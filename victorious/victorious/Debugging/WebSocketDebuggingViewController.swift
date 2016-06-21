@@ -58,7 +58,8 @@
             let cell = tableView.dequeueReusableCellWithIdentifier(Constants.cellReuseIdentifier) as! DebugCell
             let currentRow = indexPath.row
             guard let rawMessageContainer = rawMessageContainer else {
-                fatalError("we should have a message container")
+                assertionFailure("we should have a message container")
+                return UITableViewCell()
             }
             
             guard rawMessageContainer.messageCount > currentRow else {
@@ -76,7 +77,8 @@
 
         override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
             guard let rawMessageContainer = rawMessageContainer else {
-                fatalError("we should have a message container")
+                assertionFailure("we should have a message container")
+                return
             }
             
             let message = rawMessageContainer.messageContainer[indexPath.row]
