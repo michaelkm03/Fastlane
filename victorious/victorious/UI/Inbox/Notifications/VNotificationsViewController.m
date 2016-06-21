@@ -21,7 +21,7 @@
 
 static NSString * const kNotificationCellViewIdentifier = @"NotificationCell";
 static CGFloat const kNotificationCellHeight = 64.0f;
-static CGFloat const kNotificationAddedVerticalInset = 5.0f;
+static CGFloat const kNotificationAddedVerticalInset = 8.0f;
 
 @interface VNotificationsViewController () <VNavigationDestination, VCellWithProfileDelegate, VScrollPaginatorDelegate, VPaginatedDataSourceDelegate, VBackgroundContainer>
 
