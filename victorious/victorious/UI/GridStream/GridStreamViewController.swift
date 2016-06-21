@@ -40,6 +40,8 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     
     private var header: HeaderType?
     
+    private let trackingParameters: [NSObject : AnyObject]
+    
     // MARK: - Initializing
     
     init(
@@ -47,12 +49,14 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         header: HeaderType? = nil,
         content: HeaderType.ContentType?,
         configuration: GridStreamConfiguration? = nil,
-        streamAPIPath: APIPath
+        streamAPIPath: APIPath,
+        trackingParameters: [NSObject : AnyObject] = [:]
     ) {
         self.dependencyManager = dependencyManager
         self.header = header
         self.content = content
         self.configuration = configuration ?? GridStreamConfiguration()
+        self.trackingParameters = trackingParameters
         
         dataSource = GridStreamDataSource<HeaderType>(
             dependencyManager: dependencyManager,
@@ -233,8 +237,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     // MARK: - ContentCellTracker
     
     var sessionParameters: [NSObject : AnyObject] {
-        //TODO: Fill this in
-        return [ : ]
+        return trackingParameters
     }
 }
 

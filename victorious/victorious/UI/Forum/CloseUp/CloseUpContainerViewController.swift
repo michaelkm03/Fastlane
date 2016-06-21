@@ -67,12 +67,17 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
             managesBackground: true
         )
         
+        var parameters = [String : String]()
+        if let contentId = content?.id {
+            parameters[VTrackingKeyParentContentId] = contentId
+        }
         gridStreamController = GridStreamViewController<CloseUpView>(
             dependencyManager: dependencyManager,
             header: header,
             content: content,
             configuration: configuration,
-            streamAPIPath: streamAPIPath
+            streamAPIPath: streamAPIPath,
+            trackingParameters: parameters
         )
         self.content = content
         

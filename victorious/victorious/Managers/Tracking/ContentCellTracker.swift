@@ -11,15 +11,15 @@ import Foundation
 protocol ContentCellTracker {
     var sessionParameters: [NSObject : AnyObject] { get }
     
-    func trackCell(cell: ContentCell, trackingKey: ViewTrackingKey)
+    func trackCell(cell: ContentCell, trackingKey: TrackingKey)
 }
 
 extension ContentCellTracker {
     private var trackingManager: VTrackingManager {
         return VTrackingManager.sharedInstance()
     }
-    
-    func trackCell(cell: ContentCell, trackingKey: ViewTrackingKey) {
+
+    func trackCell(cell: ContentCell, trackingKey: TrackingKey) {
         guard
             let content = cell.content,
             let eventId = content.id,
@@ -36,17 +36,23 @@ extension ContentCellTracker {
         )
     }
     
-    private func parametersForTrackingKey(trackingKey: ViewTrackingKey, content: ContentModel) -> [NSObject : AnyObject]? {
-        guard let trackingURLstrings = content.tracking?.trackingMap?[trackingKey] else {
+    private func parametersForTrackingKey(trackingKey: TrackingKey, content: ContentModel) -> [NSObject : AnyObject]? {
+        guard let trackingURLstrings = content.tracking?.trackingURLsForKey(trackingKey) else {
             return nil
         }
         
+        let parameters = [
+            VTrackingKeyTimeStamp : NSDate(),
+            VTrackingKeyUrls : trackingURLstrings
+        ]
+        
         switch trackingKey {
-            case .cellView:
-                //TODO: Get details, fill this in
-                return [
-                    VTrackingKeyUrls : trackingURLstrings
-                ]
+            case .cellView: ()
+            default:
+                assertionFailure("not implemented yet")
+                return nil
         }
+        
+        return parameters
     }
 }

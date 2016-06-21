@@ -22,8 +22,13 @@ class VContent: NSManagedObject, ContentModel, PaginatableItem {
     @NSManaged var v_contentMediaAssets: Set<VContentMediaAsset>
     @NSManaged var v_author: VUser
     @NSManaged var v_contentPreviewAssets: Set<VImageAsset>
+    @NSManaged var v_tracking: VTracking?
     
     // MARK: - ContentModel
+    
+    var tracking: Tracking? {
+        return v_tracking
+    }
     
     var createdAt: NSDate {
         return v_createdAt
@@ -98,11 +103,6 @@ class VContent: NSManagedObject, ContentModel, PaginatableItem {
         set {
             return
         }
-    }
-    
-    var tracking: ContentTracking? {
-        //TODO: Figure out if I need to implement this
-        return nil
     }
 }
 

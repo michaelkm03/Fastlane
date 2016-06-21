@@ -35,7 +35,7 @@ public protocol ContentModel: PreviewImageContainer, DictionaryConvertible {
     var seekAheadTime: NSTimeInterval? { get set }
     
     /// Keys correspond to an array of string-represented tracking urls
-    var tracking: ContentTracking? { get }
+    var tracking: Tracking? { get }
 }
 
 extension ContentModel {
@@ -73,6 +73,10 @@ extension ContentModel {
         
         return dictionary
     }
+    
+    public var tracking: Tracking? {
+        return nil
+    }
 }
 
 public class Content: ContentModel {
@@ -92,7 +96,7 @@ public class Content: ContentModel {
     /// seekAheadTime for videos to be played on the VIP stage (which needs synchronization)
     public var seekAheadTime : NSTimeInterval?
     
-    public let tracking: ContentTracking?
+    public let tracking: TrackingModel?
     
     public init?(json viewedContentJSON: JSON) {
         let json = viewedContentJSON["content"]
@@ -132,7 +136,7 @@ public class Content: ContentModel {
             self.assets = []
         }
         
-        self.tracking = ContentTracking(json: json["tracking"])
+        self.tracking = TrackingModel(json: json["tracking"])
     }
     
     public init?(chatMessageJSON json: JSON, serverTime: NSDate) {
