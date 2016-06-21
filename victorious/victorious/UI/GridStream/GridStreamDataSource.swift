@@ -15,7 +15,7 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
     private let cellCornerRadius = CGFloat(6)
     private let cellBackgroundColor = UIColor.clearColor()
     private let cellContentBackgroundColor = UIColor.clearColor()
-    
+
     // MARK: - Initializing
     
     init(dependencyManager: VDependencyManager, header: HeaderType? = nil, content: HeaderType.ContentType?, streamAPIPath: APIPath) {
