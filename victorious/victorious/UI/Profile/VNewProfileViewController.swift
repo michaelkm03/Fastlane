@@ -105,7 +105,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         supplementalRightButtons = []
         
         let isCurrentUser = user?.isCurrentUser == true
-        let isCreator = user?.accessLevel?.isCreator != true
+        let isCreator = user?.accessLevel?.isCreator == true
         
         if !isCurrentUser {
             supplementalRightButtons.append(upvoteButton)
