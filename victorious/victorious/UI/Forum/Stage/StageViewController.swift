@@ -10,7 +10,7 @@ import UIKit
 import VictoriousIOSSDK
 import SDWebImage
 
-class StageViewController: UIViewController, Stage {
+class StageViewController: UIViewController, Stage, AttributionBarDelegate {
     private struct Constants {
         static let contentSizeAnimationDuration: NSTimeInterval = 0.5
         static let defaultAspectRatio: CGFloat = 16 / 9
@@ -20,6 +20,7 @@ class StageViewController: UIViewController, Stage {
     @IBOutlet private var attributionBar: AttributionBar! {
         didSet {
             attributionBar.hidden = true
+            attributionBar.delegate = self
             updateAttributionBarAppearance(with: dependencyManager)
         }
     }
@@ -93,6 +94,10 @@ class StageViewController: UIViewController, Stage {
         let attributionBarDependency = dependencyManager?.attributionBarDependency
         attributionBar.hidden = attributionBarDependency == nil
         attributionBar.dependencyManager = attributionBarDependency
+    }
+    
+    func didTapOnUser(user: UserModel) {
+        ShowProfileOperation(originViewController: self, dependencyManager: dependencyManager, userId: user.id).queue()
     }
 }
 

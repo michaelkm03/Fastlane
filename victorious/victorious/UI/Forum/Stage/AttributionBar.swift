@@ -8,7 +8,15 @@
 
 import UIKit
 
+protocol AttributionBarDelegate: class {
+    func didTapOnUser(user: UserModel)
+}
+
 class AttributionBar: UIView {
+    
+    var dependencyManager: VDependencyManager?
+    weak var delegate: AttributionBarDelegate?
+    
     @IBOutlet private var profileButton: VDefaultProfileButton!
     @IBOutlet private var userNameLabel: UILabel! {
         didSet {
@@ -17,14 +25,18 @@ class AttributionBar: UIView {
         }
     }
     
-    var dependencyManager: VDependencyManager?
+    private var displayingUser: UserModel!
     
     func configure(with user: UserModel) {
+        displayingUser = user
         userNameLabel.text = user.name
-
         if let profileImageURL = user.previewImageURL(ofMinimumSize: profileButton.bounds.size) {
             profileButton?.setProfileImageURL(profileImageURL, forState: .Normal)
         }
+    }
+    
+    @IBAction private func didTapOnUser() {
+        delegate?.didTapOnUser(displayingUser)
     }
 }
 
