@@ -9,6 +9,7 @@
 import VictoriousIOSSDK
 
 extension UserModel {
+    
     // MARK: - Current user information
     
     var isCurrentUser: Bool {

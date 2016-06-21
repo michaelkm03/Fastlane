@@ -690,27 +690,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (BOOL)shouldNavigateWithAccessoryMenuItem:(VNavigationMenuItem *)menuItem
 {
-    if ( [menuItem.destination isKindOfClass:[VConversationContainerViewController class]] )
-    {
-        // Fetch the conversation or create a new one
-        VDependencyManager *destinationDependencyManager = ((VConversationContainerViewController *)menuItem.destination).dependencyManager;
-        ConversationForUserOperation *operation = [[ConversationForUserOperation alloc] initWithUserID:self.user.remoteId.integerValue];
-        [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
-         {
-             VConversation *conversation = operation.loadedConversation;
-             if ( conversation != nil )
-             {
-                 VConversationContainerViewController *viewController = [VConversationContainerViewController newWithDependencyManager:destinationDependencyManager];
-                 viewController.conversation = conversation;
-                 [self.navigationController pushViewController:viewController animated:YES];
-             }
-         }];
-    }
-    else if ( [menuItem.destination isKindOfClass:[VFindFriendsViewController class]] )
-    {
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectFindFriends];
-    }
-    
     return YES;
 }
 
