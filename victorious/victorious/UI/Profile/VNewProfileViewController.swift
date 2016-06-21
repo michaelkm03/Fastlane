@@ -102,15 +102,17 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
             upvoteButton.tintColor = nil
         }
         
-        
         supplementalRightButtons = []
         
-        if user?.isCurrentUser != true {
-            supplementalRightButtons.append(upvoteButton)
-        }
+        let isCurrentUser = user?.isCurrentUser == true
+        let isCreator = user?.accessLevel?.isCreator != true
         
-        if user?.accessLevel?.isCreator != true {
-            supplementalRightButtons.append(overflowButton)
+        if !isCurrentUser {
+            supplementalRightButtons.append(upvoteButton)
+            
+            if !isCreator {
+                supplementalRightButtons.append(overflowButton)
+            }
         }
         
         v_addAccessoryScreensWithDependencyManager(dependencyManager)
