@@ -11,10 +11,11 @@ import Foundation
 class StageDataSource: ForumEventReceiver {
     
     weak var delegate: Stage?
-
+    
     private let dependencyManager: VDependencyManager?
     
     private var currentContentFetchOperation: StageContentFetchOperation?
+    private var currentContent: ContentModel?
     
     // MARK: Initialiation
     
@@ -31,32 +32,44 @@ class StageDataSource: ForumEventReceiver {
         }
         
         switch event {
-        case .refreshStage(let stageEvent) where stageEvent.section == .VIPStage:
-            guard let currentUserID = VCurrentUser.user()?.remoteId.stringValue where VCurrentUser.isLoggedIn() else {
-                v_log("The current user is not logged in and got a refresh stage message. App is in an inconsistent state. VCurrentUser -> \(VCurrentUser.user())")
-                return
-            }
-            
-            currentContentFetchOperation?.cancel()
-            
-            guard let contentFetchURL = dependencyManager.contentFetchURL else {
-                return
-            }
-            let stageContentFetchOperation = StageContentFetchOperation(macroURLString: contentFetchURL, currentUserID: currentUserID, refreshStageEvent: stageEvent)
-            currentContentFetchOperation = stageContentFetchOperation
-            stageContentFetchOperation.queue() { [weak self] results, error, canceled in
-                guard let strongSelf = self,
-                    let delegate = strongSelf.delegate
-                    where canceled != true else {
-                        return
+            case .refreshStage(let stageEvent):
+                guard let currentUserID = VCurrentUser.user()?.remoteId.stringValue where VCurrentUser.isLoggedIn() else {
+                    v_log("The current user is not logged in and got a refresh stage message. App is in an inconsistent state. VCurrentUser -> \(VCurrentUser.user())")
+                    return
                 }
-                if let content = results?.first as? Content {
-                    delegate.addContent(content)
+                
+                guard let contentFetchURL = dependencyManager.contentFetchURL else {
+                    return
                 }
+                
+                if currentContent?.id == stageEvent.contentID && stageEvent.section == .MainStage {
+                    return
+                }
+                
+                currentContentFetchOperation?.cancel()
+                
+                currentContentFetchOperation = StageContentFetchOperation(macroURLString: contentFetchURL, currentUserID: currentUserID, refreshStageEvent: stageEvent)
+                
+                currentContentFetchOperation?.queue() { [weak self] results, error, canceled in
+                    guard
+                        !canceled,
+                        let content = results?.first as? ContentModel
+                    else {
+                            return
+                    }
+                    
+                    self?.delegate?.addContent(content)
+                    self?.currentContent = content
+                }
+                
+            case .closeMainStage:
+                currentContentFetchOperation?.cancel()
+                delegate?.removeContent()
+                currentContent = nil
+                
+            default:
+                break
             }
-        default:
-            break
-        }
     }
 }
 

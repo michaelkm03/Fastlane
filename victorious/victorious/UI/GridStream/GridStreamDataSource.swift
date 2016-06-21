@@ -61,7 +61,7 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
     }
     
     func loadContent(for collectionView: UICollectionView, loadingType: PaginatedLoadingType, completion: ((newItems: [ContentModel], error: NSError?) -> Void)? = nil) {
-        paginatedDataSource.loadItems(loadingType) { [weak self] newItems, error in
+        paginatedDataSource.loadItems(loadingType) { [weak self] newItems, stageEvent, error in
             if let items = self?.paginatedDataSource.items {
                 self?.header?.gridStreamDidUpdateDataSource(with: items)
             }
