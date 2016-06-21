@@ -25,6 +25,7 @@ class TextOnImageButton: UIButton, TrackableButton {
             
             setTitleColor(templateAppearanceValue(.foregroundColor), forState: .Normal)
             setTitle(templateAppearanceValue(.text), forState: .Normal)
+            titleLabel?.font = templateAppearanceValue(.font)
             
             backgroundColor = .clearColor()
         }

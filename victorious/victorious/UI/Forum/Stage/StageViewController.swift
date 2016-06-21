@@ -11,13 +11,24 @@ import VictoriousIOSSDK
 import SDWebImage
 
 class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
-    
     private struct Constants {
         static let contentSizeAnimationDuration: NSTimeInterval = 0.5
         static let defaultAspectRatio: CGFloat = 16 / 9
+        
+        static let pillInsets = UIEdgeInsetsMake(10, 10, 10, 10)
+        static let pillHeight: CGFloat = 30
+        static let pillBottomMargin: CGFloat = 20
     }
     
     @IBOutlet private var mediaContentView: MediaContentView!
+    private lazy var newItemPill: TextOnColorButton = {
+        let pill = TextOnColorButton()
+        pill.dependencyManager = self.dependencyManager.newItemButtonDependency
+        pill.contentEdgeInsets = Constants.pillInsets
+        pill.sizeToFit()
+        pill.clipsToBounds = true
+        return pill
+    }()
     
     private var stageDataSource: StageDataSource?
     
@@ -28,6 +39,13 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
             // The data source is initialized with the dependency manager since it needs URLs in the template to operate.
             stageDataSource = setupDataSource(dependencyManager)
         }
+    }
+    
+    override func viewDidLoad() {
+        view.addSubview(newItemPill)
+        view.v_addPinToBottomToSubview(newItemPill, bottomMargin: Constants.pillBottomMargin)
+        view.v_addCenterHorizontallyConstraintsToSubview(newItemPill)
+        newItemPill.v_addHeightConstraint(Constants.pillHeight)
     }
 
     // MARK: Life cycle
@@ -78,5 +96,11 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
             self.view.layoutIfNeeded()
         }
         self.delegate?.stage(self, didUpdateContentHeight: 0.0)
+    }
+}
+
+private extension VDependencyManager {
+    var newItemButtonDependency: VDependencyManager? {
+        return childDependencyForKey("newItemButton")
     }
 }

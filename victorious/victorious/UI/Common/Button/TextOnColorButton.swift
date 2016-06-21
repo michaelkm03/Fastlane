@@ -18,6 +18,19 @@ class TextOnColorButton: UIButton, TrackableButton {
             backgroundColor = templateAppearanceValue(.backgroundColor)
             setTitleColor(templateAppearanceValue(.foregroundColor), forState: .Normal)
             setTitle(templateAppearanceValue(.text), forState: .Normal)
+            let font: UIFont = templateAppearanceValue(.font)!
+            titleLabel?.font = font
         }
+    }
+    
+    override var highlighted: Bool {
+        didSet {
+            alpha = highlighted ? 0.5 : 1.0
+        }
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        layer.cornerRadius = frame.size.v_roundCornerRadius
     }
 }
