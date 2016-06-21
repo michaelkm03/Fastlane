@@ -11,13 +11,13 @@ import VictoriousIOSSDK
 import SDWebImage
 
 class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
-    
     private struct Constants {
         static let contentSizeAnimationDuration: NSTimeInterval = 0.5
         static let defaultAspectRatio: CGFloat = 16 / 9
     }
     
     @IBOutlet private var mediaContentView: MediaContentView!
+    @IBOutlet private var attributionBar: AttributionBar!
     
     private var stageDataSource: StageDataSource?
     
@@ -56,6 +56,8 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
         
         let defaultStageHeight = view.bounds.width / Constants.defaultAspectRatio
         delegate?.stage(self, didUpdateContentHeight: defaultStageHeight)
+        
+        attributionBar.configure(with: dependencyManager, user: stageContent.author)
     }
 
     func removeContent() {
@@ -78,5 +80,11 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
             self.view.layoutIfNeeded()
         }
         self.delegate?.stage(self, didUpdateContentHeight: 0.0)
+    }
+}
+
+private extension VDependencyManager {
+    var attributionBarDependency: VDependencyManager? {
+        return childDependencyForKey("attributionBar")
     }
 }

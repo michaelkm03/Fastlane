@@ -186,6 +186,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
 
         // Set up the network source if needed.
         forumNetworkSource?.setUpIfNeeded()
+        
+        debug_createStageEvents()
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
