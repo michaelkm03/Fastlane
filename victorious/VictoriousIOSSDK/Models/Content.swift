@@ -35,7 +35,7 @@ public protocol ContentModel: PreviewImageContainer, DictionaryConvertible {
     var seekAheadTime: NSTimeInterval? { get set }
     
     /// Keys correspond to an array of string-represented tracking urls
-    var tracking: Tracking? { get }
+    var tracking: TrackingModel? { get }
 }
 
 extension ContentModel {
@@ -72,10 +72,6 @@ extension ContentModel {
         }
         
         return dictionary
-    }
-    
-    public var tracking: Tracking? {
-        return nil
     }
 }
 
