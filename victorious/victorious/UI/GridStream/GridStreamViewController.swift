@@ -18,9 +18,6 @@ struct GridStreamConfiguration {
 
 class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIViewController, UICollectionViewDelegateFlowLayout, VScrollPaginatorDelegate, VBackgroundContainer {
     
-    private let highlightAlpha: CGFloat = 0.2
-    private let highlightAnimationDuration: Double = 0.3
-    
     // MARK: Variables
     
     let dependencyManager: VDependencyManager
@@ -222,20 +219,6 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let displayModifier = ShowCloseUpDisplayModifier(dependencyManager: dependencyManager, originViewController: self)
         ShowCloseUpOperation.showOperation(forContent: dataSource.items[indexPath.row], displayModifier: displayModifier).queue()
-    }
-    
-    func collectionView(collectionView: UICollectionView, didHighlightItemAtIndexPath indexPath: NSIndexPath) {
-        let cell = collectionView.cellForItemAtIndexPath(indexPath)
-        UIView.animateWithDuration(highlightAnimationDuration, animations: {
-            cell?.alpha = self.highlightAlpha
-        })
-    }
-    
-    func collectionView(collectionView: UICollectionView, didUnhighlightItemAtIndexPath indexPath: NSIndexPath) {
-        let cell = collectionView.cellForItemAtIndexPath(indexPath)
-        UIView.animateWithDuration(highlightAnimationDuration, animations: {
-            cell?.alpha = 1
-        })
     }
 }
 

@@ -13,6 +13,7 @@ class VContentOnlyCell: UICollectionViewCell {
     // MARK: - Constants
     
     private static let cornerRadius: CGFloat = 6.0
+    private static let highlightAlpha: CGFloat = 0.2
     
     // MARK: - Initializing
     
@@ -27,13 +28,8 @@ class VContentOnlyCell: UICollectionViewCell {
     }
     
     private func setup() {
-        // Prevents UICollectionView from complaining about constraints "ambiguously suggesting a size of zero".
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addConstraint(NSLayoutConstraint(item: contentView, attribute: .Width,  relatedBy: .GreaterThanOrEqual, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: 1.0))
-        contentView.addConstraint(NSLayoutConstraint(item: contentView, attribute: .Height, relatedBy: .GreaterThanOrEqual, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: 1.0))
-        
-        clipsToBounds = true
-        layer.cornerRadius = VContentOnlyCell.cornerRadius
+        contentView.clipsToBounds = true
+        contentView.layer.cornerRadius = VContentOnlyCell.cornerRadius
     }
     
     // MARK: - Content
@@ -59,15 +55,16 @@ class VContentOnlyCell: UICollectionViewCell {
         guard let content = content else {
             return
         }
-        addSubview(contentPreviewView)
-        v_addFitToParentConstraintsToSubview(contentPreviewView)
+        contentView.addSubview(contentPreviewView)
+        contentView.v_addFitToParentConstraintsToSubview(contentPreviewView)
         contentPreviewView.content = content
     }
     
-    // MARK: Layout
+    // MARK: Highlighting
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        contentView.frame = bounds
+    override var highlighted: Bool {
+        didSet {
+            self.contentView.alpha = self.highlighted ? VContentOnlyCell.highlightAlpha : 1.0
+        }
     }
 }
