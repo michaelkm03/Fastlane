@@ -21,14 +21,23 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     }
     
     @IBOutlet private var mediaContentView: MediaContentView!
-    private lazy var newItemPill: TextOnColorButton = {
+    private lazy var newItemPill: TextOnColorButton = { [weak self] in
         let pill = TextOnColorButton()
-        pill.dependencyManager = self.dependencyManager.newItemButtonDependency
+        pill.dependencyManager = self?.dependencyManager.newItemButtonDependency
         pill.contentEdgeInsets = Constants.pillInsets
         pill.sizeToFit()
         pill.clipsToBounds = true
+        pill.hidden = true
+        
+        if let strongSelf = self {
+            pill.addTarget(strongSelf, action: #selector(onPillSelect), forControlEvents: .TouchUpInside)
+        }
+        
         return pill
     }()
+    
+    private var hasShownStage: Bool = false
+    private var queuedContent: ContentModel?
     
     private var stageDataSource: StageDataSource?
     
@@ -69,15 +78,64 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     //MARK: - Stage
     
     func addContent(stageContent: ContentModel) {
+        queuedContent = stageContent
+        if !hasShownStage || mediaContentView.content?.type != .video {
+            // If the stage was not shown, or if the current content was one that is not time based (video for now), we will immediately move to the next content.
+            hasShownStage = true
+            let defaultStageHeight = view.bounds.width / Constants.defaultAspectRatio
+            delegate?.stage(self, didUpdateContentHeight: defaultStageHeight)
+            nextContent()
+        }
+        else {
+            showPill()
+        }
+    }
+    
+    func nextContent() {
+        hidePill()
+        guard let stageContent = queuedContent else {
+            return
+        }
+        
         mediaContentView.videoCoordinator?.pauseVideo()
         mediaContentView.content = stageContent
-        
-        let defaultStageHeight = view.bounds.width / Constants.defaultAspectRatio
-        delegate?.stage(self, didUpdateContentHeight: defaultStageHeight)
+        queuedContent = nil
+    }
+    
+    func onPillSelect() {
+        nextContent()
+        hidePill()
     }
 
     func removeContent() {
+        hidePill()
         hideStage()
+        hasShownStage = false
+        queuedContent = nil
+    }
+    
+    private func hidePill() {
+        guard newItemPill.hidden == false else {
+            return
+        }
+        
+        UIView.animateWithDuration(0.5, animations: {
+            self.newItemPill.alpha = 0.0
+        }) { _ in
+            self.newItemPill.hidden = true
+        }
+    }
+    
+    private func showPill() {
+        guard newItemPill.hidden == true else {
+            return
+        }
+        
+        newItemPill.alpha = 0.0
+        newItemPill.hidden = false
+        UIView.animateWithDuration(0.5, animations: {
+            self.newItemPill.alpha = 1.0
+        })
     }
 
     // MARK: - ForumEventReceiver

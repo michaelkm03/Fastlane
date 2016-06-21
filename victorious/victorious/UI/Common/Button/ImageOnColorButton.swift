@@ -13,7 +13,6 @@ import Foundation
 class ImageOnColorButton: UIButton, TrackableButton {
     var dependencyManager: VDependencyManager! {
         didSet {
-            
             backgroundColor = templateAppearanceValue(.backgroundColor)
             
             var foregroundRenderingMode = UIImageRenderingMode.AlwaysOriginal
