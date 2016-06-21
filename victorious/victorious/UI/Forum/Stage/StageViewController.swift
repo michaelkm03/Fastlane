@@ -10,14 +10,19 @@ import UIKit
 import VictoriousIOSSDK
 import SDWebImage
 
-class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
+class StageViewController: UIViewController, Stage {
     private struct Constants {
         static let contentSizeAnimationDuration: NSTimeInterval = 0.5
         static let defaultAspectRatio: CGFloat = 16 / 9
     }
     
     @IBOutlet private var mediaContentView: MediaContentView!
-    @IBOutlet private var attributionBar: AttributionBar!
+    @IBOutlet private var attributionBar: AttributionBar! {
+        didSet {
+            attributionBar.hidden = true
+            updateAttributionBarAppearance(with: dependencyManager)
+        }
+    }
     
     private var stageDataSource: StageDataSource?
     
@@ -54,10 +59,10 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
         mediaContentView.videoCoordinator?.pauseVideo()
         mediaContentView.content = stageContent
         
+        attributionBar.configure(with: stageContent.author)
+        
         let defaultStageHeight = view.bounds.width / Constants.defaultAspectRatio
         delegate?.stage(self, didUpdateContentHeight: defaultStageHeight)
-        
-        attributionBar.configure(with: dependencyManager, user: stageContent.author)
     }
 
     func removeContent() {
@@ -80,6 +85,14 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
             self.view.layoutIfNeeded()
         }
         self.delegate?.stage(self, didUpdateContentHeight: 0.0)
+    }
+    
+    // MARK: - Attribution Bar
+    
+    private func updateAttributionBarAppearance(with dependencyManager: VDependencyManager?) {
+        let attributionBarDependency = dependencyManager?.attributionBarDependency
+        attributionBar.hidden = attributionBarDependency == nil
+        attributionBar.dependencyManager = attributionBarDependency
     }
 }
 
