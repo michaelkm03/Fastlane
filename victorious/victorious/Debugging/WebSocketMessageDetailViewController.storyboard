@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="tRX-V4-riM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="tRX-V4-riM">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -25,7 +25,7 @@
                                     <constraint firstAttribute="height" constant="400" id="qrl-TI-47g"/>
                                 </constraints>
                                 <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <fontDescription key="fontDescription" name="Menlo-Regular" family="Menlo" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                 <variation key="default">
                                     <mask key="constraints">
@@ -34,7 +34,7 @@
                                 </variation>
                             </textView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w8S-6f-e3A">
-                                <rect key="frame" x="0.0" y="60" width="580" height="40"/>
+                                <rect key="frame" x="0.0" y="60" width="600" height="40"/>
                                 <color key="backgroundColor" red="1" green="0.57211721124620063" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="kHO-Ws-xBj"/>
@@ -47,14 +47,14 @@
                                 <rect key="frame" x="0.0" y="100" width="580" height="150"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <fontDescription key="fontDescription" name="Menlo-Regular" family="Menlo" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Pwe-Bq-QXk" firstAttribute="leading" secondItem="vrX-Ls-sV1" secondAttribute="leading" id="5Z9-ru-7i2"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="w8S-6f-e3A" secondAttribute="trailing" id="9fQ-EX-QJ9"/>
+                            <constraint firstAttribute="trailing" secondItem="w8S-6f-e3A" secondAttribute="trailing" id="9fQ-EX-QJ9"/>
                             <constraint firstItem="w8S-6f-e3A" firstAttribute="top" secondItem="vrX-Ls-sV1" secondAttribute="topMargin" constant="60" id="HuM-Ck-gk2"/>
                             <constraint firstItem="w8S-6f-e3A" firstAttribute="leading" secondItem="vrX-Ls-sV1" secondAttribute="leading" id="JFa-aN-1tf"/>
                             <constraint firstItem="xZS-jO-1n4" firstAttribute="top" secondItem="w8S-6f-e3A" secondAttribute="bottom" id="RvE-ZN-HBw"/>
