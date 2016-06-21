@@ -11,7 +11,7 @@ import VictoriousIOSSDK
 
 extension VTracking: PersistenceParsable {
     
-    func populate( fromSourceModel tracking: Tracking ) {
+    func populate( fromSourceModel tracking: TrackingModel ) {
         cellClick           = tracking.trackingURLsForKey(.cellClick) ?? cellClick
         cellView            = tracking.trackingURLsForKey(.cellView) ?? cellView
         cellLoad            = tracking.trackingURLsForKey(.cellLoad) ?? cellLoad

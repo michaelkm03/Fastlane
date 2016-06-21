@@ -136,7 +136,7 @@ public class Content: ContentModel {
             self.assets = []
         }
         
-        self.tracking = TrackingModel(json: json["tracking"])
+        self.tracking = Tracking(json: json["tracking"])
     }
     
     public init?(chatMessageJSON json: JSON, serverTime: NSDate) {

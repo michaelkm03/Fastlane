@@ -24,11 +24,11 @@ public enum TrackingKey: String {
     case share = "share"
 }
 
-public protocol Tracking {
+public protocol TrackingModel {
     func trackingURLsForKey(key: TrackingKey) -> [String]?
 }
 
-public struct TrackingModel: Tracking {
+public struct Tracking: TrackingModel {
     private let trackingMap: [TrackingKey : [String]]?
     
     public func trackingURLsForKey(key: TrackingKey) -> [String]? {
@@ -36,7 +36,7 @@ public struct TrackingModel: Tracking {
     }
 }
 
-extension TrackingModel {
+extension Tracking {
     init(json: JSON) {
         var map = [TrackingKey : [String]]()
         json.dictionary?.forEach() { key, value in

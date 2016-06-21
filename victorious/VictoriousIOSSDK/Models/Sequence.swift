@@ -94,7 +94,7 @@ extension Sequence {
         comments                = json["comments"].array?.flatMap { Comment(json: $0) }
         nodes                   = json["nodes"].array?.flatMap { Node(json: $0) }
         parentUser              = User(json: json["parent_user"])
-        tracking                = TrackingModel(json: json["tracking"])
+        tracking                = Tracking(json: json["tracking"])
         
         // MARK: - StreamItemType
         

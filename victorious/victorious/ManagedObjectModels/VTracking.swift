@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 
 @objc(VTracking)
-class VTracking: NSManagedObject, Tracking {
+class VTracking: NSManagedObject, TrackingModel {
     
     func trackingURLsForKey(key: TrackingKey) -> [String]? {
         switch key {

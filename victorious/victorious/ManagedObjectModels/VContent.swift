@@ -26,7 +26,7 @@ class VContent: NSManagedObject, ContentModel, PaginatableItem {
     
     // MARK: - ContentModel
     
-    var tracking: Tracking? {
+    var tracking: TrackingModel? {
         return v_tracking
     }
     
