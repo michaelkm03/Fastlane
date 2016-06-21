@@ -11,8 +11,6 @@ import Foundation
 /// Describes a template-styled button,
 /// provides default implementations for easy subclassing.
 protocol TrackableButton {
-    var selectionBlock: ()->()? { get set }
-    
     var dependencyManager: VDependencyManager! { get set }
     
     var trackingID: String { get }
