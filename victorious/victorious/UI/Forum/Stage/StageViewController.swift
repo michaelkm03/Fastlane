@@ -41,11 +41,11 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         mediaContentView.allowsVideoControls = false
-        mediaContentView.videoCoordinator?.playVideo()
+        showStage(animated)
     }
 
     override func viewWillDisappear(animated: Bool) {
-        hideStage()
+        hideStage(animated)
     }
     
     //MARK: - Stage
@@ -78,5 +78,17 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
             self.view.layoutIfNeeded()
         }
         self.delegate?.stage(self, didUpdateContentHeight: 0.0)
+    }
+    
+    private func showStage(animated: Bool = false) {
+        mediaContentView.videoCoordinator?.playVideo()
+        mediaContentView.showContent(animated: animated)
+        
+        UIView.animateWithDuration(animated == true ? Constants.contentSizeAnimationDuration : 0) {
+            self.view.layoutIfNeeded()
+        }
+        
+        let defaultStageHeight = view.bounds.width / Constants.defaultAspectRatio
+        self.delegate?.stage(self, didUpdateContentHeight: defaultStageHeight)
     }
 }
