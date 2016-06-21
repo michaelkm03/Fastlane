@@ -14,4 +14,9 @@
 
 @interface VSettingsViewController : UITableViewController <VHasManagedDependencies, VNavigationDestination, VAccessoryNavigationSource>
 
+// These are exposed here since they are used in the Swift extension
+@property (weak, nonatomic) IBOutlet UILabel *versionString;
+
+- (void)sendHelp;
+
 @end

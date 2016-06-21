@@ -9,7 +9,7 @@
 import UIKit
 
 /// The table view cell used to display notifications.
-class NotificationCell: UITableViewCell, VBackgroundContainer {
+class NotificationCell: UITableViewCell {
     // MARK: - Constants
     
     private static let containerCornerRadius: CGFloat = 6.0
@@ -138,12 +138,6 @@ class NotificationCell: UITableViewCell, VBackgroundContainer {
     
     @IBAction private func profileButtonWasPressed() {
         delegate?.cellDidSelectProfile(self)
-    }
-    
-    // MARK: - VBackgroundContainer
-    
-    func backgroundContainerView() -> UIView {
-        return containerView
     }
 }
 

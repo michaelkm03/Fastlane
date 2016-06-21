@@ -111,11 +111,11 @@ class VIPGateViewController: UIViewController {
     }
     
     @IBAction func onPrivacyPolicySelected() {
-        ShowPrivacyPolicyOperation(originViewController: self).queue()
+        ShowWebContentOperation(originViewController: self, type: .PrivacyPolicy, dependencyManager: dependencyManager).queue()
     }
     
     @IBAction func onTermsOfServiceSelected() {
-        ShowTermsOfServiceOperation(originViewController: self).queue()
+        ShowWebContentOperation(originViewController: self, type: .TermsOfService, dependencyManager: dependencyManager).queue()
     }
     
     // MARK: - Private
