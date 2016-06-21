@@ -11,13 +11,14 @@ import Foundation
 /// A template-styled button that displays text on top of a solid-color background
 @objc(VTextOnColorButton)
 class TextOnColorButton: UIButton, TrackableButton {
-    var dependencyManager: VDependencyManager! {
+    var dependencyManager: VDependencyManager? {>>>>>>> dev
         didSet {
             backgroundColor = templateAppearanceValue(.backgroundColor)
             setTitleColor(templateAppearanceValue(.foregroundColor), forState: .Normal)
             setTitle(templateAppearanceValue(.text), forState: .Normal)
             let font: UIFont = templateAppearanceValue(.font)!
             titleLabel?.font = font
+            self.enabled = templateAppearanceValue(.clickable) ?? false
         }
     }
     

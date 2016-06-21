@@ -12,6 +12,7 @@ import Foundation
 @objc(VTextOnImageButton)
 class TextOnImageButton: UIButton, TrackableButton {
     var dependencyManager: VDependencyManager! {
+    var dependencyManager: VDependencyManager? {
         didSet {
             var backgroundRenderingMode = UIImageRenderingMode.AlwaysOriginal
             if let backgroundColor: UIColor = templateAppearanceValue(.backgroundColor) {
@@ -26,6 +27,7 @@ class TextOnImageButton: UIButton, TrackableButton {
             titleLabel?.font = templateAppearanceValue(.font)
             
             backgroundColor = .clearColor()
+            self.enabled = templateAppearanceValue(.clickable) ?? false
         }
     }
 }
