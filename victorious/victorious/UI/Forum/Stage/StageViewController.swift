@@ -21,9 +21,12 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     }
     
     @IBOutlet private var mediaContentView: MediaContentView!
-    private lazy var newItemPill: TextOnColorButton = { [weak self] in
+    private lazy var newItemPill: TextOnColorButton? = { [weak self] in
+        guard let pillDependency = self?.dependencyManager.newItemButtonDependency else {
+            return nil
+        }
         let pill = TextOnColorButton()
-        pill.dependencyManager = self?.dependencyManager.newItemButtonDependency
+        pill.dependencyManager = pillDependency
         pill.contentEdgeInsets = Constants.pillInsets
         pill.sizeToFit()
         pill.clipsToBounds = true
@@ -51,6 +54,9 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     }
     
     override func viewDidLoad() {
+        guard let newItemPill = newItemPill else {
+            return
+        }
         view.addSubview(newItemPill)
         view.v_addPinToBottomToSubview(newItemPill, bottomMargin: Constants.pillBottomMargin)
         view.v_addCenterHorizontallyConstraintsToSubview(newItemPill)
@@ -79,8 +85,11 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     
     func addContent(stageContent: ContentModel) {
         queuedContent = stageContent
-        if !hasShownStage || mediaContentView.content?.type != .video {
-            // If the stage was not shown, or if the current content was one that is not time based (video for now), we will immediately move to the next content.
+        if !hasShownStage || mediaContentView.content?.type != .video || newItemPill == nil {
+            // If the stage was not shown, 
+            // or if the current content was one that is not time based (video for now),
+            // or if we don't have a pill (for VIP stage)
+            // we will immediately move to the next content.
             hasShownStage = true
             let defaultStageHeight = view.bounds.width / Constants.defaultAspectRatio
             delegate?.stage(self, didUpdateContentHeight: defaultStageHeight)
@@ -115,26 +124,32 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     }
     
     private func hidePill() {
-        guard newItemPill.hidden == false else {
+        guard
+            let newItemPill = newItemPill
+            where newItemPill.hidden == false
+        else {
             return
         }
         
         UIView.animateWithDuration(0.5, animations: {
-            self.newItemPill.alpha = 0.0
+            newItemPill.alpha = 0.0
         }) { _ in
-            self.newItemPill.hidden = true
+            newItemPill.hidden = true
         }
     }
     
     private func showPill() {
-        guard newItemPill.hidden == true else {
+        guard
+            let newItemPill = newItemPill
+            where newItemPill.hidden == true
+        else {
             return
         }
         
         newItemPill.alpha = 0.0
         newItemPill.hidden = false
         UIView.animateWithDuration(0.5, animations: {
-            self.newItemPill.alpha = 1.0
+            newItemPill.alpha = 1.0
         })
     }
 
