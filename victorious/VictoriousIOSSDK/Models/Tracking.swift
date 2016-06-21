@@ -8,7 +8,13 @@
 
 import Foundation
 
-public enum TrackingKey: String {
+public enum CellTrackingKey: String {
+    case cellView = "cell_view"
+    case cellClick = "cell_click"
+    case cellLoad = "cell_load"
+}
+
+public enum ViewTrackingKey: String {
     case viewStart = "view_start"
     case viewStop = "view_stop"
     case videoComplete25 = "view_25_complete"
@@ -18,30 +24,35 @@ public enum TrackingKey: String {
     case videoError = "view_error"
     case videoStall = "view_stall"
     case videoSkip = "view_skip"
-    case cellView = "cell_view"
-    case cellClick = "cell_click"
-    case cellLoad = "cell_load"
     case share = "share"
 }
 
 public protocol TrackingModel {
-    func trackingURLsForKey(key: TrackingKey) -> [String]?
+    func trackingURLsForKey(key: CellTrackingKey) -> [String]?
+    func trackingURLsForKey(key: ViewTrackingKey) -> [String]?
 }
 
 public struct Tracking: TrackingModel {
-    private let trackingMap: [TrackingKey : [String]]?
+    private let trackingMap: [String : [String]]?
     
-    public func trackingURLsForKey(key: TrackingKey) -> [String]? {
-        return trackingMap?[key]
+    public func trackingURLsForKey(key: CellTrackingKey) -> [String]? {
+        return trackingMap?[key.rawValue]
+    }
+    
+    public func trackingURLsForKey(key: ViewTrackingKey) -> [String]? {
+        return trackingMap?[key.rawValue]
     }
 }
 
 extension Tracking {
     init(json: JSON) {
-        var map = [TrackingKey : [String]]()
+        var map = [String : [String]]()
         json.dictionary?.forEach() { key, value in
-            if let trackingKey = TrackingKey(rawValue: key) {
-                map[trackingKey] = value.arrayValue.flatMap { $0.string }
+            if
+                CellTrackingKey(rawValue: key) != nil ||
+                ViewTrackingKey(rawValue: key) != nil
+            {
+                map[key] = value.arrayValue.flatMap { $0.string }
             }
         }
         trackingMap = map

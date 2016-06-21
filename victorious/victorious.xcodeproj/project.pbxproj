@@ -2067,6 +2067,7 @@
 		F028F3E71AC0D9E800ABFDDC /* VAppInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = F028F3E61AC0D9E800ABFDDC /* VAppInfo.m */; };
 		F029B56D1CA1AA6200A01703 /* LibraryCreationFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F029B56C1CA1AA6200A01703 /* LibraryCreationFlowController.swift */; };
 		F03A01261D18D49E00BC0040 /* VTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03A01241D18D49E00BC0040 /* VTracking.swift */; };
+		F03A01281D19F47300BC0040 /* ViewTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03A01271D19F47300BC0040 /* ViewTracker.swift */; };
 		F03C135A1B698F6F00287F4C /* VAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = F03C13591B698F6F00287F4C /* VAsset.m */; };
 		F03C135D1B698F7000287F4C /* VComment.m in Sources */ = {isa = PBXBuildFile; fileRef = F03C135C1B698F7000287F4C /* VComment.m */; };
 		F03C13741B6C340A00287F4C /* VInStreamCommentsShowMoreAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = F03C13731B6C340A00287F4C /* VInStreamCommentsShowMoreAttributes.m */; };
@@ -5027,6 +5028,7 @@
 		F028F3E81AC0F2BB00ABFDDC /* VAppInfoTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAppInfoTests.m; sourceTree = "<group>"; };
 		F029B56C1CA1AA6200A01703 /* LibraryCreationFlowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryCreationFlowController.swift; sourceTree = "<group>"; };
 		F03A01241D18D49E00BC0040 /* VTracking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VTracking.swift; sourceTree = "<group>"; };
+		F03A01271D19F47300BC0040 /* ViewTracker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewTracker.swift; sourceTree = "<group>"; };
 		F03C13581B698F6F00287F4C /* VAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAsset.h; sourceTree = "<group>"; };
 		F03C13591B698F6F00287F4C /* VAsset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAsset.m; sourceTree = "<group>"; };
 		F03C135B1B698F7000287F4C /* VComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VComment.h; sourceTree = "<group>"; };
@@ -8843,6 +8845,7 @@
 				A790C8241A01980F00C4F208 /* VTrackingManager.h */,
 				A790C8251A01980F00C4F208 /* VTrackingManager.m */,
 				F0E667291D14964A007BF537 /* ContentCellTracker.swift */,
+				F03A01271D19F47300BC0040 /* ViewTracker.swift */,
 			);
 			path = Tracking;
 			sourceTree = "<group>";
@@ -13538,6 +13541,7 @@
 				A7B514561A4517A80074282F /* VUtilityButtonCell.m in Sources */,
 				A72C86141C977FF500E97D4F /* FriendFindByEmailOperation.swift in Sources */,
 				C3A4C5B21BCC6455000B745B /* StatusBarUtils.swift in Sources */,
+				F03A01281D19F47300BC0040 /* ViewTracker.swift in Sources */,
 				675CBEE61C7FB74D0098F6AE /* TrophyCaseAchievementCollectionViewCell.swift in Sources */,
 				0EC0F60F1CE65005008760E8 /* WebSocketDebuggingViewController.swift in Sources */,
 				A7C565E61C442FEA00E4DF6A /* VNotification+Parsable.swift in Sources */,

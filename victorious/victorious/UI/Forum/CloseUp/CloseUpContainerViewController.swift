@@ -93,6 +93,11 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
         gridStreamController.didMoveToParentViewController(self)
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        dependencyManager.trackViewWillAppear(self)
+    }
+    
     private func updateHeader() {
         guard let content = content else {
             return

@@ -12,12 +12,19 @@ import CoreData
 @objc(VTracking)
 class VTracking: NSManagedObject, TrackingModel {
     
-    func trackingURLsForKey(key: TrackingKey) -> [String]? {
+    func trackingURLsForKey(key: CellTrackingKey) -> [String]? {
         switch key {
             case .cellClick:
                 return cellClick as? [String]
             case .cellView:
                 return cellView as? [String]
+            case .cellLoad:
+                return cellLoad as? [String]
+        }
+    }
+    
+    func trackingURLsForKey(key: ViewTrackingKey) -> [String]? {
+        switch key {
             case .viewStart:
                 return viewStart as? [String]
             case .viewStop:
@@ -38,8 +45,6 @@ class VTracking: NSManagedObject, TrackingModel {
                 return videoComplete100 as? [String]
             case .share:
                 return share as? [String]
-            case .cellLoad:
-                return cellLoad as? [String]
         }
     }
     
