@@ -30,6 +30,12 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         didSet {
             dataSource.content = content
             collectionView.reloadSections(NSIndexSet(index: 0))
+            if
+                let content = content as? ContentModel,
+                let contentId = content.id
+            {
+                trackingParameters = [ VTrackingKeyParentContentId : contentId ]
+            }
         }
     }
     
@@ -40,7 +46,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     
     private var header: HeaderType?
     
-    private let trackingParameters: [NSObject : AnyObject]
+    private var trackingParameters: [NSObject : AnyObject]
     
     // MARK: - Initializing
     
@@ -49,14 +55,13 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         header: HeaderType? = nil,
         content: HeaderType.ContentType?,
         configuration: GridStreamConfiguration? = nil,
-        streamAPIPath: APIPath,
-        trackingParameters: [NSObject : AnyObject] = [:]
+        streamAPIPath: APIPath
     ) {
         self.dependencyManager = dependencyManager
         self.header = header
+        self.trackingParameters = [:]
         self.content = content
         self.configuration = configuration ?? GridStreamConfiguration()
-        self.trackingParameters = trackingParameters
         
         dataSource = GridStreamDataSource<HeaderType>(
             dependencyManager: dependencyManager,

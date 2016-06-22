@@ -63,6 +63,5 @@ class VTracking: NSManagedObject, TrackingModel {
     @NSManaged var videoStall: NSObject?
     @NSManaged var viewStart: NSObject?
     @NSManaged var viewStop: NSObject?
-    @NSManaged var streamItemPointer: VStreamItemPointer?
     @NSManaged var content: VContent?
 }

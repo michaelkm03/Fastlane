@@ -18,6 +18,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
     private let gridStreamController: GridStreamViewController<CloseUpView>
     private var dependencyManager: VDependencyManager
     private var content: ContentModel?
+    private let contentId: String
     
     private lazy var shareButton: UIBarButtonItem = {
         return UIBarButtonItem(
@@ -48,6 +49,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
     }()
     
     init(dependencyManager: VDependencyManager,
+         contentId: String,
          content: ContentModel? = nil,
          streamAPIPath: APIPath) {
         self.dependencyManager = dependencyManager
@@ -67,18 +69,14 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
             managesBackground: true
         )
         
-        var parameters = [String : String]()
-        if let contentId = content?.id {
-            parameters[VTrackingKeyParentContentId] = contentId
-        }
         gridStreamController = GridStreamViewController<CloseUpView>(
             dependencyManager: dependencyManager,
             header: header,
             content: content,
             configuration: configuration,
-            streamAPIPath: streamAPIPath,
-            trackingParameters: parameters
+            streamAPIPath: streamAPIPath
         )
+        self.contentId = contentId
         self.content = content
         
         super.init(nibName: nil, bundle: nil)
@@ -95,7 +93,12 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        dependencyManager.trackViewWillAppear(self)
+        dependencyManager.trackViewWillAppear(self, withParameters: [ VTrackingKeyContentId : contentId ])
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        dependencyManager.trackViewWillDisappear(self)
     }
     
     private func updateHeader() {

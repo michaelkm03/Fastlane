@@ -140,20 +140,7 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 {
     [super viewDidAppear:animated];
     
-    if ( self.sequence != nil )
-    {
-        // Track view-start event, similar to how content is tracking in VNewContentViewController when loaded
-        
-        VTracking *tracking = self.sequence.streamItemPointerForStandloneStreamItem.tracking;
-        NSAssert( tracking != nil,
-                 @"Cannot track 'viewStart' event in `VWebBrowserViewController` because tracking data is missing." );
-        
-        NSDictionary *params = @{ VTrackingKeyTimeCurrent : [NSDate date],
-                                  VTrackingKeySequenceId : self.sequence.remoteId,
-                                  VTrackingKeyUrls : tracking.viewStart ?: @[]
-                                  };
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventViewDidStart parameters:params];
-    }
+    // Tracking code removed
     
     [self v_addBadgingToAccessoryScreensWithDependencyManager:self.dependencyManager];
 }
