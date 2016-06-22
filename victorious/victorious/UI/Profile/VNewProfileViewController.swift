@@ -9,19 +9,18 @@
 import UIKit
 
 /// A view controller that displays the contents of a user's profile.
-class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderDelegate, VIPGateViewControllerDelegate, AccessoryScreensKeyProvider {
+class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderDelegate, VIPGateViewControllerDelegate, AccessoryScreenContainer, VAccessoryNavigationSource {
     // MARK: - Constants
     
     static let userAppearanceKey = "userAppearance"
     static let creatorAppearanceKey = "creatorAppearance"
+    static let upgradeButtonID = "Accessory paygate"
     
-    private static let upgradeButtonXPadding = CGFloat(12.0)
-    private static let upgradeButtonCornerRadius = CGFloat(5.0)
     private struct AccessoryScreensKeys {
-        static let userOwn = "accessories.user.own"
-        static let userOther = "accessories.user.other"
-        static let userCreator = "accessories.user.creator"
-        static let creatorOwn = "accessories.creator.own"
+        static let selfUser = "accessories.user.own"
+        static let otherUser = "accessories.user.other"
+        static let selfCreator = "accessories.creator.own"
+        static let otherCreator = "accessories.user.creator"
     }
     
     // MARK: Dependency Manager
@@ -30,7 +29,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     
     // MARK: Model Data
     
-    var user: VUser? {
+    var user: UserModel? {
         get {
             return gridStreamController.content
         }
@@ -65,11 +64,13 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         var configuration = GridStreamConfiguration()
         configuration.managesBackground = false
         
-        gridStreamController = GridStreamViewController(dependencyManager: dependencyManager,
-                                                        header: header,
-                                                        content: nil,
-                                                        configuration: configuration,
-                                                        streamAPIPath: dependencyManager.streamAPIPath(forUserID: userID))
+        gridStreamController = GridStreamViewController(
+            dependencyManager: dependencyManager,
+            header: header,
+            content: nil,
+            configuration: configuration,
+            streamAPIPath: dependencyManager.streamAPIPath(forUserID: userID)
+        )
         
         super.init(nibName: nil, bundle: nil)
         header.delegate = self
@@ -91,28 +92,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     
     // MARK: - View updating
     
-    private func updateUpgradeButton() {
-        if VCurrentUser.user()?.isVIPValid() == true {
-            // FUTURE: When new upgrade button appearance fields are read from template, update appearance of upgradeButton here
-        }
-        else {
-            upgradeButton.setTitle("UPGRADE", forState: .Normal)
-            upgradeButton.addTarget(self, action: #selector(upgradeButtonWasPressed), forControlEvents: .TouchUpInside)
-            upgradeButton.sizeToFit()
-            upgradeButton.frame.size.width += VNewProfileViewController.upgradeButtonXPadding
-            upgradeButton.layer.cornerRadius = VNewProfileViewController.upgradeButtonCornerRadius
-            if let navigationBar = navigationController?.navigationBar {
-                upgradeButton.backgroundColor = navigationBar.tintColor
-                upgradeButton.setTitleColor(navigationBar.barTintColor, forState: .Normal)
-            }
-        }
-    }
-    
-    private func updateRightBarButtonItems() {
-        // Upgrade button
-        updateUpgradeButton()
-        
-        // Upvote button
+    private func updateBarButtonItems() {
         if user?.isFollowedByCurrentUser == true {
             upvoteButton.image = dependencyManager.upvoteIconSelected
             upvoteButton.tintColor = dependencyManager.upvoteIconTint
@@ -122,19 +102,20 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
             upvoteButton.tintColor = nil
         }
         
-        var rightBarButtonItems:[UIBarButtonItem] = []
-        if shouldShowUpgradeButton() {
-            rightBarButtonItems.append(UIBarButtonItem(customView: upgradeButton))
-        }
-        if user?.id != VCurrentUser.user()?.id {
-            rightBarButtonItems.append(upvoteButton)
-            if user?.isCreator != true {
-                rightBarButtonItems.append(overflowButton)
+        supplementalRightButtons = []
+        
+        let isCurrentUser = user?.isCurrentUser == true
+        let isCreator = user?.accessLevel?.isCreator == true
+        
+        if !isCurrentUser {
+            supplementalRightButtons.append(upvoteButton)
+            
+            if !isCreator {
+                supplementalRightButtons.append(overflowButton)
             }
         }
-
-        // FUTURE: This should be coming from the template VDependencyManager+AccessoryScreens infrastructure
-//        navigationItem.rightBarButtonItems = rightBarButtonItems
+        
+        v_addAccessoryScreensWithDependencyManager(dependencyManager)
     }
     
     // MARK: - View controllers
@@ -155,14 +136,13 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         guard let user = user else {
             return
         }
-        let userID = Int(user.id)
         
         UserUpvoteToggleOperation(
-            userID: userID,
+            userID: user.id,
             upvoteAPIPath: dependencyManager.userUpvoteAPIPath,
             unupvoteAPIPath: dependencyManager.userUnupvoteAPIPath
         ).queue { [weak self] _ in
-            self?.updateRightBarButtonItems()
+            self?.updateBarButtonItems()
         }
     }
     
@@ -195,30 +175,54 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     
     // MARK: - VIPGateViewControllerDelegate
     
-    func vipGateViewController(vipGateViewController: VIPGateViewController, allowedAccess allowed: Bool) {
-        updateUpgradeButton()
-    }
+    func vipGateViewController(vipGateViewController: VIPGateViewController, allowedAccess allowed: Bool) {}
     
-    // MARK: - AccessoryScreensKeyProvider
-
+    // MARK: - AccessoryScreenContainer
+    
+    private var supplementalLeftButtons = [UIBarButtonItem]()
+    private var supplementalRightButtons = [UIBarButtonItem]()
+    
     var accessoryScreensKey: String? {
         guard let user = self.user else {
             return nil
         }
         
-        if user.isCurrentUser() {
-            if user.accessLevel == .owner {
-                return AccessoryScreensKeys.creatorOwn
-            } else {
-                return AccessoryScreensKeys.userOwn
-            }
-        } else {
-            if user.accessLevel == .user {
-                return AccessoryScreensKeys.userCreator
-            } else {
-                return AccessoryScreensKeys.userOther
-            }
+        if user.accessLevel?.isCreator == true {
+            return user.isCurrentUser ? AccessoryScreensKeys.selfCreator : AccessoryScreensKeys.otherCreator
         }
+        else {
+            return user.isCurrentUser ? AccessoryScreensKeys.selfUser : AccessoryScreensKeys.otherUser
+        }
+    }
+    
+    func addCustomLeftItems(to items: [UIBarButtonItem]) -> [UIBarButtonItem] {
+        return items + supplementalLeftButtons
+    }
+    
+    func addCustomRightItems(to items: [UIBarButtonItem]) -> [UIBarButtonItem] {
+        return items + supplementalRightButtons
+    }
+    
+    func shouldDisplayAccessoryItem(withIdentifier identifier: String) -> Bool {
+        if identifier == VNewProfileViewController.upgradeButtonID {
+            return user?.hasValidVIPSubscription != true
+        }
+        
+        return true
+    }
+    
+    // MARK: - VAccessoryNavigationSource
+    
+    func shouldNavigateWithAccessoryMenuItem(menuItem: VNavigationMenuItem!) -> Bool {
+        return true
+    }
+    
+    func shouldDisplayAccessoryMenuItem(menuItem: VNavigationMenuItem!, fromSource source: UIViewController!) -> Bool {
+        if menuItem?.identifier == VNewProfileViewController.upgradeButtonID {
+            return user?.hasValidVIPSubscription != true
+        }
+        
+        return true
     }
     
     // MARK: - Managing the user
@@ -247,9 +251,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         let appearanceDependencyManager = dependencyManager.childDependencyForKey(appearanceKey)
         appearanceDependencyManager?.addBackgroundToBackgroundHost(gridStreamController)
         
-        upgradeButton.hidden = user.isCreator != true || VCurrentUser.user()?.isVIPSubscriber == true
-        
-        v_addAccessoryScreensWithDependencyManager(dependencyManager)
+        updateBarButtonItems()
     }
     
     private static func getUserID(forDependencyManager dependencyManager: VDependencyManager) -> Int {
@@ -264,17 +266,6 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
             assert(user != nil, "User should not be nil")
             return user?.remoteId.integerValue ?? 0
         }
-    }
-    
-    private func shouldShowUpgradeButton() -> Bool {
-        return !userIsVIPSubscriber() && user?.isCreator == true
-    }
-    
-    private func userIsVIPSubscriber() -> Bool {
-        guard let currentUser = VCurrentUser.user() else {
-            return false
-        }
-        return currentUser.isVIPValid()
     }
     
     // MARK: - ConfigurableGridStreamContainer

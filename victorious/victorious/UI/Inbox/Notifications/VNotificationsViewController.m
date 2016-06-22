@@ -21,7 +21,7 @@
 
 static NSString * const kNotificationCellViewIdentifier = @"NotificationCell";
 static CGFloat const kNotificationCellHeight = 64.0f;
-static CGFloat const kNotificationAddedVerticalInset = 5.0f;
+static CGFloat const kNotificationAddedVerticalInset = 8.0f;
 
 @interface VNotificationsViewController () <VNavigationDestination, VCellWithProfileDelegate, VScrollPaginatorDelegate, VPaginatedDataSourceDelegate, VBackgroundContainer>
 
@@ -101,10 +101,12 @@ static CGFloat const kNotificationAddedVerticalInset = 5.0f;
     }
     
     self.tableView.contentInset = contentInset;
-    self.tableView.contentOffset = CGPointMake(0, -self.v_layoutInsets.top);
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = kNotificationCellHeight;
-    self.automaticallyAdjustsScrollViewInsets = NO;
+    
+    self.automaticallyAdjustsScrollViewInsets = YES;
+    self.edgesForExtendedLayout = UIRectEdgeAll;
+    self.extendedLayoutIncludesOpaqueBars = NO;
     
     self.noContentView = [VNoContentView viewFromNibWithFrame:self.tableView.bounds];
     self.noContentView.dependencyManager = self.dependencyManager;

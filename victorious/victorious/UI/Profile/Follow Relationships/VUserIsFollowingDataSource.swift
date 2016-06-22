@@ -36,11 +36,11 @@ import Foundation
     // MARK: - VUsersDataSource
     
     func noContentTitle() -> String {
-        return self.user.isCurrentUser() ? NSLocalizedString( "NotFollowingTitle", comment: "" ) : NSLocalizedString( "ProfileNotFollowingTitle", comment: "" )
+        return self.user.isCurrentUser ? NSLocalizedString( "NotFollowingTitle", comment: "" ) : NSLocalizedString( "ProfileNotFollowingTitle", comment: "" )
     }
     
     func noContentMessage() -> String {
-        return self.user.isCurrentUser() ? NSLocalizedString( "NotFollowingMessage", comment: "" ) : NSLocalizedString( "ProfileNotFollowingMessage", comment: "" )
+        return self.user.isCurrentUser ? NSLocalizedString( "NotFollowingMessage", comment: "" ) : NSLocalizedString( "ProfileNotFollowingMessage", comment: "" )
     }
     
     func noContentImage() -> UIImage {
