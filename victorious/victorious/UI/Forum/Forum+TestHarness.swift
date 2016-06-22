@@ -108,7 +108,6 @@ extension ForumViewController {
             )
         )
         stage?.addContent(content)
-        print("new stage content: \(content)")
         stageCount += 1
         
         let time = next["length"] != nil ? Double(next["length"]!)! : ForumViewController.defaultStageContentLength
