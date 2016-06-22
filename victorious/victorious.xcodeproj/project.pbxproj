@@ -788,6 +788,7 @@
 		79B718FF1C56E93100578012 /* NSManagedObject+Deletable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B718FE1C56E93100578012 /* NSManagedObject+Deletable.swift */; };
 		79BA44AD1BFBEBD800594F9F /* FilteredImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79BA44AC1BFBEBD800594F9F /* FilteredImageView.swift */; };
 		79BA44AF1BFBEBEF00594F9F /* UIImageOrientation+TiffOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79BA44AE1BFBEBEF00594F9F /* UIImageOrientation+TiffOrientation.swift */; };
+		79BA9E5A1D18C81B008BAA35 /* WebSocketDebuggingViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 79BA9E591D18C81B008BAA35 /* WebSocketDebuggingViewController.storyboard */; };
 		79C593511BFD5C3C00EC76ED /* CGRect+Aspect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C593501BFD5C3C00EC76ED /* CGRect+Aspect.swift */; };
 		79CBAC111C3CD20100D1387E /* FriendFindByEmailOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79CBAC101C3CD20100D1387E /* FriendFindByEmailOperationTests.swift */; };
 		79CBAC131C3CD3EE00D1387E /* BaseFetcherOperationTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79CBAC121C3CD3EE00D1387E /* BaseFetcherOperationTestCase.swift */; };
@@ -3259,6 +3260,7 @@
 		79B718FE1C56E93100578012 /* NSManagedObject+Deletable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+Deletable.swift"; sourceTree = "<group>"; };
 		79BA44AC1BFBEBD800594F9F /* FilteredImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilteredImageView.swift; sourceTree = "<group>"; };
 		79BA44AE1BFBEBEF00594F9F /* UIImageOrientation+TiffOrientation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageOrientation+TiffOrientation.swift"; sourceTree = "<group>"; };
+		79BA9E591D18C81B008BAA35 /* WebSocketDebuggingViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = WebSocketDebuggingViewController.storyboard; path = Debugging/WebSocketDebuggingViewController.storyboard; sourceTree = "<group>"; };
 		79C593501BFD5C3C00EC76ED /* CGRect+Aspect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGRect+Aspect.swift"; sourceTree = "<group>"; };
 		79C593521BFD5D1700EC76ED /* CGRect+AspectTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGRect+AspectTests.swift"; sourceTree = "<group>"; };
 		79CBAC101C3CD20100D1387E /* FriendFindByEmailOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendFindByEmailOperationTests.swift; sourceTree = "<group>"; };
@@ -7162,6 +7164,7 @@
 			isa = PBXGroup;
 			children = (
 				0EC0F60E1CE65005008760E8 /* WebSocketDebuggingViewController.swift */,
+				79BA9E591D18C81B008BAA35 /* WebSocketDebuggingViewController.storyboard */,
 				F009BD121CE6855400F81CAA /* WebSocketMessageDetailViewController.swift */,
 				F009BD141CE69B1600F81CAA /* WebSocketMessageDetailViewController.storyboard */,
 				0E8BC7141CEE27870074F41D /* DebugMenuHandler.swift */,
@@ -11519,6 +11522,7 @@
 				D8D812AD1B14EA1800E93B37 /* VModernResetPasswordViewController.storyboard in Resources */,
 				036F38681A0C4DEA0014DF66 /* Bitter-Regular.ttf in Resources */,
 				F0411E8F1B4B20A500557176 /* VBlurredMarqueeCaptionView.xib in Resources */,
+				79BA9E5A1D18C81B008BAA35 /* WebSocketDebuggingViewController.storyboard in Resources */,
 				D8E2F6641B17F4D3008B1EC2 /* VEnterProfilePictureCameraViewController.storyboard in Resources */,
 				036F38981A0C4DEA0014DF66 /* Volkhov-Regular.ttf in Resources */,
 				0314D08719B4688E00FA363C /* Icon-40@2x.png in Resources */,

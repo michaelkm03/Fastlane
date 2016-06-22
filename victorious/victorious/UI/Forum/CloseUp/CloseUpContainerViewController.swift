@@ -68,7 +68,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
         )
         
         gridStreamController = GridStreamViewController<CloseUpView>(
-            dependencyManager: dependencyManager,
+            dependencyManager: dependencyManager.gridStreamDependencyManager ?? dependencyManager,
             header: header,
             content: content,
             configuration: configuration,
@@ -219,3 +219,8 @@ private extension VDependencyManager {
     }
 }
 
+private extension VDependencyManager {
+    var gridStreamDependencyManager: VDependencyManager? {
+        return childDependencyForKey("gridStream")
+    }
+}

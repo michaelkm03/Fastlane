@@ -18,9 +18,15 @@ final class ContentFeedOperation: NSOperation, Queueable {
         
         queuePriority = .VeryHigh
         
-        ContentFeedRemoteOperation(url: url).before(self).queue { [weak self] results, error, _ in
+        let remoteOperation = ContentFeedRemoteOperation(url: url)
+        remoteOperation.before(self).queue { [weak self] results, error, _ in
             self?.contentIDs = (results as? [String]) ?? []
             self?.error = error
+            if let refreshStage = remoteOperation.refreshStage {
+                self?.stageEvent = .refreshStage(refreshStage)
+            } else {
+                self?.stageEvent = .closeMainStage
+            }
         }
     }
     
@@ -29,6 +35,7 @@ final class ContentFeedOperation: NSOperation, Queueable {
     var contentIDs = [String]()
     var items = [ContentModel]()
     var error: NSError?
+    private var stageEvent: ForumEvent?
     
     // MARK: - Executing
     
@@ -46,9 +53,9 @@ final class ContentFeedOperation: NSOperation, Queueable {
         }
     }
     
-    func executeCompletionBlock(completionBlock: (newItems: [ContentModel], error: NSError?) -> Void) {
+    func executeCompletionBlock(completionBlock: (newItems: [ContentModel], stageEvent: ForumEvent?, error: NSError?) -> Void) {
         dispatch_async(dispatch_get_main_queue()) {
-            completionBlock(newItems: self.items, error: self.error)
+            completionBlock(newItems: self.items, stageEvent: self.stageEvent, error: self.error)
         }
     }
 }
