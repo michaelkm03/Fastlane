@@ -177,7 +177,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
     /// Expected to be called whenever the cell goes off-screen and is queued for later reuse. Stops media from playing
     /// and frees up resources that are no longer needed.
     func stopDisplaying() {
-        mediaView?.content = nil
+        content = nil
     }
     
     // MARK: - Sizing
