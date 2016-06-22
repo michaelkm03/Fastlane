@@ -15,7 +15,8 @@ protocol ChatFeedMessageCellDelegate: class {
 }
 
 class ChatFeedMessageCell: UICollectionViewCell {
-    static let mediaCellReuseIdentifier = "MediaChatFeedMessageCell"
+    static let imageCellReuseIdentifier = "ImageChatFeedMessageCell"
+    static let videoCellReuseIdentifier = "VideoChatFeedMessageCell"
     static let nonMediaCellReuseIdentifier = "NonMediaChatFeedMessageCell"
     
     let detailLabel = UILabel()
