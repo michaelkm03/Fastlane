@@ -156,6 +156,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
         
         let mediaView = MediaContentView(showsBackground: false)
         mediaView.animatesBetweenContent = false
+        mediaView.allowsVideoControls = false
         mediaView.clipsToBounds = true
         mediaView.translatesAutoresizingMaskIntoConstraints = false
         mediaView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onMediaTapped)))
