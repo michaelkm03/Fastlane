@@ -35,7 +35,7 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
     private var presentedInterstitial: Interstitial?
     
     /// Presents modally any available interstitials on the provided presenting view controller
-    func showNextInterstitial( onViewController presentingViewController: UIViewController) -> Bool {
+    func showNextInterstitial(onViewController presentingViewController: UIViewController) -> Bool {
         if !registeredAlerts.isEmpty {
             let alertToShow = registeredAlerts.removeFirst()
             
@@ -80,7 +80,7 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
     
     private func acknowledgeAlert(alert: Alert) {
         AlertAcknowledgeOperation(alertID: alert.alertID).queue()
-        shownAlerts.append( alert )
+        shownAlerts.append(alert)
         isShowingInterstital = true
     }
     

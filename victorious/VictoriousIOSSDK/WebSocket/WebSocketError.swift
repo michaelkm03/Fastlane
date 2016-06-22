@@ -8,12 +8,13 @@
 
 import Foundation
 
-/**
- The differents error cases originating from the WebSocket.
- 
- - URLInvalid:           An invalid URL is used for connecting.
- - ConnectionTerminated: Connection closed, could contain a code and an error.
- */
+//
+// The differents error cases originating from the WebSocket.
+//
+// - URLInvalid: An invalid URL is used for connecting.
+// - AuthenticationTokenNotValid: The WebSocket authentication token used is not valid.
+// - ConnectionTerminated: Connection closed, could contain a code and an error.
+//
 public enum WebSocketError: ErrorType, Equatable, CustomStringConvertible {
     case URLInvalid
     case AuthenticationTokenNotValid

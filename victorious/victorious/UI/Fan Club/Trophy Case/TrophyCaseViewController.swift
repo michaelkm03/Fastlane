@@ -57,8 +57,10 @@ class TrophyCaseViewController: UIViewController, UICollectionViewDelegate, VBac
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         collectionView.deselectItemAtIndexPath(indexPath, animated: false)
         
-        guard let cell = collectionView.cellForItemAtIndexPath(indexPath) as? TrophyCaseAchievementCollectionViewCell,
-            let achievement = cell.achievement else {
+        guard
+            let cell = collectionView.cellForItemAtIndexPath(indexPath) as? TrophyCaseAchievementCollectionViewCell,
+            let achievement = cell.achievement
+        else {
                 return
         }
         
