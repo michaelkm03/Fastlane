@@ -737,6 +737,7 @@
 		67F9EAA91CCE9BA80005A2EF /* CreatorListOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67F9EAA81CCE9BA80005A2EF /* CreatorListOperation.swift */; };
 		67F9EAAB1CCEA6210005A2EF /* CreatorListRemoteOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67F9EAAA1CCEA6210005A2EF /* CreatorListRemoteOperationTests.swift */; };
 		67FAC0BA1C4083370051D47E /* MockOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67FAC0B91C4083370051D47E /* MockOperations.swift */; };
+		67FD09551D18C60B00A5AEB5 /* AttributionBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67FD09541D18C60B00A5AEB5 /* AttributionBar.swift */; };
 		67FD54BB1BF68F6300CF52F7 /* FlagSequenceRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67FD54BA1BF68F6300CF52F7 /* FlagSequenceRequestTests.swift */; };
 		67FD54BD1BF68F7100CF52F7 /* FlagCommentRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67FD54BC1BF68F7100CF52F7 /* FlagCommentRequestTests.swift */; };
 		67FD54C11BF6938100CF52F7 /* DeleteSequenceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67FD54C01BF6938100CF52F7 /* DeleteSequenceRequest.swift */; };
@@ -3200,6 +3201,7 @@
 		67F9EAAA1CCEA6210005A2EF /* CreatorListRemoteOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatorListRemoteOperationTests.swift; sourceTree = "<group>"; };
 		67FAC0B91C4083370051D47E /* MockOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockOperations.swift; sourceTree = "<group>"; };
 		67FBE4DC1D0BD5DC00F87A2A /* VDiscoverViewControllerProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDiscoverViewControllerProtocol.h; sourceTree = "<group>"; };
+		67FD09541D18C60B00A5AEB5 /* AttributionBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributionBar.swift; sourceTree = "<group>"; };
 		67FD54BA1BF68F6300CF52F7 /* FlagSequenceRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlagSequenceRequestTests.swift; sourceTree = "<group>"; };
 		67FD54BC1BF68F7100CF52F7 /* FlagCommentRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlagCommentRequestTests.swift; sourceTree = "<group>"; };
 		67FD54C01BF6938100CF52F7 /* DeleteSequenceRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteSequenceRequest.swift; sourceTree = "<group>"; };
@@ -8280,6 +8282,7 @@
 		A73BA29C1C938B68008168B5 /* Stage */ = {
 			isa = PBXGroup;
 			children = (
+				67FD09541D18C60B00A5AEB5 /* AttributionBar.swift */,
 				0E96809E1CD03E130094ADF4 /* Stage.storyboard */,
 				A73BA29D1C938B68008168B5 /* Stage.swift */,
 				0E6628741CCEE5DF0049ECF8 /* StageDataSource.swift */,
@@ -13499,6 +13502,7 @@
 				A790C8291A01980F00C4F208 /* VTrackingEvent.m in Sources */,
 				A721E91A1B572454000B7901 /* VSequence+Fetcher.m in Sources */,
 				A72C86281C977FF500E97D4F /* PollVoteOperation.swift in Sources */,
+				67FD09551D18C60B00A5AEB5 /* AttributionBar.swift in Sources */,
 				79B718FF1C56E93100578012 /* NSManagedObject+Deletable.swift in Sources */,
 				A72C866E1C977FF600E97D4F /* ConversationDeleteRemoteOperation.swift in Sources */,
 				F00DEB9E1CC1863000C5C9EA /* CameraNextBarButtonItem.swift in Sources */,

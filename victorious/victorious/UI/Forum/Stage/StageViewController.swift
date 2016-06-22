@@ -7,10 +7,8 @@
 //
 
 import UIKit
-import VictoriousIOSSDK
-import SDWebImage
 
-class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
+class StageViewController: UIViewController, Stage, AttributionBarDelegate {
     private struct Constants {
         static let contentSizeAnimationDuration: NSTimeInterval = 0.5
         static let defaultAspectRatio: CGFloat = 16 / 9
@@ -24,6 +22,15 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
         return self.view.bounds.width / Constants.defaultAspectRatio
     }()
 
+    @IBOutlet private var mediaContentView: MediaContentView!
+    @IBOutlet private var attributionBar: AttributionBar! {
+        didSet {
+            attributionBar.hidden = true
+            attributionBar.delegate = self
+            updateAttributionBarAppearance(with: dependencyManager)
+        }
+    }
+    
     private lazy var newItemPill: TextOnColorButton? = { [weak self] in
         guard let pillDependency = self?.dependencyManager.newItemButtonDependency else {
             return nil
@@ -44,8 +51,6 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     
     private var hasShownStage: Bool = false
     private var queuedContent: ContentModel?
-    
-    @IBOutlet private var mediaContentView: MediaContentView!
     private var stageDataSource: StageDataSource?
 
     weak var delegate: StageDelegate?
@@ -117,6 +122,8 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
         
         mediaContentView.videoCoordinator?.pauseVideo()
         mediaContentView.content = stageContent
+        
+        attributionBar.configure(with: stageContent.author)
         
         delegate?.stage(self, didUpdateContentHeight: defaultStageHeight)
         queuedContent = nil
@@ -190,9 +197,25 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
         
         self.delegate?.stage(self, didUpdateContentHeight: defaultStageHeight)
     }
+    
+    // MARK: - Attribution Bar
+    
+    private func updateAttributionBarAppearance(with dependencyManager: VDependencyManager?) {
+        let attributionBarDependency = dependencyManager?.attributionBarDependency
+        attributionBar.hidden = attributionBarDependency == nil
+        attributionBar.dependencyManager = attributionBarDependency
+    }
+    
+    func didTapOnUser(user: UserModel) {
+        ShowProfileOperation(originViewController: self, dependencyManager: dependencyManager, userId: user.id).queue()
+    }
 }
 
 private extension VDependencyManager {
+    var attributionBarDependency: VDependencyManager? {
+        return childDependencyForKey("attributionBar")
+    }
+    
     var newItemButtonDependency: VDependencyManager? {
         return childDependencyForKey("newItemButton")
     }
