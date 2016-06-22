@@ -151,7 +151,10 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     }
     
     func hideContent(animated animated: Bool = true) {
+        videoCoordinator?.pauseVideo()
+        
         let animationDuration = animated ? Constants.fadeDuration * Constants.fadeOutDurationMultiplier : 0
+        
         UIView.animateWithDuration(
             animationDuration,
             delay: 0,
@@ -190,7 +193,9 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
                 self.videoContainerView.alpha = 1
                 self.previewImageView.alpha = 1
             },
-            completion: nil
+            completion: { [weak self] completed in
+                self?.videoCoordinator?.playVideo()
+            }
         )
     }
     

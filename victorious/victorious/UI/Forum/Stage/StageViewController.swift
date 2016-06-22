@@ -18,6 +18,10 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate {
         static let pillBottomMargin: CGFloat = 20
     }
     
+    private lazy var defaultStageHeight: CGFloat = {
+        return self.view.bounds.width / Constants.defaultAspectRatio
+    }()
+
     @IBOutlet private var mediaContentView: MediaContentView!
     @IBOutlet private var attributionBar: AttributionBar! {
         didSet {
@@ -47,11 +51,9 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate {
     
     private var hasShownStage: Bool = false
     private var queuedContent: ContentModel?
-    
     private var stageDataSource: StageDataSource?
     
     weak var delegate: StageDelegate?
-    
     var dependencyManager: VDependencyManager! {
         didSet {
             // The data source is initialized with the dependency manager since it needs URLs in the template to operate.
@@ -59,17 +61,20 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate {
         }
     }
     
+    // MARK: - Life cycle
+    
     override func viewDidLoad() {
+        super.viewDidLoad()
+        
         guard let newItemPill = newItemPill else {
             return
         }
+        
         view.addSubview(newItemPill)
         view.v_addPinToBottomToSubview(newItemPill, bottomMargin: Constants.pillBottomMargin)
         view.v_addCenterHorizontallyConstraintsToSubview(newItemPill)
         newItemPill.v_addHeightConstraint(Constants.pillHeight)
     }
-
-    // MARK: Life cycle
     
     private func setupDataSource(dependencyManager: VDependencyManager) -> StageDataSource {
         let dataSource = StageDataSource(dependencyManager: dependencyManager)
@@ -79,15 +84,18 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        
         mediaContentView.allowsVideoControls = false
-        mediaContentView.videoCoordinator?.playVideo()
+        showStage(animated)
     }
 
     override func viewWillDisappear(animated: Bool) {
-        hideStage()
+        super.viewWillDisappear(animated)
+        
+        hideStage(animated)
     }
     
-    //MARK: - Stage
+    // MARK: - Stage
     
     func addContent(stageContent: ContentModel) {
         queuedContent = stageContent
@@ -117,7 +125,6 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate {
         
         attributionBar.configure(with: stageContent.author)
         
-        let defaultStageHeight = view.bounds.width / Constants.defaultAspectRatio
         delegate?.stage(self, didUpdateContentHeight: defaultStageHeight)
         queuedContent = nil
     }
@@ -170,16 +177,25 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate {
         return [stageDataSource].flatMap { $0 }
     }
 
-    // MARK: Clear Media
+    // MARK: - Show/Hide Stage
     
     private func hideStage(animated: Bool = false) {
-        mediaContentView.videoCoordinator?.pauseVideo()
         mediaContentView.hideContent(animated: animated)
         
-        UIView.animateWithDuration(animated == true ? Constants.contentSizeAnimationDuration : 0) {
+        UIView.animateWithDuration(animated ? Constants.contentSizeAnimationDuration : 0) {
             self.view.layoutIfNeeded()
         }
         self.delegate?.stage(self, didUpdateContentHeight: 0.0)
+    }
+    
+    private func showStage(animated: Bool = false) {
+        mediaContentView.showContent(animated: animated)
+        
+        UIView.animateWithDuration(animated ? Constants.contentSizeAnimationDuration : 0) {
+            self.view.layoutIfNeeded()
+        }
+        
+        self.delegate?.stage(self, didUpdateContentHeight: defaultStageHeight)
     }
     
     // MARK: - Attribution Bar
@@ -199,9 +215,7 @@ private extension VDependencyManager {
     var attributionBarDependency: VDependencyManager? {
         return childDependencyForKey("attributionBar")
     }
-}
-
-private extension VDependencyManager {
+    
     var newItemButtonDependency: VDependencyManager? {
         return childDependencyForKey("newItemButton")
     }
