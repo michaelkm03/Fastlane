@@ -24,7 +24,6 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
         return self.view.bounds.width / Constants.defaultAspectRatio
     }()
 
-    @IBOutlet private var mediaContentView: MediaContentView!
     private lazy var newItemPill: TextOnColorButton? = { [weak self] in
         guard let pillDependency = self?.dependencyManager.newItemButtonDependency else {
             return nil
