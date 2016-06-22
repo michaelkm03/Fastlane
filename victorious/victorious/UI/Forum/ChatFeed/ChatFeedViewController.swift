@@ -83,7 +83,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         
         dataSource.nextSender = self
         
-        newItemsController.depedencyManager = dependencyManager
+        newItemsController.dependencyManager = dependencyManager
         newItemsController.delegate = self
         newItemsController.hide(animated: false)
     }

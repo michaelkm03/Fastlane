@@ -12,15 +12,20 @@ import Foundation
     func onNewItemsSelected()
 }
 
-class NewItemsController: NSObject, VBackgroundContainer {
+class NewItemsController: NSObject {
+    private struct Constants {
+        static let pillInsets = UIEdgeInsetsMake(10, 10, 10, 10)
+        static let pillHeight: CGFloat = 30
+        static let pillBottomMargin: CGFloat = 20
+    }
     
     let largeNumberFormatter = VLargeNumberFormatter()
     
-    var depedencyManager: VDependencyManager! {
+    var dependencyManager: VDependencyManager! {
         didSet {
-            depedencyManager.addBackgroundToBackgroundHost(self)
-            button.titleLabel?.font = depedencyManager.font
-            button.titleLabel?.textColor = depedencyManager.textColor
+            newItemPill.dependencyManager = dependencyManager?.newItemButtonDependency
+            newItemPill.contentEdgeInsets = Constants.pillInsets
+            newItemPill.addTarget(self, action: #selector(onNewItemsSelected), forControlEvents: .TouchUpInside)
         }
     }
     
@@ -33,14 +38,11 @@ class NewItemsController: NSObject, VBackgroundContainer {
         }
     }
     
-    func backgroundContainerView() -> UIView {
-        return container
-    }
-    
     weak var delegate: NewItemsControllerDelegate?
     
-    @IBOutlet private weak var button: UIButton!
     @IBOutlet private weak var container: UIView!
+    
+    @IBOutlet weak var newItemPill: TextOnColorButton!
     
     private var containerHeightFromStoryboard: CGFloat?
     @IBOutlet private weak var containerHeight: NSLayoutConstraint! {
@@ -105,7 +107,7 @@ class NewItemsController: NSObject, VBackgroundContainer {
     
     // MARK: - Private
     
-    @IBAction private func onNewItemsSelected() {
+    func onNewItemsSelected() {
         delegate?.onNewItemsSelected()
         hide()
     }
@@ -124,19 +126,15 @@ class NewItemsController: NSObject, VBackgroundContainer {
     }
     
     private func setButtonTitle(title: String) {
-        let attributes = [ NSFontAttributeName: button.titleLabel!.font ]
-        let attributedText = NSAttributedString(string: title, attributes: attributes)
-        button.setAttributedTitle( attributedText, forState: .Normal)
+        guard let pill = newItemPill else {
+            return
+        }
+        pill.setTitle(title, forState: .Normal)
     }
 }
 
 private extension VDependencyManager {
-    
-    var textColor: UIColor {
-        return colorForKey("color.newItems.text")
-    }
-    
-    var font: UIFont {
-        return fontForKey("font.newItems")
+    var newItemButtonDependency: VDependencyManager? {
+        return childDependencyForKey("newItemButton")
     }
 }
