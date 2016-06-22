@@ -16,8 +16,7 @@ class TextOnColorButton: UIButton, TrackableButton {
             backgroundColor = templateAppearanceValue(.backgroundColor)
             setTitleColor(templateAppearanceValue(.foregroundColor), forState: .Normal)
             setTitle(templateAppearanceValue(.text), forState: .Normal)
-            let font: UIFont = templateAppearanceValue(.font)!
-            titleLabel?.font = font
+            titleLabel?.font = templateAppearanceValue(.font)
             self.enabled = templateAppearanceValue(.clickable) ?? false
         }
     }
