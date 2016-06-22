@@ -52,7 +52,7 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate {
     private var hasShownStage: Bool = false
     private var queuedContent: ContentModel?
     private var stageDataSource: StageDataSource?
-
+    
     weak var delegate: StageDelegate?
     var dependencyManager: VDependencyManager! {
         didSet {
@@ -182,7 +182,7 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate {
     private func hideStage(animated: Bool = false) {
         mediaContentView.hideContent(animated: animated)
         
-        UIView.animateWithDuration(animated == true ? Constants.contentSizeAnimationDuration : 0) {
+        UIView.animateWithDuration(animated ? Constants.contentSizeAnimationDuration : 0) {
             self.view.layoutIfNeeded()
         }
         self.delegate?.stage(self, didUpdateContentHeight: 0.0)
@@ -191,7 +191,7 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate {
     private func showStage(animated: Bool = false) {
         mediaContentView.showContent(animated: animated)
         
-        UIView.animateWithDuration(animated == true ? Constants.contentSizeAnimationDuration : 0) {
+        UIView.animateWithDuration(animated ? Constants.contentSizeAnimationDuration : 0) {
             self.view.layoutIfNeeded()
         }
         
