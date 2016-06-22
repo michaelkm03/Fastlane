@@ -16,12 +16,38 @@ protocol AttributionBarDelegate: class {
 class AttributionBar: UIView {
     
     // MARK: - Configuration
+    
     var dependencyManager: VDependencyManager?
     weak var delegate: AttributionBarDelegate?
     
     private var displayingUser: UserModel!
+    private let fadeDuration = NSTimeInterval(0.75)
     
-    func configure(with user: UserModel) {
+    func configure(with user: UserModel, animated: Bool = true) {
+        guard animated else {
+            updateComponents(with: user)
+            return
+        }
+        
+        UIView.animateWithDuration(
+            fadeDuration,
+            animations: {
+                self.alpha = 0
+            },
+            completion: { completed in
+                self.updateComponents(with: user)
+                UIView.animateWithDuration(
+                    self.fadeDuration,
+                    animations: {
+                        self.alpha = 1
+                    },
+                    completion: nil
+                )
+            }
+        )
+    }
+    
+    private func updateComponents(with user: UserModel) {
         displayingUser = user
         userNameButton.setTitle(user.name, forState: .Normal)
         if let profileImageURL = user.previewImageURL(ofMinimumSize: profileButton.bounds.size) {
@@ -30,6 +56,7 @@ class AttributionBar: UIView {
     }
     
     // MARK: - Outlets and Actions
+    
     @IBOutlet private var profileButton: VDefaultProfileButton!
     @IBOutlet private var userNameButton: UIButton! {
         didSet {
