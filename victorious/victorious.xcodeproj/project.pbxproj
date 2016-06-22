@@ -9604,7 +9604,6 @@
 				A7AA647B19E78EAA0068D2B1 /* victoriOS.xcdatamodeld */,
 				BFCFFFF91CEE909F00F512B1 /* VImageAsset.swift */,
 				0385FEE718EF41B4009FBD68 /* VImageSearchResult.h */,
-				F03A01241D18D49E00BC0040 /* VTracking.swift */,
 				0385FEE818EF41B4009FBD68 /* VImageSearchResult.m */,
 				BE799B8D19C8A91C0023CE88 /* VInteraction.h */,
 				BE799B8E19C8A91C0023CE88 /* VInteraction.m */,
@@ -9629,9 +9628,10 @@
 				F07557E41B73B49F00BB2648 /* VStreamItem.h */,
 				F07557E51B73B49F00BB2648 /* VStreamItem.m */,
 				A7B1330C1C606C2C006EC4F5 /* VStreamItemPointer.swift */,
+				F03A01241D18D49E00BC0040 /* VTracking.swift */,
+				67D38B0A1CF6192F003F1D5F /* VUser.swift */,
 				BE7D2E8F18EB762A009E488E /* VVoteResult.h */,
 				BE7D2E9018EB762A009E488E /* VVoteResult.m */,
-				67D38B0A1CF6192F003F1D5F /* VUser.swift */,
 			);
 			path = ManagedObjectModels;
 			sourceTree = "<group>";
