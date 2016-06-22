@@ -34,14 +34,11 @@ class VContentOnlyCell: UICollectionViewCell {
     
     // MARK: - Content
     
-    func setContent(content: ContentModel?) {
-        if let content = content {
-            self.content = content
+    var content: ContentModel? {
+        didSet {
+            updatePreviewView()
         }
-        updatePreviewView()
     }
-    
-    private var content: ContentModel?
     
     // MARK: - Dependency manager
     
