@@ -107,7 +107,7 @@ class NewItemsController: NSObject {
     
     // MARK: - Private
     
-    func onNewItemsSelected() {
+    @objc private func onNewItemsSelected() {
         delegate?.onNewItemsSelected()
         hide()
     }
