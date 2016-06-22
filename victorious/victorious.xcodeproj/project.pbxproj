@@ -8827,10 +8827,12 @@
 		A790C81C1A01980F00C4F208 /* Tracking */ = {
 			isa = PBXGroup;
 			children = (
+				F0E667291D14964A007BF537 /* ContentCellTracker.swift */,
 				A72005571A030E4700285A9C /* Delegates */,
 				A76711E41C1B4F47006568DF /* Performance */,
 				C39452411B715CDA009367EB /* StreamCellContext.swift */,
 				A76711F31C1B6E54006568DF /* VEventTracker.h */,
+				F03A01271D19F47300BC0040 /* ViewTracker.swift */,
 				B0DDD5551B4DF7F80065E540 /* VPermissionsTrackingHelper.h */,
 				B0DDD5561B4DF7F80065E540 /* VPermissionsTrackingHelper.m */,
 				A7F529511A9E66E000F7E41F /* VStreamTrackingHelper.h */,
@@ -8844,8 +8846,6 @@
 				A769FE4A1ABD051A00888ED8 /* VTrackingEventLog.m */,
 				A790C8241A01980F00C4F208 /* VTrackingManager.h */,
 				A790C8251A01980F00C4F208 /* VTrackingManager.m */,
-				F0E667291D14964A007BF537 /* ContentCellTracker.swift */,
-				F03A01271D19F47300BC0040 /* ViewTracker.swift */,
 			);
 			path = Tracking;
 			sourceTree = "<group>";
