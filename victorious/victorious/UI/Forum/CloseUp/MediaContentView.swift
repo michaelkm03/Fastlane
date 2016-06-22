@@ -219,7 +219,11 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         videoCoordinator?.tearDown()
         videoCoordinator = VContentVideoPlayerCoordinator(content: content)
         videoCoordinator?.setupVideoPlayer(in: videoContainerView)
-        videoCoordinator?.setupToolbar(in: self, initallyVisible: false)
+        
+        if allowsVideoControls {
+            videoCoordinator?.setupToolbar(in: self, initallyVisible: false)
+        }
+        
         videoCoordinator?.loadVideo()
         videoCoordinator?.delegate = self
     }

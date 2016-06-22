@@ -45,7 +45,13 @@ class VContentOnlyCell: UICollectionViewCell {
     
     // MARK: - Dependency manager
     
-    var dependencyManager: VDependencyManager?
+    var dependencyManager: VDependencyManager? {
+        didSet {
+            if dependencyManager != nil && dependencyManager != oldValue {
+                contentPreviewView.dependencyManager = dependencyManager
+            }
+        }
+    }
     
     // MARK: - Views
     

@@ -214,7 +214,7 @@ import Foundation
             actionItems.append(flagActionItem(forSequence: sequence))
         }
         
-        if !sequence.user.isCurrentUser() {
+        if !sequence.user.isCurrentUser {
             actionItems.append(blockUserActionItem(forSequence: sequence))
         }
         
