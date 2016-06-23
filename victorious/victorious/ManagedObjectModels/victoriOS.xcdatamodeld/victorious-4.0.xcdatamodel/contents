@@ -76,7 +76,7 @@
         <relationship name="v_author" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="content" inverseEntity="User" syncable="YES"/>
         <relationship name="v_contentMediaAssets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ContentMediaAsset" inverseName="v_content" inverseEntity="ContentMediaAsset" syncable="YES"/>
         <relationship name="v_contentPreviewAssets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ImageAsset" inverseName="content" inverseEntity="ImageAsset" syncable="YES"/>
-        <relationship name="v_tracking" maxCount="1" deletionRule="Nullify" destinationEntity="Tracking" inverseName="content" inverseEntity="Tracking" syncable="YES"/>
+        <relationship name="v_tracking" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="Tracking" inverseName="content" inverseEntity="Tracking" syncable="YES"/>
     </entity>
     <entity name="ContentMediaAsset" representedClassName=".VContentMediaAsset" syncable="YES">
         <attribute name="v_externalID" optional="YES" attributeType="String" syncable="YES"/>
@@ -309,7 +309,7 @@
         <attribute name="videoStall" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="viewStart" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="viewStop" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <relationship name="content" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Content" inverseName="v_tracking" inverseEntity="Content" syncable="YES"/>
+        <relationship name="content" maxCount="1" deletionRule="Nullify" destinationEntity="Content" inverseName="v_tracking" inverseEntity="Content" syncable="YES"/>
     </entity>
     <entity name="User" representedClassName="VUser" syncable="YES">
         <attribute name="accountIdentifier" optional="YES" transient="YES" attributeType="String" syncable="YES"/>

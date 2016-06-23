@@ -22,7 +22,7 @@ class VContent: NSManagedObject, ContentModel, PaginatableItem {
     @NSManaged var v_contentMediaAssets: Set<VContentMediaAsset>
     @NSManaged var v_author: VUser
     @NSManaged var v_contentPreviewAssets: Set<VImageAsset>
-    @NSManaged var v_tracking: VTracking
+    @NSManaged var v_tracking: VTracking?
     
     // MARK: - ContentModel
     
