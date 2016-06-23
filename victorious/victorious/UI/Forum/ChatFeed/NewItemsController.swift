@@ -35,10 +35,10 @@ class NewItemsController: NSObject {
         didSet {
             if oldValue != count {
                 let title = localizedButtonTitle(count: count)
-                UIView.setAnimationsEnabled(false)
-                // Disable animations to not allow the button title to animate.
                 newItemIndicator?.setTitle(title, forState: .Normal)
-                UIView.setAnimationsEnabled(true)
+            }
+            if count == 0 {
+                hide()
             }
         }
     }
@@ -73,7 +73,7 @@ class NewItemsController: NSObject {
                 delay: 0.0,
                 usingSpringWithDamping: 0.5,
                 initialSpringVelocity: 0.5,
-                options: [],
+                options: [.LayoutSubviews],
                 animations: animations,
                 completion: nil
             )
