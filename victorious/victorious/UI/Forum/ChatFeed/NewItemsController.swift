@@ -33,8 +33,10 @@ class NewItemsController: NSObject {
     
     var count: Int = 0 {
         didSet {
-            let buttonTitle = localizedButtonTitle(count: count)
-            setButtonTitle(buttonTitle)
+            if oldValue != count {
+                let buttonTitle = localizedButtonTitle(count: count)
+                setButtonTitle(buttonTitle)
+            }
         }
     }
     
@@ -126,10 +128,7 @@ class NewItemsController: NSObject {
     }
     
     private func setButtonTitle(title: String) {
-        guard let pill = newItemPill else {
-            return
-        }
-        pill.setTitle(title, forState: .Normal)
+        newItemPill?.setTitle(title, forState: .Normal)
     }
 }
 
