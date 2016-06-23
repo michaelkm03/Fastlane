@@ -470,7 +470,9 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             preview = image
         }
         
-        selectedAsset = ContentMediaAsset(contentType: contentType, url: capturedMediaURL)
+        let publishParameters = creationFlowController.publishParameters
+        
+        selectedAsset = ContentMediaAsset.newLocalAsset(contentType, url: capturedMediaURL, remoteID: publishParameters.assetRemoteId, source: publishParameters.source)
         let maxDimension = view.bounds.width * Constants.maximumAttachmentWidthPercentage
         let resizedImage = preview.scaledImageWithMaxDimension(maxDimension, upScaling: true)
         composerTextViewManager?.prependImage(resizedImage, toTextView: textView)
