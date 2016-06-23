@@ -23,9 +23,9 @@ class NewItemsController: NSObject {
     
     var dependencyManager: VDependencyManager! {
         didSet {
-            newItemPill.dependencyManager = dependencyManager?.newItemButtonDependency
-            newItemPill.contentEdgeInsets = Constants.pillInsets
-            newItemPill.addTarget(self, action: #selector(onNewItemsSelected), forControlEvents: .TouchUpInside)
+            newItemIndicator.dependencyManager = dependencyManager?.newItemButtonDependency
+            newItemIndicator.contentEdgeInsets = Constants.pillInsets
+            newItemIndicator.addTarget(self, action: #selector(onNewItemsSelected), forControlEvents: .TouchUpInside)
         }
     }
     
@@ -44,7 +44,7 @@ class NewItemsController: NSObject {
     
     @IBOutlet private weak var container: UIView!
     
-    @IBOutlet private weak var newItemPill: TextOnColorButton!
+    @IBOutlet private weak var newItemIndicator: TextOnColorButton!
     
     private var containerHeightFromStoryboard: CGFloat?
     @IBOutlet private weak var containerHeight: NSLayoutConstraint! {
@@ -128,7 +128,7 @@ class NewItemsController: NSObject {
     }
     
     private func setButtonTitle(title: String) {
-        newItemPill?.setTitle(title, forState: .Normal)
+        newItemIndicator?.setTitle(title, forState: .Normal)
     }
 }
 
