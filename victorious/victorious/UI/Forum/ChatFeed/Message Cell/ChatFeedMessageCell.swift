@@ -182,6 +182,12 @@ class ChatFeedMessageCell: UICollectionViewCell {
         mediaView?.videoCoordinator?.pauseVideo()
     }
     
+    func startDisplaying() {
+        if mediaView?.videoCoordinator?.isPlaying == false {
+            mediaView?.videoCoordinator?.playVideo()
+        }
+    }
+    
     // MARK: - Sizing
     
     static func cellHeight(displaying content: ContentModel, inWidth width: CGFloat, dependencyManager: VDependencyManager) -> CGFloat {
