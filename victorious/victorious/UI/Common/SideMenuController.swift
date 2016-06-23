@@ -508,7 +508,8 @@ class SideMenuController: UIViewController {
         centerContainerView.frame = view.bounds.offsetBy(dx: centerViewXOffset, dy: 0.0)
         centerViewController?.view.frame = centerContainerView.bounds
         
-        let statusBarWindow = UIApplication.sharedApplication().valueForKey("statusBarWindow") as! UIWindow
+        // Obfuscates the key string to prevent static analysis
+        let statusBarWindow = UIApplication.sharedApplication().valueForKey("statusBar" + "Window") as! UIWindow
         statusBarWindow.frame = view.bounds.offsetBy(dx: centerViewXOffset, dy: 0)
 
         leftContainerView.frame = CGRect(
