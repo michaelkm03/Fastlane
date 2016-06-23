@@ -30,12 +30,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         didSet {
             dataSource.content = content
             collectionView.reloadSections(NSIndexSet(index: 0))
-            if
-                let content = content as? ContentModel,
-                let contentId = content.id
-            {
-                trackingParameters = [ VTrackingKeyParentContentId : contentId ]
-            }
+            updateTrackingParameters()
         }
     }
     
@@ -46,7 +41,13 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     
     private var header: HeaderType?
     
-    private var trackingParameters: [NSObject : AnyObject]
+    private var trackingParameters: [NSObject : AnyObject] = [:]
+    
+    // MARK: - ContentCellTracker
+    
+    var sessionParameters: [NSObject : AnyObject] {
+        return trackingParameters
+    }
     
     // MARK: - Initializing
     
@@ -59,7 +60,6 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     ) {
         self.dependencyManager = dependencyManager
         self.header = header
-        self.trackingParameters = [:]
         self.content = content
         self.configuration = configuration ?? GridStreamConfiguration()
         
@@ -71,6 +71,8 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         )
         
         super.init(nibName: nil, bundle: nil)
+        
+        updateTrackingParameters()
         
         dataSource.registerViewsFor(collectionView)
         
@@ -239,10 +241,15 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         trackCell(cell, trackingKey: .cellView)
     }
     
-    // MARK: - ContentCellTracker
+    // MARK: - Tracking updating
     
-    var sessionParameters: [NSObject : AnyObject] {
-        return trackingParameters
+    private func updateTrackingParameters() {
+        if
+            let content = content as? ContentModel,
+            let contentId = content.id
+        {
+            trackingParameters = [ VTrackingKeyParentContentId : contentId ]
+        }
     }
 }
 

@@ -70,7 +70,7 @@ class ShowCloseUpOperation: MainQueueOperation {
         
         let closeUpViewController = CloseUpContainerViewController(
             dependencyManager: childDependencyManager,
-            contentId: contentID,
+            contentID: contentID,
             content: content,
             streamAPIPath: apiPath
         )

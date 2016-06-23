@@ -46,13 +46,10 @@ extension VContent: PersistenceParsable {
         
         v_contentMediaAssets = Set(persistentAssets)
         
-        guard let sourceTracking = content.tracking else {
-            v_tracking = nil
-            return
-        }
-        
         let tracking = v_managedObjectContext.v_createObject() as VTracking
-        tracking.populate(fromSourceModel: sourceTracking)
+        if let sourceTracking = content.tracking {
+            tracking.populate(fromSourceModel: sourceTracking)
+        }
         v_tracking = tracking
     }
 }

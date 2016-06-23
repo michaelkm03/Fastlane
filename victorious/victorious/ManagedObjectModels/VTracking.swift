@@ -48,8 +48,14 @@ class VTracking: NSManagedObject, TrackingModel {
         }
     }
     
-    //Legacy way of doing things, would be better to just have the model store a single
-    //dictionary and have all trackers access urls via the protocol method
+    // Legacy way of doing things, would be better to just have the model store a single
+    // dictionary and have all trackers access urls via the protocol method.
+    //
+    // Example future code:
+    //
+    //// This object is a dictionary of strings, each corresponding to a raw value for CellTrackingKey or ViewTrackingKey, keyed to values that are arrays of strings representing urls that should be hit for the provided tracking key.
+    //@NSManaged var trackingMap: NSObject?
+    //
     @NSManaged var cellClick: NSObject?
     @NSManaged var cellView: NSObject?
     @NSManaged var cellLoad: NSObject?

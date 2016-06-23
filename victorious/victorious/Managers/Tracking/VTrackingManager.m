@@ -227,24 +227,14 @@
         self.queuedEventGroups[eventName] = existingQueuedEvents;
     }
     
-    if ( existingQueuedEvents[queueKey] != nil )
-    {
+    NSDictionary *completeParams = [self addTimeStampToParametersDictionary:parameters];
+    VTrackingEvent *event = [[VTrackingEvent alloc] initWithName:eventName parameters:completeParams eventId:eventId];
+    [existingQueuedEvents setObject:event forKey:queueKey];
+    [self trackEvent:event.name parameters:event.parameters sessionParameters:sessionParameters];
+    
 #if TRACKING_QUEUE_LOGGING_ENABLED
-        NSLog( @"Event with duplicate key rejected. Queued: %lu", (unsigned long)self.queuedEvents.count);
+    NSLog( @"Event queued.  Queued: %lu", (unsigned long)self.queuedEvents.count);
 #endif
-        return;
-    }
-    else
-    {
-        NSDictionary *completeParams = [self addTimeStampToParametersDictionary:parameters];
-        VTrackingEvent *event = [[VTrackingEvent alloc] initWithName:eventName parameters:completeParams eventId:eventId];
-        [existingQueuedEvents setObject:event forKey:queueKey];
-        [self trackEvent:event.name parameters:event.parameters sessionParameters:sessionParameters];
-        
-#if TRACKING_QUEUE_LOGGING_ENABLED
-        NSLog( @"Event queued.  Queued: %lu", (unsigned long)self.queuedEvents.count);
-#endif
-    }
 }
 
 - (NSString *)queueKeyForEventWithParameters:(NSDictionary *)parameters andEventId:(NSString *)eventId
