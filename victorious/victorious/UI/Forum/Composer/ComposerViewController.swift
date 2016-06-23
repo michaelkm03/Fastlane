@@ -463,9 +463,10 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
         
         var preview = previewImage
-        if contentType == .gif,
-            let image = capturedMediaURL.v_videoPreviewImage {
-            
+        if
+            contentType == .gif,
+            let image = capturedMediaURL.v_videoPreviewImage
+        {
             preview = image
         }
         
@@ -486,7 +487,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
     }
     
-    private func contentType(for creationFlowController: VCreationFlowController!) -> ContentType? {
+    private func contentType(for creationFlowController: VCreationFlowController) -> ContentType? {
         switch creationFlowController.mediaType() {
         case .Image:
             return .image
