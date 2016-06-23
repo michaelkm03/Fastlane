@@ -34,8 +34,10 @@ class NewItemsController: NSObject {
     var count: Int = 0 {
         didSet {
             if oldValue != count {
-                let buttonTitle = localizedButtonTitle(count: count)
-                setButtonTitle(buttonTitle)
+                let title = localizedButtonTitle(count: count)
+                UIView.setAnimationsEnabled(false)
+                newItemIndicator?.setTitle(title, forState: .Normal)
+                UIView.setAnimationsEnabled(true)
             }
         }
     }
@@ -43,7 +45,6 @@ class NewItemsController: NSObject {
     weak var delegate: NewItemsControllerDelegate?
     
     @IBOutlet private weak var container: UIView!
-    
     @IBOutlet private weak var newItemIndicator: TextOnColorButton!
     
     private var containerHeightFromStoryboard: CGFloat?
@@ -125,10 +126,6 @@ class NewItemsController: NSObject {
             title = NSString(format: localizedFormat, formattedMessageCount) as String
         }
         return title
-    }
-    
-    private func setButtonTitle(title: String) {
-        newItemIndicator?.setTitle(title, forState: .Normal)
     }
 }
 

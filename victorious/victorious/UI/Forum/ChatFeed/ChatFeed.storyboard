@@ -30,9 +30,11 @@
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o9c-Bd-nvE" userLabel="New Items Container">
                                 <rect key="frame" x="0.0" y="560" width="600" height="40"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PqY-xF-WCZ" customClass="VTextOnColorButton">
-                                        <rect key="frame" x="247" y="0.0" width="107" height="30"/>
-                                        <state key="normal" title="1 New Message"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PqY-xF-WCZ" customClass="VTextOnColorButton">
+                                        <rect key="frame" x="237" y="0.0" width="127" height="30"/>
+                                        <state key="normal" title="1 New Message">
+                                            <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -69,7 +71,7 @@
                     <connections>
                         <outlet property="container" destination="o9c-Bd-nvE" id="AN3-zh-Y3L"/>
                         <outlet property="containerHeight" destination="ng4-9N-6d9" id="lau-ig-wT5"/>
-                        <outlet property="newItemPill" destination="PqY-xF-WCZ" id="nJB-Mi-8sx"/>
+                        <outlet property="newItemIndicator" destination="PqY-xF-WCZ" id="w9P-k2-tI5"/>
                     </connections>
                 </customObject>
             </objects>
