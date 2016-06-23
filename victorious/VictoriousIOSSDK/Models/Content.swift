@@ -108,7 +108,7 @@ public class Content: ContentModel {
         self.id = id
         self.status = json["status"].string
         self.shareURL = json["share_url"].URL
-        self.createdAt = NSDate(timeIntervalSince1970: json["released_at"].doubleValue/1000) // Backend returns in milliseconds
+        self.createdAt = NSDate(millisecondsSince1970: json["released_at"].doubleValue)
         self.hashtags = []
         self.type = type
         self.text = json["title"].string
