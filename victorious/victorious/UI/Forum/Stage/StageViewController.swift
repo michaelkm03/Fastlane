@@ -22,7 +22,11 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate {
         return self.view.bounds.width / Constants.defaultAspectRatio
     }()
 
-    @IBOutlet private var mediaContentView: MediaContentView!
+    @IBOutlet private var mediaContentView: MediaContentView! {
+        didSet {
+            mediaContentView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOnContent)))
+        }
+    }
     @IBOutlet private var attributionBar: AttributionBar! {
         didSet {
             attributionBar.hidden = true
@@ -93,6 +97,22 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate {
         super.viewWillDisappear(animated)
         
         hideStage(animated)
+    }
+    
+    @objc private func didTapOnContent() {
+        guard let targetContent = mediaContentView.content else {
+            return
+        }
+        
+        let displayModifier = ShowCloseUpDisplayModifier(dependencyManager: dependencyManager, originViewController: self)
+        
+        switch targetContent.type {
+            case .text, .image, .gif, .video:
+                ShowCloseUpOperation(content: targetContent, displayModifier: displayModifier).queue()
+            case .link:
+                // TODO: Deep link or regular link
+                print("hello deep link or regular link")
+        }
     }
     
     // MARK: - Stage
