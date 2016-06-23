@@ -183,9 +183,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
     }
     
     func startDisplaying() {
-        if mediaView?.videoCoordinator?.isPlaying == false {
-            mediaView?.videoCoordinator?.playVideo()
-        }
+        mediaView?.videoCoordinator?.playVideo()
     }
     
     // MARK: - Sizing
