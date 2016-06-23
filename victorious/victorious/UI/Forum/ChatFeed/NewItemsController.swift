@@ -36,6 +36,7 @@ class NewItemsController: NSObject {
             if oldValue != count {
                 let title = localizedButtonTitle(count: count)
                 UIView.setAnimationsEnabled(false)
+                // Disable animations to not allow the button title to animate.
                 newItemIndicator?.setTitle(title, forState: .Normal)
                 UIView.setAnimationsEnabled(true)
             }
