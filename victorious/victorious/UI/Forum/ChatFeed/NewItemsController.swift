@@ -44,7 +44,7 @@ class NewItemsController: NSObject {
     
     @IBOutlet private weak var container: UIView!
     
-    @IBOutlet weak var newItemPill: TextOnColorButton!
+    @IBOutlet private weak var newItemPill: TextOnColorButton!
     
     private var containerHeightFromStoryboard: CGFloat?
     @IBOutlet private weak var containerHeight: NSLayoutConstraint! {
