@@ -65,19 +65,21 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
         }
         
         switch alert.alertType {
-            
-        case .Toast:
-            addInterstitialAsSubview(viewController)
-            
-        case .Achievement, .LevelUp, .StatusUpdate, .ClientSideCreated:
-            viewController.transitioningDelegate = self
-            viewController.modalPresentationStyle = interstitial.preferredModalPresentationStyle()
-            presentingViewController.presentViewController(viewController, animated: true, completion: nil)
+            case .Toast:
+                addInterstitialAsSubview(viewController)
+            case .Achievement, .LevelUp, .StatusUpdate, .ClientSideCreated:
+                viewController.transitioningDelegate = self
+                viewController.modalPresentationStyle = interstitial.preferredModalPresentationStyle()
+                presentingViewController.presentViewController(viewController, animated: true, completion: nil)
+            case .WebSocketError:
+                // TODO: implement, probably as toast...
+                ()
         }
         
         acknowledgeAlert(alert)
     }
-    
+
+    // TODO: don't send a request after Error alert
     private func acknowledgeAlert(alert: Alert) {
         AlertAcknowledgeOperation(alertID: alert.alertID).queue()
         shownAlerts.append(alert)
@@ -95,19 +97,27 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
     }
     
     // MARK: - AlertReceiver
-    
-    func onAlertsReceived( alerts: [Alert] ) {
-        let newAlerts = alerts.filter { alert in
-            !registeredAlerts.contains(alert) && !shownAlerts.contains(alert)
+
+    func receive(alert: Alert) {
+        guard !registeredAlerts.contains(alert) && !shownAlerts.contains(alert) else {
+            return
         }
-        
-        for alert in newAlerts {
+
+        registeredAlerts.append(alert)
+        if let interstitialListener = interstitialListener {
+            interstitialListener.newInterstitialHasBeenRegistered()
+        }
+    }
+
+    func receive(alerts: [Alert]) {
+        for alert in alerts {
             registeredAlerts.append(alert)
             if let interstitialListener = interstitialListener {
                 interstitialListener.newInterstitialHasBeenRegistered()
             }
         }
     }
+
     
     /// MARK: Interstitial
     

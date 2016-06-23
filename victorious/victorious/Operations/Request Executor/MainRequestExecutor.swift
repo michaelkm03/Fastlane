@@ -71,7 +71,7 @@ class MainRequestExecutor: RequestExecutorType {
                         onError?(nsError)
                     } else if let result = result {
                         if !result.alerts.isEmpty {
-                            self.alertsReceiver.onAlertsReceived( result.alerts )
+                            self.alertsReceiver.receive(result.alerts)
                         }
                         onComplete?(result.result)
                     }
