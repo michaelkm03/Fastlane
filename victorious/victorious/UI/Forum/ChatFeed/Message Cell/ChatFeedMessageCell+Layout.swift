@@ -13,8 +13,8 @@ private enum ChatFeedMessageCellAlignment {
     case left, right
 }
 
-/// A type that encapsulates the layout logic for a chat feed message cell.
 extension ChatFeedMessageCell {
+    /// Performs the view layout for `cell` based on its content.
     static func layoutContent(for cell: ChatFeedMessageCell) {
         guard let content = cell.content, dependencyManager = cell.dependencyManager else {
             return
