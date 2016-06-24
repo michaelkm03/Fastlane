@@ -43,6 +43,76 @@ extension VNotificationSettingsViewController {
                 navigationController?.presentViewController(alertController, animated: true, completion: nil)
             }
         }
+        
+        
+        
     }
     
+    func initializeSettings() {
+        
+        //        // Feed section
+        //        NSString *format = NSLocalizedString( @"PostFromCreator", nil);
+        //        VAppInfo *appInfo = [[VAppInfo alloc] initWithDependencyManager:self.dependencyManager];
+        //        NSString *creatorName = appInfo.ownerName;
+        //        NSArray *sectionFeedRows = @[ [[VNotificationSettingsTableRow alloc] initWithTitle:[NSString stringWithFormat:format, creatorName]
+        //        enabled:_settings.isPostFromCreatorEnabled.boolValue],
+        //        [[VNotificationSettingsTableRow alloc] initWithTitle:NSLocalizedString( @"PostFromFollowed", nil)
+        //        enabled:_settings.isPostFromFollowedEnabled.boolValue],
+        //        [[VNotificationSettingsTableRow alloc] initWithTitle:NSLocalizedString( @"NewComment", nil)
+        //        enabled:_settings.isNewCommentOnMyPostEnabled.boolValue],
+        //        [[VNotificationSettingsTableRow alloc] initWithTitle:NSLocalizedString( @"PostOnFollowedHashTag", nil)
+        //        enabled:_settings.isPostOnFollowedHashTagEnabled.boolValue]];
+        //        NSString *sectionFeedTitle = NSLocalizedString( @"NotificationSettingSectionFeeds", nil);
+        //        VNotificationSettingsTableSection *sectionFeed = [[VNotificationSettingsTableSection alloc] initWithTitle:sectionFeedTitle
+        //        rows:sectionFeedRows ];
+        //
+        //        // People Section
+        //        NSArray *sectionPeopleRows = @[ [[VNotificationSettingsTableRow alloc] initWithTitle:NSLocalizedString( @"NewPrivateMessage", nil)
+        //        enabled:_settings.isNewPrivateMessageEnabled.boolValue],
+        //        [[VNotificationSettingsTableRow alloc] initWithTitle:NSLocalizedString( @"NewFollower", nil)
+        //        enabled:_settings.isNewFollowerEnabled.boolValue],
+        //        [[VNotificationSettingsTableRow alloc] initWithTitle:NSLocalizedString( @"TagInComment", nil)
+        //        enabled:_settings.isUserTagInCommentEnabled.boolValue],
+        //        [[VNotificationSettingsTableRow alloc] initWithTitle:NSLocalizedString( @"LikePost", nil)
+        //        enabled:_settings.isPeopleLikeMyPostEnabled.boolValue]];
+        //        NSString *sectionPeopleTitle = NSLocalizedString( @"NotificationSettingSectionPeople", nil);
+        //        VNotificationSettingsTableSection *sectionPeople = [[VNotificationSettingsTableSection alloc] initWithTitle:sectionPeopleTitle
+        //        rows:sectionPeopleRows ];
+        //
+        //        // Add both sections
+        //        self.sections = [[NSOrderedSet alloc] initWithObjects: sectionFeed, sectionPeople, nil];
+        
+        //self.sections = dependencyManager.sectionsForTableView()
+    }
+    
+    func configureErrorMessageCell (cell: VNoContentTableViewCell){
+        //        cell.setMessage(dependencyManager.errorString)
+        //        cell.centered = true;
+        //
+        //        if ( self.settingsError.code == kErrorCodeUserNotRegistered )
+        //        {
+        //            [cell showActionButtonWithLabel:NSLocalizedString( @"Open Settings", nil) callback:^void
+        //                {
+        //                NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+        //                [[UIApplication sharedApplication] openURL:url];
+        //                }];
+        //        }
+    }
+    
+    public func backgroundContainerView() -> UIView {
+        return tableView.backgroundView ?? self.view
+    }
+    
+    func updateSettings() {
+//        self.settings.isPostFromCreatorEnabled = @( [section rowAtIndex: dependencyManager.indexPathForSettingType(VNotificationSettingType.isPostCreator)].isEnabled );
+//        self.settings.isPostFromFollowedEnabled = @( [section rowAtIndex:1].isEnabled );
+//        self.settings.isNewCommentOnMyPostEnabled = @( [section rowAtIndex:2].isEnabled );
+//        self.settings.isPostOnFollowedHashTagEnabled = @( [section rowAtIndex:3].isEnabled );
+//        section = self.sections[ 1 ];
+//        self.settings.isNewPrivateMessageEnabled = @( [section rowAtIndex:0].isEnabled );
+//        self.settings.isNewFollowerEnabled = @( [section rowAtIndex:1].isEnabled );
+//        self.settings.isUserTagInCommentEnabled = @( [section rowAtIndex:2].isEnabled );
+//        self.settings.isPeopleLikeMyPostEnabled = @( [section rowAtIndex:3].isEnabled );
+    }
 }
+

@@ -20,10 +20,9 @@
 
 @interface VNotificationSettingsViewController() <VSettingsSwitchCellDelegate, VNotificiationSettingsStateManagerDelegate>
 
-@property (nonatomic, strong) VNotificationSettings *settings;
-@property (nonatomic, strong) NSOrderedSet *sections;
 @property (nonatomic, assign, readonly) BOOL hasValidSettings;
 @property (nonatomic, strong) NSError *settingsError;
+@property (nonatomic, strong) VNotificationSettings *settings;
 @property (nonatomic, assign) BOOL didSettingsChange;
 @property (nonatomic, strong, readwrite) VNotificationSettingsStateManager *stateManager;
 @property (nonatomic, assign) CGFloat lastKnownTableWidth;
