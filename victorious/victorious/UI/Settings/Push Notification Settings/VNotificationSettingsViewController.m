@@ -116,37 +116,37 @@
         return;
     }
     
-    // Feed section
-    NSString *format = NSLocalizedString( @"PostFromCreator", nil);
-    VAppInfo *appInfo = [[VAppInfo alloc] initWithDependencyManager:self.dependencyManager];
-    NSString *creatorName = appInfo.ownerName;
-    NSArray *sectionFeedRows = @[ [[VNotificationSettingsTableRow alloc] initWithTitle:[NSString stringWithFormat:format, creatorName]
-                                                                               enabled:_settings.isPostFromCreatorEnabled.boolValue],
-                                  [[VNotificationSettingsTableRow alloc] initWithTitle:NSLocalizedString( @"PostFromFollowed", nil)
-                                                                               enabled:_settings.isPostFromFollowedEnabled.boolValue],
-                                  [[VNotificationSettingsTableRow alloc] initWithTitle:NSLocalizedString( @"NewComment", nil)
-                                                                               enabled:_settings.isNewCommentOnMyPostEnabled.boolValue],
-                                  [[VNotificationSettingsTableRow alloc] initWithTitle:NSLocalizedString( @"PostOnFollowedHashTag", nil)
-                                                                               enabled:_settings.isPostOnFollowedHashTagEnabled.boolValue]];
-    NSString *sectionFeedTitle = NSLocalizedString( @"NotificationSettingSectionFeeds", nil);
-    VNotificationSettingsTableSection *sectionFeed = [[VNotificationSettingsTableSection alloc] initWithTitle:sectionFeedTitle
-                                                                                                         rows:sectionFeedRows ];
-    
-    // People Section
-    NSArray *sectionPeopleRows = @[ [[VNotificationSettingsTableRow alloc] initWithTitle:NSLocalizedString( @"NewPrivateMessage", nil)
-                                                                                 enabled:_settings.isNewPrivateMessageEnabled.boolValue],
-                                    [[VNotificationSettingsTableRow alloc] initWithTitle:NSLocalizedString( @"NewFollower", nil)
-                                                                                 enabled:_settings.isNewFollowerEnabled.boolValue],
-                                    [[VNotificationSettingsTableRow alloc] initWithTitle:NSLocalizedString( @"TagInComment", nil)
-                                                                                 enabled:_settings.isUserTagInCommentEnabled.boolValue],
-                                    [[VNotificationSettingsTableRow alloc] initWithTitle:NSLocalizedString( @"LikePost", nil)
-                                                                                 enabled:_settings.isPeopleLikeMyPostEnabled.boolValue]];
-    NSString *sectionPeopleTitle = NSLocalizedString( @"NotificationSettingSectionPeople", nil);
-    VNotificationSettingsTableSection *sectionPeople = [[VNotificationSettingsTableSection alloc] initWithTitle:sectionPeopleTitle
-                                                                                                           rows:sectionPeopleRows ];
-    
-    // Add both sections
-    self.sections = [[NSOrderedSet alloc] initWithObjects:sectionFeed, sectionPeople, nil];
+//    // Feed section
+//    NSString *format = NSLocalizedString( @"PostFromCreator", nil);
+//    VAppInfo *appInfo = [[VAppInfo alloc] initWithDependencyManager:self.dependencyManager];
+//    NSString *creatorName = appInfo.ownerName;
+//    NSArray *sectionFeedRows = @[ [[VNotificationSettingsTableRow alloc] initWithTitle:[NSString stringWithFormat:format, creatorName]
+//                                                                               enabled:_settings.isPostFromCreatorEnabled.boolValue],
+//                                  [[VNotificationSettingsTableRow alloc] initWithTitle:NSLocalizedString( @"PostFromFollowed", nil)
+//                                                                               enabled:_settings.isPostFromFollowedEnabled.boolValue],
+//                                  [[VNotificationSettingsTableRow alloc] initWithTitle:NSLocalizedString( @"NewComment", nil)
+//                                                                               enabled:_settings.isNewCommentOnMyPostEnabled.boolValue],
+//                                  [[VNotificationSettingsTableRow alloc] initWithTitle:NSLocalizedString( @"PostOnFollowedHashTag", nil)
+//                                                                               enabled:_settings.isPostOnFollowedHashTagEnabled.boolValue]];
+//    NSString *sectionFeedTitle = NSLocalizedString( @"NotificationSettingSectionFeeds", nil);
+//    VNotificationSettingsTableSection *sectionFeed = [[VNotificationSettingsTableSection alloc] initWithTitle:sectionFeedTitle
+//                                                                                                         rows:sectionFeedRows ];
+//    
+//    // People Section
+//    NSArray *sectionPeopleRows = @[ [[VNotificationSettingsTableRow alloc] initWithTitle:NSLocalizedString( @"NewPrivateMessage", nil)
+//                                                                                 enabled:_settings.isNewPrivateMessageEnabled.boolValue],
+//                                    [[VNotificationSettingsTableRow alloc] initWithTitle:NSLocalizedString( @"NewFollower", nil)
+//                                                                                 enabled:_settings.isNewFollowerEnabled.boolValue],
+//                                    [[VNotificationSettingsTableRow alloc] initWithTitle:NSLocalizedString( @"TagInComment", nil)
+//                                                                                 enabled:_settings.isUserTagInCommentEnabled.boolValue],
+//                                    [[VNotificationSettingsTableRow alloc] initWithTitle:NSLocalizedString( @"LikePost", nil)
+//                                                                                 enabled:_settings.isPeopleLikeMyPostEnabled.boolValue]];
+//    NSString *sectionPeopleTitle = NSLocalizedString( @"NotificationSettingSectionPeople", nil);
+//    VNotificationSettingsTableSection *sectionPeople = [[VNotificationSettingsTableSection alloc] initWithTitle:sectionPeopleTitle
+//                                                                                                           rows:sectionPeopleRows ];
+//    
+//    // Add both sections
+//    self.sections = [[NSOrderedSet alloc] initWithObjects:sectionFeed, sectionPeople, nil];
 }
 
 -(VNotificationSettings*) getSettings
@@ -250,20 +250,6 @@
         }
     }
     [self.permissionsTrackingHelper permissionsDidChange:permissionChanged permissionState:trackingValueState];
-}
-
-#pragma mark - VSettingsSwitchCellDelegate
-
-- (void)settingsDidUpdateFromCell:(VSettingsSwitchCell *)cell
-{
-    if (self.settings == nil )
-    {
-        return;
-    }
-    
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-    BOOL value = cell.value;
-    [self updateSettingsAtIndexPath:indexPath withValue:value];
 }
 
 #pragma mark - UITableViewDataSource

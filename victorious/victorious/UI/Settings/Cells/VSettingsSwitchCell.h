@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol VSettingsSwitchCellDelegate <NSObject>
 
-- (void)settingsDidUpdateFromCell:(VSettingsSwitchCell *)cell;
+- (void)settingsDidUpdateFromCell:(VSettingsSwitchCell *)cell newValue:(BOOL)newValue key:(NSString *)key;
 
 @end
 

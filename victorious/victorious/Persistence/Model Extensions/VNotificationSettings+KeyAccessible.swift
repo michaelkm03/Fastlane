@@ -37,4 +37,23 @@ extension VNotificationSettings {
             return false
         }
     }
+    
+    func updateValue(forKey key: String, newValue: Bool) {
+        switch key {
+        case VNotificationSettingType.postFromCreator.rawValue:
+            isPostFromCreatorEnabled = newValue
+        case VNotificationSettingType.postFromFavorite.rawValue:
+            isPostFromFollowedEnabled = newValue
+        case VNotificationSettingType.mentionsUser.rawValue:
+           isUserTagInCommentEnabled = newValue
+        case VNotificationSettingType.upvotePost.rawValue:
+            isPeopleLikeMyPostEnabled = newValue
+        case VNotificationSettingType.favoritesUser.rawValue:
+            isNewFollowerEnabled = newValue
+        case VNotificationSettingType.privateMessage.rawValue:
+            isNewPrivateMessageEnabled = newValue
+        default:
+           break
+        }
+    }
 }
