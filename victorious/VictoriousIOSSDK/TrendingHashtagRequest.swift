@@ -10,10 +10,16 @@ import Foundation
 
 public struct TrendingHashtagRequest: RequestType {
     
-    public init() {}
+    private static let defaultURL = NSURL(string: "/api/discover/hashtags")!
+    
+    private let url: NSURL
+    
+    public init(url: NSURL?) {
+        self.url = url ?? TrendingHashtagRequest.defaultURL
+    }
     
     public var urlRequest: NSURLRequest {
-        return NSURLRequest(URL:NSURL(string: "/api/discover/hashtags")!)
+        return NSURLRequest(URL:url)
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [Hashtag] {

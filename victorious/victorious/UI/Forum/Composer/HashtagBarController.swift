@@ -60,8 +60,6 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
         }
     }
     
-    let dependencyManager: VDependencyManager
-    
     private var hasValidSearchText: Bool {
         return !(searchText?.isEmpty ?? true)
     }
@@ -81,13 +79,18 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
         }
     }
     
+    private let searchAPIPath: APIPath?
+    
+    private let trendingURL: NSURL?
+    
     weak var selectionDelegate: HashtagBarControllerSelectionDelegate?
     
     weak var searchDelegate: HashtagBarControllerSearchDelegate?
     
     init(dependencyManager: VDependencyManager, collectionView: UICollectionView) {
-        self.dependencyManager = dependencyManager
         cellDecorator = HashtagBarCellDecorator(dependencyManager: dependencyManager)
+        searchAPIPath = dependencyManager.hashtagSearchAPIPath
+        trendingURL = dependencyManager.trendingHashtagsURL
         self.collectionView = collectionView
         super.init()
         collectionView.dataSource = self
@@ -129,7 +132,7 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
     // MARK: - Hashtag updating
     
     private func searchForText(text: String) {
-        currentFetchOperation = HashtagSearchOperation(searchTerm: text)
+        currentFetchOperation = HashtagSearchOperation(searchTerm: text, apiPath: searchAPIPath)
         currentFetchOperation?.queue() { [weak self] results, error, success in
             guard let results = results as? [HashtagSearchResultObject] else {
                 return
@@ -149,7 +152,7 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
         
         searchResults = currentTrendingTags
         
-        currentFetchOperation = TrendingHashtagOperation()
+        currentFetchOperation = TrendingHashtagOperation(url: trendingURL)
         currentFetchOperation?.queue() { [weak self] results, error, success in
             guard let results = results as? [HashtagSearchResultObject] else {
                 return
@@ -217,5 +220,19 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
         }
         
         selectionDelegate?.hashtagBarController(self, selectedHashtag: selectedText)
+    }
+}
+
+private extension VDependencyManager {
+    
+    var hashtagSearchAPIPath: APIPath? {
+        return networkResources?.apiPathForKey("hashtag.search.URL")
+    }
+    
+    var trendingHashtagsURL: NSURL? {
+        guard let urlString = networkResources?.stringForKey("trendingHashtagsURL") else {
+            return nil
+        }
+        return NSURL(string: urlString)
     }
 }

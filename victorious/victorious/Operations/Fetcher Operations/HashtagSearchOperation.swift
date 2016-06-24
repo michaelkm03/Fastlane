@@ -30,8 +30,8 @@ final class HashtagSearchOperation: RemoteFetcherOperation, PaginatedRequestOper
         self.escapedQueryString = request.searchTerm
     }
     
-    convenience init?( searchTerm: String ) {
-        guard let request = HashtagSearchRequest(searchTerm: searchTerm) else {
+    convenience init?( searchTerm: String, apiPath: APIPath? = nil ) {
+        guard let request = HashtagSearchRequest(searchTerm: searchTerm, apiPath: apiPath) else {
             return nil
         }
         self.init(request: request)

@@ -11,7 +11,11 @@ import VictoriousIOSSDK
 
 class TrendingHashtagOperation: RemoteFetcherOperation, RequestOperation {
     
-    let request: TrendingHashtagRequest! = TrendingHashtagRequest()
+    let request: TrendingHashtagRequest!
+    
+    init(url: NSURL? = nil) {
+        request = TrendingHashtagRequest(url: url)
+    }
     
     override func main() {
         requestExecutor.executeRequest(request, onComplete: onComplete, onError: nil)
