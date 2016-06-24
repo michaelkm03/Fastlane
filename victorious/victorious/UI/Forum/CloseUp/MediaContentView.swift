@@ -19,6 +19,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         static let textPostLineSpacing: CGFloat = 2.0
         static let maxLineCount = 4
         static let textAlignment = NSTextAlignment.Center
+        static let minimumScaleFactor: CGFloat = 0.8
     }
     
     private(set) var videoCoordinator: VContentVideoPlayerCoordinator?
@@ -274,7 +275,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         textLabel.textAlignment = .Center
         textLabel.font = dependencyManager?.textPostFont()
         textLabel.adjustsFontSizeToFitWidth = true
-        textLabel.minimumScaleFactor = 0.8
+        textLabel.minimumScaleFactor = Constants.minimumScaleFactor
         textLabel.textColor = dependencyManager?.textPostColor()
         
         if let url = dependencyManager?.textPostBackgroundImageURL() {
