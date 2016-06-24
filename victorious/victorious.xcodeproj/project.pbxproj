@@ -2163,6 +2163,7 @@
 		F0A34AA81BA89F91000D70EF /* AvatarLevelBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A34AA61BA89F91000D70EF /* AvatarLevelBadgeView.swift */; };
 		F0A82AF71AE1A88C00EB2257 /* VCardDirectoryCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A82AF61AE1A88C00EB2257 /* VCardDirectoryCollectionViewFlowLayout.m */; };
 		F0A82AFA1AE1ABD800EB2257 /* VDirectoryCollectionFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A82AF91AE1ABD800EB2257 /* VDirectoryCollectionFlowLayout.m */; };
+		F0ABAA7C1D1CA8F800DAD4B3 /* BackgroundInsetAdjustableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0ABAA7B1D1CA8F700DAD4B3 /* BackgroundInsetAdjustableButton.swift */; };
 		F0AD216B1AF313BC001BDCC6 /* VNoContentCollectionViewCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F0AD216A1AF313BC001BDCC6 /* VNoContentCollectionViewCellFactory.m */; };
 		F0AD216E1AF318FC001BDCC6 /* VNoContentCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0AD216D1AF318FC001BDCC6 /* VNoContentCollectionViewCell.m */; };
 		F0AD21761AF43DFA001BDCC6 /* VCollectionsDirectoryCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F0AD21751AF43DFA001BDCC6 /* VCollectionsDirectoryCellFactory.m */; };
@@ -5167,6 +5168,7 @@
 		F0A82AF61AE1A88C00EB2257 /* VCardDirectoryCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCardDirectoryCollectionViewFlowLayout.m; sourceTree = "<group>"; };
 		F0A82AF81AE1ABD800EB2257 /* VDirectoryCollectionFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDirectoryCollectionFlowLayout.h; sourceTree = "<group>"; };
 		F0A82AF91AE1ABD800EB2257 /* VDirectoryCollectionFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDirectoryCollectionFlowLayout.m; sourceTree = "<group>"; };
+		F0ABAA7B1D1CA8F700DAD4B3 /* BackgroundInsetAdjustableButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundInsetAdjustableButton.swift; sourceTree = "<group>"; };
 		F0AD21691AF313BC001BDCC6 /* VNoContentCollectionViewCellFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNoContentCollectionViewCellFactory.h; sourceTree = "<group>"; };
 		F0AD216A1AF313BC001BDCC6 /* VNoContentCollectionViewCellFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNoContentCollectionViewCellFactory.m; sourceTree = "<group>"; };
 		F0AD216C1AF318FC001BDCC6 /* VNoContentCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNoContentCollectionViewCell.h; sourceTree = "<group>"; };
@@ -10555,6 +10557,7 @@
 		F07DDE2F1CFCC4F400C7FC8D /* Button */ = {
 			isa = PBXGroup;
 			children = (
+				F0ABAA7B1D1CA8F700DAD4B3 /* BackgroundInsetAdjustableButton.swift */,
 				F07DDE451CFCF33400C7FC8D /* ImageOnColorButton.swift */,
 				F07DDE461CFCF33400C7FC8D /* ImageOnImageButton.swift */,
 				F07DDE341CFCC7B200C7FC8D /* TextOnColorButton.swift */,
@@ -13253,6 +13256,7 @@
 				A7C713B21B74450A00089B5E /* GCDUtils.swift in Sources */,
 				7AEB1F421D13565400E93A64 /* UserModel.swift in Sources */,
 				C30AA4F31B067C370010CEFE /* VPermissionCamera.m in Sources */,
+				F0ABAA7C1D1CA8F800DAD4B3 /* BackgroundInsetAdjustableButton.swift in Sources */,
 				F022CFE01CFF447A00F040BB /* VDependencyManager+Buttons.swift in Sources */,
 				A7F843741BFD5A0B004C3D55 /* NSManagedObjectContext+Fetchers.swift in Sources */,
 				A70FC0F71A2D012E00F5BBDE /* VNotificationSettingsTableRow.m in Sources */,
