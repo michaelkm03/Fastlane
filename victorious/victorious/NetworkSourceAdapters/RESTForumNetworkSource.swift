@@ -48,7 +48,7 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
             dataSource.apiPath = newAPIPath
             
             dataSource.loadItems(.refresh) { [weak self] contents, _, _ in
-                guard let strongSelf = self where contents.count > 0 else {
+                guard let strongSelf = self else {
                     return
                 }
                 
@@ -78,10 +78,9 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     
     @objc private func pollForNewContent() {
         dataSource.loadItems(.newer) { [weak self] contents, stageEvent, _ in
-            guard let contents = self?.processContents(contents) where contents.count > 0 else {
+            guard let contents = self?.processContents(contents) else {
                 return
             }
-            
             self?.broadcast(.appendContent(contents))
             
             if let stageEvent = stageEvent {
@@ -158,7 +157,7 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
         switch event {
             case .loadOldContent:
                 dataSource.loadItems(.older) { [weak self] contents, stageEvent, error in
-                    guard let strongSelf = self where contents.count > 0 else {
+                    guard let strongSelf = self else {
                         return
                     }
                     
