@@ -1,5 +1,5 @@
 //
-//  ChatFeedMessageCellLayout.swift
+//  ChatFeedMessageCell+Layout.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 3/8/16.
