@@ -155,7 +155,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     }
     
     private func handleNewItems(newItems: [ChatFeedContent], loadingType: PaginatedLoadingType, completion: (() -> Void)? = nil) {
-        guard newItems.count > 0 else {
+        guard newItems.count > 0 || loadingType == .refresh else {
             return
         }
         

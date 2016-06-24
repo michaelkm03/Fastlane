@@ -48,7 +48,7 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
             dataSource.apiPath = newAPIPath
             
             dataSource.loadItems(.refresh) { [weak self] contents, _, _ in
-                guard let strongSelf = self else {
+                guard let strongSelf = self where contents.count > 0 else {
                     return
                 }
                 
@@ -78,9 +78,10 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     
     @objc private func pollForNewContent() {
         dataSource.loadItems(.newer) { [weak self] contents, stageEvent, _ in
-            guard let contents = self?.processContents(contents) else {
+            guard let contents = self?.processContents(contents) where contents.count > 0 else {
                 return
             }
+            
             self?.broadcast(.appendContent(contents))
             
             if let stageEvent = stageEvent {
@@ -155,21 +156,21 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
         nextSender?.send(event)
         
         switch event {
-        case .loadOldContent:
-            dataSource.loadItems(.older) { [weak self] contents, stageEvent, error in
-                guard let strongSelf = self else {
-                    return
-                }
-                
-                let contents = strongSelf.processContents(contents)
-                strongSelf.broadcast(.prependContent(contents))
+            case .loadOldContent:
+                dataSource.loadItems(.older) { [weak self] contents, stageEvent, error in
+                    guard let strongSelf = self where contents.count > 0 else {
+                        return
+                    }
                     
-                if let stageEvent = stageEvent {
-                    strongSelf.broadcast(stageEvent)
+                    let contents = strongSelf.processContents(contents)
+                    strongSelf.broadcast(.prependContent(contents))
+                        
+                    if let stageEvent = stageEvent {
+                        strongSelf.broadcast(stageEvent)
+                    }
                 }
-            }
-        default:
-            break
+            default:
+                break
         }
     }
     
