@@ -56,4 +56,25 @@ extension VNotificationSettings {
            break
         }
     }
+    
+    //Refer to VTrackingConstants
+    func trackingName(forKey key: String) -> String {
+        switch key {
+        case VNotificationSettingType.postFromCreator.rawValue:
+            return VTrackingValuePostFromCreator
+        case VNotificationSettingType.postFromFavorite.rawValue:
+            return VTrackingValuePostFromFollowed
+        case VNotificationSettingType.mentionsUser.rawValue:
+            return VTrackingValueUsertagInComment
+        case VNotificationSettingType.upvotePost.rawValue:
+            return VTrackingValuePeopleLikeMyPost
+        case VNotificationSettingType.favoritesUser.rawValue:
+            return VTrackingValueNewFollower
+        case VNotificationSettingType.privateMessage.rawValue:
+            return VTrackingValueNewPrivateMessage
+        default:
+            return ""
+        }
+
+    }
 }

@@ -771,7 +771,7 @@
 		797006F01B7AA3980058B09A /* VTabScaffoldHidingHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 797006EF1B7AA3980058B09A /* VTabScaffoldHidingHelper.m */; };
 		79714C761BF1358900CAC227 /* UnreadMessageCountRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79714C751BF1358900CAC227 /* UnreadMessageCountRequestTests.swift */; };
 		79714C781BF1368700CAC227 /* UnreadMessageCountRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79714C771BF1368700CAC227 /* UnreadMessageCountRequest.swift */; };
-		7979A0301C18B10400455FF8 /* VNotificationSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7979A02F1C18B10400455FF8 /* VNotificationSettingsViewController.swift */; };
+		7979A0301C18B10400455FF8 /* NotificationSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7979A02F1C18B10400455FF8 /* NotificationSettingsViewController.swift */; };
 		7979A0341C18EAE300455FF8 /* VNotificationSettings+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7979A0331C18EAE300455FF8 /* VNotificationSettings+Parsable.swift */; };
 		797FD25D1BFA9D6000BFFB08 /* SequenceUserInteractionsRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797FD25C1BFA9D6000BFFB08 /* SequenceUserInteractionsRequestTests.swift */; };
 		797FD2611BFAA19900BFFB08 /* UserInteractionsTest.json in Resources */ = {isa = PBXBuildFile; fileRef = 797FD2601BFAA19900BFFB08 /* UserInteractionsTest.json */; };
@@ -937,7 +937,6 @@
 		A70E846F1C3F00C800689EFA /* TestPersistentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EB32681C3B1FC1006C2783 /* TestPersistentStore.swift */; };
 		A70E84701C3F069A00689EFA /* FetcherOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 623989831C3607F200D0E4D0 /* FetcherOperationTests.swift */; };
 		A70FC0F41A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC0F31A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m */; };
-		A70FC0F71A2D012E00F5BBDE /* VNotificationSettingsTableRow.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC0F61A2D012E00F5BBDE /* VNotificationSettingsTableRow.m */; };
 		A70FC0FE1A2D412200F5BBDE /* VPurchaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC0FD1A2D412200F5BBDE /* VPurchaseManager.m */; };
 		A70FC10A1A2D558200F5BBDE /* VPurchase.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC1091A2D558200F5BBDE /* VPurchase.m */; };
 		A70FC1101A2D619300F5BBDE /* VProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC10F1A2D619300F5BBDE /* VProduct.m */; };
@@ -1281,7 +1280,6 @@
 		A76711FF1C1B8439006568DF /* MockTimingTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76711FE1C1B8439006568DF /* MockTimingTracker.swift */; };
 		A767120F1C1F81A7006568DF /* VInteraction+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A767120E1C1F81A7006568DF /* VInteraction+Parsable.swift */; };
 		A76712111C1F83C8006568DF /* VAnswer+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76712101C1F83C8006568DF /* VAnswer+Parsable.swift */; };
-		A76712131C1FBE03006568DF /* VNotificationSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B98A3C1A264D0900C58335 /* VNotificationSettingsViewController.m */; };
 		A76712191C209E11006568DF /* VEditCommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76712181C209E11006568DF /* VEditCommentViewController.swift */; };
 		A76712241C21E57E006568DF /* VAsset+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76712231C21E57E006568DF /* VAsset+Parsable.swift */; };
 		A769C3E91A13176700698D0C /* VWebBrowserActions.m in Sources */ = {isa = PBXBuildFile; fileRef = A769C3DA1A13176700698D0C /* VWebBrowserActions.m */; };
@@ -1414,7 +1412,6 @@
 		A7B844E51CB84F4C00CE02DE /* SelectMediaAttachmentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B844E41CB84F4C00CE02DE /* SelectMediaAttachmentOperation.swift */; };
 		A7B844E71CB88D7B00CE02DE /* forum.json in Resources */ = {isa = PBXBuildFile; fileRef = A7B844E61CB88D7B00CE02DE /* forum.json */; };
 		A7B844E91CBC25F700CE02DE /* MediaAttachment+Forum.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B844E81CBC25F700CE02DE /* MediaAttachment+Forum.swift */; };
-		A7B98A3E1A264D0900C58335 /* VNotificationSettingsTableSection.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B98A3A1A264D0900C58335 /* VNotificationSettingsTableSection.m */; };
 		A7B98A421A264D1D00C58335 /* VNotificationSettingsStateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B98A411A264D1D00C58335 /* VNotificationSettingsStateManager.m */; };
 		A7BA22001BA75A9A00F2CD37 /* UIView+Nib.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA21FF1BA75A9A00F2CD37 /* UIView+Nib.swift */; };
 		A7BA22051BA77E0400F2CD37 /* ContentViewHandoffController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7BA22041BA77E0400F2CD37 /* ContentViewHandoffController.swift */; };
@@ -3242,7 +3239,7 @@
 		797006EF1B7AA3980058B09A /* VTabScaffoldHidingHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VTabScaffoldHidingHelper.m; path = ../VTabScaffoldHidingHelper.m; sourceTree = "<group>"; };
 		79714C751BF1358900CAC227 /* UnreadMessageCountRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnreadMessageCountRequestTests.swift; sourceTree = "<group>"; };
 		79714C771BF1368700CAC227 /* UnreadMessageCountRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnreadMessageCountRequest.swift; sourceTree = "<group>"; };
-		7979A02F1C18B10400455FF8 /* VNotificationSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VNotificationSettingsViewController.swift; sourceTree = "<group>"; };
+		7979A02F1C18B10400455FF8 /* NotificationSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationSettingsViewController.swift; sourceTree = "<group>"; };
 		7979A0331C18EAE300455FF8 /* VNotificationSettings+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VNotificationSettings+Parsable.swift"; sourceTree = "<group>"; };
 		797FD25C1BFA9D6000BFFB08 /* SequenceUserInteractionsRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceUserInteractionsRequestTests.swift; sourceTree = "<group>"; };
 		797FD25E1BFA9E4000BFFB08 /* SequenceUserInteractionsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceUserInteractionsRequest.swift; sourceTree = "<group>"; };
@@ -3474,8 +3471,6 @@
 		A709A3331C32F5ED00C8B8F9 /* VHashtag+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VHashtag+Parsable.swift"; sourceTree = "<group>"; };
 		A70FC0F21A268FF100F5BBDE /* VNotificationSettingsTestDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotificationSettingsTestDelegate.h; sourceTree = "<group>"; };
 		A70FC0F31A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotificationSettingsTestDelegate.m; sourceTree = "<group>"; };
-		A70FC0F51A2D012E00F5BBDE /* VNotificationSettingsTableRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotificationSettingsTableRow.h; sourceTree = "<group>"; };
-		A70FC0F61A2D012E00F5BBDE /* VNotificationSettingsTableRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotificationSettingsTableRow.m; sourceTree = "<group>"; };
 		A70FC0FC1A2D412200F5BBDE /* VPurchaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPurchaseManager.h; sourceTree = "<group>"; };
 		A70FC0FD1A2D412200F5BBDE /* VPurchaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPurchaseManager.m; sourceTree = "<group>"; };
 		A70FC1081A2D558200F5BBDE /* VPurchase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPurchase.h; sourceTree = "<group>"; };
@@ -4158,10 +4153,6 @@
 		A7B844E81CBC25F700CE02DE /* MediaAttachment+Forum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MediaAttachment+Forum.swift"; sourceTree = "<group>"; };
 		A7B98A311A251D7D00C58335 /* VTestHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTestHelpers.h; sourceTree = "<group>"; };
 		A7B98A321A251D7D00C58335 /* VTestHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTestHelpers.m; sourceTree = "<group>"; };
-		A7B98A391A264D0900C58335 /* VNotificationSettingsTableSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotificationSettingsTableSection.h; sourceTree = "<group>"; };
-		A7B98A3A1A264D0900C58335 /* VNotificationSettingsTableSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotificationSettingsTableSection.m; sourceTree = "<group>"; };
-		A7B98A3B1A264D0900C58335 /* VNotificationSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotificationSettingsViewController.h; sourceTree = "<group>"; };
-		A7B98A3C1A264D0900C58335 /* VNotificationSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotificationSettingsViewController.m; sourceTree = "<group>"; };
 		A7B98A401A264D1D00C58335 /* VNotificationSettingsStateManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotificationSettingsStateManager.h; sourceTree = "<group>"; };
 		A7B98A411A264D1D00C58335 /* VNotificationSettingsStateManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotificationSettingsStateManager.m; sourceTree = "<group>"; };
 		A7B98A431A267AAA00C58335 /* VNotificationSettingsStateManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotificationSettingsStateManagerTests.m; sourceTree = "<group>"; };
@@ -9054,13 +9045,7 @@
 			children = (
 				A7B98A401A264D1D00C58335 /* VNotificationSettingsStateManager.h */,
 				A7B98A411A264D1D00C58335 /* VNotificationSettingsStateManager.m */,
-				A70FC0F51A2D012E00F5BBDE /* VNotificationSettingsTableRow.h */,
-				A70FC0F61A2D012E00F5BBDE /* VNotificationSettingsTableRow.m */,
-				A7B98A391A264D0900C58335 /* VNotificationSettingsTableSection.h */,
-				A7B98A3A1A264D0900C58335 /* VNotificationSettingsTableSection.m */,
-				A7B98A3B1A264D0900C58335 /* VNotificationSettingsViewController.h */,
-				A7B98A3C1A264D0900C58335 /* VNotificationSettingsViewController.m */,
-				7979A02F1C18B10400455FF8 /* VNotificationSettingsViewController.swift */,
+				7979A02F1C18B10400455FF8 /* NotificationSettingsViewController.swift */,
 			);
 			path = "Push Notification Settings";
 			sourceTree = "<group>";
@@ -12575,7 +12560,7 @@
 				A7ECC1CD1AD617480003E00A /* VTextToolController.m in Sources */,
 				F0FC98141B61AAA10098AFCB /* UIViewController+VAccessoryScreens.m in Sources */,
 				D85E428D1AFA9A5B00A13BD3 /* VHTMLSequncePreviewView.m in Sources */,
-				7979A0301C18B10400455FF8 /* VNotificationSettingsViewController.swift in Sources */,
+				7979A0301C18B10400455FF8 /* NotificationSettingsViewController.swift in Sources */,
 				A72C86181C977FF500E97D4F /* HashtagSaveOperation.swift in Sources */,
 				A70E846F1C3F00C800689EFA /* TestPersistentStore.swift in Sources */,
 				F059A0031B852D1800037BC8 /* Shelf.swift in Sources */,
@@ -12601,7 +12586,6 @@
 				A7EBF53A1C2B9AB80080C7CF /* VHashtagFollowingTableViewController.swift in Sources */,
 				A72C86911C977FF600E97D4F /* CreateTextPostOperation.swift in Sources */,
 				A72C86161C977FF500E97D4F /* GIFSearchOperation.swift in Sources */,
-				A7B98A3E1A264D0900C58335 /* VNotificationSettingsTableSection.m in Sources */,
 				F07557EC1B751F5300BB2648 /* VDirectoryContentCellFactory.swift in Sources */,
 				D8B44CD21ADCB3A4006340E8 /* VSleekStreamCollectionCell.m in Sources */,
 				A7EB57521AF9378C006AA1CF /* VTextPostCalloutHelper.m in Sources */,
@@ -13259,7 +13243,6 @@
 				C30AA4F31B067C370010CEFE /* VPermissionCamera.m in Sources */,
 				F022CFE01CFF447A00F040BB /* VDependencyManager+Buttons.swift in Sources */,
 				A7F843741BFD5A0B004C3D55 /* NSManagedObjectContext+Fetchers.swift in Sources */,
-				A70FC0F71A2D012E00F5BBDE /* VNotificationSettingsTableRow.m in Sources */,
 				C3E7721A1B45EAF7005809A5 /* VActionSheetTextView.m in Sources */,
 				A76711EE1C1B5FC1006568DF /* ContentViewAppTimingHelper.swift in Sources */,
 				A72C86451C977FF500E97D4F /* MediaAttachment+PublishParameters.swift in Sources */,
@@ -13656,7 +13639,6 @@
 				A721E9181B572454000B7901 /* VNode+Fetcher.m in Sources */,
 				A73BA2CE1C9393ED008168B5 /* NewItemsController.swift in Sources */,
 				D82EA50E1A577FF70008FD3E /* VVideoFrameRateComposition.m in Sources */,
-				A76712131C1FBE03006568DF /* VNotificationSettingsViewController.m in Sources */,
 				A70FC0FE1A2D412200F5BBDE /* VPurchaseManager.m in Sources */,
 				A75ED0001AB0B6B400C35063 /* VCropToolViewController.m in Sources */,
 				C3E772231B4DBC96005809A5 /* VCollectionViewStreamFocusHelper.m in Sources */,
