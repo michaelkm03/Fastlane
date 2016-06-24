@@ -206,7 +206,9 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
     }
     
     private func displayPermissionsErrorState() {
-        
+        if let errorStateView = dependencyManager?.createErrorStateView(actionType: .openSettings) {
+            self.tableView.addSubview(errorStateView)
+        }
     }
     
 }
