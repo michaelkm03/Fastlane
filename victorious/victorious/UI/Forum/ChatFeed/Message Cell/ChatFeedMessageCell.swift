@@ -59,7 +59,6 @@ class ChatFeedMessageCell: UICollectionViewCell {
     static let contentMargin = UIEdgeInsets(top: 30, left: 10, bottom: 2, right: 75)
     static let topLabelYSpacing = CGFloat(6.5)
     static let topLabelXInset = CGFloat(5.0)
-    static let minUsernameWidth = CGFloat(40.0)
     
     // MARK: - Initializing
     
