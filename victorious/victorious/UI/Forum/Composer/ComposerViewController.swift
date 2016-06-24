@@ -64,7 +64,11 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     private var searchTextChanged = false
 
-    private var selectedAsset: ContentMediaAsset?
+    private var selectedAsset: ContentMediaAsset? {
+        didSet {
+            updateConfirmButtonState()
+        }
+    }
     
     private var composerTextViewManager: ComposerTextViewManager?
     private var keyboardManager: VKeyboardNotificationManager?
@@ -217,7 +221,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     var textViewHasText: Bool = false {
         didSet {
-            confirmButton.enabled = textViewHasText || selectedAsset != nil
+            updateConfirmButtonState()
             if oldValue != textViewHasText {
                 view.setNeedsUpdateConstraints()
             }
@@ -275,6 +279,10 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     func inputTextAttributes() -> (inputTextColor: UIColor?, inputTextFont: UIFont?) {
         return (dependencyManager.inputTextColor, dependencyManager.inputTextFont)
+    }
+    
+    private func updateConfirmButtonState() {
+        confirmButton.enabled = textViewHasText || selectedAsset != nil
     }
     
     // MARK: - View lifecycle
