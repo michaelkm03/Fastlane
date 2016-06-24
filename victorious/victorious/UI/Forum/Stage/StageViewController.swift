@@ -85,9 +85,8 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        
+    
         mediaContentView.allowsVideoControls = false
-        mediaContentView.dependencyManager = dependencyManager
         showStage(animated)
     }
 
