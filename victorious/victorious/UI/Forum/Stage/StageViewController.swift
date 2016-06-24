@@ -110,8 +110,10 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate {
             case .image, .gif, .video:
                 ShowCloseUpOperation.showOperation(forContent: targetContent, displayModifier: displayModifier).queue()
             case .link:
-                // TODO: Deep link or regular link
-                print("hello deep link or regular link")
+                //FIXME: is this the right thing to do?
+                if let url = targetContent.linkedURL {
+                    VRootViewController.sharedRootViewController()?.openURL(url)
+                }
             case .text:
                 break
         }

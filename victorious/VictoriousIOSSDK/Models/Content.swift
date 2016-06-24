@@ -20,6 +20,7 @@ public protocol ContentModel: PreviewImageContainer, DictionaryConvertible {
     var text: String? { get }
     var hashtags: [Hashtag] { get }
     var shareURL: NSURL? { get }
+    var linkedURL: NSURL? { get }
     var author: UserModel { get }
     
     /// Whether this content is only accessible for VIPs
@@ -78,6 +79,7 @@ public class Content: ContentModel {
     public let text: String?
     public let hashtags: [Hashtag]
     public let shareURL: NSURL?
+    public let linkedURL: NSURL?
     public let createdAt: NSDate
     public let previewImages: [ImageAssetModel]
     public let assets: [ContentMediaAssetModel]
@@ -113,6 +115,7 @@ public class Content: ContentModel {
         self.type = type
         self.text = json["title"].string
         self.author = author
+        self.linkedURL = NSURL(string: json[typeString]["data"].stringValue)
         
         self.previewImages = (json["preview"][previewType]["assets"].array ?? []).flatMap { ImageAsset(json: $0) }
         
@@ -142,6 +145,7 @@ public class Content: ContentModel {
         status = nil
         hashtags = []
         shareURL = nil
+        linkedURL = nil
         previewImages = []
         type = .text
         isVIPOnly = false
@@ -173,6 +177,7 @@ public class Content: ContentModel {
         self.status = nil
         self.hashtags = []
         self.shareURL = nil
+        self.linkedURL = nil
         self.isVIPOnly = false
         isLikedByCurrentUser = false
     }
