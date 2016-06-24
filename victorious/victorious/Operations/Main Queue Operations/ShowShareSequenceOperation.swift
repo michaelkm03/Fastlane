@@ -53,30 +53,7 @@ class ShowShareSequenceOperation: MainQueueOperation {
     }
     
     private func activityViewDidFinish(activityType activityType: String, completed: Bool, activityError: NSError?) {
-        let tracking: VTracking?
-        
-        if let streamID = streamID {
-            tracking = sequence.streamItemPointer(streamID: streamID)?.tracking
-        } else {
-            tracking = sequence.streamItemPointerForStandloneStreamItem()?.tracking
-        }
-        
-        assert(tracking != nil, "Cannot track 'share' event because tracking data is missing.")
-        
-        var trackingParameters: [String:AnyObject] = [
-            VTrackingKeySequenceCategory: sequence.category ?? "",
-            VTrackingKeyShareDestination: activityType,
-            VTrackingKeyUrls: tracking?.share ?? []
-        ]
-        
-        if completed {
-            VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidShare, parameters: trackingParameters)
-        }
-        else if let activityError = activityError {
-            trackingParameters[VTrackingKeyErrorMessage] = activityError.localizedDescription
-            VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidShare, parameters: trackingParameters)
-        }
-        
+        // Tracking code removed
         originViewController.reloadInputViews()
         finishedExecuting()
     }

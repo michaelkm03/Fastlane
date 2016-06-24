@@ -12,7 +12,6 @@
 #import "VVoteType.h"
 #import "VVoteType.h"
 #import "VVoteResult.h"
-#import "VTracking.h"
 #import "VDependencyManager.h"
 #import "victorious-Swift.h"
 

@@ -9,7 +9,6 @@
 #import "VStreamTrackingHelper.h"
 #import "VStreamItem+Fetcher.h"
 #import "VSequence.h"
-#import "VTracking.h"
 #import <AVFoundation/AVFoundation.h>
 #import "VReachability.h"
 #import "victorious-Swift.h"
@@ -86,68 +85,12 @@ NSString * const kStreamTrackingHelperLoggedInChangedNotification = @"com.getvic
 
 - (void)onStreamCellDidBecomeVisibleWithCellEvent:(StreamCellContext *)event
 {
-    if ( ![event.streamItem isKindOfClass:[VSequence class]] && event.streamItem.remoteId != nil )
-    {
-        return;
-    }
-    VSequence *sequence = (VSequence *)event.streamItem;
-    VStream *stream = event.stream;
-    VTracking *tracking = [sequence streamItemPointerWithStreamID:stream.remoteId].tracking;
-    
-    if ( sequence == nil || stream == nil || tracking == nil )
-    {
-        VLog( @"Cannot track 'cellView' because required data is missing:  Sequence: %@, Stream: %@, URLs: %@",
-             sequence.remoteId, stream.remoteId, tracking.cellView);
-        return;
-    }
-    
-    NSString *trackingID = (event.fromShelf ? stream.shelfId : stream.trackingIdentifier) ?: stream.remoteId;
-    NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId ?: @"",
-                              VTrackingKeyTimeStamp : [NSDate date],
-                              VTrackingKeyUrls : tracking.cellView,
-                              VTrackingKeyStreamId : trackingID ?: @""};
-    [[VTrackingManager sharedInstance] queueEvent:VTrackingEventSequenceDidAppearInStream
-                                       parameters:params
-                                          eventId:sequence.remoteId];
+    // Implementation removed
 }
 
 - (void)onStreamCellSelectedWithCellEvent:(StreamCellContext *)context additionalInfo:(NSDictionary *)info
 {
-    if ( ![context.streamItem isKindOfClass:[VSequence class]] )
-    {
-        return;
-    }
-    VSequence *sequence = (VSequence *)context.streamItem;
-    VStream *stream = context.stream;
-    VTracking *tracking = [sequence streamItemPointerWithStreamID:stream.remoteId].tracking;
-    
-    if ( sequence == nil || stream == nil || tracking == nil )
-    {
-        VLog( @"Cannot track 'cellClick' because required data is missing:  Sequence: %@, Stream: %@, URLs: %@",
-             sequence.remoteId, stream.remoteId, tracking.cellClick);
-        return;
-    }
-
-    NSString *trackingID = context.fromShelf ? stream.shelfId : stream.trackingIdentifier;
-    NSDictionary *params = @{ VTrackingKeySequenceId : sequence.remoteId,
-                              VTrackingKeyTimeStamp : [NSDate date],
-                              VTrackingKeyUrls : tracking.cellClick,
-                              VTrackingKeyStreamId : trackingID ?: @""};
-    
-    // Track an autoplay click if necessary
-    if (!sequence.isGifStyle.boolValue)
-    {
-        if (sequence.firstNode.httpLiveStreamingAsset.streamAutoplay.boolValue)
-        {
-            VideoTrackingEvent *event = [[VideoTrackingEvent alloc] initWithName:VTrackingEventVideoDidStop urls:tracking.viewStop];
-            event.context = context;
-            event.autoPlay = YES;
-            event.currentTime = info[VTrackingKeyTimeCurrent];
-            [self trackAutoplayEvent:event];
-        }
-    }
-    
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectItemFromStream parameters:[NSDictionary dictionaryWithDictionary:params]];
+    // Implementation removed
 }
 
 #pragma mark - State management for StreamDidAppear event

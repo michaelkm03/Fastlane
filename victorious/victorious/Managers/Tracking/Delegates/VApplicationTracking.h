@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "VTracking.h"
 #import "VTrackingDelegate.h"
 
 @class VDependencyManager;

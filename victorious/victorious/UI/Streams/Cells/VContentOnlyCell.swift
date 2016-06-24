@@ -9,7 +9,7 @@
 import UIKit
 
 /// A collection view cell that only shows a stream item's content.
-class VContentOnlyCell: UICollectionViewCell {
+class VContentOnlyCell: UICollectionViewCell, ContentCell {
     // MARK: - Constants
     
     private static let cornerRadius: CGFloat = 6.0
@@ -67,7 +67,7 @@ class VContentOnlyCell: UICollectionViewCell {
     
     override var highlighted: Bool {
         didSet {
-            self.contentView.alpha = self.highlighted ? VContentOnlyCell.highlightAlpha : 1.0
+            contentView.alpha = highlighted ? VContentOnlyCell.highlightAlpha : 1.0
         }
     }
 }
