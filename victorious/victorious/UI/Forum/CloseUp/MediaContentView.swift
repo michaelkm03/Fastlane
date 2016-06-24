@@ -158,7 +158,6 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         if (content.type == .text) {
             setUpTextLabel(for: content)
         }
-        
         else {
             tearDownTextLabel()
         }
@@ -362,15 +361,22 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
 //MARK: - VDependency Manager extension
 
 private extension VDependencyManager {
-    func textPostFont() -> UIFont {
-        return fontForKey("font.textpost")
+    func textPostFont() -> UIFont? {
+        let textPostManager = childDependencyForKey("textPost")
+        return textPostManager?.fontForKey("font.textpost")
     }
     
-    func textPostColor() -> UIColor {
-        return colorForKey("color.textpost")
+    func textPostColor() -> UIColor? {
+        let textPostManager = childDependencyForKey("textPost")
+        return textPostManager?.colorForKey("color.textpost")
     }
     
     func textPostBackgroundImageURL() -> NSURL? {
-        return NSURL(string: stringForKey("backgroundImage.textpost"))
+        if let textPostManager = childDependencyForKey("textPost") {
+            return NSURL(string: textPostManager.stringForKey("backgroundImage.textpost"))
+        }
+        else {
+            return nil
+        }
     }
 }
