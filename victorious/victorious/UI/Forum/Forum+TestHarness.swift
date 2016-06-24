@@ -146,55 +146,55 @@ private var stageCount = 0
 private var totalCount = 0
 
 private let sampleStageImageContents = [
-//    [
-//        "type": "image",
-//        "url": "http://sportsup365.com/wp-content/uploads/2015/12/usatsi_8903306.jpg",
-//        "length": "10"
-//    ],
-//    [
-//        "type": "image",
-//        "url": "http://www.koco.com/image/view/-/36170342/medRes/1/-/maxh/460/maxw/620/-/hwy60t/-/westbrook-jpg--1-.jpg"
-//    ],
-//    [
-//        "type": "image",
-//        "url": "http://images.christianpost.com/full/88618/big-bang-theory.png"
-//    ],
-//    [
-//        "type": "gif",
-//        "url": "https://media.giphy.com/media/l41Yi2XOcNZ2lvTGw/giphy.mp4",
-//        "length": "15"
-//    ],
-//    [
-//        "type": "gif",
-//        "url": "https://media.giphy.com/media/lJh4drC6QTkkg/giphy.mp4"
-//    ],
-//    [
-//        "type": "video",
-//        "url": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/852ced0666ee143e1d91b987daa8df6e/playlist.m3u8"
-//    ],
-//    [
-//        "type": "video",
-//        "url": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/36170da86ad3933a86edd9bff9b21846/playlist.m3u8",
-//        "length": "15"
-//    ],
-//    [
-//        "type": "video",
-//        "source": "youtube",
-//        "id": "aL33-XfVccg",
-//        "length": "30"
-//        ],
-//    [
-//        "type": "video",
-//        "source": "youtube",
-//        "id": "OV0wOGUFZdw",
-//        "length": "30"
-//    ],
-//    [
-//        "type": "video",
-//        "source": "youtube",
-//        "id": "hgb8Jofr5ew",
-//        "length": "30"
-//    ],
+    [
+        "type": "image",
+        "url": "http://sportsup365.com/wp-content/uploads/2015/12/usatsi_8903306.jpg",
+        "length": "10"
+    ],
+    [
+        "type": "image",
+        "url": "http://www.koco.com/image/view/-/36170342/medRes/1/-/maxh/460/maxw/620/-/hwy60t/-/westbrook-jpg--1-.jpg"
+    ],
+    [
+        "type": "image",
+        "url": "http://images.christianpost.com/full/88618/big-bang-theory.png"
+    ],
+    [
+        "type": "gif",
+        "url": "https://media.giphy.com/media/l41Yi2XOcNZ2lvTGw/giphy.mp4",
+        "length": "15"
+    ],
+    [
+        "type": "gif",
+        "url": "https://media.giphy.com/media/lJh4drC6QTkkg/giphy.mp4"
+    ],
+    [
+        "type": "video",
+        "url": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/852ced0666ee143e1d91b987daa8df6e/playlist.m3u8"
+    ],
+    [
+        "type": "video",
+        "url": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/36170da86ad3933a86edd9bff9b21846/playlist.m3u8",
+        "length": "15"
+    ],
+    [
+        "type": "video",
+        "source": "youtube",
+        "id": "aL33-XfVccg",
+        "length": "30"
+        ],
+    [
+        "type": "video",
+        "source": "youtube",
+        "id": "OV0wOGUFZdw",
+        "length": "30"
+    ],
+    [
+        "type": "video",
+        "source": "youtube",
+        "id": "hgb8Jofr5ew",
+        "length": "30"
+    ],
     [
         "type" : "text",
         "text" : "Stage post text test content"
