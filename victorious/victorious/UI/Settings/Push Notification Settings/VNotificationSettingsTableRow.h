@@ -10,9 +10,10 @@
 
 @interface VNotificationSettingsTableRow : NSObject
 
-- (instancetype)initWithTitle:(NSString *)title enabled:(BOOL)isEnabled;
+- (instancetype)initWithTitle:(NSString *)title enabled:(BOOL)isEnabled key:(NSString *) key;
 
 @property (nonatomic, readonly) NSString *title;
 @property (nonatomic, assign) BOOL isEnabled;
+@property (nonatomic, assign) NSString *key;
 
 @end

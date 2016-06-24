@@ -149,6 +149,12 @@
     self.sections = [[NSOrderedSet alloc] initWithObjects:sectionFeed, sectionPeople, nil];
 }
 
+-(VNotificationSettings*) getSettings
+{
+    return self.settings;
+}
+
+
 - (void)updateSettings
 {
     VNotificationSettingsTableSection *section;

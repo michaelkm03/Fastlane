@@ -43,7 +43,7 @@ extension VNotificationSettingsViewController {
                 navigationController?.presentViewController(alertController, animated: true, completion: nil)
             }
         }
-        
+
         
         
     }
@@ -104,6 +104,8 @@ extension VNotificationSettingsViewController {
     }
     
     func updateSettings() {
+        let settings = self.getSettings()
+        settings.isPostFromCreatorEnabled = isSettingEnabled(.postFromCreator)
 //        self.settings.isPostFromCreatorEnabled = @( [section rowAtIndex: dependencyManager.indexPathForSettingType(VNotificationSettingType.isPostCreator)].isEnabled );
 //        self.settings.isPostFromFollowedEnabled = @( [section rowAtIndex:1].isEnabled );
 //        self.settings.isNewCommentOnMyPostEnabled = @( [section rowAtIndex:2].isEnabled );
@@ -114,5 +116,47 @@ extension VNotificationSettingsViewController {
 //        self.settings.isUserTagInCommentEnabled = @( [section rowAtIndex:2].isEnabled );
 //        self.settings.isPeopleLikeMyPostEnabled = @( [section rowAtIndex:3].isEnabled );
     }
+    
+    private func sectionsForTableView() -> NSOrderedSet {
+        let result = NSMutableOrderedSet()
+        let items = dependencyManager.arrayForKey("items")
+        
+        for item in items {
+            if let itemDictionary = item as? NSDictionary,
+                let sectionTitle = itemDictionary["section.title"] as? String,
+                let sectionArray = itemDictionary["section.items"] as? NSArray
+            {
+                var sectionRows: [VNotificationSettingsTableRow] = []
+                sectionArray.enumerateObjectsUsingBlock(){ (object, _, _) in
+                    if let rowDictionary = object as? NSDictionary,
+                        let rowTitle = rowDictionary["title"] as? String,
+                        let rowKey = rowDictionary["key"] as? String
+                    {
+                        let row = VNotificationSettingsTableRow(title: rowTitle, enabled: self.getSettings().isKeyEnabled(rowKey), key: rowKey)
+                        sectionRows.append(row)
+                    }
+                }
+                let tableViewSection = VNotificationSettingsTableSection(title: sectionTitle, rows: sectionRows)
+                result.addObject(tableViewSection)
+            }
+        }
+        
+        return result
+    }
+    
+    private func isSettingEnabled(type: VNotificationSettingType) -> Bool{
+        sections.enumerateObjectsUsingBlock { (section, _, _) in
+            if let sectionArray = section as? NSArray {
+                sectionArray.enumerateObjectsUsingBlock({ (row, _, _) in
+                    if let tableRow = row as? VNotificationSettingsTableRow where row.key == type.rawValue {
+                        return row.isEnabled
+                    }
+                })
+            }
+        }
+        
+        return false 
+    }
+    
 }
 

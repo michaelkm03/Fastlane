@@ -19,9 +19,9 @@
 /// Below is only visible to facilitate Swift Integration
 @class VNotificationSettings, VNotificationSettingsStateManager;
 /// ATTENTION: For internal class use only.
-
 @interface VNotificationSettingsViewController (SwiftPersistenceIntegration)
 -(void) setSettings:(VNotificationSettings *)settings;
+-(VNotificationSettings*) getSettings;
 @property (nonatomic, strong) NSError *settingsError;
 @property (nonatomic, readonly) VNotificationSettingsStateManager *stateManager;
 @property (nonatomic, strong) NSOrderedSet *sections;
