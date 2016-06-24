@@ -854,6 +854,7 @@
 		7C268F011D1484C300E4A66A /* WebViewHTMLFetchRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C268F001D1484C300E4A66A /* WebViewHTMLFetchRequestTests.swift */; };
 		7C268F031D14A11100E4A66A /* PrivacyPolicy.html in Resources */ = {isa = PBXBuildFile; fileRef = 7C268F021D14A11100E4A66A /* PrivacyPolicy.html */; };
 		7C268F051D14A12600E4A66A /* tos.html in Resources */ = {isa = PBXBuildFile; fileRef = 7C268F041D14A12600E4A66A /* tos.html */; };
+		7C28F1021D1DD94A0070B8AE /* CtAErrorState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C28F1011D1DD94A0070B8AE /* CtAErrorState.swift */; };
 		7C358BA61D1CBB300063CF66 /* VNotificationSettings+KeyAccessible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C358BA51D1CBB300063CF66 /* VNotificationSettings+KeyAccessible.swift */; };
 		7C37B8E71CF66CA200E83594 /* SystemBlurredImageBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C37B8E61CF66CA100E83594 /* SystemBlurredImageBackground.swift */; };
 		7C4CCE681D10D36F00784D30 /* SettingsViewController+Templatized.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4CCE671D10D36F00784D30 /* SettingsViewController+Templatized.swift */; };
@@ -3328,6 +3329,7 @@
 		7C268F001D1484C300E4A66A /* WebViewHTMLFetchRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewHTMLFetchRequestTests.swift; sourceTree = "<group>"; };
 		7C268F021D14A11100E4A66A /* PrivacyPolicy.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = PrivacyPolicy.html; sourceTree = "<group>"; };
 		7C268F041D14A12600E4A66A /* tos.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = tos.html; sourceTree = "<group>"; };
+		7C28F1011D1DD94A0070B8AE /* CtAErrorState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CtAErrorState.swift; sourceTree = "<group>"; };
 		7C358BA51D1CBB300063CF66 /* VNotificationSettings+KeyAccessible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VNotificationSettings+KeyAccessible.swift"; sourceTree = "<group>"; };
 		7C37B8E61CF66CA100E83594 /* SystemBlurredImageBackground.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SystemBlurredImageBackground.swift; sourceTree = "<group>"; };
 		7C4CCE671D10D36F00784D30 /* SettingsViewController+Templatized.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+Templatized.swift"; sourceTree = "<group>"; };
@@ -5629,6 +5631,7 @@
 				A7EB575B1AFAAA2D006AA1CF /* VURLSelectionResponder.h */,
 				F0FBFA671CE1624D006318FC /* PersistentContentCreator.swift */,
 				7C268EFE1D138F6100E4A66A /* VButton+VBackgroundContainer.swift */,
+				7C28F1011D1DD94A0070B8AE /* CtAErrorState.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -13131,6 +13134,7 @@
 				A6B9FD121B6070B100166BE8 /* VCameraFocusView.m in Sources */,
 				03CE670019B640CD0011BB9E /* VDeviceInfo.m in Sources */,
 				A7F2D0BF1BF19E2B00490D7B /* PersistenceParsable.swift in Sources */,
+				7C28F1021D1DD94A0070B8AE /* CtAErrorState.swift in Sources */,
 				F06B41BF1B7EE4FB008709E8 /* VListShelfCellFactory.swift in Sources */,
 				C30AA4DD1B055C000010CEFE /* VPermissionAlertPresentationController.m in Sources */,
 				036E87B21ACB6B3F00E5AAAD /* VContentViewFactory.m in Sources */,
