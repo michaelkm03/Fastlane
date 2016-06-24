@@ -268,7 +268,8 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         guard let text = content.text else {
             return
         }
-    
+        
+        textLabel.hidden = false
         textLabel.text = text
         textLabel.textAlignment = .Center
         textLabel.font = dependencyManager?.textPostFont()
