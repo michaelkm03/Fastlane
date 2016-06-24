@@ -95,7 +95,8 @@ extension ForumViewController {
         if let id = next["id"] {
             let parameters = ContentMediaAsset.LocalAssetParameters(contentType: contentType, remoteID: id, source: source)
             asset = ContentMediaAsset(initializationParameters: parameters)
-        } else {
+        }
+        else {
             let url = NSURL(string: next["url"]!)!
             let parameters = ContentMediaAsset.RemoteAssetParameters(contentType: contentType, url: url, source: source)
             asset = ContentMediaAsset(initializationParameters: parameters)

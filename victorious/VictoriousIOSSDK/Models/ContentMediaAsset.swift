@@ -121,10 +121,7 @@ public enum ContentMediaAsset: ContentMediaAssetModel {
     }
     
     private init?(contentType: ContentType, source: String?, remoteID: String? = nil, url: NSURL? = nil) {
-        guard
-            url != nil ||
-            remoteID != nil
-        else {
+        guard url != nil || remoteID != nil else {
             // By using the initialziation structs, we should NEVER make it here
             assertionFailure("invalid initialization parameters provided to \(#function)")
             return nil

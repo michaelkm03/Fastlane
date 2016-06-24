@@ -471,7 +471,8 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         if let remoteID = publishParameters.assetRemoteId {
             let mediaParameters = ContentMediaAsset.LocalAssetParameters(contentType: contentType, remoteID: remoteID, source: publishParameters.source, url: capturedMediaURL)
             selectedAsset = ContentMediaAsset(initializationParameters: mediaParameters)
-        } else {
+        }
+        else {
             let mediaParameters = ContentMediaAsset.RemoteAssetParameters(contentType: contentType, url: capturedMediaURL, source: publishParameters.source)
             selectedAsset = ContentMediaAsset(initializationParameters: mediaParameters)
         }
