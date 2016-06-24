@@ -107,11 +107,13 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate {
         let displayModifier = ShowCloseUpDisplayModifier(dependencyManager: dependencyManager, originViewController: self)
         
         switch targetContent.type {
-            case .text, .image, .gif, .video:
-                ShowCloseUpOperation(content: targetContent, displayModifier: displayModifier).queue()
+            case .image, .gif, .video:
+                ShowCloseUpOperation.showOperation(forContent: targetContent, displayModifier: displayModifier).queue()
             case .link:
                 // TODO: Deep link or regular link
                 print("hello deep link or regular link")
+            case .text:
+                break
         }
     }
     
