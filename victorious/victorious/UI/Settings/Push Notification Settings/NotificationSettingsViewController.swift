@@ -177,6 +177,8 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
             return []
         }
         
+        return []
+        
 //        let result = NSMutableOrderedSet()
 //        let items = dependencyManager.arrayForKey("items")
 //        

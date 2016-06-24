@@ -52,11 +52,6 @@ NS_ASSUME_NONNULL_BEGIN
     return self.settingSwitch.on;
 }
 
--(NSString *) key
-{
-    return self.key
-}
-
 - (void)setValue:(BOOL)value animated:(BOOL)animated
 {
     self.shouldPreventNotifyingDelegate = YES;
@@ -76,7 +71,7 @@ NS_ASSUME_NONNULL_BEGIN
 {
     if ( !self.shouldPreventNotifyingDelegate &&
          self.delegate != nil &&
-         [self.delegate respondsToSelector:@selector(settingsDidUpdateFromCell:)] )
+         [self.delegate respondsToSelector:@selector(settingsDidUpdateFromCell:newValue:key:)] )
     {
         [self.delegate settingsDidUpdateFromCell:self newValue:[self value] key:[self key]];
     }

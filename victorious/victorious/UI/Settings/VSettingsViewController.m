@@ -14,7 +14,6 @@
 #import "VWebContentViewController.h"
 #import "VEnvironment.h"
 #import "VAppDelegate.h"
-#import "VNotificationSettingsViewController.h"
 #import "VButton.h"
 #import "VPurchaseManager.h"
 #import "VSettingsTableViewCell.h"
