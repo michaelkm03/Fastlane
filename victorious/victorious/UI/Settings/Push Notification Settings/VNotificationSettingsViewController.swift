@@ -49,7 +49,7 @@ extension VNotificationSettingsViewController: VSettingsSwitchCellDelegate {
     }
     
     func initializeSettings() {
-        //self.sections = dependencyManager.sectionsForTableView()
+        self.sections = self.sectionsForTableView()
     }
     
     func configureErrorMessageCell (cell: VNoContentTableViewCell){

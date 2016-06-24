@@ -10,13 +10,14 @@
 
 @implementation VNotificationSettingsTableRow
 
-- (instancetype)initWithTitle:(NSString *)title enabled:(BOOL)isEnabled
+- (instancetype)initWithTitle:(NSString *)title enabled:(BOOL)isEnabled key:(NSString *)key
 {
     self = [super init];
     if (self)
     {
         _title = title;
         _isEnabled = isEnabled;
+        _key = key; 
     }
     return self;
 }
