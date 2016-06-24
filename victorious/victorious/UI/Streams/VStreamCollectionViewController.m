@@ -49,7 +49,6 @@
 #import "VStreamCollectionViewDataSource.h"
 #import "VStreamCollectionViewParallaxFlowLayout.h"
 #import "VStreamContentCellFactoryDelegate.h"
-#import "VTracking.h"
 #import "VUploadManager.h"
 #import "VUploadProgressViewController.h"
 #import "VUserProfileViewController.h"

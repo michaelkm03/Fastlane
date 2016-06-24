@@ -245,7 +245,6 @@
 #import "VThemeManager.h"
 #import "VTickerPickerViewController.h"
 #import "VTimerManager.h"
-#import "VTracking.h"
 #import "VTrackingManager.h"
 #import "VTransitionDelegate.h"
 #import "VTwitterManager.h"

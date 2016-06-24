@@ -20,7 +20,7 @@
 @property (nonatomic, readonly) NSUInteger numberOfQueuedEvents;
 
 - (NSUInteger)numberOfQueuedEventsForEventName:(NSString *)eventName;
-- (NSDictionary *)addSessionParametersToDictionary:(NSDictionary *)dictionary;
+- (NSDictionary *)addSessionParameters:(NSDictionary *)sessionParameters toDictionary:(NSDictionary *)dictionary;
 
 @end
 
@@ -198,9 +198,10 @@
     [self.trackingMgr setValue:session1Value forSessionParameterWithKey:param1Key];
     [self.trackingMgr setValue:session2Value forSessionParameterWithKey:session2Key];
     
+    NSDictionary *sessionParameters = @{ param1Key : session1Value, session2Key : session2Value };
     NSDictionary *eventParams = @{ param1Key : param1Value, param2Key : param2Value };
     
-    NSDictionary *combinedParams = [self.trackingMgr addSessionParametersToDictionary:eventParams];
+    NSDictionary *combinedParams = [self.trackingMgr addSessionParameters: sessionParameters toDictionary:eventParams];
     
     XCTAssertEqualObjects( combinedParams[ param1Key ], param1Value,
                           @"Session parameters should not override event parameters with same key" );

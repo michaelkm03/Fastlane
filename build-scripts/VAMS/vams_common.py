@@ -33,9 +33,11 @@ def init():
     global _DEFAULT_HEADERS
     global _DEFAULT_PLATFORM
     global _PRODUCTION_HOST
+    global _PRODUCTION_VAPI
     global _STAGING_HOST
-    global _QA_HOST
+    global _STAGING_VAPI
     global _DEV_HOST
+    global _DEV_VAPI
     global _LOCAL_HOST
     global _DEFAULT_LOCAL_PORT
     global _AUTH_TOKEN
@@ -74,9 +76,11 @@ def init():
 
     _DEFAULT_PLATFORM = _PLATFORM_ANDROID
     _PRODUCTION_HOST = 'https://api.getvictorious.com'
+    _PRODUCTION_VAPI = 'https://vapi.getvictorious.com'
     _STAGING_HOST = 'https://staging.getvictorious.com'
-    _QA_HOST = 'http://qa.getvictorious.com'
+    _STAGING_VAPI = 'https://vapi-staging.getvictorious.com'
     _DEV_HOST = 'http://dev.getvictorious.com'
+    _DEV_VAPI = 'https://vapi-dev.getvictorious.com'
     _LOCAL_HOST = 'http://localhost'
     _DEFAULT_LOCAL_PORT = '8887'
 
@@ -99,6 +103,32 @@ def createDateString():
 
     return ' '.join(date_list)
 
+def GetVictoriousVAPI(host):
+    """
+    Retrieves a VAPI host url
+
+    :param host:
+        The corresponding VAPI environment.
+
+    :return:
+        A string of a VAPI url
+
+    """
+
+    if host.lower() == 'dev':
+        hostURL = _DEV_VAPI
+    elif host.lower() == 'staging':
+        hostURL = _STAGING_VAPI
+    elif host.lower() == 'production':
+        hostURL = _PRODUCTION_VAPI
+    elif host.lower() == 'localhost':
+        hostURL = "%s:%s" % (_LOCAL_HOST, _DEFAULT_LOCAL_PORT)
+    elif host.lower() == 'local':
+        hostURL = "%s:%s" % (_LOCAL_HOST, _DEFAULT_LOCAL_PORT)
+    else:
+        hostURL = _PRODUCTION_VAPI
+
+    return hostURL
 
 def GetVictoriousHost(host):
     """
@@ -113,8 +143,6 @@ def GetVictoriousHost(host):
 
     if host.lower() == 'dev':
         hostURL = _DEV_HOST
-    elif host.lower() == 'qa':
-        hostURL = _QA_HOST
     elif host.lower() == 'staging':
         hostURL = _STAGING_HOST
     elif host.lower() == 'production':
@@ -215,6 +243,25 @@ def calcAuthHash(endpoint, reqMethod, date):
             date + endpoint + _DEFAULT_USERAGENT + _AUTH_TOKEN +
             reqMethod).hexdigest()
 
+def headersWith(path, requestType):
+    """
+    Calculates the appropriate headers for the given path and request type.
+
+    :param path:
+        The API path being called.
+
+    "param requestType:
+        The RESTful HTTP method that these headers will be part of.
+    """
+    date = createDateString()
+    req_hash = calcAuthHash(path, requestType, date)
+    auth_header = 'BASIC %s:%s' % (_DEFAULT_VAMS_USERID, req_hash)
+
+    return {
+        'Authorization': auth_header,
+        'User-Agent': _DEFAULT_USERAGENT,
+        'Date': date
+    }
 
 def assetFetcher(url, filename):
     """

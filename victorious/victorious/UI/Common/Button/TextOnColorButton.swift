@@ -13,6 +13,7 @@ import Foundation
 class TextOnColorButton: UIButton, TrackableButton {
     var dependencyManager: VDependencyManager? {
         didSet {
+            hidden = dependencyManager == nil
             backgroundColor = templateAppearanceValue(.backgroundColor)
             setTitleColor(templateAppearanceValue(.foregroundColor), forState: .Normal)
             setTitle(templateAppearanceValue(.text), forState: .Normal)

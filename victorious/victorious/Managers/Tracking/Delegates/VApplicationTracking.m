@@ -15,6 +15,8 @@
 @import VictoriousCommon;
 @import VictoriousIOSSDK;
 
+static NSString * const kMacroContentId              = @"%%CONTENT_ID%%";
+static NSString * const kMacroParentContentId        = @"%%PARENT_CONTENT_ID%%";
 static NSString * const kMacroFromTime               = @"%%FROM_TIME%%";
 static NSString * const kMacroToTime                 = @"%%TO_TIME%%";
 static NSString * const kMacroTimeCurrent            = @"%%TIME_CURRENT%%";
@@ -66,7 +68,10 @@ static NSString * const kMacroSubtype                = @"%%SUBTYPE%%";
     if (self)
     {
         // This is a mapping of generic parameters to application-specific macros
-        _parameterMacroMapping = @{ VTrackingKeyFromTime           : kMacroFromTime,
+        _parameterMacroMapping = @{
+                                    VTrackingKeyContentId          : kMacroContentId,
+                                    VTrackingKeyParentContentId    : kMacroParentContentId,
+                                    VTrackingKeyFromTime           : kMacroFromTime,
                                     VTrackingKeyToTime             : kMacroToTime,
                                     VTrackingKeyTimeCurrent        : kMacroTimeCurrent,
                                     VTrackingKeyTimeStamp          : kMacroTimeStamp,
