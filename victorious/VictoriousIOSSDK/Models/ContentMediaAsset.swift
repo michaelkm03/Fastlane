@@ -44,6 +44,30 @@ public enum ContentMediaAsset: ContentMediaAssetModel {
     case gif(remoteID: String?, url: NSURL, source: String?)
     case image(url: NSURL)
     
+    public struct RemoteAssetParameters {
+        public let contentType: ContentType
+        public let url: NSURL
+        public let source: String?
+        public init(contentType: ContentType, url: NSURL, source: String?) {
+            self.contentType = contentType
+            self.url = url
+            self.source = source
+        }
+    }
+    
+    public struct LocalAssetParameters {
+        public let contentType: ContentType
+        public let remoteID: String
+        public let source: String?
+        public let url: NSURL?
+        public init(contentType: ContentType, remoteID: String, source: String?, url: NSURL? = nil) {
+            self.contentType = contentType
+            self.remoteID = remoteID
+            self.source = source
+            self.url = url
+        }
+    }
+    
     public init?(contentType: ContentType, sourceType: String, json: JSON) {
         switch contentType {
             case .image:
@@ -88,42 +112,50 @@ public enum ContentMediaAsset: ContentMediaAssetModel {
         }
     }
     
-    /// Remote identifier is the URL or remoteID of the content
-    public init?(contentType: ContentType, source: String?, remoteIdentifier: String) {
-        let remoteURL = NSURL(string: remoteIdentifier)
+    public init?(initializationParameters parameters: RemoteAssetParameters) {
+        self.init(contentType: parameters.contentType, source: parameters.source, url: parameters.url)
+    }
+    
+    public init?(initializationParameters parameters: LocalAssetParameters) {
+        self.init(contentType: parameters.contentType, source: parameters.source, remoteID: parameters.remoteID, url: parameters.url)
+    }
+    
+    private init?(contentType: ContentType, source: String?, remoteID: String? = nil, url: NSURL? = nil) {
+        guard
+            url != nil ||
+            remoteID != nil
+        else {
+            // By using the initialziation structs, we should NEVER make it here
+            assertionFailure("invalid initialization parameters provided to \(#function)")
+            return nil
+        }
         
         switch contentType {
             case .text, .link:
                 return nil
             case .video:
                 if source == "youtube" {
-                    self = .youtube(remoteID: remoteIdentifier, source: source)
-                }
-                else {
-                    guard let remoteURL = remoteURL else {
+                    guard let remoteID = remoteID else {
                         return nil
                     }
-                    self = .video(url: remoteURL, source: nil)
+                    self = .youtube(remoteID: remoteID, source: source)
+                }
+                else {
+                    guard let url = url else {
+                        return nil
+                    }
+                    self = .video(url: url, source: source)
                 }
             case .gif:
-                guard let remoteURL = remoteURL else {
+                guard let url = url else {
                     return nil
                 }
-                self = .gif(remoteID: remoteIdentifier, url: remoteURL, source: source)
+                self = .gif(remoteID: remoteID, url: url, source: source)
             case .image:
-                guard let remoteURL = remoteURL else {
+                guard let url = url else {
                     return nil
                 }
-                self = .image(url: remoteURL)
-        }
-    }
-    
-    public static func newLocalAsset(contentType: ContentType, url: NSURL, remoteID: String? = nil, source: String? = nil) -> ContentMediaAsset? {
-        switch contentType {
-        case .text, .link: return nil
-        case .video: return .video(url: url, source: source)
-        case .gif: return .gif(remoteID: remoteID, url: url, source: source)
-        case .image: return .image(url: url)
+                self = .image(url: url)
         }
     }
     
