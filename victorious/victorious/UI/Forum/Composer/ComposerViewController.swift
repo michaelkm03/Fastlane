@@ -463,13 +463,19 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
         
         var preview = previewImage
-        if contentType == .gif,
-            let image = capturedMediaURL.v_videoPreviewImage {
-            
+        if let image = capturedMediaURL.v_videoPreviewImage where contentType == .gif {
             preview = image
         }
         
-        selectedAsset = ContentMediaAsset(contentType: contentType, url: capturedMediaURL)
+        let publishParameters = creationFlowController.publishParameters
+        if let remoteID = publishParameters.assetRemoteId {
+            let mediaParameters = ContentMediaAsset.LocalAssetParameters(contentType: contentType, remoteID: remoteID, source: publishParameters.source, url: capturedMediaURL)
+            selectedAsset = ContentMediaAsset(initializationParameters: mediaParameters)
+        }
+        else {
+            let mediaParameters = ContentMediaAsset.RemoteAssetParameters(contentType: contentType, url: capturedMediaURL, source: publishParameters.source)
+            selectedAsset = ContentMediaAsset(initializationParameters: mediaParameters)
+        }
         let maxDimension = view.bounds.width * Constants.maximumAttachmentWidthPercentage
         let resizedImage = preview.scaledImageWithMaxDimension(maxDimension, upScaling: true)
         composerTextViewManager?.prependImage(resizedImage, toTextView: textView)
@@ -486,7 +492,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
     }
     
-    private func contentType(for creationFlowController: VCreationFlowController!) -> ContentType? {
+    private func contentType(for creationFlowController: VCreationFlowController) -> ContentType? {
         switch creationFlowController.mediaType() {
         case .Image:
             return .image
