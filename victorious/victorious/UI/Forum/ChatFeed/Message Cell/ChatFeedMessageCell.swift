@@ -24,6 +24,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
     let bubbleView = UIView()
     let captionLabel = UILabel()
     let avatarView = VDefaultProfileImageView()
+    let avatarTapTarget = UIView()
     var mediaView: MediaContentView?
     
     weak var delegate: ChatFeedMessageCellDelegate?
@@ -54,6 +55,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
     static let captionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
     static let horizontalSpacing = CGFloat(10.0)
     static let avatarSize = CGSize(width: 30.0, height: 30.0)
+    static let avatarTapTargetSize = CGSize(width: 44.0, height: 44.0)
     static let contentMargin = UIEdgeInsets(top: 30, left: 10, bottom: 2, right: 75)
     static let topLabelYSpacing = CGFloat(6.5)
     static let topLabelXInset = CGFloat(5.0)
@@ -66,7 +68,8 @@ class ChatFeedMessageCell: UICollectionViewCell {
         
         avatarView.clipsToBounds = true
         avatarView.userInteractionEnabled = true
-        avatarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onAvatarTapped)))
+        
+        avatarTapTarget.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onAvatarTapped)))
         
         bubbleView.clipsToBounds = true
         
@@ -75,6 +78,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
         contentView.addSubview(usernameLabel)
         contentView.addSubview(timestampLabel)
         contentView.addSubview(avatarView)
+        contentView.addSubview(avatarTapTarget)
         contentView.addSubview(bubbleView)
         
         bubbleView.addSubview(captionLabel)

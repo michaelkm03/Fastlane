@@ -57,6 +57,11 @@ extension ChatFeedMessageCell {
             size: avatarSize
         )
         
+        cell.avatarTapTarget.frame = CGRect(
+            center: cell.avatarView.center,
+            size: avatarTapTargetSize
+        )
+        
         // Bubble / content layout:
         
         cell.bubbleView.frame = CGRect(origin: bubbleOffset, size: contentSize)
