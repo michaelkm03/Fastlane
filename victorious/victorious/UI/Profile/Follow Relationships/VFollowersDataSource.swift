@@ -36,11 +36,11 @@ import Foundation
     }
     
     func noContentTitle() -> String {
-        return self.user.isCurrentUser() ? NSLocalizedString( "NoFollowersTitle", comment: "" ) : NSLocalizedString( "ProfileNoFollowersTitle", comment: "" )
+        return self.user.isCurrentUser ? NSLocalizedString( "NoFollowersTitle", comment: "" ) : NSLocalizedString( "ProfileNoFollowersTitle", comment: "" )
     }
     
     func noContentMessage() -> String {
-        return self.user.isCurrentUser() ? NSLocalizedString( "NoFollowersMessage", comment: "" ) : NSLocalizedString( "ProfileNoFollowersMessage", comment: "" )
+        return self.user.isCurrentUser ? NSLocalizedString( "NoFollowersMessage", comment: "" ) : NSLocalizedString( "ProfileNoFollowersMessage", comment: "" )
     }
     
     func noContentImage() -> UIImage {

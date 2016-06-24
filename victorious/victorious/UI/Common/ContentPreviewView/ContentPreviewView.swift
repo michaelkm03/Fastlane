@@ -20,32 +20,40 @@ class ContentPreviewView: UIView {
     }
 
     let previewImageView = UIImageView()
-    let vipImageView: UIView
+    let vipIcon = UIImageView()
     let playButton: UIView
+    
+    var dependencyManager: VDependencyManager? {
+        didSet {
+            if
+                let dependencyManager = dependencyManager
+                where dependencyManager != oldValue
+            {
+                vipIcon.image = dependencyManager.vipIcon
+            }
+        }
+    }
     
     init() {
         /// Play Button
         playButton = UIImageView(image: UIImage(named: Constants.playButtonPlayImageName))
         playButton.contentMode = UIViewContentMode.ScaleAspectFill
         
-        /// VIP icon
-        let label = UILabel()
-        label.text = "VIP"
-        label.textColor = .whiteColor()
-        vipImageView = label
-        
         super.init(frame: CGRectZero)
         backgroundColor = Constants.loadingColor
         previewImageView.backgroundColor = .clearColor()
         
         /// Preview Image View
-        previewImageView.contentMode = UIViewContentMode.ScaleAspectFill
+        previewImageView.contentMode = .ScaleAspectFill
         addSubview(previewImageView)
         v_addFitToParentConstraintsToSubview(previewImageView)
         
-        addSubview(vipImageView)
-        v_addPinToLeadingEdgeToSubview(vipImageView, leadingMargin: Constants.vipMargins)
-        v_addPinToBottomToSubview(vipImageView, bottomMargin: Constants.vipMargins)
+        addSubview(vipIcon)
+        vipIcon.contentMode = .ScaleAspectFit
+        vipIcon.v_addWidthConstraint(30)
+        vipIcon.v_addHeightConstraint(30)
+        v_addPinToLeadingEdgeToSubview(vipIcon, leadingMargin: Constants.vipMargins)
+        v_addPinToBottomToSubview(vipIcon, bottomMargin: Constants.vipMargins)
         
         addSubview(playButton)
         v_addCenterToParentContraintsToSubview(playButton)
@@ -68,25 +76,33 @@ class ContentPreviewView: UIView {
     }
     
     private func setupForContent(content: ContentModel) {
-        guard let previewImageURL = content.largestPreviewImageURL else {
-                return
-        }
-        
-        let userIsVIP = VCurrentUser.user()?.isVIPValid() ?? false
+        let userIsVIP = VCurrentUser.user()?.hasValidVIPSubscription ?? false
         let contentIsForVIPOnly = content.isVIPOnly
-        if !userIsVIP && contentIsForVIPOnly {
-            vipImageView.hidden = false
-            previewImageView.applyBlurToImageURL(previewImageURL, withRadius: Constants.imageViewBlurEffectRadius) { [weak self] in
-                self?.previewImageView.alpha = 1
+        vipIcon.hidden = userIsVIP || !contentIsForVIPOnly
+        
+        if let previewImageURL = content.largestPreviewImageURL {
+            if !userIsVIP && contentIsForVIPOnly {
+                previewImageView.applyBlurToImageURL(previewImageURL, withRadius: Constants.imageViewBlurEffectRadius) { [weak self] in
+                    self?.previewImageView.alpha = 1
+                }
             }
-        } else {
-            vipImageView.hidden = true
-            previewImageView.sd_setImageWithURL(previewImageURL)
+            else {
+                previewImageView.sd_setImageWithURL(previewImageURL)
+            }
+        }
+        else {
+            previewImageView.image = nil
         }
         
         switch content.type {
             case .video: playButton.hidden = false
             case .text, .link, .gif, .image: playButton.hidden = true
         }
+    }
+}
+
+private extension VDependencyManager {
+    var vipIcon: UIImage? {
+        return imageForKey("icon.vip")
     }
 }

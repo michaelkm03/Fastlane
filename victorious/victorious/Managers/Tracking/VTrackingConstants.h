@@ -248,6 +248,10 @@ extern NSString * const VTrackingEventComponentDidBecomeVisible; //< Backend map
 // Permissions
 extern NSString * const VTrackingEventUserPermissionDidChange; //< Backend mapping: permission_change
 
+// Content tracking event parameters
+extern NSString * const VTrackingKeyContentId; //< Backend mapping: %%CONTENT_ID%%
+extern NSString * const VTrackingKeyParentContentId; //< Backend mapping: %%PARENT_CONTENT_ID%%
+
 // Tracking Event Parameters
 extern NSString * const VTrackingKeyCurrentSection; //< "Which major section is selected, such as ""Home"", ""Indbox"", ""Profile"", etc.",
 extern NSString * const VTrackingKeySection; //< The section of the app that is being selected (not the CurrentSection).

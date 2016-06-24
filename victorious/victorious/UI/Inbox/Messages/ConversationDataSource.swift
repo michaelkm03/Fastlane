@@ -80,7 +80,7 @@ class ConversationDataSource: PaginatedDataSource, UITableViewDataSource {
         cell.messageTextAndMediaView?.text = message.text
         cell.messageTextAndMediaView?.message = message
         cell.profileImageView?.tintColor = self.dependencyManager.colorForKey(VDependencyManagerLinkColorKey)
-        cell.profileImageOnRight = message.sender.isCurrentUser() ?? false
+        cell.profileImageOnRight = message.sender.isCurrentUser
         cell.selectionStyle = .None
         
         if let profileImageView = cell.profileImageView, imageURL = message.sender.pictureURL(ofMinimumSize: profileImageView.frame.size) {

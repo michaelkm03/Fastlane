@@ -22,9 +22,10 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
         var streamAPIPath = streamAPIPath
         
         self.dependencyManager = dependencyManager
+        self.gridDependency = dependencyManager.gridDependency
         self.header = header
         self.content = content
-        self.cellFactory = VContentOnlyCellFactory(dependencyManager: dependencyManager)
+        self.cellFactory = VContentOnlyCellFactory(dependencyManager: gridDependency)
         
         streamAPIPath.queryParameters["filter_text"] = "true"
         
@@ -36,6 +37,7 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
     // MARK: - Dependency manager
     
     private let dependencyManager: VDependencyManager
+    private var gridDependency: VDependencyManager
     
     // MARK: - Registering views
     
@@ -61,7 +63,7 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
     }
     
     func loadContent(for collectionView: UICollectionView, loadingType: PaginatedLoadingType, completion: ((newItems: [ContentModel], error: NSError?) -> Void)? = nil) {
-        paginatedDataSource.loadItems(loadingType) { [weak self] newItems, error in
+        paginatedDataSource.loadItems(loadingType) { [weak self] newItems, stageEvent, error in
             if let items = self?.paginatedDataSource.items {
                 self?.header?.gridStreamDidUpdateDataSource(with: items)
             }
@@ -119,5 +121,11 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
         cell.backgroundColor = cellBackgroundColor
         cell.contentView.backgroundColor = cellContentBackgroundColor
         return cell
+    }
+}
+
+private extension VDependencyManager {
+    var gridDependency: VDependencyManager {
+        return childDependencyForKey("gridStream") ?? self
     }
 }

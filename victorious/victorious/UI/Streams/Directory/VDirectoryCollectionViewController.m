@@ -21,7 +21,6 @@
 #import "VCoachmarkManager.h"
 #import "VDependencyManager+VNavigationItem.h"
 #import "VDependencyManager+VTracking.h"
-#import "VTracking.h"
 #import "UIViewController+VAccessoryScreens.h"
 #import "victorious-Swift.h"
 

@@ -33,6 +33,9 @@ public protocol ContentModel: PreviewImageContainer, DictionaryConvertible {
     
     /// seekAheadTime to keep videos in sync for videos on VIP stage
     var seekAheadTime: NSTimeInterval? { get set }
+    
+    /// Keys correspond to an array of string-represented tracking urls
+    var tracking: TrackingModel? { get }
 }
 
 extension ContentModel {
@@ -89,6 +92,8 @@ public class Content: ContentModel {
     /// seekAheadTime for videos to be played on the VIP stage (which needs synchronization)
     public var seekAheadTime : NSTimeInterval?
     
+    public let tracking: TrackingModel?
+    
     public init?(json viewedContentJSON: JSON) {
         let json = viewedContentJSON["content"]
         
@@ -133,6 +138,8 @@ public class Content: ContentModel {
         case .text, .link:
             self.assets = []
         }
+        
+        self.tracking = Tracking(json: json["tracking"])
     }
     
     public init?(chatMessageJSON json: JSON, serverTime: NSDate) {
@@ -153,6 +160,7 @@ public class Content: ContentModel {
         type = .text
         isVIPOnly = false
         isLikedByCurrentUser = false
+        tracking = nil //Tracking is not returned on chat messages
         
         // Either one of these types are required to be counted as a chat message.
         guard text != nil || assets.count > 0 else {
@@ -181,6 +189,7 @@ public class Content: ContentModel {
         self.hashtags = []
         self.shareURL = nil
         self.isVIPOnly = false
+        self.tracking = nil
         isLikedByCurrentUser = false
     }
 }

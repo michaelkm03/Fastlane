@@ -15,7 +15,6 @@ let kAccountIdentifierDefaultsKey = "com.getvictorious.VUserManager.AccountIdent
 let kManagedObjectContextUserInfoCurrentUserKey = "com.victorious.Persstence.CurrentUser"
 
 class VCurrentUser: NSObject {
-    
     static var persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
     
     /// Returns a `VUser` object from the provided managed object context's user info dictionary
@@ -67,7 +66,6 @@ class VCurrentUser: NSObject {
 }
 
 extension VUser {
-    
     /// Sets the receiver as the current user returned in `currentUser()` method.  Any previous
     /// current user will lose its current status, as there can be only one.
     func setAsCurrentUser() {
@@ -82,9 +80,5 @@ extension VUser {
             context.userInfo[ kManagedObjectContextUserInfoCurrentUserKey ] = self
             NSNotificationCenter.defaultCenter().postNotificationName(kLoggedInChangedNotification, object: nil)
         }
-    }
-    
-    func isCurrentUser() -> Bool {
-        return self == VCurrentUser.user()
     }
 }

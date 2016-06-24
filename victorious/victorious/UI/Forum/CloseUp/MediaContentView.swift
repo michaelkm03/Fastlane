@@ -17,6 +17,8 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         static let backgroundFadeInDurationMultiplier = 0.75
         static let fadeOutDurationMultiplier = 1.25
         static let textPostLineSpacing: CGFloat = 2.0
+        static let maxLineCount = 4
+        static let textAlignment = NSTextAlignment.Center
     }
     
     private(set) var videoCoordinator: VContentVideoPlayerCoordinator?
@@ -65,8 +67,8 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         videoContainerView.backgroundColor = .clearColor()
         addSubview(videoContainerView)
         
-        textLabel.textAlignment = .Center
-        textLabel.numberOfLines = 4
+        textLabel.textAlignment = Constants.textAlignment
+        textLabel.numberOfLines = Constants.maxLineCount
         addSubview(textLabel)
   
         addSubview(spinner)
@@ -171,7 +173,10 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     }
     
     func hideContent(animated animated: Bool = true) {
+        videoCoordinator?.pauseVideo()
+        
         let animationDuration = animated ? Constants.fadeDuration * Constants.fadeOutDurationMultiplier : 0
+        
         UIView.animateWithDuration(
             animationDuration,
             delay: 0,
@@ -212,7 +217,9 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
                 self.previewImageView.alpha = 1
                 self.textLabel.alpha = 1
             },
-            completion: nil
+            completion: { [weak self] completed in
+                self?.videoCoordinator?.playVideo()
+            }
         )
     }
     
@@ -241,7 +248,11 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         videoCoordinator?.tearDown()
         videoCoordinator = VContentVideoPlayerCoordinator(content: content)
         videoCoordinator?.setupVideoPlayer(in: videoContainerView)
-        videoCoordinator?.setupToolbar(in: self, initallyVisible: false)
+        
+        if allowsVideoControls {
+            videoCoordinator?.setupToolbar(in: self, initallyVisible: false)
+        }
+        
         videoCoordinator?.loadVideo()
         videoCoordinator?.delegate = self
     }

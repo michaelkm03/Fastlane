@@ -15,7 +15,8 @@ protocol ChatFeedMessageCellDelegate: class {
 }
 
 class ChatFeedMessageCell: UICollectionViewCell {
-    static let mediaCellReuseIdentifier = "MediaChatFeedMessageCell"
+    static let imageCellReuseIdentifier = "ImageChatFeedMessageCell"
+    static let videoCellReuseIdentifier = "VideoChatFeedMessageCell"
     static let nonMediaCellReuseIdentifier = "NonMediaChatFeedMessageCell"
     
     let detailLabel = UILabel()
@@ -155,6 +156,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
         
         let mediaView = MediaContentView(showsBackground: false)
         mediaView.animatesBetweenContent = false
+        mediaView.allowsVideoControls = false
         mediaView.clipsToBounds = true
         mediaView.translatesAutoresizingMaskIntoConstraints = false
         mediaView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onMediaTapped)))
@@ -177,7 +179,11 @@ class ChatFeedMessageCell: UICollectionViewCell {
     /// Expected to be called whenever the cell goes off-screen and is queued for later reuse. Stops media from playing
     /// and frees up resources that are no longer needed.
     func stopDisplaying() {
-        mediaView?.content = nil
+        mediaView?.videoCoordinator?.pauseVideo()
+    }
+    
+    func startDisplaying() {
+        mediaView?.videoCoordinator?.playVideo()
     }
     
     // MARK: - Sizing

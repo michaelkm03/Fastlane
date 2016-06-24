@@ -10,7 +10,6 @@
 #import "VDependencyManager+VTracking.h"
 #import "VRootViewController.h"
 #import "VSessionTimer.h"
-#import "VTracking.h"
 #import "victorious-Swift.h"
 
 #define TEST_NEW_SESSION 0 // Set to '1' to start a new session by leaving the app for only 10 seconds.

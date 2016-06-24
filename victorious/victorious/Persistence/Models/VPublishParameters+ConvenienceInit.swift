@@ -13,26 +13,26 @@ extension VPublishParameters {
     convenience init?(content: ContentModel) {
         self.init()
         
-        caption = content.text
-        
-        guard let mediaAsset = content.assets.first else {
+        guard
+            let mediaAsset = content.assets.first where
+            mediaAsset.contentType != .text &&
+            mediaAsset.contentType != .link
+            else
+        {
             return nil
         }
         
-        mediaToUploadURL = mediaAsset.url
+        caption = content.text
+        source = mediaAsset.source
         
-        switch mediaAsset.contentType {
-            case .video:
-                isGIF = false
-                isVideo = true
-            case .gif:
-                isGIF = true
-                isVideo = false
-            case .image:
-                isGIF = false
-                isVideo = false
-            case .text, .link:
-                return nil
+        isGIF = mediaAsset.contentType == .gif
+        isVideo = mediaAsset.contentType == .video
+        
+        if isGIF {
+            assetRemoteId = mediaAsset.externalID
+        }
+        else {
+            mediaToUploadURL = mediaAsset.url
         }
     }
 }
