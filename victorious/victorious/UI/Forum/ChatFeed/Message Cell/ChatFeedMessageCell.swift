@@ -19,19 +19,12 @@ class ChatFeedMessageCell: UICollectionViewCell {
     static let videoCellReuseIdentifier = "VideoChatFeedMessageCell"
     static let nonMediaCellReuseIdentifier = "NonMediaChatFeedMessageCell"
     
-    let detailLabel = UILabel()
-    let contentContainer = UIView()
-    let messageContainer = UIView()
+    let usernameLabel = UILabel()
+    let timestampLabel = UILabel()
     let bubbleView = UIView()
     let captionLabel = UILabel()
     let avatarView = VDefaultProfileImageView()
     var mediaView: MediaContentView?
-    
-    var layout: ChatFeedMessageCellLayout! {
-        didSet {
-            setNeedsLayout()
-        }
-    }
     
     weak var delegate: ChatFeedMessageCellDelegate?
     
@@ -60,8 +53,11 @@ class ChatFeedMessageCell: UICollectionViewCell {
     
     static let captionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
     static let horizontalSpacing = CGFloat(10.0)
-    static let avatarSize = CGSize(width: 41.0, height: 41.0)
+    static let avatarSize = CGSize(width: 30.0, height: 30.0)
     static let contentMargin = UIEdgeInsets(top: 30, left: 10, bottom: 2, right: 75)
+    static let topLabelYSpacing = CGFloat(6.5)
+    static let topLabelXInset = CGFloat(5.0)
+    static let minUsernameWidth = CGFloat(40.0)
     
     // MARK: - Initializing
     
@@ -74,17 +70,12 @@ class ChatFeedMessageCell: UICollectionViewCell {
         
         bubbleView.clipsToBounds = true
         
-        captionLabel.backgroundColor = .clearColor()
         captionLabel.numberOfLines = 0
-        detailLabel.backgroundColor = .clearColor()
         
-        contentView.addSubview(detailLabel)
-        contentView.addSubview(contentContainer)
-        
-        contentContainer.addSubview(messageContainer)
-        contentContainer.addSubview(avatarView)
-        
-        messageContainer.addSubview(bubbleView)
+        contentView.addSubview(usernameLabel)
+        contentView.addSubview(timestampLabel)
+        contentView.addSubview(avatarView)
+        contentView.addSubview(bubbleView)
         
         bubbleView.addSubview(captionLabel)
     }
@@ -97,7 +88,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        content?.layout.update(for: self)
+        ChatFeedMessageCell.layoutContent(for: self)
         avatarView.layer.cornerRadius = avatarView.bounds.size.v_roundCornerRadius
     }
     
@@ -112,8 +103,8 @@ class ChatFeedMessageCell: UICollectionViewCell {
     }
     
     private func updateStyle() {
-        detailLabel.font = dependencyManager.userLabelFont
-        detailLabel.textColor = dependencyManager.userLabelColor
+        updateTopLabelStyle(for: usernameLabel)
+        updateTopLabelStyle(for: timestampLabel)
         
         bubbleView.backgroundColor = dependencyManager.backgroundColor
         bubbleView.layer.borderColor = dependencyManager.borderColor.CGColor
@@ -125,8 +116,19 @@ class ChatFeedMessageCell: UICollectionViewCell {
         avatarView.backgroundColor = dependencyManager.backgroundColor
     }
     
+    private func updateTopLabelStyle(for label: UILabel) {
+        label.font = dependencyManager.userLabelFont
+        label.textColor = dependencyManager.userLabelColor
+    }
+    
     private func populateData() {
         captionLabel.attributedText = content?.attributedText(using: dependencyManager)
+        usernameLabel.text = content?.author.name ?? ""
+        updateTimestamp()
+        
+        let shouldHideTopLabels = content?.wasCreatedByCurrentUser == true
+        usernameLabel.hidden = shouldHideTopLabels
+        timestampLabel.hidden = shouldHideTopLabels
         
         if let content = content where content.type.hasMedia {
             let mediaView = createMediaViewIfNeeded()
@@ -136,10 +138,6 @@ class ChatFeedMessageCell: UICollectionViewCell {
         else {
             mediaView?.hidden = true
         }
-        
-        detailLabel.hidden = VCurrentUser.user()?.remoteId.integerValue == content?.author.id
-        
-        updateTimestamp()
         
         if let imageURL = content?.author.previewImageURL(ofMinimumSize: avatarView.frame.size) {
             avatarView.setProfileImageURL(imageURL)
@@ -166,12 +164,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
     }
     
     func updateTimestamp() {
-        if let name = content?.author.name, timeStamp = content?.timeLabel {
-            detailLabel.text = "\(name) (\(timeStamp))"
-        }
-        else {
-            detailLabel.text = ""
-        }
+        timestampLabel.text = content?.timeLabel ?? ""
     }
     
     // MARK: - Managing lifecycle
@@ -273,10 +266,6 @@ private extension VDependencyManager {
 }
 
 private extension ContentModel {
-    var layout: ChatFeedMessageCellLayout {
-        return wasCreatedByCurrentUser ? RightAlignmentCellLayout() : LeftAlignmentCellLayout()
-    }
-    
     func attributedText(using dependencyManager: VDependencyManager) -> NSAttributedString? {
         guard let text = text where text != "" else {
             return nil

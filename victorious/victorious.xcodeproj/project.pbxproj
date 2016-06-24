@@ -1172,7 +1172,7 @@
 		A73BA2C61C9393ED008168B5 /* ChatFeedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2B31C9393ED008168B5 /* ChatFeedDataSource.swift */; };
 		A73BA2C81C9393ED008168B5 /* ChatFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2B51C9393ED008168B5 /* ChatFeedViewController.swift */; };
 		A73BA2C91C9393ED008168B5 /* ChatFeedMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2B71C9393ED008168B5 /* ChatFeedMessageCell.swift */; };
-		A73BA2CC1C9393ED008168B5 /* ChatFeedMessageCellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2BA1C9393ED008168B5 /* ChatFeedMessageCellLayout.swift */; };
+		A73BA2CC1C9393ED008168B5 /* ChatFeedMessageCell+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2BA1C9393ED008168B5 /* ChatFeedMessageCell+Layout.swift */; };
 		A73BA2CE1C9393ED008168B5 /* NewItemsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2BC1C9393ED008168B5 /* NewItemsController.swift */; };
 		A73BA2DA1C9394B6008168B5 /* ForumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2D71C9394B6008168B5 /* ForumViewController.swift */; };
 		A73BA41F1C93B174008168B5 /* MediaSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA41E1C93B174008168B5 /* MediaSearchResult.swift */; };
@@ -3767,7 +3767,7 @@
 		A73BA2B31C9393ED008168B5 /* ChatFeedDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedDataSource.swift; sourceTree = "<group>"; };
 		A73BA2B51C9393ED008168B5 /* ChatFeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedViewController.swift; sourceTree = "<group>"; };
 		A73BA2B71C9393ED008168B5 /* ChatFeedMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedMessageCell.swift; sourceTree = "<group>"; };
-		A73BA2BA1C9393ED008168B5 /* ChatFeedMessageCellLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedMessageCellLayout.swift; sourceTree = "<group>"; };
+		A73BA2BA1C9393ED008168B5 /* ChatFeedMessageCell+Layout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ChatFeedMessageCell+Layout.swift"; sourceTree = "<group>"; };
 		A73BA2BC1C9393ED008168B5 /* NewItemsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewItemsController.swift; sourceTree = "<group>"; };
 		A73BA2D71C9394B6008168B5 /* ForumViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForumViewController.swift; sourceTree = "<group>"; };
 		A73BA41E1C93B174008168B5 /* MediaSearchResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSearchResult.swift; sourceTree = "<group>"; };
@@ -8309,7 +8309,7 @@
 			isa = PBXGroup;
 			children = (
 				A73BA2B71C9393ED008168B5 /* ChatFeedMessageCell.swift */,
-				A73BA2BA1C9393ED008168B5 /* ChatFeedMessageCellLayout.swift */,
+				A73BA2BA1C9393ED008168B5 /* ChatFeedMessageCell+Layout.swift */,
 			);
 			path = "Message Cell";
 			sourceTree = "<group>";
@@ -13081,7 +13081,7 @@
 				0314D4A919B46B5E00FA363C /* VMessageCell.m in Sources */,
 				D8C7CF5819DCCC6E00BA33E5 /* VExperienceEnhancerBar.m in Sources */,
 				A721E95F1B572454000B7901 /* UIView+VDynamicsHelpers.m in Sources */,
-				A73BA2CC1C9393ED008168B5 /* ChatFeedMessageCellLayout.swift in Sources */,
+				A73BA2CC1C9393ED008168B5 /* ChatFeedMessageCell+Layout.swift in Sources */,
 				F06B41C11B7EE606008709E8 /* VListShelfCollectionViewCell.swift in Sources */,
 				A721E9411B572454000B7901 /* NSString+Unicode.swift in Sources */,
 				D89367491ADDBAA1001D2426 /* VActionBarFixedWidthItem.m in Sources */,
