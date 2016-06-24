@@ -30,11 +30,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
     /// MARK : - Properties 
     
     var dependencyManager: VDependencyManager?
-    var settings : VNotificationSettings? {
-        didSet {
-            self.initializeFromSettings()
-        }
-    }
+    var settings : VNotificationSettings?
     
     private var stateManager: VNotificationSettingsStateManager?
     private var permissionsTrackingHelper: VPermissionsTrackingHelper?
@@ -50,6 +46,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         stateManager?.reset()
+        initializeSections()
     }
     
      override func viewWillDisappear(animated: Bool) {
@@ -112,7 +109,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
         }
     }
     
-    func initializeFromSettings() {
+    func initializeSections() {
         self.sections = sectionsForTableView()
     }
     
