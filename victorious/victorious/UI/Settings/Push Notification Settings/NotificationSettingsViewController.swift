@@ -13,6 +13,7 @@ private struct Constants {
     static let trackingPermissionAuthorizedString = "Authorized"
     static let trackingPermissionDeniedString = "Denied"
     static let userDeviceNotificationNotEnabledErrorCode = 5080
+    static let dependencyManagerKey = "push.notifications.screen"
 }
 
 private struct NotificationSettingsTableSection {
@@ -25,7 +26,7 @@ private struct NotificationSettingsTableRow {
     var title: String
 }
 
-class NotificationSettingsViewController: UITableViewController, VSettingsSwitchCellDelegate, VNotificiationSettingsStateManagerDelegate {
+class NotificationSettingsViewController: UITableViewController, VSettingsSwitchCellDelegate, VNotificiationSettingsStateManagerDelegate, VHasManagedDependencies {
     
     /// MARK : - Properties 
     
@@ -70,6 +71,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
     func onDeviceWillRegisterWithServer() {
         self.settings = nil
     }
+    
     
     /// MARK: - Settings Management
     
@@ -206,6 +208,13 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
         if let errorStateView = dependencyManager?.createErrorStateView(actionType: .openSettings) {
             self.tableView.addSubview(errorStateView)
         }
+    }
+    
+    /// MARK: - Custom Initializers 
+    
+    init(dependencyManager: VDependencyManager) {
+        self.dependencyManager = dependencyManager
+        super.init(nibName: "N", bundle: <#T##NSBundle?#>)
     }
     
 }
