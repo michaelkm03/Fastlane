@@ -435,8 +435,8 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         textView.textContainerInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         textView.backgroundColor = dependencyManager.inputAreaBackgroundColor
         
-        confirmButton.setTitleColor(dependencyManager.confirmButtonDeselectedTextColor, forState: .Normal)
-        confirmButton.setTitleColor(dependencyManager.confirmButtonSelectedTextColor, forState: .Selected)
+        confirmButton.setTitleColor(dependencyManager.confirmButtonSelectedTextColor, forState: .Normal)
+        confirmButton.setTitleColor(dependencyManager.confirmButtonDeselectedTextColor, forState: .Disabled)
         confirmButton.titleLabel?.font = dependencyManager.confirmButtonTextFont
         confirmButton.backgroundColor = dependencyManager.confirmButtonBackgroundColorEnabled
         
