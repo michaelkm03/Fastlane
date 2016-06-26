@@ -282,6 +282,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     private func updateConfirmButtonState() {
         confirmButton.enabled = textViewHasText || selectedAsset != nil
+        confirmButton.backgroundColor = confirmButton.enabled ? dependencyManager.confirmButtonBackgroundColorEnabled : dependencyManager.confirmButtonBackgroundColorDisabled
     }
     
     // MARK: - View lifecycle
@@ -607,6 +608,7 @@ private extension VDependencyManager {
     }
     
     var confirmButtonBackgroundColorDisabled: UIColor? {
+        return UIColor.whiteColor().colorWithAlphaComponent(0.03)
         return colorForKey("color.accent.disabled")
     }
     
