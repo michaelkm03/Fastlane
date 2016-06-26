@@ -56,8 +56,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     @IBOutlet weak private var interactiveContainerView: UIView!
     @IBOutlet weak private var confirmButton: UIButton! {
         didSet {
-            confirmButton.layer.cornerRadius = 5
-            confirmButton.clipsToBounds = true
+            confirmButton.applyDefaultCornerRadius()
         }
     }
     @IBOutlet weak private var confirmButtonContainer: UIView!
@@ -432,10 +431,15 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         textView.textColor = dependencyManager.inputTextColor
         textView.setPlaceholderTextColor(dependencyManager.inputPlaceholderTextColor)
         textView.keyboardAppearance = dependencyManager.keyboardAppearance
+        textView.applyDefaultCornerRadius()
+        textView.textContainerInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        textView.backgroundColor = dependencyManager.inputAreaBackgroundColor
+        
         confirmButton.setTitleColor(dependencyManager.confirmButtonDeselectedTextColor, forState: .Normal)
         confirmButton.setTitleColor(dependencyManager.confirmButtonSelectedTextColor, forState: .Selected)
         confirmButton.titleLabel?.font = dependencyManager.confirmButtonTextFont
-        confirmButton.backgroundColor = dependencyManager.confirmButtonBackgroundColor
+        confirmButton.backgroundColor = dependencyManager.confirmButtonBackgroundColorEnabled
+        
         attachmentTabBar.tabItemDeselectedTintColor = dependencyManager.tabItemDeselectedTintColor
         attachmentTabBar.tabItemSelectedTintColor = dependencyManager.tabItemSelectedTintColor
         confirmButton.setTitle(dependencyManager.confirmKeyText, forState: .Normal)
@@ -588,15 +592,27 @@ private extension VDependencyManager {
     }
     
     var confirmButtonDeselectedTextColor: UIColor? {
+        return UIColor.whiteColor().colorWithAlphaComponent(0.15)
         return colorForKey("color.link.deselected")
     }
     
     var confirmButtonSelectedTextColor: UIColor? {
+        return UIColor.whiteColor().colorWithAlphaComponent(0.7)
         return colorForKey("color.link.selected")
     }
     
-    var confirmButtonBackgroundColor: UIColor? {
-        return colorForKey(VDependencyManagerAccentColorKey)
+    var confirmButtonBackgroundColorEnabled: UIColor? {
+        return UIColor.whiteColor().colorWithAlphaComponent(0.06)
+        return colorForKey("color.accent.enabled")
+    }
+    
+    var confirmButtonBackgroundColorDisabled: UIColor? {
+        return colorForKey("color.accent.disabled")
+    }
+    
+    var inputAreaBackgroundColor: UIColor? {
+        return UIColor.blackColor().colorWithAlphaComponent(0.3)
+        return colorForKey("color.accent.secondary")
     }
     
     var inputTextFont: UIFont? {
