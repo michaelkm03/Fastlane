@@ -155,7 +155,7 @@ class TutorialViewController: UIViewController, UICollectionViewDelegate, UIColl
     }
     
     func onTimerTick() {
-        collectionViewDataSource.updateTimeStamps(in: collectionView)
+        collectionViewDataSource.updateTimestamps(in: collectionView)
     }
 }
 
