@@ -270,7 +270,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
             return
         }
         
-        textPostLabel.hidden = false
+        textPostLabel.hidden = true //Hide while we set up the view for the next post
         textPostLabel.text = text
         textPostLabel.textAlignment = .Center
         textPostLabel.font = dependencyManager?.textPostFont()
@@ -281,6 +281,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         if let url = dependencyManager?.textPostBackgroundImageURL() {
             setBackgroundBlur(withImageUrl: url) { [weak self] in
                 self?.spinner.stopAnimating()
+                self?.textPostLabel.hidden = false
                 self?.showContent()
             }
         }
