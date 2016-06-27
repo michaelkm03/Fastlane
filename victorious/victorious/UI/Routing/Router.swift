@@ -23,52 +23,32 @@ struct Router {
     }
     
     func navigate(to content: ContentModel, preferredTransition: ViewTransition = .push) {
+        // TODO: actually support preferredTransition
         switch content.type {
-        case .image, .video, .gif:
-            showCloseUpView(for: content)
-        case .link:
-            if let destination = DeeplinkDestination(url: content.linkedURL!) {
-                navigate(to: destination)
-            } else {
+            case .image, .video, .gif:
                 showCloseUpView(for: content)
-            }
-        case .text:
-            // We currently don't support tapping on text content
-            break
-        }
-    }
-    
-    private func navigate(to destination: DeeplinkDestination, preferredTransition: ViewTransition = .push) {
-        switch destination {
-            case .profile: break
-            case .closeUp: break
-            case .vipForum: break
-            case .externalURL: break
+            case .link:
+                guard
+                    let linkedURL = content.linkedURL,
+                    let destination = DeeplinkDestination(url: linkedURL) else {
+                        return
+                }
+                switch destination {
+                    case .profile: break
+                    case .closeUp, .externalURL:
+                        showCloseUpView(for: content)
+                    case .vipForum:
+                        ShowForumOperation(originViewController: originViewController, dependencyManager: dependencyManager, showVIP: true, animated: true).queue()
+                }
+            case .text:
+                // We currently don't support tapping on text content
+                break
         }
     }
     
     private func showCloseUpView(for content: ContentModel, preferredTransition: ViewTransition = .push) {
         let displayModifier = ShowCloseUpDisplayModifier(dependencyManager: dependencyManager, originViewController: originViewController)
         ShowCloseUpOperation.showOperation(forContent: content, displayModifier: displayModifier).queue()
-    }
-}
-
-private enum DeeplinkDestination {
-    case profile
-    case closeUp
-    case vipForum
-    case externalURL
-    
-    init?(url: NSURL) {
-        switch url.scheme.lowercaseString {
-            case "vthisapp":
-                guard let destination = DeeplinkMapper.deeplinkDestination(for: url.host) else {
-                    return nil
-                }
-                self = destination
-            default:
-                self = .externalURL
-        }
     }
 }
 
@@ -88,5 +68,24 @@ private struct DeeplinkMapper {
             return nil
         }
         return urlHostToDestinationMapping[host]
+    }
+}
+
+private enum DeeplinkDestination {
+    case profile
+    case closeUp
+    case vipForum
+    case externalURL
+    
+    init?(url: NSURL) {
+        switch url.scheme.lowercaseString {
+        case "vthisapp":
+            guard let destination = DeeplinkMapper.deeplinkDestination(for: url.host) else {
+                return nil
+            }
+            self = destination
+        default:
+            self = .externalURL
+        }
     }
 }
