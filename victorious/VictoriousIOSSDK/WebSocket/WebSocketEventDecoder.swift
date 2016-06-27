@@ -14,6 +14,7 @@ private struct Keys {
     static let refreshStage         = "refresh"
     static let epochTime            = "server_time"
     static let type                 = "type"
+    static let error                = "error"
 }
 
 private struct Types {
@@ -56,7 +57,11 @@ extension WebSocketEventDecoder {
                     forumEvent = .chatUserCount(chatUserCount)
                 }
             default:
-                print("Unparsable WebSocket message returned -> \(rootNode.stringValue)")
+                // In theory we could get an error message without the conneciton being closed. This JSON node does not have a `type` like the rest of them
+                // and needs to be parsed out in the default clause.
+                if let webSocketError = WebSocketError(json: json[Keys.error], didDisconnect: false) {
+                    forumEvent = .websocket(.ServerError(webSocketError: webSocketError))
+                }
             }
         }
         
