@@ -39,7 +39,12 @@ struct Router {
     }
     
     private func navigate(to destination: DeeplinkDestination, preferredTransition: ViewTransition = .push) {
-        
+        switch destination {
+            case .profile: break
+            case .closeUp: break
+            case .vipForum: break
+            case .externalURL: break
+        }
     }
     
     private func showCloseUpView(for content: ContentModel, preferredTransition: ViewTransition = .push) {
@@ -49,18 +54,39 @@ struct Router {
 }
 
 private enum DeeplinkDestination {
-    init?(url: NSURL) {
-        switch url.host! {
-            case "vthisapp": // deeplink cases
-                break
-            default: // externalURL case
-                break
-        }
-        self = .profile // FIXME: take this out
-    }
-    
     case profile
     case closeUp
     case vipForum
     case externalURL
+    
+    init?(url: NSURL) {
+        switch url.scheme.lowercaseString {
+            case "vthisapp":
+                guard let destination = DeeplinkMapper.deeplinkDestination(for: url.host) else {
+                    return nil
+                }
+                self = destination
+            default:
+                self = .externalURL
+        }
+    }
+}
+
+private struct DeeplinkMapper {
+    private static var urlHostToDestinationMapping: [String: DeeplinkDestination] {
+        return [
+            "content": .closeUp,
+            "profile": .profile,
+            "vipForum": .vipForum,
+        ]
+    }
+    
+    typealias URLHostComponent = String
+    
+    static func deeplinkDestination(for host: URLHostComponent?) -> DeeplinkDestination? {
+        guard let host = host else {
+            return nil
+        }
+        return urlHostToDestinationMapping[host]
+    }
 }
