@@ -24,7 +24,12 @@ private struct Types {
 }
 
 protocol WebSocketEventDecoder {
+    /// Parses out a ForumEvent from the JSON string coming in over the WebSocket.
     func decodeEventFromJSON(json: JSON) -> ForumEvent?
+
+    /// `WebSocketError` is handled uniquely since it does not follow the layout as the other messages. 
+    /// In theory we could get an error message without the connection being closed, use `didDisconnect` to specify this.
+    func decodeErrorFromJSON(json: JSON, didDisconnect: Bool) -> ForumEvent?
 }
 
 extension WebSocketEventDecoder {
@@ -57,14 +62,24 @@ extension WebSocketEventDecoder {
                     forumEvent = .chatUserCount(chatUserCount)
                 }
             default:
-                // In theory we could get an error message without the conneciton being closed. This JSON node does not have a `type` like the rest of them
-                // and needs to be parsed out in the default clause.
-                if let webSocketError = WebSocketError(json: json[Keys.error], didDisconnect: false) {
-                    forumEvent = .websocket(.ServerError(webSocketError: webSocketError))
-                }
+                ()
             }
         }
         
         return forumEvent
+    }
+
+    func decodeErrorFromJSON(json: JSON, didDisconnect: Bool = false) -> ForumEvent? {
+        var webSocketEvent: ForumEvent?
+
+        if let webSocketError = WebSocketError(json: json[Keys.root][Keys.error], didDisconnect: didDisconnect) {
+            if didDisconnect {
+                webSocketEvent = .websocket(.Disconnected(webSocketError: webSocketError))
+            } else {
+                webSocketEvent = .websocket(.ServerError(webSocketError: webSocketError))
+            }
+        }
+
+        return webSocketEvent
     }
 }
