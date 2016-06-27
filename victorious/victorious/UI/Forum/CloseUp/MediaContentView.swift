@@ -25,7 +25,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     private(set) var videoCoordinator: VContentVideoPlayerCoordinator?
     
     private let previewImageView = UIImageView()
-    private let textLabel = UILabel()
+    private let textPostLabel = UILabel()
     private let videoContainerView = VPassthroughContainerView()
     private var backgroundView: UIImageView?
     private let spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
@@ -68,16 +68,16 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         videoContainerView.backgroundColor = .clearColor()
         addSubview(videoContainerView)
         
-        textLabel.textAlignment = Constants.textAlignment
-        textLabel.numberOfLines = Constants.maxLineCount
-        addSubview(textLabel)
+        textPostLabel.textAlignment = Constants.textAlignment
+        textPostLabel.numberOfLines = Constants.maxLineCount
+        addSubview(textPostLabel)
   
         addSubview(spinner)
         sendSubviewToBack(spinner)
         
         videoContainerView.alpha = 0.0
         previewImageView.alpha = 0.0
-        textLabel.alpha = 0.0
+        textPostLabel.alpha = 0.0
         backgroundView?.alpha = 0.0
         
         addGestureRecognizer(singleTapRecognizer)
@@ -184,7 +184,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
             animations: {
                 self.videoContainerView.alpha = 0
                 self.previewImageView.alpha = 0
-                self.textLabel.alpha = 0
+                self.textPostLabel.alpha = 0
                 self.backgroundView?.alpha = 0
             },
             completion: { [weak self] _ in
@@ -215,7 +215,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
             animations: {
                 self.videoContainerView.alpha = 1
                 self.previewImageView.alpha = 1
-                self.textLabel.alpha = 1
+                self.textPostLabel.alpha = 1
             },
             completion: { [weak self] completed in
                 self?.videoCoordinator?.playVideo()
@@ -270,24 +270,24 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
             return
         }
         
-        textLabel.hidden = false
-        textLabel.text = text
-        textLabel.textAlignment = .Center
-        textLabel.font = dependencyManager?.textPostFont()
-        textLabel.adjustsFontSizeToFitWidth = true
-        textLabel.minimumScaleFactor = Constants.minimumScaleFactor
-        textLabel.textColor = dependencyManager?.textPostColor()
+        textPostLabel.hidden = false
+        textPostLabel.text = text
+        textPostLabel.textAlignment = .Center
+        textPostLabel.font = dependencyManager?.textPostFont()
+        textPostLabel.adjustsFontSizeToFitWidth = true
+        textPostLabel.minimumScaleFactor = Constants.minimumScaleFactor
+        textPostLabel.textColor = dependencyManager?.textPostColor()
         
         if let url = dependencyManager?.textPostBackgroundImageURL() {
-            setBackgroundBlur(withImageUrl: url)
+            setBackgroundBlur(withImageUrl: url) { [weak self] in
+                self?.spinner.stopAnimating()
+                self?.showContent()
+            }
         }
-        
-        spinner.stopAnimating()
-        showContent()
     }
     
     private func tearDownTextLabel() {
-        textLabel.hidden = true
+        textPostLabel.hidden = true
     }
     
     // MARK: - Layout
@@ -296,7 +296,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         super.layoutSubviews()
         previewImageView.frame = bounds
         videoContainerView.frame = bounds
-        v_addFitToParentConstraintsToSubview(textLabel, leading: 25, trailing: 25, top: 0, bottom: 0)
+        v_addFitToParentConstraintsToSubview(textPostLabel, leading: 25, trailing: 25, top: 0, bottom: 0)
         backgroundView?.frame = bounds
         spinner.center = CGPoint(x: bounds.midX, y: bounds.midY)
         videoCoordinator?.layout(in: bounds)
@@ -331,9 +331,10 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         }
     }
     
-    private func setBackgroundBlur(withImageUrl imageURL: NSURL) {
+    private func setBackgroundBlur(withImageUrl imageURL: NSURL, completion: (()->())? = nil) {
         backgroundView?.applyBlurToImageURL(imageURL, withRadius: Constants.blurRadius) { [weak self] in
             self?.backgroundView?.alpha = 1
+            completion?()
         }
     }
 
@@ -374,11 +375,10 @@ private extension VDependencyManager {
     }
     
     func textPostBackgroundImageURL() -> NSURL? {
-        if let textPostManager = childDependencyForKey("textPost") {
-            return NSURL(string: textPostManager.stringForKey("backgroundImage.textpost"))
-        }
-        else {
+        guard let textPostManager = childDependencyForKey("textPost") else {
             return nil
         }
+        
+        return NSURL(string: textPostManager.stringForKey("backgroundImage.textpost"))
     }
 }

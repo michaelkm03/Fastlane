@@ -90,26 +90,19 @@ extension ForumViewController {
         let contentType = ContentType(rawValue: next["type"]!)!
         let source = next["source"]
 
-        var asset: ContentMediaAsset!
+        var assets: [ContentMediaAssetModel] = []
         var previewAsset = randPreviewImage()
         if let id = next["id"] {
             let parameters = ContentMediaAsset.LocalAssetParameters(contentType: contentType, remoteID: id, source: source)
-            asset = ContentMediaAsset(initializationParameters: parameters)
+            assets.append(ContentMediaAsset(initializationParameters: parameters)!)
         }
-        else {
-            if (contentType != .text) {
-                let url = NSURL(string: next["url"]!)!
-                let parameters = ContentMediaAsset.RemoteAssetParameters(contentType: contentType, url: url, source: source)
-                asset = ContentMediaAsset(initializationParameters: parameters)
-                if contentType == .image {
-                    previewAsset = ImageAsset(mediaMetaData: MediaMetaData(url: url, size: CGSizeMake(100, 100)))
-                }
+        else if (contentType != .text) {
+            let url = NSURL(string: next["url"]!)!
+            let parameters = ContentMediaAsset.RemoteAssetParameters(contentType: contentType, url: url, source: source)
+            assets.append(ContentMediaAsset(initializationParameters: parameters)!)
+            if contentType == .image {
+                previewAsset = ImageAsset(mediaMetaData: MediaMetaData(url: url, size: CGSizeMake(100, 100)))
             }
-        }
-        
-        var assets: [ContentMediaAssetModel] = []
-        if (asset != nil) {
-            assets.append(asset)
         }
         
         let content = Content(
