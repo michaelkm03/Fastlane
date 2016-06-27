@@ -104,19 +104,8 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate {
             return
         }
         
-        let displayModifier = ShowCloseUpDisplayModifier(dependencyManager: dependencyManager, originViewController: self)
-        
-        switch targetContent.type {
-            case .image, .gif, .video:
-                ShowCloseUpOperation.showOperation(forContent: targetContent, displayModifier: displayModifier).queue()
-            case .link:
-                //FIXME: is this the right thing to do?
-                if let url = targetContent.linkedURL {
-                    VRootViewController.sharedRootViewController()?.openURL(url)
-                }
-            case .text:
-                break
-        }
+        let router = Router(originViewController: self, dependencyManager: dependencyManager)
+        router.navigate(to: targetContent)
     }
     
     // MARK: - Stage
