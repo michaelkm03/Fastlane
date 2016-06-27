@@ -437,8 +437,8 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         textView.textContainerInset = Constants.composerTextInsets
         textView.backgroundColor = dependencyManager.inputAreaBackgroundColor
         
-        confirmButton.setTitleColor(dependencyManager.confirmButtonSelectedTextColor, forState: .Normal)
-        confirmButton.setTitleColor(dependencyManager.confirmButtonDeselectedTextColor, forState: .Disabled)
+        confirmButton.setTitleColor(dependencyManager.confirmButtonEnabledTextColor, forState: .Normal)
+        confirmButton.setTitleColor(dependencyManager.confirmButtonDisabledTextColor, forState: .Disabled)
         confirmButton.titleLabel?.font = dependencyManager.confirmButtonTextFont
         confirmButton.backgroundColor = dependencyManager.confirmButtonBackgroundColorEnabled
         
@@ -593,23 +593,23 @@ private extension VDependencyManager {
         return colorForKey(VDependencyManagerPlaceholderTextColorKey)
     }
     
-    var confirmButtonDeselectedTextColor: UIColor? {
+    var confirmButtonDisabledTextColor: UIColor? {
         return UIColor.whiteColor().colorWithAlphaComponent(0.15)
-        return colorForKey("color.link.deselected")
+        return colorForKey("color.link.disabled")
     }
     
-    var confirmButtonSelectedTextColor: UIColor? {
+    var confirmButtonEnabledTextColor: UIColor? {
         return UIColor.whiteColor().colorWithAlphaComponent(0.7)
-        return colorForKey("color.link.selected")
+        return colorForKey("color.link.enabled")
     }
     
     var confirmButtonBackgroundColorEnabled: UIColor? {
-        return UIColor.whiteColor().colorWithAlphaComponent(0.06)
+        return UIColor.whiteColor().colorWithAlphaComponent(0.2)
         return colorForKey("color.accent.enabled")
     }
     
     var confirmButtonBackgroundColorDisabled: UIColor? {
-        return UIColor.whiteColor().colorWithAlphaComponent(0.03)
+        return UIColor.whiteColor().colorWithAlphaComponent(0.06)
         return colorForKey("color.accent.disabled")
     }
     
