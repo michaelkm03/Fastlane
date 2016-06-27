@@ -133,6 +133,10 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         videoPlayer.pause()
     }
     
+    var isPlaying: Bool {
+        return videoPlayer.isPlaying
+    }
+    
     // MARK: - Layout
     
     func layout(in bounds: CGRect) {

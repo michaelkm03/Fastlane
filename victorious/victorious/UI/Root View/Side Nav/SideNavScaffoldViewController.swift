@@ -14,7 +14,7 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
     // MARK: - Configuration
     
     private static let estimatedBarButtonWidth: CGFloat = 60.0
-    private static let userPictureNavButtonSize = CGSize(width: 32.0, height: 32.0)
+    private static let userPictureNavButtonSize = CGSize(width: 30.0, height: 30.0)
     
     // MARK: - Initializing
     

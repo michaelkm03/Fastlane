@@ -8,7 +8,7 @@
 
 #import "VExperienceEnhancer.h"
 #import "VVoteType.h"
-#import "VTracking.h"
+#import "victorious-Swift.h"
 
 @interface VExperienceEnhancer()
 

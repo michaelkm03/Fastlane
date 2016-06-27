@@ -8,7 +8,6 @@
 
 #import "VDummyModels.h"
 #import "VVoteResult.h"
-#import "VTracking.h"
 #import "VTag.h"
 #import "victorious-Swift.h"
 

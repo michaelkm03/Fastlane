@@ -815,6 +815,7 @@
 		79FE184E1C53098D00170E5B /* VConversation.m in Sources */ = {isa = PBXBuildFile; fileRef = F0F04AD51B1E271A00F6F401 /* VConversation.m */; };
 		79FE185A1C531E2A00170E5B /* NumericPaginator+Predicate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79FE18591C531E2A00170E5B /* NumericPaginator+Predicate.swift */; };
 		7A126DF51CFF956800F9C86E /* APIPathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A126DF41CFF956800F9C86E /* APIPathTests.swift */; };
+		7A1ACD1D1D1CBD6A009C431C /* CGRect+Initializers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1ACD1C1D1CBD6A009C431C /* CGRect+Initializers.swift */; };
 		7A1C70AA1CC8513B00A666F5 /* SideMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1C70A91CC8513B00A666F5 /* SideMenuController.swift */; };
 		7A26E0151CB6D57B006C99DF /* NSDate+timeSince.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A26E0141CB6D57B006C99DF /* NSDate+timeSince.swift */; };
 		7A2747CE1D10AC37005168BA /* ContentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2747CD1D10AC37005168BA /* ContentModel.swift */; };
@@ -1173,7 +1174,7 @@
 		A73BA2C61C9393ED008168B5 /* ChatFeedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2B31C9393ED008168B5 /* ChatFeedDataSource.swift */; };
 		A73BA2C81C9393ED008168B5 /* ChatFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2B51C9393ED008168B5 /* ChatFeedViewController.swift */; };
 		A73BA2C91C9393ED008168B5 /* ChatFeedMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2B71C9393ED008168B5 /* ChatFeedMessageCell.swift */; };
-		A73BA2CC1C9393ED008168B5 /* ChatFeedMessageCellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2BA1C9393ED008168B5 /* ChatFeedMessageCellLayout.swift */; };
+		A73BA2CC1C9393ED008168B5 /* ChatFeedMessageCell+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2BA1C9393ED008168B5 /* ChatFeedMessageCell+Layout.swift */; };
 		A73BA2CE1C9393ED008168B5 /* NewItemsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2BC1C9393ED008168B5 /* NewItemsController.swift */; };
 		A73BA2DA1C9394B6008168B5 /* ForumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2D71C9394B6008168B5 /* ForumViewController.swift */; };
 		A73BA41F1C93B174008168B5 /* MediaSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA41E1C93B174008168B5 /* MediaSearchResult.swift */; };
@@ -1493,7 +1494,6 @@
 		A7D716921C53174900F45977 /* MockPagination.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D716911C53174900F45977 /* MockPagination.swift */; };
 		A7D7ED511B59BEB900FA346A /* UISearchBar+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D7ED501B59BEB900FA346A /* UISearchBar+Extensions.swift */; };
 		A7D7ED571B5D6B0000FA346A /* VScaleAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D7ED561B5D6B0000FA346A /* VScaleAnimator.m */; };
-		A7D8532419F6F3B100EDBFF8 /* VTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D8532319F6F3B100EDBFF8 /* VTracking.m */; };
 		A7D920441C055589002A6503 /* ExperimentSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034912701B7EA5E700EA8A07 /* ExperimentSettingsTests.swift */; };
 		A7D920491C06369C002A6503 /* RequestErrorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D920481C06369C002A6503 /* RequestErrorType.swift */; };
 		A7D9204B1C0636B3002A6503 /* ResponseParsingError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D9204A1C0636B3002A6503 /* ResponseParsingError.swift */; };
@@ -2074,6 +2074,7 @@
 		F027D8DF1B93A6FB00BC6322 /* UIEdgeInsets+Addition.swift in Sources */ = {isa = PBXBuildFile; fileRef = F027D8DE1B93A6FB00BC6322 /* UIEdgeInsets+Addition.swift */; };
 		F028F3E71AC0D9E800ABFDDC /* VAppInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = F028F3E61AC0D9E800ABFDDC /* VAppInfo.m */; };
 		F029B56D1CA1AA6200A01703 /* LibraryCreationFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F029B56C1CA1AA6200A01703 /* LibraryCreationFlowController.swift */; };
+		F03A01261D18D49E00BC0040 /* VTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03A01241D18D49E00BC0040 /* VTracking.swift */; };
 		F03C135A1B698F6F00287F4C /* VAsset.m in Sources */ = {isa = PBXBuildFile; fileRef = F03C13591B698F6F00287F4C /* VAsset.m */; };
 		F03C135D1B698F7000287F4C /* VComment.m in Sources */ = {isa = PBXBuildFile; fileRef = F03C135C1B698F7000287F4C /* VComment.m */; };
 		F03C13741B6C340A00287F4C /* VInStreamCommentsShowMoreAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = F03C13731B6C340A00287F4C /* VInStreamCommentsShowMoreAttributes.m */; };
@@ -2164,6 +2165,7 @@
 		F0A34AA81BA89F91000D70EF /* AvatarLevelBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A34AA61BA89F91000D70EF /* AvatarLevelBadgeView.swift */; };
 		F0A82AF71AE1A88C00EB2257 /* VCardDirectoryCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A82AF61AE1A88C00EB2257 /* VCardDirectoryCollectionViewFlowLayout.m */; };
 		F0A82AFA1AE1ABD800EB2257 /* VDirectoryCollectionFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A82AF91AE1ABD800EB2257 /* VDirectoryCollectionFlowLayout.m */; };
+		F0ABAA7C1D1CA8F800DAD4B3 /* TouchableInsetAdjustableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0ABAA7B1D1CA8F700DAD4B3 /* TouchableInsetAdjustableButton.swift */; };
 		F0AD216B1AF313BC001BDCC6 /* VNoContentCollectionViewCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F0AD216A1AF313BC001BDCC6 /* VNoContentCollectionViewCellFactory.m */; };
 		F0AD216E1AF318FC001BDCC6 /* VNoContentCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0AD216D1AF318FC001BDCC6 /* VNoContentCollectionViewCell.m */; };
 		F0AD21761AF43DFA001BDCC6 /* VCollectionsDirectoryCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F0AD21751AF43DFA001BDCC6 /* VCollectionsDirectoryCellFactory.m */; };
@@ -2200,6 +2202,8 @@
 		F0E0F1BA1AE8C2AE00143CBF /* VInsetMarqueeStreamItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0E0F1B91AE8C2AE00143CBF /* VInsetMarqueeStreamItemCell.xib */; };
 		F0E25FD71D088BD0003ECF09 /* ShowPermissionedCloseUpOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E25FD61D088BD0003ECF09 /* ShowPermissionedCloseUpOperation.swift */; };
 		F0E25FD91D088DA2003ECF09 /* ShowFetchedCloseUpOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E25FD81D088DA2003ECF09 /* ShowFetchedCloseUpOperation.swift */; };
+		F0E6672A1D14964A007BF537 /* ContentCellTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E667291D14964A007BF537 /* ContentCellTracker.swift */; };
+		F0E6672E1D1496B8007BF537 /* ContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E6672D1D1496B8007BF537 /* ContentCell.swift */; };
 		F0EBAAAD1B8002E100515D4C /* VListShelfCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0EBAAAC1B8002E100515D4C /* VListShelfCollectionViewFlowLayout.swift */; };
 		F0EBAAAF1B800FC800515D4C /* VRightSideIconButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0EBAAAE1B800FC800515D4C /* VRightSideIconButton.swift */; };
 		F0EBAAB11B80121D00515D4C /* VListShelfContentCoverCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0EBAAB01B80121D00515D4C /* VListShelfContentCoverCell.swift */; };
@@ -3290,6 +3294,7 @@
 		79EEC4A41C17BD150004E6FC /* Experiment+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Experiment+Parsable.swift"; sourceTree = "<group>"; };
 		79FE18591C531E2A00170E5B /* NumericPaginator+Predicate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NumericPaginator+Predicate.swift"; sourceTree = "<group>"; };
 		7A126DF41CFF956800F9C86E /* APIPathTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIPathTests.swift; sourceTree = "<group>"; };
+		7A1ACD1C1D1CBD6A009C431C /* CGRect+Initializers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGRect+Initializers.swift"; sourceTree = "<group>"; };
 		7A1C70A91CC8513B00A666F5 /* SideMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuController.swift; sourceTree = "<group>"; };
 		7A215BA51CF537BE005034BF /* PreviewImageContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewImageContainer.swift; sourceTree = "<group>"; };
 		7A26E0141CB6D57B006C99DF /* NSDate+timeSince.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+timeSince.swift"; sourceTree = "<group>"; };
@@ -3769,7 +3774,7 @@
 		A73BA2B31C9393ED008168B5 /* ChatFeedDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedDataSource.swift; sourceTree = "<group>"; };
 		A73BA2B51C9393ED008168B5 /* ChatFeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedViewController.swift; sourceTree = "<group>"; };
 		A73BA2B71C9393ED008168B5 /* ChatFeedMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedMessageCell.swift; sourceTree = "<group>"; };
-		A73BA2BA1C9393ED008168B5 /* ChatFeedMessageCellLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedMessageCellLayout.swift; sourceTree = "<group>"; };
+		A73BA2BA1C9393ED008168B5 /* ChatFeedMessageCell+Layout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ChatFeedMessageCell+Layout.swift"; sourceTree = "<group>"; };
 		A73BA2BC1C9393ED008168B5 /* NewItemsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewItemsController.swift; sourceTree = "<group>"; };
 		A73BA2D71C9394B6008168B5 /* ForumViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForumViewController.swift; sourceTree = "<group>"; };
 		A73BA41E1C93B174008168B5 /* MediaSearchResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSearchResult.swift; sourceTree = "<group>"; };
@@ -4242,8 +4247,6 @@
 		A7D7ED501B59BEB900FA346A /* UISearchBar+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UISearchBar+Extensions.swift"; sourceTree = "<group>"; };
 		A7D7ED551B5D6B0000FA346A /* VScaleAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VScaleAnimator.h; sourceTree = "<group>"; };
 		A7D7ED561B5D6B0000FA346A /* VScaleAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VScaleAnimator.m; sourceTree = "<group>"; };
-		A7D8532219F6F3B100EDBFF8 /* VTracking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTracking.h; sourceTree = "<group>"; };
-		A7D8532319F6F3B100EDBFF8 /* VTracking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTracking.m; sourceTree = "<group>"; };
 		A7D920481C06369C002A6503 /* RequestErrorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestErrorType.swift; sourceTree = "<group>"; };
 		A7D9204A1C0636B3002A6503 /* ResponseParsingError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseParsingError.swift; sourceTree = "<group>"; };
 		A7D9204C1C0636CC002A6503 /* APIError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
@@ -5035,6 +5038,7 @@
 		F028F3E61AC0D9E800ABFDDC /* VAppInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAppInfo.m; sourceTree = "<group>"; };
 		F028F3E81AC0F2BB00ABFDDC /* VAppInfoTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAppInfoTests.m; sourceTree = "<group>"; };
 		F029B56C1CA1AA6200A01703 /* LibraryCreationFlowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryCreationFlowController.swift; sourceTree = "<group>"; };
+		F03A01241D18D49E00BC0040 /* VTracking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VTracking.swift; sourceTree = "<group>"; };
 		F03C13581B698F6F00287F4C /* VAsset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAsset.h; sourceTree = "<group>"; };
 		F03C13591B698F6F00287F4C /* VAsset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAsset.m; sourceTree = "<group>"; };
 		F03C135B1B698F7000287F4C /* VComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VComment.h; sourceTree = "<group>"; };
@@ -5169,6 +5173,7 @@
 		F0A82AF61AE1A88C00EB2257 /* VCardDirectoryCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCardDirectoryCollectionViewFlowLayout.m; sourceTree = "<group>"; };
 		F0A82AF81AE1ABD800EB2257 /* VDirectoryCollectionFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDirectoryCollectionFlowLayout.h; sourceTree = "<group>"; };
 		F0A82AF91AE1ABD800EB2257 /* VDirectoryCollectionFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDirectoryCollectionFlowLayout.m; sourceTree = "<group>"; };
+		F0ABAA7B1D1CA8F700DAD4B3 /* TouchableInsetAdjustableButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchableInsetAdjustableButton.swift; sourceTree = "<group>"; };
 		F0AD21691AF313BC001BDCC6 /* VNoContentCollectionViewCellFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNoContentCollectionViewCellFactory.h; sourceTree = "<group>"; };
 		F0AD216A1AF313BC001BDCC6 /* VNoContentCollectionViewCellFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNoContentCollectionViewCellFactory.m; sourceTree = "<group>"; };
 		F0AD216C1AF318FC001BDCC6 /* VNoContentCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNoContentCollectionViewCell.h; sourceTree = "<group>"; };
@@ -5237,6 +5242,8 @@
 		F0E0F1B91AE8C2AE00143CBF /* VInsetMarqueeStreamItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VInsetMarqueeStreamItemCell.xib; sourceTree = "<group>"; };
 		F0E25FD61D088BD0003ECF09 /* ShowPermissionedCloseUpOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowPermissionedCloseUpOperation.swift; sourceTree = "<group>"; };
 		F0E25FD81D088DA2003ECF09 /* ShowFetchedCloseUpOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowFetchedCloseUpOperation.swift; sourceTree = "<group>"; };
+		F0E667291D14964A007BF537 /* ContentCellTracker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentCellTracker.swift; sourceTree = "<group>"; };
+		F0E6672D1D1496B8007BF537 /* ContentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContentCell.swift; path = ../../../Managers/Tracking/ContentCell.swift; sourceTree = "<group>"; };
 		F0EBAAAC1B8002E100515D4C /* VListShelfCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VListShelfCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		F0EBAAAE1B800FC800515D4C /* VRightSideIconButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VRightSideIconButton.swift; sourceTree = "<group>"; };
 		F0EBAAB01B80121D00515D4C /* VListShelfContentCoverCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VListShelfContentCoverCell.swift; sourceTree = "<group>"; };
@@ -7805,6 +7812,7 @@
 				A721E8621B572452000B7901 /* AVAsset+Orientation.m */,
 				C3CF52761BB5D78100411F40 /* CGPoint+Addition.swift */,
 				79C593501BFD5C3C00EC76ED /* CGRect+Aspect.swift */,
+				7A1ACD1C1D1CBD6A009C431C /* CGRect+Initializers.swift */,
 				7AB55FE41CADF00A00EBE31E /* CGSize+CornerRadius.swift */,
 				A721E8631B572452000B7901 /* CIImage+VImage.h */,
 				A721E8641B572452000B7901 /* CIImage+VImage.m */,
@@ -8320,7 +8328,7 @@
 			isa = PBXGroup;
 			children = (
 				A73BA2B71C9393ED008168B5 /* ChatFeedMessageCell.swift */,
-				A73BA2BA1C9393ED008168B5 /* ChatFeedMessageCellLayout.swift */,
+				A73BA2BA1C9393ED008168B5 /* ChatFeedMessageCell+Layout.swift */,
 			);
 			path = "Message Cell";
 			sourceTree = "<group>";
@@ -8834,6 +8842,7 @@
 		A790C81C1A01980F00C4F208 /* Tracking */ = {
 			isa = PBXGroup;
 			children = (
+				F0E667291D14964A007BF537 /* ContentCellTracker.swift */,
 				A72005571A030E4700285A9C /* Delegates */,
 				A76711E41C1B4F47006568DF /* Performance */,
 				C39452411B715CDA009367EB /* StreamCellContext.swift */,
@@ -8892,6 +8901,7 @@
 		A7AEF96C1A83F1C300A3D3A0 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				F0E6672D1D1496B8007BF537 /* ContentCell.swift */,
 				7A8737681CB4785100D2FF74 /* Content Only Cell */,
 				F06B41CA1B7FBF10008709E8 /* List Shelf Cell */,
 				F0AD21711AF32359001BDCC6 /* NoContentCollectionViewCell */,
@@ -9632,11 +9642,10 @@
 				F07557E41B73B49F00BB2648 /* VStreamItem.h */,
 				F07557E51B73B49F00BB2648 /* VStreamItem.m */,
 				A7B1330C1C606C2C006EC4F5 /* VStreamItemPointer.swift */,
-				A7D8532219F6F3B100EDBFF8 /* VTracking.h */,
-				A7D8532319F6F3B100EDBFF8 /* VTracking.m */,
+				F03A01241D18D49E00BC0040 /* VTracking.swift */,
+				67D38B0A1CF6192F003F1D5F /* VUser.swift */,
 				BE7D2E8F18EB762A009E488E /* VVoteResult.h */,
 				BE7D2E9018EB762A009E488E /* VVoteResult.m */,
-				67D38B0A1CF6192F003F1D5F /* VUser.swift */,
 			);
 			path = ManagedObjectModels;
 			sourceTree = "<group>";
@@ -10570,6 +10579,7 @@
 				F07DDE461CFCF33400C7FC8D /* ImageOnImageButton.swift */,
 				F07DDE341CFCC7B200C7FC8D /* TextOnColorButton.swift */,
 				F07DDE471CFCF33400C7FC8D /* TextOnImageButton.swift */,
+				F0ABAA7B1D1CA8F700DAD4B3 /* TouchableInsetAdjustableButton.swift */,
 				F07DDE401CFCDB1500C7FC8D /* TrackableButton.swift */,
 			);
 			name = Button;
@@ -12646,6 +12656,7 @@
 				C39452421B715CDA009367EB /* StreamCellContext.swift in Sources */,
 				BFBDFB3E1CBEB9CA00BE077A /* StartLoadingOperation.swift in Sources */,
 				7AE3EA331CAEF42E00272A6A /* VNewProfileHeaderView.swift in Sources */,
+				7A1ACD1D1D1CBD6A009C431C /* CGRect+Initializers.swift in Sources */,
 				C35265FE1B28F167001F093F /* VCreateSheetViewController.m in Sources */,
 				C3E47F6C1B69451B0084FF65 /* MediaAttachmentView.swift in Sources */,
 				A7F843641BFD0ED0004C3D55 /* VTracking+Parsable.swift in Sources */,
@@ -13092,7 +13103,7 @@
 				0314D4A919B46B5E00FA363C /* VMessageCell.m in Sources */,
 				D8C7CF5819DCCC6E00BA33E5 /* VExperienceEnhancerBar.m in Sources */,
 				A721E95F1B572454000B7901 /* UIView+VDynamicsHelpers.m in Sources */,
-				A73BA2CC1C9393ED008168B5 /* ChatFeedMessageCellLayout.swift in Sources */,
+				A73BA2CC1C9393ED008168B5 /* ChatFeedMessageCell+Layout.swift in Sources */,
 				F06B41C11B7EE606008709E8 /* VListShelfCollectionViewCell.swift in Sources */,
 				A721E9411B572454000B7901 /* NSString+Unicode.swift in Sources */,
 				D89367491ADDBAA1001D2426 /* VActionBarFixedWidthItem.m in Sources */,
@@ -13213,6 +13224,7 @@
 				D8E5A4ED1AAA72C30019F231 /* VBlurOverPresentationController.m in Sources */,
 				F0BD3A6C1CDD0C1600B4AB3E /* MixedMediaCreationFlow.swift in Sources */,
 				A72C867F1C977FF600E97D4F /* SequenceUnlikeRemoteOperation.swift in Sources */,
+				F03A01261D18D49E00BC0040 /* VTracking.swift in Sources */,
 				F0FC97361B509C3D0098AFCB /* VInStreamCommentsController.m in Sources */,
 				A77951061B27D22D00D9DB0A /* VSuggestedUsersViewController.m in Sources */,
 				A77951121B27DDB800D9DB0A /* VSuggestedUserCell.m in Sources */,
@@ -13265,6 +13277,7 @@
 				A7C713B21B74450A00089B5E /* GCDUtils.swift in Sources */,
 				7AEB1F421D13565400E93A64 /* UserModel.swift in Sources */,
 				C30AA4F31B067C370010CEFE /* VPermissionCamera.m in Sources */,
+				F0ABAA7C1D1CA8F800DAD4B3 /* TouchableInsetAdjustableButton.swift in Sources */,
 				F022CFE01CFF447A00F040BB /* VDependencyManager+Buttons.swift in Sources */,
 				A7F843741BFD5A0B004C3D55 /* NSManagedObjectContext+Fetchers.swift in Sources */,
 				A70FC0F71A2D012E00F5BBDE /* VNotificationSettingsTableRow.m in Sources */,
@@ -13280,7 +13293,6 @@
 				A76567141B3B1DAA002721F3 /* VSleekActionButton.m in Sources */,
 				F07409841B059FEA00C44623 /* VCoachmark.m in Sources */,
 				6725A9FE1CDBE6E8003E9168 /* NetworkDataSource.swift in Sources */,
-				A7D8532419F6F3B100EDBFF8 /* VTracking.m in Sources */,
 				A7C565DD1C4051E300E4DF6A /* InterstitialManager+Debug.swift in Sources */,
 				035ABE7C1AD7ABE500B6B1A5 /* VDependencyManager+VDefaultTemplate.m in Sources */,
 				A72C864F1C977FF500E97D4F /* ConfirmDestructiveActionOperation.swift in Sources */,
@@ -13446,6 +13458,7 @@
 				A7F843661BFD44DB004C3D55 /* Conversation+Parsable.swift in Sources */,
 				BF3CD8841D11BB8400CB7764 /* UserUnupvoteRemoteOperation.swift in Sources */,
 				79FE185A1C531E2A00170E5B /* NumericPaginator+Predicate.swift in Sources */,
+				F0E6672E1D1496B8007BF537 /* ContentCell.swift in Sources */,
 				A733D8FC1A23D0980053E9F1 /* VNotificationSettings.m in Sources */,
 				A78740A51BA362E40093D1E0 /* VImageAssetFinder+PollAssets.m in Sources */,
 				A650EFDD1B422378005529E5 /* VAssetCollectionListViewController.m in Sources */,
@@ -13511,6 +13524,7 @@
 				F0AD216B1AF313BC001BDCC6 /* VNoContentCollectionViewCellFactory.m in Sources */,
 				A790C82A1A01980F00C4F208 /* VTrackingManager.m in Sources */,
 				C39864BD1B266A7700694AB3 /* VDependencyManager+VHighlightContainer.m in Sources */,
+				F0E6672A1D14964A007BF537 /* ContentCellTracker.swift in Sources */,
 				A790C8291A01980F00C4F208 /* VTrackingEvent.m in Sources */,
 				A721E91A1B572454000B7901 /* VSequence+Fetcher.m in Sources */,
 				A72C86281C977FF500E97D4F /* PollVoteOperation.swift in Sources */,

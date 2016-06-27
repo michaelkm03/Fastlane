@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
-#import "VTracking.h"
+#import "victorious-Swift.h"
 #import "VDummyModels.h"
 #import "VCVideoPlayerViewController.h"
 

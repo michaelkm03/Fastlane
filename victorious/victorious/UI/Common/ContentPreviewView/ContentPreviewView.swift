@@ -44,7 +44,7 @@ class ContentPreviewView: UIView {
         previewImageView.backgroundColor = .clearColor()
         
         /// Preview Image View
-        previewImageView.contentMode = UIViewContentMode.ScaleAspectFill
+        previewImageView.contentMode = .ScaleAspectFill
         addSubview(previewImageView)
         v_addFitToParentConstraintsToSubview(previewImageView)
         
@@ -76,21 +76,22 @@ class ContentPreviewView: UIView {
     }
     
     private func setupForContent(content: ContentModel) {
-        guard let previewImageURL = content.largestPreviewImageURL else {
-                return
-        }
-        
         let userIsVIP = VCurrentUser.user()?.hasValidVIPSubscription ?? false
         let contentIsForVIPOnly = content.isVIPOnly
-        if !userIsVIP && contentIsForVIPOnly {
-            vipIcon.hidden = false
-            previewImageView.applyBlurToImageURL(previewImageURL, withRadius: Constants.imageViewBlurEffectRadius) { [weak self] in
-                self?.previewImageView.alpha = 1
+        vipIcon.hidden = userIsVIP || !contentIsForVIPOnly
+        
+        if let previewImageURL = content.largestPreviewImageURL {
+            if !userIsVIP && contentIsForVIPOnly {
+                previewImageView.applyBlurToImageURL(previewImageURL, withRadius: Constants.imageViewBlurEffectRadius) { [weak self] in
+                    self?.previewImageView.alpha = 1
+                }
+            }
+            else {
+                previewImageView.sd_setImageWithURL(previewImageURL)
             }
         }
         else {
-            vipIcon.hidden = true
-            previewImageView.sd_setImageWithURL(previewImageURL)
+            previewImageView.image = nil
         }
         
         switch content.type {
