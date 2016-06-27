@@ -18,6 +18,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         static let defaultMaximumTextLength = 0
         static let maximumAttachmentWidthPercentage: CGFloat = 480.0 / 667.0
         static let minimumConfirmButtonContainerHeight: CGFloat = 52
+        static let composerTextInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
     }
     
     /// ForumEventSender
@@ -56,7 +57,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     @IBOutlet weak private var interactiveContainerView: UIView!
     @IBOutlet weak private var confirmButton: UIButton! {
         didSet {
-            confirmButton.applyDefaultCornerRadius()
+            confirmButton.applyCornerRadius()
         }
     }
     @IBOutlet weak private var confirmButtonContainer: UIView!
@@ -432,8 +433,8 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         textView.textColor = dependencyManager.inputTextColor
         textView.setPlaceholderTextColor(dependencyManager.inputPlaceholderTextColor)
         textView.keyboardAppearance = dependencyManager.keyboardAppearance
-        textView.applyDefaultCornerRadius()
-        textView.textContainerInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        textView.applyCornerRadius()
+        textView.textContainerInset = Constants.composerTextInsets
         textView.backgroundColor = dependencyManager.inputAreaBackgroundColor
         
         confirmButton.setTitleColor(dependencyManager.confirmButtonSelectedTextColor, forState: .Normal)
