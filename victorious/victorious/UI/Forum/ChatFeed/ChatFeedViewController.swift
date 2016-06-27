@@ -295,7 +295,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     }
     
     private dynamic func onTimerTick() {
-        dataSource.updateTimeStamps(in: collectionView)
+        dataSource.updateTimestamps(in: collectionView)
     }
 }
 
