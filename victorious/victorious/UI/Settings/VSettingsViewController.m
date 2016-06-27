@@ -255,6 +255,11 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
             [[self.dependencyManager coachmarkManager] resetShownCoachmarks];
             [self updateResetCoachmarksCell];
         }
+        else if (indexPath.row == VSettingsActionNotifications)
+        {
+            NotificationSettingsViewController *viewController = [self.dependencyManager templateValueOfType: [NotificationSettingsViewController class] forKey:@"push.notifications.screen"];
+            [self.navigationController pushViewController:viewController animated:YES];
+        }
     }
     else if (indexPath.section == 1)
     {

@@ -122,7 +122,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
         
         guard
             let cell = tableView.dequeueReusableCellWithIdentifier(reuseId) as? VSettingsSwitchCell,
-            let dependencyManager = self.dependencyManager,
+            //let dependencyManager = self.dependencyManager,
             let settings = self.settings
         where
             indexPath.section < sections.count &&
@@ -135,7 +135,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
         cell.setTitle(row.title, value: settings.isKeyEnabled(row.key))
         cell.key = row.key
         cell.delegate = self
-        cell.setDependencyManager(dependencyManager)
+        cell.setDependencyManager(dependencyManager!)
         return cell
     }
     
@@ -172,36 +172,31 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
     
     private func sectionsForTableView() -> [NotificationSettingsTableSection] {
         
-        guard let dependencyManager = self.dependencyManager else {
-            return []
+        
+        var result: [NotificationSettingsTableSection] = []
+        let items = dependencyManager!.arrayForKey("items")
+        
+        for item in items {
+            if let itemDictionary = item as? NSDictionary,
+                let sectionTitle = itemDictionary["section.title"] as? String,
+                let sectionArray = itemDictionary["section.items"] as? NSArray
+            {
+                var sectionRows: [NotificationSettingsTableRow] = []
+                sectionArray.enumerateObjectsUsingBlock(){ (object, _, _) in
+                    if  let rowDictionary = object as? NSDictionary,
+                        let rowTitle = rowDictionary["title"] as? String,
+                        let rowKey = rowDictionary["key"] as? String
+                    {
+                        let row = NotificationSettingsTableRow(key: rowKey, title: rowTitle)
+                        sectionRows.append(row)
+                    }
+                }
+                let tableViewSection = NotificationSettingsTableSection(title: sectionTitle, rows: sectionRows)
+                result.append(tableViewSection)
+            }
         }
         
-        return []
-        
-//        let result = NSMutableOrderedSet()
-//        let items = dependencyManager.arrayForKey("items")
-//        
-//        for item in items {
-//            if let itemDictionary = item as? NSDictionary,
-//                let sectionTitle = itemDictionary["section.title"] as? String,
-//                let sectionArray = itemDictionary["section.items"] as? NSArray
-//            {
-//                var sectionRows: [VNotificationSettingsTableRow] = []
-//                sectionArray.enumerateObjectsUsingBlock(){ (object, _, _) in
-//                    if let rowDictionary = object as? NSDictionary,
-//                        let rowTitle = rowDictionary["title"] as? String,
-//                        let rowKey = rowDictionary["key"] as? String
-//                    {
-//                        let row = VNotificationSettingsTableRow(title: rowTitle, enabled: self.getSettings().isKeyEnabled(rowKey), key: rowKey)
-//                        sectionRows.append(row)
-//                    }
-//                }
-//                let tableViewSection = VNotificationSettingsTableSection(title: sectionTitle, rows: sectionRows)
-//                result.addObject(tableViewSection)
-//            }
-//        }
-//        
-//        return result
+        return result
     }
     
     private func displayPermissionsErrorState() {
@@ -213,7 +208,13 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
     /// MARK: - Custom Initializers 
     
     func setDependencyManager(dependencyManager: VDependencyManager) {
-       self.dependencyManager = dependencyManager.childDependencyForKey("push.notifications.screen")
+       self.dependencyManager = dependencyManager
+    }
+    
+    class func newWithDependencyManager(dependencyManager: VDependencyManager) -> NotificationSettingsViewController {
+        let viewController = NotificationSettingsViewController(style: .Grouped)
+        viewController.setDependencyManager(dependencyManager)
+        return viewController
     }
     
 }
