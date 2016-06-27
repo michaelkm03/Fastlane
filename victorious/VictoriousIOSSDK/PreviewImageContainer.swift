@@ -24,11 +24,17 @@ extension PreviewImageContainer {
     }
     
     public func previewImageURL(ofMinimumWidth minimumWidth: CGFloat) -> NSURL? {
-        for asset in previewImages ?? [] where asset.mediaMetaData.size?.width >= minimumWidth {
-            return asset.mediaMetaData.url
+        var qualifiedAsset: ImageAssetModel?
+        var lastWidth = CGFloat.max
+        
+        for asset in previewImages ?? [] where asset.mediaMetaData.size?.width >= minimumWidth && asset.mediaMetaData.size?.width <= lastWidth {
+            if let width = asset.mediaMetaData.size?.width {
+                qualifiedAsset = asset
+                lastWidth = width
+            }
         }
         
-        return largestPreviewImageURL
+        return qualifiedAsset?.mediaMetaData.url ?? largestPreviewImageURL
     }
     
     public var largestPreviewImageURL: NSURL? {
