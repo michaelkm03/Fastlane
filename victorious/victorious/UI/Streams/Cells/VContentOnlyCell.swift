@@ -34,14 +34,11 @@ class VContentOnlyCell: UICollectionViewCell, ContentCell {
     
     // MARK: - Content
     
-    func setContent(content: ContentModel?) {
-        if let content = content {
-            self.content = content
+    var content: ContentModel? {
+        didSet {
+            updatePreviewView()
         }
-        updatePreviewView()
     }
-    
-    private(set) var content: ContentModel?
     
     // MARK: - Dependency manager
     
@@ -70,7 +67,7 @@ class VContentOnlyCell: UICollectionViewCell, ContentCell {
     
     override var highlighted: Bool {
         didSet {
-            self.contentView.alpha = self.highlighted ? VContentOnlyCell.highlightAlpha : 1.0
+            contentView.alpha = highlighted ? VContentOnlyCell.highlightAlpha : 1.0
         }
     }
 }

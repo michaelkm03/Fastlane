@@ -88,12 +88,22 @@ extension ForumViewController {
         stageCount = stageCount % sampleStageImageContents.count
         let next = sampleStageImageContents[stageCount]
         let contentType = ContentType(rawValue: next["type"]!)!
-        let remoteIdentifier = next["id"]!
         let source = next["source"]
-        
-        let asset = ContentMediaAsset(contentType: contentType, source: source, remoteIdentifier: remoteIdentifier)!
-        
-        let previewAsset = contentType == .image ? ImageAsset(mediaMetaData: MediaMetaData(url: NSURL(string: remoteIdentifier)!, size: CGSizeMake(100, 100))) : randPreviewImage()
+
+        var asset: ContentMediaAsset!
+        var previewAsset = randPreviewImage()
+        if let id = next["id"] {
+            let parameters = ContentMediaAsset.LocalAssetParameters(contentType: contentType, remoteID: id, source: source)
+            asset = ContentMediaAsset(initializationParameters: parameters)
+        }
+        else {
+            let url = NSURL(string: next["url"]!)!
+            let parameters = ContentMediaAsset.RemoteAssetParameters(contentType: contentType, url: url, source: source)
+            asset = ContentMediaAsset(initializationParameters: parameters)
+            if contentType == .image {
+                previewAsset = ImageAsset(mediaMetaData: MediaMetaData(url: url, size: CGSizeMake(100, 100)))
+            }
+        }
         
         let content = Content(
             id: String(1000 + Int(arc4random() % 9999)),
@@ -131,33 +141,33 @@ private var totalCount = 0
 private let sampleStageImageContents = [
     [
         "type": "image",
-        "id": "http://sportsup365.com/wp-content/uploads/2015/12/usatsi_8903306.jpg",
+        "url": "http://sportsup365.com/wp-content/uploads/2015/12/usatsi_8903306.jpg",
         "length": "10"
     ],
     [
         "type": "image",
-        "id": "http://www.koco.com/image/view/-/36170342/medRes/1/-/maxh/460/maxw/620/-/hwy60t/-/westbrook-jpg--1-.jpg"
+        "url": "http://www.koco.com/image/view/-/36170342/medRes/1/-/maxh/460/maxw/620/-/hwy60t/-/westbrook-jpg--1-.jpg"
     ],
     [
         "type": "image",
-        "id": "http://images.christianpost.com/full/88618/big-bang-theory.png"
+        "url": "http://images.christianpost.com/full/88618/big-bang-theory.png"
     ],
     [
         "type": "gif",
-        "id": "https://media.giphy.com/media/l41Yi2XOcNZ2lvTGw/giphy.mp4",
+        "url": "https://media.giphy.com/media/l41Yi2XOcNZ2lvTGw/giphy.mp4",
         "length": "15"
     ],
     [
         "type": "gif",
-        "id": "https://media.giphy.com/media/lJh4drC6QTkkg/giphy.mp4"
+        "url": "https://media.giphy.com/media/lJh4drC6QTkkg/giphy.mp4"
     ],
     [
         "type": "video",
-        "id": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/852ced0666ee143e1d91b987daa8df6e/playlist.m3u8"
+        "url": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/852ced0666ee143e1d91b987daa8df6e/playlist.m3u8"
     ],
     [
         "type": "video",
-        "id": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/36170da86ad3933a86edd9bff9b21846/playlist.m3u8",
+        "url": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/36170da86ad3933a86edd9bff9b21846/playlist.m3u8",
         "length": "15"
     ],
     [

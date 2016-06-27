@@ -59,6 +59,7 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
             let newString = NSMutableAttributedString(attributedString: textView.attributedText)
             newString.appendAttributedString(NSAttributedString(string: text, attributes: getTextViewInputAttributes()))
             textView.attributedText = newString
+            updateDelegateOfTextViewStatus(textView)
         }
         else {
             delegate?.textViewDidHitCharacterLimit(textView)
