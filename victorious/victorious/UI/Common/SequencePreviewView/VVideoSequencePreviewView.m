@@ -328,22 +328,22 @@ typedef NS_ENUM(NSUInteger, VVideoState)
     if (percent >= 25.0f && percent < 50.0f && !self.didPlay25)
     {
         self.didPlay25 = YES;
-        [self trackAutoplayEvent:VTrackingEventVideoDidComplete25 urls:self.trackingData.videoComplete25];
+        [self trackAutoplayEvent:VTrackingEventVideoDidComplete25 urls:(NSArray *)self.trackingData.videoComplete25];
     }
     else if (percent >= 50.0f && percent < 75.0f && !self.didPlay50)
     {
         self.didPlay50 = YES;
-        [self trackAutoplayEvent:VTrackingEventVideoDidComplete50 urls:self.trackingData.videoComplete50];
+        [self trackAutoplayEvent:VTrackingEventVideoDidComplete50 urls:(NSArray *)self.trackingData.videoComplete50];
     }
     else if (percent >= 75.0f && percent < 95.0f && !self.didPlay75)
     {
         self.didPlay75 = YES;
-        [self trackAutoplayEvent:VTrackingEventVideoDidComplete75 urls:self.trackingData.videoComplete75];
+        [self trackAutoplayEvent:VTrackingEventVideoDidComplete75 urls:(NSArray *)self.trackingData.videoComplete75];
     }
     else if (percent >= 95.0f && !self.didPlay100)
     {
         self.didPlay100 = YES;
-        [self trackAutoplayEvent:VTrackingEventVideoDidComplete100 urls:self.trackingData.videoComplete100];
+        [self trackAutoplayEvent:VTrackingEventVideoDidComplete100 urls:(NSArray *)self.trackingData.videoComplete100];
     }
 }
 

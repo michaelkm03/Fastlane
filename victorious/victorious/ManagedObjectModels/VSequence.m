@@ -10,7 +10,6 @@
 #import "VComment.h"
 #import "VNode.h"
 #import "VPollResult.h"
-#import "VTracking.h"
 #import "VVoteResult.h"
 #import "victorious-Swift.h"
 

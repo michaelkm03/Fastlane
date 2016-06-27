@@ -155,21 +155,21 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
         nextSender?.send(event)
         
         switch event {
-        case .loadOldContent:
-            dataSource.loadItems(.older) { [weak self] contents, stageEvent, error in
-                guard let strongSelf = self else {
-                    return
-                }
-                
-                let contents = strongSelf.processContents(contents)
-                strongSelf.broadcast(.prependContent(contents))
+            case .loadOldContent:
+                dataSource.loadItems(.older) { [weak self] contents, stageEvent, error in
+                    guard let strongSelf = self else {
+                        return
+                    }
                     
-                if let stageEvent = stageEvent {
-                    strongSelf.broadcast(stageEvent)
+                    let contents = strongSelf.processContents(contents)
+                    strongSelf.broadcast(.prependContent(contents))
+                        
+                    if let stageEvent = stageEvent {
+                        strongSelf.broadcast(stageEvent)
+                    }
                 }
-            }
-        default:
-            break
+            default:
+                break
         }
     }
     

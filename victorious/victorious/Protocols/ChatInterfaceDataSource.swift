@@ -32,15 +32,15 @@ extension ChatInterfaceDataSource {
     
     func cellForItem(for collectionView: UICollectionView, at indexPath: NSIndexPath) -> ChatFeedMessageCell {
         let content = visibleItems[indexPath.row].content
-        let reuseIdentifier = content.type.hasMedia ? ChatFeedMessageCell.mediaCellReuseIdentifier : ChatFeedMessageCell.nonMediaCellReuseIdentifier
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! ChatFeedMessageCell
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(content.reuseIdentifier, forIndexPath: indexPath) as! ChatFeedMessageCell
         decorate(cell, content: content)
         
         return cell
     }
     
     func registerCells(for collectionView: UICollectionView) {
-        collectionView.registerClass(ChatFeedMessageCell.self, forCellWithReuseIdentifier: ChatFeedMessageCell.mediaCellReuseIdentifier)
+        collectionView.registerClass(ChatFeedMessageCell.self, forCellWithReuseIdentifier: ChatFeedMessageCell.imageCellReuseIdentifier)
+        collectionView.registerClass(ChatFeedMessageCell.self, forCellWithReuseIdentifier: ChatFeedMessageCell.videoCellReuseIdentifier)
         collectionView.registerClass(ChatFeedMessageCell.self, forCellWithReuseIdentifier: ChatFeedMessageCell.nonMediaCellReuseIdentifier)
     }
     
@@ -65,10 +65,23 @@ extension ChatInterfaceDataSource {
         cell.content = content
     }
     
-    func updateTimeStamps(in collectionView: UICollectionView) {
+    func updateTimestamps(in collectionView: UICollectionView) {
         for indexPath in collectionView.indexPathsForVisibleItems() {
             let cell = collectionView.cellForItemAtIndexPath(indexPath) as! ChatFeedMessageCell
             cell.updateTimestamp()
         }
+    }
+}
+
+extension ContentModel {
+    var reuseIdentifier: String {
+        if type.displaysAsVideo {
+            return ChatFeedMessageCell.videoCellReuseIdentifier
+        }
+        else if type.displaysAsImage {
+            return ChatFeedMessageCell.imageCellReuseIdentifier
+        }
+        
+        return ChatFeedMessageCell.nonMediaCellReuseIdentifier
     }
 }

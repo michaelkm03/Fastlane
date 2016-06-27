@@ -83,7 +83,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         
         dataSource.nextSender = self
         
-        newItemsController.depedencyManager = dependencyManager
+        newItemsController.dependencyManager = dependencyManager
         newItemsController.delegate = self
         newItemsController.hide(animated: false)
     }
@@ -107,6 +107,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
         let messageCell = cell as! ChatFeedMessageCell
         messageCell.delegate = self
+        messageCell.startDisplaying()
     }
     
     func collectionView(collectionView: UICollectionView, didEndDisplayingCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
@@ -154,7 +155,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     }
     
     private func handleNewItems(newItems: [ChatFeedContent], loadingType: PaginatedLoadingType, completion: (() -> Void)? = nil) {
-        guard newItems.count > 0 else {
+        guard newItems.count > 0 || loadingType == .refresh else {
             return
         }
         
@@ -294,7 +295,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     }
     
     private dynamic func onTimerTick() {
-        dataSource.updateTimeStamps(in: collectionView)
+        dataSource.updateTimestamps(in: collectionView)
     }
 }
 

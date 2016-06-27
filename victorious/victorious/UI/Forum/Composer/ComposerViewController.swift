@@ -18,6 +18,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         static let defaultMaximumTextLength = 0
         static let maximumAttachmentWidthPercentage: CGFloat = 480.0 / 667.0
         static let minimumConfirmButtonContainerHeight: CGFloat = 52
+        static let confirmButtonHorizontalInset: CGFloat = 16
     }
     
     /// ForumEventSender
@@ -54,17 +55,30 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     @IBOutlet weak private var attachmentContainerView: UIView!
     @IBOutlet weak private var interactiveContainerView: UIView!
-    @IBOutlet weak private var confirmButton: UIButton! {
+    @IBOutlet weak private var confirmButton: TouchableInsetAdjustableButton! {
         didSet {
             confirmButton.layer.cornerRadius = 5
             confirmButton.clipsToBounds = true
         }
     }
+    
     @IBOutlet weak private var confirmButtonContainer: UIView!
+    
+    @IBOutlet private var confirmButtonHorizontalConstraints: [NSLayoutConstraint]! {
+        didSet {
+            for constraint in confirmButtonHorizontalConstraints {
+                constraint.constant = Constants.confirmButtonHorizontalInset
+            }
+        }
+    }
     
     private var searchTextChanged = false
 
-    private var selectedAsset: ContentMediaAsset?
+    private var selectedAsset: ContentMediaAsset? {
+        didSet {
+            updateConfirmButtonState()
+        }
+    }
     
     private var composerTextViewManager: ComposerTextViewManager?
     private var keyboardManager: VKeyboardNotificationManager?
@@ -217,7 +231,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     var textViewHasText: Bool = false {
         didSet {
-            confirmButton.enabled = textViewHasText || selectedAsset != nil
+            updateConfirmButtonState()
             if oldValue != textViewHasText {
                 view.setNeedsUpdateConstraints()
             }
@@ -277,6 +291,10 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         return (dependencyManager.inputTextColor, dependencyManager.inputTextFont)
     }
     
+    private func updateConfirmButtonState() {
+        confirmButton.enabled = textViewHasText || selectedAsset != nil
+    }
+    
     // MARK: - View lifecycle
     
     override func viewDidLoad() {
@@ -328,6 +346,11 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     }
     
     override func updateViewConstraints() {
+        
+        let confirmButtonContainerHeight = confirmButtonContainer.bounds.height
+        if confirmButtonContainerHeight != abs(confirmButton.backgroundInsets.vertical) {
+            confirmButton.backgroundInsets = UIEdgeInsetsMake(-confirmButtonContainerHeight / 2, -Constants.confirmButtonHorizontalInset, -confirmButtonContainerHeight / 2, -Constants.confirmButtonHorizontalInset)
+        }
 
         let desiredAttachmentContainerHeight = shouldShowAttachmentContainer ? confirmButtonContainer.bounds.height : 0
         let attachmentContainerHeightNeedsUpdate = attachmentContainerHeightConstraint.constant != desiredAttachmentContainerHeight
@@ -463,13 +486,19 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
         
         var preview = previewImage
-        if contentType == .gif,
-            let image = capturedMediaURL.v_videoPreviewImage {
-            
+        if let image = capturedMediaURL.v_videoPreviewImage where contentType == .gif {
             preview = image
         }
         
-        selectedAsset = ContentMediaAsset(contentType: contentType, url: capturedMediaURL)
+        let publishParameters = creationFlowController.publishParameters
+        if let remoteID = publishParameters.assetRemoteId {
+            let mediaParameters = ContentMediaAsset.LocalAssetParameters(contentType: contentType, remoteID: remoteID, source: publishParameters.source, url: capturedMediaURL)
+            selectedAsset = ContentMediaAsset(initializationParameters: mediaParameters)
+        }
+        else {
+            let mediaParameters = ContentMediaAsset.RemoteAssetParameters(contentType: contentType, url: capturedMediaURL, source: publishParameters.source)
+            selectedAsset = ContentMediaAsset(initializationParameters: mediaParameters)
+        }
         let maxDimension = view.bounds.width * Constants.maximumAttachmentWidthPercentage
         let resizedImage = preview.scaledImageWithMaxDimension(maxDimension, upScaling: true)
         composerTextViewManager?.prependImage(resizedImage, toTextView: textView)
@@ -486,7 +515,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
     }
     
-    private func contentType(for creationFlowController: VCreationFlowController!) -> ContentType? {
+    private func contentType(for creationFlowController: VCreationFlowController) -> ContentType? {
         switch creationFlowController.mediaType() {
         case .Image:
             return .image

@@ -11,10 +11,8 @@ import Foundation
 /// A template-styled button that displays an image on top of a solid-color background
 @objc(VImageOnColorButton)
 class ImageOnColorButton: UIButton, TrackableButton {
-
-    var dependencyManager: VDependencyManager! {
+    var dependencyManager: VDependencyManager? {
         didSet {
-            
             backgroundColor = templateAppearanceValue(.backgroundColor)
             
             var foregroundRenderingMode = UIImageRenderingMode.AlwaysOriginal
@@ -26,6 +24,8 @@ class ImageOnColorButton: UIButton, TrackableButton {
             }
             let foregroundImage: UIImage? = templateAppearanceValue(.foregroundImage)
             setImage(foregroundImage?.imageWithRenderingMode(foregroundRenderingMode), forState: .Normal)
+            
+            self.enabled = templateAppearanceValue(.clickable) ?? false
         }
     }
 }

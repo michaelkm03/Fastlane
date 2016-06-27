@@ -110,9 +110,6 @@
 
 - (void)updateFollowingAnimated:(BOOL)animated
 {
-    self.followControl.hidden = [self.user isCurrentUser];
-    VFollowControlState controlState = [VFollowControl controlStateForFollowing:self.user.isFollowedByMainUser.boolValue];
-    [self.followControl setControlState:controlState animated:animated];
 }
 
 - (IBAction)onFollow:(VFollowControl *)sender
