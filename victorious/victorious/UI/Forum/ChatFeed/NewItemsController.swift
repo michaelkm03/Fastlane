@@ -19,8 +19,8 @@ class NewItemsController: NSObject, VBackgroundContainer {
     var depedencyManager: VDependencyManager! {
         didSet {
             depedencyManager.addBackgroundToBackgroundHost(self)
-            button.titleLabel?.font = depedencyManager.font
-            button.titleLabel?.textColor = depedencyManager.textColor
+//            button.titleLabel?.font = depedencyManager.font
+//            button.titleLabel?.textColor = depedencyManager.textColor
         }
     }
     

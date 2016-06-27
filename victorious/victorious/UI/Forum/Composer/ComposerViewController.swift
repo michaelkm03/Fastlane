@@ -55,7 +55,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     @IBOutlet weak private var attachmentContainerView: UIView!
     @IBOutlet weak private var interactiveContainerView: UIView!
-    @IBOutlet weak private var confirmButton: BackgroundInsetAdjustableButton! {
+    @IBOutlet weak private var confirmButton: TouchableInsetAdjustableButton! {
         didSet {
             confirmButton.layer.cornerRadius = 5
             confirmButton.clipsToBounds = true

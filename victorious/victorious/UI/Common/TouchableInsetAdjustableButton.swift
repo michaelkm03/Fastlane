@@ -1,5 +1,5 @@
 //
-//  BackgroundInsetAdjustableButton.swift
+//  TouchableInsetAdjustableButton.swift
 //  victorious
 //
 //  Created by Sharif Ahmed on 6/23/16.
@@ -8,8 +8,7 @@
 
 import UIKit
 
-class BackgroundInsetAdjustableButton: UIButton {
-    
+class TouchableInsetAdjustableButton: UIButton {
     var backgroundInsets = UIEdgeInsetsZero
     
     override func pointInside(point: CGPoint, withEvent event: UIEvent?) -> Bool {
