@@ -24,7 +24,6 @@ extension VContent: PersistenceParsable {
         /// and we will update again on the next launch when our persistent store is cleared.
         v_isLikedByCurrentUser = v_isLikedByCurrentUser ?? content.isLikedByCurrentUser
         
-        
         let author = content.author
         v_author = v_managedObjectContext.v_findOrCreateObject(["remoteId": author.id])
         v_author.populate(fromSourceModel: author)
@@ -46,5 +45,17 @@ extension VContent: PersistenceParsable {
         }
         
         v_contentMediaAssets = Set(persistentAssets)
+        
+        if let sourceTracking = content.tracking {
+            let tracking: VTracking = v_managedObjectContext.v_createObject()
+            tracking.populate(fromSourceModel: sourceTracking)
+            tracking.content = self
+            
+            if let v_tracking = v_tracking {
+                v_managedObjectContext.deleteObject(v_tracking)
+            }
+            
+            v_tracking = tracking
+        }
     }
 }

@@ -246,6 +246,8 @@ NSString * const VTrackingEventComponentDidBecomeVisible = @"ComponentDidBecomeV
 NSString * const VTrackingEventUserPermissionDidChange = @"UserPermissionDidChange";
 
 // Tracking Event Parameters
+NSString * const VTrackingKeyContentId = @"ContentId";
+NSString * const VTrackingKeyParentContentId = @"ParentContentId";
 NSString * const VTrackingKeyCurrentSection = @"CurrentSection";
 NSString * const VTrackingKeySection = @"Section";
 NSString * const VTrackingKeyTextType = @"TextType";

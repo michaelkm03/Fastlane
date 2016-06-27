@@ -18,6 +18,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
     private let gridStreamController: GridStreamViewController<CloseUpView>
     private var dependencyManager: VDependencyManager
     private var content: ContentModel?
+    private let contentID: String
     
     private lazy var shareButton: UIBarButtonItem = {
         return UIBarButtonItem(
@@ -48,6 +49,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
     }()
     
     init(dependencyManager: VDependencyManager,
+         contentID: String,
          content: ContentModel? = nil,
          streamAPIPath: APIPath) {
         self.dependencyManager = dependencyManager
@@ -74,6 +76,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
             configuration: configuration,
             streamAPIPath: streamAPIPath
         )
+        self.contentID = contentID
         self.content = content
         
         super.init(nibName: nil, bundle: nil)
@@ -86,6 +89,16 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
         view.addSubview(gridStreamController.view)
         view.v_addFitToParentConstraintsToSubview(gridStreamController.view)
         gridStreamController.didMoveToParentViewController(self)
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        dependencyManager.trackViewWillAppear(self, withParameters: [ VTrackingKeyContentId : contentID ])
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        dependencyManager.trackViewWillDisappear(self)
     }
     
     private func updateHeader() {
@@ -137,9 +150,6 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
     }
     
     func toggleUpvote() {
-        guard let contentID = content?.id else {
-            return
-        }
         ContentUpvoteToggleOperation(
             contentID: contentID,
             upvoteURL: dependencyManager.contentUpvoteURL,
@@ -150,10 +160,6 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
     }
     
     func overflow() {
-        guard let contentID = content?.id else {
-            return
-        }
-        
         let isCreatorOfContent = content?.author.id == VCurrentUser.user()?.id
         
         let flagOrDeleteOperation = isCreatorOfContent

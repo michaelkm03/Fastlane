@@ -6,7 +6,7 @@
 #import "VCVideoPlayerViewController.h"
 #import "VElapsedTimeFormatter.h"
 #import "VVideoDownloadProgressIndicatorView.h"
-#import "VTracking.h"
+#import "victorious-Swift.h"
 #import "VVideoUtils.h"
 #import "VCVideoPlayerView.h"
 

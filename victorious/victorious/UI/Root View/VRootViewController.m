@@ -15,7 +15,6 @@
 #import "VRootViewController.h"
 #import "VSessionTimer.h"
 #import "VThemeManager.h"
-#import "VTracking.h"
 #import "VConstants.h"
 #import "VLocationManager.h"
 #import "VVoteType.h"
