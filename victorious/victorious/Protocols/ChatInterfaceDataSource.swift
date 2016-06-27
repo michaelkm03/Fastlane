@@ -39,7 +39,7 @@ extension ChatInterfaceDataSource {
     }
     
     func registerCells(for collectionView: UICollectionView) {
-        collectionView.registerClass(ChatFeedMessageCell.self, forCellWithReuseIdentifier: ChatFeedMessageCell.imageCellReuseIdentifier)
+        collectionView.registerClass(ChatFeedMessageCell.self, forCellWithReuseIdentifier: ChatFeedMessageCell.mediaCellReuseIdentifier)
         collectionView.registerClass(ChatFeedMessageCell.self, forCellWithReuseIdentifier: ChatFeedMessageCell.videoCellReuseIdentifier)
         collectionView.registerClass(ChatFeedMessageCell.self, forCellWithReuseIdentifier: ChatFeedMessageCell.nonMediaCellReuseIdentifier)
     }
@@ -75,11 +75,11 @@ extension ChatInterfaceDataSource {
 
 extension ContentModel {
     var reuseIdentifier: String {
-        if type.displaysAsVideo {
+        if type == .gif {
             return ChatFeedMessageCell.videoCellReuseIdentifier
         }
-        else if type.displaysAsImage {
-            return ChatFeedMessageCell.imageCellReuseIdentifier
+        else if type == .video || type == .image {
+            return ChatFeedMessageCell.mediaCellReuseIdentifier
         }
         
         return ChatFeedMessageCell.nonMediaCellReuseIdentifier

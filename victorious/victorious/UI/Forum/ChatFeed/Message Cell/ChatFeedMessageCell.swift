@@ -15,7 +15,7 @@ protocol ChatFeedMessageCellDelegate: class {
 }
 
 class ChatFeedMessageCell: UICollectionViewCell {
-    static let imageCellReuseIdentifier = "ImageChatFeedMessageCell"
+    static let mediaCellReuseIdentifier = "MediaChatFeedMessageCell"
     static let videoCellReuseIdentifier = "VideoChatFeedMessageCell"
     static let nonMediaCellReuseIdentifier = "NonMediaChatFeedMessageCell"
     
@@ -25,7 +25,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
     let bubbleView = UIView()
     let captionLabel = UILabel()
     let avatarView = VDefaultProfileImageView()
-    var mediaView: MediaContentView?
+    var previewView: UIView?
     
     var layout: ChatFeedMessageCellLayout! {
         didSet {
@@ -129,12 +129,24 @@ class ChatFeedMessageCell: UICollectionViewCell {
         captionLabel.attributedText = content?.attributedText(using: dependencyManager)
         
         if let content = content where content.type.hasMedia {
-            let mediaView = createMediaViewIfNeeded()
-            mediaView.content = content
-            mediaView.hidden = false
+            if content.type == .gif {
+                let previewView = createMediaViewIfNeeded()
+                setNeedsLayout()
+                layoutIfNeeded()
+                previewView.content = content
+                previewView.hidden = false
+            }
+            else {
+                // Videos and images
+                let previewView = createContentPreviewViewIfNeeded()
+                setNeedsLayout()
+                layoutIfNeeded()
+                previewView.hidden = false
+                previewView.content = content
+            }
         }
         else {
-            mediaView?.hidden = true
+            previewView?.hidden = true
         }
         
         detailLabel.hidden = VCurrentUser.user()?.remoteId.integerValue == content?.author.id
@@ -149,20 +161,41 @@ class ChatFeedMessageCell: UICollectionViewCell {
         }
     }
     
+    private func createContentPreviewViewIfNeeded() -> ContentPreviewView {
+        if let existingPreviewView = self.previewView as? ContentPreviewView {
+            return existingPreviewView
+        }
+        
+        let previewView = ContentPreviewView()
+        
+        previewView.clipsToBounds = true
+        previewView.translatesAutoresizingMaskIntoConstraints = false
+        
+        previewView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onMediaTapped)))
+        
+        bubbleView.addSubview(previewView)
+        self.previewView = previewView
+        return previewView
+    }
+    
     private func createMediaViewIfNeeded() -> MediaContentView {
-        if let existingMediaView = self.mediaView {
+        if let existingMediaView = self.previewView as? MediaContentView {
             return existingMediaView
         }
         
-        let mediaView = MediaContentView(showsBackground: false)
-        mediaView.animatesBetweenContent = false
-        mediaView.allowsVideoControls = false
-        mediaView.clipsToBounds = true
-        mediaView.translatesAutoresizingMaskIntoConstraints = false
-        mediaView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onMediaTapped)))
-        bubbleView.addSubview(mediaView)
-        self.mediaView = mediaView
-        return mediaView
+        let previewView = MediaContentView(showsBackground: false)
+        
+        previewView.animatesBetweenContent = false
+        previewView.allowsVideoControls = false
+        
+        previewView.clipsToBounds = true
+        previewView.translatesAutoresizingMaskIntoConstraints = false
+        
+        previewView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onMediaTapped)))
+        
+        bubbleView.addSubview(previewView)
+        self.previewView = previewView
+        return previewView
     }
     
     func updateTimestamp() {
@@ -179,11 +212,15 @@ class ChatFeedMessageCell: UICollectionViewCell {
     /// Expected to be called whenever the cell goes off-screen and is queued for later reuse. Stops media from playing
     /// and frees up resources that are no longer needed.
     func stopDisplaying() {
-        mediaView?.videoCoordinator?.pauseVideo()
+        if let previewView = previewView as? MediaContentView {
+            previewView.videoCoordinator?.pauseVideo()
+        }
     }
     
     func startDisplaying() {
-        mediaView?.videoCoordinator?.playVideo()
+        if let previewView = previewView as? MediaContentView {
+            previewView.videoCoordinator?.playVideo()
+        }
     }
     
     // MARK: - Sizing

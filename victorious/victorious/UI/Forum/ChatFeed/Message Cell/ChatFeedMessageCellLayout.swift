@@ -41,7 +41,7 @@ extension ChatFeedMessageCellLayout {
             height: textSize.height
         )
         
-        cell.mediaView?.frame = CGRect(
+        cell.previewView?.frame = CGRect(
             x: 0,
             y: 0,
             width: cell.bubbleView.bounds.width,
