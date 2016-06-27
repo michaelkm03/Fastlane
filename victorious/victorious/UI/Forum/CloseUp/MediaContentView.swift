@@ -20,6 +20,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         static let maxLineCount = 4
         static let textAlignment = NSTextAlignment.Center
         static let minimumScaleFactor: CGFloat = 0.8
+        static let textPostPadding = 25
     }
     
     private(set) var videoCoordinator: VContentVideoPlayerCoordinator?
@@ -280,9 +281,18 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         
         if let url = dependencyManager?.textPostBackgroundImageURL() {
             setBackgroundBlur(withImageUrl: url) { [weak self] in
-                self?.spinner.stopAnimating()
-                self?.textPostLabel.hidden = false
-                self?.showContent()
+                guard
+                    let strongSelf = self,
+                    let currentContentID = strongSelf.content?.id
+                where
+                    currentContentID == content.id
+                else {
+                    return
+                }
+                
+                strongSelf.spinner.stopAnimating()
+                strongSelf.textPostLabel.hidden = false
+                strongSelf.showContent()
             }
         }
     }
@@ -297,7 +307,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         super.layoutSubviews()
         previewImageView.frame = bounds
         videoContainerView.frame = bounds
-        v_addFitToParentConstraintsToSubview(textPostLabel, leading: 25, trailing: 25, top: 0, bottom: 0)
+        textPostLabel.frame = CGRect(x: bounds.origin.x + CGFloat(Constants.textPostPadding), y: bounds.origin.y, width: bounds.width - CGFloat(2 * Constants.textPostPadding), height: bounds.height)
         backgroundView?.frame = bounds
         spinner.center = CGPoint(x: bounds.midX, y: bounds.midY)
         videoCoordinator?.layout(in: bounds)
