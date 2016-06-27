@@ -15,8 +15,8 @@ protocol ChatFeedMessageCellDelegate: class {
 }
 
 class ChatFeedMessageCell: UICollectionViewCell {
-    static let mediaCellReuseIdentifier = "MediaChatFeedMessageCell"
-    static let videoCellReuseIdentifier = "VideoChatFeedMessageCell"
+    static let imagePreviewCellReuseIdentifier = "ImagePreviewChatFeedMessageCell"
+    static let videoPreviewCellReuseIdentifier = "VideoPreviewChatFeedMessageCell"
     static let nonMediaCellReuseIdentifier = "NonMediaChatFeedMessageCell"
     
     let usernameLabel = UILabel()
@@ -168,14 +168,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
         }
         
         let previewView = ContentPreviewView()
-        
-        previewView.clipsToBounds = true
-        previewView.translatesAutoresizingMaskIntoConstraints = false
-        
-        previewView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onMediaTapped)))
-        
-        bubbleView.addSubview(previewView)
-        self.previewView = previewView
+        setupPreviewView(previewView)
         return previewView
     }
     
@@ -188,7 +181,11 @@ class ChatFeedMessageCell: UICollectionViewCell {
         
         previewView.animatesBetweenContent = false
         previewView.allowsVideoControls = false
-        
+        setupPreviewView(previewView)
+        return previewView
+    }
+    
+    private func setupPreviewView(previewView: UIView) {
         previewView.clipsToBounds = true
         previewView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -196,7 +193,6 @@ class ChatFeedMessageCell: UICollectionViewCell {
         
         bubbleView.addSubview(previewView)
         self.previewView = previewView
-        return previewView
     }
     
     func updateTimestamp() {

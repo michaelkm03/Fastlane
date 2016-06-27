@@ -41,15 +41,12 @@ class ContentPreviewView: UIView {
         previewImageView.frame = self.bounds
         
         playButton.frame.size = Constants.playButtonSize
-        playButton.center = self.center
+        playButton.center = self.bounds.center
         
-        vipIcon.frame.size = Constants.vipSize
-        
-        var origin = CGPointZero
-        origin.x = Constants.vipMargins
-        origin.y = bounds.size.height - Constants.vipSize.height - Constants.vipMargins
-        
-        vipIcon.frame.origin = origin
+        vipIcon.frame = CGRect(
+            origin: CGPoint(x: Constants.vipMargins, y: bounds.size.height - Constants.vipSize.height - Constants.vipMargins),
+            size: Constants.vipSize
+        )
     }
     
     init() {
@@ -113,5 +110,14 @@ class ContentPreviewView: UIView {
 private extension VDependencyManager {
     var vipIcon: UIImage? {
         return imageForKey("icon.vip")
+    }
+}
+
+private extension CGRect {
+    var center: CGPoint {
+        return CGPoint(
+            x: size.width/2 + origin.x,
+            y: size.height/2 + origin.y
+        )
     }
 }
