@@ -50,7 +50,6 @@ class ContentPreviewView: UIView {
         origin.y = bounds.size.height - Constants.vipSize.height - Constants.vipMargins
         
         vipIcon.frame.origin = origin
-        
     }
     
     init() {
