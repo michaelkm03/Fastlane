@@ -29,8 +29,6 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         static let toolbarHeight = CGFloat(41.0)
     }
 
-    private let videoPlayer: VVideoPlayer
-    
     private var lastState: VideoState = .NotStarted
     private var state: VideoState = .NotStarted {
         didSet {
@@ -75,12 +73,6 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         toolbar.removeFromSuperview()
     }
     
-    func setupVideoPlayer(in superview: UIView) {
-        superview.addSubview(videoPlayer.view)
-    }
-    
-    
-    
     func loadVideo() {
         guard let asset = content.assets.first else {
             assertionFailure("There were no assets for this piece of content.")
@@ -101,11 +93,20 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         
         if let item = item {
             item.muted = shouldMute
+            item.loop = shouldLoop
             item.useAspectFit = true
             videoPlayer.setItem(item)
             videoPlayer.playFromStart()
             state = .Playing
         }
+    }
+    
+    // MARK: - Managing the video player
+    
+    private let videoPlayer: VVideoPlayer
+    
+    func setupVideoPlayer(in superview: UIView) {
+        superview.addSubview(videoPlayer.view)
     }
     
     // MARK: - Managing the toolbar
@@ -159,14 +160,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     }
     
     func videoPlayerDidReachEnd(videoPlayer: VVideoPlayer) {
-        videoPlayer.pause()
-        // Replay the video if necessary
-        if  shouldLoop {
-            videoPlayer.playFromStart()
-        }
-        else {
-            state = .Ended
-        }
+        state = .Ended
     }
     
     func videoPlayerDidStartBuffering(videoPlayer: VVideoPlayer) {
@@ -187,7 +181,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     }
     
     func videoPlayerDidPlay(videoPlayer: VVideoPlayer) {
-        state = .Playing;
+        state = .Playing
     }
     
     func videoPlayerDidPause(videoPlayer: VVideoPlayer) {
