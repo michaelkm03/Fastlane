@@ -136,7 +136,9 @@ public class Content: ContentModel {
     }
     
     public init?(chatMessageJSON json: JSON, serverTime: NSDate) {
-        guard let user = User(json: json["user"]) else {
+        guard
+            let user = User(json: json["user"])
+        else {
             return nil
         }
         
@@ -150,7 +152,7 @@ public class Content: ContentModel {
         hashtags = []
         shareURL = nil
         previewImages = []
-        type = .text
+        self.type = assets.first?.contentType ?? .text
         isVIPOnly = false
         isLikedByCurrentUser = false
         tracking = nil //Tracking is not returned on chat messages
