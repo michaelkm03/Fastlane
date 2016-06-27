@@ -86,7 +86,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6XI-Cd-FZ6">
                                         <rect key="frame" x="532" y="25" width="68" height="55"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ytv-wP-GFy">
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ytv-wP-GFy" customClass="TouchableInsetAdjustableButton" customModule="victorious" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="8" width="60" height="39"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="60" id="I1u-aw-0Wa"/>
@@ -150,8 +150,6 @@
                         <outlet property="textView" destination="FNU-QM-fIQ" id="Iaw-x1-tj0"/>
                         <outlet property="textViewContainerHeightConstraint" destination="4PX-UV-qLv" id="0ih-yq-hJK"/>
                         <outlet property="textViewHeightConstraint" destination="ciC-0O-1WA" id="zlJ-WN-OOp"/>
-                        <outletCollection property="confirmButtonHorizontalConstraints" destination="3mp-RO-N8O" collectionClass="NSMutableArray" id="Tau-k3-u8s"/>
-                        <outletCollection property="confirmButtonHorizontalConstraints" destination="jMz-WL-Eun" collectionClass="NSMutableArray" id="1UC-V1-Maw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pv6-ay-D6e" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -64,14 +64,6 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     @IBOutlet weak private var confirmButtonContainer: UIView!
     
-    @IBOutlet private var confirmButtonHorizontalConstraints: [NSLayoutConstraint]! {
-        didSet {
-            for constraint in confirmButtonHorizontalConstraints {
-                constraint.constant = Constants.confirmButtonHorizontalInset
-            }
-        }
-    }
-    
     private var searchTextChanged = false
 
     private var selectedAsset: ContentMediaAsset? {
