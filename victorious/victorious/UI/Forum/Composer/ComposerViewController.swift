@@ -594,27 +594,22 @@ private extension VDependencyManager {
     }
     
     var confirmButtonDisabledTextColor: UIColor? {
-        return UIColor.whiteColor().colorWithAlphaComponent(0.15)
         return colorForKey("color.link.disabled")
     }
     
     var confirmButtonEnabledTextColor: UIColor? {
-        return UIColor.whiteColor().colorWithAlphaComponent(0.7)
         return colorForKey("color.link.enabled")
     }
     
     var confirmButtonBackgroundColorEnabled: UIColor? {
-        return UIColor.whiteColor().colorWithAlphaComponent(0.2)
         return colorForKey("color.accent.enabled")
     }
     
     var confirmButtonBackgroundColorDisabled: UIColor? {
-        return UIColor.whiteColor().colorWithAlphaComponent(0.06)
         return colorForKey("color.accent.disabled")
     }
     
     var inputAreaBackgroundColor: UIColor? {
-        return UIColor.blackColor().colorWithAlphaComponent(0.3)
         return colorForKey("color.accent.secondary")
     }
     
