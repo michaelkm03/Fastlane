@@ -26,11 +26,11 @@ private struct NotificationSettingsTableRow {
     var title: String
 }
 
-class NotificationSettingsViewController: UITableViewController, VSettingsSwitchCellDelegate, VNotificiationSettingsStateManagerDelegate, VHasManagedDependencies {
+class NotificationSettingsViewController: UITableViewController, VSettingsSwitchCellDelegate, VNotificiationSettingsStateManagerDelegate {
     
     /// MARK : - Properties 
     
-    var dependencyManager: VDependencyManager?
+    private var dependencyManager: VDependencyManager?
     var settings : VNotificationSettings?
     
     private var stateManager: VNotificationSettingsStateManager?
@@ -212,9 +212,8 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
     
     /// MARK: - Custom Initializers 
     
-    init(dependencyManager: VDependencyManager) {
-        self.dependencyManager = dependencyManager
-        super.init(nibName: "N", bundle: <#T##NSBundle?#>)
+    func setDependencyManager(dependencyManager: VDependencyManager) {
+       self.dependencyManager = dependencyManager.childDependencyForKey("push.notifications.screen")
     }
     
 }
