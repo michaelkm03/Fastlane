@@ -38,7 +38,7 @@ extension Composer {
     }
     
     func sendMessage(asset asset: ContentMediaAsset, text: String?, currentUser: UserModel) {
-        let content = Content(text: text, assets: [asset], author: currentUser)
+        let content = Content(text: text, assets: [asset], type: asset.contentType, author: currentUser)
         send(.sendContent(content))
     }
 }
