@@ -18,6 +18,9 @@ private struct Constants {
     static let sectionTitleColorKey = "color.text.section.title"
     static let sectionTitleFontKey = "font.text.section.title"
     static let tableViewSeparatorColorKey = "color.separator.navigation.items"
+    static let itemsArrayKey = "items"
+    static let sectionItemsKey = "section.items"
+    static let sectionTitleKey = "section.title"
     static let creatorNameMacro = "%%CREATOR_NAME%%"
     static let tableViewRowHeight: CGFloat = 44
     static let tableViewHeaderHeight: CGFloat = 25
@@ -211,12 +214,12 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
         }
         
         var result: [NotificationSettingsTableSection] = []
-        let items = dependencyManager.arrayForKey("items")
+        let items = dependencyManager.arrayForKey(Constants.itemsArrayKey)
         
         for item in items {
             if let itemDictionary = item as? [String : AnyObject],
-                let sectionTitle = itemDictionary["section.title"] as? String,
-                let sectionArray = itemDictionary["section.items"] as? [AnyObject]
+                let sectionTitle = itemDictionary[Constants.sectionTitleKey] as? String,
+                let sectionArray = itemDictionary[Constants.sectionItemsKey] as? [AnyObject]
             {
                 let sectionRows: [NotificationSettingsTableRow] = sectionArray.map(){ (object) in
                     if  let rowDictionary = object as? [String : AnyObject],
