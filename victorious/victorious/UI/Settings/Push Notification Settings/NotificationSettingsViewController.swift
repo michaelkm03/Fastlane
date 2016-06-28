@@ -28,12 +28,12 @@ private struct Constants {
     static let errorStateViewWidthMultiplier: CGFloat = 0.8
 }
 
-private struct NotificationSettingsTableSection {
+struct NotificationSettingsTableSection {
     var title: String
     var rows: [NotificationSettingsTableRow]
 }
 
-private struct NotificationSettingsTableRow {
+struct NotificationSettingsTableRow {
     var key: String
     var title: String
 }
@@ -208,7 +208,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
     
     /// MARK: - Internal functions
     
-    private func sectionsForTableView() -> [NotificationSettingsTableSection] {
+    func sectionsForTableView() -> [NotificationSettingsTableSection] {
         guard let dependencyManager = self.dependencyManager else {
             return []
         }

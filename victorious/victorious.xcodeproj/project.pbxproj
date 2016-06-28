@@ -862,7 +862,7 @@
 		7C4CCE681D10D36F00784D30 /* SettingsViewController+Templatized.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4CCE671D10D36F00784D30 /* SettingsViewController+Templatized.swift */; };
 		7C4CCE6A1D10E44800784D30 /* UITableViewCell+VBackgroundContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4CCE691D10E44800784D30 /* UITableViewCell+VBackgroundContainer.swift */; };
 		7C582CA21D22E80300707CBE /* VSettingsSwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C582CA11D22E80300707CBE /* VSettingsSwitchCell.xib */; };
-		7C582CA41D23249C00707CBE /* NotificationSettingsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C582CA31D23249C00707CBE /* NotificationSettingsViewControllerTests.swift */; };
+		7C582CA61D23270000707CBE /* NotificationSettingsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C582CA51D23270000707CBE /* NotificationSettingsViewControllerTests.swift */; };
 		7C6547D61CF4CDAE005F58A1 /* UIView+ShakeAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C61D31CEF81400072349B /* UIView+ShakeAnimation.swift */; };
 		7CC982211D0104EC00583B70 /* VDependencyManager+ForumNetworkSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC982201D0104EC00583B70 /* VDependencyManager+ForumNetworkSource.swift */; };
 		7CC982241D0235D300583B70 /* ForumNavBarTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC982231D0235D300583B70 /* ForumNavBarTitleView.swift */; };
@@ -3342,7 +3342,7 @@
 		7C4CCE671D10D36F00784D30 /* SettingsViewController+Templatized.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+Templatized.swift"; sourceTree = "<group>"; };
 		7C4CCE691D10E44800784D30 /* UITableViewCell+VBackgroundContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+VBackgroundContainer.swift"; sourceTree = "<group>"; };
 		7C582CA11D22E80300707CBE /* VSettingsSwitchCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VSettingsSwitchCell.xib; sourceTree = "<group>"; };
-		7C582CA31D23249C00707CBE /* NotificationSettingsViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationSettingsViewControllerTests.swift; sourceTree = "<group>"; };
+		7C582CA51D23270000707CBE /* NotificationSettingsViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationSettingsViewControllerTests.swift; sourceTree = "<group>"; };
 		7C68CA9BC5F670F063DA6A87 /* Pods-victoriousPersistenceTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victoriousPersistenceTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-victoriousPersistenceTests/Pods-victoriousPersistenceTests.release.xcconfig"; sourceTree = "<group>"; };
 		7C9C61D31CEF81400072349B /* UIView+ShakeAnimation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+ShakeAnimation.swift"; sourceTree = "<group>"; };
 		7CC982201D0104EC00583B70 /* VDependencyManager+ForumNetworkSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VDependencyManager+ForumNetworkSource.swift"; sourceTree = "<group>"; };
@@ -9531,7 +9531,7 @@
 				F015BEF21A8A8392008A0D67 /* VUserTaggingTextStorageTests.m */,
 				A73AFB7B19F573AB0005A9EA /* VVideoTrackingTests.m */,
 				A7AB4FE819F5A6A300BFFE35 /* VVoteTypeFetcherTests.m */,
-				7C582CA31D23249C00707CBE /* NotificationSettingsViewControllerTests.swift */,
+				7C582CA51D23270000707CBE /* NotificationSettingsViewControllerTests.swift */,
 			);
 			path = victoriousTests;
 			sourceTree = "<group>";
@@ -13717,7 +13717,7 @@
 				A7DCA4E61C128A78004E35B4 /* VElapsedTimeFormatterTests.m in Sources */,
 				67D3E0521CED4822008F9398 /* TestTrackingManager.swift in Sources */,
 				A7DCA4F51C128A78004E35B4 /* VLargeNumberFormatterTests.m in Sources */,
-				7C582CA41D23249C00707CBE /* NotificationSettingsViewControllerTests.swift in Sources */,
+				7C582CA61D23270000707CBE /* NotificationSettingsViewControllerTests.swift in Sources */,
 				A7DCA4E11C128A78004E35B4 /* VDefaultTemplateTests.m in Sources */,
 				A7DCA4E81C128A78004E35B4 /* VExperienceEnhancerTests.m in Sources */,
 				A7DCA4F41C128A78004E35B4 /* VKeyboardInputAccessoryViewTests.m in Sources */,
