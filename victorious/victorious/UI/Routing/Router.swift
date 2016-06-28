@@ -31,6 +31,7 @@ struct Router {
                 guard
                     let linkedURL = content.linkedURL,
                     let destination = DeeplinkDestination(url: linkedURL) else {
+                        showError()
                         return
                 }
                 switch destination {
@@ -38,7 +39,8 @@ struct Router {
                     case .closeUp, .externalURL:
                         showCloseUpView(for: content)
                     case .vipForum:
-                        ShowForumOperation(originViewController: originViewController, dependencyManager: dependencyManager, showVIP: true, animated: true).queue()
+                        showVIPForum()
+                    
                 }
             case .text:
                 // We currently don't support tapping on text content
@@ -46,9 +48,24 @@ struct Router {
         }
     }
     
+    func navigate(to contentID: String, preferredTransition: ViewTransition = .push) {
+        let displayModifier = ShowCloseUpDisplayModifier(dependencyManager: dependencyManager, originViewController: originViewController)
+        ShowCloseUpOperation.showOperation(forContentID: contentID, displayModifier: displayModifier).queue()
+    }
+    
     private func showCloseUpView(for content: ContentModel, preferredTransition: ViewTransition = .push) {
         let displayModifier = ShowCloseUpDisplayModifier(dependencyManager: dependencyManager, originViewController: originViewController)
         ShowCloseUpOperation.showOperation(forContent: content, displayModifier: displayModifier).queue()
+    }
+    
+    private func showVIPForum() {
+        ShowForumOperation(originViewController: originViewController, dependencyManager: dependencyManager, showVIP: true, animated: true).queue()
+    }
+    
+    private func showError() {
+        let title = NSLocalizedString("Missing Content", comment: "The title of the alert saying we can't find a piece of content")
+        let message = NSLocalizedString("Missing Content Message", comment: "A deep linked content has a wrong destination URL that we can't navigate to")
+        originViewController.v_showAlert(title: title, message: message)
     }
 }
 
