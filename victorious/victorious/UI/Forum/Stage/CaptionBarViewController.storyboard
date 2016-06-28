@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="s4g-pW-yus">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+    </dependencies>
+    <scenes>
+        <!--Caption Bar View Controller-->
+        <scene sceneID="Xl1-d1-iAH">
+            <objects>
+                <viewController storyboardIdentifier="CaptionBarViewController" id="s4g-pW-yus" customClass="CaptionBarViewController" customModule="victorious" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="aux-jy-eBS"/>
+                        <viewControllerLayoutGuide type="bottom" id="EkJ-Pu-Rn4"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="hsw-wA-xV3" customClass="CaptionBar" customModule="victorious" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="80"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8OE-xq-oGY">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="80"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="AVo-6W-zf1">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="80"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                </view>
+                                <blurEffect style="dark"/>
+                            </visualEffectView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DEK-3L-V3o">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="80"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Bvc-71-Pei">
+                                        <rect key="frame" x="16" y="16" width="44" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="IYl-ux-fmA"/>
+                                            <constraint firstAttribute="width" secondItem="Bvc-71-Pei" secondAttribute="height" multiplier="1:1" id="MZK-U3-rov"/>
+                                        </constraints>
+                                    </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zd0-Zd-kLL">
+                                        <rect key="frame" x="538" y="23" width="46" height="30"/>
+                                        <state key="normal" title="Button"/>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NwJ-vh-MaQ">
+                                        <rect key="frame" x="76" y="16" width="446" height="48"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="Bvc-71-Pei" firstAttribute="leading" secondItem="DEK-3L-V3o" secondAttribute="leading" constant="16" id="4qz-OD-ujm"/>
+                                    <constraint firstAttribute="bottom" secondItem="NwJ-vh-MaQ" secondAttribute="bottom" priority="999" constant="16" id="6Qj-Vg-UYi"/>
+                                    <constraint firstItem="zd0-Zd-kLL" firstAttribute="centerY" secondItem="Bvc-71-Pei" secondAttribute="centerY" id="awo-4b-LpF"/>
+                                    <constraint firstItem="zd0-Zd-kLL" firstAttribute="leading" secondItem="NwJ-vh-MaQ" secondAttribute="trailing" constant="16" id="jCJ-Wa-byf"/>
+                                    <constraint firstItem="NwJ-vh-MaQ" firstAttribute="leading" secondItem="Bvc-71-Pei" secondAttribute="trailing" constant="16" id="oX9-V5-z89"/>
+                                    <constraint firstAttribute="trailing" secondItem="zd0-Zd-kLL" secondAttribute="trailing" constant="16" id="om5-uC-wAE"/>
+                                    <constraint firstItem="NwJ-vh-MaQ" firstAttribute="top" secondItem="Bvc-71-Pei" secondAttribute="top" id="pFF-RU-mmJ"/>
+                                    <constraint firstItem="NwJ-vh-MaQ" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Bvc-71-Pei" secondAttribute="bottom" id="tJs-1w-Dxe"/>
+                                    <constraint firstItem="NwJ-vh-MaQ" firstAttribute="top" secondItem="DEK-3L-V3o" secondAttribute="top" priority="998" constant="16" id="uPe-Ch-9Ul"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="DEK-3L-V3o" firstAttribute="leading" secondItem="hsw-wA-xV3" secondAttribute="leading" id="7E3-f2-bZR"/>
+                            <constraint firstItem="EkJ-Pu-Rn4" firstAttribute="top" secondItem="8OE-xq-oGY" secondAttribute="bottom" id="ADr-XL-YNx"/>
+                            <constraint firstAttribute="trailing" secondItem="DEK-3L-V3o" secondAttribute="trailing" id="TMq-BS-UUu"/>
+                            <constraint firstItem="8OE-xq-oGY" firstAttribute="top" secondItem="aux-jy-eBS" secondAttribute="bottom" id="WKF-SL-qWP"/>
+                            <constraint firstAttribute="trailing" secondItem="8OE-xq-oGY" secondAttribute="trailing" id="b5o-9J-oap"/>
+                            <constraint firstItem="EkJ-Pu-Rn4" firstAttribute="top" secondItem="DEK-3L-V3o" secondAttribute="bottom" id="cNq-KR-FR2"/>
+                            <constraint firstItem="8OE-xq-oGY" firstAttribute="leading" secondItem="hsw-wA-xV3" secondAttribute="leading" id="lfi-4g-OTe"/>
+                            <constraint firstItem="DEK-3L-V3o" firstAttribute="top" secondItem="aux-jy-eBS" secondAttribute="bottom" id="y1F-cL-Yez"/>
+                        </constraints>
+                        <connections>
+                            <outlet property="avatarImageView" destination="Bvc-71-Pei" id="1Oe-6J-bKM"/>
+                            <outlet property="captionLabel" destination="NwJ-vh-MaQ" id="ojT-Kc-TGB"/>
+                            <outlet property="expandButton" destination="zd0-Zd-kLL" id="BLF-1O-Tem"/>
+                            <outlet property="overlayView" destination="DEK-3L-V3o" id="60q-X6-dYo"/>
+                        </connections>
+                    </view>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="600" height="80"/>
+                    <connections>
+                        <outlet property="captionBar" destination="hsw-wA-xV3" id="ZM5-g1-gvR"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="u09-DR-Ehp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="373" y="443"/>
+        </scene>
+    </scenes>
+</document>

@@ -30,6 +30,7 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate {
             updateAttributionBarAppearance(with: dependencyManager)
         }
     }
+    private var captionBarViewController: CaptionBarViewController!
     
     private lazy var newItemPill: TextOnColorButton? = { [weak self] in
         guard let pillDependency = self?.dependencyManager.newItemButtonDependency else {
@@ -65,6 +66,8 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        captionBarViewController = childViewControllers.flatMap({ $0 as? CaptionBarViewController }).first
         
         guard let newItemPill = newItemPill else {
             return
@@ -214,6 +217,10 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate {
 private extension VDependencyManager {
     var attributionBarDependency: VDependencyManager? {
         return childDependencyForKey("attributionBar")
+    }
+    
+    var captionBarDependency: VDependencyManager? {
+        return childDependencyForKey("captionBar")
     }
     
     var newItemButtonDependency: VDependencyManager? {
