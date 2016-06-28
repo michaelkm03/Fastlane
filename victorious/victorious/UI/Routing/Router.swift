@@ -8,16 +8,10 @@
 
 import Foundation
 
-enum ViewTransition {
-    case push
-    case present
-}
-
-/* TODO: 
- 1. Actually support preferredTransition
- 2. Queueing deep links (before scaffold is ready)
- 3. Unify navigating to `ContentModel` and `ContentID` by refactoring `ShowCloseUpOperation`
-*/
+/// FUTURE:
+/// - Queueing deep links (before scaffold is ready)
+/// - Unify navigating to `ContentModel` and `ContentID` by refactoring `ShowCloseUpOperation`
+///
 
 struct Router {
     private weak var originViewController: UIViewController!
@@ -28,7 +22,7 @@ struct Router {
         self.dependencyManager = dependencyManager
     }
     
-    func navigate(to content: ContentModel, preferredTransition: ViewTransition = .push) {
+    func navigate(to content: ContentModel) {
         switch content.type {
             case .image, .video, .gif:
                 showCloseUpView(for: content)
@@ -57,7 +51,7 @@ struct Router {
         }
     }
     
-    func navigate(to url: NSURL, preferredTransition: ViewTransition = .push) {
+    func navigate(to url: NSURL) {
         guard let destination = DeeplinkDestination(url: url) else {
             showError()
             return
@@ -70,7 +64,7 @@ struct Router {
                     showError()
                     return
                 }
-                showCloseUpView(for: contentID, preferredTransition: preferredTransition)
+                showCloseUpView(for: contentID)
             case .vipForum:
                 showVIPForum()
             case .externalURL:
@@ -81,12 +75,12 @@ struct Router {
     
     typealias ContentID = String
     
-    private func showCloseUpView(for contentID: ContentID, preferredTransition: ViewTransition = .push) {
+    private func showCloseUpView(for contentID: ContentID) {
         let displayModifier = ShowCloseUpDisplayModifier(dependencyManager: dependencyManager, originViewController: originViewController)
         ShowCloseUpOperation.showOperation(forContentID: contentID, displayModifier: displayModifier).queue()
     }
     
-    private func showCloseUpView(for content: ContentModel, preferredTransition: ViewTransition = .push) {
+    private func showCloseUpView(for content: ContentModel) {
         let displayModifier = ShowCloseUpDisplayModifier(dependencyManager: dependencyManager, originViewController: originViewController)
         ShowCloseUpOperation.showOperation(forContent: content, displayModifier: displayModifier).queue()
     }
