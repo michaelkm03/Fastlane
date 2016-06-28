@@ -16,19 +16,42 @@ public protocol PreviewImageContainer {
 
 extension PreviewImageContainer {
     public func previewImageURL(ofMinimumSize minimumSize: CGSize) -> NSURL? {
-        for asset in previewImages ?? [] where asset.mediaMetaData.size?.contains(minimumSize) == true {
-            return asset.mediaMetaData.url
+        var qualifiedAsset: ImageAssetModel?
+        
+        let minimumWidth = minimumSize.width
+        let minimumHeight = minimumSize.height
+        
+        for asset in previewImages ?? [] {
+            let lastWidth = qualifiedAsset?.mediaMetaData.size?.width ?? CGFloat.max
+            let lastHeight = qualifiedAsset?.mediaMetaData.size?.height ?? CGFloat.max
+            
+            if
+                let width = asset.mediaMetaData.size?.width,
+                let height = asset.mediaMetaData.size?.height
+                where width >= minimumWidth && height >= minimumHeight && width <= lastWidth && height <= lastHeight
+            {
+                qualifiedAsset = asset
+            }
         }
         
-        return largestPreviewImageURL
+        return qualifiedAsset?.mediaMetaData.url ?? largestPreviewImageURL
     }
     
     public func previewImageURL(ofMinimumWidth minimumWidth: CGFloat) -> NSURL? {
-        for asset in previewImages ?? [] where asset.mediaMetaData.size?.width >= minimumWidth {
-            return asset.mediaMetaData.url
+        var qualifiedAsset: ImageAssetModel?
+        
+        for asset in previewImages ?? [] {
+            let lastWidth = qualifiedAsset?.mediaMetaData.size?.width ?? CGFloat.max
+            
+            if
+                let width = asset.mediaMetaData.size?.width
+                where width >= minimumWidth && width <= lastWidth
+            {
+                qualifiedAsset = asset
+            }
         }
         
-        return largestPreviewImageURL
+        return qualifiedAsset?.mediaMetaData.url ?? largestPreviewImageURL
     }
     
     public var largestPreviewImageURL: NSURL? {

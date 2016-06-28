@@ -18,6 +18,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         static let defaultMaximumTextLength = 0
         static let maximumAttachmentWidthPercentage: CGFloat = 480.0 / 667.0
         static let minimumConfirmButtonContainerHeight: CGFloat = 52
+        static let confirmButtonHorizontalInset: CGFloat = 16
     }
     
     /// ForumEventSender
@@ -54,17 +55,30 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     @IBOutlet weak private var attachmentContainerView: UIView!
     @IBOutlet weak private var interactiveContainerView: UIView!
-    @IBOutlet weak private var confirmButton: UIButton! {
+    @IBOutlet weak private var confirmButton: TouchableInsetAdjustableButton! {
         didSet {
             confirmButton.layer.cornerRadius = 5
             confirmButton.clipsToBounds = true
         }
     }
+    
     @IBOutlet weak private var confirmButtonContainer: UIView!
+    
+    @IBOutlet private var confirmButtonHorizontalConstraints: [NSLayoutConstraint]! {
+        didSet {
+            for constraint in confirmButtonHorizontalConstraints {
+                constraint.constant = Constants.confirmButtonHorizontalInset
+            }
+        }
+    }
     
     private var searchTextChanged = false
 
-    private var selectedAsset: ContentMediaAsset?
+    private var selectedAsset: ContentMediaAsset? {
+        didSet {
+            updateConfirmButtonState()
+        }
+    }
     
     private var composerTextViewManager: ComposerTextViewManager?
     private var keyboardManager: VKeyboardNotificationManager?
@@ -217,7 +231,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     var textViewHasText: Bool = false {
         didSet {
-            confirmButton.enabled = textViewHasText || selectedAsset != nil
+            updateConfirmButtonState()
             if oldValue != textViewHasText {
                 view.setNeedsUpdateConstraints()
             }
@@ -245,6 +259,9 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             if oldValue != textViewHasPrependedImage {
                 attachmentTabBar.buttonsEnabled = !textViewHasPrependedImage
                 attachmentTabBar.enableButtonForIdentifier(ComposerInputAttachmentType.Hashtag.rawValue)
+                if !textViewHasPrependedImage {
+                    selectedAsset = nil
+                }
             }
         }
     }
@@ -275,6 +292,10 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     func inputTextAttributes() -> (inputTextColor: UIColor?, inputTextFont: UIFont?) {
         return (dependencyManager.inputTextColor, dependencyManager.inputTextFont)
+    }
+    
+    private func updateConfirmButtonState() {
+        confirmButton.enabled = textViewHasText || selectedAsset != nil
     }
     
     // MARK: - View lifecycle
@@ -328,6 +349,11 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     }
     
     override func updateViewConstraints() {
+        
+        let confirmButtonContainerHeight = confirmButtonContainer.bounds.height
+        if confirmButtonContainerHeight != abs(confirmButton.backgroundInsets.vertical) {
+            confirmButton.backgroundInsets = UIEdgeInsetsMake(-confirmButtonContainerHeight / 2, -Constants.confirmButtonHorizontalInset, -confirmButtonContainerHeight / 2, -Constants.confirmButtonHorizontalInset)
+        }
 
         let desiredAttachmentContainerHeight = shouldShowAttachmentContainer ? confirmButtonContainer.bounds.height : 0
         let attachmentContainerHeightNeedsUpdate = attachmentContainerHeightConstraint.constant != desiredAttachmentContainerHeight
