@@ -13,6 +13,12 @@ enum ViewTransition {
     case present
 }
 
+/* TODO: 
+ 1. Actually support preferredTransition
+ 2. Queueing deep links (before scaffold is ready)
+ 3. Unify navigating to `ContentModel` and `ContentID` by refactoring `ShowCloseUpOperation`
+*/
+
 struct Router {
     private weak var originViewController: UIViewController!
     private let dependencyManager: VDependencyManager
@@ -22,7 +28,6 @@ struct Router {
         self.dependencyManager = dependencyManager
     }
     
-    // TODO: actually support preferredTransition
     func navigate(to content: ContentModel, preferredTransition: ViewTransition = .push) {
         switch content.type {
             case .image, .video, .gif:
@@ -32,15 +37,18 @@ struct Router {
                     let linkedURL = content.linkedURL,
                     let destination = DeeplinkDestination(url: linkedURL)
                 else {
-                        showError()
-                        return
+                    showError()
+                    return
                 }
                 switch destination {
                     case .profile: break
-                    case .closeUp, .externalURL:
+                    case .closeUp:
                         showCloseUpView(for: content)
                     case .vipForum:
                         showVIPForum()
+                    case .externalURL:
+                        // Show web content
+                        break
                     
                 }
             case .text:
@@ -49,7 +57,31 @@ struct Router {
         }
     }
     
-    func navigate(to contentID: String, preferredTransition: ViewTransition = .push) {
+    func navigate(to url: NSURL, preferredTransition: ViewTransition = .push) {
+        guard let destination = DeeplinkDestination(url: url) else {
+            showError()
+            return
+        }
+        
+        switch destination {
+            case .profile: break
+            case .closeUp:
+                guard let contentID = url.v_firstNonSlashPathComponent() else {
+                    showError()
+                    return
+                }
+                showCloseUpView(for: contentID, preferredTransition: preferredTransition)
+            case .vipForum:
+                showVIPForum()
+            case .externalURL:
+                // Show web content
+                break
+        }
+    }
+    
+    typealias ContentID = String
+    
+    private func showCloseUpView(for contentID: ContentID, preferredTransition: ViewTransition = .push) {
         let displayModifier = ShowCloseUpDisplayModifier(dependencyManager: dependencyManager, originViewController: originViewController)
         ShowCloseUpOperation.showOperation(forContentID: contentID, displayModifier: displayModifier).queue()
     }
