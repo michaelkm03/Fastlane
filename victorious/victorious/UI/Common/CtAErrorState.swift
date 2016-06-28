@@ -66,6 +66,6 @@ class CtAErrorState: UIView {
                 if let url = NSURL(string: UIApplicationOpenSettingsURLString) {
                     UIApplication.sharedApplication().openURL(url)
                 }
-            }
+        }
     }
 }
