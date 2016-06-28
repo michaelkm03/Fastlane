@@ -342,9 +342,10 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         }
     }
     
-    private func setBackgroundBlur(withImageUrl imageURL: NSURL) {
+    private func setBackgroundBlur(withImageUrl imageURL: NSURL, completion: (()->())? = nil) {
         backgroundView?.applyBlurToImageURL(imageURL, withRadius: Constants.blurRadius) { [weak self] in
             self?.backgroundView?.alpha = 1
+            completion?()
         }
     }
 
