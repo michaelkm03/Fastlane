@@ -30,9 +30,9 @@ class InterstitialManagerTests: XCTestCase {
     }
     
     func testReceivingAlerts() {
-        interstitialManager.onAlertsReceived([alertA, alertB, alertC])
+        interstitialManager.receive([alertA, alertB, alertC])
         XCTAssertEqual(interstitialListener.registeredInterstitialsCount, 3)
-        interstitialManager.onAlertsReceived([alertA])
+        interstitialManager.receive(alertA)
         XCTAssertEqual(interstitialListener.registeredInterstitialsCount, 3)
     }
     
@@ -42,7 +42,7 @@ class InterstitialManagerTests: XCTestCase {
     }
     
     func testClearAllAlerts() {
-        interstitialManager.onAlertsReceived([alertA, alertB, alertC])
+        interstitialManager.receive([alertA, alertB, alertC])
         XCTAssertTrue(showNextInterstitial())
         interstitialManager.clearAllRegisteredAlerts()
         XCTAssertFalse(showNextInterstitial())
@@ -50,7 +50,7 @@ class InterstitialManagerTests: XCTestCase {
     
     func testShowInterstitial() {
         XCTAssertFalse(showNextInterstitial())
-        interstitialManager.onAlertsReceived([alertA])
+        interstitialManager.receive([alertA])
         XCTAssertTrue(showNextInterstitial())
     }
 }
