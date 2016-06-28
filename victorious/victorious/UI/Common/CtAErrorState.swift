@@ -43,15 +43,18 @@ class CtAErrorState: UIView {
 
     private func setupViews() {
         messageLabel.text = dependencyManager.stringForKey(Constants.messageTextKey)
+        messageLabel.numberOfLines = 0
+        messageLabel.textAlignment = .Center
         messageLabel.font = dependencyManager.fontForKey(Constants.messageFontKey)
         messageLabel.textColor = dependencyManager.colorForKey(Constants.messageColorKey)
+        stackView.addArrangedSubview(messageLabel)
         if let button = dependencyManager.buttonForKey(Constants.actionButtonKey) {
             actionButton = button
             stackView.addArrangedSubview(button)
         }
         stackView.axis = .Vertical
-        stackView.alignment = .Center
-        stackView.addArrangedSubview(messageLabel)
+        stackView.alignment = .Fill
+        stackView.distribution = .EqualSpacing
         self.addSubview(stackView)
         v_addFitToParentConstraintsToSubview(stackView)
     }

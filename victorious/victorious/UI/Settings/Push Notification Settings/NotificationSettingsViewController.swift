@@ -18,8 +18,11 @@ private struct Constants {
     static let sectionTitleColorKey = "color.text.section.title"
     static let sectionTitleFontKey = "font.text.section.title"
     static let tableViewSeparatorColorKey = "color.separator.navigation.items"
+    static let creatorNameMacro = "%%CREATOR_NAME%%"
     static let tableViewRowHeight: CGFloat = 44
     static let tableViewHeaderHeight: CGFloat = 25
+    static let errorStateViewHeight: CGFloat = 100
+    static let errorStateViewWidthMultiplier: CGFloat = 0.8
 }
 
 private struct NotificationSettingsTableSection {
@@ -47,6 +50,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
     private var stateManager: VNotificationSettingsStateManager?
     private var permissionsTrackingHelper: VPermissionsTrackingHelper?
     private var sections:[NotificationSettingsTableSection] = []
+    private var errorStateView: CtAErrorState? 
     
     /// MARK: - UIViewController methods
     
@@ -56,6 +60,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
         let cellNib = UINib(nibName: "VSettingsSwitchCell", bundle: nil)
         tableView.registerNib(cellNib, forCellReuseIdentifier: Constants.cellIdentifier)
         tableView.separatorColor = dependencyManager?.colorForKey(Constants.tableViewSeparatorColorKey)
+        createErrorStateView()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -73,12 +78,15 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
     
     func onDeviceDidRegisterWithOS() {
         loadSettings()
+        errorStateView?.removeFromSuperview()
+        tableView.scrollEnabled = true
     }
     
     func onError(error: NSError!) {
         settings = nil
-        if (error.code == Constants.userDeviceNotificationNotEnabledErrorCode) {
-            displayPermissionsErrorState()
+        if let errorStateView = self.errorStateView where error.code == Constants.userDeviceNotificationNotEnabledErrorCode {
+            view.addSubview(errorStateView)
+            tableView.scrollEnabled = false
         }
     }
     
@@ -131,7 +139,6 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
     /// MARK: - TableViewDataSource
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
         guard
             let cell = tableView.dequeueReusableCellWithIdentifier(Constants.cellIdentifier) as? VSettingsSwitchCell,
             let dependencyManager = self.dependencyManager,
@@ -148,6 +155,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
         cell.key = row.key
         cell.delegate = self
         cell.setDependencyManager(dependencyManager)
+        cell.selectionStyle = .None
         return cell
     }
     
@@ -178,7 +186,6 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
     override  func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return Constants.tableViewHeaderHeight
     }
-
     
     // MARK: - SettingsSwitchCell Delegate
     
@@ -208,40 +215,35 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
         let items = dependencyManager.arrayForKey("items")
         
         for item in items {
-            if let itemDictionary = item as? NSDictionary,
+            if let itemDictionary = item as? [String : AnyObject],
                 let sectionTitle = itemDictionary["section.title"] as? String,
-                let sectionArray = itemDictionary["section.items"] as? NSArray
+                let sectionArray = itemDictionary["section.items"] as? [AnyObject]
             {
-                var sectionRows: [NotificationSettingsTableRow] = []
-                sectionArray.enumerateObjectsUsingBlock(){ (object, _, _) in
-                    if  let rowDictionary = object as? NSDictionary,
-                        let rowTitle = rowDictionary["title"] as? String,
+                let sectionRows: [NotificationSettingsTableRow] = sectionArray.map(){ (object) in
+                    if  let rowDictionary = object as? [String : AnyObject],
+                        var rowTitle = rowDictionary["title"] as? String,
                         let rowKey = rowDictionary["key"] as? String
                     {
                         if (rowKey == VNotificationSettingType.postFromCreator.rawValue) {
-                            rowTitle = replaceCreatorNameInString(rowTitle)
+                            let appInfo = VAppInfo(dependencyManager: dependencyManager)
+                            rowTitle = rowTitle.stringByReplacingOccurrencesOfString(Constants.creatorNameMacro, withString: appInfo.ownerName ?? "Creator")
                         }
-                        
-                        let row = NotificationSettingsTableRow(key: rowKey, title: rowTitle)
-                        sectionRows.append(row)
+                        return NotificationSettingsTableRow(key: rowKey, title: rowTitle)
                     }
+                    return NotificationSettingsTableRow(key: "", title: "")
                 }
                 
-                let tableViewSection = NotificationSettingsTableSection(title: sectionTitle, rows: sectionRows)
-                result.append(tableViewSection)
+                result.append(NotificationSettingsTableSection(title: sectionTitle, rows: sectionRows))
             }
         }
         
         return result
     }
     
-    private func replaceCreatorNameInString(rowTitle: String) -> String {
-        
-    }
-    
-    private func displayPermissionsErrorState() {
+    private func createErrorStateView() {
         if let errorStateView = dependencyManager?.createErrorStateView(actionType: .openSettings) {
-            self.tableView.addSubview(errorStateView)
+            errorStateView.frame = CGRect(center: self.tableView.bounds.center, size: CGSize(width: Constants.errorStateViewWidthMultiplier * tableView.frame.width, height: Constants.errorStateViewHeight))
+           self.errorStateView = errorStateView
         }
     }
     
