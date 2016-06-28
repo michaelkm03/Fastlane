@@ -2,8 +2,8 @@
 //  NotificationSettingsViewController.swift
 //  victorious
 //
-//  Created by Michael Sena on 12/9/15.
-//  Copyright © 2015 Victorious. All rights reserved.
+//  Created by Darvish Kamalia
+//  Copyright © 2016 Victorious. All rights reserved.
 //
 
 import Foundation
@@ -93,7 +93,6 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
     func onDeviceWillRegisterWithServer() {
         self.settings = nil
     }
-    
     
     /// MARK: - Settings Management
     
@@ -267,6 +266,4 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
         tableView.backgroundView = UIView()
         dependencyManager.addBackgroundToBackgroundHost(self)
     }
-    
 }
-

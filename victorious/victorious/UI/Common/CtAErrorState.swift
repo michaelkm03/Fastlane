@@ -12,6 +12,7 @@ import VictoriousIOSSDK
 enum CtAErrorStateActionType {
     case openSettings
 }
+
 private struct Constants {
     static let messageTextKey = "message"
     static let messageFontKey = "message.font"
@@ -61,10 +62,10 @@ class CtAErrorState: UIView {
     
     @objc private func performButtonAction() {
         switch actionType {
-        case .openSettings:
-            if let url = NSURL(string: UIApplicationOpenSettingsURLString) {
-                UIApplication.sharedApplication().openURL(url)
+            case .openSettings:
+                if let url = NSURL(string: UIApplicationOpenSettingsURLString) {
+                    UIApplication.sharedApplication().openURL(url)
+                }
             }
-        }
     }
 }
