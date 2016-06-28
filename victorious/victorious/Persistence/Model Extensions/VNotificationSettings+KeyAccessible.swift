@@ -11,7 +11,7 @@ import Foundation
 
 enum VNotificationSettingType : String {
     case postFromCreator = "notification_creator_post"
-    case postFromFavorite = "notification_follow_posts"
+    case postFromFavorite = "notification_follow_post"
     case mentionsUser = "notification_mention"
     case upvotePost = "notification_like_post"
     case favoritesUser = "notification_new_follower"

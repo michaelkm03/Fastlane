@@ -11,10 +11,15 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+NSString * const itemBackgroundColorKey = @"color.background.navigation.items";
+NSString * const itemTextFontKey = @"font.text.navigation.items";
+NSString * const itemTextColorKey = @"color.text.navigation.items";
+
 @interface VSettingsSwitchCell()
 
-@property (nonatomic, strong) IBOutlet UISwitch *settingSwitch;
-@property (nonatomic, strong) IBOutlet UILabel *settingLabel;
+@property (strong, nonatomic) IBOutlet UILabel *settingLabel;
+@property (strong, nonatomic) IBOutlet UISwitch *settingSwitch;
+
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, assign) BOOL shouldPreventNotifyingDelegate;
 
@@ -31,20 +36,15 @@ NS_ASSUME_NONNULL_BEGIN
 {
     _dependencyManager = dependencyManager;
     
-    self.settingLabel.font = [dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
-    self.settingSwitch.onTintColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    self.settingLabel.font =  [dependencyManager fontForKey: itemTextFontKey];
+    self.settingLabel.textColor = [dependencyManager colorForKey:itemTextColorKey];
+    self.backgroundColor = [dependencyManager colorForKey:itemBackgroundColorKey];
 }
 
 - (void)setTitle:(NSString *)title value:(BOOL)value
 {
     self.settingLabel.text = title;
     self.settingSwitch.on = value;
-}
-
-- (void)setSwitchColor:(UIColor *__nonnull)switchColor
-{
-    _switchColor = switchColor;
-    self.settingSwitch.onTintColor = switchColor;
 }
 
 - (BOOL)value

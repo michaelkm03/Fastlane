@@ -5,68 +5,6 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--Push Notifications-->
-        <scene sceneID="CaJ-Gk-ZQq">
-            <objects>
-                <tableViewController storyboardIdentifier="NotificationSettingsViewController" title="Push Notifications" extendedLayoutIncludesOpaqueBars="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" clearsSelectionOnViewWillAppear="NO" id="2cC-vU-QEc" customClass="NotificationSettingsViewController" customModule="victorious" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="grouped" separatorStyle="default" allowsSelection="NO" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="eWd-cN-CbD">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="separatorColor" red="0.96470588235294119" green="0.96470588235294119" blue="0.96470588235294119" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="VSettingsSwitchCell" id="NJf-vn-jIU" customClass="VSettingsSwitchCell">
-                                <rect key="frame" x="0.0" y="70" width="600" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NJf-vn-jIU" id="aLC-a7-A4E">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" misplaced="YES" text="TITLE" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="8Fn-0A-Ctn">
-                                            <rect key="frame" x="15" y="0.0" width="240" height="44"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BWr-Jv-6Ld">
-                                            <rect key="frame" x="257" y="5" width="51" height="31"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="49" id="YsM-Pw-aX6"/>
-                                                <constraint firstAttribute="height" constant="31" id="xqt-xX-ZHJ"/>
-                                            </constraints>
-                                            <connections>
-                                                <action selector="settingValueDidchange:" destination="NJf-vn-jIU" eventType="valueChanged" id="2Yp-Hm-VUL"/>
-                                            </connections>
-                                        </switch>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="trailingMargin" secondItem="BWr-Jv-6Ld" secondAttribute="trailing" constant="6" id="KXe-Gm-wCO"/>
-                                        <constraint firstItem="BWr-Jv-6Ld" firstAttribute="top" secondItem="aLC-a7-A4E" secondAttribute="topMargin" constant="-3" id="V0U-nt-gZO"/>
-                                        <constraint firstItem="BWr-Jv-6Ld" firstAttribute="leading" secondItem="8Fn-0A-Ctn" secondAttribute="trailing" constant="2" id="Zb0-3k-Kg0"/>
-                                        <constraint firstAttribute="bottom" secondItem="8Fn-0A-Ctn" secondAttribute="bottom" constant="-1" id="uDm-88-TqD"/>
-                                        <constraint firstItem="8Fn-0A-Ctn" firstAttribute="top" secondItem="aLC-a7-A4E" secondAttribute="top" id="wOc-Xn-fvC"/>
-                                        <constraint firstItem="8Fn-0A-Ctn" firstAttribute="leading" secondItem="aLC-a7-A4E" secondAttribute="leading" constant="15" id="ygV-qA-46c"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="settingLabel" destination="8Fn-0A-Ctn" id="7JA-h2-Tob"/>
-                                    <outlet property="settingSwitch" destination="BWr-Jv-6Ld" id="7kw-BZ-rfa"/>
-                                </connections>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="2cC-vU-QEc" id="6aD-Fj-iJl"/>
-                            <outlet property="delegate" destination="2cC-vU-QEc" id="vWU-i8-VaF"/>
-                        </connections>
-                    </tableView>
-                    <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Push Notifications" id="WVz-KR-Hhr"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="xIg-N5-kgX" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-9414" y="-1699.5"/>
-        </scene>
         <!--Settings-->
         <scene sceneID="sS9-Sh-Zfa">
             <objects>
@@ -962,7 +900,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mG7-xu-zJg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-8809.5" y="-1599"/>
+            <point key="canvasLocation" x="-9087" y="-1637.25"/>
         </scene>
         <!--Tracking Settings-->
         <scene sceneID="8Zb-26-6Dw">

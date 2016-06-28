@@ -14,6 +14,12 @@ private struct Constants {
     static let trackingPermissionDeniedString = "Denied"
     static let userDeviceNotificationNotEnabledErrorCode = 5080
     static let dependencyManagerKey = "push.notifications.screen"
+    static let cellIdentifier = "VSettingsSwitchCell"
+    static let sectionTitleColorKey = "color.text.section.title"
+    static let sectionTitleFontKey = "font.text.section.title"
+    static let tableViewSeparatorColorKey = "color.separator.navigation.items"
+    static let tableViewRowHeight: CGFloat = 44
+    static let tableViewHeaderHeight: CGFloat = 25
 }
 
 private struct NotificationSettingsTableSection {
@@ -26,12 +32,17 @@ private struct NotificationSettingsTableRow {
     var title: String
 }
 
-class NotificationSettingsViewController: UITableViewController, VSettingsSwitchCellDelegate, VNotificiationSettingsStateManagerDelegate {
+class NotificationSettingsViewController: UITableViewController, VSettingsSwitchCellDelegate, VNotificiationSettingsStateManagerDelegate, VBackgroundContainer {
     
     /// MARK : - Properties 
     
     private var dependencyManager: VDependencyManager?
-    var settings : VNotificationSettings?
+    var settings : VNotificationSettings? {
+        didSet {
+            initializeSections()
+            tableView.reloadData()
+        }
+    }
     
     private var stateManager: VNotificationSettingsStateManager?
     private var permissionsTrackingHelper: VPermissionsTrackingHelper?
@@ -42,12 +53,15 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
     override func viewDidLoad() {
         stateManager = VNotificationSettingsStateManager(delegate: self)
         permissionsTrackingHelper = VPermissionsTrackingHelper()
+        let cellNib = UINib(nibName: "VSettingsSwitchCell", bundle: nil)
+        tableView.registerNib(cellNib, forCellReuseIdentifier: Constants.cellIdentifier)
+        tableView.separatorColor = dependencyManager?.colorForKey(Constants.tableViewSeparatorColorKey)
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         stateManager?.reset()
-        initializeSections()
+        styleWithDependencyManager()
     }
     
      override func viewWillDisappear(animated: Bool) {
@@ -87,7 +101,6 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
                 return
             }
             self.settings = mainQueueSettings
-            self.tableView.reloadData()
         }
     }
     
@@ -118,11 +131,10 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
     /// MARK: - TableViewDataSource
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let reuseId = NSStringFromClass(VSettingsSwitchCell.self)
         
         guard
-            let cell = tableView.dequeueReusableCellWithIdentifier(reuseId) as? VSettingsSwitchCell,
-            //let dependencyManager = self.dependencyManager,
+            let cell = tableView.dequeueReusableCellWithIdentifier(Constants.cellIdentifier) as? VSettingsSwitchCell,
+            let dependencyManager = self.dependencyManager,
             let settings = self.settings
         where
             indexPath.section < sections.count &&
@@ -135,7 +147,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
         cell.setTitle(row.title, value: settings.isKeyEnabled(row.key))
         cell.key = row.key
         cell.delegate = self
-        cell.setDependencyManager(dependencyManager!)
+        cell.setDependencyManager(dependencyManager)
         return cell
     }
     
@@ -144,12 +156,29 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
     }
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return sections.count
+        return settings == nil ? 0 : sections.count
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 44
+        return Constants.tableViewRowHeight
     }
+    
+    override  func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let dependencyManager = self.dependencyManager where section < sections.count else {
+            return nil
+        }
+        let headerLabel = UILabel()
+        headerLabel.text = sections[section].title
+        headerLabel.font = dependencyManager.fontForKey(Constants.sectionTitleFontKey)
+        headerLabel.textColor = dependencyManager.colorForKey(Constants.sectionTitleColorKey)
+        headerLabel.sizeToFit()
+        return headerLabel
+    }
+    
+    override  func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return Constants.tableViewHeaderHeight
+    }
+
     
     // MARK: - SettingsSwitchCell Delegate
     
@@ -171,10 +200,12 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
     /// MARK: - Internal functions
     
     private func sectionsForTableView() -> [NotificationSettingsTableSection] {
-        
+        guard let dependencyManager = self.dependencyManager else {
+            return []
+        }
         
         var result: [NotificationSettingsTableSection] = []
-        let items = dependencyManager!.arrayForKey("items")
+        let items = dependencyManager.arrayForKey("items")
         
         for item in items {
             if let itemDictionary = item as? NSDictionary,
@@ -187,10 +218,15 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
                         let rowTitle = rowDictionary["title"] as? String,
                         let rowKey = rowDictionary["key"] as? String
                     {
+                        if (rowKey == VNotificationSettingType.postFromCreator.rawValue) {
+                            rowTitle = replaceCreatorNameInString(rowTitle)
+                        }
+                        
                         let row = NotificationSettingsTableRow(key: rowKey, title: rowTitle)
                         sectionRows.append(row)
                     }
                 }
+                
                 let tableViewSection = NotificationSettingsTableSection(title: sectionTitle, rows: sectionRows)
                 result.append(tableViewSection)
             }
@@ -199,13 +235,17 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
         return result
     }
     
+    private func replaceCreatorNameInString(rowTitle: String) -> String {
+        
+    }
+    
     private func displayPermissionsErrorState() {
         if let errorStateView = dependencyManager?.createErrorStateView(actionType: .openSettings) {
             self.tableView.addSubview(errorStateView)
         }
     }
     
-    /// MARK: - Custom Initializers 
+    /// MARK: - Dependency Manager
     
     func setDependencyManager(dependencyManager: VDependencyManager) {
        self.dependencyManager = dependencyManager
@@ -215,6 +255,15 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
         let viewController = NotificationSettingsViewController(style: .Grouped)
         viewController.setDependencyManager(dependencyManager)
         return viewController
+    }
+    
+    func styleWithDependencyManager() {
+        guard let dependencyManager = self.dependencyManager else {
+            return
+        }
+        
+        tableView.backgroundView = UIView()
+        dependencyManager.addBackgroundToBackgroundHost(self)
     }
     
 }

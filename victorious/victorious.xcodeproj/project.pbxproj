@@ -861,6 +861,7 @@
 		7C37B8E71CF66CA200E83594 /* SystemBlurredImageBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C37B8E61CF66CA100E83594 /* SystemBlurredImageBackground.swift */; };
 		7C4CCE681D10D36F00784D30 /* SettingsViewController+Templatized.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4CCE671D10D36F00784D30 /* SettingsViewController+Templatized.swift */; };
 		7C4CCE6A1D10E44800784D30 /* UITableViewCell+VBackgroundContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4CCE691D10E44800784D30 /* UITableViewCell+VBackgroundContainer.swift */; };
+		7C582CA21D22E80300707CBE /* VSettingsSwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C582CA11D22E80300707CBE /* VSettingsSwitchCell.xib */; };
 		7C6547D61CF4CDAE005F58A1 /* UIView+ShakeAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C61D31CEF81400072349B /* UIView+ShakeAnimation.swift */; };
 		7CC982211D0104EC00583B70 /* VDependencyManager+ForumNetworkSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC982201D0104EC00583B70 /* VDependencyManager+ForumNetworkSource.swift */; };
 		7CC982241D0235D300583B70 /* ForumNavBarTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC982231D0235D300583B70 /* ForumNavBarTitleView.swift */; };
@@ -3340,6 +3341,7 @@
 		7C37B8E61CF66CA100E83594 /* SystemBlurredImageBackground.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SystemBlurredImageBackground.swift; sourceTree = "<group>"; };
 		7C4CCE671D10D36F00784D30 /* SettingsViewController+Templatized.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+Templatized.swift"; sourceTree = "<group>"; };
 		7C4CCE691D10E44800784D30 /* UITableViewCell+VBackgroundContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+VBackgroundContainer.swift"; sourceTree = "<group>"; };
+		7C582CA11D22E80300707CBE /* VSettingsSwitchCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VSettingsSwitchCell.xib; sourceTree = "<group>"; };
 		7C68CA9BC5F670F063DA6A87 /* Pods-victoriousPersistenceTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victoriousPersistenceTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-victoriousPersistenceTests/Pods-victoriousPersistenceTests.release.xcconfig"; sourceTree = "<group>"; };
 		7C9C61D31CEF81400072349B /* UIView+ShakeAnimation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+ShakeAnimation.swift"; sourceTree = "<group>"; };
 		7CC982201D0104EC00583B70 /* VDependencyManager+ForumNetworkSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VDependencyManager+ForumNetworkSource.swift"; sourceTree = "<group>"; };
@@ -9076,6 +9078,7 @@
 				A7DDA6E21B601C95005CE55E /* SettingsEmptyCell.swift */,
 				A7BF9D121B5ECB1E002C0A98 /* VSettingsSwitchCell.h */,
 				A7BF9D131B5ECB1E002C0A98 /* VSettingsSwitchCell.m */,
+				7C582CA11D22E80300707CBE /* VSettingsSwitchCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -11470,6 +11473,7 @@
 				676372E51B8D090600A59705 /* ExploreMarqueeStreamItemCell.xib in Resources */,
 				0326C36019F8226200DBC341 /* Images.xcassets in Resources */,
 				037A643019F727AB0001C90B /* VVideoPlayerToolbarView.xib in Resources */,
+				7C582CA21D22E80300707CBE /* VSettingsSwitchCell.xib in Resources */,
 				036F38961A0C4DEA0014DF66 /* Ubuntu-Regular.ttf in Resources */,
 				A780ED5A1A933D9300A8CD5D /* filters.xml in Resources */,
 				7925E7331C58293700946D0F /* UserTaggingViewController.storyboard in Resources */,
