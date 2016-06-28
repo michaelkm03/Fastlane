@@ -159,6 +159,10 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
             return
         }
         
+        if loadingType == .refresh {
+            newItemsController.hide()
+        }
+        
         // Disable UICollectionView insertion animation.
         CATransaction.begin()
         CATransaction.setDisableActions(true)
@@ -174,11 +178,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
             // If we loaded newer items and we were scrolled to the bottom, or if we refreshed the feed, scroll down to
             // reveal the new content.
             if (loadingType == .newer && wasScrolledToBottom) || loadingType == .refresh {
-                // There's probably a better way to do this, but this prevents some issues with not scrolling all the
-                // way to the bottom.
-                dispatch_after(0.0) {
-                    collectionView.setContentOffset(collectionView.v_bottomOffset, animated: loadingType != .refresh)
-                }
+                collectionView.setContentOffset(collectionView.v_bottomOffset, animated: loadingType != .refresh)
             }
             
             completion?()
@@ -344,7 +344,9 @@ class ChatFeedCollectionViewLayout: UICollectionViewFlowLayout {
         let extraHeight = collectionView.bounds.height - contentSize.height
         
         if extraHeight > 0.0 {
-            layoutAttributes.frame.origin.y += extraHeight
+            let modifiedLayoutAttributes = layoutAttributes.copy() as! UICollectionViewLayoutAttributes
+            modifiedLayoutAttributes.frame.origin.y += extraHeight
+            return modifiedLayoutAttributes
         }
         
         return layoutAttributes
