@@ -12,7 +12,13 @@ import Foundation
 /// - Queueing deep links (before scaffold is ready)
 /// - Remove DeepLinkReceiver
 
+/// A Router object that is able to navigate to a destination in the app,
+/// e.g. A piece of content, a user, or a specific screen that is deep linked to.
+/// Use one of the `navigate(to:) APIs to perform the navigation.
 struct Router {
+    
+    // MARK: - Initialization
+    
     private weak var originViewController: UIViewController!
     private let dependencyManager: VDependencyManager
     
@@ -21,6 +27,9 @@ struct Router {
         self.dependencyManager = dependencyManager
     }
     
+    // MARK: - API
+    
+    /// Performs navigation to a piece of content
     func navigate(to content: ContentModel) {
         switch content.type {
             case .image, .video, .gif:
@@ -37,8 +46,9 @@ struct Router {
         }
     }
     
-    func navigate(to url: NSURL) {
-        guard let destination = DeeplinkDestination(url: url) else {
+    /// Performs navigation to a deep link URL
+    func navigate(to deeplinkURL: NSURL) {
+        guard let destination = DeeplinkDestination(url: deeplinkURL) else {
             showError()
             return
         }
@@ -56,6 +66,8 @@ struct Router {
         }
     }
     
+    // MARK: - Private Helper Functions
+
     typealias ContentID = String
     private func showCloseUpView(for contentID: ContentID) {
         let displayModifier = ShowCloseUpDisplayModifier(dependencyManager: dependencyManager, originViewController: originViewController)
