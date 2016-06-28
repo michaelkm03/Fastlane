@@ -11,7 +11,7 @@ import Foundation
 /// FUTURE:
 /// - Queueing deep links (before scaffold is ready)
 /// - Unify navigating to `ContentModel` and `ContentID` by refactoring `ShowCloseUpOperation`
-///
+/// - Remove DeepLinkReceiver
 
 struct Router {
     private weak var originViewController: UIViewController!
@@ -34,17 +34,7 @@ struct Router {
                     showError()
                     return
                 }
-                switch destination {
-                    case .profile: break
-                    case .closeUp:
-                        showCloseUpView(for: content)
-                    case .vipForum:
-                        showVIPForum()
-                    case .externalURL:
-                        // Show web content
-                        break
-                    
-                }
+                navigate(to: destination, targetContentWrapper: .id(contentID: linkedURL.v_firstNonSlashPathComponent()))
             case .text:
                 // We currently don't support tapping on text content
                 break
@@ -52,24 +42,32 @@ struct Router {
     }
     
     func navigate(to url: NSURL) {
-        guard let destination = DeeplinkDestination(url: url) else {
+        guard
+            let destination = DeeplinkDestination(url: url),
+            let contentID = url.v_firstNonSlashPathComponent()
+        else {
             showError()
             return
         }
         
+        navigate(to: destination, targetContentWrapper: .id(contentID: contentID))
+    }
+    
+    private func navigate(to destination: DeeplinkDestination, targetContentWrapper contentWrapper: ContentWrapper) {
         switch destination {
-            case .profile: break
-            case .closeUp:
-                guard let contentID = url.v_firstNonSlashPathComponent() else {
-                    showError()
-                    return
-                }
-                showCloseUpView(for: contentID)
-            case .vipForum:
-                showVIPForum()
-            case .externalURL:
-                // Show web content
-                break
+        case .profile: break
+        case .closeUp:
+            switch contentWrapper {
+                case .content(let content):
+                    showCloseUpView(for: content)
+                case .id(let contentID):
+                    showCloseUpView(for: contentID)
+            }
+        case .vipForum:
+            showVIPForum()
+        case .externalURL:
+            // Show web content
+            break
         }
     }
     
@@ -132,4 +130,9 @@ private enum DeeplinkDestination {
             self = .externalURL
         }
     }
+}
+
+private enum ContentWrapper {
+    case content(content: ContentModel)
+    case id(contentID: String)
 }
