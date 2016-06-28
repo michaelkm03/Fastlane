@@ -17,7 +17,7 @@ import WebKit
     func title() -> String {
         switch self {
             case .PrivacyPolicy: return "Privacy Policy"
-            case .HelpCenter: return "Help Center"
+            case .HelpCenter: return "Help"
             case .TermsOfService: return "Terms Of Service"
         }
     }
