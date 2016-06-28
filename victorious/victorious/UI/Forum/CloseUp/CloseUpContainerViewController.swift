@@ -122,10 +122,14 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
         fatalError("NSCoding not supported.")
     }
     
+    func updateError() {
+        gridStreamController.setContent(nil, withError: true)
+    }
+    
     func updateContent(content: ContentModel) {
         self.content = content
         updateHeader()
-        gridStreamController.content = content
+        gridStreamController.setContent(content, withError: false)
     }
     
     // MARK: - CloseUpViewDelegate

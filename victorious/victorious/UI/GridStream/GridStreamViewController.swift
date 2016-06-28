@@ -26,12 +26,15 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         collectionViewLayout: UICollectionViewFlowLayout()
     )
     private let dataSource: GridStreamDataSource<HeaderType>
-    var content: HeaderType.ContentType? {
-        didSet {
-            dataSource.content = content
-            collectionView.reloadSections(NSIndexSet(index: 0))
-            updateTrackingParameters()
-        }
+    private(set) var content: HeaderType.ContentType?
+    private var hasError: Bool = false
+    
+    func setContent(content: HeaderType.ContentType?, withError hasError: Bool) {
+        self.content = content
+        self.hasError = hasError
+        dataSource.setContent(content, withError: hasError)
+        collectionView.reloadSections(NSIndexSet(index: 0))
+        updateTrackingParameters()
     }
     
     private let refreshControl = UIRefreshControl()
@@ -185,7 +188,8 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         let size = header.sizeForHeader(
             dependencyManager,
             maxHeight: CGRectGetHeight(collectionView.bounds),
-            content: content
+            content: content,
+            hasError: hasError
         )
         return size
     }

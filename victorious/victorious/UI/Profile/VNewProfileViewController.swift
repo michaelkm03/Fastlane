@@ -245,7 +245,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
             return
         }
         
-        gridStreamController.content = user
+        gridStreamController.setContent(user, withError: false)
         
         let appearanceKey = user.isCreator?.boolValue ?? false ? VNewProfileViewController.creatorAppearanceKey : VNewProfileViewController.userAppearanceKey
         let appearanceDependencyManager = dependencyManager.childDependencyForKey(appearanceKey)

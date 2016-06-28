@@ -199,11 +199,13 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
     
     // MARK: - ConfigurableGridStreamHeader
     
-    func decorateHeader(dependencyManager: VDependencyManager, maxHeight: CGFloat, content: VUser?) {
+    func decorateHeader(dependencyManager: VDependencyManager, maxHeight: CGFloat, content: VUser?, hasError: Bool) {
+        // No error states for profiles
         self.user = content
     }
     
-    func sizeForHeader(dependencyManager: VDependencyManager, maxHeight: CGFloat, content: VUser?) -> CGSize {
+    func sizeForHeader(dependencyManager: VDependencyManager, maxHeight: CGFloat, content: VUser?, hasError: Bool) -> CGSize {
+        // No error states for profiles
         self.user = content
         
         setNeedsLayout()
