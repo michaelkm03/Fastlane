@@ -22,15 +22,16 @@ struct Router {
         self.dependencyManager = dependencyManager
     }
     
+    // TODO: actually support preferredTransition
     func navigate(to content: ContentModel, preferredTransition: ViewTransition = .push) {
-        // TODO: actually support preferredTransition
         switch content.type {
             case .image, .video, .gif:
                 showCloseUpView(for: content)
             case .link:
                 guard
                     let linkedURL = content.linkedURL,
-                    let destination = DeeplinkDestination(url: linkedURL) else {
+                    let destination = DeeplinkDestination(url: linkedURL)
+                else {
                         showError()
                         return
                 }
