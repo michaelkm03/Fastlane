@@ -15483,6 +15483,10 @@
 					"$(inherited)",
 					"-DNDEBUG",
 				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-lTestFairy",
+				);
 				OTHER_SWIFT_FLAGS = "-DV_SHOW_TEST_ALERT_SETTINGS -DV_ENABLE_WEBSOCKET_DEBUG_MENU";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.getvictorious.${ProductPrefix}victorious";
 				PRODUCT_NAME = "$(TARGET_NAME)";
