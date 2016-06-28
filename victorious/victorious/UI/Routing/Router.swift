@@ -8,10 +8,9 @@
 
 import Foundation
 
-/// FUTURE:
+/// FUTURE: Will do these in the following PR
 /// - Queueing deep links (before scaffold is ready)
 /// - Remove DeepLinkReceiver
-
 
 struct Router {
     private weak var originViewController: UIViewController!
