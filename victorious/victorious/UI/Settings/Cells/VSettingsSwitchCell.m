@@ -14,11 +14,13 @@ NS_ASSUME_NONNULL_BEGIN
 NSString * const itemBackgroundColorKey = @"color.background.navigation.items";
 NSString * const itemTextFontKey = @"font.text.navigation.items";
 NSString * const itemTextColorKey = @"color.text.navigation.items";
+NSString * const itemSeparatorColorKey = @"color.separator.navigation.items";
 
 @interface VSettingsSwitchCell()
 
 @property (strong, nonatomic) IBOutlet UILabel *settingLabel;
 @property (strong, nonatomic) IBOutlet UISwitch *settingSwitch;
+@property (strong, nonatomic) IBOutlet UIView *separatorView;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, assign) BOOL shouldPreventNotifyingDelegate;
@@ -39,6 +41,7 @@ NSString * const itemTextColorKey = @"color.text.navigation.items";
     self.settingLabel.font =  [dependencyManager fontForKey: itemTextFontKey];
     self.settingLabel.textColor = [dependencyManager colorForKey:itemTextColorKey];
     self.backgroundColor = [dependencyManager colorForKey:itemBackgroundColorKey];
+    self.separatorView.backgroundColor = [dependencyManager colorForKey:itemSeparatorColorKey]; 
 }
 
 - (void)setTitle:(NSString *)title value:(BOOL)value
@@ -57,6 +60,11 @@ NSString * const itemTextColorKey = @"color.text.navigation.items";
     self.shouldPreventNotifyingDelegate = YES;
     [self.settingSwitch setOn:value animated:animated];
     self.shouldPreventNotifyingDelegate = NO;
+}
+
+- (void)setSeparatorHidden: (BOOL) value
+{
+    [self.separatorView setHidden:value];
 }
 
 - (void)prepareForReuse

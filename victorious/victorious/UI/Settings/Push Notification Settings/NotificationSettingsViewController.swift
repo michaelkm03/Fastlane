@@ -43,7 +43,7 @@ struct NotificationSettingsTableRow {
 
 class NotificationSettingsViewController: UITableViewController, VSettingsSwitchCellDelegate, VNotificiationSettingsStateManagerDelegate, VBackgroundContainer {
     
-    /// MARK : - Properties 
+    // MARK : - Properties
     
     private var dependencyManager: VDependencyManager?
     var settings : VNotificationSettings? {
@@ -60,15 +60,14 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
     private var canLoadSettings = true
     private let spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
     
-    /// MARK: - UIViewController methods
+    // MARK: - UIViewController methods
     
     override func viewDidLoad() {
         stateManager = VNotificationSettingsStateManager(delegate: self)
         permissionsTrackingHelper = VPermissionsTrackingHelper()
         let cellNib = UINib(nibName: "VSettingsSwitchCell", bundle: nil)
         tableView.registerNib(cellNib, forCellReuseIdentifier: Constants.cellIdentifier)
-        tableView.separatorColor = dependencyManager?.colorForKey(Constants.tableViewSeparatorColorKey)
-        tableView.separatorInset = UIEdgeInsetsZero //Must be overridden by individual cells
+        tableView.separatorColor = UIColor.clearColor()
         tableView.bounces = false
         spinner.frame = CGRect(center: tableView.bounds.center, size: CGSize(width: Constants.activityIndicatorSideLength, height: Constants.activityIndicatorSideLength))
         createErrorStateView()
@@ -89,22 +88,20 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
     }
     
     override func viewDidDisappear(animated: Bool) {
-        canLoadSettings = true //Only reload once the screen dissappears completely
+        canLoadSettings = true //Only reload once the screen disappears completely
     }
     
-    /// MARK: - VNotificationSettingsStageManagerDelegate
+    // MARK: - VNotificationSettingsStageManagerDelegate
     
     func onDeviceDidRegisterWithOS() {
         loadSettings()
         errorStateView?.removeFromSuperview()
-        tableView.scrollEnabled = true
     }
     
     func onError(error: NSError!) {
         settings = nil
         if let errorStateView = self.errorStateView where error.code == Constants.userDeviceNotificationNotEnabledErrorCode {
             view.addSubview(errorStateView)
-            tableView.scrollEnabled = false
         }
     }
     
@@ -112,7 +109,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
         self.settings = nil
     }
     
-    /// MARK: - Settings Management
+    // MARK: - Settings Management
     
     func loadSettings() {
         settings = nil
@@ -154,7 +151,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
         self.sections = sectionsForTableView()
     }
     
-    /// MARK: - TableViewDataSource
+    // MARK: - TableViewDataSource
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         guard
@@ -174,7 +171,11 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
         cell.delegate = self
         cell.setDependencyManager(dependencyManager)
         cell.selectionStyle = .None
-        cell.separatorInset = UIEdgeInsets(top: 0, left: Constants.tableViewSeparatorLeftPadding, bottom: 0, right: 0)
+        
+        if (indexPath.row == sections[indexPath.section].rows.count - 1) {
+            cell.setSeparatorHidden(true)
+        }
+    
         return cell
     }
     
@@ -226,7 +227,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
         return tableView.backgroundView ?? self.view
     }
     
-    /// MARK: - Internal functions
+    // MARK: - Internal functions
     
     func sectionsForTableView() -> [NotificationSettingsTableSection] {
         guard let dependencyManager = self.dependencyManager else {
@@ -279,7 +280,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
         spinner.removeFromSuperview()
     }
     
-    /// MARK: - Dependency Manager
+    // MARK: - Dependency Manager
     
     func setDependencyManager(dependencyManager: VDependencyManager) {
        self.dependencyManager = dependencyManager

@@ -30,6 +30,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setValue:(BOOL)value animated:(BOOL)animated;
 
+- (void)setSeparatorHidden:(BOOL)value; 
+
 + (NSString *)suggestedReuseIdentifier;
 
 /**
