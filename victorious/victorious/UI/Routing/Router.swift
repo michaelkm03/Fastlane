@@ -15,8 +15,6 @@ struct Router {
     
     private weak var originViewController: UIViewController?
     private let dependencyManager: VDependencyManager
-    typealias ContentID = String
-    typealias UserID = Int
 
     init(originViewController: UIViewController, dependencyManager: VDependencyManager) {
         self.originViewController = originViewController
@@ -42,7 +40,7 @@ struct Router {
     
     // MARK: - Private Helper Functions
 
-    private func showCloseUpView(for contentID: ContentID) {
+    private func showCloseUpView(for contentID: Content.ID) {
         guard let originViewController = self.originViewController else { return }
         let displayModifier = ShowCloseUpDisplayModifier(dependencyManager: dependencyManager, originViewController: originViewController)
         ShowCloseUpOperation.showOperation(forContentID: contentID, displayModifier: displayModifier).queue()
@@ -59,7 +57,7 @@ struct Router {
         ShowForumOperation(originViewController: originViewController, dependencyManager: dependencyManager, showVIP: true, animated: true).queue()
     }
     
-    private func showProfile(for userID: UserID) {
+    private func showProfile(for userID: User.ID) {
         guard let originViewController = self.originViewController else { return }
         ShowProfileOperation(originViewController: originViewController, dependencyManager: dependencyManager, userId: userID).queue()
     }

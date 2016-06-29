@@ -17,9 +17,6 @@ enum DeeplinkDestination {
     case trophyCase
     case externalURL
     
-    typealias ContentID = String
-    typealias UserID = Int
-    
     init?(url: NSURL) {
         let scheme = url.scheme.lowercaseString
         
@@ -70,7 +67,7 @@ enum DeeplinkDestination {
         }
     }
     
-    init(userID: UserID) {
+    init(userID: User.ID) {
         self = .profile(userID: userID)
     }
 }
