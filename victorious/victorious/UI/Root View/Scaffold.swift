@@ -22,6 +22,8 @@ protocol Scaffold: VCoachmarkDisplayResponder, VDeeplinkSupporter, VDeeplinkHand
     
     /// Navigates to the given `destination` view controller.
     func navigate(to destination: UIViewController, animated: Bool)
+    
+    func navigate(to deeplinkURL: NSURL)
 }
 
 extension Scaffold where Self: UIViewController {
@@ -70,5 +72,9 @@ extension Scaffold where Self: UIViewController {
         if presentedViewController == nil {
             InterstitialManager.sharedInstance.showNextInterstitial(onViewController: self)
         }
+    }
+    
+    func navigate(to deeplinkURL: NSURL) {
+        Router(originViewController: self, dependencyManager: dependencyManager).navigate(to: deeplinkURL)
     }
 }

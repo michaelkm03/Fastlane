@@ -45,7 +45,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 @property (nonatomic, strong) VDependencyManager *rootDependencyManager; ///< The dependency manager at the top of the heirarchy--the one with no parent
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic, strong, readwrite) VDependencyManager *scaffoldDependencyManager;
 @property (nonatomic) BOOL appearing;
 @property (nonatomic) BOOL shouldPresentForceUpgradeScreenOnNextAppearance;
 @property (nonatomic, strong, readwrite) UIViewController *currentViewController;
@@ -276,8 +275,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     VDependencyManager *scaffoldDependencyManager = [self.dependencyManager childDependencyForKey:VDependencyManagerScaffoldViewControllerKey];
     
     self.scaffold = scaffold;
-    self.scaffoldDependencyManager = scaffoldDependencyManager;
-    
     self.deepLinkReceiver.dependencyManager = scaffoldDependencyManager; // TODO: REMOVE
     
     [self showViewController:scaffold animated:YES completion:^(void)
@@ -289,7 +286,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
         
         if (self.queuedDeeplink != nil)
         {
-            [self showQueuedDeeplink:self.queuedDeeplink on:scaffold with:scaffoldDependencyManager];
+            [self showDeeplink:self.queuedDeeplink on:scaffold];
             self.queuedDeeplink = nil;
         }
     }];
