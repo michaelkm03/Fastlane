@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VSettingsSwitchCell"/>
@@ -15,7 +14,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="paI-k3-qj2">
-                        <rect key="frame" x="257" y="6" width="51" height="31"/>
+                        <rect key="frame" x="261" y="6" width="51" height="31"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="31" id="dvx-PF-FSN"/>
                             <constraint firstAttribute="width" constant="49" id="gfv-6v-jcn"/>
@@ -25,7 +24,7 @@
                         </connections>
                     </switch>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GqS-pb-dXP">
-                        <rect key="frame" x="8" y="8" width="248" height="27"/>
+                        <rect key="frame" x="10" y="8" width="248" height="27"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="248" id="3p9-9M-2Da"/>
                             <constraint firstAttribute="height" constant="27" id="wwH-Cj-TMY"/>
@@ -37,11 +36,13 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="paI-k3-qj2" firstAttribute="centerY" secondItem="9Pp-A7-hrN" secondAttribute="centerY" id="H3K-1d-jCo"/>
-                    <constraint firstAttribute="leadingMargin" secondItem="GqS-pb-dXP" secondAttribute="leading" id="ZcN-ey-akA"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="paI-k3-qj2" secondAttribute="trailing" constant="6" id="kmd-8s-yEt"/>
                     <constraint firstItem="GqS-pb-dXP" firstAttribute="centerY" secondItem="9Pp-A7-hrN" secondAttribute="centerY" id="pUM-vp-ej6"/>
                 </constraints>
             </tableViewCellContentView>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="paI-k3-qj2" secondAttribute="trailing" constant="10" id="1lo-Ac-fii"/>
+                <constraint firstItem="GqS-pb-dXP" firstAttribute="leading" secondItem="od7-Gg-3yu" secondAttribute="leading" constant="10" id="eEM-Ip-TaB"/>
+            </constraints>
             <connections>
                 <outlet property="settingLabel" destination="GqS-pb-dXP" id="2WE-hG-eGT"/>
                 <outlet property="settingSwitch" destination="paI-k3-qj2" id="ZY8-4a-Pbk"/>

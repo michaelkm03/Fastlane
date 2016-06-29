@@ -23,9 +23,12 @@ private struct Constants {
     static let sectionTitleKey = "section.title"
     static let creatorNameMacro = "%%CREATOR_NAME%%"
     static let tableViewRowHeight: CGFloat = 44
-    static let tableViewHeaderHeight: CGFloat = 25
+    static let tableViewHeaderHeight: CGFloat = 35
+    static let tableViewHeaderLeftPadding: CGFloat = 10
+    static let tableViewSeparatorLeftPadding: CGFloat = 10
     static let errorStateViewHeight: CGFloat = 100
     static let errorStateViewWidthMultiplier: CGFloat = 0.8
+    static let activityIndicatorSideLength: CGFloat = 50
 }
 
 struct NotificationSettingsTableSection {
@@ -53,7 +56,9 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
     private var stateManager: VNotificationSettingsStateManager?
     private var permissionsTrackingHelper: VPermissionsTrackingHelper?
     private var sections:[NotificationSettingsTableSection] = []
-    private var errorStateView: CtAErrorState? 
+    private var errorStateView: CtAErrorState?
+    private var canLoadSettings = true
+    private let spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
     
     /// MARK: - UIViewController methods
     
@@ -63,18 +68,28 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
         let cellNib = UINib(nibName: "VSettingsSwitchCell", bundle: nil)
         tableView.registerNib(cellNib, forCellReuseIdentifier: Constants.cellIdentifier)
         tableView.separatorColor = dependencyManager?.colorForKey(Constants.tableViewSeparatorColorKey)
+        tableView.separatorInset = UIEdgeInsetsZero //Must be overridden by individual cells
+        tableView.bounces = false
+        spinner.frame = CGRect(center: tableView.bounds.center, size: CGSize(width: Constants.activityIndicatorSideLength, height: Constants.activityIndicatorSideLength))
         createErrorStateView()
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        stateManager?.reset()
-        styleWithDependencyManager()
+        if (canLoadSettings) {
+            stateManager?.reset()
+            styleWithDependencyManager()
+            canLoadSettings = false
+        }
     }
     
-     override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         saveSettings()
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        canLoadSettings = true //Only reload once the screen dissappears completely
     }
     
     /// MARK: - VNotificationSettingsStageManagerDelegate
@@ -101,9 +116,10 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
     
     func loadSettings() {
         settings = nil
-        
+        startSpinner()
         let notificationPreferencesOperation = DevicePreferencesOperation()
         notificationPreferencesOperation.queue() { results, error, cancelled in
+            self.stopSpinner()
             guard error == nil, let mainQueueSettings = notificationPreferencesOperation.mainQueueSettings else {
                 self.settings = nil
                 self.stateManager?.errorDidOccur(error)
@@ -158,6 +174,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
         cell.delegate = self
         cell.setDependencyManager(dependencyManager)
         cell.selectionStyle = .None
+        cell.separatorInset = UIEdgeInsets(top: 0, left: Constants.tableViewSeparatorLeftPadding, bottom: 0, right: 0)
         return cell
     }
     
@@ -182,7 +199,10 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
         headerLabel.font = dependencyManager.fontForKey(Constants.sectionTitleFontKey)
         headerLabel.textColor = dependencyManager.colorForKey(Constants.sectionTitleColorKey)
         headerLabel.sizeToFit()
-        return headerLabel
+        let headerContainer = UIView()
+        headerContainer.addSubview(headerLabel)
+        headerContainer.v_addFitToParentConstraintsToSubview(headerLabel, leading: Constants.tableViewHeaderLeftPadding, trailing: 0, top: 0, bottom: 0)
+        return headerContainer
     }
     
     override  func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -247,6 +267,16 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
             errorStateView.frame = CGRect(center: self.tableView.bounds.center, size: CGSize(width: Constants.errorStateViewWidthMultiplier * tableView.frame.width, height: Constants.errorStateViewHeight))
            self.errorStateView = errorStateView
         }
+    }
+    
+    private func startSpinner() {
+        view.addSubview(spinner)
+        spinner.startAnimating()
+    }
+    
+    private func stopSpinner() {
+        spinner.stopAnimating()
+        spinner.removeFromSuperview()
     }
     
     /// MARK: - Dependency Manager
