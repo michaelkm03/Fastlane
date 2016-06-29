@@ -8,10 +8,6 @@
 
 import Foundation
 
-/// FUTURE: Will do these in the following PR
-/// - Queueing deep links (before scaffold is ready)
-/// - Remove DeepLinkReceiver
-
 /// A Router object that is able to navigate to a destination in the app,
 /// e.g. A piece of content, a user, or a specific screen that is deep linked to.
 /// Use one of the `navigate(to:) APIs to perform the navigation.
