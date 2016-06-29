@@ -10,12 +10,6 @@
 #import "VConstants.h"
 #import <KVOController/FBKVOController.h>
 
-@interface VVideoUtils()
-
-@property (nonatomic, readwrite) NSUInteger compositionLoopCount;
-
-@end
-
 @implementation VVideoUtils
 
 - (void)createPlayerItemWithURL:(NSURL *)itemURL
