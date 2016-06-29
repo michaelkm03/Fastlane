@@ -62,7 +62,7 @@ extension WebSocketEventDecoder {
                     forumEvent = .chatUserCount(chatUserCount)
                 }
             default:
-                ()
+                forumEvent = nil
             }
         }
         
