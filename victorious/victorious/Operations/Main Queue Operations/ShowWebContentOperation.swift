@@ -16,9 +16,9 @@ import WebKit
     
     func title() -> String {
         switch self {
-            case .PrivacyPolicy: return "Privacy Policy"
-            case .HelpCenter: return "Help Center"
-            case .TermsOfService: return "Terms Of Service"
+            case .PrivacyPolicy: return NSLocalizedString("Privacy Policy", comment: "")
+            case .HelpCenter: return NSLocalizedString("Help", comment: "")
+            case .TermsOfService: return NSLocalizedString("Terms of Service", comment: "")
         }
     }
     
