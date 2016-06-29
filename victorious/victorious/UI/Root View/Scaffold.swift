@@ -45,12 +45,6 @@ extension Scaffold where Self: UIViewController {
             pushNotificationOperation.addDependency(tutorialOperation)
         }
         
-        if let rootViewController = VRootViewController.sharedRootViewController() {
-            let deepLinkOperation = ShowQueuedDeeplinkOperation(deepLinkReceiver: rootViewController.deepLinkReceiver)
-            deepLinkOperation.addDependency(pushNotificationOperation)
-            deepLinkOperation.queue()
-        }
-        
         pushNotificationOperation.queue { [weak self] error, cancelled in
             self?.coachmarkManager.allowCoachmarks = true
             onReady?()

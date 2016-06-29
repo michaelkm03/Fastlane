@@ -699,7 +699,6 @@
 		67ADE37D1C979E060097D42F /* VCardSeeMoreDirectoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6728C0E61C6133020005A29F /* VCardSeeMoreDirectoryCell.xib */; };
 		67B6666A1CDA6AF80096F18C /* ChatInterfaceDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67B666691CDA6AF80096F18C /* ChatInterfaceDataSource.swift */; };
 		67B783BE1C80F98900940D61 /* Achievement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67B783BD1C80F98900940D61 /* Achievement.swift */; };
-		67BB52D81CA2089100A406F3 /* ShowQueuedDeeplinkOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67BB52D71CA2089100A406F3 /* ShowQueuedDeeplinkOperation.swift */; };
 		67BECC4B1CC9840C00DFEE4B /* ListMenuCreatorCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67BECC4A1CC9840C00DFEE4B /* ListMenuCreatorCollectionViewCell.swift */; };
 		67BECC4D1CC9845900DFEE4B /* ListMenuCreatorDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67BECC4C1CC9845900DFEE4B /* ListMenuCreatorDataSource.swift */; };
 		67BECC4F1CC985C000DFEE4B /* ListMenuCommunityItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67BECC4E1CC985C000DFEE4B /* ListMenuCommunityItem.swift */; };
@@ -3168,7 +3167,6 @@
 		67AB78201C40823800BA00FE /* MockRequests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockRequests.swift; sourceTree = "<group>"; };
 		67B666691CDA6AF80096F18C /* ChatInterfaceDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatInterfaceDataSource.swift; sourceTree = "<group>"; };
 		67B783BD1C80F98900940D61 /* Achievement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Achievement.swift; path = "Trophy Case/Achievement.swift"; sourceTree = "<group>"; };
-		67BB52D71CA2089100A406F3 /* ShowQueuedDeeplinkOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowQueuedDeeplinkOperation.swift; sourceTree = "<group>"; };
 		67BECC4A1CC9840C00DFEE4B /* ListMenuCreatorCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListMenuCreatorCollectionViewCell.swift; path = "List Menu/Creators/ListMenuCreatorCollectionViewCell.swift"; sourceTree = "<group>"; };
 		67BECC4C1CC9845900DFEE4B /* ListMenuCreatorDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListMenuCreatorDataSource.swift; path = "List Menu/Creators/ListMenuCreatorDataSource.swift"; sourceTree = "<group>"; };
 		67BECC4E1CC985C000DFEE4B /* ListMenuCommunityItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListMenuCommunityItem.swift; path = "List Menu/Community/ListMenuCommunityItem.swift"; sourceTree = "<group>"; };
@@ -8107,7 +8105,6 @@
 			children = (
 				A72C85AB1C977FF500E97D4F /* AnonymousLoginOperation.swift */,
 				A72C85AD1C977FF500E97D4F /* RequestPushNotificationPermissionOperation.swift */,
-				67BB52D71CA2089100A406F3 /* ShowQueuedDeeplinkOperation.swift */,
 				67D3E0501CECEE70008F9398 /* ShowTutorialsOperation.swift */,
 				BFBDFB3D1CBEB9CA00BE077A /* StartLoadingOperation.swift */,
 				BF9C375D1C978B5F001841C5 /* TempDirectoryCleanupOperation.swift */,
@@ -13412,7 +13409,6 @@
 				C3C734591B60714C00D6795D /* ExperienceEnhancerAnimatingIconView.swift in Sources */,
 				BE42842919DDC19100AEDBA6 /* VDefaultProfileButton.m in Sources */,
 				F0EBAAAD1B8002E100515D4C /* VListShelfCollectionViewFlowLayout.swift in Sources */,
-				67BB52D81CA2089100A406F3 /* ShowQueuedDeeplinkOperation.swift in Sources */,
 				A75FAF1719E8AC1E00EB87C1 /* VDiscoverSuggestedPeopleSectionCell.m in Sources */,
 				A72C85FA1C977FF500E97D4F /* AccountUpdateOperation.swift in Sources */,
 				F0C83A551B156D1700A6EC1A /* VCoachmarkManager+VObjectAssociation.m in Sources */,
