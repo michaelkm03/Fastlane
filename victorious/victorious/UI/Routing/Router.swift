@@ -19,7 +19,7 @@ struct Router {
     
     // MARK: - Initialization
     
-    private weak var originViewController: UIViewController!
+    private weak var originViewController: UIViewController?
     private let dependencyManager: VDependencyManager
     
     init(originViewController: UIViewController, dependencyManager: VDependencyManager) {
@@ -32,37 +32,27 @@ struct Router {
     /// Performs navigation to a piece of content
     func navigate(to content: ContentModel) {
         switch content.type {
-            case .image, .video, .gif:
-                showCloseUpView(for: content)
-            case .link:
-                guard let linkedURL = content.linkedURL else {
-                    showError()
-                    return
-                }
-                navigate(to: linkedURL)
-            case .text:
-                // FUTURE: We currently don't support tapping on text content
-                break
+            case .image, .video, .gif: showCloseUpView(for: content)
+            case .link: navigate(to: content.linkedURL)
+            case .text: break // FUTURE: We currently don't support tapping on text content
         }
     }
     
     /// Performs navigation to a deep link URL
-    func navigate(to deeplinkURL: NSURL) {
-        guard let destination = DeeplinkDestination(url: deeplinkURL) else {
+    func navigate(to deeplinkURL: NSURL?) {
+        guard
+            let url = deeplinkURL,
+            let destination = DeeplinkDestination(url: url)
+        else {
             showError()
             return
         }
         
         switch destination {
-            case .profile(let userID):
-                showProfile(for: userID)
-            case .closeUp(let contentID):
-                showCloseUpView(for: contentID)
-            case .vipForum:
-                showVIPForum()
-            case .externalURL:
-                // FUTURE: Show Web Content
-                break
+            case .profile(let userID): showProfile(for: userID)
+            case .closeUp(let contentID): showCloseUpView(for: contentID)
+            case .vipForum: showVIPForum()
+            case .externalURL: break // FUTURE: Show Web Content
         }
     }
     
@@ -70,28 +60,32 @@ struct Router {
 
     typealias ContentID = String
     private func showCloseUpView(for contentID: ContentID) {
+        guard let originViewController = self.originViewController else { return }
         let displayModifier = ShowCloseUpDisplayModifier(dependencyManager: dependencyManager, originViewController: originViewController)
         ShowCloseUpOperation.showOperation(forContentID: contentID, displayModifier: displayModifier).queue()
     }
     
     private func showCloseUpView(for content: ContentModel) {
+        guard let originViewController = self.originViewController else { return }
         let displayModifier = ShowCloseUpDisplayModifier(dependencyManager: dependencyManager, originViewController: originViewController)
         ShowCloseUpOperation.showOperation(forContent: content, displayModifier: displayModifier).queue()
     }
     
     private func showVIPForum() {
+        guard let originViewController = self.originViewController else { return }
         ShowForumOperation(originViewController: originViewController, dependencyManager: dependencyManager, showVIP: true, animated: true).queue()
     }
     
     typealias UserID = Int
     private func showProfile(for userID: UserID) {
+        guard let originViewController = self.originViewController else { return }
         ShowProfileOperation(originViewController: originViewController, dependencyManager: dependencyManager, userId: userID).queue()
     }
     
     private func showError() {
         let title = NSLocalizedString("Missing Content", comment: "The title of the alert saying we can't find a piece of content")
         let message = NSLocalizedString("Missing Content Message", comment: "A deep linked content has a wrong destination URL that we can't navigate to")
-        originViewController.v_showAlert(title: title, message: message)
+        originViewController?.v_showAlert(title: title, message: message)
     }
 }
 
