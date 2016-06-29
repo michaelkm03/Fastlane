@@ -40,12 +40,6 @@ public protocol ContentModel: PreviewImageContainer, DictionaryConvertible {
 }
 
 extension ContentModel {
-    // MARK: - Assets
-    
-    public var aspectRatio: CGFloat {
-        return previewImages.first?.mediaMetaData.size?.aspectRatio ?? 0.0
-    }
-    
     // MARK: - DictionaryConvertible
     
     public var rootKey: String {

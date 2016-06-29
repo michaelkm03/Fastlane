@@ -47,11 +47,10 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     }
     
     func height(for content: ContentModel?) -> CGFloat {
-        guard let content = content else {
+        guard let aspectRatio = content?.naturalMediaAspectRatio else {
             return 0
         }
-        let contentAspectRatio = content.aspectRatio
-        return min(screenWidth / contentAspectRatio, maxContentHeight - headerSection.bounds.size.height)
+        return min(screenWidth / aspectRatio, maxContentHeight - headerSection.bounds.size.height)
     }
 
     var content: ContentModel? {

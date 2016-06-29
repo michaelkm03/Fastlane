@@ -14,4 +14,27 @@ extension ContentModel {
     var wasCreatedByCurrentUser: Bool {
         return author.id == VCurrentUser.user()?.remoteId.integerValue
     }
+    
+    // MARK: - Media size
+    
+    /// The natural aspect ratio of the content's media, or nil if the content does not have any media.
+    ///
+    /// This may not correspond to a supported aspect ratio value. Use the `mediaSize` property if you need a supported
+    /// aspect ratio.
+    ///
+    var naturalMediaAspectRatio: CGFloat? {
+        return previewImages.first?.mediaMetaData.size?.aspectRatio
+    }
+    
+    /// The sizing information for the content's media, or nil if the content does not have any media.
+    ///
+    /// This size will be mapped to the closest supported aspect ratio.
+    ///
+    var mediaSize: ContentMediaSize? {
+        guard let aspectRatio = naturalMediaAspectRatio else {
+            return nil
+        }
+        
+        return ContentMediaSize.supportedSize(closestToAspectRatio: aspectRatio)
+    }
 }

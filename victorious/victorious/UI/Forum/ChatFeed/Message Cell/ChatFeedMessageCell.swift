@@ -56,7 +56,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
     static let horizontalSpacing = CGFloat(10.0)
     static let avatarSize = CGSize(width: 30.0, height: 30.0)
     static let avatarTapTargetSize = CGSize(width: 44.0, height: 44.0)
-    static let contentMargin = UIEdgeInsets(top: 30, left: 10, bottom: 2, right: 75)
+    static let contentMargin = UIEdgeInsets(top: 30, left: 10, bottom: 2, right: 40)
     static let topLabelYSpacing = CGFloat(6.5)
     static let topLabelXInset = CGFloat(5.0)
     
@@ -219,7 +219,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
     
     static func cellHeight(displaying content: ContentModel, inWidth width: CGFloat, dependencyManager: VDependencyManager) -> CGFloat {
         let textHeight = textSize(displaying: content, inWidth: width, dependencyManager: dependencyManager).height
-        let mediaHeight = mediaSize(displaying: content, inWidth: width, dependencyManager: dependencyManager).height
+        let mediaHeight = mediaSize(displaying: content, inWidth: width, dependencyManager: dependencyManager)?.height ?? 0.0
         let contentHeight = max(textHeight + mediaHeight, avatarSize.height)
         return contentMargin.top + contentMargin.bottom + contentHeight
     }
@@ -242,22 +242,12 @@ class ChatFeedMessageCell: UICollectionViewCell {
         return size
     }
     
-    static func mediaSize(displaying content: ContentModel, inWidth width: CGFloat, dependencyManager: VDependencyManager) -> CGSize {
-        guard !content.assets.isEmpty else {
-            return CGSize.zero
-        }
-        
-        let maxWidth = width - nonContentWidth
-        let aspectRatio = dependencyManager.clampedAspectRatio(from: content.aspectRatio)
-        
-        return CGSize(
-            width: maxWidth,
-            height: maxWidth / aspectRatio
-        )
+    static func mediaSize(displaying content: ContentModel, inWidth width: CGFloat, dependencyManager: VDependencyManager) -> CGSize? {
+        return content.mediaSize?.preferredSize(clampedToWidth: width - nonContentWidth)
     }
     
     private static var nonContentWidth: CGFloat {
-        return contentMargin.left + contentMargin.right + avatarSize.width + horizontalSpacing
+        return contentMargin.horizontal + avatarSize.width + horizontalSpacing
     }
 }
 
@@ -268,14 +258,6 @@ private extension ContentModel {
 }
 
 private extension VDependencyManager {
-    func clampedAspectRatio(from rawAspectRatio: CGFloat) -> CGFloat {
-        let defaultMinimum = 0.75
-        let defaultMaximum = 4.0
-        let minAspect = CGFloat(numberForKey("aspectRatio.minimum")?.floatValue ?? defaultMinimum)
-        let maxAspect = CGFloat(numberForKey("aspectRatio.maximum")?.floatValue ?? defaultMaximum)
-        return min(maxAspect, max(rawAspectRatio, minAspect))
-    }
-    
     var messageTextColor: UIColor {
         return colorForKey("color.message.text") ?? .whiteColor()
     }
