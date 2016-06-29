@@ -724,7 +724,6 @@
 		67D3E0511CECEE70008F9398 /* ShowTutorialsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D3E0501CECEE70008F9398 /* ShowTutorialsOperation.swift */; };
 		67D3E0521CED4822008F9398 /* TestTrackingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6232D46F1C86539E00B1D9B8 /* TestTrackingManager.swift */; };
 		67D9BFDC1BFAA99B002B1F17 /* FollowCountRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D9BFDB1BFAA99B002B1F17 /* FollowCountRequestTests.swift */; };
-		67F2310A1CB72133006BDBA5 /* TrophyCaseDeepLinkHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67F231091CB72133006BDBA5 /* TrophyCaseDeepLinkHandler.swift */; };
 		67F2314D1CBC8A9F006BDBA5 /* ListMenuHashtagDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67F2314C1CBC8A9F006BDBA5 /* ListMenuHashtagDataSource.swift */; };
 		67F231531CBD6134006BDBA5 /* ListMenuViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 67F231521CBD6134006BDBA5 /* ListMenuViewController.storyboard */; };
 		67F231551CBD6178006BDBA5 /* ListMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67F231541CBD6178006BDBA5 /* ListMenuViewController.swift */; };
@@ -3183,7 +3182,6 @@
 		67D3E0501CECEE70008F9398 /* ShowTutorialsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowTutorialsOperation.swift; sourceTree = "<group>"; };
 		67D9BFD31BFAA347002B1F17 /* FollowCountRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowCountRequest.swift; sourceTree = "<group>"; };
 		67D9BFDB1BFAA99B002B1F17 /* FollowCountRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowCountRequestTests.swift; sourceTree = "<group>"; };
-		67F231091CB72133006BDBA5 /* TrophyCaseDeepLinkHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TrophyCaseDeepLinkHandler.swift; path = "Trophy Case/TrophyCaseDeepLinkHandler.swift"; sourceTree = "<group>"; };
 		67F2314C1CBC8A9F006BDBA5 /* ListMenuHashtagDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = ListMenuHashtagDataSource.swift; path = "List Menu/Trending Hashtags/ListMenuHashtagDataSource.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		67F231521CBD6134006BDBA5 /* ListMenuViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = ListMenuViewController.storyboard; path = "List Menu/ListMenuViewController.storyboard"; sourceTree = "<group>"; };
 		67F231541CBD6178006BDBA5 /* ListMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListMenuViewController.swift; path = "List Menu/ListMenuViewController.swift"; sourceTree = "<group>"; };
@@ -7559,7 +7557,6 @@
 				67B783BD1C80F98900940D61 /* Achievement.swift */,
 				675CBEE51C7FB74D0098F6AE /* TrophyCaseAchievementCollectionViewCell.swift */,
 				675CBEE71C7FBA860098F6AE /* TrophyCaseCollectionViewDataSource.swift */,
-				67F231091CB72133006BDBA5 /* TrophyCaseDeepLinkHandler.swift */,
 				675CBEE81C7FBA860098F6AE /* TrophyCaseViewController.storyboard */,
 				675CBEE91C7FBA860098F6AE /* TrophyCaseViewController.swift */,
 			);
@@ -13319,7 +13316,6 @@
 				F074097F1B059CA200C44623 /* VCoachmarkManager.m in Sources */,
 				A70FC1131A2D61A000F5BBDE /* VProductsRequest.m in Sources */,
 				A7B0E0791BC4423500593B21 /* YouTubeVideoPlayer.swift in Sources */,
-				67F2310A1CB72133006BDBA5 /* TrophyCaseDeepLinkHandler.swift in Sources */,
 				BF2AE2C21CD280CB00A9967A /* GridStreamViewController.swift in Sources */,
 				F0FC98221B6298620098AFCB /* VNavigationTitleView.m in Sources */,
 				A72C86261C977FF500E97D4F /* PollResultSummaryBySequenceOperation.swift in Sources */,
