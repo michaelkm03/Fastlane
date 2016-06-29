@@ -53,7 +53,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 @property (nonatomic, strong) NSString *queuedNotificationID; ///< A notificationID that came in before we were ready for it
 @property (nonatomic) VAppLaunchState launchState; ///< At what point in the launch lifecycle are we?
 @property (nonatomic) BOOL properlyBackgrounded; ///< The app has been properly sent to the background (not merely lost focus)
-@property (nonatomic, strong, readwrite) VDeeplinkReceiver *deepLinkReceiver;
 @property (nonatomic, strong) VApplicationTracking *applicationTracking;
 @property (nonatomic, strong) VCrashlyticsLogTracking *crashlyticsLogTracking;
 @property (nonatomic, strong) NSURL *queuedDeeplink;
@@ -85,7 +84,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 - (void)commonInit
 {
-    self.deepLinkReceiver = [[VDeeplinkReceiver alloc] init];
     self.applicationTracking = [[VApplicationTracking alloc] init];
     self.crashlyticsLogTracking = [[VCrashlyticsLogTracking alloc] init];
     [[VTrackingManager sharedInstance] addDelegate:self.applicationTracking];
@@ -272,17 +270,11 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     [DefaultTimingTracker sharedInstance].dependencyManager = self.dependencyManager;
     
     UIViewController<Scaffold> *scaffold = [self.dependencyManager scaffoldViewController];
-    VDependencyManager *scaffoldDependencyManager = [self.dependencyManager childDependencyForKey:VDependencyManagerScaffoldViewControllerKey];
-    
     self.scaffold = scaffold;
-    self.deepLinkReceiver.dependencyManager = scaffoldDependencyManager; // TODO: REMOVE
     
     [self showViewController:scaffold animated:YES completion:^(void)
     {
         self.launchState = VAppLaunchStateLaunched;
-        
-        // VDeeplinkReceiver depends on scaffold being visible already, so make sure this is in this completion block
-        [self.deepLinkReceiver receiveQueuedDeeplink];
         
         if (self.queuedDeeplink != nil)
         {
@@ -430,8 +422,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     {
         [self showDeeplink:url on:self.scaffold];
     }
-    
-    [self.deepLinkReceiver receiveDeeplink:url];
 }
 
 - (void)startNewSession

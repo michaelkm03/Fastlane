@@ -44,8 +44,6 @@ extern NSString * const VApplicationDidBecomeActiveNotification;
  */
 @property (nonatomic, strong, readonly) VSessionTimer *sessionTimer;
 
-@property (nonatomic, strong, readonly) VDeeplinkReceiver *deepLinkReceiver;
-
 @property (nonatomic, strong, readonly) UIViewController<Scaffold> *scaffold;
 
 /**
