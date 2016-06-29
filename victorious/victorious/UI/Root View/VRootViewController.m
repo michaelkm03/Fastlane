@@ -422,6 +422,15 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 - (void)openURL:(NSURL *)url
 {
+    if (self.scaffold == nil)
+    {
+        self.queuedDeeplink = url;
+    }
+    else
+    {
+        [self showDeeplink:url on:self.scaffold];
+    }
+    
     [self.deepLinkReceiver receiveDeeplink:url];
 }
 
