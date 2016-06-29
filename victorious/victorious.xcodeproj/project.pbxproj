@@ -10709,10 +10709,10 @@
 			isa = PBXGroup;
 			children = (
 				F0FBC43D1D21D4120070873F /* CaptionBar.swift */,
-				F0FBC43F1D21EDF80070873F /* CaptionBarViewController.swift */,
-				F0FBC4451D22EF260070873F /* CaptionBarViewController.storyboard */,
 				F0FBC4411D22E9170070873F /* CaptionBarDecorator.swift */,
 				F0FBC4431D22EB580070873F /* CaptionBarPopulator.swift */,
+				F0FBC4451D22EF260070873F /* CaptionBarViewController.storyboard */,
+				F0FBC43F1D21EDF80070873F /* CaptionBarViewController.swift */,
 			);
 			name = CaptionBar;
 			sourceTree = "<group>";

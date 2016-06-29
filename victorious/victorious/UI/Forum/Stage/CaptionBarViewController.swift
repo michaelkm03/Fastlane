@@ -9,8 +9,8 @@
 import Foundation
 
 protocol CaptionBarViewControllerDelegate: class {
-    func didTapOnUser(user: UserModel)
-    func wantsUpdateToContentHeight(height: CGFloat)
+    func captionBarViewController(captionBarViewController: CaptionBarViewController, didTapOnUser user: UserModel)
+    func captionBarViewController(captionBarViewController: CaptionBarViewController, wantsUpdateToContentHeight height: CGFloat)
 }
 
 class CaptionBarViewController: UIViewController {
@@ -35,12 +35,12 @@ class CaptionBarViewController: UIViewController {
     private var captionIsExpanded = false {
         didSet {
             guard isViewLoaded() && isShowingCaption else {
-                delegate?.wantsUpdateToContentHeight(0)
+                delegate?.captionBarViewController(self, wantsUpdateToContentHeight: 0)
                 return
             }
             
             let desiredHeight = CaptionBarPopulator.toggle(captionBar, toCollapsed: !captionIsExpanded)
-            delegate?.wantsUpdateToContentHeight(desiredHeight)
+            delegate?.captionBarViewController(self, wantsUpdateToContentHeight: desiredHeight)
         }
     }
     
@@ -59,6 +59,8 @@ class CaptionBarViewController: UIViewController {
         captionBarDecorator?.decorate(captionBar)
     }
     
+    // MARK: - Public
+    
     func populate(user: UserModel, caption: String) {
         displayingUser = user
         CaptionBarPopulator.populate(captionBar, withUser: user, andCaption: caption)
@@ -68,5 +70,11 @@ class CaptionBarViewController: UIViewController {
     func reset() {
         displayingUser = nil
         captionIsExpanded = false
+    }
+    
+    // MARK: - Actions
+    
+    @IBAction private func pressedToggleButton() {
+        captionIsExpanded = !captionIsExpanded
     }
 }

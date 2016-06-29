@@ -19,6 +19,9 @@ struct CaptionBarPopulator {
         captionBar.captionLabel.numberOfLines = collapsed ? 2 : 5
         captionBar.layoutIfNeeded()
         let maxSize = CGSize(width: captionBar.bounds.width, height: CGFloat.max)
-        return captionBar.sizeThatFits(maxSize).height
+        let textHeight = captionBar.captionLabel.sizeThatFits(maxSize).height
+        let labelHeight = max(textHeight, captionBar.avatarImageViewHeightConstraint.constant)
+        let captionLabelVerticalPadding = captionBar.verticalLabelPaddingConstraints.reduce(0, combine: { $0 + $1.constant })
+        return captionLabelVerticalPadding + labelHeight
     }
 }

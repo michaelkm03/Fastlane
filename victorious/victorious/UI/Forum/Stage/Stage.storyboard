@@ -16,9 +16,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a1k-JM-1LN" customClass="MediaContentView" customModule="victorious" customModuleProvider="target">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a1k-JM-1LN" userLabel="Media Content Container View">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="520"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DfU-P8-ZhH" customClass="MediaContentView" customModule="victorious" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="520"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="DfU-P8-ZhH" secondAttribute="trailing" id="0gl-1G-kyQ"/>
+                                    <constraint firstItem="DfU-P8-ZhH" firstAttribute="leading" secondItem="a1k-JM-1LN" secondAttribute="leading" id="7zd-OI-IH5"/>
+                                    <constraint firstAttribute="bottom" secondItem="DfU-P8-ZhH" secondAttribute="bottom" id="CW4-lj-9tA"/>
+                                    <constraint firstItem="DfU-P8-ZhH" firstAttribute="top" secondItem="a1k-JM-1LN" secondAttribute="top" id="ILF-E3-rYC"/>
+                                </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BQJ-IP-Emu" customClass="AttributionBar" customModule="victorious" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="456" width="600" height="64"/>
@@ -54,7 +66,7 @@
                                     <outlet property="userNameButton" destination="DAf-y5-PcP" id="ZRq-3o-7pJ"/>
                                 </connections>
                             </view>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wSh-lD-twH">
+                            <containerView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wSh-lD-twH">
                                 <rect key="frame" x="0.0" y="520" width="600" height="80"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="80" id="OT1-tL-iiZ"/>
@@ -64,7 +76,7 @@
                                 </connections>
                             </containerView>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="wSh-lD-twH" firstAttribute="leading" secondItem="dPd-gY-gTf" secondAttribute="leading" id="3oL-8j-brd"/>
                             <constraint firstItem="BQJ-IP-Emu" firstAttribute="top" secondItem="a1k-JM-1LN" secondAttribute="bottom" constant="-64" id="AOi-fR-WqG"/>
@@ -81,18 +93,19 @@
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
                         <outlet property="attributionBar" destination="BQJ-IP-Emu" id="acC-2b-eTE"/>
-                        <outlet property="mediaContentView" destination="a1k-JM-1LN" id="axM-Ue-I6y"/>
+                        <outlet property="captionBarHeightConstraint" destination="OT1-tL-iiZ" id="nG7-V3-Mfn"/>
+                        <outlet property="mediaContentView" destination="DfU-P8-ZhH" id="JPI-87-IJO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nKP-kC-OcX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1057" y="772"/>
         </scene>
-        <!--Storyboard Reference-->
+        <!--CaptionBarViewController-->
         <scene sceneID="a4N-jU-xxu">
             <objects>
-                <viewControllerPlaceholder storyboardIdentifier="CaptionBarViewController" id="y7m-QI-tHk" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kYe-dx-1zT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewControllerPlaceholder storyboardIdentifier="CaptionBarViewController" storyboardName="CaptionBarViewController" id="y7m-QI-tHk" sceneMemberID="viewController"/>
             </objects>
             <point key="canvasLocation" x="1057.5" y="1248"/>
         </scene>

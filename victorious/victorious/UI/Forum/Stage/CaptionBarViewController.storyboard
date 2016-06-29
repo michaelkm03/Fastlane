@@ -8,7 +8,7 @@
         <!--Caption Bar View Controller-->
         <scene sceneID="Xl1-d1-iAH">
             <objects>
-                <viewController storyboardIdentifier="CaptionBarViewController" id="s4g-pW-yus" customClass="CaptionBarViewController" customModule="victorious" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController modalPresentationStyle="currentContext" id="s4g-pW-yus" customClass="CaptionBarViewController" customModule="victorious" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="aux-jy-eBS"/>
                         <viewControllerLayoutGuide type="bottom" id="EkJ-Pu-Rn4"/>
@@ -23,6 +23,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="80"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 </view>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <blurEffect style="dark"/>
                             </visualEffectView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DEK-3L-V3o">
@@ -35,18 +36,21 @@
                                             <constraint firstAttribute="width" secondItem="Bvc-71-Pei" secondAttribute="height" multiplier="1:1" id="MZK-U3-rov"/>
                                         </constraints>
                                     </imageView>
-                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zd0-Zd-kLL">
-                                        <rect key="frame" x="538" y="23" width="46" height="30"/>
-                                        <state key="normal" title="Button"/>
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zd0-Zd-kLL">
+                                        <rect key="frame" x="572" y="27" width="12" height="22"/>
+                                        <state key="normal" image="CaptionBarDisclosureButton"/>
+                                        <connections>
+                                            <action selector="pressedToggleButton" destination="s4g-pW-yus" eventType="touchUpInside" id="ubM-7L-4eC"/>
+                                        </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NwJ-vh-MaQ">
-                                        <rect key="frame" x="76" y="16" width="446" height="48"/>
+                                        <rect key="frame" x="76" y="16" width="480" height="48"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="Bvc-71-Pei" firstAttribute="leading" secondItem="DEK-3L-V3o" secondAttribute="leading" constant="16" id="4qz-OD-ujm"/>
                                     <constraint firstAttribute="bottom" secondItem="NwJ-vh-MaQ" secondAttribute="bottom" priority="999" constant="16" id="6Qj-Vg-UYi"/>
@@ -73,9 +77,12 @@
                         </constraints>
                         <connections>
                             <outlet property="avatarImageView" destination="Bvc-71-Pei" id="1Oe-6J-bKM"/>
+                            <outlet property="avatarImageViewHeightConstraint" destination="IYl-ux-fmA" id="0sv-7M-1Xd"/>
                             <outlet property="captionLabel" destination="NwJ-vh-MaQ" id="ojT-Kc-TGB"/>
                             <outlet property="expandButton" destination="zd0-Zd-kLL" id="BLF-1O-Tem"/>
                             <outlet property="overlayView" destination="DEK-3L-V3o" id="60q-X6-dYo"/>
+                            <outletCollection property="verticalLabelPaddingConstraints" destination="uPe-Ch-9Ul" id="qkZ-L4-JvW"/>
+                            <outletCollection property="verticalLabelPaddingConstraints" destination="6Qj-Vg-UYi" id="um2-wc-s7H"/>
                         </connections>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
@@ -90,4 +97,7 @@
             <point key="canvasLocation" x="373" y="443"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="CaptionBarDisclosureButton" width="12" height="12"/>
+    </resources>
 </document>

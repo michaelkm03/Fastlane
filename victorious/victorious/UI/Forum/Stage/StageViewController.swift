@@ -8,7 +8,7 @@
 
 import UIKit
 
-class StageViewController: UIViewController, Stage, AttributionBarDelegate {
+class StageViewController: UIViewController, Stage, AttributionBarDelegate, CaptionBarViewControllerDelegate {
     private struct Constants {
         static let contentSizeAnimationDuration: NSTimeInterval = 0.5
         static let defaultAspectRatio: CGFloat = 16 / 9
@@ -22,15 +22,34 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate {
         return self.view.bounds.width / Constants.defaultAspectRatio
     }()
 
-    @IBOutlet private var mediaContentView: MediaContentView!
-    @IBOutlet private var attributionBar: AttributionBar! {
+    @IBOutlet private weak var mediaContentView: MediaContentView!
+    @IBOutlet private weak var attributionBar: AttributionBar! {
         didSet {
             attributionBar.hidden = true
             attributionBar.delegate = self
             updateAttributionBarAppearance(with: dependencyManager)
         }
     }
-    private var captionBarViewController: CaptionBarViewController!
+    @IBOutlet private var captionBarHeightConstraint: NSLayoutConstraint! {
+        didSet {
+            captionBarHeightConstraint.constant = captionBarHeight
+        }
+    }
+    private var captionBarHeight: CGFloat = 0
+    private var captionBarViewController: CaptionBarViewController? {
+        didSet {
+            let captionBarDependency = dependencyManager.captionBarDependency
+            let hasCaptionBar = captionBarDependency != nil
+            captionBarViewController?.delegate = hasCaptionBar ? self : nil
+            captionBarViewController?.dependencyManager = captionBarDependency
+        }
+    }
+    
+    private var visible = true {
+        didSet {
+            updateStageHeight()
+        }
+    }
     
     private lazy var newItemPill: TextOnColorButton? = { [weak self] in
         guard let pillDependency = self?.dependencyManager.newItemButtonDependency else {
@@ -100,16 +119,27 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate {
     
     // MARK: - Stage
     
+    func addCaptionContent(content: ContentModel) {
+        let text = content.text ?? "testing"
+//        guard let text = content.text else {
+//            return
+//        }
+        captionBarViewController?.populate(content.author, caption: text)
+    }
+    
     func addContent(stageContent: ContentModel) {
         queuedContent = stageContent
-        if !hasShownStage || mediaContentView.content?.type != .video || newItemPill == nil {
+        if
+            !hasShownStage ||
+            mediaContentView.content?.type != .video ||
+            newItemPill == nil
+        {
             // If the stage was not shown, 
             // or if the current content was one that is not time based (video for now),
             // or if we don't have a pill (for VIP stage)
             // we will immediately move to the next content.
             hasShownStage = true
-            let defaultStageHeight = view.bounds.width / Constants.defaultAspectRatio
-            delegate?.stage(self, didUpdateContentHeight: defaultStageHeight)
+            updateStageHeight()
             nextContent()
         }
         else {
@@ -128,7 +158,7 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate {
         
         attributionBar.configure(with: stageContent.author)
         
-        delegate?.stage(self, didUpdateContentHeight: defaultStageHeight)
+        delegate?.stage(self, wantsUpdateToContentHeight: defaultStageHeight)
         queuedContent = nil
     }
     
@@ -184,21 +214,18 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate {
     
     private func hideStage(animated: Bool = false) {
         mediaContentView.hideContent(animated: animated)
-        
+        visible = false
         UIView.animateWithDuration(animated ? Constants.contentSizeAnimationDuration : 0) {
             self.view.layoutIfNeeded()
         }
-        self.delegate?.stage(self, didUpdateContentHeight: 0.0)
     }
     
     private func showStage(animated: Bool = false) {
         mediaContentView.showContent(animated: animated)
-        
+        visible = true
         UIView.animateWithDuration(animated ? Constants.contentSizeAnimationDuration : 0) {
             self.view.layoutIfNeeded()
         }
-        
-        self.delegate?.stage(self, didUpdateContentHeight: defaultStageHeight)
     }
     
     // MARK: - Attribution Bar
@@ -211,6 +238,26 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate {
     
     func didTapOnUser(user: UserModel) {
         ShowProfileOperation(originViewController: self, dependencyManager: dependencyManager, userId: user.id).queue()
+    }
+    
+    // MARK: - CaptionBarViewControllerDelegate
+    
+    func captionBarViewController(captionBarViewController: CaptionBarViewController, didTapOnUser user: UserModel) {
+        ShowProfileOperation(originViewController: self, dependencyManager: dependencyManager, userId: user.id).queue()
+    }
+    
+    func captionBarViewController(captionBarViewController: CaptionBarViewController, wantsUpdateToContentHeight height: CGFloat) {
+        captionBarHeight = height
+        updateStageHeight()
+    }
+    
+    // MARK: - View updating
+    
+    private func updateStageHeight() {
+        let stageVisible = visible
+        let stageHeight = stageVisible ? defaultStageHeight + captionBarHeight : 0
+        captionBarHeightConstraint.constant = stageVisible ? captionBarHeight : 0
+        delegate?.stage(self, wantsUpdateToContentHeight: stageHeight)
     }
 }
 

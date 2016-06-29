@@ -13,4 +13,6 @@ class CaptionBar: UIView {
     @IBOutlet weak var avatarImageView: UIImageView!
     @IBOutlet weak var expandButton: UIButton!
     @IBOutlet weak var overlayView: UIView!
+    @IBOutlet var verticalLabelPaddingConstraints: [NSLayoutConstraint]!
+    @IBOutlet weak var avatarImageViewHeightConstraint: NSLayoutConstraint!
 }
