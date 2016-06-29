@@ -502,6 +502,8 @@
 		0EBF418C1CAB6563002966B3 /* InboundWebsocketEvent.json in Resources */ = {isa = PBXBuildFile; fileRef = 0EBF418B1CAB6563002966B3 /* InboundWebsocketEvent.json */; };
 		0EBF418E1CAC889C002966B3 /* RefreshStage.json in Resources */ = {isa = PBXBuildFile; fileRef = 0EBF418D1CAC889C002966B3 /* RefreshStage.json */; };
 		0EC0F60F1CE65005008760E8 /* WebSocketDebuggingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC0F60E1CE65005008760E8 /* WebSocketDebuggingViewController.swift */; };
+		0EC8ECF11D24488900A3272D /* WebSocketErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC8ECF01D24488900A3272D /* WebSocketErrorTests.swift */; };
+		0EC8ECF31D24499300A3272D /* WebSocketErrors.json in Resources */ = {isa = PBXBuildFile; fileRef = 0EC8ECF21D24499300A3272D /* WebSocketErrors.json */; };
 		0ECECD2C1D00E7520076CB92 /* ChatUserCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECECD2B1D00E7520076CB92 /* ChatUserCount.swift */; };
 		0ECECD2E1D010E7F0076CB92 /* ChatUserCount.json in Resources */ = {isa = PBXBuildFile; fileRef = 0ECECD2D1D010E7F0076CB92 /* ChatUserCount.json */; };
 		0EDED5D61CBD72F000FAF77E /* CreateChatServiceTokenRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EDED5D51CBD72F000FAF77E /* CreateChatServiceTokenRequestTests.swift */; };
@@ -2961,6 +2963,8 @@
 		0EBF418B1CAB6563002966B3 /* InboundWebsocketEvent.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = InboundWebsocketEvent.json; sourceTree = "<group>"; };
 		0EBF418D1CAC889C002966B3 /* RefreshStage.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = RefreshStage.json; sourceTree = "<group>"; };
 		0EC0F60E1CE65005008760E8 /* WebSocketDebuggingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebSocketDebuggingViewController.swift; path = Debugging/WebSocketDebuggingViewController.swift; sourceTree = "<group>"; };
+		0EC8ECF01D24488900A3272D /* WebSocketErrorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebSocketErrorTests.swift; sourceTree = "<group>"; };
+		0EC8ECF21D24499300A3272D /* WebSocketErrors.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = WebSocketErrors.json; sourceTree = "<group>"; };
 		0ECECD2B1D00E7520076CB92 /* ChatUserCount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChatUserCount.swift; path = ForumEvents/ChatUserCount.swift; sourceTree = "<group>"; };
 		0ECECD2D1D010E7F0076CB92 /* ChatUserCount.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ChatUserCount.json; sourceTree = "<group>"; };
 		0EDED5D51CBD72F000FAF77E /* CreateChatServiceTokenRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateChatServiceTokenRequestTests.swift; sourceTree = "<group>"; };
@@ -6197,6 +6201,7 @@
 				BF2D25791CED40980001A2AF /* ViewedContent */,
 				6780537B1C6086AD00894821 /* VoteResultTests.swift */,
 				A7BAD63C1BF144800076D3B7 /* StreamTests.swift */,
+				0EC8ECF01D24488900A3272D /* WebSocketErrorTests.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -6273,6 +6278,7 @@
 				797FD2601BFAA19900BFFB08 /* UserInteractionsTest.json */,
 				670C65911C52BA1800BD7F3F /* UserShelfResponse.json */,
 				BF2D256C1CED3FCC0001A2AF /* ViewedContent */,
+				0EC8ECF21D24499300A3272D /* WebSocketErrors.json */,
 			);
 			path = "Test Data";
 			sourceTree = "<group>";
@@ -11202,6 +11208,7 @@
 				C3FEA79D1BF17307003446CC /* TrendingGIFsResponse.json in Resources */,
 				C3E7C0E71BF3C8E400AFE545 /* NotificationsResponse.json in Resources */,
 				BF3777D81CEE4D5800AEF7F2 /* ContentInvalidSourceType.json in Resources */,
+				0EC8ECF31D24499300A3272D /* WebSocketErrors.json in Resources */,
 				79D9FC541BF27FF400445D2D /* MinDataConverationResponse.json in Resources */,
 				62575EF91C54CB2000B49CB0 /* SequenceWithAdBreak.json in Resources */,
 				79CFD3D51BF2AEB9004F70D9 /* ConversationWithUserFoundResponse.json in Resources */,
@@ -12237,6 +12244,7 @@
 				A72EDF9B1C03FF3C003D6177 /* SequenceTests.swift in Sources */,
 				C3E7C0F91BF3F44700AFE545 /* MarkAllNotificationsAsReadRequestTests.swift in Sources */,
 				79610B9B1C3B59DB00D9254B /* FriendFindByEmailRequestTests.swift in Sources */,
+				0EC8ECF11D24488900A3272D /* WebSocketErrorTests.swift in Sources */,
 				C3E7C0EF1BF3ED9900AFE545 /* NotificationsRequestTests.swift in Sources */,
 				0300AA801BF2BCBB000A121D /* DevicePreferencesRequestTests.swift in Sources */,
 				6798479E1BF135D300C01DE3 /* SuggestedUsersRequestTests.swift in Sources */,

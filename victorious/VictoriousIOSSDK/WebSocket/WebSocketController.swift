@@ -221,7 +221,7 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
 
         // System generated error.
         if disconnectEvent == nil {
-            let webSocketError = WebSocketError.ConnectionTerminated(code: error?.code, message: error?.localizedDescription)
+            let webSocketError = WebSocketError.connectionTerminated(code: error?.code, message: error?.localizedDescription)
             disconnectEvent = ForumEvent.websocket(.Disconnected(webSocketError: webSocketError))
         }
 
