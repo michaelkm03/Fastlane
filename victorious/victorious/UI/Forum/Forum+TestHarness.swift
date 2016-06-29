@@ -195,6 +195,10 @@ private let sampleStageImageContents = [
     [
         "type" : "text",
         "text" : "VIP Event happening now! Switch to VIP chat to check it out!"
+    ],
+    [
+        "type" : "text",
+        "text" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation "
     ]
 ]
 
