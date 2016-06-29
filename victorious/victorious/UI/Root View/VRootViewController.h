@@ -46,6 +46,10 @@ extern NSString * const VApplicationDidBecomeActiveNotification;
 
 @property (nonatomic, strong, readonly) VDeeplinkReceiver *deepLinkReceiver;
 
+@property (nonatomic, strong, readonly) UIViewController<Scaffold> *scaffold;
+
+@property (nonatomic, strong, readonly) VDependencyManager *scaffoldDependencyManager;
+
 /**
  Returns the instance of VRootViewController that is set as the main 
  window's rootViewController property. If no such instance exists,

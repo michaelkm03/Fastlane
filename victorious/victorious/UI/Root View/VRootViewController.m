@@ -45,6 +45,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 @property (nonatomic, strong) VDependencyManager *rootDependencyManager; ///< The dependency manager at the top of the heirarchy--the one with no parent
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (nonatomic, strong, readwrite) VDependencyManager *scaffoldDependencyManager;
 @property (nonatomic) BOOL appearing;
 @property (nonatomic) BOOL shouldPresentForceUpgradeScreenOnNextAppearance;
 @property (nonatomic, strong, readwrite) UIViewController *currentViewController;
@@ -56,6 +57,8 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 @property (nonatomic, strong, readwrite) VDeeplinkReceiver *deepLinkReceiver;
 @property (nonatomic, strong) VApplicationTracking *applicationTracking;
 @property (nonatomic, strong) VCrashlyticsLogTracking *crashlyticsLogTracking;
+@property (nonatomic, strong) NSURL *queuedDeeplink;
+@property (nonatomic, strong, readwrite) UIViewController<Scaffold> *scaffold;
 
 @end
 
@@ -269,11 +272,13 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     self.applicationTracking.dependencyManager = self.dependencyManager;
     [DefaultTimingTracker sharedInstance].dependencyManager = self.dependencyManager;
     
-    UIViewController *scaffold = [self.dependencyManager scaffoldViewController];
+    UIViewController<Scaffold> *scaffold = [self.dependencyManager scaffoldViewController];
+    VDependencyManager *scaffoldDependencyManager = [self.dependencyManager childDependencyForKey:VDependencyManagerScaffoldViewControllerKey];
     
-    NSDictionary *scaffoldConfig = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:VDependencyManagerScaffoldViewControllerKey];
-    VDependencyManager *scaffoldDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:scaffoldConfig];
-    self.deepLinkReceiver.dependencyManager = scaffoldDependencyManager;
+    self.scaffold = scaffold;
+    self.scaffoldDependencyManager = scaffoldDependencyManager;
+    
+    self.deepLinkReceiver.dependencyManager = scaffoldDependencyManager; // TODO: REMOVE
     
     [self showViewController:scaffold animated:YES completion:^(void)
     {
@@ -281,6 +286,12 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
         
         // VDeeplinkReceiver depends on scaffold being visible already, so make sure this is in this completion block
         [self.deepLinkReceiver receiveQueuedDeeplink];
+        
+        if (self.queuedDeeplink != nil)
+        {
+            [self showQueuedDeeplink:self.queuedDeeplink on:scaffold with:scaffoldDependencyManager];
+            self.queuedDeeplink = nil;
+        }
     }];
 }
 
@@ -389,7 +400,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
         }
         if ( [self.sessionTimer shouldNewSessionStartNow] )
         {
-            [self.deepLinkReceiver queueDeeplink:deepLink];
+            self.queuedDeeplink = deepLink;
             self.queuedNotificationID = notificationID;
         }
         else
