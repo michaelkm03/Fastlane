@@ -44,7 +44,7 @@ enum DeeplinkDestination {
             self = .profile(userID: userID)
         case "vipForum":
             self = .vipForum
-        case "trophyCase":
+        case "profile/trophyCase":
             self = .trophyCase
         default:
             assertionFailure("Unrecgonized host for the deep link URL")

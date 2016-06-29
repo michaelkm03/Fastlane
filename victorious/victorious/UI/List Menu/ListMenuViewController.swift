@@ -49,9 +49,16 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     // MARK: - Notifications
     
     private func selectCreator(atIndex index: Int) {
+        guard let scaffold = VRootViewController.sharedRootViewController()?.scaffold as? Scaffold else {
+            return
+        }
+        
         let creator = collectionViewDataSource.creatorDataSource.visibleItems[index]
-        let router = Router(originViewController: self, dependencyManager: dependencyManager)
         let destination = DeeplinkDestination(userID: creator.id)
+        
+        // Had to trace down the real navigation controlelr because List Menu has no idea where it is - and it doesn't have navigation stack either.
+        let router = Router(originViewController: scaffold.mainNavigationController.innerNavigationController, dependencyManager: dependencyManager)
+        
         router.navigate(to: destination)
         
         // This notification closes the side view controller
