@@ -66,6 +66,8 @@ extension Scaffold where Self: UIViewController {
     }
     
     func navigate(to deeplinkURL: NSURL) {
-        Router(originViewController: self, dependencyManager: dependencyManager).navigate(to: deeplinkURL)
+        let router = Router(originViewController: self, dependencyManager: dependencyManager)
+        let destination = DeeplinkDestination(url: deeplinkURL)
+        router.navigate(to: destination)
     }
 }

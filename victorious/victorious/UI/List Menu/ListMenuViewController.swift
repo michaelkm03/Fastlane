@@ -51,7 +51,8 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     private func selectCreator(atIndex index: Int) {
         let creator = collectionViewDataSource.creatorDataSource.visibleItems[index]
         let router = Router(originViewController: self, dependencyManager: dependencyManager)
-        router.navigate(to: creator.id)
+        let destination = DeeplinkDestination(userID: creator.id)
+        router.navigate(to: destination)
         
         // This notification closes the side view controller
         NSNotificationCenter.defaultCenter().postNotificationName(

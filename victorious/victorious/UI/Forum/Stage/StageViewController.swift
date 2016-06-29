@@ -105,7 +105,8 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate {
         }
         
         let router = Router(originViewController: self, dependencyManager: dependencyManager)
-        router.navigate(to: targetContent)
+        let destination = DeeplinkDestination(content: targetContent)
+        router.navigate(to: destination)
     }
     
     // MARK: - Stage

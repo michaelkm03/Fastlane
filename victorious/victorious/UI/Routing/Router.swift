@@ -17,10 +17,9 @@ struct Router {
     
     private weak var originViewController: UIViewController?
     private let dependencyManager: VDependencyManager
-    
     typealias ContentID = String
     typealias UserID = Int
-    
+
     init(originViewController: UIViewController, dependencyManager: VDependencyManager) {
         self.originViewController = originViewController
         self.dependencyManager = dependencyManager
@@ -28,26 +27,8 @@ struct Router {
     
     // MARK: - API
     
-    /// Performs navigation to a piece of content
-    func navigate(to content: ContentModel) {
-        switch content.type {
-            case .image, .video, .gif: showCloseUpView(for: content)
-            case .link: navigate(to: content.linkedURL)
-            case .text: break // FUTURE: We currently don't support tapping on text content
-        }
-    }
-    
-    /// Performs navigation to a user profile with provided user ID
-    func navigate(to userID: UserID) {
-        showProfile(for: userID)
-    }
-    
-    /// Performs navigation to a deep link URL
-    func navigate(to deeplinkURL: NSURL?) {
-        guard
-            let url = deeplinkURL,
-            let destination = DeeplinkDestination(url: url)
-        else {
+    func navigate(to destination: DeeplinkDestination?) {
+        guard let destination = destination else {
             showError()
             return
         }
@@ -56,6 +37,7 @@ struct Router {
             case .profile(let userID): showProfile(for: userID)
             case .closeUp(let contentID): showCloseUpView(for: contentID)
             case .vipForum: showVIPForum()
+            case .trophyCase: showTrophyCase()
             case .externalURL: break // FUTURE: Show Web Content
         }
     }
@@ -84,6 +66,10 @@ struct Router {
         ShowProfileOperation(originViewController: originViewController, dependencyManager: dependencyManager, userId: userID).queue()
     }
     
+    private func showTrophyCase() {
+        
+    }
+    
     private func showError() {
         let title = NSLocalizedString("Missing Content", comment: "The title of the alert saying we can't find a piece of content")
         let message = NSLocalizedString("Missing Content Message", comment: "A deep linked content has a wrong destination URL that we can't navigate to")
@@ -91,11 +77,15 @@ struct Router {
     }
 }
 
-private enum DeeplinkDestination {
+enum DeeplinkDestination {
     case profile(userID: Int)
     case closeUp(contentID: String)
     case vipForum
+    case trophyCase
     case externalURL
+    
+    typealias ContentID = String
+    typealias UserID = Int
     
     init?(url: NSURL) {
         let scheme = url.scheme.lowercaseString
@@ -114,20 +104,40 @@ private enum DeeplinkDestination {
         
         switch host {
             case "content":
-                guard let contentID = url.v_firstNonSlashPathComponent() else {
-                    return nil
-                }
+                guard let contentID = url.v_firstNonSlashPathComponent() else { return nil }
                 self = .closeUp(contentID: contentID)
             case "profile":
-                guard let userID = Int(url.v_firstNonSlashPathComponent()) else {
-                    return nil
-                }
+                guard let userID = Int(url.v_firstNonSlashPathComponent()) else { return nil }
                 self = .profile(userID: userID)
             case "vipForum":
                 self = .vipForum
+            case "trophyCase":
+                self = .trophyCase
             default:
                 assertionFailure("Unrecgonized host for the deep link URL")
                 return nil
         }
+    }
+    
+    init?(content: ContentModel) {
+        switch content.type {
+            case .image, .video, .gif:
+                guard let contentID = content.id else { return nil }
+                self = .closeUp(contentID: contentID)
+            case .link:
+                guard
+                    let url = content.linkedURL,
+                    let validDestination = DeeplinkDestination(url: url)
+                else { 
+                    return nil
+                }
+                self = validDestination
+            case .text:
+                return nil
+        }
+    }
+    
+    init(userID: UserID) {
+        self = .profile(userID: userID)
     }
 }
