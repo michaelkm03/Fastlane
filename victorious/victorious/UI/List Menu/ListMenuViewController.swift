@@ -30,12 +30,16 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     static func newWithDependencyManager(dependencyManager: VDependencyManager) -> ListMenuViewController {
         let viewController = self.v_initialViewControllerFromStoryboard() as ListMenuViewController
         viewController.dependencyManager = dependencyManager
-        dependencyManager.addBackgroundToBackgroundHost(viewController)
-        
         return viewController
     }
     
     // MARK: - View events
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        dependencyManager.addBackgroundToBackgroundHost(self)
+        view.layoutIfNeeded()
+    }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
