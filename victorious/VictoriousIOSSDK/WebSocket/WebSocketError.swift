@@ -31,18 +31,18 @@ public enum WebSocketError: ErrorType, Equatable, CustomStringConvertible {
         var description: String
 
         switch self {
-        case .missingAppId(let message):
-            description = message
-        case .missingToken(let message):
-            description = message
-        case .unsupportedApp(let message):
-            description = message
-        case .unrecognizedToken(let message):
-            description = message
-        case .unsupportedProtocol(let message):
-            description = message
-        case .connectionTerminated(let code, let error):
-            return "Connection terminated. Code: \(code) Error: \(error)"
+            case .missingAppId(let message):
+                description = message
+            case .missingToken(let message):
+                description = message
+            case .unsupportedApp(let message):
+                description = message
+            case .unrecognizedToken(let message):
+                description = message
+            case .unsupportedProtocol(let message):
+                description = message
+            case .connectionTerminated(let code, let error):
+                return "Connection terminated. Code: \(code) Error: \(error)"
         }
 
         return description
@@ -63,18 +63,18 @@ public enum WebSocketError: ErrorType, Equatable, CustomStringConvertible {
         } else {
             // Error codes are not important to us on a system level since we translate them into our enum.
             switch code {
-            case 10:
-                self = .missingAppId(message: message)
-            case 20:
-                self = .missingToken(message: message)
-            case 30:
-                self = .unsupportedApp(message: message)
-            case 40:
-                self = .unrecognizedToken(message: message)
-            case 50:
-                self = .unsupportedProtocol(message: message)
-            default:
-                return nil
+                case 10:
+                    self = .missingAppId(message: message)
+                case 20:
+                    self = .missingToken(message: message)
+                case 30:
+                    self = .unsupportedApp(message: message)
+                case 40:
+                    self = .unrecognizedToken(message: message)
+                case 50:
+                    self = .unsupportedProtocol(message: message)
+                default:
+                    return nil
             }
         }
     }
@@ -82,19 +82,19 @@ public enum WebSocketError: ErrorType, Equatable, CustomStringConvertible {
 
 public func ==(lhs: WebSocketError, rhs: WebSocketError) -> Bool {
     switch (lhs, rhs) {
-    case (let .missingAppId(message1), let .missingAppId(message2)):
-        return (message1 == message2)
-    case (let .missingToken(message1), let .missingToken(message2)):
-        return (message1 == message2)
-    case (let .unsupportedApp(message1), let .unsupportedApp(message2)):
-        return (message1 == message2)
-    case (let .unrecognizedToken(message1), let .unrecognizedToken(message2)):
-        return (message1 == message2)
-    case (let .unsupportedProtocol(message1), let .unsupportedProtocol(message2)):
-        return (message1 == message2)
-    case (let .connectionTerminated(code1, message1), let .connectionTerminated(code2, message2)):
-        return (code1 == code2) || (message1 == message2)
-    default:
-        return false
+        case (let .missingAppId(message1), let .missingAppId(message2)):
+            return (message1 == message2)
+        case (let .missingToken(message1), let .missingToken(message2)):
+            return (message1 == message2)
+        case (let .unsupportedApp(message1), let .unsupportedApp(message2)):
+            return (message1 == message2)
+        case (let .unrecognizedToken(message1), let .unrecognizedToken(message2)):
+            return (message1 == message2)
+        case (let .unsupportedProtocol(message1), let .unsupportedProtocol(message2)):
+            return (message1 == message2)
+        case (let .connectionTerminated(code1, message1), let .connectionTerminated(code2, message2)):
+            return (code1 == code2) || (message1 == message2)
+        default:
+            return false
     }
 }
