@@ -194,18 +194,6 @@ class VTabScaffoldViewController: UIViewController, Scaffold, UITabBarController
         }
     }
     
-    // MARK: - VDeeplinkSupporter
-    
-    func deepLinkHandlerForURL(url: NSURL) -> VDeeplinkHandler {
-        let contentDeepLinkHandler = VContentDeepLinkHandler(dependencyManager: dependencyManager)
-        
-        if contentDeepLinkHandler.canDisplayContentForDeeplinkURL(url) {
-            return contentDeepLinkHandler
-        }
-        
-        return self
-    }
-    
     // MARK: - VDeeplinkHandler
     
     var requiresAuthorization: Bool {

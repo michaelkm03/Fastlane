@@ -14,22 +14,6 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol VNavigationDestination, VDeeplinkHandler;
 
 /**
- Conformers of this protocol are indicating they provide deep link support by implementing
- the `deepLinkHandlerForURL:` method, returning a `VDeeplinkHandler` object that is dedicated to
- validating and responding to deep link URLs.
- */
-@protocol VDeeplinkSupporter <NSObject>
-
-/**
- Carries out the sole purpose of this protocol, which is to provide a `VDeeplinkHandler` object
- that will handle deep links on behalf of the current object (usually a UIViewController conforming
- to VNavigationDestination).
- */
-- (id<VDeeplinkHandler>)deepLinkHandlerForURL:(NSURL *)url;
-
-@end
-
-/**
  Completion block for deepLink handlers.
  
  @param displayedViewController The view controller presented by the handler.

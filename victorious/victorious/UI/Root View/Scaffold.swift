@@ -7,7 +7,7 @@
 //
 
 /// A protocol for scaffold view controllers that defines the common functionality between them.
-protocol Scaffold: VCoachmarkDisplayResponder, VDeeplinkSupporter, VDeeplinkHandler, InterstitialListener {
+protocol Scaffold: VCoachmarkDisplayResponder, VDeeplinkHandler, InterstitialListener {
     /// The scaffold's dependency manager.
     var dependencyManager: VDependencyManager { get }
     
