@@ -252,13 +252,19 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     
     // MARK: - UIScrollViewDelegate
     
+    private var unstashingViaScrollingIsEnabled = true
+    
     func scrollViewDidScroll(scrollView: UIScrollView) {
         scrollPaginator.scrollViewDidScroll(scrollView)
         
         if scrollView.v_isScrolledToBottom {
-            dataSource.unstash()
+            if unstashingViaScrollingIsEnabled {
+                dataSource.unstash()
+            }
+            
             dataSource.stashingEnabled = false
-        } else {
+        }
+        else {
             dataSource.stashingEnabled = true
         }
         
@@ -312,7 +318,16 @@ class ChatFeedCollectionViewLayout: UICollectionViewFlowLayout {
             let newContentSize = collectionViewContentSize()
             let contentOffsetY = collectionView.contentOffset.y + (newContentSize.height - oldContentSize.height)
             let newOffset = CGPoint(x: collectionView.contentOffset.x, y: contentOffsetY)
+            
+            // Occasionally, setting the content offset here will trigger the chat feed's unstashing behavior. For some
+            // unknown reason, this causes a crash within UICollectionView, so we disable unstashing while we scroll
+            // here. We should find a better way of maintaining the scroll position when inserting content at the top
+            // of the collection view that doesn't have this problem.
+            let chatFeedViewController = collectionView.delegate as? ChatFeedViewController
+            chatFeedViewController?.unstashingViaScrollingIsEnabled = false
             collectionView.setContentOffset(newOffset, animated: false)
+            chatFeedViewController?.unstashingViaScrollingIsEnabled = true
+            
             contentSizeWhenInsertingAbove = nil
         }
     }
