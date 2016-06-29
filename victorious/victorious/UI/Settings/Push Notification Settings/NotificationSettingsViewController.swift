@@ -45,7 +45,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
     
     // MARK : - Properties
     
-    private var dependencyManager: VDependencyManager?
+    private var dependencyManager: VDependencyManager!
     var settings : VNotificationSettings? {
         didSet {
             initializeSections()
@@ -56,8 +56,8 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
     private var stateManager: VNotificationSettingsStateManager?
     private var permissionsTrackingHelper: VPermissionsTrackingHelper?
     private var sections:[NotificationSettingsTableSection] = []
-    private var errorStateView: CtAErrorState?
-    private var canLoadSettings = true
+    private var errorStateView: CTAErrorState?
+    private var shouldFetchSettings = true
     private let spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
     
     // MARK: - UIViewController methods
@@ -69,16 +69,17 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
         tableView.registerNib(cellNib, forCellReuseIdentifier: Constants.cellIdentifier)
         tableView.separatorColor = UIColor.clearColor()
         tableView.bounces = true
+        tableView.rowHeight = Constants.tableViewRowHeight
         spinner.frame = CGRect(center: tableView.bounds.center, size: CGSize(width: Constants.activityIndicatorSideLength, height: Constants.activityIndicatorSideLength))
         createErrorStateView()
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        if (canLoadSettings) {
+        if (shouldFetchSettings) {
             stateManager?.reset()
             styleWithDependencyManager()
-            canLoadSettings = false
+            shouldFetchSettings = false
         }
     }
     
@@ -88,7 +89,8 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
     }
     
     override func viewDidDisappear(animated: Bool) {
-        canLoadSettings = true //Only reload once the screen disappears completely
+        super.viewDidDisappear(animated)
+        shouldFetchSettings = true //Only reload once the screen disappears completely
     }
     
     // MARK: - VNotificationSettingsStageManagerDelegate
@@ -106,7 +108,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
     }
     
     func onDeviceWillRegisterWithServer() {
-        self.settings = nil
+        settings = nil
     }
     
     // MARK: - Settings Management
@@ -115,25 +117,28 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
         settings = nil
         startSpinner()
         let notificationPreferencesOperation = DevicePreferencesOperation()
-        notificationPreferencesOperation.queue() { results, error, cancelled in
-            self.stopSpinner()
+        notificationPreferencesOperation.queue() { [weak self] results, error, cancelled in
+            guard let strongSelf = self else {
+                return
+            }
+            
+            strongSelf.stopSpinner()
             guard error == nil, let mainQueueSettings = notificationPreferencesOperation.mainQueueSettings else {
-                self.settings = nil
-                self.stateManager?.errorDidOccur(error)
+                strongSelf.settings = nil
+                strongSelf.stateManager?.errorDidOccur(error)
 
                 return
             }
-            self.settings = mainQueueSettings
+            strongSelf.settings = mainQueueSettings
         }
     }
     
     func saveSettings() {
-        guard let settings = self.settings else {
+        guard let settings = settings else {
             return
         }
         
         let notificationUpdateOperation = DevicePreferencesOperation(newPreferences: settings.networkPreferences())
-        let navigationController = self.navigationController
         
         notificationUpdateOperation.queue() { [weak navigationController] results, error, cancelled in
             if let _ = error where navigationController != nil {
@@ -148,7 +153,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
     }
     
     func initializeSections() {
-        self.sections = sectionsForTableView()
+        sections = sectionsForTableView()
     }
     
     // MARK: - TableViewDataSource
@@ -156,7 +161,6 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         guard
             let cell = tableView.dequeueReusableCellWithIdentifier(Constants.cellIdentifier) as? VSettingsSwitchCell,
-            let dependencyManager = self.dependencyManager,
             let settings = self.settings
         where
             indexPath.section < sections.count &&
@@ -185,10 +189,6 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return settings == nil ? 0 : sections.count
-    }
-    
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return Constants.tableViewRowHeight
     }
     
     override  func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -282,13 +282,9 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
     
     // MARK: - Dependency Manager
     
-    func setDependencyManager(dependencyManager: VDependencyManager) {
-       self.dependencyManager = dependencyManager
-    }
-    
     class func newWithDependencyManager(dependencyManager: VDependencyManager) -> NotificationSettingsViewController {
         let viewController = NotificationSettingsViewController(style: .Grouped)
-        viewController.setDependencyManager(dependencyManager)
+        viewController.dependencyManager = dependencyManager
         return viewController
     }
     

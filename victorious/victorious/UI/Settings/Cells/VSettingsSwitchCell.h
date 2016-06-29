@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) BOOL value;
 @property (nonatomic, weak, nullable) id<VSettingsSwitchCellDelegate> delegate;
 @property (nonatomic, copy) UIColor *switchColor;
-@property (nonatomic, weak) NSString *key;
+@property (nonatomic, strong) NSString *key;
 
 - (void)setTitle:(NSString *)title value:(BOOL)value;
 

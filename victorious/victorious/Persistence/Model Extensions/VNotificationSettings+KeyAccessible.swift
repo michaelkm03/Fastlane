@@ -20,60 +20,66 @@ enum VNotificationSettingType : String {
 
 extension VNotificationSettings {
     func isKeyEnabled(key: String) -> Bool {
-        switch key {
-            case VNotificationSettingType.postFromCreator.rawValue:
+        guard let settingType = VNotificationSettingType(rawValue: key) else {
+            return false
+        }
+        
+        switch settingType {
+            case .postFromCreator:
                 return isPostFromCreatorEnabled?.boolValue ?? false
-            case VNotificationSettingType.postFromFavorite.rawValue:
+            case .postFromFavorite:
                 return isPostFromFollowedEnabled?.boolValue ?? false
-            case VNotificationSettingType.mentionsUser.rawValue:
+            case .mentionsUser:
                 return isUserTagInCommentEnabled?.boolValue ?? false
-            case VNotificationSettingType.upvotePost.rawValue:
+            case .upvotePost:
                 return isPeopleLikeMyPostEnabled?.boolValue ?? false
-            case VNotificationSettingType.favoritesUser.rawValue:
+            case .favoritesUser:
                 return isNewFollowerEnabled?.boolValue ?? false
-            case VNotificationSettingType.privateMessage.rawValue:
+            case .privateMessage:
                 return isNewPrivateMessageEnabled?.boolValue ?? false
-            default:
-                return false
         }
     }
     
     func updateValue(forKey key: String, newValue: Bool) {
-        switch key {
-            case VNotificationSettingType.postFromCreator.rawValue:
+        guard let settingType = VNotificationSettingType(rawValue: key) else {
+            return
+        }
+        
+        switch settingType {
+            case .postFromCreator:
                 isPostFromCreatorEnabled = newValue
-            case VNotificationSettingType.postFromFavorite.rawValue:
+            case .postFromFavorite:
                 isPostFromFollowedEnabled = newValue
-            case VNotificationSettingType.mentionsUser.rawValue:
+            case .mentionsUser:
                isUserTagInCommentEnabled = newValue
-            case VNotificationSettingType.upvotePost.rawValue:
+            case .upvotePost:
                 isPeopleLikeMyPostEnabled = newValue
-            case VNotificationSettingType.favoritesUser.rawValue:
+            case .favoritesUser:
                 isNewFollowerEnabled = newValue
-            case VNotificationSettingType.privateMessage.rawValue:
+            case .privateMessage:
                 isNewPrivateMessageEnabled = newValue
-            default:
-               break
         }
     }
     
     //Refer to VTrackingConstants
     func trackingName(forKey key: String) -> String {
-        switch key {
-            case VNotificationSettingType.postFromCreator.rawValue:
+        guard let settingType = VNotificationSettingType(rawValue: key) else {
+            return ""
+        }
+        
+        switch settingType {
+            case .postFromCreator:
                 return VTrackingValuePostFromCreator
-            case VNotificationSettingType.postFromFavorite.rawValue:
+            case .postFromFavorite:
                 return VTrackingValuePostFromFollowed
-            case VNotificationSettingType.mentionsUser.rawValue:
+            case .mentionsUser:
                 return VTrackingValueUsertagInComment
-            case VNotificationSettingType.upvotePost.rawValue:
+            case .upvotePost:
                 return VTrackingValuePeopleLikeMyPost
-            case VNotificationSettingType.favoritesUser.rawValue:
+            case .favoritesUser:
                 return VTrackingValueNewFollower
-            case VNotificationSettingType.privateMessage.rawValue:
+            case .privateMessage:
                 return VTrackingValueNewPrivateMessage
-            default:
-                return ""
         }
     }
 }

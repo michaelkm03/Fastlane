@@ -1,5 +1,5 @@
 //
-//  VDependencyManager+CtAErrorState.swift
+//  VDependencyManager+CTAErrorState.swift
 //  victorious
 //
 //  Created by Darvish Kamalia on 6/24/16.
@@ -10,9 +10,9 @@ import Foundation
 
 extension VDependencyManager {
     /// The calling parent view must provide constraints or a new frame for this view
-    func createErrorStateView(withKey key: String = "error.state", actionType: CtAErrorStateActionType) -> CtAErrorState? {
+    func createErrorStateView(withKey key: String = "error.state", actionType: CTAErrorStateActionType) -> CTAErrorState? {
         if let childManager = childDependencyForKey(key) {
-            return CtAErrorState(frame: CGRect(), dependencyManager: childManager, actionType: actionType)
+            return CTAErrorState(frame: CGRectZero, dependencyManager: childManager, actionType: actionType)
         }
         else {
             return nil

@@ -18,9 +18,9 @@ NSString * const itemSeparatorColorKey = @"color.separator.navigation.items";
 
 @interface VSettingsSwitchCell()
 
-@property (strong, nonatomic) IBOutlet UILabel *settingLabel;
-@property (strong, nonatomic) IBOutlet UISwitch *settingSwitch;
-@property (strong, nonatomic) IBOutlet UIView *separatorView;
+@property (nonatomic, strong) IBOutlet UILabel *settingLabel;
+@property (nonatomic, strong) IBOutlet UISwitch *settingSwitch;
+@property (nonatomic, strong) IBOutlet UIView *separatorView;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, assign) BOOL shouldPreventNotifyingDelegate;
@@ -62,7 +62,7 @@ NSString * const itemSeparatorColorKey = @"color.separator.navigation.items";
     self.shouldPreventNotifyingDelegate = NO;
 }
 
-- (void)setSeparatorHidden: (BOOL) value
+- (void)setSeparatorHidden:(BOOL)value
 {
     [self.separatorView setHidden:value];
 }

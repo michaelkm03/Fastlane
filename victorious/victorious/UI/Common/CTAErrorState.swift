@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-enum CtAErrorStateActionType {
+enum CTAErrorStateActionType {
     case openSettings
 }
 
@@ -18,23 +18,24 @@ private struct Constants {
     static let messageFontKey = "message.font"
     static let messageColorKey = "message.color"
     static let actionButtonKey = "action.button"
+    static let minimumSpacing: CGFloat = 10
 }
 
 /// A reusable error state class that tells the user that the current screen is not usable unless
 /// they perform a specific action.
-class CtAErrorState: UIView {
+class CTAErrorState: UIView {
     private let messageLabel = UILabel()
     private var actionButton: UIButton?
     private var stackView = UIStackView()
     private let dependencyManager: VDependencyManager
-    private let actionType: CtAErrorStateActionType
+    private let actionType: CTAErrorStateActionType
 
-    init(frame: CGRect, dependencyManager: VDependencyManager, actionType: CtAErrorStateActionType) {
+    init(frame: CGRect, dependencyManager: VDependencyManager, actionType: CTAErrorStateActionType) {
         self.dependencyManager = dependencyManager
         self.actionType = actionType
         super.init(frame: frame)
         setupViews()
-        actionButton?.addTarget(self, action: #selector(CtAErrorState.performButtonAction), forControlEvents: .TouchUpInside)
+        actionButton?.addTarget(self, action: #selector(CTAErrorState.performButtonAction), forControlEvents: .TouchUpInside)
         
     }
 
@@ -56,6 +57,7 @@ class CtAErrorState: UIView {
         stackView.axis = .Vertical
         stackView.alignment = .Fill
         stackView.distribution = .EqualSpacing
+        stackView.spacing = Constants.minimumSpacing
         self.addSubview(stackView)
         v_addFitToParentConstraintsToSubview(stackView)
     }
