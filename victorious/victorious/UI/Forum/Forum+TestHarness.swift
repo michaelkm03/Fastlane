@@ -108,7 +108,7 @@ extension ForumViewController {
         let content = Content(
             id: String(1000 + Int(arc4random() % 9999)),
             type: contentType,
-            text: contentType == .text ? next["text"] : randomText(),
+            text: next["text"] ?? randomText(),
             assets: assets,
             previewImages: [previewAsset],
             author: User(

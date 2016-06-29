@@ -8,20 +8,24 @@
 
 import UIKit
 
+private struct Constants {
+    static let blurRadius: CGFloat = 12
+    static let fadeDuration: NSTimeInterval = 0.75
+    static let backgroundFadeInDurationMultiplier = 0.75
+    static let fadeOutDurationMultiplier = 1.25
+    static let textPostLineSpacing: CGFloat = 2.0
+    static let maxLineCount = 4
+    static let textAlignment = NSTextAlignment.Center
+    static let minimumScaleFactor: CGFloat = 0.8
+    static let textPostPadding = 25
+    static let defaultTextBackgroundColor = UIColor.blackColor()
+    static let defaultTextColor = UIColor.whiteColor()
+    static let defaultTextFont = UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline)
+}
+
 /// Displays an image/video/GIF/Youtube video/text post upon setting the content property
 
 class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGestureRecognizerDelegate {
-    private struct Constants {
-        static let blurRadius: CGFloat = 12
-        static let fadeDuration: NSTimeInterval = 0.75
-        static let backgroundFadeInDurationMultiplier = 0.75
-        static let fadeOutDurationMultiplier = 1.25
-        static let textPostLineSpacing: CGFloat = 2.0
-        static let maxLineCount = 4
-        static let textAlignment = NSTextAlignment.Center
-        static let minimumScaleFactor: CGFloat = 0.8
-        static let textPostPadding = 25
-    }
     
     private(set) var videoCoordinator: VContentVideoPlayerCoordinator?
     
@@ -71,6 +75,8 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         
         textPostLabel.textAlignment = Constants.textAlignment
         textPostLabel.numberOfLines = Constants.maxLineCount
+        textPostLabel.adjustsFontSizeToFitWidth = true
+        textPostLabel.minimumScaleFactor = Constants.minimumScaleFactor
         addSubview(textPostLabel)
   
         addSubview(spinner)
@@ -240,6 +246,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     
     private func tearDownPreviewImage() {
         previewImageView.hidden = true
+        downloadedPreviewImage = nil
     }
     
     // MARK: - Managing video
@@ -267,38 +274,49 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     // MARK: - Managing Text 
     
     private func setUpTextLabel(for content: ContentModel) {
-        guard let text = content.text else {
+        guard
+            let text = content.text,
+            let textPostManager = dependencyManager?.textPostManager
+        else {
             return
         }
         
         textPostLabel.hidden = true //Hide while we set up the view for the next post
         textPostLabel.text = text
-        textPostLabel.textAlignment = .Center
-        textPostLabel.font = dependencyManager?.textPostFont()
-        textPostLabel.adjustsFontSizeToFitWidth = true
-        textPostLabel.minimumScaleFactor = Constants.minimumScaleFactor
-        textPostLabel.textColor = dependencyManager?.textPostColor()
+        textPostLabel.font = textPostManager.textPostFont
+        textPostLabel.textColor = textPostManager.textPostColor
         
-        if let url = dependencyManager?.textPostBackgroundImageURL() {
-            setBackgroundBlur(withImageUrl: url) { [weak self] in
+        if let url = textPostManager.textPostBackgroundImageURL {
+            setBackgroundBlur(withImageUrl: url, forContent: content) { [weak self] in
                 guard
-                    let strongSelf = self,
-                    let currentContentID = strongSelf.content?.id
+                    let currentContentID = self?.content?.id,
+                    let hideAnimationDidFinish = self?.alphaHasAnimatedToZero
                 where
-                    currentContentID == content.id
+                    currentContentID == content.id && hideAnimationDidFinish
                 else {
                     return
                 }
                 
-                strongSelf.spinner.stopAnimating()
-                strongSelf.textPostLabel.hidden = false
-                strongSelf.showContent()
+                self?.didSetupTextLabel()
             }
+        }
+        
+        else {
+            backgroundView?.image = nil
+            backgroundView?.backgroundColor = Constants.defaultTextBackgroundColor
+            didSetupTextLabel()
         }
     }
     
     private func tearDownTextLabel() {
         textPostLabel.hidden = true
+        textPostLabel.text = ""
+    }
+    
+    private func didSetupTextLabel() {
+        spinner.stopAnimating()
+        textPostLabel.hidden = false
+        showContent()
     }
     
     // MARK: - Layout
@@ -308,7 +326,16 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         previewImageView.frame = bounds
         videoContainerView.frame = bounds
         textPostLabel.frame = CGRect(x: bounds.origin.x + CGFloat(Constants.textPostPadding), y: bounds.origin.y, width: bounds.width - CGFloat(2 * Constants.textPostPadding), height: bounds.height)
-        backgroundView?.frame = bounds
+        
+        //Background should extend a little beyond the original bounds, 
+        //so that the guassian blur doesn't introduce shadow at the edges
+        var backgroundBounds = bounds
+        backgroundBounds.origin.x -= 10
+        backgroundBounds.origin.y -= 10
+        backgroundBounds.size.height += 20
+        backgroundBounds.size.width += 20
+        
+        backgroundView?.frame = backgroundBounds
         spinner.center = CGPoint(x: bounds.midX, y: bounds.midY)
         videoCoordinator?.layout(in: bounds)
     }
@@ -328,22 +355,25 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         
         let minWidth = UIScreen.mainScreen().bounds.size.width
         if let imageURL = content.previewImageURL(ofMinimumWidth: minWidth) {
-            setBackgroundBlur(withImageUrl: imageURL)
+            setBackgroundBlur(withImageUrl: imageURL, forContent: content)
         }
         else if
             let dataURL = content.assets.first?.resourceID,
             let imageURL = NSURL(string: dataURL)
             where content.type == .image
         {
-            setBackgroundBlur(withImageUrl: imageURL)
+            setBackgroundBlur(withImageUrl: imageURL, forContent: content)
         }
         else {
             backgroundView?.image = nil
         }
     }
     
-    private func setBackgroundBlur(withImageUrl imageURL: NSURL, completion: (()->())? = nil) {
+    private func setBackgroundBlur(withImageUrl imageURL: NSURL, forContent content: ContentModel, completion: (()->())? = nil) {
         backgroundView?.applyBlurToImageURL(imageURL, withRadius: Constants.blurRadius) { [weak self] in
+            guard let currentContentID = content.id where currentContentID == self?.content?.id else {
+                return
+            }
             self?.backgroundView?.alpha = 1
             completion?()
         }
@@ -375,21 +405,29 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
 //MARK: - VDependency Manager extension
 
 private extension VDependencyManager {
-    func textPostFont() -> UIFont? {
-        let textPostManager = childDependencyForKey("textPost")
-        return textPostManager?.fontForKey("font.textpost")
+    var textPostManager: VDependencyManager? {
+        return childDependencyForKey("textPost")
     }
     
-    func textPostColor() -> UIColor? {
-        let textPostManager = childDependencyForKey("textPost")
-        return textPostManager?.colorForKey("color.textpost")
-    }
-    
-    func textPostBackgroundImageURL() -> NSURL? {
-        guard let textPostManager = childDependencyForKey("textPost") else {
-            return nil
+    var textPostFont: UIFont? {
+        get {
+            return fontForKey("font.textpost") ?? Constants.defaultTextFont
         }
-        
-        return NSURL(string: textPostManager.stringForKey("backgroundImage.textpost"))
+    }
+    
+    var textPostColor: UIColor {
+        get {
+            return colorForKey("color.textpost") ?? Constants.defaultTextColor
+        }
+    }
+    
+    var textPostBackgroundImageURL: NSURL? {
+        get {
+            guard let urlString = stringForKey("backgroundImage.textpost") else {
+                return nil
+            }
+            
+            return NSURL(string: urlString)
+        }
     }
 }
