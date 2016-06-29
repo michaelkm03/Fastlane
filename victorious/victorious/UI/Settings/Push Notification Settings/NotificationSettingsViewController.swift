@@ -68,7 +68,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
         let cellNib = UINib(nibName: "VSettingsSwitchCell", bundle: nil)
         tableView.registerNib(cellNib, forCellReuseIdentifier: Constants.cellIdentifier)
         tableView.separatorColor = UIColor.clearColor()
-        tableView.bounces = false
+        tableView.bounces = true
         spinner.frame = CGRect(center: tableView.bounds.center, size: CGSize(width: Constants.activityIndicatorSideLength, height: Constants.activityIndicatorSideLength))
         createErrorStateView()
     }
