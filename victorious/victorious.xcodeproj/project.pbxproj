@@ -659,6 +659,7 @@
 		6780537A1C60838800894821 /* VoteResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678053791C60838800894821 /* VoteResult.swift */; };
 		6780537C1C6086AD00894821 /* VoteResultTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6780537B1C6086AD00894821 /* VoteResultTests.swift */; };
 		6780BD601D244DAD003F8141 /* VRootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6780BD5F1D244DAD003F8141 /* VRootViewController.swift */; };
+		6780BD621D248392003F8141 /* DeeplinkDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6780BD611D248392003F8141 /* DeeplinkDestination.swift */; };
 		6782EA7B1BF2AD49000C7C0D /* FollowingRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6782EA7A1BF2AD49000C7C0D /* FollowingRequestTests.swift */; };
 		6782EA7F1BF2C6ED000C7C0D /* LikeSequenceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6782EA7E1BF2C6ED000C7C0D /* LikeSequenceRequest.swift */; };
 		6782EA811BF2C885000C7C0D /* LikeSequenceRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6782EA801BF2C885000C7C0D /* LikeSequenceRequestTests.swift */; };
@@ -3119,6 +3120,7 @@
 		678053791C60838800894821 /* VoteResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoteResult.swift; sourceTree = "<group>"; };
 		6780537B1C6086AD00894821 /* VoteResultTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoteResultTests.swift; sourceTree = "<group>"; };
 		6780BD5F1D244DAD003F8141 /* VRootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VRootViewController.swift; sourceTree = "<group>"; };
+		6780BD611D248392003F8141 /* DeeplinkDestination.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeeplinkDestination.swift; sourceTree = "<group>"; };
 		6782EA7A1BF2AD49000C7C0D /* FollowingRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowingRequestTests.swift; sourceTree = "<group>"; };
 		6782EA7E1BF2C6ED000C7C0D /* LikeSequenceRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikeSequenceRequest.swift; sourceTree = "<group>"; };
 		6782EA801BF2C885000C7C0D /* LikeSequenceRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikeSequenceRequestTests.swift; sourceTree = "<group>"; };
@@ -7532,6 +7534,7 @@
 		67AB0C721D21A31500394598 /* Routing */ = {
 			isa = PBXGroup;
 			children = (
+				6780BD611D248392003F8141 /* DeeplinkDestination.swift */,
 				67AB0C751D21A38A00394598 /* Router.swift */,
 			);
 			path = Routing;
@@ -12924,6 +12927,7 @@
 				BFE31A821CD2969200585155 /* CloseUpView.swift in Sources */,
 				A7D69C721C0E87AB00B462C3 /* VNewContentViewController.m in Sources */,
 				D8D8958919E88C2100632663 /* VExperienceEnhancerBarCell.m in Sources */,
+				6780BD621D248392003F8141 /* DeeplinkDestination.swift in Sources */,
 				A75ECFFE1AB0B6B400C35063 /* VCropOverlayView.m in Sources */,
 				A7F0C8711CB3253C0007178A /* UIViewController+RootPresentationTarget.swift in Sources */,
 				BF4CE0DC1C5825540073ABDF /* VImageAnimationOperation.swift in Sources */,
