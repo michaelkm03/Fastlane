@@ -16,7 +16,6 @@
 #import "VRootViewController.h"
 #import "VThemeManager.h"
 #import "VNoContentView.h"
-#import "VInboxDeeplinkHandler.h"
 #import "VNavigationController.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
 #import "VDependencyManager+VNavigationItem.h"

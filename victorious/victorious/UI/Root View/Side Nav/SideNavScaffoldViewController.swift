@@ -280,21 +280,6 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
         return CGRectZero
     }
     
-    // MARK: - VDeeplinkHandler
-    
-    func displayContentForDeeplinkURL(url: NSURL, completion: VDeeplinkHandlerCompletionBlock?) {
-        // Side nav scaffold doesn't display any content itself at the moment.
-        completion?(false, nil)
-    }
-    
-    func canDisplayContentForDeeplinkURL(url: NSURL) -> Bool {
-        return false
-    }
-    
-    var requiresAuthorization: Bool {
-        return false
-    }
-    
     // MARK: - VNavigationControllerDelegate
     
     func navigationController(navigationController: VNavigationController, willShowViewController viewController: UIViewController, animated: Bool) {

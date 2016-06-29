@@ -18,6 +18,9 @@ struct Router {
     private weak var originViewController: UIViewController?
     private let dependencyManager: VDependencyManager
     
+    typealias ContentID = String
+    typealias UserID = Int
+    
     init(originViewController: UIViewController, dependencyManager: VDependencyManager) {
         self.originViewController = originViewController
         self.dependencyManager = dependencyManager
@@ -32,6 +35,11 @@ struct Router {
             case .link: navigate(to: content.linkedURL)
             case .text: break // FUTURE: We currently don't support tapping on text content
         }
+    }
+    
+    /// Performs navigation to a user profile with provided user ID
+    func navigate(to userID: UserID) {
+        showProfile(for: userID)
     }
     
     /// Performs navigation to a deep link URL
@@ -54,7 +62,6 @@ struct Router {
     
     // MARK: - Private Helper Functions
 
-    typealias ContentID = String
     private func showCloseUpView(for contentID: ContentID) {
         guard let originViewController = self.originViewController else { return }
         let displayModifier = ShowCloseUpDisplayModifier(dependencyManager: dependencyManager, originViewController: originViewController)
@@ -72,7 +79,6 @@ struct Router {
         ShowForumOperation(originViewController: originViewController, dependencyManager: dependencyManager, showVIP: true, animated: true).queue()
     }
     
-    typealias UserID = Int
     private func showProfile(for userID: UserID) {
         guard let originViewController = self.originViewController else { return }
         ShowProfileOperation(originViewController: originViewController, dependencyManager: dependencyManager, userId: userID).queue()

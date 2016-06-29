@@ -50,9 +50,9 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     
     private func selectCreator(atIndex index: Int) {
         let creator = collectionViewDataSource.creatorDataSource.visibleItems[index]
-        let deepLinkURL = ProfileDeepLinkHandler.deepLinkURL(for: creator)
-        
-        VRootViewController.sharedRootViewController()?.openURL(deepLinkURL)
+//        let deepLinkURL = ProfileDeepLinkHandler.deepLinkURL(for: creator)
+//        VRootViewController.sharedRootViewController()?.openURL(deepLinkURL)
+        // TODO: Use Router
         
         // This notification closes the side view controller
         NSNotificationCenter.defaultCenter().postNotificationName(

@@ -194,39 +194,6 @@ class VTabScaffoldViewController: UIViewController, Scaffold, UITabBarController
         }
     }
     
-    // MARK: - VDeeplinkHandler
-    
-    var requiresAuthorization: Bool {
-        return false
-    }
-    
-    func displayContentForDeeplinkURL(url: NSURL, completion: VDeeplinkHandlerCompletionBlock?) {
-        guard canDisplayContentForDeeplinkURL(url) else {
-            return
-        }
-        
-        guard let pathComponent = url.v_firstNonSlashPathComponent(), viewControllers = internalTabBarController.viewControllers else {
-            return
-        }
-        
-        let index = (pathComponent as NSString).integerValue
-        let viewController = viewControllers[index]
-        internalTabBarController.selectedViewController = viewController
-        setNeedsStatusBarAppearanceUpdate()
-    }
-    
-    func canDisplayContentForDeeplinkURL(url: NSURL) -> Bool {
-        let hostIsValid = url.host == "menu"
-        
-        guard let pathComponent = url.v_firstNonSlashPathComponent(), viewControllers = internalTabBarController.viewControllers else {
-            return false
-        }
-        
-        let index = (pathComponent as NSString).integerValue
-        let sectionIsValid = viewControllers.indices ~= index
-        return hostIsValid && sectionIsValid
-    }
-    
     // MARK: - UITabBarControllerDelegate
     
     func tabBarController(tabBarController: UITabBarController, shouldSelectViewController viewController: UIViewController) -> Bool {
