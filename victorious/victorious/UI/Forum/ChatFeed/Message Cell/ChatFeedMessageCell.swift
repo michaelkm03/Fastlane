@@ -56,7 +56,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
     static let horizontalSpacing = CGFloat(10.0)
     static let avatarSize = CGSize(width: 30.0, height: 30.0)
     static let avatarTapTargetSize = CGSize(width: 44.0, height: 44.0)
-    static let contentMargin = UIEdgeInsets(top: 30, left: 10, bottom: 2, right: 40)
+    static let contentMargin = UIEdgeInsets(top: 30, left: 10, bottom: 2, right: 75)
     static let topLabelYSpacing = CGFloat(6.5)
     static let topLabelXInset = CGFloat(5.0)
     
@@ -229,7 +229,8 @@ class ChatFeedMessageCell: UICollectionViewCell {
             return CGSize.zero
         }
         
-        let maxTextWidth = width - nonContentWidth
+        let mediaWidth = mediaSize(displaying: content, inWidth: width, dependencyManager: dependencyManager)?.width
+        let maxTextWidth = min(width - nonContentWidth, mediaWidth ?? CGFloat.max)
         
         var size = attributedText.boundingRectWithSize(
             CGSize(width: maxTextWidth, height: CGFloat.max),

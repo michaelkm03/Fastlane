@@ -55,19 +55,8 @@ struct ContentMediaSize: Equatable {
     
     /// Returns a supported size that best matches the given `aspectRatio`.
     static func supportedSize(closestToAspectRatio aspectRatio: CGFloat) -> ContentMediaSize {
-        var bestSize: ContentMediaSize?
-        
-        // TODO: Add a CollectionType extension for selecting the best item from a collection.
-        
-        for size in supportedSizes {
-            if let currentBestSize = bestSize {
-                if fabs(size.aspectRatio - aspectRatio) < fabs(currentBestSize.aspectRatio - aspectRatio) {
-                    bestSize = size
-                }
-            }
-            else {
-                bestSize = size
-            }
+        let bestSize = supportedSizes.select { currentSize, potentialSize in
+            return fabs(potentialSize.aspectRatio - aspectRatio) < fabs(currentSize.aspectRatio - aspectRatio)
         }
         
         if let bestSize = bestSize {
