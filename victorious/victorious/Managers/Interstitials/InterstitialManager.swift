@@ -52,28 +52,27 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
     }
     
     private func showInterstitial(with alert: Alert, onto presentingViewController: UIViewController) {
-        guard !isShowingInterstital,
-            let interstitial = dependencyManager?.interstitialViewController(alert: alert) else {
-                return
+        guard
+            !isShowingInterstital,
+            let interstitial = dependencyManager?.interstitialViewController(alert: alert)
+        else {
+            return
         }
         
         presentedInterstitial = interstitial
         interstitial.interstitialDelegate = self
         
-        guard let viewController = interstitial as? UIViewController else {
+        guard let interstitialViewController = interstitial as? UIViewController else {
             return
         }
         
         switch alert.alertType {
-            case .Toast:
-                addInterstitialAsSubview(viewController)
+            case .Toast, .WebSocketError:
+            addInterstitial(interstitialViewController, toParent: presentingViewController)
             case .Achievement, .LevelUp, .StatusUpdate, .ClientSideCreated:
-                viewController.transitioningDelegate = self
-                viewController.modalPresentationStyle = interstitial.preferredModalPresentationStyle()
-                presentingViewController.presentViewController(viewController, animated: true, completion: nil)
-            case .WebSocketError:
-                // TODO: implement, probably as toast...
-                ()
+                interstitialViewController.transitioningDelegate = self
+                interstitialViewController.modalPresentationStyle = interstitial.preferredModalPresentationStyle()
+                presentingViewController.presentViewController(interstitialViewController, animated: true, completion: nil)
         }
         
         acknowledgeAlert(alert)
@@ -81,19 +80,19 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
 
     // TODO: don't send a request after Error alert
     private func acknowledgeAlert(alert: Alert) {
-        AlertAcknowledgeOperation(alertID: alert.alertID).queue()
+        if alert.alertType != .WebSocketError {
+            AlertAcknowledgeOperation(alertID: alert.alertID).queue()
+        }
+
         shownAlerts.append(alert)
         isShowingInterstital = true
     }
-    
-    private func addInterstitialAsSubview(viewController: UIViewController) {
-        guard let currentPresentedViewController = VRootViewController.sharedRootViewController()?.currentViewController else {
-            return
-        }
-        currentPresentedViewController.view.addSubview(viewController.view)
-        currentPresentedViewController.willMoveToParentViewController(currentPresentedViewController)
-        currentPresentedViewController.addChildViewController(viewController)
-        viewController.didMoveToParentViewController(currentPresentedViewController)
+
+    private func addInterstitial(interstitial: UIViewController, toParent parent: UIViewController) {
+        parent.view.addSubview(interstitial.view)
+        interstitial.willMoveToParentViewController(parent)
+        parent.addChildViewController(interstitial)
+        interstitial.didMoveToParentViewController(parent)
     }
     
     // MARK: - AlertReceiver
@@ -104,6 +103,7 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
         }
 
         registeredAlerts.append(alert)
+
         if let interstitialListener = interstitialListener {
             interstitialListener.newInterstitialHasBeenRegistered()
         }
@@ -111,15 +111,12 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
 
     func receive(alerts: [Alert]) {
         for alert in alerts {
-            registeredAlerts.append(alert)
-            if let interstitialListener = interstitialListener {
-                interstitialListener.newInterstitialHasBeenRegistered()
-            }
+            receive(alert)
         }
     }
 
     
-    /// MARK: Interstitial
+    // MARK: Interstitial
     
     func dismissInterstitial(interstitialViewController: UIViewController) {
         if interstitialViewController.presentingViewController != nil {
@@ -129,10 +126,10 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
         }
         
         presentedInterstitial = nil
-        self.isShowingInterstital = false
+        isShowingInterstital = false
     }
     
-    /// MARK: Transition Delegate
+    // MARK: Transition Delegate
         
     func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return presentedInterstitial?.presentationAnimator()
