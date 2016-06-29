@@ -123,7 +123,9 @@ static NSString * const kSequenceIdKey = @"sequenceId";
 {
     if ( [url v_isThisAppGenericScheme] )
     {
-        [[VRootViewController sharedRootViewController] openURL:url];
+        // FUTURE: This class is no longer used. Remove this on a separate branch.
+        // Keeping this here for reference for now.
+//        [[VRootViewController sharedRootViewController] openURL:url];
         return nil;
     }
     else if ( [url v_hasCustomScheme] )

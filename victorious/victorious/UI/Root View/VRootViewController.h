@@ -70,11 +70,6 @@ extern NSString * const VApplicationDidBecomeActiveNotification;
 - (void)handleLocalNotification:(UILocalNotification *)localNotification;
 
 /**
- Opens a deeplink URL
- */
-- (void)openURL:(NSURL *)url;
-
-/**
  Restarts the session of the app, returning it to a state as if it had just been launched.
  */
 - (void)startNewSession;
