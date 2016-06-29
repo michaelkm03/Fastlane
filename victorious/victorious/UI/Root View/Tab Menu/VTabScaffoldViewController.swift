@@ -170,51 +170,6 @@ class VTabScaffoldViewController: UIViewController, Scaffold, UITabBarController
         } ?? []
     }
     
-    func navigate(to destination: UIViewController, animated: Bool) {
-        if presentedViewController != nil {
-            dismissViewControllerAnimated(false, completion: nil)
-        }
-        
-        if willSelectContainerViewController == nil {
-            for viewController in internalTabBarController.viewControllers ?? [] {
-                guard let containerViewController = viewController as? VNavigationDestinationContainerViewController else {
-                    continue
-                }
-                
-                if containerViewController.navigationDestination === destination {
-                    willSelectContainerViewController = containerViewController
-                    break
-                }
-            }
-        }
-        
-        if let willSelectContainerViewController = willSelectContainerViewController {
-            if internalTabBarController.viewControllers?.contains(willSelectContainerViewController) != true {
-                // Tab bar is not fully initialized yet, return early
-                // in case someone is spamming the tab bar item
-                return
-            }
-            
-            if willSelectContainerViewController.containedViewController == nil {
-                let navigationController = VNavigationController(dependencyManager: dependencyManager)
-                navigationController.innerNavigationController.pushViewController(destination, animated: false)
-                navigationController.loadViewIfNeeded()
-                willSelectContainerViewController.containedViewController = navigationController
-            }
-            
-            internalTabBarController.selectedViewController = willSelectContainerViewController
-            setNeedsStatusBarAppearanceUpdate()
-            self.willSelectContainerViewController = nil
-        }
-        else if let containerViewController = internalTabBarController.selectedViewController as? VNavigationDestinationContainerViewController {
-            if let navigationController = containerViewController.containedViewController as? VNavigationController {
-                if !navigationController.innerNavigationController.viewControllers.contains(destination) {
-                    navigationController.innerNavigationController.pushViewController(destination, animated: animated)
-                }
-            }
-        }
-    }
-    
     // MARK: - VCoachmarkDisplayResponder
     
     func findOnScreenMenuItemWithIdentifier(identifier: String, andCompletion completion: VMenuItemDiscoveryBlock) {
@@ -298,14 +253,6 @@ class VTabScaffoldViewController: UIViewController, Scaffold, UITabBarController
         
         if let navigationDestinationContainer = viewController as? VNavigationDestinationContainerViewController {
             willSelectContainerViewController = navigationDestinationContainer
-            
-            let destination = navigationDestinationContainer.navigationDestination
-            
-            if destination.shouldNavigate?() != false {
-                if let destination = navigationDestinationContainer.navigationDestination as? UIViewController {
-                    navigate(to: destination, animated: true)
-                }
-            }
         }
         
         return false

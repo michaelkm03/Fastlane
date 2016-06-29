@@ -244,21 +244,6 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
         }
     }
     
-    func navigate(to destination: UIViewController, animated: Bool) {
-        if destination === sideMenuController.leftViewController {
-            sideMenuController.openSideViewController(on: .left, animated: animated)
-        }
-        else if destination === sideMenuController.rightViewController || destination === rightNavViewController {
-            sideMenuController.openSideViewController(on: .right, animated: animated)
-        }
-        else if destination === sideMenuController.centerViewController {
-            sideMenuController.closeSideViewController(animated: animated)
-        }
-        else {
-            mainNavigationController.innerNavigationController.pushViewController(destination, animated: animated)
-        }
-    }
-    
     // MARK: - VCoachmarkDisplayResponder
     
     func findOnScreenMenuItemWithIdentifier(identifier: String, andCompletion completion: VMenuItemDiscoveryBlock) {

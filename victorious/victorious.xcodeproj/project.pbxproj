@@ -850,7 +850,6 @@
 		7AE3EA3B1CAF3B3200272A6A /* UICollectionViewFlowLayout+CellSizeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE3EA3A1CAF3B3200272A6A /* UICollectionViewFlowLayout+CellSizeTests.swift */; };
 		7AEB1F421D13565400E93A64 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AEB1F411D13565400E93A64 /* UserModel.swift */; };
 		7AEB294F1CCED06200B98C3B /* UIViewController+RootNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AEB294E1CCED06200B98C3B /* UIViewController+RootNavigationController.swift */; };
-		7AEB29511CCED41E00B98C3B /* VDeepLinkReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AEB29501CCED41E00B98C3B /* VDeepLinkReceiver.swift */; };
 		7AEB29531CCED68500B98C3B /* VDependencyManager+CoachmarkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AEB29521CCED68500B98C3B /* VDependencyManager+CoachmarkManager.swift */; };
 		7C268EFF1D138F6100E4A66A /* VButton+VBackgroundContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C268EFE1D138F6100E4A66A /* VButton+VBackgroundContainer.swift */; };
 		7C268F011D1484C300E4A66A /* WebViewHTMLFetchRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C268F001D1484C300E4A66A /* WebViewHTMLFetchRequestTests.swift */; };
@@ -1357,7 +1356,6 @@
 		A798259E1C0FB2BA00C53A07 /* CommentFindResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = A798259D1C0FB2BA00C53A07 /* CommentFindResponse.json */; };
 		A79825A21C0FBA6A00C53A07 /* VContentDeepLinkHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A79825A11C0FBA6A00C53A07 /* VContentDeepLinkHandler.swift */; };
 		A79869EB1AD7124D00F2564A /* VContentDeepLinkHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A79869E11AD7124D00F2564A /* VContentDeepLinkHandler.m */; };
-		A79869EC1AD7124D00F2564A /* VDeepLinkReceiver.m in Sources */ = {isa = PBXBuildFile; fileRef = A79869E41AD7124D00F2564A /* VDeepLinkReceiver.m */; };
 		A79869ED1AD7124D00F2564A /* VDiscoverDeepLinkHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A79869E61AD7124D00F2564A /* VDiscoverDeepLinkHandler.m */; };
 		A79869EE1AD7124D00F2564A /* VInboxDeepLinkHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A79869E81AD7124D00F2564A /* VInboxDeepLinkHandler.m */; };
 		A79869EF1AD7124D00F2564A /* VProfileDeepLinkHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A79869EA1AD7124D00F2564A /* VProfileDeepLinkHandler.m */; };
@@ -3330,7 +3328,6 @@
 		7AE3EA3A1CAF3B3200272A6A /* UICollectionViewFlowLayout+CellSizeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UICollectionViewFlowLayout+CellSizeTests.swift"; sourceTree = "<group>"; };
 		7AEB1F411D13565400E93A64 /* UserModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		7AEB294E1CCED06200B98C3B /* UIViewController+RootNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+RootNavigationController.swift"; sourceTree = "<group>"; };
-		7AEB29501CCED41E00B98C3B /* VDeepLinkReceiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VDeepLinkReceiver.swift; sourceTree = "<group>"; };
 		7AEB29521CCED68500B98C3B /* VDependencyManager+CoachmarkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VDependencyManager+CoachmarkManager.swift"; sourceTree = "<group>"; };
 		7C268EFE1D138F6100E4A66A /* VButton+VBackgroundContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VButton+VBackgroundContainer.swift"; sourceTree = "<group>"; };
 		7C268F001D1484C300E4A66A /* WebViewHTMLFetchRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewHTMLFetchRequestTests.swift; sourceTree = "<group>"; };
@@ -4063,8 +4060,6 @@
 		A79869E01AD7124D00F2564A /* VContentDeepLinkHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentDeepLinkHandler.h; sourceTree = "<group>"; };
 		A79869E11AD7124D00F2564A /* VContentDeepLinkHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentDeepLinkHandler.m; sourceTree = "<group>"; };
 		A79869E21AD7124D00F2564A /* VDeepLinkHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDeepLinkHandler.h; sourceTree = "<group>"; };
-		A79869E31AD7124D00F2564A /* VDeepLinkReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDeepLinkReceiver.h; sourceTree = "<group>"; };
-		A79869E41AD7124D00F2564A /* VDeepLinkReceiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDeepLinkReceiver.m; sourceTree = "<group>"; };
 		A79869E51AD7124D00F2564A /* VDiscoverDeepLinkHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDiscoverDeepLinkHandler.h; sourceTree = "<group>"; };
 		A79869E61AD7124D00F2564A /* VDiscoverDeepLinkHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDiscoverDeepLinkHandler.m; sourceTree = "<group>"; };
 		A79869E71AD7124D00F2564A /* VInboxDeepLinkHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInboxDeepLinkHandler.h; sourceTree = "<group>"; };
@@ -8876,9 +8871,6 @@
 				A79869E11AD7124D00F2564A /* VContentDeepLinkHandler.m */,
 				A79825A11C0FBA6A00C53A07 /* VContentDeepLinkHandler.swift */,
 				A79869E21AD7124D00F2564A /* VDeepLinkHandler.h */,
-				A79869E31AD7124D00F2564A /* VDeepLinkReceiver.h */,
-				A79869E41AD7124D00F2564A /* VDeepLinkReceiver.m */,
-				7AEB29501CCED41E00B98C3B /* VDeepLinkReceiver.swift */,
 				A79869E51AD7124D00F2564A /* VDiscoverDeepLinkHandler.h */,
 				A79869E61AD7124D00F2564A /* VDiscoverDeepLinkHandler.m */,
 				A79869E71AD7124D00F2564A /* VInboxDeepLinkHandler.h */,
@@ -12588,7 +12580,6 @@
 				0314D48919B46B5E00FA363C /* VContentInputAccessoryView.m in Sources */,
 				A72C86291C977FF500E97D4F /* PrunePersistentStoreOperation.swift in Sources */,
 				6708F7021CD83CB2004332CF /* TutorialCollectionViewDataSource.swift in Sources */,
-				7AEB29511CCED41E00B98C3B /* VDeepLinkReceiver.swift in Sources */,
 				A7A2E0071A38E44B00F8C705 /* VPurchaseViewController.m in Sources */,
 				A721E94F1B572454000B7901 /* UIImage+ImageCreation.m in Sources */,
 				A72C86301C977FF500E97D4F /* SequenceLikeOperation.swift in Sources */,
@@ -12803,7 +12794,6 @@
 				F0E0F1B31AE8BFC700143CBF /* VInsetMarqueeStreamItemCell.m in Sources */,
 				D8F8B1EC1AC4C47B00AA2DB7 /* VTilePatternBackgroundView.m in Sources */,
 				D8DF71DD1AFBE12B002EA7A5 /* VStreamCellHeader.m in Sources */,
-				A79869EC1AD7124D00F2564A /* VDeepLinkReceiver.m in Sources */,
 				A76711EA1C1B5067006568DF /* VAppTimingEventType.m in Sources */,
 				F009BD1B1CEBD3C800F81CAA /* String+SubstringHelpers.swift in Sources */,
 				7A87376C1CB47C2D00D2FF74 /* VContentOnlyCellFactory.swift in Sources */,

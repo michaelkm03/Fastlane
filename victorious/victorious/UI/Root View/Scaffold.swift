@@ -20,9 +20,6 @@ protocol Scaffold: VCoachmarkDisplayResponder, VDeeplinkSupporter, VDeeplinkHand
     /// A list of the view controllers that the scaffold can navigate to.
     var navigationDestinations: [VNavigationDestination] { get }
     
-    /// Navigates to the given `destination` view controller.
-    func navigate(to destination: UIViewController, animated: Bool)
-    
     func navigate(to deeplinkURL: NSURL)
 }
 

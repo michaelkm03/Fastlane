@@ -7,9 +7,9 @@
 //
 
 @import UIKit;
-#import "VDeeplinkReceiver.h"
 
 @class VSessionTimer;
+@protocol Scaffold;
 
 NS_ASSUME_NONNULL_BEGIN
 
