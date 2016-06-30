@@ -29,7 +29,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="222"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 </view>
-                                <blurEffect style="dark"/>
+                                <blurEffect style="light"/>
                             </visualEffectView>
                             <containerView opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n69-dn-iF9" userLabel="Stage Container" customClass="VPassthroughContainerView">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="222"/>

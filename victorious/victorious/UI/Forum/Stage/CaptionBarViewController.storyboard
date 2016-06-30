@@ -49,6 +49,9 @@
                                             <constraint firstAttribute="height" constant="30" id="Q7U-fb-alD"/>
                                             <constraint firstAttribute="width" secondItem="uvg-Jp-QHN" secondAttribute="height" multiplier="1:1" id="p3d-1R-LM2"/>
                                         </constraints>
+                                        <connections>
+                                            <action selector="pressedAvatarButton" destination="s4g-pW-yus" eventType="touchUpInside" id="xSL-LS-9Pm"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>

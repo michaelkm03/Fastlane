@@ -76,4 +76,11 @@ class CaptionBarViewController: UIViewController {
     @IBAction private func pressedToggleButton() {
         captionIsExpanded = !captionIsExpanded
     }
+    
+    @IBAction private func pressedAvatarButton() {
+        guard let displayingUser = displayingUser else {
+            return
+        }
+        delegate?.captionBarViewController(self, didTapOnUser: displayingUser)
+    }
 }
