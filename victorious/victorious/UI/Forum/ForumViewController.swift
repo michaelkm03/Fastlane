@@ -112,9 +112,17 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     // MARK: - Forum protocol requirements
     
-    var stage: Stage?
+    var stage: Stage? {
+        didSet {
+            updateCreatorMessagesHandling()
+        }
+    }
     var composer: Composer?
-    var chatFeed: ChatFeed?
+    var chatFeed: ChatFeed? {
+        didSet {
+            updateCreatorMessagesHandling()
+        }
+    }
     var dependencyManager: VDependencyManager!
     var forumNetworkSource: ForumNetworkSource?
 
@@ -129,6 +137,10 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     func setStageHeight(value: CGFloat) {
         stageContainerHeight.constant = value
         view.layoutIfNeeded()
+    }
+    
+    private func updateCreatorMessagesHandling() {
+        chatFeed?.shouldShowCreatorMessages = !(stage?.canHandleCaptionContent == true)
     }
     
     // MARK: - UploadManagerHost

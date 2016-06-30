@@ -14,6 +14,8 @@ protocol Stage: class, ForumEventReceiver {
     
     var dependencyManager: VDependencyManager! { get set }
     
+    var canHandleCaptionContent: Bool { get }
+    
     /// Replaces the current content on the stage with the new one.
     func addContent(stageContent: ContentModel)
     

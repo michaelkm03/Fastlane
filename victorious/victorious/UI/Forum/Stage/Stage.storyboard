@@ -7,12 +7,12 @@
         <!--Stage View Controller-->
         <scene sceneID="pV2-xd-h6F">
             <objects>
-                <viewController storyboardIdentifier="Stage" id="RXE-Oi-dH9" customClass="StageViewController" customModule="victorious" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Stage" modalPresentationStyle="overCurrentContext" id="RXE-Oi-dH9" customClass="StageViewController" customModule="victorious" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="RSM-kF-oLY"/>
                         <viewControllerLayoutGuide type="bottom" id="Ldt-nB-e5k"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="dPd-gY-gTf">
+                    <view key="view" opaque="NO" contentMode="scaleToFill" id="dPd-gY-gTf">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
@@ -68,6 +68,7 @@
                             </view>
                             <containerView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wSh-lD-twH">
                                 <rect key="frame" x="0.0" y="520" width="600" height="80"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="80" id="OT1-tL-iiZ"/>
                                 </constraints>
@@ -104,8 +105,8 @@
         <!--CaptionBarViewController-->
         <scene sceneID="a4N-jU-xxu">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="kYe-dx-1zT" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewControllerPlaceholder storyboardIdentifier="CaptionBarViewController" storyboardName="CaptionBarViewController" id="y7m-QI-tHk" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kYe-dx-1zT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1057.5" y="1248"/>
         </scene>

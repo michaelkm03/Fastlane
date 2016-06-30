@@ -19,8 +19,9 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     
     // MARK: Initializing
     
-    init(dependencyManager: VDependencyManager) {
+    init(dependencyManager: VDependencyManager, shouldShowCreatorMessages: Bool) {
         self.dependencyManager = dependencyManager
+        self.shouldShowCreatorMessages = shouldShowCreatorMessages
         super.init()
     }
     
@@ -34,6 +35,12 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     private(set) var stashedItems = [ChatFeedContent]()
     
     var stashingEnabled = false
+    var shouldShowCreatorMessages: Bool {
+        didSet {
+            visibleItems = displayableMessages(fromMessages: visibleItems)
+            stashedItems = displayableMessages(fromMessages: stashedItems)
+        }
+    }
     
     func unstash() {
         guard stashedItems.count > 0 else {
@@ -48,12 +55,20 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
         delegate?.chatFeedDataSource(self, didUnstashItems: previouslyStashedItems)
     }
     
+    private func displayableMessages(fromMessages messages: [ChatFeedContent]) -> [ChatFeedContent] {
+        if !shouldShowCreatorMessages {
+            return messages.filter({ $0.content.author.accessLevel != .owner })
+        }
+        return messages
+    }
+    
     // MARK: - ForumEventReceiver
     
     func receive(event: ForumEvent) {
         switch event {
             case .appendContent(let newItems):
-                let newItems = newItems.map { ChatFeedContent($0) }
+                var newItems = newItems.map { ChatFeedContent($0) }
+                newItems = displayableMessages(fromMessages: newItems)
                 
                 if stashingEnabled {
                     stashedItems.appendContentsOf(newItems)

@@ -16,6 +16,8 @@ protocol ChatFeed: class, ForumEventReceiver, ForumEventSender {
     
     var dependencyManager: VDependencyManager! { get set }
     
+    var shouldShowCreatorMessages: Bool { get set }
+    
     func setTopInset(value: CGFloat)
     
     func setBottomInset(value: CGFloat)

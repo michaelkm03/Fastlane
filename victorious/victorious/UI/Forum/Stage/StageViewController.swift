@@ -35,7 +35,11 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
             captionBarHeightConstraint.constant = captionBarHeight
         }
     }
-    private var captionBarHeight: CGFloat = 0
+    private var captionBarHeight: CGFloat = 0 {
+        didSet {
+            captionBarHeightConstraint.constant = captionBarHeight
+        }
+    }
     private var captionBarViewController: CaptionBarViewController? {
         didSet {
             let captionBarDependency = dependencyManager.captionBarDependency
@@ -81,6 +85,10 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         }
     }
     
+    var canHandleCaptionContent: Bool {
+        return dependencyManager.captionBarDependency != nil
+    }
+    
     // MARK: - Life cycle
     
     override func viewDidLoad() {
@@ -120,10 +128,9 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
     // MARK: - Stage
     
     func addCaptionContent(content: ContentModel) {
-        let text = content.text ?? "testing"
-//        guard let text = content.text else {
-//            return
-//        }
+        guard let text = content.text else {
+            return
+        }
         captionBarViewController?.populate(content.author, caption: text)
     }
     
@@ -158,7 +165,7 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         
         attributionBar.configure(with: stageContent.author)
         
-        delegate?.stage(self, wantsUpdateToContentHeight: defaultStageHeight)
+        updateStageHeight()
         queuedContent = nil
     }
     
@@ -254,10 +261,11 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
     // MARK: - View updating
     
     private func updateStageHeight() {
-        let stageVisible = visible
-        let stageHeight = stageVisible ? defaultStageHeight + captionBarHeight : 0
-        captionBarHeightConstraint.constant = stageVisible ? captionBarHeight : 0
-        delegate?.stage(self, wantsUpdateToContentHeight: stageHeight)
+        var height = captionBarHeight
+        if visible {
+            height += defaultStageHeight
+        }
+        delegate?.stage(self, wantsUpdateToContentHeight: height)
     }
 }
 

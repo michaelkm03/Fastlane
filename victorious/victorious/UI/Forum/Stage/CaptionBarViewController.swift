@@ -34,12 +34,11 @@ class CaptionBarViewController: UIViewController {
     
     private var captionIsExpanded = false {
         didSet {
-            guard isViewLoaded() && isShowingCaption else {
-                delegate?.captionBarViewController(self, wantsUpdateToContentHeight: 0)
-                return
+            var desiredHeight: CGFloat = 0
+            let captionVisible = isViewLoaded() && isShowingCaption
+            if captionVisible {
+                desiredHeight = CaptionBarPopulator.toggle(captionBar, toCollapsed: !captionIsExpanded)
             }
-            
-            let desiredHeight = CaptionBarPopulator.toggle(captionBar, toCollapsed: !captionIsExpanded)
             delegate?.captionBarViewController(self, wantsUpdateToContentHeight: desiredHeight)
         }
     }
