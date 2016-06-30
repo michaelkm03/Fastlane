@@ -199,6 +199,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
     
     func updateTimestamp() {
         timestampLabel.text = content?.timeLabel ?? ""
+        setNeedsLayout()
     }
     
     // MARK: - Managing lifecycle
