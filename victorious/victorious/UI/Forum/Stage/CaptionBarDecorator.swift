@@ -9,7 +9,6 @@
 import Foundation
 
 struct CaptionBarDecorator {
-    
     let dependencyManager: VDependencyManager
     
     func decorate(captionBar: CaptionBar) {

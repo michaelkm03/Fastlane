@@ -2215,6 +2215,8 @@
 		F0FBC4421D22E9170070873F /* CaptionBarDecorator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0FBC4411D22E9170070873F /* CaptionBarDecorator.swift */; };
 		F0FBC4441D22EB580070873F /* CaptionBarPopulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0FBC4431D22EB580070873F /* CaptionBarPopulator.swift */; };
 		F0FBC4461D22EF260070873F /* CaptionBarViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F0FBC4451D22EF260070873F /* CaptionBarViewController.storyboard */; };
+		F0FBC4491D258FD70070873F /* UITextView+TextInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0FBC4481D258FD70070873F /* UITextView+TextInsets.swift */; };
+		F0FBC44B1D2591AF0070873F /* NSMutableParagraphStyle+TextInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0FBC44A1D2591AF0070873F /* NSMutableParagraphStyle+TextInsets.swift */; };
 		F0FBFA641CE14819006318FC /* VPublishParameters+ConvenienceInit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0FBFA631CE14819006318FC /* VPublishParameters+ConvenienceInit.swift */; };
 		F0FBFA681CE1624D006318FC /* PersistentContentCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0FBFA671CE1624D006318FC /* PersistentContentCreator.swift */; };
 		F0FC97331B507EB40098AFCB /* VInStreamCommentCellContents.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97321B507EB40098AFCB /* VInStreamCommentCellContents.m */; };
@@ -5266,6 +5268,8 @@
 		F0FBC4411D22E9170070873F /* CaptionBarDecorator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaptionBarDecorator.swift; sourceTree = "<group>"; };
 		F0FBC4431D22EB580070873F /* CaptionBarPopulator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaptionBarPopulator.swift; sourceTree = "<group>"; };
 		F0FBC4451D22EF260070873F /* CaptionBarViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CaptionBarViewController.storyboard; sourceTree = "<group>"; };
+		F0FBC4481D258FD70070873F /* UITextView+TextInsets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITextView+TextInsets.swift"; sourceTree = "<group>"; };
+		F0FBC44A1D2591AF0070873F /* NSMutableParagraphStyle+TextInsets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSMutableParagraphStyle+TextInsets.swift"; sourceTree = "<group>"; };
 		F0FBFA631CE14819006318FC /* VPublishParameters+ConvenienceInit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VPublishParameters+ConvenienceInit.swift"; sourceTree = "<group>"; };
 		F0FBFA671CE1624D006318FC /* PersistentContentCreator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentContentCreator.swift; sourceTree = "<group>"; };
 		F0FC97311B507EB40098AFCB /* VInStreamCommentCellContents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInStreamCommentCellContents.h; sourceTree = "<group>"; };
@@ -7851,6 +7855,7 @@
 				A721E8C21B572453000B7901 /* NSNotificationCenter+VNotificationDebugger.m */,
 				A7DD35F11BB0BD5000C4DBC5 /* NSNumber+VBitmask.h */,
 				A7DD35F21BB0BD5000C4DBC5 /* NSNumber+VBitmask.m */,
+				F0FBC44A1D2591AF0070873F /* NSMutableParagraphStyle+TextInsets.swift */,
 				A721E8C31B572453000B7901 /* NSString+Unicode.swift */,
 				A721E8C61B572453000B7901 /* NSString+VParseHelp.h */,
 				A721E8C71B572453000B7901 /* NSString+VParseHelp.m */,
@@ -7913,6 +7918,7 @@
 				A7D7ED501B59BEB900FA346A /* UISearchBar+Extensions.swift */,
 				A721E8F31B572454000B7901 /* UIStoryboard+VMainStoryboard.h */,
 				A721E8F41B572454000B7901 /* UIStoryboard+VMainStoryboard.m */,
+				F0FBC4481D258FD70070873F /* UITextView+TextInsets.swift */,
 				A721E8F51B572454000B7901 /* UIView+AutoLayout.h */,
 				A721E8F61B572454000B7901 /* UIView+AutoLayout.m */,
 				A721E8F71B572454000B7901 /* UIView+Masking.h */,
@@ -13079,6 +13085,7 @@
 				A763636B1C5036BF000887C4 /* VFollowedUser.m in Sources */,
 				A72C86901C977FF600E97D4F /* CreatePollOperation.swift in Sources */,
 				A72C86361C977FF500E97D4F /* StreamItemRemoveOperation.swift in Sources */,
+				F0FBC44B1D2591AF0070873F /* NSMutableParagraphStyle+TextInsets.swift in Sources */,
 				F00BBAB51CC5E98400CBDB94 /* NativeCameraCreationFlowController.swift in Sources */,
 				F0FC97841B545DB90098AFCB /* VStream.m in Sources */,
 				C3E47F6F1B6990C30084FF65 /* VCommentTextAndMediaView.m in Sources */,
@@ -13714,6 +13721,7 @@
 				A70FC0FE1A2D412200F5BBDE /* VPurchaseManager.m in Sources */,
 				A75ED0001AB0B6B400C35063 /* VCropToolViewController.m in Sources */,
 				C3E772231B4DBC96005809A5 /* VCollectionViewStreamFocusHelper.m in Sources */,
+				F0FBC4491D258FD70070873F /* UITextView+TextInsets.swift in Sources */,
 				A735989C1BACCB0D00B5B630 /* VVideoPlayer.m in Sources */,
 				039ED29C19C908F400305987 /* VCVideoPlayerViewController.m in Sources */,
 				BE42842C19DDD0D500AEDBA6 /* VDefaultProfileImageView.m in Sources */,

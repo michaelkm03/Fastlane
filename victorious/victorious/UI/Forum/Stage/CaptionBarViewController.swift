@@ -13,6 +13,8 @@ protocol CaptionBarViewControllerDelegate: class {
     func captionBarViewController(captionBarViewController: CaptionBarViewController, wantsUpdateToContentHeight height: CGFloat)
 }
 
+/// Shows and manages the display of a bar showing a user's avatar, text they've posted, and,
+/// when appropriate, an expansion button to allow all of the text to be scrolled through.
 class CaptionBarViewController: UIViewController {
     
     @IBOutlet private weak var captionBar: CaptionBar!
