@@ -221,7 +221,9 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate {
     }
     
     func didTapOnUser(user: UserModel) {
-        ShowProfileOperation(originViewController: self, dependencyManager: dependencyManager, userId: user.id).queue()
+        let router = Router(originViewController: self, dependencyManager: dependencyManager)
+        let destination = DeeplinkDestination(userID: user.id)
+        router.navigate(to: destination)
     }
 }
 
