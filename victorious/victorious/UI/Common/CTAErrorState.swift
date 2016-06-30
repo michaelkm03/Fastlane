@@ -19,13 +19,14 @@ private struct Constants {
     static let messageColorKey = "message.color"
     static let actionButtonKey = "action.button"
     static let minimumSpacing: CGFloat = 10
+    static let buttonCornerRadius: CGFloat = 5
 }
 
 /// A reusable error state class that tells the user that the current screen is not usable unless
 /// they perform a specific action.
 class CTAErrorState: UIView {
     private let messageLabel = UILabel()
-    private var actionButton: UIButton?
+    private var actionButton = TextOnColorButton()
     private var stackView = UIStackView()
     private let dependencyManager: VDependencyManager
     private let actionType: CTAErrorStateActionType
@@ -35,8 +36,7 @@ class CTAErrorState: UIView {
         self.actionType = actionType
         super.init(frame: frame)
         setupViews()
-        actionButton?.addTarget(self, action: #selector(CTAErrorState.performButtonAction), forControlEvents: .TouchUpInside)
-        
+        actionButton.addTarget(self, action: #selector(CTAErrorState.performButtonAction), forControlEvents: .TouchUpInside)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -50,10 +50,11 @@ class CTAErrorState: UIView {
         messageLabel.font = dependencyManager.fontForKey(Constants.messageFontKey)
         messageLabel.textColor = dependencyManager.colorForKey(Constants.messageColorKey)
         stackView.addArrangedSubview(messageLabel)
-        if let button = dependencyManager.buttonForKey(Constants.actionButtonKey) {
-            actionButton = button
-            stackView.addArrangedSubview(button)
-        }
+        
+        actionButton.dependencyManager = dependencyManager.childDependencyForKey(Constants.actionButtonKey)
+        actionButton.roundingType = .roundedRect(radius: Constants.buttonCornerRadius)
+        stackView.addArrangedSubview(actionButton)
+        
         stackView.axis = .Vertical
         stackView.alignment = .Fill
         stackView.distribution = .EqualSpacing
