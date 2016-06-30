@@ -14,7 +14,7 @@ import Foundation
 // TODO: Content Wrapper of content or contentID
 enum DeeplinkDestination {
     case profile(userID: Int)
-    case closeUp(contentID: String)
+    case closeUp(contentWrapper: CloseUpContentWrapper)
     case vipForum
     case trophyCase
     case externalURL
@@ -28,7 +28,7 @@ enum DeeplinkDestination {
         switch host {
             case "content":
                 guard let contentID = url.v_firstNonSlashPathComponent() else { return nil }
-                self = .closeUp(contentID: contentID)
+                self = .closeUp(contentWrapper: .contentID(id: contentID))
             case "profile":
                 guard let userID = Int(url.v_firstNonSlashPathComponent()) else { return nil }
                 self = .profile(userID: userID)
@@ -44,8 +44,7 @@ enum DeeplinkDestination {
     init?(content: ContentModel) {
         switch content.type {
         case .image, .video, .gif:
-            guard let contentID = content.id else { return nil }
-            self = .closeUp(contentID: contentID)
+            self = .closeUp(contentWrapper: .content(content: content))
         case .link:
             guard
                 let url = content.linkedURL,
@@ -62,4 +61,10 @@ enum DeeplinkDestination {
     init(userID: User.ID) {
         self = .profile(userID: userID)
     }
+}
+
+/// A
+enum CloseUpContentWrapper {
+    case content(content: ContentModel)
+    case contentID(id: Content.ID)
 }
