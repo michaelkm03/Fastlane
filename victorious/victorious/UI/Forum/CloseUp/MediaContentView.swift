@@ -325,17 +325,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         previewImageView.frame = bounds
         videoContainerView.frame = bounds
         textPostLabel.frame = CGRect(x: bounds.origin.x + CGFloat(Constants.textPostPadding), y: bounds.origin.y, width: bounds.width - CGFloat(2 * Constants.textPostPadding), height: bounds.height)
-        
-        // Warning: Dirty Hack
-        // Background should extend a little beyond the original bounds,
-        // so that the guassian blur doesn't introduce shadow at the edges
-        var backgroundBounds = bounds
-        backgroundBounds.origin.x -= 10
-        backgroundBounds.origin.y -= 10
-        backgroundBounds.size.height += 20
-        backgroundBounds.size.width += 20
-        
-        backgroundView?.frame = backgroundBounds
+        backgroundView?.frame = computeBackgroundBounds()
         spinner.center = CGPoint(x: bounds.midX, y: bounds.midY)
         videoCoordinator?.layout(in: bounds)
     }
@@ -367,6 +357,18 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         else {
             backgroundView?.image = nil
         }
+    }
+    
+    // Warning: Dirty Hack
+    // Background should extend a little beyond the frame bounds,
+    // so that the guassian blur doesn't introduce shadow at the edges
+    private func computeBackgroundBounds() -> CGRect {
+        var backgroundBounds = bounds
+        backgroundBounds.origin.x -= 10
+        backgroundBounds.origin.y -= 10
+        backgroundBounds.size.height += 20
+        backgroundBounds.size.width += 20
+        return backgroundBounds
     }
     
     private func setBackgroundBlur(withImageUrl imageURL: NSURL, forContent content: ContentModel, completion: (()->())? = nil) {
