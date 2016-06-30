@@ -22,6 +22,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
     let usernameLabel = UILabel()
     let timestampLabel = UILabel()
     let bubbleView = UIView()
+    let bubbleBorderView = UIImageView()
     let captionLabel = UILabel()
     let avatarView = VDefaultProfileImageView()
     var previewView: UIView?
@@ -53,6 +54,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
     // MARK: - Configuration
     
     static let captionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+    static let bubbleBackgroundInsets = UIEdgeInsets(top: -1.0, left: -2.0, bottom: -3.0, right: -2.0)
     static let horizontalSpacing = CGFloat(10.0)
     static let avatarSize = CGSize(width: 30.0, height: 30.0)
     static let avatarTapTargetSize = CGSize(width: 44.0, height: 44.0)
@@ -70,6 +72,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
         
         avatarTapTarget.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onAvatarTapped)))
         
+        bubbleBorderView.image = UIImage(named: "chat-cell-border")
         bubbleView.clipsToBounds = true
         
         captionLabel.numberOfLines = 0
@@ -79,6 +82,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
         contentView.addSubview(avatarView)
         contentView.addSubview(avatarTapTarget)
         contentView.addSubview(bubbleView)
+        contentView.addSubview(bubbleBorderView)
         
         bubbleView.addSubview(captionLabel)
     }
@@ -110,9 +114,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
         updateTopLabelStyle(for: timestampLabel)
         
         bubbleView.backgroundColor = dependencyManager.backgroundColor
-        bubbleView.layer.borderColor = dependencyManager.borderColor.CGColor
-        bubbleView.layer.cornerRadius = 5.0
-        bubbleView.layer.borderWidth = 0.5
+        bubbleView.layer.cornerRadius = 6.0
         
         avatarView.layer.borderWidth = 1.0
         avatarView.layer.borderColor = UIColor.blackColor().colorWithAlphaComponent(0.3).CGColor
@@ -286,10 +288,6 @@ private extension VDependencyManager {
 
     var backgroundColor: UIColor? {
         return colorForKey("color.message.bubble") ?? .darkGrayColor()
-    }
-    
-    var borderColor: UIColor {
-        return colorForKey("color.message.border") ?? .lightGrayColor()
     }
     
     var userLabelFont: UIFont {

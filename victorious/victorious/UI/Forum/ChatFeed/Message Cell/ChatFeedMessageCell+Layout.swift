@@ -66,6 +66,8 @@ extension ChatFeedMessageCell {
         
         cell.bubbleView.frame = CGRect(origin: bubbleOffset, size: contentSize)
         
+        cell.bubbleBorderView.frame = cell.bubbleView.frame.insetBy(bubbleBackgroundInsets)
+        
         cell.previewView?.frame = CGRect(
             origin: CGPoint.zero,
             size: CGSize(width: contentSize.width, height: mediaSize.height)
