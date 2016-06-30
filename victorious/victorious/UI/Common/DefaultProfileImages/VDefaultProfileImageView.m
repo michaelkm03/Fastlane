@@ -42,7 +42,7 @@
     self.clipsToBounds = YES;
         
     self.backgroundColor = [UIColor whiteColor];
-    self.tintColor = [UIColor darkGrayColor];
+    self.tintColor = [UIColor whiteColor];
 }
 
 - (void)setTintColor:(UIColor *)tintColor

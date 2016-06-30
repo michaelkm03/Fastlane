@@ -157,9 +157,6 @@ class ChatFeedMessageCell: UICollectionViewCell {
         if let imageURL = content?.author.previewImageURL(ofMinimumSize: avatarView.frame.size) {
             avatarView.setProfileImageURL(imageURL)
         }
-        else {
-            avatarView.image = nil
-        }
     }
     
     private func createContentPreviewViewIfNeeded() -> ContentPreviewView {
