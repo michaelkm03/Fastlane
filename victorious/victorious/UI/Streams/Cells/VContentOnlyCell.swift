@@ -58,10 +58,21 @@ class VContentOnlyCell: UICollectionViewCell, ContentCell {
         guard let content = content else {
             return
         }
-        contentPreviewView.frame = self.bounds
+        
+        setNeedsLayout()
+        layoutIfNeeded()
+        
         contentView.addSubview(contentPreviewView)
         contentPreviewView.content = content
     }
+    
+    // MARK: - View Lifecycle
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        contentPreviewView.frame = contentView.bounds
+    }
+    
     
     // MARK: Highlighting
     
