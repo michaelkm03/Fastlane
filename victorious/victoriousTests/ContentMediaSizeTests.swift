@@ -13,7 +13,7 @@ import XCTest
 class ContentMediaSizeTests: XCTestCase {
     func testPreferredHeight() {
         XCTAssertEqual(ContentMediaSize(aspectRatio: 1.0 / 1.0, preferredWidth: 100.0).preferredHeight, 100.0)
-        XCTAssertEqual(ContentMediaSize(aspectRatio: 2.0 / 3.0, preferredWidth: 300.0).preferredHeight, 200.0)
+        XCTAssertEqual(ContentMediaSize(aspectRatio: 2.0 / 3.0, preferredWidth: 300.0).preferredHeight, 450.0)
         XCTAssertEqual(ContentMediaSize(aspectRatio: 2.0 / 1.0, preferredWidth: 200.0).preferredHeight, 100.0)
     }
     
