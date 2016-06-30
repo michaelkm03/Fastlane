@@ -139,8 +139,22 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     
     // MARK: - Layout
     
-    func layout(in bounds: CGRect) {
-        videoPlayer.view.frame = bounds
+    func layout(in bounds: CGRect, withContentFill shouldFillContent: Bool = false) {
+        let boundsAspectRatio = bounds.size.aspectRatio
+        
+        if let contentAspectRatio = content.naturalMediaAspectRatio where contentAspectRatio != boundsAspectRatio && shouldFillContent {
+            // This expands the frame of the video player to fill the given bounds.
+            let difference = fabs(boundsAspectRatio - contentAspectRatio)
+            
+            videoPlayer.view.frame = bounds.insetBy(
+                dx: -bounds.size.width * difference,
+                dy: -bounds.size.height * difference
+            )
+        }
+        else {
+            videoPlayer.view.frame = bounds
+        }
+
     }
     
     // MARK: - VVideoPlayerDelegate

@@ -57,7 +57,6 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         
         addSubview(previewImageView)
         
-        videoContainerView.frame = bounds
         videoContainerView.backgroundColor = .clearColor()
         addSubview(videoContainerView)
         
@@ -247,7 +246,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         videoContainerView.frame = bounds
         backgroundView?.frame = bounds
         spinner.center = CGPoint(x: bounds.midX, y: bounds.midY)
-        videoCoordinator?.layout(in: bounds)
+        videoCoordinator?.layout(in: videoContainerView.bounds, withContentFill: !showsBackground)
     }
     
     private func updatePreviewImageIfReady() {
