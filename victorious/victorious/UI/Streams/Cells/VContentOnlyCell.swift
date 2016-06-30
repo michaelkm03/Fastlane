@@ -58,9 +58,19 @@ class VContentOnlyCell: UICollectionViewCell, ContentCell {
         guard let content = content else {
             return
         }
+        
+        setNeedsLayout()
+        layoutIfNeeded()
+        
         contentView.addSubview(contentPreviewView)
-        contentView.v_addFitToParentConstraintsToSubview(contentPreviewView)
         contentPreviewView.content = content
+    }
+    
+    // MARK: - View Lifecycle
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        contentPreviewView.frame = contentView.bounds
     }
     
     // MARK: Highlighting
