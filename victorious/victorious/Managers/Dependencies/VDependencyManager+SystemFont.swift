@@ -18,14 +18,24 @@ extension VDependencyManager {
         }
         
         switch normalizedName {
+        case "systemfont-ultralight":
+            return UIFontWeightUltraLight
+        case "systemfont-thin":
+            return UIFontWeightThin
         case "systemfont-light":
             return UIFontWeightLight
         case "systemfont-regular":
             return UIFontWeightRegular
         case "systemfont-medium":
             return UIFontWeightMedium
+        case "systemfont-semibold":
+            return UIFontWeightSemibold
         case "systemfont-bold":
             return UIFontWeightBold
+        case "systemfont-heavy":
+            return UIFontWeightHeavy
+        case "systemfont-black":
+            return UIFontWeightBlack
         default:
             return UIFontWeightRegular
         }
