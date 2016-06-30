@@ -45,6 +45,7 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate {
         pill.sizeToFit()
         pill.clipsToBounds = true
         pill.hidden = true
+        pill.roundingType = .pill
         
         if let strongSelf = self {
             pill.addTarget(strongSelf, action: #selector(onPillSelect), forControlEvents: .TouchUpInside)
