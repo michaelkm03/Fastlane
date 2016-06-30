@@ -57,7 +57,7 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     
     private func displayableMessages(fromMessages messages: [ChatFeedContent]) -> [ChatFeedContent] {
         if !shouldShowCreatorMessages {
-            return messages.filter({ $0.content.author.accessLevel != .owner })
+            return messages.filter { $0.content.author.accessLevel != .owner }
         }
         return messages
     }
