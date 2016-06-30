@@ -19,13 +19,13 @@ class ContentMediaSizeTests: XCTestCase {
     
     func testPreferredSizeClampedToWidth() {
         XCTAssertEqual(
-            ContentMediaSize(aspectRatio: 3.0 / 4.0, preferredWidth: 100.0).preferredSize(clampedToWidth: 200.0),
-            CGSize(width: 100.0, height: 125.0)
+            ContentMediaSize(aspectRatio: 3.0 / 4.0, preferredWidth: 120.0).preferredSize(clampedToWidth: 200.0),
+            CGSize(width: 120.0, height: 160.0)
         )
         
         XCTAssertEqual(
-            ContentMediaSize(aspectRatio: 3.0 / 4.0, preferredWidth: 100.0).preferredSize(clampedToWidth: 50.0),
-            CGSize(width: 50.0, height: 62.5)
+            ContentMediaSize(aspectRatio: 3.0 / 4.0, preferredWidth: 120.0).preferredSize(clampedToWidth: 60.0),
+            CGSize(width: 60.0, height: 80.0)
         )
     }
     
