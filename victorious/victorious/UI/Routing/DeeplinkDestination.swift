@@ -18,34 +18,24 @@ enum DeeplinkDestination {
     case externalURL
     
     init?(url: NSURL) {
-        let scheme = url.scheme.lowercaseString
-        
-        // First check if we have a deep link URL or an external URL
-        guard scheme == "vthisapp" else {
-            self = .externalURL
-            return
-        }
-        
-        // Then find out where we would like to deep link to
         guard let host = url.host else {
             assertionFailure("We got a deep link URL but no host component, so we don't know where to navigate")
             return nil
         }
         
         switch host {
-        case "content":
-            guard let contentID = url.v_firstNonSlashPathComponent() else { return nil }
-            self = .closeUp(contentID: contentID)
-        case "profile":
-            guard let userID = Int(url.v_firstNonSlashPathComponent()) else { return nil }
-            self = .profile(userID: userID)
-        case "vipForum":
-            self = .vipForum
-        case "profile/trophyCase":
-            self = .trophyCase
-        default:
-            assertionFailure("Unrecgonized host for the deep link URL")
-            return nil
+            case "content":
+                guard let contentID = url.v_firstNonSlashPathComponent() else { return nil }
+                self = .closeUp(contentID: contentID)
+            case "profile":
+                guard let userID = Int(url.v_firstNonSlashPathComponent()) else { return nil }
+                self = .profile(userID: userID)
+            case "vipForum":
+                self = .vipForum
+            case "profile/trophyCase":
+                self = .trophyCase
+            default:
+                self = .externalURL
         }
     }
     
