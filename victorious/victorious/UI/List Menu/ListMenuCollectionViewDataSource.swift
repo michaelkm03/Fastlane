@@ -116,7 +116,13 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
     // MARK: - Actions
     
     @objc private func onSubscribePressed() {
-        ShowForumOperation(originViewController: dependencyManager.scaffoldViewController(), dependencyManager: dependencyManager, showVIP: true).queue()
+        guard let scaffold = VRootViewController.sharedRootViewController()?.scaffold else {
+            return
+        }
+        let router = Router(originViewController: scaffold, dependencyManager: dependencyManager)
+        let destination = DeeplinkDestination.vipForum
+        router.navigate(to: destination)
+        
     }
     
     // MARK: - List Menu Network Data Source Delegate
