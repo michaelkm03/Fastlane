@@ -692,6 +692,7 @@
 		67A952481C444DD3001234B4 /* RegisterPushNotificationOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67A952471C444DD3001234B4 /* RegisterPushNotificationOperationTests.swift */; };
 		67AA52261C3DC996000444F7 /* PasswordResetRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AA52251C3DC996000444F7 /* PasswordResetRequest.swift */; };
 		67AA52281C3DC9B0000444F7 /* PasswordResetRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AA52271C3DC9B0000444F7 /* PasswordResetRequestTests.swift */; };
+		67AB0C761D21A38A00394598 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AB0C751D21A38A00394598 /* Router.swift */; };
 		67AB3D3C1CDD462B00778F1C /* TutorialContentsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AB3D3B1CDD462B00778F1C /* TutorialContentsRequest.swift */; };
 		67AB78211C40823800BA00FE /* MockRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AB78201C40823800BA00FE /* MockRequests.swift */; };
 		67ADE37D1C979E060097D42F /* VCardSeeMoreDirectoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6728C0E61C6133020005A29F /* VCardSeeMoreDirectoryCell.xib */; };
@@ -3161,6 +3162,7 @@
 		67A952471C444DD3001234B4 /* RegisterPushNotificationOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterPushNotificationOperationTests.swift; sourceTree = "<group>"; };
 		67AA52251C3DC996000444F7 /* PasswordResetRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordResetRequest.swift; sourceTree = "<group>"; };
 		67AA52271C3DC9B0000444F7 /* PasswordResetRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordResetRequestTests.swift; sourceTree = "<group>"; };
+		67AB0C751D21A38A00394598 /* Router.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		67AB3D3B1CDD462B00778F1C /* TutorialContentsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialContentsRequest.swift; sourceTree = "<group>"; };
 		67AB78201C40823800BA00FE /* MockRequests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockRequests.swift; sourceTree = "<group>"; };
 		67B666691CDA6AF80096F18C /* ChatInterfaceDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatInterfaceDataSource.swift; sourceTree = "<group>"; };
@@ -5509,6 +5511,7 @@
 				0314D3BC19B46B5E00FA363C /* Profile */,
 				A7A2E0021A38E41800F8C705 /* Purchases */,
 				0314D3E219B46B5E00FA363C /* Root View */,
+				67AB0C721D21A31500394598 /* Routing */,
 				0314D3EF19B46B5E00FA363C /* Search */,
 				0314D3F219B46B5E00FA363C /* Settings */,
 				0314D40019B46B5E00FA363C /* Sharing */,
@@ -7550,6 +7553,14 @@
 				6791505C1CD4201000225151 /* TutorialViewController.swift */,
 			);
 			name = Tutorial;
+			sourceTree = "<group>";
+		};
+		67AB0C721D21A31500394598 /* Routing */ = {
+			isa = PBXGroup;
+			children = (
+				67AB0C751D21A38A00394598 /* Router.swift */,
+			);
+			path = Routing;
 			sourceTree = "<group>";
 		};
 		67C69F561B67EC4F00C59230 /* Presenters */ = {
@@ -13104,6 +13115,7 @@
 				A6B9FD0F1B60630900166BE8 /* NSURL+VTemporaryFiles.m in Sources */,
 				A706FE241C236AC900C2CBFF /* NSManagedObject+EditRelationship.swift in Sources */,
 				A767120F1C1F81A7006568DF /* VInteraction+Parsable.swift in Sources */,
+				67AB0C761D21A38A00394598 /* Router.swift in Sources */,
 				039ED29D19C908F400305987 /* VElapsedTimeFormatter.m in Sources */,
 				D80536271B17B5CB0049B77A /* VPromptCollectionViewCell.m in Sources */,
 				A72C86411C977FF500E97D4F /* UserSearchOperation.swift in Sources */,
@@ -15480,6 +15492,10 @@
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-DNDEBUG",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-lTestFairy",
 				);
 				OTHER_SWIFT_FLAGS = "-DV_SHOW_TEST_ALERT_SETTINGS -DV_ENABLE_WEBSOCKET_DEBUG_MENU";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.getvictorious.${ProductPrefix}victorious";

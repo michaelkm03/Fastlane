@@ -71,6 +71,10 @@ class VContent: NSManagedObject, ContentModel, PaginatableItem {
         return NSURL(string: v_shareURL)
     }
     
+    var linkedURL: NSURL? {
+        return nil
+    }
+    
     var author: UserModel {
         return v_author
     }
