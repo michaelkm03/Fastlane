@@ -81,8 +81,8 @@ class ChatFeedMessageCell: UICollectionViewCell {
         contentView.addSubview(timestampLabel)
         contentView.addSubview(avatarView)
         contentView.addSubview(avatarTapTarget)
-        contentView.addSubview(bubbleView)
         contentView.addSubview(bubbleBorderView)
+        contentView.addSubview(bubbleView)
         
         bubbleView.addSubview(captionLabel)
     }
