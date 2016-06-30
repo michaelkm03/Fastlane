@@ -358,8 +358,10 @@ class ChatFeedCollectionViewLayout: UICollectionViewFlowLayout {
         let contentSize = collectionViewContentSize()
         let extraHeight = collectionView.bounds.height - contentSize.height
         
-        if extraHeight > 0.0 {
-            let modifiedLayoutAttributes = layoutAttributes.copy() as! UICollectionViewLayoutAttributes
+        if
+            let modifiedLayoutAttributes = layoutAttributes.copy() as? UICollectionViewLayoutAttributes
+            where extraHeight > 0.0
+        {
             modifiedLayoutAttributes.frame.origin.y += extraHeight
             return modifiedLayoutAttributes
         }
