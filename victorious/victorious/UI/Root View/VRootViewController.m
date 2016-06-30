@@ -408,7 +408,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     NSString *deeplinkUrlString = localNotification.userInfo[ [LocalNotificationScheduler deplinkURLKey] ];
     if ( deeplinkUrlString != nil && deeplinkUrlString.length > 0 )
     {
-        [[VRootViewController sharedRootViewController] openURL:[NSURL URLWithString:deeplinkUrlString]];
+        [self openURL:[NSURL URLWithString:deeplinkUrlString]];
     }
 }
 
