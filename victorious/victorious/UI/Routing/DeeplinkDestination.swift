@@ -10,8 +10,6 @@ import Foundation
 
 /// A deeplink destination that we can naviagte to within the app, or an external URL
 /// e.g. A piece of content, a user, or a specific screen that is deep linked to.
-
-// TODO: Content Wrapper of content or contentID
 enum DeeplinkDestination {
     case profile(userID: Int)
     case closeUp(contentWrapper: CloseUpContentWrapper)
@@ -63,7 +61,9 @@ enum DeeplinkDestination {
     }
 }
 
-/// A
+/// A wrapper around content to be shown in close up view.
+/// This is needed because we could either pass a content object or content ID to close up view.
+/// If we pass a content object, it will be shown directly. While if we pass a content ID, it'll fetch the content from network.
 enum CloseUpContentWrapper {
     case content(content: ContentModel)
     case contentID(id: Content.ID)
