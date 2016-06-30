@@ -27,7 +27,6 @@ private struct Constants {
 class CTAErrorState: UIView {
     private let messageLabel = UILabel()
     private var actionButton = TextOnColorButton()
-    private var stackView = UIStackView()
     private let dependencyManager: VDependencyManager
     private let actionType: CTAErrorStateActionType
 
@@ -49,18 +48,23 @@ class CTAErrorState: UIView {
         messageLabel.textAlignment = .Center
         messageLabel.font = dependencyManager.fontForKey(Constants.messageFontKey)
         messageLabel.textColor = dependencyManager.colorForKey(Constants.messageColorKey)
-        stackView.addArrangedSubview(messageLabel)
         
         actionButton.dependencyManager = dependencyManager.childDependencyForKey(Constants.actionButtonKey)
         actionButton.roundingType = .roundedRect(radius: Constants.buttonCornerRadius)
-        stackView.addArrangedSubview(actionButton)
         
-        stackView.axis = .Vertical
-        stackView.alignment = .Fill
-        stackView.distribution = .EqualSpacing
-        stackView.spacing = Constants.minimumSpacing
-        self.addSubview(stackView)
-        v_addFitToParentConstraintsToSubview(stackView)
+        addSubview(messageLabel)
+        
+        messageLabel.widthAnchor.constraintEqualToAnchor(self.widthAnchor).active = true
+        messageLabel.topAnchor.constraintEqualToAnchor(self.topAnchor).active = true
+        messageLabel.centerXAnchor.constraintEqualToAnchor(self.centerXAnchor).active = true
+        messageLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        addSubview(actionButton)
+        actionButton.widthAnchor.constraintEqualToAnchor(self.widthAnchor).active = true
+        actionButton.topAnchor.constraintEqualToAnchor(messageLabel.bottomAnchor, constant: Constants.minimumSpacing).active = true
+        actionButton.centerXAnchor.constraintEqualToAnchor(self.centerXAnchor).active = true
+        actionButton.translatesAutoresizingMaskIntoConstraints = false
+        
     }
     
     @objc private func performButtonAction() {

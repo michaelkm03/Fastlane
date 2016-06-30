@@ -266,7 +266,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
     private func createErrorStateView() {
         if let errorStateView = dependencyManager?.createErrorStateView(actionType: .openSettings) {
             errorStateView.frame = CGRect(center: self.tableView.bounds.center, size: CGSize(width: Constants.errorStateViewWidthMultiplier * tableView.frame.width, height: Constants.errorStateViewHeight))
-           self.errorStateView = errorStateView
+            self.errorStateView = errorStateView
         }
     }
     
