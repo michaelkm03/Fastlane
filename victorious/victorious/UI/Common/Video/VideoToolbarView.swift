@@ -26,7 +26,7 @@ class VideoToolbarView: UIView {
     
     weak var delegate: VideoToolbarDelegate?
     
-    private var autoVisbilityTimer = VTimerManager()
+    private var autoVisibilityTimer = VTimerManager()
     
     private let kTimeLabelPlaceholderText = "--:--"
     private let kPlayButtonPlayImageName = "player-play-icon"
@@ -75,18 +75,15 @@ class VideoToolbarView: UIView {
         }
     }
     
-    private var visible: Bool = true
-    var isVisible: Bool {
-        return visible
-    }
+    private(set) var isVisible = true
     
-    var autoVisbilityTimerEnabled: Bool = true {
+    var autoVisibilityTimerEnabled = true {
         didSet {
-            if self.autoVisbilityTimerEnabled {
+            if self.autoVisibilityTimerEnabled {
                 resetTimer()
             }
             else {
-                autoVisbilityTimer.invalidate()
+                autoVisibilityTimer.invalidate()
             }
         }
     }
@@ -100,72 +97,58 @@ class VideoToolbarView: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        self.paused = true
-        self.hide(animated: false)
-        self.resetTime()
+        paused = true
+        setVisible(false, animated: false)
+        resetTime()
     }
     
     // MARK: - Visibility
     
-    func hide( animated animated: Bool = true ) {
-        if !self.visible {
+    func setVisible(isVisible: Bool, animated: Bool = true) {
+        guard isVisible != self.isVisible else {
             return
         }
-        visible = false
+        
+        self.isVisible = isVisible
+        
         layoutIfNeeded()
-        let animations: ()->() = {
-            self.containerTopConstraint.constant = self.frame.height
-            self.containerBottomConstraint.constant = -self.frame.height
+        
+        let animations = {
+            self.containerTopConstraint.constant = isVisible ? 0.0 : self.frame.height
+            self.containerBottomConstraint.constant = isVisible ? 0.0 : -self.frame.height
             self.layoutIfNeeded()
             
-            self.delegate?.animateAlongsideVideoToolbarWillDisappear?(self)
-        }
-        let comletion: Bool->() = { finished in
-            self.autoVisbilityTimer.invalidate()
-        }
-        if animated {
-            UIView.animateWithDuration( kVisibilityAnimationDuration,
-                delay: 0.0,
-                options: .CurveEaseOut,
-                animations: animations,
-                completion: comletion
-            )
-        }
-        else {
-            animations()
-            comletion(true)
-        }
-    }
-    
-    func show( animated animated: Bool = true ) {
-        if self.visible {
-            return
-        }
-        visible = true
-        layoutIfNeeded()
-        let animations: ()->() = {
-            self.containerTopConstraint.constant = 0.0
-            self.containerBottomConstraint.constant = 0.0
-            self.layoutIfNeeded()
-            
-            self.delegate?.animateAlongsideVideoToolbarWillAppear?(self)
-        }
-        let comletion: Bool->() = { finished in
-            if self.autoVisbilityTimerEnabled {
-                self.resetTimer()
+            if isVisible {
+                self.delegate?.animateAlongsideVideoToolbarWillAppear?(self)
+            }
+            else {
+                self.delegate?.animateAlongsideVideoToolbarWillDisappear?(self)
             }
         }
+        
+        let completion: Bool -> Void = { finished in
+            if isVisible {
+                if self.autoVisibilityTimerEnabled {
+                    self.resetTimer()
+                }
+            }
+            else {
+                self.autoVisibilityTimer.invalidate()
+            }
+        }
+        
         if animated {
-            UIView.animateWithDuration( kVisibilityAnimationDuration,
+            UIView.animateWithDuration(
+                kVisibilityAnimationDuration,
                 delay: 0.0,
                 options: .CurveEaseOut,
                 animations: animations,
-                completion: comletion
+                completion: completion
             )
         }
         else {
             animations()
-            comletion(true)
+            completion(true)
         }
     }
     
@@ -214,8 +197,8 @@ class VideoToolbarView: UIView {
     func onTimer() {
         let duration = -self.lastInteractionDate.timeIntervalSinceNow
         if duration >= kMaxVisibilityTimerDuration {
-            autoVisbilityTimer.invalidate()
-            hide(animated: true)
+            autoVisibilityTimer.invalidate()
+            setVisible(false, animated: true)
         }
     }
     
@@ -224,15 +207,17 @@ class VideoToolbarView: UIView {
     }
     
     private func resetTimer() {
-        if !self.autoVisbilityTimerEnabled {
+        if !self.autoVisibilityTimerEnabled {
             return
         }
-        autoVisbilityTimer.invalidate()
+        autoVisibilityTimer.invalidate()
         refreshVisibilityDate()
-        autoVisbilityTimer = VTimerManager.scheduledTimerManagerWithTimeInterval( 0.5,
+        autoVisibilityTimer = VTimerManager.scheduledTimerManagerWithTimeInterval(
+            0.5,
             target: self,
             selector: #selector(onTimer),
             userInfo: nil,
-            repeats: true )
+            repeats: true
+        )
     }
 }
