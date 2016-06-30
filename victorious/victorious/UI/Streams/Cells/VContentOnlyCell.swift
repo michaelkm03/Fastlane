@@ -58,8 +58,8 @@ class VContentOnlyCell: UICollectionViewCell, ContentCell {
         guard let content = content else {
             return
         }
+        contentPreviewView.frame = self.bounds
         contentView.addSubview(contentPreviewView)
-        contentView.v_addFitToParentConstraintsToSubview(contentPreviewView)
         contentPreviewView.content = content
     }
     
