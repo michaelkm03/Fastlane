@@ -30,7 +30,7 @@ struct CaptionBarPopulator {
     
     static func populate(captionBar: CaptionBar, withUser user: UserModel, andCaption caption: String) {
         let imageURL = user.previewImageURL(ofMinimumWidth: captionBar.bounds.width) ?? NSURL()
-        captionBar.avatarImageView.fadeInImageAtURL(imageURL)
+        captionBar.avatarButton.setProfileImageURL(imageURL, forState: .Normal)
         
         let captionTextView = captionBar.captionTextView
         captionTextView.text = caption
@@ -42,10 +42,15 @@ struct CaptionBarPopulator {
         captionLabel.attributedText = NSAttributedString(string: caption, attributes: attributes)
         captionLabel.hidden = false
         
-        let collapsedRect = captionLabel.textRectForBounds(captionTextView.bounds, limitedToNumberOfLines: captionBar.collapsedNumberOfLines)
-        let canExpand = collapsedRect != captionLabel.textRectForBounds(captionTextView.bounds, limitedToNumberOfLines: 0)
+        var collapsedRect = captionLabel.textRectForBounds(captionTextView.bounds, limitedToNumberOfLines: captionBar.collapsedNumberOfLines)
+        let unboundedRect = captionLabel.textRectForBounds(captionTextView.bounds, limitedToNumberOfLines: 0)
+        let canExpand = collapsedRect != unboundedRect
         captionBar.expandButton.hidden = !canExpand
-        captionBar.labelWidthConstraint.constant = collapsedRect.width + captionTextView.textContainer.lineFragmentPadding * 2
+        
+        collapsedRect.size = CGSize(width: collapsedRect.width + captionTextView.textContainer.lineFragmentPadding * 2, height: collapsedRect.height + captionTextView.textContainerInset.top + captionTextView.textContainerInset.bottom)
+        captionBar.labelWidthConstraint.constant = collapsedRect.width
+        let avatarVerticalDelta = collapsedRect.height - captionBar.avatarButtonHeightConstraint.constant
+        captionBar.avatarButtonTopConstraint.constant = -max(ceil(avatarVerticalDelta / 2), 0)
     }
     
     static func toggle(captionBar: CaptionBar, toCollapsed collapsed: Bool) -> CGFloat {
@@ -69,7 +74,7 @@ struct CaptionBarPopulator {
         captionLabel.hidden = !showLabel
         captionTextView.scrollEnabled = !showLabel
         
-        let visibleHeight = max(textHeight, captionBar.avatarImageViewHeightConstraint.constant)
+        let visibleHeight = max(textHeight, captionBar.avatarButtonHeightConstraint.constant)
         let captionLabelVerticalPadding = captionBar.verticalLabelPaddingConstraints.reduce(0, combine: { $0 + $1.constant })
         return captionLabelVerticalPadding + visibleHeight
     }

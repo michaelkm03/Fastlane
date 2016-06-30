@@ -20,29 +20,22 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DEK-3L-V3o">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="76"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Bvc-71-Pei">
-                                        <rect key="frame" x="16" y="16" width="44" height="44"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="44" id="IYl-ux-fmA"/>
-                                            <constraint firstAttribute="width" secondItem="Bvc-71-Pei" secondAttribute="height" multiplier="1:1" id="MZK-U3-rov"/>
-                                        </constraints>
-                                    </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zd0-Zd-kLL">
-                                        <rect key="frame" x="572" y="27" width="12" height="22"/>
+                                        <rect key="frame" x="578" y="12" width="12" height="22"/>
                                         <state key="normal" image="CaptionBarDisclosureButton"/>
                                         <connections>
                                             <action selector="pressedToggleButton" destination="s4g-pW-yus" eventType="touchUpInside" id="ubM-7L-4eC"/>
                                         </connections>
                                     </button>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Wes-gJ-PRU">
-                                        <rect key="frame" x="76" y="16" width="480" height="44"/>
+                                        <rect key="frame" x="50" y="8" width="518" height="60"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1J5-Re-xOT">
-                                        <rect key="frame" x="76" y="16" width="480" height="44"/>
+                                        <rect key="frame" x="50" y="8" width="480" height="60"/>
                                         <constraints>
                                             <constraint firstAttribute="width" priority="999" constant="480" id="awS-6E-13u"/>
                                         </constraints>
@@ -50,23 +43,30 @@
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uvg-Jp-QHN" customClass="VDefaultProfileButton">
+                                        <rect key="frame" x="10" y="8" width="30" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="Q7U-fb-alD"/>
+                                            <constraint firstAttribute="width" secondItem="uvg-Jp-QHN" secondAttribute="height" multiplier="1:1" id="p3d-1R-LM2"/>
+                                        </constraints>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="zd0-Zd-kLL" firstAttribute="leading" secondItem="Wes-gJ-PRU" secondAttribute="trailing" constant="16" id="2vh-Y3-k6W"/>
-                                    <constraint firstItem="Bvc-71-Pei" firstAttribute="leading" secondItem="DEK-3L-V3o" secondAttribute="leading" constant="16" id="4qz-OD-ujm"/>
-                                    <constraint firstItem="Wes-gJ-PRU" firstAttribute="top" secondItem="DEK-3L-V3o" secondAttribute="top" priority="999" constant="16" id="EqS-jM-nAI"/>
+                                    <constraint firstItem="zd0-Zd-kLL" firstAttribute="leading" secondItem="Wes-gJ-PRU" secondAttribute="trailing" constant="10" id="2vh-Y3-k6W"/>
+                                    <constraint firstItem="uvg-Jp-QHN" firstAttribute="leading" secondItem="DEK-3L-V3o" secondAttribute="leading" constant="10" id="CWg-c0-hO9"/>
+                                    <constraint firstItem="Wes-gJ-PRU" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="uvg-Jp-QHN" secondAttribute="bottom" id="D4j-xZ-fhW"/>
+                                    <constraint firstItem="Wes-gJ-PRU" firstAttribute="top" secondItem="uvg-Jp-QHN" secondAttribute="top" id="DTT-rv-fMV"/>
+                                    <constraint firstItem="Wes-gJ-PRU" firstAttribute="top" secondItem="DEK-3L-V3o" secondAttribute="top" priority="999" constant="8" id="EqS-jM-nAI"/>
                                     <constraint firstItem="1J5-Re-xOT" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="Wes-gJ-PRU" secondAttribute="trailing" id="Huu-LT-DQ1"/>
-                                    <constraint firstItem="Wes-gJ-PRU" firstAttribute="leading" secondItem="Bvc-71-Pei" secondAttribute="trailing" constant="16" id="VYl-rl-yHb"/>
-                                    <constraint firstAttribute="bottom" secondItem="Wes-gJ-PRU" secondAttribute="bottom" priority="999" constant="16" id="Yu0-3h-CnO"/>
+                                    <constraint firstAttribute="bottom" secondItem="Wes-gJ-PRU" secondAttribute="bottom" priority="999" constant="8" id="Yu0-3h-CnO"/>
                                     <constraint firstItem="1J5-Re-xOT" firstAttribute="top" secondItem="Wes-gJ-PRU" secondAttribute="top" id="bHb-ki-YCL"/>
-                                    <constraint firstItem="Wes-gJ-PRU" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Bvc-71-Pei" secondAttribute="bottom" id="bok-Dh-6to"/>
                                     <constraint firstItem="1J5-Re-xOT" firstAttribute="bottom" secondItem="Wes-gJ-PRU" secondAttribute="bottom" id="cND-jj-c6h"/>
-                                    <constraint firstItem="Wes-gJ-PRU" firstAttribute="top" secondItem="Bvc-71-Pei" secondAttribute="top" id="nJN-pR-Cud"/>
+                                    <constraint firstItem="1J5-Re-xOT" firstAttribute="leading" secondItem="uvg-Jp-QHN" secondAttribute="trailing" constant="10" id="ikJ-52-a5Y"/>
                                     <constraint firstItem="1J5-Re-xOT" firstAttribute="leading" secondItem="Wes-gJ-PRU" secondAttribute="leading" id="o1X-05-eUQ"/>
-                                    <constraint firstAttribute="trailing" secondItem="zd0-Zd-kLL" secondAttribute="trailing" constant="16" id="om5-uC-wAE"/>
+                                    <constraint firstAttribute="trailing" secondItem="zd0-Zd-kLL" secondAttribute="trailing" constant="10" id="om5-uC-wAE"/>
                                     <constraint firstItem="1J5-Re-xOT" firstAttribute="centerY" secondItem="Wes-gJ-PRU" secondAttribute="centerY" id="vpM-AF-ezP"/>
-                                    <constraint firstItem="zd0-Zd-kLL" firstAttribute="centerY" secondItem="Bvc-71-Pei" secondAttribute="centerY" id="zND-fG-5tO"/>
+                                    <constraint firstItem="zd0-Zd-kLL" firstAttribute="centerY" secondItem="uvg-Jp-QHN" secondAttribute="centerY" id="zHG-WR-Uzj"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -78,8 +78,9 @@
                             <constraint firstItem="DEK-3L-V3o" firstAttribute="top" secondItem="aux-jy-eBS" secondAttribute="bottom" id="y1F-cL-Yez"/>
                         </constraints>
                         <connections>
-                            <outlet property="avatarImageView" destination="Bvc-71-Pei" id="1Oe-6J-bKM"/>
-                            <outlet property="avatarImageViewHeightConstraint" destination="IYl-ux-fmA" id="0sv-7M-1Xd"/>
+                            <outlet property="avatarButton" destination="uvg-Jp-QHN" id="kIH-3p-hJw"/>
+                            <outlet property="avatarButtonHeightConstraint" destination="Q7U-fb-alD" id="oiK-fB-5up"/>
+                            <outlet property="avatarButtonTopConstraint" destination="DTT-rv-fMV" id="Equ-UI-jTc"/>
                             <outlet property="captionLabel" destination="1J5-Re-xOT" id="m19-QW-uYb"/>
                             <outlet property="captionTextView" destination="Wes-gJ-PRU" id="dPL-KR-hh4"/>
                             <outlet property="expandButton" destination="zd0-Zd-kLL" id="BLF-1O-Tem"/>

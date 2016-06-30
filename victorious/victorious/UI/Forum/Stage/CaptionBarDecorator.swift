@@ -24,11 +24,7 @@ struct CaptionBarDecorator {
         captionLabel.backgroundColor = dependencyManager.textContainerColor
         captionLabel.numberOfLines = captionBar.collapsedNumberOfLines
         
-//        captionBar.overlayView.backgroundColor = dependencyManager.backgroundOverlayColor
-        
-        let avatarImageView = captionBar.avatarImageView
-        avatarImageView.layer.cornerRadius = avatarImageView.bounds.height / 2
-        avatarImageView.clipsToBounds = true
+        captionBar.overlayView.backgroundColor = dependencyManager.backgroundOverlayColor
         
         captionTextView.layer.cornerRadius = 6
         captionTextView.clipsToBounds = true
