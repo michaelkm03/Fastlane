@@ -64,7 +64,6 @@ class CTAErrorState: UIView {
         actionButton.topAnchor.constraintEqualToAnchor(messageLabel.bottomAnchor, constant: Constants.minimumSpacing).active = true
         actionButton.centerXAnchor.constraintEqualToAnchor(self.centerXAnchor).active = true
         actionButton.translatesAutoresizingMaskIntoConstraints = false
-        
     }
     
     @objc private func performButtonAction() {
