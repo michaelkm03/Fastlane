@@ -326,8 +326,9 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         videoContainerView.frame = bounds
         textPostLabel.frame = CGRect(x: bounds.origin.x + CGFloat(Constants.textPostPadding), y: bounds.origin.y, width: bounds.width - CGFloat(2 * Constants.textPostPadding), height: bounds.height)
         
-        //Background should extend a little beyond the original bounds, 
-        //so that the guassian blur doesn't introduce shadow at the edges
+        // Warning: Dirty Hack
+        // Background should extend a little beyond the original bounds,
+        // so that the guassian blur doesn't introduce shadow at the edges
         var backgroundBounds = bounds
         backgroundBounds.origin.x -= 10
         backgroundBounds.origin.y -= 10
