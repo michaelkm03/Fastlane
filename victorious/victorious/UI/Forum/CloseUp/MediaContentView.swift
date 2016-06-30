@@ -8,27 +8,27 @@
 
 import UIKit
 
-private struct Constants {
-    static let blurRadius: CGFloat = 12
-    static let fadeDuration: NSTimeInterval = 0.75
-    static let backgroundFadeInDurationMultiplier = 0.75
-    static let fadeOutDurationMultiplier = 1.25
-    static let textPostLineSpacing: CGFloat = 2.0
-    static let maxLineCount = 4
-    static let textAlignment = NSTextAlignment.Center
-    static let minimumScaleFactor: CGFloat = 0.8
-    static let textPostPadding = 25
-    static let defaultTextBackgroundColor = UIColor.blackColor()
-    static let defaultTextColor = UIColor.whiteColor()
-    static let defaultTextFont = UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline)
-}
+
 
 /// Displays an image/video/GIF/Youtube video/text post upon setting the content property
 
 class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGestureRecognizerDelegate {
+    private struct Constants {
+        static let blurRadius: CGFloat = 12
+        static let fadeDuration: NSTimeInterval = 0.75
+        static let backgroundFadeInDurationMultiplier = 0.75
+        static let fadeOutDurationMultiplier = 1.25
+        static let textPostLineSpacing: CGFloat = 2.0
+        static let maxLineCount = 4
+        static let textAlignment = NSTextAlignment.Center
+        static let minimumScaleFactor: CGFloat = 0.8
+        static let textPostPadding = 25
+        static let defaultTextBackgroundColor = UIColor.blackColor()
+        static let defaultTextColor = UIColor.whiteColor()
+        static let defaultTextFont = UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline)
+    }
     
     private(set) var videoCoordinator: VContentVideoPlayerCoordinator?
-    
     private let previewImageView = UIImageView()
     private let textPostLabel = UILabel()
     private let videoContainerView = VPassthroughContainerView()
@@ -283,8 +283,8 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         
         textPostLabel.hidden = true //Hide while we set up the view for the next post
         textPostLabel.text = text
-        textPostLabel.font = textPostDependency.textPostFont
-        textPostLabel.textColor = textPostDependency.textPostColor
+        textPostLabel.font = textPostDependency.textPostFont ?? Constants.defaultTextFont
+        textPostLabel.textColor = textPostDependency.textPostColor ?? Constants.defaultTextColor
         
         if let url = textPostDependency.textPostBackgroundImageURL {
             setBackgroundBlur(withImageUrl: url, forContent: content) { [weak self] in
@@ -412,11 +412,11 @@ private extension VDependencyManager {
     }
     
     var textPostFont: UIFont? {
-        return fontForKey("font.textpost") ?? Constants.defaultTextFont
+        return fontForKey("font.textpost")
     }
     
-    var textPostColor: UIColor {
-        return colorForKey("color.textpost") ?? Constants.defaultTextColor
+    var textPostColor: UIColor? {
+        return colorForKey("color.textpost")
     }
     
     var textPostBackgroundImageURL: NSURL? {
