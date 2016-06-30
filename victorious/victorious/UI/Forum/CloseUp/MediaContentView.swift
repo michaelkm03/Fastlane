@@ -276,17 +276,17 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     private func setUpTextLabel(for content: ContentModel) {
         guard
             let text = content.text,
-            let textPostManager = dependencyManager?.textPostManager
+            let textPostDependency = dependencyManager?.textPostDependency
         else {
             return
         }
         
         textPostLabel.hidden = true //Hide while we set up the view for the next post
         textPostLabel.text = text
-        textPostLabel.font = textPostManager.textPostFont
-        textPostLabel.textColor = textPostManager.textPostColor
+        textPostLabel.font = textPostDependency.textPostFont
+        textPostLabel.textColor = textPostDependency.textPostColor
         
-        if let url = textPostManager.textPostBackgroundImageURL {
+        if let url = textPostDependency.textPostBackgroundImageURL {
             setBackgroundBlur(withImageUrl: url, forContent: content) { [weak self] in
                 guard
                     let currentContentID = self?.content?.id,
@@ -300,7 +300,6 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
                 self?.didSetupTextLabel()
             }
         }
-        
         else {
             backgroundView?.image = nil
             backgroundView?.backgroundColor = Constants.defaultTextBackgroundColor
@@ -402,32 +401,26 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     }
 }
 
-//MARK: - VDependency Manager extension
+// MARK: - VDependency Manager extension
 
 private extension VDependencyManager {
-    var textPostManager: VDependencyManager? {
+    var textPostDependency: VDependencyManager? {
         return childDependencyForKey("textPost")
     }
     
     var textPostFont: UIFont? {
-        get {
-            return fontForKey("font.textpost") ?? Constants.defaultTextFont
-        }
+        return fontForKey("font.textpost") ?? Constants.defaultTextFont
     }
     
     var textPostColor: UIColor {
-        get {
-            return colorForKey("color.textpost") ?? Constants.defaultTextColor
-        }
+        return colorForKey("color.textpost") ?? Constants.defaultTextColor
     }
     
     var textPostBackgroundImageURL: NSURL? {
-        get {
-            guard let urlString = stringForKey("backgroundImage.textpost") else {
-                return nil
-            }
-            
-            return NSURL(string: urlString)
+        guard let urlString = stringForKey("backgroundImage.textpost") else {
+            return nil
         }
+        
+        return NSURL(string: urlString)
     }
 }
