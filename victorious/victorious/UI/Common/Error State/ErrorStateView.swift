@@ -9,10 +9,27 @@
 import UIKit
 
 class ErrorStateView: UIView {
+    private struct Constants {
+        static let cornerRadii = CGSizeMake(10, 10)
+    }
+    
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var messageLabel: UILabel!
-    
+
+    override func layoutSubviews() {
+        let maskPath = UIBezierPath(
+            roundedRect: bounds,
+            byRoundingCorners: [.BottomRight, .BottomLeft],
+            cornerRadii: Constants.cornerRadii
+        )
+        
+        let maskLayer = CAShapeLayer()
+        maskLayer.frame = bounds
+        maskLayer.path = maskPath.CGPath
+        
+        layer.mask = maskLayer;
+    }
     
     var dependencyManager: VDependencyManager? {
         didSet {

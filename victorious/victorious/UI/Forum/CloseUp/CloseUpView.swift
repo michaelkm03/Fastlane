@@ -127,7 +127,6 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     
     override func awakeFromNib() {
         addSubview(errorView)
-        errorView.layer.cornerRadius = Constants.cornerRadius
         
         profileImageView.layer.cornerRadius = profileImageView.frame.size.v_roundCornerRadius
         closeUpContentContainerView.layer.cornerRadius = Constants.cornerRadius
@@ -167,8 +166,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
         
         if content == nil {
             var bounds = self.bounds
-            bounds.origin.y = Constants.topOffset // to not show the top rounded circle
-            bounds.size.height = bounds.size.height - Constants.topOffset - relatedLabel.frame.size.height
+            bounds.size.height = bounds.size.height - relatedLabel.frame.size.height
             errorView.frame = bounds
             
             var mediaContentViewFrame = mediaContentView.frame
@@ -249,6 +247,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     func decorateHeader(dependencyManager: VDependencyManager, maxHeight: CGFloat, content: ContentModel?, hasError: Bool) {
         self.content = content
         errorView.hidden = !hasError
+        closeUpContentContainerView.hidden = hasError
     }
     
     func sizeForHeader(dependencyManager: VDependencyManager, maxHeight: CGFloat, content: ContentModel?, hasError: Bool) -> CGSize {

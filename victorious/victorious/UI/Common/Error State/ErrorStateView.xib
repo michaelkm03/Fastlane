@@ -11,17 +11,18 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zdw-Um-vBW" userLabel="CenteredView">
-                    <rect key="frame" x="0.0" y="191" width="600" height="219"/>
+                    <rect key="frame" x="0.0" y="216" width="600" height="168"/>
                     <subviews>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="TEp-Ft-lHw">
-                            <rect key="frame" x="8" y="8" width="584" height="80"/>
+                            <rect key="frame" x="255" y="0.0" width="90" height="90"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="80" id="wq1-6o-H9m"/>
+                                <constraint firstAttribute="width" constant="90" id="cWp-fF-kMb"/>
+                                <constraint firstAttribute="height" constant="90" id="wq1-6o-H9m"/>
                             </constraints>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Oh snap!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H9y-b0-uzI">
-                            <rect key="frame" x="8" y="128" width="584" height="30"/>
+                            <rect key="frame" x="8" y="110" width="584" height="30"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="30" id="eDW-h7-gnW"/>
@@ -30,8 +31,8 @@
                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Something went wrong" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k6g-rR-daZ">
-                            <rect key="frame" x="8" y="169" width="584" height="30"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We cannot find this post." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k6g-rR-daZ">
+                            <rect key="frame" x="8" y="142" width="584" height="30"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="30" id="54c-d3-J8Y"/>
@@ -44,15 +45,14 @@
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="H9y-b0-uzI" firstAttribute="leading" secondItem="Zdw-Um-vBW" secondAttribute="leading" constant="8" id="7ti-Ee-FfF"/>
-                        <constraint firstAttribute="bottom" secondItem="k6g-rR-daZ" secondAttribute="bottom" constant="20" id="B4c-mi-j8G"/>
+                        <constraint firstAttribute="bottom" secondItem="k6g-rR-daZ" secondAttribute="bottom" constant="-4" id="B4c-mi-j8G"/>
                         <constraint firstAttribute="trailing" secondItem="H9y-b0-uzI" secondAttribute="trailing" constant="8" id="DEb-qQ-6Gx"/>
-                        <constraint firstAttribute="trailing" secondItem="TEp-Ft-lHw" secondAttribute="trailing" constant="8" id="Hqo-nS-Hg4"/>
                         <constraint firstAttribute="trailing" secondItem="k6g-rR-daZ" secondAttribute="trailing" constant="8" id="LRM-4C-Zkd"/>
-                        <constraint firstItem="TEp-Ft-lHw" firstAttribute="leading" secondItem="Zdw-Um-vBW" secondAttribute="leading" constant="8" id="YAN-xq-CoO"/>
                         <constraint firstItem="k6g-rR-daZ" firstAttribute="leading" secondItem="Zdw-Um-vBW" secondAttribute="leading" constant="8" id="ZdL-MA-Xpl"/>
-                        <constraint firstItem="TEp-Ft-lHw" firstAttribute="top" secondItem="Zdw-Um-vBW" secondAttribute="top" constant="8" id="fRz-Fl-86V"/>
-                        <constraint firstItem="k6g-rR-daZ" firstAttribute="top" secondItem="H9y-b0-uzI" secondAttribute="bottom" constant="11" id="gOa-0A-TLL"/>
-                        <constraint firstItem="H9y-b0-uzI" firstAttribute="top" secondItem="TEp-Ft-lHw" secondAttribute="bottom" constant="40" id="pLt-uE-sal"/>
+                        <constraint firstItem="TEp-Ft-lHw" firstAttribute="top" secondItem="Zdw-Um-vBW" secondAttribute="top" id="fRz-Fl-86V"/>
+                        <constraint firstItem="k6g-rR-daZ" firstAttribute="top" secondItem="H9y-b0-uzI" secondAttribute="bottom" constant="2" id="gOa-0A-TLL"/>
+                        <constraint firstItem="H9y-b0-uzI" firstAttribute="top" secondItem="TEp-Ft-lHw" secondAttribute="bottom" constant="20" id="pLt-uE-sal"/>
+                        <constraint firstItem="TEp-Ft-lHw" firstAttribute="centerX" secondItem="Zdw-Um-vBW" secondAttribute="centerX" id="qmQ-ul-ILA"/>
                     </constraints>
                 </view>
             </subviews>
