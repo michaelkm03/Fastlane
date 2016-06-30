@@ -73,7 +73,6 @@ class VContentOnlyCell: UICollectionViewCell, ContentCell {
         contentPreviewView.frame = contentView.bounds
     }
     
-    
     // MARK: Highlighting
     
     override var highlighted: Bool {
