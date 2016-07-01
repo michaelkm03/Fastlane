@@ -30,7 +30,7 @@ extension VDependencyManager {
                     interstitial = toastViewController
                 }
             case .WebSocketError:
-                let templateValue = templateValueOfType(InterstitialToastViewController.self, forKey: "errorToastScreen")
+                let templateValue = templateValueOfType(InterstitialToastViewController.self, forKey: "errorToast")
                 if let toastViewController = templateValue as? InterstitialToastViewController {
                     interstitial = toastViewController
                 }
