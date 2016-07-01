@@ -17,7 +17,7 @@
 public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket, WebSocketEventDecoder, WebSocketPongDelegate {
 
     private struct Constants {
-        static let forceDisconnectTimeout: NSTimeInterval = 5
+        static let forceDisconnectTimeout: NSTimeInterval = 2
     }
     
     /// Custom background queue for packing and unpacking messages over the WebSocket.
