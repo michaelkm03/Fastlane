@@ -259,6 +259,9 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             if oldValue != textViewHasPrependedImage {
                 attachmentTabBar.buttonsEnabled = !textViewHasPrependedImage
                 attachmentTabBar.enableButtonForIdentifier(ComposerInputAttachmentType.Hashtag.rawValue)
+                if !textViewHasPrependedImage {
+                    selectedAsset = nil
+                }
             }
         }
     }
