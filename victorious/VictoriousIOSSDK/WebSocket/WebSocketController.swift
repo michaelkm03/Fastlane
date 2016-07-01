@@ -10,10 +10,10 @@
 ///
 /// It features are:
 /// 1. Open/Close a websocket connection using a configuration.
-/// 2. Receive messages over the websocket.
-/// 3. Send messages over the websocket.
-/// 4. Forward messages using the (FEC) Forum Event Chain™.
-/// 5. It complies to the TemplateNetworkSource protocol so it can be instanciated through the template.
+/// 2. Receive messages over the WebSocket.
+/// 3. Send messages over the WebSocket.
+/// 4. Forward messages using the Forum Event Chain.
+/// 5. It complies to the TemplateNetworkSource protocol so it can be instansiated through the template.
 public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket, WebSocketEventDecoder, WebSocketPongDelegate {
 
     private struct Constants {
@@ -30,6 +30,9 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
     
     /// The timer that will fire at a specified interval to keep the connection alive.
     private var pingTimer: NSTimer?
+
+    /// If the client disconnects we still get the disconnect event, this flag is there to help avoid passsing that event on.
+    private var didClientInitiatedDisconnect: Bool = false
     
     /// The interval to send of ping messages.
     private let pingTimerInterval: NSTimeInterval = 15
@@ -85,11 +88,13 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
     }
     
     /// Sends the disconnect message to the server and waits for a certain amount of time before forcing the disconnect.
-    /// When the disconnect has happened a `WebSocketEvent` of type `.Disconnected` will be broadcasted.
+    /// When the disconnect has happened a `WebSocketEvent` of type `.disconnected` will be broadcasted.
     public func tearDown() {
         guard let webSocket = webSocket where webSocket.isConnected else {
             return
         }
+
+        didClientInitiatedDisconnect = true
         webSocket.disconnect(forceTimeout: Constants.forceDisconnectTimeout)
     }
     
@@ -142,15 +147,19 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
         
         // The WebSocket instance with the baked in token has been consumed. 
         // A new token has to be fetched and a new WebSocket instance has to be created.
-        webSocket = nil
         pingTimer?.invalidate()
-        
-        let webSocketError = WebSocketError.ConnectionTerminated(code: error?.code, error: error)
-        let disconnectEvent = WebSocketEvent.Disconnected(webSocketError: webSocketError)
-        
-        dispatch_async(dispatch_get_main_queue()) { [weak self] in
-            self?.broadcast(.websocket(disconnectEvent))
+        webSocket = nil
+
+        // According to the RFC even if the client disconnects we should receive a close message with the error code 1000. 
+        // We still want to bradcast that to the rest of the app but without an error so it's explicit nothing went wrong.
+        var webSocketError: WebSocketError? = nil
+        if let error = error where !didClientInitiatedDisconnect && WebSocket.CloseCode(rawValue: UInt16(error.code)) == WebSocket.CloseCode.Normal {
+            didClientInitiatedDisconnect = false
+        } else {
+            webSocketError = WebSocketError.ConnectionTerminated(code: error?.code, error: error)
         }
+
+        broadcastDisconnectWithWebSocketError(webSocketError)
     }
 
     public func websocketDidReceiveMessage(socket: WebSocket, text: String) {
@@ -199,6 +208,13 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
     private func bounceBackOutboundEvent(event: ForumEvent) {
         if case .sendContent(let content) = event {
             broadcast(.appendContent([content]))
+        }
+    }
+
+    private func broadcastDisconnectWithWebSocketError(webSocketError: WebSocketError?) {
+        let disconnectEvent = WebSocketEvent.Disconnected(webSocketError: webSocketError)
+        dispatch_async(dispatch_get_main_queue()) { [weak self] in
+            self?.broadcast(.websocket(disconnectEvent))
         }
     }
 

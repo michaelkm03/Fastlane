@@ -19,7 +19,7 @@ public enum WebSocketEvent: Equatable {
     case Authenticated
     case AuthenticationFailed(webSocketError: WebSocketError)
     case Connected
-    case Disconnected(webSocketError: WebSocketError)
+    case Disconnected(webSocketError: WebSocketError?)
 }
 
 public func ==(lhs: WebSocketEvent, rhs: WebSocketEvent) -> Bool {
