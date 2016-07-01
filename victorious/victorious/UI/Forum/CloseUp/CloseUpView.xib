@@ -10,11 +10,6 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view hidden="YES" contentMode="scaleToFill" id="5U4-wv-hfS" customClass="ErrorStateView" customModule="victorious" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="524"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                    <color key="backgroundColor" red="0.6887738041" green="1" blue="0.94076784979999994" alpha="1" colorSpace="calibratedRGB"/>
-                </view>
                 <view clipsSubviews="YES" contentMode="scaleToFill" id="oEy-rS-69c" userLabel="containerView">
                     <rect key="frame" x="0.0" y="-20" width="320" height="544"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

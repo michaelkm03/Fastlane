@@ -49,7 +49,7 @@ class ShowFetchedCloseUpOperation: MainQueueOperation {
                 return
             }
             
-            guard let content = results?.first as? VContent else {
+            guard let content = results?.first as? ContentModel else {
                 // Display error message.
                 shownCloseUpView.updateError()
                 completionBlock?()

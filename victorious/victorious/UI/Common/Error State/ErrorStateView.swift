@@ -16,19 +16,26 @@ class ErrorStateView: UIView {
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var messageLabel: UILabel!
+    private var lastBounds: CGRect? {
+        didSet {
+            if lastBounds != oldValue {
+                let maskPath = UIBezierPath(
+                    roundedRect: bounds,
+                    byRoundingCorners: [.BottomRight, .BottomLeft],
+                    cornerRadii: Constants.cornerRadii
+                )
+                
+                let maskLayer = CAShapeLayer()
+                maskLayer.frame = bounds
+                maskLayer.path = maskPath.CGPath
+                
+                layer.mask = maskLayer
+            }
+        }
+    }
 
     override func layoutSubviews() {
-        let maskPath = UIBezierPath(
-            roundedRect: bounds,
-            byRoundingCorners: [.BottomRight, .BottomLeft],
-            cornerRadii: Constants.cornerRadii
-        )
-        
-        let maskLayer = CAShapeLayer()
-        maskLayer.frame = bounds
-        maskLayer.path = maskPath.CGPath
-        
-        layer.mask = maskLayer;
+        lastBounds = bounds
     }
     
     var dependencyManager: VDependencyManager? {
