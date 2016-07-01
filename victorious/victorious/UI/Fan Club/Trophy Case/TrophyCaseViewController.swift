@@ -57,14 +57,17 @@ class TrophyCaseViewController: UIViewController, UICollectionViewDelegate, VBac
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         collectionView.deselectItemAtIndexPath(indexPath, animated: false)
         
-        guard let cell = collectionView.cellForItemAtIndexPath(indexPath) as? TrophyCaseAchievementCollectionViewCell,
-            let achievement = cell.achievement else {
+        guard
+            let cell = collectionView.cellForItemAtIndexPath(indexPath) as? TrophyCaseAchievementCollectionViewCell,
+            let achievement = cell.achievement
+        else {
                 return
         }
         
         let detailViewController = InterstitialAlertViewController.newWithDependencyManager(dependencyManager)
-        detailViewController.alert = Alert(title: achievement.title, description: achievement.detailedDescription)
-        InterstitialManager.sharedInstance.onAlertsReceived([detailViewController.alert!])
+        let alert = Alert(title: achievement.title, description: achievement.detailedDescription)
+        detailViewController.alert = alert
+        InterstitialManager.sharedInstance.receive(alert)
     }
     
     //MARK: - Background Container
