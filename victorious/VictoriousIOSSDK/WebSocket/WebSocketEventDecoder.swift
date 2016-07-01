@@ -74,9 +74,9 @@ extension WebSocketEventDecoder {
 
         if let webSocketError = WebSocketError(json: json[Keys.root][Keys.error], didDisconnect: didDisconnect) {
             if didDisconnect {
-                webSocketEvent = .websocket(.Disconnected(webSocketError: webSocketError))
+                webSocketEvent = .websocket(.disconnected(webSocketError: webSocketError))
             } else {
-                webSocketEvent = .websocket(.ServerError(webSocketError: webSocketError))
+                webSocketEvent = .websocket(.serverError(webSocketError: webSocketError))
             }
         }
 
