@@ -24,9 +24,10 @@ class ChatFeedMessageCell: UICollectionViewCell {
     let bubbleView = UIView()
     let bubbleBorderView = UIImageView()
     let captionLabel = UILabel()
-    let avatarView = VDefaultProfileImageView()
+    let avatarView = UIImageView()
     var previewView: UIView?
     let avatarTapTarget = UIView()
+    let defaultAvatarImage = UIImage(named: "profile_full")
     
     weak var delegate: ChatFeedMessageCellDelegate?
     
@@ -158,10 +159,10 @@ class ChatFeedMessageCell: UICollectionViewCell {
         }
         
         if let imageURL = content?.author.previewImageURL(ofMinimumSize: avatarView.frame.size) {
-            avatarView.setProfileImageURL(imageURL)
+            avatarView.sd_setImageWithURL(imageURL, placeholderImage: defaultAvatarImage)
         }
         else {
-            avatarView.image = nil
+            avatarView.image = defaultAvatarImage
         }
     }
     

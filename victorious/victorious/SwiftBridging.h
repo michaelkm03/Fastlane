@@ -91,7 +91,6 @@
 #import "VCreationFlowPresenter.h"
 #import "VDataCache.h"
 #import "VDefaultProfileButton.h"
-#import "VDefaultProfileImageView.h"
 #import "VDependencyManager+NavigationBar.h"
 #import "VDependencyManager+VAccessoryScreens.h"
 #import "VDependencyManager+VBackgroundContainer.h"
