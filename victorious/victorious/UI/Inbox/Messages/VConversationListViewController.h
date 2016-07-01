@@ -6,7 +6,6 @@
 //  Copyright (c) 2013 Victorious Inc. All rights reserved.
 //
 
-#import "VDeeplinkHandler.h"
 #import "VNavigationDestination.h"
 #import "VMultipleContainer.h"
 #import "VAuthorizationContextProvider.h"

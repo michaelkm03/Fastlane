@@ -2,27 +2,38 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="RXE-Oi-dH9">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Stage View Controller-->
         <scene sceneID="pV2-xd-h6F">
             <objects>
-                <viewController storyboardIdentifier="Stage" id="RXE-Oi-dH9" customClass="StageViewController" customModule="victorious" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Stage" modalPresentationStyle="overCurrentContext" id="RXE-Oi-dH9" customClass="StageViewController" customModule="victorious" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="RSM-kF-oLY"/>
                         <viewControllerLayoutGuide type="bottom" id="Ldt-nB-e5k"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="dPd-gY-gTf">
+                    <view key="view" opaque="NO" contentMode="scaleToFill" id="dPd-gY-gTf">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a1k-JM-1LN" customClass="MediaContentView" customModule="victorious" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a1k-JM-1LN" userLabel="Media Content Container View">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="520"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DfU-P8-ZhH" customClass="MediaContentView" customModule="victorious" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="520"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="DfU-P8-ZhH" secondAttribute="trailing" id="0gl-1G-kyQ"/>
+                                    <constraint firstItem="DfU-P8-ZhH" firstAttribute="leading" secondItem="a1k-JM-1LN" secondAttribute="leading" id="7zd-OI-IH5"/>
+                                    <constraint firstAttribute="bottom" secondItem="DfU-P8-ZhH" secondAttribute="bottom" id="CW4-lj-9tA"/>
+                                    <constraint firstItem="DfU-P8-ZhH" firstAttribute="top" secondItem="a1k-JM-1LN" secondAttribute="top" id="ILF-E3-rYC"/>
+                                </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BQJ-IP-Emu" customClass="AttributionBar" customModule="victorious" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="536" width="600" height="64"/>
+                                <rect key="frame" x="0.0" y="456" width="600" height="64"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dPD-mB-M3H" customClass="VDefaultProfileButton">
                                         <rect key="frame" x="8" y="12" width="40" height="40"/>
@@ -44,7 +55,7 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="64" id="2sb-t2-eQL"/>
+                                    <constraint firstAttribute="height" constant="64" id="K1P-D2-eJz"/>
                                     <constraint firstItem="dPD-mB-M3H" firstAttribute="leading" secondItem="BQJ-IP-Emu" secondAttribute="leading" constant="8" id="KXr-73-YEk"/>
                                     <constraint firstItem="DAf-y5-PcP" firstAttribute="centerY" secondItem="BQJ-IP-Emu" secondAttribute="centerY" id="OOO-WF-bom"/>
                                     <constraint firstItem="DAf-y5-PcP" firstAttribute="leading" secondItem="dPD-mB-M3H" secondAttribute="trailing" constant="12" id="jue-hU-HDA"/>
@@ -55,27 +66,49 @@
                                     <outlet property="userNameButton" destination="DAf-y5-PcP" id="ZRq-3o-7pJ"/>
                                 </connections>
                             </view>
+                            <containerView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wSh-lD-twH">
+                                <rect key="frame" x="0.0" y="520" width="600" height="80"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="80" id="OT1-tL-iiZ"/>
+                                </constraints>
+                                <connections>
+                                    <segue destination="y7m-QI-tHk" kind="embed" id="raZ-7x-h2h"/>
+                                </connections>
+                            </containerView>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="bottomMargin" secondItem="BQJ-IP-Emu" secondAttribute="bottom" id="9qa-qL-FQx"/>
+                            <constraint firstItem="wSh-lD-twH" firstAttribute="leading" secondItem="dPd-gY-gTf" secondAttribute="leading" id="3oL-8j-brd"/>
+                            <constraint firstItem="BQJ-IP-Emu" firstAttribute="top" secondItem="a1k-JM-1LN" secondAttribute="bottom" constant="-64" id="AOi-fR-WqG"/>
                             <constraint firstItem="BQJ-IP-Emu" firstAttribute="leading" secondItem="dPd-gY-gTf" secondAttribute="leading" id="Kum-mY-zsR"/>
                             <constraint firstItem="a1k-JM-1LN" firstAttribute="leading" secondItem="dPd-gY-gTf" secondAttribute="leading" id="OeU-pM-iYQ"/>
+                            <constraint firstAttribute="trailing" secondItem="wSh-lD-twH" secondAttribute="trailing" id="QK3-4L-siD"/>
                             <constraint firstAttribute="trailing" secondItem="BQJ-IP-Emu" secondAttribute="trailing" id="lGu-8U-4sw"/>
+                            <constraint firstItem="Ldt-nB-e5k" firstAttribute="top" secondItem="wSh-lD-twH" secondAttribute="bottom" id="s1w-qo-3RR"/>
                             <constraint firstItem="a1k-JM-1LN" firstAttribute="top" secondItem="dPd-gY-gTf" secondAttribute="top" id="txg-R1-cPS"/>
-                            <constraint firstAttribute="bottom" secondItem="a1k-JM-1LN" secondAttribute="bottom" id="yCG-mA-hRX"/>
+                            <constraint firstItem="wSh-lD-twH" firstAttribute="top" secondItem="a1k-JM-1LN" secondAttribute="bottom" id="vrG-hh-Mxe"/>
                             <constraint firstAttribute="trailing" secondItem="a1k-JM-1LN" secondAttribute="trailing" id="zqi-qs-Csp"/>
                         </constraints>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
                         <outlet property="attributionBar" destination="BQJ-IP-Emu" id="acC-2b-eTE"/>
-                        <outlet property="mediaContentView" destination="a1k-JM-1LN" id="axM-Ue-I6y"/>
+                        <outlet property="captionBarHeightConstraint" destination="OT1-tL-iiZ" id="nG7-V3-Mfn"/>
+                        <outlet property="mediaContentView" destination="DfU-P8-ZhH" id="JPI-87-IJO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nKP-kC-OcX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1057" y="772"/>
+        </scene>
+        <!--CaptionBarViewController-->
+        <scene sceneID="a4N-jU-xxu">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="CaptionBarViewController" storyboardName="CaptionBarViewController" id="y7m-QI-tHk" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kYe-dx-1zT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1057.5" y="1248"/>
         </scene>
     </scenes>
 </document>

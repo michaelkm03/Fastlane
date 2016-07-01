@@ -25,14 +25,10 @@ protocol ContentVideoPlayerCoordinatorDelegate: class {
 /// (currently supporting GIFs, videos, and youtube videos)
 /// Sets up the video view and handles replay/buffering/scrubbing logic
 class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolbarDelegate {
-
     private struct Constants {
         static let toolbarHeight = CGFloat(41.0)
     }
 
-    private var videoPlayer: VVideoPlayer = VVideoView()
-    private var toolbar: VideoToolbarView = VideoToolbarView.viewFromNib()
-    
     private var lastState: VideoState = .NotStarted
     private var state: VideoState = .NotStarted {
         didSet {
@@ -52,19 +48,23 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     
     init?(content: ContentModel) {
         self.content = content
+        
         guard let asset = content.assets.first else {
             return nil
         }
+        
         if content.type == .video && asset.videoSource == .youtube {
             videoPlayer = YouTubeVideoPlayer()
+        }
+        else {
+            videoPlayer = VVideoView()
         }
         
         videoPlayer.view.backgroundColor = .clearColor()
         
         super.init()
-        videoPlayer.delegate = self
-        videoPlayer.view.backgroundColor = UIColor.clearColor()
         
+        videoPlayer.delegate = self
         toolbar.delegate = self
     }
     
@@ -73,57 +73,59 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         toolbar.removeFromSuperview()
     }
     
-    func setupVideoPlayer(in superview: UIView) {
-        superview.addSubview(videoPlayer.view)
-    }
-    
-    func setupToolbar(in superview: UIView, initallyVisible visible: Bool) {
-        superview.addSubview(toolbar)
-        toolbar.v_addHeightConstraint(Constants.toolbarHeight)
-        superview.v_addPinToLeadingTrailingToSubview(toolbar)
-        superview.v_addPinToBottomToSubview(toolbar)
-        
-        if visible {
-            toolbar.show()
-        } else {
-            toolbar.hide()
-        }
-    }
-    
     func loadVideo() {
         guard let asset = content.assets.first else {
             assertionFailure("There were no assets for this piece of content.")
             return
         }
         
-        var item: VVideoPlayerItem?
+        let item: VVideoPlayerItem?
         
         if asset.videoSource == .youtube {
             item = VVideoPlayerItem(externalID: asset.resourceID)
-        } else if let resourceURL = NSURL(string: asset.resourceID) {
+        }
+        else if let resourceURL = NSURL(string: asset.resourceID) {
             item = VVideoPlayerItem(URL: resourceURL)
-        } else {
+        }
+        else {
             return
         }
         
         if let item = item {
             item.muted = shouldMute
+            item.loop = shouldLoop
             item.useAspectFit = true
             videoPlayer.setItem(item)
             videoPlayer.playFromStart()
             state = .Playing
-            return
         }
     }
     
-    func toggleToolbarVisibility(animated: Bool) {
-        if !toolbar.isVisible {
-            toolbar.show(animated: animated)
-        }
-        else {
-            toolbar.hide(animated: animated)
-        }
+    // MARK: - Managing the video player
+    
+    private let videoPlayer: VVideoPlayer
+    
+    func setupVideoPlayer(in superview: UIView) {
+        superview.addSubview(videoPlayer.view)
     }
+    
+    // MARK: - Managing the toolbar
+    
+    private let toolbar = VideoToolbarView.viewFromNib()
+    
+    func setupToolbar(in superview: UIView, initallyVisible visible: Bool) {
+        superview.addSubview(toolbar)
+        toolbar.v_addHeightConstraint(Constants.toolbarHeight)
+        superview.v_addPinToLeadingTrailingToSubview(toolbar)
+        superview.v_addPinToBottomToSubview(toolbar)
+        toolbar.setVisible(visible)
+    }
+    
+    func toggleToolbarVisibility(animated: Bool) {
+        toolbar.setVisible(!toolbar.isVisible, animated: animated)
+    }
+    
+    // MARK: - Managing playback
     
     func playVideo() {
         videoPlayer.play()
@@ -172,14 +174,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     }
     
     func videoPlayerDidReachEnd(videoPlayer: VVideoPlayer) {
-        videoPlayer.pause()
-        // Replay the video if necessary
-        if  shouldLoop {
-            videoPlayer.playFromStart()
-        }
-        else {
-            state = .Ended
-        }
+        state = .Ended
     }
     
     func videoPlayerDidStartBuffering(videoPlayer: VVideoPlayer) {
@@ -200,7 +195,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     }
     
     func videoPlayerDidPlay(videoPlayer: VVideoPlayer) {
-        state = .Playing;
+        state = .Playing
     }
     
     func videoPlayerDidPause(videoPlayer: VVideoPlayer) {

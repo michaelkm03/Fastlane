@@ -8,6 +8,11 @@
 
 import Foundation
 
+enum TextOnColorButtonRoundingType {
+    case pill
+    case roundedRect(radius: CGFloat)
+}
+
 /// A template-styled button that displays text on top of a solid-color background
 @objc(VTextOnColorButton)
 class TextOnColorButton: UIButton, TrackableButton {
@@ -28,8 +33,14 @@ class TextOnColorButton: UIButton, TrackableButton {
         }
     }
     
+    var roundingType: TextOnColorButtonRoundingType = .roundedRect(radius: 0)
+    
     override func layoutSubviews() {
         super.layoutSubviews()
-        layer.cornerRadius = frame.size.v_roundCornerRadius
+        
+        switch(roundingType) {
+            case .pill: layer.cornerRadius = frame.size.v_roundCornerRadius
+            case .roundedRect(let radius):layer.cornerRadius = radius
+        }
     }
 }

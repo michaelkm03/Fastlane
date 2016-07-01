@@ -51,7 +51,7 @@ class ForumEventChainTests: XCTestCase {
     }
     
     func createEvent() -> ForumEvent {
-        return .websocket(.Connected)
+        return .websocket(.connected)
     }
     
     func testPerformance() {

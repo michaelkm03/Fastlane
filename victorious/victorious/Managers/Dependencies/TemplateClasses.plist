@@ -220,7 +220,7 @@
 	<string>VTextOnImageButton</string>
 	<key>textOnColor.button</key>
 	<string>VTextOnColorButton</string>
-	<key>vipPaygate.screen</key>
-	<string>victorious.VIPGateViewController</string>
+	<key>push.notifications.screen</key>
+	<string>victorious.NotificationSettingsViewController</string>
 </dict>
 </plist>

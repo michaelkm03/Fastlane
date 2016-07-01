@@ -22,14 +22,12 @@ extension PreviewImageContainer {
         let minimumHeight = minimumSize.height
         
         for asset in previewImages ?? [] {
-            let lastWidth = qualifiedAsset?.mediaMetaData.size?.width ?? CGFloat.max
-            let lastHeight = qualifiedAsset?.mediaMetaData.size?.height ?? CGFloat.max
-            
-            if
-                let width = asset.mediaMetaData.size?.width,
-                let height = asset.mediaMetaData.size?.height
-                where width >= minimumWidth && height >= minimumHeight && width <= lastWidth && height <= lastHeight
-            {
+            let lastWidth = qualifiedAsset?.mediaMetaData.size.width ?? CGFloat.max
+            let lastHeight = qualifiedAsset?.mediaMetaData.size.height ?? CGFloat.max
+            let width = asset.mediaMetaData.size.width
+            let height = asset.mediaMetaData.size.height
+
+            if width >= minimumWidth && height >= minimumHeight && width <= lastWidth && height <= lastHeight {
                 qualifiedAsset = asset
             }
         }
@@ -41,12 +39,10 @@ extension PreviewImageContainer {
         var qualifiedAsset: ImageAssetModel?
         
         for asset in previewImages ?? [] {
-            let lastWidth = qualifiedAsset?.mediaMetaData.size?.width ?? CGFloat.max
+            let lastWidth = qualifiedAsset?.mediaMetaData.size.width ?? CGFloat.max
+            let width = asset.mediaMetaData.size.width
             
-            if
-                let width = asset.mediaMetaData.size?.width
-                where width >= minimumWidth && width <= lastWidth
-            {
+            if width >= minimumWidth && width <= lastWidth {
                 qualifiedAsset = asset
             }
         }
@@ -57,7 +53,7 @@ extension PreviewImageContainer {
     public var largestPreviewImageURL: NSURL? {
         var largestAsset: ImageAssetModel?
         
-        for asset in previewImages ?? [] where asset.mediaMetaData.size?.area > largestAsset?.mediaMetaData.size?.area {
+        for asset in previewImages ?? [] where asset.mediaMetaData.size.area > largestAsset?.mediaMetaData.size.area {
             largestAsset = asset
         }
         

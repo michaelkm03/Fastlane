@@ -25,6 +25,7 @@ class NewItemsController: NSObject {
         didSet {
             newItemIndicator.dependencyManager = dependencyManager?.newItemButtonDependency
             newItemIndicator.contentEdgeInsets = Constants.pillInsets
+            newItemIndicator.roundingType = .pill
             newItemIndicator.addTarget(self, action: #selector(onNewItemsSelected), forControlEvents: .TouchUpInside)
         }
     }

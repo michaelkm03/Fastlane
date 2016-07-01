@@ -13,7 +13,7 @@ import XCTest
 class AcknowledgeAlertRequestTests: XCTestCase {
 
     func testRequest() {        
-        let alertID = Int(1524)
+        let alertID = "1524"
         let acknowledgeAlertRequest = AcknowledgeAlertRequest(alertID: alertID)
         XCTAssertEqual(acknowledgeAlertRequest.urlRequest.URL?.absoluteString, "/api/alert/acknowledge")
         
