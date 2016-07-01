@@ -34,7 +34,6 @@ extension VDependencyManager {
                     interstitial = toastViewController
                 }
             case .WebSocketError:
-                // TODO: implement
                 ()
         }
         return interstitial

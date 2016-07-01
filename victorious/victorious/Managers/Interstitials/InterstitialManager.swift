@@ -72,14 +72,12 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
                 viewController.modalPresentationStyle = interstitial.preferredModalPresentationStyle()
                 presentingViewController.presentViewController(viewController, animated: true, completion: nil)
             case .WebSocketError:
-                // TODO: implement, probably as toast...
                 ()
         }
         
         acknowledgeAlert(alert)
     }
 
-    // TODO: don't send a request after Error alert
     private func acknowledgeAlert(alert: Alert) {
         AlertAcknowledgeOperation(alertID: alert.alertID).queue()
         shownAlerts.append(alert)
