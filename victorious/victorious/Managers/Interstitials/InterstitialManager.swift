@@ -114,7 +114,6 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
             receive(alert)
         }
     }
-
     
     // MARK: Interstitial
     

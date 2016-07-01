@@ -7,21 +7,22 @@
 //
 
 import Foundation
+import QuartzCore
 
 /// Different alert types, could be coming from the backend or internally triggered.
 public enum AlertType: String {
 
     // MARK: Backend driven alerts.
 
-    case LevelUp = "levelUp"
-    case Achievement = "achievement"
-    case StatusUpdate = "statusUpdate"
-    case Toast = "toast"
+    case LevelUp            = "levelUp"
+    case Achievement        = "achievement"
+    case StatusUpdate       = "statusUpdate"
+    case Toast              = "toast"
 
     // MARK: Locally created alerts.
 
-    case ClientSideCreated = "clientSideCreated"
-    case WebSocketError = "WebSocketError"
+    case ClientSideCreated  = "clientSideCreated"
+    case WebSocketError     = "WebSocketError"
 }
 
 public struct Alert: Equatable {
@@ -41,15 +42,26 @@ public struct Alert: Equatable {
         }
     }
 
-    public let alertID: Int
+    public let alertID: Double
     public let alertType: AlertType
     public let parameters: Alert.Parameters
     public let dateAcknowledged: NSDate?
+
+    /// Initialize an alert only with display information. This is provided for initializing alerts on the client side.
+    /// - parameter title: Title of the alert. Required.
+    /// - parameter description: Description of the alert. Optional
+    /// - parameter iconURLs: An array of icons for the alert
+    public init(title: String, description: String?, iconURLs: [NSURL]? = nil) {
+        self.alertID = CACurrentMediaTime()
+        self.alertType = .ClientSideCreated
+        self.parameters = Parameters(title: title, description: description, icons: iconURLs)
+        self.dateAcknowledged = nil
+    }
 }
 
 extension Alert {
     public init(webSocketError: WebSocketError) {
-        alertID = Int(NSDate().timeIntervalSince1970)
+        alertID = CACurrentMediaTime()
         alertType = .WebSocketError
         parameters = Parameters(title: "Error", description: "Description")
         dateAcknowledged = nil
@@ -59,27 +71,16 @@ extension Alert {
 extension Alert {
     public init?(json: JSON) {
         guard
-            let alertID = Int(json["id"].stringValue) ?? json["id"].int,
+            let alertID = Double(json["id"].stringValue) ?? json["id"].double,
             let alertType = AlertType(rawValue: json["type"].string ?? ""),
             let parameters = Alert.Parameters(json: json["params"])
         else {
-                return nil
+            return nil
         }
         self.alertType = alertType
         self.parameters = parameters
         self.alertID = alertID
         self.dateAcknowledged = NSDateFormatter.vsdk_defaultDateFormatter().dateFromString(json["acknowledged_at"].stringValue)
-    }
-    
-    /// Initialize an alert only with display information. This is provided for initializing alerts on the client side.
-    /// - parameter title: Title of the alert. Required.
-    /// - parameter description: Description of the alert. Optional
-    /// - parameter iconURLs: An array of icons for the alert
-    public init(title: String, description: String?, iconURLs: [NSURL]? = nil) {
-        self.alertID = Int(NSDate().timeIntervalSince1970)
-        self.alertType = .ClientSideCreated
-        self.parameters = Parameters(title: title, description: description, icons: iconURLs)
-        self.dateAcknowledged = nil
     }
 }
 
