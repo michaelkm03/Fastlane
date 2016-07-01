@@ -36,12 +36,7 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
     }
     @IBOutlet private var captionBarHeightConstraint: NSLayoutConstraint! {
         didSet {
-            captionBarHeightConstraint.constant = captionBarHeight
-        }
-    }
-    private var captionBarHeight: CGFloat = 0 {
-        didSet {
-            captionBarHeightConstraint.constant = captionBarHeight
+            captionBarHeightConstraint.constant = 0
         }
     }
     private var captionBarViewController: CaptionBarViewController? {
@@ -267,14 +262,14 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
     }
     
     func captionBarViewController(captionBarViewController: CaptionBarViewController, wantsUpdateToContentHeight height: CGFloat) {
-        captionBarHeight = height
+        captionBarHeightConstraint.constant = height
         updateStageHeight()
     }
     
     // MARK: - View updating
     
     private func updateStageHeight() {
-        var height = captionBarHeight
+        var height = captionBarHeightConstraint.constant
         if visible {
             height += defaultStageHeight
         }

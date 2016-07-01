@@ -15,10 +15,10 @@ class CaptionBar: UIView {
     @IBOutlet weak var captionTextView: UITextView!
     @IBOutlet weak var captionLabel: UILabel!
     @IBOutlet weak var avatarButton: VDefaultProfileButton!
-    @IBOutlet weak var expandButton: UIButton!
+    @IBOutlet weak var expandButton: TouchableInsetAdjustableButton!
     @IBOutlet weak var overlayView: UIView!
     @IBOutlet var verticalLabelPaddingConstraints: [NSLayoutConstraint]!
-    @IBOutlet weak var avatarButtonHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var labelWidthConstraint: NSLayoutConstraint!
-    @IBOutlet weak var avatarButtonTopConstraint: NSLayoutConstraint!
+    @IBOutlet var avatarButtonHeightConstraint: NSLayoutConstraint!
+    @IBOutlet var labelWidthConstraint: NSLayoutConstraint!
+    @IBOutlet var avatarButtonTopConstraint: NSLayoutConstraint!
 }

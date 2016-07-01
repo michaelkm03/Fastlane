@@ -76,7 +76,7 @@ struct CaptionBarPopulator {
         }
         captionTextView.hidden = showLabel
         captionLabel.hidden = !showLabel
-        captionTextView.scrollEnabled = !showLabel
+        captionTextView.scrollEnabled = true
         
         // Determine visible height
         let visibleHeight = max(textHeight, captionBar.avatarButtonHeightConstraint.constant)

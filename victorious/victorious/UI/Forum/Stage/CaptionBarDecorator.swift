@@ -9,6 +9,11 @@
 import Foundation
 
 struct CaptionBarDecorator {
+    private struct Constants {
+        static let textAreaCornerRadius: CGFloat = 6
+        static let expandButtonTouchInsets = UIEdgeInsetsMake(-6, -6, -6, -6)
+    }
+    
     let dependencyManager: VDependencyManager
     
     func decorate(captionBar: CaptionBar) {
@@ -25,11 +30,13 @@ struct CaptionBarDecorator {
         
         captionBar.overlayView.backgroundColor = dependencyManager.backgroundOverlayColor
         
-        captionTextView.layer.cornerRadius = 6
+        captionTextView.layer.cornerRadius = Constants.textAreaCornerRadius
         captionTextView.clipsToBounds = true
         
-        captionLabel.layer.cornerRadius = 6
+        captionLabel.layer.cornerRadius = Constants.textAreaCornerRadius
         captionLabel.clipsToBounds = true
+        
+        captionBar.expandButton.touchInsets = Constants.expandButtonTouchInsets
     }
 }
 

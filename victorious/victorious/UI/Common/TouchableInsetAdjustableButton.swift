@@ -9,10 +9,10 @@
 import UIKit
 
 class TouchableInsetAdjustableButton: UIButton {
-    var backgroundInsets = UIEdgeInsetsZero
+    var touchInsets = UIEdgeInsetsZero
     
     override func pointInside(point: CGPoint, withEvent event: UIEvent?) -> Bool {
-        let touchableRect = UIEdgeInsetsInsetRect(bounds, backgroundInsets)
+        let touchableRect = UIEdgeInsetsInsetRect(bounds, touchInsets)
         return touchableRect.contains(point)
     }
 }

@@ -198,7 +198,11 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
     /// Will send outgoing content events back over the event chain.
     private func bounceBackOutboundEvent(event: ForumEvent) {
         if case .sendContent(let content) = event {
-            broadcast(.appendContent([content]))
+            if content.author.accessLevel == .owner {
+                broadcast(.showCaptionContent(content))
+            } else {
+                broadcast(.appendContent([content]))
+            }
         }
     }
 

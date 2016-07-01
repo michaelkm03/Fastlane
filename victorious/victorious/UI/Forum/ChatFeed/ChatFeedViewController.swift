@@ -10,7 +10,7 @@ import UIKit
 
 class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDelegate, UICollectionViewDelegateFlowLayout, VScrollPaginatorDelegate, NewItemsControllerDelegate, ChatFeedMessageCellDelegate {
     private lazy var dataSource: ChatFeedDataSource = {
-        return ChatFeedDataSource(dependencyManager: self.dependencyManager, shouldShowCreatorMessages: self.shouldShowCreatorMessages)
+        return ChatFeedDataSource(dependencyManager: self.dependencyManager)
     }()
     
     private struct Layout {
@@ -21,12 +21,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     private var edgeInsets = UIEdgeInsets(top: Layout.topMargin, left: 0.0, bottom: Layout.bottomMargin, right: 0.0)
     
     var dependencyManager: VDependencyManager!
-    
-    var shouldShowCreatorMessages = true {
-        didSet {
-            dataSource.shouldShowCreatorMessages = shouldShowCreatorMessages
-        }
-    }
     
     private lazy var focusHelper: VCollectionViewStreamFocusHelper = {
         return VCollectionViewStreamFocusHelper(collectionView: self.collectionView)

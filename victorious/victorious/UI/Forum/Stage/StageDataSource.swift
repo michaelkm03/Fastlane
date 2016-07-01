@@ -67,11 +67,8 @@ class StageDataSource: ForumEventReceiver {
                 delegate?.removeContent()
                 currentContent = nil
             
-            case .appendContent(let contents):
-                if let captionContent = contents.filter({ $0.author.accessLevel == .owner }).last {
-                    delegate?.addCaptionContent(captionContent)
-                }
-            
+            case .showCaptionContent(let content):
+                delegate?.addCaptionContent(content)
             
             default:
                 break
