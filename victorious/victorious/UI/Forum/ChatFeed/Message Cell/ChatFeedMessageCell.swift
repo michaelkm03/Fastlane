@@ -221,7 +221,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
     
     static func cellHeight(displaying content: ContentModel, inWidth width: CGFloat, dependencyManager: VDependencyManager) -> CGFloat {
         let textHeight = textSize(displaying: content, inWidth: width, dependencyManager: dependencyManager).height
-        let mediaHeight = mediaSize(displaying: content, inWidth: width, dependencyManager: dependencyManager)?.height ?? 0.0
+        let mediaHeight = mediaSize(displaying: content, inWidth: width)?.height ?? 0.0
         let contentHeight = max(textHeight + mediaHeight, avatarSize.height)
         return contentMargin.top + contentMargin.bottom + contentHeight
     }
@@ -231,7 +231,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
             return CGSize.zero
         }
         
-        let mediaWidth = mediaSize(displaying: content, inWidth: width, dependencyManager: dependencyManager)?.width
+        let mediaWidth = mediaSize(displaying: content, inWidth: width)?.width
         let maxTextWidth = min(width - nonContentWidth, mediaWidth ?? CGFloat.max)
         
         var size = attributedText.boundingRectWithSize(
@@ -245,7 +245,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
         return size
     }
     
-    static func mediaSize(displaying content: ContentModel, inWidth width: CGFloat, dependencyManager: VDependencyManager) -> CGSize? {
+    static func mediaSize(displaying content: ContentModel, inWidth width: CGFloat) -> CGSize? {
         return content.mediaSize?.preferredSize(clampedToWidth: width - nonContentWidth)
     }
     

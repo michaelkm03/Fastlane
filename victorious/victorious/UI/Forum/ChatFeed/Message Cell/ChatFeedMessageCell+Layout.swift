@@ -22,7 +22,7 @@ extension ChatFeedMessageCell {
         
         let alignment: ChatFeedMessageCellAlignment = content.wasCreatedByCurrentUser ? .right : .left
         
-        let mediaSize = self.mediaSize(displaying: content, inWidth: cell.bounds.width, dependencyManager: dependencyManager)
+        let mediaSize = self.mediaSize(displaying: content, inWidth: cell.bounds.width)
         let textSize = self.textSize(displaying: content, inWidth: cell.bounds.width, dependencyManager: dependencyManager)
         let timestampSize = cell.timestampLabel.sizeThatFits(cell.bounds.size)
         let usernameSize = self.usernameSize(in: cell, withTimestampSize: timestampSize)
