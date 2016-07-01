@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="ZFM-mZ-dfv">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="ZFM-mZ-dfv">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -17,45 +17,30 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="80"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="dmC-hI-ZBA">
-                                <rect key="frame" x="20" y="5" width="560" height="70"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Yrk-h9-eQt">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="80"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BuR-7i-Xow">
-                                        <rect key="frame" x="0.0" y="10" width="50" height="50"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" priority="999" constant="50" id="RmQ-rx-ZFb"/>
-                                            <constraint firstAttribute="width" priority="999" constant="50" id="lra-CA-jmF"/>
-                                        </constraints>
-                                    </imageView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Yrk-h9-eQt">
-                                        <rect key="frame" x="60" y="0.0" width="500" height="70"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Title label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1ek-Pp-oKi">
-                                                <rect key="frame" x="0.0" y="0.0" width="500" height="21"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tfz-YT-ILT">
-                                                <rect key="frame" x="0.0" y="31" width="500" height="39"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                    </stackView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Title label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1ek-Pp-oKi">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tfz-YT-ILT">
+                                        <rect key="frame" x="0.0" y="31" width="600" height="49"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
-                                <constraints>
-                                    <constraint firstItem="Yrk-h9-eQt" firstAttribute="height" secondItem="dmC-hI-ZBA" secondAttribute="height" id="Ue5-CI-IHC"/>
-                                </constraints>
                             </stackView>
                         </subviews>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstAttribute="bottomMargin" secondItem="dmC-hI-ZBA" secondAttribute="bottom" constant="5" id="5nv-Yu-d7e"/>
-                            <constraint firstItem="dmC-hI-ZBA" firstAttribute="top" secondItem="q0e-ni-Xuw" secondAttribute="topMargin" constant="5" id="JnN-KK-you"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="dmC-hI-ZBA" secondAttribute="trailing" id="qvK-G9-ruc"/>
-                            <constraint firstItem="dmC-hI-ZBA" firstAttribute="leading" secondItem="q0e-ni-Xuw" secondAttribute="leadingMargin" id="skn-84-F42"/>
+                            <constraint firstItem="Yrk-h9-eQt" firstAttribute="top" secondItem="q0e-ni-Xuw" secondAttribute="topMargin" id="ZjW-3H-G1c"/>
+                            <constraint firstItem="Yrk-h9-eQt" firstAttribute="leading" secondItem="q0e-ni-Xuw" secondAttribute="leading" id="deT-Vf-I2D"/>
+                            <constraint firstAttribute="trailing" secondItem="Yrk-h9-eQt" secondAttribute="trailing" id="exE-M3-h1F"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="Yrk-h9-eQt" secondAttribute="bottom" id="ezF-q1-73c"/>
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="EBz-mj-mDA" appends="YES" id="60Z-8W-CdD"/>
@@ -68,7 +53,6 @@
                     <connections>
                         <outlet property="containerView" destination="q0e-ni-Xuw" id="Jl8-SG-Las"/>
                         <outlet property="descriptionLabel" destination="tfz-YT-ILT" id="yeR-4P-hSy"/>
-                        <outlet property="iconImageView" destination="BuR-7i-Xow" id="Q3p-WE-nwn"/>
                         <outlet property="titleLabel" destination="1ek-Pp-oKi" id="gct-Hd-vzy"/>
                     </connections>
                 </viewController>

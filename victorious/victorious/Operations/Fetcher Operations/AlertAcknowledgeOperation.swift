@@ -13,7 +13,7 @@ class AlertAcknowledgeOperation: RemoteFetcherOperation, RequestOperation {
     
     let request: AcknowledgeAlertRequest!
     
-    init(alertID: Int) {
+    init(alertID: Double) {
         self.request = AcknowledgeAlertRequest(alertID: alertID)
     }
     

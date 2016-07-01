@@ -12,8 +12,7 @@ import Foundation
 /// It slides in from the top of the screen, similar to a system push notification, and the gets dismissed automatically after a period of time. 
 /// Or it can also be dismissed if the user swipe up on the toast.
 class InterstitialToastViewController: UIViewController, Interstitial, VBackgroundContainer {
-    
-    @IBOutlet private weak var iconImageView: UIImageView?
+
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var descriptionLabel: UILabel!
     @IBOutlet private weak var containerView: UIView!
@@ -23,34 +22,30 @@ class InterstitialToastViewController: UIViewController, Interstitial, VBackgrou
     private var timerManager: VTimerManager?
     
     private struct Constants {
-        static let automaticDismissalTime: NSTimeInterval = 3
-        static let slideInAnimationTime: NSTimeInterval = 0.4
-        static let slideOutAnimationTime: NSTimeInterval = 0.4
+        static let automaticDismissalTime = NSTimeInterval(10)
+        static let slideInAnimationTime = NSTimeInterval(0.4)
+        static let slideOutAnimationTime = NSTimeInterval(0.4)
         
-        static let toastViewHeight: CGFloat = 80
-        static let statusBarHeight = UIApplication.sharedApplication().statusBarFrame.height
+        static let toastViewHeight: CGFloat = 40
+        static let topOffset = CGFloat(0)
     }
     
     // MARK: - Initialization
     
     class func newWithDependencyManager(dependencyManager: VDependencyManager) -> InterstitialToastViewController {
-        let toast = InterstitialToastViewController.v_initialViewControllerFromStoryboard() as InterstitialToastViewController
-        toast.dependencyManager = dependencyManager
-        
-        return toast
+        let toastViewController = InterstitialToastViewController.v_initialViewControllerFromStoryboard() as InterstitialToastViewController
+        toastViewController.dependencyManager = dependencyManager
+        return toastViewController
     }
-    
-    private func configure(withTitle title: String, detailedDescription detail: String?, iconImageURL iconURL: NSURL? = nil) {
+
+    private func configure(withTitle title: String, detailedDescription detail: String? = nil) {
         titleLabel.text = title
-        
-        /// These two views are being hidden for now. Once spec for description and icon image is ready, we'll re-enable them.
-        descriptionLabel.hidden = true
-        iconImageView?.hidden = true
     }
     
     // MARK: - Interstitial Protocol
     
     var alert: Alert?
+
     weak var interstitialDelegate: InterstitialDelegate?
     
     func presentationAnimator() -> UIViewControllerAnimatedTransitioning? {
@@ -81,7 +76,7 @@ class InterstitialToastViewController: UIViewController, Interstitial, VBackgrou
         super.viewDidLoad()
         styleComponents()
         if let alert = alert {
-            configure(withTitle: alert.parameters.title, detailedDescription: alert.parameters.description, iconImageURL: alert.parameters.icons?.first)
+            configure(withTitle: alert.parameters.title, detailedDescription: alert.parameters.description)
         }
     }
     
@@ -110,30 +105,19 @@ class InterstitialToastViewController: UIViewController, Interstitial, VBackgrou
         view.rightAnchor.constraintEqualToAnchor(parent.view.rightAnchor).active = true
         topAnchorConstraint = view.topAnchor.constraintEqualToAnchor(parent.view.topAnchor, constant: -Constants.toastViewHeight)
         topAnchorConstraint.active = true
-        
+
         slideIn()
     }
     
     // MARK: - User Actions
     
     @IBAction private func handlePan(sender: UIPanGestureRecognizer) {
-        switch sender.state {
-        case .Ended:
-            if sender.translationInView(view).y < 0 {
-                dismiss()
-            }
-        default:
-            break
+        if sender.state == .Ended && sender.translationInView(view).y < 0 {
+            dismiss()
         }
     }
     
-    @IBAction private func handleTap(sender: UITapGestureRecognizer) {
-        dismiss()
-        let deeplinkURL = TrophyCaseDeepLinkHandler.deeplinkURL
-        VRootViewController.sharedRootViewController()?.openURL(deeplinkURL)
-    }
-    
-    func dismiss() {
+    @objc private func dismiss() {
         timerManager?.invalidate()
         slideOut() {
             self.interstitialDelegate?.dismissInterstitial(self)
@@ -143,8 +127,6 @@ class InterstitialToastViewController: UIViewController, Interstitial, VBackgrou
     // MARK: - Private Methods
     
     private func styleComponents() {
-        view.layer.addBottomShadow()
-        
         titleLabel.font = dependencyManager.titleFont
         titleLabel.textColor = dependencyManager.textColor
         
@@ -158,7 +140,7 @@ class InterstitialToastViewController: UIViewController, Interstitial, VBackgrou
         view.layoutIfNeeded()
         
         UIView.animateWithDuration(Constants.slideInAnimationTime) {
-            self.topAnchorConstraint.constant = Constants.statusBarHeight
+            self.topAnchorConstraint.constant = Constants.topOffset
             self.view.layoutIfNeeded()
         }
     }
@@ -180,23 +162,14 @@ class InterstitialToastViewController: UIViewController, Interstitial, VBackgrou
 private extension VDependencyManager {
     
     var titleFont: UIFont? {
-        return fontForKey(VDependencyManagerHeading3FontKey)
+        return fontForKey("font.title")
     }
     
     var detailLabelFont: UIFont? {
-        return fontForKey(VDependencyManagerParagraphFontKey)
+        return fontForKey("font.detail")
     }
     
     var textColor: UIColor? {
-        return colorForKey(VDependencyManagerMainTextColorKey)
-    }
-}
-
-private extension CALayer {
-    func addBottomShadow() {
-        shadowColor = UIColor.blackColor().CGColor
-        shadowOffset = CGSizeMake(0, 2)
-        shadowRadius = 2
-        shadowOpacity = 0.8
+        return colorForKey("color.text")
     }
 }

@@ -129,10 +129,9 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
     public func websocketDidConnect(socket: WebSocket) {
         let rawMessage = WebSocketRawMessage(messageString: "Connected to URL -> \(socket.currentURL)")
         webSocketMessageContainer.addMessage(rawMessage)
-        
-        let connectEvent = WebSocketEvent.Connected
+
         dispatch_async(dispatch_get_main_queue()) { [weak self] in
-            self?.broadcast(.websocket(connectEvent))
+            self?.broadcast(.websocket(.connected))
         }
     }
 
@@ -221,8 +220,8 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
 
         // System generated error.
         if disconnectEvent == nil {
-            let webSocketError = WebSocketError.ConnectionTerminated(code: error?.code, message: error?.localizedDescription)
-            disconnectEvent = ForumEvent.websocket(.Disconnected(webSocketError: webSocketError))
+            let webSocketError = WebSocketError.connectionTerminated(code: error?.code, message: error?.localizedDescription)
+            disconnectEvent = ForumEvent.websocket(.disconnected(webSocketError: webSocketError))
         }
 
         return disconnectEvent
