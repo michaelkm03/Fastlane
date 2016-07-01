@@ -130,7 +130,7 @@ class ExperimentSettingsDataSource: NSObject {
 
 extension ExperimentSettingsDataSource: VSettingsSwitchCellDelegate {
     
-    func settingsDidUpdateFromCell( cell: VSettingsSwitchCell ) {
+    func settingsDidUpdateFromCell(cell: VSettingsSwitchCell, newValue: Bool, key: String) {
         if let indexPath = self.delegate?.tableView.indexPathForCell( cell ) {
             
             let section = self.sections[ indexPath.section ]

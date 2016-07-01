@@ -152,11 +152,11 @@ typedef NS_ENUM(NSUInteger, VVideoState)
             [self v_addPinToLeadingTrailingToSubview:self.toolbar];
             [self v_addPinToBottomToSubview:self.toolbar];
         }
-        [self.toolbar showWithAnimated:YES];
+        [self.toolbar setVisible:YES animated:YES];
     }
     else if ( _toolbar != nil )
     {
-        [self.toolbar hideWithAnimated:animated];
+        [self.toolbar setVisible:NO animated:YES];
     }
 }
 

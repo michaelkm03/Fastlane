@@ -11,16 +11,16 @@ import Foundation
 /// Marks an alert as seen by the user, which will remove it from any further response payloads.
 public struct AcknowledgeAlertRequest: RequestType {
 
-    public let alertID: Double
-    
+    public let alertID: String
+
     public var urlRequest: NSURLRequest {
         let urlRequest = NSMutableURLRequest(URL: NSURL(string: "/api/alert/acknowledge")!)
-        let params = ["alert_id": String(Int(alertID))]
+        let params = ["alert_id": alertID]
         urlRequest.vsdk_addURLEncodedFormPost(params)
         return urlRequest
     }
-    
-    public init(alertID: Double) {
+
+    public init(alertID: String) {
         self.alertID = alertID
     }
 }

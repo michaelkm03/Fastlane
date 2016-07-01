@@ -24,15 +24,15 @@ public enum WebSocketEvent: Equatable {
 
 public func ==(lhs: WebSocketEvent, rhs: WebSocketEvent) -> Bool {
     switch (lhs, rhs) {
-    case (.authenticated, .authenticated):
-        return true
-    case (.connected, .connected):
-        return true
-    case (let .disconnected(error1), let .disconnected(error2)):
-        return error1 == error2
-    case (let .serverError(error1), let .serverError(error2)):
-        return error1 == error2
-    default:
-        return false
+        case (.authenticated, .authenticated):
+            return true
+        case (.connected, .connected):
+            return true
+        case (let .disconnected(error1), let .disconnected(error2)):
+            return error1 == error2
+        case (let .serverError(error1), let .serverError(error2)):
+            return error1 == error2
+        default:
+            return false
     }
 }

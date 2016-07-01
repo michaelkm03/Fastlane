@@ -10,13 +10,13 @@ import Foundation
 import VictoriousIOSSDK
 
 class AlertAcknowledgeOperation: RemoteFetcherOperation, RequestOperation {
-    
+
     let request: AcknowledgeAlertRequest!
-    
-    init(alertID: Double) {
+
+    init(alertID: String) {
         self.request = AcknowledgeAlertRequest(alertID: alertID)
     }
-    
+
     override func main() {
         requestExecutor.executeRequest( request, onComplete: nil, onError: nil )
     }

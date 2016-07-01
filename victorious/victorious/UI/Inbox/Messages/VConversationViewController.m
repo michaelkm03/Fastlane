@@ -15,7 +15,6 @@
 #import "VConversationContainerViewController.h"
 #import "VUnreadMessageCountCoordinator.h"
 #import "VUserProfileViewController.h"
-#import "VDefaultProfileImageView.h"
 #import "UIStoryboard+VMainStoryboard.h"
 #import "VLightboxTransitioningDelegate.h"
 #import "VVideoLightboxViewController.h"

@@ -42,7 +42,7 @@ public struct Alert: Equatable {
         }
     }
 
-    public let alertID: Double
+    public let alertID: String
     public let alertType: AlertType
     public let parameters: Alert.Parameters
     public let dateAcknowledged: NSDate?
@@ -52,7 +52,7 @@ public struct Alert: Equatable {
     /// - parameter description: Description of the alert. Optional
     /// - parameter iconURLs: An array of icons for the alert
     public init(title: String, description: String?, iconURLs: [NSURL]? = nil) {
-        self.alertID = CACurrentMediaTime()
+        self.alertID = String(CACurrentMediaTime())
         self.alertType = .ClientSideCreated
         self.parameters = Parameters(title: title, description: description, icons: iconURLs)
         self.dateAcknowledged = nil
@@ -61,7 +61,7 @@ public struct Alert: Equatable {
 
 extension Alert {
     public init(webSocketError: WebSocketError) {
-        alertID = CACurrentMediaTime()
+        alertID = String(CACurrentMediaTime())
         alertType = .WebSocketError
         parameters = Parameters(title: "Error", description: "Description")
         dateAcknowledged = nil
@@ -71,7 +71,7 @@ extension Alert {
 extension Alert {
     public init?(json: JSON) {
         guard
-            let alertID = Double(json["id"].stringValue) ?? json["id"].double,
+            let alertID = json["id"].string,
             let alertType = AlertType(rawValue: json["type"].string ?? ""),
             let parameters = Alert.Parameters(json: json["params"])
         else {
@@ -90,7 +90,7 @@ extension Alert.Parameters {
             let title = json["title"].string,
             let userFanLoyalty = FanLoyalty(json: json["user"]["fanloyalty"])
         else {
-            return nil
+                return nil
         }
 
         self.title          = title

@@ -54,7 +54,6 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
         switch event {
             case .appendContent(let newItems):
                 let newItems = newItems.map { ChatFeedContent($0) }
-                
                 if stashingEnabled {
                     stashedItems.appendContentsOf(newItems)
                     delegate?.chatFeedDataSource(self, didStashItems: newItems)
@@ -71,6 +70,7 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
             case .replaceContent(let newItems):
                 let newItems = newItems.map { ChatFeedContent($0) }
                 visibleItems = newItems
+                stashedItems = []
                 delegate?.chatFeedDataSource(self, didLoadItems: newItems, loadingType: .refresh)
             
             default:

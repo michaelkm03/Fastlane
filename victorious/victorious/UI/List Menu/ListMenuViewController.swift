@@ -30,12 +30,16 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     static func newWithDependencyManager(dependencyManager: VDependencyManager) -> ListMenuViewController {
         let viewController = self.v_initialViewControllerFromStoryboard() as ListMenuViewController
         viewController.dependencyManager = dependencyManager
-        dependencyManager.addBackgroundToBackgroundHost(viewController)
-        
         return viewController
     }
     
     // MARK: - View events
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        dependencyManager.addBackgroundToBackgroundHost(self)
+        view.layoutIfNeeded()
+    }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -49,10 +53,17 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     // MARK: - Notifications
     
     private func selectCreator(atIndex index: Int) {
-        let creator = collectionViewDataSource.creatorDataSource.visibleItems[index]
-        let deepLinkURL = ProfileDeepLinkHandler.deepLinkURL(for: creator)
+        guard let scaffold = VRootViewController.sharedRootViewController()?.scaffold as? Scaffold else {
+            return
+        }
         
-        VRootViewController.sharedRootViewController()?.openURL(deepLinkURL)
+        let creator = collectionViewDataSource.creatorDataSource.visibleItems[index]
+        let destination = DeeplinkDestination(userID: creator.id)
+        
+        // Had to trace down the inner navigation controller because List Menu has no idea where it is - and it doesn't have navigation stack either.
+        let router = Router(originViewController: scaffold.mainNavigationController.innerNavigationController, dependencyManager: dependencyManager)
+        
+        router.navigate(to: destination)
         
         // This notification closes the side view controller
         NSNotificationCenter.defaultCenter().postNotificationName(

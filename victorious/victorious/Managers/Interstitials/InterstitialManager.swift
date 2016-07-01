@@ -68,7 +68,7 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
         
         switch alert.alertType {
             case .Toast, .WebSocketError:
-            addInterstitial(interstitialViewController, toParent: presentingViewController)
+                addInterstitial(interstitialViewController, toParent: presentingViewController)
             case .Achievement, .LevelUp, .StatusUpdate, .ClientSideCreated:
                 interstitialViewController.transitioningDelegate = self
                 interstitialViewController.modalPresentationStyle = interstitial.preferredModalPresentationStyle()
@@ -78,7 +78,6 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
         acknowledgeAlert(alert)
     }
 
-    // TODO: don't send a request after Error alert
     private func acknowledgeAlert(alert: Alert) {
         if alert.alertType != .WebSocketError {
             AlertAcknowledgeOperation(alertID: alert.alertID).queue()
