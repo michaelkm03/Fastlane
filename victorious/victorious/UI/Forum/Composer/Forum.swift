@@ -62,7 +62,7 @@ extension Forum {
 
     // MARK: - StageDelegate
     
-    func stage(stage: Stage, didUpdateContentHeight height: CGFloat) {
+    func stage(stage: Stage, wantsUpdateToContentHeight height: CGFloat) {
         setStageHeight(height)
         chatFeed?.setTopInset(height)
     }

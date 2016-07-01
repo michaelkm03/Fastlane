@@ -2202,6 +2202,13 @@
 		F0EBAAB11B80121D00515D4C /* VListShelfContentCoverCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0EBAAB01B80121D00515D4C /* VListShelfContentCoverCell.swift */; };
 		F0F04AE21B20EEB600F6F401 /* VInsetMarqueeCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = F0F04AE11B20EEB600F6F401 /* VInsetMarqueeCollectionViewFlowLayout.m */; };
 		F0F04AF41B29E8FE00F6F401 /* VShareMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = F0F04AF31B29E8FE00F6F401 /* VShareMenuItem.m */; };
+		F0FBC43E1D21D4120070873F /* CaptionBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0FBC43D1D21D4120070873F /* CaptionBar.swift */; };
+		F0FBC4401D21EDF80070873F /* CaptionBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0FBC43F1D21EDF80070873F /* CaptionBarViewController.swift */; };
+		F0FBC4421D22E9170070873F /* CaptionBarDecorator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0FBC4411D22E9170070873F /* CaptionBarDecorator.swift */; };
+		F0FBC4441D22EB580070873F /* CaptionBarPopulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0FBC4431D22EB580070873F /* CaptionBarPopulator.swift */; };
+		F0FBC4461D22EF260070873F /* CaptionBarViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F0FBC4451D22EF260070873F /* CaptionBarViewController.storyboard */; };
+		F0FBC4491D258FD70070873F /* UITextView+TextInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0FBC4481D258FD70070873F /* UITextView+TextInsets.swift */; };
+		F0FBC44B1D2591AF0070873F /* NSMutableParagraphStyle+TextInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0FBC44A1D2591AF0070873F /* NSMutableParagraphStyle+TextInsets.swift */; };
 		F0FBFA641CE14819006318FC /* VPublishParameters+ConvenienceInit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0FBFA631CE14819006318FC /* VPublishParameters+ConvenienceInit.swift */; };
 		F0FBFA681CE1624D006318FC /* PersistentContentCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0FBFA671CE1624D006318FC /* PersistentContentCreator.swift */; };
 		F0FC97331B507EB40098AFCB /* VInStreamCommentCellContents.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97321B507EB40098AFCB /* VInStreamCommentCellContents.m */; };
@@ -5231,6 +5238,13 @@
 		F0F04AF21B29E8FE00F6F401 /* VShareMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VShareMenuItem.h; sourceTree = "<group>"; };
 		F0F04AF31B29E8FE00F6F401 /* VShareMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VShareMenuItem.m; sourceTree = "<group>"; };
 		F0F04AF51B2A37CB00F6F401 /* VDependencyManager+VShareMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+VShareMenuItem.h"; sourceTree = "<group>"; };
+		F0FBC43D1D21D4120070873F /* CaptionBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaptionBar.swift; sourceTree = "<group>"; };
+		F0FBC43F1D21EDF80070873F /* CaptionBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaptionBarViewController.swift; sourceTree = "<group>"; };
+		F0FBC4411D22E9170070873F /* CaptionBarDecorator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaptionBarDecorator.swift; sourceTree = "<group>"; };
+		F0FBC4431D22EB580070873F /* CaptionBarPopulator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaptionBarPopulator.swift; sourceTree = "<group>"; };
+		F0FBC4451D22EF260070873F /* CaptionBarViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CaptionBarViewController.storyboard; sourceTree = "<group>"; };
+		F0FBC4481D258FD70070873F /* UITextView+TextInsets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITextView+TextInsets.swift"; sourceTree = "<group>"; };
+		F0FBC44A1D2591AF0070873F /* NSMutableParagraphStyle+TextInsets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSMutableParagraphStyle+TextInsets.swift"; sourceTree = "<group>"; };
 		F0FBFA631CE14819006318FC /* VPublishParameters+ConvenienceInit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VPublishParameters+ConvenienceInit.swift"; sourceTree = "<group>"; };
 		F0FBFA671CE1624D006318FC /* PersistentContentCreator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentContentCreator.swift; sourceTree = "<group>"; };
 		F0FC97311B507EB40098AFCB /* VInStreamCommentCellContents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInStreamCommentCellContents.h; sourceTree = "<group>"; };
@@ -7819,6 +7833,7 @@
 				A721E8C21B572453000B7901 /* NSNotificationCenter+VNotificationDebugger.m */,
 				A7DD35F11BB0BD5000C4DBC5 /* NSNumber+VBitmask.h */,
 				A7DD35F21BB0BD5000C4DBC5 /* NSNumber+VBitmask.m */,
+				F0FBC44A1D2591AF0070873F /* NSMutableParagraphStyle+TextInsets.swift */,
 				A721E8C31B572453000B7901 /* NSString+Unicode.swift */,
 				A721E8C61B572453000B7901 /* NSString+VParseHelp.h */,
 				A721E8C71B572453000B7901 /* NSString+VParseHelp.m */,
@@ -7881,6 +7896,7 @@
 				A7D7ED501B59BEB900FA346A /* UISearchBar+Extensions.swift */,
 				A721E8F31B572454000B7901 /* UIStoryboard+VMainStoryboard.h */,
 				A721E8F41B572454000B7901 /* UIStoryboard+VMainStoryboard.m */,
+				F0FBC4481D258FD70070873F /* UITextView+TextInsets.swift */,
 				A721E8F51B572454000B7901 /* UIView+AutoLayout.h */,
 				A721E8F61B572454000B7901 /* UIView+AutoLayout.m */,
 				A721E8F71B572454000B7901 /* UIView+Masking.h */,
@@ -8282,6 +8298,7 @@
 			isa = PBXGroup;
 			children = (
 				67FD09541D18C60B00A5AEB5 /* AttributionBar.swift */,
+				F0FBC4471D22F0E60070873F /* CaptionBar */,
 				0E96809E1CD03E130094ADF4 /* Stage.storyboard */,
 				A73BA29D1C938B68008168B5 /* Stage.swift */,
 				0E6628741CCEE5DF0049ECF8 /* StageDataSource.swift */,
@@ -10655,6 +10672,18 @@
 			path = Publish;
 			sourceTree = "<group>";
 		};
+		F0FBC4471D22F0E60070873F /* CaptionBar */ = {
+			isa = PBXGroup;
+			children = (
+				F0FBC43D1D21D4120070873F /* CaptionBar.swift */,
+				F0FBC4411D22E9170070873F /* CaptionBarDecorator.swift */,
+				F0FBC4431D22EB580070873F /* CaptionBarPopulator.swift */,
+				F0FBC4451D22EF260070873F /* CaptionBarViewController.storyboard */,
+				F0FBC43F1D21EDF80070873F /* CaptionBarViewController.swift */,
+			);
+			name = CaptionBar;
+			sourceTree = "<group>";
+		};
 		F0FC97CE1B5AD5D40098AFCB /* In Stream Comments */ = {
 			isa = PBXGroup;
 			children = (
@@ -11377,6 +11406,7 @@
 				F0FC97AA1B5563A40098AFCB /* VInStreamCommentsCell.xib in Resources */,
 				03C1858619B42C9100E27D05 /* Roboto-Light.ttf in Resources */,
 				0E96809F1CD03E130094ADF4 /* Stage.storyboard in Resources */,
+				F0FBC4461D22EF260070873F /* CaptionBarViewController.storyboard in Resources */,
 				F089E3621AC486A60076DC4D /* VBlurredMarqueeCollectionViewCell.xib in Resources */,
 				0390086C19F39F6A00FD7EDF /* VConversationCell.xib in Resources */,
 				03C1857A19B42C9100E27D05 /* Impact.ttf in Resources */,
@@ -12866,6 +12896,7 @@
 				A7B0E07A1BC4423500593B21 /* YouTubeVideoSequencePreviewView.swift in Sources */,
 				C3623F2D1BA7A4A3002B121D /* LevelUpAnimator.swift in Sources */,
 				A73BA2A51C938B68008168B5 /* CloseUpMenuItem.swift in Sources */,
+				F0FBC4441D22EB580070873F /* CaptionBarPopulator.swift in Sources */,
 				A743E7EA1A081FFF00339CB3 /* VStringValidator.m in Sources */,
 				A72C86791C977FF600E97D4F /* SequenceDeleteRemoteOperation.swift in Sources */,
 				A72C86871C977FF600E97D4F /* MainRequestExecutor.swift in Sources */,
@@ -12999,6 +13030,7 @@
 				A763636B1C5036BF000887C4 /* VFollowedUser.m in Sources */,
 				A72C86901C977FF600E97D4F /* CreatePollOperation.swift in Sources */,
 				A72C86361C977FF500E97D4F /* StreamItemRemoveOperation.swift in Sources */,
+				F0FBC44B1D2591AF0070873F /* NSMutableParagraphStyle+TextInsets.swift in Sources */,
 				F00BBAB51CC5E98400CBDB94 /* NativeCameraCreationFlowController.swift in Sources */,
 				F0FC97841B545DB90098AFCB /* VStream.m in Sources */,
 				C3E47F6F1B6990C30084FF65 /* VCommentTextAndMediaView.m in Sources */,
@@ -13168,6 +13200,7 @@
 				D85B70741B0EAF3F0038CA5B /* VFindFriendsTableViewController.m in Sources */,
 				A72C86201C977FF500E97D4F /* NotificationsMarkAllAsReadOperation.swift in Sources */,
 				A7AF17B01C5855B7007BCAFE /* VDependencyManager+SearchBar.swift in Sources */,
+				F0FBC4401D21EDF80070873F /* CaptionBarViewController.swift in Sources */,
 				A7BF9D141B5ECB1E002C0A98 /* VSettingsSwitchCell.m in Sources */,
 				A779512E1B28F61C00D9DB0A /* VContentThumbnailsViewController.m in Sources */,
 				A705F4571B3DF220007DBD3C /* VDependencyManager+VLoginAndRegistration.m in Sources */,
@@ -13202,6 +13235,7 @@
 				A7B133641C6178FD006EC4F5 /* VNoContentView.m in Sources */,
 				67F6B7B81CCFE41200232CAF /* ListMenuNoContentCollectionViewCell.swift in Sources */,
 				A73C3EBC1C45890E00A8452C /* MediaSearchActivityFooter.swift in Sources */,
+				F0FBC4421D22E9170070873F /* CaptionBarDecorator.swift in Sources */,
 				0386E2001A8DECF900FC9BDF /* VDependencyManager+VNavigationItem.m in Sources */,
 				A7D378691AF45B7C007FF197 /* VSequencePermissions.m in Sources */,
 				A6BB61231B583256002C3B7C /* VAssetCollectionUnauthorizedDataSource.m in Sources */,
@@ -13289,6 +13323,7 @@
 				A75ED0BA1AB78C7400C35063 /* VHashtagPickerDataSource.m in Sources */,
 				67BECC4B1CC9840C00DFEE4B /* ListMenuCreatorCollectionViewCell.swift in Sources */,
 				A72C86851C977FF600E97D4F /* AlertsRequestDecorator.swift in Sources */,
+				F0FBC43E1D21D4120070873F /* CaptionBar.swift in Sources */,
 				D8B827DD19D5FDFE00CCD6D9 /* VDescriptionTableViewCell.m in Sources */,
 				BE799B9219C8A91C0023CE88 /* VNode.m in Sources */,
 				79B51FD41B853A1900F826F3 /* NSDate+ComparableEquatable.swift in Sources */,
@@ -13628,6 +13663,7 @@
 				A70FC0FE1A2D412200F5BBDE /* VPurchaseManager.m in Sources */,
 				A75ED0001AB0B6B400C35063 /* VCropToolViewController.m in Sources */,
 				C3E772231B4DBC96005809A5 /* VCollectionViewStreamFocusHelper.m in Sources */,
+				F0FBC4491D258FD70070873F /* UITextView+TextInsets.swift in Sources */,
 				A735989C1BACCB0D00B5B630 /* VVideoPlayer.m in Sources */,
 				039ED29C19C908F400305987 /* VCVideoPlayerViewController.m in Sources */,
 				BE42842C19DDD0D500AEDBA6 /* VDefaultProfileImageView.m in Sources */,

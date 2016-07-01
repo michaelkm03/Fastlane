@@ -15,7 +15,7 @@ protocol ChatFeed: class, ForumEventReceiver, ForumEventSender {
     weak var nextSender: ForumEventSender? { get set }
     
     var dependencyManager: VDependencyManager! { get set }
-    
+        
     func setTopInset(value: CGFloat)
     
     func setBottomInset(value: CGFloat)
