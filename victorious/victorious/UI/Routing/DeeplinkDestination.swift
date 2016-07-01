@@ -47,8 +47,8 @@ enum DeeplinkDestination {
             guard
                 let url = content.linkedURL,
                 let validDestination = DeeplinkDestination(url: url)
-                else {
-                    return nil
+            else {
+                return nil
             }
             self = validDestination
         case .text:

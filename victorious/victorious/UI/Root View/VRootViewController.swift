@@ -10,11 +10,11 @@ import Foundation
 
 extension VRootViewController {
     
-    // MARK: - Bridging with Objc-C
+    // MARK: - Bridging with Obj-C
     
     func showDeeplink(deeplink: NSURL, on scaffold: UIViewController) {
         // Ideally we would pass in a `Scaffold` type to avoid this check, but this function is being called by
-        // dear Objc-C so that was not an option.
+        // dear Obj-C so that was not an option.
         if let scaffold = scaffold as? Scaffold {
             scaffold.navigate(to: deeplink)
         }

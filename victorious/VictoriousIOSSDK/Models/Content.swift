@@ -14,7 +14,6 @@ import Foundation
 public protocol ContentModel: PreviewImageContainer, DictionaryConvertible {
     var createdAt: NSDate { get }
     var type: ContentType { get }
-    
     var id: Content.ID? { get }
     var isLikedByCurrentUser: Bool { get }
     var text: String? { get }

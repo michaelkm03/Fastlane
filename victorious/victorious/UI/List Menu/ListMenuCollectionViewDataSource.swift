@@ -122,7 +122,6 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         let router = Router(originViewController: scaffold, dependencyManager: dependencyManager)
         let destination = DeeplinkDestination.vipForum
         router.navigate(to: destination)
-        
     }
     
     // MARK: - List Menu Network Data Source Delegate

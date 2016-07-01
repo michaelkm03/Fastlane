@@ -56,7 +56,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         let creator = collectionViewDataSource.creatorDataSource.visibleItems[index]
         let destination = DeeplinkDestination(userID: creator.id)
         
-        // Had to trace down the real navigation controlelr because List Menu has no idea where it is - and it doesn't have navigation stack either.
+        // Had to trace down the inner navigation controller because List Menu has no idea where it is - and it doesn't have navigation stack either.
         let router = Router(originViewController: scaffold.mainNavigationController.innerNavigationController, dependencyManager: dependencyManager)
         
         router.navigate(to: destination)
