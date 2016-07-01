@@ -25,8 +25,6 @@
 #import "VBarButton.h"
 #import "VDependencyManager+VNavigationItem.h"
 #import "VDependencyManager+VAccessoryScreens.h"
-#import "VProfileDeeplinkHandler.h"
-#import "VInboxDeepLinkHandler.h"
 #import "VFloatingUserProfileHeaderViewController.h"
 #import "UIViewController+VAccessoryScreens.h"
 #import "VUsersViewController.h"

@@ -31,4 +31,17 @@ extension VNotificationsViewController {
             self.tableView.backgroundView = nil
         }
     }
+    
+    func showDeeplink(with urlString: String?) {
+        guard
+            let urlString = urlString,
+            let url = NSURL(string: urlString)
+        else {
+            return
+        }
+        
+        let destination = DeeplinkDestination(url: url)
+        let router = Router(originViewController: self, dependencyManager: dependencyManager)
+        router.navigate(to: destination)
+    }
 }

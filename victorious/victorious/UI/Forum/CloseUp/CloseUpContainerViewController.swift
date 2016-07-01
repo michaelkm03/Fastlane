@@ -131,11 +131,9 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
     // MARK: - CloseUpViewDelegate
     
     func didSelectProfileForUserID(userID: Int) {
-        ShowProfileOperation(
-            originViewController: self,
-            dependencyManager: dependencyManager,
-            userId: userID
-        ).queue()
+        let router = Router(originViewController: self, dependencyManager: dependencyManager)
+        let destination = DeeplinkDestination(userID: userID)
+        router.navigate(to: destination)
     }
     
     func share() {

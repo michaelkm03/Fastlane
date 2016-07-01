@@ -27,7 +27,7 @@ static CGFloat const kNotificationAddedVerticalInset = 8.0f;
 
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) VScrollPaginator *scrollPaginator;
-@property (strong, nonatomic) VDependencyManager *dependencyManager;
+@property (nonatomic, strong, readwrite) VDependencyManager *dependencyManager;
 @property (nonatomic) NSInteger badgeNumber;
 
 @end
@@ -191,7 +191,7 @@ static CGFloat const kNotificationAddedVerticalInset = 8.0f;
     if ([notification.deepLink length] > 0)
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectNotification];
-        [[VRootViewController sharedRootViewController] openURL:[NSURL URLWithString:notification.deepLink]];
+        [self showDeeplinkWith:notification.deepLink];
     }
 }
 
