@@ -33,7 +33,6 @@ extension CollectionType {
             else {
                 selection = element
             }
-            
         }
         
         return selection
