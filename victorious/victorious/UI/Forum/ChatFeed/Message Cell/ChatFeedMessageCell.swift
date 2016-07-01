@@ -61,6 +61,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
     static let contentMargin = UIEdgeInsets(top: 30, left: 10, bottom: 2, right: 75)
     static let topLabelYSpacing = CGFloat(6.5)
     static let topLabelXInset = CGFloat(5.0)
+    static let bubbleCornerRadius = CGFloat(6.0)
     
     // MARK: - Initializing
     
@@ -114,7 +115,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
         updateTopLabelStyle(for: timestampLabel)
         
         bubbleView.backgroundColor = dependencyManager.backgroundColor
-        bubbleView.layer.cornerRadius = 6.0
+        bubbleView.layer.cornerRadius = ChatFeedMessageCell.bubbleCornerRadius
         
         avatarView.layer.borderWidth = 1.0
         avatarView.layer.borderColor = UIColor.blackColor().colorWithAlphaComponent(0.3).CGColor
