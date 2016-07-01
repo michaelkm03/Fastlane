@@ -151,23 +151,14 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         if content.type.displaysAsImage, let previewImageURL = content.previewImageURL(ofMinimumWidth: minWidth) ?? NSURL(v_string: content.assets.first?.resourceID) {
             setUpPreviewImage(from: previewImageURL)
         }
-        else {
-            tearDownPreviewImage()
-        }
         
         // Set up video view if content is video
-        if content.type.displaysAsVideo {
+        else if content.type.displaysAsVideo {
             setUpVideoPlayer(for: content)
         }
-        else {
-            tearDownVideoPlayer()
-        }
 
-        if (content.type == .text) {
-            setUpTextLabel(for: content)
-        }
-        else {
-            tearDownTextLabel()
+        else if content.type == .text {
+            setUpTextLabel(forContent: content)
         }
         
         setNeedsLayout()
@@ -233,6 +224,9 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     // MARK: - Managing preview image
     
     private func setUpPreviewImage(from url: NSURL) {
+        tearDownVideoPlayer()
+        tearDownTextLabel()
+        
         previewImageView.hidden = false
         previewImageView.sd_setImageWithURL(
             url,
@@ -252,6 +246,9 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     // MARK: - Managing video
     
     private func setUpVideoPlayer(for content: ContentModel) {
+        tearDownTextLabel()
+        tearDownPreviewImage()
+        
         videoContainerView.hidden = false
         videoCoordinator?.tearDown()
         videoCoordinator = VContentVideoPlayerCoordinator(content: content)
@@ -273,20 +270,25 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     
     // MARK: - Managing Text 
     
-    private func setUpTextLabel(for content: ContentModel) {
+    private func setUpTextLabel(forContent content: ContentModel) {
+        tearDownPreviewImage()
+        tearDownVideoPlayer()
+        
         guard
-            let text = content.text,
-            let textPostDependency = dependencyManager?.textPostDependency
+            let text = content.text
         else {
+            assertionFailure("Invalid text content sent to MediaContentView")
             return
         }
         
+        let textPostDependency = dependencyManager?.textPostDependency
+        
         textPostLabel.hidden = true //Hide while we set up the view for the next post
         textPostLabel.text = text
-        textPostLabel.font = textPostDependency.textPostFont ?? Constants.defaultTextFont
-        textPostLabel.textColor = textPostDependency.textPostColor ?? Constants.defaultTextColor
+        textPostLabel.font = textPostDependency?.textPostFont ?? Constants.defaultTextFont
+        textPostLabel.textColor = textPostDependency?.textPostColor ?? Constants.defaultTextColor
         
-        if let url = textPostDependency.textPostBackgroundImageURL {
+        if let url = textPostDependency?.textPostBackgroundImageURL {
             setBackgroundBlur(withImageUrl: url, forContent: content) { [weak self] in
                 guard
                     let currentContentID = self?.content?.id,
