@@ -59,7 +59,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             case .websocket(let websocketEvent):
                 switch websocketEvent {
                     case .Disconnected(let webSocketError):
-                        if isViewLoaded() {
+                        if let webSocketError = webSocketError where isViewLoaded() {
                             v_showAlert(title: "Disconnected from chat server", message: "Reconnecting soon.\n(error: \(webSocketError))", completion: nil)
                         }
                     default:

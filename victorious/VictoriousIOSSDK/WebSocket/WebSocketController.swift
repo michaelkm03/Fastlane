@@ -153,7 +153,7 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
         // According to the RFC even if the client disconnects we should receive a close message with the error code 1000. 
         // We still want to bradcast that to the rest of the app but without an error so it's explicit nothing went wrong.
         var webSocketError: WebSocketError? = nil
-        if let error = error where !didClientInitiatedDisconnect && WebSocket.CloseCode(rawValue: UInt16(error.code)) == WebSocket.CloseCode.Normal {
+        if let error = error where didClientInitiatedDisconnect && WebSocket.CloseCode(rawValue: UInt16(error.code)) == WebSocket.CloseCode.Normal {
             didClientInitiatedDisconnect = false
         } else {
             webSocketError = WebSocketError.ConnectionTerminated(code: error?.code, error: error)

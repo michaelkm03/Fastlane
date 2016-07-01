@@ -58,8 +58,8 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
         switch event {
         case .websocket(let websocketEvent):
             switch websocketEvent {
-                case .Disconnected(_):
-                    receiveDisconnectEvent()
+                case .Disconnected(let webSocketError):
+                    receiveDisconnectEventWithError(webSocketError)
                 default: break
             }
         default:
@@ -67,8 +67,8 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
         }
     }
     
-    private func receiveDisconnectEvent() {
-        guard let reconnectTimeout = reconnectTimeout else {
+    private func receiveDisconnectEventWithError(error: WebSocketError?) {
+        guard let reconnectTimeout = reconnectTimeout, let _ = error else {
             return
         }
 
