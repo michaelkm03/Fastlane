@@ -160,7 +160,6 @@ class ChatFeedMessageCell: UICollectionViewCell {
             previewView?.hidden = true
         }
 
-        
         if let imageURL = content?.author.previewImageURL(ofMinimumSize: avatarView.frame.size) {
             avatarView.sd_setImageWithURL(imageURL, placeholderImage: defaultAvatarImage)
         }
