@@ -95,7 +95,7 @@ static NSString * const kAvatarBadgeLevelViewKey = @"avatarBadgeLevelView";
              return;
          }
 
-         [strongSelf setImage:image forState:UIControlStateNormal];
+         [strongSelf setImage:[image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
      }];
 }
 

@@ -60,9 +60,9 @@ import Foundation
     // MARK: - User
     
     func showProfileWithRemoteId(userId: Int) {
-        ShowProfileOperation(originViewController: originViewController,
-                            dependencyManager: dependencyManager,
-                            userId: userId).queue()
+        let router = Router(originViewController: originViewController, dependencyManager: dependencyManager)
+        let destination = DeeplinkDestination(userID: userId)
+        router.navigate(to: destination)
     }
     
     // MARK: - Share
