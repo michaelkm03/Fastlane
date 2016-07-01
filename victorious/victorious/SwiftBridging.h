@@ -94,7 +94,6 @@
 #import "VDeepLinkHandler.h"
 #import "VDeepLinkReceiver.h"
 #import "VDefaultProfileButton.h"
-#import "VDefaultProfileImageView.h"
 #import "VDependencyManager+NavigationBar.h"
 #import "VDependencyManager+VAccessoryScreens.h"
 #import "VDependencyManager+VBackgroundContainer.h"

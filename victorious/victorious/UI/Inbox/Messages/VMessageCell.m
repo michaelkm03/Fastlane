@@ -8,7 +8,6 @@
 
 #import "VMessageTextAndMediaView.h"
 #import "VMessageCell.h"
-#import "VDefaultProfileImageView.h"
 #import "victorious-Swift.h"
 
 NSString * const kVMessageCellNibName = @"VMessageCell";
@@ -23,7 +22,6 @@ static NSString * const kChatBubbleArrowRight   = @"ChatBubbleArrowRight";
 
 @property (nonatomic, weak, readwrite) IBOutlet VMessageTextAndMediaView *messageTextAndMediaView;
 @property (nonatomic, weak, readwrite) IBOutlet UILabel *timeLabel;
-@property (nonatomic, weak, readwrite) IBOutlet VDefaultProfileImageView *profileImageView;
 @property (nonatomic, weak, readwrite) IBOutlet UIImageView *chatBubble;
 @property (nonatomic, weak, readwrite) IBOutlet UIImageView *chatBubbleArrow;
 @property (nonatomic, weak, readwrite) IBOutlet UIButton *profileImageButton;
@@ -184,7 +182,6 @@ static NSString * const kChatBubbleArrowRight   = @"ChatBubbleArrowRight";
 {
     self.chatBubble.tintColor = [UIColor whiteColor];
     [self.messageTextAndMediaView resetView];
-    [self.profileImageView setup];
     self.profileImageOnRight = NO;
 }
 
