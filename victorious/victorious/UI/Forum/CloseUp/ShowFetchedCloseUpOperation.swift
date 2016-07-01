@@ -44,10 +44,14 @@ class ShowFetchedCloseUpOperation: MainQueueOperation {
         
         let completionBlock = showCloseUpOperation.completionBlock
         contentFetchOperation.rechainAfter(showCloseUpOperation).queue() { results, _, _ in
-            guard
-                let content = results?.first as? VContent,
-                let shownCloseUpView = showCloseUpOperation.displayedCloseUpView
-            else {
+            guard let shownCloseUpView = showCloseUpOperation.displayedCloseUpView else {
+                completionBlock?()
+                return
+            }
+            
+            guard let content = results?.first as? ContentModel else {
+                // Display error message.
+                shownCloseUpView.updateError()
                 completionBlock?()
                 return
             }
