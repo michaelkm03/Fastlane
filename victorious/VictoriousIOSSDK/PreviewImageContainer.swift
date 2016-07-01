@@ -22,8 +22,8 @@ extension PreviewImageContainer {
         let minimumHeight = minimumSize.height
         
         for asset in previewImages ?? [] {
-            let lastWidth = qualifiedAsset?.mediaMetaData.size.width
-            let lastHeight = qualifiedAsset?.mediaMetaData.size.height
+            let lastWidth = qualifiedAsset?.mediaMetaData.size.width ?? CGFloat.max
+            let lastHeight = qualifiedAsset?.mediaMetaData.size.height ?? CGFloat.max
             let width = asset.mediaMetaData.size.width
             let height = asset.mediaMetaData.size.height
 
@@ -39,7 +39,7 @@ extension PreviewImageContainer {
         var qualifiedAsset: ImageAssetModel?
         
         for asset in previewImages ?? [] {
-            let lastWidth = qualifiedAsset?.mediaMetaData.size.width
+            let lastWidth = qualifiedAsset?.mediaMetaData.size.width ?? CGFloat.max
             let width = asset.mediaMetaData.size.width
             
             if width >= minimumWidth && width <= lastWidth {
