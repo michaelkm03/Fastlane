@@ -43,7 +43,7 @@ extension ContentModel {
     // MARK: - Assets
     
     public var aspectRatio: CGFloat {
-        return previewImages.first?.mediaMetaData.size?.aspectRatio ?? 1
+        return previewImages.first?.mediaMetaData.size.aspectRatio ?? 1
     }
     
     // MARK: - DictionaryConvertible
