@@ -89,7 +89,7 @@ extension Alert.Parameters {
         guard
             let title = json["title"].string,
             let userFanLoyalty = FanLoyalty(json: json["user"]["fanloyalty"])
-            else {
+        else {
                 return nil
         }
 

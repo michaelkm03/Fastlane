@@ -20,7 +20,6 @@ extension VDependencyManager {
                     viewController.alert = alert
                     interstitial = viewController
                 }
-            
             case .StatusUpdate, .Achievement, .ClientSideCreated:
                 let templateValue = templateValueOfType(InterstitialAlertViewController.self, forKey: "statusUpdateScreen")
                 if let imageAlertVC = templateValue as? InterstitialAlertViewController {
@@ -34,7 +33,7 @@ extension VDependencyManager {
                     interstitial = toastViewController
                 }
             case .WebSocketError:
-                ()
+                interstitial = nil
         }
         return interstitial
     }

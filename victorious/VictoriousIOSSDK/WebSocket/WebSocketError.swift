@@ -54,7 +54,7 @@ public enum WebSocketError: ErrorType, Equatable, CustomStringConvertible {
         guard
             let message = json["message"].string,
             let code = json["code"].int
-            else {
+        else {
                 return nil
         }
 
