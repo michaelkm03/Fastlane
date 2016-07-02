@@ -84,12 +84,11 @@ class ContentPreviewView: UIView {
     }
     
     private func setupForContent(content: ContentModel) {
-        let userIsVIP = VCurrentUser.user()?.hasValidVIPSubscription ?? false
-        let contentIsForVIPOnly = content.isVIPOnly
-        vipIcon.hidden = userIsVIP || !contentIsForVIPOnly
+        let userCanViewContent = VCurrentUser.user()?.canView(content) == true
+        vipIcon.hidden = userCanViewContent
         
         if let previewImageURL = content.previewImageURL(ofMinimumWidth: bounds.size.width) {
-            if !userIsVIP && contentIsForVIPOnly {
+            if !userCanViewContent {
                 previewImageView.applyBlurToImageURL(previewImageURL, withRadius: Constants.imageViewBlurEffectRadius) { [weak self] in
                     self?.previewImageView.alpha = 1
                 }

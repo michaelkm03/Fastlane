@@ -25,4 +25,8 @@ extension UserModel {
         
         return endDate > NSDate()
     }
+    
+    func canView(content: ContentModel) -> Bool {
+        return !content.isVIPOnly || hasValidVIPSubscription
+    }
 }
