@@ -13,7 +13,7 @@
 /// 2. Receive messages over the WebSocket.
 /// 3. Send messages over the WebSocket.
 /// 4. Forward messages using the Forum Event Chain.
-/// 5. It complies to the TemplateNetworkSource protocol so it can be instansiated through the template.
+/// 5. It complies to the TemplateNetworkSource protocol so it can be instantiated through the template.
 public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket, WebSocketEventDecoder, WebSocketPongDelegate {
 
     private struct Constants {
@@ -32,7 +32,7 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
     private var pingTimer: NSTimer?
 
     /// If the client disconnects we still get the disconnect event, this flag is there to help avoid passsing that event on.
-    private var didClientInitiatedDisconnect: Bool = false
+    private var clientInitiatedDisconnect = false
     
     /// The interval to send of ping messages.
     private let pingTimerInterval: NSTimeInterval = 15
@@ -94,7 +94,7 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
             return
         }
 
-        didClientInitiatedDisconnect = true
+        clientInitiatedDisconnect = true
         webSocket.disconnect(forceTimeout: Constants.forceDisconnectTimeout)
     }
     
@@ -151,11 +151,12 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
         webSocket = nil
 
         // According to the RFC even if the client disconnects we should receive a close message with the error code 1000. 
-        // We still want to bradcast that to the rest of the app but without an error so it's explicit nothing went wrong.
+        // We still want to broadcast that to the rest of the app but without an error so it's explicit nothing went wrong.
         var webSocketError: WebSocketError? = nil
-        if let error = error where didClientInitiatedDisconnect && WebSocket.CloseCode(rawValue: UInt16(error.code)) == WebSocket.CloseCode.Normal {
-            didClientInitiatedDisconnect = false
-        } else {
+        if let error = error where clientInitiatedDisconnect && WebSocket.CloseCode(rawValue: UInt16(error.code)) == WebSocket.CloseCode.Normal {
+            clientInitiatedDisconnect = false
+        }
+        else {
             webSocketError = WebSocketError.ConnectionTerminated(code: error?.code, error: error)
         }
 
