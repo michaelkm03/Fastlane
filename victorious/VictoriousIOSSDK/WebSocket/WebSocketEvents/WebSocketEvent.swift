@@ -18,7 +18,7 @@ import Foundation
 public enum WebSocketEvent: Equatable {
     case authenticated
     case connected
-    case disconnected(webSocketError: WebSocketError)
+    case disconnected(webSocketError: WebSocketError?)
     case serverError(webSocketError: WebSocketError)
 }
 
