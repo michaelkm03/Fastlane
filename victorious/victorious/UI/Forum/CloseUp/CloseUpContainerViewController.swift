@@ -122,20 +122,22 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
         fatalError("NSCoding not supported.")
     }
     
+    func updateError() {
+        gridStreamController.setContent(nil, withError: true)
+    }
+    
     func updateContent(content: ContentModel) {
         self.content = content
         updateHeader()
-        gridStreamController.content = content
+        gridStreamController.setContent(content, withError: false)
     }
     
     // MARK: - CloseUpViewDelegate
     
     func didSelectProfileForUserID(userID: Int) {
-        ShowProfileOperation(
-            originViewController: self,
-            dependencyManager: dependencyManager,
-            userId: userID
-        ).queue()
+        let router = Router(originViewController: self, dependencyManager: dependencyManager)
+        let destination = DeeplinkDestination(userID: userID)
+        router.navigate(to: destination)
     }
     
     func share() {

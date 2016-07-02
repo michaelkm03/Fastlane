@@ -66,7 +66,10 @@ class StageDataSource: ForumEventReceiver {
                 currentContentFetchOperation?.cancel()
                 delegate?.removeContent()
                 currentContent = nil
-                
+            
+            case .showCaptionContent(let content):
+                delegate?.addCaptionContent(content)
+            
             default:
                 break
             }

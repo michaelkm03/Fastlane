@@ -22,14 +22,14 @@ extension ChatFeedMessageCell {
         
         let alignment: ChatFeedMessageCellAlignment = content.wasCreatedByCurrentUser ? .right : .left
         
-        let mediaSize = self.mediaSize(displaying: content, inWidth: cell.bounds.width, dependencyManager: dependencyManager)
+        let mediaSize = self.mediaSize(displaying: content, inWidth: cell.bounds.width)
         let textSize = self.textSize(displaying: content, inWidth: cell.bounds.width, dependencyManager: dependencyManager)
         let timestampSize = cell.timestampLabel.sizeThatFits(cell.bounds.size)
         let usernameSize = self.usernameSize(in: cell, withTimestampSize: timestampSize)
         
         let contentSize = CGSize(
-            width: max(textSize.width, mediaSize.width),
-            height: textSize.height + mediaSize.height
+            width: mediaSize?.width ?? textSize.width,
+            height: textSize.height + (mediaSize?.height ?? 0.0)
         )
         
         let bubbleOffset = self.bubbleOffset(forAlignment: alignment, inBounds: cell.bounds, withBubbleSize: contentSize)
@@ -57,23 +57,19 @@ extension ChatFeedMessageCell {
             size: avatarSize
         )
         
-        cell.avatarTapTarget.frame = CGRect(
-            center: cell.avatarView.center,
-            size: avatarTapTargetSize
-        )
+        cell.avatarTapTarget.frame = CGRect(center: cell.avatarView.center, size: avatarTapTargetSize)
         
         // Bubble / content layout:
         
         cell.bubbleView.frame = CGRect(origin: bubbleOffset, size: contentSize)
         
-        cell.previewView?.frame = CGRect(
-            origin: CGPoint.zero,
-            size: CGSize(width: contentSize.width, height: mediaSize.height)
-        )
+        cell.bubbleBorderView.frame = cell.bubbleView.frame.insetBy(bubbleBackgroundInsets)
+        
+        cell.previewView?.frame = CGRect(origin: CGPoint.zero, size: mediaSize ?? CGSize.zero)
         
         cell.captionLabel.frame = CGRect(
             x: captionInsets.left,
-            y: mediaSize.height,
+            y: mediaSize?.height ?? 0.0,
             width: contentSize.width - captionInsets.horizontal,
             height: textSize.height
         )

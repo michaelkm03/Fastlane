@@ -189,8 +189,10 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
 
 - (void)applyBlurToImageURL:(NSURL *)url withRadius:(CGFloat)blurRadius completion:(void (^)())callbackBlock
 {
-    if ( [self isURLDownloaded:url] )
+    UIImage *cachedImage = [self cachedBlurredImageForURL:url andBlurRadius:blurRadius];
+    if (cachedImage)
     {
+        self.image = cachedImage;
         return;
     }
     
@@ -208,6 +210,12 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
             }
             
             UIImage *blurredImage = [image applyBlurWithRadius:blurRadius];
+            
+            __strong typeof(weakSelf) strongSelf = weakSelf;
+            
+            [strongSelf addBlurredImage:blurredImage
+                         toCacheWithURL:url
+                          andBlurRadius:blurRadius];
             
             dispatch_async(dispatch_get_main_queue(), ^
             {
@@ -271,7 +279,7 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
                          andDuration:(NSTimeInterval)duration
             withConcurrentAnimations:(void (^)(void))animations
 {
-    UIImage *cachedBlurredImage = [self cachedBlurredImageForURL:cacheURL];
+    UIImage *cachedBlurredImage = [self cachedBlurredImageForURL:cacheURL andBlurRadius:kBlurRadius];
     if (cachedBlurredImage !=  nil)
     {
         if ( animations != nil )
@@ -317,25 +325,28 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
           }
                           completion:^(BOOL finished)
           {
-              [weakSelf addBlurredImage:blurredImage toCacheWithURL:cacheURL];
+              [weakSelf addBlurredImage:blurredImage toCacheWithURL:cacheURL andBlurRadius:kBlurRadius];
           }];
      }];
 }
 
-- (void)addBlurredImage:(UIImage *)image toCacheWithURL:(NSURL *)imageURL
+- (void)addBlurredImage:(UIImage *)image toCacheWithURL:(NSURL *)imageURL andBlurRadius:(CGFloat)blurRadius
 {
     if ( imageURL == nil )
     {
         return;
     }
     
+    NSString *extension = [NSString stringWithFormat:@"%@/%f", kBlurredImageCachePathExtension, blurRadius];
     [[[SDWebImageManager sharedManager] imageCache] storeImage:image
-                                                        forKey:[[imageURL URLByAppendingPathComponent:kBlurredImageCachePathExtension] absoluteString]];
+                                                        forKey:[[imageURL URLByAppendingPathComponent:extension] absoluteString]];
 }
 
-- (UIImage *)cachedBlurredImageForURL:(NSURL *)cacheURL
+- (UIImage *)cachedBlurredImageForURL:(NSURL *)cacheURL andBlurRadius:(CGFloat)blurRadius
 {
-    NSURL *blurredURL = cacheURL != nil ? [cacheURL URLByAppendingPathComponent:kBlurredImageCachePathExtension] : nil;
+    NSString *extension = [NSString stringWithFormat:@"%@/%f", kBlurredImageCachePathExtension, blurRadius];
+
+    NSURL *blurredURL = cacheURL != nil ? [cacheURL URLByAppendingPathComponent:extension] : nil;
     NSString *blurredKey = [blurredURL absoluteString];
     if ( blurredKey != nil )
     {

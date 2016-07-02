@@ -15,4 +15,13 @@ extension CGRect {
             y: midY
         )
     }
+    
+    func insetBy(insets: UIEdgeInsets) -> CGRect {
+        var rect = self
+        rect.origin.x += insets.left
+        rect.origin.y += insets.top
+        rect.size.width -= insets.horizontal
+        rect.size.height -= insets.vertical
+        return rect
+    }
 }

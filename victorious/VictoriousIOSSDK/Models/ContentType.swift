@@ -24,8 +24,8 @@ public enum ContentType: String {
     
     public var displaysAsImage: Bool {
         switch self {
-            case .image: return true
-            case .text, .link, .gif, .video: return false
+            case .image, .link: return true
+            case .text, .gif, .video: return false
         }
     }
     

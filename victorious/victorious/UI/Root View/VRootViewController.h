@@ -7,9 +7,9 @@
 //
 
 @import UIKit;
-#import "VDeeplinkReceiver.h"
 
 @class VSessionTimer;
+@protocol Scaffold;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -44,7 +44,7 @@ extern NSString * const VApplicationDidBecomeActiveNotification;
  */
 @property (nonatomic, strong, readonly) VSessionTimer *sessionTimer;
 
-@property (nonatomic, strong, readonly) VDeeplinkReceiver *deepLinkReceiver;
+@property (nonatomic, strong, readonly) UIViewController<Scaffold> *scaffold;
 
 /**
  Returns the instance of VRootViewController that is set as the main 
@@ -68,11 +68,6 @@ extern NSString * const VApplicationDidBecomeActiveNotification;
  from the app delegate where the notificaitons are received.
  */
 - (void)handleLocalNotification:(UILocalNotification *)localNotification;
-
-/**
- Opens a deeplink URL
- */
-- (void)openURL:(NSURL *)url;
 
 /**
  Restarts the session of the app, returning it to a state as if it had just been launched.

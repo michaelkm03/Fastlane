@@ -58,7 +58,7 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
         switch event {
         case .websocket(let websocketEvent):
             switch websocketEvent {
-                case .Disconnected(let webSocketError):
+                case .disconnected(let webSocketError):
                     receiveDisconnectEventWithError(webSocketError)
                 default: break
             }

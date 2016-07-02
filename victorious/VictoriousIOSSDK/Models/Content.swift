@@ -14,8 +14,7 @@ import Foundation
 public protocol ContentModel: PreviewImageContainer, DictionaryConvertible {
     var createdAt: NSDate { get }
     var type: ContentType { get }
-    
-    var id: String? { get }
+    var id: Content.ID? { get }
     var isLikedByCurrentUser: Bool { get }
     var text: String? { get }
     var hashtags: [Hashtag] { get }
@@ -40,12 +39,6 @@ public protocol ContentModel: PreviewImageContainer, DictionaryConvertible {
 }
 
 extension ContentModel {
-    // MARK: - Assets
-    
-    public var aspectRatio: CGFloat {
-        return previewImages.first?.mediaMetaData.size?.aspectRatio ?? 0.0
-    }
-    
     // MARK: - DictionaryConvertible
     
     public var rootKey: String {
@@ -77,7 +70,10 @@ extension ContentModel {
 }
 
 public class Content: ContentModel {
-    public let id: String?
+    
+    public typealias ID = String
+    
+    public let id: ID?
     public let status: String?
     public let text: String?
     public let hashtags: [Hashtag]
