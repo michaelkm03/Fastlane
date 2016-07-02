@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="ZFM-mZ-dfv">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Interstitial Toast View Controller-->
@@ -17,30 +16,23 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="80"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Yrk-h9-eQt">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="80"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Title label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1ek-Pp-oKi">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tfz-YT-ILT">
-                                        <rect key="frame" x="0.0" y="31" width="600" height="49"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                            </stackView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Title label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1ek-Pp-oKi">
+                                <rect key="frame" x="263" y="54" width="74" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Description label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tfz-YT-ILT">
+                                <rect key="frame" x="0.0" y="0.0" width="129" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="Yrk-h9-eQt" firstAttribute="top" secondItem="q0e-ni-Xuw" secondAttribute="topMargin" id="ZjW-3H-G1c"/>
-                            <constraint firstItem="Yrk-h9-eQt" firstAttribute="leading" secondItem="q0e-ni-Xuw" secondAttribute="leading" id="deT-Vf-I2D"/>
-                            <constraint firstAttribute="trailing" secondItem="Yrk-h9-eQt" secondAttribute="trailing" id="exE-M3-h1F"/>
-                            <constraint firstAttribute="bottomMargin" secondItem="Yrk-h9-eQt" secondAttribute="bottom" id="ezF-q1-73c"/>
+                            <constraint firstItem="1ek-Pp-oKi" firstAttribute="centerX" secondItem="q0e-ni-Xuw" secondAttribute="centerX" id="TMI-vC-VAY"/>
+                            <constraint firstItem="JNl-j1-XnN" firstAttribute="top" secondItem="1ek-Pp-oKi" secondAttribute="bottom" constant="5" id="sP5-44-YHB"/>
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="EBz-mj-mDA" appends="YES" id="60Z-8W-CdD"/>
@@ -62,11 +54,7 @@
                         <action selector="handlePan:" destination="ZFM-mZ-dfv" id="FCT-f3-2IH"/>
                     </connections>
                 </panGestureRecognizer>
-                <tapGestureRecognizer id="2Ky-pB-me5">
-                    <connections>
-                        <action selector="handleTap:" destination="ZFM-mZ-dfv" id="Glb-b7-TJ0"/>
-                    </connections>
-                </tapGestureRecognizer>
+                <tapGestureRecognizer id="2Ky-pB-me5"/>
             </objects>
             <point key="canvasLocation" x="968" y="343"/>
         </scene>

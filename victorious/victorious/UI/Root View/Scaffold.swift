@@ -58,9 +58,16 @@ extension Scaffold where Self: UIViewController {
     }
     
     // MARK: - InterstitialListener
-    
+
     func newInterstitialHasBeenRegistered() {
-        if presentedViewController == nil {
+        // Don't stack interstitials on each other.
+        if presentedViewController is Interstitial {
+            return
+        }
+
+        if let presentedViewController = presentedViewController {
+            InterstitialManager.sharedInstance.showNextInterstitial(onViewController: presentedViewController)
+        } else {
             InterstitialManager.sharedInstance.showNextInterstitial(onViewController: self)
         }
     }

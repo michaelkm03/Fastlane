@@ -46,7 +46,7 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
         return false
     }
     
-    /// Removes all registered interstitials
+    /// Removes all registered interstitials.
     func clearAllRegisteredAlerts() {
         registeredAlerts.removeAll()
     }
@@ -66,20 +66,20 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
             return
         }
         
-        switch alert.alertType {
-            case .Toast, .WebSocketError:
+        switch alert.type {
+            case .toast, .reconnectingError:
                 addInterstitial(interstitialViewController, toParent: presentingViewController)
-            case .Achievement, .LevelUp, .StatusUpdate, .ClientSideCreated:
+            case .achievement, .levelUp, .statusUpdate, .clientSideCreated:
                 interstitialViewController.transitioningDelegate = self
                 interstitialViewController.modalPresentationStyle = interstitial.preferredModalPresentationStyle()
                 presentingViewController.presentViewController(interstitialViewController, animated: true, completion: nil)
         }
-        
+
         acknowledgeAlert(alert)
     }
 
     private func acknowledgeAlert(alert: Alert) {
-        if alert.alertType != .WebSocketError {
+        if alert.type != .reconnectingError {
             AlertAcknowledgeOperation(alertID: alert.alertID).queue()
         }
 
@@ -93,7 +93,7 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
         parent.addChildViewController(interstitial)
         interstitial.didMoveToParentViewController(parent)
     }
-    
+
     // MARK: - AlertReceiver
 
     func receive(alert: Alert) {
@@ -115,14 +115,25 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
     }
     
     // MARK: Interstitial
+
+    /// Dismisses the interstitial on the screen at the moment if it's `Alert` is of the correct type.
+    func dismissCurrentInterstitial(of alertType: AlertType) {
+        guard let currentInterstitial = presentedInterstitial as? UIViewController where presentedInterstitial?.alert?.type == alertType else {
+            return
+        }
+        dismissInterstitial(currentInterstitial)
+    }
     
     func dismissInterstitial(interstitialViewController: UIViewController) {
-        if interstitialViewController.presentingViewController != nil {
-            interstitialViewController.dismissViewControllerAnimated(true, completion: nil)
-        } else if interstitialViewController.parentViewController != nil {
+        if interstitialViewController.parentViewController != nil {
+            interstitialViewController.willMoveToParentViewController(nil)
             interstitialViewController.view.removeFromSuperview()
+            interstitialViewController.removeFromParentViewController()
         }
-        
+        else if interstitialViewController.presentingViewController != nil {
+            interstitialViewController.dismissViewControllerAnimated(true, completion: nil)
+        }
+
         presentedInterstitial = nil
         isShowingInterstital = false
     }

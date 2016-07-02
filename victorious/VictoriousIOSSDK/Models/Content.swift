@@ -129,12 +129,12 @@ public class Content: ContentModel {
         let sourceType = json[typeString]["type"].string ?? typeString
         
         switch type {
-        case .image:
-            self.assets = [ContentMediaAsset(contentType: type, sourceType: sourceType, json: json[typeString])].flatMap { $0 }
-        case .gif, .video:
-            self.assets = (json[typeString][sourceType].array ?? []).flatMap { ContentMediaAsset(contentType: type, sourceType: sourceType, json: $0) }
-        case .text, .link:
-            self.assets = []
+            case .image:
+                self.assets = [ContentMediaAsset(contentType: type, sourceType: sourceType, json: json[typeString])].flatMap { $0 }
+            case .gif, .video:
+                self.assets = (json[typeString][sourceType].array ?? []).flatMap { ContentMediaAsset(contentType: type, sourceType: sourceType, json: $0) }
+            case .text, .link:
+                self.assets = []
         }
         
         self.tracking = Tracking(json: json["tracking"])

@@ -22,9 +22,8 @@ class InterstitialToastViewController: UIViewController, Interstitial, VBackgrou
     private var timerManager: VTimerManager?
     
     private struct Constants {
-        static let automaticDismissalTime = NSTimeInterval(10)
-        static let slideInAnimationTime = NSTimeInterval(0.4)
-        static let slideOutAnimationTime = NSTimeInterval(0.4)
+        static let slideInAnimationDuration = NSTimeInterval(0.4)
+        static let slideOutAnimationDuration = NSTimeInterval(0.4)
         
         static let toastViewHeight: CGFloat = 40
         static let topOffset = CGFloat(0)
@@ -40,6 +39,10 @@ class InterstitialToastViewController: UIViewController, Interstitial, VBackgrou
 
     private func configure(withTitle title: String, detailedDescription detail: String? = nil) {
         titleLabel.text = title
+
+        // FUTURE: toasts don't support details any more, maybe they will in the future so don't want to rip this out
+        descriptionLabel.text = detail
+        descriptionLabel.hidden = (detail == nil)
     }
     
     // MARK: - Interstitial Protocol
@@ -86,14 +89,19 @@ class InterstitialToastViewController: UIViewController, Interstitial, VBackgrou
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        timerManager = VTimerManager.scheduledTimerManagerWithTimeInterval(Constants.automaticDismissalTime,
+
+        guard let dismissalTime = alert?.parameters.dismissalTime else {
+            return
+        }
+
+        timerManager = VTimerManager.scheduledTimerManagerWithTimeInterval(dismissalTime,
             target: self,
             selector: #selector(dismiss),
             userInfo: nil,
             repeats: false
         )
     }
-    
+
     override func willMoveToParentViewController(parent: UIViewController?) {
         guard let parent = parent else {
             return
@@ -129,26 +137,24 @@ class InterstitialToastViewController: UIViewController, Interstitial, VBackgrou
     private func styleComponents() {
         titleLabel.font = dependencyManager.titleFont
         titleLabel.textColor = dependencyManager.textColor
-        
+
         descriptionLabel.font = dependencyManager.detailLabelFont
         descriptionLabel.textColor = dependencyManager.textColor
-        
+
         dependencyManager.addBackgroundToBackgroundHost(self)
     }
     
     private func slideIn() {
         view.layoutIfNeeded()
-        
-        UIView.animateWithDuration(Constants.slideInAnimationTime) {
+        UIView.animateWithDuration(Constants.slideInAnimationDuration) {
             self.topAnchorConstraint.constant = Constants.topOffset
             self.view.layoutIfNeeded()
         }
     }
-    
+
     private func slideOut(completion: () -> Void) {
         view.layoutIfNeeded()
-        
-        UIView.animateWithDuration(Constants.slideOutAnimationTime,
+        UIView.animateWithDuration(Constants.slideOutAnimationDuration,
             animations: {
                 self.topAnchorConstraint.constant = -Constants.toastViewHeight
                 self.view.layoutIfNeeded()

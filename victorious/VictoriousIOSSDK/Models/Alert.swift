@@ -14,15 +14,15 @@ public enum AlertType: String {
 
     // MARK: Backend driven alerts.
 
-    case LevelUp            = "levelUp"
-    case Achievement        = "achievement"
-    case StatusUpdate       = "statusUpdate"
-    case Toast              = "toast"
+    case levelUp            = "levelUp"
+    case achievement        = "achievement"
+    case statusUpdate       = "statusUpdate"
+    case toast              = "toast"
 
     // MARK: Locally created alerts.
 
-    case ClientSideCreated  = "clientSideCreated"
-    case WebSocketError     = "WebSocketError"
+    case clientSideCreated  = "clientSideCreated"
+    case reconnectingError   = "reconnectingError"
 }
 
 public struct Alert: Equatable {
@@ -32,18 +32,20 @@ public struct Alert: Equatable {
         public let description: String?
         public let userFanLoyalty: FanLoyalty?
         public let icons: [NSURL]?
+        public let dismissalTime: NSTimeInterval?
 
-        public init(title: String, backgroundVideoURL: NSURL? = nil, description: String? = nil, userFanLoyalty: FanLoyalty? = nil, icons: [NSURL]? = nil) {
+        public init(title: String, backgroundVideoURL: NSURL? = nil, description: String? = nil, userFanLoyalty: FanLoyalty? = nil, icons: [NSURL]? = nil, dismissalTime: NSTimeInterval? = nil) {
             self.title = title
             self.backgroundVideoURL = backgroundVideoURL
             self.description = description
             self.userFanLoyalty = userFanLoyalty
             self.icons = icons
+            self.dismissalTime = dismissalTime
         }
     }
 
     public let alertID: String
-    public let alertType: AlertType
+    public let type: AlertType
     public let parameters: Alert.Parameters
     public let dateAcknowledged: NSDate?
 
@@ -53,17 +55,22 @@ public struct Alert: Equatable {
     /// - parameter iconURLs: An array of icons for the alert
     public init(title: String, description: String?, iconURLs: [NSURL]? = nil) {
         self.alertID = String(CACurrentMediaTime())
-        self.alertType = .ClientSideCreated
+        self.type = .clientSideCreated
         self.parameters = Parameters(title: title, description: description, icons: iconURLs)
         self.dateAcknowledged = nil
     }
 }
 
 extension Alert {
-    public init(webSocketError: WebSocketError) {
+    /// Initialize an alert by setting it's type and time on screen. The alert will dismiss it self after the specified amounts of time.
+    /// - parameter title: Title of the alert.
+    /// - parameter type: Type of alert to be presented.
+    /// - parameter description: Description of the alert.
+    /// - parameter dismissalTime: Time to display alert, is nil is passed in it will be presented until user dismisses it.
+    public init(title: String, type: AlertType, description: String? = nil, dismissalTime: NSTimeInterval? = nil) {
         alertID = String(CACurrentMediaTime())
-        alertType = .WebSocketError
-        parameters = Parameters(title: "Error", description: "Description")
+        self.type = type
+        parameters = Parameters(title: title, description: description, dismissalTime: dismissalTime)
         dateAcknowledged = nil
     }
 }
@@ -77,7 +84,7 @@ extension Alert {
         else {
             return nil
         }
-        self.alertType = alertType
+        self.type = alertType
         self.parameters = parameters
         self.alertID = alertID
         self.dateAcknowledged = NSDateFormatter.vsdk_defaultDateFormatter().dateFromString(json["acknowledged_at"].stringValue)
@@ -99,6 +106,7 @@ extension Alert.Parameters {
         icons               = json["icons"].arrayValue.map { $0.stringValue }.flatMap { NSURL(string: $0) }
 
         self.backgroundVideoURL = json["backgroundVideo"].URL
+        dismissalTime = nil
     }
 }
 
