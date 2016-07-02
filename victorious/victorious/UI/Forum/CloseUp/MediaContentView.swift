@@ -8,8 +8,6 @@
 
 import UIKit
 
-
-
 /// Displays an image/video/GIF/Youtube video/text post upon setting the content property
 
 class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGestureRecognizerDelegate {
