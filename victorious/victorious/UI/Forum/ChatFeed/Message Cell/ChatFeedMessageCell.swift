@@ -138,24 +138,23 @@ class ChatFeedMessageCell: UICollectionViewCell {
         timestampLabel.hidden = shouldHideTopLabels
         
         if let content = content where content.type.hasMedia {
-            if content.type == .gif {
+            if content.type == .gif && VCurrentUser.user()?.canView(content) == true {
                 let previewView = createMediaViewIfNeeded()
                 ChatFeedMessageCell.layoutContent(for: self)
                 previewView.content = content
-                previewView.hidden = false
             }
             else {
                 // Videos and images
                 let previewView = createContentPreviewViewIfNeeded()
                 ChatFeedMessageCell.layoutContent(for: self)
-                previewView.hidden = false
                 previewView.content = content
             }
+            previewView?.hidden = false
         }
         else {
             previewView?.hidden = true
         }
-        
+
         if let imageURL = content?.author.previewImageURL(ofMinimumSize: avatarView.frame.size) {
             avatarView.sd_setImageWithURL(imageURL, placeholderImage: defaultAvatarImage)
         }
