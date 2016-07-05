@@ -1732,6 +1732,7 @@
 		BF5BF6BD1D00F657009FE532 /* ContentUpvoteRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5BF6BC1D00F657009FE532 /* ContentUpvoteRequestTests.swift */; };
 		BF5BF6BF1D00F6E7009FE532 /* ContentUpvoteToggleOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5BF6BE1D00F6E7009FE532 /* ContentUpvoteToggleOperationTests.swift */; };
 		BF68C4F01C7CEE9900739D87 /* AvatarBadgeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF68C4EE1C7CEE0000739D87 /* AvatarBadgeType.swift */; };
+		BF72ACCA1D2C423C005210FF /* DeleteFlagContentHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF72ACC91D2C423C005210FF /* DeleteFlagContentHelper.swift */; };
 		BF78BF071CE27FB800AFB8F3 /* ContentMediaAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF78BF061CE27FB800AFB8F3 /* ContentMediaAsset.swift */; };
 		BF79B77D1C59542100AC980A /* UIDevice+VDeviceCapability.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF79B77C1C59542100AC980A /* UIDevice+VDeviceCapability.swift */; };
 		BF79C7711C98D3D100222C8A /* LoadingCancellableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF79C76F1C98D3D100222C8A /* LoadingCancellableView.swift */; };
@@ -4492,6 +4493,7 @@
 		BF5BF6BC1D00F657009FE532 /* ContentUpvoteRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentUpvoteRequestTests.swift; sourceTree = "<group>"; };
 		BF5BF6BE1D00F6E7009FE532 /* ContentUpvoteToggleOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentUpvoteToggleOperationTests.swift; sourceTree = "<group>"; };
 		BF68C4EE1C7CEE0000739D87 /* AvatarBadgeType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AvatarBadgeType.swift; sourceTree = "<group>"; };
+		BF72ACC91D2C423C005210FF /* DeleteFlagContentHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DeleteFlagContentHelper.swift; path = "VictoriousIOSSDK/Model+Helpers/DeleteFlagContentHelper.swift"; sourceTree = SOURCE_ROOT; };
 		BF78BF061CE27FB800AFB8F3 /* ContentMediaAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentMediaAsset.swift; sourceTree = "<group>"; };
 		BF79B77C1C59542100AC980A /* UIDevice+VDeviceCapability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIDevice+VDeviceCapability.swift"; sourceTree = "<group>"; };
 		BF79C76F1C98D3D100222C8A /* LoadingCancellableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingCancellableView.swift; sourceTree = "<group>"; };
@@ -6328,6 +6330,7 @@
 				0E17C2A81C9129B90013291C /* VideoAsset.swift */,
 				A7559A791CCFD93B00C37349 /* VIPStatus.swift */,
 				678053791C60838800894821 /* VoteResult.swift */,
+				BF72ACC91D2C423C005210FF /* DeleteFlagContentHelper.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -12075,6 +12078,7 @@
 				0EF7168A1C98F8C60005CF86 /* WebSocket.swift in Sources */,
 				67AA52261C3DC996000444F7 /* PasswordResetRequest.swift in Sources */,
 				A798259A1C0FAE1100C53A07 /* CommentFindRequest.swift in Sources */,
+				BF72ACCA1D2C423C005210FF /* DeleteFlagContentHelper.swift in Sources */,
 				BFE25A491D0B7E2B00F55653 /* ContentDeleteRequest.swift in Sources */,
 				03314F651BE40F3200EE74FD /* User.swift in Sources */,
 				BF68C4F01C7CEE9900739D87 /* AvatarBadgeType.swift in Sources */,
