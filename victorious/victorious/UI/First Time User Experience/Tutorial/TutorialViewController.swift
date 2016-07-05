@@ -15,7 +15,6 @@ class TutorialViewController: UIViewController, UICollectionViewDelegate, UIColl
             collectionView.dataSource = collectionViewDataSource
             collectionView.delegate = self
             collectionView.backgroundColor = nil
-            collectionView.scrollEnabled = false
         }
     }
     
@@ -105,7 +104,6 @@ class TutorialViewController: UIViewController, UICollectionViewDelegate, UIColl
     }
 
     func didFinishFetchingAllItems() {
-        collectionView.scrollEnabled = true
         continueButton.hidden = false
         UIView.animateWithDuration(1.0) { [weak self] in
             self?.continueButton.alpha = 1.0
