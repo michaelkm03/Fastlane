@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol VSettingsSwitchCellDelegate <NSObject>
 
-- (void)settingsDidUpdateFromCell:(VSettingsSwitchCell *)cell;
+- (void)settingsDidUpdateFromCell:(VSettingsSwitchCell *)cell newValue:(BOOL)newValue key:(NSString *)key;
 
 @end
 
@@ -24,10 +24,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) BOOL value;
 @property (nonatomic, weak, nullable) id<VSettingsSwitchCellDelegate> delegate;
 @property (nonatomic, copy) UIColor *switchColor;
+@property (nonatomic, strong) NSString *key;
 
 - (void)setTitle:(NSString *)title value:(BOOL)value;
 
 - (void)setValue:(BOOL)value animated:(BOOL)animated;
+
+- (void)setSeparatorHidden:(BOOL)value; 
 
 + (NSString *)suggestedReuseIdentifier;
 

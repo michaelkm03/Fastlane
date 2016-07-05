@@ -22,6 +22,7 @@
 
 @property (strong, nonatomic) VNoContentView *noContentView;
 @property (strong, nonatomic) NotificationsDataSource *dataSource;
+@property (nonatomic, strong, readonly) VDependencyManager *dependencyManager;
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 

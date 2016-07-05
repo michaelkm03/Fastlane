@@ -27,7 +27,7 @@ static CGFloat const kNotificationAddedVerticalInset = 8.0f;
 
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) VScrollPaginator *scrollPaginator;
-@property (strong, nonatomic) VDependencyManager *dependencyManager;
+@property (nonatomic, strong, readwrite) VDependencyManager *dependencyManager;
 @property (nonatomic) NSInteger badgeNumber;
 
 @end
@@ -94,11 +94,8 @@ static CGFloat const kNotificationAddedVerticalInset = 8.0f;
     
     UIEdgeInsets contentInset = self.v_layoutInsets;
     
-    if (self.dependencyManager.festivalIsEnabled)
-    {
-        contentInset.top += kNotificationAddedVerticalInset;
-        contentInset.bottom += kNotificationAddedVerticalInset;
-    }
+    contentInset.top += kNotificationAddedVerticalInset;
+    contentInset.bottom += kNotificationAddedVerticalInset;
     
     self.tableView.contentInset = contentInset;
     self.tableView.rowHeight = UITableViewAutomaticDimension;
@@ -122,17 +119,8 @@ static CGFloat const kNotificationAddedVerticalInset = 8.0f;
     [self.tableView insertSubview:self.refreshControl atIndex:0];
     [self.refreshControl beginRefreshing];
     
-    if (self.dependencyManager.festivalIsEnabled)
-    {
-        [self.dependencyManager addBackgroundToBackgroundHost:self];
-        self.refreshControl.tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
-    }
-    else
-    {
-        self.tableView.backgroundColor = [self.dependencyManager colorForKey:VDependencyManagerBackgroundColorKey];
-        self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-        self.tableView.separatorColor = [UIColor lightGrayColor];
-    }
+    [self.dependencyManager addBackgroundToBackgroundHost:self];
+    self.refreshControl.tintColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -191,7 +179,7 @@ static CGFloat const kNotificationAddedVerticalInset = 8.0f;
     if ([notification.deepLink length] > 0)
     {
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectNotification];
-        [[VRootViewController sharedRootViewController] openURL:[NSURL URLWithString:notification.deepLink]];
+        [self showDeeplinkWith:notification.deepLink];
     }
 }
 

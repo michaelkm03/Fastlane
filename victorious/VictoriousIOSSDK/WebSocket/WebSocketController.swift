@@ -10,14 +10,14 @@
 ///
 /// It features are:
 /// 1. Open/Close a websocket connection using a configuration.
-/// 2. Receive messages over the websocket.
-/// 3. Send messages over the websocket.
-/// 4. Forward messages using the (FEC) Forum Event Chain™.
-/// 5. It complies to the TemplateNetworkSource protocol so it can be instanciated through the template.
+/// 2. Receive messages over the WebSocket.
+/// 3. Send messages over the WebSocket.
+/// 4. Forward messages using the Forum Event Chain.
+/// 5. It complies to the TemplateNetworkSource protocol so it can be instantiated through the template.
 public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket, WebSocketEventDecoder, WebSocketPongDelegate {
 
     private struct Constants {
-        static let forceDisconnectTimeout: NSTimeInterval = 5
+        static let forceDisconnectTimeout: NSTimeInterval = 2
     }
     
     /// Custom background queue for packing and unpacking messages over the WebSocket.
@@ -30,6 +30,9 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
     
     /// The timer that will fire at a specified interval to keep the connection alive.
     private var pingTimer: NSTimer?
+
+    /// If the client disconnects we still get the disconnect event, this flag is there to help avoid passsing that event on.
+    private var clientInitiatedDisconnect = false
     
     /// The interval to send of ping messages.
     private let pingTimerInterval: NSTimeInterval = 15
@@ -85,11 +88,13 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
     }
     
     /// Sends the disconnect message to the server and waits for a certain amount of time before forcing the disconnect.
-    /// When the disconnect has happened a `WebSocketEvent` of type `.Disconnected` will be broadcasted.
+    /// When the disconnect has happened a `WebSocketEvent` of type `.disconnected` will be broadcasted.
     public func tearDown() {
         guard let webSocket = webSocket where webSocket.isConnected else {
             return
         }
+
+        clientInitiatedDisconnect = true
         webSocket.disconnect(forceTimeout: Constants.forceDisconnectTimeout)
     }
     
@@ -129,10 +134,9 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
     public func websocketDidConnect(socket: WebSocket) {
         let rawMessage = WebSocketRawMessage(messageString: "Connected to URL -> \(socket.currentURL)")
         webSocketMessageContainer.addMessage(rawMessage)
-        
-        let connectEvent = WebSocketEvent.Connected
+
         dispatch_async(dispatch_get_main_queue()) { [weak self] in
-            self?.broadcast(.websocket(connectEvent))
+            self?.broadcast(.websocket(.connected))
         }
     }
 
@@ -142,14 +146,13 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
         
         // The WebSocket instance with the baked in token has been consumed. 
         // A new token has to be fetched and a new WebSocket instance has to be created.
-        webSocket = nil
         pingTimer?.invalidate()
-        
-        let webSocketError = WebSocketError.ConnectionTerminated(code: error?.code, error: error)
-        let disconnectEvent = WebSocketEvent.Disconnected(webSocketError: webSocketError)
-        
-        dispatch_async(dispatch_get_main_queue()) { [weak self] in
-            self?.broadcast(.websocket(disconnectEvent))
+        webSocket = nil
+
+        if let disconnectEvent = eventFromDisconnect(error) {
+            dispatch_async(dispatch_get_main_queue()) { [weak self] in
+                self?.broadcast(disconnectEvent)
+            }
         }
     }
 
@@ -160,10 +163,12 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
             let json = JSON(data: dataFromString)
             rawMessage.json = json
 
-            if let event = decodeEventFromJSON(json) {
+            if let event = (decodeEventFromJSON(json) ?? decodeEventFromJSON(json)) {
                 dispatch_async(dispatch_get_main_queue()) { [weak self] in
                     self?.broadcast(event)
                 }
+            } else {
+                print("Unparsable WebSocket message returned -> \(text)")
             }
         }
 
@@ -198,8 +203,41 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
     /// Will send outgoing content events back over the event chain.
     private func bounceBackOutboundEvent(event: ForumEvent) {
         if case .sendContent(let content) = event {
-            broadcast(.appendContent([content]))
+            if content.author.accessLevel == .owner {
+                broadcast(.showCaptionContent(content))
+            } else {
+                broadcast(.appendContent([content]))
+            }
         }
+    }
+
+    /// When the connection is closed we could get a custom error message from our backend OR it could be one generated by the system.
+    /// We therefore first try to parse out the custom one and if that fails we go ahead and check for a system error.
+    /// In the odd case that none of these exists we just create an empty disconnect event so the rest of the app knows that the connection is closed.
+    private func eventFromDisconnect(error: NSError?) -> ForumEvent? {
+        var disconnectEvent: ForumEvent?
+
+        // According to the RFC even if the client disconnects we should receive a close message with the error code 1000.
+        // We still want to broadcast that to the rest of the app but without an error so it's explicit nothing went wrong.
+        if let error = error where clientInitiatedDisconnect && WebSocket.CloseCode(rawValue: UInt16(error.code)) == WebSocket.CloseCode.Normal {
+            clientInitiatedDisconnect = false
+            disconnectEvent = .websocket(.disconnected(webSocketError: nil))
+        }
+        else if let error = error, let errorMessageData = error.localizedDescription.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false) {
+            // Try to parse out custom error message.
+            let errorJSON = JSON(data: errorMessageData)
+            if let webSocketError = decodeErrorFromJSON(errorJSON, didDisconnect: true) {
+                disconnectEvent = webSocketError
+            }
+        }
+
+        // System generated error if all else fails.
+        if disconnectEvent == nil {
+            let webSocketError = WebSocketError.connectionTerminated(code: error?.code, message: error?.localizedDescription)
+            disconnectEvent = ForumEvent.websocket(.disconnected(webSocketError: webSocketError))
+        }
+
+        return disconnectEvent
     }
 
     private func sendJSON(from dictionaryConvertible: DictionaryConvertible) {

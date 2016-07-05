@@ -14,12 +14,12 @@ import Foundation
 public protocol ContentModel: PreviewImageContainer, DictionaryConvertible {
     var createdAt: NSDate { get }
     var type: ContentType { get }
-    
-    var id: String? { get }
+    var id: Content.ID? { get }
     var isLikedByCurrentUser: Bool { get }
     var text: String? { get }
     var hashtags: [Hashtag] { get }
     var shareURL: NSURL? { get }
+    var linkedURL: NSURL? { get }
     var author: UserModel { get }
     
     /// Whether this content is only accessible for VIPs
@@ -39,12 +39,6 @@ public protocol ContentModel: PreviewImageContainer, DictionaryConvertible {
 }
 
 extension ContentModel {
-    // MARK: - Assets
-    
-    public var aspectRatio: CGFloat {
-        return previewImages.first?.mediaMetaData.size?.aspectRatio ?? 0.0
-    }
-    
     // MARK: - DictionaryConvertible
     
     public var rootKey: String {
@@ -76,11 +70,15 @@ extension ContentModel {
 }
 
 public class Content: ContentModel {
-    public let id: String?
+    
+    public typealias ID = String
+    
+    public let id: ID?
     public let status: String?
     public let text: String?
     public let hashtags: [Hashtag]
     public let shareURL: NSURL?
+    public let linkedURL: NSURL?
     public let createdAt: NSDate
     public let previewImages: [ImageAssetModel]
     public let assets: [ContentMediaAssetModel]
@@ -113,11 +111,12 @@ public class Content: ContentModel {
         self.id = id
         self.status = json["status"].string
         self.shareURL = json["share_url"].URL
-        self.createdAt = NSDate(timeIntervalSince1970: json["released_at"].doubleValue/1000) // Backend returns in milliseconds
+        self.createdAt = NSDate(millisecondsSince1970: json["released_at"].doubleValue)
         self.hashtags = []
         self.type = type
         self.text = json["title"].string
         self.author = author
+        self.linkedURL = NSURL(string: json[typeString]["data"].stringValue)
         
         self.previewImages = (json["preview"][previewType]["assets"].array ?? []).flatMap { ImageAsset(json: $0) }
         
@@ -136,7 +135,9 @@ public class Content: ContentModel {
     }
     
     public init?(chatMessageJSON json: JSON, serverTime: NSDate) {
-        guard let user = User(json: json["user"]) else {
+        guard
+            let user = User(json: json["user"])
+        else {
             return nil
         }
         
@@ -149,8 +150,9 @@ public class Content: ContentModel {
         status = nil
         hashtags = []
         shareURL = nil
+        linkedURL = nil
         previewImages = []
-        type = .text
+        self.type = assets.first?.contentType ?? .text
         isVIPOnly = false
         isLikedByCurrentUser = false
         tracking = nil //Tracking is not returned on chat messages
@@ -181,6 +183,7 @@ public class Content: ContentModel {
         self.status = nil
         self.hashtags = []
         self.shareURL = nil
+        self.linkedURL = nil
         self.isVIPOnly = false
         self.tracking = nil
         isLikedByCurrentUser = false

@@ -18,7 +18,7 @@ protocol TrackableButton {
     func templateAppearanceValue<AppearanceValueType>(appearance: TrackableButtonAppearance) -> AppearanceValueType?
 }
 
-extension TrackableButton {
+extension TrackableButton where Self: UIButton {
     var trackingID: String? {
         return dependencyManager?.stringForKey("id")
     }

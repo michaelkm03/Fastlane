@@ -251,6 +251,9 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             if oldValue != textViewHasPrependedImage {
                 attachmentTabBar.buttonsEnabled = !textViewHasPrependedImage
                 attachmentTabBar.enableButtonForIdentifier(ComposerInputAttachmentType.Hashtag.rawValue)
+                if !textViewHasPrependedImage {
+                    selectedAsset = nil
+                }
             }
         }
     }
@@ -341,8 +344,8 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     override func updateViewConstraints() {
         
         let confirmButtonContainerHeight = confirmButtonContainer.bounds.height
-        if confirmButtonContainerHeight != abs(confirmButton.backgroundInsets.vertical) {
-            confirmButton.backgroundInsets = UIEdgeInsetsMake(-confirmButtonContainerHeight / 2, -Constants.confirmButtonHorizontalInset, -confirmButtonContainerHeight / 2, -Constants.confirmButtonHorizontalInset)
+        if confirmButtonContainerHeight != abs(confirmButton.touchInsets.vertical) {
+            confirmButton.touchInsets = UIEdgeInsetsMake(-confirmButtonContainerHeight / 2, -Constants.confirmButtonHorizontalInset, -confirmButtonContainerHeight / 2, -Constants.confirmButtonHorizontalInset)
         }
 
         let desiredAttachmentContainerHeight = shouldShowAttachmentContainer ? confirmButtonContainer.bounds.height : 0

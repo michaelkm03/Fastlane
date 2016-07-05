@@ -12,9 +12,9 @@ import VictoriousIOSSDK
 
 @objc(VImageAsset)
 class VImageAsset: NSManagedObject, ImageAssetModel {
-    @NSManaged var height: NSNumber?
+    @NSManaged var height: NSNumber
     @NSManaged var imageURL: String
-    @NSManaged var width: NSNumber?
+    @NSManaged var width: NSNumber
     @NSManaged var streamItems: NSSet?
     @NSManaged var user: VUser?
     @NSManaged var content: VContent?
@@ -22,10 +22,7 @@ class VImageAsset: NSManagedObject, ImageAssetModel {
     // MARK: - ImageAssetModel
     
     var mediaMetaData: MediaMetaData {
-        var size: CGSize? = nil
-        if let width = self.width?.floatValue, let height = self.height?.floatValue {
-            size = CGSize(width: CGFloat(width), height: CGFloat(height))
-        }
+        let size = CGSize(width: CGFloat(width.floatValue), height: CGFloat(height.floatValue))
         
         // retrievedURL should be valid because it's an non optional property on the network model.
         // But due to Core Data limitations, we lose that information when we store the url as a String in core data

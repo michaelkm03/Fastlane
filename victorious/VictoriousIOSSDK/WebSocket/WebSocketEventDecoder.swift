@@ -14,6 +14,7 @@ private struct Keys {
     static let refreshStage         = "refresh"
     static let epochTime            = "server_time"
     static let type                 = "type"
+    static let error                = "error"
 }
 
 private struct Types {
@@ -23,7 +24,12 @@ private struct Types {
 }
 
 protocol WebSocketEventDecoder {
+    /// Parses out a ForumEvent from the JSON string coming in over the WebSocket.
     func decodeEventFromJSON(json: JSON) -> ForumEvent?
+
+    /// `WebSocketError` is handled uniquely since it does not follow the layout as the other messages. 
+    /// In theory we could get an error message without the connection being closed, use `didDisconnect` to specify this.
+    func decodeErrorFromJSON(json: JSON, didDisconnect: Bool) -> ForumEvent?
 }
 
 extension WebSocketEventDecoder {
@@ -56,10 +62,24 @@ extension WebSocketEventDecoder {
                     forumEvent = .chatUserCount(chatUserCount)
                 }
             default:
-                print("Unparsable WebSocket message returned -> \(rootNode.stringValue)")
+                forumEvent = nil
             }
         }
         
         return forumEvent
+    }
+
+    func decodeErrorFromJSON(json: JSON, didDisconnect: Bool = false) -> ForumEvent? {
+        var webSocketEvent: ForumEvent?
+
+        if let webSocketError = WebSocketError(json: json[Keys.root][Keys.error], didDisconnect: didDisconnect) {
+            if didDisconnect {
+                webSocketEvent = .websocket(.disconnected(webSocketError: webSocketError))
+            } else {
+                webSocketEvent = .websocket(.serverError(webSocketError: webSocketError))
+            }
+        }
+
+        return webSocketEvent
     }
 }
