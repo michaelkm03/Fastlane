@@ -27,9 +27,19 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     }
     
     private(set) var videoCoordinator: VContentVideoPlayerCoordinator?
-    private lazy var previewImageView = UIImageView()
-    private lazy var textPostLabel = UILabel()
-    private lazy var videoContainerView = VPassthroughContainerView()
+    private lazy var previewImageView = {
+        return UIImageView()
+    }()
+    private lazy var textPostLabel: UILabel = {
+        let label = UILabel()
+        let textPostDependency = self.dependencyManager?.textPostDependency
+        label.font = textPostDependency?.textPostFont ?? Constants.defaultTextFont
+        label.textColor = textPostDependency?.textPostColor ?? Constants.defaultTextColor
+        return label
+    }()
+    private lazy var videoContainerView = {
+        return VPassthroughContainerView()
+    }()
     private var backgroundView: UIImageView?
     private let spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
     
@@ -185,7 +195,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     
     private func didFinishHidingContent() {
         alphaHasAnimatedToZero = true
-        guard let content = self.content else {
+        guard let content = content else {
             return
         }
         
@@ -194,11 +204,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
                 updatePreviewImageIfReady()
             case .text:
                 updateTextLabelIfReady()
-            case .video:
-                break
-            case .gif:
-                break
-            case .link:
+            case .video, .gif, .link:
                 break
         }
     }
@@ -288,11 +294,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         tearDownPreviewImage()
         tearDownVideoPlayer()
         
-        let textPostDependency = dependencyManager?.textPostDependency
-        
         textPostLabel.hidden = true //Hide while we set up the view for the next post
-        textPostLabel.font = textPostDependency?.textPostFont ?? Constants.defaultTextFont
-        textPostLabel.textColor = textPostDependency?.textPostColor ?? Constants.defaultTextColor
     }
     
     private func tearDownTextLabel() {
@@ -303,7 +305,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     private func updateTextLabelIfReady() {
         guard
             let textPostDependency = dependencyManager?.textPostDependency,
-            let content = self.content,
+            let content = content,
             let text = content.text
         where
             content.type == .text
