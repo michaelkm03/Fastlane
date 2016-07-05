@@ -90,16 +90,16 @@ extension ForumViewController {
         let contentType = ContentType(rawValue: next["type"]!)!
         let source = next["source"]
 
-        var asset: ContentMediaAsset!
+        var assets: [ContentMediaAssetModel] = []
         var previewAsset = randPreviewImage()
         if let id = next["id"] {
             let parameters = ContentMediaAsset.LocalAssetParameters(contentType: contentType, remoteID: id, source: source)
-            asset = ContentMediaAsset(initializationParameters: parameters)
+            assets.append(ContentMediaAsset(initializationParameters: parameters)!)
         }
-        else {
+        else if (contentType != .text) {
             let url = NSURL(string: next["url"]!)!
             let parameters = ContentMediaAsset.RemoteAssetParameters(contentType: contentType, url: url, source: source)
-            asset = ContentMediaAsset(initializationParameters: parameters)
+            assets.append(ContentMediaAsset(initializationParameters: parameters)!)
             if contentType == .image {
                 previewAsset = ImageAsset(mediaMetaData: MediaMetaData(url: url, size: CGSizeMake(100, 100)))
             }
@@ -108,8 +108,8 @@ extension ForumViewController {
         let content = Content(
             id: String(1000 + Int(arc4random() % 9999)),
             type: contentType,
-            text: randomText(),
-            assets: [asset],
+            text: next["text"] ?? randomText(),
+            assets: assets,
             previewImages: [previewAsset],
             author: User(
                 id: 1000 + Int(arc4random() % 9999),
@@ -188,6 +188,18 @@ private let sampleStageImageContents = [
         "id": "hgb8Jofr5ew",
         "length": "30"
     ],
+    [
+        "type" : "text",
+        "text" : "Stage post text test content"
+    ],
+    [
+        "type" : "text",
+        "text" : "VIP Event happening now! Switch to VIP chat to check it out!"
+    ],
+    [
+        "type" : "text",
+        "text" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation "
+    ]
 ]
 
 private let sampleMedia = [

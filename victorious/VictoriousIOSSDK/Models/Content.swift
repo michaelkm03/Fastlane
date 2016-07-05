@@ -114,7 +114,14 @@ public class Content: ContentModel {
         self.createdAt = NSDate(millisecondsSince1970: json["released_at"].doubleValue)
         self.hashtags = []
         self.type = type
-        self.text = json["title"].string
+        
+        if (type == .text) {
+            self.text = json[typeString]["data"].string
+        }
+        else {
+            self.text = json["title"].string
+        }
+        
         self.author = author
         self.linkedURL = NSURL(string: json[typeString]["data"].stringValue)
         
