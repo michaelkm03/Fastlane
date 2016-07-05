@@ -67,7 +67,6 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         
         addSubview(previewImageView)
         
-        videoContainerView.frame = bounds
         videoContainerView.backgroundColor = .clearColor()
         addSubview(videoContainerView)
         
@@ -348,7 +347,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         textPostLabel.frame = CGRect(x: bounds.origin.x + CGFloat(Constants.textPostPadding), y: bounds.origin.y, width: bounds.width - CGFloat(2 * Constants.textPostPadding), height: bounds.height)
         backgroundView?.frame = computeBackgroundBounds()
         spinner.center = CGPoint(x: bounds.midX, y: bounds.midY)
-        videoCoordinator?.layout(in: bounds)
+        videoCoordinator?.layout(in: videoContainerView.bounds, withContentFill: !showsBackground)
     }
     
     private func updatePreviewImageIfReady() {
