@@ -110,6 +110,10 @@ class TutorialViewController: UIViewController, UICollectionViewDelegate, UIColl
         }
     }
     
+    // MARK: - New Message Layout
+    
+    // The following 2 methods are directly copy/pasted from ChatFeedViewController. I intentionally avoid changing anything so we are aware of the copy/paste. The goal is to remove this duplciation all together by reusing chat feed component for tutorials. Per https://jira.victorious.com/browse/IOS-5070, we are doing this quick fix for now to keep moving.
+    
     private func handleNewItems(newItems: [ChatFeedContent], loadingType: PaginatedLoadingType, completion: (() -> Void)? = nil) {
         guard newItems.count > 0 || loadingType == .refresh else {
             return
