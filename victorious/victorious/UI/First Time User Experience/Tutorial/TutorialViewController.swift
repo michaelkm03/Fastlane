@@ -100,8 +100,8 @@ class TutorialViewController: UIViewController, UICollectionViewDelegate, UIColl
     
     // MARK: - TutorialNetworkDataSourceDelegate
     
-    func didUpdateVisibleItems(from oldValue: [ChatFeedContent], to newValue: [ChatFeedContent]) {
-        handleNewItems(newValue, loadingType: .refresh)
+    func didReceiveNewMessage(message: ChatFeedContent) {
+        handleNewItems([message], loadingType: .newer)
     }
 
     func didFinishFetchingAllItems() {
