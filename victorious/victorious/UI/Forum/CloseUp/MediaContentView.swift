@@ -26,25 +26,28 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         static let defaultTextFont = UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline)
     }
     
+    var dependencyManager: VDependencyManager?
+
     private(set) var videoCoordinator: VContentVideoPlayerCoordinator?
+    private var backgroundView: UIImageView?
+    private let spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+    private var alphaHasAnimatedToZero = false
+    private var downloadedPreviewImage: UIImage?
+
     private lazy var previewImageView = {
         return UIImageView()
     }()
     private lazy var textPostLabel: UILabel = {
         let label = UILabel()
-        let textPostDependency = self.dependencyManager?.textPostDependency
-        label.font = textPostDependency?.textPostFont ?? Constants.defaultTextFont
-        label.textColor = textPostDependency?.textPostColor ?? Constants.defaultTextColor
+        label.textAlignment = Constants.textAlignment
+        label.numberOfLines = Constants.maxLineCount
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = Constants.minimumScaleFactor
         return label
     }()
     private lazy var videoContainerView = {
         return VPassthroughContainerView()
     }()
-    private var backgroundView: UIImageView?
-    private let spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
-    
-    private var alphaHasAnimatedToZero = false
-    private var downloadedPreviewImage: UIImage?
     
     private lazy var singleTapRecognizer: UITapGestureRecognizer = {
         let singleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(onContentTap))
@@ -53,8 +56,6 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         
         return singleTapRecognizer
     }()
-    
-    var dependencyManager: VDependencyManager?
     
     // MARK: - Initializing
     
@@ -80,10 +81,6 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         videoContainerView.backgroundColor = .clearColor()
         addSubview(videoContainerView)
         
-        textPostLabel.textAlignment = Constants.textAlignment
-        textPostLabel.numberOfLines = Constants.maxLineCount
-        textPostLabel.adjustsFontSizeToFitWidth = true
-        textPostLabel.minimumScaleFactor = Constants.minimumScaleFactor
         addSubview(textPostLabel)
   
         addSubview(spinner)
@@ -293,6 +290,10 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         //Text doesn't need the image view and video player
         tearDownPreviewImage()
         tearDownVideoPlayer()
+        
+        let textPostDependency = self.dependencyManager?.textPostDependency
+        textPostLabel.font = textPostDependency?.textPostFont ?? Constants.defaultTextFont
+        textPostLabel.textColor = textPostDependency?.textPostColor ?? Constants.defaultTextColor
         
         textPostLabel.hidden = true //Hide while we set up the view for the next post
     }
