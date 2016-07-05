@@ -65,8 +65,8 @@
                                                 <constraints>
                                                     <constraint firstAttribute="height" priority="998" constant="27" id="4PX-UV-qLv"/>
                                                     <constraint firstAttribute="trailing" secondItem="FNU-QM-fIQ" secondAttribute="trailing" id="AVr-Dj-QAM"/>
-                                                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="FNU-QM-fIQ" secondAttribute="bottom" id="F0Y-Rd-1ae"/>
-                                                    <constraint firstItem="FNU-QM-fIQ" firstAttribute="top" relation="greaterThanOrEqual" secondItem="7nb-cq-ZtM" secondAttribute="top" id="Ljo-LZ-G5S"/>
+                                                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="FNU-QM-fIQ" secondAttribute="bottom" constant="8" id="F0Y-Rd-1ae"/>
+                                                    <constraint firstItem="FNU-QM-fIQ" firstAttribute="top" relation="greaterThanOrEqual" secondItem="7nb-cq-ZtM" secondAttribute="top" constant="8" id="Ljo-LZ-G5S"/>
                                                     <constraint firstItem="FNU-QM-fIQ" firstAttribute="centerY" secondItem="7nb-cq-ZtM" secondAttribute="centerY" id="Q1J-vv-1qp"/>
                                                     <constraint firstItem="FNU-QM-fIQ" firstAttribute="leading" secondItem="7nb-cq-ZtM" secondAttribute="leading" id="aMp-u6-CMa"/>
                                                 </constraints>

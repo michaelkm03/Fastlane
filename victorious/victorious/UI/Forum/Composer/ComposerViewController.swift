@@ -20,6 +20,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         static let minimumConfirmButtonContainerHeight: CGFloat = 52
         static let composerTextInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         static let confirmButtonHorizontalInset: CGFloat = 16
+        static let textViewMargins = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
     }
     
     /// ForumEventSender
@@ -356,7 +357,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         if textViewHasText {
             textViewContentHeight = ceil(textView.contentSize.height)
             //Ensure that text view container is less than maximum height
-            textViewContainerHeight = min(textViewContentHeight, maximumTextInputHeight)
+            textViewContainerHeight = min(textViewContentHeight, maximumTextInputHeight) + Constants.textViewMargins.top + Constants.textViewMargins.bottom
         }
         
         //Ensure text view container is at least as tall as the confirm button container
