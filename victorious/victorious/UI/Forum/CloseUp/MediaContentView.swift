@@ -328,9 +328,8 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         else {
             backgroundView?.image = nil
             backgroundView?.backgroundColor = Constants.defaultTextBackgroundColor
+            renderText(text)
         }
-        
-        renderText(text)
     }
     
     private func renderText(text: String) {
