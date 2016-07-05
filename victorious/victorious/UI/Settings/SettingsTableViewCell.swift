@@ -9,6 +9,7 @@
 import UIKit
 
 class SettingsTableViewCell: UITableViewCell, VBackgroundContainer {
+    
     // MARK: - Views
     
     @IBOutlet private var label: UILabel!
