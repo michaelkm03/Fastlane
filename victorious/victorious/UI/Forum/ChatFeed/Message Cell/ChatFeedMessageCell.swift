@@ -15,36 +15,10 @@ protocol ChatFeedMessageCellDelegate: class {
 }
 
 class ChatFeedMessageCell: UICollectionViewCell {
-    static let imagePreviewCellReuseIdentifier = "ImagePreviewChatFeedMessageCell"
-    static let videoPreviewCellReuseIdentifier = "VideoPreviewChatFeedMessageCell"
-    static let nonMediaCellReuseIdentifier = "NonMediaChatFeedMessageCell"
     
-    let defaultAvatarImage = UIImage(named: "profile_full")
+    // MARK: - Constants
     
-    weak var delegate: ChatFeedMessageCellDelegate?
-    
-    var dependencyManager: VDependencyManager! {
-        didSet {
-            if dependencyManager != oldValue {
-                updateStyle()
-            }
-        }
-    }
-    
-    var content: ContentModel? {
-        didSet {
-            // Updating the content is expensive, so we try to bail if we're setting the same content as before.
-            // However, chat message contents don't have IDs, so we can't do this if the ID is nil.
-            if content?.id == oldValue?.id && content?.id != nil {
-                return
-            }
-            
-            populateData()
-            setNeedsLayout()
-        }
-    }
-    
-    // MARK: - Configuration
+    // We don't use a Constants struct to allow for easy access to these values from our static layout methods.
     
     static let captionInsets = UIEdgeInsets(top: 8.0, left: 8.0, bottom: 8.0, right: 8.0)
     static let horizontalSpacing = CGFloat(12.0)
@@ -58,6 +32,14 @@ class ChatFeedMessageCell: UICollectionViewCell {
     static let shadowOpacity = Float(0.2)
     static let shadowColor = UIColor.blackColor()
     static let shadowOffset = CGSize(width: 0.0, height: 1.0)
+    
+    let defaultAvatarImage = UIImage(named: "profile_full")
+    
+    // MARK: - Reuse identifiers
+    
+    static let imagePreviewCellReuseIdentifier = "ImagePreviewChatFeedMessageCell"
+    static let videoPreviewCellReuseIdentifier = "VideoPreviewChatFeedMessageCell"
+    static let nonMediaCellReuseIdentifier = "NonMediaChatFeedMessageCell"
     
     // MARK: - Initializing
     
@@ -88,6 +70,33 @@ class ChatFeedMessageCell: UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("NSCoding not supported.")
+    }
+    
+    // MARK: - Configuration
+    
+    weak var delegate: ChatFeedMessageCellDelegate?
+    
+    var dependencyManager: VDependencyManager! {
+        didSet {
+            if dependencyManager != oldValue {
+                updateStyle()
+            }
+        }
+    }
+    
+    // MARK: - Content
+    
+    var content: ContentModel? {
+        didSet {
+            // Updating the content is expensive, so we try to bail if we're setting the same content as before.
+            // However, chat message contents don't have IDs, so we can't do this if the ID is nil.
+            if content?.id == oldValue?.id && content?.id != nil {
+                return
+            }
+            
+            populateData()
+            setNeedsLayout()
+        }
     }
     
     // MARK: - Subviews
