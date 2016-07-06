@@ -40,7 +40,7 @@ final class ContentFeedOperation: NSOperation, Queueable {
     // MARK: - Executing
     
     override func main() {
-        guard error == nil else {
+        guard error == nil && !cancelled else {
             return
         }
         

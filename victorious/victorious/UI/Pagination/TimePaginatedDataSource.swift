@@ -38,7 +38,7 @@ enum PaginatedOrdering {
 ///
 /// - NOTE: This should be renamed to `PaginatedDataSource` once the other `PaginatedDataSource` is removed.
 ///
-class TimePaginatedDataSource<Item, Operation: Queueable where Operation.CompletionBlockType == (newItems: [Item], stageEvent: ForumEvent?, error: NSError?) -> Void> {
+class TimePaginatedDataSource<Item, Operation: Queueable where Operation.CompletionBlockType == (newItems: [Item], stageEvent: ForumEvent?, error: NSError?) -> Void, Operation: NSOperation> {
     
     // MARK: - Initializing
     
@@ -54,13 +54,16 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
     let ordering: PaginatedOrdering
     let createOperation: (url: NSURL) -> Operation
     
-    // MARK: - Managing content
+    // MARK: - Managing contents
     
     /// The data source's list of items ordered from oldest to newest.
     private(set) var items: [Item] = []
     
+    private var lastOperation: Operation?
     /// Whether the data source is currently loading a page of items or not.
-    private(set) var isLoading = false
+    var isLoading: Bool {
+        return lastOperation != nil
+    }
     
     /// Loads a new page of items.
     ///
@@ -69,6 +72,12 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
     /// This method does nothing if a page is already being loaded.
     ///
     func loadItems(loadingType: PaginatedLoadingType, completion: ((newItems: [Item], stageEvent: ForumEvent?, error: NSError?) -> Void)? = nil) {
+        
+        if loadingType == .refresh {
+            lastOperation?.cancel()
+            lastOperation = nil
+        }
+        
         guard !isLoading else {
             return
         }
@@ -78,10 +87,9 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
             return
         }
         
-        isLoading = true
+        lastOperation = createOperation(url: url)
         
-        
-        createOperation(url: url).queue { [weak self] newItems, stageEvent, error in
+        lastOperation?.queue { [weak self] newItems, stageEvent, error in
             defer {
                 completion?(newItems: newItems, stageEvent: stageEvent, error: error)
             }
@@ -107,7 +115,7 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
                     }
             }
             
-            self?.isLoading = false
+            self?.lastOperation = nil
         }
     }
     
