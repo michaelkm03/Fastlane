@@ -76,13 +76,6 @@ extension ChatFeedMessageCell {
         else {
             cell.captionLabel.frame = CGRect.zero
         }
-        
-//        cell.previewView?.hidden = true
-//        cell.captionLabel.hidden = true
-//        cell.bubbleView.backgroundColor = UIColor(white: 0.4235, alpha: 1.0)
-//        cell.bubbleBorderView.hidden = true
-        cell.avatarView.image = nil
-        cell.avatarView.backgroundColor = UIColor(white: 0.4235, alpha: 1.0)
     }
     
     private static func layoutBubbleView(bubbleView: UIView?, forAlignment alignment: ChatFeedMessageCellAlignment, size: CGSize?, precedingBubbleFrame: CGRect?, inBounds bounds: CGRect) -> CGRect? {
