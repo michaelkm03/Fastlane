@@ -32,7 +32,10 @@ class ContentFetchOperation: RemoteFetcherOperation, RequestOperation {
     
     func onComplete(result: ContentFetchRequest.ResultType) {
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            guard let id = result.id else {
+            guard
+                let id = result.id
+                where !DeleteFlagContentHelper.isFlagged(id)
+            else {
                 self.results = []
                 return
             }

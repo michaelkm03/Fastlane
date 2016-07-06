@@ -77,7 +77,8 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
             collectionView.collectionViewLayout.invalidateLayout()
             
             if loadingType == .refresh {
-                collectionView.reloadData()
+                // GridStreamViewController will only have one section. Also, collectionView.reloadData() was not properly reloading the cells.
+                collectionView.reloadSections(NSIndexSet(index: 0))
             }
             else if let totalItemCount = self?.items.count where newItems.count > 0 {
                 let previousCount = totalItemCount - newItems.count

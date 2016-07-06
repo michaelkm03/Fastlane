@@ -101,7 +101,6 @@ public class Content: ContentModel {
             let type = ContentType(rawValue: typeString),
             let previewType = json["preview"]["type"].string,
             let author = User(json: viewedContentJSON["author"])
-            where DeleteFlagContentHelper.canParse(id)
         else {
             NSLog("Required field missing in content json -> \(viewedContentJSON)")
             return nil

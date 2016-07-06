@@ -9,14 +9,13 @@
 import UIKit
 
 class DeleteFlagContentHelper: NSObject {
-    private static let sharedInstance = DeleteFlagContentHelper()
-    private var ids: Set<Content.ID> = Set()
+    private static var ids: Set<Content.ID> = Set()
     
-    static func canParse(contentID: Content.ID) -> Bool {
-        return sharedInstance.ids.contains(contentID)
+    static func isFlagged(contentID: Content.ID) -> Bool {
+        return ids.contains(contentID)
     }
     
     static func add(contentID: Content.ID) {
-        sharedInstance.ids.insert(contentID)
+        ids.insert(contentID)
     }
 }
