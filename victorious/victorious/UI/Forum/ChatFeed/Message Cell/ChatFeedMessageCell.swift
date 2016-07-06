@@ -29,8 +29,6 @@ class ChatFeedMessageCell: UICollectionViewCell {
     static let topLabelXInset = CGFloat(4.0)
     static let bubbleSpacing = CGFloat(6.0)
     
-    let defaultAvatarImage = UIImage(named: "profile_full")
-    
     // MARK: - Reuse identifiers
     
     static let imagePreviewCellReuseIdentifier = "ImagePreviewChatFeedMessageCell"
