@@ -96,7 +96,6 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
             item.loop = shouldLoop
             item.useAspectFit = true
             videoPlayer.setItem(item)
-            videoPlayer.playFromStart()
             state = .Playing
         }
     }
@@ -148,12 +147,9 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     // MARK: - VVideoPlayerDelegate
     
     func videoPlayerDidBecomeReady(videoPlayer: VVideoPlayer) {
-        videoPlayer.playFromStart()
         state = .Playing
         delegate?.coordinatorDidBecomeReady()
-    }
-    
-    func videoPlayerItemIsReadyToPlay(videoPlayer: VVideoPlayer) {
+        videoPlayer.playFromStart()
         if let seekAheadTime = content.seekAheadTime where Int(videoPlayer.currentTimeSeconds) <= Int(seekAheadTime) {
             videoPlayer.seekToTimeSeconds(seekAheadTime)
         }
@@ -166,13 +162,6 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     func videoPlayerDidStartBuffering(videoPlayer: VVideoPlayer) {
         if state != .Scrubbing && state != .Paused {
             state = .Buffering
-        }
-    }
-    
-    func videoPlayerDidStopBuffering(videoPlayer: VVideoPlayer) {
-        if state == .Buffering {
-            videoPlayer.play()
-            state = .Playing
         }
     }
     

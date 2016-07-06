@@ -193,9 +193,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
                 self.videoContainerView.alpha = 1
                 self.previewImageView.alpha = 1
             },
-            completion: { [weak self] completed in
-                self?.videoCoordinator?.playVideo()
-            }
+            completion: nil
         )
     }
     

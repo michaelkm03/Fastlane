@@ -251,12 +251,13 @@ static NSString * const kPlayerItemIsReadyToPlay = @"status";
                                              selector:@selector(playerItemDidReachEnd:)
                                                  name:AVPlayerItemDidPlayToEndTimeNotification
                                                object:playerItem];
-    
+    self.isReady = true;
+
     if ( [self.delegate respondsToSelector:@selector(videoPlayerDidBecomeReady:)])
     {
         [self.delegate videoPlayerDidBecomeReady:self];
     }
-    self.isReady = true;
+    
     if ( self.shouldPlayWhenReady )
     {
         [self play];
