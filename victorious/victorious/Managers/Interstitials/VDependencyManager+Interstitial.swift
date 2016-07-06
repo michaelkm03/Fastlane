@@ -30,7 +30,7 @@ extension VDependencyManager {
                     interstitial = toastViewController
                 }
             case .reconnectingError:
-                let templateValue = templateValueOfType(InterstitialToastViewController.self, forKey: "errorToast")
+                let templateValue = templateValueOfType(InterstitialToastViewController.self, forKey: "error.toast")
                 if let toastViewController = templateValue as? InterstitialToastViewController {
                     interstitial = toastViewController
                 }
