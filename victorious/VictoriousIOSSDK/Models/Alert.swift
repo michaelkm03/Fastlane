@@ -22,7 +22,7 @@ public enum AlertType: String {
     // MARK: Locally created alerts.
 
     case clientSideCreated  = "clientSideCreated"
-    case reconnectingError   = "reconnectingError"
+    case reconnectingError  = "reconnectingError"
 }
 
 public struct Alert: Equatable {

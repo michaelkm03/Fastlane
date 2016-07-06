@@ -10,7 +10,12 @@ import Foundation
 import VictoriousIOSSDK
 
 protocol InterstitialListener {
+    /// A callback to let the implementer know that a new Alert has been registered.
+    /// The receiver can then when it's ready call `showNextInterstitial` on `InterstitialManager`.
     func newInterstitialHasBeenRegistered()
+
+    /// Dismisses the current interstitial on screen with the specified alert type.
+    func dismissCurrentInterstitial(of alertType: AlertType)
 }
 
 /// A singleton object for managing alerts received from the Victorious API and presenting appropriate
@@ -79,8 +84,11 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
     }
 
     private func acknowledgeAlert(alert: Alert) {
-        if alert.type != .reconnectingError {
-            AlertAcknowledgeOperation(alertID: alert.alertID).queue()
+        switch alert.type {
+            case .achievement, .levelUp, .statusUpdate, .toast:
+                AlertAcknowledgeOperation(alertID: alert.alertID).queue()
+            default:
+                break
         }
 
         shownAlerts.append(alert)
