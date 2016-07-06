@@ -601,6 +601,7 @@
 		670C65991C52C49900BD7F3F /* UserShelfTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670C65981C52C49900BD7F3F /* UserShelfTests.swift */; };
 		670C659B1C52C7EA00BD7F3F /* ListShelfTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670C659A1C52C7EA00BD7F3F /* ListShelfTests.swift */; };
 		670C659D1C52CE8A00BD7F3F /* HashtagShelfTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670C659C1C52CE8A00BD7F3F /* HashtagShelfTests.swift */; };
+		671658FB1D2CA367000C7F62 /* ChatFeedCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 671658FA1D2CA367000C7F62 /* ChatFeedCollectionViewLayout.swift */; };
 		671B01B51BFD5AB800E47902 /* DismissButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 671B01B41BFD5AB800E47902 /* DismissButton.swift */; };
 		672033571C4DCF900015D91D /* TrendingUsersResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 672033561C4DCF900015D91D /* TrendingUsersResponse.json */; };
 		6720335B1C4DD8A10015D91D /* TrendingUsersOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6720335A1C4DD8A10015D91D /* TrendingUsersOperationTests.swift */; };
@@ -3080,6 +3081,7 @@
 		670C65981C52C49900BD7F3F /* UserShelfTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserShelfTests.swift; sourceTree = "<group>"; };
 		670C659A1C52C7EA00BD7F3F /* ListShelfTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListShelfTests.swift; sourceTree = "<group>"; };
 		670C659C1C52CE8A00BD7F3F /* HashtagShelfTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagShelfTests.swift; sourceTree = "<group>"; };
+		671658FA1D2CA367000C7F62 /* ChatFeedCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedCollectionViewLayout.swift; sourceTree = "<group>"; };
 		671B01B41BFD5AB800E47902 /* DismissButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissButton.swift; sourceTree = "<group>"; };
 		672033561C4DCF900015D91D /* TrendingUsersResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TrendingUsersResponse.json; sourceTree = "<group>"; };
 		6720335A1C4DD8A10015D91D /* TrendingUsersOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendingUsersOperationTests.swift; sourceTree = "<group>"; };
@@ -8332,6 +8334,7 @@
 				A73BA2B51C9393ED008168B5 /* ChatFeedViewController.swift */,
 				A73BA2B61C9393ED008168B5 /* Message Cell */,
 				A73BA2BC1C9393ED008168B5 /* NewItemsController.swift */,
+				671658FA1D2CA367000C7F62 /* ChatFeedCollectionViewLayout.swift */,
 			);
 			path = ChatFeed;
 			sourceTree = "<group>";
@@ -12925,6 +12928,7 @@
 				F0FBC4441D22EB580070873F /* CaptionBarPopulator.swift in Sources */,
 				A743E7EA1A081FFF00339CB3 /* VStringValidator.m in Sources */,
 				A72C86791C977FF600E97D4F /* SequenceDeleteRemoteOperation.swift in Sources */,
+				671658FB1D2CA367000C7F62 /* ChatFeedCollectionViewLayout.swift in Sources */,
 				A72C86871C977FF600E97D4F /* MainRequestExecutor.swift in Sources */,
 				F0FC98021B5EB63C0098AFCB /* VAbstractCommentHighlighter.m in Sources */,
 				67BECC4F1CC985C000DFEE4B /* ListMenuCommunityItem.swift in Sources */,
