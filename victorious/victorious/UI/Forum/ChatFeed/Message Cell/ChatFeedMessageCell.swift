@@ -21,8 +21,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
     
     let usernameLabel = UILabel()
     let timestampLabel = UILabel()
-    let bubbleView = UIView()
-    let bubbleBorderView = UIImageView()
+    let bubbleView = ChatBubbleView()
     let captionLabel = UILabel()
     let avatarShadowView = UIView()
     let avatarView = UIImageView()
@@ -56,14 +55,13 @@ class ChatFeedMessageCell: UICollectionViewCell {
     // MARK: - Configuration
     
     static let captionInsets = UIEdgeInsets(top: 8.0, left: 8.0, bottom: 8.0, right: 8.0)
-    static let bubbleBackgroundInsets = UIEdgeInsets(top: -1.0, left: -2.0, bottom: -3.0, right: -2.0)
     static let horizontalSpacing = CGFloat(12.0)
     static let avatarSize = CGSize(width: 30.0, height: 30.0)
     static let avatarTapTargetSize = CGSize(width: 44.0, height: 44.0)
     static let contentMargin = UIEdgeInsets(top: 24, left: 10, bottom: 2, right: 75)
     static let topLabelYSpacing = CGFloat(4.0)
     static let topLabelXInset = CGFloat(4.0)
-    static let bubbleCornerRadius = CGFloat(6.0)
+    static let captionBubbleSpacing = CGFloat(8.0)
     static let shadowRadius = CGFloat(1.0)
     static let shadowOpacity = Float(0.15)
     static let shadowColor = UIColor.blackColor()
@@ -79,9 +77,6 @@ class ChatFeedMessageCell: UICollectionViewCell {
         
         avatarTapTarget.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onAvatarTapped)))
         
-        bubbleBorderView.image = UIImage(named: "chat-cell-border")
-        bubbleView.clipsToBounds = true
-        
         captionLabel.numberOfLines = 0
         
         avatarShadowView.layer.shadowColor = ChatFeedMessageCell.shadowColor.CGColor
@@ -94,10 +89,9 @@ class ChatFeedMessageCell: UICollectionViewCell {
         contentView.addSubview(avatarShadowView)
         contentView.addSubview(avatarView)
         contentView.addSubview(avatarTapTarget)
-        contentView.addSubview(bubbleBorderView)
         contentView.addSubview(bubbleView)
         
-        bubbleView.addSubview(captionLabel)
+        bubbleView.contentView.addSubview(captionLabel)
     }
     
     required init?(coder: NSCoder) {
@@ -144,7 +138,6 @@ class ChatFeedMessageCell: UICollectionViewCell {
         timestampLabel.textColor = dependencyManager.timestampColor
         
         bubbleView.backgroundColor = dependencyManager.backgroundColor
-        bubbleView.layer.cornerRadius = ChatFeedMessageCell.bubbleCornerRadius
         
         avatarView.backgroundColor = dependencyManager.backgroundColor
     }
@@ -213,7 +206,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
         
         previewView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onMediaTapped)))
         
-        bubbleView.addSubview(previewView)
+        bubbleView.contentView.addSubview(previewView)
         self.previewView = previewView
     }
     
