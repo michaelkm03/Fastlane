@@ -43,7 +43,7 @@ extension VSettingsViewController: VBackgroundContainer {
     }
     
     override public func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        guard let label = cell.textLabel else {
+        guard let label = cell.textLabel, cell = cell as? SettingsTableViewCell else {
             return
         }
         

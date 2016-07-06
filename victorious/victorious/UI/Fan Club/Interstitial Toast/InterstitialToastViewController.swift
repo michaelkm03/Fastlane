@@ -129,8 +129,10 @@ class InterstitialToastViewController: UIViewController, Interstitial, VBackgrou
     
     @IBAction private func handleTap(sender: UITapGestureRecognizer) {
         dismiss()
-        let deeplinkURL = TrophyCaseDeepLinkHandler.deeplinkURL
-        VRootViewController.sharedRootViewController()?.openURL(deeplinkURL)
+        
+        let destination = DeeplinkDestination.trophyCase
+        let router = Router(originViewController: self, dependencyManager: dependencyManager)
+        router.navigate(to: destination)
     }
     
     func dismiss() {

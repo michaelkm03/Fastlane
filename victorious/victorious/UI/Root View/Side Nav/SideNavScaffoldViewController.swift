@@ -14,7 +14,7 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
     // MARK: - Configuration
     
     private static let estimatedBarButtonWidth: CGFloat = 60.0
-    private static let userPictureNavButtonSize = CGSize(width: 32.0, height: 32.0)
+    private static let userPictureNavButtonSize = CGSize(width: 30.0, height: 30.0)
     
     // MARK: - Initializing
     
@@ -244,21 +244,6 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
         }
     }
     
-    func navigate(to destination: UIViewController, animated: Bool) {
-        if destination === sideMenuController.leftViewController {
-            sideMenuController.openSideViewController(on: .left, animated: animated)
-        }
-        else if destination === sideMenuController.rightViewController || destination === rightNavViewController {
-            sideMenuController.openSideViewController(on: .right, animated: animated)
-        }
-        else if destination === sideMenuController.centerViewController {
-            sideMenuController.closeSideViewController(animated: animated)
-        }
-        else {
-            mainNavigationController.innerNavigationController.pushViewController(destination, animated: animated)
-        }
-    }
-    
     // MARK: - VCoachmarkDisplayResponder
     
     func findOnScreenMenuItemWithIdentifier(identifier: String, andCompletion completion: VMenuItemDiscoveryBlock) {
@@ -293,45 +278,6 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
         }
         
         return CGRectZero
-    }
-    
-    // MARK: - VDeeplinkSupporter
-    
-    func deepLinkHandlerForURL(url: NSURL) -> VDeeplinkHandler {
-        let contentDeepLinkHandler = ContentDeepLinkHandler(
-            dependencyManager: dependencyManager,
-            originViewController: mainNavigationController.innerNavigationController
-        )
-        
-        if contentDeepLinkHandler.canDisplayContentForDeeplinkURL(url) {
-            return contentDeepLinkHandler
-        }
-        
-        let profileDeepLinkHandler = ProfileDeepLinkHandler(
-            dependencyManager: dependencyManager,
-            originViewController: mainNavigationController.innerNavigationController
-        )
-        
-        if profileDeepLinkHandler.canDisplayContentForDeeplinkURL(url) {
-            return profileDeepLinkHandler
-        }
-        
-        return self
-    }
-    
-    // MARK: - VDeeplinkHandler
-    
-    func displayContentForDeeplinkURL(url: NSURL, completion: VDeeplinkHandlerCompletionBlock?) {
-        // Side nav scaffold doesn't display any content itself at the moment.
-        completion?(false, nil)
-    }
-    
-    func canDisplayContentForDeeplinkURL(url: NSURL) -> Bool {
-        return false
-    }
-    
-    var requiresAuthorization: Bool {
-        return false
     }
     
     // MARK: - VNavigationControllerDelegate

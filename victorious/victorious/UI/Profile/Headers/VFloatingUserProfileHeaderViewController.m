@@ -8,7 +8,6 @@
 
 #import "VFloatingUserProfileHeaderViewController.h"
 #import "VDependencyManager.h"
-#import "VDefaultProfileImageView.h"
 #import "VLinearGradientView.h"
 #import "VButton.h"
 #import "UIView+AutoLayout.h"
@@ -19,7 +18,6 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 
 static const CGFloat kBlurredWhiteAlpha = 0.5f;
-static const CGFloat kFloatProfileImageSize = 57.0f;
 static const CGFloat kTrophyButtonLeftMargin = 5.0f;
 static const CGFloat kTrophyButtonTopMargin = 31.0f; // Equals to top margin of user profile image view on static profile header
 
@@ -39,14 +37,6 @@ static const CGFloat kTrophyButtonTopMargin = 31.0f; // Equals to top margin of 
 @implementation VFloatingUserProfileHeaderViewController
 
 @synthesize loading = _loading;
-
-- (void)loadView
-{
-    CGRect profileFrame = CGRectMake( 0, 0, kFloatProfileImageSize, kFloatProfileImageSize );
-    self.floatingProfileImageView = [[VDefaultProfileImageView alloc] initWithFrame:profileFrame];
-    
-    [super loadView];
-}
 
 - (void)viewDidLoad
 {
@@ -91,11 +81,6 @@ static const CGFloat kTrophyButtonTopMargin = 31.0f; // Equals to top margin of 
 }
 
 - (VDefaultProfileImageView *)profileImageView
-{
-    return self.floatingProfileImageView;
-}
-
-- (UIView *)floatingProfileImage
 {
     return self.floatingProfileImageView;
 }
@@ -208,14 +193,8 @@ static const CGFloat kTrophyButtonTopMargin = 31.0f; // Equals to top margin of 
     UIColor *textColor = [self.dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     UIColor *contentTextColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
     UIColor *secondaryTextColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryTextColorKey];
-    UIColor *linkColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     UIColor *secondaryLinkColor = [self.dependencyManager colorForKey:VDependencyManagerSecondaryLinkColorKey];
-    
-    self.profileImageView.layer.borderWidth = 2.0;
-    self.profileImageView.layer.borderColor = secondaryLinkColor.CGColor;
-    self.profileImageView.tintColor = linkColor;
-    self.profileImageView.backgroundColor = [UIColor whiteColor];
-    
+
     self.primaryActionButton.primaryColor = secondaryLinkColor;
     self.primaryActionButton.secondaryColor = secondaryLinkColor;
     self.primaryActionButton.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];

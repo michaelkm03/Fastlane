@@ -14,8 +14,7 @@ import VictoriousIOSSDK
 /// a simple collection or table view layout.
 @objc public class PaginatedDataSource: NSObject, PaginatedDataSourceType, GenericPaginatedDataSourceType {
     
-    // Keeps a reference without retaining; avoids needing [weak self] when queueing
-    private(set) weak var currentPaginatedOperation: NSOperation?
+    private(set) var currentPaginatedOperation: NSOperation?
     
     private(set) var state: VDataSourceState = .Cleared {
         didSet {

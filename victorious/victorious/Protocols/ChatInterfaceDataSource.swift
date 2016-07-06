@@ -39,8 +39,8 @@ extension ChatInterfaceDataSource {
     }
     
     func registerCells(for collectionView: UICollectionView) {
-        collectionView.registerClass(ChatFeedMessageCell.self, forCellWithReuseIdentifier: ChatFeedMessageCell.imageCellReuseIdentifier)
-        collectionView.registerClass(ChatFeedMessageCell.self, forCellWithReuseIdentifier: ChatFeedMessageCell.videoCellReuseIdentifier)
+        collectionView.registerClass(ChatFeedMessageCell.self, forCellWithReuseIdentifier: ChatFeedMessageCell.imagePreviewCellReuseIdentifier)
+        collectionView.registerClass(ChatFeedMessageCell.self, forCellWithReuseIdentifier: ChatFeedMessageCell.videoPreviewCellReuseIdentifier)
         collectionView.registerClass(ChatFeedMessageCell.self, forCellWithReuseIdentifier: ChatFeedMessageCell.nonMediaCellReuseIdentifier)
     }
     
@@ -65,7 +65,7 @@ extension ChatInterfaceDataSource {
         cell.content = content
     }
     
-    func updateTimeStamps(in collectionView: UICollectionView) {
+    func updateTimestamps(in collectionView: UICollectionView) {
         for indexPath in collectionView.indexPathsForVisibleItems() {
             let cell = collectionView.cellForItemAtIndexPath(indexPath) as! ChatFeedMessageCell
             cell.updateTimestamp()
@@ -75,11 +75,11 @@ extension ChatInterfaceDataSource {
 
 extension ContentModel {
     var reuseIdentifier: String {
-        if type.displaysAsVideo {
-            return ChatFeedMessageCell.videoCellReuseIdentifier
+        if type.previewsAsVideo {
+            return ChatFeedMessageCell.videoPreviewCellReuseIdentifier
         }
-        else if type.displaysAsImage {
-            return ChatFeedMessageCell.imageCellReuseIdentifier
+        else if type.previewsAsImage {
+            return ChatFeedMessageCell.imagePreviewCellReuseIdentifier
         }
         
         return ChatFeedMessageCell.nonMediaCellReuseIdentifier

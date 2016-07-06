@@ -34,14 +34,11 @@ class VContentOnlyCell: UICollectionViewCell, ContentCell {
     
     // MARK: - Content
     
-    func setContent(content: ContentModel?) {
-        if let content = content {
-            self.content = content
+    var content: ContentModel? {
+        didSet {
+            updatePreviewView()
         }
-        updatePreviewView()
     }
-    
-    private(set) var content: ContentModel?
     
     // MARK: - Dependency manager
     
@@ -61,16 +58,26 @@ class VContentOnlyCell: UICollectionViewCell, ContentCell {
         guard let content = content else {
             return
         }
+        
+        setNeedsLayout()
+        layoutIfNeeded()
+        
         contentView.addSubview(contentPreviewView)
-        contentView.v_addFitToParentConstraintsToSubview(contentPreviewView)
         contentPreviewView.content = content
+    }
+    
+    // MARK: - View Lifecycle
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        contentPreviewView.frame = contentView.bounds
     }
     
     // MARK: Highlighting
     
     override var highlighted: Bool {
         didSet {
-            self.contentView.alpha = self.highlighted ? VContentOnlyCell.highlightAlpha : 1.0
+            contentView.alpha = highlighted ? VContentOnlyCell.highlightAlpha : 1.0
         }
     }
 }

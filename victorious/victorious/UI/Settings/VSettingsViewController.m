@@ -14,10 +14,8 @@
 #import "VWebContentViewController.h"
 #import "VEnvironment.h"
 #import "VAppDelegate.h"
-#import "VNotificationSettingsViewController.h"
 #import "VButton.h"
 #import "VPurchaseManager.h"
-#import "VSettingsTableViewCell.h"
 #import "VAppInfo.h"
 #import "VDependencyManager+VAccessoryScreens.h"
 #import "VDependencyManager+VNavigationItem.h"
@@ -58,6 +56,7 @@ static NSString * const kSupportEmailKey = @"email.support";
 static NSString * const kItemFontKey = @"item.font";
 static NSString * const kItemColorKey = @"item.color";
 static NSString * const kItemBackgroundKey = @"item.background";
+static NSString * const kPushNotificationDependencyKey = @"push.notifications.screen";
 
 static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 
@@ -256,6 +255,11 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
             [[self.dependencyManager coachmarkManager] resetShownCoachmarks];
             [self updateResetCoachmarksCell];
         }
+        else if (indexPath.row == VSettingsActionNotifications)
+        {
+            NotificationSettingsViewController *viewController = [self.dependencyManager templateValueOfType: [NotificationSettingsViewController class] forKey:kPushNotificationDependencyKey];
+            [self.navigationController pushViewController:viewController animated:YES];
+        }
     }
     else if (indexPath.section == 1)
     {
@@ -268,8 +272,8 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     }
     
     // Tracking
-    VSettingsTableViewCell *cell = (VSettingsTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-    if ( [cell isKindOfClass:[VSettingsTableViewCell class]] )
+    SettingsTableViewCell *cell = (SettingsTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+    if ( [cell isKindOfClass:[SettingsTableViewCell class]] )
     {
         NSDictionary *params = @{ VTrackingKeyName : cell.settingName ?: @"" };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectSetting parameters:params];

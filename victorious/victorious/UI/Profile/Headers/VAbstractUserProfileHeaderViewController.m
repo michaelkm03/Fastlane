@@ -9,7 +9,6 @@
 #import "VAbstractUserProfileHeaderViewController.h"
 #import "VDependencyManager.h"
 #import "VLargeNumberFormatter.h"
-#import "VDefaultProfileImageView.h"
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VImageAssetFinder.h"
 #import "victorious-Swift.h"
@@ -240,7 +239,6 @@
                         options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
                           block:^(id observer, id object, NSDictionary *change)
      {
-         [welf.profileImageView setProfileImageURL:[user pictureURLOfMinimumSize:welf.profileImageView.frame.size]];
          [welf updateProfileImage];
      }];
     

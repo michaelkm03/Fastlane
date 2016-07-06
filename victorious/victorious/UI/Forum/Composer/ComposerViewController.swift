@@ -18,6 +18,8 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         static let defaultMaximumTextLength = 0
         static let maximumAttachmentWidthPercentage: CGFloat = 480.0 / 667.0
         static let minimumConfirmButtonContainerHeight: CGFloat = 52
+        static let composerTextInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        static let confirmButtonHorizontalInset: CGFloat = 16
     }
     
     /// ForumEventSender
@@ -54,17 +56,21 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     @IBOutlet weak private var attachmentContainerView: UIView!
     @IBOutlet weak private var interactiveContainerView: UIView!
-    @IBOutlet weak private var confirmButton: UIButton! {
+    @IBOutlet weak private var confirmButton: TouchableInsetAdjustableButton! {
         didSet {
-            confirmButton.layer.cornerRadius = 5
-            confirmButton.clipsToBounds = true
+            confirmButton.applyCornerRadius()
         }
     }
+    
     @IBOutlet weak private var confirmButtonContainer: UIView!
     
     private var searchTextChanged = false
 
-    private var selectedAsset: ContentMediaAsset?
+    private var selectedAsset: ContentMediaAsset? {
+        didSet {
+            updateConfirmButtonState()
+        }
+    }
     
     private var composerTextViewManager: ComposerTextViewManager?
     private var keyboardManager: VKeyboardNotificationManager?
@@ -217,7 +223,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     var textViewHasText: Bool = false {
         didSet {
-            confirmButton.enabled = textViewHasText || selectedAsset != nil
+            updateConfirmButtonState()
             if oldValue != textViewHasText {
                 view.setNeedsUpdateConstraints()
             }
@@ -245,6 +251,9 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             if oldValue != textViewHasPrependedImage {
                 attachmentTabBar.buttonsEnabled = !textViewHasPrependedImage
                 attachmentTabBar.enableButtonForIdentifier(ComposerInputAttachmentType.Hashtag.rawValue)
+                if !textViewHasPrependedImage {
+                    selectedAsset = nil
+                }
             }
         }
     }
@@ -275,6 +284,11 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     func inputTextAttributes() -> (inputTextColor: UIColor?, inputTextFont: UIFont?) {
         return (dependencyManager.inputTextColor, dependencyManager.inputTextFont)
+    }
+    
+    private func updateConfirmButtonState() {
+        confirmButton.enabled = textViewHasText || selectedAsset != nil
+        confirmButton.backgroundColor = confirmButton.enabled ? dependencyManager.confirmButtonBackgroundColorEnabled : dependencyManager.confirmButtonBackgroundColorDisabled
     }
     
     // MARK: - View lifecycle
@@ -328,6 +342,11 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     }
     
     override func updateViewConstraints() {
+        
+        let confirmButtonContainerHeight = confirmButtonContainer.bounds.height
+        if confirmButtonContainerHeight != abs(confirmButton.touchInsets.vertical) {
+            confirmButton.touchInsets = UIEdgeInsetsMake(-confirmButtonContainerHeight / 2, -Constants.confirmButtonHorizontalInset, -confirmButtonContainerHeight / 2, -Constants.confirmButtonHorizontalInset)
+        }
 
         let desiredAttachmentContainerHeight = shouldShowAttachmentContainer ? confirmButtonContainer.bounds.height : 0
         let attachmentContainerHeightNeedsUpdate = attachmentContainerHeightConstraint.constant != desiredAttachmentContainerHeight
@@ -424,10 +443,15 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         textView.textColor = dependencyManager.inputTextColor
         textView.setPlaceholderTextColor(dependencyManager.inputPlaceholderTextColor)
         textView.keyboardAppearance = dependencyManager.keyboardAppearance
-        confirmButton.setTitleColor(dependencyManager.confirmButtonDeselectedTextColor, forState: .Normal)
-        confirmButton.setTitleColor(dependencyManager.confirmButtonSelectedTextColor, forState: .Selected)
+        textView.applyCornerRadius()
+        textView.textContainerInset = Constants.composerTextInsets
+        textView.backgroundColor = dependencyManager.inputAreaBackgroundColor
+        
+        confirmButton.setTitleColor(dependencyManager.confirmButtonEnabledTextColor, forState: .Normal)
+        confirmButton.setTitleColor(dependencyManager.confirmButtonDisabledTextColor, forState: .Disabled)
         confirmButton.titleLabel?.font = dependencyManager.confirmButtonTextFont
-        confirmButton.backgroundColor = dependencyManager.confirmButtonBackgroundColor
+        confirmButton.backgroundColor = dependencyManager.confirmButtonBackgroundColorEnabled
+        
         attachmentTabBar.tabItemDeselectedTintColor = dependencyManager.tabItemDeselectedTintColor
         attachmentTabBar.tabItemSelectedTintColor = dependencyManager.tabItemSelectedTintColor
         confirmButton.setTitle(dependencyManager.confirmKeyText, forState: .Normal)
@@ -463,13 +487,19 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
         
         var preview = previewImage
-        if contentType == .gif,
-            let image = capturedMediaURL.v_videoPreviewImage {
-            
+        if let image = capturedMediaURL.v_videoPreviewImage where contentType == .gif {
             preview = image
         }
         
-        selectedAsset = ContentMediaAsset(contentType: contentType, url: capturedMediaURL)
+        let publishParameters = creationFlowController.publishParameters
+        if let remoteID = publishParameters.assetRemoteId {
+            let mediaParameters = ContentMediaAsset.LocalAssetParameters(contentType: contentType, remoteID: remoteID, source: publishParameters.source, url: capturedMediaURL)
+            selectedAsset = ContentMediaAsset(initializationParameters: mediaParameters)
+        }
+        else {
+            let mediaParameters = ContentMediaAsset.RemoteAssetParameters(contentType: contentType, url: capturedMediaURL, source: publishParameters.source)
+            selectedAsset = ContentMediaAsset(initializationParameters: mediaParameters)
+        }
         let maxDimension = view.bounds.width * Constants.maximumAttachmentWidthPercentage
         let resizedImage = preview.scaledImageWithMaxDimension(maxDimension, upScaling: true)
         composerTextViewManager?.prependImage(resizedImage, toTextView: textView)
@@ -486,7 +516,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
     }
     
-    private func contentType(for creationFlowController: VCreationFlowController!) -> ContentType? {
+    private func contentType(for creationFlowController: VCreationFlowController) -> ContentType? {
         switch creationFlowController.mediaType() {
         case .Image:
             return .image
@@ -573,16 +603,24 @@ private extension VDependencyManager {
         return colorForKey(VDependencyManagerPlaceholderTextColorKey)
     }
     
-    var confirmButtonDeselectedTextColor: UIColor? {
-        return colorForKey("color.link.deselected")
+    var confirmButtonDisabledTextColor: UIColor? {
+        return colorForKey("color.link.disabled")
     }
     
-    var confirmButtonSelectedTextColor: UIColor? {
-        return colorForKey("color.link.selected")
+    var confirmButtonEnabledTextColor: UIColor? {
+        return colorForKey("color.link.enabled")
     }
     
-    var confirmButtonBackgroundColor: UIColor? {
-        return colorForKey(VDependencyManagerAccentColorKey)
+    var confirmButtonBackgroundColorEnabled: UIColor? {
+        return colorForKey("color.accent.enabled")
+    }
+    
+    var confirmButtonBackgroundColorDisabled: UIColor? {
+        return colorForKey("color.accent.disabled")
+    }
+    
+    var inputAreaBackgroundColor: UIColor? {
+        return colorForKey("color.accent.secondary")
     }
     
     var inputTextFont: UIFont? {

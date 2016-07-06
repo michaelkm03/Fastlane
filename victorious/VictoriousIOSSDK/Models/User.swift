@@ -9,7 +9,7 @@
 /// Conformers are models that store information about a user in the app
 /// Consumers can directly use this type without caring what the concrete type is, persistent or not.
 public protocol UserModel: PreviewImageContainer {
-    var id: Int { get }
+    var id: User.ID { get }
     var email: String? { get }
     var name: String? { get }
     var completedProfile: Bool? { get }
@@ -47,7 +47,9 @@ public struct User: UserModel {
         }
     }
     
-    public let id: Int
+    public typealias ID = Int
+    
+    public let id: ID
     public let email: String?
     public let name: String?
     public let completedProfile: Bool?

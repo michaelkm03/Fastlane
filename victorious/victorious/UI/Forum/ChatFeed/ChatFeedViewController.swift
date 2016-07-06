@@ -155,8 +155,12 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     }
     
     private func handleNewItems(newItems: [ChatFeedContent], loadingType: PaginatedLoadingType, completion: (() -> Void)? = nil) {
-        guard newItems.count > 0 else {
+        guard newItems.count > 0 || loadingType == .refresh else {
             return
+        }
+        
+        if loadingType == .refresh {
+            newItemsController.hide()
         }
         
         // Disable UICollectionView insertion animation.
@@ -174,11 +178,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
             // If we loaded newer items and we were scrolled to the bottom, or if we refreshed the feed, scroll down to
             // reveal the new content.
             if (loadingType == .newer && wasScrolledToBottom) || loadingType == .refresh {
-                // There's probably a better way to do this, but this prevents some issues with not scrolling all the
-                // way to the bottom.
-                dispatch_after(0.0) {
-                    collectionView.setContentOffset(collectionView.v_bottomOffset, animated: loadingType != .refresh)
-                }
+                collectionView.setContentOffset(collectionView.v_bottomOffset, animated: loadingType != .refresh)
             }
             
             completion?()
@@ -252,13 +252,19 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     
     // MARK: - UIScrollViewDelegate
     
+    private var unstashingViaScrollingIsEnabled = true
+    
     func scrollViewDidScroll(scrollView: UIScrollView) {
         scrollPaginator.scrollViewDidScroll(scrollView)
         
         if scrollView.v_isScrolledToBottom {
-            dataSource.unstash()
+            if unstashingViaScrollingIsEnabled {
+                dataSource.unstash()
+            }
+            
             dataSource.stashingEnabled = false
-        } else {
+        }
+        else {
             dataSource.stashingEnabled = true
         }
         
@@ -295,7 +301,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     }
     
     private dynamic func onTimerTick() {
-        dataSource.updateTimeStamps(in: collectionView)
+        dataSource.updateTimestamps(in: collectionView)
     }
 }
 
@@ -312,7 +318,16 @@ class ChatFeedCollectionViewLayout: UICollectionViewFlowLayout {
             let newContentSize = collectionViewContentSize()
             let contentOffsetY = collectionView.contentOffset.y + (newContentSize.height - oldContentSize.height)
             let newOffset = CGPoint(x: collectionView.contentOffset.x, y: contentOffsetY)
+            
+            // Occasionally, setting the content offset here will trigger the chat feed's unstashing behavior. For some
+            // unknown reason, this causes a crash within UICollectionView, so we disable unstashing while we scroll
+            // here. We should find a better way of maintaining the scroll position when inserting content at the top
+            // of the collection view that doesn't have this problem.
+            let chatFeedViewController = collectionView.delegate as? ChatFeedViewController
+            chatFeedViewController?.unstashingViaScrollingIsEnabled = false
             collectionView.setContentOffset(newOffset, animated: false)
+            chatFeedViewController?.unstashingViaScrollingIsEnabled = true
+            
             contentSizeWhenInsertingAbove = nil
         }
     }
@@ -343,8 +358,12 @@ class ChatFeedCollectionViewLayout: UICollectionViewFlowLayout {
         let contentSize = collectionViewContentSize()
         let extraHeight = collectionView.bounds.height - contentSize.height
         
-        if extraHeight > 0.0 {
-            layoutAttributes.frame.origin.y += extraHeight
+        if
+            let modifiedLayoutAttributes = layoutAttributes.copy() as? UICollectionViewLayoutAttributes
+            where extraHeight > 0.0
+        {
+            modifiedLayoutAttributes.frame.origin.y += extraHeight
+            return modifiedLayoutAttributes
         }
         
         return layoutAttributes

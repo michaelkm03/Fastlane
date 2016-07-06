@@ -26,7 +26,13 @@ class VDependencyManager_SystemFontTests: XCTestCase {
     }
 
     func testSystemFonts() {
-        var dependencyManager = dependencyManagerWithFontNamed("systemFont-Light")
+        var dependencyManager = dependencyManagerWithFontNamed("systemFont-UltraLight")
+        XCTAssertEqual(dependencyManager.font, UIFont.systemFontOfSize(CGFloat(fontSize), weight: UIFontWeightUltraLight))
+        
+        dependencyManager = dependencyManagerWithFontNamed("systemFont-Thin")
+        XCTAssertEqual(dependencyManager.font, UIFont.systemFontOfSize(CGFloat(fontSize), weight: UIFontWeightThin))
+        
+        dependencyManager = dependencyManagerWithFontNamed("systemFont-Light")
         XCTAssertEqual(dependencyManager.font, UIFont.systemFontOfSize(CGFloat(fontSize), weight: UIFontWeightLight))
         
         dependencyManager = dependencyManagerWithFontNamed("systemFont-Regular")
@@ -35,8 +41,17 @@ class VDependencyManager_SystemFontTests: XCTestCase {
         dependencyManager = dependencyManagerWithFontNamed("systemFont-Medium")
         XCTAssertEqual(dependencyManager.font, UIFont.systemFontOfSize(CGFloat(fontSize), weight: UIFontWeightMedium))
         
+        dependencyManager = dependencyManagerWithFontNamed("systemFont-semibold")
+        XCTAssertEqual(dependencyManager.font, UIFont.systemFontOfSize(CGFloat(fontSize), weight: UIFontWeightSemibold))
+        
         dependencyManager = dependencyManagerWithFontNamed("systemFont-Bold")
         XCTAssertEqual(dependencyManager.font, UIFont.systemFontOfSize(CGFloat(fontSize), weight: UIFontWeightBold))
+        
+        dependencyManager = dependencyManagerWithFontNamed("systemFont-Heavy")
+        XCTAssertEqual(dependencyManager.font, UIFont.systemFontOfSize(CGFloat(fontSize), weight: UIFontWeightHeavy))
+        
+        dependencyManager = dependencyManagerWithFontNamed("systemFont-Black")
+        XCTAssertEqual(dependencyManager.font, UIFont.systemFontOfSize(CGFloat(fontSize), weight: UIFontWeightBlack))
         
         dependencyManager = dependencyManagerWithFontNamed("systemFont-TotallyRidiculousValueThatShouldMakeTheDefaultAppear")
         XCTAssertEqual(dependencyManager.font, UIFont.systemFontOfSize(CGFloat(fontSize), weight: UIFontWeightRegular))
