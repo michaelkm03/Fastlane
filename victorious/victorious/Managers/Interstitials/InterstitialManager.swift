@@ -13,9 +13,6 @@ protocol InterstitialListener {
     /// A callback to let the implementer know that a new Alert has been registered.
     /// The receiver can then when it's ready call `showNextInterstitial` on `InterstitialManager`.
     func newInterstitialHasBeenRegistered()
-
-    /// Dismisses the current interstitial on screen with the specified alert type.
-    func dismissCurrentInterstitial(of alertType: AlertType)
 }
 
 /// A singleton object for managing alerts received from the Victorious API and presenting appropriate
@@ -122,7 +119,7 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
         }
     }
     
-    // MARK: Interstitial
+    // MARK: InterstitialDelegate
 
     /// Dismisses the interstitial on the screen at the moment if it's `Alert` is of the correct type.
     func dismissCurrentInterstitial(of alertType: AlertType) {
