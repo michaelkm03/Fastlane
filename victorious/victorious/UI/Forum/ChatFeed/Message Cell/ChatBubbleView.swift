@@ -11,17 +11,17 @@
 /// Subviews can be added to `contentView` to display content in the bubble.
 ///
 class ChatBubbleView: UIView {
-    // MARK: - Configuration
-    
-    private static let borderInsets = UIEdgeInsets(top: -1.0, left: -2.0, bottom: -3.0, right: -2.0)
-    private static let bubbleCornerRadius = CGFloat(6.0)
+    private struct Constants {
+        static let borderInsets = UIEdgeInsets(top: -1.0, left: -2.0, bottom: -3.0, right: -2.0)
+        static let bubbleCornerRadius = CGFloat(6.0)
+    }
     
     // MARK: - Initializing
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        layer.cornerRadius = ChatBubbleView.bubbleCornerRadius
-        contentView.layer.cornerRadius = ChatBubbleView.bubbleCornerRadius
+        layer.cornerRadius = Constants.bubbleCornerRadius
+        contentView.layer.cornerRadius = Constants.bubbleCornerRadius
         contentView.clipsToBounds = true
         borderView.image = UIImage(named: "chat-cell-border")
         addSubview(borderView)
@@ -43,6 +43,6 @@ class ChatBubbleView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         contentView.frame = bounds
-        borderView.frame = bounds.insetBy(ChatBubbleView.borderInsets)
+        borderView.frame = bounds.insetBy(Constants.borderInsets)
     }
 }
