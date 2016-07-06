@@ -138,26 +138,23 @@ class ChatFeedMessageCell: UICollectionViewCell {
         timestampLabel.hidden = shouldHideTopLabels
         
         if let content = content where content.type.hasMedia {
-            if content.type == .gif {
+            if content.type == .gif && VCurrentUser.user()?.canView(content) == true {
                 let previewView = createMediaViewIfNeeded()
-                setNeedsLayout()
-                layoutIfNeeded()
+                ChatFeedMessageCell.layoutContent(for: self)
                 previewView.content = content
-                previewView.hidden = false
             }
             else {
                 // Videos and images
                 let previewView = createContentPreviewViewIfNeeded()
-                setNeedsLayout()
-                layoutIfNeeded()
-                previewView.hidden = false
+                ChatFeedMessageCell.layoutContent(for: self)
                 previewView.content = content
             }
+            previewView?.hidden = false
         }
         else {
             previewView?.hidden = true
         }
-        
+
         if let imageURL = content?.author.previewImageURL(ofMinimumSize: avatarView.frame.size) {
             avatarView.sd_setImageWithURL(imageURL, placeholderImage: defaultAvatarImage)
         }
@@ -224,7 +221,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
     
     static func cellHeight(displaying content: ContentModel, inWidth width: CGFloat, dependencyManager: VDependencyManager) -> CGFloat {
         let textHeight = textSize(displaying: content, inWidth: width, dependencyManager: dependencyManager).height
-        let mediaHeight = mediaSize(displaying: content, inWidth: width, dependencyManager: dependencyManager).height
+        let mediaHeight = mediaSize(displaying: content, inWidth: width)?.height ?? 0.0
         let contentHeight = max(textHeight + mediaHeight, avatarSize.height)
         return contentMargin.top + contentMargin.bottom + contentHeight
     }
@@ -234,7 +231,8 @@ class ChatFeedMessageCell: UICollectionViewCell {
             return CGSize.zero
         }
         
-        let maxTextWidth = width - nonContentWidth
+        let mediaWidth = mediaSize(displaying: content, inWidth: width)?.width
+        let maxTextWidth = min(width - nonContentWidth, mediaWidth ?? CGFloat.max)
         
         var size = attributedText.boundingRectWithSize(
             CGSize(width: maxTextWidth, height: CGFloat.max),
@@ -247,22 +245,12 @@ class ChatFeedMessageCell: UICollectionViewCell {
         return size
     }
     
-    static func mediaSize(displaying content: ContentModel, inWidth width: CGFloat, dependencyManager: VDependencyManager) -> CGSize {
-        guard !content.assets.isEmpty else {
-            return CGSize.zero
-        }
-        
-        let maxWidth = width - nonContentWidth
-        let aspectRatio = dependencyManager.clampedAspectRatio(from: content.aspectRatio)
-        
-        return CGSize(
-            width: maxWidth,
-            height: maxWidth / aspectRatio
-        )
+    static func mediaSize(displaying content: ContentModel, inWidth width: CGFloat) -> CGSize? {
+        return content.mediaSize?.preferredSize(clampedToWidth: width - nonContentWidth)
     }
     
     private static var nonContentWidth: CGFloat {
-        return contentMargin.left + contentMargin.right + avatarSize.width + horizontalSpacing
+        return contentMargin.horizontal + avatarSize.width + horizontalSpacing
     }
 }
 
@@ -273,14 +261,6 @@ private extension ContentModel {
 }
 
 private extension VDependencyManager {
-    func clampedAspectRatio(from rawAspectRatio: CGFloat) -> CGFloat {
-        let defaultMinimum = 0.75
-        let defaultMaximum = 4.0
-        let minAspect = CGFloat(numberForKey("aspectRatio.minimum")?.floatValue ?? defaultMinimum)
-        let maxAspect = CGFloat(numberForKey("aspectRatio.maximum")?.floatValue ?? defaultMaximum)
-        return min(maxAspect, max(rawAspectRatio, minAspect))
-    }
-    
     var messageTextColor: UIColor {
         return colorForKey("color.message.text") ?? .whiteColor()
     }

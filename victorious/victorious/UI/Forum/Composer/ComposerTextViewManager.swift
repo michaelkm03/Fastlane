@@ -78,7 +78,7 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
             if let delegate = delegate where delegate.textViewCanDismiss {
                 textView.resignFirstResponder()
             }
-            return false
+            return true
         }
         
         if maximumTextLength == 0 {

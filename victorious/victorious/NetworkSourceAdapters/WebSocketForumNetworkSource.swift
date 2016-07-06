@@ -33,6 +33,16 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
         // Device ID is needed for tracking calls on the backend.
         let deviceID = UIDevice.currentDevice().v_authorizationDeviceID
         webSocketController.setDeviceID(deviceID)
+
+        NSNotificationCenter.defaultCenter().addObserverForName(UIApplicationDidEnterBackgroundNotification, object: nil, queue: nil) { [weak self] (notification) in
+            self?.tearDown()
+        }
+
+        NSNotificationCenter.defaultCenter().addObserverForName(UIApplicationWillEnterForegroundNotification, object: nil, queue: nil) { [weak self] (notification) in
+            if self?.isSetUp == false && self?.childEventReceivers.isEmpty == false {
+                self?.setUp()
+            }
+        }
     }
     
     // MARK: - Configuration
@@ -48,8 +58,8 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
         switch event {
         case .websocket(let websocketEvent):
             switch websocketEvent {
-                case .disconnected(_):
-                    receiveDisconnectEvent()
+                case .disconnected(let webSocketError):
+                    receiveDisconnectEventWithError(webSocketError)
                 default: break
             }
         default:
@@ -57,12 +67,13 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
         }
     }
     
-    private func receiveDisconnectEvent() {
-        guard let reconnectTimeout = reconnectTimeout else {
+    private func receiveDisconnectEventWithError(error: WebSocketError?) {
+        guard let reconnectTimeout = reconnectTimeout, let _ = error else {
             return
         }
-        
-        if (VCurrentUser.isLoggedIn()) { //Try to reconnect only if the user is still logged in 
+
+        // Try to reconnect only if the user is still logged in
+        if VCurrentUser.isLoggedIn() {
             dispatch_after(reconnectTimeout) { [weak self] in
                 self?.setUpIfNeeded()
             }

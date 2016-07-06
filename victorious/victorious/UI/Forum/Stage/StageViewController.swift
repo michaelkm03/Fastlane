@@ -104,6 +104,7 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         view.v_addPinToBottomToSubview(newItemPill, bottomMargin: Constants.pillBottomMargin)
         view.v_addCenterHorizontallyConstraintsToSubview(newItemPill)
         newItemPill.v_addHeightConstraint(Constants.pillHeight)
+        mediaContentView.dependencyManager = dependencyManager
     }
     
     private func setupDataSource(dependencyManager: VDependencyManager) -> StageDataSource {
@@ -114,7 +115,6 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        
         mediaContentView.allowsVideoControls = false
         showStage(animated)
     }

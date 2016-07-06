@@ -41,8 +41,8 @@ class TutorialCollectionViewDataSource: NSObject, ChatInterfaceDataSource, Tutor
     
     // MARK: - TutorialNetworkDataSourceDelegate
     
-    func didUpdateVisibleItems(from oldValue: [ChatFeedContent], to newValue: [ChatFeedContent]) {
-        delegate?.didUpdateVisibleItems(from: oldValue, to: newValue)
+    func didReceiveNewMessage(message: ChatFeedContent) {
+        delegate?.didReceiveNewMessage(message)
     }
     
     func didFinishFetchingAllItems() {
