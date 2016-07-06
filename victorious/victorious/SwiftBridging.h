@@ -18,7 +18,6 @@
 #import "NSURL+VPathHelper.h"
 #import "NSURL+VTemporaryFiles.h"
 #import "UIColor+VBrightness.h"
-#import "UIColor+VHex.h"
 #import "UIImage+ImageCreation.h"
 #import "UIImage+Resize.h"
 #import "UIImage+Round.h"
