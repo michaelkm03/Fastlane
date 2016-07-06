@@ -54,14 +54,14 @@ class ChatFeedMessageCell: UICollectionViewCell {
     
     // MARK: - Configuration
     
-    static let captionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+    static let captionInsets = UIEdgeInsets(top: 8.0, left: 8.0, bottom: 8.0, right: 8.0)
     static let bubbleBackgroundInsets = UIEdgeInsets(top: -1.0, left: -2.0, bottom: -3.0, right: -2.0)
-    static let horizontalSpacing = CGFloat(10.0)
+    static let horizontalSpacing = CGFloat(12.0)
     static let avatarSize = CGSize(width: 30.0, height: 30.0)
     static let avatarTapTargetSize = CGSize(width: 44.0, height: 44.0)
-    static let contentMargin = UIEdgeInsets(top: 30, left: 10, bottom: 2, right: 75)
-    static let topLabelYSpacing = CGFloat(6.5)
-    static let topLabelXInset = CGFloat(5.0)
+    static let contentMargin = UIEdgeInsets(top: 24, left: 10, bottom: 2, right: 75)
+    static let topLabelYSpacing = CGFloat(4.0)
+    static let topLabelXInset = CGFloat(4.0)
     static let bubbleCornerRadius = CGFloat(6.0)
     
     // MARK: - Initializing
@@ -112,20 +112,16 @@ class ChatFeedMessageCell: UICollectionViewCell {
     }
     
     private func updateStyle() {
-        updateTopLabelStyle(for: usernameLabel)
-        updateTopLabelStyle(for: timestampLabel)
+        usernameLabel.font = dependencyManager.usernameFont
+        usernameLabel.textColor = dependencyManager.usernameColor
+        
+        timestampLabel.font = dependencyManager.timestampFont
+        timestampLabel.textColor = dependencyManager.timestampColor
         
         bubbleView.backgroundColor = dependencyManager.backgroundColor
         bubbleView.layer.cornerRadius = ChatFeedMessageCell.bubbleCornerRadius
         
-        avatarView.layer.borderWidth = 1.0
-        avatarView.layer.borderColor = UIColor.blackColor().colorWithAlphaComponent(0.3).CGColor
         avatarView.backgroundColor = dependencyManager.backgroundColor
-    }
-    
-    private func updateTopLabelStyle(for label: UILabel) {
-        label.font = dependencyManager.userLabelFont
-        label.textColor = dependencyManager.userLabelColor
     }
     
     private func populateData() {
@@ -266,19 +262,27 @@ private extension VDependencyManager {
     }
 
     var messageFont: UIFont {
-        return UIFont.boldSystemFontOfSize(16)
+        return fontForKey("font.message")
     }
 
     var backgroundColor: UIColor? {
         return colorForKey("color.message.bubble") ?? .darkGrayColor()
     }
     
-    var userLabelFont: UIFont {
-        return UIFont.boldSystemFontOfSize(12)
+    var usernameFont: UIFont {
+        return fontForKey("font.username.text")
     }
     
-    var userLabelColor: UIColor {
+    var usernameColor: UIColor {
         return colorForKey("color.username.text") ?? .whiteColor()
+    }
+    
+    var timestampFont: UIFont {
+        return fontForKey("font.timestamp.text")
+    }
+    
+    var timestampColor: UIColor {
+        return colorForKey("color.timestamp.text") ?? .whiteColor()
     }
 }
 
