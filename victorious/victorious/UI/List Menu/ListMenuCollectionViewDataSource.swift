@@ -33,10 +33,13 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
     let creatorDataSource: ListMenuCreatorDataSource
     
     private lazy var subscribeButton: UIButton = {
-        // FUTURE: Make this styled via template once available
-        let button = UIButton(type: .Custom)
+        let button = UIButton(type: .System)
+        button.tintColor = self.dependencyManager.subscribeButtonTextColor
+        button.backgroundColor = self.dependencyManager.subscribeButtonBackgroundColor
+        button.titleLabel?.font = self.dependencyManager.subscribeButtonFont
+        button.layer.cornerRadius = 6.0
         button.addTarget(self, action: #selector(onSubscribePressed), forControlEvents: .TouchUpInside)
-        button.setTitle("subscribe", forState: .Normal)
+        button.setTitle(NSLocalizedString("Upgrade", comment: ""), forState: .Normal)
         return button
     }()
     
@@ -182,5 +185,19 @@ private extension VDependencyManager {
     
     var activityIndicatorColor: UIColor? {
         return colorForKey(VDependencyManagerMainTextColorKey)
+    }
+    
+    // FUTURE: Make this styled via template once available
+    
+    var subscribeButtonFont: UIFont? {
+        return UIFont.systemFontOfSize(14.0, weight: UIFontWeightSemibold)
+    }
+    
+    var subscribeButtonTextColor: UIColor? {
+        return UIColor(white: 1.0, alpha: 1.0)
+    }
+    
+    var subscribeButtonBackgroundColor: UIColor? {
+        return UIColor(white: 1.0, alpha: 0.15)
     }
 }

@@ -10,6 +10,10 @@ import UIKit
 
 class ListMenuSectionHeaderView: UICollectionReusableView {
     
+    private static let accessoryButtonHeight = CGFloat(30.0)
+    private static let accessoryButtonXPadding = CGFloat(20.0)
+    private static let accessoryButtonXMargin = CGFloat(12.0)
+    
     @IBOutlet private weak var titleLabel: UILabel!
     
     var dependencyManager: VDependencyManager! {
@@ -19,6 +23,7 @@ class ListMenuSectionHeaderView: UICollectionReusableView {
     }
     
     private func applyTemplateAppearance(with dependencyManager: VDependencyManager) {
+        clipsToBounds = false
         titleLabel.text = dependencyManager.titleText
         titleLabel.textColor = dependencyManager.titleColor
         titleLabel.font = dependencyManager.titleFont
@@ -37,10 +42,29 @@ class ListMenuSectionHeaderView: UICollectionReusableView {
         didSet {
             if let accessoryButton = accessoryButton {
                 addSubview(accessoryButton)
-                v_addPinToTrailingEdgeToSubview(accessoryButton)
-                v_addPinToTopBottomToSubview(accessoryButton)
             }
         }
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        guard let accessoryButton = accessoryButton else {
+            return
+        }
+        
+        let buttonSize = CGSize(
+            width: accessoryButton.sizeThatFits(bounds.size).width + ListMenuSectionHeaderView.accessoryButtonXPadding,
+            height: ListMenuSectionHeaderView.accessoryButtonHeight
+        )
+        
+        accessoryButton.frame = CGRect(
+            origin: CGPoint(
+                x: bounds.width - buttonSize.width - ListMenuSectionHeaderView.accessoryButtonXMargin,
+                y: (bounds.height - buttonSize.height) / 2.0
+            ),
+            size: buttonSize
+        )
     }
 }
 

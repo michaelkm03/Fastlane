@@ -28,10 +28,6 @@ class ListMenuCreatorCollectionViewCell: UICollectionViewCell, ListMenuSectionCe
     }
     
     // MARK: - List Menu Section Cell
-
-    static var preferredHeight: CGFloat {
-        return 60
-    }
     
     var dependencyManager: VDependencyManager? {
         didSet {
