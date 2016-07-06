@@ -40,9 +40,6 @@ class ChatFeedMessageCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        avatarView.clipsToBounds = true
-        avatarView.userInteractionEnabled = true
-        
         avatarTapTarget.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onAvatarTapped)))
         
         captionLabel.numberOfLines = 0
