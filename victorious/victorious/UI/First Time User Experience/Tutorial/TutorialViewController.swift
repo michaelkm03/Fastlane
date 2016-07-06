@@ -154,28 +154,28 @@ class TutorialViewController: UIViewController, UICollectionViewDelegate, UIColl
             // though, so we have to do that separately.
             collectionView.performBatchUpdates({
                 switch loadingType {
-                case .newer:
-                    let previousCount = self.collectionViewDataSource.visibleItems.count - newItems.count
-                    
-                    collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
-                        NSIndexPath(forItem: previousCount + $0, inSection: 0)
-                        })
-                    
-                case .older:
-                    if let layout = collectionView.collectionViewLayout as? ChatFeedCollectionViewLayout {
-                        layout.contentSizeWhenInsertingAbove = collectionView.contentSize
+                    case .newer:
+                        let previousCount = self.collectionViewDataSource.visibleItems.count - newItems.count
+                        
+                        collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
+                            NSIndexPath(forItem: previousCount + $0, inSection: 0)
+                            })
+                        
+                    case .older:
+                        if let layout = collectionView.collectionViewLayout as? ChatFeedCollectionViewLayout {
+                            layout.contentSizeWhenInsertingAbove = collectionView.contentSize
+                        }
+                        else {
+                            assertionFailure("Chat feed's collection view did not have the required layout type ChatFeedCollectionViewLayout.")
+                        }
+                        
+                        collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
+                            NSIndexPath(forItem: $0, inSection: 0)
+                            })
+                        
+                    case .refresh:
+                        break
                     }
-                    else {
-                        assertionFailure("Chat feed's collection view did not have the required layout type ChatFeedCollectionViewLayout.")
-                    }
-                    
-                    collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
-                        NSIndexPath(forItem: $0, inSection: 0)
-                        })
-                    
-                case .refresh:
-                    break
-                }
                 }, completion: { _ in
                     completion()
             })
