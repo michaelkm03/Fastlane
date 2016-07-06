@@ -51,14 +51,9 @@ final class HashtagSearchDataSource: PaginatedDataSource, SearchDataSourceType, 
             return
         }
         
-        loadPage( pageType,
-            createOperation: {
-                return operation
-            },
-            completion: { (results, error, cancelled) in
-                completion?( error )
-            }
-        )
+        operation.queue() { (results, error, cancelled) in
+            completion?( error )
+        }
     }
     
     //MARK: - UITableViewDataSource

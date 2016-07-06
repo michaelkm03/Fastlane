@@ -22,7 +22,7 @@ class HashtagShelf: Shelf {
         super.populate(fromSourceShelf: hashtagShelf.shelf)
         
         self.hashtagTitle = hashtagShelf.hashtag.tag
-        self.amFollowing = NSNumber(bool: hashtagShelf.hashtag.amFollowing ?? false)
+        self.amFollowing = NSNumber(bool: false)
         self.postsCount = NSNumber(integer: hashtagShelf.postCount)
     }
 }

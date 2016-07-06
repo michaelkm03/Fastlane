@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class VUser, VHashtag;
+@class VUser;
 
 /*
  An object to represent a user or hashtag tag within an attributed string
@@ -45,17 +45,6 @@
  */
 + (instancetype)tagWithUser:(VUser *)user
      andTagStringAttributes:(NSDictionary *)tagStringAttributes;
-
-/**
- Generate a new tag from the given hashtag and string attributes dictionary
- 
- @param hashtag a VHastag object with a valid tag field.
- @param tagStringAttributes a dictionary of string attributes that will be used to format the tag.
- 
- @return A new VTag when provided a valid hashtag and dictionary, will raise exception if no hashtag or dictionary is supplied
- */
-+ (instancetype)tagWithHashtag:(VHashtag *)hashtag
-        andTagStringAttributes:(NSDictionary *)tagStringAttributes;
 
 /**
  Generate a new tag from the given database-formatted user string and string attributes dictionary

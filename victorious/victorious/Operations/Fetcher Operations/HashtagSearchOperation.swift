@@ -19,7 +19,7 @@ import VictoriousIOSSDK
     }
 }
 
-final class HashtagSearchOperation: RemoteFetcherOperation, PaginatedRequestOperation {
+final class HashtagSearchOperation: RemoteFetcherOperation {
     
     let request: HashtagSearchRequest
     
@@ -42,10 +42,6 @@ final class HashtagSearchOperation: RemoteFetcherOperation, PaginatedRequestOper
     }
     
     func onComplete( networkResult: HashtagSearchRequest.ResultType ) {
-        
         self.results = networkResult.map{ HashtagSearchResultObject(hashtag: $0) }
-        
-        // Queue a follow-up operation that parses to persistent store
-        HashtagSaveOperation(hashtags: networkResult).after(self).queue()
     }
 }

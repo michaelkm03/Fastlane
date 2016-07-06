@@ -23,8 +23,5 @@ class TrendingHashtagOperation: RemoteFetcherOperation, RequestOperation {
 
     func onComplete( networkResult: TrendingHashtagRequest.ResultType ) {
         self.results = networkResult.map{ HashtagSearchResultObject(hashtag: $0) }
-        
-        // Queue a follow-up operation that parses to persistent store
-        HashtagSaveOperation(hashtags: networkResult).after(self).queue()
     }
 }

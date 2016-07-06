@@ -23,8 +23,6 @@ class HashtagShelfTests: XCTestCase {
         }
         let hashtag = hashtagShelf.hashtag
         XCTAssertEqual(hashtag.tag, "test")
-        XCTAssertEqual(hashtag.amFollowing, false)
-        XCTAssertNil(hashtag.count)
         
         let shelf = hashtagShelf.shelf
         XCTAssertEqual(shelf.streamID, "15139")

@@ -9,7 +9,6 @@
 #import "VHashtagCell.h"
 #import "VHashTags.h"
 #import "VConstants.h"
-#import "VHashtag.h"
 #import "VFollowControl.h"
 #import "VDependencyManager.h"
 #import "victorious-swift.h"

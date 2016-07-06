@@ -19,7 +19,7 @@ class TrendingHashtagRequestTests: XCTestCase {
         }
         
         do {
-            let trendingHashtagRequest = TrendingHashtagRequest()
+            let trendingHashtagRequest = TrendingHashtagRequest(url: nil)
             let results = try trendingHashtagRequest.parseResponse(NSURLResponse(), toRequest: trendingHashtagRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(results.count, 2)
             XCTAssertEqual(results[0].tag, "surfing")
@@ -29,9 +29,15 @@ class TrendingHashtagRequestTests: XCTestCase {
         }
     }
     
-    func testDiscoverRequest() {
-        let trendingHashtagRequest = TrendingHashtagRequest()
+    func testDefaultTrendingRequest() {
+        let trendingHashtagRequest = TrendingHashtagRequest(url: nil)
         XCTAssertEqual(trendingHashtagRequest.urlRequest.URL?.absoluteString, "/api/discover/hashtags")
+    }
+    
+    func testCustomTrendingRequest() {
+        let urlString = "testingURL"
+        let trendingHashtagRequest = TrendingHashtagRequest(url: NSURL(string: urlString))
+        XCTAssertEqual(trendingHashtagRequest.urlRequest.URL?.absoluteString, urlString)
     }
     
     func testSearchRequest() {
