@@ -19,14 +19,6 @@ class ChatFeedMessageCell: UICollectionViewCell {
     static let videoPreviewCellReuseIdentifier = "VideoPreviewChatFeedMessageCell"
     static let nonMediaCellReuseIdentifier = "NonMediaChatFeedMessageCell"
     
-    let usernameLabel = UILabel()
-    let timestampLabel = UILabel()
-    let bubbleView = ChatBubbleView()
-    let captionLabel = UILabel()
-    let avatarShadowView = UIView()
-    let avatarView = UIImageView()
-    var previewView: UIView?
-    let avatarTapTarget = UIView()
     let defaultAvatarImage = UIImage(named: "profile_full")
     
     weak var delegate: ChatFeedMessageCellDelegate?
@@ -58,10 +50,10 @@ class ChatFeedMessageCell: UICollectionViewCell {
     static let horizontalSpacing = CGFloat(12.0)
     static let avatarSize = CGSize(width: 30.0, height: 30.0)
     static let avatarTapTargetSize = CGSize(width: 44.0, height: 44.0)
-    static let contentMargin = UIEdgeInsets(top: 24, left: 10, bottom: 2, right: 75)
+    static let contentMargin = UIEdgeInsets(top: 28.0, left: 10.0, bottom: 2.0, right: 75.0)
     static let topLabelYSpacing = CGFloat(4.0)
     static let topLabelXInset = CGFloat(4.0)
-    static let captionBubbleSpacing = CGFloat(8.0)
+    static let bubbleSpacing = CGFloat(6.0)
     static let shadowRadius = CGFloat(1.0)
     static let shadowOpacity = Float(0.15)
     static let shadowColor = UIColor.blackColor()
@@ -89,14 +81,29 @@ class ChatFeedMessageCell: UICollectionViewCell {
         contentView.addSubview(avatarShadowView)
         contentView.addSubview(avatarView)
         contentView.addSubview(avatarTapTarget)
-        contentView.addSubview(bubbleView)
+        contentView.addSubview(captionBubbleView)
         
-        bubbleView.contentView.addSubview(captionLabel)
+        captionBubbleView.contentView.addSubview(captionLabel)
     }
     
     required init?(coder: NSCoder) {
         fatalError("NSCoding not supported.")
     }
+    
+    // MARK: - Subviews
+    
+    let usernameLabel = UILabel()
+    let timestampLabel = UILabel()
+    
+    let avatarShadowView = UIView()
+    let avatarView = UIImageView()
+    let avatarTapTarget = UIView()
+    
+    let captionBubbleView = ChatBubbleView()
+    let captionLabel = UILabel()
+    
+    var previewBubbleView: ChatBubbleView?
+    var previewView: UIView?
     
     // MARK: - Layout
     
@@ -137,7 +144,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
         timestampLabel.font = dependencyManager.timestampFont
         timestampLabel.textColor = dependencyManager.timestampColor
         
-        bubbleView.backgroundColor = dependencyManager.backgroundColor
+        captionBubbleView.backgroundColor = dependencyManager.backgroundColor
         
         avatarView.backgroundColor = dependencyManager.backgroundColor
     }
@@ -206,7 +213,10 @@ class ChatFeedMessageCell: UICollectionViewCell {
         
         previewView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onMediaTapped)))
         
+        let bubbleView = ChatBubbleView()
         bubbleView.contentView.addSubview(previewView)
+        addSubview(bubbleView)
+        previewBubbleView = bubbleView
         self.previewView = previewView
     }
     
@@ -234,15 +244,16 @@ class ChatFeedMessageCell: UICollectionViewCell {
     // MARK: - Sizing
     
     static func cellHeight(displaying content: ContentModel, inWidth width: CGFloat, dependencyManager: VDependencyManager) -> CGFloat {
-        let textHeight = textSize(displaying: content, inWidth: width, dependencyManager: dependencyManager).height
+        let textHeight = textSize(displaying: content, inWidth: width, dependencyManager: dependencyManager)?.height ?? 0.0
         let mediaHeight = mediaSize(displaying: content, inWidth: width)?.height ?? 0.0
-        let contentHeight = max(textHeight + mediaHeight, avatarSize.height)
+        let bubbleSpacing = textHeight > 0.0 && mediaHeight > 0.0 ? self.bubbleSpacing : 0.0
+        let contentHeight = max(textHeight + bubbleSpacing + mediaHeight, avatarSize.height)
         return contentMargin.top + contentMargin.bottom + contentHeight
     }
     
-    static func textSize(displaying content: ContentModel, inWidth width: CGFloat, dependencyManager: VDependencyManager) -> CGSize {
+    static func textSize(displaying content: ContentModel, inWidth width: CGFloat, dependencyManager: VDependencyManager) -> CGSize? {
         guard let attributedText = content.attributedText(using: dependencyManager) else {
-            return CGSize.zero
+            return nil
         }
         
         let mediaWidth = mediaSize(displaying: content, inWidth: width)?.width
