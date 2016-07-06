@@ -16,7 +16,6 @@
 #import "VAppDelegate.h"
 #import "VButton.h"
 #import "VPurchaseManager.h"
-#import "VSettingsTableViewCell.h"
 #import "VAppInfo.h"
 #import "VDependencyManager+VAccessoryScreens.h"
 #import "VDependencyManager+VNavigationItem.h"
@@ -273,8 +272,8 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     }
     
     // Tracking
-    VSettingsTableViewCell *cell = (VSettingsTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-    if ( [cell isKindOfClass:[VSettingsTableViewCell class]] )
+    SettingsTableViewCell *cell = (SettingsTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+    if ( [cell isKindOfClass:[SettingsTableViewCell class]] )
     {
         NSDictionary *params = @{ VTrackingKeyName : cell.settingName ?: @"" };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectSetting parameters:params];
