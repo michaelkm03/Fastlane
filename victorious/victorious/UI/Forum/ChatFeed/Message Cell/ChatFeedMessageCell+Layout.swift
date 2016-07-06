@@ -22,15 +22,15 @@ extension ChatFeedMessageCell {
         
         let alignment: ChatFeedMessageCellAlignment = content.wasCreatedByCurrentUser ? .right : .left
         
-        let mediaSize = self.mediaSize(displaying: content, inWidth: cell.bounds.width)
-        let textSize = self.textSize(displaying: content, inWidth: cell.bounds.width, dependencyManager: dependencyManager)
+        let previewSize = self.previewSize(displaying: content, inWidth: cell.bounds.width)
+        let captionSize = self.captionSize(displaying: content, inWidth: cell.bounds.width, dependencyManager: dependencyManager)
         let timestampSize = cell.timestampLabel.sizeThatFits(cell.bounds.size)
         let usernameSize = self.usernameSize(in: cell, withTimestampSize: timestampSize)
         
         // Bubble layout:
         
-        let previewFrame = layoutBubbleView(cell.previewBubbleView, forAlignment: alignment, size: mediaSize, precedingBubbleFrame: nil, inBounds: cell.bounds)
-        let captionFrame = layoutBubbleView(cell.captionBubbleView, forAlignment: alignment, size: textSize, precedingBubbleFrame: previewFrame, inBounds: cell.bounds)
+        let previewFrame = layoutBubbleView(cell.previewBubbleView, forAlignment: alignment, size: previewSize, precedingBubbleFrame: nil, inBounds: cell.bounds)
+        let captionFrame = layoutBubbleView(cell.captionBubbleView, forAlignment: alignment, size: captionSize, precedingBubbleFrame: previewFrame, inBounds: cell.bounds)
         let bubbleFrames = [previewFrame, captionFrame].flatMap { $0 }
         let firstBubbleFrame = bubbleFrames.first ?? CGRect.zero
         

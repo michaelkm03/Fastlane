@@ -55,7 +55,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
     static let topLabelXInset = CGFloat(4.0)
     static let bubbleSpacing = CGFloat(6.0)
     static let shadowRadius = CGFloat(1.0)
-    static let shadowOpacity = Float(0.15)
+    static let shadowOpacity = Float(0.2)
     static let shadowColor = UIColor.blackColor()
     static let shadowOffset = CGSize(width: 0.0, height: 1.0)
     
@@ -133,7 +133,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
         delegate?.messageCellDidSelectAvatarImage(self)
     }
     
-    func onMediaTapped(sender: AnyObject?) {
+    func onPreviewTapped(sender: AnyObject?) {
         delegate?.messageCellDidSelectMedia(self)
     }
     
@@ -211,7 +211,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
         previewView.clipsToBounds = true
         previewView.translatesAutoresizingMaskIntoConstraints = false
         
-        previewView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onMediaTapped)))
+        previewView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onPreviewTapped)))
         
         let bubbleView = ChatBubbleView()
         bubbleView.contentView.addSubview(previewView)
@@ -244,23 +244,23 @@ class ChatFeedMessageCell: UICollectionViewCell {
     // MARK: - Sizing
     
     static func cellHeight(displaying content: ContentModel, inWidth width: CGFloat, dependencyManager: VDependencyManager) -> CGFloat {
-        let textHeight = textSize(displaying: content, inWidth: width, dependencyManager: dependencyManager)?.height ?? 0.0
-        let mediaHeight = mediaSize(displaying: content, inWidth: width)?.height ?? 0.0
-        let bubbleSpacing = textHeight > 0.0 && mediaHeight > 0.0 ? self.bubbleSpacing : 0.0
-        let contentHeight = max(textHeight + bubbleSpacing + mediaHeight, avatarSize.height)
+        let captionHeight = captionSize(displaying: content, inWidth: width, dependencyManager: dependencyManager)?.height ?? 0.0
+        let previewHeight = previewSize(displaying: content, inWidth: width)?.height ?? 0.0
+        let bubbleSpacing = captionHeight > 0.0 && previewHeight > 0.0 ? self.bubbleSpacing : 0.0
+        let contentHeight = max(captionHeight + bubbleSpacing + previewHeight, avatarSize.height)
         return contentMargin.top + contentMargin.bottom + contentHeight
     }
     
-    static func textSize(displaying content: ContentModel, inWidth width: CGFloat, dependencyManager: VDependencyManager) -> CGSize? {
+    static func captionSize(displaying content: ContentModel, inWidth width: CGFloat, dependencyManager: VDependencyManager) -> CGSize? {
         guard let attributedText = content.attributedText(using: dependencyManager) else {
             return nil
         }
         
-        let mediaWidth = mediaSize(displaying: content, inWidth: width)?.width
-        let maxTextWidth = min(width - nonContentWidth, mediaWidth ?? CGFloat.max)
+        let previewWidth = previewSize(displaying: content, inWidth: width)?.width
+        let maxCaptionWidth = min(width - nonContentWidth, previewWidth ?? CGFloat.max)
         
         var size = attributedText.boundingRectWithSize(
-            CGSize(width: maxTextWidth, height: CGFloat.max),
+            CGSize(width: maxCaptionWidth, height: CGFloat.max),
             options: [.UsesLineFragmentOrigin],
             context: nil
         ).size
@@ -270,7 +270,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
         return size
     }
     
-    static func mediaSize(displaying content: ContentModel, inWidth width: CGFloat) -> CGSize? {
+    static func previewSize(displaying content: ContentModel, inWidth width: CGFloat) -> CGSize? {
         return content.mediaSize?.preferredSize(clampedToWidth: width - nonContentWidth)
     }
     
