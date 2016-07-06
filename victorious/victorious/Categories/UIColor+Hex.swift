@@ -11,21 +11,8 @@ import UIKit
 extension UIColor {
     convenience init?(rgbHexString: String) {
         let hexNSString = rgbHexString as NSString
-        let length = hexNSString.length
         
-        guard length == 6 else {
-            return nil
-        }
-        
-        // Brutal and not-very elegant test for non hex-numeric characters
-        guard let regex = try? NSRegularExpression(pattern: "[^a-fA-F|0-9]", options: []) else {
-            return nil
-        }
-        
-        let range = NSRange(location: 0, length: length)
-        let match = regex.numberOfMatchesInString(rgbHexString, options: [.ReportCompletion], range: range)
-        
-        guard match != 0 else {
+        guard hexNSString.length == 6 else {
             return nil
         }
         
