@@ -28,11 +28,14 @@ enum AvatarViewSize {
 class AvatarView: UIView {
     private struct Constants {
         static let initialsFont = UIFont.systemFontOfSize(14.0, weight: UIFontWeightMedium)
-        static let initialsColor = UIColor.blackColor()
+        static let initialsColor = UIColor(white: 0.0, alpha: 0.5)
         static let initialsMinScaleFactor = CGFloat(0.5)
         
-        static let shadowRadius = CGFloat(1.0)
-        static let shadowOpacity = Float(0.2)
+        static let borderColor = UIColor(white: 0.0, alpha: 0.12)
+        static let borderWidth = CGFloat(0.5)
+        
+        static let shadowRadius = CGFloat(0.5)
+        static let shadowOpacity = Float(0.1)
         static let shadowColor = UIColor.blackColor()
         static let shadowOffset = CGSize(width: 0.0, height: 1.0)
     }
@@ -53,6 +56,8 @@ class AvatarView: UIView {
         clipsToBounds = false
         imageView.clipsToBounds = true
         
+        shadowView.layer.borderColor = Constants.borderColor.CGColor
+        shadowView.layer.borderWidth = Constants.borderWidth
         shadowView.layer.shadowColor = Constants.shadowColor.CGColor
         shadowView.layer.shadowRadius = Constants.shadowRadius
         shadowView.layer.shadowOpacity = Constants.shadowOpacity
@@ -147,10 +152,11 @@ class AvatarView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        shadowView.frame = bounds
+        shadowView.frame = bounds.insetBy(dx: -Constants.borderWidth, dy: -Constants.borderWidth)
         imageView.frame = bounds
         initialsLabel.frame = bounds
-        imageView.layer.cornerRadius = bounds.size.v_roundCornerRadius
+        imageView.layer.cornerRadius = imageView.frame.size.v_roundCornerRadius
+        shadowView.layer.cornerRadius = shadowView.frame.size.v_roundCornerRadius
         updateShadowPathIfNeeded()
         updateContentIfNeeded()
     }
