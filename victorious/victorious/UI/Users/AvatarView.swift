@@ -53,6 +53,7 @@ class AvatarView: UIView {
     }
     
     private func setup() {
+        backgroundColor = nil
         clipsToBounds = false
         imageView.clipsToBounds = true
         
