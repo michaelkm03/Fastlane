@@ -209,13 +209,13 @@ static NSString * const kMacroSubtype                = @"%%SUBTYPE%%";
     
     completeParameters[ VTrackingKeySessionTime ] = @(sessionTimer.sessionDuration);
     
-    NSMutableDictionary *replacementsDictionary = [[NSMutableDictionary alloc] initWithCapacity:parameters.count];
-    for (NSString *parameter in parameters.keyEnumerator)
+    NSMutableDictionary *replacementsDictionary = [[NSMutableDictionary alloc] initWithCapacity:completeParameters.count];
+    for (NSString *parameter in completeParameters.keyEnumerator)
     {
         NSString *macro = self.parameterMacroMapping[parameter];
         if ( macro != nil )
         {
-            replacementsDictionary[macro] = [self stringFromParameterValue:parameters[parameter]];
+            replacementsDictionary[macro] = [self stringFromParameterValue:completeParameters[parameter]];
         }
     }
     NSString *urlWithMacrosReplaced = [self.macroReplacement urlByReplacingMacrosFromDictionary:replacementsDictionary inURLString:urlString];
