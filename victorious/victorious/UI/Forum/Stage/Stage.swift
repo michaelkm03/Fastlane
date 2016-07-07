@@ -24,6 +24,9 @@ protocol Stage: class, ForumEventReceiver {
     
     /// Removes the current content on the stage.
     func removeContent()
+    
+    /// Provides a way for the stage to interpolate UI alongside the shrinking 
+    func interpolateAlongSideShrinking(percentage: CGFloat)
 }
 
 /// Conformers will recieve messages related to the stage resizing.

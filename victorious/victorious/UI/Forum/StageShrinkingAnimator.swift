@@ -11,6 +11,7 @@ import UIKit
 class StageShrinkingAnimator: NSObject {
     
     private struct Constants {
+        static let downDragIgnoredMagnitude: CGFloat = 50
         static let dragMagnitude: CGFloat = 160
         static let cornerRadius: CGFloat = 6
         static let scaleFactor: CGFloat = 0.42666
@@ -21,6 +22,8 @@ class StageShrinkingAnimator: NSObject {
         static let scaleTransform = CGAffineTransformMakeScale(scaleFactor, scaleFactor)
         static let stageMargin = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 10)
         static let borderEndingAlpha: CGFloat = 0.3
+        static let tranlationTriggerCoefficient: CGFloat = 0.2
+        static let velocityTarget: CGFloat = 0.3
     }
     
     private enum StageState {
@@ -32,7 +35,9 @@ class StageShrinkingAnimator: NSObject {
     
     private var stageState = StageState.expanded
     
+    // Handlers
     var shouldHideKeyboardHandler: (() -> Void)?
+    var interpolateAlongSide: ((percentage: CGFloat) -> Void)?
     
     private let stageContainer: UIView
     private let stageTouchBlocker: UIView
@@ -88,9 +93,12 @@ class StageShrinkingAnimator: NSObject {
             return
         }
         
-        let translation = scrollView.panGestureRecognizer.translationInView(chatFeedContainer)
+        var translation = scrollView.panGestureRecognizer.translationInView(chatFeedContainer)
         guard (translation.y > 0 && stageState == .expanded) || (translation.y < 0 && stageState == .shrunken) else {
             return
+        }
+        if translation.y < 0 {
+            translation.y = min(translation.y + Constants.downDragIgnoredMagnitude, -0.5)
         }
         
         var percentTranslated = translation.y / Constants.dragMagnitude
@@ -122,27 +130,36 @@ class StageShrinkingAnimator: NSObject {
             return
         }
         
-        print("willEndDragging: velocity: \(velocity)")
-        let shouldShrink = velocity.y < 0 ? true : false
+        
+        let currentState = stageState
+        let scrollingDown = velocity.y < 0 ? true : false
         let translation = scrollView.panGestureRecognizer.translationInView(chatFeedContainer)
         let shouldAnimate = translation.y > 0 ? (translation.y < Constants.dragMagnitude) : (translation.y > -Constants.dragMagnitude)
+        let targetState = scrollingDown ? StageState.shrunken : StageState.expanded
+        print("willEndDragging: velocity: \(velocity), currentState: \(currentState), translation: \(translation)")
+        
+        func changeFunction() {
+            if targetState == .shrunken && velocity.y < -Constants.velocityTarget && translation.y > (Constants.dragMagnitude * Constants.tranlationTriggerCoefficient) {
+                shrinkStage()
+            } else if targetState == .expanded && velocity.y > Constants.velocityTarget && translation.y < (Constants.dragMagnitude * Constants.tranlationTriggerCoefficient){
+                enlargeStage()
+            } else {
+                if currentState == .expanded {
+                    enlargeStage()
+                } else {
+                    shrinkStage()
+                }
+            }
+            ignoreScrollBehaviorUntilNextBegin = true
+        }
         
         if shouldAnimate {
             UIView.animateWithDuration(0.3) {
-                if shouldShrink {
-                    self.shrinkStage()
-                } else {
-                    self.enlargeStage()
-                }
+                changeFunction()
             }
         } else {
-            if shouldShrink {
-                self.shrinkStage()
-            } else {
-                self.enlargeStage()
-            }
+            changeFunction()
         }
-        
     }
     
     func chatFeed(chatFeed: ChatFeed, didEndDragging scrollView: UIScrollView) {
@@ -185,9 +202,10 @@ class StageShrinkingAnimator: NSObject {
     
     func applyInterploatedValues(withPercentage percentage: CGFloat) {
         stageContainer.transform = affineTransformFor(percentage)
-        stageViewControllerContainmentContainer.layer.cornerRadius = Constants.cornerRadius * percentage
-        stageBlurBackground.layer.cornerRadius = Constants.cornerRadius * percentage
+        stageViewControllerContainmentContainer.layer.cornerRadius = Constants.cornerRadius * percentage * (1 / scaleFactorFor(percentage))
+        stageBlurBackground.layer.cornerRadius = Constants.cornerRadius * percentage * (1 / scaleFactorFor(percentage))
         stageViewControllerContainmentContainer.layer.borderColor = interpolatedBorderColorFor(percentThrough: percentage)
+        interpolateAlongSide?(percentage: percentage)
     }
     
     // MARK: - Math and Interpolation functions

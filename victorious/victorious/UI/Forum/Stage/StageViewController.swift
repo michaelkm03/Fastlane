@@ -191,6 +191,12 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         queuedContent = nil
     }
     
+    func interpolateAlongSideShrinking(percentage: CGFloat) {
+        captionBarViewController?.view.alpha = 1 - percentage
+        attributionBar.alpha = 1 - percentage
+        newItemPill?.alpha = 1 - percentage
+    }
+    
     private func hidePill() {
         guard
             let newItemPill = newItemPill
