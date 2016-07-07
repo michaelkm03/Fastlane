@@ -10,5 +10,8 @@
     "total_pages": 2,
     "experiment_ids": [27],
     "alerts": [],
-    "payload": ["surfer", "surfer2"]
+    "payload": {
+        "hashtags": [{"hashtag": "surfer"},
+                     {"hashtag": "surfer2"}]
+    }
 }

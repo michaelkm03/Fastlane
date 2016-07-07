@@ -594,7 +594,6 @@
 		670C658B1C52AC0F00BD7F3F /* ListShelf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670C658A1C52AC0F00BD7F3F /* ListShelf.swift */; };
 		670C658D1C52AC6200BD7F3F /* HashtagShelf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670C658C1C52AC6200BD7F3F /* HashtagShelf.swift */; };
 		670C65921C52BA1800BD7F3F /* ExploreMarqueeShelfResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 670C658E1C52BA1800BD7F3F /* ExploreMarqueeShelfResponse.json */; };
-		670C65931C52BA1800BD7F3F /* FeaturedHashtagResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 670C658F1C52BA1800BD7F3F /* FeaturedHashtagResponse.json */; };
 		670C65941C52BA1800BD7F3F /* PlayListShelfResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 670C65901C52BA1800BD7F3F /* PlayListShelfResponse.json */; };
 		670C65951C52BA1800BD7F3F /* UserShelfResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 670C65911C52BA1800BD7F3F /* UserShelfResponse.json */; };
 		670C65971C52BA3800BD7F3F /* ShelfTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670C65961C52BA3800BD7F3F /* ShelfTests.swift */; };
@@ -3069,7 +3068,6 @@
 		670C658A1C52AC0F00BD7F3F /* ListShelf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListShelf.swift; sourceTree = "<group>"; };
 		670C658C1C52AC6200BD7F3F /* HashtagShelf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagShelf.swift; sourceTree = "<group>"; };
 		670C658E1C52BA1800BD7F3F /* ExploreMarqueeShelfResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ExploreMarqueeShelfResponse.json; sourceTree = "<group>"; };
-		670C658F1C52BA1800BD7F3F /* FeaturedHashtagResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FeaturedHashtagResponse.json; sourceTree = "<group>"; };
 		670C65901C52BA1800BD7F3F /* PlayListShelfResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PlayListShelfResponse.json; sourceTree = "<group>"; };
 		670C65911C52BA1800BD7F3F /* UserShelfResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = UserShelfResponse.json; sourceTree = "<group>"; };
 		670C65961C52BA3800BD7F3F /* ShelfTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShelfTests.swift; sourceTree = "<group>"; };
@@ -6218,7 +6216,6 @@
 				0300AA811BF2E465000A121D /* DevicePreferencesResponse.json */,
 				670C658E1C52BA1800BD7F3F /* ExploreMarqueeShelfResponse.json */,
 				6731B2641BF1834700B9FFFE /* FanLoyalty.json */,
-				670C658F1C52BA1800BD7F3F /* FeaturedHashtagResponse.json */,
 				67A42FC81BF29ABC0087FBE9 /* FollowersResponse.json */,
 				67C2101D1BFA797E0074E40E /* FollowHashtagResponse.json */,
 				67C2101F1BFA7A210074E40E /* FollowingHashtagsResponse.json */,
@@ -11189,7 +11186,6 @@
 				0EBF418E1CAC889C002966B3 /* RefreshStage.json in Resources */,
 				678D94581BF44100009A1F93 /* PollResultBySequenceResponse.json in Resources */,
 				0ECECD2E1D010E7F0076CB92 /* ChatUserCount.json in Resources */,
-				670C65931C52BA1800BD7F3F /* FeaturedHashtagResponse.json in Resources */,
 				795B75901BFA686200227647 /* tos.json in Resources */,
 				C3E7C1011BF414D100AFE545 /* SendMessageResponse.json in Resources */,
 				BF3777E21CEE4D5800AEF7F2 /* ViewedContentsResponse.json in Resources */,

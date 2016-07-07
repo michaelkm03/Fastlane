@@ -41,24 +41,11 @@ class TrendingHashtagRequestTests: XCTestCase {
     }
     
     func testSearchRequest() {
-        let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 15)
-        guard let hashtagRequest = HashtagSearchRequest(searchTerm: "blah blah 🍞", context: nil, paginator: paginator) else {
+        guard let hashtagRequest = HashtagSearchRequest(searchTerm: "blah blah 🍞") else {
             XCTFail("HashtagSearchRequest: Could not create request.")
             return
         }
         let urlRequest = hashtagRequest.urlRequest
-        XCTAssertEqual(urlRequest.URL?.absoluteString, "/api/hashtag/search/blah%20blah%20%F0%9F%8D%9E/1/15")
-    }
-    
-    func testSearchRequestContext() {
-        let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 15)
-        for context in [ SearchContext.Message, SearchContext.Discover, SearchContext.UserTag ] {
-            guard let hashtagRequest = HashtagSearchRequest(searchTerm: "blah blah 🍞", context: context, paginator: paginator) else {
-                XCTFail("HashtagSearchRequest: Could not create request.")
-                return
-            }
-            let urlRequest = hashtagRequest.urlRequest
-            XCTAssertEqual(urlRequest.URL?.absoluteString, "/api/hashtag/search/blah%20blah%20%F0%9F%8D%9E/1/15/\(context.rawValue)")
-        }
+        XCTAssertEqual(urlRequest.URL?.absoluteString, "/api/hashtag/search/blah%20blah%20%F0%9F%8D%9E")
     }
 }
