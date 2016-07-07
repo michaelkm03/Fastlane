@@ -9,6 +9,8 @@
 import CoreGraphics
 import Foundation
 
+var ids: Set<Content.ID> = Set()
+
 /// Conformers are models that store information about piece of content in the app
 /// Consumers can directly use this type without caring what the concrete type is, persistent or not.
 public protocol ContentModel: PreviewImageContainer, DictionaryConvertible {
@@ -39,6 +41,7 @@ public protocol ContentModel: PreviewImageContainer, DictionaryConvertible {
 }
 
 extension ContentModel {
+    
     // MARK: - DictionaryConvertible
     
     public var rootKey: String {
@@ -66,6 +69,21 @@ extension ContentModel {
         }
         
         return dictionary
+    }
+}
+
+extension ContentModel {
+    
+    // MARK: Hidden Content
+    
+    public static func hideContent(withID id: Content.ID) {
+        print("hide: \(ids)")
+        ids.insert(id)
+    }
+    
+    public static func contentIsHidden(withID id: Content.ID) -> Bool {
+        print("isHidden: \(ids)")
+        return ids.contains(id)
     }
 }
 
