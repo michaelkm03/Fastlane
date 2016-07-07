@@ -19,7 +19,7 @@ class HashtagSearchRequestTests: XCTestCase {
         }
         
         do {
-            guard let hashtagSearch = HashtagSearchRequest(searchTerm: "surfer") else {
+            guard let hashtagSearch = HashtagSearchRequest(searchTerm: "surfer", apiPath: APIPath(templatePath: "test")) else {
                 XCTFail("HashtagSearchRequest: Could not create request.")
                 return
             }
@@ -33,7 +33,7 @@ class HashtagSearchRequestTests: XCTestCase {
     }
     
     func testDefaultRequest() {
-        guard let hashtagSearch = HashtagSearchRequest(searchTerm: "surfer") else {
+        guard let hashtagSearch = HashtagSearchRequest(searchTerm: "surfer", apiPath: APIPath(templatePath: "test")) else {
             XCTFail("HashtagSearchRequest: Could not create request.")
             return
         }

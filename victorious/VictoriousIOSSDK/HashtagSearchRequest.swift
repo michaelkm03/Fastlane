@@ -21,7 +21,6 @@ public struct HashtagSearchRequest: RequestType {
     
     // param: - searchTerm must be a urlPathPart percent encoded string
     public init?(searchTerm: String, apiPath: APIPath) {
-        
         let charSet = NSCharacterSet.vsdk_pathPartAllowedCharacterSet
         guard let escapedSearchTerm = searchTerm.stringByAddingPercentEncodingWithAllowedCharacters(charSet) else {
             return nil
