@@ -851,6 +851,8 @@
 		7AC1945B1D2C9002001B15B8 /* ChatBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC1945A1D2C9002001B15B8 /* ChatBubbleView.swift */; };
 		7AC1945D1D2DB9BB001B15B8 /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC1945C1D2DB9BB001B15B8 /* UIColor+Hex.swift */; };
 		7AC1945F1D2DC283001B15B8 /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC1945E1D2DC283001B15B8 /* AvatarView.swift */; };
+		7AC194611D2DD1A9001B15B8 /* String+Initials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC194601D2DD1A9001B15B8 /* String+Initials.swift */; };
+		7AC194631D2DD2FC001B15B8 /* String+InitialsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC194621D2DD2FC001B15B8 /* String+InitialsTests.swift */; };
 		7AE363A11CC864B600F851E9 /* SideNavScaffoldViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE363A01CC864B600F851E9 /* SideNavScaffoldViewController.swift */; };
 		7AE363A51CC98F5D00F851E9 /* RightNavViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE363A41CC98F5D00F851E9 /* RightNavViewController.swift */; };
 		7AE363A71CC9BA9400F851E9 /* Scaffold.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE363A61CC9BA9400F851E9 /* Scaffold.swift */; };
@@ -3339,6 +3341,8 @@
 		7AC1945A1D2C9002001B15B8 /* ChatBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatBubbleView.swift; sourceTree = "<group>"; };
 		7AC1945C1D2DB9BB001B15B8 /* UIColor+Hex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
 		7AC1945E1D2DC283001B15B8 /* AvatarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AvatarView.swift; sourceTree = "<group>"; };
+		7AC194601D2DD1A9001B15B8 /* String+Initials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Initials.swift"; sourceTree = "<group>"; };
+		7AC194621D2DD2FC001B15B8 /* String+InitialsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+InitialsTests.swift"; sourceTree = "<group>"; };
 		7AE363A01CC864B600F851E9 /* SideNavScaffoldViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideNavScaffoldViewController.swift; sourceTree = "<group>"; };
 		7AE363A41CC98F5D00F851E9 /* RightNavViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RightNavViewController.swift; sourceTree = "<group>"; };
 		7AE363A61CC9BA9400F851E9 /* Scaffold.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scaffold.swift; sourceTree = "<group>"; };
@@ -7870,6 +7874,7 @@
 				A6B9FD0D1B60630900166BE8 /* NSURL+VTemporaryFiles.h */,
 				A6B9FD0E1B60630900166BE8 /* NSURL+VTemporaryFiles.m */,
 				C3A4C5B11BCC6455000B745B /* StatusBarUtils.swift */,
+				7AC194601D2DD1A9001B15B8 /* String+Initials.swift */,
 				F009BD1A1CEBD3C800F81CAA /* String+SubstringHelpers.swift */,
 				A721E8D01B572453000B7901 /* UIActivityViewController+VStatusBarHandling.h */,
 				A721E8D11B572453000B7901 /* UIActivityViewController+VStatusBarHandling.m */,
@@ -9463,6 +9468,7 @@
 				03A7614E1B3232970016B69D /* NSURL+VDataCacheIDTests.m */,
 				7987D7981B8A66C400EE4A39 /* NSURL+VTemporaryFilesTests.m */,
 				79070A2A1CFE73570049CFC3 /* ShowTutorialsOperationTests.swift */,
+				7AC194621D2DD2FC001B15B8 /* String+InitialsTests.swift */,
 				F093A9361CEFA008009ACABF /* String+SubstringHelpersTests.swift */,
 				BE171D9F1868BE64004E5202 /* Supporting Files */,
 				03D94C2A19DE155400BFAA27 /* Swizzling Support */,
@@ -13195,6 +13201,7 @@
 				0314D4A719B46B5E00FA363C /* VConversationCell.m in Sources */,
 				676263E81D0B6F2500127D21 /* UIImage+Blurring.swift in Sources */,
 				A70FC1101A2D619300F5BBDE /* VProduct.m in Sources */,
+				7AC194611D2DD1A9001B15B8 /* String+Initials.swift in Sources */,
 				F0AD216E1AF318FC001BDCC6 /* VNoContentCollectionViewCell.m in Sources */,
 				A74679681AFC31AA005EB1D9 /* VDependencyManager+VWebBrowser.m in Sources */,
 				D8CA63BB19D5240C002046E5 /* VActionSheetPresentationAnimator.m in Sources */,
@@ -13770,6 +13777,7 @@
 				A7DCA4DE1C128A78004E35B4 /* VCoachmarkViewTests.m in Sources */,
 				A7DCA4ED1C128A78004E35B4 /* VHashTagsTest.m in Sources */,
 				A7DCA50C1C128A78004E35B4 /* VTrackingManagerTests.m in Sources */,
+				7AC194631D2DD2FC001B15B8 /* String+InitialsTests.swift in Sources */,
 				A7DCA4E31C128A78004E35B4 /* VDependencyManagerImageTests.m in Sources */,
 				F093A9371CEFA008009ACABF /* String+SubstringHelpersTests.swift in Sources */,
 				A7DCA5071C128A78004E35B4 /* VTagSensitiveTextViewTests.m in Sources */,
