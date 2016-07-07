@@ -11,7 +11,7 @@ import UIKit
 class ListMenuSectionHeaderView: UICollectionReusableView {
     
     private static let accessoryButtonHeight = CGFloat(30.0)
-    private static let accessoryButtonXPadding = CGFloat(20.0)
+    private static let accessoryButtonXPadding = CGFloat(24.0)
     private static let accessoryButtonXMargin = CGFloat(12.0)
     
     @IBOutlet private weak var titleLabel: UILabel!
