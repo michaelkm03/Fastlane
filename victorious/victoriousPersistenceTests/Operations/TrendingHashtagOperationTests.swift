@@ -16,7 +16,7 @@ class TrendingHashtagOperationTests: BaseFetcherOperationTestCase {
         let tagString = "testHashtag"
         let hashtag = Hashtag(tag: tagString)
         
-        let operation = TrendingHashtagOperation(url: NSURL())
+        let operation = TrendingHashtagOperation(url: NSURL(string: "test")!)
         testRequestExecutor = TestRequestExecutor(result:[hashtag])
         operation.requestExecutor = testRequestExecutor
         

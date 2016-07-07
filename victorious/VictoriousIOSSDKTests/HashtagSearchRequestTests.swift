@@ -31,12 +31,4 @@ class HashtagSearchRequestTests: XCTestCase {
             XCTFail("Sorry, parseResponse should not throw here: \(error)")
         }
     }
-    
-    func testDefaultRequest() {
-        guard let hashtagSearch = HashtagSearchRequest(searchTerm: "surfer", apiPath: APIPath(templatePath: "test")) else {
-            XCTFail("HashtagSearchRequest: Could not create request.")
-            return
-        }
-        XCTAssertEqual(hashtagSearch.urlRequest.URL?.absoluteString, "/api/hashtag/search/surfer")
-    }
 }

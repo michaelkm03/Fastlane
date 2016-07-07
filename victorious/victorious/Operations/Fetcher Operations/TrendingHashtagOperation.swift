@@ -14,7 +14,8 @@ class TrendingHashtagOperation: RemoteFetcherOperation, RequestOperation {
     let request: TrendingHashtagRequest!
     
     init(url: NSURL) {
-        request = TrendingHashtagRequest(url: url)
+        let test = TrendingHashtagRequest(url: url)
+        request = test
     }
     
     override func main() {
