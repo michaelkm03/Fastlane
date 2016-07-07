@@ -36,7 +36,7 @@ struct Router {
             case .closeUp(let contentWrapper): showCloseUpView(for: contentWrapper)
             case .vipForum: showVIPForum()
             case .trophyCase: showTrophyCase()
-            case .externalURL: break // FUTURE: Show Web Content
+            case .externalURL(let url): showWebView(for: url)
         }
     }
     
@@ -65,6 +65,11 @@ struct Router {
     private func showTrophyCase() {
         guard let originViewController = self.originViewController else { return }
         ShowTrophyCaseOperation(originViewController: originViewController, dependencyManager: dependencyManager).queue()
+    }
+    
+    private func showWebView(for url: NSURL) {
+        // Future: Show the web view in close up properly
+        UIApplication.sharedApplication().openURL(url)
     }
     
     private func showError() {
