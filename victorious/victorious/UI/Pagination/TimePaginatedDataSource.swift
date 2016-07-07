@@ -53,16 +53,16 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
     var apiPath: APIPath
     let ordering: PaginatedOrdering
     let createOperation: (url: NSURL) -> Operation
+    private var currentOperation: Operation?
     
     // MARK: - Managing contents
     
     /// The data source's list of items ordered from oldest to newest.
     private(set) var items: [Item] = []
     
-    private var lastOperation: Operation?
     /// Whether the data source is currently loading a page of items or not.
     var isLoading: Bool {
-        return lastOperation != nil
+        return currentOperation != nil
     }
     
     /// Loads a new page of items.
@@ -72,10 +72,9 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
     /// This method does nothing if a page is already being loaded.
     ///
     func loadItems(loadingType: PaginatedLoadingType, completion: ((newItems: [Item], stageEvent: ForumEvent?, error: NSError?) -> Void)? = nil) {
-        
         if loadingType == .refresh {
-            lastOperation?.cancel()
-            lastOperation = nil
+            currentOperation?.cancel()
+            currentOperation = nil
         }
         
         guard !isLoading else {
@@ -87,9 +86,9 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
             return
         }
         
-        lastOperation = createOperation(url: url)
+        currentOperation = createOperation(url: url)
         
-        lastOperation?.queue { [weak self] newItems, stageEvent, error in
+        currentOperation?.queue { [weak self] newItems, stageEvent, error in
             defer {
                 completion?(newItems: newItems, stageEvent: stageEvent, error: error)
             }
@@ -115,7 +114,7 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
                     }
             }
             
-            self?.lastOperation = nil
+            self?.currentOperation = nil
         }
     }
     
