@@ -48,7 +48,7 @@ final class ContentFeedOperation: NSOperation, Queueable {
         
         persistentStore.mainContext.v_performBlockAndWait { [weak self] context in
             self?.items = self?.contentIDs.flatMap { contentID in
-                if DeleteFlagContentHelper.isFlagged(contentID) {
+                if Content.contentIsHidden(withID: contentID) {
                     return nil
                 }
                 return context.v_findOrCreateObject(["v_remoteID": contentID]) as VContent
