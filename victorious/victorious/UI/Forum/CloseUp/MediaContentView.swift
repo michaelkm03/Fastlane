@@ -197,11 +197,11 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         }
         
         switch(content.type) {
-            case .image:
+            case .image, .video, .gif:
                 updatePreviewImageIfReady()
             case .text:
                 updateTextLabelIfReady()
-            case .video, .gif, .link:
+            case .link:
                 break
         }
     }
