@@ -10,29 +10,6 @@ import UIKit
 
 class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, TutorialNetworkDataSourceDelegate, VBackgroundContainer {
     
-    @IBOutlet private(set) weak var collectionView: UICollectionView! {
-        didSet {
-            collectionView.dataSource = collectionViewDataSource
-            collectionView.delegate = self
-            collectionView.backgroundColor = nil
-        }
-    }
-    
-    weak var delegate: ChatFeedDelegate? = nil
-    weak var nextSender: ForumEventSender? = nil
-    var newItemsController: NewItemsController? = nil
-    var chatDataSource: ChatInterfaceDataSource {
-        return collectionViewDataSource
-    }
-    
-    func setTopInset(value: CGFloat) {
-        // Do nothing
-    }
-    
-    func setBottomInset(value: CGFloat) {
-        // Do nothing
-    }
-    
     @IBOutlet private weak var continueButton: UIButton! {
         didSet {
             continueButton.hidden = true
@@ -44,9 +21,7 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
         }
     }
     
-    var dependencyManager: VDependencyManager!
-    
-    lazy private var collectionViewDataSource: ChatInterfaceDataSource = {
+    lazy private(set) var chatDataSource: ChatInterfaceDataSource = {
         let mainFeedDependency: VDependencyManager = self.dependencyManager.childDependencyForKey("mainFeed") ?? self.dependencyManager
         let dataSource = TutorialCollectionViewDataSource(dependencyManager: mainFeedDependency)
         dataSource.delegate = self
@@ -60,6 +35,28 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
     private var timerManager: VTimerManager?
     
     var onContinue: (() -> Void)?
+    
+    // MARK: - ChatFeed
+    
+    weak var nextSender: ForumEventSender? = nil
+    
+    @IBOutlet private(set) weak var collectionView: UICollectionView! {
+        didSet {
+            collectionView.dataSource = chatDataSource
+            collectionView.delegate = self
+            collectionView.backgroundColor = nil
+        }
+    }
+    
+    func setTopInset(value: CGFloat) {
+        // Do nothing for tutorial screen
+    }
+    
+    func setBottomInset(value: CGFloat) {
+        // Do nothing for tutorial screen
+    }
+    
+    var dependencyManager: VDependencyManager!
 
     // MARK: - Initialization
     
@@ -105,7 +102,7 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
     // MARK: - UICollectionViewFlowLayoutDelegate
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        return collectionViewDataSource.desiredCellSize(for: collectionView, at: indexPath)
+        return chatDataSource.desiredCellSize(for: collectionView, at: indexPath)
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
@@ -155,7 +152,7 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
     }
     
     func onTimerTick() {
-        collectionViewDataSource.updateTimestamps(in: collectionView)
+        chatDataSource.updateTimestamps(in: collectionView)
     }
 }
 

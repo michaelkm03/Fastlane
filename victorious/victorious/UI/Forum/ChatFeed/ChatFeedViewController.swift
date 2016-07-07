@@ -9,14 +9,6 @@
 import UIKit
 
 class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDelegate, UICollectionViewDelegateFlowLayout, VScrollPaginatorDelegate, NewItemsControllerDelegate, ChatFeedMessageCellDelegate {
-    private lazy var dataSource: ChatFeedDataSource = {
-        return ChatFeedDataSource(dependencyManager: self.dependencyManager)
-    }()
-    
-    var chatDataSource: ChatInterfaceDataSource {
-        return dataSource
-    }
-    
     private struct Layout {
         private static let bottomMargin: CGFloat = 20.0
         private static let topMargin: CGFloat = 64.0
@@ -24,7 +16,9 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     
     private var edgeInsets = UIEdgeInsets(top: Layout.topMargin, left: 0.0, bottom: Layout.bottomMargin, right: 0.0)
     
-    var dependencyManager: VDependencyManager!
+    private lazy var dataSource: ChatFeedDataSource = {
+        return ChatFeedDataSource(dependencyManager: self.dependencyManager)
+    }()
     
     private lazy var focusHelper: VCollectionViewStreamFocusHelper = {
         return VCollectionViewStreamFocusHelper(collectionView: self.collectionView)
@@ -35,13 +29,19 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     // Used to create a temporary window where immediate re-stashing is disabled after unstashing
     private var canStashNewItems: Bool = true
     
-    @IBOutlet private(set) var newItemsController: NewItemsController?
-    @IBOutlet private(set) weak var collectionView: UICollectionView!
     @IBOutlet private var collectionViewBottom: NSLayoutConstraint!
     
     // MARK: - ChatFeed
     
     weak var delegate: ChatFeedDelegate?
+    var dependencyManager: VDependencyManager!
+    
+    @IBOutlet private(set) weak var collectionView: UICollectionView!
+    @IBOutlet private(set) var newItemsController: NewItemsController?
+    
+    var chatDataSource: ChatInterfaceDataSource {
+        return dataSource
+    }
     
     func setTopInset(value: CGFloat) {
         edgeInsets.top = value + Layout.topMargin

@@ -8,26 +8,44 @@
 
 import Foundation
 
-protocol ChatFeed: class, ForumEventReceiver, ForumEventSender {
+protocol ChatFeed: class, ForumEventSender, ForumEventReceiver {
     
-    weak var delegate: ChatFeedDelegate? { get set }
-    
-    weak var nextSender: ForumEventSender? { get set }
-    
+    var nextSender: ForumEventSender? { get set }
+    var delegate: ChatFeedDelegate? { get set }
     var dependencyManager: VDependencyManager! { get set }
-    
-    // MARK: - Layout
-    
-    func setTopInset(value: CGFloat)
-    
-    func setBottomInset(value: CGFloat)
     
     var newItemsController: NewItemsController? { get }
     var collectionView: UICollectionView! { get }
     var chatDataSource: ChatInterfaceDataSource { get }
+    
+    // MARK: - Layout
+    
+    func setTopInset(value: CGFloat)
+    func setBottomInset(value: CGFloat)
+}
+
+protocol ChatFeedDelegate: class {
+    
+    func chatFeed(chatFeed: ChatFeed, didSelectUserWithUserID userID: Int)
+    
+    func chatFeed(chatFeed: ChatFeed, didSelectContent content: ContentModel)
 }
 
 extension ChatFeed {
+    
+    var delegate: ChatFeedDelegate? {
+        get {
+            return nil
+        }
+        set {
+            return
+        }
+    }
+    
+    var newItemsController: NewItemsController? {
+        return nil
+    }
+    
     func handleNewItems(newItems: [ChatFeedContent], loadingType: PaginatedLoadingType, completion: (() -> Void)? = nil) {
         guard newItems.count > 0 || loadingType == .refresh else {
             return
@@ -59,7 +77,7 @@ extension ChatFeed {
         }
     }
     
-    func updateCollectionView(with newItems: [ChatFeedContent], loadingType: PaginatedLoadingType, completion: () -> Void) {
+    private func updateCollectionView(with newItems: [ChatFeedContent], loadingType: PaginatedLoadingType, completion: () -> Void) {
         if loadingType == .refresh {
             collectionView.reloadData()
             completion()
@@ -99,11 +117,4 @@ extension ChatFeed {
             })
         }
     }
-}
-
-protocol ChatFeedDelegate: class {
-    
-    func chatFeed(chatFeed: ChatFeed, didSelectUserWithUserID userID: Int)
-    
-    func chatFeed(chatFeed: ChatFeed, didSelectContent content: ContentModel)
 }
