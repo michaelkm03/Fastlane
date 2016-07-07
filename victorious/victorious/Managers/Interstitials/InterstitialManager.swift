@@ -84,7 +84,7 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
         switch alert.type {
             case .achievement, .levelUp, .statusUpdate, .toast:
                 AlertAcknowledgeOperation(alertID: alert.alertID).queue()
-            default:
+            case .clientSideCreated, .reconnectingError:
                 break
         }
 
