@@ -27,10 +27,9 @@ class YouTubeVideoPlayer: NSObject, VVideoPlayer, YTPlayerViewDelegate {
         }
     }
     
-    private func loadCurrentItem() {
-        guard let item = currentItem,
-            let videoId = item.remoteContentId else {
-                assertionFailure( "Cannot play video without setting a `VVideoPlayerItem` with a valid `remoteContentId` property." )
+    func setItem(item: VVideoPlayerItem) {
+        guard let videoId = item.remoteContentId else {
+                assertionFailure("Cannot play video without setting a `VVideoPlayerItem` with a valid `remoteContentId` property.")
                 return
         }
         
@@ -38,7 +37,7 @@ class YouTubeVideoPlayer: NSObject, VVideoPlayer, YTPlayerViewDelegate {
         playerView.alpha = 0.0
         playerView.userInteractionEnabled = false
         delegate?.videoPlayerDidStartBuffering?(self)
-        playerView.loadWithVideoId( videoId, playerVars: playerVars )
+        playerView.loadWithVideoId(videoId, playerVars: playerVars)
         playerView.playVideo()
         
         isReadyToPlay = true
@@ -87,12 +86,6 @@ class YouTubeVideoPlayer: NSObject, VVideoPlayer, YTPlayerViewDelegate {
         return playerView
     }
     
-    func setItem(item: VVideoPlayerItem) {
-        if currentItem?.remoteContentId != item.remoteContentId {
-            self.reset()
-        }
-        currentItem = item
-    }
     
     func seekToTimeSeconds(timeSeconds: NSTimeInterval) {
         playerView.seekToSeconds( Float(timeSeconds), allowSeekAhead: true)
@@ -107,10 +100,6 @@ class YouTubeVideoPlayer: NSObject, VVideoPlayer, YTPlayerViewDelegate {
         let wasPlaying = isPlaying
         if !wasPlaying {
             isPlaying = true
-            if !isReadyToPlay {
-                loadCurrentItem()
-            }
-            
             playerView.playVideo()
             delegate?.videoPlayerDidPlay?(self)
         }
@@ -128,9 +117,6 @@ class YouTubeVideoPlayer: NSObject, VVideoPlayer, YTPlayerViewDelegate {
     func playFromStart() {
         let wasPlaying = isPlaying
         if !wasPlaying {
-            if !isReadyToPlay {
-                loadCurrentItem()
-            }
             playerView.seekToSeconds( 0.0, allowSeekAhead: true)
             playerView.playVideo()
         }

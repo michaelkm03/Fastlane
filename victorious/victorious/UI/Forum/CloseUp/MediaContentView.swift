@@ -31,7 +31,6 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     private(set) var videoCoordinator: VContentVideoPlayerCoordinator?
     private var backgroundView: UIImageView?
     private let spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
-    private var alphaHasAnimatedToZero = false
     private var downloadedPreviewImage: UIImage?
 
     private lazy var previewImageView = {
@@ -147,19 +146,23 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     
     private func displayContent(content: ContentModel) {
         spinner.startAnimating()
-        hideContent(animated: animatesBetweenContent)
-        
-        // Set up image view if content is image
-        let minWidth = frame.size.width
-        
-        if content.type.displaysAsImage, let previewImageURL = content.previewImageURL(ofMinimumWidth: minWidth) ?? NSURL(v_string: content.assets.first?.resourceID) {
-            setUpPreviewImage(from: previewImageURL)
-        }
-        else if content.type.displaysAsVideo {
-            setUpVideoPlayer(for: content)
-        }
-        else if content.type == .text {
-            setUpTextLabel()
+        hideContent(animated: animatesBetweenContent) { [weak self] _ in
+            guard let strongSelf = self else {
+                return
+            }
+            
+            // Set up image view if content is image
+            let minWidth = strongSelf.frame.size.width
+            
+            if content.type.displaysAsImage, let previewImageURL = content.previewImageURL(ofMinimumWidth: minWidth) ?? NSURL(v_string: content.assets.first?.resourceID) {
+                strongSelf.setUpPreviewImage(from: previewImageURL)
+            }
+            else if content.type.displaysAsVideo {
+                strongSelf.setUpVideoPlayer(for: content)
+            }
+            else if content.type == .text {
+                strongSelf.setUpTextLabel()
+            }
         }
     }
     
@@ -169,9 +172,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         tearDownTextLabel()
     }
     
-    func hideContent(animated animated: Bool = true) {
-        videoCoordinator?.pauseVideo()
-        
+    func hideContent(animated animated: Bool = true, completion: ((Bool) -> Void)? = nil) {
         let animationDuration = animated ? Constants.fadeDuration * Constants.fadeOutDurationMultiplier : 0
         
         UIView.animateWithDuration(
@@ -184,26 +185,10 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
                 self.textPostLabel.alpha = 0
                 self.backgroundView?.alpha = 0
             },
-            completion: { [weak self] _ in
-                self?.didFinishHidingContent()
+            completion: { didFinish in
+                completion?(didFinish)
             }
         )
-    }
-    
-    private func didFinishHidingContent() {
-        alphaHasAnimatedToZero = true
-        guard let content = content else {
-            return
-        }
-        
-        switch(content.type) {
-            case .image, .video, .gif:
-                updatePreviewImageIfReady()
-            case .text:
-                updateTextLabelIfReady()
-            case .link:
-                break
-        }
     }
     
     func showContent(animated animated: Bool = true, forcePlayVideo: Bool = false) {
@@ -229,11 +214,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
                 self.previewImageView.alpha = 1
                 self.textPostLabel.alpha = 1
             },
-            completion: { _ in
-                if (forcePlayVideo == true) {
-                    self.videoCoordinator?.playVideo()
-                }
-            }
+            completion: nil
         )
     }
     
@@ -298,6 +279,23 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         textPostLabel.textColor = textPostDependency?.textPostColor ?? Constants.defaultTextColor
         
         textPostLabel.hidden = true //Hide while we set up the view for the next post
+        
+        if  let url = textPostDependency?.textPostBackgroundImageURL,
+            let content = content
+            {
+                setBackgroundBlur(withImageUrl: url, forContent: content) { [weak self] in
+                    guard let currentContentID = self?.content?.id where currentContentID == content.id else {
+                        return
+                    }
+                    self?.renderText(content.text)
+                }
+        }
+        else {
+            backgroundView?.image = nil
+            backgroundView?.backgroundColor = Constants.defaultTextBackgroundColor
+            renderText(content?.text)
+        }
+
     }
     
     private func tearDownTextLabel() {
@@ -305,38 +303,10 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         textPostLabel.text = ""
     }
     
-    private func updateTextLabelIfReady() {
-        guard
-            let textPostDependency = dependencyManager?.textPostDependency,
-            let content = content,
-            let text = content.text
-        where
-            content.type == .text
-        else {
+    private func renderText(text: String?) {
+        guard let text = text else {
             return
         }
-        
-        if let url = textPostDependency.textPostBackgroundImageURL {
-            setBackgroundBlur(withImageUrl: url, forContent: content) { [weak self] in
-                guard
-                    let currentContentID = self?.content?.id,
-                    let hideAnimationDidFinish = self?.alphaHasAnimatedToZero
-                where
-                    currentContentID == content.id && hideAnimationDidFinish
-                else {
-                    return
-                }
-                self?.renderText(text)
-            }
-        }
-        else {
-            backgroundView?.image = nil
-            backgroundView?.backgroundColor = Constants.defaultTextBackgroundColor
-            renderText(text)
-        }
-    }
-    
-    private func renderText(text: String) {
         textPostLabel.text = text
         spinner.stopAnimating()
         textPostLabel.hidden = false
@@ -358,14 +328,13 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     private func updatePreviewImageIfReady() {
         guard
             let content = content where
-            downloadedPreviewImage != nil && alphaHasAnimatedToZero
+            downloadedPreviewImage != nil
         else {
             return
         }
         spinner.stopAnimating()
         previewImageView.image = downloadedPreviewImage
         downloadedPreviewImage = nil
-        alphaHasAnimatedToZero = false
         showContent(animated: animatesBetweenContent)
         
         let minWidth = UIScreen.mainScreen().bounds.size.width
