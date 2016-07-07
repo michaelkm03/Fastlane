@@ -27,6 +27,10 @@ enum AvatarViewSize {
 ///
 class AvatarView: UIView {
     private struct Constants {
+        static let initialsFont = UIFont.systemFontOfSize(14.0, weight: UIFontWeightMedium)
+        static let initialsColor = UIColor.blackColor()
+        static let initialsMinScaleFactor = CGFloat(0.5)
+        
         static let shadowRadius = CGFloat(1.0)
         static let shadowOpacity = Float(0.2)
         static let shadowColor = UIColor.blackColor()
@@ -54,6 +58,8 @@ class AvatarView: UIView {
         shadowView.layer.shadowOpacity = Constants.shadowOpacity
         shadowView.layer.shadowOffset = Constants.shadowOffset
         
+        applyInitialsStyle()
+        
         addSubview(shadowView)
         addSubview(imageView)
         addSubview(initialsLabel)
@@ -70,9 +76,18 @@ class AvatarView: UIView {
     var size = AvatarViewSize.small {
         didSet {
             if size != oldValue {
+                applyInitialsStyle()
                 invalidateIntrinsicContentSize()
             }
         }
+    }
+    
+    private func applyInitialsStyle() {
+        initialsLabel.textAlignment = .Center
+        initialsLabel.adjustsFontSizeToFitWidth = true
+        initialsLabel.minimumScaleFactor = Constants.initialsMinScaleFactor
+        initialsLabel.font = Constants.initialsFont
+        initialsLabel.textColor = Constants.initialsColor
     }
     
     // MARK: - Content
@@ -97,10 +112,10 @@ class AvatarView: UIView {
         
         needsContentUpdate = false
         
+        imageView.image = nil
         imageView.backgroundColor = user?.color
         
         if let imageURL = user?.previewImageURL(ofMinimumSize: bounds.size) {
-            imageView.image = nil
             initialsLabel.hidden = true
             
             imageView.sd_setImageWithURL(imageURL) { [weak self] _, error, _, _ in
@@ -115,8 +130,13 @@ class AvatarView: UIView {
     }
     
     private func showInitials() {
+        guard let initials = user?.name?.initials() else {
+            initialsLabel.hidden = true
+            return
+        }
+        
         initialsLabel.hidden = false
-        // TODO: Update label.
+        initialsLabel.text = initials
     }
     
     // MARK: - Layout
