@@ -130,7 +130,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     
     var content: ContentModel? {
         didSet {
-            guard content?.id != oldValue?.id || content?.id == nil else {
+            guard content?.id != nil else {
                 return
             }
             
@@ -206,7 +206,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         }
     }
     
-    func showContent(animated animated: Bool = true) {
+    func showContent(animated animated: Bool = true, forcePlayVideo: Bool = false) {
         let animationDuration = animated ? Constants.fadeDuration : 0
         
         // Animate the backgroundView faster
@@ -229,7 +229,11 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
                 self.previewImageView.alpha = 1
                 self.textPostLabel.alpha = 1
             },
-            completion: nil
+            completion: { _ in
+                if (forcePlayVideo == true) {
+                    self.videoCoordinator?.playVideo()
+                }
+            }
         )
     }
     

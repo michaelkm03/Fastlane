@@ -238,7 +238,7 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
     }
     
     private func showStage(animated: Bool = false) {
-        mediaContentView.showContent(animated: animated)
+        mediaContentView.showContent(animated: animated, forcePlayVideo: true)
         visible = true
         UIView.animateWithDuration(animated ? Constants.contentSizeAnimationDuration : 0) {
             self.view.layoutIfNeeded()
