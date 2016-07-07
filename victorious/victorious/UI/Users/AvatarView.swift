@@ -112,12 +112,28 @@ class AvatarView: UIView {
                 return
             }
             
-            needsContentUpdate = true
-            setNeedsLayout()
+            setNeedsContentUpdate()
+            
+            kvoController.unobserveAll()
+            
+            if let newUser = user as? AnyObject {
+                kvoController.observe(newUser, keyPath: "previewAssets", options: []) { [weak self] _, _, _ in
+                    self?.setNeedsContentUpdate()
+                }
+            }
         }
     }
     
+    private let kvoController = KVOController()
+    
+    // MARK: - Updating content
+    
     private var needsContentUpdate = false
+    
+    private func setNeedsContentUpdate() {
+        needsContentUpdate = true
+        setNeedsLayout()
+    }
     
     private func updateContentIfNeeded() {
         guard needsContentUpdate else {
@@ -157,6 +173,10 @@ class AvatarView: UIView {
     
     override func intrinsicContentSize() -> CGSize {
         return size.value
+    }
+    
+    override func sizeThatFits(size: CGSize) -> CGSize {
+        return intrinsicContentSize()
     }
     
     override func layoutSubviews() {
