@@ -24,8 +24,8 @@ class ChatBubbleView: UIView {
         contentView.layer.cornerRadius = Constants.bubbleCornerRadius
         contentView.clipsToBounds = true
         borderView.image = UIImage(named: "chat-cell-border")
-        addSubview(borderView)
         addSubview(contentView)
+        addSubview(borderView)
     }
     
     required init(coder: NSCoder) {
