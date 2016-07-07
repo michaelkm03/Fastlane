@@ -16,7 +16,7 @@ protocol ChatFeed: class, ForumEventSender, ForumEventReceiver {
     
     var newItemsController: NewItemsController? { get }
     var collectionView: UICollectionView! { get }
-    var chatDataSource: ChatInterfaceDataSource { get }
+    var chatInterfaceDataSource: ChatInterfaceDataSource { get }
     
     // MARK: - Layout
     
@@ -91,7 +91,7 @@ extension ChatFeed {
             collectionView.performBatchUpdates({
                 switch loadingType {
                 case .newer:
-                    let previousCount = self.chatDataSource.visibleItems.count - newItems.count
+                    let previousCount = self.chatInterfaceDataSource.visibleItems.count - newItems.count
                     
                     collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
                         NSIndexPath(forItem: previousCount + $0, inSection: 0)

@@ -39,7 +39,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     @IBOutlet private(set) weak var collectionView: UICollectionView!
     @IBOutlet private(set) var newItemsController: NewItemsController?
     
-    var chatDataSource: ChatInterfaceDataSource {
+    var chatInterfaceDataSource: ChatInterfaceDataSource {
         return dataSource
     }
     

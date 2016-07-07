@@ -21,15 +21,6 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
         }
     }
     
-    lazy private(set) var chatDataSource: ChatInterfaceDataSource = {
-        let mainFeedDependency: VDependencyManager = self.dependencyManager.childDependencyForKey("mainFeed") ?? self.dependencyManager
-        let dataSource = TutorialCollectionViewDataSource(dependencyManager: mainFeedDependency)
-        dataSource.delegate = self
-        dataSource.registerCells(for: self.collectionView)
-        
-        return dataSource
-    }()
-    
     private var edgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 60, right: 0)
     
     private var timerManager: VTimerManager?
@@ -39,14 +30,24 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
     // MARK: - ChatFeed
     
     weak var nextSender: ForumEventSender? = nil
+    var dependencyManager: VDependencyManager!
     
     @IBOutlet private(set) weak var collectionView: UICollectionView! {
         didSet {
-            collectionView.dataSource = chatDataSource
+            collectionView.dataSource = chatInterfaceDataSource
             collectionView.delegate = self
             collectionView.backgroundColor = nil
         }
     }
+    
+    lazy private(set) var chatInterfaceDataSource: ChatInterfaceDataSource = {
+        let mainFeedDependency: VDependencyManager = self.dependencyManager.childDependencyForKey("mainFeed") ?? self.dependencyManager
+        let dataSource = TutorialCollectionViewDataSource(dependencyManager: mainFeedDependency)
+        dataSource.delegate = self
+        dataSource.registerCells(for: self.collectionView)
+        
+        return dataSource
+    }()
     
     func setTopInset(value: CGFloat) {
         // Do nothing for tutorial screen
@@ -55,8 +56,6 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
     func setBottomInset(value: CGFloat) {
         // Do nothing for tutorial screen
     }
-    
-    var dependencyManager: VDependencyManager!
 
     // MARK: - Initialization
     
@@ -102,7 +101,7 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
     // MARK: - UICollectionViewFlowLayoutDelegate
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        return chatDataSource.desiredCellSize(for: collectionView, at: indexPath)
+        return chatInterfaceDataSource.desiredCellSize(for: collectionView, at: indexPath)
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
@@ -152,7 +151,7 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
     }
     
     func onTimerTick() {
-        chatDataSource.updateTimestamps(in: collectionView)
+        chatInterfaceDataSource.updateTimestamps(in: collectionView)
     }
 }
 
