@@ -19,8 +19,7 @@ class HashtagSearchRequestTests: XCTestCase {
         }
         
         do {
-            let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 100)
-            guard let hashtagSearch = HashtagSearchRequest(searchTerm: "surfer", paginator: paginator) else {
+            guard let hashtagSearch = HashtagSearchRequest(searchTerm: "surfer", apiPath: APIPath(templatePath: "test")) else {
                 XCTFail("HashtagSearchRequest: Could not create request.")
                 return
             }
@@ -31,14 +30,5 @@ class HashtagSearchRequestTests: XCTestCase {
         } catch {
             XCTFail("Sorry, parseResponse should not throw here: \(error)")
         }
-    }
-    
-    func testRequest() {
-        let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 100)
-        guard let hashtagSearch = HashtagSearchRequest(searchTerm: "surfer", paginator: paginator) else {
-            XCTFail("HashtagSearchRequest: Could not create request.")
-            return
-        }
-        XCTAssertEqual(hashtagSearch.urlRequest.URL?.absoluteString, "/api/hashtag/search/surfer/1/100")
     }
 }
