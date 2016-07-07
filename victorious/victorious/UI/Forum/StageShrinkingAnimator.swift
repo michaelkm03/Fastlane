@@ -20,7 +20,7 @@ class StageShrinkingAnimator: NSObject {
         static let shadowColor = UIColor.blackColor().CGColor
         static let scaleTransform = CGAffineTransformMakeScale(scaleFactor, scaleFactor)
         static let stageMargin = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 10)
-        static let borderColor = UIColor.whiteColor().colorWithAlphaComponent(0.3).CGColor
+        static let borderEndingAlpha: CGFloat = 0.3
     }
     
     private enum StageState {
@@ -42,11 +42,13 @@ class StageShrinkingAnimator: NSObject {
     private let stageTapGestureRecognizer: UITapGestureRecognizer
     private var keyboardManager: VKeyboardNotificationManager!
     
-    init(stageContainer: UIView,
-         stageTouchBlocker: UIView,
-         chatFeedContainer: UIView,
-         stageViewControllerContainmentContainer: UIView,
-         stageBlurBackground: UIVisualEffectView) {
+    init(
+        stageContainer: UIView,
+        stageTouchBlocker: UIView,
+        chatFeedContainer: UIView,
+        stageViewControllerContainmentContainer: UIView,
+        stageBlurBackground: UIVisualEffectView
+    ) {
         self.stageContainer = stageContainer
         self.stageTouchBlocker = stageTouchBlocker
         self.chatFeedContainer = chatFeedContainer
@@ -55,6 +57,7 @@ class StageShrinkingAnimator: NSObject {
         self.stageTapGestureRecognizer = UITapGestureRecognizer()
         super.init()
         
+        configureMaskingAndBorders()
         configureShadow()
         stageTapGestureRecognizer.addTarget(self, action: #selector(tappedOnStage(_:)))
         stageTouchBlocker.addGestureRecognizer(stageTapGestureRecognizer)
@@ -95,7 +98,7 @@ class StageShrinkingAnimator: NSObject {
             percentTranslated = 1 - fabs(percentTranslated)
         }
         print("percent translated: \(percentTranslated)")
-        self.stageContainer.transform = affineTransformFor(min(1, max(0, percentTranslated)))
+        applyInterploatedValues(withPercentage: min(1, max(0, percentTranslated)))
     }
     
     func chatFeed(chatFeed: ChatFeed, didScrollTopTop scrollView: UIScrollView) {
@@ -166,29 +169,32 @@ class StageShrinkingAnimator: NSObject {
     
     private func shrinkStage() {
         print("shrink stage")
-        self.stageContainer.transform = affineTransformFor(1.0)
-        self.stageViewControllerContainmentContainer.layer.cornerRadius = Constants.cornerRadius
-        self.stageViewControllerContainmentContainer.layer.masksToBounds = true
-        self.stageBlurBackground.layer.masksToBounds = true
-        self.stageBlurBackground.layer.cornerRadius = Constants.cornerRadius
+        applyInterploatedValues(withPercentage: 1.0)
         self.stageTouchBlocker.hidden = false
         self.stageTapGestureRecognizer.enabled = true
-        self.stageViewControllerContainmentContainer.layer.borderColor = Constants.borderColor
-        // Want the border to be 1px after scaled transform
-        self.stageViewControllerContainmentContainer.layer.borderWidth = (1 / stageViewControllerContainmentContainer.contentScaleFactor) //* scaleFactorFor(1.0)
-        
         stageState = .shrunken
     }
     
     private func enlargeStage() {
         print("enlarge stage")
-        self.stageContainer.transform = CGAffineTransformIdentity
-        self.stageViewControllerContainmentContainer.layer.cornerRadius = 0
-        self.stageBlurBackground.layer.cornerRadius = 0
+        applyInterploatedValues(withPercentage: 0)
         self.stageTouchBlocker.hidden = true
         self.stageViewControllerContainmentContainer.layer.borderColor = UIColor.clearColor().CGColor
-        
         stageState = .expanded
+    }
+    
+    func applyInterploatedValues(withPercentage percentage: CGFloat) {
+        stageContainer.transform = affineTransformFor(percentage)
+        stageViewControllerContainmentContainer.layer.cornerRadius = Constants.cornerRadius * percentage
+        stageBlurBackground.layer.cornerRadius = Constants.cornerRadius * percentage
+        stageViewControllerContainmentContainer.layer.borderColor = interpolatedBorderColorFor(percentThrough: percentage)
+    }
+    
+    // MARK: - Math and Interpolation functions
+    
+    private func interpolatedBorderColorFor(percentThrough percent: CGFloat) -> CGColor {
+        let interpolatedAlpha = Constants.borderEndingAlpha * percent
+        return UIColor.whiteColor().colorWithAlphaComponent(interpolatedAlpha).CGColor
     }
     
     private func affineTransformFor(percentThrough: CGFloat) -> CGAffineTransform {
@@ -234,5 +240,13 @@ class StageShrinkingAnimator: NSObject {
         stageContainer.layer.shadowRadius = Constants.shadowRadius
         stageContainer.layer.shadowOpacity = Constants.shadowOpacity
         stageContainer.layer.shadowOffset = Constants.shadowOffset
+    }
+    
+    private func configureMaskingAndBorders() {
+        stageViewControllerContainmentContainer.layer.masksToBounds = true
+        stageBlurBackground.layer.masksToBounds = true
+        
+        // Want the border to be 1px after scaled transform
+        stageViewControllerContainmentContainer.layer.borderWidth = (1 / stageViewControllerContainmentContainer.contentScaleFactor) //* scaleFactorFor(1.0)
     }
 }
