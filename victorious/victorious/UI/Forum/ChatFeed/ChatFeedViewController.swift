@@ -269,6 +269,27 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         }
         
         focusHelper.updateFocus()
+        
+        delegate?.chatFeed(self, didScroll: scrollView)
+    }
+    
+    func scrollViewDidScrollToTop(scrollView: UIScrollView) {
+        delegate?.chatFeed(self, didScrollTopTop: scrollView)
+    }
+    
+    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+        delegate?.chatFeed(self, willBeginDragging: scrollView)
+    }
+    
+    func scrollViewWillEndDragging(scrollView: UIScrollView,
+                                   withVelocity velocity: CGPoint,
+                                                targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        delegate?.chatFeed(self, willEndDragging: scrollView,
+                           withVelocity: velocity)
+    }
+    
+    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        //
     }
     
     // MARK: - Timestamp update timer
