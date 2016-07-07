@@ -13,7 +13,7 @@ class TrendingHashtagOperation: RemoteFetcherOperation, RequestOperation {
     
     let request: TrendingHashtagRequest!
     
-    init(url: NSURL? = nil) {
+    init(url: NSURL) {
         request = TrendingHashtagRequest(url: url)
     }
     
@@ -22,6 +22,6 @@ class TrendingHashtagOperation: RemoteFetcherOperation, RequestOperation {
     }
 
     func onComplete( networkResult: TrendingHashtagRequest.ResultType ) {
-        self.results = networkResult.map{ HashtagSearchResultObject(hashtag: $0) }
+        self.results = networkResult.map { HashtagSearchResultObject(hashtag: $0) }
     }
 }

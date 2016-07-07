@@ -9,13 +9,10 @@
 import Foundation
 
 public struct TrendingHashtagRequest: RequestType {
-    
-    private static let defaultURL = NSURL(string: "/api/discover/hashtags")!
-    
     private let url: NSURL
     
-    public init(url: NSURL?) {
-        self.url = url ?? TrendingHashtagRequest.defaultURL
+    public init(url: NSURL) {
+        self.url = url
     }
     
     public var urlRequest: NSURLRequest {

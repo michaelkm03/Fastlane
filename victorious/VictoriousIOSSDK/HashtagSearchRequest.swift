@@ -20,17 +20,17 @@ public struct HashtagSearchRequest: RequestType {
     }
     
     // param: - searchTerm must be a urlPathPart percent encoded string
-    public init?(searchTerm: String, apiPath: APIPath? = nil) {
+    public init?(searchTerm: String, apiPath: APIPath) {
         
         let charSet = NSCharacterSet.vsdk_pathPartAllowedCharacterSet
         guard let escapedSearchTerm = searchTerm.stringByAddingPercentEncodingWithAllowedCharacters(charSet) else {
-                return nil
+            return nil
         }
         
         var apiPath = apiPath
-        apiPath?.queryParameters = ["hashtag" : escapedSearchTerm]
-        guard let url = apiPath?.url ?? NSURL(string: "/api/hashtag/search/\(escapedSearchTerm)") else {
-                return nil
+        apiPath.queryParameters = ["hashtag" : escapedSearchTerm]
+        guard let url = apiPath.url else {
+            return nil
         }
         
         self.url = url

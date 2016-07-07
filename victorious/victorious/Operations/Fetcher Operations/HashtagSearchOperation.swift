@@ -25,12 +25,12 @@ final class HashtagSearchOperation: RemoteFetcherOperation {
     
     private let escapedQueryString: String
     
-    required init( request: HashtagSearchRequest ) {
+    required init(request: HashtagSearchRequest) {
         self.request = request
         self.escapedQueryString = request.searchTerm
     }
     
-    convenience init?( searchTerm: String, apiPath: APIPath? = nil ) {
+    convenience init?(searchTerm: String, apiPath: APIPath) {
         guard let request = HashtagSearchRequest(searchTerm: searchTerm, apiPath: apiPath) else {
             return nil
         }

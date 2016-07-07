@@ -43,7 +43,11 @@ final class ListMenuHashtagDataSource: ListMenuSectionDataSource {
     weak var delegate: ListMenuSectionDataSourceDelegate?
     
     func fetchRemoteData() {
-        let operation = TrendingHashtagOperation(url: dependencyManager.trendingHashtagsURL)
+        guard let trendingHashtagsURL = dependencyManager.trendingHashtagsURL else {
+            return
+        }
+        
+        let operation = TrendingHashtagOperation(url: trendingHashtagsURL)
         operation.queue { [weak self] results, error, cancelled in
             guard let hashtags = results as? [HashtagSearchResultObject] else {
                 self?.state = .failed(error: error)
