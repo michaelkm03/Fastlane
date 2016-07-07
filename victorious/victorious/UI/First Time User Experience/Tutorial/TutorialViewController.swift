@@ -88,16 +88,6 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
         dependencyManager.applyStyleToNavigationBar(navigationController?.navigationBar)
     }
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        startTimestampUpdate()
-    }
-    
-    override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
-        stopTimestampUpdate()
-    }
-    
     // MARK: - UICollectionViewFlowLayoutDelegate
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
@@ -125,33 +115,6 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
     
     func backgroundContainerView() -> UIView {
         return view
-    }
-    
-    // MARK: - Timestamp update timer
-    
-    private func stopTimestampUpdate() {
-        timerManager?.invalidate()
-        timerManager = nil
-    }
-    
-    private func startTimestampUpdate() {
-        guard timerManager == nil else {
-            return
-        }
-        timerManager = VTimerManager.addTimerManagerWithTimeInterval(
-            ChatFeedViewController.timestampUpdateInterval,
-            target: self,
-            selector: #selector(onTimerTick),
-            userInfo: nil,
-            repeats: true,
-            toRunLoop: NSRunLoop.mainRunLoop(),
-            withRunMode: NSRunLoopCommonModes
-        )
-        onTimerTick()
-    }
-    
-    func onTimerTick() {
-        chatInterfaceDataSource.updateTimestamps(in: collectionView)
     }
 }
 
