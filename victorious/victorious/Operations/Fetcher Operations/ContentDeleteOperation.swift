@@ -24,7 +24,7 @@ class ContentDeleteOperation: FetcherOperation {
             return
         }
         
-        flaggedContent.addRemoteId(contentID, toFlaggedItemsWithType: .Content)
+        Content.hideContent(withID: contentID)
         
         persistentStore.createBackgroundContext().v_performBlockAndWait { context in
             guard let content: VContent = context.v_findObjects(["v_remoteID": self.contentID]).first else {

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class VHashtag, VFollowControl, VDependencyManager;
+@class VFollowControl, VDependencyManager;
 
 @interface VHashtagCell : UITableViewCell
 

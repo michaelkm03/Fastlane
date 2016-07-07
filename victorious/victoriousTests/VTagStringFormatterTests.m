@@ -24,7 +24,6 @@
 @property (nonatomic) NSString *databaseFormattedUser;
 @property (nonatomic) NSString *databaseFormattedHashtag;
 @property (nonatomic) VUser *user;
-@property (nonatomic) VHashtag *hashtag;
 @property (nonatomic) VTag *userTag;
 @property (nonatomic) VTag *hashtagTag;
 @property (nonatomic) NSArray *tags;
@@ -44,17 +43,16 @@
                                  NSForegroundColorAttributeName : [UIColor redColor]};
     
     self.user = [[VDummyModels createUsers:1] lastObject];
-    self.hashtag = [[VDummyModels createHashtags:1] lastObject];
     
     NSString *userName = self.user.name;
-    NSString *hashtagTag = self.hashtag.tag;
+    NSString *hashtagTag = @"tag";
     
     self.databaseFormattedUser = [NSString stringWithFormat:@"@{%@:%@}", self.user.remoteId, userName];
     self.databaseFormattedHashtag = [NSString stringWithFormat:@"#%@", hashtagTag];
     
     self.userTag = [[VTag alloc] initWithAttributedDisplayString:[[NSMutableAttributedString alloc] initWithString:userName attributes:self.tagStringAttributes] databaseFormattedString:self.databaseFormattedUser andTagStringAttributes:self.tagStringAttributes];
     
-    self.hashtagTag = [[VTag alloc] initWithAttributedDisplayString:[[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"#%@", self.hashtag.tag] attributes:self.tagStringAttributes] databaseFormattedString:self.databaseFormattedHashtag andTagStringAttributes:self.tagStringAttributes];
+    self.hashtagTag = [[VTag alloc] initWithAttributedDisplayString:[[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"#%@", hashtagTag] attributes:self.tagStringAttributes] databaseFormattedString:self.databaseFormattedHashtag andTagStringAttributes:self.tagStringAttributes];
     
     self.tags = @[self.userTag, self.hashtagTag];
     
@@ -125,12 +123,6 @@
 {
     XCTAssertNil([VTagStringFormatter databaseFormattedStringFromUser:nil], @"database formatted string for nil user should be nil");
     XCTAssertTrue([[VTagStringFormatter databaseFormattedStringFromUser:self.user] isEqualToString:self.databaseFormattedUser], @"database formatted string failed to properly format user");
-}
-
-- (void)testDatabaseFormattedStringFromHashtag
-{
-    XCTAssertNil([VTagStringFormatter databaseFormattedStringFromHashtag:nil], @"database formatted string for nil hashtag should be nil");
-    XCTAssertTrue([[VTagStringFormatter databaseFormattedStringFromHashtag:self.hashtag] isEqualToString:self.databaseFormattedHashtag], @"database formatted string failed to properly format hashtag");
 }
 
 - (void)testTagRangesInRangeOfAttributedStringWithTagDictionary
