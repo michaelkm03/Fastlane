@@ -18,6 +18,13 @@ enum AvatarViewSize {
             case .large: return CGSize(width: 90.0, height: 90.0)
         }
     }
+    
+    var initialsFont: UIFont {
+        switch self {
+            case .small: return AvatarView.Constants.smallInitialsFont
+            case .large: return AvatarView.Constants.largeInitialsFont
+        }
+    }
 }
 
 /// A reusable view for displaying a user's avatar that handles decoration and fallback images.
@@ -27,8 +34,9 @@ enum AvatarViewSize {
 ///
 class AvatarView: UIView {
     private struct Constants {
-        static let initialsFont = UIFont.systemFontOfSize(14.0, weight: UIFontWeightMedium)
-        static let initialsColor = UIColor(white: 0.0, alpha: 0.5)
+        static let smallInitialsFont = UIFont.systemFontOfSize(14.0, weight: UIFontWeightMedium)
+        static let largeInitialsFont = UIFont.systemFontOfSize(42.0, weight: UIFontWeightSemibold)
+        static let initialsColor = UIColor(white: 0.0, alpha: 0.7)
         static let initialsMinScaleFactor = CGFloat(0.5)
         
         static let borderColor = UIColor(white: 0.0, alpha: 0.12)
@@ -92,7 +100,7 @@ class AvatarView: UIView {
         initialsLabel.textAlignment = .Center
         initialsLabel.adjustsFontSizeToFitWidth = true
         initialsLabel.minimumScaleFactor = Constants.initialsMinScaleFactor
-        initialsLabel.font = Constants.initialsFont
+        initialsLabel.font = size.initialsFont
         initialsLabel.textColor = Constants.initialsColor
     }
     
