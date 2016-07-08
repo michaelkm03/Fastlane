@@ -82,16 +82,17 @@ class StageShrinkingAnimator: NSObject {
         stageTouchBlocker.addGestureRecognizer(stageTapGestureRecognizer)
         stageContainer.addGestureRecognizer(stagePanGestureRecognizer)
         keyboardManager = VKeyboardNotificationManager(
-            keyboardWillShowBlock: { [weak self]startFrame, endFrame, animationDuration, animationCurve in
+            keyboardWillShowBlock: { [weak self] startFrame, endFrame, animationDuration, animationCurve in
                 self?.shrinkStage()
             },
-            willHideBlock: {[weak self]startFrame, endFrame, animationDuration, animationCurve in
+            willHideBlock: { [weak self] startFrame, endFrame, animationDuration, animationCurve in
                 self?.ignoreScrollBehaviorUntilNextBegin = true
             },
-            willChangeFrameBlock: nil)
+            willChangeFrameBlock: nil
+            )
     }
     
-    //MARK: - API
+    // MARK: - API
     
     func chatFeed(chatFeed: ChatFeed, didScroll scrollView: UIScrollView) {
         guard ignoreScrollBehaviorUntilNextBegin == false else {
@@ -166,7 +167,7 @@ class StageShrinkingAnimator: NSObject {
         print("didEndDragging")
     }
     
-    //MARK: - Actions
+    // MARK: - Actions
     
     @objc private func pannedOnStage(gesture: UIPanGestureRecognizer) {
         guard let view = gesture.view else {
@@ -295,7 +296,7 @@ class StageShrinkingAnimator: NSObject {
         return CGSize(width: shrunkenXTranslation, height: -shrunkenYTranslation)
     }
 
-    //MARK: - Misc
+    // MARK: - Misc
     
     private func configureShadow() {
         stageContainer.layer.shadowColor = Constants.shadowColor

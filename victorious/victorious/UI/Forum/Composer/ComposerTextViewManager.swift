@@ -35,7 +35,7 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         updateDelegateOfTextViewStatus(textView)
     }
     
-    //MARK: - Updating logic
+    // MARK: - Updating logic
     
     func replaceTextInRange(range: NSRange, withText text: String, inTextView textView: UITextView) -> Bool {
         
@@ -110,7 +110,7 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         return dismissOnReturn && text == "\n"
     }
     
-    //MARK: - UITextViewDelegate
+    // MARK: - UITextViewDelegate
     
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
         guard canUpdateTextView(textView, textInRange: range, replacementText: text) else {
@@ -159,7 +159,7 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         }
     }
     
-    //MARK: - Helpers
+    // MARK: - Helpers
     
     private static func attributedTextAttributesFor(textView: UITextView) -> [String: AnyObject]? {
         
@@ -192,7 +192,7 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         return (preceedingString + proceedingString, foundRange)
     }
     
-    //MARK: - Image management
+    // MARK: - Image management
     
     private static func attachmentStringForImage(image: UIImage, fromTextView textView: UITextView) -> NSAttributedString? {
         

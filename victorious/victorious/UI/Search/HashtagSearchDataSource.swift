@@ -42,7 +42,7 @@ final class HashtagSearchDataSource: PaginatedDataSource, SearchDataSourceType, 
         self.tableView = tableView
     }
     
-    //MARK: - API
+    // MARK: - API
     
     func search(searchTerm searchTerm: String, pageType: VPageType, completion: ((NSError?) -> ())? = nil ) {
         
@@ -61,7 +61,7 @@ final class HashtagSearchDataSource: PaginatedDataSource, SearchDataSourceType, 
         )
     }
     
-    //MARK: - UITableViewDataSource
+    // MARK: - UITableViewDataSource
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.visibleItems.count ?? 0
