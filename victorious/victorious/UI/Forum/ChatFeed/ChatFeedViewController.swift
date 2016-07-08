@@ -273,10 +273,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         delegate?.chatFeed(self, didScroll: scrollView)
     }
     
-    func scrollViewDidScrollToTop(scrollView: UIScrollView) {
-        delegate?.chatFeed(self, didScrollToTop: scrollView)
-    }
-    
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
         delegate?.chatFeed(self, willBeginDragging: scrollView)
     }

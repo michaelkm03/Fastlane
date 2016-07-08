@@ -294,10 +294,6 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         stageShrinkingAnimator?.chatFeed(chatFeed, didScroll: scrollView)
     }
     
-    func chatFeed(chatFeed: ChatFeed, didScrollToTop scrollView: UIScrollView) {
-        stageShrinkingAnimator?.chatFeed(chatFeed, didScrollToTop: scrollView)
-    }
-    
     func chatFeed(chatFeed: ChatFeed, willBeginDragging scrollView: UIScrollView) {
         stageShrinkingAnimator?.chatFeed(chatFeed, willBeginDragging: scrollView)
     }

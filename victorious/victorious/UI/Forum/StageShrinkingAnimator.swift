@@ -120,17 +120,6 @@ class StageShrinkingAnimator: NSObject {
         applyInterploatedValues(withPercentage: min(1, max(0, percentThrough(forTranslation: translation))))
     }
     
-    func chatFeed(chatFeed: ChatFeed, didScrollToTop scrollView: UIScrollView) {
-        guard ignoreScrollBehaviorUntilNextBegin == false else {
-            return
-        }
-        
-        print("scrollToTop")
-        UIView.animateWithDuration(Constants.inProgressSnapAnimationDuration) {
-            self.shrinkStage()
-        }
-    }
-    
     func chatFeed(chatFeed: ChatFeed, willBeginDragging scrollView: UIScrollView) {
         print("willBeginDragging")
         ignoreScrollBehaviorUntilNextBegin = false
@@ -141,26 +130,31 @@ class StageShrinkingAnimator: NSObject {
             return
         }
         
-        let scrollingDown = velocity.y < 0
-        guard scrollingDown == true else {
+        // We only care about the end of a scroll gesture when we're in the .expanded state
+        guard stageState == .expanded else {
             return
         }
         
+        let scrollingDown = velocity.y < 0
         let currentState = stageState
         let translation = scrollView.panGestureRecognizer.translationInView(chatFeedContainer)
         let targetState = scrollingDown ? StageState.shrunken : StageState.expanded
         let percentTranslated = percentThrough(forTranslation: translation)
         print("willEndDragging: velocity: \(velocity), currentState: \(currentState), translation: \(translation), percentTranslated: \(percentTranslated)")
         
-        
-        UIView.animateWithDuration(0.3) {
+        animateInProgressSnap { 
+            // Strong flick takes us to the target
             if fabs(velocity.y) > Constants.velocityTargetShrink {
                 print("goto target")
                 self.goTo(targetState)
-            } else if percentTranslated > 0.5 {
+            }
+                // If we are past half-way go to target
+            else if percentTranslated > 0.5 {
                 print("goto shrunken")
                 self.goTo(.shrunken)
-            } else {
+            }
+                // Otherwise remain at the current location
+            else {
                 print("goto current")
                 self.goTo(currentState)
             }
@@ -189,19 +183,13 @@ class StageShrinkingAnimator: NSObject {
                 applyInterploatedValues(withPercentage: percentage)
             case .Ended:
                 print("ended pan")
-                UIView.animateWithDuration(Constants.inProgressSnapAnimationDuration,
-                                           delay: 0.0,
-                                           usingSpringWithDamping: Constants.springDamping,
-                                           initialSpringVelocity: Constants.inProgressSpringInitialVelocity,
-                                           options: [],
-                                           animations: { 
-                                               if gesture.velocityInView(view).y < 0 {
-                                                   self.shrinkStage()
-                                               } else {
-                                                   self.enlargeStage()
-                                               }
-                                           },
-                                           completion: nil)
+                animateInProgressSnap(withAnimations: { 
+                    if gesture.velocityInView(view).y < 0 {
+                        self.shrinkStage()
+                    } else {
+                        self.enlargeStage()
+                    }
+                })
             case .Possible, .Began, .Cancelled, .Failed:
                 break
         }
@@ -212,7 +200,7 @@ class StageShrinkingAnimator: NSObject {
         ignoreScrollBehaviorUntilNextBegin = true
         UIView.animateWithDuration(Constants.fullSnapAnimationDuration,
                                    delay: 0,
-                                   usingSpringWithDamping: Constants.springDamping,
+                                   usingSpringWithDamping: 1.0,
                                    initialSpringVelocity: 0,
                                    options: [],
                                    animations: { 
@@ -254,6 +242,16 @@ class StageShrinkingAnimator: NSObject {
         stageBlurBackground.layer.cornerRadius = Constants.cornerRadius * percentage * (1 / scaleFactorFor(percentage))
         stageViewControllerContainmentContainer.layer.borderColor = interpolatedBorderColorFor(percentThrough: percentage)
         interpolateAlongside?(percentage: percentage)
+    }
+    
+    private func animateInProgressSnap(withAnimations animations:() -> Void) {
+        UIView.animateWithDuration(Constants.inProgressSnapAnimationDuration,
+                                   delay: 0.0,
+                                   usingSpringWithDamping: Constants.springDamping,
+                                   initialSpringVelocity: Constants.inProgressSpringInitialVelocity,
+                                   options: [],
+                                   animations: animations,
+                                   completion: nil)
     }
     
     // MARK: - Math and Interpolation functions
