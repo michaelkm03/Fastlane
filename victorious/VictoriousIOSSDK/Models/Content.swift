@@ -77,12 +77,10 @@ extension ContentModel {
     // MARK: Hidden Content
     
     public static func hideContent(withID id: Content.ID) {
-        print("hide: \(ids)")
         ids.insert(id)
     }
     
     public static func contentIsHidden(withID id: Content.ID) -> Bool {
-        print("isHidden: \(ids)")
         return ids.contains(id)
     }
 }
