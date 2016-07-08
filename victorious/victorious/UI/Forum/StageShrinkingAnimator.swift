@@ -161,7 +161,7 @@ class StageShrinkingAnimator: NSObject {
         
         let translation = gesture.translationInView(view)
         var percentage = max(min(fabs(translation.y) / Constants.dragMagnitude, 1), 0)
-        percentage = stageState == .expanded ? percentage : 1 - percentage
+        percentage = translation.y < 0 ? percentage : 1 - percentage
         switch gesture.state {
             case .Changed:
                 // We only care about going a certain direction from either expanded or shrunken
