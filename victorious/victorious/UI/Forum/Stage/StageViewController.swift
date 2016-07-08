@@ -73,7 +73,6 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         return pill
     }()
     
-    private var hasShownStage: Bool = false
     private var queuedContent: ContentModel?
     private var stageDataSource: StageDataSource?
     
@@ -116,13 +115,11 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         mediaContentView.allowsVideoControls = false
-        showStage(animated)
     }
 
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        
-        hideStage(animated)
+        hideStage(animated: animated)
     }
     
     @objc private func didTapOnContent() {
@@ -147,7 +144,7 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
     func addContent(stageContent: ContentModel) {
         queuedContent = stageContent
         if
-            !hasShownStage ||
+            !visible ||
             mediaContentView.content?.type != .video ||
             newItemPill == nil
         {
@@ -155,16 +152,15 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
             // or if the current content was one that is not time based (video for now),
             // or if we don't have a pill (for VIP stage)
             // we will immediately move to the next content.
-            hasShownStage = true
-            updateStageHeight()
-            nextContent()
+            nextContent(animated: false)
+            showStage(animated: true)
         }
         else {
             showPill()
         }
     }
     
-    func nextContent() {
+    func nextContent(animated animated: Bool = true) {
         hidePill()
         guard let stageContent = queuedContent else {
             return
@@ -173,7 +169,7 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         mediaContentView.videoCoordinator?.pauseVideo()
         mediaContentView.content = stageContent
         
-        attributionBar.configure(with: stageContent.author)
+        attributionBar.configure(with: stageContent.author, animated: animated)
         
         updateStageHeight()
         queuedContent = nil
@@ -187,7 +183,6 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
     func removeContent() {
         hidePill()
         hideStage()
-        hasShownStage = false
         queuedContent = nil
     }
     
@@ -229,7 +224,7 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
 
     // MARK: - Show/Hide Stage
     
-    private func hideStage(animated: Bool = false) {
+    private func hideStage(animated animated: Bool = false) {
         mediaContentView.hideContent(animated: animated)
         visible = false
         UIView.animateWithDuration(animated ? Constants.contentSizeAnimationDuration : 0) {
@@ -237,7 +232,7 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         }
     }
     
-    private func showStage(animated: Bool = false) {
+    private func showStage(animated animated: Bool = false) {
         mediaContentView.showContent(animated: animated)
         visible = true
         UIView.animateWithDuration(animated ? Constants.contentSizeAnimationDuration : 0) {
