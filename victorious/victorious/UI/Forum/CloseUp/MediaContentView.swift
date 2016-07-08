@@ -259,8 +259,6 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         }
         
         videoCoordinator?.loadVideo()
-        self.setNeedsLayout()
-        self.layoutIfNeeded()
         videoCoordinator?.delegate = self
     }
     
@@ -347,15 +345,11 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         previewImageView.image = downloadedPreviewImage
         downloadedPreviewImage = nil
         showContent(animated: animatesBetweenContent) { [weak self] _ in
-            // Only play the video if the source is youtube
-            // otherwise we wait for the videoItemIsReadyCallback
-            guard let strongSelf = self else {
-                return
-            }
-            print ("setting layout")
-            strongSelf.setNeedsLayout()
-            strongSelf.layoutIfNeeded()
-            strongSelf.playVideo()
+            // Need to set layout manually,
+            // otherwise video doesn't appear on first load
+            self?.setNeedsLayout()
+            self?.layoutIfNeeded()
+            self?.playVideo()
         }
         
         let minWidth = UIScreen.mainScreen().bounds.size.width

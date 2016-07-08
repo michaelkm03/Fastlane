@@ -96,7 +96,6 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
             item.loop = shouldLoop
             item.useAspectFit = true
             videoPlayer.setItem(item)
-            state = .Playing
         }
     }
     
