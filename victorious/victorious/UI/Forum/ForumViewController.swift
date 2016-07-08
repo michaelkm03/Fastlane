@@ -20,7 +20,6 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         }
     }
     @IBOutlet private weak var chatFeedContainer: VPassthroughContainerView!
-    @IBOutlet private weak var stageTapGestureRecognizer: UITapGestureRecognizer!
 
     private var stageShrinkingAnimator: StageShrinkingAnimator?
     
@@ -201,7 +200,6 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         stageShrinkingAnimator = StageShrinkingAnimator(
             stageContainer: stageContainer,
             stageTouchView: stageTouchView,
-            chatFeedContainer: chatFeedContainer,
             stageViewControllerContainer: stageViewControllerContainer
         )
         stageShrinkingAnimator?.shouldHideKeyboardHandler = { [weak self] in

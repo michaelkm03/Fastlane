@@ -13,8 +13,7 @@ import UIKit
 ///
 /// * `stageContainer.transform` by applying a combination of scale and translate transform to shrink the stage into the corner.
 /// * `stageViewControllerContainmentCOntainer.layer.cornerRadius` by rounding the corner interactively during the animation.
-/// * `stageBlurBackground.layer.cornerRadius` by rounding interactively during the animation just as above.
-/// * `stageViewControllerContainmentContainer.layer.borderColor` by fading the border from clear to white with opacity.
+/// * `stageViewControllerContainer.layer.borderColor` by fading the border from clear to white with opacity.
 /// 
 /// **NOTE:** No constraints are modified or added to the view hierarchy as part of this animator's behavior.
 ///
@@ -58,10 +57,8 @@ class StageShrinkingAnimator: NSObject {
     var interpolateAlongside: ((percentage: CGFloat) -> Void)?
     
     // MARK: - Private Properties
-
     private let stageContainer: UIView
     private let stageTouchView: UIView
-    private let chatFeedContainer: UIView
     private let stageViewControllerContainer: UIView
     private var keyboardManager: VKeyboardNotificationManager!
     private let stageTapGestureRecognizer = UITapGestureRecognizer()
@@ -72,12 +69,10 @@ class StageShrinkingAnimator: NSObject {
     init(
         stageContainer: UIView,
         stageTouchView: UIView,
-        chatFeedContainer: UIView,
         stageViewControllerContainer: UIView
     ) {
         self.stageContainer = stageContainer
         self.stageTouchView = stageTouchView
-        self.chatFeedContainer = chatFeedContainer
         self.stageViewControllerContainer = stageViewControllerContainer
         super.init()
         
@@ -112,7 +107,7 @@ class StageShrinkingAnimator: NSObject {
             return
         }
         
-        let translation = scrollView.panGestureRecognizer.translationInView(chatFeedContainer)
+        let translation = scrollView.panGestureRecognizer.translationInView(scrollView)
         guard translation.y > 0 && stageState == .expanded else {
             return
         }
@@ -135,7 +130,7 @@ class StageShrinkingAnimator: NSObject {
         
         let scrollingDown = velocity.y < 0
         let currentState = stageState
-        let translation = scrollView.panGestureRecognizer.translationInView(chatFeedContainer)
+        let translation = scrollView.panGestureRecognizer.translationInView(scrollView)
         let targetState = scrollingDown ? StageState.shrunken : StageState.expanded
         let percentTranslated = percentThrough(forTranslation: translation)
         
