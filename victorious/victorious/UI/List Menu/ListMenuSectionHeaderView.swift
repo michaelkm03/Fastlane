@@ -9,6 +9,9 @@
 import UIKit
 
 class ListMenuSectionHeaderView: UICollectionReusableView {
+    private struct Constants {
+        static let accessoryButtonXMargin = CGFloat(12.0)
+    }
     
     @IBOutlet private weak var titleLabel: UILabel!
     
@@ -19,6 +22,7 @@ class ListMenuSectionHeaderView: UICollectionReusableView {
     }
     
     private func applyTemplateAppearance(with dependencyManager: VDependencyManager) {
+        clipsToBounds = false
         titleLabel.text = dependencyManager.titleText
         titleLabel.textColor = dependencyManager.titleColor
         titleLabel.font = dependencyManager.titleFont
@@ -37,15 +41,15 @@ class ListMenuSectionHeaderView: UICollectionReusableView {
         didSet {
             if let accessoryButton = accessoryButton {
                 addSubview(accessoryButton)
-                v_addPinToTrailingEdgeToSubview(accessoryButton)
-                v_addPinToTopBottomToSubview(accessoryButton)
+                accessoryButton.translatesAutoresizingMaskIntoConstraints = false
+                centerYAnchor.constraintEqualToAnchor(accessoryButton.centerYAnchor).active = true
+                trailingAnchor.constraintEqualToAnchor(accessoryButton.trailingAnchor, constant: Constants.accessoryButtonXMargin).active = true
             }
         }
     }
 }
 
 private extension VDependencyManager {
-    
     var titleColor: UIColor? {
         return colorForKey(VDependencyManagerMainTextColorKey)
     }
