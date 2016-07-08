@@ -8,7 +8,16 @@
 
 import UIKit
 
-/// Stage
+/// StageShrinkingAnimator is a helper class for animating the stage shrinking interaction.
+/// This class performs the animations by modifying the properties:
+///
+/// * `stageContainer.transform` by applying a combination of scale and translate transform to shrink the stage into the corner.
+/// * `stageViewControllerContainmentCOntainer.layer.cornerRadius` by rounding the corner interactively during the animation.
+/// * `stageBlurBackground.layer.cornerRadius` by rounding interactively during the animation just as above.
+/// * `stageViewControllerContainmentContainer.layer.borderColor` by fading the border from clear to white with opacity.
+/// 
+/// **NOTE:** No constraints are modified or added to the vier hierarchy as part of this animator's behavior.
+///
 class StageShrinkingAnimator: NSObject {
     
     private struct Constants {
@@ -37,7 +46,10 @@ class StageShrinkingAnimator: NSObject {
     private var stageState = StageState.expanded
     
     // Handlers
+    /// This handler will be called when the animator desires the keyboard to be hidden.
     var shouldHideKeyboardHandler: (() -> Void)?
+    
+    /// This handler will be called interactively during the animation transition. The percentage value passed in the handler could be outside of the 0-1 range.
     var interpolateAlongSide: ((percentage: CGFloat) -> Void)?
     
     private let stageContainer: UIView
@@ -68,23 +80,13 @@ class StageShrinkingAnimator: NSObject {
         stageTapGestureRecognizer.addTarget(self, action: #selector(tappedOnStage(_:)))
         stageTouchBlocker.addGestureRecognizer(stageTapGestureRecognizer)
         keyboardManager = VKeyboardNotificationManager(
-            keyboardWillShowBlock: { startFrame, endFrame, animationDuration, animationCurve in
-                self.shrinkStage()
+            keyboardWillShowBlock: { [weak self]startFrame, endFrame, animationDuration, animationCurve in
+                self?.shrinkStage()
             },
-            willHideBlock: {startFrame, endFrame, animationDuration, animationCurve in
-                self.enlargeStage()
+            willHideBlock: {[weak self]startFrame, endFrame, animationDuration, animationCurve in
+                self?.enlargeStage()
             },
-            willChangeFrameBlock: {startFrame, endFrame, animationDuration, animationCurve in
-        })
-    }
-    
-    private func performAnimated(animationBlock block: () -> Void, duration animationDuration: NSTimeInterval, animationCurve curve: UIViewAnimationCurve) {
-        ignoreScrollBehaviorUntilNextBegin = true
-        let rawCurve = UInt(curve.rawValue)
-        UIView.animateWithDuration(animationDuration,
-                                   delay: 0,
-                                   options: UIViewAnimationOptions(rawValue: rawCurve << 16),
-                                   animations: block, completion: nil)
+            willChangeFrameBlock: nil)
     }
     
     //MARK: - API
@@ -204,7 +206,7 @@ class StageShrinkingAnimator: NSObject {
         stageState = .expanded
     }
     
-    func applyInterploatedValues(withPercentage percentage: CGFloat) {
+    private func applyInterploatedValues(withPercentage percentage: CGFloat) {
         stageContainer.transform = affineTransformFor(percentage)
         stageViewControllerContainmentContainer.layer.cornerRadius = Constants.cornerRadius * percentage * (1 / scaleFactorFor(percentage))
         stageBlurBackground.layer.cornerRadius = Constants.cornerRadius * percentage * (1 / scaleFactorFor(percentage))
