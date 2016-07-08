@@ -28,9 +28,9 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     private let dataSource: GridStreamDataSource<HeaderType>
     var content: HeaderType.ContentType? {
         didSet {
+            updateTrackingParameters()
             dataSource.content = content
             collectionView.reloadSections(NSIndexSet(index: 0))
-            updateTrackingParameters()
         }
     }
     
@@ -230,6 +230,11 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let displayModifier = ShowCloseUpDisplayModifier(dependencyManager: dependencyManager, originViewController: self)
         ShowCloseUpOperation.showOperation(forContent: dataSource.items[indexPath.row], displayModifier: displayModifier).queue()
+        
+        guard let cell = collectionView.cellForItemAtIndexPath(indexPath) as? ContentCell else {
+            return
+        }
+        trackCell(cell, trackingKey: .cellClick)
     }
     
     // MARK: - UICollectionViewDelegate
