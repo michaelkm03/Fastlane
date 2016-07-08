@@ -35,7 +35,7 @@ class StageShrinkingAnimator: NSObject {
         static let velocityTargetShrink = CGFloat(0.3)
         static let velocityTargetGrow = CGFloat(1.5)
         static let inProgressSnapAnimationDuration = NSTimeInterval(0.3)
-        static let fullSnapAnimationDuration = NSTimeInterval(0.45)
+        static let fullSnapAnimationDuration = NSTimeInterval(0.4)
         static let springDamping = CGFloat(0.72)
         static let inProgressSpringInitialVelocity = CGFloat(0.2)
     }
@@ -144,16 +144,16 @@ class StageShrinkingAnimator: NSObject {
         
         animateInProgressSnap { 
             // Strong flick takes us to the target
-            if fabs(velocity.y) > Constants.velocityTargetShrink {
-                print("goto target")
-                self.goTo(targetState)
-            }
-                // If we are past half-way go to target
-            else if percentTranslated > 0.5 {
+            if percentTranslated > 0.5 {
                 print("goto shrunken")
                 self.goTo(.shrunken)
             }
-                // Otherwise remain at the current location
+            // If we are past half-way go to target
+            else if fabs(velocity.y) > Constants.velocityTargetShrink {
+                print("goto target")
+                self.goTo(targetState)
+            }
+            // Otherwise remain at the current location
             else {
                 print("goto current")
                 self.goTo(currentState)
@@ -170,23 +170,28 @@ class StageShrinkingAnimator: NSObject {
             return
         }
         
+        
         let translation = gesture.translationInView(view)
+        var percentage = max(min(fabs(translation.y) / Constants.dragMagnitude, 1), 0)
+        percentage = stageState == .expanded ? percentage : 1 - percentage
         switch gesture.state {
             case .Changed:
                 // We only care about going a certain direction from either expanded or shrunken
                 guard (stageState == .expanded && translation.y < 0 ) || (stageState == .shrunken && translation.y > 0) else {
                     return
                 }
-                var percentage = max(min(fabs(translation.y) / Constants.dragMagnitude, 1), 0)
-                percentage = stageState == .expanded ? percentage : 1 - percentage
                 print("translation: \(translation), percentage: \(percentage), startingState: \(stageState)")
                 applyInterploatedValues(withPercentage: percentage)
             case .Ended:
                 print("ended pan")
-                animateInProgressSnap(withAnimations: { 
-                    if gesture.velocityInView(view).y < 0 {
+                animateInProgressSnap(withAnimations: {
+                    if percentage > 0.5 {
+                        self.goTo(self.stageState == .expanded ? .shrunken : .expanded)
+                    }
+                    else if gesture.velocityInView(view).y < 0 {
                         self.shrinkStage()
-                    } else {
+                    }
+                    else {
                         self.enlargeStage()
                     }
                 })
@@ -268,7 +273,7 @@ class StageShrinkingAnimator: NSObject {
         print("percent translated: \(percentTranslated)")
         return percentTranslated
     }
-    
+
     private func interpolatedBorderColorFor(percentThrough percent: CGFloat) -> CGColor {
         let interpolatedAlpha = Constants.borderEndingAlpha * percent
         return UIColor(white: 1.0, alpha: interpolatedAlpha).CGColor
