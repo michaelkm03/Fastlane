@@ -103,24 +103,6 @@ static NSString * const kPlayerItemIsReadyToPlay = @"status";
         [self.layer addSublayer:self.playerLayer];
         self.playerLayer.frame = self.bounds;
         self.playerLayer.opacity = 1.0f;
-        
-        __weak VVideoView *weakSelf = self;
-        [self.KVOController observe:self.playerLayer
-                           keyPaths:@[@"readyForDisplay"]
-                            options:NSKeyValueObservingOptionNew
-                              block:^(id observer, AVPlayerLayer *playerLayer, NSDictionary *change)
-         {
-             VVideoView *strongSelf = weakSelf;
-             if ( strongSelf != nil )
-             {
-//                 BOOL isIntendedPlayerItem = [strongSelf.playerLayer.player.currentItem isEqual:strongSelf.newestPlayerItem];
-//                 if ( isIntendedPlayerItem && strongSelf.playerLayer.isReadyForDisplay)
-//                 {
-//                     strongSelf.playerLayer.opacity = 1.0f;
-//                 }
-             }
-         }];
-
         self.videoUtils = [[VVideoUtils alloc] init];
     }
     
