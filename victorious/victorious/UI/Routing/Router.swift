@@ -82,7 +82,6 @@ struct Router {
 // MARK: - Show Forum
 
 private class ShowForumOperation: MainQueueOperation {
-    
     private let dependencyManager: VDependencyManager
     private let animated: Bool
     private let showVIP: Bool
@@ -120,9 +119,7 @@ private class ShowForumOperation: MainQueueOperation {
 
 // MARK: - Show Profile
 
-
 private class ShowProfileOperation: MainQueueOperation {
-    
     private let dependencyManager: VDependencyManager
     private weak var originViewController: UIViewController?
     private let userId: Int
