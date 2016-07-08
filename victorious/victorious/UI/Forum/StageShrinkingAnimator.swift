@@ -34,6 +34,8 @@ class StageShrinkingAnimator: NSObject {
         static let tranlationTriggerCoefficient = CGFloat(0.3)
         static let velocityTargetShrink = CGFloat(0.3)
         static let velocityTargetGrow = CGFloat(1.5)
+        static let inProgressSnapAnimationDuration = NSTimeInterval(0.2)
+        static let fullSnapAnimationDuration = NSTimeInterval(0.3)
     }
     
     private enum StageState {
@@ -45,13 +47,16 @@ class StageShrinkingAnimator: NSObject {
     
     private var stageState = StageState.expanded
     
-    // Handlers
+    // MARK: - Handler Properties
+
     /// This handler will be called when the animator desires the keyboard to be hidden.
     var shouldHideKeyboardHandler: (() -> Void)?
     
     /// This handler will be called interactively during the animation transition. The percentage value passed in the handler could be outside of the 0-1 range.
     var interpolateAlongside: ((percentage: CGFloat) -> Void)?
     
+    // MARK: - Private Properties
+
     private let stageContainer: UIView
     private let stageTouchBlocker: UIView
     private let chatFeedContainer: UIView
@@ -61,6 +66,8 @@ class StageShrinkingAnimator: NSObject {
     private let stageTapGestureRecognizer = UITapGestureRecognizer()
     private let stagePanGestureRecognizer = UIPanGestureRecognizer()
     
+    // MARK: - API
+
     init(
         stageContainer: UIView,
         stageTouchBlocker: UIView,
@@ -92,8 +99,6 @@ class StageShrinkingAnimator: NSObject {
             )
     }
     
-    // MARK: - API
-    
     func chatFeed(chatFeed: ChatFeed, didScroll scrollView: UIScrollView) {
         guard ignoreScrollBehaviorUntilNextBegin == false else {
             return
@@ -112,7 +117,7 @@ class StageShrinkingAnimator: NSObject {
         }
         
         print("scrollToTop")
-        UIView.animateWithDuration(0.2) { 
+        UIView.animateWithDuration(Constants.inProgressSnapAnimationDuration) {
             self.shrinkStage()
         }
     }
@@ -127,7 +132,7 @@ class StageShrinkingAnimator: NSObject {
             return
         }
         
-        let scrollingDown = velocity.y < 0 ? true : false
+        let scrollingDown = velocity.y < 0
         guard scrollingDown == true else {
             return
         }
@@ -138,35 +143,22 @@ class StageShrinkingAnimator: NSObject {
         let percentTranslated = percentThrough(forTranslation: translation)
         print("willEndDragging: velocity: \(velocity), currentState: \(currentState), translation: \(translation), percentTranslated: \(percentTranslated)")
         
-        func goTo(state: StageState) {
-            if state == .shrunken {
-                shrinkStage()
-            } else {
-                enlargeStage()
-            }
-        }
-        func changeFunction() {
+        
+        UIView.animateWithDuration(0.3) {
             if fabs(velocity.y) > Constants.velocityTargetShrink {
                 print("goto target")
-                goTo(targetState)
+                self.goTo(targetState)
             } else if percentTranslated > 0.5 {
                 print("goto shrunken")
-                goTo(.shrunken)
+                self.goTo(.shrunken)
             } else {
                 print("goto current")
-                goTo(currentState)
+                self.goTo(currentState)
             }
-            ignoreScrollBehaviorUntilNextBegin = true
-        }
-        UIView.animateWithDuration(0.3) {
-            changeFunction()
+            self.ignoreScrollBehaviorUntilNextBegin = true
         }
     }
-    
-    func chatFeed(chatFeed: ChatFeed, didEndDragging scrollView: UIScrollView) {
-        print("didEndDragging")
-    }
-    
+
     // MARK: - Actions
     
     @objc private func pannedOnStage(gesture: UIPanGestureRecognizer) {
@@ -188,7 +180,7 @@ class StageShrinkingAnimator: NSObject {
                 applyInterploatedValues(withPercentage: percentage)
             case .Ended:
                 print("ended pan")
-                UIView.animateWithDuration(0.2,
+                UIView.animateWithDuration(Constants.inProgressSnapAnimationDuration,
                                            animations: {
                                             if gesture.velocityInView(view).y < 0 {
                                                 self.shrinkStage()
@@ -204,18 +196,28 @@ class StageShrinkingAnimator: NSObject {
     @objc private func tappedOnStage(sender: UITapGestureRecognizer) {
         shouldHideKeyboardHandler?()
         ignoreScrollBehaviorUntilNextBegin = true
-        UIView.animateWithDuration(0.3,
+        UIView.animateWithDuration(Constants.fullSnapAnimationDuration,
                                    delay: 0,
                                    usingSpringWithDamping: 1,
                                    initialSpringVelocity: 0,
                                    options: [],
                                    animations: { 
-                                    self.enlargeStage()
-            },
+                                       self.enlargeStage()
+                                   },
                                    completion:nil)
     }
     
     // MARK: - Stage Shrinking Support
+    
+    private func goTo(state: StageState) {
+        if state == .shrunken {
+            shrinkStage()
+        }
+        else
+        {
+            enlargeStage()
+        }
+    }
     
     private func shrinkStage() {
         print("shrink stage")
@@ -257,7 +259,7 @@ class StageShrinkingAnimator: NSObject {
     
     private func interpolatedBorderColorFor(percentThrough percent: CGFloat) -> CGColor {
         let interpolatedAlpha = Constants.borderEndingAlpha * percent
-        return UIColor.whiteColor().colorWithAlphaComponent(interpolatedAlpha).CGColor
+        return UIColor(white: 1.0, alpha: interpolatedAlpha).CGColor
     }
     
     private func affineTransformFor(percentThrough: CGFloat) -> CGAffineTransform {
@@ -310,6 +312,6 @@ class StageShrinkingAnimator: NSObject {
         stageBlurBackground.layer.masksToBounds = true
         
         // Want the border to be 1px after scaled transform
-        stageViewControllerContainmentContainer.layer.borderWidth = (1 / stageViewControllerContainmentContainer.contentScaleFactor) //* scaleFactorFor(1.0)
+        stageViewControllerContainmentContainer.layer.borderWidth = (1 / stageViewControllerContainmentContainer.contentScaleFactor)
     }
 }

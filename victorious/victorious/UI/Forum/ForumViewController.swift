@@ -305,10 +305,6 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     func chatFeed(chatFeed: ChatFeed, willEndDragging scrollView: UIScrollView, withVelocity velocity: CGPoint) {
         stageShrinkingAnimator?.chatFeed(chatFeed, willEndDragging: scrollView, withVelocity: velocity)
     }
-    
-    func chatFeed(chatFeed: ChatFeed, didEndDragging scrollView: UIScrollView) {
-        stageShrinkingAnimator?.chatFeed(chatFeed, didEndDragging: scrollView)
-    }
 
     // MARK: - VFocusable
     

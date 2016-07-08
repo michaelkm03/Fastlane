@@ -281,11 +281,8 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         delegate?.chatFeed(self, willBeginDragging: scrollView)
     }
     
-    func scrollViewWillEndDragging(scrollView: UIScrollView,
-                                   withVelocity velocity: CGPoint,
-                                                targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        delegate?.chatFeed(self, willEndDragging: scrollView,
-                           withVelocity: velocity)
+    func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        delegate?.chatFeed(self, willEndDragging: scrollView, withVelocity: velocity)
     }
     
     // MARK: - Timestamp update timer
