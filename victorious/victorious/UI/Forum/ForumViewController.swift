@@ -10,8 +10,7 @@ import UIKit
 
 /// A template driven .screen component that sets up, houses and mediates the interaction
 /// between the Forum's required concrete implementations and abstract dependencies.
-class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocusable, PersistentContentCreator, UploadManagerHost{
-
+class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocusable, PersistentContentCreator, UploadManagerHost {
     @IBOutlet weak var stageBlurBackground: UIVisualEffectView!
     @IBOutlet private weak var stageContainer: UIView!
     @IBOutlet private weak var stageViewControllerContainmentContainer: VPassthroughContainerView!
@@ -200,16 +199,18 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        stageShrinkingAnimator = StageShrinkingAnimator(stageContainer: stageContainer,
-                                                        stageTouchBlocker: stageTouchBlocker,
-                                                        chatFeedContainer: chatFeedContainer,
-                                                        stageViewControllerContainmentContainer: stageViewControllerContainmentContainer,
-                                                        stageBlurBackground: stageBlurBackground)
-        stageShrinkingAnimator?.shouldHideKeyboardHandler = {[weak self] () -> () in
+        stageShrinkingAnimator = StageShrinkingAnimator(
+            stageContainer: stageContainer,
+            stageTouchBlocker: stageTouchBlocker,
+            chatFeedContainer: chatFeedContainer,
+            stageViewControllerContainmentContainer: stageViewControllerContainmentContainer,
+            stageBlurBackground: stageBlurBackground
+        )
+        stageShrinkingAnimator?.shouldHideKeyboardHandler = { [weak self] in
             self?.view.endEditing(true)
         }
-        stageShrinkingAnimator?.interpolateAlongSide = {[weak self] (percentage: CGFloat) -> () in
-            self?.stage?.interpolateAlongSideShrinking(percentage)
+        stageShrinkingAnimator?.interpolateAlongside = {[weak self] percentage in
+            self?.stage?.overlayUIAlpha = 1 - percentage
         }
         
         chatFeed?.nextSender = self
@@ -293,8 +294,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         stageShrinkingAnimator?.chatFeed(chatFeed, didScroll: scrollView)
     }
     
-    func chatFeed(chatFeed: ChatFeed, didScrollTopTop scrollView: UIScrollView) {
-        stageShrinkingAnimator?.chatFeed(chatFeed, didScrollTopTop: scrollView)
+    func chatFeed(chatFeed: ChatFeed, didScrollToTop scrollView: UIScrollView) {
+        stageShrinkingAnimator?.chatFeed(chatFeed, didScrollToTop: scrollView)
     }
     
     func chatFeed(chatFeed: ChatFeed, willBeginDragging scrollView: UIScrollView) {

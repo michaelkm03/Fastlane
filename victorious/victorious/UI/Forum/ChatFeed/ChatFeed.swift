@@ -29,11 +29,9 @@ protocol ChatFeedDelegate: class {
     
     func chatFeed(chatFeed: ChatFeed, didScroll scrollView: UIScrollView)
     
-    func chatFeed(chatFeed: ChatFeed, didScrollTopTop scrollView: UIScrollView)
+    func chatFeed(chatFeed: ChatFeed, didScrollToTop scrollView: UIScrollView)
     
     func chatFeed(chatFeed: ChatFeed, willBeginDragging scrollView: UIScrollView)
     
     func chatFeed(chatFeed: ChatFeed, willEndDragging scrollView: UIScrollView, withVelocity velocity: CGPoint)
-    
-    func chatFeed(chatFeed: ChatFeed, didEndDragging scrollView: UIScrollView)
 }

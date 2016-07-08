@@ -16,25 +16,24 @@ import UIKit
 /// * `stageBlurBackground.layer.cornerRadius` by rounding interactively during the animation just as above.
 /// * `stageViewControllerContainmentContainer.layer.borderColor` by fading the border from clear to white with opacity.
 /// 
-/// **NOTE:** No constraints are modified or added to the vier hierarchy as part of this animator's behavior.
+/// **NOTE:** No constraints are modified or added to the view hierarchy as part of this animator's behavior.
 ///
 class StageShrinkingAnimator: NSObject {
-    
     private struct Constants {
-        static let downDragIgnoredMagnitude: CGFloat = 120
-        static let dragMagnitude: CGFloat = 160
-        static let cornerRadius: CGFloat = 6
-        static let scaleFactor: CGFloat = 0.42666
-        static let shadowRadius: CGFloat = 4
-        static let shadowOpacity: Float = 0.40
+        static let downDragIgnoredMagnitude = CGFloat(120)
+        static let dragMagnitude = CGFloat(160)
+        static let cornerRadius = CGFloat(6)
+        static let scaleFactor = CGFloat(0.42666)
+        static let shadowRadius = CGFloat(4)
+        static let shadowOpacity = Float(0.40)
         static let shadowOffset = CGSize(width:0, height:2)
         static let shadowColor = UIColor.blackColor().CGColor
         static let scaleTransform = CGAffineTransformMakeScale(scaleFactor, scaleFactor)
         static let stageMargin = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 10)
-        static let borderEndingAlpha: CGFloat = 0.3
-        static let tranlationTriggerCoefficient: CGFloat = 0.3
-        static let velocityTargetShrink: CGFloat = 0.3
-        static let velocityTargetGrow: CGFloat = 1.5
+        static let borderEndingAlpha = CGFloat(0.3)
+        static let tranlationTriggerCoefficient = CGFloat(0.3)
+        static let velocityTargetShrink = CGFloat(0.3)
+        static let velocityTargetGrow = CGFloat(1.5)
     }
     
     private enum StageState {
@@ -51,7 +50,7 @@ class StageShrinkingAnimator: NSObject {
     var shouldHideKeyboardHandler: (() -> Void)?
     
     /// This handler will be called interactively during the animation transition. The percentage value passed in the handler could be outside of the 0-1 range.
-    var interpolateAlongSide: ((percentage: CGFloat) -> Void)?
+    var interpolateAlongside: ((percentage: CGFloat) -> Void)?
     
     private let stageContainer: UIView
     private let stageTouchBlocker: UIView
@@ -106,7 +105,7 @@ class StageShrinkingAnimator: NSObject {
         applyInterploatedValues(withPercentage: min(1, max(0, percentThrough(forTranslation: translation))))
     }
     
-    func chatFeed(chatFeed: ChatFeed, didScrollTopTop scrollView: UIScrollView) {
+    func chatFeed(chatFeed: ChatFeed, didScrollToTop scrollView: UIScrollView) {
         guard ignoreScrollBehaviorUntilNextBegin == false else {
             return
         }
@@ -237,7 +236,7 @@ class StageShrinkingAnimator: NSObject {
         stageViewControllerContainmentContainer.layer.cornerRadius = Constants.cornerRadius * percentage * (1 / scaleFactorFor(percentage))
         stageBlurBackground.layer.cornerRadius = Constants.cornerRadius * percentage * (1 / scaleFactorFor(percentage))
         stageViewControllerContainmentContainer.layer.borderColor = interpolatedBorderColorFor(percentThrough: percentage)
-        interpolateAlongSide?(percentage: percentage)
+        interpolateAlongside?(percentage: percentage)
     }
     
     // MARK: - Math and Interpolation functions
