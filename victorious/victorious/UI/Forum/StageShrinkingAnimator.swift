@@ -99,7 +99,8 @@ class StageShrinkingAnimator: NSObject {
                     options: [],
                     animations: { 
                         self?.shrinkStage()
-                    }, completion: nil)
+                    }, completion: nil
+                )
             },
             willHideBlock: { [weak self] startFrame, endFrame, animationDuration, animationCurve in
                 self?.ignoreScrollBehaviorUntilNextBegin = true
@@ -165,7 +166,6 @@ class StageShrinkingAnimator: NSObject {
             return
         }
         
-        
         let translation = gesture.translationInView(view)
         var percentage = max(min(fabs(translation.y) / Constants.dragMagnitude, 1), 0)
         percentage = stageState == .expanded ? percentage : 1 - percentage
@@ -196,15 +196,17 @@ class StageShrinkingAnimator: NSObject {
     @objc private func tappedOnStage(sender: UITapGestureRecognizer) {
         shouldHideKeyboardHandler?()
         ignoreScrollBehaviorUntilNextBegin = true
-        UIView.animateWithDuration(Constants.fullSnapAnimationDuration,
-                                   delay: 0,
-                                   usingSpringWithDamping: 1.0,
-                                   initialSpringVelocity: 0,
-                                   options: [],
-                                   animations: { 
-                                       self.enlargeStage()
-                                   },
-                                   completion:nil)
+        UIView.animateWithDuration(
+            Constants.fullSnapAnimationDuration,
+            delay: 0,
+            usingSpringWithDamping: 1.0,
+            initialSpringVelocity: 0,
+            options: [],
+            animations: { 
+                self.enlargeStage()
+            },
+            completion:nil
+        )
     }
     
     // MARK: - Stage Shrinking Support
@@ -213,8 +215,7 @@ class StageShrinkingAnimator: NSObject {
         if state == .shrunken {
             shrinkStage()
         }
-        else
-        {
+        else {
             enlargeStage()
         }
     }
@@ -237,17 +238,20 @@ class StageShrinkingAnimator: NSObject {
         stageViewControllerContainmentContainer.layer.cornerRadius = Constants.cornerRadius * percentage * (1 / scaleFactorFor(percentage))
         stageBlurBackground.layer.cornerRadius = Constants.cornerRadius * percentage * (1 / scaleFactorFor(percentage))
         stageViewControllerContainmentContainer.layer.borderColor = interpolatedBorderColorFor(percentThrough: percentage)
+        
         interpolateAlongside?(percentage: percentage)
     }
     
     private func animateInProgressSnap(withAnimations animations:() -> Void) {
-        UIView.animateWithDuration(Constants.inProgressSnapAnimationDuration,
-                                   delay: 0.0,
-                                   usingSpringWithDamping: Constants.springDamping,
-                                   initialSpringVelocity: Constants.inProgressSpringInitialVelocity,
-                                   options: [],
-                                   animations: animations,
-                                   completion: nil)
+        UIView.animateWithDuration(
+            Constants.inProgressSnapAnimationDuration,
+            delay: 0.0,
+            usingSpringWithDamping: Constants.springDamping,
+            initialSpringVelocity: Constants.inProgressSpringInitialVelocity,
+            options: [],
+            animations: animations,
+            completion: nil
+        )
     }
     
     // MARK: - Math and Interpolation functions
