@@ -336,7 +336,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
                              animations:^(void)
              {
                  viewController.view.alpha = 1;
-                 viewController.view.center = CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds));
              }
                              completion:removeViewController];
         }
