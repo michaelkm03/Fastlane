@@ -76,7 +76,7 @@ class NativeWorkspaceViewController: VWorkspaceViewController, UIVideoEditorCont
         self.videoEditorViewController = videoEditorViewController
     }
     
-    //MARK: - UIViewControllerTransitioningDelegate
+    // MARK: - UIViewControllerTransitioningDelegate
     
     func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         animator.presenting = true
@@ -88,7 +88,7 @@ class NativeWorkspaceViewController: VWorkspaceViewController, UIVideoEditorCont
         return animator
     }
 
-    //MARK: - UINavigationControllerDelegate
+    // MARK: - UINavigationControllerDelegate
 
     func navigationController(navigationController: UINavigationController, willShowViewController viewController: UIViewController, animated: Bool) {
         let navigationItem = viewController.navigationItem
@@ -99,7 +99,7 @@ class NativeWorkspaceViewController: VWorkspaceViewController, UIVideoEditorCont
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Back", comment: ""), style: .Plain, target: oldLeftBarButton.target, action: oldLeftBarButton.action)
     }
     
-    //MARK: - UIVideoEditorControllerDelegate
+    // MARK: - UIVideoEditorControllerDelegate
     
     func videoEditorControllerDidCancel(editor: UIVideoEditorController) {
         presentingViewController?.dismissViewControllerAnimated(true, completion: nil)

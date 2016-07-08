@@ -35,7 +35,7 @@ final class UserSearchDataSource: PaginatedDataSource, SearchDataSourceType, UIT
         }
     }
     
-    //MARK: - API
+    // MARK: - API
     
     func search(searchTerm searchTerm: String, pageType: VPageType, completion: ((NSError?) -> ())? = nil ) {
         guard let operation = UserSearchOperation(searchTerm: searchTerm) else {
@@ -63,7 +63,7 @@ final class UserSearchDataSource: PaginatedDataSource, SearchDataSourceType, UIT
         self.tableView = tableView
     }
     
-    //MARK: - UITableViewDataSource
+    // MARK: - UITableViewDataSource
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.visibleItems.count

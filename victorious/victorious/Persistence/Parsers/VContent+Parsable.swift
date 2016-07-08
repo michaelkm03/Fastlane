@@ -14,6 +14,7 @@ extension VContent: PersistenceParsable {
         v_createdAt = content.createdAt ?? v_createdAt
         v_remoteID = content.id ?? v_remoteID
         v_shareURL = content.shareURL?.absoluteString ?? v_shareURL
+        v_linkedURL = content.linkedURL?.absoluteString ?? v_linkedURL
         v_status = content.status ?? v_status
         v_text = content.text ?? v_text
         v_type = content.type.rawValue

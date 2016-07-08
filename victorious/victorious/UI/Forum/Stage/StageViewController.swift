@@ -191,6 +191,17 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         queuedContent = nil
     }
     
+    var overlayUIAlpha: CGFloat {
+        get {
+            return attributionBar.alpha
+        }
+        set {
+            captionBarViewController?.view.alpha = newValue
+            attributionBar.alpha = newValue
+            newItemPill?.alpha = newValue
+        }
+    }
+    
     private func hidePill() {
         guard
             let newItemPill = newItemPill
@@ -262,7 +273,9 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
     // MARK: - CaptionBarViewControllerDelegate
     
     func captionBarViewController(captionBarViewController: CaptionBarViewController, didTapOnUser user: UserModel) {
-        ShowProfileOperation(originViewController: self, dependencyManager: dependencyManager, userId: user.id).queue()
+        let router = Router(originViewController: self, dependencyManager: dependencyManager)
+        let destination = DeeplinkDestination(userID: user.id)
+        router.navigate(to: destination)
     }
     
     func captionBarViewController(captionBarViewController: CaptionBarViewController, wantsUpdateToContentHeight height: CGFloat) {

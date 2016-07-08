@@ -51,7 +51,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
     
     private static let numberFormatter = VLargeNumberFormatter()
     
-    //MARK: - Setters
+    // MARK: - Setters
     
     override var shelf: Shelf? {
         didSet {
@@ -99,7 +99,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
         }
     }
     
-    //MARK: - Getters
+    // MARK: - Getters
     
     private class func getUsernameText(shelf: UserShelf) -> String {
         return VTagStringFormatter.databaseFormattedStringFromUser(shelf.user) ?? ""
@@ -126,7 +126,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
         return countsText
     }
     
-    //MARK: - View management
+    // MARK: - View management
     
     override class func nibForCell() -> UINib {
         return UINib(nibName: "VTrendingUserShelfCollectionViewCell", bundle: nil)
@@ -177,7 +177,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
         return CGSizeMake(bounds.width, height)
     }
 
-    //MARK: - View updating
+    // MARK: - View updating
     
     override func updateFollowControlState() {
         if let shelf = shelf as? UserShelf,
@@ -195,7 +195,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
         }
     }
     
-    //MARK: - Interaction response
+    // MARK: - Interaction response
     
     private func respondToUserTap() {
         let responder: VTrendingUserShelfResponder = typedResponder()

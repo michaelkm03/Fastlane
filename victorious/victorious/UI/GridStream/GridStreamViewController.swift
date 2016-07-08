@@ -233,8 +233,10 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     }
 
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let displayModifier = ShowCloseUpDisplayModifier(dependencyManager: dependencyManager, originViewController: self)
-        ShowCloseUpOperation.showOperation(forContent: dataSource.items[indexPath.row], displayModifier: displayModifier).queue()
+        let router = Router(originViewController: self, dependencyManager: dependencyManager)
+        let targetContent = dataSource.items[indexPath.row]
+        let destination = DeeplinkDestination(content: targetContent)
+        router.navigate(to: destination)
         
         guard let cell = collectionView.cellForItemAtIndexPath(indexPath) as? ContentCell else {
             return

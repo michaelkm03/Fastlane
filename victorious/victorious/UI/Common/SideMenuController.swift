@@ -24,7 +24,7 @@ enum SideMenuControllerEdge {
 class SideMenuController: UIViewController {
     // MARK: - Config
     
-    private static let visibleCenterEdgeWidth: CGFloat = 52.0
+    private static let visibleCenterEdgeWidth: CGFloat = 54.0
     private static let slideAnimationDuration: NSTimeInterval = 0.5
     private static let statusBarAnimationDuration: NSTimeInterval = 0.2
     private static let panTriggerThreshold: CGFloat = 80.0

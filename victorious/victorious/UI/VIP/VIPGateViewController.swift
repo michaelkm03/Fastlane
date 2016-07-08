@@ -47,7 +47,7 @@ class VIPGateViewController: UIViewController {
         }
     }
 
-    //MARK: - Initialization
+    // MARK: - Initialization
 
     class func newWithDependencyManager(dependencyManager: VDependencyManager) -> VIPGateViewController? {
         guard
@@ -65,7 +65,7 @@ class VIPGateViewController: UIViewController {
         return viewController
     }
 
-    //MARK: - UIViewController
+    // MARK: - UIViewController
 
     override func viewDidLoad() {
         super.viewDidLoad()

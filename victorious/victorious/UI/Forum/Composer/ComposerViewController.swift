@@ -9,7 +9,7 @@
 import UIKit
 
 /// Handles view manipulation and message sending related to the composer. Could definitely use a refactor to make it less stateful.
-class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate, ComposerAttachmentTabBarDelegate, VBackgroundContainer, VPassthroughContainerViewDelegate, VCreationFlowControllerDelegate, HashtagBarControllerSelectionDelegate, HashtagBarViewControllerAnimationDelegate {
+class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate, ComposerAttachmentTabBarDelegate, VBackgroundContainer, VCreationFlowControllerDelegate, HashtagBarControllerSelectionDelegate, HashtagBarViewControllerAnimationDelegate {
     
     private struct Constants {
         static let animationDuration = 0.2
@@ -44,11 +44,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     @IBOutlet weak private var hashtagBarContainerView: UIView!
     
-    @IBOutlet weak private var passthroughContainerView: VPassthroughContainerView! {
-        didSet {
-            passthroughContainerView.delegate = self
-        }
-    }
+    @IBOutlet weak private var passthroughContainerView: VPassthroughContainerView!
     
     @IBOutlet weak private var textView: VPlaceholderTextView!
     
@@ -538,12 +534,6 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     func creationFlowControllerDidCancel(creationFlowController: VCreationFlowController!) {
         creationFlowPresenter.dismissCurrentFlowController()
-    }
-    
-    // MARK: - VPassthroughContainerViewDelegate
-    
-    func passthroughViewRecievedTouch(passthroughContainerView: VPassthroughContainerView!) {
-        dismissKeyboard(true)
     }
     
     // MARK: - Actions
