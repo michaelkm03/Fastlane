@@ -208,7 +208,7 @@
 	<string>victorious.InterstitialAlertViewController</string>
 	<key>listMenu.screen</key>
 	<string>victorious.ListMenuViewController</string>
-	<key>toast.interstitial</key>
+	<key>standard.error.toast</key>
 	<string>victorious.InterstitialToastViewController</string>
 	<key>tutorial.screen</key>
 	<string>victorious.TutorialViewController</string>
@@ -220,5 +220,7 @@
 	<string>VTextOnImageButton</string>
 	<key>textOnColor.button</key>
 	<string>VTextOnColorButton</string>
+	<key>push.notifications.screen</key>
+	<string>victorious.NotificationSettingsViewController</string>
 </dict>
 </plist>

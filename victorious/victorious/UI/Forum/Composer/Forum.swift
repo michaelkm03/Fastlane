@@ -40,9 +40,9 @@ extension Forum {
     // MARK: - ChatFeedDelegate
     
     func chatFeed(chatFeed: ChatFeed, didSelectUserWithUserID userID: Int) {
-        ShowProfileOperation(originViewController: originViewController,
-            dependencyManager: dependencyManager,
-            userId: userID).queue()
+        let router = Router(originViewController: originViewController, dependencyManager: dependencyManager)
+        let destination = DeeplinkDestination(userID: userID)
+        router.navigate(to: destination)
     }
     
     func chatFeed(chatFeed: ChatFeed, didSelectContent content: ContentModel) {
@@ -62,7 +62,7 @@ extension Forum {
 
     // MARK: - StageDelegate
     
-    func stage(stage: Stage, didUpdateContentHeight height: CGFloat) {
+    func stage(stage: Stage, wantsUpdateToContentHeight height: CGFloat) {
         setStageHeight(height)
         chatFeed?.setTopInset(height)
     }

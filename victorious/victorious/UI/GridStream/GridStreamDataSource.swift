@@ -48,7 +48,13 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
     
     // MARK: - Managing content
     
-    var content: HeaderType.ContentType?
+    private(set) var content: HeaderType.ContentType?
+    private var hasError = false
+    
+    func setContent(content: HeaderType.ContentType?, withError hasError: Bool) {
+        self.content = content
+        self.hasError = hasError
+    }
     
     // MARK: - Managing items
     
@@ -71,7 +77,8 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
             collectionView.collectionViewLayout.invalidateLayout()
             
             if loadingType == .refresh {
-                collectionView.reloadData()
+                // GridStreamViewController will only have one section. Also, collectionView.reloadData() was not properly reloading the cells.
+                collectionView.reloadSections(NSIndexSet(index: 0))
             }
             else if let totalItemCount = self?.items.count where newItems.count > 0 {
                 let previousCount = totalItemCount - newItems.count
@@ -100,11 +107,12 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
     func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
         if kind == UICollectionElementKindSectionFooter {
             return collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: VFooterActivityIndicatorView.reuseIdentifier(), forIndexPath: indexPath) as! VFooterActivityIndicatorView
-        } else {
+        }
+        else {
             if headerView == nil {
                 headerView = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: headerName, forIndexPath: indexPath) as? ConfigurableGridStreamHeaderView
             }
-            header?.decorateHeader(dependencyManager, maxHeight: CGRectGetHeight(collectionView.bounds), content: content)
+            header?.decorateHeader(dependencyManager, maxHeight: CGRectGetHeight(collectionView.bounds), content: content, hasError: hasError)
             
             guard let header = header as? UIView else {
                 assertionFailure("header is not a UIView")

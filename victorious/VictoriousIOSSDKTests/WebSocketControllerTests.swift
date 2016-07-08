@@ -164,25 +164,25 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
         switch event {
         case .websocket(let websocketEvent):
             switch websocketEvent {
-            case .Authenticated:
+            case .authenticated:
                 expectationAuthenticationEvent?.fulfill()
-            case .Connected:
+            case .connected:
                 guard let expectationConnectEvent = expectationConnectEvent else {
                     return
                 }
                 if controller.isSetUp {
                     expectationConnectEvent.fulfill()
                 } else {
-                    XCTFail("Expected WebSocketController to be connected after the .Connected event has been sent out.")
+                    XCTFail("Expected WebSocketController to be connected after the .connected event has been sent out.")
                 }
-            case .Disconnected(webSocketError: _):
+            case .disconnected(webSocketError: _):
                 guard let expectationDisconnectedEvent = expectationDisconnectedEvent else {
                     return
                 }
                 if !controller.isSetUp {
                     expectationDisconnectedEvent.fulfill()
                 } else {
-                    XCTFail("Expected WebSocketController to NOT be connected after the .Disconnect event has been sent out.")
+                    XCTFail("Expected WebSocketController to NOT be connected after the .disconnect event has been sent out.")
                 }
             default:
                 XCTFail("Unexpected WebSocketEventType received. Type -> \(websocketEvent)")

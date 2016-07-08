@@ -15,17 +15,64 @@ protocol ChatFeedMessageCellDelegate: class {
 }
 
 class ChatFeedMessageCell: UICollectionViewCell {
+    
+    // MARK: - Constants
+    
+    // We don't use a Constants struct to allow for easy access to these values from our static layout methods.
+    
+    static let captionInsets = UIEdgeInsets(top: 8.0, left: 8.0, bottom: 8.0, right: 8.0)
+    static let horizontalSpacing = CGFloat(12.0)
+    static let avatarSize = CGSize(width: 30.0, height: 30.0)
+    static let avatarTapTargetSize = CGSize(width: 44.0, height: 44.0)
+    static let contentMargin = UIEdgeInsets(top: 28.0, left: 10.0, bottom: 2.0, right: 75.0)
+    static let topLabelYSpacing = CGFloat(4.0)
+    static let topLabelXInset = CGFloat(4.0)
+    static let bubbleSpacing = CGFloat(6.0)
+    static let shadowRadius = CGFloat(1.0)
+    static let shadowOpacity = Float(0.2)
+    static let shadowColor = UIColor.blackColor()
+    static let shadowOffset = CGSize(width: 0.0, height: 1.0)
+    
+    let defaultAvatarImage = UIImage(named: "profile_full")
+    
+    // MARK: - Reuse identifiers
+    
     static let imagePreviewCellReuseIdentifier = "ImagePreviewChatFeedMessageCell"
     static let videoPreviewCellReuseIdentifier = "VideoPreviewChatFeedMessageCell"
     static let nonMediaCellReuseIdentifier = "NonMediaChatFeedMessageCell"
     
-    let usernameLabel = UILabel()
-    let timestampLabel = UILabel()
-    let bubbleView = UIView()
-    let captionLabel = UILabel()
-    let avatarView = VDefaultProfileImageView()
-    var previewView: UIView?
-    let avatarTapTarget = UIView()
+    // MARK: - Initializing
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        avatarView.clipsToBounds = true
+        avatarView.userInteractionEnabled = true
+        
+        avatarTapTarget.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onAvatarTapped)))
+        
+        captionLabel.numberOfLines = 0
+        
+        avatarShadowView.layer.shadowColor = ChatFeedMessageCell.shadowColor.CGColor
+        avatarShadowView.layer.shadowRadius = ChatFeedMessageCell.shadowRadius
+        avatarShadowView.layer.shadowOpacity = ChatFeedMessageCell.shadowOpacity
+        avatarShadowView.layer.shadowOffset = ChatFeedMessageCell.shadowOffset
+        
+        contentView.addSubview(usernameLabel)
+        contentView.addSubview(timestampLabel)
+        contentView.addSubview(avatarShadowView)
+        contentView.addSubview(avatarView)
+        contentView.addSubview(avatarTapTarget)
+        contentView.addSubview(captionBubbleView)
+        
+        captionBubbleView.contentView.addSubview(captionLabel)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("NSCoding not supported.")
+    }
+    
+    // MARK: - Configuration
     
     weak var delegate: ChatFeedMessageCellDelegate?
     
@@ -36,6 +83,8 @@ class ChatFeedMessageCell: UICollectionViewCell {
             }
         }
     }
+    
+    // MARK: - Content
     
     var content: ContentModel? {
         didSet {
@@ -50,49 +99,41 @@ class ChatFeedMessageCell: UICollectionViewCell {
         }
     }
     
-    // MARK: - Configuration
+    // MARK: - Subviews
     
-    static let captionInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
-    static let horizontalSpacing = CGFloat(10.0)
-    static let avatarSize = CGSize(width: 30.0, height: 30.0)
-    static let avatarTapTargetSize = CGSize(width: 44.0, height: 44.0)
-    static let contentMargin = UIEdgeInsets(top: 30, left: 10, bottom: 2, right: 75)
-    static let topLabelYSpacing = CGFloat(6.5)
-    static let topLabelXInset = CGFloat(5.0)
+    let usernameLabel = UILabel()
+    let timestampLabel = UILabel()
     
-    // MARK: - Initializing
+    let avatarShadowView = UIView()
+    let avatarView = UIImageView()
+    let avatarTapTarget = UIView()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        avatarView.clipsToBounds = true
-        avatarView.userInteractionEnabled = true
-        
-        avatarTapTarget.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onAvatarTapped)))
-        
-        bubbleView.clipsToBounds = true
-        
-        captionLabel.numberOfLines = 0
-        
-        contentView.addSubview(usernameLabel)
-        contentView.addSubview(timestampLabel)
-        contentView.addSubview(avatarView)
-        contentView.addSubview(avatarTapTarget)
-        contentView.addSubview(bubbleView)
-        
-        bubbleView.addSubview(captionLabel)
-    }
+    let captionBubbleView = ChatBubbleView()
+    let captionLabel = UILabel()
     
-    required init?(coder: NSCoder) {
-        fatalError("NSCoding not supported.")
-    }
+    var previewBubbleView: ChatBubbleView?
+    var previewView: UIView?
     
-    // MARK: - UIView
+    // MARK: - Layout
     
     override func layoutSubviews() {
         super.layoutSubviews()
         ChatFeedMessageCell.layoutContent(for: self)
         avatarView.layer.cornerRadius = avatarView.bounds.size.v_roundCornerRadius
+        updateAvatarShadowPathIfNeeded()
+    }
+    
+    // MARK: - Shadows
+    
+    private var shadowBounds: CGRect?
+    
+    private func updateAvatarShadowPathIfNeeded() {
+        let newShadowBounds = avatarShadowView.bounds
+        
+        if newShadowBounds != shadowBounds {
+            shadowBounds = newShadowBounds
+            avatarShadowView.layer.shadowPath = UIBezierPath(ovalInRect: newShadowBounds).CGPath
+        }
     }
     
     // MARK: - Gesture Recognizer Actions
@@ -101,27 +142,20 @@ class ChatFeedMessageCell: UICollectionViewCell {
         delegate?.messageCellDidSelectAvatarImage(self)
     }
     
-    func onMediaTapped(sender: AnyObject?) {
+    func onPreviewTapped(sender: AnyObject?) {
         delegate?.messageCellDidSelectMedia(self)
     }
     
     private func updateStyle() {
-        updateTopLabelStyle(for: usernameLabel)
-        updateTopLabelStyle(for: timestampLabel)
+        usernameLabel.font = dependencyManager.usernameFont
+        usernameLabel.textColor = dependencyManager.usernameColor
         
-        bubbleView.backgroundColor = dependencyManager.backgroundColor
-        bubbleView.layer.borderColor = dependencyManager.borderColor.CGColor
-        bubbleView.layer.cornerRadius = 5.0
-        bubbleView.layer.borderWidth = 0.5
+        timestampLabel.font = dependencyManager.timestampFont
+        timestampLabel.textColor = dependencyManager.timestampColor
         
-        avatarView.layer.borderWidth = 1.0
-        avatarView.layer.borderColor = UIColor.blackColor().colorWithAlphaComponent(0.3).CGColor
+        captionBubbleView.backgroundColor = dependencyManager.backgroundColor
+        
         avatarView.backgroundColor = dependencyManager.backgroundColor
-    }
-    
-    private func updateTopLabelStyle(for label: UILabel) {
-        label.font = dependencyManager.userLabelFont
-        label.textColor = dependencyManager.userLabelColor
     }
     
     private func populateData() {
@@ -134,31 +168,28 @@ class ChatFeedMessageCell: UICollectionViewCell {
         timestampLabel.hidden = shouldHideTopLabels
         
         if let content = content where content.type.hasMedia {
-            if content.type == .gif {
+            if content.type == .gif && VCurrentUser.user()?.canView(content) == true {
                 let previewView = createMediaViewIfNeeded()
-                setNeedsLayout()
-                layoutIfNeeded()
+                ChatFeedMessageCell.layoutContent(for: self)
                 previewView.content = content
-                previewView.hidden = false
             }
             else {
                 // Videos and images
                 let previewView = createContentPreviewViewIfNeeded()
-                setNeedsLayout()
-                layoutIfNeeded()
-                previewView.hidden = false
+                ChatFeedMessageCell.layoutContent(for: self)
                 previewView.content = content
             }
+            previewView?.hidden = false
         }
         else {
             previewView?.hidden = true
         }
-        
+
         if let imageURL = content?.author.previewImageURL(ofMinimumSize: avatarView.frame.size) {
-            avatarView.setProfileImageURL(imageURL)
+            avatarView.sd_setImageWithURL(imageURL, placeholderImage: defaultAvatarImage)
         }
         else {
-            avatarView.image = nil
+            avatarView.image = defaultAvatarImage
         }
     }
     
@@ -189,14 +220,18 @@ class ChatFeedMessageCell: UICollectionViewCell {
         previewView.clipsToBounds = true
         previewView.translatesAutoresizingMaskIntoConstraints = false
         
-        previewView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onMediaTapped)))
+        previewView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onPreviewTapped)))
         
-        bubbleView.addSubview(previewView)
+        let bubbleView = ChatBubbleView()
+        bubbleView.contentView.addSubview(previewView)
+        addSubview(bubbleView)
+        previewBubbleView = bubbleView
         self.previewView = previewView
     }
     
     func updateTimestamp() {
         timestampLabel.text = content?.timeLabel ?? ""
+        setNeedsLayout()
     }
     
     // MARK: - Managing lifecycle
@@ -218,21 +253,23 @@ class ChatFeedMessageCell: UICollectionViewCell {
     // MARK: - Sizing
     
     static func cellHeight(displaying content: ContentModel, inWidth width: CGFloat, dependencyManager: VDependencyManager) -> CGFloat {
-        let textHeight = textSize(displaying: content, inWidth: width, dependencyManager: dependencyManager).height
-        let mediaHeight = mediaSize(displaying: content, inWidth: width, dependencyManager: dependencyManager).height
-        let contentHeight = max(textHeight + mediaHeight, avatarSize.height)
+        let captionHeight = captionSize(displaying: content, inWidth: width, dependencyManager: dependencyManager)?.height ?? 0.0
+        let previewHeight = previewSize(displaying: content, inWidth: width)?.height ?? 0.0
+        let bubbleSpacing = captionHeight > 0.0 && previewHeight > 0.0 ? self.bubbleSpacing : 0.0
+        let contentHeight = max(captionHeight + bubbleSpacing + previewHeight, avatarSize.height)
         return contentMargin.top + contentMargin.bottom + contentHeight
     }
     
-    static func textSize(displaying content: ContentModel, inWidth width: CGFloat, dependencyManager: VDependencyManager) -> CGSize {
+    static func captionSize(displaying content: ContentModel, inWidth width: CGFloat, dependencyManager: VDependencyManager) -> CGSize? {
         guard let attributedText = content.attributedText(using: dependencyManager) else {
-            return CGSize.zero
+            return nil
         }
         
-        let maxTextWidth = width - nonContentWidth
+        let previewWidth = previewSize(displaying: content, inWidth: width)?.width
+        let maxCaptionWidth = min(width - nonContentWidth, previewWidth ?? CGFloat.max)
         
         var size = attributedText.boundingRectWithSize(
-            CGSize(width: maxTextWidth, height: CGFloat.max),
+            CGSize(width: maxCaptionWidth, height: CGFloat.max),
             options: [.UsesLineFragmentOrigin],
             context: nil
         ).size
@@ -242,22 +279,12 @@ class ChatFeedMessageCell: UICollectionViewCell {
         return size
     }
     
-    static func mediaSize(displaying content: ContentModel, inWidth width: CGFloat, dependencyManager: VDependencyManager) -> CGSize {
-        guard !content.assets.isEmpty else {
-            return CGSize.zero
-        }
-        
-        let maxWidth = width - nonContentWidth
-        let aspectRatio = dependencyManager.clampedAspectRatio(from: content.aspectRatio)
-        
-        return CGSize(
-            width: maxWidth,
-            height: maxWidth / aspectRatio
-        )
+    static func previewSize(displaying content: ContentModel, inWidth width: CGFloat) -> CGSize? {
+        return content.mediaSize?.preferredSize(clampedToWidth: width - nonContentWidth)
     }
     
     private static var nonContentWidth: CGFloat {
-        return contentMargin.left + contentMargin.right + avatarSize.width + horizontalSpacing
+        return contentMargin.horizontal + avatarSize.width + horizontalSpacing
     }
 }
 
@@ -268,36 +295,32 @@ private extension ContentModel {
 }
 
 private extension VDependencyManager {
-    func clampedAspectRatio(from rawAspectRatio: CGFloat) -> CGFloat {
-        let defaultMinimum = 0.75
-        let defaultMaximum = 4.0
-        let minAspect = CGFloat(numberForKey("aspectRatio.minimum")?.floatValue ?? defaultMinimum)
-        let maxAspect = CGFloat(numberForKey("aspectRatio.maximum")?.floatValue ?? defaultMaximum)
-        return min(maxAspect, max(rawAspectRatio, minAspect))
-    }
-    
     var messageTextColor: UIColor {
         return colorForKey("color.message.text") ?? .whiteColor()
     }
 
     var messageFont: UIFont {
-        return UIFont.boldSystemFontOfSize(16)
+        return fontForKey("font.message")
     }
 
     var backgroundColor: UIColor? {
         return colorForKey("color.message.bubble") ?? .darkGrayColor()
     }
     
-    var borderColor: UIColor {
-        return colorForKey("color.message.border") ?? .lightGrayColor()
+    var usernameFont: UIFont {
+        return fontForKey("font.username.text")
     }
     
-    var userLabelFont: UIFont {
-        return UIFont.boldSystemFontOfSize(12)
-    }
-    
-    var userLabelColor: UIColor {
+    var usernameColor: UIColor {
         return colorForKey("color.username.text") ?? .whiteColor()
+    }
+    
+    var timestampFont: UIFont {
+        return fontForKey("font.timestamp.text")
+    }
+    
+    var timestampColor: UIColor {
+        return colorForKey("color.timestamp.text") ?? .whiteColor()
     }
 }
 

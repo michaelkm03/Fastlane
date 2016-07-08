@@ -12,10 +12,18 @@ protocol CloseUpViewDelegate: class {
     func didSelectProfileForUserID(userID: Int)
 }
 
-private let blurredImageAlpha: CGFloat = 0.5
 
 class CloseUpView: UIView, ConfigurableGridStreamHeader {
-    private static let relatedAnimationDuration: Double = 1
+    private struct Constants {
+        static let blurredImageAlpha = CGFloat(0.5)
+        static let relatedAnimationDuration = Double(1)
+        static let horizontalMargins = CGFloat(16)
+        static let verticalMargins = CGFloat(18)
+        static let cornerRadius = CGFloat(6)
+        static let topOffset = CGFloat(-20)
+        static let defaultAspectRatio = CGFloat(1)
+        static let blurRadius = CGFloat(12)
+    }
     
     @IBOutlet weak var headerSection: UIView!
     @IBOutlet weak var profileImageView: UIImageView!
@@ -25,15 +33,14 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     @IBOutlet weak var captionLabel: UILabel!
     @IBOutlet weak var relatedLabel: UILabel!
     @IBOutlet weak var closeUpContentContainerView: UIView!
-    
-    private var videoPlayer: VVideoPlayer?
-    private let placeholderImage = UIImage(named: "profile_full")
-    private let horizontalMargins: CGFloat = 16
-    private let verticalMargins: CGFloat = 18
-    private let screenWidth = UIScreen.mainScreen().bounds.size.width
-    
     @IBOutlet weak var lightOverlayView: UIView!
     @IBOutlet weak var blurredImageView: UIImageView!
+    
+    private lazy var errorView: ErrorStateView = {
+       return ErrorStateView.v_fromNib()
+    }()
+    private var videoPlayer: VVideoPlayer?
+    private let placeholderImage = UIImage(named: "profile_full")
     
     weak var delegate: CloseUpViewDelegate?
     
@@ -42,16 +49,18 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     
     var dependencyManager: VDependencyManager! {
         didSet {
+            errorView.dependencyManager = dependencyManager.errorStateDependency
             configureFontsAndColors()
         }
     }
     
     func height(for content: ContentModel?) -> CGFloat {
-        guard let content = content else {
+        guard let aspectRatio = content?.naturalMediaAspectRatio else {
             return 0
         }
-        let contentAspectRatio = content.aspectRatio
-        return min(screenWidth / contentAspectRatio, maxContentHeight - headerSection.bounds.size.height)
+        
+        // Hack since CUV should always be full screen width anyway, and the parent containers use autolayout.
+        return min(UIScreen.mainScreen().bounds.size.width / aspectRatio, maxContentHeight - headerSection.bounds.size.height)
     }
 
     var content: ContentModel? {
@@ -79,8 +88,8 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
             let minWidth = UIScreen.mainScreen().bounds.size.width
             
             if let previewURL = content.previewImageURL(ofMinimumWidth: minWidth) {
-                blurredImageView.applyBlurToImageURL(previewURL, withRadius: 12.0) { [weak self] in
-                    self?.blurredImageView.alpha = blurredImageAlpha
+                blurredImageView.applyBlurToImageURL(previewURL, withRadius: Constants.blurRadius) { [weak self] in
+                    self?.blurredImageView.alpha = Constants.blurredImageAlpha
                 }
             }
             
@@ -121,15 +130,19 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     }
     
     override func awakeFromNib() {
+        addSubview(errorView)
+        
         profileImageView.layer.cornerRadius = profileImageView.frame.size.v_roundCornerRadius
-        closeUpContentContainerView.layer.cornerRadius = 6.0
+        closeUpContentContainerView.layer.cornerRadius = Constants.cornerRadius
         clearContent()
         
-        NSNotificationCenter.defaultCenter().addObserver(self,
-                                                         selector: #selector(closeUpDismissed),
-                                                         name: "closeUpDismissed",
-                                                         object: nil)
-        blurredImageView.alpha = blurredImageAlpha
+        NSNotificationCenter.defaultCenter().addObserver(
+            self,
+            selector: #selector(closeUpDismissed),
+            name: "closeUpDismissed",
+            object: nil
+        )
+        blurredImageView.alpha = Constants.blurredImageAlpha
     }
     
     func configureFontsAndColors() {
@@ -158,6 +171,10 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
         var totalHeight = headerSection.bounds.size.height + headerSection.frame.origin.y
         
         if content == nil {
+            var bounds = self.bounds
+            bounds.size.height = bounds.size.height - relatedLabel.frame.size.height
+            errorView.frame = bounds
+            
             var mediaContentViewFrame = mediaContentView.frame
             mediaContentViewFrame.origin.y = totalHeight
             mediaContentViewFrame.size.height = self.frame.size.height - totalHeight
@@ -175,25 +192,35 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
         
         // Caption
         var frame = captionLabel.frame
-        frame.origin.y = totalHeight + verticalMargins
-        frame.size.width = screenWidth - 2 * horizontalMargins
+        frame.origin.y = totalHeight + Constants.verticalMargins
+        frame.size.width = bounds.size.width - 2 * Constants.horizontalMargins
         captionLabel.frame = frame
         captionLabel.sizeToFit()
         
     }
     
-    func sizeForContent(content: ContentModel) -> CGSize {
+    func sizeForContent(content: ContentModel?) -> CGSize {
+        guard let content = content else {
+            let screenWidth = UIScreen.mainScreen().bounds.size.width
+            let aspectRatio = Constants.defaultAspectRatio
+            return CGSize(
+                width: screenWidth,
+                height: screenWidth / aspectRatio
+            )
+        }
+        
         let contentHeight = height(for: content)
+        let width = bounds.size.width
         
         if !contentHasText(content) {
             return CGSize(
-                width: screenWidth,
+                width: width,
                 height: headerSection.bounds.size.height + contentHeight + relatedLabel.bounds.size.height
             )
         }
         
         var frame = captionLabel.frame
-        frame.size.width = screenWidth - 2 * horizontalMargins
+        frame.size.width = width - 2 * Constants.horizontalMargins
         captionLabel.frame = frame
         captionLabel.text = content.text
         captionLabel.sizeToFit()
@@ -201,11 +228,11 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
         let totalHeight = headerSection.bounds.size.height +
             contentHeight +
             captionLabel.bounds.size.height +
-            2 * verticalMargins +
+            2 * Constants.verticalMargins +
             relatedLabel.bounds.size.height
         
         return CGSize(
-            width: screenWidth,
+            width: width,
             height: totalHeight
         )
     }
@@ -224,16 +251,24 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     
     // MARK: - ConfigurableGridStreamHeader
     
-    func decorateHeader(dependencyManager: VDependencyManager, maxHeight: CGFloat, content: ContentModel?) {
+    func decorateHeader(dependencyManager: VDependencyManager, maxHeight: CGFloat, content: ContentModel?, hasError: Bool) {
         self.content = content
+        errorView.hidden = !hasError
+        closeUpContentContainerView.hidden = hasError
     }
     
-    func sizeForHeader(dependencyManager: VDependencyManager, maxHeight: CGFloat, content: ContentModel?) -> CGSize {
-        let screenWidth = UIScreen.mainScreen().bounds.size.width
-        guard let content = content else {
-            return CGSizeMake(screenWidth, screenWidth)
+    func sizeForHeader(dependencyManager: VDependencyManager, maxHeight: CGFloat, content: ContentModel?, hasError: Bool) -> CGSize {
+        if hasError {
+            let screenWidth = UIScreen.mainScreen().bounds.size.width
+            let aspectRatio = Constants.defaultAspectRatio
+            return CGSize(
+                width: screenWidth,
+                height: screenWidth / aspectRatio
+            )
         }
-        return sizeForContent(content)
+        else {
+            return sizeForContent(content)
+        }
     }
     
     func headerWillAppear() {
@@ -246,7 +281,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     
     func gridStreamDidUpdateDataSource(with items: [ContentModel]) {
         dispatch_async(dispatch_get_main_queue(), {
-            UIView.animateWithDuration(CloseUpView.relatedAnimationDuration, animations: {
+            UIView.animateWithDuration(Constants.relatedAnimationDuration, animations: {
                 self.relatedLabel.alpha = items.count == 0 ? 0 : 1
             })
         })
@@ -288,5 +323,9 @@ private extension VDependencyManager {
     
     var relatedText: String? {
         return stringForKey("related_text")
+    }
+    
+    var errorStateDependency: VDependencyManager? {
+        return childDependencyForKey("error.state")
     }
 }

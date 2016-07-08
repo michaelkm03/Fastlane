@@ -27,6 +27,9 @@ public enum ForumEvent {
     /// no filter is being applied.
     case filterContent(path: APIPath?)
     
+    /// Requests that the given content is shown in the caption bar
+    case showCaptionContent(ContentModel)
+    
     /// Notifies of the given websocket event.
     case websocket(WebSocketEvent)
     

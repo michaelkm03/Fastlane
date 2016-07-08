@@ -1,0 +1,26 @@
+[
+    {
+        "code": 10,
+        "message": "Message 1"
+    },
+    {
+        "code": 20,
+        "message": "Message 2"
+    },
+    {
+        "code": 30,
+        "message": "Message 3"
+    },
+    {
+        "code": 40,
+        "message": "Message 4"
+    },
+    {
+        "code": 50,
+        "message": "Message 5"
+    },
+    {
+        "code": 45687432184,
+        "message": "Unknown code"
+    }
+]

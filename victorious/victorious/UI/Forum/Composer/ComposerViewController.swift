@@ -18,6 +18,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         static let defaultMaximumTextLength = 0
         static let maximumAttachmentWidthPercentage: CGFloat = 480.0 / 667.0
         static let minimumConfirmButtonContainerHeight: CGFloat = 52
+        static let composerTextInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         static let confirmButtonHorizontalInset: CGFloat = 16
     }
     
@@ -57,20 +58,11 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     @IBOutlet weak private var interactiveContainerView: UIView!
     @IBOutlet weak private var confirmButton: TouchableInsetAdjustableButton! {
         didSet {
-            confirmButton.layer.cornerRadius = 5
-            confirmButton.clipsToBounds = true
+            confirmButton.applyCornerRadius()
         }
     }
     
     @IBOutlet weak private var confirmButtonContainer: UIView!
-    
-    @IBOutlet private var confirmButtonHorizontalConstraints: [NSLayoutConstraint]! {
-        didSet {
-            for constraint in confirmButtonHorizontalConstraints {
-                constraint.constant = Constants.confirmButtonHorizontalInset
-            }
-        }
-    }
     
     private var searchTextChanged = false
 
@@ -296,6 +288,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     private func updateConfirmButtonState() {
         confirmButton.enabled = textViewHasText || selectedAsset != nil
+        confirmButton.backgroundColor = confirmButton.enabled ? dependencyManager.confirmButtonBackgroundColorEnabled : dependencyManager.confirmButtonBackgroundColorDisabled
     }
     
     // MARK: - View lifecycle
@@ -351,8 +344,8 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     override func updateViewConstraints() {
         
         let confirmButtonContainerHeight = confirmButtonContainer.bounds.height
-        if confirmButtonContainerHeight != abs(confirmButton.backgroundInsets.vertical) {
-            confirmButton.backgroundInsets = UIEdgeInsetsMake(-confirmButtonContainerHeight / 2, -Constants.confirmButtonHorizontalInset, -confirmButtonContainerHeight / 2, -Constants.confirmButtonHorizontalInset)
+        if confirmButtonContainerHeight != abs(confirmButton.touchInsets.vertical) {
+            confirmButton.touchInsets = UIEdgeInsetsMake(-confirmButtonContainerHeight / 2, -Constants.confirmButtonHorizontalInset, -confirmButtonContainerHeight / 2, -Constants.confirmButtonHorizontalInset)
         }
 
         let desiredAttachmentContainerHeight = shouldShowAttachmentContainer ? confirmButtonContainer.bounds.height : 0
@@ -450,10 +443,15 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         textView.textColor = dependencyManager.inputTextColor
         textView.setPlaceholderTextColor(dependencyManager.inputPlaceholderTextColor)
         textView.keyboardAppearance = dependencyManager.keyboardAppearance
-        confirmButton.setTitleColor(dependencyManager.confirmButtonDeselectedTextColor, forState: .Normal)
-        confirmButton.setTitleColor(dependencyManager.confirmButtonSelectedTextColor, forState: .Selected)
+        textView.applyCornerRadius()
+        textView.textContainerInset = Constants.composerTextInsets
+        textView.backgroundColor = dependencyManager.inputAreaBackgroundColor
+        
+        confirmButton.setTitleColor(dependencyManager.confirmButtonEnabledTextColor, forState: .Normal)
+        confirmButton.setTitleColor(dependencyManager.confirmButtonDisabledTextColor, forState: .Disabled)
         confirmButton.titleLabel?.font = dependencyManager.confirmButtonTextFont
-        confirmButton.backgroundColor = dependencyManager.confirmButtonBackgroundColor
+        confirmButton.backgroundColor = dependencyManager.confirmButtonBackgroundColorEnabled
+        
         attachmentTabBar.tabItemDeselectedTintColor = dependencyManager.tabItemDeselectedTintColor
         attachmentTabBar.tabItemSelectedTintColor = dependencyManager.tabItemSelectedTintColor
         confirmButton.setTitle(dependencyManager.confirmKeyText, forState: .Normal)
@@ -605,16 +603,24 @@ private extension VDependencyManager {
         return colorForKey(VDependencyManagerPlaceholderTextColorKey)
     }
     
-    var confirmButtonDeselectedTextColor: UIColor? {
-        return colorForKey("color.link.deselected")
+    var confirmButtonDisabledTextColor: UIColor? {
+        return colorForKey("color.link.disabled")
     }
     
-    var confirmButtonSelectedTextColor: UIColor? {
-        return colorForKey("color.link.selected")
+    var confirmButtonEnabledTextColor: UIColor? {
+        return colorForKey("color.link.enabled")
     }
     
-    var confirmButtonBackgroundColor: UIColor? {
-        return colorForKey(VDependencyManagerAccentColorKey)
+    var confirmButtonBackgroundColorEnabled: UIColor? {
+        return colorForKey("color.accent.enabled")
+    }
+    
+    var confirmButtonBackgroundColorDisabled: UIColor? {
+        return colorForKey("color.accent.disabled")
+    }
+    
+    var inputAreaBackgroundColor: UIColor? {
+        return colorForKey("color.accent.secondary")
     }
     
     var inputTextFont: UIFont? {

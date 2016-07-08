@@ -10,11 +10,11 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="97"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="g6F-yQ-WNN" id="Piw-pF-kIO">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="96.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="96"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QUQ-UC-jqE" userLabel="Container View">
-                        <rect key="frame" x="12" y="4" width="296" height="88.5"/>
+                        <rect key="frame" x="12" y="4" width="296" height="88"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lah-z8-5d3" userLabel="Profile Shadow View">
                                 <rect key="frame" x="9" y="12" width="40" height="40"/>
@@ -44,7 +44,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="0.10000000000000001" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.20000000000000001" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="EL9-An-auI" secondAttribute="bottom" constant="12" id="0wo-WP-7cl"/>
                             <constraint firstItem="zon-jL-8wU" firstAttribute="top" secondItem="qgV-KO-Ggl" secondAttribute="top" constant="3" id="71I-FK-CHP"/>
@@ -71,10 +71,6 @@
             </tableViewCellContentView>
             <connections>
                 <outlet property="containerView" destination="QUQ-UC-jqE" id="YiE-KN-xPF"/>
-                <outlet property="containerViewBottomSpacingConstraint" destination="GwG-A4-deg" id="1Qk-yv-aSU"/>
-                <outlet property="containerViewLeftSpacingConstraint" destination="imk-vg-Det" id="s0Q-Lz-j9d"/>
-                <outlet property="containerViewRightSpacingConstraint" destination="mCI-MB-ELP" id="GwJ-ZJ-ijn"/>
-                <outlet property="containerViewTopSpacingConstraint" destination="iWa-ia-DuN" id="Ao5-Hv-CbA"/>
                 <outlet property="dateLabel" destination="EL9-An-auI" id="plD-8p-qDi"/>
                 <outlet property="messageLabel" destination="zon-jL-8wU" id="J1F-lh-GvH"/>
                 <outlet property="profileButton" destination="qgV-KO-Ggl" id="VGA-FT-FGW"/>

@@ -19,7 +19,7 @@ class TrendingHashtagRequestTests: XCTestCase {
         }
         
         do {
-            let trendingHashtagRequest = TrendingHashtagRequest()
+            let trendingHashtagRequest = TrendingHashtagRequest(url: NSURL())
             let results = try trendingHashtagRequest.parseResponse(NSURLResponse(), toRequest: trendingHashtagRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(results.count, 2)
             XCTAssertEqual(results[0].tag, "surfing")
@@ -29,30 +29,9 @@ class TrendingHashtagRequestTests: XCTestCase {
         }
     }
     
-    func testDiscoverRequest() {
-        let trendingHashtagRequest = TrendingHashtagRequest()
-        XCTAssertEqual(trendingHashtagRequest.urlRequest.URL?.absoluteString, "/api/discover/hashtags")
-    }
-    
-    func testSearchRequest() {
-        let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 15)
-        guard let hashtagRequest = HashtagSearchRequest(searchTerm: "blah blah 🍞", context: nil, paginator: paginator) else {
-            XCTFail("HashtagSearchRequest: Could not create request.")
-            return
-        }
-        let urlRequest = hashtagRequest.urlRequest
-        XCTAssertEqual(urlRequest.URL?.absoluteString, "/api/hashtag/search/blah%20blah%20%F0%9F%8D%9E/1/15")
-    }
-    
-    func testSearchRequestContext() {
-        let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 15)
-        for context in [ SearchContext.Message, SearchContext.Discover, SearchContext.UserTag ] {
-            guard let hashtagRequest = HashtagSearchRequest(searchTerm: "blah blah 🍞", context: context, paginator: paginator) else {
-                XCTFail("HashtagSearchRequest: Could not create request.")
-                return
-            }
-            let urlRequest = hashtagRequest.urlRequest
-            XCTAssertEqual(urlRequest.URL?.absoluteString, "/api/hashtag/search/blah%20blah%20%F0%9F%8D%9E/1/15/\(context.rawValue)")
-        }
+    func testCustomTrendingRequest() {
+        let urlString = "testingURL"
+        let trendingHashtagRequest = TrendingHashtagRequest(url: NSURL(string: urlString)!)
+        XCTAssertEqual(trendingHashtagRequest.urlRequest.URL?.absoluteString, urlString)
     }
 }

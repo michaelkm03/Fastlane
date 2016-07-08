@@ -9,13 +9,14 @@
 import CoreGraphics
 import Foundation
 
+var ids: Set<Content.ID> = Set()
+
 /// Conformers are models that store information about piece of content in the app
 /// Consumers can directly use this type without caring what the concrete type is, persistent or not.
 public protocol ContentModel: PreviewImageContainer, DictionaryConvertible {
     var createdAt: NSDate { get }
     var type: ContentType { get }
-    
-    var id: String? { get }
+    var id: Content.ID? { get }
     var isLikedByCurrentUser: Bool { get }
     var text: String? { get }
     var hashtags: [Hashtag] { get }
@@ -40,11 +41,6 @@ public protocol ContentModel: PreviewImageContainer, DictionaryConvertible {
 }
 
 extension ContentModel {
-    // MARK: - Assets
-    
-    public var aspectRatio: CGFloat {
-        return previewImages.first?.mediaMetaData.size?.aspectRatio ?? 0.0
-    }
     
     // MARK: - DictionaryConvertible
     
@@ -76,8 +72,24 @@ extension ContentModel {
     }
 }
 
+extension ContentModel {
+    
+    // MARK: Hidden Content
+    
+    public static func hideContent(withID id: Content.ID) {
+        ids.insert(id)
+    }
+    
+    public static func contentIsHidden(withID id: Content.ID) -> Bool {
+        return ids.contains(id)
+    }
+}
+
 public class Content: ContentModel {
-    public let id: String?
+    
+    public typealias ID = String
+    
+    public let id: ID?
     public let status: String?
     public let text: String?
     public let hashtags: [Hashtag]
@@ -118,7 +130,14 @@ public class Content: ContentModel {
         self.createdAt = NSDate(millisecondsSince1970: json["released_at"].doubleValue)
         self.hashtags = []
         self.type = type
-        self.text = json["title"].string
+        
+        if (type == .text) {
+            self.text = json[typeString]["data"].string
+        }
+        else {
+            self.text = json["title"].string
+        }
+        
         self.author = author
         self.linkedURL = NSURL(string: json[typeString]["data"].stringValue)
         
@@ -127,12 +146,12 @@ public class Content: ContentModel {
         let sourceType = json[typeString]["type"].string ?? typeString
         
         switch type {
-        case .image:
-            self.assets = [ContentMediaAsset(contentType: type, sourceType: sourceType, json: json[typeString])].flatMap { $0 }
-        case .gif, .video:
-            self.assets = (json[typeString][sourceType].array ?? []).flatMap { ContentMediaAsset(contentType: type, sourceType: sourceType, json: $0) }
-        case .text, .link:
-            self.assets = []
+            case .image:
+                self.assets = [ContentMediaAsset(contentType: type, sourceType: sourceType, json: json[typeString])].flatMap { $0 }
+            case .gif, .video:
+                self.assets = (json[typeString][sourceType].array ?? []).flatMap { ContentMediaAsset(contentType: type, sourceType: sourceType, json: $0) }
+            case .text, .link:
+                self.assets = []
         }
         
         self.tracking = Tracking(json: json["tracking"])

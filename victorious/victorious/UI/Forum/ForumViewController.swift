@@ -58,14 +58,16 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         switch event {
             case .websocket(let websocketEvent):
                 switch websocketEvent {
-                    case .Disconnected(let webSocketError):
-                        if isViewLoaded() {
-                            v_showAlert(title: "Disconnected from chat server", message: "Reconnecting soon.\n(error: \(webSocketError))", completion: nil)
-                        }
+                    case .disconnected(_) where isViewLoaded():
+                        // FUTURE: fetch the localized string from a new node in the template, depending on what the error type is.
+                        let alert = Alert(title: "Reconnecting to server...", type: .reconnectingError)
+                        InterstitialManager.sharedInstance.receive(alert)
                     default:
                         break
                 }
             case .chatUserCount(let userCount):
+                // A chat user count message is the only confirmed way of knowing that the connection is open, since our backend always accepts our connection before validating everything is ok.
+                InterstitialManager.sharedInstance.dismissCurrentInterstitial(of: .reconnectingError)
                 navBarTitleView?.activeUserCount = userCount.userCount
             case .filterContent(let path):
                 composer?.setComposerVisible(path == nil, animated: true)
