@@ -371,6 +371,7 @@
 "SubscriptionRestorePrompt"             = "Already subscribed?";
 "SubscriptionRestoreSucceeded"          = "Subscription restored!";
 "SubscriptionFailed"                    = "Subscription failed.";
+"Upgrade"                               = "Upgrade";
 
 "This will discard any content added to your post" = "This will discard any content added to your post";
 

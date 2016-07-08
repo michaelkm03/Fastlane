@@ -11,16 +11,18 @@ import VictoriousIOSSDK
 
 class TrendingHashtagOperation: RemoteFetcherOperation, RequestOperation {
     
-    let request: TrendingHashtagRequest! = TrendingHashtagRequest()
+    let request: TrendingHashtagRequest!
+    
+    init(url: NSURL) {
+        let test = TrendingHashtagRequest(url: url)
+        request = test
+    }
     
     override func main() {
         requestExecutor.executeRequest(request, onComplete: onComplete, onError: nil)
     }
 
     func onComplete( networkResult: TrendingHashtagRequest.ResultType ) {
-        self.results = networkResult.map{ HashtagSearchResultObject(hashtag: $0) }
-        
-        // Queue a follow-up operation that parses to persistent store
-        HashtagSaveOperation(hashtags: networkResult).after(self).queue()
+        self.results = networkResult.map { HashtagSearchResultObject(hashtag: $0) }
     }
 }

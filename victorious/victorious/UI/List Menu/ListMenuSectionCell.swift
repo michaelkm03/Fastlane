@@ -29,7 +29,7 @@ protocol ListMenuSectionCell: class {
 extension ListMenuSectionCell {
     
     static var preferredHeight: CGFloat {
-        return 36
+        return 38
     }
     
     func updateCellBackgroundColor(to backgroundContainer: UIView, selectedColor color: UIColor?, isSelected: Bool) {

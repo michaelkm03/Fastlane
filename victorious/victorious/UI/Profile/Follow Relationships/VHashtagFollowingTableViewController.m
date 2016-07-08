@@ -9,7 +9,6 @@
 #import "VHashtagFollowingTableViewController.h"
 #import "VHashtagCell.h"
 #import "VNoContentTableViewCell.h"
-#import "VHashtag.h"
 #import "VConstants.h"
 #import "VStreamItem+Fetcher.h"
 #import "VStreamCollectionViewController.h"
@@ -106,29 +105,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VHashtagCell";
 {
     VHashtagCell *customCell = (VHashtagCell *)[tableView dequeueReusableCellWithIdentifier:kVFollowingTagIdentifier forIndexPath:indexPath];
     
-    VHashtag *hashtag = self.paginatedDataSource.visibleItems[ indexPath.row ];
-    NSString *hashtagText = hashtag.tag;
-    [customCell setHashtagText:hashtagText];
-    [self updateFollowControl:customCell.followControl forHashtag:hashtagText];
-    customCell.dependencyManager = self.dependencyManager;
-    
-    __weak VHashtagCell *weakCell = customCell;
-    __weak VHashtagFollowingTableViewController *weakSelf = self;
-    customCell.followControl.onToggleFollow = ^(void)
-    {
-        __strong VHashtagCell *strongCell = weakCell;
-        __strong VHashtagFollowingTableViewController *strongSelf = weakSelf;
-        if ( strongCell == nil || strongSelf == nil )
-        {
-            return;
-        }
-        
-        FetcherOperation *operation = [[FollowHashtagToggleOperation alloc] initWithHashtag:hashtagText];
-        [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled) {
-            [strongSelf updateFollowControl:strongCell.followControl forHashtag:hashtagText];
-        }];
-    };
-    customCell.dependencyManager = self.dependencyManager;
+    // Removed body alongside deprecation of VHashtag
     
     return customCell;
 }
@@ -149,17 +126,7 @@ static NSString * const kVFollowingTagIdentifier  = @"VHashtagCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Show hashtag stream
-    VHashtag *hashtag = self.paginatedDataSource.visibleItems[ indexPath.row ];
-    [self showStreamWithHashtag:hashtag];
+    // Removed body alongside deprecation of VHashtag
 }
 
-#pragma mark - VStreamCollectionViewController List of Tags
-
-- (void)showStreamWithHashtag:(VHashtag *)hashtag
-{
-    VHashtagStreamCollectionViewController *vc = [self.dependencyManager hashtagStreamWithHashtag:hashtag.tag];
-    [self.navigationController pushViewController:vc animated:YES];
-}
-             
 @end

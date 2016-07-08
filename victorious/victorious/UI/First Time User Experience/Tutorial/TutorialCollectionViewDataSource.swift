@@ -36,7 +36,10 @@ class TutorialCollectionViewDataSource: NSObject, ChatInterfaceDataSource, Tutor
     }
     
     func collectionView( collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath ) -> UICollectionViewCell {
-        return cellForItem(for: collectionView, at: indexPath)
+        let cell = cellForItem(for: collectionView, at: indexPath)
+        cell.timestampLabel.hidden = true
+        
+        return cell
     }
     
     // MARK: - TutorialNetworkDataSourceDelegate

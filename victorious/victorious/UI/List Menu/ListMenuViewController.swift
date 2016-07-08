@@ -12,6 +12,10 @@ import UIKit
 /// of a sliding scaffold.
 class ListMenuViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, VCoachmarkDisplayer, VNavigationDestination, VBackgroundContainer {
     
+    // MARK: - Configuration
+    
+    private static let contentInset = UIEdgeInsets(top: 20.0, left: 0.0, bottom: 0.0, right: 0.0)
+    
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
             collectionView.dataSource = collectionViewDataSource
@@ -37,6 +41,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        collectionView?.contentInset = ListMenuViewController.contentInset
         dependencyManager.addBackgroundToBackgroundHost(self)
         view.layoutIfNeeded()
     }

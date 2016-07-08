@@ -8,25 +8,17 @@
 
 public struct Hashtag {
     public let tag: String
-    public let amFollowing: Bool?
-    public let count: Int?
     
-    public init( tag: String, amFollowing: Bool? = nil, count: Int? = nil ) {
+    public init( tag: String ) {
         self.tag = tag
-        self.amFollowing = amFollowing
-        self.count = count
     }
 }
 
 extension Hashtag {
     public init?(json: JSON) {
-        if let tag = json["tag"].string {
-            self.tag = tag
-        } else {
+        guard let tag = json["hashtag"].string else {
             return nil
         }
-        
-        amFollowing = json["am_following"].bool
-        count = Int(json["count"].stringValue) ?? json["count"].int
+        self.tag = tag
     }
 }

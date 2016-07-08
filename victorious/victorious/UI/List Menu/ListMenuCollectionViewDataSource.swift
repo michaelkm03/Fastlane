@@ -33,10 +33,13 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
     let creatorDataSource: ListMenuCreatorDataSource
     
     private lazy var subscribeButton: UIButton = {
-        // FUTURE: Make this styled via template once available
-        let button = UIButton(type: .Custom)
+        let button = SubscribeButton(type: .System)
+        button.tintColor = self.dependencyManager.subscribeButtonTextColor
+        button.backgroundColor = self.dependencyManager.subscribeButtonBackgroundColor
+        button.titleLabel?.font = self.dependencyManager.subscribeButtonFont
+        button.layer.cornerRadius = 6.0
         button.addTarget(self, action: #selector(onSubscribePressed), forControlEvents: .TouchUpInside)
-        button.setTitle("subscribe", forState: .Normal)
+        button.setTitle(NSLocalizedString("Upgrade", comment: ""), forState: .Normal)
         return button
     }()
     
@@ -167,7 +170,6 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
 }
 
 private extension VDependencyManager {
-    
     var creatorsChildDependency: VDependencyManager {
         return self.childDependencyForKey("creators") ?? self
     }
@@ -182,5 +184,34 @@ private extension VDependencyManager {
     
     var activityIndicatorColor: UIColor? {
         return colorForKey(VDependencyManagerMainTextColorKey)
+    }
+    
+    // FUTURE: Make this styled via template once available
+    
+    var subscribeButtonFont: UIFont? {
+        return UIFont.systemFontOfSize(14.0, weight: UIFontWeightSemibold)
+    }
+    
+    var subscribeButtonTextColor: UIColor? {
+        return UIColor(white: 1.0, alpha: 1.0)
+    }
+    
+    var subscribeButtonBackgroundColor: UIColor? {
+        return UIColor(white: 1.0, alpha: 0.15)
+    }
+}
+
+/// A custom button subclass that lets us modify the intrinsic content size of the subscribe button.
+private class SubscribeButton: UIButton {
+    private struct Constants {
+        static let addedWidth = CGFloat(20.0)
+        static let height = CGFloat(30.0)
+    }
+    
+    private override func intrinsicContentSize() -> CGSize {
+        return CGSize(
+            width: super.intrinsicContentSize().width + Constants.addedWidth,
+            height: Constants.height
+        )
     }
 }

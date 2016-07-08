@@ -17,8 +17,6 @@
 @interface VTagDictionaryTests : XCTestCase
 
 @property (nonatomic) NSArray *userTags;
-@property (nonatomic) NSArray *hashtagTags;
-@property (nonatomic) NSArray *testTags;
 
 @end
 
@@ -28,15 +26,11 @@
 {
     [super setUp];
     self.userTags = [VDummyModels createUserTags:4];
-    self.hashtagTags = [VDummyModels createHashtagTags:2];
-    self.testTags = [self.userTags arrayByAddingObject:[self.hashtagTags lastObject]];
 }
 
 - (void)tearDown
 {
     self.userTags = nil;
-    self.hashtagTags = nil;
-    self.testTags = nil;
     [super tearDown];
 }
 
@@ -46,58 +40,12 @@
     
     VTagDictionary *tagDictionary = [VTagDictionary tagDictionaryWithTags:nil];
     XCTAssertNotNil(tagDictionary, @"tag dictionary should return an empty dictionary, not nil, when no tags are passed in");
-
-    for ( VTag *testTag in self.testTags )
-    {
-        tagDictionary = [VTagDictionary tagDictionaryWithTags:@[testTag]];
-        XCTAssertNotNil(tagDictionary, @"tag dictionary should not be nil when valid tags array is passed in");
-    }
-}
-
-- (void)testIncrementTag
-{
-    for ( VTag *testTag in self.testTags)
-    {
-        VTagDictionary *tagDictionary = [[VTagDictionary alloc] init];
-        [tagDictionary incrementTag:testTag];
-        XCTAssertTrue([tagDictionary count] == 1, @"tag dictionary should only contain the single added tag after increment");
-        
-        [tagDictionary incrementTag:testTag];
-        XCTAssertTrue([tagDictionary count] == 1, @"tag dictionary shouldn't add a separate entry after incrementing an already present tag");
-        
-        XCTAssertNoThrow([tagDictionary incrementTag:nil], @"tag dictionary should not throw an exception when trying to increment nil tag");
-    }
-}
-
-- (void)testDecrementTag
-{
-    for ( VTag *testTag in self.testTags)
-    {
-        VTagDictionary *tagDictionary = [VTagDictionary tagDictionaryWithTags:@[testTag, testTag]];
-        NSString *tagKey = [VTagDictionary keyForTag:testTag];
-        [tagDictionary decrementTagWithKey:tagKey];
-        XCTAssertTrue([tagDictionary count] == 1, @"tag dictionary should not remove tag when its numberOfOccurrences is > 0");
-        
-        [tagDictionary decrementTagWithKey:tagKey];
-        XCTAssertTrue([tagDictionary count] == 0, @"tag dictionary should remove tag when its numberOfOccurrences is 0");
-        
-        XCTAssertNoThrow([tagDictionary decrementTagWithKey:tagKey], @"tag dictionary should not throw an exception when trying to decrement tag that is not in the dictionary");
-        XCTAssertNoThrow([tagDictionary decrementTagWithKey:nil], @"tag dictionary should not throw an exception when trying to decrement tag with nil key");
-    }
 }
 
 - (void)testGetTagsArray
 {
     VTagDictionary *tagDictionary = [[VTagDictionary alloc] init];
     XCTAssertNil([tagDictionary tags], @"tag dictionary should return a nil tags array if there are no tags stored in the dictionary");
-    
-    for ( VTag *testTag in self.testTags)
-    {
-        tagDictionary = [VTagDictionary tagDictionaryWithTags:@[testTag, testTag]];
-        NSArray *tags = [tagDictionary tags];
-        XCTAssertTrue(tags.count == 1, @"tag dictionary should not have duplicate entries for tags that have been passed in more than once");
-        XCTAssertTrue([[tags lastObject] isEqual:testTag], @"returned tag should be the tag stored in the dictionary");
-    }
 }
 
 - (void)testTagForKey
@@ -110,22 +58,6 @@
     
     tag = [tagDictionary tagForKey:@"random"];
     XCTAssertNil(tag, @"tag dictionary should return nil if no tagForKey is passed a key that doesn't match any stored tags");
-    
-    for ( VTag *testTag in self.testTags )
-    {
-        tagDictionary = [VTagDictionary tagDictionaryWithTags:@[testTag, testTag]];
-        NSString *key = [VTagDictionary keyForTag:testTag];
-        XCTAssertTrue([[tagDictionary tagForKey:key] isEqual:testTag], @"tag returned by tagForKey should be equivalent to tag stored in dictionary");
-    }
-}
-
-- (void)testKeyForTag
-{
-    for ( VTag *testTag in self.testTags )
-    {
-        NSString *key = [VTagDictionary keyForTag:testTag];
-        XCTAssertTrue([key isEqualToString:testTag.displayString.string], @"key should be the display string of the provided tag");
-    }
 }
 
 - (void)testCount

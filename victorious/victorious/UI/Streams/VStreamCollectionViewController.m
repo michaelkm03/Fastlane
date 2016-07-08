@@ -30,7 +30,6 @@
 #import "VDirectoryCollectionViewController.h"
 #import "VFocusable.h"
 #import "VFullscreenMarqueeSelectionDelegate.h"
-#import "VHashtag.h"
 #import "VHashtagSelectionResponder.h"
 #import "VHashtagStreamCollectionViewController.h"
 #import "VMultipleContainerViewController.h"

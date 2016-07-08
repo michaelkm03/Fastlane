@@ -23,20 +23,7 @@ class UnfollowHashtagOperation: FetcherOperation {
     }
     
     override func main() {
-        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            guard let currentUser = VCurrentUser.user(inManagedObjectContext: context) else {
-                return
-            }
-            
-            // Find the following relationship using VFollowedHashtag
-            let uniqueElements = [ "user": currentUser, "hashtag.tag": self.hashtag ]
-            if let followedHashtag: VFollowedHashtag = context.v_findObjects( uniqueElements ).first {
-                context.deleteObject( followedHashtag )
-            }
-            context.v_save()
-        }
-        
-        self.trackingManager.trackEvent(VTrackingEventUserDidUnfollowHashtag)
+        // Removed body alongside deprecation of VFollowedHashtag
     }
 }
 

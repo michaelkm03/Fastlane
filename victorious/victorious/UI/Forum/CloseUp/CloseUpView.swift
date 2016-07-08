@@ -59,7 +59,8 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
             return 0
         }
         
-        return min(bounds.width / aspectRatio, maxContentHeight - headerSection.bounds.size.height)
+        // Hack since CUV should always be full screen width anyway, and the parent containers use autolayout.
+        return min(UIScreen.mainScreen().bounds.size.width / aspectRatio, maxContentHeight - headerSection.bounds.size.height)
     }
 
     var content: ContentModel? {

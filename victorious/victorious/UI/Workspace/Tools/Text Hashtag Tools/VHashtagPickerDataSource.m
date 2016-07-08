@@ -12,7 +12,6 @@
 #import "VDependencyManager.h"
 #import "VHashtagType.h"
 #import "NSArray+VMap.h"
-#import "VHashtag.h"
 #import "VHashtags.h"
 #import "victorious-Swift.h"
 
