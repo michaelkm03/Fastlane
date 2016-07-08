@@ -153,7 +153,6 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
             
             // Set up image view if content is image
             let minWidth = strongSelf.frame.size.width
-            
             if content.type.displaysAsImage, let previewImageURL = content.previewImageURL(ofMinimumWidth: minWidth) ?? NSURL(v_string: content.assets.first?.resourceID) {
                 strongSelf.setUpPreviewImage(from: previewImageURL)
             }
@@ -191,7 +190,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         )
     }
     
-    func showContent(animated animated: Bool = true, forcePlayVideo: Bool = false) {
+    func showContent(animated animated: Bool = true, completion: ((Bool) -> Void)? = nil) {
         let animationDuration = animated ? Constants.fadeDuration : 0
         
         // Animate the backgroundView faster
@@ -214,7 +213,9 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
                 self.previewImageView.alpha = 1
                 self.textPostLabel.alpha = 1
             },
-            completion: nil
+            completion: { didFinish in
+                completion?(didFinish)
+            }
         )
     }
     
@@ -265,6 +266,14 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         videoContainerView.hidden = true
         videoCoordinator?.tearDown()
         videoCoordinator = nil
+    }
+    
+    func playVideo() {
+        videoCoordinator?.playVideo()
+    }
+    
+    func pauseVideo() {
+        videoCoordinator?.pauseVideo()
     }
     
     // MARK: - Managing Text 
@@ -335,7 +344,12 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         spinner.stopAnimating()
         previewImageView.image = downloadedPreviewImage
         downloadedPreviewImage = nil
-        showContent(animated: animatesBetweenContent)
+        showContent(animated: animatesBetweenContent) { [weak self] _ in
+            self?.playVideo()
+            // Need to call this manually, otherwise video doesn't appear on first launch 
+            self?.setNeedsLayout()
+            self?.layoutIfNeeded()
+        }
         
         let minWidth = UIScreen.mainScreen().bounds.size.width
         if let imageURL = content.previewImageURL(ofMinimumWidth: minWidth) {

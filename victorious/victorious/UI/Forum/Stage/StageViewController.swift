@@ -230,7 +230,9 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
     // MARK: - Show/Hide Stage
     
     private func hideStage(animated: Bool = false) {
-        mediaContentView.hideContent(animated: animated)
+        mediaContentView.hideContent(animated: animated) { [weak self] _ in
+            self?.mediaContentView.pauseVideo()
+        }
         visible = false
         UIView.animateWithDuration(animated ? Constants.contentSizeAnimationDuration : 0) {
             self.view.layoutIfNeeded()
@@ -238,7 +240,9 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
     }
     
     private func showStage(animated: Bool = false) {
-        mediaContentView.showContent(animated: animated, forcePlayVideo: true)
+        mediaContentView.showContent(animated: animated) { [weak self] _ in
+            self?.mediaContentView.playVideo()
+        }
         visible = true
         UIView.animateWithDuration(animated ? Constants.contentSizeAnimationDuration : 0) {
             self.view.layoutIfNeeded()
