@@ -34,8 +34,10 @@ class StageShrinkingAnimator: NSObject {
         static let tranlationTriggerCoefficient = CGFloat(0.3)
         static let velocityTargetShrink = CGFloat(0.3)
         static let velocityTargetGrow = CGFloat(1.5)
-        static let inProgressSnapAnimationDuration = NSTimeInterval(0.2)
-        static let fullSnapAnimationDuration = NSTimeInterval(0.3)
+        static let inProgressSnapAnimationDuration = NSTimeInterval(0.3)
+        static let fullSnapAnimationDuration = NSTimeInterval(0.45)
+        static let springDamping = CGFloat(0.85)
+        static let inProgressSpringInitialVelocity = CGFloat(0.2)
     }
     
     private enum StageState {
@@ -90,13 +92,20 @@ class StageShrinkingAnimator: NSObject {
         stageContainer.addGestureRecognizer(stagePanGestureRecognizer)
         keyboardManager = VKeyboardNotificationManager(
             keyboardWillShowBlock: { [weak self] startFrame, endFrame, animationDuration, animationCurve in
-                self?.shrinkStage()
+                UIView.animateWithDuration(Constants.fullSnapAnimationDuration,
+                    delay: 0,
+                    usingSpringWithDamping: Constants.springDamping,
+                    initialSpringVelocity: 0,
+                    options: [],
+                    animations: { 
+                        self?.shrinkStage()
+                    }, completion: nil)
             },
             willHideBlock: { [weak self] startFrame, endFrame, animationDuration, animationCurve in
                 self?.ignoreScrollBehaviorUntilNextBegin = true
             },
             willChangeFrameBlock: nil
-            )
+        )
     }
     
     func chatFeed(chatFeed: ChatFeed, didScroll scrollView: UIScrollView) {
@@ -181,13 +190,18 @@ class StageShrinkingAnimator: NSObject {
             case .Ended:
                 print("ended pan")
                 UIView.animateWithDuration(Constants.inProgressSnapAnimationDuration,
-                                           animations: {
-                                            if gesture.velocityInView(view).y < 0 {
-                                                self.shrinkStage()
-                                            } else {
-                                                self.enlargeStage()
-                                            }
-                })
+                                           delay: 0.0,
+                                           usingSpringWithDamping: Constants.springDamping,
+                                           initialSpringVelocity: Constants.inProgressSpringInitialVelocity,
+                                           options: [],
+                                           animations: { 
+                                               if gesture.velocityInView(view).y < 0 {
+                                                   self.shrinkStage()
+                                               } else {
+                                                   self.enlargeStage()
+                                               }
+                                           },
+                                           completion: nil)
             case .Possible, .Began, .Cancelled, .Failed:
                 break
         }
@@ -198,7 +212,7 @@ class StageShrinkingAnimator: NSObject {
         ignoreScrollBehaviorUntilNextBegin = true
         UIView.animateWithDuration(Constants.fullSnapAnimationDuration,
                                    delay: 0,
-                                   usingSpringWithDamping: 1,
+                                   usingSpringWithDamping: Constants.springDamping,
                                    initialSpringVelocity: 0,
                                    options: [],
                                    animations: { 
