@@ -33,9 +33,7 @@ extension ChatFeed {
         get {
             return nil
         }
-        set {
-            return
-        }
+        set {}
     }
     
     var newItemsController: NewItemsController? {
@@ -87,7 +85,7 @@ extension ChatFeed {
             collectionView.performBatchUpdates({
                 switch loadingType {
                     case .newer:
-                        let previousCount = self.dataSource.visibleItems.count - newItems.count
+                        let previousCount = self.chatInterfaceDataSource.visibleItems.count - newItems.count
                         
                         collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
                             NSIndexPath(forItem: previousCount + $0, inSection: 0)
