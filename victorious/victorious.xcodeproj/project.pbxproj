@@ -863,7 +863,6 @@
 		7AEB1F421D13565400E93A64 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AEB1F411D13565400E93A64 /* UserModel.swift */; };
 		7AEB294F1CCED06200B98C3B /* UIViewController+RootNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AEB294E1CCED06200B98C3B /* UIViewController+RootNavigationController.swift */; };
 		7AEB29531CCED68500B98C3B /* VDependencyManager+CoachmarkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AEB29521CCED68500B98C3B /* VDependencyManager+CoachmarkManager.swift */; };
-		7AF917141D3029E0000C8EC1 /* BackgroundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF917131D3029E0000C8EC1 /* BackgroundButton.swift */; };
 		7C268EFF1D138F6100E4A66A /* VButton+VBackgroundContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C268EFE1D138F6100E4A66A /* VButton+VBackgroundContainer.swift */; };
 		7C268F011D1484C300E4A66A /* WebViewHTMLFetchRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C268F001D1484C300E4A66A /* WebViewHTMLFetchRequestTests.swift */; };
 		7C268F031D14A11100E4A66A /* PrivacyPolicy.html in Resources */ = {isa = PBXBuildFile; fileRef = 7C268F021D14A11100E4A66A /* PrivacyPolicy.html */; };
@@ -3343,7 +3342,6 @@
 		7AEB1F411D13565400E93A64 /* UserModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		7AEB294E1CCED06200B98C3B /* UIViewController+RootNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+RootNavigationController.swift"; sourceTree = "<group>"; };
 		7AEB29521CCED68500B98C3B /* VDependencyManager+CoachmarkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VDependencyManager+CoachmarkManager.swift"; sourceTree = "<group>"; };
-		7AF917131D3029E0000C8EC1 /* BackgroundButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundButton.swift; sourceTree = "<group>"; };
 		7C268EFE1D138F6100E4A66A /* VButton+VBackgroundContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VButton+VBackgroundContainer.swift"; sourceTree = "<group>"; };
 		7C268F001D1484C300E4A66A /* WebViewHTMLFetchRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewHTMLFetchRequestTests.swift; sourceTree = "<group>"; };
 		7C268F021D14A11100E4A66A /* PrivacyPolicy.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = PrivacyPolicy.html; sourceTree = "<group>"; };
@@ -5558,17 +5556,14 @@
 				D8DCE58D1ADD834C0004B782 /* Action Bar */,
 				D8CA63AF19D51C8D002046E5 /* Action Sheet */,
 				D876E1F91A9DA685002CAA29 /* Background */,
-				7AF917131D3029E0000C8EC1 /* BackgroundButton.swift */,
 				F07DDE2F1CFCC4F400C7FC8D /* Button */,
 				BFC673631CE3C9C8004F9D3C /* ContentPreviewView */,
 				D89A50071A000D540010D050 /* Controls */,
-				7C28F1011D1DD94A0070B8AE /* CTAErrorState.swift */,
 				BE42842D19DDD0D800AEDBA6 /* DefaultProfileImages */,
 				BF7AF9C41D22F98500539D90 /* Error States */,
 				A776E00A1AE743F3001F25FF /* Floating Navigation View */,
 				D8DF71ED1AFD987B002EA7A5 /* Following */,
 				0314D34919B46B5E00FA363C /* Keyboard Bar */,
-				F0FBFA671CE1624D006318FC /* PersistentContentCreator.swift */,
 				D86528F01AE82AAC003832AC /* PollView */,
 				D85E427B1AFA982000A13BD3 /* SequencePreviewView */,
 				7A1C70A91CC8513B00A666F5 /* SideMenuController.swift */,
@@ -5584,7 +5579,6 @@
 				D84558FF1ABF4CFF00EA2FA9 /* VBadgeStringFormatter.m */,
 				A7A390C31A32441E00709812 /* VButton.h */,
 				A7A390C41A32441E00709812 /* VButton.m */,
-				7C268EFE1D138F6100E4A66A /* VButton+VBackgroundContainer.swift */,
 				0314D35219B46B5E00FA363C /* VContentInputAccessoryView.h */,
 				0314D35319B46B5E00FA363C /* VContentInputAccessoryView.m */,
 				D8A411C01AE5B17A000A7229 /* VCreationInfoContainer.h */,
@@ -5634,6 +5628,9 @@
 				F098D8141A9D29EA0003B6D4 /* VTagSensitiveTextView.m */,
 				F098D8161A9D2E3B0003B6D4 /* VTagSensitiveTextViewDelegate.h */,
 				A7EB575B1AFAAA2D006AA1CF /* VURLSelectionResponder.h */,
+				F0FBFA671CE1624D006318FC /* PersistentContentCreator.swift */,
+				7C268EFE1D138F6100E4A66A /* VButton+VBackgroundContainer.swift */,
+				7C28F1011D1DD94A0070B8AE /* CTAErrorState.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -12772,7 +12769,6 @@
 				A78DE8D61C3CC906009D4EF7 /* VCreatePollViewController.swift in Sources */,
 				A769C3EA1A13176700698D0C /* VWebBrowserHeaderViewController.m in Sources */,
 				F06B41711B7AA8D4008709E8 /* VFailureSequencePreviewView.m in Sources */,
-				7AF917141D3029E0000C8EC1 /* BackgroundButton.swift in Sources */,
 				5AC41CDF1C9AB3FD00603FE5 /* VDependencyManager+Subcomponent.swift in Sources */,
 				D8CA63BE19D5DB06002046E5 /* VActionSheetTransitioningDelegate.m in Sources */,
 				A7AEF9D11A83F2F500A3D3A0 /* VVideoView.m in Sources */,
