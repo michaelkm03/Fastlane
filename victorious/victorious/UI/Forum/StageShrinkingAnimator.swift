@@ -60,9 +60,9 @@ class StageShrinkingAnimator: NSObject {
     // MARK: - Private Properties
 
     private let stageContainer: UIView
-    private let stageTouchBlocker: UIView
+    private let stageTouchView: UIView
     private let chatFeedContainer: UIView
-    private let stageViewControllerContainmentContainer: UIView
+    private let stageViewControllerContainer: UIView
     private let stageBlurBackground: UIVisualEffectView
     private var keyboardManager: VKeyboardNotificationManager!
     private let stageTapGestureRecognizer = UITapGestureRecognizer()
@@ -72,15 +72,15 @@ class StageShrinkingAnimator: NSObject {
 
     init(
         stageContainer: UIView,
-        stageTouchBlocker: UIView,
+        stageTouchView: UIView,
         chatFeedContainer: UIView,
-        stageViewControllerContainmentContainer: UIView,
+        stageViewControllerContainer: UIView,
         stageBlurBackground: UIVisualEffectView
     ) {
         self.stageContainer = stageContainer
-        self.stageTouchBlocker = stageTouchBlocker
+        self.stageTouchView = stageTouchView
         self.chatFeedContainer = chatFeedContainer
-        self.stageViewControllerContainmentContainer = stageViewControllerContainmentContainer
+        self.stageViewControllerContainer = stageViewControllerContainer
         self.stageBlurBackground = stageBlurBackground
         super.init()
         
@@ -88,7 +88,7 @@ class StageShrinkingAnimator: NSObject {
         configureShadow()
         stageTapGestureRecognizer.addTarget(self, action: #selector(tappedOnStage(_:)))
         stagePanGestureRecognizer.addTarget(self, action: #selector(pannedOnStage(_:)))
-        stageTouchBlocker.addGestureRecognizer(stageTapGestureRecognizer)
+        stageTouchView.addGestureRecognizer(stageTapGestureRecognizer)
         stageContainer.addGestureRecognizer(stagePanGestureRecognizer)
         keyboardManager = VKeyboardNotificationManager(
             keyboardWillShowBlock: { [weak self] startFrame, endFrame, animationDuration, animationCurve in
@@ -111,7 +111,7 @@ class StageShrinkingAnimator: NSObject {
     }
     
     func chatFeed(chatFeed: ChatFeed, didScroll scrollView: UIScrollView) {
-        guard ignoreScrollBehaviorUntilNextBegin == false else {
+        guard !ignoreScrollBehaviorUntilNextBegin else {
             return
         }
         
@@ -127,7 +127,7 @@ class StageShrinkingAnimator: NSObject {
     }
     
     func chatFeed(chatFeed: ChatFeed, willEndDragging scrollView: UIScrollView, withVelocity velocity: CGPoint) {
-        guard ignoreScrollBehaviorUntilNextBegin == false else {
+        guard !ignoreScrollBehaviorUntilNextBegin else {
             return
         }
         
@@ -163,7 +163,7 @@ class StageShrinkingAnimator: NSObject {
     
     @objc private func pannedOnStage(gesture: UIPanGestureRecognizer) {
         guard let view = gesture.view else {
-            print("something went wrong")
+            assertionFailure("Failed to get pan recognizer view for stage shrinking animator.")
             return
         }
         
@@ -223,22 +223,22 @@ class StageShrinkingAnimator: NSObject {
     
     private func shrinkStage() {
         applyInterploatedValues(withPercentage: 1.0)
-        self.stageTouchBlocker.hidden = false
+        self.stageTouchView.hidden = false
         stageState = .shrunken
     }
     
     private func enlargeStage() {
         applyInterploatedValues(withPercentage: 0)
-        self.stageTouchBlocker.hidden = true
-        self.stageViewControllerContainmentContainer.layer.borderColor = UIColor.clearColor().CGColor
+        self.stageTouchView.hidden = true
+        self.stageViewControllerContainer.layer.borderColor = UIColor.clearColor().CGColor
         stageState = .expanded
     }
     
     private func applyInterploatedValues(withPercentage percentage: CGFloat) {
         stageContainer.transform = affineTransformFor(percentage)
-        stageViewControllerContainmentContainer.layer.cornerRadius = Constants.cornerRadius * percentage * (1 / scaleFactorFor(percentage))
+        stageViewControllerContainer.layer.cornerRadius = Constants.cornerRadius * percentage * (1 / scaleFactorFor(percentage))
         stageBlurBackground.layer.cornerRadius = Constants.cornerRadius * percentage * (1 / scaleFactorFor(percentage))
-        stageViewControllerContainmentContainer.layer.borderColor = interpolatedBorderColorFor(percentThrough: percentage)
+        stageViewControllerContainer.layer.borderColor = interpolatedBorderColorFor(percentThrough: percentage)
         
         interpolateAlongside?(percentage: percentage)
     }
@@ -316,10 +316,10 @@ class StageShrinkingAnimator: NSObject {
     }
     
     private func configureMaskingAndBorders() {
-        stageViewControllerContainmentContainer.layer.masksToBounds = true
+        stageViewControllerContainer.layer.masksToBounds = true
         stageBlurBackground.layer.masksToBounds = true
         
         // Want the border to be 1px after scaled transform
-        stageViewControllerContainmentContainer.layer.borderWidth = (1 / stageViewControllerContainmentContainer.contentScaleFactor)
+        stageViewControllerContainer.layer.borderWidth = (1 / stageViewControllerContainer.contentScaleFactor)
     }
 }

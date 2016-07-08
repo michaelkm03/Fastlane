@@ -13,8 +13,8 @@ import UIKit
 class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocusable, PersistentContentCreator, UploadManagerHost {
     @IBOutlet weak var stageBlurBackground: UIVisualEffectView!
     @IBOutlet private weak var stageContainer: UIView!
-    @IBOutlet private weak var stageViewControllerContainmentContainer: VPassthroughContainerView!
-    @IBOutlet private weak var stageTouchBlocker: UIView!
+    @IBOutlet private weak var stageViewControllerContainer: VPassthroughContainerView!
+    @IBOutlet private weak var stageTouchView: UIView!
     @IBOutlet private weak var stageContainerHeight: NSLayoutConstraint! {
         didSet {
             stageContainerHeight.constant = 0.0
@@ -201,9 +201,9 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         
         stageShrinkingAnimator = StageShrinkingAnimator(
             stageContainer: stageContainer,
-            stageTouchBlocker: stageTouchBlocker,
+            stageTouchView: stageTouchView,
             chatFeedContainer: chatFeedContainer,
-            stageViewControllerContainmentContainer: stageViewControllerContainmentContainer,
+            stageViewControllerContainer: stageViewControllerContainer,
             stageBlurBackground: stageBlurBackground
         )
         stageShrinkingAnimator?.shouldHideKeyboardHandler = { [weak self] in

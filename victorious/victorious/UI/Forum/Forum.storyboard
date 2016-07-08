@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="K6M-ZV-Lef">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="K6M-ZV-Lef">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
@@ -48,7 +48,7 @@
                                             <segue destination="Znu-5d-S6d" kind="embed" id="A38-Us-fyN"/>
                                         </connections>
                                     </containerView>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dRb-kS-pyb" userLabel="Touch Blocker">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dRb-kS-pyb" userLabel="Touch View">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="128"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <gestureRecognizers/>
@@ -97,8 +97,8 @@
                         <outlet property="stageBlurBackground" destination="xZ4-2e-l7M" id="Bq3-hh-IWr"/>
                         <outlet property="stageContainer" destination="lV3-cv-6cA" id="vs7-xT-1Cl"/>
                         <outlet property="stageContainerHeight" destination="wiZ-Na-Sw7" id="aHc-9D-vbs"/>
-                        <outlet property="stageTouchBlocker" destination="dRb-kS-pyb" id="EQf-7k-ejl"/>
-                        <outlet property="stageViewControllerContainmentContainer" destination="n69-dn-iF9" id="g9j-My-IjM"/>
+                        <outlet property="stageTouchView" destination="dRb-kS-pyb" id="Uhu-KN-gZO"/>
+                        <outlet property="stageViewControllerContainer" destination="n69-dn-iF9" id="sNs-dV-8Kc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7JE-m9-1fb" userLabel="First Responder" sceneMemberID="firstResponder"/>
