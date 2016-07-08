@@ -23,7 +23,7 @@ class FriendFindByEmailOperationTests: BaseFetcherOperationTestCase {
         
         let expectation = expectationWithDescription("FriendFindByOnComplete")
         
-        let user = User(userID: self.testUserID)
+        let user = User(id: self.testUserID)
         operation.requestExecutor = TestRequestExecutor(result: [user])
         
         operation.queue() { results, error, cancelled in
@@ -34,11 +34,7 @@ class FriendFindByEmailOperationTests: BaseFetcherOperationTestCase {
                     return
             }
             
-            guard let remoteId = firstResult.remoteId?.integerValue else {
-                XCTFail("First result should have a remoteId")
-                return
-            }
-            
+            let remoteId = firstResult.remoteId.integerValue
             XCTAssertEqual(remoteId, self.testUserID)
             expectation.fulfill()
         }
@@ -54,7 +50,7 @@ class FriendFindByEmailOperationTests: BaseFetcherOperationTestCase {
         
         let expectation = expectationWithDescription("FriendFindByOnComplete")
         
-        let user = User(userID: self.testUserID)
+        let user = User(id: self.testUserID)
         operation.requestExecutor = TestRequestExecutor(result: [user])
         
         operation.queue() { results, error, cancelled in
@@ -65,10 +61,7 @@ class FriendFindByEmailOperationTests: BaseFetcherOperationTestCase {
                     return
             }
             
-            guard let remoteId = firstResult.remoteId?.integerValue else {
-                XCTFail("First result should have a remoteId")
-                return
-            }
+            let remoteId = firstResult.remoteId.integerValue
             
             XCTAssertEqual(remoteId, self.testUserID)
             expectation.fulfill()

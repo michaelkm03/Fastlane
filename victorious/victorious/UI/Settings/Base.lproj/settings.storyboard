@@ -1,72 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="kYh-dZ-t7J">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="kYh-dZ-t7J">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--Push Notifications-->
-        <scene sceneID="CaJ-Gk-ZQq">
-            <objects>
-                <tableViewController storyboardIdentifier="VNotificationSettingsViewController" title="Push Notifications" extendedLayoutIncludesOpaqueBars="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" clearsSelectionOnViewWillAppear="NO" id="2cC-vU-QEc" customClass="VNotificationSettingsViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="grouped" separatorStyle="default" allowsSelection="NO" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="eWd-cN-CbD">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="1024"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="separatorColor" red="0.96470588235294119" green="0.96470588235294119" blue="0.96470588235294119" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="VSettingsSwitchCell" id="NJf-vn-jIU" customClass="VSettingsSwitchCell">
-                                <rect key="frame" x="0.0" y="114" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NJf-vn-jIU" id="aLC-a7-A4E">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="TITLE" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="8Fn-0A-Ctn">
-                                            <rect key="frame" x="15" y="0.0" width="240" height="44"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BWr-Jv-6Ld">
-                                            <rect key="frame" x="257" y="5" width="51" height="31"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="49" id="YsM-Pw-aX6"/>
-                                                <constraint firstAttribute="height" constant="31" id="xqt-xX-ZHJ"/>
-                                            </constraints>
-                                            <connections>
-                                                <action selector="settingValueDidchange:" destination="NJf-vn-jIU" eventType="valueChanged" id="2Yp-Hm-VUL"/>
-                                            </connections>
-                                        </switch>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="trailingMargin" secondItem="BWr-Jv-6Ld" secondAttribute="trailing" constant="6" id="KXe-Gm-wCO"/>
-                                        <constraint firstItem="BWr-Jv-6Ld" firstAttribute="top" secondItem="aLC-a7-A4E" secondAttribute="topMargin" constant="-3" id="V0U-nt-gZO"/>
-                                        <constraint firstItem="BWr-Jv-6Ld" firstAttribute="leading" secondItem="8Fn-0A-Ctn" secondAttribute="trailing" constant="2" id="Zb0-3k-Kg0"/>
-                                        <constraint firstAttribute="bottom" secondItem="8Fn-0A-Ctn" secondAttribute="bottom" constant="-1" id="uDm-88-TqD"/>
-                                        <constraint firstItem="8Fn-0A-Ctn" firstAttribute="top" secondItem="aLC-a7-A4E" secondAttribute="top" id="wOc-Xn-fvC"/>
-                                        <constraint firstItem="8Fn-0A-Ctn" firstAttribute="leading" secondItem="aLC-a7-A4E" secondAttribute="leading" constant="15" id="ygV-qA-46c"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="settingLabel" destination="8Fn-0A-Ctn" id="7JA-h2-Tob"/>
-                                    <outlet property="settingSwitch" destination="BWr-Jv-6Ld" id="7kw-BZ-rfa"/>
-                                </connections>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="2cC-vU-QEc" id="6aD-Fj-iJl"/>
-                            <outlet property="delegate" destination="2cC-vU-QEc" id="vWU-i8-VaF"/>
-                        </connections>
-                    </tableView>
-                    <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Push Notifications" id="WVz-KR-Hhr"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="xIg-N5-kgX" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-9306" y="-1440"/>
-        </scene>
         <!--Settings-->
         <scene sceneID="sS9-Sh-Zfa">
             <objects>
@@ -74,19 +12,21 @@
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="45" sectionHeaderHeight="10" sectionFooterHeight="10" id="sD4-nd-dBH">
                         <rect key="frame" x="0.0" y="64" width="320" height="960"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <color key="separatorColor" white="0.96600932459677424" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="sectionIndexColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <sections>
                             <tableViewSection id="iAG-GC-4SW">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="r0B-CY-cMb" style="IBUITableViewCellStyleDefault" id="CsK-sK-e3v" customClass="VSettingsTableViewCell">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="3vi-dw-AX2" style="IBUITableViewCellStyleDefault" id="LqU-pE-7Qe" customClass="SettingsTableViewCell" customModule="victorious" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="35" width="320" height="45"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CsK-sK-e3v" id="tNd-FX-x1f">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="LqU-pE-7Qe" id="jOd-FV-Ucc">
                                             <rect key="frame" x="0.0" y="0.0" width="287" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Posts I've Liked" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="r0B-CY-cMb">
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Edit Profile" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="3vi-dw-AX2">
                                                     <rect key="frame" x="15" y="0.0" width="270" height="44"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
@@ -95,12 +35,34 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="label" destination="3vi-dw-AX2" id="cp9-5A-vpT"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="r0B-CY-cMb" style="IBUITableViewCellStyleDefault" id="CsK-sK-e3v" customClass="SettingsTableViewCell" customModule="victorious" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="80" width="320" height="45"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CsK-sK-e3v" id="tNd-FX-x1f">
+                                            <rect key="frame" x="0.0" y="0.0" width="287" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Upvoted Posts" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="r0B-CY-cMb">
+                                                    <rect key="frame" x="15" y="0.0" width="270" height="44"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outlet property="label" destination="r0B-CY-cMb" id="mtA-xF-j4V"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="xmy-by-M88" style="IBUITableViewCellStyleDefault" id="g7K-HM-Hn1" customClass="VSettingsTableViewCell">
-                                        <rect key="frame" x="0.0" y="80" width="320" height="45"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="xmy-by-M88" style="IBUITableViewCellStyleDefault" id="g7K-HM-Hn1" customClass="SettingsTableViewCell" customModule="victorious" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="125" width="320" height="45"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="g7K-HM-Hn1" id="2dD-6f-UoD">
                                             <rect key="frame" x="0.0" y="0.0" width="287" height="44"/>
@@ -115,32 +77,13 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outlet property="label" destination="xmy-by-M88" id="Hwc-do-h6E"/>
                                             <segue destination="Tch-Qc-dzd" kind="show" id="Ve9-kD-Gat"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="Ywp-Nm-FQ2" style="IBUITableViewCellStyleDefault" id="8Vp-DR-kUb" customClass="VSettingsTableViewCell">
-                                        <rect key="frame" x="0.0" y="125" width="320" height="45"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8Vp-DR-kUb" id="n7L-en-opt">
-                                            <rect key="frame" x="0.0" y="0.0" width="287" height="44"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Feedback/Help" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Ywp-Nm-FQ2">
-                                                    <rect key="frame" x="15" y="0.0" width="270" height="44"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="label" destination="Ywp-Nm-FQ2" id="eyl-hJ-yUD"/>
-                                        </connections>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="c84-Tn-JWi" style="IBUITableViewCellStyleDefault" id="gzt-Nj-vwC" customClass="VSettingsTableViewCell">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="c84-Tn-JWi" style="IBUITableViewCellStyleDefault" id="gzt-Nj-vwC" customClass="SettingsTableViewCell" customModule="victorious" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="170" width="320" height="45"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gzt-Nj-vwC" id="xhJ-Va-UhG">
@@ -156,12 +99,12 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outlet property="label" destination="c84-Tn-JWi" id="cDY-io-YF9"/>
-                                            <segue destination="2cC-vU-QEc" kind="show" id="KBD-ko-rAS"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="16U-jQ-75p" style="IBUITableViewCellStyleDefault" id="OQL-l9-rlJ" customClass="VSettingsTableViewCell">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="16U-jQ-75p" style="IBUITableViewCellStyleDefault" id="OQL-l9-rlJ" customClass="SettingsTableViewCell" customModule="victorious" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="215" width="320" height="45"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="OQL-l9-rlJ" id="N4F-ho-eiL">
@@ -177,12 +120,13 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outlet property="label" destination="16U-jQ-75p" id="GPh-BK-t45"/>
                                             <segue destination="0nf-aa-3V6" kind="show" identifier="toPurchaseSettings" id="RfN-cX-kio"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="jjo-ti-snK" detailTextLabel="U7G-Km-0yw" style="IBUITableViewCellStyleValue1" id="nwQ-31-lr9" customClass="VSettingsTableViewCell">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="jjo-ti-snK" detailTextLabel="U7G-Km-0yw" style="IBUITableViewCellStyleValue1" id="nwQ-31-lr9" customClass="SettingsTableViewCell" customModule="victorious" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="260" width="320" height="45"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nwQ-31-lr9" id="Y45-k0-dQO">
@@ -199,18 +143,20 @@
                                                 <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="U7G-Km-0yw">
                                                     <rect key="frame" x="226" y="12" width="59" height="21"/>
                                                     <autoresizingMask key="autoresizingMask"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outlet property="label" destination="jjo-ti-snK" id="D16-sW-k9y"/>
                                             <segue destination="6fa-Sd-wUR" kind="show" id="TH6-Ms-vjl"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="A70-cw-6uE" style="IBUITableViewCellStyleDefault" id="4Fr-do-ylo" customClass="VSettingsTableViewCell">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="A70-cw-6uE" style="IBUITableViewCellStyleDefault" id="4Fr-do-ylo" customClass="SettingsTableViewCell" customModule="victorious" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="305" width="320" height="45"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="4Fr-do-ylo" id="Hbw-dL-U5c">
@@ -226,12 +172,13 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outlet property="label" destination="A70-cw-6uE" id="IJb-Lf-bsm"/>
                                             <segue destination="p5c-fI-FBT" kind="show" id="bje-i4-g0X"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="f7G-BC-zp9" style="IBUITableViewCellStyleDefault" id="yMF-KR-v3l" customClass="VSettingsTableViewCell">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="f7G-BC-zp9" style="IBUITableViewCellStyleDefault" id="yMF-KR-v3l" customClass="SettingsTableViewCell" customModule="victorious" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="350" width="320" height="45"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yMF-KR-v3l" id="KTK-Ub-9Iz">
@@ -247,12 +194,13 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outlet property="label" destination="f7G-BC-zp9" id="l1Y-5p-vun"/>
                                             <segue destination="6nd-lx-w31" kind="show" id="fdl-iU-MwU"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="FNb-Ni-uJN" style="IBUITableViewCellStyleDefault" id="rci-iZ-Ffn" customClass="VSettingsTableViewCell">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="FNb-Ni-uJN" style="IBUITableViewCellStyleDefault" id="rci-iZ-Ffn" customClass="SettingsTableViewCell" customModule="victorious" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="395" width="320" height="45"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rci-iZ-Ffn" id="6Tf-Sd-nW1">
@@ -262,17 +210,19 @@
                                                 <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Reset Coachmarks" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="FNb-Ni-uJN">
                                                     <rect key="frame" x="15" y="0.0" width="290" height="44"/>
                                                     <autoresizingMask key="autoresizingMask"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outlet property="label" destination="FNb-Ni-uJN" id="PLP-x8-wWr"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="jfn-8g-oUa" style="IBUITableViewCellStyleDefault" id="9cy-Xy-kII" customClass="VSettingsTableViewCell">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="jfn-8g-oUa" style="IBUITableViewCellStyleDefault" id="9cy-Xy-kII" customClass="SettingsTableViewCell" customModule="victorious" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="440" width="320" height="45"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9cy-Xy-kII" id="Fzm-qO-j4T">
@@ -282,12 +232,14 @@
                                                 <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Register Test Alerts" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="jfn-8g-oUa">
                                                     <rect key="frame" x="15" y="0.0" width="270" height="44"/>
                                                     <autoresizingMask key="autoresizingMask"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outlet property="label" destination="jfn-8g-oUa" id="BpP-dY-4U1"/>
                                             <segue destination="THc-ec-WSZ" kind="show" id="Ga2-C9-cbq"/>
@@ -297,8 +249,50 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="About" id="pML-Pk-7g5" userLabel="About Section">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="mrn-LJ-NES" style="IBUITableViewCellStyleDefault" id="Bme-1H-2lu" customClass="VSettingsTableViewCell">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="YUJ-gc-OLy" style="IBUITableViewCellStyleDefault" id="ULP-GQ-dA7" customClass="SettingsTableViewCell" customModule="victorious" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="528" width="320" height="45"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ULP-GQ-dA7" id="e6i-dk-0rk">
+                                            <rect key="frame" x="0.0" y="0.0" width="287" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Help" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="YUJ-gc-OLy">
+                                                    <rect key="frame" x="15" y="0.0" width="270" height="44"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="label" destination="YUJ-gc-OLy" id="G4N-fe-m8M"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="Ywp-Nm-FQ2" style="IBUITableViewCellStyleDefault" id="8Vp-DR-kUb" customClass="SettingsTableViewCell" customModule="victorious" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="573" width="320" height="45"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8Vp-DR-kUb" id="n7L-en-opt">
+                                            <rect key="frame" x="0.0" y="0.0" width="287" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Feedback" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Ywp-Nm-FQ2">
+                                                    <rect key="frame" x="15" y="0.0" width="270" height="44"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="label" destination="Ywp-Nm-FQ2" id="eyl-hJ-yUD"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="mrn-LJ-NES" style="IBUITableViewCellStyleDefault" id="Bme-1H-2lu" customClass="SettingsTableViewCell" customModule="victorious" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="618" width="320" height="45"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Bme-1H-2lu" id="JZS-Kd-CZS">
                                             <rect key="frame" x="0.0" y="0.0" width="287" height="44"/>
@@ -313,12 +307,13 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outlet property="label" destination="mrn-LJ-NES" id="5n7-tR-eUd"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="vRt-M4-9nW" style="IBUITableViewCellStyleDefault" id="0L1-DZ-eiR" customClass="VSettingsTableViewCell">
-                                        <rect key="frame" x="0.0" y="573" width="320" height="45"/>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="vRt-M4-9nW" style="IBUITableViewCellStyleDefault" id="0L1-DZ-eiR" customClass="SettingsTableViewCell" customModule="victorious" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="663" width="320" height="45"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0L1-DZ-eiR" id="bgL-db-7WW">
                                             <rect key="frame" x="0.0" y="0.0" width="287" height="44"/>
@@ -333,6 +328,7 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outlet property="label" destination="vRt-M4-9nW" id="3yq-8Y-AGK"/>
                                         </connections>
@@ -341,39 +337,29 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="" id="xUJ-hV-E4y" userLabel="Log in/out Section">
                                 <cells>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="50" id="MMB-GP-mk8">
-                                        <rect key="frame" x="0.0" y="638" width="320" height="50"/>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="Ib2-0x-W7O" rowHeight="50" style="IBUITableViewCellStyleDefault" id="MMB-GP-mk8" customClass="SettingsTableViewCell" customModule="victorious" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="728" width="320" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="MMB-GP-mk8" id="1b6-aa-YNy">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LM5-sK-eej" customClass="VButton">
-                                                    <rect key="frame" x="20" y="0.0" width="280" height="49"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="280" id="iLk-M4-zZE"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <state key="normal" title="Log out">
-                                                        <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                    </state>
-                                                    <connections>
-                                                        <action selector="logout:" destination="kYh-dZ-t7J" eventType="touchUpInside" id="ei6-at-bCn"/>
-                                                    </connections>
-                                                </button>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Log Out" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Ib2-0x-W7O">
+                                                    <rect key="frame" x="15" y="0.0" width="290" height="49"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="centerX" secondItem="LM5-sK-eej" secondAttribute="centerX" id="3ax-I1-gTe"/>
-                                                <constraint firstAttribute="bottom" secondItem="LM5-sK-eej" secondAttribute="bottom" id="LAb-Gq-Q8w"/>
-                                                <constraint firstItem="LM5-sK-eej" firstAttribute="top" secondItem="1b6-aa-YNy" secondAttribute="top" id="qeA-Ba-HT6"/>
-                                            </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="label" destination="Ib2-0x-W7O" id="uOR-1C-19P"/>
+                                        </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="M6S-Qq-jZK">
-                                        <rect key="frame" x="0.0" y="688" width="320" height="45"/>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="M6S-Qq-jZK" customClass="SettingsTableViewCell" customModule="victorious" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="778" width="320" height="45"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="M6S-Qq-jZK" id="Gcj-EI-Wy4">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -397,6 +383,9 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="label" destination="OZa-mN-lgJ" id="g3B-0j-aXg"/>
+                                        </connections>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -414,12 +403,10 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="1024"/>
                     <connections>
-                        <outlet property="logoutButton" destination="LM5-sK-eej" id="uSu-zC-V8M"/>
                         <outlet property="resetPurchasesCell" destination="OQL-l9-rlJ" id="xe9-fy-rX8"/>
                         <outlet property="serverEnvironmentCell" destination="nwQ-31-lr9" id="9C9-vy-t7z"/>
-                        <outlet property="versionString" destination="OZa-mN-lgJ" id="DGz-Dz-6bv"/>
+                        <outlet property="versionString" destination="OZa-mN-lgJ" id="Z99-jt-1Zj"/>
                         <outletCollection property="labels" destination="xmy-by-M88" id="3hy-7b-8ZA"/>
-                        <outletCollection property="labels" destination="Ywp-Nm-FQ2" id="bbs-pw-Jaq"/>
                         <outletCollection property="labels" destination="jjo-ti-snK" id="cwJ-QK-caw"/>
                         <outletCollection property="labels" destination="mrn-LJ-NES" id="x2D-yn-sx3"/>
                         <outletCollection property="labels" destination="vRt-M4-9nW" id="uzK-GU-C7F"/>
@@ -431,6 +418,9 @@
                         <outletCollection property="labels" destination="r0B-CY-cMb" id="1uU-bP-mfq"/>
                         <outletCollection property="labels" destination="f7G-BC-zp9" id="bfF-yb-VXh"/>
                         <outletCollection property="labels" destination="jfn-8g-oUa" id="UkN-pC-mqD"/>
+                        <outletCollection property="labels" destination="Ywp-Nm-FQ2" id="bbs-pw-Jaq"/>
+                        <outletCollection property="labels" destination="YUJ-gc-OLy" id="bd1-Sg-Vl9"/>
+                        <outletCollection property="labels" destination="Ib2-0x-W7O" id="XNi-Y0-cn7"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pFQ-S7-584" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -916,7 +906,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mG7-xu-zJg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-8843" y="-1440"/>
+            <point key="canvasLocation" x="-9087" y="-1637.25"/>
         </scene>
         <!--Tracking Settings-->
         <scene sceneID="8Zb-26-6Dw">
@@ -1073,7 +1063,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="g0l-TG-a1s" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-9706" y="-1668"/>
+            <point key="canvasLocation" x="-9861" y="-1590.75"/>
         </scene>
     </scenes>
 </document>

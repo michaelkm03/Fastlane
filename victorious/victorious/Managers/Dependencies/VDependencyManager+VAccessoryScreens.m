@@ -125,7 +125,16 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
     
     objc_setAssociatedObject( sourceViewController, &kAssociatedObjectBadgeableBarButtonsKey, [badgeableBarButtons copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC );
     
+    if ([sourceViewController conformsToProtocol:@protocol(AccessoryScreenContainer)])
+    {
+        id<AccessoryScreenContainer> container = (id<AccessoryScreenContainer>)sourceViewController;
+        newBarButtonItemsLeft = [[container addCustomLeftItemsTo:newBarButtonItemsLeft] mutableCopy];
+        newBarButtonItemsRight = [[container addCustomRightItemsTo:newBarButtonItemsRight] mutableCopy];
+    }
+    
     BOOL shouldAnimate;
+    
+    navigationItem.leftItemsSupplementBackButton = YES;
     
     shouldAnimate = newBarButtonItemsLeft.count != navigationItem.leftBarButtonItems.count;
     [navigationItem setLeftBarButtonItems:newBarButtonItemsLeft animated:shouldAnimate];
@@ -231,9 +240,17 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
     [source v_walkWithBlock:^(UIResponder *responder, BOOL *stop)
      {
          id<VNavigationDestination> destination = (id<VNavigationDestination>)responder;
-         if ( [destination respondsToSelector:@selector(dependencyManager)] )
+         
+         NSString *accessoryScreensKey = nil;
+         // Does this point in the responder chain provide a custom accessory screens key?
+         if ([destination conformsToProtocol:@protocol(AccessoryScreenContainer)])
          {
-             [accessoryMenuItems addObjectsFromArray:[destination dependencyManager].accessoryMenuItems];
+             accessoryScreensKey = [(id<AccessoryScreenContainer>)destination accessoryScreensKey];
+         }
+         
+         if ([destination respondsToSelector:@selector(dependencyManager)])
+         {
+             [accessoryMenuItems addObjectsFromArray:[[destination dependencyManager] accessoryMenuItemsWithKey:accessoryScreensKey]];
          }
      }];
     

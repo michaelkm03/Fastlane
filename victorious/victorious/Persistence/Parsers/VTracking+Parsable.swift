@@ -11,18 +11,19 @@ import VictoriousIOSSDK
 
 extension VTracking: PersistenceParsable {
     
-    func populate( fromSourceModel tracking: Tracking ) {
-        cellClick           = tracking.cellClick ?? cellClick
-        cellView            = tracking.cellView ?? cellView
-        share               = tracking.share ?? share
-        videoComplete100    = tracking.videoComplete100 ?? videoComplete100
-        videoComplete25     = tracking.videoComplete25 ?? videoComplete25
-        videoComplete50     = tracking.videoComplete50 ?? videoComplete50
-        videoComplete75     = tracking.videoComplete75 ?? videoComplete75
-        videoError          = tracking.videoError ?? videoError
-        videoSkip           = tracking.videoSkip ?? videoSkip
-        videoStall          = tracking.videoStall ?? videoStall
-        viewStart           = tracking.viewStart ?? viewStart
-        viewStop            = tracking.viewStop ?? viewStop
+    func populate( fromSourceModel tracking: TrackingModel ) {
+        cellClick           = tracking.trackingURLsForKey(.cellClick) ?? cellClick
+        cellView            = tracking.trackingURLsForKey(.cellView) ?? cellView
+        cellLoad            = tracking.trackingURLsForKey(.cellLoad) ?? cellLoad
+        share               = tracking.trackingURLsForKey(.share) ?? share
+        videoComplete100    = tracking.trackingURLsForKey(.videoComplete100) ?? videoComplete100
+        videoComplete25     = tracking.trackingURLsForKey(.videoComplete25) ?? videoComplete25
+        videoComplete50     = tracking.trackingURLsForKey(.videoComplete50) ?? videoComplete50
+        videoComplete75     = tracking.trackingURLsForKey(.videoComplete75) ?? videoComplete75
+        videoError          = tracking.trackingURLsForKey(.videoError) ?? videoError
+        videoSkip           = tracking.trackingURLsForKey(.videoSkip) ?? videoSkip
+        videoStall          = tracking.trackingURLsForKey(.videoStall) ?? videoStall
+        viewStart           = tracking.trackingURLsForKey(.viewStart) ?? viewStart
+        viewStop            = tracking.trackingURLsForKey(.viewStop) ?? viewStop
     }
 }

@@ -16,8 +16,6 @@
 #import "VRootViewController.h"
 #import "VThemeManager.h"
 #import "VNoContentView.h"
-#import "VUser.h"
-#import "VInboxDeeplinkHandler.h"
 #import "VNavigationController.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
 #import "VDependencyManager+VNavigationItem.h"
@@ -234,13 +232,6 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 - (VAuthorizationContext)authorizationContext
 {
     return VAuthorizationContextInbox;
-}
-
-#pragma mark - VDeepLinkSupporter
-
-- (id<VDeeplinkHandler>)deepLinkHandlerForURL:(NSURL *)url
-{
-    return [[VInboxDeepLinkHandler alloc] initWithDependencyManager:self.dependencyManager inboxViewController:self];
 }
 
 #pragma mark - VConversationContainerViewControllerDelegate

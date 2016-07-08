@@ -9,7 +9,7 @@
 import UIKit
 
 class StartLoadingOperation: BackgroundOperation, VTemplateDownloadOperationDelegate {
-    
+
     var template: NSDictionary? {
         if let templateConfiguration = self.templateDownloadOperation.templateConfiguration {
             return templateConfiguration
@@ -43,7 +43,24 @@ class StartLoadingOperation: BackgroundOperation, VTemplateDownloadOperationDele
             self.finishedExecuting()
         }
         
-        let loginOperation = AgeGate.isAnonymousUser() ? AnonymousLoginOperation() : StoredLoginOperation()
+        var cachedTemplate = VDependencyManager.dependencyManagerWithDefaultValuesForColorsAndFonts()
+        if let template = template as? [NSObject: AnyObject] {
+            let templateDecorator = VTemplateDecorator(templateDictionary: template )
+            
+            let parentManager = VDependencyManager(
+                parentManager: cachedTemplate,
+                configuration: nil,
+                dictionaryOfClassesByTemplateName: nil
+            )
+            
+            cachedTemplate = VDependencyManager(
+                parentManager: parentManager,
+                configuration: templateDecorator.decoratedTemplate,
+                dictionaryOfClassesByTemplateName: nil
+            )
+        }
+        
+        let loginOperation = AgeGate.isAnonymousUser() ? AnonymousLoginOperation() : StoredLoginOperation(dependencyManager: cachedTemplate)
         
         loginOperation.rechainAfter(self)
         if template == nil {

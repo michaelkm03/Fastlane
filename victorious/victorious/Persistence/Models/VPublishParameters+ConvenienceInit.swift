@@ -10,14 +10,29 @@ import Foundation
 
 extension VPublishParameters {
     
-    convenience init?(chatMessage: ChatMessage) {
+    convenience init?(content: ContentModel) {
         self.init()
-        caption = chatMessage.text
-        guard let mediaAttachment = chatMessage.mediaAttachment else {
+        
+        guard
+            let mediaAsset = content.assets.first where
+            mediaAsset.contentType != .text &&
+            mediaAsset.contentType != .link
+            else
+        {
             return nil
         }
-        mediaToUploadURL = mediaAttachment.url
-        isGIF = mediaAttachment.type == .GIF
-        isVideo = mediaAttachment.type == .Video        
+        
+        caption = content.text
+        source = mediaAsset.source
+        
+        isGIF = mediaAsset.contentType == .gif
+        isVideo = mediaAsset.contentType == .video
+        
+        if isGIF {
+            assetRemoteId = mediaAsset.externalID
+        }
+        else {
+            mediaToUploadURL = mediaAsset.url
+        }
     }
 }

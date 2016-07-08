@@ -10,22 +10,15 @@ import XCTest
 @testable import VictoriousIOSSDK
 
 class UserInfoRequestTests: XCTestCase {
-    
-    func testRequestConfigurationWithoutAPIPath() {
-        let id = 3694
-        let request = UserInfoRequest(userID: id)
-        XCTAssertEqual(request.urlRequest.URL, NSURL(string: "/api/userinfo/fetch/\(id)"))
-        XCTAssertEqual(request.urlRequest.HTTPMethod, "GET")
-    }
+    private static let macroAPIPath = "http://api.getvictorious.com/my/cool/path/%%USER_ID%%"
     
     func testRequestConfigurationWithAPIPath() {
         let id = 9090
-        let request = UserInfoRequest(userID: id, apiPath: "http://api.getvictorious.com/my/cool/path/%%USER_ID%%")
+        let request = UserInfoRequest(userID: id, apiPath: UserInfoRequestTests.macroAPIPath)!
         XCTAssertEqual(request.urlRequest.URL, NSURL(string: "http://api.getvictorious.com/my/cool/path/\(id)"))
     }
     
     func testParseResponse() {
-        
         guard let mockUserDataURL = NSBundle(forClass: self.dynamicType).URLForResource("UserInfoResponse", withExtension: "json"),
             let mockData = NSData(contentsOfURL: mockUserDataURL) else {
                 XCTFail("Error reading mock json data")
@@ -33,7 +26,7 @@ class UserInfoRequestTests: XCTestCase {
         }
         
         let id: Int = 3694
-        let request =  UserInfoRequest(userID: id)
+        let request =  UserInfoRequest(userID: id, apiPath: UserInfoRequestTests.macroAPIPath)!
         let user: User
         do {
             user = try request.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
@@ -42,6 +35,6 @@ class UserInfoRequestTests: XCTestCase {
             return
         }
         
-        XCTAssertEqual( user.userID, id )
+        XCTAssertEqual( user.id, id )
     }
 }

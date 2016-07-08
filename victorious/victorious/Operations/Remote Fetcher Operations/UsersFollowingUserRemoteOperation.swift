@@ -38,7 +38,7 @@ final class UsersFollowingUserRemoteOperation: RemoteFetcherOperation, Paginated
             for user in results {
                 
                 // Load a user who is following self.userID according to the results
-                let subjectUser: VUser = context.v_findOrCreateObject( ["remoteId" : user.userID] )
+                let subjectUser: VUser = context.v_findOrCreateObject( ["remoteId" : user.id] )
                 subjectUser.populate(fromSourceModel: user)
                 
                 // Find or create the following relationship

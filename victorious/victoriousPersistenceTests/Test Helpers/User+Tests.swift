@@ -12,25 +12,24 @@ import Foundation
 extension User {
 
     init(userID: Int, vipStatus: VIPStatus? = nil) {
-        self.userID = userID
+        self.id = userID
         self.email = nil
         self.name = nil
         self.completedProfile = nil
         self.location = nil
         self.tagline = nil
         self.fanLoyalty = nil
-        self.isBlockedByMainUser = nil
+        self.isBlockedByCurrentUser = nil
         self.accessLevel = nil
         self.isDirectMessagingDisabled = nil
-        self.isFollowedByMainUser = nil
+        self.isFollowedByCurrentUser = nil
         self.numberOfFollowers = nil
         self.numberOfFollowing = nil
         self.likesReceived = nil
         self.likesGiven = nil
-        self.tokenUpdatedAt = nil
-        self.previewImageAssets = nil
+        self.previewImageAssets = []
         self.maxVideoUploadDuration = nil
-        self.avatar = nil
+        self.avatarBadgeType = .None
         self.vipStatus = vipStatus
     }
 }

@@ -16,8 +16,11 @@ class UserInfoOperation: RemoteFetcherOperation, RequestOperation {
     /// The result (if successfuly), a user loaded from the main context
     var user: VUser?
     
-    init(userID: Int, apiPath: String? = nil) {
-        self.request = UserInfoRequest(userID: userID, apiPath: apiPath)
+    init?(userID: Int, apiPath: String) {
+        guard let request = UserInfoRequest(userID: userID, apiPath: apiPath) else {
+            return nil
+        }
+        self.request = request
     }
     
     override func main() {
@@ -26,7 +29,7 @@ class UserInfoOperation: RemoteFetcherOperation, RequestOperation {
     
     private func onComplete( user: UserInfoRequest.ResultType) {
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            let persistentUser: VUser = context.v_findOrCreateObject([ "remoteId" : user.userID ])
+            let persistentUser: VUser = context.v_findOrCreateObject([ "remoteId" : user.id ])
             persistentUser.populate(fromSourceModel: user)
             context.v_save()
             let objectID = persistentUser.objectID;

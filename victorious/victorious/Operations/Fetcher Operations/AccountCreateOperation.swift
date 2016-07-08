@@ -16,10 +16,12 @@ struct AccountCreateParameters {
 
 class AccountCreateOperation: RemoteFetcherOperation, RequestOperation {
     
+    private let dependencyManager: VDependencyManager
     let request: AccountCreateRequest!
     let parameters: AccountCreateParameters
     
-    init( request: AccountCreateRequest, parameters: AccountCreateParameters) {
+    init(dependencyManager: VDependencyManager, request: AccountCreateRequest, parameters: AccountCreateParameters) {
+        self.dependencyManager = dependencyManager
         self.parameters = parameters
         self.request = request
         super.init()
@@ -34,7 +36,10 @@ class AccountCreateOperation: RemoteFetcherOperation, RequestOperation {
     }
     
     func onComplete( response: AccountCreateResponse) {
-        let successOperation = LoginSuccessOperation(response: response, parameters: self.parameters)
-        successOperation.rechainAfter(self).queue()
+        LoginSuccessOperation(
+            dependencyManager: dependencyManager,
+            response: response,
+            parameters: self.parameters
+        ).rechainAfter(self).queue()
     }
 }

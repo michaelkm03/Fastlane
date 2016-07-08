@@ -13,7 +13,6 @@
 #import <KVOController/FBKVOController.h>
 #import "VAssetThumbnailDataSource.h"
 #import "VCVideoPlayerViewController.h"
-#import "VUser.h"
 #import "victorious-Swift.h"
 
 static const int32_t kDefaultTimeScale = 600;

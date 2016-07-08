@@ -15,9 +15,9 @@
 #import "VUserTag.h"
 #import "VInStreamCommentsResponder.h"
 #import "VComment.h"
-#import "VUser.h"
 #import "VTagDictionary.h"
 #import "VTagStringFormatter.h"
+#import "victorious-Swift.h"
 
 //Warning, must match up EXACTLY with values in this class' xib
 static CGFloat const kContentSeparationSpace = 6.0f;

@@ -6,28 +6,15 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
+// FUTURE: remove from project before App Store deploy.
+
 import Foundation
+import VictoriousIOSSDK
 
 private var debugTimer = VTimerManager()
 
-private extension ChatMessage {
-    init(serverTime: NSDate, text: String?, mediaAttachment: MediaAttachment?, fromUser: ChatMessageUser) {
-        self.serverTime = serverTime
-        self.text = text
-        self.mediaAttachment = mediaAttachment
-        self.fromUser = fromUser
-    }
-}
-
-private extension ChatMessageUser {
-    init(id: Int, name: String, profileURL: NSURL) {
-        self.id = id
-        self.name = name
-        self.profileURL = profileURL
-    }
-}
-
 extension ForumViewController {
+    private static let defaultStageContentLength: Double = 5
     
     func debug_startGeneratingMessages(interval interval: NSTimeInterval) {
         VTimerManager.addTimerManagerWithTimeInterval(interval,
@@ -46,10 +33,10 @@ extension ForumViewController {
         return testMessageText[rnd]
     }
     
-    private func randProfile() -> NSURL {
-        let rnd = Int(arc4random() % UInt32(profileURLs.count) )
-        let string = profileURLs[rnd]
-        return NSURL(string: string)!
+    private func randPreviewImage() -> ImageAsset {
+        let rnd = Int(arc4random() % UInt32(previewImageURLs.count))
+        let string = previewImageURLs[rnd]
+        return ImageAsset(mediaMetaData: MediaMetaData(url: NSURL(string: string)!, size: CGSizeZero))
     }
     
     private func randName() -> String {
@@ -57,77 +44,180 @@ extension ForumViewController {
         return names[rnd]
     }
     
-    private func randMedia() -> MediaAttachment {
+    private func randAsset() -> ContentMediaAsset {
         let rnd = Int(arc4random() % UInt32(sampleMedia.count) )
         let json = JSON(sampleMedia[rnd])
-        return MediaAttachment(fromForumJSON: json)!
+        return ContentMediaAsset(forumJSON: json)!
     }
     
     func debug_createMessages() {
         let text: String?
-        let media: MediaAttachment?
+        let asset: ContentMediaAsset?
         
         if arc4random() % 10 > 8 {
             text = randomText()
-            media = randMedia()
+            asset = randAsset()
         } else if arc4random() % 10 > 2 {
             text = randomText()
-            media = nil
+            asset = nil
         } else {
             text = nil
-            media = randMedia()
+            asset = randAsset()
         }
         
-        guard let event: ForumEvent = ChatMessage(
-            serverTime: NSDate(),
+        let content = Content(
+            createdAt: NSDate(),
             text: (text == nil) ? nil : "\(totalCount) :: \(text!)",
-            mediaAttachment: media,
-            fromUser: ChatMessageUser(
+            assets: [asset].flatMap { $0 },
+            author: User(
                 id: 1000 + Int(arc4random() % 9999),
                 name: randName(),
-                profileURL: randProfile()
+                previewImages: [randPreviewImage()]
             )
-        ) else {
-            return
-        }
+        )
+        
         totalCount += 1
-        receiveEvent(event)
+        broadcast(.appendContent([content]))
     }
+    
+    func debug_createStageEvents() {
+        stageNext()
+    }
+    
+    func stageNext() {
+        stageCount = stageCount % sampleStageImageContents.count
+        let next = sampleStageImageContents[stageCount]
+        let contentType = ContentType(rawValue: next["type"]!)!
+        let source = next["source"]
+
+        var assets: [ContentMediaAssetModel] = []
+        var previewAsset = randPreviewImage()
+        if let id = next["id"] {
+            let parameters = ContentMediaAsset.LocalAssetParameters(contentType: contentType, remoteID: id, source: source)
+            assets.append(ContentMediaAsset(initializationParameters: parameters)!)
+        }
+        else if (contentType != .text) {
+            let url = NSURL(string: next["url"]!)!
+            let parameters = ContentMediaAsset.RemoteAssetParameters(contentType: contentType, url: url, source: source)
+            assets.append(ContentMediaAsset(initializationParameters: parameters)!)
+            if contentType == .image {
+                previewAsset = ImageAsset(mediaMetaData: MediaMetaData(url: url, size: CGSizeMake(100, 100)))
+            }
+        }
+        
+        let content = Content(
+            id: String(1000 + Int(arc4random() % 9999)),
+            type: contentType,
+            text: next["text"] ?? randomText(),
+            assets: assets,
+            previewImages: [previewAsset],
+            author: User(
+                id: 1000 + Int(arc4random() % 9999),
+                name: randName(),
+                previewImages: [randPreviewImage()]
+            )
+        )
+        stage?.addContent(content)
+        stageCount += 1
+        
+        let time = next["length"] != nil ? Double(next["length"]!)! : ForumViewController.defaultStageContentLength
+        
+        VTimerManager.addTimerManagerWithTimeInterval(
+            time,
+            target: self,
+            selector: #selector(stageNext),
+            userInfo: nil,
+            repeats: false,
+            toRunLoop: NSRunLoop.mainRunLoop(),
+            withRunMode: NSRunLoopCommonModes
+        )
+    }
+
 }
 
+private var stageCount = 0
 private var totalCount = 0
+
+private let sampleStageImageContents = [
+    [
+        "type": "image",
+        "url": "http://sportsup365.com/wp-content/uploads/2015/12/usatsi_8903306.jpg",
+        "length": "10"
+    ],
+    [
+        "type": "image",
+        "url": "http://www.koco.com/image/view/-/36170342/medRes/1/-/maxh/460/maxw/620/-/hwy60t/-/westbrook-jpg--1-.jpg"
+    ],
+    [
+        "type": "image",
+        "url": "http://images.christianpost.com/full/88618/big-bang-theory.png"
+    ],
+    [
+        "type": "gif",
+        "url": "https://media.giphy.com/media/l41Yi2XOcNZ2lvTGw/giphy.mp4",
+        "length": "15"
+    ],
+    [
+        "type": "gif",
+        "url": "https://media.giphy.com/media/lJh4drC6QTkkg/giphy.mp4"
+    ],
+    [
+        "type": "video",
+        "url": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/852ced0666ee143e1d91b987daa8df6e/playlist.m3u8"
+    ],
+    [
+        "type": "video",
+        "url": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/36170da86ad3933a86edd9bff9b21846/playlist.m3u8",
+        "length": "15"
+    ],
+    [
+        "type": "video",
+        "source": "youtube",
+        "id": "aL33-XfVccg",
+        "length": "30"
+        ],
+    [
+        "type": "video",
+        "source": "youtube",
+        "id": "OV0wOGUFZdw",
+        "length": "30"
+    ],
+    [
+        "type": "video",
+        "source": "youtube",
+        "id": "hgb8Jofr5ew",
+        "length": "30"
+    ],
+    [
+        "type" : "text",
+        "text" : "Stage post text test content"
+    ],
+    [
+        "type" : "text",
+        "text" : "VIP Event happening now! Switch to VIP chat to check it out!"
+    ],
+    [
+        "type" : "text",
+        "text" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation "
+    ]
+]
 
 private let sampleMedia = [
     [
-        "type": "IMAGE",
-        "url": "http://www.ducatiusa.com/cms-web/upl/MediaGalleries/939/MediaGallery_939430/Color_M-821_White_01_1067x600.jpg",
-        "thumbnail_url": "http://www.ducatiusa.com/cms-web/upl/MediaGalleries/939/MediaGallery_939430/Color_M-821_White_01_1067x600.jpg",
-        "width": 1067,
-        "height": 600
+        "type": "image",
+        "url": "http://www.ducatiusa.com/cms-web/upl/MediaGalleries/939/MediaGallery_939430/Color_M-821_White_01_1067x600.jpg"
     ], [
-        "type": "IMAGE",
-        "url": "http://coolspotters.com/files/photos/444434/ducati-streetfighter-s-profile.png",
-        "thumbnail_url": "http://coolspotters.com/files/photos/444434/ducati-streetfighter-s-profile.png",
-        "width": 300,
-        "height": 450
+        "type": "image",
+        "url": "http://coolspotters.com/files/photos/444434/ducati-streetfighter-s-profile.png"
     ], [
-        "type": "IMAGE",
-        "url": "http://kickstart.bikeexif.com/wp-content/uploads/2013/09/ducati-monster-1100.jpg",
-        "thumbnail_url": "http://kickstart.bikeexif.com/wp-content/uploads/2013/09/ducati-monster-1100.jpg",
-        "width": 625,
-        "height": 417
+        "type": "image",
+        "url": "http://kickstart.bikeexif.com/wp-content/uploads/2013/09/ducati-monster-1100.jpg"
     ], [
-        "type": "IMAGE",
-        "url": "http://i.telegraph.co.uk/multimedia/archive/02963/Monster-821-1_2963300b.jpg",
-        "thumbnail_url": "http://i.telegraph.co.uk/multimedia/archive/02963/Monster-821-1_2963300b.jpg",
-        "width": 620,
-        "height": 387
+        "type": "image",
+        "url": "http://i.telegraph.co.uk/multimedia/archive/02963/Monster-821-1_2963300b.jpg"
     ], [
-        "type": "GIF",
-        "url": "https://media3.giphy.com/media/6qalZjXQlpoGI/giphy.mp4",
-        "thumbnail_url": "https://media3.giphy.com/media/6qalZjXQlpoGI/100_s.gif",
-        "width": 400,
-        "height": 170
+        "type": "gif",
+        "url": "https://media3.giphy.com/media/6qalZjXQlpoGI/giphy.mp4"
     ]
 ]
 
@@ -135,7 +225,7 @@ private let names = [
     "Carl", "James", "Micelle", "Franky", "Bernadette", "Julia", "Patrick", "Sebastian", "Sharif"
 ]
 
-private let profileURLs = [
+private let previewImageURLs = [
     "http://40.media.tumblr.com/c88901101bc29bdeb4cd4c78c660b5c5/tumblr_nvmcod4W7m1ufrlieo1_500.png",
     "http://40.media.tumblr.com/3b9c703debacefbb7d7550b12c0de713/tumblr_nvmcqdVZAG1ufrlieo1_r1_500.png",
     "http://41.media.tumblr.com/1ffa6516e70d676b4c471f2ad25192a0/tumblr_nz04pmrWBN1ufrlieo1_500.png"

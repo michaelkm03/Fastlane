@@ -28,8 +28,8 @@ class SequenceTests: XCTestCase {
         XCTAssertEqual( sequence.sequenceID, "17143" )
         XCTAssertEqual( sequence.category, Sequence.Category.UGCVideoRepost )
         XCTAssertEqual( sequence.releasedAt, releasedAtDate )
-        XCTAssertEqual( sequence.user.userID, Int(3694) )
-        XCTAssertEqual( sequence.parentUser?.userID, Int(3694) )
+        XCTAssertEqual( sequence.user.id, Int(3694) )
+        XCTAssertEqual( sequence.parentUser?.id, Int(3694) )
         XCTAssertEqual( sequence.nodes?.count, 1 )
         XCTAssertEqual( sequence.type, StreamContentType.Sequence )
         XCTAssertEqual( sequence.subtype, StreamContentType.Video )
@@ -81,7 +81,7 @@ class SequenceTests: XCTestCase {
         XCTAssertEqual( sequence.releasedAt, releasedAtDate )
         XCTAssertEqual( sequence.type, StreamContentType.Sequence )
         XCTAssertEqual( sequence.subtype, StreamContentType.Video )
-        XCTAssertEqual( sequence.user.userID, Int(3694) )
+        XCTAssertEqual( sequence.user.id, Int(3694) )
         XCTAssertNil( sequence.nodes )
     }
 

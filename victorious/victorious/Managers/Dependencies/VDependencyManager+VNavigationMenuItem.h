@@ -37,12 +37,25 @@ extern NSString * const VDependencyManagerAccessoryScreensKey; // An arry of acc
 - (NSArray<VNavigationMenuItem *> *)menuItemsForKey:(NSString *)key;
 
 /**
+ Same as calling `accessoryMenuItemsWithKey:` with `nil`.
+ */
+- (NSArray *)accessoryMenuItems;
+
+/**
  Returns an array of accessory menu items. These should
  be used for left/right navigation items for various screens.
  
+ @param key A key to use for fetching accessoryMenuItems. When nil is passed defaults to "AccessoryScreens".
+ 
  @return NSArray of VNavigationMenuItem.
  */
-- (NSArray *)accessoryMenuItems;
+- (NSArray *)accessoryMenuItemsWithKey:(NSString *)key;
+
+
+/**
+ Same as calling `accessoryMenuItemsWithInheritance:key:` with nil for the key parameter.
+ */
+- (NSArray *)accessoryMenuItemsWithInheritance:(BOOL)withInheritance;
 
 /**
  Returns an array of accessory menu items. These should
@@ -51,8 +64,11 @@ extern NSString * const VDependencyManagerAccessoryScreensKey; // An arry of acc
  @param withInheritance When set to NO, only acccessory menu items added to *this*
  dependency manager will be returned and not those belonging to the parent manager.
  
+ @param key When a key is provided it will be used to index into the configuration for accessory menu items. 
+ When nil is passed deefaults to "AccessoryScreens".
+ 
  @return NSArray of VNavigationMenuItem.
- */
-- (NSArray *)accessoryMenuItemsWithInheritance:(BOOL)withInheritance;
+ */- (NSArray *)accessoryMenuItemsWithInheritance:(BOOL)withInheritance
+                                              key:(NSString *)key;
 
 @end

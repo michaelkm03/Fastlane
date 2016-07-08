@@ -61,7 +61,7 @@
         "name": "testy",
         "profile_location": "Egypt",
         "profile_tagline": "Test all day",
-        "access_level": "API_USER",
+        "access_level": "api_user",
         "app_id": 1,
         "parent_login_id": 6097,
         "preview": {
@@ -109,5 +109,8 @@
                     ],
         "vip": {},
         "complete": true
+    },
+    "viewer_engagements": {
+        "is_liking": true
     }
 }

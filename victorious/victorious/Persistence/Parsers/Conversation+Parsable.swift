@@ -18,7 +18,7 @@ extension VConversation: PersistenceParsable {
         lastMessageText     = sourceModel.previewMessageText ?? lastMessageText
         
         if self.user == nil {
-            self.user = v_managedObjectContext.v_findOrCreateObject( [ "remoteId" : sourceModel.otherUser.userID ] ) as VUser
+            self.user = v_managedObjectContext.v_findOrCreateObject( [ "remoteId" : sourceModel.otherUser.id ] ) as VUser
         }
         self.user?.populate(fromSourceModel: sourceModel.otherUser)
     }

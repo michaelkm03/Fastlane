@@ -10,9 +10,9 @@ import UIKit
 
 class ContentFetchOperation: RemoteFetcherOperation, RequestOperation {
     
-    internal let request: ViewedContentFetchRequest!
+    internal let request: ContentFetchRequest!
     
-    required init(request: ViewedContentFetchRequest) {
+    required init(request: ContentFetchRequest) {
         self.request = request
     }
     
@@ -20,7 +20,7 @@ class ContentFetchOperation: RemoteFetcherOperation, RequestOperation {
                       currentUserID: String,
                       contentID: String) {
         
-        let request = ViewedContentFetchRequest(macroURLString: macroURLString,
+        let request = ContentFetchRequest(macroURLString: macroURLString,
                                           currentUserID: currentUserID,
                                           contentID: contentID)
         self.init(request: request)
@@ -30,9 +30,14 @@ class ContentFetchOperation: RemoteFetcherOperation, RequestOperation {
         requestExecutor.executeRequest(request, onComplete: onComplete, onError: nil)
     }
     
-    func onComplete(result: ViewedContentFetchRequest.ResultType) {
+    func onComplete(result: ContentFetchRequest.ResultType) {
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            let content: VContent = context.v_findOrCreateObject( [ "remoteID" : result.content.id ] )
+            guard let id = result.id else {
+                self.results = []
+                return
+            }
+            
+            let content: VContent = context.v_findOrCreateObject(["v_remoteID": id])
 
             content.populate(fromSourceModel: result)
             context.v_save()

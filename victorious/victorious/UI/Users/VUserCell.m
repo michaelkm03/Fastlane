@@ -7,7 +7,6 @@
 //
 
 #import "VUserCell.h"
-#import "VUser.h"
 #import "VDependencyManager.h"
 #import "VFollowControl.h"
 #import "VDefaultProfileButton.h"
@@ -98,17 +97,11 @@ static const CGFloat kUserCellHeight = 51.0f;
 
 - (IBAction)tappedFollowControl:(VFollowControl *)sender
 {
-    NSInteger userId = self.user.remoteId.integerValue;
-    FetcherOperation *operation = [[FollowUserToggleOperation alloc] initWithUserID:userId
-                                                                   sourceScreenName:self.sourceScreenName];
-    [operation queueWithCompletion:nil];
+    // FollowUserOperation/FollowUserToggleOperation not supported in 5.0
 }
 
 - (void)updateFollowingAnimated:(BOOL)animated
 {
-    self.followControl.hidden = [self.user isCurrentUser];
-    VFollowControlState controlState = [VFollowControl controlStateForFollowing:self.user.isFollowedByMainUser.boolValue];
-    [self.followControl setControlState:controlState animated:animated];
 }
 
 @end

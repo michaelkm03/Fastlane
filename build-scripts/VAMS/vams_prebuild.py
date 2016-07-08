@@ -63,8 +63,8 @@ def proccessAppAssets(app_name, json):
 
 
     if _CONSOLE_OUTPUT:
-        print "\nUsing Directory: %s" % _WORKING_DIRECTORY
-        print '\nDownloading the Most Recent Art Assets for %s...' % app_title
+        print '\nUsing Directory: %s' % _WORKING_DIRECTORY
+        print u'\nDownloading the Most Recent Art Assets for %s...' % app_title
 
     for asset in platform_assets:
 
@@ -160,7 +160,7 @@ def setAppConfig(app_name, json_obj):
     config_file = '%s/%s' % (_WORKING_DIRECTORY, file_name)
 
     if _CONSOLE_OUTPUT:
-        print 'Applying Most Recent App Configuration Data to %s' % app_title
+        print u'Applying Most Recent App Configuration Data to %s' % app_title
         print ''
         # Uncomment out the following line to display the retrieved config data
         print app_config.encode('utf-8')
@@ -188,21 +188,13 @@ def setAppConfig(app_name, json_obj):
 
 def downloadProvisioningProfiles(json):
     """
-    Downloads the QA and Staging Provisioning Profiles from VAMS and writes them to a local location.
+    Downloads the Staging Provisioning Profile from VAMS and writes it to a local location.
 
     :param json:
         The json object containing the provisioning profile assets
     """
 
-    qa_profile_url = json['qa']
     staging_proifle_url = json['staging']
-
-    if qa_profile_url:
-        if _CONSOLE_OUTPUT:
-            print 'Downloading QA Provisioning Profile...'
-        qa_profile = '%s/%s' % (_WORKING_DIRECTORY, vams._QA_PROVISIONING_PROFILE)
-        vams.assetFetcher(qa_profile_url, qa_profile)
-
     if staging_proifle_url:
         if _CONSOLE_OUTPUT:
             print 'Downloading Staging Provisioning Profile...'
@@ -254,7 +246,7 @@ def showProperUsage():
         print 'examples:'
         print './vams_prebuild.py awesomeness ios     <-- will use PRODUCTION'
         print '  -- OR --'
-        print './vams_prebuild.py awesomeness ios qa  <-- will use QA'
+        print './vams_prebuild.py awesomeness ios staging  <-- will use STAGING'
         print ''
         sys.exit(1)
 

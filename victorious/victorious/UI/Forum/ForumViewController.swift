@@ -12,8 +12,6 @@ import UIKit
 /// between the Forum's required concrete implementations and abstract dependencies.
 class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocusable, PersistentContentCreator, UploadManagerHost {
 
-    private let webSocketReconnectTimeout: NSTimeInterval = 5
-
     @IBOutlet private weak var stageContainer: UIView! {
         didSet {
             stageContainer.layer.shadowColor = UIColor.blackColor().CGColor
@@ -35,6 +33,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         }()
     #endif
 
+    private var navBarTitleView : ForumNavBarTitleView?
+    
     // MARK: - Initialization
     
     class func newWithDependencyManager(dependencyManager: VDependencyManager) -> ForumViewController {
@@ -54,49 +54,63 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         return children.flatMap { $0 }
     }
     
-    func receiveEvent(event: ForumEvent) {
-        for receiver in childEventReceivers {
-            receiver.receiveEvent(event)
-        }
-        
-        if let event = event as? WebSocketEvent {
-            switch event.type {
-            case .Disconnected(let webSocketError):
-                guard isViewLoaded() else {
-                    return
+    func receive(event: ForumEvent) {
+        switch event {
+            case .websocket(let websocketEvent):
+                switch websocketEvent {
+                    case .disconnected(_) where isViewLoaded():
+                        // FUTURE: fetch the localized string from a new node in the template, depending on what the error type is.
+                        let alert = Alert(title: "Reconnecting to server...", type: .reconnectingError)
+                        InterstitialManager.sharedInstance.receive(alert)
+                    default:
+                        break
                 }
-
-                self.v_showAlert(title: "So sorry 😳", message: "Dropped connection to chat server. Reconnecting in \(webSocketReconnectTimeout)s. \n (error: \(webSocketError))", completion: nil)
-
-                dispatch_after(webSocketReconnectTimeout, {
-                    self.connectToNetworkSourceIfNeeded()
-                })
+            case .chatUserCount(let userCount):
+                // A chat user count message is the only confirmed way of knowing that the connection is open, since our backend always accepts our connection before validating everything is ok.
+                InterstitialManager.sharedInstance.dismissCurrentInterstitial(of: .reconnectingError)
+                navBarTitleView?.activeUserCount = userCount.userCount
+            case .filterContent(let path):
+                composer?.setComposerVisible(path == nil, animated: true)
             default:
                 break
-            }
-        } else if let event = event as? ChatMessage where
-            event.mediaAttachment != nil {
+        }
+    }
+    
+    func send(event: ForumEvent) {
+        
+        switch event {
+        case .sendContent(let content):
             
-            //Create a persistent piece of content so long as we're not a normal user on the socket
-            guard let networkResourcesDependency = dependencyManager.networkResourcesDependency else {
+            guard let networkResources = dependencyManager.networkResources else {
                 let logMessage = "Didn't find a valid network resources dependency inside the forum!"
                 assertionFailure(logMessage)
                 v_log(logMessage)
+                nextSender?.send(event)
                 return
             }
             
-            createPersistentContent(event, networkResourcesDependency: networkResourcesDependency) { [weak self] error in
-                if let _ = error,
+            createPersistentContent(content, networkResourcesDependency: networkResources) { [weak self] error in
+                
+                if let validError = error,
                     let strongSelf = self {
-                    strongSelf.v_showDefaultErrorAlert()
+                    
+                    if let persistenceError = validError as? PersistentContentCreatorError where
+                        persistenceError.isInvalidNetworkResourcesError {
+                        //Encountered an error where the network resources were inadequate. This does NOT
+                        //represent an error state that should be messaged to the user.
+                    } else {
+                        strongSelf.v_showDefaultErrorAlert()
+                    }
                 }
             }
+        default:()
         }
+        nextSender?.send(event)
     }
 
     // MARK: - ForumEventSender
     
-    var nextSender: ForumEventSender?
+    weak var nextSender: ForumEventSender?
     
     // MARK: - Forum protocol requirements
     
@@ -152,11 +166,13 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
-
+        navigationController?.navigationBar.topItem?.titleView = navBarTitleView
+        navBarTitleView?.sizeToFit()
+        
         #if V_ENABLE_WEBSOCKET_DEBUG_MENU
-            if let forumNetworkSourceWebSocket = forumNetworkSource as? WebSocketNetworkAdapter,
+            if let webSocketForumNetworkSource = forumNetworkSource as? WebSocketForumNetworkSource,
                 let navigationController = navigationController {
-                let type = DebugMenuType.webSocket(messageContainer: forumNetworkSourceWebSocket.webSocketMessageContainer)
+                let type = DebugMenuType.webSocket(messageContainer: webSocketForumNetworkSource.webSocketMessageContainer)
                 debugMenuHandler.setupCurrentDebugMenu(type, targetView: navigationController.navigationBar)
             }
         #endif
@@ -167,11 +183,11 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         addUploadManagerToViewController(self, topInset: topLayoutGuide.length)
         updateUploadProgressViewControllerVisibility()
         
-        //Remove this once the way to animate the workspace in and out from forum has been figured out
+        // Remove this once the way to animate the workspace in and out from forum has been figured out
         navigationController?.setNavigationBarHidden(false, animated: animated)
 
-        // Reconnect if the WebSocket is not connected.
-        connectToNetworkSourceIfNeeded()
+        // Set up the network source if needed.
+        forumNetworkSource?.setUpIfNeeded()
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -184,17 +200,26 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: NSLocalizedString("Exit", comment: ""),
+        
+        chatFeed?.nextSender = self
+        //Initialize the title view. This will later be resized in the viewWillAppear, once it has actually been added to the navigation stack
+        navBarTitleView = ForumNavBarTitleView(dependencyManager: self.dependencyManager, frame: CGRect(x: 0, y: 0, width: 200, height: 45))
+        navigationController?.navigationBar.barStyle = .Black
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: dependencyManager.exitButtonIcon,
             style: .Plain,
             target: self,
             action: #selector(onClose)
         )
         updateStyle()
-
+        
         if let forumNetworkSource = dependencyManager.forumNetworkSource {
-            setupNetworkSource(forumNetworkSource)
+            // Add the network source as the next responder in the FEC.
+            nextSender = forumNetworkSource
+            
+            // Inject ourselves into the child receiver list in order to link the chain together.
+            forumNetworkSource.addChildReceiver(self)
+            
             self.forumNetworkSource = forumNetworkSource
         }
     }
@@ -227,7 +252,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     // MARK: - Actions
     
-    func onClose() {
+    @objc private func onClose() {
         navigationController?.dismissViewControllerAnimated(true, completion: nil)
 
         // Close connection to network source when we close the forum.
@@ -260,23 +285,6 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     func screenIdentifier() -> String! {
         return dependencyManager.stringForKey(VDependencyManagerIDKey)
     }
-    
-    // MARK: Private
-    
-    private func setupNetworkSource(networkSource: ForumNetworkSource) {
-        // Add the network source as the next responder in the event chain.
-        nextSender = networkSource
-
-        // Inject ourselves into the child receiver list in order to link the chain together.
-        networkSource.addChildReceiver(self)
-    }
-
-    /// Will connect over the WebSocket if the connection is down.
-    private func connectToNetworkSourceIfNeeded() {
-        if let socketNetworkAdapter = forumNetworkSource as? WebSocketNetworkAdapter where !socketNetworkAdapter.isConnected {
-            socketNetworkAdapter.setUp()
-        }
-    }
 }
 
 private extension VDependencyManager {
@@ -297,11 +305,7 @@ private extension VDependencyManager {
         return childDependencyForKey("stage")
     }
     
-    var networkResourcesDependency: VDependencyManager? {
-        return childDependencyForKey("networkResources")
-    }
-
-    var forumNetworkSource: WebSocketNetworkAdapter? {
-        return singletonObjectOfType(WebSocketNetworkAdapter.self, forKey: "networkLayerSource") as? WebSocketNetworkAdapter
+    var exitButtonIcon: UIImage? {
+        return imageForKey("closeIcon") ?? UIImage(named: "x_icon") //Template is currently returning incorrect path, so use the close icon in the image assets
     }
 }

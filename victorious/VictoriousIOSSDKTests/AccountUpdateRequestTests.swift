@@ -64,7 +64,7 @@ class AccountUpdateRequestTests: XCTestCase {
         
         do {
             let user = try updateRequest.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
-            XCTAssertEqual( user.userID, 156)
+            XCTAssertEqual( user.id, 156)
             XCTAssertEqual( user.name, "Joe Victorious")
         } catch {
             XCTFail("parseResponse is not supposed to throw")
@@ -81,7 +81,7 @@ class AccountUpdateRequestTests: XCTestCase {
         
         do {
             let user = try updatePasswordRequest.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
-            XCTAssertEqual( user.userID, 156)
+            XCTAssertEqual( user.id, 156)
             XCTAssertEqual( user.name, "Joe Victorious")
         } catch {
             XCTFail("parseResponse is not supposed to throw")

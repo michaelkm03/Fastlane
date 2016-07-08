@@ -7,10 +7,9 @@
 //
 
 #import "VDummyModels.h"
-#import "VUser.h"
 #import "VVoteResult.h"
-#import "VTracking.h"
 #import "VTag.h"
+#import "victorious-Swift.h"
 
 static NSManagedObjectContext *context = nil;
 
@@ -31,6 +30,10 @@ NSString * const kMacroBallisticsCount = @"%%COUNT%%";
     return context;
 }
 
+// Suppress a warning we get from importing victorious-Swift.h. Can remove once we convert more of our tests to Swift.
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wstrict-selector-match"
+
 + (id)objectWithEntityName:(NSString *)entityName subclass:(Class)subclass
 {
     NSManagedObjectContext *context = [VDummyModels context];
@@ -39,6 +42,8 @@ NSString * const kMacroBallisticsCount = @"%%COUNT%%";
     
     return nil;
 }
+
+#pragma clang diagnostic pop
 
 + (NSArray *)objectsWithEntityName:(NSString *)entityName subclass:(Class)subclass count:(NSInteger)count
 {

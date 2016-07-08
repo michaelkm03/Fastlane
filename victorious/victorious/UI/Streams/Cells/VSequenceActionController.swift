@@ -60,9 +60,9 @@ import Foundation
     // MARK: - User
     
     func showProfileWithRemoteId(userId: Int) {
-        ShowProfileOperation(originViewController: originViewController,
-                            dependencyManager: dependencyManager,
-                            userId: userId).queue()
+        let router = Router(originViewController: originViewController, dependencyManager: dependencyManager)
+        let destination = DeeplinkDestination(userID: userId)
+        router.navigate(to: destination)
     }
     
     // MARK: - Share
@@ -110,35 +110,7 @@ import Foundation
     /// confirmation, blocks the user and calls the completion block with a
     /// Boolean representing success/failure of the operation.
     func blockUser(user: VUser, completion: ((Bool) -> ())? ) {
-        
-        let blockOrUnblock: FetcherOperation
-        let actionTitle: String
-        if user.isBlockedByMainUser.boolValue {
-            actionTitle = NSLocalizedString("UnblockUser", comment: "")
-            blockOrUnblock = UnblockUserOperation(userID: user.remoteId.integerValue)
-        } else {
-            blockOrUnblock = BlockUserOperation(userID: user.remoteId.integerValue)
-            actionTitle = NSLocalizedString("BlockUser", comment: "")
-        }
-        let confirm = ConfirmDestructiveActionOperation(
-            actionTitle: actionTitle,
-            originViewController: originViewController,
-            dependencyManager: dependencyManager
-        )
-        
-        confirm.before(blockOrUnblock)
-        confirm.queue()
-        blockOrUnblock.queue() { (results, error, cancelled) in
-            guard !blockOrUnblock.cancelled else {
-                return
-            }
-            let didBlockUser = user.isBlockedByMainUser.boolValue
-            if didBlockUser {
-                self.originViewController.v_showBlockedUserAlert() {
-                    completion?(true)
-                }
-            }
-        }
+        // BlockUserOperation is not supported in 5.0
     }
     
     // MARK: - Delete
@@ -242,7 +214,7 @@ import Foundation
             actionItems.append(flagActionItem(forSequence: sequence))
         }
         
-        if !sequence.user.isCurrentUser() {
+        if !sequence.user.isCurrentUser {
             actionItems.append(blockUserActionItem(forSequence: sequence))
         }
         
@@ -272,7 +244,7 @@ import Foundation
     }
     
     private func blockUserActionItem(forSequence sequence: VSequence) -> VActionItem {
-        let title = sequence.user.isBlockedByMainUser.boolValue ? NSLocalizedString("UnblockUser", comment: "") : NSLocalizedString("BlockUser", comment: "")
+        let title = sequence.user.isBlockedByMainUser?.boolValue ?? false ? NSLocalizedString("UnblockUser", comment: "") : NSLocalizedString("BlockUser", comment: "")
         let blockItem = VActionItem.defaultActionItemWithTitle(title,
             actionIcon: UIImage(named: "action_sheet_block"),
             detailText: "")

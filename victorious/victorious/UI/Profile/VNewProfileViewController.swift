@@ -9,32 +9,72 @@
 import UIKit
 
 /// A view controller that displays the contents of a user's profile.
-class VNewProfileViewController: UIViewController {
+class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderDelegate, AccessoryScreenContainer, VAccessoryNavigationSource {
     // MARK: - Constants
     
     static let userAppearanceKey = "userAppearance"
     static let creatorAppearanceKey = "creatorAppearance"
+    static let upgradeButtonID = "Accessory paygate"
     
-    private static let upgradeButtonXPadding = CGFloat(12.0)
-    private static let upgradeButtonCornerRadius = CGFloat(5.0)
+    private struct AccessoryScreensKeys {
+        static let selfUser = "accessories.user.own"
+        static let otherUser = "accessories.user.other"
+        static let selfCreator = "accessories.creator.own"
+        static let otherCreator = "accessories.user.creator"
+    }
+    
+    // MARK: Dependency Manager
+    
+    let dependencyManager: VDependencyManager
+    
+    // MARK: Model Data
+    
+    var user: UserModel? {
+        get {
+            return gridStreamController.content
+        }
+    }
+    
+    private lazy var overflowButton: UIBarButtonItem = {
+        return UIBarButtonItem(
+            image: self.dependencyManager.overflowIcon,
+            style: .Done,
+            target: self,
+            action: #selector(overflow)
+        )
+    }()
+    
+    private lazy var upvoteButton: UIBarButtonItem = {
+        return UIBarButtonItem(
+            image: self.dependencyManager.upvoteIconUnselected,
+            style: .Done,
+            target: self,
+            action: #selector(toggleUpvote)
+        )
+    }()
     
     // MARK: - Initializing
     
     init(dependencyManager: VDependencyManager) {
+        self.dependencyManager = dependencyManager
+        
         let userID = VNewProfileViewController.getUserID(forDependencyManager: dependencyManager)
         let header = VNewProfileHeaderView.newWithDependencyManager(dependencyManager)
         
         var configuration = GridStreamConfiguration()
         configuration.managesBackground = false
         
-        gridStreamController = GridStreamViewController(dependencyManager: dependencyManager,
-                                                        header: header,
-                                                        content: nil,
-                                                        configuration: configuration,
-                                                        streamAPIPath: dependencyManager.streamAPIPath(forUserID: userID) ?? "")
+        gridStreamController = GridStreamViewController(
+            dependencyManager: dependencyManager,
+            header: header,
+            content: nil,
+            configuration: configuration,
+            streamAPIPath: dependencyManager.streamAPIPath(forUserID: userID)
+        )
         
         super.init(nibName: nil, bundle: nil)
-        
+        header.delegate = self
+
         // Applies a fallback background color while we fetch the user.
         view.backgroundColor = dependencyManager.colorForKey(VDependencyManagerBackgroundColorKey)
         
@@ -43,14 +83,6 @@ class VNewProfileViewController: UIViewController {
         view.v_addFitToParentConstraintsToSubview(gridStreamController.view)
         gridStreamController.didMoveToParentViewController(self)
         
-        upgradeButton.setTitle("UPGRADE", forState: .Normal)
-        upgradeButton.addTarget(self, action: #selector(upgradeButtonWasPressed), forControlEvents: .TouchUpInside)
-        upgradeButton.sizeToFit()
-        upgradeButton.frame.size.width += VNewProfileViewController.upgradeButtonXPadding
-        upgradeButton.layer.cornerRadius = VNewProfileViewController.upgradeButtonCornerRadius
-        upgradeButton.hidden = true
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: upgradeButton)
-        
         fetchUser(using: dependencyManager)
     }
     
@@ -58,15 +90,32 @@ class VNewProfileViewController: UIViewController {
         fatalError("NSCoding not supported.")
     }
     
-    // MARK: - View events
+    // MARK: - View updating
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        if let navigationBar = navigationController?.navigationBar {
-            upgradeButton.backgroundColor = navigationBar.tintColor
-            upgradeButton.setTitleColor(navigationBar.barTintColor, forState: .Normal)
+    private func updateBarButtonItems() {
+        if user?.isFollowedByCurrentUser == true {
+            upvoteButton.image = dependencyManager.upvoteIconSelected
+            upvoteButton.tintColor = dependencyManager.upvoteIconTint
         }
+        else {
+            upvoteButton.image = dependencyManager.upvoteIconUnselected
+            upvoteButton.tintColor = nil
+        }
+        
+        supplementalRightButtons = []
+        
+        let isCurrentUser = user?.isCurrentUser == true
+        let isCreator = user?.accessLevel?.isCreator == true
+        
+        if !isCurrentUser {
+            supplementalRightButtons.append(upvoteButton)
+            
+            if !isCreator {
+                supplementalRightButtons.append(overflowButton)
+            }
+        }
+        
+        v_addAccessoryScreensWithDependencyManager(dependencyManager)
     }
     
     // MARK: - View controllers
@@ -80,7 +129,96 @@ class VNewProfileViewController: UIViewController {
     // MARK: - Actions
     
     private dynamic func upgradeButtonWasPressed() {
-        ShowVIPGateOperation(originViewController: self, dependencyManager: gridStreamController.dependencyManager).queue()
+        ShowVIPFlowOperation(originViewController: self, dependencyManager: gridStreamController.dependencyManager).queue()
+    }
+    
+    func toggleUpvote() {
+        guard let user = user else {
+            return
+        }
+        
+        UserUpvoteToggleOperation(
+            userID: user.id,
+            upvoteAPIPath: dependencyManager.userUpvoteAPIPath,
+            unupvoteAPIPath: dependencyManager.userUnupvoteAPIPath
+        ).queue { [weak self] _ in
+            self?.updateBarButtonItems()
+        }
+    }
+    
+    func overflow() {
+        guard
+            let isBlocked = user?.isBlockedByCurrentUser,
+            let userID = user?.id
+        else {
+            return
+        }
+        
+        let toggleBlockedOperation = UserBlockToggleOperation(
+            userID: userID,
+            blockAPIPath: dependencyManager.userBlockAPIPath,
+            unblockAPIPath: dependencyManager.userUnblockAPIPath
+        )
+        
+        let actionTitle = isBlocked
+            ? NSLocalizedString("UnblockUser", comment: "")
+            : NSLocalizedString("BlockUser", comment: "")
+        let confirm = ConfirmDestructiveActionOperation(
+            actionTitle: actionTitle,
+            originViewController: self,
+            dependencyManager: dependencyManager
+        )
+        confirm.before(toggleBlockedOperation)
+        confirm.queue()
+        toggleBlockedOperation.queue()
+    }
+    
+    // MARK: - AccessoryScreenContainer
+    
+    private var supplementalLeftButtons = [UIBarButtonItem]()
+    private var supplementalRightButtons = [UIBarButtonItem]()
+    
+    var accessoryScreensKey: String? {
+        guard let user = self.user else {
+            return nil
+        }
+        
+        if user.accessLevel?.isCreator == true {
+            return user.isCurrentUser ? AccessoryScreensKeys.selfCreator : AccessoryScreensKeys.otherCreator
+        }
+        else {
+            return user.isCurrentUser ? AccessoryScreensKeys.selfUser : AccessoryScreensKeys.otherUser
+        }
+    }
+    
+    func addCustomLeftItems(to items: [UIBarButtonItem]) -> [UIBarButtonItem] {
+        return items + supplementalLeftButtons
+    }
+    
+    func addCustomRightItems(to items: [UIBarButtonItem]) -> [UIBarButtonItem] {
+        return items + supplementalRightButtons
+    }
+    
+    func shouldDisplayAccessoryItem(withIdentifier identifier: String) -> Bool {
+        if identifier == VNewProfileViewController.upgradeButtonID {
+            return user?.hasValidVIPSubscription != true
+        }
+        
+        return true
+    }
+    
+    // MARK: - VAccessoryNavigationSource
+    
+    func shouldNavigateWithAccessoryMenuItem(menuItem: VNavigationMenuItem!) -> Bool {
+        return true
+    }
+    
+    func shouldDisplayAccessoryMenuItem(menuItem: VNavigationMenuItem!, fromSource source: UIViewController!) -> Bool {
+        if menuItem?.identifier == VNewProfileViewController.upgradeButtonID {
+            return user?.hasValidVIPSubscription != true
+        }
+        
+        return true
     }
     
     // MARK: - Managing the user
@@ -90,11 +228,7 @@ class VNewProfileViewController: UIViewController {
             setUser(user, using: dependencyManager)
         }
         else if let userRemoteID = dependencyManager.templateValueOfType(NSNumber.self, forKey: VDependencyManager.userRemoteIdKey) as? NSNumber {
-            let userInfoOperation = UserInfoOperation(userID: userRemoteID.integerValue, apiPath: dependencyManager.userFetchAPIPath)
-            
-            userInfoOperation.queue { [weak self] results, error, cancelled in
-                self?.setUser(userInfoOperation.user, using: dependencyManager)
-            }
+            fetchUser(withRemoteID: userRemoteID.integerValue)
         }
         else {
             setUser(VCurrentUser.user(), using: dependencyManager)
@@ -107,13 +241,13 @@ class VNewProfileViewController: UIViewController {
             return
         }
         
-        gridStreamController.content = user
+        gridStreamController.setContent(user, withError: false)
         
-        let appearanceKey = user.isCreator.boolValue ? VNewProfileViewController.creatorAppearanceKey : VNewProfileViewController.userAppearanceKey
+        let appearanceKey = user.isCreator?.boolValue ?? false ? VNewProfileViewController.creatorAppearanceKey : VNewProfileViewController.userAppearanceKey
         let appearanceDependencyManager = dependencyManager.childDependencyForKey(appearanceKey)
         appearanceDependencyManager?.addBackgroundToBackgroundHost(gridStreamController)
         
-        upgradeButton.hidden = user.isCreator != true || VCurrentUser.user()?.isVIPSubscriber == true
+        updateBarButtonItems()
     }
     
     private static func getUserID(forDependencyManager dependencyManager: VDependencyManager) -> Int {
@@ -129,29 +263,103 @@ class VNewProfileViewController: UIViewController {
             return user?.remoteId.integerValue ?? 0
         }
     }
+    
+    // MARK: - ConfigurableGridStreamContainer
+    
+    func shouldRefresh() {
+        guard let userID = user?.id else {
+            return
+        }
+        fetchUser(withRemoteID: userID)
+    }
+    
+    private func fetchUser(withRemoteID remoteID: Int) {
+        guard
+            let apiPath = dependencyManager.networkResources?.userFetchAPIPath,
+            let userInfoOperation = UserInfoOperation(userID: remoteID, apiPath: apiPath)
+        else {
+            return
+        }
+        
+        userInfoOperation.queue { [weak self] results, error, cancelled in
+            guard let dependencyManager = self?.dependencyManager else {
+                return
+            }
+            self?.setUser(userInfoOperation.user, using: dependencyManager)
+        }
+    }
 }
 
 private extension VDependencyManager {
     var refreshControlColor: UIColor? {
         return colorForKey(VDependencyManagerMainTextColorKey)
     }
-    
-    var userFetchAPIPath: String? {
-        return stringForKey("userInfoURL")
+}
+
+private extension VDependencyManager {
+    func streamAPIPath(forUserID userID: Int) -> APIPath {
+        guard var apiPath = apiPathForKey("streamURL") else {
+            return APIPath(templatePath: "")
+        }
+        
+        apiPath.queryParameters = [
+            "user_id": "\(userID)"
+        ]
+        
+        return apiPath
     }
 }
 
 private extension VDependencyManager {
-    func streamAPIPath(forUserID userID: Int) -> String? {
-        let timeInterval = "\(Int(NSDate().timeIntervalSince1970*1000))"
-        guard let apiPath = stringForKey("streamURL")?.stringByReplacingOccurrencesOfString("%%FROM_TIME%%", withString: timeInterval) else {
-            return nil
+    var userUpvoteAPIPath: APIPath {
+        guard let apiPath = networkResources?.apiPathForKey("userUpvoteURL") else {
+            assertionFailure("Failed to retrieve main feed API path from dependency manager.")
+            return APIPath(templatePath: "")
         }
-        
-        let urlComponents = NSURLComponents(string: apiPath)
-        let queryItem = NSURLQueryItem(name: "user_id", value: "\(userID)" )
-        urlComponents?.queryItems = [ queryItem ]
-        
-        return urlComponents?.string
+        return apiPath
+    }
+    
+    var userUnupvoteAPIPath: APIPath {
+        guard let apiPath = networkResources?.apiPathForKey("userUnupvoteURL") else {
+            assertionFailure("Failed to retrieve main feed API path from dependency manager.")
+            return APIPath(templatePath: "")
+        }
+        return apiPath
+    }
+    
+    var userBlockAPIPath: APIPath {
+        guard let apiPath = networkResources?.apiPathForKey("userBlockURL") else {
+            assertionFailure("Failed to retrieve main feed API path from dependency manager.")
+            return APIPath(templatePath: "")
+        }
+        return apiPath
+    }
+    
+    var userUnblockAPIPath: APIPath {
+        guard let apiPath = networkResources?.apiPathForKey("userUnblockURL") else {
+            assertionFailure("Failed to retrieve main feed API path from dependency manager.")
+            return APIPath(templatePath: "")
+        }
+        return apiPath
+    }
+    
+    var upvoteIconTint: UIColor? {
+        return colorForKey("color.text.actionButton")
+    }
+    
+    var upvoteIconSelected: UIImage? {
+        return imageForKey("upvote_icon_selected")?.imageWithRenderingMode(.AlwaysTemplate)
+    }
+    
+    var upvoteIconUnselected: UIImage? {
+        return imageForKey("upvote_icon_unselected")?.imageWithRenderingMode(.AlwaysTemplate)
+    }
+    
+    var overflowIcon: UIImage? {
+        return imageForKey("more_icon")
+    }
+    
+    var shareIcon: UIImage? {
+        return imageForKey("share_icon")
     }
 }

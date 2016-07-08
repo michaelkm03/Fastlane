@@ -8,12 +8,14 @@
 
 import Foundation
 
-protocol ChatFeed: class, ForumEventReceiver {
+protocol ChatFeed: class, ForumEventReceiver, ForumEventSender {
     
     weak var delegate: ChatFeedDelegate? { get set }
     
-    var dependencyManager: VDependencyManager! { get set }
+    weak var nextSender: ForumEventSender? { get set }
     
+    var dependencyManager: VDependencyManager! { get set }
+        
     func setTopInset(value: CGFloat)
     
     func setBottomInset(value: CGFloat)
@@ -23,5 +25,5 @@ protocol ChatFeedDelegate: class {
     
     func chatFeed(chatFeed: ChatFeed, didSelectUserWithUserID userID: Int)
     
-    func chatFeed(chatFeed: ChatFeed, didSelectMedia media: MediaAttachment)
+    func chatFeed(chatFeed: ChatFeed, didSelectContent content: ContentModel)
 }

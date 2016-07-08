@@ -91,9 +91,6 @@
     [self.collectionView registerNib:[VFooterActivityIndicatorView nibForSupplementaryView]
           forSupplementaryViewOfKind:UICollectionElementKindSectionFooter
                  withReuseIdentifier:[VFooterActivityIndicatorView reuseIdentifier]];
-    [self.collectionView registerNib:[VFooterActivityIndicatorView nibForSupplementaryView]
-          forSupplementaryViewOfKind:CHTCollectionElementKindSectionFooter
-                 withReuseIdentifier:[VFooterActivityIndicatorView reuseIdentifier]];
     
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
@@ -113,23 +110,6 @@
     
     [self.dependencyManager trackViewWillAppear:self];
     
-    const BOOL shouldRefresh = !self.refreshControl.isRefreshing && self.streamDataSource.count == 0;
-    if ( shouldRefresh )
-    {
-        const BOOL isPreLoaded = self.currentStream.streamItems.count > 0;
-        if ( isPreLoaded )
-        {
-            [self.streamDataSource loadPreloadedStreamWithCompletion:nil];
-        }
-        else
-        {
-            [self loadPage:VPageTypeFirst completion:^
-             {
-                 [self.refreshControl endRefreshing];
-             }];
-        }
-    }
-    
     if ( self.v_navigationController == nil && self.navigationController.navigationBarHidden )
     {
         [self.navigationController setNavigationBarHidden:NO animated:animated];
@@ -145,13 +125,6 @@
     if ( self.navigationBarShouldAutoHide )
     {
         [self addScrollDelegate];
-    }
-    
-    if ( self.streamDataSource.count != 0 )
-    {
-        // This is HIGHLY important to call because any deleted sequences that are still being displayed
-        // in the stream are ticking timebombs waiting to crash.
-        [self.streamDataSource removeDeletedItems];
     }
     
     // Adjust our scroll indicator insets to account for nav bar
@@ -294,24 +267,6 @@
         }
         return;
     }
-    
-    [self.refreshControl beginRefreshing];
-    
-    [self.streamDataSource loadPage:pageType completion:^(NSError *_Nullable error)
-     {
-         [self.streamTrackingHelper streamDidLoad:self.currentStream];
-         [self.appTimingStreamHelper endStreamLoadAppTimingEventsWithPageType:pageType];
-         
-         if ( [self.refreshControl isRefreshing] )
-         {
-             [self.refreshControl endRefreshing];
-         }
-         
-         if ( completion != nil )
-         {
-             completion();
-         }
-     }];
 }
 
 - (void)positionRefreshControl
@@ -384,19 +339,6 @@
     {
         return;
     }
-    
-    __weak typeof(self) welf = self;
-    
-    [self.streamDataSource loadPage:VPageTypeNext completion:^(NSError *_Nullable error)
-    {
-        if (error == nil)
-        {
-            [welf.collectionView flashScrollIndicators];
-        }
-        [welf.appTimingStreamHelper endStreamLoadAppTimingEventsWithPageType:VPageTypeNext];
-    }];
-    
-    [self.collectionView.collectionViewLayout invalidateLayout];
 }
 
 - (void)flashScrollIndicatorsWithDelay:(NSTimeInterval)delay

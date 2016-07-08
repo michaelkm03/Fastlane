@@ -8,7 +8,6 @@
 
 #import "VFollowedHashtag.h"
 #import "VHashtag.h"
-#import "VUser.h"
 
 @implementation VFollowedHashtag
 

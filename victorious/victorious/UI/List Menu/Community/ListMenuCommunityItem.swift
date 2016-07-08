@@ -10,14 +10,14 @@ import Foundation
 
 struct ListMenuCommunityItem {
     let title: String
-    let streamURL: String
+    let streamAPIPath: APIPath
     
-    init?(_ dependencyDictionary : [String: AnyObject]) {
+    init?(_ dependencyDictionary: [String: AnyObject]) {
         guard let title = dependencyDictionary["name"] as? String,
             let streamURL = dependencyDictionary["streamURL"] as? String else {
                 return nil
         }
         self.title = title
-        self.streamURL = streamURL
+        self.streamAPIPath = APIPath(templatePath: streamURL)
     }
 }

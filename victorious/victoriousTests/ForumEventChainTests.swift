@@ -15,7 +15,7 @@ class ForumEventChainTests: XCTestCase {
         let parent = MockReceiver()
         
         let event = createEvent()
-        parent.receiveEvent(event)
+        parent.receive(event)
         
         XCTAssertEqual(parent.receivedEvents.count, 1)
     }
@@ -27,7 +27,7 @@ class ForumEventChainTests: XCTestCase {
         
         let parent = MockReceiverWithChildren(children: [childA, childB, childC])
         let event = createEvent()
-        parent.receiveEvent(event)
+        parent.broadcast(event)
         
         XCTAssertEqual(childA.receivedEvents.count, 1)
         XCTAssertEqual(childB.receivedEvents.count, 1)
@@ -45,14 +45,13 @@ class ForumEventChainTests: XCTestCase {
         senderLinkC.nextSender = senderDestination
         
         let event = createEvent()
-        senderLinkA.sendEvent(event)
+        senderLinkA.send(event)
         
         XCTAssertEqual(senderDestination.sentEvents.count, 1)
     }
     
     func createEvent() -> ForumEvent {
-        eventIdCounter += 1
-        return ForumEventTestable(serverTime: NSDate(timeIntervalSince1970: 1234567890), internalIdentifier: eventIdCounter)
+        return .websocket(.connected)
     }
     
     func testPerformance() {
@@ -66,22 +65,10 @@ class ForumEventChainTests: XCTestCase {
         self.measureBlock() {
             for _ in 1...10000 {
                 let event = self.createEvent()
-                origin.receiveEvent(event)
+                origin.receive(event)
             }
         }
     }
-}
-
-private var eventIdCounter = 0
-
-// Internal struct made for testing the FEC (Forum Event Chain™).
-private struct ForumEventTestable: ForumEvent, Equatable {
-    let serverTime: NSDate
-    let internalIdentifier: Int
-}
-
-private func ==(lhs: ForumEventTestable, rhs: ForumEventTestable) -> Bool {
-    return lhs.internalIdentifier == rhs.internalIdentifier
 }
 
 private class MockTerminusSender: ForumEventSender {
@@ -89,7 +76,7 @@ private class MockTerminusSender: ForumEventSender {
     
     var nextSender: ForumEventSender?
     
-    func sendEvent(event: ForumEvent) {
+    func send(event: ForumEvent) {
         sentEvents.append(event)
     }
 }
@@ -101,7 +88,7 @@ private class MockLinkSender: ForumEventSender {
 private class MockReceiver: ForumEventReceiver {
     var receivedEvents = [ForumEvent]()
     
-    func receiveEvent(event: ForumEvent) {
+    func receive(event: ForumEvent) {
         receivedEvents.append(event)
     }
 }
@@ -112,6 +99,8 @@ private class MockReceiverWithChildren: ForumEventReceiver {
     var childEventReceivers: [ForumEventReceiver] {
         return children
     }
+    
+    private func receive(event: ForumEvent) {}
     
     init(children: [ForumEventReceiver] = []) {
         self.children = children

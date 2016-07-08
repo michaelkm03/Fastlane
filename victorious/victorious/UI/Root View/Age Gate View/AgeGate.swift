@@ -75,10 +75,6 @@ import Foundation
         return menuItems.filter() { AgeGate.authorizedMenuItemIdentifiers.contains($0.identifier) }
     }
     
-    static func filterMultipleContainerItems(containerChilds: [UIViewController]) -> [UIViewController] {
-        return containerChilds.filter() { !$0.isKindOfClass(VDiscoverContainerViewController) }
-    }
-    
     static func filterMoreButtonItems(items: [VActionItem]) -> [VActionItem] {
         return items.filter() { $0.title == NSLocalizedString("Report/Flag", comment: "") || $0.type != VActionItemType.Default }
     }

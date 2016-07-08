@@ -21,7 +21,6 @@
 
 // API
 #import "VTwitterAccountsHelper.h"
-#import "VUser.h"
 #import "VConstants.h"
 
 // Validation
@@ -35,7 +34,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 
 @interface VLoginFlowAPIHelper ()
 
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
+@property (nonatomic, readwrite, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, weak) UIViewController *viewControllerToPresentOn;
 
 // For forgot password

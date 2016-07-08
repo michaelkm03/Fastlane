@@ -38,7 +38,7 @@ final class SequenceRepostersRemoteOperation: RemoteFetcherOperation, PaginatedR
             // Load the persistent models (VUser) from the provided networking models (User)
             var reposters = [VUser]()
             for user in users {
-                let reposter: VUser = context.v_findOrCreateObject( [ "remoteId" : user.userID ] )
+                let reposter: VUser = context.v_findOrCreateObject( [ "remoteId" : user.id ] )
                 reposter.populate(fromSourceModel: user )
                 reposters.append( reposter )
             }

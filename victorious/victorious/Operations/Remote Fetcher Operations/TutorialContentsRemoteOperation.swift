@@ -27,7 +27,7 @@ final class TutorialContentsRemoteOperation: RemoteFetcherOperation {
         requestExecutor.executeRequest(request, onComplete: onComplete, onError: nil)
     }
     
-    private func onComplete(contents: [ViewedContent]) {
+    private func onComplete(contents: [Content]) {
         self.results = contents
     }
 }

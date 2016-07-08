@@ -10,7 +10,6 @@
 #import "VDependencyManager+VTracking.h"
 #import "VRootViewController.h"
 #import "VSessionTimer.h"
-#import "VTracking.h"
 #import "victorious-Swift.h"
 
 #define TEST_NEW_SESSION 0 // Set to '1' to start a new session by leaving the app for only 10 seconds.
@@ -33,7 +32,6 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
 @interface VSessionTimer ()
 
 @property (nonatomic) BOOL firstLaunch;
-@property (nonatomic) BOOL transitioningFromBackgroundToForeground;
 @property (nonatomic, readwrite) BOOL started;
 @property (nonatomic, strong) NSDate *sessionStartTime;
 @property (nonatomic, copy, readwrite) NSString *sessionID;
@@ -58,12 +56,9 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
     {
         return;
     }
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground:)  name:UIApplicationDidEnterBackgroundNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:)     name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive:)    name:UIApplicationWillResignActiveNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
     
-    self.transitioningFromBackgroundToForeground = YES;
     self.started = YES;
     self.firstLaunch = YES;
     [self sessionDidStart];
@@ -164,34 +159,20 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
 
 #pragma mark - NSNotification handlers
 
-- (void)applicationDidEnterBackground:(NSNotification *)notification
-{
-    [self trackApplicationBackground];
-    [self sessionDidEnd];
-}
-
 - (void)applicationDidBecomeActive:(NSNotification *)notification
 {
-    if (self.transitioningFromBackgroundToForeground)
+    if ( ![self shouldNewSessionStartNow] )
     {
-        self.transitioningFromBackgroundToForeground = NO;
-        if ( ![self shouldNewSessionStartNow] )
-        {
-            [[NSNotificationCenter defaultCenter] postNotificationName:VApplicationDidBecomeActiveNotification  object:self];
-        }
-        [self sessionDidStart];
+        [[NSNotificationCenter defaultCenter] postNotificationName:VApplicationDidBecomeActiveNotification object:self];
     }
+    [self sessionDidStart];
     [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:kSessionEndTimeDefaultsKey];
 }
 
 - (void)applicationWillResignActive:(NSNotification *)notification
 {
-    self.transitioningFromBackgroundToForeground = NO;
-}
-
-- (void)applicationWillEnterForeground:(NSNotification *)notification
-{
-    self.transitioningFromBackgroundToForeground = YES;
+    [self trackApplicationBackground];
+    [self sessionDidEnd];
 }
 
 @end

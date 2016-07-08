@@ -8,7 +8,6 @@
 
 #import "VContentViewViewModel.h"
 #import "VComment.h"
-#import "VUser.h"
 #import "VAsset.h"
 #import "VAnswer.h"
 #import "VPollResult.h"
@@ -17,7 +16,6 @@
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
 #import "VComment+Fetcher.h"
-#import "VUser.h"
 #import "NSString+VParseHelp.h"
 #import "VLargeNumberFormatter.h"
 #import "NSURL+MediaType.h"
@@ -55,7 +53,6 @@
         
         _sequence = context.sequence;
         _streamId = context.streamId ?: @"";
-        _trackingData = [_sequence streamItemPointerWithStreamID:_streamId].tracking;
         _dependencyManager = context.destinationDependencyManager;
         
         id<TimingTracker> timingTracker = [DefaultTimingTracker sharedInstance];

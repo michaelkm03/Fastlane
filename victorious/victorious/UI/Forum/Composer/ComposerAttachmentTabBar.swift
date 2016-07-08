@@ -10,7 +10,10 @@ import Foundation
 
 class ComposerAttachmentTabBar: VFlexBar {
     
-    private let buttonSideLength: CGFloat = 22
+    private struct Constants {
+        static let buttonSideLength: CGFloat = 22
+        static let expandedHeight: CGFloat = 53
+    }
     
     weak var delegate: ComposerAttachmentTabBarDelegate?
     
@@ -51,8 +54,8 @@ class ComposerAttachmentTabBar: VFlexBar {
             
             let button = ComposerAttachmentTabBarButton(navigationMenuItem: navigationMenuItem)
             button.translatesAutoresizingMaskIntoConstraints = false
-            button.v_addWidthConstraint(buttonSideLength)
-            button.v_addHeightConstraint(bounds.height)
+            button.v_addWidthConstraint(Constants.buttonSideLength)
+            button.v_addHeightConstraint(Constants.expandedHeight)
             button.addTarget(self, action: #selector(buttonPressed(_: )), forControlEvents: .TouchUpInside)
             actionItems.append(button)
             actionItems.append(ActionBarFlexibleSpaceItem.flexibleSpaceItem())
@@ -61,7 +64,7 @@ class ComposerAttachmentTabBar: VFlexBar {
         // Since every action item has an accompanying space item, we should have twice as
         // many action items as the max number of menu items to be properly laid out.
         while actionItems.count / 2 < maxNumberOfMenuItems {
-            actionItems.append(VActionBarFixedWidthItem(width: buttonSideLength))
+            actionItems.append(VActionBarFixedWidthItem(width: Constants.buttonSideLength))
             actionItems.append(ActionBarFlexibleSpaceItem.flexibleSpaceItem())
         }
         
@@ -83,8 +86,16 @@ class ComposerAttachmentTabBar: VFlexBar {
         }
     }
     
+    func enableButtonForIdentifier(identifier: String) {
+        for button in buttons() {
+            if (button.navigationMenuItem.identifier == identifier) {
+                button.enabled = true 
+            }
+        }
+    }
+    
     @objc private func buttonPressed(button: ComposerAttachmentTabBarButton) {
-        delegate?.composerAttachmentTabBar(self, didSelectNagiationItem: button.navigationMenuItem)
+        delegate?.composerAttachmentTabBar(self, didSelectNavigationItem: button.navigationMenuItem)
     }
     
     private func buttons() -> [ComposerAttachmentTabBarButton] {

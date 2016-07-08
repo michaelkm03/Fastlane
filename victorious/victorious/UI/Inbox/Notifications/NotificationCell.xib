@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
@@ -14,16 +14,16 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QUQ-UC-jqE" userLabel="Container View">
-                        <rect key="frame" x="12" y="6" width="296" height="84"/>
+                        <rect key="frame" x="12" y="4" width="296" height="88"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lah-z8-5d3" userLabel="Profile Shadow View">
-                                <rect key="frame" x="9" y="12" width="45" height="45"/>
+                                <rect key="frame" x="9" y="12" width="40" height="40"/>
                             </view>
                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qgV-KO-Ggl" userLabel="Profile Button" customClass="VDefaultProfileButton">
-                                <rect key="frame" x="9" y="12" width="45" height="45"/>
+                                <rect key="frame" x="9" y="12" width="40" height="40"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="45" id="7XI-UI-KdW"/>
-                                    <constraint firstAttribute="height" constant="45" id="jST-La-baC"/>
+                                    <constraint firstAttribute="width" constant="40" id="7XI-UI-KdW"/>
+                                    <constraint firstAttribute="height" constant="40" id="jST-La-baC"/>
                                 </constraints>
                                 <state key="normal" image="profile_full">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -33,18 +33,18 @@
                                 </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="message" lineBreakMode="wordWrap" numberOfLines="0" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zon-jL-8wU" userLabel="Message label" customClass="IntrinsicContentSizeHackLabel" customModule="victorious" customModuleProvider="target">
-                                <rect key="frame" x="63" y="15" width="224" height="20"/>
+                                <rect key="frame" x="58" y="15" width="229" height="20"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="253" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="1d" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EL9-An-auI">
-                                <rect key="frame" x="63" y="36" width="13" height="14"/>
+                                <rect key="frame" x="58" y="36" width="13" height="14"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                 <color key="textColor" red="0.27058823529999998" green="0.27058823529999998" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="0.25" alpha="0.10000000000000001" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="0.20000000000000001" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="EL9-An-auI" secondAttribute="bottom" constant="12" id="0wo-WP-7cl"/>
                             <constraint firstItem="zon-jL-8wU" firstAttribute="top" secondItem="qgV-KO-Ggl" secondAttribute="top" constant="3" id="71I-FK-CHP"/>
@@ -63,18 +63,14 @@
                     </view>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="bottom" secondItem="QUQ-UC-jqE" secondAttribute="bottom" constant="6" id="GwG-A4-deg"/>
-                    <constraint firstItem="QUQ-UC-jqE" firstAttribute="top" secondItem="Piw-pF-kIO" secondAttribute="top" constant="6" id="iWa-ia-DuN"/>
+                    <constraint firstAttribute="bottom" secondItem="QUQ-UC-jqE" secondAttribute="bottom" constant="4" id="GwG-A4-deg"/>
+                    <constraint firstItem="QUQ-UC-jqE" firstAttribute="top" secondItem="Piw-pF-kIO" secondAttribute="top" constant="4" id="iWa-ia-DuN"/>
                     <constraint firstItem="QUQ-UC-jqE" firstAttribute="leading" secondItem="Piw-pF-kIO" secondAttribute="leading" constant="12" id="imk-vg-Det"/>
                     <constraint firstAttribute="trailing" secondItem="QUQ-UC-jqE" secondAttribute="trailing" constant="12" id="mCI-MB-ELP"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="containerView" destination="QUQ-UC-jqE" id="YiE-KN-xPF"/>
-                <outlet property="containerViewBottomSpacingConstraint" destination="GwG-A4-deg" id="1Qk-yv-aSU"/>
-                <outlet property="containerViewLeftSpacingConstraint" destination="imk-vg-Det" id="s0Q-Lz-j9d"/>
-                <outlet property="containerViewRightSpacingConstraint" destination="mCI-MB-ELP" id="GwJ-ZJ-ijn"/>
-                <outlet property="containerViewTopSpacingConstraint" destination="iWa-ia-DuN" id="Ao5-Hv-CbA"/>
                 <outlet property="dateLabel" destination="EL9-An-auI" id="plD-8p-qDi"/>
                 <outlet property="messageLabel" destination="zon-jL-8wU" id="J1F-lh-GvH"/>
                 <outlet property="profileButton" destination="qgV-KO-Ggl" id="VGA-FT-FGW"/>

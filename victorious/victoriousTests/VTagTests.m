@@ -9,11 +9,11 @@
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 #import "VDependencyManager.h"
-#import "VUser.h"
 #import "VHashtag.h"
 #import "VTag.h"
 #import "VUserTag.h"
 #import "VDummyModels.h"
+#import "victorious-Swift.h"
 
 @interface VTagTests : XCTestCase
 

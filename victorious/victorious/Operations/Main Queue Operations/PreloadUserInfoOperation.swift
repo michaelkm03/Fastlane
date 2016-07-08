@@ -11,10 +11,14 @@ import Foundation
 /// Executes several sub operations that pre-load user info including conversations, poll responses,
 /// profile data, profile stream, etc.  Intended to be called just after login.
 class PreloadUserInfoOperation: BackgroundOperation {
-    
-    override init() {
+    private let dependencyManager: VDependencyManager
+
+    init(dependencyManager: VDependencyManager) {
+        self.dependencyManager = dependencyManager
         super.init()
     }
+    
+    private(set) var user: VUser?
     
     var persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
     
@@ -22,32 +26,33 @@ class PreloadUserInfoOperation: BackgroundOperation {
         super.start()
         beganExecuting()
         
-        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            guard let currentUser = VCurrentUser.user(inManagedObjectContext: context) else {
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { [weak self] context in
+            guard let strongSelf = self else {
                 return
             }
             
-            let apiPath = VStreamItem.apiPathForStreamWithUserID(currentUser.remoteId)
-            let userID = currentUser.remoteId.integerValue
+            guard
+                let userID = VCurrentUser.user(inManagedObjectContext: context)?.remoteId.integerValue,
+                let apiPath = self?.dependencyManager.networkResources?.userFetchAPIPath,
+                let infoOperation = UserInfoOperation(userID: userID, apiPath: apiPath)
+            else {
+                strongSelf.finishedExecuting()
+                return
+            }
             
-            StreamOperation(apiPath: apiPath).queue()
+            infoOperation.queue() { _ in
+                strongSelf.user = infoOperation.user
+                strongSelf.finishedExecuting()
+            }
             
-            UserInfoOperation(userID: userID).queue()
-            
-            PollResultSummaryByUserOperation(userID: userID).queue()
-            
-            ConversationListOperation().queue()
-            
-            FollowCountOperation(userID: currentUser.remoteId.integerValue).queue()
+            FollowCountOperation(userID: userID).queue()
 
             VPushNotificationManager.sharedPushNotificationManager().sendTokenWithSuccessBlock(nil, failBlock: nil)
             
-            UsersFollowedByUserOperation(userID: currentUser.remoteId.integerValue).queue()
+            UsersFollowedByUserOperation(userID: userID).queue()
             
             let request = HashtagSubscribedToListRequest(paginator: StandardPaginator(pageNumber: 1, itemsPerPage: 200))
             FollowedHashtagsRemoteOperation(request: request).queue()
         }
-        
-        finishedExecuting()
     }
 }

@@ -9,12 +9,22 @@
 import UIKit
 
 protocol CloseUpViewDelegate: class {
-    func didSelectProfile()
+    func didSelectProfileForUserID(userID: Int)
 }
 
-private let blurredImageAlpha: CGFloat = 0.5
 
 class CloseUpView: UIView, ConfigurableGridStreamHeader {
+    private struct Constants {
+        static let blurredImageAlpha = CGFloat(0.5)
+        static let relatedAnimationDuration = Double(1)
+        static let horizontalMargins = CGFloat(16)
+        static let verticalMargins = CGFloat(18)
+        static let cornerRadius = CGFloat(6)
+        static let topOffset = CGFloat(-20)
+        static let defaultAspectRatio = CGFloat(1)
+        static let blurRadius = CGFloat(12)
+    }
+    
     @IBOutlet weak var headerSection: UIView!
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var userNameButton: UIButton!
@@ -23,15 +33,14 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     @IBOutlet weak var captionLabel: UILabel!
     @IBOutlet weak var relatedLabel: UILabel!
     @IBOutlet weak var closeUpContentContainerView: UIView!
-    
-    private var videoPlayer: VVideoPlayer?
-    private let placeholderImage = UIImage(named: "profile_full")
-    private let horizontalMargins: CGFloat = 16
-    private let verticalMargins: CGFloat = 18
-    private let screenWidth = UIScreen.mainScreen().bounds.size.width
-    
     @IBOutlet weak var lightOverlayView: UIView!
     @IBOutlet weak var blurredImageView: UIImageView!
+    
+    private lazy var errorView: ErrorStateView = {
+       return ErrorStateView.v_fromNib()
+    }()
+    private var videoPlayer: VVideoPlayer?
+    private let placeholderImage = UIImage(named: "profile_full")
     
     weak var delegate: CloseUpViewDelegate?
     
@@ -40,84 +49,79 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     
     var dependencyManager: VDependencyManager! {
         didSet {
+            errorView.dependencyManager = dependencyManager.errorStateDependency
             configureFontsAndColors()
         }
     }
     
-    func height(for content: VContent?) -> CGFloat {
-        guard let content = content else {
+    func height(for content: ContentModel?) -> CGFloat {
+        guard let aspectRatio = content?.naturalMediaAspectRatio else {
             return 0
         }
-        let contentAspectRatio = content.aspectRatio
-        return min(screenWidth / contentAspectRatio, maxContentHeight - headerSection.bounds.size.height)
+        
+        return min(bounds.width / aspectRatio, maxContentHeight - headerSection.bounds.size.height)
     }
 
-    var content: VContent? {
+    var content: ContentModel? {
         didSet {
-            guard let content = content,
-                let author = content.author else {
-                    return
+            if oldValue?.id == content?.id {
+                return
+            }
+            guard let content = content else {
+                return
             }
             
-            setBackground(for: content)
+            let author = content.author
+            
             setHeader(for: content, author: author)
             
             // Header
             userNameButton.setTitle(author.name, forState: .Normal)
-            if let pictureURL = author.pictureURL(ofMinimumSize: profileImageView.frame.size) {
-                profileImageView.sd_setImageWithURL(pictureURL,
-                                                    placeholderImage: placeholderImage)
-            }
-            else {
+            
+            if let pictureURL = author.previewImageURL(ofMinimumSize: profileImageView.frame.size) {
+                profileImageView.sd_setImageWithURL(pictureURL, placeholderImage: placeholderImage)
+            } else {
                 profileImageView.image = placeholderImage
             }
+            
             let minWidth = UIScreen.mainScreen().bounds.size.width
             
-            if let preview = content.previewImageWithMinimumWidth(minWidth),
-                let remoteURL = NSURL(string: preview.imageURL) {
-                blurredImageView.applyBlurToImageURL(remoteURL, withRadius: 12.0) { [weak self] in
-                    self?.blurredImageView.alpha = blurredImageAlpha
+            if let previewURL = content.previewImageURL(ofMinimumWidth: minWidth) {
+                blurredImageView.applyBlurToImageURL(previewURL, withRadius: Constants.blurRadius) { [weak self] in
+                    self?.blurredImageView.alpha = Constants.blurredImageAlpha
                 }
             }
             
-            createdAtLabel.text = content.releasedAt.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds) ?? ""
-            captionLabel.text = content.title
-            mediaContentView.updateContent(content)
+            createdAtLabel.text = content.createdAt.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds) ?? ""
+            captionLabel.text = content.text
+            mediaContentView.content = content
             
             // Update size
             self.frame.size = sizeForContent(content)
         }
     }
     
-    func setHeader(for content: VContent, author: VUser ) {
+    func setHeader(for content: ContentModel, author: UserModel ) {
         userNameButton.setTitle(author.name, forState: .Normal)
-        if let pictureURL = author.pictureURL(ofMinimumSize: profileImageView.frame.size) {
-            profileImageView.sd_setImageWithURL(pictureURL,
-                                                placeholderImage: placeholderImage)
-        }
-        else {
+        
+        if let pictureURL = author.previewImageURL(ofMinimumSize: profileImageView.frame.size) {
+            profileImageView.sd_setImageWithURL(pictureURL, placeholderImage: placeholderImage)
+        } else {
             profileImageView.image = placeholderImage
         }
-        createdAtLabel.text = content.releasedAt.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds) ?? ""
-        captionLabel.text = content.title
-    }
-    
-    func setBackground(for content: VContent) {
-        let minWidth = UIScreen.mainScreen().bounds.size.width
-        if let preview = content.previewImageWithMinimumWidth(minWidth),
-            let remoteURL = NSURL(string: preview.imageURL) {
-            blurredImageView.applyBlurToImageURL(remoteURL, withRadius: 12.0) { [weak self] in
-                self?.blurredImageView.alpha = blurredImageAlpha
-            }
-        }
+        
+        createdAtLabel.text = content.createdAt.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds) ?? ""
+        captionLabel.text = content.text
     }
     
     @IBAction func selectedProfile(sender: AnyObject) {
-        delegate?.didSelectProfile()
+        guard let userID = content?.author.id else {
+            return
+        }
+        delegate?.didSelectProfileForUserID(userID)
     }
     
-    class func newWithDependencyManager(dependencyManager: VDependencyManager,
-                                        delegate: CloseUpViewDelegate? = nil) -> CloseUpView {
+    class func newWithDependencyManager(dependencyManager: VDependencyManager, delegate: CloseUpViewDelegate? = nil) -> CloseUpView {
         let view : CloseUpView = CloseUpView.v_fromNib()
         view.dependencyManager = dependencyManager
         view.delegate = delegate
@@ -125,15 +129,19 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     }
     
     override func awakeFromNib() {
+        addSubview(errorView)
+        
         profileImageView.layer.cornerRadius = profileImageView.frame.size.v_roundCornerRadius
-        closeUpContentContainerView.layer.cornerRadius = 6.0
+        closeUpContentContainerView.layer.cornerRadius = Constants.cornerRadius
         clearContent()
         
-        NSNotificationCenter.defaultCenter().addObserver(self,
-                                                         selector: #selector(closeUpDismissed),
-                                                         name: "closeUpDismissed",
-                                                         object: nil)
-        blurredImageView.alpha = blurredImageAlpha
+        NSNotificationCenter.defaultCenter().addObserver(
+            self,
+            selector: #selector(closeUpDismissed),
+            name: "closeUpDismissed",
+            object: nil
+        )
+        blurredImageView.alpha = Constants.blurredImageAlpha
     }
     
     func configureFontsAndColors() {
@@ -153,15 +161,25 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
         profileImageView.image = nil
         userNameButton.setTitle("", forState: .Normal)
         createdAtLabel.text = ""
+        relatedLabel.alpha = 0
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        if content == nil {
-            return
-        }
         
         var totalHeight = headerSection.bounds.size.height + headerSection.frame.origin.y
+        
+        if content == nil {
+            var bounds = self.bounds
+            bounds.size.height = bounds.size.height - relatedLabel.frame.size.height
+            errorView.frame = bounds
+            
+            var mediaContentViewFrame = mediaContentView.frame
+            mediaContentViewFrame.origin.y = totalHeight
+            mediaContentViewFrame.size.height = self.frame.size.height - totalHeight
+            mediaContentView.frame = mediaContentViewFrame
+            return
+        }
         
         // Content
         var mediaContentViewFrame = mediaContentView.frame
@@ -173,46 +191,53 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
         
         // Caption
         var frame = captionLabel.frame
-        frame.origin.y = totalHeight + verticalMargins
-        frame.size.width = screenWidth - 2 * horizontalMargins
+        frame.origin.y = totalHeight + Constants.verticalMargins
+        frame.size.width = bounds.size.width - 2 * Constants.horizontalMargins
         captionLabel.frame = frame
         captionLabel.sizeToFit()
         
     }
     
-    func sizeForContent(content: VContent) -> CGSize {
-        let contentHeight = height(for: content)
-        
-        if !contentHasTitle(content) {
+    func sizeForContent(content: ContentModel?) -> CGSize {
+        guard let content = content else {
+            let screenWidth = UIScreen.mainScreen().bounds.size.width
+            let aspectRatio = Constants.defaultAspectRatio
             return CGSize(
                 width: screenWidth,
+                height: screenWidth / aspectRatio
+            )
+        }
+        
+        let contentHeight = height(for: content)
+        let width = bounds.size.width
+        
+        if !contentHasText(content) {
+            return CGSize(
+                width: width,
                 height: headerSection.bounds.size.height + contentHeight + relatedLabel.bounds.size.height
             )
         }
         
         var frame = captionLabel.frame
-        frame.size.width = screenWidth - 2 * horizontalMargins
+        frame.size.width = width - 2 * Constants.horizontalMargins
         captionLabel.frame = frame
-        captionLabel.text = content.title
+        captionLabel.text = content.text
         captionLabel.sizeToFit()
         
         let totalHeight = headerSection.bounds.size.height +
             contentHeight +
             captionLabel.bounds.size.height +
-            2 * verticalMargins +
+            2 * Constants.verticalMargins +
             relatedLabel.bounds.size.height
         
         return CGSize(
-            width: screenWidth,
+            width: width,
             height: totalHeight
         )
     }
     
-    private func contentHasTitle(content: VContent) -> Bool {
-        guard let title = content.title else {
-            return false
-        }
-        return title.stringByTrimmingCharactersInSet(.whitespaceCharacterSet()).characters.count > 0
+    private func contentHasText(content: ContentModel) -> Bool {
+        return content.text?.stringByTrimmingCharactersInSet(.whitespaceCharacterSet()).characters.count > 0
     }
     
     @objc private func closeUpDismissed() {
@@ -223,21 +248,42 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
         }
     }
     
-    // MARK: - ConfigurableHeader
+    // MARK: - ConfigurableGridStreamHeader
     
-    func decorateHeader(dependencyManager: VDependencyManager,
-                        maxHeight: CGFloat,
-                        content: VContent?) {
+    func decorateHeader(dependencyManager: VDependencyManager, maxHeight: CGFloat, content: ContentModel?, hasError: Bool) {
         self.content = content
+        errorView.hidden = !hasError
+        closeUpContentContainerView.hidden = hasError
     }
     
-    func sizeForHeader(dependencyManager: VDependencyManager,
-                       maxHeight: CGFloat,
-                       content: VContent?) -> CGSize {
-        guard let content = content else {
-            return CGSizeZero
+    func sizeForHeader(dependencyManager: VDependencyManager, maxHeight: CGFloat, content: ContentModel?, hasError: Bool) -> CGSize {
+        if hasError {
+            let screenWidth = UIScreen.mainScreen().bounds.size.width
+            let aspectRatio = Constants.defaultAspectRatio
+            return CGSize(
+                width: screenWidth,
+                height: screenWidth / aspectRatio
+            )
         }
-        return sizeForContent(content)
+        else {
+            return sizeForContent(content)
+        }
+    }
+    
+    func headerWillAppear() {
+        mediaContentView.videoCoordinator?.playVideo()
+    }
+    
+    func headerDidDisappear() {
+        mediaContentView.videoCoordinator?.pauseVideo()
+    }
+    
+    func gridStreamDidUpdateDataSource(with items: [ContentModel]) {
+        dispatch_async(dispatch_get_main_queue(), {
+            UIView.animateWithDuration(Constants.relatedAnimationDuration, animations: {
+                self.relatedLabel.alpha = items.count == 0 ? 0 : 1
+            })
+        })
     }
 }
 
@@ -276,5 +322,9 @@ private extension VDependencyManager {
     
     var relatedText: String? {
         return stringForKey("related_text")
+    }
+    
+    var errorStateDependency: VDependencyManager? {
+        return childDependencyForKey("error.state")
     }
 }

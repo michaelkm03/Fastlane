@@ -51,7 +51,7 @@ class LoginRequestTests: XCTestCase {
         do {
             let response = try loginRequest.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(response.token, "a787304ffd2cfcbc67edf0f628a030abdcf1808d")
-            XCTAssertEqual(response.user.userID, 156)
+            XCTAssertEqual(response.user.id, 156)
             XCTAssertEqual(response.user.name, "Joe")
             XCTAssertEqual(response.user.email, "joe@example.com")
         } catch {

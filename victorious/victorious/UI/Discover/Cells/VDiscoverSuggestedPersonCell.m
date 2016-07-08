@@ -110,17 +110,11 @@
 
 - (void)updateFollowingAnimated:(BOOL)animated
 {
-    self.followControl.hidden = [self.user isCurrentUser];
-    VFollowControlState controlState = [VFollowControl controlStateForFollowing:self.user.isFollowedByMainUser.boolValue];
-    [self.followControl setControlState:controlState animated:animated];
 }
 
 - (IBAction)onFollow:(VFollowControl *)sender
 {
-    NSInteger userId = self.user.remoteId.integerValue;
-    NSString *sourceScreenName = VFollowSourceScreenDiscoverSuggestedUsers;
-    FetcherOperation *operation = [[FollowUserToggleOperation alloc] initWithUserID:userId  sourceScreenName:sourceScreenName];
-    [operation queueWithCompletion:nil];
+    // FollowUserOperation/FollowUserToggleOperation not supported in 5.0
 }
 
 @end

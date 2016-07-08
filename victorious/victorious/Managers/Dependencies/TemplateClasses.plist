@@ -29,7 +29,7 @@
 	<key>translucent.background</key>
 	<string>VTranslucentBackground</string>
 	<key>blurredImage.background</key>
-	<string>VBlurredImageBackground</string>
+	<string>victorious.SystemBlurredImageBackground</string>
 	<key>solidColor.background</key>
 	<string>VSolidColorBackground</string>
 	<key>gradient.background</key>
@@ -104,6 +104,8 @@
 	<string>VTabMenuShim</string>
 	<key>stream.screen</key>
 	<string>VStreamCollectionViewController</string>
+	<key>closeupview.screen</key>
+	<string>victorious.CloseUpContainerViewController</string>
 	<key>likedContentStream.screen</key>
 	<string>VLikedContentStreamCollectionViewController</string>
 	<key>hashtagStream.screen</key>
@@ -146,8 +148,6 @@
 	<string>victorious.VNewProfileViewController</string>
 	<key>settings.screen</key>
 	<string>VSettingsViewController</string>
-	<key>discover.screen</key>
-	<string>VDiscoverContainerViewController</string>
 	<key>comments.screen</key>
 	<string>victorious.CommentsViewController</string>
 	<key>collections.directoryCell</key>
@@ -188,33 +188,41 @@
 	<string>VForcedWorkspaceContainerViewController</string>
 	<key>publish.screen</key>
 	<string>VPublishViewController</string>
-	<key>userHashtagSearch.screen</key>
-	<string>DiscoverSearchViewController</string>
 	<key>standard.badgeView</key>
 	<string>victorious.AvatarLevelBadgeView</string>
-	<key>explore.screen</key>
-	<string>victorious.VExploreViewController</string>
 	<key>trendingTopic.shelf</key>
 	<string>victorious.TrendingTopicShelfFactory</string>
 	<key>levelUp.interstitial</key>
 	<string>victorious.LevelUpViewController</string>
 	<key>animated.badgeView</key>
 	<string>victorious.AnimatedBadgeView</string>
-	<key>vip.screen</key>
+	<key>vipPaygate.screen</key>
 	<string>VIPFlowNavigationController</string>
 	<key>trophyCase.screen</key>
 	<string>victorious.TrophyCaseViewController</string>
 	<key>trophyCase.achievement</key>
 	<string>victorious.Achievement</string>
 	<key>webSocket.networkLayer</key>
-	<string>victorious.WebSocketNetworkAdapter</string>
+	<string>victorious.WebSocketForumNetworkSource</string>
+	<key>REST.networkLayer</key>
+	<string>victorious.RESTForumNetworkSource</string>
 	<key>statusUpdate.interstitial</key>
 	<string>victorious.InterstitialAlertViewController</string>
 	<key>listMenu.screen</key>
 	<string>victorious.ListMenuViewController</string>
-	<key>toast.interstitial</key>
+	<key>standard.error.toast</key>
 	<string>victorious.InterstitialToastViewController</string>
 	<key>tutorial.screen</key>
 	<string>victorious.TutorialViewController</string>
+	<key>imageOnImage.button</key>
+	<string>VImageOnImageButton</string>
+	<key>imageOnColor.button</key>
+	<string>VImageOnColorButton</string>
+	<key>textOnImage.button</key>
+	<string>VTextOnImageButton</string>
+	<key>textOnColor.button</key>
+	<string>VTextOnColorButton</string>
+	<key>push.notifications.screen</key>
+	<string>victorious.NotificationSettingsViewController</string>
 </dict>
 </plist>

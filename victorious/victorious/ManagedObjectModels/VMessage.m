@@ -9,7 +9,6 @@
 #import "VMessage.h"
 #import "VConversation.h"
 #import "VNotification.h"
-#import "VUser.h"
 
 
 @implementation VMessage

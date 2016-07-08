@@ -8,7 +8,6 @@
 
 #import "VConversation+UnreadMessageCount.h"
 #import "VMessage.h"
-#import "VUser.h"
 
 @implementation VConversation (UnreadMessageCount)
 

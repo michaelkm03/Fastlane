@@ -9,91 +9,107 @@
 import UIKit
 
 class ContentPreviewView: UIView {
-    // Change to actual assets
-    private let kPlayButtonPlayImageName = "directory_play_btn"
-    private let playButtonSize: CGFloat = 30
-    private let vipMargins: CGFloat = 6
-    
+
+    private struct Constants {
+        // Change to actual assets
+        static let playButtonPlayImageName = "directory_play_btn"
+        static let playButtonSize = CGSize(width: 30, height: 30)
+        
+        static let loadingColor = UIColor.whiteColor().colorWithAlphaComponent(0.2)
+        static let imageViewBlurEffectRadius: CGFloat = 6.0
+        
+        static let vipMargins: CGFloat = 6
+        static let vipSize = CGSize(width: 30, height: 30)
+    }
+
     let previewImageView = UIImageView()
-    let vipImageView: UIView
+    let vipIcon = UIImageView()
     let playButton: UIView
     
-    init() {
+    var dependencyManager: VDependencyManager? {
+        didSet {
+            if
+                let dependencyManager = dependencyManager
+                where dependencyManager != oldValue
+            {
+                vipIcon.image = dependencyManager.vipIcon
+            }
+        }
+    }
+    
+    override func layoutSubviews() {
+        previewImageView.frame = self.bounds
         
+        playButton.frame = CGRect(
+            origin: CGPoint(x: bounds.center.x - Constants.playButtonSize.width/2, y: bounds.center.y - Constants.playButtonSize.height/2),
+            size: Constants.playButtonSize
+        )
+
+        vipIcon.frame = CGRect(
+            origin: CGPoint(x: Constants.vipMargins, y: bounds.size.height - Constants.vipSize.height - Constants.vipMargins),
+            size: Constants.vipSize
+        )
+    }
+    
+    init() {
         /// Play Button
-        playButton = UIImageView(image: UIImage(named: kPlayButtonPlayImageName))
+        playButton = UIImageView(image: UIImage(named: Constants.playButtonPlayImageName))
         playButton.contentMode = UIViewContentMode.ScaleAspectFill
         
-        /// VIP icon
-        let label = UILabel()
-        label.text = "VIP"
-        label.textColor = .whiteColor()
-        vipImageView = label
-        
         super.init(frame: CGRectZero)
-        backgroundColor = .clearColor()
+        backgroundColor = Constants.loadingColor
+        previewImageView.backgroundColor = .clearColor()
         
         /// Preview Image View
-        previewImageView.contentMode = UIViewContentMode.ScaleAspectFill
+        previewImageView.contentMode = .ScaleAspectFill
         addSubview(previewImageView)
-        v_addFitToParentConstraintsToSubview(previewImageView)
         
-        addSubview(vipImageView)
-        v_addPinToLeadingEdgeToSubview(
-            vipImageView,
-            leadingMargin: vipMargins)
-        v_addPinToBottomToSubview(
-            vipImageView,
-            bottomMargin: vipMargins)
-        
+        addSubview(vipIcon)
+        vipIcon.contentMode = .ScaleAspectFit
         addSubview(playButton)
-        v_addCenterToParentContraintsToSubview(playButton)
-        playButton.v_addWidthConstraint(playButtonSize)
-        playButton.v_addHeightConstraint(playButtonSize)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    var content: VContent? {
+    var content: ContentModel? {
         didSet {
             guard let content = content else {
-                assertionFailure("Content cannot be nil")
+                assertionFailure("Content cannot be nil in ContentPreviewView.")
                 return
             }
             setupForContent(content)
         }
     }
     
-    private func setupForContent(content: VContent) {
-        guard let preview = content.largestPreviewAsset(),
-            let previewImageURL = NSURL(string: preview.imageURL) else {
-                return
-        }
+    private func setupForContent(content: ContentModel) {
+        let userCanViewContent = VCurrentUser.user()?.canView(content) == true
+        vipIcon.hidden = userCanViewContent
         
-        let userIsVIP = VCurrentUser.user()?.isVIPValid() ?? false
-        let contentIsForVIPOnly = content.isVIP?.boolValue ?? false
-        if !userIsVIP && contentIsForVIPOnly {
-            vipImageView.hidden = false
-            previewImageView.applyBlurToImageURL(previewImageURL, withRadius: 6.0) { [weak self] in
-                self?.previewImageView.alpha = 1
+        if let previewImageURL = content.previewImageURL(ofMinimumWidth: bounds.size.width) {
+            if !userCanViewContent {
+                previewImageView.applyBlurToImageURL(previewImageURL, withRadius: Constants.imageViewBlurEffectRadius) { [weak self] in
+                    self?.previewImageView.alpha = 1
+                }
             }
-        } else {
-            vipImageView.hidden = true
-            previewImageView.sd_setImageWithURL(previewImageURL)
+            else {
+                previewImageView.sd_setImageWithURL(previewImageURL)
+            }
+        }
+        else {
+            previewImageView.image = nil
         }
         
-        guard let contentType = content.contentType() else {
-            playButton.hidden = true
-            return
+        switch content.type {
+            case .video: playButton.hidden = false
+            case .text, .link, .gif, .image: playButton.hidden = true
         }
-        
-        switch contentType {
-        case .video:
-            playButton.hidden = false
-        case .gif, .image:
-            playButton.hidden = true
-        }
+    }
+}
+
+private extension VDependencyManager {
+    var vipIcon: UIImage? {
+        return imageForKey("icon.vip")
     }
 }

@@ -10,9 +10,9 @@
 #import <XCTest/XCTest.h>
 #import "VTagSensitiveTextView.h"
 #import "VDummyModels.h"
-#import "VUser.h"
 #import "VHashtag.h"
 #import "VTagStringFormatter.h"
+#import "victorious-Swift.h"
 
 @interface VTagSensitiveTextViewTests : XCTestCase <VTagSensitiveTextViewDelegate>
 

@@ -14,7 +14,7 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
     // MARK: - Configuration
     
     private static let estimatedBarButtonWidth: CGFloat = 60.0
-    private static let userPictureNavButtonSize = CGSize(width: 32.0, height: 32.0)
+    private static let userPictureNavButtonSize = CGSize(width: 30.0, height: 30.0)
     
     // MARK: - Initializing
     
@@ -23,7 +23,7 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
         
         let leftViewController = dependencyManager.viewControllerForKey("leftNavigation")
         let centerViewController = dependencyManager.viewControllerForKey("centerScreen")
-        let rightNavViewController = dependencyManager.viewControllerForKey("rightNavigation") as? RightNavViewController
+        let rightNavViewController = dependencyManager.viewControllerForKey("rightNavigation")
         
         if leftViewController == nil || centerViewController == nil {
             assertionFailure("`SideNavScaffoldViewController` requires `leftNavigation` and `centerScreen` subcomponents.")
@@ -60,9 +60,7 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
         sideMenuController.didMoveToParentViewController(self)
         
         dependencyManager.applyStyleToNavigationBar(mainNavigationController.innerNavigationController.navigationBar)
-        
-        InterstitialManager.sharedInstance.interstitialListener = self
-        
+
         let navigationBar = mainNavigationController.innerNavigationController.navigationBar
         let backArrowImage = UIImage(named: "BackArrow")
         navigationBar.backIndicatorImage = backArrowImage
@@ -83,12 +81,12 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
         
         performCommonInitialSetup()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(loggedInStatusDidChange(_: )), name: kLoggedInChangedNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(loggedInStatusDidChange), name: kLoggedInChangedNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(mainFeedFilterDidChange), name: RESTForumNetworkSource.updateStreamURLNotification, object: nil)
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
         if !AgeGate.isAnonymousUser() && !hasPerformedFirstLaunchSetup {
             hasPerformedFirstLaunchSetup = true
             performSetup()
@@ -164,7 +162,7 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
     let centerViewController: UIViewController?
     
     /// The view controller that displays the right navigation area.
-    let rightNavViewController: RightNavViewController?
+    let rightNavViewController: UIViewController?
     
     // MARK: - Actions
     
@@ -179,7 +177,13 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
     private var allowsRightNavigation = true
     
     @objc private func rightNavButtonWasPressed() {
-        if let rightNavViewController = rightNavViewController where allowsRightNavigation {
+        
+        guard allowsRightNavigation else {
+            return
+        }
+        
+        if let rightNavViewController = rightNavViewController {
+            allowsRightNavigation = false
             mainNavigationController.innerNavigationController.pushViewController(rightNavViewController, animated: true)
         }
     }
@@ -197,8 +201,12 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
     
     // MARK: - Notifications
     
-    func loggedInStatusDidChange(notification: NSNotification) {
+    private dynamic func loggedInStatusDidChange(notification: NSNotification) {
         handleLoggedInStatusChange()
+    }
+    
+    private dynamic func mainFeedFilterDidChange(notification: NSNotification) {
+        sideMenuController.closeSideViewController(animated: true)
     }
     
     // MARK: - KVO
@@ -231,21 +239,6 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
             } else {
                 return viewController as? VNavigationDestination
             }
-        }
-    }
-    
-    func navigate(to destination: UIViewController, animated: Bool) {
-        if destination === sideMenuController.leftViewController {
-            sideMenuController.openSideViewController(on: .left, animated: animated)
-        }
-        else if destination === sideMenuController.rightViewController || destination === rightNavViewController {
-            sideMenuController.openSideViewController(on: .right, animated: animated)
-        }
-        else if destination === sideMenuController.centerViewController {
-            sideMenuController.closeSideViewController(animated: animated)
-        }
-        else {
-            mainNavigationController.innerNavigationController.pushViewController(destination, animated: animated)
         }
     }
     
@@ -285,45 +278,11 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
         return CGRectZero
     }
     
-    // MARK: - VDeeplinkSupporter
-    
-    func deepLinkHandlerForURL(url: NSURL) -> VDeeplinkHandler {
-        let contentDeepLinkHandler = VContentDeepLinkHandler(dependencyManager: dependencyManager)
-        
-        if contentDeepLinkHandler.canDisplayContentForDeeplinkURL(url) {
-            return contentDeepLinkHandler
-        }
-        
-        let profileDeepLinkHandler = VProfileDeeplinkHandler(dependencyManager: dependencyManager)
-        
-        if profileDeepLinkHandler.canDisplayContentForDeeplinkURL(url) {
-            return profileDeepLinkHandler
-        }
-        
-        return self
-    }
-    
-    // MARK: - VDeeplinkHandler
-    
-    func displayContentForDeeplinkURL(url: NSURL, completion: VDeeplinkHandlerCompletionBlock?) {
-        // Side nav scaffold doesn't display any content itself at the moment.
-        completion?(false, nil)
-    }
-    
-    func canDisplayContentForDeeplinkURL(url: NSURL) -> Bool {
-        return false
-    }
-    
-    var requiresAuthorization: Bool {
-        return false
-    }
-    
     // MARK: - VNavigationControllerDelegate
     
     func navigationController(navigationController: VNavigationController, willShowViewController viewController: UIViewController, animated: Bool) {
         sideMenuController.panningIsEnabled = navigationController.innerNavigationController.viewControllers.count <= 1
         viewController.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
-        allowsRightNavigation = false
     }
     
     func navigationController(navigationController: VNavigationController, didShowViewController viewController: UIViewController, animated: Bool) {

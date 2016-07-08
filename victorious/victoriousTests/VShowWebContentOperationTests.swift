@@ -18,15 +18,18 @@ class VShowWebContentOperationTests: BasePersistentStoreTestCase {
         window.rootViewController = rootViewController
         window.makeKeyAndVisible()
         
-        let operation = ShowWebContentOperation(
-            originViewController: presentingViewController,
-            title: title,
-            createFetchOperation: { MockFetchWebContentOperation() },
-            forceModal: forceModal,
-            animated: false
-        )
-        
+        let operation = ShowWebContentOperation(originViewController: rootViewController, type: .PrivacyPolicy, forceModal: forceModal, animated: false, dependencyManager: createDummyDependencyManager())
         operation.start()
+    }
+    
+    private func createDummyDependencyManager() -> VDependencyManager {
+        return VDependencyManager(parentManager: nil,
+                                  configuration:
+                                    [
+                                        "tosURL" : (NSBundle(forClass: VShowWebContentOperationTests.self).URLForResource("tos", withExtension: "html")!.absoluteString),
+                                        "privacyURL" : NSBundle(forClass: VShowWebContentOperationTests.self).URLForResource("PrivacyPolicy", withExtension: "html")!.absoluteString
+                                    ],
+                                  dictionaryOfClassesByTemplateName: nil)
     }
     
     func testPushesToNavigationController() {
@@ -41,7 +44,6 @@ class VShowWebContentOperationTests: BasePersistentStoreTestCase {
         XCTAssertEqual(navigationController.viewControllers.count, 2)
         XCTAssertEqual(navigationController.viewControllers.first, presentingViewController)
         XCTAssert(navigationController.viewControllers.last is VWebContentViewController)
-        XCTAssertEqual(navigationController.viewControllers.last?.title, "Navigation Web Content")
     }
     
     func testPresentsModally() {
@@ -58,7 +60,6 @@ class VShowWebContentOperationTests: BasePersistentStoreTestCase {
         
         XCTAssertEqual(navigationController.viewControllers.count, 1)
         XCTAssert(navigationController.viewControllers.first is VWebContentViewController)
-        XCTAssertEqual(navigationController.viewControllers.first?.title, "Modal Web Content")
     }
     
     func testForceModal() {
@@ -77,16 +78,5 @@ class VShowWebContentOperationTests: BasePersistentStoreTestCase {
         
         XCTAssertEqual(presentedNavigationController.viewControllers.count, 1)
         XCTAssert(presentedNavigationController.viewControllers.first is VWebContentViewController)
-        XCTAssertEqual(presentedNavigationController.viewControllers.first?.title, "Forced Modal Web Content")
-    }
-}
-
-private class MockFetchWebContentOperation: FetchWebContentOperation {
-    private override var publicBaseURL: NSURL {
-        return NSURL(string: "http://apple.com")!
-    }
-    
-    override func main() {
-        resultHTMLString = "<p>yo</p>"
     }
 }

@@ -95,7 +95,7 @@ static NSString * const kAvatarBadgeLevelViewKey = @"avatarBadgeLevelView";
              return;
          }
 
-         [strongSelf setImage:image forState:UIControlStateNormal];
+         [strongSelf setImage:[image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
      }];
 }
 
@@ -114,7 +114,7 @@ static NSString * const kAvatarBadgeLevelViewKey = @"avatarBadgeLevelView";
     else if ( self.levelBadgeView != nil )
     {
         [self.levelBadgeView updateBadgeForUser:self.user];
-        self.levelBadgeView.avatarBadgeType = [self.user badgeType];
+        self.levelBadgeView.avatarBadgeType = self.user.avatarBadgeType;
         self.levelBadgeView.levelBadgeImageType = self.levelBadgeImageType;
         [self setNeedsLayout];
     }

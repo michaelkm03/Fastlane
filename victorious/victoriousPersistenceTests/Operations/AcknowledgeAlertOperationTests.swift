@@ -16,7 +16,7 @@ class AlertAcknowledgeOperationTests: BaseFetcherOperationTestCase {
     
     override func setUp() {
         super.setUp()
-        operation = AlertAcknowledgeOperation(alertID: 5)
+        operation = AlertAcknowledgeOperation(alertID: "5")
         operation.requestExecutor = testRequestExecutor
     }
     

@@ -7,7 +7,6 @@
 //
 
 #import "VNotification.h"
-#import "VUser.h"
 
 
 @implementation VNotification

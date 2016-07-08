@@ -7,7 +7,6 @@
 //
 
 #import "VHashtag.h"
-#import "VUser.h"
 
 
 @implementation VHashtag

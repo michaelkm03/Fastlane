@@ -32,8 +32,8 @@ class TutorialContentsRequestTests: XCTestCase {
             let results = try request.parseResponse(NSURLResponse(), toRequest: request.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             
             XCTAssertEqual(results.count, 2)
-            XCTAssertEqual(results.first?.content.id, "20711")
-            XCTAssertEqual(results.last?.content.id, "20712")
+            XCTAssertEqual(results.first?.id, "20711")
+            XCTAssertEqual(results.last?.id, "20712")
         } catch {
             XCTFail("Parse Response Failed.")
         }

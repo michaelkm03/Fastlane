@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="K6M-ZV-Lef">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="K6M-ZV-Lef">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
@@ -23,7 +23,15 @@
                                     <segue destination="prN-jb-br1" kind="embed" id="Otl-YM-ShP"/>
                                 </connections>
                             </containerView>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n69-dn-iF9" userLabel="Stage Container" customClass="VPassthroughContainerView">
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VnG-XF-1UH">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="222"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="Jkv-m2-mJu">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="222"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                </view>
+                                <blurEffect style="light"/>
+                            </visualEffectView>
+                            <containerView opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n69-dn-iF9" userLabel="Stage Container" customClass="VPassthroughContainerView">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="222"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -43,13 +51,17 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="VnG-XF-1UH" firstAttribute="top" secondItem="n69-dn-iF9" secondAttribute="top" id="0ub-S5-pm0"/>
+                            <constraint firstItem="VnG-XF-1UH" firstAttribute="trailing" secondItem="n69-dn-iF9" secondAttribute="trailing" id="3As-vz-4Kg"/>
                             <constraint firstItem="dCr-Dr-Gbg" firstAttribute="top" secondItem="fFi-e4-tGY" secondAttribute="bottom" id="BZ2-du-KRo"/>
                             <constraint firstItem="n69-dn-iF9" firstAttribute="leading" secondItem="BWd-6Y-0dE" secondAttribute="leading" id="Bxu-bP-hLS"/>
                             <constraint firstItem="3Ba-Yb-hke" firstAttribute="top" secondItem="fFi-e4-tGY" secondAttribute="bottom" id="C44-0J-vef"/>
                             <constraint firstItem="3Ba-Yb-hke" firstAttribute="leading" secondItem="BWd-6Y-0dE" secondAttribute="leading" id="EEf-Ia-4f1"/>
                             <constraint firstAttribute="trailing" secondItem="3Ba-Yb-hke" secondAttribute="trailing" id="PeR-kp-NBy"/>
                             <constraint firstItem="dCr-Dr-Gbg" firstAttribute="leading" secondItem="BWd-6Y-0dE" secondAttribute="leading" id="Zzy-xi-Pl3"/>
+                            <constraint firstItem="VnG-XF-1UH" firstAttribute="leading" secondItem="n69-dn-iF9" secondAttribute="leading" id="cPr-hE-SH1"/>
                             <constraint firstAttribute="trailing" secondItem="dCr-Dr-Gbg" secondAttribute="trailing" id="dEJ-UD-VhO"/>
+                            <constraint firstItem="VnG-XF-1UH" firstAttribute="bottom" secondItem="n69-dn-iF9" secondAttribute="bottom" id="g9S-0f-0UA"/>
                             <constraint firstItem="xTF-ZG-in5" firstAttribute="top" secondItem="3Ba-Yb-hke" secondAttribute="bottom" id="oJ6-PG-gRc"/>
                             <constraint firstAttribute="trailing" secondItem="n69-dn-iF9" secondAttribute="trailing" id="sNe-r4-gdn"/>
                             <constraint firstItem="n69-dn-iF9" firstAttribute="top" secondItem="fFi-e4-tGY" secondAttribute="bottom" id="upL-BX-9P1"/>

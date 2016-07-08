@@ -9,6 +9,11 @@
                        "38",
                        "42"
                        ],
+    "main_stage": {
+        "content_id": "21253",
+        "section": "main_stage",
+        "start_time": 13532432414321
+    },
     "payload": {
         "viewed_contents": [
                             {
@@ -74,7 +79,7 @@
                             "name": "vincenth",
                             "profile_location": "",
                             "profile_tagline": "",
-                            "access_level": "API_USER",
+                            "access_level": "api_user",
                             "app_id": 1,
                             "parent_login_id": 6097,
                             "preview": {
@@ -187,7 +192,7 @@
                             "name": "vincenth",
                             "profile_location": "",
                             "profile_tagline": "",
-                            "access_level": "API_USER",
+                            "access_level": "api_user",
                             "app_id": 1,
                             "parent_login_id": 6097,
                             "preview": {

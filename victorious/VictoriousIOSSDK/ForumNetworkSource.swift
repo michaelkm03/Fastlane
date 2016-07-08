@@ -30,13 +30,21 @@ public protocol ForumNetworkSource: ForumEventReceiver, ForumEventSender {
     /// The receiver will close any connections open and clean up after itself.
     ///
     func tearDown()
+    
+    /// Whether the network source is set-up and ready to use or not.
+    var isSetUp: Bool { get }
+}
+
+extension ForumNetworkSource {
+    /// Calls `setUp` if `isSetUp` returns false.
+    public func setUpIfNeeded() {
+        if !isSetUp {
+            setUp()
+        }
+    }
 }
 
 public protocol ForumNetworkSourceWebSocket: ForumNetworkSource {
-    
-    /// A flag that tells if the connection is open and ready to use.
-    var isConnected: Bool { get }
-    
     /// Used for tracking trafic over the websocket to a particular device. Should be set before messages are sent.
     func setDeviceID(deviceID: String)
     

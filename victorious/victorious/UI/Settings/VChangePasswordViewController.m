@@ -7,7 +7,6 @@
 //
 
 #import "VChangePasswordViewController.h"
-#import "VUser.h"
 #import "VConstants.h"
 #import "VPasswordValidator.h"
 #import "VButton.h"

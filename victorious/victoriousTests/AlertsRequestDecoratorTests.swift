@@ -37,7 +37,7 @@ class AlertsRequestDecoratorTests: XCTestCase {
             
             continueAfterFailure = false
             XCTAssertEqual(result.alerts.count, 1)
-            XCTAssertEqual(result.alerts[0].alertID, 2475)
+            XCTAssertEqual(result.alerts[0].alertID, "2475")
             
         } catch {
             XCTFail("Sorry, parseResponse should not throw here")

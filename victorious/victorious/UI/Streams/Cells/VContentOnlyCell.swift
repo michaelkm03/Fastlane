@@ -9,10 +9,11 @@
 import UIKit
 
 /// A collection view cell that only shows a stream item's content.
-class VContentOnlyCell: UICollectionViewCell {
+class VContentOnlyCell: UICollectionViewCell, ContentCell {
     // MARK: - Constants
     
     private static let cornerRadius: CGFloat = 6.0
+    private static let highlightAlpha: CGFloat = 0.2
     
     // MARK: - Initializing
     
@@ -27,86 +28,56 @@ class VContentOnlyCell: UICollectionViewCell {
     }
     
     private func setup() {
-        // Prevents UICollectionView from complaining about constraints "ambiguously suggesting a size of zero".
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addConstraint(NSLayoutConstraint(item: contentView, attribute: .Width,  relatedBy: .GreaterThanOrEqual, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: 1.0))
-        contentView.addConstraint(NSLayoutConstraint(item: contentView, attribute: .Height, relatedBy: .GreaterThanOrEqual, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: 1.0))
-        
-        clipsToBounds = true
-        layer.cornerRadius = VContentOnlyCell.cornerRadius
+        contentView.clipsToBounds = true
+        contentView.layer.cornerRadius = VContentOnlyCell.cornerRadius
     }
     
-    // MARK: - Sequence/ViewedContent
+    // MARK: - Content
     
-    func setStreamItem(streamItem: VStreamItem?) {
-        if let streamItem = streamItem {
-            self.streamItem = streamItem
-            self.content = nil
+    var content: ContentModel? {
+        didSet {
+            updatePreviewView()
         }
-        updatePreviewView()
     }
-    
-    func setContent(content: VContent?) {
-        if let content = content {
-            self.content = content
-            self.streamItem = nil
-        }
-        updatePreviewView()
-    }
-    
-    private var streamItem: VStreamItem?
-    private var content: VContent?
     
     // MARK: - Dependency manager
     
-    var dependencyManager: VDependencyManager?
+    var dependencyManager: VDependencyManager? {
+        didSet {
+            if dependencyManager != nil && dependencyManager != oldValue {
+                contentPreviewView.dependencyManager = dependencyManager
+            }
+        }
+    }
     
     // MARK: - Views
     
-    private var streamItemPreviewView: VStreamItemPreviewView?
     private var contentPreviewView = ContentPreviewView()
     
     private func updatePreviewView() {
-        if streamItem == nil && content == nil {
-            streamItemPreviewView?.removeFromSuperview()
-            contentPreviewView.removeFromSuperview()
+        guard let content = content else {
             return
         }
         
-        if let streamItem = streamItem {
-            contentPreviewView.removeFromSuperview()
-            if streamItemPreviewView?.canHandleStreamItem(streamItem) == true {
-                streamItemPreviewView?.streamItem = streamItem
-            }
-            else {
-                streamItemPreviewView?.removeFromSuperview()
-                
-                let newPreviewView = VStreamItemPreviewView(streamItem: streamItem)
-                newPreviewView.onlyShowPreview = true
-                newPreviewView.dependencyManager = dependencyManager
-                newPreviewView.streamItem = streamItem
-                contentView.addSubview(newPreviewView)
-                
-                streamItemPreviewView = newPreviewView
-                
-                setNeedsLayout()
-            }
-        }
-        else if let content = content {
-            streamItemPreviewView?.removeFromSuperview()
-            addSubview(contentPreviewView)
-            v_addFitToParentConstraintsToSubview(contentPreviewView)
-            contentPreviewView.backgroundColor = .blackColor()
-            contentPreviewView.content = content
-        }
+        setNeedsLayout()
+        layoutIfNeeded()
         
+        contentView.addSubview(contentPreviewView)
+        contentPreviewView.content = content
     }
     
-    // MARK: Layout
+    // MARK: - View Lifecycle
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        contentView.frame = bounds
-        streamItemPreviewView?.frame = contentView.bounds
+        contentPreviewView.frame = contentView.bounds
+    }
+    
+    // MARK: Highlighting
+    
+    override var highlighted: Bool {
+        didSet {
+            contentView.alpha = highlighted ? VContentOnlyCell.highlightAlpha : 1.0
+        }
     }
 }

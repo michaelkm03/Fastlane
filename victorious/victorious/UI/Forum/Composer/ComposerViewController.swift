@@ -8,7 +8,8 @@
 
 import UIKit
 
-class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate, ComposerAttachmentTabBarDelegate, VBackgroundContainer, VPassthroughContainerViewDelegate, VCreationFlowControllerDelegate {
+/// Handles view manipulation and message sending related to the composer. Could definitely use a refactor to make it less stateful.
+class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate, ComposerAttachmentTabBarDelegate, VBackgroundContainer, VPassthroughContainerViewDelegate, VCreationFlowControllerDelegate, HashtagBarControllerSelectionDelegate, HashtagBarViewControllerAnimationDelegate {
     
     private struct Constants {
         static let animationDuration = 0.2
@@ -17,6 +18,8 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         static let defaultMaximumTextLength = 0
         static let maximumAttachmentWidthPercentage: CGFloat = 480.0 / 667.0
         static let minimumConfirmButtonContainerHeight: CGFloat = 52
+        static let composerTextInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        static let confirmButtonHorizontalInset: CGFloat = 16
     }
     
     /// ForumEventSender
@@ -37,6 +40,9 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     @IBOutlet weak private var inputViewToBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak private var textViewContainerHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak private var textViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak private(set) var hashtagBarContainerHeightConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak private var hashtagBarContainerView: UIView!
     
     @IBOutlet weak private var passthroughContainerView: VPassthroughContainerView! {
         didSet {
@@ -50,26 +56,33 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     @IBOutlet weak private var attachmentContainerView: UIView!
     @IBOutlet weak private var interactiveContainerView: UIView!
-    @IBOutlet weak private var confirmButton: UIButton! {
+    @IBOutlet weak private var confirmButton: TouchableInsetAdjustableButton! {
         didSet {
-            confirmButton.layer.cornerRadius = 5
-            confirmButton.clipsToBounds = true
+            confirmButton.applyCornerRadius()
         }
     }
+    
     @IBOutlet weak private var confirmButtonContainer: UIView!
     
-    private var selectedMedia: MediaAttachment?
+    private var searchTextChanged = false
+
+    private var selectedAsset: ContentMediaAsset? {
+        didSet {
+            updateConfirmButtonState()
+        }
+    }
     
     private var composerTextViewManager: ComposerTextViewManager?
     private var keyboardManager: VKeyboardNotificationManager?
     
     private var totalComposerHeight: CGFloat {
-        guard isViewLoaded() else {
+        guard isViewLoaded() && composerIsVisible else {
             return 0
         }
         return fabs(inputViewToBottomConstraint.constant)
             + textViewContainerHeightConstraint.constant
             + attachmentContainerHeightConstraint.constant
+            + hashtagBarContainerHeightConstraint.constant
     }
     
     /// The maximum number of characters a user can input into
@@ -102,20 +115,19 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         return !attachmentMenuItems.isEmpty && textViewIsEditing
     }
     
-    var delegate: ComposerDelegate? {
+    weak var delegate: ComposerDelegate? {
         didSet {
             setupAttachmentTabBar()
         }
     }
     
     private var userIsOwner: Bool {
-        return VCurrentUser.user()?.isCreator.boolValue ?? false
+        return VCurrentUser.user()?.isCreator?.boolValue ?? false
     }
     
     var dependencyManager: VDependencyManager! {
         didSet {
-            maximumTextLength = dependencyManager.maximumTextLengthForOwner(userIsOwner)
-            attachmentMenuItems = dependencyManager.attachmentMenuItemsForOwner(userIsOwner)
+            setupUserDependentUI()
             updateAppearanceFromDependencyManager()
             creationFlowPresenter = VCreationFlowPresenter(dependencyManager: dependencyManager)
         }
@@ -157,11 +169,61 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
     }
     
+    private var composerIsVisible = true
+    
+    func setComposerVisible(visible: Bool, animated: Bool) {
+        guard visible != composerIsVisible else {
+            return
+        }
+        
+        if animated {
+            UIView.animateWithDuration(0.3) {
+                self.setComposerVisible(visible, animated: false)
+                self.view.layoutIfNeeded()
+            }
+        }
+        else {
+            inputViewToBottomConstraint.constant = visible ? 0.0 : -totalComposerHeight
+            composerIsVisible = visible
+            delegate?.composer(self, didUpdateContentHeight: totalComposerHeight)
+        }
+    }
+    
+    // MARK: - HashtagBar
+    
+    private var hashtagBarController: HashtagBarController! {
+        didSet {
+            hashtagBarController.selectionDelegate = self
+        }
+    }
+    
+    // MARK: - HashtagBarControllerSearchDelegate
+    
+    func hashtagBarController(hashtagBarController: HashtagBarController, selectedHashtag hashtag: String) {
+        
+        guard let (_, range) = textViewCurrentHashtag else {
+            return
+        }
+        
+        let replacementText = hashtag + " "
+        if composerTextViewManager?.replaceTextInRange(range, withText: replacementText, inTextView: textView) == true {
+            hashtagBarController.searchText = nil
+        }
+    }
+    
+    // MARK: - HashtagBarControllerAnimationDelegate
+    
+    func hashtagBarViewController(hashtagBarViewController: HashtagBarViewController, isUpdatingConstraints updateBlock: Void -> ()) {
+        updateBlock()
+        searchTextChanged = true
+        view.setNeedsUpdateConstraints()
+    }
+    
     // MARK: - ComposerTextViewManagerDelegate
     
     var textViewHasText: Bool = false {
         didSet {
-            confirmButton.enabled = textViewHasText || selectedMedia != nil
+            updateConfirmButtonState()
             if oldValue != textViewHasText {
                 view.setNeedsUpdateConstraints()
             }
@@ -188,6 +250,10 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         didSet {
             if oldValue != textViewHasPrependedImage {
                 attachmentTabBar.buttonsEnabled = !textViewHasPrependedImage
+                attachmentTabBar.enableButtonForIdentifier(ComposerInputAttachmentType.Hashtag.rawValue)
+                if !textViewHasPrependedImage {
+                    selectedAsset = nil
+                }
             }
         }
     }
@@ -196,10 +262,42 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         return interactiveContainerView.layer.animationKeys() == nil
     }
     
+    var textViewCurrentHashtag: (String, NSRange)? {
+        didSet {
+            guard let (hashtag, _) = textViewCurrentHashtag else {
+                hashtagBarController.searchText = nil
+                return
+            }
+            if let (oldHashtag, _) = oldValue {
+                if hashtag != oldHashtag {
+                    hashtagBarController.searchText = hashtag
+                }
+            } else {
+                hashtagBarController.searchText = hashtag
+            }
+        }
+    }
+    
+    func textViewDidHitCharacterLimit(textView: UITextView) {
+        textView.v_performShakeAnimation()
+    }
+    
+    func inputTextAttributes() -> (inputTextColor: UIColor?, inputTextFont: UIFont?) {
+        return (dependencyManager.inputTextColor, dependencyManager.inputTextFont)
+    }
+    
+    private func updateConfirmButtonState() {
+        confirmButton.enabled = textViewHasText || selectedAsset != nil
+        confirmButton.backgroundColor = confirmButton.enabled ? dependencyManager.confirmButtonBackgroundColorEnabled : dependencyManager.confirmButtonBackgroundColorDisabled
+    }
+    
     // MARK: - View lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userChanged), name: kLoggedInChangedNotification, object: nil)
+        setupUserDependentUI()
         
         //Setup once-initialized properties that cannot be created on initialization
         keyboardManager = VKeyboardNotificationManager(keyboardWillShowBlock: showKeyboardBlock, willHideBlock: hideKeyboardBlock, willChangeFrameBlock: showKeyboardBlock)
@@ -211,6 +309,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         setupTextView()
         updateAppearanceFromDependencyManager()
         composerTextViewManager = ComposerTextViewManager(textView: textView, delegate: self, maximumTextLength: maximumTextLength)
+        setupHashtagBar()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -243,6 +342,11 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     }
     
     override func updateViewConstraints() {
+        
+        let confirmButtonContainerHeight = confirmButtonContainer.bounds.height
+        if confirmButtonContainerHeight != abs(confirmButton.touchInsets.vertical) {
+            confirmButton.touchInsets = UIEdgeInsetsMake(-confirmButtonContainerHeight / 2, -Constants.confirmButtonHorizontalInset, -confirmButtonContainerHeight / 2, -Constants.confirmButtonHorizontalInset)
+        }
 
         let desiredAttachmentContainerHeight = shouldShowAttachmentContainer ? confirmButtonContainer.bounds.height : 0
         let attachmentContainerHeightNeedsUpdate = attachmentContainerHeightConstraint.constant != desiredAttachmentContainerHeight
@@ -273,11 +377,14 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         
         guard attachmentContainerHeightNeedsUpdate ||
             textViewContainerHeightNeedsUpdate ||
-            textViewHeightNeedsUpdate else {
+            textViewHeightNeedsUpdate ||
+            searchTextChanged else {
             // No reason to lay out views again
             super.updateViewConstraints()
             return
         }
+        
+        searchTextChanged = false
         
         let previousContentOffset = textView.contentOffset
         UIView.animateWithDuration(Constants.animationDuration, delay: 0, options: .AllowUserInteraction, animations: {
@@ -293,14 +400,13 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         super.updateViewConstraints()
     }
     
-    // MARK: - ComposerAttachmentTabBarDelegate
-
-    func composerAttachmentTabBar(composerAttachmentTabBar: ComposerAttachmentTabBar, didSelectNagiationItem navigationItem: VNavigationMenuItem) {
-        let creationType = CreationFlowTypeHelper.creationFlowTypeForIdentifier(navigationItem.identifier)
-        delegate?.composer(self, didSelectCreationFlowType: creationType)
-    }
-    
     // MARK: - Subview setup
+    
+    @objc private func setupUserDependentUI() {
+        let isOwner = userIsOwner
+        maximumTextLength = dependencyManager.maximumTextLengthForOwner(isOwner)
+        attachmentMenuItems = dependencyManager.attachmentMenuItemsForOwner(isOwner)
+    }
     
     private func setupTextView() {
         textView.text = nil
@@ -317,6 +423,15 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             attachmentTabBar.delegate = self
         }
     }
+    
+    private func setupHashtagBar() {
+        let hashtagBarViewController = HashtagBarViewController.new(dependencyManager, containerHeightConstraint: hashtagBarContainerHeightConstraint)
+        addChildViewController(hashtagBarViewController)
+        hashtagBarContainerView.addSubview(hashtagBarViewController.view)
+        hashtagBarContainerView.v_addFitToParentConstraintsToSubview(hashtagBarViewController.view)
+        hashtagBarViewController.animationDelegate = self
+        hashtagBarController = hashtagBarViewController.hashtagBarController
+    }
 
     private func updateAppearanceFromDependencyManager() {
         guard isViewLoaded() else {
@@ -328,10 +443,15 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         textView.textColor = dependencyManager.inputTextColor
         textView.setPlaceholderTextColor(dependencyManager.inputPlaceholderTextColor)
         textView.keyboardAppearance = dependencyManager.keyboardAppearance
-        confirmButton.setTitleColor(dependencyManager.confirmButtonDeselectedTextColor, forState: .Normal)
-        confirmButton.setTitleColor(dependencyManager.confirmButtonSelectedTextColor, forState: .Selected)
+        textView.applyCornerRadius()
+        textView.textContainerInset = Constants.composerTextInsets
+        textView.backgroundColor = dependencyManager.inputAreaBackgroundColor
+        
+        confirmButton.setTitleColor(dependencyManager.confirmButtonEnabledTextColor, forState: .Normal)
+        confirmButton.setTitleColor(dependencyManager.confirmButtonDisabledTextColor, forState: .Disabled)
         confirmButton.titleLabel?.font = dependencyManager.confirmButtonTextFont
-        confirmButton.backgroundColor = dependencyManager.confirmButtonBackgroundColor
+        confirmButton.backgroundColor = dependencyManager.confirmButtonBackgroundColorEnabled
+        
         attachmentTabBar.tabItemDeselectedTintColor = dependencyManager.tabItemDeselectedTintColor
         attachmentTabBar.tabItemSelectedTintColor = dependencyManager.tabItemSelectedTintColor
         confirmButton.setTitle(dependencyManager.confirmKeyText, forState: .Normal)
@@ -348,7 +468,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     // MARK: - ComposerAttachmentTabBarDelegate
     
-    func composerAttachmentTabBar(composerAttachmentTabBar: ComposerAttachmentTabBar, selectedNavigationItem navigationItem: VNavigationMenuItem) {
+    func composerAttachmentTabBar(composerAttachmentTabBar: ComposerAttachmentTabBar, didSelectNavigationItem navigationItem: VNavigationMenuItem) {
         let identifier = navigationItem.identifier
         let creationFlowType = CreationFlowTypeHelper.creationFlowTypeForIdentifier(identifier)
         if creationFlowType != .Unknown {
@@ -361,20 +481,25 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     // MARK: - VCreationFlowControllerDelegate
     
     func creationFlowController(creationFlowController: VCreationFlowController!, finishedWithPreviewImage previewImage: UIImage!, capturedMediaURL: NSURL!) {
-        
-        guard let mediaType = MediaAttachmentType(creationFlowController: creationFlowController) else {
+        guard let contentType = contentType(for: creationFlowController) else {
             creationFlowController.v_showErrorDefaultError()
             return
         }
         
         var preview = previewImage
-        if mediaType == .GIF,
-            let image = capturedMediaURL.v_videoPreviewImage {
-            
+        if let image = capturedMediaURL.v_videoPreviewImage where contentType == .gif {
             preview = image
         }
         
-        selectedMedia = MediaAttachment(url: capturedMediaURL, type: mediaType, thumbnailURL: nil, size: nil)
+        let publishParameters = creationFlowController.publishParameters
+        if let remoteID = publishParameters.assetRemoteId {
+            let mediaParameters = ContentMediaAsset.LocalAssetParameters(contentType: contentType, remoteID: remoteID, source: publishParameters.source, url: capturedMediaURL)
+            selectedAsset = ContentMediaAsset(initializationParameters: mediaParameters)
+        }
+        else {
+            let mediaParameters = ContentMediaAsset.RemoteAssetParameters(contentType: contentType, url: capturedMediaURL, source: publishParameters.source)
+            selectedAsset = ContentMediaAsset(initializationParameters: mediaParameters)
+        }
         let maxDimension = view.bounds.width * Constants.maximumAttachmentWidthPercentage
         let resizedImage = preview.scaledImageWithMaxDimension(maxDimension, upScaling: true)
         composerTextViewManager?.prependImage(resizedImage, toTextView: textView)
@@ -388,6 +513,22 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             let textView = strongSelf.textView
             textView.becomeFirstResponder()
             textView.selectedRange = NSMakeRange(textView.text.characters.count, 0)
+        }
+    }
+    
+    private func contentType(for creationFlowController: VCreationFlowController) -> ContentType? {
+        switch creationFlowController.mediaType() {
+        case .Image:
+            return .image
+        case .Video:
+            if creationFlowController.dynamicType == VGIFCreationFlowController.self {
+                return .gif
+            } else {
+                return .video
+            }
+        case .Unknown:
+            assertionFailure("Creation flow controller returned an invalid media type.")
+            return nil
         }
     }
     
@@ -407,14 +548,34 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     // MARK: - Actions
     
-    @IBAction func pressedConfirmButton() {
-        if let media = selectedMedia {
-            sendMessage(mediaAttachment: media, text: textView.text)
-        } else {
-            sendMessage(text: textView.text)
+    @IBAction private func pressedConfirmButton() {
+        guard let user = VCurrentUser.user() else {
+            assertionFailure("Failed to send message due to missing a valid logged in user")
+            return
+        }
+        
+        if let asset = selectedAsset {
+            // The textView currently contains an attachment representing the piece of selected media.
+            // Remove it before sending along the text as caption.
+            let text = composerTextViewManager?.removePrependedImageFromAttributedText(textView.attributedText)?.string
+            sendMessage(asset: asset, text: text, currentUser: user)
+        }
+        else {
+            sendMessage(text: textView.text, currentUser: user)
         }
         composerTextViewManager?.resetTextView(textView)
-        selectedMedia = nil
+        selectedAsset = nil
+    }
+    
+    // MARK: - Notification response
+    
+    func userChanged() {
+        guard let user = VCurrentUser.user() else {
+            KVOController.unobserveAll()
+            return
+        }
+        
+        KVOController.observe(user, keyPath: "isCreator", options: [.New, .Initial], action: #selector(setupUserDependentUI))
     }
 }
 
@@ -426,7 +587,7 @@ private extension VDependencyManager {
     }
     
     var inputPromptText: String {
-        return stringForKey("inputTextPrompt")
+        return stringForKey("inputTextPrompt") ?? NSLocalizedString("What do you think?", comment: "")
     }
     
     func attachmentMenuItemsForOwner(owner: Bool) -> [VNavigationMenuItem]? {
@@ -442,31 +603,39 @@ private extension VDependencyManager {
         return colorForKey(VDependencyManagerPlaceholderTextColorKey)
     }
     
-    var confirmButtonDeselectedTextColor: UIColor {
-        return colorForKey("color.link.deselected")
+    var confirmButtonDisabledTextColor: UIColor? {
+        return colorForKey("color.link.disabled")
     }
     
-    var confirmButtonSelectedTextColor: UIColor {
-        return colorForKey("color.link.selected")
+    var confirmButtonEnabledTextColor: UIColor? {
+        return colorForKey("color.link.enabled")
     }
     
-    var confirmButtonBackgroundColor: UIColor {
-        return colorForKey(VDependencyManagerAccentColorKey)
+    var confirmButtonBackgroundColorEnabled: UIColor? {
+        return colorForKey("color.accent.enabled")
+    }
+    
+    var confirmButtonBackgroundColorDisabled: UIColor? {
+        return colorForKey("color.accent.disabled")
+    }
+    
+    var inputAreaBackgroundColor: UIColor? {
+        return colorForKey("color.accent.secondary")
     }
     
     var inputTextFont: UIFont? {
         return fontForKey(VDependencyManagerParagraphFontKey)
     }
 
-    var confirmButtonTextFont: UIFont {
+    var confirmButtonTextFont: UIFont? {
         return fontForKey(VDependencyManagerLabel4FontKey)
     }
     
-    var tabItemDeselectedTintColor: UIColor {
+    var tabItemDeselectedTintColor: UIColor? {
         return colorForKey("color.link.deselected")
     }
     
-    var tabItemSelectedTintColor: UIColor {
+    var tabItemSelectedTintColor: UIColor? {
         return colorForKey("color.link.selected")
     }
     
@@ -475,15 +644,10 @@ private extension VDependencyManager {
     }
     
     var keyboardAppearance: UIKeyboardAppearance {
-        return keyboardStyleForKey("keyboardStyle")
+        return keyboardStyleForKey("keyboardStyle") ?? .Light
     }
     
     var confirmKeyText: String {
-        return stringForKey("confirmKeyText")
-    }
-    
-    var backgroundColor: UIColor {
-        let background = templateValueOfType( VSolidColorBackground.self, forKey: "background") as! VSolidColorBackground
-        return background.backgroundColor
+        return stringForKey("confirmKeyText") ?? NSLocalizedString("Send", comment: "")
     }
 }

@@ -78,25 +78,13 @@ final class UserSearchDataSource: PaginatedDataSource, SearchDataSourceType, UIT
         user.populate(fromSourceModel: visibleItem.sourceResult)
         
         let username = user.name ?? ""
-        let userID = visibleItem.sourceResult.userID
+        let userID = visibleItem.sourceResult.id
         let pictureURL = user.pictureURL(ofMinimumSize: cell.preferredPictureSize) ?? NSURL()
         self.updateFollowControlState(cell.followControl, forUserID: userID, animated: false)
         cell.viewData = UserSearchResultTableViewCell.ViewData(username: username, profileURL:pictureURL)
         cell.dependencyManager = dependencyManager
-        cell.followControl?.onToggleFollow = { [weak self] in
-            guard let strongSelf = self, let currentUser = VCurrentUser.user() else {
-                return
-            }
-            
-            let operation: FetcherOperation
-            if currentUser.isFollowingUserID(userID) {
-                operation = UnfollowUserOperation(userID: userID, sourceScreenName: strongSelf.sourceScreenName)
-            } else {
-                operation = FollowUsersOperation(userIDs: [userID], sourceScreenName: strongSelf.sourceScreenName)
-            }
-            operation.queue() { results, error, cancelled in
-                self?.onFollowingUpdated()
-            }
+        cell.followControl?.onToggleFollow = { _ in
+            // FollowUserOperation/FollowUserToggleOperation not supported in 5.0
         }
         return cell
     }

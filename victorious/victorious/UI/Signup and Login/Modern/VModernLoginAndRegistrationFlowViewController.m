@@ -525,7 +525,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
             weakSelf.isRegisteredAsNewUser = [VCurrentUser user].isNewUser.boolValue;
             if ( error == nil )
             {
-                BOOL completeProfile = [VCurrentUser user].completedProfile.boolValue;
+                BOOL completeProfile = [VCurrentUser user].v_completedProfile.boolValue;
                 completion(YES, completeProfile, nil);
                 if (completeProfile)
                 {
@@ -645,7 +645,8 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     {
         return;
     }
-    [[[ShowPrivacyPolicyOperation alloc] initWithOriginViewController:self forceModal:YES animated:YES] queueWithCompletion:nil];
+    
+    [[[ShowWebContentOperation alloc] initWithOriginViewController:self type:WebContentOperationTypePrivacyPolicy forceModal:NO animated:YES dependencyManager:self.dependencyManager] queueWithCompletion:NULL];
 }
 
 - (void)showTermsOfService
@@ -654,7 +655,9 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     {
         return;
     }
-    [[[ShowTermsOfServiceOperation alloc] initWithOriginViewController:self forceModal:YES animated:YES] queueWithCompletion:nil];
+    
+    [[[ShowWebContentOperation alloc] initWithOriginViewController:self type:WebContentOperationTypeTermsOfService forceModal:NO animated:YES dependencyManager:self.dependencyManager] queueWithCompletion:NULL];
+
 }
 
 - (void)setProfilePictureFilePath:(NSURL *)profilePictureFilePath

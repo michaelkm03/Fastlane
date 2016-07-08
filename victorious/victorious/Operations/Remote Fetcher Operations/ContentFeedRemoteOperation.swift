@@ -8,31 +8,43 @@
 
 import UIKit
 
-final class ContentFeedRemoteOperation: RemoteFetcherOperation, PaginatedRequestOperation {
+final class ContentFeedRemoteOperation: RemoteFetcherOperation {
+    private(set) var refreshStage: RefreshStage?
     
-    let request: ViewedContentFeedRequest
+    // MARK: - Initializing
     
-    required init( request: ViewedContentFeedRequest ) {
+    init(request: ContentFeedRequest) {
         self.request = request
     }
     
-    convenience init( apiPath: String, sequenceID: String? = nil) {
-        self.init( request: ViewedContentFeedRequest(apiPath: apiPath) )
+    convenience init(url: NSURL) {
+        self.init(request: ContentFeedRequest(url: url))
     }
+    
+    // MARK: - Executing
+    
+    let request: ContentFeedRequest
     
     override func main() {
-        requestExecutor.executeRequest( request, onComplete: self.onComplete, onError: nil )
+        requestExecutor.executeRequest(request, onComplete: { [weak self] (contents, refreshStage) in
+            self?.refreshStage = refreshStage
+            self?.onComplete(contents)
+        }, onError: nil)
     }
     
-    func onComplete( sourceFeed: ViewedContentFeedRequest.ResultType) {
-        
+    func onComplete(contents: [Content]) {
         // Make changes on background queue
-        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in            
-            self.results = sourceFeed.flatMap({
-                let content: VContent = context.v_findOrCreateObject( [ "remoteID" : $0.content.id ] )
-                content.populate(fromSourceModel: $0)
-                return content.remoteID
-            })
+        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
+            self.results = contents.flatMap { sdkContent in
+                guard let id = sdkContent.id else {
+                    return nil
+                }
+                
+                let content: VContent = context.v_findOrCreateObject(["v_remoteID": id])
+                content.populate(fromSourceModel: sdkContent)
+                return content.id
+            }
+            
             context.v_save()
         }
     }

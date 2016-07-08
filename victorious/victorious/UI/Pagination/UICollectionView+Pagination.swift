@@ -17,7 +17,7 @@ extension UIScrollView {
     }
     
     var v_isScrolledToBottom: Bool {
-        return contentOffset.y >= v_bottomOffset.y
+        return floor(contentOffset.y) >= floor(v_bottomOffset.y)
     }
     
     func v_scrollToBottomAnimated(animated: Bool, completion: (() -> ())? = nil) {

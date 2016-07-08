@@ -12,6 +12,7 @@
 #import "VTagDictionary.h"
 #import "VDummyModels.h"
 #import "VTag.h"
+#import "victorious-Swift.h"
 
 @interface VTagStringFormatterTests : XCTestCase
 

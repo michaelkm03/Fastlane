@@ -153,16 +153,6 @@ NSString * const VDependencyManagerNativeWorkspaceKey = @"nativeWorkspace";
 
 - (UIColor *)colorForKey:(NSString *)key
 {
-    // TODO: special case: we switched from using a background color key to a background component,
-    //       but not everything has been updated to use it yet. Until everything is updated,
-    //       we return a background color extracted from the background component to anyone who
-    //       asks for the old background color key.
-    if ( [key isEqualToString:VDependencyManagerBackgroundColorKey] )
-    {
-        VSolidColorBackground *background = [self templateValueOfType:[VSolidColorBackground class] forKey:VDependencyManagerBackgroundKey];
-        return background.backgroundColor;
-    }
-    
     NSDictionary *colorDictionary = [self templateValueOfType:[NSDictionary class] forKey:key];
     UIColor *color = [[self class] colorFromDictionary:colorDictionary];
     
@@ -233,7 +223,7 @@ NSString * const VDependencyManagerNativeWorkspaceKey = @"nativeWorkspace";
     if ([fontName isKindOfClass:[NSString class]] &&
         [fontSize isKindOfClass:[NSNumber class]])
     {
-        font = [UIFont fontWithName:fontName size:[fontSize VCGFLOAT_VALUE]];
+        font = [self fontWithName:fontName size:[fontSize VCGFLOAT_VALUE]];
     }
     if ( font == nil )
     {

@@ -23,7 +23,7 @@ class ListMenuCreatorCollectionViewCell: UICollectionViewCell, ListMenuSectionCe
     
     override var selected: Bool {
         didSet {
-            updateCellBackgroundColor(to: contentView, selectedColor: dependencyManager.highlightedBackgroundColor, isSelected: selected)
+            updateCellBackgroundColor(to: contentView, selectedColor: dependencyManager?.highlightedBackgroundColor, isSelected: selected)
         }
     }
     
@@ -33,9 +33,11 @@ class ListMenuCreatorCollectionViewCell: UICollectionViewCell, ListMenuSectionCe
         return 60
     }
     
-    var dependencyManager: VDependencyManager! {
+    var dependencyManager: VDependencyManager? {
         didSet {
-            applyTemplateAppearance(with: dependencyManager)
+            if let dependencyManager = dependencyManager {
+                applyTemplateAppearance(with: dependencyManager)
+            }
         }
     }
     

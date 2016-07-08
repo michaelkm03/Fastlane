@@ -42,7 +42,8 @@ static const char kAssociatedObjectViewWasHiddenKey;
 - (BOOL)isComponentForTemplateClass:(Class)templateClass
 {
     NSString *componentName = [self stringForKey:@"name"];
-    NSString *className = [self defaultDictionaryOfClassesByTemplateName][ componentName ];
+    NSDictionary *dictionary = [self defaultDictionaryOfClassesByTemplateName];
+    NSString *className = dictionary[ componentName ];
     return [className isEqualToString:NSStringFromClass(templateClass)];
 }
 

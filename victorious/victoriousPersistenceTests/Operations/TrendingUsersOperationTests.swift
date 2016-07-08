@@ -14,7 +14,7 @@ class TrendingUsersOperationTests: BaseFetcherOperationTestCase {
     
     func testResults() {
         let userID = 20160118
-        let user = User(userID: userID)
+        let user = User(id: userID)
         testRequestExecutor = TestRequestExecutor(result:[user])
         let operation = TrendingUsersOperation()
         operation.requestExecutor = testRequestExecutor

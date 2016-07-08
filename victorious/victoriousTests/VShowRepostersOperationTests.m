@@ -11,7 +11,6 @@
 #import "VDependencyManager.h"
 #import "VDummyModels.h"
 #import "VSequence.h"
-#import "VUser.h"
 #import "VStreamCollectionViewController.h"
 
 #import "victorious-Swift.h"

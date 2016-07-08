@@ -32,7 +32,6 @@
 @property (nonatomic, retain) NSNumber * completedProfile;
 @property (nonatomic, retain) NSString * tagline;
 @property (nonatomic, retain) NSString * token;
-@property (nonatomic, retain) NSDate * tokenUpdatedAt;
 @property (nonatomic, retain) NSSet *childSequences;
 @property (nonatomic, retain) NSSet *comments;
 @property (nonatomic, retain) NSOrderedSet *conversations;

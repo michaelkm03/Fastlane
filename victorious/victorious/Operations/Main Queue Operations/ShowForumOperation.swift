@@ -12,10 +12,12 @@ class ShowForumOperation: MainQueueOperation {
     
     private let dependencyManager: VDependencyManager
     private let animated: Bool
+    private let showVIP: Bool
     private weak var originViewController: UIViewController?
     
-    required init( originViewController: UIViewController, dependencyManager: VDependencyManager, animated: Bool = true) {
+    required init(originViewController: UIViewController, dependencyManager: VDependencyManager, showVIP: Bool = false, animated: Bool = true) {
         self.dependencyManager = dependencyManager
+        self.showVIP = showVIP
         self.originViewController = originViewController
         self.animated = animated
     }
@@ -29,7 +31,8 @@ class ShowForumOperation: MainQueueOperation {
         
         beganExecuting()
         
-        let templateValue = dependencyManager.templateValueOfType(ForumViewController.self, forKey: "forum")
+        let templateKey = showVIP ? "vipForum" : "forum"
+        let templateValue = dependencyManager.templateValueOfType(ForumViewController.self, forKey: templateKey)
         guard let viewController = templateValue as? ForumViewController else {
             finishedExecuting()
             return

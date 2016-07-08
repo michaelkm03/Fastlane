@@ -9,42 +9,53 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class ContentFeedOperation: FetcherOperation, PaginatedOperation {
+final class ContentFeedOperation: NSOperation, Queueable {
     
-    let paginator: StreamPaginator
-    var contentRemoteIDs: [String]?
+    // MARK: - Initializing
     
-    required init(paginator: StreamPaginator) {
-        self.paginator = paginator
+    init(url: NSURL) {
         super.init()
         
-        self.queuePriority = .VeryHigh
+        queuePriority = .VeryHigh
         
-        if !localFetch {
-            let request = ViewedContentFeedRequest(
-                apiPath: paginator.apiPath,
-                paginator: paginator
-            )
-            ContentFeedRemoteOperation(request: request).before(self).queue(){ [weak self] results, error, completed in
-                self?.contentRemoteIDs = results as? [String]
+        let remoteOperation = ContentFeedRemoteOperation(url: url)
+        remoteOperation.before(self).queue { [weak self] results, error, _ in
+            self?.contentIDs = (results as? [String]) ?? []
+            self?.error = error
+            if let refreshStage = remoteOperation.refreshStage {
+                self?.stageEvent = .refreshStage(refreshStage)
+            } else {
+                self?.stageEvent = .closeMainStage
             }
         }
     }
     
-    required convenience init(operation: ContentFeedOperation, paginator: StreamPaginator) {
-        self.init(paginator: paginator)
-    }
+    // MARK: - Fetched content
     
-    convenience init( apiPath: String) {
-        self.init( paginator: StreamPaginator(apiPath: apiPath)!)
-    }
+    var contentIDs = [String]()
+    var items = [ContentModel]()
+    var error: NSError?
+    private var stageEvent: ForumEvent?
+    
+    // MARK: - Executing
     
     override func main() {
-        persistentStore.mainContext.v_performBlockAndWait() { context in
-            self.results = self.contentRemoteIDs?.flatMap({
-                let content: VContent = context.v_findOrCreateObject( [ "remoteID" : $0 ] )
-                return content
-            })
+        guard error == nil else {
+            return
+        }
+        
+        let persistentStore = PersistentStoreSelector.defaultPersistentStore
+        
+        persistentStore.mainContext.v_performBlockAndWait { [weak self] context in
+            self?.items = self?.contentIDs.flatMap {
+                return context.v_findOrCreateObject(["v_remoteID": $0]) as VContent
+            } ?? []
+        }
+    }
+    
+    func executeCompletionBlock(completionBlock: (newItems: [ContentModel], stageEvent: ForumEvent?, error: NSError?) -> Void) {
+        dispatch_async(dispatch_get_main_queue()) {
+            completionBlock(newItems: self.items, stageEvent: self.stageEvent, error: self.error)
         }
     }
 }

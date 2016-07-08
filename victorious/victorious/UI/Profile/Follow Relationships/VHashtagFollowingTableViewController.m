@@ -9,7 +9,6 @@
 #import "VHashtagFollowingTableViewController.h"
 #import "VHashtagCell.h"
 #import "VNoContentTableViewCell.h"
-#import "VUser.h"
 #import "VHashtag.h"
 #import "VConstants.h"
 #import "VStreamItem+Fetcher.h"

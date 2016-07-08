@@ -95,7 +95,7 @@ static NSString * const kTestToken = @"dsadasdsa8ga7fb976dafga8bs6fgabdsfdsa";
     loggedInUser.token = kTestToken;
     XCTAssertFalse( [self.storedLogin saveLoggedInUserToDisk:loggedInUser] );
     
-    loggedInUser.remoteId = nil;
+    loggedInUser.remoteId = @(0);
     loggedInUser.token = kTestToken;
     XCTAssertFalse( [self.storedLogin saveLoggedInUserToDisk:loggedInUser] );
     

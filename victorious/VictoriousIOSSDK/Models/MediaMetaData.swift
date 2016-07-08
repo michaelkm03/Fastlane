@@ -12,7 +12,7 @@ public struct MediaMetaData {
 
     public let url: NSURL
 
-    public let size: CGSize?
+    public let size: CGSize
     
     /// The data container that describes the meta data related to the media on the stage.
     /// 
@@ -34,10 +34,14 @@ public struct MediaMetaData {
         
         self.url = url
         
-        if let width = json["width"].int, let height = json["height"].int {
-            size = CGSize(width: width, height: height)
-        } else {
-            size = nil
+        guard let width = json["width"].int, let height = json["height"].int else {
+            return nil
         }
+        self.size = CGSize(width: width, height: height)
+    }
+    
+    public init(url: NSURL, size: CGSize) {
+        self.url = url
+        self.size = size
     }
 }

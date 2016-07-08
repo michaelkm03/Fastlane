@@ -55,9 +55,7 @@ class AccountUpdateOperation: RemoteFetcherOperation, RequestOperation {
                             imageAsset.imageURL = imageURL.absoluteString
                             imageAsset.width = image.size.width
                             imageAsset.height = image.size.height
-                            imageAsset.type = "image/jpeg"
-                            user.previewAssets = Set<NSObject>()
-                            user.previewAssets.insert( imageAsset )
+                            user.previewAssets = [imageAsset]
                     }
                 }
                 context.v_save()

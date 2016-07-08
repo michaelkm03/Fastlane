@@ -15,7 +15,6 @@
 #import "VRootViewController.h"
 #import "VSessionTimer.h"
 #import "VThemeManager.h"
-#import "VTracking.h"
 #import "VConstants.h"
 #import "VLocationManager.h"
 #import "VVoteType.h"
@@ -54,9 +53,10 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 @property (nonatomic, strong) NSString *queuedNotificationID; ///< A notificationID that came in before we were ready for it
 @property (nonatomic) VAppLaunchState launchState; ///< At what point in the launch lifecycle are we?
 @property (nonatomic) BOOL properlyBackgrounded; ///< The app has been properly sent to the background (not merely lost focus)
-@property (nonatomic, strong, readwrite) VDeeplinkReceiver *deepLinkReceiver;
 @property (nonatomic, strong) VApplicationTracking *applicationTracking;
 @property (nonatomic, strong) VCrashlyticsLogTracking *crashlyticsLogTracking;
+@property (nonatomic, strong) NSURL *queuedDeeplink;
+@property (nonatomic, strong, readwrite) UIViewController<Scaffold> *scaffold;
 
 @end
 
@@ -84,7 +84,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 - (void)commonInit
 {
-    self.deepLinkReceiver = [[VDeeplinkReceiver alloc] init];
     self.applicationTracking = [[VApplicationTracking alloc] init];
     self.crashlyticsLogTracking = [[VCrashlyticsLogTracking alloc] init];
     [[VTrackingManager sharedInstance] addDelegate:self.applicationTracking];
@@ -270,18 +269,18 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     self.applicationTracking.dependencyManager = self.dependencyManager;
     [DefaultTimingTracker sharedInstance].dependencyManager = self.dependencyManager;
     
-    UIViewController *scaffold = [self.dependencyManager scaffoldViewController];
-    
-    NSDictionary *scaffoldConfig = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:VDependencyManagerScaffoldViewControllerKey];
-    VDependencyManager *scaffoldDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:scaffoldConfig];
-    self.deepLinkReceiver.dependencyManager = scaffoldDependencyManager;
+    UIViewController<Scaffold> *scaffold = [self.dependencyManager scaffoldViewController];
+    self.scaffold = scaffold;
     
     [self showViewController:scaffold animated:YES completion:^(void)
     {
         self.launchState = VAppLaunchStateLaunched;
         
-        // VDeeplinkReceiver depends on scaffold being visible already, so make sure this is in this completion block
-        [self.deepLinkReceiver receiveQueuedDeeplink];
+        if (self.queuedDeeplink != nil)
+        {
+            [self showDeeplink:self.queuedDeeplink on:scaffold];
+            self.queuedDeeplink = nil;
+        }
     }];
 }
 
@@ -390,7 +389,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
         }
         if ( [self.sessionTimer shouldNewSessionStartNow] )
         {
-            [self.deepLinkReceiver queueDeeplink:deepLink];
+            self.queuedDeeplink = deepLink;
             self.queuedNotificationID = notificationID;
         }
         else
@@ -409,13 +408,20 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     NSString *deeplinkUrlString = localNotification.userInfo[ [LocalNotificationScheduler deplinkURLKey] ];
     if ( deeplinkUrlString != nil && deeplinkUrlString.length > 0 )
     {
-        [[VRootViewController sharedRootViewController] openURL:[NSURL URLWithString:deeplinkUrlString]];
+        [self openURL:[NSURL URLWithString:deeplinkUrlString]];
     }
 }
 
 - (void)openURL:(NSURL *)url
 {
-    [self.deepLinkReceiver receiveDeeplink:url];
+    if (self.scaffold == nil)
+    {
+        self.queuedDeeplink = url;
+    }
+    else
+    {
+        [self showDeeplink:url on:self.scaffold];
+    }
 }
 
 - (void)startNewSession

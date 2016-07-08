@@ -37,6 +37,7 @@ extension VLoginFlowAPIHelper {
         let credentials: NewAccountCredentials = loginType.storedCredentials()!
         let accountCreateRequest = AccountCreateRequest(credentials: credentials)
         let operation = AccountCreateOperation(
+            dependencyManager: dependencyManager,
             request: accountCreateRequest,
             parameters: AccountCreateParameters(
                 loginType: loginType,
@@ -54,6 +55,7 @@ extension VLoginFlowAPIHelper {
         let credentials: NewAccountCredentials = .Twitter(accessToken: oauthToken, accessSecret: accessSecret, twitterID: twitterID)
         let accountCreateRequest = AccountCreateRequest(credentials: credentials)
         let operation = AccountCreateOperation(
+            dependencyManager: dependencyManager,
             request: accountCreateRequest,
             parameters: AccountCreateParameters(
                 loginType: loginType,
@@ -67,7 +69,12 @@ extension VLoginFlowAPIHelper {
     }
     
     func queueLoginOperationWithEmail(email: String, password: String, completion: ([AnyObject]?, NSError?, Bool) -> () ) -> NSOperation {
-        let operation = LoginOperation(email: email, password: password)
+        let operation = LoginOperation(
+            dependencyManager: dependencyManager,
+            email: email,
+            password: password
+        )
+        
         operation.queue( completion: completion )
         return operation
     }
@@ -75,6 +82,7 @@ extension VLoginFlowAPIHelper {
     func queueAccountCreateOperationWithEmail(email: String, password: String, completion: ([AnyObject]?, NSError?, Bool) -> () ) -> NSOperation {
         let accountCreateRequest = AccountCreateRequest(credentials: .EmailPassword(email: email, password: password))
         let operation = AccountCreateOperation(
+            dependencyManager: dependencyManager,
             request: accountCreateRequest,
             parameters: AccountCreateParameters(
                 loginType: .Email,

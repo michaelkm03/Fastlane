@@ -34,19 +34,20 @@ protocol Forum: ForumEventReceiver, ForumEventSender, ChatFeedDelegate, Composer
 
 /// The default implementation of the highest-level, abstract Forum business logic,
 /// intended as a concise and flexible mini-architecture and defines the
-/// most fundamental interation between parent and subcomponents.
+/// most fundamental interaction between parent and subcomponents.
 extension Forum {
     
     // MARK: - ChatFeedDelegate
     
     func chatFeed(chatFeed: ChatFeed, didSelectUserWithUserID userID: Int) {
-        ShowProfileOperation(originViewController: originViewController,
-            dependencyManager: dependencyManager,
-            userId: userID).queue()
+        let router = Router(originViewController: originViewController, dependencyManager: dependencyManager)
+        let destination = DeeplinkDestination(userID: userID)
+        router.navigate(to: destination)
     }
     
-    func chatFeed(chatFeed: ChatFeed, didSelectMedia media: MediaAttachment) {
-        // FUTURE: Show closeup/lightbox
+    func chatFeed(chatFeed: ChatFeed, didSelectContent content: ContentModel) {
+        let displayModifier = ShowCloseUpDisplayModifier(dependencyManager: dependencyManager, originViewController: originViewController)
+        ShowCloseUpOperation.showOperation(forContent: content, displayModifier: displayModifier).queue()
     }
     
     // MARK: - ComposerDelegate
@@ -61,17 +62,9 @@ extension Forum {
 
     // MARK: - StageDelegate
     
-    func stage(stage: Stage, didUpdateContentHeight height: CGFloat) {
+    func stage(stage: Stage, wantsUpdateToContentHeight height: CGFloat) {
         setStageHeight(height)
         chatFeed?.setTopInset(height)
-    }
-
-    func stage(stage: Stage, didUpdateWithMedia media: StageContent) {
-        
-    }
-
-    func stage(stage: Stage, didSelectMedia media: StageContent) {
-        
     }
 }
 

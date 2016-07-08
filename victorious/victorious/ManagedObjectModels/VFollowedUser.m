@@ -7,7 +7,6 @@
 //
 
 #import "VFollowedUser.h"
-#import "VUser.h"
 
 @implementation VFollowedUser
 

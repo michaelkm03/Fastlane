@@ -7,53 +7,104 @@
 //
 
 import UIKit
-import VictoriousIOSSDK
-import SDWebImage
 
-class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
-    
+class StageViewController: UIViewController, Stage, AttributionBarDelegate, CaptionBarViewControllerDelegate {
     private struct Constants {
         static let contentSizeAnimationDuration: NSTimeInterval = 0.5
-        static let contentHideAnimationDuration: NSTimeInterval = 0.5
-        static let fixedStageHeight: CGFloat = 200.0
+        static let defaultAspectRatio: CGFloat = 16 / 9
+        
+        static let pillInsets = UIEdgeInsetsMake(10, 10, 10, 10)
+        static let pillHeight: CGFloat = 30
+        static let pillBottomMargin: CGFloat = 20
     }
     
-    /// The content view that grows and shrinks depending on the content it is displaying.
-    /// Is is also this size that will be broadcasted to the stage delegate.
-    @IBOutlet private weak var mainContentView: UIView!
-    @IBOutlet private weak var mainContentViewBottomConstraint: NSLayoutConstraint!
+    private lazy var defaultStageHeight: CGFloat = {
+        return self.view.bounds.width / Constants.defaultAspectRatio
+    }()
+
+    @IBOutlet private var mediaContentView: MediaContentView! {
+        didSet {
+            mediaContentView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOnContent)))
+        }
+    }
+    @IBOutlet private var attributionBar: AttributionBar! {
+        didSet {
+            attributionBar.hidden = true
+            attributionBar.delegate = self
+            updateAttributionBarAppearance(with: dependencyManager)
+        }
+    }
+    @IBOutlet private var captionBarHeightConstraint: NSLayoutConstraint! {
+        didSet {
+            captionBarHeightConstraint.constant = 0
+        }
+    }
+    private var captionBarViewController: CaptionBarViewController? {
+        didSet {
+            let captionBarDependency = dependencyManager.captionBarDependency
+            let hasCaptionBar = captionBarDependency != nil
+            captionBarViewController?.delegate = hasCaptionBar ? self : nil
+            captionBarViewController?.dependencyManager = captionBarDependency
+        }
+    }
     
-    @IBOutlet private weak var imageView: UIImageView!
+    private var visible = true {
+        didSet {
+            updateStageHeight()
+        }
+    }
     
-    @IBOutlet private weak var videoContentView: UIView!
+    private lazy var newItemPill: TextOnColorButton? = { [weak self] in
+        guard let pillDependency = self?.dependencyManager.newItemButtonDependency else {
+            return nil
+        }
+        let pill = TextOnColorButton()
+        pill.dependencyManager = pillDependency
+        pill.contentEdgeInsets = Constants.pillInsets
+        pill.sizeToFit()
+        pill.clipsToBounds = true
+        pill.hidden = true
+        pill.roundingType = .pill
+        
+        if let strongSelf = self {
+            pill.addTarget(strongSelf, action: #selector(onPillSelect), forControlEvents: .TouchUpInside)
+        }
+        
+        return pill
+    }()
     
-    private lazy var videoPlayer: VVideoView = self.setupVideoView(self.videoContentView)
-    
-    private var currentContentView: UIView?
-    
-    private var currentStagedContent: StageContent?
-    
+    private var hasShownStage: Bool = false
+    private var queuedContent: ContentModel?
     private var stageDataSource: StageDataSource?
     
     weak var delegate: StageDelegate?
-    
     var dependencyManager: VDependencyManager! {
         didSet {
             // The data source is initialized with the dependency manager since it needs URLs in the template to operate.
             stageDataSource = setupDataSource(dependencyManager)
         }
     }
-
-    // MARK: Life cycle
     
-    private func setupVideoView(containerView: UIView) -> VVideoView {
-        let videoPlayer = VVideoView(frame: self.videoContentView.bounds)
-        videoPlayer.useAspectFit = false
-        videoPlayer.delegate = self
-        videoPlayer.backgroundColor = UIColor.clearColor()
-        containerView.addSubview(videoPlayer.view)
-        containerView.v_addFitToParentConstraintsToSubview(videoPlayer.view)
-        return videoPlayer
+    var canHandleCaptionContent: Bool {
+        return dependencyManager.captionBarDependency != nil
+    }
+    
+    // MARK: - Life cycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        captionBarViewController = childViewControllers.flatMap({ $0 as? CaptionBarViewController }).first
+        
+        guard let newItemPill = newItemPill else {
+            return
+        }
+        
+        view.addSubview(newItemPill)
+        view.v_addPinToBottomToSubview(newItemPill, bottomMargin: Constants.pillBottomMargin)
+        view.v_addCenterHorizontallyConstraintsToSubview(newItemPill)
+        newItemPill.v_addHeightConstraint(Constants.pillHeight)
+        mediaContentView.dependencyManager = dependencyManager
     }
     
     private func setupDataSource(dependencyManager: VDependencyManager) -> StageDataSource {
@@ -61,30 +112,113 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
         dataSource.delegate = self
         return dataSource
     }
-
-    override func viewWillDisappear(animated: Bool) {
-        clearStageMedia()
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        mediaContentView.allowsVideoControls = false
+        showStage(animated)
     }
 
-    //MARK: - Stage
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        hideStage(animated)
+    }
     
-    func addContent(stageContent: StageContent) {
-        videoPlayer.pause()
-        currentStagedContent = stageContent
-
-        switch stageContent {
-        case .video:
-            addVideoAsset(stageContent)
-        case .image:
-            addImageAsset(stageContent)
-        case .gif:
-            addGifAsset(stageContent)
+    @objc private func didTapOnContent() {
+        guard let targetContent = mediaContentView.content else {
+            return
         }
-        delegate?.stage(self, didUpdateContentHeight: Constants.fixedStageHeight)
+        
+        let router = Router(originViewController: self, dependencyManager: dependencyManager)
+        let destination = DeeplinkDestination(content: targetContent)
+        router.navigate(to: destination)
+    }
+    
+    // MARK: - Stage
+    
+    func addCaptionContent(content: ContentModel) {
+        guard let text = content.text else {
+            return
+        }
+        captionBarViewController?.populate(content.author, caption: text)
+    }
+    
+    func addContent(stageContent: ContentModel) {
+        queuedContent = stageContent
+        if
+            !hasShownStage ||
+            mediaContentView.content?.type != .video ||
+            newItemPill == nil
+        {
+            // If the stage was not shown, 
+            // or if the current content was one that is not time based (video for now),
+            // or if we don't have a pill (for VIP stage)
+            // we will immediately move to the next content.
+            hasShownStage = true
+            updateStageHeight()
+            nextContent()
+        }
+        else {
+            showPill()
+        }
+    }
+    
+    func nextContent() {
+        hidePill()
+        guard let stageContent = queuedContent else {
+            return
+        }
+        
+        mediaContentView.videoCoordinator?.pauseVideo()
+        mediaContentView.content = stageContent
+        
+        attributionBar.configure(with: stageContent.author)
+        
+        updateStageHeight()
+        queuedContent = nil
+    }
+    
+    func onPillSelect() {
+        nextContent()
+        hidePill()
     }
 
     func removeContent() {
-        clearStageMedia()
+        hidePill()
+        hideStage()
+        hasShownStage = false
+        queuedContent = nil
+    }
+    
+    private func hidePill() {
+        guard
+            let newItemPill = newItemPill
+            where newItemPill.hidden == false
+        else {
+            return
+        }
+        
+        UIView.animateWithDuration(0.5, animations: {
+            newItemPill.alpha = 0.0
+        }) { _ in
+            newItemPill.hidden = true
+        }
+    }
+    
+    private func showPill() {
+        guard
+            let newItemPill = newItemPill
+            where newItemPill.hidden == true
+        else {
+            return
+        }
+        
+        newItemPill.alpha = 0.0
+        newItemPill.hidden = false
+        UIView.animateWithDuration(0.5, animations: {
+            newItemPill.alpha = 1.0
+        })
     }
 
     // MARK: - ForumEventReceiver
@@ -92,82 +226,71 @@ class StageViewController: UIViewController, Stage, VVideoPlayerDelegate {
     var childEventReceivers: [ForumEventReceiver] {
         return [stageDataSource].flatMap { $0 }
     }
+
+    // MARK: - Show/Hide Stage
     
-    // MARK: - VVideoPlayerDelegate
-    
-    func videoPlayerDidBecomeReady(videoPlayer: VVideoPlayer) {
-        switchToContentView(videoContentView, fromContentView: currentContentView)
-        videoPlayer.play()
-    }
-    
-    func videoPlayerItemIsReadyToPlay(videoPlayer: VVideoPlayer) {
-        // This callback could happen multiple times so we don't want to queue up multiple seeks, therefore we need to compare the current time of the video to the actual seek.
-        if let seekAheadTime = currentStagedContent?.seekAheadTime where Int(videoPlayer.currentTimeSeconds) <= Int(seekAheadTime) {
-            videoPlayer.seekToTimeSeconds(seekAheadTime)
-        }
-    }
-    
-    func videoPlayerDidReachEnd(videoPlayer: VVideoPlayer) {
-        currentStagedContent = nil
-    }
-
-    // MARK: Video Asset
-
-    private func addVideoAsset(videoContent: StageContent) {
-        let videoItem = VVideoPlayerItem(URL: videoContent.url)
-        videoPlayer.setItem(videoItem)
-    }
-
-    // MARK: Image Asset
-    
-    private func addImageAsset(imageContent: StageContent) {
-        imageView.sd_setImageWithURL(imageContent.url) { [weak self] (image, error, cacheType, url) in
-            guard let strongSelf = self else {
-                return
-            }
-
-            guard let stageImageURL = strongSelf.currentStagedContent?.url where stageImageURL == url else {
-                return
-            }
-            
-            strongSelf.switchToContentView(strongSelf.imageView, fromContentView: strongSelf.currentContentView)
-        }
-    }
-
-    // MARK: Gif Playback
-    
-    private func addGifAsset(gifContent: StageContent) {
-        let videoItem = VVideoPlayerItem(URL: gifContent.url)
-        videoItem.loop = true
-        videoPlayer.setItem(videoItem)
-        videoPlayer.seekToTimeSeconds(0)
-    }
-
-    // MARK: Clear Media
-
-    private func switchToContentView(newContentView: UIView, fromContentView oldContentView: UIView?) {
-        if newContentView != oldContentView {
-            UIView.animateWithDuration(Constants.contentHideAnimationDuration) {
-                newContentView.alpha = 1.0
-                oldContentView?.alpha = 0.0
-            }
-        }
-        currentContentView = newContentView
-        mainContentViewBottomConstraint.constant = Constants.fixedStageHeight
-        
-        UIView.animateWithDuration(Constants.contentSizeAnimationDuration) {
+    private func hideStage(animated: Bool = false) {
+        mediaContentView.hideContent(animated: animated)
+        visible = false
+        UIView.animateWithDuration(animated ? Constants.contentSizeAnimationDuration : 0) {
             self.view.layoutIfNeeded()
         }
-
-        delegate?.stage(self, didUpdateContentHeight: Constants.fixedStageHeight)
     }
     
-    private func clearStageMedia(animated: Bool = false) {
-        mainContentViewBottomConstraint.constant = 0
-        
-        UIView.animateWithDuration(animated == true ? Constants.contentSizeAnimationDuration : 0) {
+    private func showStage(animated: Bool = false) {
+        mediaContentView.showContent(animated: animated)
+        visible = true
+        UIView.animateWithDuration(animated ? Constants.contentSizeAnimationDuration : 0) {
             self.view.layoutIfNeeded()
         }
-        self.delegate?.stage(self, didUpdateContentHeight: 0.0)
+    }
+    
+    // MARK: - Attribution Bar
+    
+    private func updateAttributionBarAppearance(with dependencyManager: VDependencyManager?) {
+        let attributionBarDependency = dependencyManager?.attributionBarDependency
+        attributionBar.hidden = attributionBarDependency == nil
+        attributionBar.dependencyManager = attributionBarDependency
+    }
+    
+    func didTapOnUser(user: UserModel) {
+        let router = Router(originViewController: self, dependencyManager: dependencyManager)
+        let destination = DeeplinkDestination(userID: user.id)
+        router.navigate(to: destination)
+    }
+    
+    // MARK: - CaptionBarViewControllerDelegate
+    
+    func captionBarViewController(captionBarViewController: CaptionBarViewController, didTapOnUser user: UserModel) {
+        ShowProfileOperation(originViewController: self, dependencyManager: dependencyManager, userId: user.id).queue()
+    }
+    
+    func captionBarViewController(captionBarViewController: CaptionBarViewController, wantsUpdateToContentHeight height: CGFloat) {
+        captionBarHeightConstraint.constant = height
+        updateStageHeight()
+    }
+    
+    // MARK: - View updating
+    
+    private func updateStageHeight() {
+        var height = captionBarHeightConstraint.constant
+        if visible {
+            height += defaultStageHeight
+        }
+        delegate?.stage(self, wantsUpdateToContentHeight: height)
+    }
+}
+
+private extension VDependencyManager {
+    var attributionBarDependency: VDependencyManager? {
+        return childDependencyForKey("attributionBar")
+    }
+    
+    var captionBarDependency: VDependencyManager? {
+        return childDependencyForKey("captionBar")
+    }
+    
+    var newItemButtonDependency: VDependencyManager? {
+        return childDependencyForKey("newItemButton")
     }
 }

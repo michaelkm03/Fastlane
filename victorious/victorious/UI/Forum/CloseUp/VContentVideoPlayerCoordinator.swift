@@ -17,14 +17,18 @@ enum VideoState {
     Scrubbing
 }
 
+protocol ContentVideoPlayerCoordinatorDelegate: class {
+    func coordinatorDidBecomeReady()
+}
+
 /// A coordinator that holds a VVideoView object adjusting for different types of VContent 
 /// (currently supporting GIFs, videos, and youtube videos)
 /// Sets up the video view and handles replay/buffering/scrubbing logic
 class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolbarDelegate {
-    private var videoPlayer: VVideoPlayer = VVideoView()
-    private var toolbar: VideoToolbarView = VideoToolbarView.viewFromNib()
-    private var previewView: UIImageView /// Preview view to show the thumbnail image as the video loads
-    
+    private struct Constants {
+        static let toolbarHeight = CGFloat(41.0)
+    }
+
     private var lastState: VideoState = .NotStarted
     private var state: VideoState = .NotStarted {
         didSet {
@@ -32,90 +36,127 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
             toolbar.paused = state != .Playing
         }
     }
-    private var content: VContent
+    private var content: ContentModel
     private var shouldLoop: Bool {
-        return content.contentType() == .gif
+        return content.type == .gif
     }
     private var shouldMute: Bool {
-        return content.contentType() == .gif
+        return content.type == .gif
     }
     
-    init?(content: VContent) {
+    weak var delegate: ContentVideoPlayerCoordinatorDelegate?
+    
+    init?(content: ContentModel) {
         self.content = content
-        guard let firstAsset = content.contentMediaAssets?.allObjects.first as? VContentMediaAsset else {
+        
+        guard let asset = content.assets.first else {
             return nil
         }
-        if let contentType = content.contentType()
-            where contentType == .video && firstAsset.source == "youtube" {
+        
+        if content.type == .video && asset.videoSource == .youtube {
             videoPlayer = YouTubeVideoPlayer()
+        }
+        else {
+            videoPlayer = VVideoView()
         }
         
         videoPlayer.view.backgroundColor = .clearColor()
         
-        previewView = UIImageView()
-        let minWidth = UIScreen.mainScreen().bounds.size.width
-        
-        if let preview = content.previewImageWithMinimumWidth(minWidth),
-            let remoteURL = NSURL(string: preview.imageURL) {
-            previewView.sd_setImageWithURL(remoteURL)
-        }
         super.init()
-        videoPlayer.delegate = self
-        videoPlayer.view.backgroundColor = UIColor.clearColor()
         
+        videoPlayer.delegate = self
         toolbar.delegate = self
     }
     
-    func setupVideoPlayer(in superview: UIView) {
-        superview.addSubview(previewView)
-        superview.v_addFitToParentConstraintsToSubview(previewView)
-        superview.addSubview(videoPlayer.view)
-        superview.v_addFitToParentConstraintsToSubview(videoPlayer.view)
-    }
-    
-    func setupToolbar(in superview: UIView, initallyVisible visible: Bool) {
-        superview.addSubview(toolbar)
-        toolbar.v_addHeightConstraint(41.0)
-        superview.v_addPinToLeadingTrailingToSubview(toolbar)
-        superview.v_addPinToBottomToSubview(toolbar)
-        if visible {
-            toolbar.show()
-        }
-        else {
-            toolbar.hide()
-        }
+    func tearDown() {
+        videoPlayer.view.removeFromSuperview()
+        toolbar.removeFromSuperview()
     }
     
     func loadVideo() {
-        guard let contentData = content.contentMediaAssets?.allObjects.first as? VContentMediaAsset else {
+        guard let asset = content.assets.first else {
             assertionFailure("There were no assets for this piece of content.")
             return
         }
         
-        var item: VVideoPlayerItem?
-        if let remoteSource = contentData.remoteSource,
-            let contentURL = NSURL(string: remoteSource) {
-            item = VVideoPlayerItem(URL: contentURL)
+        let item: VVideoPlayerItem?
+        
+        if asset.videoSource == .youtube {
+            item = VVideoPlayerItem(externalID: asset.resourceID)
         }
-        if let externalID = contentData.externalID {
-            item = VVideoPlayerItem(externalID: externalID)
+        else if let resourceURL = NSURL(string: asset.resourceID) {
+            item = VVideoPlayerItem(URL: resourceURL)
         }
+        else {
+            return
+        }
+        
         if let item = item {
             item.muted = shouldMute
+            item.loop = shouldLoop
+            item.useAspectFit = true
             videoPlayer.setItem(item)
             videoPlayer.playFromStart()
             state = .Playing
-            return
         }
     }
     
+    // MARK: - Managing the video player
+    
+    private let videoPlayer: VVideoPlayer
+    
+    func setupVideoPlayer(in superview: UIView) {
+        superview.addSubview(videoPlayer.view)
+    }
+    
+    // MARK: - Managing the toolbar
+    
+    private let toolbar = VideoToolbarView.viewFromNib()
+    
+    func setupToolbar(in superview: UIView, initallyVisible visible: Bool) {
+        superview.addSubview(toolbar)
+        toolbar.v_addHeightConstraint(Constants.toolbarHeight)
+        superview.v_addPinToLeadingTrailingToSubview(toolbar)
+        superview.v_addPinToBottomToSubview(toolbar)
+        toolbar.setVisible(visible)
+    }
+    
     func toggleToolbarVisibility(animated: Bool) {
-        if !toolbar.isVisible {
-            toolbar.show(animated: animated)
+        toolbar.setVisible(!toolbar.isVisible, animated: animated)
+    }
+    
+    // MARK: - Managing playback
+    
+    func playVideo() {
+        videoPlayer.play()
+    }
+    
+    func pauseVideo() {
+        videoPlayer.pause()
+    }
+    
+    var isPlaying: Bool {
+        return videoPlayer.isPlaying
+    }
+    
+    // MARK: - Layout
+    
+    func layout(in bounds: CGRect, withContentFill shouldFillContent: Bool = false) {
+        let boundsAspectRatio = bounds.size.aspectRatio
+        
+        if let contentAspectRatio = content.naturalMediaAspectRatio where contentAspectRatio != boundsAspectRatio && shouldFillContent {
+            // This expands the frame of the video player to fill the given bounds.
+            let difference = fabs(boundsAspectRatio - contentAspectRatio)
+            
+            videoPlayer.view.frame = bounds.insetBy(
+                dx: -bounds.size.width * difference,
+                dy: -bounds.size.height * difference
+            )
         }
         else {
-            toolbar.hide(animated: animated)
+            videoPlayer.view.frame = bounds
         }
+
     }
     
     // MARK: - VVideoPlayerDelegate
@@ -123,18 +164,17 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     func videoPlayerDidBecomeReady(videoPlayer: VVideoPlayer) {
         videoPlayer.playFromStart()
         state = .Playing
-        previewView.hidden = true
+        delegate?.coordinatorDidBecomeReady()
+    }
+    
+    func videoPlayerItemIsReadyToPlay(videoPlayer: VVideoPlayer) {
+        if let seekAheadTime = content.seekAheadTime where Int(videoPlayer.currentTimeSeconds) <= Int(seekAheadTime) {
+            videoPlayer.seekToTimeSeconds(seekAheadTime)
+        }
     }
     
     func videoPlayerDidReachEnd(videoPlayer: VVideoPlayer) {
-        videoPlayer.pause()
-        // Replay the video if necessary
-        if  shouldLoop {
-            videoPlayer.playFromStart()
-        }
-        else {
-            state = .Ended
-        }
+        state = .Ended
     }
     
     func videoPlayerDidStartBuffering(videoPlayer: VVideoPlayer) {
@@ -155,7 +195,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     }
     
     func videoPlayerDidPlay(videoPlayer: VVideoPlayer) {
-        state = .Playing;
+        state = .Playing
     }
     
     func videoPlayerDidPause(videoPlayer: VVideoPlayer) {

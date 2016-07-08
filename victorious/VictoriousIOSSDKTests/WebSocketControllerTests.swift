@@ -22,7 +22,9 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
     var expectationDisconnectedEvent: XCTestExpectation?
     var expectationIncomingChatMessage: XCTestExpectation?
     var expectationRefreshStageMessage: XCTestExpectation?
-    
+    var expectationChatUserCountEvent: XCTestExpectation?
+
+
     // MARK: - Life Cycle
     override func setUp() {
         super.setUp()
@@ -39,7 +41,8 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
         expectationDisconnectedEvent = nil
         expectationIncomingChatMessage = nil
         expectationRefreshStageMessage = nil
-        
+        expectationChatUserCountEvent = nil
+
         // Brake the retain loop.
         controller = nil
         nextSender = nil
@@ -51,7 +54,7 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
         nextSender = controller
         controller.addChildReceiver(self)
         
-        XCTAssertFalse(controller.isConnected, "Expected controller to NOT be connected after initialization.")
+        XCTAssertFalse(controller.isSetUp, "Expected controller to NOT be set up after initialization.")
         
         expectationConnectEvent = expectationWithDescription("WebSocket-connect-event")
         controller.setUp()
@@ -63,7 +66,7 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
         controller.addChildReceiver(self)
         
         webSocket.connect()
-        XCTAssertTrue(controller.isConnected, "Expected controller to be connected in order to test out the disconnect event.")
+        XCTAssertTrue(controller.isSetUp, "Expected controller to be set up in order to test out the disconnect event.")
 
         expectationDisconnectedEvent = expectationWithDescription("WebSocket-disconnect-event")
         controller.tearDown()
@@ -87,8 +90,8 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
     func testWebSocketOutboundChatMessage() {
         nextSender = controller
         
-        let user = ChatMessageUser(id: 1222, name: "username", profileURL: NSURL())
-        let chatMessageOutbound = ChatMessage(serverTime: NSDate(timeIntervalSince1970: 1234567890), fromUser: user, text: "Test chat message")!
+        let user = User(id: 1222, name: "username")
+        let chatMessageOutbound = Content(createdAt: NSDate(timeIntervalSince1970: 1234567890), text: "Test chat message", author: user)
         let identificationMessage = controller.uniqueIdentificationMessage
 
         var toServerDictionary: [String: AnyObject] = [chatMessageOutbound.rootTypeKey!: chatMessageOutbound.rootTypeValue!]
@@ -101,14 +104,14 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
         webSocket.expectationOutboundChatMessage = expectationWithDescription("WebSocket-outgoing-chat-message")
         webSocket.connect()
         
-        sendEvent(chatMessageOutbound)
+        send(.sendContent(chatMessageOutbound))
         waitForExpectationsWithTimeout(1, handler: nil)
     }
 
     func testWebSocketBlockUserMessage() {
         nextSender = controller
         
-        let blockUser = BlockUser(serverTime: NSDate(timeIntervalSince1970: 1234567890), userID: "1337")
+        let blockUser = BlockUser(userID: "1337")
         let identificationMessage = controller.uniqueIdentificationMessage
 
         var toServerDictionary: [String: AnyObject] = [blockUser.rootTypeKey!: blockUser.rootTypeValue!]
@@ -121,7 +124,7 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
         webSocket.expectationBlockUserMessage = expectationWithDescription("WebSocket-block-user-message")
         webSocket.connect()
 
-        sendEvent(blockUser)
+        send(.blockUser(blockUser))
         waitForExpectationsWithTimeout(1, handler: nil)
     }
 
@@ -140,39 +143,56 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
         waitForExpectationsWithTimeout(1, handler: nil)
     }
 
+    func testChatUsersCount() {
+        nextSender = controller
+        controller.addChildReceiver(self)
+
+        guard let mockChatUserCountURL = NSBundle(forClass: self.dynamicType).URLForResource("ChatUserCount", withExtension: "json"),
+            let mockChatUserCountString = try? String(contentsOfURL: mockChatUserCountURL, encoding: NSUTF8StringEncoding) else {
+                XCTFail("Error reading mock JSON data for ChatUserCount")
+                return
+        }
+
+        expectationChatUserCountEvent = expectationWithDescription("WebSocket-chat-user-event")
+        controller.websocketDidReceiveMessage(webSocket, text: mockChatUserCountString)
+        waitForExpectationsWithTimeout(1, handler: nil)
+    }
+
     // MARK: ForumEventReceiver
 
-    func receiveEvent(event: ForumEvent) {
+    func receive(event: ForumEvent) {
         switch event {
-        case let webSocketEvent as WebSocketEvent:
-            switch webSocketEvent.type {
-            case .Authenticated:
+        case .websocket(let websocketEvent):
+            switch websocketEvent {
+            case .authenticated:
                 expectationAuthenticationEvent?.fulfill()
-            case .Connected:
+            case .connected:
                 guard let expectationConnectEvent = expectationConnectEvent else {
                     return
                 }
-                if controller.isConnected {
+                if controller.isSetUp {
                     expectationConnectEvent.fulfill()
                 } else {
-                    XCTFail("Expected WebSocketController to be connected after the .Connected event has been sent out.")
+                    XCTFail("Expected WebSocketController to be connected after the .connected event has been sent out.")
                 }
-            case .Disconnected(webSocketError: _):
+            case .disconnected(webSocketError: _):
                 guard let expectationDisconnectedEvent = expectationDisconnectedEvent else {
                     return
                 }
-                if !controller.isConnected {
+                if !controller.isSetUp {
                     expectationDisconnectedEvent.fulfill()
                 } else {
-                    XCTFail("Expected WebSocketController to NOT be connected after the .Disconnect event has been sent out.")
+                    XCTFail("Expected WebSocketController to NOT be connected after the .disconnect event has been sent out.")
                 }
             default:
-                XCTFail("Unexpected WebSocketEventType received. Type -> \(webSocketEvent.type)")
+                XCTFail("Unexpected WebSocketEventType received. Type -> \(websocketEvent)")
             }
-        case is ChatMessage:
+        case .appendContent(_):
             expectationIncomingChatMessage?.fulfill()
-        case is RefreshStage:
+        case .refreshStage(_):
             expectationRefreshStageMessage?.fulfill()
+        case .chatUserCount(_):
+            expectationChatUserCountEvent?.fulfill()
         default:
             XCTFail("Unexpected ForumEvent type received. Event -> \(event)")
         }

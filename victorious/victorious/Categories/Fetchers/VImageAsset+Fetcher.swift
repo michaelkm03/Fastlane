@@ -14,10 +14,6 @@ extension VImageAsset {
     ///  The area of the image in pixels squared.  Width * height;
     
     func area() -> CGFloat {
-        guard let width = width,
-            height = height else {
-                return CGFloat(0)
-        }
         return CGFloat(width) * CGFloat(height)
     }
     
@@ -25,10 +21,6 @@ extension VImageAsset {
     /// to the width and height of the provided size.
     
     func fitsWithinSize(size: CGSize) -> Bool {
-        guard let width = width,
-            height = height else {
-                return false
-        }
         return CGFloat(width) <= size.width && CGFloat(height) <= size.height
     }
     
@@ -36,10 +28,6 @@ extension VImageAsset {
     /// to the width and height of the provided size.
 
     func encompassesSize(size: CGSize) -> Bool {
-        guard let width = width,
-            height = height else {
-                return false
-        }
         return CGFloat(width) >= size.width && CGFloat(height) >= size.height
     }
     

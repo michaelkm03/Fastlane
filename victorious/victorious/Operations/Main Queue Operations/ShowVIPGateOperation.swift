@@ -1,15 +1,17 @@
 //
-//  ShowVIPGateOperation.swift
+//  ShowVIPFlowOperation.swift
 //  victorious
 //
 //  Created by Jarod Long on 5/10/16.
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-class ShowVIPGateOperation: MainQueueOperation {
+class ShowVIPFlowOperation: MainQueueOperation, VIPFlowNavigationControllerDelegate {
     private let dependencyManager: VDependencyManager
     private let animated: Bool
     private weak var originViewController: UIViewController?
+    private(set) var showedGate = false
+    private(set) var allowedAccess = false
     
     required init(originViewController: UIViewController, dependencyManager: VDependencyManager, animated: Bool = true) {
         self.dependencyManager = dependencyManager
@@ -18,23 +20,24 @@ class ShowVIPGateOperation: MainQueueOperation {
     }
     
     override func start() {
-        guard !cancelled else {
+        guard
+            !cancelled,
+            let originViewController = originViewController,
+            let vipFlow = dependencyManager.templateValueOfType(VIPFlowNavigationController.self, forKey: "vipPaygateScreen") as? VIPFlowNavigationController
+        else {
             finishedExecuting()
             return
         }
         
-        guard let viewController = dependencyManager.templateValueOfType(VIPGateViewController.self, forKey: "vipPaygateScreen") as? VIPGateViewController else {
-            finishedExecuting()
-            return
-        }
-        
-        if let navigationController = originViewController?.navigationController {
-            navigationController.pushViewController(viewController, animated: animated)
-            finishedExecuting()
-        } else {
-            originViewController?.presentViewController(viewController, animated: animated) {
-                self.finishedExecuting()
-            }
+        vipFlow.flowDelegate = self
+        showedGate = true
+        originViewController.presentViewController(vipFlow, animated: animated, completion: nil)
+    }
+    
+    func VIPFlowNaivigationController(navigationController: VIPFlowNavigationController, completedFlowWithSuccess success: Bool) {
+        self.allowedAccess = success
+        navigationController.dismissViewControllerAnimated(animated) { [weak self] in
+            self?.finishedExecuting()
         }
     }
 }

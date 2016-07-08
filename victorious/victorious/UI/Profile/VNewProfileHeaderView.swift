@@ -8,6 +8,10 @@
 
 import Foundation
 
+protocol ConfigurableGridStreamHeaderDelegate: class {
+    func shouldRefresh()
+}
+
 /// The collection header view used for `VNewProfileViewController`.
 class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHeader {
     // MARK: - Constants
@@ -16,6 +20,8 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
     private static let shadowOpacity: Float = 0.5
     private static let userProfilePictureWidth: CGFloat = 80.0
     private static let creatorProfilePictureWidth: CGFloat = 90.0
+    
+    weak var delegate: ConfigurableGridStreamHeaderDelegate?
     
     // MARK: - Initializing
     
@@ -40,6 +46,9 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
     
     var user: VUser? {
         didSet {
+            if user == oldValue {
+                return
+            }
             populateUserContent()
             
             if let oldValue = oldValue {
@@ -140,8 +149,8 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         locationLabel.text = user?.location
         taglineLabel.text = user?.tagline
         vipIconImageView.hidden = user?.isVIPSubscriber?.boolValue != true
-        likesGivenValueLabel?.text = numberFormatter.stringForInteger(user?.likesGiven?.integerValue ?? 0)
-        likesReceivedValueLabel?.text = numberFormatter.stringForInteger(user?.likesReceived?.integerValue ?? 0)
+        likesGivenValueLabel?.text = numberFormatter.stringForInteger(user?.likesGiven ?? 0)
+        likesReceivedValueLabel?.text = numberFormatter.stringForInteger(user?.likesReceived ?? 0)
         
         let tier = user?.tier
         let shouldDisplayTier = tier?.isEmpty == false
@@ -153,8 +162,11 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         let pictureURL = user?.pictureURL(ofMinimumSize: profilePictureView.frame.size)
         profilePictureView.sd_setImageWithURL(pictureURL, placeholderImage: placeholderImage)
         
-        let backgroundPictureURL = user?.pictureURL(ofMinimumSize: backgroundImageView.frame.size)
-        backgroundImageView.sd_setImageWithURL(backgroundPictureURL)
+        if let backgroundPictureURL = user?.pictureURL(ofMinimumSize: backgroundImageView.frame.size) {
+            backgroundImageView.applyBlurToImageURL(backgroundPictureURL, withRadius: 12.0) { [weak self] in
+                self?.backgroundImageView.alpha = 1.0
+            }
+        }
         
         contentContainerView.hidden = user == nil
         loadingContainerView.hidden = user != nil
@@ -185,17 +197,15 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         }
     }
     
-    // MARK: - Configurable Header
+    // MARK: - ConfigurableGridStreamHeader
     
-    func decorateHeader(dependencyManager: VDependencyManager,
-                        maxHeight: CGFloat,
-                        content: VUser?) {
+    func decorateHeader(dependencyManager: VDependencyManager, maxHeight: CGFloat, content: VUser?, hasError: Bool) {
+        // No error states for profiles
         self.user = content
     }
     
-    func sizeForHeader(dependencyManager: VDependencyManager,
-                       maxHeight: CGFloat,
-                       content: VUser?) -> CGSize {
+    func sizeForHeader(dependencyManager: VDependencyManager, maxHeight: CGFloat, content: VUser?, hasError: Bool) -> CGSize {
+        // No error states for profiles
         self.user = content
         
         setNeedsLayout()
@@ -208,6 +218,10 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         removeConstraint(widthConstraint)
         
         return CGSizeMake(width, height)
+    }
+    
+    func gridStreamShouldRefresh() {
+        delegate?.shouldRefresh()
     }
 }
 

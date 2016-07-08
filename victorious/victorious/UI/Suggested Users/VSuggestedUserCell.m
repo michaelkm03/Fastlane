@@ -9,10 +9,8 @@
 #import "VSuggestedUserCell.h"
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VFollowControl.h"
-#import "VUser.h"
 #import "UIView+AutoLayout.h"
 #import "UIResponder+VResponderChain.h"
-#import "VDefaultProfileImageView.h"
 #import "VContentThumbnailsViewController.h"
 #import "VContentThumbnailsDataSource.h"
 #import "VSequence.h"
@@ -80,15 +78,7 @@ static NSString * const kTextTitleColorKey = @"color.text.label1";
 - (void)configureWithSuggestedUser:(VSuggestedUser *)suggestedUser
 {
     self.user = suggestedUser.user;
-    self.usernameTextView.text = self.user.name;
-    
-    NSURL *pictureURL = [self.user pictureURLOfMinimumSize:self.userProfileImage.frame.size];
-    
-    if (pictureURL != nil)
-    {
-        [self.userProfileImage setProfileImageURL:pictureURL];
-    }
-    
+    self.usernameTextView.text = self.user.name;    
     self.recentSequences = suggestedUser.recentSequences;
     self.thumbnailsDataSource.sequences = self.recentSequences;
     [self.thumbnailsViewController.collectionView reloadData];
@@ -115,13 +105,7 @@ static NSString * const kTextTitleColorKey = @"color.text.label1";
 
 - (IBAction)followControlPressed:(VFollowControl *)sender
 {
-    NSInteger userId = self.user.remoteId.integerValue;
-    NSString *sourceScreenName = VFollowSourceScreenRegistrationSuggestedUsers;
-    FetcherOperation *operation = [[FollowUserToggleOperation alloc] initWithUserID:userId sourceScreenName:sourceScreenName];
-    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
-     {
-         [self updateFollowingStateAnimated:YES];
-     }];
+    // FollowUserOperation/FollowUserToggleOperation not supported in 5.0
 }
 
 #pragma mark - VBackgroundContainer

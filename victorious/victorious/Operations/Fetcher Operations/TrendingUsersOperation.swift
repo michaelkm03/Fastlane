@@ -21,11 +21,11 @@ class TrendingUsersOperation: RemoteFetcherOperation, RequestOperation {
         
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             for networkUser in networkResult {
-                let persistentUser: VUser = context.v_findOrCreateObject(["remoteId": networkUser.userID])
+                let persistentUser: VUser = context.v_findOrCreateObject(["remoteId": networkUser.id])
                 persistentUser.populate(fromSourceModel: networkUser)
             }
             context.v_save()
-            let userIDs = networkResult.map { $0.userID }
+            let userIDs = networkResult.map { $0.id }
             self.results = self.fetchResults(userIDs)
         }
     }

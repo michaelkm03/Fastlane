@@ -257,14 +257,7 @@
 
 - (IBAction)pressedDone:(id)sender
 {
-    NSMutableSet *newFriends = [[NSMutableSet alloc] init];
-    [newFriends addObjectsFromArray:[self.contactsInnerViewController selectedUsers]];
-    [newFriends addObjectsFromArray:[self.facebookInnerViewController selectedUsers]];
-    
-    FetcherOperation *operation = [[FollowUsersOperation alloc] initWithUserIDs:[newFriends allObjects] sourceScreenName:@""];
-    [operation queueWithCompletion:nil];
-
-    [self dismissViewControllerAnimated:YES completion:nil];
+    // FollowUserOperation/FollowUserToggleOperation not supported in 5.0
 }
 
 #pragma mark - Invite

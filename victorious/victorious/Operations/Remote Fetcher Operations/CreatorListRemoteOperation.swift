@@ -31,7 +31,7 @@ final class CreatorListRemoteOperation: RemoteFetcherOperation {
     private func onComplete( users: [User]) {
         persistentStore.createBackgroundContext().v_performBlockAndWait { context in
             for networkUser in users {
-                let persistentUser: VUser = context.v_findOrCreateObject(["remoteId": networkUser.userID])
+                let persistentUser: VUser = context.v_findOrCreateObject(["remoteId": networkUser.id])
                 persistentUser.populate(fromSourceModel: networkUser)
             }
             context.v_save()

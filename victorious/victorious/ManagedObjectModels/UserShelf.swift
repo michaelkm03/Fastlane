@@ -21,7 +21,7 @@ class UserShelf: Shelf {
         
         super.populate(fromSourceShelf: userShelf.shelf)
         self.postsCount = NSNumber(integer: userShelf.shelf.postCount ?? 0)
-        self.user = v_managedObjectContext.v_findOrCreateObject( [ "remoteId" : userShelf.user.userID ] ) as VUser
+        self.user = v_managedObjectContext.v_findOrCreateObject( [ "remoteId" : userShelf.user.id ] ) as VUser
         self.user.populate(fromSourceModel: userShelf.user)
     }
 }

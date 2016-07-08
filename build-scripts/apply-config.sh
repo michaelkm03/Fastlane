@@ -96,12 +96,6 @@ fi
 
 ### Set App IDs
 
-QA_APP_ID=$(./build-scripts/get-app-id.sh "$FOLDER" "QA" 2> /dev/null)
-if [ $? != 0 ]; then
-    echo "Could not read app ID from Info.plist"
-    exit 1
-fi
-
 STAGING_APP_ID=$(./build-scripts/get-app-id.sh "$FOLDER" "Staging" 2> /dev/null)
 if [ $? != 0 ]; then
     echo "Could not read app ID from Info.plist"
@@ -122,8 +116,6 @@ setAppIDs(){
         NAME=$(/usr/libexec/PlistBuddy -c "Print :$N:name" "$ENVIRONMENTS_PLIST" 2> /dev/null)
         if [ "$NAME" == "" ]; then
             break
-        elif [ "$NAME" == "QA" ]; then
-            /usr/libexec/PlistBuddy -c "Set :$N:appID $QA_APP_ID" "$ENVIRONMENTS_PLIST"
         elif [ "$NAME" == "Staging" ]; then
             /usr/libexec/PlistBuddy -c "Set :$N:appID $STAGING_APP_ID" "$ENVIRONMENTS_PLIST"
         elif [ "$NAME" == "Production" ]; then

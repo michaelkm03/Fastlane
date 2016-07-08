@@ -1,56 +1,116 @@
 {
-    "id": "1",
-    "status": "public",
-    "title": "TEST_TITLE",
-    "share_url": "SHARE_URL",
-    "released_at": 314159,
-    "is_ugc": true,
-    "is_repost": true,
-    "preview": {
-        "type": "media",
-        "media": {
-            "assets": [
-                       {
-                       "image_url": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/36170da86ad3933a86edd9bff9b21846/960x540.jpg",
-                       "type": "image",
-                       "width": 960,
-                       "height": 540
-                       },
-                       {
-                       "image_url": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/36170da86ad3933a86edd9bff9b21846/640x360.jpg",
-                       "type": "image",
-                       "width": 640,
-                       "height": 360
-                       },
-                       {
-                       "image_url": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/36170da86ad3933a86edd9bff9b21846/80x45.jpg",
-                       "type": "image",
-                       "width": 80,
-                       "height": 45
-                       },
-                       {
-                       "image_url": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/36170da86ad3933a86edd9bff9b21846/320x180.jpg",
-                       "type": "image",
-                       "width": 320,
-                       "height": 180
-                       }
-                       ]
-        }
+    "content": {
+        "id": "1",
+        "status": "public",
+        "title": "TEST_TITLE",
+        "share_url": "SHARE_URL",
+        "released_at": 314159,
+        "is_ugc": true,
+        "is_repost": true,
+        "preview": {
+            "type": "media",
+            "media": {
+                "assets": [
+                           {
+                           "image_url": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/36170da86ad3933a86edd9bff9b21846/960x540.jpg",
+                           "type": "image",
+                           "width": 960,
+                           "height": 540
+                           },
+                           {
+                           "image_url": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/36170da86ad3933a86edd9bff9b21846/640x360.jpg",
+                           "type": "image",
+                           "width": 640,
+                           "height": 360
+                           },
+                           {
+                           "image_url": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/36170da86ad3933a86edd9bff9b21846/80x45.jpg",
+                           "type": "image",
+                           "width": 80,
+                           "height": 45
+                           },
+                           {
+                           "image_url": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/36170da86ad3933a86edd9bff9b21846/320x180.jpg",
+                           "type": "image",
+                           "width": 320,
+                           "height": 180
+                           }
+                           ]
+            }
+        },
+        "type": "video",
+        "video": {
+            "type": "video_assets",
+            "is_remix": false,
+            "video_assets": [
+                             {
+                             "mime_type": "HLS",
+                             "data": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/36170da86ad3933a86edd9bff9b21846/playlist.m3u8",
+                             "duration": 70,
+                             "height": 720,
+                             "width": 1280
+                             }
+                             ]
+        },
+        "app_id": 1,
+        "created_by": 6086
     },
-    "type": "video",
-    "video": {
-        "type": "video_assets",
-        "is_remix": false,
-        "video_assets": [
-                         {
-                         "mime_type": "HLS",
-                         "data": "http://media-dev-public.s3-website-us-west-1.amazonaws.com/36170da86ad3933a86edd9bff9b21846/playlist.m3u8",
-                         "duration": 70,
-                         "height": 720,
-                         "width": 1280
-                         }
-                         ]
+    "author": {
+        "id": "1",
+        "username": "testy@testy.testy",
+        "name": "testy",
+        "profile_location": "Egypt",
+        "profile_tagline": "Test all day",
+        "access_level": "API_USER",
+        "app_id": 1,
+        "parent_login_id": 6097,
+        "preview": {
+            "type": "media",
+            "media": {
+                "assets": [
+                           {
+                           "image_url": "054fbd17b5f97116afa460e98cad610b/398x399.jpg",
+                           "type": "media",
+                           "width": 398,
+                           "height": 399
+                           },
+                           {
+                           "image_url": "054fbd17b5f97116afa460e98cad610b/80x80.jpg",
+                           "type": "media",
+                           "width": 80,
+                           "height": 80
+                           },
+                           {
+                           "image_url": "054fbd17b5f97116afa460e98cad610b/319x320.jpg",
+                           "type": "media",
+                           "width": 319,
+                           "height": 320
+                           }
+                           ]
+            }
+        },
+        "created_at": 1,
+        "updated_at": 1,
+        "last_login_at": 1,
+        "autofollow": false,
+        "banned": false,
+        "deleted": false,
+        "direct_message_enabled": true,
+        "verified": true,
+        "profiles": [],
+        "blocked": [
+                    "6086",
+                    "4460",
+                    "6210",
+                    "6088",
+                    "3694",
+                    "6349",
+                    "97"
+                    ],
+        "vip": {},
+        "complete": true
     },
-    "app_id": 1,
-    "created_by": 6086
+    "viewer_engagements": {
+        "is_liking": true
+    }
 }

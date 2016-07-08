@@ -9,44 +9,53 @@
 import UIKit
 
 extension VContent: PersistenceParsable {
-    
-    func populate( fromSourceModel viewedContent: ViewedContent ) {
+    func populate(fromSourceModel content: Content) {
+        v_isVIPOnly = content.isVIPOnly ?? v_isVIPOnly
+        v_createdAt = content.createdAt ?? v_createdAt
+        v_remoteID = content.id ?? v_remoteID
+        v_shareURL = content.shareURL?.absoluteString ?? v_shareURL
+        v_status = content.status ?? v_status
+        v_text = content.text ?? v_text
+        v_type = content.type.rawValue
         
-        let content = viewedContent.content
-        let author = viewedContent.author
+        /// We do not want to update the like status after it has been populated.
+        /// If a user likes a piece of content, and the outgoing request fails, we don't want the user to know anything went wrong.
+        /// Same thing if they want to unlike a piece of content. Therefore, we will show the user a state that they always expect,
+        /// and we will update again on the next launch when our persistent store is cleared.
+        v_isLikedByCurrentUser = v_isLikedByCurrentUser ?? content.isLikedByCurrentUser
         
-        isVIP = content.isVIP ?? isVIP
-        isUGC = content.isUGC ?? isUGC
-        releasedAt = content.releasedAt ?? releasedAt
-        remoteID = content.id ?? remoteID
-        shareURL = content.shareURL?.absoluteString ?? shareURL
-        status = content.status ?? status
-        title = content.title ?? title
-        type = content.type ?? type
+        let author = content.author
+        v_author = v_managedObjectContext.v_findOrCreateObject(["remoteId": author.id])
+        v_author.populate(fromSourceModel: author)
         
-        if self.author == nil {
-            self.author = v_managedObjectContext.v_findOrCreateObject( [ "remoteId" : author.userID ] ) as VUser
-        }
-        self.author?.populate(fromSourceModel: author)
-        
-        if let previewAssets = content.previewImages {
-            let persistentAssets: [VImageAsset] = previewAssets.flatMap {
-                let previewAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject([ "imageURL" : $0.mediaMetaData.url.absoluteString ])
-                previewAsset.populate( fromSourceModel: $0 )
-                previewAsset.content = self
-                return previewAsset
-            }
-            self.contentPreviewAssets = Set<VImageAsset>(persistentAssets)
+        let persistentImageAssets: [VImageAsset] = content.previewImages.flatMap { imageAsset in
+            let previewAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject(["imageURL": imageAsset.mediaMetaData.url.absoluteString ])
+            previewAsset.populate(fromSourceModel: imageAsset)
+            previewAsset.content = self
+            return previewAsset
         }
         
-        if let contentData = content.contentData {
-            let persistentAssets: [VContentMediaAsset] = contentData.flatMap {
-                let data: VContentMediaAsset = self.v_managedObjectContext.v_findOrCreateObject([ "uniqueID" :  $0.uniqueID])
-                data.populate( fromSourceModel: $0 )
-                data.content = self
-                return data
+        v_contentPreviewAssets = Set(persistentImageAssets)
+        
+        let persistentAssets: [VContentMediaAsset] = content.assets.flatMap { asset in
+            let data: VContentMediaAsset = self.v_managedObjectContext.v_findOrCreateObject(["v_uniqueID": asset.resourceID])
+            data.populate(fromSourceModel: asset)
+            data.v_content = self
+            return data
+        }
+        
+        v_contentMediaAssets = Set(persistentAssets)
+        
+        if let sourceTracking = content.tracking {
+            let tracking: VTracking = v_managedObjectContext.v_createObject()
+            tracking.populate(fromSourceModel: sourceTracking)
+            tracking.content = self
+            
+            if let v_tracking = v_tracking {
+                v_managedObjectContext.deleteObject(v_tracking)
             }
-            self.contentMediaAssets = Set<VContentMediaAsset>(persistentAssets)
+            
+            v_tracking = tracking
         }
     }
 }

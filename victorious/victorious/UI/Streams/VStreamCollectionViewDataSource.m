@@ -11,7 +11,6 @@
 #import "VFooterActivityIndicatorView.h"
 #import "VStreamItem+Fetcher.h"
 #import "VSequence.h"
-#import "CHTCollectionViewWaterfallLayout+ColumnAccessor.h"
 #import "victorious-Swift.h"
 
 @implementation VStreamCollectionViewDataSource
@@ -29,7 +28,6 @@
     {
         _stream = stream;
         _paginatedDataSource = [[PaginatedDataSource alloc] init];
-        _paginatedDataSource.delegate = self;
         _visibleItems = [[NSOrderedSet alloc] init];
     }
     return self;
@@ -112,7 +110,7 @@
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
 {
-    BOOL isFooter = kind == UICollectionElementKindSectionFooter || kind == CHTCollectionElementKindSectionFooter;
+    BOOL isFooter = kind == UICollectionElementKindSectionFooter;
     if ( isFooter && [self.delegate shouldDisplayActivityViewFooterForCollectionView:collectionView inSection:indexPath.section] )
     {
         return [collectionView dequeueReusableSupplementaryViewOfKind:kind

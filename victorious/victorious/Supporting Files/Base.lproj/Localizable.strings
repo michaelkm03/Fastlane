@@ -8,6 +8,8 @@
 
 "Back"                  =   "Back";
 "OK"                    =   "OK";
+"DeletePost"            =   "Delete Post";
+"ReportPost"            =   "Report Post";
 "DeleteButton"          =   "Delete";
 "ResetButton"           =   "Reset";
 "Publish"               =   "Publish";
@@ -18,6 +20,9 @@
 "Continue"              =   "Continue";
 "Loading..."            =   "Loading...";
 "Finding fans to connect with..." = "Finding fans to connect with...";
+
+"Send"                  =   "Send";
+"What do you think?"    =   "What do you think?";
 
 "Following"             =   "Following";
 "FOLLOWERS"             =   "FOLLOWERS";
@@ -399,6 +404,7 @@
 "By signing up you are agreeing to our" = "By signing up you are agreeing to our";
 "Terms of Service" = "Terms of Service";
 "Privacy Policy" = "Privacy Policy";
+"Help" = "Help";
 "Enter Email" = "Enter Email";
 "Enter name" = "Enter name";
 "You must enter a name." = "You must enter a name.";

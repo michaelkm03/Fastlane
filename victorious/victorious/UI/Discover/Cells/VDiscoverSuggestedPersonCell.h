@@ -7,10 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "VUser.h"
 #import "VFollowControl.h"
 
-@class VDependencyManager;
+@class VDependencyManager, VUser;
 
 @interface VDiscoverSuggestedPersonCell : UICollectionViewCell
 

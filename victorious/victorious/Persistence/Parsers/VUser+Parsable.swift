@@ -10,43 +10,35 @@ import Foundation
 import VictoriousIOSSDK
 
 extension VUser: PersistenceParsable {
-    
-    func populate( fromSourceModel user: User ) {
-        remoteId                    = user.userID ?? remoteId
-        completedProfile            = user.completedProfile ?? completedProfile
+    func populate(fromSourceModel user: UserModel) {
+        remoteId                    = user.id ?? remoteId
+        v_completedProfile          = user.completedProfile ?? completedProfile
         email                       = user.email ?? email
         name                        = user.name ?? name
         location                    = user.location ?? location
         tagline                     = user.tagline ?? tagline
-        isBlockedByMainUser         = user.isBlockedByMainUser ?? isBlockedByMainUser
+        isBlockedByMainUser         = user.isBlockedByCurrentUser ?? isBlockedByMainUser
         isVIPSubscriber             = user.vipStatus?.isVIP ?? isVIPSubscriber
         vipEndDate                  = user.vipStatus?.endDate ?? vipEndDate
         isCreator                   = user.accessLevel?.isCreator ?? isCreator
-        isDirectMessagingDisabled   = user.isDirectMessagingDisabled ?? isDirectMessagingDisabled
-        isFollowedByMainUser        = user.isFollowedByMainUser ?? isFollowedByMainUser
-        tokenUpdatedAt              = user.tokenUpdatedAt ?? tokenUpdatedAt
-        maxUploadDuration           = user.maxVideoUploadDuration ?? maxUploadDuration
-        numberOfFollowers           = user.numberOfFollowers ?? numberOfFollowers
-        numberOfFollowing           = user.numberOfFollowing ?? numberOfFollowing
-        likesGiven                  = user.likesGiven ?? likesGiven
-        likesReceived               = user.likesReceived ?? likesReceived
+        isFollowedByMainUser        = user.isFollowedByCurrentUser ?? isFollowedByMainUser
+        v_likesGiven                = user.likesGiven ?? likesGiven
+        v_likesReceived             = user.likesReceived ?? likesReceived
         levelProgressPoints         = user.fanLoyalty?.points ?? levelProgressPoints
         level                       = user.fanLoyalty?.level ?? level
         levelProgressPercentage     = user.fanLoyalty?.progress ?? levelProgressPercentage
         tier                        = user.fanLoyalty?.tier ?? tier
         achievementsUnlocked        = user.fanLoyalty?.achievementsUnlocked ?? achievementsUnlocked
+        v_avatarBadgeType           = user.avatarBadgeType.stringRepresentation
         
         if let vipStatus = user.vipStatus {
             populateVIPStatus(fromSourceModel: vipStatus)
         }
         
-        /// If backend does not send us a badgeType, we default to "", which means we show the default level badge
-        avatarBadgeType             = user.avatar?.badgeType ?? ""
-        
-        if let previewImageAssets = user.previewImageAssets where !previewImageAssets.isEmpty {
-            let newPreviewAssets: [VImageAsset] = previewImageAssets.flatMap {
-                let imageAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject([ "imageURL" : $0.mediaMetaData.url.absoluteString ])
-                imageAsset.populate( fromSourceModel: $0 )
+        if !user.previewImages.isEmpty {
+            let newPreviewAssets: [VImageAsset] = user.previewImages.flatMap {
+                let imageAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject(["imageURL": $0.mediaMetaData.url.absoluteString])
+                imageAsset.populate(fromSourceModel: $0)
                 return imageAsset
             }
             self.v_addObjects( newPreviewAssets, to: "previewAssets" )
@@ -58,13 +50,13 @@ extension VUser: PersistenceParsable {
         vipEndDate = nil
     }
     
-    func populateVIPStatus( fromSourceModel vipStatus: VIPStatus ) {
+    func populateVIPStatus(fromSourceModel vipStatus: VIPStatus) {
         // If the user already is a VIP, we do not want to undo that.  We only want
         // to update the status if the existing value is undefined (nil) or false.
         // The purposes of this is to allow the user to remain a VIP for the duration of
         // their session even if their subscription expires during the session.
         // Upon the next session, the user will not be a VIP and must re-subscribe.
-        if !isVIPSubscriber.boolValue {
+        if isVIPSubscriber == false {
             isVIPSubscriber = vipStatus.isVIP
         }
     }

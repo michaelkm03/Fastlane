@@ -45,7 +45,9 @@
 
             switch currentDebugMenuType {
             case .webSocket(let messageContainer):
-                let debuggingViewController = WebSocketDebuggingViewController(rawMessageContainer: messageContainer)
+                
+                let debuggingViewController: WebSocketDebuggingViewController = WebSocketDebuggingViewController.v_initialViewControllerFromStoryboard()
+                debuggingViewController.rawMessageContainer = messageContainer
                 let navigationController = UINavigationController(rootViewController: debuggingViewController)
                 targetViewController.presentViewController(navigationController, animated: true, completion: nil)
             }

@@ -19,4 +19,11 @@ protocol ComposerTextViewManagerDelegate: class {
     var textViewHasPrependedImage: Bool { get set }
     
     var textViewCanDismiss: Bool { get }
+    
+    var textViewCurrentHashtag: (String, NSRange)? { get set }
+
+    func textViewDidHitCharacterLimit(textView: UITextView)
+    
+    func inputTextAttributes() -> (inputTextColor: UIColor?, inputTextFont: UIFont?)
+    
 }

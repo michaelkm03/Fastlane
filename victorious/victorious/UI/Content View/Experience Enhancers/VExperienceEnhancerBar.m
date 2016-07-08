@@ -14,7 +14,6 @@
 #import "VVoteType.h"
 #import "VExperienceEnhancerResponder.h"
 #import "UIResponder+VResponderChain.h"
-#import "VUser.h"
 #import "victorious-Swift.h"
 #import <KVOController/FBKVOController.h>
 

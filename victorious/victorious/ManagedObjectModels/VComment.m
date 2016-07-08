@@ -9,7 +9,6 @@
 #import "VComment.h"
 #import "VMediaAttachment.h"
 #import "VSequence.h"
-#import "VUser.h"
 
 
 @implementation VComment

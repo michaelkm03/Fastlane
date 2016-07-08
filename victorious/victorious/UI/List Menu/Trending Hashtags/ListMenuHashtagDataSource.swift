@@ -10,8 +10,6 @@ final class ListMenuHashtagDataSource: ListMenuSectionDataSource {
     
     typealias Cell = ListMenuHashtagCollectionViewCell
 
-    let dependencyManager: VDependencyManager
-    
     // MARK: - Initialization
     
     /// Initializes a ListMenuHashtagDataSource, then start to fetch trending hashtags from backend
@@ -19,6 +17,14 @@ final class ListMenuHashtagDataSource: ListMenuSectionDataSource {
         self.dependencyManager = dependencyManager
         
         fetchRemoteData()
+    }
+    
+    // MARK - Dependency manager
+    
+    let dependencyManager: VDependencyManager
+    
+    var hashtagStreamAPIPath: APIPath {
+        return dependencyManager.apiPathForKey("streamURL") ?? APIPath(templatePath: "")
     }
     
     // MARK: - List Menu Section Data Source

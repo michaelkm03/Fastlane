@@ -171,4 +171,9 @@ extern NSString *const TFSDKIdentityTraitPhoneNumberKey;
 extern NSString *const TFSDKIdentityTraitWebsiteAddressKey;
 extern NSString *const TFSDKIdentityTraitAgeKey;
 extern NSString *const TFSDKIdentityTraitSignupDateKey;
+extern NSString *const TFSDKEnableCrashReporterKey;
+extern NSString *const TestFairyDidShakeDevice;
+extern NSString *const TestFairyWillProvideFeedback;
+extern NSString *const TestFairyDidCancelFeedback;
+extern NSString *const TestFairyDidSendFeedback;
 

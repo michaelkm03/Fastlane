@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="paS-vU-3hQ">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="paS-vU-3hQ">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
@@ -16,10 +16,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" indicatorStyle="white" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="FkS-7s-kZf" customClass="TouchDetectionView" customModule="victorious" customModuleProvider="target">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" indicatorStyle="white" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="FkS-7s-kZf">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="Frl-fQ-fGv">
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="Frl-fQ-fGv" customClass="ChatFeedCollectionViewLayout" customModule="victorious" customModuleProvider="target">
                                     <size key="itemSize" width="50" height="50"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
@@ -28,30 +28,21 @@
                                 <cells/>
                             </collectionView>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o9c-Bd-nvE" userLabel="New Items Container">
-                                <rect key="frame" x="0.0" y="570" width="600" height="30"/>
+                                <rect key="frame" x="0.0" y="560" width="600" height="40"/>
                                 <subviews>
-                                    <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qNw-uD-Ufa" userLabel="New Items Button">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="30"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="30" id="xUi-Am-Zua"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
-                                        <state key="normal" title="Lorem Ipsum">
-                                            <color key="titleColor" white="0.96999999999999997" alpha="1" colorSpace="calibratedWhite"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PqY-xF-WCZ" customClass="VTextOnColorButton">
+                                        <rect key="frame" x="237" y="0.0" width="127" height="30"/>
+                                        <state key="normal" title="1 New Message">
+                                            <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
-                                        <connections>
-                                            <action selector="onNewItemsSelected" destination="HjE-OH-UhY" eventType="touchUpInside" id="rlY-gD-g97"/>
-                                        </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="qNw-uD-Ufa" firstAttribute="top" secondItem="o9c-Bd-nvE" secondAttribute="top" id="HBv-CU-j7c"/>
-                                    <constraint firstItem="qNw-uD-Ufa" firstAttribute="leading" secondItem="o9c-Bd-nvE" secondAttribute="leading" id="gep-Xj-6mJ"/>
-                                    <constraint firstAttribute="height" constant="30" id="ng4-9N-6d9"/>
-                                    <constraint firstAttribute="trailing" secondItem="qNw-uD-Ufa" secondAttribute="trailing" id="zeQ-sK-XTS"/>
+                                    <constraint firstItem="PqY-xF-WCZ" firstAttribute="top" secondItem="o9c-Bd-nvE" secondAttribute="top" id="Dai-Li-zSI"/>
+                                    <constraint firstAttribute="bottom" secondItem="PqY-xF-WCZ" secondAttribute="bottom" constant="10" id="HCh-nB-8Ng"/>
+                                    <constraint firstItem="PqY-xF-WCZ" firstAttribute="centerX" secondItem="o9c-Bd-nvE" secondAttribute="centerX" id="VBa-bi-Bw1"/>
+                                    <constraint firstAttribute="height" constant="40" id="ng4-9N-6d9"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -72,18 +63,15 @@
                     <connections>
                         <outlet property="collectionView" destination="FkS-7s-kZf" id="YSa-cN-wF1"/>
                         <outlet property="collectionViewBottom" destination="Jzy-30-zwU" id="R8t-xZ-KkZ"/>
-                        <outlet property="collectionViewHeight" destination="VF1-gQ-0Jr" id="mK6-i9-u6a"/>
                         <outlet property="newItemsController" destination="HjE-OH-UhY" id="1Qv-rK-GiC"/>
-                        <outlet property="touchDownController" destination="JYA-Cw-HVv" id="VXQ-U9-cPq"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6CL-ip-iM4" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <customObject id="JYA-Cw-HVv" customClass="TouchDownController" customModule="victorious" customModuleProvider="target"/>
                 <customObject id="HjE-OH-UhY" customClass="NewItemsController" customModule="victorious" customModuleProvider="target">
                     <connections>
-                        <outlet property="button" destination="qNw-uD-Ufa" id="6bh-Dk-DF1"/>
                         <outlet property="container" destination="o9c-Bd-nvE" id="AN3-zh-Y3L"/>
                         <outlet property="containerHeight" destination="ng4-9N-6d9" id="lau-ig-wT5"/>
+                        <outlet property="newItemIndicator" destination="PqY-xF-WCZ" id="w9P-k2-tI5"/>
                     </connections>
                 </customObject>
             </objects>

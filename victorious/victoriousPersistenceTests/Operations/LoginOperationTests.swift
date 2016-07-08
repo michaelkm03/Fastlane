@@ -17,7 +17,11 @@ class LoginOperationTests: BaseFetcherOperationTestCase {
             return
         }
         
-        let operation = LoginOperation(email: email, password: "password")
+        let operation = LoginOperation(
+            dependencyManager: VDependencyManager.dependencyManagerWithDefaultValuesForColorsAndFonts(),
+            email: email,
+            password: "password"
+        )
         
         XCTAssertFalse( operation.requiresAuthorization )
         
@@ -28,7 +32,7 @@ class LoginOperationTests: BaseFetcherOperationTestCase {
         let expectation = expectationWithDescription("testLoginWithEmailAndPassword")
         operation.queue() { results, error, cancelled in
             
-            guard let persistentUser: VUser = self.testStore.mainContext.v_findObjects(["remoteId" : user.userID ]).first else {
+            guard let persistentUser: VUser = self.testStore.mainContext.v_findObjects(["remoteId" : user.id ]).first else {
                 XCTFail( "Unable to load the user the operation should have parsed." )
                 return
             }

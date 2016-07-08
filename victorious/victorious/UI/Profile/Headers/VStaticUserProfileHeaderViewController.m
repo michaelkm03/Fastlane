@@ -11,7 +11,6 @@
 #import "UIImageView+Blurring.h"
 #import "UIImage+ImageCreation.h"
 #import "VButton.h"
-#import "VDefaultProfileImageView.h"
 #import "victorious-Swift.h"
 #import "VLaunchScreenProvider.h"
 
@@ -106,7 +105,7 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
         return nil;
     }
     
-    if ([self.user badgeType] == AvatarBadgeTypeVerified)
+    if (self.user.avatarBadgeType == AvatarBadgeTypeVerified)
     {
         // Created another container view since we are automatically scaling the size of the returned
         // view to be the size of the container.
@@ -153,7 +152,6 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
 {
     [self.view addSubview:button];
     button.translatesAutoresizingMaskIntoConstraints = NO;
-    [button.topAnchor constraintEqualToAnchor:self.profileImageView.topAnchor].active = YES;
     [button.leftAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.leftAnchor constant:kTrophyButtonLeftMargin].active = YES;
 }
 
@@ -270,11 +268,6 @@ static NSString * const kLevelBadgeKey = @"animatedBadge";
     
     UIColor *linkColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     UIColor *textColor = [self.dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
-    
-    self.profileImageView.layer.borderWidth = 2.0;
-    self.profileImageView.layer.borderColor = linkColor.CGColor;
-    self.profileImageView.tintColor = linkColor;
-    self.profileImageView.backgroundColor = [UIColor whiteColor];
     
     self.primaryActionButton.primaryColor = linkColor;
     self.primaryActionButton.secondaryColor = linkColor;

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="d6x-iC-hBm">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <scenes>
+        <!--Hashtag Bar View Controller-->
+        <scene sceneID="Zkw-Qe-Exg">
+            <objects>
+                <viewController modalPresentationStyle="currentContext" id="d6x-iC-hBm" customClass="HashtagBarViewController" customModule="victorious" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="tBO-FP-tqK"/>
+                        <viewControllerLayoutGuide type="bottom" id="uZk-t7-dto"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="zyf-jF-Irj">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="96U-t8-QHx">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="600" id="OTX-z9-nu8"/>
+                                </constraints>
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="9cu-75-ny3">
+                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="96U-t8-QHx" secondAttribute="trailing" id="Bva-RU-d1X"/>
+                            <constraint firstItem="96U-t8-QHx" firstAttribute="leading" secondItem="zyf-jF-Irj" secondAttribute="leading" id="Qc1-Rh-fX3"/>
+                            <constraint firstItem="96U-t8-QHx" firstAttribute="centerY" secondItem="zyf-jF-Irj" secondAttribute="centerY" id="SZx-dh-Bon"/>
+                            <constraint firstItem="96U-t8-QHx" firstAttribute="top" secondItem="tBO-FP-tqK" secondAttribute="bottom" priority="998" id="ZbQ-KC-Rul"/>
+                            <constraint firstItem="uZk-t7-dto" firstAttribute="top" secondItem="96U-t8-QHx" secondAttribute="bottom" priority="998" id="f56-t9-ab1"/>
+                        </constraints>
+                    </view>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <connections>
+                        <outlet property="collectionView" destination="96U-t8-QHx" id="B6V-Df-PLq"/>
+                        <outlet property="collectionViewHeightConstraint" destination="OTX-z9-nu8" id="exb-Vo-ziZ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OhS-Xi-aMa" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="0.0" y="20"/>
+        </scene>
+    </scenes>
+</document>

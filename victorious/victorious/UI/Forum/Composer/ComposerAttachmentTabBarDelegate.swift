@@ -10,5 +10,5 @@ import Foundation
 
 protocol ComposerAttachmentTabBarDelegate: class {
     
-    func composerAttachmentTabBar(composerAttachmentTabBar: ComposerAttachmentTabBar, didSelectNagiationItem navigationItem: VNavigationMenuItem)
+    func composerAttachmentTabBar(composerAttachmentTabBar: ComposerAttachmentTabBar, didSelectNavigationItem navigationItem: VNavigationMenuItem)
 }

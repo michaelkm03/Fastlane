@@ -37,7 +37,6 @@
 @dynamic completedProfile;
 @dynamic tagline;
 @dynamic token;
-@dynamic tokenUpdatedAt;
 @dynamic childSequences;
 @dynamic conversations;
 @dynamic comments;
@@ -61,5 +60,10 @@
 @dynamic achievementsUnlocked;
 @dynamic avatarBadgeType;
 @dynamic content;
+
+-(NSNumber *)isCreator
+{
+    return @YES;
+}
 
 @end

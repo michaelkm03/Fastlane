@@ -10,30 +10,33 @@ import Foundation
 import VictoriousIOSSDK
 
 extension VDependencyManager {
-    
     func interstitialViewController(alert alert: Alert) -> Interstitial? {
-        switch alert.alertType {
-            
-        case .LevelUp:
-            let tempalteValue = self.templateValueOfType(LevelUpViewController.self, forKey: "levelUpScreen")
-            if let viewController = tempalteValue as? LevelUpViewController {
-                viewController.alert = alert
-                return viewController
-            }
-        
-        case .StatusUpdate, .Achievement, .ClientSideCreated:
-            let templateValue = templateValueOfType(InterstitialAlertViewController.self, forKey: "statusUpdateScreen")
-            if let imageAlertVC = templateValue as? InterstitialAlertViewController {
-                imageAlertVC.alert = alert
-                return imageAlertVC
-            }
-        case .Toast:
-            let templateValue = templateValueOfType(InterstitialToastViewController.self, forKey: "toastScreen")
-            if let toastViewController = templateValue as? InterstitialToastViewController {
-                toastViewController.alert = alert
-                return toastViewController
-            }
+        var interstitial: Interstitial?
+
+        switch alert.type {
+            case .levelUp:
+                let tempalteValue = templateValueOfType(LevelUpViewController.self, forKey: "levelUpScreen")
+                if let viewController = tempalteValue as? LevelUpViewController {
+                    interstitial = viewController
+                }
+            case .statusUpdate, .achievement, .clientSideCreated:
+                let templateValue = templateValueOfType(InterstitialAlertViewController.self, forKey: "statusUpdateScreen")
+                if let imageAlertVC = templateValue as? InterstitialAlertViewController {
+                    interstitial = imageAlertVC
+                }
+            case .toast:
+                let templateValue = templateValueOfType(InterstitialToastViewController.self, forKey: "toastScreen")
+                if let toastViewController = templateValue as? InterstitialToastViewController {
+                    interstitial = toastViewController
+                }
+            case .reconnectingError:
+                let templateValue = templateValueOfType(InterstitialToastViewController.self, forKey: "error.toast")
+                if let toastViewController = templateValue as? InterstitialToastViewController {
+                    interstitial = toastViewController
+                }
         }
-        return nil
+        interstitial?.alert = alert
+
+        return interstitial
     }
 }

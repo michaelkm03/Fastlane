@@ -86,7 +86,6 @@ strip_invalid_archs() {
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-victorious-test/Bolts.framework"
   install_framework "Pods-victorious-test/CCHLinkTextView.framework"
-  install_framework "Pods-victorious-test/CHTCollectionViewWaterfallLayout.framework"
   install_framework "Pods-victorious-test/FBSDKCoreKit.framework"
   install_framework "Pods-victorious-test/FBSDKLoginKit.framework"
   install_framework "Pods-victorious-test/FBSDKShareKit.framework"
@@ -94,14 +93,12 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-victorious-test/MBProgressHUD.framework"
   install_framework "Pods-victorious-test/OAStackView.framework"
   install_framework "Pods-victorious-test/SDWebImage.framework"
-  install_framework "Pods-victorious-test/TTTAttributedLabel.framework"
   install_framework "Pods-victorious-test/Nocilla.framework"
   install_framework "Pods-victorious-test/OCMock.framework"
 fi
 if [[ "$CONFIGURATION" == "QA" ]]; then
   install_framework "Pods-victorious-test/Bolts.framework"
   install_framework "Pods-victorious-test/CCHLinkTextView.framework"
-  install_framework "Pods-victorious-test/CHTCollectionViewWaterfallLayout.framework"
   install_framework "Pods-victorious-test/FBSDKCoreKit.framework"
   install_framework "Pods-victorious-test/FBSDKLoginKit.framework"
   install_framework "Pods-victorious-test/FBSDKShareKit.framework"
@@ -109,14 +106,12 @@ if [[ "$CONFIGURATION" == "QA" ]]; then
   install_framework "Pods-victorious-test/MBProgressHUD.framework"
   install_framework "Pods-victorious-test/OAStackView.framework"
   install_framework "Pods-victorious-test/SDWebImage.framework"
-  install_framework "Pods-victorious-test/TTTAttributedLabel.framework"
   install_framework "Pods-victorious-test/Nocilla.framework"
   install_framework "Pods-victorious-test/OCMock.framework"
 fi
 if [[ "$CONFIGURATION" == "Staging" ]]; then
   install_framework "Pods-victorious-test/Bolts.framework"
   install_framework "Pods-victorious-test/CCHLinkTextView.framework"
-  install_framework "Pods-victorious-test/CHTCollectionViewWaterfallLayout.framework"
   install_framework "Pods-victorious-test/FBSDKCoreKit.framework"
   install_framework "Pods-victorious-test/FBSDKLoginKit.framework"
   install_framework "Pods-victorious-test/FBSDKShareKit.framework"
@@ -124,14 +119,12 @@ if [[ "$CONFIGURATION" == "Staging" ]]; then
   install_framework "Pods-victorious-test/MBProgressHUD.framework"
   install_framework "Pods-victorious-test/OAStackView.framework"
   install_framework "Pods-victorious-test/SDWebImage.framework"
-  install_framework "Pods-victorious-test/TTTAttributedLabel.framework"
   install_framework "Pods-victorious-test/Nocilla.framework"
   install_framework "Pods-victorious-test/OCMock.framework"
 fi
 if [[ "$CONFIGURATION" == "Stable" ]]; then
   install_framework "Pods-victorious-test/Bolts.framework"
   install_framework "Pods-victorious-test/CCHLinkTextView.framework"
-  install_framework "Pods-victorious-test/CHTCollectionViewWaterfallLayout.framework"
   install_framework "Pods-victorious-test/FBSDKCoreKit.framework"
   install_framework "Pods-victorious-test/FBSDKLoginKit.framework"
   install_framework "Pods-victorious-test/FBSDKShareKit.framework"
@@ -139,14 +132,12 @@ if [[ "$CONFIGURATION" == "Stable" ]]; then
   install_framework "Pods-victorious-test/MBProgressHUD.framework"
   install_framework "Pods-victorious-test/OAStackView.framework"
   install_framework "Pods-victorious-test/SDWebImage.framework"
-  install_framework "Pods-victorious-test/TTTAttributedLabel.framework"
   install_framework "Pods-victorious-test/Nocilla.framework"
   install_framework "Pods-victorious-test/OCMock.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-victorious-test/Bolts.framework"
   install_framework "Pods-victorious-test/CCHLinkTextView.framework"
-  install_framework "Pods-victorious-test/CHTCollectionViewWaterfallLayout.framework"
   install_framework "Pods-victorious-test/FBSDKCoreKit.framework"
   install_framework "Pods-victorious-test/FBSDKLoginKit.framework"
   install_framework "Pods-victorious-test/FBSDKShareKit.framework"
@@ -154,7 +145,6 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-victorious-test/MBProgressHUD.framework"
   install_framework "Pods-victorious-test/OAStackView.framework"
   install_framework "Pods-victorious-test/SDWebImage.framework"
-  install_framework "Pods-victorious-test/TTTAttributedLabel.framework"
   install_framework "Pods-victorious-test/Nocilla.framework"
   install_framework "Pods-victorious-test/OCMock.framework"
 fi

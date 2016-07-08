@@ -10,9 +10,9 @@
 #import "VTag.h"
 #import "VDependencyManager.h"
 #import "VHashtag.h"
-#import "VUser.h"
 #import "VUserTaggingTextStorage.h"
 #import "VTagDictionary.h"
+#import "victorious-Swift.h"
 
 @implementation VTagStringFormatter
 

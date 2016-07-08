@@ -14,8 +14,13 @@ protocol Stage: class, ForumEventReceiver {
     
     var dependencyManager: VDependencyManager! { get set }
     
-    /// Replaces the currently content on the stage with the new one.
-    func addContent(stageContent: StageContent)
+    var canHandleCaptionContent: Bool { get }
+    
+    /// Replaces the current content on the stage with the new one.
+    func addContent(stageContent: ContentModel)
+    
+    /// Shows the caption of the provided content in the caption bar (if provided in the template)
+    func addCaptionContent(content: ContentModel)
     
     /// Removes the current content on the stage.
     func removeContent()
@@ -23,5 +28,5 @@ protocol Stage: class, ForumEventReceiver {
 
 /// Conformers will recieve messages related to the stage resizing.
 protocol StageDelegate: class {
-    func stage(stage: Stage, didUpdateContentHeight size: CGFloat)
+    func stage(stage: Stage, wantsUpdateToContentHeight size: CGFloat)
 }

@@ -11,10 +11,17 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+NSString * const itemBackgroundColorKey = @"color.background.navigation.items";
+NSString * const itemTextFontKey = @"font.text.navigation.items";
+NSString * const itemTextColorKey = @"color.text.navigation.items";
+NSString * const itemSeparatorColorKey = @"color.separator.navigation.items";
+
 @interface VSettingsSwitchCell()
 
-@property (nonatomic, strong) IBOutlet UISwitch *settingSwitch;
 @property (nonatomic, strong) IBOutlet UILabel *settingLabel;
+@property (nonatomic, strong) IBOutlet UISwitch *settingSwitch;
+@property (nonatomic, strong) IBOutlet UIView *separatorView;
+
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, assign) BOOL shouldPreventNotifyingDelegate;
 
@@ -31,20 +38,16 @@ NS_ASSUME_NONNULL_BEGIN
 {
     _dependencyManager = dependencyManager;
     
-    self.settingLabel.font = [dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
-    self.settingSwitch.onTintColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
+    self.settingLabel.font =  [dependencyManager fontForKey: itemTextFontKey];
+    self.settingLabel.textColor = [dependencyManager colorForKey:itemTextColorKey];
+    self.backgroundColor = [dependencyManager colorForKey:itemBackgroundColorKey];
+    self.separatorView.backgroundColor = [dependencyManager colorForKey:itemSeparatorColorKey]; 
 }
 
 - (void)setTitle:(NSString *)title value:(BOOL)value
 {
     self.settingLabel.text = title;
     self.settingSwitch.on = value;
-}
-
-- (void)setSwitchColor:(UIColor *__nonnull)switchColor
-{
-    _switchColor = switchColor;
-    self.settingSwitch.onTintColor = switchColor;
 }
 
 - (BOOL)value
@@ -59,6 +62,11 @@ NS_ASSUME_NONNULL_BEGIN
     self.shouldPreventNotifyingDelegate = NO;
 }
 
+- (void)setSeparatorHidden:(BOOL)value
+{
+    [self.separatorView setHidden:value];
+}
+
 - (void)prepareForReuse
 {
     [super prepareForReuse];
@@ -71,9 +79,9 @@ NS_ASSUME_NONNULL_BEGIN
 {
     if ( !self.shouldPreventNotifyingDelegate &&
          self.delegate != nil &&
-         [self.delegate respondsToSelector:@selector(settingsDidUpdateFromCell:)] )
+         [self.delegate respondsToSelector:@selector(settingsDidUpdateFromCell:newValue:key:)] )
     {
-        [self.delegate settingsDidUpdateFromCell:self];
+        [self.delegate settingsDidUpdateFromCell:self newValue:[self value] key:[self key]];
     }
 }
 

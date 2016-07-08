@@ -28,9 +28,17 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
     private let listMenuViewController: ListMenuViewController
     private let dependencyManager: VDependencyManager
     
-    private let communityDataSource: ListMenuCommunityDataSource
-    private let hashtagDataSource: ListMenuHashtagDataSource
-    private let creatorDataSource: ListMenuCreatorDataSource
+    let communityDataSource: ListMenuCommunityDataSource
+    let hashtagDataSource: ListMenuHashtagDataSource
+    let creatorDataSource: ListMenuCreatorDataSource
+    
+    private lazy var subscribeButton: UIButton = {
+        // FUTURE: Make this styled via template once available
+        let button = UIButton(type: .Custom)
+        button.addTarget(self, action: #selector(onSubscribePressed), forControlEvents: .TouchUpInside)
+        button.setTitle("subscribe", forState: .Normal)
+        return button
+    }()
     
     // MARK: - Initialization
     
@@ -98,8 +106,22 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         case .hashtags:
             headerView.dependencyManager = dependencyManager.hashtagsChildDependency
         }
+
+        // A custom accessoryButton is added to the first headerView to allow entry into the VIPForum and is not related to the actual section header.
+        headerView.accessoryButton = indexPath.section == 0 ? subscribeButton : nil
         
         return headerView
+    }
+    
+    // MARK: - Actions
+    
+    @objc private func onSubscribePressed() {
+        guard let scaffold = VRootViewController.sharedRootViewController()?.scaffold else {
+            return
+        }
+        let router = Router(originViewController: scaffold, dependencyManager: dependencyManager)
+        let destination = DeeplinkDestination.vipForum
+        router.navigate(to: destination)
     }
     
     // MARK: - List Menu Network Data Source Delegate

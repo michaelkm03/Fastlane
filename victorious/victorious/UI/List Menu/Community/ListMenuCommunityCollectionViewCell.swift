@@ -14,15 +14,17 @@ class ListMenuCommunityCollectionViewCell: UICollectionViewCell, ListMenuSection
     
     override var selected: Bool {
         didSet {
-            updateCellBackgroundColor(to: contentView, selectedColor: dependencyManager.highlightedBackgroundColor, isSelected: selected)
+            updateCellBackgroundColor(to: contentView, selectedColor: dependencyManager?.highlightedBackgroundColor, isSelected: selected)
         }
     }
 
     // MARK: - List Menu Section Cell
     
-    var dependencyManager: VDependencyManager! {
+    var dependencyManager: VDependencyManager? {
         didSet {
-            applyTemplateAppearance(with: dependencyManager)
+            if let dependencyManager = dependencyManager {
+                applyTemplateAppearance(with: dependencyManager)
+            }
         }
     }
     

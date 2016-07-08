@@ -23,13 +23,12 @@ class VUserTests: BasePersistentStoreTestCase {
         XCTAssertEqual(user.location, "Fargo, ND")
         XCTAssertEqual(user.tagline, "My coolest tagline")
         XCTAssertEqual(user.levelProgressPoints, Int(2764))
-        XCTAssertEqual(user.numberOfFollowers, Int(15))
         XCTAssertEqual(user.likesGiven, 99)
         XCTAssertEqual(user.likesReceived, 40)
         XCTAssertEqual(user.isVIPSubscriber, 1)
         let dateFormatter = NSDateFormatter(vsdk_format: .Standard)
-        XCTAssertEqual(dateFormatter.stringFromDate(user.vipEndDate), "2016-05-02 18:22:50")
-        XCTAssertEqual(user.previewAssets.count, 2)
+        XCTAssertEqual(dateFormatter.stringFromDate(user.vipEndDate!), "2016-05-02 18:22:50")
+        XCTAssertEqual(user.previewAssets?.count, 2)
     }
     
     private func createUserFromJSON(fileName fileName: String) -> VUser? {

@@ -7,7 +7,6 @@
 //
 
 #import "VRegistrationModel.h"
-#import "VUser.h"
 #import "victorious-Swift.h"
 
 @implementation VRegistrationModel

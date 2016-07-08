@@ -180,8 +180,9 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
     //MARK: - View updating
     
     override func updateFollowControlState() {
-        if let shelf = shelf as? UserShelf {
-            let isFollowed = shelf.user.isFollowedByMainUser.boolValue
+        if let shelf = shelf as? UserShelf,
+            let isFollowed = shelf.user.isFollowedByMainUser?.boolValue {
+            
             let controlState: VFollowControlState = isFollowed ? .Followed : .Unfollowed
             followControl?.setControlState(controlState, animated: true)
         }
@@ -207,20 +208,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
     }
     
     @IBAction private func tappedFollowControl(followControl: VFollowControl) {
-        guard let shelf = shelf as? UserShelf, let currentUser = VCurrentUser.user() else {
-            fatalError("The VTrendingUserShelfCollectionViewCell attempted to unfollow non-UserShelf shelf")
-        }
-        
-        let userID = shelf.user.remoteId.integerValue
-        let operation: FetcherOperation
-        if currentUser.isFollowingUserID(userID) {
-            operation = UnfollowUserOperation( userID: userID, sourceScreenName: VFollowSourceScreenStreamTrendingUserShelf )
-        } else {
-            operation = FollowUsersOperation( userID: userID, sourceScreenName: VFollowSourceScreenStreamTrendingUserShelf )
-        }
-        operation.queue() { results, error, cancelled in
-            self.updateFollowControlState()
-        }
+        // FollowUserOperation/FollowUserToggleOperation not supported in 5.0
     }
     
     @IBAction private func tappedAvatarButton(sender: VDefaultProfileButton) {

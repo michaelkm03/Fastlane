@@ -11,8 +11,14 @@ import VictoriousIOSSDK
 
 class StoredLoginOperation: BackgroundOperation {
     
+    private let dependencyManager: VDependencyManager
     private let persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
     
+    init(dependencyManager: VDependencyManager) {
+        self.dependencyManager = dependencyManager
+        super.init()
+    }
+
     override func start() {
         super.start()
         
@@ -34,9 +40,13 @@ class StoredLoginOperation: BackgroundOperation {
                 context.v_save()
                 return user
             }
+            
             user.setAsCurrentUser()
             
-            PreloadUserInfoOperation().after(self).queue()
+            let infoOperation = PreloadUserInfoOperation(dependencyManager: dependencyManager)
+            infoOperation.after(self).queue() { _ in
+                infoOperation.user?.setAsCurrentUser()
+            }
             
         } else if let loginType = VLoginType(rawValue: defaults.integerForKey(kLastLoginTypeUserDefaultsKey)),
             let credentials = loginType.storedCredentials( accountIdentifier ) {
@@ -44,6 +54,7 @@ class StoredLoginOperation: BackgroundOperation {
                 // Next, if login with a stored token failed, use any stored credentials to login automatically
                 let accountCreateRequest = AccountCreateRequest(credentials: credentials)
                 let accountCreateOperation = AccountCreateOperation(
+                    dependencyManager: dependencyManager,
                     request: accountCreateRequest,
                     parameters: AccountCreateParameters(
                         loginType: loginType,

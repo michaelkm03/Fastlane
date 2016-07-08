@@ -34,7 +34,7 @@ class ConversationRequestTests: XCTestCase {
             XCTAssertEqual(firstMessage.text, "this is a test")
             XCTAssertEqual(firstMessage.isRead, true)
             XCTAssertEqual(firstMessage.messageID, 8749)
-            XCTAssertEqual(firstMessage.sender?.userID, 97)
+            XCTAssertEqual(firstMessage.sender?.id, 97)
             XCTAssertEqual(firstMessage.mediaAttachment?.thumbnailURL, NSURL(string: "http://media-dev-public.s3-website-us-west-1.amazonaws.com/d7b465ba8581b0f4828086b3e99d77d0/thumbnail-00001.jpg"))
             XCTAssertEqual(firstMessage.mediaAttachment?.url, NSURL(string: "http://media-dev-public.s3-website-us-west-1.amazonaws.com/d7b465ba8581b0f4828086b3e99d77d0/playlist.m3u8"))
             XCTAssertEqual(firstMessage.mediaAttachment?.type, .Video)
@@ -76,7 +76,7 @@ class ConversationRequestTests: XCTestCase {
         XCTAssertEqual(results.count, 1)
         if let firstMessage = results.first {
             XCTAssertEqual(firstMessage.messageID, 8749)
-            XCTAssertEqual(firstMessage.sender?.userID, 97)
+            XCTAssertEqual(firstMessage.sender?.id, 97)
             XCTAssertNil(firstMessage.text)
             XCTAssertNil(firstMessage.isRead)
             XCTAssertNil(firstMessage.mediaAttachment)

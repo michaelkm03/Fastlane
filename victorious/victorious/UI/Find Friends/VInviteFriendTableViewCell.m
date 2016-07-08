@@ -7,7 +7,6 @@
 //
 
 #import "VInviteFriendTableViewCell.h"
-#import "VUser.h"
 #import "VFollowControl.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "VDependencyManager.h"
@@ -107,9 +106,7 @@ static const CGFloat kInviteCellHeight = 50.0f;
 
 - (IBAction)followUnfollowUser:(VFollowControl *)sender
 {
-    NSInteger userId = self.profile.remoteId.integerValue;
-    FetcherOperation *operation = [[FollowUserToggleOperation alloc] initWithUserID:userId sourceScreenName:self.sourceScreenName];
-    [operation queueWithCompletion:nil];
+    // FollowUserOperation/FollowUserToggleOperation not supported in 5.0
 }
 
 @end

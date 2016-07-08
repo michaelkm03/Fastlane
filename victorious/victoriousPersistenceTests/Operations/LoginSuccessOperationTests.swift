@@ -19,7 +19,11 @@ class LoginSuccessOperationTests: BaseFetcherOperationTestCase {
         let token = "ABCDEFGabcdefg"
         let response = AccountCreateResponse(token: token, user: user)
         let parameters = AccountCreateParameters(loginType: .Email, accountIdentifier: email)
-        let operation = LoginSuccessOperation(response: response, parameters: parameters)
+        let operation = LoginSuccessOperation(
+            dependencyManager: VDependencyManager.dependencyManagerWithDefaultValuesForColorsAndFonts(),
+            response: response,
+            parameters: parameters
+        )
         
         let expectation = expectationWithDescription("")
         operation.queue() { results, error, cancelled in
@@ -28,12 +32,12 @@ class LoginSuccessOperationTests: BaseFetcherOperationTestCase {
         }
         waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
         
-        guard let persistentUser: VUser = operation.persistentStore.mainContext.v_findObjects(["remoteId" : user.userID ]).first else {
+        guard let persistentUser: VUser = operation.persistentStore.mainContext.v_findObjects(["remoteId" : user.id ]).first else {
             XCTFail( "Unable to load the user the operation should have parsed." )
             return
         }
         
-        XCTAssertEqual( persistentUser.loginType?.integerValue ?? -1, VLoginType.Email.rawValue )
+        XCTAssertEqual( persistentUser.loginType.integerValue, VLoginType.Email.rawValue )
         XCTAssertEqual( persistentUser.token, token )
         
         let currentUser = VCurrentUser.user()
