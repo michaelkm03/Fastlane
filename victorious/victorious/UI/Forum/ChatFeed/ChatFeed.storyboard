@@ -32,6 +32,9 @@
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PqY-xF-WCZ" customClass="VTextOnColorButton">
                                         <rect key="frame" x="237" y="0.0" width="127" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="TXu-Sv-smy"/>
+                                        </constraints>
                                         <state key="normal" title="1 New Message">
                                             <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
@@ -39,7 +42,6 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="PqY-xF-WCZ" firstAttribute="top" secondItem="o9c-Bd-nvE" secondAttribute="top" id="Dai-Li-zSI"/>
                                     <constraint firstAttribute="bottom" secondItem="PqY-xF-WCZ" secondAttribute="bottom" constant="10" id="HCh-nB-8Ng"/>
                                     <constraint firstItem="PqY-xF-WCZ" firstAttribute="centerX" secondItem="o9c-Bd-nvE" secondAttribute="centerX" id="VBa-bi-Bw1"/>
                                     <constraint firstAttribute="height" constant="40" id="ng4-9N-6d9"/>
@@ -70,7 +72,6 @@
                 <customObject id="HjE-OH-UhY" customClass="NewItemsController" customModule="victorious" customModuleProvider="target">
                     <connections>
                         <outlet property="container" destination="o9c-Bd-nvE" id="AN3-zh-Y3L"/>
-                        <outlet property="containerHeight" destination="ng4-9N-6d9" id="lau-ig-wT5"/>
                         <outlet property="newItemIndicator" destination="PqY-xF-WCZ" id="w9P-k2-tI5"/>
                     </connections>
                 </customObject>
