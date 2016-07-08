@@ -168,10 +168,10 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
             return
         }
         
+        attributionBar.configure(with: stageContent.author, animated: animated)
+        
         mediaContentView.videoCoordinator?.pauseVideo()
         mediaContentView.content = stageContent
-        
-        attributionBar.configure(with: stageContent.author, animated: animated)
         
         updateStageHeight()
         queuedContent = nil
