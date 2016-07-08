@@ -44,13 +44,11 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         )
     }()
     
-    private lazy var upvoteButton: UIBarButtonItem = {
-        return UIBarButtonItem(
-            image: self.dependencyManager.upvoteIconUnselected,
-            style: .Done,
-            target: self,
-            action: #selector(toggleUpvote)
-        )
+    private lazy var upvoteButton: UIButton = {
+        let button = BackgroundButton(type: .System)
+        button.addTarget(self, action: #selector(toggleUpvote), forControlEvents: .TouchUpInside)
+        button.sizeToFit()
+        return button
     }()
     
     // MARK: - Initializing
@@ -93,22 +91,21 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     // MARK: - View updating
     
     private func updateBarButtonItems() {
-        if user?.isFollowedByCurrentUser == true {
-            upvoteButton.image = dependencyManager.upvoteIconSelected
-            upvoteButton.tintColor = dependencyManager.upvoteIconTint
-        }
-        else {
-            upvoteButton.image = dependencyManager.upvoteIconUnselected
-            upvoteButton.tintColor = nil
-        }
-        
         supplementalRightButtons = []
         
         let isCurrentUser = user?.isCurrentUser == true
         let isCreator = user?.accessLevel?.isCreator == true
         
         if !isCurrentUser {
-            supplementalRightButtons.append(upvoteButton)
+            if user?.isFollowedByCurrentUser == true {
+                upvoteButton.setTitle("Unfollow", forState: .Normal)
+            }
+            else {
+                upvoteButton.setTitle("Follow", forState: .Normal)
+            }
+            
+            upvoteButton.sizeToFit()
+            supplementalRightButtons.append(UIBarButtonItem(customView: upvoteButton))
             
             if !isCreator {
                 supplementalRightButtons.append(overflowButton)
@@ -345,18 +342,6 @@ private extension VDependencyManager {
             return APIPath(templatePath: "")
         }
         return apiPath
-    }
-    
-    var upvoteIconTint: UIColor? {
-        return colorForKey("color.text.actionButton")
-    }
-    
-    var upvoteIconSelected: UIImage? {
-        return imageForKey("upvote_icon_selected")?.imageWithRenderingMode(.AlwaysTemplate)
-    }
-    
-    var upvoteIconUnselected: UIImage? {
-        return imageForKey("upvote_icon_unselected")?.imageWithRenderingMode(.AlwaysTemplate)
     }
     
     var overflowIcon: UIImage? {
