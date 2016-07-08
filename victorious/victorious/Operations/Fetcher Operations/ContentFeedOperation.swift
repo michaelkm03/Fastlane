@@ -40,15 +40,18 @@ final class ContentFeedOperation: NSOperation, Queueable {
     // MARK: - Executing
     
     override func main() {
-        guard error == nil else {
+        guard error == nil && !cancelled else {
             return
         }
         
         let persistentStore = PersistentStoreSelector.defaultPersistentStore
         
         persistentStore.mainContext.v_performBlockAndWait { [weak self] context in
-            self?.items = self?.contentIDs.flatMap {
-                return context.v_findOrCreateObject(["v_remoteID": $0]) as VContent
+            self?.items = self?.contentIDs.flatMap { contentID in
+                if Content.contentIsHidden(withID: contentID) {
+                    return nil
+                }
+                return context.v_findOrCreateObject(["v_remoteID": contentID]) as VContent
             } ?? []
         }
     }

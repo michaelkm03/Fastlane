@@ -7,7 +7,6 @@
 //
 
 #import "VVoteType.h"
-#import "VHashtag.h"
 
 @interface VDummyModels : NSObject
 
@@ -31,8 +30,6 @@
 // Add more convenience methods as you see fit
 
 + (NSArray *)createUsers:(NSInteger)count;
-
-+ (NSArray *)createHashtags:(NSInteger)count;
 
 + (NSArray *)createVoteTypes:(NSInteger)count;
 

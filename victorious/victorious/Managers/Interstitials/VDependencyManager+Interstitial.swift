@@ -13,28 +13,30 @@ extension VDependencyManager {
     func interstitialViewController(alert alert: Alert) -> Interstitial? {
         var interstitial: Interstitial?
 
-        switch alert.alertType {
-            case .LevelUp:
+        switch alert.type {
+            case .levelUp:
                 let tempalteValue = templateValueOfType(LevelUpViewController.self, forKey: "levelUpScreen")
                 if let viewController = tempalteValue as? LevelUpViewController {
-                    viewController.alert = alert
                     interstitial = viewController
                 }
-            case .StatusUpdate, .Achievement, .ClientSideCreated:
+            case .statusUpdate, .achievement, .clientSideCreated:
                 let templateValue = templateValueOfType(InterstitialAlertViewController.self, forKey: "statusUpdateScreen")
                 if let imageAlertVC = templateValue as? InterstitialAlertViewController {
-                    imageAlertVC.alert = alert
                     interstitial = imageAlertVC
                 }
-            case .Toast:
+            case .toast:
                 let templateValue = templateValueOfType(InterstitialToastViewController.self, forKey: "toastScreen")
                 if let toastViewController = templateValue as? InterstitialToastViewController {
-                    toastViewController.alert = alert
                     interstitial = toastViewController
                 }
-            case .WebSocketError:
-                interstitial = nil
+            case .reconnectingError:
+                let templateValue = templateValueOfType(InterstitialToastViewController.self, forKey: "error.toast")
+                if let toastViewController = templateValue as? InterstitialToastViewController {
+                    interstitial = toastViewController
+                }
         }
+        interstitial?.alert = alert
+
         return interstitial
     }
 }

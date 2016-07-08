@@ -9,10 +9,9 @@
 import UIKit
 
 class ListMenuSectionHeaderView: UICollectionReusableView {
-    
-    private static let accessoryButtonHeight = CGFloat(30.0)
-    private static let accessoryButtonXPadding = CGFloat(20.0)
-    private static let accessoryButtonXMargin = CGFloat(12.0)
+    private struct Constants {
+        static let accessoryButtonXMargin = CGFloat(12.0)
+    }
     
     @IBOutlet private weak var titleLabel: UILabel!
     
@@ -42,34 +41,15 @@ class ListMenuSectionHeaderView: UICollectionReusableView {
         didSet {
             if let accessoryButton = accessoryButton {
                 addSubview(accessoryButton)
+                accessoryButton.translatesAutoresizingMaskIntoConstraints = false
+                centerYAnchor.constraintEqualToAnchor(accessoryButton.centerYAnchor).active = true
+                trailingAnchor.constraintEqualToAnchor(accessoryButton.trailingAnchor, constant: Constants.accessoryButtonXMargin).active = true
             }
         }
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        guard let accessoryButton = accessoryButton else {
-            return
-        }
-        
-        let buttonSize = CGSize(
-            width: accessoryButton.sizeThatFits(bounds.size).width + ListMenuSectionHeaderView.accessoryButtonXPadding,
-            height: ListMenuSectionHeaderView.accessoryButtonHeight
-        )
-        
-        accessoryButton.frame = CGRect(
-            origin: CGPoint(
-                x: bounds.width - buttonSize.width - ListMenuSectionHeaderView.accessoryButtonXMargin,
-                y: (bounds.height - buttonSize.height) / 2.0
-            ),
-            size: buttonSize
-        )
     }
 }
 
 private extension VDependencyManager {
-    
     var titleColor: UIColor? {
         return colorForKey(VDependencyManagerMainTextColorKey)
     }

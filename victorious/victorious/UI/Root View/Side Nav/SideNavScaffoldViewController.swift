@@ -59,9 +59,7 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
         sideMenuController.didMoveToParentViewController(self)
         
         dependencyManager.applyStyleToNavigationBar(mainNavigationController.innerNavigationController.navigationBar)
-        
-        InterstitialManager.sharedInstance.interstitialListener = self
-        
+
         let navigationBar = mainNavigationController.innerNavigationController.navigationBar
         let backArrowImage = UIImage(named: "BackArrow")
         navigationBar.backIndicatorImage = backArrowImage

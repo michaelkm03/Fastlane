@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class VUser, VHashtag, VTagDictionary;
+@class VUser, VTagDictionary;
 
 /**
  A helper for converting attributed strings with tags from display-formatted to database-formatted and visa versa.
@@ -59,15 +59,6 @@
  @return a database-formatted string composed of the name and remoteId fields from the user or an empty string for nil user or user with invalid fields
  */
 + (NSString *)databaseFormattedStringFromUser:(VUser *)user;
-
-/**
- Generate a database-formatted string from the provided hashtag
- 
- @param user a hashtag with valid tag field
- 
- @return a database-formatted string composed of the tag field from the hashtag or an empty string for nil hashtag or hashtag with invalid fields
- */
-+ (NSString *)databaseFormattedStringFromHashtag:(VHashtag *)hashtag;
 
 /**
  All ranges of tags in provided range of attributed string containing tags in the provided tagDictionary. Returned ranges will include full ranges of any partial tags found in the provided range. Delimiter strings are included in the returned ranges.
