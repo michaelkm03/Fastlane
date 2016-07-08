@@ -139,11 +139,10 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     }
     
     private func prepareToPlay() {
-        videoPlayer.pauseAtStart()
         if let seekAheadTime = self.content.seekAheadTime where Int(videoPlayer.currentTimeSeconds) <= Int(seekAheadTime) {
             videoPlayer.seekToTimeSeconds(seekAheadTime)
         }
-        self.delegate?.coordinatorDidBecomeReady()
+        delegate?.coordinatorDidBecomeReady()
     }
     
     // MARK: - Layout
