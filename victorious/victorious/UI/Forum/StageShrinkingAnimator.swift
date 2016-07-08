@@ -63,7 +63,6 @@ class StageShrinkingAnimator: NSObject {
     private let stageTouchView: UIView
     private let chatFeedContainer: UIView
     private let stageViewControllerContainer: UIView
-    private let stageBlurBackground: UIVisualEffectView
     private var keyboardManager: VKeyboardNotificationManager!
     private let stageTapGestureRecognizer = UITapGestureRecognizer()
     private let stagePanGestureRecognizer = UIPanGestureRecognizer()
@@ -74,14 +73,12 @@ class StageShrinkingAnimator: NSObject {
         stageContainer: UIView,
         stageTouchView: UIView,
         chatFeedContainer: UIView,
-        stageViewControllerContainer: UIView,
-        stageBlurBackground: UIVisualEffectView
+        stageViewControllerContainer: UIView
     ) {
         self.stageContainer = stageContainer
         self.stageTouchView = stageTouchView
         self.chatFeedContainer = chatFeedContainer
         self.stageViewControllerContainer = stageViewControllerContainer
-        self.stageBlurBackground = stageBlurBackground
         super.init()
         
         configureMaskingAndBorders()
@@ -237,7 +234,6 @@ class StageShrinkingAnimator: NSObject {
     private func applyInterploatedValues(withPercentage percentage: CGFloat) {
         stageContainer.transform = affineTransformFor(percentage)
         stageViewControllerContainer.layer.cornerRadius = Constants.cornerRadius * percentage * (1 / scaleFactorFor(percentage))
-        stageBlurBackground.layer.cornerRadius = Constants.cornerRadius * percentage * (1 / scaleFactorFor(percentage))
         stageViewControllerContainer.layer.borderColor = interpolatedBorderColorFor(percentThrough: percentage)
         
         interpolateAlongside?(percentage: percentage)
@@ -317,7 +313,6 @@ class StageShrinkingAnimator: NSObject {
     
     private func configureMaskingAndBorders() {
         stageViewControllerContainer.layer.masksToBounds = true
-        stageBlurBackground.layer.masksToBounds = true
         
         // Want the border to be 1px after scaled transform
         stageViewControllerContainer.layer.borderWidth = (1 / stageViewControllerContainer.contentScaleFactor)

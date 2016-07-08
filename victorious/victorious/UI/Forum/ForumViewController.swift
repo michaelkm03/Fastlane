@@ -11,7 +11,6 @@ import UIKit
 /// A template driven .screen component that sets up, houses and mediates the interaction
 /// between the Forum's required concrete implementations and abstract dependencies.
 class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocusable, PersistentContentCreator, UploadManagerHost {
-    @IBOutlet weak var stageBlurBackground: UIVisualEffectView!
     @IBOutlet private weak var stageContainer: UIView!
     @IBOutlet private weak var stageViewControllerContainer: VPassthroughContainerView!
     @IBOutlet private weak var stageTouchView: UIView!
@@ -203,8 +202,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             stageContainer: stageContainer,
             stageTouchView: stageTouchView,
             chatFeedContainer: chatFeedContainer,
-            stageViewControllerContainer: stageViewControllerContainer,
-            stageBlurBackground: stageBlurBackground
+            stageViewControllerContainer: stageViewControllerContainer
         )
         stageShrinkingAnimator?.shouldHideKeyboardHandler = { [weak self] in
             self?.view.endEditing(true)
