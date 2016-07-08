@@ -36,7 +36,7 @@ class StageShrinkingAnimator: NSObject {
         static let velocityTargetGrow = CGFloat(1.5)
         static let inProgressSnapAnimationDuration = NSTimeInterval(0.3)
         static let fullSnapAnimationDuration = NSTimeInterval(0.45)
-        static let springDamping = CGFloat(0.85)
+        static let springDamping = CGFloat(0.72)
         static let inProgressSpringInitialVelocity = CGFloat(0.2)
     }
     
