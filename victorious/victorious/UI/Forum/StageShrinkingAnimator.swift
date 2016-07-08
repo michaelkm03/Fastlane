@@ -21,7 +21,7 @@ import UIKit
 class StageShrinkingAnimator: NSObject {
     
     private struct Constants {
-        static let downDragIgnoredMagnitude: CGFloat = 80
+        static let downDragIgnoredMagnitude: CGFloat = 120
         static let dragMagnitude: CGFloat = 160
         static let cornerRadius: CGFloat = 6
         static let scaleFactor: CGFloat = 0.42666
@@ -33,7 +33,7 @@ class StageShrinkingAnimator: NSObject {
         static let stageMargin = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 10)
         static let borderEndingAlpha: CGFloat = 0.3
         static let tranlationTriggerCoefficient: CGFloat = 0.3
-        static let velocityTarget: CGFloat = 0.5
+        static let velocityTarget: CGFloat = 1.5
     }
     
     private enum StageState {
@@ -97,7 +97,7 @@ class StageShrinkingAnimator: NSObject {
         }
         
         let translation = scrollView.panGestureRecognizer.translationInView(chatFeedContainer)
-        guard (translation.y > 0 && stageState == .expanded) || (translation.y < 0 && stageState == .shrunken) else {
+        guard translation.y > 0 && stageState == .expanded else {
             return
         }
         applyInterploatedValues(withPercentage: min(1, max(0, percentThrough(forTranslation: translation))))
@@ -131,7 +131,6 @@ class StageShrinkingAnimator: NSObject {
         let percentTranslated = percentThrough(forTranslation: translation)
         print("willEndDragging: velocity: \(velocity), currentState: \(currentState), translation: \(translation), percentTranslated: \(percentTranslated)")
         
-        // This is a mess, need to be cleaned up in the future or replaced with UIKit Dynamics
         func goTo(state: StageState) {
             if state == .shrunken {
                 shrinkStage()
@@ -146,17 +145,6 @@ class StageShrinkingAnimator: NSObject {
             } else if percentTranslated > 0.5 {
                 print("goto shrunken")
                 goTo(.shrunken)
-            } else if percentTranslated < 0.5 && currentState == .expanded {
-                print("goto expanded")
-                goTo(.expanded)
-            } else if percentTranslated < 0.5 && currentState == .shrunken {
-                if translation.y > 0 {
-                    print("goto shrunken")
-                    goTo(.shrunken)
-                } else {
-                    print("goto expanded")
-                    goTo(.expanded)
-                }
             } else {
                 print("goto current")
                 goTo(currentState)
