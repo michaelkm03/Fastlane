@@ -327,7 +327,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
         if (animated)
         {
             viewController.view.clipsToBounds = YES;
-            viewController.view.center = CGPointMake(CGRectGetWidth(self.view.bounds) * 1.5f, CGRectGetMidY(self.view.bounds));
+            viewController.view.alpha = 0;
             [UIView animateWithDuration:kAnimationDuration
                                   delay:0.0f
                  usingSpringWithDamping:1.0f
@@ -335,6 +335,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
                                 options:kNilOptions
                              animations:^(void)
              {
+                 viewController.view.alpha = 1;
                  viewController.view.center = CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds));
              }
                              completion:removeViewController];
