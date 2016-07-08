@@ -10,6 +10,8 @@ import Foundation
 import VictoriousIOSSDK
 
 protocol InterstitialListener {
+    /// A callback to let the implementer know that a new Alert has been registered.
+    /// The receiver can then when it's ready call `showNextInterstitial` on `InterstitialManager`.
     func newInterstitialHasBeenRegistered()
 }
 
@@ -46,54 +48,57 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
         return false
     }
     
-    /// Removes all registered interstitials
+    /// Removes all registered interstitials.
     func clearAllRegisteredAlerts() {
         registeredAlerts.removeAll()
     }
     
     private func showInterstitial(with alert: Alert, onto presentingViewController: UIViewController) {
-        guard !isShowingInterstital,
-            let interstitial = dependencyManager?.interstitialViewController(alert: alert) else {
-                return
+        guard
+            !isShowingInterstital,
+            let interstitial = dependencyManager?.interstitialViewController(alert: alert)
+        else {
+            return
         }
         
         presentedInterstitial = interstitial
         interstitial.interstitialDelegate = self
         
-        guard let viewController = interstitial as? UIViewController else {
+        guard let interstitialViewController = interstitial as? UIViewController else {
             return
         }
         
-        switch alert.alertType {
-            case .Toast:
-                addInterstitialAsSubview(viewController)
-            case .Achievement, .LevelUp, .StatusUpdate, .ClientSideCreated:
-                viewController.transitioningDelegate = self
-                viewController.modalPresentationStyle = interstitial.preferredModalPresentationStyle()
-                presentingViewController.presentViewController(viewController, animated: true, completion: nil)
-            case .WebSocketError:
-                ()
+        switch alert.type {
+            case .toast, .reconnectingError:
+                addInterstitial(interstitialViewController, toParent: presentingViewController)
+            case .achievement, .levelUp, .statusUpdate, .clientSideCreated:
+                interstitialViewController.transitioningDelegate = self
+                interstitialViewController.modalPresentationStyle = interstitial.preferredModalPresentationStyle()
+                presentingViewController.presentViewController(interstitialViewController, animated: true, completion: nil)
         }
-        
+
         acknowledgeAlert(alert)
     }
 
     private func acknowledgeAlert(alert: Alert) {
-        AlertAcknowledgeOperation(alertID: alert.alertID).queue()
+        switch alert.type {
+            case .achievement, .levelUp, .statusUpdate, .toast:
+                AlertAcknowledgeOperation(alertID: alert.alertID).queue()
+            case .clientSideCreated, .reconnectingError:
+                break
+        }
+
         shownAlerts.append(alert)
         isShowingInterstital = true
     }
-    
-    private func addInterstitialAsSubview(viewController: UIViewController) {
-        guard let currentPresentedViewController = VRootViewController.sharedRootViewController()?.currentViewController else {
-            return
-        }
-        currentPresentedViewController.view.addSubview(viewController.view)
-        currentPresentedViewController.willMoveToParentViewController(currentPresentedViewController)
-        currentPresentedViewController.addChildViewController(viewController)
-        viewController.didMoveToParentViewController(currentPresentedViewController)
+
+    private func addInterstitial(interstitial: UIViewController, toParent parent: UIViewController) {
+        parent.view.addSubview(interstitial.view)
+        interstitial.willMoveToParentViewController(parent)
+        parent.addChildViewController(interstitial)
+        interstitial.didMoveToParentViewController(parent)
     }
-    
+
     // MARK: - AlertReceiver
 
     func receive(alert: Alert) {
@@ -102,6 +107,7 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
         }
 
         registeredAlerts.append(alert)
+
         if let interstitialListener = interstitialListener {
             interstitialListener.newInterstitialHasBeenRegistered()
         }
@@ -109,27 +115,35 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
 
     func receive(alerts: [Alert]) {
         for alert in alerts {
-            registeredAlerts.append(alert)
-            if let interstitialListener = interstitialListener {
-                interstitialListener.newInterstitialHasBeenRegistered()
-            }
+            receive(alert)
         }
     }
     
-    /// MARK: Interstitial
+    // MARK: InterstitialDelegate
+
+    /// Dismisses the interstitial on the screen at the moment if it's `Alert` is of the correct type.
+    func dismissCurrentInterstitial(of alertType: AlertType) {
+        guard let currentInterstitial = presentedInterstitial as? UIViewController where presentedInterstitial?.alert?.type == alertType else {
+            return
+        }
+        dismissInterstitial(currentInterstitial)
+    }
     
     func dismissInterstitial(interstitialViewController: UIViewController) {
-        if interstitialViewController.presentingViewController != nil {
-            interstitialViewController.dismissViewControllerAnimated(true, completion: nil)
-        } else if interstitialViewController.parentViewController != nil {
+        if interstitialViewController.parentViewController != nil {
+            interstitialViewController.willMoveToParentViewController(nil)
             interstitialViewController.view.removeFromSuperview()
+            interstitialViewController.removeFromParentViewController()
         }
-        
+        else if interstitialViewController.presentingViewController != nil {
+            interstitialViewController.dismissViewControllerAnimated(true, completion: nil)
+        }
+
         presentedInterstitial = nil
-        self.isShowingInterstital = false
+        isShowingInterstital = false
     }
     
-    /// MARK: Transition Delegate
+    // MARK: Transition Delegate
         
     func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return presentedInterstitial?.presentationAnimator()

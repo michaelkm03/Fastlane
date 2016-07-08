@@ -594,7 +594,6 @@
 		670C658B1C52AC0F00BD7F3F /* ListShelf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670C658A1C52AC0F00BD7F3F /* ListShelf.swift */; };
 		670C658D1C52AC6200BD7F3F /* HashtagShelf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670C658C1C52AC6200BD7F3F /* HashtagShelf.swift */; };
 		670C65921C52BA1800BD7F3F /* ExploreMarqueeShelfResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 670C658E1C52BA1800BD7F3F /* ExploreMarqueeShelfResponse.json */; };
-		670C65931C52BA1800BD7F3F /* FeaturedHashtagResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 670C658F1C52BA1800BD7F3F /* FeaturedHashtagResponse.json */; };
 		670C65941C52BA1800BD7F3F /* PlayListShelfResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 670C65901C52BA1800BD7F3F /* PlayListShelfResponse.json */; };
 		670C65951C52BA1800BD7F3F /* UserShelfResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 670C65911C52BA1800BD7F3F /* UserShelfResponse.json */; };
 		670C65971C52BA3800BD7F3F /* ShelfTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 670C65961C52BA3800BD7F3F /* ShelfTests.swift */; };
@@ -818,8 +817,8 @@
 		79EEC4A51C17BD150004E6FC /* Experiment+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79EEC4A41C17BD150004E6FC /* Experiment+Parsable.swift */; };
 		79FE184E1C53098D00170E5B /* VConversation.m in Sources */ = {isa = PBXBuildFile; fileRef = F0F04AD51B1E271A00F6F401 /* VConversation.m */; };
 		79FE185A1C531E2A00170E5B /* NumericPaginator+Predicate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79FE18591C531E2A00170E5B /* NumericPaginator+Predicate.swift */; };
-		7A02F8951D273C0F00F43B24 /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A02F8941D273C0F00F43B24 /* SettingsTableViewCell.swift */; };
 		7A02F8931D2486D400F43B24 /* CollectionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A02F8921D2486D400F43B24 /* CollectionType.swift */; };
+		7A02F8951D273C0F00F43B24 /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A02F8941D273C0F00F43B24 /* SettingsTableViewCell.swift */; };
 		7A126DF51CFF956800F9C86E /* APIPathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A126DF41CFF956800F9C86E /* APIPathTests.swift */; };
 		7A1ACD1D1D1CBD6A009C431C /* CGRect+Initializers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1ACD1C1D1CBD6A009C431C /* CGRect+Initializers.swift */; };
 		7A1C70AA1CC8513B00A666F5 /* SideMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1C70A91CC8513B00A666F5 /* SideMenuController.swift */; };
@@ -950,7 +949,6 @@
 		A706FE261C236AE100C2CBFF /* NSManagedObject+Copy.swift in Sources */ = {isa = PBXBuildFile; fileRef = A706FE251C236AE100C2CBFF /* NSManagedObject+Copy.swift */; };
 		A7078D001BFC082C008FB7FF /* SequenceFetchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078CFF1BFC082C008FB7FF /* SequenceFetchRequest.swift */; };
 		A7078D021BFC08AF008FB7FF /* SequenceFetchRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7078D011BFC08AF008FB7FF /* SequenceFetchRequestTests.swift */; };
-		A709A3341C32F5ED00C8B8F9 /* VHashtag+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A709A3331C32F5ED00C8B8F9 /* VHashtag+Parsable.swift */; };
 		A70E846F1C3F00C800689EFA /* TestPersistentStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EB32681C3B1FC1006C2783 /* TestPersistentStore.swift */; };
 		A70E84701C3F069A00689EFA /* FetcherOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 623989831C3607F200D0E4D0 /* FetcherOperationTests.swift */; };
 		A70FC0F41A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A70FC0F31A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m */; };
@@ -1056,7 +1054,6 @@
 		A72C86151C977FF500E97D4F /* FriendFindBySocialNetworkOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C856F1C977FF500E97D4F /* FriendFindBySocialNetworkOperation.swift */; };
 		A72C86161C977FF500E97D4F /* GIFSearchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85701C977FF500E97D4F /* GIFSearchOperation.swift */; };
 		A72C86171C977FF500E97D4F /* GIFSearchResultObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85711C977FF500E97D4F /* GIFSearchResultObject.swift */; };
-		A72C86181C977FF500E97D4F /* HashtagSaveOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85721C977FF500E97D4F /* HashtagSaveOperation.swift */; };
 		A72C86191C977FF500E97D4F /* HashtagSearchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85731C977FF500E97D4F /* HashtagSearchOperation.swift */; };
 		A72C861A1C977FF500E97D4F /* ImageSearchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85741C977FF500E97D4F /* ImageSearchOperation.swift */; };
 		A72C861B1C977FF500E97D4F /* LoginOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85751C977FF500E97D4F /* LoginOperation.swift */; };
@@ -1282,7 +1279,6 @@
 		A763635B1C5031E2000887C4 /* PaginatedObjectType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A763635A1C5031E2000887C4 /* PaginatedObjectType.swift */; };
 		A76363691C5036BF000887C4 /* VSequenceLiker.m in Sources */ = {isa = PBXBuildFile; fileRef = A763635F1C5036BE000887C4 /* VSequenceLiker.m */; };
 		A763636B1C5036BF000887C4 /* VFollowedUser.m in Sources */ = {isa = PBXBuildFile; fileRef = A76363631C5036BE000887C4 /* VFollowedUser.m */; };
-		A763636D1C5036BF000887C4 /* VFollowedHashtag.m in Sources */ = {isa = PBXBuildFile; fileRef = A76363671C5036BE000887C4 /* VFollowedHashtag.m */; };
 		A76567141B3B1DAA002721F3 /* VSleekActionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A76567131B3B1DAA002721F3 /* VSleekActionButton.m */; };
 		A7670D9C1BAB946A00991078 /* ContentViewNextTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7670D9B1BAB946A00991078 /* ContentViewNextTransition.swift */; };
 		A76711E81C1B4F47006568DF /* DefaultTimingTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76711E51C1B4F47006568DF /* DefaultTimingTracker.swift */; };
@@ -2035,7 +2031,6 @@
 		DB2A491F19DF43F900CB687B /* VForceUpgradeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DB2A492119DF43F900CB687B /* VForceUpgradeViewController.xib */; };
 		DB2A493B19DF449400CB687B /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB2A493D19DF449400CB687B /* Profile.storyboard */; };
 		DB2A494319DF44CF00CB687B /* settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB2A494519DF44CF00CB687B /* settings.storyboard */; };
-		DB531B561A425A7200B4ADC8 /* VHashtag.m in Sources */ = {isa = PBXBuildFile; fileRef = DB531B551A425A7200B4ADC8 /* VHashtag.m */; };
 		DB81FB631AAE49FE00EA4E3C /* LaunchImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DB81FB621AAE49FE00EA4E3C /* LaunchImage@2x.png */; };
 		DB8D3A1319803A03005DD36D /* VHashTags.m in Sources */ = {isa = PBXBuildFile; fileRef = DB8D3A1219803A03005DD36D /* VHashTags.m */; };
 		DBAD890119F5BA5B00D678A0 /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBAD88FF19F5BA5B00D678A0 /* EventKit.framework */; };
@@ -3078,7 +3073,6 @@
 		670C658A1C52AC0F00BD7F3F /* ListShelf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListShelf.swift; sourceTree = "<group>"; };
 		670C658C1C52AC6200BD7F3F /* HashtagShelf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagShelf.swift; sourceTree = "<group>"; };
 		670C658E1C52BA1800BD7F3F /* ExploreMarqueeShelfResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ExploreMarqueeShelfResponse.json; sourceTree = "<group>"; };
-		670C658F1C52BA1800BD7F3F /* FeaturedHashtagResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FeaturedHashtagResponse.json; sourceTree = "<group>"; };
 		670C65901C52BA1800BD7F3F /* PlayListShelfResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PlayListShelfResponse.json; sourceTree = "<group>"; };
 		670C65911C52BA1800BD7F3F /* UserShelfResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = UserShelfResponse.json; sourceTree = "<group>"; };
 		670C65961C52BA3800BD7F3F /* ShelfTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShelfTests.swift; sourceTree = "<group>"; };
@@ -3308,8 +3302,8 @@
 		79EEC4A01C17B99B0004E6FC /* DeviceExperimentsResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DeviceExperimentsResponse.json; sourceTree = "<group>"; };
 		79EEC4A41C17BD150004E6FC /* Experiment+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Experiment+Parsable.swift"; sourceTree = "<group>"; };
 		79FE18591C531E2A00170E5B /* NumericPaginator+Predicate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NumericPaginator+Predicate.swift"; sourceTree = "<group>"; };
-		7A02F8941D273C0F00F43B24 /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
 		7A02F8921D2486D400F43B24 /* CollectionType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionType.swift; sourceTree = "<group>"; };
+		7A02F8941D273C0F00F43B24 /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
 		7A126DF41CFF956800F9C86E /* APIPathTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIPathTests.swift; sourceTree = "<group>"; };
 		7A1ACD1C1D1CBD6A009C431C /* CGRect+Initializers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGRect+Initializers.swift"; sourceTree = "<group>"; };
 		7A1C70A91CC8513B00A666F5 /* SideMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuController.swift; sourceTree = "<group>"; };
@@ -3503,7 +3497,6 @@
 		A7078D011BFC08AF008FB7FF /* SequenceFetchRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceFetchRequestTests.swift; sourceTree = "<group>"; };
 		A7078D061BFC1367008FB7FF /* VContentViewViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VContentViewViewModel.swift; sourceTree = "<group>"; };
 		A709640419F0738200CE6633 /* VApplicationTrackingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VApplicationTrackingTests.m; sourceTree = "<group>"; };
-		A709A3331C32F5ED00C8B8F9 /* VHashtag+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VHashtag+Parsable.swift"; sourceTree = "<group>"; };
 		A70FC0F21A268FF100F5BBDE /* VNotificationSettingsTestDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotificationSettingsTestDelegate.h; sourceTree = "<group>"; };
 		A70FC0F31A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotificationSettingsTestDelegate.m; sourceTree = "<group>"; };
 		A70FC0FC1A2D412200F5BBDE /* VPurchaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPurchaseManager.h; sourceTree = "<group>"; };
@@ -3660,7 +3653,6 @@
 		A72C856F1C977FF500E97D4F /* FriendFindBySocialNetworkOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendFindBySocialNetworkOperation.swift; sourceTree = "<group>"; };
 		A72C85701C977FF500E97D4F /* GIFSearchOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchOperation.swift; sourceTree = "<group>"; };
 		A72C85711C977FF500E97D4F /* GIFSearchResultObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchResultObject.swift; sourceTree = "<group>"; };
-		A72C85721C977FF500E97D4F /* HashtagSaveOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagSaveOperation.swift; sourceTree = "<group>"; };
 		A72C85731C977FF500E97D4F /* HashtagSearchOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagSearchOperation.swift; sourceTree = "<group>"; };
 		A72C85741C977FF500E97D4F /* ImageSearchOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageSearchOperation.swift; sourceTree = "<group>"; };
 		A72C85751C977FF500E97D4F /* LoginOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginOperation.swift; sourceTree = "<group>"; };
@@ -3945,8 +3937,6 @@
 		A763635F1C5036BE000887C4 /* VSequenceLiker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequenceLiker.m; sourceTree = "<group>"; };
 		A76363621C5036BE000887C4 /* VFollowedUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFollowedUser.h; sourceTree = "<group>"; };
 		A76363631C5036BE000887C4 /* VFollowedUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFollowedUser.m; sourceTree = "<group>"; };
-		A76363661C5036BE000887C4 /* VFollowedHashtag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFollowedHashtag.h; sourceTree = "<group>"; };
-		A76363671C5036BE000887C4 /* VFollowedHashtag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFollowedHashtag.m; sourceTree = "<group>"; };
 		A76567121B3B1DAA002721F3 /* VSleekActionButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSleekActionButton.h; sourceTree = "<group>"; };
 		A76567131B3B1DAA002721F3 /* VSleekActionButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSleekActionButton.m; sourceTree = "<group>"; };
 		A766CFE81B66CF3E00419688 /* NSString+UnicodeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSString+UnicodeTests.swift"; sourceTree = "<group>"; };
@@ -4972,8 +4962,6 @@
 		D973EAEF66C87DDB60603750 /* Pods-victorious.stable.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.stable.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.stable.xcconfig"; sourceTree = "<group>"; };
 		D9A7055332AB197912A6EC01 /* Pods-test.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.debug.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.debug.xcconfig"; sourceTree = "<group>"; };
 		DB2A48FA19DF2D9D00CB687B /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
-		DB531B541A425A7200B4ADC8 /* VHashtag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashtag.h; sourceTree = "<group>"; };
-		DB531B551A425A7200B4ADC8 /* VHashtag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashtag.m; sourceTree = "<group>"; };
 		DB81FB621AAE49FE00EA4E3C /* LaunchImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LaunchImage@2x.png"; sourceTree = "<group>"; };
 		DB8D3A1119803A03005DD36D /* VHashTags.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashTags.h; sourceTree = "<group>"; };
 		DB8D3A1219803A03005DD36D /* VHashTags.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashTags.m; sourceTree = "<group>"; };
@@ -6237,7 +6225,6 @@
 				0300AA811BF2E465000A121D /* DevicePreferencesResponse.json */,
 				670C658E1C52BA1800BD7F3F /* ExploreMarqueeShelfResponse.json */,
 				6731B2641BF1834700B9FFFE /* FanLoyalty.json */,
-				670C658F1C52BA1800BD7F3F /* FeaturedHashtagResponse.json */,
 				67A42FC81BF29ABC0087FBE9 /* FollowersResponse.json */,
 				67C2101D1BFA797E0074E40E /* FollowHashtagResponse.json */,
 				67C2101F1BFA7A210074E40E /* FollowingHashtagsResponse.json */,
@@ -7919,7 +7906,6 @@
 				A7D7ED501B59BEB900FA346A /* UISearchBar+Extensions.swift */,
 				A721E8F31B572454000B7901 /* UIStoryboard+VMainStoryboard.h */,
 				A721E8F41B572454000B7901 /* UIStoryboard+VMainStoryboard.m */,
-				7C4CCE691D10E44800784D30 /* UITableViewCell+VBackgroundContainer.swift */,
 				F0FBC4481D258FD70070873F /* UITextView+TextInsets.swift */,
 				A721E8F51B572454000B7901 /* UIView+AutoLayout.h */,
 				A721E8F61B572454000B7901 /* UIView+AutoLayout.m */,
@@ -8046,7 +8032,6 @@
 				A72C856F1C977FF500E97D4F /* FriendFindBySocialNetworkOperation.swift */,
 				A72C85701C977FF500E97D4F /* GIFSearchOperation.swift */,
 				A72C85711C977FF500E97D4F /* GIFSearchResultObject.swift */,
-				A72C85721C977FF500E97D4F /* HashtagSaveOperation.swift */,
 				A72C85731C977FF500E97D4F /* HashtagSearchOperation.swift */,
 				A72C85741C977FF500E97D4F /* ImageSearchOperation.swift */,
 				A72C85751C977FF500E97D4F /* LoginOperation.swift */,
@@ -8825,7 +8810,6 @@
 				A76712101C1F83C8006568DF /* VAnswer+Parsable.swift */,
 				A76712231C21E57E006568DF /* VAsset+Parsable.swift */,
 				A7D69C6F1C0E725100B462C3 /* VComment+Parsable.swift */,
-				A709A3331C32F5ED00C8B8F9 /* VHashtag+Parsable.swift */,
 				A789F7201BF11F4900F5C87B /* VImageAsset+Parsable.swift */,
 				A767120E1C1F81A7006568DF /* VInteraction+Parsable.swift */,
 				A7F843671BFD44EE004C3D55 /* VMessage+Parsable.swift */,
@@ -9608,12 +9592,8 @@
 				BF2D255F1CED3A3A0001A2AF /* VContentMediaAsset.swift */,
 				F0F04AD41B1E271A00F6F401 /* VConversation.h */,
 				F0F04AD51B1E271A00F6F401 /* VConversation.m */,
-				A76363661C5036BE000887C4 /* VFollowedHashtag.h */,
-				A76363671C5036BE000887C4 /* VFollowedHashtag.m */,
 				A76363621C5036BE000887C4 /* VFollowedUser.h */,
 				A76363631C5036BE000887C4 /* VFollowedUser.m */,
-				DB531B541A425A7200B4ADC8 /* VHashtag.h */,
-				DB531B551A425A7200B4ADC8 /* VHashtag.m */,
 				A7AA647B19E78EAA0068D2B1 /* victoriOS.xcdatamodeld */,
 				BFCFFFF91CEE909F00F512B1 /* VImageAsset.swift */,
 				0385FEE718EF41B4009FBD68 /* VImageSearchResult.h */,
@@ -11219,7 +11199,6 @@
 				0EBF418E1CAC889C002966B3 /* RefreshStage.json in Resources */,
 				678D94581BF44100009A1F93 /* PollResultBySequenceResponse.json in Resources */,
 				0ECECD2E1D010E7F0076CB92 /* ChatUserCount.json in Resources */,
-				670C65931C52BA1800BD7F3F /* FeaturedHashtagResponse.json in Resources */,
 				795B75901BFA686200227647 /* tos.json in Resources */,
 				C3E7C1011BF414D100AFE545 /* SendMessageResponse.json in Resources */,
 				BF3777E21CEE4D5800AEF7F2 /* ViewedContentsResponse.json in Resources */,
@@ -12617,7 +12596,6 @@
 				F0FC98141B61AAA10098AFCB /* UIViewController+VAccessoryScreens.m in Sources */,
 				D85E428D1AFA9A5B00A13BD3 /* VHTMLSequncePreviewView.m in Sources */,
 				7979A0301C18B10400455FF8 /* NotificationSettingsViewController.swift in Sources */,
-				A72C86181C977FF500E97D4F /* HashtagSaveOperation.swift in Sources */,
 				A70E846F1C3F00C800689EFA /* TestPersistentStore.swift in Sources */,
 				F059A0031B852D1800037BC8 /* Shelf.swift in Sources */,
 				A72C860D1C977FF500E97D4F /* FetchUserOperation.swift in Sources */,
@@ -12740,7 +12718,6 @@
 				A769C3ED1A13176700698D0C /* VWebContentViewController.m in Sources */,
 				D836884419C3718A00070F22 /* VBaseSupplementaryView.m in Sources */,
 				A7F711FE1AE1D5A00086F729 /* VProfileFollowingContainerViewController.m in Sources */,
-				A763636D1C5036BF000887C4 /* VFollowedHashtag.m in Sources */,
 				A721E93D1B572454000B7901 /* NSIndexSet+Map.m in Sources */,
 				A72C85FB1C977FF500E97D4F /* AlertAcknowledgeOperation.swift in Sources */,
 				F06FC1FC1C97437900A014C7 /* ComposerTextViewManagerDelegate.swift in Sources */,
@@ -13496,7 +13473,6 @@
 				D888B52B1A86FC7800B34149 /* VRadialGradientView.m in Sources */,
 				03E910831B96B032009CC937 /* TrendingTopicGradientView.swift in Sources */,
 				A73BA2DA1C9394B6008168B5 /* ForumViewController.swift in Sources */,
-				A709A3341C32F5ED00C8B8F9 /* VHashtag+Parsable.swift in Sources */,
 				D8D3B7241AB264D400CF966C /* AVAsset+VVideoCompositionWithFrameDuration.m in Sources */,
 				F0FC97ED1B5C41280098AFCB /* VGifLinkViewController.m in Sources */,
 				7A7348591D063E83005225E4 /* ReferenceWrapper.swift in Sources */,
@@ -13540,7 +13516,6 @@
 				C3E772201B4DBA78005809A5 /* VStreamFocusHelper.m in Sources */,
 				D839D6921B16A64000FAFBD0 /* VEnterProfilePictureCameraViewController.m in Sources */,
 				A72C86481C977FF500E97D4F /* VLoginType+Credentials.swift in Sources */,
-				DB531B561A425A7200B4ADC8 /* VHashtag.m in Sources */,
 				A721E9611B572454000B7901 /* UIView+VViewRendering.m in Sources */,
 				A7ECC1CC1AD617480003E00A /* VImageToolController.m in Sources */,
 				B074C5BC1B3B2CA800EA3FFC /* VTimeMarkView.m in Sources */,

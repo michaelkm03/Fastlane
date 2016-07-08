@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "VSequenceActionControllerDelegate.h"
 
-@class VSequence, VHashtag, VUser;
+@class VSequence, VUser;
 
 @protocol VSequenceActionsDelegate <NSObject>
 @optional

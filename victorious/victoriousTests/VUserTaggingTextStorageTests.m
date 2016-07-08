@@ -10,7 +10,6 @@
 #import <XCTest/XCTest.h>
 #import "VUserTaggingTextStorage.h"
 #import "VDummyModels.h"
-#import "VHashtag.h"
 #import "victorious-Swift.h"
 
 @interface VUserTaggingTextStorageTests : XCTestCase
@@ -29,17 +28,17 @@
 {
     [super setUp];
     VUser *user = [[VDummyModels createUsers:1] lastObject];
-    VHashtag *hashtag = [[VDummyModels createHashtags:1] lastObject];
     self.testStringFormat = @"test user : %@, test hashtag : %@";
     
     char cString[] = "\u200B";
     NSData *data = [NSData dataWithBytes:cString length:strlen(cString)];
     NSString *delimiterString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     
+    NSString *sampleTag = @"tag";
     NSString *wrappedUser = [[delimiterString stringByAppendingString:user.name] stringByAppendingString:delimiterString];
-    NSString *wrappedHashtag = [[delimiterString stringByAppendingString:[NSString stringWithFormat:@"#%@", hashtag.tag]] stringByAppendingString:delimiterString];
+    NSString *wrappedHashtag = [[delimiterString stringByAppendingString:[NSString stringWithFormat:@"#%@", sampleTag]] stringByAppendingString:delimiterString];
     self.displayFormattedString = [NSString stringWithFormat:self.testStringFormat, wrappedUser, wrappedHashtag];
-    self.databaseFormattedString = [NSString stringWithFormat:self.testStringFormat, [NSString stringWithFormat:@"@{%@:%@}", [user.remoteId stringValue], user.name], [NSString stringWithFormat:@"#%@", hashtag.tag]];
+    self.databaseFormattedString = [NSString stringWithFormat:self.testStringFormat, [NSString stringWithFormat:@"@{%@:%@}", [user.remoteId stringValue], user.name], [NSString stringWithFormat:@"#%@", sampleTag]];
     
     self.textView = [[UITextView alloc] init];
     self.defaultFont = [UIFont systemFontOfSize:13.0f];

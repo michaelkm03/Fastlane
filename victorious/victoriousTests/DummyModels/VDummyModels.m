@@ -85,18 +85,6 @@ NSString * const kMacroBallisticsCount = @"%%COUNT%%";
     return [NSArray arrayWithArray:models];
 }
 
-+ (NSArray *)createHashtags:(NSInteger)count
-{
-    NSMutableArray *models = [[NSMutableArray alloc] init];
-    for ( NSInteger i = 0; i < count; i++ )
-    {
-        VHashtag *hashtag = (VHashtag *)[self objectWithEntityName:@"Hashtag" subclass:[VHashtag class]];
-        hashtag.tag = [NSString stringWithFormat:@"hashtag_%lu", (unsigned long)i];
-        [models addObject:hashtag];
-    }
-    return [NSArray arrayWithArray:models];
-}
-
 + (NSArray *)createVoteResults:(NSInteger)count
 {
     NSMutableArray *models = [[NSMutableArray alloc] init];

@@ -23,7 +23,7 @@ class AlertTests: XCTestCase {
         }
         
         XCTAssertEqual( alert.alertID, "1341" )
-        XCTAssertEqual( alert.alertType, AlertType.LevelUp )
+        XCTAssertEqual( alert.type, AlertType.levelUp )
         XCTAssertEqual( NSDateFormatter.vsdk_defaultDateFormatter().stringFromDate( alert.dateAcknowledged!), "2015-12-18 20:40:43" )
         XCTAssertEqual( alert.parameters.backgroundVideoURL?.absoluteString, "http://www.video.com" )
         XCTAssertEqual( alert.parameters.description, "Level up!" )
