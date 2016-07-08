@@ -99,7 +99,8 @@ class StageShrinkingAnimator: NSObject {
                     options: [],
                     animations: { 
                         self?.shrinkStage()
-                    }, completion: nil
+                    },
+                    completion: nil
                 )
             },
             willHideBlock: { [weak self] startFrame, endFrame, animationDuration, animationCurve in
