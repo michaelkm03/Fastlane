@@ -58,8 +58,9 @@ class StageShrinkingAnimator: NSObject {
     private let chatFeedContainer: UIView
     private let stageViewControllerContainmentContainer: UIView
     private let stageBlurBackground: UIVisualEffectView
-    private let stageTapGestureRecognizer: UITapGestureRecognizer
     private var keyboardManager: VKeyboardNotificationManager!
+    private let stageTapGestureRecognizer = UITapGestureRecognizer()
+    private let stagePanGestureRecognizer = UIPanGestureRecognizer()
     
     init(
         stageContainer: UIView,
@@ -73,19 +74,20 @@ class StageShrinkingAnimator: NSObject {
         self.chatFeedContainer = chatFeedContainer
         self.stageViewControllerContainmentContainer = stageViewControllerContainmentContainer
         self.stageBlurBackground = stageBlurBackground
-        self.stageTapGestureRecognizer = UITapGestureRecognizer()
         super.init()
         
         configureMaskingAndBorders()
         configureShadow()
         stageTapGestureRecognizer.addTarget(self, action: #selector(tappedOnStage(_:)))
+        stagePanGestureRecognizer.addTarget(self, action: #selector(pannedOnStage(_:)))
         stageTouchBlocker.addGestureRecognizer(stageTapGestureRecognizer)
+        stageContainer.addGestureRecognizer(stagePanGestureRecognizer)
         keyboardManager = VKeyboardNotificationManager(
             keyboardWillShowBlock: { [weak self]startFrame, endFrame, animationDuration, animationCurve in
                 self?.shrinkStage()
             },
             willHideBlock: {[weak self]startFrame, endFrame, animationDuration, animationCurve in
-                self?.enlargeStage()
+                self?.ignoreScrollBehaviorUntilNextBegin = true
             },
             willChangeFrameBlock: nil)
     }
@@ -125,8 +127,12 @@ class StageShrinkingAnimator: NSObject {
             return
         }
         
-        let currentState = stageState
         let scrollingDown = velocity.y < 0 ? true : false
+        guard scrollingDown == true else {
+            return
+        }
+        
+        let currentState = stageState
         let translation = scrollView.panGestureRecognizer.translationInView(chatFeedContainer)
         let targetState = scrollingDown ? StageState.shrunken : StageState.expanded
         let percentTranslated = percentThrough(forTranslation: translation)
@@ -163,6 +169,38 @@ class StageShrinkingAnimator: NSObject {
     
     //MARK: - Actions
     
+    @objc private func pannedOnStage(gesture: UIPanGestureRecognizer) {
+        guard let view = gesture.view else {
+            print("something went wrong")
+            return
+        }
+        
+        let translation = gesture.translationInView(view)
+        switch gesture.state {
+            case .Changed:
+                // We only care about going a certain direction from either expanded or shrunken
+                guard (stageState == .expanded && translation.y < 0 ) || (stageState == .shrunken && translation.y > 0) else {
+                    return
+                }
+                var percentage = max(min(fabs(translation.y) / Constants.dragMagnitude, 1), 0)
+                percentage = stageState == .expanded ? percentage : 1 - percentage
+                print("translation: \(translation), percentage: \(percentage), startingState: \(stageState)")
+                applyInterploatedValues(withPercentage: percentage)
+            case .Ended:
+                print("ended pan")
+                UIView.animateWithDuration(0.2,
+                                           animations: {
+                                            if gesture.velocityInView(view).y < 0 {
+                                                self.shrinkStage()
+                                            } else {
+                                                self.enlargeStage()
+                                            }
+                })
+            case .Possible, .Began, .Cancelled, .Failed:
+                break
+        }
+    }
+    
     @objc private func tappedOnStage(sender: UITapGestureRecognizer) {
         shouldHideKeyboardHandler?()
         ignoreScrollBehaviorUntilNextBegin = true
@@ -183,7 +221,6 @@ class StageShrinkingAnimator: NSObject {
         print("shrink stage")
         applyInterploatedValues(withPercentage: 1.0)
         self.stageTouchBlocker.hidden = false
-        self.stageTapGestureRecognizer.enabled = true
         stageState = .shrunken
     }
     

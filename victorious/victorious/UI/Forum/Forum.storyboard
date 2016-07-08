@@ -48,7 +48,7 @@
                                             <segue destination="Znu-5d-S6d" kind="embed" id="A38-Us-fyN"/>
                                         </connections>
                                     </containerView>
-                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dRb-kS-pyb" userLabel="Touch Blocker">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dRb-kS-pyb" userLabel="Touch Blocker">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="128"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <gestureRecognizers/>
