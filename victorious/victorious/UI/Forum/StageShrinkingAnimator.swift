@@ -121,7 +121,6 @@ class StageShrinkingAnimator: NSObject {
     }
     
     func chatFeed(chatFeed: ChatFeed, willBeginDragging scrollView: UIScrollView) {
-        print("willBeginDragging")
         ignoreScrollBehaviorUntilNextBegin = false
     }
     
@@ -140,22 +139,18 @@ class StageShrinkingAnimator: NSObject {
         let translation = scrollView.panGestureRecognizer.translationInView(chatFeedContainer)
         let targetState = scrollingDown ? StageState.shrunken : StageState.expanded
         let percentTranslated = percentThrough(forTranslation: translation)
-        print("willEndDragging: velocity: \(velocity), currentState: \(currentState), translation: \(translation), percentTranslated: \(percentTranslated)")
         
         animateInProgressSnap { 
             // Strong flick takes us to the target
             if percentTranslated > 0.5 {
-                print("goto shrunken")
                 self.goTo(.shrunken)
             }
             // If we are past half-way go to target
             else if fabs(velocity.y) > Constants.velocityTargetShrink {
-                print("goto target")
                 self.goTo(targetState)
             }
             // Otherwise remain at the current location
             else {
-                print("goto current")
                 self.goTo(currentState)
             }
             self.ignoreScrollBehaviorUntilNextBegin = true
@@ -180,10 +175,8 @@ class StageShrinkingAnimator: NSObject {
                 guard (stageState == .expanded && translation.y < 0 ) || (stageState == .shrunken && translation.y > 0) else {
                     return
                 }
-                print("translation: \(translation), percentage: \(percentage), startingState: \(stageState)")
                 applyInterploatedValues(withPercentage: percentage)
             case .Ended:
-                print("ended pan")
                 animateInProgressSnap(withAnimations: {
                     if percentage > 0.5 {
                         self.goTo(self.stageState == .expanded ? .shrunken : .expanded)
@@ -227,14 +220,12 @@ class StageShrinkingAnimator: NSObject {
     }
     
     private func shrinkStage() {
-        print("shrink stage")
         applyInterploatedValues(withPercentage: 1.0)
         self.stageTouchBlocker.hidden = false
         stageState = .shrunken
     }
     
     private func enlargeStage() {
-        print("enlarge stage")
         applyInterploatedValues(withPercentage: 0)
         self.stageTouchBlocker.hidden = true
         self.stageViewControllerContainmentContainer.layer.borderColor = UIColor.clearColor().CGColor
@@ -266,12 +257,7 @@ class StageShrinkingAnimator: NSObject {
         if adjustedTranslation.y < 0 {
             adjustedTranslation.y = min(adjustedTranslation.y + Constants.downDragIgnoredMagnitude, 0)
         }
-        var percentTranslated = adjustedTranslation.y / Constants.dragMagnitude
-        if percentTranslated <= 0 {
-            percentTranslated = 1 - fabs(percentTranslated)
-        }
-        print("percent translated: \(percentTranslated)")
-        return percentTranslated
+        return adjustedTranslation.y / Constants.dragMagnitude
     }
 
     private func interpolatedBorderColorFor(percentThrough percent: CGFloat) -> CGColor {
