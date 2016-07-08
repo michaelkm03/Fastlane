@@ -128,6 +128,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     
     func playVideo() {
         videoPlayer.play()
+        self.state = .Playing
     }
     
     func pauseVideo() {
@@ -136,6 +137,14 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     
     var isPlaying: Bool {
         return videoPlayer.isPlaying
+    }
+    
+    private func prepareToPlay() {
+        videoPlayer.pauseAtStart()
+        if let seekAheadTime = self.content.seekAheadTime where Int(videoPlayer.currentTimeSeconds) <= Int(seekAheadTime) {
+            videoPlayer.seekToTimeSeconds(seekAheadTime)
+        }
+        self.delegate?.coordinatorDidBecomeReady()
     }
     
     // MARK: - Layout
@@ -161,12 +170,15 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     // MARK: - VVideoPlayerDelegate
     
     func videoPlayerDidBecomeReady(videoPlayer: VVideoPlayer) {
-        self.state = .Playing
-        videoPlayer.pauseAtStart()
-        if let seekAheadTime = self.content.seekAheadTime where Int(videoPlayer.currentTimeSeconds) <= Int(seekAheadTime) {
-            videoPlayer.seekToTimeSeconds(seekAheadTime)
+        guard let asset = content.assets.first where asset.videoSource == .youtube else {
+            return
         }
-        self.delegate?.coordinatorDidBecomeReady()
+        prepareToPlay()
+
+    }
+    
+    func videoPlayerItemIsReadyToPlay(videoPlayer: VVideoPlayer) {
+        prepareToPlay()
     }
     
     func videoPlayerDidReachEnd(videoPlayer: VVideoPlayer) {

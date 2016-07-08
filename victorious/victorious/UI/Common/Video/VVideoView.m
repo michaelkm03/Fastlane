@@ -102,7 +102,7 @@ static NSString * const kPlayerItemIsReadyToPlay = @"status";
         self.playerLayer.videoGravity = [self videoGravity];
         [self.layer addSublayer:self.playerLayer];
         self.playerLayer.frame = self.bounds;
-        self.playerLayer.opacity = 0.0f;
+        self.playerLayer.opacity = 1.0f;
         
         __weak VVideoView *weakSelf = self;
         [self.KVOController observe:self.playerLayer
@@ -113,11 +113,11 @@ static NSString * const kPlayerItemIsReadyToPlay = @"status";
              VVideoView *strongSelf = weakSelf;
              if ( strongSelf != nil )
              {
-                 BOOL isIntendedPlayerItem = [strongSelf.playerLayer.player.currentItem isEqual:strongSelf.newestPlayerItem];
-                 if ( isIntendedPlayerItem && strongSelf.playerLayer.isReadyForDisplay)
-                 {
-                     strongSelf.playerLayer.opacity = 1.0f;
-                 }
+//                 BOOL isIntendedPlayerItem = [strongSelf.playerLayer.player.currentItem isEqual:strongSelf.newestPlayerItem];
+//                 if ( isIntendedPlayerItem && strongSelf.playerLayer.isReadyForDisplay)
+//                 {
+//                     strongSelf.playerLayer.opacity = 1.0f;
+//                 }
              }
          }];
 
@@ -128,14 +128,13 @@ static NSString * const kPlayerItemIsReadyToPlay = @"status";
     self.player.muted = self.muted;
     
     self.newestPlayerItem = nil;
-    self.playerLayer.opacity = 0.0f;
     [self.videoUtils createPlayerItemWithURL:self.itemURL
                                         loop:self.loop
                                readyCallback:^(AVPlayerItem *playerItem, NSURL *composedItemURL, CMTime duration)
      {
          if ( [composedItemURL isEqual:_itemURL] )
          {
-             self.newestPlayerItem = playerItem;
+             [self.player replaceCurrentItemWithPlayerItem:playerItem];
              [self didFinishAssetCreation:playerItem];
          }
      }];
@@ -319,10 +318,6 @@ static NSString * const kPlayerItemIsReadyToPlay = @"status";
     }
     if ( !self.isPlaying )
     {
-        if (self.player.currentItem != self.newestPlayerItem)
-        {
-            [self.player replaceCurrentItemWithPlayerItem:self.newestPlayerItem];
-        }
         
         [self.player play];
         if ([self.delegate respondsToSelector:@selector(videoPlayerDidPlay:)])
