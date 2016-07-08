@@ -32,13 +32,13 @@ class UserTaggingViewController: UIViewController, SearchResultsViewControllerDe
         return viewController
     }
     
-    //MARK: - API
+    // MARK: - API
     
     func searchWithTerm(searchTerm: String) {
         dataSource.search(searchTerm: searchTerm, pageType: .First)
     }
     
-    //MARK: - UIViewController
+    // MARK: - UIViewController
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == UserTaggingViewController.Constants.embeddedViewControllerSegueIdentifier {
@@ -49,7 +49,7 @@ class UserTaggingViewController: UIViewController, SearchResultsViewControllerDe
         }
     }
     
-    //MARK: - SearchResultsViewControllerDelegate
+    // MARK: - SearchResultsViewControllerDelegate
     
     func searchResultsViewControllerDidSelectResult(result: AnyObject) {
         guard let result: UserSearchResultObject = result as? UserSearchResultObject else {

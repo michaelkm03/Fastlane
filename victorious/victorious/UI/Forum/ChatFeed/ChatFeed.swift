@@ -26,6 +26,12 @@ protocol ChatFeed: class, ForumEventSender, ForumEventReceiver {
 protocol ChatFeedDelegate: class {
     func chatFeed(chatFeed: ChatFeed, didSelectUserWithUserID userID: Int)
     func chatFeed(chatFeed: ChatFeed, didSelectContent content: ContentModel)
+    
+    func chatFeed(chatFeed: ChatFeed, didScroll scrollView: UIScrollView)
+    
+    func chatFeed(chatFeed: ChatFeed, willBeginDragging scrollView: UIScrollView)
+    
+    func chatFeed(chatFeed: ChatFeed, willEndDragging scrollView: UIScrollView, withVelocity velocity: CGPoint)
 }
 
 extension ChatFeed {

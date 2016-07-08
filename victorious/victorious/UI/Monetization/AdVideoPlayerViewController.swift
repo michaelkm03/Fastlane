@@ -10,7 +10,7 @@ class AdVideoPlayerViewController: UIViewController, AdLifecycleDelegate {
     weak var delegate: AdLifecycleDelegate?
     var adViewController: VAdViewControllerType
 
-    //MARK: - Initializers
+    // MARK: - Initializers
 
     init(adViewController: VAdViewControllerType) {
         self.adViewController = adViewController
@@ -21,14 +21,14 @@ class AdVideoPlayerViewController: UIViewController, AdLifecycleDelegate {
         fatalError("init(coder:) has not been implemented")
     }
 
-    //MARK: - View Lifecycle
+    // MARK: - View Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.clearColor()
     }
 
-    //MARK: - AdVideoPlayerViewController entry point
+    // MARK: - AdVideoPlayerViewController entry point
 
     func start() {
         adViewController.delegate = self
@@ -37,7 +37,7 @@ class AdVideoPlayerViewController: UIViewController, AdLifecycleDelegate {
         adViewController.startAdManager()
     }
 
-    //MARK: - AdLifecycleDelegate
+    // MARK: - AdLifecycleDelegate
 
     func adDidLoad() {
         delegate?.adDidLoad()
