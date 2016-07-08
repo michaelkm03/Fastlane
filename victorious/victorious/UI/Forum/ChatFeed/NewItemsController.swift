@@ -17,6 +17,9 @@ class NewItemsController: NSObject {
         static let pillInsets = UIEdgeInsetsMake(10, 10, 10, 10)
         static let pillHeight: CGFloat = 30
         static let pillBottomMargin: CGFloat = 20
+        
+        static let openAnimationDuration: Double = 0.75
+        static let closeAnimationDuration: Double = 0.2
     }
     
     let largeNumberFormatter = VLargeNumberFormatter()
@@ -49,28 +52,16 @@ class NewItemsController: NSObject {
     @IBOutlet private weak var container: UIView!
     @IBOutlet private weak var newItemIndicator: TextOnColorButton!
     
-    private var containerHeightFromStoryboard: CGFloat?
-    @IBOutlet private weak var containerHeight: NSLayoutConstraint! {
-        didSet {
-            containerHeightFromStoryboard = containerHeight.constant
-        }
-    }
-    
     func show(animated animated: Bool = true) {
         guard !isShowing else {
             return
         }
         isShowing = true
         let animations = {
-            guard let bottomConstant = self.containerHeightFromStoryboard else {
-                assertionFailure("`containerHeightFromStoryboard` must be set as soon as this class is instantiated from a storyboard.")
-                return
-            }
-            self.containerHeight.constant = bottomConstant
-            self.container.superview?.layoutIfNeeded()
+            self.newItemIndicator.transform = CGAffineTransformMakeScale(1, 1)
         }
         if animated {
-            UIView.animateWithDuration(0.75,
+            UIView.animateWithDuration(Constants.openAnimationDuration,
                 delay: 0.0,
                 usingSpringWithDamping: 0.5,
                 initialSpringVelocity: 0.5,
@@ -88,15 +79,14 @@ class NewItemsController: NSObject {
             return
         }
         let animations = {
-            self.containerHeight.constant = 0.0
-            self.container.superview?.layoutIfNeeded()
+            self.newItemIndicator.transform = CGAffineTransformMakeScale(0, 0)
         }
         let completion = { (_: Bool) in
             self.count = 0
             self.isShowing = false
         }
         if animated {
-            UIView.animateWithDuration(0.2,
+            UIView.animateWithDuration(Constants.closeAnimationDuration,
                 delay: 0.0,
                 usingSpringWithDamping: 1.0,
                 initialSpringVelocity: 0.0,
