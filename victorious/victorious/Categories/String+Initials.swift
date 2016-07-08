@@ -16,9 +16,9 @@ extension String {
         
         let initials: [String] = (0 ..< initialCount).map { index in
             switch index {
-                case 0:         return words[0].uppercaseFirstCharacter
+                case 0: return words[0].uppercaseFirstCharacter
                 case lastIndex: return words.last?.uppercaseFirstCharacter ?? ""
-                default:        return words[index].uppercaseFirstCharacter
+                default: return words[index].uppercaseFirstCharacter
             }
         }
         
