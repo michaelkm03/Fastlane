@@ -33,7 +33,8 @@ class StageShrinkingAnimator: NSObject {
         static let stageMargin = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 10)
         static let borderEndingAlpha: CGFloat = 0.3
         static let tranlationTriggerCoefficient: CGFloat = 0.3
-        static let velocityTarget: CGFloat = 1.5
+        static let velocityTargetShrink: CGFloat = 0.3
+        static let velocityTargetGrow: CGFloat = 1.5
     }
     
     private enum StageState {
@@ -139,7 +140,7 @@ class StageShrinkingAnimator: NSObject {
             }
         }
         func changeFunction() {
-            if velocity.y > fabs(Constants.velocityTarget) {
+            if fabs(velocity.y) > Constants.velocityTargetShrink {
                 print("goto target")
                 goTo(targetState)
             } else if percentTranslated > 0.5 {
