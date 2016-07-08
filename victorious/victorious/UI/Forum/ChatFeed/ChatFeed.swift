@@ -9,7 +9,6 @@
 import Foundation
 
 protocol ChatFeed: class, ForumEventSender, ForumEventReceiver {
-    
     var nextSender: ForumEventSender? { get set }
     var delegate: ChatFeedDelegate? { get set }
     var dependencyManager: VDependencyManager! { get set }
@@ -25,14 +24,11 @@ protocol ChatFeed: class, ForumEventSender, ForumEventReceiver {
 }
 
 protocol ChatFeedDelegate: class {
-    
     func chatFeed(chatFeed: ChatFeed, didSelectUserWithUserID userID: Int)
-    
     func chatFeed(chatFeed: ChatFeed, didSelectContent content: ContentModel)
 }
 
 extension ChatFeed {
-    
     var delegate: ChatFeedDelegate? {
         get {
             return nil
@@ -90,30 +86,30 @@ extension ChatFeed {
             // though, so we have to do that separately.
             collectionView.performBatchUpdates({
                 switch loadingType {
-                case .newer:
-                    let previousCount = self.chatInterfaceDataSource.visibleItems.count - newItems.count
-                    
-                    collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
-                        NSIndexPath(forItem: previousCount + $0, inSection: 0)
+                    case .newer:
+                        let previousCount = self.dataSource.visibleItems.count - newItems.count
+                        
+                        collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
+                            NSIndexPath(forItem: previousCount + $0, inSection: 0)
                         })
                     
-                case .older:
-                    if let layout = collectionView.collectionViewLayout as? ChatFeedCollectionViewLayout {
-                        layout.contentSizeWhenInsertingAbove = collectionView.contentSize
-                    }
-                    else {
-                        assertionFailure("Chat feed's collection view did not have the required layout type ChatFeedCollectionViewLayout.")
-                    }
-                    
-                    collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
-                        NSIndexPath(forItem: $0, inSection: 0)
+                    case .older:
+                        if let layout = collectionView.collectionViewLayout as? ChatFeedCollectionViewLayout {
+                            layout.contentSizeWhenInsertingAbove = collectionView.contentSize
+                        }
+                        else {
+                            assertionFailure("Chat feed's collection view did not have the required layout type ChatFeedCollectionViewLayout.")
+                        }
+                        
+                        collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
+                            NSIndexPath(forItem: $0, inSection: 0)
                         })
                     
-                case .refresh:
-                    break
+                    case .refresh:
+                        break
                 }
-                }, completion: { _ in
-                    completion()
+            }, completion: { _ in
+                completion()
             })
         }
     }
