@@ -15,7 +15,7 @@ class BackgroundButton: UIButton {
         static let cornerRadius = CGFloat(6.0)
         static let defaultFont = UIFont.systemFontOfSize(14.0, weight: UIFontWeightSemibold)
         static let defaultTintColor = UIColor(white: 1.0, alpha: 1.0)
-        static let defaultBackgroundColor = UIColor(white: 1.0, alpha: 0.15)
+        static let defaultBackgroundColor = UIColor(white: 1.0, alpha: 0.2)
     }
     
     // MARK: - Initializing

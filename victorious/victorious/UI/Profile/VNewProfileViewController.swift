@@ -112,6 +112,10 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
             upvoteButton.sizeToFit()
             supplementalRightButtons.append(UIBarButtonItem(customView: upvoteButton))
             
+            if isCreator && VCurrentUser.user()?.hasValidVIPSubscription != true {
+                supplementalRightButtons.append(UIBarButtonItem(customView: upgradeButton))
+            }
+            
             if !isCreator {
                 supplementalRightButtons.append(overflowButton)
             }
@@ -126,7 +130,14 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     
     // MARK: - Views
     
-    private let upgradeButton = UIButton(type: .System)
+    private lazy var upgradeButton: UIButton = {
+        let button = BackgroundButton(type: .System)
+        button.addTarget(self, action: #selector(upgradeButtonWasPressed), forControlEvents: .TouchUpInside)
+        // TODO: Localize.
+        button.setTitle("Upgrade", forState: .Normal)
+        button.sizeToFit()
+        return button
+    }()
     
     // MARK: - Actions
     
@@ -206,11 +217,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     }
     
     func shouldDisplayAccessoryItem(withIdentifier identifier: String) -> Bool {
-        if identifier == VNewProfileViewController.upgradeButtonID {
-            return user?.hasValidVIPSubscription != true
-        }
-        
-        return true
+        return identifier != VNewProfileViewController.upgradeButtonID
     }
     
     // MARK: - VAccessoryNavigationSource
@@ -220,11 +227,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     }
     
     func shouldDisplayAccessoryMenuItem(menuItem: VNavigationMenuItem!, fromSource source: UIViewController!) -> Bool {
-        if menuItem?.identifier == VNewProfileViewController.upgradeButtonID {
-            return user?.hasValidVIPSubscription != true
-        }
-        
-        return true
+        return menuItem?.identifier != VNewProfileViewController.upgradeButtonID
     }
     
     // MARK: - Managing the user
