@@ -14,7 +14,6 @@ private let interItemSpacing = CGFloat(3)
 private let cellsPerRow = 3
 
 class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
-    
     private let gridStreamController: GridStreamViewController<CloseUpView>
     private var dependencyManager: VDependencyManager
     private var content: ContentModel?
@@ -38,20 +37,13 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
         )
     }()
     
-    private lazy var upvoteButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(
-            image: self.dependencyManager.upvoteIconUnselected,
-            style: .Done,
-            target: self,
-            action: #selector(toggleUpvote)
-        )
+    private lazy var upvoteButton: UIButton = {
+        let button = BackgroundButton(type: .System)
+        button.addTarget(self, action: #selector(toggleUpvote), forControlEvents: .TouchUpInside)
         return button
     }()
     
-    init(dependencyManager: VDependencyManager,
-         contentID: String,
-         content: ContentModel? = nil,
-         streamAPIPath: APIPath) {
+    init(dependencyManager: VDependencyManager, contentID: String, content: ContentModel? = nil, streamAPIPath: APIPath) {
         self.dependencyManager = dependencyManager
         
         let header = CloseUpView.newWithDependencyManager(dependencyManager)
@@ -106,16 +98,23 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
             return
         }
         
+        upvoteButton.tintColor = UIColor.redColor()
+        
         if content.isLikedByCurrentUser {
-            upvoteButton.image = dependencyManager.upvoteIconSelected
-            upvoteButton.tintColor = dependencyManager.upvotedIconTint
+            upvoteButton.setImage(dependencyManager.upvoteIconSelected, forState: .Normal)
+            upvoteButton.backgroundColor = dependencyManager.upvoteIconSelectedBackgroundColor
+//            upvoteButton.image = dependencyManager.upvoteIconSelected
+            upvoteButton.tintColor = dependencyManager.upvoteIconTint
         }
         else {
-            upvoteButton.image = dependencyManager.upvoteIconUnselected
+            upvoteButton.setImage(dependencyManager.upvoteIconUnselected, forState: .Normal)
+            upvoteButton.backgroundColor = dependencyManager.upvoteIconUnselectedBackgroundColor
+//            upvoteButton.image = dependencyManager.upvoteIconUnselected
             upvoteButton.tintColor = nil
         }
         
-        navigationItem.rightBarButtonItems = [upvoteButton, overflowButton, shareButton]
+        upvoteButton.sizeToFit()
+        navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: upvoteButton), shareButton, overflowButton]
     }
     
     required init?(coder: NSCoder) {
@@ -156,8 +155,8 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
             contentID: contentID,
             upvoteURL: dependencyManager.contentUpvoteURL,
             unupvoteURL: dependencyManager.contentUnupvoteURL
-            ).queue() { [weak self] _ in
-                self?.updateHeader()
+        ).queue { [weak self] _ in
+            self?.updateHeader()
         }
     }
     
@@ -190,16 +189,29 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
 }
 
 private extension VDependencyManager {
-    var upvotedIconTint: UIColor? {
-        return colorForKey("color.text.actionButton")
+    // TODO: Update colors and icons that come from the template.
+    
+    var upvoteIconTint: UIColor? {
+        return UIColor(white: 0.169, alpha: 1.0)
+//        return colorForKey("color.text.actionButton")
+    }
+    
+    var upvoteIconSelectedBackgroundColor: UIColor? {
+        return UIColor(white: 1.0, alpha: 0.8)
+    }
+    
+    var upvoteIconUnselectedBackgroundColor: UIColor? {
+        return UIColor(white: 1.0, alpha: 0.2)
     }
     
     var upvoteIconSelected: UIImage? {
-        return imageForKey("upvote_icon_selected")?.imageWithRenderingMode(.AlwaysTemplate)
+        return UIImage(named: "star")
+//        return imageForKey("upvote_icon_selected")?.imageWithRenderingMode(.AlwaysTemplate)
     }
     
     var upvoteIconUnselected: UIImage? {
-        return imageForKey("upvote_icon_unselected")?.imageWithRenderingMode(.AlwaysTemplate)
+        return UIImage(named: "star")
+//        return imageForKey("upvote_icon_unselected")?.imageWithRenderingMode(.AlwaysTemplate)
     }
     
     var overflowIcon: UIImage? {
