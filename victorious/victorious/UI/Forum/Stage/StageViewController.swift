@@ -54,6 +54,8 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         }
     }
     
+    private var enabled = true
+    
     private lazy var newItemPill: TextOnColorButton? = { [weak self] in
         guard let pillDependency = self?.dependencyManager.newItemButtonDependency else {
             return nil
@@ -145,6 +147,9 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
     }
     
     func addContent(stageContent: ContentModel) {
+        guard enabled else {
+            return
+        }
         queuedContent = stageContent
         if
             !hasShownStage ||
@@ -163,8 +168,37 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
             showPill()
         }
     }
+
+    func removeContent() {
+        hidePill()
+        hideStage()
+        hasShownStage = false
+        queuedContent = nil
+    }
     
-    func nextContent() {
+    func setStageEnabled(enabled: Bool, animated: Bool) {
+        self.enabled = enabled
+        
+        if enabled {
+            showStage(animated)
+        }
+        else {
+            hideStage(animated)
+        }
+    }
+    
+    var overlayUIAlpha: CGFloat {
+        get {
+            return attributionBar.alpha
+        }
+        set {
+            captionBarViewController?.view.alpha = newValue
+            attributionBar.alpha = newValue
+            newItemPill?.alpha = newValue
+        }
+    }
+    
+    private func nextContent() {
         hidePill()
         guard let stageContent = queuedContent else {
             return
@@ -179,57 +213,9 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         queuedContent = nil
     }
     
-    func onPillSelect() {
+    private dynamic func onPillSelect() {
         nextContent()
         hidePill()
-    }
-
-    func removeContent() {
-        hidePill()
-        hideStage()
-        hasShownStage = false
-        queuedContent = nil
-    }
-    
-    var overlayUIAlpha: CGFloat {
-        get {
-            return attributionBar.alpha
-        }
-        set {
-            captionBarViewController?.view.alpha = newValue
-            attributionBar.alpha = newValue
-            newItemPill?.alpha = newValue
-        }
-    }
-    
-    private func hidePill() {
-        guard
-            let newItemPill = newItemPill
-            where newItemPill.hidden == false
-        else {
-            return
-        }
-        
-        UIView.animateWithDuration(0.5, animations: {
-            newItemPill.alpha = 0.0
-        }) { _ in
-            newItemPill.hidden = true
-        }
-    }
-    
-    private func showPill() {
-        guard
-            let newItemPill = newItemPill
-            where newItemPill.hidden == true
-        else {
-            return
-        }
-        
-        newItemPill.alpha = 0.0
-        newItemPill.hidden = false
-        UIView.animateWithDuration(0.5, animations: {
-            newItemPill.alpha = 1.0
-        })
     }
 
     // MARK: - ForumEventReceiver
@@ -291,6 +277,36 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
             height += defaultStageHeight
         }
         delegate?.stage(self, wantsUpdateToContentHeight: height)
+    }
+    
+    private func hidePill() {
+        guard
+            let newItemPill = newItemPill
+            where newItemPill.hidden == false
+            else {
+                return
+        }
+        
+        UIView.animateWithDuration(0.5, animations: {
+            newItemPill.alpha = 0.0
+        }) { _ in
+            newItemPill.hidden = true
+        }
+    }
+    
+    private func showPill() {
+        guard
+            let newItemPill = newItemPill
+            where newItemPill.hidden == true
+            else {
+                return
+        }
+        
+        newItemPill.alpha = 0.0
+        newItemPill.hidden = false
+        UIView.animateWithDuration(0.5, animations: {
+            newItemPill.alpha = 1.0
+        })
     }
 }
 
