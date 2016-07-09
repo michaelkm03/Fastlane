@@ -96,27 +96,26 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         let isCreator = user?.accessLevel?.isCreator == true
         
         if !isCurrentUser {
-            if user?.isFollowedByCurrentUser == true {
-                upvoteButton.setImage(dependencyManager.upvoteIconSelected, forState: .Normal)
-                upvoteButton.backgroundColor = dependencyManager.upvoteIconSelectedBackgroundColor
-//                upvoteButton.image = dependencyManager.upvoteIconSelected
-                upvoteButton.tintColor = dependencyManager.upvoteIconTint
-            }
-            else {
-                upvoteButton.setImage(dependencyManager.upvoteIconUnselected, forState: .Normal)
-                upvoteButton.backgroundColor = dependencyManager.upvoteIconUnselectedBackgroundColor
-//                upvoteButton.image = dependencyManager.upvoteIconUnselected
-                upvoteButton.tintColor = nil
-            }
-            
-            upvoteButton.sizeToFit()
-            supplementalRightButtons.append(UIBarButtonItem(customView: upvoteButton))
-            
             if isCreator && VCurrentUser.user()?.hasValidVIPSubscription != true {
                 supplementalRightButtons.append(UIBarButtonItem(customView: upgradeButton))
             }
             
             if !isCreator {
+                if user?.isFollowedByCurrentUser == true {
+                    upvoteButton.setImage(dependencyManager.upvoteIconSelected, forState: .Normal)
+                    upvoteButton.backgroundColor = dependencyManager.upvoteIconSelectedBackgroundColor
+    //                upvoteButton.image = dependencyManager.upvoteIconSelected
+                    upvoteButton.tintColor = dependencyManager.upvoteIconTint
+                }
+                else {
+                    upvoteButton.setImage(dependencyManager.upvoteIconUnselected, forState: .Normal)
+                    upvoteButton.backgroundColor = dependencyManager.upvoteIconUnselectedBackgroundColor
+    //                upvoteButton.image = dependencyManager.upvoteIconUnselected
+                    upvoteButton.tintColor = nil
+                }
+                
+                upvoteButton.sizeToFit()
+                supplementalRightButtons.append(UIBarButtonItem(customView: upvoteButton))
                 supplementalRightButtons.append(overflowButton)
             }
         }
