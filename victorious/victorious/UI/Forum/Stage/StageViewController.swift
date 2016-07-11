@@ -53,6 +53,7 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
     private var hasShownStage: Bool = false
     private var queuedContent: ContentModel?
     private var stageDataSource: StageDataSource?
+    private var enabled = true
     
     weak var delegate: StageDelegate?
     var dependencyManager: VDependencyManager! {
@@ -225,36 +226,6 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
             height += defaultStageHeight
         }
         delegate?.stage(self, wantsUpdateToContentHeight: height)
-    }
-    
-    private func hidePill() {
-        guard
-            let newItemPill = newItemPill
-            where newItemPill.hidden == false
-            else {
-                return
-        }
-        
-        UIView.animateWithDuration(0.5, animations: {
-            newItemPill.alpha = 0.0
-        }) { _ in
-            newItemPill.hidden = true
-        }
-    }
-    
-    private func showPill() {
-        guard
-            let newItemPill = newItemPill
-            where newItemPill.hidden == true
-            else {
-                return
-        }
-        
-        newItemPill.alpha = 0.0
-        newItemPill.hidden = false
-        UIView.animateWithDuration(0.5, animations: {
-            newItemPill.alpha = 1.0
-        })
     }
 }
 
