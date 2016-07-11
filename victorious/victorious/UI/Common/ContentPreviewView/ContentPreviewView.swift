@@ -54,8 +54,8 @@ class ContentPreviewView: UIView {
         
         if let content = content where lastSize.area / bounds.size.area < Constants.imageReloadThreshold {
             setupImage(forContent: content)
+            lastSize = bounds.size
         }
-        lastSize = bounds.size
     }
     
     init() {
