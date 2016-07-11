@@ -26,9 +26,8 @@ struct CaptionBarPopulator {
     }
     
     static func populate(captionBar: CaptionBar, withUser user: UserModel, andCaption caption: String) {
-        // Configure the avatar button
-        let imageURL = user.previewImageURL(ofMinimumWidth: captionBar.bounds.width) ?? NSURL()
-        captionBar.avatarButton.setProfileImageURL(imageURL, forState: .Normal)
+        // Configure the avatar view
+        captionBar.avatarView.user = user
         
         // Configure the textView
         let captionTextView = captionBar.captionTextView
