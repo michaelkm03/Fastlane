@@ -7,7 +7,6 @@
 //
 
 #import "VDiscoverSuggestedPersonCell.h"
-#import "VDefaultProfileButton.h"
 #import "VFollowControl.h"
 #import "VFollowersTextFormatter.h"
 #import "VDependencyManager.h"
@@ -17,7 +16,7 @@
 @interface VDiscoverSuggestedPersonCell()
 
 @property (nonatomic, weak) IBOutlet VFollowControl *followControl;
-@property (nonatomic, weak) IBOutlet VDefaultProfileButton *profileButton;
+@property (nonatomic, weak) IBOutlet UIButton *profileButton;
 @property (nonatomic, weak) IBOutlet UILabel *usernameLabel;
 @property (nonatomic, weak) IBOutlet UILabel *descriptionLabel;
 
@@ -49,7 +48,6 @@
         self.usernameLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
         self.descriptionLabel.textColor = [_dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
         self.followControl.tintColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-        self.profileButton.dependencyManager = dependencyManager;
         self.profileButton.tintColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     }
 }
@@ -105,7 +103,6 @@
     self.descriptionLabel.text = [VFollowersTextFormatter followerTextWithNumberOfFollowers:intValue];
     
     self.usernameLabel.text = self.user.name;
-    self.profileButton.user = self.user;
 }
 
 - (void)updateFollowingAnimated:(BOOL)animated

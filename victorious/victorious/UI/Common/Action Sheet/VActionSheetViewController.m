@@ -12,7 +12,6 @@
 #import "VThemeManager.h"
 
 // SubViews
-#import "VDefaultProfileButton.h"
 #import "CCHLinkTextView.h"
 #import "CCHLinkTextViewDelegate.h"
 
@@ -40,7 +39,7 @@
 @property (weak, nonatomic) IBOutlet UIView *blurringContainer;
 @property (weak, nonatomic) IBOutlet UITableView *actionItemsTableView;
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
-@property (weak, nonatomic) IBOutlet VDefaultProfileButton *profileButton;
+@property (weak, nonatomic) IBOutlet UIButton *profileButton;
 @property (weak, nonatomic) IBOutlet UIButton *avatarButton;
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *userCaptionLabel;
@@ -105,7 +104,6 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
     self.cancelButton.titleLabel.font = [[VThemeManager sharedThemeManager] themedFontForKey:kVButton2Font];
     
     self.titleTextView.dependencyManager = self.dependencyManager;
-    self.profileButton.dependencyManager = self.dependencyManager;
     [self reloadData];
 }
 
@@ -153,7 +151,6 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
     if (dependencyManager != nil)
     {
         [self.titleTextView setDependencyManager:dependencyManager];
-        self.profileButton.dependencyManager = dependencyManager;
     }
 }
 
@@ -218,7 +215,6 @@ static const UIEdgeInsets kSeparatorInsets = {0.0f, 20.0f, 0.0f, 20.0f};
                  blurredContainerHeight = blurredContainerHeight + 44.0f;
                  break;
              case VActionItemTypeUser:
-                 self.profileButton.user = actionItem.user;
                  self.usernameLabel.text = actionItem.title;
                  self.userCaptionLabel.text = [actionItem.detailText uppercaseStringWithLocale:[NSLocale currentLocale]];
                  self.userItem = actionItem;
