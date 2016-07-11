@@ -12,8 +12,6 @@ import UIKit
 /// of a sliding scaffold.
 class ListMenuViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, VCoachmarkDisplayer, VNavigationDestination, VBackgroundContainer {
     
-    private var persistentIndexPath: NSIndexPath?
-    
     // MARK: - Configuration
     
     private static let contentInset = UIEdgeInsets(top: 20.0, left: 0.0, bottom: 0.0, right: 0.0)
@@ -128,6 +126,8 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     
     // MARK: - UICollectionView Delegate
     
+    private var lastSelectedIndexPath: NSIndexPath?
+    
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         
         let listMenuSection = ListMenuSection(rawValue: indexPath.section)!
@@ -135,19 +135,22 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         switch listMenuSection {
             case .creator:
                 selectCreator(atIndex: indexPath.item)
+                
+                // Hack to get the selection to work. Otherwise, the previous state would not appear to be selected
+                // until touching the collectionView.
                 collectionView.performBatchUpdates(nil, completion: { [weak self] _ in
                     collectionView.selectItemAtIndexPath(
-                        self?.persistentIndexPath,
+                        self?.lastSelectedIndexPath,
                         animated: true,
                         scrollPosition: .None
                     )
                 })
             case .community:
                 selectCommunity(atIndex: indexPath.item)
-                persistentIndexPath = indexPath
+                lastSelectedIndexPath = indexPath
             case .hashtags:
                 selectHashtag(atIndex: indexPath.item)
-                persistentIndexPath = indexPath
+                lastSelectedIndexPath = indexPath
         }
     }
     
