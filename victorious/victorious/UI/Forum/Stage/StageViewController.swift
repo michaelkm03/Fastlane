@@ -54,6 +54,8 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         }
     }
     
+    /// Set by function call `setStageEnabled(_:, animated:). 
+    /// Determines whether the stage component is enabled to show up.
     private var enabled = true
     
     private lazy var newItemPill: TextOnColorButton? = { [weak self] in

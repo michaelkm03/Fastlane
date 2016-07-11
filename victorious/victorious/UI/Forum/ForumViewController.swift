@@ -68,7 +68,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             case .filterContent(let path):
                 // path will be nil for home feed, and non nil for filtered feed
                 composer?.setComposerVisible(path == nil, animated: true)
-                stage?.setStageVisible(path == nil, animated: true)
+                stage?.setStageEnabled(path == nil, animated: true)
             default:
                 break
         }
