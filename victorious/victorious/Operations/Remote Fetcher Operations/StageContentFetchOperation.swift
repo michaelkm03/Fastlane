@@ -44,6 +44,7 @@ class StageContentFetchOperation: RemoteFetcherOperation, RequestOperation {
             let startTime = refreshStageEvent.startTime,
             let serverTime = refreshStageEvent.serverTime,
             let operationStartTime = operationStartTime
+            where content.type == .video
         else {
             return content
         }
