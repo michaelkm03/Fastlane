@@ -113,6 +113,9 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
     }
     
     func addContent(stageContent: ContentModel) {
+        guard enabled else {
+            return
+        }
         queuedContent = stageContent
         // If the stage was not shown,
         // or if the current content was one that is not time based (video for now),
@@ -135,11 +138,22 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         updateStageHeight()
         queuedContent = nil
     }
-
+    
     func removeContent() {
         hideStage()
         hasShownStage = false
         queuedContent = nil
+    }
+    
+    func setStageEnabled(enabled: Bool, animated: Bool) {
+        self.enabled = enabled
+        
+        if enabled {
+            showStage(animated)
+        }
+        else {
+            hideStage(animated)
+        }
     }
     
     var overlayUIAlpha: CGFloat {
@@ -211,6 +225,36 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
             height += defaultStageHeight
         }
         delegate?.stage(self, wantsUpdateToContentHeight: height)
+    }
+    
+    private func hidePill() {
+        guard
+            let newItemPill = newItemPill
+            where newItemPill.hidden == false
+            else {
+                return
+        }
+        
+        UIView.animateWithDuration(0.5, animations: {
+            newItemPill.alpha = 0.0
+        }) { _ in
+            newItemPill.hidden = true
+        }
+    }
+    
+    private func showPill() {
+        guard
+            let newItemPill = newItemPill
+            where newItemPill.hidden == true
+            else {
+                return
+        }
+        
+        newItemPill.alpha = 0.0
+        newItemPill.hidden = false
+        UIView.animateWithDuration(0.5, animations: {
+            newItemPill.alpha = 1.0
+        })
     }
 }
 
