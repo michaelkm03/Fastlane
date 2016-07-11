@@ -25,7 +25,7 @@ protocol Stage: class, ForumEventReceiver {
     /// Removes the current content on the stage.
     func removeContent()
     
-    /// This will allow callers to change the opacity of overlays in the stage (caption/attribution/refresh pill)
+    /// This will allow callers to change the opacity of overlays in the stage (caption/attribution)
     var overlayUIAlpha: CGFloat { get set }
 }
 
