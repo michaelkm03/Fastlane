@@ -38,7 +38,6 @@ extension ContentCellTracker {
     }
     
     private func parametersForCellTrackingKey(trackingKey: CellTrackingKey, trackingURLStrings: [String]) -> [NSObject : AnyObject]? {
-        
         let parameters = [
             VTrackingKeyTimeStamp : NSDate(),
             VTrackingKeyUrls : trackingURLStrings
@@ -72,7 +71,6 @@ extension ContentCellTracker {
     }
     
     private func parametersForViewTrackingKey(trackingKey: ViewTrackingKey, trackingURLStrings: [String]) -> [NSObject : AnyObject]? {
-        
         let parameters = [
             VTrackingKeyTimeStamp : NSDate(),
             VTrackingKeyUrls : trackingURLStrings
