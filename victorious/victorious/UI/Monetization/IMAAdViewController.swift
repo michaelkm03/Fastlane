@@ -24,7 +24,7 @@ private let adIDMacro = "%%ADID%%"
     weak var delegate: AdLifecycleDelegate?
     private var hasBeenCalled = false
 
-    //MARK: - Initializers
+    // MARK: - Initializers
 
     init(player: VVideoPlayer,
         adTag: String,
@@ -56,7 +56,7 @@ private let adIDMacro = "%%ADID%%"
         return newAdTag
     }
 
-    //MARK: - VAdViewControllerType method overrides
+    // MARK: - VAdViewControllerType method overrides
 
     func startAdManager() {
         let adDisplayContainer = IMAAdDisplayContainer(adContainer: adView, companionSlots: nil)
@@ -64,7 +64,7 @@ private let adIDMacro = "%%ADID%%"
         adsLoader.requestAdsWithRequest(request)
     }
 
-    //MARK: - Notification handlers
+    // MARK: - Notification handlers
 
     func contentDidFinishPlaying(notification: NSNotification) {
         if let player = notification.object as? VVideoPlayer where player === self.player {
@@ -72,7 +72,7 @@ private let adIDMacro = "%%ADID%%"
         }
     }
 
-    //MARK: - IMAAdsLoaderDelegate methods
+    // MARK: - IMAAdsLoaderDelegate methods
 
     func adsLoader(loader: IMAAdsLoader!, adsLoadedWithData adsLoadedData: IMAAdsLoadedData!) {
         self.adsManager = adsLoadedData.adsManager
@@ -96,7 +96,7 @@ private let adIDMacro = "%%ADID%%"
         delegate?.adHadError(error)
     }
 
-    //MARK: - IMAAdsManagerDelegate methods
+    // MARK: - IMAAdsManagerDelegate methods
 
     func adsManager(adsManager: IMAAdsManager!, didReceiveAdEvent event: IMAAdEvent!) {
         switch event.type {
@@ -156,7 +156,7 @@ private let adIDMacro = "%%ADID%%"
         player.play()
     }
 
-    //MARK: - IMAWebOpenerDelegate
+    // MARK: - IMAWebOpenerDelegate
 
     func webOpenerDidCloseInAppBrowser(webOpener: NSObject) {
         delegate?.adDidFinish()

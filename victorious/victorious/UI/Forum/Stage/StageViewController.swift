@@ -191,6 +191,17 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         queuedContent = nil
     }
     
+    var overlayUIAlpha: CGFloat {
+        get {
+            return attributionBar.alpha
+        }
+        set {
+            captionBarViewController?.view.alpha = newValue
+            attributionBar.alpha = newValue
+            newItemPill?.alpha = newValue
+        }
+    }
+    
     private func hidePill() {
         guard
             let newItemPill = newItemPill
