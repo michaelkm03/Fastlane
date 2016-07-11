@@ -12,6 +12,8 @@ import UIKit
 /// of a sliding scaffold.
 class ListMenuViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, VCoachmarkDisplayer, VNavigationDestination, VBackgroundContainer {
     
+    private var persistentIndexPath: NSIndexPath?
+    
     // MARK: - Configuration
     
     private static let contentInset = UIEdgeInsets(top: 20.0, left: 0.0, bottom: 0.0, right: 0.0)
@@ -131,9 +133,21 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         let listMenuSection = ListMenuSection(rawValue: indexPath.section)!
         
         switch listMenuSection {
-            case .creator: selectCreator(atIndex: indexPath.item)
-            case .community: selectCommunity(atIndex: indexPath.item)
-            case .hashtags: selectHashtag(atIndex: indexPath.item)
+            case .creator:
+                selectCreator(atIndex: indexPath.item)
+                collectionView.performBatchUpdates(nil, completion: { [weak self] _ in
+                    collectionView.selectItemAtIndexPath(
+                        self?.persistentIndexPath,
+                        animated: true,
+                        scrollPosition: .None
+                    )
+                })
+            case .community:
+                selectCommunity(atIndex: indexPath.item)
+                persistentIndexPath = indexPath
+            case .hashtags:
+                selectHashtag(atIndex: indexPath.item)
+                persistentIndexPath = indexPath
         }
     }
     
@@ -145,7 +159,6 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
             case .community: validIndices = collectionViewDataSource.communityDataSource.visibleItems.indices
             case .hashtags: validIndices = collectionViewDataSource.hashtagDataSource.visibleItems.indices
         }
-        
         return validIndices ~= indexPath.row
     }
     
