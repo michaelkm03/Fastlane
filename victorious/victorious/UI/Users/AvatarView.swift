@@ -117,7 +117,9 @@ class AvatarView: UIView {
             kvoController.unobserveAll()
             
             if let newUser = user as? AnyObject {
-                kvoController.observe(newUser, keyPath: "previewAssets", options: []) { [weak self] _, _, _ in
+                let keyPaths = ["previewAssets", "name"]
+                
+                kvoController.observe(newUser, keyPaths: keyPaths, options: []) { [weak self] _, _, _ in
                     self?.setNeedsContentUpdate()
                 }
             }
@@ -146,11 +148,12 @@ class AvatarView: UIView {
         imageView.backgroundColor = user?.color
         
         if let imageURL = user?.previewImageURL(ofMinimumSize: bounds.size) {
-            initialsLabel.hidden = true
-            
             imageView.sd_setImageWithURL(imageURL) { [weak self] _, error, _, _ in
                 if error != nil {
                     self?.showInitials()
+                }
+                else {
+                    self?.initialsLabel.hidden = true
                 }
             }
         }

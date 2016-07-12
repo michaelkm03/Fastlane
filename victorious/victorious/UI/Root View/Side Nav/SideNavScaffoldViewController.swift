@@ -200,6 +200,16 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
         return [.Portrait]
     }
     
+    // MARK: - Layout
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        // Shouldn't be necessary, but UIBarButtonItem doesn't trigger layoutSubviews properly otherwise.
+        avatarView?.setNeedsLayout()
+        avatarView?.layoutIfNeeded()
+    }
+    
     // MARK: - Scaffold
     
     let coachmarkManager: VCoachmarkManager
