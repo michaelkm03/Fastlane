@@ -44,10 +44,36 @@ class ContentPublisher {
     
     /// Queues `content` for publishing.
     func publish(content: ContentModel) {
-        print("publish!")
-        // TODO: Fix this.
-//        pendingContent.append(ChatFeedContent(content))
-        createPersistentContent(content) { _ in }
+        pendingContent.append(ChatFeedContent(content, creationState: .waiting))
+        
+        if pendingContent.count == 1 {
+            publishNextContent()
+        }
+    }
+    
+    private func publishNextContent() {
+        guard let content = getNextContent() else {
+            return
+        }
+        
+        createPersistentContent(content) { [weak self] error in
+            if error != nil {
+                // FUTURE: Handle failure.
+            }
+            else {
+                self?.publishNextContent()
+            }
+        }
+    }
+    
+    /// Returns the next content in the queue that's waiting to be sent and sets its `creationState` to `sending`.
+    private func getNextContent() -> ContentModel? {
+        for chatFeedContent in pendingContent where chatFeedContent.creationState == .waiting {
+            chatFeedContent.creationState = .sending
+            return chatFeedContent.content
+        }
+        
+        return nil
     }
     
     /// Transforms the chatMessage into a data type that can be persisted by the backend

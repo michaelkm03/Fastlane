@@ -84,33 +84,11 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     }
     
     private func publish(content: ContentModel) {
-//        guard let networkResources = dependencyManager.networkResources else {
-//            let logMessage = "Didn't find a valid network resources dependency inside the forum!"
-//            assertionFailure(logMessage)
-//            v_log(logMessage)
-//            return
-//        }
-        
         guard let publisher = (chatFeed?.chatInterfaceDataSource as? ChatFeedDataSource)?.publisher else {
             return
         }
         
         publisher.publish(content)
-        
-//        createPersistentContent(content, networkResourcesDependency: networkResources) { [weak self] error in
-//            
-//            if let validError = error,
-//                let strongSelf = self {
-//                
-//                if let persistenceError = validError as? PersistentContentCreatorError where
-//                    persistenceError.isInvalidNetworkResourcesError {
-//                    //Encountered an error where the network resources were inadequate. This does NOT
-//                    //represent an error state that should be messaged to the user.
-//                } else {
-//                    strongSelf.v_showDefaultErrorAlert()
-//                }
-//            }
-//        }
     }
 
     // MARK: - ForumEventSender

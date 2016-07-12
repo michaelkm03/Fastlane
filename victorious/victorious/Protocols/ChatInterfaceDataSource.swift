@@ -11,6 +11,7 @@ import VictoriousIOSSDK
 
 /// Conformers are collection view data sources for any collection views with a chat-like interface
 protocol ChatInterfaceDataSource: UICollectionViewDataSource {
+    /// The dependency manager associated with the data source.
     var dependencyManager: VDependencyManager { get }
     
     /// The number of items displayed in the chat interface.
@@ -19,6 +20,7 @@ protocol ChatInterfaceDataSource: UICollectionViewDataSource {
     /// Returns the content at the given `index`.
     func content(at index: Int) -> ChatFeedContent
     
+    /// Registers the appropriate collection view cells on `collectionView`.
     func registerCells(for collectionView: UICollectionView)
     
     /// Calculated desired cell size for a given indexPath. 

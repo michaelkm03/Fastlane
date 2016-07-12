@@ -25,7 +25,8 @@ class ChatFeedContent {
     ///
     var creationState: ContentCreationState?
     
-    init(_ content: ContentModel) {
+    init(_ content: ContentModel, creationState: ContentCreationState? = nil) {
         self.content = content
+        self.creationState = creationState
     }
 }

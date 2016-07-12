@@ -51,7 +51,8 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     }
     
     var itemCount: Int {
-        return visibleItems.count + publisher.pendingContent.count
+        // FUTURE: We'll add the pending content count once the queueing implementation is finished.
+        return visibleItems.count // + publisher.pendingContent.count
     }
     
     func content(at index: Int) -> ChatFeedContent {
