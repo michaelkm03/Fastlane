@@ -52,25 +52,26 @@ class ContentPublisher {
     }
     
     private func publishNextContent() {
-        guard let content = getNextContent() else {
+        guard let chatFeedContent = getNextContent() else {
             return
         }
         
-        createPersistentContent(content) { [weak self] error in
+        createPersistentContent(chatFeedContent.content) { [weak self] error in
             if error != nil {
                 // FUTURE: Handle failure.
             }
             else {
+                chatFeedContent.creationState = .sent
                 self?.publishNextContent()
             }
         }
     }
     
     /// Returns the next content in the queue that's waiting to be sent and sets its `creationState` to `sending`.
-    private func getNextContent() -> ContentModel? {
+    private func getNextContent() -> ChatFeedContent? {
         for chatFeedContent in pendingContent where chatFeedContent.creationState == .waiting {
             chatFeedContent.creationState = .sending
-            return chatFeedContent.content
+            return chatFeedContent
         }
         
         return nil
