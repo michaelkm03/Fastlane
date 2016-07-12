@@ -260,6 +260,8 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         
         videoCoordinator?.loadVideo()
         videoCoordinator?.delegate = self
+        
+        setNeedsLayout()
     }
     
     private func tearDownVideoPlayer() {
@@ -345,10 +347,6 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         previewImageView.image = downloadedPreviewImage
         downloadedPreviewImage = nil
         showContent(animated: animatesBetweenContent) { [weak self] _ in
-            // Need to set layout manually,
-            // otherwise video doesn't appear on first load
-            self?.setNeedsLayout()
-            self?.layoutIfNeeded()
             self?.playVideo()
         }
         
