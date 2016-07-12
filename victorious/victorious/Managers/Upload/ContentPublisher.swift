@@ -77,8 +77,7 @@ class ContentPublisher {
         return nil
     }
     
-    /// Transforms the chatMessage into a data type that can be persisted by the backend
-    /// and uploads it.
+    /// Uploads `content` to the server.
     ///
     /// - Parameter content: The content that should be persisted.
     /// - Parameter completion: The block to call after upload has completed or failed. Always called.
