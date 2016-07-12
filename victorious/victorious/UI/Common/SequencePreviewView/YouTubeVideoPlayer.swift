@@ -9,15 +9,11 @@
 import UIKit
 
 class YouTubeVideoPlayer: NSObject, VVideoPlayer, YTPlayerViewDelegate {
-    
-    private var currentItem: VVideoPlayerItem?
 
     private let playerView = YTPlayerView()
     
     private(set) var isPlaying: Bool = false
-    
-    private var isReadyToPlay: Bool = false
-    
+
     private func updateMute() {
         if muted {
             playerView.mute()
@@ -39,8 +35,6 @@ class YouTubeVideoPlayer: NSObject, VVideoPlayer, YTPlayerViewDelegate {
         delegate?.videoPlayerDidStartBuffering?(self)
         playerView.loadWithVideoId(videoId, playerVars: playerVars)
         playerView.playVideo()
-        
-        isReadyToPlay = true
     }
     
     private var playerVars: [NSObject: AnyObject] {
@@ -92,10 +86,9 @@ class YouTubeVideoPlayer: NSObject, VVideoPlayer, YTPlayerViewDelegate {
     }
     
     func reset() {
-        isReadyToPlay = false
         playerView.clearVideo()
     }
-    
+
     func play() {
         let wasPlaying = isPlaying
         if !wasPlaying {

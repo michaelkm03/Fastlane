@@ -22,7 +22,6 @@ static NSString * const kPlayerItemIsReadyToPlay = @"status";
 
 @property (nonatomic, strong, nullable) AVPlayer *player;
 @property (nonatomic, strong, nullable) AVPlayerLayer *playerLayer;
-@property (nonatomic, strong, nullable) AVPlayerItem *newestPlayerItem;
 @property (nonatomic, strong) VVideoUtils *videoUtils;
 @property (nonatomic, strong, nullable) id timeObserver;
 @property (nonatomic, assign) BOOL loop;
@@ -109,7 +108,6 @@ static NSString * const kPlayerItemIsReadyToPlay = @"status";
     self.player.actionAtItemEnd = self.loop ? AVPlayerActionAtItemEndNone : AVPlayerActionAtItemEndPause;
     self.player.muted = self.muted;
     
-    self.newestPlayerItem = nil;
     [self.videoUtils createPlayerItemWithURL:self.itemURL
                                         loop:self.loop
                                readyCallback:^(AVPlayerItem *playerItem, NSURL *composedItemURL, CMTime duration)
