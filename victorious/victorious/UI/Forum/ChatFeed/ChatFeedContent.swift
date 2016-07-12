@@ -9,7 +9,7 @@
 import Foundation
 
 /// A wrapper around a `ContentModel` that contains extra information specific to the chat feed.
-class ChatFeedContent {
+struct ChatFeedContent {
     /// The content model.
     let content: ContentModel
     
