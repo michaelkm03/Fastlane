@@ -56,6 +56,7 @@ class VTracking: NSManagedObject, TrackingModel {
     //// This object is a dictionary of strings, each corresponding to a raw value for CellTrackingKey or ViewTrackingKey, keyed to values that are arrays of strings representing urls that should be hit for the provided tracking key.
     //@NSManaged var trackingMap: NSObject?
     //
+    @NSManaged var id: String
     @NSManaged var cellClick: NSObject?
     @NSManaged var cellView: NSObject?
     @NSManaged var cellLoad: NSObject?
