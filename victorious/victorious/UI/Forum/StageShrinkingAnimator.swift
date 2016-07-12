@@ -160,25 +160,18 @@ class StageShrinkingAnimator: NSObject {
         }
         
         let translation = gesture.translationInView(view)
-        var percentage = max(min(fabs(translation.y) / Constants.dragMagnitude, 1), 0)
-        percentage = translation.y < 0 ? percentage : 1 - percentage
+        let percentage = percentThrough(forTranslation: gesture.translationInView(view))
+        print("gesture: \(translation), percentage: \(percentage)")
         switch gesture.state {
             case .Changed:
-                // We only care about going a certain direction from either expanded or shrunken
-                guard (stageState == .expanded && translation.y < 0 ) || (stageState == .shrunken && translation.y > 0) else {
-                    return
-                }
-                applyInterploatedValues(withPercentage: percentage)
+                applyInterploatedValues(withPercentage: max(min(1, percentage), 0))
             case .Ended:
                 animateInProgressSnap(withAnimations: {
                     if percentage > 0.5 {
                         self.goTo(self.stageState == .expanded ? .shrunken : .expanded)
                     }
-                    else if gesture.velocityInView(view).y < 0 {
-                        self.shrinkStage()
-                    }
                     else {
-                        self.enlargeStage()
+                        self.goTo(self.stageState)
                     }
                 })
             case .Possible, .Began, .Cancelled, .Failed:
@@ -227,11 +220,11 @@ class StageShrinkingAnimator: NSObject {
     }
     
     private func applyInterploatedValues(withPercentage percentage: CGFloat) {
-        stageContainer.transform = affineTransformFor(percentage)
-        stageViewControllerContainer.layer.cornerRadius = Constants.cornerRadius * percentage * (1 / scaleFactorFor(percentage))
-        stageViewControllerContainer.layer.borderColor = interpolatedBorderColorFor(percentThrough: percentage)
-        
-        interpolateAlongside?(percentage: percentage)
+        let modifiedPercentage = stageState == .shrunken ? 1 - percentage : percentage
+        stageContainer.transform = affineTransformFor(modifiedPercentage)
+        stageViewControllerContainer.layer.cornerRadius = Constants.cornerRadius * modifiedPercentage * (1 / scaleFactorFor(modifiedPercentage))
+        stageViewControllerContainer.layer.borderColor = interpolatedBorderColorFor(percentThrough: modifiedPercentage)
+        interpolateAlongside?(percentage: modifiedPercentage)
     }
     
     private func animateInProgressSnap(withAnimations animations:() -> Void) {
@@ -249,11 +242,11 @@ class StageShrinkingAnimator: NSObject {
     // MARK: - Math and Interpolation functions
     
     private func percentThrough(forTranslation translation: CGPoint) -> CGFloat {
-        var adjustedTranslation = translation
-        if adjustedTranslation.y < 0 {
-            adjustedTranslation.y = min(adjustedTranslation.y + Constants.downDragIgnoredMagnitude, 0)
+        var percentThrough = translation.y / Constants.dragMagnitude
+        if stageState == .expanded {
+            percentThrough = -percentThrough
         }
-        return adjustedTranslation.y / Constants.dragMagnitude
+        return percentThrough
     }
 
     private func interpolatedBorderColorFor(percentThrough percent: CGFloat) -> CGColor {
