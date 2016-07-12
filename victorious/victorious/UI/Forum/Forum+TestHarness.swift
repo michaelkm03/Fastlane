@@ -36,7 +36,7 @@ extension ForumViewController {
     private func randPreviewImage() -> ImageAsset {
         let rnd = Int(arc4random() % UInt32(previewImageURLs.count))
         let string = previewImageURLs[rnd]
-        return ImageAsset(mediaMetaData: MediaMetaData(url: NSURL(string: string)!, size: CGSizeZero))
+        return ImageAsset(mediaMetaData: MediaMetaData(url: NSURL(string: string)!, size: CGSize(width: 16 , height: 9)))
     }
     
     private func randName() -> String {
@@ -52,23 +52,27 @@ extension ForumViewController {
     
     func debug_createMessages() {
         let text: String?
-        let asset: ContentMediaAsset?
+        let previewImage: ImageAsset?
+        var type = ContentType.text
         
         if arc4random() % 10 > 8 {
             text = randomText()
-            asset = randAsset()
+            previewImage = randPreviewImage()
+            type = .image
         } else if arc4random() % 10 > 2 {
             text = randomText()
-            asset = nil
+            previewImage = nil
         } else {
             text = nil
-            asset = randAsset()
+            type = .image
+            previewImage = randPreviewImage()
         }
         
         let content = Content(
             createdAt: NSDate(),
             text: (text == nil) ? nil : "\(totalCount) :: \(text!)",
-            assets: [asset].flatMap { $0 },
+            previewImages: [previewImage].flatMap { $0 },
+            type: type, 
             author: User(
                 id: 1000 + Int(arc4random() % 9999),
                 name: randName(),

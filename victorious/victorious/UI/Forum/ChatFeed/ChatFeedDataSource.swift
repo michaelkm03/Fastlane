@@ -13,6 +13,7 @@ protocol ChatFeedDataSourceDelegate: class {
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didLoadItems newItems: [ChatFeedContent], loadingType: PaginatedLoadingType)
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didStashItems stashedItems: [ChatFeedContent])
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didUnstashItems unstashedItems: [ChatFeedContent])
+    func widthForChatFeedItems() -> CGFloat 
 }
 
 class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatInterfaceDataSource {
@@ -53,7 +54,7 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     func receive(event: ForumEvent) {
         switch event {
             case .appendContent(let newItems):
-                let newItems = newItems.map { ChatFeedContent($0) }
+                let newItems = createNewItemsArray(newItems)
                 if stashingEnabled {
                     stashedItems.appendContentsOf(newItems)
                     delegate?.chatFeedDataSource(self, didStashItems: newItems)
@@ -63,12 +64,12 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
                 }
             
             case .prependContent(let newItems):
-                let newItems = newItems.map { ChatFeedContent($0) }
+               let newItems = createNewItemsArray(newItems)
                 visibleItems = newItems + visibleItems
                 delegate?.chatFeedDataSource(self, didLoadItems: newItems, loadingType: .older)
             
             case .replaceContent(let newItems):
-                let newItems = newItems.map { ChatFeedContent($0) }
+                let newItems = createNewItemsArray(newItems)
                 visibleItems = newItems
                 stashedItems = []
                 delegate?.chatFeedDataSource(self, didLoadItems: newItems, loadingType: .refresh)
@@ -76,6 +77,19 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
             default:
                 break
         }
+    }
+    
+    // MARK: - Internal helpers
+    
+    private func createNewItemsArray(contents: [ContentModel]) -> [ChatFeedContent] {
+        return contents.filter({ (content) -> Bool in
+            if content.previewImages.count == 0 && content.text == nil {
+                return false
+            }
+            return true
+        }).map({
+            return ChatFeedContent($0)
+        })
     }
     
     // MARK: - ForumEventSender
