@@ -21,7 +21,7 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     
     init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
-        self.publisher = ContentPublisher(dependencyManager: dependencyManager)
+        self.publisher = ContentPublisher(dependencyManager: dependencyManager.networkResources ?? dependencyManager)
         super.init()
     }
     
