@@ -28,11 +28,14 @@ public enum ViewTrackingKey: String {
 }
 
 public protocol TrackingModel {
+    var id: String { get }
     func trackingURLsForKey(key: CellTrackingKey) -> [String]?
     func trackingURLsForKey(key: ViewTrackingKey) -> [String]?
 }
 
 public struct Tracking: TrackingModel {
+    public let id: String
+    
     private let trackingMap: [String : [String]]?
     
     public func trackingURLsForKey(key: CellTrackingKey) -> [String]? {
@@ -47,14 +50,25 @@ public struct Tracking: TrackingModel {
 extension Tracking {
     init(json: JSON) {
         var map = [String : [String]]()
+        var id = ""
         json.dictionary?.forEach() { key, value in
             if
                 CellTrackingKey(rawValue: key) != nil ||
                 ViewTrackingKey(rawValue: key) != nil
             {
-                map[key] = value.arrayValue.flatMap { $0.string }
+                let urlStrings = value.arrayValue.flatMap { $0.string }
+                map[key] = urlStrings
+                if id != "" {
+                    id += ","
+                }
+                // Create id by appending hashes of strings instead of full strings to save space
+                id += "\(key.hash)"
+                for urlString in urlStrings {
+                    id += "\(urlString.hash)"
+                }
             }
         }
+        self.id = id
         trackingMap = map
     }
 }
