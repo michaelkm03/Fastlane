@@ -13,11 +13,16 @@ private let topBottomSectionInset = CGFloat(3)
 private let interItemSpacing = CGFloat(3)
 private let cellsPerRow = 3
 
-class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
+class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, ContentCellTracker {
     private let gridStreamController: GridStreamViewController<CloseUpView>
     private var dependencyManager: VDependencyManager
-    private var content: ContentModel?
+    private var content: ContentModel? {
+        didSet {
+            trackContentView()
+        }
+    }
     private let contentID: String
+    private var firstPresentation = true
     
     private lazy var shareButton: UIBarButtonItem = {
         return UIBarButtonItem(
@@ -85,12 +90,26 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        dependencyManager.trackViewWillAppear(self, withParameters: [ VTrackingKeyContentId : contentID ])
+        dependencyManager.trackViewWillAppear(self)
+        trackContentView()
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         dependencyManager.trackViewWillDisappear(self)
+    }
+    
+    // MARK: - ContentCellTracker
+    
+    var sessionParameters: [NSObject : AnyObject] {
+        return [ VTrackingKeyContentId : contentID ]
+    }
+    
+    private func trackContentView() {
+        if let content = content where firstPresentation {
+            trackView(.viewStart, showingContent: content)
+            firstPresentation = false
+        }
     }
     
     private func updateHeader() {

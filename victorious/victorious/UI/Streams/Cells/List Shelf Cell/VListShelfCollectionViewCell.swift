@@ -143,7 +143,7 @@ class VListShelfCollectionViewCell: VBaseCollectionViewCell {
         return CGSizeMake(width, height)
     }
     
-    //MARK: - View management
+    // MARK: - View management
     
     override func awakeFromNib() {
         super.awakeFromNib()

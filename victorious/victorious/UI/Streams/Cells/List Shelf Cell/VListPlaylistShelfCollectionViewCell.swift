@@ -24,7 +24,7 @@ class VListPlaylistShelfCollectionViewCell: VListShelfCollectionViewCell {
         }
     }
     
-    //MARK: -View management
+    // MARK: -View management
 
     override class func desiredSize(collectionViewBounds: CGRect, shelf: ListShelf, dependencyManager: VDependencyManager) -> CGSize {
         var size = super.desiredSize(collectionViewBounds, shelf: shelf, dependencyManager: dependencyManager)

@@ -15,6 +15,14 @@ protocol AttributionBarDelegate: class {
 /// An attribution bar that displays author information of a piece of content
 class AttributionBar: UIView {
     
+    // MARK: - Initializing
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapOnUser))
+        avatarView.addGestureRecognizer(tapRecognizer)
+    }
+    
     // MARK: - Configuration
     
     var dependencyManager: VDependencyManager?
@@ -49,15 +57,13 @@ class AttributionBar: UIView {
     
     private func updateComponents(with user: UserModel) {
         displayingUser = user
+        avatarView.user = user
         userNameButton.setTitle(user.name, forState: .Normal)
-        if let profileImageURL = user.previewImageURL(ofMinimumSize: profileButton.bounds.size) {
-            profileButton?.setProfileImageURL(profileImageURL, forState: .Normal)
-        }
     }
     
     // MARK: - Outlets and Actions
     
-    @IBOutlet private var profileButton: VDefaultProfileButton!
+    @IBOutlet private var avatarView: AvatarView!
     @IBOutlet private var userNameButton: UIButton! {
         didSet {
             userNameButton.setTitleColor(dependencyManager?.userNameLabelTextColor, forState: .Normal)
@@ -65,7 +71,7 @@ class AttributionBar: UIView {
         }
     }
     
-    @IBAction private func didTapOnUser() {
+    @IBAction private dynamic func didTapOnUser() {
         delegate?.didTapOnUser(displayingUser)
     }
 }

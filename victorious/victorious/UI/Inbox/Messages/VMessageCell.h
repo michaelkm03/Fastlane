@@ -10,7 +10,7 @@
 #import "VFocusable.h"
 #import "VCellWithProfileDelegate.h"
 
-@class VDefaultProfileImageView, VMessage;
+@class VMessage;
 
 extern NSString * const kVMessageCellNibName;
 

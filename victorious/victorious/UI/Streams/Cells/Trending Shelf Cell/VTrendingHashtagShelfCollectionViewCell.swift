@@ -47,7 +47,7 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
     
     private static let numberFormatter = VLargeNumberFormatter()
     
-    //MARK: - Setters
+    // MARK: - Setters
     
     override var shelf: Shelf? {
         didSet {
@@ -91,7 +91,7 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
         }
     }
     
-    //MARK: - Getters
+    // MARK: - Getters
     
     private class func getHashtagText(shelf: HashtagShelf) -> String {
         return "#" + shelf.hashtagTitle
@@ -110,7 +110,7 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
         }
     }
     
-    //MARK: - View management
+    // MARK: - View management
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -199,7 +199,7 @@ class VTrendingHashtagShelfCollectionViewCell: VTrendingShelfCollectionViewCell 
         return CGSizeMake(bounds.width, height)
     }
     
-    //MARK: - Interaction response
+    // MARK: - Interaction response
     
     @IBAction private func tappedFollowControl(followControl: VFollowControl) {
         guard let shelf = shelf as? HashtagShelf else {

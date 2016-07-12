@@ -16,29 +16,11 @@
                         <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <containerView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dCr-Dr-Gbg" userLabel="ChatFeed Container" customClass="VPassthroughContainerView">
+                            <containerView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dCr-Dr-Gbg" userLabel="ChatFeed Container">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <segue destination="prN-jb-br1" kind="embed" id="Otl-YM-ShP"/>
-                                </connections>
-                            </containerView>
-                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VnG-XF-1UH">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="222"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="Jkv-m2-mJu">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="222"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                </view>
-                                <blurEffect style="light"/>
-                            </visualEffectView>
-                            <containerView opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n69-dn-iF9" userLabel="Stage Container" customClass="VPassthroughContainerView">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="222"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="222" id="Tc7-jJ-F3b"/>
-                                </constraints>
-                                <connections>
-                                    <segue destination="Znu-5d-S6d" kind="embed" id="A38-Us-fyN"/>
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Ba-Yb-hke" userLabel="Composer Container" customClass="VPassthroughContainerView">
@@ -48,23 +30,50 @@
                                     <segue destination="0Nu-Zq-HvW" kind="embed" id="5Wh-Ml-zHo"/>
                                 </connections>
                             </containerView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lV3-cv-6cA">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="128"/>
+                                <subviews>
+                                    <containerView opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n69-dn-iF9" userLabel="Stage ViewController Container" customClass="VPassthroughContainerView">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="128"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <segue destination="Znu-5d-S6d" kind="embed" id="A38-Us-fyN"/>
+                                        </connections>
+                                    </containerView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dRb-kS-pyb" userLabel="Touch View">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="128"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <gestureRecognizers/>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstItem="n69-dn-iF9" firstAttribute="top" secondItem="lV3-cv-6cA" secondAttribute="top" id="0Tz-Sb-nE9"/>
+                                    <constraint firstAttribute="trailing" secondItem="dRb-kS-pyb" secondAttribute="trailing" id="7eX-Wd-jh0"/>
+                                    <constraint firstAttribute="trailing" secondItem="n69-dn-iF9" secondAttribute="trailing" id="BGl-f0-ukG"/>
+                                    <constraint firstAttribute="bottom" secondItem="dRb-kS-pyb" secondAttribute="bottom" id="Ivx-xZ-xH3"/>
+                                    <constraint firstItem="dRb-kS-pyb" firstAttribute="top" secondItem="lV3-cv-6cA" secondAttribute="top" id="ZgF-wy-Kcm"/>
+                                    <constraint firstAttribute="bottom" secondItem="n69-dn-iF9" secondAttribute="bottom" id="nIb-dD-Amr"/>
+                                    <constraint firstItem="dRb-kS-pyb" firstAttribute="leading" secondItem="lV3-cv-6cA" secondAttribute="leading" id="upR-ID-kON"/>
+                                    <constraint firstItem="n69-dn-iF9" firstAttribute="leading" secondItem="lV3-cv-6cA" secondAttribute="leading" id="vko-8Y-YYB"/>
+                                    <constraint firstAttribute="height" constant="128" id="wiZ-Na-Sw7"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="VnG-XF-1UH" firstAttribute="top" secondItem="n69-dn-iF9" secondAttribute="top" id="0ub-S5-pm0"/>
-                            <constraint firstItem="VnG-XF-1UH" firstAttribute="trailing" secondItem="n69-dn-iF9" secondAttribute="trailing" id="3As-vz-4Kg"/>
+                            <constraint firstItem="lV3-cv-6cA" firstAttribute="leading" secondItem="BWd-6Y-0dE" secondAttribute="leading" id="8lz-VI-S7W"/>
                             <constraint firstItem="dCr-Dr-Gbg" firstAttribute="top" secondItem="fFi-e4-tGY" secondAttribute="bottom" id="BZ2-du-KRo"/>
-                            <constraint firstItem="n69-dn-iF9" firstAttribute="leading" secondItem="BWd-6Y-0dE" secondAttribute="leading" id="Bxu-bP-hLS"/>
+                            <constraint firstItem="lV3-cv-6cA" firstAttribute="top" secondItem="BWd-6Y-0dE" secondAttribute="top" id="Bl3-FV-C07"/>
                             <constraint firstItem="3Ba-Yb-hke" firstAttribute="top" secondItem="fFi-e4-tGY" secondAttribute="bottom" id="C44-0J-vef"/>
                             <constraint firstItem="3Ba-Yb-hke" firstAttribute="leading" secondItem="BWd-6Y-0dE" secondAttribute="leading" id="EEf-Ia-4f1"/>
+                            <constraint firstAttribute="trailing" secondItem="lV3-cv-6cA" secondAttribute="trailing" id="Oat-Vf-wUR"/>
                             <constraint firstAttribute="trailing" secondItem="3Ba-Yb-hke" secondAttribute="trailing" id="PeR-kp-NBy"/>
                             <constraint firstItem="dCr-Dr-Gbg" firstAttribute="leading" secondItem="BWd-6Y-0dE" secondAttribute="leading" id="Zzy-xi-Pl3"/>
-                            <constraint firstItem="VnG-XF-1UH" firstAttribute="leading" secondItem="n69-dn-iF9" secondAttribute="leading" id="cPr-hE-SH1"/>
                             <constraint firstAttribute="trailing" secondItem="dCr-Dr-Gbg" secondAttribute="trailing" id="dEJ-UD-VhO"/>
-                            <constraint firstItem="VnG-XF-1UH" firstAttribute="bottom" secondItem="n69-dn-iF9" secondAttribute="bottom" id="g9S-0f-0UA"/>
                             <constraint firstItem="xTF-ZG-in5" firstAttribute="top" secondItem="3Ba-Yb-hke" secondAttribute="bottom" id="oJ6-PG-gRc"/>
-                            <constraint firstAttribute="trailing" secondItem="n69-dn-iF9" secondAttribute="trailing" id="sNe-r4-gdn"/>
-                            <constraint firstItem="n69-dn-iF9" firstAttribute="top" secondItem="fFi-e4-tGY" secondAttribute="bottom" id="upL-BX-9P1"/>
                             <constraint firstItem="xTF-ZG-in5" firstAttribute="top" secondItem="dCr-Dr-Gbg" secondAttribute="bottom" id="wuG-vm-xz6"/>
                         </constraints>
                     </view>
@@ -72,8 +81,11 @@
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <connections>
-                        <outlet property="stageContainer" destination="n69-dn-iF9" id="aZJ-pm-SPX"/>
-                        <outlet property="stageContainerHeight" destination="Tc7-jJ-F3b" id="DJR-m2-imO"/>
+                        <outlet property="chatFeedContainer" destination="dCr-Dr-Gbg" id="2Wr-CI-o9t"/>
+                        <outlet property="stageContainer" destination="lV3-cv-6cA" id="vs7-xT-1Cl"/>
+                        <outlet property="stageContainerHeight" destination="wiZ-Na-Sw7" id="aHc-9D-vbs"/>
+                        <outlet property="stageTouchView" destination="dRb-kS-pyb" id="Uhu-KN-gZO"/>
+                        <outlet property="stageViewControllerContainer" destination="n69-dn-iF9" id="sNs-dV-8Kc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7JE-m9-1fb" userLabel="First Responder" sceneMemberID="firstResponder"/>

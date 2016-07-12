@@ -21,7 +21,7 @@ class TrophyCaseViewController: UIViewController, UICollectionViewDelegate, VBac
         }
     }
     
-    //MARK: - Factory Functions
+    // MARK: - Factory Functions
     
     class func newWithDependencyManager(dependencyManager: VDependencyManager) -> TrophyCaseViewController {
         let trophyCaseViewController = TrophyCaseViewController.v_fromStoryboard() as TrophyCaseViewController
@@ -31,7 +31,7 @@ class TrophyCaseViewController: UIViewController, UICollectionViewDelegate, VBac
         return trophyCaseViewController
     }
     
-    //MARK: - View Controller Life Cycle
+    // MARK: - View Controller Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,7 +52,7 @@ class TrophyCaseViewController: UIViewController, UICollectionViewDelegate, VBac
         return .Portrait
     }
     
-    //MARK: - UICollectionViewDelegate
+    // MARK: - UICollectionViewDelegate
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         collectionView.deselectItemAtIndexPath(indexPath, animated: false)
@@ -70,13 +70,13 @@ class TrophyCaseViewController: UIViewController, UICollectionViewDelegate, VBac
         InterstitialManager.sharedInstance.receive(alert)
     }
     
-    //MARK: - Background Container
+    // MARK: - Background Container
     
     func backgroundContainerView() -> UIView {
         return self.view
     }
     
-    //MARK: - Private Functions
+    // MARK: - Private Functions
     
     private func configureUIComponents() {
         extendedLayoutIncludesOpaqueBars = true

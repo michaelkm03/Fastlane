@@ -89,7 +89,6 @@
 #import "VCreateSheetViewController.h"
 #import "VCreationFlowPresenter.h"
 #import "VDataCache.h"
-#import "VDefaultProfileButton.h"
 #import "VDependencyManager+NavigationBar.h"
 #import "VDependencyManager+VAccessoryScreens.h"
 #import "VDependencyManager+VBackgroundContainer.h"

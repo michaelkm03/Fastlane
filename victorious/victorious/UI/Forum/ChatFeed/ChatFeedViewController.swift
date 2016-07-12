@@ -201,6 +201,16 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         }
         
         focusHelper.updateFocus()
+        
+        delegate?.chatFeed(self, didScroll: scrollView)
+    }
+    
+    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+        delegate?.chatFeed(self, willBeginDragging: scrollView)
+    }
+    
+    func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        delegate?.chatFeed(self, willEndDragging: scrollView, withVelocity: velocity)
     }
     
     // MARK: - Timestamp update timer

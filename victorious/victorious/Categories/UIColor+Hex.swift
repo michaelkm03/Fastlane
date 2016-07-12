@@ -39,7 +39,7 @@ extension UIColor {
             return nil
         }
         
-        return CGFloat(value) / 254.0
+        return CGFloat(value) / 255.0
     }
     
     var rgbHexString: String {
