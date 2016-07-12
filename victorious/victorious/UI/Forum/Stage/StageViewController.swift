@@ -50,7 +50,6 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         }
     }
     
-    private var hasShownStage: Bool = false
     private var queuedContent: ContentModel?
     private var stageDataSource: StageDataSource?
     private var enabled = true
@@ -74,6 +73,7 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         
         captionBarViewController = childViewControllers.flatMap({ $0 as? CaptionBarViewController }).first
         mediaContentView.dependencyManager = dependencyManager
+        mediaContentView.allowsVideoControls = false
     }
     
     private func setupDataSource(dependencyManager: VDependencyManager) -> StageDataSource {
@@ -84,14 +84,12 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        mediaContentView.allowsVideoControls = false
-        showStage(animated)
+        mediaContentView.videoCoordinator?.playVideo()
     }
 
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        
-        hideStage(animated)
+        mediaContentView.videoCoordinator?.pauseVideo()
     }
     
     @objc private func didTapOnContent() {
@@ -121,20 +119,19 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         // If the stage was not shown,
         // or if the current content was one that is not time based (video for now),
         // we will immediately move to the next content.
-        hasShownStage = true
-        updateStageHeight()
-        nextContent()
+        nextContent(animated: false)
+        showStage(animated: true)
     }
     
-    func nextContent() {
+    func nextContent(animated animated: Bool = true) {
         guard let stageContent = queuedContent else {
             return
         }
         
+        attributionBar.configure(with: stageContent.author, animated: animated)
+        
         mediaContentView.videoCoordinator?.pauseVideo()
         mediaContentView.content = stageContent
-        
-        attributionBar.configure(with: stageContent.author)
         
         updateStageHeight()
         queuedContent = nil
@@ -142,7 +139,6 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
     
     func removeContent() {
         hideStage()
-        hasShownStage = false
         queuedContent = nil
     }
     
@@ -150,10 +146,10 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         self.enabled = enabled
         
         if enabled {
-            showStage(animated)
+            showStage(animated: animated)
         }
         else {
-            hideStage(animated)
+            hideStage(animated: animated)
         }
     }
     
@@ -175,7 +171,7 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
 
     // MARK: - Show/Hide Stage
     
-    private func hideStage(animated: Bool = false) {
+    private func hideStage(animated animated: Bool = false) {
         mediaContentView.hideContent(animated: animated)
         visible = false
         UIView.animateWithDuration(animated ? Constants.contentSizeAnimationDuration : 0) {
@@ -183,7 +179,7 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         }
     }
     
-    private func showStage(animated: Bool = false) {
+    private func showStage(animated animated: Bool = false) {
         mediaContentView.showContent(animated: animated)
         visible = true
         UIView.animateWithDuration(animated ? Constants.contentSizeAnimationDuration : 0) {
