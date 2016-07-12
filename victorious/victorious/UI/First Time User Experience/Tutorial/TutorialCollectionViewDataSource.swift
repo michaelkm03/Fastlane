@@ -51,4 +51,8 @@ class TutorialCollectionViewDataSource: NSObject, ChatInterfaceDataSource, Tutor
     func didFinishFetchingAllItems() {
         delegate?.didFinishFetchingAllItems()
     }
+    
+    func chatFeedItemWidth() -> CGFloat? {
+        return delegate?.chatFeedItemWidth()
+    }
 }

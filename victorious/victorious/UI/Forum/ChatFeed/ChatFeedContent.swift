@@ -14,12 +14,17 @@ class ChatFeedContent {
     let content: ContentModel
     
     /// The calculated size of the content's `ChatFeedMessageCell`, which we cache for performance.
-    ///
-    /// If nil, the size has not been calculated yet.
-    ///
-    var size: CGSize?
+    var size: CGSize
     
-    init(_ content: ContentModel) {
+    private init(_ content: ContentModel, size: CGSize) {
         self.content = content
+        self.size = size
+    }
+    
+    static func createChatFeedContent(fromContentModel content: ContentModel, withWidth width: CGFloat, dependencyManager: VDependencyManager) -> ChatFeedContent? {
+        guard let height = ChatFeedMessageCell.cellHeight(displaying: content, inWidth: width, dependencyManager: dependencyManager) else {
+            return nil
+        }
+        return ChatFeedContent(content, size: CGSize(width: width, height: height))
     }
 }

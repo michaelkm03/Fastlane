@@ -111,6 +111,10 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
         }
     }
     
+    func chatFeedItemWidth() -> CGFloat? {
+        return collectionView.bounds.width
+    }
+    
     // MARK: - VBackgroundContainer
     
     func backgroundContainerView() -> UIView {

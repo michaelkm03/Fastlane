@@ -158,6 +158,10 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         }
     }
     
+    func widthForChatFeedItem() -> CGFloat {
+        return collectionView.bounds.width
+    }
+    
     // MARK: - VScrollPaginatorDelegate
     
     func shouldLoadPreviousPage() {
