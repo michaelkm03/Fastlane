@@ -55,7 +55,7 @@ class AgeGateViewController: UIViewController {
         return ageGateViewController
     }
     
-    //MARK: - View Controller Lifecycle
+    // MARK: - View Controller Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -103,7 +103,7 @@ class AgeGateViewController: UIViewController {
         ShowWebContentOperation(originViewController: self, type: .PrivacyPolicy, dependencyManager: dependencyManager).queue()
     }
     
-    //MARK: - Private functions
+    // MARK: - Private functions
     
     private func setupBackgroundViews() {
         let launchScreen = VLaunchScreenProvider.launchScreen()

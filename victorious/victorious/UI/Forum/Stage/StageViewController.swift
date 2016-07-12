@@ -12,10 +12,6 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
     private struct Constants {
         static let contentSizeAnimationDuration: NSTimeInterval = 0.5
         static let defaultAspectRatio: CGFloat = 16 / 9
-        
-        static let pillInsets = UIEdgeInsetsMake(10, 10, 10, 10)
-        static let pillHeight: CGFloat = 30
-        static let pillBottomMargin: CGFloat = 20
     }
     
     private lazy var defaultStageHeight: CGFloat = {
@@ -54,27 +50,9 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         }
     }
     
-    private lazy var newItemPill: TextOnColorButton? = { [weak self] in
-        guard let pillDependency = self?.dependencyManager.newItemButtonDependency else {
-            return nil
-        }
-        let pill = TextOnColorButton()
-        pill.dependencyManager = pillDependency
-        pill.contentEdgeInsets = Constants.pillInsets
-        pill.sizeToFit()
-        pill.clipsToBounds = true
-        pill.hidden = true
-        pill.roundingType = .pill
-        
-        if let strongSelf = self {
-            pill.addTarget(strongSelf, action: #selector(onPillSelect), forControlEvents: .TouchUpInside)
-        }
-        
-        return pill
-    }()
-    
     private var queuedContent: ContentModel?
     private var stageDataSource: StageDataSource?
+    private var enabled = true
     
     weak var delegate: StageDelegate?
     var dependencyManager: VDependencyManager! {
@@ -94,16 +72,6 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         super.viewDidLoad()
         
         captionBarViewController = childViewControllers.flatMap({ $0 as? CaptionBarViewController }).first
-        
-        guard let newItemPill = newItemPill else {
-            return
-        }
-        
-        view.addSubview(newItemPill)
-        view.v_addPinToBottomToSubview(newItemPill, bottomMargin: Constants.pillBottomMargin)
-        view.v_addCenterHorizontallyConstraintsToSubview(newItemPill)
-        newItemPill.v_addHeightConstraint(Constants.pillHeight)
-        
         mediaContentView.dependencyManager = dependencyManager
         mediaContentView.allowsVideoControls = false
     }
@@ -144,26 +112,18 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
     }
     
     func addContent(stageContent: ContentModel) {
+        guard enabled else {
+            return
+        }
         queuedContent = stageContent
-        if
-            !visible ||
-            mediaContentView.content?.type != .video ||
-            newItemPill == nil
-        {
-            // If the stage was not shown, 
-            // or if the current content was one that is not time based (video for now),
-            // or if we don't have a pill (for VIP stage)
-            // we will immediately move to the next content.
-            nextContent(animated: false)
-            showStage(animated: true)
-        }
-        else {
-            showPill()
-        }
+        // If the stage was not shown,
+        // or if the current content was one that is not time based (video for now),
+        // we will immediately move to the next content.
+        nextContent(animated: false)
+        showStage(animated: true)
     }
     
     func nextContent(animated animated: Bool = true) {
-        hidePill()
         guard let stageContent = queuedContent else {
             return
         }
@@ -177,47 +137,32 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         queuedContent = nil
     }
     
-    func onPillSelect() {
-        nextContent()
-        hidePill()
-    }
-
     func removeContent() {
-        hidePill()
         hideStage()
         queuedContent = nil
     }
     
-    private func hidePill() {
-        guard
-            let newItemPill = newItemPill
-            where newItemPill.hidden == false
-        else {
-            return
-        }
+    func setStageEnabled(enabled: Bool, animated: Bool) {
+        self.enabled = enabled
         
-        UIView.animateWithDuration(0.5, animations: {
-            newItemPill.alpha = 0.0
-        }) { _ in
-            newItemPill.hidden = true
+        if enabled {
+            showStage(animated: animated)
+        }
+        else {
+            hideStage(animated: animated)
         }
     }
     
-    private func showPill() {
-        guard
-            let newItemPill = newItemPill
-            where newItemPill.hidden == true
-        else {
-            return
+    var overlayUIAlpha: CGFloat {
+        get {
+            return attributionBar.alpha
         }
-        
-        newItemPill.alpha = 0.0
-        newItemPill.hidden = false
-        UIView.animateWithDuration(0.5, animations: {
-            newItemPill.alpha = 1.0
-        })
+        set {
+            captionBarViewController?.view.alpha = newValue
+            attributionBar.alpha = newValue
+        }
     }
-
+    
     // MARK: - ForumEventReceiver
     
     var childEventReceivers: [ForumEventReceiver] {

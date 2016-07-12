@@ -71,7 +71,7 @@ class UserSearchViewController: UINavigationController, SearchResultsViewControl
         return .LightContent
     }
     
-    //MARK: - SearchResultsViewControllerDelegate
+    // MARK: - SearchResultsViewControllerDelegate
     
     @objc let searchController = UISearchController(searchResultsController: nil)
     
