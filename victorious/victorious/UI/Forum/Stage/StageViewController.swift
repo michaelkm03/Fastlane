@@ -119,11 +119,11 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         // If the stage was not shown,
         // or if the current content was one that is not time based (video for now),
         // we will immediately move to the next content.
-        nextContent(false)
-        showStage(true)
+        nextContent(animated: false)
+        showStage(animated: true)
     }
     
-    func nextContent(animated: Bool = true) {
+    func nextContent(animated animated: Bool = true) {
         guard let stageContent = queuedContent else {
             return
         }
@@ -146,10 +146,10 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         self.enabled = enabled
         
         if enabled {
-            showStage(animated)
+            showStage(animated: animated)
         }
         else {
-            hideStage(animated)
+            hideStage(animated: animated)
         }
     }
     
@@ -171,7 +171,7 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
 
     // MARK: - Show/Hide Stage
 
-    private func hideStage(animated: Bool = false) {
+    private func hideStage(animated animated: Bool = false) {
         mediaContentView.hideContent(animated: animated) { [weak self] _ in
             self?.mediaContentView.pauseVideo()
         }
@@ -181,7 +181,7 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         }
     }
 
-    private func showStage(animated: Bool = false) {
+    private func showStage(animated animated: Bool = false) {
         mediaContentView.showContent(animated: animated) { [weak self] _ in
             self?.mediaContentView.playVideo()
         }
