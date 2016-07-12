@@ -41,4 +41,7 @@ protocol InterstitialDelegate: class {
     
     /// Informs the delegate that the user wants to dismiss the interstitial
     func dismissInterstitial(interstitialViewController: UIViewController)
+
+    /// Dismisses the current interstitial on screen with the specified alert type.
+    func dismissCurrentInterstitial(of alertType: AlertType)
 }

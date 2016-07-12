@@ -12,10 +12,6 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
     private struct Constants {
         static let contentSizeAnimationDuration: NSTimeInterval = 0.5
         static let defaultAspectRatio: CGFloat = 16 / 9
-        
-        static let pillInsets = UIEdgeInsetsMake(10, 10, 10, 10)
-        static let pillHeight: CGFloat = 30
-        static let pillBottomMargin: CGFloat = 20
     }
     
     private lazy var defaultStageHeight: CGFloat = {
@@ -54,28 +50,9 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         }
     }
     
-    private lazy var newItemPill: TextOnColorButton? = { [weak self] in
-        guard let pillDependency = self?.dependencyManager.newItemButtonDependency else {
-            return nil
-        }
-        let pill = TextOnColorButton()
-        pill.dependencyManager = pillDependency
-        pill.contentEdgeInsets = Constants.pillInsets
-        pill.sizeToFit()
-        pill.clipsToBounds = true
-        pill.hidden = true
-        pill.roundingType = .pill
-        
-        if let strongSelf = self {
-            pill.addTarget(strongSelf, action: #selector(onPillSelect), forControlEvents: .TouchUpInside)
-        }
-        
-        return pill
-    }()
-    
-    private var hasShownStage: Bool = false
     private var queuedContent: ContentModel?
     private var stageDataSource: StageDataSource?
+    private var enabled = true
     
     weak var delegate: StageDelegate?
     var dependencyManager: VDependencyManager! {
@@ -95,16 +72,8 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         super.viewDidLoad()
         
         captionBarViewController = childViewControllers.flatMap({ $0 as? CaptionBarViewController }).first
-        
-        guard let newItemPill = newItemPill else {
-            return
-        }
-        
-        view.addSubview(newItemPill)
-        view.v_addPinToBottomToSubview(newItemPill, bottomMargin: Constants.pillBottomMargin)
-        view.v_addCenterHorizontallyConstraintsToSubview(newItemPill)
-        newItemPill.v_addHeightConstraint(Constants.pillHeight)
         mediaContentView.dependencyManager = dependencyManager
+        mediaContentView.allowsVideoControls = false
     }
     
     private func setupDataSource(dependencyManager: VDependencyManager) -> StageDataSource {
@@ -115,14 +84,12 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        mediaContentView.allowsVideoControls = false
-        showStage(animated)
+        mediaContentView.videoCoordinator?.playVideo()
     }
 
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        
-        hideStage(animated)
+        mediaContentView.videoCoordinator?.pauseVideo()
     }
     
     @objc private func didTapOnContent() {
@@ -145,82 +112,57 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
     }
     
     func addContent(stageContent: ContentModel) {
+        guard enabled else {
+            return
+        }
         queuedContent = stageContent
-        if
-            !hasShownStage ||
-            mediaContentView.content?.type != .video ||
-            newItemPill == nil
-        {
-            // If the stage was not shown, 
-            // or if the current content was one that is not time based (video for now),
-            // or if we don't have a pill (for VIP stage)
-            // we will immediately move to the next content.
-            hasShownStage = true
-            updateStageHeight()
-            nextContent()
-        }
-        else {
-            showPill()
-        }
+        // If the stage was not shown,
+        // or if the current content was one that is not time based (video for now),
+        // we will immediately move to the next content.
+        nextContent(false)
+        showStage(true)
     }
     
-    func nextContent() {
-        hidePill()
+    func nextContent(animated: Bool = true) {
         guard let stageContent = queuedContent else {
             return
         }
         
+        attributionBar.configure(with: stageContent.author, animated: animated)
+        
         mediaContentView.videoCoordinator?.pauseVideo()
         mediaContentView.content = stageContent
-        
-        attributionBar.configure(with: stageContent.author)
         
         updateStageHeight()
         queuedContent = nil
     }
     
-    func onPillSelect() {
-        nextContent()
-        hidePill()
-    }
-
     func removeContent() {
-        hidePill()
         hideStage()
-        hasShownStage = false
         queuedContent = nil
     }
     
-    private func hidePill() {
-        guard
-            let newItemPill = newItemPill
-            where newItemPill.hidden == false
-        else {
-            return
-        }
+    func setStageEnabled(enabled: Bool, animated: Bool) {
+        self.enabled = enabled
         
-        UIView.animateWithDuration(0.5, animations: {
-            newItemPill.alpha = 0.0
-        }) { _ in
-            newItemPill.hidden = true
+        if enabled {
+            showStage(animated)
+        }
+        else {
+            hideStage(animated)
         }
     }
     
-    private func showPill() {
-        guard
-            let newItemPill = newItemPill
-            where newItemPill.hidden == true
-        else {
-            return
+    var overlayUIAlpha: CGFloat {
+        get {
+            return attributionBar.alpha
         }
-        
-        newItemPill.alpha = 0.0
-        newItemPill.hidden = false
-        UIView.animateWithDuration(0.5, animations: {
-            newItemPill.alpha = 1.0
-        })
+        set {
+            captionBarViewController?.view.alpha = newValue
+            attributionBar.alpha = newValue
+        }
     }
-
+    
     // MARK: - ForumEventReceiver
     
     var childEventReceivers: [ForumEventReceiver] {
@@ -228,7 +170,7 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
     }
 
     // MARK: - Show/Hide Stage
-    
+
     private func hideStage(animated: Bool = false) {
         mediaContentView.hideContent(animated: animated) { [weak self] _ in
             self?.mediaContentView.pauseVideo()
@@ -238,7 +180,7 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
             self.view.layoutIfNeeded()
         }
     }
-    
+
     private func showStage(animated: Bool = false) {
         mediaContentView.showContent(animated: animated) { [weak self] _ in
             self?.mediaContentView.playVideo()
@@ -266,7 +208,9 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
     // MARK: - CaptionBarViewControllerDelegate
     
     func captionBarViewController(captionBarViewController: CaptionBarViewController, didTapOnUser user: UserModel) {
-        ShowProfileOperation(originViewController: self, dependencyManager: dependencyManager, userId: user.id).queue()
+        let router = Router(originViewController: self, dependencyManager: dependencyManager)
+        let destination = DeeplinkDestination(userID: user.id)
+        router.navigate(to: destination)
     }
     
     func captionBarViewController(captionBarViewController: CaptionBarViewController, wantsUpdateToContentHeight height: CGFloat) {

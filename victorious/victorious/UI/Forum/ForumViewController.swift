@@ -11,22 +11,18 @@ import UIKit
 /// A template driven .screen component that sets up, houses and mediates the interaction
 /// between the Forum's required concrete implementations and abstract dependencies.
 class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocusable, PersistentContentCreator, UploadManagerHost {
-
-    @IBOutlet private weak var stageContainer: UIView! {
-        didSet {
-            stageContainer.layer.shadowColor = UIColor.blackColor().CGColor
-            stageContainer.layer.shadowRadius = 8.0
-            stageContainer.layer.shadowOpacity = 0.75
-            stageContainer.layer.shadowOffset = CGSize(width:0, height:2)
-        }
-    }
-    
+    @IBOutlet private weak var stageContainer: UIView!
+    @IBOutlet private weak var stageViewControllerContainer: VPassthroughContainerView!
+    @IBOutlet private weak var stageTouchView: UIView!
     @IBOutlet private weak var stageContainerHeight: NSLayoutConstraint! {
         didSet {
             stageContainerHeight.constant = 0.0
         }
     }
+    @IBOutlet private weak var chatFeedContainer: VPassthroughContainerView!
 
+    private var stageShrinkingAnimator: StageShrinkingAnimator?
+    
     #if V_ENABLE_WEBSOCKET_DEBUG_MENU
         private lazy var debugMenuHandler: DebugMenuHandler = {
             return DebugMenuHandler(targetViewController: self)
@@ -58,17 +54,21 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         switch event {
             case .websocket(let websocketEvent):
                 switch websocketEvent {
-                    case .disconnected(let webSocketError):
-                        if let webSocketError = webSocketError where isViewLoaded() {
-                            v_showAlert(title: "Disconnected from chat server", message: "Reconnecting soon.\n(error: \(webSocketError))", completion: nil)
-                        }
+                    case .disconnected(_) where isViewLoaded():
+                        // FUTURE: fetch the localized string from a new node in the template, depending on what the error type is.
+                        let alert = Alert(title: "Reconnecting to server...", type: .reconnectingError)
+                        InterstitialManager.sharedInstance.receive(alert)
                     default:
                         break
                 }
             case .chatUserCount(let userCount):
+                // A chat user count message is the only confirmed way of knowing that the connection is open, since our backend always accepts our connection before validating everything is ok.
+                InterstitialManager.sharedInstance.dismissCurrentInterstitial(of: .reconnectingError)
                 navBarTitleView?.activeUserCount = userCount.userCount
             case .filterContent(let path):
+                // path will be nil for home feed, and non nil for filtered feed
                 composer?.setComposerVisible(path == nil, animated: true)
+                stage?.setStageEnabled(path == nil, animated: true)
             default:
                 break
         }
@@ -199,6 +199,18 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        stageShrinkingAnimator = StageShrinkingAnimator(
+            stageContainer: stageContainer,
+            stageTouchView: stageTouchView,
+            stageViewControllerContainer: stageViewControllerContainer
+        )
+        stageShrinkingAnimator?.shouldHideKeyboardHandler = { [weak self] in
+            self?.view.endEditing(true)
+        }
+        stageShrinkingAnimator?.interpolateAlongside = {[weak self] percentage in
+            self?.stage?.overlayUIAlpha = 1 - percentage
+        }
+        
         chatFeed?.nextSender = self
         //Initialize the title view. This will later be resized in the viewWillAppear, once it has actually been added to the navigation stack
         navBarTitleView = ForumNavBarTitleView(dependencyManager: self.dependencyManager, frame: CGRect(x: 0, y: 0, width: 200, height: 45))
@@ -268,6 +280,24 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         dependencyManager.applyStyleToNavigationBar(self.navigationController?.navigationBar)
         navigationController?.navigationBar.translucent = false
         dependencyManager.addBackgroundToBackgroundHost(self)
+    }
+
+    @IBAction private func tappedOnStage(sender: UITapGestureRecognizer) {
+        view.endEditing(true)
+    }
+    
+    // MARK: - ChatFeedDelegate
+    
+    func chatFeed(chatFeed: ChatFeed, didScroll scrollView: UIScrollView) {
+        stageShrinkingAnimator?.chatFeed(chatFeed, didScroll: scrollView)
+    }
+    
+    func chatFeed(chatFeed: ChatFeed, willBeginDragging scrollView: UIScrollView) {
+        stageShrinkingAnimator?.chatFeed(chatFeed, willBeginDragging: scrollView)
+    }
+    
+    func chatFeed(chatFeed: ChatFeed, willEndDragging scrollView: UIScrollView, withVelocity velocity: CGPoint) {
+        stageShrinkingAnimator?.chatFeed(chatFeed, willEndDragging: scrollView, withVelocity: velocity)
     }
 
     // MARK: - VFocusable

@@ -9,15 +9,18 @@
 import Foundation
 
 public struct TrendingHashtagRequest: RequestType {
+    private let url: NSURL
     
-    public init() {}
+    public init(url: NSURL) {
+        self.url = url
+    }
     
     public var urlRequest: NSURLRequest {
-        return NSURLRequest(URL:NSURL(string: "/api/discover/hashtags")!)
+        return NSURLRequest(URL:url)
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [Hashtag] {
-        guard let hashtagJSON = responseJSON["payload"].array else {
+        guard let hashtagJSON = responseJSON["payload"]["hashtags"].array else {
             throw ResponseParsingError()
         }
         return hashtagJSON.flatMap { Hashtag(json: $0) }

@@ -14,6 +14,7 @@ extension VContent: PersistenceParsable {
         v_createdAt = content.createdAt ?? v_createdAt
         v_remoteID = content.id ?? v_remoteID
         v_shareURL = content.shareURL?.absoluteString ?? v_shareURL
+        v_linkedURL = content.linkedURL?.absoluteString ?? v_linkedURL
         v_status = content.status ?? v_status
         v_text = content.text ?? v_text
         v_type = content.type.rawValue
@@ -47,14 +48,13 @@ extension VContent: PersistenceParsable {
         v_contentMediaAssets = Set(persistentAssets)
         
         if let sourceTracking = content.tracking {
-            let tracking: VTracking = v_managedObjectContext.v_createObject()
-            tracking.populate(fromSourceModel: sourceTracking)
-            tracking.content = self
-            
             if let v_tracking = v_tracking {
                 v_managedObjectContext.deleteObject(v_tracking)
             }
             
+            let tracking: VTracking = v_managedObjectContext.v_createObject()
+            tracking.populate(fromSourceModel: sourceTracking)
+            tracking.content = self
             v_tracking = tracking
         }
     }

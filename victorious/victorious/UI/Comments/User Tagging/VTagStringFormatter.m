@@ -9,7 +9,6 @@
 #import "VTagStringFormatter.h"
 #import "VTag.h"
 #import "VDependencyManager.h"
-#import "VHashtag.h"
 #import "VUserTaggingTextStorage.h"
 #import "VTagDictionary.h"
 #import "victorious-Swift.h"
@@ -106,15 +105,6 @@
         return nil;
     }
     return [NSString stringWithFormat:@"@{%@:%@}", [user.remoteId stringValue], user.name];
-}
-
-+ (NSString *)databaseFormattedStringFromHashtag:(VHashtag *)hashtag
-{
-    if ( hashtag == nil )
-    {
-        return nil;
-    }
-    return [NSString stringWithFormat:@"#%@", hashtag.tag];
 }
 
 + (NSIndexSet *)tagRangesInRange:(NSRange)range

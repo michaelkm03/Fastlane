@@ -46,8 +46,9 @@ extension Forum {
     }
     
     func chatFeed(chatFeed: ChatFeed, didSelectContent content: ContentModel) {
-        let displayModifier = ShowCloseUpDisplayModifier(dependencyManager: dependencyManager, originViewController: originViewController)
-        ShowCloseUpOperation.showOperation(forContent: content, displayModifier: displayModifier).queue()
+        let router = Router(originViewController: originViewController, dependencyManager: dependencyManager)
+        let destination = DeeplinkDestination(content: content)
+        router.navigate(to: destination)
     }
     
     // MARK: - ComposerDelegate

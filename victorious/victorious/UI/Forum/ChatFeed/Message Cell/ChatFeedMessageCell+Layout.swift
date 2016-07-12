@@ -22,30 +22,30 @@ extension ChatFeedMessageCell {
         
         let alignment: ChatFeedMessageCellAlignment = content.wasCreatedByCurrentUser ? .right : .left
         
-        let mediaSize = self.mediaSize(displaying: content, inWidth: cell.bounds.width)
-        let textSize = self.textSize(displaying: content, inWidth: cell.bounds.width, dependencyManager: dependencyManager)
+        let previewSize = self.previewSize(displaying: content, inWidth: cell.bounds.width)
+        let captionSize = self.captionSize(displaying: content, inWidth: cell.bounds.width, dependencyManager: dependencyManager)
         let timestampSize = cell.timestampLabel.sizeThatFits(cell.bounds.size)
         let usernameSize = self.usernameSize(in: cell, withTimestampSize: timestampSize)
         
-        let contentSize = CGSize(
-            width: mediaSize?.width ?? textSize.width,
-            height: textSize.height + (mediaSize?.height ?? 0.0)
-        )
+        // Bubble layout:
         
-        let bubbleOffset = self.bubbleOffset(forAlignment: alignment, inBounds: cell.bounds, withBubbleSize: contentSize)
+        let previewFrame = layoutBubbleView(cell.previewBubbleView, forAlignment: alignment, size: previewSize, precedingBubbleFrame: nil, inBounds: cell.bounds)
+        let captionFrame = layoutBubbleView(cell.captionBubbleView, forAlignment: alignment, size: captionSize, precedingBubbleFrame: previewFrame, inBounds: cell.bounds)
+        let bubbleFrames = [previewFrame, captionFrame].flatMap { $0 }
+        let firstBubbleFrame = bubbleFrames.first ?? CGRect.zero
         
         // Top label layout:
         
         cell.usernameLabel.frame = CGRect(
-            x: bubbleOffset.x + topLabelXInset,
-            y: bubbleOffset.y - usernameSize.height - topLabelYSpacing,
+            x: firstBubbleFrame.origin.x + topLabelXInset,
+            y: firstBubbleFrame.origin.y - usernameSize.height - topLabelYSpacing,
             width: usernameSize.width,
             height: usernameSize.height
         )
         
         cell.timestampLabel.frame = CGRect(
-            x: bubbleOffset.x + max(usernameSize.width + topLabelXInset * 2.0, contentSize.width - timestampSize.width - topLabelXInset),
-            y: bubbleOffset.y - timestampSize.height - topLabelYSpacing,
+            x: firstBubbleFrame.origin.x + max(usernameSize.width + topLabelXInset * 2.0, firstBubbleFrame.width - timestampSize.width - topLabelXInset),
+            y: firstBubbleFrame.origin.y - timestampSize.height - topLabelYSpacing,
             width: timestampSize.width,
             height: timestampSize.height
         )
@@ -57,37 +57,67 @@ extension ChatFeedMessageCell {
             size: avatarSize
         )
         
+        cell.avatarShadowView.frame = cell.avatarView.frame
+        
         cell.avatarTapTarget.frame = CGRect(center: cell.avatarView.center, size: avatarTapTargetSize)
         
-        // Bubble / content layout:
+        // Preview / caption layout:
         
-        cell.bubbleView.frame = CGRect(origin: bubbleOffset, size: contentSize)
+        cell.previewView?.frame = cell.previewBubbleView?.bounds ?? CGRect.zero
         
-        cell.bubbleBorderView.frame = cell.bubbleView.frame.insetBy(bubbleBackgroundInsets)
+        if let captionFrame = captionFrame {
+            cell.captionLabel.frame = CGRect(
+                x: captionInsets.left,
+                y: 0.0,
+                width: captionFrame.width - captionInsets.horizontal,
+                height: captionFrame.height
+            )
+        }
+        else {
+            cell.captionLabel.frame = CGRect.zero
+        }
+    }
+    
+    private static func layoutBubbleView(bubbleView: UIView?, forAlignment alignment: ChatFeedMessageCellAlignment, size: CGSize?, precedingBubbleFrame: CGRect?, inBounds bounds: CGRect) -> CGRect? {
+        guard let size = size else {
+            bubbleView?.frame = CGRect.zero
+            return nil
+        }
         
-        cell.previewView?.frame = CGRect(origin: CGPoint.zero, size: mediaSize ?? CGSize.zero)
+        guard let bubbleView = bubbleView else {
+            return nil
+        }
         
-        cell.captionLabel.frame = CGRect(
-            x: captionInsets.left,
-            y: mediaSize?.height ?? 0.0,
-            width: contentSize.width - captionInsets.horizontal,
-            height: textSize.height
+        let edgePadding = horizontalSpacing * 2.0 + avatarSize.width
+        
+        let x: CGFloat
+        
+        switch alignment {
+            case .left: x = edgePadding
+            case .right: x = bounds.maxX - size.width - edgePadding
+        }
+        
+        bubbleView.frame = CGRect(
+            origin: CGPoint(x: x, y: precedingBubbleFrame.map { $0.maxY + bubbleSpacing } ?? contentMargin.top),
+            size: size
         )
+        
+        return bubbleView.frame
+    }
+    
+    private static func contentOffset(forAlignment alignment: ChatFeedMessageCellAlignment, inBounds bounds: CGRect, withBubbleWidth bubbleWidth: CGFloat) -> CGPoint {
+        let edgePadding = horizontalSpacing * 2.0 + avatarSize.width
+        
+        switch alignment {
+            case .left: return CGPoint(x: edgePadding, y: contentMargin.top)
+            case .right: return CGPoint(x: bounds.maxX - bubbleWidth - edgePadding, y: contentMargin.top)
+        }
     }
     
     private static func avatarOffset(forAlignment alignment: ChatFeedMessageCellAlignment, inBounds bounds: CGRect) -> CGPoint {
         switch alignment {
             case .left: return CGPoint(x: horizontalSpacing, y: contentMargin.top)
             case .right: return CGPoint(x: bounds.maxX - horizontalSpacing - avatarSize.width, y: contentMargin.top)
-        }
-    }
-    
-    private static func bubbleOffset(forAlignment alignment: ChatFeedMessageCellAlignment, inBounds bounds: CGRect, withBubbleSize bubbleSize: CGSize) -> CGPoint {
-        let edgePadding = horizontalSpacing * 2.0 + avatarSize.width
-        
-        switch alignment {
-            case .left: return CGPoint(x: edgePadding, y: contentMargin.top)
-            case .right: return CGPoint(x: bounds.maxX - bubbleSize.width - edgePadding, y: contentMargin.top)
         }
     }
     

@@ -37,7 +37,7 @@ class FilteredImageView: GLKView {
     }
     private var ciContext: CIContext!
     
-    //MARK: - Initializers
+    // MARK: - Initializers
     
     override init(frame: CGRect) {
         super.init(frame: frame, context: glContext)
@@ -56,7 +56,7 @@ class FilteredImageView: GLKView {
         ciContext = CIContext(EAGLContext: context, options: [kCIContextWorkingColorSpace: NSNull()])
     }
     
-    //MARK: - UIView
+    // MARK: - UIView
     
     override func drawRect(rect: CGRect) {
         if let scaledImage = scaledImage {

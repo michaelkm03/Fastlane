@@ -53,7 +53,7 @@ class NativeCameraCreationFlowController: VCreationFlowController, UIImagePicker
         return isRecordingVideo ? .Video : .Image
     }
     
-    //MARK: - UIImagePickerControllerDelegate
+    // MARK: - UIImagePickerControllerDelegate
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
         creationFlowDelegate.creationFlowControllerDidCancel?(self)
@@ -78,7 +78,7 @@ class NativeCameraCreationFlowController: VCreationFlowController, UIImagePicker
         }
     }
     
-    //MARK: - Editing mode hack
+    // MARK: - Editing mode hack
     
     func passthroughViewRecievedTouch(passthroughContainerView: VPassthroughContainerView!) {
         let recordingVideo = isRecordingVideo
