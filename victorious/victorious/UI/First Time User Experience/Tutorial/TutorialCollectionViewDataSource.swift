@@ -31,6 +31,14 @@ class TutorialCollectionViewDataSource: NSObject, ChatInterfaceDataSource, Tutor
     
     // MARK: - ChatInterfaceDataSource
     
+    var itemCount: Int {
+        return visibleItems.count
+    }
+    
+    func content(at index: Int) -> ChatFeedContent {
+        return visibleItems[index]
+    }
+    
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return numberOfItems(for: collectionView, in: section)
     }

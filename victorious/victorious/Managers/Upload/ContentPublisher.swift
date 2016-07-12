@@ -44,7 +44,7 @@ class ContentPublisher {
     
     /// Queues `content` for publishing.
     func publish(content: ContentModel) {
-        // TODO: Implement me!
+        pendingContent.append(ChatFeedContent(content))
     }
     
     /// Transforms the chatMessage into a data type that can be persisted by the backend

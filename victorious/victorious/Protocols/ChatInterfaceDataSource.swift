@@ -13,7 +13,11 @@ import VictoriousIOSSDK
 protocol ChatInterfaceDataSource: UICollectionViewDataSource {
     var dependencyManager: VDependencyManager { get }
     
-    var visibleItems: [ChatFeedContent] { get }
+    /// The number of items displayed in the chat interface.
+    var itemCount: Int { get }
+    
+    /// Returns the content at the given `index`.
+    func content(at index: Int) -> ChatFeedContent
     
     func registerCells(for collectionView: UICollectionView)
     
@@ -27,11 +31,11 @@ protocol ChatInterfaceDataSource: UICollectionViewDataSource {
 
 extension ChatInterfaceDataSource {
     func numberOfItems(for collectionView: UICollectionView, in section: Int) -> Int {
-        return visibleItems.count
+        return itemCount
     }
     
     func cellForItem(for collectionView: UICollectionView, at indexPath: NSIndexPath) -> ChatFeedMessageCell {
-        let content = visibleItems[indexPath.row].content
+        let content = self.content(at: indexPath.row).content
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(content.reuseIdentifier, forIndexPath: indexPath) as! ChatFeedMessageCell
         decorate(cell, content: content)
         
@@ -45,7 +49,7 @@ extension ChatInterfaceDataSource {
     }
     
     func desiredCellSize(for collectionView: UICollectionView, at indexPath: NSIndexPath) -> CGSize {
-        let chatFeedContent = visibleItems[indexPath.row]
+        let chatFeedContent = content(at: indexPath.row)
         
         if let size = chatFeedContent.size {
             return size
