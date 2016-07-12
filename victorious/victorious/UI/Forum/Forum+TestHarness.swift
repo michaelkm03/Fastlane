@@ -36,7 +36,7 @@ extension ForumViewController {
     private func randPreviewImage() -> ImageAsset {
         let rnd = Int(arc4random() % UInt32(previewImageURLs.count))
         let string = previewImageURLs[rnd]
-        return ImageAsset(mediaMetaData: MediaMetaData(url: NSURL(string: string)!, size: CGSize(width: 16 , height: 9)))
+        return ImageAsset(mediaMetaData: MediaMetaData(url: NSURL(string: string)!, size: CGSize(width: Double(arc4random() % 100), height: Double(arc4random() % 100))))
     }
     
     private func randName() -> String {
