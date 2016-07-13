@@ -14,10 +14,6 @@ class TutorialCollectionViewDataSource: NSObject, ChatInterfaceDataSource, Tutor
     
     let sizingCell = ChatFeedMessageCell(frame: CGRectZero)
     
-    var visibleItems: [ChatFeedContent] {
-        return networkDataSource.visibleItems
-    }
-    
     lazy var networkDataSource: NetworkDataSource = {
         let dataSource = TutorialNetworkDataSource(dependencyManager: self.dependencyManager)
         dataSource.delegate = self
@@ -32,11 +28,11 @@ class TutorialCollectionViewDataSource: NSObject, ChatInterfaceDataSource, Tutor
     // MARK: - ChatInterfaceDataSource
     
     var itemCount: Int {
-        return visibleItems.count
+        return networkDataSource.visibleItems.count
     }
     
     func content(at index: Int) -> ChatFeedContent {
-        return visibleItems[index]
+        return networkDataSource.visibleItems[index]
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
