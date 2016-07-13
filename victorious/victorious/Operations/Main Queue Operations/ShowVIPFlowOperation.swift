@@ -35,8 +35,6 @@ class ShowVIPFlowOperation: MainQueueOperation, VIPFlowNavigationControllerDeleg
     
     func VIPFlowNaivigationController(navigationController: VIPFlowNavigationController, completedFlowWithSuccess success: Bool) {
         self.allowedAccess = success
-        navigationController.dismissViewControllerAnimated(animated) { [weak self] in
-            self?.finishedExecuting()
-        }
+        self.finishedExecuting()
     }
 }

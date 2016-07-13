@@ -365,10 +365,8 @@
 "SubscriptionsSettingsTitle"            = "Subscriptions";
 
 "SubscriptionRestoreFailed"             = "Failed to restore subcription.";
-"SubscriptionSucceeded"                 = "Subscription complete!";
 "SubscriptionActivityRestoring"         = "Checking for subscription...";
 "SubscriptionRestorePrompt"             = "Already subscribed?";
-"SubscriptionRestoreSucceeded"          = "Subscription restored!";
 "SubscriptionFailed"                    = "Subscription failed.";
 
 "This will discard any content added to your post" = "This will discard any content added to your post";

@@ -197,7 +197,7 @@
 	<key>animated.badgeView</key>
 	<string>victorious.AnimatedBadgeView</string>
 	<key>vipPaygate.screen</key>
-	<string>VIPFlowNavigationController</string>
+	<string>victorious.VIPFlowNavigationController</string>
 	<key>trophyCase.screen</key>
 	<string>victorious.TrophyCaseViewController</string>
 	<key>trophyCase.achievement</key>

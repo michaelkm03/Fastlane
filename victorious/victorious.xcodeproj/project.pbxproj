@@ -1119,7 +1119,6 @@
 		A72C865C1C977FF500E97D4F /* ShowShareSequenceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85BC1C977FF500E97D4F /* ShowShareSequenceOperation.swift */; };
 		A72C865D1C977FF600E97D4F /* StoredLoginOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85BD1C977FF500E97D4F /* StoredLoginOperation.swift */; };
 		A72C865E1C977FF600E97D4F /* Paginated.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85BF1C977FF500E97D4F /* Paginated.swift */; };
-		A72C865F1C977FF600E97D4F /* FetchTemplateProductIdentifiersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85C11C977FF500E97D4F /* FetchTemplateProductIdentifiersOperation.swift */; };
 		A72C86601C977FF600E97D4F /* RestorePurchaseOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85C21C977FF500E97D4F /* RestorePurchaseOperation.swift */; };
 		A72C86641C977FF600E97D4F /* ActionConfirmationOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85C71C977FF500E97D4F /* ActionConfirmationOperation.swift */; };
 		A72C86651C977FF600E97D4F /* ErrorOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85C81C977FF500E97D4F /* ErrorOperation.swift */; };
@@ -1562,7 +1561,6 @@
 		A7E3985F1A34F6E1000E4CAC /* creator-avatar.png in Resources */ = {isa = PBXBuildFile; fileRef = A7E3985D1A34F6E1000E4CAC /* creator-avatar.png */; };
 		A7E398601A34F6E1000E4CAC /* creator-avatar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A7E3985E1A34F6E1000E4CAC /* creator-avatar@2x.png */; };
 		A7E8CF2A1C90B0B600D126BF /* MockPurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E8CF291C90B0B600D126BF /* MockPurchaseManager.swift */; };
-		A7E8CF2C1C90B4E600D126BF /* FetchProductIdentifiersOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E8CF2B1C90B4E600D126BF /* FetchProductIdentifiersOperationTests.swift */; };
 		A7E8CF2E1C90B9BB00D126BF /* VDependencyManager+TemplateProducts.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E8CF2D1C90B9BB00D126BF /* VDependencyManager+TemplateProducts.swift */; };
 		A7E8CF301C90B9C900D126BF /* TemplateProductsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E8CF2F1C90B9C900D126BF /* TemplateProductsDataSource.swift */; };
 		A7E8CF321C90BBFA00D126BF /* NSBundle+TestBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E8CF311C90BBFA00D126BF /* NSBundle+TestBundle.swift */; };
@@ -2067,6 +2065,9 @@
 		F0140BC11AA93AEB00B95642 /* VTimerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F0140BC01AA93AEB00B95642 /* VTimerManager.m */; };
 		F0140BC71AAA37EC00B95642 /* VRoundedSegmentedSelectorView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0140BC61AAA37EC00B95642 /* VRoundedSegmentedSelectorView.m */; };
 		F02024AD1ADD7F3D00C61313 /* VCardDirectoryCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F02024AC1ADD7F3D00C61313 /* VCardDirectoryCellFactory.m */; };
+		F020B3581D33FE5C00388043 /* VIPFetchSubscriptionOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F020B3571D33FE5C00388043 /* VIPFetchSubscriptionOperation.swift */; };
+		F020B35A1D3564F800388043 /* CrossFadingAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F020B3591D3564F800388043 /* CrossFadingAnimationController.swift */; };
+		F020B35C1D35654700388043 /* CrossFadingNavigationControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F020B35B1D35654700388043 /* CrossFadingNavigationControllerDelegate.swift */; };
 		F022CFDA1CFE52EA00F040BB /* ChatMessageCreateRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F022CFD91CFE52EA00F040BB /* ChatMessageCreateRemoteOperation.swift */; };
 		F022CFDC1CFE535500F040BB /* ChatMessageCreateRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F022CFDB1CFE535500F040BB /* ChatMessageCreateRequest.swift */; };
 		F022CFE01CFF447A00F040BB /* VDependencyManager+Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = F022CFDF1CFF447A00F040BB /* VDependencyManager+Buttons.swift */; };
@@ -3728,7 +3729,6 @@
 		A72C85BC1C977FF500E97D4F /* ShowShareSequenceOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowShareSequenceOperation.swift; sourceTree = "<group>"; };
 		A72C85BD1C977FF500E97D4F /* StoredLoginOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoredLoginOperation.swift; sourceTree = "<group>"; };
 		A72C85BF1C977FF500E97D4F /* Paginated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Paginated.swift; sourceTree = "<group>"; };
-		A72C85C11C977FF500E97D4F /* FetchTemplateProductIdentifiersOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchTemplateProductIdentifiersOperation.swift; sourceTree = "<group>"; };
 		A72C85C21C977FF500E97D4F /* RestorePurchaseOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestorePurchaseOperation.swift; sourceTree = "<group>"; };
 		A72C85C71C977FF500E97D4F /* ActionConfirmationOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionConfirmationOperation.swift; sourceTree = "<group>"; };
 		A72C85C81C977FF500E97D4F /* ErrorOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorOperation.swift; sourceTree = "<group>"; };
@@ -4276,7 +4276,6 @@
 		A7E8CF251C909F5200D126BF /* VIPValidateReceiptOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VIPValidateReceiptOperationTests.swift; sourceTree = "<group>"; };
 		A7E8CF271C90A88E00D126BF /* VIPPurchasingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VIPPurchasingTests.swift; sourceTree = "<group>"; };
 		A7E8CF291C90B0B600D126BF /* MockPurchaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockPurchaseManager.swift; sourceTree = "<group>"; };
-		A7E8CF2B1C90B4E600D126BF /* FetchProductIdentifiersOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchProductIdentifiersOperationTests.swift; sourceTree = "<group>"; };
 		A7E8CF2D1C90B9BB00D126BF /* VDependencyManager+TemplateProducts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VDependencyManager+TemplateProducts.swift"; sourceTree = "<group>"; };
 		A7E8CF2F1C90B9C900D126BF /* TemplateProductsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplateProductsDataSource.swift; sourceTree = "<group>"; };
 		A7E8CF311C90BBFA00D126BF /* NSBundle+TestBundle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSBundle+TestBundle.swift"; sourceTree = "<group>"; };
@@ -5030,6 +5029,9 @@
 		F02024A21ADCABA900C61313 /* VDirectoryCellFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDirectoryCellFactory.h; sourceTree = "<group>"; };
 		F02024AB1ADD7F3D00C61313 /* VCardDirectoryCellFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCardDirectoryCellFactory.h; sourceTree = "<group>"; };
 		F02024AC1ADD7F3D00C61313 /* VCardDirectoryCellFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCardDirectoryCellFactory.m; sourceTree = "<group>"; };
+		F020B3571D33FE5C00388043 /* VIPFetchSubscriptionOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VIPFetchSubscriptionOperation.swift; sourceTree = "<group>"; };
+		F020B3591D3564F800388043 /* CrossFadingAnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CrossFadingAnimationController.swift; sourceTree = "<group>"; };
+		F020B35B1D35654700388043 /* CrossFadingNavigationControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CrossFadingNavigationControllerDelegate.swift; sourceTree = "<group>"; };
 		F022CFD91CFE52EA00F040BB /* ChatMessageCreateRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessageCreateRemoteOperation.swift; sourceTree = "<group>"; };
 		F022CFDB1CFE535500F040BB /* ChatMessageCreateRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessageCreateRequest.swift; sourceTree = "<group>"; };
 		F022CFDF1CFF447A00F040BB /* VDependencyManager+Buttons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VDependencyManager+Buttons.swift"; sourceTree = "<group>"; };
@@ -7425,6 +7427,8 @@
 				F093A93C1CF3D9D0009ACABF /* VIPFlowNavigationController.storyboard */,
 				F093A9441CF4D220009ACABF /* VIPSuccessViewController.swift */,
 				F093A9461CF4D24E009ACABF /* VIPSuccessViewController.storyboard */,
+				F020B3591D3564F800388043 /* CrossFadingAnimationController.swift */,
+				F020B35B1D35654700388043 /* CrossFadingNavigationControllerDelegate.swift */,
 			);
 			path = VIP;
 			sourceTree = "<group>";
@@ -8174,7 +8178,7 @@
 			isa = PBXGroup;
 			children = (
 				A7BB6C981CAEDF1A007FDD17 /* VIPSubscribeOperation.swift */,
-				A72C85C11C977FF500E97D4F /* FetchTemplateProductIdentifiersOperation.swift */,
+				F020B3571D33FE5C00388043 /* VIPFetchSubscriptionOperation.swift */,
 				A72C85C21C977FF500E97D4F /* RestorePurchaseOperation.swift */,
 				A73BA5741C93CAA0008168B5 /* ShowTestPurchaseConfirmationOperation.swift */,
 				A7FFCE4C1C8FCDD900B1BE49 /* RestorePurchaseOperation.swift */,
@@ -8707,7 +8711,6 @@
 				BFBF1B451C8E005D00AD8144 /* ExperienceEnhancerOperationTests.swift */,
 				623989831C3607F200D0E4D0 /* FetcherOperationTests.swift */,
 				A60C990E1C5AE4830096691D /* FetchFromMainContextOperationTests.swift */,
-				A7E8CF2B1C90B4E600D126BF /* FetchProductIdentifiersOperationTests.swift */,
 				A748BCC01C878B8C003D5F5F /* FlagSequenceOperationTests.swift */,
 				A7C565DA1C403FE600E4DF6A /* FollowCountOperationTests.swift */,
 				79CBAC101C3CD20100D1387E /* FriendFindByEmailOperationTests.swift */,
@@ -12559,7 +12562,6 @@
 				A70E84701C3F069A00689EFA /* FetcherOperationTests.swift in Sources */,
 				BFBF1B461C8E005D00AD8144 /* ExperienceEnhancerOperationTests.swift in Sources */,
 				A7A583521C3B07040088A08A /* SuggestedUsersOperationTests.swift in Sources */,
-				A7E8CF2C1C90B4E600D126BF /* FetchProductIdentifiersOperationTests.swift in Sources */,
 				BF3CD88E1D11D7B000CB7764 /* UserUpvoteToggleOperationTests.swift in Sources */,
 				7933BB611C3D945D00EFC374 /* UserSearchOperationTests.swift in Sources */,
 				A7B0A6301C347A01008B875C /* NSManagedObject+Extensions_Tests.swift in Sources */,
@@ -12795,6 +12797,7 @@
 				79FE184E1C53098D00170E5B /* VConversation.m in Sources */,
 				A73C3EB51C45890E00A8452C /* MediaSearchPreviewCell.swift in Sources */,
 				7AEB29531CCED68500B98C3B /* VDependencyManager+CoachmarkManager.swift in Sources */,
+				F020B35C1D35654700388043 /* CrossFadingNavigationControllerDelegate.swift in Sources */,
 				D8EC36EC1AB3F96700FB0CEB /* AVComposition+VTrimmedLoopingComposition.m in Sources */,
 				C3623E5F1B9A7874002B121D /* HexagonView.swift in Sources */,
 				D8C7CF5D19DCCD0200BA33E5 /* VExperienceEnhancerCell.m in Sources */,
@@ -13188,6 +13191,7 @@
 				F0457DD41CC07873009769A1 /* CameraFlashBarButtonItem.swift in Sources */,
 				A757DC861C80F9FB00618C0D /* VSocialLoginErrors.m in Sources */,
 				D86448A11A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m in Sources */,
+				F020B3581D33FE5C00388043 /* VIPFetchSubscriptionOperation.swift in Sources */,
 				A72C868A1C977FF600E97D4F /* UnauthorizedErrorHandler.swift in Sources */,
 				A6B9FD121B6070B100166BE8 /* VCameraFocusView.m in Sources */,
 				03CE670019B640CD0011BB9E /* VDeviceInfo.m in Sources */,
@@ -13390,6 +13394,7 @@
 				A700330D1C5FEA0600AB4A57 /* VMessage+Equitable.swift in Sources */,
 				0314D2E219B46AF300FA363C /* VThemeManager.m in Sources */,
 				7AB55FE51CADF00A00EBE31E /* CGSize+CornerRadius.swift in Sources */,
+				F020B35A1D3564F800388043 /* CrossFadingAnimationController.swift in Sources */,
 				A76AEAAB1BFFC7E900E8A26F /* VProfileEditViewController.swift in Sources */,
 				F06B41811B7ADA4B008709E8 /* VTrendingHashtagShelfCollectionViewCell.swift in Sources */,
 				D8DF71E71AFC3784002EA7A5 /* VTileOverlayCollectionCell.m in Sources */,
@@ -13518,7 +13523,6 @@
 				A7DDA6E31B601C95005CE55E /* SettingsEmptyCell.swift in Sources */,
 				C30AA4F01B0678BB0010CEFE /* VPermission.m in Sources */,
 				5A75EADE1C57653200B08056 /* VPublishParameters.m in Sources */,
-				A72C865F1C977FF600E97D4F /* FetchTemplateProductIdentifiersOperation.swift in Sources */,
 				A7738B081A4A36C9008EA973 /* VTransitionModel.m in Sources */,
 				A776EF1C1ACC99C20093992F /* VMultiplePickerViewController.m in Sources */,
 				A721E9111B572454000B7901 /* CIImage+VImage.m in Sources */,

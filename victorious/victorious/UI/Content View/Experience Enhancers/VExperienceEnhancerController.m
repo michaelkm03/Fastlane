@@ -81,19 +81,7 @@
                                                object:nil];
     
     self.sequence = [self.dependencyManager templateValueOfType:[VSequence class] forKey:@"sequence"];
-    
-    ExperienceEnhancersOperation *experienceEnhancerOperation = [[ExperienceEnhancersOperation alloc] initWithSequenceID:self.sequence.remoteId
-                                                                                                     productsDataSource:self.dependencyManager];
-    FetchTemplateProductIdentifiersOperation *fetchProductsOperation = [[FetchTemplateProductIdentifiersOperation alloc] initWithProductsDataSource:self.dependencyManager];
-    fetchProductsOperation.purchaseManager = self.purchaseManager;
-    [fetchProductsOperation addDependency:experienceEnhancerOperation];
-    [fetchProductsOperation queueWithCompletion:nil];
-    
-    __weak typeof(self) weakSelf = self;
-    [experienceEnhancerOperation queueWithCompletion:^(NSArray *results, NSError *error, BOOL cancelled)
-     {
-         [weakSelf onExperienceEnhancersLoaded:results];
-     }];
+    /// Body removed alongside FetchTemplateProductIdentifiersOperation
 }
 
 - (void)onExperienceEnhancersLoaded:(NSArray *)experienceEnhancers

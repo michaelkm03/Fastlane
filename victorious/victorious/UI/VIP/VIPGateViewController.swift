@@ -29,21 +29,20 @@ extension VIPGateViewControllerDelegate {
     }
 }
 
-@objc(VVIPGateViewController)
 class VIPGateViewController: UIViewController {
-    
     @IBOutlet weak private var headlineLabel: UILabel!
     @IBOutlet weak private var detailLabel: UILabel!
-    @IBOutlet weak private var subscribeButton: UIButton! //FUTURE: Make this a `textOnImage.button` once available
+    @IBOutlet weak private var subscribeButton: TextOnColorButton!
     @IBOutlet weak private var restoreButton: UIButton!
     @IBOutlet weak private var privacyPolicyButton: UIButton!
     @IBOutlet weak private var termsOfServiceButton: UIButton!
     @IBOutlet weak private var closeButton: UIButton!
     
+    @IBOutlet private var labelWidthConstraint: NSLayoutConstraint!
+    @IBOutlet private var scrollViewInsetConstraints: [NSLayoutConstraint]!
+    
     weak var delegate: VIPGateViewControllerDelegate?
-    
-    private var productIdentifier: String!
-    
+        
     var dependencyManager: VDependencyManager! {
         didSet {
             updateViews()
@@ -53,7 +52,7 @@ class VIPGateViewController: UIViewController {
     //MARK: - Initialization
 
     class func newWithDependencyManager(dependencyManager: VDependencyManager) -> VIPGateViewController {
-        let viewController: VIPGateViewController = VIPGateViewController.v_initialViewControllerFromStoryboard("VIPGateViewController")
+        let viewController: VIPGateViewController = VIPGateViewController.v_initialViewControllerFromStoryboard()
         viewController.dependencyManager = dependencyManager
         viewController.title = dependencyManager.stringForKey("title")
         return viewController
@@ -70,21 +69,38 @@ class VIPGateViewController: UIViewController {
     // MARK: - IBActions
     
     @IBAction func onSubscribe(sender: UIButton? = nil) {
-        let subscribe = VIPSubscribeOperation(productIdentifier: productIdentifier)
-        
-        setIsLoading(true, title: Strings.purchaseInProgress)
-        subscribe.queue() { error, canceled in
-            self.setIsLoading(false)
+        let subscriptionFetchOperation = VIPFetchSubscriptionOperation()
+        self.setIsLoading(true, title: Strings.purchaseInProgress)
+        subscriptionFetchOperation.queue() { [weak self] error, canceled in
             guard !canceled else {
+                self?.setIsLoading(false)
+                return
+            }
+
+            guard
+                let productIdentifier = subscriptionFetchOperation.subscriptionProductIdentifier where
+                error == nil
+            else {
+                let title = Strings.subscriptionFailed
+                self?.v_showErrorWithTitle(title, message: error?.localizedDescription)
+                self?.setIsLoading(false)
                 return
             }
             
-            if let error = error {
-                let title = Strings.subscriptionFailed
-                let message = error.localizedDescription
-                self.v_showErrorWithTitle(title, message: message)
-            } else {
-                self.onSubcriptionValidated()
+            let subscribe = VIPSubscribeOperation(productIdentifier: productIdentifier)
+            subscribe.queue() { error, canceled in
+                self?.setIsLoading(false)
+                guard !canceled else {
+                    return
+                }
+                
+                if let error = error {
+                    let title = Strings.subscriptionFailed
+                    let message = error.localizedDescription
+                    self?.v_showErrorWithTitle(title, message: message)
+                } else {
+                    self?.openGate(afterPurchase: true)
+                }
             }
         }
     }
@@ -93,8 +109,8 @@ class VIPGateViewController: UIViewController {
         let restore = RestorePurchasesOperation()
         
         setIsLoading(true, title: Strings.restoreInProgress)
-        restore.queue() { error, canceled in
-            self.setIsLoading(false)
+        restore.queue() { [weak self] error, canceled in
+            self?.setIsLoading(false)
             guard !canceled else {
                 return
             }
@@ -102,9 +118,9 @@ class VIPGateViewController: UIViewController {
             if let error = error {
                 let title = Strings.restoreFailed
                 let message = error.localizedDescription
-                self.v_showErrorWithTitle(title, message: message)
+                self?.v_showErrorWithTitle(title, message: message)
             } else {
-                self.onSubcriptionValidated()
+                self?.openGate(afterPurchase: false)
             }
         }
     }
@@ -135,9 +151,7 @@ class VIPGateViewController: UIViewController {
     }
     
     private func onSubcriptionValidated() {
-        showResultWithMessage(Strings.purchaseSucceeded) {
-            self.openGate(afterPurchase: true)
-        }
+        self.openGate(afterPurchase: true)
     }
     
     private func showResultWithMessage(message: String, completion: (() -> ())? = nil) {
@@ -199,12 +213,22 @@ class VIPGateViewController: UIViewController {
             detailLabel.font = font
         }
         
-        closeButton.setBackgroundImage(dependencyManager.closeIcon, forState: .Normal)
+        let icon = dependencyManager.closeIcon
+        closeButton.setBackgroundImage(icon, forState: .Normal)
         if let color = dependencyManager.closeIconTintColor {
             closeButton.tintColor = color
         }
         
-//        subscribeButton.dependencyManager = dependencyManager
+        subscribeButton.dependencyManager = dependencyManager.subscribeButtonDependency
+    }
+    
+    override func updateViewConstraints() {
+        let inset = scrollViewInsetConstraints.reduce(0, combine: { $0 + $1.constant })
+        let updatedLabelWidth = view.bounds.width - inset
+        if labelWidthConstraint.constant != updatedLabelWidth {
+            labelWidthConstraint.constant = updatedLabelWidth
+        }
+        super.updateViewConstraints()
     }
     
     // MARK: - String Constants
@@ -213,11 +237,9 @@ class VIPGateViewController: UIViewController {
         static let privacyPolicy            = NSLocalizedString("Privacy Policy", comment: "")
         static let termsOfService           = NSLocalizedString("Terms of Service", comment: "")
         static let purchaseInProgress       = NSLocalizedString("ActivityPurchasing", comment: "")
-        static let purchaseSucceeded        = NSLocalizedString("SubscriptionSucceeded", comment: "")
         static let restoreFailed            = NSLocalizedString("SubscriptionRestoreFailed", comment: "")
         static let restoreInProgress        = NSLocalizedString("SubscriptionActivityRestoring", comment: "")
         static let restorePrompt            = NSLocalizedString("SubscriptionRestorePrompt", comment: "")
-        static let restoreSucceeded         = NSLocalizedString("SubscriptionRestoreSucceeded", comment: "")
         static let subscriptionFailed       = NSLocalizedString("SubscriptionFailed", comment: "")
     }
 }
@@ -302,5 +324,9 @@ private extension VDependencyManager {
     
     var closeIconTintColor: UIColor? {
         return colorForKey("color.closeIcon")
+    }
+    
+    var subscribeButtonDependency: VDependencyManager? {
+        return childDependencyForKey("subscribeButton")
     }
 }

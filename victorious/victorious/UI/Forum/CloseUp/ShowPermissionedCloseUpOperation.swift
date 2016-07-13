@@ -35,12 +35,12 @@ class ShowPermissionedCloseUpOperation: MainQueueOperation {
         
         if content.isVIPOnly {
             let scaffold = dependencyManager.scaffoldViewController()
-            let showVIPGateOperation = ShowVIPFlowOperation(originViewController: scaffold, dependencyManager: dependencyManager)
+            let showVIPFlowOperation = ShowVIPFlowOperation(originViewController: scaffold, dependencyManager: dependencyManager)
             
             let completionBlock = self.completionBlock
-            showVIPGateOperation.rechainAfter(self).queue() { _ in
-                if !showVIPGateOperation.showedGate || showVIPGateOperation.allowedAccess {
-                    ShowCloseUpOperation(content: content, displayModifier: displayModifier).rechainAfter(showVIPGateOperation).queue() { _ in
+            showVIPFlowOperation.rechainAfter(self).queue() { _ in
+                if !showVIPFlowOperation.showedGate || showVIPFlowOperation.allowedAccess {
+                    ShowCloseUpOperation(content: content, displayModifier: displayModifier).rechainAfter(showVIPFlowOperation).queue() { _ in
                         completionBlock?()
                     }
                 }

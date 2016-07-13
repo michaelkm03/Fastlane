@@ -9,12 +9,10 @@
 import UIKit
 
 protocol VIPSuccessViewControllerDelegate: class {
-    
     func successViewControllerFinished(successViewController: VIPSuccessViewController)
 }
 
 class VIPSuccessViewController: UIViewController {
-    
     @IBOutlet weak var successImageView: UIImageView!
     @IBOutlet weak var headlineTextView: UITextView!
     @IBOutlet weak var detailTextView: UITextView!
@@ -84,6 +82,11 @@ class VIPSuccessViewController: UIViewController {
             successImageView.tintColor = tintColor
         }
         
+        confirmButton.backgroundColor = dependencyManager.confirmButonBackgroundColor
+        if let attributedConfirmText = dependencyManager.confirmButtonAttributedText {
+            confirmButton.setAttributedTitle(attributedConfirmText, forState: .Normal)
+        }
+        
         view.setNeedsUpdateConstraints()
     }
     
@@ -115,14 +118,17 @@ private extension VDependencyManager {
                 return nil
         }
         
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = .Center
         return [
             NSFontAttributeName: font,
-            NSForegroundColorAttributeName: color
+            NSForegroundColorAttributeName: color,
+            NSParagraphStyleAttributeName: paragraphStyle
         ]
     }
     
     var detailText: String? {
-        return stringForKey("text.successMessage")
+        return stringForKey("text.successDetails")
     }
     
     var detailTextAttributes: [String : AnyObject]? {
@@ -132,27 +138,30 @@ private extension VDependencyManager {
                 return nil
         }
         
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = .Center
         return [
             NSFontAttributeName: font,
-            NSForegroundColorAttributeName: color
+            NSForegroundColorAttributeName: color,
+            NSParagraphStyleAttributeName: paragraphStyle
         ]
     }
     
-    var confirmButtonText: String? {
-        return stringForKey("text.proceedMessage")
-    }
-    
-    var confirmButtonTextAttributes: [String : AnyObject]? {
-        
-        guard let font = fontForKey("font.proceedMessage"),
-            let color = colorForKey("color.proceedMessage") else {
+    var confirmButtonAttributedText: NSAttributedString? {
+        guard
+            let font = fontForKey("font.proceedMessage"),
+            let color = colorForKey("color.proceedMessage"),
+            let text = stringForKey("text.proceedMessage")
+        else {
                 return nil
         }
-        
-        return [
+
+        let attributes = [
             NSFontAttributeName: font,
             NSForegroundColorAttributeName: color
         ]
+        
+        return NSAttributedString(string: text, attributes: attributes)
     }
     
     var confirmButonBackgroundColor: UIColor? {

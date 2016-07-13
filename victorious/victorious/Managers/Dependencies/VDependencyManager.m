@@ -890,7 +890,13 @@ NSString * const VDependencyManagerNativeWorkspaceKey = @"nativeWorkspace";
             return [[UIImage alloc] initWithData:imageData scale:[templateImage.scale VCGFLOAT_VALUE]];
         }
     }
-    return [UIImage imageNamed:templateImage.imageURL.absoluteString];
+    NSString *imageName = templateImage.imageURL.absoluteString;
+    if ( [imageName isEqualToString:@"splash"] )
+    {
+        imageName = @"launchImage";
+    }
+    
+    return [UIImage imageNamed:imageName];
 }
 
 - (BOOL)isDictionaryAComponent:(NSDictionary *)possibleComponent
