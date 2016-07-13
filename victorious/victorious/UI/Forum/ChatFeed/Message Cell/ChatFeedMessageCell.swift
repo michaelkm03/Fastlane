@@ -50,8 +50,8 @@ class ChatFeedMessageCell: UICollectionViewCell {
         avatarView.clipsToBounds = true
         avatarView.userInteractionEnabled = true
         
-        avatarTapTarget.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onAvatarTapped)))
-        
+        avatarTapTarget.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOnAvatar)))
+        failureButton.addTarget(self, action: #selector(didTapOnFailureButton(_:)), forControlEvents: .TouchUpInside)
         captionLabel.numberOfLines = 0
         
         avatarShadowView.layer.shadowColor = ChatFeedMessageCell.shadowColor.CGColor
@@ -116,7 +116,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
     var previewBubbleView: ChatBubbleView?
     var previewView: UIView?
     
-    let failureButton = UIButton(type: .System)
+    let failureButton = UIButton(type: .Custom)
     
     // MARK: - Layout
     
@@ -142,13 +142,19 @@ class ChatFeedMessageCell: UICollectionViewCell {
     
     // MARK: - Gesture Recognizer Actions
     
-    func onAvatarTapped(sender: AnyObject?) {
+    private dynamic func didTapOnAvatar(sender: AnyObject?) {
         delegate?.messageCellDidSelectAvatarImage(self)
     }
     
-    func onPreviewTapped(sender: AnyObject?) {
+    private dynamic func didTapOnPreview(sender: AnyObject?) {
         delegate?.messageCellDidSelectMedia(self)
     }
+    
+    private dynamic func didTapOnFailureButton(sender: UIButton) {
+        print("abc")
+    }
+    
+    // MARK: - Private helper methods
     
     private func updateStyle() {
         usernameLabel.font = dependencyManager.usernameFont
@@ -160,6 +166,8 @@ class ChatFeedMessageCell: UICollectionViewCell {
         captionBubbleView.backgroundColor = dependencyManager.backgroundColor
         
         avatarView.backgroundColor = dependencyManager.backgroundColor
+        
+        failureButton.setImage(UIImage(named: "failed_error"), forState: .Normal)
     }
     
     private func populateData() {
@@ -224,7 +232,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
         previewView.clipsToBounds = true
         previewView.translatesAutoresizingMaskIntoConstraints = false
         
-        previewView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onPreviewTapped)))
+        previewView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOnPreview)))
         
         let bubbleView = ChatBubbleView()
         bubbleView.contentView.addSubview(previewView)
