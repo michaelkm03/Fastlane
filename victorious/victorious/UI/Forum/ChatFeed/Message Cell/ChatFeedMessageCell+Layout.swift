@@ -105,15 +105,6 @@ extension ChatFeedMessageCell {
         return bubbleView.frame
     }
     
-    private static func contentOffset(forAlignment alignment: ChatFeedMessageCellAlignment, inBounds bounds: CGRect, withBubbleWidth bubbleWidth: CGFloat) -> CGPoint {
-        let edgePadding = horizontalSpacing * 2.0 + avatarSize.width
-        
-        switch alignment {
-            case .left: return CGPoint(x: edgePadding, y: contentMargin.top)
-            case .right: return CGPoint(x: bounds.maxX - bubbleWidth - edgePadding, y: contentMargin.top)
-        }
-    }
-    
     private static func avatarOffset(forAlignment alignment: ChatFeedMessageCellAlignment, inBounds bounds: CGRect) -> CGPoint {
         switch alignment {
             case .left: return CGPoint(x: horizontalSpacing, y: contentMargin.top)
