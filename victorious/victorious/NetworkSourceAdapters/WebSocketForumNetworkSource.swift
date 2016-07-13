@@ -47,7 +47,7 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
     
     // MARK: - Configuration
 
-    private struct Reconnect {
+    private struct Reconnector {
         /// The initial time to wait before reconnecting upon disconnection.
         static let initialTimeout = NSTimeInterval(2)
 
@@ -58,13 +58,13 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
         static let maxTimeout = NSTimeInterval(25)
 
         static func increaseReconnectTimeout(reconnectTimeout: NSTimeInterval) -> NSTimeInterval {
-            let increasedReconnectTimeout = reconnectTimeout + NSTimeInterval(arc4random_uniform(Reconnect.timeoutPadding)) + 1
+            let increasedReconnectTimeout = reconnectTimeout + NSTimeInterval(arc4random_uniform(Reconnector.timeoutPadding)) + 1
             return min(increasedReconnectTimeout, maxTimeout)
         }
     }
 
     /// The reconnect timeout used at the moment, will reset when we explicitly close the WS. Set to 0 to disable reconnecting.
-    private var currentReconnectTimeout: NSTimeInterval = Reconnect.initialTimeout
+    private var currentReconnectTimeout: NSTimeInterval = Reconnector.initialTimeout
 
     // MARK: - ForumEventReceiver
     
@@ -75,7 +75,7 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
             case .websocket(let websocketEvent):
                 switch websocketEvent {
                     case .connected:
-                        currentReconnectTimeout = Reconnect.initialTimeout
+                        currentReconnectTimeout = Reconnector.initialTimeout
                     case .disconnected(let webSocketError):
                         receiveDisconnectEventWithError(webSocketError)
                     default: break
@@ -90,7 +90,7 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
             return
         }
 
-        currentReconnectTimeout = Reconnect.increaseReconnectTimeout(currentReconnectTimeout)
+        currentReconnectTimeout = Reconnector.increaseReconnectTimeout(currentReconnectTimeout)
         dispatch_after(currentReconnectTimeout) { [weak self] in
             self?.setUpIfNeeded()
         }
@@ -110,7 +110,7 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
         webSocketController.tearDown()
 
         // The reconnect timeout is reset whenever the WS is closed explicitly.
-        currentReconnectTimeout = Reconnect.initialTimeout
+        currentReconnectTimeout = Reconnector.initialTimeout
     }
     
     var isSetUp: Bool {
