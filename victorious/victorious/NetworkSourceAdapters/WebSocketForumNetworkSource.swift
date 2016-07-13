@@ -74,6 +74,8 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
         switch event {
             case .websocket(let websocketEvent):
                 switch websocketEvent {
+                    case .connected:
+                        currentReconnectTimeout = Reconnect.initialTimeout
                     case .disconnected(let webSocketError):
                         receiveDisconnectEventWithError(webSocketError)
                     default: break
