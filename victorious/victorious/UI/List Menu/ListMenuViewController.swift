@@ -49,6 +49,9 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         collectionView?.contentInset = ListMenuViewController.contentInset
         dependencyManager.addBackgroundToBackgroundHost(self)
         view.layoutIfNeeded()
+        
+        // Hack to show the creator logo
+        postListMenuSelection(nil)
     }
     
     override func viewWillAppear(animated: Bool) {

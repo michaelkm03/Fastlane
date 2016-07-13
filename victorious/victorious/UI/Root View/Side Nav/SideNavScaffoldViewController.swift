@@ -62,7 +62,6 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
         let navigationBar = mainNavigationController.innerNavigationController.navigationBar
         navigationBar.translucent = false
         dependencyManager.applyStyleToNavigationBar(navigationBar)
-        loadNavigationBarTitle()
         
         let backArrowImage = UIImage(named: "BackArrow")
         navigationBar.backIndicatorImage = backArrowImage
@@ -220,7 +219,9 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
     }
     
     private func loadNavigationBarTitle() {
-        dependencyManager.childDependencyForKey("centerScreen")?.configureNavigationItem(mainNavigationController.innerNavigationController.navigationBar.topItem)
+        dispatch_async(dispatch_get_main_queue()) {
+            self.dependencyManager.childDependencyForKey("centerScreen")?.configureNavigationItem(self.mainNavigationController.innerNavigationController.navigationBar.topItem)
+        }
     }
     
     // MARK: - KVO
