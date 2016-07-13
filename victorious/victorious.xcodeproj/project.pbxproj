@@ -569,12 +569,9 @@
 		626842B61C7418CE00AFA454 /* TestIMAAd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 626842B41C74187500AFA454 /* TestIMAAd.swift */; };
 		627FD7E01C5DC10000680B22 /* TestAdLifecycleDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 627FD7DF1C5DC10000680B22 /* TestAdLifecycleDelegate.swift */; };
 		6287BE101C7E87390057D116 /* VIPGateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6287BE0F1C7E87390057D116 /* VIPGateViewController.swift */; };
-		629EDACF1C51B3A100E8421F /* IMAAdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629EDACE1C51B3A100E8421F /* IMAAdViewController.swift */; };
-		629EDAD11C52F43E00E8421F /* VIMAContentPlayhead.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629EDAD01C52F43E00E8421F /* VIMAContentPlayhead.swift */; };
 		62A45FA91C6F2C8C0089DC9E /* TestAdLifecycleDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 627FD7DF1C5DC10000680B22 /* TestAdLifecycleDelegate.swift */; };
 		62A7C9EB1C7FAE2A009F8200 /* NSBundle+AppStoreReceipt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62A7C9EA1C7FAE2A009F8200 /* NSBundle+AppStoreReceipt.swift */; };
 		62B3CC421C5631D700FD733A /* SequenceWithAdBreak.json in Resources */ = {isa = PBXBuildFile; fileRef = 62575EEC1C54CB2000B49CB0 /* SequenceWithAdBreak.json */; };
-		62B509701C548AC4008C8D38 /* GoogleInteractiveMediaAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62B5096F1C548AC4008C8D38 /* GoogleInteractiveMediaAds.framework */; };
 		62B509741C5492C1008C8D38 /* AdBreakTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62B509731C5492C1008C8D38 /* AdBreakTests.swift */; };
 		62BA8BCE1C59E0C700FFDF9F /* TestVAdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62BA8BCD1C59E0C700FFDF9F /* TestVAdViewController.swift */; };
 		62C0808B1C39D2FD007F1C73 /* PersistentStoreTestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C0808A1C39D2FD007F1C73 /* PersistentStoreTestHelper.swift */; };
@@ -3036,10 +3033,7 @@
 		627FD7E31C5DC1A500680B22 /* TestIMAAdsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestIMAAdsManager.swift; sourceTree = "<group>"; };
 		627FD7E51C5DCD6A00680B22 /* TestIMAAdsLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestIMAAdsLoader.swift; sourceTree = "<group>"; };
 		6287BE0F1C7E87390057D116 /* VIPGateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = VIPGateViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		629EDACE1C51B3A100E8421F /* IMAAdViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = IMAAdViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		629EDAD01C52F43E00E8421F /* VIMAContentPlayhead.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VIMAContentPlayhead.swift; sourceTree = "<group>"; };
 		62A7C9EA1C7FAE2A009F8200 /* NSBundle+AppStoreReceipt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSBundle+AppStoreReceipt.swift"; sourceTree = "<group>"; };
-		62B5096F1C548AC4008C8D38 /* GoogleInteractiveMediaAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleInteractiveMediaAds.framework; sourceTree = "<group>"; };
 		62B509731C5492C1008C8D38 /* AdBreakTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdBreakTests.swift; sourceTree = "<group>"; };
 		62B9E8365153DC8C04105B08 /* Pods-victorious-test.stable.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.stable.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.stable.xcconfig"; sourceTree = "<group>"; };
 		62BA8BCD1C59E0C700FFDF9F /* TestVAdViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestVAdViewController.swift; sourceTree = "<group>"; };
@@ -5370,7 +5364,6 @@
 				A7F8DD631A0B1A8B00F82256 /* WebKit.framework in Frameworks */,
 				DBAD890A19F5BBAD00D678A0 /* CoreLocation.framework in Frameworks */,
 				DBAD890819F5BB9C00D678A0 /* MediaPlayer.framework in Frameworks */,
-				62B509701C548AC4008C8D38 /* GoogleInteractiveMediaAds.framework in Frameworks */,
 				DBAD890619F5BB9000D678A0 /* MapKit.framework in Frameworks */,
 				DBAD890419F5BAC500D678A0 /* CoreText.framework in Frameworks */,
 				038B7F9719DB8EB300F739DF /* CoreTelephony.framework in Frameworks */,
@@ -7015,7 +7008,6 @@
 			isa = PBXGroup;
 			children = (
 				03C1859519B42D3000E27D05 /* Crashlytics.framework */,
-				62B5096F1C548AC4008C8D38 /* GoogleInteractiveMediaAds.framework */,
 				03CE66F919B59F260011BB9E /* Image Effects */,
 				792D46C81BD953F500DE662A /* Reveal.framework */,
 				03388EEC1C582F9A00D59A05 /* TestFairySDK */,
@@ -7376,14 +7368,6 @@
 				BFCFFFEE1CEE835C00F512B1 /* VUserTests.swift */,
 			);
 			name = Models;
-			sourceTree = "<group>";
-		};
-		626930461C49B81300A1A664 /* Video */ = {
-			isa = PBXGroup;
-			children = (
-				629EDAD01C52F43E00E8421F /* VIMAContentPlayhead.swift */,
-			);
-			name = Video;
 			sourceTree = "<group>";
 		};
 		6287BE0E1C7E871B0057D116 /* VIP */ = {
@@ -9547,7 +9531,6 @@
 				03CE66F319B47B590011BB9E /* Twitter */,
 				037CB73919CFE8550084BBED /* Upload */,
 				A743E7E11A0816D500339CB3 /* Validation */,
-				626930461C49B81300A1A664 /* Video */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -10337,7 +10320,6 @@
 			children = (
 				62E5A9701C6F0E19007E27C7 /* AdLifecycleDelegate.h */,
 				62168C501C7076DF008E34AA /* AdVideoPlayerViewController.swift */,
-				629EDACE1C51B3A100E8421F /* IMAAdViewController.swift */,
 				DBB1A0481A0025F600E16D62 /* VAdViewControllerType.h */,
 			);
 			path = Monetization;
@@ -12911,7 +12893,6 @@
 				A7B1335A1C6178FD006EC4F5 /* ActivityFooterCollectionDataSource.swift in Sources */,
 				A706FE261C236AE100C2CBFF /* NSManagedObject+Copy.swift in Sources */,
 				A789F7331BF11F4900F5C87B /* VStream+Parsable.swift in Sources */,
-				629EDAD11C52F43E00E8421F /* VIMAContentPlayhead.swift in Sources */,
 				A72C861D1C977FF500E97D4F /* LogoutOperation.swift in Sources */,
 				C35266011B28F1B6001F093F /* VCreateSheetCollectionViewCell.m in Sources */,
 				BF2AE2BE1CD280CB00A9967A /* ConfigurableGridStreamHeaderView.swift in Sources */,
@@ -13118,7 +13099,6 @@
 				03F61E6D1C6ADF0700EEA8F9 /* YTPlayerView.m in Sources */,
 				037FCF1B1A8DAF0E00E8ABFC /* VNavigationControllerScrollDelegate.m in Sources */,
 				BE171D8C1868BE64004E5202 /* VAppDelegate.m in Sources */,
-				629EDACF1C51B3A100E8421F /* IMAAdViewController.swift in Sources */,
 				A7D69C701C0E725100B462C3 /* VComment+Parsable.swift in Sources */,
 				039ED29919C908F400305987 /* VCVideoPlayerToolbarSlider.m in Sources */,
 				A7CD87591B1E74AE002532A9 /* VImageAssetFinder.m in Sources */,
