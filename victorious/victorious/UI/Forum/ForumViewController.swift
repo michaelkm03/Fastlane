@@ -299,6 +299,38 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     func chatFeed(chatFeed: ChatFeed, willEndDragging scrollView: UIScrollView, withVelocity velocity: CGPoint) {
         stageShrinkingAnimator?.chatFeed(chatFeed, willEndDragging: scrollView, withVelocity: velocity)
     }
+    
+    func chatFeed(chatFeed: ChatFeed, didSelectFailureButtonForContent content: ContentModel) {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+        alertController.addAction(
+            UIAlertAction(
+                title: NSLocalizedString("TryAgain", comment: "Sending message failed. User taps this to try sending again"),
+                style: .Default,
+                handler: { alertAction in
+                    // Handle re-send action
+                }
+            )
+        )
+        
+        alertController.addAction(
+            UIAlertAction(
+                title: NSLocalizedString("Delete", comment: ""),
+                style: .Destructive,
+                handler: { alertAction in
+                    // Handle delete action
+                }
+            )
+        )
+        
+        alertController.addAction(
+            UIAlertAction(
+                title: NSLocalizedString("Cancel", comment: ""),
+                style: .Cancel,
+                handler: nil
+            )
+        )
+        presentViewController(alertController, animated: true, completion: nil)
+    }
 
     // MARK: - VFocusable
     

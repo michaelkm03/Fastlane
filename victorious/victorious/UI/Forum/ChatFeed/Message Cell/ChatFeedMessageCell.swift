@@ -12,6 +12,7 @@ import VictoriousIOSSDK
 protocol ChatFeedMessageCellDelegate: class {
     func messageCellDidSelectAvatarImage(messageCell: ChatFeedMessageCell)
     func messageCellDidSelectMedia(messageCell: ChatFeedMessageCell)
+    func messageCellDidSelectFailureButton(messageCell: ChatFeedMessageCell)
 }
 
 class ChatFeedMessageCell: UICollectionViewCell {
@@ -151,34 +152,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
     }
     
     private dynamic func didTapOnFailureButton(sender: UIButton) {
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
-        alertController.addAction(
-            UIAlertAction(
-                title: NSLocalizedString("TryAgain", comment: "Sending message failed. User taps this to try sending again"),
-                style: .Default,
-                handler: { alertAction in
-                    // Handle re-send action
-                }
-            )
-        )
-        
-        alertController.addAction(
-            UIAlertAction(
-                title: NSLocalizedString("Delete", comment: ""),
-                style: .Destructive,
-                handler: { alertAction in
-                    // Handle delete action
-                }
-            )
-        )
-        
-        alertController.addAction(
-            UIAlertAction(
-                title: NSLocalizedString("Cancel", comment: ""),
-                style: .Cancel,
-                handler: nil
-            )
-        )
+        delegate?.messageCellDidSelectFailureButton(self)
     }
     
     // MARK: - Private helper methods
