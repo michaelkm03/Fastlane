@@ -30,7 +30,8 @@ class StageShrinkingAnimator: NSObject {
         static let scaleTransform = CGAffineTransformMakeScale(scaleFactor, scaleFactor)
         static let stageMargin = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 10)
         static let borderEndingAlpha = CGFloat(0.3)
-        static let tranlationTriggerCoefficient = CGFloat(0.3)
+        static let openPanTriggerPercentage = CGFloat(0.8)
+        static let closePanTriggerPercentage = CGFloat (0.25)
         static let velocityTargetShrink = CGFloat(0.3)
         static let velocityTargetGrow = CGFloat(1.5)
         static let inProgressSnapAnimationDuration = NSTimeInterval(0.3)
@@ -78,28 +79,8 @@ class StageShrinkingAnimator: NSObject {
         
         configureMaskingAndBorders()
         configureShadow()
-        stageTapGestureRecognizer.addTarget(self, action: #selector(tappedOnStage(_:)))
-        stagePanGestureRecognizer.addTarget(self, action: #selector(pannedOnStage(_:)))
-        stageTouchView.addGestureRecognizer(stageTapGestureRecognizer)
-        stageContainer.addGestureRecognizer(stagePanGestureRecognizer)
-        keyboardManager = VKeyboardNotificationManager(
-            keyboardWillShowBlock: { [weak self] startFrame, endFrame, animationDuration, animationCurve in
-                UIView.animateWithDuration(Constants.fullSnapAnimationDuration,
-                    delay: 0,
-                    usingSpringWithDamping: Constants.springDamping,
-                    initialSpringVelocity: 0,
-                    options: [],
-                    animations: { 
-                        self?.shrinkStage()
-                    },
-                    completion: nil
-                )
-            },
-            willHideBlock: { [weak self] startFrame, endFrame, animationDuration, animationCurve in
-                self?.ignoreScrollBehaviorUntilNextBegin = true
-            },
-            willChangeFrameBlock: nil
-        )
+        configureGestureRecognizers()
+        configureKeyboardListener()
     }
     
     func chatFeed(chatFeed: ChatFeed, didScroll scrollView: UIScrollView) {
@@ -158,10 +139,8 @@ class StageShrinkingAnimator: NSObject {
             assertionFailure("Failed to get pan recognizer view for stage shrinking animator.")
             return
         }
-        
         let translation = gesture.translationInView(view)
-        var percentage = max(min(fabs(translation.y) / Constants.dragMagnitude, 1), 0)
-        percentage = translation.y < 0 ? percentage : 1 - percentage
+        let percentage = percentThroughPanOnStage(forTranslation: translation)
         switch gesture.state {
             case .Changed:
                 // We only care about going a certain direction from either expanded or shrunken
@@ -171,14 +150,12 @@ class StageShrinkingAnimator: NSObject {
                 applyInterploatedValues(withPercentage: percentage)
             case .Ended:
                 animateInProgressSnap(withAnimations: {
-                    if percentage > 0.5 {
-                        self.goTo(self.stageState == .expanded ? .shrunken : .expanded)
-                    }
-                    else if gesture.velocityInView(view).y < 0 {
-                        self.shrinkStage()
-                    }
-                    else {
-                        self.enlargeStage()
+                    if (self.stageState == .expanded) && (percentage > Constants.closePanTriggerPercentage) {
+                        self.goTo(.shrunken)
+                    } else if (self.stageState == .shrunken) && (percentage < Constants.openPanTriggerPercentage) {
+                        self.goTo(.expanded)
+                    } else {
+                        self.goTo(self.stageState)
                     }
                 })
             case .Possible, .Began, .Cancelled, .Failed:
@@ -235,6 +212,7 @@ class StageShrinkingAnimator: NSObject {
     }
     
     private func animateInProgressSnap(withAnimations animations:() -> Void) {
+        ignoreScrollBehaviorUntilNextBegin = true
         UIView.animateWithDuration(
             Constants.inProgressSnapAnimationDuration,
             delay: 0.0,
@@ -247,6 +225,16 @@ class StageShrinkingAnimator: NSObject {
     }
     
     // MARK: - Math and Interpolation functions
+    
+    /// This method returns a percentage through the pan interaction on top of the stage.
+    /// Input for translation.y that results in a value of zero indicate that the stage 
+    /// should be fully expanded. Input that result in a value of 1 indicate that the stage
+    /// should be fully shrunken. The percentage will apply a linear interpolation of values 
+    /// for all input in between.
+    private func percentThroughPanOnStage(forTranslation translation: CGPoint) -> CGFloat {
+        let percentage = max(min(fabs(translation.y) / Constants.dragMagnitude, 1), 0)
+        return translation.y < 0 ? percentage : 1 - percentage
+    }
     
     private func percentThrough(forTranslation translation: CGPoint) -> CGFloat {
         var adjustedTranslation = translation
@@ -311,5 +299,33 @@ class StageShrinkingAnimator: NSObject {
         
         // Want the border to be 1px after scaled transform
         stageViewControllerContainer.layer.borderWidth = (1 / stageViewControllerContainer.contentScaleFactor)
+    }
+    
+    private func configureGestureRecognizers() {
+        stageTapGestureRecognizer.addTarget(self, action: #selector(tappedOnStage(_:)))
+        stagePanGestureRecognizer.addTarget(self, action: #selector(pannedOnStage(_:)))
+        stageTouchView.addGestureRecognizer(stageTapGestureRecognizer)
+        stageContainer.addGestureRecognizer(stagePanGestureRecognizer)
+    }
+    
+    private func configureKeyboardListener() {
+        keyboardManager = VKeyboardNotificationManager(
+            keyboardWillShowBlock: { [weak self] startFrame, endFrame, animationDuration, animationCurve in
+                UIView.animateWithDuration(Constants.fullSnapAnimationDuration,
+                    delay: 0,
+                    usingSpringWithDamping: Constants.springDamping,
+                    initialSpringVelocity: 0,
+                    options: [],
+                    animations: {
+                        self?.shrinkStage()
+                    },
+                    completion: nil
+                )
+            },
+            willHideBlock: { [weak self] startFrame, endFrame, animationDuration, animationCurve in
+                self?.ignoreScrollBehaviorUntilNextBegin = true
+            },
+            willChangeFrameBlock: nil
+        )
     }
 }
