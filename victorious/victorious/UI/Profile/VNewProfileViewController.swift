@@ -353,11 +353,11 @@ private extension VDependencyManager {
     }
     
     var upvoteIconSelectedBackgroundColor: UIColor? {
-        return colorForKey("color.background.upvote.selected") ?? UIColor(white: 1.0, alpha: 0.8)
+        return colorForKey("color.background.upvote.selected")
     }
     
     var upvoteIconUnselectedBackgroundColor: UIColor? {
-        return colorForKey("color.background.upvote.unselected") ?? UIColor(white: 1.0, alpha: 0.2)
+        return colorForKey("color.background.upvote.unselected")
     }
     
     var upvoteIconSelected: UIImage? {
