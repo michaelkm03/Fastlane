@@ -10,24 +10,17 @@ import UIKit
 
 /// The table view cell used to display notifications.
 class NotificationCell: UITableViewCell, VBackgroundContainer {
-    // MARK: - Constants
-    
-    private static let containerCornerRadius: CGFloat = 6.0
-    private static let shadowRadius: CGFloat = 1.25
-    private static let shadowOpacity: Float = 0.4
+    private struct Constants {
+        static let containerCornerRadius = CGFloat(6.0)
+    }
     
     // MARK: - Initializing
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        containerView.layer.cornerRadius = NotificationCell.containerCornerRadius
+        containerView.layer.cornerRadius = Constants.containerCornerRadius
         selectionStyle = .None
-        
-        profileShadowView.layer.shadowColor = UIColor.blackColor().CGColor
-        profileShadowView.layer.shadowRadius = NotificationCell.shadowRadius
-        profileShadowView.layer.shadowOpacity = NotificationCell.shadowOpacity
-        profileShadowView.layer.shadowOffset = CGSize(width: 0.0, height: 0.0)
         
         backgroundColor = nil
         backgroundView?.backgroundColor = nil
@@ -36,12 +29,8 @@ class NotificationCell: UITableViewCell, VBackgroundContainer {
     // MARK: - Content
     
     func updateContent(with notification: VNotification, dependencyManager: VDependencyManager) {
-        profileButton.user = notification.user
-        profileButton.dependencyManager = dependencyManager
-        profileButton.tintColor = dependencyManager.profileButtonTintColor
-        
+        avatarView.user = notification.user
         dateLabel.text = notification.createdAt.stringDescribingTimeIntervalSinceNow(format: .verbose, precision: .minutes) ?? ""
-        
         dateLabel.font = dependencyManager.dateFont
         
         let message = notification.subject
@@ -83,30 +72,9 @@ class NotificationCell: UITableViewCell, VBackgroundContainer {
     // MARK: - Views
     
     @IBOutlet private var containerView: UIView!
-    @IBOutlet private var profileButton: VDefaultProfileButton!
-    @IBOutlet private var profileShadowView: UIView!
+    @IBOutlet private var avatarView: AvatarView!
     @IBOutlet private var messageLabel: IntrinsicContentSizeHackLabel!
     @IBOutlet private var dateLabel: UILabel!
-    
-    // MARK: - Layout
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        updateProfilePictureShadowPathIfNeeded()
-    }
-    
-    // MARK: - Shadows
-    
-    private var shadowBounds: CGRect?
-    
-    private func updateProfilePictureShadowPathIfNeeded() {
-        let newShadowBounds = profileShadowView.bounds
-        
-        if newShadowBounds != shadowBounds {
-            shadowBounds = newShadowBounds
-            profileShadowView.layer.shadowPath = UIBezierPath(ovalInRect: newShadowBounds).CGPath
-        }
-    }
     
     // MARK: - Actions
     
@@ -122,10 +90,6 @@ class NotificationCell: UITableViewCell, VBackgroundContainer {
 }
 
 private extension VDependencyManager {
-    var profileButtonTintColor: UIColor? {
-        return colorForKey(VDependencyManagerLinkColorKey)
-    }
-    
     var messageTextColor: UIColor? {
         return colorForKey(VDependencyManagerMainTextColorKey)
     }

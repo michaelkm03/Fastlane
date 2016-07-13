@@ -25,7 +25,7 @@ static NSString * const kTextTitleColorKey = @"color.text.label1";
 @property (nonatomic, strong) VFollowControl *followControl;
 @property (nonatomic, strong) VContentThumbnailsDataSource *thumbnailsDataSource;
 @property (nonatomic, strong) VContentThumbnailsViewController *thumbnailsViewController;
-@property (nonatomic, weak) IBOutlet VDefaultProfileImageView *userProfileImage;
+@property (nonatomic, weak) IBOutlet UIImageView *userProfileImage;
 @property (nonatomic, weak) IBOutlet UITextView *usernameTextView;
 @property (nonatomic, weak) IBOutlet UIView *followControlContainerView;
 @property (nonatomic, weak) IBOutlet UIView *userStreamContainerView;
