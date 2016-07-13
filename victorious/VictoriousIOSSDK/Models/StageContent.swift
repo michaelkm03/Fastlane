@@ -1,5 +1,5 @@
 //
-//  StageItem.swift
+//  StageContent.swift
 //  victorious
 //
 //  Created by Sebastian Nystorm on 13/7/16.
@@ -9,8 +9,8 @@
 import Foundation
 
 /// A compound struct that contain both the actual content that goes on stage and 
-/// the metaData object that belongs to it.
-public struct StageItem {
+/// the meta data object that belongs to it.
+public struct StageContent {
     public let content: ContentModel
     public let metaData: StageMetaData?
 

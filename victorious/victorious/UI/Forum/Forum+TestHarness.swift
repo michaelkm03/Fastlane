@@ -117,8 +117,8 @@ extension ForumViewController {
                 previewImages: [randPreviewImage()]
             )
         )
-        let item = StageItem(content: content)
-        stage?.addStageItem(item)
+        let stageContent = StageContent(content: content)
+        stage?.addStageContent(stageContent)
         stageCount += 1
         
         let time = next["length"] != nil ? Double(next["length"]!)! : ForumViewController.defaultStageContentLength

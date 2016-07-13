@@ -50,8 +50,8 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         }
     }
 
-    /// Holds the aggregated information about the content and the meta data.
-    private var currentStageItem: StageItem?
+    /// Holds the current aggregated information about the content and the meta data.
+    private var currentStageContent: StageContent?
 
     private var stageDataSource: StageDataSource?
     private var enabled = true
@@ -104,16 +104,16 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         captionBarViewController?.populate(content.author, caption: text)
     }
 
-    func addStageItem(stageItem: StageItem) {
+    func addStageContent(stageContent: StageContent) {
         guard enabled else {
             return
         }
-        currentStageItem = stageItem
+        currentStageContent = stageContent
 
-        attributionBar.configure(with: stageItem.content.author)
+        attributionBar.configure(with: stageContent.content.author)
 
         mediaContentView.videoCoordinator?.pauseVideo()
-        mediaContentView.content = stageItem.content
+        mediaContentView.content = stageContent.content
 
         updateStageHeight()
 
@@ -122,7 +122,7 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
     
     func removeContent() {
         hideStage()
-        currentStageItem = nil
+        currentStageContent = nil
     }
     
     func setStageEnabled(enabled: Bool, animated: Bool) {

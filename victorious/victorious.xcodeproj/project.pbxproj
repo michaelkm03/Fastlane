@@ -510,7 +510,7 @@
 		0EE5C61B1C97818500BF7DB0 /* GifAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE5C61A1C97818500BF7DB0 /* GifAsset.swift */; };
 		0EF3774F1D35DE21006BF786 /* StageMetaData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF3774E1D35DE21006BF786 /* StageMetaData.swift */; };
 		0EF377511D36C6E5006BF786 /* StageMetaDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF377501D36C6E5006BF786 /* StageMetaDataTests.swift */; };
-		0EF377531D36EF4A006BF786 /* StageItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF377521D36EF4A006BF786 /* StageItem.swift */; };
+		0EF377531D36EF4A006BF786 /* StageContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF377521D36EF4A006BF786 /* StageContent.swift */; };
 		0EF716891C98F8C60005CF86 /* SSLSecurity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF716871C98F8C60005CF86 /* SSLSecurity.swift */; };
 		0EF7168A1C98F8C60005CF86 /* WebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF716881C98F8C60005CF86 /* WebSocket.swift */; };
 		0EF7168D1C98FE5E0005CF86 /* WebSocketController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF7168C1C98FE5E0005CF86 /* WebSocketController.swift */; };
@@ -2972,7 +2972,7 @@
 		0EE5C61A1C97818500BF7DB0 /* GifAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GifAsset.swift; sourceTree = "<group>"; };
 		0EF3774E1D35DE21006BF786 /* StageMetaData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StageMetaData.swift; sourceTree = "<group>"; };
 		0EF377501D36C6E5006BF786 /* StageMetaDataTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StageMetaDataTests.swift; sourceTree = "<group>"; };
-		0EF377521D36EF4A006BF786 /* StageItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StageItem.swift; sourceTree = "<group>"; };
+		0EF377521D36EF4A006BF786 /* StageContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StageContent.swift; sourceTree = "<group>"; };
 		0EF716871C98F8C60005CF86 /* SSLSecurity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SSLSecurity.swift; path = Starscream/Source/SSLSecurity.swift; sourceTree = "<group>"; };
 		0EF716881C98F8C60005CF86 /* WebSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebSocket.swift; path = Starscream/Source/WebSocket.swift; sourceTree = "<group>"; };
 		0EF7168C1C98FE5E0005CF86 /* WebSocketController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebSocketController.swift; path = WebSocket/WebSocketController.swift; sourceTree = "<group>"; };
@@ -6319,7 +6319,7 @@
 				0E17C2A81C9129B90013291C /* VideoAsset.swift */,
 				A7559A791CCFD93B00C37349 /* VIPStatus.swift */,
 				678053791C60838800894821 /* VoteResult.swift */,
-				0EF377521D36EF4A006BF786 /* StageItem.swift */,
+				0EF377521D36EF4A006BF786 /* StageContent.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -12095,7 +12095,7 @@
 				A7B844E91CBC25F700CE02DE /* MediaAttachment+Forum.swift in Sources */,
 				0EBF41791CAAF836002966B3 /* MediaMetaData.swift in Sources */,
 				0300AA5B1BF17C20000A121D /* VMultipartFormDataWriter.m in Sources */,
-				0EF377531D36EF4A006BF786 /* StageItem.swift in Sources */,
+				0EF377531D36EF4A006BF786 /* StageContent.swift in Sources */,
 				6759555B1BF145B000D40A87 /* SuggestedUsersRequest.swift in Sources */,
 				0E06150B1CA35DDC00236D4A /* ForumEventReceiver.swift in Sources */,
 				0399E80E1C51D42900E090F7 /* TemplateRequest.swift in Sources */,
