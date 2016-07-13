@@ -256,7 +256,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
         let captionHeight = captionSize(displaying: content, inWidth: width, dependencyManager: dependencyManager)?.height ?? 0.0
         let previewHeight = previewSize(displaying: content, inWidth: width)?.height ?? 0.0
         
-        if (captionHeight == 0.0 && previewHeight == 0.0) {
+        if captionHeight == 0.0 && previewHeight == 0.0 {
             return nil //Invalid content
         }
     

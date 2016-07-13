@@ -158,7 +158,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         }
     }
     
-    func widthForChatFeedItem() -> CGFloat {
+    var chatFeedItemWidth: CGFloat {
         return collectionView.bounds.width
     }
     

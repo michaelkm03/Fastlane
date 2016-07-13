@@ -12,7 +12,7 @@ import Foundation
 protocol TutorialNetworkDataSourceDelegate: class {
     func didReceiveNewMessage(message: ChatFeedContent)
     func didFinishFetchingAllItems()
-    func chatFeedItemWidth() -> CGFloat?
+    var chatFeedItemWidth: CGFloat? { get }
 }
 
 class TutorialNetworkDataSource: NSObject, NetworkDataSource {
@@ -46,12 +46,15 @@ class TutorialNetworkDataSource: NSObject, NetworkDataSource {
     }
 
     @objc private func dequeueTutorialMessage() {
-        if  !queuedTutorialMessages.isEmpty,
-            let width = delegate?.chatFeedItemWidth(),
-            let newMessageToDisplay = ChatFeedContent.createChatFeedContent(fromContentModel: queuedTutorialMessages.removeFirst(), withWidth: width, dependencyManager: dependencyManager) {
-                visibleItems.append(newMessageToDisplay)
-                delegate?.didReceiveNewMessage(newMessageToDisplay)
-        } else {
+        if
+            !queuedTutorialMessages.isEmpty,
+            let width = delegate?.chatFeedItemWidth,
+            let newMessageToDisplay = ChatFeedContent(withContentModel: queuedTutorialMessages.removeFirst(), withWidth: width, dependencyManager: dependencyManager)
+        {
+            visibleItems.append(newMessageToDisplay)
+            delegate?.didReceiveNewMessage(newMessageToDisplay)
+        }
+        else {
             timerManager?.invalidate()
             delegate?.didFinishFetchingAllItems()
         }

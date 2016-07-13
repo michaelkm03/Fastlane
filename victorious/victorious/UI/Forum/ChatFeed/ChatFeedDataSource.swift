@@ -13,7 +13,7 @@ protocol ChatFeedDataSourceDelegate: class {
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didLoadItems newItems: [ChatFeedContent], loadingType: PaginatedLoadingType)
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didStashItems stashedItems: [ChatFeedContent])
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didUnstashItems unstashedItems: [ChatFeedContent])
-    func widthForChatFeedItem() -> CGFloat
+    var chatFeedItemWidth: CGFloat { get }
 }
 
 class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatInterfaceDataSource {
@@ -82,16 +82,13 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     // MARK: - Internal helpers
     
     private func createNewItemsArray(contents: [ContentModel]) -> [ChatFeedContent] {
-        guard let width = delegate?.widthForChatFeedItem() else {
+        guard let width = delegate?.chatFeedItemWidth else {
             return []
         }
         
-        return contents.map({ (content) -> ChatFeedContent? in
-            if let chatFeedContent = ChatFeedContent.createChatFeedContent(fromContentModel: content, withWidth: width, dependencyManager: dependencyManager) {
-                return chatFeedContent
-            }
-            return nil
-        }).flatMap({ $0 })
+        return contents.flatMap({ (content) in
+            ChatFeedContent(withContentModel: content, withWidth: width, dependencyManager: dependencyManager) 
+        })
     }
     
     // MARK: - ForumEventSender
