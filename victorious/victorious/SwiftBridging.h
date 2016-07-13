@@ -92,6 +92,7 @@
 #import "VDataCache.h"
 #import "VDefaultProfileButton.h"
 #import "VDependencyManager+NavigationBar.h"
+#import "VDependencyManager+VNavigationItem.h"
 #import "VDependencyManager+VAccessoryScreens.h"
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VDependencyManager+VDefaultTemplate.h"

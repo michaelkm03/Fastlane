@@ -30,7 +30,7 @@ NSString * const VDependencyManagerNavigationBarAppearanceKey = @"navigationBarA
     VDependencyManager *dependenciesForNavigationBar = [self dependencyManagerForNavigationBar];
     
     // We bake the alpha into the RGB values because we don't properly support transparent navigation bars right now.
-    UIColor *baseBackgroundColor = [dependenciesForNavigationBar colorForKey:VDependencyManagerBackgroundColorKey];
+    UIColor *baseBackgroundColor = [[dependenciesForNavigationBar childDependencyForKey:VDependencyManagerBackgroundKey] colorForKey:@"color"];
     CGFloat alpha = 0.0;
     [baseBackgroundColor getRed:nil green:nil blue:nil alpha:&alpha];
     
