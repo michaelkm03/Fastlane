@@ -49,8 +49,10 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
             updateStageHeight()
         }
     }
-    
-    private var queuedContent: ContentModel?
+
+    private var currentContent: ContentModel?
+    private var currentStageMetaData: StageMetaData?
+
     private var stageDataSource: StageDataSource?
     private var enabled = true
     
@@ -66,7 +68,8 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         return dependencyManager.captionBarDependency != nil
     }
     
-    // MARK: - Life cycle
+
+    // MARK: - UIViewController Life cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -91,17 +94,7 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         super.viewWillDisappear(animated)
         mediaContentView.videoCoordinator?.pauseVideo()
     }
-    
-    @objc private func didTapOnContent() {
-        guard let targetContent = mediaContentView.content else {
-            return
-        }
-        
-        let router = Router(originViewController: self, dependencyManager: dependencyManager)
-        let destination = DeeplinkDestination(content: targetContent)
-        router.navigate(to: destination)
-    }
-    
+
     // MARK: - Stage
     
     func addCaptionContent(content: ContentModel) {
@@ -111,35 +104,27 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         captionBarViewController?.populate(content.author, caption: text)
     }
     
-    func addContent(stageContent: ContentModel) {
+    func addContent(stageContent: ContentModel, stageMetaData: StageMetaData? = nil) {
         guard enabled else {
             return
         }
-        queuedContent = stageContent
-        // If the stage was not shown,
-        // or if the current content was one that is not time based (video for now),
-        // we will immediately move to the next content.
-        nextContent(animated: false)
-        showStage(animated: true)
-    }
-    
-    func nextContent(animated animated: Bool = true) {
-        guard let stageContent = queuedContent else {
-            return
-        }
-        
-        attributionBar.configure(with: stageContent.author, animated: animated)
-        
+        currentContent = stageContent
+        currentStageMetaData = stageMetaData
+
+        attributionBar.configure(with: stageContent.author)
+
         mediaContentView.videoCoordinator?.pauseVideo()
         mediaContentView.content = stageContent
-        
+
         updateStageHeight()
-        queuedContent = nil
+
+        showStage(animated: true)
     }
     
     func removeContent() {
         hideStage()
-        queuedContent = nil
+        currentContent = nil
+        currentStageMetaData = nil
     }
     
     func setStageEnabled(enabled: Bool, animated: Bool) {
@@ -204,7 +189,19 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         let destination = DeeplinkDestination(userID: user.id)
         router.navigate(to: destination)
     }
-    
+
+    // MARK: - Deep linking content
+
+    @objc private func didTapOnContent() {
+        guard let targetContent = mediaContentView.content else {
+            return
+        }
+
+        let router = Router(originViewController: self, dependencyManager: dependencyManager)
+        let destination = DeeplinkDestination(content: targetContent)
+        router.navigate(to: destination)
+    }
+
     // MARK: - CaptionBarViewControllerDelegate
     
     func captionBarViewController(captionBarViewController: CaptionBarViewController, didTapOnUser user: UserModel) {

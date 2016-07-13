@@ -59,8 +59,11 @@ class StageDataSource: ForumEventReceiver {
                     else {
                         return
                     }
-                    
-                    self?.delegate?.addContent(content)
+
+                    var stageMetaData = stageEvent.stageMetaData
+                    stageMetaData?.populateWith(content)
+
+                    self?.delegate?.addContent(content, stageMetaData: stageMetaData)
                     self?.currentContent = content
                 }
                 
