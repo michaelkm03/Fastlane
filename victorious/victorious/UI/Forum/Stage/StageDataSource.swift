@@ -60,10 +60,8 @@ class StageDataSource: ForumEventReceiver {
                         return
                     }
 
-                    var stageMetaData = stageEvent.stageMetaData
-                    stageMetaData?.populateWith(content)
-
-                    self?.delegate?.addContent(content, stageMetaData: stageMetaData)
+                    let stageItem = StageItem(content: content, metaData: stageEvent.stageMetaData)
+                    self?.delegate?.addStageItem(stageItem)
                     self?.currentContent = content
                 }
                 

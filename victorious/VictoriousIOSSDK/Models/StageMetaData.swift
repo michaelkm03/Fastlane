@@ -9,27 +9,13 @@
 import Foundation
 
 ///
-/// Contains meta data about the content currently on stage right now.
+/// Contains meta data about the content currently on stage right now. It is populated by data from the refresh stage event.
 /// 
-/// Since this struct holds data from two separate parts of the stage update flow, it is populated in two steps.
-/// 1. When a stage refresh message is received from the backend.
-/// 2. When the actual content has been fetched.
-///
 public struct StageMetaData {
 
     let title: String?
-    private(set) var description: String?
-    private(set) var author: UserModel?
 
     public init(title: String? = nil) {
         self.title = title
-        description = nil
-        author = nil
-    }
-
-    /// Populates the StageMetaData struct with information about the content and it's author.
-    public mutating func populateWith(content: ContentModel) {
-        self.description = content.text
-        self.author = content.author
     }
 }

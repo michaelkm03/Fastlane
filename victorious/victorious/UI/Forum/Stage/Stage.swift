@@ -18,8 +18,10 @@ protocol Stage: class, ForumEventReceiver {
     
     var canHandleCaptionContent: Bool { get }
     
-    /// Replaces the current content on the stage with the new one. StageMetaData provides additional information about the content on stage. Send in nil to clear out the meta data.
-    func addContent(stageContent: ContentModel, stageMetaData: StageMetaData?)
+
+    /// Replaces the current content on the stage with the content present in the StageItem. 
+    /// StageItem may also contain meta data about the item on stage.
+    func addStageItem(stageItem: StageItem)
     
     /// Shows the caption of the provided content in the caption bar (if provided in the template)
     func addCaptionContent(content: ContentModel)
