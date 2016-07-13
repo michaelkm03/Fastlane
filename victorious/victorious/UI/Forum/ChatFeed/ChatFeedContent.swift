@@ -16,7 +16,7 @@ struct ChatFeedContent {
     /// The calculated size of the content's `ChatFeedMessageCell`, which we cache for performance.
     var size: CGSize
     
-    init?(withContentModel content: ContentModel, withWidth width: CGFloat, dependencyManager: VDependencyManager) {
+    init?(content: ContentModel, width: CGFloat, dependencyManager: VDependencyManager) {
         guard let height = ChatFeedMessageCell.cellHeight(displaying: content, inWidth: width, dependencyManager: dependencyManager) else {
             return nil
         }

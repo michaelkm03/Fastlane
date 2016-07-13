@@ -86,9 +86,9 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
             return []
         }
         
-        return contents.flatMap({ (content) in
-            ChatFeedContent(withContentModel: content, withWidth: width, dependencyManager: dependencyManager) 
-        })
+        return contents.flatMap(){ content in
+            ChatFeedContent(content: content, width: width, dependencyManager: dependencyManager)
+        }
     }
     
     // MARK: - ForumEventSender

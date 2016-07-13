@@ -49,7 +49,7 @@ class TutorialNetworkDataSource: NSObject, NetworkDataSource {
         if
             !queuedTutorialMessages.isEmpty,
             let width = delegate?.chatFeedItemWidth,
-            let newMessageToDisplay = ChatFeedContent(withContentModel: queuedTutorialMessages.removeFirst(), withWidth: width, dependencyManager: dependencyManager)
+            let newMessageToDisplay = ChatFeedContent(content: queuedTutorialMessages.removeFirst(), width: width, dependencyManager: dependencyManager)
         {
             visibleItems.append(newMessageToDisplay)
             delegate?.didReceiveNewMessage(newMessageToDisplay)
