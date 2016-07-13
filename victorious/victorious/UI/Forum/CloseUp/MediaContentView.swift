@@ -8,8 +8,7 @@
 
 import UIKit
 
-/// Displays an image/video/GIF/Youtube video/text post upon setting the content property
-
+/// Displays an image/video/GIF/Youtube video/text post upon setting the content property.
 class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGestureRecognizerDelegate {
     private struct Constants {
         static let blurRadius: CGFloat = 12
@@ -31,12 +30,12 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     private(set) var videoCoordinator: VContentVideoPlayerCoordinator?
     private var backgroundView: UIImageView?
     private let spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
-    private var alphaHasAnimatedToZero = false
     private var downloadedPreviewImage: UIImage?
 
     private lazy var previewImageView = {
         return UIImageView()
     }()
+
     private lazy var textPostLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = Constants.textAlignment
@@ -45,6 +44,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         label.minimumScaleFactor = Constants.minimumScaleFactor
         return label
     }()
+
     private lazy var videoContainerView = {
         return VPassthroughContainerView()
     }()
@@ -147,19 +147,22 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     
     private func displayContent(content: ContentModel) {
         spinner.startAnimating()
-        hideContent(animated: animatesBetweenContent)
-        
-        // Set up image view if content is image
-        let minWidth = frame.size.width
-        
-        if content.type.displaysAsImage, let previewImageURL = content.previewImageURL(ofMinimumWidth: minWidth) ?? NSURL(v_string: content.assets.first?.resourceID) {
-            setUpPreviewImage(from: previewImageURL)
-        }
-        else if content.type.displaysAsVideo {
-            setUpVideoPlayer(for: content)
-        }
-        else if content.type == .text {
-            setUpTextLabel()
+        hideContent(animated: animatesBetweenContent) { [weak self] _ in
+            guard let strongSelf = self else {
+                return
+            }
+            
+            // Set up image view if content is image
+            let minWidth = strongSelf.frame.size.width
+            if content.type.displaysAsImage, let previewImageURL = content.previewImageURL(ofMinimumWidth: minWidth) ?? NSURL(v_string: content.assets.first?.resourceID) {
+                strongSelf.setUpPreviewImage(from: previewImageURL)
+            }
+            else if content.type.displaysAsVideo {
+                strongSelf.setUpVideoPlayer(for: content)
+            }
+            else if content.type == .text {
+                strongSelf.setUpTextLabel()
+            }
         }
     }
     
@@ -169,9 +172,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         tearDownTextLabel()
     }
     
-    func hideContent(animated animated: Bool = true) {
-        videoCoordinator?.pauseVideo()
-        
+    func hideContent(animated animated: Bool = true, completion: ((Bool) -> Void)? = nil) {
         let animationDuration = animated ? Constants.fadeDuration * Constants.fadeOutDurationMultiplier : 0
         
         UIView.animateWithDuration(
@@ -184,29 +185,13 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
                 self.textPostLabel.alpha = 0
                 self.backgroundView?.alpha = 0
             },
-            completion: { [weak self] _ in
-                self?.didFinishHidingContent()
+            completion: { didFinish in
+                completion?(didFinish)
             }
         )
     }
     
-    private func didFinishHidingContent() {
-        alphaHasAnimatedToZero = true
-        guard let content = content else {
-            return
-        }
-        
-        switch(content.type) {
-            case .image:
-                updatePreviewImageIfReady()
-            case .text:
-                updateTextLabelIfReady()
-            case .video, .gif, .link:
-                break
-        }
-    }
-    
-    func showContent(animated animated: Bool = true) {
+    func showContent(animated animated: Bool = true, completion: ((Bool) -> Void)? = nil) {
         let animationDuration = animated ? Constants.fadeDuration : 0
         
         // Animate the backgroundView faster
@@ -229,8 +214,8 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
                 self.previewImageView.alpha = 1
                 self.textPostLabel.alpha = 1
             },
-            completion: { [weak self] completed in
-                self?.videoCoordinator?.playVideo()
+            completion: { didFinish in
+                completion?(didFinish)
             }
         )
     }
@@ -276,12 +261,22 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         
         videoCoordinator?.loadVideo()
         videoCoordinator?.delegate = self
+        
+        setNeedsLayout()
     }
     
     private func tearDownVideoPlayer() {
         videoContainerView.hidden = true
         videoCoordinator?.tearDown()
         videoCoordinator = nil
+    }
+    
+    func playVideo() {
+        videoCoordinator?.playVideo()
+    }
+    
+    func pauseVideo() {
+        videoCoordinator?.pauseVideo()
     }
     
     // MARK: - Managing Text 
@@ -296,6 +291,23 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         textPostLabel.textColor = textPostDependency?.textPostColor ?? Constants.defaultTextColor
         
         textPostLabel.hidden = true //Hide while we set up the view for the next post
+        
+        if  let url = textPostDependency?.textPostBackgroundImageURL,
+            let content = content
+            {
+                setBackgroundBlur(withImageUrl: url, forContent: content) { [weak self] in
+                    guard let currentContentID = self?.content?.id where currentContentID == content.id else {
+                        return
+                    }
+                    self?.renderText(content.text)
+                }
+        }
+        else {
+            backgroundView?.image = nil
+            backgroundView?.backgroundColor = Constants.defaultTextBackgroundColor
+            renderText(content?.text)
+        }
+
     }
     
     private func tearDownTextLabel() {
@@ -303,38 +315,10 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         textPostLabel.text = ""
     }
     
-    private func updateTextLabelIfReady() {
-        guard
-            let textPostDependency = dependencyManager?.textPostDependency,
-            let content = content,
-            let text = content.text
-        where
-            content.type == .text
-        else {
+    private func renderText(text: String?) {
+        guard let text = text else {
             return
         }
-        
-        if let url = textPostDependency.textPostBackgroundImageURL {
-            setBackgroundBlur(withImageUrl: url, forContent: content) { [weak self] in
-                guard
-                    let currentContentID = self?.content?.id,
-                    let hideAnimationDidFinish = self?.alphaHasAnimatedToZero
-                where
-                    currentContentID == content.id && hideAnimationDidFinish
-                else {
-                    return
-                }
-                self?.renderText(text)
-            }
-        }
-        else {
-            backgroundView?.image = nil
-            backgroundView?.backgroundColor = Constants.defaultTextBackgroundColor
-            renderText(text)
-        }
-    }
-    
-    private func renderText(text: String) {
         textPostLabel.text = text
         spinner.stopAnimating()
         textPostLabel.hidden = false
@@ -356,15 +340,16 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     private func updatePreviewImageIfReady() {
         guard
             let content = content where
-            downloadedPreviewImage != nil && alphaHasAnimatedToZero
+            downloadedPreviewImage != nil
         else {
             return
         }
         spinner.stopAnimating()
         previewImageView.image = downloadedPreviewImage
         downloadedPreviewImage = nil
-        alphaHasAnimatedToZero = false
-        showContent(animated: animatesBetweenContent)
+        showContent(animated: animatesBetweenContent) { [weak self] _ in
+            self?.playVideo()
+        }
         
         let minWidth = UIScreen.mainScreen().bounds.size.width
         if let imageURL = content.previewImageURL(ofMinimumWidth: minWidth) {

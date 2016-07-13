@@ -33,20 +33,18 @@ class StageContentFetchOperation: RemoteFetcherOperation, RequestOperation {
     }
 
     func onComplete(content: ContentFetchRequest.ResultType) {
-        var result = content
-        if refreshStageEvent.section == .VIPStage {
-            result = calculateSeekAheadTime(for: result)
-        }
+        let result = calculateSeekAheadTime(for: content)
         self.results = [result]
     }
     
-    /// Calculated time diff, used to sync users in the video for VIP stage
+    /// Calculated time diff, used to sync users in the video on stage.
     /// seekAheadTime = serverTime - startTime + workTime
     private func calculateSeekAheadTime(for content: Content) -> Content {
         guard
             let startTime = refreshStageEvent.startTime,
             let serverTime = refreshStageEvent.serverTime,
             let operationStartTime = operationStartTime
+            where content.type == .video
         else {
             return content
         }

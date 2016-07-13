@@ -149,12 +149,12 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
         let now = NSDate().paginationTimestamp
         
         switch loadingType {
-        case .refresh:
-            return (fromTime: now, toTime: 0)
-        case .newer:
-            return (fromTime: now, toTime: newestTimestamp ?? 0)
-        case .older:
-            return (fromTime: oldestTimestamp ?? now, toTime: 0)
+            case .refresh:
+                return (fromTime: now, toTime: 0)
+            case .newer:
+                return (fromTime: now, toTime: newestTimestamp ?? 0)
+            case .older:
+                return (fromTime: oldestTimestamp ?? now, toTime: 0)
         }
     }
     

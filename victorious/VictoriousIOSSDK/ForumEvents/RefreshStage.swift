@@ -28,8 +28,15 @@ public struct RefreshStage {
         }
         
         self.contentID = contentID
-        self.serverTime = serverTime
-        
+
+        // The server time could either be present inside the stage message or at a higher level 
+        // depending on what part of the API we get it from. :/
+        if let parsedServerTime = json["server_time"].double {
+            self.serverTime = NSDate(millisecondsSince1970: parsedServerTime)
+        } else {
+            self.serverTime = serverTime
+        }
+
         if let startTime = json["start_time"].double {
             self.startTime = NSDate(millisecondsSince1970: startTime)
         } else {

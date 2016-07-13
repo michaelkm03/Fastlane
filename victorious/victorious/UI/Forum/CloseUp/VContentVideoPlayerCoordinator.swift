@@ -96,8 +96,6 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
             item.loop = shouldLoop
             item.useAspectFit = true
             videoPlayer.setItem(item)
-            videoPlayer.playFromStart()
-            state = .Playing
         }
     }
     
@@ -129,6 +127,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     
     func playVideo() {
         videoPlayer.play()
+        self.state = .Playing
     }
     
     func pauseVideo() {
@@ -137,6 +136,13 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     
     var isPlaying: Bool {
         return videoPlayer.isPlaying
+    }
+    
+    private func prepareToPlay() {
+        if let seekAheadTime = self.content.seekAheadTime where Int(videoPlayer.currentTimeSeconds) <= Int(seekAheadTime) {
+            videoPlayer.seekToTimeSeconds(seekAheadTime)
+        }
+        delegate?.coordinatorDidBecomeReady()
     }
     
     // MARK: - Layout
@@ -162,15 +168,15 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     // MARK: - VVideoPlayerDelegate
     
     func videoPlayerDidBecomeReady(videoPlayer: VVideoPlayer) {
-        videoPlayer.playFromStart()
-        state = .Playing
-        delegate?.coordinatorDidBecomeReady()
+        guard let asset = content.assets.first where asset.videoSource == .youtube else {
+            return
+        }
+        prepareToPlay()
+
     }
     
     func videoPlayerItemIsReadyToPlay(videoPlayer: VVideoPlayer) {
-        if let seekAheadTime = content.seekAheadTime where Int(videoPlayer.currentTimeSeconds) <= Int(seekAheadTime) {
-            videoPlayer.seekToTimeSeconds(seekAheadTime)
-        }
+        prepareToPlay()
     }
     
     func videoPlayerDidReachEnd(videoPlayer: VVideoPlayer) {
@@ -180,13 +186,6 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     func videoPlayerDidStartBuffering(videoPlayer: VVideoPlayer) {
         if state != .Scrubbing && state != .Paused {
             state = .Buffering
-        }
-    }
-    
-    func videoPlayerDidStopBuffering(videoPlayer: VVideoPlayer) {
-        if state == .Buffering {
-            videoPlayer.play()
-            state = .Playing
         }
     }
     
