@@ -261,7 +261,7 @@ static NSString * const kPlayerItemIsReadyToPlay = @"status";
 
 - (void)returnFromBackground
 {
-    if ( self.wasPlayingBeforeEnteringBackground )
+    if (self.wasPlayingBeforeEnteringBackground)
     {
         [self play];
     }
@@ -274,7 +274,7 @@ static NSString * const kPlayerItemIsReadyToPlay = @"status";
 
 - (void)seekToTimeSeconds:(NSTimeInterval)timeSeconds
 {
-    [self updateToTime:CMTimeMake( timeSeconds, 1.0 )];
+    [self updateToTime:CMTimeMake(timeSeconds, 1.0)];
 }
 
 - (void)pause
@@ -291,12 +291,12 @@ static NSString * const kPlayerItemIsReadyToPlay = @"status";
 
 - (void)play
 {
-    if ( !self.isReady )
+    if (!self.isReady)
     {
         self.shouldPlayWhenReady = YES;
         return;
     }
-    if ( !self.isPlaying )
+    if (!self.isPlaying)
     {
         
         [self.player play];
@@ -345,7 +345,7 @@ static NSString * const kPlayerItemIsReadyToPlay = @"status";
     Float64 currentTimeInSeconds = 0;
     if ( self.player != nil && self.player.currentItem != nil )
     {
-        currentTimeInSeconds = CMTimeGetSeconds( self.player.currentItem.currentTime );
+        currentTimeInSeconds = CMTimeGetSeconds(self.player.currentItem.currentTime);
     }
     return currentTimeInSeconds;
 }

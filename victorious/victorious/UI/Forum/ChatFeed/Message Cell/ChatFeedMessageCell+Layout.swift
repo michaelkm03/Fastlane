@@ -60,8 +60,6 @@ extension ChatFeedMessageCell {
             size: avatarSize
         )
         
-        cell.avatarShadowView.frame = cell.avatarView.frame
-        
         cell.avatarTapTarget.frame = CGRect(center: cell.avatarView.center, size: avatarTapTargetSize)
         
         // Preview / caption layout:

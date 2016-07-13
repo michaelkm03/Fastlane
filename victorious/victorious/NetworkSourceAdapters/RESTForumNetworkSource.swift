@@ -60,7 +60,7 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     
     // MARK: - Polling
     
-    private static let pollingInterval = NSTimeInterval(10.0)
+    private static let pollingInterval = NSTimeInterval(5.0)
     
     private var pollingTimer: VTimerManager?
     

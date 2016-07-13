@@ -8,8 +8,7 @@
 
 import UIKit
 
-/// Displays an image/video/GIF/Youtube video/text post upon setting the content property
-
+/// Displays an image/video/GIF/Youtube video/text post upon setting the content property.
 class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGestureRecognizerDelegate {
     private struct Constants {
         static let blurRadius: CGFloat = 12
@@ -36,6 +35,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     private lazy var previewImageView = {
         return UIImageView()
     }()
+
     private lazy var textPostLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = Constants.textAlignment
@@ -44,6 +44,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         label.minimumScaleFactor = Constants.minimumScaleFactor
         return label
     }()
+
     private lazy var videoContainerView = {
         return VPassthroughContainerView()
     }()

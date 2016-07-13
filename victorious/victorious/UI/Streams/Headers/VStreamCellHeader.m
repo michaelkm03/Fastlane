@@ -12,7 +12,6 @@
 #import "VFlexBar.h"
 #import "VActionBarFixedWidthItem.h"
 #import "VCreationInfoContainer.h"
-#import "VDefaultProfileButton.h"
 #import "VLargeNumberFormatter.h"
 #import "UIView+AutoLayout.h"
 #import "VTimeSinceWidget.h"
@@ -32,7 +31,7 @@ static const CGFloat kSpaceLabelsToTimestamp = kSpaceAvatarToLabels;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VFlexBar *actionBar;
-@property (nonatomic, strong) VDefaultProfileButton *profileButton;
+@property (nonatomic, strong) UIButton *profileButton;
 @property (nonatomic, strong) VCreationInfoContainer *creationInfoContainer;
 @property (nonatomic, strong) VTimeSinceWidget *timeSinceWidget;
 @property (nonatomic, strong) VFollowControl *followControl;
@@ -79,13 +78,12 @@ static const CGFloat kSpaceLabelsToTimestamp = kSpaceAvatarToLabels;
     
     if ( [self actionBarNeedsSetup] )
     {
-        VDefaultProfileButton *button = [[VDefaultProfileButton alloc] initWithFrame:CGRectZero];
+        UIButton *button = [[UIButton alloc] initWithFrame:CGRectZero];
         button.translatesAutoresizingMaskIntoConstraints = NO;
         [button v_addHeightConstraint:kAvatarSize];
         [button v_addWidthConstraint:kAvatarSize];
         [button addTarget:self action:@selector(selectedUserButton:) forControlEvents:UIControlEventTouchUpInside];
         self.profileButton = button;
-        self.profileButton.dependencyManager = self.dependencyManager;
         self.profileButton.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
         
         VCreationInfoContainer *creationContainer = [[VCreationInfoContainer alloc] initWithFrame:CGRectZero];
@@ -151,14 +149,13 @@ static const CGFloat kSpaceLabelsToTimestamp = kSpaceAvatarToLabels;
     }
     
     self.creationInfoContainer.sequence = sequence;
-    self.profileButton.user = sequence.displayOriginalPoster;
     
     [self observeSequence:_sequence];
 }
 
 #pragma mark - Target/Action
 
-- (void)selectedUserButton:(VDefaultProfileButton *)profileButton
+- (void)selectedUserButton:(UIButton *)profileButton
 {
     UIResponder<VSequenceActionsDelegate> *targetForUserSelection = [self targetForAction:@selector(selectedUser:onSequence:fromView:)
                                                                                withSender:self];
@@ -185,7 +182,6 @@ static const CGFloat kSpaceLabelsToTimestamp = kSpaceAvatarToLabels;
     {
         [self.timeSinceWidget setDependencyManager:dependencyManager];
     }
-    self.profileButton.dependencyManager = dependencyManager;
     self.profileButton.tintColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
 }
 
@@ -249,7 +245,6 @@ static const CGFloat kSpaceLabelsToTimestamp = kSpaceAvatarToLabels;
 
 - (void)updateUserAvatarForSequence:(VSequence *)sequence
 {
-    self.profileButton.user = sequence.displayOriginalPoster;
 }
 
 #pragma mark - Lazy properties

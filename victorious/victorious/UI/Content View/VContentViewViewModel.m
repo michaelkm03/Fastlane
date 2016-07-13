@@ -21,7 +21,6 @@
 #import "NSURL+MediaType.h"
 #import "VStream.h"
 #import "VDependencyManager.h"
-#import "UIColor+VHex.h"
 #import "victorious-Swift.h"
 #import <KVOController/FBKVOController.h>
 
@@ -229,7 +228,7 @@
 
 - (UIColor *)textBackgroundColor
 {
-    return [UIColor v_colorFromHexString:self.currentAsset.backgroundColor];
+    return [[UIColor alloc] initWithRgbHexString:self.currentAsset.backgroundColor];
 }
 
 - (NSURL *)textBackgroundImageURL
