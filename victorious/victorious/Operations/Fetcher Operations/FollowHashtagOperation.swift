@@ -23,25 +23,7 @@ class FollowHashtagOperation: FetcherOperation {
     }
     
     override func main() {
-        persistentStore.createBackgroundContext().v_performBlockAndWait { context in
-            guard let currentUser = VCurrentUser.user(inManagedObjectContext: context) else {
-                return
-            }
-            
-            let persistentHashtag: VHashtag = context.v_findOrCreateObject( [ "tag" : self.hashtag ] )
-            persistentHashtag.tag = self.hashtag
-            
-            // Find or create the following relationship using VFollowedHashtag
-            let uniqueElements = [ "user": currentUser, "hashtag.tag": self.hashtag ]
-            let followedHashtag: VFollowedHashtag = context.v_findOrCreateObject( uniqueElements )
-            followedHashtag.user = currentUser
-            followedHashtag.hashtag = persistentHashtag
-            followedHashtag.displayOrder = 0
-            
-            context.v_save()
-        }
-        
-        self.trackingManager.trackEvent(VTrackingEventUserDidFollowHashtag)
+        // Removed body alongside deprecation of VHashtag
     }
 }
 

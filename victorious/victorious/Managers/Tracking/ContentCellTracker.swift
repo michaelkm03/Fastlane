@@ -12,7 +12,7 @@ protocol ContentCellTracker {
     var sessionParameters: [NSObject : AnyObject] { get }
     
     func trackCell(cell: ContentCell, trackingKey: CellTrackingKey)
-    func trackView(trackingKey: ViewTrackingKey)
+    func trackView(trackingKey: ViewTrackingKey, showingContent content: ContentModel)
 }
 
 extension ContentCellTracker {
@@ -22,9 +22,8 @@ extension ContentCellTracker {
 
     func trackCell(cell: ContentCell, trackingKey: CellTrackingKey) {
         guard
-            let content = cell.content,
-            let eventId = content.id,
-            let trackingStrings = content.tracking?.trackingURLsForKey(trackingKey),
+            let tracking = cell.content?.tracking,
+            let trackingStrings = tracking.trackingURLsForKey(trackingKey),
             let parameters = parametersForCellTrackingKey(trackingKey, trackingURLStrings: trackingStrings)
         else {
             return
@@ -33,20 +32,19 @@ extension ContentCellTracker {
         trackingManager.queueEvent(
             trackingKey.rawValue,
             parameters: parameters,
-            eventId: eventId,
+            eventId: tracking.id,
             sessionParameters: sessionParameters
         )
     }
     
     private func parametersForCellTrackingKey(trackingKey: CellTrackingKey, trackingURLStrings: [String]) -> [NSObject : AnyObject]? {
-        
         let parameters = [
             VTrackingKeyTimeStamp : NSDate(),
             VTrackingKeyUrls : trackingURLStrings
         ]
         
         switch trackingKey {
-            case .cellView: ()
+            case .cellView, .cellClick: ()
             default:
                 assertionFailure("not implemented yet")
                 return nil
@@ -55,7 +53,36 @@ extension ContentCellTracker {
         return parameters
     }
     
-    func trackView(trackingKey: ViewTrackingKey) {
-        assertionFailure("not implemented yet")
+    func trackView(trackingKey: ViewTrackingKey, showingContent content: ContentModel) {
+        guard
+            let tracking = content.tracking,
+            let trackingStrings = tracking.trackingURLsForKey(trackingKey),
+            let parameters = parametersForViewTrackingKey(trackingKey, trackingURLStrings: trackingStrings)
+        else {
+            return
+        }
+        
+        trackingManager.queueEvent(
+            trackingKey.rawValue,
+            parameters: parameters,
+            eventId: tracking.id,
+            sessionParameters: sessionParameters
+        )
+    }
+    
+    private func parametersForViewTrackingKey(trackingKey: ViewTrackingKey, trackingURLStrings: [String]) -> [NSObject : AnyObject]? {
+        let parameters = [
+            VTrackingKeyTimeStamp : NSDate(),
+            VTrackingKeyUrls : trackingURLStrings
+        ]
+        
+        switch trackingKey {
+        case .viewStart: ()
+        default:
+            assertionFailure("not implemented yet")
+            return nil
+        }
+        
+        return parameters
     }
 }

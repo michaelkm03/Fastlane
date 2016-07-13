@@ -30,7 +30,7 @@ static const CGFloat kTrophyButtonTopMargin = 31.0f; // Equals to top margin of 
 @property (nonatomic, assign) CGFloat primaryActionButtonStartHeight;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *primaryActionButtonTopConstraint;
 @property (nonatomic, assign) CGFloat primaryActionButtonStartTop;
-@property (nonatomic, strong) VDefaultProfileImageView *floatingProfileImageView;
+@property (nonatomic, strong) UIImageView *floatingProfileImageView;
 
 @end
 
@@ -80,7 +80,7 @@ static const CGFloat kTrophyButtonTopMargin = 31.0f; // Equals to top margin of 
     [button.leftAnchor constraintEqualToAnchor:self.view.layoutMarginsGuide.leftAnchor constant:kTrophyButtonLeftMargin].active = YES;
 }
 
-- (VDefaultProfileImageView *)profileImageView
+- (UIImageView *)profileImageView
 {
     return self.floatingProfileImageView;
 }

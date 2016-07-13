@@ -26,7 +26,7 @@ static const CGFloat kBlurredWhiteAlpha = 0.3f;
 @interface VAbstractProfileEditViewController () <VContentInputAccessoryViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UILabel *tagLinePlaceholderLabel;
-@property (nonatomic, weak) IBOutlet VDefaultProfileImageView *profileImageView;
+@property (nonatomic, weak) IBOutlet UIImageView *profileImageView;
 @property (nonatomic, weak) IBOutlet UIButton *cameraButton;
 
 @property (nonatomic, weak) IBOutlet UITableViewCell *captionCell;

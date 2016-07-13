@@ -38,7 +38,7 @@ class VListRecentShelfCollectionViewCell: VListShelfCollectionViewCell {
         }
     }
     
-    //MARK: - View management
+    // MARK: - View management
     
     override func awakeFromNib() {
         super.awakeFromNib()

@@ -14,7 +14,6 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
     // MARK: - Configuration
     
     private static let estimatedBarButtonWidth: CGFloat = 60.0
-    private static let userPictureNavButtonSize = CGSize(width: 30.0, height: 30.0)
     
     // MARK: - Initializing
     
@@ -65,9 +64,6 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
         let backArrowImage = UIImage(named: "BackArrow")
         navigationBar.backIndicatorImage = backArrowImage
         navigationBar.backIndicatorTransitionMaskImage = backArrowImage
-        
-        VCurrentUser.user()?.addObserver(self, forKeyPath: "previewAssets", options: [], context: nil)
-        updateNavButtonWithUserPicture()
     }
     
     required init(coder: NSCoder) {
@@ -117,29 +113,15 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
         )
         
         if rightNavViewController != nil {
-            centerWrapperViewController.navigationItem.rightBarButtonItem = UIBarButtonItem(
-                image: UIImage(named: "profile_thumb"),
-                style: .Plain,
-                target: self,
-                action: #selector(rightNavButtonWasPressed)
-            )
-        }
-    }
-    
-    private func updateNavButtonWithUserPicture() {
-        let pictureSize = SideNavScaffoldViewController.userPictureNavButtonSize
-        
-        if let userPictureURL = VCurrentUser.user()?.pictureURL(ofMinimumSize: pictureSize) {
-            SDWebImageManager.sharedManager()?.downloadImageWithURL(userPictureURL, options: [], progress: nil) { [weak self] image, _, _, _, _ in
-                guard let image = image else {
-                    return
-                }
-                
-                self?.centerWrapperViewController.navigationItem.rightBarButtonItem?.image = image
-                    .resizedImageWithContentMode(.ScaleAspectFill, bounds: pictureSize, interpolationQuality: .Default)
-                    .roundedImageWithCornerRadius(pictureSize.v_roundCornerRadius)
-                    .imageWithRenderingMode(.AlwaysOriginal)
-            }
+            let avatarView = AvatarView()
+            self.avatarView = AvatarView()
+            avatarView.user = VCurrentUser.user()
+            avatarView.sizeToFit()
+            
+            let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(rightNavButtonWasPressed))
+            avatarView.addGestureRecognizer(tapRecognizer)
+            
+            centerWrapperViewController.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: avatarView)
         }
     }
     
@@ -164,6 +146,9 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
     /// The view controller that displays the right navigation area.
     let rightNavViewController: UIViewController?
     
+    /// The avatar view used as the right navigation button.
+    private var avatarView: AvatarView?
+    
     // MARK: - Actions
     
     @objc private func leftNavButtonWasPressed() {
@@ -177,7 +162,6 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
     private var allowsRightNavigation = true
     
     @objc private func rightNavButtonWasPressed() {
-        
         guard allowsRightNavigation else {
             return
         }
@@ -203,24 +187,27 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
     
     private dynamic func loggedInStatusDidChange(notification: NSNotification) {
         handleLoggedInStatusChange()
+        avatarView?.user = VCurrentUser.user()
     }
     
     private dynamic func mainFeedFilterDidChange(notification: NSNotification) {
         sideMenuController.closeSideViewController(animated: true)
     }
     
-    // MARK: - KVO
-    
-    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String: AnyObject]?, context: UnsafeMutablePointer<Void>) {
-        if keyPath == "previewAssets" {
-            updateNavButtonWithUserPicture()
-        }
-    }
-    
     // MARK: - Orientation
     
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
         return [.Portrait]
+    }
+    
+    // MARK: - Layout
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        // Shouldn't be necessary, but UIBarButtonItem doesn't trigger layoutSubviews properly otherwise.
+        avatarView?.setNeedsLayout()
+        avatarView?.layoutIfNeeded()
     }
     
     // MARK: - Scaffold
@@ -256,7 +243,8 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
         
         if let nextCoachmarkDisplayResponder = nextResponder()?.targetForAction(selector, withSender: nil) as? VCoachmarkDisplayResponder {
             nextCoachmarkDisplayResponder.findOnScreenMenuItemWithIdentifier(identifier, andCompletion: completion)
-        } else {
+        }
+        else {
             completion(false, CGRectZero)
         }
     }

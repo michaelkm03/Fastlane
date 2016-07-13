@@ -15,7 +15,7 @@ enum DeeplinkDestination {
     case closeUp(contentWrapper: CloseUpContentWrapper)
     case vipForum
     case trophyCase
-    case externalURL
+    case externalURL(url: NSURL)
     
     init?(url: NSURL) {
         guard let host = url.host else {
@@ -35,7 +35,7 @@ enum DeeplinkDestination {
             case "profile/trophyCase":
                 self = .trophyCase
             default:
-                self = .externalURL
+                self = .externalURL(url: url)
         }
     }
     

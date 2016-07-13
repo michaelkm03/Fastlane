@@ -210,7 +210,7 @@
 	<string>victorious.InterstitialAlertViewController</string>
 	<key>listMenu.screen</key>
 	<string>victorious.ListMenuViewController</string>
-	<key>standard.error.toast</key>
+	<key>standard.toast</key>
 	<string>victorious.InterstitialToastViewController</string>
 	<key>tutorial.screen</key>
 	<string>victorious.TutorialViewController</string>

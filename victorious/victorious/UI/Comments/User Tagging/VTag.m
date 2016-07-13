@@ -8,7 +8,6 @@
 
 #import "VTag.h"
 #import "VUserTag.h"
-#import "VHashtag.h"
 #import "VTagStringFormatter.h"
 
 @implementation VTag
@@ -90,15 +89,6 @@
     NSAssert(tagStringAttributes != nil, @"Must supply tagStringAttributes to format");
     
     return [self tagWithUserString:[VTagStringFormatter databaseFormattedStringFromUser:user] andTagStringAttributes:tagStringAttributes];
-}
-
-+ (instancetype)tagWithHashtag:(VHashtag *)hashtag
-        andTagStringAttributes:(NSDictionary *)tagStringAttributes
-{
-    NSAssert(hashtag != nil, @"Must supply a hashtag to create a tag");
-    NSAssert(tagStringAttributes != nil, @"Must supply tagStringAttributes to format");
-    
-    return [self tagWithHashtagString:[VTagStringFormatter databaseFormattedStringFromHashtag:hashtag] andTagStringAttributes:tagStringAttributes];
 }
 
 @end

@@ -12,6 +12,10 @@ import UIKit
 /// of a sliding scaffold.
 class ListMenuViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, VCoachmarkDisplayer, VNavigationDestination, VBackgroundContainer {
     
+    // MARK: - Configuration
+    
+    private static let contentInset = UIEdgeInsets(top: 20.0, left: 0.0, bottom: 0.0, right: 0.0)
+    
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
             collectionView.dataSource = collectionViewDataSource
@@ -37,6 +41,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        collectionView?.contentInset = ListMenuViewController.contentInset
         dependencyManager.addBackgroundToBackgroundHost(self)
         view.layoutIfNeeded()
     }
@@ -121,14 +126,31 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     
     // MARK: - UICollectionView Delegate
     
+    private var lastSelectedIndexPath: NSIndexPath?
+    
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         
         let listMenuSection = ListMenuSection(rawValue: indexPath.section)!
         
         switch listMenuSection {
-            case .creator: selectCreator(atIndex: indexPath.item)
-            case .community: selectCommunity(atIndex: indexPath.item)
-            case .hashtags: selectHashtag(atIndex: indexPath.item)
+            case .creator:
+                selectCreator(atIndex: indexPath.item)
+                
+                // Hack to get the selection to work. Otherwise, the previous state would not appear to be selected
+                // until touching the collectionView.
+                collectionView.performBatchUpdates(nil, completion: { [weak self] _ in
+                    collectionView.selectItemAtIndexPath(
+                        self?.lastSelectedIndexPath,
+                        animated: true,
+                        scrollPosition: .None
+                    )
+                })
+            case .community:
+                selectCommunity(atIndex: indexPath.item)
+                lastSelectedIndexPath = indexPath
+            case .hashtags:
+                selectHashtag(atIndex: indexPath.item)
+                lastSelectedIndexPath = indexPath
         }
     }
     
@@ -140,7 +162,6 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
             case .community: validIndices = collectionViewDataSource.communityDataSource.visibleItems.indices
             case .hashtags: validIndices = collectionViewDataSource.hashtagDataSource.visibleItems.indices
         }
-        
         return validIndices ~= indexPath.row
     }
     

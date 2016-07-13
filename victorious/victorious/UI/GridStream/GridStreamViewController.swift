@@ -26,15 +26,16 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         collectionViewLayout: UICollectionViewFlowLayout()
     )
     private let dataSource: GridStreamDataSource<HeaderType>
+
     private(set) var content: HeaderType.ContentType?
     private var hasError: Bool = false
     
     func setContent(content: HeaderType.ContentType?, withError hasError: Bool) {
         self.content = content
         self.hasError = hasError
+        updateTrackingParameters()
         dataSource.setContent(content, withError: hasError)
         collectionView.reloadSections(NSIndexSet(index: 0))
-        updateTrackingParameters()
     }
     
     private let refreshControl = UIRefreshControl()
@@ -232,8 +233,15 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     }
 
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let displayModifier = ShowCloseUpDisplayModifier(dependencyManager: dependencyManager, originViewController: self)
-        ShowCloseUpOperation.showOperation(forContent: dataSource.items[indexPath.row], displayModifier: displayModifier).queue()
+        let router = Router(originViewController: self, dependencyManager: dependencyManager)
+        let targetContent = dataSource.items[indexPath.row]
+        let destination = DeeplinkDestination(content: targetContent)
+        router.navigate(to: destination)
+        
+        guard let cell = collectionView.cellForItemAtIndexPath(indexPath) as? ContentCell else {
+            return
+        }
+        trackCell(cell, trackingKey: .cellClick)
     }
     
     // MARK: - UICollectionViewDelegate

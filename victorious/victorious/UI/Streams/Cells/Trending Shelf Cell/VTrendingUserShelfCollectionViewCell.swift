@@ -38,7 +38,6 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
     }
     
     @IBOutlet private weak var usernameTextView: VTagSensitiveTextView!
-    @IBOutlet private weak var userAvatarButton: VDefaultProfileButton!
     @IBOutlet private weak var postsCountLabel: UILabel!
     @IBOutlet private weak var titleTopVerticalSpaceConstraint: NSLayoutConstraint!
     @IBOutlet private var minimumBottomVerticalSpaceConstraints: [NSLayoutConstraint]!
@@ -51,7 +50,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
     
     private static let numberFormatter = VLargeNumberFormatter()
     
-    //MARK: - Setters
+    // MARK: - Setters
     
     override var shelf: Shelf? {
         didSet {
@@ -66,7 +65,6 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
                     KVOController.unobserve(oldValue.user)
                 }
                 KVOController.observe(shelf.user, keyPath: "isFollowedByMainUser", options: NSKeyValueObservingOptions.New, action: #selector(updateFollowControlState))
-                userAvatarButton.user = shelf.user
                 updateUsername()
             }
         }
@@ -86,9 +84,6 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
                 
                 let accentColor = dependencyManager.accentColor
                 separatorView.backgroundColor = accentColor
-                userAvatarButton.dependencyManager = dependencyManager
-                userAvatarButton.tintColor = accentColor
-                userAvatarButton.addBorderWithWidth(2, andColor: accentColor)
                 
                 let textColor = dependencyManager.textColor
                 titleLabel.textColor = textColor
@@ -99,7 +94,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
         }
     }
     
-    //MARK: - Getters
+    // MARK: - Getters
     
     private class func getUsernameText(shelf: UserShelf) -> String {
         return VTagStringFormatter.databaseFormattedStringFromUser(shelf.user) ?? ""
@@ -126,7 +121,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
         return countsText
     }
     
-    //MARK: - View management
+    // MARK: - View management
     
     override class func nibForCell() -> UINib {
         return UINib(nibName: "VTrendingUserShelfCollectionViewCell", bundle: nil)
@@ -177,7 +172,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
         return CGSizeMake(bounds.width, height)
     }
 
-    //MARK: - View updating
+    // MARK: - View updating
     
     override func updateFollowControlState() {
         if let shelf = shelf as? UserShelf,
@@ -195,7 +190,7 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
         }
     }
     
-    //MARK: - Interaction response
+    // MARK: - Interaction response
     
     private func respondToUserTap() {
         let responder: VTrendingUserShelfResponder = typedResponder()
@@ -210,11 +205,6 @@ class VTrendingUserShelfCollectionViewCell: VTrendingShelfCollectionViewCell {
     @IBAction private func tappedFollowControl(followControl: VFollowControl) {
         // FollowUserOperation/FollowUserToggleOperation not supported in 5.0
     }
-    
-    @IBAction private func tappedAvatarButton(sender: VDefaultProfileButton) {
-        respondToUserTap()
-    }
-    
 }
 
 extension VTrendingUserShelfCollectionViewCell: VTagSensitiveTextViewDelegate {

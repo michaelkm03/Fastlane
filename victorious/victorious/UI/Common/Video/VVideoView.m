@@ -22,7 +22,6 @@ static NSString * const kPlayerItemIsReadyToPlay = @"status";
 
 @property (nonatomic, strong, nullable) AVPlayer *player;
 @property (nonatomic, strong, nullable) AVPlayerLayer *playerLayer;
-@property (nonatomic, strong, nullable) AVPlayerItem *newestPlayerItem;
 @property (nonatomic, strong) VVideoUtils *videoUtils;
 @property (nonatomic, strong, nullable) id timeObserver;
 @property (nonatomic, assign) BOOL loop;
@@ -102,40 +101,20 @@ static NSString * const kPlayerItemIsReadyToPlay = @"status";
         self.playerLayer.videoGravity = [self videoGravity];
         [self.layer addSublayer:self.playerLayer];
         self.playerLayer.frame = self.bounds;
-        self.playerLayer.opacity = 0.0f;
-        
-        __weak VVideoView *weakSelf = self;
-        [self.KVOController observe:self.playerLayer
-                           keyPaths:@[@"readyForDisplay"]
-                            options:NSKeyValueObservingOptionNew
-                              block:^(id observer, AVPlayerLayer *playerLayer, NSDictionary *change)
-         {
-             VVideoView *strongSelf = weakSelf;
-             if ( strongSelf != nil )
-             {
-                 BOOL isIntendedPlayerItem = [strongSelf.playerLayer.player.currentItem isEqual:strongSelf.newestPlayerItem];
-                 if ( isIntendedPlayerItem && strongSelf.playerLayer.isReadyForDisplay)
-                 {
-                     strongSelf.playerLayer.opacity = 1.0f;
-                 }
-             }
-         }];
-
+        self.playerLayer.opacity = 1.0f;
         self.videoUtils = [[VVideoUtils alloc] init];
     }
     
     self.player.actionAtItemEnd = self.loop ? AVPlayerActionAtItemEndNone : AVPlayerActionAtItemEndPause;
     self.player.muted = self.muted;
     
-    self.newestPlayerItem = nil;
-    self.playerLayer.opacity = 0.0f;
     [self.videoUtils createPlayerItemWithURL:self.itemURL
                                         loop:self.loop
                                readyCallback:^(AVPlayerItem *playerItem, NSURL *composedItemURL, CMTime duration)
      {
          if ( [composedItemURL isEqual:_itemURL] )
          {
-             self.newestPlayerItem = playerItem;
+             [self.player replaceCurrentItemWithPlayerItem:playerItem];
              [self didFinishAssetCreation:playerItem];
          }
      }];
@@ -251,12 +230,13 @@ static NSString * const kPlayerItemIsReadyToPlay = @"status";
                                              selector:@selector(playerItemDidReachEnd:)
                                                  name:AVPlayerItemDidPlayToEndTimeNotification
                                                object:playerItem];
-    
+    self.isReady = true;
+
     if ( [self.delegate respondsToSelector:@selector(videoPlayerDidBecomeReady:)])
     {
         [self.delegate videoPlayerDidBecomeReady:self];
     }
-    self.isReady = true;
+    
     if ( self.shouldPlayWhenReady )
     {
         [self play];
@@ -281,7 +261,7 @@ static NSString * const kPlayerItemIsReadyToPlay = @"status";
 
 - (void)returnFromBackground
 {
-    if ( self.wasPlayingBeforeEnteringBackground )
+    if (self.wasPlayingBeforeEnteringBackground)
     {
         [self play];
     }
@@ -294,7 +274,7 @@ static NSString * const kPlayerItemIsReadyToPlay = @"status";
 
 - (void)seekToTimeSeconds:(NSTimeInterval)timeSeconds
 {
-    [self updateToTime:CMTimeMake( timeSeconds, 1.0 )];
+    [self updateToTime:CMTimeMake(timeSeconds, 1.0)];
 }
 
 - (void)pause
@@ -311,17 +291,13 @@ static NSString * const kPlayerItemIsReadyToPlay = @"status";
 
 - (void)play
 {
-    if ( !self.isReady )
+    if (!self.isReady)
     {
         self.shouldPlayWhenReady = YES;
         return;
     }
-    if ( !self.isPlaying )
+    if (!self.isPlaying)
     {
-        if (self.player.currentItem != self.newestPlayerItem)
-        {
-            [self.player replaceCurrentItemWithPlayerItem:self.newestPlayerItem];
-        }
         
         [self.player play];
         if ([self.delegate respondsToSelector:@selector(videoPlayerDidPlay:)])
@@ -369,7 +345,7 @@ static NSString * const kPlayerItemIsReadyToPlay = @"status";
     Float64 currentTimeInSeconds = 0;
     if ( self.player != nil && self.player.currentItem != nil )
     {
-        currentTimeInSeconds = CMTimeGetSeconds( self.player.currentItem.currentTime );
+        currentTimeInSeconds = CMTimeGetSeconds(self.player.currentItem.currentTime);
     }
     return currentTimeInSeconds;
 }

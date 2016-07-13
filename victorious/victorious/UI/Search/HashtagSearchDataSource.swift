@@ -42,26 +42,14 @@ final class HashtagSearchDataSource: PaginatedDataSource, SearchDataSourceType, 
         self.tableView = tableView
     }
     
-    //MARK: - API
+    // MARK: - API
     
     func search(searchTerm searchTerm: String, pageType: VPageType, completion: ((NSError?) -> ())? = nil ) {
-        
         self.searchTerm = searchTerm
-        guard let operation = HashtagSearchOperation(searchTerm: searchTerm) else {
-            return
-        }
-        
-        loadPage( pageType,
-            createOperation: {
-                return operation
-            },
-            completion: { (results, error, cancelled) in
-                completion?( error )
-            }
-        )
+        // Implementation removed
     }
     
-    //MARK: - UITableViewDataSource
+    // MARK: - UITableViewDataSource
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.visibleItems.count ?? 0
