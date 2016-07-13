@@ -56,7 +56,7 @@ class ContentPublisher {
             return
         }
         
-        createPersistentContent(chatFeedContent.content) { [weak self] error in
+        upload(chatFeedContent.content) { [weak self] error in
             if error != nil {
                 // FUTURE: Handle failure.
             }
@@ -79,10 +79,10 @@ class ContentPublisher {
     
     /// Uploads `content` to the server.
     ///
-    /// - Parameter content: The content that should be persisted.
+    /// - Parameter content: The content that should be uploaded.
     /// - Parameter completion: The block to call after upload has completed or failed. Always called.
     ///
-    private func createPersistentContent(content: ContentModel, completion: (ErrorType?) -> Void) {
+    private func upload(content: ContentModel, completion: (ErrorType?) -> Void) {
         if !content.assets.isEmpty {
             guard let publishParameters = VPublishParameters(content: content) else {
                 completion(ContentPublisherError.invalidContent)
