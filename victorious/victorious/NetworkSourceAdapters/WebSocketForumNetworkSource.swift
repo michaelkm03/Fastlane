@@ -55,7 +55,7 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
         static let timeoutPadding = UInt32(3)
 
         /// The cap that the reconnect timeout can increase to.
-        static let maxTimeout = NSTimeInterval(15)
+        static let maxTimeout = NSTimeInterval(25)
 
         static func increaseReconnectTimeout(reconnectTimeout: NSTimeInterval) -> NSTimeInterval {
             let increasedReconnectTimeout = reconnectTimeout + NSTimeInterval(arc4random_uniform(Reconnect.timeoutPadding)) + 1
