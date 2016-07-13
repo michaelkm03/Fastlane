@@ -201,7 +201,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     
     func shouldDisplayAccessoryItem(withIdentifier identifier: String) -> Bool {
         if identifier == VNewProfileViewController.upgradeButtonID {
-            return user?.hasValidVIPSubscription != true
+            return user?.hasValidVIPSubscription != true && dependencyManager.vipSubscription?.enabled == true
         }
         
         return true
@@ -215,7 +215,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     
     func shouldDisplayAccessoryMenuItem(menuItem: VNavigationMenuItem!, fromSource source: UIViewController!) -> Bool {
         if menuItem?.identifier == VNewProfileViewController.upgradeButtonID {
-            return user?.hasValidVIPSubscription != true
+            return user?.hasValidVIPSubscription != true && dependencyManager.vipSubscription?.enabled == true
         }
         
         return true
