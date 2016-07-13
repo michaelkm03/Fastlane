@@ -24,6 +24,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
     static let horizontalSpacing = CGFloat(12.0)
     static let avatarSize = CGSize(width: 30.0, height: 30.0)
     static let avatarTapTargetSize = CGSize(width: 44.0, height: 44.0)
+    static let failureButtonSize = CGSize(width: 24.0, height: 24.0)
     static let contentMargin = UIEdgeInsets(top: 28.0, left: 10.0, bottom: 2.0, right: 75.0)
     static let topLabelYSpacing = CGFloat(4.0)
     static let topLabelXInset = CGFloat(4.0)
@@ -64,6 +65,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
         contentView.addSubview(avatarView)
         contentView.addSubview(avatarTapTarget)
         contentView.addSubview(captionBubbleView)
+        contentView.addSubview(failureButton)
         
         captionBubbleView.contentView.addSubview(captionLabel)
     }
@@ -113,6 +115,8 @@ class ChatFeedMessageCell: UICollectionViewCell {
     
     var previewBubbleView: ChatBubbleView?
     var previewView: UIView?
+    
+    let failureButton = UIButton(type: .System)
     
     // MARK: - Layout
     
