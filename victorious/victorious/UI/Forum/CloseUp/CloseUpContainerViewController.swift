@@ -122,13 +122,11 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         if content.isLikedByCurrentUser {
             upvoteButton.setImage(dependencyManager.upvoteIconSelected, forState: .Normal)
             upvoteButton.backgroundColor = dependencyManager.upvoteIconSelectedBackgroundColor
-//            upvoteButton.image = dependencyManager.upvoteIconSelected
             upvoteButton.tintColor = dependencyManager.upvoteIconTint
         }
         else {
             upvoteButton.setImage(dependencyManager.upvoteIconUnselected, forState: .Normal)
             upvoteButton.backgroundColor = dependencyManager.upvoteIconUnselectedBackgroundColor
-//            upvoteButton.image = dependencyManager.upvoteIconUnselected
             upvoteButton.tintColor = nil
         }
         
@@ -208,29 +206,24 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
 }
 
 private extension VDependencyManager {
-    // TODO: Update colors and icons that come from the template.
-    
     var upvoteIconTint: UIColor? {
-        return UIColor(white: 0.169, alpha: 1.0)
-//        return colorForKey("color.text.actionButton")
+        return colorForKey("color.text.actionButton")
     }
     
     var upvoteIconSelectedBackgroundColor: UIColor? {
-        return UIColor(white: 1.0, alpha: 0.8)
+        return colorForKey("color.background.upvote.selected") ?? UIColor(white: 1.0, alpha: 0.8)
     }
     
     var upvoteIconUnselectedBackgroundColor: UIColor? {
-        return UIColor(white: 1.0, alpha: 0.2)
+        return colorForKey("color.background.upvote.unselected") ?? UIColor(white: 1.0, alpha: 0.2)
     }
     
     var upvoteIconSelected: UIImage? {
-        return UIImage(named: "star")
-//        return imageForKey("upvote_icon_selected")?.imageWithRenderingMode(.AlwaysTemplate)
+        return imageForKey("upvote_icon_selected")?.imageWithRenderingMode(.AlwaysTemplate)
     }
     
     var upvoteIconUnselected: UIImage? {
-        return UIImage(named: "star")
-//        return imageForKey("upvote_icon_unselected")?.imageWithRenderingMode(.AlwaysTemplate)
+        return imageForKey("upvote_icon_unselected")?.imageWithRenderingMode(.AlwaysTemplate)
     }
     
     var overflowIcon: UIImage? {

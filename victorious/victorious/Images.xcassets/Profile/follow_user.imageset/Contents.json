@@ -2,7 +2,7 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "Icons_Follow_1x.png",
+      "filename" : "follow_user.png",
       "scale" : "1x"
     },
     {
@@ -12,7 +12,7 @@
     },
     {
       "idiom" : "universal",
-      "filename" : "Icons_Follow_3x.png",
+      "filename" : "follow_user@3x.png",
       "scale" : "3x"
     }
   ],
