@@ -59,9 +59,10 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
         view.v_addFitToParentConstraintsToSubview(sideMenuController.view)
         sideMenuController.didMoveToParentViewController(self)
         
-        dependencyManager.applyStyleToNavigationBar(mainNavigationController.innerNavigationController.navigationBar)
-
         let navigationBar = mainNavigationController.innerNavigationController.navigationBar
+        navigationBar.translucent = false
+        dependencyManager.applyStyleToNavigationBar(navigationBar)
+        
         let backArrowImage = UIImage(named: "BackArrow")
         navigationBar.backIndicatorImage = backArrowImage
         navigationBar.backIndicatorTransitionMaskImage = backArrowImage

@@ -41,11 +41,6 @@ NSString * const VDependencyManagerNavigationBarAppearanceKey = @"navigationBarA
                        forBarPosition:UIBarPositionAny
                            barMetrics:UIBarMetricsDefault];
 
-    if (!self.festivalIsEnabled)
-    {
-        navigationBar.shadowImage = [UIImage v_singlePixelImageWithColor:[UIColor v_navigationAndTabBarShadowColor]];
-    }
-
     NSMutableDictionary *titleAttributes = [NSMutableDictionary dictionary];
     UIColor *navigationBarTitleTintColor = [self barItemTintColor];
     UIFont *navigationBarTitleFont = [dependenciesForNavigationBar fontForKey:VDependencyManagerHeaderFontKey];
