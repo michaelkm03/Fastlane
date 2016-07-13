@@ -52,7 +52,7 @@ class TutorialCollectionViewDataSource: NSObject, ChatInterfaceDataSource, Tutor
         delegate?.didFinishFetchingAllItems()
     }
     
-    var chatFeedItemWidth: CGFloat? {
-        return delegate?.chatFeedItemWidth
+    var chatFeedItemWidth: CGFloat {
+        return delegate?.chatFeedItemWidth ?? 0.0
     }
 }

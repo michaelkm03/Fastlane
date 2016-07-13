@@ -12,7 +12,7 @@ import Foundation
 protocol TutorialNetworkDataSourceDelegate: class {
     func didReceiveNewMessage(message: ChatFeedContent)
     func didFinishFetchingAllItems()
-    var chatFeedItemWidth: CGFloat? { get }
+    var chatFeedItemWidth: CGFloat { get }
 }
 
 class TutorialNetworkDataSource: NSObject, NetworkDataSource {
