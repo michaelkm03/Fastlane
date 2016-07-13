@@ -43,7 +43,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
         super.init(frame: frame)
         
         avatarTapTarget.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOnAvatar)))
-        failureButton.addTarget(self, action: #selector(didTapOnFailureButton(_:)), forControlEvents: .TouchUpInside)
+        failureButton.addTarget(self, action: #selector(didTapOnFailureButton), forControlEvents: .TouchUpInside)
         captionLabel.numberOfLines = 0
         
         contentView.addSubview(usernameLabel)
