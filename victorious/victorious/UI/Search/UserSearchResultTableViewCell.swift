@@ -20,7 +20,6 @@ class UserSearchResultTableViewCell: UITableViewCell {
     var viewData: ViewData? {
         didSet {
             if let viewData = viewData {
-                profileButton.setProfileImageURL(viewData.profileURL, forState: .Normal)
                 usernameLabel.text = viewData.username
             }
         }
@@ -42,7 +41,6 @@ class UserSearchResultTableViewCell: UITableViewCell {
     var dependencyManager: VDependencyManager? {
         didSet {
             if let dependencyManager = dependencyManager {
-                profileButton.dependencyManager = dependencyManager
                 profileButton.tintColor = dependencyManager.colorForKey(VDependencyManagerLinkColorKey)
                 usernameLabel.font = dependencyManager.fontForKey(VDependencyManagerLabel1FontKey)
                 followControl?.dependencyManager = dependencyManager
@@ -50,6 +48,6 @@ class UserSearchResultTableViewCell: UITableViewCell {
         }
     }
     
-    @IBOutlet private var profileButton: VDefaultProfileButton!
+    @IBOutlet private var profileButton: UIButton!
     @IBOutlet private var usernameLabel: UILabel!
 }

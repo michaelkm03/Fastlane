@@ -26,7 +26,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     }
     
     @IBOutlet weak var headerSection: UIView!
-    @IBOutlet weak var profileImageView: UIImageView!
+    @IBOutlet weak var avatarView: AvatarView!
     @IBOutlet weak var userNameButton: UIButton!
     @IBOutlet weak var createdAtLabel: UILabel!
     @IBOutlet weak var mediaContentView: MediaContentView!
@@ -40,7 +40,6 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
        return ErrorStateView.v_fromNib()
     }()
     private var videoPlayer: VVideoPlayer?
-    private let placeholderImage = UIImage(named: "profile_full")
     
     weak var delegate: CloseUpViewDelegate?
     
@@ -78,12 +77,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
             
             // Header
             userNameButton.setTitle(author.name, forState: .Normal)
-            
-            if let pictureURL = author.previewImageURL(ofMinimumSize: profileImageView.frame.size) {
-                profileImageView.sd_setImageWithURL(pictureURL, placeholderImage: placeholderImage)
-            } else {
-                profileImageView.image = placeholderImage
-            }
+            avatarView.user = author
             
             let minWidth = UIScreen.mainScreen().bounds.size.width
             
@@ -105,12 +99,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     func setHeader(for content: ContentModel, author: UserModel ) {
         userNameButton.setTitle(author.name, forState: .Normal)
         
-        if let pictureURL = author.previewImageURL(ofMinimumSize: profileImageView.frame.size) {
-            profileImageView.sd_setImageWithURL(pictureURL, placeholderImage: placeholderImage)
-        } else {
-            profileImageView.image = placeholderImage
-        }
-        
+        avatarView.user = author
         createdAtLabel.text = content.createdAt.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds) ?? ""
         captionLabel.text = content.text
     }
@@ -132,7 +121,6 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     override func awakeFromNib() {
         addSubview(errorView)
         
-        profileImageView.layer.cornerRadius = profileImageView.frame.size.v_roundCornerRadius
         closeUpContentContainerView.layer.cornerRadius = Constants.cornerRadius
         clearContent()
         
@@ -159,7 +147,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     
     func clearContent() {
         captionLabel.text = ""
-        profileImageView.image = nil
+        avatarView.user = nil
         userNameButton.setTitle("", forState: .Normal)
         createdAtLabel.text = ""
         relatedLabel.alpha = 0

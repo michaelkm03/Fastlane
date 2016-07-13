@@ -10,7 +10,6 @@
 
 
 // Subviews
-#import "VDefaultProfileButton.h"
 #import "VCommentTextAndMediaView.h"
 
 // Dependency Manager
@@ -40,7 +39,7 @@ static NSCache *_sharedImageCache = nil;
 
 @interface VContentCommentsCell ()
 
-@property (weak, nonatomic) IBOutlet VDefaultProfileButton *commentersAvatarButton;
+@property (weak, nonatomic) IBOutlet UIButton *commentersAvatarButton;
 @property (weak, nonatomic) IBOutlet UILabel *commentersUsernameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *timestampLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *seperatorImageView;
@@ -151,7 +150,6 @@ static NSCache *_sharedImageCache = nil;
         self.commentersUsernameLabel.textColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
         self.timestampLabel.font = [dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
         self.commentAndMediaView.textFont = [dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
-        self.commentersAvatarButton.dependencyManager = dependencyManager;
     }
 }
 
@@ -163,7 +161,6 @@ static NSCache *_sharedImageCache = nil;
     
     self.commentBody = comment.text;
     self.commenterName = comment.user.name;
-    self.commentersAvatarButton.user = comment.user;
     self.timestampText = [comment.postedAt stringDescribingTimeIntervalSinceNow];
     self.mediaIsVideo = comment.commentMediaType == VCommentMediaTypeVideo;
     self.hasMedia = comment.commentMediaType != VCommentMediaTypeNoMedia;

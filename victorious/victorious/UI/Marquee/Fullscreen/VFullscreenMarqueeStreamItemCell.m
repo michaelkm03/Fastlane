@@ -12,7 +12,6 @@
 #import "VSequence+Fetcher.h"
 
 // Views + Helpers
-#import "VDefaultProfileButton.h"
 #import "UIView+Autolayout.h"
 #import "UIImageView+VLoadingAnimations.h"
 #import "UIImage+ImageCreation.h"

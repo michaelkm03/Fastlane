@@ -8,7 +8,7 @@
 
 #import "VBaseCollectionViewCell.h"
 
-@class VInStreamCommentCellContents, VTagSensitiveTextView, VDefaultProfileButton, VTagDictionary;
+@class VInStreamCommentCellContents, VTagSensitiveTextView, VTagDictionary;
 
 /**
     A condensed representation of a comment, intended to be displayed alongside the content that has been commented on.
