@@ -111,7 +111,7 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
         }
     }
     
-    var chatFeedItemWidth : CGFloat? {
+    var chatFeedItemWidth: CGFloat? {
         return collectionView.bounds.width
     }
     
