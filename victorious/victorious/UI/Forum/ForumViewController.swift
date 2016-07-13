@@ -304,10 +304,10 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
         alertController.addAction(
             UIAlertAction(
-                title: NSLocalizedString("TryAgain", comment: "Sending message failed. User taps this to try sending again"),
+                title: NSLocalizedString("Try Again", comment: "Sending message failed. User taps this to try sending again"),
                 style: .Default,
                 handler: { alertAction in
-                    // Handle re-send action
+                    // FUTURE: Handle re-send action
                 }
             )
         )
@@ -317,7 +317,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                 title: NSLocalizedString("Delete", comment: ""),
                 style: .Destructive,
                 handler: { alertAction in
-                    // Handle delete action
+                    // FUTURE: Handle delete action
                 }
             )
         )

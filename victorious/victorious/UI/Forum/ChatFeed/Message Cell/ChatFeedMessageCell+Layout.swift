@@ -8,8 +8,8 @@
 
 import Foundation
 
-// FIXME: Remove this testing bit
-let testingFailrueState = true
+// FUTURE: Remove this testing bit
+let testingFailrueState = false
 
 /// The possible alignment values for the content of a chat feed message cell.
 private enum ChatFeedMessageCellAlignment {
@@ -81,12 +81,15 @@ extension ChatFeedMessageCell {
         }
         
         // Failure button layout:
-        let avatarFrame = cell.avatarView.frame
-        cell.failureButton.frame = CGRect(
-            center: CGPoint(
-                x: avatarFrame.origin.x + avatarFrame.size.width + horizontalSpacing + failureButtonSize.width / 2,
-                y: avatarFrame.center.y),
-            size: failureButtonSize)
+        
+        if alignment == .right && testingFailrueState {
+            let avatarFrame = cell.avatarView.frame
+            cell.failureButton.frame = CGRect(
+                center: CGPoint(
+                    x: avatarFrame.origin.x + avatarFrame.size.width + horizontalSpacing + failureButtonSize.width / 2,
+                    y: avatarFrame.center.y),
+                size: failureButtonSize)
+        }
     }
     
     private static func layoutBubbleView(bubbleView: UIView?, forAlignment alignment: ChatFeedMessageCellAlignment, size: CGSize?, precedingBubbleFrame: CGRect?, inBounds bounds: CGRect) -> CGRect? {
