@@ -219,7 +219,9 @@
 {
     NSParameterAssert( eventName != nil );
     
-    NSString *queueKey = [self queueKeyForEventWithParameters:parameters andEventId:eventId];
+    NSMutableDictionary *eventParameters = [NSMutableDictionary dictionaryWithDictionary:parameters];
+    [eventParameters addEntriesFromDictionary:sessionParameters];
+    NSString *queueKey = [self queueKeyForEventWithParameters:eventParameters andEventId:eventId];
     NSMutableDictionary *existingQueuedEvents = self.queuedEventGroups[eventName];
     if ( existingQueuedEvents == nil )
     {
@@ -227,24 +229,34 @@
         self.queuedEventGroups[eventName] = existingQueuedEvents;
     }
     
-    NSDictionary *completeParams = [self addTimeStampToParametersDictionary:parameters];
-    VTrackingEvent *event = [[VTrackingEvent alloc] initWithName:eventName parameters:completeParams eventId:eventId];
-    [existingQueuedEvents setObject:event forKey:queueKey];
-    [self trackEvent:event.name parameters:event.parameters sessionParameters:sessionParameters];
-    
+    if ( existingQueuedEvents[queueKey] != nil )
+    {
 #if TRACKING_QUEUE_LOGGING_ENABLED
-    NSLog( @"Event queued.  Queued: %lu", (unsigned long)self.queuedEvents.count);
+        NSLog( @"Event with duplicate key rejected. Queued: %lu", (unsigned long)self.queuedEvents.count);
 #endif
+        return;
+    }
+    else
+    {
+        NSDictionary *completeParams = [self addTimeStampToParametersDictionary:eventParameters];
+        VTrackingEvent *event = [[VTrackingEvent alloc] initWithName:eventName parameters:completeParams eventId:eventId];
+        [existingQueuedEvents setObject:event forKey:queueKey];
+        [self trackEvent:event.name parameters:event.parameters];
+        
+#if TRACKING_QUEUE_LOGGING_ENABLED
+        NSLog( @"Event queued.  Queued: %lu", (unsigned long)self.queuedEvents.count);
+#endif
+    }
 }
 
 - (NSString *)queueKeyForEventWithParameters:(NSDictionary *)parameters andEventId:(NSString *)eventId
 {
     NSString *queueKey = eventId != nil ? eventId : @"";
     queueKey = [queueKey stringByAppendingString:@"."];
-    NSString *streamId = parameters[VTrackingKeyStreamId];
-    if ( streamId != nil )
+    NSString *parentContentId = parameters[VTrackingKeyParentContentId];
+    if ( parentContentId != nil )
     {
-        queueKey = [queueKey stringByAppendingString:streamId];
+        queueKey = [queueKey stringByAppendingString:parentContentId];
     }
     return queueKey;
 }

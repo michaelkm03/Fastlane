@@ -40,25 +40,22 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DoU-Dg-AKF">
+                                                <view contentMode="scaleToFill" placeholderIntrinsicWidth="30" placeholderIntrinsicHeight="30" translatesAutoresizingMaskIntoConstraints="NO" id="LvS-JK-TEH" customClass="AvatarView" customModule="victorious" customModuleProvider="target">
                                                     <rect key="frame" x="12" y="17" width="30" height="30"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="30" id="LTt-p9-Fy8"/>
-                                                        <constraint firstAttribute="width" constant="30" id="jxg-BT-gzP"/>
-                                                    </constraints>
-                                                </imageView>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </view>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                         <constraints>
-                                            <constraint firstItem="DoU-Dg-AKF" firstAttribute="centerY" secondItem="pDL-Ab-X1N" secondAttribute="centerY" id="2hw-Tp-2fv"/>
-                                            <constraint firstItem="DoU-Dg-AKF" firstAttribute="leading" secondItem="pDL-Ab-X1N" secondAttribute="leading" constant="12" id="4JD-eN-Nrj"/>
-                                            <constraint firstItem="sbZ-95-2Ut" firstAttribute="leading" secondItem="DoU-Dg-AKF" secondAttribute="trailing" constant="12" id="OIX-oy-rIO"/>
+                                            <constraint firstItem="sbZ-95-2Ut" firstAttribute="leading" secondItem="LvS-JK-TEH" secondAttribute="trailing" constant="12" id="8XI-IH-57w"/>
                                             <constraint firstItem="sbZ-95-2Ut" firstAttribute="centerY" secondItem="pDL-Ab-X1N" secondAttribute="centerY" id="RyP-Yx-X3y"/>
+                                            <constraint firstItem="LvS-JK-TEH" firstAttribute="leading" secondItem="pDL-Ab-X1N" secondAttribute="leading" constant="12" id="hNn-gU-t1Q"/>
+                                            <constraint firstItem="LvS-JK-TEH" firstAttribute="centerY" secondItem="pDL-Ab-X1N" secondAttribute="centerY" id="jh1-Kf-abM"/>
                                         </constraints>
                                         <connections>
+                                            <outlet property="avatarView" destination="LvS-JK-TEH" id="seZ-KC-bjv"/>
                                             <outlet property="creatorNameLabel" destination="sbZ-95-2Ut" id="vCk-7k-9nt"/>
-                                            <outlet property="profileImageView" destination="DoU-Dg-AKF" id="OBf-Ee-iCj"/>
                                         </connections>
                                     </collectionViewCell>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ListMenuCommunityCollectionViewCell" id="Aw7-Zd-Ktk" customClass="ListMenuCommunityCollectionViewCell" customModule="victorious" customModuleProvider="target">

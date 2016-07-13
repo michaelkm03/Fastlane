@@ -41,7 +41,9 @@ class StageDataSource: ForumEventReceiver {
                 guard let contentFetchURL = dependencyManager.contentFetchURL else {
                     return
                 }
-                
+
+                // Don't replace the content on the Main Stage if it's the same content since we might be getting 
+                // multiple Main stage messages during the contents lifetime.
                 if currentContent?.id == stageEvent.contentID && stageEvent.section == .MainStage {
                     return
                 }
@@ -55,7 +57,7 @@ class StageDataSource: ForumEventReceiver {
                         !canceled,
                         let content = results?.first as? ContentModel
                     else {
-                            return
+                        return
                     }
                     
                     self?.delegate?.addContent(content)

@@ -9,7 +9,7 @@
 #import "VCameraControl.h"
 
 #import "UIColor+VBrightness.h"
-#import "UIColor+VHex.h"
+#import "victorious-Swift.h"
 
 static const CGFloat kMinHeightSize = 80.0f;
 static const CGFloat kWidthScaleFactorImageOnly = 1.2f;
@@ -136,7 +136,7 @@ static const NSTimeInterval kNotRecordingTrackingTime = 0.0;
         }
         self.redDotView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kRecordingDotDiameter, kRecordingDotDiameter)];
         self.redDotView.userInteractionEnabled = NO;
-        self.redDotView.backgroundColor = [UIColor v_colorFromHexString:kRecordingDotHexColor];
+        self.redDotView.backgroundColor = [[UIColor alloc] initWithRgbHexString:kRecordingDotHexColor];
         self.redDotView.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
         self.redDotView.layer.cornerRadius = kRecordingDotDiameter / 2.0f;
         self.redDotView.layer.masksToBounds = YES;

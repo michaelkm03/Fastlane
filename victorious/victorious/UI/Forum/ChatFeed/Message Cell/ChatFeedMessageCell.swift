@@ -28,12 +28,6 @@ class ChatFeedMessageCell: UICollectionViewCell {
     static let topLabelYSpacing = CGFloat(4.0)
     static let topLabelXInset = CGFloat(4.0)
     static let bubbleSpacing = CGFloat(6.0)
-    static let shadowRadius = CGFloat(1.0)
-    static let shadowOpacity = Float(0.2)
-    static let shadowColor = UIColor.blackColor()
-    static let shadowOffset = CGSize(width: 0.0, height: 1.0)
-    
-    let defaultAvatarImage = UIImage(named: "profile_full")
     
     // MARK: - Reuse identifiers
     
@@ -46,21 +40,12 @@ class ChatFeedMessageCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        avatarView.clipsToBounds = true
-        avatarView.userInteractionEnabled = true
-        
         avatarTapTarget.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onAvatarTapped)))
         
         captionLabel.numberOfLines = 0
         
-        avatarShadowView.layer.shadowColor = ChatFeedMessageCell.shadowColor.CGColor
-        avatarShadowView.layer.shadowRadius = ChatFeedMessageCell.shadowRadius
-        avatarShadowView.layer.shadowOpacity = ChatFeedMessageCell.shadowOpacity
-        avatarShadowView.layer.shadowOffset = ChatFeedMessageCell.shadowOffset
-        
         contentView.addSubview(usernameLabel)
         contentView.addSubview(timestampLabel)
-        contentView.addSubview(avatarShadowView)
         contentView.addSubview(avatarView)
         contentView.addSubview(avatarTapTarget)
         contentView.addSubview(captionBubbleView)
@@ -104,8 +89,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
     let usernameLabel = UILabel()
     let timestampLabel = UILabel()
     
-    let avatarShadowView = UIView()
-    let avatarView = UIImageView()
+    let avatarView = AvatarView()
     let avatarTapTarget = UIView()
     
     let captionBubbleView = ChatBubbleView()
@@ -119,21 +103,6 @@ class ChatFeedMessageCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         ChatFeedMessageCell.layoutContent(for: self)
-        avatarView.layer.cornerRadius = avatarView.bounds.size.v_roundCornerRadius
-        updateAvatarShadowPathIfNeeded()
-    }
-    
-    // MARK: - Shadows
-    
-    private var shadowBounds: CGRect?
-    
-    private func updateAvatarShadowPathIfNeeded() {
-        let newShadowBounds = avatarShadowView.bounds
-        
-        if newShadowBounds != shadowBounds {
-            shadowBounds = newShadowBounds
-            avatarShadowView.layer.shadowPath = UIBezierPath(ovalInRect: newShadowBounds).CGPath
-        }
     }
     
     // MARK: - Gesture Recognizer Actions
@@ -154,8 +123,6 @@ class ChatFeedMessageCell: UICollectionViewCell {
         timestampLabel.textColor = dependencyManager.timestampColor
         
         captionBubbleView.backgroundColor = dependencyManager.backgroundColor
-        
-        avatarView.backgroundColor = dependencyManager.backgroundColor
     }
     
     private func populateData() {
@@ -184,13 +151,8 @@ class ChatFeedMessageCell: UICollectionViewCell {
         else {
             previewView?.hidden = true
         }
-
-        if let imageURL = content?.author.previewImageURL(ofMinimumSize: avatarView.frame.size) {
-            avatarView.sd_setImageWithURL(imageURL, placeholderImage: defaultAvatarImage)
-        }
-        else {
-            avatarView.image = defaultAvatarImage
-        }
+        
+        avatarView.user = content?.author
     }
     
     private func createContentPreviewViewIfNeeded() -> ContentPreviewView {

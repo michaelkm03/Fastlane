@@ -11,12 +11,12 @@
 #import "VUserProfileHeader.h"
 #import "VButton.h"
 
-@class VUser, VDefaultProfileImageView, VDependencyManager;
+@class VUser, VDependencyManager;
 
 @interface VAbstractUserProfileHeaderViewController : UIViewController <VUserProfileHeader, VHasManagedDependencies>
 
 @property (nonatomic, strong, readonly) VDependencyManager *dependencyManager;
-@property (nonatomic, strong, readonly) VDefaultProfileImageView *profileImageView;
+@property (nonatomic, strong, readonly) UIImageView *profileImageView;
 @property (nonatomic, assign, readonly) BOOL isCurrentUser;
 @property (nonatomic, weak) IBOutlet UIImageView *backgroundImageView;
 @property (nonatomic, weak) IBOutlet VButton *primaryActionButton;

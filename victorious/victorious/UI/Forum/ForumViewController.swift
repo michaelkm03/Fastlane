@@ -66,7 +66,9 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                 InterstitialManager.sharedInstance.dismissCurrentInterstitial(of: .reconnectingError)
                 navBarTitleView?.activeUserCount = userCount.userCount
             case .filterContent(let path):
+                // path will be nil for home feed, and non nil for filtered feed
                 composer?.setComposerVisible(path == nil, animated: true)
+                stage?.setStageEnabled(path == nil, animated: true)
             default:
                 break
         }
