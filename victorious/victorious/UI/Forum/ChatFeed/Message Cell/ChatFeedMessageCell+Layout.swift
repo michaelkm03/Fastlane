@@ -80,9 +80,13 @@ extension ChatFeedMessageCell {
             cell.captionLabel.frame = CGRect.zero
         }
         
-        // TODO: Failure button layout:
-        
-        
+        // Failure button layout:
+        let avatarFrame = cell.avatarView.frame
+        cell.failureButton.frame = CGRect(
+            center: CGPoint(
+                x: avatarFrame.origin.x + avatarFrame.size.width + horizontalSpacing + failureButtonSize.width / 2,
+                y: avatarFrame.center.y),
+            size: failureButtonSize)
     }
     
     private static func layoutBubbleView(bubbleView: UIView?, forAlignment alignment: ChatFeedMessageCellAlignment, size: CGSize?, precedingBubbleFrame: CGRect?, inBounds bounds: CGRect) -> CGRect? {
