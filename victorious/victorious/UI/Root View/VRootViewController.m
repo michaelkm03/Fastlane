@@ -242,6 +242,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     [[[FetchTemplateProductIdentifiersOperation alloc] initWithProductsDataSource:self.dependencyManager] queueWithCompletion:nil];
     
     [[InterstitialManager sharedInstance] setDependencyManager:self.dependencyManager];
+    
 }
 
 - (void)showAgeGateViewController

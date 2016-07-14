@@ -11,14 +11,6 @@
 
 @class VBackground;
 
-typedef NS_ENUM( NSUInteger, VToastVerticalLocation )
-{
-    VToastVerticalLocationTop,
-    VToastVerticalLocationMiddle,
-    VToastVerticalLocationBottom,
-    VToastVerticalLocationInvalid
-};
-
 /**
     A model represting a coachmark that is used to determine the appearance,
     location, and message of a coachmark view.
@@ -61,11 +53,6 @@ typedef NS_ENUM( NSUInteger, VToastVerticalLocation )
     The font of the displayed text.
  */
 @property (nonatomic, readonly) UIFont *font;
-
-/**
-    The vertical location of the coachmark when it is shown as a toast.
- */
-@property (nonatomic, readonly) VToastVerticalLocation toastLocation;
 
 /**
     The identifier of this coachmark. This id is consistent across sessions.
