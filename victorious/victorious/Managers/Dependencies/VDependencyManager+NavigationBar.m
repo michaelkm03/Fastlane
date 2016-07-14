@@ -33,9 +33,8 @@ NSString * const VDependencyManagerNavigationBarAppearanceKey = @"navigationBarA
     UIColor *baseBackgroundColor = [[dependenciesForNavigationBar childDependencyForKey:VDependencyManagerBackgroundKey] colorForKey:@"color"];
     CGFloat alpha = 0.0;
     [baseBackgroundColor getRed:nil green:nil blue:nil alpha:&alpha];
-//    245, 129, 89,255
-    //TODO: for board meeting
-    UIColor *backgroundColor = [[UIColor colorWithRed:(245.0/255.0) green:(129.0/255.0) blue:(89.0/255.0) alpha:1.0] v_colorLightenedBy:0.1];
+    
+    UIColor *backgroundColor = [[baseBackgroundColor v_colorDarkenedBy:1.0 - alpha] colorWithAlphaComponent:1.0];
     
     [navigationBar setBarTintColor:backgroundColor];
     [navigationBar setBackgroundImage:[UIImage v_imageWithColor:backgroundColor]
