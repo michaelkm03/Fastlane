@@ -68,7 +68,8 @@ extension ChatInterfaceDataSource {
     
     func decorate(cell: ChatFeedMessageCell, content: ContentModel) {
         cell.dependencyManager = dependencyManager
-        cell.content = content
+        let chatFeedContent = ChatFeedContent(content)
+        cell.chatFeedContent = chatFeedContent
     }
     
     func updateTimestamps(in collectionView: UICollectionView) {

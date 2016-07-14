@@ -167,7 +167,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     // MARK: - ChatFeedMessageCellDelegate
     
     func messageCellDidSelectAvatarImage(messageCell: ChatFeedMessageCell) {
-        guard let userID = messageCell.content?.author.id else {
+        guard let userID = messageCell.chatFeedContent?.content.author.id else {
             return
         }
         
@@ -175,7 +175,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     }
     
     func messageCellDidSelectMedia(messageCell: ChatFeedMessageCell) {
-        guard let content = messageCell.content else {
+        guard let content = messageCell.chatFeedContent?.content else {
             return
         }
         
@@ -183,7 +183,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     }
     
     func messageCellDidSelectFailureButton(messageCell: ChatFeedMessageCell) {
-        guard let content = messageCell.content else {
+        guard let content = messageCell.chatFeedContent?.content else {
             return
         }
         
