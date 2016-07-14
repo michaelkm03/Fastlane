@@ -10,7 +10,7 @@ import UIKit
 
 /// A template driven .screen component that sets up, houses and mediates the interaction
 /// between the Forum's required concrete implementations and abstract dependencies.
-class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocusable, PersistentContentCreator, UploadManagerHost {
+class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocusable, UploadManagerHost {
     @IBOutlet private weak var stageContainer: UIView!
     @IBOutlet private weak var stageViewControllerContainer: VPassthroughContainerView!
     @IBOutlet private weak var stageTouchView: UIView!
@@ -75,35 +75,20 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     }
     
     func send(event: ForumEvent) {
-        
         switch event {
-        case .sendContent(let content):
-            
-            guard let networkResources = dependencyManager.networkResources else {
-                let logMessage = "Didn't find a valid network resources dependency inside the forum!"
-                assertionFailure(logMessage)
-                v_log(logMessage)
-                nextSender?.send(event)
-                return
-            }
-            
-            createPersistentContent(content, networkResourcesDependency: networkResources) { [weak self] error in
-                
-                if let validError = error,
-                    let strongSelf = self {
-                    
-                    if let persistenceError = validError as? PersistentContentCreatorError where
-                        persistenceError.isInvalidNetworkResourcesError {
-                        //Encountered an error where the network resources were inadequate. This does NOT
-                        //represent an error state that should be messaged to the user.
-                    } else {
-                        strongSelf.v_showDefaultErrorAlert()
-                    }
-                }
-            }
-        default:()
+            case .sendContent(let content): publish(content)
+            default: break
         }
+        
         nextSender?.send(event)
+    }
+    
+    private func publish(content: ContentModel) {
+        guard let publisher = (chatFeed?.chatInterfaceDataSource as? ChatFeedDataSource)?.publisher else {
+            return
+        }
+        
+        publisher.publish(content)
     }
 
     // MARK: - ForumEventSender
@@ -278,11 +263,14 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             return
         }
         
+
         //TODO: Fixme
 //        title = dependencyManager.title
 //        navigationItem.titleView = 
         dependencyManager.applyStyleToNavigationBar(self.navigationController?.navigationBar)
         navigationController?.navigationBar.translucent = false
+        dependencyManager.applyStyleToNavigationBar(navigationController?.navigationBar)
+        
         dependencyManager.addBackgroundToBackgroundHost(self)
     }
 
@@ -302,6 +290,38 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     func chatFeed(chatFeed: ChatFeed, willEndDragging scrollView: UIScrollView, withVelocity velocity: CGPoint) {
         stageShrinkingAnimator?.chatFeed(chatFeed, willEndDragging: scrollView, withVelocity: velocity)
+    }
+    
+    func chatFeed(chatFeed: ChatFeed, didSelectFailureButtonForContent content: ContentModel) {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+        alertController.addAction(
+            UIAlertAction(
+                title: NSLocalizedString("Try Again", comment: "Sending message failed. User taps this to try sending again"),
+                style: .Default,
+                handler: { alertAction in
+                    // FUTURE: Handle re-send action
+                }
+            )
+        )
+        
+        alertController.addAction(
+            UIAlertAction(
+                title: NSLocalizedString("Delete", comment: ""),
+                style: .Destructive,
+                handler: { alertAction in
+                    // FUTURE: Handle delete action
+                }
+            )
+        )
+        
+        alertController.addAction(
+            UIAlertAction(
+                title: NSLocalizedString("Cancel", comment: ""),
+                style: .Cancel,
+                handler: nil
+            )
+        )
+        presentViewController(alertController, animated: true, completion: nil)
     }
 
     // MARK: - VFocusable

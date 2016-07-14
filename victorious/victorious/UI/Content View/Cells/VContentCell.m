@@ -240,11 +240,9 @@ static const NSTimeInterval kDefaultAdTimeoutTimeInterval = 3.0;
     }
     
     self.backgroundColor = [UIColor blackColor];
-    IMAAdViewController *adViewController = [[IMAAdViewController alloc] initWithPlayer:self.videoPlayer
-                                                                                  adTag:adBreak.adTag
-                                                                              adsLoader:[[IMAAdsLoader alloc] init]
-                                                                                 adView:[[UIView alloc] init]];
-    self.adVideoPlayerViewController = [[AdVideoPlayerViewController alloc] initWithAdViewController:adViewController];
+    
+    // Method body removed alongside google ads framework
+    
     _currentAdBreak = adBreak;
     if ( self.adVideoPlayerViewController != nil )
     {

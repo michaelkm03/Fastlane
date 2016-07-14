@@ -8,6 +8,11 @@
 
 import UIKit
 
+struct ListMenuSelectedItem {
+    let streamAPIPath: APIPath
+    let title: String?
+}
+
 /// View Controller for the entire List Menu Component, which is currently being displayed as the left navigation pane
 /// of a sliding scaffold.
 class ListMenuViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, VCoachmarkDisplayer, VNavigationDestination, VBackgroundContainer {
@@ -44,6 +49,9 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         collectionView?.contentInset = ListMenuViewController.contentInset
         dependencyManager.addBackgroundToBackgroundHost(self)
         view.layoutIfNeeded()
+        
+        // Hack to show the creator logo
+        postListMenuSelection(nil)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -82,21 +90,23 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         let item = collectionViewDataSource.communityDataSource.visibleItems[index]
         
         // Index 0 should correspond to the home feed, so we broadcast a nil path to denote an unfiltered feed.
-        postStreamAPIPath(index == 0 ? nil : item.streamAPIPath)
+        postListMenuSelection(index == 0 ? nil : ListMenuSelectedItem(streamAPIPath: item.streamAPIPath, title: item.title))
     }
     
     private func selectHashtag(atIndex index: Int) {
         let item = collectionViewDataSource.hashtagDataSource.visibleItems[index]
         var apiPath = collectionViewDataSource.hashtagDataSource.hashtagStreamAPIPath
         apiPath.macroReplacements["%%HASHTAG%%"] = item.tag
-        postStreamAPIPath(apiPath)
+        let selectedTagItem = ListMenuSelectedItem(streamAPIPath: apiPath, title: "#\(item.tag)")
+        
+        postListMenuSelection(selectedTagItem)
     }
     
-    private func postStreamAPIPath(streamAPIPath: APIPath?) {
+    private func postListMenuSelection(listMenuSelection: ListMenuSelectedItem?) {
         NSNotificationCenter.defaultCenter().postNotificationName(
             RESTForumNetworkSource.updateStreamURLNotification,
             object: nil,
-            userInfo: streamAPIPath.flatMap { ["streamAPIPath": ReferenceWrapper($0)] }
+            userInfo: listMenuSelection.flatMap { ["selectedItem": ReferenceWrapper($0)] }
         )
     }
     
