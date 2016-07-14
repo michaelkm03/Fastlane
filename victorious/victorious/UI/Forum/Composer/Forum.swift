@@ -45,9 +45,9 @@ extension Forum {
         router.navigate(to: destination)
     }
     
-    func chatFeed(chatFeed: ChatFeed, didSelectContent content: ContentModel) {
+    func chatFeed(chatFeed: ChatFeed, didSelectContent chatFeedContent: ChatFeedContent) {
         let router = Router(originViewController: originViewController, dependencyManager: dependencyManager)
-        let destination = DeeplinkDestination(content: content)
+        let destination = DeeplinkDestination(content: chatFeedContent.content)
         router.navigate(to: destination)
     }
     

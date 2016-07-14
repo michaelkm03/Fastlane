@@ -285,7 +285,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         stageShrinkingAnimator?.chatFeed(chatFeed, willEndDragging: scrollView, withVelocity: velocity)
     }
     
-    func chatFeed(chatFeed: ChatFeed, didSelectFailureButtonForContent content: ContentModel) {
+    func chatFeed(chatFeed: ChatFeed, didSelectFailureButtonForContent content: ChatFeedContent) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
         alertController.addAction(
             UIAlertAction(
