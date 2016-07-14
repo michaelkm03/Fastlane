@@ -39,7 +39,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         button.titleLabel?.font = self.dependencyManager.subscribeButtonFont
         button.layer.cornerRadius = 6.0
         button.addTarget(self, action: #selector(onSubscribePressed), forControlEvents: .TouchUpInside)
-        button.setTitle(NSLocalizedString("Upgrade", comment: ""), forState: .Normal)
+        button.setTitle("Go VIP", forState: .Normal)
         return button
     }()
     

@@ -105,7 +105,7 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     static let updateStreamURLNotification = "com.getvictorious.update-stream-url"
     
     private dynamic func handleUpdateStreamURLNotification(notification: NSNotification) {
-        filteredStreamAPIPath = (notification.userInfo?["streamAPIPath"] as? ReferenceWrapper<APIPath>)?.value
+        filteredStreamAPIPath = (notification.userInfo?["selectedItem"] as? ReferenceWrapper<ListMenuSelectedItem>)?.value.streamAPIPath
     }
     
     // MARK: - ForumNetworkSource

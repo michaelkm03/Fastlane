@@ -152,7 +152,9 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
-        navigationController?.navigationBar.topItem?.titleView = navBarTitleView
+        if let navBarTitleView = navBarTitleView {
+            navigationController?.navigationBar.topItem?.titleView = navBarTitleView
+        }
         navBarTitleView?.sizeToFit()
         
         #if V_ENABLE_WEBSOCKET_DEBUG_MENU
@@ -267,6 +269,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         title = dependencyManager.title
         dependencyManager.applyStyleToNavigationBar(self.navigationController?.navigationBar)
         navigationController?.navigationBar.translucent = false
+        dependencyManager.applyStyleToNavigationBar(navigationController?.navigationBar)
+        
         dependencyManager.addBackgroundToBackgroundHost(self)
     }
 
