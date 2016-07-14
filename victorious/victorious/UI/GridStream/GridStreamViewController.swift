@@ -231,6 +231,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         let targetContent = dataSource.items[indexPath.row]
         let destination = DeeplinkDestination(content: targetContent)
         router.navigate(to: destination)
+        header?.headerDidDisappear()
         
         guard let cell = collectionView.cellForItemAtIndexPath(indexPath) as? ContentCell else {
             return

@@ -64,18 +64,7 @@ extension ChatInterfaceDataSource {
     }
     
     func desiredCellSize(for collectionView: UICollectionView, at indexPath: NSIndexPath) -> CGSize {
-        let chatFeedContent = content(at: indexPath.row)
-        
-        if let size = chatFeedContent.size {
-            return size
-        }
-        else {
-            let width = collectionView.bounds.width
-            let height = ChatFeedMessageCell.cellHeight(displaying: chatFeedContent.content, inWidth: width, dependencyManager: dependencyManager)
-            let size = CGSize(width: width, height: height)
-            chatFeedContent.size = size
-            return size
-        }
+        return content(at: indexPath.row).size
     }
     
     func decorate(cell: ChatFeedMessageCell, content: ContentModel) {

@@ -84,11 +84,14 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     }
     
     private func publish(content: ContentModel) {
-        guard let publisher = (chatFeed?.chatInterfaceDataSource as? ChatFeedDataSource)?.publisher else {
+        guard
+            let publisher = (chatFeed?.chatInterfaceDataSource as? ChatFeedDataSource)?.publisher,
+            let width = chatFeed?.collectionView.frame.width
+        else {
             return
         }
         
-        publisher.publish(content)
+        publisher.publish(content, withWidth: width)
     }
 
     // MARK: - ForumEventSender
@@ -149,7 +152,9 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
-        navigationController?.navigationBar.topItem?.titleView = navBarTitleView
+        if let navBarTitleView = navBarTitleView {
+            navigationController?.navigationBar.topItem?.titleView = navBarTitleView
+        }
         navBarTitleView?.sizeToFit()
         
         #if V_ENABLE_WEBSOCKET_DEBUG_MENU
