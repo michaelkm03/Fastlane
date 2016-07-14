@@ -8,9 +8,6 @@
 
 import Foundation
 
-// FUTURE: Remove this testing bit
-let testingFailrueState = false
-
 /// The possible alignment values for the content of a chat feed message cell.
 private enum ChatFeedMessageCellAlignment {
     case left, right
@@ -19,10 +16,13 @@ private enum ChatFeedMessageCellAlignment {
 extension ChatFeedMessageCell {
     /// Performs the view layout for `cell` based on its content.
     static func layoutContent(for cell: ChatFeedMessageCell) {
-        guard let content = cell.chatFeedContent?.content, dependencyManager = cell.dependencyManager else {
+        guard
+            let chatFeedContent = cell.chatFeedContent,
+            let dependencyManager = cell.dependencyManager
+        else {
             return
         }
-        
+        let content = chatFeedContent.content
         let alignment: ChatFeedMessageCellAlignment = content.wasCreatedByCurrentUser ? .right : .left
         
         let previewSize = self.previewSize(displaying: content, inWidth: cell.bounds.width)
@@ -32,8 +32,8 @@ extension ChatFeedMessageCell {
         
         // Bubble layout:
         
-        let previewFrame = layoutBubbleView(cell.previewBubbleView, forAlignment: alignment, size: previewSize, precedingBubbleFrame: nil, inBounds: cell.bounds)
-        let captionFrame = layoutBubbleView(cell.captionBubbleView, forAlignment: alignment, size: captionSize, precedingBubbleFrame: previewFrame, inBounds: cell.bounds)
+        let previewFrame = layoutBubbleView(cell.previewBubbleView, forAlignment: alignment, withChatFeedContent: chatFeedContent, size: previewSize, precedingBubbleFrame: nil, inBounds: cell.bounds)
+        let captionFrame = layoutBubbleView(cell.captionBubbleView, forAlignment: alignment, withChatFeedContent: chatFeedContent, size: captionSize, precedingBubbleFrame: previewFrame, inBounds: cell.bounds)
         let bubbleFrames = [previewFrame, captionFrame].flatMap { $0 }
         let firstBubbleFrame = bubbleFrames.first ?? CGRect.zero
         
@@ -56,7 +56,7 @@ extension ChatFeedMessageCell {
         // Avatar layout:
         
         cell.avatarView.frame = CGRect(
-            origin: avatarOffset(forAlignment: alignment, inBounds: cell.bounds),
+            origin: avatarOffset(forAlignment: alignment, withChatFeedContent: chatFeedContent, inBounds: cell.bounds),
             size: avatarSize
         )
         
@@ -80,7 +80,7 @@ extension ChatFeedMessageCell {
         
         // Failure button layout:
         
-        if alignment == .right && testingFailrueState {
+        if alignment == .right && cell.chatFeedContent?.creationState == .failed {
             let avatarFrame = cell.avatarView.frame
             cell.failureButton.frame = CGRect(
                 center: CGPoint(
@@ -91,7 +91,7 @@ extension ChatFeedMessageCell {
         }
     }
     
-    private static func layoutBubbleView(bubbleView: UIView?, forAlignment alignment: ChatFeedMessageCellAlignment, size: CGSize?, precedingBubbleFrame: CGRect?, inBounds bounds: CGRect) -> CGRect? {
+    private static func layoutBubbleView(bubbleView: UIView?, forAlignment alignment: ChatFeedMessageCellAlignment, withChatFeedContent content: ChatFeedContent, size: CGSize?, precedingBubbleFrame: CGRect?, inBounds bounds: CGRect) -> CGRect? {
         guard let size = size else {
             bubbleView?.frame = CGRect.zero
             return nil
@@ -101,7 +101,7 @@ extension ChatFeedMessageCell {
             return nil
         }
         
-        let avatarXPosition = avatarOffset(forAlignment: alignment, inBounds: bounds).x
+        let avatarXPosition = avatarOffset(forAlignment: alignment, withChatFeedContent: content, inBounds: bounds).x
         let x: CGFloat
         
         switch alignment {
@@ -117,13 +117,13 @@ extension ChatFeedMessageCell {
         return bubbleView.frame
     }
     
-    private static func avatarOffset(forAlignment alignment: ChatFeedMessageCellAlignment, inBounds bounds: CGRect) -> CGPoint {
+    private static func avatarOffset(forAlignment alignment: ChatFeedMessageCellAlignment, withChatFeedContent content: ChatFeedContent, inBounds bounds: CGRect) -> CGPoint {
         switch alignment {
             case .left:
                 return CGPoint(x: horizontalSpacing, y: contentMargin.top)
             case .right:
                 var x = bounds.maxX - horizontalSpacing - avatarSize.width
-                if testingFailrueState {
+                if content.creationState == .failed {
                     x -= (failureButtonSize.width + horizontalSpacing)
                 }
                 return CGPoint(x: x, y: contentMargin.top)
