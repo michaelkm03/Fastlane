@@ -129,20 +129,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     // MARK: - ChatFeedDataSourceDelegate
     
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didLoadItems newItems: [ChatFeedContent], loadingType: PaginatedLoadingType) {
-        let removedPendingContentCount: Int
-        
-        if loadingType == .newer {
-            let userContentCount = newItems.filter({ $0.content.wasCreatedByCurrentUser }).count
-            removedPendingContentCount = min(dataSource.publisher.pendingContent.count, userContentCount)
-            
-            if removedPendingContentCount > 0 {
-                dataSource.publisher.pendingContent.removeRange(0 ..< removedPendingContentCount)
-            }
-        }
-        else {
-            removedPendingContentCount = 0
-        }
-        
+        let removedPendingContentCount = removePendingContent(newItems: newItems, loadingType: loadingType)
         handleNewItems(newItems, loadingType: loadingType, pendingContentDelta: -removedPendingContentCount)
     }
     
@@ -165,7 +152,9 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didUnstashItems unstashedItems: [ChatFeedContent]) {
         newItemsController?.hide()
         
-        handleNewItems(unstashedItems, loadingType: .newer) { [weak self] in
+        let removedPendingContentCount = removePendingContent(newItems: unstashedItems, loadingType: .newer)
+        
+        handleNewItems(unstashedItems, loadingType: .newer, pendingContentDelta: -removedPendingContentCount) { [weak self] in
             if self?.collectionView.v_isScrolledToBottom == false {
                 self?.collectionView.v_scrollToBottomAnimated(true)
             }
@@ -178,6 +167,22 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     
     var chatFeedItemWidth: CGFloat {
         return collectionView.bounds.width
+    }
+    
+    private func removePendingContent(newItems newItems: [ChatFeedContent], loadingType: PaginatedLoadingType) -> Int {
+        if loadingType == .newer {
+            let userContentCount = newItems.filter({ $0.content.wasCreatedByCurrentUser }).count
+            let removalCount = min(dataSource.publisher.pendingContent.count, userContentCount)
+            
+            if removalCount > 0 {
+                dataSource.publisher.pendingContent.removeRange(0 ..< removalCount)
+            }
+            
+            return removalCount
+        }
+        else {
+            return 0
+        }
     }
     
     // MARK: - VScrollPaginatorDelegate

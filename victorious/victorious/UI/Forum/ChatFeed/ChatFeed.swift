@@ -95,8 +95,6 @@ extension ChatFeed {
             let collectionView = self.collectionView
             let visibleItemCount = chatInterfaceDataSource.visibleItems.count
             let oldVisibleItemCount = visibleItemCount - newItems.count
-            let pendingItemCount = chatInterfaceDataSource.pendingItems.count
-            let oldPendingItemCount = pendingItemCount - pendingContentDelta
             let itemCount = chatInterfaceDataSource.itemCount
             
             // The collection view's layout information is guaranteed to be updated properly in the completion handler
