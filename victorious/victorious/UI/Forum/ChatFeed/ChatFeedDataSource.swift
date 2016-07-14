@@ -22,6 +22,7 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     
     init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
+        self.publisher = ContentPublisher(dependencyManager: dependencyManager.networkResources ?? dependencyManager)
         super.init()
     }
     
@@ -33,6 +34,7 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     
     private(set) var visibleItems = [ChatFeedContent]()
     private(set) var stashedItems = [ChatFeedContent]()
+    let publisher: ContentPublisher
     
     var stashingEnabled = false
     
@@ -47,6 +49,20 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
         stashedItems.removeAll()
         
         delegate?.chatFeedDataSource(self, didUnstashItems: previouslyStashedItems)
+    }
+    
+    var itemCount: Int {
+        // FUTURE: We'll add the pending content count once the queueing implementation is finished.
+        return visibleItems.count // + publisher.pendingContent.count
+    }
+    
+    func content(at index: Int) -> ChatFeedContent {
+        if index < visibleItems.count {
+            return visibleItems[index]
+        }
+        else {
+            return publisher.pendingContent[index - visibleItems.count]
+        }
     }
     
     // MARK: - ForumEventReceiver

@@ -8,6 +8,9 @@
 
 import Foundation
 
+// FUTURE: Remove this testing bit
+let testingFailrueState = false
+
 /// The possible alignment values for the content of a chat feed message cell.
 private enum ChatFeedMessageCellAlignment {
     case left, right
@@ -74,6 +77,18 @@ extension ChatFeedMessageCell {
         else {
             cell.captionLabel.frame = CGRect.zero
         }
+        
+        // Failure button layout:
+        
+        if alignment == .right && testingFailrueState {
+            let avatarFrame = cell.avatarView.frame
+            cell.failureButton.frame = CGRect(
+                center: CGPoint(
+                    x: avatarFrame.origin.x + avatarFrame.size.width + horizontalSpacing + failureButtonSize.width / 2,
+                    y: avatarFrame.center.y),
+                size: failureButtonSize
+            )
+        }
     }
     
     private static func layoutBubbleView(bubbleView: UIView?, forAlignment alignment: ChatFeedMessageCellAlignment, size: CGSize?, precedingBubbleFrame: CGRect?, inBounds bounds: CGRect) -> CGRect? {
@@ -86,13 +101,12 @@ extension ChatFeedMessageCell {
             return nil
         }
         
-        let edgePadding = horizontalSpacing * 2.0 + avatarSize.width
-        
+        let avatarXPosition = avatarOffset(forAlignment: alignment, inBounds: bounds).x
         let x: CGFloat
         
         switch alignment {
-            case .left: x = edgePadding
-            case .right: x = bounds.maxX - size.width - edgePadding
+            case .left: x = avatarXPosition + avatarSize.width + horizontalSpacing
+            case .right: x = avatarXPosition - size.width - horizontalSpacing
         }
         
         bubbleView.frame = CGRect(
@@ -103,19 +117,16 @@ extension ChatFeedMessageCell {
         return bubbleView.frame
     }
     
-    private static func contentOffset(forAlignment alignment: ChatFeedMessageCellAlignment, inBounds bounds: CGRect, withBubbleWidth bubbleWidth: CGFloat) -> CGPoint {
-        let edgePadding = horizontalSpacing * 2.0 + avatarSize.width
-        
-        switch alignment {
-            case .left: return CGPoint(x: edgePadding, y: contentMargin.top)
-            case .right: return CGPoint(x: bounds.maxX - bubbleWidth - edgePadding, y: contentMargin.top)
-        }
-    }
-    
     private static func avatarOffset(forAlignment alignment: ChatFeedMessageCellAlignment, inBounds bounds: CGRect) -> CGPoint {
         switch alignment {
-            case .left: return CGPoint(x: horizontalSpacing, y: contentMargin.top)
-            case .right: return CGPoint(x: bounds.maxX - horizontalSpacing - avatarSize.width, y: contentMargin.top)
+            case .left:
+                return CGPoint(x: horizontalSpacing, y: contentMargin.top)
+            case .right:
+                var x = bounds.maxX - horizontalSpacing - avatarSize.width
+                if testingFailrueState {
+                    x -= (failureButtonSize.width + horizontalSpacing)
+                }
+                return CGPoint(x: x, y: contentMargin.top)
         }
     }
     

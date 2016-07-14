@@ -12,6 +12,7 @@ import VictoriousIOSSDK
 protocol ChatFeedMessageCellDelegate: class {
     func messageCellDidSelectAvatarImage(messageCell: ChatFeedMessageCell)
     func messageCellDidSelectMedia(messageCell: ChatFeedMessageCell)
+    func messageCellDidSelectFailureButton(messageCell: ChatFeedMessageCell)
 }
 
 class ChatFeedMessageCell: UICollectionViewCell {
@@ -24,6 +25,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
     static let horizontalSpacing = CGFloat(12.0)
     static let avatarSize = CGSize(width: 30.0, height: 30.0)
     static let avatarTapTargetSize = CGSize(width: 44.0, height: 44.0)
+    static let failureButtonSize = CGSize(width: 24.0, height: 24.0)
     static let contentMargin = UIEdgeInsets(top: 28.0, left: 10.0, bottom: 2.0, right: 75.0)
     static let topLabelYSpacing = CGFloat(4.0)
     static let topLabelXInset = CGFloat(4.0)
@@ -40,8 +42,8 @@ class ChatFeedMessageCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        avatarTapTarget.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onAvatarTapped)))
-        
+        avatarTapTarget.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOnAvatar)))
+        failureButton.addTarget(self, action: #selector(didTapOnFailureButton), forControlEvents: .TouchUpInside)
         captionLabel.numberOfLines = 0
         
         contentView.addSubview(usernameLabel)
@@ -49,6 +51,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
         contentView.addSubview(avatarView)
         contentView.addSubview(avatarTapTarget)
         contentView.addSubview(captionBubbleView)
+        contentView.addSubview(failureButton)
         
         captionBubbleView.contentView.addSubview(captionLabel)
     }
@@ -98,6 +101,8 @@ class ChatFeedMessageCell: UICollectionViewCell {
     var previewBubbleView: ChatBubbleView?
     var previewView: UIView?
     
+    let failureButton = UIButton(type: .Custom)
+    
     // MARK: - Layout
     
     override func layoutSubviews() {
@@ -107,13 +112,19 @@ class ChatFeedMessageCell: UICollectionViewCell {
     
     // MARK: - Gesture Recognizer Actions
     
-    func onAvatarTapped(sender: AnyObject?) {
+    private dynamic func didTapOnAvatar(sender: AnyObject?) {
         delegate?.messageCellDidSelectAvatarImage(self)
     }
     
-    func onPreviewTapped(sender: AnyObject?) {
+    private dynamic func didTapOnPreview(sender: AnyObject?) {
         delegate?.messageCellDidSelectMedia(self)
     }
+    
+    private dynamic func didTapOnFailureButton(sender: UIButton) {
+        delegate?.messageCellDidSelectFailureButton(self)
+    }
+    
+    // MARK: - Private helper methods
     
     private func updateStyle() {
         usernameLabel.font = dependencyManager.usernameFont
@@ -123,6 +134,8 @@ class ChatFeedMessageCell: UICollectionViewCell {
         timestampLabel.textColor = dependencyManager.timestampColor
         
         captionBubbleView.backgroundColor = dependencyManager.backgroundColor
+        
+        failureButton.setImage(UIImage(named: "failed_error"), forState: .Normal)
     }
     
     private func populateData() {
@@ -182,7 +195,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
         previewView.clipsToBounds = true
         previewView.translatesAutoresizingMaskIntoConstraints = false
         
-        previewView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onPreviewTapped)))
+        previewView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOnPreview)))
         
         let bubbleView = ChatBubbleView()
         bubbleView.contentView.addSubview(previewView)
