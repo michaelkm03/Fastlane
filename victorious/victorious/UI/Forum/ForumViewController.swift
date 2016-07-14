@@ -90,13 +90,6 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         
         publisher.publish(content)
     }
-    
-    private func retryPublish(content: ChatFeedContent) {
-        guard let publisher = (chatFeed?.chatInterfaceDataSource as? ChatFeedDataSource)?.publisher else {
-            return
-        }
-        publisher.retryPublish(content)
-    }
 
     // MARK: - ForumEventSender
     
@@ -332,8 +325,17 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         presentViewController(alertController, animated: true, completion: nil)
     }
     
+    // MARK: - Content Post Failure Handling 
+    
     private func delete(chatFeedContent content: ChatFeedContent) {
         chatFeed?.remove(chatFeedContent: content)
+    }
+    
+    private func retryPublish(content: ChatFeedContent) {
+        guard let publisher = (chatFeed?.chatInterfaceDataSource as? ChatFeedDataSource)?.publisher else {
+            return
+        }
+        publisher.retryPublish(content)
     }
 
     // MARK: - VFocusable
