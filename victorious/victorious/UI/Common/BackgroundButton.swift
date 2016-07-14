@@ -8,6 +8,7 @@
 
 import UIKit
 
+/// A button that displays a colored background behind its content via the `backgroundColor` property.
 class BackgroundButton: UIButton {
     private struct Constants {
         static let addedWidth = CGFloat(20.0)
