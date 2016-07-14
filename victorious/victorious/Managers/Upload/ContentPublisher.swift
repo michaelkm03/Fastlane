@@ -86,7 +86,8 @@ class ContentPublisher {
         
         upload(chatFeedContent.content) { [weak self] error in
             if error != nil {
-                chatFeedContent.creationState = .failed
+                self?.pendingContent.forEach { $0.creationState = .failed }
+                // FUTURE: Update collectionView
             }
             else {
                 chatFeedContent.creationState = .sent
