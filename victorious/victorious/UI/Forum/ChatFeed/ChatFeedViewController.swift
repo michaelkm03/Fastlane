@@ -173,11 +173,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         if loadingType == .newer {
             let userContentCount = newItems.filter({ $0.content.wasCreatedByCurrentUser }).count
             let removalCount = min(dataSource.publisher.pendingContent.count, userContentCount)
-            
-            if removalCount > 0 {
-                dataSource.publisher.pendingContent.removeRange(0 ..< removalCount)
-            }
-            
+            dataSource.publisher.confirmPublish(count: removalCount)
             return removalCount
         }
         else {

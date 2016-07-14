@@ -49,8 +49,7 @@ class ContentPublisher {
     // MARK: - Publishing
     
     /// The content that is currently pending creation.
-    // TODO: private(set)
-    var pendingContent = [ChatFeedContent]()
+    private(set) var pendingContent = [ChatFeedContent]()
     
     /// Queues `content` for publishing.
     func publish(content: ContentModel, withWidth width: CGFloat) {
@@ -65,6 +64,12 @@ class ContentPublisher {
         if !pendingContent.contains({ $0.creationState == .sending }) {
             publishNextContent()
         }
+    }
+    
+    /// Should be called after calling `publish` to confirm that content was published, which will remove it from the
+    /// queue.
+    func confirmPublish(count count: Int) {
+        pendingContent.removeRange(0 ..< count)
     }
     
     private func publishNextContent() {
