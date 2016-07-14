@@ -51,6 +51,10 @@ class ContentPublisher {
         }
     }
     
+    func remove(chatFeedContent chatFeedContent: ChatFeedContent) {
+        pendingContent = pendingContent.filter { $0.content.id != chatFeedContent.content.id }
+    }
+    
     private func publishNextContent() {
         guard let chatFeedContent = getNextContent() else {
             return

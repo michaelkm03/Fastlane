@@ -35,6 +35,10 @@ class TutorialCollectionViewDataSource: NSObject, ChatInterfaceDataSource, Tutor
         return networkDataSource.visibleItems[index]
     }
     
+    func remove(chatFeedContent content: ChatFeedContent) {
+        // Does not support removing content from tutorial feed
+    }
+    
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return numberOfItems(for: collectionView, in: section)
     }

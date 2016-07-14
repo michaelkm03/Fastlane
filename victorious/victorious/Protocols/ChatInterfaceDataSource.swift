@@ -20,6 +20,9 @@ protocol ChatInterfaceDataSource: UICollectionViewDataSource {
     /// Returns the content at the given `index`.
     func content(at index: Int) -> ChatFeedContent
     
+    /// Removes a piece of content from the feed
+    func remove(chatFeedContent content: ChatFeedContent)
+    
     /// Registers the appropriate collection view cells on `collectionView`.
     func registerCells(for collectionView: UICollectionView)
     
