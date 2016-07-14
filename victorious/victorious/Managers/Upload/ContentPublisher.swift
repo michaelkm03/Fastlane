@@ -73,6 +73,7 @@ class ContentPublisher {
             else {
                 // TODO: Is this too early to mark it as .sent?
                 chatFeedContent.creationState = .sent
+                self?.remove(chatFeedContent)
                 self?.publishNextContent()
             }
         }
@@ -130,6 +131,13 @@ class ContentPublisher {
         }
         else {
             completion(ContentPublisherError.invalidContent)
+        }
+    }
+    
+    private func remove(chatFeedContent: ChatFeedContent) {
+        let index = pendingContent.indexOf { chatFeedContent.content.id == $0.content.id }
+        if let index = index {
+            pendingContent.removeAtIndex(index)
         }
     }
 }

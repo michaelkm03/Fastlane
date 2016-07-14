@@ -58,9 +58,10 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
         view.v_addFitToParentConstraintsToSubview(sideMenuController.view)
         sideMenuController.didMoveToParentViewController(self)
         
-        dependencyManager.applyStyleToNavigationBar(mainNavigationController.innerNavigationController.navigationBar)
-
         let navigationBar = mainNavigationController.innerNavigationController.navigationBar
+        navigationBar.translucent = false
+        dependencyManager.applyStyleToNavigationBar(navigationBar)
+        
         let backArrowImage = UIImage(named: "BackArrow")
         navigationBar.backIndicatorImage = backArrowImage
         navigationBar.backIndicatorTransitionMaskImage = backArrowImage
@@ -192,6 +193,20 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
     
     private dynamic func mainFeedFilterDidChange(notification: NSNotification) {
         sideMenuController.closeSideViewController(animated: true)
+        if let title = (notification.userInfo?["selectedItem"] as? ReferenceWrapper<ListMenuSelectedItem>)?.value.title {
+            mainNavigationController.innerNavigationController.navigationBar.topItem?.titleView = nil
+            mainNavigationController.innerNavigationController.navigationBar.topItem?.title = title
+        }
+        else {
+            // Display Creator Logo/Name
+            loadNavigationBarTitle()
+        }
+    }
+    
+    private func loadNavigationBarTitle() {
+        dispatch_async(dispatch_get_main_queue()) {
+            self.dependencyManager.childDependencyForKey("centerScreen")?.configureNavigationItem(self.mainNavigationController.innerNavigationController.navigationBar.topItem)
+        }
     }
     
     // MARK: - Orientation
