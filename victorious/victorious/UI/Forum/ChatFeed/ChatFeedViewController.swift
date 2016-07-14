@@ -160,9 +160,14 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didAddPendingItems pendingItems: [ChatFeedContent]) {
         let itemCount = dataSource.itemCount
+        let collectionView = self.collectionView
         
-        collectionView.insertItemsAtIndexPaths((0 ..< pendingItems.count).map {
-            NSIndexPath(forItem: itemCount - 1 - $0, inSection: 0)
+        collectionView.performBatchUpdates({
+            collectionView.insertItemsAtIndexPaths((0 ..< pendingItems.count).map {
+                NSIndexPath(forItem: itemCount - 1 - $0, inSection: 0)
+            })
+        }, completion: { _ in
+            collectionView.setContentOffset(collectionView.v_bottomOffset, animated: true)
         })
     }
     
