@@ -62,6 +62,11 @@ class ContentPublisher {
             }
             else {
                 chatFeedContent.creationState = .sent
+                let index = self?.pendingContent.indexOf { chatFeedContent.content.id == $0.content.id
+                }
+                if let index = index {
+                    self?.pendingContent.removeAtIndex(index)
+                }
                 self?.publishNextContent()
             }
         }
