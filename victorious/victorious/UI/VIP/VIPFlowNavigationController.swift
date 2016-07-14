@@ -8,24 +8,12 @@
 
 import UIKit
 
-protocol VIPFlowNavigationControllerDelegate: class {
-    func VIPFlowNaivigationController(navigationController: VIPFlowNavigationController, completedFlowWithSuccess success: Bool)
-}
+typealias VIPFlowCompletion = (Bool -> ())
 
 class VIPFlowNavigationController: UINavigationController, VIPGateViewControllerDelegate, VIPSuccessViewControllerDelegate, VBackgroundContainer, VNavigationDestination {
     let animationDelegate = CrossFadingNavigationControllerDelegate()
     
-    weak var flowDelegate: VIPFlowNavigationControllerDelegate? {
-        didSet {
-            guard
-                let user = VCurrentUser.user()
-                where user.isVIPSubscriber == false
-            else {
-                flowDelegate?.VIPFlowNaivigationController(self, completedFlowWithSuccess: true)
-                return
-            }
-        }
-    }
+    var completionBlock: VIPFlowCompletion?
     
     @objc private(set) var dependencyManager: VDependencyManager!
     
@@ -74,20 +62,20 @@ class VIPFlowNavigationController: UINavigationController, VIPGateViewController
             successViewController.delegate = self
             showViewController(successViewController, sender: nil)
         } else {
-            dismissAndNotifyDelegateOfSuccess(false)
+            dismissAndCallCompletionWithSuccess(false)
         }
     }
     
     // MARK: - VIPSuccessViewControllerDelegate
     
     func successViewControllerFinished(successViewController: VIPSuccessViewController) {
-        dismissAndNotifyDelegateOfSuccess(true)
+        dismissAndCallCompletionWithSuccess(true)
     }
     
     // MARK: - Delegate notification
     
-    func dismissAndNotifyDelegateOfSuccess(success: Bool) {
-        flowDelegate?.VIPFlowNaivigationController(self, completedFlowWithSuccess: success)
+    func dismissAndCallCompletionWithSuccess(success: Bool) {
+        completionBlock?(success)
         presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
     }
 }

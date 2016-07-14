@@ -181,8 +181,6 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         addUploadManagerToViewController(self, topInset: topLayoutGuide.length)
         updateUploadProgressViewControllerVisibility()
         
-        ShowVIPFlowOperation(originViewController: self, dependencyManager: dependencyManager).queue()
-        
         // Remove this once the way to animate the workspace in and out from forum has been figured out
         navigationController?.setNavigationBarHidden(false, animated: animated)
 

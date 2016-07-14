@@ -263,18 +263,15 @@ private class ShowPermissionedCloseUpOperation: MainQueueOperation {
         
         if content.isVIPOnly {
             let scaffold = dependencyManager.scaffoldViewController()
-            let showVIPFlowOperation = ShowVIPFlowOperation(originViewController: scaffold, dependencyManager: dependencyManager)
+            let showVIPFlowOperation = ShowVIPFlowOperation(originViewController: scaffold, dependencyManager: dependencyManager) { success in
+                if success {
+                    ShowCloseUpOperation(content: content, displayModifier: displayModifier).queue()
+                }
+            }
             
             let completionBlock = self.completionBlock
             showVIPFlowOperation.rechainAfter(self).queue() { _ in
-                if !showVIPFlowOperation.showedGate || showVIPFlowOperation.allowedAccess {
-                    ShowCloseUpOperation(content: content, displayModifier: displayModifier).rechainAfter(showVIPFlowOperation).queue() { _ in
-                        completionBlock?()
-                    }
-                }
-                else {
-                    completionBlock?()
-                }
+                completionBlock?()
             }
         } else {
             ShowCloseUpOperation(content: content, displayModifier: displayModifier).rechainAfter(self).queue()
@@ -332,15 +329,16 @@ private class ShowFetchedCloseUpOperation: MainQueueOperation {
             
             if content.isVIPOnly {
                 let dependencyManager = displayModifier.dependencyManager
-                let showVIPFlowOperation = ShowVIPFlowOperation(originViewController: shownCloseUpView, dependencyManager: dependencyManager)
-                
-                showVIPFlowOperation.rechainAfter(self).queue() { _ in
-                    if !showVIPFlowOperation.showedGate || showVIPFlowOperation.allowedAccess {
+                let showVIPFlowOperation = ShowVIPFlowOperation(originViewController: shownCloseUpView, dependencyManager: dependencyManager) { success in
+                    if success {
                         shownCloseUpView.updateContent(content)
                     }
                     else {
                         shownCloseUpView.navigationController?.popViewControllerAnimated(true)
                     }
+                }
+                
+                showVIPFlowOperation.rechainAfter(self).queue() { _ in
                     completionBlock?()
                 }
             }

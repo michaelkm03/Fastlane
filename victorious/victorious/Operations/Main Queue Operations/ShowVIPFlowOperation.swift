@@ -6,17 +6,18 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-class ShowVIPFlowOperation: MainQueueOperation, VIPFlowNavigationControllerDelegate {
+class ShowVIPFlowOperation: MainQueueOperation {
     private let dependencyManager: VDependencyManager
     private let animated: Bool
+    private let completion: VIPFlowCompletion?
     private weak var originViewController: UIViewController?
     private(set) var showedGate = false
-    private(set) var allowedAccess = false
     
-    required init(originViewController: UIViewController, dependencyManager: VDependencyManager, animated: Bool = true) {
+    required init(originViewController: UIViewController, dependencyManager: VDependencyManager, animated: Bool = true, completion: VIPFlowCompletion? = nil) {
         self.dependencyManager = dependencyManager
         self.originViewController = originViewController
         self.animated = animated
+        self.completion = completion
     }
     
     override func start() {
@@ -28,13 +29,9 @@ class ShowVIPFlowOperation: MainQueueOperation, VIPFlowNavigationControllerDeleg
                 return
         }
         
-        vipFlow.flowDelegate = self
+        vipFlow.completionBlock = completion
         showedGate = true
         originViewController.presentViewController(vipFlow, animated: animated, completion: nil)
-    }
-    
-    func VIPFlowNaivigationController(navigationController: VIPFlowNavigationController, completedFlowWithSuccess success: Bool) {
-        self.allowedAccess = success
-        self.finishedExecuting()
+        finishedExecuting()
     }
 }
