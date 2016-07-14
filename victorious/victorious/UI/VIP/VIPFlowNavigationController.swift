@@ -68,22 +68,26 @@ class VIPFlowNavigationController: UINavigationController, VIPGateViewController
     // MARK: - VIPGateViewControllerDelegate
     
     func vipGateExitedWithSuccess(success: Bool, afterPurchase purchased: Bool) {
-        
         if success && purchased {
             //Transition to success state
             let successViewController = VIPSuccessViewController.newWithDependencyManager(successDependencyManager)
             successViewController.delegate = self
             showViewController(successViewController, sender: nil)
         } else {
-            let shouldAnimate = !(success || purchased)
-            presentingViewController?.dismissViewControllerAnimated(shouldAnimate, completion: nil)
+            dismissAndNotifyDelegateOfSuccess(false)
         }
     }
     
     // MARK: - VIPSuccessViewControllerDelegate
     
     func successViewControllerFinished(successViewController: VIPSuccessViewController) {
-        flowDelegate?.VIPFlowNaivigationController(self, completedFlowWithSuccess: true)
+        dismissAndNotifyDelegateOfSuccess(true)
+    }
+    
+    // MARK: - Delegate notification
+    
+    func dismissAndNotifyDelegateOfSuccess(success: Bool) {
+        flowDelegate?.VIPFlowNaivigationController(self, completedFlowWithSuccess: success)
         presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
     }
 }
