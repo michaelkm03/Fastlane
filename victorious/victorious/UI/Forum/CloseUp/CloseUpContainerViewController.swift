@@ -14,7 +14,6 @@ private let interItemSpacing = CGFloat(3)
 private let cellsPerRow = 3
 
 class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, ContentCellTracker {
-    
     private let gridStreamController: GridStreamViewController<CloseUpView>
     private var dependencyManager: VDependencyManager
     private var content: ContentModel? {
@@ -43,20 +42,13 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         )
     }()
     
-    private lazy var upvoteButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(
-            image: self.dependencyManager.upvoteIconUnselected,
-            style: .Done,
-            target: self,
-            action: #selector(toggleUpvote)
-        )
+    private lazy var upvoteButton: UIButton = {
+        let button = BackgroundButton(type: .System)
+        button.addTarget(self, action: #selector(toggleUpvote), forControlEvents: .TouchUpInside)
         return button
     }()
     
-    init(dependencyManager: VDependencyManager,
-         contentID: String,
-         content: ContentModel? = nil,
-         streamAPIPath: APIPath) {
+    init(dependencyManager: VDependencyManager, contentID: String, content: ContentModel? = nil, streamAPIPath: APIPath) {
         self.dependencyManager = dependencyManager
         
         let header = CloseUpView.newWithDependencyManager(dependencyManager)
@@ -125,16 +117,21 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
             return
         }
         
+        upvoteButton.tintColor = UIColor.redColor()
+        
         if content.isLikedByCurrentUser {
-            upvoteButton.image = dependencyManager.upvoteIconSelected
-            upvoteButton.tintColor = dependencyManager.upvotedIconTint
+            upvoteButton.setImage(dependencyManager.upvoteIconSelected, forState: .Normal)
+            upvoteButton.backgroundColor = dependencyManager.upvoteIconSelectedBackgroundColor
+            upvoteButton.tintColor = dependencyManager.upvoteIconTint
         }
         else {
-            upvoteButton.image = dependencyManager.upvoteIconUnselected
+            upvoteButton.setImage(dependencyManager.upvoteIconUnselected, forState: .Normal)
+            upvoteButton.backgroundColor = dependencyManager.upvoteIconUnselectedBackgroundColor
             upvoteButton.tintColor = nil
         }
         
-        navigationItem.rightBarButtonItems = [upvoteButton, overflowButton, shareButton]
+        upvoteButton.sizeToFit()
+        navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: upvoteButton), shareButton, overflowButton]
     }
     
     required init?(coder: NSCoder) {
@@ -175,8 +172,8 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
             contentID: contentID,
             upvoteURL: dependencyManager.contentUpvoteURL,
             unupvoteURL: dependencyManager.contentUnupvoteURL
-            ).queue() { [weak self] _ in
-                self?.updateHeader()
+        ).queue { [weak self] _ in
+            self?.updateHeader()
         }
     }
     
@@ -209,8 +206,16 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
 }
 
 private extension VDependencyManager {
-    var upvotedIconTint: UIColor? {
+    var upvoteIconTint: UIColor? {
         return colorForKey("color.text.actionButton")
+    }
+    
+    var upvoteIconSelectedBackgroundColor: UIColor? {
+        return colorForKey("color.background.upvote.selected")
+    }
+    
+    var upvoteIconUnselectedBackgroundColor: UIColor? {
+        return colorForKey("color.background.upvote.unselected")
     }
     
     var upvoteIconSelected: UIImage? {
