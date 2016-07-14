@@ -35,12 +35,12 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Creator Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sbZ-95-2Ut">
-                                                    <rect key="frame" x="54" y="21" width="107" height="21"/>
+                                                    <rect key="frame" x="54" y="21" width="518" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <view contentMode="scaleToFill" placeholderIntrinsicWidth="30" placeholderIntrinsicHeight="30" translatesAutoresizingMaskIntoConstraints="NO" id="LvS-JK-TEH" customClass="AvatarView" customModule="victorious" customModuleProvider="target">
+                                                <view contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" placeholderIntrinsicWidth="30" placeholderIntrinsicHeight="30" translatesAutoresizingMaskIntoConstraints="NO" id="LvS-JK-TEH" customClass="AvatarView" customModule="victorious" customModuleProvider="target">
                                                     <rect key="frame" x="12" y="17" width="30" height="30"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </view>
@@ -51,6 +51,7 @@
                                             <constraint firstItem="sbZ-95-2Ut" firstAttribute="leading" secondItem="LvS-JK-TEH" secondAttribute="trailing" constant="12" id="8XI-IH-57w"/>
                                             <constraint firstItem="sbZ-95-2Ut" firstAttribute="centerY" secondItem="pDL-Ab-X1N" secondAttribute="centerY" id="RyP-Yx-X3y"/>
                                             <constraint firstItem="LvS-JK-TEH" firstAttribute="leading" secondItem="pDL-Ab-X1N" secondAttribute="leading" constant="12" id="hNn-gU-t1Q"/>
+                                            <constraint firstAttribute="trailing" secondItem="sbZ-95-2Ut" secondAttribute="trailing" constant="28" id="iE6-Q2-ob3"/>
                                             <constraint firstItem="LvS-JK-TEH" firstAttribute="centerY" secondItem="pDL-Ab-X1N" secondAttribute="centerY" id="jh1-Kf-abM"/>
                                         </constraints>
                                         <connections>
@@ -66,7 +67,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Feed Filter Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pkv-DF-vXY">
-                                                    <rect key="frame" x="14" y="19" width="159" height="26"/>
+                                                    <rect key="frame" x="14" y="19" width="558" height="26"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -77,6 +78,7 @@
                                         <constraints>
                                             <constraint firstItem="pkv-DF-vXY" firstAttribute="centerY" secondItem="Aw7-Zd-Ktk" secondAttribute="centerY" id="RWB-E0-TSt"/>
                                             <constraint firstItem="pkv-DF-vXY" firstAttribute="leading" secondItem="Aw7-Zd-Ktk" secondAttribute="leading" constant="14" id="gNj-9b-Buz"/>
+                                            <constraint firstAttribute="trailing" secondItem="pkv-DF-vXY" secondAttribute="trailing" constant="28" id="njj-j8-Nss"/>
                                         </constraints>
                                         <connections>
                                             <outlet property="titleLabel" destination="pkv-DF-vXY" id="lsJ-9X-fXF"/>
@@ -90,7 +92,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" alpha="0.90000000000000002" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hashtag Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NhT-Ef-yEM">
-                                                    <rect key="frame" x="14" y="20.5" width="127" height="23"/>
+                                                    <rect key="frame" x="14" y="20.5" width="558" height="23"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
@@ -101,6 +103,7 @@
                                         <constraints>
                                             <constraint firstItem="NhT-Ef-yEM" firstAttribute="centerY" secondItem="AOw-BJ-JkJ" secondAttribute="centerY" id="HRS-S8-13P"/>
                                             <constraint firstItem="NhT-Ef-yEM" firstAttribute="leading" secondItem="AOw-BJ-JkJ" secondAttribute="leading" constant="14" id="X9W-3d-1pZ"/>
+                                            <constraint firstAttribute="trailing" secondItem="NhT-Ef-yEM" secondAttribute="trailing" constant="28" id="qhO-li-5sb"/>
                                         </constraints>
                                         <connections>
                                             <outlet property="titleLabel" destination="NhT-Ef-yEM" id="Lx0-vK-UDk"/>
@@ -114,7 +117,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Content Message" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CmX-Fs-CR1">
-                                                    <rect key="frame" x="14" y="21" width="161" height="21"/>
+                                                    <rect key="frame" x="14" y="21" width="558" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -125,6 +128,7 @@
                                         <constraints>
                                             <constraint firstItem="CmX-Fs-CR1" firstAttribute="leading" secondItem="Mme-Cf-5dM" secondAttribute="leading" constant="14" id="DKl-3f-coD"/>
                                             <constraint firstItem="CmX-Fs-CR1" firstAttribute="centerY" secondItem="Mme-Cf-5dM" secondAttribute="centerY" id="QGI-Rw-Hnr"/>
+                                            <constraint firstAttribute="trailing" secondItem="CmX-Fs-CR1" secondAttribute="trailing" constant="28" id="h8p-Ac-SiH"/>
                                         </constraints>
                                         <connections>
                                             <outlet property="noContentMessageLabel" destination="CmX-Fs-CR1" id="cZu-IO-c1s"/>

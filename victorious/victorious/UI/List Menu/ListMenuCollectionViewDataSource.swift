@@ -33,11 +33,10 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
     let creatorDataSource: ListMenuCreatorDataSource
     
     private lazy var subscribeButton: UIButton = {
-        let button = SubscribeButton(type: .System)
+        let button = BackgroundButton(type: .System)
         button.tintColor = self.dependencyManager.subscribeButtonTextColor
         button.backgroundColor = self.dependencyManager.subscribeButtonBackgroundColor
         button.titleLabel?.font = self.dependencyManager.subscribeButtonFont
-        button.layer.cornerRadius = 6.0
         button.addTarget(self, action: #selector(onSubscribePressed), forControlEvents: .TouchUpInside)
         button.setTitle("Go VIP", forState: .Normal)
         return button
@@ -198,20 +197,5 @@ private extension VDependencyManager {
     
     var subscribeButtonBackgroundColor: UIColor? {
         return UIColor(white: 1.0, alpha: 0.15)
-    }
-}
-
-/// A custom button subclass that lets us modify the intrinsic content size of the subscribe button.
-private class SubscribeButton: UIButton {
-    private struct Constants {
-        static let addedWidth = CGFloat(20.0)
-        static let height = CGFloat(30.0)
-    }
-    
-    private override func intrinsicContentSize() -> CGSize {
-        return CGSize(
-            width: super.intrinsicContentSize().width + Constants.addedWidth,
-            height: Constants.height
-        )
     }
 }
