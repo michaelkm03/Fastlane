@@ -14,11 +14,11 @@ protocol ChatInterfaceDataSource: UICollectionViewDataSource {
     /// The dependency manager associated with the data source.
     var dependencyManager: VDependencyManager { get }
     
-    /// The number of items displayed in the chat interface.
-    var itemCount: Int { get }
+    /// The chat feed items that are currently visible in the feed.
+    var visibleItems: [ChatFeedContent] { get }
     
-    /// Returns the content at the given `index`.
-    func content(at index: Int) -> ChatFeedContent
+    /// Items that are pending insertion into the feed which will be shown at the bottom of the feed.
+    var pendingItems: [ChatFeedContent] { get }
     
     /// Registers the appropriate collection view cells on `collectionView`.
     func registerCells(for collectionView: UICollectionView)
@@ -32,6 +32,19 @@ protocol ChatInterfaceDataSource: UICollectionViewDataSource {
 }
 
 extension ChatInterfaceDataSource {
+    var itemCount: Int {
+        return visibleItems.count + pendingItems.count
+    }
+    
+    func content(at index: Int) -> ChatFeedContent {
+        if index < visibleItems.count {
+            return visibleItems[index]
+        }
+        else {
+            return pendingItems[index - visibleItems.count]
+        }
+    }
+    
     func numberOfItems(for collectionView: UICollectionView, in section: Int) -> Int {
         return itemCount
     }
@@ -63,7 +76,6 @@ extension ChatInterfaceDataSource {
             chatFeedContent.size = size
             return size
         }
-        
     }
     
     func decorate(cell: ChatFeedMessageCell, content: ContentModel) {
