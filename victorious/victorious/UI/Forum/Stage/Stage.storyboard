@@ -32,40 +32,16 @@
                                     <constraint firstItem="DfU-P8-ZhH" firstAttribute="top" secondItem="a1k-JM-1LN" secondAttribute="top" id="ILF-E3-rYC"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BQJ-IP-Emu" customClass="AttributionBar" customModule="victorious" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="466" width="600" height="54"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dPD-mB-M3H" customClass="VDefaultProfileButton">
-                                        <rect key="frame" x="12" y="12" width="30" height="30"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="30" id="1D3-R9-b5T"/>
-                                            <constraint firstAttribute="width" constant="30" id="TjT-Jf-gtS"/>
-                                        </constraints>
-                                        <connections>
-                                            <action selector="didTapOnUser" destination="BQJ-IP-Emu" eventType="touchUpInside" id="pjs-ud-OTo"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DAf-y5-PcP">
-                                        <rect key="frame" x="54" y="12" width="41" height="30"/>
-                                        <state key="normal" title="Name"/>
-                                        <connections>
-                                            <action selector="didTapOnUser" destination="BQJ-IP-Emu" eventType="touchUpInside" id="qDz-mX-flK"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hIh-NH-2x7" userLabel="Title Card Container View">
+                                <rect key="frame" x="0.0" y="463" width="600" height="45"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="54" id="K1P-D2-eJz"/>
-                                    <constraint firstItem="dPD-mB-M3H" firstAttribute="leading" secondItem="BQJ-IP-Emu" secondAttribute="leading" constant="12" id="KXr-73-YEk"/>
-                                    <constraint firstItem="DAf-y5-PcP" firstAttribute="centerY" secondItem="BQJ-IP-Emu" secondAttribute="centerY" id="OOO-WF-bom"/>
-                                    <constraint firstItem="DAf-y5-PcP" firstAttribute="leading" secondItem="dPD-mB-M3H" secondAttribute="trailing" constant="12" id="jue-hU-HDA"/>
-                                    <constraint firstItem="dPD-mB-M3H" firstAttribute="centerY" secondItem="BQJ-IP-Emu" secondAttribute="centerY" id="wIR-Ee-TzB"/>
+                                    <constraint firstAttribute="height" constant="45" id="8P6-Wf-ZqA"/>
                                 </constraints>
                                 <connections>
-                                    <outlet property="profileButton" destination="dPD-mB-M3H" id="4Zu-5n-33B"/>
-                                    <outlet property="userNameButton" destination="DAf-y5-PcP" id="ZRq-3o-7pJ"/>
+                                    <segue destination="C0g-dH-nqr" kind="embed" id="9bo-U2-hdo"/>
                                 </connections>
-                            </view>
+                            </containerView>
                             <containerView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wSh-lD-twH">
                                 <rect key="frame" x="0.0" y="520" width="600" height="80"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -80,12 +56,12 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="wSh-lD-twH" firstAttribute="leading" secondItem="dPd-gY-gTf" secondAttribute="leading" id="3oL-8j-brd"/>
-                            <constraint firstItem="BQJ-IP-Emu" firstAttribute="top" secondItem="a1k-JM-1LN" secondAttribute="bottom" constant="-54" id="AOi-fR-WqG"/>
-                            <constraint firstItem="BQJ-IP-Emu" firstAttribute="leading" secondItem="dPd-gY-gTf" secondAttribute="leading" id="Kum-mY-zsR"/>
                             <constraint firstItem="a1k-JM-1LN" firstAttribute="leading" secondItem="dPd-gY-gTf" secondAttribute="leading" id="OeU-pM-iYQ"/>
+                            <constraint firstItem="hIh-NH-2x7" firstAttribute="leading" secondItem="dPd-gY-gTf" secondAttribute="leading" id="Orb-UE-xAs"/>
                             <constraint firstAttribute="trailing" secondItem="wSh-lD-twH" secondAttribute="trailing" id="QK3-4L-siD"/>
-                            <constraint firstAttribute="trailing" secondItem="BQJ-IP-Emu" secondAttribute="trailing" id="lGu-8U-4sw"/>
+                            <constraint firstAttribute="trailing" secondItem="hIh-NH-2x7" secondAttribute="trailing" id="RTu-M9-7eH"/>
                             <constraint firstItem="Ldt-nB-e5k" firstAttribute="top" secondItem="wSh-lD-twH" secondAttribute="bottom" id="s1w-qo-3RR"/>
+                            <constraint firstItem="wSh-lD-twH" firstAttribute="top" secondItem="hIh-NH-2x7" secondAttribute="bottom" constant="12" id="t92-7c-YjQ"/>
                             <constraint firstItem="a1k-JM-1LN" firstAttribute="top" secondItem="dPd-gY-gTf" secondAttribute="top" id="txg-R1-cPS"/>
                             <constraint firstItem="wSh-lD-twH" firstAttribute="top" secondItem="a1k-JM-1LN" secondAttribute="bottom" id="vrG-hh-Mxe"/>
                             <constraint firstAttribute="trailing" secondItem="a1k-JM-1LN" secondAttribute="trailing" id="zqi-qs-Csp"/>
@@ -93,7 +69,6 @@
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
-                        <outlet property="attributionBar" destination="BQJ-IP-Emu" id="acC-2b-eTE"/>
                         <outlet property="captionBarHeightConstraint" destination="OT1-tL-iiZ" id="nG7-V3-Mfn"/>
                         <outlet property="mediaContentView" destination="DfU-P8-ZhH" id="JPI-87-IJO"/>
                     </connections>
@@ -101,6 +76,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nKP-kC-OcX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1057" y="772"/>
+        </scene>
+        <!--TitleCardViewController-->
+        <scene sceneID="96x-gi-M3K">
+            <objects>
+                <viewControllerPlaceholder storyboardName="TitleCardViewController" id="C0g-dH-nqr" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="GC8-IP-c79" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="828.5" y="1248"/>
         </scene>
         <!--CaptionBarViewController-->
         <scene sceneID="a4N-jU-xxu">

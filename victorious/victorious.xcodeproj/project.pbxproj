@@ -511,6 +511,8 @@
 		0EF3774F1D35DE21006BF786 /* StageMetaData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF3774E1D35DE21006BF786 /* StageMetaData.swift */; };
 		0EF377511D36C6E5006BF786 /* StageMetaDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF377501D36C6E5006BF786 /* StageMetaDataTests.swift */; };
 		0EF377531D36EF4A006BF786 /* StageContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF377521D36EF4A006BF786 /* StageContent.swift */; };
+		0EF377581D370673006BF786 /* TitleCardViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0EF377571D370673006BF786 /* TitleCardViewController.storyboard */; };
+		0EF3775A1D370697006BF786 /* TitleCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF377591D370697006BF786 /* TitleCardViewController.swift */; };
 		0EF716891C98F8C60005CF86 /* SSLSecurity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF716871C98F8C60005CF86 /* SSLSecurity.swift */; };
 		0EF7168A1C98F8C60005CF86 /* WebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF716881C98F8C60005CF86 /* WebSocket.swift */; };
 		0EF7168D1C98FE5E0005CF86 /* WebSocketController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF7168C1C98FE5E0005CF86 /* WebSocketController.swift */; };
@@ -2973,6 +2975,8 @@
 		0EF3774E1D35DE21006BF786 /* StageMetaData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StageMetaData.swift; sourceTree = "<group>"; };
 		0EF377501D36C6E5006BF786 /* StageMetaDataTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StageMetaDataTests.swift; sourceTree = "<group>"; };
 		0EF377521D36EF4A006BF786 /* StageContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StageContent.swift; sourceTree = "<group>"; };
+		0EF377571D370673006BF786 /* TitleCardViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = TitleCardViewController.storyboard; path = TitleCard/TitleCardViewController.storyboard; sourceTree = "<group>"; };
+		0EF377591D370697006BF786 /* TitleCardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TitleCardViewController.swift; path = TitleCard/TitleCardViewController.swift; sourceTree = "<group>"; };
 		0EF716871C98F8C60005CF86 /* SSLSecurity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SSLSecurity.swift; path = Starscream/Source/SSLSecurity.swift; sourceTree = "<group>"; };
 		0EF716881C98F8C60005CF86 /* WebSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebSocket.swift; path = Starscream/Source/WebSocket.swift; sourceTree = "<group>"; };
 		0EF7168C1C98FE5E0005CF86 /* WebSocketController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebSocketController.swift; path = WebSocket/WebSocketController.swift; sourceTree = "<group>"; };
@@ -7187,6 +7191,15 @@
 			path = NetworkSourceAdapters;
 			sourceTree = "<group>";
 		};
+		0EF377561D37065F006BF786 /* TitleCard */ = {
+			isa = PBXGroup;
+			children = (
+				0EF377571D370673006BF786 /* TitleCardViewController.storyboard */,
+				0EF377591D370697006BF786 /* TitleCardViewController.swift */,
+			);
+			name = TitleCard;
+			sourceTree = "<group>";
+		};
 		0EF716851C98F89B0005CF86 /* Starscream */ = {
 			isa = PBXGroup;
 			children = (
@@ -8296,6 +8309,7 @@
 		A73BA29C1C938B68008168B5 /* Stage */ = {
 			isa = PBXGroup;
 			children = (
+				0EF377561D37065F006BF786 /* TitleCard */,
 				67FD09541D18C60B00A5AEB5 /* AttributionBar.swift */,
 				F0FBC4471D22F0E60070873F /* CaptionBar */,
 				0E96809E1CD03E130094ADF4 /* Stage.storyboard */,
@@ -11480,6 +11494,7 @@
 				D8C7CF6119DCD23D00BA33E5 /* VExperienceEnhancerBar.xib in Resources */,
 				BF2AE2BF1CD280CB00A9967A /* ConfigurableGridStreamHeaderView.xib in Resources */,
 				A7B514581A464E770074282F /* VUtilityButtonCell.xib in Resources */,
+				0EF377581D370673006BF786 /* TitleCardViewController.storyboard in Resources */,
 				F089E3641AC486B40076DC4D /* VBlurredMarqueeStreamItemCell.xib in Resources */,
 				0390085D19F38D5C00FD7EDF /* VKeyboardInputAccessoryView.xib in Resources */,
 				03803DE11B0C270300B63F05 /* Purchases.storyboard in Resources */,
@@ -13524,6 +13539,7 @@
 				A778CB6D1C474EF7007DF0C2 /* VConversationViewController.m in Sources */,
 				F0B390C31A88502D00EE70C7 /* VTagDictionary.m in Sources */,
 				A75ED0BE1AB7927A00C35063 /* VTextTypePickerDataSource.m in Sources */,
+				0EF3775A1D370697006BF786 /* TitleCardViewController.swift in Sources */,
 				B0DDD5571B4DF7F80065E540 /* VPermissionsTrackingHelper.m in Sources */,
 				0386E1F71A8DDA7F00FC9BDF /* VFollowingStreamCollectionViewController.m in Sources */,
 				F0FC97DC1B5C0B9B0098AFCB /* VAbstractMediaLinkViewController.m in Sources */,
