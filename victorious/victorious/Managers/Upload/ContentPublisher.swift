@@ -51,8 +51,14 @@ class ContentPublisher {
         }
     }
     
+    /// TODO: This implemention assumes that a failed content is at the start of the queue. Which is probably not true. Instead, I need to find out where the content is and try to send that. Does this break the queue implementation?
+    func retryPublish() {
+        publishNextContent()
+    }
+    
     func remove(chatFeedContent chatFeedContent: ChatFeedContent) {
         pendingContent = pendingContent.filter { $0.content.id != chatFeedContent.content.id }
+        // TODO: Update collectionView
     }
     
     private func publishNextContent() {
@@ -62,9 +68,10 @@ class ContentPublisher {
         
         upload(chatFeedContent.content) { [weak self] error in
             if error != nil {
-                // FUTURE: Handle failure.
+                chatFeedContent.creationState = .failed
             }
             else {
+                // TODO: Is this too early to mark it as .sent?
                 chatFeedContent.creationState = .sent
                 self?.publishNextContent()
             }
@@ -73,12 +80,17 @@ class ContentPublisher {
     
     /// Returns the next content in the queue that's waiting to be sent and sets its `creationState` to `sending`.
     private func getNextContent() -> ChatFeedContent? {
-        for chatFeedContent in pendingContent where chatFeedContent.creationState == .waiting {
+        for chatFeedContent in pendingContent where readyToSend(chatFeedContent) {
             chatFeedContent.creationState = .sending
             return chatFeedContent
         }
         
         return nil
+    }
+    
+    /// A piece of content that is either in the state of .waiting or .failed would be ready to be published
+    private func readyToSend(content: ChatFeedContent) -> Bool {
+        return content.creationState == .waiting || content.creationState == .failed
     }
     
     /// Uploads `content` to the server.
