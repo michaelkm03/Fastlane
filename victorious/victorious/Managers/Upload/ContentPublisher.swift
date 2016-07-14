@@ -62,11 +62,7 @@ class ContentPublisher {
             }
             else {
                 chatFeedContent.creationState = .sent
-                let index = self?.pendingContent.indexOf { chatFeedContent.content.id == $0.content.id
-                }
-                if let index = index {
-                    self?.pendingContent.removeAtIndex(index)
-                }
+                self?.remove(chatFeedContent)
                 self?.publishNextContent()
             }
         }
@@ -119,6 +115,13 @@ class ContentPublisher {
         }
         else {
             completion(ContentPublisherError.invalidContent)
+        }
+    }
+    
+    private func remove(chatFeedContent: ChatFeedContent) {
+        let index = pendingContent.indexOf { chatFeedContent.content.id == $0.content.id }
+        if let index = index {
+            pendingContent.removeAtIndex(index)
         }
     }
 }
