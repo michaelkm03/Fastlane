@@ -302,7 +302,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                 title: NSLocalizedString("Delete", comment: ""),
                 style: .Destructive,
                 handler: { [weak self] alertAction in
-                    self?.deleteContent(chatFeedContent.content)
+                    self?.delete(chatFeedContent: chatFeedContent)
                 }
             )
         )
@@ -317,24 +317,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         presentViewController(alertController, animated: true, completion: nil)
     }
     
-    private func deleteContent(content: ContentModel) {
-        guard let contentID = content.id else {
-            return
-        }
-        
-        let deleteOperation = ContentDeleteOperation(contentID: contentID, contentDeleteURL: dependencyManager.contentDeleteURL)
-        
-        let actionTitle = NSLocalizedString("DeletePost", comment: "")
-        let confirm = ConfirmDestructiveActionOperation(actionTitle: actionTitle, originViewController: self, dependencyManager: dependencyManager)
-        
-        confirm.before(deleteOperation)
-        confirm.queue()
-        deleteOperation.queue { [weak self] _, _, cancelled in
-            if !cancelled {
-                // TODO: Update the feed properly
-                self?.chatFeed?.collectionView.reloadData()
-            }
-        }
+    private func delete(chatFeedContent content: ChatFeedContent) {
+        chatFeed?.remove(chatFeedContent: content)
     }
 
     // MARK: - VFocusable
