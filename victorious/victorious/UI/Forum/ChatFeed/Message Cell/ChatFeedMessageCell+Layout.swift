@@ -89,6 +89,9 @@ extension ChatFeedMessageCell {
                 size: failureButtonSize
             )
         }
+        else {
+            cell.failureButton.frame = .zero
+        }
     }
     
     private static func layoutBubbleView(bubbleView: UIView?, forAlignment alignment: ChatFeedMessageCellAlignment, withChatFeedContent content: ChatFeedContent, size: CGSize?, precedingBubbleFrame: CGRect?, inBounds bounds: CGRect) -> CGRect? {
