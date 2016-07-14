@@ -8,7 +8,7 @@
 
 import UIKit
 
-class StageViewController: UIViewController, Stage, AttributionBarDelegate, CaptionBarViewControllerDelegate {
+class StageViewController: UIViewController, Stage, CaptionBarViewControllerDelegate, TileCardDelegate {
     private struct Constants {
         static let contentSizeAnimationDuration: NSTimeInterval = 0.5
         static let defaultAspectRatio: CGFloat = 16 / 9
@@ -23,18 +23,13 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
             mediaContentView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOnContent)))
         }
     }
-    @IBOutlet private var attributionBar: AttributionBar! {
-        didSet {
-            attributionBar.hidden = true
-            attributionBar.delegate = self
-            updateAttributionBarAppearance(with: dependencyManager)
-        }
-    }
+
     @IBOutlet private var captionBarHeightConstraint: NSLayoutConstraint! {
         didSet {
             captionBarHeightConstraint.constant = 0
         }
     }
+
     private var captionBarViewController: CaptionBarViewController? {
         didSet {
             let captionBarDependency = dependencyManager.captionBarDependency
@@ -44,7 +39,7 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         }
     }
     
-    private var visible = true {
+    private var visible = false {
         didSet {
             updateStageHeight()
         }
@@ -98,6 +93,7 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
 
         let destination = segue.destinationViewController
         if let titleCardViewController = destination as? TitleCardViewController {
+            titleCardViewController.delegate = self
             self.titleCardViewController = titleCardViewController
         }
     }
@@ -117,7 +113,6 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         }
         currentStageContent = stageContent
 
-        attributionBar.configure(with: stageContent.content.author)
 
         mediaContentView.videoCoordinator?.pauseVideo()
         mediaContentView.content = stageContent.content
@@ -191,7 +186,9 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         }
     }
 
-    func didTapOnUser(user: UserModel) {
+    // MARK: - TileCardDelegate
+
+    func didTap(on user: UserModel) {
         let router = Router(originViewController: self, dependencyManager: dependencyManager)
         let destination = DeeplinkDestination(userID: user.id)
         router.navigate(to: destination)

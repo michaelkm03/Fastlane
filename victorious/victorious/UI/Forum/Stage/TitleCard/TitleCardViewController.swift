@@ -8,60 +8,62 @@
 
 import UIKit
 
+protocol TileCardDelegate: class {
+    func didTap(on user: UserModel)
+}
+
 class TitleCardViewController: UIViewController {
-
-    private struct Constanst {
-        static let animationDuration = NSTimeInterval(1)
-        static let cornerRadius = CGFloat(6)
-        static let maxWidth = CGFloat(250)
-
-        /// This offset is so we clip the left side of the view to create the slide out title card effect.
-        static let leadingEgdeOffset = CGFloat(-10)
-    }
-
-    @IBOutlet private weak var profileButton: VDefaultProfileButton!
-    @IBOutlet private weak var authorLabel: UILabel!
-    @IBOutlet private weak var titleLabel: UILabel!
-
-    /// The animatable container view.
-    @IBOutlet private weak var containerView: UIView!
-    @IBOutlet private weak var containerViewLeadingConstraint: NSLayoutConstraint!
 
     enum State {
         case shown
         case hidden
     }
 
+    weak var delegate: TileCardDelegate?
+
+    private struct Constants {
+        static let cornerRadius = CGFloat(6)
+        static let maxWidth = CGFloat(250)
+
+        /// This offset is so we clip the left side of the view to create the slide out title card effect.
+        static let leadingEdgeOffset = CGFloat(-12)
+    }
+
+    @IBOutlet private weak var profileButton: VDefaultProfileButton!
+    @IBOutlet private weak var authorLabel: UILabel!
+    @IBOutlet private weak var titleLabel: UILabel!
+
+    /// The draggable container view.
+    @IBOutlet private weak var containerView: UIView!
+
     private var currentState = State.hidden
 
     private var stageContent: StageContent?
 
-    // UIDynamics
-    private var animator: UIDynamicAnimator?
+    // MARK: - UIDynamics & Interraction
 
-    private var openSnapBehaviour: UISnapBehavior?
-    private var closeSnapBehaviour: UISnapBehavior?
+    private var animator: UIDynamicAnimator?
+    private var draggableBehaviour: DraggableBehaviour?
+
+    private var panGestureRecognizer: UIPanGestureRecognizer?
+    private var tapGesturereRecognizer: UITapGestureRecognizer?
+
 
     // MARK: - UIViewController life cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        containerView.applyCornerRadius(Constanst.cornerRadius)
+        containerView.applyCornerRadius(Constants.cornerRadius)
         containerView.layer.borderColor = UIColor(white: 0.0, alpha: 0.1).CGColor
         containerView.layer.borderWidth = 1
         view.backgroundColor = .clearColor()
 
-        animator = setupAnimator(with: view)
+        setupAnimator(with: view)
+        setupRecognizers(on: containerView)
 
-        // Setup animator behaviour
-        let titleCardBehaviour = UIDynamicItemBehavior(items: [containerView])
-        titleCardBehaviour.allowsRotation = false
-        titleCardBehaviour.density = 10
-        animator?.addBehavior(titleCardBehaviour)
-
-        openSnapBehaviour = UISnapBehavior(item: containerView, snapToPoint: CGPoint(x: -10, y: 100))
-        closeSnapBehaviour = UISnapBehavior(item: containerView, snapToPoint: CGPoint(x: -250, y: 100))
+        // Set the tile card in it's starting state.
+        containerView.center = targetPoint
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -73,8 +75,69 @@ class TitleCardViewController: UIViewController {
 
     // MARK: Private
 
-    private func setupAnimator(with referenceView: UIView) -> UIDynamicAnimator {
-        return UIDynamicAnimator(referenceView: referenceView)
+    private func setupRecognizers(on view: UIView) {
+        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(didPand(_:)))
+        containerView.addGestureRecognizer(panGestureRecognizer)
+        self.panGestureRecognizer = panGestureRecognizer
+
+        let tapGesturereRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTap(_:)))
+        containerView.addGestureRecognizer(tapGesturereRecognizer)
+        self.tapGesturereRecognizer = tapGesturereRecognizer
+
+    }
+
+    private func setupAnimator(with referenceView: UIView) {
+        animator = UIDynamicAnimator(referenceView: referenceView)
+    }
+
+    /// Target point of tile card that depends on current state.
+    private var targetPoint: CGPoint {
+        var point: CGPoint
+        switch currentState {
+            case .shown:
+                point = CGPoint(x: (containerView.frame.width / 2) + Constants.leadingEdgeOffset, y: containerView.frame.height / 2)
+            case .hidden:
+                point = CGPoint(x: -containerView.frame.width, y: containerView.frame.height / 2)
+        }
+        print("state -> \(currentState)   point -> \(point)")
+        return point
+    }
+
+    private func animateTileCard(withInitialVelocity initialVelocity: CGPoint) {
+        if draggableBehaviour == nil {
+            draggableBehaviour = DraggableBehaviour(with: containerView)
+        }
+        draggableBehaviour?.targetPoint = targetPoint
+        draggableBehaviour?.velocity = initialVelocity
+        animator?.addBehavior(draggableBehaviour!)
+    }
+
+    @objc private func didPand(recognizer: UIPanGestureRecognizer) {
+        let point = recognizer.translationInView(containerView?.superview)
+        containerView.center = CGPoint(x: containerView.center.x + point.x, y: containerView.center.y)
+        recognizer.setTranslation(CGPointZero, inView: containerView?.superview)
+
+        switch recognizer.state {
+            case .Began:
+                animator?.removeAllBehaviors()
+            case .Ended:
+                var velocity = recognizer.velocityInView(containerView?.superview)
+                velocity.y = 0
+                currentState = (velocity.x > 0 ? .shown : .hidden)
+                animateTileCard(withInitialVelocity: velocity)
+            default:
+                break
+        }
+    }
+
+    @objc private func didTap(recognizer: UITapGestureRecognizer) {
+        print("didTap")
+        guard let draggableBehaviour = draggableBehaviour else {
+            return
+        }
+
+        currentState = (currentState == .shown ? .hidden : .shown)
+        animateTileCard(withInitialVelocity: draggableBehaviour.velocity)
     }
 
     // MARK: Public
@@ -96,65 +159,20 @@ class TitleCardViewController: UIViewController {
 
     func show(animated animated: Bool) {
         print("SHOWING TITLE CARD")
-        guard let openSnapBehaviour = openSnapBehaviour,
-            let closeSnapBehaviour = closeSnapBehaviour
-            where currentState == .hidden
-        else {
+        guard currentState == .hidden else {
             return
         }
         currentState = .shown
-
-        animator?.removeBehavior(closeSnapBehaviour)
-        animator?.addBehavior(openSnapBehaviour)
-
-//        containerViewLeadingConstraint.constant = Constanst.leadingEgdeOffset
-//        print("containerViewLeadingConstraint.constant -> \(containerViewLeadingConstraint.constant)")
-//        UIView.animateWithDuration(
-//            (animated ? Constanst.animationDuration : 0),
-//            delay: 0,
-//            usingSpringWithDamping: 0.75,
-//            initialSpringVelocity: 0.1,
-//            options: [.AllowUserInteraction, .BeginFromCurrentState],
-//            animations:
-//            {   [weak self] in
-//                print("Inside show animation block")
-//                self?.view.layoutIfNeeded()
-//            }) { (completed) in
-//                print("SHOWN")
-//        }
+        animateTileCard(withInitialVelocity: CGPointZero)
     }
 
     func hide(animated animated: Bool) {
         print("HIDING TITLE CARD")
-        guard let openSnapBehaviour = openSnapBehaviour,
-            let closeSnapBehaviour = closeSnapBehaviour
-            where currentState == .shown
-        else {
+        guard currentState == .shown else {
             return
         }
         currentState = .hidden
-
-        animator?.removeBehavior(openSnapBehaviour)
-        animator?.addBehavior(closeSnapBehaviour)
-
-
-//        let containerOffset = -view.frame.width
-//        containerViewLeadingConstraint.constant = containerOffset
-//        print("containerViewLeadingConstraint.constant -> \(containerViewLeadingConstraint.constant)")
-//        UIView.animateWithDuration(
-//            (animated ? Constanst.animationDuration : 0),
-//            delay: 0,
-//            usingSpringWithDamping: 0.75,
-//            initialSpringVelocity: 0.1,
-//            options: [.AllowUserInteraction, .BeginFromCurrentState],
-//            animations:
-//            {   [weak self] in
-//                print("Inside hide animation block")
-//                self?.view.layoutIfNeeded()
-//            })
-//        { (completed) in
-//            print("HIDDEN")
-//        }
+        animateTileCard(withInitialVelocity: CGPointZero)
     }
 
     // MARK: Private
@@ -164,12 +182,10 @@ class TitleCardViewController: UIViewController {
             return
         }
 
-        print("populateUI -> \(stageContent)")
         authorLabel.text = stageContent?.content.author.name ?? ""
         titleLabel.text = stageContent?.metaData?.title ?? ""
 
         if let profileImageURL = stageContent?.content.author.previewImageURL(ofMinimumSize: profileButton.bounds.size) {
-            print("profileImageURL -> \(profileImageURL)")
             profileButton?.setProfileImageURL(profileImageURL, forState: .Normal)
         }
 
@@ -177,7 +193,9 @@ class TitleCardViewController: UIViewController {
     }
 
     @IBAction private func profileAction(sender: UIButton) {
-        print("Tapped Avatar!")
-        // TODO: open profile
+        guard let avatarUser = stageContent?.content.author else {
+            return
+        }
+        delegate?.didTap(on: avatarUser)
     }
 }

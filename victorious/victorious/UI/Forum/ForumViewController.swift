@@ -75,33 +75,33 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     }
     
     func send(event: ForumEvent) {
-        
         switch event {
-        case .sendContent(let content):
-            
-            guard let networkResources = dependencyManager.networkResources else {
-                let logMessage = "Didn't find a valid network resources dependency inside the forum!"
-                assertionFailure(logMessage)
-                v_log(logMessage)
-                nextSender?.send(event)
-                return
-            }
-            
-            createPersistentContent(content, networkResourcesDependency: networkResources) { [weak self] error in
+            case .sendContent(let content):
                 
-                if let validError = error,
-                    let strongSelf = self {
+                guard let networkResources = dependencyManager.networkResources else {
+                    let logMessage = "Didn't find a valid network resources dependency inside the forum!"
+                    assertionFailure(logMessage)
+                    v_log(logMessage)
+                    nextSender?.send(event)
+                    return
+                }
+                
+                createPersistentContent(content, networkResourcesDependency: networkResources) { [weak self] error in
                     
-                    if let persistenceError = validError as? PersistentContentCreatorError where
-                        persistenceError.isInvalidNetworkResourcesError {
-                        //Encountered an error where the network resources were inadequate. This does NOT
-                        //represent an error state that should be messaged to the user.
-                    } else {
-                        strongSelf.v_showDefaultErrorAlert()
+                    if let validError = error,
+                        let strongSelf = self {
+                        
+                        if let persistenceError = validError as? PersistentContentCreatorError where
+                            persistenceError.isInvalidNetworkResourcesError {
+                            //Encountered an error where the network resources were inadequate. This does NOT
+                            //represent an error state that should be messaged to the user.
+                        } else {
+                            strongSelf.v_showDefaultErrorAlert()
+                        }
                     }
                 }
-            }
-        default:()
+            default:
+                break
         }
         nextSender?.send(event)
     }
