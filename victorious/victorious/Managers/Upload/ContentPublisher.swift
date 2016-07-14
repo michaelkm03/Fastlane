@@ -59,34 +59,6 @@ class ContentPublisher {
         publishNextContent()
     }
     
-    /// Retry publishing `content` that failed to be sent
-    func retryPublish(chatFeedContent: ChatFeedContent) {
-        guard chatFeedContent.creationState == .failed else {
-            return
-        }
-        
-        upload(chatFeedContent.content) { [weak self] error in
-            guard let index = self?.index(of: chatFeedContent) else {
-                return
-            }
-            
-            if error != nil {
-                self?.pendingContent[index].creationState = .failed
-            }
-            else {
-                self?.pendingContent[index].creationState = .sent
-                // FUTURE: Remove after the message comes in from content feed fetch response.
-                self?.remove(chatFeedContent)
-            }
-        }
-    }
-    
-    /// Removes `content` from the pending queue
-    func remove(chatFeedContent: ChatFeedContent) {
-        pendingContent = pendingContent.filter { $0.content.id != chatFeedContent.content.id }
-        // FUTURE: Update collectionView
-    }
-    
     private func publishNextContent() {
         guard let index = indexOfNextWaitingContent() else {
             return
@@ -112,19 +84,6 @@ class ContentPublisher {
                 strongSelf.publishNextContent()
             }
         }
-    }
-    
-    /// Returns the next content in the queue that's waiting to be sent and sets its `creationState` to `sending`.
-    private func indexOfNextWaitingContent() -> Int? {
-        for (index, chatFeedContent) in pendingContent.enumerate() where chatFeedContent.creationState == .waiting {
-            return index
-        }
-        return nil
-    }
-    
-    /// Returns the index of the specified content
-    private func index(of chatFeedContent: ChatFeedContent) -> Int? {
-        return pendingContent.indexOf { $0.content.id == chatFeedContent.content.id }
     }
     
     /// Uploads `content` to the server.
@@ -165,6 +124,51 @@ class ContentPublisher {
         else {
             completion(ContentPublisherError.invalidContent)
         }
+    }
+    
+    // MARK: - Handling Errors
+    
+    /// Retry publishing `content` that failed to be sent
+    func retryPublish(chatFeedContent: ChatFeedContent) {
+        guard chatFeedContent.creationState == .failed else {
+            return
+        }
+        
+        upload(chatFeedContent.content) { [weak self] error in
+            guard let index = self?.index(of: chatFeedContent) else {
+                return
+            }
+            
+            if error != nil {
+                self?.pendingContent[index].creationState = .failed
+            }
+            else {
+                self?.pendingContent[index].creationState = .sent
+                // FUTURE: Remove after the message comes in from content feed fetch response.
+                self?.remove(chatFeedContent)
+            }
+        }
+    }
+    
+    /// Removes `content` from the pending queue
+    func remove(chatFeedContent: ChatFeedContent) {
+        pendingContent = pendingContent.filter { $0.content.id != chatFeedContent.content.id }
+        // FUTURE: Update collectionView
+    }
+    
+    // MARK: - Index of Queue
+    
+    /// Returns the next content in the queue that's waiting to be sent and sets its `creationState` to `sending`.
+    private func indexOfNextWaitingContent() -> Int? {
+        for (index, chatFeedContent) in pendingContent.enumerate() where chatFeedContent.creationState == .waiting {
+            return index
+        }
+        return nil
+    }
+    
+    /// Returns the index of the specified content
+    private func index(of chatFeedContent: ChatFeedContent) -> Int? {
+        return pendingContent.indexOf { $0.content.id == chatFeedContent.content.id }
     }
 }
 
