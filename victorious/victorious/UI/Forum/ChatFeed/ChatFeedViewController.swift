@@ -158,6 +158,14 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         }
     }
     
+    func chatFeedDataSource(dataSource: ChatFeedDataSource, didAddPendingItems pendingItems: [ChatFeedContent]) {
+        let itemCount = dataSource.itemCount
+        
+        collectionView.insertItemsAtIndexPaths((0 ..< pendingItems.count).map {
+            NSIndexPath(forItem: itemCount - 1 - $0, inSection: 0)
+        })
+    }
+    
     // MARK: - VScrollPaginatorDelegate
     
     func shouldLoadPreviousPage() {

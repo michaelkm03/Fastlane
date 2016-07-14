@@ -13,16 +13,20 @@ protocol ChatFeedDataSourceDelegate: class {
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didLoadItems newItems: [ChatFeedContent], loadingType: PaginatedLoadingType)
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didStashItems stashedItems: [ChatFeedContent])
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didUnstashItems unstashedItems: [ChatFeedContent])
+    func chatFeedDataSource(dataSource: ChatFeedDataSource, didAddPendingItems pendingItems: [ChatFeedContent])
 }
 
-class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatInterfaceDataSource {
+class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatInterfaceDataSource, ContentPublisherDelegate {
     
     // MARK: Initializing
     
     init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
         self.publisher = ContentPublisher(dependencyManager: dependencyManager.networkResources ?? dependencyManager)
+        
         super.init()
+        
+        publisher.delegate = self
     }
     
     // MARK: - Dependency manager
@@ -92,6 +96,12 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     // MARK: - ChatFeedNetworkDataSourceType
     
     weak var delegate: ChatFeedDataSourceDelegate?
+    
+    // MARK: - ContentPublisherDelegate
+    
+    func contentPublisher(contentPublisher: ContentPublisher, didQueueContent content: ChatFeedContent) {
+        delegate?.chatFeedDataSource(self, didAddPendingItems: [content])
+    }
     
     // MARK: - UICollectionViewDataSource
     
