@@ -47,8 +47,16 @@ extension ChatFeed {
         return nil
     }
     
-    func handleNewItems(newItems: [ChatFeedContent], loadingType: PaginatedLoadingType, completion: (() -> Void)? = nil) {
-        guard newItems.count > 0 || loadingType == .refresh else {
+    /// Updates the collection view with the given set of new items, inserting or reloading depending on the
+    /// `loadingType`.
+    ///
+    /// The items are expected to have already been updated in the data source.
+    ///
+    /// If pending content has been added or removed, the change in count should be passed in as `pendingContentDelta`,
+    /// which will adjust the number of inserted items accordingly.
+    ///
+    func handleNewItems(newItems: [ChatFeedContent], loadingType: PaginatedLoadingType, pendingContentDelta: Int = 0, completion: (() -> Void)? = nil) {
+        guard newItems.count > 0 || pendingContentDelta != 0 || loadingType == .refresh else {
             return
         }
         
@@ -63,7 +71,7 @@ extension ChatFeed {
         let collectionView = self.collectionView
         let wasScrolledToBottom = collectionView.v_isScrolledToBottom
         
-        updateCollectionView(with: newItems, loadingType: loadingType) {
+        updateCollectionView(with: newItems, loadingType: loadingType, pendingContentDelta: pendingContentDelta) {
             collectionView.collectionViewLayout.invalidateLayout()
             
             CATransaction.commit()
@@ -78,13 +86,18 @@ extension ChatFeed {
         }
     }
     
-    private func updateCollectionView(with newItems: [ChatFeedContent], loadingType: PaginatedLoadingType, completion: () -> Void) {
+    private func updateCollectionView(with newItems: [ChatFeedContent], loadingType: PaginatedLoadingType, pendingContentDelta: Int, completion: () -> Void) {
         if loadingType == .refresh {
             collectionView.reloadData()
             completion()
         }
         else {
             let collectionView = self.collectionView
+            let visibleItemCount = chatInterfaceDataSource.visibleItems.count
+            let oldVisibleItemCount = visibleItemCount - newItems.count
+            let pendingItemCount = chatInterfaceDataSource.pendingItems.count
+            let oldPendingItemCount = pendingItemCount - pendingContentDelta
+            let itemCount = chatInterfaceDataSource.itemCount
             
             // The collection view's layout information is guaranteed to be updated properly in the completion handler
             // of this method, which allows us to properly manage scrolling. We can't call `reloadData` in this method,
@@ -92,10 +105,8 @@ extension ChatFeed {
             collectionView.performBatchUpdates({
                 switch loadingType {
                     case .newer:
-                        let previousCount = self.chatInterfaceDataSource.visibleItems.count - newItems.count
-                        
                         collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
-                            NSIndexPath(forItem: previousCount + $0, inSection: 0)
+                            NSIndexPath(forItem: oldVisibleItemCount + $0, inSection: 0)
                         })
                     
                     case .older:
@@ -112,6 +123,15 @@ extension ChatFeed {
                     
                     case .refresh:
                         break
+                }
+                
+                for index in 0 ..< abs(pendingContentDelta) {
+                    if pendingContentDelta < 0 {
+                        collectionView.deleteItemsAtIndexPaths([NSIndexPath(forItem: oldVisibleItemCount + index, inSection: 0)])
+                    }
+                    else {
+                        collectionView.insertItemsAtIndexPaths([NSIndexPath(forItem: itemCount - 1 - index, inSection: 0)])
+                    }
                 }
             }, completion: { _ in
                 completion()

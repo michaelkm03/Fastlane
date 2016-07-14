@@ -74,11 +74,14 @@ class ChatFeedMessageCell: UICollectionViewCell {
     
     // MARK: - Content
     
-    var content: ContentModel? {
+    var chatFeedContent: ChatFeedContent? {
         didSet {
             // Updating the content is expensive, so we try to bail if we're setting the same content as before.
             // However, chat message contents don't have IDs, so we can't do this if the ID is nil.
-            if content?.id == oldValue?.id && content?.id != nil {
+            let oldID = oldValue?.content.id
+            let newID = chatFeedContent?.content.id
+            
+            guard newID != oldID || newID == nil else {
                 return
             }
             
@@ -107,6 +110,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        alpha = chatFeedContent?.creationState == nil ? 1.0 : 0.5
         ChatFeedMessageCell.layoutContent(for: self)
     }
     
@@ -139,6 +143,8 @@ class ChatFeedMessageCell: UICollectionViewCell {
     }
     
     private func populateData() {
+        let content = chatFeedContent?.content
+        
         captionLabel.attributedText = content?.attributedText(using: dependencyManager)
         usernameLabel.text = content?.author.name ?? ""
         updateTimestamp()
@@ -205,7 +211,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
     }
     
     func updateTimestamp() {
-        timestampLabel.text = content?.timeLabel ?? ""
+        timestampLabel.text = chatFeedContent?.content.timeLabel ?? ""
         setNeedsLayout()
     }
     

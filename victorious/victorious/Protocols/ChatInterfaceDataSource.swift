@@ -28,7 +28,7 @@ protocol ChatInterfaceDataSource: UICollectionViewDataSource {
     func desiredCellSize(for collectionView: UICollectionView, at indexPath: NSIndexPath) -> CGSize
     
     /// Decorates and configures a cell with its data object
-    func decorate(cell: ChatFeedMessageCell, content: ContentModel)
+    func decorate(cell: ChatFeedMessageCell, with chatFeedContent: ChatFeedContent)
 }
 
 extension ChatInterfaceDataSource {
@@ -50,10 +50,10 @@ extension ChatInterfaceDataSource {
     }
     
     func cellForItem(for collectionView: UICollectionView, at indexPath: NSIndexPath) -> ChatFeedMessageCell {
-        let content = self.content(at: indexPath.row).content
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(content.reuseIdentifier, forIndexPath: indexPath) as! ChatFeedMessageCell
-        decorate(cell, content: content)
-        
+        let chatFeedContent = content(at: indexPath.row)
+        let reuseIdentifier = chatFeedContent.content.reuseIdentifier
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! ChatFeedMessageCell
+        decorate(cell, with: chatFeedContent)
         return cell
     }
     
@@ -67,9 +67,9 @@ extension ChatInterfaceDataSource {
         return content(at: indexPath.row).size
     }
     
-    func decorate(cell: ChatFeedMessageCell, content: ContentModel) {
+    func decorate(cell: ChatFeedMessageCell, with chatFeedContent: ChatFeedContent) {
         cell.dependencyManager = dependencyManager
-        cell.content = content
+        cell.chatFeedContent = chatFeedContent
     }
     
     func updateTimestamps(in collectionView: UICollectionView) {

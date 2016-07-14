@@ -129,7 +129,21 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     // MARK: - ChatFeedDataSourceDelegate
     
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didLoadItems newItems: [ChatFeedContent], loadingType: PaginatedLoadingType) {
-        handleNewItems(newItems, loadingType: loadingType)
+        let removedPendingContentCount: Int
+        
+        if loadingType == .newer {
+            let userContentCount = newItems.filter({ $0.content.wasCreatedByCurrentUser }).count
+            removedPendingContentCount = min(dataSource.publisher.pendingContent.count, userContentCount)
+            
+            if removedPendingContentCount > 0 {
+                dataSource.publisher.pendingContent.removeRange(0 ..< removedPendingContentCount)
+            }
+        }
+        else {
+            removedPendingContentCount = 0
+        }
+        
+        handleNewItems(newItems, loadingType: loadingType, pendingContentDelta: -removedPendingContentCount)
     }
     
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didStashItems stashedItems: [ChatFeedContent]) {
@@ -159,16 +173,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     }
     
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didAddPendingItems pendingItems: [ChatFeedContent]) {
-        let itemCount = dataSource.itemCount
-        let collectionView = self.collectionView
-        
-        collectionView.performBatchUpdates({
-            collectionView.insertItemsAtIndexPaths((0 ..< pendingItems.count).map {
-                NSIndexPath(forItem: itemCount - 1 - $0, inSection: 0)
-            })
-        }, completion: { _ in
-            collectionView.setContentOffset(collectionView.v_bottomOffset, animated: true)
-        })
+        handleNewItems([], loadingType: .newer, pendingContentDelta: pendingItems.count)
     }
     
     var chatFeedItemWidth: CGFloat {
@@ -184,7 +189,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     // MARK: - ChatFeedMessageCellDelegate
     
     func messageCellDidSelectAvatarImage(messageCell: ChatFeedMessageCell) {
-        guard let userID = messageCell.content?.author.id else {
+        guard let userID = messageCell.chatFeedContent?.content.author.id else {
             return
         }
         
@@ -192,7 +197,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     }
     
     func messageCellDidSelectMedia(messageCell: ChatFeedMessageCell) {
-        guard let content = messageCell.content else {
+        guard let content = messageCell.chatFeedContent?.content else {
             return
         }
         
@@ -200,7 +205,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     }
     
     func messageCellDidSelectFailureButton(messageCell: ChatFeedMessageCell) {
-        guard let content = messageCell.content else {
+        guard let content = messageCell.chatFeedContent?.content else {
             return
         }
         

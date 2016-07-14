@@ -49,7 +49,8 @@ class ContentPublisher {
     // MARK: - Publishing
     
     /// The content that is currently pending creation.
-    private(set) var pendingContent = [ChatFeedContent]()
+    // TODO: private(set)
+    var pendingContent = [ChatFeedContent]()
     
     /// Queues `content` for publishing.
     func publish(content: ContentModel, withWidth width: CGFloat) {

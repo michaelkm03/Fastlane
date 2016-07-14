@@ -19,7 +19,7 @@ private enum ChatFeedMessageCellAlignment {
 extension ChatFeedMessageCell {
     /// Performs the view layout for `cell` based on its content.
     static func layoutContent(for cell: ChatFeedMessageCell) {
-        guard let content = cell.content, dependencyManager = cell.dependencyManager else {
+        guard let content = cell.chatFeedContent?.content, dependencyManager = cell.dependencyManager else {
             return
         }
         
