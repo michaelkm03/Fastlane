@@ -30,6 +30,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
     static let topLabelYSpacing = CGFloat(4.0)
     static let topLabelXInset = CGFloat(4.0)
     static let bubbleSpacing = CGFloat(6.0)
+    static let pendingContentAlpha = CGFloat(0.4)
     
     // MARK: - Reuse identifiers
     
@@ -110,7 +111,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        alpha = chatFeedContent?.creationState == nil ? 1.0 : 0.5
+        contentView.alpha = chatFeedContent?.creationState?.alpha ?? 1.0
         ChatFeedMessageCell.layoutContent(for: self)
     }
     
@@ -276,6 +277,12 @@ class ChatFeedMessageCell: UICollectionViewCell {
 private extension ContentModel {
     var timeLabel: String {
         return createdAt.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds)
+    }
+}
+
+private extension ContentCreationState {
+    var alpha: CGFloat {
+        return self == .failed ? 1.0 : ChatFeedMessageCell.pendingContentAlpha
     }
 }
 
