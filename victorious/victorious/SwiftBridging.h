@@ -10,7 +10,6 @@
  Use this file to import Objective-C headers that need to be exposed to any Swift code.
  */
 
-#import "GoogleInteractiveMediaAds/GoogleInteractiveMediaAds.h"
 #import "NSString+VCrypto.h"
 #import "NSString+VParseHelp.h"
 #import "NSURL+MediaType.h"
@@ -90,6 +89,7 @@
 #import "VCreationFlowPresenter.h"
 #import "VDataCache.h"
 #import "VDependencyManager+NavigationBar.h"
+#import "VDependencyManager+VNavigationItem.h"
 #import "VDependencyManager+VAccessoryScreens.h"
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VDependencyManager+VDefaultTemplate.h"

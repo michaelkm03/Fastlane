@@ -44,13 +44,10 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         )
     }()
     
-    private lazy var upvoteButton: UIBarButtonItem = {
-        return UIBarButtonItem(
-            image: self.dependencyManager.upvoteIconUnselected,
-            style: .Done,
-            target: self,
-            action: #selector(toggleUpvote)
-        )
+    private lazy var upvoteButton: UIButton = {
+        let button = BackgroundButton(type: .System)
+        button.addTarget(self, action: #selector(toggleUpvote), forControlEvents: .TouchUpInside)
+        return button
     }()
     
     // MARK: - Initializing
@@ -93,24 +90,30 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     // MARK: - View updating
     
     private func updateBarButtonItems() {
-        if user?.isFollowedByCurrentUser == true {
-            upvoteButton.image = dependencyManager.upvoteIconSelected
-            upvoteButton.tintColor = dependencyManager.upvoteIconTint
-        }
-        else {
-            upvoteButton.image = dependencyManager.upvoteIconUnselected
-            upvoteButton.tintColor = nil
-        }
-        
         supplementalRightButtons = []
         
         let isCurrentUser = user?.isCurrentUser == true
         let isCreator = user?.accessLevel?.isCreator == true
         
         if !isCurrentUser {
-            supplementalRightButtons.append(upvoteButton)
+            if isCreator && VCurrentUser.user()?.hasValidVIPSubscription != true {
+                supplementalRightButtons.append(UIBarButtonItem(customView: upgradeButton))
+            }
             
             if !isCreator {
+                if user?.isFollowedByCurrentUser == true {
+                    upvoteButton.setImage(dependencyManager.upvoteIconSelected, forState: .Normal)
+                    upvoteButton.backgroundColor = dependencyManager.upvoteIconSelectedBackgroundColor
+                    upvoteButton.tintColor = dependencyManager.upvoteIconTint
+                }
+                else {
+                    upvoteButton.setImage(dependencyManager.upvoteIconUnselected, forState: .Normal)
+                    upvoteButton.backgroundColor = dependencyManager.upvoteIconUnselectedBackgroundColor
+                    upvoteButton.tintColor = nil
+                }
+                
+                upvoteButton.sizeToFit()
+                supplementalRightButtons.append(UIBarButtonItem(customView: upvoteButton))
                 supplementalRightButtons.append(overflowButton)
             }
         }
@@ -124,7 +127,13 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     
     // MARK: - Views
     
-    private let upgradeButton = UIButton(type: .System)
+    private lazy var upgradeButton: UIButton = {
+        let button = BackgroundButton(type: .System)
+        button.addTarget(self, action: #selector(upgradeButtonWasPressed), forControlEvents: .TouchUpInside)
+        button.setTitle(NSLocalizedString("Upgrade", comment: ""), forState: .Normal)
+        button.sizeToFit()
+        return button
+    }()
     
     // MARK: - Actions
     
@@ -200,11 +209,9 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     }
     
     func shouldDisplayAccessoryItem(withIdentifier identifier: String) -> Bool {
-        if identifier == VNewProfileViewController.upgradeButtonID {
-            return user?.hasValidVIPSubscription != true && dependencyManager.vipSubscription?.enabled == true
-        }
-        
-        return true
+        let hasUpgradeIdentifier = identifier == VNewProfileViewController.upgradeButtonID
+        let vipIsEnabled = dependencyManager.vipSubscription?.enabled == true
+        return !hasUpgradeIdentifier || (hasUpgradeIdentifier && vipIsEnabled)
     }
     
     // MARK: - VAccessoryNavigationSource
@@ -214,11 +221,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     }
     
     func shouldDisplayAccessoryMenuItem(menuItem: VNavigationMenuItem!, fromSource source: UIViewController!) -> Bool {
-        if menuItem?.identifier == VNewProfileViewController.upgradeButtonID {
-            return user?.hasValidVIPSubscription != true && dependencyManager.vipSubscription?.enabled == true
-        }
-        
-        return true
+        return shouldDisplayAccessoryItem(withIdentifier: menuItem.identifier)
     }
     
     // MARK: - Managing the user
@@ -345,6 +348,14 @@ private extension VDependencyManager {
     
     var upvoteIconTint: UIColor? {
         return colorForKey("color.text.actionButton")
+    }
+    
+    var upvoteIconSelectedBackgroundColor: UIColor? {
+        return colorForKey("color.background.upvote.selected")
+    }
+    
+    var upvoteIconUnselectedBackgroundColor: UIColor? {
+        return colorForKey("color.background.upvote.unselected")
     }
     
     var upvoteIconSelected: UIImage? {

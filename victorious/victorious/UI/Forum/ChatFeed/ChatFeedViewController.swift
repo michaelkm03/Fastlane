@@ -158,6 +158,10 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         }
     }
     
+    var chatFeedItemWidth: CGFloat {
+        return collectionView.bounds.width
+    }
+    
     // MARK: - VScrollPaginatorDelegate
     
     func shouldLoadPreviousPage() {
@@ -180,6 +184,14 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         }
         
         delegate?.chatFeed(self, didSelectContent: content)
+    }
+    
+    func messageCellDidSelectFailureButton(messageCell: ChatFeedMessageCell) {
+        guard let content = messageCell.content else {
+            return
+        }
+        
+        delegate?.chatFeed(self, didSelectFailureButtonForContent: content)
     }
     
     // MARK: - UIScrollViewDelegate
