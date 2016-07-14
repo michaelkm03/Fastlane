@@ -43,8 +43,12 @@ class ContentPublisher {
     private(set) var pendingContent = [ChatFeedContent]()
     
     /// Queues `content` for publishing.
-    func publish(content: ContentModel) {
-        pendingContent.append(ChatFeedContent(content, creationState: .waiting))
+    func publish(content: ContentModel, withWidth width: CGFloat) {
+        guard let chatFeedContent = ChatFeedContent(content: content, width: width, dependencyManager: dependencyManager, creationState: .waiting) else {
+            assertionFailure("Failed to calculate height for chat feed content")
+            return
+        }
+        pendingContent.append(chatFeedContent)
         
         if pendingContent.count == 1 {
             publishNextContent()
@@ -52,29 +56,29 @@ class ContentPublisher {
     }
     
     private func publishNextContent() {
-        guard let chatFeedContent = getNextContent() else {
+        guard let index = indexOfNextContent else {
             return
         }
         
-        upload(chatFeedContent.content) { [weak self] error in
+        pendingContent[index].creationState = .sending
+
+        upload(pendingContent[index].content) { [weak self] error in
             if error != nil {
                 // FUTURE: Handle failure.
             }
             else {
-                chatFeedContent.creationState = .sent
-                self?.remove(chatFeedContent)
+                self?.pendingContent[index].creationState = .sent
+                self?.pendingContent.removeAtIndex(index)
                 self?.publishNextContent()
             }
         }
     }
     
     /// Returns the next content in the queue that's waiting to be sent and sets its `creationState` to `sending`.
-    private func getNextContent() -> ChatFeedContent? {
-        for chatFeedContent in pendingContent where chatFeedContent.creationState == .waiting {
-            chatFeedContent.creationState = .sending
-            return chatFeedContent
+    private var indexOfNextContent: Int? {
+        for (index, chatFeedContent) in pendingContent.enumerate() where chatFeedContent.creationState == .waiting {
+            return index
         }
-        
         return nil
     }
     

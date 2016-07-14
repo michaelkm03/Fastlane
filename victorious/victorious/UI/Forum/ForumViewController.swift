@@ -84,11 +84,14 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     }
     
     private func publish(content: ContentModel) {
-        guard let publisher = (chatFeed?.chatInterfaceDataSource as? ChatFeedDataSource)?.publisher else {
+        guard
+            let publisher = (chatFeed?.chatInterfaceDataSource as? ChatFeedDataSource)?.publisher,
+            let width = chatFeed?.collectionView.frame.width
+        else {
             return
         }
         
-        publisher.publish(content)
+        publisher.publish(content, withWidth: width)
     }
 
     // MARK: - ForumEventSender
