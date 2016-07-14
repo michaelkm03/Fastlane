@@ -86,6 +86,7 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
         
         dependencyManager.addBackgroundToBackgroundHost(self)
         dependencyManager.applyStyleToNavigationBar(navigationController?.navigationBar)
+        dependencyManager.configureNavigationItem(navigationController?.navigationBar.topItem)
     }
     
     // MARK: - UICollectionViewFlowLayoutDelegate
@@ -109,6 +110,10 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
         UIView.animateWithDuration(1.0) { [weak self] in
             self?.continueButton.alpha = 1.0
         }
+    }
+    
+    var chatFeedItemWidth: CGFloat {
+        return collectionView.bounds.width
     }
     
     // MARK: - VBackgroundContainer
