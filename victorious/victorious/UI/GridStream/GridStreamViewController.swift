@@ -127,12 +127,6 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         fatalError("NSCoding not supported.")
     }
     
-    // MARK: - View events
-    
-    override func viewWillAppear(animated: Bool) {
-        dependencyManager.applyStyleToNavigationBar(navigationController?.navigationBar)
-    }
-    
     // MARK: - Refreshing
     
     func refresh() {

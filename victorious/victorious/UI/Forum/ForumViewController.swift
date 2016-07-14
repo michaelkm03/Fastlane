@@ -262,8 +262,11 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         }
         
         title = dependencyManager.title
-        dependencyManager.applyStyleToNavigationBar(self.navigationController?.navigationBar)
+        
+        // Set navigation bar appearance only if dependency manager supports it.
         navigationController?.navigationBar.translucent = false
+        dependencyManager.applyStyleToNavigationBar(navigationController?.navigationBar)
+        
         dependencyManager.addBackgroundToBackgroundHost(self)
     }
 
