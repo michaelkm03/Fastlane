@@ -51,7 +51,7 @@ extension ChatFeed {
     
     func remove(chatFeedContent content: ChatFeedContent) {
         chatInterfaceDataSource.remove(chatFeedContent: content)
-        updateCollectionView(with: [], loadingType: .refresh) { }
+        // FUTURE: Update collection view
     }
     
     func handleNewItems(newItems: [ChatFeedContent], loadingType: PaginatedLoadingType, completion: (() -> Void)? = nil) {
