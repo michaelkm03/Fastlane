@@ -331,6 +331,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         confirm.queue()
         deleteOperation.queue { [weak self] _, _, cancelled in
             if !cancelled {
+                // TODO: Update the feed properly
                 self?.chatFeed?.collectionView.reloadData()
             }
         }
