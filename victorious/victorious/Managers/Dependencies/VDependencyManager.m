@@ -893,7 +893,7 @@ NSString * const VDependencyManagerNativeWorkspaceKey = @"nativeWorkspace";
     NSString *imageName = templateImage.imageURL.absoluteString;
     if ( [imageName isEqualToString:@"splash"] )
     {
-        imageName = @"launchImage";
+        imageName = @"LaunchImage";
     }
     
     return [UIImage imageNamed:imageName];
