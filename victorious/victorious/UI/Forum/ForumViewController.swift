@@ -285,14 +285,14 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         stageShrinkingAnimator?.chatFeed(chatFeed, willEndDragging: scrollView, withVelocity: velocity)
     }
     
-    func chatFeed(chatFeed: ChatFeed, didSelectFailureButtonForContent content: ChatFeedContent) {
+    func chatFeed(chatFeed: ChatFeed, didSelectFailureButtonForContent chatFeedContent: ChatFeedContent) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
         alertController.addAction(
             UIAlertAction(
                 title: NSLocalizedString("Try Again", comment: "Sending message failed. User taps this to try sending again"),
                 style: .Default,
-                handler: { alertAction in
-                    // FUTURE: Handle re-send action
+                handler: { [weak self] alertAction in
+                    self?.publish(chatFeedContent.content)
                 }
             )
         )
@@ -301,8 +301,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             UIAlertAction(
                 title: NSLocalizedString("Delete", comment: ""),
                 style: .Destructive,
-                handler: { alertAction in
-                    // FUTURE: Handle delete action
+                handler: { [weak self] alertAction in
+                    self?.deleteContent(chatFeedContent.content)
                 }
             )
         )
@@ -315,6 +315,25 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             )
         )
         presentViewController(alertController, animated: true, completion: nil)
+    }
+    
+    private func deleteContent(content: ContentModel) {
+        guard let contentID = content.id else {
+            return
+        }
+        
+        let deleteOperation = ContentDeleteOperation(contentID: contentID, contentDeleteURL: dependencyManager.contentDeleteURL)
+        
+        let actionTitle = NSLocalizedString("DeletePost", comment: "")
+        let confirm = ConfirmDestructiveActionOperation(actionTitle: actionTitle, originViewController: self, dependencyManager: dependencyManager)
+        
+        confirm.before(deleteOperation)
+        confirm.queue()
+        deleteOperation.queue { [weak self] _, _, cancelled in
+            if !cancelled {
+                self?.chatFeed?.collectionView.reloadData()
+            }
+        }
     }
 
     // MARK: - VFocusable
@@ -352,5 +371,9 @@ private extension VDependencyManager {
     
     var exitButtonIcon: UIImage? {
         return imageForKey("closeIcon") ?? UIImage(named: "x_icon") //Template is currently returning incorrect path, so use the close icon in the image assets
+    }
+    
+    var contentDeleteURL: String {
+        return networkResources?.stringForKey("contentDeleteURL") ?? ""
     }
 }
