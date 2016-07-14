@@ -149,8 +149,10 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
-        navigationController?.navigationBar.topItem?.titleView = navBarTitleView
-        navBarTitleView?.sizeToFit()
+        let imageView = UIImageView(image: UIImage(named: "Victorious"))
+        //TODO: Fix the hax
+        navigationController?.navigationBar.topItem?.titleView = imageView
+//        navBarTitleView?.sizeToFit()
         
         #if V_ENABLE_WEBSOCKET_DEBUG_MENU
             if let webSocketForumNetworkSource = forumNetworkSource as? WebSocketForumNetworkSource,
@@ -199,7 +201,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         chatFeed?.nextSender = self
         //Initialize the title view. This will later be resized in the viewWillAppear, once it has actually been added to the navigation stack
         navBarTitleView = ForumNavBarTitleView(dependencyManager: self.dependencyManager, frame: CGRect(x: 0, y: 0, width: 200, height: 45))
-        navigationController?.navigationBar.barStyle = .Black
+        //TODO: Fix hax
+//        navigationController?.navigationBar.barStyle = .Black
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: dependencyManager.exitButtonIcon,
             style: .Plain,
@@ -261,9 +264,11 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             return
         }
         
-        title = dependencyManager.title
-        
-        // Set navigation bar appearance only if dependency manager supports it.
+
+        //TODO: Fixme
+//        title = dependencyManager.title
+//        navigationItem.titleView = 
+        dependencyManager.applyStyleToNavigationBar(self.navigationController?.navigationBar)
         navigationController?.navigationBar.translucent = false
         dependencyManager.applyStyleToNavigationBar(navigationController?.navigationBar)
         
