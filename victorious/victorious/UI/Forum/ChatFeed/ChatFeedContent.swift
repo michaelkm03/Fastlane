@@ -19,7 +19,14 @@ class ChatFeedContent {
     ///
     var size: CGSize?
     
-    init(_ content: ContentModel) {
+    /// The state of the content while it's being created by the current user.
+    ///
+    /// This should be nil if this is not content that is actively being created by the user.
+    ///
+    var creationState: ContentCreationState?
+    
+    init(_ content: ContentModel, creationState: ContentCreationState? = nil) {
         self.content = content
+        self.creationState = creationState
     }
 }

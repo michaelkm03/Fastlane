@@ -38,7 +38,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         button.backgroundColor = self.dependencyManager.subscribeButtonBackgroundColor
         button.titleLabel?.font = self.dependencyManager.subscribeButtonFont
         button.addTarget(self, action: #selector(onSubscribePressed), forControlEvents: .TouchUpInside)
-        button.setTitle(NSLocalizedString("Upgrade", comment: ""), forState: .Normal)
+        button.setTitle("Go VIP", forState: .Normal)
         return button
     }()
     
