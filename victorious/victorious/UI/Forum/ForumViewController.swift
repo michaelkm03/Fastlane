@@ -90,6 +90,13 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         
         publisher.publish(content)
     }
+    
+    private func retryPublish(content: ChatFeedContent) {
+        guard let publisher = (chatFeed?.chatInterfaceDataSource as? ChatFeedDataSource)?.publisher else {
+            return
+        }
+        publisher.retryPublish(content)
+    }
 
     // MARK: - ForumEventSender
     
@@ -300,7 +307,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                 title: NSLocalizedString("Try Again", comment: "Sending message failed. User taps this to try sending again"),
                 style: .Default,
                 handler: { [weak self] alertAction in
-                    self?.publish(chatFeedContent.content)
+                    self?.retryPublish(chatFeedContent)
                 }
             )
         )

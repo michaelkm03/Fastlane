@@ -65,7 +65,7 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     }
     
     func remove(chatFeedContent content: ChatFeedContent) {
-        publisher.remove(chatFeedContent: content)
+        publisher.remove(content)
     }
     
     // MARK: - ForumEventReceiver

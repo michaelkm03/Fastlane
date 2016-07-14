@@ -27,6 +27,7 @@ enum ContentCreationState {
 /// display of content in the feed.
 ///
 class ContentPublisher {
+    
     // MARK: - Initializing
     
     init(dependencyManager: VDependencyManager) {
@@ -46,19 +47,36 @@ class ContentPublisher {
     func publish(content: ContentModel) {
         pendingContent.append(ChatFeedContent(content, creationState: .waiting))
         
-        if pendingContent.count == 1 {
-            publishNextContent()
+        // We want to make sure that we send items sequentially
+        guard !pendingContent.contains({$0.creationState == .sending}) else {
+            return
         }
-    }
-    
-    /// TODO: This implemention assumes that a failed content is at the start of the queue. Which is probably not true. Instead, I need to find out where the content is and try to send that. Does this break the queue implementation?
-    func retryPublish() {
+        
         publishNextContent()
     }
     
-    func remove(chatFeedContent chatFeedContent: ChatFeedContent) {
+    /// Retry publishing `content` that failed to be sent
+    func retryPublish(chatFeedContent: ChatFeedContent) {
+        guard chatFeedContent.creationState == .failed else {
+            return
+        }
+        
+        upload(chatFeedContent.content) { [weak self] error in
+            if error != nil {
+                chatFeedContent.creationState = .failed
+            }
+            else {
+                chatFeedContent.creationState = .sent
+                // FUTURE: Remove after the message comes in from content feed fetch response.
+                self?.remove(chatFeedContent)
+            }
+        }
+    }
+    
+    /// Removes `content` from the pending queue
+    func remove(chatFeedContent: ChatFeedContent) {
         pendingContent = pendingContent.filter { $0.content.id != chatFeedContent.content.id }
-        // TODO: Update collectionView
+        // FUTURE: Update collectionView
     }
     
     private func publishNextContent() {
@@ -71,8 +89,8 @@ class ContentPublisher {
                 chatFeedContent.creationState = .failed
             }
             else {
-                // TODO: Is this too early to mark it as .sent?
                 chatFeedContent.creationState = .sent
+                // FUTURE: Remove after the message comes in from content feed fetch response.
                 self?.remove(chatFeedContent)
                 self?.publishNextContent()
             }
@@ -81,17 +99,12 @@ class ContentPublisher {
     
     /// Returns the next content in the queue that's waiting to be sent and sets its `creationState` to `sending`.
     private func getNextContent() -> ChatFeedContent? {
-        for chatFeedContent in pendingContent where readyToSend(chatFeedContent) {
+        for chatFeedContent in pendingContent where chatFeedContent.creationState == .waiting {
             chatFeedContent.creationState = .sending
             return chatFeedContent
         }
         
         return nil
-    }
-    
-    /// A piece of content that is either in the state of .waiting or .failed would be ready to be published
-    private func readyToSend(content: ChatFeedContent) -> Bool {
-        return content.creationState == .waiting || content.creationState == .failed
     }
     
     /// Uploads `content` to the server.
@@ -131,13 +144,6 @@ class ContentPublisher {
         }
         else {
             completion(ContentPublisherError.invalidContent)
-        }
-    }
-    
-    private func remove(chatFeedContent: ChatFeedContent) {
-        let index = pendingContent.indexOf { chatFeedContent.content.id == $0.content.id }
-        if let index = index {
-            pendingContent.removeAtIndex(index)
         }
     }
 }
