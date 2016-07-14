@@ -44,8 +44,12 @@ class ContentPublisher {
     private(set) var pendingContent = [ChatFeedContent]()
     
     /// Queues `content` for publishing.
-    func publish(content: ContentModel) {
-        pendingContent.append(ChatFeedContent(content, creationState: .waiting))
+    func publish(content: ContentModel, withWidth width: CGFloat) {
+        guard let chatFeedContent = ChatFeedContent(content: content, width: width, dependencyManager: dependencyManager, creationState: .waiting) else {
+            assertionFailure("Failed to calculate height for chat feed content")
+            return
+        }
+        pendingContent.append(chatFeedContent)
         
         // We want to make sure that we send items sequentially
         guard !pendingContent.contains({$0.creationState == .sending}) else {
@@ -62,11 +66,15 @@ class ContentPublisher {
         }
         
         upload(chatFeedContent.content) { [weak self] error in
+            guard let index = self?.index(of: chatFeedContent) else {
+                return
+            }
+            
             if error != nil {
-                chatFeedContent.creationState = .failed
+                self?.pendingContent[index].creationState = .failed
             }
             else {
-                chatFeedContent.creationState = .sent
+                self?.pendingContent[index].creationState = .sent
                 // FUTURE: Remove after the message comes in from content feed fetch response.
                 self?.remove(chatFeedContent)
             }
@@ -80,32 +88,43 @@ class ContentPublisher {
     }
     
     private func publishNextContent() {
-        guard let chatFeedContent = getNextContent() else {
+        guard let index = indexOfNextWaitingContent() else {
             return
         }
         
-        upload(chatFeedContent.content) { [weak self] error in
+        pendingContent[index].creationState = .sending
+
+        upload(pendingContent[index].content) { [weak self] error in
+            guard let strongSelf = self else {
+                return
+            }
+            
             if error != nil {
-                self?.pendingContent.forEach { $0.creationState = .failed }
+                for (index, _) in strongSelf.pendingContent.enumerate() {
+                    strongSelf.pendingContent[index].creationState = .failed
+                }
                 // FUTURE: Update collectionView
             }
             else {
-                chatFeedContent.creationState = .sent
+                strongSelf.pendingContent[index].creationState = .sent
                 // FUTURE: Remove after the message comes in from content feed fetch response.
-                self?.remove(chatFeedContent)
-                self?.publishNextContent()
+                strongSelf.remove(strongSelf.pendingContent[index])
+                strongSelf.publishNextContent()
             }
         }
     }
     
     /// Returns the next content in the queue that's waiting to be sent and sets its `creationState` to `sending`.
-    private func getNextContent() -> ChatFeedContent? {
-        for chatFeedContent in pendingContent where chatFeedContent.creationState == .waiting {
-            chatFeedContent.creationState = .sending
-            return chatFeedContent
+    private func indexOfNextWaitingContent() -> Int? {
+        for (index, chatFeedContent) in pendingContent.enumerate() where chatFeedContent.creationState == .waiting {
+            return index
         }
-        
         return nil
+    }
+    
+    /// Returns the index of the specified content
+    private func index(of chatFeedContent: ChatFeedContent) -> Int? {
+        return pendingContent.indexOf { $0.content.id == chatFeedContent.content.id }
     }
     
     /// Uploads `content` to the server.

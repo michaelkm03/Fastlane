@@ -232,10 +232,14 @@ class ChatFeedMessageCell: UICollectionViewCell {
     
     // MARK: - Sizing
     
-    static func cellHeight(displaying content: ContentModel, inWidth width: CGFloat, dependencyManager: VDependencyManager) -> CGFloat {
+    static func cellHeight(displaying content: ContentModel, inWidth width: CGFloat, dependencyManager: VDependencyManager) -> CGFloat? {
         let captionHeight = captionSize(displaying: content, inWidth: width, dependencyManager: dependencyManager)?.height ?? 0.0
         let previewHeight = previewSize(displaying: content, inWidth: width)?.height ?? 0.0
-        let bubbleSpacing = captionHeight > 0.0 && previewHeight > 0.0 ? self.bubbleSpacing : 0.0
+        
+        if captionHeight == 0.0 && previewHeight == 0.0 {
+            return nil //Invalid content
+        }
+    
         let contentHeight = max(captionHeight + bubbleSpacing + previewHeight, avatarSize.height)
         return contentMargin.top + contentMargin.bottom + contentHeight
     }
