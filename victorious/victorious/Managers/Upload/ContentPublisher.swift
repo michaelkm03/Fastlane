@@ -21,6 +21,15 @@ enum ContentCreationState {
     case failed
 }
 
+/// A delegate protocol for `ContentPublisher`.
+protocol ContentPublisherDelegate: class {
+    /// Notifies the delegate that the given `content` was queued to be published.
+    func contentPublisher(contentPublisher: ContentPublisher, didQueue content: ChatFeedContent)
+    
+    /// Notifies the delegate that the given `content` failed to send.
+    func contentPublisher(contentPublisher: ContentPublisher, didFailToSend content: ChatFeedContent)
+}
+
 /// An object that manages the publishing of user content.
 ///
 /// It uses a queueing system that facilitates correct content creation order, cascading failures, and optimistic
@@ -38,6 +47,10 @@ class ContentPublisher {
     
     private let dependencyManager: VDependencyManager
     
+    // MARK: - Configuration
+    
+    weak var delegate: ContentPublisherDelegate?
+    
     // MARK: - Publishing
     
     /// The content that is currently pending creation.
@@ -51,6 +64,7 @@ class ContentPublisher {
         }
         
         pendingContent.append(chatFeedContent)
+        delegate?.contentPublisher(self, didQueue: chatFeedContent)
         
         // We want to make sure that we send items sequentially
         guard !pendingContent.contains({ $0.creationState == .sending }) else {
@@ -74,7 +88,9 @@ class ContentPublisher {
         pendingContent[index].creationState = .sending
 
         upload(pendingContent[index].content) { [weak self] error in
-            guard let strongSelf = self else {
+            // The content's index will have changed by now if a preceding item was confirmed while this one was being
+            // sent, so we need to get an updated index.
+            guard let strongSelf = self, updatedIndex = strongSelf.indexOfContent(withState: .sending) else {
                 return
             }
             
@@ -82,9 +98,10 @@ class ContentPublisher {
                 for index in strongSelf.pendingContent.indices {
                     strongSelf.pendingContent[index].creationState = .failed
                 }
-                // FUTURE: Update collectionView
+                
+                strongSelf.delegate?.contentPublisher(strongSelf, didFailToSend: strongSelf.pendingContent[updatedIndex])
             }
-            else if let updatedIndex = strongSelf.indexOfContent(withState: .sending) {
+            else {
                 // The content's index will have changed by now if a preceding item was confirmed while this one was
                 // being sent, so we need to get an updated index.
                 strongSelf.pendingContent[updatedIndex].creationState = .sent
@@ -142,15 +159,16 @@ class ContentPublisher {
         }
         
         upload(chatFeedContent.content) { [weak self] error in
-            guard let index = self?.index(of: chatFeedContent) else {
+            guard let strongSelf = self, index = strongSelf.index(of: chatFeedContent) else {
                 return
             }
             
             if error != nil {
-                self?.pendingContent[index].creationState = .failed
+                strongSelf.pendingContent[index].creationState = .failed
+                strongSelf.delegate?.contentPublisher(strongSelf, didFailToSend: chatFeedContent)
             }
             else {
-                self?.pendingContent[index].creationState = .sent
+                strongSelf.pendingContent[index].creationState = .sent
             }
         }
     }
@@ -165,10 +183,7 @@ class ContentPublisher {
     
     /// Returns the first content in the queue that has the given `state`.
     private func indexOfContent(withState state: ContentCreationState) -> Int? {
-        for (index, chatFeedContent) in pendingContent.enumerate() where chatFeedContent.creationState == state {
-            return index
-        }
-        return nil
+        return pendingContent.indexOf { $0.creationState == state }
     }
     
     /// Returns the index of the specified content

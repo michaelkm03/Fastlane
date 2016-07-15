@@ -10,7 +10,7 @@ import UIKit
 
 /// A template driven .screen component that sets up, houses and mediates the interaction
 /// between the Forum's required concrete implementations and abstract dependencies.
-class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocusable, UploadManagerHost {
+class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocusable, UploadManagerHost, ContentPublisherDelegate {
     @IBOutlet private weak var stageContainer: UIView!
     @IBOutlet private weak var stageViewControllerContainer: VPassthroughContainerView!
     @IBOutlet private weak var stageTouchView: UIView!
@@ -93,7 +93,6 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         }
         
         publisher?.publish(content, withWidth: width)
-        chatFeed?.handleNewItems([], loadingType: .newer, pendingContentDelta: 1)
     }
 
     // MARK: - ForumEventSender
@@ -192,6 +191,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         super.viewDidLoad()
         
         publisher = ContentPublisher(dependencyManager: dependencyManager.networkResources ?? dependencyManager)
+        publisher?.delegate = self
         
         stageShrinkingAnimator = StageShrinkingAnimator(
             stageContainer: stageContainer,
@@ -330,6 +330,22 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     func publisher(for chatFeed: ChatFeed) -> ContentPublisher? {
         return publisher
+    }
+    
+    // MARK: - ContentPublisherDelegate
+    
+    func contentPublisher(contentPublisher: ContentPublisher, didQueue content: ChatFeedContent) {
+        chatFeed?.handleNewItems([], loadingType: .newer, pendingContentDelta: 1)
+    }
+    
+    func contentPublisher(contentPublisher: ContentPublisher, didFailToSend content: ChatFeedContent) {
+        guard let itemCount = chatFeed?.chatInterfaceDataSource.itemCount else {
+            return
+        }
+        
+        chatFeed?.collectionView.reloadItemsAtIndexPaths(contentPublisher.pendingContent.indices.map {
+            NSIndexPath(forItem: itemCount - 1 - $0, inSection: 0)
+        })
     }
     
     // MARK: - Content Post Failure Handling
