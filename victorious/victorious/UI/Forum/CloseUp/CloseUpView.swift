@@ -105,6 +105,10 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     }
     
     @IBAction func selectedProfile(sender: AnyObject) {
+        showProfile()
+    }
+    
+    private dynamic func showProfile() {
         guard let userID = content?.author.id else {
             return
         }
@@ -120,6 +124,8 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     
     override func awakeFromNib() {
         addSubview(errorView)
+        
+        avatarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showProfile)))
         
         closeUpContentContainerView.layer.cornerRadius = Constants.cornerRadius
         clearContent()
