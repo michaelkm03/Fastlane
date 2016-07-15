@@ -31,7 +31,6 @@ class VIPSuccessViewController: UIViewController {
     }
     
     static func newWithDependencyManager(dependencyManager: VDependencyManager) -> VIPSuccessViewController {
-        
         let successViewController: VIPSuccessViewController = v_initialViewControllerFromStoryboard()
         successViewController.dependencyManager = dependencyManager
         return successViewController
@@ -45,15 +44,10 @@ class VIPSuccessViewController: UIViewController {
     }
     
     override func updateViewConstraints() {
-        
         super.updateViewConstraints()
         headlineTextViewHeightConstraint.constant = headlineTextView.contentSize.height
         detailTextViewHeightConstraint.constant = detailTextView.contentSize.height
-        var imageViewHeight: CGFloat = 0
-        if let imageHeight = successImageView.image?.size.height {
-            imageViewHeight = imageHeight
-        }
-        successImageViewHeightConstraint.constant = imageViewHeight
+        successImageViewHeightConstraint.constant = successImageView.image?.size.height ?? 0
     }
     
     // MARK: - Subview population
@@ -64,14 +58,16 @@ class VIPSuccessViewController: UIViewController {
         }
         
         var headlineText = NSAttributedString()
-        if let text = dependencyManager.headlineText,
+        if
+            let text = dependencyManager.headlineText,
             let attributes = dependencyManager.headlineTextAttributes {
             headlineText = NSAttributedString(string: text, attributes: attributes)
         }
         headlineTextView.attributedText = headlineText
         
         var detailText = NSAttributedString()
-        if let text = dependencyManager.detailText,
+        if
+            let text = dependencyManager.detailText,
             let attributes = dependencyManager.detailTextAttributes {
             detailText = NSAttributedString(string: text, attributes: attributes)
         }
@@ -98,7 +94,6 @@ class VIPSuccessViewController: UIViewController {
 }
 
 private extension VDependencyManager {
-    
     var successIcon: UIImage? {
         return imageForKey("successIcon")
     }
@@ -112,9 +107,10 @@ private extension VDependencyManager {
     }
     
     var headlineTextAttributes: [String : AnyObject]? {
-        
-        guard let font = fontForKey("font.successMessage"),
-            let color = colorForKey("color.successMessage") else {
+        guard
+            let font = fontForKey("font.successMessage"),
+            let color = colorForKey("color.successMessage")
+        else {
                 return nil
         }
         
@@ -132,9 +128,10 @@ private extension VDependencyManager {
     }
     
     var detailTextAttributes: [String : AnyObject]? {
-        
-        guard let font = fontForKey("font.successDetails"),
-            let color = colorForKey("color.successDetails") else {
+        guard
+            let font = fontForKey("font.successDetails"),
+            let color = colorForKey("color.successDetails")
+        else {
                 return nil
         }
         
@@ -153,7 +150,7 @@ private extension VDependencyManager {
             let color = colorForKey("color.proceedMessage"),
             let text = stringForKey("text.proceedMessage")
         else {
-                return nil
+            return nil
         }
 
         let attributes = [

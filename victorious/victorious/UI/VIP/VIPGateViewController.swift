@@ -225,10 +225,7 @@ class VIPGateViewController: UIViewController {
     
     override func updateViewConstraints() {
         let inset = scrollViewInsetConstraints.reduce(0, combine: { $0 + $1.constant })
-        let updatedLabelWidth = view.bounds.width - inset
-        if labelWidthConstraint.constant != updatedLabelWidth {
-            labelWidthConstraint.constant = updatedLabelWidth
-        }
+        labelWidthConstraint.constant = view.bounds.width - inset
         super.updateViewConstraints()
     }
     
@@ -246,7 +243,6 @@ class VIPGateViewController: UIViewController {
 }
 
 private extension VDependencyManager {
-    
     var headerText: String? {
         return stringForKey("text.header")
     }
@@ -284,9 +280,10 @@ private extension VDependencyManager {
     }
     
     var termsOfServiceLinkAttributes: [String : AnyObject]? {
-        
-        guard let font = fontForKey("font.tos"),
-            let color = colorForKey("color.tos") else {
+        guard
+            let font = fontForKey("font.tos"),
+            let color = colorForKey("color.tos")
+        else {
                 return nil
         }
         
@@ -302,9 +299,10 @@ private extension VDependencyManager {
     }
     
     var privacyPolicyLinkAttributes: [String : AnyObject]? {
-        
-        guard let font = fontForKey("font.privacy"),
-            let color = colorForKey("color.privacy") else {
+        guard
+            let font = fontForKey("font.privacy"),
+            let color = colorForKey("color.privacy")
+        else {
                 return nil
         }
         
