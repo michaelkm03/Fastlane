@@ -21,7 +21,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
             trackContentView()
         }
     }
-    private let contentID: String
+    private let contentID: Content.ID
     private var firstPresentation = true
     
     private lazy var shareButton: UIBarButtonItem = {
