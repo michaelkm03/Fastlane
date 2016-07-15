@@ -209,9 +209,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     }
     
     func shouldDisplayAccessoryItem(withIdentifier identifier: String) -> Bool {
-        let hasUpgradeIdentifier = identifier == VNewProfileViewController.upgradeButtonID
-        let vipIsEnabled = dependencyManager.vipSubscription?.enabled == true
-        return !hasUpgradeIdentifier || (hasUpgradeIdentifier && vipIsEnabled)
+        return identifier != VNewProfileViewController.upgradeButtonID
     }
     
     // MARK: - VAccessoryNavigationSource
