@@ -73,7 +73,7 @@ class ContentPublisher {
     }
     
     private func publishNextContent() {
-        guard let index = indexOfNextContent else {
+        guard let index = indexOfContent(withState: .waiting) else {
             return
         }
         
@@ -83,16 +83,18 @@ class ContentPublisher {
             if error != nil {
                 // FUTURE: Handle failure.
             }
-            else {
-                self?.pendingContent[index].creationState = .sent
+            else if let updatedIndex = self?.indexOfContent(withState: .sending) {
+                // The content's index will have changed by now if a preceding item was confirmed while this one was
+                // being sent, so we need to get an updated index.
+                self?.pendingContent[updatedIndex].creationState = .sent
                 self?.publishNextContent()
             }
         }
     }
     
-    /// Returns the next content in the queue that's waiting to be sent and sets its `creationState` to `sending`.
-    private var indexOfNextContent: Int? {
-        for (index, chatFeedContent) in pendingContent.enumerate() where chatFeedContent.creationState == .waiting {
+    /// Returns the first content in the queue that has the given `state`.
+    private func indexOfContent(withState state: ContentCreationState) -> Int? {
+        for (index, chatFeedContent) in pendingContent.enumerate() where chatFeedContent.creationState == state {
             return index
         }
         return nil

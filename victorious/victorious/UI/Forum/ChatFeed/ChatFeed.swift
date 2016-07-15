@@ -70,6 +70,8 @@ extension ChatFeed {
         
         let collectionView = self.collectionView
         let wasScrolledToBottom = collectionView.v_isScrolledToBottom
+        let oldPendingItemCount = max(0, chatInterfaceDataSource.pendingItems.count - pendingContentDelta)
+        let insertingAbovePendingContent = oldPendingItemCount > 0 && pendingContentDelta <= 0
         
         updateCollectionView(with: newItems, loadingType: loadingType, pendingContentDelta: pendingContentDelta) {
             collectionView.collectionViewLayout.invalidateLayout()
@@ -79,7 +81,9 @@ extension ChatFeed {
             // If we loaded newer items and we were scrolled to the bottom, or if we refreshed the feed, scroll down to
             // reveal the new content.
             if (loadingType == .newer && wasScrolledToBottom) || loadingType == .refresh {
-                collectionView.setContentOffset(collectionView.v_bottomOffset, animated: loadingType != .refresh)
+                // Animation disabled when inserting above pending items because it causes the pending items to warp
+                // past the bottom and scroll back up. This could use some work to make the transition better.
+                collectionView.setContentOffset(collectionView.v_bottomOffset, animated: loadingType != .refresh && !insertingAbovePendingContent)
             }
             
             completion?()
