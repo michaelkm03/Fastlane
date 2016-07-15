@@ -314,8 +314,11 @@ private class ShowFetchedCloseUpOperation: MainQueueOperation {
         )
         
         let completionBlock = showCloseUpOperation.completionBlock
-        contentFetchOperation.rechainAfter(showCloseUpOperation).queue() { results, _, _ in
-            guard let shownCloseUpView = showCloseUpOperation.displayedCloseUpView else {
+        contentFetchOperation.rechainAfter(showCloseUpOperation).queue() { [weak self] results, _, _ in
+            guard
+                let strongSelf = self,
+                let shownCloseUpView = showCloseUpOperation.displayedCloseUpView
+            else {
                 completionBlock?()
                 return
             }
@@ -338,7 +341,7 @@ private class ShowFetchedCloseUpOperation: MainQueueOperation {
                     }
                 }
                 
-                showVIPFlowOperation.rechainAfter(self).queue() { _ in
+                showVIPFlowOperation.rechainAfter(strongSelf).queue() { _ in
                     completionBlock?()
                 }
             }

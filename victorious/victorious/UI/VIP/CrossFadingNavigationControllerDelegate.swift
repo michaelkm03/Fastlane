@@ -9,15 +9,18 @@
 import Foundation
 
 class CrossFadingNavigationControllerDelegate: NSObject, UINavigationControllerDelegate {
-    var animationController: CrossFadingAnimationController = CrossFadingAnimationController()
+    var animationController: CrossFadingAnimationController
     
-    init(animationController: CrossFadingAnimationController? = nil) {
-        if let animationController = animationController {
-            self.animationController = animationController
-        }
+    init(animationController: CrossFadingAnimationController = CrossFadingAnimationController()) {
+        self.animationController = animationController
     }
     
-    func navigationController(navigationController: UINavigationController, animationControllerForOperation operation: UINavigationControllerOperation, fromViewController fromVC: UIViewController, toViewController toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func navigationController(
+        navigationController: UINavigationController,
+        animationControllerForOperation operation: UINavigationControllerOperation,
+        fromViewController fromVC: UIViewController,
+        toViewController toVC: UIViewController
+    ) -> UIViewControllerAnimatedTransitioning? {
         return animationController
     }
 }

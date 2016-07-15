@@ -12,21 +12,17 @@ typealias VIPFlowCompletion = (Bool -> ())
 
 class VIPFlowNavigationController: UINavigationController, VIPGateViewControllerDelegate, VIPSuccessViewControllerDelegate, VBackgroundContainer, VNavigationDestination {
     let animationDelegate = CrossFadingNavigationControllerDelegate()
-    
     var completionBlock: VIPFlowCompletion?
-    
     @objc private(set) var dependencyManager: VDependencyManager!
-    
     private var gateDependencyManager: VDependencyManager!
-    
     private var successDependencyManager: VDependencyManager!
     
     class func newWithDependencyManager(dependencyManager: VDependencyManager) -> VIPFlowNavigationController? {
         guard
             dependencyManager.isVIPEnabled == true,
             let gateDependencyManager = dependencyManager.paygateDependency,
-            let successDependencyManager = dependencyManager.successDependency,
-            let _ = VCurrentUser.user()
+            let successDependencyManager = dependencyManager.successDependency where
+            VCurrentUser.isLoggedIn()
         else {
             return nil
         }

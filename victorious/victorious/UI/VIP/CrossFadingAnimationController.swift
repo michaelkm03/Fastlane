@@ -17,12 +17,10 @@ struct CrossFadingAnimationControllerOptions {
 }
 
 class CrossFadingAnimationController: NSObject, UIViewControllerAnimatedTransitioning {
-    var animationOptions = CrossFadingAnimationControllerOptions(fadeOutDuration: 0.5, fadeInDuration: 0.5)
+    var animationOptions: CrossFadingAnimationControllerOptions
     
-    init(animationOptions: CrossFadingAnimationControllerOptions? = nil) {
-        if let animationOptions = animationOptions {
-            self.animationOptions = animationOptions
-        }
+    init(animationOptions: CrossFadingAnimationControllerOptions = CrossFadingAnimationControllerOptions(fadeOutDuration: 0.5, fadeInDuration: 0.5)) {
+        self.animationOptions = animationOptions
     }
     
     func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
@@ -34,17 +32,19 @@ class CrossFadingAnimationController: NSObject, UIViewControllerAnimatedTransiti
             return
         }
         toView.alpha = 0.0
+        let animations = {
+            fromView.alpha = 0.0
+        }
     
         let animationOptions = self.animationOptions
-        UIView.animateWithDuration(animationOptions.fadeOutDuration, animations: { 
-            fromView.alpha = 0.0
-        }) { _ in
+        UIView.animateWithDuration(animationOptions.fadeOutDuration, animations: animations) { _ in
             fromView.removeFromSuperview()
             containerView.addSubview(toView)
-            UIView.animateWithDuration(animationOptions.fadeInDuration, animations: { 
+            let animations = {
                 toView.alpha = 1.0
                 transitionContext.completeTransition(true)
-            })
+            }
+            UIView.animateWithDuration(animationOptions.fadeInDuration, animations: animations)
         }
     }
     
