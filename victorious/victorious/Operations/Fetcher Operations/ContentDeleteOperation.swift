@@ -10,10 +10,10 @@ import UIKit
 
 class ContentDeleteOperation: FetcherOperation {
     private let contentDeleteURL: String
-    private let contentID: String
+    private let contentID: Content.ID
     private let flaggedContent = VFlaggedContent()
     
-    init(contentID: String, contentDeleteURL: String) {
+    init(contentID: Content.ID, contentDeleteURL: String) {
         self.contentID = contentID
         self.contentDeleteURL = contentDeleteURL
     }

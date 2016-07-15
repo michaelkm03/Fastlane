@@ -20,6 +20,9 @@ protocol ChatInterfaceDataSource: UICollectionViewDataSource {
     /// Returns the content at the given `index`.
     func content(at index: Int) -> ChatFeedContent
     
+    /// Removes a piece of content from the feed
+    func remove(chatFeedContent content: ChatFeedContent)
+    
     /// Registers the appropriate collection view cells on `collectionView`.
     func registerCells(for collectionView: UICollectionView)
     
@@ -28,7 +31,7 @@ protocol ChatInterfaceDataSource: UICollectionViewDataSource {
     func desiredCellSize(for collectionView: UICollectionView, at indexPath: NSIndexPath) -> CGSize
     
     /// Decorates and configures a cell with its data object
-    func decorate(cell: ChatFeedMessageCell, content: ContentModel)
+    func decorate(cell: ChatFeedMessageCell, chatFeedContent: ChatFeedContent)
 }
 
 extension ChatInterfaceDataSource {
@@ -37,9 +40,9 @@ extension ChatInterfaceDataSource {
     }
     
     func cellForItem(for collectionView: UICollectionView, at indexPath: NSIndexPath) -> ChatFeedMessageCell {
-        let content = self.content(at: indexPath.row).content
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(content.reuseIdentifier, forIndexPath: indexPath) as! ChatFeedMessageCell
-        decorate(cell, content: content)
+        let chatFeedContent = self.content(at: indexPath.row)
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(chatFeedContent.content.reuseIdentifier, forIndexPath: indexPath) as! ChatFeedMessageCell
+        decorate(cell, chatFeedContent: chatFeedContent)
         
         return cell
     }
@@ -54,9 +57,9 @@ extension ChatInterfaceDataSource {
         return content(at: indexPath.row).size
     }
     
-    func decorate(cell: ChatFeedMessageCell, content: ContentModel) {
+    func decorate(cell: ChatFeedMessageCell, chatFeedContent: ChatFeedContent) {
         cell.dependencyManager = dependencyManager
-        cell.content = content
+        cell.chatFeedContent = chatFeedContent
     }
     
     func updateTimestamps(in collectionView: UICollectionView) {
