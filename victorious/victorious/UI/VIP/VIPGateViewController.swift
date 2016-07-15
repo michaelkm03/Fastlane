@@ -78,8 +78,8 @@ class VIPGateViewController: UIViewController {
             }
 
             guard
-                let productIdentifier = subscriptionFetchOperation.subscriptionProductIdentifier where
-                error == nil
+                let productIdentifier = subscriptionFetchOperation.subscriptionProductIdentifier
+                where error == nil
             else {
                 let title = Strings.subscriptionFailed
                 self?.v_showErrorWithTitle(title, message: error?.localizedDescription)
