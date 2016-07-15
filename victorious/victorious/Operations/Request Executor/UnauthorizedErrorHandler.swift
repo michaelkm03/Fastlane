@@ -13,7 +13,7 @@ class UnauthorizedErrorHandler: RequestErrorHandler {
     
     func handleError(error: NSError) -> Bool {
         if error.code == 401 && VCurrentUser.user() != nil {
-//            LogoutOperation().queue()
+            LogoutOperation().queue()
             return true
         }
         return false

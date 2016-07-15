@@ -21,17 +21,20 @@ class ShowVIPFlowOperation: MainQueueOperation {
     }
     
     override func start() {
-        guard !cancelled,
+        defer {
+            finishedExecuting()
+        }
+        
+        guard
+            !cancelled,
             let originViewController = originViewController,
             let vipFlow = dependencyManager.templateValueOfType(VIPFlowNavigationController.self, forKey: "vipPaygateScreen") as? VIPFlowNavigationController
-            else {
-                finishedExecuting()
+        else {
                 return
         }
         
         vipFlow.completionBlock = completion
         showedGate = true
         originViewController.presentViewController(vipFlow, animated: animated, completion: nil)
-        finishedExecuting()
     }
 }

@@ -12,15 +12,17 @@ class VIPFetchSubscriptionOperation: BackgroundOperation {
     var subscriptionProductIdentifier: String?
     
     override func start() {
+        defer {
+            finishedExecuting()
+        }
+        
         guard didConfirmActionFromDependencies else {
             cancel()
-            finishedExecuting()
             return
         }
         
         beganExecuting()
         // FUTURE: Remove this testing value when this operation is fully implemented
         subscriptionProductIdentifier = "testingProductIdentifier"
-        finishedExecuting()
     }
 }
