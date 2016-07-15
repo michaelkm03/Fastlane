@@ -149,8 +149,6 @@ class ChatFeedMessageCell: UICollectionViewCell {
     }
     
     private func populateData() {
-        let content = chatFeedContent?.content
-        
         captionLabel.attributedText = content?.attributedText(using: dependencyManager)
         usernameLabel.text = content?.author.name ?? ""
         updateTimestamp()
@@ -217,7 +215,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
     }
     
     func updateTimestamp() {
-        timestampLabel.text = chatFeedContent?.content.timeLabel ?? ""
+        timestampLabel.text = content?.timeLabel ?? ""
         setNeedsLayout()
     }
     
