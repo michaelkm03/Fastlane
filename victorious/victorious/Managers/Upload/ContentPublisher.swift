@@ -102,8 +102,6 @@ class ContentPublisher {
                 strongSelf.delegate?.contentPublisher(strongSelf, didFailToSend: strongSelf.pendingContent[updatedIndex])
             }
             else {
-                // The content's index will have changed by now if a preceding item was confirmed while this one was
-                // being sent, so we need to get an updated index.
                 strongSelf.pendingContent[updatedIndex].creationState = .sent
                 strongSelf.publishNextContent()
             }
@@ -154,21 +152,23 @@ class ContentPublisher {
     
     /// Retry publishing `content` that failed to be sent
     func retryPublish(chatFeedContent: ChatFeedContent) {
-        guard chatFeedContent.creationState == .failed else {
+        guard let index = index(of: chatFeedContent) where chatFeedContent.creationState == .failed else {
             return
         }
         
+        pendingContent[index].creationState = .sending
+        
         upload(chatFeedContent.content) { [weak self] error in
-            guard let strongSelf = self, index = strongSelf.index(of: chatFeedContent) else {
+            guard let strongSelf = self, updatedIndex = strongSelf.index(of: chatFeedContent) else {
                 return
             }
             
             if error != nil {
-                strongSelf.pendingContent[index].creationState = .failed
+                strongSelf.pendingContent[updatedIndex].creationState = .failed
                 strongSelf.delegate?.contentPublisher(strongSelf, didFailToSend: chatFeedContent)
             }
             else {
-                strongSelf.pendingContent[index].creationState = .sent
+                strongSelf.pendingContent[updatedIndex].creationState = .sent
             }
         }
     }
@@ -176,7 +176,6 @@ class ContentPublisher {
     /// Removes `content` from the pending queue
     func remove(chatFeedContent: ChatFeedContent) {
         pendingContent = pendingContent.filter { $0.content.id != chatFeedContent.content.id }
-        // FUTURE: Update collectionView
     }
     
     // MARK: - Index of Queue

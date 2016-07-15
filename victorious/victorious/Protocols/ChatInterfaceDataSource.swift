@@ -20,9 +20,6 @@ protocol ChatInterfaceDataSource: UICollectionViewDataSource {
     /// Items that are pending insertion into the feed which will be shown at the bottom of the feed.
     var pendingItems: [ChatFeedContent] { get }
     
-    /// Removes a piece of content from the feed
-    func remove(chatFeedContent content: ChatFeedContent)
-    
     /// Registers the appropriate collection view cells on `collectionView`.
     func registerCells(for collectionView: UICollectionView)
     

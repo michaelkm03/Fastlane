@@ -303,7 +303,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                 title: NSLocalizedString("Try Again", comment: "Sending message failed. User taps this to try sending again"),
                 style: .Default,
                 handler: { [weak self] alertAction in
-                    self?.publisher?.retryPublish(chatFeedContent)
+                    self?.retryPublish(chatFeedContent)
                 }
             )
         )
@@ -313,7 +313,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                 title: NSLocalizedString("Delete", comment: ""),
                 style: .Destructive,
                 handler: { [weak self] alertAction in
-                    self?.delete(chatFeedContent: chatFeedContent)
+                    self?.delete(chatFeedContent)
                 }
             )
         )
@@ -350,8 +350,34 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     // MARK: - Content Post Failure Handling
     
-    private func delete(chatFeedContent content: ChatFeedContent) {
-        chatFeed?.remove(chatFeedContent: content)
+    private func retryPublish(chatFeedContent: ChatFeedContent) {
+        guard
+            let index = publisher?.pendingContent.indexOf({ $0.content.id == chatFeedContent.content.id }),
+            let dataSource = chatFeed?.chatInterfaceDataSource
+        else {
+            return
+        }
+        
+        publisher?.retryPublish(chatFeedContent)
+        
+        chatFeed?.collectionView.reloadItemsAtIndexPaths([
+            NSIndexPath(forItem: dataSource.visibleItems.count + index, inSection: 0)
+        ])
+    }
+    
+    private func delete(chatFeedContent: ChatFeedContent) {
+        guard
+            let index = publisher?.pendingContent.indexOf({ $0.content.id == chatFeedContent.content.id }),
+            let dataSource = chatFeed?.chatInterfaceDataSource
+        else {
+            return
+        }
+        
+        publisher?.remove(chatFeedContent)
+        
+        chatFeed?.collectionView.deleteItemsAtIndexPaths([
+            NSIndexPath(forItem: dataSource.visibleItems.count + index, inSection: 0)
+        ])
     }
     
     // MARK: - VFocusable
