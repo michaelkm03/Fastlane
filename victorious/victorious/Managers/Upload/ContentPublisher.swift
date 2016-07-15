@@ -32,6 +32,7 @@ protocol ContentPublisherDelegate: class {
 /// display of content in the feed.
 ///
 class ContentPublisher {
+    
     // MARK: - Initializing
     
     init(dependencyManager: VDependencyManager) {
@@ -61,9 +62,12 @@ class ContentPublisher {
         pendingContent.append(chatFeedContent)
         delegate?.contentPublisher(self, didQueueContent: chatFeedContent)
         
-        if !pendingContent.contains({ $0.creationState == .sending }) {
-            publishNextContent()
+        // We want to make sure that we send items sequentially
+        guard !pendingContent.contains({ $0.creationState == .sending }) else {
+            return
         }
+        
+        publishNextContent()
     }
     
     /// Should be called after calling `publish` to confirm that content was published, which will remove it from the
@@ -80,24 +84,23 @@ class ContentPublisher {
         pendingContent[index].creationState = .sending
 
         upload(pendingContent[index].content) { [weak self] error in
-            if error != nil {
-                // FUTURE: Handle failure.
+            guard let strongSelf = self else {
+                return
             }
-            else if let updatedIndex = self?.indexOfContent(withState: .sending) {
+            
+            if error != nil {
+                for index in strongSelf.pendingContent.indices {
+                    strongSelf.pendingContent[index].creationState = .failed
+                }
+                // FUTURE: Update collectionView
+            }
+            else if let updatedIndex = strongSelf.indexOfContent(withState: .sending) {
                 // The content's index will have changed by now if a preceding item was confirmed while this one was
                 // being sent, so we need to get an updated index.
-                self?.pendingContent[updatedIndex].creationState = .sent
-                self?.publishNextContent()
+                strongSelf.pendingContent[updatedIndex].creationState = .sent
+                strongSelf.publishNextContent()
             }
         }
-    }
-    
-    /// Returns the first content in the queue that has the given `state`.
-    private func indexOfContent(withState state: ContentCreationState) -> Int? {
-        for (index, chatFeedContent) in pendingContent.enumerate() where chatFeedContent.creationState == state {
-            return index
-        }
-        return nil
     }
     
     /// Uploads `content` to the server.
@@ -140,11 +143,47 @@ class ContentPublisher {
         }
     }
     
-    private func remove(chatFeedContent: ChatFeedContent) {
-        let index = pendingContent.indexOf { chatFeedContent.content.id == $0.content.id }
-        if let index = index {
-            pendingContent.removeAtIndex(index)
+    // MARK: - Handling Errors
+    
+    /// Retry publishing `content` that failed to be sent
+    func retryPublish(chatFeedContent: ChatFeedContent) {
+        guard chatFeedContent.creationState == .failed else {
+            return
         }
+        
+        upload(chatFeedContent.content) { [weak self] error in
+            guard let index = self?.index(of: chatFeedContent) else {
+                return
+            }
+            
+            if error != nil {
+                self?.pendingContent[index].creationState = .failed
+            }
+            else {
+                self?.pendingContent[index].creationState = .sent
+            }
+        }
+    }
+    
+    /// Removes `content` from the pending queue
+    func remove(chatFeedContent: ChatFeedContent) {
+        pendingContent = pendingContent.filter { $0.content.id != chatFeedContent.content.id }
+        // FUTURE: Update collectionView
+    }
+    
+    // MARK: - Index of Queue
+    
+    /// Returns the first content in the queue that has the given `state`.
+    private func indexOfContent(withState state: ContentCreationState) -> Int? {
+        for (index, chatFeedContent) in pendingContent.enumerate() where chatFeedContent.creationState == state {
+            return index
+        }
+        return nil
+    }
+    
+    /// Returns the index of the specified content
+    private func index(of chatFeedContent: ChatFeedContent) -> Int? {
+        return pendingContent.indexOf { $0.content.id == chatFeedContent.content.id }
     }
 }
 

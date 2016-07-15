@@ -292,14 +292,14 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         stageShrinkingAnimator?.chatFeed(chatFeed, willEndDragging: scrollView, withVelocity: velocity)
     }
     
-    func chatFeed(chatFeed: ChatFeed, didSelectFailureButtonForContent content: ContentModel) {
+    func chatFeed(chatFeed: ChatFeed, didSelectFailureButtonForContent chatFeedContent: ChatFeedContent) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
         alertController.addAction(
             UIAlertAction(
                 title: NSLocalizedString("Try Again", comment: "Sending message failed. User taps this to try sending again"),
                 style: .Default,
-                handler: { alertAction in
-                    // FUTURE: Handle re-send action
+                handler: { [weak self] alertAction in
+                    self?.retryPublish(chatFeedContent)
                 }
             )
         )
@@ -308,8 +308,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             UIAlertAction(
                 title: NSLocalizedString("Delete", comment: ""),
                 style: .Destructive,
-                handler: { alertAction in
-                    // FUTURE: Handle delete action
+                handler: { [weak self] alertAction in
+                    self?.delete(chatFeedContent: chatFeedContent)
                 }
             )
         )
@@ -322,6 +322,19 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             )
         )
         presentViewController(alertController, animated: true, completion: nil)
+    }
+    
+    // MARK: - Content Post Failure Handling 
+    
+    private func delete(chatFeedContent content: ChatFeedContent) {
+        chatFeed?.remove(chatFeedContent: content)
+    }
+    
+    private func retryPublish(content: ChatFeedContent) {
+        guard let publisher = (chatFeed?.chatInterfaceDataSource as? ChatFeedDataSource)?.publisher else {
+            return
+        }
+        publisher.retryPublish(content)
     }
 
     // MARK: - VFocusable
@@ -359,5 +372,9 @@ private extension VDependencyManager {
     
     var exitButtonIcon: UIImage? {
         return imageForKey("closeIcon") ?? UIImage(named: "x_icon") //Template is currently returning incorrect path, so use the close icon in the image assets
+    }
+    
+    var contentDeleteURL: String {
+        return networkResources?.stringForKey("contentDeleteURL") ?? ""
     }
 }

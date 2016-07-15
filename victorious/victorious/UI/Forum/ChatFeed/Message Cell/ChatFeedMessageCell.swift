@@ -91,6 +91,11 @@ class ChatFeedMessageCell: UICollectionViewCell {
         }
     }
     
+    /// Provides a private shorthand accessor within the implementation because we mostly deal with the ContentModel
+    private var content: ContentModel? {
+        return chatFeedContent?.content
+    }
+    
     // MARK: - Subviews
     
     let usernameLabel = UILabel()

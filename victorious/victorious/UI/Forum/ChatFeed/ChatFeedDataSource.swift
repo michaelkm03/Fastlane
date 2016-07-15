@@ -60,6 +60,10 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
         delegate?.chatFeedDataSource(self, didUnstashItems: previouslyStashedItems)
     }
     
+    func remove(chatFeedContent content: ChatFeedContent) {
+        publisher.remove(content)
+    }
+    
     // MARK: - ForumEventReceiver
     
     func receive(event: ForumEvent) {

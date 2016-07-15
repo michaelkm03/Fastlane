@@ -198,7 +198,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     }
     
     func messageCellDidSelectMedia(messageCell: ChatFeedMessageCell) {
-        guard let content = messageCell.chatFeedContent?.content else {
+        guard let content = messageCell.chatFeedContent else {
             return
         }
         
@@ -206,7 +206,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     }
     
     func messageCellDidSelectFailureButton(messageCell: ChatFeedMessageCell) {
-        guard let content = messageCell.chatFeedContent?.content else {
+        guard let content = messageCell.chatFeedContent else {
             return
         }
         

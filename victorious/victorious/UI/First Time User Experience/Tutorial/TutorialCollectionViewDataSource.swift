@@ -33,6 +33,10 @@ class TutorialCollectionViewDataSource: NSObject, ChatInterfaceDataSource, Tutor
     
     let pendingItems = [ChatFeedContent]()
     
+    func remove(chatFeedContent content: ChatFeedContent) {
+        // Does not support removing content from tutorial feed
+    }
+    
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return numberOfItems(for: collectionView, in: section)
     }

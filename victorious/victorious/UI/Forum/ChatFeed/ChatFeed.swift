@@ -21,17 +21,19 @@ protocol ChatFeed: class, ForumEventSender, ForumEventReceiver {
     
     func setTopInset(value: CGFloat)
     func setBottomInset(value: CGFloat)
+    
+    // MARK: - Content Manipulation
+    
+    func remove(chatFeedContent content: ChatFeedContent)
 }
 
 protocol ChatFeedDelegate: class {
     func chatFeed(chatFeed: ChatFeed, didSelectUserWithUserID userID: Int)
-    func chatFeed(chatFeed: ChatFeed, didSelectContent content: ContentModel)
-    func chatFeed(chatFeed: ChatFeed, didSelectFailureButtonForContent content: ContentModel)
+    func chatFeed(chatFeed: ChatFeed, didSelectContent content: ChatFeedContent)
+    func chatFeed(chatFeed: ChatFeed, didSelectFailureButtonForContent content: ChatFeedContent)
     
     func chatFeed(chatFeed: ChatFeed, didScroll scrollView: UIScrollView)
-    
     func chatFeed(chatFeed: ChatFeed, willBeginDragging scrollView: UIScrollView)
-    
     func chatFeed(chatFeed: ChatFeed, willEndDragging scrollView: UIScrollView, withVelocity velocity: CGPoint)
 }
 
@@ -45,6 +47,11 @@ extension ChatFeed {
     
     var newItemsController: NewItemsController? {
         return nil
+    }
+    
+    func remove(chatFeedContent content: ChatFeedContent) {
+        chatInterfaceDataSource.remove(chatFeedContent: content)
+        // FUTURE: Update collection view
     }
     
     /// Updates the collection view with the given set of new items, inserting or reloading depending on the
