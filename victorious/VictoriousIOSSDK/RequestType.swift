@@ -95,12 +95,11 @@ extension RequestType {
         }
         
         let dataTask = urlSession.dataTaskWithRequest(mutableRequest) { (data: NSData?, response: NSURLResponse?, requestError: NSError?) in
-            
+
             let result: ResultType?
             let error: ErrorType?
             
-            if let response = response,
-               let data = data {
+            if let response = response, data = data {
                 do {
                     // Try to parse formatted error (e.g. 401s)
                     let responseJSON = JSON(data: data)
@@ -137,7 +136,7 @@ extension RequestType {
         }
     }
     
-    private func parseError( httpURLResponse: NSURLResponse) throws {
+    private func parseError(httpURLResponse: NSURLResponse) throws {
         if let httpURLResponse = httpURLResponse as? NSHTTPURLResponse where httpURLResponse.statusCode >= 400 {
             throw APIError(localizedDescription: "Received HTTP Response Error", code: httpURLResponse.statusCode)
         }
