@@ -7,6 +7,7 @@
 //
 
 #import "VHasManagedDependencies.h"
+//#import "victorious-Swift.h"
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
@@ -32,6 +33,7 @@ extern NSString * const VDependencyManagerPositionRight;
 @property (nonatomic, strong, readonly) id destination; ///< This menu item's destination. Should be either a UIViewController subclass or an implementation of VNavigationDestination
 @property (nonatomic, strong, readonly) UIColor *tintColor; ///< Template-driven color to use for `tintColor` property of bar button
 @property (nonatomic, strong, readonly) NSString *position; ///< 'left' or 'right'
+//@property (nonatomic, strong, readonly) VTracking *tracking; ///< Tracking calls to be sent on button tap
 
 /**
  Initializes a new instance of VNavigationMenuItem with the provided property values

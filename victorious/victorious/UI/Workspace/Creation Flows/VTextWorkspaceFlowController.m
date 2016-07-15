@@ -71,9 +71,6 @@
         _textWorkspaceViewController.toolController = _textToolController;
         _textWorkspaceViewController.disablesInpectorOnKeyboardAppearance = YES;
         
-        // Set our dependency manager
-        _dependencyManager = dependencyManager;
-        
         // Add tools to the tool controller
         [_textWorkspaceViewController.toolController.tools enumerateObjectsUsingBlock:^(id<VWorkspaceTool> tool, NSUInteger idx, BOOL *stop)
          {
