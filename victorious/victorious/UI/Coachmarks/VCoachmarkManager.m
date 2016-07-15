@@ -7,8 +7,6 @@
 //
 
 #import "VCoachmarkManager.h"
-#import "VCoachmark.h"
-#import "VCoachmarkView.h"
 #import "VDependencyManager+NavigationBar.h"
 #import "VCoachmarkDisplayResponder.h"
 #import "VNavigationController.h"
@@ -160,52 +158,6 @@ NSString * const VLikeButtonCoachmarkIdentifier = @"like_button_coachmark";
 
 #pragma mark - Adding and removing coachmark views
 
-- (BOOL)addTooltipCoachmark:(VCoachmark *)coachmark withWidth:(CGFloat)width toViewController:(UIViewController *)viewController
-{
-    UIResponder <VCoachmarkDisplayResponder> *nextResponder = [viewController targetForAction:@selector(findOnScreenMenuItemWithIdentifier:andCompletion:) withSender:self];
-    if ( nextResponder == nil )
-    {
-        //There is nobody in the responder chain that responds to
-        //findOnScreenMenuItemWithIdentifier:andCompletion:, so there
-        //is no way to find out where to point. Look for the next coachmark.
-        return NO;
-    }
-    
-    __block BOOL foundDisplayableCoachmark = NO;
-    __block CGRect menuItemLocation = CGRectZero;
-    [nextResponder findOnScreenMenuItemWithIdentifier:coachmark.displayTarget andCompletion:^(BOOL found, CGRect location)
-     {
-         foundDisplayableCoachmark = found;
-         menuItemLocation = location;
-     }];
-    
-    if ( foundDisplayableCoachmark )
-    {
-        [self addTooltipCoachmark:coachmark withWidth:width toViewController:viewController atLocation:menuItemLocation];
-    }
-    return foundDisplayableCoachmark;
-}
-
-- (void)addTooltipCoachmark:(VCoachmark *)coachmark withWidth:(CGFloat)width toViewController:(UIViewController *)viewController atLocation:(CGRect)location
-{
-    CGFloat arrowCenter = CGRectGetMidX(location) - coachmark.horizontalInset;
-    CGFloat viewHeight = CGRectGetHeight(viewController.view.bounds) - [viewController v_layoutInsets].top;
-    VTooltipArrowDirection direction = CGRectGetMidY(location) > viewHeight / 2 ? VTooltipArrowDirectionDown : VTooltipArrowDirectionUp;
-    
-    //Enforce min and max arrow center values
-    arrowCenter = MAX(arrowCenter, VMinimumTooltipArrowLocation);
-    arrowCenter = MIN(arrowCenter, width - VMinimumTooltipArrowLocation);
-    
-    VCoachmarkView *coachmarkView = [VCoachmarkView tooltipCoachmarkViewWithCoachmark:coachmark
-                                                                                width:width
-                                                                arrowHorizontalOffset:arrowCenter
-                                                                    andArrowDirection:direction];
-    coachmarkView.frame = [self frameForTooltipCoachmarkView:coachmarkView
-                                                      arrowDirection:direction
-                                                   andTargetLocation:location
-                                                    inViewController:viewController];
-    [self addCoachmarkView:coachmarkView toViewController:viewController];
-}
 
 - (void)removePassthroughContainerView:(VCoachmarkPassthroughContainerView *)passthroughContainerView animated:(BOOL)animated
 {

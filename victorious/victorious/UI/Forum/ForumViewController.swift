@@ -176,6 +176,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
 
         // Set up the network source if needed.
         forumNetworkSource?.setUpIfNeeded()
+        
+        self.view.addSubview(Coachmark(dependencyManager: dependencyManager, frame: view.frame, highlightFrame: CGRect(x: 10, y: 10, width: 100, height: 100)))
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {

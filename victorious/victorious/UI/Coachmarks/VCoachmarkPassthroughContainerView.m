@@ -7,25 +7,24 @@
 //
 
 #import "VCoachmarkPassthroughContainerView.h"
-#import "VCoachmarkView.h"
 
-@interface VCoachmarkPassthroughContainerView ()
-
-@property (nonatomic, readwrite) VCoachmarkView *coachmarkView;
-
-@end
-
-@implementation VCoachmarkPassthroughContainerView
-
-+ (instancetype)coachmarkPassthroughContainerViewWithCoachmarkView:(VCoachmarkView *)coachmarkView andDelegate:(id <VPassthroughContainerViewDelegate>)delegate
-{
-    NSParameterAssert(coachmarkView != nil);
-    
-    VCoachmarkPassthroughContainerView *coachmarkPassthroughContainerView = [[VCoachmarkPassthroughContainerView alloc] init];
-    coachmarkPassthroughContainerView.coachmarkView = coachmarkView;
-    [coachmarkPassthroughContainerView addSubview:coachmarkView];
-    coachmarkPassthroughContainerView.delegate = delegate;
-    return coachmarkPassthroughContainerView;
-}
-
-@end
+//@interface VCoachmarkPassthroughContainerView ()
+//
+//@property (nonatomic, readwrite) VCoachmarkView *coachmarkView;
+//
+//@end
+//
+//@implementation VCoachmarkPassthroughContainerView
+//
+//+ (instancetype)coachmarkPassthroughContainerViewWithCoachmarkView:(VCoachmarkView *)coachmarkView andDelegate:(id <VPassthroughContainerViewDelegate>)delegate
+//{
+//    NSParameterAssert(coachmarkView != nil);
+//    
+//    VCoachmarkPassthroughContainerView *coachmarkPassthroughContainerView = [[VCoachmarkPassthroughContainerView alloc] init];
+//    coachmarkPassthroughContainerView.coachmarkView = coachmarkView;
+//    [coachmarkPassthroughContainerView addSubview:coachmarkView];
+//    coachmarkPassthroughContainerView.delegate = delegate;
+//    return coachmarkPassthroughContainerView;
+//}
+//
+//@end
