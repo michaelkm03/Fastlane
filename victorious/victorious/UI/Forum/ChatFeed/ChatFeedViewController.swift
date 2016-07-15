@@ -129,7 +129,8 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     // MARK: - ChatFeedDataSourceDelegate
     
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didLoadItems newItems: [ChatFeedContent], loadingType: PaginatedLoadingType) {
-        handleNewItems(newItems, loadingType: loadingType)
+        let removedPendingContentCount = removePendingContent(newItems: newItems, loadingType: loadingType)
+        handleNewItems(newItems, loadingType: loadingType, pendingContentDelta: -removedPendingContentCount)
     }
     
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didStashItems stashedItems: [ChatFeedContent]) {
@@ -151,15 +152,33 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didUnstashItems unstashedItems: [ChatFeedContent]) {
         newItemsController?.hide()
         
-        handleNewItems(unstashedItems, loadingType: .newer) { [weak self] in
+        let removedPendingContentCount = removePendingContent(newItems: unstashedItems, loadingType: .newer)
+        
+        handleNewItems(unstashedItems, loadingType: .newer, pendingContentDelta: -removedPendingContentCount) { [weak self] in
             if self?.collectionView.v_isScrolledToBottom == false {
                 self?.collectionView.v_scrollToBottomAnimated(true)
             }
         }
     }
     
+    func chatFeedDataSource(dataSource: ChatFeedDataSource, didAddPendingItems pendingItems: [ChatFeedContent]) {
+        handleNewItems([], loadingType: .newer, pendingContentDelta: pendingItems.count)
+    }
+    
     var chatFeedItemWidth: CGFloat {
         return collectionView.bounds.width
+    }
+    
+    private func removePendingContent(newItems newItems: [ChatFeedContent], loadingType: PaginatedLoadingType) -> Int {
+        if loadingType == .newer {
+            let userContentCount = newItems.filter({ $0.content.wasCreatedByCurrentUser }).count
+            let removalCount = min(dataSource.publisher.pendingContent.count, userContentCount)
+            dataSource.publisher.confirmPublish(count: removalCount)
+            return removalCount
+        }
+        else {
+            return 0
+        }
     }
     
     // MARK: - VScrollPaginatorDelegate

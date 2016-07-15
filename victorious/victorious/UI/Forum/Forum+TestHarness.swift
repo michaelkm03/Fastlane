@@ -25,7 +25,6 @@ extension ForumViewController {
             toRunLoop: NSRunLoop.mainRunLoop(),
             withRunMode: NSRunLoopCommonModes
         )
-        debug_createMessages()
     }
     
     private func randomText() -> String {

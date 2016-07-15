@@ -30,6 +30,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
     static let topLabelYSpacing = CGFloat(4.0)
     static let topLabelXInset = CGFloat(4.0)
     static let bubbleSpacing = CGFloat(6.0)
+    static let pendingContentAlpha = CGFloat(0.4)
     
     // MARK: - Reuse identifiers
     
@@ -78,7 +79,10 @@ class ChatFeedMessageCell: UICollectionViewCell {
         didSet {
             // Updating the content is expensive, so we try to bail if we're setting the same content as before.
             // However, chat message contents don't have IDs, so we can't do this if the ID is nil.
-            if chatFeedContent?.content.id == oldValue?.content.id && chatFeedContent?.content.id != nil {
+            let oldID = oldValue?.content.id
+            let newID = chatFeedContent?.content.id
+            
+            guard newID != oldID || newID == nil else {
                 return
             }
             
@@ -112,6 +116,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        contentView.alpha = chatFeedContent?.creationState?.alpha ?? 1.0
         ChatFeedMessageCell.layoutContent(for: self)
     }
     
@@ -275,6 +280,12 @@ class ChatFeedMessageCell: UICollectionViewCell {
 private extension ContentModel {
     var timeLabel: String {
         return createdAt.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds)
+    }
+}
+
+private extension ContentCreationState {
+    var alpha: CGFloat {
+        return self == .failed ? 1.0 : ChatFeedMessageCell.pendingContentAlpha
     }
 }
 

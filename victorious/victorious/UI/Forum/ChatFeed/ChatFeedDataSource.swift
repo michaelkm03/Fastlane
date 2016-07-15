@@ -13,17 +13,21 @@ protocol ChatFeedDataSourceDelegate: class {
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didLoadItems newItems: [ChatFeedContent], loadingType: PaginatedLoadingType)
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didStashItems stashedItems: [ChatFeedContent])
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didUnstashItems unstashedItems: [ChatFeedContent])
+    func chatFeedDataSource(dataSource: ChatFeedDataSource, didAddPendingItems pendingItems: [ChatFeedContent])
     var chatFeedItemWidth: CGFloat { get }
 }
 
-class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatInterfaceDataSource {
+class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatInterfaceDataSource, ContentPublisherDelegate {
     
     // MARK: Initializing
     
     init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
         self.publisher = ContentPublisher(dependencyManager: dependencyManager.networkResources ?? dependencyManager)
+        
         super.init()
+        
+        publisher.delegate = self
     }
     
     // MARK: - Dependency manager
@@ -34,6 +38,11 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     
     private(set) var visibleItems = [ChatFeedContent]()
     private(set) var stashedItems = [ChatFeedContent]()
+    
+    var pendingItems: [ChatFeedContent] {
+        return publisher.pendingContent
+    }
+    
     let publisher: ContentPublisher
     
     var stashingEnabled = false
@@ -49,20 +58,6 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
         stashedItems.removeAll()
         
         delegate?.chatFeedDataSource(self, didUnstashItems: previouslyStashedItems)
-    }
-    
-    var itemCount: Int {
-        // FUTURE: We'll add the pending content count once the queueing implementation is finished.
-        return visibleItems.count // + publisher.pendingContent.count
-    }
-    
-    func content(at index: Int) -> ChatFeedContent {
-        if index < visibleItems.count {
-            return visibleItems[index]
-        }
-        else {
-            return publisher.pendingContent[index - visibleItems.count]
-        }
     }
     
     func remove(chatFeedContent content: ChatFeedContent) {
@@ -118,6 +113,12 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     // MARK: - ChatFeedNetworkDataSourceType
     
     weak var delegate: ChatFeedDataSourceDelegate?
+    
+    // MARK: - ContentPublisherDelegate
+    
+    func contentPublisher(contentPublisher: ContentPublisher, didQueueContent content: ChatFeedContent) {
+        delegate?.chatFeedDataSource(self, didAddPendingItems: [content])
+    }
     
     // MARK: - UICollectionViewDataSource
     

@@ -21,6 +21,11 @@ enum ContentCreationState {
     case failed
 }
 
+/// A delegate protocol for `ContentPublisher`.
+protocol ContentPublisherDelegate: class {
+    func contentPublisher(contentPublisher: ContentPublisher, didQueueContent content: ChatFeedContent)
+}
+
 /// An object that manages the publishing of user content.
 ///
 /// It uses a queueing system that facilitates correct content creation order, cascading failures, and optimistic
@@ -38,6 +43,10 @@ class ContentPublisher {
     
     private let dependencyManager: VDependencyManager
     
+    // MARK: - Configuration
+    
+    weak var delegate: ContentPublisherDelegate?
+    
     // MARK: - Publishing
     
     /// The content that is currently pending creation.
@@ -49,18 +58,26 @@ class ContentPublisher {
             assertionFailure("Failed to calculate height for chat feed content")
             return
         }
+        
         pendingContent.append(chatFeedContent)
+        delegate?.contentPublisher(self, didQueueContent: chatFeedContent)
         
         // We want to make sure that we send items sequentially
-        guard !pendingContent.contains({$0.creationState == .sending}) else {
+        guard !pendingContent.contains({ $0.creationState == .sending }) else {
             return
         }
         
         publishNextContent()
     }
     
+    /// Should be called after calling `publish` to confirm that content was published, which will remove it from the
+    /// queue.
+    func confirmPublish(count count: Int) {
+        pendingContent.removeRange(0 ..< count)
+    }
+    
     private func publishNextContent() {
-        guard let index = indexOfNextWaitingContent() else {
+        guard let index = indexOfContent(withState: .waiting) else {
             return
         }
         
@@ -77,10 +94,10 @@ class ContentPublisher {
                 }
                 // FUTURE: Update collectionView
             }
-            else {
-                strongSelf.pendingContent[index].creationState = .sent
-                // FUTURE: Remove after the message comes in from content feed fetch response.
-                strongSelf.remove(strongSelf.pendingContent[index])
+            else if let updatedIndex = strongSelf.indexOfContent(withState: .sending) {
+                // The content's index will have changed by now if a preceding item was confirmed while this one was
+                // being sent, so we need to get an updated index.
+                strongSelf.pendingContent[updatedIndex].creationState = .sent
                 strongSelf.publishNextContent()
             }
         }
@@ -144,8 +161,6 @@ class ContentPublisher {
             }
             else {
                 self?.pendingContent[index].creationState = .sent
-                // FUTURE: Remove after the message comes in from content feed fetch response.
-                self?.remove(chatFeedContent)
             }
         }
     }
@@ -158,9 +173,9 @@ class ContentPublisher {
     
     // MARK: - Index of Queue
     
-    /// Returns the next content in the queue that's waiting to be sent and sets its `creationState` to `sending`.
-    private func indexOfNextWaitingContent() -> Int? {
-        for (index, chatFeedContent) in pendingContent.enumerate() where chatFeedContent.creationState == .waiting {
+    /// Returns the first content in the queue that has the given `state`.
+    private func indexOfContent(withState state: ContentCreationState) -> Int? {
+        for (index, chatFeedContent) in pendingContent.enumerate() where chatFeedContent.creationState == state {
             return index
         }
         return nil
