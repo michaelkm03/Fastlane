@@ -98,7 +98,8 @@ class VIPGateViewController: UIViewController {
                     let title = Strings.subscriptionFailed
                     let message = error.localizedDescription
                     self?.v_showErrorWithTitle(title, message: message)
-                } else {
+                }
+                else {
                     self?.openGate(afterPurchase: true)
                 }
             }
