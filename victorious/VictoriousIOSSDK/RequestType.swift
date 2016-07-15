@@ -98,12 +98,21 @@ extension RequestType {
             
             let result: ResultType?
             let error: ErrorType?
+            
             if let response = response,
                let data = data {
                 do {
+                    // Try to parse formatted error (e.g. 401s)
                     let responseJSON = JSON(data: data)
                     try self.parseError(responseJSON)
+                    
+                    // Try to check for other HTTP errors
+                    try self.parseError(response)
+                    
+                    // Try to parse response for valid results
                     result = try self.parseResponse(response, toRequest: mutableRequest, responseData: data, responseJSON: responseJSON)
+                    
+                    // If none of the `try` statements threw, then pass along the requestError
                     error = requestError
                 }
                 catch let e {
@@ -122,9 +131,15 @@ extension RequestType {
         return dataTask
     }
     
-    private func parseError( responseJSON: JSON ) throws {
+    private func parseError(responseJSON: JSON) throws {
         if let errorCode = responseJSON["error"].int where errorCode != 0  {
             throw APIError(localizedDescription: responseJSON["message"].stringValue, code: errorCode)
+        }
+    }
+    
+    private func parseError( httpURLResponse: NSURLResponse) throws {
+        if let httpURLResponse = httpURLResponse as? NSHTTPURLResponse where httpURLResponse.statusCode != 200 {
+            throw APIError(localizedDescription: "Received HTTP Response Error", code: httpURLResponse.statusCode)
         }
     }
 
