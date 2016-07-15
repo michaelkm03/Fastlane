@@ -138,7 +138,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     // MARK: - Actions
     
     private dynamic func upgradeButtonWasPressed() {
-        ShowVIPFlowOperation(originViewController: self, dependencyManager: gridStreamController.dependencyManager).queue()
+        ShowVIPFlowOperation(originViewController: self, dependencyManager: dependencyManager).queue()
     }
     
     func toggleUpvote() {
