@@ -72,7 +72,7 @@ class ContentPublisher {
             }
             
             if error != nil {
-                for (index, _) in strongSelf.pendingContent.enumerate() {
+                for index in strongSelf.pendingContent.indices {
                     strongSelf.pendingContent[index].creationState = .failed
                 }
                 // FUTURE: Update collectionView
