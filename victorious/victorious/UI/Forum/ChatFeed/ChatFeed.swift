@@ -35,6 +35,8 @@ protocol ChatFeedDelegate: class {
     func chatFeed(chatFeed: ChatFeed, didScroll scrollView: UIScrollView)
     func chatFeed(chatFeed: ChatFeed, willBeginDragging scrollView: UIScrollView)
     func chatFeed(chatFeed: ChatFeed, willEndDragging scrollView: UIScrollView, withVelocity velocity: CGPoint)
+    
+    func publisher(for chatFeed: ChatFeed) -> ContentPublisher?
 }
 
 extension ChatFeed {

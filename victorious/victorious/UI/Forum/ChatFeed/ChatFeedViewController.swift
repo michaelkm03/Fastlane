@@ -161,24 +161,23 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         }
     }
     
-    func chatFeedDataSource(dataSource: ChatFeedDataSource, didAddPendingItems pendingItems: [ChatFeedContent]) {
-        handleNewItems([], loadingType: .newer, pendingContentDelta: pendingItems.count)
-    }
-    
     var chatFeedItemWidth: CGFloat {
         return collectionView.bounds.width
     }
     
+    func pendingItems(for chatFeedDataSource: ChatFeedDataSource) -> [ChatFeedContent] {
+        return delegate?.publisher(for: self)?.pendingContent ?? []
+    }
+    
     private func removePendingContent(newItems newItems: [ChatFeedContent], loadingType: PaginatedLoadingType) -> Int {
-        if loadingType == .newer {
-            let userContentCount = newItems.filter({ $0.content.wasCreatedByCurrentUser }).count
-            let removalCount = min(dataSource.publisher.pendingContent.count, userContentCount)
-            dataSource.publisher.confirmPublish(count: removalCount)
-            return removalCount
-        }
-        else {
+        guard let publisher = delegate?.publisher(for: self) where loadingType == .newer else {
             return 0
         }
+        
+        let userContentCount = newItems.filter({ $0.content.wasCreatedByCurrentUser }).count
+        let removalCount = min(publisher.pendingContent.count, userContentCount)
+        publisher.confirmPublish(count: removalCount)
+        return removalCount
     }
     
     // MARK: - VScrollPaginatorDelegate

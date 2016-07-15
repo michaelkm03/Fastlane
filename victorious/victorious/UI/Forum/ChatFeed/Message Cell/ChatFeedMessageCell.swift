@@ -295,7 +295,7 @@ private extension VDependencyManager {
     }
 
     var messageFont: UIFont {
-        return fontForKey("font.message")
+        return fontForKey("font.message") ?? UIFont.systemFontOfSize(16.0)
     }
 
     var backgroundColor: UIColor? {

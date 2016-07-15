@@ -21,11 +21,6 @@ enum ContentCreationState {
     case failed
 }
 
-/// A delegate protocol for `ContentPublisher`.
-protocol ContentPublisherDelegate: class {
-    func contentPublisher(contentPublisher: ContentPublisher, didQueueContent content: ChatFeedContent)
-}
-
 /// An object that manages the publishing of user content.
 ///
 /// It uses a queueing system that facilitates correct content creation order, cascading failures, and optimistic
@@ -43,10 +38,6 @@ class ContentPublisher {
     
     private let dependencyManager: VDependencyManager
     
-    // MARK: - Configuration
-    
-    weak var delegate: ContentPublisherDelegate?
-    
     // MARK: - Publishing
     
     /// The content that is currently pending creation.
@@ -60,7 +51,6 @@ class ContentPublisher {
         }
         
         pendingContent.append(chatFeedContent)
-        delegate?.contentPublisher(self, didQueueContent: chatFeedContent)
         
         // We want to make sure that we send items sequentially
         guard !pendingContent.contains({ $0.creationState == .sending }) else {

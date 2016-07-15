@@ -83,15 +83,17 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         nextSender?.send(event)
     }
     
+    // MARK: - Publishing
+    
+    private var publisher: ContentPublisher?
+    
     private func publish(content: ContentModel) {
-        guard
-            let publisher = (chatFeed?.chatInterfaceDataSource as? ChatFeedDataSource)?.publisher,
-            let width = chatFeed?.collectionView.frame.width
-        else {
+        guard let width = chatFeed?.collectionView.frame.width else {
             return
         }
         
-        publisher.publish(content, withWidth: width)
+        publisher?.publish(content, withWidth: width)
+        chatFeed?.handleNewItems([], loadingType: .newer, pendingContentDelta: 1)
     }
 
     // MARK: - ForumEventSender
@@ -188,6 +190,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        publisher = ContentPublisher(dependencyManager: dependencyManager.networkResources ?? dependencyManager)
         
         stageShrinkingAnimator = StageShrinkingAnimator(
             stageContainer: stageContainer,
@@ -299,7 +303,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                 title: NSLocalizedString("Try Again", comment: "Sending message failed. User taps this to try sending again"),
                 style: .Default,
                 handler: { [weak self] alertAction in
-                    self?.retryPublish(chatFeedContent)
+                    self?.publisher?.retryPublish(chatFeedContent)
                 }
             )
         )
@@ -324,19 +328,16 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         presentViewController(alertController, animated: true, completion: nil)
     }
     
-    // MARK: - Content Post Failure Handling 
+    func publisher(for chatFeed: ChatFeed) -> ContentPublisher? {
+        return publisher
+    }
+    
+    // MARK: - Content Post Failure Handling
     
     private func delete(chatFeedContent content: ChatFeedContent) {
         chatFeed?.remove(chatFeedContent: content)
     }
     
-    private func retryPublish(content: ChatFeedContent) {
-        guard let publisher = (chatFeed?.chatInterfaceDataSource as? ChatFeedDataSource)?.publisher else {
-            return
-        }
-        publisher.retryPublish(content)
-    }
-
     // MARK: - VFocusable
     
     var focusType: VFocusType = .None {
