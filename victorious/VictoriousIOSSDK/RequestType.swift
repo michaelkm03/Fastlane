@@ -138,7 +138,7 @@ extension RequestType {
     }
     
     private func parseError( httpURLResponse: NSURLResponse) throws {
-        if let httpURLResponse = httpURLResponse as? NSHTTPURLResponse where httpURLResponse.statusCode != 200 {
+        if let httpURLResponse = httpURLResponse as? NSHTTPURLResponse where httpURLResponse.statusCode >= 400 {
             throw APIError(localizedDescription: "Received HTTP Response Error", code: httpURLResponse.statusCode)
         }
     }
