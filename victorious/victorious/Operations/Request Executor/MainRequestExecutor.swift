@@ -64,8 +64,7 @@ class MainRequestExecutor: RequestExecutorType {
                         return
                     }
 
-                    if let error = error as? RequestErrorType {
-                        let nsError = NSError(error)
+                    if let nsError = self.convertError(error) {
                         self.error = nsError
                         self.handleError(nsError)
                         onError?(nsError)
@@ -80,5 +79,17 @@ class MainRequestExecutor: RequestExecutorType {
         )
         dispatch_semaphore_wait(executeSemphore, DISPATCH_TIME_FOREVER)
         networkActivityIndicator.stop()
+    }
+    
+    private func convertError(error: ErrorType?) -> NSError? {
+        guard let error = error else {
+            return nil
+        }
+        if let requestError = error as? RequestErrorType {
+            return NSError(requestError)
+        }
+        else {
+            return error as NSError
+        }
     }
 }
