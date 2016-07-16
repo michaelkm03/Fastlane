@@ -93,15 +93,11 @@ extension Alert {
 
 extension Alert.Parameters {
     public init?(json: JSON) {
-        guard
-            let title = json["title"].string,
-            let userFanLoyalty = FanLoyalty(json: json["user"]["fanloyalty"])
-        else {
+        guard let title = json["title"].string else {
                 return nil
         }
-
         self.title          = title
-        self.userFanLoyalty = userFanLoyalty
+        self.userFanLoyalty = FanLoyalty(json: json["user"]["fanloyalty"])
         description         = json["description"].string
         icons               = json["icons"].arrayValue.map { $0.stringValue }.flatMap { NSURL(string: $0) }
 
