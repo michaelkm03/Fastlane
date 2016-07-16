@@ -15,6 +15,7 @@
 #import "VFilterTool.h"
 #import "VTextTool.h"
 #import "NSURL+VTemporaryFiles.h"
+#import "VCanvasView.h"
 
 static const CGFloat kJPEGCompressionQuality    = 0.8f;
 
@@ -29,6 +30,16 @@ NSString * const VImageToolControllerShouldDisableTextOverlayKey = @"VImageToolC
 
 @implementation VImageToolController
 
+- (instancetype)initWithTools:(NSArray *)tools
+{
+    self = [super initWithTools:tools];
+    if (self != nil)
+    {
+        [self updateCanvasView];
+    }
+    return self;
+}
+
 #pragma mark - Property Accessors
 
 - (void)setDisableTextOverlay:(BOOL)disableTextOverlay
@@ -42,6 +53,17 @@ NSString * const VImageToolControllerShouldDisableTextOverlayKey = @"VImageToolC
             [self disableTool:tool];
         }
     }
+}
+
+- (void)setCanvasView:(VCanvasView *)canvasView
+{
+    [super setCanvasView:canvasView];
+    [self updateCanvasView];
+}
+
+- (void)updateCanvasView
+{
+    self.canvasView.allowsZoom = self.tools.count != 0;
 }
 
 #pragma mark - VToolController
@@ -82,7 +104,7 @@ NSString * const VImageToolControllerShouldDisableTextOverlayKey = @"VImageToolC
         return nil;
     }
     
-    NSArray *filterOrderTools = [self.tools sortedArrayUsingComparator:^NSComparisonResult(id <VWorkspaceTool> tool1, id <VWorkspaceTool> tool2)
+    NSMutableArray *filterOrderTools = [[NSMutableArray alloc] initWithArray:[self.tools sortedArrayUsingComparator:^NSComparisonResult(id <VWorkspaceTool> tool1, id <VWorkspaceTool> tool2)
                                  {
                                      if (tool1.renderIndex < tool2.renderIndex)
                                      {
@@ -93,7 +115,14 @@ NSString * const VImageToolControllerShouldDisableTextOverlayKey = @"VImageToolC
                                          return NSOrderedDescending;
                                      }
                                      return NSOrderedSame;
-                                 }];
+                                 }]];
+    
+    // Add a crop tool by default to trim to the visible area on screen
+    if (filterOrderTools.count == 0)
+    {
+        VCropTool *cropTool = [[VCropTool alloc] init];
+        [filterOrderTools addObject:cropTool];
+    }
     
     [filterOrderTools enumerateObjectsUsingBlock:^(id <VWorkspaceTool> tool, NSUInteger idx, BOOL *stop)
      {
