@@ -17,10 +17,7 @@ class FanLoyaltyTests: XCTestCase {
                 return
         }
         
-        guard let fanLoyalty = FanLoyalty(json: JSON(data: mockData)) else {
-            XCTFail("Fan Loyalty initializer failed")
-            return
-        }
+        let fanLoyalty = FanLoyalty(json: JSON(data: mockData))
         
         XCTAssertEqual(fanLoyalty.points, Int(2764))
         XCTAssertEqual(fanLoyalty.level, 7)
