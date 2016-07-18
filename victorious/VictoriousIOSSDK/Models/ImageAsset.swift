@@ -16,7 +16,7 @@ public protocol ImageAssetModel {
     var size: CGSize { get }
 }
 
-extension ImageAssetModel {
+public extension ImageAssetModel {
     var url: NSURL? {
         switch imageSource {
             case .remote(let url): return url
