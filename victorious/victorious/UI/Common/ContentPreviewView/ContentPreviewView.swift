@@ -71,6 +71,7 @@ class ContentPreviewView: UIView {
         /// Play Button
         playButton = UIImageView(image: UIImage(named: Constants.playButtonPlayImageName))
         playButton.contentMode = UIViewContentMode.ScaleAspectFill
+        playButton.alpha = 0
         
         super.init(frame: CGRectZero)
         backgroundColor = Constants.loadingColor
@@ -122,11 +123,13 @@ class ContentPreviewView: UIView {
             if !userCanViewContent {
                 previewImageView.applyBlurToImageURL(previewImageURL, withRadius: Constants.imageViewBlurEffectRadius) { [weak self] in
                     self?.previewImageView.alpha = 1
+                    self?.playButton.alpha = 1
                     self?.spinner.stopAnimating()
                 }
             }
             else {
                 previewImageView.sd_setImageWithURL(previewImageURL) { [weak self] _ in
+                    self?.playButton.alpha = 1
                     self?.spinner.stopAnimating()
                 }
             }
@@ -135,7 +138,6 @@ class ContentPreviewView: UIView {
             previewImageView.image = nil
         }
         lastSize = bounds.size
-
     }
 }
 
