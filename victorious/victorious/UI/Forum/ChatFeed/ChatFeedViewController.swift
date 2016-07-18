@@ -134,15 +134,9 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     }
     
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didStashItems stashedItems: [ChatFeedContent]) {
-        let itemsContainCurrentUserMessage = stashedItems.contains {
-            $0.content.author.id == VCurrentUser.user()?.remoteId.integerValue
-        }
+        let itemsContainOtherUserMessage = stashedItems.contains { !$0.content.wasCreatedByCurrentUser }
         
-        if itemsContainCurrentUserMessage {
-            // Unstash if we got a message from the current user.
-            dataSource.unstash()
-        }
-        else if stashedItems.count > 0 {
+        if itemsContainOtherUserMessage {
             // Update stash count and show stash counter.
             newItemsController?.count = dataSource.stashedItems.count
             newItemsController?.show()
