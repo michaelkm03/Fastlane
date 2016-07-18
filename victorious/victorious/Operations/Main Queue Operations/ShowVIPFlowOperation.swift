@@ -30,7 +30,7 @@ class ShowVIPFlowOperation: MainQueueOperation {
             let originViewController = originViewController,
             let vipFlow = dependencyManager.templateValueOfType(VIPFlowNavigationController.self, forKey: "vipPaygateScreen") as? VIPFlowNavigationController
         else {
-                return
+            return
         }
         
         vipFlow.completionBlock = completion

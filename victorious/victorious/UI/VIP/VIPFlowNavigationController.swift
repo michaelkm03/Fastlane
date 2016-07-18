@@ -21,8 +21,8 @@ class VIPFlowNavigationController: UINavigationController, VIPGateViewController
         guard
             dependencyManager.isVIPEnabled == true,
             let gateDependencyManager = dependencyManager.paygateDependency,
-            let successDependencyManager = dependencyManager.successDependency where
-            VCurrentUser.isLoggedIn()
+            let successDependencyManager = dependencyManager.successDependency
+            where VCurrentUser.user()?.hasValidVIPSubscription == false
         else {
             return nil
         }
