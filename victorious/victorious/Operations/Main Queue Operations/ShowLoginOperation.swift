@@ -34,12 +34,14 @@ class ShowLoginOperation: MainQueueOperation {
         
         // Don't show login when running unit tests
         guard !cancelled && !VAutomation.shouldAlwaysShowLoginScreen() else {
+            loginCompletion?()
             finishedExecuting()
             return
         }
         
         // Don't show login if the user is already logged in
         guard VCurrentUser.user() == nil else {
+            loginCompletion?()
             finishedExecuting()
             return
         }
