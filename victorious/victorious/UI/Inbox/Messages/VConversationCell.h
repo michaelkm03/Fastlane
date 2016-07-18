@@ -11,7 +11,7 @@
 
 extern const CGFloat VConversationCellHeight;
 
-@class VConversation, VDefaultProfileButton, VDependencyManager;
+@class VConversation, VDependencyManager;
 
 NS_ASSUME_NONNULL_BEGIN
 

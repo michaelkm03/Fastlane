@@ -29,7 +29,12 @@ class TitleCardViewController: UIViewController {
         static let leadingEdgeOffset = CGFloat(-12)
     }
 
-    @IBOutlet private weak var profileButton: VDefaultProfileButton!
+    @IBOutlet private weak var avatarView: AvatarView! {
+        didSet {
+            avatarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(avatarTapped)))
+        }
+    }
+
     @IBOutlet private weak var authorLabel: UILabel!
     @IBOutlet private weak var titleLabel: UILabel!
 
@@ -184,15 +189,10 @@ class TitleCardViewController: UIViewController {
 
         authorLabel.text = stageContent?.content.author.name ?? ""
         titleLabel.text = stageContent?.metaData?.title ?? ""
-
-        if let profileImageURL = stageContent?.content.author.previewImageURL(ofMinimumSize: profileButton.bounds.size) {
-            profileButton?.setProfileImageURL(profileImageURL, forState: .Normal)
-        }
-
-        view.setNeedsLayout()
+        avatarView.user = stageContent?.content.author
     }
 
-    @IBAction private func profileAction(sender: UIButton) {
+    @objc private func avatarTapped() {
         guard let avatarUser = stageContent?.content.author else {
             return
         }

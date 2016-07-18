@@ -9,7 +9,6 @@
 #import "VInStreamCommentsCell.h"
 #import "VInStreamCommentCellContents.h"
 #import "VTagSensitiveTextView.h"
-#import "VDefaultProfileButton.h"
 #import "VInStreamMediaLink.h"
 #import "VTagSensitiveTextViewDelegate.h"
 #import "VUserTag.h"
@@ -33,7 +32,7 @@ static NSString * const kMediaIdentifierSuffix = @"withMedia";
 @property (nonatomic, weak) IBOutlet UIButton *mediaLinkButton;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *mediaLinkTopConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *mediaLinkButtonHeightConstraint;
-@property (nonatomic, weak) IBOutlet VDefaultProfileButton *profileButton;
+@property (nonatomic, weak) IBOutlet UIButton *profileButton;
 
 @property (nonatomic, readwrite) VInStreamCommentCellContents *commentCellContents;
 
@@ -83,8 +82,6 @@ static NSString * const kMediaIdentifierSuffix = @"withMedia";
     
     self.mediaLinkTopConstraint.constant = [[self class] contentsHasValidMediaLink:contents] ? kContentSeparationSpace : 0.0f;
     [self setupMediaLinkButtonWithInStreamMediaLink:contents.inStreamMediaLink forSizing:NO];
-    
-    [self.profileButton setProfileImageURL:[NSURL URLWithString:contents.profileImageUrlString] forState:UIControlStateNormal];
 }
 
 - (void)setupMediaLinkButtonWithInStreamMediaLink:(VInStreamMediaLink *)mediaLink forSizing:(BOOL)forSizing

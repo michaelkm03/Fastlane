@@ -9,16 +9,9 @@
 import UIKit
 
 class ListMenuCreatorCollectionViewCell: UICollectionViewCell, ListMenuSectionCell {
-    
     typealias Cell = ListMenuCreatorCollectionViewCell
     
-    @IBOutlet private weak var profileImageView: UIImageView! {
-        didSet {
-            profileImageView.backgroundColor = nil
-            profileImageView.layer.cornerRadius = profileImageView.bounds.width / 2
-        }
-    }
-    
+    @IBOutlet private weak var avatarView: AvatarView!
     @IBOutlet private weak var creatorNameLabel: UILabel!
     
     override var selected: Bool {
@@ -39,10 +32,7 @@ class ListMenuCreatorCollectionViewCell: UICollectionViewCell, ListMenuSectionCe
     
     func configureCell(with user: VUser) {
         creatorNameLabel.text = user.name
-        
-        let placeholderImage = UIImage(named: "profile_full")
-        let imageURL = user.pictureURL(ofMinimumSize: profileImageView.frame.size)
-        profileImageView.sd_setImageWithURL(imageURL, placeholderImage: placeholderImage)
+        avatarView.user = user
     }
     
     // MARK: - Private methods
@@ -54,7 +44,6 @@ class ListMenuCreatorCollectionViewCell: UICollectionViewCell, ListMenuSectionCe
 }
 
 private extension VDependencyManager {
-    
     var titleColor: UIColor? {
         return colorForKey("color.text.navItem")
     }

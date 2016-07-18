@@ -10,7 +10,6 @@
 #import "VFollowControl.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "VDependencyManager.h"
-#import "VDefaultProfileButton.h"
 #import "victorious-Swift.h"
 #import <KVOController/FBKVOController.h>
 
@@ -18,7 +17,7 @@ static const CGFloat kInviteCellHeight = 50.0f;
 
 @interface VInviteFriendTableViewCell ()
 
-@property (nonatomic, weak) IBOutlet VDefaultProfileButton *profileButton;
+@property (nonatomic, weak) IBOutlet UIButton *profileButton;
 @property (nonatomic, weak) IBOutlet UILabel *profileName;
 @property (nonatomic, weak) IBOutlet UIView *labelsSuperview;
 @property (nonatomic, strong) UIImage *followIcon;
@@ -30,7 +29,6 @@ static const CGFloat kInviteCellHeight = 50.0f;
 
 - (void)awakeFromNib
 {
-    [self.profileButton addBorderWithWidth:1.0f andColor:[UIColor whiteColor]];
     self.contentView.backgroundColor = [UIColor clearColor];
     
     if ([AgeGate isAnonymousUser])
@@ -74,7 +72,6 @@ static const CGFloat kInviteCellHeight = 50.0f;
          [welf updateFollowStatusAnimated:YES];
      }];
     
-    self.profileButton.user = profile;
     self.profileName.text = profile.name;
     
     NSInteger profileID = profile.remoteId.integerValue;
@@ -96,7 +93,6 @@ static const CGFloat kInviteCellHeight = 50.0f;
     if ( dependencyManager != nil )
     {
         self.followUserControl.dependencyManager = dependencyManager;
-        self.profileButton.dependencyManager = dependencyManager;
         self.profileButton.tintColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
         self.profileName.font = [dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
     }

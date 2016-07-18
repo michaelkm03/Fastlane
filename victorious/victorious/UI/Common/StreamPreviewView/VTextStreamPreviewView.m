@@ -17,7 +17,6 @@
 
 // Views + Helpers
 #import "VTextPostViewController.h"
-#import "UIColor+VHex.h"
 #import "UIView+AutoLayout.h"
 #import "VDependencyManager.h"
 #import "UIView+VViewRendering.h"
@@ -124,7 +123,7 @@ static const CGRect kRenderedTextPostFrame = { {0, 0}, {kRenderedTextPostSide, k
     if ( textAsset != nil )
     {
         NSString *text = textAsset.data;
-        UIColor *color = [UIColor v_colorFromHexString:textAsset.backgroundColor];
+        UIColor *color = [[UIColor alloc] initWithRgbHexString:textAsset.backgroundColor];
         NSURL *imageUrl = [NSURL URLWithString:textAsset.backgroundImageUrl];
         [self populateTextPostViewControllerText:text color:color backgroundImageURL:imageUrl];
     }

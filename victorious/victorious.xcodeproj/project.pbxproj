@@ -854,6 +854,10 @@
 		7AB55FE51CADF00A00EBE31E /* CGSize+CornerRadius.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB55FE41CADF00A00EBE31E /* CGSize+CornerRadius.swift */; };
 		7AB55FE71CADF06000EBE31E /* CGSize+CornerRadiusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB55FE61CADF06000EBE31E /* CGSize+CornerRadiusTests.swift */; };
 		7AC1945B1D2C9002001B15B8 /* ChatBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC1945A1D2C9002001B15B8 /* ChatBubbleView.swift */; };
+		7AC1945D1D2DB9BB001B15B8 /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC1945C1D2DB9BB001B15B8 /* UIColor+Hex.swift */; };
+		7AC1945F1D2DC283001B15B8 /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC1945E1D2DC283001B15B8 /* AvatarView.swift */; };
+		7AC194611D2DD1A9001B15B8 /* String+Initials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC194601D2DD1A9001B15B8 /* String+Initials.swift */; };
+		7AC194631D2DD2FC001B15B8 /* String+InitialsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC194621D2DD2FC001B15B8 /* String+InitialsTests.swift */; };
 		7AE363A11CC864B600F851E9 /* SideNavScaffoldViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE363A01CC864B600F851E9 /* SideNavScaffoldViewController.swift */; };
 		7AE363A51CC98F5D00F851E9 /* RightNavViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE363A41CC98F5D00F851E9 /* RightNavViewController.swift */; };
 		7AE363A71CC9BA9400F851E9 /* Scaffold.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE363A61CC9BA9400F851E9 /* Scaffold.swift */; };
@@ -997,7 +1001,6 @@
 		A721E9491B572454000B7901 /* UIAlertController+VSimpleAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8D31B572453000B7901 /* UIAlertController+VSimpleAlert.m */; };
 		A721E94A1B572454000B7901 /* UICollectionView+Convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8D51B572453000B7901 /* UICollectionView+Convenience.m */; };
 		A721E94C1B572454000B7901 /* UIColor+VBrightness.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8D81B572453000B7901 /* UIColor+VBrightness.m */; };
-		A721E94D1B572454000B7901 /* UIColor+VHex.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8DA1B572453000B7901 /* UIColor+VHex.m */; };
 		A721E94E1B572454000B7901 /* UIImage+Cropping.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8DC1B572453000B7901 /* UIImage+Cropping.m */; };
 		A721E94F1B572454000B7901 /* UIImage+ImageCreation.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8DE1B572453000B7901 /* UIImage+ImageCreation.m */; };
 		A721E9511B572454000B7901 /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8E21B572453000B7901 /* UIImage+Resize.m */; };
@@ -1641,7 +1644,6 @@
 		BE171D991868BE64004E5202 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE171D791868BE64004E5202 /* Foundation.framework */; };
 		BE171D9A1868BE64004E5202 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE171D7D1868BE64004E5202 /* UIKit.framework */; };
 		BE171D9B1868BE64004E5202 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE171D7F1868BE64004E5202 /* CoreData.framework */; };
-		BE42842919DDC19100AEDBA6 /* VDefaultProfileButton.m in Sources */ = {isa = PBXBuildFile; fileRef = BE42842819DDC19100AEDBA6 /* VDefaultProfileButton.m */; };
 		BE46F02A19D0C4B700CD7EF6 /* VMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = BE46F02919D0C4B700CD7EF6 /* VMessage.m */; };
 		BE6C15251880A31A00469BA8 /* VAnswerAction.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6C15241880A31A00469BA8 /* VAnswerAction.m */; };
 		BE799B8F19C8A91C0023CE88 /* VInteraction.m in Sources */ = {isa = PBXBuildFile; fileRef = BE799B8E19C8A91C0023CE88 /* VInteraction.m */; };
@@ -3336,6 +3338,10 @@
 		7AB55FE41CADF00A00EBE31E /* CGSize+CornerRadius.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGSize+CornerRadius.swift"; sourceTree = "<group>"; };
 		7AB55FE61CADF06000EBE31E /* CGSize+CornerRadiusTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGSize+CornerRadiusTests.swift"; sourceTree = "<group>"; };
 		7AC1945A1D2C9002001B15B8 /* ChatBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatBubbleView.swift; sourceTree = "<group>"; };
+		7AC1945C1D2DB9BB001B15B8 /* UIColor+Hex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
+		7AC1945E1D2DC283001B15B8 /* AvatarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AvatarView.swift; sourceTree = "<group>"; };
+		7AC194601D2DD1A9001B15B8 /* String+Initials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Initials.swift"; sourceTree = "<group>"; };
+		7AC194621D2DD2FC001B15B8 /* String+InitialsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+InitialsTests.swift"; sourceTree = "<group>"; };
 		7AE363A01CC864B600F851E9 /* SideNavScaffoldViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideNavScaffoldViewController.swift; sourceTree = "<group>"; };
 		7AE363A41CC98F5D00F851E9 /* RightNavViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RightNavViewController.swift; sourceTree = "<group>"; };
 		7AE363A61CC9BA9400F851E9 /* Scaffold.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scaffold.swift; sourceTree = "<group>"; };
@@ -3571,8 +3577,6 @@
 		A721E8D51B572453000B7901 /* UICollectionView+Convenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UICollectionView+Convenience.m"; sourceTree = "<group>"; };
 		A721E8D71B572453000B7901 /* UIColor+VBrightness.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+VBrightness.h"; sourceTree = "<group>"; };
 		A721E8D81B572453000B7901 /* UIColor+VBrightness.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+VBrightness.m"; sourceTree = "<group>"; };
-		A721E8D91B572453000B7901 /* UIColor+VHex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+VHex.h"; sourceTree = "<group>"; };
-		A721E8DA1B572453000B7901 /* UIColor+VHex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+VHex.m"; sourceTree = "<group>"; };
 		A721E8DB1B572453000B7901 /* UIImage+Cropping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Cropping.h"; sourceTree = "<group>"; };
 		A721E8DC1B572453000B7901 /* UIImage+Cropping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Cropping.m"; sourceTree = "<group>"; };
 		A721E8DD1B572453000B7901 /* UIImage+ImageCreation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageCreation.h"; sourceTree = "<group>"; };
@@ -4389,8 +4393,6 @@
 		BE171D961868BE64004E5202 /* victoriousTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = victoriousTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE171D971868BE64004E5202 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		BE171DA01868BE64004E5202 /* victoriousTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "victoriousTests-Info.plist"; sourceTree = "<group>"; };
-		BE42842719DDC19100AEDBA6 /* VDefaultProfileButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDefaultProfileButton.h; sourceTree = "<group>"; };
-		BE42842819DDC19100AEDBA6 /* VDefaultProfileButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDefaultProfileButton.m; sourceTree = "<group>"; };
 		BE46F02819D0C4B700CD7EF6 /* VMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMessage.h; sourceTree = "<group>"; };
 		BE46F02919D0C4B700CD7EF6 /* VMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMessage.m; sourceTree = "<group>"; };
 		BE49323519E338CE00C0912E /* NSDate+timeSinceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+timeSinceTests.m"; sourceTree = "<group>"; };
@@ -7877,6 +7879,7 @@
 				A6B9FD0D1B60630900166BE8 /* NSURL+VTemporaryFiles.h */,
 				A6B9FD0E1B60630900166BE8 /* NSURL+VTemporaryFiles.m */,
 				C3A4C5B11BCC6455000B745B /* StatusBarUtils.swift */,
+				7AC194601D2DD1A9001B15B8 /* String+Initials.swift */,
 				F009BD1A1CEBD3C800F81CAA /* String+SubstringHelpers.swift */,
 				A721E8D01B572453000B7901 /* UIActivityViewController+VStatusBarHandling.h */,
 				A721E8D11B572453000B7901 /* UIActivityViewController+VStatusBarHandling.m */,
@@ -7885,10 +7888,9 @@
 				A721E8D41B572453000B7901 /* UICollectionView+Convenience.h */,
 				A721E8D51B572453000B7901 /* UICollectionView+Convenience.m */,
 				7AE3EA381CAF39C400272A6A /* UICollectionViewFlowLayout+CellSize.swift */,
+				7AC1945C1D2DB9BB001B15B8 /* UIColor+Hex.swift */,
 				A721E8D71B572453000B7901 /* UIColor+VBrightness.h */,
 				A721E8D81B572453000B7901 /* UIColor+VBrightness.m */,
-				A721E8D91B572453000B7901 /* UIColor+VHex.h */,
-				A721E8DA1B572453000B7901 /* UIColor+VHex.m */,
 				7925A5081BCD9E2300BCA649 /* UIColor+Victorious.swift */,
 				F00BBABE1CC995E800CBDB94 /* UIControl+NavigationBarEmbedding.swift */,
 				BF79B77C1C59542100AC980A /* UIDevice+VDeviceCapability.swift */,
@@ -8628,6 +8630,7 @@
 		A7724FD51B3241FD00B1BBB3 /* Users */ = {
 			isa = PBXGroup;
 			children = (
+				7AC1945E1D2DC283001B15B8 /* AvatarView.swift */,
 				A705F4441B3CC00D007DBD3C /* VUserCell.h */,
 				A705F4451B3CC00D007DBD3C /* VUserCell.m */,
 				A705F4461B3CC00D007DBD3C /* VUserCell.xib */,
@@ -9463,6 +9466,7 @@
 				03A7614E1B3232970016B69D /* NSURL+VDataCacheIDTests.m */,
 				7987D7981B8A66C400EE4A39 /* NSURL+VTemporaryFilesTests.m */,
 				79070A2A1CFE73570049CFC3 /* ShowTutorialsOperationTests.swift */,
+				7AC194621D2DD2FC001B15B8 /* String+InitialsTests.swift */,
 				F093A9361CEFA008009ACABF /* String+SubstringHelpersTests.swift */,
 				BE171D9F1868BE64004E5202 /* Supporting Files */,
 				03D94C2A19DE155400BFAA27 /* Swizzling Support */,
@@ -9636,15 +9640,6 @@
 				BE7D2E9018EB762A009E488E /* VVoteResult.m */,
 			);
 			path = ManagedObjectModels;
-			sourceTree = "<group>";
-		};
-		BE42842D19DDD0D800AEDBA6 /* DefaultProfileImages */ = {
-			isa = PBXGroup;
-			children = (
-				BE42842719DDC19100AEDBA6 /* VDefaultProfileButton.h */,
-				BE42842819DDC19100AEDBA6 /* VDefaultProfileButton.m */,
-			);
-			path = DefaultProfileImages;
 			sourceTree = "<group>";
 		};
 		BE76FBE218E4AA95009E6DD7 /* AppSpecific */ = {
@@ -12816,7 +12811,6 @@
 				A72C86681C977FF600E97D4F /* Queueable.swift in Sources */,
 				A7738B041A4A35DF008EA973 /* VSimpleModalTransition.m in Sources */,
 				A7250A311CA090BF00B5EAE6 /* Forum.swift in Sources */,
-				A721E94D1B572454000B7901 /* UIColor+VHex.m in Sources */,
 				A72C868F1C977FF600E97D4F /* CreateMediaUploadOperation.swift in Sources */,
 				67D3E0511CECEE70008F9398 /* ShowTutorialsOperation.swift in Sources */,
 				F022CFDA1CFE52EA00F040BB /* ChatMessageCreateRemoteOperation.swift in Sources */,
@@ -12919,6 +12913,7 @@
 				D87351881A3120F5006D97B2 /* VCanvasView.m in Sources */,
 				A72C860C1C977FF500E97D4F /* FetchFromMainContextOperation.swift in Sources */,
 				D83AC7AA1AB201A600F63603 /* VPlayerView.m in Sources */,
+				7AC1945D1D2DB9BB001B15B8 /* UIColor+Hex.swift in Sources */,
 				A72C864A1C977FF500E97D4F /* VStoredLogin.m in Sources */,
 				A7B0E07A1BC4423500593B21 /* YouTubeVideoSequencePreviewView.swift in Sources */,
 				C3623F2D1BA7A4A3002B121D /* LevelUpAnimator.swift in Sources */,
@@ -13188,6 +13183,7 @@
 				0314D4A719B46B5E00FA363C /* VConversationCell.m in Sources */,
 				676263E81D0B6F2500127D21 /* UIImage+Blurring.swift in Sources */,
 				A70FC1101A2D619300F5BBDE /* VProduct.m in Sources */,
+				7AC194611D2DD1A9001B15B8 /* String+Initials.swift in Sources */,
 				F0AD216E1AF318FC001BDCC6 /* VNoContentCollectionViewCell.m in Sources */,
 				A74679681AFC31AA005EB1D9 /* VDependencyManager+VWebBrowser.m in Sources */,
 				D8CA63BB19D5240C002046E5 /* VActionSheetPresentationAnimator.m in Sources */,
@@ -13312,6 +13308,7 @@
 				D876E1FC1A9DA685002CAA29 /* VBackground.m in Sources */,
 				0314D4B419B46B5E00FA363C /* VLightboxDismissAnimator.m in Sources */,
 				A7B844E51CB84F4C00CE02DE /* SelectMediaAttachmentOperation.swift in Sources */,
+				7AC1945F1D2DC283001B15B8 /* AvatarView.swift in Sources */,
 				7A02F8931D2486D400F43B24 /* CollectionType.swift in Sources */,
 				A7A390C51A32441E00709812 /* VButton.m in Sources */,
 				A72C862D1C977FF500E97D4F /* SequenceFetchOperation.swift in Sources */,
@@ -13416,7 +13413,6 @@
 				BF3CD8861D11BB8C00CB7764 /* UserUpvoteRemoteOperation.swift in Sources */,
 				79BA44AF1BFBEBEF00594F9F /* UIImageOrientation+TiffOrientation.swift in Sources */,
 				C3C734591B60714C00D6795D /* ExperienceEnhancerAnimatingIconView.swift in Sources */,
-				BE42842919DDC19100AEDBA6 /* VDefaultProfileButton.m in Sources */,
 				F0EBAAAD1B8002E100515D4C /* VListShelfCollectionViewFlowLayout.swift in Sources */,
 				A75FAF1719E8AC1E00EB87C1 /* VDiscoverSuggestedPeopleSectionCell.m in Sources */,
 				A72C85FA1C977FF500E97D4F /* AccountUpdateOperation.swift in Sources */,
@@ -13760,6 +13756,7 @@
 				A7DCA4DE1C128A78004E35B4 /* VCoachmarkViewTests.m in Sources */,
 				A7DCA4ED1C128A78004E35B4 /* VHashTagsTest.m in Sources */,
 				A7DCA50C1C128A78004E35B4 /* VTrackingManagerTests.m in Sources */,
+				7AC194631D2DD2FC001B15B8 /* String+InitialsTests.swift in Sources */,
 				A7DCA4E31C128A78004E35B4 /* VDependencyManagerImageTests.m in Sources */,
 				F093A9371CEFA008009ACABF /* String+SubstringHelpersTests.swift in Sources */,
 				A7DCA5071C128A78004E35B4 /* VTagSensitiveTextViewTests.m in Sources */,

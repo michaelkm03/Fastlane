@@ -48,13 +48,11 @@
                                                         </label>
                                                     </subviews>
                                                 </stackView>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="bzn-jL-0Ce" customClass="VDefaultProfileButton">
+                                                <view contentMode="scaleToFill" id="giT-8C-waV" customClass="AvatarView" customModule="victorious" customModuleProvider="target">
                                                     <rect key="frame" x="12" y="7" width="30" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <connections>
-                                                        <action selector="profileAction:" destination="NM8-sM-mk9" eventType="touchUpInside" id="mYm-1f-aMo"/>
-                                                    </connections>
-                                                </button>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </view>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
@@ -70,8 +68,8 @@
                     <size key="freeformSize" width="211" height="45"/>
                     <connections>
                         <outlet property="authorLabel" destination="rd4-t3-blb" id="b6F-GF-lh3"/>
+                        <outlet property="avatarView" destination="giT-8C-waV" id="RbR-uD-ZLi"/>
                         <outlet property="containerView" destination="s8A-QO-Jkh" id="bRN-VT-T9b"/>
-                        <outlet property="profileButton" destination="bzn-jL-0Ce" id="8xr-yD-mFE"/>
                         <outlet property="titleLabel" destination="HIQ-7p-2cM" id="5Ym-Bn-3zp"/>
                     </connections>
                 </viewController>
