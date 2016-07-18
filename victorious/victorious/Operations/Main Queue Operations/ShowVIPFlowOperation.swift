@@ -33,6 +33,11 @@ class ShowVIPFlowOperation: MainQueueOperation {
             return
         }
         
+        guard VCurrentUser.user()?.hasValidVIPSubscription != true else {
+            completion?(true)
+            return
+        }
+        
         vipFlow.completionBlock = completion
         showedGate = true
         originViewController.presentViewController(vipFlow, animated: animated, completion: nil)
