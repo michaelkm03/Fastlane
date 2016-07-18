@@ -257,11 +257,12 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     ShowLoginOperation *showLoginOperation = [[ShowLoginOperation alloc] initWithOriginViewController:self
                                                                                     dependencyManager:[self.dependencyManager childDependencyForKey:VDependencyManagerScaffoldViewControllerKey]
                                                                                               context:VAuthorizationContextDefault
-                                                                                             animated:NO];
+                                                                                             animated:NO
+                                                                                      loginCompletion:^{
+                                                                                          [self initializeScaffold];
+                                                                                      }];
     
-    [showLoginOperation queueWithCompletion: ^(NSError *error, BOOL cancelled) {
-        [self initializeScaffold];
-    }];
+    [showLoginOperation queueWithCompletion:nil];
 }
 
 - (void)initializeScaffold

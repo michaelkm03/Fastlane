@@ -645,8 +645,11 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     {
         return;
     }
-    
-    [[[ShowWebContentOperation alloc] initWithOriginViewController:self type:WebContentOperationTypePrivacyPolicy forceModal:NO animated:YES dependencyManager:self.dependencyManager] queueWithCompletion:NULL];
+    [[[ShowWebContentOperation alloc] initWithOriginViewController:self
+                                                              type:WebContentOperationTypePrivacyPolicy
+                                                        forceModal:YES
+                                                          animated:YES
+                                                 dependencyManager:self.dependencyManager] queueWithCompletion:nil];
 }
 
 - (void)showTermsOfService
@@ -656,7 +659,11 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         return;
     }
     
-    [[[ShowWebContentOperation alloc] initWithOriginViewController:self type:WebContentOperationTypeTermsOfService forceModal:NO animated:YES dependencyManager:self.dependencyManager] queueWithCompletion:NULL];
+    [[[ShowWebContentOperation alloc] initWithOriginViewController:self
+                                                              type:WebContentOperationTypeTermsOfService
+                                                        forceModal:YES
+                                                          animated:YES
+                                                 dependencyManager:self.dependencyManager] queueWithCompletion:nil];
 
 }
 
