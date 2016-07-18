@@ -9,27 +9,27 @@
             <objects>
                 <viewController id="NM8-sM-mk9" customClass="TitleCardViewController" customModule="victorious" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="phw-Cr-eOS">
-                        <rect key="frame" x="0.0" y="0.0" width="251" height="45"/>
+                        <rect key="frame" x="0.0" y="0.0" width="211" height="45"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <visualEffectView opaque="NO" contentMode="scaleToFill" id="s8A-QO-Jkh">
-                                <rect key="frame" x="0.0" y="0.0" width="250" height="44"/>
+                                <rect key="frame" x="0.0" y="0.0" width="210" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="YL4-zM-YYK">
-                                    <rect key="frame" x="0.0" y="0.0" width="250" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="210" height="44"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" id="QlM-8X-Q80">
-                                            <rect key="frame" x="0.0" y="0.0" width="250" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="210" height="44"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <subviews>
                                                 <view alpha="0.5" contentMode="scaleToFill" id="oJe-8G-a1t">
-                                                    <rect key="frame" x="0.0" y="0.0" width="250" height="44"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="210" height="44"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </view>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" id="803-fB-06x">
-                                                    <rect key="frame" x="54" y="7" width="184" height="32"/>
+                                                    <rect key="frame" x="54" y="5" width="184" height="32"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="rd4-t3-blb">
@@ -67,7 +67,7 @@
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="251" height="45"/>
+                    <size key="freeformSize" width="211" height="45"/>
                     <connections>
                         <outlet property="authorLabel" destination="rd4-t3-blb" id="b6F-GF-lh3"/>
                         <outlet property="containerView" destination="s8A-QO-Jkh" id="bRN-VT-T9b"/>
