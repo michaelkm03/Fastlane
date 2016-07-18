@@ -269,7 +269,11 @@ class ChatFeedMessageCell: UICollectionViewCell {
     }
     
     static func previewSize(displaying content: ContentModel, inWidth width: CGFloat) -> CGSize? {
-        return content.mediaSize?.preferredSize(clampedToWidth: width - nonContentWidth)
+        guard content.type.hasMedia else {
+            return nil
+        }
+        
+        return content.mediaSize?.preferredSize(clampedToWidth: width - nonContentWidth) ?? CGSize(width: width / 2, height: width / 2)
     }
     
     private static var nonContentWidth: CGFloat {
