@@ -57,7 +57,8 @@ class VIPFlowNavigationController: UINavigationController, VIPGateViewController
             let successViewController = VIPSuccessViewController.newWithDependencyManager(successDependencyManager)
             successViewController.delegate = self
             showViewController(successViewController, sender: nil)
-        } else {
+        }
+        else {
             dismissAndCallCompletionWithSuccess(false)
         }
     }

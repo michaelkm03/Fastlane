@@ -111,7 +111,7 @@ private extension VDependencyManager {
             let font = fontForKey("font.successMessage"),
             let color = colorForKey("color.successMessage")
         else {
-                return nil
+            return nil
         }
         
         let paragraphStyle = NSMutableParagraphStyle()
@@ -132,7 +132,7 @@ private extension VDependencyManager {
             let font = fontForKey("font.successDetails"),
             let color = colorForKey("color.successDetails")
         else {
-                return nil
+            return nil
         }
         
         let paragraphStyle = NSMutableParagraphStyle()

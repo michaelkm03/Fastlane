@@ -31,6 +31,7 @@ class CrossFadingAnimationController: NSObject, UIViewControllerAnimatedTransiti
         else {
             return
         }
+        
         toView.alpha = 0.0
         let animations = {
             fromView.alpha = 0.0
