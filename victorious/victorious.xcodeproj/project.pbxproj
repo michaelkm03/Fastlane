@@ -477,7 +477,6 @@
 		0E06150B1CA35DDC00236D4A /* ForumEventReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E06150A1CA35DDC00236D4A /* ForumEventReceiver.swift */; };
 		0E0DF0CC1CDD3DE100C782EA /* UniqueIdentificationMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E0DF0CB1CDD3DE100C782EA /* UniqueIdentificationMessage.swift */; };
 		0E0EB0EA1CF8BBD900DD7E22 /* ChatMessage.json in Resources */ = {isa = PBXBuildFile; fileRef = 0E0EB0E91CF8BBD900DD7E22 /* ChatMessage.json */; };
-		0E17C2A91C9129B90013291C /* VideoAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E17C2A81C9129B90013291C /* VideoAsset.swift */; };
 		0E279B641CB854A80023156F /* CreateChatServiceTokenOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E279B631CB854A80023156F /* CreateChatServiceTokenOperationTests.swift */; };
 		0E4BF6B31CA60B5400B8A456 /* WebSocketEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E4BF6B21CA60B5400B8A456 /* WebSocketEvent.swift */; };
 		0E5991671CD84D8700ED7E6D /* NSDate+Initializers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E5991661CD84D8700ED7E6D /* NSDate+Initializers.swift */; };
@@ -507,7 +506,6 @@
 		0ECECD2C1D00E7520076CB92 /* ChatUserCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECECD2B1D00E7520076CB92 /* ChatUserCount.swift */; };
 		0ECECD2E1D010E7F0076CB92 /* ChatUserCount.json in Resources */ = {isa = PBXBuildFile; fileRef = 0ECECD2D1D010E7F0076CB92 /* ChatUserCount.json */; };
 		0EDED5D61CBD72F000FAF77E /* CreateChatServiceTokenRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EDED5D51CBD72F000FAF77E /* CreateChatServiceTokenRequestTests.swift */; };
-		0EE5C61B1C97818500BF7DB0 /* GifAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE5C61A1C97818500BF7DB0 /* GifAsset.swift */; };
 		0EF716891C98F8C60005CF86 /* SSLSecurity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF716871C98F8C60005CF86 /* SSLSecurity.swift */; };
 		0EF7168A1C98F8C60005CF86 /* WebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF716881C98F8C60005CF86 /* WebSocket.swift */; };
 		0EF7168D1C98FE5E0005CF86 /* WebSocketController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF7168C1C98FE5E0005CF86 /* WebSocketController.swift */; };
@@ -2929,7 +2927,6 @@
 		0E06150A1CA35DDC00236D4A /* ForumEventReceiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ForumEventReceiver.swift; path = WebSocket/ForumEventReceiver.swift; sourceTree = "<group>"; };
 		0E0DF0CB1CDD3DE100C782EA /* UniqueIdentificationMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UniqueIdentificationMessage.swift; path = WebSocket/UniqueIdentificationMessage.swift; sourceTree = "<group>"; };
 		0E0EB0E91CF8BBD900DD7E22 /* ChatMessage.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ChatMessage.json; sourceTree = "<group>"; };
-		0E17C2A81C9129B90013291C /* VideoAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoAsset.swift; sourceTree = "<group>"; };
 		0E279B631CB854A80023156F /* CreateChatServiceTokenOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateChatServiceTokenOperationTests.swift; sourceTree = "<group>"; };
 		0E4BF6B21CA60B5400B8A456 /* WebSocketEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebSocketEvent.swift; path = WebSocket/WebSocketEvents/WebSocketEvent.swift; sourceTree = "<group>"; };
 		0E5991661CD84D8700ED7E6D /* NSDate+Initializers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+Initializers.swift"; sourceTree = "<group>"; };
@@ -2959,7 +2956,6 @@
 		0ECECD2D1D010E7F0076CB92 /* ChatUserCount.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ChatUserCount.json; sourceTree = "<group>"; };
 		0EDED5D51CBD72F000FAF77E /* CreateChatServiceTokenRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateChatServiceTokenRequestTests.swift; sourceTree = "<group>"; };
 		0EDFBEAC1C91FAFE00325332 /* MediaMetaData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaMetaData.swift; sourceTree = "<group>"; };
-		0EE5C61A1C97818500BF7DB0 /* GifAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GifAsset.swift; sourceTree = "<group>"; };
 		0EF716871C98F8C60005CF86 /* SSLSecurity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SSLSecurity.swift; path = Starscream/Source/SSLSecurity.swift; sourceTree = "<group>"; };
 		0EF716881C98F8C60005CF86 /* WebSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebSocket.swift; path = Starscream/Source/WebSocket.swift; sourceTree = "<group>"; };
 		0EF7168C1C98FE5E0005CF86 /* WebSocketController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebSocketController.swift; path = WebSocket/WebSocketController.swift; sourceTree = "<group>"; };
@@ -5541,12 +5537,10 @@
 				BFC673631CE3C9C8004F9D3C /* ContentPreviewView */,
 				D89A50071A000D540010D050 /* Controls */,
 				7C28F1011D1DD94A0070B8AE /* CTAErrorState.swift */,
-				BE42842D19DDD0D800AEDBA6 /* DefaultProfileImages */,
 				BF7AF9C41D22F98500539D90 /* Error States */,
 				A776E00A1AE743F3001F25FF /* Floating Navigation View */,
 				D8DF71ED1AFD987B002EA7A5 /* Following */,
 				0314D34919B46B5E00FA363C /* Keyboard Bar */,
-				F0FBFA671CE1624D006318FC /* PersistentContentCreator.swift */,
 				D86528F01AE82AAC003832AC /* PollView */,
 				D85E427B1AFA982000A13BD3 /* SequencePreviewView */,
 				7A1C70A91CC8513B00A666F5 /* SideMenuController.swift */,
@@ -6265,7 +6259,6 @@
 				79D081A91BF1615E00E8A0C5 /* Conversation.swift */,
 				7992DF681C17ADFE004007A1 /* DeviceExperiment.swift */,
 				6759555E1BF157BA00D40A87 /* FanLoyalty.swift */,
-				0EE5C61A1C97818500BF7DB0 /* GifAsset.swift */,
 				C3FEA7941BF16AF1003446CC /* GIFSearchResult.swift */,
 				C314E6BE1BF13D2300FB9591 /* Hashtag.swift */,
 				670C658C1C52AC6200BD7F3F /* HashtagShelf.swift */,
@@ -6292,7 +6285,6 @@
 				A7F843611BFD0BFD004C3D55 /* Tracking.swift */,
 				03314F5C1BE40F3200EE74FD /* User.swift */,
 				670C65881C52AC0000BD7F3F /* Usershelf.swift */,
-				0E17C2A81C9129B90013291C /* VideoAsset.swift */,
 				A7559A791CCFD93B00C37349 /* VIPStatus.swift */,
 				678053791C60838800894821 /* VoteResult.swift */,
 			);
@@ -11932,7 +11924,6 @@
 				A778CB6F1C4753E3007DF0C2 /* MediaAttachment.swift in Sources */,
 				A7EF1BCF1BF2754D00D429DE /* Stream.swift in Sources */,
 				A7EF1BCC1BF2754D00D429DE /* Node.swift in Sources */,
-				0E17C2A91C9129B90013291C /* VideoAsset.swift in Sources */,
 				A7D15DD61CBED6610039761B /* DictionaryConvertible.swift in Sources */,
 				A734AF1A1C499C9100ECA324 /* MessageRequestBodyWriter.swift in Sources */,
 				C323C3B71BF55F6600681059 /* CommentEditRequest.swift in Sources */,
@@ -12075,7 +12066,6 @@
 				670C658B1C52AC0F00BD7F3F /* ListShelf.swift in Sources */,
 				A7039CE11C24867C0023DE6F /* CreateAlertRequest.swift in Sources */,
 				67C5C5351C0009FC00F99C8C /* SequenceDetailListByUserRequest.swift in Sources */,
-				0EE5C61B1C97818500BF7DB0 /* GifAsset.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
