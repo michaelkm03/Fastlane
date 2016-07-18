@@ -238,9 +238,11 @@ class StageShrinkingAnimator: NSObject {
     private func progressThroughPanOnStage(forTranslation translation: CGPoint) -> CGFloat {
         if stageState == .expanded && translation.y > 0 {
             return 0
-        } else if stageState == .shrunken && translation.y <= 0 {
+        }
+        else if stageState == .shrunken && translation.y <= 0 {
             return 1
-        } else {
+        }
+        else {
             let progress = max(min(fabs(-translation.y) / Constants.dragMagnitude, 1), 0)
             return stageState == .expanded ? progress : 1 - progress
         }
