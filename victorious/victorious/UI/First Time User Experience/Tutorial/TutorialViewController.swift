@@ -8,16 +8,7 @@
 
 import UIKit
 
-class TutorialViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, TutorialNetworkDataSourceDelegate, VBackgroundContainer {
-    
-    @IBOutlet private weak var collectionView: UICollectionView! {
-        didSet {
-            collectionView.dataSource = collectionViewDataSource
-            collectionView.delegate = self
-            collectionView.backgroundColor = nil
-            collectionView.scrollEnabled = false
-        }
-    }
+class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, TutorialNetworkDataSourceDelegate, VBackgroundContainer {
     
     @IBOutlet private weak var continueButton: UIButton! {
         didSet {
@@ -30,9 +21,26 @@ class TutorialViewController: UIViewController, UICollectionViewDelegate, UIColl
         }
     }
     
-    private var dependencyManager: VDependencyManager!
+    private var edgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 60, right: 0)
     
-    lazy private var collectionViewDataSource: ChatInterfaceDataSource = {
+    private var timerManager: VTimerManager?
+    
+    var onContinue: (() -> Void)?
+    
+    // MARK: - ChatFeed
+    
+    weak var nextSender: ForumEventSender? = nil
+    var dependencyManager: VDependencyManager!
+    
+    @IBOutlet private(set) weak var collectionView: UICollectionView! {
+        didSet {
+            collectionView.dataSource = chatInterfaceDataSource
+            collectionView.delegate = self
+            collectionView.backgroundColor = nil
+        }
+    }
+    
+    lazy private(set) var chatInterfaceDataSource: ChatInterfaceDataSource = {
         let mainFeedDependency: VDependencyManager = self.dependencyManager.childDependencyForKey("mainFeed") ?? self.dependencyManager
         let dataSource = TutorialCollectionViewDataSource(dependencyManager: mainFeedDependency)
         dataSource.delegate = self
@@ -41,11 +49,13 @@ class TutorialViewController: UIViewController, UICollectionViewDelegate, UIColl
         return dataSource
     }()
     
-    private var edgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 60, right: 0)
+    func setTopInset(value: CGFloat) {
+        // Do nothing for tutorial screen
+    }
     
-    private var timerManager: VTimerManager?
-    
-    var onContinue: (() -> Void)?
+    func setBottomInset(value: CGFloat) {
+        // Do nothing for tutorial screen
+    }
 
     // MARK: - Initialization
     
@@ -76,22 +86,13 @@ class TutorialViewController: UIViewController, UICollectionViewDelegate, UIColl
         
         dependencyManager.addBackgroundToBackgroundHost(self)
         dependencyManager.applyStyleToNavigationBar(navigationController?.navigationBar)
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        startTimestampUpdate()
-    }
-    
-    override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
-        stopTimestampUpdate()
+        dependencyManager.configureNavigationItem(navigationController?.navigationBar.topItem)
     }
     
     // MARK: - UICollectionViewFlowLayoutDelegate
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        return collectionViewDataSource.desiredCellSize(for: collectionView, at: indexPath)
+        return chatInterfaceDataSource.desiredCellSize(for: collectionView, at: indexPath)
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
@@ -100,62 +101,25 @@ class TutorialViewController: UIViewController, UICollectionViewDelegate, UIColl
     
     // MARK: - TutorialNetworkDataSourceDelegate
     
-    func didUpdateVisibleItems(from oldValue: [ContentModel], to newValue: [ContentModel]) {
-        
-        collectionView.reloadData()
-        CATransaction.begin()
-        let targetInset = max(self.collectionView.bounds.height, 0.0)
-        self.edgeInsets.top = targetInset
-        self.collectionView.collectionViewLayout.invalidateLayout()
-        CATransaction.setCompletionBlock() {
-            // Schedule this on next run cycle to make sure the collection view's content is updated
-            // before we can scroll to bottom
-            dispatch_after(0.0) {
-                self.collectionView.v_scrollToBottomAnimated(true)
-            }
-        }
-        CATransaction.commit()
+    func didReceiveNewMessage(message: ChatFeedContent) {
+        handleNewItems([message], loadingType: .newer)
     }
 
     func didFinishFetchingAllItems() {
-        collectionView.scrollEnabled = true
         continueButton.hidden = false
         UIView.animateWithDuration(1.0) { [weak self] in
             self?.continueButton.alpha = 1.0
         }
     }
     
+    var chatFeedItemWidth: CGFloat {
+        return collectionView.bounds.width
+    }
+    
     // MARK: - VBackgroundContainer
     
     func backgroundContainerView() -> UIView {
         return view
-    }
-    
-    // MARK: - Timestamp update timer
-    
-    private func stopTimestampUpdate() {
-        timerManager?.invalidate()
-        timerManager = nil
-    }
-    
-    private func startTimestampUpdate() {
-        guard timerManager == nil else {
-            return
-        }
-        timerManager = VTimerManager.addTimerManagerWithTimeInterval(
-            ChatFeedViewController.timestampUpdateInterval,
-            target: self,
-            selector: #selector(onTimerTick),
-            userInfo: nil,
-            repeats: true,
-            toRunLoop: NSRunLoop.mainRunLoop(),
-            withRunMode: NSRunLoopCommonModes
-        )
-        onTimerTick()
-    }
-    
-    func onTimerTick() {
-        collectionViewDataSource.updateTimeStamps(in: collectionView)
     }
 }
 

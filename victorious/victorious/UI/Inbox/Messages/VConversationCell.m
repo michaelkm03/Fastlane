@@ -8,7 +8,6 @@
 
 #import "VConversationCell.h"
 #import "VUserProfileViewController.h"
-#import "VDefaultProfileButton.h"
 #import "VConversation.h"
 #import "victorious-Swift.h"
 
@@ -22,7 +21,7 @@ static const CGFloat kBaselineOffset = 0.5f;
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *messageLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
-@property (weak, nonatomic) IBOutlet VDefaultProfileButton *profileButton;
+@property (weak, nonatomic) IBOutlet UIButton *profileButton;
 
 @end
 
@@ -50,7 +49,6 @@ static const CGFloat kBaselineOffset = 0.5f;
         self.messageLabel.font = [dependencyManager fontForKey:VDependencyManagerLabel2FontKey];
         self.usernameLabel.font = [dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
         self.usernameLabel.textColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-        self.profileButton.dependencyManager = dependencyManager;
         self.profileButton.tintColor = [dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     }
 }
@@ -85,7 +83,6 @@ static const CGFloat kBaselineOffset = 0.5f;
     
     self.messageLabel.attributedText = [[NSAttributedString alloc] initWithString:lastMessageText attributes:@{ NSParagraphStyleAttributeName : paragraphStyle, NSBaselineOffsetAttributeName  : @(kBaselineOffset) }];
     self.dateLabel.text = [conversation.postedAt stringDescribingTimeIntervalSinceNow];
-    self.profileButton.user = conversation.user;
 }
 
 - (IBAction)profileButtonAction:(id)sender

@@ -13,7 +13,6 @@
 #import "VConstants.h"
 #import "VNavigationController.h"
 #import "VTemplateBackgroundView.h"
-#import "VDefaultProfileImageView.h"
 #import "UIImageView+VLoadingAnimations.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "VEditProfilePicturePresenter.h"
@@ -27,7 +26,7 @@ static const CGFloat kBlurredWhiteAlpha = 0.3f;
 @interface VAbstractProfileEditViewController () <VContentInputAccessoryViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UILabel *tagLinePlaceholderLabel;
-@property (nonatomic, weak) IBOutlet VDefaultProfileImageView *profileImageView;
+@property (nonatomic, weak) IBOutlet UIImageView *profileImageView;
 @property (nonatomic, weak) IBOutlet UIButton *cameraButton;
 
 @property (nonatomic, weak) IBOutlet UITableViewCell *captionCell;
@@ -136,14 +135,6 @@ static const CGFloat kBlurredWhiteAlpha = 0.3f;
 
 - (void)applySyle
 {
-    self.profileImageView.layer.masksToBounds = YES;
-    self.profileImageView.layer.cornerRadius = CGRectGetHeight(self.profileImageView.bounds)/2;
-    self.profileImageView.clipsToBounds = YES;
-    self.profileImageView.layer.borderWidth = 2.0;
-    self.profileImageView.layer.borderColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey].CGColor;
-    self.profileImageView.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-    self.profileImageView.backgroundColor = [UIColor whiteColor];
-    
     self.usernameTextField.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     self.usernameTextField.textColor = [UIColor colorWithWhite:kTextColor alpha:1.0f];
     self.usernameTextField.font = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
@@ -172,20 +163,6 @@ static const CGFloat kBlurredWhiteAlpha = 0.3f;
     self.tableView.backgroundView = backgroundImageView;
     self.backgroundImageView = backgroundImageView;
     self.edgesForExtendedLayout = UIRectEdgeAll;
-    
-    // Set profile images
-    NSURL *profileImageURL = [profile pictureURLOfMinimumSize:self.profileImageView.frame.size];
-    
-    if (profileImageURL != nil)
-    {
-        [backgroundImageView applyTintAndBlurToImageWithURL:profileImageURL
-                                              withTintColor:[UIColor colorWithWhite:1.0 alpha:kBlurredWhiteAlpha]];
-        [self.profileImageView setProfileImageURL:profileImageURL];
-    }
-    else
-    {
-        self.tableView.backgroundView = [[VTemplateBackgroundView alloc] initWithFrame:self.tableView.bounds];
-    }
 }
 
 #pragma mark - Actions
@@ -200,7 +177,6 @@ static const CGFloat kBlurredWhiteAlpha = 0.3f;
         {
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectImageForEditProfile];
             
-            welf.profileImageView.image = previewImage;
             welf.updatedProfileImage = mediaURL;
             
             [welf.backgroundImageView setBlurredImageWithClearImage:previewImage

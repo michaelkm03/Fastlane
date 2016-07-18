@@ -25,8 +25,6 @@
 #import "VBarButton.h"
 #import "VDependencyManager+VNavigationItem.h"
 #import "VDependencyManager+VAccessoryScreens.h"
-#import "VProfileDeeplinkHandler.h"
-#import "VInboxDeepLinkHandler.h"
 #import "VFloatingUserProfileHeaderViewController.h"
 #import "UIViewController+VAccessoryScreens.h"
 #import "VUsersViewController.h"
@@ -292,11 +290,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     {
         return;
     }
-    
-    if ( self.user.isCurrentUser )
-    {
-        self.profileHeaderViewController.state = VUserProfileHeaderStateCurrentUser;
-    }
 }
 
 - (void)reloadUserFollowingRelationship
@@ -310,12 +303,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)updateProfileHeaderState
 {
-    if ( self.user.isCurrentUser )
-    {
-        self.profileHeaderViewController.state = VUserProfileHeaderStateCurrentUser;
-        return;
-    }
-    
     id<VUserProfileHeader> header = self.profileHeaderViewController;
     if ( header == nil )
     {
@@ -447,8 +434,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
         return;
     }
     
-    self.representsMainUser = [VCurrentUser user].isCurrentUser;
-    
     [self initializeProfileHeader];
     
     __weak typeof(self) welf = self;
@@ -475,10 +460,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
     {
         return nil;
     }
-    else if ( !self.user.isCurrentUser )
-    {
-        return self.user.name;
-    }
     
     return [super title];
 }
@@ -497,15 +478,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)primaryActionHandler
 {
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectEditProfile];
-    if ( self.user.isCurrentUser )
-    {
-        [self performSegueWithIdentifier:kEditProfileSegueIdentifier sender:self];
-    }
-    else
-    {
-        [self toggleFollowUser];
-    }
 }
 
 - (void)followerHandler
@@ -521,19 +493,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)followingHandler
 {
-    if (self.user.isCurrentUser)
-    {
-        [self performSegueWithIdentifier:@"toHashtagsAndFollowing" sender:self];
-    }
-    else
-    {
-        VDependencyManager *childDependencyManager = [self.dependencyManager childDependencyManagerWithAddedConfiguration:@{}];
-        VUsersViewController *usersViewController = [[VUsersViewController alloc] initWithDependencyManager:childDependencyManager];
-        usersViewController.title = NSLocalizedString( @"Following", nil );
-        usersViewController.usersDataSource = [[VUserIsFollowingDataSource alloc] initWithUser:self.user];
-        usersViewController.usersViewContext = VUsersViewContextFollowing;
-        [self.navigationController pushViewController:usersViewController animated:YES];
-    }
 }
 
 #pragma mark - User Actions
@@ -608,16 +567,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (void)updateTitleVisibilityWithVerticalOffset:(CGFloat)verticalOffset
 {
-    NSString *title = [self.dependencyManager stringForKey:VDependencyManagerTitleKey];
-    if ([self isDisplayingFloatingProfileHeader] && self.user.isCurrentUser)
-    {
-        BOOL shouldHideTitle = [(VStreamNavigationViewFloatingController *)self.navigationViewfloatingController visibility] > 0.4f;
-        self.navigationItem.title = shouldHideTitle ? @"" : title;
-    }
-    else if (self.user.isCurrentUser)
-    {
-        self.navigationItem.title = title;
-    }
 }
 
 #pragma mark - VStreamCollectionDataDelegate
@@ -739,36 +688,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 
 - (BOOL)shouldNavigateWithAccessoryMenuItem:(VNavigationMenuItem *)menuItem
 {
-    if ( [menuItem.destination isKindOfClass:[VConversationContainerViewController class]] )
-    {
-        if ( self.user.isCurrentUser )
-        {
-            return NO;
-        }
-        else
-        {
-            // Fetch the conversation or create a new one
-            VDependencyManager *destinationDependencyManager = ((VConversationContainerViewController *)menuItem.destination).dependencyManager;
-            ConversationForUserOperation *operation = [[ConversationForUserOperation alloc] initWithUserID:self.user.remoteId.integerValue];
-            [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
-             {
-                 VConversation *conversation = operation.loadedConversation;
-                 if ( conversation != nil )
-                 {
-                     VConversationContainerViewController *viewController = [VConversationContainerViewController newWithDependencyManager:destinationDependencyManager];
-                     viewController.conversation = conversation;
-                     [self.navigationController pushViewController:viewController animated:YES];
-                 }
-             }];
-            
-            return NO;
-        }
-    }
-    else if ( [menuItem.destination isKindOfClass:[VFindFriendsViewController class]] )
-    {
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectFindFriends];
-    }
-    
     return YES;
 }
 

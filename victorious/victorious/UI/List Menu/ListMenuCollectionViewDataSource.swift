@@ -33,10 +33,12 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
     let creatorDataSource: ListMenuCreatorDataSource
     
     private lazy var subscribeButton: UIButton = {
-        // FUTURE: Make this styled via template once available
-        let button = UIButton(type: .Custom)
+        let button = BackgroundButton(type: .System)
+        button.tintColor = self.dependencyManager.subscribeButtonTextColor
+        button.backgroundColor = self.dependencyManager.subscribeButtonBackgroundColor
+        button.titleLabel?.font = self.dependencyManager.subscribeButtonFont
         button.addTarget(self, action: #selector(onSubscribePressed), forControlEvents: .TouchUpInside)
-        button.setTitle("subscribe", forState: .Normal)
+        button.setTitle("Go VIP", forState: .Normal)
         return button
     }()
     
@@ -116,7 +118,12 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
     // MARK: - Actions
     
     @objc private func onSubscribePressed() {
-        ShowForumOperation(originViewController: dependencyManager.scaffoldViewController(), dependencyManager: dependencyManager, showVIP: true).queue()
+        guard let scaffold = VRootViewController.sharedRootViewController()?.scaffold else {
+            return
+        }
+        let router = Router(originViewController: scaffold, dependencyManager: dependencyManager)
+        let destination = DeeplinkDestination.vipForum
+        router.navigate(to: destination)
     }
     
     // MARK: - List Menu Network Data Source Delegate
@@ -162,7 +169,6 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
 }
 
 private extension VDependencyManager {
-    
     var creatorsChildDependency: VDependencyManager {
         return self.childDependencyForKey("creators") ?? self
     }
@@ -177,5 +183,19 @@ private extension VDependencyManager {
     
     var activityIndicatorColor: UIColor? {
         return colorForKey(VDependencyManagerMainTextColorKey)
+    }
+    
+    // FUTURE: Make this styled via template once available
+    
+    var subscribeButtonFont: UIFont? {
+        return UIFont.systemFontOfSize(14.0, weight: UIFontWeightSemibold)
+    }
+    
+    var subscribeButtonTextColor: UIColor? {
+        return UIColor(white: 1.0, alpha: 1.0)
+    }
+    
+    var subscribeButtonBackgroundColor: UIColor? {
+        return UIColor(white: 1.0, alpha: 0.15)
     }
 }

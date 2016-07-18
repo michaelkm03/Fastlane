@@ -13,11 +13,5 @@ extension VStreamItemPointer: PersistenceParsable {
     func populate( fromSourceModel sourceSequence: Sequence ) {
         
         headline = sourceSequence.headline ?? headline
-        
-        if let trackingData = sourceSequence.tracking {
-            let tracking = v_managedObjectContext.v_createObject() as VTracking
-            tracking.populate(fromSourceModel: trackingData)
-            self.tracking = tracking
-        }
     }
 }

@@ -8,9 +8,18 @@
 
 import UIKit
 
+struct ListMenuSelectedItem {
+    let streamAPIPath: APIPath
+    let title: String?
+}
+
 /// View Controller for the entire List Menu Component, which is currently being displayed as the left navigation pane
 /// of a sliding scaffold.
 class ListMenuViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, VCoachmarkDisplayer, VNavigationDestination, VBackgroundContainer {
+    
+    // MARK: - Configuration
+    
+    private static let contentInset = UIEdgeInsets(top: 20.0, left: 0.0, bottom: 0.0, right: 0.0)
     
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
@@ -30,12 +39,20 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     static func newWithDependencyManager(dependencyManager: VDependencyManager) -> ListMenuViewController {
         let viewController = self.v_initialViewControllerFromStoryboard() as ListMenuViewController
         viewController.dependencyManager = dependencyManager
-        dependencyManager.addBackgroundToBackgroundHost(viewController)
-        
         return viewController
     }
     
     // MARK: - View events
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        collectionView?.contentInset = ListMenuViewController.contentInset
+        dependencyManager.addBackgroundToBackgroundHost(self)
+        view.layoutIfNeeded()
+        
+        // Hack to show the creator logo
+        postListMenuSelection(nil)
+    }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -48,25 +65,48 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     
     // MARK: - Notifications
     
+    private func selectCreator(atIndex index: Int) {
+        guard let scaffold = VRootViewController.sharedRootViewController()?.scaffold as? Scaffold else {
+            return
+        }
+        
+        let creator = collectionViewDataSource.creatorDataSource.visibleItems[index]
+        let destination = DeeplinkDestination(userID: creator.id)
+        
+        // Had to trace down the inner navigation controller because List Menu has no idea where it is - and it doesn't have navigation stack either.
+        let router = Router(originViewController: scaffold.mainNavigationController.innerNavigationController, dependencyManager: dependencyManager)
+        
+        router.navigate(to: destination)
+        
+        // This notification closes the side view controller
+        NSNotificationCenter.defaultCenter().postNotificationName(
+            RESTForumNetworkSource.updateStreamURLNotification,
+            object: nil,
+            userInfo: nil
+        )
+    }
+    
     private func selectCommunity(atIndex index: Int) {
         let item = collectionViewDataSource.communityDataSource.visibleItems[index]
         
         // Index 0 should correspond to the home feed, so we broadcast a nil path to denote an unfiltered feed.
-        postStreamAPIPath(index == 0 ? nil : item.streamAPIPath)
+        postListMenuSelection(index == 0 ? nil : ListMenuSelectedItem(streamAPIPath: item.streamAPIPath, title: item.title))
     }
     
     private func selectHashtag(atIndex index: Int) {
         let item = collectionViewDataSource.hashtagDataSource.visibleItems[index]
         var apiPath = collectionViewDataSource.hashtagDataSource.hashtagStreamAPIPath
         apiPath.macroReplacements["%%HASHTAG%%"] = item.tag
-        postStreamAPIPath(apiPath)
+        let selectedTagItem = ListMenuSelectedItem(streamAPIPath: apiPath, title: "#\(item.tag)")
+        
+        postListMenuSelection(selectedTagItem)
     }
     
-    private func postStreamAPIPath(streamAPIPath: APIPath?) {
+    private func postListMenuSelection(listMenuSelection: ListMenuSelectedItem?) {
         NSNotificationCenter.defaultCenter().postNotificationName(
             RESTForumNetworkSource.updateStreamURLNotification,
             object: nil,
-            userInfo: streamAPIPath.flatMap { ["streamAPIPath": ReferenceWrapper($0)] }
+            userInfo: listMenuSelection.flatMap { ["selectedItem": ReferenceWrapper($0)] }
         )
     }
     
@@ -96,14 +136,31 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     
     // MARK: - UICollectionView Delegate
     
+    private var lastSelectedIndexPath: NSIndexPath?
+    
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         
         let listMenuSection = ListMenuSection(rawValue: indexPath.section)!
         
         switch listMenuSection {
-            case .creator: break
-            case .community: selectCommunity(atIndex: indexPath.item)
-            case .hashtags: selectHashtag(atIndex: indexPath.item)
+            case .creator:
+                selectCreator(atIndex: indexPath.item)
+                
+                // Hack to get the selection to work. Otherwise, the previous state would not appear to be selected
+                // until touching the collectionView.
+                collectionView.performBatchUpdates(nil, completion: { [weak self] _ in
+                    collectionView.selectItemAtIndexPath(
+                        self?.lastSelectedIndexPath,
+                        animated: true,
+                        scrollPosition: .None
+                    )
+                })
+            case .community:
+                selectCommunity(atIndex: indexPath.item)
+                lastSelectedIndexPath = indexPath
+            case .hashtags:
+                selectHashtag(atIndex: indexPath.item)
+                lastSelectedIndexPath = indexPath
         }
     }
     
@@ -115,7 +172,6 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
             case .community: validIndices = collectionViewDataSource.communityDataSource.visibleItems.indices
             case .hashtags: validIndices = collectionViewDataSource.hashtagDataSource.visibleItems.indices
         }
-        
         return validIndices ~= indexPath.row
     }
     

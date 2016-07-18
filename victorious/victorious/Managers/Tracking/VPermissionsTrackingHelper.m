@@ -7,7 +7,7 @@
 //
 
 #import "VPermissionsTrackingHelper.h"
-#import "VTracking.h"
+#import "victorious-Swift.h"
 #import "VPermissionCamera.h"
 #import "VPermissionMicrophone.h"
 #import "VPermissionPhotoLibrary.h"

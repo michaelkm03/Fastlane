@@ -12,19 +12,25 @@ import XCTest
 struct TrackingManagerCall {
     let eventName: String?
     let parameters: [NSObject : AnyObject]?
+    let sessionParameters: [NSObject : AnyObject]?
 }
 
 class TestTrackingManager: NSObject, VEventTracker {
 
     var trackEventCalls = [TrackingManagerCall]()
+    
+    func trackEvent(eventName: String?, parameters: [NSObject : AnyObject]?, sessionParameters: [NSObject : AnyObject]?) {
+        let call = TrackingManagerCall(eventName: eventName, parameters: parameters, sessionParameters: sessionParameters)
+        self.trackEventCalls.append(call)
+    }
 
     func trackEvent(eventName: String?, parameters: [NSObject: AnyObject]? ) {
-        let call = TrackingManagerCall(eventName: eventName, parameters: parameters)
-        self.trackEventCalls.append( call )
+        let call = TrackingManagerCall(eventName: eventName, parameters: parameters, sessionParameters: nil)
+        self.trackEventCalls.append(call)
     }
 
     func trackEvent(eventName: String?) {
-        let call = TrackingManagerCall(eventName: eventName, parameters: nil)
-        self.trackEventCalls.append( call )
+        let call = TrackingManagerCall(eventName: eventName, parameters: nil, sessionParameters: nil)
+        self.trackEventCalls.append(call)
     }
 }

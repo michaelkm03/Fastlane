@@ -9,19 +9,29 @@
 import Foundation
 
 protocol Stage: class, ForumEventReceiver {
-    
     weak var delegate: StageDelegate? { get set }
     
     var dependencyManager: VDependencyManager! { get set }
     
-    /// Replaces the currently content on the stage with the new one.
+    /// This will allow callers to change the opacity of overlays in the stage (caption/attribution/refresh pill)
+    var overlayUIAlpha: CGFloat { get set }
+    
+    var canHandleCaptionContent: Bool { get }
+    
+    /// Replaces the current content on the stage with the new one.
     func addContent(stageContent: ContentModel)
+    
+    /// Shows the caption of the provided content in the caption bar (if provided in the template)
+    func addCaptionContent(content: ContentModel)
     
     /// Removes the current content on the stage.
     func removeContent()
+    
+    /// Determines whether the stage component is enabled to show up.
+    func setStageEnabled(enabled: Bool, animated: Bool)
 }
 
 /// Conformers will recieve messages related to the stage resizing.
 protocol StageDelegate: class {
-    func stage(stage: Stage, didUpdateContentHeight size: CGFloat)
+    func stage(stage: Stage, wantsUpdateToContentHeight size: CGFloat)
 }

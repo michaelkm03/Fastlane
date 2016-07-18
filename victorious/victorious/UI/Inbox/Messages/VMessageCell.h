@@ -10,7 +10,7 @@
 #import "VFocusable.h"
 #import "VCellWithProfileDelegate.h"
 
-@class VDefaultProfileImageView, VMessage;
+@class VMessage;
 
 extern NSString * const kVMessageCellNibName;
 
@@ -18,7 +18,6 @@ extern NSString * const kVMessageCellNibName;
 
 @property (nonatomic, weak, readonly) IBOutlet VMessageTextAndMediaView *messageTextAndMediaView;
 @property (nonatomic, weak, readonly) IBOutlet UILabel *timeLabel;
-@property (nonatomic, weak, readonly) IBOutlet VDefaultProfileImageView *profileImageView;
 @property (nonatomic, weak) id<VCellWithProfileDelegate> profileDelegate;
 @property (nonatomic) BOOL profileImageOnRight; ///< If YES, the profile image is to the right of the chat bubble
 

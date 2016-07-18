@@ -9,15 +9,13 @@
     "page_number": 1,
     "total_pages": 1,
     "experiment_ids": [2, 0, 1, 3],
-    "payload": [{
-                "id": "760",
-                "tag": "surfing",
-                "count": "1",
-                "am_following": false
-                }, {
-                "id": "761",
-                "tag": "bikes",
-                "count": "1",
-                "am_following": false
-                }]
+    "payload":
+        {
+        "hashtags": [{
+                        "hashtag": "surfing",
+                     }, {
+                        "hashtag": "bikes",
+                     }]
+        
+        }
 }

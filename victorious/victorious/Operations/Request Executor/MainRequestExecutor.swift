@@ -36,13 +36,13 @@ class MainRequestExecutor: RequestExecutorType {
     
     var cancelled: Bool = false
     
-    func executeRequest<T: RequestType>(request: T, onComplete: (T.ResultType -> ())?, onError: (NSError->())?) {
+    func executeRequest<T: RequestType>(request: T, onComplete: (T.ResultType -> ())?, onError: (NSError -> ())?) {
         
         let currentEnvironment = VEnvironmentManager.sharedInstance().currentEnvironment
         let requestContext = RequestContext(environment: currentEnvironment)
         let baseURL = request.baseURL ?? currentEnvironment.baseURL
         
-        let authenticationContext: AuthenticationContext? = dispatch_sync( dispatch_get_main_queue() ) {
+        let authenticationContext: AuthenticationContext? = dispatch_sync(dispatch_get_main_queue()) {
             return AuthenticationContext(currentUser: VCurrentUser.user())
         }
         
@@ -55,29 +55,41 @@ class MainRequestExecutor: RequestExecutorType {
             requestContext: requestContext,
             authenticationContext: authenticationContext,
             callback: { (result, error) in
-                dispatch_async( dispatch_get_main_queue() ) {
+                dispatch_async(dispatch_get_main_queue()) {
                     defer {
-                        dispatch_semaphore_signal( executeSemphore )
+                        dispatch_semaphore_signal(executeSemphore)
                     }
-                    if self.cancelled {
+
+                    guard !self.cancelled else {
                         return
-                    
-                    } else if let error = error as? RequestErrorType {
-                        let nsError = NSError(error)
+                    }
+
+                    if let nsError = self.convertError(error) {
                         self.error = nsError
-                        self.handleError( nsError )
-                        onError?( nsError )
-                        
+                        self.handleError(nsError)
+                        onError?(nsError)
                     } else if let result = result {
                         if !result.alerts.isEmpty {
-                            self.alertsReceiver.onAlertsReceived( result.alerts )
+                            self.alertsReceiver.receive(result.alerts)
                         }
-                        onComplete?( result.result )
+                        onComplete?(result.result)
                     }
                 }
             }
         )
-        dispatch_semaphore_wait( executeSemphore, DISPATCH_TIME_FOREVER )
+        dispatch_semaphore_wait(executeSemphore, DISPATCH_TIME_FOREVER)
         networkActivityIndicator.stop()
+    }
+    
+    private func convertError(error: ErrorType?) -> NSError? {
+        guard let error = error else {
+            return nil
+        }
+        if let requestError = error as? RequestErrorType {
+            return NSError(requestError)
+        }
+        else {
+            return error as NSError
+        }
     }
 }

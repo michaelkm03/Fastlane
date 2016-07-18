@@ -10,23 +10,19 @@ import UIKit
 
 /// A template driven .screen component that sets up, houses and mediates the interaction
 /// between the Forum's required concrete implementations and abstract dependencies.
-class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocusable, PersistentContentCreator, UploadManagerHost {
-
-    @IBOutlet private weak var stageContainer: UIView! {
-        didSet {
-            stageContainer.layer.shadowColor = UIColor.blackColor().CGColor
-            stageContainer.layer.shadowRadius = 8.0
-            stageContainer.layer.shadowOpacity = 0.75
-            stageContainer.layer.shadowOffset = CGSize(width:0, height:2)
-        }
-    }
-    
+class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocusable, UploadManagerHost {
+    @IBOutlet private weak var stageContainer: UIView!
+    @IBOutlet private weak var stageViewControllerContainer: VPassthroughContainerView!
+    @IBOutlet private weak var stageTouchView: UIView!
     @IBOutlet private weak var stageContainerHeight: NSLayoutConstraint! {
         didSet {
             stageContainerHeight.constant = 0.0
         }
     }
+    @IBOutlet private weak var chatFeedContainer: VPassthroughContainerView!
 
+    private var stageShrinkingAnimator: StageShrinkingAnimator?
+    
     #if V_ENABLE_WEBSOCKET_DEBUG_MENU
         private lazy var debugMenuHandler: DebugMenuHandler = {
             return DebugMenuHandler(targetViewController: self)
@@ -58,52 +54,44 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         switch event {
             case .websocket(let websocketEvent):
                 switch websocketEvent {
-                    case .Disconnected(let webSocketError):
-                        if isViewLoaded() {
-                            v_showAlert(title: "Disconnected from chat server", message: "Reconnecting soon.\n(error: \(webSocketError))", completion: nil)
-                        }
+                    case .disconnected(_) where isViewLoaded():
+                        // FUTURE: fetch the localized string from a new node in the template, depending on what the error type is.
+                        let alert = Alert(title: "Reconnecting to server...", type: .reconnectingError)
+                        InterstitialManager.sharedInstance.receive(alert)
                     default:
                         break
                 }
             case .chatUserCount(let userCount):
+                // A chat user count message is the only confirmed way of knowing that the connection is open, since our backend always accepts our connection before validating everything is ok.
+                InterstitialManager.sharedInstance.dismissCurrentInterstitial(of: .reconnectingError)
                 navBarTitleView?.activeUserCount = userCount.userCount
             case .filterContent(let path):
+                // path will be nil for home feed, and non nil for filtered feed
                 composer?.setComposerVisible(path == nil, animated: true)
+                stage?.setStageEnabled(path == nil, animated: true)
             default:
                 break
         }
     }
     
     func send(event: ForumEvent) {
-        
         switch event {
-        case .sendContent(let content):
-            
-            guard let networkResources = dependencyManager.networkResources else {
-                let logMessage = "Didn't find a valid network resources dependency inside the forum!"
-                assertionFailure(logMessage)
-                v_log(logMessage)
-                nextSender?.send(event)
-                return
-            }
-            
-            createPersistentContent(content, networkResourcesDependency: networkResources) { [weak self] error in
-                
-                if let validError = error,
-                    let strongSelf = self {
-                    
-                    if let persistenceError = validError as? PersistentContentCreatorError where
-                        persistenceError.isInvalidNetworkResourcesError {
-                        //Encountered an error where the network resources were inadequate. This does NOT
-                        //represent an error state that should be messaged to the user.
-                    } else {
-                        strongSelf.v_showDefaultErrorAlert()
-                    }
-                }
-            }
-        default:()
+            case .sendContent(let content): publish(content)
+            default: break
         }
+        
         nextSender?.send(event)
+    }
+    
+    private func publish(content: ContentModel) {
+        guard
+            let publisher = (chatFeed?.chatInterfaceDataSource as? ChatFeedDataSource)?.publisher,
+            let width = chatFeed?.collectionView.frame.width
+        else {
+            return
+        }
+        
+        publisher.publish(content, withWidth: width)
     }
 
     // MARK: - ForumEventSender
@@ -164,7 +152,9 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
-        navigationController?.navigationBar.topItem?.titleView = navBarTitleView
+        if let navBarTitleView = navBarTitleView {
+            navigationController?.navigationBar.topItem?.titleView = navBarTitleView
+        }
         navBarTitleView?.sizeToFit()
         
         #if V_ENABLE_WEBSOCKET_DEBUG_MENU
@@ -198,6 +188,18 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        stageShrinkingAnimator = StageShrinkingAnimator(
+            stageContainer: stageContainer,
+            stageTouchView: stageTouchView,
+            stageViewControllerContainer: stageViewControllerContainer
+        )
+        stageShrinkingAnimator?.shouldHideKeyboardHandler = { [weak self] in
+            self?.view.endEditing(true)
+        }
+        stageShrinkingAnimator?.interpolateAlongside = {[weak self] percentage in
+            self?.stage?.overlayUIAlpha = 1 - percentage
+        }
         
         chatFeed?.nextSender = self
         //Initialize the title view. This will later be resized in the viewWillAppear, once it has actually been added to the navigation stack
@@ -267,7 +269,72 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         title = dependencyManager.title
         dependencyManager.applyStyleToNavigationBar(self.navigationController?.navigationBar)
         navigationController?.navigationBar.translucent = false
+        dependencyManager.applyStyleToNavigationBar(navigationController?.navigationBar)
+        
         dependencyManager.addBackgroundToBackgroundHost(self)
+    }
+
+    @IBAction private func tappedOnStage(sender: UITapGestureRecognizer) {
+        view.endEditing(true)
+    }
+    
+    // MARK: - ChatFeedDelegate
+    
+    func chatFeed(chatFeed: ChatFeed, didScroll scrollView: UIScrollView) {
+        stageShrinkingAnimator?.chatFeed(chatFeed, didScroll: scrollView)
+    }
+    
+    func chatFeed(chatFeed: ChatFeed, willBeginDragging scrollView: UIScrollView) {
+        stageShrinkingAnimator?.chatFeed(chatFeed, willBeginDragging: scrollView)
+    }
+    
+    func chatFeed(chatFeed: ChatFeed, willEndDragging scrollView: UIScrollView, withVelocity velocity: CGPoint) {
+        stageShrinkingAnimator?.chatFeed(chatFeed, willEndDragging: scrollView, withVelocity: velocity)
+    }
+    
+    func chatFeed(chatFeed: ChatFeed, didSelectFailureButtonForContent chatFeedContent: ChatFeedContent) {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+        alertController.addAction(
+            UIAlertAction(
+                title: NSLocalizedString("Try Again", comment: "Sending message failed. User taps this to try sending again"),
+                style: .Default,
+                handler: { [weak self] alertAction in
+                    self?.retryPublish(chatFeedContent)
+                }
+            )
+        )
+        
+        alertController.addAction(
+            UIAlertAction(
+                title: NSLocalizedString("Delete", comment: ""),
+                style: .Destructive,
+                handler: { [weak self] alertAction in
+                    self?.delete(chatFeedContent: chatFeedContent)
+                }
+            )
+        )
+        
+        alertController.addAction(
+            UIAlertAction(
+                title: NSLocalizedString("Cancel", comment: ""),
+                style: .Cancel,
+                handler: nil
+            )
+        )
+        presentViewController(alertController, animated: true, completion: nil)
+    }
+    
+    // MARK: - Content Post Failure Handling 
+    
+    private func delete(chatFeedContent content: ChatFeedContent) {
+        chatFeed?.remove(chatFeedContent: content)
+    }
+    
+    private func retryPublish(content: ChatFeedContent) {
+        guard let publisher = (chatFeed?.chatInterfaceDataSource as? ChatFeedDataSource)?.publisher else {
+            return
+        }
+        publisher.retryPublish(content)
     }
 
     // MARK: - VFocusable
@@ -305,5 +372,9 @@ private extension VDependencyManager {
     
     var exitButtonIcon: UIImage? {
         return imageForKey("closeIcon") ?? UIImage(named: "x_icon") //Template is currently returning incorrect path, so use the close icon in the image assets
+    }
+    
+    var contentDeleteURL: String {
+        return networkResources?.stringForKey("contentDeleteURL") ?? ""
     }
 }

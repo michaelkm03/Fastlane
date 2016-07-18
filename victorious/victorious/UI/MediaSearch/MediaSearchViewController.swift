@@ -68,7 +68,7 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
     private var progressHUD: MBProgressHUD?
     
     
-    //MARK: - UIViewController
+    // MARK: - UIViewController
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -141,7 +141,7 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
         delegate?.mediaSearchDidCancel?()
     }
     
-    //MARK: - API
+    // MARK: - API
     
     func continueWithSelectedItem(sender: AnyObject?) {
         guard let indexPath = self.selectedIndexPath else {

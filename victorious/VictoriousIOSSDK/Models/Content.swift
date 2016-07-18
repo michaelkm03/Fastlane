@@ -9,17 +9,19 @@
 import CoreGraphics
 import Foundation
 
+var ids: Set<Content.ID> = Set()
+
 /// Conformers are models that store information about piece of content in the app
 /// Consumers can directly use this type without caring what the concrete type is, persistent or not.
 public protocol ContentModel: PreviewImageContainer, DictionaryConvertible {
     var createdAt: NSDate { get }
     var type: ContentType { get }
-    
-    var id: String? { get }
+    var id: Content.ID? { get }
     var isLikedByCurrentUser: Bool { get }
     var text: String? { get }
     var hashtags: [Hashtag] { get }
     var shareURL: NSURL? { get }
+    var linkedURL: NSURL? { get }
     var author: UserModel { get }
     
     /// Whether this content is only accessible for VIPs
@@ -33,14 +35,12 @@ public protocol ContentModel: PreviewImageContainer, DictionaryConvertible {
     
     /// seekAheadTime to keep videos in sync for videos on VIP stage
     var seekAheadTime: NSTimeInterval? { get set }
+    
+    /// Keys correspond to an array of string-represented tracking urls
+    var tracking: TrackingModel? { get }
 }
 
 extension ContentModel {
-    // MARK: - Assets
-    
-    public var aspectRatio: CGFloat {
-        return previewImages.first?.mediaMetaData.size?.aspectRatio ?? 0.0
-    }
     
     // MARK: - DictionaryConvertible
     
@@ -72,12 +72,29 @@ extension ContentModel {
     }
 }
 
+extension ContentModel {
+    
+    // MARK: Hidden Content
+    
+    public static func hideContent(withID id: Content.ID) {
+        ids.insert(id)
+    }
+    
+    public static func contentIsHidden(withID id: Content.ID) -> Bool {
+        return ids.contains(id)
+    }
+}
+
 public class Content: ContentModel {
-    public let id: String?
+    
+    public typealias ID = String
+    
+    public let id: ID?
     public let status: String?
     public let text: String?
     public let hashtags: [Hashtag]
     public let shareURL: NSURL?
+    public let linkedURL: NSURL?
     public let createdAt: NSDate
     public let previewImages: [ImageAssetModel]
     public let assets: [ContentMediaAssetModel]
@@ -88,6 +105,8 @@ public class Content: ContentModel {
     
     /// seekAheadTime for videos to be played on the VIP stage (which needs synchronization)
     public var seekAheadTime : NSTimeInterval?
+    
+    public let tracking: TrackingModel?
     
     public init?(json viewedContentJSON: JSON) {
         let json = viewedContentJSON["content"]
@@ -108,28 +127,40 @@ public class Content: ContentModel {
         self.id = id
         self.status = json["status"].string
         self.shareURL = json["share_url"].URL
-        self.createdAt = NSDate(timeIntervalSince1970: json["released_at"].doubleValue/1000) // Backend returns in milliseconds
+        self.createdAt = NSDate(millisecondsSince1970: json["released_at"].doubleValue)
         self.hashtags = []
         self.type = type
-        self.text = json["title"].string
+        
+        if (type == .text) {
+            self.text = json[typeString]["data"].string
+        }
+        else {
+            self.text = json["title"].string
+        }
+        
         self.author = author
+        self.linkedURL = NSURL(string: json[typeString]["data"].stringValue)
         
         self.previewImages = (json["preview"][previewType]["assets"].array ?? []).flatMap { ImageAsset(json: $0) }
         
         let sourceType = json[typeString]["type"].string ?? typeString
         
         switch type {
-        case .image:
-            self.assets = [ContentMediaAsset(contentType: type, sourceType: sourceType, json: json[typeString])].flatMap { $0 }
-        case .gif, .video:
-            self.assets = (json[typeString][sourceType].array ?? []).flatMap { ContentMediaAsset(contentType: type, sourceType: sourceType, json: $0) }
-        case .text, .link:
-            self.assets = []
+            case .image:
+                self.assets = [ContentMediaAsset(contentType: type, sourceType: sourceType, json: json[typeString])].flatMap { $0 }
+            case .gif, .video:
+                self.assets = (json[typeString][sourceType].array ?? []).flatMap { ContentMediaAsset(contentType: type, sourceType: sourceType, json: $0) }
+            case .text, .link:
+                self.assets = []
         }
+        
+        self.tracking = Tracking(json: json["tracking"])
     }
     
     public init?(chatMessageJSON json: JSON, serverTime: NSDate) {
-        guard let user = User(json: json["user"]) else {
+        guard
+            let user = User(json: json["user"])
+        else {
             return nil
         }
         
@@ -142,10 +173,12 @@ public class Content: ContentModel {
         status = nil
         hashtags = []
         shareURL = nil
+        linkedURL = nil
         previewImages = []
-        type = .text
+        self.type = assets.first?.contentType ?? .text
         isVIPOnly = false
         isLikedByCurrentUser = false
+        tracking = nil //Tracking is not returned on chat messages
         
         // Either one of these types are required to be counted as a chat message.
         guard text != nil || assets.count > 0 else {
@@ -173,7 +206,9 @@ public class Content: ContentModel {
         self.status = nil
         self.hashtags = []
         self.shareURL = nil
+        self.linkedURL = nil
         self.isVIPOnly = false
+        self.tracking = nil
         isLikedByCurrentUser = false
     }
 }

@@ -165,7 +165,7 @@
 
 #pragma mark - Public tracking methods
 
-- (void)trackEvent:(NSString *)eventName parameters:(NSDictionary *)parameters
+- (void)trackEvent:(NSString *)eventName parameters:(NSDictionary *_Nullable)parameters sessionParameters:(NSDictionary *_Nullable)sessionParameters
 {
     if ( eventName == nil || eventName.length == 0 )
     {
@@ -176,7 +176,7 @@
     [self.eventLog logEvent:eventName parameters:parameters];
 #endif
     
-    NSDictionary *completeParams = [self addSessionParametersToDictionary:parameters];
+    NSDictionary *completeParams = [self addSessionParameters:sessionParameters toDictionary:parameters];
     
 #if TRACKING_LOGGING_ENABLED
     NSLog( @"*** TRACKING (%lu delegates) ***\n>>> %@ <<< %@\n", (unsigned long)self.delegates.count, eventName, [self stringFromDictionary:completeParams] );
@@ -200,6 +200,11 @@
      }];
 }
 
+- (void)trackEvent:(NSString *)eventName parameters:(NSDictionary *_Nullable)parameters
+{
+    [self trackEvent:eventName parameters:parameters sessionParameters:self.sessionParameters];
+}
+
 - (void)trackEvent:(NSString *)eventName
 {
     [self trackEvent:eventName parameters:@{}];
@@ -207,9 +212,16 @@
 
 - (void)queueEvent:(NSString *)eventName parameters:(NSDictionary *)parameters eventId:(NSString *)eventId
 {
+    [self queueEvent:eventName parameters:parameters eventId:eventId sessionParameters:self.sessionParameters];
+}
+
+- (void)queueEvent:(NSString *)eventName parameters:(NSDictionary *)parameters eventId:(NSString *)eventId sessionParameters:(NSDictionary *)sessionParameters
+{
     NSParameterAssert( eventName != nil );
     
-    NSString *queueKey = [self queueKeyForEventWithParameters:parameters andEventId:eventId];
+    NSMutableDictionary *eventParameters = [NSMutableDictionary dictionaryWithDictionary:parameters];
+    [eventParameters addEntriesFromDictionary:sessionParameters];
+    NSString *queueKey = [self queueKeyForEventWithParameters:eventParameters andEventId:eventId];
     NSMutableDictionary *existingQueuedEvents = self.queuedEventGroups[eventName];
     if ( existingQueuedEvents == nil )
     {
@@ -226,7 +238,7 @@
     }
     else
     {
-        NSDictionary *completeParams = [self addTimeStampToParametersDictionary:parameters];
+        NSDictionary *completeParams = [self addTimeStampToParametersDictionary:eventParameters];
         VTrackingEvent *event = [[VTrackingEvent alloc] initWithName:eventName parameters:completeParams eventId:eventId];
         [existingQueuedEvents setObject:event forKey:queueKey];
         [self trackEvent:event.name parameters:event.parameters];
@@ -241,10 +253,10 @@
 {
     NSString *queueKey = eventId != nil ? eventId : @"";
     queueKey = [queueKey stringByAppendingString:@"."];
-    NSString *streamId = parameters[VTrackingKeyStreamId];
-    if ( streamId != nil )
+    NSString *parentContentId = parameters[VTrackingKeyParentContentId];
+    if ( parentContentId != nil )
     {
-        queueKey = [queueKey stringByAppendingString:streamId];
+        queueKey = [queueKey stringByAppendingString:parentContentId];
     }
     return queueKey;
 }
@@ -340,9 +352,9 @@
     return [NSDictionary dictionaryWithDictionary:mutable];
 }
 
-- (NSDictionary *)addSessionParametersToDictionary:(NSDictionary *)dictionary
+- (NSDictionary *)addSessionParameters:(NSDictionary *_Nullable)sessionParameters toDictionary:(NSDictionary *_Nullable)dictionary
 {
-    if ( self.sessionParameters.count == 0 )
+    if ( sessionParameters.count == 0 )
     {
         return dictionary;
     }
@@ -352,7 +364,7 @@
     }
     
     NSMutableDictionary *mutable = [dictionary mutableCopy];
-    [self.sessionParameters enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
+    [sessionParameters enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop)
     {
         // Session parameters should not override parameters already inside dictionary
         if ( mutable[ key ] == nil )

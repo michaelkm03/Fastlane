@@ -9,37 +9,58 @@
 import UIKit
 import VictoriousIOSSDK
 
-protocol ChatCellType {
-    func cellSizeWithinBounds(bounds: CGRect) -> CGSize
-    var content: ContentModel? { get set }
-}
-
 protocol ChatFeedMessageCellDelegate: class {
     func messageCellDidSelectAvatarImage(messageCell: ChatFeedMessageCell)
     func messageCellDidSelectMedia(messageCell: ChatFeedMessageCell)
+    func messageCellDidSelectFailureButton(messageCell: ChatFeedMessageCell)
 }
 
-class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
+class ChatFeedMessageCell: UICollectionViewCell {
     
-    static let suggestedReuseIdentifier = "ChatFeedMessageCell"
+    // MARK: - Constants
     
-    let detailTextView = UITextView.unselectableInstance()
-    let contentContainer = UIView()
-    let messageContainer = UIView()
-    let bubbleView = UIView()
-    let textView = UITextView.unselectableInstance()
-    let mediaView = MediaContentView()
-    let avatarView = VDefaultProfileImageView()
+    // We don't use a Constants struct to allow for easy access to these values from our static layout methods.
     
-    let horizontalSpacing: CGFloat = 10.0
-    let avatarSize = CGSize(width: 41.0, height: 41.0)
-    let contentMargin = UIEdgeInsets(top: 30, left: 10, bottom: 2, right: 75)
+    static let captionInsets = UIEdgeInsets(top: 8.0, left: 8.0, bottom: 8.0, right: 8.0)
+    static let horizontalSpacing = CGFloat(12.0)
+    static let avatarSize = CGSize(width: 30.0, height: 30.0)
+    static let avatarTapTargetSize = CGSize(width: 44.0, height: 44.0)
+    static let failureButtonSize = CGSize(width: 24.0, height: 24.0)
+    static let contentMargin = UIEdgeInsets(top: 28.0, left: 10.0, bottom: 2.0, right: 75.0)
+    static let topLabelYSpacing = CGFloat(4.0)
+    static let topLabelXInset = CGFloat(4.0)
+    static let bubbleSpacing = CGFloat(6.0)
     
-    var layout: ChatFeedMessageCellLayout! {
-        didSet {
-            setNeedsLayout()
-        }
+    // MARK: - Reuse identifiers
+    
+    static let imagePreviewCellReuseIdentifier = "ImagePreviewChatFeedMessageCell"
+    static let videoPreviewCellReuseIdentifier = "VideoPreviewChatFeedMessageCell"
+    static let nonMediaCellReuseIdentifier = "NonMediaChatFeedMessageCell"
+    
+    // MARK: - Initializing
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        avatarTapTarget.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOnAvatar)))
+        failureButton.addTarget(self, action: #selector(didTapOnFailureButton), forControlEvents: .TouchUpInside)
+        captionLabel.numberOfLines = 0
+        
+        contentView.addSubview(usernameLabel)
+        contentView.addSubview(timestampLabel)
+        contentView.addSubview(avatarView)
+        contentView.addSubview(avatarTapTarget)
+        contentView.addSubview(captionBubbleView)
+        contentView.addSubview(failureButton)
+        
+        captionBubbleView.contentView.addSubview(captionLabel)
     }
+    
+    required init?(coder: NSCoder) {
+        fatalError("NSCoding not supported.")
+    }
+    
+    // MARK: - Configuration
     
     weak var delegate: ChatFeedMessageCellDelegate?
     
@@ -51,11 +72,13 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
         }
     }
     
-    var content: ContentModel? {
+    // MARK: - Content
+    
+    var chatFeedContent: ChatFeedContent? {
         didSet {
             // Updating the content is expensive, so we try to bail if we're setting the same content as before.
             // However, chat message contents don't have IDs, so we can't do this if the ID is nil.
-            if content?.id == oldValue?.id && content?.id != nil {
+            if chatFeedContent?.content.id == oldValue?.content.id && chatFeedContent?.content.id != nil {
                 return
             }
             
@@ -64,173 +87,188 @@ class ChatFeedMessageCell: UICollectionViewCell, ChatCellType {
         }
     }
     
-    // MARK: - Initializing
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        mediaView.clipsToBounds = true
-        mediaView.translatesAutoresizingMaskIntoConstraints = false
-        mediaView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onMediaTapped)))
-        
-        avatarView.clipsToBounds = true
-        avatarView.userInteractionEnabled = true
-        avatarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onAvatarTapped)))
-        
-        bubbleView.clipsToBounds = true
-        
-        configureTextView(textView)
-        configureTextView(detailTextView)
-        
-        contentView.addSubview(detailTextView)
-        contentView.addSubview(contentContainer)
-        
-        contentContainer.addSubview(messageContainer)
-        contentContainer.addSubview(avatarView)
-        
-        messageContainer.addSubview(bubbleView)
-        
-        bubbleView.addSubview(textView)
-        bubbleView.addSubview(mediaView)
+    /// Provides a private shorthand accessor within the implementation because we mostly deal with the ContentModel
+    private var content: ContentModel? {
+        return chatFeedContent?.content
     }
     
-    private func configureTextView(textView: UITextView) {
-        textView.backgroundColor = nil
-        textView.scrollEnabled = false
-        textView.editable = false
-    }
+    // MARK: - Subviews
     
-    required init?(coder: NSCoder) {
-        fatalError("NSCoding not supported.")
-    }
+    let usernameLabel = UILabel()
+    let timestampLabel = UILabel()
     
-    // MARK: - UIView
+    let avatarView = AvatarView()
+    let avatarTapTarget = UIView()
+    
+    let captionBubbleView = ChatBubbleView()
+    let captionLabel = UILabel()
+    
+    var previewBubbleView: ChatBubbleView?
+    var previewView: UIView?
+    
+    let failureButton = UIButton(type: .Custom)
+    
+    // MARK: - Layout
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        layout.updateWithCell(self)
-        avatarView.layer.cornerRadius = avatarView.bounds.size.v_roundCornerRadius
+        ChatFeedMessageCell.layoutContent(for: self)
     }
     
     // MARK: - Gesture Recognizer Actions
     
-    func onAvatarTapped(sender: AnyObject?) {
+    private dynamic func didTapOnAvatar(sender: AnyObject?) {
         delegate?.messageCellDidSelectAvatarImage(self)
     }
     
-    func onMediaTapped(sender: AnyObject?) {
+    private dynamic func didTapOnPreview(sender: AnyObject?) {
         delegate?.messageCellDidSelectMedia(self)
     }
     
+    private dynamic func didTapOnFailureButton(sender: UIButton) {
+        delegate?.messageCellDidSelectFailureButton(self)
+    }
+    
+    // MARK: - Private helper methods
+    
     private func updateStyle() {
-        detailTextView.contentInset = UIEdgeInsetsZero
-        detailTextView.font = dependencyManager.userLabelFont
-        detailTextView.textColor = dependencyManager.userLabelColor
+        usernameLabel.font = dependencyManager.usernameFont
+        usernameLabel.textColor = dependencyManager.usernameColor
         
-        bubbleView.backgroundColor = dependencyManager.backgroundColor
-        bubbleView.layer.borderColor = dependencyManager.borderColor.CGColor
-        bubbleView.layer.cornerRadius = 5.0
-        bubbleView.layer.borderWidth = 0.5
+        timestampLabel.font = dependencyManager.timestampFont
+        timestampLabel.textColor = dependencyManager.timestampColor
         
-        avatarView.layer.borderWidth = 1.0
-        avatarView.layer.borderColor = UIColor.blackColor().colorWithAlphaComponent(0.3).CGColor
-        avatarView.backgroundColor = dependencyManager.backgroundColor
+        captionBubbleView.backgroundColor = dependencyManager.backgroundColor
+        
+        failureButton.setImage(UIImage(named: "failed_error"), forState: .Normal)
     }
     
     private func populateData() {
-        textView.attributedText = attributedText
-        
-        if let content = content where content.type != .text {
-            mediaView.hidden = false
-            mediaView.updateContent(content)
-        }
-        else {
-            mediaView.hidden = true
-        }
-        
-        detailTextView.hidden = VCurrentUser.user()?.remoteId.integerValue == content?.author.id
-        
+        captionLabel.attributedText = content?.attributedText(using: dependencyManager)
+        usernameLabel.text = content?.author.name ?? ""
         updateTimestamp()
         
-        if let imageURL = content?.author.previewImageURL(ofMinimumSize: avatarView.frame.size) {
-            avatarView.setProfileImageURL(imageURL)
+        let shouldHideTopLabels = content?.wasCreatedByCurrentUser == true
+        usernameLabel.hidden = shouldHideTopLabels
+        timestampLabel.hidden = shouldHideTopLabels
+        
+        if let content = content where content.type.hasMedia {
+            if content.type == .gif && VCurrentUser.user()?.canView(content) == true {
+                let previewView = createMediaViewIfNeeded()
+                ChatFeedMessageCell.layoutContent(for: self)
+                previewView.content = content
+            }
+            else {
+                // Videos and images
+                let previewView = createContentPreviewViewIfNeeded()
+                ChatFeedMessageCell.layoutContent(for: self)
+                previewView.content = content
+            }
+            previewView?.hidden = false
         }
         else {
-            avatarView.image = nil
+            previewView?.hidden = true
         }
+        
+        avatarView.user = content?.author
+    }
+    
+    private func createContentPreviewViewIfNeeded() -> ContentPreviewView {
+        if let existingPreviewView = self.previewView as? ContentPreviewView {
+            return existingPreviewView
+        }
+        
+        let previewView = ContentPreviewView()
+        setupPreviewView(previewView)
+        return previewView
+    }
+    
+    private func createMediaViewIfNeeded() -> MediaContentView {
+        if let existingMediaView = self.previewView as? MediaContentView {
+            return existingMediaView
+        }
+        
+        let previewView = MediaContentView(showsBackground: false)
+        
+        previewView.animatesBetweenContent = false
+        previewView.allowsVideoControls = false
+        setupPreviewView(previewView)
+        return previewView
+    }
+    
+    private func setupPreviewView(previewView: UIView) {
+        previewView.clipsToBounds = true
+        previewView.translatesAutoresizingMaskIntoConstraints = false
+        
+        previewView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOnPreview)))
+        
+        let bubbleView = ChatBubbleView()
+        bubbleView.contentView.addSubview(previewView)
+        addSubview(bubbleView)
+        previewBubbleView = bubbleView
+        self.previewView = previewView
     }
     
     func updateTimestamp() {
-        if let name = content?.author.name, timeStamp = content?.timeLabel {
-            detailTextView.text = "\(name) (\(timeStamp))"
-        }
-        else {
-            detailTextView.text = ""
+        timestampLabel.text = content?.timeLabel ?? ""
+        setNeedsLayout()
+    }
+    
+    // MARK: - Managing lifecycle
+    
+    /// Expected to be called whenever the cell goes off-screen and is queued for later reuse. Stops media from playing
+    /// and frees up resources that are no longer needed.
+    func stopDisplaying() {
+        if let previewView = previewView as? MediaContentView {
+            previewView.videoCoordinator?.pauseVideo()
         }
     }
     
-    // MARK: - ChatCellType
-    
-    func cellSizeWithinBounds(bounds: CGRect) -> CGSize {
-        let mediaSize = calculateMediaSizeWithinBounds(bounds)
-        let textSize = calculateTextSizeWithinBounds(bounds)
-        let totalHeight = contentMargin.top
-            + textSize.height
-            + mediaSize.height
-            + contentMargin.bottom
-        return CGSize(
-            width: bounds.width,
-            height: max(totalHeight, avatarSize.height + contentMargin.top)
-        )
+    func startDisplaying() {
+        if let previewView = previewView as? MediaContentView {
+            previewView.videoCoordinator?.playVideo()
+        }
     }
     
     // MARK: - Sizing
     
-    private func maxContentWidthWithinBounds(bounds: CGRect) -> CGFloat {
-        return bounds.width - (contentMargin.left + contentMargin.right) - avatarSize.width - horizontalSpacing
+    static func cellHeight(displaying content: ContentModel, inWidth width: CGFloat, dependencyManager: VDependencyManager) -> CGFloat? {
+        let captionHeight = captionSize(displaying: content, inWidth: width, dependencyManager: dependencyManager)?.height ?? 0.0
+        let previewHeight = previewSize(displaying: content, inWidth: width)?.height ?? 0.0
+        
+        if captionHeight == 0.0 && previewHeight == 0.0 {
+            return nil //Invalid content
+        }
+    
+        let contentHeight = max(captionHeight + bubbleSpacing + previewHeight, avatarSize.height)
+        return contentMargin.top + contentMargin.bottom + contentHeight
     }
     
-    func calculateTextSizeWithinBounds(bounds: CGRect) -> CGSize {
-        guard let attributedText = attributedText else {
-            return CGSize.zero
+    static func captionSize(displaying content: ContentModel, inWidth width: CGFloat, dependencyManager: VDependencyManager) -> CGSize? {
+        guard let attributedText = content.attributedText(using: dependencyManager) else {
+            return nil
         }
-        let maxTextWidth = maxContentWidthWithinBounds(bounds)
-        let availableSizeForWidth = CGSize(width: maxTextWidth, height: CGFloat.max)
-        var size = attributedText.boundingRectWithSize(availableSizeForWidth,
-            options: [ .UsesLineFragmentOrigin ],
-            context: nil).size
-        size.height += textView.textContainerInset.bottom + textView.textContainerInset.top
         
-        size.width += contentMargin.left //< Eh, this isn't quite right, thought it looks okay fr now
+        let previewWidth = previewSize(displaying: content, inWidth: width)?.width
+        let maxCaptionWidth = min(width - nonContentWidth, previewWidth ?? CGFloat.max)
+        
+        var size = attributedText.boundingRectWithSize(
+            CGSize(width: maxCaptionWidth, height: CGFloat.max),
+            options: [.UsesLineFragmentOrigin],
+            context: nil
+        ).size
+        
+        size.width += captionInsets.horizontal
+        size.height += captionInsets.vertical
         return size
     }
     
-    func calculateMediaSizeWithinBounds(bounds: CGRect) -> CGSize {
-        guard let unclampedAspectRatio = content?.aspectRatio where content?.assets.isEmpty == false else {
-            return CGSize.zero
-        }
-        
-        let maxContentWidth = maxContentWidthWithinBounds(bounds) + contentMargin.left
-        let aspectRatio = dependencyManager.clampedAspectRatio(from: unclampedAspectRatio)
-        
-        return CGSize(
-            width: maxContentWidth,
-            height: maxContentWidth / aspectRatio
-        )
+    static func previewSize(displaying content: ContentModel, inWidth width: CGFloat) -> CGSize? {
+        return content.mediaSize?.preferredSize(clampedToWidth: width - nonContentWidth)
     }
     
-    private var attributedText: NSAttributedString? {
-        guard let text = content?.text where text != "" else {
-            return nil
-        }
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = layout.textAlignment
-        let attributes = [
-            NSParagraphStyleAttributeName: paragraphStyle,
-            NSForegroundColorAttributeName: dependencyManager.messageTextColor,
-            NSFontAttributeName: dependencyManager.messageFont
-        ]
-        return NSAttributedString(string: text, attributes: attributes)
+    private static var nonContentWidth: CGFloat {
+        return contentMargin.horizontal + avatarSize.width + horizontalSpacing
     }
 }
 
@@ -241,35 +279,44 @@ private extension ContentModel {
 }
 
 private extension VDependencyManager {
-    func clampedAspectRatio(from rawAspectRatio: CGFloat) -> CGFloat {
-        let defaultMinimum = 1.0
-        let defaultMaximum = 4.0
-        let minAspect = CGFloat(numberForKey("aspectRatio.minimum")?.floatValue ?? defaultMinimum)
-        let maxAspect = CGFloat(numberForKey("aspectRatio.maximum")?.floatValue ?? defaultMaximum)
-        return min( maxAspect, max(rawAspectRatio, minAspect) )
-    }
-    
     var messageTextColor: UIColor {
         return colorForKey("color.message.text") ?? .whiteColor()
     }
 
     var messageFont: UIFont {
-        return UIFont.boldSystemFontOfSize(16)
+        return fontForKey("font.message")
     }
 
     var backgroundColor: UIColor? {
         return colorForKey("color.message.bubble") ?? .darkGrayColor()
     }
     
-    var borderColor: UIColor {
-        return colorForKey("color.message.border") ?? .lightGrayColor()
+    var usernameFont: UIFont {
+        return fontForKey("font.username.text")
     }
     
-    var userLabelFont: UIFont {
-        return UIFont.boldSystemFontOfSize(12)
-    }
-    
-    var userLabelColor: UIColor {
+    var usernameColor: UIColor {
         return colorForKey("color.username.text") ?? .whiteColor()
+    }
+    
+    var timestampFont: UIFont {
+        return fontForKey("font.timestamp.text")
+    }
+    
+    var timestampColor: UIColor {
+        return colorForKey("color.timestamp.text") ?? .whiteColor()
+    }
+}
+
+private extension ContentModel {
+    func attributedText(using dependencyManager: VDependencyManager) -> NSAttributedString? {
+        guard let text = text where text != "" else {
+            return nil
+        }
+        
+        return NSAttributedString(string: text, attributes: [
+            NSForegroundColorAttributeName: dependencyManager.messageTextColor,
+            NSFontAttributeName: dependencyManager.messageFont
+        ])
     }
 }

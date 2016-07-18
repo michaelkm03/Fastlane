@@ -10,16 +10,13 @@ import Foundation
 
 /// Conformers can respond to the results fetched by this network data source
 protocol TutorialNetworkDataSourceDelegate: class {
-    func didUpdateVisibleItems(from oldValue: [ContentModel], to newValue: [ContentModel])
+    func didReceiveNewMessage(message: ChatFeedContent)
     func didFinishFetchingAllItems()
+    var chatFeedItemWidth: CGFloat { get }
 }
 
 class TutorialNetworkDataSource: NSObject, NetworkDataSource {
-    private(set) var visibleItems: [ContentModel] = [] {
-        didSet {
-            delegate?.didUpdateVisibleItems(from: oldValue, to: visibleItems)
-        }
-    }
+    private(set) var visibleItems: [ChatFeedContent] = []
     
     private var queuedTutorialMessages: [ContentModel] = []
     
@@ -49,10 +46,15 @@ class TutorialNetworkDataSource: NSObject, NetworkDataSource {
     }
 
     @objc private func dequeueTutorialMessage() {
-        if !queuedTutorialMessages.isEmpty {
-            let newMessageToDisplay = queuedTutorialMessages.removeFirst()
+        if
+            !queuedTutorialMessages.isEmpty,
+            let width = delegate?.chatFeedItemWidth,
+            let newMessageToDisplay = ChatFeedContent(content: queuedTutorialMessages.removeFirst(), width: width, dependencyManager: dependencyManager)
+        {
             visibleItems.append(newMessageToDisplay)
-        } else {
+            delegate?.didReceiveNewMessage(newMessageToDisplay)
+        }
+        else {
             timerManager?.invalidate()
             delegate?.didFinishFetchingAllItems()
         }

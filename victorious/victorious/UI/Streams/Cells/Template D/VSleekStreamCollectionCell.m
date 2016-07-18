@@ -227,18 +227,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 
 - (void)updateListicle
 {
-    VStreamItemPointer *streamItemPointer = [self.sequence streamItemPointerWithStreamID:self.stream.remoteId];
-    self.previewView.trackingData = streamItemPointer.tracking;
-    if ( streamItemPointer.headline.length > 0 )
-    {
-        self.listicleView.hidden = NO;
-        self.listicleView.headlineText = streamItemPointer.headline;
-    }
-    else
-    {
-        self.listicleView.hidden = YES;
-        self.listicleView.headlineText = nil;
-    }
+    // Implementation removed
 }
 
 - (void)setDependencyManager:(VDependencyManager *)dependencyManager

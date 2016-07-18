@@ -9,10 +9,6 @@
 import UIKit
 
 class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDelegate, UICollectionViewDelegateFlowLayout, VScrollPaginatorDelegate, NewItemsControllerDelegate, ChatFeedMessageCellDelegate {
-    private lazy var dataSource: ChatFeedDataSource = {
-        return ChatFeedDataSource(dependencyManager: self.dependencyManager)
-    }()
-    
     private struct Layout {
         private static let bottomMargin: CGFloat = 20.0
         private static let topMargin: CGFloat = 64.0
@@ -20,7 +16,9 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     
     private var edgeInsets = UIEdgeInsets(top: Layout.topMargin, left: 0.0, bottom: Layout.bottomMargin, right: 0.0)
     
-    var dependencyManager: VDependencyManager!
+    private lazy var dataSource: ChatFeedDataSource = {
+        return ChatFeedDataSource(dependencyManager: self.dependencyManager)
+    }()
     
     private lazy var focusHelper: VCollectionViewStreamFocusHelper = {
         return VCollectionViewStreamFocusHelper(collectionView: self.collectionView)
@@ -31,13 +29,19 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     // Used to create a temporary window where immediate re-stashing is disabled after unstashing
     private var canStashNewItems: Bool = true
     
-    @IBOutlet private var newItemsController: NewItemsController!
-    @IBOutlet private weak var collectionView: UICollectionView!
-    @IBOutlet private weak var collectionViewBottom: NSLayoutConstraint!
+    @IBOutlet private var collectionViewBottom: NSLayoutConstraint!
     
     // MARK: - ChatFeed
     
     weak var delegate: ChatFeedDelegate?
+    var dependencyManager: VDependencyManager!
+    
+    @IBOutlet private(set) weak var collectionView: UICollectionView!
+    @IBOutlet private(set) var newItemsController: NewItemsController?
+    
+    var chatInterfaceDataSource: ChatInterfaceDataSource {
+        return dataSource
+    }
     
     func setTopInset(value: CGFloat) {
         edgeInsets.top = value + Layout.topMargin
@@ -83,9 +87,9 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         
         dataSource.nextSender = self
         
-        newItemsController.depedencyManager = dependencyManager
-        newItemsController.delegate = self
-        newItemsController.hide(animated: false)
+        newItemsController?.dependencyManager = dependencyManager
+        newItemsController?.delegate = self
+        newItemsController?.hide(animated: false)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -107,6 +111,11 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
         let messageCell = cell as! ChatFeedMessageCell
         messageCell.delegate = self
+        messageCell.startDisplaying()
+    }
+    
+    func collectionView(collectionView: UICollectionView, didEndDisplayingCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+        (cell as! ChatFeedMessageCell).stopDisplaying()
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
@@ -114,27 +123,18 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        // If there isn't enough content to fill the screen, push it down to the bottom.
-        var adjustedInsets = edgeInsets
-        
-        // Doing this when the content size is zero doesn't help, and it prevents scrolling to bottom after the initial
-        // content is loaded.
-        if collectionView.contentSize.height > 0.0 {
-            adjustedInsets.top += max(0.0, collectionView.bounds.height - collectionView.contentSize.height)
-        }
-        
-        return adjustedInsets
+        return edgeInsets
     }
     
     // MARK: - ChatFeedDataSourceDelegate
     
-    func chatFeedDataSource(dataSource: ChatFeedDataSource, didLoadItems newItems: [ContentModel], loadingType: PaginatedLoadingType) {
+    func chatFeedDataSource(dataSource: ChatFeedDataSource, didLoadItems newItems: [ChatFeedContent], loadingType: PaginatedLoadingType) {
         handleNewItems(newItems, loadingType: loadingType)
     }
     
-    func chatFeedDataSource(dataSource: ChatFeedDataSource, didStashItems stashedItems: [ContentModel]) {
+    func chatFeedDataSource(dataSource: ChatFeedDataSource, didStashItems stashedItems: [ChatFeedContent]) {
         let itemsContainCurrentUserMessage = stashedItems.contains {
-            $0.author.id == VCurrentUser.user()?.remoteId.integerValue
+            $0.content.author.id == VCurrentUser.user()?.remoteId.integerValue
         }
         
         if itemsContainCurrentUserMessage {
@@ -143,13 +143,13 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         }
         else if stashedItems.count > 0 {
             // Update stash count and show stash counter.
-            newItemsController.count = dataSource.stashedItems.count
-            newItemsController.show()
+            newItemsController?.count = dataSource.stashedItems.count
+            newItemsController?.show()
         }
     }
     
-    func chatFeedDataSource(dataSource: ChatFeedDataSource, didUnstashItems unstashedItems: [ContentModel]) {
-        newItemsController.hide()
+    func chatFeedDataSource(dataSource: ChatFeedDataSource, didUnstashItems unstashedItems: [ChatFeedContent]) {
+        newItemsController?.hide()
         
         handleNewItems(unstashedItems, loadingType: .newer) { [weak self] in
             if self?.collectionView.v_isScrolledToBottom == false {
@@ -158,75 +158,8 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         }
     }
     
-    private func handleNewItems(newItems: [ContentModel], loadingType: PaginatedLoadingType, completion: (() -> Void)? = nil) {
-        guard newItems.count > 0 else {
-            return
-        }
-        
-        // Disable UICollectionView insertion animation.
-        CATransaction.begin()
-        CATransaction.setDisableActions(true)
-        
-        let collectionView = self.collectionView
-        let bottomOffset = collectionView.contentSize.height - collectionView.contentOffset.y
-        let wasScrolledToBottom = collectionView.v_isScrolledToBottom
-        
-        updateCollectionView(with: newItems, loadingType: loadingType) {
-            // If we loaded older items, maintain the previous scroll position.
-            if loadingType == .older {
-                collectionView.contentOffset = CGPoint(x: 0.0, y: collectionView.contentSize.height - bottomOffset)
-            }
-            
-            collectionView.collectionViewLayout.invalidateLayout()
-            
-            CATransaction.commit()
-            
-            // If we loaded newer items and we were scrolled to the bottom, or if we refreshed the feed, scroll down to
-            // reveal the new content.
-            if (loadingType == .newer && wasScrolledToBottom) || loadingType == .refresh {
-                // There's probably a better way to do this, but this prevents some issues with not scrolling all the
-                // way to the bottom.
-                dispatch_after(0.0) {
-                    collectionView.setContentOffset(collectionView.v_bottomOffset, animated: loadingType != .refresh)
-                }
-            }
-            
-            completion?()
-        }
-    }
-    
-    private func updateCollectionView(with newItems: [ContentModel], loadingType: PaginatedLoadingType, completion: () -> Void) {
-        if loadingType == .refresh {
-            collectionView.reloadData()
-            completion()
-        }
-        else {
-            let collectionView = self.collectionView
-            
-            // The collection view's layout information is guaranteed to be updated properly in the completion handler
-            // of this method, which allows us to properly manage scrolling. We can't call `reloadData` in this method,
-            // though, so we have to do that separately.
-            collectionView.performBatchUpdates({
-                switch loadingType {
-                    case .newer:
-                        let previousCount = self.dataSource.visibleItems.count - newItems.count
-                        
-                        collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
-                            NSIndexPath(forItem: previousCount + $0, inSection: 0)
-                        })
-                    
-                    case .older:
-                        collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
-                            NSIndexPath(forItem: $0, inSection: 0)
-                        })
-                    
-                    case .refresh:
-                        break
-                }
-            }, completion: { _ in
-                completion()
-            })
-        }
+    var chatFeedItemWidth: CGFloat {
+        return collectionView.bounds.width
     }
     
     // MARK: - VScrollPaginatorDelegate
@@ -238,7 +171,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     // MARK: - ChatFeedMessageCellDelegate
     
     func messageCellDidSelectAvatarImage(messageCell: ChatFeedMessageCell) {
-        guard let userID = messageCell.content?.author.id else {
+        guard let userID = messageCell.chatFeedContent?.content.author.id else {
             return
         }
         
@@ -246,26 +179,50 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     }
     
     func messageCellDidSelectMedia(messageCell: ChatFeedMessageCell) {
-        guard let content = messageCell.content else {
+        guard let content = messageCell.chatFeedContent else {
             return
         }
         
         delegate?.chatFeed(self, didSelectContent: content)
     }
     
+    func messageCellDidSelectFailureButton(messageCell: ChatFeedMessageCell) {
+        guard let content = messageCell.chatFeedContent else {
+            return
+        }
+        
+        delegate?.chatFeed(self, didSelectFailureButtonForContent: content)
+    }
+    
     // MARK: - UIScrollViewDelegate
+    
+    var unstashingViaScrollingIsEnabled = true
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         scrollPaginator.scrollViewDidScroll(scrollView)
         
         if scrollView.v_isScrolledToBottom {
-            dataSource.unstash()
+            if unstashingViaScrollingIsEnabled {
+                dataSource.unstash()
+            }
+            
             dataSource.stashingEnabled = false
-        } else {
+        }
+        else {
             dataSource.stashingEnabled = true
         }
         
         focusHelper.updateFocus()
+        
+        delegate?.chatFeed(self, didScroll: scrollView)
+    }
+    
+    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+        delegate?.chatFeed(self, willBeginDragging: scrollView)
+    }
+    
+    func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        delegate?.chatFeed(self, willEndDragging: scrollView, withVelocity: velocity)
     }
     
     // MARK: - Timestamp update timer
@@ -298,6 +255,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     }
     
     private dynamic func onTimerTick() {
-        dataSource.updateTimeStamps(in: collectionView)
+        dataSource.updateTimestamps(in: collectionView)
     }
 }

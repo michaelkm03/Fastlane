@@ -24,7 +24,7 @@ final class CreateTextPostOperation: FetcherOperation, RequestOperation {
         if let backgroundImageURL = parameters.backgroundImageURL {
             dict["background_image"] = backgroundImageURL
         }
-        dict["background_color"] = parameters.backgroundColor?.v_hexString() ?? ""
+        dict["background_color"] = parameters.backgroundColor?.rgbHexString ?? ""
         
         return dict
     }

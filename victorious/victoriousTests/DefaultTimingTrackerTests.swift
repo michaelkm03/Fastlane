@@ -14,15 +14,24 @@ class MockTracker: NSObject, VEventTracker {
     
     var lastEvent: String!
     var lastParams: [NSObject : AnyObject]!
+    var lastSessionParams: [NSObject : AnyObject]!
+    
+    func trackEvent(eventName: String?, parameters: [NSObject : AnyObject]?, sessionParameters: [NSObject : AnyObject]?) {
+        lastEvent = eventName
+        lastParams = parameters
+        lastSessionParams = sessionParameters
+    }
     
     func trackEvent(eventName: String?, parameters: [NSObject: AnyObject]? ) {
         lastEvent = eventName
         lastParams = parameters
+        lastSessionParams = nil
     }
     
     func trackEvent(eventName: String?  ) {
         lastEvent = eventName
         lastParams = nil
+        lastSessionParams = nil
     }
 }
 

@@ -13,11 +13,16 @@ private let topBottomSectionInset = CGFloat(3)
 private let interItemSpacing = CGFloat(3)
 private let cellsPerRow = 3
 
-class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
-    
+class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, ContentCellTracker {
     private let gridStreamController: GridStreamViewController<CloseUpView>
     private var dependencyManager: VDependencyManager
-    private var content: ContentModel?
+    private var content: ContentModel? {
+        didSet {
+            trackContentView()
+        }
+    }
+    private let contentID: Content.ID
+    private var firstPresentation = true
     
     private lazy var shareButton: UIBarButtonItem = {
         return UIBarButtonItem(
@@ -37,19 +42,13 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
         )
     }()
     
-    private lazy var upvoteButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(
-            image: self.dependencyManager.upvoteIconUnselected,
-            style: .Done,
-            target: self,
-            action: #selector(toggleUpvote)
-        )
+    private lazy var upvoteButton: UIButton = {
+        let button = BackgroundButton(type: .System)
+        button.addTarget(self, action: #selector(toggleUpvote), forControlEvents: .TouchUpInside)
         return button
     }()
     
-    init(dependencyManager: VDependencyManager,
-         content: ContentModel? = nil,
-         streamAPIPath: APIPath) {
+    init(dependencyManager: VDependencyManager, contentID: String, content: ContentModel? = nil, streamAPIPath: APIPath) {
         self.dependencyManager = dependencyManager
         
         let header = CloseUpView.newWithDependencyManager(dependencyManager)
@@ -68,12 +67,13 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
         )
         
         gridStreamController = GridStreamViewController<CloseUpView>(
-            dependencyManager: dependencyManager,
+            dependencyManager: dependencyManager.gridStreamDependencyManager ?? dependencyManager,
             header: header,
             content: content,
             configuration: configuration,
             streamAPIPath: streamAPIPath
         )
+        self.contentID = contentID
         self.content = content
         
         super.init(nibName: nil, bundle: nil)
@@ -88,41 +88,72 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
         gridStreamController.didMoveToParentViewController(self)
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        dependencyManager.trackViewWillAppear(self)
+        trackContentView()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        dependencyManager.trackViewWillDisappear(self)
+    }
+    
+    // MARK: - ContentCellTracker
+    
+    var sessionParameters: [NSObject : AnyObject] {
+        return [ VTrackingKeyContentId : contentID ]
+    }
+    
+    private func trackContentView() {
+        if let content = content where firstPresentation {
+            trackView(.viewStart, showingContent: content)
+            firstPresentation = false
+        }
+    }
+    
     private func updateHeader() {
         guard let content = content else {
             return
         }
         
+        upvoteButton.tintColor = UIColor.redColor()
+        
         if content.isLikedByCurrentUser {
-            upvoteButton.image = dependencyManager.upvoteIconSelected
-            upvoteButton.tintColor = dependencyManager.upvotedIconTint
+            upvoteButton.setImage(dependencyManager.upvoteIconSelected, forState: .Normal)
+            upvoteButton.backgroundColor = dependencyManager.upvoteIconSelectedBackgroundColor
+            upvoteButton.tintColor = dependencyManager.upvoteIconTint
         }
         else {
-            upvoteButton.image = dependencyManager.upvoteIconUnselected
+            upvoteButton.setImage(dependencyManager.upvoteIconUnselected, forState: .Normal)
+            upvoteButton.backgroundColor = dependencyManager.upvoteIconUnselectedBackgroundColor
             upvoteButton.tintColor = nil
         }
         
-        navigationItem.rightBarButtonItems = [upvoteButton, overflowButton, shareButton]
+        upvoteButton.sizeToFit()
+        navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: upvoteButton), shareButton, overflowButton]
     }
     
     required init?(coder: NSCoder) {
         fatalError("NSCoding not supported.")
     }
     
+    func updateError() {
+        gridStreamController.setContent(nil, withError: true)
+    }
+    
     func updateContent(content: ContentModel) {
         self.content = content
         updateHeader()
-        gridStreamController.content = content
+        gridStreamController.setContent(content, withError: false)
     }
     
     // MARK: - CloseUpViewDelegate
     
     func didSelectProfileForUserID(userID: Int) {
-        ShowProfileOperation(
-            originViewController: self,
-            dependencyManager: dependencyManager,
-            userId: userID
-        ).queue()
+        let router = Router(originViewController: self, dependencyManager: dependencyManager)
+        let destination = DeeplinkDestination(userID: userID)
+        router.navigate(to: destination)
     }
     
     func share() {
@@ -137,23 +168,16 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
     }
     
     func toggleUpvote() {
-        guard let contentID = content?.id else {
-            return
-        }
         ContentUpvoteToggleOperation(
             contentID: contentID,
             upvoteURL: dependencyManager.contentUpvoteURL,
             unupvoteURL: dependencyManager.contentUnupvoteURL
-            ).queue() { [weak self] _ in
-                self?.updateHeader()
+        ).queue { [weak self] _ in
+            self?.updateHeader()
         }
     }
     
     func overflow() {
-        guard let contentID = content?.id else {
-            return
-        }
-        
         let isCreatorOfContent = content?.author.id == VCurrentUser.user()?.id
         
         let flagOrDeleteOperation = isCreatorOfContent
@@ -161,8 +185,8 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
             : ContentFlagOperation(contentID: contentID, contentFlagURL: dependencyManager.contentFlagURL)
         
         let actionTitle = isCreatorOfContent
-            ? NSLocalizedString("DeleteButton", comment: "")
-            : NSLocalizedString("Report/Flag", comment: "")
+            ? NSLocalizedString("DeletePost", comment: "Delete this user's post")
+            : NSLocalizedString("ReportPost", comment: "Report this post")
         
         let confirm = ConfirmDestructiveActionOperation(
             actionTitle: actionTitle,
@@ -182,8 +206,16 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate {
 }
 
 private extension VDependencyManager {
-    var upvotedIconTint: UIColor? {
+    var upvoteIconTint: UIColor? {
         return colorForKey("color.text.actionButton")
+    }
+    
+    var upvoteIconSelectedBackgroundColor: UIColor? {
+        return colorForKey("color.background.upvote.selected")
+    }
+    
+    var upvoteIconUnselectedBackgroundColor: UIColor? {
+        return colorForKey("color.background.upvote.unselected")
     }
     
     var upvoteIconSelected: UIImage? {
@@ -219,3 +251,8 @@ private extension VDependencyManager {
     }
 }
 
+private extension VDependencyManager {
+    var gridStreamDependencyManager: VDependencyManager? {
+        return childDependencyForKey("gridStream")
+    }
+}

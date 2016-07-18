@@ -33,39 +33,66 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
         // Device ID is needed for tracking calls on the backend.
         let deviceID = UIDevice.currentDevice().v_authorizationDeviceID
         webSocketController.setDeviceID(deviceID)
+
+        NSNotificationCenter.defaultCenter().addObserverForName(UIApplicationDidEnterBackgroundNotification, object: nil, queue: nil) { [weak self] (notification) in
+            self?.tearDown()
+        }
+
+        NSNotificationCenter.defaultCenter().addObserverForName(UIApplicationWillEnterForegroundNotification, object: nil, queue: nil) { [weak self] (notification) in
+            if self?.isSetUp == false && self?.childEventReceivers.isEmpty == false {
+                self?.setUp()
+            }
+        }
     }
     
     // MARK: - Configuration
-    
-    /// The amount of time to wait before reconnecting upon disconnection. Set to nil to disable automatic reconnection.
-    var reconnectTimeout: NSTimeInterval? = 5.0
-    
+
+    private struct Reconnector {
+        /// The initial time to wait before reconnecting upon disconnection.
+        static let initialTimeout = NSTimeInterval(2)
+
+        /// A randomized reconnect padding is added so all clients won't reconnect at the same time.
+        static let timeoutPadding = UInt32(3)
+
+        /// The cap that the reconnect timeout can increase to.
+        static let maxTimeout = NSTimeInterval(25)
+
+        static func increaseReconnectTimeout(reconnectTimeout: NSTimeInterval) -> NSTimeInterval {
+            let increasedReconnectTimeout = reconnectTimeout + NSTimeInterval(arc4random_uniform(Reconnector.timeoutPadding)) + 1
+            return min(increasedReconnectTimeout, maxTimeout)
+        }
+    }
+
+    /// The reconnect timeout used at the moment, will reset when we explicitly close the WS. Set to 0 to disable reconnecting.
+    private var currentReconnectTimeout: NSTimeInterval = Reconnector.initialTimeout
+
     // MARK: - ForumEventReceiver
     
     private(set) var childEventReceivers = [ForumEventReceiver]()
     
     func receive(event: ForumEvent) {
         switch event {
-        case .websocket(let websocketEvent):
-            switch websocketEvent {
-                case .Disconnected(_):
-                    receiveDisconnectEvent()
-                default: break
-            }
-        default:
-            break
+            case .websocket(let websocketEvent):
+                switch websocketEvent {
+                    case .connected:
+                        currentReconnectTimeout = Reconnector.initialTimeout
+                    case .disconnected(let webSocketError):
+                        receiveDisconnectEventWithError(webSocketError)
+                    default: break
+                }
+            default:
+                break
         }
     }
     
-    private func receiveDisconnectEvent() {
-        guard let reconnectTimeout = reconnectTimeout else {
+    private func receiveDisconnectEventWithError(error: WebSocketError?) {
+        guard let _ = error where currentReconnectTimeout > 0 && VCurrentUser.isLoggedIn() else {
             return
         }
-        
-        if (VCurrentUser.isLoggedIn()) { //Try to reconnect only if the user is still logged in 
-            dispatch_after(reconnectTimeout) { [weak self] in
-                self?.setUpIfNeeded()
-            }
+
+        currentReconnectTimeout = Reconnector.increaseReconnectTimeout(currentReconnectTimeout)
+        dispatch_after(currentReconnectTimeout) { [weak self] in
+            self?.setUpIfNeeded()
         }
     }
     
@@ -81,6 +108,9 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
     
     func tearDown() {
         webSocketController.tearDown()
+
+        // The reconnect timeout is reset whenever the WS is closed explicitly.
+        currentReconnectTimeout = Reconnector.initialTimeout
     }
     
     var isSetUp: Bool {

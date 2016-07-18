@@ -19,11 +19,15 @@ public struct ContentFeedRequest: RequestType {
         return NSURLRequest(URL: url)
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [Content] {
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> (contents: [Content], refreshStage: RefreshStage?) {
         guard let contents = responseJSON["payload"]["viewed_contents"].array else {
             throw ResponseParsingError()
         }
+        let mainStageJSON = responseJSON["main_stage"]
         
-        return contents.flatMap { Content(json: $0) }
+        let parsedContents = contents.flatMap { Content(json: $0) }
+        let parsedRefreshStage = RefreshStage(json: mainStageJSON)
+        
+        return (parsedContents, parsedRefreshStage)
     }
 }

@@ -10,7 +10,6 @@
 #import "VStreamCollectionViewController.h"
 #import "VDependencyManager+VAccessoryScreens.h"
 #import "VProvidesNavigationMenuItemBadge.h"
-#import "VDeepLinkHandler.h"
 #import "VNavigationDestination.h"
 
 @class VUser;

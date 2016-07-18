@@ -34,7 +34,7 @@ class VContentOnlyCellFactory: NSObject {
         
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! VContentOnlyCell
         cell.dependencyManager = dependencyManager
-        cell.setContent(content)
+        cell.content = content
         return cell
     }    
 }

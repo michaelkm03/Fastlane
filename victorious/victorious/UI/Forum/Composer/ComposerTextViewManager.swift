@@ -35,7 +35,7 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         updateDelegateOfTextViewStatus(textView)
     }
     
-    //MARK: - Updating logic
+    // MARK: - Updating logic
     
     func replaceTextInRange(range: NSRange, withText text: String, inTextView textView: UITextView) -> Bool {
         
@@ -59,6 +59,7 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
             let newString = NSMutableAttributedString(attributedString: textView.attributedText)
             newString.appendAttributedString(NSAttributedString(string: text, attributes: getTextViewInputAttributes()))
             textView.attributedText = newString
+            updateDelegateOfTextViewStatus(textView)
         }
         else {
             delegate?.textViewDidHitCharacterLimit(textView)
@@ -77,7 +78,7 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
             if let delegate = delegate where delegate.textViewCanDismiss {
                 textView.resignFirstResponder()
             }
-            return false
+            return true
         }
         
         if maximumTextLength == 0 {
@@ -109,7 +110,7 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         return dismissOnReturn && text == "\n"
     }
     
-    //MARK: - UITextViewDelegate
+    // MARK: - UITextViewDelegate
     
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
         guard canUpdateTextView(textView, textInRange: range, replacementText: text) else {
@@ -158,7 +159,7 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         }
     }
     
-    //MARK: - Helpers
+    // MARK: - Helpers
     
     private static func attributedTextAttributesFor(textView: UITextView) -> [String: AnyObject]? {
         
@@ -191,7 +192,7 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         return (preceedingString + proceedingString, foundRange)
     }
     
-    //MARK: - Image management
+    // MARK: - Image management
     
     private static func attachmentStringForImage(image: UIImage, fromTextView textView: UITextView) -> NSAttributedString? {
         
@@ -231,12 +232,17 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         }
         
         if delegate.textViewHasPrependedImage {
-            let imageRange = NSMakeRange(0, attachmentStringLength)
-            let mutableText = textView.attributedText.mutableCopy() as! NSMutableAttributedString
-            mutableText.deleteCharactersInRange(imageRange)
-            textView.attributedText = mutableText
+            textView.attributedText = removePrependedImageFromAttributedText(textView.attributedText)
         }
         updateDelegateOfTextViewStatus(textView)
+    }
+    
+    func removePrependedImageFromAttributedText(attributedText: NSAttributedString) -> NSAttributedString? {
+        let imageRange = NSMakeRange(0, attachmentStringLength)
+        let mutableText = attributedText.mutableCopy() as! NSMutableAttributedString
+        mutableText.deleteCharactersInRange(imageRange)
+        let immutableCopy = mutableText.copy() as! NSAttributedString
+        return immutableCopy.length > 0 ? immutableCopy : nil
     }
     
     private func shouldRemoveImageFromTextView(textView: UITextView, tryingToDeleteRange range: NSRange) -> Bool {

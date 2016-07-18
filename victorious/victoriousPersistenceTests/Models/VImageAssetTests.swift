@@ -21,8 +21,8 @@ class VImageAssetTests: BasePersistentStoreTestCase {
                 return
         }
 
-        XCTAssertEqual(asset.height?.integerValue, 180)
-        XCTAssertEqual(asset.width?.integerValue, 320)
+        XCTAssertEqual(asset.height.integerValue, 180)
+        XCTAssertEqual(asset.width.integerValue, 320)
         XCTAssertEqual(asset.imageURL, "https://d36dd6wez3mcdh.cloudfront.net/a901cc4e626b33e1fa089aad76fb31ef/320x180.jpg")
     }
     

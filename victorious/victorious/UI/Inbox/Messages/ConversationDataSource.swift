@@ -79,12 +79,11 @@ class ConversationDataSource: PaginatedDataSource, UITableViewDataSource {
         cell.timeLabel?.text = message.postedAt.stringDescribingTimeIntervalSinceNow() ?? ""
         cell.messageTextAndMediaView?.text = message.text
         cell.messageTextAndMediaView?.message = message
-        cell.profileImageView?.tintColor = self.dependencyManager.colorForKey(VDependencyManagerLinkColorKey)
-        cell.profileImageOnRight = message.sender.isCurrentUser() ?? false
+        cell.profileImageOnRight = message.sender.isCurrentUser
         cell.selectionStyle = .None
         
-        if let profileImageView = cell.profileImageView, imageURL = message.sender.pictureURL(ofMinimumSize: profileImageView.frame.size) {
-            profileImageView.setProfileImageURL(imageURL)
-        }
+        // VMessageCell's profile image view was removed
+        // Add an image view to VMessageCell if you need
+        // to display a profile image
     }
 }

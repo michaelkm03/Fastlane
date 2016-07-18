@@ -22,7 +22,5 @@ class HashtagTests: XCTestCase {
             return
         }
         XCTAssertEqual(hashtag.tag, "surfing")
-        XCTAssertEqual(hashtag.count, 1)
-        XCTAssertEqual(hashtag.amFollowing, false)
     }
 }

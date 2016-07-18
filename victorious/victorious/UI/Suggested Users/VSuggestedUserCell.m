@@ -11,7 +11,6 @@
 #import "VFollowControl.h"
 #import "UIView+AutoLayout.h"
 #import "UIResponder+VResponderChain.h"
-#import "VDefaultProfileImageView.h"
 #import "VContentThumbnailsViewController.h"
 #import "VContentThumbnailsDataSource.h"
 #import "VSequence.h"
@@ -26,7 +25,7 @@ static NSString * const kTextTitleColorKey = @"color.text.label1";
 @property (nonatomic, strong) VFollowControl *followControl;
 @property (nonatomic, strong) VContentThumbnailsDataSource *thumbnailsDataSource;
 @property (nonatomic, strong) VContentThumbnailsViewController *thumbnailsViewController;
-@property (nonatomic, weak) IBOutlet VDefaultProfileImageView *userProfileImage;
+@property (nonatomic, weak) IBOutlet UIImageView *userProfileImage;
 @property (nonatomic, weak) IBOutlet UITextView *usernameTextView;
 @property (nonatomic, weak) IBOutlet UIView *followControlContainerView;
 @property (nonatomic, weak) IBOutlet UIView *userStreamContainerView;
@@ -79,15 +78,7 @@ static NSString * const kTextTitleColorKey = @"color.text.label1";
 - (void)configureWithSuggestedUser:(VSuggestedUser *)suggestedUser
 {
     self.user = suggestedUser.user;
-    self.usernameTextView.text = self.user.name;
-    
-    NSURL *pictureURL = [self.user pictureURLOfMinimumSize:self.userProfileImage.frame.size];
-    
-    if (pictureURL != nil)
-    {
-        [self.userProfileImage setProfileImageURL:pictureURL];
-    }
-    
+    self.usernameTextView.text = self.user.name;    
     self.recentSequences = suggestedUser.recentSequences;
     self.thumbnailsDataSource.sequences = self.recentSequences;
     [self.thumbnailsViewController.collectionView reloadData];

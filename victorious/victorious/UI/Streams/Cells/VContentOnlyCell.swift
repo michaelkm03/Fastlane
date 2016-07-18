@@ -9,10 +9,11 @@
 import UIKit
 
 /// A collection view cell that only shows a stream item's content.
-class VContentOnlyCell: UICollectionViewCell {
+class VContentOnlyCell: UICollectionViewCell, ContentCell {
     // MARK: - Constants
     
     private static let cornerRadius: CGFloat = 6.0
+    private static let highlightAlpha: CGFloat = 0.2
     
     // MARK: - Initializing
     
@@ -27,29 +28,27 @@ class VContentOnlyCell: UICollectionViewCell {
     }
     
     private func setup() {
-        // Prevents UICollectionView from complaining about constraints "ambiguously suggesting a size of zero".
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addConstraint(NSLayoutConstraint(item: contentView, attribute: .Width,  relatedBy: .GreaterThanOrEqual, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: 1.0))
-        contentView.addConstraint(NSLayoutConstraint(item: contentView, attribute: .Height, relatedBy: .GreaterThanOrEqual, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: 1.0))
-        
-        clipsToBounds = true
-        layer.cornerRadius = VContentOnlyCell.cornerRadius
+        contentView.clipsToBounds = true
+        contentView.layer.cornerRadius = VContentOnlyCell.cornerRadius
     }
     
     // MARK: - Content
     
-    func setContent(content: ContentModel?) {
-        if let content = content {
-            self.content = content
+    var content: ContentModel? {
+        didSet {
+            updatePreviewView()
         }
-        updatePreviewView()
     }
-    
-    private var content: ContentModel?
     
     // MARK: - Dependency manager
     
-    var dependencyManager: VDependencyManager?
+    var dependencyManager: VDependencyManager? {
+        didSet {
+            if dependencyManager != nil && dependencyManager != oldValue {
+                contentPreviewView.dependencyManager = dependencyManager
+            }
+        }
+    }
     
     // MARK: - Views
     
@@ -59,15 +58,26 @@ class VContentOnlyCell: UICollectionViewCell {
         guard let content = content else {
             return
         }
-        addSubview(contentPreviewView)
-        v_addFitToParentConstraintsToSubview(contentPreviewView)
+        
+        setNeedsLayout()
+        layoutIfNeeded()
+        
+        contentView.addSubview(contentPreviewView)
         contentPreviewView.content = content
     }
     
-    // MARK: Layout
+    // MARK: - View Lifecycle
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        contentView.frame = bounds
+        contentPreviewView.frame = contentView.bounds
+    }
+    
+    // MARK: Highlighting
+    
+    override var highlighted: Bool {
+        didSet {
+            contentView.alpha = highlighted ? VContentOnlyCell.highlightAlpha : 1.0
+        }
     }
 }

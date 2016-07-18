@@ -14,6 +14,7 @@ extension VContent: PersistenceParsable {
         v_createdAt = content.createdAt ?? v_createdAt
         v_remoteID = content.id ?? v_remoteID
         v_shareURL = content.shareURL?.absoluteString ?? v_shareURL
+        v_linkedURL = content.linkedURL?.absoluteString ?? v_linkedURL
         v_status = content.status ?? v_status
         v_text = content.text ?? v_text
         v_type = content.type.rawValue
@@ -23,7 +24,6 @@ extension VContent: PersistenceParsable {
         /// Same thing if they want to unlike a piece of content. Therefore, we will show the user a state that they always expect,
         /// and we will update again on the next launch when our persistent store is cleared.
         v_isLikedByCurrentUser = v_isLikedByCurrentUser ?? content.isLikedByCurrentUser
-        
         
         let author = content.author
         v_author = v_managedObjectContext.v_findOrCreateObject(["remoteId": author.id])
@@ -46,5 +46,16 @@ extension VContent: PersistenceParsable {
         }
         
         v_contentMediaAssets = Set(persistentAssets)
+        
+        if let sourceTracking = content.tracking {
+            if let v_tracking = v_tracking {
+                v_managedObjectContext.deleteObject(v_tracking)
+            }
+            
+            let tracking: VTracking = v_managedObjectContext.v_createObject()
+            tracking.populate(fromSourceModel: sourceTracking)
+            tracking.content = self
+            v_tracking = tracking
+        }
     }
 }

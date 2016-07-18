@@ -8,14 +8,12 @@
 
 import Foundation
 
+protocol ConfigurableGridStreamHeaderDelegate: class {
+    func shouldRefresh()
+}
+
 /// The collection header view used for `VNewProfileViewController`.
 class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHeader {
-    // MARK: - Constants
-    
-    private static let shadowRadius: CGFloat = 2.0
-    private static let shadowOpacity: Float = 0.5
-    private static let userProfilePictureWidth: CGFloat = 80.0
-    private static let creatorProfilePictureWidth: CGFloat = 90.0
     
     // MARK: - Initializing
     
@@ -27,12 +25,7 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
-        profilePictureShadowView.layer.shadowColor = UIColor.blackColor().CGColor
-        profilePictureShadowView.layer.shadowRadius = VNewProfileHeaderView.shadowRadius
-        profilePictureShadowView.layer.shadowOpacity = VNewProfileHeaderView.shadowOpacity
-        profilePictureShadowView.layer.shadowOffset = CGSize(width: 0.0, height: 1.0)
-        
+        avatarView.size = .large
         populateUserContent()
     }
     
@@ -76,12 +69,14 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
     @IBOutlet private var tierTitleLabel: UILabel!
     @IBOutlet private var locationLabel: UILabel!
     @IBOutlet private var taglineLabel: UILabel!
-    @IBOutlet private var profilePictureView: UIImageView!
-    @IBOutlet private var profilePictureShadowView: UIView!
+    @IBOutlet private var avatarView: AvatarView!
+    
+    // MARK: - Configuration
+    
+    weak var delegate: ConfigurableGridStreamHeaderDelegate?
     
     // MARK: - Constraints
     
-    @IBOutlet private var profilePictureWidthConstraint: NSLayoutConstraint!
     @IBOutlet private var profilePictureBottomSpacingConstraint: NSLayoutConstraint!
     
     // MARK: - Dependency manager
@@ -130,12 +125,6 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
     private func populateUserContent() {
         let userIsCreator = user?.isCreator == true
         
-        if userIsCreator {
-            profilePictureWidthConstraint.constant = VNewProfileHeaderView.creatorProfilePictureWidth
-        } else {
-            profilePictureWidthConstraint.constant = VNewProfileHeaderView.userProfilePictureWidth
-        }
-        
         profilePictureBottomSpacingConstraint.active = userIsCreator
         statsContainerView.hidden = userIsCreator
         
@@ -152,9 +141,7 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         tierTitleLabel.hidden = !shouldDisplayTier
         tierValueLabel.hidden = !shouldDisplayTier
         
-        let placeholderImage = UIImage(named: "profile_full")
-        let pictureURL = user?.pictureURL(ofMinimumSize: profilePictureView.frame.size)
-        profilePictureView.sd_setImageWithURL(pictureURL, placeholderImage: placeholderImage)
+        avatarView.user = user
         
         if let backgroundPictureURL = user?.pictureURL(ofMinimumSize: backgroundImageView.frame.size) {
             backgroundImageView.applyBlurToImageURL(backgroundPictureURL, withRadius: 12.0) { [weak self] in
@@ -168,36 +155,15 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
     
     private let numberFormatter = VLargeNumberFormatter()
     
-    // MARK: - Layout
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        updateProfilePictureShadowPathIfNeeded()
-        
-        profilePictureView.layer.cornerRadius = profilePictureView.frame.size.v_roundCornerRadius
-    }
-    
-    // MARK: - Shadows
-    
-    private var shadowBounds: CGRect?
-    
-    private func updateProfilePictureShadowPathIfNeeded() {
-        let newShadowBounds = profilePictureShadowView.bounds
-
-        if newShadowBounds != shadowBounds {
-            shadowBounds = newShadowBounds
-            profilePictureShadowView.layer.shadowPath = UIBezierPath(ovalInRect: newShadowBounds).CGPath
-        }
-    }
-    
     // MARK: - ConfigurableGridStreamHeader
     
-    func decorateHeader(dependencyManager: VDependencyManager, maxHeight: CGFloat, content: VUser?) {
+    func decorateHeader(dependencyManager: VDependencyManager, maxHeight: CGFloat, content: VUser?, hasError: Bool) {
+        // No error states for profiles
         self.user = content
     }
     
-    func sizeForHeader(dependencyManager: VDependencyManager, maxHeight: CGFloat, content: VUser?) -> CGSize {
+    func sizeForHeader(dependencyManager: VDependencyManager, maxHeight: CGFloat, content: VUser?, hasError: Bool) -> CGSize {
+        // No error states for profiles
         self.user = content
         
         setNeedsLayout()
@@ -212,12 +178,8 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         return CGSizeMake(width, height)
     }
     
-    func headerWillAppear() {
-        // Empty implementation for ConfigurableGridStreamHeader
-    }
-    
-    func headerDidDisappear() {
-        // Empty implementation for ConfigurableGridStreamHeader
+    func gridStreamShouldRefresh() {
+        delegate?.shouldRefresh()
     }
 }
 

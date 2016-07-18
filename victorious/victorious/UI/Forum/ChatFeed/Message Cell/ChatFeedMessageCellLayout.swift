@@ -9,17 +9,19 @@
 import Foundation
 
 protocol ChatFeedMessageCellLayout {
-    var textAlignment: NSTextAlignment { get }
-    func updateWithCell(cell: ChatFeedMessageCell)
+    func update(for cell: ChatFeedMessageCell)
 }
 
-struct LeftAlignmentCellLayout: ChatFeedMessageCellLayout {
-    
-    let textAlignment: NSTextAlignment = .Left
-    
-    func updateWithCell(cell: ChatFeedMessageCell) {
-        let mediaSize = cell.calculateMediaSizeWithinBounds(cell.bounds)
-        let textSize = cell.calculateTextSizeWithinBounds(cell.bounds)
+extension ChatFeedMessageCellLayout {
+    private func performCommonLayout(for cell: ChatFeedMessageCell) {
+        guard let content = cell.content, dependencyManager = cell.dependencyManager else {
+            return
+        }
+        
+        let mediaSize = ChatFeedMessageCell.mediaSize(displaying: content, inWidth: cell.bounds.width, dependencyManager: dependencyManager)
+        let textSize = ChatFeedMessageCell.textSize(displaying: content, inWidth: cell.bounds.width, dependencyManager: dependencyManager)
+        let captionInsets = ChatFeedMessageCell.captionInsets
+        
         let contentSize = CGSize(
             width: max(textSize.width, mediaSize.width),
             height: textSize.height + mediaSize.height
@@ -31,109 +33,105 @@ struct LeftAlignmentCellLayout: ChatFeedMessageCellLayout {
             width: contentSize.width,
             height: contentSize.height
         )
-        cell.textView.frame = CGRect(
-            x: 0,
+        
+        cell.captionLabel.frame = CGRect(
+            x: captionInsets.left,
             y: mediaSize.height,
-            width: cell.bubbleView.bounds.width,
+            width: cell.bubbleView.bounds.width - captionInsets.horizontal,
             height: textSize.height
         )
-        cell.mediaView.frame = CGRect(
+        
+        cell.previewView?.frame = CGRect(
             x: 0,
             y: 0,
             width: cell.bubbleView.bounds.width,
             height: mediaSize.height
         )
+    }
+}
+
+struct LeftAlignmentCellLayout: ChatFeedMessageCellLayout {
+    func update(for cell: ChatFeedMessageCell) {
+        let horizontalSpacing = ChatFeedMessageCell.horizontalSpacing
+        let avatarSize = ChatFeedMessageCell.avatarSize
+        let contentMargin = ChatFeedMessageCell.contentMargin
+        
+        performCommonLayout(for: cell)
+        
         cell.avatarView.frame = CGRect(
             x: 0,
             y: 0,
-            width: cell.avatarSize.width,
-            height: cell.avatarSize.height
+            width: avatarSize.width,
+            height: avatarSize.height
         )
+        
         cell.messageContainer.frame = CGRect(
-            x: cell.avatarView.frame.maxX + cell.horizontalSpacing,
+            x: cell.avatarView.frame.maxX + horizontalSpacing,
             y: 0,
             width: cell.bubbleView.bounds.width,
             height: cell.bubbleView.bounds.height
         )
+        
         cell.contentContainer.frame = CGRect(
-            x: cell.contentMargin.left,
-            y: cell.contentMargin.top,
+            x: contentMargin.left,
+            y: contentMargin.top,
             width: cell.messageContainer.bounds.width
-                + cell.horizontalSpacing
+                + horizontalSpacing
                 + cell.avatarView.bounds.width,
             height: cell.messageContainer.bounds.height
         )
-        cell.detailTextView.frame = CGRect(
-            x: cell.contentMargin.left + cell.messageContainer.frame.origin.x,
+        
+        cell.detailLabel.frame = CGRect(
+            x: contentMargin.left + cell.messageContainer.frame.origin.x,
             y: 0,
             width: cell.bounds.width,
-            height: cell.contentMargin.top
+            height: contentMargin.top
         )
     }
 }
 
 struct RightAlignmentCellLayout: ChatFeedMessageCellLayout {
-    
-    let textAlignment: NSTextAlignment = .Right
-    
-    func updateWithCell(cell: ChatFeedMessageCell) {
-        let mediaSize = cell.calculateMediaSizeWithinBounds(cell.bounds)
-        let textSize = cell.calculateTextSizeWithinBounds(cell.bounds)
-        let contentSize = CGSize(
-            width: max(textSize.width, mediaSize.width),
-            height: textSize.height + mediaSize.height
-        )
-        cell.bubbleView.frame = CGRect(
-            x: 0,
-            y: 0,
-            width: contentSize.width,
-            height: contentSize.height
-        )
-        cell.textView.frame = CGRect(
-            x: 0,
-            y: mediaSize.height,
-            width: cell.bubbleView.bounds.width,
-            height: textSize.height
-        )
-        cell.mediaView.frame = CGRect(
-            x: 0,
-            y: 0,
-            width: cell.bubbleView.bounds.width,
-            height: mediaSize.height
-        )
+    func update(for cell: ChatFeedMessageCell) {
+        let horizontalSpacing = ChatFeedMessageCell.horizontalSpacing
+        let avatarSize = ChatFeedMessageCell.avatarSize
+        let contentMargin = ChatFeedMessageCell.contentMargin
+        
+        performCommonLayout(for: cell)
+        
         cell.messageContainer.frame = CGRect(
             x: 0,
             y: 0,
             width: cell.bubbleView.bounds.width,
             height: cell.bubbleView.bounds.height
         )
+        
         cell.avatarView.frame = CGRect(
-            x: cell.messageContainer.bounds.width + cell.horizontalSpacing,
+            x: cell.messageContainer.bounds.maxX + horizontalSpacing,
             y: 0,
-            width: cell.avatarSize.width,
-            height: cell.avatarSize.height
+            width: avatarSize.width,
+            height: avatarSize.height
         )
+        
         cell.contentContainer.frame = CGRect(
             x: cell.bounds.width
                 - cell.messageContainer.bounds.width
-                - cell.horizontalSpacing
+                - horizontalSpacing
                 - cell.avatarView.bounds.width
-                - cell.contentMargin.left,
-            y: cell.contentMargin.top,
+                - contentMargin.left,
+            y: contentMargin.top,
             width: cell.messageContainer.bounds.width
-                + cell.horizontalSpacing
+                + horizontalSpacing
                 + cell.avatarView.bounds.width,
             height: cell.messageContainer.bounds.height
         )
-        
-        cell.detailTextView.frame = CGRect(
+        cell.detailLabel.frame = CGRect(
             x: cell.contentContainer.frame.maxX
                 - cell.avatarView.frame.width
-                - cell.horizontalSpacing
-                - cell.detailTextView.frame.width,
+                - horizontalSpacing
+                - cell.detailLabel.frame.width,
             y: 0,
             width: cell.bounds.width,
-            height: cell.contentMargin.top
+            height: contentMargin.top
         )
     }
 }

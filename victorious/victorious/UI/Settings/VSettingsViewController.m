@@ -14,10 +14,8 @@
 #import "VWebContentViewController.h"
 #import "VEnvironment.h"
 #import "VAppDelegate.h"
-#import "VNotificationSettingsViewController.h"
 #import "VButton.h"
 #import "VPurchaseManager.h"
-#import "VSettingsTableViewCell.h"
 #import "VAppInfo.h"
 #import "VDependencyManager+VAccessoryScreens.h"
 #import "VDependencyManager+VNavigationItem.h"
@@ -33,9 +31,9 @@ static const NSInteger kSettingsSectionIndex = 0;
 
 typedef NS_ENUM(NSInteger, VSettingsAction)
 {
+    VSettingsActionEditProfile,
     VSettingsActionLikedContent,
     VSettingsActionChangePassword,
-    VSettingsActionHelp,
     VSettingsActionNotifications,
     VSettingsActionResetPurchases,
     VSettingsActionServerEnvironment,
@@ -48,20 +46,24 @@ typedef NS_ENUM(NSInteger, VSettingsAction)
 typedef NS_ENUM(NSInteger, VSettingsAboutAction)
 {
     VSettingsAboutActionTermsOfService,
-    VSettingsAboutActionPrivacyPolicy
+    VSettingsAboutActionPrivacyPolicy,
+    VSettingsAboutActionFeedback,
+    VSettingsAboutActionHelp
 };
 
 static NSString * const kDefaultHelpEmail = @"services@getvictorious.com";
 static NSString * const kSupportEmailKey = @"email.support";
+static NSString * const kItemFontKey = @"item.font";
+static NSString * const kItemColorKey = @"item.color";
+static NSString * const kItemBackgroundKey = @"item.background";
+static NSString * const kPushNotificationDependencyKey = @"push.notifications.screen";
 
 static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 
 @interface VSettingsViewController ()   <MFMailComposeViewControllerDelegate>
 
-@property (weak, nonatomic) IBOutlet VButton *logoutButton;
 @property (weak, nonatomic) IBOutlet UITableViewCell *serverEnvironmentCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *resetPurchasesCell;
-@property (nonatomic, weak) IBOutlet UILabel *versionString;
 
 @property (nonatomic, assign) BOOL showEnvironmentSetting;
 @property (nonatomic, assign) BOOL showTrackingAlertSetting;
@@ -93,33 +95,6 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-    self.tableView.accessibilityIdentifier = VAutomationIdentifierSettingsTableView;
-    
-    self.tableView.backgroundColor = [UIColor colorWithWhite:0.97 alpha:1.0];
-    
-    [self.labels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop)
-     {
-         label.font = [self.dependencyManager fontForKey:VDependencyManagerHeading3FontKey];
-     }];
-    [self.rightLabels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop)
-     {
-         label.font = [self.dependencyManager fontForKey:VDependencyManagerParagraphFontKey];
-     }];
-    
-    NSString *appVersionString = [NSString stringWithFormat:NSLocalizedString(@"Version", @""), [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
-    
-#ifdef V_SHOW_BUILD_NUMBER_IN_SETTINGS
-    appVersionString = [appVersionString stringByAppendingFormat:@" (%@)", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]];
-#endif
-    
-    self.versionString.text = appVersionString;
-    self.versionString.font = [self.dependencyManager fontForKey:VDependencyManagerLabel3FontKey];
-}
-
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -129,9 +104,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     [self v_addAccessoryScreensWithDependencyManager:self.dependencyManager];
     
     [self.dependencyManager trackViewWillAppear:self];
-    
-    [self updateLogoutButtonState];
-    
+        
     self.serverEnvironmentCell.detailTextLabel.text = [[[VEnvironmentManager sharedInstance] currentEnvironment] name];
     
 #ifdef V_SWITCH_ENVIRONMENTS
@@ -174,13 +147,23 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     // This is to make room for the larger titles
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
     [self.navigationItem setBackBarButtonItem:backButton];
+    
+    NSString *appVersionString = [NSString stringWithFormat:NSLocalizedString(@"Version", @""), [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
+    
+#ifdef V_SHOW_BUILD_NUMBER_IN_SETTINGS
+    appVersionString = [appVersionString stringByAppendingFormat:@" (%@)", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]];
+#endif
+    
+    self.versionString.text = appVersionString;
+    self.versionString.font = [self.dependencyManager fontForKey:@"version.font"];
+    self.versionString.textColor = [self.dependencyManager colorForKey:@"version.color"];
+
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     [[VTrackingManager sharedInstance] startEvent:VTrackingEventSettingsDidAppear];
-    
     [self v_addBadgingToAccessoryScreensWithDependencyManager:self.dependencyManager];
 }
 
@@ -229,29 +212,6 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     [self.tableView endUpdates];
 }
 
-- (void)updateLogoutButtonState
-{
-    self.logoutButton.primaryColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
-    self.logoutButton.titleLabel.font = [self.dependencyManager fontForKey:VDependencyManagerHeaderFontKey];
-    
-    if ([VCurrentUser user] != nil)
-    {
-        [self.logoutButton setTitle:NSLocalizedString(@"Logout", @"") forState:UIControlStateNormal];
-        self.logoutButton.style = VButtonStyleSecondary;
-        self.logoutButton.accessibilityIdentifier = VAutomationIdentifierSettingsLogOut;
-    }
-    else
-    {
-        [self.logoutButton setTitle:NSLocalizedString(@"Login", @"") forState:UIControlStateNormal];
-        self.logoutButton.style = VButtonStylePrimary;
-        self.logoutButton.accessibilityIdentifier = VAutomationIdentifierSettingsLogIn;
-    }
-    
-    [self.tableView beginUpdates];
-    [self.tableView reloadData];
-    [self.tableView endUpdates];
-}
-
 - (void)pushLikedContent
 {
     VLikedContentStreamCollectionViewController *likedContentViewController = [self.dependencyManager templateValueOfType:[VLikedContentStreamCollectionViewController class]
@@ -289,53 +249,37 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
         {
             [self pushLikedContent];
         }
-        else if (indexPath.row == VSettingsActionHelp )
-        {
-            [self sendHelp:self];
-        }
         else if ( indexPath.row == VSettingsActionResetCoachmarks )
         {
             // Reset coachmarks
             [[self.dependencyManager coachmarkManager] resetShownCoachmarks];
             [self updateResetCoachmarksCell];
         }
+        else if (indexPath.row == VSettingsActionNotifications)
+        {
+            NotificationSettingsViewController *viewController = [self.dependencyManager templateValueOfType: [NotificationSettingsViewController class] forKey:kPushNotificationDependencyKey];
+            [self.navigationController pushViewController:viewController animated:YES];
+        }
     }
     else if (indexPath.section == 1)
     {
-        if (indexPath.row == VSettingsAboutActionTermsOfService)
-        {
-            [[[ShowTermsOfServiceOperation alloc] initWithOriginViewController:self forceModal:NO animated:YES] queueWithCompletion:nil];
-        }
-        else if (indexPath.row == VSettingsAboutActionPrivacyPolicy)
-        {
-            [[[ShowPrivacyPolicyOperation alloc] initWithOriginViewController:self forceModal:NO animated:YES] queueWithCompletion:nil];
-        }
+        [self handleAboutSectionSelection: indexPath.row];
+    }
+    
+    else if (indexPath.section == 2 && indexPath.row == 0)
+    {
+        [[[LogoutOperation alloc] initWithDependencyManager: self.dependencyManager] queueWithCompletion:NULL];
     }
     
     // Tracking
-    VSettingsTableViewCell *cell = (VSettingsTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-    if ( [cell isKindOfClass:[VSettingsTableViewCell class]] )
+    SettingsTableViewCell *cell = (SettingsTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+    if ( [cell isKindOfClass:[SettingsTableViewCell class]] )
     {
         NSDictionary *params = @{ VTrackingKeyName : cell.settingName ?: @"" };
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectSetting parameters:params];
     }
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-}
-
-#pragma mark - Actions
-
-- (IBAction)logout:(id)sender
-{
-    if ( [VCurrentUser user] != nil )
-    {
-        // Logout first if logged in
-        LogoutOperation *operation = [[LogoutOperation alloc] initWithDependencyManager: self.dependencyManager];
-        [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
-        {
-            [self updateLogoutButtonState];
-        }];
-    }
 }
 
 #pragma mark - Navigation
@@ -403,7 +347,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     
 }
 
-- (IBAction)sendHelp:(id)sender
+- (void)sendHelp
 {
     if ([MFMailComposeViewController canSendMail])
     {

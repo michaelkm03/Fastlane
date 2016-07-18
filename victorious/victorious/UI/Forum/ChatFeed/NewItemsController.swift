@@ -12,15 +12,24 @@ import Foundation
     func onNewItemsSelected()
 }
 
-class NewItemsController: NSObject, VBackgroundContainer {
+class NewItemsController: NSObject {
+    private struct Constants {
+        static let pillInsets = UIEdgeInsetsMake(10, 10, 10, 10)
+        static let pillHeight: CGFloat = 30
+        static let pillBottomMargin: CGFloat = 20
+        
+        static let openAnimationDuration: Double = 0.75
+        static let closeAnimationDuration: Double = 0.2
+    }
     
     let largeNumberFormatter = VLargeNumberFormatter()
     
-    var depedencyManager: VDependencyManager! {
+    var dependencyManager: VDependencyManager! {
         didSet {
-            depedencyManager.addBackgroundToBackgroundHost(self)
-            button.titleLabel?.font = depedencyManager.font
-            button.titleLabel?.textColor = depedencyManager.textColor
+            newItemIndicator.dependencyManager = dependencyManager?.newItemButtonDependency
+            newItemIndicator.contentEdgeInsets = Constants.pillInsets
+            newItemIndicator.roundingType = .pill
+            newItemIndicator.addTarget(self, action: #selector(onNewItemsSelected), forControlEvents: .TouchUpInside)
         }
     }
     
@@ -28,26 +37,20 @@ class NewItemsController: NSObject, VBackgroundContainer {
     
     var count: Int = 0 {
         didSet {
-            let buttonTitle = localizedButtonTitle(count: count)
-            setButtonTitle(buttonTitle)
+            if oldValue != count {
+                let title = localizedButtonTitle(count: count)
+                newItemIndicator?.setTitle(title, forState: .Normal)
+            }
+            if count == 0 {
+                hide()
+            }
         }
-    }
-    
-    func backgroundContainerView() -> UIView {
-        return container
     }
     
     weak var delegate: NewItemsControllerDelegate?
     
-    @IBOutlet private weak var button: UIButton!
     @IBOutlet private weak var container: UIView!
-    
-    private var containerHeightFromStoryboard: CGFloat?
-    @IBOutlet private weak var containerHeight: NSLayoutConstraint! {
-        didSet {
-            containerHeightFromStoryboard = containerHeight.constant
-        }
-    }
+    @IBOutlet private weak var newItemIndicator: TextOnColorButton!
     
     func show(animated animated: Bool = true) {
         guard !isShowing else {
@@ -55,19 +58,14 @@ class NewItemsController: NSObject, VBackgroundContainer {
         }
         isShowing = true
         let animations = {
-            guard let bottomConstant = self.containerHeightFromStoryboard else {
-                assertionFailure("`containerHeightFromStoryboard` must be set as soon as this class is instantiated from a storyboard.")
-                return
-            }
-            self.containerHeight.constant = bottomConstant
-            self.container.superview?.layoutIfNeeded()
+            self.newItemIndicator.transform = CGAffineTransformMakeScale(1, 1)
         }
         if animated {
-            UIView.animateWithDuration(0.75,
+            UIView.animateWithDuration(Constants.openAnimationDuration,
                 delay: 0.0,
                 usingSpringWithDamping: 0.5,
                 initialSpringVelocity: 0.5,
-                options: [],
+                options: [.LayoutSubviews],
                 animations: animations,
                 completion: nil
             )
@@ -81,15 +79,14 @@ class NewItemsController: NSObject, VBackgroundContainer {
             return
         }
         let animations = {
-            self.containerHeight.constant = 0.0
-            self.container.superview?.layoutIfNeeded()
+            self.newItemIndicator.transform = CGAffineTransformMakeScale(0, 0)
         }
         let completion = { (_: Bool) in
             self.count = 0
             self.isShowing = false
         }
         if animated {
-            UIView.animateWithDuration(0.2,
+            UIView.animateWithDuration(Constants.closeAnimationDuration,
                 delay: 0.0,
                 usingSpringWithDamping: 1.0,
                 initialSpringVelocity: 0.0,
@@ -105,7 +102,7 @@ class NewItemsController: NSObject, VBackgroundContainer {
     
     // MARK: - Private
     
-    @IBAction private func onNewItemsSelected() {
+    @objc private func onNewItemsSelected() {
         delegate?.onNewItemsSelected()
         hide()
     }
@@ -122,21 +119,10 @@ class NewItemsController: NSObject, VBackgroundContainer {
         }
         return title
     }
-    
-    private func setButtonTitle(title: String) {
-        let attributes = [ NSFontAttributeName: button.titleLabel!.font ]
-        let attributedText = NSAttributedString(string: title, attributes: attributes)
-        button.setAttributedTitle( attributedText, forState: .Normal)
-    }
 }
 
 private extension VDependencyManager {
-    
-    var textColor: UIColor {
-        return colorForKey("color.newItems.text")
-    }
-    
-    var font: UIFont {
-        return fontForKey("font.newItems")
+    var newItemButtonDependency: VDependencyManager? {
+        return childDependencyForKey("newItemButton")
     }
 }

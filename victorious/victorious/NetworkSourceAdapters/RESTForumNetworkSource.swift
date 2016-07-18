@@ -47,7 +47,7 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
             
             dataSource.apiPath = newAPIPath
             
-            dataSource.loadItems(.refresh) { [weak self] contents, _ in
+            dataSource.loadItems(.refresh) { [weak self] contents, _, _ in
                 guard let strongSelf = self else {
                     return
                 }
@@ -60,7 +60,7 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     
     // MARK: - Polling
     
-    private static let pollingInterval = NSTimeInterval(10.0)
+    private static let pollingInterval = NSTimeInterval(5.0)
     
     private var pollingTimer: VTimerManager?
     
@@ -77,12 +77,15 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     }
     
     @objc private func pollForNewContent() {
-        dataSource.loadItems(.newer) { [weak self] contents, _ in
+        dataSource.loadItems(.newer) { [weak self] contents, stageEvent, _ in
             guard let contents = self?.processContents(contents) else {
                 return
             }
-            
             self?.broadcast(.appendContent(contents))
+            
+            if let stageEvent = stageEvent {
+                self?.broadcast(stageEvent)
+            }
         }
     }
     
@@ -102,7 +105,7 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     static let updateStreamURLNotification = "com.getvictorious.update-stream-url"
     
     private dynamic func handleUpdateStreamURLNotification(notification: NSNotification) {
-        filteredStreamAPIPath = (notification.userInfo?["streamAPIPath"] as? ReferenceWrapper<APIPath>)?.value
+        filteredStreamAPIPath = (notification.userInfo?["selectedItem"] as? ReferenceWrapper<ListMenuSelectedItem>)?.value.streamAPIPath
     }
     
     // MARK: - ForumNetworkSource
@@ -110,13 +113,17 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     func setUp() {
         isSetUp = true
         
-        dataSource.loadItems(.refresh) { [weak self] contents, error in
+        dataSource.loadItems(.refresh) { [weak self] contents, stageEvent, error in
             guard let strongSelf = self else {
                 return
             }
             
             let contents = strongSelf.processContents(contents)
             strongSelf.broadcast(.appendContent(contents))
+                
+            if let stageEvent = stageEvent {
+                strongSelf.broadcast(stageEvent)
+            }
         }
         
         startPolling()
@@ -148,17 +155,21 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
         nextSender?.send(event)
         
         switch event {
-        case .loadOldContent:
-            dataSource.loadItems(.older) { [weak self] contents, error in
-                guard let strongSelf = self else {
-                    return
+            case .loadOldContent:
+                dataSource.loadItems(.older) { [weak self] contents, stageEvent, error in
+                    guard let strongSelf = self else {
+                        return
+                    }
+                    
+                    let contents = strongSelf.processContents(contents)
+                    strongSelf.broadcast(.prependContent(contents))
+                        
+                    if let stageEvent = stageEvent {
+                        strongSelf.broadcast(stageEvent)
+                    }
                 }
-                
-                let contents = strongSelf.processContents(contents)
-                strongSelf.broadcast(.prependContent(contents))
-            }
-        default:
-            break
+            default:
+                break
         }
     }
     

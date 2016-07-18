@@ -14,6 +14,7 @@ class VContent: NSManagedObject, ContentModel, PaginatableItem {
     @NSManaged var v_createdAt: NSDate
     @NSManaged var v_remoteID: String
     @NSManaged var v_shareURL: String?
+    @NSManaged var v_linkedURL: String?
     @NSManaged var v_status: String?
     @NSManaged var v_text: String?
     @NSManaged var v_type: String
@@ -22,8 +23,13 @@ class VContent: NSManagedObject, ContentModel, PaginatableItem {
     @NSManaged var v_contentMediaAssets: Set<VContentMediaAsset>
     @NSManaged var v_author: VUser
     @NSManaged var v_contentPreviewAssets: Set<VImageAsset>
+    @NSManaged var v_tracking: VTracking?
     
     // MARK: - ContentModel
+    
+    var tracking: TrackingModel? {
+        return v_tracking
+    }
     
     var createdAt: NSDate {
         return v_createdAt
@@ -35,19 +41,15 @@ class VContent: NSManagedObject, ContentModel, PaginatableItem {
     
     var type: ContentType {
         switch v_type {
-        case "image":
-            return .image
-        case "video":
-            return .video
-        case "gif":
-            return .gif
-        case "text":
-            return .text
-        case "link":
-            return .link
-        default:
-            assertionFailure("Should always have a valid type")
-            return .text
+            case "image": return .image
+            case "video": return .video
+            case "gif": return .gif
+            case "text": return .text
+            case "link": return .link
+            
+            default:
+                assertionFailure("Should always have a valid type")
+                return .text
         }
     }
     
@@ -64,6 +66,13 @@ class VContent: NSManagedObject, ContentModel, PaginatableItem {
             return nil
         }
         return NSURL(string: v_shareURL)
+    }
+    
+    var linkedURL: NSURL? {
+        guard let linkedURL = v_linkedURL else {
+            return nil
+        }
+        return NSURL(string: linkedURL)
     }
     
     var author: UserModel {

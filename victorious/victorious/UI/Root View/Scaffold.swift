@@ -7,7 +7,7 @@
 //
 
 /// A protocol for scaffold view controllers that defines the common functionality between them.
-protocol Scaffold: VCoachmarkDisplayResponder, VDeeplinkSupporter, VDeeplinkHandler, InterstitialListener {
+protocol Scaffold: VCoachmarkDisplayResponder, InterstitialListener {
     /// The scaffold's dependency manager.
     var dependencyManager: VDependencyManager { get }
     
@@ -20,8 +20,7 @@ protocol Scaffold: VCoachmarkDisplayResponder, VDeeplinkSupporter, VDeeplinkHand
     /// A list of the view controllers that the scaffold can navigate to.
     var navigationDestinations: [VNavigationDestination] { get }
     
-    /// Navigates to the given `destination` view controller.
-    func navigate(to destination: UIViewController, animated: Bool)
+    func navigate(to deeplinkURL: NSURL)
 }
 
 extension Scaffold where Self: UIViewController {
@@ -43,12 +42,6 @@ extension Scaffold where Self: UIViewController {
             pushNotificationOperation.addDependency(tutorialOperation)
         }
         
-        if let rootViewController = VRootViewController.sharedRootViewController() {
-            let deepLinkOperation = ShowQueuedDeeplinkOperation(deepLinkReceiver: rootViewController.deepLinkReceiver)
-            deepLinkOperation.addDependency(pushNotificationOperation)
-            deepLinkOperation.queue()
-        }
-        
         pushNotificationOperation.queue { [weak self] error, cancelled in
             self?.coachmarkManager.allowCoachmarks = true
             onReady?()
@@ -65,10 +58,23 @@ extension Scaffold where Self: UIViewController {
     }
     
     // MARK: - InterstitialListener
-    
+
     func newInterstitialHasBeenRegistered() {
-        if presentedViewController == nil {
+        // Don't stack interstitials on each other.
+        if presentedViewController is Interstitial {
+            return
+        }
+
+        if let presentedViewController = presentedViewController {
+            InterstitialManager.sharedInstance.showNextInterstitial(onViewController: presentedViewController)
+        } else {
             InterstitialManager.sharedInstance.showNextInterstitial(onViewController: self)
         }
+    }
+    
+    func navigate(to deeplinkURL: NSURL) {
+        let router = Router(originViewController: self.mainNavigationController.innerNavigationController, dependencyManager: dependencyManager)
+        let destination = DeeplinkDestination(url: deeplinkURL)
+        router.navigate(to: destination)
     }
 }

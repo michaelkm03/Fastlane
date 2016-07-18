@@ -15,6 +15,8 @@
 @import VictoriousCommon;
 @import VictoriousIOSSDK;
 
+static NSString * const kMacroContentId              = @"%%CONTENT_ID%%";
+static NSString * const kMacroParentContentId        = @"%%PARENT_CONTENT_ID%%";
 static NSString * const kMacroFromTime               = @"%%FROM_TIME%%";
 static NSString * const kMacroToTime                 = @"%%TO_TIME%%";
 static NSString * const kMacroTimeCurrent            = @"%%TIME_CURRENT%%";
@@ -66,7 +68,10 @@ static NSString * const kMacroSubtype                = @"%%SUBTYPE%%";
     if (self)
     {
         // This is a mapping of generic parameters to application-specific macros
-        _parameterMacroMapping = @{ VTrackingKeyFromTime           : kMacroFromTime,
+        _parameterMacroMapping = @{
+                                    VTrackingKeyContentId          : kMacroContentId,
+                                    VTrackingKeyParentContentId    : kMacroParentContentId,
+                                    VTrackingKeyFromTime           : kMacroFromTime,
                                     VTrackingKeyToTime             : kMacroToTime,
                                     VTrackingKeyTimeCurrent        : kMacroTimeCurrent,
                                     VTrackingKeyTimeStamp          : kMacroTimeStamp,
@@ -204,13 +209,13 @@ static NSString * const kMacroSubtype                = @"%%SUBTYPE%%";
     
     completeParameters[ VTrackingKeySessionTime ] = @(sessionTimer.sessionDuration);
     
-    NSMutableDictionary *replacementsDictionary = [[NSMutableDictionary alloc] initWithCapacity:parameters.count];
-    for (NSString *parameter in parameters.keyEnumerator)
+    NSMutableDictionary *replacementsDictionary = [[NSMutableDictionary alloc] initWithCapacity:completeParameters.count];
+    for (NSString *parameter in completeParameters.keyEnumerator)
     {
         NSString *macro = self.parameterMacroMapping[parameter];
         if ( macro != nil )
         {
-            replacementsDictionary[macro] = [self stringFromParameterValue:parameters[parameter]];
+            replacementsDictionary[macro] = [self stringFromParameterValue:completeParameters[parameter]];
         }
     }
     NSString *urlWithMacrosReplaced = [self.macroReplacement urlByReplacingMacrosFromDictionary:replacementsDictionary inURLString:urlString];

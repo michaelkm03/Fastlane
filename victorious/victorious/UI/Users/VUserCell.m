@@ -9,7 +9,6 @@
 #import "VUserCell.h"
 #import "VDependencyManager.h"
 #import "VFollowControl.h"
-#import "VDefaultProfileButton.h"
 #import "victorious-Swift.h"
 #import <KVOController/FBKVOController.h>
 #import "victorious-Swift.h"
@@ -18,7 +17,6 @@ static const CGFloat kUserCellHeight = 51.0f;
 
 @interface VUserCell ()
 
-@property (weak, nonatomic) IBOutlet VDefaultProfileButton *userButton;
 @property (nonatomic, weak) IBOutlet UILabel *userName;
 @property (nonatomic, weak) IBOutlet VFollowControl *followControl;
 @property (nonatomic, strong) VUser *user;
@@ -40,8 +38,6 @@ static const CGFloat kUserCellHeight = 51.0f;
 {
     [super awakeFromNib];
     
-    [self.userButton addBorderWithWidth:1.0 andColor:[UIColor whiteColor]];
-    self.userButton.dependencyManager = self.dependencyManager;
     self.contentView.backgroundColor = [UIColor clearColor];
     
     if ([AgeGate isAnonymousUser])
@@ -74,7 +70,6 @@ static const CGFloat kUserCellHeight = 51.0f;
          [welf updateFollowingAnimated:YES];
      }];
     
-    self.userButton.user = user;
     self.userName.text = user.name;
     self.followControl.enabled = YES;
     
@@ -88,8 +83,6 @@ static const CGFloat kUserCellHeight = 51.0f;
     _dependencyManager = dependencyManager;
     
     self.userName.font = [_dependencyManager fontForKey:VDependencyManagerLabel1FontKey];
-    self.userButton.dependencyManager = dependencyManager;
-    self.userButton.tintColor = [_dependencyManager colorForKey:VDependencyManagerLinkColorKey];
     self.followControl.dependencyManager = dependencyManager;
 }
 
@@ -102,9 +95,6 @@ static const CGFloat kUserCellHeight = 51.0f;
 
 - (void)updateFollowingAnimated:(BOOL)animated
 {
-    self.followControl.hidden = [self.user isCurrentUser];
-    VFollowControlState controlState = [VFollowControl controlStateForFollowing:self.user.isFollowedByMainUser.boolValue];
-    [self.followControl setControlState:controlState animated:animated];
 }
 
 @end

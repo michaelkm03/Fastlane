@@ -40,14 +40,15 @@ extension Forum {
     // MARK: - ChatFeedDelegate
     
     func chatFeed(chatFeed: ChatFeed, didSelectUserWithUserID userID: Int) {
-        ShowProfileOperation(originViewController: originViewController,
-            dependencyManager: dependencyManager,
-            userId: userID).queue()
+        let router = Router(originViewController: originViewController, dependencyManager: dependencyManager)
+        let destination = DeeplinkDestination(userID: userID)
+        router.navigate(to: destination)
     }
     
-    func chatFeed(chatFeed: ChatFeed, didSelectContent content: ContentModel) {
-        let displayModifier = ShowCloseUpDisplayModifier(dependencyManager: dependencyManager, originViewController: originViewController)
-        ShowCloseUpOperation.showOperation(forContent: content, displayModifier: displayModifier).queue()
+    func chatFeed(chatFeed: ChatFeed, didSelectContent chatFeedContent: ChatFeedContent) {
+        let router = Router(originViewController: originViewController, dependencyManager: dependencyManager)
+        let destination = DeeplinkDestination(content: chatFeedContent.content)
+        router.navigate(to: destination)
     }
     
     // MARK: - ComposerDelegate
@@ -62,7 +63,7 @@ extension Forum {
 
     // MARK: - StageDelegate
     
-    func stage(stage: Stage, didUpdateContentHeight height: CGFloat) {
+    func stage(stage: Stage, wantsUpdateToContentHeight height: CGFloat) {
         setStageHeight(height)
         chatFeed?.setTopInset(height)
     }

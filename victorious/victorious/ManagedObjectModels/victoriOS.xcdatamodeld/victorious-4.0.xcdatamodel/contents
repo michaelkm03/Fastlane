@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10174" systemVersion="15E65" minimumToolsVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10174" systemVersion="15F34" minimumToolsVersion="Automatic">
     <entity name="AdBreak" representedClassName="victorious.VAdBreak" syncable="YES">
         <attribute name="adSystemID" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="adTag" optional="YES" attributeType="String" syncable="YES"/>
@@ -68,6 +68,7 @@
         <attribute name="v_createdAt" attributeType="Date" syncable="YES"/>
         <attribute name="v_isLikedByCurrentUser" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="v_isVIPOnly" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="v_linkedURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="v_remoteID" attributeType="String" syncable="YES"/>
         <attribute name="v_shareURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="v_status" optional="YES" attributeType="String" syncable="YES"/>
@@ -76,6 +77,7 @@
         <relationship name="v_author" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="content" inverseEntity="User" syncable="YES"/>
         <relationship name="v_contentMediaAssets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ContentMediaAsset" inverseName="v_content" inverseEntity="ContentMediaAsset" syncable="YES"/>
         <relationship name="v_contentPreviewAssets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ImageAsset" inverseName="content" inverseEntity="ImageAsset" syncable="YES"/>
+        <relationship name="v_tracking" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="Tracking" inverseName="content" inverseEntity="Tracking" syncable="YES"/>
     </entity>
     <entity name="ContentMediaAsset" representedClassName=".VContentMediaAsset" syncable="YES">
         <attribute name="v_externalID" optional="YES" attributeType="String" syncable="YES"/>
@@ -103,20 +105,10 @@
         <attribute name="layerName" attributeType="String" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
     </entity>
-    <entity name="FollowedHashtag" representedClassName="VFollowedHashtag" syncable="YES">
-        <attribute name="displayOrder" attributeType="Integer 64" indexed="YES" syncable="YES"/>
-        <relationship name="hashtag" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Hashtag" inverseName="followedHashtags" inverseEntity="Hashtag" syncable="YES"/>
-        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="followedHashtags" inverseEntity="User" syncable="YES"/>
-    </entity>
     <entity name="FollowedUser" representedClassName="VFollowedUser" syncable="YES">
         <attribute name="displayOrder" attributeType="Integer 64" indexed="YES" syncable="YES"/>
         <relationship name="objectUser" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="followers" inverseEntity="User" syncable="YES"/>
         <relationship name="subjectUser" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="following" inverseEntity="User" syncable="YES"/>
-    </entity>
-    <entity name="Hashtag" representedClassName="VHashtag" syncable="YES">
-        <attribute name="count" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
-        <attribute name="tag" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="followedHashtags" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="FollowedHashtag" inverseName="hashtag" inverseEntity="FollowedHashtag" syncable="YES"/>
     </entity>
     <entity name="HashtagShelf" representedClassName="victorious.HashtagShelf" parentEntity="Shelf" syncable="YES">
         <attribute name="amFollowing" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -124,9 +116,9 @@
         <attribute name="postsCount" attributeType="Integer 64" syncable="YES"/>
     </entity>
     <entity name="ImageAsset" representedClassName="VImageAsset" syncable="YES">
-        <attribute name="height" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="height" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="imageURL" attributeType="String" syncable="YES"/>
-        <attribute name="width" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="width" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <relationship name="content" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Content" inverseName="v_contentPreviewAssets" inverseEntity="Content" syncable="YES"/>
         <relationship name="streamItems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StreamItem" inverseName="previewImageAssets" inverseEntity="StreamItem" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="previewAssets" inverseEntity="User" syncable="YES"/>
@@ -293,11 +285,12 @@
         <attribute name="headline" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="streamItem" maxCount="1" deletionRule="Nullify" destinationEntity="StreamItem" inverseName="parentStreamItemPointers" inverseEntity="StreamItem" syncable="YES"/>
         <relationship name="streamParent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Stream" inverseName="streamItemPointers" inverseEntity="Stream" syncable="YES"/>
-        <relationship name="tracking" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Tracking" inverseName="streamItemPointer" inverseEntity="Tracking" syncable="YES"/>
     </entity>
     <entity name="Tracking" representedClassName="VTracking" syncable="YES">
         <attribute name="cellClick" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="cellLoad" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="cellView" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="share" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="videoComplete25" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="videoComplete50" optional="YES" attributeType="Transformable" syncable="YES"/>
@@ -308,7 +301,7 @@
         <attribute name="videoStall" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="viewStart" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="viewStop" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <relationship name="streamItemPointer" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="StreamItemPointer" inverseName="tracking" inverseEntity="StreamItemPointer" syncable="YES"/>
+        <relationship name="content" maxCount="1" deletionRule="Nullify" destinationEntity="Content" inverseName="v_tracking" inverseEntity="Content" syncable="YES"/>
     </entity>
     <entity name="User" representedClassName="VUser" syncable="YES">
         <attribute name="accountIdentifier" optional="YES" transient="YES" attributeType="String" syncable="YES"/>
@@ -342,7 +335,6 @@
         <relationship name="comments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Comment" inverseName="user" inverseEntity="Comment" syncable="YES"/>
         <relationship name="content" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Content" inverseName="v_author" inverseEntity="Content" syncable="YES"/>
         <relationship name="conversations" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Conversation" inverseName="user" inverseEntity="Conversation" syncable="YES"/>
-        <relationship name="followedHashtags" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="FollowedHashtag" inverseName="user" inverseEntity="FollowedHashtag" syncable="YES"/>
         <relationship name="followers" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="FollowedUser" inverseName="objectUser" inverseEntity="FollowedUser" syncable="YES"/>
         <relationship name="following" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="FollowedUser" inverseName="subjectUser" inverseEntity="FollowedUser" syncable="YES"/>
         <relationship name="likedSequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SequenceLiker" inverseName="user" inverseEntity="SequenceLiker" syncable="YES"/>
@@ -372,13 +364,11 @@
         <element name="AnswerAction" positionX="0" positionY="0" width="128" height="75"/>
         <element name="Asset" positionX="0" positionY="0" width="128" height="300"/>
         <element name="Comment" positionX="0" positionY="0" width="128" height="375"/>
-        <element name="Content" positionX="81" positionY="153" width="128" height="210"/>
+        <element name="Content" positionX="81" positionY="153" width="128" height="240"/>
         <element name="ContentMediaAsset" positionX="108" positionY="180" width="128" height="120"/>
         <element name="Conversation" positionX="0" positionY="0" width="128" height="165"/>
         <element name="Experiment" positionX="0" positionY="0" width="128" height="150"/>
-        <element name="FollowedHashtag" positionX="0" positionY="0" width="128" height="90"/>
         <element name="FollowedUser" positionX="0" positionY="0" width="128" height="90"/>
-        <element name="Hashtag" positionX="0" positionY="0" width="128" height="90"/>
         <element name="HashtagShelf" positionX="0" positionY="0" width="128" height="90"/>
         <element name="ImageAsset" positionX="0" positionY="0" width="128" height="135"/>
         <element name="Interaction" positionX="0" positionY="0" width="128" height="195"/>
@@ -397,8 +387,8 @@
         <element name="Shelf" positionX="0" positionY="0" width="128" height="75"/>
         <element name="Stream" positionX="0" positionY="0" width="128" height="165"/>
         <element name="StreamItem" positionX="0" positionY="0" width="128" height="225"/>
-        <element name="StreamItemPointer" positionX="0" positionY="0" width="128" height="120"/>
-        <element name="Tracking" positionX="0" positionY="0" width="128" height="240"/>
+        <element name="StreamItemPointer" positionX="0" positionY="0" width="128" height="105"/>
+        <element name="Tracking" positionX="0" positionY="0" width="128" height="270"/>
         <element name="User" positionX="0" positionY="0" width="128" height="705"/>
         <element name="UserShelf" positionX="0" positionY="0" width="128" height="90"/>
         <element name="VoteResult" positionX="0" positionY="0" width="128" height="90"/>

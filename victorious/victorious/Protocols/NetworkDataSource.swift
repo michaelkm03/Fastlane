@@ -10,7 +10,6 @@ import Foundation
 
 /// Conformers are data sources that fetch `DataObject` from the network
 protocol NetworkDataSource: class {
-    
     /// The results fetched from network that should be visible to users
-    var visibleItems: [ContentModel] { get }
+    var visibleItems: [ChatFeedContent] { get }
 }

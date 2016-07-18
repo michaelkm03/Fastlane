@@ -9,19 +9,18 @@
 import UIKit
 
 /// A view controller that displays the contents of a user's profile.
-class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate, AccessoryScreensKeyProvider {
+class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderDelegate, VIPGateViewControllerDelegate, AccessoryScreenContainer, VAccessoryNavigationSource {
     // MARK: - Constants
     
     static let userAppearanceKey = "userAppearance"
     static let creatorAppearanceKey = "creatorAppearance"
+    static let upgradeButtonID = "Accessory paygate"
     
-    private static let upgradeButtonXPadding = CGFloat(12.0)
-    private static let upgradeButtonCornerRadius = CGFloat(5.0)
     private struct AccessoryScreensKeys {
-        static let userOwn = "accessories.user.own"
-        static let userOther = "accessories.user.other"
-        static let userCreator = "accessories.user.creator"
-        static let creatorOwn = "accessories.creator.own"
+        static let selfUser = "accessories.user.own"
+        static let otherUser = "accessories.user.other"
+        static let selfCreator = "accessories.creator.own"
+        static let otherCreator = "accessories.user.creator"
     }
     
     // MARK: Dependency Manager
@@ -30,7 +29,7 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
     
     // MARK: Model Data
     
-    var user: VUser? {
+    var user: UserModel? {
         get {
             return gridStreamController.content
         }
@@ -45,13 +44,10 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
         )
     }()
     
-    private lazy var upvoteButton: UIBarButtonItem = {
-        return UIBarButtonItem(
-            image: self.dependencyManager.upvoteIconUnselected,
-            style: .Done,
-            target: self,
-            action: #selector(toggleUpvote)
-        )
+    private lazy var upvoteButton: UIButton = {
+        let button = BackgroundButton(type: .System)
+        button.addTarget(self, action: #selector(toggleUpvote), forControlEvents: .TouchUpInside)
+        return button
     }()
     
     // MARK: - Initializing
@@ -65,14 +61,17 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
         var configuration = GridStreamConfiguration()
         configuration.managesBackground = false
         
-        gridStreamController = GridStreamViewController(dependencyManager: dependencyManager,
-                                                        header: header,
-                                                        content: nil,
-                                                        configuration: configuration,
-                                                        streamAPIPath: dependencyManager.streamAPIPath(forUserID: userID))
+        gridStreamController = GridStreamViewController(
+            dependencyManager: dependencyManager,
+            header: header,
+            content: nil,
+            configuration: configuration,
+            streamAPIPath: dependencyManager.streamAPIPath(forUserID: userID)
+        )
         
         super.init(nibName: nil, bundle: nil)
-        
+        header.delegate = self
+
         // Applies a fallback background color while we fetch the user.
         view.backgroundColor = dependencyManager.colorForKey(VDependencyManagerBackgroundColorKey)
         
@@ -90,47 +89,36 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
     
     // MARK: - View updating
     
-    private func updateUpgradeButton() {
-        if VCurrentUser.user()?.isVIPValid() == true {
-            // FUTURE: When new upgrade button appearance fields are read from template, update appearance of upgradeButton here
-        }
-        else {
-            upgradeButton.setTitle("UPGRADE", forState: .Normal)
-            upgradeButton.addTarget(self, action: #selector(upgradeButtonWasPressed), forControlEvents: .TouchUpInside)
-            upgradeButton.sizeToFit()
-            upgradeButton.frame.size.width += VNewProfileViewController.upgradeButtonXPadding
-            upgradeButton.layer.cornerRadius = VNewProfileViewController.upgradeButtonCornerRadius
-            if let navigationBar = navigationController?.navigationBar {
-                upgradeButton.backgroundColor = navigationBar.tintColor
-                upgradeButton.setTitleColor(navigationBar.barTintColor, forState: .Normal)
+    private func updateBarButtonItems() {
+        supplementalRightButtons = []
+        
+        let isCurrentUser = user?.isCurrentUser == true
+        let isCreator = user?.accessLevel?.isCreator == true
+        
+        if !isCurrentUser {
+            if isCreator && VCurrentUser.user()?.hasValidVIPSubscription != true {
+                supplementalRightButtons.append(UIBarButtonItem(customView: upgradeButton))
+            }
+            
+            if !isCreator {
+                if user?.isFollowedByCurrentUser == true {
+                    upvoteButton.setImage(dependencyManager.upvoteIconSelected, forState: .Normal)
+                    upvoteButton.backgroundColor = dependencyManager.upvoteIconSelectedBackgroundColor
+                    upvoteButton.tintColor = dependencyManager.upvoteIconTint
+                }
+                else {
+                    upvoteButton.setImage(dependencyManager.upvoteIconUnselected, forState: .Normal)
+                    upvoteButton.backgroundColor = dependencyManager.upvoteIconUnselectedBackgroundColor
+                    upvoteButton.tintColor = nil
+                }
+                
+                upvoteButton.sizeToFit()
+                supplementalRightButtons.append(UIBarButtonItem(customView: upvoteButton))
+                supplementalRightButtons.append(overflowButton)
             }
         }
-    }
-    
-    private func updateRightBarButtonItems() {
-        // Upgrade button
-        updateUpgradeButton()
         
-        // Upvote button
-        if user?.isFollowedByCurrentUser == true {
-            upvoteButton.image = dependencyManager.upvoteIconSelected
-            upvoteButton.tintColor = dependencyManager.upvoteIconTint
-        }
-        else {
-            upvoteButton.image = dependencyManager.upvoteIconUnselected
-            upvoteButton.tintColor = nil
-        }
-        
-        var rightBarButtonItems:[UIBarButtonItem] = []
-        if shouldShowUpgradeButton() {
-            rightBarButtonItems.append(UIBarButtonItem(customView: upgradeButton))
-        }
-        if user?.id != VCurrentUser.user()?.id {
-            rightBarButtonItems.append(upvoteButton)
-        }
-
-        // FUTURE: This should be coming from the template VDependencyManager+AccessoryScreens infrastructure
-//        navigationItem.rightBarButtonItems = rightBarButtonItems
+        v_addAccessoryScreensWithDependencyManager(dependencyManager)
     }
     
     // MARK: - View controllers
@@ -139,7 +127,13 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
     
     // MARK: - Views
     
-    private let upgradeButton = UIButton(type: .System)
+    private lazy var upgradeButton: UIButton = {
+        let button = BackgroundButton(type: .System)
+        button.addTarget(self, action: #selector(upgradeButtonWasPressed), forControlEvents: .TouchUpInside)
+        button.setTitle(NSLocalizedString("Upgrade", comment: ""), forState: .Normal)
+        button.sizeToFit()
+        return button
+    }()
     
     // MARK: - Actions
     
@@ -151,47 +145,85 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
         guard let user = user else {
             return
         }
-        let userID = Int(user.id)
         
         UserUpvoteToggleOperation(
-            userID: userID,
+            userID: user.id,
             upvoteAPIPath: dependencyManager.userUpvoteAPIPath,
             unupvoteAPIPath: dependencyManager.userUnupvoteAPIPath
         ).queue { [weak self] _ in
-            self?.updateRightBarButtonItems()
+            self?.updateBarButtonItems()
         }
     }
     
     func overflow() {
-        // FUTURE: Implement overflow button
+        guard
+            let isBlocked = user?.isBlockedByCurrentUser,
+            let userID = user?.id
+        else {
+            return
+        }
+        
+        let toggleBlockedOperation = UserBlockToggleOperation(
+            userID: userID,
+            blockAPIPath: dependencyManager.userBlockAPIPath,
+            unblockAPIPath: dependencyManager.userUnblockAPIPath
+        )
+        
+        let actionTitle = isBlocked
+            ? NSLocalizedString("UnblockUser", comment: "")
+            : NSLocalizedString("BlockUser", comment: "")
+        let confirm = ConfirmDestructiveActionOperation(
+            actionTitle: actionTitle,
+            originViewController: self,
+            dependencyManager: dependencyManager
+        )
+        confirm.before(toggleBlockedOperation)
+        confirm.queue()
+        toggleBlockedOperation.queue()
     }
     
     // MARK: - VIPGateViewControllerDelegate
     
-    func vipGateViewController(vipGateViewController: VIPGateViewController, allowedAccess allowed: Bool) {
-        updateUpgradeButton()
-    }
+    func vipGateViewController(vipGateViewController: VIPGateViewController, allowedAccess allowed: Bool) {}
     
-    // MARK: - AccessoryScreensKeyProvider
-
+    // MARK: - AccessoryScreenContainer
+    
+    private var supplementalLeftButtons = [UIBarButtonItem]()
+    private var supplementalRightButtons = [UIBarButtonItem]()
+    
     var accessoryScreensKey: String? {
         guard let user = self.user else {
             return nil
         }
         
-        if user.isCurrentUser() {
-            if user.accessLevel == .owner {
-                return AccessoryScreensKeys.creatorOwn
-            } else {
-                return AccessoryScreensKeys.userOwn
-            }
-        } else {
-            if user.accessLevel == .user {
-                return AccessoryScreensKeys.userCreator
-            } else {
-                return AccessoryScreensKeys.userOther
-            }
+        if user.accessLevel?.isCreator == true {
+            return user.isCurrentUser ? AccessoryScreensKeys.selfCreator : AccessoryScreensKeys.otherCreator
         }
+        else {
+            return user.isCurrentUser ? AccessoryScreensKeys.selfUser : AccessoryScreensKeys.otherUser
+        }
+    }
+    
+    func addCustomLeftItems(to items: [UIBarButtonItem]) -> [UIBarButtonItem] {
+        return items + supplementalLeftButtons
+    }
+    
+    func addCustomRightItems(to items: [UIBarButtonItem]) -> [UIBarButtonItem] {
+        return items + supplementalRightButtons
+    }
+    
+    func shouldDisplayAccessoryItem(withIdentifier identifier: String) -> Bool {
+        return identifier != VNewProfileViewController.upgradeButtonID
+    }
+    
+    // MARK: - VAccessoryNavigationSource
+    
+    func shouldNavigateWithAccessoryMenuItem(menuItem: VNavigationMenuItem!) -> Bool {
+        return true
+    }
+    
+    func shouldDisplayAccessoryMenuItem(menuItem: VNavigationMenuItem!, fromSource source: UIViewController!) -> Bool {
+        return menuItem?.identifier != VNewProfileViewController.upgradeButtonID
     }
     
     // MARK: - Managing the user
@@ -201,16 +233,7 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
             setUser(user, using: dependencyManager)
         }
         else if let userRemoteID = dependencyManager.templateValueOfType(NSNumber.self, forKey: VDependencyManager.userRemoteIdKey) as? NSNumber {
-            guard
-                let apiPath = dependencyManager.networkResources?.userFetchAPIPath,
-                let userInfoOperation = UserInfoOperation(userID: userRemoteID.integerValue, apiPath: apiPath)
-            else {
-                return
-            }
-            
-            userInfoOperation.queue { [weak self] results, error, cancelled in
-                self?.setUser(userInfoOperation.user, using: dependencyManager)
-            }
+            fetchUser(withRemoteID: userRemoteID.integerValue)
         }
         else {
             setUser(VCurrentUser.user(), using: dependencyManager)
@@ -223,15 +246,13 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
             return
         }
         
-        gridStreamController.content = user
+        gridStreamController.setContent(user, withError: false)
         
         let appearanceKey = user.isCreator?.boolValue ?? false ? VNewProfileViewController.creatorAppearanceKey : VNewProfileViewController.userAppearanceKey
         let appearanceDependencyManager = dependencyManager.childDependencyForKey(appearanceKey)
         appearanceDependencyManager?.addBackgroundToBackgroundHost(gridStreamController)
         
-        upgradeButton.hidden = user.isCreator != true || VCurrentUser.user()?.isVIPSubscriber == true
-        
-        v_addAccessoryScreensWithDependencyManager(dependencyManager)
+        updateBarButtonItems()
     }
     
     private static func getUserID(forDependencyManager dependencyManager: VDependencyManager) -> Int {
@@ -248,15 +269,29 @@ class VNewProfileViewController: UIViewController, VIPGateViewControllerDelegate
         }
     }
     
-    private func shouldShowUpgradeButton() -> Bool {
-        return !userIsVIPSubscriber() && user?.isCreator == true
+    // MARK: - ConfigurableGridStreamContainer
+    
+    func shouldRefresh() {
+        guard let userID = user?.id else {
+            return
+        }
+        fetchUser(withRemoteID: userID)
     }
     
-    private func userIsVIPSubscriber() -> Bool {
-        guard let currentUser = VCurrentUser.user() else {
-            return false
+    private func fetchUser(withRemoteID remoteID: Int) {
+        guard
+            let apiPath = dependencyManager.networkResources?.userFetchAPIPath,
+            let userInfoOperation = UserInfoOperation(userID: remoteID, apiPath: apiPath)
+        else {
+            return
         }
-        return currentUser.isVIPValid()
+        
+        userInfoOperation.queue { [weak self] results, error, cancelled in
+            guard let dependencyManager = self?.dependencyManager else {
+                return
+            }
+            self?.setUser(userInfoOperation.user, using: dependencyManager)
+        }
     }
 }
 
@@ -315,6 +350,14 @@ private extension VDependencyManager {
     
     var upvoteIconTint: UIColor? {
         return colorForKey("color.text.actionButton")
+    }
+    
+    var upvoteIconSelectedBackgroundColor: UIColor? {
+        return colorForKey("color.background.upvote.selected")
+    }
+    
+    var upvoteIconUnselectedBackgroundColor: UIColor? {
+        return colorForKey("color.background.upvote.unselected")
     }
     
     var upvoteIconSelected: UIImage? {

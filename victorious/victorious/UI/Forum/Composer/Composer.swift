@@ -23,32 +23,22 @@ protocol Composer: class, ForumEventReceiver, ForumEventSender, ComposerAttachme
     
     func dismissKeyboard(animated: Bool)
     
-    func sendMessage(asset asset: ContentMediaAsset, text: String?)
+    func sendMessage(text text: String, currentUser: UserModel)
     
-    func sendMessage(text text: String)
+    func sendMessage(asset asset: ContentMediaAsset, text: String?, currentUser: UserModel)
     
     func setComposerVisible(visible: Bool, animated: Bool)
 }
 
 extension Composer {
     
-    func sendMessage(text text: String) {
-        guard let currentUser = VCurrentUser.user() else {
-            assertionFailure("Unable to construct message from Composer.")
-            return
-        }
-        
+    func sendMessage(text text: String, currentUser: UserModel) {
         let content = Content(text: text, author: currentUser)
         send(.sendContent(content))
     }
     
-    func sendMessage(asset asset: ContentMediaAsset, text: String?) {
-        guard let currentUser = VCurrentUser.user() else {
-            assertionFailure("Unable to construct message from Composer.")
-            return
-        }
-        
-        let content = Content(text: text, assets: [asset], author: currentUser)
+    func sendMessage(asset asset: ContentMediaAsset, text: String?, currentUser: UserModel) {
+        let content = Content(text: text, assets: [asset], type: asset.contentType, author: currentUser)
         send(.sendContent(content))
     }
 }

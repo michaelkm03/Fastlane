@@ -104,6 +104,8 @@
 	<string>VTabMenuShim</string>
 	<key>stream.screen</key>
 	<string>VStreamCollectionViewController</string>
+	<key>closeupview.screen</key>
+	<string>victorious.CloseUpContainerViewController</string>
 	<key>likedContentStream.screen</key>
 	<string>VLikedContentStreamCollectionViewController</string>
 	<key>hashtagStream.screen</key>
@@ -206,7 +208,7 @@
 	<string>victorious.InterstitialAlertViewController</string>
 	<key>listMenu.screen</key>
 	<string>victorious.ListMenuViewController</string>
-	<key>toast.interstitial</key>
+	<key>standard.toast</key>
 	<string>victorious.InterstitialToastViewController</string>
 	<key>tutorial.screen</key>
 	<string>victorious.TutorialViewController</string>
@@ -218,5 +220,7 @@
 	<string>VTextOnImageButton</string>
 	<key>textOnColor.button</key>
 	<string>VTextOnColorButton</string>
+	<key>push.notifications.screen</key>
+	<string>victorious.NotificationSettingsViewController</string>
 </dict>
 </plist>

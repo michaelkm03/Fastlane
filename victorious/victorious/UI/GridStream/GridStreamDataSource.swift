@@ -22,9 +22,10 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
         var streamAPIPath = streamAPIPath
         
         self.dependencyManager = dependencyManager
+        self.gridDependency = dependencyManager.gridDependency
         self.header = header
         self.content = content
-        self.cellFactory = VContentOnlyCellFactory(dependencyManager: dependencyManager)
+        self.cellFactory = VContentOnlyCellFactory(dependencyManager: gridDependency)
         
         streamAPIPath.queryParameters["filter_text"] = "true"
         
@@ -36,6 +37,7 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
     // MARK: - Dependency manager
     
     private let dependencyManager: VDependencyManager
+    private var gridDependency: VDependencyManager
     
     // MARK: - Registering views
     
@@ -46,7 +48,13 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
     
     // MARK: - Managing content
     
-    var content: HeaderType.ContentType?
+    private(set) var content: HeaderType.ContentType?
+    private var hasError = false
+    
+    func setContent(content: HeaderType.ContentType?, withError hasError: Bool) {
+        self.content = content
+        self.hasError = hasError
+    }
     
     // MARK: - Managing items
     
@@ -61,11 +69,16 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
     }
     
     func loadContent(for collectionView: UICollectionView, loadingType: PaginatedLoadingType, completion: ((newItems: [ContentModel], error: NSError?) -> Void)? = nil) {
-        paginatedDataSource.loadItems(loadingType) { [weak self] newItems, error in
+        paginatedDataSource.loadItems(loadingType) { [weak self] newItems, stageEvent, error in
+            if let items = self?.paginatedDataSource.items {
+                self?.header?.gridStreamDidUpdateDataSource(with: items)
+            }
+            
             collectionView.collectionViewLayout.invalidateLayout()
             
             if loadingType == .refresh {
-                collectionView.reloadData()
+                // GridStreamViewController will only have one section. Also, collectionView.reloadData() was not properly reloading the cells.
+                collectionView.reloadSections(NSIndexSet(index: 0))
             }
             else if let totalItemCount = self?.items.count where newItems.count > 0 {
                 let previousCount = totalItemCount - newItems.count
@@ -94,11 +107,12 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
     func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
         if kind == UICollectionElementKindSectionFooter {
             return collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: VFooterActivityIndicatorView.reuseIdentifier(), forIndexPath: indexPath) as! VFooterActivityIndicatorView
-        } else {
+        }
+        else {
             if headerView == nil {
                 headerView = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: headerName, forIndexPath: indexPath) as? ConfigurableGridStreamHeaderView
             }
-            header?.decorateHeader(dependencyManager, maxHeight: CGRectGetHeight(collectionView.bounds), content: content)
+            header?.decorateHeader(dependencyManager, maxHeight: CGRectGetHeight(collectionView.bounds), content: content, hasError: hasError)
             
             guard let header = header as? UIView else {
                 assertionFailure("header is not a UIView")
@@ -115,5 +129,11 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
         cell.backgroundColor = cellBackgroundColor
         cell.contentView.backgroundColor = cellContentBackgroundColor
         return cell
+    }
+}
+
+private extension VDependencyManager {
+    var gridDependency: VDependencyManager {
+        return childDependencyForKey("gridStream") ?? self
     }
 }

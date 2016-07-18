@@ -38,7 +38,7 @@ enum PaginatedOrdering {
 ///
 /// - NOTE: This should be renamed to `PaginatedDataSource` once the other `PaginatedDataSource` is removed.
 ///
-class TimePaginatedDataSource<Item, Operation: Queueable where Operation.CompletionBlockType == (newItems: [Item], error: NSError?) -> Void> {
+class TimePaginatedDataSource<Item, Operation: Queueable where Operation.CompletionBlockType == (newItems: [Item], stageEvent: ForumEvent?, error: NSError?) -> Void, Operation: NSOperation> {
     
     // MARK: - Initializing
     
@@ -53,14 +53,17 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
     var apiPath: APIPath
     let ordering: PaginatedOrdering
     let createOperation: (url: NSURL) -> Operation
+    private var currentOperation: Operation?
     
-    // MARK: - Managing content
+    // MARK: - Managing contents
     
     /// The data source's list of items ordered from oldest to newest.
     private(set) var items: [Item] = []
     
     /// Whether the data source is currently loading a page of items or not.
-    private(set) var isLoading = false
+    var isLoading: Bool {
+        return currentOperation != nil
+    }
     
     /// Loads a new page of items.
     ///
@@ -68,7 +71,12 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
     ///
     /// This method does nothing if a page is already being loaded.
     ///
-    func loadItems(loadingType: PaginatedLoadingType, completion: ((newItems: [Item], error: NSError?) -> Void)? = nil) {
+    func loadItems(loadingType: PaginatedLoadingType, completion: ((newItems: [Item], stageEvent: ForumEvent?, error: NSError?) -> Void)? = nil) {
+        if loadingType == .refresh {
+            currentOperation?.cancel()
+            currentOperation = nil
+        }
+        
         guard !isLoading else {
             return
         }
@@ -78,11 +86,11 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
             return
         }
         
-        isLoading = true
+        currentOperation = createOperation(url: url)
         
-        createOperation(url: url).queue { [weak self] newItems, error in
+        currentOperation?.queue { [weak self] newItems, stageEvent, error in
             defer {
-                completion?(newItems: newItems, error: error)
+                completion?(newItems: newItems, stageEvent: stageEvent, error: error)
             }
             
             guard let ordering = self?.ordering else {
@@ -106,7 +114,7 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
                     }
             }
             
-            self?.isLoading = false
+            self?.currentOperation = nil
         }
     }
     
@@ -141,12 +149,12 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
         let now = NSDate().paginationTimestamp
         
         switch loadingType {
-        case .refresh:
-            return (fromTime: now, toTime: 0)
-        case .newer:
-            return (fromTime: now, toTime: newestTimestamp ?? 0)
-        case .older:
-            return (fromTime: oldestTimestamp ?? now, toTime: 0)
+            case .refresh:
+                return (fromTime: now, toTime: 0)
+            case .newer:
+                return (fromTime: now, toTime: newestTimestamp ?? 0)
+            case .older:
+                return (fromTime: oldestTimestamp ?? now, toTime: 0)
         }
     }
     

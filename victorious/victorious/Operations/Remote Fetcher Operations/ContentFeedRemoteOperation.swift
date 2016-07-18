@@ -9,6 +9,7 @@
 import UIKit
 
 final class ContentFeedRemoteOperation: RemoteFetcherOperation {
+    private(set) var refreshStage: RefreshStage?
     
     // MARK: - Initializing
     
@@ -25,7 +26,8 @@ final class ContentFeedRemoteOperation: RemoteFetcherOperation {
     let request: ContentFeedRequest
     
     override func main() {
-        requestExecutor.executeRequest(request, onComplete: { [weak self] contents in
+        requestExecutor.executeRequest(request, onComplete: { [weak self] (contents, refreshStage) in
+            self?.refreshStage = refreshStage
             self?.onComplete(contents)
         }, onError: nil)
     }

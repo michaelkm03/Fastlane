@@ -8,34 +8,67 @@
 
 import Foundation
 
-public struct Tracking {
-    public let cellClick: [String]?
-    public let cellView: [String]?
-    public let videoComplete25: [String]?
-    public let videoComplete50: [String]?
-    public let videoComplete75: [String]?
-    public let videoComplete100: [String]?
-    public let viewStop: [String]?
-    public let videoError: [String]?
-    public let videoSkip: [String]?
-    public let videoStall: [String]?
-    public let viewStart: [String]?
-    public let share: [String]?
+public enum CellTrackingKey: String {
+    case cellView = "cell_view"
+    case cellClick = "cell_click"
+    case cellLoad = "cell_load"
+}
+
+public enum ViewTrackingKey: String {
+    case viewStart = "view_start"
+    case viewStop = "view_stop"
+    case videoComplete25 = "view_25_complete"
+    case videoComplete50 = "view_50_complete"
+    case videoComplete75 = "view_75_complete"
+    case videoComplete100 = "view_100_complete"
+    case videoError = "view_error"
+    case videoStall = "view_stall"
+    case videoSkip = "view_skip"
+    case share = "share"
+}
+
+public protocol TrackingModel {
+    var id: String { get }
+    func trackingURLsForKey(key: CellTrackingKey) -> [String]?
+    func trackingURLsForKey(key: ViewTrackingKey) -> [String]?
+}
+
+public struct Tracking: TrackingModel {
+    public let id: String
+    
+    private let trackingMap: [String : [String]]?
+    
+    public func trackingURLsForKey(key: CellTrackingKey) -> [String]? {
+        return trackingMap?[key.rawValue]
+    }
+    
+    public func trackingURLsForKey(key: ViewTrackingKey) -> [String]? {
+        return trackingMap?[key.rawValue]
+    }
 }
 
 extension Tracking {
-    public init(json: JSON) {
-        viewStart           = json["view-start"].array?.flatMap { $0.string }
-        viewStop            = json["view-stop"].array?.flatMap { $0.string }
-        videoComplete25     = json["view-25-complete"].array?.flatMap { $0.string }
-        videoComplete50     = json["view-50-complete"].array?.flatMap { $0.string }
-        videoComplete75     = json["view-75-complete"].array?.flatMap { $0.string }
-        videoComplete100    = json["view-100-complete"].array?.flatMap { $0.string }
-        videoError          = json["view-error"].array?.flatMap { $0.string }
-        videoStall          = json["view-stall"].array?.flatMap { $0.string }
-        videoSkip           = json["view-skip"].array?.flatMap { $0.string }
-        cellView            = json["cell-view"].array?.flatMap { $0.string }
-        cellClick           = json["cell-click"].array?.flatMap { $0.string }
-        share               = json["share"].array?.flatMap { $0.string }
+    init(json: JSON) {
+        var map = [String : [String]]()
+        var id = ""
+        json.dictionary?.forEach() { key, value in
+            if
+                CellTrackingKey(rawValue: key) != nil ||
+                ViewTrackingKey(rawValue: key) != nil
+            {
+                let urlStrings = value.arrayValue.flatMap { $0.string }
+                map[key] = urlStrings
+                if id != "" {
+                    id += ","
+                }
+                // Create id by appending hashes of strings instead of full strings to save space
+                id += "\(key.hash)"
+                for urlString in urlStrings {
+                    id += "\(urlString.hash)"
+                }
+            }
+        }
+        self.id = id
+        trackingMap = map
     }
 }

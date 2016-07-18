@@ -11,28 +11,28 @@ import Foundation
 ///
 /// The Forum Event Chain is used to transport control messages regarding the state of the WebSocket connection.
 ///
-/// - Authenticated: The authentication handshake has been performed.
-/// - AuthenticationFailed: The authentication handshake has failed with an error message
-/// - Connected: The WebSocket connection is open.
-/// - Disconnected: The WebSocket connection is closed with potentially an error message.
+/// - authenticated: The authentication handshake has been performed.
+/// - connected: The WebSocket connection is open.
+/// - disconnected: The WebSocket connection is closed with an error message.
+/// - serverError: A custom error message was sent from the backend.
 public enum WebSocketEvent: Equatable {
-    case Authenticated
-    case AuthenticationFailed(webSocketError: WebSocketError)
-    case Connected
-    case Disconnected(webSocketError: WebSocketError)
+    case authenticated
+    case connected
+    case disconnected(webSocketError: WebSocketError?)
+    case serverError(webSocketError: WebSocketError)
 }
 
 public func ==(lhs: WebSocketEvent, rhs: WebSocketEvent) -> Bool {
     switch (lhs, rhs) {
-    case (.Authenticated, .Authenticated):
-        return true
-    case (let .AuthenticationFailed(error1), let .AuthenticationFailed(error2)):
-        return error1 == error2
-    case (.Connected, .Connected):
-        return true
-    case (let .Disconnected(error1), let .Disconnected(error2)):
-        return error1 == error2
-    default:
-        return false
+        case (.authenticated, .authenticated):
+            return true
+        case (.connected, .connected):
+            return true
+        case (let .disconnected(error1), let .disconnected(error2)):
+            return error1 == error2
+        case (let .serverError(error1), let .serverError(error2)):
+            return error1 == error2
+        default:
+            return false
     }
 }

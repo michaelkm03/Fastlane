@@ -9,6 +9,28 @@
 import UIKit
 import WebKit
 
+@objc enum WebContentOperationType : Int {
+    case PrivacyPolicy
+    case HelpCenter
+    case TermsOfService
+    
+    func title() -> String {
+        switch self {
+            case .PrivacyPolicy: return NSLocalizedString("Privacy Policy", comment: "")
+            case .HelpCenter: return NSLocalizedString("Help", comment: "")
+            case .TermsOfService: return NSLocalizedString("Terms of Service", comment: "")
+        }
+    }
+    
+    func templateURLKey() -> String {
+        switch self {
+            case .PrivacyPolicy: return "privacyURL"
+            case .HelpCenter: return "helpCenterURL"
+            case .TermsOfService: return "tosURL"
+        }
+    }
+}
+
 class ShowWebContentOperation: MainQueueOperation {
     private let originViewController: UIViewController
     private let title: String
@@ -16,12 +38,14 @@ class ShowWebContentOperation: MainQueueOperation {
     private let forceModal: Bool
     private let animated: Bool
     
-    init(originViewController: UIViewController, title: String, createFetchOperation: () -> FetchWebContentOperation, forceModal: Bool = false, animated: Bool = true) {
-        self.originViewController = originViewController
-        self.title = title
-        self.createFetchOperation = createFetchOperation
+    init(originViewController: UIViewController, type: WebContentOperationType, forceModal: Bool = false, animated: Bool = true, dependencyManager: VDependencyManager?) {
         self.forceModal = forceModal
         self.animated = animated
+        self.originViewController = originViewController
+        self.title = type.title()
+        self.createFetchOperation = {
+            return WebViewHTMLFetchOperation(urlPath: dependencyManager?.urlForWebContent(type) ?? "")
+        }
     }
     
     override func start() {
@@ -74,5 +98,11 @@ class ShowWebContentOperation: MainQueueOperation {
                 self.finishedExecuting()
             }
         }
+    }
+}
+
+private extension VDependencyManager {
+    func urlForWebContent(type: WebContentOperationType) -> String {
+        return stringForKey(type.templateURLKey()) ?? ""
     }
 }

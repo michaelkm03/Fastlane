@@ -21,7 +21,6 @@
 #import "NSURL+MediaType.h"
 #import "VStream.h"
 #import "VDependencyManager.h"
-#import "UIColor+VHex.h"
 #import "victorious-Swift.h"
 #import <KVOController/FBKVOController.h>
 
@@ -53,7 +52,6 @@
         
         _sequence = context.sequence;
         _streamId = context.streamId ?: @"";
-        _trackingData = [_sequence streamItemPointerWithStreamID:_streamId].tracking;
         _dependencyManager = context.destinationDependencyManager;
         
         id<TimingTracker> timingTracker = [DefaultTimingTracker sharedInstance];
@@ -230,7 +228,7 @@
 
 - (UIColor *)textBackgroundColor
 {
-    return [UIColor v_colorFromHexString:self.currentAsset.backgroundColor];
+    return [[UIColor alloc] initWithRgbHexString:self.currentAsset.backgroundColor];
 }
 
 - (NSURL *)textBackgroundImageURL

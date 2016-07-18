@@ -11,15 +11,19 @@ import VictoriousIOSSDK
 
 /// Conformers are collection view data sources for any collection views with a chat-like interface
 protocol ChatInterfaceDataSource: UICollectionViewDataSource {
-    
-    /// A standalone cell used to calculate dynamic cell sizes
-    /// - Note: Each concrete implementation should provide a stored sizing cell, because it temporarily stores cell content to size the cell
-    var sizingCell: ChatFeedMessageCell { get }
-    
+    /// The dependency manager associated with the data source.
     var dependencyManager: VDependencyManager { get }
     
-    var visibleItems: [ContentModel] { get }
+    /// The number of items displayed in the chat interface.
+    var itemCount: Int { get }
     
+    /// Returns the content at the given `index`.
+    func content(at index: Int) -> ChatFeedContent
+    
+    /// Removes a piece of content from the feed
+    func remove(chatFeedContent content: ChatFeedContent)
+    
+    /// Registers the appropriate collection view cells on `collectionView`.
     func registerCells(for collectionView: UICollectionView)
     
     /// Calculated desired cell size for a given indexPath. 
@@ -27,51 +31,54 @@ protocol ChatInterfaceDataSource: UICollectionViewDataSource {
     func desiredCellSize(for collectionView: UICollectionView, at indexPath: NSIndexPath) -> CGSize
     
     /// Decorates and configures a cell with its data object
-    func decorate(cell: ChatFeedMessageCell, content: ContentModel)
+    func decorate(cell: ChatFeedMessageCell, chatFeedContent: ChatFeedContent)
 }
 
 extension ChatInterfaceDataSource {
-    
     func numberOfItems(for collectionView: UICollectionView, in section: Int) -> Int {
-        return visibleItems.count
+        return itemCount
     }
     
     func cellForItem(for collectionView: UICollectionView, at indexPath: NSIndexPath) -> ChatFeedMessageCell {
-        let identifier = ChatFeedMessageCell.defaultReuseIdentifier
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath: indexPath) as! ChatFeedMessageCell
-        let content = visibleItems[indexPath.row]
-        decorate(cell, content: content)
+        let chatFeedContent = self.content(at: indexPath.row)
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(chatFeedContent.content.reuseIdentifier, forIndexPath: indexPath) as! ChatFeedMessageCell
+        decorate(cell, chatFeedContent: chatFeedContent)
         
         return cell
     }
     
     func registerCells(for collectionView: UICollectionView) {
-        let identifier = ChatFeedMessageCell.suggestedReuseIdentifier
-        collectionView.registerClass(ChatFeedMessageCell.self, forCellWithReuseIdentifier: identifier)
+        collectionView.registerClass(ChatFeedMessageCell.self, forCellWithReuseIdentifier: ChatFeedMessageCell.imagePreviewCellReuseIdentifier)
+        collectionView.registerClass(ChatFeedMessageCell.self, forCellWithReuseIdentifier: ChatFeedMessageCell.videoPreviewCellReuseIdentifier)
+        collectionView.registerClass(ChatFeedMessageCell.self, forCellWithReuseIdentifier: ChatFeedMessageCell.nonMediaCellReuseIdentifier)
     }
     
     func desiredCellSize(for collectionView: UICollectionView, at indexPath: NSIndexPath) -> CGSize {
-        let content = visibleItems[indexPath.row]
-        decorate(sizingCell, content: content)
-        
-        return sizingCell.cellSizeWithinBounds(collectionView.bounds)
+        return content(at: indexPath.row).size
     }
     
-    func decorate(cell: ChatFeedMessageCell, content: ContentModel) {
-        if VCurrentUser.user()?.remoteId.integerValue == content.author.id {
-            cell.layout = RightAlignmentCellLayout()
-        } else {
-            cell.layout = LeftAlignmentCellLayout()
-        }
-        
+    func decorate(cell: ChatFeedMessageCell, chatFeedContent: ChatFeedContent) {
         cell.dependencyManager = dependencyManager
-        cell.content = content
+        cell.chatFeedContent = chatFeedContent
     }
     
-    func updateTimeStamps(in collectionView: UICollectionView) {
+    func updateTimestamps(in collectionView: UICollectionView) {
         for indexPath in collectionView.indexPathsForVisibleItems() {
             let cell = collectionView.cellForItemAtIndexPath(indexPath) as! ChatFeedMessageCell
             cell.updateTimestamp()
         }
+    }
+}
+
+extension ContentModel {
+    var reuseIdentifier: String {
+        if type.previewsAsVideo {
+            return ChatFeedMessageCell.videoPreviewCellReuseIdentifier
+        }
+        else if type.previewsAsImage {
+            return ChatFeedMessageCell.imagePreviewCellReuseIdentifier
+        }
+        
+        return ChatFeedMessageCell.nonMediaCellReuseIdentifier
     }
 }

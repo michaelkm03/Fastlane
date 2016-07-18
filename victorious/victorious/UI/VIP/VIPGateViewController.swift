@@ -20,7 +20,12 @@ protocol VIPGateViewControllerDelegate: class {
 
 extension VIPGateViewControllerDelegate {
     func showVIPForumFromDependencyManager(dependencyManager: VDependencyManager) {
-        ShowForumOperation(originViewController: dependencyManager.scaffoldViewController(), dependencyManager: dependencyManager).queue()
+        guard let scaffold = VRootViewController.sharedRootViewController()?.scaffold else {
+            return
+        }
+        let router = Router(originViewController: scaffold, dependencyManager: dependencyManager)
+        let destination = DeeplinkDestination.vipForum
+        router.navigate(to: destination)
     }
 }
 
@@ -42,12 +47,14 @@ class VIPGateViewController: UIViewController {
         }
     }
 
-    //MARK: - Initialization
+    // MARK: - Initialization
 
     class func newWithDependencyManager(dependencyManager: VDependencyManager) -> VIPGateViewController? {
-        guard let productIdentifier = dependencyManager.vipSubscription?.productIdentifier,
-            let currentUser = VCurrentUser.user() where
-            !currentUser.isVIPValid() else {
+        guard
+            let productIdentifier = dependencyManager.vipSubscription?.productIdentifier,
+            let currentUser = VCurrentUser.user()
+            where !currentUser.hasValidVIPSubscription
+        else {
             return nil
         }
         
@@ -58,7 +65,7 @@ class VIPGateViewController: UIViewController {
         return viewController
     }
 
-    //MARK: - UIViewController
+    // MARK: - UIViewController
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -109,11 +116,11 @@ class VIPGateViewController: UIViewController {
     }
     
     @IBAction func onPrivacyPolicySelected() {
-        ShowPrivacyPolicyOperation(originViewController: self).queue()
+        ShowWebContentOperation(originViewController: self, type: .PrivacyPolicy, dependencyManager: dependencyManager).queue()
     }
     
     @IBAction func onTermsOfServiceSelected() {
-        ShowTermsOfServiceOperation(originViewController: self).queue()
+        ShowWebContentOperation(originViewController: self, type: .TermsOfService, dependencyManager: dependencyManager).queue()
     }
     
     // MARK: - Private
@@ -198,36 +205,35 @@ class VIPGateViewController: UIViewController {
 }
 
 private extension VDependencyManager {
-    
     var greetingText: String {
-        return stringForKey("greeting.text")
+        return stringForKey("greeting.text") ?? ""
     }
     
     var greetingFont: UIFont {
-        return fontForKey("greeting.font")
+        return fontForKey("greeting.font") ?? UIFont.systemFontOfSize(13.0)
     }
     
     var greetingColor: UIColor {
-        return colorForKey("greeting.color")
+        return colorForKey("greeting.color") ?? UIColor.blackColor()
     }
     
     var subscribeColor: UIColor {
-        return colorForKey("subscribe.color")
+        return colorForKey("subscribe.color") ?? UIColor.blackColor()
     }
     
     var subscribeText: String {
-        return stringForKey("subscribe.text")
+        return stringForKey("subscribe.text") ?? ""
     }
     
     var backgroundColor: UIColor? {
-        let background = templateValueOfType( VSolidColorBackground.self, forKey: "background") as? VSolidColorBackground
+        let background = templateValueOfType(VSolidColorBackground.self, forKey: "background") as? VSolidColorBackground
         return background?.backgroundColor
     }
     
     var legalLinkAttributes: [String : AnyObject] {
         return [
             NSFontAttributeName: fontForKey("font.paragraph"),
-            NSForegroundColorAttributeName: colorForKey("subscribe.color"),
+            NSForegroundColorAttributeName: subscribeColor,
             NSUnderlineStyleAttributeName: NSNumber(integer: NSUnderlineStyle.StyleSingle.rawValue)
         ]
     }

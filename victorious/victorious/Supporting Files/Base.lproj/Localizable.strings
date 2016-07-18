@@ -8,6 +8,8 @@
 
 "Back"                  =   "Back";
 "OK"                    =   "OK";
+"DeletePost"            =   "Delete Post";
+"ReportPost"            =   "Report Post";
 "DeleteButton"          =   "Delete";
 "ResetButton"           =   "Reset";
 "Publish"               =   "Publish";
@@ -369,6 +371,7 @@
 "SubscriptionRestorePrompt"             = "Already subscribed?";
 "SubscriptionRestoreSucceeded"          = "Subscription restored!";
 "SubscriptionFailed"                    = "Subscription failed.";
+"Upgrade"                               = "Upgrade";
 
 "This will discard any content added to your post" = "This will discard any content added to your post";
 
@@ -403,6 +406,7 @@
 "By signing up you are agreeing to our" = "By signing up you are agreeing to our";
 "Terms of Service" = "Terms of Service";
 "Privacy Policy" = "Privacy Policy";
+"Help" = "Help";
 "Enter Email" = "Enter Email";
 "Enter name" = "Enter name";
 "You must enter a name." = "You must enter a name.";
@@ -457,3 +461,5 @@
 "NewMessagesFormatSingular" = "%@ New Message"; // i.e. "1 New Message"
 
 "Exit" = "Exit";
+
+"Try Again" = "Try Again";

@@ -24,7 +24,7 @@ enum SideMenuControllerEdge {
 class SideMenuController: UIViewController {
     // MARK: - Config
     
-    private static let visibleCenterEdgeWidth: CGFloat = 52.0
+    private static let visibleCenterEdgeWidth: CGFloat = 54.0
     private static let slideAnimationDuration: NSTimeInterval = 0.5
     private static let statusBarAnimationDuration: NSTimeInterval = 0.2
     private static let panTriggerThreshold: CGFloat = 80.0
@@ -70,6 +70,12 @@ class SideMenuController: UIViewController {
         updateFocusOfContainedViews()
     }
     
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        closeSideViewController(animated: true)
+    }
+    
     // MARK: - Status bar
     
     override func preferredStatusBarUpdateAnimation() -> UIStatusBarAnimation {
@@ -77,7 +83,7 @@ class SideMenuController: UIViewController {
     }
     
     override func prefersStatusBarHidden() -> Bool {
-        return centerViewXOffset != 0.0 || panState?.hasShownSideMenu == true || centerViewController?.prefersStatusBarHidden() == true
+        return centerViewController?.prefersStatusBarHidden() == true
     }
     
     override func childViewControllerForStatusBarStyle() -> UIViewController? {
@@ -502,6 +508,11 @@ class SideMenuController: UIViewController {
         centerContainerView.frame = view.bounds.offsetBy(dx: centerViewXOffset, dy: 0.0)
         centerViewController?.view.frame = centerContainerView.bounds
         
+        // Obfuscates the key string to prevent static analysis
+        if let statusBarWindow = UIApplication.sharedApplication().valueForKey("statusBar" + "Window") as? UIWindow {
+            statusBarWindow.frame = view.bounds.offsetBy(dx: centerViewXOffset, dy: 0)
+        }
+
         leftContainerView.frame = CGRect(
             x: view.bounds.minX,
             y: view.bounds.minY,

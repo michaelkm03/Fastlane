@@ -27,11 +27,17 @@ public enum ForumEvent {
     /// no filter is being applied.
     case filterContent(path: APIPath?)
     
+    /// Requests that the given content is shown in the caption bar
+    case showCaptionContent(ContentModel)
+    
     /// Notifies of the given websocket event.
     case websocket(WebSocketEvent)
     
     /// Requests that the stage is refreshed with new content.
     case refreshStage(RefreshStage)
+    
+    /// Closes the main stage
+    case closeMainStage
     
     /// Requests that the given user is blocked.
     case blockUser(BlockUser)
