@@ -14,7 +14,6 @@ var ids: Set<Content.ID> = Set()
 /// Conformers are models that store information about piece of content in the app
 /// Consumers can directly use this type without caring what the concrete type is, persistent or not.
 public protocol ContentModel: PreviewImageContainer, DictionaryConvertible {
-    var createdAt: NSDate { get }
     var type: ContentType { get }
     var id: Content.ID? { get }
     var isLikedByCurrentUser: Bool { get }
@@ -23,6 +22,18 @@ public protocol ContentModel: PreviewImageContainer, DictionaryConvertible {
     var shareURL: NSURL? { get }
     var linkedURL: NSURL? { get }
     var author: UserModel { get }
+    
+    /// The time that the user created the content locally.
+    ///
+    /// This can be used to match locally-created content to content returned from the server. If content was created
+    /// by the same user and has the same `postedAt` date, then it is guaranteed to be the same content.
+    ///
+    /// Will be nil for chat messages.
+    ///
+    var postedAt: NSDate? { get }
+    
+    /// The time that the content was created on the server.
+    var createdAt: NSDate { get }
     
     /// Whether this content is only accessible for VIPs
     var isVIPOnly: Bool { get }
@@ -96,6 +107,7 @@ public class Content: ContentModel {
     public let shareURL: NSURL?
     public let linkedURL: NSURL?
     public let createdAt: NSDate
+    public let postedAt: NSDate?
     public let previewImages: [ImageAssetModel]
     public let assets: [ContentMediaAssetModel]
     public let type: ContentType
@@ -128,6 +140,7 @@ public class Content: ContentModel {
         self.status = json["status"].string
         self.shareURL = json["share_url"].URL
         self.createdAt = NSDate(millisecondsSince1970: json["released_at"].doubleValue)
+        self.postedAt = NSDate(millisecondsSince1970: json["posted_at"].doubleValue)
         self.hashtags = []
         self.type = type
         
@@ -158,14 +171,13 @@ public class Content: ContentModel {
     }
     
     public init?(chatMessageJSON json: JSON, serverTime: NSDate) {
-        guard
-            let user = User(json: json["user"])
-        else {
+        guard let user = User(json: json["user"]) else {
             return nil
         }
         
         author = user
         createdAt = serverTime
+        postedAt = nil
         text = json["text"].string
         assets = [ContentMediaAsset(forumJSON: json["asset"])].flatMap { $0 }
         
@@ -203,6 +215,7 @@ public class Content: ContentModel {
         self.previewImages = previewImages
         self.author = author
         
+        self.postedAt = nil
         self.status = nil
         self.hashtags = []
         self.shareURL = nil
