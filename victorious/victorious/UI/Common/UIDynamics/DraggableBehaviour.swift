@@ -30,8 +30,11 @@ class DraggableBehaviour: UIDynamicBehavior {
     }
 
     private struct Constants {
-        static let attachmentFrequency = CGFloat(3.5)
-        // TODO: fill in
+        static let frequency = CGFloat(3.5)
+        static let damping = CGFloat(0.4)
+        static let length = CGFloat(0)
+        static let density = CGFloat(100)
+        static let resistance = CGFloat(10)
     }
 
     private var item: UIDynamicItem
@@ -46,15 +49,15 @@ class DraggableBehaviour: UIDynamicBehavior {
 
     private func setup() {
         let attachmentBehaviour = UIAttachmentBehavior(item: item, attachedToAnchor: CGPointZero)
-        attachmentBehaviour.frequency = Constants.attachmentFrequency
-        attachmentBehaviour.damping = 0.4
-        attachmentBehaviour.length = 10
+        attachmentBehaviour.frequency = Constants.frequency
+        attachmentBehaviour.damping = Constants.damping
+        attachmentBehaviour.length = Constants.length
         self.addChildBehavior(attachmentBehaviour)
         self.attachmentBehaviour = attachmentBehaviour
 
         let itemBehaviour = UIDynamicItemBehavior(items: [item])
-        itemBehaviour.density = 100
-        itemBehaviour.resistance = 10
+        itemBehaviour.density = Constants.density
+        itemBehaviour.resistance = Constants.resistance
         self.addChildBehavior(itemBehaviour)
         self.itemBehaviour = itemBehaviour
     }
