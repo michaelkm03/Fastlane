@@ -22,7 +22,7 @@ class VIPFetchSubscriptionOperation: BackgroundOperation {
         }
         
         beganExecuting()
-        // FUTURE: Remove this testing value when this operation is fully implemented
+        // FUTURE: Remove this testing value when this operation is fully implemented (tracked by this ticket https://jira.victorious.com/browse/IOS-5278)
         subscriptionProductIdentifier = "testingProductIdentifier"
     }
 }
