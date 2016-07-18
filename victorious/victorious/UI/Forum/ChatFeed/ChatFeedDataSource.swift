@@ -13,21 +13,17 @@ protocol ChatFeedDataSourceDelegate: class {
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didLoadItems newItems: [ChatFeedContent], loadingType: PaginatedLoadingType)
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didStashItems stashedItems: [ChatFeedContent])
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didUnstashItems unstashedItems: [ChatFeedContent])
-    func chatFeedDataSource(dataSource: ChatFeedDataSource, didAddPendingItems pendingItems: [ChatFeedContent])
+    func pendingItems(for chatFeedDataSource: ChatFeedDataSource) -> [ChatFeedContent]
     var chatFeedItemWidth: CGFloat { get }
 }
 
-class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatInterfaceDataSource, ContentPublisherDelegate {
+class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatInterfaceDataSource {
     
     // MARK: Initializing
     
     init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
-        self.publisher = ContentPublisher(dependencyManager: dependencyManager.networkResources ?? dependencyManager)
-        
         super.init()
-        
-        publisher.delegate = self
     }
     
     // MARK: - Dependency manager
@@ -40,10 +36,8 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     private(set) var stashedItems = [ChatFeedContent]()
     
     var pendingItems: [ChatFeedContent] {
-        return publisher.pendingContent
+        return delegate?.pendingItems(for: self) ?? []
     }
-    
-    let publisher: ContentPublisher
     
     var stashingEnabled = false
     
@@ -58,10 +52,6 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
         stashedItems.removeAll()
         
         delegate?.chatFeedDataSource(self, didUnstashItems: previouslyStashedItems)
-    }
-    
-    func remove(chatFeedContent content: ChatFeedContent) {
-        publisher.remove(content)
     }
     
     // MARK: - ForumEventReceiver
@@ -113,12 +103,6 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     // MARK: - ChatFeedNetworkDataSourceType
     
     weak var delegate: ChatFeedDataSourceDelegate?
-    
-    // MARK: - ContentPublisherDelegate
-    
-    func contentPublisher(contentPublisher: ContentPublisher, didQueueContent content: ChatFeedContent) {
-        delegate?.chatFeedDataSource(self, didAddPendingItems: [content])
-    }
     
     // MARK: - UICollectionViewDataSource
     

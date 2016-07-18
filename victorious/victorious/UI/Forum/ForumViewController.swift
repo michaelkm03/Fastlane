@@ -10,7 +10,7 @@ import UIKit
 
 /// A template driven .screen component that sets up, houses and mediates the interaction
 /// between the Forum's required concrete implementations and abstract dependencies.
-class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocusable, UploadManagerHost {
+class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocusable, UploadManagerHost, ContentPublisherDelegate {
     @IBOutlet private weak var stageContainer: UIView!
     @IBOutlet private weak var stageViewControllerContainer: VPassthroughContainerView!
     @IBOutlet private weak var stageTouchView: UIView!
@@ -83,15 +83,16 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         nextSender?.send(event)
     }
     
+    // MARK: - Publishing
+    
+    private var publisher: ContentPublisher?
+    
     private func publish(content: ContentModel) {
-        guard
-            let publisher = (chatFeed?.chatInterfaceDataSource as? ChatFeedDataSource)?.publisher,
-            let width = chatFeed?.collectionView.frame.width
-        else {
+        guard let width = chatFeed?.collectionView.frame.width else {
             return
         }
         
-        publisher.publish(content, withWidth: width)
+        publisher?.publish(content, withWidth: width)
     }
 
     // MARK: - ForumEventSender
@@ -188,6 +189,9 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        publisher = ContentPublisher(dependencyManager: dependencyManager.networkResources ?? dependencyManager)
+        publisher?.delegate = self
         
         stageShrinkingAnimator = StageShrinkingAnimator(
             stageContainer: stageContainer,
@@ -309,7 +313,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                 title: NSLocalizedString("Delete", comment: ""),
                 style: .Destructive,
                 handler: { [weak self] alertAction in
-                    self?.delete(chatFeedContent: chatFeedContent)
+                    self?.delete(chatFeedContent)
                 }
             )
         )
@@ -324,19 +328,58 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         presentViewController(alertController, animated: true, completion: nil)
     }
     
-    // MARK: - Content Post Failure Handling 
-    
-    private func delete(chatFeedContent content: ChatFeedContent) {
-        chatFeed?.remove(chatFeedContent: content)
+    func publisher(for chatFeed: ChatFeed) -> ContentPublisher? {
+        return publisher
     }
     
-    private func retryPublish(content: ChatFeedContent) {
-        guard let publisher = (chatFeed?.chatInterfaceDataSource as? ChatFeedDataSource)?.publisher else {
+    // MARK: - ContentPublisherDelegate
+    
+    func contentPublisher(contentPublisher: ContentPublisher, didQueue content: ChatFeedContent) {
+        chatFeed?.handleNewItems([], loadingType: .newer, pendingContentDelta: 1)
+    }
+    
+    func contentPublisher(contentPublisher: ContentPublisher, didFailToSend content: ChatFeedContent) {
+        guard let itemCount = chatFeed?.chatInterfaceDataSource.itemCount else {
             return
         }
-        publisher.retryPublish(content)
+        
+        chatFeed?.collectionView.reloadItemsAtIndexPaths(contentPublisher.pendingContent.indices.map {
+            NSIndexPath(forItem: itemCount - 1 - $0, inSection: 0)
+        })
     }
-
+    
+    // MARK: - Content Post Failure Handling
+    
+    private func retryPublish(chatFeedContent: ChatFeedContent) {
+        guard
+            let index = publisher?.pendingContent.indexOf({ $0.content.id == chatFeedContent.content.id }),
+            let dataSource = chatFeed?.chatInterfaceDataSource
+        else {
+            return
+        }
+        
+        publisher?.retryPublish(chatFeedContent)
+        
+        chatFeed?.collectionView.reloadItemsAtIndexPaths([
+            NSIndexPath(forItem: dataSource.visibleItems.count + index, inSection: 0)
+        ])
+    }
+    
+    private func delete(chatFeedContent: ChatFeedContent) {
+        guard
+            let index = publisher?.pendingContent.indexOf({ $0.content.id == chatFeedContent.content.id }),
+            let dataSource = chatFeed?.chatInterfaceDataSource
+        else {
+            return
+        }
+        
+        publisher?.remove(chatFeedContent)
+        
+        chatFeed?.collectionView.deleteItemsAtIndexPaths([
+            NSIndexPath(forItem: dataSource.visibleItems.count + index, inSection: 0)
+        ])
+    }
+    
     // MARK: - VFocusable
     
     var focusType: VFocusType = .None {

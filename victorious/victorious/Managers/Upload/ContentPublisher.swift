@@ -23,7 +23,11 @@ enum ContentCreationState {
 
 /// A delegate protocol for `ContentPublisher`.
 protocol ContentPublisherDelegate: class {
-    func contentPublisher(contentPublisher: ContentPublisher, didQueueContent content: ChatFeedContent)
+    /// Notifies the delegate that the given `content` was queued to be published.
+    func contentPublisher(contentPublisher: ContentPublisher, didQueue content: ChatFeedContent)
+    
+    /// Notifies the delegate that the given `content` failed to send.
+    func contentPublisher(contentPublisher: ContentPublisher, didFailToSend content: ChatFeedContent)
 }
 
 /// An object that manages the publishing of user content.
@@ -60,7 +64,7 @@ class ContentPublisher {
         }
         
         pendingContent.append(chatFeedContent)
-        delegate?.contentPublisher(self, didQueueContent: chatFeedContent)
+        delegate?.contentPublisher(self, didQueue: chatFeedContent)
         
         // We want to make sure that we send items sequentially
         guard !pendingContent.contains({ $0.creationState == .sending }) else {
@@ -84,7 +88,9 @@ class ContentPublisher {
         pendingContent[index].creationState = .sending
 
         upload(pendingContent[index].content) { [weak self] error in
-            guard let strongSelf = self else {
+            // The content's index will have changed by now if a preceding item was confirmed while this one was being
+            // sent, so we need to get an updated index.
+            guard let strongSelf = self, updatedIndex = strongSelf.indexOfContent(withState: .sending) else {
                 return
             }
             
@@ -92,11 +98,10 @@ class ContentPublisher {
                 for index in strongSelf.pendingContent.indices {
                     strongSelf.pendingContent[index].creationState = .failed
                 }
-                // FUTURE: Update collectionView
+                
+                strongSelf.delegate?.contentPublisher(strongSelf, didFailToSend: strongSelf.pendingContent[updatedIndex])
             }
-            else if let updatedIndex = strongSelf.indexOfContent(withState: .sending) {
-                // The content's index will have changed by now if a preceding item was confirmed while this one was
-                // being sent, so we need to get an updated index.
+            else {
                 strongSelf.pendingContent[updatedIndex].creationState = .sent
                 strongSelf.publishNextContent()
             }
@@ -147,20 +152,23 @@ class ContentPublisher {
     
     /// Retry publishing `content` that failed to be sent
     func retryPublish(chatFeedContent: ChatFeedContent) {
-        guard chatFeedContent.creationState == .failed else {
+        guard let index = index(of: chatFeedContent) where chatFeedContent.creationState == .failed else {
             return
         }
         
+        pendingContent[index].creationState = .sending
+        
         upload(chatFeedContent.content) { [weak self] error in
-            guard let index = self?.index(of: chatFeedContent) else {
+            guard let strongSelf = self, updatedIndex = strongSelf.index(of: chatFeedContent) else {
                 return
             }
             
             if error != nil {
-                self?.pendingContent[index].creationState = .failed
+                strongSelf.pendingContent[updatedIndex].creationState = .failed
+                strongSelf.delegate?.contentPublisher(strongSelf, didFailToSend: chatFeedContent)
             }
             else {
-                self?.pendingContent[index].creationState = .sent
+                strongSelf.pendingContent[updatedIndex].creationState = .sent
             }
         }
     }
@@ -168,17 +176,13 @@ class ContentPublisher {
     /// Removes `content` from the pending queue
     func remove(chatFeedContent: ChatFeedContent) {
         pendingContent = pendingContent.filter { $0.content.id != chatFeedContent.content.id }
-        // FUTURE: Update collectionView
     }
     
     // MARK: - Index of Queue
     
     /// Returns the first content in the queue that has the given `state`.
     private func indexOfContent(withState state: ContentCreationState) -> Int? {
-        for (index, chatFeedContent) in pendingContent.enumerate() where chatFeedContent.creationState == state {
-            return index
-        }
-        return nil
+        return pendingContent.indexOf { $0.creationState == state }
     }
     
     /// Returns the index of the specified content
