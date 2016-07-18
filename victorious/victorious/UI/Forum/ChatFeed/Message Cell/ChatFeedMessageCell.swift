@@ -167,6 +167,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
                 // Videos and images
                 let previewView = createContentPreviewViewIfNeeded()
                 ChatFeedMessageCell.layoutContent(for: self)
+                previewView.loadingSpinnerEnabled = true
                 previewView.content = content
             }
             previewView?.hidden = false

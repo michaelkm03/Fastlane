@@ -23,10 +23,12 @@ class ContentPreviewView: UIView {
         static let imageReloadThreshold = CGFloat(0.75)
     }
 
-    let previewImageView = UIImageView()
-    let vipIcon = UIImageView()
-    let playButton: UIView
-    var lastSize = CGSizeZero
+    private let previewImageView = UIImageView()
+    private let vipIcon = UIImageView()
+    private let playButton: UIView
+    private let spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+    
+    private var lastSize = CGSizeZero
     
     var dependencyManager: VDependencyManager? {
         didSet {
@@ -36,6 +38,12 @@ class ContentPreviewView: UIView {
             {
                 vipIcon.image = dependencyManager.vipIcon
             }
+        }
+    }
+    
+    var loadingSpinnerEnabled: Bool = false {
+        didSet {
+            spinner.hidden = !loadingSpinnerEnabled
         }
     }
     
@@ -55,6 +63,8 @@ class ContentPreviewView: UIView {
         if let content = content where lastSize.area / bounds.size.area < Constants.imageReloadThreshold {
             setupImage(forContent: content)
         }
+        
+        spinner.center = CGPoint(x: bounds.midX, y: bounds.midY)
     }
     
     init() {
@@ -73,6 +83,9 @@ class ContentPreviewView: UIView {
         addSubview(vipIcon)
         vipIcon.contentMode = .ScaleAspectFit
         addSubview(playButton)
+        
+        addSubview(spinner)
+        sendSubviewToBack(spinner)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -90,6 +103,8 @@ class ContentPreviewView: UIView {
     }
     
     private func setupForContent(content: ContentModel) {
+        spinner.startAnimating()
+        
         let userCanViewContent = VCurrentUser.user()?.canView(content) == true
         vipIcon.hidden = userCanViewContent
         
@@ -107,10 +122,13 @@ class ContentPreviewView: UIView {
             if !userCanViewContent {
                 previewImageView.applyBlurToImageURL(previewImageURL, withRadius: Constants.imageViewBlurEffectRadius) { [weak self] in
                     self?.previewImageView.alpha = 1
+                    self?.spinner.stopAnimating()
                 }
             }
             else {
-                previewImageView.sd_setImageWithURL(previewImageURL)
+                previewImageView.sd_setImageWithURL(previewImageURL) { [weak self] _ in
+                    self?.spinner.stopAnimating()
+                }
             }
         }
         else {
