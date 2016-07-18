@@ -169,7 +169,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
             self.view.layoutIfNeeded()
         }
 
-        titleCardViewController?.hide(animated: animated)
+        titleCardViewController?.hide()
     }
 
     private func showStage(animated animated: Bool = false) {

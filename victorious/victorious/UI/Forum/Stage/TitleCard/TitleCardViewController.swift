@@ -22,6 +22,11 @@ class TitleCardViewController: UIViewController {
 
     weak var delegate: TileCardDelegate?
 
+    /// Time after `show` is called to automatically slide out the card.
+    var autoHideDelay = NSTimeInterval(3)
+
+    private var autoHideTimer: VTimerManager?
+
     private struct Constants {
         static let cornerRadius = CGFloat(6)
         static let maxWidth = CGFloat(250)
@@ -108,7 +113,7 @@ class TitleCardViewController: UIViewController {
         return point
     }
 
-    private func animateTileCard(withInitialVelocity initialVelocity: CGPoint) {
+    private func animateTitleCard(withInitialVelocity initialVelocity: CGPoint) {
         if draggableBehaviour == nil {
             draggableBehaviour = DraggableBehaviour(with: containerView)
         }
@@ -129,7 +134,7 @@ class TitleCardViewController: UIViewController {
                 var velocity = recognizer.velocityInView(containerView?.superview)
                 velocity.y = 0
                 currentState = (velocity.x > 0 ? .shown : .hidden)
-                animateTileCard(withInitialVelocity: velocity)
+                animateTitleCard(withInitialVelocity: velocity)
             default:
                 break
         }
@@ -142,12 +147,12 @@ class TitleCardViewController: UIViewController {
         }
 
         currentState = (currentState == .shown ? .hidden : .shown)
-        animateTileCard(withInitialVelocity: draggableBehaviour.velocity)
+        animateTitleCard(withInitialVelocity: draggableBehaviour.velocity)
     }
 
     // MARK: Public
 
-    ///
+    /// Sets the content on the title card, call before `show` to have the right content be present before it animates in.
     func populate(with stageContent: StageContent?) {
         print("populate -> \(stageContent)")
 
@@ -162,22 +167,28 @@ class TitleCardViewController: UIViewController {
         populateUI(with: nil)
     }
 
-    func show(animated animated: Bool) {
+    func show() {
         print("SHOWING TITLE CARD")
         guard currentState == .hidden else {
             return
         }
+
         currentState = .shown
-        animateTileCard(withInitialVelocity: CGPointZero)
+        animateTitleCard(withInitialVelocity: CGPointZero)
+
+        autoHideTimer?.invalidate()
+        autoHideTimer = VTimerManager.scheduledTimerManagerWithTimeInterval(autoHideDelay, target: self, selector: #selector(hide), userInfo: nil, repeats: false)
     }
 
-    func hide(animated animated: Bool) {
+    func hide() {
         print("HIDING TITLE CARD")
         guard currentState == .shown else {
             return
         }
+        autoHideTimer?.invalidate()
+
         currentState = .hidden
-        animateTileCard(withInitialVelocity: CGPointZero)
+        animateTitleCard(withInitialVelocity: CGPointZero)
     }
 
     // MARK: Private
