@@ -11,8 +11,10 @@ import UIKit
 extension VDependencyManager: TemplateProductsDataSource {
     
     var vipSubscription: Subscription? {
-        guard let subscription = childDependencyForKey("subscription"),
-            let enabled = subscription.numberForKey("enabled")?.boolValue else {
+        guard
+            let subscription = childDependencyForKey("subscription"),
+            let enabled = subscription.numberForKey("enabled")?.boolValue
+        else {
             return nil
         }
         let iconImage = subscription.imageForKey("icon")
