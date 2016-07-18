@@ -7,12 +7,12 @@
 //
 
 /// A protocol for scaffold view controllers that defines the common functionality between them.
-protocol Scaffold: VCoachmarkDisplayResponder, InterstitialListener {
+protocol Scaffold: InterstitialListener {
     /// The scaffold's dependency manager.
     var dependencyManager: VDependencyManager { get }
     
     /// The coachmark manager associated with the scaffold. 
-    var coachmarkManager: VCoachmarkManager { get }
+    var coachmarkManager: CoachmarkManager { get }
     
     /// The top-level navigation controller used by the scaffold.
     var mainNavigationController: VNavigationController { get }
@@ -43,7 +43,7 @@ extension Scaffold where Self: UIViewController {
         }
         
         pushNotificationOperation.queue { [weak self] error, cancelled in
-            self?.coachmarkManager.allowCoachmarks = true
+            //self?.coachmarkManager.allowCoachmarks = true
             onReady?()
         }
     }

@@ -15,7 +15,7 @@ struct ListMenuSelectedItem {
 
 /// View Controller for the entire List Menu Component, which is currently being displayed as the left navigation pane
 /// of a sliding scaffold.
-class ListMenuViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, VCoachmarkDisplayer, VNavigationDestination, VBackgroundContainer {
+class ListMenuViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, CoachmarkDisplayer, VNavigationDestination, VBackgroundContainer {
     
     // MARK: - Configuration
     
@@ -177,8 +177,12 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     
     // MARK - VCoachmarkDisplayer
     
-    func screenIdentifier() -> String! {
-        return dependencyManager.stringForKey(VDependencyManagerIDKey)
+    var screenIdentifier : String {
+        return dependencyManager.stringForKey(VDependencyManagerIDKey) ?? "" 
+    }
+    
+    func highlightFrame(forIdentifier: String) -> CGRect? {
+        return nil 
     }
     
     // MARK: - VBackgroundContainer

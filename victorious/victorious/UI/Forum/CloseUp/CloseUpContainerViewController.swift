@@ -13,7 +13,7 @@ private let topBottomSectionInset = CGFloat(3)
 private let interItemSpacing = CGFloat(3)
 private let cellsPerRow = 3
 
-class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, ContentCellTracker {
+class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, ContentCellTracker, CoachmarkDisplayer {
     
     private let gridStreamController: GridStreamViewController<CloseUpView>
     private var dependencyManager: VDependencyManager
@@ -105,6 +105,11 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         dependencyManager.trackViewWillDisappear(self)
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        dependencyManager.coachmarkManager?.displayCoachmark(inViewController: self)
     }
     
     // MARK: - ContentCellTracker
@@ -205,6 +210,16 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
                 self?.navigationController?.popViewControllerAnimated(true)
             }
         }
+    }
+    
+    // MARK : - Coachmark Displayer
+    
+    var screenIdentifier: String {
+        return dependencyManager.stringForKey(VDependencyManagerIDKey)
+    }
+    
+    func highlightFrame(forIdentifier: String) -> CGRect? {
+        return CGRect(x: 0, y: 0, width: 100, height: 100)
     }
 }
 
