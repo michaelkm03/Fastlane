@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="kYh-dZ-t7J">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="kYh-dZ-t7J">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -17,9 +17,9 @@
                         <color key="sectionIndexColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <sections>
-                            <tableViewSection id="iAG-GC-4SW">
+                            <tableViewSection id="iAG-GC-4SW" userLabel="Miscellaneous Section">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="3vi-dw-AX2" style="IBUITableViewCellStyleDefault" id="LqU-pE-7Qe" customClass="SettingsTableViewCell" customModule="victorious" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="3vi-dw-AX2" style="IBUITableViewCellStyleDefault" id="LqU-pE-7Qe" userLabel="Edit Profile Cell" customClass="SettingsTableViewCell" customModule="victorious" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="35" width="320" height="45"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="LqU-pE-7Qe" id="jOd-FV-Ucc">
@@ -38,6 +38,7 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outlet property="label" destination="3vi-dw-AX2" id="cp9-5A-vpT"/>
+                                            <segue destination="4W8-LC-EN6" kind="show" id="8co-O0-F28"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="r0B-CY-cMb" style="IBUITableViewCellStyleDefault" id="CsK-sK-e3v" customClass="SettingsTableViewCell" customModule="victorious" customModuleProvider="target">
@@ -545,7 +546,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wg2-rQ-jp8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-8041" y="-1440"/>
+            <point key="canvasLocation" x="-8649" y="-1438"/>
         </scene>
         <!--Change Password-->
         <scene sceneID="jgg-OK-3hB">
@@ -664,7 +665,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IwE-mi-tse" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-7637" y="-1440"/>
+            <point key="canvasLocation" x="-8285" y="-1438"/>
         </scene>
         <!--Test Alerts-->
         <scene sceneID="wtG-fK-caf">
@@ -756,7 +757,15 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pgb-1Z-ADm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-7232" y="-1440"/>
+            <point key="canvasLocation" x="-7925" y="-1438"/>
+        </scene>
+        <!--EditProfileViewController-->
+        <scene sceneID="7V8-n5-P5B">
+            <objects>
+                <viewControllerPlaceholder storyboardName="EditProfileViewController" id="4W8-LC-EN6" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="f5H-45-ijE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-7619.5" y="-1965"/>
         </scene>
         <!--Server Environment-->
         <scene sceneID="quU-xZ-2Jq">
@@ -795,7 +804,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Imd-KZ-Wo5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-8437" y="-1440"/>
+            <point key="canvasLocation" x="-9010" y="-1438"/>
         </scene>
         <!--Purchase Settings-->
         <scene sceneID="oSl-bU-Faw">
@@ -906,7 +915,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mG7-xu-zJg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-9087" y="-1637.25"/>
+            <point key="canvasLocation" x="-9361" y="-1438"/>
         </scene>
         <!--Tracking Settings-->
         <scene sceneID="8Zb-26-6Dw">
@@ -939,7 +948,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AkG-Qq-U2G" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-10108" y="-1440"/>
+            <point key="canvasLocation" x="-10055" y="-1438"/>
         </scene>
         <!--Experiments-->
         <scene sceneID="aPZ-DK-vVh">
@@ -1063,7 +1072,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="g0l-TG-a1s" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-9861" y="-1590.75"/>
+            <point key="canvasLocation" x="-9707" y="-1666"/>
         </scene>
     </scenes>
 </document>

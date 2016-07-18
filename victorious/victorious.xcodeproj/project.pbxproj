@@ -772,6 +772,8 @@
 		7979A0341C18EAE300455FF8 /* VNotificationSettings+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7979A0331C18EAE300455FF8 /* VNotificationSettings+Parsable.swift */; };
 		797FD25D1BFA9D6000BFFB08 /* SequenceUserInteractionsRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797FD25C1BFA9D6000BFFB08 /* SequenceUserInteractionsRequestTests.swift */; };
 		797FD2611BFAA19900BFFB08 /* UserInteractionsTest.json in Resources */ = {isa = PBXBuildFile; fileRef = 797FD2601BFAA19900BFFB08 /* UserInteractionsTest.json */; };
+		79841FE21D3D40C6004AC4CB /* AboutMeTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79841FE11D3D40C6004AC4CB /* AboutMeTextCell.swift */; };
+		79841FE41D3D40F3004AC4CB /* UsernameLocationAvatarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79841FE31D3D40F3004AC4CB /* UsernameLocationAvatarCell.swift */; };
 		7987D79A1B8A66E400EE4A39 /* NSURL+VTemporaryFiles.m in Sources */ = {isa = PBXBuildFile; fileRef = A6B9FD0E1B60630900166BE8 /* NSURL+VTemporaryFiles.m */; };
 		79883BDA1D1211310082D998 /* AccessoryScreenContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79883BD91D1211310082D998 /* AccessoryScreenContainer.swift */; };
 		798AA5941C3B3CCB00D267C3 /* FriendFindByEmailRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 798AA5931C3B3CCB00D267C3 /* FriendFindByEmailRequest.swift */; };
@@ -3241,6 +3243,8 @@
 		797FD25C1BFA9D6000BFFB08 /* SequenceUserInteractionsRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceUserInteractionsRequestTests.swift; sourceTree = "<group>"; };
 		797FD25E1BFA9E4000BFFB08 /* SequenceUserInteractionsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceUserInteractionsRequest.swift; sourceTree = "<group>"; };
 		797FD2601BFAA19900BFFB08 /* UserInteractionsTest.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = UserInteractionsTest.json; sourceTree = "<group>"; };
+		79841FE11D3D40C6004AC4CB /* AboutMeTextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutMeTextCell.swift; sourceTree = "<group>"; };
+		79841FE31D3D40F3004AC4CB /* UsernameLocationAvatarCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsernameLocationAvatarCell.swift; sourceTree = "<group>"; };
 		7987D7981B8A66C400EE4A39 /* NSURL+VTemporaryFilesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+VTemporaryFilesTests.m"; sourceTree = "<group>"; };
 		79883BD91D1211310082D998 /* AccessoryScreenContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessoryScreenContainer.swift; sourceTree = "<group>"; };
 		798AA5931C3B3CCB00D267C3 /* FriendFindByEmailRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendFindByEmailRequest.swift; sourceTree = "<group>"; };
@@ -5545,12 +5549,10 @@
 				BFC673631CE3C9C8004F9D3C /* ContentPreviewView */,
 				D89A50071A000D540010D050 /* Controls */,
 				7C28F1011D1DD94A0070B8AE /* CTAErrorState.swift */,
-				BE42842D19DDD0D800AEDBA6 /* DefaultProfileImages */,
 				BF7AF9C41D22F98500539D90 /* Error States */,
 				A776E00A1AE743F3001F25FF /* Floating Navigation View */,
 				D8DF71ED1AFD987B002EA7A5 /* Following */,
 				0314D34919B46B5E00FA363C /* Keyboard Bar */,
-				F0FBFA671CE1624D006318FC /* PersistentContentCreator.swift */,
 				D86528F01AE82AAC003832AC /* PollView */,
 				D85E427B1AFA982000A13BD3 /* SequencePreviewView */,
 				7A1C70A91CC8513B00A666F5 /* SideMenuController.swift */,
@@ -9169,6 +9171,8 @@
 				A7F711DF1AE1D5A00086F729 /* VProfileEditViewController.m */,
 				7970EFAF1D0BF3940028FDAA /* EditProfileViewController.swift */,
 				7970EFB11D0BF3A10028FDAA /* EditProfileViewController.storyboard */,
+				79841FE11D3D40C6004AC4CB /* AboutMeTextCell.swift */,
+				79841FE31D3D40F3004AC4CB /* UsernameLocationAvatarCell.swift */,
 			);
 			path = "Edit Profile";
 			sourceTree = "<group>";
@@ -12556,6 +12560,7 @@
 				A7815E1B1B6C5D9F007797B7 /* SettingsButtonCell.swift in Sources */,
 				D89367531ADDE98F001D2426 /* VInsetActionView.m in Sources */,
 				F07557EE1B751F8C00BB2648 /* VSequenceContentCellFactory.swift in Sources */,
+				79841FE21D3D40C6004AC4CB /* AboutMeTextCell.swift in Sources */,
 				F098D8151A9D29EA0003B6D4 /* VTagSensitiveTextView.m in Sources */,
 				A72C862B1C977FF500E97D4F /* SequenceCommentsRemoteOperation.swift in Sources */,
 				A7EBF53A1C2B9AB80080C7CF /* VHashtagFollowingTableViewController.swift in Sources */,
@@ -13117,6 +13122,7 @@
 				A70FC1101A2D619300F5BBDE /* VProduct.m in Sources */,
 				7AC194611D2DD1A9001B15B8 /* String+Initials.swift in Sources */,
 				F0AD216E1AF318FC001BDCC6 /* VNoContentCollectionViewCell.m in Sources */,
+				79841FE41D3D40F3004AC4CB /* UsernameLocationAvatarCell.swift in Sources */,
 				A74679681AFC31AA005EB1D9 /* VDependencyManager+VWebBrowser.m in Sources */,
 				D8CA63BB19D5240C002046E5 /* VActionSheetPresentationAnimator.m in Sources */,
 				037CB74519CFE8D20084BBED /* VUploadTaskInformation.m in Sources */,

@@ -32,35 +32,27 @@ class EditProfileViewController: UITableViewController {
                                                         tableView: tableView)
             tableView.dataSource = dataSource
         }
-        
     }
     
     //MARK: - Target Action
     
     @IBAction func tappedSave(sender: UIBarButtonItem) {
         self.performSegueWithIdentifier(EditProfileViewController.unwindToSettingsSegueKey, sender: self)
+        
+        guard let dataSource = dataSource else {
+            // Must have a dataSource in order to grab the values
+            return
+        }
+        
+        if let delta = dataSource.accountUpdateDelta(),
+            let operation = AccountUpdateOperation(profileUpdate: delta) {
+                operation.queue()
+        } else {
+            print("failed ot create operation!!")
+        }
+        
     }
 
-}
-
-
-private extension VDependencyManager {
-    
-    var placeholderAndEnteredTextFont: UIFont? {
-        return fontForKey("font.paragraph")
-    }
-    
-    var placeholderTextColor: UIColor? {
-        return colorForKey("color.text.placeholder")
-    }
-    
-    var enteredTextColor: UIColor? {
-        return colorForKey("color.text")
-    }
-    
-    var cellBackgroundColor: UIColor? {
-        return colorForKey("color.accent")
-    }
 }
 
 class EditProfileTableViewDataSource: NSObject, UITableViewDataSource {
@@ -94,9 +86,34 @@ class EditProfileTableViewDataSource: NSObject, UITableViewDataSource {
         }
     }
     
+    // MARK: - API
+    
+    func accountUpdateDelta() -> ProfileUpdate? {
+        guard let currentUser = VCurrentUser.user() else {
+            print("we need a user to compute the delta on!")
+            return nil
+        }
+        
+        let nameFieldValue = nameAndLocationCell.username
+        let locationFieldValue = nameAndLocationCell.location
+        let taglineFieldValue = aboutMeCell.tagline
+        
+        let username = nameFieldValue != currentUser.name ? nameFieldValue : nil
+        let location = locationFieldValue != currentUser.location ? locationFieldValue : nil
+        let tagline = taglineFieldValue != currentUser.tagline ? taglineFieldValue : nil
+        
+        return ProfileUpdate(email: nil,
+                             name: username,
+                             location: location,
+                             tagline: tagline,
+                             profileImageURL: nil)
+    }
+    
+    // MARK: - Misc Private Funcitons
+    
     private func configureNameAndLocationCell(nameCell: UsernameLocationAvatarCell) {
         nameCell.onReturnKeySelected = { [weak self] in
-            self?.aboutMeCell.textView.becomeFirstResponder()
+            self?.aboutMeCell.beginEditing()
         }
     }
     
@@ -111,102 +128,4 @@ class EditProfileTableViewDataSource: NSObject, UITableViewDataSource {
         
         aboutMeCell.dependencyManager = dependencyManager
     }
-}
-
-class UsernameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
-    
-    var onReturnKeySelected: (() -> ())?
-    
-    var dependencyManager: VDependencyManager? {
-        didSet {
-            // Visual Configuration
-            guard let dependencyManager = dependencyManager,
-                let font = dependencyManager.placeholderAndEnteredTextFont,
-                let placeholderTextColor = dependencyManager.placeholderTextColor,
-                let enteredTextColor = dependencyManager.enteredTextColor else {
-                    return
-            }
-            
-            // Font + Colors
-            usernameField.font = font
-            locationField.font = font
-            usernameField.textColor = enteredTextColor
-            locationField.textColor = enteredTextColor
-            
-            // Placeholder
-            let placeholderAttributes = [NSForegroundColorAttributeName: placeholderTextColor]
-            usernameField.attributedPlaceholder = NSAttributedString(string: "Name",
-                                                                     attributes: placeholderAttributes)
-            locationField.attributedPlaceholder = NSAttributedString(string: "Location",
-                                                                     attributes: placeholderAttributes)
-            
-            // Background
-            contentView.backgroundColor = dependencyManager.cellBackgroundColor
-        }
-    }
-    
-    @IBOutlet private var usernameField: UITextField! {
-        didSet {
-            usernameField.delegate = self
-        }
-    }
-    @IBOutlet private var locationField: UITextField! {
-        didSet {
-            locationField.delegate = self
-        }
-    }
-    
-    //MARK: - UITextFieldDelegate
-    
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return false
-    }
-    
-    func textFieldShouldEndEditing(textField: UITextField) -> Bool {
-        if textField == usernameField {
-            locationField.becomeFirstResponder()
-        } else if textField == locationField {
-            onReturnKeySelected?()
-        }
-        return true
-    }
-    
-}
-
-class AboutMeTextCell: UITableViewCell, UITextViewDelegate {
-    
-    var dependencyManager: VDependencyManager? {
-        didSet {
-            // Visual Configuration
-            guard let dependencyManager = dependencyManager,
-                let font = dependencyManager.placeholderAndEnteredTextFont,
-                let placeholderTextColor = dependencyManager.placeholderTextColor,
-                let enteredTextColor = dependencyManager.enteredTextColor else {
-                    return
-            }
-            
-            textView.placeholderText = "About Me"
-            textView.setPlaceholderFont(font)
-            textView.setPlaceholderTextColor(placeholderTextColor)
-            textView.textColor = enteredTextColor
-            textView.font = font
-            
-            contentView.backgroundColor = dependencyManager.cellBackgroundColor
-        }
-    }
-    
-    var onDesiredHeightChangeClosure: ((desiredHeight: CGFloat) -> ())?
-    
-    @IBOutlet private var textView: VPlaceholderTextView!
-    
-    @objc func textViewDidChange(textView: UITextView) {
-        let textSize = textView.sizeThatFits(CGSize(width: textView.bounds.width, height: CGFloat.max))
-        guard textSize.height != contentView.bounds.height else {
-            return
-        }
-        
-        onDesiredHeightChangeClosure?(desiredHeight: textSize.height)
-    }
-    
 }
