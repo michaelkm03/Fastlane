@@ -306,6 +306,7 @@ class StageShrinkingAnimator: NSObject {
         
         // Want the border to be 1px after scaled transform
         stageViewControllerContainer.layer.borderWidth = (1 / stageViewControllerContainer.contentScaleFactor)
+        stageViewControllerContainer.layer.borderColor = UIColor.clearColor().CGColor
     }
     
     private func configureGestureRecognizers() {
