@@ -23,6 +23,7 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
             mediaContentView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOnContent)))
         }
     }
+
     @IBOutlet private var attributionBar: AttributionBar! {
         didSet {
             attributionBar.hidden = true
@@ -30,11 +31,13 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
             updateAttributionBarAppearance(with: dependencyManager)
         }
     }
+
     @IBOutlet private var captionBarHeightConstraint: NSLayoutConstraint! {
         didSet {
             captionBarHeightConstraint.constant = 0
         }
     }
+
     private var captionBarViewController: CaptionBarViewController? {
         didSet {
             let captionBarDependency = dependencyManager.captionBarDependency
@@ -55,6 +58,7 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
     private var enabled = true
     
     weak var delegate: StageDelegate?
+
     var dependencyManager: VDependencyManager! {
         didSet {
             // The data source is initialized with the dependency manager since it needs URLs in the template to operate.
@@ -74,6 +78,7 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         captionBarViewController = childViewControllers.flatMap({ $0 as? CaptionBarViewController }).first
         mediaContentView.dependencyManager = dependencyManager
         mediaContentView.allowsVideoControls = false
+        mediaContentView.showsBackground = false
     }
     
     private func setupDataSource(dependencyManager: VDependencyManager) -> StageDataSource {

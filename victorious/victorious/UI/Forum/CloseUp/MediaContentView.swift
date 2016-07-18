@@ -10,6 +10,16 @@ import UIKit
 
 /// Displays an image/video/GIF/Youtube video/text post upon setting the content property.
 class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGestureRecognizerDelegate {
+
+    enum VideoFillMode {
+        case fill
+        case fit
+    }
+
+    var dependencyManager: VDependencyManager?
+
+    // MARK: - Private
+
     private struct Constants {
         static let blurRadius: CGFloat = 12
         static let fadeDuration: NSTimeInterval = 0.75
@@ -24,8 +34,6 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         static let defaultTextColor = UIColor.whiteColor()
         static let defaultTextFont = UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline)
     }
-    
-    var dependencyManager: VDependencyManager?
 
     private(set) var videoCoordinator: VContentVideoPlayerCoordinator?
     private var backgroundView: UIImageView?
@@ -53,7 +61,6 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         let singleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(onContentTap))
         singleTapRecognizer.numberOfTapsRequired = 1
         singleTapRecognizer.delegate = self
-        
         return singleTapRecognizer
     }()
     
@@ -107,6 +114,14 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         didSet {
             if showsBackground != oldValue {
                 configureBackground()
+            }
+        }
+    }
+
+    var videoFillMode: VideoFillMode = .fit {
+        didSet {
+            if videoFillMode != oldValue {
+                videoCoordinator?.layout(in: videoContainerView.bounds, withContentFill: (videoFillMode == .fill))
             }
         }
     }
@@ -334,7 +349,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         textPostLabel.frame = CGRect(x: bounds.origin.x + CGFloat(Constants.textPostPadding), y: bounds.origin.y, width: bounds.width - CGFloat(2 * Constants.textPostPadding), height: bounds.height)
         backgroundView?.frame = computeBackgroundBounds()
         spinner.center = CGPoint(x: bounds.midX, y: bounds.midY)
-        videoCoordinator?.layout(in: videoContainerView.bounds, withContentFill: !showsBackground)
+        videoCoordinator?.layout(in: videoContainerView.bounds, withContentFill: (videoFillMode == .fill))
     }
     
     private func updatePreviewImageIfReady() {
