@@ -12,7 +12,7 @@ import MBProgressHUD
 /// Conformers will receive a message when the vip gate
 /// will dismiss or has permitted the user to pass through.
 protocol VIPGateViewControllerDelegate: class {
-    func vipGateViewController(vipGateViewController: VIPGateViewController, allowedAccess allowed: Bool)
+    func vipGateExitedWithSuccess(success: Bool, afterPurchase purchased: Bool)
     
     /// Presents a VIP flow on the scaffold using values found in the provided dependency manager.
     func showVIPForumFromDependencyManager(dependencyManager: VDependencyManager)
@@ -30,17 +30,19 @@ extension VIPGateViewControllerDelegate {
 }
 
 class VIPGateViewController: UIViewController {
-    @IBOutlet weak private var textView: UITextView!
-    @IBOutlet weak private var subscribeButton: UIButton!
+    @IBOutlet weak private var headlineLabel: UILabel!
+    @IBOutlet weak private var detailLabel: UILabel!
+    @IBOutlet weak private var subscribeButton: TextOnColorButton!
     @IBOutlet weak private var restoreButton: UIButton!
     @IBOutlet weak private var privacyPolicyButton: UIButton!
     @IBOutlet weak private var termsOfServiceButton: UIButton!
-    @IBOutlet weak private var legalPromptLabel: UILabel!
+    @IBOutlet weak private var closeButton: UIButton!
+    
+    @IBOutlet private var labelWidthConstraint: NSLayoutConstraint!
+    @IBOutlet private var scrollViewInsetConstraints: [NSLayoutConstraint]!
     
     weak var delegate: VIPGateViewControllerDelegate?
-    
-    private var productIdentifier: String!
-    
+        
     var dependencyManager: VDependencyManager! {
         didSet {
             updateViews()
@@ -49,19 +51,10 @@ class VIPGateViewController: UIViewController {
 
     // MARK: - Initialization
 
-    class func newWithDependencyManager(dependencyManager: VDependencyManager) -> VIPGateViewController? {
-        guard
-            let productIdentifier = dependencyManager.vipSubscription?.productIdentifier,
-            let currentUser = VCurrentUser.user()
-            where !currentUser.hasValidVIPSubscription
-        else {
-            return nil
-        }
-        
-        let viewController: VIPGateViewController = VIPGateViewController.v_initialViewControllerFromStoryboard("VIPGate")
+    class func newWithDependencyManager(dependencyManager: VDependencyManager) -> VIPGateViewController {
+        let viewController: VIPGateViewController = VIPGateViewController.v_initialViewControllerFromStoryboard()
         viewController.dependencyManager = dependencyManager
         viewController.title = dependencyManager.stringForKey("title")
-        viewController.productIdentifier = productIdentifier
         return viewController
     }
 
@@ -76,21 +69,39 @@ class VIPGateViewController: UIViewController {
     // MARK: - IBActions
     
     @IBAction func onSubscribe(sender: UIButton? = nil) {
-        let subscribe = VIPSubscribeOperation(productIdentifier: productIdentifier)
-        
-        setIsLoading(true, title: Strings.purchaseInProgress)
-        subscribe.queue() { error, canceled in
-            self.setIsLoading(false)
+        let subscriptionFetchOperation = VIPFetchSubscriptionOperation()
+        self.setIsLoading(true, title: Strings.purchaseInProgress)
+        subscriptionFetchOperation.queue() { [weak self] error, canceled in
             guard !canceled else {
+                self?.setIsLoading(false)
+                return
+            }
+
+            guard
+                let productIdentifier = subscriptionFetchOperation.subscriptionProductIdentifier
+                where error == nil
+            else {
+                let title = Strings.subscriptionFailed
+                self?.v_showErrorWithTitle(title, message: error?.localizedDescription)
+                self?.setIsLoading(false)
                 return
             }
             
-            if let error = error {
-                let title = Strings.subscriptionFailed
-                let message = error.localizedDescription
-                self.v_showErrorWithTitle(title, message: message)
-            } else {
-                self.onSubcriptionValidated()
+            let subscribe = VIPSubscribeOperation(productIdentifier: productIdentifier)
+            subscribe.queue() { error, canceled in
+                self?.setIsLoading(false)
+                guard !canceled else {
+                    return
+                }
+                
+                if let error = error {
+                    let title = Strings.subscriptionFailed
+                    let message = error.localizedDescription
+                    self?.v_showErrorWithTitle(title, message: message)
+                }
+                else {
+                    self?.openGate(afterPurchase: true)
+                }
             }
         }
     }
@@ -99,8 +110,8 @@ class VIPGateViewController: UIViewController {
         let restore = RestorePurchasesOperation()
         
         setIsLoading(true, title: Strings.restoreInProgress)
-        restore.queue() { error, canceled in
-            self.setIsLoading(false)
+        restore.queue() { [weak self] error, canceled in
+            self?.setIsLoading(false)
             guard !canceled else {
                 return
             }
@@ -108,19 +119,23 @@ class VIPGateViewController: UIViewController {
             if let error = error {
                 let title = Strings.restoreFailed
                 let message = error.localizedDescription
-                self.v_showErrorWithTitle(title, message: message)
+                self?.v_showErrorWithTitle(title, message: message)
             } else {
-                self.onSubcriptionValidated()
+                self?.openGate(afterPurchase: false)
             }
         }
     }
     
     @IBAction func onPrivacyPolicySelected() {
-        ShowWebContentOperation(originViewController: self, type: .PrivacyPolicy, dependencyManager: dependencyManager).queue()
+        ShowWebContentOperation(originViewController: self, type: .PrivacyPolicy, forceModal: true, dependencyManager: dependencyManager).queue()
     }
     
     @IBAction func onTermsOfServiceSelected() {
-        ShowWebContentOperation(originViewController: self, type: .TermsOfService, dependencyManager: dependencyManager).queue()
+        ShowWebContentOperation(originViewController: self, type: .TermsOfService, forceModal: true, dependencyManager: dependencyManager).queue()
+    }
+    
+    @IBAction func onCloseSelected() {
+        delegate?.vipGateExitedWithSuccess(false, afterPurchase: false)
     }
     
     // MARK: - Private
@@ -137,9 +152,7 @@ class VIPGateViewController: UIViewController {
     }
     
     private func onSubcriptionValidated() {
-        showResultWithMessage(Strings.purchaseSucceeded) {
-            self.openGate()
-        }
+        self.openGate(afterPurchase: true)
     }
     
     private func showResultWithMessage(message: String, completion: (() -> ())? = nil) {
@@ -154,8 +167,8 @@ class VIPGateViewController: UIViewController {
         }
     }
     
-    private func openGate() {
-        delegate?.vipGateViewController(self, allowedAccess: true)
+    private func openGate(afterPurchase purchased: Bool) {
+        delegate?.vipGateExitedWithSuccess(true, afterPurchase: purchased)
     }
     
     private func updateViews() {
@@ -163,78 +176,156 @@ class VIPGateViewController: UIViewController {
             return
         }
         
-        legalPromptLabel.text = Strings.legalPrompt
-        
-        let privacyPolicyText = NSAttributedString(
-            string: Strings.privacyPolicy,
-            attributes: dependencyManager.legalLinkAttributes
+        let privacyPolicyText = NSMutableAttributedString(
+            string: dependencyManager.privacyPolicyText ?? Strings.privacyPolicy
         )
+        if let attributes = dependencyManager.privacyPolicyLinkAttributes {
+            privacyPolicyText.addAttributes(attributes, range: NSMakeRange(0, privacyPolicyText.length))
+        }
         privacyPolicyButton.setAttributedTitle(privacyPolicyText, forState: .Normal)
         
-        let termsOfServiceText = NSAttributedString(
-            string: Strings.termsOfService,
-            attributes: dependencyManager.legalLinkAttributes
+        let termsOfServiceText = NSMutableAttributedString(
+            string: dependencyManager.termsOfService ?? Strings.termsOfService
         )
+        if let attributes = dependencyManager.termsOfServiceLinkAttributes {
+            termsOfServiceText.addAttributes(attributes, range: NSMakeRange(0, termsOfServiceText.length))
+        }
         termsOfServiceButton.setAttributedTitle(termsOfServiceText, forState: .Normal)
         
-        restoreButton.setTitle(Strings.restorePrompt, forState: .Normal)
-        restoreButton.setTitleColor(dependencyManager.subscribeColor, forState: .Normal)
+        restoreButton.setTitle(dependencyManager.restoreText ?? Strings.restorePrompt, forState: .Normal)
+        restoreButton.setTitleColor(dependencyManager.restoreTextColor, forState: .Normal)
+        if let font = dependencyManager.restoreFont {
+            restoreButton.titleLabel?.font = font
+        }
         
-        subscribeButton.setTitle(dependencyManager.subscribeText, forState: .Normal)
-        subscribeButton.backgroundColor = dependencyManager.subscribeColor
+        headlineLabel.text = dependencyManager.headerText
+        if let color = dependencyManager.headerTextColor {
+            headlineLabel.textColor = color
+        }
+        if let font = dependencyManager.headerFont {
+            headlineLabel.font = font
+        }
         
-        textView.text = dependencyManager.greetingText
-        textView.font = dependencyManager.greetingFont
-        textView.textColor = dependencyManager.greetingColor
+        detailLabel.text = dependencyManager.descriptionText
+        if let color = dependencyManager.descriptionTextColor {
+            detailLabel.textColor = color
+        }
+        if let font = dependencyManager.descriptionFont {
+            detailLabel.font = font
+        }
+        
+        let icon = dependencyManager.closeIcon
+        closeButton.setBackgroundImage(icon, forState: .Normal)
+        if let color = dependencyManager.closeIconTintColor {
+            closeButton.tintColor = color
+        }
+        
+        subscribeButton.dependencyManager = dependencyManager.subscribeButtonDependency
+    }
+    
+    override func updateViewConstraints() {
+        let inset = scrollViewInsetConstraints.reduce(0, combine: { $0 + $1.constant })
+        labelWidthConstraint.constant = view.bounds.width - inset
+        super.updateViewConstraints()
     }
     
     // MARK: - String Constants
     
     private struct Strings {
-        static let legalPrompt              = NSLocalizedString("SubscriptionLegalPrompt", comment: "")
         static let privacyPolicy            = NSLocalizedString("Privacy Policy", comment: "")
         static let termsOfService           = NSLocalizedString("Terms of Service", comment: "")
         static let purchaseInProgress       = NSLocalizedString("ActivityPurchasing", comment: "")
-        static let purchaseSucceeded        = NSLocalizedString("SubscriptionSucceeded", comment: "")
         static let restoreFailed            = NSLocalizedString("SubscriptionRestoreFailed", comment: "")
         static let restoreInProgress        = NSLocalizedString("SubscriptionActivityRestoring", comment: "")
         static let restorePrompt            = NSLocalizedString("SubscriptionRestorePrompt", comment: "")
-        static let restoreSucceeded         = NSLocalizedString("SubscriptionRestoreSucceeded", comment: "")
         static let subscriptionFailed       = NSLocalizedString("SubscriptionFailed", comment: "")
     }
 }
 
 private extension VDependencyManager {
-    var greetingText: String {
-        return stringForKey("greeting.text") ?? ""
+    var headerText: String? {
+        return stringForKey("text.header")
     }
     
-    var greetingFont: UIFont {
-        return fontForKey("greeting.font") ?? UIFont.systemFontOfSize(13.0)
+    var headerFont: UIFont? {
+        return fontForKey("font.header")
     }
     
-    var greetingColor: UIColor {
-        return colorForKey("greeting.color") ?? UIColor.blackColor()
+    var headerTextColor: UIColor? {
+        return colorForKey("color.header")
     }
     
-    var subscribeColor: UIColor {
-        return colorForKey("subscribe.color") ?? UIColor.blackColor()
+    var descriptionText: String? {
+        return stringForKey("text.description")
     }
     
-    var subscribeText: String {
-        return stringForKey("subscribe.text") ?? ""
+    var descriptionFont: UIFont? {
+        return fontForKey("font.description")
     }
     
-    var backgroundColor: UIColor? {
-        let background = templateValueOfType(VSolidColorBackground.self, forKey: "background") as? VSolidColorBackground
-        return background?.backgroundColor
+    var descriptionTextColor: UIColor? {
+        return colorForKey("color.description")
     }
     
-    var legalLinkAttributes: [String : AnyObject] {
+    var restoreText: String? {
+        return stringForKey("text.restore")
+    }
+    
+    var restoreFont: UIFont? {
+        return fontForKey("font.restore")
+    }
+    
+    var restoreTextColor: UIColor? {
+        return colorForKey("color.restore")
+    }
+    
+    var termsOfServiceLinkAttributes: [String : AnyObject]? {
+        guard
+            let font = fontForKey("font.tos"),
+            let color = colorForKey("color.tos")
+        else {
+                return nil
+        }
+        
         return [
-            NSFontAttributeName: fontForKey("font.paragraph"),
-            NSForegroundColorAttributeName: subscribeColor,
+            NSFontAttributeName: font,
+            NSForegroundColorAttributeName: color,
             NSUnderlineStyleAttributeName: NSNumber(integer: NSUnderlineStyle.StyleSingle.rawValue)
         ]
+    }
+    
+    var termsOfService: String? {
+        return stringForKey("text.tos")
+    }
+    
+    var privacyPolicyLinkAttributes: [String : AnyObject]? {
+        guard
+            let font = fontForKey("font.privacy"),
+            let color = colorForKey("color.privacy")
+        else {
+                return nil
+        }
+        
+        return [
+            NSFontAttributeName: font,
+            NSForegroundColorAttributeName: color,
+            NSUnderlineStyleAttributeName: NSNumber(integer: NSUnderlineStyle.StyleSingle.rawValue)
+        ]
+    }
+    
+    var privacyPolicyText: String? {
+        return stringForKey("text.privacy")
+    }
+    
+    var closeIcon: UIImage? {
+        return imageForKey("closeIcon")
+    }
+    
+    var closeIconTintColor: UIColor? {
+        return colorForKey("color.closeIcon")
+    }
+    
+    var subscribeButtonDependency: VDependencyManager? {
+        return childDependencyForKey("subscribeButton")
     }
 }

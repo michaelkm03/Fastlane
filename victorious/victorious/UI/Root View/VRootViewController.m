@@ -239,7 +239,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
     
-    [[[FetchTemplateProductIdentifiersOperation alloc] initWithProductsDataSource:self.dependencyManager] queueWithCompletion:nil];
+    /// Body removed alongside FetchTemplateProductIdentifiersOperation
     
     [[InterstitialManager sharedInstance] setDependencyManager:self.dependencyManager];
 }

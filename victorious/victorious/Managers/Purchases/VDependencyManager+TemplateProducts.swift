@@ -11,13 +11,14 @@ import UIKit
 extension VDependencyManager: TemplateProductsDataSource {
     
     var vipSubscription: Subscription? {
-        guard let subscription = childDependencyForKey("subscription"),
-            let productIdentifier = subscription.stringForKey("appleProductId")
-            where !productIdentifier.isEmpty else {
+        guard
+            let subscription = childDependencyForKey("subscription"),
+            let enabled = subscription.numberForKey("enabled")?.boolValue
+        else {
             return nil
         }
         let iconImage = subscription.imageForKey("icon")
-        return Subscription(productIdentifier: productIdentifier, iconImage: iconImage)
+        return Subscription(enabled: enabled, iconImage: iconImage)
     }
     
     var productIdentifiersForVoteTypes: [String] {
