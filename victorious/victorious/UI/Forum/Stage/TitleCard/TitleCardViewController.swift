@@ -32,7 +32,10 @@ class TitleCardViewController: UIViewController {
         static let maxWidth = CGFloat(250)
 
         /// This offset is so we clip the left side of the view to create the slide out title card effect.
-        static let leadingEdgeOffset = CGFloat(-12)
+        static let leadingEdgeOffset = CGFloat(-10)
+
+        /// Amount the card can be dragged horizontally from the target spot.
+        static let horizontalDragLimit = CGFloat(10)
     }
 
     @IBOutlet private weak var avatarView: AvatarView! {
@@ -124,7 +127,10 @@ class TitleCardViewController: UIViewController {
 
     @objc private func didPand(recognizer: UIPanGestureRecognizer) {
         let point = recognizer.translationInView(containerView?.superview)
-        containerView.center = CGPoint(x: containerView.center.x + point.x, y: containerView.center.y)
+        let newCenter = CGPoint(x: containerView.center.x + point.x, y: containerView.center.y)
+        if newCenter.x < (targetPoint.x + Constants.horizontalDragLimit) {
+            containerView.center = newCenter
+        }
         recognizer.setTranslation(CGPointZero, inView: containerView?.superview)
 
         switch recognizer.state {
@@ -142,6 +148,7 @@ class TitleCardViewController: UIViewController {
 
     @objc private func didTap(recognizer: UITapGestureRecognizer) {
         print("didTap")
+
         guard let draggableBehaviour = draggableBehaviour else {
             return
         }
