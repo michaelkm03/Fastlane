@@ -33,14 +33,14 @@ class ShowLoginOperation: MainQueueOperation {
         super.start()
         
         // Don't show login when running unit tests
-        guard !self.cancelled && !VAutomation.shouldAlwaysShowLoginScreen() else {
-            self.finishedExecuting()
+        guard !cancelled && !VAutomation.shouldAlwaysShowLoginScreen() else {
+            finishedExecuting()
             return
         }
         
         // Don't show login if the user is already logged in
         guard VCurrentUser.user() == nil else {
-            self.finishedExecuting()
+            finishedExecuting()
             return
         }
         
@@ -53,15 +53,16 @@ class ShowLoginOperation: MainQueueOperation {
             let viewController = templateValue as? UIViewController,
             let loginFlow = templateValue as? VLoginRegistrationFlow
         else {
-            self.finishedExecuting()
+            finishedExecuting()
             return
         }
         
         let originViewController = self.originViewController
         let loginCompletion = self.loginCompletion
         loginFlow.onCompletionBlock = { didSucceed in
+            loginCompletion?()
+            
             guard didSucceed else {
-                loginCompletion?()
                 return
             }
             
@@ -70,9 +71,7 @@ class ShowLoginOperation: MainQueueOperation {
             // to run first so that the configured tab bar is visible immediately
             // when the login view controller is dismissed.
             dispatch_after(0.0) {
-                originViewController?.dismissViewControllerAnimated(true) {
-                    loginCompletion?()
-                }
+                originViewController?.dismissViewControllerAnimated(true, completion: nil)
             }
         }
         loginFlow.setAuthorizationContext?( self.context )
