@@ -59,6 +59,7 @@ class StageShrinkingAnimator: NSObject {
     
     // MARK: - Private Properties
     private let stageContainer: UIView
+    // Blocks touches on the stage so that we can tap to expand
     private let stageTouchView: UIView
     private let stageViewControllerContainer: UIView
     private var keyboardManager: VKeyboardNotificationManager!
@@ -314,6 +315,7 @@ class StageShrinkingAnimator: NSObject {
         stagePanGestureRecognizer.addTarget(self, action: #selector(pannedOnStage(_:)))
         stageTouchView.addGestureRecognizer(stageTapGestureRecognizer)
         stageContainer.addGestureRecognizer(stagePanGestureRecognizer)
+        stageTouchView.hidden = true // Setup is in expanded state so hide the blocker
     }
     
     private func configureKeyboardListener() {
