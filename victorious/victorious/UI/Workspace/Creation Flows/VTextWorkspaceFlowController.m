@@ -27,7 +27,6 @@
 @property (nonatomic, strong) VMediaAttachmentPresenter *attachmentPresenter;
 
 @property (nonatomic, strong) UIViewController *mediaCaptureViewController;
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
