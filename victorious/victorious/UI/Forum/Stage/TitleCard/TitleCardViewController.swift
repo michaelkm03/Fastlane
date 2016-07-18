@@ -14,6 +14,7 @@ protocol TileCardDelegate: class {
 
 class TitleCardViewController: UIViewController {
 
+    /// The presentation state of the TitleCard.
     enum State {
         case shown
         case hidden
@@ -51,7 +52,7 @@ class TitleCardViewController: UIViewController {
     private var draggableBehaviour: DraggableBehaviour?
 
     private var panGestureRecognizer: UIPanGestureRecognizer?
-    private var tapGesturereRecognizer: UITapGestureRecognizer?
+    private var tapGestureRecognizer: UITapGestureRecognizer?
 
 
     // MARK: - UIViewController life cycle
@@ -85,10 +86,9 @@ class TitleCardViewController: UIViewController {
         containerView.addGestureRecognizer(panGestureRecognizer)
         self.panGestureRecognizer = panGestureRecognizer
 
-        let tapGesturereRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTap(_:)))
-        containerView.addGestureRecognizer(tapGesturereRecognizer)
-        self.tapGesturereRecognizer = tapGesturereRecognizer
-
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTap(_:)))
+        containerView.addGestureRecognizer(tapGestureRecognizer)
+        self.tapGestureRecognizer = tapGestureRecognizer
     }
 
     private func setupAnimator(with referenceView: UIView) {
