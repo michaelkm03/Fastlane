@@ -89,6 +89,8 @@ class TitleCardViewController: UIViewController {
         populateUI(with: stageContent)
     }
 
+    /// Slides out the title card if it's not already present on the screen.
+    /// The card will auto hide after the a length of time specified in `autoHideDelay`.
     func show() {
         guard currentState == .hidden else {
             return
@@ -135,7 +137,7 @@ class TitleCardViewController: UIViewController {
         draggableBehaviour = DraggableBehaviour(with: draggableView)
     }
 
-    /// Target point of tile card that depends on current state.
+    /// Target point of title card that depends on current state.
     private var targetPoint: CGPoint {
         var point: CGPoint
         switch currentState {
@@ -144,7 +146,6 @@ class TitleCardViewController: UIViewController {
             case .hidden:
                 point = CGPoint(x: -draggableView.frame.width, y: draggableView.frame.height / 2)
         }
-        print("state -> \(currentState)   point -> \(point)")
         return point
     }
 
@@ -152,7 +153,6 @@ class TitleCardViewController: UIViewController {
         guard let draggableBehaviour = draggableBehaviour else {
             return
         }
-
         draggableBehaviour.targetPoint = targetPoint
         draggableBehaviour.velocity = initialVelocity
         animator?.addBehavior(draggableBehaviour)
@@ -172,7 +172,10 @@ class TitleCardViewController: UIViewController {
             case .Ended:
                 var velocity = recognizer.velocityInView(draggableView?.superview)
                 velocity.y = 0
-                currentState = (velocity.x > 0 ? .shown : .hidden)
+                if velocity.x <= 0 {
+                    currentState = .hidden
+                }
+
                 animateTitleCard(withInitialVelocity: velocity)
             default:
                 break
