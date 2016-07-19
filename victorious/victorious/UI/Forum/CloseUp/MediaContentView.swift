@@ -8,13 +8,13 @@
 
 import UIKit
 
+enum FillMode {
+    case fill
+    case fit
+}
+
 /// Displays an image/video/GIF/Youtube video/text post upon setting the content property.
 class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGestureRecognizerDelegate {
-
-    enum VideoFillMode {
-        case fill
-        case fit
-    }
 
     var dependencyManager: VDependencyManager?
 
@@ -118,16 +118,16 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         }
     }
 
-    var videoFillMode: VideoFillMode = .fit {
+    var fillMode: FillMode = .fit {
         didSet {
-            if videoFillMode != oldValue {
-                videoCoordinator?.layout(in: videoContainerView.bounds, withContentFill: (videoFillMode == .fill))
+            if fillMode != oldValue {
+                setNeedsLayout()
             }
         }
     }
     
     private func configureBackground() {
-        previewImageView.contentMode = showsBackground ? .ScaleAspectFit : .ScaleAspectFill
+        previewImageView.contentMode = (fillMode == .fit) ? .ScaleAspectFit : .ScaleAspectFill
         
         if showsBackground {
             let backgroundView = UIImageView()
@@ -349,7 +349,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         textPostLabel.frame = CGRect(x: bounds.origin.x + CGFloat(Constants.textPostPadding), y: bounds.origin.y, width: bounds.width - CGFloat(2 * Constants.textPostPadding), height: bounds.height)
         backgroundView?.frame = computeBackgroundBounds()
         spinner.center = CGPoint(x: bounds.midX, y: bounds.midY)
-        videoCoordinator?.layout(in: videoContainerView.bounds, withContentFill: (videoFillMode == .fill))
+        videoCoordinator?.layout(in: videoContainerView.bounds, with: fillMode)
     }
     
     private func updatePreviewImageIfReady() {
