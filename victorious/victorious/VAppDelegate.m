@@ -55,25 +55,11 @@
     self.window.rootViewController = [storyboard instantiateInitialViewController];
     [self.window makeKeyAndVisible];
     
-    UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
-    if ( localNotification != nil )
-    {
-        [[VRootViewController sharedRootViewController] handleLocalNotification:localNotification];
-    }
-    
     DefaultTimingTracker *appTimingTracker = [DefaultTimingTracker sharedInstance];
     [appTimingTracker startEventWithType:VAppTimingEventTypeAppStart subtype:nil];
     [appTimingTracker startEventWithType:VAppTimingEventTypeShowRegistration subtype:nil];
     
     return [[FBSDKApplicationDelegate sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];
-}
-
-- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)localNotification
-{
-    if ( [application applicationState] == UIApplicationStateInactive )
-    {
-        [[VRootViewController sharedRootViewController] handleLocalNotification:localNotification];
-    }
 }
 
 - (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window

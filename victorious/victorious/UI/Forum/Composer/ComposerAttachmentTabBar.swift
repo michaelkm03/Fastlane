@@ -74,7 +74,6 @@ class ComposerAttachmentTabBar: VFlexBar {
     }
     
     private func updateTintColorOfButtons() {
-        
         let buttonItems = buttons()
         let renderingMode: UIImageRenderingMode = tabItemDeselectedTintColor != nil ? .AlwaysTemplate : .AlwaysOriginal
         for button in buttonItems {
@@ -96,6 +95,7 @@ class ComposerAttachmentTabBar: VFlexBar {
     
     @objc private func buttonPressed(button: ComposerAttachmentTabBarButton) {
         delegate?.composerAttachmentTabBar(self, didSelectNavigationItem: button.navigationMenuItem)
+        button.navigationMenuItem.dependencyManager.trackButtonEvent(.tap)
     }
     
     private func buttons() -> [ComposerAttachmentTabBarButton] {

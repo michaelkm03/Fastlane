@@ -8,6 +8,7 @@
 
 #import "VDependencyManager.h"
 #import "VNavigationMenuItem.h"
+#import "victorious-Swift.h"
 
 NSString * const VDependencyManagerPositionKey      = @"position";
 NSString * const VDependencyManagerDestinationKey   = @"destination";
@@ -16,6 +17,12 @@ NSString * const VDependencyManagerIconKey          = @"icon";
 NSString * const VDependencyManagerSelectedIconKey  = @"selectedIcon";
 NSString * const VDependencyManagerPositionLeft     = @"left";
 NSString * const VDependencyManagerPositionRight    = @"right";
+
+@interface VNavigationMenuItem()
+
+@property (nonatomic, strong, readwrite) VDependencyManager *dependencyManager;
+
+@end
 
 @implementation VNavigationMenuItem
 
@@ -50,12 +57,15 @@ NSString * const VDependencyManagerPositionRight    = @"right";
     id destination = [dependencyManager singletonObjectOfType:[NSObject class] forKey:VDependencyManagerDestinationKey];
     NSString *position = [dependencyManager stringForKey:VDependencyManagerPositionKey];
     UIColor *tintColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
-    return [self initWithTitle:title
-                    identifier:identifier
-                          icon:icon
-                  selectedIcon:selectedIcon
-                   destination:destination
-                      position:position tintColor:tintColor];
+    VNavigationMenuItem *menuItem = [self initWithTitle:title
+                                             identifier:identifier
+                                                   icon:icon
+                                           selectedIcon:selectedIcon
+                                            destination:destination
+                                               position:position
+                                              tintColor:tintColor];
+    menuItem.dependencyManager = dependencyManager;
+    return menuItem;
 }
 
 - (instancetype)init

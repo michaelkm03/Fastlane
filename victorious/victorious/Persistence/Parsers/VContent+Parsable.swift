@@ -33,7 +33,7 @@ extension VContent: PersistenceParsable {
             guard let assetURL = imageAsset.url else {
                 return nil
             }
-            let previewAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject(["imageURL": assetURL.absoluteString ])
+            let previewAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject(["imageURL": assetURL.absoluteString])
             previewAsset.populate(fromSourceModel: imageAsset)
             previewAsset.content = self
             return previewAsset

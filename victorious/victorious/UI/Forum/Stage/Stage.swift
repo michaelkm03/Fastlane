@@ -13,13 +13,15 @@ protocol Stage: class, ForumEventReceiver {
     
     var dependencyManager: VDependencyManager! { get set }
     
-    /// This will allow callers to change the opacity of overlays in the stage (caption/attribution/refresh pill)
+    /// This will allow callers to change the opacity of overlays in the stage (caption/attribution/refresh pill).
     var overlayUIAlpha: CGFloat { get set }
     
     var canHandleCaptionContent: Bool { get }
     
-    /// Replaces the current content on the stage with the new one.
-    func addContent(stageContent: ContentModel)
+
+    /// Replaces the current content on the stage with the content present in the StageContent.
+    /// StageContent may also contain meta data about the item on stage.
+    func addStageContent(stageContent: StageContent)
     
     /// Shows the caption of the provided content in the caption bar (if provided in the template)
     func addCaptionContent(content: ContentModel)

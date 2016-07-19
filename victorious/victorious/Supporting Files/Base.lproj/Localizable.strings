@@ -365,11 +365,8 @@
 "SubscriptionsSettingsTitle"            = "Subscriptions";
 
 "SubscriptionRestoreFailed"             = "Failed to restore subcription.";
-"SubscriptionSucceeded"                 = "Subscription complete!";
-"SubscriptionLegalPrompt"               = "By subscribing you are agreeing to our";
 "SubscriptionActivityRestoring"         = "Checking for subscription...";
 "SubscriptionRestorePrompt"             = "Already subscribed?";
-"SubscriptionRestoreSucceeded"          = "Subscription restored!";
 "SubscriptionFailed"                    = "Subscription failed.";
 "Upgrade"                               = "Upgrade";
 
