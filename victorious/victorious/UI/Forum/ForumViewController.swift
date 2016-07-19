@@ -335,7 +335,11 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     // MARK: - ContentPublisherDelegate
     
     func contentPublisher(contentPublisher: ContentPublisher, didQueue content: ChatFeedContent) {
-        chatFeed?.handleNewItems([], loadingType: .newer, pendingContentDelta: 1)
+        chatFeed?.handleNewItems([], loadingType: .newer, pendingContentDelta: 1) { [weak self] in
+            if self?.chatFeed?.collectionView.v_isScrolledToBottom == false {
+                self?.chatFeed?.collectionView.v_scrollToBottomAnimated(true)
+            }
+        }
     }
     
     func contentPublisher(contentPublisher: ContentPublisher, didFailToSend content: ChatFeedContent) {
