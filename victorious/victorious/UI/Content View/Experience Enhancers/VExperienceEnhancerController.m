@@ -22,7 +22,6 @@
 @property (nonatomic, strong) NSMutableArray *collectedTrackingItems;
 @property (nonatomic, assign) id<VPurchaseManagerType> purchaseManager;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic, strong) LocalNotificationScheduler *localNotificationScheduler;
 
 @end
 
@@ -90,7 +89,7 @@
     [self.enhancerBar reloadData];
     [self.delegate experienceEnhancersDidUpdate];
     
-    self.localNotificationScheduler = [[LocalNotificationScheduler alloc] initWithDependencyManager:self.dependencyManager];
+    // Remove Ballistics notification scheduler
 }
 
 - (void)purchaseManagedDidUpdate:(NSNotification *)notification
@@ -190,19 +189,8 @@
     
     NSDictionary *finalParams = [NSDictionary dictionaryWithDictionary:params];
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidVoteSequence parameters:finalParams];
-    
-    VExperienceEnhancer *lastExperienceEnhancerToCoolDown = [self lastExperienceEnhancerToCoolDown];
-    if ( lastExperienceEnhancerToCoolDown != nil )
-    {
-        NSString *identifier = [VDependencyManager localNotificationBallisticsCooldownIdentifier];
-        
-        // Unschedule previous notifications (if any)
-        [self.localNotificationScheduler unscheduleNotificationWithIdentifier:identifier];
-        
-        // Schedule a new notification
-        NSDate *fireDate = lastExperienceEnhancerToCoolDown.cooldownDate;
-        [self.localNotificationScheduler scheduleNotificationWithIdentifier:identifier fireDate:fireDate];
-    }
+
+    // Remove Ballistics notification scheduler
 }
 
 - (VExperienceEnhancer *)lastExperienceEnhancerToCoolDown

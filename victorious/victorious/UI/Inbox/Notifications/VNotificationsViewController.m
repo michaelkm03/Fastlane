@@ -14,7 +14,6 @@
 #import "VNavigationDestination.h"
 #import "UIViewController+VAccessoryScreens.h"
 #import "UIViewController+VLayoutInsets.h"
-#import "VBadgeResponder.h"
 #import "VDependencyManager+VTracking.h"
 #import "VConversationListViewController.h"
 #import "victorious-Swift.h"
@@ -33,9 +32,6 @@ static CGFloat const kNotificationAddedVerticalInset = 8.0f;
 @end
 
 @implementation VNotificationsViewController
-
-@synthesize multipleContainerChildDelegate = _multipleContainerChildDelegate;
-@synthesize badgeNumberUpdateBlock = _badgeNumberUpdateBlock;
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager
 {
@@ -233,22 +229,8 @@ static CGFloat const kNotificationAddedVerticalInset = 8.0f;
 
 - (void)setBadgeNumber:(NSInteger)badgeNumber
 {
-    if ( badgeNumber == _badgeNumber )
-    {
-        return;
-    }
     _badgeNumber = badgeNumber;
-    
-    id<VBadgeResponder> badgeResponder = [[self nextResponder] targetForAction:@selector(updateBadge) withSender:nil];
-    if (badgeResponder != nil)
-    {
-        [badgeResponder updateBadge];
-    }
-    
-    if ( self.badgeNumberUpdateBlock != nil )
-    {
-        self.badgeNumberUpdateBlock(self.badgeNumber);
-    }
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:badgeNumber];
 }
 
 - (void)applicationDidBecomeActive:(NSNotification *)notification

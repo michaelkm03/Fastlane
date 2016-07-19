@@ -20,7 +20,6 @@
 #import "VDependencyManager+VNavigationMenuItem.h"
 #import "VDependencyManager+VNavigationItem.h"
 #import "VDependencyManager+VTracking.h"
-#import "VBadgeResponder.h"
 #import "UIViewController+VAccessoryScreens.h"
 #import "VDependencyManager+VAccessoryScreens.h"
 #import "VNavigationController.h"
@@ -45,7 +44,6 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 
 @implementation VConversationListViewController
 
-@synthesize multipleContainerChildDelegate = _multipleContainerChildDelegate;
 @synthesize badgeNumberUpdateBlock = _badgeNumberUpdateBlock;
 
 + (instancetype)inboxViewController
@@ -464,11 +462,7 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 
 - (void)updateBadge
 {
-    id<VBadgeResponder> badgeResponder = [[self nextResponder] targetForAction:@selector(updateBadge) withSender:nil];
-    if (badgeResponder != nil)
-    {
-        [badgeResponder updateBadge];
-    }
+    // Removed due to removeal of VBadgeResponder
 }
 
 #pragma mark - Key-Value Observation
