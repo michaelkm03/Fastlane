@@ -12,6 +12,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     private struct Constants {
         static let contentSizeAnimationDuration: NSTimeInterval = 0.5
         static let defaultAspectRatio: CGFloat = 16 / 9
+        static let titleCardDelayedShow = NSTimeInterval(1)
     }
     
     private lazy var defaultStageHeight: CGFloat = {
@@ -120,9 +121,12 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         updateStageHeight()
 
         showStage(animated: true)
-        titleCardViewController?.show()
+
+        dispatch_after(Constants.titleCardDelayedShow) {
+            self.titleCardViewController?.show()
+        }
     }
-    
+
     func removeContent() {
         hideStage()
         currentStageContent = nil

@@ -23,18 +23,21 @@ class TitleCardViewController: UIViewController {
     weak var delegate: TileCardDelegate?
 
     /// Time after `show` is called to automatically slide out the card.
-    var autoHideDelay = NSTimeInterval(3)
+    var autoHideDelay = NSTimeInterval(4)
 
     private var autoHideTimer: VTimerManager?
+
+    private var currentState = State.hidden
+
+    private var stageContent: StageContent?
 
     private struct Constants {
         static let cornerRadius = CGFloat(6)
         static let borderWidth = CGFloat(1)
         static let borderColor = UIColor(white: 0.0, alpha: 0.1).CGColor
-        static let maxWidth = CGFloat(250)
 
         /// This offset is so we clip the left side of the view to create the slide out title card effect.
-        static let leadingEdgeOffset = CGFloat(-10)
+        static let leadingEdgeOffset = CGFloat(-5)
 
         /// Amount the card can be dragged horizontally from the target spot.
         static let horizontalDragLimit = CGFloat(10)
@@ -49,12 +52,8 @@ class TitleCardViewController: UIViewController {
     @IBOutlet private weak var authorLabel: UILabel!
     @IBOutlet private weak var titleLabel: UILabel!
 
-    /// The draggable container view, the actual title card that is animated.
+    /// The draggable container view - the actual title card that is animated.
     @IBOutlet private weak var draggableView: UIView!
-
-    private var currentState = State.hidden
-
-    private var stageContent: StageContent?
 
     // MARK: - UIDynamics & Interraction
 
@@ -73,9 +72,6 @@ class TitleCardViewController: UIViewController {
         setupContainerView()
         setupDynamics(inReferenceView: view, withDraggableView: draggableView)
         setupRecognizers(on: draggableView)
-
-        // Set the tile card in it's starting state.
-        draggableView.center = targetPoint
     }
 
     override func viewWillAppear(animated: Bool) {
