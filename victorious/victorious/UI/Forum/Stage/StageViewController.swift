@@ -114,6 +114,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         }
         currentStageContent = stageContent
 
+        titleCardViewController?.populate(with: stageContent)
 
         mediaContentView.videoCoordinator?.pauseVideo()
         mediaContentView.content = stageContent.content
