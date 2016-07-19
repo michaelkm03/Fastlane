@@ -118,12 +118,6 @@
 	<string>VFollowingStreamCollectionViewController</string>
 	<key>directory.screen</key>
 	<string>VDirectoryCollectionViewController</string>
-	<key>basic.multiScreenSelector</key>
-	<string>VSegmentedSelectorView</string>
-	<key>textbar.multiScreenSelector</key>
-	<string>VTextbarSelectorView</string>
-	<key>rounded.multiScreenSelector</key>
-	<string>VRoundedSegmentedSelectorView</string>
 	<key>inbox.screen</key>
 	<string>VConversationListViewController</string>
 	<key>livechat.screen</key>
