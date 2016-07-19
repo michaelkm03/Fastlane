@@ -163,27 +163,26 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
             let json = JSON(data: dataFromString)
             rawMessage.json = json
 
-            if let event = (decodeEventFromJSON(json) ?? decodeEventFromJSON(json)) {
-                dispatch_async(dispatch_get_main_queue()) { [weak self] in
-                    if case .appendContent(let contents) = event {
-                        var captionEvent: ForumEvent?
-                        let contentsToAppend = contents.filter({ content -> Bool in
-                            let isCaptionContent = content.author.accessLevel == .owner
-                            if isCaptionContent {
-                                captionEvent = .showCaptionContent(content)
-                            }
-                            return !isCaptionContent
-                        })
-                        if let captionEvent = captionEvent {
-                            self?.broadcast(captionEvent)
-                        }
-                        self?.broadcast(.appendContent(contentsToAppend))
-                    } else {
-                        self?.broadcast(event)
-                    }
-                }
-            } else {
+            guard let event = (decodeEventFromJSON(json) ?? decodeEventFromJSON(json)) else {
                 print("Unparsable WebSocket message returned -> \(text)")
+                return
+            }
+            
+            dispatch_async(dispatch_get_main_queue()) { [weak self] in
+                guard let strongSelf = self else {
+                    return
+                }
+                
+                if case .appendContent(let contents) = event {
+                    let (contentFeedEvent, captionEvent) = strongSelf.parseEvents(for: contents)
+                    if let captionEvent = captionEvent {
+                        strongSelf.broadcast(captionEvent)
+                    }
+                    strongSelf.broadcast(contentFeedEvent)
+                }
+                else {
+                    strongSelf.broadcast(event)
+                }
             }
         }
 
@@ -271,6 +270,19 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
             return
         }
         webSocket.writePing(NSData())
+    }
+    
+    private func parseEvents(for content: [ContentModel]) -> (ForumEvent, ForumEvent?) {
+        let contentFeed = content.filter { $0.author.accessLevel != .owner }
+        let creatorContent = content.filter { $0.author.accessLevel == .owner }
+        
+        let contentFeedEvent = ForumEvent.appendContent(contentFeed)
+        if let latestCreatorContent = creatorContent.last {
+            return (contentFeedEvent, .showCaptionContent(latestCreatorContent))
+        }
+        else {
+            return (contentFeedEvent, nil)
+        }
     }
 }
 
