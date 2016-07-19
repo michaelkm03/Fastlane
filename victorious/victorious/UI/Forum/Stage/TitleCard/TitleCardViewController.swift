@@ -81,6 +81,36 @@ class TitleCardViewController: UIViewController {
         }
     }
 
+    // MARK: Public
+
+    /// Sets the content on the title card, call before `show` to have the right content be present before it animates in.
+    func populate(with stageContent: StageContent?) {
+        self.stageContent = stageContent
+        populateUI(with: stageContent)
+    }
+
+    func show() {
+        guard currentState == .hidden else {
+            return
+        }
+
+        currentState = .shown
+        animateTitleCard(withInitialVelocity: CGPointZero)
+
+        autoHideTimer?.invalidate()
+        autoHideTimer = VTimerManager.scheduledTimerManagerWithTimeInterval(autoHideDelay, target: self, selector: #selector(hide), userInfo: nil, repeats: false)
+    }
+
+    func hide() {
+        guard currentState == .shown else {
+            return
+        }
+        autoHideTimer?.invalidate()
+
+        currentState = .hidden
+        animateTitleCard(withInitialVelocity: CGPointZero)
+    }
+
     // MARK: Private
 
     private func setupContainerView() {
@@ -157,43 +187,6 @@ class TitleCardViewController: UIViewController {
         currentState = .hidden
         animateTitleCard(withInitialVelocity: draggableBehaviour.velocity)
     }
-
-    // MARK: Public
-
-    /// Sets the content on the title card, call before `show` to have the right content be present before it animates in.
-    func populate(with stageContent: StageContent?) {
-        self.stageContent = stageContent
-        populateUI(with: stageContent)
-    }
-
-    func clearCurrentContent() {
-        stageContent = nil
-        populateUI(with: nil)
-    }
-
-    func show() {
-        guard currentState == .hidden else {
-            return
-        }
-
-        currentState = .shown
-        animateTitleCard(withInitialVelocity: CGPointZero)
-
-        autoHideTimer?.invalidate()
-        autoHideTimer = VTimerManager.scheduledTimerManagerWithTimeInterval(autoHideDelay, target: self, selector: #selector(hide), userInfo: nil, repeats: false)
-    }
-
-    func hide() {
-        guard currentState == .shown else {
-            return
-        }
-        autoHideTimer?.invalidate()
-
-        currentState = .hidden
-        animateTitleCard(withInitialVelocity: CGPointZero)
-    }
-
-    // MARK: Private
 
     private func populateUI(with stageContent: StageContent?) {
         guard isViewLoaded() else {

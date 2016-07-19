@@ -131,7 +131,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     func removeContent() {
         hideStage()
         currentStageContent = nil
-        titleCardViewController?.clearCurrentContent()
+        titleCardViewController?.hide()
     }
     
     func setStageEnabled(enabled: Bool, animated: Bool) {
