@@ -598,6 +598,7 @@
 		672894331BFA9874001146DB /* MuseoSans-100.otf in Resources */ = {isa = PBXBuildFile; fileRef = 672894301BFA9874001146DB /* MuseoSans-100.otf */; };
 		672894341BFA9874001146DB /* MuseoSans-300.otf in Resources */ = {isa = PBXBuildFile; fileRef = 672894311BFA9874001146DB /* MuseoSans-300.otf */; };
 		672894351BFA9874001146DB /* MuseoSans-500.otf in Resources */ = {isa = PBXBuildFile; fileRef = 672894321BFA9874001146DB /* MuseoSans-500.otf */; };
+		6728F6DE1D3DADC000559A04 /* UIImageView+ImageAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6728F6DD1D3DADC000559A04 /* UIImageView+ImageAsset.swift */; };
 		6731B2611BF182F100B9FFFE /* FanLoyaltyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6731B2601BF182F100B9FFFE /* FanLoyaltyTests.swift */; };
 		673B91C41C6D541900846EA6 /* FriendFindBySocialNetworkRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 673B91C31C6D541900846EA6 /* FriendFindBySocialNetworkRequest.swift */; };
 		673B91C61C6D545300846EA6 /* FriendFindBySocialNetworkRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 673B91C51C6D545300846EA6 /* FriendFindBySocialNetworkRequestTests.swift */; };
@@ -3060,6 +3061,7 @@
 		672894311BFA9874001146DB /* MuseoSans-300.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSans-300.otf"; sourceTree = "<group>"; };
 		672894321BFA9874001146DB /* MuseoSans-500.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSans-500.otf"; sourceTree = "<group>"; };
 		6728C0E71C6133020005A29F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/VCardSeeMoreDirectoryCell.xib; sourceTree = "<group>"; };
+		6728F6DD1D3DADC000559A04 /* UIImageView+ImageAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+ImageAsset.swift"; sourceTree = "<group>"; };
 		6731B2601BF182F100B9FFFE /* FanLoyaltyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FanLoyaltyTests.swift; sourceTree = "<group>"; };
 		6731B2641BF1834700B9FFFE /* FanLoyalty.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FanLoyalty.json; sourceTree = "<group>"; };
 		673B91C31C6D541900846EA6 /* FriendFindBySocialNetworkRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendFindBySocialNetworkRequest.swift; sourceTree = "<group>"; };
@@ -7778,11 +7780,11 @@
 				A721E8BC1B572453000B7901 /* NSIndexSet+Map.m */,
 				A721E8BD1B572453000B7901 /* NSLayoutConstraint+CenterConstraints.h */,
 				A721E8BE1B572453000B7901 /* NSLayoutConstraint+CenterConstraints.m */,
+				F0FBC44A1D2591AF0070873F /* NSMutableParagraphStyle+TextInsets.swift */,
 				A721E8C11B572453000B7901 /* NSNotificationCenter+VNotificationDebugger.h */,
 				A721E8C21B572453000B7901 /* NSNotificationCenter+VNotificationDebugger.m */,
 				A7DD35F11BB0BD5000C4DBC5 /* NSNumber+VBitmask.h */,
 				A7DD35F21BB0BD5000C4DBC5 /* NSNumber+VBitmask.m */,
-				F0FBC44A1D2591AF0070873F /* NSMutableParagraphStyle+TextInsets.swift */,
 				A721E8C31B572453000B7901 /* NSString+Unicode.swift */,
 				A721E8C61B572453000B7901 /* NSString+VParseHelp.h */,
 				A721E8C71B572453000B7901 /* NSString+VParseHelp.m */,
@@ -7833,6 +7835,7 @@
 				79BA44AE1BFBEBEF00594F9F /* UIImageOrientation+TiffOrientation.swift */,
 				A721E8E91B572453000B7901 /* UIImageView+Blurring.h */,
 				A721E8EA1B572453000B7901 /* UIImageView+Blurring.m */,
+				6728F6DD1D3DADC000559A04 /* UIImageView+ImageAsset.swift */,
 				A721E8EB1B572453000B7901 /* UIImageView+VLoadingAnimations.h */,
 				A721E8EC1B572453000B7901 /* UIImageView+VLoadingAnimations.m */,
 				A721E8ED1B572454000B7901 /* UINavigationController+RotationMethodForwarding.h */,
@@ -12666,6 +12669,7 @@
 				0E8EB2D31CCF0C130087D815 /* StageContentFetchOperation.swift in Sources */,
 				A79342F01C9CDD0200C855BE /* VGradientBackground.swift in Sources */,
 				C3345F621B59ACB30091D889 /* VMenuItemControl.m in Sources */,
+				6728F6DE1D3DADC000559A04 /* UIImageView+ImageAsset.swift in Sources */,
 				C3BC59531B756E4C000A4576 /* VVideoSequencePreviewView.m in Sources */,
 				F0E0F1AA1AE8811700143CBF /* VLaunchScreenProvider.m in Sources */,
 				A720054C1A030D9300285A9C /* VTrackingConstants.m in Sources */,
