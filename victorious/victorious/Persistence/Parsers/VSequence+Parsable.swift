@@ -74,16 +74,7 @@ extension VSequence: PersistenceParsable {
             }
             self.nodes = NSOrderedSet(array: persistentNodes)
         }
-        
-        if let previewImageAssets = sourceModel.previewImageAssets {
-            let persistentAssets: [VImageAsset] = previewImageAssets.flatMap {
-                let imageAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject([ "imageURL" : $0.mediaMetaData.url.absoluteString ])
-                imageAsset.populate( fromSourceModel: $0 )
-                return imageAsset
-            }
-            self.previewImageAssets = Set<VImageAsset>(persistentAssets)
-        }
-        
+                
         if let voteResults = sequence.voteTypes where !voteResults.isEmpty {
             self.voteResults = Set<VVoteResult>(voteResults.flatMap {
                 guard let id = Int($0.voteID) else {
