@@ -416,14 +416,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     [self v_addBadgingToAccessoryScreensWithDependencyManager:self.dependencyManager];
 }
 
-- (void)multipleContainerDidSetSelected:(BOOL)isDefault
-{
-    if (isDefault)
-    {
-        [self viewWillAppear:YES];
-    }
-}
-
 - (void)createNewPost
 {
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectCreatePost];

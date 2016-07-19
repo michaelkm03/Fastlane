@@ -73,13 +73,6 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-#pragma mark -  Container Child
-
-- (void)multipleContainerDidSetSelected:(BOOL)isDefault
-{
-    // Empty
-}
-
 #pragma mark - View Lifecycle
 
 - (void)viewDidLoad

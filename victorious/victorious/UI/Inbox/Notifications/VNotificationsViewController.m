@@ -67,13 +67,6 @@ static CGFloat const kNotificationAddedVerticalInset = 8.0f;
     return VAuthorizationContextNotification;
 }
 
-#pragma mark -  Container Child
-
-- (void)multipleContainerDidSetSelected:(BOOL)isDefault
-{
-    // Empty
-}
-
 #pragma mark - View Lifecycle
 
 - (void)viewDidLoad
