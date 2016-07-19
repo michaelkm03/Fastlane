@@ -12,8 +12,8 @@ private struct Constants {
     static let backgroundKey = "background"
     static let screenIdentifierKey = "screen"
     static let titleKey = "title"
-    static let titleColorKey = "title.color"
-    static let titleFontKey = "title.font"
+    static let titleColorKey = "color.title"
+    static let titleFontKey = "font.title"
     static let textKey = "text"
     static let textColorKey = "color.text"
     static let textFontKey = "font.text"
@@ -22,10 +22,12 @@ private struct Constants {
     static let highlightTargetKey = "highlight.target"
     static let highlightForegroundKey = "highlight.foreground"
     static let textContainerStrokeColorKey = "stroke.color"
-    static let textContainerPadding: CGFloat = 10.0
+    static let textContainerItemWidth: CGFloat = 300
+    static let textContainerPadding: CGFloat = -10.0
     static let highlightBoundaryStrokeThickness: CGFloat = 4.0
     static let highlightCircleRadius: CGFloat = 50.0
     static let highlightStrokeColor = UIColor.blackColor().CGColor
+    static let userMacro = "%%USER%%"
 }
 
 class CoachmarkView: UIView, VBackgroundContainer {
@@ -37,48 +39,9 @@ class CoachmarkView: UIView, VBackgroundContainer {
         
         let dependencyManager = coachmark.dependencyManager
         
-        let detailsView = TextContainerView()
-        detailsView.axis = .Vertical
-        detailsView.distribution = .EqualCentering
-        detailsView.alignment = .Center
-
-        let titleLabel = UILabel()
-        titleLabel.text = dependencyManager.title
-        titleLabel.font = dependencyManager.titleFont
-        titleLabel.textColor = dependencyManager.titleColor
-        detailsView.addArrangedSubview(titleLabel)
-        
-        let textLabel = UILabel()
-        textLabel.text = dependencyManager.text
-        textLabel.font = dependencyManager.textFont
-        textLabel.textColor = dependencyManager.textColor
-        textLabel.numberOfLines = 0
-        detailsView.addArrangedSubview(textLabel)
-        
-        let closeButton = dependencyManager.closeButton
-        closeButton.addTarget(self, action: #selector(CoachmarkView.closeButtonAction), forControlEvents: .TouchUpInside)
-        detailsView.addArrangedSubview(closeButton)
-        
-        detailsView.translatesAutoresizingMaskIntoConstraints = false
-        dependencyManager.addBackgroundToBackgroundHost(detailsView, forKey: Constants.textBackgroundKey)
-        self.addSubview(detailsView)
-        
-        detailsView.bottomAnchor.constraintEqualToAnchor(self.bottomAnchor).active = true
-        detailsView.widthAnchor.constraintEqualToAnchor(self.widthAnchor).active = true
-        detailsView.centerXAnchor.constraintEqualToAnchor(self.centerXAnchor).active = true
-//
-        var height = titleLabel.intrinsicContentSize().height + textLabel.intrinsicContentSize().height + closeButton.intrinsicContentSize().height
-        height += Constants.textContainerPadding * 3
-        detailsView.heightAnchor.constraintEqualToConstant(height).active = true
-//        self.translatesAutoresizingMaskIntoConstraints = false
-//       
-    
         dependencyManager.addBackgroundToBackgroundHost(self)
         self.addSubview(backgroundView)
-        sendSubviewToBack(backgroundView)
         self.v_addFitToParentConstraintsToSubview(backgroundView)
-        backgroundView.sizeToFit()
-       // dependencyManager.addBackgroundToBackgroundHost(detailsView, forKey: Constants.textBackgroundKey)
         
         if let highlightFrame = highlightFrame {
             // The following code creates a "hole" in the view's layer
@@ -122,6 +85,51 @@ class CoachmarkView: UIView, VBackgroundContainer {
             self.addSubview(foregroundView)
             v_addFitToParentConstraintsToSubview(foregroundView)
         }
+        
+        let detailsView = TextContainerView()
+
+        let titleLabel = UILabel()
+        titleLabel.text = dependencyManager.title
+        titleLabel.font = dependencyManager.titleFont
+        titleLabel.textColor = dependencyManager.titleColor
+        titleLabel.textAlignment = .Center
+        detailsView.addSubview(titleLabel)
+        
+        let textLabel = UILabel()
+        textLabel.text = dependencyManager.text
+        textLabel.font = dependencyManager.textFont
+        textLabel.textColor = dependencyManager.textColor
+        textLabel.numberOfLines = 0
+        textLabel.textAlignment = .Center
+        detailsView.addSubview(textLabel)
+        
+        let closeButton = dependencyManager.closeButton
+        closeButton.addTarget(self, action: #selector(CoachmarkView.closeButtonAction), forControlEvents: .TouchUpInside)
+        detailsView.addSubview(closeButton)
+        
+        detailsView.translatesAutoresizingMaskIntoConstraints = false
+        dependencyManager.addBackgroundToBackgroundHost(detailsView, forKey: Constants.textBackgroundKey)
+        self.addSubview(detailsView)
+        
+        //Setup constraints
+        detailsView.bottomAnchor.constraintEqualToAnchor(self.bottomAnchor).active = true
+        detailsView.centerXAnchor.constraintEqualToAnchor(self.centerXAnchor).active = true
+        detailsView.topAnchor.constraintEqualToAnchor(titleLabel.topAnchor, constant: Constants.textContainerPadding).active = true
+        detailsView.widthAnchor.constraintEqualToAnchor(self.widthAnchor).active = true
+        
+        closeButton.translatesAutoresizingMaskIntoConstraints = false
+        closeButton.bottomAnchor.constraintEqualToAnchor(detailsView.bottomAnchor, constant: Constants.textContainerPadding).active = true
+        closeButton.centerXAnchor.constraintEqualToAnchor(detailsView.centerXAnchor).active = true
+        closeButton.widthAnchor.constraintEqualToConstant(Constants.textContainerItemWidth).active = true
+  
+        textLabel.translatesAutoresizingMaskIntoConstraints = false
+        textLabel.bottomAnchor.constraintEqualToAnchor(closeButton.topAnchor, constant: Constants.textContainerPadding).active = true
+        textLabel.centerXAnchor.constraintEqualToAnchor(detailsView.centerXAnchor).active = true
+        textLabel.widthAnchor.constraintEqualToConstant(Constants.textContainerItemWidth).active = true
+        
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.bottomAnchor.constraintEqualToAnchor(textLabel.topAnchor, constant: Constants.textContainerPadding).active = true
+        titleLabel.centerXAnchor.constraintEqualToAnchor(detailsView.centerXAnchor).active = true
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -131,7 +139,11 @@ class CoachmarkView: UIView, VBackgroundContainer {
     // MARK : - Button Actions 
     
     func closeButtonAction() {
-        removeFromSuperview()
+       UIView.animateWithDuration(1, animations: { 
+            self.alpha = 0
+        }) { (_) in
+            self.removeFromSuperview()
+        }
     }
     
     // MARK : - VBackgroundContainer Methods 
@@ -148,7 +160,7 @@ private class HighlightForegroundView : UIView, VBackgroundContainer {
     }
 }
 
-private class TextContainerView: UIStackView, VBackgroundContainer {
+private class TextContainerView: UIView, VBackgroundContainer {
     @objc func backgroundContainerView() -> UIView {
         return self
     }
@@ -156,7 +168,13 @@ private class TextContainerView: UIStackView, VBackgroundContainer {
 
 private extension VDependencyManager {
     var title: String {
-        return stringForKey(Constants.titleKey) ?? "Test title"
+        if let titleString = stringForKey(Constants.titleKey) {
+            if let name = VCurrentUser.user()?.name {
+                return titleString.stringByReplacingOccurrencesOfString(Constants.userMacro, withString: name)
+            }
+            return titleString.stringByReplacingOccurrencesOfString(Constants.userMacro, withString: "")
+        }
+        return "Coachmark"
     }
     
     var titleFont: UIFont {

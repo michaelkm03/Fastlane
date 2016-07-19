@@ -8,10 +8,14 @@
 
 import UIKit
 
-private let leftRightSectionInset = CGFloat(0)
-private let topBottomSectionInset = CGFloat(3)
-private let interItemSpacing = CGFloat(3)
-private let cellsPerRow = 3
+private struct Constants {
+    static let leftRightSectionInset = CGFloat(0)
+    static let topBottomSectionInset = CGFloat(3)
+    static let interItemSpacing = CGFloat(3)
+    static let cellsPerRow = 3
+    static let estimatedBarButtonWidth: CGFloat = 60.0
+    static let estimatedStatusBarHeight: CGFloat = 20.0
+}
 
 class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, ContentCellTracker, CoachmarkDisplayer {
     
@@ -63,13 +67,13 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
                 
         let configuration = GridStreamConfiguration(
             sectionInset: UIEdgeInsets(
-                top: topBottomSectionInset,
-                left: leftRightSectionInset,
-                bottom: topBottomSectionInset,
-                right: leftRightSectionInset
+                top: Constants.topBottomSectionInset,
+                left: Constants.leftRightSectionInset,
+                bottom: Constants.topBottomSectionInset,
+                right: Constants.leftRightSectionInset
             ),
-            interItemSpacing: interItemSpacing,
-            cellsPerRow: cellsPerRow,
+            interItemSpacing: Constants.interItemSpacing,
+            cellsPerRow: Constants.cellsPerRow,
             allowsForRefresh: false,
             managesBackground: true
         )
@@ -214,15 +218,20 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         }
     }
     
-    // MARK : - Coachmark Displayer
+    // MARK: - Coachmark Displayer
     
     var screenIdentifier: String {
         return dependencyManager.stringForKey(VDependencyManagerIDKey)
     }
     
     func highlightFrame(identifier: String) -> CGRect? {
-        if (identifier == "bump") {
-            return (upvoteButton.valueForKey("view") as? UIView)?.frame
+        if let barFrame = navigationController?.navigationBar.frame where identifier == "bump" {
+            return CGRect(
+                        x: barFrame.width - Constants.estimatedBarButtonWidth,
+                        y: Constants.estimatedStatusBarHeight,
+                        width: Constants.estimatedBarButtonWidth,
+                        height: barFrame.height
+                    )
         }
         return nil
     }

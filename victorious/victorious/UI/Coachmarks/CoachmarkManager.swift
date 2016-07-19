@@ -17,6 +17,7 @@ private struct Constants {
 class CoachmarkManager : NSObject {
     let dependencyManager: VDependencyManager
     var coachmarks: [Coachmark] = []
+    var allowCoachmarks = false
     
     init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
@@ -48,6 +49,17 @@ class CoachmarkManager : NSObject {
         reloadCoachmarks()
     }
     
+    private func fetchShownCoachmarkIDs() -> [String] {
+        return NSUserDefaults.standardUserDefaults().objectForKey(Constants.shownCoachmarksKey) as? [String] ?? []
+    }
+    
+    private func saveCoachmarkState() {
+        let shownCoachmarkIDs = coachmarks.filter { (coachmark) -> Bool in
+            return coachmark.hasBeenShown
+            }.map { return $0.remoteID }
+        NSUserDefaults.standardUserDefaults().setObject(shownCoachmarkIDs, forKey: Constants.shownCoachmarksKey)
+    }
+    
     /**
      Creates the coachmark and displays it over the viewController. This performs calculations
      on view frames, hence it must be called after these have been set, for example in viewDidAppear
@@ -56,6 +68,11 @@ class CoachmarkManager : NSObject {
  
     */
     func displayCoachmark(inCoachmarkDisplayer displayer: CoachmarkDisplayer, withContainerView container: UIView) {
+        guard allowCoachmarks else {
+            assertionFailure("Coachmarks are not enabled")
+            return
+        }
+        
         resetShownCoachmarks() //REMOVE BEFORE RELEASE
         let screenIdentifier = displayer.screenIdentifier
         if let index = coachmarks.indexOf({ $0.screenIdentifier == screenIdentifier}) {
@@ -71,8 +88,12 @@ class CoachmarkManager : NSObject {
                 
                 let containerFrame = container.bounds
                 let coachmarkView = CoachmarkView(coachmark: coachmarkToDisplay, containerFrame: containerFrame, highlightFrame: highlightFrame)
-                
+                coachmarkView.alpha = 0
                 container.addSubview(coachmarkView)
+                
+                UIView.animateWithDuration(1, animations: { 
+                    coachmarkView.alpha = 1
+                })
                 
                 coachmarkToDisplay.hasBeenShown = true
                 saveCoachmarkState()
@@ -80,16 +101,4 @@ class CoachmarkManager : NSObject {
             
         }
     }
-    
-    private func fetchShownCoachmarkIDs() -> [String] {
-        return NSUserDefaults.standardUserDefaults().objectForKey(Constants.shownCoachmarksKey) as? [String] ?? []
-    }
-    
-    private func saveCoachmarkState() {
-        let shownCoachmarkIDs = coachmarks.filter { (coachmark) -> Bool in
-            return coachmark.hasBeenShown
-            }.map { return $0.remoteID }
-        NSUserDefaults.standardUserDefaults().setObject(shownCoachmarkIDs, forKey: Constants.shownCoachmarksKey)
-    }
-    
 }

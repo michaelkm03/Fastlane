@@ -22,13 +22,11 @@ protocol CoachmarkDisplayer {
 /**
     Finds the frame to create a highlight around an item of interest, 
     if that item exists in the view heirarachy. This must be relative to
-    the container frame returned in the other method.
+    the container frame passed into the coachmark manager's
+    displayCoachmark method.
  
     parameter identifier The identifier of the item to highlight 
     return The frame
 */
     func highlightFrame(identifier: String) -> CGRect?
-    
-
-
 }

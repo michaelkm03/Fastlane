@@ -43,7 +43,7 @@ extension Scaffold where Self: UIViewController {
         }
         
         pushNotificationOperation.queue { [weak self] error, cancelled in
-            //self?.coachmarkManager.allowCoachmarks = true
+            self?.coachmarkManager.allowCoachmarks = true
             onReady?()
         }
     }
