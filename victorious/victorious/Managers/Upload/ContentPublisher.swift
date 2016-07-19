@@ -138,26 +138,20 @@ class ContentPublisher {
                 return
             }
             
-            guard
-                let mediaCreationString = dependencyManager.mediaCreationURL,
-                let creationURL = NSURL(string: mediaCreationString)
-            else {
+            guard let apiPath = dependencyManager.mediaCreationAPIPath(for: content) else {
                 completion(ContentPublisherError.invalidNetworkResources)
                 return
             }
             
-            CreateMediaUploadOperation(publishParameters: publishParameters, uploadManager: VUploadManager.sharedManager(), mediaCreationURL: creationURL, uploadCompletion: completion).queue()
+            CreateMediaUploadOperation(publishParameters: publishParameters, uploadManager: VUploadManager.sharedManager(), apiPath: apiPath, uploadCompletion: completion).queue()
         }
         else if let text = content.text {
-            guard
-                let textCreationString = dependencyManager.textCreationURL,
-                let creationURL = NSURL(string: textCreationString)
-            else {
+            guard let apiPath = dependencyManager.textCreationAPIPath(for: content) else {
                 completion(ContentPublisherError.invalidNetworkResources)
                 return
             }
             
-            ChatMessageCreateRemoteOperation(textCreationURL: creationURL, text: text).queue { _, error, _ in
+            ChatMessageCreateRemoteOperation(apiPath: apiPath, text: text).queue { _, error, _ in
                 completion(error)
             }
         }
@@ -216,11 +210,15 @@ enum ContentPublisherError: ErrorType {
 }
 
 private extension VDependencyManager {
-    var mediaCreationURL: String? {
-        return stringForKey("mediaCreationURL")
+    func mediaCreationAPIPath(for content: ContentModel) -> APIPath? {
+        return apiPathForKey("mediaCreationURL", queryParameters: [
+            "posted_at": content.postedAt?.timestamp ?? ""
+        ])
     }
     
-    var textCreationURL: String? {
-        return stringForKey("textCreationURL")
+    func textCreationAPIPath(for content: ContentModel) -> APIPath? {
+        return apiPathForKey("textCreationURL", queryParameters: [
+            "posted_at": content.postedAt?.timestamp ?? ""
+        ])
     }
 }

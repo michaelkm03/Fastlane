@@ -480,7 +480,7 @@
 		0E17C2A91C9129B90013291C /* VideoAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E17C2A81C9129B90013291C /* VideoAsset.swift */; };
 		0E279B641CB854A80023156F /* CreateChatServiceTokenOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E279B631CB854A80023156F /* CreateChatServiceTokenOperationTests.swift */; };
 		0E4BF6B31CA60B5400B8A456 /* WebSocketEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E4BF6B21CA60B5400B8A456 /* WebSocketEvent.swift */; };
-		0E5991671CD84D8700ED7E6D /* NSDate+Initializers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E5991661CD84D8700ED7E6D /* NSDate+Initializers.swift */; };
+		0E5991671CD84D8700ED7E6D /* NSDate+Timestamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E5991661CD84D8700ED7E6D /* NSDate+Timestamp.swift */; };
 		0E5F7E401CA1E42000B3AF14 /* ForumNetworkSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E5F7E3F1CA1E42000B3AF14 /* ForumNetworkSource.swift */; };
 		0E5F7E421CA1EBC700B3AF14 /* WebSocketEventDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E5F7E411CA1EBC700B3AF14 /* WebSocketEventDecoder.swift */; };
 		0E6628751CCEE5DF0049ECF8 /* StageDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E6628741CCEE5DF0049ECF8 /* StageDataSource.swift */; };
@@ -2932,7 +2932,7 @@
 		0E17C2A81C9129B90013291C /* VideoAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoAsset.swift; sourceTree = "<group>"; };
 		0E279B631CB854A80023156F /* CreateChatServiceTokenOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateChatServiceTokenOperationTests.swift; sourceTree = "<group>"; };
 		0E4BF6B21CA60B5400B8A456 /* WebSocketEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebSocketEvent.swift; path = WebSocket/WebSocketEvents/WebSocketEvent.swift; sourceTree = "<group>"; };
-		0E5991661CD84D8700ED7E6D /* NSDate+Initializers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+Initializers.swift"; sourceTree = "<group>"; };
+		0E5991661CD84D8700ED7E6D /* NSDate+Timestamp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+Timestamp.swift"; sourceTree = "<group>"; };
 		0E5F7E3F1CA1E42000B3AF14 /* ForumNetworkSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForumNetworkSource.swift; sourceTree = "<group>"; };
 		0E5F7E411CA1EBC700B3AF14 /* WebSocketEventDecoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebSocketEventDecoder.swift; path = WebSocket/WebSocketEventDecoder.swift; sourceTree = "<group>"; };
 		0E6628741CCEE5DF0049ECF8 /* StageDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StageDataSource.swift; sourceTree = "<group>"; };
@@ -5541,12 +5541,10 @@
 				BFC673631CE3C9C8004F9D3C /* ContentPreviewView */,
 				D89A50071A000D540010D050 /* Controls */,
 				7C28F1011D1DD94A0070B8AE /* CTAErrorState.swift */,
-				BE42842D19DDD0D800AEDBA6 /* DefaultProfileImages */,
 				BF7AF9C41D22F98500539D90 /* Error States */,
 				A776E00A1AE743F3001F25FF /* Floating Navigation View */,
 				D8DF71ED1AFD987B002EA7A5 /* Following */,
 				0314D34919B46B5E00FA363C /* Keyboard Bar */,
-				F0FBFA671CE1624D006318FC /* PersistentContentCreator.swift */,
 				D86528F01AE82AAC003832AC /* PollView */,
 				D85E427B1AFA982000A13BD3 /* SequencePreviewView */,
 				7A1C70A91CC8513B00A666F5 /* SideMenuController.swift */,
@@ -5985,7 +5983,7 @@
 				03314F5A1BE40F3200EE74FD /* Models */,
 				C3E7C0F01BF3EFEB00AFE545 /* NotificationsRequest.swift */,
 				03F9A8351C6C1FF600962481 /* NSCharacterSet+VSDKURLParts.swift */,
-				0E5991661CD84D8700ED7E6D /* NSDate+Initializers.swift */,
+				0E5991661CD84D8700ED7E6D /* NSDate+Timestamp.swift */,
 				03314F581BE40F3200EE74FD /* NSDictionary+URLEncodedString.swift */,
 				03314F5D1BE40F3200EE74FD /* NSMutableURLRequest+VictoriousIOSSDK.swift */,
 				A778CB691C474BA8007DF0C2 /* NSPredicate+Pagination.swift */,
@@ -11996,7 +11994,7 @@
 				79CFD3CB1BF29DAB004F70D9 /* MarkConversationReadRequest.swift in Sources */,
 				79004DB81BF53A050027E344 /* DateFormat.swift in Sources */,
 				67AB3D3C1CDD462B00778F1C /* TutorialContentsRequest.swift in Sources */,
-				0E5991671CD84D8700ED7E6D /* NSDate+Initializers.swift in Sources */,
+				0E5991671CD84D8700ED7E6D /* NSDate+Timestamp.swift in Sources */,
 				79CFD3D31BF2A784004F70D9 /* ConversationWithUserRequest.swift in Sources */,
 				0EF7168A1C98F8C60005CF86 /* WebSocket.swift in Sources */,
 				67AA52261C3DC996000444F7 /* PasswordResetRequest.swift in Sources */,

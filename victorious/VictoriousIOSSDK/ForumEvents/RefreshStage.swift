@@ -31,14 +31,14 @@ public struct RefreshStage {
 
         // The server time could either be present inside the stage message or at a higher level 
         // depending on what part of the API we get it from. :/
-        if let parsedServerTime = json["server_time"].double {
-            self.serverTime = NSDate(millisecondsSince1970: parsedServerTime)
+        if let parsedServerTime = NSDate(timestamp: json["server_time"].stringValue) {
+            self.serverTime = parsedServerTime
         } else {
             self.serverTime = serverTime
         }
 
-        if let startTime = json["start_time"].double {
-            self.startTime = NSDate(millisecondsSince1970: startTime)
+        if let startTime = NSDate(timestamp: json["start_time"].stringValue) {
+            self.startTime = startTime
         } else {
             self.startTime = nil
         }

@@ -146,15 +146,12 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
     /// - NOTE: `fromTime` will always be greater than `toTime` to match the API's pagination conventions.
     ///
     private func paginationTimestamps(for loadingType: PaginatedLoadingType) -> (fromTime: Int64, toTime: Int64) {
-        let now = NSDate().paginationTimestamp
+        let now = NSDate().millisecondsSince1970
         
         switch loadingType {
-            case .refresh:
-                return (fromTime: now, toTime: 0)
-            case .newer:
-                return (fromTime: now, toTime: newestTimestamp ?? 0)
-            case .older:
-                return (fromTime: oldestTimestamp ?? now, toTime: 0)
+            case .refresh: return (fromTime: now, toTime: 0)
+            case .newer: return (fromTime: now, toTime: newestTimestamp ?? 0)
+            case .older: return (fromTime: oldestTimestamp ?? now, toTime: 0)
         }
     }
     
@@ -163,7 +160,7 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
     
     private var oldestTimestamp: Int64? {
         if let timestamp = items.reduce(nil, combine: { timestamp, item in
-            min(timestamp ?? Int64.max, (item as! PaginatableItem).createdAt.paginationTimestamp)
+            min(timestamp ?? Int64.max, (item as! PaginatableItem).createdAt.millisecondsSince1970)
         }) {
             return timestamp - 1
         }
@@ -173,18 +170,11 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
     
     private var newestTimestamp: Int64? {
         if let timestamp = items.reduce(nil, combine: { timestamp, item in
-            max(timestamp ?? 0, (item as! PaginatableItem).createdAt.paginationTimestamp)
+            max(timestamp ?? 0, (item as! PaginatableItem).createdAt.millisecondsSince1970)
         }) {
             return timestamp + 1
         }
         
         return nil
-    }
-}
-
-private extension NSDate {
-    var paginationTimestamp: Int64 {
-        // Must use Int64 to avoid overflow issues with 32 bit ints.
-        return Int64(timeIntervalSince1970 * 1000.0)
     }
 }

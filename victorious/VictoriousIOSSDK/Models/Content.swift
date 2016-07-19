@@ -139,8 +139,8 @@ public class Content: ContentModel {
         self.id = id
         self.status = json["status"].string
         self.shareURL = json["share_url"].URL
-        self.createdAt = NSDate(millisecondsSince1970: json["released_at"].doubleValue)
-        self.postedAt = NSDate(millisecondsSince1970: json["posted_at"].doubleValue)
+        self.createdAt = NSDate(timestamp: json["released_at"].stringValue) ?? NSDate()
+        self.postedAt = NSDate(timestamp: json["posted_at"].stringValue)
         self.hashtags = []
         self.type = type
         
