@@ -21,7 +21,7 @@ class ImageAssetTests: XCTestCase {
             XCTFail("ImageAsset initializer failed")
             return
         }
-        XCTAssertEqual(imageAsset.mediaMetaData.size, CGSizeMake(320, 180))
-        XCTAssertEqual(imageAsset.mediaMetaData.url, NSURL(string: "https://d36dd6wez3mcdh.cloudfront.net/a901cc4e626b33e1fa089aad76fb31ef/320x180.jpg"))
+        XCTAssertEqual(imageAsset.size, CGSizeMake(320, 180))
+        XCTAssertEqual(imageAsset.url, NSURL(string: "https://d36dd6wez3mcdh.cloudfront.net/a901cc4e626b33e1fa089aad76fb31ef/320x180.jpg"))
     }
 }
