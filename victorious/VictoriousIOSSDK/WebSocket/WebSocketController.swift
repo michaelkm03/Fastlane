@@ -165,7 +165,22 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
 
             if let event = (decodeEventFromJSON(json) ?? decodeEventFromJSON(json)) {
                 dispatch_async(dispatch_get_main_queue()) { [weak self] in
-                    self?.broadcast(event)
+                    if case .appendContent(let contents) = event {
+                        var captionEvent: ForumEvent?
+                        let contentsToAppend = contents.filter({ content -> Bool in
+                            let isCaptionContent = content.author.accessLevel == .owner
+                            if isCaptionContent {
+                                captionEvent = .showCaptionContent(content)
+                            }
+                            return !isCaptionContent
+                        })
+                        if let captionEvent = captionEvent {
+                            self?.broadcast(captionEvent)
+                        }
+                        self?.broadcast(.appendContent(contentsToAppend))
+                    } else {
+                        self?.broadcast(event)
+                    }
                 }
             } else {
                 print("Unparsable WebSocket message returned -> \(text)")
@@ -202,12 +217,8 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
 
     /// Will send outgoing content events back over the event chain.
     private func bounceBackOutboundEvent(event: ForumEvent) {
-        if case .sendContent(let content) = event {
-            if content.author.accessLevel == .owner {
-                broadcast(.showCaptionContent(content))
-            } else {
-                broadcast(.appendContent([content]))
-            }
+        if case .sendContent(let content) = event where content.author.accessLevel != .owner {
+            broadcast(.appendContent([content]))
         }
     }
 
