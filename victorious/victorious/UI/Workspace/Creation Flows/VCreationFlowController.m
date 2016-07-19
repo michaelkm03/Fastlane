@@ -63,6 +63,18 @@ static NSString * const kStatusBaryStleKey = @"statusBarStyle";
     self.navigationBar.tintColor = [self.dependencyManager colorForKey:kBarTintColorKey];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.dependencyManager trackViewWillAppear:self];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self.dependencyManager trackViewWillDisappear:self];
+}
+
 - (UIViewController *)childViewControllerForStatusBarStyle
 {
     return nil;

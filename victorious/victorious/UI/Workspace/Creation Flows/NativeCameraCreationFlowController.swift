@@ -11,6 +11,8 @@ import UIKit
 
 class NativeCameraCreationFlowController: VCreationFlowController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, VPassthroughContainerViewDelegate {
     
+    private var trackedAppear = false
+    
     static let maxImageDimension: CGFloat = 640
     
     private var isRecordingVideo: Bool {
@@ -18,7 +20,6 @@ class NativeCameraCreationFlowController: VCreationFlowController, UIImagePicker
     }
     
     private lazy var imagePickerController: UIImagePickerController? = {
-        
         let pickerSourceType = UIImagePickerControllerSourceType.Camera
         guard let mediaTypes = UIImagePickerController.availableMediaTypesForSourceType(pickerSourceType) else {
             assertionFailure("Have no available media types for this device!")
@@ -45,6 +46,11 @@ class NativeCameraCreationFlowController: VCreationFlowController, UIImagePicker
     }()
     
     override func rootFlowController() -> UINavigationController! {
+        if !trackedAppear {
+            trackedAppear = true
+            dependencyManager.trackViewWillAppear(self)
+        }
+        
         //Return image picker controller or empty creation flow (by returning self)
         return imagePickerController ?? self
     }
@@ -56,10 +62,15 @@ class NativeCameraCreationFlowController: VCreationFlowController, UIImagePicker
     // MARK: - UIImagePickerControllerDelegate
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
+        dependencyManager.trackViewWillDisappear(self)
         creationFlowDelegate.creationFlowControllerDidCancel?(self)
     }
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String: AnyObject]) {
+        defer {
+            dependencyManager.trackViewWillDisappear(self)
+        }
+        
         if let mediaURL = info[UIImagePickerControllerMediaURL] as? NSURL,
             let image = mediaURL.v_videoPreviewImage {
             
