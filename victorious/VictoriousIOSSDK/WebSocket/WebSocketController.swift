@@ -276,7 +276,7 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
         webSocket.writePing(NSData())
     }
     
-    private func parseEvents(for content: [ContentModel]) -> (ForumEvent, ForumEvent?) {
+    private func parseEvents(for content: [ContentModel]) -> (appendEvent: ForumEvent, captionEvent: ForumEvent?) {
         let contentFeed = content.filter { $0.author.accessLevel != .owner }
         let creatorContent = content.filter { $0.author.accessLevel == .owner }
         
