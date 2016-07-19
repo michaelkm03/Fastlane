@@ -146,7 +146,6 @@ class StageShrinkingAnimator: NSObject {
             case .Changed:
                 // We only care about going a certain direction from either expanded or shrunken
                 guard (stageState == .expanded && translation.y < 0 ) || (stageState == .shrunken && translation.y > 0) else {
-                    goTo(.expanded)
                     return
                 }
                 applyInterploatedValues(withProgress: progress)
