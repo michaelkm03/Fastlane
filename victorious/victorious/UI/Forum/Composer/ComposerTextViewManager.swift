@@ -16,6 +16,8 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
     
     weak var delegate: ComposerTextViewManagerDelegate?
     
+    private(set) var prependedImage: UIImage?
+    
     private var attachmentStringLength: Int
     
     private var updatingSelection = false
@@ -217,6 +219,7 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
             return false
         }
         
+        prependedImage = image
         removePrependedImageFrom(textView)
         
         let mutableText = textView.attributedText.mutableCopy() as! NSMutableAttributedString
@@ -226,7 +229,7 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         return true
     }
     
-    func removePrependedImageFrom(textView: UITextView) {
+    private func removePrependedImageFrom(textView: UITextView) {
         guard let delegate = delegate else {
             return
         }
@@ -238,6 +241,8 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
     }
     
     func removePrependedImageFromAttributedText(attributedText: NSAttributedString) -> NSAttributedString? {
+        prependedImage = nil
+        
         let imageRange = NSMakeRange(0, attachmentStringLength)
         let mutableText = attributedText.mutableCopy() as! NSMutableAttributedString
         mutableText.deleteCharactersInRange(imageRange)

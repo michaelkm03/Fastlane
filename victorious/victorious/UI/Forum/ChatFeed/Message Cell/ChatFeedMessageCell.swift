@@ -167,6 +167,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
                 // Videos and images
                 let previewView = createContentPreviewViewIfNeeded()
                 ChatFeedMessageCell.layoutContent(for: self)
+                previewView.loadingSpinnerEnabled = true
                 previewView.content = content
             }
             previewView?.hidden = false
@@ -194,9 +195,9 @@ class ChatFeedMessageCell: UICollectionViewCell {
         }
         
         let previewView = MediaContentView(showsBackground: false)
-        
         previewView.animatesBetweenContent = false
         previewView.allowsVideoControls = false
+        previewView.fillMode = .fill
         setupPreviewView(previewView)
         return previewView
     }
@@ -209,7 +210,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
         
         let bubbleView = ChatBubbleView()
         bubbleView.contentView.addSubview(previewView)
-        addSubview(bubbleView)
+        contentView.addSubview(bubbleView)
         previewBubbleView = bubbleView
         self.previewView = previewView
     }
@@ -269,7 +270,11 @@ class ChatFeedMessageCell: UICollectionViewCell {
     }
     
     static func previewSize(displaying content: ContentModel, inWidth width: CGFloat) -> CGSize? {
-        return content.mediaSize?.preferredSize(clampedToWidth: width - nonContentWidth)
+        guard content.type.hasMedia else {
+            return nil
+        }
+        
+        return content.mediaSize?.preferredSize(clampedToWidth: width - nonContentWidth) ?? CGSize(width: width / 2, height: width / 2)
     }
     
     private static var nonContentWidth: CGFloat {

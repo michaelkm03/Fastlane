@@ -147,8 +147,8 @@ class AvatarView: UIView {
         imageView.image = nil
         imageView.backgroundColor = user?.color
         
-        if let imageURL = user?.previewImageURL(ofMinimumSize: bounds.size) {
-            imageView.sd_setImageWithURL(imageURL) { [weak self] _, error, _, _ in
+        if let imageAsset = user?.previewImage(ofMinimumSize: bounds.size) {
+            imageView.setImageAsset(imageAsset) { [weak self] _, error in
                 if error != nil {
                     self?.showInitials()
                 }

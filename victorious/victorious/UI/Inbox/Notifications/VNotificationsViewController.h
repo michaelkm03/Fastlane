@@ -6,7 +6,6 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VMultipleContainer.h"
 #import "VProvidesNavigationMenuItemBadge.h"
 #import "VAuthorizationContextProvider.h"
 #import "VAccessoryNavigationSource.h"
@@ -14,9 +13,7 @@
 
 @class VUnreadMessageCountCoordinator, VUser, VDependencyManager, NotificationsDataSource;
 
-@interface VNotificationsViewController : UIViewController <VMultipleContainerChild, VProvidesNavigationMenuItemBadge, VAuthorizationContextProvider, VAccessoryNavigationSource>
-
-@property (nonatomic, weak) id<VMultipleContainerChildDelegate> multipleContainerChildDelegate;
+@interface VNotificationsViewController : UIViewController <VAuthorizationContextProvider, VAccessoryNavigationSource>
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager;
 

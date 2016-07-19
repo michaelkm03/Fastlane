@@ -21,13 +21,16 @@ public struct RefreshStage {
     
     /// May be set in order to sync clients to the same spot.
     public let startTime: NSDate?
+
+    public let stageMetaData: StageMetaData?
     
-    public init?(json: JSON, serverTime: NSDate? = nil) {
+    public init?(json: JSON, serverTime: NSDate? = nil, stageMetaData: StageMetaData? = nil) {
         guard let contentID = json["content_id"].string else {
             return nil
         }
         
         self.contentID = contentID
+        self.stageMetaData = stageMetaData
 
         // The server time could either be present inside the stage message or at a higher level 
         // depending on what part of the API we get it from. :/
@@ -47,12 +50,12 @@ public struct RefreshStage {
         
         let lowerCasedSection = section.lowercaseString
         switch lowerCasedSection {
-        case "vip_stage":
-            self.section = RefreshSection.VIPStage
-        case "main_stage":
-            self.section = RefreshSection.MainStage
-        default:
-            return nil
+            case "vip_stage":
+                self.section = RefreshSection.VIPStage
+            case "main_stage":
+                self.section = RefreshSection.MainStage
+            default:
+                return nil
         }
     }
 }

@@ -9,7 +9,6 @@
 #import <objc/runtime.h>
 #import "VDependencyManager+VTracking.h"
 #import "VTrackingManager.h"
-#import "VMultipleContainer.h"
 
 NSString * const VTrackingStartKey                      = @"start";
 NSString * const VTrackingStopKey                       = @"stop";
@@ -83,26 +82,11 @@ static const char kAssociatedObjectViewWasHiddenKey;
     objc_setAssociatedObject( viewController, &kAssociatedObjectViewWasHiddenKey, @NO, OBJC_ASSOCIATION_RETAIN_NONATOMIC );
 }
 
-- (UIViewController *)viewControllerInNavControllerFromViewController:(UIViewController *)viewController
-{
-    UIViewController *viewControllerInNavController = viewController;
-    if ( [viewController conformsToProtocol:@protocol(VMultipleContainerChild)] )
-    {
-        id<VMultipleContainerChildDelegate> delegate = ((id<VMultipleContainerChild>)viewController).multipleContainerChildDelegate;
-        if ( [delegate isKindOfClass:[UIViewController class]] )
-        {
-            viewControllerInNavController = (UIViewController *)delegate;
-        }
-    }
-    return viewControllerInNavController;
-}
-
 - (void)trackViewWillDisappear:(UIViewController *)viewController
 {
-    UIViewController *viewControllerInNavController = [self viewControllerInNavControllerFromViewController:viewController];
     NSArray *navStackAfterViewController = @[];
     NSArray *navStack = viewController.navigationController.viewControllers;
-    NSInteger start = [navStack indexOfObject:viewControllerInNavController];
+    NSInteger start = [navStack indexOfObject:viewController];
     if ( start != NSNotFound )
     {
         NSRange range = NSMakeRange(start, navStack.count - start);

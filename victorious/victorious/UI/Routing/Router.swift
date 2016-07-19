@@ -263,18 +263,15 @@ private class ShowPermissionedCloseUpOperation: MainQueueOperation {
         
         if content.isVIPOnly {
             let scaffold = dependencyManager.scaffoldViewController()
-            let showVIPGateOperation = ShowVIPGateOperation(originViewController: scaffold, dependencyManager: dependencyManager)
+            let showVIPFlowOperation = ShowVIPFlowOperation(originViewController: scaffold, dependencyManager: dependencyManager) { success in
+                if success {
+                    ShowCloseUpOperation(content: content, displayModifier: displayModifier).queue()
+                }
+            }
             
             let completionBlock = self.completionBlock
-            showVIPGateOperation.rechainAfter(self).queue() { _ in
-                if !showVIPGateOperation.showedGate || showVIPGateOperation.allowedAccess {
-                    ShowCloseUpOperation(content: content, displayModifier: displayModifier).rechainAfter(showVIPGateOperation).queue() { _ in
-                        completionBlock?()
-                    }
-                }
-                else {
-                    completionBlock?()
-                }
+            showVIPFlowOperation.rechainAfter(self).queue() { _ in
+                completionBlock?()
             }
         } else {
             ShowCloseUpOperation(content: content, displayModifier: displayModifier).rechainAfter(self).queue()
@@ -317,8 +314,11 @@ private class ShowFetchedCloseUpOperation: MainQueueOperation {
         )
         
         let completionBlock = showCloseUpOperation.completionBlock
-        contentFetchOperation.rechainAfter(showCloseUpOperation).queue() { results, _, _ in
-            guard let shownCloseUpView = showCloseUpOperation.displayedCloseUpView else {
+        contentFetchOperation.rechainAfter(showCloseUpOperation).queue() { [weak self] results, _, _ in
+            guard
+                let strongSelf = self,
+                let shownCloseUpView = showCloseUpOperation.displayedCloseUpView
+            else {
                 completionBlock?()
                 return
             }
@@ -332,15 +332,16 @@ private class ShowFetchedCloseUpOperation: MainQueueOperation {
             
             if content.isVIPOnly {
                 let dependencyManager = displayModifier.dependencyManager
-                let showVIPGateOperation = ShowVIPGateOperation(originViewController: shownCloseUpView, dependencyManager: dependencyManager)
-                
-                showVIPGateOperation.rechainAfter(self).queue() { _ in
-                    if !showVIPGateOperation.showedGate || showVIPGateOperation.allowedAccess {
+                let showVIPFlowOperation = ShowVIPFlowOperation(originViewController: shownCloseUpView, dependencyManager: dependencyManager) { success in
+                    if success {
                         shownCloseUpView.updateContent(content)
                     }
                     else {
                         shownCloseUpView.navigationController?.popViewControllerAnimated(true)
                     }
+                }
+                
+                showVIPFlowOperation.rechainAfter(strongSelf).queue() { _ in
                     completionBlock?()
                 }
             }

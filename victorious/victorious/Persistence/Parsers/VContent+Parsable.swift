@@ -31,7 +31,10 @@ extension VContent: PersistenceParsable {
         v_author.populate(fromSourceModel: author)
         
         let persistentImageAssets: [VImageAsset] = content.previewImages.flatMap { imageAsset in
-            let previewAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject(["imageURL": imageAsset.mediaMetaData.url.absoluteString ])
+            guard let assetURL = imageAsset.url else {
+                return nil
+            }
+            let previewAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject(["imageURL": assetURL.absoluteString])
             previewAsset.populate(fromSourceModel: imageAsset)
             previewAsset.content = self
             return previewAsset

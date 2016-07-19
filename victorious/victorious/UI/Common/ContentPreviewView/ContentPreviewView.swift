@@ -23,10 +23,12 @@ class ContentPreviewView: UIView {
         static let imageReloadThreshold = CGFloat(0.75)
     }
 
-    let previewImageView = UIImageView()
-    let vipIcon = UIImageView()
-    let playButton: UIView
-    var lastSize = CGSizeZero
+    private let previewImageView = UIImageView()
+    private let vipIcon = UIImageView()
+    private let playButton: UIView
+    private let spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+    
+    private var lastSize = CGSizeZero
     
     var dependencyManager: VDependencyManager? {
         didSet {
@@ -36,6 +38,15 @@ class ContentPreviewView: UIView {
             {
                 vipIcon.image = dependencyManager.vipIcon
             }
+        }
+    }
+    
+    var loadingSpinnerEnabled: Bool {
+        get {
+            return !spinner.hidden
+        }
+        set {
+            spinner.hidden = !loadingSpinnerEnabled
         }
     }
     
@@ -55,12 +66,15 @@ class ContentPreviewView: UIView {
         if let content = content where lastSize.area / bounds.size.area < Constants.imageReloadThreshold {
             setupImage(forContent: content)
         }
+        
+        spinner.center = CGPoint(x: bounds.midX, y: bounds.midY)
     }
     
     init() {
         /// Play Button
         playButton = UIImageView(image: UIImage(named: Constants.playButtonPlayImageName))
         playButton.contentMode = UIViewContentMode.ScaleAspectFill
+        playButton.alpha = 0
         
         super.init(frame: CGRectZero)
         backgroundColor = Constants.loadingColor
@@ -73,6 +87,9 @@ class ContentPreviewView: UIView {
         addSubview(vipIcon)
         vipIcon.contentMode = .ScaleAspectFit
         addSubview(playButton)
+        
+        addSubview(spinner)
+        sendSubviewToBack(spinner)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -90,6 +107,8 @@ class ContentPreviewView: UIView {
     }
     
     private func setupForContent(content: ContentModel) {
+        spinner.startAnimating()
+        
         let userCanViewContent = VCurrentUser.user()?.canView(content) == true
         vipIcon.hidden = userCanViewContent
         
@@ -103,21 +122,25 @@ class ContentPreviewView: UIView {
     
     private func setupImage(forContent content: ContentModel) {
         let userCanViewContent = VCurrentUser.user()?.canView(content) == true
-        if let previewImageURL = content.previewImageURL(ofMinimumWidth: bounds.size.width) {
+        if let imageAsset = content.previewImage(ofMinimumWidth: bounds.size.width) {
             if !userCanViewContent {
-                previewImageView.applyBlurToImageURL(previewImageURL, withRadius: Constants.imageViewBlurEffectRadius) { [weak self] in
+                previewImageView.applyBlurToImageURL(imageAsset.url, withRadius: Constants.imageViewBlurEffectRadius) { [weak self] in
                     self?.previewImageView.alpha = 1
+                    self?.playButton.alpha = 1
+                    self?.spinner.stopAnimating()
                 }
             }
             else {
-                previewImageView.sd_setImageWithURL(previewImageURL)
+                previewImageView.setImageAsset(imageAsset) { [weak self] _ in
+                    self?.playButton.alpha = 1
+                    self?.spinner.stopAnimating()
+                }
             }
         }
         else {
             previewImageView.image = nil
         }
         lastSize = bounds.size
-
     }
 }
 

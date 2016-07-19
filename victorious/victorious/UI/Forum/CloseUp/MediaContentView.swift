@@ -8,8 +8,18 @@
 
 import UIKit
 
+enum FillMode {
+    case fill
+    case fit
+}
+
 /// Displays an image/video/GIF/Youtube video/text post upon setting the content property.
 class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGestureRecognizerDelegate {
+
+    var dependencyManager: VDependencyManager?
+
+    // MARK: - Private
+
     private struct Constants {
         static let blurRadius: CGFloat = 12
         static let fadeDuration: NSTimeInterval = 0.75
@@ -24,8 +34,6 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         static let defaultTextColor = UIColor.whiteColor()
         static let defaultTextFont = UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline)
     }
-    
-    var dependencyManager: VDependencyManager?
 
     private(set) var videoCoordinator: VContentVideoPlayerCoordinator?
     private var backgroundView: UIImageView?
@@ -53,7 +61,6 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         let singleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(onContentTap))
         singleTapRecognizer.numberOfTapsRequired = 1
         singleTapRecognizer.delegate = self
-        
         return singleTapRecognizer
     }()
     
@@ -110,9 +117,17 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
             }
         }
     }
+
+    var fillMode: FillMode = .fit {
+        didSet {
+            if fillMode != oldValue {
+                setNeedsLayout()
+            }
+        }
+    }
     
     private func configureBackground() {
-        previewImageView.contentMode = showsBackground ? .ScaleAspectFit : .ScaleAspectFill
+        previewImageView.contentMode = (fillMode == .fit) ? .ScaleAspectFit : .ScaleAspectFill
         
         if showsBackground {
             let backgroundView = UIImageView()
@@ -154,8 +169,9 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
             
             // Set up image view if content is image
             let minWidth = strongSelf.frame.size.width
-            if content.type.displaysAsImage, let previewImageURL = content.previewImageURL(ofMinimumWidth: minWidth) ?? NSURL(v_string: content.assets.first?.resourceID) {
-                strongSelf.setUpPreviewImage(from: previewImageURL)
+            
+            if content.type.displaysAsImage, let imageAsset = content.previewImage(ofMinimumWidth: minWidth) {
+                strongSelf.setUpPreviewImage(from: imageAsset)
             }
             else if content.type.displaysAsVideo {
                 strongSelf.setUpVideoPlayer(for: content)
@@ -222,20 +238,27 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     
     // MARK: - Managing preview image
     
-    private func setUpPreviewImage(from url: NSURL) {
+    private func setUpPreviewImage(from imageAsset: ImageAssetModel) {
         //Images don't need a video player and a text label
         tearDownVideoPlayer()
         tearDownTextLabel()
         
         previewImageView.hidden = false
-        previewImageView.sd_setImageWithURL(
-            url,
-            placeholderImage: previewImageView.image, // Leave the image as is, since we want to wait until animation has finished before setting the image.
-            options: .AvoidAutoSetImage
-        ) { [weak self] image, _, _, _ in
-            self?.downloadedPreviewImage = image
-            self?.updatePreviewImageIfReady()
-        }
+        
+        switch imageAsset.imageSource {
+            case .remote(let url):
+                previewImageView.sd_setImageWithURL(
+                    url,
+                    placeholderImage: previewImageView.image, // Leave the image as is, since we want to wait until animation has finished before setting the image.
+                    options: .AvoidAutoSetImage
+                ) { [weak self] image, _, _, _ in
+                    self?.downloadedPreviewImage = image
+                    self?.updatePreviewImageIfReady()
+                }
+            case .local(let image):
+                downloadedPreviewImage = image
+                updatePreviewImageIfReady()
+        }        
     }
     
     private func tearDownPreviewImage() {
@@ -292,15 +315,17 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         
         textPostLabel.hidden = true //Hide while we set up the view for the next post
         
-        if  let url = textPostDependency?.textPostBackgroundImageURL,
+        if
+            let url = textPostDependency?.textPostBackgroundImageURL,
             let content = content
-            {
-                setBackgroundBlur(withImageUrl: url, forContent: content) { [weak self] in
-                    guard let currentContentID = self?.content?.id where currentContentID == content.id else {
-                        return
-                    }
-                    self?.renderText(content.text)
+        {
+            let imageAsset = ImageAsset(url: url, size: frame.size)
+            setBackgroundBlur(withImageAsset: imageAsset, forContent: content) { [weak self] in
+                guard let currentContentID = self?.content?.id where currentContentID == content.id else {
+                    return
                 }
+                self?.renderText(content.text)
+            }
         }
         else {
             backgroundView?.image = nil
@@ -334,7 +359,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         textPostLabel.frame = CGRect(x: bounds.origin.x + CGFloat(Constants.textPostPadding), y: bounds.origin.y, width: bounds.width - CGFloat(2 * Constants.textPostPadding), height: bounds.height)
         backgroundView?.frame = computeBackgroundBounds()
         spinner.center = CGPoint(x: bounds.midX, y: bounds.midY)
-        videoCoordinator?.layout(in: videoContainerView.bounds, withContentFill: !showsBackground)
+        videoCoordinator?.layout(in: videoContainerView.bounds, with: fillMode)
     }
     
     private func updatePreviewImageIfReady() {
@@ -352,15 +377,8 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         }
         
         let minWidth = UIScreen.mainScreen().bounds.size.width
-        if let imageURL = content.previewImageURL(ofMinimumWidth: minWidth) {
-            setBackgroundBlur(withImageUrl: imageURL, forContent: content)
-        }
-        else if
-            let dataURL = content.assets.first?.resourceID,
-            let imageURL = NSURL(string: dataURL)
-            where content.type == .image
-        {
-            setBackgroundBlur(withImageUrl: imageURL, forContent: content)
+        if let imageAsset = content.previewImage(ofMinimumWidth: minWidth) {
+            setBackgroundBlur(withImageAsset: imageAsset, forContent: content)
         }
         else {
             backgroundView?.image = nil
@@ -378,8 +396,8 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         return backgroundBounds
     }
     
-    private func setBackgroundBlur(withImageUrl imageURL: NSURL, forContent content: ContentModel, completion: (()->())? = nil) {
-        backgroundView?.applyBlurToImageURL(imageURL, withRadius: Constants.blurRadius) { [weak self] in
+    private func setBackgroundBlur(withImageAsset imageAsset: ImageAssetModel, forContent content: ContentModel, completion: (()->())? = nil) {
+        backgroundView?.applyBlurToImageURL(imageAsset.url, withRadius: Constants.blurRadius) { [weak self] in
             guard let currentContentID = content.id where currentContentID == self?.content?.id else {
                 return
             }

@@ -116,8 +116,8 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
             
             let minWidth = UIScreen.mainScreen().bounds.size.width
             
-            if let previewURL = content.previewImageURL(ofMinimumWidth: minWidth) {
-                blurredImageView.applyBlurToImageURL(previewURL, withRadius: Constants.blurRadius) { [weak self] in
+            if let imageAsset = content.previewImage(ofMinimumWidth: minWidth) {
+                blurredImageView.applyBlurToImageURL(imageAsset.url, withRadius: Constants.blurRadius) { [weak self] in
                     self?.blurredImageView.alpha = Constants.blurredImageAlpha
                 }
             }

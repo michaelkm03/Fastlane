@@ -1,5 +1,5 @@
 //
-//  CtAErrorState.swift
+//  CTAErrorState.swift
 //  victorious
 //
 //  Created by Darvish Kamalia on 6/24/16.
@@ -67,6 +67,7 @@ class CTAErrorState: UIView {
     }
     
     @objc private func performButtonAction() {
+        actionButton.dependencyManager?.trackButtonEvent(.tap)
         switch actionType {
             case .openSettings:
                 if let url = NSURL(string: UIApplicationOpenSettingsURLString) {
