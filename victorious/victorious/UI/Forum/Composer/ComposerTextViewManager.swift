@@ -94,7 +94,7 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
     }
     
     func updateDelegateOfTextViewStatus(textView: UITextView) {
-        delegate?.textViewHasText = !textView.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()).isEmpty
+        delegate?.textViewHasText = captionFromTextView(textView, afterRemovingImage: false) != nil
         delegate?.textViewContentSize = textView.contentSize
         let imageRange = NSMakeRange(0, attachmentStringLength)
         let hasImage = textView.attributedText.length >= attachmentStringLength && textView.attributedText.containsAttachmentsInRange(imageRange)
@@ -237,7 +237,7 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         updateDelegateOfTextViewStatus(textView)
     }
     
-    func removePrependedImageFromAttributedText(attributedText: NSAttributedString) -> NSAttributedString? {
+    private func removePrependedImageFromAttributedText(attributedText: NSAttributedString) -> NSAttributedString? {
         let imageRange = NSMakeRange(0, attachmentStringLength)
         let mutableText = attributedText.mutableCopy() as! NSMutableAttributedString
         mutableText.deleteCharactersInRange(imageRange)
@@ -246,7 +246,6 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
     }
     
     private func shouldRemoveImageFromTextView(textView: UITextView, tryingToDeleteRange range: NSRange) -> Bool {
-        
         guard let delegate = delegate else {
             return false
         }
@@ -267,5 +266,13 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
             NSForegroundColorAttributeName : color,
             NSFontAttributeName            : font
         ]
+    }
+    
+    func captionFromTextView(textView: UITextView, afterRemovingImage: Bool) -> String? {
+        if afterRemovingImage {
+            removePrependedImageFrom(textView)
+        }
+        let text = textView.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+        return text.isEmpty ? nil : text
     }
 }
