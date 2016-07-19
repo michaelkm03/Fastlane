@@ -150,13 +150,11 @@ class TitleCardViewController: UIViewController {
     }
 
     @objc private func didTap(recognizer: UITapGestureRecognizer) {
-        print("didTap")
-
         guard let draggableBehaviour = draggableBehaviour else {
             return
         }
 
-        currentState = (currentState == .shown ? .hidden : .shown)
+        currentState = .hidden
         animateTitleCard(withInitialVelocity: draggableBehaviour.velocity)
     }
 
@@ -164,21 +162,16 @@ class TitleCardViewController: UIViewController {
 
     /// Sets the content on the title card, call before `show` to have the right content be present before it animates in.
     func populate(with stageContent: StageContent?) {
-        print("populate -> \(stageContent)")
-
         self.stageContent = stageContent
         populateUI(with: stageContent)
     }
 
     func clearCurrentContent() {
-        print("clearCurrentContent")
-
         stageContent = nil
         populateUI(with: nil)
     }
 
     func show() {
-        print("SHOWING TITLE CARD")
         guard currentState == .hidden else {
             return
         }
@@ -191,7 +184,6 @@ class TitleCardViewController: UIViewController {
     }
 
     func hide() {
-        print("HIDING TITLE CARD")
         guard currentState == .shown else {
             return
         }
