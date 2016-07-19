@@ -89,7 +89,7 @@
     [self.enhancerBar reloadData];
     [self.delegate experienceEnhancersDidUpdate];
     
-    // Remove Ballistics notification scheduler
+    // Removed Ballistics notification scheduler
 }
 
 - (void)purchaseManagedDidUpdate:(NSNotification *)notification
@@ -190,7 +190,7 @@
     NSDictionary *finalParams = [NSDictionary dictionaryWithDictionary:params];
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidVoteSequence parameters:finalParams];
 
-    // Remove Ballistics notification scheduler
+    // Removed Ballistics notification scheduler
 }
 
 - (VExperienceEnhancer *)lastExperienceEnhancerToCoolDown
