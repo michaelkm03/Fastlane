@@ -163,7 +163,7 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
             let json = JSON(data: dataFromString)
             rawMessage.json = json
 
-            guard let event = (decodeEventFromJSON(json) ?? decodeEventFromJSON(json)) else {
+            guard let event = (decodeEventFromJSON(json) ?? decodeErrorFromJSON(json)) else {
                 print("Unparsable WebSocket message returned -> \(text)")
                 return
             }
