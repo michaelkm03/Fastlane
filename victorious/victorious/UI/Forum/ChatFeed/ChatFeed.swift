@@ -21,16 +21,19 @@ protocol ChatFeed: class, ForumEventSender, ForumEventReceiver {
     
     func setTopInset(value: CGFloat)
     func setBottomInset(value: CGFloat)
+    
+    // MARK: - Content Manipulation
+    
+    func remove(chatFeedContent content: ChatFeedContent)
 }
 
 protocol ChatFeedDelegate: class {
     func chatFeed(chatFeed: ChatFeed, didSelectUserWithUserID userID: Int)
-    func chatFeed(chatFeed: ChatFeed, didSelectContent content: ContentModel)
+    func chatFeed(chatFeed: ChatFeed, didSelectContent content: ChatFeedContent)
+    func chatFeed(chatFeed: ChatFeed, didSelectFailureButtonForContent content: ChatFeedContent)
     
     func chatFeed(chatFeed: ChatFeed, didScroll scrollView: UIScrollView)
-    
     func chatFeed(chatFeed: ChatFeed, willBeginDragging scrollView: UIScrollView)
-    
     func chatFeed(chatFeed: ChatFeed, willEndDragging scrollView: UIScrollView, withVelocity velocity: CGPoint)
 }
 
@@ -44,6 +47,11 @@ extension ChatFeed {
     
     var newItemsController: NewItemsController? {
         return nil
+    }
+    
+    func remove(chatFeedContent content: ChatFeedContent) {
+        chatInterfaceDataSource.remove(chatFeedContent: content)
+        // FUTURE: Update collection view
     }
     
     func handleNewItems(newItems: [ChatFeedContent], loadingType: PaginatedLoadingType, completion: (() -> Void)? = nil) {
@@ -91,7 +99,7 @@ extension ChatFeed {
             collectionView.performBatchUpdates({
                 switch loadingType {
                     case .newer:
-                        let previousCount = self.chatInterfaceDataSource.visibleItems.count - newItems.count
+                        let previousCount = self.chatInterfaceDataSource.itemCount - newItems.count
                         
                         collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
                             NSIndexPath(forItem: previousCount + $0, inSection: 0)

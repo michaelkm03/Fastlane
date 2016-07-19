@@ -158,6 +158,10 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         }
     }
     
+    var chatFeedItemWidth: CGFloat {
+        return collectionView.bounds.width
+    }
+    
     // MARK: - VScrollPaginatorDelegate
     
     func shouldLoadPreviousPage() {
@@ -167,7 +171,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     // MARK: - ChatFeedMessageCellDelegate
     
     func messageCellDidSelectAvatarImage(messageCell: ChatFeedMessageCell) {
-        guard let userID = messageCell.content?.author.id else {
+        guard let userID = messageCell.chatFeedContent?.content.author.id else {
             return
         }
         
@@ -175,11 +179,19 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     }
     
     func messageCellDidSelectMedia(messageCell: ChatFeedMessageCell) {
-        guard let content = messageCell.content else {
+        guard let content = messageCell.chatFeedContent else {
             return
         }
         
         delegate?.chatFeed(self, didSelectContent: content)
+    }
+    
+    func messageCellDidSelectFailureButton(messageCell: ChatFeedMessageCell) {
+        guard let content = messageCell.chatFeedContent else {
+            return
+        }
+        
+        delegate?.chatFeed(self, didSelectFailureButtonForContent: content)
     }
     
     // MARK: - UIScrollViewDelegate

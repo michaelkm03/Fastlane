@@ -14,6 +14,9 @@ protocol CloseUpViewDelegate: class {
 
 
 class CloseUpView: UIView, ConfigurableGridStreamHeader {
+    
+    // MARK: - Configuration
+    
     private struct Constants {
         static let blurredImageAlpha = CGFloat(0.5)
         static let relatedAnimationDuration = Double(1)
@@ -24,6 +27,11 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
         static let defaultAspectRatio = CGFloat(1)
         static let blurRadius = CGFloat(12)
     }
+    
+    /// Maximum height of the close up view (set from the outside). Defaults to CGFloat.max
+    var maxContentHeight: CGFloat = CGFloat.max
+    
+    // MARK: - IBOutlets
     
     @IBOutlet weak var headerSection: UIView!
     @IBOutlet weak var avatarView: AvatarView!
@@ -36,16 +44,16 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     @IBOutlet weak var lightOverlayView: UIView!
     @IBOutlet weak var blurredImageView: UIImageView!
     
-    private lazy var errorView: ErrorStateView = {
-       return ErrorStateView.v_fromNib()
-    }()
-    private var videoPlayer: VVideoPlayer?
+    // MARK: - Variables
     
     weak var delegate: CloseUpViewDelegate?
     
-    /// Maximum height of the close up view (set from the outside). Defaults to CGFloat.max
-    var maxContentHeight: CGFloat = CGFloat.max
+    private lazy var errorView: ErrorStateView = {
+        return ErrorStateView.v_fromNib()
+    }()
     
+    private var videoPlayer: VVideoPlayer?
+
     var dependencyManager: VDependencyManager! {
         didSet {
             errorView.dependencyManager = dependencyManager.errorStateDependency
@@ -53,13 +61,40 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
         }
     }
     
-    func height(for content: ContentModel?) -> CGFloat {
-        guard let aspectRatio = content?.naturalMediaAspectRatio else {
-            return 0
-        }
+    // MARK: - Initialization
+    
+    class func newWithDependencyManager(dependencyManager: VDependencyManager, delegate: CloseUpViewDelegate? = nil) -> CloseUpView {
+        let view : CloseUpView = CloseUpView.v_fromNib()
+        view.dependencyManager = dependencyManager
+        view.delegate = delegate
+        return view
+    }
+    
+    override func awakeFromNib() {
+        addSubview(errorView)
         
-        // Hack since CUV should always be full screen width anyway, and the parent containers use autolayout.
-        return min(UIScreen.mainScreen().bounds.size.width / aspectRatio, maxContentHeight - headerSection.bounds.size.height)
+        avatarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showProfile)))
+        
+        closeUpContentContainerView.layer.cornerRadius = Constants.cornerRadius
+        clearContent()
+        
+        NSNotificationCenter.defaultCenter().addObserver(
+            self,
+            selector: #selector(closeUpDismissed),
+            name: "closeUpDismissed",
+            object: nil
+        )
+        blurredImageView.alpha = Constants.blurredImageAlpha
+    }
+    
+    // MARK: - Setting Content
+    
+    func setHeader(for content: ContentModel, author: UserModel ) {
+        userNameButton.setTitle(author.name, forState: .Normal)
+        
+        avatarView.user = author
+        createdAtLabel.text = content.createdAt.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds) ?? ""
+        captionLabel.text = content.text
     }
 
     var content: ContentModel? {
@@ -96,61 +131,15 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
         }
     }
     
-    func setHeader(for content: ContentModel, author: UserModel ) {
-        userNameButton.setTitle(author.name, forState: .Normal)
-        
-        avatarView.user = author
-        createdAtLabel.text = content.createdAt.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds) ?? ""
-        captionLabel.text = content.text
-    }
+    // MARK: - Frame/Size Calculations
     
-    @IBAction func selectedProfile(sender: AnyObject) {
-        guard let userID = content?.author.id else {
-            return
+    func height(for content: ContentModel?) -> CGFloat {
+        guard let aspectRatio = content?.naturalMediaAspectRatio else {
+            return 0
         }
-        delegate?.didSelectProfileForUserID(userID)
-    }
-    
-    class func newWithDependencyManager(dependencyManager: VDependencyManager, delegate: CloseUpViewDelegate? = nil) -> CloseUpView {
-        let view : CloseUpView = CloseUpView.v_fromNib()
-        view.dependencyManager = dependencyManager
-        view.delegate = delegate
-        return view
-    }
-    
-    override func awakeFromNib() {
-        addSubview(errorView)
         
-        closeUpContentContainerView.layer.cornerRadius = Constants.cornerRadius
-        clearContent()
-        
-        NSNotificationCenter.defaultCenter().addObserver(
-            self,
-            selector: #selector(closeUpDismissed),
-            name: "closeUpDismissed",
-            object: nil
-        )
-        blurredImageView.alpha = Constants.blurredImageAlpha
-    }
-    
-    func configureFontsAndColors() {
-        userNameButton.setTitleColor(dependencyManager.usernameColor, forState: .Normal)
-        createdAtLabel.textColor = dependencyManager.timestampColor
-        captionLabel.textColor = dependencyManager.captionColor
-        userNameButton.titleLabel!.font = dependencyManager.usernameFont
-        createdAtLabel.font = dependencyManager.timestampFont
-        captionLabel.font = dependencyManager.captionFont
-        relatedLabel.textColor = dependencyManager.usernameColor
-        relatedLabel.font = dependencyManager.relatedFont
-        relatedLabel.text = dependencyManager.relatedText
-    }
-    
-    func clearContent() {
-        captionLabel.text = ""
-        avatarView.user = nil
-        userNameButton.setTitle("", forState: .Normal)
-        createdAtLabel.text = ""
-        relatedLabel.alpha = 0
+        // Hack since CUV should always be full screen width anyway, and the parent containers use autolayout.
+        return min(UIScreen.mainScreen().bounds.size.width / aspectRatio, maxContentHeight - headerSection.bounds.size.height)
     }
     
     override func layoutSubviews() {
@@ -225,6 +214,19 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
         )
     }
     
+    @IBAction func selectedProfile(sender: AnyObject) {
+        showProfile()
+    }
+    
+    private dynamic func showProfile() {
+        guard let userID = content?.author.id else {
+            return
+        }
+        delegate?.didSelectProfileForUserID(userID)
+    }
+    
+    // MARK: - Helpers
+    
     private func contentHasText(content: ContentModel) -> Bool {
         return content.text?.stringByTrimmingCharactersInSet(.whitespaceCharacterSet()).characters.count > 0
     }
@@ -235,6 +237,26 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
                 videoPlayer.pause()
             })
         }
+    }
+    
+    private func configureFontsAndColors() {
+        userNameButton.setTitleColor(dependencyManager.usernameColor, forState: .Normal)
+        createdAtLabel.textColor = dependencyManager.timestampColor
+        captionLabel.textColor = dependencyManager.captionColor
+        userNameButton.titleLabel!.font = dependencyManager.usernameFont
+        createdAtLabel.font = dependencyManager.timestampFont
+        captionLabel.font = dependencyManager.captionFont
+        relatedLabel.textColor = dependencyManager.usernameColor
+        relatedLabel.font = dependencyManager.relatedFont
+        relatedLabel.text = dependencyManager.relatedText
+    }
+    
+    private func clearContent() {
+        captionLabel.text = ""
+        avatarView.user = nil
+        userNameButton.setTitle("", forState: .Normal)
+        createdAtLabel.text = ""
+        relatedLabel.alpha = 0
     }
     
     // MARK: - ConfigurableGridStreamHeader
@@ -275,6 +297,8 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
         })
     }
 }
+
+// MARK: - Dependencies
 
 private extension VDependencyManager {
     var usernameColor: UIColor? {

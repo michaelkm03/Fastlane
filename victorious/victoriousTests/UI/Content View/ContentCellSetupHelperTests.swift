@@ -172,7 +172,6 @@ class ContentCellSetupHelperTests: BasePersistentStoreTestCase {
             videoPreviewViewDelegate: testVideoPreviewViewDelegate,
             adBreak: adBreak)
         XCTAssertEqual(0, testVideoPlayer.playFromStartCallCount)
-        XCTAssertNotNil(contentCell.adVideoPlayerViewController)
     }
 
     func testPlayVideo() {
@@ -184,6 +183,5 @@ class ContentCellSetupHelperTests: BasePersistentStoreTestCase {
             videoPreviewViewDelegate: testVideoPreviewViewDelegate,
             adBreak: nil)
         XCTAssertEqual(1, testVideoPlayer.playFromStartCallCount)
-        XCTAssertNil(contentCell.adVideoPlayerViewController)
     }
 }

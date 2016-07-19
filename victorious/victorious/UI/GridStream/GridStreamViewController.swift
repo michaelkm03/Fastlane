@@ -127,12 +127,6 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         fatalError("NSCoding not supported.")
     }
     
-    // MARK: - View events
-    
-    override func viewWillAppear(animated: Bool) {
-        dependencyManager.applyStyleToNavigationBar(navigationController?.navigationBar)
-    }
-    
     // MARK: - Refreshing
     
     func refresh() {
@@ -237,6 +231,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         let targetContent = dataSource.items[indexPath.row]
         let destination = DeeplinkDestination(content: targetContent)
         router.navigate(to: destination)
+        header?.headerDidDisappear()
         
         guard let cell = collectionView.cellForItemAtIndexPath(indexPath) as? ContentCell else {
             return

@@ -9,46 +9,61 @@
 import Foundation
 
 class ShowLoginOperation: MainQueueOperation {
-    
     private weak var originViewController: UIViewController?
     private let dependencyManager: VDependencyManager
     private let context: VAuthorizationContext
     private let animated: Bool
+    private let loginCompletion: (()->())?
     
-    required init( originViewController: UIViewController, dependencyManager: VDependencyManager, context: VAuthorizationContext = .Default, animated: Bool = true) {
+    required init(
+        originViewController: UIViewController,
+        dependencyManager: VDependencyManager,
+        context: VAuthorizationContext = .Default,
+        animated: Bool = true,
+        loginCompletion: (()->())? = nil
+    ) {
         self.originViewController = originViewController
         self.dependencyManager = dependencyManager
         self.context = context
         self.animated = animated
+        self.loginCompletion = loginCompletion
     }
     
     override func start() {
         super.start()
         
         // Don't show login when running unit tests
-        guard !self.cancelled && !VAutomation.shouldAlwaysShowLoginScreen() else {
-            self.finishedExecuting()
+        guard !cancelled && !VAutomation.shouldAlwaysShowLoginScreen() else {
+            self.loginCompletion?()
+            finishedExecuting()
             return
         }
         
         // Don't show login if the user is already logged in
         guard VCurrentUser.user() == nil else {
-            self.finishedExecuting()
+            self.loginCompletion?()
+            finishedExecuting()
             return
         }
         
         self.beganExecuting()
         
         // User is not logged in, show login view
-        guard let templateValue = self.dependencyManager.templateValueConformingToProtocol( VLoginRegistrationFlow.self,
+        guard
+            let templateValue = self.dependencyManager.templateValueConformingToProtocol(VLoginRegistrationFlow.self,
             forKey: "loginAndRegistrationView"),
             let viewController = templateValue as? UIViewController,
-            let loginFlow = templateValue as? VLoginRegistrationFlow else {
-                self.finishedExecuting()
-                return
+            let loginFlow = templateValue as? VLoginRegistrationFlow
+        else {
+            finishedExecuting()
+            return
         }
         
+        let originViewController = self.originViewController
+        let loginCompletion = self.loginCompletion
         loginFlow.onCompletionBlock = { didSucceed in
+            loginCompletion?()
+            
             guard didSucceed else {
                 return
             }
@@ -58,13 +73,13 @@ class ShowLoginOperation: MainQueueOperation {
             // to run first so that the configured tab bar is visible immediately
             // when the login view controller is dismissed.
             dispatch_after(0.0) {
-                self.originViewController?.dismissViewControllerAnimated(true, completion: nil)
+                originViewController?.dismissViewControllerAnimated(true, completion: nil)
             }
-            
-            self.finishedExecuting()
         }
         loginFlow.setAuthorizationContext?( self.context )
         
-        self.originViewController?.presentViewController(viewController, animated: self.animated, completion: nil)
+        self.originViewController?.presentViewController(viewController, animated: animated) {
+            self.finishedExecuting()
+        }
     }
 }

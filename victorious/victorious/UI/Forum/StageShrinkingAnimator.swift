@@ -158,7 +158,6 @@ class StageShrinkingAnimator: NSObject {
             case .Changed:
                 // We only care about going a certain direction from either enlarged or shrunken
                 guard (stageState == .enlarged && translation.y < 0 ) || (stageState == .shrunken && translation.y > 0) else {
-                    self.goTo(.enlarged)
                     return
                 }
                 applyInterploatedValues(withProgress: progress)
@@ -166,9 +165,11 @@ class StageShrinkingAnimator: NSObject {
                 animateInProgressSnap(withAnimations: {
                     if (self.stageState == .enlarged) && (progress > Constants.closePanTriggerProgress) {
                         self.goTo(.shrunken)
-                    } else if (self.stageState == .shrunken) && (progress < Constants.openPanTriggerProgress) {
+                    }
+                    else if (self.stageState == .shrunken) && (progress < Constants.openPanTriggerProgress) {
                         self.goTo(.enlarged)
-                    } else {
+                    }
+                    else {
                         self.goTo(self.stageState)
                     }
                 })
@@ -250,9 +251,11 @@ class StageShrinkingAnimator: NSObject {
     private func progressThroughPanOnStage(forTranslation translation: CGPoint) -> CGFloat {
         if stageState == .enlarged && translation.y > 0 {
             return 0
-        } else if stageState == .shrunken && translation.y <= 0 {
+        }
+        else if stageState == .shrunken && translation.y <= 0 {
             return 1
-        } else {
+        }
+        else {
             let progress = max(min(fabs(-translation.y) / Constants.dragMagnitude, 1), 0)
             return stageState == .enlarged ? progress : 1 - progress
         }

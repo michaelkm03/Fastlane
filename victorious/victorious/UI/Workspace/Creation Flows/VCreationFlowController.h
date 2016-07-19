@@ -111,4 +111,6 @@ typedef NS_ENUM(NSInteger, VCreationFlowSource)
 // Tracking Properties
 @property (nonatomic, assign) VCreationFlowSource source;
 
+@property (nonatomic, readonly) VDependencyManager *dependencyManager;
+
 @end

@@ -45,8 +45,6 @@
 
 @property (nonatomic, weak, readonly) VSequencePreviewView *sequencePreviewView;
 
-@property (nonatomic, strong, readonly) AdVideoPlayerViewController *adVideoPlayerViewController;
-
 /**
  Properly rotates itself and subcomponents based on the rotation of the collection view.
  Make sure to forward this from your collection view controller.

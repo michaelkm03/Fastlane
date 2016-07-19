@@ -13,6 +13,7 @@ protocol ChatFeedDataSourceDelegate: class {
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didLoadItems newItems: [ChatFeedContent], loadingType: PaginatedLoadingType)
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didStashItems stashedItems: [ChatFeedContent])
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didUnstashItems unstashedItems: [ChatFeedContent])
+    var chatFeedItemWidth: CGFloat { get }
 }
 
 class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatInterfaceDataSource {
@@ -21,6 +22,7 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     
     init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
+        self.publisher = ContentPublisher(dependencyManager: dependencyManager.networkResources ?? dependencyManager)
         super.init()
     }
     
@@ -32,6 +34,7 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     
     private(set) var visibleItems = [ChatFeedContent]()
     private(set) var stashedItems = [ChatFeedContent]()
+    let publisher: ContentPublisher
     
     var stashingEnabled = false
     
@@ -48,12 +51,30 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
         delegate?.chatFeedDataSource(self, didUnstashItems: previouslyStashedItems)
     }
     
+    var itemCount: Int {
+        // FUTURE: We'll add the pending content count once the queueing implementation is finished.
+        return visibleItems.count // + publisher.pendingContent.count
+    }
+    
+    func content(at index: Int) -> ChatFeedContent {
+        if index < visibleItems.count {
+            return visibleItems[index]
+        }
+        else {
+            return publisher.pendingContent[index - visibleItems.count]
+        }
+    }
+    
+    func remove(chatFeedContent content: ChatFeedContent) {
+        publisher.remove(content)
+    }
+    
     // MARK: - ForumEventReceiver
     
     func receive(event: ForumEvent) {
         switch event {
             case .appendContent(let newItems):
-                let newItems = newItems.map { ChatFeedContent($0) }
+                let newItems = createNewItemsArray(newItems)
                 if stashingEnabled {
                     stashedItems.appendContentsOf(newItems)
                     delegate?.chatFeedDataSource(self, didStashItems: newItems)
@@ -63,18 +84,30 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
                 }
             
             case .prependContent(let newItems):
-                let newItems = newItems.map { ChatFeedContent($0) }
+               let newItems = createNewItemsArray(newItems)
                 visibleItems = newItems + visibleItems
                 delegate?.chatFeedDataSource(self, didLoadItems: newItems, loadingType: .older)
             
             case .replaceContent(let newItems):
-                let newItems = newItems.map { ChatFeedContent($0) }
+                let newItems = createNewItemsArray(newItems)
                 visibleItems = newItems
                 stashedItems = []
                 delegate?.chatFeedDataSource(self, didLoadItems: newItems, loadingType: .refresh)
             
             default:
                 break
+        }
+    }
+    
+    // MARK: - Internal helpers
+    
+    private func createNewItemsArray(contents: [ContentModel]) -> [ChatFeedContent] {
+        guard let width = delegate?.chatFeedItemWidth else {
+            return []
+        }
+        
+        return contents.flatMap(){ content in
+            ChatFeedContent(content: content, width: width, dependencyManager: dependencyManager)
         }
     }
     

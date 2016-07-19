@@ -14,10 +14,6 @@ class TutorialCollectionViewDataSource: NSObject, ChatInterfaceDataSource, Tutor
     
     let sizingCell = ChatFeedMessageCell(frame: CGRectZero)
     
-    var visibleItems: [ChatFeedContent] {
-        return networkDataSource.visibleItems
-    }
-    
     lazy var networkDataSource: NetworkDataSource = {
         let dataSource = TutorialNetworkDataSource(dependencyManager: self.dependencyManager)
         dataSource.delegate = self
@@ -30,6 +26,18 @@ class TutorialCollectionViewDataSource: NSObject, ChatInterfaceDataSource, Tutor
     }
     
     // MARK: - ChatInterfaceDataSource
+    
+    var itemCount: Int {
+        return networkDataSource.visibleItems.count
+    }
+    
+    func content(at index: Int) -> ChatFeedContent {
+        return networkDataSource.visibleItems[index]
+    }
+    
+    func remove(chatFeedContent content: ChatFeedContent) {
+        // Does not support removing content from tutorial feed
+    }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return numberOfItems(for: collectionView, in: section)
@@ -50,5 +58,9 @@ class TutorialCollectionViewDataSource: NSObject, ChatInterfaceDataSource, Tutor
     
     func didFinishFetchingAllItems() {
         delegate?.didFinishFetchingAllItems()
+    }
+    
+    var chatFeedItemWidth: CGFloat {
+        return delegate?.chatFeedItemWidth ?? 0.0
     }
 }

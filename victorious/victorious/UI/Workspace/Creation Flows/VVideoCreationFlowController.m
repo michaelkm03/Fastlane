@@ -28,7 +28,6 @@ static Float64 const kMaxVideoLengthForEditing = 15.0f;
 
 @interface VVideoCreationFlowController () <VVideoCameraViewControllerDelegate>
 
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VVideoCameraViewController *videoCameraViewController;
 @property (nonatomic, assign) Float64 currentVideoLength;
 
@@ -41,7 +40,6 @@ static Float64 const kMaxVideoLengthForEditing = 15.0f;
     self = [super initWithDependencyManager:dependencyManager];
     if (self != nil)
     {
-        _dependencyManager = dependencyManager;
         [self setContext:VCameraContextVideoContentCreation];
     }
     return self;

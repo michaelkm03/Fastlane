@@ -11,10 +11,19 @@ import VictoriousIOSSDK
 
 /// Conformers are collection view data sources for any collection views with a chat-like interface
 protocol ChatInterfaceDataSource: UICollectionViewDataSource {
+    /// The dependency manager associated with the data source.
     var dependencyManager: VDependencyManager { get }
     
-    var visibleItems: [ChatFeedContent] { get }
+    /// The number of items displayed in the chat interface.
+    var itemCount: Int { get }
     
+    /// Returns the content at the given `index`.
+    func content(at index: Int) -> ChatFeedContent
+    
+    /// Removes a piece of content from the feed
+    func remove(chatFeedContent content: ChatFeedContent)
+    
+    /// Registers the appropriate collection view cells on `collectionView`.
     func registerCells(for collectionView: UICollectionView)
     
     /// Calculated desired cell size for a given indexPath. 
@@ -22,18 +31,18 @@ protocol ChatInterfaceDataSource: UICollectionViewDataSource {
     func desiredCellSize(for collectionView: UICollectionView, at indexPath: NSIndexPath) -> CGSize
     
     /// Decorates and configures a cell with its data object
-    func decorate(cell: ChatFeedMessageCell, content: ContentModel)
+    func decorate(cell: ChatFeedMessageCell, chatFeedContent: ChatFeedContent)
 }
 
 extension ChatInterfaceDataSource {
     func numberOfItems(for collectionView: UICollectionView, in section: Int) -> Int {
-        return visibleItems.count
+        return itemCount
     }
     
     func cellForItem(for collectionView: UICollectionView, at indexPath: NSIndexPath) -> ChatFeedMessageCell {
-        let content = visibleItems[indexPath.row].content
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(content.reuseIdentifier, forIndexPath: indexPath) as! ChatFeedMessageCell
-        decorate(cell, content: content)
+        let chatFeedContent = self.content(at: indexPath.row)
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(chatFeedContent.content.reuseIdentifier, forIndexPath: indexPath) as! ChatFeedMessageCell
+        decorate(cell, chatFeedContent: chatFeedContent)
         
         return cell
     }
@@ -45,24 +54,12 @@ extension ChatInterfaceDataSource {
     }
     
     func desiredCellSize(for collectionView: UICollectionView, at indexPath: NSIndexPath) -> CGSize {
-        let chatFeedContent = visibleItems[indexPath.row]
-        
-        if let size = chatFeedContent.size {
-            return size
-        }
-        else {
-            let width = collectionView.bounds.width
-            let height = ChatFeedMessageCell.cellHeight(displaying: chatFeedContent.content, inWidth: width, dependencyManager: dependencyManager)
-            let size = CGSize(width: width, height: height)
-            chatFeedContent.size = size
-            return size
-        }
-        
+        return content(at: indexPath.row).size
     }
     
-    func decorate(cell: ChatFeedMessageCell, content: ContentModel) {
+    func decorate(cell: ChatFeedMessageCell, chatFeedContent: ChatFeedContent) {
         cell.dependencyManager = dependencyManager
-        cell.content = content
+        cell.chatFeedContent = chatFeedContent
     }
     
     func updateTimestamps(in collectionView: UICollectionView) {

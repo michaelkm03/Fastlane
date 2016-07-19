@@ -22,7 +22,6 @@
 @property (nonatomic, strong) NSMutableArray *collectedTrackingItems;
 @property (nonatomic, assign) id<VPurchaseManagerType> purchaseManager;
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic, strong) LocalNotificationScheduler *localNotificationScheduler;
 
 @end
 
@@ -81,19 +80,7 @@
                                                object:nil];
     
     self.sequence = [self.dependencyManager templateValueOfType:[VSequence class] forKey:@"sequence"];
-    
-    ExperienceEnhancersOperation *experienceEnhancerOperation = [[ExperienceEnhancersOperation alloc] initWithSequenceID:self.sequence.remoteId
-                                                                                                     productsDataSource:self.dependencyManager];
-    FetchTemplateProductIdentifiersOperation *fetchProductsOperation = [[FetchTemplateProductIdentifiersOperation alloc] initWithProductsDataSource:self.dependencyManager];
-    fetchProductsOperation.purchaseManager = self.purchaseManager;
-    [fetchProductsOperation addDependency:experienceEnhancerOperation];
-    [fetchProductsOperation queueWithCompletion:nil];
-    
-    __weak typeof(self) weakSelf = self;
-    [experienceEnhancerOperation queueWithCompletion:^(NSArray *results, NSError *error, BOOL cancelled)
-     {
-         [weakSelf onExperienceEnhancersLoaded:results];
-     }];
+    /// Body removed alongside FetchTemplateProductIdentifiersOperation
 }
 
 - (void)onExperienceEnhancersLoaded:(NSArray *)experienceEnhancers
@@ -102,7 +89,7 @@
     [self.enhancerBar reloadData];
     [self.delegate experienceEnhancersDidUpdate];
     
-    self.localNotificationScheduler = [[LocalNotificationScheduler alloc] initWithDependencyManager:self.dependencyManager];
+    // Removed Ballistics notification scheduler
 }
 
 - (void)purchaseManagedDidUpdate:(NSNotification *)notification
@@ -202,19 +189,8 @@
     
     NSDictionary *finalParams = [NSDictionary dictionaryWithDictionary:params];
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidVoteSequence parameters:finalParams];
-    
-    VExperienceEnhancer *lastExperienceEnhancerToCoolDown = [self lastExperienceEnhancerToCoolDown];
-    if ( lastExperienceEnhancerToCoolDown != nil )
-    {
-        NSString *identifier = [VDependencyManager localNotificationBallisticsCooldownIdentifier];
-        
-        // Unschedule previous notifications (if any)
-        [self.localNotificationScheduler unscheduleNotificationWithIdentifier:identifier];
-        
-        // Schedule a new notification
-        NSDate *fireDate = lastExperienceEnhancerToCoolDown.cooldownDate;
-        [self.localNotificationScheduler scheduleNotificationWithIdentifier:identifier fireDate:fireDate];
-    }
+
+    // Removed Ballistics notification scheduler
 }
 
 - (VExperienceEnhancer *)lastExperienceEnhancerToCoolDown

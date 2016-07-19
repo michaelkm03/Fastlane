@@ -56,6 +56,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     private var enabled = true
     
     weak var delegate: StageDelegate?
+
     var dependencyManager: VDependencyManager! {
         didSet {
             // The data source is initialized with the dependency manager since it needs URLs in the template to operate.
@@ -71,6 +72,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         captionBarViewController = childViewControllers.flatMap({ $0 as? CaptionBarViewController }).first
         mediaContentView.dependencyManager = dependencyManager
         mediaContentView.allowsVideoControls = false
+        mediaContentView.showsBackground = false
     }
     
     private func setupDataSource(dependencyManager: VDependencyManager) -> StageDataSource {
