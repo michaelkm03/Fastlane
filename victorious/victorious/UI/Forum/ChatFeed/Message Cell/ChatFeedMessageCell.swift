@@ -210,7 +210,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
         
         let bubbleView = ChatBubbleView()
         bubbleView.contentView.addSubview(previewView)
-        addSubview(bubbleView)
+        contentView.addSubview(bubbleView)
         previewBubbleView = bubbleView
         self.previewView = previewView
     }
