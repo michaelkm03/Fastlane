@@ -404,15 +404,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     }
 }
 
-- (void)handleLocalNotification:(UILocalNotification *)localNotification
-{
-    NSString *deeplinkUrlString = localNotification.userInfo[ [LocalNotificationScheduler deplinkURLKey] ];
-    if ( deeplinkUrlString != nil && deeplinkUrlString.length > 0 )
-    {
-        [self openURL:[NSURL URLWithString:deeplinkUrlString]];
-    }
-}
-
 - (void)openURL:(NSURL *)url
 {
     if (self.scaffold == nil)

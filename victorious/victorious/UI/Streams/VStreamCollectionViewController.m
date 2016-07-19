@@ -32,7 +32,6 @@
 #import "VFullscreenMarqueeSelectionDelegate.h"
 #import "VHashtagSelectionResponder.h"
 #import "VHashtagStreamCollectionViewController.h"
-#import "VMultipleContainerViewController.h"
 #import "VNavigationController.h"
 #import "VNewContentViewController.h"
 #import "VNoContentCollectionViewCellFactory.h"
@@ -415,14 +414,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 - (void)addBadgingToNavigationItems
 {
     [self v_addBadgingToAccessoryScreensWithDependencyManager:self.dependencyManager];
-}
-
-- (void)multipleContainerDidSetSelected:(BOOL)isDefault
-{
-    if (isDefault)
-    {
-        [self viewWillAppear:YES];
-    }
 }
 
 - (void)createNewPost
@@ -939,12 +930,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     if ( !hidden && self.navigationController.navigationBarHidden )
     {
         [self.navigationController setNavigationBarHidden:NO];
-        
-        UIViewController *topVC = self.navigationController.topViewController;
-        if ([topVC isKindOfClass:[VMultipleContainerViewController class]])
-        {
-            [self.v_navigationController updateSupplementaryHeaderViewForViewController:topVC];
-        }
     }
     self.uploadProgressViewController.view.hidden = hidden;
     self.navigationBarShouldAutoHide = hidden;

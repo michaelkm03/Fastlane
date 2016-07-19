@@ -623,11 +623,6 @@ static const CGFloat kScrollAnimationThreshholdHeight = 75.0f;
 {
     NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings)
                               {
-                                  if ( [evaluatedObject conformsToProtocol:@protocol(VMultipleContainer)] )
-                                  {
-                                      id<VMultipleContainer> multipleContainer = evaluatedObject;
-                                      return [self array:multipleContainer.children containsObjectOfClass:objectClass];
-                                  }
                                   return [evaluatedObject isKindOfClass:objectClass];
                               }];
     return [array filteredArrayUsingPredicate:predicate].count > 0;
