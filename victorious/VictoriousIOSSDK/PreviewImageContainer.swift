@@ -15,7 +15,7 @@ public protocol PreviewImageContainer {
 }
 
 extension PreviewImageContainer {
-    public func previewImageURL(ofMinimumSize minimumSize: CGSize) -> NSURL? {
+    public func previewImage(ofMinimumSize minimumSize: CGSize) -> ImageAssetModel? {
         var qualifiedAsset: ImageAssetModel?
         
         let minimumWidth = minimumSize.width
@@ -32,10 +32,10 @@ extension PreviewImageContainer {
             }
         }
         
-        return qualifiedAsset?.url ?? largestPreviewImageURL
+        return qualifiedAsset ?? largestPreviewImage
     }
     
-    public func previewImageURL(ofMinimumWidth minimumWidth: CGFloat) -> NSURL? {
+    public func previewImage(ofMinimumWidth minimumWidth: CGFloat) -> ImageAssetModel? {
         var qualifiedAsset: ImageAssetModel?
         
         for asset in previewImages ?? [] {
@@ -47,16 +47,16 @@ extension PreviewImageContainer {
             }
         }
         
-        return qualifiedAsset?.url ?? largestPreviewImageURL
+        return qualifiedAsset ?? largestPreviewImage
     }
     
-    public var largestPreviewImageURL: NSURL? {
+    public var largestPreviewImage: ImageAssetModel? {
         var largestAsset: ImageAssetModel?
         
         for asset in previewImages ?? [] where asset.size.area > largestAsset?.size.area {
             largestAsset = asset
         }
         
-        return largestAsset?.url
+        return largestAsset
     }
 }

@@ -119,16 +119,16 @@ class ContentPreviewView: UIView {
     
     private func setupImage(forContent content: ContentModel) {
         let userCanViewContent = VCurrentUser.user()?.canView(content) == true
-        if let previewImageURL = content.previewImageURL(ofMinimumWidth: bounds.size.width) {
+        if let imageAsset = content.previewImage(ofMinimumWidth: bounds.size.width) {
             if !userCanViewContent {
-                previewImageView.applyBlurToImageURL(previewImageURL, withRadius: Constants.imageViewBlurEffectRadius) { [weak self] in
+                previewImageView.applyBlurToImageURL(imageAsset.url, withRadius: Constants.imageViewBlurEffectRadius) { [weak self] in
                     self?.previewImageView.alpha = 1
                     self?.playButton.alpha = 1
                     self?.spinner.stopAnimating()
                 }
             }
             else {
-                previewImageView.sd_setImageWithURL(previewImageURL) { [weak self] _ in
+                previewImageView.setImageAsset(imageAsset) { [weak self] _ in
                     self?.playButton.alpha = 1
                     self?.spinner.stopAnimating()
                 }
