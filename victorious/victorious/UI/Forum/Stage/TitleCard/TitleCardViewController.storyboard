@@ -69,7 +69,7 @@
                     <connections>
                         <outlet property="authorLabel" destination="rd4-t3-blb" id="b6F-GF-lh3"/>
                         <outlet property="avatarView" destination="giT-8C-waV" id="RbR-uD-ZLi"/>
-                        <outlet property="containerView" destination="s8A-QO-Jkh" id="bRN-VT-T9b"/>
+                        <outlet property="draggableView" destination="s8A-QO-Jkh" id="doC-mh-4TD"/>
                         <outlet property="titleLabel" destination="HIQ-7p-2cM" id="5Ym-Bn-3zp"/>
                     </connections>
                 </viewController>

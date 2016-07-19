@@ -62,6 +62,3 @@ class DraggableBehaviour: UIDynamicBehavior {
         self.itemBehaviour = itemBehaviour
     }
 }
-
-
-

@@ -29,6 +29,8 @@ class TitleCardViewController: UIViewController {
 
     private struct Constants {
         static let cornerRadius = CGFloat(6)
+        static let borderWidth = CGFloat(1)
+        static let borderColor = UIColor(white: 0.0, alpha: 0.1).CGColor
         static let maxWidth = CGFloat(250)
 
         /// This offset is so we clip the left side of the view to create the slide out title card effect.
@@ -47,8 +49,8 @@ class TitleCardViewController: UIViewController {
     @IBOutlet private weak var authorLabel: UILabel!
     @IBOutlet private weak var titleLabel: UILabel!
 
-    /// The draggable container view.
-    @IBOutlet private weak var containerView: UIView!
+    /// The draggable container view, the actual title card that is animated.
+    @IBOutlet private weak var draggableView: UIView!
 
     private var currentState = State.hidden
 
@@ -68,16 +70,12 @@ class TitleCardViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        containerView.applyCornerRadius(Constants.cornerRadius)
-        containerView.layer.borderColor = UIColor(white: 0.0, alpha: 0.1).CGColor
-        containerView.layer.borderWidth = 1
-        view.backgroundColor = .clearColor()
-
-        setupAnimator(with: view)
-        setupRecognizers(on: containerView)
+        setupContainerView()
+        setupDynamics(inReferenceView: view, withDraggableView: draggableView)
+        setupRecognizers(on: draggableView)
 
         // Set the tile card in it's starting state.
-        containerView.center = targetPoint
+        draggableView.center = targetPoint
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -89,18 +87,26 @@ class TitleCardViewController: UIViewController {
 
     // MARK: Private
 
+    private func setupContainerView() {
+        draggableView.applyCornerRadius(Constants.cornerRadius)
+        draggableView.layer.borderColor = Constants.borderColor
+        draggableView.layer.borderWidth = Constants.borderWidth
+        view.backgroundColor = .clearColor()
+    }
+
     private func setupRecognizers(on view: UIView) {
         let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(didPand(_:)))
-        containerView.addGestureRecognizer(panGestureRecognizer)
+        draggableView.addGestureRecognizer(panGestureRecognizer)
         self.panGestureRecognizer = panGestureRecognizer
 
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTap(_:)))
-        containerView.addGestureRecognizer(tapGestureRecognizer)
+        draggableView.addGestureRecognizer(tapGestureRecognizer)
         self.tapGestureRecognizer = tapGestureRecognizer
     }
 
-    private func setupAnimator(with referenceView: UIView) {
+    private func setupDynamics(inReferenceView referenceView: UIView, withDraggableView draggableView: UIView) {
         animator = UIDynamicAnimator(referenceView: referenceView)
+        draggableBehaviour = DraggableBehaviour(with: draggableView)
     }
 
     /// Target point of tile card that depends on current state.
@@ -108,36 +114,37 @@ class TitleCardViewController: UIViewController {
         var point: CGPoint
         switch currentState {
             case .shown:
-                point = CGPoint(x: (containerView.frame.width / 2) + Constants.leadingEdgeOffset, y: containerView.frame.height / 2)
+                point = CGPoint(x: (draggableView.frame.width / 2) + Constants.leadingEdgeOffset, y: draggableView.frame.height / 2)
             case .hidden:
-                point = CGPoint(x: -containerView.frame.width, y: containerView.frame.height / 2)
+                point = CGPoint(x: -draggableView.frame.width, y: draggableView.frame.height / 2)
         }
         print("state -> \(currentState)   point -> \(point)")
         return point
     }
 
     private func animateTitleCard(withInitialVelocity initialVelocity: CGPoint) {
-        if draggableBehaviour == nil {
-            draggableBehaviour = DraggableBehaviour(with: containerView)
+        guard let draggableBehaviour = draggableBehaviour else {
+            return
         }
-        draggableBehaviour?.targetPoint = targetPoint
-        draggableBehaviour?.velocity = initialVelocity
-        animator?.addBehavior(draggableBehaviour!)
+
+        draggableBehaviour.targetPoint = targetPoint
+        draggableBehaviour.velocity = initialVelocity
+        animator?.addBehavior(draggableBehaviour)
     }
 
     @objc private func didPand(recognizer: UIPanGestureRecognizer) {
-        let point = recognizer.translationInView(containerView?.superview)
-        let newCenter = CGPoint(x: containerView.center.x + point.x, y: containerView.center.y)
+        let point = recognizer.translationInView(draggableView?.superview)
+        let newCenter = CGPoint(x: draggableView.center.x + point.x, y: draggableView.center.y)
         if newCenter.x < (targetPoint.x + Constants.horizontalDragLimit) {
-            containerView.center = newCenter
+            draggableView.center = newCenter
         }
-        recognizer.setTranslation(CGPointZero, inView: containerView?.superview)
+        recognizer.setTranslation(CGPointZero, inView: draggableView?.superview)
 
         switch recognizer.state {
             case .Began:
                 animator?.removeAllBehaviors()
             case .Ended:
-                var velocity = recognizer.velocityInView(containerView?.superview)
+                var velocity = recognizer.velocityInView(draggableView?.superview)
                 velocity.y = 0
                 currentState = (velocity.x > 0 ? .shown : .hidden)
                 animateTitleCard(withInitialVelocity: velocity)

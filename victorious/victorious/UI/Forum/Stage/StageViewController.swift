@@ -120,6 +120,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         updateStageHeight()
 
         showStage(animated: true)
+        titleCardViewController?.show()
     }
     
     func removeContent() {
