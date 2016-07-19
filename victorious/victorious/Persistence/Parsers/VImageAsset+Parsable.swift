@@ -13,6 +13,6 @@ extension VImageAsset: PersistenceParsable {
     func populate(fromSourceModel imageAsset: ImageAssetModel) {
         height = imageAsset.size.height
         width = imageAsset.size.width
-        imageURL = imageAsset.url!.absoluteString ?? imageURL
+        imageURL = imageAsset.url?.absoluteString ?? imageURL
     }
 }

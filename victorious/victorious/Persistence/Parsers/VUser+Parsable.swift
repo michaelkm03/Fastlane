@@ -36,10 +36,13 @@ extension VUser: PersistenceParsable {
         }
         
         if !user.previewImages.isEmpty {
-            let newPreviewAssets: [VImageAsset] = user.previewImages.flatMap {
-                let imageAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject(["imageURL": $0.url!.absoluteString])
-                imageAsset.populate(fromSourceModel: $0)
-                return imageAsset
+            let newPreviewAssets: [VImageAsset] = user.previewImages.flatMap { imageAsset in
+                guard let assetURL = imageAsset.url else {
+                    return nil
+                }
+                let persistentImageAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject(["imageURL": assetURL.absoluteString])
+                persistentImageAsset.populate(fromSourceModel: imageAsset)
+                return persistentImageAsset
             }
             self.v_addObjects( newPreviewAssets, to: "previewAssets" )
         }

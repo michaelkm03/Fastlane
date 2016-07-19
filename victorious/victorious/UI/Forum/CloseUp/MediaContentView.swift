@@ -239,12 +239,11 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
                 ) { [weak self] image, _, _, _ in
                     self?.downloadedPreviewImage = image
                     self?.updatePreviewImageIfReady()
-            }
+                }
             case .local(let image):
                 downloadedPreviewImage = image
                 updatePreviewImageIfReady()
-        }
-        
+        }        
     }
     
     private func tearDownPreviewImage() {
