@@ -55,30 +55,24 @@ class CoachmarkManager : NSObject {
      parameter viewController The target view controller
  
     */
-    func displayCoachmark<T : UIViewController where T : CoachmarkDisplayer>
-        (inViewController viewController: T) {
+    func displayCoachmark(inCoachmarkDisplayer displayer: CoachmarkDisplayer, withContainerView container: UIView) {
         resetShownCoachmarks() //REMOVE BEFORE RELEASE
-        let screenIdentifier = viewController.screenIdentifier
+        let screenIdentifier = displayer.screenIdentifier
         if let index = coachmarks.indexOf({ $0.screenIdentifier == screenIdentifier}) {
             let coachmarkToDisplay = coachmarks[index]
             
             var highlightFrame: CGRect? = nil
             if let highlightIdentifier = coachmarkToDisplay.highlightIdentifier,
-                frame = viewController.highlightFrame(highlightIdentifier) {
+                frame = displayer.highlightFrame(highlightIdentifier) {
                 highlightFrame = frame
             }
             
             if (!coachmarkToDisplay.hasBeenShown) {
                 
-                let containerFrame = viewController.navigationController?.view.bounds ?? viewController.view.bounds
+                let containerFrame = container.bounds
                 let coachmarkView = CoachmarkView(coachmark: coachmarkToDisplay, containerFrame: containerFrame, highlightFrame: highlightFrame)
                 
-                if let containerView = viewController.navigationController?.view {
-                    containerView.addSubview(coachmarkView)
-                }
-                else {
-                    viewController.view.addSubview(coachmarkView)
-                }
+                container.addSubview(coachmarkView)
                 
                 coachmarkToDisplay.hasBeenShown = true
                 saveCoachmarkState()

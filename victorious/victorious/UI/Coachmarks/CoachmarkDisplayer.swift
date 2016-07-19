@@ -27,7 +27,7 @@ protocol CoachmarkDisplayer {
     parameter identifier The identifier of the item to highlight 
     return The frame
 */
-    func highlightFrame(forIdentifier: String) -> CGRect?
+    func highlightFrame(identifier: String) -> CGRect?
     
 
 

@@ -109,7 +109,9 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        dependencyManager.coachmarkManager?.displayCoachmark(inViewController: self)
+        if let containerView = navigationController?.view ?? self.view {
+            dependencyManager.coachmarkManager?.displayCoachmark(inCoachmarkDisplayer: self, withContainerView: containerView)
+        }
     }
     
     // MARK: - ContentCellTracker
@@ -218,8 +220,11 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         return dependencyManager.stringForKey(VDependencyManagerIDKey)
     }
     
-    func highlightFrame(forIdentifier: String) -> CGRect? {
-        return CGRect(x: 0, y: 0, width: 100, height: 100)
+    func highlightFrame(identifier: String) -> CGRect? {
+        if (identifier == "bump") {
+            return (upvoteButton.valueForKey("view") as? UIView)?.frame
+        }
+        return nil
     }
 }
 

@@ -36,42 +36,48 @@ class CoachmarkView: UIView, VBackgroundContainer {
         super.init(frame: containerFrame)
         
         let dependencyManager = coachmark.dependencyManager
-//        
-//        let detailsView = TextContainerView()
-//        detailsView.axis = .Vertical
-//        detailsView.distribution = .EqualCentering
-//        detailsView.alignment = .Center
-//        
-//        let titleLabel = UILabel()
-//        titleLabel.text = dependencyManager.title
-//        titleLabel.font = dependencyManager.titleFont
-//        titleLabel.textColor = dependencyManager.titleColor
-//        detailsView.addArrangedSubview(titleLabel)
-//        
-//        let textLabel = UILabel()
-//        textLabel.text = dependencyManager.text
-//        textLabel.font = dependencyManager.textFont
-//        textLabel.textColor = dependencyManager.textColor
-//        detailsView.addArrangedSubview(textLabel)
-//        
-//        let closeButton = dependencyManager.closeButton
-//        closeButton.addTarget(self, action: #selector(CoachmarkView.closeButtonAction), forControlEvents: .TouchUpInside)
-//        detailsView.addArrangedSubview(closeButton)
-//        self.addSubview(detailsView)
-//        
-//        detailsView.bottomAnchor.constraintEqualToAnchor(self.bottomAnchor).active = true
-//        detailsView.widthAnchor.constraintEqualToAnchor(self.widthAnchor).active = true
-//        detailsView.centerXAnchor.constraintEqualToAnchor(self.centerXAnchor).active = true
-//        
-//        var height = titleLabel.intrinsicContentSize().height + textLabel.intrinsicContentSize().height + closeButton.intrinsicContentSize().height
-//        height += Constants.textContainerPadding * 3
-//        detailsView.heightAnchor.constraintEqualToConstant(height).active = true
+        
+        let detailsView = TextContainerView()
+        detailsView.axis = .Vertical
+        detailsView.distribution = .EqualCentering
+        detailsView.alignment = .Center
+
+        let titleLabel = UILabel()
+        titleLabel.text = dependencyManager.title
+        titleLabel.font = dependencyManager.titleFont
+        titleLabel.textColor = dependencyManager.titleColor
+        detailsView.addArrangedSubview(titleLabel)
+        
+        let textLabel = UILabel()
+        textLabel.text = dependencyManager.text
+        textLabel.font = dependencyManager.textFont
+        textLabel.textColor = dependencyManager.textColor
+        textLabel.numberOfLines = 0
+        detailsView.addArrangedSubview(textLabel)
+        
+        let closeButton = dependencyManager.closeButton
+        closeButton.addTarget(self, action: #selector(CoachmarkView.closeButtonAction), forControlEvents: .TouchUpInside)
+        detailsView.addArrangedSubview(closeButton)
+        
+        detailsView.translatesAutoresizingMaskIntoConstraints = false
+        dependencyManager.addBackgroundToBackgroundHost(detailsView, forKey: Constants.textBackgroundKey)
+        self.addSubview(detailsView)
+        
+        detailsView.bottomAnchor.constraintEqualToAnchor(self.bottomAnchor).active = true
+        detailsView.widthAnchor.constraintEqualToAnchor(self.widthAnchor).active = true
+        detailsView.centerXAnchor.constraintEqualToAnchor(self.centerXAnchor).active = true
+//
+        var height = titleLabel.intrinsicContentSize().height + textLabel.intrinsicContentSize().height + closeButton.intrinsicContentSize().height
+        height += Constants.textContainerPadding * 3
+        detailsView.heightAnchor.constraintEqualToConstant(height).active = true
 //        self.translatesAutoresizingMaskIntoConstraints = false
 //       
     
-       dependencyManager.addBackgroundToBackgroundHost(self)
+        dependencyManager.addBackgroundToBackgroundHost(self)
         self.addSubview(backgroundView)
+        sendSubviewToBack(backgroundView)
         self.v_addFitToParentConstraintsToSubview(backgroundView)
+        backgroundView.sizeToFit()
        // dependencyManager.addBackgroundToBackgroundHost(detailsView, forKey: Constants.textBackgroundKey)
         
         if let highlightFrame = highlightFrame {
