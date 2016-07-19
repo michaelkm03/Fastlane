@@ -29,35 +29,39 @@ class DraggableBehaviour: UIDynamicBehavior {
         }
     }
 
-    private struct Constants {
-        static let frequency = CGFloat(3.5)
-        static let damping = CGFloat(0.4)
-        static let length = CGFloat(0)
-        static let density = CGFloat(100)
-        static let resistance = CGFloat(10)
+    struct Parameters {
+       var frequency = CGFloat(3.5)
+       var damping = CGFloat(0.4)
+       var length = CGFloat(0)
+       var density = CGFloat(100)
+       var resistance = CGFloat(10)
     }
 
     private var item: UIDynamicItem
     private var attachmentBehaviour: UIAttachmentBehavior?
     private var itemBehaviour: UIDynamicItemBehavior?
+    private var parameters: Parameters
 
-    init(with item: UIDynamicItem) {
+    /// Initialize with a `UIDynamicItem` which will be the item dragged around on the screen. 
+    /// Pass in a `Parameters` struct in order to tweak the values that feeds into the physics engine.
+    init(with item: UIDynamicItem, and parameters: Parameters = Parameters()) {
         self.item = item
+        self.parameters = parameters
         super.init()
         setup()
     }
 
     private func setup() {
         let attachmentBehaviour = UIAttachmentBehavior(item: item, attachedToAnchor: CGPointZero)
-        attachmentBehaviour.frequency = Constants.frequency
-        attachmentBehaviour.damping = Constants.damping
-        attachmentBehaviour.length = Constants.length
+        attachmentBehaviour.frequency = parameters.frequency
+        attachmentBehaviour.damping = parameters.damping
+        attachmentBehaviour.length = parameters.length
         self.addChildBehavior(attachmentBehaviour)
         self.attachmentBehaviour = attachmentBehaviour
 
         let itemBehaviour = UIDynamicItemBehavior(items: [item])
-        itemBehaviour.density = Constants.density
-        itemBehaviour.resistance = Constants.resistance
+        itemBehaviour.density = parameters.density
+        itemBehaviour.resistance = parameters.resistance
         self.addChildBehavior(itemBehaviour)
         self.itemBehaviour = itemBehaviour
     }
