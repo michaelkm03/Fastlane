@@ -200,6 +200,12 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         router.navigate(to: destination)
     }
 
+    // MARK: - StageShrinkingAnimatorDelegate
+
+    func willSwitch(to state: StageState) {
+        titleCardViewController?.hide()
+    }
+
     // MARK: - Deep linking content
 
     @objc private func didTapOnContent() {
