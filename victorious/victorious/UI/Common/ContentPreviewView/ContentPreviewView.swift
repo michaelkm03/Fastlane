@@ -41,8 +41,11 @@ class ContentPreviewView: UIView {
         }
     }
     
-    var loadingSpinnerEnabled: Bool = false {
-        didSet {
+    var loadingSpinnerEnabled: Bool {
+        get {
+            return !spinner.hidden
+        }
+        set {
             spinner.hidden = !loadingSpinnerEnabled
         }
     }
