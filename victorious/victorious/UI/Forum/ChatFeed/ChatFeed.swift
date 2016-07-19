@@ -52,11 +52,11 @@ extension ChatFeed {
     ///
     /// The items are expected to have already been updated in the data source.
     ///
-    /// If pending content has been added or removed, the change in count should be passed in as `pendingContentDelta`,
-    /// which will adjust the number of inserted items accordingly.
+    /// If pending content has been added or removed, the added count or the indices of the removed items should be
+    /// passed in via `newPendingContentCount` and `removedPendingContentIndices`.
     ///
-    func handleNewItems(newItems: [ChatFeedContent], loadingType: PaginatedLoadingType, pendingContentDelta: Int = 0, completion: (() -> Void)? = nil) {
-        guard newItems.count > 0 || pendingContentDelta != 0 || loadingType == .refresh else {
+    func handleNewItems(newItems: [ChatFeedContent], loadingType: PaginatedLoadingType, newPendingContentCount: Int = 0, removedPendingContentIndices: NSIndexSet = NSIndexSet(), completion: (() -> Void)? = nil) {
+        guard newItems.count > 0 || newPendingContentCount != 0 || removedPendingContentIndices.count > 0 || loadingType == .refresh else {
             return
         }
         
@@ -70,10 +70,10 @@ extension ChatFeed {
         
         let collectionView = self.collectionView
         let wasScrolledToBottom = collectionView.v_isScrolledToBottom
-        let oldPendingItemCount = max(0, chatInterfaceDataSource.pendingItems.count - pendingContentDelta)
-        let insertingAbovePendingContent = oldPendingItemCount > 0 && pendingContentDelta <= 0
+        let oldPendingItemCount = max(0, chatInterfaceDataSource.pendingItems.count - newPendingContentCount)
+        let insertingAbovePendingContent = oldPendingItemCount > 0 && newPendingContentCount <= 0
         
-        updateCollectionView(with: newItems, loadingType: loadingType, pendingContentDelta: pendingContentDelta) {
+        updateCollectionView(with: newItems, loadingType: loadingType, newPendingContentCount: newPendingContentCount, removedPendingContentIndices: removedPendingContentIndices) {
             collectionView.collectionViewLayout.invalidateLayout()
             
             CATransaction.commit()
@@ -90,7 +90,7 @@ extension ChatFeed {
         }
     }
     
-    private func updateCollectionView(with newItems: [ChatFeedContent], loadingType: PaginatedLoadingType, pendingContentDelta: Int, completion: () -> Void) {
+    private func updateCollectionView(with newItems: [ChatFeedContent], loadingType: PaginatedLoadingType, newPendingContentCount: Int, removedPendingContentIndices: NSIndexSet, completion: () -> Void) {
         if loadingType == .refresh {
             collectionView.reloadData()
             completion()
@@ -127,14 +127,13 @@ extension ChatFeed {
                         break
                 }
                 
-                for index in 0 ..< abs(pendingContentDelta) {
-                    if pendingContentDelta < 0 {
-                        collectionView.deleteItemsAtIndexPaths([NSIndexPath(forItem: oldVisibleItemCount + index, inSection: 0)])
-                    }
-                    else {
-                        collectionView.insertItemsAtIndexPaths([NSIndexPath(forItem: itemCount - 1 - index, inSection: 0)])
-                    }
-                }
+                collectionView.insertItemsAtIndexPaths((0 ..< newPendingContentCount).map {
+                    NSIndexPath(forItem: itemCount - 1 - $0, inSection: 0)
+                })
+                
+                collectionView.deleteItemsAtIndexPaths(removedPendingContentIndices.map {
+                    NSIndexPath(forItem: oldVisibleItemCount + $0, inSection: 0)
+                })
             }, completion: { _ in
                 completion()
             })

@@ -144,7 +144,7 @@ public class Content: ContentModel {
         self.hashtags = []
         self.type = type
         
-        if (type == .text) {
+        if type == .text {
             self.text = json[typeString]["data"].string
         }
         else {
@@ -201,6 +201,7 @@ public class Content: ContentModel {
     public init(
         id: String? = nil,
         createdAt: NSDate = NSDate(),
+        postedAt: NSDate = NSDate(),
         type: ContentType = .text,
         text: String? = nil,
         assets: [ContentMediaAssetModel] = [],
@@ -208,6 +209,7 @@ public class Content: ContentModel {
         author: UserModel
     ) {
         self.id = id
+        self.postedAt = postedAt
         self.createdAt = createdAt
         self.type = type
         self.text = text
@@ -215,7 +217,6 @@ public class Content: ContentModel {
         self.previewImages = previewImages
         self.author = author
         
-        self.postedAt = nil
         self.status = nil
         self.hashtags = []
         self.shareURL = nil

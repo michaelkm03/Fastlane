@@ -74,10 +74,28 @@ class ContentPublisher {
         publishNextContent()
     }
     
-    /// Should be called after calling `publish` to confirm that content was published, which will remove it from the
-    /// queue.
-    func confirmPublish(count count: Int) {
-        pendingContent.removeRange(0 ..< count)
+    /// Removes `chatFeedContents` from the `pendingQueue`, returning the indices of each removed item in the queue.
+    func remove(chatFeedContents: [ChatFeedContent]) -> NSIndexSet {
+        let removedIndices = NSMutableIndexSet()
+        
+        for (index, chatFeedContent) in pendingContent.enumerate() {
+            let content = chatFeedContent.content
+            
+            for removedChatFeedContent in chatFeedContents {
+                let removedContent = removedChatFeedContent.content
+                
+                if removedContent.wasCreatedByCurrentUser && removedContent.postedAt == content.postedAt {
+                    removedIndices.addIndex(index)
+                    break
+                }
+            }
+        }
+        
+        for (removedIndexCount, index) in removedIndices.enumerate() {
+            pendingContent.removeAtIndex(index - removedIndexCount)
+        }
+        
+        return removedIndices
     }
     
     private func publishNextContent() {

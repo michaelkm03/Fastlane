@@ -12,6 +12,7 @@ extension VContent: PersistenceParsable {
     func populate(fromSourceModel content: Content) {
         v_isVIPOnly = content.isVIPOnly ?? v_isVIPOnly
         v_createdAt = content.createdAt ?? v_createdAt
+        v_postedAt = content.postedAt ?? v_postedAt
         v_remoteID = content.id ?? v_remoteID
         v_shareURL = content.shareURL?.absoluteString ?? v_shareURL
         v_linkedURL = content.linkedURL?.absoluteString ?? v_linkedURL

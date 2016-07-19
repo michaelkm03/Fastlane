@@ -129,8 +129,8 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     // MARK: - ChatFeedDataSourceDelegate
     
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didLoadItems newItems: [ChatFeedContent], loadingType: PaginatedLoadingType) {
-        let removedPendingContentCount = removePendingContent(newItems: newItems, loadingType: loadingType)
-        handleNewItems(newItems, loadingType: loadingType, pendingContentDelta: -removedPendingContentCount)
+        let removedPendingContentIndices = removePendingContent(newItems, loadingType: loadingType)
+        handleNewItems(newItems, loadingType: loadingType, removedPendingContentIndices: removedPendingContentIndices)
     }
     
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didStashItems stashedItems: [ChatFeedContent]) {
@@ -146,9 +146,9 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didUnstashItems unstashedItems: [ChatFeedContent]) {
         newItemsController?.hide()
         
-        let removedPendingContentCount = removePendingContent(newItems: unstashedItems, loadingType: .newer)
+        let removedPendingContentIndices = removePendingContent(unstashedItems, loadingType: .newer)
         
-        handleNewItems(unstashedItems, loadingType: .newer, pendingContentDelta: -removedPendingContentCount) { [weak self] in
+        handleNewItems(unstashedItems, loadingType: .newer, removedPendingContentIndices: removedPendingContentIndices) { [weak self] in
             if self?.collectionView.v_isScrolledToBottom == false {
                 self?.collectionView.v_scrollToBottomAnimated(true)
             }
@@ -163,15 +163,12 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         return delegate?.publisher(for: self)?.pendingContent ?? []
     }
     
-    private func removePendingContent(newItems newItems: [ChatFeedContent], loadingType: PaginatedLoadingType) -> Int {
+    private func removePendingContent(contentToRemove: [ChatFeedContent], loadingType: PaginatedLoadingType) -> NSIndexSet {
         guard let publisher = delegate?.publisher(for: self) where loadingType == .newer else {
-            return 0
+            return NSIndexSet()
         }
         
-        let userContentCount = newItems.filter({ $0.content.wasCreatedByCurrentUser }).count
-        let removalCount = min(publisher.pendingContent.count, userContentCount)
-        publisher.confirmPublish(count: removalCount)
-        return removalCount
+        return publisher.remove(contentToRemove)
     }
     
     // MARK: - VScrollPaginatorDelegate
