@@ -185,11 +185,6 @@ class ContentPublisher {
         }
     }
     
-    /// Removes `content` from the pending queue
-    func remove(chatFeedContent: ChatFeedContent) {
-        pendingContent = pendingContent.filter { $0.content.id != chatFeedContent.content.id }
-    }
-    
     // MARK: - Index of Queue
     
     /// Returns the first content in the queue that has the given `state`.

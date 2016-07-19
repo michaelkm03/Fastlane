@@ -377,7 +377,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             return
         }
         
-        publisher?.remove(chatFeedContent)
+        publisher?.remove([chatFeedContent])
         
         chatFeed?.collectionView.deleteItemsAtIndexPaths([
             NSIndexPath(forItem: dataSource.visibleItems.count + index, inSection: 0)
