@@ -160,12 +160,12 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     }
     
     func pendingItems(for chatFeedDataSource: ChatFeedDataSource) -> [ChatFeedContent] {
-        return delegate?.publisher(for: self)?.pendingContent ?? []
+        return delegate?.publisher(for: self)?.pendingItems ?? []
     }
     
-    private func removePendingContent(contentToRemove: [ChatFeedContent], loadingType: PaginatedLoadingType) -> NSIndexSet {
+    private func removePendingContent(contentToRemove: [ChatFeedContent], loadingType: PaginatedLoadingType) -> [Int] {
         guard let publisher = delegate?.publisher(for: self) where loadingType == .newer else {
-            return NSIndexSet()
+            return []
         }
         
         return publisher.remove(contentToRemove)

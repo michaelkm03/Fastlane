@@ -347,7 +347,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             return
         }
         
-        chatFeed?.collectionView.reloadItemsAtIndexPaths(contentPublisher.pendingContent.indices.map {
+        chatFeed?.collectionView.reloadItemsAtIndexPaths(contentPublisher.pendingItems.indices.map {
             NSIndexPath(forItem: itemCount - 1 - $0, inSection: 0)
         })
     }
@@ -356,7 +356,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     private func retryPublish(chatFeedContent: ChatFeedContent) {
         guard
-            let index = publisher?.pendingContent.indexOf({ $0.content.id == chatFeedContent.content.id }),
+            let index = publisher?.pendingItems.indexOf({ $0.content.id == chatFeedContent.content.id }),
             let dataSource = chatFeed?.chatInterfaceDataSource
         else {
             return
@@ -371,7 +371,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     private func delete(chatFeedContent: ChatFeedContent) {
         guard
-            let index = publisher?.pendingContent.indexOf({ $0.content.id == chatFeedContent.content.id }),
+            let index = publisher?.pendingItems.indexOf({ $0.content.id == chatFeedContent.content.id }),
             let dataSource = chatFeed?.chatInterfaceDataSource
         else {
             return

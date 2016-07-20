@@ -54,7 +54,7 @@ class ContentPublisher {
     // MARK: - Publishing
     
     /// The content that is currently pending creation.
-    private(set) var pendingContent = [ChatFeedContent]()
+    private(set) var pendingItems = [ChatFeedContent]()
     
     /// Queues `content` for publishing.
     func publish(content: ContentModel, withWidth width: CGFloat) {
@@ -63,11 +63,11 @@ class ContentPublisher {
             return
         }
         
-        pendingContent.append(chatFeedContent)
+        pendingItems.append(chatFeedContent)
         delegate?.contentPublisher(self, didQueue: chatFeedContent)
         
         // We want to make sure that we send items sequentially
-        guard !pendingContent.contains({ $0.creationState == .sending }) else {
+        guard !pendingItems.contains({ $0.creationState == .sending }) else {
             return
         }
         
@@ -75,27 +75,20 @@ class ContentPublisher {
     }
     
     /// Removes `chatFeedContents` from the `pendingQueue`, returning the indices of each removed item in the queue.
-    func remove(chatFeedContents: [ChatFeedContent]) -> NSIndexSet {
-        let removedIndices = NSMutableIndexSet()
+    func remove(itemsToRemove: [ChatFeedContent]) -> [Int] {
+        let indices = pendingItems.enumerate().filter { index, item in
+            itemsToRemove.contains { itemToRemove in
+                 itemToRemove.matchesForRemoval(item)
+            }
+        }.map { $0.index }
         
-        for (index, chatFeedContent) in pendingContent.enumerate() {
-            let content = chatFeedContent.content
-            
-            for removedChatFeedContent in chatFeedContents {
-                let removedContent = removedChatFeedContent.content
-                
-                if removedContent.wasCreatedByCurrentUser && removedContent.postedAt == content.postedAt {
-                    removedIndices.addIndex(index)
-                    break
-                }
+        pendingItems = pendingItems.filter { item in
+            !itemsToRemove.contains { itemToRemove in
+                 itemToRemove.matchesForRemoval(item)
             }
         }
         
-        for (removedIndexCount, index) in removedIndices.enumerate() {
-            pendingContent.removeAtIndex(index - removedIndexCount)
-        }
-        
-        return removedIndices
+        return indices
     }
     
     private func publishNextContent() {
@@ -103,9 +96,9 @@ class ContentPublisher {
             return
         }
         
-        pendingContent[index].creationState = .sending
+        pendingItems[index].creationState = .sending
 
-        upload(pendingContent[index].content) { [weak self] error in
+        upload(pendingItems[index].content) { [weak self] error in
             // The content's index will have changed by now if a preceding item was confirmed while this one was being
             // sent, so we need to get an updated index.
             guard let strongSelf = self, updatedIndex = strongSelf.indexOfContent(withState: .sending) else {
@@ -113,14 +106,14 @@ class ContentPublisher {
             }
             
             if error != nil {
-                for index in strongSelf.pendingContent.indices {
-                    strongSelf.pendingContent[index].creationState = .failed
+                for index in strongSelf.pendingItems.indices {
+                    strongSelf.pendingItems[index].creationState = .failed
                 }
                 
-                strongSelf.delegate?.contentPublisher(strongSelf, didFailToSend: strongSelf.pendingContent[updatedIndex])
+                strongSelf.delegate?.contentPublisher(strongSelf, didFailToSend: strongSelf.pendingItems[updatedIndex])
             }
             else {
-                strongSelf.pendingContent[updatedIndex].creationState = .sent
+                strongSelf.pendingItems[updatedIndex].creationState = .sent
                 strongSelf.publishNextContent()
             }
         }
@@ -168,7 +161,7 @@ class ContentPublisher {
             return
         }
         
-        pendingContent[index].creationState = .sending
+        pendingItems[index].creationState = .sending
         
         upload(chatFeedContent.content) { [weak self] error in
             guard let strongSelf = self, updatedIndex = strongSelf.index(of: chatFeedContent) else {
@@ -176,11 +169,11 @@ class ContentPublisher {
             }
             
             if error != nil {
-                strongSelf.pendingContent[updatedIndex].creationState = .failed
+                strongSelf.pendingItems[updatedIndex].creationState = .failed
                 strongSelf.delegate?.contentPublisher(strongSelf, didFailToSend: chatFeedContent)
             }
             else {
-                strongSelf.pendingContent[updatedIndex].creationState = .sent
+                strongSelf.pendingItems[updatedIndex].creationState = .sent
             }
         }
     }
@@ -189,12 +182,12 @@ class ContentPublisher {
     
     /// Returns the first content in the queue that has the given `state`.
     private func indexOfContent(withState state: ContentCreationState) -> Int? {
-        return pendingContent.indexOf { $0.creationState == state }
+        return pendingItems.indexOf { $0.creationState == state }
     }
     
     /// Returns the index of the specified content
     private func index(of chatFeedContent: ChatFeedContent) -> Int? {
-        return pendingContent.indexOf { $0.content.id == chatFeedContent.content.id }
+        return pendingItems.indexOf { $0.content.id == chatFeedContent.content.id }
     }
 }
 
@@ -215,5 +208,14 @@ private extension VDependencyManager {
         return apiPathForKey("textCreationURL", queryParameters: [
             "posted_at": content.postedAt?.timestamp ?? ""
         ])
+    }
+}
+
+private extension ChatFeedContent {
+    func matchesForRemoval(item: ChatFeedContent) -> Bool {
+        guard self.content.wasCreatedByCurrentUser && item.content.wasCreatedByCurrentUser else {
+            return false
+        }
+        return self.content.postedAt == item.content.postedAt
     }
 }

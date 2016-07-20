@@ -55,7 +55,7 @@ extension ChatFeed {
     /// If pending content has been added or removed, the added count or the indices of the removed items should be
     /// passed in via `newPendingContentCount` and `removedPendingContentIndices`.
     ///
-    func handleNewItems(newItems: [ChatFeedContent], loadingType: PaginatedLoadingType, newPendingContentCount: Int = 0, removedPendingContentIndices: NSIndexSet = NSIndexSet(), completion: (() -> Void)? = nil) {
+    func handleNewItems(newItems: [ChatFeedContent], loadingType: PaginatedLoadingType, newPendingContentCount: Int = 0, removedPendingContentIndices: [Int] = [], completion: (() -> Void)? = nil) {
         guard newItems.count > 0 || newPendingContentCount != 0 || removedPendingContentIndices.count > 0 || loadingType == .refresh else {
             return
         }
@@ -90,7 +90,7 @@ extension ChatFeed {
         }
     }
     
-    private func updateCollectionView(with newItems: [ChatFeedContent], loadingType: PaginatedLoadingType, newPendingContentCount: Int, removedPendingContentIndices: NSIndexSet, completion: () -> Void) {
+    private func updateCollectionView(with newItems: [ChatFeedContent], loadingType: PaginatedLoadingType, newPendingContentCount: Int, removedPendingContentIndices: [Int], completion: () -> Void) {
         if loadingType == .refresh {
             collectionView.reloadData()
             completion()
