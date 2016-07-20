@@ -25,7 +25,7 @@ private struct Types {
 
 // !!! BEWARE DRAGONS BELOW !!!
 // This is an extreme h4ck that I had to implement in order to have this functionality in place at all. :/
-// Please remove as soon as we get a proper sollution in place. And for the record, yes I hate myself for writing this.
+// Please remove as soon as we get a proper solution in place. And for the record, yes I hate myself for writing this.
 //
 // If we get back a stage refresh message with a custom content id (specified below) we are to treat it as a close stage message.
 //
@@ -44,7 +44,6 @@ protocol WebSocketEventDecoder {
 }
 
 extension WebSocketEventDecoder {
-
     /// Returns a *single* ForumEvent from the JSON blob passed in if parsing succeeds.
     /// - NOTE: Don't pass in a JSON blob with multiple events, there is no guarantee which one will be returned.
     func decodeEventFromJSON(json: JSON) -> ForumEvent? {
