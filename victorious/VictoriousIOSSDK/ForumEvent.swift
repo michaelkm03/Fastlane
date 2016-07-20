@@ -36,8 +36,8 @@ public enum ForumEvent {
     /// Requests that the stage is refreshed with new content.
     case refreshStage(RefreshStage)
     
-    /// Closes the main stage
-    case closeMainStage
+    /// Closes either the main or VIP stage.
+    case closeStage(StageSection)
     
     /// Requests that the given user is blocked.
     case blockUser(BlockUser)
