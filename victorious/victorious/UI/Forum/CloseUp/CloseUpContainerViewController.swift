@@ -243,7 +243,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     }
     
     func coachmarkDidDismiss() {
-        isDisplayingCoachmark = false 
+        isDisplayingCoachmark = false
     }
     
     // MARK: - GestureRecognizerDelegate 

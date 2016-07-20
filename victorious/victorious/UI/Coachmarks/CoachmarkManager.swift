@@ -19,6 +19,10 @@ class CoachmarkManager : NSObject {
     var coachmarks: [Coachmark] = []
     var allowCoachmarks = false
     
+    private var trackingManager: VTrackingManager {
+        return VTrackingManager.sharedInstance()
+    }
+    
     init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
         super.init()
@@ -96,6 +100,7 @@ class CoachmarkManager : NSObject {
                 }) {  _ in
                     coachmarkToDisplay.hasBeenShown = true
                     self.saveCoachmarkState()
+                    self.trackingManager.
                     displayer.coachmarkDidShow()
                 }
             }
