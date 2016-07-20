@@ -67,11 +67,6 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
             stageDataSource = setupDataSource(dependencyManager)
         }
     }
-    
-    var canHandleCaptionContent: Bool {
-        return dependencyManager.captionBarDependency != nil
-    }
-    
 
     // MARK: - UIViewController Life cycle
     
