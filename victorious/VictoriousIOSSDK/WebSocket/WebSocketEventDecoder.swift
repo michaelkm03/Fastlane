@@ -33,7 +33,9 @@ protocol WebSocketEventDecoder {
 }
 
 extension WebSocketEventDecoder {
-    
+
+    /// Returns a *single* ForumEvent from the JSON blob passed in if parsing succeeds.
+    /// - NOTE: Don't pass in a JSON blob with multiple events, there is no guarantee which one will be returned.
     func decodeEventFromJSON(json: JSON) -> ForumEvent? {
         var forumEvent: ForumEvent?
         let rootNode = json[Keys.root]
@@ -49,9 +51,7 @@ extension WebSocketEventDecoder {
         
         switch type {
             case Types.chatMessage:
-                // According to the current web socket protocol, we assume there's only one piece of content per socket message
                 let chatJSON = json[Keys.root][Keys.chat]
-                
                 guard let content = Content(chatMessageJSON: chatJSON, serverTime: serverTime) else {
                     return nil
                 }
