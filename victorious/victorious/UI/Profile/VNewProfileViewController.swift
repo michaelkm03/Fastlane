@@ -93,7 +93,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         supplementalRightButtons = []
         
         let isCurrentUser = user?.isCurrentUser == true
-        let isCreator = user?.accessLevel?.isCreator == true
+        let isCreator = user?.accessLevel.isCreator == true
         
         if !isCurrentUser {
             if isCreator && VCurrentUser.user()?.hasValidVIPSubscription != true {
@@ -192,7 +192,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
             return nil
         }
         
-        if user.accessLevel?.isCreator == true {
+        if user.accessLevel.isCreator == true {
             return user.isCurrentUser ? AccessoryScreensKeys.selfCreator : AccessoryScreensKeys.otherCreator
         }
         else {
