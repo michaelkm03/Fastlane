@@ -89,6 +89,10 @@ extension ForumViewController {
     
     func debug_createStageEvents() {
         stageNext()
+        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(stageNext))
+        gestureRecognizer.numberOfTouchesRequired = 3
+        gestureRecognizer.numberOfTapsRequired = 3
+        UIApplication.sharedApplication().windows.first?.addGestureRecognizer(gestureRecognizer)
     }
     
     func stageNext() {
@@ -124,21 +128,10 @@ extension ForumViewController {
                 previewImages: [randPreviewImage()]
             )
         )
+        print("Test harness adding content")
         let stageContent = StageContent(content: content)
         stage?.addStageContent(stageContent)
         stageCount += 1
-        
-        let time = next["length"] != nil ? Double(next["length"]!)! : ForumViewController.defaultStageContentLength
-        
-        VTimerManager.addTimerManagerWithTimeInterval(
-            time,
-            target: self,
-            selector: #selector(stageNext),
-            userInfo: nil,
-            repeats: false,
-            toRunLoop: NSRunLoop.mainRunLoop(),
-            withRunMode: NSRunLoopCommonModes
-        )
     }
 
 }
