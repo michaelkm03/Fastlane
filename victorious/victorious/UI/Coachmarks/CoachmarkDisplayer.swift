@@ -29,4 +29,25 @@ protocol CoachmarkDisplayer {
     return The frame
 */
     func highlightFrame(identifier: String) -> CGRect?
+    
+/**
+    Called when the coachmark is displayed to the user, 
+    after a short animation
+*/
+    func coachmarkDidShow()
+
+/** 
+    Called when the coachmark is dimissed by the user
+ */
+    func coachmarkDidDismiss()
+}
+
+extension CoachmarkDisplayer {
+    func coachmarkDidShow() {
+        return
+    }
+    
+    func coachmarkDidDismiss() {
+        return
+    }
 }

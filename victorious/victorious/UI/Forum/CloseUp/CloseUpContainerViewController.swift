@@ -17,7 +17,7 @@ private struct Constants {
     static let estimatedStatusBarHeight: CGFloat = 20.0
 }
 
-class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, ContentCellTracker, CoachmarkDisplayer {
+class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, ContentCellTracker, CoachmarkDisplayer, UIGestureRecognizerDelegate {
     
     private let gridStreamController: GridStreamViewController<CloseUpView>
     private var dependencyManager: VDependencyManager
@@ -28,6 +28,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     }
     private let contentID: String
     private var firstPresentation = true
+    private var isDisplayingCoachmark = false
     
     private lazy var shareButton: UIBarButtonItem = {
         return UIBarButtonItem(
@@ -113,6 +114,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
         if let containerView = navigationController?.view ?? self.view {
             dependencyManager.coachmarkManager?.displayCoachmark(inCoachmarkDisplayer: self, withContainerView: containerView)
         }
@@ -234,6 +236,20 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
                     )
         }
         return nil
+    }
+    
+    func coachmarkDidShow() {
+        isDisplayingCoachmark = true
+    }
+    
+    func coachmarkDidDismiss() {
+        isDisplayingCoachmark = false 
+    }
+    
+    // MARK: - GestureRecognizerDelegate 
+    
+    func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return !isDisplayingCoachmark
     }
 }
 

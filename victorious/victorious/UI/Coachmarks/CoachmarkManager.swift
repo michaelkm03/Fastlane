@@ -87,13 +87,15 @@ class CoachmarkManager : NSObject {
             if (!coachmarkToDisplay.hasBeenShown) {
                 
                 let containerFrame = container.bounds
-                let coachmarkView = CoachmarkView(coachmark: coachmarkToDisplay, containerFrame: containerFrame, highlightFrame: highlightFrame)
+                let coachmarkView = CoachmarkView(coachmark: coachmarkToDisplay, containerFrame: containerFrame, highlightFrame: highlightFrame, displayer: displayer)
                 coachmarkView.alpha = 0
                 container.addSubview(coachmarkView)
                 
                 UIView.animateWithDuration(1, animations: { 
                     coachmarkView.alpha = 1
-                })
+                }) { _ in
+                    displayer.coachmarkDidShow()
+                }
                 
                 coachmarkToDisplay.hasBeenShown = true
                 saveCoachmarkState()

@@ -22,8 +22,10 @@ private struct Constants {
     static let highlightTargetKey = "highlight.target"
     static let highlightForegroundKey = "highlight.foreground"
     static let textContainerStrokeColorKey = "stroke.color"
-    static let textContainerItemWidth: CGFloat = 300
-    static let textContainerPadding: CGFloat = -10.0
+    static let textContainerTextWidth: CGFloat = 279
+    static let closeButtonWidth: CGFloat = 100
+    static let closeButtonHeight: CGFloat = 40
+    static let textContainerPadding: CGFloat = -20.0
     static let highlightBoundaryStrokeThickness: CGFloat = 4.0
     static let highlightCircleRadius: CGFloat = 50.0
     static let highlightStrokeColor = UIColor.blackColor().CGColor
@@ -33,9 +35,12 @@ private struct Constants {
 class CoachmarkView: UIView, VBackgroundContainer {
     
     let backgroundView = UIView()
+    var displayer: CoachmarkDisplayer?
     
-    init(coachmark: Coachmark, containerFrame: CGRect, highlightFrame: CGRect? = nil) {
+    init(coachmark: Coachmark, containerFrame: CGRect, highlightFrame: CGRect? = nil, displayer: CoachmarkDisplayer? = nil) {
         super.init(frame: containerFrame)
+        
+        self.displayer = displayer
         
         let dependencyManager = coachmark.dependencyManager
         
@@ -43,51 +48,8 @@ class CoachmarkView: UIView, VBackgroundContainer {
         self.addSubview(backgroundView)
         self.v_addFitToParentConstraintsToSubview(backgroundView)
         
-        if let highlightFrame = highlightFrame {
-            // The following code creates a "hole" in the view's layer
-            // We start with a boundary path that encloses the whole view, then we add a path for the
-            // circular highlight. Lastly, because we fill with the EvenOddRule, everything between the
-            // circle and the boundary is filled, and this is used to mask the layer
-            let circularPath = UIBezierPath(
-               arcCenter: highlightFrame.center,
-               radius: Constants.highlightCircleRadius,
-               startAngle: 0,
-               endAngle: CGFloat(2 * M_PI),
-               clockwise: true
-            )
-            
-            let maskPath = UIBezierPath(rect: containerFrame)
-            maskPath.appendPath(circularPath)
-
-            let backgroundMaskLayer =  CAShapeLayer()
-            backgroundMaskLayer.path = maskPath.CGPath
-            backgroundMaskLayer.fillRule = kCAFillRuleEvenOdd
-            backgroundView.layer.mask = backgroundMaskLayer
-            
-            //Fill in the "hole" using the specified foreground
-            let foregroundMasklayer = CAShapeLayer()
-            foregroundMasklayer.path = circularPath.CGPath  //Now we only want the inside of the circle
-            
-            let foregroundView = HighlightForegroundView(frame: containerFrame)
-            foregroundView.layer.mask = foregroundMasklayer
-            
-            //Create the stroke around the highlight
-            let strokeLayer = CAShapeLayer()
-            strokeLayer.path = circularPath.CGPath
-            strokeLayer.strokeColor = Constants.highlightStrokeColor
-            strokeLayer.lineWidth = Constants.highlightBoundaryStrokeThickness
-            strokeLayer.strokeStart = 0.0
-            strokeLayer.strokeEnd = 1.0
-            strokeLayer.fillColor = nil
-            foregroundView.layer.addSublayer(strokeLayer)
-            
-            dependencyManager.addBackgroundToBackgroundHost(foregroundView, forKey: Constants.highlightForegroundKey)
-            self.addSubview(foregroundView)
-            v_addFitToParentConstraintsToSubview(foregroundView)
-        }
-        
         let detailsView = TextContainerView()
-
+        
         let titleLabel = UILabel()
         titleLabel.text = dependencyManager.title
         titleLabel.font = dependencyManager.titleFont
@@ -120,16 +82,72 @@ class CoachmarkView: UIView, VBackgroundContainer {
         closeButton.translatesAutoresizingMaskIntoConstraints = false
         closeButton.bottomAnchor.constraintEqualToAnchor(detailsView.bottomAnchor, constant: Constants.textContainerPadding).active = true
         closeButton.centerXAnchor.constraintEqualToAnchor(detailsView.centerXAnchor).active = true
-        closeButton.widthAnchor.constraintEqualToConstant(Constants.textContainerItemWidth).active = true
-  
+        closeButton.widthAnchor.constraintEqualToConstant(Constants.closeButtonWidth).active = true
+        closeButton.heightAnchor.constraintEqualToConstant(Constants.closeButtonHeight).active = true
+        
         textLabel.translatesAutoresizingMaskIntoConstraints = false
         textLabel.bottomAnchor.constraintEqualToAnchor(closeButton.topAnchor, constant: Constants.textContainerPadding).active = true
         textLabel.centerXAnchor.constraintEqualToAnchor(detailsView.centerXAnchor).active = true
-        textLabel.widthAnchor.constraintEqualToConstant(Constants.textContainerItemWidth).active = true
+        textLabel.widthAnchor.constraintEqualToConstant(Constants.textContainerTextWidth).active = true
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.bottomAnchor.constraintEqualToAnchor(textLabel.topAnchor, constant: Constants.textContainerPadding).active = true
+        titleLabel.widthAnchor.constraintEqualToConstant(Constants.textContainerTextWidth).active = true
         titleLabel.centerXAnchor.constraintEqualToAnchor(detailsView.centerXAnchor).active = true
+        
+        // Must force layout here so that we can use the height
+        // of the view when calculating the region to mask
+        detailsView.layoutIfNeeded()
+        
+        if let highlightFrame = highlightFrame {
+            // The following code creates a "hole" in the view's layer
+            // We start with a boundary path that encloses the whole view, then we add a path for the
+            // circular highlight. Lastly, because we fill with the EvenOddRule, everything between the
+            // circle and the boundary is filled, and this is used to mask the layer
+            let circularPath = UIBezierPath(
+               arcCenter: highlightFrame.center,
+               radius: Constants.highlightCircleRadius,
+               startAngle: 0,
+               endAngle: CGFloat(2 * M_PI),
+               clockwise: true
+            )
+            
+            let maskPath = UIBezierPath(rect: CGRect(
+                                                origin: containerFrame.origin,
+                                                size: CGSize(width: containerFrame.width, height: containerFrame.height - detailsView.frame.height)
+                                                )
+                                        )
+            maskPath.appendPath(circularPath)
+
+            let backgroundMaskLayer =  CAShapeLayer()
+            backgroundMaskLayer.path = maskPath.CGPath
+            backgroundMaskLayer.fillRule = kCAFillRuleEvenOdd
+            backgroundView.layer.mask = backgroundMaskLayer
+            
+            //Fill in the "hole" using the specified foreground
+            let foregroundMasklayer = CAShapeLayer()
+            foregroundMasklayer.path = circularPath.CGPath  //Now we only want the inside of the circle
+            
+            let foregroundView = HighlightForegroundView(frame: containerFrame)
+            foregroundView.layer.mask = foregroundMasklayer
+            
+            //Create the stroke around the highlight
+            let strokeLayer = CAShapeLayer()
+            strokeLayer.path = circularPath.CGPath
+            strokeLayer.strokeColor = Constants.highlightStrokeColor
+            strokeLayer.lineWidth = Constants.highlightBoundaryStrokeThickness
+            strokeLayer.strokeStart = 0.0
+            strokeLayer.strokeEnd = 1.0
+            strokeLayer.fillColor = nil
+            foregroundView.layer.addSublayer(strokeLayer)
+            
+            dependencyManager.addBackgroundToBackgroundHost(foregroundView, forKey: Constants.highlightForegroundKey)
+            self.addSubview(foregroundView)
+            v_addFitToParentConstraintsToSubview(foregroundView)
+        }
+        
+        bringSubviewToFront(detailsView)
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -143,6 +161,7 @@ class CoachmarkView: UIView, VBackgroundContainer {
             self.alpha = 0
         }) { (_) in
             self.removeFromSuperview()
+            self.displayer?.coachmarkDidDismiss()
         }
     }
     
@@ -174,7 +193,7 @@ private extension VDependencyManager {
             }
             return titleString.stringByReplacingOccurrencesOfString(Constants.userMacro, withString: "")
         }
-        return "Coachmark"
+        return ""
     }
     
     var titleFont: UIFont {
