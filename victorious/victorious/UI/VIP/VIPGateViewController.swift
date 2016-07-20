@@ -73,6 +73,7 @@ class VIPGateViewController: UIViewController {
             let urlString = dependencyManager.subscriptionFetchURL,
             let subscriptionFetchOperation = VIPFetchSubscriptionRemoteOperation(urlString: urlString)
         else {
+            v_showErrorWithTitle(Strings.subscriptionFailed, message: Strings.subscriptionFetchFailed)
             return
         }
         
@@ -89,11 +90,12 @@ class VIPGateViewController: UIViewController {
                 where error == nil
             else {
                 let title = Strings.subscriptionFailed
-                self?.v_showErrorWithTitle(title, message: error?.localizedDescription)
                 self?.setIsLoading(false)
+                self?.v_showErrorWithTitle(title, message: error?.localizedDescription)
                 return
             }
             
+            // FUTURE: Present product selection prompt for multiple product identifiers ( tracked https://jira.victorious.com/browse/IOS-5365 )
             let subscribe = VIPSubscribeOperation(productIdentifier: productIdentifier)
             subscribe.queue() { error, canceled in
                 self?.setIsLoading(false)
@@ -246,6 +248,7 @@ class VIPGateViewController: UIViewController {
         static let restoreInProgress        = NSLocalizedString("SubscriptionActivityRestoring", comment: "")
         static let restorePrompt            = NSLocalizedString("SubscriptionRestorePrompt", comment: "")
         static let subscriptionFailed       = NSLocalizedString("SubscriptionFailed", comment: "")
+        static let subscriptionFetchFailed  = NSLocalizedString("SubscriptionFetchFailed", comment: "")
     }
 }
 
@@ -337,6 +340,6 @@ private extension VDependencyManager {
     }
     
     var subscriptionFetchURL: String? {
-        return networkResources?.stringForKey("product.subscription.id.URL")
+        return networkResources?.stringForKey("inapp.sku.URL")
     }
 }

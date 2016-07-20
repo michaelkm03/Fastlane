@@ -23,6 +23,6 @@ public struct VIPFetchSubscriptionRequest: RequestType {
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [String] {
-        return responseJSON["payload"].array?.flatMap({ $0.string }) ?? []
+        return responseJSON["payload"]["subscription_id"].array?.flatMap({ $0.string }) ?? []
     }
 }
