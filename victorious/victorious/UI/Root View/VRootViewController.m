@@ -239,7 +239,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
     
-    [[[FetchTemplateProductIdentifiersOperation alloc] initWithProductsDataSource:self.dependencyManager] queueWithCompletion:nil];
+    /// Body removed alongside FetchTemplateProductIdentifiersOperation
     
     [[InterstitialManager sharedInstance] setDependencyManager:self.dependencyManager];
     
@@ -258,11 +258,12 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     ShowLoginOperation *showLoginOperation = [[ShowLoginOperation alloc] initWithOriginViewController:self
                                                                                     dependencyManager:[self.dependencyManager childDependencyForKey:VDependencyManagerScaffoldViewControllerKey]
                                                                                               context:VAuthorizationContextDefault
-                                                                                             animated:NO];
+                                                                                             animated:NO
+                                                                                      loginCompletion:^{
+                                                                                          [self initializeScaffold];
+                                                                                      }];
     
-    [showLoginOperation queueWithCompletion: ^(NSError *error, BOOL cancelled) {
-        [self initializeScaffold];
-    }];
+    [showLoginOperation queueWithCompletion:nil];
 }
 
 - (void)initializeScaffold
@@ -365,6 +366,12 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 {
     NSURL *deepLink = [NSURL URLWithString:pushNotification[kDeepLinkURLKey]];
     NSString *notificationID = pushNotification[kNotificationIDKey];
+    
+    if ( notificationID != nil )
+    {
+        [[VTrackingManager sharedInstance] setValue:notificationID forSessionParameterWithKey:VTrackingKeyNotificationId];
+    }
+    
     if (deepLink != nil)
     {
         [self openURL:deepLink fromExternalSourceWithOptionalNotificationID:notificationID];
@@ -384,10 +391,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 {
     if ( [[UIApplication sharedApplication] applicationState] != UIApplicationStateActive && self.properlyBackgrounded )
     {
-        if ( notificationID != nil )
-        {
-            [[VTrackingManager sharedInstance] setValue:notificationID forSessionParameterWithKey:VTrackingKeyNotificationId];
-        }
         if ( [self.sessionTimer shouldNewSessionStartNow] )
         {
             self.queuedDeeplink = deepLink;
@@ -401,15 +404,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     else if ( [deepLink.host isEqualToString:VConversationListViewControllerDeeplinkHostComponent] )
     {
         [[NSNotificationCenter defaultCenter] postNotificationName:VConversationListViewControllerInboxPushReceivedNotification object:self];
-    }
-}
-
-- (void)handleLocalNotification:(UILocalNotification *)localNotification
-{
-    NSString *deeplinkUrlString = localNotification.userInfo[ [LocalNotificationScheduler deplinkURLKey] ];
-    if ( deeplinkUrlString != nil && deeplinkUrlString.length > 0 )
-    {
-        [self openURL:[NSURL URLWithString:deeplinkUrlString]];
     }
 }
 

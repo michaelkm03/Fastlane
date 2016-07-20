@@ -25,7 +25,6 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
 
 @interface VGIFCreationFlowController () <MediaSearchDelegate, VVideoCameraViewControllerDelegate>
 
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) MediaSearchViewController *mediaSearchViewController;
 
 @end
@@ -38,7 +37,6 @@ static NSString * const kGifWorkspaceKey = @"gifWorkspace";
     if (self != nil)
     {
         [self setContext:VCameraContextVideoContentCreation];
-        _dependencyManager = dependencyManager;
 		
 		id<MediaSearchDataSource> dataSource = [[GIFSearchDataSource alloc] init];
         _mediaSearchViewController = [MediaSearchViewController mediaSearchViewControllerWithDataSource:dataSource

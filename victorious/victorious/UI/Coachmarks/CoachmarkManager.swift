@@ -11,6 +11,8 @@ import Foundation
 private struct Constants {
     static let shownCoachmarksKey = "shownCoachmarks"
     static let coachmarksArrayKey = "coachmarks"
+    static let trackingURLsKey = "tracking"
+    static let trackingEventName = "Coachmark Open"
 }
 
 @objc(VCoachmarkManager)
@@ -100,7 +102,10 @@ class CoachmarkManager : NSObject {
                 }) {  _ in
                     coachmarkToDisplay.hasBeenShown = true
                     self.saveCoachmarkState()
-                    self.trackingManager.
+                    
+                    if let urls = self.dependencyManager.arrayForKey(Constants.trackingURLsKey) as? [String] {
+                        self.trackingManager.trackEvent(Constants.trackingEventName, parameters: [ VTrackingKeyUrls : urls])
+                    }
                     displayer.coachmarkDidShow()
                 }
             }

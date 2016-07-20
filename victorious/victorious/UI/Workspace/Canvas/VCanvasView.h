@@ -39,6 +39,8 @@ extern NSString * const VCanvasViewAssetSizeBecameAvailableNotification;
 
 @property (nonatomic, readonly) UIScrollView *canvasScrollView; ///< A zooming scrollview for providing crop functionality.
 
+@property (nonatomic, assign) BOOL allowsZoom; ///< Defaults to true.
+
 @end
 
 /**

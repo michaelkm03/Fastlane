@@ -74,17 +74,22 @@ class ChatFeedMessageCell: UICollectionViewCell {
     
     // MARK: - Content
     
-    var content: ContentModel? {
+    var chatFeedContent: ChatFeedContent? {
         didSet {
             // Updating the content is expensive, so we try to bail if we're setting the same content as before.
             // However, chat message contents don't have IDs, so we can't do this if the ID is nil.
-            if content?.id == oldValue?.id && content?.id != nil {
+            if chatFeedContent?.content.id == oldValue?.content.id && chatFeedContent?.content.id != nil {
                 return
             }
             
             populateData()
             setNeedsLayout()
         }
+    }
+    
+    /// Provides a private shorthand accessor within the implementation because we mostly deal with the ContentModel
+    private var content: ContentModel? {
+        return chatFeedContent?.content
     }
     
     // MARK: - Subviews
@@ -184,9 +189,9 @@ class ChatFeedMessageCell: UICollectionViewCell {
         }
         
         let previewView = MediaContentView(showsBackground: false)
-        
         previewView.animatesBetweenContent = false
         previewView.allowsVideoControls = false
+        previewView.fillMode = .fill
         setupPreviewView(previewView)
         return previewView
     }

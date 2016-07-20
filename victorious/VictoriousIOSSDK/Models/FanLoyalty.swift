@@ -10,22 +10,17 @@ import Foundation
 
 public struct FanLoyalty {
     public let points: Int?
-    public let level: Int
-    public let progress: Int
+    public let level: Int?
+    public let progress: Int?
     public let tier: String?
     public let name: String?
     public let achievementsUnlocked: [String]
 }
 
 extension FanLoyalty {
-    public init?(json: JSON) {
-
-        guard let level = json["level"].int,
-            let progress = json["progress"].int else {
-                return nil
-        }
-        self.level = level
-        self.progress = progress
+    public init(json: JSON) {
+        self.level = json["level"].int
+        self.progress = json["progress"].int
         
         self.points = json["points"].int
         self.name = json["name"].string

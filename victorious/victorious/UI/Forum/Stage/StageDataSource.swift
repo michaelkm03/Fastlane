@@ -59,8 +59,9 @@ class StageDataSource: ForumEventReceiver {
                     else {
                         return
                     }
-                    
-                    self?.delegate?.addContent(content)
+
+                    let stageContent = StageContent(content: content, metaData: stageEvent.stageMetaData)
+                    self?.delegate?.addStageContent(stageContent)
                     self?.currentContent = content
                 }
                 

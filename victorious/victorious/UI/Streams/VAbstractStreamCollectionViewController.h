@@ -11,7 +11,6 @@
 #import "VPageType.h"
 #import "VStreamCollectionViewDataSource.h"
 #import "VStreamTrackingHelper.h"
-#import "VMultipleContainer.h"
 #import "VNavigationViewFloatingController.h"
 #import "VNavigationControllerScrollDelegate.h"
 #import "VHasManagedDependencies.h"
@@ -25,7 +24,7 @@ static const CGFloat VStreamMarqueeParallaxRatio = 0.5f;
 /**
     A view controller setup to display, track, and interact with stream content
  */
-@interface VAbstractStreamCollectionViewController : UIViewController <VStreamCollectionDataDelegate, UIScrollViewDelegate, UICollectionViewDelegateFlowLayout, VMultipleContainerChild>
+@interface VAbstractStreamCollectionViewController : UIViewController <VStreamCollectionDataDelegate, UIScrollViewDelegate, UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, strong) UIRefreshControl *refreshControl;///<Refresh control for the collectionview
 @property (nonatomic, strong) VStream *currentStream;///<The stream to display

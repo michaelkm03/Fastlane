@@ -64,12 +64,6 @@ extern NSString * const VApplicationDidBecomeActiveNotification;
 - (void)applicationOpenURL:(NSURL *)url sourceApplication:(nullable NSString *)sourceApplication annotation:(id)annotation;
 
 /**
- Handles local (user) notifications received by the application.  Designed to be called or forwarded
- from the app delegate where the notificaitons are received.
- */
-- (void)handleLocalNotification:(UILocalNotification *)localNotification;
-
-/**
  Restarts the session of the app, returning it to a state as if it had just been launched.
  */
 - (void)startNewSession;

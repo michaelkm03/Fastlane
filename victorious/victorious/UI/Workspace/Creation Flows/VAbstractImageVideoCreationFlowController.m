@@ -48,8 +48,6 @@ static NSString * const kCreationFlowSourceSearch = @"search";
 
 @property (nonatomic, strong) NSArray *cachedAssetCollections;
 
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
-
 @property (nonatomic, strong) VCaptureContainerViewController *captureContainerViewController;
 @property (nonatomic, strong, readwrite) VAssetCollectionGridViewController *gridViewController;
 @property (nonatomic, strong) VAssetDownloader *downloader;
@@ -77,8 +75,6 @@ static NSString * const kCreationFlowSourceSearch = @"search";
     self = [super initWithDependencyManager:dependencyManager];
     if (self != nil)
     {
-        _dependencyManager = dependencyManager;
-        
         _captureContainerViewController = [VCaptureContainerViewController captureContainerWithDependencyManager:dependencyManager];
         
         _gridViewController = [self gridViewControllerWithDependencyManager:dependencyManager];

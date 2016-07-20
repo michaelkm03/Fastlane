@@ -34,6 +34,7 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
 @property (nonatomic, strong) NSMutableArray *rendertimes;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
 @property (nonatomic, assign, getter = hasLayedOutCanvasScrollView) BOOL layedoutCanvasScrollView;
+@property (nonatomic, strong) UITapGestureRecognizer *doubleTapGestureRecognizer;
 
 @end
 
@@ -92,9 +93,9 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
     _filteredImageView.contentMode = UIViewContentModeScaleAspectFill;
     [_canvasScrollView addSubview:_filteredImageView];
     
-    UITapGestureRecognizer *doubleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTapCanvas:)];
-    doubleTapGestureRecognizer.numberOfTapsRequired = 2;
-    [_canvasScrollView addGestureRecognizer:doubleTapGestureRecognizer];
+    _doubleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(doubleTapCanvas:)];
+    _doubleTapGestureRecognizer.numberOfTapsRequired = 2;
+    [_canvasScrollView addGestureRecognizer:_doubleTapGestureRecognizer];
     
     _context = [CIContext contextWithOptions:@{}];
     
@@ -319,6 +320,16 @@ static const CGFloat kRelatvieScaleFactor = 0.55f;
         self.didCropPan = YES;
         [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCropWorkspaceWithPan];
     }
+}
+
+#pragma mark - Setters
+
+- (void)setAllowsZoom:(BOOL)allowsZoom
+{
+    _allowsZoom = allowsZoom;
+    self.doubleTapGestureRecognizer.enabled = allowsZoom;
+    self.canvasScrollView.maximumZoomScale = allowsZoom ? 4.0 : 1.0;
+    self.canvasScrollView.bouncesZoom = allowsZoom;
 }
 
 @end

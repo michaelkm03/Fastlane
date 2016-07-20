@@ -36,34 +36,43 @@ extension WebSocketEventDecoder {
     
     func decodeEventFromJSON(json: JSON) -> ForumEvent? {
         var forumEvent: ForumEvent?
-
         let rootNode = json[Keys.root]
-        if let serverTime = rootNode[Keys.serverTime].double where rootNode.isExists() {
+        
+        guard
+            let serverTimeFromJSON = rootNode[Keys.serverTime].double where rootNode.isExists(),
+            let type = rootNode[Keys.type].string
+        else {
+            return nil
+        }
 
-            guard let type = rootNode[Keys.type].string else {
-                return nil
-            }
-
-            let serverTime = NSDate(millisecondsSince1970: serverTime)
-
-            switch type {
-                case Types.chatMessage:
-                    let chatJSON = json[Keys.root][Keys.chat]
-                    if let content = Content(chatMessageJSON: chatJSON, serverTime: serverTime) {
-                        forumEvent = .appendContent([content])
-                    }
-                case Types.stageRefresh:
-                    let refreshJSON = rootNode[Keys.refreshStage]
-                    if let refresh = RefreshStage(json: refreshJSON, serverTime: serverTime) {
-                        forumEvent = .refreshStage(refresh)
-                    }
-                case Types.chatUserCount:
-                    if let chatUserCount = ChatUserCount(json: json[Keys.root], serverTime: serverTime) {
-                        forumEvent = .chatUserCount(chatUserCount)
-                    }
-                default:
-                    forumEvent = nil
-            }
+        let serverTime = NSDate(millisecondsSince1970: serverTimeFromJSON)
+        
+        switch type {
+            case Types.chatMessage:
+                // According to the current web socket protocol, we assume there's only one piece of content per socket message
+                let chatJSON = json[Keys.root][Keys.chat]
+                
+                guard let content = Content(chatMessageJSON: chatJSON, serverTime: serverTime) else {
+                    return nil
+                }
+                
+                if content.author.accessLevel.isCreator {
+                    forumEvent = .showCaptionContent(content)
+                }
+                else {
+                    forumEvent = .appendContent([content])
+                }
+            case Types.stageRefresh:
+                let refreshJSON = rootNode[Keys.refreshStage]
+                if let refresh = RefreshStage(json: refreshJSON, serverTime: serverTime) {
+                    forumEvent = .refreshStage(refresh)
+                }
+            case Types.chatUserCount:
+                if let chatUserCount = ChatUserCount(json: json[Keys.root], serverTime: serverTime) {
+                    forumEvent = .chatUserCount(chatUserCount)
+                }
+            default:
+                forumEvent = nil
         }
         
         return forumEvent
