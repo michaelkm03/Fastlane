@@ -52,6 +52,12 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
             updateStageHeight()
         }
     }
+    
+    private var shouldMute = true {
+        didSet {
+            mediaContentView.shouldMute = shouldMute
+        }
+    }
 
     /// Holds the current aggregated information about the content and the meta data.
     private var currentStageContent: StageContent?
@@ -60,6 +66,7 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
     private var enabled = true
     
     weak var delegate: StageDelegate?
+    let audioSession = AVAudioSession.sharedInstance()
 
     var dependencyManager: VDependencyManager! {
         didSet {
@@ -82,6 +89,13 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         mediaContentView.dependencyManager = dependencyManager
         mediaContentView.allowsVideoControls = false
         mediaContentView.showsBackground = false
+        
+        audioSession.addObserver(
+            self,
+            forKeyPath: "outputVolume",
+            options: [.New, .Old],
+            context: nil
+        )
     }
     
     private func setupDataSource(dependencyManager: VDependencyManager) -> StageDataSource {
@@ -92,12 +106,23 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        mediaContentView.videoCoordinator?.playVideo()
+        mediaContentView.shouldMute = shouldMute
     }
 
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        mediaContentView.videoCoordinator?.pauseVideo()
+        mediaContentView.shouldMute = true
+    }
+    
+    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+        if
+            let change = change
+            where keyPath == "outputVolume" && view.window != nil
+        {
+            /// Only change the mute state if we are visible.
+            print("\(change[NSKeyValueChangeOldKey]) -> \(change[NSKeyValueChangeNewKey])")
+            shouldMute = false
+        }
     }
 
     // MARK: - Stage
@@ -119,6 +144,9 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
 
         mediaContentView.videoCoordinator?.pauseVideo()
         mediaContentView.content = stageContent.content
+        
+        /// shouldMute = whether we can see the stage && whether we were muted before
+        shouldMute = (shouldMute || view.window == nil)
 
         updateStageHeight()
 

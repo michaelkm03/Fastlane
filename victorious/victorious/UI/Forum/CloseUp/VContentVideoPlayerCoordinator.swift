@@ -37,11 +37,10 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         }
     }
     private var content: ContentModel
-    private var shouldLoop: Bool {
-        return content.type == .gif
-    }
-    private var shouldMute: Bool {
-        return content.type == .gif
+    var shouldMute = true {
+        didSet {
+            videoPlayer.muted = shouldMute || content.shouldMute
+        }
     }
     
     weak var delegate: ContentVideoPlayerCoordinatorDelegate?
@@ -92,8 +91,8 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         }
         
         if let item = item {
-            item.muted = shouldMute
-            item.loop = shouldLoop
+            item.muted = content.shouldMute
+            item.loop = content.shouldLoop
             item.useAspectFit = true
             videoPlayer.setItem(item)
         }
@@ -162,17 +161,16 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         else {
             videoPlayer.view.frame = bounds
         }
-
     }
     
     // MARK: - VVideoPlayerDelegate
     
     func videoPlayerDidBecomeReady(videoPlayer: VVideoPlayer) {
+        videoPlayer.muted = shouldMute
         guard let asset = content.assets.first where asset.videoSource == .youtube else {
             return
         }
         prepareToPlay()
-
     }
     
     func videoPlayerItemIsReadyToPlay(videoPlayer: VVideoPlayer) {
@@ -230,5 +228,15 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     func videoToolbar(videoToolbar: VideoToolbarView, didStartScrubbingToLocation location: Float) {
         state = .Scrubbing
         videoPlayer.pause()
+    }
+}
+
+private extension ContentModel {
+    var shouldMute: Bool {
+        return type == .gif
+    }
+    
+    var shouldLoop: Bool {
+        return type == .gif
     }
 }
