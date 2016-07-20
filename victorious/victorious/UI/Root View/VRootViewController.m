@@ -257,11 +257,12 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     ShowLoginOperation *showLoginOperation = [[ShowLoginOperation alloc] initWithOriginViewController:self
                                                                                     dependencyManager:[self.dependencyManager childDependencyForKey:VDependencyManagerScaffoldViewControllerKey]
                                                                                               context:VAuthorizationContextDefault
-                                                                                             animated:NO];
+                                                                                             animated:NO
+                                                                                      loginCompletion:^{
+                                                                                          [self initializeScaffold];
+                                                                                      }];
     
-    [showLoginOperation queueWithCompletion: ^(NSError *error, BOOL cancelled) {
-        [self initializeScaffold];
-    }];
+    [showLoginOperation queueWithCompletion:nil];
 }
 
 - (void)initializeScaffold
@@ -400,15 +401,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     else if ( [deepLink.host isEqualToString:VConversationListViewControllerDeeplinkHostComponent] )
     {
         [[NSNotificationCenter defaultCenter] postNotificationName:VConversationListViewControllerInboxPushReceivedNotification object:self];
-    }
-}
-
-- (void)handleLocalNotification:(UILocalNotification *)localNotification
-{
-    NSString *deeplinkUrlString = localNotification.userInfo[ [LocalNotificationScheduler deplinkURLKey] ];
-    if ( deeplinkUrlString != nil && deeplinkUrlString.length > 0 )
-    {
-        [self openURL:[NSURL URLWithString:deeplinkUrlString]];
     }
 }
 

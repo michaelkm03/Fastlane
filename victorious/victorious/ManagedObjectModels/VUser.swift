@@ -80,7 +80,7 @@ class VUser: NSManagedObject, UserModel {
         return isBlockedByMainUser?.boolValue
     }
     
-    var accessLevel: User.AccessLevel? {
+    var accessLevel: User.AccessLevel {
         let isCreator = self.isCreator?.boolValue ?? false
         return isCreator ? .owner : .user
     }

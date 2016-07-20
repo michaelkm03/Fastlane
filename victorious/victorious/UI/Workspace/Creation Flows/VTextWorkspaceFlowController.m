@@ -27,7 +27,6 @@
 @property (nonatomic, strong) VMediaAttachmentPresenter *attachmentPresenter;
 
 @property (nonatomic, strong) UIViewController *mediaCaptureViewController;
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @end
 
@@ -70,9 +69,6 @@
         _textToolController.delegate = _textWorkspaceViewController;
         _textWorkspaceViewController.toolController = _textToolController;
         _textWorkspaceViewController.disablesInpectorOnKeyboardAppearance = YES;
-        
-        // Set our dependency manager
-        _dependencyManager = dependencyManager;
         
         // Add tools to the tool controller
         [_textWorkspaceViewController.toolController.tools enumerateObjectsUsingBlock:^(id<VWorkspaceTool> tool, NSUInteger idx, BOOL *stop)

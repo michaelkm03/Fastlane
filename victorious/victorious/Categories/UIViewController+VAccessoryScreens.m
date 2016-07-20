@@ -7,7 +7,6 @@
 //
 
 #import "UIViewController+VAccessoryScreens.h"
-#import "VMultipleContainer.h"
 #import "VDependencyManager+VAccessoryScreens.h"
 
 @implementation UIViewController (VAccessoryScreens)
@@ -26,16 +25,7 @@
 
 - (UINavigationItem *)navigationItemForAccessoryItems
 {
-    UINavigationItem *navigationItem = self.navigationItem;
-    if ( [self conformsToProtocol:@protocol(VMultipleContainerChild)] )
-    {
-        UIViewController <VMultipleContainerChild> *childViewController = (UIViewController <VMultipleContainerChild> *)self;
-        if ( childViewController.multipleContainerChildDelegate != nil )
-        {
-            navigationItem = [childViewController.multipleContainerChildDelegate parentNavigationItem];
-        }
-    }
-    return navigationItem;
+    return self.navigationItem;
 }
 
 @end

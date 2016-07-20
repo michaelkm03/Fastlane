@@ -26,7 +26,6 @@ NSString * const VImageCreationFlowControllerDefaultSearchTermKey = @"defaultSea
 
 @interface VImageCreationFlowController () <MediaSearchDelegate, VImageCameraViewControllerDelegate>
 
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) MediaSearchViewController *mediaSearchViewController;
 
 @end
@@ -39,7 +38,6 @@ NSString * const VImageCreationFlowControllerDefaultSearchTermKey = @"defaultSea
     if (self != nil)
     {
         [self setContext:VCameraContextImageContentCreation];
-		_dependencyManager = dependencyManager;
         
         NSString *dependencyManagerSearchTerm = [dependencyManager stringForKey:VImageCreationFlowControllerDefaultSearchTermKey];
 		

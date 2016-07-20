@@ -16,21 +16,9 @@ static NSString * const kPollCreationScreenKey = @"pollCreationScreen";
 
 @interface VPollCreationFlowController ()
 
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
-
 @end
 
 @implementation VPollCreationFlowController
-
-- (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager
-{
-    self = [super initWithDependencyManager:dependencyManager];
-    if (self != nil)
-    {
-        _dependencyManager = dependencyManager;
-    }
-    return self;
-}
 
 - (void)viewDidLoad
 {
