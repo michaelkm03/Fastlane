@@ -49,7 +49,15 @@ extension WebSocketEventDecoder {
             switch type {
                 case Types.chatMessage:
                     let chatJSON = json[Keys.root][Keys.chat]
-                    if let content = Content(chatMessageJSON: chatJSON, serverTime: serverTime) {
+                    
+                    guard let content = Content(chatMessageJSON: chatJSON, serverTime: serverTime) else {
+                        return nil
+                    }
+                    
+                    if content.author.accessLevel.isCreator {
+                        forumEvent = .showCaptionContent(content)
+                    }
+                    else {
                         forumEvent = .appendContent([content])
                     }
                 case Types.stageRefresh:

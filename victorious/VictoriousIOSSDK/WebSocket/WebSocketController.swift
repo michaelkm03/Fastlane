@@ -169,20 +169,7 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
             }
             
             dispatch_async(dispatch_get_main_queue()) { [weak self] in
-                guard let strongSelf = self else {
-                    return
-                }
-                
-                if case .appendContent(let contents) = event {
-                    let (contentFeedEvent, captionEvent) = strongSelf.parseEvents(for: contents)
-                    if let captionEvent = captionEvent {
-                        strongSelf.broadcast(captionEvent)
-                    }
-                    strongSelf.broadcast(contentFeedEvent)
-                }
-                else {
-                    strongSelf.broadcast(event)
-                }
+                self?.broadcast(event)
             }
         }
 
@@ -274,19 +261,6 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
             return
         }
         webSocket.writePing(NSData())
-    }
-    
-    private func parseEvents(for content: [ContentModel]) -> (appendEvent: ForumEvent, captionEvent: ForumEvent?) {
-        let contentFeed = content.filter { $0.author.accessLevel != .owner }
-        let creatorContent = content.filter { $0.author.accessLevel == .owner }
-        
-        let contentFeedEvent = ForumEvent.appendContent(contentFeed)
-        if let latestCreatorContent = creatorContent.last {
-            return (contentFeedEvent, .showCaptionContent(latestCreatorContent))
-        }
-        else {
-            return (contentFeedEvent, nil)
-        }
     }
 }
 
