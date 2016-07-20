@@ -9,23 +9,19 @@
 import Foundation
 
 @objc public enum AvatarBadgeType: Int {
-    case Verified
-    case None
+    case verified
     
-    public init(json: JSON) {
+    public init?(json: JSON) {
         if json["badge_type"].stringValue == "verified" {
-            self = .Verified
+            self = .verified
         } else {
-            self = .None
+            return nil
         }
     }
     
     public var stringRepresentation: String {
         switch self {
-        case .Verified:
-            return "verified"
-        case .None:
-            return ""
+            case .verified: return "verified"
         }
     }
 }

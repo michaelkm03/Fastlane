@@ -84,6 +84,18 @@ class AvatarView: UIView {
     private let shadowView = UIView()
     private let imageView = UIImageView()
     private let initialsLabel = UILabel()
+    private var verifiedBadgeView: UIImageView?
+    
+    private func getOrCreateVerifiedBadgeView() -> UIImageView {
+        if let verifiedBadgeView = self.verifiedBadgeView {
+            return verifiedBadgeView
+        }
+        
+        let verifiedBadgeView = UIImageView(image: UIImage(named: "verified_badge"))
+        self.verifiedBadgeView = verifiedBadgeView
+        addSubview(verifiedBadgeView)
+        return verifiedBadgeView
+    }
     
     // MARK: - Configuration
     
@@ -189,8 +201,20 @@ class AvatarView: UIView {
         initialsLabel.frame = bounds
         imageView.layer.cornerRadius = imageView.frame.size.v_roundCornerRadius
         shadowView.layer.cornerRadius = shadowView.frame.size.v_roundCornerRadius
+        layoutVerifiedBadge()
         updateShadowPathIfNeeded()
         updateContentIfNeeded()
+    }
+    
+    private func layoutVerifiedBadge() {
+        guard user?.avatarBadgeType == .verified else {
+            self.verifiedBadgeView?.hidden = true
+            return
+        }
+        
+        let verifiedBadgeView = getOrCreateVerifiedBadgeView()
+        verifiedBadgeView.hidden = false
+        verifiedBadgeView.frame = CGRect(origin: CGPoint.zero, size: verifiedBadgeView.intrinsicContentSize())
     }
     
     // MARK: - Shadow

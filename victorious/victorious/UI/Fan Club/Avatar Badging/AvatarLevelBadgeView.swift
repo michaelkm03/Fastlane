@@ -89,7 +89,7 @@ class AvatarLevelBadgeView: UIView, VHasManagedDependencies {
     }
     
     private var verified: Bool {
-        return avatarBadgeType == .Verified
+        return avatarBadgeType == .verified
     }
 
     // MARK: Readonly variables
@@ -129,7 +129,7 @@ class AvatarLevelBadgeView: UIView, VHasManagedDependencies {
         }
     }
     
-    var avatarBadgeType: AvatarBadgeType = .None {
+    var avatarBadgeType: AvatarBadgeType? {
         didSet {
             if avatarBadgeType != oldValue {
                 updateBadgeIcon()
