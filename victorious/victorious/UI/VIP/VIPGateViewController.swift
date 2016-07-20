@@ -69,16 +69,23 @@ class VIPGateViewController: UIViewController {
     // MARK: - IBActions
     
     @IBAction func onSubscribe(sender: UIButton? = nil) {
-        let subscriptionFetchOperation = VIPFetchSubscriptionOperation()
+        guard
+            let urlString = dependencyManager.subscriptionFetchURL,
+            let subscriptionFetchOperation = VIPFetchSubscriptionRemoteOperation(urlString: urlString)
+        else {
+            return
+        }
+        
         self.setIsLoading(true, title: Strings.purchaseInProgress)
-        subscriptionFetchOperation.queue() { [weak self] error, canceled in
+        subscriptionFetchOperation.queue() { [weak self] results, error, canceled in
             guard !canceled else {
                 self?.setIsLoading(false)
                 return
             }
 
+            // FUTURE: Update this guard to check for multiple identifiers in results ( tracked https://jira.victorious.com/browse/IOS-5365 )
             guard
-                let productIdentifier = subscriptionFetchOperation.subscriptionProductIdentifier
+                let productIdentifier = results?.first as? String
                 where error == nil
             else {
                 let title = Strings.subscriptionFailed
@@ -327,5 +334,9 @@ private extension VDependencyManager {
     
     var subscribeButtonDependency: VDependencyManager? {
         return childDependencyForKey("subscribeButton")
+    }
+    
+    var subscriptionFetchURL: String? {
+        return networkResources?.stringForKey("product.subscription.id.URL")
     }
 }
