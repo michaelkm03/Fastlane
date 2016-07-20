@@ -23,6 +23,17 @@ private struct Types {
     static let chatUserCount        = "CHAT_USERS"
 }
 
+// !!! BEWARE DRAGONS BELOW !!!
+// This is an extreme h4ck that I had to implement in order to have this functionality in place at all. :/
+// Please remove as soon as we get a proper sollution in place. And for the record, yes I hate myself for writing this.
+//
+// If we get back a stage refresh message with a custom content id (specified below) we are to treat it as a close stage message.
+//
+private struct StageClose {
+    static let contentIdKey         = "content_id"
+    static let magicKey             = "close socket"
+}
+
 protocol WebSocketEventDecoder {
     /// Parses out a ForumEvent from the JSON string coming in over the WebSocket.
     func decodeEventFromJSON(json: JSON) -> ForumEvent?
@@ -64,7 +75,10 @@ extension WebSocketEventDecoder {
                 }
             case Types.stageRefresh:
                 let refreshJSON = rootNode[Keys.refreshStage]
-                if let refresh = RefreshStage(json: refreshJSON, serverTime: serverTime) {
+                if refreshJSON[StageClose.contentIdKey].string == StageClose.magicKey {
+                    forumEvent = .closeStage(.vip)
+                }
+                else if let refresh = RefreshStage(json: refreshJSON, serverTime: serverTime) {
                     forumEvent = .refreshStage(refresh)
                 }
             case Types.chatUserCount:
