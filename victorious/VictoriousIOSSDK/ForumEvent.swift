@@ -38,6 +38,9 @@ public enum ForumEvent {
     
     /// Closes either the main or VIP stage.
     case closeStage(StageSection)
+
+    /// Closes the whole VIP experience.
+    case closeVIP()
     
     /// Requests that the given user is blocked.
     case blockUser(BlockUser)
