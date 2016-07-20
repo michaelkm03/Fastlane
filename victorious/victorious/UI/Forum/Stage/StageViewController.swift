@@ -120,7 +120,6 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
             where keyPath == "outputVolume" && view.window != nil
         {
             /// Only change the mute state if we are visible.
-            print("\(change[NSKeyValueChangeOldKey]) -> \(change[NSKeyValueChangeNewKey])")
             shouldMute = false
         }
     }
