@@ -34,6 +34,11 @@ class EditProfileViewController: UITableViewController {
         }
     }
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        dataSource?.beginEditing()
+    }
+    
     //MARK: - Target Action
     
     @IBAction func tappedSave(sender: UIBarButtonItem) {
@@ -50,7 +55,6 @@ class EditProfileViewController: UITableViewController {
         } else {
             print("failed ot create operation!!")
         }
-        
     }
 
 }
@@ -69,6 +73,8 @@ class EditProfileTableViewDataSource: NSObject, UITableViewDataSource {
         nameAndLocationCell = tableView.dequeueReusableCellWithIdentifier("NameLocationAndPictureCell") as! UsernameLocationAvatarCell
         aboutMeCell = tableView.dequeueReusableCellWithIdentifier("AboutMe") as! AboutMeTextCell
     }
+    
+    // MARK: - UITableViewDataSource
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 2
@@ -109,12 +115,18 @@ class EditProfileTableViewDataSource: NSObject, UITableViewDataSource {
                              profileImageURL: nil)
     }
     
+    func beginEditing() {
+        nameAndLocationCell.beginEditing()
+    }
+    
     // MARK: - Misc Private Funcitons
     
     private func configureNameAndLocationCell(nameCell: UsernameLocationAvatarCell) {
         nameCell.onReturnKeySelected = { [weak self] in
             self?.aboutMeCell.beginEditing()
         }
+        nameCell.username = VCurrentUser.user()?.name
+        nameCell.location = VCurrentUser.user()?.location
     }
     
     private func configueAboutMeCell(aboutMeCell: AboutMeTextCell) {
@@ -127,5 +139,6 @@ class EditProfileTableViewDataSource: NSObject, UITableViewDataSource {
         }
         
         aboutMeCell.dependencyManager = dependencyManager
+        aboutMeCell.tagline = VCurrentUser.user()?.tagline
     }
 }

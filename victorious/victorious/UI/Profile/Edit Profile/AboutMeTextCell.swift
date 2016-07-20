@@ -14,6 +14,9 @@ class AboutMeTextCell: UITableViewCell, UITextViewDelegate {
         get {
             return textView.text
         }
+        set {
+            textView.text = newValue
+        }
     }
     
     var dependencyManager: VDependencyManager? {

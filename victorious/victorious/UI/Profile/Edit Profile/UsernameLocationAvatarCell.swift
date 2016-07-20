@@ -14,15 +14,34 @@ class UsernameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
     /// the username or location text fields.
     var onReturnKeySelected: (() -> ())?
     
+    /// Provide a closure to be notified when the user taps on their avatar
+    /// indicating that they want to
+    var onAvatarSelected: (() -> ())?
+    
     var username: String? {
         get {
             return usernameField.text
+        }
+        set {
+            usernameField.text = newValue
         }
     }
     
     var location: String? {
         get {
             return locationField.text
+        }
+        set {
+            locationField.text = newValue
+        }
+    }
+    
+    var avatar: UIImage? {
+        get {
+            return avatarButton.backgroundImageForState(.Normal)
+        }
+        set {
+            avatarButton.setBackgroundImage(newValue, forState: .Normal)
         }
     }
     
@@ -54,34 +73,26 @@ class UsernameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
         }
     }
     
-    @IBOutlet private var usernameField: UITextField! {
-        didSet {
-            usernameField.delegate = self
-        }
-    }
+    @IBOutlet private var usernameField: UITextField!
+    @IBOutlet private var locationField: UITextField!
+    @IBOutlet private var avatarButton: UIButton!
     
-    @IBOutlet private var locationField: UITextField! {
-        didSet {
-            locationField.delegate = self
-        }
+    func beginEditing() {
+        usernameField.becomeFirstResponder()
     }
     
     //MARK: - UITextFieldDelegate
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return false
-    }
-    
-    func textFieldShouldEndEditing(textField: UITextField) -> Bool {
-        if textField == usernameField {
-            locationField.becomeFirstResponder()
-        } else if textField == locationField {
-            onReturnKeySelected?()
-        }
+        dispatch_after(0.001, {
+            if textField == self.usernameField {
+                self.locationField.becomeFirstResponder()
+            } else if textField == self.locationField {
+                self.onReturnKeySelected?()
+            }
+        })
         return true
     }
-    
 }
 
 private extension VDependencyManager {
