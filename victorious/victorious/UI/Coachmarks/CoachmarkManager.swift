@@ -26,14 +26,14 @@ class CoachmarkManager : NSObject {
     }
     
     private func reloadCoachmarks() {
-        guard let coachmarkDependencies = dependencyManager.arrayForKey(Constants.coachmarksArrayKey) as? [[NSObject : AnyObject]] else {
+        guard let coachmarkConfigurations = dependencyManager.arrayForKey(Constants.coachmarksArrayKey) as? [[NSObject : AnyObject]] else {
             assertionFailure("No coachmarks could be found in coachmark manager")
             return
         }
         coachmarks = []
         let shownCoachmarks = fetchShownCoachmarkIDs()
-        for coachmarkDependency in coachmarkDependencies {
-            let childDependency = dependencyManager.childDependencyManagerWithAddedConfiguration(coachmarkDependency)
+        for coachmarkConfiguration in coachmarkConfigurations {
+            let childDependency = dependencyManager.childDependencyManagerWithAddedConfiguration(coachmarkConfiguration)
             let coachmark = Coachmark(dependencyManager: childDependency)
             if (shownCoachmarks.contains(){ shownCoachmarkID in
                 return shownCoachmarkID == coachmark.remoteID
@@ -64,8 +64,8 @@ class CoachmarkManager : NSObject {
      Creates the coachmark and displays it over the viewController. This performs calculations
      on view frames, hence it must be called after these have been set, for example in viewDidAppear
      
-     parameter viewController The target view controller
- 
+     - parameter displayer: The object that will provide the frames for the coachmark, and will handle callbacks
+     - parameter container: The container frame of the coachmark, usually the entire screen
     */
     func displayCoachmark(inCoachmarkDisplayer displayer: CoachmarkDisplayer, withContainerView container: UIView) {
         guard allowCoachmarks else {
@@ -73,19 +73,19 @@ class CoachmarkManager : NSObject {
             return
         }
         
-        resetShownCoachmarks() //REMOVE BEFORE RELEASE
         let screenIdentifier = displayer.screenIdentifier
         if let index = coachmarks.indexOf({ $0.screenIdentifier == screenIdentifier}) {
             let coachmarkToDisplay = coachmarks[index]
             
             var highlightFrame: CGRect? = nil
-            if let highlightIdentifier = coachmarkToDisplay.highlightIdentifier,
-                frame = displayer.highlightFrame(highlightIdentifier) {
+            if
+                let highlightIdentifier = coachmarkToDisplay.highlightIdentifier,
+                let frame = displayer.highlightFrame(highlightIdentifier)
+            {
                 highlightFrame = frame
             }
             
             if (!coachmarkToDisplay.hasBeenShown) {
-                
                 let containerFrame = container.bounds
                 let coachmarkView = CoachmarkView(coachmark: coachmarkToDisplay, containerFrame: containerFrame, highlightFrame: highlightFrame, displayer: displayer)
                 coachmarkView.alpha = 0
@@ -93,14 +93,12 @@ class CoachmarkManager : NSObject {
                 
                 UIView.animateWithDuration(1, animations: { 
                     coachmarkView.alpha = 1
-                }) { _ in
+                }) {  _ in
+                    coachmarkToDisplay.hasBeenShown = true
+                    self.saveCoachmarkState()
                     displayer.coachmarkDidShow()
                 }
-                
-                coachmarkToDisplay.hasBeenShown = true
-                saveCoachmarkState()
             }
-            
         }
     }
 }

@@ -30,10 +30,10 @@ private struct Constants {
     static let highlightCircleRadius: CGFloat = 50.0
     static let highlightStrokeColor = UIColor.blackColor().CGColor
     static let userMacro = "%%USER%%"
+    static let animationDuration: NSTimeInterval = 1
 }
 
 class CoachmarkView: UIView, VBackgroundContainer {
-    
     let backgroundView = UIView()
     var displayer: CoachmarkDisplayer?
     
@@ -55,6 +55,7 @@ class CoachmarkView: UIView, VBackgroundContainer {
         titleLabel.font = dependencyManager.titleFont
         titleLabel.textColor = dependencyManager.titleColor
         titleLabel.textAlignment = .Center
+        titleLabel.numberOfLines = 0
         detailsView.addSubview(titleLabel)
         
         let textLabel = UILabel()
@@ -104,19 +105,21 @@ class CoachmarkView: UIView, VBackgroundContainer {
             // We start with a boundary path that encloses the whole view, then we add a path for the
             // circular highlight. Lastly, because we fill with the EvenOddRule, everything between the
             // circle and the boundary is filled, and this is used to mask the layer
-            let circularPath = UIBezierPath(
-               arcCenter: highlightFrame.center,
-               radius: Constants.highlightCircleRadius,
-               startAngle: 0,
-               endAngle: CGFloat(2 * M_PI),
-               clockwise: true
-            )
             
             let maskPath = UIBezierPath(rect: CGRect(
                                                 origin: containerFrame.origin,
                                                 size: CGSize(width: containerFrame.width, height: containerFrame.height - detailsView.frame.height)
-                                                )
+                                            )
                                         )
+            
+            let circularPath = UIBezierPath(
+                arcCenter: highlightFrame.center,
+                radius: Constants.highlightCircleRadius,
+                startAngle: 0,
+                endAngle: CGFloat(2 * M_PI),
+                clockwise: true
+            )
+            
             maskPath.appendPath(circularPath)
 
             let backgroundMaskLayer =  CAShapeLayer()
@@ -157,12 +160,15 @@ class CoachmarkView: UIView, VBackgroundContainer {
     // MARK : - Button Actions 
     
     func closeButtonAction() {
-       UIView.animateWithDuration(1, animations: { 
-            self.alpha = 0
-        }) { (_) in
-            self.removeFromSuperview()
-            self.displayer?.coachmarkDidDismiss()
-        }
+       UIView.animateWithDuration(
+            Constants.animationDuration,
+            animations: {
+                self.alpha = 0
+            })
+            { _ in
+                self.removeFromSuperview()
+                self.displayer?.coachmarkDidDismiss()
+            }
     }
     
     // MARK : - VBackgroundContainer Methods 
@@ -219,5 +225,4 @@ private extension VDependencyManager {
     var closeButton : UIButton {
         return buttonForKey(Constants.closeButtonKey) ?? UIButton()
     }
-    
 }
