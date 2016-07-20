@@ -17,7 +17,7 @@ private struct Constants {
     static let estimatedStatusBarHeight: CGFloat = 20.0
 }
 
-class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, ContentCellTracker {
+class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, ContentCellTracker, UIGestureRecognizerDelegate, CoachmarkDisplayer {
     private let gridStreamController: GridStreamViewController<CloseUpView>
     private var dependencyManager: VDependencyManager
     private var content: ContentModel? {
