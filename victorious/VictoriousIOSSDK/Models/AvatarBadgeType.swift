@@ -12,7 +12,7 @@ import Foundation
     case verified
     
     public init?(json: JSON) {
-        if json["badge_type"].stringValue == "verified" {
+        if json["badge_type"].stringValue == "verified"  || json["verified"].bool == true {
             self = .verified
         } else {
             return nil
