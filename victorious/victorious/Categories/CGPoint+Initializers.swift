@@ -9,8 +9,12 @@
 import CoreGraphics
 
 extension CGPoint {
-    init(angle: CGFloat, onCircleWithRadius radius: CGFloat, origin: CGPoint = CGPoint.zero) {
-        // TODO
-        self.init(x: 0.0, y: 0.0)
+    /// Initializes to a point on the edge of a circle of the given `radius` whose center lies at `origin`, determined
+    /// by the given `angle` in radians.
+    init(angle: CGFloat, onEdgeOfCircleWithRadius radius: CGFloat, origin: CGPoint = CGPoint.zero) {
+        self.init(
+            x: origin.x + radius * cos(angle),
+            y: origin.y + radius * sin(angle)
+        )
     }
 }

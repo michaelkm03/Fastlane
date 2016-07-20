@@ -46,6 +46,8 @@ class AvatarView: UIView {
         static let shadowOpacity = Float(0.1)
         static let shadowColor = UIColor.blackColor()
         static let shadowOffset = CGSize(width: 0.0, height: 1.0)
+        
+        static let verifiedBadgeAngle = CGFloat(M_PI * 0.25)
     }
     
     // MARK: - Initializing
@@ -213,8 +215,16 @@ class AvatarView: UIView {
         }
         
         let verifiedBadgeView = getOrCreateVerifiedBadgeView()
+        let size = verifiedBadgeView.intrinsicContentSize()
+        
+        let pointOnCircle = CGPoint(
+            angle: Constants.verifiedBadgeAngle,
+            onEdgeOfCircleWithRadius: bounds.width / 2.0,
+            origin: bounds.center
+        )
+        
+        verifiedBadgeView.frame = CGRect(center: pointOnCircle, size: size)
         verifiedBadgeView.hidden = false
-        verifiedBadgeView.frame = CGRect(origin: CGPoint.zero, size: verifiedBadgeView.intrinsicContentSize())
     }
     
     // MARK: - Shadow

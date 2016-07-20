@@ -847,6 +847,7 @@
 		7AC194611D2DD1A9001B15B8 /* String+Initials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC194601D2DD1A9001B15B8 /* String+Initials.swift */; };
 		7AC194631D2DD2FC001B15B8 /* String+InitialsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC194621D2DD2FC001B15B8 /* String+InitialsTests.swift */; };
 		7AC1B9FE1D3FF7CF00FA3CF6 /* CGPoint+Initializers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC1B9FD1D3FF7CF00FA3CF6 /* CGPoint+Initializers.swift */; };
+		7AC1BA001D3FFD9100FA3CF6 /* CGPoint+InitializersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC1B9FF1D3FFD9100FA3CF6 /* CGPoint+InitializersTests.swift */; };
 		7AE363A11CC864B600F851E9 /* SideNavScaffoldViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE363A01CC864B600F851E9 /* SideNavScaffoldViewController.swift */; };
 		7AE363A51CC98F5D00F851E9 /* RightNavViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE363A41CC98F5D00F851E9 /* RightNavViewController.swift */; };
 		7AE363A71CC9BA9400F851E9 /* Scaffold.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE363A61CC9BA9400F851E9 /* Scaffold.swift */; };
@@ -3317,6 +3318,7 @@
 		7AC194601D2DD1A9001B15B8 /* String+Initials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Initials.swift"; sourceTree = "<group>"; };
 		7AC194621D2DD2FC001B15B8 /* String+InitialsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+InitialsTests.swift"; sourceTree = "<group>"; };
 		7AC1B9FD1D3FF7CF00FA3CF6 /* CGPoint+Initializers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPoint+Initializers.swift"; sourceTree = "<group>"; };
+		7AC1B9FF1D3FFD9100FA3CF6 /* CGPoint+InitializersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPoint+InitializersTests.swift"; sourceTree = "<group>"; };
 		7AE363A01CC864B600F851E9 /* SideNavScaffoldViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideNavScaffoldViewController.swift; sourceTree = "<group>"; };
 		7AE363A41CC98F5D00F851E9 /* RightNavViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RightNavViewController.swift; sourceTree = "<group>"; };
 		7AE363A61CC9BA9400F851E9 /* Scaffold.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scaffold.swift; sourceTree = "<group>"; };
@@ -9362,6 +9364,7 @@
 				79070A2E1CFE92B50049CFC3 /* AppVersionTests.swift */,
 				03D94C2719DE155400BFAA27 /* AsyncTestHelper */,
 				A7976D0819FAE94300B5A145 /* AVAsset+OrientationTests.m */,
+				7AC1B9FF1D3FFD9100FA3CF6 /* CGPoint+InitializersTests.swift */,
 				79C593521BFD5D1700EC76ED /* CGRect+AspectTests.swift */,
 				7AB55FE61CADF06000EBE31E /* CGSize+CornerRadiusTests.swift */,
 				F0BD812C1C9B67150062D079 /* ComposerAttachmentTabBarButtonTests.swift */,
@@ -13663,6 +13666,7 @@
 				A7DCA4DC1C128A78004E35B4 /* VCoachmarkManagerTests.m in Sources */,
 				A76AEA571BFED31B00E8A26F /* FirstInstallManagerTests.swift in Sources */,
 				A7DCA4DF1C128A78004E35B4 /* VCommentMediaTypeHelperTests.m in Sources */,
+				7AC1BA001D3FFD9100FA3CF6 /* CGPoint+InitializersTests.swift in Sources */,
 				A7DCA4E41C128A78004E35B4 /* VDependencyManagerTests.m in Sources */,
 				A7DCA5001C128A78004E35B4 /* VSequencePermissionsTests.m in Sources */,
 				A7DCA5011C128A78004E35B4 /* VSequenceWebContentTests.m in Sources */,
