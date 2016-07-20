@@ -6,9 +6,7 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-import Foundation
-
-@objc public enum AvatarBadgeType: Int {
+public enum AvatarBadgeType {
     case verified
     
     public init?(json: JSON) {
