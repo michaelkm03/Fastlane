@@ -165,7 +165,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     // MARK: - Show/Hide Stage
 
     private func hideStage(animated animated: Bool = false) {
-        guard visible == true else {
+        guard visible else {
             return
         }
 
@@ -181,7 +181,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     }
 
     private func showStage(animated animated: Bool = false) {
-        guard visible == false else {
+        guard !visible else {
             return
         }
 

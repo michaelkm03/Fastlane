@@ -13,7 +13,6 @@ protocol TileCardDelegate: class {
 }
 
 class TitleCardViewController: UIViewController {
-
     /// The presentation state of the TitleCard.
     enum State {
         case shown
@@ -60,10 +59,6 @@ class TitleCardViewController: UIViewController {
     private var animator: UIDynamicAnimator?
     private var draggableBehaviour: DraggableBehaviour?
 
-    private var panGestureRecognizer: UIPanGestureRecognizer?
-    private var tapGestureRecognizer: UITapGestureRecognizer?
-
-
     // MARK: - UIViewController life cycle
 
     override func viewDidLoad() {
@@ -90,9 +85,9 @@ class TitleCardViewController: UIViewController {
     }
 
     /// Slides out the title card if it's not already present on the screen.
-    /// The card will auto hide after the a length of time specified in `autoHideDelay`.
+    /// The card will auto hide after a length of time specified in `autoHideDelay`.
     func show() {
-        guard currentState == .hidden else {
+        guard currentState != .shown else {
             return
         }
 
@@ -103,10 +98,12 @@ class TitleCardViewController: UIViewController {
         autoHideTimer = VTimerManager.scheduledTimerManagerWithTimeInterval(autoHideDelay, target: self, selector: #selector(hide), userInfo: nil, repeats: false)
     }
 
+    /// Slides out the title card from the screen.
     func hide() {
-        guard currentState == .shown else {
+        guard currentState != .hidden else {
             return
         }
+
         autoHideTimer?.invalidate()
 
         currentState = .hidden
@@ -123,13 +120,11 @@ class TitleCardViewController: UIViewController {
     }
 
     private func setupRecognizers(on view: UIView) {
-        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(didPand(_:)))
-        draggableView.addGestureRecognizer(panGestureRecognizer)
-        self.panGestureRecognizer = panGestureRecognizer
+        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(didPan(_:)))
+        view.addGestureRecognizer(panGestureRecognizer)
 
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTap(_:)))
-        draggableView.addGestureRecognizer(tapGestureRecognizer)
-        self.tapGestureRecognizer = tapGestureRecognizer
+        view.addGestureRecognizer(tapGestureRecognizer)
     }
 
     private func setupDynamics(inReferenceView referenceView: UIView, withDraggableView draggableView: UIView) {
@@ -158,7 +153,7 @@ class TitleCardViewController: UIViewController {
         animator?.addBehavior(draggableBehaviour)
     }
 
-    @objc private func didPand(recognizer: UIPanGestureRecognizer) {
+    @objc private func didPan(recognizer: UIPanGestureRecognizer) {
         let point = recognizer.translationInView(draggableView?.superview)
         let newCenter = CGPoint(x: draggableView.center.x + point.x, y: draggableView.center.y)
         if newCenter.x < (targetPoint.x + Constants.horizontalDragLimit) {
