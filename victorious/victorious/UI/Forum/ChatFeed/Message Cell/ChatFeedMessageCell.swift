@@ -192,6 +192,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
         previewView.animatesBetweenContent = false
         previewView.allowsVideoControls = false
         previewView.fillMode = .fill
+        previewView.dependencyManager = dependencyManager
         setupPreviewView(previewView)
         return previewView
     }
