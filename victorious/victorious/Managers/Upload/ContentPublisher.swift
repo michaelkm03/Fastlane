@@ -49,6 +49,8 @@ class ContentPublisher {
     
     // MARK: - Configuration
     
+    var optimisticPostingEnabled = true
+    
     weak var delegate: ContentPublisherDelegate?
     
     // MARK: - Publishing
@@ -58,20 +60,25 @@ class ContentPublisher {
     
     /// Queues `content` for publishing.
     func publish(content: ContentModel, withWidth width: CGFloat) {
-        guard let chatFeedContent = ChatFeedContent(content: content, width: width, dependencyManager: dependencyManager, creationState: .waiting) else {
-            assertionFailure("Failed to calculate height for chat feed content")
-            return
+        if optimisticPostingEnabled {
+            guard let chatFeedContent = ChatFeedContent(content: content, width: width, dependencyManager: dependencyManager, creationState: .waiting) else {
+                assertionFailure("Failed to calculate height for chat feed content")
+                return
+            }
+            
+            pendingItems.append(chatFeedContent)
+            delegate?.contentPublisher(self, didQueue: chatFeedContent)
+            
+            // We want to make sure that we send items sequentially
+            guard !pendingItems.contains({ $0.creationState == .sending }) else {
+                return
+            }
+            
+            publishNextContent()
         }
-        
-        pendingItems.append(chatFeedContent)
-        delegate?.contentPublisher(self, didQueue: chatFeedContent)
-        
-        // We want to make sure that we send items sequentially
-        guard !pendingItems.contains({ $0.creationState == .sending }) else {
-            return
+        else {
+            upload(content)
         }
-        
-        publishNextContent()
     }
     
     /// Removes `chatFeedContents` from the `pendingQueue`, returning the indices of each removed item in the queue.
@@ -125,15 +132,15 @@ class ContentPublisher {
     /// - Parameter content: The content that should be uploaded.
     /// - Parameter completion: The block to call after upload has completed or failed. Always called.
     ///
-    private func upload(content: ContentModel, completion: (ErrorType?) -> Void) {
+    private func upload(content: ContentModel, completion: ((ErrorType?) -> Void)? = nil) {
         if !content.assets.isEmpty {
             guard let publishParameters = VPublishParameters(content: content) else {
-                completion(ContentPublisherError.invalidContent)
+                completion?(ContentPublisherError.invalidContent)
                 return
             }
             
             guard let apiPath = dependencyManager.mediaCreationAPIPath(for: content) else {
-                completion(ContentPublisherError.invalidNetworkResources)
+                completion?(ContentPublisherError.invalidNetworkResources)
                 return
             }
             
@@ -141,16 +148,16 @@ class ContentPublisher {
         }
         else if let text = content.text {
             guard let apiPath = dependencyManager.textCreationAPIPath(for: content) else {
-                completion(ContentPublisherError.invalidNetworkResources)
+                completion?(ContentPublisherError.invalidNetworkResources)
                 return
             }
             
             ChatMessageCreateRemoteOperation(apiPath: apiPath, text: text).queue { _, error, _ in
-                completion(error)
+                completion?(error)
             }
         }
         else {
-            completion(ContentPublisherError.invalidContent)
+            completion?(ContentPublisherError.invalidContent)
         }
     }
     

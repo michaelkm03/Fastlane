@@ -16,11 +16,11 @@ class CreateMediaUploadOperation: BackgroundOperation {
     let uploadManager: VUploadManager
     let publishParameters: VPublishParameters
     let mediaURL: NSURL?
-    let uploadCompletion: (NSError?) -> Void
+    let uploadCompletion: ((NSError?) -> Void)?
     
     private var currentUploadTask: VUploadTaskInformation?
     
-    init(publishParameters: VPublishParameters, uploadManager: VUploadManager, apiPath: APIPath, uploadCompletion: (NSError?) -> Void) {
+    init(publishParameters: VPublishParameters, uploadManager: VUploadManager, apiPath: APIPath, uploadCompletion: ((NSError?) -> Void)?) {
         self.mediaURL = publishParameters.mediaToUploadURL
         self.request = MediaUploadCreateRequest(apiPath: apiPath)
         self.publishParameters = publishParameters
@@ -44,7 +44,7 @@ class CreateMediaUploadOperation: BackgroundOperation {
     
     private func completionError(error: NSError?) {
         dispatch_async(dispatch_get_main_queue()) {
-            self.uploadCompletion(error)
+            self.uploadCompletion?(error)
             self.finishedExecuting()
         }
     }

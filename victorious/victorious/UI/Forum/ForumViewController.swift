@@ -71,6 +71,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                 stage?.setStageEnabled(path == nil, animated: true)
             case .closeVIP():
                 onClose()
+            case .setOptimisticPostingEnabled(let enabled):
+                publisher?.optimisticPostingEnabled = enabled
             default:
                 break
         }
