@@ -145,34 +145,34 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
     ///
     /// - NOTE: `fromTime` will always be greater than `toTime` to match the API's pagination conventions.
     ///
-    private func paginationTimestamps(for loadingType: PaginatedLoadingType) -> (fromTime: Int64, toTime: Int64) {
-        let now = NSDate().millisecondsSince1970
+    private func paginationTimestamps(for loadingType: PaginatedLoadingType) -> (fromTime: Timestamp, toTime: Timestamp) {
+        let now = Timestamp()
         
         switch loadingType {
-            case .refresh: return (fromTime: now, toTime: 0)
-            case .newer: return (fromTime: now, toTime: newestTimestamp ?? 0)
-            case .older: return (fromTime: oldestTimestamp ?? now, toTime: 0)
+            case .refresh: return (fromTime: now, toTime: Timestamp(value: 0))
+            case .newer: return (fromTime: now, toTime: newestTimestamp ?? Timestamp(value: 0))
+            case .older: return (fromTime: oldestTimestamp ?? now, toTime: Timestamp(value: 0))
         }
     }
     
     // NOTE: Pagination timestamps are inclusive, so to avoid retrieving multiple copies of the same item, we adjust
     // the timestamps by 1ms to make them exclusive.
     
-    private var oldestTimestamp: Int64? {
+    private var oldestTimestamp: Timestamp? {
         if let timestamp = items.reduce(nil, combine: { timestamp, item in
-            min(timestamp ?? Int64.max, (item as! PaginatableItem).createdAt.value)
+            min(timestamp ?? Timestamp.max, (item as! PaginatableItem).createdAt)
         }) {
-            return timestamp - 1
+            return Timestamp(value: timestamp.value - 1)
         }
         
         return nil
     }
     
-    private var newestTimestamp: Int64? {
+    private var newestTimestamp: Timestamp? {
         if let timestamp = items.reduce(nil, combine: { timestamp, item in
-            max(timestamp ?? 0, (item as! PaginatableItem).createdAt.value)
+            max(timestamp ?? Timestamp(value: 0), (item as! PaginatableItem).createdAt)
         }) {
-            return timestamp + 1
+            return Timestamp(value: timestamp.value + 1)
         }
         
         return nil

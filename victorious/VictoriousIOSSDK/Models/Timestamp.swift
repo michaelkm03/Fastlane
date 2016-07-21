@@ -50,6 +50,11 @@ public struct Timestamp: Comparable, CustomStringConvertible {
     public var description: String {
         return apiString
     }
+    
+    // MARK: - Constant values
+    
+    public static let max = Timestamp(value: Int64.max)
+    public static let min = Timestamp(value: Int64.min)
 }
 
 public func == (lhs: Timestamp, rhs: Timestamp) -> Bool {

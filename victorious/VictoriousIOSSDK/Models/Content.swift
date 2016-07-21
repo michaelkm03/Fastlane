@@ -170,13 +170,13 @@ public class Content: ContentModel {
         self.tracking = Tracking(json: json["tracking"])
     }
     
-    public init?(chatMessageJSON json: JSON, serverTime: NSDate) {
+    public init?(chatMessageJSON json: JSON, serverTime: Timestamp) {
         guard let user = User(json: json["user"]) else {
             return nil
         }
         
         author = user
-        createdAt = Timestamp(date: serverTime)
+        createdAt = serverTime
         postedAt = nil
         text = json["text"].string
         assets = [ContentMediaAsset(forumJSON: json["asset"])].flatMap { $0 }
