@@ -17,10 +17,6 @@ class VIPFetchSubscriptionRemoteOperation: RemoteFetcherOperation, RequestOperat
     
     let request: VIPFetchSubscriptionRequest!
     
-    required init(request: VIPFetchSubscriptionRequest) {
-        self.request = request
-    }
-    
     init(urlString: String) throws {
         guard let request = VIPFetchSubscriptionRequest(urlString: urlString) else {
             throw VIPFetchSubscriptionRemoteOperation.initError

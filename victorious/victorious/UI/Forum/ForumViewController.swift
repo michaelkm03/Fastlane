@@ -224,8 +224,6 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             
             self.forumNetworkSource = forumNetworkSource
         }
-        
-        ShowVIPFlowOperation(originViewController: self, dependencyManager: dependencyManager).queue()
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
