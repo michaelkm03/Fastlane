@@ -17,7 +17,7 @@ class RefreshStageTests: XCTestCase {
                 XCTFail("Error reading RefreshStage JSON data.")
                 return
         }
-        let serverTime = NSDate(timeIntervalSince1970: 1234567890)
+        let serverTime = Timestamp(value: 1234567890000)
         guard let refreshStage = RefreshStage(json: JSON(data: jsonData), serverTime: serverTime) else {
             XCTFail("RefreshStage initializer failed.")
             return
@@ -34,7 +34,7 @@ class RefreshStageTests: XCTestCase {
                 XCTFail("Error reading RefreshStage JSON data.")
                 return
         }
-        let serverTime = NSDate(timeIntervalSince1970: 1234567890)
+        let serverTime = Timestamp(value: 1234567890000)
         guard let refreshStage = RefreshStage(json: JSON(data: jsonData), serverTime: serverTime) else {
             XCTFail("RefreshStage initializer failed.")
             return

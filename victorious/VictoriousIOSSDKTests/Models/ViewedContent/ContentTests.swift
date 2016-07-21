@@ -77,7 +77,7 @@ class ContentTests: XCTestCase {
                 return nil
         }
 
-        return Content(chatMessageJSON: JSON(data: mockData), serverTime: NSDate(millisecondsSince1970: 1234567890))
+        return Content(chatMessageJSON: JSON(data: mockData), serverTime: Timestamp(value: 1234567890))
     }
 
     private func createContentFromJSON(fileName fileName: String) -> Content? {
