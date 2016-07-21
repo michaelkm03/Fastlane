@@ -463,8 +463,6 @@
 		03EE1DE01C4D77B200C25287 /* NSURL+DefaultScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03EE1DDF1C4D77B200C25287 /* NSURL+DefaultScheme.swift */; };
 		03EE1DE21C4D77E000C25287 /* NSURL+DefaultSchemeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03EE1DE11C4D77E000C25287 /* NSURL+DefaultSchemeTests.swift */; };
 		03F2F7951B560B8E00F2EF16 /* sampleImage2.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F2F7941B560B8E00F2EF16 /* sampleImage2.png */; };
-		03F61E6C1C6ADF0700EEA8F9 /* Assets.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 03F61E691C6ADF0700EEA8F9 /* Assets.bundle */; };
-		03F61E6D1C6ADF0700EEA8F9 /* YTPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 03F61E6B1C6ADF0700EEA8F9 /* YTPlayerView.m */; };
 		03F6E2671AB79E090017826E /* Workspace.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03F6E2691AB79E090017826E /* Workspace.storyboard */; };
 		03F9A8361C6C1FF600962481 /* NSCharacterSet+VSDKURLParts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F9A8351C6C1FF600962481 /* NSCharacterSet+VSDKURLParts.swift */; };
 		03FD87D519F96F6900D93BAA /* VNoContentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03FD87D419F96F6900D93BAA /* VNoContentTableViewCell.xib */; };
@@ -1719,6 +1717,8 @@
 		BF5BF6BD1D00F657009FE532 /* ContentUpvoteRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5BF6BC1D00F657009FE532 /* ContentUpvoteRequestTests.swift */; };
 		BF5BF6BF1D00F6E7009FE532 /* ContentUpvoteToggleOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5BF6BE1D00F6E7009FE532 /* ContentUpvoteToggleOperationTests.swift */; };
 		BF68C4F01C7CEE9900739D87 /* AvatarBadgeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF68C4EE1C7CEE0000739D87 /* AvatarBadgeType.swift */; };
+		BF6981321D3FF98B00CC558C /* YTPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = BF6981311D3FF98B00CC558C /* YTPlayerView.m */; };
+		BF6981341D3FF99D00CC558C /* Assets.bundle in Resources */ = {isa = PBXBuildFile; fileRef = BF6981331D3FF99D00CC558C /* Assets.bundle */; };
 		BF78BF071CE27FB800AFB8F3 /* ContentMediaAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF78BF061CE27FB800AFB8F3 /* ContentMediaAsset.swift */; };
 		BF79B77D1C59542100AC980A /* UIDevice+VDeviceCapability.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF79B77C1C59542100AC980A /* UIDevice+VDeviceCapability.swift */; };
 		BF79C7711C98D3D100222C8A /* LoadingCancellableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF79C76F1C98D3D100222C8A /* LoadingCancellableView.swift */; };
@@ -2908,9 +2908,6 @@
 		03F2F7631B55829100F2EF16 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		03F2F7691B55829200F2EF16 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Discover.strings; sourceTree = "<group>"; };
 		03F2F7941B560B8E00F2EF16 /* sampleImage2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sampleImage2.png; sourceTree = "<group>"; };
-		03F61E691C6ADF0700EEA8F9 /* Assets.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Assets.bundle; sourceTree = "<group>"; };
-		03F61E6A1C6ADF0700EEA8F9 /* YTPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YTPlayerView.h; sourceTree = "<group>"; };
-		03F61E6B1C6ADF0700EEA8F9 /* YTPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YTPlayerView.m; sourceTree = "<group>"; };
 		03F6E2681AB79E090017826E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Workspace.storyboard; sourceTree = "<group>"; };
 		03F6E26A1AB79E100017826E /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Workspace.strings; sourceTree = "<group>"; };
 		03F6E26B1AB79E130017826E /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Workspace.strings; sourceTree = "<group>"; };
@@ -4460,6 +4457,9 @@
 		BF5BF6BC1D00F657009FE532 /* ContentUpvoteRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentUpvoteRequestTests.swift; sourceTree = "<group>"; };
 		BF5BF6BE1D00F6E7009FE532 /* ContentUpvoteToggleOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentUpvoteToggleOperationTests.swift; sourceTree = "<group>"; };
 		BF68C4EE1C7CEE0000739D87 /* AvatarBadgeType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AvatarBadgeType.swift; sourceTree = "<group>"; };
+		BF6981301D3FF98B00CC558C /* YTPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YTPlayerView.h; path = ../../YTPlayerView.h; sourceTree = "<group>"; };
+		BF6981311D3FF98B00CC558C /* YTPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YTPlayerView.m; path = ../../YTPlayerView.m; sourceTree = "<group>"; };
+		BF6981331D3FF99D00CC558C /* Assets.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Assets.bundle; sourceTree = "<group>"; };
 		BF78BF061CE27FB800AFB8F3 /* ContentMediaAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentMediaAsset.swift; sourceTree = "<group>"; };
 		BF79B77C1C59542100AC980A /* UIDevice+VDeviceCapability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIDevice+VDeviceCapability.swift"; sourceTree = "<group>"; };
 		BF79C76F1C98D3D100222C8A /* LoadingCancellableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingCancellableView.swift; sourceTree = "<group>"; };
@@ -7100,9 +7100,9 @@
 		03F61E681C6ADF0700EEA8F9 /* youtube-ios-player-helper */ = {
 			isa = PBXGroup;
 			children = (
-				03F61E691C6ADF0700EEA8F9 /* Assets.bundle */,
-				03F61E6A1C6ADF0700EEA8F9 /* YTPlayerView.h */,
-				03F61E6B1C6ADF0700EEA8F9 /* YTPlayerView.m */,
+				BF6981331D3FF99D00CC558C /* Assets.bundle */,
+				BF6981301D3FF98B00CC558C /* YTPlayerView.h */,
+				BF6981311D3FF98B00CC558C /* YTPlayerView.m */,
 			);
 			path = "youtube-ios-player-helper";
 			sourceTree = "<group>";
@@ -11256,6 +11256,7 @@
 				036F387F1A0C4DEA0014DF66 /* Montserrat-Regular.ttf in Resources */,
 				035926D21B1EA33400E910A7 /* Quicksand-Bold.ttf in Resources */,
 				A7A5E05A1C4DDBE30015B185 /* Discover.storyboard in Resources */,
+				BF6981341D3FF99D00CC558C /* Assets.bundle in Resources */,
 				A705F44B1B3CC00D007DBD3C /* VUserCell.xib in Resources */,
 				A7B844E71CB88D7B00CE02DE /* forum.json in Resources */,
 				0390087019F3A01A00FD7EDF /* NotificationCell.xib in Resources */,
@@ -11362,7 +11363,6 @@
 				036F387A1A0C4DEA0014DF66 /* MavenPro-Bold.ttf in Resources */,
 				F009BD1D1CEBF73500F81CAA /* HashtagBarViewController.storyboard in Resources */,
 				B074C5B51B39D41F00EA3FFC /* VHashmarkView.xib in Resources */,
-				03F61E6C1C6ADF0700EEA8F9 /* Assets.bundle in Resources */,
 				C30AA4D71B043E890010CEFE /* PermissionAlert.storyboard in Resources */,
 				03645B0D1B9EB2B50038231E /* VPublishSaveCollectionViewCell.xib in Resources */,
 				036F38951A0C4DEA0014DF66 /* Ubuntu-Medium.ttf in Resources */,
@@ -12952,6 +12952,7 @@
 				C3E47F6F1B6990C30084FF65 /* VCommentTextAndMediaView.m in Sources */,
 				039D02AD1A1043D300DB9236 /* VDependencyManager.m in Sources */,
 				6287BE101C7E87390057D116 /* VIPGateViewController.swift in Sources */,
+				BF6981321D3FF98B00CC558C /* YTPlayerView.m in Sources */,
 				F07DDE411CFCDB1500C7FC8D /* TrackableButton.swift in Sources */,
 				BF3CD89C1D120F6300CB7764 /* UserUnblockRemoteOperation.swift in Sources */,
 				A7738B051A4A35DF008EA973 /* VTransitionDelegate.m in Sources */,
@@ -13044,7 +13045,6 @@
 				A700330F1C5FEA1800AB4A57 /* VComment+Equitable.swift in Sources */,
 				A721E9391B572454000B7901 /* NSData+AES.m in Sources */,
 				A75C64A71ADDDFC900245125 /* VTextBackgroundFrameMaker.swift in Sources */,
-				03F61E6D1C6ADF0700EEA8F9 /* YTPlayerView.m in Sources */,
 				037FCF1B1A8DAF0E00E8ABFC /* VNavigationControllerScrollDelegate.m in Sources */,
 				BE171D8C1868BE64004E5202 /* VAppDelegate.m in Sources */,
 				A7D69C701C0E725100B462C3 /* VComment+Parsable.swift in Sources */,
