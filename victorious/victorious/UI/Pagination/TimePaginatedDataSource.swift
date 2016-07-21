@@ -8,7 +8,7 @@
 
 /// A protocol that items managed by `TimePaginatedDataSource` must conform to.
 protocol PaginatableItem {
-    var createdAt: NSDate { get }
+    var createdAt: Timestamp { get }
 }
 
 /// The different ways that paginated items can be loaded.
@@ -160,7 +160,7 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
     
     private var oldestTimestamp: Int64? {
         if let timestamp = items.reduce(nil, combine: { timestamp, item in
-            min(timestamp ?? Int64.max, (item as! PaginatableItem).createdAt.millisecondsSince1970)
+            min(timestamp ?? Int64.max, (item as! PaginatableItem).createdAt.value)
         }) {
             return timestamp - 1
         }
@@ -170,7 +170,7 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
     
     private var newestTimestamp: Int64? {
         if let timestamp = items.reduce(nil, combine: { timestamp, item in
-            max(timestamp ?? 0, (item as! PaginatableItem).createdAt.millisecondsSince1970)
+            max(timestamp ?? 0, (item as! PaginatableItem).createdAt.value)
         }) {
             return timestamp + 1
         }

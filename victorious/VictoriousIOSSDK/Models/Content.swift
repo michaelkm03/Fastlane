@@ -30,10 +30,10 @@ public protocol ContentModel: PreviewImageContainer, DictionaryConvertible {
     ///
     /// Will be nil for chat messages.
     ///
-    var postedAt: NSDate? { get }
+    var postedAt: Timestamp? { get }
     
     /// The time that the content was created on the server.
-    var createdAt: NSDate { get }
+    var createdAt: Timestamp { get }
     
     /// Whether this content is only accessible for VIPs
     var isVIPOnly: Bool { get }
@@ -106,8 +106,8 @@ public class Content: ContentModel {
     public let hashtags: [Hashtag]
     public let shareURL: NSURL?
     public let linkedURL: NSURL?
-    public let createdAt: NSDate
-    public let postedAt: NSDate?
+    public let createdAt: Timestamp
+    public let postedAt: Timestamp?
     public let previewImages: [ImageAssetModel]
     public let assets: [ContentMediaAssetModel]
     public let type: ContentType
@@ -139,8 +139,8 @@ public class Content: ContentModel {
         self.id = id
         self.status = json["status"].string
         self.shareURL = json["share_url"].URL
-        self.createdAt = NSDate(timestamp: json["released_at"].stringValue) ?? NSDate()
-        self.postedAt = NSDate(timestamp: json["posted_at"].stringValue)
+        self.createdAt = Timestamp(apiString: json["released_at"].stringValue) ?? Timestamp()
+        self.postedAt = Timestamp(apiString: json["posted_at"].stringValue)
         self.hashtags = []
         self.type = type
         
@@ -176,7 +176,7 @@ public class Content: ContentModel {
         }
         
         author = user
-        createdAt = serverTime
+        createdAt = Timestamp(date: serverTime)
         postedAt = nil
         text = json["text"].string
         assets = [ContentMediaAsset(forumJSON: json["asset"])].flatMap { $0 }
@@ -200,8 +200,8 @@ public class Content: ContentModel {
     
     public init(
         id: String? = nil,
-        createdAt: NSDate = NSDate(),
-        postedAt: NSDate = NSDate(),
+        createdAt: Timestamp = Timestamp(),
+        postedAt: Timestamp = Timestamp(),
         type: ContentType = .text,
         text: String? = nil,
         assets: [ContentMediaAssetModel] = [],

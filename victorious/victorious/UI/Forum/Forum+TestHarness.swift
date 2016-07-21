@@ -71,7 +71,7 @@ extension ForumViewController {
         }
         
         let content = Content(
-            createdAt: NSDate(),
+            createdAt: Timestamp(),
             text: (text == nil) ? nil : "\(totalCount) :: \(text!)",
             previewImages: [previewImage].flatMap { $0 },
             type: type, 
