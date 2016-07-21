@@ -38,6 +38,8 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         }
     }
     
+    private var isDisplayingCoachmark = false
+    
     // MARK: Dependency Manager
     
     let dependencyManager: VDependencyManager
@@ -64,8 +66,6 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         button.addTarget(self, action: #selector(toggleUpvote), forControlEvents: .TouchUpInside)
         return button
     }()
-    
-    private var isDisplayingCoachmark = false
     
     // MARK: - Initializing
     
