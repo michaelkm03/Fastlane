@@ -10,7 +10,7 @@ import UIKit
 import SDWebImage
 
 extension UIImageView {
-    func setImageAsset(imageAsset: ImageAssetModel, completion: (UIImage, NSError?) -> Void) {
+    func setImageAsset(imageAsset: ImageAssetModel, completion: (UIImage?, NSError?) -> Void) {
         switch imageAsset.imageSource {
             case .remote(let url):
                 sd_setImageWithURL(url) { image, error, _, _ in
