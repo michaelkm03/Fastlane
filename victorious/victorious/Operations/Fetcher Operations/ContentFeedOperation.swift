@@ -25,7 +25,7 @@ final class ContentFeedOperation: NSOperation, Queueable {
             if let refreshStage = remoteOperation.refreshStage {
                 self?.stageEvent = .refreshStage(refreshStage)
             } else {
-                self?.stageEvent = .closeMainStage
+                self?.stageEvent = .closeStage(.main)
             }
         }
     }

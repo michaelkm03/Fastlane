@@ -179,6 +179,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
         }
         
         let previewView = ContentPreviewView()
+        previewView.dependencyManager = dependencyManager
         setupPreviewView(previewView)
         return previewView
     }
