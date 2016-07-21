@@ -86,7 +86,7 @@ class YouTubeVideoPlayer: NSObject, VVideoPlayer, YTPlayerViewDelegate {
     }
     
     func reset() {
-        playerView.clearVideo()
+//        playerView.clearVideo()
     }
 
     func play() {
@@ -117,7 +117,7 @@ class YouTubeVideoPlayer: NSObject, VVideoPlayer, YTPlayerViewDelegate {
     
     // MARK: - YTPlayerViewDelegate
     
-    func playerViewDidBecomeReady(playerView: YTPlayerView!) {
+    func playerViewDidBecomeReady(playerView: YTPlayerView) {
         playerView.webView?.backgroundColor = UIColor.clearColor()
         playerView.stopVideo()
         isPlaying = false
@@ -136,7 +136,7 @@ class YouTubeVideoPlayer: NSObject, VVideoPlayer, YTPlayerViewDelegate {
         }
     }
     
-    func playerView(playerView: YTPlayerView!, didChangeToState state: YTPlayerState) {
+    func playerView(playerView: YTPlayerView, didChangeToState state: YTPlayerState) {
         switch state {
         case .Ended:
             playerView.userInteractionEnabled = true
@@ -158,13 +158,13 @@ class YouTubeVideoPlayer: NSObject, VVideoPlayer, YTPlayerViewDelegate {
         }
     }
     
-    func playerView(playerView: YTPlayerView!, didChangeToQuality quality: YTPlaybackQuality) {}
+    func playerView(playerView: YTPlayerView, didChangeToQuality quality: YTPlaybackQuality) {}
     
-    func playerView(playerView: YTPlayerView!, receivedError error: YTPlayerError) {
+    func playerView(playerView: YTPlayerView, receivedError error: YTPlayerError) {
         print( "YTPlayerView receivedError = \(error)" )
     }
     
-    func playerView(playerView: YTPlayerView!, didPlayTime playTime: Float) {
+    func playerView(playerView: YTPlayerView, didPlayTime playTime: Float) {
         delegate?.videoPlayer?(self, didPlayToTime: Float64(playTime) )
     }
     
