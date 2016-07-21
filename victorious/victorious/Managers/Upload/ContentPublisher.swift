@@ -76,6 +76,7 @@ class ContentPublisher {
     
     /// Removes `chatFeedContents` from the `pendingQueue`, returning the indices of each removed item in the queue.
     func remove(itemsToRemove: [ChatFeedContent]) -> [Int] {
+        
         let indices = pendingItems.enumerate().filter { index, item in
             itemsToRemove.contains { itemToRemove in
                  itemToRemove.matchesForRemoval(item)
@@ -199,14 +200,14 @@ enum ContentPublisherError: ErrorType {
 
 private extension VDependencyManager {
     func mediaCreationAPIPath(for content: ContentModel) -> APIPath? {
-        return apiPathForKey("mediaCreationURL", queryParameters: [
-            "posted_at": content.postedAt?.timestamp ?? ""
+        return apiPathForKey("mediaCreationURL", macroReplacements: [
+            "%%TIME_CURRENT%%": content.postedAt?.timestamp ?? ""
         ])
     }
     
     func textCreationAPIPath(for content: ContentModel) -> APIPath? {
-        return apiPathForKey("textCreationURL", queryParameters: [
-            "posted_at": content.postedAt?.timestamp ?? ""
+        return apiPathForKey("textCreationURL", macroReplacements: [
+            "%%TIME_CURRENT%%": content.postedAt?.timestamp ?? ""
         ])
     }
 }
