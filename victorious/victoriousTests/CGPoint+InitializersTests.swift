@@ -31,7 +31,7 @@ class CGPoint_InitializersTests: XCTestCase {
         
         assertPointsEqual(
             CGPoint(angle: pi * 0.75, onEdgeOfCircleWithRadius: 2.0, origin: CGPoint.zero),
-            CGPoint(x: -1.412, y: 1.412)
+            CGPoint(x: -1.414, y: 1.414)
         )
         
         assertPointsEqual(
