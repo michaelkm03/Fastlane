@@ -1,5 +1,5 @@
 //
-//  DraggableBehaviour.swift
+//  DraggableBehavior.swift
 //  victorious
 //
 //  Created by Sebastian Nystorm on 14/7/16.
@@ -9,22 +9,22 @@
 import UIKit
 
 /// Abstracts away the logics for panning something on the screen using UIDynamics. By setting the `targetPoint` or `velocity`
-/// the underlying behaviours will update. 
+/// the underlying behaviors will update. 
 /// Can be used together with a `UIGestureRecognizer` to transfer the velocity of the item being dragged over to UIDynamics.
-class DraggableBehaviour: UIDynamicBehavior {
+class DraggableBehavior: UIDynamicBehavior {
 
-    /// Setting targetPoint will change the anchorPoint of the item with this behaviour attached.
+    /// Setting targetPoint will change the anchorPoint of the item with this behavior attached.
     var targetPoint = CGPointZero {
         didSet {
-            attachmentBehaviour?.anchorPoint = targetPoint
+            attachmentBehavior?.anchorPoint = targetPoint
         }
     }
 
     var velocity = CGPointZero {
         didSet {
-            if let currentVelocity = itemBehaviour?.linearVelocityForItem(item) {
+            if let currentVelocity = itemBehavior?.linearVelocityForItem(item) {
                 let velocityDelta = CGPoint(x: velocity.x - currentVelocity.x, y: velocity.y - currentVelocity.y)
-                itemBehaviour?.addLinearVelocity(velocityDelta, forItem: item)
+                itemBehavior?.addLinearVelocity(velocityDelta, forItem: item)
             }
         }
     }
@@ -38,8 +38,8 @@ class DraggableBehaviour: UIDynamicBehavior {
     }
 
     private var item: UIDynamicItem
-    private var attachmentBehaviour: UIAttachmentBehavior?
-    private var itemBehaviour: UIDynamicItemBehavior?
+    private var attachmentBehavior: UIAttachmentBehavior?
+    private var itemBehavior: UIDynamicItemBehavior?
     private var parameters: Parameters
 
     /// Initialize with a `UIDynamicItem` which will be the item dragged around on the screen. 
@@ -52,17 +52,17 @@ class DraggableBehaviour: UIDynamicBehavior {
     }
 
     private func setup() {
-        let attachmentBehaviour = UIAttachmentBehavior(item: item, attachedToAnchor: CGPointZero)
-        attachmentBehaviour.frequency = parameters.frequency
-        attachmentBehaviour.damping = parameters.damping
-        attachmentBehaviour.length = parameters.length
-        self.addChildBehavior(attachmentBehaviour)
-        self.attachmentBehaviour = attachmentBehaviour
+        let attachmentBehavior = UIAttachmentBehavior(item: item, attachedToAnchor: CGPointZero)
+        attachmentBehavior.frequency = parameters.frequency
+        attachmentBehavior.damping = parameters.damping
+        attachmentBehavior.length = parameters.length
+        self.addChildBehavior(attachmentBehavior)
+        self.attachmentBehavior = attachmentBehavior
 
-        let itemBehaviour = UIDynamicItemBehavior(items: [item])
-        itemBehaviour.density = parameters.density
-        itemBehaviour.resistance = parameters.resistance
-        self.addChildBehavior(itemBehaviour)
-        self.itemBehaviour = itemBehaviour
+        let itemBehavior = UIDynamicItemBehavior(items: [item])
+        itemBehavior.density = parameters.density
+        itemBehavior.resistance = parameters.resistance
+        self.addChildBehavior(itemBehavior)
+        self.itemBehavior = itemBehavior
     }
 }

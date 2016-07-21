@@ -57,7 +57,7 @@ class TitleCardViewController: UIViewController {
     // MARK: - UIDynamics & Interraction
 
     private var animator: UIDynamicAnimator?
-    private var draggableBehaviour: DraggableBehaviour?
+    private var draggableBehavior: DraggableBehavior?
 
     // MARK: - UIViewController life cycle
 
@@ -129,7 +129,7 @@ class TitleCardViewController: UIViewController {
 
     private func setupDynamics(inReferenceView referenceView: UIView, withDraggableView draggableView: UIView) {
         animator = UIDynamicAnimator(referenceView: referenceView)
-        draggableBehaviour = DraggableBehaviour(with: draggableView)
+        draggableBehavior = DraggableBehavior(with: draggableView)
     }
 
     /// Target point of title card that depends on current state.
@@ -145,12 +145,12 @@ class TitleCardViewController: UIViewController {
     }
 
     private func animateTitleCard(withInitialVelocity initialVelocity: CGPoint) {
-        guard let draggableBehaviour = draggableBehaviour else {
+        guard let draggableBehavior = draggableBehavior else {
             return
         }
-        draggableBehaviour.targetPoint = targetPoint
-        draggableBehaviour.velocity = initialVelocity
-        animator?.addBehavior(draggableBehaviour)
+        draggableBehavior.targetPoint = targetPoint
+        draggableBehavior.velocity = initialVelocity
+        animator?.addBehavior(draggableBehavior)
     }
 
     @objc private func didPan(recognizer: UIPanGestureRecognizer) {
@@ -178,12 +178,12 @@ class TitleCardViewController: UIViewController {
     }
 
     @objc private func didTap(recognizer: UITapGestureRecognizer) {
-        guard let draggableBehaviour = draggableBehaviour else {
+        guard let draggableBehavior = draggableBehavior else {
             return
         }
 
         currentState = .hidden
-        animateTitleCard(withInitialVelocity: draggableBehaviour.velocity)
+        animateTitleCard(withInitialVelocity: draggableBehavior.velocity)
     }
 
     private func populateUI(with stageContent: StageContent?) {

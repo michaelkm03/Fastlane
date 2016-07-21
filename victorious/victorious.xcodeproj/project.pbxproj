@@ -514,7 +514,7 @@
 		0EF7168A1C98F8C60005CF86 /* WebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF716881C98F8C60005CF86 /* WebSocket.swift */; };
 		0EF7168D1C98FE5E0005CF86 /* WebSocketController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF7168C1C98FE5E0005CF86 /* WebSocketController.swift */; };
 		0EF716911C9904D20005CF86 /* WebSocketError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF716901C9904D20005CF86 /* WebSocketError.swift */; };
-		0EFC27D91D38277200C84068 /* DraggableBehaviour.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFC27D81D38277200C84068 /* DraggableBehaviour.swift */; };
+		0EFC27D91D38277200C84068 /* DraggableBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFC27D81D38277200C84068 /* DraggableBehavior.swift */; };
 		0EFE50561CB5BA64000D1C95 /* CreateChatServiceTokenRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFE50551CB5BA64000D1C95 /* CreateChatServiceTokenRequest.swift */; };
 		0EFE50581CB5C10D000D1C95 /* CreateChatServiceTokenOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFE50571CB5C10D000D1C95 /* CreateChatServiceTokenOperation.swift */; };
 		1094009C31AC4618020BBB01 /* Pods_victorious_test.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5C5A0342449CFD4C4768B97 /* Pods_victorious_test.framework */; };
@@ -2967,7 +2967,7 @@
 		0EF7168C1C98FE5E0005CF86 /* WebSocketController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebSocketController.swift; path = WebSocket/WebSocketController.swift; sourceTree = "<group>"; };
 		0EF7168E1C99010F0005CF86 /* WebSocketControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebSocketControllerTests.swift; sourceTree = "<group>"; };
 		0EF716901C9904D20005CF86 /* WebSocketError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebSocketError.swift; path = WebSocket/WebSocketError.swift; sourceTree = "<group>"; };
-		0EFC27D81D38277200C84068 /* DraggableBehaviour.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DraggableBehaviour.swift; sourceTree = "<group>"; };
+		0EFC27D81D38277200C84068 /* DraggableBehavior.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DraggableBehavior.swift; sourceTree = "<group>"; };
 		0EFE50551CB5BA64000D1C95 /* CreateChatServiceTokenRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateChatServiceTokenRequest.swift; sourceTree = "<group>"; };
 		0EFE50571CB5C10D000D1C95 /* CreateChatServiceTokenOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateChatServiceTokenOperation.swift; sourceTree = "<group>"; };
 		138B5A4A675BB6176F7DA761 /* Pods-victorious.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.release.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.release.xcconfig"; sourceTree = "<group>"; };
@@ -5541,12 +5541,10 @@
 				BFC673631CE3C9C8004F9D3C /* ContentPreviewView */,
 				D89A50071A000D540010D050 /* Controls */,
 				7C28F1011D1DD94A0070B8AE /* CTAErrorState.swift */,
-				BE42842D19DDD0D800AEDBA6 /* DefaultProfileImages */,
 				BF7AF9C41D22F98500539D90 /* Error States */,
 				A776E00A1AE743F3001F25FF /* Floating Navigation View */,
 				D8DF71ED1AFD987B002EA7A5 /* Following */,
 				0314D34919B46B5E00FA363C /* Keyboard Bar */,
-				F0FBFA671CE1624D006318FC /* PersistentContentCreator.swift */,
 				D86528F01AE82AAC003832AC /* PollView */,
 				D85E427B1AFA982000A13BD3 /* SequencePreviewView */,
 				7A1C70A91CC8513B00A666F5 /* SideMenuController.swift */,
@@ -7200,7 +7198,7 @@
 		0EFC27DA1D38596E00C84068 /* UIDynamics */ = {
 			isa = PBXGroup;
 			children = (
-				0EFC27D81D38277200C84068 /* DraggableBehaviour.swift */,
+				0EFC27D81D38277200C84068 /* DraggableBehavior.swift */,
 			);
 			path = UIDynamics;
 			sourceTree = "<group>";
@@ -13525,7 +13523,7 @@
 				A72C86841C977FF600E97D4F /* AlertReceiver.swift in Sources */,
 				A7D7ED511B59BEB900FA346A /* UISearchBar+Extensions.swift in Sources */,
 				A65F4D581B5DA69B00C96F1F /* VNoAssetsDataSource.m in Sources */,
-				0EFC27D91D38277200C84068 /* DraggableBehaviour.swift in Sources */,
+				0EFC27D91D38277200C84068 /* DraggableBehavior.swift in Sources */,
 				A72C863D1C977FF500E97D4F /* UnfollowHashtagOperation.swift in Sources */,
 				F089E3591AC486170076DC4D /* VBlurredMarqueeCollectionViewCell.m in Sources */,
 				A72C86671C977FF600E97D4F /* PrefetchedResultsOperation.swift in Sources */,
