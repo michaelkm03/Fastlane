@@ -13,9 +13,9 @@ private struct Constants {
     static let coachmarksArrayKey = "coachmarks"
     static let trackingURLsKey = "tracking"
     static let trackingEventName = "Coachmark Open"
+    static let animationDuration = 1.0
 }
 
-@objc(VCoachmarkManager)
 class CoachmarkManager : NSObject {
     let dependencyManager: VDependencyManager
     var coachmarks: [Coachmark] = []
@@ -31,7 +31,7 @@ class CoachmarkManager : NSObject {
         reloadCoachmarks()
     }
     
-    private func reloadCoachmarks() {
+     func reloadCoachmarks() {
         guard let coachmarkConfigurations = dependencyManager.arrayForKey(Constants.coachmarksArrayKey) as? [[NSObject : AnyObject]] else {
             assertionFailure("No coachmarks could be found in coachmark manager")
             return
@@ -55,7 +55,7 @@ class CoachmarkManager : NSObject {
         reloadCoachmarks()
     }
     
-    private func fetchShownCoachmarkIDs() -> [String] {
+    func fetchShownCoachmarkIDs() -> [String] {
         return NSUserDefaults.standardUserDefaults().objectForKey(Constants.shownCoachmarksKey) as? [String] ?? []
     }
     
@@ -97,17 +97,17 @@ class CoachmarkManager : NSObject {
                 coachmarkView.alpha = 0
                 container.addSubview(coachmarkView)
                 
-                UIView.animateWithDuration(1, animations: { 
+                UIView.animateWithDuration(Constants.animationDuration) {
                     coachmarkView.alpha = 1
-                }) {  _ in
-                    coachmarkToDisplay.hasBeenShown = true
-                    self.saveCoachmarkState()
-                    
-                    if let urls = self.dependencyManager.arrayForKey(Constants.trackingURLsKey) as? [String] {
-                        self.trackingManager.trackEvent(Constants.trackingEventName, parameters: [ VTrackingKeyUrls : urls])
-                    }
-                    displayer.coachmarkDidShow()
                 }
+                
+                coachmarkToDisplay.hasBeenShown = true
+                self.saveCoachmarkState()
+                
+                if let urls = self.dependencyManager.arrayForKey(Constants.trackingURLsKey) as? [String] {
+                    self.trackingManager.trackEvent(Constants.trackingEventName, parameters: [ VTrackingKeyUrls : urls])
+                }
+                displayer.coachmarkDidShow()
             }
         }
     }
