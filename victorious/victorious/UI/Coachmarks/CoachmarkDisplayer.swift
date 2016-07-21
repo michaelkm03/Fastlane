@@ -40,6 +40,7 @@ protocol CoachmarkDisplayer {
     Called when the coachmark is dimissed by the user
  */
     func coachmarkDidDismiss()
+    
 }
 
 extension CoachmarkDisplayer {

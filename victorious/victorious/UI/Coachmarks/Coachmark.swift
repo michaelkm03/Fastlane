@@ -14,11 +14,13 @@ class Coachmark {
     let remoteID: String
     let dependencyManager: VDependencyManager
     var hasBeenShown = false
+    var context: String?
     
     init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
         self.screenIdentifier = dependencyManager.stringForKey("screen")
         self.highlightIdentifier = dependencyManager.stringForKey("highlight.target")
         self.remoteID = dependencyManager.stringForKey("id")
+        self.context = dependencyManager.stringForKey("context") 
     }
 }

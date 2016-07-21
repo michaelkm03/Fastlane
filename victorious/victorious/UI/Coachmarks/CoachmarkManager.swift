@@ -73,14 +73,20 @@ class CoachmarkManager : NSObject {
      - parameter displayer: The object that will provide the frames for the coachmark, and will handle callbacks
      - parameter container: The container frame of the coachmark, usually the entire screen
     */
-    func displayCoachmark(inCoachmarkDisplayer displayer: CoachmarkDisplayer, withContainerView container: UIView) {
+    func displayCoachmark(inCoachmarkDisplayer displayer: CoachmarkDisplayer, withContainerView container: UIView, withContext viewContext: String? = nil) {
         guard allowCoachmarks else {
             assertionFailure("Coachmarks are not enabled")
             return
         }
         
         let screenIdentifier = displayer.screenIdentifier
-        if let index = coachmarks.indexOf({ $0.screenIdentifier == screenIdentifier}) {
+        if let index = coachmarks.indexOf({ coachmark in
+            var contextMatches = true
+            if let coachmarkContext = coachmark.context {
+                contextMatches = viewContext == coachmarkContext
+            }
+            return coachmark.screenIdentifier == screenIdentifier && contextMatches
+        }) {
             let coachmarkToDisplay = coachmarks[index]
             
             var highlightFrame: CGRect? = nil

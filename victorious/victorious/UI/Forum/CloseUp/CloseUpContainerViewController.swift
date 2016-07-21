@@ -107,9 +107,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         navigationController?.interactivePopGestureRecognizer?.delegate = self
-        if let containerView = navigationController?.view ?? self.view {
-            dependencyManager.coachmarkManager?.displayCoachmark(inCoachmarkDisplayer: self, withContainerView: containerView)
-        }
+        dependencyManager.coachmarkManager?.displayCoachmark(inCoachmarkDisplayer: self, withContainerView: coachmarkContainerView)
     }
     
     // MARK: - ContentCellTracker

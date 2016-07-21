@@ -9,18 +9,33 @@
 import UIKit
 
 /// A view controller that displays the contents of a user's profile.
-class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderDelegate, AccessoryScreenContainer, VAccessoryNavigationSource {
+class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderDelegate, AccessoryScreenContainer, VAccessoryNavigationSource, CoachmarkDisplayer, UIGestureRecognizerDelegate {
     // MARK: - Constants
     
     static let userAppearanceKey = "userAppearance"
     static let creatorAppearanceKey = "creatorAppearance"
     static let upgradeButtonID = "Accessory paygate"
+    static let estimatedBarButtonWidth: CGFloat = 60.0
+    static let estimatedStatusBarHeight: CGFloat = 20.0
     
-    private struct AccessoryScreensKeys {
-        static let selfUser = "accessories.user.own"
-        static let otherUser = "accessories.user.other"
-        static let selfCreator = "accessories.creator.own"
-        static let otherCreator = "accessories.user.creator"
+    private enum AccessoryScreensType : String {
+        case selfUser = "accessories.user.own"
+        case otherUser = "accessories.user.other"
+        case selfCreator = "accessories.creator.own"
+        case otherCreator = "accessories.user.creator"
+        
+        var coachmarkContext: String {
+            switch self {
+                case .selfUser:
+                    return "self_user"
+                case .otherUser:
+                    return "other_user"
+                case .selfCreator:
+                    return "self_creator"
+                case otherCreator:
+                    return "other_creator"
+            }
+        }
     }
     
     // MARK: Dependency Manager
@@ -49,6 +64,8 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         button.addTarget(self, action: #selector(toggleUpvote), forControlEvents: .TouchUpInside)
         return button
     }()
+    
+    private var isDisplayingCoachmark = false
     
     // MARK: - Initializing
     
@@ -135,6 +152,16 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         return button
     }()
     
+    // MARK: - ViewControlle lifecycle
+    
+    override func viewDidLoad() {
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        dependencyManager.coachmarkManager?.displayCoachmark(inCoachmarkDisplayer: self, withContainerView: coachmarkContainerView, withContext: accessoryScreensType?.coachmarkContext)
+    }
+    
     // MARK: - Actions
     
     private dynamic func upgradeButtonWasPressed() {
@@ -187,17 +214,21 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     private var supplementalLeftButtons = [UIBarButtonItem]()
     private var supplementalRightButtons = [UIBarButtonItem]()
     
-    var accessoryScreensKey: String? {
+    private var accessoryScreensType: AccessoryScreensType? {
         guard let user = self.user else {
             return nil
         }
         
         if user.accessLevel.isCreator == true {
-            return user.isCurrentUser ? AccessoryScreensKeys.selfCreator : AccessoryScreensKeys.otherCreator
+            return user.isCurrentUser ? AccessoryScreensType.selfCreator : AccessoryScreensType.otherCreator
         }
         else {
-            return user.isCurrentUser ? AccessoryScreensKeys.selfUser : AccessoryScreensKeys.otherUser
+            return user.isCurrentUser ? AccessoryScreensType.selfUser : AccessoryScreensType.otherUser
         }
+    }
+    
+    var accessoryScreensKey: String? {
+        return accessoryScreensType?.rawValue
     }
     
     func addCustomLeftItems(to items: [UIBarButtonItem]) -> [UIBarButtonItem] {
@@ -289,6 +320,39 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
             self?.setUser(userInfoOperation.user, using: dependencyManager)
         }
     }
+    
+    // MARK: - Coachmark Displayer
+    
+    var screenIdentifier: String {
+        return dependencyManager.stringForKey(VDependencyManagerIDKey)
+    }
+    
+    func highlightFrame(identifier: String) -> CGRect? {
+        if let barFrame = navigationController?.navigationBar.frame where identifier == "bump" {
+            return CGRect(
+                x: barFrame.width - VNewProfileViewController.estimatedBarButtonWidth,
+                y: VNewProfileViewController.estimatedStatusBarHeight,
+                width: VNewProfileViewController.estimatedBarButtonWidth,
+                height: barFrame.height
+            )
+        }
+        return nil
+    }
+    
+    func coachmarkDidShow() {
+        isDisplayingCoachmark = true
+    }
+    
+    func coachmarkDidDismiss() {
+        isDisplayingCoachmark = false
+    }
+    
+    // MARK: - GestureRecognizerDelegate
+    
+    func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return !isDisplayingCoachmark
+    }
+
 }
 
 private extension VDependencyManager {

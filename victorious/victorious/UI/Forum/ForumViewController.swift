@@ -10,7 +10,7 @@ import UIKit
 
 /// A template driven .screen component that sets up, houses and mediates the interaction
 /// between the Forum's required concrete implementations and abstract dependencies.
-class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocusable, UploadManagerHost {
+class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocusable, UploadManagerHost, CoachmarkDisplayer, UIGestureRecognizerDelegate {
     @IBOutlet private weak var stageContainer: UIView!
     @IBOutlet private weak var stageViewControllerContainer: VPassthroughContainerView!
     @IBOutlet private weak var stageTouchView: UIView!
@@ -30,6 +30,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     #endif
 
     private var navBarTitleView : ForumNavBarTitleView?
+    private var isDisplayingCoachmark = false 
     
     // MARK: - Initialization
     
@@ -158,7 +159,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             navigationController?.navigationBar.topItem?.titleView = navBarTitleView
         }
         navBarTitleView?.sizeToFit()
-        
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
         #if V_ENABLE_WEBSOCKET_DEBUG_MENU
             if let webSocketForumNetworkSource = forumNetworkSource as? WebSocketForumNetworkSource,
                 let navigationController = navigationController {
@@ -179,7 +180,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         // Set up the network source if needed.
         forumNetworkSource?.setUpIfNeeded()
         
-        //self.view.addSubview(CoachmarkView(dependencyManager: dependencyManager, frame: view.frame, highlightFrame: CGRect(x: 10, y: 10, width: 200, height: 200)))
+        dependencyManager.coachmarkManager?.displayCoachmark(inCoachmarkDisplayer: self, withContainerView: coachmarkContainerView)
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -349,11 +350,30 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         }
     }
     
-    // MARK: - VCoachmarkDisplayer
+    // MARK: - Coachmark Displayer
     
-    func screenIdentifier() -> String! {
+    var screenIdentifier: String {
         return dependencyManager.stringForKey(VDependencyManagerIDKey)
     }
+    
+    func highlightFrame(identifier: String) -> CGRect? {
+        return nil
+    }
+    
+    func coachmarkDidShow() {
+        isDisplayingCoachmark = true
+    }
+    
+    func coachmarkDidDismiss() {
+        isDisplayingCoachmark = false
+    }
+    
+    // MARK: - GestureRecognizerDelegate
+    
+    func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return !isDisplayingCoachmark
+    }
+
 }
 
 private extension VDependencyManager {
