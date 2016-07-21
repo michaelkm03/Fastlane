@@ -121,6 +121,12 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         {
             /// Only change the mute state if we are visible.
             shouldMute = false
+            do {
+                try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            } catch {
+                print("unable to change audio session category")
+            }
+            
         }
     }
 
