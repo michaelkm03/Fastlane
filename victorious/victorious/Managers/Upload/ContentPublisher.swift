@@ -79,13 +79,13 @@ class ContentPublisher {
         
         let indices = pendingItems.enumerate().filter { index, item in
             itemsToRemove.contains { itemToRemove in
-                 itemToRemove.matchesForRemoval(item)
+                 itemToRemove.matches(item)
             }
         }.map { $0.index }
         
         pendingItems = pendingItems.filter { item in
             !itemsToRemove.contains { itemToRemove in
-                 itemToRemove.matchesForRemoval(item)
+                 itemToRemove.matches(item)
             }
         }
         
@@ -157,9 +157,9 @@ class ContentPublisher {
     // MARK: - Handling Errors
     
     /// Retry publishing `content` that failed to be sent
-    func retryPublish(chatFeedContent: ChatFeedContent) {
+    func retryPublish(chatFeedContent: ChatFeedContent) -> Int? {
         guard let index = index(of: chatFeedContent) where chatFeedContent.creationState == .failed else {
-            return
+            return nil
         }
         
         pendingItems[index].creationState = .sending
@@ -177,6 +177,8 @@ class ContentPublisher {
                 strongSelf.pendingItems[updatedIndex].creationState = .sent
             }
         }
+        
+        return index
     }
     
     // MARK: - Index of Queue
@@ -188,7 +190,7 @@ class ContentPublisher {
     
     /// Returns the index of the specified content
     private func index(of chatFeedContent: ChatFeedContent) -> Int? {
-        return pendingItems.indexOf { $0.content.id == chatFeedContent.content.id }
+        return pendingItems.indexOf { $0.matches(chatFeedContent) }
     }
 }
 
@@ -213,7 +215,7 @@ private extension VDependencyManager {
 }
 
 private extension ChatFeedContent {
-    func matchesForRemoval(item: ChatFeedContent) -> Bool {
+    func matches(item: ChatFeedContent) -> Bool {
         guard self.content.wasCreatedByCurrentUser && item.content.wasCreatedByCurrentUser else {
             return false
         }
