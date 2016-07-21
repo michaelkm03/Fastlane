@@ -10,6 +10,10 @@ import Foundation
 
 class UsernameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
     
+    struct Constants {
+        static let placeholderAlpha = CGFloat(0.5)
+    }
+    
     /// Provide a closure to be notified when the return key is pressed in either
     /// the username or location text fields.
     var onReturnKeySelected: (() -> ())?
@@ -17,6 +21,18 @@ class UsernameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
     /// Provide a closure to be notified when the user taps on their avatar
     /// indicating that they want to
     var onAvatarSelected: (() -> ())?
+    
+    var user: UserModel? {
+        didSet {
+            guard user?.id != oldValue?.id else {
+                return
+            }
+
+            usernameField.text = user?.name
+            locationField.text = user?.location
+            avatarView.user = user
+        }
+    }
     
     var username: String? {
         get {
@@ -36,22 +52,13 @@ class UsernameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
         }
     }
     
-    var avatar: UIImage? {
-        get {
-            return avatarButton.backgroundImageForState(.Normal)
-        }
-        set {
-            avatarButton.setBackgroundImage(newValue, forState: .Normal)
-        }
-    }
-    
     var dependencyManager: VDependencyManager? {
         didSet {
             // Visual Configuration
             guard let dependencyManager = dependencyManager,
-                let font = dependencyManager.placeholderAndEnteredTextFont,
-                let placeholderTextColor = dependencyManager.placeholderTextColor,
-                let enteredTextColor = dependencyManager.enteredTextColor else {
+                font = dependencyManager.placeholderAndEnteredTextFont,
+                placeholderTextColor = dependencyManager.placeholderTextColor,
+                enteredTextColor = dependencyManager.enteredTextColor else {
                     return
             }
             
@@ -62,7 +69,7 @@ class UsernameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
             locationField.textColor = enteredTextColor
             
             // Placeholder
-            let placeholderAttributes = [NSForegroundColorAttributeName: placeholderTextColor]
+            let placeholderAttributes = [NSForegroundColorAttributeName: placeholderTextColor.colorWithAlphaComponent(Constants.placeholderAlpha)]
             usernameField.attributedPlaceholder = NSAttributedString(string: "Name",
                                                                      attributes: placeholderAttributes)
             locationField.attributedPlaceholder = NSAttributedString(string: "Location",
@@ -75,13 +82,21 @@ class UsernameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
     
     @IBOutlet private var usernameField: UITextField!
     @IBOutlet private var locationField: UITextField!
-    @IBOutlet private var avatarButton: UIButton!
+    @IBOutlet private weak var avatarView: AvatarView!
+    
+    // MARK: - API
     
     func beginEditing() {
         usernameField.becomeFirstResponder()
     }
     
-    //MARK: - UITextFieldDelegate
+    // MARK: - Target / Action
+    
+    @IBAction private func tappedOnAvatar(sender: AnyObject) {
+        self.onAvatarSelected?()
+    }
+    
+    // MARK: - UITextFieldDelegate
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         dispatch_after(0.001, {

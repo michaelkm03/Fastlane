@@ -262,3 +262,5 @@
 #import "VWorkspaceViewController.h"
 #import "YTPlayerView.h"
 #import "VDependencyManager+VBackground.h"
+#import "VEditProfilePicturePresenter.h"
+

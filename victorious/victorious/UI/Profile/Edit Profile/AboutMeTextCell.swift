@@ -10,6 +10,10 @@ import Foundation
 
 class AboutMeTextCell: UITableViewCell, UITextViewDelegate {
     
+    private struct Constants {
+        static let textViewInsets = UIEdgeInsets(top: 15, left: -4, bottom: 14, right: 0)
+    }
+    
     var tagline: String? {
         get {
             return textView.text
@@ -34,6 +38,7 @@ class AboutMeTextCell: UITableViewCell, UITextViewDelegate {
             textView.setPlaceholderTextColor(placeholderTextColor)
             textView.textColor = enteredTextColor
             textView.font = font
+            textView.textContainerInset = Constants.textViewInsets
             
             contentView.backgroundColor = dependencyManager.cellBackgroundColor
         }

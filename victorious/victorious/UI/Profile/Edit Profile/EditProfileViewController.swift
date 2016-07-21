@@ -14,6 +14,7 @@ class EditProfileViewController: UITableViewController {
 
     var dependencyManager: VDependencyManager?
     var dataSource: EditProfileTableViewDataSource?
+    var profilePicturePresenter: VEditProfilePicturePresenter?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,13 +26,34 @@ class EditProfileViewController: UITableViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        tableView.backgroundView = dependencyManager?.background().viewForBackground()
-        
-        if let dependencyManager = dependencyManager {
-            dataSource = EditProfileTableViewDataSource(dependencyManager: dependencyManager,
-                                                        tableView: tableView)
-            tableView.dataSource = dataSource
+        guard let dependencyManager = dependencyManager,
+            currentUser = VCurrentUser.user() else {
+            print("We need a dependencyManager in the edit profile VC!")
+            return
         }
+        
+        dataSource = EditProfileTableViewDataSource(dependencyManager: dependencyManager,
+                                                    tableView: tableView,
+                                                    userModel: currentUser)
+        dataSource?.onUserRequestsCameraFlow = { [weak self] in
+            VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectImageForEditProfile)
+            self?.profilePicturePresenter = VEditProfilePicturePresenter(dependencyManager: dependencyManager)
+            self?.profilePicturePresenter?.resultHandler = { success, previewImage, mediaURL in
+                defer {
+                    self?.dismissViewControllerAnimated(true, completion: nil)
+                }
+                
+                guard success else {
+                    return
+                }
+                
+                // Create a new userModel with the new preview image
+            }
+            self?.profilePicturePresenter?.presentOnViewController(self)
+        }
+        
+        tableView.dataSource = dataSource
+        tableView.backgroundView = dependencyManager.background().viewForBackground()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -61,15 +83,19 @@ class EditProfileViewController: UITableViewController {
 
 class EditProfileTableViewDataSource: NSObject, UITableViewDataSource {
     
-    let dependencyManager: VDependencyManager
-    let tableView: UITableView
-    let nameAndLocationCell: UsernameLocationAvatarCell
-    let aboutMeCell: AboutMeTextCell
+    private let dependencyManager: VDependencyManager
+    private let tableView: UITableView
+    private let nameAndLocationCell: UsernameLocationAvatarCell
+    private let aboutMeCell: AboutMeTextCell
+    var user: UserModel
+    var onUserRequestsCameraFlow: (() -> ())?
     
     init(dependencyManager: VDependencyManager,
-         tableView: UITableView) {
+         tableView: UITableView,
+         userModel: UserModel) {
         self.dependencyManager = dependencyManager
         self.tableView = tableView
+        self.user = userModel
         nameAndLocationCell = tableView.dequeueReusableCellWithIdentifier("NameLocationAndPictureCell") as! UsernameLocationAvatarCell
         aboutMeCell = tableView.dequeueReusableCellWithIdentifier("AboutMe") as! AboutMeTextCell
     }
@@ -125,8 +151,11 @@ class EditProfileTableViewDataSource: NSObject, UITableViewDataSource {
         nameCell.onReturnKeySelected = { [weak self] in
             self?.aboutMeCell.beginEditing()
         }
-        nameCell.username = VCurrentUser.user()?.name
-        nameCell.location = VCurrentUser.user()?.location
+        nameCell.onAvatarSelected = { [weak self] in
+            self?.onUserRequestsCameraFlow?()
+        }
+        nameCell.user = user
+        nameCell.dependencyManager = dependencyManager
     }
     
     private func configueAboutMeCell(aboutMeCell: AboutMeTextCell) {
