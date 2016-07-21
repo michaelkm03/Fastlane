@@ -168,6 +168,10 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
             return []
         }
         
+        if publisher.pendingItems.isEmpty || contentToRemove.isEmpty {
+            return []
+        }
+        
         return publisher.remove(contentToRemove)
     }
     
