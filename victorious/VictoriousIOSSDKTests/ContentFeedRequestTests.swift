@@ -34,7 +34,7 @@ class ContentFeedRequestTests: XCTestCase {
             XCTAssertEqual(contents.first?.id, "20711")
             XCTAssertEqual(contents.last?.id, "20712")
             XCTAssertEqual(refreshStage?.contentID, "21253")
-            XCTAssertEqual(refreshStage?.section, RefreshSection.MainStage)
+            XCTAssertEqual(refreshStage?.section, StageSection.main)
         } catch {
             XCTFail("parseResponse is not supposed to throw")
             return

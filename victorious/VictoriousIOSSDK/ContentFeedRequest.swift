@@ -26,7 +26,8 @@ public struct ContentFeedRequest: RequestType {
         let mainStageJSON = responseJSON["main_stage"]
         
         let parsedContents = contents.flatMap { Content(json: $0) }
-        let parsedRefreshStage = RefreshStage(json: mainStageJSON)
+        let stageMetaData = StageMetaData(title: mainStageJSON["title"].string)
+        let parsedRefreshStage = RefreshStage(json: mainStageJSON, stageMetaData: stageMetaData)
         
         return (parsedContents, parsedRefreshStage)
     }

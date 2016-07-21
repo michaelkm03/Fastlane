@@ -163,12 +163,13 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
             let json = JSON(data: dataFromString)
             rawMessage.json = json
 
-            if let event = (decodeEventFromJSON(json) ?? decodeEventFromJSON(json)) {
-                dispatch_async(dispatch_get_main_queue()) { [weak self] in
-                    self?.broadcast(event)
-                }
-            } else {
+            guard let event = (decodeEventFromJSON(json) ?? decodeErrorFromJSON(json)) else {
                 print("Unparsable WebSocket message returned -> \(text)")
+                return
+            }
+            
+            dispatch_async(dispatch_get_main_queue()) { [weak self] in
+                self?.broadcast(event)
             }
         }
 

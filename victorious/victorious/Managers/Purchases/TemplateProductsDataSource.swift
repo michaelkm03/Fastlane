@@ -10,11 +10,13 @@ import Foundation
 
 @objc class Subscription: NSObject {
     let productIdentifier: String
+    let enabled: Bool
     let iconImage: UIImage?
     
-    init(productIdentifier: String, iconImage: UIImage? = nil) {
+    init(enabled: Bool, iconImage: UIImage? = nil) {
         self.iconImage = iconImage
-        self.productIdentifier = productIdentifier
+        self.enabled = enabled
+        self.productIdentifier = "placeholder"
     }
 }
 

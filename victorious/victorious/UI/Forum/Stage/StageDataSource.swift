@@ -44,7 +44,7 @@ class StageDataSource: ForumEventReceiver {
 
                 // Don't replace the content on the Main Stage if it's the same content since we might be getting 
                 // multiple Main stage messages during the contents lifetime.
-                if currentContent?.id == stageEvent.contentID && stageEvent.section == .MainStage {
+                if currentContent?.id == stageEvent.contentID && stageEvent.section == .main {
                     return
                 }
                 
@@ -59,12 +59,13 @@ class StageDataSource: ForumEventReceiver {
                     else {
                         return
                     }
-                    
-                    self?.delegate?.addContent(content)
+
+                    let stageContent = StageContent(content: content, metaData: stageEvent.stageMetaData)
+                    self?.delegate?.addStageContent(stageContent)
                     self?.currentContent = content
                 }
                 
-            case .closeMainStage:
+            case .closeStage(_):
                 currentContentFetchOperation?.cancel()
                 delegate?.removeContent()
                 currentContent = nil

@@ -35,8 +35,6 @@
 
 @implementation VAbstractStreamCollectionViewController
 
-@synthesize multipleContainerChildDelegate;
-
 #pragma mark - Init & Dealloc
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -182,27 +180,6 @@
 - (void)updateNavigationItems
 {
     // Nothing to do here, provided to override in subclasses
-}
-
-#pragma mark - VMultipleContainerChild protocol
-
-- (void)multipleContainerDidSetSelected:(BOOL)isDefault
-{
-    if ( isDefault )
-    {
-        [self.streamTrackingHelper viewControllerAppearedAsInitial:self.currentStream];
-    }
-    else
-    {
-        // In spite of its name, this is not actullay a stream-related event, so it is not part of `streamTrackingHelper`.
-        // This event fires for any conformist of `VMultipleContainerChild`.
-        NSDictionary *params = @{ VTrackingKeyStreamName : self.currentStream.name ?: @"" };
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectStream parameters:params];
-        
-        [self.streamTrackingHelper multipleContainerDidSetSelected:self.currentStream];
-    }
-    
-    [self updateNavigationItems];
 }
 
 #pragma mark - Property Setters

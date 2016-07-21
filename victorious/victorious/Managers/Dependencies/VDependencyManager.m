@@ -890,7 +890,15 @@ NSString * const VDependencyManagerNativeWorkspaceKey = @"nativeWorkspace";
             return [[UIImage alloc] initWithData:imageData scale:[templateImage.scale VCGFLOAT_VALUE]];
         }
     }
-    return [UIImage imageNamed:templateImage.imageURL.absoluteString];
+    
+    // FUTURE: Remove this hacky check after the cms returns the launchImage for the name "splash" instead of "LaunchImage"
+    NSString *imageName = templateImage.imageURL.absoluteString;
+    if ( [imageName isEqualToString:@"splash"] && [UIImage imageNamed:imageName] == nil )
+    {
+        imageName = @"LaunchImage";
+    }
+    
+    return [UIImage imageNamed:imageName];
 }
 
 - (BOOL)isDictionaryAComponent:(NSDictionary *)possibleComponent

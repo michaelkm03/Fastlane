@@ -69,6 +69,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                 // path will be nil for home feed, and non nil for filtered feed
                 composer?.setComposerVisible(path == nil, animated: true)
                 stage?.setStageEnabled(path == nil, animated: true)
+            case .closeVIP():
+                onClose()
             default:
                 break
         }
@@ -173,7 +175,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         
         // Remove this once the way to animate the workspace in and out from forum has been figured out
         navigationController?.setNavigationBarHidden(false, animated: animated)
-
+        
         // Set up the network source if needed.
         forumNetworkSource?.setUpIfNeeded()
     }

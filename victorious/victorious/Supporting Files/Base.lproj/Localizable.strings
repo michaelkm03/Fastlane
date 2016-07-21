@@ -365,12 +365,10 @@
 "SubscriptionsSettingsTitle"            = "Subscriptions";
 
 "SubscriptionRestoreFailed"             = "Failed to restore subcription.";
-"SubscriptionSucceeded"                 = "Subscription complete!";
-"SubscriptionLegalPrompt"               = "By subscribing you are agreeing to our";
 "SubscriptionActivityRestoring"         = "Checking for subscription...";
 "SubscriptionRestorePrompt"             = "Already subscribed?";
-"SubscriptionRestoreSucceeded"          = "Subscription restored!";
 "SubscriptionFailed"                    = "Subscription failed.";
+"SubscriptionFetchFailed"               = "Failed to find subscriptions for purchase.";
 "Upgrade"                               = "Upgrade";
 
 "This will discard any content added to your post" = "This will discard any content added to your post";

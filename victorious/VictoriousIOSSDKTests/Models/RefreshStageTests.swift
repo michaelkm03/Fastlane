@@ -24,7 +24,7 @@ class RefreshStageTests: XCTestCase {
         }
         
         XCTAssertEqual(refreshStage.contentID, "BB7670057")
-        XCTAssertEqual(refreshStage.section, RefreshSection.VIPStage)
+        XCTAssertEqual(refreshStage.section, StageSection.vip)
         XCTAssertEqual(refreshStage.serverTime, serverTime)
     }
     
@@ -41,7 +41,7 @@ class RefreshStageTests: XCTestCase {
         }
         
         XCTAssertEqual(refreshStage.contentID, "XBXBX8888")
-        XCTAssertEqual(refreshStage.section, RefreshSection.MainStage)
+        XCTAssertEqual(refreshStage.section, StageSection.main)
         XCTAssertEqual(refreshStage.serverTime, serverTime)
     }
 }
