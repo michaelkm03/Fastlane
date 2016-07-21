@@ -188,7 +188,7 @@ class ContentPublisher {
     
     /// Returns the index of the specified content
     private func index(of chatFeedContent: ChatFeedContent) -> Int? {
-        return pendingItems.indexOf { $0.content.id == chatFeedContent.content.id }
+        return pendingItems.indexOf { $0.matchesForRemoval(chatFeedContent) }
     }
 }
 
