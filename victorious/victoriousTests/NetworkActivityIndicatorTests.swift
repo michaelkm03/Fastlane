@@ -17,7 +17,7 @@ class NetworkActivityIndicatorTests: XCTestCase {
     }
     
     func testUsage() {
-        let indicator = NetworkActivityIndicator.sharedInstance()
+        let indicator = NetworkActivityIndicator()
         XCTAssertFalse( indicator.visible )
         indicator.start()
         XCTAssert( indicator.visible )

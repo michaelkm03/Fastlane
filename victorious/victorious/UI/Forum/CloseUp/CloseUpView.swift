@@ -93,7 +93,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
         userNameButton.setTitle(author.name, forState: .Normal)
         
         avatarView.user = author
-        createdAtLabel.text = content.createdAt.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds) ?? ""
+        createdAtLabel.text = NSDate(timestamp: content.createdAt).stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds) ?? ""
         captionLabel.text = content.text
     }
 
@@ -122,7 +122,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
                 }
             }
             
-            createdAtLabel.text = content.createdAt.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds) ?? ""
+            createdAtLabel.text = NSDate(timestamp: content.createdAt).stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds) ?? ""
             captionLabel.text = content.text
             mediaContentView.content = content
             

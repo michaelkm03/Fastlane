@@ -38,13 +38,11 @@ extension WebSocketEventDecoder {
         var forumEvent: ForumEvent?
 
         let rootNode = json[Keys.root]
-        if let serverTime = rootNode[Keys.serverTime].double where rootNode.isExists() {
-
+        
+        if let serverTime = Timestamp(apiString: rootNode[Keys.serverTime].stringValue) where rootNode.isExists() {
             guard let type = rootNode[Keys.type].string else {
                 return nil
             }
-
-            let serverTime = NSDate(millisecondsSince1970: serverTime)
 
             switch type {
                 case Types.chatMessage:

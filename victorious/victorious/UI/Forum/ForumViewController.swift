@@ -335,7 +335,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     // MARK: - ContentPublisherDelegate
     
     func contentPublisher(contentPublisher: ContentPublisher, didQueue content: ChatFeedContent) {
-        chatFeed?.handleNewItems([], loadingType: .newer, pendingContentDelta: 1) { [weak self] in
+        chatFeed?.handleNewItems([], loadingType: .newer, newPendingContentCount: 1) { [weak self] in
             if self?.chatFeed?.collectionView.v_isScrolledToBottom == false {
                 self?.chatFeed?.collectionView.v_scrollToBottomAnimated(true)
             }
@@ -347,7 +347,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             return
         }
         
-        chatFeed?.collectionView.reloadItemsAtIndexPaths(contentPublisher.pendingContent.indices.map {
+        chatFeed?.collectionView.reloadItemsAtIndexPaths(contentPublisher.pendingItems.indices.map {
             NSIndexPath(forItem: itemCount - 1 - $0, inSection: 0)
         })
     }
@@ -355,33 +355,25 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     // MARK: - Content Post Failure Handling
     
     private func retryPublish(chatFeedContent: ChatFeedContent) {
-        guard
-            let index = publisher?.pendingContent.indexOf({ $0.content.id == chatFeedContent.content.id }),
-            let dataSource = chatFeed?.chatInterfaceDataSource
-        else {
+        guard let dataSource = chatFeed?.chatInterfaceDataSource else {
             return
         }
         
-        publisher?.retryPublish(chatFeedContent)
-        
-        chatFeed?.collectionView.reloadItemsAtIndexPaths([
-            NSIndexPath(forItem: dataSource.visibleItems.count + index, inSection: 0)
-        ])
+        if let retriedIndex = publisher?.retryPublish(chatFeedContent) {
+            let retriedIndexPath = NSIndexPath(forItem: dataSource.visibleItems.count + retriedIndex, inSection: 0)
+            chatFeed?.collectionView.reloadItemsAtIndexPaths([retriedIndexPath])
+        }
     }
     
     private func delete(chatFeedContent: ChatFeedContent) {
-        guard
-            let index = publisher?.pendingContent.indexOf({ $0.content.id == chatFeedContent.content.id }),
-            let dataSource = chatFeed?.chatInterfaceDataSource
-        else {
+        guard let dataSource = chatFeed?.chatInterfaceDataSource else {
             return
         }
         
-        publisher?.remove(chatFeedContent)
-        
-        chatFeed?.collectionView.deleteItemsAtIndexPaths([
-            NSIndexPath(forItem: dataSource.visibleItems.count + index, inSection: 0)
-        ])
+        if let removedIndicies = publisher?.remove([chatFeedContent]) {
+            let indexPaths = removedIndicies.map { NSIndexPath(forItem: dataSource.visibleItems.count + $0, inSection: 0)}
+            chatFeed?.collectionView.deleteItemsAtIndexPaths(indexPaths)
+        }
     }
     
     // MARK: - VFocusable

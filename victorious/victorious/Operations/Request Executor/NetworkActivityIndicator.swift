@@ -18,7 +18,7 @@ public class NetworkActivityIndicator {
         return instance
     }
     
-    private init() {}
+    init() {}
     
     public func start() {
         activityCount += 1

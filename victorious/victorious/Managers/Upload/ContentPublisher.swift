@@ -54,7 +54,7 @@ class ContentPublisher {
     // MARK: - Publishing
     
     /// The content that is currently pending creation.
-    private(set) var pendingContent = [ChatFeedContent]()
+    private(set) var pendingItems = [ChatFeedContent]()
     
     /// Queues `content` for publishing.
     func publish(content: ContentModel, withWidth width: CGFloat) {
@@ -63,21 +63,33 @@ class ContentPublisher {
             return
         }
         
-        pendingContent.append(chatFeedContent)
+        pendingItems.append(chatFeedContent)
         delegate?.contentPublisher(self, didQueue: chatFeedContent)
         
         // We want to make sure that we send items sequentially
-        guard !pendingContent.contains({ $0.creationState == .sending }) else {
+        guard !pendingItems.contains({ $0.creationState == .sending }) else {
             return
         }
         
         publishNextContent()
     }
     
-    /// Should be called after calling `publish` to confirm that content was published, which will remove it from the
-    /// queue.
-    func confirmPublish(count count: Int) {
-        pendingContent.removeRange(0 ..< count)
+    /// Removes `chatFeedContents` from the `pendingQueue`, returning the indices of each removed item in the queue.
+    func remove(itemsToRemove: [ChatFeedContent]) -> [Int] {
+        
+        let indices = pendingItems.enumerate().filter { index, item in
+            itemsToRemove.contains { itemToRemove in
+                 itemToRemove.matches(item)
+            }
+        }.map { $0.index }
+        
+        pendingItems = pendingItems.filter { item in
+            !itemsToRemove.contains { itemToRemove in
+                 itemToRemove.matches(item)
+            }
+        }
+        
+        return indices
     }
     
     private func publishNextContent() {
@@ -85,9 +97,9 @@ class ContentPublisher {
             return
         }
         
-        pendingContent[index].creationState = .sending
+        pendingItems[index].creationState = .sending
 
-        upload(pendingContent[index].content) { [weak self] error in
+        upload(pendingItems[index].content) { [weak self] error in
             // The content's index will have changed by now if a preceding item was confirmed while this one was being
             // sent, so we need to get an updated index.
             guard let strongSelf = self, updatedIndex = strongSelf.indexOfContent(withState: .sending) else {
@@ -95,14 +107,14 @@ class ContentPublisher {
             }
             
             if error != nil {
-                for index in strongSelf.pendingContent.indices {
-                    strongSelf.pendingContent[index].creationState = .failed
+                for index in strongSelf.pendingItems.indices {
+                    strongSelf.pendingItems[index].creationState = .failed
                 }
                 
-                strongSelf.delegate?.contentPublisher(strongSelf, didFailToSend: strongSelf.pendingContent[updatedIndex])
+                strongSelf.delegate?.contentPublisher(strongSelf, didFailToSend: strongSelf.pendingItems[updatedIndex])
             }
             else {
-                strongSelf.pendingContent[updatedIndex].creationState = .sent
+                strongSelf.pendingItems[updatedIndex].creationState = .sent
                 strongSelf.publishNextContent()
             }
         }
@@ -120,26 +132,20 @@ class ContentPublisher {
                 return
             }
             
-            guard
-                let mediaCreationString = dependencyManager.mediaCreationURL,
-                let creationURL = NSURL(string: mediaCreationString)
-            else {
+            guard let apiPath = dependencyManager.mediaCreationAPIPath(for: content) else {
                 completion(ContentPublisherError.invalidNetworkResources)
                 return
             }
             
-            CreateMediaUploadOperation(publishParameters: publishParameters, uploadManager: VUploadManager.sharedManager(), mediaCreationURL: creationURL, uploadCompletion: completion).queue()
+            CreateMediaUploadOperation(publishParameters: publishParameters, uploadManager: VUploadManager.sharedManager(), apiPath: apiPath, uploadCompletion: completion).queue()
         }
         else if let text = content.text {
-            guard
-                let textCreationString = dependencyManager.textCreationURL,
-                let creationURL = NSURL(string: textCreationString)
-            else {
+            guard let apiPath = dependencyManager.textCreationAPIPath(for: content) else {
                 completion(ContentPublisherError.invalidNetworkResources)
                 return
             }
             
-            ChatMessageCreateRemoteOperation(textCreationURL: creationURL, text: text).queue { _, error, _ in
+            ChatMessageCreateRemoteOperation(apiPath: apiPath, text: text).queue { _, error, _ in
                 completion(error)
             }
         }
@@ -151,12 +157,12 @@ class ContentPublisher {
     // MARK: - Handling Errors
     
     /// Retry publishing `content` that failed to be sent
-    func retryPublish(chatFeedContent: ChatFeedContent) {
+    func retryPublish(chatFeedContent: ChatFeedContent) -> Int? {
         guard let index = index(of: chatFeedContent) where chatFeedContent.creationState == .failed else {
-            return
+            return nil
         }
         
-        pendingContent[index].creationState = .sending
+        pendingItems[index].creationState = .sending
         
         upload(chatFeedContent.content) { [weak self] error in
             guard let strongSelf = self, updatedIndex = strongSelf.index(of: chatFeedContent) else {
@@ -164,30 +170,27 @@ class ContentPublisher {
             }
             
             if error != nil {
-                strongSelf.pendingContent[updatedIndex].creationState = .failed
+                strongSelf.pendingItems[updatedIndex].creationState = .failed
                 strongSelf.delegate?.contentPublisher(strongSelf, didFailToSend: chatFeedContent)
             }
             else {
-                strongSelf.pendingContent[updatedIndex].creationState = .sent
+                strongSelf.pendingItems[updatedIndex].creationState = .sent
             }
         }
-    }
-    
-    /// Removes `content` from the pending queue
-    func remove(chatFeedContent: ChatFeedContent) {
-        pendingContent = pendingContent.filter { $0.content.id != chatFeedContent.content.id }
+        
+        return index
     }
     
     // MARK: - Index of Queue
     
     /// Returns the first content in the queue that has the given `state`.
     private func indexOfContent(withState state: ContentCreationState) -> Int? {
-        return pendingContent.indexOf { $0.creationState == state }
+        return pendingItems.indexOf { $0.creationState == state }
     }
     
     /// Returns the index of the specified content
     private func index(of chatFeedContent: ChatFeedContent) -> Int? {
-        return pendingContent.indexOf { $0.content.id == chatFeedContent.content.id }
+        return pendingItems.indexOf { $0.matches(chatFeedContent) }
     }
 }
 
@@ -198,11 +201,24 @@ enum ContentPublisherError: ErrorType {
 }
 
 private extension VDependencyManager {
-    var mediaCreationURL: String? {
-        return stringForKey("mediaCreationURL")
+    func mediaCreationAPIPath(for content: ContentModel) -> APIPath? {
+        return apiPathForKey("mediaCreationURL", macroReplacements: [
+            "%%TIME_CURRENT%%": content.postedAt?.apiString ?? ""
+        ])
     }
     
-    var textCreationURL: String? {
-        return stringForKey("textCreationURL")
+    func textCreationAPIPath(for content: ContentModel) -> APIPath? {
+        return apiPathForKey("textCreationURL", macroReplacements: [
+            "%%TIME_CURRENT%%": content.postedAt?.apiString ?? ""
+        ])
+    }
+}
+
+private extension ChatFeedContent {
+    func matches(item: ChatFeedContent) -> Bool {
+        guard self.content.wasCreatedByCurrentUser && item.content.wasCreatedByCurrentUser else {
+            return false
+        }
+        return self.content.postedAt == item.content.postedAt
     }
 }

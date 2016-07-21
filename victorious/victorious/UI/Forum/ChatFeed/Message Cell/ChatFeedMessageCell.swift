@@ -284,7 +284,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
 
 private extension ContentModel {
     var timeLabel: String {
-        return createdAt.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds)
+        return NSDate(timestamp: createdAt).stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds)
     }
 }
 
