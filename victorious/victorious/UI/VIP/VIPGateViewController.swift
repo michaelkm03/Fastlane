@@ -69,24 +69,33 @@ class VIPGateViewController: UIViewController {
     // MARK: - IBActions
     
     @IBAction func onSubscribe(sender: UIButton? = nil) {
-        let subscriptionFetchOperation = VIPFetchSubscriptionOperation()
+        guard
+            let urlString = dependencyManager.subscriptionFetchURL,
+            let subscriptionFetchOperation = VIPFetchSubscriptionRemoteOperation(urlString: urlString)
+        else {
+            v_showErrorWithTitle(Strings.subscriptionFailed, message: Strings.subscriptionFetchFailed)
+            return
+        }
+        
         self.setIsLoading(true, title: Strings.purchaseInProgress)
-        subscriptionFetchOperation.queue() { [weak self] error, canceled in
+        subscriptionFetchOperation.queue() { [weak self] results, error, canceled in
             guard !canceled else {
                 self?.setIsLoading(false)
                 return
             }
 
+            // FUTURE: Update this guard to check for multiple identifiers in results ( tracked https://jira.victorious.com/browse/IOS-5365 )
             guard
-                let productIdentifier = subscriptionFetchOperation.subscriptionProductIdentifier
+                let productIdentifier = results?.first as? String
                 where error == nil
             else {
                 let title = Strings.subscriptionFailed
-                self?.v_showErrorWithTitle(title, message: error?.localizedDescription)
                 self?.setIsLoading(false)
+                self?.v_showErrorWithTitle(title, message: error?.localizedDescription)
                 return
             }
             
+            // FUTURE: Present product selection prompt for multiple product identifiers ( tracked https://jira.victorious.com/browse/IOS-5365 )
             let subscribe = VIPSubscribeOperation(productIdentifier: productIdentifier)
             subscribe.queue() { error, canceled in
                 self?.setIsLoading(false)
@@ -239,6 +248,7 @@ class VIPGateViewController: UIViewController {
         static let restoreInProgress        = NSLocalizedString("SubscriptionActivityRestoring", comment: "")
         static let restorePrompt            = NSLocalizedString("SubscriptionRestorePrompt", comment: "")
         static let subscriptionFailed       = NSLocalizedString("SubscriptionFailed", comment: "")
+        static let subscriptionFetchFailed  = NSLocalizedString("SubscriptionFetchFailed", comment: "")
     }
 }
 
@@ -327,5 +337,9 @@ private extension VDependencyManager {
     
     var subscribeButtonDependency: VDependencyManager? {
         return childDependencyForKey("subscribeButton")
+    }
+    
+    var subscriptionFetchURL: String? {
+        return networkResources?.stringForKey("inapp.sku.URL")
     }
 }
