@@ -25,6 +25,13 @@ enum AvatarViewSize {
             case .large: return AvatarView.Constants.largeInitialsFont
         }
     }
+    
+    var verifiedBadgeImage: UIImage? {
+        switch self {
+            case .small: return UIImage(named: "verified_badge_small")
+            case .large: return UIImage(named: "verified_badge_large")
+        }
+    }
 }
 
 /// A reusable view for displaying a user's avatar that handles decoration and fallback images.
@@ -93,9 +100,10 @@ class AvatarView: UIView {
             return verifiedBadgeView
         }
         
-        let verifiedBadgeView = UIImageView(image: UIImage(named: "verified_badge"))
+        let verifiedBadgeView = UIImageView()
         self.verifiedBadgeView = verifiedBadgeView
         addSubview(verifiedBadgeView)
+        updateVerifiedBadge()
         return verifiedBadgeView
     }
     
@@ -105,6 +113,7 @@ class AvatarView: UIView {
         didSet {
             if size != oldValue {
                 applyInitialsStyle()
+                updateVerifiedBadge()
                 invalidateIntrinsicContentSize()
             }
         }
@@ -116,6 +125,10 @@ class AvatarView: UIView {
         initialsLabel.minimumScaleFactor = Constants.initialsMinScaleFactor
         initialsLabel.font = size.initialsFont
         initialsLabel.textColor = Constants.initialsColor
+    }
+    
+    private func updateVerifiedBadge() {
+        verifiedBadgeView?.image = size.verifiedBadgeImage
     }
     
     // MARK: - Content

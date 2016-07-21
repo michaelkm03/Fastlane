@@ -3,17 +3,17 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "verified_badge.png"
+      "filename" : "verified_badge_small.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "verified_badge@2x.png"
+      "filename" : "verified_badge_small@2x.png"
     },
     {
       "idiom" : "universal",
       "scale" : "3x",
-      "filename" : "verified_badge@3x.png"
+      "filename" : "verified_badge_small@3x.png"
     }
   ],
   "info" : {
