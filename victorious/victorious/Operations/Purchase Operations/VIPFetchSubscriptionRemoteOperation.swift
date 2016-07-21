@@ -8,7 +8,12 @@
 
 import Foundation
 
+let VIPFetchSubscriptionRemoteOperationErrorDomain = "VIPFetchSubscriptionRemoteOperationError"
+
 class VIPFetchSubscriptionRemoteOperation: RemoteFetcherOperation, RequestOperation {
+    private static let initErrorDescription = NSLocalizedString("ProductsRequestError", comment: "")
+
+    private static let initError = NSError(domain: VIPFetchSubscriptionRemoteOperationErrorDomain, code: 0, userInfo: [ NSLocalizedDescriptionKey : initErrorDescription ] )
     
     let request: VIPFetchSubscriptionRequest!
     
@@ -16,9 +21,9 @@ class VIPFetchSubscriptionRemoteOperation: RemoteFetcherOperation, RequestOperat
         self.request = request
     }
     
-    init?(urlString: String) {
+    init(urlString: String) throws {
         guard let request = VIPFetchSubscriptionRequest(urlString: urlString) else {
-            return nil
+            throw VIPFetchSubscriptionRemoteOperation.initError
         }
         self.request = request
     }

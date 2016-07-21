@@ -29,7 +29,7 @@ extension VIPGateViewControllerDelegate {
     }
 }
 
-class VIPGateViewController: UIViewController {
+class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     @IBOutlet weak private var headlineLabel: UILabel!
     @IBOutlet weak private var detailLabel: UILabel!
     @IBOutlet weak private var subscribeButton: TextOnColorButton!
@@ -40,6 +40,13 @@ class VIPGateViewController: UIViewController {
     
     @IBOutlet private var labelWidthConstraint: NSLayoutConstraint!
     @IBOutlet private var scrollViewInsetConstraints: [NSLayoutConstraint]!
+    
+    lazy var vipSubscriptionHelper: VIPSubscriptionHelper? = {
+        guard let subscriptionFetchURL = self.dependencyManager.subscriptionFetchURL else {
+            return nil
+        }
+        return VIPSubscriptionHelper(subscriptionFetchURL: subscriptionFetchURL, delegate: self, originViewController: self)
+    }()
     
     weak var delegate: VIPGateViewControllerDelegate?
         
@@ -69,50 +76,7 @@ class VIPGateViewController: UIViewController {
     // MARK: - IBActions
     
     @IBAction func onSubscribe(sender: UIButton? = nil) {
-        guard
-            let urlString = dependencyManager.subscriptionFetchURL,
-            let subscriptionFetchOperation = VIPFetchSubscriptionRemoteOperation(urlString: urlString)
-        else {
-            v_showErrorWithTitle(Strings.subscriptionFailed, message: Strings.subscriptionFetchFailed)
-            return
-        }
-        
-        self.setIsLoading(true, title: Strings.purchaseInProgress)
-        subscriptionFetchOperation.queue() { [weak self] results, error, canceled in
-            guard !canceled else {
-                self?.setIsLoading(false)
-                return
-            }
-
-            // FUTURE: Update this guard to check for multiple identifiers in results ( tracked https://jira.victorious.com/browse/IOS-5365 )
-            guard
-                let productIdentifier = results?.first as? String
-                where error == nil
-            else {
-                let title = Strings.subscriptionFailed
-                self?.setIsLoading(false)
-                self?.v_showErrorWithTitle(title, message: error?.localizedDescription)
-                return
-            }
-            
-            // FUTURE: Present product selection prompt for multiple product identifiers ( tracked https://jira.victorious.com/browse/IOS-5365 )
-            let subscribe = VIPSubscribeOperation(productIdentifier: productIdentifier)
-            subscribe.queue() { error, canceled in
-                self?.setIsLoading(false)
-                guard !canceled else {
-                    return
-                }
-                
-                if let error = error {
-                    let title = Strings.subscriptionFailed
-                    let message = error.localizedDescription
-                    self?.v_showErrorWithTitle(title, message: message)
-                }
-                else {
-                    self?.openGate(afterPurchase: true)
-                }
-            }
-        }
+        vipSubscriptionHelper?.subscribe()
     }
     
     @IBAction func onRestore(sender: UIButton? = nil) {
@@ -149,7 +113,7 @@ class VIPGateViewController: UIViewController {
     
     // MARK: - Private
     
-    private func setIsLoading(isLoading: Bool, title: String? = nil) {
+    func setIsLoading(isLoading: Bool, title: String? = nil) {
         if isLoading {
             MBProgressHUD.hideAllHUDsForView(self.view, animated: false)
             let progressHUD = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
@@ -238,17 +202,20 @@ class VIPGateViewController: UIViewController {
         super.updateViewConstraints()
     }
     
+    // MARK: - VIPSubscriptionHelperDelegate
+    
+    func VIPSubscriptionHelperCompletedSubscription(helper: VIPSubscriptionHelper) {
+        openGate(afterPurchase: true)
+    }
+    
     // MARK: - String Constants
     
     private struct Strings {
         static let privacyPolicy            = NSLocalizedString("Privacy Policy", comment: "")
         static let termsOfService           = NSLocalizedString("Terms of Service", comment: "")
-        static let purchaseInProgress       = NSLocalizedString("ActivityPurchasing", comment: "")
         static let restoreFailed            = NSLocalizedString("SubscriptionRestoreFailed", comment: "")
         static let restoreInProgress        = NSLocalizedString("SubscriptionActivityRestoring", comment: "")
         static let restorePrompt            = NSLocalizedString("SubscriptionRestorePrompt", comment: "")
-        static let subscriptionFailed       = NSLocalizedString("SubscriptionFailed", comment: "")
-        static let subscriptionFetchFailed  = NSLocalizedString("SubscriptionFetchFailed", comment: "")
     }
 }
 
