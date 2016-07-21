@@ -24,7 +24,7 @@ class UserTests: XCTestCase {
         XCTAssertEqual(user.id, 36179)
         XCTAssertEqual(user.email, "tyt@creator.us")
         XCTAssertEqual(user.name, "The Young Turks")
-        XCTAssertEqual(user.accessLevel, .owner)
+        XCTAssertEqual(user.accessLevel, User.AccessLevel.owner)
         XCTAssertEqual(user.location, "Fargo, ND")
         XCTAssertEqual(user.tagline, "My coolest tagline")
         XCTAssertEqual(user.fanLoyalty?.points, Int(2764))

@@ -20,7 +20,7 @@ extension VUser: PersistenceParsable {
         isBlockedByMainUser         = user.isBlockedByCurrentUser ?? isBlockedByMainUser
         isVIPSubscriber             = user.vipStatus?.isVIP ?? isVIPSubscriber
         vipEndDate                  = user.vipStatus?.endDate ?? vipEndDate
-        isCreator                   = user.accessLevel?.isCreator ?? isCreator
+        isCreator                   = user.accessLevel.isCreator ?? isCreator
         isFollowedByMainUser        = user.isFollowedByCurrentUser ?? isFollowedByMainUser
         v_likesGiven                = user.likesGiven ?? likesGiven
         v_likesReceived             = user.likesReceived ?? likesReceived

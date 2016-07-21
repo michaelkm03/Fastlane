@@ -14,7 +14,7 @@ public struct RefreshStage {
     public let serverTime: Timestamp?
     
     /// Points to the different instaces of Stage.
-    public let section: RefreshSection
+    public let section: StageSection
     
     /// The new content to be fetched and played on stage.
     public let contentID: String
@@ -51,9 +51,9 @@ public struct RefreshStage {
         let lowerCasedSection = section.lowercaseString
         switch lowerCasedSection {
             case "vip_stage":
-                self.section = RefreshSection.VIPStage
+                self.section = .vip
             case "main_stage":
-                self.section = RefreshSection.MainStage
+                self.section = .main
             default:
                 return nil
         }
