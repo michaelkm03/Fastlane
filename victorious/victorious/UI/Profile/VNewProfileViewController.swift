@@ -88,6 +88,10 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         fatalError("NSCoding not supported.")
     }
     
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
@@ -262,7 +266,9 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     // MARK: - Managing the user
     
     @objc private func userChanged() {
-        setUser(VCurrentUser.user(), using: dependencyManager)
+        if user?.id == VCurrentUser.user()?.id {
+            setUser(VCurrentUser.user(), using: dependencyManager)
+        }
     }
     
     private func fetchUser(using dependencyManager: VDependencyManager) {
