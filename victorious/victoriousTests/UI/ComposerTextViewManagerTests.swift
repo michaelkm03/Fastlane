@@ -119,7 +119,7 @@ class ComposerTextViewManagerTests: XCTestCase {
         
         var onSetTextViewIsEditing: (Void -> ())? = nil
         
-        var onSetTextViewHasPrependedImage: (Void -> ())? = nil
+        var onSetTextViewPrependedImage: (Void -> ())? = nil
         
         var textViewContentSize: CGSize = CGSize.zero {
             didSet {
@@ -139,9 +139,9 @@ class ComposerTextViewManagerTests: XCTestCase {
             }
         }
         
-        private var textViewHasPrependedImage: Bool = false {
+        private var textViewPrependedImage: UIImage? {
             didSet {
-                onSetTextViewHasPrependedImage?()
+                onSetTextViewPrependedImage?()
             }
         }
         

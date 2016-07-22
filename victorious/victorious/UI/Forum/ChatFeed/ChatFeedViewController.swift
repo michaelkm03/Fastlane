@@ -129,19 +129,14 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     // MARK: - ChatFeedDataSourceDelegate
     
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didLoadItems newItems: [ChatFeedContent], loadingType: PaginatedLoadingType) {
-        handleNewItems(newItems, loadingType: loadingType)
+        let removedPendingContentIndices = removePendingContent(newItems, loadingType: loadingType)
+        handleNewItems(newItems, loadingType: loadingType, removedPendingContentIndices: removedPendingContentIndices)
     }
     
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didStashItems stashedItems: [ChatFeedContent]) {
-        let itemsContainCurrentUserMessage = stashedItems.contains {
-            $0.content.author.id == VCurrentUser.user()?.remoteId.integerValue
-        }
+        let itemsContainOtherUserMessage = stashedItems.contains { !$0.content.wasCreatedByCurrentUser }
         
-        if itemsContainCurrentUserMessage {
-            // Unstash if we got a message from the current user.
-            dataSource.unstash()
-        }
-        else if stashedItems.count > 0 {
+        if itemsContainOtherUserMessage {
             // Update stash count and show stash counter.
             newItemsController?.count = dataSource.stashedItems.count
             newItemsController?.show()
@@ -151,7 +146,9 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didUnstashItems unstashedItems: [ChatFeedContent]) {
         newItemsController?.hide()
         
-        handleNewItems(unstashedItems, loadingType: .newer) { [weak self] in
+        let removedPendingContentIndices = removePendingContent(unstashedItems, loadingType: .newer)
+        
+        handleNewItems(unstashedItems, loadingType: .newer, removedPendingContentIndices: removedPendingContentIndices) { [weak self] in
             if self?.collectionView.v_isScrolledToBottom == false {
                 self?.collectionView.v_scrollToBottomAnimated(true)
             }
@@ -160,6 +157,22 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     
     var chatFeedItemWidth: CGFloat {
         return collectionView.bounds.width
+    }
+    
+    func pendingItems(for chatFeedDataSource: ChatFeedDataSource) -> [ChatFeedContent] {
+        return delegate?.publisher(for: self)?.pendingItems ?? []
+    }
+    
+    private func removePendingContent(contentToRemove: [ChatFeedContent], loadingType: PaginatedLoadingType) -> [Int] {
+        guard let publisher = delegate?.publisher(for: self) where loadingType == .newer else {
+            return []
+        }
+        
+        if publisher.pendingItems.isEmpty || contentToRemove.isEmpty {
+            return []
+        }
+        
+        return publisher.remove(contentToRemove)
     }
     
     // MARK: - VScrollPaginatorDelegate

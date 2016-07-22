@@ -51,13 +51,11 @@ extension WebSocketEventDecoder {
         let rootNode = json[Keys.root]
         
         guard
-            let serverTimeFromJSON = rootNode[Keys.serverTime].double where rootNode.isExists(),
+            let serverTime = Timestamp(apiString: rootNode[Keys.serverTime].stringValue) where rootNode.isExists(),
             let type = rootNode[Keys.type].string
         else {
             return nil
         }
-
-        let serverTime = NSDate(millisecondsSince1970: serverTimeFromJSON)
         
         switch type {
             case Types.chatMessage:

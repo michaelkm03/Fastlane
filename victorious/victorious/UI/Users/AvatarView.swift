@@ -25,6 +25,13 @@ enum AvatarViewSize {
             case .large: return AvatarView.Constants.largeInitialsFont
         }
     }
+    
+    var verifiedBadgeImage: UIImage? {
+        switch self {
+            case .small: return UIImage(named: "verified_badge_small")
+            case .large: return UIImage(named: "verified_badge_large")
+        }
+    }
 }
 
 /// A reusable view for displaying a user's avatar that handles decoration and fallback images.
@@ -46,6 +53,8 @@ class AvatarView: UIView {
         static let shadowOpacity = Float(0.1)
         static let shadowColor = UIColor.blackColor()
         static let shadowOffset = CGSize(width: 0.0, height: 1.0)
+        
+        static let verifiedBadgeAngle = CGFloat(M_PI * 0.25)
     }
     
     // MARK: - Initializing
@@ -84,6 +93,19 @@ class AvatarView: UIView {
     private let shadowView = UIView()
     private let imageView = UIImageView()
     private let initialsLabel = UILabel()
+    private var verifiedBadgeView: UIImageView?
+    
+    private func getOrCreateVerifiedBadgeView() -> UIImageView {
+        if let verifiedBadgeView = self.verifiedBadgeView {
+            return verifiedBadgeView
+        }
+        
+        let verifiedBadgeView = UIImageView()
+        self.verifiedBadgeView = verifiedBadgeView
+        addSubview(verifiedBadgeView)
+        updateVerifiedBadge()
+        return verifiedBadgeView
+    }
     
     // MARK: - Configuration
     
@@ -91,6 +113,7 @@ class AvatarView: UIView {
         didSet {
             if size != oldValue {
                 applyInitialsStyle()
+                updateVerifiedBadge()
                 invalidateIntrinsicContentSize()
             }
         }
@@ -102,6 +125,10 @@ class AvatarView: UIView {
         initialsLabel.minimumScaleFactor = Constants.initialsMinScaleFactor
         initialsLabel.font = size.initialsFont
         initialsLabel.textColor = Constants.initialsColor
+    }
+    
+    private func updateVerifiedBadge() {
+        verifiedBadgeView?.image = size.verifiedBadgeImage
     }
     
     // MARK: - Content
@@ -147,9 +174,9 @@ class AvatarView: UIView {
         imageView.image = nil
         imageView.backgroundColor = user?.color
         
-        if let imageURL = user?.previewImageURL(ofMinimumSize: bounds.size) {
-            imageView.sd_setImageWithURL(imageURL) { [weak self] _, error, _, _ in
-                if error != nil {
+        if let imageAsset = user?.previewImage(ofMinimumSize: bounds.size) {
+            imageView.setImageAsset(imageAsset) { [weak self] image, _ in
+                if image == nil {
                     self?.showInitials()
                 }
                 else {
@@ -189,8 +216,28 @@ class AvatarView: UIView {
         initialsLabel.frame = bounds
         imageView.layer.cornerRadius = imageView.frame.size.v_roundCornerRadius
         shadowView.layer.cornerRadius = shadowView.frame.size.v_roundCornerRadius
+        layoutVerifiedBadge()
         updateShadowPathIfNeeded()
         updateContentIfNeeded()
+    }
+    
+    private func layoutVerifiedBadge() {
+        guard user?.avatarBadgeType == .verified else {
+            self.verifiedBadgeView?.hidden = true
+            return
+        }
+        
+        let verifiedBadgeView = getOrCreateVerifiedBadgeView()
+        let size = verifiedBadgeView.intrinsicContentSize()
+        
+        let pointOnCircle = CGPoint(
+            angle: Constants.verifiedBadgeAngle,
+            onEdgeOfCircleWithRadius: bounds.width / 2.0,
+            origin: bounds.center
+        )
+        
+        verifiedBadgeView.frame = CGRect(center: pointOnCircle, size: size)
+        verifiedBadgeView.hidden = false
     }
     
     // MARK: - Shadow
