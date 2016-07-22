@@ -261,7 +261,6 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     // MARK: - Managing video
     
     private func setUpVideoPlayer(for content: ContentModel) {
-        // Videos don't need the label and image view
         tearDownTextLabel()
         tearDownPreviewImage()
         
@@ -297,7 +296,6 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     // MARK: - Managing Text 
     
     private func setUpTextLabel() {
-        //Text doesn't need the image view and video player
         tearDownPreviewImage()
         tearDownVideoPlayer()
         
