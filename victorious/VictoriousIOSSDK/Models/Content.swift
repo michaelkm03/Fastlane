@@ -124,7 +124,8 @@ public class Content: ContentModel {
     public let author: UserModel
     public let isLikedByCurrentUser: Bool
     
-    /// videoStartTime for videos to be played on the VIP stage (which needs synchronization)
+    /// videoStartTime is the time this piece of video content started in our device time
+    /// It is used to keep videos in sync for videos on stage
     public var videoStartTime : NSDate?
     
     public let tracking: TrackingModel?

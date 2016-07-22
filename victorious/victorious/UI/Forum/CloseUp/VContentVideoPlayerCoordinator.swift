@@ -124,7 +124,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         }
         else {
             videoPlayer.play()
-            self.state = .Playing
+            state = .Playing
         }
     }
     
