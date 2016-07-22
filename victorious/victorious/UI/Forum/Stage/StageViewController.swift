@@ -53,12 +53,6 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         }
     }
     
-    private var shouldMute = true {
-        didSet {
-            mediaContentView.shouldMute = shouldMute
-        }
-    }
-
     /// Holds the current aggregated information about the content and the meta data.
     private var currentStageContent: StageContent?
 
@@ -122,9 +116,6 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
             let change = change
             where keyPath == "outputVolume" && view.window != nil
         {
-            /// Only change the mute state if we are visible.
-            shouldMute = false
-            
             do {
                 try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
             } catch {
@@ -154,9 +145,6 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         mediaContentView.videoCoordinator?.pauseVideo()
         mediaContentView.content = stageContent.content
         
-        /// shouldMute = whether we can see the stage && whether we were muted before
-        shouldMute = (shouldMute || view.window == nil)
-
         updateStageHeight()
 
         showStage(animated: true)

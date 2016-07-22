@@ -85,8 +85,6 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
             object: nil
         )
         blurredImageView.alpha = Constants.blurredImageAlpha
-        
-        mediaContentView.shouldMute = false
     }
     
     // MARK: - Setting Content

@@ -117,12 +117,6 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
             }
         }
     }
-    
-    var shouldMute = true {
-        didSet {
-            videoCoordinator?.shouldMute = shouldMute
-        }
-    }
 
     var fillMode: FillMode = .fit {
         didSet {
@@ -282,8 +276,6 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         
         videoCoordinator?.loadVideo()
         videoCoordinator?.delegate = self
-        
-        videoCoordinator?.shouldMute = shouldMute
         
         setNeedsLayout()
     }

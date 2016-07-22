@@ -37,11 +37,6 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         }
     }
     private var content: ContentModel
-    var shouldMute = true {
-        didSet {
-            videoPlayer.muted = shouldMute || content.shouldMute
-        }
-    }
     
     weak var delegate: ContentVideoPlayerCoordinatorDelegate?
     
@@ -91,7 +86,6 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         }
         
         if let item = item {
-            item.muted = content.shouldMute
             item.loop = content.shouldLoop
             item.useAspectFit = true
             videoPlayer.setItem(item)
@@ -172,7 +166,6 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     // MARK: - VVideoPlayerDelegate
     
     func videoPlayerDidBecomeReady(videoPlayer: VVideoPlayer) {
-        videoPlayer.muted = shouldMute
         guard let asset = content.assets.first where asset.videoSource == .youtube else {
             return
         }
@@ -238,10 +231,6 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
 }
 
 private extension ContentModel {
-    var shouldMute: Bool {
-        return type == .gif
-    }
-    
     var shouldLoop: Bool {
         return type == .gif
     }
