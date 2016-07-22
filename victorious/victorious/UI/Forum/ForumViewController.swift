@@ -30,7 +30,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     #endif
 
     private var navBarTitleView : ForumNavBarTitleView?
-    private var isDisplayingCoachmark = false 
+    private var isDisplayingCoachmark = false
     
     // MARK: - Initialization
     
@@ -72,6 +72,9 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                 stage?.setStageEnabled(path == nil, animated: true)
             case .closeVIP():
                 onClose()
+            case .refreshStage(let stageContent):
+                //Try to display the coachmark for stage once the stage has been loaded 
+                dependencyManager.coachmarkManager?.displayCoachmark(inCoachmarkDisplayer: self, withContainerView: coachmarkContainerView)
             default:
                 break
         }
@@ -180,7 +183,6 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         // Set up the network source if needed.
         forumNetworkSource?.setUpIfNeeded()
         
-        dependencyManager.coachmarkManager?.displayCoachmark(inCoachmarkDisplayer: self, withContainerView: coachmarkContainerView)
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -350,7 +352,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         }
     }
     
-    // MARK: - Coachmark Displayer
+     // MARK: - Coachmark Displayer
     
     var screenIdentifier: String {
         return dependencyManager.stringForKey(VDependencyManagerIDKey)

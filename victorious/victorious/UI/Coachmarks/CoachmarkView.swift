@@ -100,17 +100,21 @@ class CoachmarkView: UIView, VBackgroundContainer {
         // of the view when calculating the region to mask
         detailsView.layoutIfNeeded()
         
+        //This path ensures that the background doesn't display behind the details text view
+        let maskPath = UIBezierPath(rect: CGRect(
+            origin: containerFrame.origin,
+            size: CGSize(width: containerFrame.width, height: containerFrame.height - detailsView.frame.height)
+            )
+        )
+        let backgroundMaskLayer =  CAShapeLayer()
+        backgroundMaskLayer.path = maskPath.CGPath
+        
         if let highlightFrame = highlightFrame {
             // The following code creates a "hole" in the view's layer
             // We start with a boundary path that encloses the whole view, then we add a path for the
             // circular highlight. Lastly, because we fill with the EvenOddRule, everything between the
             // circle and the boundary is filled, and this is used to mask the layer
             
-            let maskPath = UIBezierPath(rect: CGRect(
-                                                origin: containerFrame.origin,
-                                                size: CGSize(width: containerFrame.width, height: containerFrame.height - detailsView.frame.height)
-                                            )
-                                        )
             
             let circularPath = UIBezierPath(
                 arcCenter: highlightFrame.center,
@@ -121,11 +125,7 @@ class CoachmarkView: UIView, VBackgroundContainer {
             )
             
             maskPath.appendPath(circularPath)
-
-            let backgroundMaskLayer =  CAShapeLayer()
-            backgroundMaskLayer.path = maskPath.CGPath
             backgroundMaskLayer.fillRule = kCAFillRuleEvenOdd
-            backgroundView.layer.mask = backgroundMaskLayer
             
             //Fill in the "hole" using the specified foreground
             let foregroundMasklayer = CAShapeLayer()
@@ -149,6 +149,7 @@ class CoachmarkView: UIView, VBackgroundContainer {
             v_addFitToParentConstraintsToSubview(foregroundView)
         }
         
+        backgroundView.layer.mask = backgroundMaskLayer
         bringSubviewToFront(detailsView)
         
     }
