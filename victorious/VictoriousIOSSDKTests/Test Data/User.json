@@ -1,7 +1,7 @@
 {
     "id": "36179",
     "name": "The Young Turks",
-    "email": "tyt@creator.us",
+    "username": "tyt@creator.us",
     "access_level": "api_owner",
     "am_following": false,
     "autofollow": "yes",
