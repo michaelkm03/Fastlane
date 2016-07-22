@@ -189,6 +189,12 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
 
 - (void)applyBlurToImageURL:(NSURL *)url withRadius:(CGFloat)blurRadius completion:(void (^)())callbackBlock
 {
+    if (url == nil)
+    {
+        NSAssert(false, @"The URL parameter is nil, cannot perform blur");
+        return;
+    }
+    
     UIImage *cachedImage = [self cachedBlurredImageForURL:url andBlurRadius:blurRadius];
     if (cachedImage)
     {

@@ -23,7 +23,7 @@ class VContentTests: BasePersistentStoreTestCase {
         XCTAssertEqual(content.v_status, "public")
         XCTAssertEqual(content.text, "We the People of the United States, in Order to form a more perfect Union, establish Justice, insure domestic Tranquility, provide for the common defence, promote the general Welfare, and secure the Blessings of Liberty to ourselves and our Posterity, do ordain and establish this Constitution for the United States of America.")
         XCTAssertEqual(content.shareURL?.absoluteString, "test_share_url")
-        XCTAssertEqual(Int(content.createdAt.timeIntervalSince1970), 123456/1000)
+        XCTAssertEqual(Int(content.createdAt.value), 123456)
         XCTAssertEqual(content.v_contentPreviewAssets.count, 4)
         XCTAssertEqual(content.v_contentMediaAssets.count, 1)
         XCTAssertEqual(content.type, ContentType.video)

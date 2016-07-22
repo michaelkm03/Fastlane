@@ -11,7 +11,8 @@ import UIKit
 extension VContent: PersistenceParsable {
     func populate(fromSourceModel content: Content) {
         v_isVIPOnly = content.isVIPOnly ?? v_isVIPOnly
-        v_createdAt = content.createdAt ?? v_createdAt
+        v_createdAt = content.createdAt.value ?? v_createdAt
+        v_postedAt = content.postedAt?.value ?? v_postedAt
         v_remoteID = content.id ?? v_remoteID
         v_shareURL = content.shareURL?.absoluteString ?? v_shareURL
         v_linkedURL = content.linkedURL?.absoluteString ?? v_linkedURL
@@ -30,7 +31,10 @@ extension VContent: PersistenceParsable {
         v_author.populate(fromSourceModel: author)
         
         let persistentImageAssets: [VImageAsset] = content.previewImages.flatMap { imageAsset in
-            let previewAsset: VImageAsset = self.v_managedObjectContext.v_createObject()
+            guard let assetURL = imageAsset.url else {
+                return nil
+            }
+            let previewAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject(["imageURL": assetURL.absoluteString])
             previewAsset.populate(fromSourceModel: imageAsset)
             previewAsset.content = self
             return previewAsset

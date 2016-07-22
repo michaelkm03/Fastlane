@@ -104,6 +104,7 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
     
     func setUp() {
         refreshToken()
+        broadcast(.setOptimisticPostingEnabled(false))
     }
     
     func tearDown() {
