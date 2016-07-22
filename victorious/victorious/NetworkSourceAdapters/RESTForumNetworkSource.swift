@@ -112,6 +112,7 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     
     func setUp() {
         isSetUp = true
+        broadcast(.setOptimisticPostingEnabled(true))
         
         dataSource.loadItems(.refresh) { [weak self] contents, stageEvent, error in
             guard let strongSelf = self else {

@@ -10,18 +10,12 @@ import Foundation
 import VictoriousIOSSDK
 
 class ChatMessageCreateRemoteOperation: RemoteFetcherOperation, RequestOperation {
-    
-    private static let defaultCreationURL: NSURL = {
-        return NSURL(fileURLWithPath: "api/text/create", relativeToURL: VEnvironmentManager.sharedInstance().currentEnvironment.baseURL)
-    }()
-    
     let request: ChatMessageCreateRequest!
     
     var trackingManager: VEventTracker = VTrackingManager.sharedInstance()
     
-    init(textCreationURL: NSURL?, text: String ) {
-        let url = textCreationURL ?? ChatMessageCreateRemoteOperation.defaultCreationURL
-        request = ChatMessageCreateRequest(textCreationURL: url, text: text)
+    init(apiPath: APIPath, text: String) {
+        request = ChatMessageCreateRequest(apiPath: apiPath, text: text)
     }
     
     override func main() {

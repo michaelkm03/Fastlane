@@ -28,7 +28,7 @@ struct PersistentStoreTestHelper {
             return context.v_createObjectAndSave { content in
                 content.v_remoteID = remoteID
                 content.v_author = author
-                content.v_createdAt = NSDate()
+                content.v_createdAt = Timestamp().value
                 content.v_type = "image"
                 content.v_isLikedByCurrentUser = likedByCurrentUser
             }

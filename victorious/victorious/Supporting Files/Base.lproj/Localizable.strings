@@ -368,6 +368,7 @@
 "SubscriptionActivityRestoring"         = "Checking for subscription...";
 "SubscriptionRestorePrompt"             = "Already subscribed?";
 "SubscriptionFailed"                    = "Subscription failed.";
+"SubscriptionFetchFailed"               = "Failed to find subscriptions for purchase.";
 "Upgrade"                               = "Upgrade";
 
 "This will discard any content added to your post" = "This will discard any content added to your post";

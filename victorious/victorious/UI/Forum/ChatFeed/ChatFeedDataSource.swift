@@ -13,6 +13,7 @@ protocol ChatFeedDataSourceDelegate: class {
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didLoadItems newItems: [ChatFeedContent], loadingType: PaginatedLoadingType)
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didStashItems stashedItems: [ChatFeedContent])
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didUnstashItems unstashedItems: [ChatFeedContent])
+    func pendingItems(for chatFeedDataSource: ChatFeedDataSource) -> [ChatFeedContent]
     var chatFeedItemWidth: CGFloat { get }
 }
 
@@ -22,7 +23,6 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     
     init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
-        self.publisher = ContentPublisher(dependencyManager: dependencyManager.networkResources ?? dependencyManager)
         super.init()
     }
     
@@ -34,7 +34,10 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     
     private(set) var visibleItems = [ChatFeedContent]()
     private(set) var stashedItems = [ChatFeedContent]()
-    let publisher: ContentPublisher
+    
+    var pendingItems: [ChatFeedContent] {
+        return delegate?.pendingItems(for: self) ?? []
+    }
     
     var stashingEnabled = false
     
@@ -49,24 +52,6 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
         stashedItems.removeAll()
         
         delegate?.chatFeedDataSource(self, didUnstashItems: previouslyStashedItems)
-    }
-    
-    var itemCount: Int {
-        // FUTURE: We'll add the pending content count once the queueing implementation is finished.
-        return visibleItems.count // + publisher.pendingContent.count
-    }
-    
-    func content(at index: Int) -> ChatFeedContent {
-        if index < visibleItems.count {
-            return visibleItems[index]
-        }
-        else {
-            return publisher.pendingContent[index - visibleItems.count]
-        }
-    }
-    
-    func remove(chatFeedContent content: ChatFeedContent) {
-        publisher.remove(content)
     }
     
     // MARK: - ForumEventReceiver

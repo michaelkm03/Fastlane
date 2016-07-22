@@ -544,11 +544,14 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             return
         }
         
-        if let asset = selectedAsset {
+        if
+            let asset = selectedAsset,
+            let previewImage = composerTextViewManager?.prependedImage
+        {
             // The textView currently contains an attachment representing the piece of selected media.
             // Remove it before sending along the text as caption.
             let text = composerTextViewManager?.removePrependedImageFromAttributedText(textView.attributedText)?.string
-            sendMessage(asset: asset, text: text, currentUser: user)
+            sendMessage(asset: asset, previewImage: previewImage, text: text, currentUser: user)
         }
         else {
             sendMessage(text: textView.text, currentUser: user)

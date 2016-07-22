@@ -25,7 +25,7 @@ protocol Composer: class, ForumEventReceiver, ForumEventSender, ComposerAttachme
     
     func sendMessage(text text: String, currentUser: UserModel)
     
-    func sendMessage(asset asset: ContentMediaAsset, text: String?, currentUser: UserModel)
+    func sendMessage(asset asset: ContentMediaAsset, previewImage: UIImage, text: String?, currentUser: UserModel)
     
     func setComposerVisible(visible: Bool, animated: Bool)
 }
@@ -37,8 +37,9 @@ extension Composer {
         send(.sendContent(content))
     }
     
-    func sendMessage(asset asset: ContentMediaAsset, text: String?, currentUser: UserModel) {
-        let content = Content(text: text, assets: [asset], type: asset.contentType, author: currentUser)
+    func sendMessage(asset asset: ContentMediaAsset, previewImage: UIImage, text: String?, currentUser: UserModel) {
+        let previewImageAsset = ImageAsset(image: previewImage)
+        let content = Content(text: text, assets: [asset], previewImages: [previewImageAsset], type: asset.contentType, author: currentUser)
         send(.sendContent(content))
     }
 }

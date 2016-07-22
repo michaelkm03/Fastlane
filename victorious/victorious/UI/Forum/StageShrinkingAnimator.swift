@@ -8,6 +8,17 @@
 
 import UIKit
 
+/// Implementors will be notified about the state of the animations.
+protocol StageShrinkingAnimatorDelegate: class {
+    func willSwitch(to state: StageState)
+}
+
+/// Describes which state the stage can be in.
+enum StageState {
+    case enlarged
+    case shrunken
+}
+
 /// StageShrinkingAnimator is a helper class for animating the stage shrinking interaction.
 /// This class performs the animations by modifying the properties:
 ///
@@ -18,6 +29,9 @@ import UIKit
 /// **NOTE:** No constraints are modified or added to the view hierarchy as part of this animator's behavior.
 ///
 class StageShrinkingAnimator: NSObject {
+
+    weak var delegate: StageShrinkingAnimatorDelegate?
+
     private struct Constants {
         static let downDragIgnoredMagnitude = CGFloat(120)
         static let dragMagnitude = CGFloat(160)
@@ -40,14 +54,9 @@ class StageShrinkingAnimator: NSObject {
         static let inProgressSpringInitialVelocity = CGFloat(0.2)
     }
     
-    private enum StageState {
-        case expanded
-        case shrunken
-    }
-    
     private var ignoreScrollBehaviorUntilNextBegin = false
     
-    private var stageState = StageState.expanded
+    private var stageState = StageState.enlarged
     
     // MARK: - Handler Properties
 
@@ -59,7 +68,8 @@ class StageShrinkingAnimator: NSObject {
     
     // MARK: - Private Properties
     private let stageContainer: UIView
-    // Blocks touches on the stage so that we can tap to expand
+
+    /// Blocks touches on the stage so that we can tap to expand
     private let stageTouchView: UIView
     private let stageViewControllerContainer: UIView
     private var keyboardManager: VKeyboardNotificationManager!
@@ -71,11 +81,13 @@ class StageShrinkingAnimator: NSObject {
     init(
         stageContainer: UIView,
         stageTouchView: UIView,
-        stageViewControllerContainer: UIView
+        stageViewControllerContainer: UIView,
+        delegate: StageShrinkingAnimatorDelegate? = nil
     ) {
         self.stageContainer = stageContainer
         self.stageTouchView = stageTouchView
         self.stageViewControllerContainer = stageViewControllerContainer
+        self.delegate = delegate
         super.init()
         
         configureMaskingAndBorders()
@@ -90,7 +102,7 @@ class StageShrinkingAnimator: NSObject {
         }
         
         let translation = scrollView.panGestureRecognizer.translationInView(scrollView)
-        guard translation.y > 0 && stageState == .expanded else {
+        guard translation.y > 0 && stageState == .enlarged else {
             return
         }
         applyInterploatedValues(withProgress: min(1, max(0, progressThrough(forTranslation: translation))))
@@ -105,15 +117,15 @@ class StageShrinkingAnimator: NSObject {
             return
         }
         
-        // We only care about the end of a scroll gesture when we're in the .expanded state
-        guard stageState == .expanded else {
+        // We only care about the end of a scroll gesture when we're in the .enlarged state
+        guard stageState == .enlarged else {
             return
         }
         
         let scrollingDown = velocity.y < 0
         let currentState = stageState
         let translation = scrollView.panGestureRecognizer.translationInView(scrollView)
-        let targetState = scrollingDown ? StageState.shrunken : StageState.expanded
+        let targetState = scrollingDown ? StageState.shrunken : StageState.enlarged
         let progressTranslated = progressThrough(forTranslation: translation)
         
         animateInProgressSnap { 
@@ -144,18 +156,18 @@ class StageShrinkingAnimator: NSObject {
         let progress = progressThroughPanOnStage(forTranslation: translation)
         switch gesture.state {
             case .Changed:
-                // We only care about going a certain direction from either expanded or shrunken
-                guard (stageState == .expanded && translation.y < 0 ) || (stageState == .shrunken && translation.y > 0) else {
+                // We only care about going a certain direction from either enlarged or shrunken
+                guard (stageState == .enlarged && translation.y < 0 ) || (stageState == .shrunken && translation.y > 0) else {
                     return
                 }
                 applyInterploatedValues(withProgress: progress)
             case .Ended:
                 animateInProgressSnap(withAnimations: {
-                    if (self.stageState == .expanded) && (progress > Constants.closePanTriggerProgress) {
+                    if (self.stageState == .enlarged) && (progress > Constants.closePanTriggerProgress) {
                         self.goTo(.shrunken)
                     }
                     else if (self.stageState == .shrunken) && (progress < Constants.openPanTriggerProgress) {
-                        self.goTo(.expanded)
+                        self.goTo(.enlarged)
                     }
                     else {
                         self.goTo(self.stageState)
@@ -194,16 +206,18 @@ class StageShrinkingAnimator: NSObject {
     }
     
     private func shrinkStage() {
+        delegate?.willSwitch(to: .shrunken)
         applyInterploatedValues(withProgress: 1.0)
-        self.stageTouchView.hidden = false
+        stageTouchView.hidden = false
         stageState = .shrunken
     }
     
     private func enlargeStage() {
+        delegate?.willSwitch(to: .enlarged)
         applyInterploatedValues(withProgress: 0)
-        self.stageTouchView.hidden = true
-        self.stageViewControllerContainer.layer.borderColor = UIColor.clearColor().CGColor
-        stageState = .expanded
+        stageTouchView.hidden = true
+        stageViewControllerContainer.layer.borderColor = UIColor.clearColor().CGColor
+        stageState = .enlarged
     }
     
     private func applyInterploatedValues(withProgress progress: CGFloat) {
@@ -231,11 +245,11 @@ class StageShrinkingAnimator: NSObject {
     
     /// This method returns a progress through the pan interaction on top of the stage.
     /// Input for translation.y that results in a value of zero indicate that the stage 
-    /// should be fully expanded. Input that result in a value of 1 indicate that the stage
+    /// should be fully grown. Input that result in a value of 1 indicate that the stage
     /// should be fully shrunken. The progress will apply a linear interpolation of values
     /// for all input in between.
     private func progressThroughPanOnStage(forTranslation translation: CGPoint) -> CGFloat {
-        if stageState == .expanded && translation.y > 0 {
+        if stageState == .enlarged && translation.y > 0 {
             return 0
         }
         else if stageState == .shrunken && translation.y <= 0 {
@@ -243,7 +257,7 @@ class StageShrinkingAnimator: NSObject {
         }
         else {
             let progress = max(min(fabs(-translation.y) / Constants.dragMagnitude, 1), 0)
-            return stageState == .expanded ? progress : 1 - progress
+            return stageState == .enlarged ? progress : 1 - progress
         }
     }
     
@@ -308,7 +322,7 @@ class StageShrinkingAnimator: NSObject {
     private func configureMaskingAndBorders() {
         stageViewControllerContainer.layer.masksToBounds = true
         
-        // Want the border to be 1px after scaled transform
+        // Want the border to be 1px after scaled transform.
         stageViewControllerContainer.layer.borderWidth = (1 / stageViewControllerContainer.contentScaleFactor)
         stageViewControllerContainer.layer.borderColor = UIColor.clearColor().CGColor
     }
@@ -318,7 +332,9 @@ class StageShrinkingAnimator: NSObject {
         stagePanGestureRecognizer.addTarget(self, action: #selector(pannedOnStage(_:)))
         stageTouchView.addGestureRecognizer(stageTapGestureRecognizer)
         stageContainer.addGestureRecognizer(stagePanGestureRecognizer)
-        stageTouchView.hidden = true // Setup is in expanded state so hide the blocker
+
+        // Setup is in the larger state so hide the blocker.
+        stageTouchView.hidden = true
     }
     
     private func configureKeyboardListener() {
