@@ -19,7 +19,7 @@ class MockErrorHandler: NSObject, RequestErrorHandler {
     
     private(set) var errorsHandled = [NSError]()
     
-    func handleError(error: NSError) -> Bool {
+    func handleError(error: NSError, request: NSURLRequest? = nil) -> Bool {
         if error.code == code {
             errorsHandled.append(error)
             return true
@@ -33,7 +33,7 @@ class MockFetcherOperation: RemoteFetcherOperation, RequestOperation {
     let request: MockRequest! = MockRequest()
     
     override func main() {
-        requestExecutor.executeRequest( request, onComplete: onComplete, onError: onError )
+        requestExecutor.executeRequest(request, onComplete: onComplete, onError: onError)
     }
     
     private func onComplete( sequence: MockRequest.ResultType) {
