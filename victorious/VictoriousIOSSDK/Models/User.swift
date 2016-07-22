@@ -17,12 +17,12 @@ public protocol UserModel: PreviewImageContainer {
     var tagline: String? { get }
     var fanLoyalty: FanLoyalty? { get }
     var isBlockedByCurrentUser: Bool? { get }
-    var accessLevel: User.AccessLevel? { get }
+    var accessLevel: User.AccessLevel { get }
     var isFollowedByCurrentUser: Bool? { get }
     var likesGiven: Int? { get }
     var likesReceived: Int? { get }
     var previewImages: [ImageAssetModel] { get }
-    var avatarBadgeType: AvatarBadgeType { get }
+    var avatarBadgeType: AvatarBadgeType? { get }
     var vipStatus: VIPStatus? { get }
 }
 
@@ -31,11 +31,11 @@ public struct User: UserModel {
     public enum AccessLevel {
         case owner, user
         
-        public init?(json: JSON) {
+        public init(json: JSON) {
             switch json.stringValue.lowercaseString {
                 case "api_owner": self = .owner
                 case "api_user": self = .user
-                default: return nil
+                default: self = .user
             }
         }
         
@@ -57,7 +57,7 @@ public struct User: UserModel {
     public let tagline: String?
     public let fanLoyalty: FanLoyalty?
     public let isBlockedByCurrentUser: Bool?
-    public let accessLevel: AccessLevel?
+    public let accessLevel: AccessLevel
     public let isDirectMessagingDisabled: Bool?
     public let isFollowedByCurrentUser: Bool?
     public let numberOfFollowers: Int?
@@ -66,7 +66,7 @@ public struct User: UserModel {
     public let likesReceived: Int?
     public let previewImages: [ImageAssetModel]
     public let maxVideoUploadDuration: Int?
-    public let avatarBadgeType: AvatarBadgeType
+    public let avatarBadgeType: AvatarBadgeType?
     public let vipStatus: VIPStatus?
     
     // NOTE: If you add a parameter here, be sure to add it in any calls to this initializer that need to be
@@ -80,7 +80,7 @@ public struct User: UserModel {
         tagline: String? = nil,
         fanLoyalty: FanLoyalty? = nil,
         isBlockedByCurrentUser: Bool? = nil,
-        accessLevel: AccessLevel? = nil,
+        accessLevel: AccessLevel = .user,
         isDirectMessagingDisabled: Bool? = nil,
         isFollowedByCurrentUser: Bool? = nil,
         numberOfFollowers: Int? = nil,
@@ -89,7 +89,7 @@ public struct User: UserModel {
         likesReceived: Int? = nil,
         previewImages: [ImageAssetModel] = [],
         maxVideoUploadDuration: Int? = nil,
-        avatarBadgeType: AvatarBadgeType = .None,
+        avatarBadgeType: AvatarBadgeType? = nil,
         vipStatus: VIPStatus? = nil
     ) {
         self.id = id

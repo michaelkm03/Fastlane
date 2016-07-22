@@ -9,9 +9,8 @@
 import Foundation
 
 public struct MediaUploadCreateRequest: RequestType {
-    
-    public init(url: NSURL) {
-        baseURL = url
+    public init(apiPath: APIPath) {
+        baseURL = apiPath.url
     }
     
     public private(set) var baseURL: NSURL?
@@ -19,7 +18,6 @@ public struct MediaUploadCreateRequest: RequestType {
     public var urlRequest: NSURLRequest {
         let request = NSMutableURLRequest(URL: baseURL!)
         request.HTTPMethod = "POST"
-        
         return request
     }
     

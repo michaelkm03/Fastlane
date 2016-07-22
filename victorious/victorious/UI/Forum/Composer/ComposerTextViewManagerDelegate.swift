@@ -9,14 +9,15 @@
 import Foundation
 
 protocol ComposerTextViewManagerDelegate: class {
-    
     var textViewContentSize: CGSize { get set }
     
     var textViewHasText: Bool { get set }
     
     var textViewIsEditing: Bool { get set }
     
-    var textViewHasPrependedImage: Bool { get set }
+    var textViewPrependedImage: UIImage? { get set }
+    
+    var textViewHasPrependedImage: Bool { get }
     
     var textViewCanDismiss: Bool { get }
     
@@ -25,5 +26,10 @@ protocol ComposerTextViewManagerDelegate: class {
     func textViewDidHitCharacterLimit(textView: UITextView)
     
     func inputTextAttributes() -> (inputTextColor: UIColor?, inputTextFont: UIFont?)
-    
+}
+
+extension ComposerTextViewManagerDelegate {
+    var textViewHasPrependedImage: Bool {
+        return textViewPrependedImage != nil
+    }
 }

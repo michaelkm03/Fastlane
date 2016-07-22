@@ -365,6 +365,12 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 {
     NSURL *deepLink = [NSURL URLWithString:pushNotification[kDeepLinkURLKey]];
     NSString *notificationID = pushNotification[kNotificationIDKey];
+    
+    if ( notificationID != nil )
+    {
+        [[VTrackingManager sharedInstance] setValue:notificationID forSessionParameterWithKey:VTrackingKeyNotificationId];
+    }
+    
     if (deepLink != nil)
     {
         [self openURL:deepLink fromExternalSourceWithOptionalNotificationID:notificationID];
@@ -384,10 +390,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 {
     if ( [[UIApplication sharedApplication] applicationState] != UIApplicationStateActive && self.properlyBackgrounded )
     {
-        if ( notificationID != nil )
-        {
-            [[VTrackingManager sharedInstance] setValue:notificationID forSessionParameterWithKey:VTrackingKeyNotificationId];
-        }
         if ( [self.sessionTimer shouldNewSessionStartNow] )
         {
             self.queuedDeeplink = deepLink;

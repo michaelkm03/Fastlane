@@ -80,7 +80,7 @@ class VUser: NSManagedObject, UserModel {
         return isBlockedByMainUser?.boolValue
     }
     
-    var accessLevel: User.AccessLevel? {
+    var accessLevel: User.AccessLevel {
         let isCreator = self.isCreator?.boolValue ?? false
         return isCreator ? .owner : .user
     }
@@ -101,12 +101,12 @@ class VUser: NSManagedObject, UserModel {
         return previewAssets?.flatMap { $0 } ?? []
     }
     
-    var avatarBadgeType: AvatarBadgeType {
-        if v_avatarBadgeType == AvatarBadgeType.Verified.stringRepresentation {
-            return .Verified
-        } else {
-            return .None
+    var avatarBadgeType: AvatarBadgeType? {
+        if v_avatarBadgeType == AvatarBadgeType.verified.stringRepresentation {
+            return .verified
         }
+        
+        return nil
     }
     
     var vipStatus: VIPStatus? {
