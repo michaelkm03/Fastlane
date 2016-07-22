@@ -9,8 +9,9 @@
 #if V_ENABLE_WEBSOCKET_DEBUG_MENU
 
     import UIKit
+    import MessageUI
 
-    class WebSocketDebuggingViewController: UITableViewController {
+    class WebSocketDebuggingViewController: UITableViewController, MFMailComposeViewControllerDelegate {
 
         private struct Constants {
             static let cellReuseIdentifier = "DebuggingCell"
@@ -26,6 +27,9 @@
         }()
 
         private lazy var closeButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: #selector(close))
+        private lazy var exportButton: UIBarButtonItem = UIBarButtonItem(title: "Export", style: .Plain, target: self, action: #selector(export))
+
+        private var mailComposerViewController: MFMailComposeViewController?
 
         // MARK: - UIViewController Lifecycle
 
@@ -40,6 +44,7 @@
             super.viewDidLoad()
             navigationItem.titleView = clearButton
             navigationItem.leftBarButtonItem = closeButton
+            navigationItem.rightBarButtonItem = exportButton
 
             tableView.rowHeight = UITableViewAutomaticDimension
             tableView.estimatedRowHeight = 60
@@ -99,6 +104,24 @@
         
         @objc private func close() {
             dismissViewControllerAnimated(true, completion: nil)
+        }
+
+        @objc private func export() {
+            if let allMessagesString = rawMessageContainer?.exportAllMessages() where MFMailComposeViewController.canSendMail() {
+                let mailComposerViewController = MFMailComposeViewController()
+                mailComposerViewController.mailComposeDelegate = self
+                mailComposerViewController.setSubject("WebSocket messages log 4 u <3")
+                mailComposerViewController.setMessageBody(allMessagesString, isHTML: false)
+
+                self.mailComposerViewController = mailComposerViewController
+                presentViewController(mailComposerViewController, animated: true, completion: nil)
+            }
+        }
+
+        // MARK: - MFMailComposeViewController
+
+        func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
+            controller.dismissViewControllerAnimated(true, completion: nil)
         }
     }
     
