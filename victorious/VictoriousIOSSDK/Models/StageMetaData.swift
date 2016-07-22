@@ -13,7 +13,7 @@ import Foundation
 /// 
 public struct StageMetaData {
 
-    let title: String?
+    public let title: String?
 
     public init(title: String? = nil) {
         self.title = title

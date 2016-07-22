@@ -8,10 +8,11 @@
 
 import UIKit
 
-class StageViewController: UIViewController, Stage, AttributionBarDelegate, CaptionBarViewControllerDelegate {
+class StageViewController: UIViewController, Stage, CaptionBarViewControllerDelegate, TileCardDelegate {
     private struct Constants {
         static let contentSizeAnimationDuration: NSTimeInterval = 0.5
         static let defaultAspectRatio: CGFloat = 16 / 9
+        static let titleCardDelayedShow = NSTimeInterval(1)
     }
     
     private lazy var defaultStageHeight: CGFloat = {
@@ -21,14 +22,6 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
     @IBOutlet private var mediaContentView: MediaContentView! {
         didSet {
             mediaContentView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOnContent)))
-        }
-    }
-
-    @IBOutlet private var attributionBar: AttributionBar! {
-        didSet {
-            attributionBar.hidden = true
-            attributionBar.delegate = self
-            updateAttributionBarAppearance(with: dependencyManager)
         }
     }
 
@@ -47,11 +40,14 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         }
     }
     
-    private var visible = true {
+    private var visible = false {
         didSet {
             updateStageHeight()
         }
     }
+
+    /// Shows meta data about the current item on the stage.
+    private var titleCardViewController: TitleCardViewController?
 
     /// Holds the current aggregated information about the content and the meta data.
     private var currentStageContent: StageContent?
@@ -67,11 +63,6 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
             stageDataSource = setupDataSource(dependencyManager)
         }
     }
-    
-    var canHandleCaptionContent: Bool {
-        return dependencyManager.captionBarDependency != nil
-    }
-    
 
     // MARK: - UIViewController Life cycle
     
@@ -100,6 +91,16 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         mediaContentView.videoCoordinator?.pauseVideo()
     }
 
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        super.prepareForSegue(segue, sender: sender)
+
+        let destination = segue.destinationViewController
+        if let titleCardViewController = destination as? TitleCardViewController {
+            titleCardViewController.delegate = self
+            self.titleCardViewController = titleCardViewController
+        }
+    }
+
     // MARK: - Stage
     
     func addCaptionContent(content: ContentModel) {
@@ -110,12 +111,12 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
     }
 
     func addStageContent(stageContent: StageContent) {
-        guard enabled else {
+        guard isViewLoaded() && enabled else {
             return
         }
         currentStageContent = stageContent
 
-        attributionBar.configure(with: stageContent.content.author)
+        titleCardViewController?.populate(with: stageContent)
 
         mediaContentView.videoCoordinator?.pauseVideo()
         mediaContentView.content = stageContent.content
@@ -123,11 +124,16 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         updateStageHeight()
 
         showStage(animated: true)
+
+        dispatch_after(Constants.titleCardDelayedShow) {
+            self.titleCardViewController?.show()
+        }
     }
-    
+
     func removeContent() {
         hideStage()
         currentStageContent = nil
+        titleCardViewController?.hide()
     }
     
     func setStageEnabled(enabled: Bool, animated: Bool) {
@@ -143,11 +149,10 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
     
     var overlayUIAlpha: CGFloat {
         get {
-            return attributionBar.alpha
+            return captionBarViewController?.view.alpha ?? 0
         }
         set {
             captionBarViewController?.view.alpha = newValue
-            attributionBar.alpha = newValue
         }
     }
     
@@ -160,6 +165,10 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
     // MARK: - Show/Hide Stage
 
     private func hideStage(animated animated: Bool = false) {
+        guard visible else {
+            return
+        }
+
         mediaContentView.hideContent(animated: animated) { [weak self] _ in
             self?.mediaContentView.pauseVideo()
         }
@@ -167,9 +176,15 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         UIView.animateWithDuration(animated ? Constants.contentSizeAnimationDuration : 0) {
             self.view.layoutIfNeeded()
         }
+
+        titleCardViewController?.hide()
     }
 
     private func showStage(animated animated: Bool = false) {
+        guard !visible else {
+            return
+        }
+
         mediaContentView.showContent(animated: animated) { [weak self] _ in
             self?.mediaContentView.playVideo()
         }
@@ -178,19 +193,19 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
             self.view.layoutIfNeeded()
         }
     }
-    
-    // MARK: - Attribution Bar
-    
-    private func updateAttributionBarAppearance(with dependencyManager: VDependencyManager?) {
-        let attributionBarDependency = dependencyManager?.attributionBarDependency
-        attributionBar.hidden = attributionBarDependency == nil
-        attributionBar.dependencyManager = attributionBarDependency
-    }
-    
-    func didTapOnUser(user: UserModel) {
+
+    // MARK: - TileCardDelegate
+
+    func didTap(on user: UserModel) {
         let router = Router(originViewController: self, dependencyManager: dependencyManager)
         let destination = DeeplinkDestination(userID: user.id)
         router.navigate(to: destination)
+    }
+
+    // MARK: - StageShrinkingAnimatorDelegate
+
+    func willSwitch(to state: StageState) {
+        titleCardViewController?.hide()
     }
 
     // MARK: - Deep linking content
@@ -230,10 +245,6 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
 }
 
 private extension VDependencyManager {
-    var attributionBarDependency: VDependencyManager? {
-        return childDependencyForKey("attributionBar")
-    }
-    
     var captionBarDependency: VDependencyManager? {
         return childDependencyForKey("captionBar")
     }

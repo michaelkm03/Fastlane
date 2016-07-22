@@ -36,12 +36,18 @@ public enum ForumEvent {
     /// Requests that the stage is refreshed with new content.
     case refreshStage(RefreshStage)
     
-    /// Closes the main stage
-    case closeMainStage
+    /// Closes either the main or VIP stage.
+    case closeStage(StageSection)
+
+    /// Closes the whole VIP experience.
+    case closeVIP()
     
     /// Requests that the given user is blocked.
     case blockUser(BlockUser)
 
     /// Indicates the current count of chat users.
     case chatUserCount(ChatUserCount)
+    
+    /// Enables or disables optimistic posting for different forums
+    case setOptimisticPostingEnabled(Bool)
 }
