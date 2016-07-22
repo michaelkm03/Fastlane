@@ -31,7 +31,7 @@ class VIPSelectSubscriptionOperation: MainQueueOperation, UIAlertViewDelegate {
         }
         
         // TODO: Replace / localize strings from Erin
-        let alert = UIAlertController(title: "subscribe", message: "select a subscription", preferredStyle: .ActionSheet)
+        let alert = UIAlertController(title: "subscribe", message: "select a subscription", preferredStyle: .Alert)
         for product in products {
             let action = UIAlertAction(title: product.price + " " + product.localizedDescription, style: .Default, handler: selectionHandler(for: product))
             alert.addAction(action)

@@ -18,7 +18,6 @@ class VIPSubscribeOperation: BackgroundOperation {
     }
     
     override func start() {
-        
         guard didConfirmActionFromDependencies else {
             cancel()
             finishedExecuting()
