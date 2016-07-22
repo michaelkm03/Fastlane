@@ -9,7 +9,6 @@
 import Foundation
 
 class VIPSubscribeOperation: BackgroundOperation {
-    
     let product: VProduct
     
     var purchaseManager: VPurchaseManagerType = VPurchaseManager.sharedInstance()

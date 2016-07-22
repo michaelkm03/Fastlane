@@ -30,7 +30,7 @@ class VIPSubscriptionHelper {
         
         do {
             let subscriptionFetchOperation = try VIPFetchSubscriptionRemoteOperation(urlString: subscriptionFetchURL)
-            delegate?.setIsLoading(true, title: Strings.purchaseInProgress)
+            delegate?.setIsLoading(true, title: nil)
             subscriptionFetchOperation.queue() { [weak self] results, error, canceled in
                 guard !canceled else {
                     self?.delegate?.setIsLoading(false, title: nil)
@@ -56,8 +56,8 @@ class VIPSubscriptionHelper {
         let productFetchOperation = ProductFetchOperation(productIdentifiers: identifiers)
         productFetchOperation.queue() { [weak self] _ in
             
-            self?.delegate?.setIsLoading(false, title: nil)
             guard let products = productFetchOperation.products else {
+                self?.delegate?.setIsLoading(false, title: nil)
                 self?.originViewController?.showSubscriptionAlert(for: productFetchOperation.error)
                 return
             }
@@ -72,8 +72,12 @@ class VIPSubscriptionHelper {
         }
         
         let selectSubscription = VIPSelectSubscriptionOperation(products: products, originViewController: originViewController)
+        if selectSubscription.willShowPrompt {
+            delegate?.setIsLoading(false, title: nil)
+        }
         selectSubscription.queue() { [weak self] _ in
             guard let selectedProduct = selectSubscription.selectedProduct else {
+                self?.delegate?.setIsLoading(false, title: nil)
                 if let error = selectSubscription.error {
                     originViewController.showSubscriptionAlert(for: error)
                 }
@@ -105,7 +109,6 @@ class VIPSubscriptionHelper {
 // MARK: - String Constants
 
 private struct Strings {
-    static let purchaseInProgress       = NSLocalizedString("ActivityPurchasing", comment: "")
     static let subscriptionFailed       = NSLocalizedString("SubscriptionFailed", comment: "")
     static let subscriptionFetchFailed  = NSLocalizedString("SubscriptionFetchFailed", comment: "")
 }

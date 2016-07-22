@@ -113,15 +113,17 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     
     // MARK: - Private
     
-    func setIsLoading(isLoading: Bool, title: String? = nil) {
-        if isLoading {
-            MBProgressHUD.hideAllHUDsForView(self.view, animated: false)
-            let progressHUD = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-            progressHUD.mode = .Indeterminate
-            progressHUD.labelText = title
-        } else {
-            MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
+    private func HUDNeedsUpdateToTitle(title: String?) -> Bool {
+        if let huds = MBProgressHUD.allHUDsForView(self.view) as? [MBProgressHUD] {
+            if
+                huds.count == 1,
+                let hud = huds.first
+                where hud.labelText == title
+            {
+                return false
+            }
         }
+        return true
     }
     
     private func onSubcriptionValidated() {
@@ -206,6 +208,20 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     
     func VIPSubscriptionHelperCompletedSubscription(helper: VIPSubscriptionHelper) {
         openGate(afterPurchase: true)
+    }
+    
+    func setIsLoading(isLoading: Bool, title: String? = nil) {
+        if isLoading {
+            guard HUDNeedsUpdateToTitle(title) else {
+                return
+            }
+            MBProgressHUD.hideAllHUDsForView(self.view, animated: false)
+            let progressHUD = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+            progressHUD.mode = .Indeterminate
+            progressHUD.labelText = title
+        } else {
+            MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
+        }
     }
     
     // MARK: - String Constants

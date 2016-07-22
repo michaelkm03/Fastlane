@@ -14,15 +14,18 @@ class VIPSelectSubscriptionOperation: MainQueueOperation, UIAlertViewDelegate {
     
     let originViewController: UIViewController
     
+    let willShowPrompt: Bool
+    
     var selectedProduct: VProduct?
     
     init(products: [VProduct], originViewController: UIViewController) {
         self.products = products
+        self.willShowPrompt = products.count != 1
         self.originViewController = originViewController
     }
     
     override func main() {
-        guard products.count != 1 else {
+        guard willShowPrompt else {
             selectedProduct = products.first
             finishedExecuting()
             return
