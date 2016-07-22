@@ -227,7 +227,7 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         return true
     }
     
-    func removePrependedImageFrom(textView: UITextView) {
+    private func removePrependedImageFrom(textView: UITextView) {
         if delegate?.textViewHasPrependedImage == true {
             textView.attributedText = removePrependedImageFromAttributedText(textView.attributedText)
             delegate?.textViewPrependedImage = nil
