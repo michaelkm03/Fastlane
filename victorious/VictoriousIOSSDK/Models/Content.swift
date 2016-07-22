@@ -44,8 +44,8 @@ public protocol ContentModel: PreviewImageContainer, DictionaryConvertible {
     /// An array of media assets for the content, could be any media type
     var assets: [ContentMediaAssetModel] { get }
     
-    /// videoStartTime is the time this piece of video content started in our device time
-    /// It is used to keep videos in sync for videos on stage
+    /// The time this piece of video content started in our device time.
+    /// It may be used in order to sync video content between sessions.
     var videoStartTime: NSDate? { get set }
     
     /// Keys correspond to an array of string-represented tracking urls
