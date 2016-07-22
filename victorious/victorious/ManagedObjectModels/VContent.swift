@@ -99,7 +99,7 @@ class VContent: NSManagedObject, ContentModel, PaginatableItem {
     }
     
     /// VContent does not provide seekAheadTime
-    var seekAheadTime: NSTimeInterval? {
+    var videoStartTime: NSDate? {
         get {
             return nil
         }

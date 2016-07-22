@@ -53,7 +53,7 @@ class StageContentFetchOperation: RemoteFetcherOperation, RequestOperation {
         let workTime = NSDate().timeIntervalSinceDate(operationStartTime)
         let seekAheadTime = timeDiff + workTime
         
-        content.seekAheadTime = seekAheadTime
+        content.videoStartTime = NSDate(timeIntervalSinceNow: -seekAheadTime)
         
         return content
     }

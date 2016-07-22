@@ -104,14 +104,17 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         return dataSource
     }
     
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        mediaContentView.shouldMute = shouldMute
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        if currentStageContent != nil {
+            showStage(animated: false)
+        }
     }
 
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        mediaContentView.shouldMute = true
+        
+        hideStage(animated: false)
     }
     
     override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
@@ -121,12 +124,12 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         {
             /// Only change the mute state if we are visible.
             shouldMute = false
+            
             do {
                 try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
             } catch {
                 print("unable to change audio session category")
             }
-            
         }
     }
 
@@ -143,6 +146,7 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
         guard enabled else {
             return
         }
+        
         currentStageContent = stageContent
 
         attributionBar.configure(with: stageContent.content.author)
@@ -204,7 +208,7 @@ class StageViewController: UIViewController, Stage, AttributionBarDelegate, Capt
 
     private func showStage(animated animated: Bool = false) {
         mediaContentView.showContent(animated: animated) { [weak self] _ in
-            self?.mediaContentView.playVideo()
+            self?.mediaContentView.videoCoordinator?.playVideo(true)
         }
         visible = true
         UIView.animateWithDuration(animated ? Constants.contentSizeAnimationDuration : 0) {

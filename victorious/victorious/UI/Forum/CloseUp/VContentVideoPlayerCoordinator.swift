@@ -124,9 +124,14 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     
     // MARK: - Managing playback
     
-    func playVideo() {
-        videoPlayer.play()
-        self.state = .Playing
+    func playVideo(synced: Bool = false) {
+        if synced {
+            prepareToPlay()
+        }
+        else {
+            videoPlayer.play()
+            self.state = .Playing
+        }
     }
     
     func pauseVideo() {
@@ -138,7 +143,8 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     }
     
     private func prepareToPlay() {
-        if let seekAheadTime = self.content.seekAheadTime where Int(videoPlayer.currentTimeSeconds) <= Int(seekAheadTime) {
+        let seekAheadTime = self.content.seekAheadTime()
+        if Int(videoPlayer.currentTimeSeconds) <= Int(seekAheadTime) {
             videoPlayer.seekToTimeSeconds(seekAheadTime)
         }
         delegate?.coordinatorDidBecomeReady()
