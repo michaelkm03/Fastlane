@@ -56,7 +56,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     private var enabled = true
     
     weak var delegate: StageDelegate?
-    let audioSession = AVAudioSession.sharedInstance()
+    private let audioSession = AVAudioSession.sharedInstance()
 
     var dependencyManager: VDependencyManager! {
         didSet {
@@ -103,16 +103,17 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     }
     
     override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
-        if
-            let change = change
-            where keyPath == "outputVolume" && view.window != nil
-        {
+        if keyPath == "outputVolume" && view.window != nil {
             do {
                 try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
             } catch {
-                print("unable to change audio session category")
+                print("Unable to change audio session category")
             }
         }
+    }
+    
+    deinit {
+        audioSession.removeObserver(self, forKeyPath: "outputVolume")
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

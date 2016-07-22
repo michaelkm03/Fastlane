@@ -46,7 +46,7 @@ public protocol ContentModel: PreviewImageContainer, DictionaryConvertible {
     
     /// The time this piece of video content started in our device time.
     /// It may be used in order to sync video content between sessions.
-    var videoStartTime: NSDate? { get set }
+    var localStartTime: NSDate? { get set }
     
     /// Keys correspond to an array of string-represented tracking urls
     var tracking: TrackingModel? { get }
@@ -84,7 +84,7 @@ extension ContentModel {
     }
     
     public func seekAheadTime() -> NSTimeInterval {
-        guard let videoStartTime = videoStartTime else {
+        guard let videoStartTime = localStartTime else {
             return 0
         }
         
@@ -126,7 +126,7 @@ public class Content: ContentModel {
     
     /// videoStartTime is the time this piece of video content started in our device time
     /// It is used to keep videos in sync for videos on stage
-    public var videoStartTime : NSDate?
+    public var localStartTime: NSDate?
     
     public let tracking: TrackingModel?
     
@@ -209,6 +209,7 @@ public class Content: ContentModel {
     }
     
     public init(
+        author: UserModel,
         id: String? = nil,
         createdAt: Timestamp = Timestamp(),
         postedAt: Timestamp = Timestamp(),
@@ -216,9 +217,9 @@ public class Content: ContentModel {
         text: String? = nil,
         assets: [ContentMediaAssetModel] = [],
         previewImages: [ImageAssetModel] = [],
-        author: UserModel,
-        videoStartTime: NSDate? = nil
+        localStartTime: NSDate? = nil
     ) {
+        self.author = author
         self.id = id
         self.postedAt = postedAt
         self.createdAt = createdAt
@@ -226,8 +227,7 @@ public class Content: ContentModel {
         self.text = text
         self.assets = assets
         self.previewImages = previewImages
-        self.author = author
-        self.videoStartTime = videoStartTime
+        self.localStartTime = localStartTime
         
         self.status = nil
         self.hashtags = []
