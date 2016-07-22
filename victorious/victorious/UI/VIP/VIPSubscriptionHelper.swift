@@ -27,7 +27,6 @@ class VIPSubscriptionHelper {
     }
     
     func subscribe() {
-        
         do {
             let subscriptionFetchOperation = try VIPFetchSubscriptionRemoteOperation(urlString: subscriptionFetchURL)
             delegate?.setIsLoading(true, title: nil)

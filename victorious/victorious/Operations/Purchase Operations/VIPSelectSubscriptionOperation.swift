@@ -9,7 +9,6 @@
 import Foundation
 
 class VIPSelectSubscriptionOperation: MainQueueOperation, UIAlertViewDelegate {
-    
     let products: [VProduct]
     
     let originViewController: UIViewController

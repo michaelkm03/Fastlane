@@ -9,7 +9,6 @@
 import Foundation
 
 class ProductFetchOperation: BackgroundOperation {
-    
     let productIdentifiers: [String]
     
     var products: [VProduct]?
