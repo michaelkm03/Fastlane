@@ -9,14 +9,11 @@
 import Foundation
 
 class ComposerTextViewManager: NSObject, UITextViewDelegate {
-        
     let dismissOnReturn: Bool
 
     var maximumTextLength: Int
     
     weak var delegate: ComposerTextViewManagerDelegate?
-    
-    private(set) var prependedImage: UIImage?
     
     private var attachmentStringLength: Int
     
@@ -96,15 +93,13 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
     }
     
     func updateDelegateOfTextViewStatus(textView: UITextView) {
-        delegate?.textViewHasText = !textView.text.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()).isEmpty
+        delegate?.textViewHasText = captionFromTextView(textView, afterRemovingImage: false) != nil
         delegate?.textViewContentSize = textView.contentSize
-        let imageRange = NSMakeRange(0, attachmentStringLength)
-        let hasImage = textView.attributedText.length >= attachmentStringLength && textView.attributedText.containsAttachmentsInRange(imageRange)
-        delegate?.textViewHasPrependedImage = hasImage
     }
     
     func resetTextView(textView: UITextView) {
         textView.text = nil
+        delegate?.textViewPrependedImage = nil
         updateDelegateOfTextViewStatus(textView)
     }
     
@@ -120,10 +115,13 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
             return false
         }
         
-        if text.characters.count == 0 &&
-            shouldRemoveImageFromTextView(textView, tryingToDeleteRange: range) {
+        if
+            text.characters.count == 0 &&
+            shouldRemoveImageFromTextView(textView, tryingToDeleteRange: range)
+        {
             removePrependedImageFrom(textView)
-            return true
+            // We handle the deletion ourselves through the removePrependedImage method
+            return false
         }
         
         return true
@@ -219,30 +217,25 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
             return false
         }
         
-        prependedImage = image
         removePrependedImageFrom(textView)
         
         let mutableText = textView.attributedText.mutableCopy() as! NSMutableAttributedString
         mutableText.insertAttributedString(prependedString, atIndex: 0)
         textView.attributedText = mutableText
+        delegate?.textViewPrependedImage = image
         updateDelegateOfTextViewStatus(textView)
         return true
     }
     
     private func removePrependedImageFrom(textView: UITextView) {
-        guard let delegate = delegate else {
-            return
-        }
-        
-        if delegate.textViewHasPrependedImage {
+        if delegate?.textViewHasPrependedImage == true {
             textView.attributedText = removePrependedImageFromAttributedText(textView.attributedText)
+            delegate?.textViewPrependedImage = nil
         }
         updateDelegateOfTextViewStatus(textView)
     }
     
-    func removePrependedImageFromAttributedText(attributedText: NSAttributedString) -> NSAttributedString? {
-        prependedImage = nil
-        
+    private func removePrependedImageFromAttributedText(attributedText: NSAttributedString) -> NSAttributedString? {
         let imageRange = NSMakeRange(0, attachmentStringLength)
         let mutableText = attributedText.mutableCopy() as! NSMutableAttributedString
         mutableText.deleteCharactersInRange(imageRange)
@@ -251,12 +244,7 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
     }
     
     private func shouldRemoveImageFromTextView(textView: UITextView, tryingToDeleteRange range: NSRange) -> Bool {
-        
-        guard let delegate = delegate else {
-            return false
-        }
-        
-        return delegate.textViewHasPrependedImage && range.location < attachmentStringLength
+        return delegate?.textViewHasPrependedImage == true && range.location < attachmentStringLength
     }
     
     private func getTextViewInputAttributes() -> [String: AnyObject] {
@@ -272,5 +260,26 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
             NSForegroundColorAttributeName : color,
             NSFontAttributeName            : font
         ]
+    }
+    
+    // This method removes leading and trailing whitespace and, optionally, a prepended image attachment from a copy of the the provided textView's attributed text.
+    // It does not change any text on the textView and, therefore, does not update any status of delegate-stored properties.
+    func captionFromTextView(textView: UITextView, afterRemovingImage: Bool = true) -> String? {
+        var attributedText: NSAttributedString? = textView.attributedText
+        if
+            afterRemovingImage
+            && delegate?.textViewHasPrependedImage == true,
+            let existingText = attributedText
+        {
+            attributedText = removePrependedImageFromAttributedText(existingText)
+        }
+    
+        guard
+            let text = attributedText?.string.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+            where !text.isEmpty
+        else {
+            return nil
+        }
+        return text
     }
 }
