@@ -11,7 +11,7 @@ import VictoriousIOSSDK
 
 @objc(VUser)
 class VUser: NSManagedObject, UserModel {
-    @NSManaged var email: String?
+    @NSManaged var username: String?
     @NSManaged var isBlockedByMainUser: NSNumber?
     @NSManaged var isCreator: NSNumber?
     @NSManaged var isDirectMessagingDisabled: NSNumber?
@@ -21,7 +21,7 @@ class VUser: NSManagedObject, UserModel {
     @NSManaged var levelProgressPoints: NSNumber?
     @NSManaged var tier: String?
     @NSManaged var location: String?
-    @NSManaged var name: String?
+    @NSManaged var displayName: String?
     @NSManaged var numberOfFollowers: NSNumber?
     @NSManaged var numberOfFollowing: NSNumber?
     @NSManaged var v_likesGiven: NSNumber?

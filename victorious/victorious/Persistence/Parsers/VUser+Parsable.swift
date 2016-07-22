@@ -13,8 +13,8 @@ extension VUser: PersistenceParsable {
     func populate(fromSourceModel user: UserModel) {
         remoteId                    = user.id ?? remoteId
         v_completedProfile          = user.completedProfile ?? completedProfile
-        email                       = user.email ?? email
-        name                        = user.name ?? name
+        username                    = user.username ?? username
+        displayName                 = user.displayName ?? displayName
         location                    = user.location ?? location
         tagline                     = user.tagline ?? tagline
         isBlockedByMainUser         = user.isBlockedByCurrentUser ?? isBlockedByMainUser

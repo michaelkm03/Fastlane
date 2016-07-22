@@ -72,7 +72,7 @@ static const CGFloat kInviteCellHeight = 50.0f;
          [welf updateFollowStatusAnimated:YES];
      }];
     
-    self.profileName.text = profile.name;
+    self.profileName.text = profile.displayName;
     
     NSInteger profileID = profile.remoteId.integerValue;
     NSInteger mainUserID = [VCurrentUser user].remoteId.integerValue;

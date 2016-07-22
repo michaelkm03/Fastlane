@@ -83,7 +83,7 @@ static const NSUInteger kCharacterLimit = 1024;
 
 - (void)updateTitle
 {
-    self.navigationItem.title = self.conversation.user.name;
+    self.navigationItem.title = self.conversation.user.displayName;
 }
 
 - (void)showMoreOptions

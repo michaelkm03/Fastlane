@@ -15,8 +15,8 @@
 {
     VRegistrationModel *registrationModel = [[self alloc] init];
     
-    registrationModel.email = user.email;
-    registrationModel.username = user.name;
+    registrationModel.email = user.username;
+    registrationModel.username = user.displayName;
     registrationModel.locationText = user.location;
     registrationModel.profileImageURL = [user pictureURLOfMinimumSize:VUser.defaultSmallMinimumPictureSize];
     

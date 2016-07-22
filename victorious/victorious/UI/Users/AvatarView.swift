@@ -163,7 +163,7 @@ class AvatarView: UIView {
     }
     
     private func showInitials() {
-        guard let initials = user?.name?.initials() else {
+        guard let initials = user?.displayName?.initials() else {
             initialsLabel.hidden = true
             return
         }

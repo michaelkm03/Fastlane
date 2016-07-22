@@ -58,7 +58,7 @@ class AttributionBar: UIView {
     private func updateComponents(with user: UserModel) {
         displayingUser = user
         avatarView.user = user
-        userNameButton.setTitle(user.name, forState: .Normal)
+        userNameButton.setTitle(user.displayName, forState: .Normal)
     }
     
     // MARK: - Outlets and Actions

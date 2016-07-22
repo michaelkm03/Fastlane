@@ -18,12 +18,12 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Saves the user's password in the keychain for automatic login in the future
  */
-- (BOOL)savePassword:(NSString *)password forEmail:(NSString *)email;
+- (BOOL)savePassword:(NSString *)password forUsername:(NSString *)username;
 
 /**
  Returns a previously-stored password
  */
-- (nullable NSString *)passwordForEmail:(NSString *)email;
+- (nullable NSString *)passwordForUsername:(NSString *)username;
 
 /**
  Removes a previously-stored password from the keychain

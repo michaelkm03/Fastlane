@@ -78,7 +78,7 @@ extension ForumViewController {
             type: type, 
             author: User(
                 id: 1000 + Int(arc4random() % 9999),
-                name: randName(),
+                displayName: randName(),
                 previewImages: [randPreviewImage()]
             )
         )
@@ -120,7 +120,7 @@ extension ForumViewController {
             previewImages: [previewAsset],
             author: User(
                 id: 1000 + Int(arc4random() % 9999),
-                name: randName(),
+                displayName: randName(),
                 previewImages: [randPreviewImage()]
             )
         )
