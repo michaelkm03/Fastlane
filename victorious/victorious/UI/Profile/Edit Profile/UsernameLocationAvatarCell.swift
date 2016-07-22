@@ -82,7 +82,11 @@ class UsernameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
     
     @IBOutlet private var usernameField: UITextField!
     @IBOutlet private var locationField: UITextField!
-    @IBOutlet private weak var avatarView: AvatarView!
+    @IBOutlet private weak var avatarView: AvatarView! {
+        didSet {
+            avatarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tappedOnAvatar(_:))))
+        }
+    }
     
     // MARK: - API
     
@@ -92,8 +96,17 @@ class UsernameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
     
     // MARK: - Target / Action
     
-    @IBAction private func tappedOnAvatar(sender: AnyObject) {
-        self.onAvatarSelected?()
+    @objc func tappedOnAvatar(gesture: UITapGestureRecognizer) {
+        print(gesture.state)
+        switch gesture.state {
+        case .Changed, .Began:
+            print("Highlight")
+        case .Ended:
+            self.onAvatarSelected?()
+        case .Possible, .Cancelled, .Failed:
+            break
+        }
+        
     }
     
     // MARK: - UITextFieldDelegate

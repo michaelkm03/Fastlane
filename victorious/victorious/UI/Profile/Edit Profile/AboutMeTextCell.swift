@@ -11,7 +11,7 @@ import Foundation
 class AboutMeTextCell: UITableViewCell, UITextViewDelegate {
     
     private struct Constants {
-        static let textViewInsets = UIEdgeInsets(top: 15, left: -4, bottom: 14, right: 0)
+        static let textViewInsets = UIEdgeInsets(top: 15, left: -4, bottom: 14, right: -5)
     }
     
     var tagline: String? {
