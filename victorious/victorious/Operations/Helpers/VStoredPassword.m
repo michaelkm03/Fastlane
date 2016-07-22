@@ -12,14 +12,14 @@ static NSString * const kKeychainServiceName = @"com.getvictorious.VUserManager.
 
 @implementation VStoredPassword
 
-- (BOOL)savePassword:(NSString *)password forEmail:(NSString *)email
+- (BOOL)savePassword:(NSString *)password forUsername:(NSString *)username
 {
-    if ( email.length == 0 || password.length == 0 )
+    if ( username.length == 0 || password.length == 0 )
     {
         return NO;
     }
     
-    if ( [self passwordForEmail:email] != nil )
+    if ( [self passwordForUsername:username] != nil )
     {
         [self clearSavedPassword];
     }
@@ -27,16 +27,16 @@ static NSString * const kKeychainServiceName = @"com.getvictorious.VUserManager.
     CFTypeRef result;
     OSStatus err = SecItemAdd((__bridge CFDictionaryRef)(@{
                                                            (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
-                                                           (__bridge id)kSecAttrAccount: email,
+                                                           (__bridge id)kSecAttrAccount: username,
                                                            (__bridge id)kSecAttrService: kKeychainServiceName,
                                                            (__bridge id)kSecValueData: [password dataUsingEncoding:NSUTF8StringEncoding]
                                                            }), &result);
     return err == errSecSuccess;
 }
 
-- (NSString *)passwordForEmail:(NSString *)email
+- (NSString *)passwordForUsername:(NSString *)username
 {
-    if ( email == nil )
+    if ( username == nil )
     {
         return nil;
     }
@@ -45,7 +45,7 @@ static NSString * const kKeychainServiceName = @"com.getvictorious.VUserManager.
     OSStatus err = SecItemCopyMatching((__bridge CFDictionaryRef)(@{
                                                                     (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
                                                                     (__bridge id)kSecAttrService: kKeychainServiceName,
-                                                                    (__bridge id)kSecAttrAccount: email,
+                                                                    (__bridge id)kSecAttrAccount: username,
                                                                     (__bridge id)kSecMatchLimit: (__bridge id)kSecMatchLimitOne,
                                                                     (__bridge id)kSecReturnData: (__bridge id)kCFBooleanTrue,
                                                                     (__bridge id)kSecReturnAttributes: (__bridge id)kCFBooleanTrue

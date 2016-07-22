@@ -30,10 +30,10 @@ class TrendingUsersRequestTests: XCTestCase {
             XCTAssertEqual(results.count, 12)
             
             XCTAssertEqual(results[0].id, 1285)
-            XCTAssertEqual(results[0].name, "tester")
+            XCTAssertEqual(results[0].displayName, "tester")
             
             XCTAssertEqual(results[1].id, 318)
-            XCTAssertEqual(results[1].name, "Android Test001")
+            XCTAssertEqual(results[1].displayName, "Android Test001")
         } catch {
             XCTFail("Sorry, parseResponse should not throw here")
         }

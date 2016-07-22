@@ -53,7 +53,7 @@ class NotificationCell: UITableViewCell, VBackgroundContainer {
             NSFontAttributeName: font
         ])
         
-        let username = notification.user.name ?? ""
+        let username = notification.user.displayName ?? ""
         let range = (message as NSString).rangeOfString(username)
         
         if range.location != NSNotFound && range.length > 0 {

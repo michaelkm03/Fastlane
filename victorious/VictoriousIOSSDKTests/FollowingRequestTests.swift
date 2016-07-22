@@ -22,11 +22,11 @@ class SubscribedToListRequestTests: XCTestCase {
             let results = try followingRequest.parseResponse(NSURLResponse(), toRequest: followingRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(results.count, 3)
             XCTAssertEqual(results[0].id, 576)
-            XCTAssertEqual(results[0].name, "Ksnd")
+            XCTAssertEqual(results[0].displayName, "Ksnd")
             XCTAssertEqual(results[1].id, 1794)
-            XCTAssertEqual(results[1].name, "Me!")
+            XCTAssertEqual(results[1].displayName, "Me!")
             XCTAssertEqual(results[2].id, 2613)
-            XCTAssertEqual(results[2].name, "Sebastian")
+            XCTAssertEqual(results[2].displayName, "Sebastian")
         } catch {
             XCTFail("Sorry, parseResponse should not throw here")
         }

@@ -334,7 +334,7 @@ import Foundation
     }
     
     private func userActionItem(forSequence sequence: VSequence) -> VActionItem {
-        let name = sequence.user.name ?? ""
+        let name = sequence.user.displayName ?? ""
         let userItem = VActionItem.userActionItemUserWithTitle(name, user: sequence.user, detailText: "")
         userItem.selectionHandler = { item in
             self.originViewController.dismissViewControllerAnimated(true) {

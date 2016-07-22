@@ -307,7 +307,7 @@
     <entity name="User" representedClassName="VUser" syncable="YES">
         <attribute name="accountIdentifier" optional="YES" transient="YES" attributeType="String" syncable="YES"/>
         <attribute name="achievementsUnlocked" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="displayName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isBlockedByMainUser" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isCreator" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isDirectMessagingDisabled" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
@@ -320,13 +320,13 @@
         <attribute name="location" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="loginType" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="maxUploadDuration" attributeType="Integer 32" defaultValueString="15" syncable="YES"/>
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="numberOfFollowers" optional="YES" attributeType="Integer 64" syncable="YES"/>
         <attribute name="numberOfFollowing" optional="YES" attributeType="Integer 64" syncable="YES"/>
         <attribute name="remoteId" attributeType="Integer 64" indexed="YES" syncable="YES"/>
         <attribute name="tagline" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="token" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="v_avatarBadgeType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="v_completedProfile" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="v_likesGiven" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
@@ -390,7 +390,7 @@
         <element name="StreamItem" positionX="0" positionY="0" width="128" height="225"/>
         <element name="StreamItemPointer" positionX="0" positionY="0" width="128" height="105"/>
         <element name="Tracking" positionX="0" positionY="0" width="128" height="270"/>
-        <element name="User" positionX="0" positionY="0" width="128" height="705"/>
+        <element name="User" positionX="0" positionY="0" width="128" height="690"/>
         <element name="UserShelf" positionX="0" positionY="0" width="128" height="90"/>
         <element name="VoteResult" positionX="0" positionY="0" width="128" height="90"/>
     </elements>

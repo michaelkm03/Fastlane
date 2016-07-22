@@ -160,7 +160,7 @@ static NSCache *_sharedImageCache = nil;
     self.mediaAssetOrientation = comment.assetOrientation;
     
     self.commentBody = comment.text;
-    self.commenterName = comment.user.name;
+    self.commenterName = comment.user.displayName;
     self.timestampText = [comment.postedAt stringDescribingTimeIntervalSinceNow];
     self.mediaIsVideo = comment.commentMediaType == VCommentMediaTypeVideo;
     self.hasMedia = comment.commentMediaType != VCommentMediaTypeNoMedia;

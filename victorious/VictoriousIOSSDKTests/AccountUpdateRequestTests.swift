@@ -37,9 +37,9 @@ class AccountUpdateRequestTests: XCTestCase {
     func testRequestWithPassword() {
         let updateRequest = AccountUpdateRequest(
             passwordUpdate: PasswordUpdate(
-                email: "joe@example.com",
-                passwordCurrent: "password",
-                passwordNew: "password_new"
+                username: "joe@example.com",
+                currentPassword: "password",
+                newPassword: "password_new"
             )
         )
         XCTAssertEqual(updateRequest?.urlRequest.URL?.absoluteString, "/api/account/update")
@@ -52,37 +52,38 @@ class AccountUpdateRequestTests: XCTestCase {
                 return
         }
         
-        guard let updateRequest = AccountUpdateRequest( profileUpdate: ProfileUpdate(
+        guard let updateRequest = AccountUpdateRequest(profileUpdate: ProfileUpdate(
             email: "joe@example.com",
             name: "Joe Victorious",
             location: "Bethesda, MD",
             tagline: "Example",
-            profileImageURL: nil )) else {
-                XCTFail("Could not instantiate AccountUpdateRequest")
-                return
+            profileImageURL: nil
+        )) else {
+            XCTFail("Could not instantiate AccountUpdateRequest")
+            return
         }
         
         do {
             let user = try updateRequest.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
-            XCTAssertEqual( user.id, 156)
-            XCTAssertEqual( user.name, "Joe Victorious")
+            XCTAssertEqual(user.id, 156)
+            XCTAssertEqual(user.displayName, "Joe Victorious")
         } catch {
             XCTFail("parseResponse is not supposed to throw")
         }
         
-        guard let updatePasswordRequest = AccountUpdateRequest( passwordUpdate: PasswordUpdate(
-            email: "joe@example.com",
-            passwordCurrent: "password",
-            passwordNew: "password_new"
-            )) else {
-                XCTFail("Could not instantiate AccountUpdateRequest")
-                return
+        guard let updatePasswordRequest = AccountUpdateRequest(passwordUpdate: PasswordUpdate(
+            username: "joe@example.com",
+            currentPassword: "password",
+            newPassword: "password_new"
+        )) else {
+            XCTFail("Could not instantiate AccountUpdateRequest")
+            return
         }
         
         do {
             let user = try updatePasswordRequest.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
-            XCTAssertEqual( user.id, 156)
-            XCTAssertEqual( user.name, "Joe Victorious")
+            XCTAssertEqual(user.id, 156)
+            XCTAssertEqual(user.displayName, "Joe Victorious")
         } catch {
             XCTFail("parseResponse is not supposed to throw")
         }

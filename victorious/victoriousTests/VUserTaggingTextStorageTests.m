@@ -35,10 +35,10 @@
     NSString *delimiterString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     
     NSString *sampleTag = @"tag";
-    NSString *wrappedUser = [[delimiterString stringByAppendingString:user.name] stringByAppendingString:delimiterString];
+    NSString *wrappedUser = [[delimiterString stringByAppendingString:user.displayName] stringByAppendingString:delimiterString];
     NSString *wrappedHashtag = [[delimiterString stringByAppendingString:[NSString stringWithFormat:@"#%@", sampleTag]] stringByAppendingString:delimiterString];
     self.displayFormattedString = [NSString stringWithFormat:self.testStringFormat, wrappedUser, wrappedHashtag];
-    self.databaseFormattedString = [NSString stringWithFormat:self.testStringFormat, [NSString stringWithFormat:@"@{%@:%@}", [user.remoteId stringValue], user.name], [NSString stringWithFormat:@"#%@", sampleTag]];
+    self.databaseFormattedString = [NSString stringWithFormat:self.testStringFormat, [NSString stringWithFormat:@"@{%@:%@}", [user.remoteId stringValue], user.displayName], [NSString stringWithFormat:@"#%@", sampleTag]];
     
     self.textView = [[UITextView alloc] init];
     self.defaultFont = [UIFont systemFontOfSize:13.0f];

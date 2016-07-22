@@ -44,7 +44,7 @@
     
     self.user = [[VDummyModels createUsers:1] lastObject];
     
-    NSString *userName = self.user.name;
+    NSString *userName = self.user.displayName;
     NSString *hashtagTag = @"tag";
     
     self.databaseFormattedUser = [NSString stringWithFormat:@"@{%@:%@}", self.user.remoteId, userName];

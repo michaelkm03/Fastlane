@@ -57,7 +57,7 @@ static const CGFloat kBaselineOffset = 0.5f;
 {
     _conversation = conversation;
     
-    self.usernameLabel.text  = conversation.user.name;
+    self.usernameLabel.text  = conversation.user.displayName;
     
     //This paragraph style causes emojis to display correctly
     NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];

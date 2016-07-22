@@ -55,7 +55,7 @@
             "level": 21,
             "progress": 100
         },
-        "email": "josh@brewhaha.net",
+        "username": "josh@brewhaha.net",
         "access_level": "api_owner",
         "hub_role": "2",
         "max_video_duration": 300
