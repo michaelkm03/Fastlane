@@ -33,20 +33,20 @@ private struct Constants {
     static let animationDuration: NSTimeInterval = 1
 }
 
-class CoachmarkView: UIView, VBackgroundContainer {
+class CoachmarkViewController: UIViewController, VBackgroundContainer {
     let backgroundView = UIView()
     var displayer: CoachmarkDisplayer?
     
     init(coachmark: Coachmark, containerFrame: CGRect, highlightFrame: CGRect? = nil, displayer: CoachmarkDisplayer? = nil) {
-        super.init(frame: containerFrame)
-        
+        super.init(nibName: nil, bundle: nil)
+        self.view = UIView(frame: containerFrame)
         self.displayer = displayer
-        
+        self.modalPresentationStyle = .CurrentContext
         let dependencyManager = coachmark.dependencyManager
         
         dependencyManager.addBackgroundToBackgroundHost(self)
-        self.addSubview(backgroundView)
-        self.v_addFitToParentConstraintsToSubview(backgroundView)
+        view.addSubview(backgroundView)
+        view.v_addFitToParentConstraintsToSubview(backgroundView)
         
         let detailsView = TextContainerView()
         
@@ -67,18 +67,18 @@ class CoachmarkView: UIView, VBackgroundContainer {
         detailsView.addSubview(textLabel)
         
         let closeButton = dependencyManager.closeButton
-        closeButton.addTarget(self, action: #selector(CoachmarkView.closeButtonAction), forControlEvents: .TouchUpInside)
+        closeButton.addTarget(self, action: #selector(CoachmarkViewController.closeButtonAction), forControlEvents: .TouchUpInside)
         detailsView.addSubview(closeButton)
         
         detailsView.translatesAutoresizingMaskIntoConstraints = false
         dependencyManager.addBackgroundToBackgroundHost(detailsView, forKey: Constants.textBackgroundKey)
-        self.addSubview(detailsView)
+        self.view.addSubview(detailsView)
         
         //Setup constraints
-        detailsView.bottomAnchor.constraintEqualToAnchor(self.bottomAnchor).active = true
-        detailsView.centerXAnchor.constraintEqualToAnchor(self.centerXAnchor).active = true
+        detailsView.bottomAnchor.constraintEqualToAnchor(view.bottomAnchor).active = true
+        detailsView.centerXAnchor.constraintEqualToAnchor(view.centerXAnchor).active = true
         detailsView.topAnchor.constraintEqualToAnchor(titleLabel.topAnchor, constant: Constants.textContainerPadding).active = true
-        detailsView.widthAnchor.constraintEqualToAnchor(self.widthAnchor).active = true
+        detailsView.widthAnchor.constraintEqualToAnchor(view.widthAnchor).active = true
         
         closeButton.translatesAutoresizingMaskIntoConstraints = false
         closeButton.bottomAnchor.constraintEqualToAnchor(detailsView.bottomAnchor, constant: Constants.textContainerPadding).active = true
@@ -114,8 +114,7 @@ class CoachmarkView: UIView, VBackgroundContainer {
             // We start with a boundary path that encloses the whole view, then we add a path for the
             // circular highlight. Lastly, because we fill with the EvenOddRule, everything between the
             // circle and the boundary is filled, and this is used to mask the layer
-            
-            
+        
             let circularPath = UIBezierPath(
                 arcCenter: highlightFrame.center,
                 radius: Constants.highlightCircleRadius,
@@ -128,29 +127,18 @@ class CoachmarkView: UIView, VBackgroundContainer {
             backgroundMaskLayer.fillRule = kCAFillRuleEvenOdd
             
             //Fill in the "hole" using the specified foreground
-            let foregroundMasklayer = CAShapeLayer()
-            foregroundMasklayer.path = circularPath.CGPath  //Now we only want the inside of the circle
-            
-            let foregroundView = HighlightForegroundView(frame: containerFrame)
-            foregroundView.layer.mask = foregroundMasklayer
-            
-            //Create the stroke around the highlight
-            let strokeLayer = CAShapeLayer()
-            strokeLayer.path = circularPath.CGPath
-            strokeLayer.strokeColor = Constants.highlightStrokeColor
-            strokeLayer.lineWidth = Constants.highlightBoundaryStrokeThickness
-            strokeLayer.strokeStart = 0.0
-            strokeLayer.strokeEnd = 1.0
-            strokeLayer.fillColor = nil
-            foregroundView.layer.addSublayer(strokeLayer)
-            
+            let foregroundSize = CGSize(width: Constants.highlightCircleRadius * CGFloat(2), height: Constants.highlightCircleRadius * CGFloat(2))
+            let foregroundView = HighlightForegroundView(frame: CGRect(center: highlightFrame.center, size: foregroundSize))
+            foregroundView.layer.cornerRadius = foregroundSize.v_roundCornerRadius
+            foregroundView.layer.masksToBounds = true
+            foregroundView.layer.borderColor = Constants.highlightStrokeColor
+            foregroundView.layer.borderWidth = Constants.highlightBoundaryStrokeThickness
             dependencyManager.addBackgroundToBackgroundHost(foregroundView, forKey: Constants.highlightForegroundKey)
-            self.addSubview(foregroundView)
-            v_addFitToParentConstraintsToSubview(foregroundView)
+            view.addSubview(foregroundView)
         }
         
         backgroundView.layer.mask = backgroundMaskLayer
-        bringSubviewToFront(detailsView)
+        view.bringSubviewToFront(detailsView)
         
     }
     
@@ -164,11 +152,10 @@ class CoachmarkView: UIView, VBackgroundContainer {
        UIView.animateWithDuration(
             Constants.animationDuration,
             animations: {
-                self.alpha = 0
+                self.view.alpha = 0
             })
             { _ in
-                self.removeFromSuperview()
-                self.displayer?.coachmarkDidDismiss()
+                self.dismissViewControllerAnimated(true, completion: nil)
             }
     }
     

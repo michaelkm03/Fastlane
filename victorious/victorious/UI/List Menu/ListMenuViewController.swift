@@ -63,6 +63,11 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         }
     }
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        dependencyManager.coachmarkManager?.displayCoachmark(inCoachmarkDisplayer: self, withContainerView: coachmarkContainerView)
+    }
+    
     // MARK: - Notifications
     
     private func selectCreator(atIndex index: Int) {

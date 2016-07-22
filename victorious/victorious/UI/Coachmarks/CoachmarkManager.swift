@@ -19,6 +19,7 @@ private struct Constants {
 class CoachmarkManager : NSObject {
     let dependencyManager: VDependencyManager
     var coachmarks: [Coachmark] = []
+    // Remove if possible 
     var allowCoachmarks = false
     
     private var trackingManager: VTrackingManager {
@@ -31,7 +32,7 @@ class CoachmarkManager : NSObject {
         reloadCoachmarks()
     }
     
-     func reloadCoachmarks() {
+    func reloadCoachmarks() {
         guard let coachmarkConfigurations = dependencyManager.arrayForKey(Constants.coachmarksArrayKey) as? [[NSObject : AnyObject]] else {
             assertionFailure("No coachmarks could be found in coachmark manager")
             return
@@ -78,7 +79,7 @@ class CoachmarkManager : NSObject {
             assertionFailure("Coachmarks are not enabled")
             return
         }
-        
+        resetShownCoachmarks()
         let screenIdentifier = displayer.screenIdentifier
         if let index = coachmarks.indexOf({ coachmark in
             var contextMatches = true
@@ -99,12 +100,12 @@ class CoachmarkManager : NSObject {
             
             if (!coachmarkToDisplay.hasBeenShown) {
                 let containerFrame = container.bounds
-                let coachmarkView = CoachmarkView(coachmark: coachmarkToDisplay, containerFrame: containerFrame, highlightFrame: highlightFrame, displayer: displayer)
-                coachmarkView.alpha = 0
-                container.addSubview(coachmarkView)
+                let coachmarkViewController = CoachmarkViewController(coachmark: coachmarkToDisplay, containerFrame: containerFrame, highlightFrame: highlightFrame, displayer: displayer)
+                coachmarkViewController.view.alpha = 0
+                displayer.presentCoachmark(coachmarkViewController)
                 
                 UIView.animateWithDuration(Constants.animationDuration) {
-                    coachmarkView.alpha = 1
+                    coachmarkViewController.view.alpha = 1
                 }
                 
                 coachmarkToDisplay.hasBeenShown = true
@@ -113,7 +114,6 @@ class CoachmarkManager : NSObject {
                 if let urls = self.dependencyManager.arrayForKey(Constants.trackingURLsKey) as? [String] {
                     self.trackingManager.trackEvent(Constants.trackingEventName, parameters: [ VTrackingKeyUrls : urls])
                 }
-                displayer.coachmarkDidShow()
             }
         }
     }

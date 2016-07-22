@@ -27,7 +27,6 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     }
     private let contentID: Content.ID
     private var firstPresentation = true
-    private var isDisplayingCoachmark = false
     
     private lazy var shareButton: UIBarButtonItem = {
         return UIBarButtonItem(
@@ -106,7 +105,6 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        navigationController?.interactivePopGestureRecognizer?.delegate = self
         dependencyManager.coachmarkManager?.displayCoachmark(inCoachmarkDisplayer: self, withContainerView: coachmarkContainerView)
     }
     
@@ -231,20 +229,6 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
                     )
         }
         return nil
-    }
-    
-    func coachmarkDidShow() {
-        isDisplayingCoachmark = true
-    }
-    
-    func coachmarkDidDismiss() {
-        isDisplayingCoachmark = false
-    }
-    
-    // MARK: - GestureRecognizerDelegate 
-    
-    func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
-        return !isDisplayingCoachmark
     }
 }
 
