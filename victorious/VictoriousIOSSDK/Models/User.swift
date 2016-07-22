@@ -22,7 +22,7 @@ public protocol UserModel: PreviewImageContainer {
     var likesGiven: Int? { get }
     var likesReceived: Int? { get }
     var previewImages: [ImageAssetModel] { get }
-    var avatarBadgeType: AvatarBadgeType { get }
+    var avatarBadgeType: AvatarBadgeType? { get }
     var vipStatus: VIPStatus? { get }
 }
 
@@ -66,7 +66,7 @@ public struct User: UserModel {
     public let likesReceived: Int?
     public let previewImages: [ImageAssetModel]
     public let maxVideoUploadDuration: Int?
-    public let avatarBadgeType: AvatarBadgeType
+    public let avatarBadgeType: AvatarBadgeType?
     public let vipStatus: VIPStatus?
     
     // NOTE: If you add a parameter here, be sure to add it in any calls to this initializer that need to be
@@ -89,7 +89,7 @@ public struct User: UserModel {
         likesReceived: Int? = nil,
         previewImages: [ImageAssetModel] = [],
         maxVideoUploadDuration: Int? = nil,
-        avatarBadgeType: AvatarBadgeType = .None,
+        avatarBadgeType: AvatarBadgeType? = nil,
         vipStatus: VIPStatus? = nil
     ) {
         self.id = id
