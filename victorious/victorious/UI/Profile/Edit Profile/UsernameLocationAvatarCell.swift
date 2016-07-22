@@ -24,10 +24,6 @@ class UsernameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
     
     var user: UserModel? {
         didSet {
-            guard user?.id != oldValue?.id else {
-                return
-            }
-
             usernameField.text = user?.name
             locationField.text = user?.location
             avatarView.user = user

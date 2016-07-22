@@ -21,17 +21,14 @@ class EditProfileViewController: UITableViewController {
         
         tableView.estimatedRowHeight = 44
         tableView.rowHeight = UITableViewAutomaticDimension
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
         
         guard let dependencyManager = dependencyManager,
             currentUser = VCurrentUser.user() else {
-            print("We need a dependencyManager in the edit profile VC!")
-            return
+                print("We need a dependencyManager in the edit profile VC!")
+                return
         }
         
+        //TODO: Refactor me getting too nested in this bitch
         dataSource = EditProfileTableViewDataSource(dependencyManager: dependencyManager,
                                                     tableView: tableView,
                                                     userModel: currentUser)
@@ -48,6 +45,27 @@ class EditProfileViewController: UITableViewController {
                 }
                 
                 // Create a new userModel with the new preview image
+                let imageAsset = ImageAsset(url: mediaURL)
+                let newUser = User(id: currentUser.id,
+                                   email: nil,
+                                   name: nil,
+                                   completedProfile: nil,
+                                   location: nil,
+                                   tagline: nil,
+                                   fanLoyalty: nil,
+                                   isBlockedByCurrentUser: nil,
+                                   accessLevel: .owner,
+                                   isDirectMessagingDisabled: nil,
+                                   isFollowedByCurrentUser: nil,
+                                   numberOfFollowers: nil,
+                                   numberOfFollowing: nil,
+                                   likesGiven: nil,
+                                   likesReceived: nil,
+                                   previewImages: [imageAsset],
+                                   maxVideoUploadDuration: nil,
+                                   avatarBadgeType: currentUser.avatarBadgeType,
+                                   vipStatus: nil)
+                self?.dataSource?.user = newUser
             }
             self?.profilePicturePresenter?.presentOnViewController(self)
         }
@@ -87,7 +105,11 @@ class EditProfileTableViewDataSource: NSObject, UITableViewDataSource {
     private let tableView: UITableView
     private let nameAndLocationCell: UsernameLocationAvatarCell
     private let aboutMeCell: AboutMeTextCell
-    var user: UserModel
+    var user: UserModel {
+        didSet {
+            updateUI()
+        }
+    }
     var onUserRequestsCameraFlow: (() -> ())?
     
     init(dependencyManager: VDependencyManager,
@@ -98,6 +120,8 @@ class EditProfileTableViewDataSource: NSObject, UITableViewDataSource {
         self.user = userModel
         nameAndLocationCell = tableView.dequeueReusableCellWithIdentifier("NameLocationAndPictureCell") as! UsernameLocationAvatarCell
         aboutMeCell = tableView.dequeueReusableCellWithIdentifier("AboutMe") as! AboutMeTextCell
+        super.init()
+        self.updateUI()
     }
     
     // MARK: - UITableViewDataSource
@@ -147,6 +171,11 @@ class EditProfileTableViewDataSource: NSObject, UITableViewDataSource {
     
     // MARK: - Misc Private Funcitons
     
+    private func updateUI() {
+        nameAndLocationCell.user = user
+        aboutMeCell.tagline = user.tagline
+    }
+    
     private func configureNameAndLocationCell(nameCell: UsernameLocationAvatarCell) {
         nameCell.onReturnKeySelected = { [weak self] in
             self?.aboutMeCell.beginEditing()
@@ -154,7 +183,6 @@ class EditProfileTableViewDataSource: NSObject, UITableViewDataSource {
         nameCell.onAvatarSelected = { [weak self] in
             self?.onUserRequestsCameraFlow?()
         }
-        nameCell.user = user
         nameCell.dependencyManager = dependencyManager
     }
     
@@ -168,6 +196,5 @@ class EditProfileTableViewDataSource: NSObject, UITableViewDataSource {
         }
         
         aboutMeCell.dependencyManager = dependencyManager
-        aboutMeCell.tagline = VCurrentUser.user()?.tagline
     }
 }

@@ -108,10 +108,6 @@ class AvatarView: UIView {
     
     var user: UserModel? {
         didSet {
-            guard user?.id != oldValue?.id else {
-                return
-            }
-            
             setNeedsContentUpdate()
             
             kvoController.unobserveAll()
@@ -132,7 +128,7 @@ class AvatarView: UIView {
     
     private var needsContentUpdate = false
     
-    private func setNeedsContentUpdate() {
+    func setNeedsContentUpdate() {
         needsContentUpdate = true
         setNeedsLayout()
     }
