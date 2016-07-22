@@ -41,7 +41,7 @@ class CoachmarkViewController: UIViewController, VBackgroundContainer {
         super.init(nibName: nil, bundle: nil)
         self.view = UIView(frame: containerFrame)
         self.displayer = displayer
-        self.modalPresentationStyle = .CurrentContext
+        self.modalPresentationStyle = .OverFullScreen
         let dependencyManager = coachmark.dependencyManager
         
         dependencyManager.addBackgroundToBackgroundHost(self)
@@ -106,8 +106,8 @@ class CoachmarkViewController: UIViewController, VBackgroundContainer {
             size: CGSize(width: containerFrame.width, height: containerFrame.height - detailsView.frame.height)
             )
         )
+        
         let backgroundMaskLayer =  CAShapeLayer()
-        backgroundMaskLayer.path = maskPath.CGPath
         
         if let highlightFrame = highlightFrame {
             // The following code creates a "hole" in the view's layer
@@ -133,10 +133,10 @@ class CoachmarkViewController: UIViewController, VBackgroundContainer {
             foregroundView.layer.masksToBounds = true
             foregroundView.layer.borderColor = Constants.highlightStrokeColor
             foregroundView.layer.borderWidth = Constants.highlightBoundaryStrokeThickness
-            dependencyManager.addBackgroundToBackgroundHost(foregroundView, forKey: Constants.highlightForegroundKey)
             view.addSubview(foregroundView)
         }
         
+        backgroundMaskLayer.path = maskPath.CGPath
         backgroundView.layer.mask = backgroundMaskLayer
         view.bringSubviewToFront(detailsView)
         

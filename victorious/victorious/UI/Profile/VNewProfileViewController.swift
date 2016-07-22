@@ -9,7 +9,7 @@
 import UIKit
 
 /// A view controller that displays the contents of a user's profile.
-class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderDelegate, AccessoryScreenContainer, VAccessoryNavigationSource, CoachmarkDisplayer, UIGestureRecognizerDelegate {
+class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderDelegate, AccessoryScreenContainer, VAccessoryNavigationSource, CoachmarkDisplayer {
     // MARK: - Constants
     
     static let userAppearanceKey = "userAppearance"
@@ -18,28 +18,28 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     static let estimatedBarButtonWidth: CGFloat = 60.0
     static let estimatedStatusBarHeight: CGFloat = 20.0
     
-    private enum AccessoryScreensType : String {
-        case selfUser = "accessories.user.own"
-        case otherUser = "accessories.user.other"
-        case selfCreator = "accessories.creator.own"
-        case otherCreator = "accessories.user.creator"
+    private enum ProfileScreenContext : String {
+        case selfUser, otherUser, selfCreator, otherCreator
+        
+        var accessoryScreensKey: String {
+            switch self {
+                case selfUser: return "accessories.user.own"
+                case otherUser: return "accessories.user.other"
+                case selfCreator: return "accessories.creator.own"
+                case otherCreator: return "accessories.user.creator"
+            }
+        }
         
         var coachmarkContext: String {
             switch self {
-                case .selfUser:
-                    return "self_user"
-                case .otherUser:
-                    return "other_user"
-                case .selfCreator:
-                    return "self_creator"
-                case otherCreator:
-                    return "other_creator"
+                case .selfUser: return "self_user"
+                case .otherUser: return "other_user"
+                case .selfCreator: return "self_creator"
+                case otherCreator: return "other_creator"
             }
         }
     }
-    
-    private var isDisplayingCoachmark = false
-    
+        
     // MARK: Dependency Manager
     
     let dependencyManager: VDependencyManager
@@ -152,14 +152,10 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         return button
     }()
     
-    // MARK: - ViewControlle lifecycle
-    
-    override func viewDidLoad() {
-        navigationController?.interactivePopGestureRecognizer?.delegate = self
-    }
+    // MARK: - ViewController lifecycle
     
     override func viewDidAppear(animated: Bool) {
-        dependencyManager.coachmarkManager?.displayCoachmark(inCoachmarkDisplayer: self, withContainerView: coachmarkContainerView, withContext: accessoryScreensType?.coachmarkContext)
+        dependencyManager.coachmarkManager?.displayCoachmark(inCoachmarkDisplayer: self, withContainerView: coachmarkContainerView, withContext: profileScreenContext?.coachmarkContext)
     }
     
     // MARK: - Actions
@@ -214,21 +210,21 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     private var supplementalLeftButtons = [UIBarButtonItem]()
     private var supplementalRightButtons = [UIBarButtonItem]()
     
-    private var accessoryScreensType: AccessoryScreensType? {
+    private var profileScreenContext: ProfileScreenContext? {
         guard let user = self.user else {
             return nil
         }
         
         if user.accessLevel.isCreator == true {
-            return user.isCurrentUser ? AccessoryScreensType.selfCreator : AccessoryScreensType.otherCreator
+            return user.isCurrentUser ? ProfileScreenContext.selfCreator : ProfileScreenContext.otherCreator
         }
         else {
-            return user.isCurrentUser ? AccessoryScreensType.selfUser : AccessoryScreensType.otherUser
+            return user.isCurrentUser ? ProfileScreenContext.selfUser : ProfileScreenContext.otherUser
         }
     }
     
     var accessoryScreensKey: String? {
-        return accessoryScreensType?.rawValue
+        return profileScreenContext?.accessoryScreensKey
     }
     
     func addCustomLeftItems(to items: [UIBarButtonItem]) -> [UIBarButtonItem] {
@@ -338,21 +334,6 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         }
         return nil
     }
-    
-    func coachmarkDidShow() {
-        isDisplayingCoachmark = true
-    }
-    
-    func coachmarkDidDismiss() {
-        isDisplayingCoachmark = false
-    }
-    
-    // MARK: - GestureRecognizerDelegate
-    
-    func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
-        return !isDisplayingCoachmark
-    }
-
 }
 
 private extension VDependencyManager {

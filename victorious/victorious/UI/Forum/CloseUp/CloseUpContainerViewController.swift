@@ -85,7 +85,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         header.delegate = self
         
         updateHeader()
-                
+        
         addChildViewController(gridStreamController)
         view.addSubview(gridStreamController.view)
         view.v_addFitToParentConstraintsToSubview(gridStreamController.view)
