@@ -15,6 +15,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     static let userAppearanceKey = "userAppearance"
     static let creatorAppearanceKey = "creatorAppearance"
     static let upgradeButtonID = "Accessory paygate"
+    static let goVIPButtonID = "Accessory Go VIP"
     
     private struct AccessoryScreensKeys {
         static let selfUser = "accessories.user.own"
@@ -87,16 +88,24 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         fatalError("NSCoding not supported.")
     }
     
+    // MARK: - Lifecycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userChanged), name: kLoggedInChangedNotification, object: nil)
+    }
+    
     // MARK: - View updating
     
     private func updateBarButtonItems() {
         supplementalRightButtons = []
         
         let isCurrentUser = user?.isCurrentUser == true
+        let currentIsCreator = VCurrentUser.user()?.isCreator == true
         let isCreator = user?.accessLevel.isCreator == true
         
         if !isCurrentUser {
-            if isCreator && VCurrentUser.user()?.hasValidVIPSubscription != true {
+            if isCreator && VCurrentUser.user()?.hasValidVIPSubscription != true && !currentIsCreator {
                 supplementalRightButtons.append(UIBarButtonItem(customView: upgradeButton))
             }
             
@@ -115,6 +124,17 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
                 upvoteButton.sizeToFit()
                 supplementalRightButtons.append(UIBarButtonItem(customView: upvoteButton))
                 supplementalRightButtons.append(overflowButton)
+            }
+        } else if
+            currentIsCreator,
+            let menuItems = dependencyManager.accessoryMenuItemsWithKey(AccessoryScreensKeys.selfCreator) as? [VNavigationMenuItem]
+        {
+            let goVIPMenuItems = menuItems.filter() { $0.identifier == VNewProfileViewController.goVIPButtonID }
+            if
+                goVIPMenuItems.count == 1,
+                let goVIPMenuItem = goVIPMenuItems.first
+            {
+                supplementalRightButtons.append(UIBarButtonItem(customView: goVIPButton(for: goVIPMenuItem)))
             }
         }
         
@@ -135,10 +155,27 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         return button
     }()
     
+    private func goVIPButton(for menuItem: VNavigationMenuItem) -> UIButton {
+        let button = BackgroundButton(type: .System)
+        button.addTarget(self, action: #selector(goVIPButtonWasPressed), forControlEvents: .TouchUpInside)
+        button.setTitle(menuItem.title, forState: .Normal)
+        button.sizeToFit()
+        return button
+    }
+    
     // MARK: - Actions
     
     private dynamic func upgradeButtonWasPressed() {
         ShowVIPFlowOperation(originViewController: self, dependencyManager: dependencyManager).queue()
+    }
+    
+    private dynamic func goVIPButtonWasPressed() {
+        guard let scaffold = VRootViewController.sharedRootViewController()?.scaffold else {
+            return
+        }
+        let router = Router(originViewController: scaffold, dependencyManager: dependencyManager)
+        let destination = DeeplinkDestination.vipForum
+        router.navigate(to: destination)
     }
     
     func toggleUpvote() {
@@ -209,7 +246,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     }
     
     func shouldDisplayAccessoryItem(withIdentifier identifier: String) -> Bool {
-        return identifier != VNewProfileViewController.upgradeButtonID
+        return identifier != VNewProfileViewController.upgradeButtonID && identifier != VNewProfileViewController.goVIPButtonID
     }
     
     // MARK: - VAccessoryNavigationSource
@@ -223,6 +260,10 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     }
     
     // MARK: - Managing the user
+    
+    @objc private func userChanged() {
+        setUser(VCurrentUser.user(), using: dependencyManager)
+    }
     
     private func fetchUser(using dependencyManager: VDependencyManager) {
         if let user = dependencyManager.templateValueOfType(VUser.self, forKey: VDependencyManager.userKey) as? VUser {
