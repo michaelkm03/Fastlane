@@ -10,13 +10,13 @@ import Foundation
 
 /// Input to a AccountUpdateRequest Used to update a user's password
 public struct PasswordUpdate {
-    public let email: String
-    public let passwordCurrent: String
-    public let passwordNew: String
+    public let username: String
+    public let currentPassword: String
+    public let newPassword: String
     
-    public init( email: String, passwordCurrent: String, passwordNew: String ) {
-        self.email = email
-        self.passwordCurrent = passwordCurrent
-        self.passwordNew = passwordNew
+    public init(username: String, currentPassword: String, newPassword: String) {
+        self.username = username
+        self.currentPassword = currentPassword
+        self.newPassword = newPassword
     }
 }

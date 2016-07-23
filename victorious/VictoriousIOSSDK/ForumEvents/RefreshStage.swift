@@ -11,7 +11,7 @@ import Foundation
 /// Indicates to client to update either one of its stages.
 public struct RefreshStage {
     
-    public let serverTime: NSDate?
+    public let serverTime: Timestamp?
     
     /// Points to the different instaces of Stage.
     public let section: StageSection
@@ -20,11 +20,11 @@ public struct RefreshStage {
     public let contentID: String
     
     /// May be set in order to sync clients to the same spot.
-    public let startTime: NSDate?
+    public let startTime: Timestamp?
 
     public let stageMetaData: StageMetaData?
     
-    public init?(json: JSON, serverTime: NSDate? = nil, stageMetaData: StageMetaData? = nil) {
+    public init?(json: JSON, serverTime: Timestamp? = nil, stageMetaData: StageMetaData? = nil) {
         guard let contentID = json["content_id"].string else {
             return nil
         }
@@ -34,14 +34,14 @@ public struct RefreshStage {
 
         // The server time could either be present inside the stage message or at a higher level 
         // depending on what part of the API we get it from. :/
-        if let parsedServerTime = json["server_time"].double {
-            self.serverTime = NSDate(millisecondsSince1970: parsedServerTime)
+        if let parsedServerTime = Timestamp(apiString: json["server_time"].stringValue) {
+            self.serverTime = parsedServerTime
         } else {
             self.serverTime = serverTime
         }
 
-        if let startTime = json["start_time"].double {
-            self.startTime = NSDate(millisecondsSince1970: startTime)
+        if let startTime = Timestamp(apiString: json["start_time"].stringValue) {
+            self.startTime = startTime
         } else {
             self.startTime = nil
         }

@@ -23,7 +23,7 @@ extension ContentModel {
     /// aspect ratio.
     ///
     var naturalMediaAspectRatio: CGFloat? {
-        return previewImages.first?.mediaMetaData.size.aspectRatio
+        return previewImages.first?.size.aspectRatio
     }
     
     /// The sizing information for the content's media, or nil if the content does not have any media.

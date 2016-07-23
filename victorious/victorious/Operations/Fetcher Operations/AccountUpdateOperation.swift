@@ -10,7 +10,6 @@ import Foundation
 import VictoriousIOSSDK
 
 class AccountUpdateOperation: RemoteFetcherOperation, RequestOperation {
-    
     private let storedPassword = VStoredPassword()
     
     let request: AccountUpdateRequest!
@@ -32,18 +31,16 @@ class AccountUpdateOperation: RemoteFetcherOperation, RequestOperation {
     }
     
     override func main() {
-        
         // For profile updates, optimistically update everything right away
         if let profileUpdate = self.request.profileUpdate {
             persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-
                 guard let user = VCurrentUser.user(inManagedObjectContext: context) else {
                     fatalError( "Expecting a current user to be set before now." )
                 }
                 
                 // Update basic stats
-                user.name = profileUpdate.name ?? user.name
-                user.email = profileUpdate.email ?? user.email
+                user.displayName = profileUpdate.name ?? user.displayName
+                user.username = profileUpdate.email ?? user.username
                 user.location = profileUpdate.location ?? user.location
                 user.tagline = profileUpdate.tagline ?? user.tagline
                 
@@ -63,12 +60,12 @@ class AccountUpdateOperation: RemoteFetcherOperation, RequestOperation {
         }
         
         // Then send out the request the server
-        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
+        requestExecutor.executeRequest(request, onComplete: onComplete, onError: nil)
     }
     
-    private func onComplete( sequence: AccountUpdateRequest.ResultType) {
-        if let passwordUpdate = self.request.passwordUpdate {
-            self.storedPassword.savePassword( passwordUpdate.passwordNew, forEmail: passwordUpdate.email )
+    private func onComplete(sequence: AccountUpdateRequest.ResultType) {
+        if let passwordUpdate = request.passwordUpdate {
+            storedPassword.savePassword(passwordUpdate.newPassword, forUsername: passwordUpdate.username)
         }
     }
 }

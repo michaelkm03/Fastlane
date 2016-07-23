@@ -24,7 +24,7 @@ class CommentTests: XCTestCase {
         XCTAssertEqual(comment.commentID, 28543)
         XCTAssertEqual(comment.displayOrder, 1)
         XCTAssertEqual(comment.userID, 5160)
-        XCTAssertEqual(comment.user.name, "Ryan Higa")
+        XCTAssertEqual(comment.user.displayName, "Ryan Higa")
         XCTAssertEqual(comment.text, "test")
         XCTAssertEqual(comment.flags, 0)
         let dateFormatter = NSDateFormatter(vsdk_format: .Standard)

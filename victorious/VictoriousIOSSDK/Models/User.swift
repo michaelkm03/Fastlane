@@ -10,8 +10,8 @@
 /// Consumers can directly use this type without caring what the concrete type is, persistent or not.
 public protocol UserModel: PreviewImageContainer {
     var id: User.ID { get }
-    var email: String? { get }
-    var name: String? { get }
+    var username: String? { get }
+    var displayName: String? { get }
     var completedProfile: Bool? { get }
     var location: String? { get }
     var tagline: String? { get }
@@ -22,7 +22,7 @@ public protocol UserModel: PreviewImageContainer {
     var likesGiven: Int? { get }
     var likesReceived: Int? { get }
     var previewImages: [ImageAssetModel] { get }
-    var avatarBadgeType: AvatarBadgeType { get }
+    var avatarBadgeType: AvatarBadgeType? { get }
     var vipStatus: VIPStatus? { get }
 }
 
@@ -50,8 +50,8 @@ public struct User: UserModel {
     public typealias ID = Int
     
     public let id: ID
-    public let email: String?
-    public let name: String?
+    public let username: String?
+    public let displayName: String?
     public let completedProfile: Bool?
     public let location: String?
     public let tagline: String?
@@ -66,15 +66,15 @@ public struct User: UserModel {
     public let likesReceived: Int?
     public let previewImages: [ImageAssetModel]
     public let maxVideoUploadDuration: Int?
-    public let avatarBadgeType: AvatarBadgeType
+    public let avatarBadgeType: AvatarBadgeType?
     public let vipStatus: VIPStatus?
     
     // NOTE: If you add a parameter here, be sure to add it in any calls to this initializer that need to be
     // comprehensive.
     public init(
         id: Int,
-        email: String? = nil,
-        name: String? = nil,
+        username: String? = nil,
+        displayName: String? = nil,
         completedProfile: Bool? = nil,
         location: String? = nil,
         tagline: String? = nil,
@@ -89,12 +89,12 @@ public struct User: UserModel {
         likesReceived: Int? = nil,
         previewImages: [ImageAssetModel] = [],
         maxVideoUploadDuration: Int? = nil,
-        avatarBadgeType: AvatarBadgeType = .None,
+        avatarBadgeType: AvatarBadgeType? = nil,
         vipStatus: VIPStatus? = nil
     ) {
         self.id = id
-        self.email = email
-        self.name = name
+        self.username = username
+        self.displayName = displayName
         self.completedProfile = completedProfile
         self.location = location
         self.tagline = tagline
@@ -123,8 +123,8 @@ extension User {
         
         self.id                   = id
         avatarBadgeType           = AvatarBadgeType(json: json)
-        email                     = json["email"].string
-        name                      = json["name"].string
+        username                  = json["username"].string
+        displayName               = json["name"].string
         completedProfile          = json["is_complete"].boolValue || json["status"].string == "complete"
         location                  = json["profile_location"].string
         tagline                   = json["profile_tagline"].string

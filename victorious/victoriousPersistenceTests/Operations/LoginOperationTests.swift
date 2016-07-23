@@ -12,7 +12,7 @@ import XCTest
 class LoginOperationTests: BaseFetcherOperationTestCase {
     
     func testLogin() {
-        guard let user = self.loadUser(), let email = user.email else {
+        guard let user = self.loadUser(), let email = user.username else {
             XCTFail( "Failed to load sample user" )
             return
         }

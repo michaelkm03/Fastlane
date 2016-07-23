@@ -253,7 +253,7 @@
 
 - (NSString *)authorName
 {
-    return self.sequence.user.name;
+    return self.sequence.user.displayName;
 }
 
 - (NSString *)analyticsContentTypeText

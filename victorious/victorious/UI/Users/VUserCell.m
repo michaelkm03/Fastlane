@@ -70,7 +70,7 @@ static const CGFloat kUserCellHeight = 51.0f;
          [welf updateFollowingAnimated:YES];
      }];
     
-    self.userName.text = user.name;
+    self.userName.text = user.displayName;
     self.followControl.enabled = YES;
     
     [self updateFollowingAnimated:NO];

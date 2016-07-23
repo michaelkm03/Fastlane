@@ -22,9 +22,9 @@ class MainRequestExecutor: RequestExecutorType {
     /// handle the error, then returns so that each error is handler by only one handler.
     var errorHandlers = [RequestErrorHandler]()
     
-    private func handleError(error: NSError) -> NSError? {
+    private func handle(error: NSError, with request: NSURLRequest? = nil) -> NSError? {
         for handler in errorHandlers {
-            if handler.handleError(error) {
+            if handler.handle(error, with: request) {
                 return nil
             }
         }
@@ -66,7 +66,7 @@ class MainRequestExecutor: RequestExecutorType {
 
                     if let nsError = self.convertError(error) {
                         self.error = nsError
-                        self.handleError(nsError)
+                        self.handle(nsError, with: request.urlRequest)
                         onError?(nsError)
                     } else if let result = result {
                         if !result.alerts.isEmpty {

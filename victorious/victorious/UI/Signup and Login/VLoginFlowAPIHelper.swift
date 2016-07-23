@@ -80,7 +80,7 @@ extension VLoginFlowAPIHelper {
     }
     
     func queueAccountCreateOperationWithEmail(email: String, password: String, completion: ([AnyObject]?, NSError?, Bool) -> () ) -> NSOperation {
-        let accountCreateRequest = AccountCreateRequest(credentials: .EmailPassword(email: email, password: password))
+        let accountCreateRequest = AccountCreateRequest(credentials: .UsernamePassword(username: email, password: password))
         let operation = AccountCreateOperation(
             dependencyManager: dependencyManager,
             request: accountCreateRequest,

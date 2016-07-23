@@ -11,10 +11,10 @@ import XCTest
 
 class AccountCreateRequestTests: XCTestCase {
     
-    func testEmailRequest() {
-        let mockEmail = "joe@abc.com"
+    func testUsernameRequest() {
+        let mockUsername = "joe@abc.com"
         let mockPassword = "hunter2"
-        let credentials = NewAccountCredentials.EmailPassword(email: mockEmail, password: mockPassword)
+        let credentials = NewAccountCredentials.UsernamePassword(username: mockUsername, password: mockPassword)
         
         let accountCreateRequest = AccountCreateRequest(credentials: credentials)
         let request = accountCreateRequest.urlRequest
@@ -27,7 +27,7 @@ class AccountCreateRequestTests: XCTestCase {
         }
         let bodyString = String(data: bodyData, encoding: NSUTF8StringEncoding)!
         
-        XCTAssertNotNil(bodyString.rangeOfString("email=\(mockEmail.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.vsdk_queryPartAllowedCharacterSet)!)"))
+        XCTAssertNotNil(bodyString.rangeOfString("email=\(mockUsername.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.vsdk_queryPartAllowedCharacterSet)!)"))
         XCTAssertNotNil(bodyString.rangeOfString("password=\(mockPassword)"))
     }
     
@@ -78,9 +78,9 @@ class AccountCreateRequestTests: XCTestCase {
                 return
         }
         
-        let mockEmail = "joe@abc.com"
+        let mockUsername = "joe@abc.com"
         let mockPassword = "hunter2"
-        let credentials = NewAccountCredentials.EmailPassword(email: mockEmail, password: mockPassword)
+        let credentials = NewAccountCredentials.UsernamePassword(username: mockUsername, password: mockPassword)
         
         let accountCreateRequest = AccountCreateRequest(credentials: credentials)
         
@@ -89,8 +89,8 @@ class AccountCreateRequestTests: XCTestCase {
             XCTAssertEqual(response.token, "f08745e841c878da64951f7bb3ceb114df27cfda")
             XCTAssertTrue(response.newUser)
             XCTAssertEqual(response.user.id, 1760702)
-            XCTAssertEqual(response.user.name, "Joe Victorious")
-            XCTAssertEqual(response.user.email, "shsis@sksiis.sndndndh")
+            XCTAssertEqual(response.user.displayName, "Joe Victorious")
+            XCTAssertEqual(response.user.username, "shsis@sksiis.sndndndh")
         } catch {
             XCTFail("parseResponse is not supposed to throw")
         }

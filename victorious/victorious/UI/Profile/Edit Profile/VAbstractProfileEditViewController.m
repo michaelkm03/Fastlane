@@ -150,7 +150,7 @@ static const CGFloat kBlurredWhiteAlpha = 0.3f;
 
 - (void)updateWithProfile:(VUser *)profile
 {
-    self.usernameTextField.text = profile.name;
+    self.usernameTextField.text = profile.displayName;
     self.taglineTextView.text = profile.tagline;
     self.locationTextField.text = profile.location;
     

@@ -12,8 +12,7 @@ import FBSDKCoreKit
 import FBSDKLoginKit
 
 extension VLoginType {
-    
-    func storedCredentials( accountIdentifier: String? = nil ) -> NewAccountCredentials? {
+    func storedCredentials(accountIdentifier: String? = nil) -> NewAccountCredentials? {
         switch self {
             
         case .Facebook:
@@ -24,11 +23,14 @@ extension VLoginType {
             return .Facebook(accessToken: currentToken.tokenString)
             
         case .Email:
-            guard let email = accountIdentifier,
-                let password = VStoredPassword().passwordForEmail( email ) else {
-                    return nil
+            guard
+                let username = accountIdentifier,
+                let password = VStoredPassword().passwordForUsername(username)
+            else {
+                return nil
             }
-            return .EmailPassword(email: email, password: password)
+            
+            return .UsernamePassword(username: username, password: password)
             
         default:
             return nil

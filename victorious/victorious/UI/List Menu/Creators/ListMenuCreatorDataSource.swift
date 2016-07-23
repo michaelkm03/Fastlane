@@ -9,7 +9,6 @@
 import Foundation
 
 final class ListMenuCreatorDataSource: ListMenuSectionDataSource {
-    
     typealias Cell = ListMenuCreatorCollectionViewCell
     
     let dependencyManager: VDependencyManager

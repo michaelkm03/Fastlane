@@ -77,11 +77,11 @@ final class UserSearchDataSource: PaginatedDataSource, SearchDataSourceType, UIT
         
         user.populate(fromSourceModel: visibleItem.sourceResult)
         
-        let username = user.name ?? ""
+        let displayName = user.displayName ?? ""
         let userID = visibleItem.sourceResult.id
         let pictureURL = user.pictureURL(ofMinimumSize: cell.preferredPictureSize) ?? NSURL()
         self.updateFollowControlState(cell.followControl, forUserID: userID, animated: false)
-        cell.viewData = UserSearchResultTableViewCell.ViewData(username: username, profileURL:pictureURL)
+        cell.viewData = UserSearchResultTableViewCell.ViewData(username: displayName, profileURL:pictureURL)
         cell.dependencyManager = dependencyManager
         cell.followControl?.onToggleFollow = { _ in
             // FollowUserOperation/FollowUserToggleOperation not supported in 5.0

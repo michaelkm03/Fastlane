@@ -102,7 +102,7 @@
     NSInteger intValue = self.user.numberOfFollowers.integerValue;
     self.descriptionLabel.text = [VFollowersTextFormatter followerTextWithNumberOfFollowers:intValue];
     
-    self.usernameLabel.text = self.user.name;
+    self.usernameLabel.text = self.user.displayName;
 }
 
 - (void)updateFollowingAnimated:(BOOL)animated

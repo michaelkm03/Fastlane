@@ -50,7 +50,7 @@ class FriendFindByEmailRequestTests: XCTestCase {
             let foundFriends = try request.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertFalse(foundFriends.isEmpty)
             if let firstUser = foundFriends.first {
-                XCTAssertEqual(firstUser.name, "Mikes")
+                XCTAssertEqual(firstUser.displayName, "Mikes")
             } else {
                 XCTFail("we should have at least one user here")
             }

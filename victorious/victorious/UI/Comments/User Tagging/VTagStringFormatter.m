@@ -104,7 +104,7 @@
     {
         return nil;
     }
-    return [NSString stringWithFormat:@"@{%@:%@}", [user.remoteId stringValue], user.name];
+    return [NSString stringWithFormat:@"@{%@:%@}", [user.remoteId stringValue], user.displayName];
 }
 
 + (NSIndexSet *)tagRangesInRange:(NSRange)range

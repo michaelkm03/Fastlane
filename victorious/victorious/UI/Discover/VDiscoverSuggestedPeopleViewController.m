@@ -187,7 +187,7 @@ static const UIEdgeInsets kCollectionViewEdgeInsets = {0, 0, 0, 0};
     VDiscoverSuggestedPersonCell *cell = (VDiscoverSuggestedPersonCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
     VUser *user = cell.user;
     
-    NSDictionary *params = @{ VTrackingKeyName : user.name ?: @"" };
+    NSDictionary *params = @{ VTrackingKeyName : user.displayName ?: @"" };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectSuggestedUser parameters:params];
     
     NSDictionary *userInfo = @{ kVDiscoverUserProfileSelectedKeyUser : user };

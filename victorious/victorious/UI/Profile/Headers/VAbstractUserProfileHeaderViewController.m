@@ -255,7 +255,7 @@
 
 - (void)reloadObservedProfileProperties
 {
-    self.nameLabel.text = self.user.name != nil ? self.user.name : @"";
+    self.nameLabel.text = self.user.displayName != nil ? self.user.displayName : @"";
     self.locationLabel.text = self.user.location;
     self.taglineLabel.text = self.user.tagline;
 }

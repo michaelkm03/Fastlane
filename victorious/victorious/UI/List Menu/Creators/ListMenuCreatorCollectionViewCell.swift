@@ -31,7 +31,7 @@ class ListMenuCreatorCollectionViewCell: UICollectionViewCell, ListMenuSectionCe
     }
     
     func configureCell(with user: VUser) {
-        creatorNameLabel.text = user.name
+        creatorNameLabel.text = user.displayName
         avatarView.user = user
     }
     
