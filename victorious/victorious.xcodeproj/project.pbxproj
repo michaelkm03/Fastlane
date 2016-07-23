@@ -1320,7 +1320,6 @@
 		A7A2DFFF1A37813D00F8C705 /* VPurchaseActionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A2DFFE1A37813D00F8C705 /* VPurchaseActionCell.m */; };
 		A7A2E0071A38E44B00F8C705 /* VPurchaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A2E0041A38E44B00F8C705 /* VPurchaseViewController.m */; };
 		A7A2E0121A391A7D00F8C705 /* VPurchaseRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A2E0111A391A7D00F8C705 /* VPurchaseRecord.m */; };
-		A7A343DB1A8A8452000F0BCF /* VCommentAlertHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A343DA1A8A8452000F0BCF /* VCommentAlertHelper.m */; };
 		A7A343E51A8D896C000F0BCF /* VHashtagStreamCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A343E41A8D896C000F0BCF /* VHashtagStreamCollectionViewController.m */; };
 		A7A390C51A32441E00709812 /* VButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A7A390C41A32441E00709812 /* VButton.m */; };
 		A7A390CA1A3257A300709812 /* ContentView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7A390C91A3257A300709812 /* ContentView.storyboard */; };
@@ -2117,8 +2116,6 @@
 		F0FBFA641CE14819006318FC /* VPublishParameters+ConvenienceInit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0FBFA631CE14819006318FC /* VPublishParameters+ConvenienceInit.swift */; };
 		F0FC97841B545DB90098AFCB /* VStream.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97831B545DB90098AFCB /* VStream.m */; };
 		F0FC97BC1B58547A0098AFCB /* VSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97BB1B58547A0098AFCB /* VSequence.m */; };
-		F0FC97D51B5AF0EE0098AFCB /* VCollectionViewCommentHighlighter.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97D41B5AF0EE0098AFCB /* VCollectionViewCommentHighlighter.m */; };
-		F0FC98021B5EB63C0098AFCB /* VAbstractCommentHighlighter.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC98011B5EB63C0098AFCB /* VAbstractCommentHighlighter.m */; };
 		F0FC98141B61AAA10098AFCB /* UIViewController+VAccessoryScreens.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC98131B61AAA10098AFCB /* UIViewController+VAccessoryScreens.m */; };
 		F0FC98221B6298620098AFCB /* VNavigationTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC98211B6298620098AFCB /* VNavigationTitleView.m */; };
 		F0FDB3651BAB2DCC002DFE5B /* VFindFriendsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F0FDB3671BAB2DCC002DFE5B /* VFindFriendsViewController.storyboard */; };
@@ -3887,8 +3884,6 @@
 		A7A2E0041A38E44B00F8C705 /* VPurchaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPurchaseViewController.m; sourceTree = "<group>"; };
 		A7A2E0101A391A7D00F8C705 /* VPurchaseRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPurchaseRecord.h; sourceTree = "<group>"; };
 		A7A2E0111A391A7D00F8C705 /* VPurchaseRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPurchaseRecord.m; sourceTree = "<group>"; };
-		A7A343D91A8A8452000F0BCF /* VCommentAlertHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCommentAlertHelper.h; sourceTree = "<group>"; };
-		A7A343DA1A8A8452000F0BCF /* VCommentAlertHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCommentAlertHelper.m; sourceTree = "<group>"; };
 		A7A343E01A8D6AE1000F0BCF /* VFollowingStreamCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFollowingStreamCollectionViewController.h; sourceTree = "<group>"; };
 		A7A343E11A8D6AE1000F0BCF /* VFollowingStreamCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFollowingStreamCollectionViewController.m; sourceTree = "<group>"; };
 		A7A343E31A8D896C000F0BCF /* VHashtagStreamCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashtagStreamCollectionViewController.h; sourceTree = "<group>"; };
@@ -4982,10 +4977,6 @@
 		F0FC97831B545DB90098AFCB /* VStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStream.m; sourceTree = "<group>"; };
 		F0FC97BA1B58547A0098AFCB /* VSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequence.h; sourceTree = "<group>"; };
 		F0FC97BB1B58547A0098AFCB /* VSequence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequence.m; sourceTree = "<group>"; };
-		F0FC97D31B5AF0EE0098AFCB /* VCollectionViewCommentHighlighter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCollectionViewCommentHighlighter.h; sourceTree = "<group>"; };
-		F0FC97D41B5AF0EE0098AFCB /* VCollectionViewCommentHighlighter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCollectionViewCommentHighlighter.m; sourceTree = "<group>"; };
-		F0FC98001B5EB63C0098AFCB /* VAbstractCommentHighlighter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractCommentHighlighter.h; sourceTree = "<group>"; };
-		F0FC98011B5EB63C0098AFCB /* VAbstractCommentHighlighter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractCommentHighlighter.m; sourceTree = "<group>"; };
 		F0FC98121B61AAA10098AFCB /* UIViewController+VAccessoryScreens.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+VAccessoryScreens.h"; sourceTree = "<group>"; };
 		F0FC98131B61AAA10098AFCB /* UIViewController+VAccessoryScreens.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+VAccessoryScreens.m"; sourceTree = "<group>"; };
 		F0FC98201B6298620098AFCB /* VNavigationTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNavigationTitleView.h; sourceTree = "<group>"; };
@@ -5317,12 +5308,6 @@
 				D82C08F419D0C04200273E0D /* Layouts */,
 				0314D36A19B46B5E00FA363C /* Polls */,
 				624E398E1C6AE0F2004E0C8E /* ContentCellSetupHelper.swift */,
-				F0FC98001B5EB63C0098AFCB /* VAbstractCommentHighlighter.h */,
-				F0FC98011B5EB63C0098AFCB /* VAbstractCommentHighlighter.m */,
-				F0FC97D31B5AF0EE0098AFCB /* VCollectionViewCommentHighlighter.h */,
-				F0FC97D41B5AF0EE0098AFCB /* VCollectionViewCommentHighlighter.m */,
-				A7A343D91A8A8452000F0BCF /* VCommentAlertHelper.h */,
-				A7A343DA1A8A8452000F0BCF /* VCommentAlertHelper.m */,
 				036E87B01ACB6B3F00E5AAAD /* VContentViewFactory.h */,
 				036E87B11ACB6B3F00E5AAAD /* VContentViewFactory.m */,
 				D8E39BB419CB7C3C007FD86A /* VContentViewViewModel.h */,
@@ -12249,7 +12234,6 @@
 				A72C86791C977FF600E97D4F /* SequenceDeleteRemoteOperation.swift in Sources */,
 				671658FB1D2CA367000C7F62 /* ChatFeedCollectionViewLayout.swift in Sources */,
 				A72C86871C977FF600E97D4F /* MainRequestExecutor.swift in Sources */,
-				F0FC98021B5EB63C0098AFCB /* VAbstractCommentHighlighter.m in Sources */,
 				67BECC4F1CC985C000DFEE4B /* ListMenuCommunityItem.swift in Sources */,
 				A7EBF5681C2F3BF40080C7CF /* VCurrentUser.swift in Sources */,
 				0314D4A419B46B5E00FA363C /* VForceUpgradeAnimatedTransition.m in Sources */,
@@ -12915,7 +12899,6 @@
 				7AE3EA391CAF39C400272A6A /* UICollectionViewFlowLayout+CellSize.swift in Sources */,
 				A776E00E1AE743F3001F25FF /* VStreamNavigationViewFloatingController.m in Sources */,
 				BE11447919D49AA4006A6D65 /* VFullscreenMarqueeStreamItemCell.m in Sources */,
-				F0FC97D51B5AF0EE0098AFCB /* VCollectionViewCommentHighlighter.m in Sources */,
 				A7A2E0121A391A7D00F8C705 /* VPurchaseRecord.m in Sources */,
 				A72E03D01BB6336700927D70 /* VContentPreviewViewReceiver.swift in Sources */,
 				A779511A1B28AB9A00D9DB0A /* VEnvironmentManager.m in Sources */,
@@ -12971,7 +12954,6 @@
 				F04DC6CA1AC9F79600FBCD50 /* VBlurredMarqueeCollectionViewFlowLayout.m in Sources */,
 				C3E772141B44B3FD005809A5 /* VLikedContentStreamCollectionViewController.m in Sources */,
 				67F2315B1CBD9762006BDBA5 /* ListMenuSectionDataSource.swift in Sources */,
-				A7A343DB1A8A8452000F0BCF /* VCommentAlertHelper.m in Sources */,
 				A650EFE01B42297A005529E5 /* VAssetCollectionViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

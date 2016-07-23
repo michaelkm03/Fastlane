@@ -13,12 +13,9 @@
 #import "UIImage+ImageCreation.h"
 #import "UIImageView+Blurring.h"
 #import "UIView+AutoLayout.h"
-#import "VAbstractCommentHighlighter.h"
 #import "VCoachmarkDisplayer.h"
 #import "VCoachmarkManager.h"
-#import "VCollectionViewCommentHighlighter.h"
 #import "VCollectionViewStreamFocusHelper.h"
-#import "VCommentAlertHelper.h"
 #import "VContentBackgroundSupplementaryView.h"
 #import "VContentCell.h"
 #import "VContentPollBallotCell.h"
@@ -72,7 +69,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, readwrite, weak) VExperienceEnhancerBarCell *experienceEnhancerCell;
 @property (nonatomic, strong) NSMutableArray *commentCellReuseIdentifiers;
 @property (nonatomic, strong) NSUserActivity *handoffObject;
-@property (nonatomic, strong) VCollectionViewCommentHighlighter *commentHighlighter;
 @property (nonatomic, strong) VCollectionViewStreamFocusHelper *focusHelper;
 @property (nonatomic, strong) VElapsedTimeFormatter *elapsedTimeFormatter;
 @property (nonatomic, strong) VMediaAttachmentPresenter *mediaAttachmentPresenter;
@@ -152,21 +148,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)didUpdateCommentsWithDeepLink:(NSNumber *)commentId
 {
-    for ( NSUInteger i = 0; i < self.viewModel.sequence.comments.count; i++ )
-    {
-        VComment *comment = self.viewModel.sequence.comments[ i ];
-        if ( [comment.remoteId isEqualToNumber:commentId] )
-        {
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:VContentViewSectionAllComments];
-            [self.commentHighlighter scrollToAndHighlightIndexPath:indexPath delay:0.3f completion:^
-            {
-                // Trigger the paginator to load any more pages based on the scroll
-                // position to which VCommentHighlighter animated to
-                [self.scrollPaginator scrollViewDidScroll:self.contentCollectionView];
-            }];
-            break;
-        }
-    }
 }
 
 - (void)didUpdateSequence

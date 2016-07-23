@@ -63,7 +63,6 @@
 #import "VChangePasswordViewController.h"
 #import "VCoachmarkDisplayResponder.h"
 #import "VCoachmarkManager.h"
-#import "VCollectionViewCommentHighlighter.h"
 #import "VCollectionViewStreamFocusHelper.h"
 #import "VColorType.h"
 #import "VComment.h"
