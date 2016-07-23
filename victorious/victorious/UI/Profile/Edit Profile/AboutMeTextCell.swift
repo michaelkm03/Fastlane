@@ -8,12 +8,14 @@
 
 import Foundation
 
+/// Provides UI for the user to edit their `tagline`.
 class AboutMeTextCell: UITableViewCell, UITextViewDelegate {
     
     private struct Constants {
         static let textViewInsets = UIEdgeInsets(top: 15, left: -4, bottom: 14, right: -5)
     }
     
+    /// The current value of the user's 
     var tagline: String? {
         get {
             return textView.text
@@ -52,18 +54,28 @@ class AboutMeTextCell: UITableViewCell, UITextViewDelegate {
     // MARK: - Target / Action
     
     @objc func textViewDidChange(textView: UITextView) {
-        let textSize = textView.sizeThatFits(CGSize(width: textView.bounds.width, height: CGFloat.max))
-        guard textSize.height != contentView.bounds.height else {
-            return
-        }
-        
-        onDesiredHeightChangeClosure?(desiredHeight: textSize.height)
+        onDataChange?()
+        notifySizeChangeIfNeeded()
     }
     
     // MARK: - API
     
+    /// Use this to bring up the UI for editing the `tagline`.
     func beginEditing() {
         textView.becomeFirstResponder()
+    }
+    
+    /// Provide a closure to be notified when any data within the cell has changed.
+    var onDataChange: (() -> ())?
+    
+    // MARK: - Misc Private Functions
+    
+    private func notifySizeChangeIfNeeded() {
+        let textSize = textView.sizeThatFits(CGSize(width: textView.bounds.width, height: CGFloat.max))
+        guard textSize.height != contentView.bounds.height else {
+            return
+        }
+        onDesiredHeightChangeClosure?(desiredHeight: textSize.height)
     }
     
 }

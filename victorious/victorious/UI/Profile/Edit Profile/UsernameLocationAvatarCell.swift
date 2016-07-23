@@ -8,6 +8,8 @@
 
 import Foundation
 
+/// Provides UI for editing the user's `name`, `location`, and `tagline` fields.
+/// Assign closures to be notified of events in the UI.
 class UsernameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
     
     struct Constants {
@@ -21,6 +23,9 @@ class UsernameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
     /// Provide a closure to be notified when the user taps on their avatar
     /// indicating that they want to
     var onAvatarSelected: (() -> ())?
+    
+    /// Provide a closure to be notified when any data within the cell has changed.
+    var onDataChange: (() -> ())?
     
     var user: UserModel? {
         didSet {
@@ -76,8 +81,22 @@ class UsernameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
         }
     }
     
-    @IBOutlet private var usernameField: UITextField!
-    @IBOutlet private var locationField: UITextField!
+    @IBOutlet private var usernameField: UITextField! {
+        didSet {
+            NSNotificationCenter.defaultCenter().addObserver(self,
+                                                             selector: #selector(textFieldDidChange(_:)),
+                                                             name: UITextFieldTextDidChangeNotification,
+                                                             object: usernameField)
+        }
+    }
+    @IBOutlet private var locationField: UITextField! {
+        didSet {
+            NSNotificationCenter.defaultCenter().addObserver(self,
+                                                             selector: #selector(textFieldDidChange(_:)),
+                                                             name: UITextFieldTextDidChangeNotification,
+                                                             object: locationField)
+        }
+    }
     @IBOutlet private weak var avatarView: AvatarView! {
         didSet {
             avatarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tappedOnAvatar(_:))))
@@ -117,6 +136,13 @@ class UsernameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
         })
         return true
     }
+
+    // MARK: - Notification Handlers
+    
+    func textFieldDidChange(notification: NSNotification) {
+        onDataChange?()
+    }
+    
 }
 
 private extension VDependencyManager {

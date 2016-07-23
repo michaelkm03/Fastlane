@@ -761,6 +761,7 @@
 		795B75901BFA686200227647 /* tos.json in Resources */ = {isa = PBXBuildFile; fileRef = 795B758F1BFA686200227647 /* tos.json */; };
 		795B75981BFA80E000227647 /* WebViewHTMLFetchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795B75971BFA80E000227647 /* WebViewHTMLFetchRequest.swift */; };
 		795D100A1C34938300E88F5E /* TestUserSearchResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 795D10091C34938300E88F5E /* TestUserSearchResponse.json */; };
+		795EA16F1D43F48D00DC2C48 /* EditProfileDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795EA16E1D43F48D00DC2C48 /* EditProfileDataSource.swift */; };
 		79610B9B1C3B59DB00D9254B /* FriendFindByEmailRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79610B9A1C3B59DB00D9254B /* FriendFindByEmailRequestTests.swift */; };
 		7962466D1B82CA2900608B58 /* NavigationBarHiddenTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7962466C1B82CA2900608B58 /* NavigationBarHiddenTabViewController.swift */; };
 		797006F01B7AA3980058B09A /* VTabScaffoldHidingHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 797006EF1B7AA3980058B09A /* VTabScaffoldHidingHelper.m */; };
@@ -2169,9 +2170,9 @@
 		F0B390B91A852C7E00EE70C7 /* VTag.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B390B81A852C7E00EE70C7 /* VTag.m */; };
 		F0B390C31A88502D00EE70C7 /* VTagDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B390C21A88502D00EE70C7 /* VTagDictionary.m */; };
 		F0B390C61A8850CF00EE70C7 /* VTagStringFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B390C51A8850CF00EE70C7 /* VTagStringFormatter.m */; };
+		F0B6F08D1D3EB3350037EACE /* VIPGateViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A748BD171C8A7302003D5F5F /* VIPGateViewController.storyboard */; };
 		F0B6F08F1D3ECDE10037EACE /* VIPFetchSubscriptionRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B6F08E1D3ECDE10037EACE /* VIPFetchSubscriptionRemoteOperation.swift */; };
 		F0B6F0911D3ED0C10037EACE /* VIPFetchSubscriptionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B6F0901D3ED0C10037EACE /* VIPFetchSubscriptionRequest.swift */; };
-		F0B6F08D1D3EB3350037EACE /* VIPGateViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A748BD171C8A7302003D5F5F /* VIPGateViewController.storyboard */; };
 		F0BD3A441CD8208000B4AB3E /* PushTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0BD3A431CD8208000B4AB3E /* PushTransitionAnimator.swift */; };
 		F0BD3A661CD95A8000B4AB3E /* UIViewController+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0BD3A651CD95A8000B4AB3E /* UIViewController+Alert.swift */; };
 		F0BD3A6C1CDD0C1600B4AB3E /* MixedMediaCreationFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0BD3A6B1CDD0C1600B4AB3E /* MixedMediaCreationFlow.swift */; };
@@ -3230,6 +3231,7 @@
 		795B758F1BFA686200227647 /* tos.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = tos.json; sourceTree = "<group>"; };
 		795B75971BFA80E000227647 /* WebViewHTMLFetchRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewHTMLFetchRequest.swift; sourceTree = "<group>"; };
 		795D10091C34938300E88F5E /* TestUserSearchResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TestUserSearchResponse.json; sourceTree = "<group>"; };
+		795EA16E1D43F48D00DC2C48 /* EditProfileDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileDataSource.swift; sourceTree = "<group>"; };
 		79610B9A1C3B59DB00D9254B /* FriendFindByEmailRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendFindByEmailRequestTests.swift; sourceTree = "<group>"; };
 		7962466C1B82CA2900608B58 /* NavigationBarHiddenTabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationBarHiddenTabViewController.swift; sourceTree = "<group>"; };
 		797006EE1B7AA3980058B09A /* VTabScaffoldHidingHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VTabScaffoldHidingHelper.h; path = ../VTabScaffoldHidingHelper.h; sourceTree = "<group>"; };
@@ -9159,15 +9161,16 @@
 		A7F711DB1AE1D5A00086F729 /* Edit Profile */ = {
 			isa = PBXGroup;
 			children = (
+				79841FE11D3D40C6004AC4CB /* AboutMeTextCell.swift */,
+				795EA16E1D43F48D00DC2C48 /* EditProfileDataSource.swift */,
+				7970EFB11D0BF3A10028FDAA /* EditProfileViewController.storyboard */,
+				7970EFAF1D0BF3940028FDAA /* EditProfileViewController.swift */,
+				79841FE31D3D40F3004AC4CB /* UsernameLocationAvatarCell.swift */,
 				A7F711DC1AE1D5A00086F729 /* VAbstractProfileEditViewController.h */,
 				A7F711DD1AE1D5A00086F729 /* VAbstractProfileEditViewController.m */,
 				A7F711DE1AE1D5A00086F729 /* VProfileEditViewController.h */,
-				A76AEAAA1BFFC7E900E8A26F /* VProfileEditViewController.swift */,
 				A7F711DF1AE1D5A00086F729 /* VProfileEditViewController.m */,
-				7970EFAF1D0BF3940028FDAA /* EditProfileViewController.swift */,
-				7970EFB11D0BF3A10028FDAA /* EditProfileViewController.storyboard */,
-				79841FE11D3D40C6004AC4CB /* AboutMeTextCell.swift */,
-				79841FE31D3D40F3004AC4CB /* UsernameLocationAvatarCell.swift */,
+				A76AEAAA1BFFC7E900E8A26F /* VProfileEditViewController.swift */,
 			);
 			path = "Edit Profile";
 			sourceTree = "<group>";
@@ -12499,6 +12502,7 @@
 				A6DAEB5F1B4C8DCA00935EA0 /* VVideoCreationFlowController.m in Sources */,
 				A763635B1C5031E2000887C4 /* PaginatedObjectType.swift in Sources */,
 				A72C86111C977FF500E97D4F /* FollowHashtagToggleOperation.swift in Sources */,
+				795EA16F1D43F48D00DC2C48 /* EditProfileDataSource.swift in Sources */,
 				A73C3EBE1C45890E00A8452C /* MediaSearchExporter.swift in Sources */,
 				F07E825D1AEF35BE00821CEA /* VDiscoverHeaderView.m in Sources */,
 				A789F7311BF11F4900F5C87B /* VNode+Parsable.swift in Sources */,
