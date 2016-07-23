@@ -8,8 +8,6 @@
 
 #import "VFullscreenMarqueeCollectionCell.h"
 
-#import "VUserProfileViewController.h"
-
 #import "VFullscreenMarqueeStreamItemCell.h"
 
 #import "VStreamCollectionViewDataSource.h"

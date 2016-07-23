@@ -14,7 +14,6 @@
 #import "VMessageCell.h"
 #import "VConversationContainerViewController.h"
 #import "VUnreadMessageCountCoordinator.h"
-#import "VUserProfileViewController.h"
 #import "UIStoryboard+VMainStoryboard.h"
 #import "VLightboxTransitioningDelegate.h"
 #import "VVideoLightboxViewController.h"
@@ -164,16 +163,7 @@
 
 - (BOOL)navigationHistoryContainsUserProfileForUser:(VUser *)user
 {
-    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings)
-                              {
-                                  if ( [evaluatedObject isKindOfClass:[VUserProfileViewController class]] )
-                                  {
-                                      VUserProfileViewController *userProfile = evaluatedObject;
-                                      return [userProfile.user isEqual:user];
-                                  }
-                                  return NO;
-                              }];
-    return [self.navigationController.viewControllers filteredArrayUsingPredicate:predicate].count > 0;
+    return NO;
 }
 
 #pragma mark - UITableViewDelegate methods

@@ -139,8 +139,8 @@ private class ShowProfileOperation: MainQueueOperation {
         }
         
         // Check if already showing the a user's profile
-        if let originViewControllerProfile = originViewController as? VUserProfileViewController
-            where originViewControllerProfile.user.remoteId.integerValue == userId {
+        if let originViewControllerProfile = originViewController as? VNewProfileViewController
+            where originViewControllerProfile.user?.id == userId {
             return
         }
         

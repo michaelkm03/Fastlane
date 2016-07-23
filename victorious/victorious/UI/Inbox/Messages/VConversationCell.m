@@ -7,7 +7,6 @@
 //
 
 #import "VConversationCell.h"
-#import "VUserProfileViewController.h"
 #import "VConversation.h"
 #import "victorious-Swift.h"
 

@@ -55,7 +55,6 @@
 #import "VTextAndMediaView.h"
 #import "VTransitionDelegate.h"
 #import "VURLSelectionResponder.h"
-#import "VUserProfileViewController.h"
 #import "VUserTag.h"
 #import "VVideoLightboxViewController.h"
 #import "VPurchaseManager.h"

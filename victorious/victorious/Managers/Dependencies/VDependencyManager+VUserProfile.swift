@@ -34,12 +34,4 @@ extension VDependencyManager {
             withAddedDependencies: [VDependencyManager.userRemoteIdKey: remoteID]
         ) as? UIViewController
     }
-    
-    func userProfileHeaderWithUser(for user: VUser) -> VUserProfileHeader? {
-        return templateValueConformingToProtocol(
-            VUserProfileHeader.self,
-            forKey: VDependencyManager.userProfileHeaderComponentKey,
-            withAddedDependencies: [VDependencyManager.userKey: user]
-        ) as? VUserProfileHeader
-    }
 }
