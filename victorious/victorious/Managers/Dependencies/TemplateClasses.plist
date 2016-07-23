@@ -128,14 +128,6 @@
 	<string>VNotificationsViewController</string>
 	<key>findFriends.screen</key>
 	<string>VFindFriendsViewController</string>
-	<key>currentUserProfile.screen</key>
-	<string>VUserProfileViewController</string>
-	<key>staticProfile.streamHeader</key>
-	<string>VStaticUserProfileHeaderViewController</string>
-	<key>floatingProfile.streamHeader</key>
-	<string>VFloatingUserProfileHeaderViewController</string>
-	<key>userProfile.screen</key>
-	<string>VUserProfileViewController</string>
 	<key>forumProfile.screen</key>
 	<string>victorious.VNewProfileViewController</string>
 	<key>settings.screen</key>
