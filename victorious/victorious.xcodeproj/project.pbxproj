@@ -11027,11 +11027,9 @@
 					03314F1B1BE3E2DE00EE74FD = {
 						CreatedOnToolsVersion = 7.1;
 						DevelopmentTeam = ABHRJGEGKA;
-						LastSwiftMigration = 0800;
 					};
 					03314F241BE3E2DF00EE74FD = {
 						CreatedOnToolsVersion = 7.1;
-						LastSwiftMigration = 0800;
 						TestTargetID = BE171D751868BE64004E5202;
 					};
 					0352FC7D1B72B90000DB6EAB = {
@@ -11043,11 +11041,9 @@
 					0370FBB21B71B260009047B6 = {
 						CreatedOnToolsVersion = 6.4;
 						DevelopmentTeam = ABHRJGEGKA;
-						LastSwiftMigration = 0800;
 					};
 					0370FBBC1B71B261009047B6 = {
 						CreatedOnToolsVersion = 6.4;
-						LastSwiftMigration = 0800;
 						TestTargetID = BE171D751868BE64004E5202;
 					};
 					0372BE661C84FA56004950CF = {
@@ -11055,12 +11051,10 @@
 					};
 					A7EBF51F1C2B8CA20080C7CF = {
 						CreatedOnToolsVersion = 7.1;
-						LastSwiftMigration = 0800;
 						TestTargetID = BE171D751868BE64004E5202;
 					};
 					BE171D751868BE64004E5202 = {
 						DevelopmentTeam = ABHRJGEGKA;
-						LastSwiftMigration = 0800;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 0;
@@ -11068,7 +11062,6 @@
 						};
 					};
 					BE171D951868BE64004E5202 = {
-						LastSwiftMigration = 0800;
 						TestTargetID = BE171D751868BE64004E5202;
 					};
 					EBEA19B51BC4A76C00878B18 = {
@@ -14287,7 +14280,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = victorious/SwiftBridging.h;
-				SWIFT_VERSION = 2.3;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -14313,7 +14305,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.getvictorious.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_VERSION = 2.3;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				VALIDATE_TRACKING = NO;
 				WRAPPER_EXTENSION = xctest;
@@ -14348,7 +14339,6 @@
 				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 2.3;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -14377,7 +14367,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 2.3;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -14407,7 +14396,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 2.3;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -14436,7 +14424,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 2.3;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -14465,7 +14452,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 2.3;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -14490,7 +14476,6 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.victorious.VictoriousIOSSDKTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
 			};
 			name = Debug;
@@ -14509,7 +14494,6 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.victorious.VictoriousIOSSDKTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
 			};
 			name = QA;
@@ -14528,7 +14512,6 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.victorious.VictoriousIOSSDKTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
 			};
 			name = Staging;
@@ -14547,7 +14530,6 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.victorious.VictoriousIOSSDKTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
 			};
 			name = Stable;
@@ -14566,7 +14548,6 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.victorious.VictoriousIOSSDKTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
 			};
 			name = Release;
@@ -14902,7 +14883,6 @@
 				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 2.3;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -14958,7 +14938,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 2.3;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -15014,7 +14993,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 2.3;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -15070,7 +15048,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 2.3;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -15126,7 +15103,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 2.3;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -15153,7 +15129,6 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.victorious.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
 			};
 			name = Debug;
@@ -15175,7 +15150,6 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.victorious.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
 			};
 			name = QA;
@@ -15197,7 +15171,6 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.victorious.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
 			};
 			name = Staging;
@@ -15219,7 +15192,6 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.victorious.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
 			};
 			name = Stable;
@@ -15241,7 +15213,6 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.victorious.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
 			};
 			name = Release;
@@ -15480,7 +15451,6 @@
 				PROVISIONING_PROFILE = "9da7992a-4489-486b-9b12-61df1851b9ea";
 				SWIFT_OBJC_BRIDGING_HEADER = victorious/SwiftBridging.h;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				SWIFT_VERSION = 2.3;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Staging;
@@ -15506,7 +15476,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.getvictorious.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_VERSION = 2.3;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				VALIDATE_TRACKING = NO;
 				WRAPPER_EXTENSION = xctest;
@@ -15532,7 +15501,6 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.victoriousPersistenceTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
 			};
 			name = Debug;
@@ -15552,7 +15520,6 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.victoriousPersistenceTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
 			};
 			name = QA;
@@ -15572,7 +15539,6 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.victoriousPersistenceTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
 			};
 			name = Staging;
@@ -15592,7 +15558,6 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.victoriousPersistenceTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
 			};
 			name = Stable;
@@ -15612,7 +15577,6 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.victoriousPersistenceTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 2.3;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/victorious.app/victorious";
 			};
 			name = Release;
@@ -15780,7 +15744,6 @@
 				PROVISIONING_PROFILE = "";
 				RUN_CLANG_STATIC_ANALYZER = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = victorious/SwiftBridging.h;
-				SWIFT_VERSION = 2.3;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -15814,7 +15777,6 @@
 				PROVISIONING_PROFILE = "9da7992a-4489-486b-9b12-61df1851b9ea";
 				SWIFT_OBJC_BRIDGING_HEADER = victorious/SwiftBridging.h;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				SWIFT_VERSION = 2.3;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Stable;
@@ -15845,7 +15807,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 2.3;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				VALIDATE_TRACKING = NO;
 				WRAPPER_EXTENSION = xctest;
@@ -15873,7 +15834,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.getvictorious.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_VERSION = 2.3;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				VALIDATE_TRACKING = NO;
 				WRAPPER_EXTENSION = xctest;
@@ -15974,7 +15934,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "9da7992a-4489-486b-9b12-61df1851b9ea";
 				SWIFT_OBJC_BRIDGING_HEADER = victorious/SwiftBridging.h;
-				SWIFT_VERSION = 2.3;
 				WRAPPER_EXTENSION = app;
 			};
 			name = QA;
@@ -16004,7 +15963,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.getvictorious.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_VERSION = 2.3;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				VALIDATE_TRACKING = NO;
 				WRAPPER_EXTENSION = xctest;
@@ -16029,7 +15987,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.victoriousUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "victoriousUITests/VictoriousUITests-Bridging-Header.h";
-				SWIFT_VERSION = 2.3;
 				TEST_TARGET_NAME = victorious;
 				USES_XCTRUNNER = YES;
 			};
@@ -16049,7 +16006,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.victoriousUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "victoriousUITests/VictoriousUITests-Bridging-Header.h";
-				SWIFT_VERSION = 2.3;
 				TEST_TARGET_NAME = victorious;
 				USES_XCTRUNNER = YES;
 			};
@@ -16069,7 +16025,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.victoriousUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "victoriousUITests/VictoriousUITests-Bridging-Header.h";
-				SWIFT_VERSION = 2.3;
 				TEST_TARGET_NAME = victorious;
 				USES_XCTRUNNER = YES;
 			};
@@ -16089,7 +16044,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.victoriousUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "victoriousUITests/VictoriousUITests-Bridging-Header.h";
-				SWIFT_VERSION = 2.3;
 				TEST_TARGET_NAME = victorious;
 				USES_XCTRUNNER = YES;
 			};
@@ -16109,7 +16063,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.victoriousUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "victoriousUITests/VictoriousUITests-Bridging-Header.h";
-				SWIFT_VERSION = 2.3;
 				TEST_TARGET_NAME = victorious;
 				USES_XCTRUNNER = YES;
 			};
