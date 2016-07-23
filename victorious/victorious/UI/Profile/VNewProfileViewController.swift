@@ -129,7 +129,8 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
                 supplementalRightButtons.append(UIBarButtonItem(customView: upvoteButton))
                 supplementalRightButtons.append(overflowButton)
             }
-        } else if
+        }
+        else if
             currentIsCreator,
             let menuItems = dependencyManager.accessoryMenuItemsWithKey(AccessoryScreensKeys.selfCreator) as? [VNavigationMenuItem]
         {
