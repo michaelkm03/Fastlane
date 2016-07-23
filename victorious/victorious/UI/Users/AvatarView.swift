@@ -128,7 +128,7 @@ class AvatarView: UIView {
     
     private var needsContentUpdate = false
     
-    func setNeedsContentUpdate() {
+    private func setNeedsContentUpdate() {
         needsContentUpdate = true
         setNeedsLayout()
     }
