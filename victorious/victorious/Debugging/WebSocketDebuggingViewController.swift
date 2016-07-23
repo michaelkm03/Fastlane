@@ -15,6 +15,7 @@
 
         private struct Constants {
             static let cellReuseIdentifier = "DebuggingCell"
+            static let defaultEmailRecipients = ["qa@getvictorious.com"]
         }
 
         var rawMessageContainer: WebSocketRawMessageContainer?
@@ -111,6 +112,7 @@
                 let mailComposerViewController = MFMailComposeViewController()
                 mailComposerViewController.mailComposeDelegate = self
                 mailComposerViewController.setSubject("WebSocket messages log 4 u <3")
+                mailComposerViewController.setToRecipients(Constants.defaultEmailRecipients)
                 mailComposerViewController.setMessageBody(allMessagesString, isHTML: false)
 
                 self.mailComposerViewController = mailComposerViewController

@@ -41,7 +41,7 @@ public class WebSocketRawMessageContainer {
     }
 
     /// Will return a String will all the raw messages concatinated in order.
-    /// - NOTE: This might be a huge string, be carefull of when you call on this function.
+    /// - NOTE: This might be a huge string, be careful of when you call on this function.
     public func exportAllMessages() -> String {
         let allMessagesString = messageContainer.reduce("") {
             let message = ("\nCreation date: \($1.creationDate)\n" + $1.messageString + messageTextDivider)
