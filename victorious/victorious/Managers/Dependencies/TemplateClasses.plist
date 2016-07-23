@@ -118,12 +118,8 @@
 	<string>VFollowingStreamCollectionViewController</string>
 	<key>directory.screen</key>
 	<string>VDirectoryCollectionViewController</string>
-	<key>inbox.screen</key>
-	<string>VConversationListViewController</string>
 	<key>livechat.screen</key>
 	<string>victorious.ChatFeedViewController</string>
-	<key>message.screen</key>
-	<string>VConversationContainerViewController</string>
 	<key>notifications.screen</key>
 	<string>VNotificationsViewController</string>
 	<key>findFriends.screen</key>
