@@ -83,10 +83,9 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
     func useNewAvatar(previewImage: UIImage, fileURL: NSURL) {
         // Create a new userModel with the new preview image
         newAvatarFileURL = fileURL
-        let imageAsset = ImageAsset(url: fileURL)
+        let imageAsset = ImageAsset(url: fileURL, size: previewImage.size)
         let newUser = User(id: user.id,
-                           email: user.email,
-                           name: nameAndLocationCell.username ?? user.name,
+                           username: nameAndLocationCell.username ?? user.username,
                            completedProfile: user.completedProfile,
                            location: nameAndLocationCell.location ?? user.location,
                            tagline: aboutMeCell.tagline,
@@ -99,11 +98,7 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
     
     /// An update 
     func accountUpdateDelta() -> ProfileUpdate? {
-        guard let currentUser = VCurrentUser.user() else {
-            print("we need a user to compute the delta on!")
-            return nil
-        }
-        return ProfileUpdate(email: currentUser.email,
+        return ProfileUpdate(email: nil,
                              name: nameAndLocationCell.username,
                              location: nameAndLocationCell.location,
                              tagline: aboutMeCell.tagline,

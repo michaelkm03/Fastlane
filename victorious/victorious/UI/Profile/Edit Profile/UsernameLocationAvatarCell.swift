@@ -29,7 +29,7 @@ class UsernameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
     
     var user: UserModel? {
         didSet {
-            usernameField.text = user?.name
+            usernameField.text = user?.username
             locationField.text = user?.location
             avatarView.user = user
         }
