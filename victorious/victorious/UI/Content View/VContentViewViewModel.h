@@ -31,7 +31,7 @@ typedef NS_ENUM(NSInteger, VPollAnswer)
     VPollAnswerB,
 };
 
-@class ContentViewContext, VLargeNumberFormatter, SequenceCommentsOperation, CommentsDataSource;
+@class ContentViewContext, VLargeNumberFormatter;
 
 @protocol VContentViewViewModelDelegate <NSObject>
 
