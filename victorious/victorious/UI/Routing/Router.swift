@@ -35,7 +35,6 @@ struct Router {
             case .profile(let userID): showProfile(for: userID)
             case .closeUp(let contentWrapper): showCloseUpView(for: contentWrapper)
             case .vipForum: showVIPForum()
-            case .trophyCase: showTrophyCase()
             case .externalURL(let url): showWebView(for: url)
         }
     }
@@ -60,11 +59,6 @@ struct Router {
     private func showProfile(for userID: User.ID) {
         guard let originViewController = self.originViewController else { return }
         ShowProfileOperation(originViewController: originViewController, dependencyManager: dependencyManager, userId: userID).queue()
-    }
-    
-    private func showTrophyCase() {
-        guard let originViewController = self.originViewController else { return }
-        ShowTrophyCaseOperation(originViewController: originViewController, dependencyManager: dependencyManager).queue()
     }
     
     private func showWebView(for url: NSURL) {

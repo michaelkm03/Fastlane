@@ -190,10 +190,6 @@
 	<string>victorious.AnimatedBadgeView</string>
 	<key>vipPaygate.screen</key>
 	<string>victorious.VIPFlowNavigationController</string>
-	<key>trophyCase.screen</key>
-	<string>victorious.TrophyCaseViewController</string>
-	<key>trophyCase.achievement</key>
-	<string>victorious.Achievement</string>
 	<key>webSocket.networkLayer</key>
 	<string>victorious.WebSocketForumNetworkSource</string>
 	<key>REST.networkLayer</key>

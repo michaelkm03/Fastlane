@@ -613,10 +613,6 @@
 		6759555D1BF1553100D40A87 /* SuggestedUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6759555C1BF1553100D40A87 /* SuggestedUser.swift */; };
 		6759555F1BF157BA00D40A87 /* FanLoyalty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6759555E1BF157BA00D40A87 /* FanLoyalty.swift */; };
 		675A9AFC1BC372DE009CE633 /* FirstInstallManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675A9AFB1BC372DE009CE633 /* FirstInstallManager.swift */; };
-		675CBEE61C7FB74D0098F6AE /* TrophyCaseAchievementCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675CBEE51C7FB74D0098F6AE /* TrophyCaseAchievementCollectionViewCell.swift */; };
-		675CBEEA1C7FBA860098F6AE /* TrophyCaseCollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675CBEE71C7FBA860098F6AE /* TrophyCaseCollectionViewDataSource.swift */; };
-		675CBEEB1C7FBA860098F6AE /* TrophyCaseViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 675CBEE81C7FBA860098F6AE /* TrophyCaseViewController.storyboard */; };
-		675CBEEC1C7FBA860098F6AE /* TrophyCaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675CBEE91C7FBA860098F6AE /* TrophyCaseViewController.swift */; };
 		675EAF0B1C10E52E00019087 /* AgeGateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 675EAF0A1C10E52E00019087 /* AgeGateViewController.swift */; };
 		6761E6C51C4DC8D600B97BF1 /* TrendingUsersRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6761E6C41C4DC8D600B97BF1 /* TrendingUsersRequest.swift */; };
 		6761E6C71C4DC8FF00B97BF1 /* TrendingUsersRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6761E6C61C4DC8FF00B97BF1 /* TrendingUsersRequestTests.swift */; };
@@ -666,7 +662,6 @@
 		678D944E1BF4399D009A1F93 /* PollResultTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678D944D1BF4399D009A1F93 /* PollResultTests.swift */; };
 		678D94561BF440F8009A1F93 /* PollResultByUserResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 678D94551BF440F8009A1F93 /* PollResultByUserResponse.json */; };
 		678D94581BF44100009A1F93 /* PollResultBySequenceResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 678D94571BF44100009A1F93 /* PollResultBySequenceResponse.json */; };
-		678F00CA1CA0D1DE0053EE60 /* ShowTrophyCaseOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678F00C91CA0D1DE0053EE60 /* ShowTrophyCaseOperation.swift */; };
 		6791505D1CD4201000225151 /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6791505C1CD4201000225151 /* TutorialViewController.swift */; };
 		6791505F1CD4214700225151 /* TutorialViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6791505E1CD4214700225151 /* TutorialViewController.storyboard */; };
 		6798479E1BF135D300C01DE3 /* SuggestedUsersRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6798479D1BF135D300C01DE3 /* SuggestedUsersRequestTests.swift */; };
@@ -690,7 +685,6 @@
 		67AB78211C40823800BA00FE /* MockRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AB78201C40823800BA00FE /* MockRequests.swift */; };
 		67ADE37D1C979E060097D42F /* VCardSeeMoreDirectoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6728C0E61C6133020005A29F /* VCardSeeMoreDirectoryCell.xib */; };
 		67B6666A1CDA6AF80096F18C /* ChatInterfaceDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67B666691CDA6AF80096F18C /* ChatInterfaceDataSource.swift */; };
-		67B783BE1C80F98900940D61 /* Achievement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67B783BD1C80F98900940D61 /* Achievement.swift */; };
 		67BECC4B1CC9840C00DFEE4B /* ListMenuCreatorCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67BECC4A1CC9840C00DFEE4B /* ListMenuCreatorCollectionViewCell.swift */; };
 		67BECC4D1CC9845900DFEE4B /* ListMenuCreatorDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67BECC4C1CC9845900DFEE4B /* ListMenuCreatorDataSource.swift */; };
 		67BECC4F1CC985C000DFEE4B /* ListMenuCommunityItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67BECC4E1CC985C000DFEE4B /* ListMenuCommunityItem.swift */; };
@@ -3054,10 +3048,6 @@
 		6759555E1BF157BA00D40A87 /* FanLoyalty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FanLoyalty.swift; sourceTree = "<group>"; };
 		675A9AFB1BC372DE009CE633 /* FirstInstallManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstInstallManager.swift; sourceTree = "<group>"; };
 		675A9AFE1BC37928009CE633 /* FirstInstallManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstInstallManagerTests.swift; sourceTree = "<group>"; };
-		675CBEE51C7FB74D0098F6AE /* TrophyCaseAchievementCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TrophyCaseAchievementCollectionViewCell.swift; path = "Trophy Case/TrophyCaseAchievementCollectionViewCell.swift"; sourceTree = "<group>"; };
-		675CBEE71C7FBA860098F6AE /* TrophyCaseCollectionViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TrophyCaseCollectionViewDataSource.swift; path = "Trophy Case/TrophyCaseCollectionViewDataSource.swift"; sourceTree = "<group>"; };
-		675CBEE81C7FBA860098F6AE /* TrophyCaseViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = TrophyCaseViewController.storyboard; path = "Trophy Case/TrophyCaseViewController.storyboard"; sourceTree = "<group>"; };
-		675CBEE91C7FBA860098F6AE /* TrophyCaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = TrophyCaseViewController.swift; path = "Trophy Case/TrophyCaseViewController.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		675EAF0A1C10E52E00019087 /* AgeGateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = AgeGateViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		6761E6C41C4DC8D600B97BF1 /* TrendingUsersRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendingUsersRequest.swift; sourceTree = "<group>"; };
 		6761E6C61C4DC8FF00B97BF1 /* TrendingUsersRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendingUsersRequestTests.swift; sourceTree = "<group>"; };
@@ -3101,7 +3091,6 @@
 		678D944D1BF4399D009A1F93 /* PollResultTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollResultTests.swift; sourceTree = "<group>"; };
 		678D94551BF440F8009A1F93 /* PollResultByUserResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PollResultByUserResponse.json; sourceTree = "<group>"; };
 		678D94571BF44100009A1F93 /* PollResultBySequenceResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PollResultBySequenceResponse.json; sourceTree = "<group>"; };
-		678F00C91CA0D1DE0053EE60 /* ShowTrophyCaseOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowTrophyCaseOperation.swift; sourceTree = "<group>"; };
 		6791505C1CD4201000225151 /* TutorialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TutorialViewController.swift; path = "First Time User Experience/Tutorial/TutorialViewController.swift"; sourceTree = "<group>"; };
 		6791505E1CD4214700225151 /* TutorialViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = TutorialViewController.storyboard; path = "First Time User Experience/Tutorial/TutorialViewController.storyboard"; sourceTree = "<group>"; };
 		6798479D1BF135D300C01DE3 /* SuggestedUsersRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestedUsersRequestTests.swift; sourceTree = "<group>"; };
@@ -3122,7 +3111,6 @@
 		67AB3D3B1CDD462B00778F1C /* TutorialContentsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialContentsRequest.swift; sourceTree = "<group>"; };
 		67AB78201C40823800BA00FE /* MockRequests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockRequests.swift; sourceTree = "<group>"; };
 		67B666691CDA6AF80096F18C /* ChatInterfaceDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatInterfaceDataSource.swift; sourceTree = "<group>"; };
-		67B783BD1C80F98900940D61 /* Achievement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Achievement.swift; path = "Trophy Case/Achievement.swift"; sourceTree = "<group>"; };
 		67BECC4A1CC9840C00DFEE4B /* ListMenuCreatorCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListMenuCreatorCollectionViewCell.swift; path = "List Menu/Creators/ListMenuCreatorCollectionViewCell.swift"; sourceTree = "<group>"; };
 		67BECC4C1CC9845900DFEE4B /* ListMenuCreatorDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListMenuCreatorDataSource.swift; path = "List Menu/Creators/ListMenuCreatorDataSource.swift"; sourceTree = "<group>"; };
 		67BECC4E1CC985C000DFEE4B /* ListMenuCommunityItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListMenuCommunityItem.swift; path = "List Menu/Community/ListMenuCommunityItem.swift"; sourceTree = "<group>"; };
@@ -7480,18 +7468,6 @@
 			path = Presenters;
 			sourceTree = "<group>";
 		};
-		67C7764D1C7E6C3700BE65CE /* Trophy Case */ = {
-			isa = PBXGroup;
-			children = (
-				67B783BD1C80F98900940D61 /* Achievement.swift */,
-				675CBEE51C7FB74D0098F6AE /* TrophyCaseAchievementCollectionViewCell.swift */,
-				675CBEE71C7FBA860098F6AE /* TrophyCaseCollectionViewDataSource.swift */,
-				675CBEE81C7FBA860098F6AE /* TrophyCaseViewController.storyboard */,
-				675CBEE91C7FBA860098F6AE /* TrophyCaseViewController.swift */,
-			);
-			name = "Trophy Case";
-			sourceTree = "<group>";
-		};
 		67F2314B1CBC8970006BDBA5 /* ListMenu */ = {
 			isa = PBXGroup;
 			children = (
@@ -8034,7 +8010,6 @@
 				A72C85BB1C977FF500E97D4F /* ShowSearchResultOperation.swift */,
 				BF0B35331CFE756900CE5DBB /* ShowShareContentOperation.swift */,
 				A72C85BC1C977FF500E97D4F /* ShowShareSequenceOperation.swift */,
-				678F00C91CA0D1DE0053EE60 /* ShowTrophyCaseOperation.swift */,
 				7A53C15E1CE2B19E00EBFD9E /* ShowVIPFlowOperation.swift */,
 				7AB14CAD1CBEF96B006E674B /* ShowWebContentOperation.swift */,
 				A72C85BD1C977FF500E97D4F /* StoredLoginOperation.swift */,
@@ -9618,7 +9593,6 @@
 				670A3B1A1CA9ED92004C5F57 /* Interstitial Alert */,
 				677DCFE11CB479FC00FC4394 /* Interstitial Toast */,
 				C3623E571B9A77B2002B121D /* Level Up Screen */,
-				67C7764D1C7E6C3700BE65CE /* Trophy Case */,
 			);
 			path = "Fan Club";
 			sourceTree = "<group>";
@@ -11191,7 +11165,6 @@
 				DB2A494319DF44CF00CB687B /* settings.storyboard in Resources */,
 				A75ED08D1AB77C1800C35063 /* VBasicToolPickerCell.xib in Resources */,
 				03C1858319B42C9100E27D05 /* Roboto-Bold.ttf in Resources */,
-				675CBEEB1C7FBA860098F6AE /* TrophyCaseViewController.storyboard in Resources */,
 				BF79C7721C98D3D100222C8A /* LoadingCancellableView.xib in Resources */,
 				A7D9526F1CD41D9300AD1D1D /* VPurchaseCell.xib in Resources */,
 				DB2A491F19DF43F900CB687B /* VForceUpgradeViewController.xib in Resources */,
@@ -12739,7 +12712,6 @@
 				A66D76841B5B2E23004765EA /* VLibraryFolderControl.m in Sources */,
 				A75FAF1B19E8AC1E00EB87C1 /* VHashtagCell.m in Sources */,
 				624E398F1C6AE0F2004E0C8E /* ContentCellSetupHelper.swift in Sources */,
-				67B783BE1C80F98900940D61 /* Achievement.swift in Sources */,
 				A72C86781C977FF600E97D4F /* SequenceCommentsOperation.swift in Sources */,
 				F0140BC11AA93AEB00B95642 /* VTimerManager.m in Sources */,
 				A6EED6AD1B5EE4EB0074052E /* VAlongsidePresentationAnimator.m in Sources */,
@@ -12959,7 +12931,6 @@
 				D8CA63BB19D5240C002046E5 /* VActionSheetPresentationAnimator.m in Sources */,
 				037CB74519CFE8D20084BBED /* VUploadTaskInformation.m in Sources */,
 				A72C860E1C977FF500E97D4F /* FollowCountOperation.swift in Sources */,
-				675CBEEC1C7FBA860098F6AE /* TrophyCaseViewController.swift in Sources */,
 				676C891E1CAB367F00B606ED /* InterstitialAlertPresentationController.swift in Sources */,
 				A72C86061C977FF500E97D4F /* ConversationListOperation.swift in Sources */,
 				F0FC97A81B5563960098AFCB /* VInStreamCommentsCell.m in Sources */,
@@ -13092,7 +13063,6 @@
 				A7B133631C6178FD006EC4F5 /* UITableView+OrderedSet.swift in Sources */,
 				C3E47F751B6ABB3F0084FF65 /* VMessage+Fetcher.m in Sources */,
 				A72C86031C977FF500E97D4F /* ConversationDeleteOperation.swift in Sources */,
-				678F00CA1CA0D1DE0053EE60 /* ShowTrophyCaseOperation.swift in Sources */,
 				A7B98A421A264D1D00C58335 /* VNotificationSettingsStateManager.m in Sources */,
 				79EEC4A51C17BD150004E6FC /* Experiment+Parsable.swift in Sources */,
 				A76D93921B32151B007A150D /* VContentLikeButton.m in Sources */,
@@ -13102,7 +13072,6 @@
 				03CE66FC19B59F260011BB9E /* UIImage+ImageEffects.m in Sources */,
 				A7AF17B41C599331007BCAFE /* VUser+Following.swift in Sources */,
 				D88CEAE41A92E17C00F5A837 /* VVideoSnapshotTool.m in Sources */,
-				675CBEEA1C7FBA860098F6AE /* TrophyCaseCollectionViewDataSource.swift in Sources */,
 				F06350751CBC6D240047E30C /* MixedMediaCameraCreationFlowController.swift in Sources */,
 				67F2314D1CBC8A9F006BDBA5 /* ListMenuHashtagDataSource.swift in Sources */,
 				D8DCE5901ADD835B0004B782 /* VFlexBar.m in Sources */,
@@ -13331,7 +13300,6 @@
 				A7B514561A4517A80074282F /* VUtilityButtonCell.m in Sources */,
 				A72C86141C977FF500E97D4F /* FriendFindByEmailOperation.swift in Sources */,
 				C3A4C5B21BCC6455000B745B /* StatusBarUtils.swift in Sources */,
-				675CBEE61C7FB74D0098F6AE /* TrophyCaseAchievementCollectionViewCell.swift in Sources */,
 				0EC0F60F1CE65005008760E8 /* WebSocketDebuggingViewController.swift in Sources */,
 				A7C565E61C442FEA00E4DF6A /* VNotification+Parsable.swift in Sources */,
 				A7D7ED571B5D6B0000FA346A /* VScaleAnimator.m in Sources */,
