@@ -7,7 +7,6 @@
 //
 
 #import "VCollectionViewCommentHighlighter.h"
-#import "VContentCommentsCell.h"
 
 @interface VCollectionViewCommentHighlighter ()
 
@@ -45,12 +44,7 @@
 
 - (UIView *)viewToAnimateForIndexPath:(NSIndexPath *)indexPath
 {
-    VContentCommentsCell *cell = (VContentCommentsCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
-    if ( cell == nil || ![cell isKindOfClass:[VContentCommentsCell class]] )
-    {
-        return nil;
-    }
-    return cell;
+    return nil;
 }
 
 @end
