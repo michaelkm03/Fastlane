@@ -344,7 +344,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 
 - (IBAction)unwindToSettings:(UIStoryboardSegue *)sender
 {
-    
+    // Empty meothd is necessary for unwinding from edit profile
 }
 
 - (void)sendHelp
