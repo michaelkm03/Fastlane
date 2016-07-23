@@ -112,16 +112,12 @@ class UsernameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
     // MARK: - Target / Action
     
     @objc func tappedOnAvatar(gesture: UITapGestureRecognizer) {
-        print(gesture.state)
         switch gesture.state {
-        case .Changed, .Began:
-            print("Highlight")
-        case .Ended:
-            self.onAvatarSelected?()
-        case .Possible, .Cancelled, .Failed:
-            break
+            case .Ended:
+                self.onAvatarSelected?()
+            case .Possible, .Cancelled, .Failed, .Changed, .Began:
+                break
         }
-        
     }
     
     // MARK: - UITextFieldDelegate

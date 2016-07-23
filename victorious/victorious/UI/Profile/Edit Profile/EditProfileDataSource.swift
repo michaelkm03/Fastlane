@@ -132,7 +132,6 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
     }
     
     private func configueAboutMeCell(aboutMeCell: AboutMeTextCell) {
-        
         // Support resizing
         aboutMeCell.onDesiredHeightChangeClosure = { [weak self] height in
             print(height)
