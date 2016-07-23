@@ -1079,10 +1079,6 @@
 		A72C86661C977FF600E97D4F /* NSOperationQueue+Queuable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85C91C977FF500E97D4F /* NSOperationQueue+Queuable.swift */; };
 		A72C86671C977FF600E97D4F /* PrefetchedResultsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85CA1C977FF500E97D4F /* PrefetchedResultsOperation.swift */; };
 		A72C86681C977FF600E97D4F /* Queueable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85CB1C977FF500E97D4F /* Queueable.swift */; };
-		A72C866A1C977FF600E97D4F /* CommentCreateRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85CE1C977FF500E97D4F /* CommentCreateRemoteOperation.swift */; };
-		A72C866B1C977FF600E97D4F /* CommentDeleteRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85CF1C977FF500E97D4F /* CommentDeleteRemoteOperation.swift */; };
-		A72C866C1C977FF600E97D4F /* CommentEditRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85D01C977FF500E97D4F /* CommentEditRemoteOperation.swift */; };
-		A72C866D1C977FF600E97D4F /* CommentFlagRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85D11C977FF500E97D4F /* CommentFlagRemoteOperation.swift */; };
 		A72C866E1C977FF600E97D4F /* ConversationDeleteRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85D21C977FF500E97D4F /* ConversationDeleteRemoteOperation.swift */; };
 		A72C866F1C977FF600E97D4F /* ConversationListRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85D31C977FF500E97D4F /* ConversationListRemoteOperation.swift */; };
 		A72C86711C977FF600E97D4F /* ConversationRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85D51C977FF500E97D4F /* ConversationRemoteOperation.swift */; };
@@ -3529,10 +3525,6 @@
 		A72C85C91C977FF500E97D4F /* NSOperationQueue+Queuable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSOperationQueue+Queuable.swift"; sourceTree = "<group>"; };
 		A72C85CA1C977FF500E97D4F /* PrefetchedResultsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrefetchedResultsOperation.swift; sourceTree = "<group>"; };
 		A72C85CB1C977FF500E97D4F /* Queueable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queueable.swift; sourceTree = "<group>"; };
-		A72C85CE1C977FF500E97D4F /* CommentCreateRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentCreateRemoteOperation.swift; sourceTree = "<group>"; };
-		A72C85CF1C977FF500E97D4F /* CommentDeleteRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentDeleteRemoteOperation.swift; sourceTree = "<group>"; };
-		A72C85D01C977FF500E97D4F /* CommentEditRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentEditRemoteOperation.swift; sourceTree = "<group>"; };
-		A72C85D11C977FF500E97D4F /* CommentFlagRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentFlagRemoteOperation.swift; sourceTree = "<group>"; };
 		A72C85D21C977FF500E97D4F /* ConversationDeleteRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationDeleteRemoteOperation.swift; sourceTree = "<group>"; };
 		A72C85D31C977FF500E97D4F /* ConversationListRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationListRemoteOperation.swift; sourceTree = "<group>"; };
 		A72C85D51C977FF500E97D4F /* ConversationRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationRemoteOperation.swift; sourceTree = "<group>"; };
@@ -7711,10 +7703,6 @@
 			isa = PBXGroup;
 			children = (
 				F022CFD91CFE52EA00F040BB /* ChatMessageCreateRemoteOperation.swift */,
-				A72C85CE1C977FF500E97D4F /* CommentCreateRemoteOperation.swift */,
-				A72C85CF1C977FF500E97D4F /* CommentDeleteRemoteOperation.swift */,
-				A72C85D01C977FF500E97D4F /* CommentEditRemoteOperation.swift */,
-				A72C85D11C977FF500E97D4F /* CommentFlagRemoteOperation.swift */,
 				BFE25A461D0B7DBA00F55653 /* ContentDeleteRemoteOperation.swift */,
 				BF8F57A21CEBE22F00188C0E /* ContentFeedRemoteOperation.swift */,
 				BFA4C9071CDD4AD500E496FD /* ContentFetchOperation.swift */,
@@ -12161,7 +12149,6 @@
 				F009BD131CE6855400F81CAA /* WebSocketMessageDetailViewController.swift in Sources */,
 				A7A1CF5F1C62BE6400B08F07 /* VStreamItem+Fetcher.m in Sources */,
 				0385FEE918EF41B4009FBD68 /* VImageSearchResult.m in Sources */,
-				A72C866C1C977FF600E97D4F /* CommentEditRemoteOperation.swift in Sources */,
 				0E6628751CCEE5DF0049ECF8 /* StageDataSource.swift in Sources */,
 				A70564C319E781EE004A8387 /* VNoContentTableViewCell.m in Sources */,
 				A601FB591B43657F0050536C /* VMediaAttachmentPresenter.m in Sources */,
@@ -12176,9 +12163,7 @@
 				A76E79C31C6FADA7006A0D35 /* UIViewController+Error.swift in Sources */,
 				A73BA5751C93CAA0008168B5 /* ShowTestPurchaseConfirmationOperation.swift in Sources */,
 				0314D48719B46B5E00FA363C /* VActivityIndicatorView.m in Sources */,
-				A72C866B1C977FF600E97D4F /* CommentDeleteRemoteOperation.swift in Sources */,
 				F0D2E94E1BB6442F001FD97F /* VTextStreamPreviewView.m in Sources */,
-				A72C866D1C977FF600E97D4F /* CommentFlagRemoteOperation.swift in Sources */,
 				030931931A184285004E9781 /* VNavigationMenuItem.m in Sources */,
 				C30E3F9F1BE7E02500184F57 /* VAutomation.m in Sources */,
 				A72C86101C977FF500E97D4F /* FollowHashtagOperation.swift in Sources */,
@@ -12593,7 +12578,6 @@
 				A75ED0041AB0B6B400C35063 /* VTextTypeTool.m in Sources */,
 				C3D4E83F1BBDCF39000AD70A /* UIFont+Layout.swift in Sources */,
 				F0411E841B4AE5D300557176 /* VAbstractCrossFadingView.m in Sources */,
-				A72C866A1C977FF600E97D4F /* CommentCreateRemoteOperation.swift in Sources */,
 				A72C86341C977FF500E97D4F /* SequenceRepostOperation.swift in Sources */,
 				039ED29E19C908F400305987 /* VVideoDownloadProgressIndicatorView.m in Sources */,
 				A75ED00C1AB0B6D100C35063 /* VFilterTool.m in Sources */,
