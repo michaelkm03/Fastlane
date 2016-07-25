@@ -14,7 +14,6 @@ enum DeeplinkDestination {
     case profile(userID: Int)
     case closeUp(contentWrapper: CloseUpContentWrapper)
     case vipForum
-    case trophyCase
     case externalURL(url: NSURL, addressBarVisible: Bool)
     
     init?(url: NSURL) {
@@ -37,8 +36,6 @@ enum DeeplinkDestination {
                 self = .profile(userID: userID)
             case "vipForum":
                 self = .vipForum
-            case "profile/trophyCase":
-                self = .trophyCase
             case "webURL":
                 guard let externalURL = NSURL(string: url.v_firstNonSlashPathComponent()) else { return nil }
                 self = .externalURL(url: externalURL, addressBarVisible: true)

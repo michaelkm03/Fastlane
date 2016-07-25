@@ -22,9 +22,6 @@
 #import "VSequenceCountsTextView.h"
 #import "VCellSizeCollection.h"
 #import "VCellSizingUserInfoKeys.h"
-#import "VInStreamCommentCellContents.h"
-#import "VInStreamCommentsShowMoreAttributes.h"
-#import "VInStreamCommentsController.h"
 #import "VActionButtonAnimationController.h"
 #import "VListicleView.h"
 #import "VStream.h"
@@ -60,7 +57,6 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
 @property (nonatomic, strong) VActionButtonAnimationController *actionButtonAnimationController;
 @property (nonatomic, weak) IBOutlet VSequenceCountsTextView *countsTextView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *captiontoPreviewVerticalSpacing;
-@property (nonatomic, strong) VInStreamCommentsController *inStreamCommentsController;
 @property (nonatomic, weak) IBOutlet UICollectionView *inStreamCommentsCollectionView;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *inStreamCommentsCollectionViewTopConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *inStreamCommentsCollectionViewBottomConstraint;
@@ -180,16 +176,7 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
             {
                 return CGSizeMake( 0.0f, defaultHeight );
             }
-            
-            BOOL showPreviousCommentsCellEnabled = [self inStreamCommentsShouldDisplayShowMoreCellForSequence:sequence];
-            NSArray *commentCellContents = [VInStreamCommentCellContents inStreamCommentsForComments:[userInfo objectForKey:VCellSizingCommentsKey] andDependencyManager:dependencyManager];
-            
-            CGFloat width = size.width;
-            width -= VCEIL( [VSleekActionView outerMarginForBarWidth:width] );
-            CGFloat height = [VInStreamCommentsController desiredHeightForCommentCellContents:commentCellContents withMaxWidth:width showMoreAttributes:[VInStreamCommentsShowMoreAttributes newWithDependencyManager:dependencyManager] andShowMoreCommentsCellEnabled:showPreviousCommentsCellEnabled];
-            height += kInStreamCommentsTopSpace; //Top space
-            height += VCEIL( ( kSleekCellActionViewHeight - VActionButtonHeight ) / 2.0f ); //Bottom space
-            return CGSizeMake( 0.0f, height );
+            return CGSizeMake( 0.0f, 0.0f );
         }];
     }
     return collection;
@@ -261,7 +248,6 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     
     [self.countsTextView setTextHighlightAttributes:[[self class] sequenceCountsActiveAttributesWithDependencyManager:dependencyManager]];
     [self.countsTextView setTextAttributes:[[self class] sequenceCountsAttributesWithDependencyManager:dependencyManager]];
-    self.inStreamCommentsController.showMoreAttributes = [VInStreamCommentsShowMoreAttributes newWithDependencyManager:dependencyManager];
 }
 
 + (NSDictionary *)sequenceCountsActiveAttributesWithDependencyManager:(VDependencyManager *)dependencyManager
@@ -329,9 +315,6 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
          [strongSelf.actionButtonAnimationController setButton:strongSelf.sleekActionView.repostButton
                                                       selected:_sequence.hasReposted.boolValue];
      }];
-    
-    NSArray *inStreamComments = [[[self class] cellLayoutCollection] commentsForCacheKey:[[self class] cacheKeyForSequence:_sequence]];
-    [self.inStreamCommentsController setupWithCommentCellContents:[VInStreamCommentCellContents inStreamCommentsForComments:inStreamComments andDependencyManager:self.dependencyManager] withShowMoreCellVisible:[[self class] inStreamCommentsShouldDisplayShowMoreCellForSequence:_sequence]];
 }
 
 - (void)updateCountsTextViewForSequence:(VSequence *)sequence
@@ -392,7 +375,6 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
     if ( ![AgeGate isAnonymousUser] )
     {
         self.textViewConstraint.constant = self.sleekActionView.leftMargin;
-        self.inStreamCommentsController.leftInset = self.sleekActionView.leftMargin;
     }
     else
     {
@@ -637,20 +619,6 @@ static NSString * const kShouldShowCommentsKey = @"shouldShowComments";
         return [comments subarrayWithRange:NSMakeRange(0, MIN(comments.count, kMaxNumberOfInStreamComments))];
     }
     return recentComments;
-}
-
-- (VInStreamCommentsController *)inStreamCommentsController
-{
-    if ( _inStreamCommentsController != nil )
-    {
-        return _inStreamCommentsController;
-    }
-    
-    if ( [[self.dependencyManager numberForKey:kShouldShowCommentsKey] boolValue] )
-    {
-        _inStreamCommentsController = [[VInStreamCommentsController alloc] initWithCollectionView:self.inStreamCommentsCollectionView];
-    }
-    return _inStreamCommentsController;
 }
 
 #pragma mark - VContentPreviewViewProvider

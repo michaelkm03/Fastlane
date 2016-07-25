@@ -49,7 +49,6 @@
 #import "VStreamContentCellFactoryDelegate.h"
 #import "VUploadManager.h"
 #import "VUploadProgressViewController.h"
-#import "VUserProfileViewController.h"
 #import "VSleekStreamCollectionCell.h"
 #import "VActionSheetViewController.h"
 #import "VActionSheetTransitioningDelegate.h"

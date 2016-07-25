@@ -15,7 +15,6 @@
 #import "VNode+Fetcher.h"
 #import "VSequence+Fetcher.h"
 #import "VNode+Fetcher.h"
-#import "VComment+Fetcher.h"
 #import "NSString+VParseHelp.h"
 #import "VLargeNumberFormatter.h"
 #import "NSURL+MediaType.h"
@@ -101,8 +100,6 @@
         {
             _currentAsset = [_currentNode imageAsset];
         }
-        _commentsDataSource = [[CommentsDataSource alloc] initWithSequence:context.sequence
-                                                         dependencyManager:self.dependencyManager];
     }
     return self;
 }
