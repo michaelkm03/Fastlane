@@ -10,7 +10,7 @@ import UIKit
 
 /// A template driven .screen component that sets up, houses and mediates the interaction
 /// between the Forum's required concrete implementations and abstract dependencies.
-class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocusable, UploadManagerHost, CoachmarkDisplayer, UIGestureRecognizerDelegate {
+class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocusable, UploadManagerHost, CoachmarkDisplayer {
     @IBOutlet private weak var stageContainer: UIView!
     @IBOutlet private weak var stageViewControllerContainer: VPassthroughContainerView!
     @IBOutlet private weak var stageTouchView: UIView!
@@ -162,7 +162,6 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             navigationController?.navigationBar.topItem?.titleView = navBarTitleView
         }
         navBarTitleView?.sizeToFit()
-        navigationController?.interactivePopGestureRecognizer?.delegate = self
         #if V_ENABLE_WEBSOCKET_DEBUG_MENU
             if let webSocketForumNetworkSource = forumNetworkSource as? WebSocketForumNetworkSource,
                 let navigationController = navigationController {
@@ -182,6 +181,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         
         // Set up the network source if needed.
         forumNetworkSource?.setUpIfNeeded()
+        
+        dependencyManager.coachmarkManager?.displayCoachmark(inCoachmarkDisplayer: self, withContainerView: coachmarkContainerView)
         
     }
     

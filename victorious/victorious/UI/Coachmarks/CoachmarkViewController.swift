@@ -22,15 +22,18 @@ private struct Constants {
     static let highlightTargetKey = "highlight.target"
     static let highlightForegroundKey = "highlight.foreground"
     static let textContainerStrokeColorKey = "stroke.color"
-    static let textContainerTextWidth: CGFloat = 279
-    static let closeButtonWidth: CGFloat = 100
+    static let textContainerTextWidth: CGFloat = 320
+    static let closeButtonWidth: CGFloat = 90
     static let closeButtonHeight: CGFloat = 40
-    static let textContainerPadding: CGFloat = -20.0
-    static let highlightBoundaryStrokeThickness: CGFloat = 4.0
-    static let highlightCircleRadius: CGFloat = 50.0
+    static let closeButtonCornerRadius: CGFloat = 6
+    static let textContainerPadding: CGFloat = -20
+    static let highlightBoundaryStrokeThickness: CGFloat = 2.0
+    static let highlightCircleRadius: CGFloat = 50
     static let highlightStrokeColor = UIColor.blackColor().CGColor
     static let userMacro = "%%USER%%"
     static let animationDuration: NSTimeInterval = 1
+    static let closeButtonStrokeWidth: CGFloat = 2
+    static let closeButtonStrokeColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.2).CGColor
 }
 
 class CoachmarkViewController: UIViewController, VBackgroundContainer {
@@ -68,6 +71,9 @@ class CoachmarkViewController: UIViewController, VBackgroundContainer {
         
         let closeButton = dependencyManager.closeButton
         closeButton.addTarget(self, action: #selector(CoachmarkViewController.closeButtonAction), forControlEvents: .TouchUpInside)
+        closeButton.layer.borderColor = Constants.closeButtonStrokeColor
+        closeButton.layer.borderWidth = Constants.closeButtonStrokeWidth
+        closeButton.applyCornerRadius(Constants.closeButtonCornerRadius)
         detailsView.addSubview(closeButton)
         
         detailsView.translatesAutoresizingMaskIntoConstraints = false
@@ -87,12 +93,12 @@ class CoachmarkViewController: UIViewController, VBackgroundContainer {
         closeButton.heightAnchor.constraintEqualToConstant(Constants.closeButtonHeight).active = true
         
         textLabel.translatesAutoresizingMaskIntoConstraints = false
-        textLabel.bottomAnchor.constraintEqualToAnchor(closeButton.topAnchor, constant: Constants.textContainerPadding).active = true
+        textLabel.bottomAnchor.constraintEqualToAnchor(closeButton.topAnchor, constant: -18).active = true
         textLabel.centerXAnchor.constraintEqualToAnchor(detailsView.centerXAnchor).active = true
         textLabel.widthAnchor.constraintEqualToConstant(Constants.textContainerTextWidth).active = true
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.bottomAnchor.constraintEqualToAnchor(textLabel.topAnchor, constant: Constants.textContainerPadding).active = true
+        titleLabel.bottomAnchor.constraintEqualToAnchor(textLabel.topAnchor, constant: -12).active = true
         titleLabel.widthAnchor.constraintEqualToConstant(Constants.textContainerTextWidth).active = true
         titleLabel.centerXAnchor.constraintEqualToAnchor(detailsView.centerXAnchor).active = true
         
@@ -155,7 +161,7 @@ class CoachmarkViewController: UIViewController, VBackgroundContainer {
                 self.view.alpha = 0
             })
             { _ in
-                self.dismissViewControllerAnimated(true, completion: nil)
+                self.dismissViewControllerAnimated(false, completion: nil)
             }
     }
     

@@ -31,13 +31,13 @@ protocol CoachmarkDisplayer {
     func highlightFrame(identifier: String) -> CGRect?
     
 /**
-     Presents the coachmark view controller inside the displayer.
+    Called when the coachmark VC is ready for presentation
 */
-    func presentCoachmark(coachmark: CoachmarkViewController)
+    func presentCoachmark(viewController: CoachmarkViewController)
 }
 
 extension CoachmarkDisplayer where Self : UIViewController {
-    func presentCoachmark(coachmark: CoachmarkViewController) {
-        self.presentViewController(coachmark, animated: false, completion: nil)
+    func presentCoachmark(viewController: CoachmarkViewController) {
+        self.presentViewController(viewController, animated: false, completion: nil)
     }
 }

@@ -79,7 +79,7 @@ class CoachmarkManager : NSObject {
             assertionFailure("Coachmarks are not enabled")
             return
         }
-        resetShownCoachmarks()
+        resetShownCoachmarks() // REMOVE BEFORE RELEASE 
         let screenIdentifier = displayer.screenIdentifier
         if let index = coachmarks.indexOf({ coachmark in
             var contextMatches = true
