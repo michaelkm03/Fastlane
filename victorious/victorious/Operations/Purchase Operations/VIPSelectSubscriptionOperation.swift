@@ -19,7 +19,7 @@ class VIPSelectSubscriptionOperation: MainQueueOperation, UIAlertViewDelegate {
     
     init(products: [VProduct], originViewController: UIViewController) {
         self.products = products
-        self.willShowPrompt = products.count != 1
+        self.willShowPrompt = products.count > 1
         self.originViewController = originViewController
     }
     
