@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SafariServices
 
 // MARK: - Router
 
@@ -36,7 +37,7 @@ struct Router {
             case .closeUp(let contentWrapper): showCloseUpView(for: contentWrapper)
             case .vipForum: showVIPForum()
             case .trophyCase: showTrophyCase()
-            case .externalURL(let url): showWebView(for: url)
+            case .externalURL(let url, let addressBarVisible): showWebView(for: url, addressBarVisible: addressBarVisible)
         }
     }
     
@@ -67,9 +68,10 @@ struct Router {
         ShowTrophyCaseOperation(originViewController: originViewController, dependencyManager: dependencyManager).queue()
     }
     
-    private func showWebView(for url: NSURL) {
-        // Future: Show the web view in close up properly
-        UIApplication.sharedApplication().openURL(url)
+    private func showWebView(for url: NSURL, addressBarVisible: Bool) {
+        // Future: We currently have no way to hide address bar. This will be handled when we implement close up web view.
+        let safariViewController = SFSafariViewController(URL: url)
+        originViewController?.presentViewController(safariViewController, animated: true, completion: nil)
     }
     
     private func showError() {
