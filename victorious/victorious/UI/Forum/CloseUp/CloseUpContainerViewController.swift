@@ -15,6 +15,7 @@ private struct Constants {
     static let cellsPerRow = 3
     static let estimatedBarButtonWidth: CGFloat = 60.0
     static let estimatedStatusBarHeight: CGFloat = 20.0
+    static let navigationBarRightPadding: CGFloat = 10.0 
 }
 
 class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, ContentCellTracker, CoachmarkDisplayer {
@@ -222,7 +223,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     func highlightFrame(identifier: String) -> CGRect? {
         if let barFrame = navigationController?.navigationBar.frame where identifier == "bump" {
             return CGRect(
-                        x: barFrame.width - Constants.estimatedBarButtonWidth - 10,
+                        x: barFrame.width - Constants.estimatedBarButtonWidth - Constants.navigationBarRightPadding,
                         y: Constants.estimatedStatusBarHeight,
                         width: Constants.estimatedBarButtonWidth,
                         height: barFrame.height
