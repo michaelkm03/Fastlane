@@ -11,7 +11,10 @@ import VictoriousIOSSDK
 
 extension AuthenticationContext {
     init?() {
-        let user = VCurrentUser.user()
+        var user: VUser?
+        dispatch_sync(dispatch_get_main_queue()) {
+            user = VCurrentUser.user()
+        }
         self.init(currentUser: user)
     }
     

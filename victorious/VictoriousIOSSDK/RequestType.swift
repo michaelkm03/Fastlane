@@ -29,8 +29,12 @@ public protocol RequestType {
     /// - parameter request: The NSURLRequest that was sent to the server
     /// - parameter responseData: The raw data returned by the server
     /// - parameter responseJSON: A JSON object parsed from responseData, if available
-    func parseResponse( response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON ) throws -> ResultType
+    func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> ResultType
     
+    /// Returns the url request decorated with headers based on the provided contexts
+    ///
+    /// - parameter requestContext: Describes metadata related to the execution of this request
+    /// - parameter authenticationContext: Describes authentication data
     func urlRequestWithHeaders(requestContext: RequestContext, authenticationContext: AuthenticationContext?) -> NSURLRequest
 }
 
@@ -68,15 +72,13 @@ extension RequestType {
     /// - returns: A Cancelable reference that can be used to cancel the network request before it completes
     public func execute(baseURL baseURL: NSURL, requestContext: RequestContext, authenticationContext: AuthenticationContext?, callback: ResultCallback? = nil) -> Cancelable {
         let urlSession = NSURLSession.sharedSession()
-        var mutableRequest = urlRequest.mutableCopy() as! NSMutableURLRequest
+        let mutableRequest = urlRequestWithHeaders(requestContext, authenticationContext: authenticationContext).mutableCopy() as! NSMutableURLRequest
         
         // Combine only if current path is relative, not full
         if let requestURLString = mutableRequest.URL?.absoluteString where !providesFullURL {
             mutableRequest.URL = NSURL(string: requestURLString, relativeToURL: baseURL)
         }
         
-        mutableRequest = urlRequestWithHeaders(requestContext, authenticationContext: authenticationContext).mutableCopy() as! NSMutableURLRequest
-
         let dataTask = urlSession.dataTaskWithRequest(mutableRequest) { (data: NSData?, response: NSURLResponse?, requestError: NSError?) in
 
             let result: ResultType?
