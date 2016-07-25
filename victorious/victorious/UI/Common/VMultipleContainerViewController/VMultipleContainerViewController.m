@@ -376,7 +376,6 @@ static NSString * const kInitialKey = @"initial";
     return total;
 }
 
-
 #pragma mark - VCoachmarkDisplayer
 
 - (NSString *)screenIdentifier

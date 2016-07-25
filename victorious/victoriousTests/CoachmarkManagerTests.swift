@@ -17,6 +17,10 @@ private class dummyDisplayer : CoachmarkDisplayer {
     private func highlightFrame(identifier: String) -> CGRect? {
         return nil
     }
+    
+    private func presentCoachmark(viewController: CoachmarkViewController) {
+        return
+    }
 }
 
 class CoachmarkManagerTests: XCTestCase {
@@ -34,7 +38,6 @@ class CoachmarkManagerTests: XCTestCase {
         }
         
         let manager = CoachmarkManager(dependencyManager: VDependencyManager(parentManager: nil, configuration: configuration, dictionaryOfClassesByTemplateName: nil))
-        manager.allowCoachmarks = true
         return manager
     }
     
