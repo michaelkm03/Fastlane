@@ -67,10 +67,26 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         )
     }
     
+    // MARK: - Managing the activity indicator
+    
+    /// Whether or not the activity indicator above the chat messages is enabled.
+    private var activityIndicatorEnabled = false {
+        didSet {
+            collectionView.collectionViewLayout.invalidateLayout()
+        }
+    }
+    
     // MARK: - ForumEventReceiver
     
     var childEventReceivers: [ForumEventReceiver] {
         return [dataSource]
+    }
+    
+    func receive(event: ForumEvent) {
+        switch event {
+            case .setChatActivityIndicatorEnabled(let enabled): activityIndicatorEnabled = enabled
+            default: break
+        }
     }
     
     // MARK: - ForumEventSender
@@ -147,11 +163,15 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     func collectionView(collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, atIndexPath indexPath: NSIndexPath) {
         if let activityView = view as? VFooterActivityIndicatorView {
             activityView.activityIndicator.color = dependencyManager.activityIndicatorColor
-            activityView.setActivityIndicatorVisible(true, animated: false)
+            activityView.setActivityIndicatorVisible(activityIndicatorEnabled, animated: false)
         }
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        guard activityIndicatorEnabled else {
+            return CGSize.zero
+        }
+        
         var size = VFooterActivityIndicatorView.desiredSizeWithCollectionViewBounds(collectionView.bounds)
         
         if collectionView.numberOfItemsInSection(0) == 0 {
