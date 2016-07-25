@@ -47,4 +47,7 @@ public enum ForumEvent {
 
     /// Indicates the current count of chat users.
     case chatUserCount(ChatUserCount)
+    
+    /// Enables or disables optimistic posting for different forums
+    case setOptimisticPostingEnabled(Bool)
 }

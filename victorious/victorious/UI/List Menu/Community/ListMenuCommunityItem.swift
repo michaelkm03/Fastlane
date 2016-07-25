@@ -13,8 +13,10 @@ struct ListMenuCommunityItem {
     let streamAPIPath: APIPath
     
     init?(_ dependencyDictionary: [String: AnyObject]) {
-        guard let title = dependencyDictionary["name"] as? String,
-            let streamURL = dependencyDictionary["streamURL"] as? String else {
+        guard
+            let title = dependencyDictionary["title"] as? String,
+            let streamURL = dependencyDictionary["streamURL"] as? String
+        else {
                 return nil
         }
         self.title = title

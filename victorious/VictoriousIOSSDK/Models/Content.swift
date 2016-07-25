@@ -14,7 +14,6 @@ var ids: Set<Content.ID> = Set()
 /// Conformers are models that store information about piece of content in the app
 /// Consumers can directly use this type without caring what the concrete type is, persistent or not.
 public protocol ContentModel: PreviewImageContainer, DictionaryConvertible {
-    var createdAt: NSDate { get }
     var type: ContentType { get }
     var id: Content.ID? { get }
     var isLikedByCurrentUser: Bool { get }
@@ -23,6 +22,18 @@ public protocol ContentModel: PreviewImageContainer, DictionaryConvertible {
     var shareURL: NSURL? { get }
     var linkedURL: NSURL? { get }
     var author: UserModel { get }
+    
+    /// The time that the user created the content locally.
+    ///
+    /// This can be used to match locally-created content to content returned from the server. If content was created
+    /// by the same user and has the same `postedAt` date, then it is guaranteed to be the same content.
+    ///
+    /// Will be nil for chat messages.
+    ///
+    var postedAt: Timestamp? { get }
+    
+    /// The time that the content was created on the server.
+    var createdAt: Timestamp { get }
     
     /// Whether this content is only accessible for VIPs
     var isVIPOnly: Bool { get }
@@ -95,7 +106,8 @@ public class Content: ContentModel {
     public let hashtags: [Hashtag]
     public let shareURL: NSURL?
     public let linkedURL: NSURL?
-    public let createdAt: NSDate
+    public let createdAt: Timestamp
+    public let postedAt: Timestamp?
     public let previewImages: [ImageAssetModel]
     public let assets: [ContentMediaAssetModel]
     public let type: ContentType
@@ -127,11 +139,12 @@ public class Content: ContentModel {
         self.id = id
         self.status = json["status"].string
         self.shareURL = json["share_url"].URL
-        self.createdAt = NSDate(millisecondsSince1970: json["released_at"].doubleValue)
+        self.createdAt = Timestamp(apiString: json["released_at"].stringValue) ?? Timestamp()
+        self.postedAt = Timestamp(apiString: json["posted_at"].stringValue)
         self.hashtags = []
         self.type = type
         
-        if (type == .text) {
+        if type == .text {
             self.text = json[typeString]["data"].string
         }
         else {
@@ -157,15 +170,14 @@ public class Content: ContentModel {
         self.tracking = Tracking(json: json["tracking"])
     }
     
-    public init?(chatMessageJSON json: JSON, serverTime: NSDate) {
-        guard
-            let user = User(json: json["user"])
-        else {
+    public init?(chatMessageJSON json: JSON, serverTime: Timestamp) {
+        guard let user = User(json: json["user"]) else {
             return nil
         }
         
         author = user
         createdAt = serverTime
+        postedAt = nil
         text = json["text"].string
         assets = [ContentMediaAsset(forumJSON: json["asset"])].flatMap { $0 }
         
@@ -188,7 +200,8 @@ public class Content: ContentModel {
     
     public init(
         id: String? = nil,
-        createdAt: NSDate = NSDate(),
+        createdAt: Timestamp = Timestamp(),
+        postedAt: Timestamp = Timestamp(),
         type: ContentType = .text,
         text: String? = nil,
         assets: [ContentMediaAssetModel] = [],
@@ -196,6 +209,7 @@ public class Content: ContentModel {
         author: UserModel
     ) {
         self.id = id
+        self.postedAt = postedAt
         self.createdAt = createdAt
         self.type = type
         self.text = text

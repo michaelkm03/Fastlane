@@ -427,7 +427,7 @@
                 "level": 9,
                 "progress": 4
                 },
-                "email": "skytest1@gmail.com",
+                "username": "skytest1@gmail.com",
                 "access_level": "api_user",
                 "hub_role": null,
                 "max_video_duration": 15
@@ -594,7 +594,7 @@
                 "level": 9,
                 "progress": 4
                 },
-                "email": "skytest1@gmail.com",
+                "username": "skytest1@gmail.com",
                 "access_level": "api_user",
                 "hub_role": null,
                 "max_video_duration": 15
@@ -713,7 +713,7 @@
                 "level": 9,
                 "progress": 4
                 },
-                "email": "skytest1@gmail.com",
+                "username": "skytest1@gmail.com",
                 "access_level": "api_user",
                 "hub_role": null,
                 "max_video_duration": 15

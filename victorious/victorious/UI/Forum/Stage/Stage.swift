@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol Stage: class, ForumEventReceiver {
+protocol Stage: class, ForumEventReceiver, StageShrinkingAnimatorDelegate {
     weak var delegate: StageDelegate? { get set }
     
     var dependencyManager: VDependencyManager! { get set }

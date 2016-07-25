@@ -30,6 +30,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
     static let topLabelYSpacing = CGFloat(4.0)
     static let topLabelXInset = CGFloat(4.0)
     static let bubbleSpacing = CGFloat(6.0)
+    static let pendingContentAlpha = CGFloat(0.4)
     
     // MARK: - Reuse identifiers
     
@@ -78,7 +79,10 @@ class ChatFeedMessageCell: UICollectionViewCell {
         didSet {
             // Updating the content is expensive, so we try to bail if we're setting the same content as before.
             // However, chat message contents don't have IDs, so we can't do this if the ID is nil.
-            if chatFeedContent?.content.id == oldValue?.content.id && chatFeedContent?.content.id != nil {
+            let oldID = oldValue?.content.id
+            let newID = chatFeedContent?.content.id
+            
+            guard newID != oldID || newID == nil else {
                 return
             }
             
@@ -112,6 +116,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        contentView.alpha = chatFeedContent?.creationState?.alpha ?? 1.0
         ChatFeedMessageCell.layoutContent(for: self)
     }
     
@@ -145,7 +150,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
     
     private func populateData() {
         captionLabel.attributedText = content?.attributedText(using: dependencyManager)
-        usernameLabel.text = content?.author.name ?? ""
+        usernameLabel.text = content?.author.displayName ?? ""
         updateTimestamp()
         
         let shouldHideTopLabels = content?.wasCreatedByCurrentUser == true
@@ -162,6 +167,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
                 // Videos and images
                 let previewView = createContentPreviewViewIfNeeded()
                 ChatFeedMessageCell.layoutContent(for: self)
+                previewView.loadingSpinnerEnabled = true
                 previewView.content = content
             }
             previewView?.hidden = false
@@ -205,7 +211,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
         
         let bubbleView = ChatBubbleView()
         bubbleView.contentView.addSubview(previewView)
-        addSubview(bubbleView)
+        contentView.addSubview(bubbleView)
         previewBubbleView = bubbleView
         self.previewView = previewView
     }
@@ -265,7 +271,11 @@ class ChatFeedMessageCell: UICollectionViewCell {
     }
     
     static func previewSize(displaying content: ContentModel, inWidth width: CGFloat) -> CGSize? {
-        return content.mediaSize?.preferredSize(clampedToWidth: width - nonContentWidth)
+        guard content.type.hasMedia else {
+            return nil
+        }
+        
+        return content.mediaSize?.preferredSize(clampedToWidth: width - nonContentWidth) ?? CGSize(width: width / 2, height: width / 2)
     }
     
     private static var nonContentWidth: CGFloat {
@@ -275,7 +285,13 @@ class ChatFeedMessageCell: UICollectionViewCell {
 
 private extension ContentModel {
     var timeLabel: String {
-        return createdAt.stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds)
+        return NSDate(timestamp: createdAt).stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds)
+    }
+}
+
+private extension ContentCreationState {
+    var alpha: CGFloat {
+        return self == .failed ? 1.0 : ChatFeedMessageCell.pendingContentAlpha
     }
 }
 
@@ -285,7 +301,7 @@ private extension VDependencyManager {
     }
 
     var messageFont: UIFont {
-        return fontForKey("font.message")
+        return fontForKey("font.message") ?? UIFont.systemFontOfSize(16.0)
     }
 
     var backgroundColor: UIColor? {

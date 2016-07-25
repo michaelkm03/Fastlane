@@ -25,7 +25,6 @@ extension ForumViewController {
             toRunLoop: NSRunLoop.mainRunLoop(),
             withRunMode: NSRunLoopCommonModes
         )
-        debug_createMessages()
     }
     
     private func randomText() -> String {
@@ -36,10 +35,10 @@ extension ForumViewController {
     private func randPreviewImage() -> ImageAsset {
         let rnd = Int(arc4random() % UInt32(previewImageURLs.count))
         let string = previewImageURLs[rnd]
-        return ImageAsset(mediaMetaData: MediaMetaData(url: NSURL(string: string)!, size: CGSize(
+        return ImageAsset(url: NSURL(string: string)!, size: CGSize(
             width: Double(arc4random() % 100) + 20, //Add constant in case the random value is too small
             height: Double(arc4random() % 100) + 20
-        )))
+        ))
     }
     
     private func randName() -> String {
@@ -72,13 +71,13 @@ extension ForumViewController {
         }
         
         let content = Content(
-            createdAt: NSDate(),
+            createdAt: Timestamp(),
             text: (text == nil) ? nil : "\(totalCount) :: \(text!)",
             previewImages: [previewImage].flatMap { $0 },
             type: type, 
             author: User(
                 id: 1000 + Int(arc4random() % 9999),
-                name: randName(),
+                displayName: randName(),
                 previewImages: [randPreviewImage()]
             )
         )
@@ -108,7 +107,7 @@ extension ForumViewController {
             let parameters = ContentMediaAsset.RemoteAssetParameters(contentType: contentType, url: url, source: source)
             assets.append(ContentMediaAsset(initializationParameters: parameters)!)
             if contentType == .image {
-                previewAsset = ImageAsset(mediaMetaData: MediaMetaData(url: url, size: CGSizeMake(100, 100)))
+                previewAsset = ImageAsset(url: url, size: CGSizeMake(100, 100))
             }
         }
         
@@ -120,7 +119,7 @@ extension ForumViewController {
             previewImages: [previewAsset],
             author: User(
                 id: 1000 + Int(arc4random() % 9999),
-                name: randName(),
+                displayName: randName(),
                 previewImages: [randPreviewImage()]
             )
         )

@@ -16,7 +16,7 @@
 
 @property (nonatomic, strong) VStoredPassword *storedPassword;
 @property (nonatomic, strong) NSString *password;
-@property (nonatomic, strong) NSString *email;
+@property (nonatomic, strong) NSString *username;
 
 @end
 
@@ -30,7 +30,7 @@
     [self.storedPassword clearSavedPassword];
     
     self.password = @"password";
-    self.email = @"some@email.com";
+    self.username = @"some@email.com";
 }
 
 - (void)tearDown
@@ -41,30 +41,30 @@
 - (void)testKeychain
 {
     // Should be nothing saved at start of test
-    XCTAssertNil( [self.storedPassword passwordForEmail:self.email] );
+    XCTAssertNil( [self.storedPassword passwordForUsername:self.username] );
     
     // Add the password to the keychain
-    XCTAssert( [self.storedPassword savePassword:self.password forEmail:self.email] );
-    XCTAssertEqualObjects( [self.storedPassword passwordForEmail:self.email], self.password );
+    XCTAssert( [self.storedPassword savePassword:self.password forUsername:self.username] );
+    XCTAssertEqualObjects( [self.storedPassword passwordForUsername:self.username], self.password );
     
     // Update the password
     NSString *newPassword = @"password_2";
-    XCTAssert( [self.storedPassword savePassword:newPassword forEmail:self.email] );
-    XCTAssertEqualObjects( [self.storedPassword passwordForEmail:self.email], newPassword );
+    XCTAssert( [self.storedPassword savePassword:newPassword forUsername:self.username] );
+    XCTAssertEqualObjects( [self.storedPassword passwordForUsername:self.username], newPassword );
     
     // Delete the password
     XCTAssert( [self.storedPassword clearSavedPassword] );
-    XCTAssertNil( [self.storedPassword passwordForEmail:self.email] );
+    XCTAssertNil( [self.storedPassword passwordForUsername:self.username] );
 }
 
 - (void)testKeychainInvalidInput
 {
-    XCTAssertFalse( [self.storedPassword savePassword:@"" forEmail:self.email] );
-    XCTAssertFalse( [self.storedPassword savePassword:self.password forEmail:@""] );
-    XCTAssertFalse( [self.storedPassword savePassword:@"" forEmail:@""] );
+    XCTAssertFalse( [self.storedPassword savePassword:@"" forUsername:self.username] );
+    XCTAssertFalse( [self.storedPassword savePassword:self.password forUsername:@""] );
+    XCTAssertFalse( [self.storedPassword savePassword:@"" forUsername:@""] );
     
     // Should be nothing saved with bad input
-    XCTAssertNil( [self.storedPassword passwordForEmail:self.email] );
+    XCTAssertNil( [self.storedPassword passwordForUsername:self.username] );
 }
 
 @end

@@ -49,7 +49,7 @@
                        }]
         },
         "isCreator": false,
-        "email": "joe@example.com",
+        "username": "joe@example.com",
         "access_level": "api_owner",
         "hub_role": "2",
         "max_video_duration": 300,

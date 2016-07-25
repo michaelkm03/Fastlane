@@ -13,8 +13,8 @@ extension VUser: PersistenceParsable {
     func populate(fromSourceModel user: UserModel) {
         remoteId                    = user.id ?? remoteId
         v_completedProfile          = user.completedProfile ?? completedProfile
-        email                       = user.email ?? email
-        name                        = user.name ?? name
+        username                    = user.username ?? username
+        displayName                 = user.displayName ?? displayName
         location                    = user.location ?? location
         tagline                     = user.tagline ?? tagline
         isBlockedByMainUser         = user.isBlockedByCurrentUser ?? isBlockedByMainUser
@@ -29,17 +29,20 @@ extension VUser: PersistenceParsable {
         levelProgressPercentage     = user.fanLoyalty?.progress ?? levelProgressPercentage
         tier                        = user.fanLoyalty?.tier ?? tier
         achievementsUnlocked        = user.fanLoyalty?.achievementsUnlocked ?? achievementsUnlocked
-        v_avatarBadgeType           = user.avatarBadgeType.stringRepresentation
+        v_avatarBadgeType           = user.avatarBadgeType?.stringRepresentation ?? v_avatarBadgeType
         
         if let vipStatus = user.vipStatus {
             populateVIPStatus(fromSourceModel: vipStatus)
         }
         
         if !user.previewImages.isEmpty {
-            let newPreviewAssets: [VImageAsset] = user.previewImages.flatMap {
-                let imageAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject(["imageURL": $0.mediaMetaData.url.absoluteString])
-                imageAsset.populate(fromSourceModel: $0)
-                return imageAsset
+            let newPreviewAssets: [VImageAsset] = user.previewImages.flatMap { imageAsset in
+                guard let assetURL = imageAsset.url else {
+                    return nil
+                }
+                let persistentImageAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject(["imageURL": assetURL.absoluteString])
+                persistentImageAsset.populate(fromSourceModel: imageAsset)
+                return persistentImageAsset
             }
             self.v_addObjects( newPreviewAssets, to: "previewAssets" )
         }

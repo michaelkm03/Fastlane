@@ -52,8 +52,8 @@ class LoginRequestTests: XCTestCase {
             let response = try loginRequest.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(response.token, "a787304ffd2cfcbc67edf0f628a030abdcf1808d")
             XCTAssertEqual(response.user.id, 156)
-            XCTAssertEqual(response.user.name, "Joe")
-            XCTAssertEqual(response.user.email, "joe@example.com")
+            XCTAssertEqual(response.user.displayName, "Joe")
+            XCTAssertEqual(response.user.username, "joe@example.com")
         } catch {
             XCTFail("parseResponse is not supposed to throw")
         }

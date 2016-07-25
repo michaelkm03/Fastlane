@@ -17,8 +17,8 @@ class VUserTests: BasePersistentStoreTestCase {
             return
         }
         XCTAssertEqual(user.remoteId, 36179)
-        XCTAssertEqual(user.email, "tyt@creator.us")
-        XCTAssertEqual(user.name, "The Young Turks")
+        XCTAssertEqual(user.username, "tyt@creator.us")
+        XCTAssertEqual(user.displayName, "The Young Turks")
         XCTAssertEqual(user.isCreator, true)
         XCTAssertEqual(user.location, "Fargo, ND")
         XCTAssertEqual(user.tagline, "My coolest tagline")

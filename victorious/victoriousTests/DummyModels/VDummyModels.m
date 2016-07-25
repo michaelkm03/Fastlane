@@ -8,7 +8,6 @@
 
 #import "VDummyModels.h"
 #import "VVoteResult.h"
-#import "VTag.h"
 #import "victorious-Swift.h"
 
 static NSManagedObjectContext *context = nil;
@@ -78,7 +77,7 @@ NSString * const kMacroBallisticsCount = @"%%COUNT%%";
     for ( NSInteger i = 0; i < count; i++ )
     {
         VUser *user = (VUser *)[self objectWithEntityName:@"User" subclass:[VUser class]];
-        user.name = [NSString stringWithFormat:@"user_%lu", (unsigned long)i];
+        user.displayName = [NSString stringWithFormat:@"user_%lu", (unsigned long)i];
         user.remoteId = @(i);
         [models addObject:user];
     }
@@ -96,36 +95,6 @@ NSString * const kMacroBallisticsCount = @"%%COUNT%%";
         [models addObject:result];
     }
     return [NSArray arrayWithArray:models];
-}
-
-+ (NSArray *)createUserTags:(NSInteger)count
-{
-    NSMutableArray *models = [[NSMutableArray alloc] init];
-    for ( NSInteger i = 0; i < count; i++ )
-    {
-        NSString *displayString = [NSString stringWithFormat:@"user %lu", (unsigned long)i];
-        VTag *tag = [[VTag alloc] initWithAttributedDisplayString:[[NSMutableAttributedString alloc] initWithString:displayString]
-                                          databaseFormattedString:[NSString stringWithFormat:@"@{%lu:%@}", (unsigned long)i, displayString]
-                                           andTagStringAttributes:@{NSFontAttributeName : [UIFont fontWithName:@"helvetica" size:10.0],
-                                                                    NSForegroundColorAttributeName : [UIColor redColor]}];
-        [models addObject:tag];
-    }
-    return models;
-}
-
-+ (NSArray *)createHashtagTags:(NSInteger)count
-{
-    NSMutableArray *models = [[NSMutableArray alloc] init];
-    for ( NSInteger i = 0; i < count; i++ )
-    {
-        NSString *displayString = [NSString stringWithFormat:@"#hashtag_%lu", (unsigned long)i];
-        VTag *tag = [[VTag alloc] initWithAttributedDisplayString:[[NSMutableAttributedString alloc] initWithString:displayString]
-                                          databaseFormattedString:displayString
-                                           andTagStringAttributes:@{NSFontAttributeName : [UIFont fontWithName:@"helvetica" size:10.0],
-                                                                    NSForegroundColorAttributeName : [UIColor redColor]}];
-        [models addObject:tag];
-    }
-    return models;
 }
 
 @end

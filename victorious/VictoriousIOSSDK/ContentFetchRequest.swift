@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct ContentFetchRequest : TemplateDrivenRequestType {
+public struct ContentFetchRequest: TemplateDrivenRequestType {
     
     public private(set) var urlString: String
     
@@ -26,7 +26,6 @@ public struct ContentFetchRequest : TemplateDrivenRequestType {
     }
 
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> Content {
-        
         let json = responseJSON["payload"]
         guard let content = Content(json: json) else {
             throw ResponseParsingError()

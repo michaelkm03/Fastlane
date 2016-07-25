@@ -40,14 +40,6 @@ import Foundation
         }
     }
     
-    //   MARK: - Show Media
-    
-    func showMediaContent(mediaUrl: NSURL, mediaLinkType linkType: VCommentMediaType) {
-        ShowMediaContentOperation(originViewController: originViewController,
-                                mediaUrl: mediaUrl,
-                                mediaLinkType: linkType).queue()
-    }
-    
     // MARK: - Remix
     
     func showRemixWithSequence(sequence: VSequence) {
@@ -79,7 +71,6 @@ import Foundation
     // MARK: - Comments
     
     func showCommentsWithSequence(sequence: VSequence) {
-        ShowCommentsOperation(originViewController: originViewController, dependencyManager: dependencyManager, sequence: sequence).queue()
     }
     
     // MARK: - Flag
@@ -334,7 +325,7 @@ import Foundation
     }
     
     private func userActionItem(forSequence sequence: VSequence) -> VActionItem {
-        let name = sequence.user.name ?? ""
+        let name = sequence.user.displayName ?? ""
         let userItem = VActionItem.userActionItemUserWithTitle(name, user: sequence.user, detailText: "")
         userItem.selectionHandler = { item in
             self.originViewController.dismissViewControllerAnimated(true) {

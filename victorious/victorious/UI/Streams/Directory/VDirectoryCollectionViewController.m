@@ -9,7 +9,6 @@
 #import "VDirectoryCollectionViewController.h"
 #import "NSString+VParseHelp.h"
 #import "VAbstractMarqueeController.h"
-#import "VUserProfileViewController.h"
 #import "VDirectoryCellFactory.h"
 #import "VDirectoryCellUpdateableFactory.h"
 #import "VStreamItem.h"

@@ -65,10 +65,11 @@
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="comments" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="Content" representedClassName=".VContent" syncable="YES">
-        <attribute name="v_createdAt" attributeType="Date" syncable="YES"/>
+        <attribute name="v_createdAt" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="v_isLikedByCurrentUser" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="v_isVIPOnly" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="v_linkedURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="v_postedAt" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="v_remoteID" attributeType="String" syncable="YES"/>
         <attribute name="v_shareURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="v_status" optional="YES" attributeType="String" syncable="YES"/>
@@ -306,7 +307,7 @@
     <entity name="User" representedClassName="VUser" syncable="YES">
         <attribute name="accountIdentifier" optional="YES" transient="YES" attributeType="String" syncable="YES"/>
         <attribute name="achievementsUnlocked" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="displayName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isBlockedByMainUser" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isCreator" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isDirectMessagingDisabled" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
@@ -319,13 +320,13 @@
         <attribute name="location" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="loginType" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="maxUploadDuration" attributeType="Integer 32" defaultValueString="15" syncable="YES"/>
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="numberOfFollowers" optional="YES" attributeType="Integer 64" syncable="YES"/>
         <attribute name="numberOfFollowing" optional="YES" attributeType="Integer 64" syncable="YES"/>
         <attribute name="remoteId" attributeType="Integer 64" indexed="YES" syncable="YES"/>
         <attribute name="tagline" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="token" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="v_avatarBadgeType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="v_completedProfile" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="v_likesGiven" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
@@ -364,7 +365,7 @@
         <element name="AnswerAction" positionX="0" positionY="0" width="128" height="75"/>
         <element name="Asset" positionX="0" positionY="0" width="128" height="300"/>
         <element name="Comment" positionX="0" positionY="0" width="128" height="375"/>
-        <element name="Content" positionX="81" positionY="153" width="128" height="240"/>
+        <element name="Content" positionX="81" positionY="153" width="128" height="255"/>
         <element name="ContentMediaAsset" positionX="108" positionY="180" width="128" height="120"/>
         <element name="Conversation" positionX="0" positionY="0" width="128" height="165"/>
         <element name="Experiment" positionX="0" positionY="0" width="128" height="150"/>
@@ -389,7 +390,7 @@
         <element name="StreamItem" positionX="0" positionY="0" width="128" height="225"/>
         <element name="StreamItemPointer" positionX="0" positionY="0" width="128" height="105"/>
         <element name="Tracking" positionX="0" positionY="0" width="128" height="270"/>
-        <element name="User" positionX="0" positionY="0" width="128" height="705"/>
+        <element name="User" positionX="0" positionY="0" width="128" height="690"/>
         <element name="UserShelf" positionX="0" positionY="0" width="128" height="90"/>
         <element name="VoteResult" positionX="0" positionY="0" width="128" height="90"/>
     </elements>
