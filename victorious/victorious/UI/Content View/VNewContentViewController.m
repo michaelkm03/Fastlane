@@ -13,10 +13,6 @@
 #import "UIImage+ImageCreation.h"
 #import "UIImageView+Blurring.h"
 #import "UIView+AutoLayout.h"
-#import "VAbstractCommentHighlighter.h"
-#import "VCollectionViewCommentHighlighter.h"
-#import "VCoachmarkDisplayer.h"
-#import "VCoachmarkManager.h"
 #import "VCollectionViewStreamFocusHelper.h"
 #import "VContentBackgroundSupplementaryView.h"
 #import "VContentCell.h"
@@ -56,7 +52,7 @@
 
 static NSString * const kPollBallotIconKey = @"orIcon";
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, VKeyboardInputAccessoryViewDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VExperienceEnhancerResponder, VUserTaggingTextStorageDelegate, VSequencePreviewViewDetailDelegate, VContentPollBallotCellDelegate, AdLifecycleDelegate, VPaginatedDataSourceDelegate, VImageAnimationOperationDelegate, VSequenceActionControllerDelegate, VCoachmarkDisplayer>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, VExperienceEnhancerControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, NSUserActivityDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VExperienceEnhancerResponder, VSequencePreviewViewDetailDelegate, VContentPollBallotCellDelegate, AdLifecycleDelegate, VPaginatedDataSourceDelegate, VImageAnimationOperationDelegate, VSequenceActionControllerDelegate>
 
 @property (nonatomic, assign) BOOL hasAutoPlayed;
 @property (nonatomic, assign) BOOL hasBeenPresented;
@@ -102,9 +98,9 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 - (void)sequenceActionControllerDidDeleteSequence:(VSequence *)sequence
 {
     [self dismissViewControllerAnimated:true completion:^
-    {
-        [self.delegate sequenceActionControllerDidDeleteSequence:sequence];
-    }];
+     {
+         [self.delegate sequenceActionControllerDidDeleteSequence:sequence];
+     }];
 }
 
 - (void)sequenceActionControllerDidFlagSequence:(VSequence *)sequence
@@ -222,248 +218,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 
 - (void)handleRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
-    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation))
-    {
-        [self.textEntryView stopEditing];
-        [self.contentCollectionView resignFirstResponder];
-        self.offsetBeforeLandscape = self.contentCollectionView.contentOffset;
-        
-        CGSize cellSize = [VExperienceEnhancerBarCell desiredSizeWithCollectionViewBounds:self.contentCollectionView.bounds
-                                                                           dependencyManager:self.dependencyManager];
-        CGPoint fixedLandscapeOffset = CGPointMake( 0.0f, cellSize.height );
-        self.contentCollectionView.contentOffset = fixedLandscapeOffset;
-        self.contentCollectionView.scrollEnabled = NO;
-        
-        [self setAccessoryButtonsHidden:YES];
-    }
-    else
-    {
-        self.contentCollectionView.contentOffset = self.offsetBeforeLandscape;
-        [self.contentCollectionView becomeFirstResponder];
-        [self setAccessoryButtonsHidden:NO];
-        self.contentCollectionView.scrollEnabled = YES;
-    }
-    
-    [self.contentCell handleRotationToInterfaceOrientation:toInterfaceOrientation];
-}
-
-#pragma mark View Lifecycle
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    self.closeButton.accessibilityIdentifier = VAutomationIdentifierContentViewCloseButton;
-    
-    self.commentHighlighter = [[VCollectionViewCommentHighlighter alloc] initWithCollectionView:self.contentCollectionView];
-    
-    // Hack to remove margins stuff should probably refactor :(
-    if ([self.view respondsToSelector:@selector(setLayoutMargins:)])
-    {
-        self.view.layoutMargins = UIEdgeInsetsZero;
-    }
-    else
-    {
-        self.leadingCollectionViewToContainer.constant = 0.0f;
-        self.trailingCollectionViewToContainer.constant = 0.0f;
-    }
-    
-    self.focusHelper = [[VCollectionViewStreamFocusHelper alloc] initWithCollectionView:self.contentCollectionView];
-    
-    self.contentCollectionView.collectionViewLayout = [[VShrinkingContentLayout alloc] init];
-    self.contentCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.contentCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    
-    if (self.viewModel.sequence.permissions.canComment)
-    {
-        NSDictionary *commentBarConfig = [self.dependencyManager templateValueOfType:[NSDictionary class] forKey:@"commentBar"];
-        VDependencyManager *commentBarDependencyManager = [[VDependencyManager alloc] initWithParentManager:self.dependencyManager configuration:commentBarConfig dictionaryOfClassesByTemplateName:nil];
-        VKeyboardInputAccessoryView *inputAccessoryView = [VKeyboardInputAccessoryView defaultInputAccessoryViewWithDependencyManager:commentBarDependencyManager];
-        inputAccessoryView.translatesAutoresizingMaskIntoConstraints = NO;
-        inputAccessoryView.delegate = self;
-        inputAccessoryView.textStorageDelegate = self;
-        inputAccessoryView.accessibilityIdentifier = VAutomationIdentifierContentViewCommentBar;
-        inputAccessoryView.sequencePermissions = self.viewModel.sequence.permissions;
-        
-        self.textEntryView = inputAccessoryView;
-        self.contentCollectionView.accessoryView = self.textEntryView;
-    }
-    
-    if ([AgeGate isAnonymousUser])
-    {
-        self.textEntryView.hidden = YES;
-    }
-    
-    self.contentCollectionView.decelerationRate = UIScrollViewDecelerationRateFast;
-    
-    // Register cells
-    [self.contentCollectionView registerClass:[VContentCell class]
-                   forCellWithReuseIdentifier:[VContentCell suggestedReuseIdentifier]];
-    [self.contentCollectionView registerNib:[VExperienceEnhancerBarCell nibForCell]
-                 forCellWithReuseIdentifier:[VExperienceEnhancerBarCell suggestedReuseIdentifier]];
-    [self.contentCollectionView registerNib:[VContentPollQuestionCell nibForCell]
-                 forCellWithReuseIdentifier:[VContentPollQuestionCell suggestedReuseIdentifier]];
-    [self.contentCollectionView registerNib:[VContentPollBallotCell nibForCell]
-                 forCellWithReuseIdentifier:[VContentPollBallotCell suggestedReuseIdentifier]];
-    [self.contentCollectionView registerNib:[VSectionHandleReusableView nibForCell]
-                 forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-                        withReuseIdentifier:[VSectionHandleReusableView suggestedReuseIdentifier]];
-    [self.contentCollectionView.collectionViewLayout registerNib:[VContentBackgroundSupplementaryView nibForCell]
-                                         forDecorationViewOfKind:VShrinkingContentLayoutContentBackgroundView];
-    
-    self.viewModel.experienceEnhancerController.delegate = self;
-    self.viewModel.commentsDataSource.delegate = self;
-    
-    self.commentCellReuseIdentifiers = [NSMutableArray new];
-    
-    [self.viewModel loadNetworkData];
-    
-    self.view.backgroundColor = [UIColor blackColor];
-    
-    self.videoPlayerDidFinishPlayingOnce = NO;
-    
-    self.experienceEnhancerCompletionQueue = [NSOperationQueue new];
-    
-    self.experienceEnhancerCompletionQueue.maxConcurrentOperationCount = [[UIDevice currentDevice] v_numberOfConcurrentAnimationsSupported];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    [self.dependencyManager trackViewWillAppear:self];
-    
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
-    
-    [self.contentCollectionView becomeFirstResponder];
-    
-    if (self.viewModel.sequence.isImage)
-    {
-        [self.blurredBackgroundImageView applyTintAndBlurToImageWithURL:self.viewModel.imageURLRequest.URL
-                                                          withTintColor:nil];
-    }
-    else
-    {
-        [self.blurredBackgroundImageView setBlurredImageWithClearImage:self.placeholderImage
-                                                      placeholderImage:nil
-                                                             tintColor:nil];
-    }
-    
-    if ( self.navigationController != nil )
-    {
-        [self.dependencyManager applyStyleToNavigationBar:self.navigationController.navigationBar];
-        if ( !self.navigationController.navigationBarHidden )
-        {
-            [self.navigationController setNavigationBarHidden:YES animated:YES];
-        }
-    }
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-    // Calculate content inset on next run loop, otherwise we get a wildly inaccurate frame for our input accessory view
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^
-    {
-        [self updateInsetsForKeyboardBarState];
-    });
-    
-    NSString *contextType = [self trackingValueForContentType] ?: @"";
-    [[VTrackingManager sharedInstance] setValue:contextType forSessionParameterWithKey:VTrackingKeyContentType];
-    [[VTrackingManager sharedInstance] setValue:VTrackingValueContentView forSessionParameterWithKey:VTrackingKeyContext];
-    
-    
-#if HANDOFFENABLED
-    if ((self.viewModel.sequence.remoteId != nil) && (self.viewModel.shareURL != nil))
-    {
-        NSString *handoffIdentifier = [NSString stringWithFormat:@"com.victorious.handoff.%@", self.viewModel.sequence.remoteId];
-        self.handoffObject = [[NSUserActivity alloc] initWithActivityType:handoffIdentifier];
-        self.handoffObject.webpageURL = self.viewModel.shareURL;
-        self.handoffObject.delegate = self;
-        [self.handoffObject becomeCurrent];
-    }
-#endif
-    
-    if ( !self.hasBeenPresented )
-    {
-        self.hasBeenPresented = YES;
-        [self trackViewDidStart];
-    }
-    
-    if ( self.isVideoContent && self.videoPlayerWasPlayingOnViewWillDisappear && !self.isBeingPresented )
-    {
-        [self.videoPlayer play];
-    }
-    
-    [self.contentCollectionView flashScrollIndicators];
-    
-    // Update cell focus
-    [self.focusHelper updateFocus];
-    
-    // By this point the collectionView should have already queried its dataSource, thus it is safe to calculate
-    // its catchPoint and lockPoint.
-    VShrinkingContentLayout *layout = (VShrinkingContentLayout *)self.contentCollectionView.collectionViewLayout;
-    [layout calculateCatchAndLockPoints];
-    
-    self.isTransitionComplete = YES;
-    [UIViewController attemptRotationToDeviceOrientation];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    //Cancels all animations
-    [self.experienceEnhancerCompletionQueue cancelAllOperations];
-    
-    [self.dependencyManager trackViewWillDisappear:self];
-        
-    if (self.isVideoContent && self.videoPlayer != nil)
-    {
-        self.videoPlayerWasPlayingOnViewWillDisappear = [self.videoPlayer isPlaying];
-        [self.videoPlayer pause];
-        if ( self.isBeingDismissed )
-        {
-            [self.videoPlayer reset];
-        }
-        
-        if ( !self.videoPlayerDidFinishPlayingOnce )
-        {
-            if ( self.viewModel.trackingData == nil )
-            {
-                VLog( @"Cannot track events without a valid `trackingData` on sequence: %@", self.viewModel.sequence.remoteId );
-                return;
-            }
-            NSDictionary *params = @{ VTrackingKeyUrls : self.viewModel.trackingData.viewStop ?: @[],
-                                      VTrackingKeyStreamId : self.viewModel.streamId,
-                                      VTrackingKeyTimeCurrent : @( self.videoPlayer.currentTimeMilliseconds ) };
-            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidStop parameters:params];
-        }
-    }
-
-    [[VTrackingManager sharedInstance] clearValueForSessionParameterWithKey:VTrackingKeyContentType];
-    
-    if ( self.isBeingDismissed )
-    {
-        [[VTrackingManager sharedInstance] clearValueForSessionParameterWithKey:VTrackingKeyContext];
-    }
-    
-#if HANDOFFENABLED
-    self.handoffObject.delegate = nil;
-    [self.handoffObject invalidate];
-#endif
-    
-    // We don't care about these notifications anymore but we still care about new user loggedin
-    [self.contentCollectionView resignFirstResponder];
-    
-    [self.commentHighlighter stopAnimations];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    
-    // Stop all video comment cells
-    [self.focusHelper endFocusOnAllCells];
 }
 
 - (void)presentViewController:(UIViewController *)viewControllerToPresent
@@ -638,7 +392,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         
         CGRect animationBounds = self.contentCell.bounds;
         CGPoint convertedCenterForAnimation = [self.experienceEnhancerCell.experienceEnhancerBar convertPoint:position toView:self.view];
-
+        
         animationImageView.image = enhancer.voteType.iconImage;
         animationImageView.contentMode = UIViewContentModeScaleAspectFill;
         
@@ -659,7 +413,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             
             animationImageView.frame = animationFrameSize;
             animationImageView.center = convertedCenterForAnimation;
-
+            
             
             dispatch_async(dispatch_get_main_queue(), ^
                            {
@@ -855,7 +609,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 {
     NSDictionary *params = @{ VTrackingKeyProductIdentifier : voteType.productIdentifier ?: @"" };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectLockedVoteType parameters:params];
-
+    
     VPurchaseViewController *viewController = [VPurchaseViewController newWithDependencyManager:self.dependencyManager];
     viewController.voteType = voteType;
     
@@ -888,12 +642,12 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (void)answerASelected
 {
     [self.viewModel answerPoll:VPollAnswerA completion:^(NSError *_Nullable error)
-    {
-        if ( error == nil )
-        {
-            [self didUpdatePoll];
-        }
-    }];
+     {
+         if ( error == nil )
+         {
+             [self didUpdatePoll];
+         }
+     }];
 }
 
 - (void)answerBSelected
