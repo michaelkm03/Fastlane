@@ -74,7 +74,7 @@ func ==(lhs: DeeplinkDestination, rhs: DeeplinkDestination) -> Bool {
         case (let .profile(id1), let .profile(id2)): return id1 == id2
         case (let .closeUp(contentWrapper1), let .closeUp(contentWrapper2)): return contentWrapper1 == contentWrapper2
         case (.vipForum, .vipForum): return true
-        case (let .externalURL(url1, _), let .externalURL(url2, _)): return url1 == url2
+        case (let .externalURL(url1, visible1), let .externalURL(url2, visible2)): return url1 == url2 && visible1 == visible2
         default: return false
     }
 }
