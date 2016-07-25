@@ -35,7 +35,6 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         self.hasError = hasError
         updateTrackingParameters()
         dataSource.setContent(content, withError: hasError)
-        collectionView.reloadSections(NSIndexSet(index: 0))
     }
     
     private let refreshControl = UIRefreshControl()
@@ -177,9 +176,13 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         collectionViewLayout: UICollectionViewLayout,
         referenceSizeForHeaderInSection section: Int) -> CGSize {
         
-        guard let header = header else {
+        guard
+            section == 0,
+            let header = header
+        else {
             return CGSizeZero
         }
+        
         let size = header.sizeForHeader(
             dependencyManager,
             maxHeight: CGRectGetHeight(collectionView.bounds),
@@ -223,6 +226,10 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     func collectionView(collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         referenceSizeForFooterInSection section: Int) -> CGSize {
+        guard section == 1 else {
+            return CGSizeZero
+        }
+        
         return dataSource.isLoading ? VFooterActivityIndicatorView.desiredSizeWithCollectionViewBounds(collectionView.bounds) : CGSizeZero
     }
 

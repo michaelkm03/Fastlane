@@ -10,6 +10,16 @@ import UIKit
 
 /// A view controller that displays the contents of a user's profile.
 class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderDelegate, AccessoryScreenContainer, VAccessoryNavigationSource {
+    /// Private struct within NewProfileViewController for comparison. Since we use Core Data, 
+    /// the user is modified beneath us and every time we call setUser(...), the fields will be the same as oldValue
+    private struct UserDetails {
+        let id: Int
+        let displayName: String?
+        let likesGiven: Int?
+        let likesReceived: Int?
+        let level: String?
+    }
+    
     // MARK: - Constants
     
     static let userAppearanceKey = "userAppearance"
@@ -35,6 +45,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
             return gridStreamController.content
         }
     }
+    private var comparableUser: UserDetails?
     
     private lazy var overflowButton: UIBarButtonItem = {
         return UIBarButtonItem(
@@ -290,6 +301,26 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
             return
         }
         
+        let newComparableUser = UserDetails(
+            id: user.id,
+            displayName: user.displayName,
+            likesGiven: user.likesGiven,
+            likesReceived: user.likesReceived,
+            level: user.fanLoyalty?.tier
+        )
+        
+        guard
+            newComparableUser.id != comparableUser?.id
+            || newComparableUser.displayName != comparableUser?.displayName
+            || newComparableUser.likesGiven != comparableUser?.likesGiven
+            || newComparableUser.likesReceived != comparableUser?.likesReceived
+            || newComparableUser.level != comparableUser?.level
+        else {
+            return
+        }
+        
+        comparableUser = newComparableUser
+        
         gridStreamController.setContent(user, withError: false)
         
         let appearanceKey = user.isCreator?.boolValue ?? false ? VNewProfileViewController.creatorAppearanceKey : VNewProfileViewController.userAppearanceKey
@@ -330,7 +361,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
             return
         }
         
-        userInfoOperation.queue { [weak self] results, error, cancelled in
+        userInfoOperation.queue { [weak self] _ in
             guard let dependencyManager = self?.dependencyManager else {
                 return
             }
