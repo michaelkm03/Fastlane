@@ -28,7 +28,6 @@ struct Router {
     
     func navigate(to destination: DeeplinkDestination?) {
         guard let destination = destination else {
-            showError()
             return
         }
         
@@ -72,12 +71,6 @@ struct Router {
         // Future: We currently have no way to hide address bar. This will be handled when we implement close up web view.
         let safariViewController = SFSafariViewController(URL: url)
         originViewController?.presentViewController(safariViewController, animated: true, completion: nil)
-    }
-    
-    private func showError() {
-        let title = NSLocalizedString("Missing Content", comment: "The title of the alert saying we can't find a piece of content")
-        let message = NSLocalizedString("Missing Content Message", comment: "A deep linked content has a wrong destination URL that we can't navigate to")
-        originViewController?.v_showAlert(title: title, message: message)
     }
 }
 
