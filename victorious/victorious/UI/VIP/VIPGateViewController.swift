@@ -41,7 +41,7 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     @IBOutlet private var labelWidthConstraint: NSLayoutConstraint!
     @IBOutlet private var scrollViewInsetConstraints: [NSLayoutConstraint]!
     
-    lazy var vipSubscriptionHelper: VIPSubscriptionHelper? = {
+    private lazy var vipSubscriptionHelper: VIPSubscriptionHelper? = {
         guard let subscriptionFetchURL = self.dependencyManager.subscriptionFetchURL else {
             return nil
         }

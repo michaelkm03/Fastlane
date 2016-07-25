@@ -9,14 +9,14 @@
 import Foundation
 
 class ProductFetchOperation: BackgroundOperation {
-    let productIdentifiers: [String]
+    let productIdentifiers: Set<String>
     
-    var products: [VProduct]?
+    private(set) var products: [VProduct]?
     
-    var purchaseManager: VPurchaseManagerType = VPurchaseManager.sharedInstance()
+    private var purchaseManager: VPurchaseManagerType = VPurchaseManager.sharedInstance()
     
     init(productIdentifiers: [String]) {
-        self.productIdentifiers = productIdentifiers
+        self.productIdentifiers = Set(productIdentifiers.map { $0 })
     }
     
     override func start() {
@@ -28,13 +28,10 @@ class ProductFetchOperation: BackgroundOperation {
         
         beganExecuting()
         
-        dispatch_async(dispatch_get_main_queue()) {
-            self.fetchProducts()
-        }
+        fetchProducts()
     }
     
     func fetchProducts() {
-        let productIdentifiers = Set(self.productIdentifiers.map { $0 })
         let success = { (fetchedProducts: Set<NSObject>?) in
             defer {
                 self.finishedExecuting()

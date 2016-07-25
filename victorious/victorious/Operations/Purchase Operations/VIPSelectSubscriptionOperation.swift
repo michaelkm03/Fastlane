@@ -15,7 +15,7 @@ class VIPSelectSubscriptionOperation: MainQueueOperation, UIAlertViewDelegate {
     
     let willShowPrompt: Bool
     
-    var selectedProduct: VProduct?
+    private(set) var selectedProduct: VProduct?
     
     init(products: [VProduct], originViewController: UIViewController) {
         self.products = products
