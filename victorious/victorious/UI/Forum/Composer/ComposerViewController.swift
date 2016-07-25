@@ -180,6 +180,9 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
         else {
             inputViewToBottomConstraint.constant = visible ? 0.0 : -totalComposerHeight
+            if !visible {
+                textView.resignFirstResponder()
+            }
             composerIsVisible = visible
             delegate?.composer(self, didUpdateContentHeight: totalComposerHeight)
         }
