@@ -10,7 +10,6 @@
 #import "VForceUpgradeViewController.h"
 #import "VDependencyManager+VDefaultTemplate.h"
 #import "VDependencyManager+NavigationBar.h"
-#import "VConversationListViewController.h"
 #import "VLoadingViewController.h"
 #import "VRootViewController.h"
 #import "VSessionTimer.h"
@@ -400,10 +399,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
         {
             [self openURL:deepLink];
         }
-    }
-    else if ( [deepLink.host isEqualToString:VConversationListViewControllerDeeplinkHostComponent] )
-    {
-        [[NSNotificationCenter defaultCenter] postNotificationName:VConversationListViewControllerInboxPushReceivedNotification object:self];
     }
 }
 

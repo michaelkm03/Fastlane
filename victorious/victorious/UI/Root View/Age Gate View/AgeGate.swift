@@ -79,10 +79,6 @@ import Foundation
         return items.filter() { $0.title == NSLocalizedString("Report/Flag", comment: "") || $0.type != VActionItemType.Default }
     }
     
-    static func filterCommentCellUtilities(utilities: [VUtilityButtonConfig]) -> [VUtilityButtonConfig] {
-        return utilities.filter() { $0.type == .Flag }
-    }
-    
     static func isAccessoryItemAllowed(accessoryItem: VNavigationMenuItem) -> Bool {
         let accessoryItemBlackList = [
             VDependencyManagerAccessoryItemMenu,
