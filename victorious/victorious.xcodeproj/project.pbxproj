@@ -680,6 +680,7 @@
 		67D3E0511CECEE70008F9398 /* ShowTutorialsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D3E0501CECEE70008F9398 /* ShowTutorialsOperation.swift */; };
 		67D3E0521CED4822008F9398 /* TestTrackingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6232D46F1C86539E00B1D9B8 /* TestTrackingManager.swift */; };
 		67D9BFDC1BFAA99B002B1F17 /* FollowCountRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67D9BFDB1BFAA99B002B1F17 /* FollowCountRequestTests.swift */; };
+		67DDA81F1D46CA2500C55494 /* NSURL+CustomScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67DDA81E1D46CA2500C55494 /* NSURL+CustomScheme.swift */; };
 		67F2314D1CBC8A9F006BDBA5 /* ListMenuHashtagDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67F2314C1CBC8A9F006BDBA5 /* ListMenuHashtagDataSource.swift */; };
 		67F231531CBD6134006BDBA5 /* ListMenuViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 67F231521CBD6134006BDBA5 /* ListMenuViewController.storyboard */; };
 		67F231551CBD6178006BDBA5 /* ListMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67F231541CBD6178006BDBA5 /* ListMenuViewController.swift */; };
@@ -931,7 +932,6 @@
 		A721E9441B572454000B7901 /* NSString+VStringWithData.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8C91B572453000B7901 /* NSString+VStringWithData.m */; };
 		A721E9451B572454000B7901 /* NSURL+MediaType.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8CB1B572453000B7901 /* NSURL+MediaType.m */; };
 		A721E9461B572454000B7901 /* NSURL+VCustomScheme.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8CD1B572453000B7901 /* NSURL+VCustomScheme.m */; };
-		A721E9471B572454000B7901 /* NSURL+VPathHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8CF1B572453000B7901 /* NSURL+VPathHelper.m */; };
 		A721E9481B572454000B7901 /* UIActivityViewController+VStatusBarHandling.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8D11B572453000B7901 /* UIActivityViewController+VStatusBarHandling.m */; };
 		A721E9491B572454000B7901 /* UIAlertController+VSimpleAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8D31B572453000B7901 /* UIAlertController+VSimpleAlert.m */; };
 		A721E94A1B572454000B7901 /* UICollectionView+Convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8D51B572453000B7901 /* UICollectionView+Convenience.m */; };
@@ -2962,6 +2962,7 @@
 		67D3E0501CECEE70008F9398 /* ShowTutorialsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowTutorialsOperation.swift; sourceTree = "<group>"; };
 		67D9BFD31BFAA347002B1F17 /* FollowCountRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowCountRequest.swift; sourceTree = "<group>"; };
 		67D9BFDB1BFAA99B002B1F17 /* FollowCountRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowCountRequestTests.swift; sourceTree = "<group>"; };
+		67DDA81E1D46CA2500C55494 /* NSURL+CustomScheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSURL+CustomScheme.swift"; sourceTree = "<group>"; };
 		67F2314C1CBC8A9F006BDBA5 /* ListMenuHashtagDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = ListMenuHashtagDataSource.swift; path = "List Menu/Trending Hashtags/ListMenuHashtagDataSource.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		67F231521CBD6134006BDBA5 /* ListMenuViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = ListMenuViewController.storyboard; path = "List Menu/ListMenuViewController.storyboard"; sourceTree = "<group>"; };
 		67F231541CBD6178006BDBA5 /* ListMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListMenuViewController.swift; path = "List Menu/ListMenuViewController.swift"; sourceTree = "<group>"; };
@@ -3311,8 +3312,6 @@
 		A721E8CB1B572453000B7901 /* NSURL+MediaType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+MediaType.m"; sourceTree = "<group>"; };
 		A721E8CC1B572453000B7901 /* NSURL+VCustomScheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+VCustomScheme.h"; sourceTree = "<group>"; };
 		A721E8CD1B572453000B7901 /* NSURL+VCustomScheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+VCustomScheme.m"; sourceTree = "<group>"; };
-		A721E8CE1B572453000B7901 /* NSURL+VPathHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+VPathHelper.h"; sourceTree = "<group>"; };
-		A721E8CF1B572453000B7901 /* NSURL+VPathHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+VPathHelper.m"; sourceTree = "<group>"; };
 		A721E8D01B572453000B7901 /* UIActivityViewController+VStatusBarHandling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActivityViewController+VStatusBarHandling.h"; sourceTree = "<group>"; };
 		A721E8D11B572453000B7901 /* UIActivityViewController+VStatusBarHandling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIActivityViewController+VStatusBarHandling.m"; sourceTree = "<group>"; };
 		A721E8D21B572453000B7901 /* UIAlertController+VSimpleAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertController+VSimpleAlert.h"; sourceTree = "<group>"; };
@@ -7291,8 +7290,7 @@
 				F00DEB9F1CC1940F00C5C9EA /* NSURL+PreviewImage.swift */,
 				A721E8CC1B572453000B7901 /* NSURL+VCustomScheme.h */,
 				A721E8CD1B572453000B7901 /* NSURL+VCustomScheme.m */,
-				A721E8CE1B572453000B7901 /* NSURL+VPathHelper.h */,
-				A721E8CF1B572453000B7901 /* NSURL+VPathHelper.m */,
+				67DDA81E1D46CA2500C55494 /* NSURL+CustomScheme.swift */,
 				A6B9FD0D1B60630900166BE8 /* NSURL+VTemporaryFiles.h */,
 				A6B9FD0E1B60630900166BE8 /* NSURL+VTemporaryFiles.m */,
 				C3A4C5B11BCC6455000B745B /* StatusBarUtils.swift */,
@@ -12089,6 +12087,7 @@
 				F00BBABF1CC995E800CBDB94 /* UIControl+NavigationBarEmbedding.swift in Sources */,
 				BE799B8F19C8A91C0023CE88 /* VInteraction.m in Sources */,
 				BFE31A821CD2969200585155 /* CloseUpView.swift in Sources */,
+				67DDA81F1D46CA2500C55494 /* NSURL+CustomScheme.swift in Sources */,
 				A7D69C721C0E87AB00B462C3 /* VNewContentViewController.m in Sources */,
 				D8D8958919E88C2100632663 /* VExperienceEnhancerBarCell.m in Sources */,
 				6780BD621D248392003F8141 /* DeeplinkDestination.swift in Sources */,
@@ -12514,7 +12513,6 @@
 				F0C83A5C1B16214C00A6EC1A /* VStreamPreviewView.m in Sources */,
 				A7E8CF301C90B9C900D126BF /* TemplateProductsDataSource.swift in Sources */,
 				A7F0C86A1CB2E51A0007178A /* SimulatedPurchaseManager.swift in Sources */,
-				A721E9471B572454000B7901 /* NSURL+VPathHelper.m in Sources */,
 				675A9AFC1BC372DE009CE633 /* FirstInstallManager.swift in Sources */,
 				67F231571CBD69CD006BDBA5 /* ListMenuCollectionViewDataSource.swift in Sources */,
 				C30AA4E91B0595AA0010CEFE /* VRoundedImageView.m in Sources */,
