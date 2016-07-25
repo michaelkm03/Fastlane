@@ -40,14 +40,6 @@ import Foundation
         }
     }
     
-    //   MARK: - Show Media
-    
-    func showMediaContent(mediaUrl: NSURL, mediaLinkType linkType: VCommentMediaType) {
-        ShowMediaContentOperation(originViewController: originViewController,
-                                mediaUrl: mediaUrl,
-                                mediaLinkType: linkType).queue()
-    }
-    
     // MARK: - Remix
     
     func showRemixWithSequence(sequence: VSequence) {
@@ -79,7 +71,6 @@ import Foundation
     // MARK: - Comments
     
     func showCommentsWithSequence(sequence: VSequence) {
-        ShowCommentsOperation(originViewController: originViewController, dependencyManager: dependencyManager, sequence: sequence).queue()
     }
     
     // MARK: - Flag

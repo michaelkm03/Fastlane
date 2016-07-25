@@ -35,8 +35,4 @@
 
 + (NSArray *)createVoteResults:(NSInteger)count;
 
-+ (NSArray *)createUserTags:(NSInteger)count;
-
-+ (NSArray *)createHashtagTags:(NSInteger)count;
-
 @end
