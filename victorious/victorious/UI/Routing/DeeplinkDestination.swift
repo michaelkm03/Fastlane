@@ -10,7 +10,7 @@ import Foundation
 
 /// A deeplink destination that we can naviagte to within the app, or an external URL
 /// e.g. A piece of content, a user, or a specific screen that is deep linked to.
-enum DeeplinkDestination {
+enum DeeplinkDestination: Equatable {
     case profile(userID: Int)
     case closeUp(contentWrapper: CloseUpContentWrapper)
     case vipForum
@@ -69,10 +69,28 @@ enum DeeplinkDestination {
     }
 }
 
+func ==(lhs: DeeplinkDestination, rhs: DeeplinkDestination) -> Bool {
+    switch (lhs, rhs) {
+        case (let .profile(id1), let .profile(id2)): return id1 == id2
+        case (let .closeUp(contentWrapper1), let .closeUp(contentWrapper2)): return contentWrapper1 == contentWrapper2
+        case (.vipForum, .vipForum): return true
+        case (let .externalURL(url1, _), let .externalURL(url2, _)): return url1 == url2
+        default: return false
+    }
+}
+
 /// A wrapper around content to be shown in close up view.
 /// This is needed because we could either pass a content object or content ID to close up view.
 /// If we pass a content object, it will be shown directly. While if we pass a content ID, it'll fetch the content from network.
-enum CloseUpContentWrapper {
+enum CloseUpContentWrapper: Equatable {
     case content(content: ContentModel)
     case contentID(id: Content.ID)
+}
+
+func ==(lhs: CloseUpContentWrapper, rhs: CloseUpContentWrapper) -> Bool {
+    switch (lhs, rhs) {
+        case (let .content(content1), let .content(content2)): return content1 == content2
+        case (let .contentID(id1), let.contentID(id2)): return id1 == id2
+        default: return false
+    }
 }
