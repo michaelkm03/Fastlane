@@ -11,13 +11,8 @@ import Foundation
 extension VDependencyManager {
     
     static var userProfileViewComponentKey: String { return "userProfileScreen" }
-    static var userProfileHeaderComponentKey: String { return "userProfileHeader" }
     static var userKey: String { return "user" }
     static var userRemoteIdKey: String { return "remoteId" }
-    static var findFriendsIconKey: String { return "findFriendsIcon" }
-    static var profileEditButtonStyleKey: String { return "editButtonStyle" }
-    static var profileEditButtonStylePill: String { return "rounded" }
-    static var trophyCaseScreenKey: String { return "trophyCaseScreen" }
     
     func userProfileViewController(for user: VUser) -> UIViewController? {
         return templateValueOfType(
@@ -33,13 +28,5 @@ extension VDependencyManager {
             forKey: VDependencyManager.userProfileViewComponentKey,
             withAddedDependencies: [VDependencyManager.userRemoteIdKey: remoteID]
         ) as? UIViewController
-    }
-    
-    func userProfileHeaderWithUser(for user: VUser) -> VUserProfileHeader? {
-        return templateValueConformingToProtocol(
-            VUserProfileHeader.self,
-            forKey: VDependencyManager.userProfileHeaderComponentKey,
-            withAddedDependencies: [VDependencyManager.userKey: user]
-        ) as? VUserProfileHeader
     }
 }

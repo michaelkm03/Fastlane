@@ -12,7 +12,6 @@
 #import "VSequence+Fetcher.h"
 #import "VDependencyManager.h"
 #import "VCardSeeMoreDirectoryCell.h"
-#import "VTagStringFormatter.h"
 #import "VStream.h"
 
 @implementation VCardDirectoryCellDecorator
@@ -81,19 +80,6 @@
 
 - (void)highlightTagsInCell:(VCardDirectoryCell *)cell withTagColor:(UIColor *)tagColor
 {
-    NSAssert(tagColor != nil, @"To highlight tags, tag color must not be nil");
-    
-    UIColor *defaultColor = cell.nameLabel.textColor;
-    if ( tagColor == nil || defaultColor == nil )
-    {
-        return;
-    }
-    
-    NSMutableAttributedString *formattedNameText = [[NSMutableAttributedString alloc] initWithAttributedString:cell.nameLabel.attributedText];
-    [VTagStringFormatter tagDictionaryFromFormattingAttributedString:formattedNameText
-                                             withTagStringAttributes:@{ NSForegroundColorAttributeName : tagColor }
-                                          andDefaultStringAttributes:@{ NSForegroundColorAttributeName : defaultColor }];
-    cell.nameLabel.attributedText = formattedNameText;
 }
 
 @end
