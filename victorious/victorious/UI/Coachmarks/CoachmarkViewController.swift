@@ -85,7 +85,10 @@ class CoachmarkViewController: UIViewController, VBackgroundContainer {
         detailsView.addSubview(strokeView)
         
         detailsView.translatesAutoresizingMaskIntoConstraints = false
-        detailsView.backgroundColor = Constants.textContainerBackgroundColor
+        let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .Light))
+        detailsView.addSubview(blurView)
+        detailsView.sendSubviewToBack(blurView)
+        detailsView.v_addFitToParentConstraintsToSubview(blurView)
         dependencyManager.addBackgroundToBackgroundHost(detailsView, forKey: Constants.textBackgroundKey)
         self.view.addSubview(detailsView)
         
