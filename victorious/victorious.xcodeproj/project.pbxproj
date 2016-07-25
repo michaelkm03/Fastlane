@@ -8731,7 +8731,6 @@
 		BE171D9E1868BE64004E5202 /* victoriousTests */ = {
 			isa = PBXGroup;
 			children = (
-				6756BF471D469AC300CF5F2B /* Deeplink */,
 				67CD14A81C1A685700C09DC7 /* AgeGateTests.swift */,
 				031DE6051C55E5550063492B /* AlertsRequestDecoratorTests.swift */,
 				A76711FC1C1B83FF006568DF /* AppTimingStreamHelperTests.swift */,
@@ -8745,6 +8744,7 @@
 				7A5519ED1D24778C00CD6BCF /* ContentMediaSizeTests.swift */,
 				A76711F41C1B7CCD006568DF /* ContentViewAppTimingHelperTests.swift */,
 				F0BD812A1C9B645F0062D079 /* CreationFlowTypeHelperTests.swift */,
+				6756BF471D469AC300CF5F2B /* Deeplink */,
 				A76711EF1C1B6C94006568DF /* DefaultTimingTrackerTests.swift */,
 				A75FAEFC19E8AB2C00EB87C1 /* DummyModels */,
 				034912701B7EA5E700EA8A07 /* ExperimentSettingsTests.swift */,
@@ -8755,6 +8755,7 @@
 				67CA1EAD1CB590F10023278F /* InterstitialManagerTests.swift */,
 				BF5857EB1C920276007684FE /* MediaSearchMediaExporterTests.swift */,
 				A7DCA51B1C128FD0004E35B4 /* NetworkActivityIndicatorTests.swift */,
+				7C582CA51D23270000707CBE /* NotificationSettingsViewControllerTests.swift */,
 				6236FF2F1C45E154006F4F23 /* NSBundle+TestBundleTests.swift */,
 				A7A2E0001A38C7B700F8C705 /* NSData+AESTests.m */,
 				BE49323519E338CE00C0912E /* NSDate+timeSinceTests.m */,
@@ -8825,7 +8826,6 @@
 				A7EB574E1AF841CC006AA1CF /* VURLDetectorTests.m */,
 				A73AFB7B19F573AB0005A9EA /* VVideoTrackingTests.m */,
 				A7AB4FE819F5A6A300BFFE35 /* VVoteTypeFetcherTests.m */,
-				7C582CA51D23270000707CBE /* NotificationSettingsViewControllerTests.swift */,
 			);
 			path = victoriousTests;
 			sourceTree = "<group>";
