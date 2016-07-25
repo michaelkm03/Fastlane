@@ -1,5 +1,5 @@
 //
-//  DebugErrorHanlder.swift
+//  DebugErrorHandler.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 2/16/16.
@@ -11,7 +11,7 @@ import Foundation
 /// A simple implementation that logs each error encountered.
 /// Priority is low to allow other more functional error handlers
 /// to take precedence.
-class DebugErrorHanlder: RequestErrorHandler {
+class DebugErrorHandler: RequestErrorHandler {
     
     let requestIdentifier: String
     
@@ -19,10 +19,10 @@ class DebugErrorHanlder: RequestErrorHandler {
         self.requestIdentifier = requestIdentifier
     }
     
-    func handleError(error: NSError) -> Bool {
-        v_log("FetcherOperation `\(requestIdentifier)` failed with error: \(error)")
+    func handle(error: NSError, with request: NSURLRequest? = nil) -> Bool {
+        v_log("FetcherOperation `\(requestIdentifier)` failed with error: \(error) for request -> \(request)")
         
-        // Doesn't actually handle/swallow errors, just logs them
+        // Doesn't actually handle errors, just logs them.
         return false
     }
 }

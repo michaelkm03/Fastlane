@@ -45,8 +45,8 @@
     NSString *resultString = @"";
     for (VUser *user in self.users)
     {
-        startString = [startString stringByAppendingString:[NSString stringWithFormat:self.userFormatString, [user.remoteId stringValue], user.name]];
-        resultString = [resultString stringByAppendingString:user.name];
+        startString = [startString stringByAppendingString:[NSString stringWithFormat:self.userFormatString, [user.remoteId stringValue], user.displayName]];
+        resultString = [resultString stringByAppendingString:user.displayName];
         startString = [startString stringByAppendingString:randomString];
         resultString = [resultString stringByAppendingString:randomString];
     }
@@ -88,9 +88,9 @@
     XCTAssertTrue([tag isKindOfClass:[VUserTag class]], @"returned tag should be a VUserTag");
     
     VUserTag *userTag = (VUserTag *)tag;
-    XCTAssertTrue([userTag.displayString.string isEqualToString:user.name], @"displayString should be the user's name");
+    XCTAssertTrue([userTag.displayString.string isEqualToString:user.displayName], @"displayString should be the user's name");
     XCTAssertTrue([userTag.remoteId isEqualToNumber:user.remoteId], @"remoteId should be the user's remoteId");
-    NSString *userString = [NSString stringWithFormat:self.userFormatString, [user.remoteId stringValue], user.name];
+    NSString *userString = [NSString stringWithFormat:self.userFormatString, [user.remoteId stringValue], user.displayName];
     XCTAssertTrue([userTag.databaseFormattedString isEqualToString:userString], @"databaseFormattedString should be of format @{remoteId:name}");
     XCTAssertThrows([VTag tagWithUser:nil andTagStringAttributes:self.tagStringAttributes], @"should throw exception for nil user");
     XCTAssertThrows([VTag tagWithUser:user andTagStringAttributes:nil], @"should throw exception for nil tagStringAttributes");
@@ -99,12 +99,12 @@
 - (void)testTagWithDatabaseFormattedUserString
 {
     VUser *user = [self.users lastObject];
-    NSString *userString = [NSString stringWithFormat:self.userFormatString, [user.remoteId stringValue], user.name];
+    NSString *userString = [NSString stringWithFormat:self.userFormatString, [user.remoteId stringValue], user.displayName];
     VTag *tag = [VTag tagWithUserString:userString andTagStringAttributes:self.tagStringAttributes];
     XCTAssertTrue([tag isKindOfClass:[VUserTag class]], @"returned tag should be a VUserTag");
     
     VUserTag *userTag = (VUserTag *)tag;
-    XCTAssertTrue([userTag.displayString.string isEqualToString:user.name], @"displayString should be the user's name");
+    XCTAssertTrue([userTag.displayString.string isEqualToString:user.displayName], @"displayString should be the user's name");
     XCTAssertTrue([userTag.remoteId isEqualToNumber:user.remoteId], @"remoteId should be the user's remoteId");
     XCTAssertTrue([userTag.databaseFormattedString isEqualToString:userString], @"databaseFormattedString should be of format @{remoteId:name}");
     XCTAssertThrows([VTag tagWithUser:nil andTagStringAttributes:self.tagStringAttributes], @"should throw exception for nil user");

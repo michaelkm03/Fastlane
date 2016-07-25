@@ -128,7 +128,7 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         profilePictureBottomSpacingConstraint.active = userIsCreator
         statsContainerView.hidden = userIsCreator
         
-        nameLabel.text = user?.name
+        nameLabel.text = user?.displayName
         locationLabel.text = user?.location
         taglineLabel.text = user?.tagline
         vipIconImageView.hidden = user?.isVIPSubscriber?.boolValue != true

@@ -90,12 +90,13 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
     func testWebSocketOutboundChatMessage() {
         nextSender = controller
         
-        let user = User(id: 1222, name: "username")
+        let user = User(id: 1222, displayName: "username")
         let chatMessageOutbound = Content(
             author: user,
-            createdAt: Timestamp(value: 1234567890)
-            , text: "Test chat message"
+            createdAt: Timestamp(value: 1234567890),
+            text: "Test chat message"
         )
+
         let identificationMessage = controller.uniqueIdentificationMessage
 
         var toServerDictionary: [String: AnyObject] = [chatMessageOutbound.rootTypeKey!: chatMessageOutbound.rootTypeValue!]

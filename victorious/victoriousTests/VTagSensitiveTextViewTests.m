@@ -32,12 +32,12 @@
     self.tagSensitiveTextView = [[VTagSensitiveTextView alloc] init];
     VUser *user = [[VDummyModels createUsers:1] lastObject];
     NSString *sampleTag = @"tag";
-    self.databaseFormattedText = [NSString stringWithFormat:@"user is @{%@:%@}, hashtag is #%@", [user.remoteId stringValue], user.name, sampleTag];
+    self.databaseFormattedText = [NSString stringWithFormat:@"user is @{%@:%@}, hashtag is #%@", [user.remoteId stringValue], user.displayName, sampleTag];
     self.defaultAttributes = @{ NSForegroundColorAttributeName : [UIColor whiteColor], NSFontAttributeName : [UIFont systemFontOfSize:10.0], @"NSOriginalFont" : [UIFont systemFontOfSize:10.0] };
     self.tagAttributes = @{ NSForegroundColorAttributeName : [UIColor redColor], NSFontAttributeName : [UIFont systemFontOfSize:10.0], @"NSOriginalFont" : [UIFont systemFontOfSize:10.0] };
     
     self.displayFormattedString = [[NSMutableAttributedString alloc] initWithString:@"user is " attributes:self.defaultAttributes];
-    [self.displayFormattedString appendAttributedString:[VTagStringFormatter delimitedAttributedString:[[NSAttributedString alloc] initWithString:user.name attributes:self.tagAttributes] withDelimiterAttributes:self.defaultAttributes]];
+    [self.displayFormattedString appendAttributedString:[VTagStringFormatter delimitedAttributedString:[[NSAttributedString alloc] initWithString:user.displayName attributes:self.tagAttributes] withDelimiterAttributes:self.defaultAttributes]];
     [self.displayFormattedString appendAttributedString:[[NSAttributedString alloc] initWithString:@", hashtag is " attributes:self.defaultAttributes]];
     [self.displayFormattedString appendAttributedString:[VTagStringFormatter delimitedAttributedString:[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"#%@", sampleTag] attributes:self.tagAttributes] withDelimiterAttributes:self.defaultAttributes]];
     

@@ -78,7 +78,7 @@ static NSString * const kTextTitleColorKey = @"color.text.label1";
 - (void)configureWithSuggestedUser:(VSuggestedUser *)suggestedUser
 {
     self.user = suggestedUser.user;
-    self.usernameTextView.text = self.user.name;    
+    self.usernameTextView.text = self.user.displayName;
     self.recentSequences = suggestedUser.recentSequences;
     self.thumbnailsDataSource.sequences = self.recentSequences;
     [self.thumbnailsViewController.collectionView reloadData];

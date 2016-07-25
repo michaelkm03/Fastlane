@@ -78,7 +78,7 @@ NSString * const kMacroBallisticsCount = @"%%COUNT%%";
     for ( NSInteger i = 0; i < count; i++ )
     {
         VUser *user = (VUser *)[self objectWithEntityName:@"User" subclass:[VUser class]];
-        user.name = [NSString stringWithFormat:@"user_%lu", (unsigned long)i];
+        user.displayName = [NSString stringWithFormat:@"user_%lu", (unsigned long)i];
         user.remoteId = @(i);
         [models addObject:user];
     }

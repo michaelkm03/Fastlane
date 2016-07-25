@@ -80,7 +80,7 @@
                   "level": 2,
                   "progress": 56
                   },
-                  "email": "gthrtht@wetwet.com",
+                  "username": "gthrtht@wetwet.com",
                   "access_level": "api_user",
                   "hub_role": null,
                   "max_video_duration": 15
@@ -119,7 +119,7 @@
                         "level": 2,
                         "progress": 56
                         },
-                        "email": "gthrtht@wetwet.com",
+                        "username": "gthrtht@wetwet.com",
                         "access_level": "api_user",
                         "hub_role": null,
                         "max_video_duration": 15

@@ -9,7 +9,6 @@
 import Foundation
 
 class AccountUpdateRequestBodyWriter: NSObject, RequestBodyWriterType {
-    
     struct Output {
         let fileURL: NSURL
         let contentType: String
@@ -17,7 +16,7 @@ class AccountUpdateRequestBodyWriter: NSObject, RequestBodyWriterType {
     
     let parameters: AccountUpdateParameters
     
-    init( parameters: AccountUpdateParameters ) {
+    init(parameters: AccountUpdateParameters) {
         self.parameters = parameters
     }
     
@@ -26,14 +25,15 @@ class AccountUpdateRequestBodyWriter: NSObject, RequestBodyWriterType {
     }
     
     func write() throws -> Output {
-        
         let writer = VMultipartFormDataWriter(outputFileURL: bodyTempFileURL)
         
         // Write params for a password update
-        if let passwordCurrent = parameters.passwordUpdate?.passwordCurrent,
-            let passwordNew = parameters.passwordUpdate?.passwordNew {
-                try writer.appendPlaintext(passwordCurrent, withFieldName: "current_password")
-                try writer.appendPlaintext(passwordNew, withFieldName: "new_password")
+        if
+            let currentPassword = parameters.passwordUpdate?.currentPassword,
+            let newPassword = parameters.passwordUpdate?.newPassword
+        {
+            try writer.appendPlaintext(currentPassword, withFieldName: "current_password")
+            try writer.appendPlaintext(newPassword, withFieldName: "new_password")
         }
         
         // Write params for a profile update
@@ -62,6 +62,6 @@ class AccountUpdateRequestBodyWriter: NSObject, RequestBodyWriterType {
         
         try writer.finishWriting()
         
-        return Output(fileURL: bodyTempFileURL, contentType: writer.contentTypeHeader() )
+        return Output(fileURL: bodyTempFileURL, contentType: writer.contentTypeHeader())
     }
 }

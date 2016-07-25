@@ -90,7 +90,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     // MARK: - Setting Content
     
     func setHeader(for content: ContentModel, author: UserModel ) {
-        userNameButton.setTitle(author.name, forState: .Normal)
+        userNameButton.setTitle(author.displayName, forState: .Normal)
         
         avatarView.user = author
         createdAtLabel.text = NSDate(timestamp: content.createdAt).stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds) ?? ""
@@ -111,7 +111,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
             setHeader(for: content, author: author)
             
             // Header
-            userNameButton.setTitle(author.name, forState: .Normal)
+            userNameButton.setTitle(author.displayName, forState: .Normal)
             avatarView.user = author
             
             let minWidth = UIScreen.mainScreen().bounds.size.width

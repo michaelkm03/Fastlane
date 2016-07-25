@@ -191,7 +191,7 @@ class TitleCardViewController: UIViewController {
             return
         }
 
-        authorLabel.text = stageContent?.content.author.name ?? ""
+        authorLabel.text = stageContent?.content.author.displayName ?? ""
         titleLabel.text = stageContent?.metaData?.title ?? ""
         avatarView.user = stageContent?.content.author
     }

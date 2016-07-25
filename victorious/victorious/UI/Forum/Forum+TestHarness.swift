@@ -73,7 +73,7 @@ extension ForumViewController {
         let content = Content(
             author: User(
                 id: 1000 + Int(arc4random() % 9999),
-                name: randName(),
+                displayName: randName(),
                 previewImages: [randPreviewImage()]
             ),
             createdAt: Timestamp(),
@@ -118,7 +118,7 @@ extension ForumViewController {
         let content = Content(
             author: User(
                 id: 1000 + Int(arc4random() % 9999),
-                name: randName(),
+                displayName: randName(),
                 previewImages: [randPreviewImage()]
             ),
             id: String(1000 + Int(arc4random() % 9999)),

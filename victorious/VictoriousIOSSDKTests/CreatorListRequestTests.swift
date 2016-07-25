@@ -38,10 +38,10 @@ class CreatorListRequestTests: XCTestCase {
             XCTAssertEqual(results.count, 3)
             
             XCTAssertEqual(results.first?.id, 405130)
-            XCTAssertEqual(results.first?.name, "Sabs")
+            XCTAssertEqual(results.first?.displayName, "Sabs")
             
             XCTAssertEqual(results.last?.id, 643629)
-            XCTAssertEqual(results.last?.name, "Lilith_Arianna")
+            XCTAssertEqual(results.last?.displayName, "Lilith_Arianna")
         } catch {
             XCTFail("Sorry, parseResponse should not throw here")
         }
