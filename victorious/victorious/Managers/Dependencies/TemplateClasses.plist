@@ -118,24 +118,12 @@
 	<string>VFollowingStreamCollectionViewController</string>
 	<key>directory.screen</key>
 	<string>VDirectoryCollectionViewController</string>
-	<key>inbox.screen</key>
-	<string>VConversationListViewController</string>
 	<key>livechat.screen</key>
 	<string>victorious.ChatFeedViewController</string>
-	<key>message.screen</key>
-	<string>VConversationContainerViewController</string>
 	<key>notifications.screen</key>
 	<string>VNotificationsViewController</string>
 	<key>findFriends.screen</key>
 	<string>VFindFriendsViewController</string>
-	<key>currentUserProfile.screen</key>
-	<string>VUserProfileViewController</string>
-	<key>staticProfile.streamHeader</key>
-	<string>VStaticUserProfileHeaderViewController</string>
-	<key>floatingProfile.streamHeader</key>
-	<string>VFloatingUserProfileHeaderViewController</string>
-	<key>userProfile.screen</key>
-	<string>VUserProfileViewController</string>
 	<key>forumProfile.screen</key>
 	<string>victorious.VNewProfileViewController</string>
 	<key>settings.screen</key>
@@ -190,10 +178,6 @@
 	<string>victorious.AnimatedBadgeView</string>
 	<key>vipPaygate.screen</key>
 	<string>victorious.VIPFlowNavigationController</string>
-	<key>trophyCase.screen</key>
-	<string>victorious.TrophyCaseViewController</string>
-	<key>trophyCase.achievement</key>
-	<string>victorious.Achievement</string>
 	<key>webSocket.networkLayer</key>
 	<string>victorious.WebSocketForumNetworkSource</string>
 	<key>REST.networkLayer</key>

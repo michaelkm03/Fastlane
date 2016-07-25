@@ -103,24 +103,6 @@ class AgeGateTests: XCTestCase {
         XCTAssertEqual(outputItems[0].title, "Report/Flag")
     }
     
-    func testFilterCommentCellUtilities() {
-        let inputItems = [
-            VUtilityButtonConfig(),
-            VUtilityButtonConfig(),
-            VUtilityButtonConfig(),
-            VUtilityButtonConfig(),
-            VUtilityButtonConfig()
-        ]
-        inputItems[0].type = .Delete
-        inputItems[1].type = .Edit
-        inputItems[2].type = .Flag
-        inputItems[3].type = .Reply
-        
-        let outputItems = AgeGate.filterCommentCellUtilities(inputItems)
-        XCTAssertEqual(outputItems.count, 1)
-        XCTAssertEqual(outputItems[0].type, VCommentCellUtilityType.Flag)
-    }
-    
     func testIsTrackingEventAllowed() {
         let inputTrackingEvents = [
             "abc",
