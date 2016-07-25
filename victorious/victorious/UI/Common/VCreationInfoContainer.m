@@ -140,7 +140,7 @@ static const CGFloat kHorizontalHitPadding = 44.0f;
         self.layedOutDefaultConstraints = YES;
     }
     
-    if ([self.sequence displayParentUser].name.length > 0)
+    if ([self.sequence displayParentUser].displayName.length > 0)
     {
         // Distribute Creator/subtitle vertically
         if (self.singleLineConstraints != nil)
@@ -217,7 +217,7 @@ static const CGFloat kHorizontalHitPadding = 44.0f;
 {
     [super layoutSubviews];
     
-    if (self.sequence.parentUser.name > 0)
+    if (self.sequence.parentUser.displayName > 0)
     {
         // Multiline hit insets
         CGFloat creatorTopPadding = CGRectGetMinY(self.creatorLabel.frame);
@@ -317,7 +317,7 @@ static const CGFloat kHorizontalHitPadding = 44.0f;
 
 - (NSAttributedString *)attributedCreatorStringHighlighted:(BOOL)highlighted
 {
-    if (self.sequence.displayOriginalPoster.name.length == 0)
+    if (self.sequence.displayOriginalPoster.displayName.length == 0)
     {
         return nil;
     }
@@ -331,13 +331,13 @@ static const CGFloat kHorizontalHitPadding = 44.0f;
     NSDictionary *attributes = @{NSForegroundColorAttributeName: textColor,
                                  NSFontAttributeName: [self.dependencyManager fontForKey:VDependencyManagerLabel1FontKey]};
 
-    return [[NSAttributedString alloc] initWithString:self.sequence.displayOriginalPoster.name
+    return [[NSAttributedString alloc] initWithString:self.sequence.displayOriginalPoster.displayName
                                            attributes:attributes];
 }
 
 - (NSAttributedString *)attributedParentStringHightlighted:(BOOL)highlighted
 {
-    NSString *parentUserString = self.sequence.displayParentUser.name ?: @"";
+    NSString *parentUserString = self.sequence.displayParentUser.displayName ?: @"";
     NSString *formattedString = nil;
     
     if (self.sequence.isRepost.boolValue && self.sequence.parentUser != nil)

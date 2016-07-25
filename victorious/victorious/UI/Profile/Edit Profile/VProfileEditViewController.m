@@ -25,7 +25,7 @@
 {
     [super viewWillAppear:animated];
     
-    self.nameLabel.text = self.profile.name;
+    self.nameLabel.text = self.profile.displayName;
 }
 
 - (void)viewDidAppear:(BOOL)animated

@@ -139,24 +139,24 @@ static const CGFloat kPlaceholderActiveTextWhiteValue = 0.4f;
         self.saveButton.enabled = NO;
         [self.saveButton showActivityIndicator];
         
-        [self updatePasswordWithCurrentPassword:self.oldPasswordTextField.text
-                                    newPassword:self.changedPasswordTextField.text
-                                     completion:^(NSError *error) {
-                                         if ( error == nil )
-                                         {
-                                             self.saveButton.enabled = YES;
-                                             [self.saveButton hideActivityIndicator];
-                                             
-                                             [self.navigationController popViewControllerAnimated:YES];
-                                         }
-                                         else
-                                         {
-                                             self.saveButton.enabled = YES;
-                                             [self.saveButton hideActivityIndicator];
-                                             
-                                             [self.passwordValidator showAlertInViewController:self withError:error];
-                                         }
-                                     }];
+        [self updatePassword:self.oldPasswordTextField.text
+                 newPassword:self.changedPasswordTextField.text
+                  completion:^(NSError *error) {
+            if ( error == nil )
+            {
+                self.saveButton.enabled = YES;
+                [self.saveButton hideActivityIndicator];
+                
+                [self.navigationController popViewControllerAnimated:YES];
+            }
+            else
+            {
+                self.saveButton.enabled = YES;
+                [self.saveButton hideActivityIndicator];
+                
+                [self.passwordValidator showAlertInViewController:self withError:error];
+            }
+        }];
     }
     else
     {

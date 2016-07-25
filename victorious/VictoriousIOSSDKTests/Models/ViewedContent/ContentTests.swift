@@ -22,7 +22,7 @@ class ContentTests: XCTestCase {
         XCTAssertEqual(content.text, "TEST_TITLE")
         XCTAssertTrue(content.hashtags.isEmpty)
         XCTAssertEqual(content.shareURL?.absoluteString, "SHARE_URL")
-        XCTAssertEqual(Int(content.createdAt.timeIntervalSince1970), 314159/1000)
+        XCTAssertEqual(Int(content.createdAt.value), 314159)
         XCTAssertEqual(content.previewImages.count, 4)
         XCTAssertEqual(content.assets.count, 1)
         XCTAssertEqual(content.type, ContentType.video)
@@ -67,7 +67,7 @@ class ContentTests: XCTestCase {
         XCTAssertEqual(chatMessage.assets.count, 1)
         // FUTURE: Switch User.id to a String and enable this assertion.
 //        XCTAssertEqual(chatMessage.author.id, "1")
-        XCTAssertEqual(chatMessage.author.name, "Leetzor")
+        XCTAssertEqual(chatMessage.author.displayName, "Leetzor")
     }
 
     private func createChatMessageFromJSON(fileName fileName: String) -> Content? {
@@ -77,7 +77,7 @@ class ContentTests: XCTestCase {
                 return nil
         }
 
-        return Content(chatMessageJSON: JSON(data: mockData), serverTime: NSDate(millisecondsSince1970: 1234567890))
+        return Content(chatMessageJSON: JSON(data: mockData), serverTime: Timestamp(value: 1234567890))
     }
 
     private func createContentFromJSON(fileName fileName: String) -> Content? {

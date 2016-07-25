@@ -27,13 +27,11 @@ class TutorialCollectionViewDataSource: NSObject, ChatInterfaceDataSource, Tutor
     
     // MARK: - ChatInterfaceDataSource
     
-    var itemCount: Int {
-        return networkDataSource.visibleItems.count
+    var visibleItems: [ChatFeedContent] {
+        return networkDataSource.visibleItems
     }
     
-    func content(at index: Int) -> ChatFeedContent {
-        return networkDataSource.visibleItems[index]
-    }
+    let pendingItems = [ChatFeedContent]()
     
     func remove(chatFeedContent content: ChatFeedContent) {
         // Does not support removing content from tutorial feed

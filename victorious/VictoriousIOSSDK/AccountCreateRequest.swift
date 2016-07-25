@@ -8,8 +8,8 @@
 
 /// The different ways a new account can be established at Victorious
 public enum NewAccountCredentials {
-    /// An account based on an e-mail address and password combination
-    case EmailPassword(email: String, password: String)
+    /// An account based on a username and password combination
+    case UsernamePassword(username: String, password: String)
     
     /// An account based on a Facebook oauth token
     case Facebook(accessToken: String)
@@ -30,27 +30,23 @@ public struct AccountCreateRequest: RequestType {
         urlRequest.HTTPMethod = "POST"
         
         switch credentials {
-        
-        case let .EmailPassword(email, password):
-            let credentials = [ "email": email,
-                                "password": password ]
-            urlRequest.vsdk_addURLEncodedFormPost(credentials)
-            break
+            case let .UsernamePassword(username, password):
+                urlRequest.vsdk_addURLEncodedFormPost(["email": username, "password": password])
             
-        case let .Facebook(accessToken):
-            urlRequest.URL = urlRequest.URL?.URLByAppendingPathComponent("via_facebook_modern")
-            let credentials = [ "facebook_access_token": accessToken ]
-            urlRequest.vsdk_addURLEncodedFormPost(credentials)
-            break
+            case let .Facebook(accessToken):
+                urlRequest.URL = urlRequest.URL?.URLByAppendingPathComponent("via_facebook_modern")
+                urlRequest.vsdk_addURLEncodedFormPost(["facebook_access_token": accessToken])
             
-        case let .Twitter(accessToken, accessSecret, twitterID):
-            urlRequest.URL = urlRequest.URL?.URLByAppendingPathComponent("via_twitter_modern")
-            let credentials = [ "access_token": accessToken,
-                                "access_secret": accessSecret,
-                                "twitter_id": twitterID ]
-            urlRequest.vsdk_addURLEncodedFormPost(credentials)
-            break
+            case let .Twitter(accessToken, accessSecret, twitterID):
+                urlRequest.URL = urlRequest.URL?.URLByAppendingPathComponent("via_twitter_modern")
+                
+                urlRequest.vsdk_addURLEncodedFormPost([
+                    "access_token": accessToken,
+                    "access_secret": accessSecret,
+                    "twitter_id": twitterID
+                ])
         }
+        
         return urlRequest
     }
     

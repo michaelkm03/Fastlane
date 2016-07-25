@@ -60,6 +60,7 @@ class StageDataSource: ForumEventReceiver {
                         return
                     }
 
+                    // The meta data is transferred over to the StageContent object in order to simplify the usage by only having one model.
                     let stageContent = StageContent(content: content, metaData: stageEvent.stageMetaData)
                     self?.delegate?.addStageContent(stageContent)
                     self?.currentContent = content

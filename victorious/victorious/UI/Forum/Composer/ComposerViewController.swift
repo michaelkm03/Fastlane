@@ -242,9 +242,9 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
     }
     
-    var textViewHasPrependedImage: Bool = false {
+    var textViewPrependedImage: UIImage? {
         didSet {
-            if oldValue != textViewHasPrependedImage {
+            if oldValue != textViewPrependedImage {
                 attachmentTabBar.buttonsEnabled = !textViewHasPrependedImage
                 attachmentTabBar.enableButtonForIdentifier(ComposerInputAttachmentType.Hashtag.rawValue)
                 if !textViewHasPrependedImage {
@@ -544,14 +544,16 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             return
         }
         
-        if let asset = selectedAsset {
-            // The textView currently contains an attachment representing the piece of selected media.
-            // Remove it before sending along the text as caption.
-            let text = composerTextViewManager?.removePrependedImageFromAttributedText(textView.attributedText)?.string
-            sendMessage(asset: asset, text: text, currentUser: user)
+        let text = composerTextViewManager?.captionFromTextView(textView)
+        
+        if
+            let asset = selectedAsset,
+            let previewImage = textViewPrependedImage
+        {
+            sendMessage(asset: asset, previewImage: previewImage, text: text, currentUser: user)
         }
-        else {
-            sendMessage(text: textView.text, currentUser: user)
+        else if let text = text {
+            sendMessage(text: text, currentUser: user)
         }
         composerTextViewManager?.resetTextView(textView)
         selectedAsset = nil

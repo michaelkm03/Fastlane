@@ -23,11 +23,11 @@ class SequenceRepostersRequestTests: XCTestCase {
             let results = try sequenceReposters.parseResponse(NSURLResponse(), toRequest: sequenceReposters.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(results.count, 3)
             XCTAssertEqual(results[0].id, 405130)
-            XCTAssertEqual(results[0].name, "Sabs")
+            XCTAssertEqual(results[0].displayName, "Sabs")
             XCTAssertEqual(results[1].id, 420812)
-            XCTAssertEqual(results[1].name, "Eliana")
+            XCTAssertEqual(results[1].displayName, "Eliana")
             XCTAssertEqual(results[2].id, 643629)
-            XCTAssertEqual(results[2].name, "Lilith_Arianna")
+            XCTAssertEqual(results[2].displayName, "Lilith_Arianna")
         } catch {
             XCTFail("Sorry, parseResponse should not throw here")
         }

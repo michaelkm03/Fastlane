@@ -188,7 +188,7 @@ private class TextContainerView: UIView, VBackgroundContainer {
 private extension VDependencyManager {
     var title: String {
         if let titleString = stringForKey(Constants.titleKey) {
-            if let name = VCurrentUser.user()?.name {
+            if let name = VCurrentUser.user()?.displayName {
                 return titleString.stringByReplacingOccurrencesOfString(Constants.userMacro, withString: name)
             }
             return titleString.stringByReplacingOccurrencesOfString(Constants.userMacro, withString: "")

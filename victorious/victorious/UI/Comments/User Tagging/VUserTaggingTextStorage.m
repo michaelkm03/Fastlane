@@ -525,7 +525,7 @@ static NSString * const VOriginalFont = @"NSOriginalFont";
 
 - (void)repliedToUser:(VUser *)user
 {
-    if (user.name != nil)
+    if (user.displayName != nil)
     {
         self.textView.text = @" "; // add a space after the user_tag
         // Insert username into text and adjust location of cursor
