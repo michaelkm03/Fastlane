@@ -104,11 +104,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     
     override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
         if keyPath == "outputVolume" && view.window != nil {
-            do {
-                try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
-            } catch {
-                print("Unable to change audio session category")
-            }
+            VAudioManager.sharedInstance().setAudioSessionCategory(AVAudioSessionCategoryPlayback)
         }
     }
     

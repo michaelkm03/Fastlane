@@ -18,6 +18,9 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     private var dependencyManager: VDependencyManager
     private var content: ContentModel? {
         didSet {
+            if content?.type == .video {
+                VAudioManager.sharedInstance().setAudioSessionCategory(AVAudioSessionCategoryPlayback)
+            }
             trackContentView()
         }
     }

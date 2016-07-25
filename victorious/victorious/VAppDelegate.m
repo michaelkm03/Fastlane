@@ -47,8 +47,8 @@
     }
     
     [[VReachability reachabilityForInternetConnection] startNotifier];
-
-    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];
+    
+    [[VAudioManager sharedInstance] setAudioSessionCategory:AVAudioSessionCategoryAmbient];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:kMainStoryboardName bundle:nil];
