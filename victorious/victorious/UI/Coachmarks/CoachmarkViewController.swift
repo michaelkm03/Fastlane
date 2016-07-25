@@ -21,7 +21,7 @@ private struct Constants {
     static let textBackgroundKey = "text.background"
     static let highlightTargetKey = "highlight.target"
     static let highlightForegroundKey = "highlight.foreground"
-    static let textContainerStrokeColorKey = "stroke.color"
+    static let textContainerStrokeColorKey = "color.stroke"
     static let textContainerTextWidth: CGFloat = 320
     static let closeButtonWidth: CGFloat = 90
     static let closeButtonHeight: CGFloat = 40
@@ -34,6 +34,10 @@ private struct Constants {
     static let animationDuration: NSTimeInterval = 1
     static let closeButtonStrokeWidth: CGFloat = 2
     static let closeButtonStrokeColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.2).CGColor
+    static let textContainerBackgroundColor = UIColor(red: 255, green: 255, blue: 255, alpha: 0.5)
+    static let textContainerStrokeHeight: CGFloat = 2
+    static let textLabelBottomPadding: CGFloat = -18
+    static let titleLabelBottomPadding: CGFloat = -12
 }
 
 class CoachmarkViewController: UIViewController, VBackgroundContainer {
@@ -73,10 +77,15 @@ class CoachmarkViewController: UIViewController, VBackgroundContainer {
         closeButton.addTarget(self, action: #selector(CoachmarkViewController.closeButtonAction), forControlEvents: .TouchUpInside)
         closeButton.layer.borderColor = Constants.closeButtonStrokeColor
         closeButton.layer.borderWidth = Constants.closeButtonStrokeWidth
-        closeButton.applyCornerRadius(Constants.closeButtonCornerRadius)
+        (closeButton as? TextOnColorButton)?.roundingType = .roundedRect(radius: Constants.closeButtonCornerRadius)
         detailsView.addSubview(closeButton)
         
+        let strokeView = UIView(frame: CGRectZero)
+        strokeView.backgroundColor = dependencyManager.containerStrokeColor
+        detailsView.addSubview(strokeView)
+        
         detailsView.translatesAutoresizingMaskIntoConstraints = false
+        detailsView.backgroundColor = Constants.textContainerBackgroundColor
         dependencyManager.addBackgroundToBackgroundHost(detailsView, forKey: Constants.textBackgroundKey)
         self.view.addSubview(detailsView)
         
@@ -93,14 +102,20 @@ class CoachmarkViewController: UIViewController, VBackgroundContainer {
         closeButton.heightAnchor.constraintEqualToConstant(Constants.closeButtonHeight).active = true
         
         textLabel.translatesAutoresizingMaskIntoConstraints = false
-        textLabel.bottomAnchor.constraintEqualToAnchor(closeButton.topAnchor, constant: -18).active = true
+        textLabel.bottomAnchor.constraintEqualToAnchor(closeButton.topAnchor, constant: Constants.textLabelBottomPadding).active = true
         textLabel.centerXAnchor.constraintEqualToAnchor(detailsView.centerXAnchor).active = true
         textLabel.widthAnchor.constraintEqualToConstant(Constants.textContainerTextWidth).active = true
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.bottomAnchor.constraintEqualToAnchor(textLabel.topAnchor, constant: -12).active = true
+        titleLabel.bottomAnchor.constraintEqualToAnchor(textLabel.topAnchor, constant: Constants.titleLabelBottomPadding).active = true
         titleLabel.widthAnchor.constraintEqualToConstant(Constants.textContainerTextWidth).active = true
         titleLabel.centerXAnchor.constraintEqualToAnchor(detailsView.centerXAnchor).active = true
+        
+        strokeView.translatesAutoresizingMaskIntoConstraints = false
+        strokeView.topAnchor.constraintEqualToAnchor(detailsView.topAnchor).active = true
+        strokeView.widthAnchor.constraintEqualToAnchor(detailsView.widthAnchor).active = true
+        strokeView.heightAnchor.constraintEqualToConstant(Constants.textContainerStrokeHeight).active = true
+        strokeView.centerXAnchor.constraintEqualToAnchor(detailsView.centerXAnchor).active = true
         
         // Must force layout here so that we can use the height
         // of the view when calculating the region to mask
@@ -145,7 +160,6 @@ class CoachmarkViewController: UIViewController, VBackgroundContainer {
         backgroundMaskLayer.path = maskPath.CGPath
         backgroundView.layer.mask = backgroundMaskLayer
         view.bringSubviewToFront(detailsView)
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -218,5 +232,9 @@ private extension VDependencyManager {
     
     var closeButton : UIButton {
         return buttonForKey(Constants.closeButtonKey) ?? UIButton()
+    }
+    
+    var containerStrokeColor: UIColor {
+        return colorForKey(Constants.textContainerStrokeColorKey) ?? UIColor.clearColor()
     }
 }
