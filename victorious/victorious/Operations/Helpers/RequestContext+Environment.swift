@@ -12,6 +12,11 @@ import VictoriousCommon
 
 extension RequestContext {
     
+    init() {
+        let currentEnvironment = VEnvironmentManager.sharedInstance().currentEnvironment
+        self.init(environment: currentEnvironment)
+    }
+    
     init( environment: VEnvironment ) {
         let deviceID = UIDevice.currentDevice().v_authorizationDeviceID
         let firstInstallDeviceID = FirstInstallManager().generateFirstInstallDeviceID() ?? deviceID

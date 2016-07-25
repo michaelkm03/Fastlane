@@ -56,7 +56,7 @@ class CreateMediaUploadOperation: BackgroundOperation {
         }
         
         let taskCreator = VUploadTaskCreator(uploadManager: uploadManager)
-        taskCreator.request = request.urlRequest
+        taskCreator.request = request.urlRequestWithHeaders(RequestContext(), authenticationContext: AuthenticationContext())
         taskCreator.formFields = formFields
         taskCreator.previewImage = publishParameters.previewImage
         
