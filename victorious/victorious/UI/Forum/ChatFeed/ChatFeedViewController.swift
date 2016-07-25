@@ -23,8 +23,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     
     private let scrollPaginator = VScrollPaginator()
     
-    @IBOutlet private var collectionViewBottom: NSLayoutConstraint!
-    
     // MARK: - ChatFeed
     
     weak var delegate: ChatFeedDelegate?
@@ -38,6 +36,8 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     }
     
     // MARK: - Managing insets
+    
+    @IBOutlet private var collectionViewBottom: NSLayoutConstraint!
     
     var addedTopInset = CGFloat(0.0) {
         didSet {
@@ -54,17 +54,24 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     }
     
     private func updateInsets() {
-        // The added bottom inset value actually needs to get added to the top inset because of the way the bottom
-        // inset works. Instead of adjusting the bottom content inset, the added bottom inset will shift the entire
-        // collection view upward in its container without adjusting its height. This fixes the scrolling behavior when
-        // the keyboard appears, but causes the top of the collection view to be clipped. Increasing the top inset
-        // keeps all of the content accessible by pushing it down below the clipped portion of the collection view.
-        collectionView.contentInset = UIEdgeInsets(
-            top: addedTopInset + addedBottomInset,
-            left: 0.0,
-            bottom: Layout.bottomMargin,
-            right: 0.0
-        )
+        if collectionView.numberOfItemsInSection(0) == 0 {
+            // When there are no items, we display a centered activity indicator, which becomes misaligned if there are
+            // any insets, so we zero them out while in this state.
+            collectionView.contentInset = UIEdgeInsetsZero
+        }
+        else {
+            // The added bottom inset value actually needs to get added to the top inset because of the way the bottom
+            // inset works. Instead of adjusting the bottom content inset, the added bottom inset will shift the entire
+            // collection view upward in its container without adjusting its height. This fixes the scrolling behavior when
+            // the keyboard appears, but causes the top of the collection view to be clipped. Increasing the top inset
+            // keeps all of the content accessible by pushing it down below the clipped portion of the collection view.
+            collectionView.contentInset = UIEdgeInsets(
+                top: addedTopInset + addedBottomInset,
+                left: 0.0,
+                bottom: Layout.bottomMargin,
+                right: 0.0
+            )
+        }
     }
     
     // MARK: - Managing the activity indicator
@@ -188,6 +195,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didLoadItems newItems: [ChatFeedContent], loadingType: PaginatedLoadingType) {
         let removedPendingContentIndices = removePendingContent(newItems, loadingType: loadingType)
         handleNewItems(newItems, loadingType: loadingType, removedPendingContentIndices: removedPendingContentIndices)
+        updateInsets()
     }
     
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didStashItems stashedItems: [ChatFeedContent]) {
@@ -208,6 +216,8 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         handleNewItems(unstashedItems, loadingType: .newer, removedPendingContentIndices: removedPendingContentIndices) { [weak self] in
             self?.collectionView.scrollToBottom(animated: true)
         }
+        
+        updateInsets()
     }
     
     var chatFeedItemWidth: CGFloat {
