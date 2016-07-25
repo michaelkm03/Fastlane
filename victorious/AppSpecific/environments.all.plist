@@ -20,7 +20,7 @@
 	</dict>
 	<dict>
 		<key>appID</key>
-		<integer>1</integer>
+		<integer>24</integer>
 		<key>baseURL</key>
 		<string>https://staging.getvictorious.com</string>
 		<key>name</key>
