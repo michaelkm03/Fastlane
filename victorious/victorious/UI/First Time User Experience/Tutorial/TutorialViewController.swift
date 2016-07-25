@@ -49,13 +49,11 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
         return dataSource
     }()
     
-    func setTopInset(value: CGFloat) {
-        // Do nothing for tutorial screen
-    }
+    // MARK: - Managing insets
     
-    func setBottomInset(value: CGFloat) {
-        // Do nothing for tutorial screen
-    }
+    // Added insets are not used for the tutorial screen.
+    var addedTopInset = CGFloat(0.0)
+    var addedBottomInset = CGFloat(0.0)
 
     // MARK: - Initialization
     

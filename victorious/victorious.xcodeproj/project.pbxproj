@@ -859,6 +859,7 @@
 		7AEB29531CCED68500B98C3B /* VDependencyManager+CoachmarkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AEB29521CCED68500B98C3B /* VDependencyManager+CoachmarkManager.swift */; };
 		7AFEB1491D413B7600FA972D /* Timestamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFEB1481D413B7600FA972D /* Timestamp.swift */; };
 		7AFEB14B1D413D7B00FA972D /* TimestampTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFEB14A1D413D7B00FA972D /* TimestampTests.swift */; };
+		7AFEB1571D46C1C500FA972D /* UIScrollView+Offsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFEB1561D46C1C500FA972D /* UIScrollView+Offsets.swift */; };
 		7C268EFF1D138F6100E4A66A /* VButton+VBackgroundContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C268EFE1D138F6100E4A66A /* VButton+VBackgroundContainer.swift */; };
 		7C268F011D1484C300E4A66A /* WebViewHTMLFetchRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C268F001D1484C300E4A66A /* WebViewHTMLFetchRequestTests.swift */; };
 		7C268F031D14A11100E4A66A /* PrivacyPolicy.html in Resources */ = {isa = PBXBuildFile; fileRef = 7C268F021D14A11100E4A66A /* PrivacyPolicy.html */; };
@@ -2167,9 +2168,9 @@
 		F0B390B91A852C7E00EE70C7 /* VTag.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B390B81A852C7E00EE70C7 /* VTag.m */; };
 		F0B390C31A88502D00EE70C7 /* VTagDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B390C21A88502D00EE70C7 /* VTagDictionary.m */; };
 		F0B390C61A8850CF00EE70C7 /* VTagStringFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B390C51A8850CF00EE70C7 /* VTagStringFormatter.m */; };
+		F0B6F08D1D3EB3350037EACE /* VIPGateViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A748BD171C8A7302003D5F5F /* VIPGateViewController.storyboard */; };
 		F0B6F08F1D3ECDE10037EACE /* VIPFetchSubscriptionRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B6F08E1D3ECDE10037EACE /* VIPFetchSubscriptionRemoteOperation.swift */; };
 		F0B6F0911D3ED0C10037EACE /* VIPFetchSubscriptionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B6F0901D3ED0C10037EACE /* VIPFetchSubscriptionRequest.swift */; };
-		F0B6F08D1D3EB3350037EACE /* VIPGateViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A748BD171C8A7302003D5F5F /* VIPGateViewController.storyboard */; };
 		F0BD3A441CD8208000B4AB3E /* PushTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0BD3A431CD8208000B4AB3E /* PushTransitionAnimator.swift */; };
 		F0BD3A661CD95A8000B4AB3E /* UIViewController+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0BD3A651CD95A8000B4AB3E /* UIViewController+Alert.swift */; };
 		F0BD3A6C1CDD0C1600B4AB3E /* MixedMediaCreationFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0BD3A6B1CDD0C1600B4AB3E /* MixedMediaCreationFlow.swift */; };
@@ -3332,6 +3333,7 @@
 		7AEB29521CCED68500B98C3B /* VDependencyManager+CoachmarkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VDependencyManager+CoachmarkManager.swift"; sourceTree = "<group>"; };
 		7AFEB1481D413B7600FA972D /* Timestamp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timestamp.swift; sourceTree = "<group>"; };
 		7AFEB14A1D413D7B00FA972D /* TimestampTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimestampTests.swift; sourceTree = "<group>"; };
+		7AFEB1561D46C1C500FA972D /* UIScrollView+Offsets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScrollView+Offsets.swift"; sourceTree = "<group>"; };
 		7C268EFE1D138F6100E4A66A /* VButton+VBackgroundContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VButton+VBackgroundContainer.swift"; sourceTree = "<group>"; };
 		7C268F001D1484C300E4A66A /* WebViewHTMLFetchRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewHTMLFetchRequestTests.swift; sourceTree = "<group>"; };
 		7C268F021D14A11100E4A66A /* PrivacyPolicy.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = PrivacyPolicy.html; sourceTree = "<group>"; };
@@ -7870,6 +7872,7 @@
 				F06B41BC1B7ED7FD008709E8 /* UIResponder+typedResponder.swift */,
 				A721E8EF1B572454000B7901 /* UIResponder+VResponderChain.h */,
 				A721E8F01B572454000B7901 /* UIResponder+VResponderChain.m */,
+				7AFEB1561D46C1C500FA972D /* UIScrollView+Offsets.swift */,
 				A721E8F11B572454000B7901 /* UIScrollView+VCenterContent.h */,
 				A721E8F21B572454000B7901 /* UIScrollView+VCenterContent.m */,
 				A7D7ED501B59BEB900FA346A /* UISearchBar+Extensions.swift */,
@@ -13519,6 +13522,7 @@
 				7AE363A11CC864B600F851E9 /* SideNavScaffoldViewController.swift in Sources */,
 				A6B9FD0C1B60413500166BE8 /* VCaptureVideoPreviewView.m in Sources */,
 				A769C3EB1A13176700698D0C /* VWebBrowserViewController.m in Sources */,
+				7AFEB1571D46C1C500FA972D /* UIScrollView+Offsets.swift in Sources */,
 				679C53681C23AB4000018E1C /* VStreamCollectionViewController+AccessoryButtonResponder.swift in Sources */,
 				C3E20B111B8659E400757F17 /* TrendingTopicShelfCollectionViewCell.swift in Sources */,
 				A74679611AFBE3AE005EB1D9 /* VWebBrowserHeaderLayoutManager.m in Sources */,

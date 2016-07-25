@@ -11,10 +11,7 @@ import UIKit
 class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDelegate, UICollectionViewDelegateFlowLayout, VScrollPaginatorDelegate, NewItemsControllerDelegate, ChatFeedMessageCellDelegate {
     private struct Layout {
         private static let bottomMargin: CGFloat = 20.0
-        private static let topMargin: CGFloat = 64.0
     }
-    
-    private var edgeInsets = UIEdgeInsets(top: Layout.topMargin, left: 0.0, bottom: Layout.bottomMargin, right: 0.0)
     
     private lazy var dataSource: ChatFeedDataSource = {
         return ChatFeedDataSource(dependencyManager: self.dependencyManager)
@@ -25,9 +22,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     }()
     
     private let scrollPaginator = VScrollPaginator()
-    
-    // Used to create a temporary window where immediate re-stashing is disabled after unstashing
-    private var canStashNewItems: Bool = true
     
     @IBOutlet private var collectionViewBottom: NSLayoutConstraint!
     
@@ -43,17 +37,38 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         return dataSource
     }
     
-    func setTopInset(value: CGFloat) {
-        edgeInsets.top = value + Layout.topMargin
+    // MARK: - Managing insets
+    
+    var addedTopInset = CGFloat(0.0) {
+        didSet {
+            updateInsets()
+        }
     }
     
-    func setBottomInset(value: CGFloat) {
-        collectionViewBottom.constant = value
-        collectionView.superview?.layoutIfNeeded()
+    var addedBottomInset = CGFloat(0.0) {
+        didSet {
+            updateInsets()
+            collectionViewBottom.constant = addedBottomInset
+            collectionView.superview?.layoutIfNeeded()
+        }
+    }
+    
+    private func updateInsets() {
+        // The added bottom inset value actually needs to get added to the top inset because of the way the bottom
+        // inset works. Instead of adjusting the bottom content inset, the added bottom inset will shift the entire
+        // collection view upward in its container without adjusting its height. This fixes the scrolling behavior when
+        // the keyboard appears, but causes the top of the collection view to be clipped. Increasing the top inset
+        // keeps all of the content accessible by pushing it down below the clipped portion of the collection view.
+        collectionView.contentInset = UIEdgeInsets(
+            top: addedTopInset + addedBottomInset,
+            left: 0.0,
+            bottom: Layout.bottomMargin,
+            right: 0.0
+        )
     }
     
     // MARK: - ForumEventReceiver
-        
+    
     var childEventReceivers: [ForumEventReceiver] {
         return [dataSource]
     }
@@ -76,9 +91,16 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         edgesForExtendedLayout = .None
         extendedLayoutIncludesOpaqueBars = true
         automaticallyAdjustsScrollViewInsets = false
+        updateInsets()
         
         dataSource.delegate = self
         dataSource.registerCells(for: collectionView)
+        
+        collectionView.registerNib(
+            VFooterActivityIndicatorView.nibForSupplementaryView(),
+            forSupplementaryViewOfKind: UICollectionElementKindSectionHeader,
+            withReuseIdentifier: VFooterActivityIndicatorView.reuseIdentifier()
+        )
         
         collectionView.dataSource = dataSource
         collectionView.delegate = self
@@ -122,8 +144,23 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         return dataSource.collectionView(collectionView, sizeForItemAtIndexPath: indexPath)
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        return edgeInsets
+    func collectionView(collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, atIndexPath indexPath: NSIndexPath) {
+        if let activityView = view as? VFooterActivityIndicatorView {
+            activityView.activityIndicator.color = dependencyManager.activityIndicatorColor
+            activityView.setActivityIndicatorVisible(true, animated: false)
+        }
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        var size = VFooterActivityIndicatorView.desiredSizeWithCollectionViewBounds(collectionView.bounds)
+        
+        if collectionView.numberOfItemsInSection(0) == 0 {
+            // If the collection view is empty, we want to center the activity indicator vertically, so we size it to
+            // the collection view's height.
+            size.height = collectionView.bounds.height - collectionView.contentInset.vertical
+        }
+        
+        return size
     }
     
     // MARK: - ChatFeedDataSourceDelegate
@@ -149,9 +186,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         let removedPendingContentIndices = removePendingContent(unstashedItems, loadingType: .newer)
         
         handleNewItems(unstashedItems, loadingType: .newer, removedPendingContentIndices: removedPendingContentIndices) { [weak self] in
-            if self?.collectionView.v_isScrolledToBottom == false {
-                self?.collectionView.v_scrollToBottomAnimated(true)
-            }
+            self?.collectionView.scrollToBottom(animated: true)
         }
     }
     
@@ -214,7 +249,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     func scrollViewDidScroll(scrollView: UIScrollView) {
         scrollPaginator.scrollViewDidScroll(scrollView)
         
-        if scrollView.v_isScrolledToBottom {
+        if scrollView.isScrolledToBottom() {
             if unstashingViaScrollingIsEnabled {
                 dataSource.unstash()
             }
@@ -269,5 +304,11 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     
     private dynamic func onTimerTick() {
         dataSource.updateTimestamps(in: collectionView)
+    }
+}
+
+private extension VDependencyManager {
+    var activityIndicatorColor: UIColor? {
+        return colorForKey("color.text")
     }
 }

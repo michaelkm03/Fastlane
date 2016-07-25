@@ -340,9 +340,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     func contentPublisher(contentPublisher: ContentPublisher, didQueue content: ChatFeedContent) {
         chatFeed?.handleNewItems([], loadingType: .newer, newPendingContentCount: 1) { [weak self] in
-            if self?.chatFeed?.collectionView.v_isScrolledToBottom == false {
-                self?.chatFeed?.collectionView.v_scrollToBottomAnimated(true)
-            }
+            self?.chatFeed?.collectionView.scrollToBottom(animated: true)
         }
     }
     

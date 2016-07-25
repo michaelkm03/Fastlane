@@ -17,10 +17,10 @@ protocol ChatFeed: class, ForumEventSender, ForumEventReceiver {
     var collectionView: UICollectionView! { get }
     var chatInterfaceDataSource: ChatInterfaceDataSource { get }
     
-    // MARK: - Layout
+    // MARK: - Managing insets
     
-    func setTopInset(value: CGFloat)
-    func setBottomInset(value: CGFloat)
+    var addedTopInset: CGFloat { get set }
+    var addedBottomInset: CGFloat { get set }
 }
 
 protocol ChatFeedDelegate: class {
@@ -69,7 +69,7 @@ extension ChatFeed {
         CATransaction.setDisableActions(true)
         
         let collectionView = self.collectionView
-        let wasScrolledToBottom = collectionView.v_isScrolledToBottom
+        let wasScrolledToBottom = collectionView.isScrolledToBottom()
         let oldPendingItemCount = max(0, chatInterfaceDataSource.pendingItems.count - newPendingContentCount)
         let insertingAbovePendingContent = oldPendingItemCount > 0 && newPendingContentCount <= 0
         
@@ -83,7 +83,7 @@ extension ChatFeed {
             if (loadingType == .newer && wasScrolledToBottom) || loadingType == .refresh {
                 // Animation disabled when inserting above pending items because it causes the pending items to warp
                 // past the bottom and scroll back up. This could use some work to make the transition better.
-                collectionView.setContentOffset(collectionView.v_bottomOffset, animated: loadingType != .refresh && !insertingAbovePendingContent)
+                collectionView.scrollToBottom(animated: loadingType != .refresh && !insertingAbovePendingContent)
             }
             
             completion?()
