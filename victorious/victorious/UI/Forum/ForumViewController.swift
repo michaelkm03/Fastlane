@@ -72,9 +72,10 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                 stage?.setStageEnabled(path == nil, animated: true)
             case .closeVIP():
                 onClose()
-            case .refreshStage(let stageContent):
+            case .refreshStage:
+                break
                 //Try to display the coachmark for stage once the stage has been loaded 
-                dependencyManager.coachmarkManager?.displayCoachmark(inCoachmarkDisplayer: self, withContainerView: coachmarkContainerView)
+                //dependencyManager.coachmarkManager?.displayCoachmark(inCoachmarkDisplayer: self, withContainerView: coachmarkContainerView)
             case .setOptimisticPostingEnabled(let enabled):
                 publisher?.optimisticPostingEnabled = enabled
             default:

@@ -42,8 +42,7 @@ extension Scaffold where Self: UIViewController {
             pushNotificationOperation.addDependency(tutorialOperation)
         }
         
-        pushNotificationOperation.queue { [weak self] error, cancelled in
-            self?.coachmarkManager.allowCoachmarks = true
+        pushNotificationOperation.queue { error, cancelled in
             onReady?()
         }
     }

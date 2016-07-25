@@ -187,7 +187,6 @@ class CoachmarkViewController: UIViewController, VBackgroundContainer {
     func backgroundContainerView() -> UIView {
         return backgroundView
     }
-    
 }
 
 private class HighlightForegroundView : UIView, VBackgroundContainer {

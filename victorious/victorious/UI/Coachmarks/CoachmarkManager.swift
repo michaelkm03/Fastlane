@@ -19,8 +19,6 @@ private struct Constants {
 class CoachmarkManager : NSObject {
     let dependencyManager: VDependencyManager
     var coachmarks: [Coachmark] = []
-    // Remove if possible 
-    var allowCoachmarks = false
     
     private var trackingManager: VTrackingManager {
         return VTrackingManager.sharedInstance()
@@ -75,11 +73,7 @@ class CoachmarkManager : NSObject {
      - parameter container: The container frame of the coachmark, usually the entire screen
     */
     func displayCoachmark(inCoachmarkDisplayer displayer: CoachmarkDisplayer, withContainerView container: UIView, withContext viewContext: String? = nil) {
-        guard allowCoachmarks else {
-            assertionFailure("Coachmarks are not enabled")
-            return
-        }
-        resetShownCoachmarks() // REMOVE BEFORE RELEASE 
+        resetShownCoachmarks() // REMOVE BEFORE RELEASE
         let screenIdentifier = displayer.screenIdentifier
         if let index = coachmarks.indexOf({ coachmark in
             var contextMatches = true

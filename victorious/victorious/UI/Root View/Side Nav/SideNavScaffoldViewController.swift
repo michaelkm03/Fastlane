@@ -45,7 +45,6 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
         )
         
         coachmarkManager = CoachmarkManager(dependencyManager: dependencyManager)
-        coachmarkManager.allowCoachmarks = true
         
         super.init(nibName: nil, bundle: nil)
         
