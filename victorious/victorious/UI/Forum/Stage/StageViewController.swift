@@ -104,7 +104,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     
     override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
         if keyPath == "outputVolume" && view.window != nil {
-            VAudioManager.sharedInstance().setAudioSessionCategory(AVAudioSessionCategoryPlayback)
+            VAudioManager.sharedInstance().focusedPlaybackDidBegin(muted: false)
         }
     }
     

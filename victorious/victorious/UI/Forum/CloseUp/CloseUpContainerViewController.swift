@@ -18,9 +18,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     private var dependencyManager: VDependencyManager
     private var content: ContentModel? {
         didSet {
-            if content?.type == .video {
-                VAudioManager.sharedInstance().setAudioSessionCategory(AVAudioSessionCategoryPlayback)
-            }
+            updateAudioSessionCategory()
             trackContentView()
         }
     }
@@ -51,6 +49,12 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         return button
     }()
     
+    private func updateAudioSessionCategory() {
+        if content?.type == .video {
+            VAudioManager.sharedInstance().focusedPlaybackDidBegin(muted: false)
+        }
+    }
+    
     init(dependencyManager: VDependencyManager, contentID: String, content: ContentModel? = nil, streamAPIPath: APIPath) {
         self.dependencyManager = dependencyManager
         
@@ -80,6 +84,8 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         self.content = content
         
         super.init(nibName: nil, bundle: nil)
+        
+        updateAudioSessionCategory()
         
         header.delegate = self
         
