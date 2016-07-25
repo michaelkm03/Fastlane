@@ -15,7 +15,7 @@ enum DeeplinkDestination {
     case closeUp(contentWrapper: CloseUpContentWrapper)
     case vipForum
     case trophyCase
-    case externalURL(url: NSURL)
+    case externalURL(url: NSURL, addressBarVisible: Bool)
     
     init?(url: NSURL) {
         guard url.scheme == "vthisapp" else {
@@ -39,8 +39,14 @@ enum DeeplinkDestination {
                 self = .vipForum
             case "profile/trophyCase":
                 self = .trophyCase
+            case "webURL":
+                guard let externalURL = NSURL(string: url.v_firstNonSlashPathComponent()) else { return nil }
+                self = .externalURL(url: externalURL, addressBarVisible: true)
+            case "hiddenWebURL":
+                guard let externalURL = NSURL(string: url.v_firstNonSlashPathComponent()) else { return nil }
+                self = .externalURL(url: externalURL, addressBarVisible: false)
             default:
-                self = .externalURL(url: url)
+                return nil
         }
     }
     
