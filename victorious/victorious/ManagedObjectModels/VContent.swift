@@ -103,7 +103,7 @@ class VContent: NSManagedObject, ContentModel, PaginatableItem {
         return v_contentMediaAssets.map { $0 }
     }
     
-    /// VContent does not provide seekAheadTime
+    /// VContent does not provide localStartTime
     var localStartTime: NSDate? {
         get {
             return nil
