@@ -30,13 +30,12 @@ class VIPSelectSubscriptionOperation: MainQueueOperation, UIAlertViewDelegate {
             return
         }
         
-        // TODO: Replace / localize strings from Erin
-        let alert = UIAlertController(title: "subscribe", message: "select a subscription", preferredStyle: .Alert)
+        let alert = UIAlertController(title: Strings.alertTitle, message: Strings.alertMessage, preferredStyle: .Alert)
         for product in products {
             let action = UIAlertAction(title: product.price + " " + product.localizedDescription, style: .Default, handler: selectionHandler(for: product))
             alert.addAction(action)
         }
-        let action = UIAlertAction(title: "Cancel", style: .Default, handler: selectionHandler(for: nil))
+        let action = UIAlertAction(title: Strings.cancel, style: .Default, handler: selectionHandler(for: nil))
         alert.addAction(action)
         originViewController.presentViewController(alert, animated: true, completion: nil)
     }
@@ -46,5 +45,12 @@ class VIPSelectSubscriptionOperation: MainQueueOperation, UIAlertViewDelegate {
             self.selectedProduct = product
             self.finishedExecuting()
         }
+    }
+    
+    private struct Strings {
+        static let alertTitle = NSLocalizedString("Become a VIP", comment: "Prompt for purchasing VIP subscription")
+        static let alertMessage = NSLocalizedString("Select payment schedule", comment: "Subtitle for VIP subscription dialog")
+        static let cancel = NSLocalizedString("Cancel", comment: "Cancel on VIP subscription dialog")
+
     }
 }
