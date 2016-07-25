@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDelegate, UICollectionViewDelegateFlowLayout, VScrollPaginatorDelegate, NewItemsControllerDelegate, ChatFeedMessageCellDelegate {
+class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDelegate, UICollectionViewDelegateFlowLayout, NewItemsControllerDelegate, ChatFeedMessageCellDelegate {
     private struct Layout {
         private static let bottomMargin: CGFloat = 20.0
     }
@@ -21,7 +21,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         return VCollectionViewStreamFocusHelper(collectionView: self.collectionView)
     }()
     
-    private let scrollPaginator = VScrollPaginator()
+    private var scrollPaginator = ScrollPaginator()
     
     // MARK: - ChatFeed
     
@@ -128,13 +128,15 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         collectionView.dataSource = dataSource
         collectionView.delegate = self
         
-        scrollPaginator.delegate = self
-        
         dataSource.nextSender = self
         
         newItemsController?.dependencyManager = dependencyManager
         newItemsController?.delegate = self
         newItemsController?.hide(animated: false)
+        
+        scrollPaginator.loadItemsAbove = { [weak self] in
+            self?.send(.loadOldContent)
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -238,12 +240,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         }
         
         return publisher.remove(contentToRemove)
-    }
-    
-    // MARK: - VScrollPaginatorDelegate
-    
-    func shouldLoadPreviousPage() {
-        send(.loadOldContent)
     }
     
     // MARK: - ChatFeedMessageCellDelegate
