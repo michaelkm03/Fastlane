@@ -1397,7 +1397,6 @@
 		A7D9526F1CD41D9300AD1D1D /* VPurchaseCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7D9526D1CD41D9300AD1D1D /* VPurchaseCell.xib */; };
 		A7DCA4D41C128A78004E35B4 /* VAbstractMarqueeControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9674F919E335060072E87A /* VAbstractMarqueeControllerTests.m */; };
 		A7DCA4D61C128A78004E35B4 /* VActionBarTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DCE5911ADD85820004B782 /* VActionBarTests.m */; };
-		A7DCA4DF1C128A78004E35B4 /* VCommentMediaTypeHelperTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC97FE1B5DB6F10098AFCB /* VCommentMediaTypeHelperTests.m */; };
 		A7DCA4DC1C128A78004E35B4 /* VCoachmarkManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C83A3A1B0F9EF900A6EC1A /* VCoachmarkManagerTests.m */; };
 		A7DCA4DD1C128A78004E35B4 /* VCoachmarkPassthroughContainerViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C83A321B0ED7DA00A6EC1A /* VCoachmarkPassthroughContainerViewTests.m */; };
 		A7DCA4DE1C128A78004E35B4 /* VCoachmarkViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C83A341B0F87EF00A6EC1A /* VCoachmarkViewTests.m */; };
@@ -2018,9 +2017,6 @@
 		F0AD21811AF43E4C001BDCC6 /* VShowcaseDirectoryCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = F0AD21801AF43E4C001BDCC6 /* VShowcaseDirectoryCellFactory.m */; };
 		F0AD21841AF43EB3001BDCC6 /* VCardDirectoryCellDecorator.m in Sources */ = {isa = PBXBuildFile; fileRef = F0AD21831AF43EB3001BDCC6 /* VCardDirectoryCellDecorator.m */; };
 		F0ADB0681AD367970069DF0D /* VImageViewContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = F0ADB0671AD367970069DF0D /* VImageViewContainer.m */; };
-		F0B390B91A852C7E00EE70C7 /* VTag.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B390B81A852C7E00EE70C7 /* VTag.m */; };
-		F0B390C31A88502D00EE70C7 /* VTagDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B390C21A88502D00EE70C7 /* VTagDictionary.m */; };
-		F0B390C61A8850CF00EE70C7 /* VTagStringFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B390C51A8850CF00EE70C7 /* VTagStringFormatter.m */; };
 		F0B6F08D1D3EB3350037EACE /* VIPGateViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A748BD171C8A7302003D5F5F /* VIPGateViewController.storyboard */; };
 		F0B6F08F1D3ECDE10037EACE /* VIPFetchSubscriptionRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B6F08E1D3ECDE10037EACE /* VIPFetchSubscriptionRemoteOperation.swift */; };
 		F0B6F0911D3ED0C10037EACE /* VIPFetchSubscriptionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B6F0901D3ED0C10037EACE /* VIPFetchSubscriptionRequest.swift */; };
@@ -8762,7 +8758,6 @@
 				D8DCE5911ADD85820004B782 /* VActionBarTests.m */,
 				F028F3E81AC0F2BB00ABFDDC /* VAppInfoTests.m */,
 				A709640419F0738200CE6633 /* VApplicationTrackingTests.m */,
-				F0FC97FE1B5DB6F10098AFCB /* VCommentMediaTypeHelperTests.m */,
 				F0C83A3A1B0F9EF900A6EC1A /* VCoachmarkManagerTests.m */,
 				F0C83A321B0ED7DA00A6EC1A /* VCoachmarkPassthroughContainerViewTests.m */,
 				F0C83A341B0F87EF00A6EC1A /* VCoachmarkViewTests.m */,
@@ -11856,7 +11851,6 @@
 				B0E1584E1B715269004F0A60 /* VUtilityButtonFlowLayout.m in Sources */,
 				F0E0F1B61AE8BFE200143CBF /* VInsetMarqueeController.m in Sources */,
 				BF79C7711C98D3D100222C8A /* LoadingCancellableView.swift in Sources */,
-				D8E39BD819CB7C80007FD86A /* VContentCommentsCell.m in Sources */,
 				7CD0FEFD1D414F80009FE7B4 /* UIViewController+CoachmarkContainer.swift in Sources */,
 				D836884119C370C400070F22 /* VBaseCollectionViewCell.m in Sources */,
 				A7D047961B97C5760091F366 /* ContentViewStreamTransition.swift in Sources */,
@@ -12306,7 +12300,6 @@
 				A77951061B27D22D00D9DB0A /* VSuggestedUsersViewController.m in Sources */,
 				A77951121B27DDB800D9DB0A /* VSuggestedUserCell.m in Sources */,
 				7C894B881D39A04100E124C8 /* Coachmark.swift in Sources */,
-				F0FC97D21B5AE9130098AFCB /* VStreamCollectionViewController+VInStreamCommentsResponder.m in Sources */,
 				D8E39BDF19CB7C80007FD86A /* VContentBackgroundSupplementaryView.m in Sources */,
 				A65F4D551B5D9E4900C96F1F /* VNoAssetsCell.m in Sources */,
 				BE799B9519C8A91C0023CE88 /* VAnswer.m in Sources */,
