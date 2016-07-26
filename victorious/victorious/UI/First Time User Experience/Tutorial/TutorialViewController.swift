@@ -18,6 +18,11 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
             continueButton.setTitle(dependencyManager.continueButtonTitleText, forState: .Normal)
             continueButton.titleLabel?.font = dependencyManager.continueButtonTitleFont
             continueButton.backgroundColor = dependencyManager.continueButtonBackgroundColor
+            let frame = continueButton.bounds
+            let strokeView = UIView(frame: CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.width, height: 2))
+            strokeView.backgroundColor = UIColor(red: 255, green: 255, blue: 255, alpha: 0.06)
+            continueButton.addSubview(strokeView)
+            
         }
     }
     
