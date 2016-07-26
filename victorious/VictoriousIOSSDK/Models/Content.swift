@@ -53,19 +53,15 @@ public protocol ContentModel: PreviewImageContainer, DictionaryConvertible {
     var tracking: TrackingModel? { get }
 }
 
-public func ==(lhs: ContentModel?, rhs: ContentModel?) -> Bool {
-    if lhs == nil && rhs == nil {
-        return true
-    }
-    
-    guard lhs?.id != nil && rhs?.id != nil else {
+public func ==(lhs: ContentModel, rhs: ContentModel) -> Bool {
+    guard lhs.id != nil && rhs.id != nil else {
         return false
     }
     
-    return lhs?.id == rhs?.id
+    return lhs.id == rhs.id
 }
 
-public func !=(lhs: ContentModel?, rhs: ContentModel?) -> Bool {
+public func !=(lhs: ContentModel, rhs: ContentModel) -> Bool {
     return !(lhs == rhs)
 }
 
