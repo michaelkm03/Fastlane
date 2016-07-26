@@ -13,7 +13,7 @@ private struct Constants {
     static let coachmarksArrayKey = "coachmarks"
     static let trackingURLsKey = "tracking"
     static let trackingEventName = "Coachmark Open"
-    static let animationDuration = 1.0
+    static let animationDuration = 0.5
 }
 
 class CoachmarkManager : NSObject {
@@ -94,13 +94,9 @@ class CoachmarkManager : NSObject {
             
             if (!coachmarkToDisplay.hasBeenShown) {
                 let containerFrame = container.bounds
-                let coachmarkViewController = CoachmarkViewController(coachmark: coachmarkToDisplay, containerFrame: containerFrame, highlightFrame: highlightFrame, displayer: displayer)
-                coachmarkViewController.view.alpha = 0
-                displayer.presentCoachmark(coachmarkViewController)
+                let coachmarkViewController = CoachmarkViewController(coachmark: coachmarkToDisplay, containerFrame: containerFrame, highlightFrame: highlightFrame)
                 
-                UIView.animateWithDuration(Constants.animationDuration) {
-                    coachmarkViewController.view.alpha = 1
-                }
+                coachmarkViewController.animate(intoDisplayer: displayer)
                 
                 coachmarkToDisplay.hasBeenShown = true
                 self.saveCoachmarkState()

@@ -41,21 +41,18 @@ private struct Constants {
 }
 
 class CoachmarkViewController: UIViewController, VBackgroundContainer {
-    let backgroundView = UIView()
-    var displayer: CoachmarkDisplayer?
+    private let backgroundView = UIView()
+    private let detailsView = CoachmarkTextContainerView()
     
-    init(coachmark: Coachmark, containerFrame: CGRect, highlightFrame: CGRect? = nil, displayer: CoachmarkDisplayer? = nil) {
+    init(coachmark: Coachmark, containerFrame: CGRect, highlightFrame: CGRect? = nil) {
         super.init(nibName: nil, bundle: nil)
         self.view = UIView(frame: containerFrame)
-        self.displayer = displayer
         self.modalPresentationStyle = .OverFullScreen
         let dependencyManager = coachmark.dependencyManager
         
         dependencyManager.addBackgroundToBackgroundHost(self)
         view.addSubview(backgroundView)
         view.v_addFitToParentConstraintsToSubview(backgroundView)
-        
-        let detailsView = TextContainerView()
         
         let titleLabel = UILabel()
         titleLabel.text = dependencyManager.title
@@ -169,17 +166,36 @@ class CoachmarkViewController: UIViewController, VBackgroundContainer {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK : - Button Actions 
+    // MARK : - Animations
     
-    func closeButtonAction() {
-       UIView.animateWithDuration(
+    func animate(intoDisplayer displayer: CoachmarkDisplayer) {
+        //Animate the coachmark
+        view.alpha = 0
+        detailsView.transform = CGAffineTransformScale(detailsView.transform, 0.0, 0.0)
+        displayer.addCoachmark(self)
+        
+        UIView.animateWithDuration(Constants.animationDuration) {
+            self.view.alpha = 1
+            self.detailsView.transform = CGAffineTransformIdentity
+        }
+    }
+    
+    func animateOut() {
+        UIView.animateWithDuration(
             Constants.animationDuration,
             animations: {
                 self.view.alpha = 0
+                self.detailsView.transform = CGAffineTransformScale(self.detailsView.transform, 0.0, 0.0)
             })
-            { _ in
-                self.dismissViewControllerAnimated(false, completion: nil)
-            }
+        { _ in
+            self.dismissViewControllerAnimated(false, completion: nil)
+        }
+    }
+    
+    // MARK : - Button Actions
+    
+    func closeButtonAction() {
+        animateOut()
     }
     
     // MARK : - VBackgroundContainer Methods 
@@ -195,7 +211,7 @@ private class HighlightForegroundView : UIView, VBackgroundContainer {
     }
 }
 
-private class TextContainerView: UIView, VBackgroundContainer {
+private class CoachmarkTextContainerView: UIView, VBackgroundContainer {
     @objc func backgroundContainerView() -> UIView {
         return self
     }

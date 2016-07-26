@@ -33,11 +33,11 @@ protocol CoachmarkDisplayer {
 /**
     Called when the coachmark VC is ready for presentation
 */
-    func presentCoachmark(viewController: CoachmarkViewController)
+    func addCoachmark(viewController: CoachmarkViewController)
 }
 
 extension CoachmarkDisplayer where Self : UIViewController {
-    func presentCoachmark(viewController: CoachmarkViewController) {
+    func addCoachmark(viewController: CoachmarkViewController) {
         self.presentViewController(viewController, animated: false, completion: nil)
     }
 }

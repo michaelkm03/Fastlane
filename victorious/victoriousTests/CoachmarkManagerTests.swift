@@ -18,7 +18,7 @@ private class dummyDisplayer : CoachmarkDisplayer {
         return nil
     }
     
-    private func presentCoachmark(viewController: CoachmarkViewController) {
+    private func addCoachmark(viewController: CoachmarkViewController) {
         return
     }
 }
