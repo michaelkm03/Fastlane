@@ -15,15 +15,7 @@ class AboutMeTextCell: UITableViewCell, UITextViewDelegate {
         static let textViewInsets = UIEdgeInsets(top: 15, left: -4, bottom: 14, right: -5)
     }
     
-    /// The current value of the user's 
-    var tagline: String? {
-        get {
-            return textView.text
-        }
-        set {
-            textView.text = newValue
-        }
-    }
+    @IBOutlet private var textView: VPlaceholderTextView!
     
     var dependencyManager: VDependencyManager? {
         didSet {
@@ -47,11 +39,6 @@ class AboutMeTextCell: UITableViewCell, UITextViewDelegate {
         }
     }
     
-    /// Provide a closure to be notified about changes to the height of the cell
-    var onDesiredHeightChangeClosure: ((desiredHeight: CGFloat) -> ())?
-    
-    @IBOutlet private var textView: VPlaceholderTextView!
-    
     // MARK: - UITextViewDelegate
     
     @objc func textViewDidChange(textView: UITextView) {
@@ -61,6 +48,16 @@ class AboutMeTextCell: UITableViewCell, UITextViewDelegate {
     
     // MARK: - API
     
+    /// The current value of the user's
+    var tagline: String? {
+        get {
+            return textView.text
+        }
+        set {
+            textView.text = newValue
+        }
+    }
+    
     /// Use this to bring up the UI for editing the `tagline`.
     func beginEditing() {
         textView.becomeFirstResponder()
@@ -68,6 +65,9 @@ class AboutMeTextCell: UITableViewCell, UITextViewDelegate {
     
     /// Provide a closure to be notified when any data within the cell has changed.
     var onDataChange: (() -> ())?
+    
+    /// Provide a closure to be notified about changes to the height of the cell
+    var onDesiredHeightChangeClosure: ((desiredHeight: CGFloat) -> ())?
     
     // MARK: - Misc Private Functions
     
