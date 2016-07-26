@@ -327,9 +327,10 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
             }
         }
         else {
-            backgroundView?.sd_setImageWithURL(url)
+            backgroundView?.sd_setImageWithURL(url, completed: { [weak self] (_, _, _, _) in
+                self?.renderText(content.text)
+            })
             backgroundView?.backgroundColor = Constants.defaultTextBackgroundColor
-            renderText(content.text)
         }
     }
     
