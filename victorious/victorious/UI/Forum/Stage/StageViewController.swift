@@ -91,8 +91,9 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        if currentStageContent != nil {
-            showStage(animated: false)
+        if let content = currentStageContent?.content {
+            mediaContentView.content = content
+            setStageEnabled(true, animated: false)
         }
     }
 
@@ -124,6 +125,10 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
 
     // MARK: - Stage
     
+    var isOnScreen: Bool {
+        return self.view.window != nil
+    }
+    
     func addCaptionContent(content: ContentModel) {
         guard let text = content.text else {
             return
@@ -132,11 +137,11 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     }
 
     func addStageContent(stageContent: StageContent) {
-        guard isViewLoaded() && enabled else {
+        currentStageContent = stageContent
+        
+        guard isOnScreen && enabled else {
             return
         }
-        
-        currentStageContent = stageContent
 
         titleCardViewController?.populate(with: stageContent)
 
@@ -206,9 +211,18 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         guard !visible else {
             return
         }
-
+        
         mediaContentView.showContent(animated: animated) { [weak self] _ in
-            self?.mediaContentView.videoCoordinator?.playVideo(true)
+            if
+                let videoDuration = self?.mediaContentView.videoCoordinator?.duration,
+                let content = self?.currentStageContent?.content
+                where content.seekAheadTime() < videoDuration
+            {
+                self?.mediaContentView.videoCoordinator?.playVideo(true)
+            }
+            else {
+                self?.hideStage(animated: true)
+            }
         }
         visible = true
         UIView.animateWithDuration(animated ? Constants.contentSizeAnimationDuration : 0) {

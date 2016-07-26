@@ -84,11 +84,11 @@ extension ContentModel {
     }
     
     public func seekAheadTime() -> NSTimeInterval {
-        guard let videoStartTime = localStartTime else {
+        guard let localStartTime = localStartTime else {
             return 0
         }
         
-        return NSDate().timeIntervalSinceDate(videoStartTime)
+        return NSDate().timeIntervalSinceDate(localStartTime)
     }
 }
 

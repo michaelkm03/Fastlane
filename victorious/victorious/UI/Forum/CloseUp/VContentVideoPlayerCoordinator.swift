@@ -96,6 +96,10 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     
     private let videoPlayer: VVideoPlayer
     
+    var duration: Double {
+        return videoPlayer.durationSeconds
+    }
+    
     func setupVideoPlayer(in superview: UIView) {
         superview.addSubview(videoPlayer.view)
     }
@@ -122,12 +126,14 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     /// `synced` can be used to enable the syncing feature where the video would be synced between all users of the app.
     func playVideo(synced: Bool = false) {
         if synced {
-            prepareToPlay()
+            print(content.localStartTime)
+            let seekAheadTime = content.seekAheadTime()
+            if Int(videoPlayer.currentTimeSeconds) <= Int(seekAheadTime) {
+                videoPlayer.seekToTimeSeconds(seekAheadTime)
+            }
         }
-        else {
-            videoPlayer.play()
-            state = .Playing
-        }
+        videoPlayer.play()
+        state = .Playing
     }
     
     func pauseVideo() {
