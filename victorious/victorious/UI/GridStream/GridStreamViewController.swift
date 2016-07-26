@@ -177,7 +177,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         referenceSizeForHeaderInSection section: Int) -> CGSize {
         
         guard
-            section == 0,
+            section == GridStreamSection.Header.rawValue,
             let header = header
         else {
             return CGSizeZero
@@ -226,7 +226,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     func collectionView(collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         referenceSizeForFooterInSection section: Int) -> CGSize {
-        guard section == 1 else {
+        guard section == GridStreamSection.Contents.rawValue else {
             return CGSizeZero
         }
         
