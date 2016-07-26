@@ -15,9 +15,7 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
     private let nameAndLocationCell: UsernameLocationAvatarCell
     private let aboutMeCell: AboutMeTextCell
     private var newAvatarFileURL: NSURL?
-    
-    /// Assign a user struct to update the UI. Does not reflect any edits
-    var user: UserModel {
+    private var user: UserModel {
         didSet {
             updateUI()
         }
