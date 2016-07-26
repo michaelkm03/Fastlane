@@ -150,7 +150,7 @@ class AvatarView: UIView {
             kvoController.unobserveAll()
             
             if let newUser = persistentUser {
-                let keyPaths = ["previewAssets", "username"]
+                let keyPaths = ["previewAssets", "displayName"]
                 
                 kvoController.observe(newUser, keyPaths: keyPaths, options: []) { [weak self] _, _, _ in
                     self?.setNeedsContentUpdate()
