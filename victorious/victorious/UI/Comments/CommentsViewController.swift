@@ -22,7 +22,7 @@ extension VDependencyManager {
     }
 }
 
-class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayout, VScrollPaginatorDelegate, VTagSensitiveTextViewDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VKeyboardInputAccessoryViewDelegate, VUserTaggingTextStorageDelegate, VPaginatedDataSourceDelegate {
+class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayout, VTagSensitiveTextViewDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VKeyboardInputAccessoryViewDelegate, VUserTaggingTextStorageDelegate, VPaginatedDataSourceDelegate {
     
     private static let kDefaultBackgroundColorAlpha: CGFloat = 0.35
 
@@ -92,7 +92,6 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     
     // MARK: - Private Properties
     
-    private let scrollPaginator = VScrollPaginator()
     private var publishParameters: VPublishParameters?
     private var mediaAttachmentPresenter: VMediaAttachmentPresenter?
     private var focusHelper: VCollectionViewStreamFocusHelper?
@@ -122,7 +121,6 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
         self.dataSource?.registerCells( collectionView )
         
         focusHelper = VCollectionViewStreamFocusHelper(collectionView: collectionView)
-        scrollPaginator.delegate = self
         keyboardBar = VKeyboardInputAccessoryView.defaultInputAccessoryViewWithDependencyManager(dependencyManager)
         if let sequence = self.sequence {
             keyboardBar?.sequencePermissions = sequence.permissions
@@ -236,7 +234,6 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         focusHelper?.updateFocus()
-        scrollPaginator.scrollViewDidScroll(scrollView)
     }
     
     // MARK: - UICollectionViewDelegate
@@ -287,14 +284,6 @@ class CommentsViewController: UIViewController, UICollectionViewDelegateFlowLayo
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         return dataSource?.collectionView(collectionView, layout: collectionViewLayout, sizeForItemAtIndexPath: indexPath) ?? CGSize.zero
     }
-
-    // MARK: - VScrollPaginatorDelegate
-    
-    func shouldLoadNextPage() {
-        dataSource?.loadComments( .Next )
-    }
-    
-    func shouldLoadPreviousPage() { }
     
     // MARK: - VSwipeViewControllerDelegate
     

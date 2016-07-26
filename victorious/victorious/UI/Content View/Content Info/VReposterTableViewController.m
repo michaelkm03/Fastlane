@@ -11,14 +11,12 @@
 #import "VNoContentView.h"
 #import "VSequence.h"
 #import "VUserProfileViewController.h"
-#import "VScrollPaginator.h"
 #import "victorious-Swift.h"
 
-@interface VReposterTableViewController () <VScrollPaginatorDelegate, VPaginatedDataSourceDelegate>
+@interface VReposterTableViewController () <VPaginatedDataSourceDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) VNoContentView *noContentView;
-@property (nonatomic, strong) VScrollPaginator *scrollPaginator;
 @property (nonatomic, strong) RepostersDataSource *dataSource;
 
 @end
@@ -41,9 +39,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.scrollPaginator = [[VScrollPaginator alloc] init];
-    self.scrollPaginator.delegate = self;
     
     self.tableView.dataSource = self.dataSource;
     self.tableView.delegate = self;
@@ -87,17 +82,6 @@
     [super viewWillDisappear:animated];
     
     [[VTrackingManager sharedInstance] clearValueForSessionParameterWithKey:VTrackingKeyContext];
-}
-
-#pragma mark - VScrollPaginatorDelegate
-
-- (void)shouldLoadNextPage
-{
-    [self.dataSource loadRepostersWithPageType:VPageTypeNext];
-}
-
-- (void)shouldLoadPreviousPage
-{
 }
 
 #pragma mark - UITableViewDelegate

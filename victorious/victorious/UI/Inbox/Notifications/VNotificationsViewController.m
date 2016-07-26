@@ -22,10 +22,9 @@ static NSString * const kNotificationCellViewIdentifier = @"NotificationCell";
 static CGFloat const kNotificationCellHeight = 64.0f;
 static CGFloat const kNotificationAddedVerticalInset = 8.0f;
 
-@interface VNotificationsViewController () <VNavigationDestination, VCellWithProfileDelegate, VScrollPaginatorDelegate, VPaginatedDataSourceDelegate, VBackgroundContainer>
+@interface VNotificationsViewController () <VNavigationDestination, VCellWithProfileDelegate, VPaginatedDataSourceDelegate, VBackgroundContainer>
 
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
-@property (nonatomic, strong) VScrollPaginator *scrollPaginator;
 @property (nonatomic, strong, readwrite) VDependencyManager *dependencyManager;
 @property (nonatomic) NSInteger badgeNumber;
 
@@ -72,9 +71,6 @@ static CGFloat const kNotificationAddedVerticalInset = 8.0f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.scrollPaginator = [[VScrollPaginator alloc] init];
-    self.scrollPaginator.delegate = self;
     
     self.dataSource = [[NotificationsDataSource alloc] initWithDependencyManager:self.dependencyManager];
     [self.dataSource registerCells:self.tableView];
@@ -268,18 +264,6 @@ static CGFloat const kNotificationAddedVerticalInset = 8.0f;
 - (void)updateNavigationItem
 {
     [self v_addAccessoryScreensWithDependencyManager:self.dependencyManager];
-}
-
-#pragma mark - Pagination
-
-- (void)shouldLoadNextPage
-{
-    [self.dataSource loadNotifications:VPageTypeNext completion:nil];
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    [self.scrollPaginator scrollViewDidScroll:scrollView];
 }
 
 #pragma mark - Navigation Destination

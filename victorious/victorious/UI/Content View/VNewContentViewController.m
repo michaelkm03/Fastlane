@@ -43,7 +43,6 @@
 #import "VNewContentViewController.h"
 #import "VNode+Fetcher.h"
 #import "VPurchaseViewController.h"
-#import "VScrollPaginator.h"
 #import "VSectionHandleReusableView.h"
 #import "VSequence+Fetcher.h"
 #import "VSequenceActionControllerDelegate.h"
@@ -66,7 +65,7 @@
 
 static NSString * const kPollBallotIconKey = @"orIcon";
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, VKeyboardInputAccessoryViewDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder, VUserTaggingTextStorageDelegate, VSequencePreviewViewDetailDelegate, VContentPollBallotCellDelegate, AdLifecycleDelegate, VPaginatedDataSourceDelegate, VImageAnimationOperationDelegate, VSequenceActionControllerDelegate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, VKeyboardInputAccessoryViewDelegate, VExperienceEnhancerControllerDelegate, VSwipeViewControllerDelegate, VCommentCellUtilitiesDelegate, VEditCommentViewControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, NSUserActivityDelegate, VTagSensitiveTextViewDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder, VUserTaggingTextStorageDelegate, VSequencePreviewViewDetailDelegate, VContentPollBallotCellDelegate, AdLifecycleDelegate, VPaginatedDataSourceDelegate, VImageAnimationOperationDelegate, VSequenceActionControllerDelegate>
 
 @property (nonatomic, assign) BOOL hasAutoPlayed;
 @property (nonatomic, assign) BOOL hasBeenPresented;
@@ -94,7 +93,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, weak) IBOutlet UIButton *moreButton;
 @property (nonatomic, weak) IBOutlet UIImageView *blurredBackgroundImageView;
 @property (nonatomic, weak) IBOutlet VInputAccessoryCollectionView *contentCollectionView;
-@property (nonatomic, weak) IBOutlet VScrollPaginator *scrollPaginator;
 @property (nonatomic, weak) NSLayoutConstraint *bottomKeyboardToContainerBottomConstraint;
 @property (nonatomic, weak) UIView *snapshotView;
 @property (nonatomic, weak) VContentPollBallotCell *ballotCell;
@@ -177,9 +175,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:VContentViewSectionAllComments];
             [self.commentHighlighter scrollToAndHighlightIndexPath:indexPath delay:0.3f completion:^
             {
-                // Trigger the paginator to load any more pages based on the scroll
-                // position to which VCommentHighlighter animated to
-                [self.scrollPaginator scrollViewDidScroll:self.contentCollectionView];
             }];
             break;
         }
@@ -1131,15 +1126,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    const BOOL hasComments = self.viewModel.commentsDataSource.visibleItems.count > 0;
-    if ( hasComments )
-    {
-        if ( !self.commentHighlighter.isAnimatingCellHighlight )
-        {
-            [self.scrollPaginator scrollViewDidScroll:scrollView];
-        }
-    }
-    
     // Update focus on cells
     [self.focusHelper updateFocus];
 }
@@ -1446,17 +1432,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
              [self.viewModel.experienceEnhancerController updateData];
          }
      }];
-}
-
-#pragma mark - VScrollPaginatorDelegate
-
-- (void)shouldLoadNextPage
-{
-    [self.viewModel.commentsDataSource loadComments:VPageTypeNext completion:nil];
-}
-
-- (void)shouldLoadPreviousPage
-{
 }
 
 #pragma mark - VSequenceActionsDelegate

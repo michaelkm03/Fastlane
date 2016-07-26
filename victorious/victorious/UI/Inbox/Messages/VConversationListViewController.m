@@ -27,12 +27,11 @@
 
 static NSString * const kMessageCellViewIdentifier = @"VConversationCell";
 
-@interface VConversationListViewController () <VProvidesNavigationMenuItemBadge, VScrollPaginatorDelegate, VCellWithProfileDelegate, VConversationContainerViewControllerDelegate>
+@interface VConversationListViewController () <VProvidesNavigationMenuItemBadge, VCellWithProfileDelegate, VConversationContainerViewControllerDelegate>
 
 @property (strong, nonatomic) NSMutableDictionary *messageViewControllers;
 @property (strong, nonatomic) VUnreadMessageCountCoordinator *messageCountCoordinator;
 @property (nonatomic, strong) VConversation *queuedConversation;
-@property (nonatomic, strong) VScrollPaginator *scrollPaginator;
 @property (nonatomic, weak) UIViewController *selectedConversationViewController;
 
 @end
@@ -78,9 +77,6 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.scrollPaginator = [[VScrollPaginator alloc] init];
-    self.scrollPaginator.delegate = self;
     
     self.dataSource = [[ConversationListDataSource alloc] initWithDependencyManager:self.dependencyManager];
     self.dataSource.delegate = self;
@@ -407,11 +403,6 @@ NSString * const VConversationListViewControllerInboxPushReceivedNotification = 
     [self.dataSource loadConversations:VPageTypeNext completion:^(NSError *error){
         self.shouldAnimateDataSourceChanges = YES;
     }];
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    [self.scrollPaginator scrollViewDidScroll:scrollView];
 }
 
 #pragma mark - NSNotification handlers

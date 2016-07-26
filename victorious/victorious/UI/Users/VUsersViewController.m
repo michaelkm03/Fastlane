@@ -10,15 +10,13 @@
 #import "UIView+AutoLayout.h"
 #import "VUserCell.h"
 #import "VUserProfileViewController.h"
-#import "VScrollPaginator.h"
 #import "VNoContentView.h"
 #import "VDependencyManager+VTracking.h"
 #import "victorious-Swift.h"
 
-@interface VUsersViewController () <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, VScrollPaginatorDelegate>
+@interface VUsersViewController () <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic, strong) VScrollPaginator *scrollPaginator;
 
 @end
 
@@ -71,9 +69,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.scrollPaginator = [[VScrollPaginator alloc] init];
-    self.scrollPaginator.delegate = self;
     
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     layout.minimumLineSpacing = layout.minimumInteritemSpacing = 0.0;
@@ -155,20 +150,6 @@
     UIViewController *profileViewController = [self.dependencyManager userProfileViewControllerFor:selectedUser];
     NSAssert( self.navigationController != nil, @"View controller must be in a navigation controller." );
     [self.navigationController pushViewController:profileViewController animated:YES];
-}
-
-#pragma mark - UIScrollViewDelegate
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    [self.scrollPaginator scrollViewDidScroll:scrollView];
-}
-
-#pragma mark - VScrollPaginatorDelegate
-
-- (void)shouldLoadNextPage
-{
-    [self.usersDataSource loadUsersWithPageType:VPageTypeNext completion:nil];
 }
 
 #pragma mark - source screen logic

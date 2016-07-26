@@ -22,12 +22,11 @@
 #import "VTableViewStreamFocusHelper.h"
 #import "victorious-Swift.h"
 
-@interface VConversationViewController () <VCommentMediaTapDelegate, VCellWithProfileDelegate, VScrollPaginatorDelegate>
+@interface VConversationViewController () <VCommentMediaTapDelegate, VCellWithProfileDelegate>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) NSMutableArray *reuseIdentifiers;
 @property (nonatomic, strong) VTableViewStreamFocusHelper *focusHelper;
-@property (nonatomic, strong) VScrollPaginator *scrollPaginator;
 
 @end
 
@@ -45,9 +44,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.scrollPaginator = [[VScrollPaginator alloc] init];
-    self.scrollPaginator.delegate = self;
     
     self.reuseIdentifiers = [NSMutableArray new];
     
@@ -127,31 +123,6 @@
     
     // End focus on cells
     [self.focusHelper endFocusOnAllCells];
-}
-
-#pragma mark - Pagination
-
-- (void)shouldLoadPreviousPage
-{
-    if ( [self.dataSource isLoading] )
-    {
-        return;
-    }
-    
-    self.isLoadingNextPage = YES;
-    [self.dataSource loadMessagesWithPageType:VPageTypeNext completion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
-     {
-         self.isLoadingNextPage = NO;
-     }];
-}
-
-- (void)shouldLoadNextPage
-{
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    [self.scrollPaginator scrollViewDidScroll:scrollView];
 }
 
 #pragma mark - Property Accessors

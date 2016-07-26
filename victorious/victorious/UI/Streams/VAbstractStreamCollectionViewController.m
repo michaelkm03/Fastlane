@@ -14,14 +14,12 @@
 #import "VNavigationController.h"
 #import "VStreamItem+Fetcher.h"
 #import "VSequence.h"
-#import "VScrollPaginator.h"
 #import "VFooterActivityIndicatorView.h"
 #import "VDependencyManager.h"
 #import "victorious-Swift.h"
 
-@interface VAbstractStreamCollectionViewController () <VScrollPaginatorDelegate>
+@interface VAbstractStreamCollectionViewController ()
 
-@property (nonatomic, strong) VScrollPaginator *scrollPaginator;
 @property (nonatomic, strong) UIActivityIndicatorView *bottomActivityIndicator;
 
 @property (nonatomic, strong) NSLayoutConstraint *headerYConstraint;
@@ -61,8 +59,6 @@
 {
     self.streamTrackingHelper = [[VStreamTrackingHelper alloc] init];
     
-    self.scrollPaginator = [[VScrollPaginator alloc] init];
-    self.scrollPaginator.delegate = self;
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.extendedLayoutIncludesOpaqueBars = YES;
     self.navigationBarShouldAutoHide = YES;
@@ -307,17 +303,6 @@
     // Subclasses may override
 }
 
-#pragma mark - VScrollPaginatorDelegate
-
-- (void)shouldLoadNextPage
-{
-    if ( self.streamDataSource.isLoading ||
-         self.targetStreamItem != nil )
-    {
-        return;
-    }
-}
-
 - (void)flashScrollIndicatorsWithDelay:(NSTimeInterval)delay
 {
     __weak typeof(self) welf = self;
@@ -331,7 +316,6 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    [self.scrollPaginator scrollViewDidScroll:scrollView];
     [self.navigationControllerScrollDelegate scrollViewDidScroll:scrollView];
     
     [self.navigationViewfloatingController updateContentOffsetOnScroll:scrollView.contentOffset];
