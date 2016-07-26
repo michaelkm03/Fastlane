@@ -10339,7 +10339,6 @@
 					};
 					EBEA19B51BC4A76C00878B18 = {
 						CreatedOnToolsVersion = 7.0.1;
-						LastSwiftMigration = 0800;
 						TestTargetID = BE171D751868BE64004E5202;
 					};
 				};

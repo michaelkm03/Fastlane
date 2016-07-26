@@ -77,6 +77,7 @@
 #import "VDataCache.h"
 #import "VDependencyManager+NavigationBar.h"
 #import "VDependencyManager+VAccessoryScreens.h"
+#import "VDependencyManager+VBackground.h"
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VDependencyManager+VDefaultTemplate.h"
 #import "VDependencyManager+VKeyboardStyle.h"
@@ -90,6 +91,7 @@
 #import "VDirectoryCollectionViewController.h"
 #import "VDiscoverSuggestedPersonCell.h"
 #import "VEditableTextPostViewController.h"
+#import "VEditProfilePicturePresenter.h"
 #import "VElapsedTimeFormatter.h"
 #import "VEnvironment.h"
 #import "VEnvironmentManager.h"
@@ -232,6 +234,3 @@
 #import "VWorkspaceShimDestination.h"
 #import "VWorkspaceViewController.h"
 #import "YTPlayerView.h"
-#import "VDependencyManager+VBackground.h"
-#import "VEditProfilePicturePresenter.h"
-

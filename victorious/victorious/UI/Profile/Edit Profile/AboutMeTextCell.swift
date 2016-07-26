@@ -28,7 +28,8 @@ class AboutMeTextCell: UITableViewCell, UITextViewDelegate {
     var dependencyManager: VDependencyManager? {
         didSet {
             // Visual Configuration
-            guard let dependencyManager = dependencyManager,
+            guard
+                let dependencyManager = dependencyManager,
                 let font = dependencyManager.placeholderAndEnteredTextFont,
                 let placeholderTextColor = dependencyManager.placeholderTextColor,
                 let enteredTextColor = dependencyManager.enteredTextColor else {
@@ -51,7 +52,7 @@ class AboutMeTextCell: UITableViewCell, UITextViewDelegate {
     
     @IBOutlet private var textView: VPlaceholderTextView!
     
-    // MARK: - Target / Action
+    // MARK: - UITextViewDelegate
     
     @objc func textViewDidChange(textView: UITextView) {
         onDataChange?()
@@ -77,7 +78,6 @@ class AboutMeTextCell: UITableViewCell, UITextViewDelegate {
         }
         onDesiredHeightChangeClosure?(desiredHeight: textSize.height)
     }
-    
 }
 
 private extension VDependencyManager {
