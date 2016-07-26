@@ -1395,7 +1395,6 @@
 		A7DCA4DC1C128A78004E35B4 /* VCoachmarkManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C83A3A1B0F9EF900A6EC1A /* VCoachmarkManagerTests.m */; };
 		A7DCA4DD1C128A78004E35B4 /* VCoachmarkPassthroughContainerViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C83A321B0ED7DA00A6EC1A /* VCoachmarkPassthroughContainerViewTests.m */; };
 		A7DCA4DE1C128A78004E35B4 /* VCoachmarkViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C83A341B0F87EF00A6EC1A /* VCoachmarkViewTests.m */; };
-		A7DCA4E01C128A78004E35B4 /* VContentViewFactoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0329B99F1ACBAAFB003BBCC5 /* VContentViewFactoryTests.m */; };
 		A7DCA4E11C128A78004E35B4 /* VDefaultTemplateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 035ABE7D1AD8871F00B6B1A5 /* VDefaultTemplateTests.m */; };
 		A7DCA4E21C128A78004E35B4 /* VDependencyManager_VNavigationMenuItemTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 035FA7771AE188CD0002EE63 /* VDependencyManager_VNavigationMenuItemTests.m */; };
 		A7DCA4E31C128A78004E35B4 /* VDependencyManagerImageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 039420491AB88A9A0087ADFA /* VDependencyManagerImageTests.m */; };
@@ -2284,7 +2283,6 @@
 		0326BBB819A8183800D995DA /* VPushNotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPushNotificationManager.h; sourceTree = "<group>"; };
 		0326BBB919A8183800D995DA /* VPushNotificationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPushNotificationManager.m; sourceTree = "<group>"; };
 		0326C35F19F8226200DBC341 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		0329B99F1ACBAAFB003BBCC5 /* VContentViewFactoryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VContentViewFactoryTests.m; sourceTree = "<group>"; };
 		03314F1C1BE3E2DE00EE74FD /* VictoriousIOSSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = VictoriousIOSSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		03314F1E1BE3E2DE00EE74FD /* VictoriousIOSSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VictoriousIOSSDK.h; sourceTree = "<group>"; };
 		03314F201BE3E2DE00EE74FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -8776,7 +8774,6 @@
 				F0C83A3A1B0F9EF900A6EC1A /* VCoachmarkManagerTests.m */,
 				F0C83A321B0ED7DA00A6EC1A /* VCoachmarkPassthroughContainerViewTests.m */,
 				F0C83A341B0F87EF00A6EC1A /* VCoachmarkViewTests.m */,
-				0329B99F1ACBAAFB003BBCC5 /* VContentViewFactoryTests.m */,
 				035ABE7D1AD8871F00B6B1A5 /* VDefaultTemplateTests.m */,
 				035FA7771AE188CD0002EE63 /* VDependencyManager_VNavigationMenuItemTests.m */,
 				F022CFE31CFFA21A00F040BB /* VDependencyManager+SystemFontTests.swift */,
@@ -12781,7 +12778,6 @@
 				A70FC0F41A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m in Sources */,
 				A7D69C5A1C0E51A000B462C3 /* VUploadTaskInformationTests.m in Sources */,
 				F050D3441CAEEFB7007A05ED /* NSPredicate+MediaTypeTests.swift in Sources */,
-				A7DCA4E01C128A78004E35B4 /* VContentViewFactoryTests.m in Sources */,
 				F0BD812B1C9B645F0062D079 /* CreationFlowTypeHelperTests.swift in Sources */,
 				03EE1DE21C4D77E000C25287 /* NSURL+DefaultSchemeTests.swift in Sources */,
 				A7DCA50F1C128A78004E35B4 /* VUploadTaskCreatorTests.m in Sources */,
