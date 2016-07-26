@@ -39,17 +39,11 @@ class EditProfileViewController: UITableViewController {
     @IBAction private func tappedSave(sender: UIBarButtonItem) {
         self.performSegueWithIdentifier(EditProfileViewController.unwindToSettingsSegueKey, sender: self)
         
-        guard let dataSource = dataSource else {
-            // Must have a dataSource in order to grab the values
+        guard let profileUpdate = dataSource?.accountUpdateDelta() else {
             return
         }
         
-        if let delta = dataSource.accountUpdateDelta(),
-            let operation = AccountUpdateOperation(profileUpdate: delta) {
-                operation.queue()
-        } else {
-            print("failed ot create operation!!")
-        }
+        AccountUpdateOperation(profileUpdate: profileUpdate)?.queue()
     }
     
     // MARK: - Validation
