@@ -11,7 +11,11 @@ import UIKit
 typealias VIPFlowCompletion = (Bool -> ())
 
 class VIPFlowNavigationController: UINavigationController, VIPGateViewControllerDelegate, VIPSuccessViewControllerDelegate, VBackgroundContainer, VNavigationDestination {
-    let animationDelegate = CrossFadingNavigationControllerDelegate()
+    let animationDelegate: CrossFadingNavigationControllerDelegate = {
+        let delegate = CrossFadingNavigationControllerDelegate()
+        delegate.fadingEnabled = false
+        return delegate
+    }()
     var completionBlock: VIPFlowCompletion?
     @objc private(set) var dependencyManager: VDependencyManager!
     private var gateDependencyManager: VDependencyManager!
@@ -54,6 +58,7 @@ class VIPFlowNavigationController: UINavigationController, VIPGateViewController
     func vipGateExitedWithSuccess(success: Bool, afterPurchase purchased: Bool) {
         if success && purchased {
             //Transition to success state
+            animationDelegate.fadingEnabled = true
             let successViewController = VIPSuccessViewController.newWithDependencyManager(successDependencyManager)
             successViewController.delegate = self
             showViewController(successViewController, sender: nil)

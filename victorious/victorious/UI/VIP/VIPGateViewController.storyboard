@@ -77,7 +77,7 @@
                                 </constraints>
                             </view>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bxh-9R-vDH">
-                                <rect key="frame" x="15" y="50" width="345" height="361"/>
+                                <rect key="frame" x="15" y="62" width="345" height="349"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Luh-5W-Dz6">
                                         <rect key="frame" x="0.0" y="0.0" width="345" height="355"/>
@@ -129,9 +129,8 @@
                                     <constraint firstItem="Luh-5W-Dz6" firstAttribute="top" secondItem="bxh-9R-vDH" secondAttribute="top" id="ubW-48-RQN"/>
                                 </constraints>
                             </scrollView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VEf-11-zqv" userLabel="Close Button">
-                                <rect key="frame" x="15" y="16" width="16" height="18"/>
-                                <state key="normal" backgroundImage="6D52495B-6E9E-4024-B056-2370FBC2EA83"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VEf-11-zqv" userLabel="Close Button" customClass="TouchableInsetAdjustableButton" customModule="victorious" customModuleProvider="target">
+                                <rect key="frame" x="15" y="16" width="30" height="30"/>
                                 <connections>
                                     <action selector="onCloseSelected" destination="MQ0-ua-9uX" eventType="touchUpInside" id="dBF-8g-tlQ"/>
                                 </connections>
@@ -178,7 +177,4 @@
             <point key="canvasLocation" x="398.5" y="320"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="6D52495B-6E9E-4024-B056-2370FBC2EA83" width="16" height="16"/>
-    </resources>
 </document>

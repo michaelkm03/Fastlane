@@ -13,15 +13,17 @@ class ShowTestPurchaseConfirmationOperation: BackgroundOperation, ActionConfirma
     private let type: VPurchaseType
     private let title: String?
     private let price: String?
+    private let duration: String?
     
     // MARK: - ActionConfirmationOperation
     
     var didConfirmAction: Bool = false
     
-    init(type: VPurchaseType, title: String?, price: String?) {
+    init(type: VPurchaseType, title: String?, duration: String?, price: String?) {
         self.type = type
         self.price = price
         self.title = title
+        self.duration = duration
     }
     
     override func start() {
@@ -36,7 +38,7 @@ class ShowTestPurchaseConfirmationOperation: BackgroundOperation, ActionConfirma
         
         let alertController = UIAlertController(
             title: type.tite,
-            message: type.messageWithTitle(title ?? "[ITEM]", price: price ?? "[PRICE]") + "\n\n[Simulated for testing]",
+            message: type.messageWithTitle(title ?? "[ITEM]", duration: duration ?? "[DESCRIPTION]", price: price ?? "[PRICE]") + "\n\n[Simulated for testing]",
             preferredStyle: .Alert
         )
         alertController.addAction(
@@ -89,10 +91,10 @@ private extension VPurchaseType {
         }
     }
     
-    func messageWithTitle(title: String, price: String) -> String {
+    func messageWithTitle(title: String, duration: String, price: String) -> String {
         switch self {
         case .Subscription:
-            return "Do you want to subscribe to \(title) for 1 month for \(price)?  This subscription will automatically renew until canceled."
+            return "Do you want to subscribe to \(title) for \(duration) for \(price)?  This subscription will automatically renew until canceled."
         case .Product:
             return "Do you want to buy \(title) for \(price)"
         }
