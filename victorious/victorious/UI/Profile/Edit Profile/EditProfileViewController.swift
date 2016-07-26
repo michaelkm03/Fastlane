@@ -82,8 +82,8 @@ class EditProfileViewController: UITableViewController {
     
     private func presentCamera() {
         VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectImageForEditProfile)
-        self.profilePicturePresenter = VEditProfilePicturePresenter(dependencyManager: dependencyManager)
-        self.profilePicturePresenter?.resultHandler = { [weak self] success, previewImage, mediaURL in
+        profilePicturePresenter = VEditProfilePicturePresenter(dependencyManager: dependencyManager)
+        profilePicturePresenter?.resultHandler = { [weak self] success, previewImage, mediaURL in
             defer {
                 self?.dismissViewControllerAnimated(true, completion: nil)
             }
@@ -93,6 +93,6 @@ class EditProfileViewController: UITableViewController {
             }
             self?.dataSource?.useNewAvatar(previewImage, fileURL: mediaURL)
         }
-        self.profilePicturePresenter?.presentOnViewController(self)
+        profilePicturePresenter?.presentOnViewController(self)
     }
 }

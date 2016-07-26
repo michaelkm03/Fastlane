@@ -11,11 +11,10 @@ import VictoriousIOSSDK
 
 extension VLoginFlowAPIHelper {
     
-    func queueUpdateProfileOperation( username username: String?, profileImageURL: NSURL?, completion: ((NSError?) -> ())? ) -> NSOperation? {
+    func queueUpdateProfileOperation( displayname displayname: String?, profileImageURL: NSURL?, completion: ((NSError?) -> ())? ) -> NSOperation? {
         let updateOperation = AccountUpdateOperation(
             profileUpdate: ProfileUpdate(
-                email: nil,
-                name: username,
+                displayName: displayname,
                 location: nil,
                 tagline: nil,
                 profileImageURL: profileImageURL

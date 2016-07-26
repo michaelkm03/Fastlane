@@ -1,5 +1,5 @@
 //
-//  UsernameLocationAvatarCell.swift
+//  DisplaynameLocationAvatarCell.swift
 //  victorious
 //
 //  Created by Michael Sena on 7/18/16.
@@ -10,37 +10,37 @@ import Foundation
 
 /// Provides UI for editing the user's `name`, `location`, and `tagline` fields.
 /// Assign closures to be notified of events in the UI.
-class UsernameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
+class DisplaynameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
     
     struct Constants {
         static let placeholderAlpha = CGFloat(0.5)
     }
     
     /// Provide a closure to be notified when the return key is pressed in either
-    /// the username or location text fields.
-    var onReturnKeySelected: (() -> ())?
+    /// the displayname or location text fields.
+    var onReturnKeySelected: (() -> Void)?
     
     /// Provide a closure to be notified when the user taps on their avatar
     /// indicating that they want to
-    var onAvatarSelected: (() -> ())?
+    var onAvatarSelected: (() -> Void)?
     
     /// Provide a closure to be notified when any data within the cell has changed.
-    var onDataChange: (() -> ())?
+    var onDataChange: (() -> Void)?
     
     var user: UserModel? {
         didSet {
-            usernameField.text = user?.username
+            displaynameField.text = user?.displayName
             locationField.text = user?.location
             avatarView.user = user
         }
     }
     
-    var username: String? {
+    var displayname: String? {
         get {
-            return usernameField.text
+            return displaynameField.text
         }
         set {
-            usernameField.text = newValue
+            displaynameField.text = newValue
         }
     }
     
@@ -56,22 +56,23 @@ class UsernameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
     var dependencyManager: VDependencyManager? {
         didSet {
             // Visual Configuration
-            guard let dependencyManager = dependencyManager,
-                font = dependencyManager.placeholderAndEnteredTextFont,
-                placeholderTextColor = dependencyManager.placeholderTextColor,
-                enteredTextColor = dependencyManager.enteredTextColor else {
+            guard
+                let dependencyManager = dependencyManager,
+                let font = dependencyManager.placeholderAndEnteredTextFont,
+                let placeholderTextColor = dependencyManager.placeholderTextColor,
+                let enteredTextColor = dependencyManager.enteredTextColor else {
                     return
             }
             
             // Font + Colors
-            usernameField.font = font
+            displaynameField.font = font
             locationField.font = font
-            usernameField.textColor = enteredTextColor
+            displaynameField.textColor = enteredTextColor
             locationField.textColor = enteredTextColor
             
             // Placeholder
             let placeholderAttributes = [NSForegroundColorAttributeName: placeholderTextColor.colorWithAlphaComponent(Constants.placeholderAlpha)]
-            usernameField.attributedPlaceholder = NSAttributedString(string: "Name",
+            displaynameField.attributedPlaceholder = NSAttributedString(string: "Name",
                                                                      attributes: placeholderAttributes)
             locationField.attributedPlaceholder = NSAttributedString(string: "Location",
                                                                      attributes: placeholderAttributes)
@@ -81,12 +82,12 @@ class UsernameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
         }
     }
     
-    @IBOutlet private var usernameField: UITextField! {
+    @IBOutlet private var displaynameField: UITextField! {
         didSet {
             NSNotificationCenter.defaultCenter().addObserver(self,
                                                              selector: #selector(textFieldDidChange(_:)),
                                                              name: UITextFieldTextDidChangeNotification,
-                                                             object: usernameField)
+                                                             object: displaynameField)
         }
     }
     @IBOutlet private var locationField: UITextField! {
@@ -106,7 +107,7 @@ class UsernameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
     // MARK: - API
     
     func beginEditing() {
-        usernameField.becomeFirstResponder()
+        displaynameField.becomeFirstResponder()
     }
     
     // MARK: - Target / Action
@@ -123,13 +124,13 @@ class UsernameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
     // MARK: - UITextFieldDelegate
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-        dispatch_after(0.001, {
-            if textField == self.usernameField {
-                self.locationField.becomeFirstResponder()
-            } else if textField == self.locationField {
-                self.onReturnKeySelected?()
-            }
-        })
+        if textField == displaynameField {
+            locationField.becomeFirstResponder()
+            return false
+        } else if textField == locationField {
+            onReturnKeySelected?()
+            return false
+        }
         return true
     }
 
@@ -138,7 +139,6 @@ class UsernameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
     func textFieldDidChange(notification: NSNotification) {
         onDataChange?()
     }
-    
 }
 
 private extension VDependencyManager {

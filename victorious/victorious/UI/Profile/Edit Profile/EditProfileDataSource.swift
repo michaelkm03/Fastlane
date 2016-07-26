@@ -12,7 +12,7 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
     
     private let dependencyManager: VDependencyManager
     private let tableView: UITableView
-    private let nameAndLocationCell: UsernameLocationAvatarCell
+    private let nameAndLocationCell: DisplaynameLocationAvatarCell
     private let aboutMeCell: AboutMeTextCell
     private var newAvatarFileURL: NSURL?
     private var user: UserModel {
@@ -22,16 +22,16 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
     }
     
     /// A callback to be notified when the user would like to edit their profile avatar
-    var onUserRequestsCameraFlow: (() -> ())?
+    var onUserRequestsCameraFlow: (() -> Void)?
     
     /// A callback to be notified when the user has made any changes to their information
-    var onUserUpdateData: (() -> ())?
+    var onUserUpdateData: (() -> Void)?
     
     init(dependencyManager: VDependencyManager, tableView: UITableView, userModel: UserModel) {
         self.dependencyManager = dependencyManager
         self.tableView = tableView
         self.user = userModel
-        nameAndLocationCell = tableView.dequeueReusableCellWithIdentifier("NameLocationAndPictureCell") as! UsernameLocationAvatarCell
+        nameAndLocationCell = tableView.dequeueReusableCellWithIdentifier("NameLocationAndPictureCell") as! DisplaynameLocationAvatarCell
         aboutMeCell = tableView.dequeueReusableCellWithIdentifier("AboutMe") as! AboutMeTextCell
         super.init()
         self.updateUI()
@@ -63,7 +63,7 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
     /// Check this boolean to determine whether or not the entered data is currently valid
     var enteredDataIsValid: Bool {
         get {
-            let username = nameAndLocationCell.username
+            let username = nameAndLocationCell.displayname
             guard let trimmedUsername = username?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) where
                 !trimmedUsername.isEmpty else {
                     return false
@@ -81,21 +81,19 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
         newAvatarFileURL = fileURL
         let imageAsset = ImageAsset(url: fileURL, size: previewImage.size)
         let newUser = User(id: user.id,
-                           username: nameAndLocationCell.username ?? user.username,
+                           username: nameAndLocationCell.displayname ?? user.displayName,
                            completedProfile: user.completedProfile,
                            location: nameAndLocationCell.location ?? user.location,
                            tagline: aboutMeCell.tagline,
-                           accessLevel: .owner,
+                           accessLevel: user.accessLevel,
                            previewImages: [imageAsset],
                            avatarBadgeType: user.avatarBadgeType,
                            vipStatus: user.vipStatus)
         self.user = newUser
     }
     
-    /// An update 
     func accountUpdateDelta() -> ProfileUpdate? {
-        return ProfileUpdate(email: nil,
-                             name: nameAndLocationCell.username,
+        return ProfileUpdate(displayName: nameAndLocationCell.displayname,
                              location: nameAndLocationCell.location,
                              tagline: aboutMeCell.tagline,
                              profileImageURL: newAvatarFileURL)
@@ -112,7 +110,7 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
         aboutMeCell.tagline = user.tagline
     }
     
-    private func configureNameAndLocationCell(nameCell: UsernameLocationAvatarCell) {
+    private func configureNameAndLocationCell(nameCell: DisplaynameLocationAvatarCell) {
         nameCell.onReturnKeySelected = { [weak self] in
             self?.aboutMeCell.beginEditing()
         }
@@ -125,7 +123,6 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
     private func configueAboutMeCell(aboutMeCell: AboutMeTextCell) {
         // Support resizing
         aboutMeCell.onDesiredHeightChangeClosure = { [weak self] height in
-            print(height)
             self?.tableView.beginUpdates()
             self?.tableView.endUpdates()
         }

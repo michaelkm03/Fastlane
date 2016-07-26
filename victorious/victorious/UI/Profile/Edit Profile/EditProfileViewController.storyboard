@@ -14,7 +14,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="NameLocationAndPictureCell" rowHeight="88" id="LOO-k8-inH" userLabel="Username Location and Avatar Cell" customClass="UsernameLocationAvatarCell" customModule="victorious" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="NameLocationAndPictureCell" rowHeight="88" id="LOO-k8-inH" userLabel="Username Location and Avatar Cell" customClass="DisplaynameLocationAvatarCell" customModule="victorious" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="114" width="600" height="88"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="LOO-k8-inH" id="pQ0-hx-pOl">
@@ -27,7 +27,7 @@
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6sk-13-fI7">
                                                     <rect key="frame" x="0.0" y="0.0" width="507" height="88"/>
                                                     <subviews>
-                                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="rUO-gE-Lo4">
+                                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="rUO-gE-Lo4" userLabel="Displayname Field">
                                                             <rect key="frame" x="0.0" y="0.0" width="507" height="44"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                             <constraints>
@@ -106,8 +106,8 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="avatarView" destination="N2S-8E-YW8" id="NgK-jr-osI"/>
+                                    <outlet property="displaynameField" destination="rUO-gE-Lo4" id="x3H-te-IFF"/>
                                     <outlet property="locationField" destination="eT9-4p-m2l" id="eJf-Og-6Dz"/>
-                                    <outlet property="usernameField" destination="rUO-gE-Lo4" id="MQX-Ay-Rwj"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="AboutMe" rowHeight="200" id="8Nq-i3-f4h" customClass="AboutMeTextCell" customModule="victorious" customModuleProvider="target">

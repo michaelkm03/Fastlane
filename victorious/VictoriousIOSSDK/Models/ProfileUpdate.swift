@@ -14,8 +14,7 @@ import Foundation
 /// properties will not be touched (e.g. setting "email" to nil will
 /// retain the user's current email address).
 public struct ProfileUpdate {
-    public let email: String?
-    public let name: String?
+    public let displayName: String?
     public let location: String?
     public let tagline: String?
     
@@ -23,9 +22,8 @@ public struct ProfileUpdate {
     /// a file URL pointing to a new profile image on disk
     public let profileImageURL: NSURL?
     
-    public init( email: String?, name: String?, location: String?, tagline: String?, profileImageURL: NSURL? ) {
-        self.email = email
-        self.name = name
+    public init( displayName: String?, location: String?, tagline: String?, profileImageURL: NSURL? ) {
+        self.displayName = displayName
         self.location = location
         self.tagline = tagline
         self.profileImageURL = profileImageURL

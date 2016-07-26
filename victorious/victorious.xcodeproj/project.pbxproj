@@ -734,7 +734,7 @@
 		799B89D11D469E02006743FE /* EditProfileDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 799B89CC1D469E02006743FE /* EditProfileDataSource.swift */; };
 		799B89D21D469E02006743FE /* EditProfileViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 799B89CD1D469E02006743FE /* EditProfileViewController.storyboard */; };
 		799B89D31D469E02006743FE /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 799B89CE1D469E02006743FE /* EditProfileViewController.swift */; };
-		799B89D41D469E02006743FE /* UsernameLocationAvatarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 799B89CF1D469E02006743FE /* UsernameLocationAvatarCell.swift */; };
+		799B89D41D469E02006743FE /* DisplaynameLocationAvatarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 799B89CF1D469E02006743FE /* DisplaynameLocationAvatarCell.swift */; };
 		79A809C61B7C07DF006AE04E /* UIViewController+Storyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79A809C51B7C07DF006AE04E /* UIViewController+Storyboard.swift */; };
 		79B51FD41B853A1900F826F3 /* NSDate+ComparableEquatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B51FD31B853A1900F826F3 /* NSDate+ComparableEquatable.swift */; };
 		79B718FF1C56E93100578012 /* NSManagedObject+Deletable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B718FE1C56E93100578012 /* NSManagedObject+Deletable.swift */; };
@@ -3029,7 +3029,7 @@
 		799B89CC1D469E02006743FE /* EditProfileDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileDataSource.swift; sourceTree = "<group>"; };
 		799B89CD1D469E02006743FE /* EditProfileViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = EditProfileViewController.storyboard; sourceTree = "<group>"; };
 		799B89CE1D469E02006743FE /* EditProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
-		799B89CF1D469E02006743FE /* UsernameLocationAvatarCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsernameLocationAvatarCell.swift; sourceTree = "<group>"; };
+		799B89CF1D469E02006743FE /* DisplaynameLocationAvatarCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplaynameLocationAvatarCell.swift; sourceTree = "<group>"; };
 		79A809C51B7C07DF006AE04E /* UIViewController+Storyboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Storyboard.swift"; sourceTree = "<group>"; };
 		79ACFD16A2EFEF8FE18E316E /* Pods-VictoriousCommonOSX.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.qa.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.qa.xcconfig"; sourceTree = "<group>"; };
 		79B51FD31B853A1900F826F3 /* NSDate+ComparableEquatable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+ComparableEquatable.swift"; sourceTree = "<group>"; };
@@ -7058,7 +7058,7 @@
 				799B89CC1D469E02006743FE /* EditProfileDataSource.swift */,
 				799B89CD1D469E02006743FE /* EditProfileViewController.storyboard */,
 				799B89CE1D469E02006743FE /* EditProfileViewController.swift */,
-				799B89CF1D469E02006743FE /* UsernameLocationAvatarCell.swift */,
+				799B89CF1D469E02006743FE /* DisplaynameLocationAvatarCell.swift */,
 			);
 			path = "Edit Profile";
 			sourceTree = "<group>";
@@ -12578,7 +12578,7 @@
 				C38211421B9640A200359D9E /* ShelfVisibilityTrackingHelper.swift in Sources */,
 				A601FB5C1B4369550050536C /* VEditProfilePicturePresenter.m in Sources */,
 				D85E42811AFA9A0F00A13BD3 /* VImageSequencePreviewView.m in Sources */,
-				799B89D41D469E02006743FE /* UsernameLocationAvatarCell.swift in Sources */,
+				799B89D41D469E02006743FE /* DisplaynameLocationAvatarCell.swift in Sources */,
 				F029B56D1CA1AA6200A01703 /* LibraryCreationFlowController.swift in Sources */,
 				A743E7E41A0816D500339CB3 /* VPasswordValidator.m in Sources */,
 				0314D48C19B46B5E00FA363C /* VSelectorViewController.m in Sources */,
