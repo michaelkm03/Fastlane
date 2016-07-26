@@ -36,7 +36,12 @@ class SimulatedPurchaseManager: VPurchaseManager {
     }
     
     override func fetchProductsWithIdentifiers(productIdentifiers: Set<NSObject>, success successCallback: VProductsRequestSuccessBlock, failure failureCallback: VProductsRequestFailureBlock) {
-        successCallback( Set<NSObject>() )
+        let productIdentifiers = productIdentifiers.flatMap({ $0 as? String })
+        var products = Set<VProduct>()
+        for productIdentifier in productIdentifiers {
+            products.insert(purchaseableProductForProductIdentifier(productIdentifier))
+        }
+        successCallback( products )
     }
     
     override func purchaseProduct(product: VProduct, success successCallback: VPurchaseSuccessBlock, failure failureCallback: VPurchaseFailBlock) {
@@ -45,6 +50,7 @@ class SimulatedPurchaseManager: VPurchaseManager {
             let operation = ShowTestPurchaseConfirmationOperation(
                 type: self?.purchaseTypeForProductIdentifier(product.productIdentifier) ?? .Product,
                 title: product.localizedTitle,
+                duration: product.localizedDescription,
                 price: product.price
             )
             operation.queue() { error, canceled in

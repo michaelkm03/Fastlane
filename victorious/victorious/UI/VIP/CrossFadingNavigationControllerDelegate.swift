@@ -11,6 +11,8 @@ import Foundation
 class CrossFadingNavigationControllerDelegate: NSObject, UINavigationControllerDelegate {
     var animationController: CrossFadingAnimationController
     
+    var fadingEnabled = true
+    
     init(animationController: CrossFadingAnimationController = CrossFadingAnimationController()) {
         self.animationController = animationController
     }
@@ -21,6 +23,6 @@ class CrossFadingNavigationControllerDelegate: NSObject, UINavigationControllerD
         fromViewController fromVC: UIViewController,
         toViewController toVC: UIViewController
     ) -> UIViewControllerAnimatedTransitioning? {
-        return animationController
+        return fadingEnabled ? animationController : nil
     }
 }
