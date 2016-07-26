@@ -27,12 +27,12 @@ private struct Constants {
     static let closeButtonHeight: CGFloat = 40
     static let closeButtonCornerRadius: CGFloat = 6
     static let textContainerPadding: CGFloat = -20
-    static let highlightBoundaryStrokeThickness: CGFloat = 2.0
+    static let highlightBoundaryStrokeThickness: CGFloat = 1.0
     static let highlightCircleRadius: CGFloat = 50
-    static let highlightStrokeColor = UIColor.blackColor().CGColor
+    static let highlightStrokeColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8).CGColor
     static let userMacro = "%%USER%%"
     static let animationDuration: NSTimeInterval = 1
-    static let closeButtonStrokeWidth: CGFloat = 2
+    static let closeButtonStrokeWidth: CGFloat = 1
     static let closeButtonStrokeColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.2).CGColor
     static let textContainerBackgroundColor = UIColor(red: 255, green: 255, blue: 255, alpha: 0.5)
     static let textContainerStrokeHeight: CGFloat = 2

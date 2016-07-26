@@ -17,6 +17,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     static let upgradeButtonID = "Accessory paygate"
     static let estimatedBarButtonWidth: CGFloat = 60.0
     static let estimatedStatusBarHeight: CGFloat = 20.0
+    static let estimatedNavBarRightPadding: CGFloat = 10.0
     static let goVIPButtonID = "Accessory Go VIP"
     
     private enum ProfileScreenContext : String {
@@ -33,10 +34,10 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         
         var coachmarkContext: String {
             switch self {
-                case .selfUser: return "self_user"
-                case .otherUser: return "other_user"
+                case .selfUser: return "user"
+                case .otherUser: return "other"
                 case .selfCreator: return "self_creator"
-                case otherCreator: return "other_creator"
+                case .otherCreator: return "creator"
             }
         }
     }
@@ -376,7 +377,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     func highlightFrame(identifier: String) -> CGRect? {
         if let barFrame = navigationController?.navigationBar.frame where identifier == "bump" {
             return CGRect(
-                x: barFrame.width - VNewProfileViewController.estimatedBarButtonWidth,
+                x: barFrame.width - VNewProfileViewController.estimatedBarButtonWidth - VNewProfileViewController.estimatedNavBarRightPadding,
                 y: VNewProfileViewController.estimatedStatusBarHeight,
                 width: VNewProfileViewController.estimatedBarButtonWidth,
                 height: barFrame.height
