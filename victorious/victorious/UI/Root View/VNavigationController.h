@@ -112,12 +112,12 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Called when the navigation controller is about to display `viewController`.
  */
-- (void)navigationController:(VNavigationController * _Nonnull)navigationController willShowViewController:(UIViewController * _Nonnull)viewController animated:(BOOL)animated;
+- (void)navigationController:(VNavigationController *_Nonnull)navigationController willShowViewController:(UIViewController *_Nonnull)viewController animated:(BOOL)animated;
 
 /**
  Called when the navigation controller has finished displaying `viewController`.
  */
-- (void)navigationController:(VNavigationController * _Nonnull)navigationController didShowViewController:(UIViewController * _Nonnull)viewController animated:(BOOL)animated;
+- (void)navigationController:(VNavigationController *_Nonnull)navigationController didShowViewController:(UIViewController *_Nonnull)viewController animated:(BOOL)animated;
 
 @end
 
