@@ -72,7 +72,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         captionBarViewController = childViewControllers.flatMap({ $0 as? CaptionBarViewController }).first
         mediaContentView.dependencyManager = dependencyManager
         mediaContentView.allowsVideoControls = false
-        mediaContentView.showsBackground = false
+        mediaContentView.showsBlurredBackground = false
     }
     
     private func setupDataSource(dependencyManager: VDependencyManager) -> StageDataSource {
