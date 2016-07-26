@@ -145,7 +145,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     
     var content: ContentModel? {
         didSet {
-            guard content?.id != oldValue?.id || content?.id == nil else {
+            guard content != oldValue else {
                 return
             }
             
