@@ -30,7 +30,6 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         static let textAlignment = NSTextAlignment.Center
         static let minimumScaleFactor: CGFloat = 0.8
         static let textPostPadding = 25
-        static let defaultTextBackgroundColor = UIColor.blackColor()
         static let defaultTextColor = UIColor.whiteColor()
         static let defaultTextFont = UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline)
     }
@@ -330,7 +329,6 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
             backgroundView?.sd_setImageWithURL(url, completed: { [weak self] (_, _, _, _) in
                 self?.renderText(content.text)
             })
-            backgroundView?.backgroundColor = Constants.defaultTextBackgroundColor
         }
     }
     
