@@ -146,12 +146,11 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     }
     
     func updateContent(content: ContentModel) {
-        
         guard let findOrCreateOperation = ContentFindOrCreateOperation(contentModel: content) else {
             return
         }
         
-        findOrCreateOperation.queue() { [weak self] results, error, success in
+        findOrCreateOperation.queue() { [weak self] results, _, _ in
             guard
                 let strongSelf = self,
                 let content = results?.first as? VContent

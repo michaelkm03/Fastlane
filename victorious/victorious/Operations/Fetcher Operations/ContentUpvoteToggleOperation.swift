@@ -29,7 +29,7 @@ class ContentUpvoteToggleOperation: FetcherOperation {
                 ContentUnupvoteOperation(
                     contentID: self.contentID,
                     contentUnupvoteURL: self.unupvoteURL
-                    ).rechainAfter(self).queue()
+                ).rechainAfter(self).queue()
             }
             else {
                 ContentUpvoteOperation(
