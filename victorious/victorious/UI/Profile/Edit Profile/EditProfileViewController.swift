@@ -20,6 +20,8 @@ class EditProfileViewController: UITableViewController {
     private var profilePicturePresenter: VEditProfilePicturePresenter?
     @IBOutlet private weak var saveButton: UIBarButtonItem!
     
+    // MARK: - UIViewController Overrides
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -46,17 +48,16 @@ class EditProfileViewController: UITableViewController {
         AccountUpdateOperation(profileUpdate: profileUpdate)?.queue()
     }
     
-    // MARK: - Validation
+    // MARK: - Miscellaneous Private Functions
     
     private func setupDataSource() {
-        guard let dependencyManager = dependencyManager,
-            currentUser = VCurrentUser.user() else {
-                print("We need a dependencyManager in the edit profile VC!")
+        guard
+            let dependencyManager = dependencyManager,
+            let currentUser = VCurrentUser.user() else {
+                v_log("We need a dependencyManager in the edit profile VC!")
                 return
         }
-        dataSource = EditProfileDataSource(dependencyManager: dependencyManager,
-                                           tableView: tableView,
-                                           userModel: currentUser)
+        dataSource = EditProfileDataSource(dependencyManager: dependencyManager, tableView: tableView, userModel: currentUser)
         dataSource?.onUserRequestsCameraFlow = { [weak self] in
             self?.presentCamera()
         }
