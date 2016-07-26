@@ -41,7 +41,7 @@ class AboutMeTextCell: UITableViewCell, UITextViewDelegate {
     
     // MARK: - UITextViewDelegate
     
-    @objc func textViewDidChange(textView: UITextView) {
+    func textViewDidChange(textView: UITextView) {
         onDataChange?()
         notifySizeChangeIfNeeded()
     }
