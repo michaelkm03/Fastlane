@@ -90,6 +90,7 @@ class ContentPreviewView: UIView {
         
         addSubview(spinner)
         sendSubviewToBack(spinner)
+        spinner.hidden = true
     }
     
     required init?(coder aDecoder: NSCoder) {
