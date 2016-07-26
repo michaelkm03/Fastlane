@@ -118,6 +118,9 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         vipIconImageView.image = appearanceDependencyManager?.vipIcon
         
         loadingSpinner.color = appearanceDependencyManager?.loadingSpinnerColor
+        
+        likesReceivedTitleLabel.text = appearanceDependencyManager?.receivedUpvotesTitle
+        likesGivenTitleLabel.text = appearanceDependencyManager?.givenUpvotesTitle
     }
     
     // MARK: - Populating content
@@ -226,5 +229,13 @@ private extension VDependencyManager {
     
     var vipIcon: UIImage? {
         return imageForKey("vipIcon")?.imageWithRenderingMode(.AlwaysTemplate)
+    }
+    
+    var receivedUpvotesTitle: String? {
+        return stringForKey("upvotes.text")
+    }
+    
+    var givenUpvotesTitle: String? {
+        return stringForKey("upvoted.text")
     }
 }
