@@ -35,7 +35,7 @@ public protocol RequestType {
     ///
     /// - parameter requestContext: Describes metadata related to the execution of this request
     /// - parameter authenticationContext: Describes authentication data
-    func urlRequestWithHeaders(requestContext: RequestContext, authenticationContext: AuthenticationContext?) -> NSURLRequest
+    func urlRequestWithHeaders(using requestContext: RequestContext, authenticationContext: AuthenticationContext?) -> NSURLRequest
 }
 
 /// For RequestType implementations that have no results, this extension provides a default implementation of
@@ -72,7 +72,7 @@ extension RequestType {
     /// - returns: A Cancelable reference that can be used to cancel the network request before it completes
     public func execute(baseURL baseURL: NSURL, requestContext: RequestContext, authenticationContext: AuthenticationContext?, callback: ResultCallback? = nil) -> Cancelable {
         let urlSession = NSURLSession.sharedSession()
-        let mutableRequest = urlRequestWithHeaders(requestContext, authenticationContext: authenticationContext).mutableCopy() as! NSMutableURLRequest
+        let mutableRequest = urlRequestWithHeaders(using: requestContext, authenticationContext: authenticationContext).mutableCopy() as! NSMutableURLRequest
         
         // Combine only if current path is relative, not full
         if let requestURLString = mutableRequest.URL?.absoluteString where !providesFullURL {
@@ -115,7 +115,7 @@ extension RequestType {
         return dataTask
     }
     
-    public func urlRequestWithHeaders(requestContext: RequestContext, authenticationContext: AuthenticationContext?) -> NSURLRequest {
+    public func urlRequestWithHeaders(using requestContext: RequestContext, authenticationContext: AuthenticationContext?) -> NSURLRequest {
         let mutableRequest = urlRequest.mutableCopy() as! NSMutableURLRequest
         
         if let authenticationContext = authenticationContext {

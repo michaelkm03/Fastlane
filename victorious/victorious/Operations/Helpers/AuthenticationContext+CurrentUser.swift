@@ -10,16 +10,8 @@ import Foundation
 import VictoriousIOSSDK
 
 extension AuthenticationContext {
-    init?() {
-        var user: VUser?
-        dispatch_sync(dispatch_get_main_queue()) {
-            user = VCurrentUser.user()
-        }
-        self.init(currentUser: user)
-    }
-    
-    init?(currentUser: VUser?) {
-        guard let currentUser = currentUser, let token = currentUser.token else {
+    init?(currentUser: VUser) {
+        guard let token = currentUser.token else {
             return nil
         }
         

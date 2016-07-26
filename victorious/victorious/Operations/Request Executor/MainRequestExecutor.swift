@@ -42,7 +42,12 @@ class MainRequestExecutor: RequestExecutorType {
         let requestContext = RequestContext(environment: currentEnvironment)
         let baseURL = request.baseURL ?? currentEnvironment.baseURL
         
-        let authenticationContext = AuthenticationContext()
+        var authenticationContext: AuthenticationContext?
+        dispatch_sync(dispatch_get_main_queue()) {
+            if let user = VCurrentUser.user() {
+                authenticationContext = AuthenticationContext(currentUser: user)
+            }
+        }
         
         networkActivityIndicator.start()
         let executeSemphore = dispatch_semaphore_create(0)

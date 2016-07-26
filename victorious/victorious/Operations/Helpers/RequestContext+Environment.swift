@@ -12,12 +12,7 @@ import VictoriousCommon
 
 extension RequestContext {
     
-    init() {
-        let currentEnvironment = VEnvironmentManager.sharedInstance().currentEnvironment
-        self.init(environment: currentEnvironment)
-    }
-    
-    init( environment: VEnvironment ) {
+    init( environment: VEnvironment = VEnvironmentManager.sharedInstance().currentEnvironment ) {
         let deviceID = UIDevice.currentDevice().v_authorizationDeviceID
         let firstInstallDeviceID = FirstInstallManager().generateFirstInstallDeviceID() ?? deviceID
         let sessionID = VRootViewController.sharedRootViewController()?.sessionTimer.sessionID
