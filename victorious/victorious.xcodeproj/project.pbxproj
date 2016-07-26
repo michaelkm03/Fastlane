@@ -1947,6 +1947,9 @@
 		F06350711CBC16840047E30C /* MixedMediaCameraViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06350701CBC16840047E30C /* MixedMediaCameraViewControllerDelegate.swift */; };
 		F06350751CBC6D240047E30C /* MixedMediaCameraCreationFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06350741CBC6D240047E30C /* MixedMediaCameraCreationFlowController.swift */; };
 		F065A40A1B433C7B00F0281B /* VFollowControl.m in Sources */ = {isa = PBXBuildFile; fileRef = F065A4091B433C7B00F0281B /* VFollowControl.m */; };
+		F069E93C1D46993500F91CE6 /* VIPSubscriptionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B6F0961D414B6D0037EACE /* VIPSubscriptionHelper.swift */; };
+		F069E93D1D46995000F91CE6 /* ProductFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B6F0941D41275F0037EACE /* ProductFetchOperation.swift */; };
+		F069E93E1D46995C00F91CE6 /* VIPSelectSubscriptionOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B6F0921D405FDB0037EACE /* VIPSelectSubscriptionOperation.swift */; };
 		F06B41711B7AA8D4008709E8 /* VFailureSequencePreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = F06B41701B7AA8D4008709E8 /* VFailureSequencePreviewView.m */; };
 		F06B41741B7AAA95008709E8 /* VFailureStreamPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = F06B41731B7AAA95008709E8 /* VFailureStreamPreviewView.m */; };
 		F06B417F1B7ADA4B008709E8 /* VTrendingShelfCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06B41771B7ADA4B008709E8 /* VTrendingShelfCollectionViewCell.swift */; };
@@ -4806,6 +4809,9 @@
 		F0ADB0671AD367970069DF0D /* VImageViewContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VImageViewContainer.m; sourceTree = "<group>"; };
 		F0B6F08E1D3ECDE10037EACE /* VIPFetchSubscriptionRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VIPFetchSubscriptionRemoteOperation.swift; sourceTree = "<group>"; };
 		F0B6F0901D3ED0C10037EACE /* VIPFetchSubscriptionRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VIPFetchSubscriptionRequest.swift; sourceTree = "<group>"; };
+		F0B6F0921D405FDB0037EACE /* VIPSelectSubscriptionOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VIPSelectSubscriptionOperation.swift; sourceTree = "<group>"; };
+		F0B6F0941D41275F0037EACE /* ProductFetchOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductFetchOperation.swift; sourceTree = "<group>"; };
+		F0B6F0961D414B6D0037EACE /* VIPSubscriptionHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VIPSubscriptionHelper.swift; sourceTree = "<group>"; };
 		F0BB3CA71BCC50E40006955D /* VContentViewOriginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VContentViewOriginViewController.h; sourceTree = "<group>"; };
 		F0BD3A431CD8208000B4AB3E /* PushTransitionAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PushTransitionAnimator.swift; path = Publish/PushTransitionAnimator.swift; sourceTree = "<group>"; };
 		F0BD3A651CD95A8000B4AB3E /* UIViewController+Alert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alert.swift"; sourceTree = "<group>"; };
@@ -6825,6 +6831,7 @@
 		6287BE0E1C7E871B0057D116 /* VIP */ = {
 			isa = PBXGroup;
 			children = (
+				F0B6F0961D414B6D0037EACE /* VIPSubscriptionHelper.swift */,
 				6287BE0F1C7E87390057D116 /* VIPGateViewController.swift */,
 				A748BD171C8A7302003D5F5F /* VIPGateViewController.storyboard */,
 				F093A9381CF3D96B009ACABF /* VIPFlowNavigationController.swift */,
@@ -7550,12 +7557,14 @@
 		A72C85C01C977FF500E97D4F /* Purchase Operations */ = {
 			isa = PBXGroup;
 			children = (
-				A7BB6C981CAEDF1A007FDD17 /* VIPSubscribeOperation.swift */,
-				F0B6F08E1D3ECDE10037EACE /* VIPFetchSubscriptionRemoteOperation.swift */,
+				F0B6F0941D41275F0037EACE /* ProductFetchOperation.swift */,
 				A72C85C21C977FF500E97D4F /* RestorePurchaseOperation.swift */,
 				A73BA5741C93CAA0008168B5 /* ShowTestPurchaseConfirmationOperation.swift */,
-				A7FFCE4C1C8FCDD900B1BE49 /* RestorePurchaseOperation.swift */,
+				F0B6F08E1D3ECDE10037EACE /* VIPFetchSubscriptionRemoteOperation.swift */,
+				F0B6F0921D405FDB0037EACE /* VIPSelectSubscriptionOperation.swift */,
+				A7BB6C981CAEDF1A007FDD17 /* VIPSubscribeOperation.swift */,
 				A7FFCE4D1C8FCDD900B1BE49 /* VIPValidateSuscriptionOperation.swift */,
+				A7FFCE4C1C8FCDD900B1BE49 /* RestorePurchaseOperation.swift */,
 			);
 			path = "Purchase Operations";
 			sourceTree = "<group>";
@@ -11861,6 +11870,7 @@
 				A7F843761BFD5A0B004C3D55 /* NSManagedObject+Entity.swift in Sources */,
 				BFA4C9081CDD4AD500E496FD /* ContentFetchOperation.swift in Sources */,
 				A72C86241C977FF500E97D4F /* PasswordResetOperation.swift in Sources */,
+				F069E93C1D46993500F91CE6 /* VIPSubscriptionHelper.swift in Sources */,
 				F06B41B71B7E6C95008709E8 /* VFollowSource.m in Sources */,
 				0314D4B819B46B5E00FA363C /* VVideoLightboxViewController.m in Sources */,
 				D85B708F1B0ECC6D0038CA5B /* VModernLandingViewController.m in Sources */,
@@ -12172,6 +12182,7 @@
 				BF52E8411C6137F500FB6C8F /* VScrollingTextContainerView.m in Sources */,
 				A7B1335E1C6178FD006EC4F5 /* ActivityIndicatorTableCell.swift in Sources */,
 				F0BD3A441CD8208000B4AB3E /* PushTransitionAnimator.swift in Sources */,
+				F069E93D1D46995000F91CE6 /* ProductFetchOperation.swift in Sources */,
 				A7B1335B1C6178FD006EC4F5 /* ActivityFooterTableDataSource.swift in Sources */,
 				A75C64991AD78DCA00245125 /* VTextPostViewModel.m in Sources */,
 				A72C86771C977FF600E97D4F /* PollResultSummaryBySequenceRemoteOperation.swift in Sources */,
@@ -12315,6 +12326,7 @@
 				A7AA647D19E78EAA0068D2B1 /* victoriOS.xcdatamodeld in Sources */,
 				A75C64AD1ADDE07B00245125 /* VTextCalloutFormatter.swift in Sources */,
 				A72C86661C977FF600E97D4F /* NSOperationQueue+Queuable.swift in Sources */,
+				F069E93E1D46995C00F91CE6 /* VIPSelectSubscriptionOperation.swift in Sources */,
 				669EBBE41A30239100DE317D /* VBasicToolPickerCell.m in Sources */,
 				F0411E871B4AE6D800557176 /* VMarqueeCaptionView.m in Sources */,
 				A72C86401C977FF500E97D4F /* UserInfoOperation.swift in Sources */,
