@@ -10,7 +10,6 @@
 #import "VInviteFriendTableViewCell.h"
 #import "VNoContentView.h"
 #import "VSequence.h"
-#import "VUserProfileViewController.h"
 #import "victorious-Swift.h"
 
 @interface VReposterTableViewController () <VPaginatedDataSourceDelegate>

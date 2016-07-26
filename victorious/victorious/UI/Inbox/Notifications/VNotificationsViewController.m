@@ -15,7 +15,6 @@
 #import "UIViewController+VAccessoryScreens.h"
 #import "UIViewController+VLayoutInsets.h"
 #import "VDependencyManager+VTracking.h"
-#import "VConversationListViewController.h"
 #import "victorious-Swift.h"
 
 static NSString * const kNotificationCellViewIdentifier = @"NotificationCell";
@@ -42,7 +41,6 @@ static CGFloat const kNotificationAddedVerticalInset = 8.0f;
         
         [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(loggedInChanged:) name:kLoggedInChangedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(applicationDidBecomeActive:) name:VApplicationDidBecomeActiveNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(inboxMessageNotification:) name:VConversationListViewControllerInboxPushReceivedNotification object:nil];
 
         [viewController loggedInChanged:nil];
     }
@@ -205,16 +203,6 @@ static CGFloat const kNotificationAddedVerticalInset = 8.0f;
 }
 
 #pragma mark - NSNotification handlers
-
-- (void)inboxMessageNotification:(NSNotification *)notification
-{
-    [self fetchNotificationCount];
-    
-    [self.dataSource refreshRemote:^(NSArray *array, NSError *error, BOOL cancelled)
-     {
-         // Don't need to redecorate visible cells here, because new notification objects are created based off of createdAt and subject properties
-     }];
-}
 
 - (void)setBadgeNumber:(NSInteger)badgeNumber
 {

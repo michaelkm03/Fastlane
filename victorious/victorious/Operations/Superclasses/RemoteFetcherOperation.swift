@@ -58,8 +58,8 @@ class RemoteFetcherOperation: FetcherOperation {
         if !requestExecutor.errorHandlers.contains({ $0 is UnauthorizedErrorHandler }) {
             requestExecutor.errorHandlers.append( UnauthorizedErrorHandler() )
         }
-        if !requestExecutor.errorHandlers.contains({ $0 is DebugErrorHanlder }) {
-            requestExecutor.errorHandlers.append( DebugErrorHanlder(requestIdentifier: "\(self.dynamicType)") )
+        if !requestExecutor.errorHandlers.contains({ $0 is DebugErrorHandler }) {
+            requestExecutor.errorHandlers.append( DebugErrorHandler(requestIdentifier: "\(self.dynamicType)") )
         }
     }
 }

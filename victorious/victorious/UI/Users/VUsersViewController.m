@@ -9,7 +9,6 @@
 #import "VUsersViewController.h"
 #import "UIView+AutoLayout.h"
 #import "VUserCell.h"
-#import "VUserProfileViewController.h"
 #import "VNoContentView.h"
 #import "VDependencyManager+VTracking.h"
 #import "victorious-Swift.h"

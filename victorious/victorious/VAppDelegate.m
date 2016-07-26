@@ -150,8 +150,8 @@
         VUser *user = [VCurrentUser user];
         if ( user != nil )
         {
-            [TestFairy identify:[user.remoteId stringValue] traits:@{TFSDKIdentityTraitNameKey: user.name ?: @"",
-                                                                     TFSDKIdentityTraitEmailAddressKey: user.email ?: @"",
+            [TestFairy identify:[user.remoteId stringValue] traits:@{TFSDKIdentityTraitNameKey: user.displayName ?: @"",
+                                                                     TFSDKIdentityTraitEmailAddressKey: user.username ?: @"",
                                                                      }];
         }
     }];
