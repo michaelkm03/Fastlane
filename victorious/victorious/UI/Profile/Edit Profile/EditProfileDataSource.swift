@@ -21,12 +21,6 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
         }
     }
     
-    /// A callback to be notified when the user would like to edit their profile avatar
-    var onUserRequestsCameraFlow: (() -> Void)?
-    
-    /// A callback to be notified when the user has made any changes to their information
-    var onUserUpdateData: (() -> Void)?
-    
     init(dependencyManager: VDependencyManager, tableView: UITableView, userModel: UserModel) {
         self.dependencyManager = dependencyManager
         self.tableView = tableView
@@ -59,6 +53,12 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
     }
     
     // MARK: - API
+    
+    /// A callback to be notified when the user would like to edit their profile avatar
+    var onUserRequestsCameraFlow: (() -> Void)?
+    
+    /// A callback to be notified when the user has made any changes to their information
+    var onUserUpdateData: (() -> Void)?
     
     /// Check this boolean to determine whether or not the entered data is currently valid
     var enteredDataIsValid: Bool {

@@ -12,9 +12,35 @@ import Foundation
 /// Assign closures to be notified of events in the UI.
 class DisplaynameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
     
-    struct Constants {
+    private struct Constants {
         static let placeholderAlpha = CGFloat(0.5)
     }
+    
+    @IBOutlet private var displaynameField: UITextField! {
+        didSet {
+            NSNotificationCenter.defaultCenter().addObserver(self,
+                                                             selector: #selector(textFieldDidChange(_:)),
+                                                             name: UITextFieldTextDidChangeNotification,
+                                                             object: displaynameField)
+        }
+    }
+    
+    @IBOutlet private var locationField: UITextField! {
+        didSet {
+            NSNotificationCenter.defaultCenter().addObserver(self,
+                                                             selector: #selector(textFieldDidChange(_:)),
+                                                             name: UITextFieldTextDidChangeNotification,
+                                                             object: locationField)
+        }
+    }
+    
+    @IBOutlet private var avatarView: AvatarView! {
+        didSet {
+            avatarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tappedOnAvatar(_:))))
+        }
+    }
+    
+    // MARK: - API
     
     /// Provide a closure to be notified when the return key is pressed in either
     /// the displayname or location text fields.
@@ -72,9 +98,9 @@ class DisplaynameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
             
             // Placeholder
             let placeholderAttributes = [NSForegroundColorAttributeName: placeholderTextColor.colorWithAlphaComponent(Constants.placeholderAlpha)]
-            displaynameField.attributedPlaceholder = NSAttributedString(string: "Name",
+            displaynameField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("DisplayNamePlaceholder", comment: "Placeholder text for the user's name as it is displayed to others."),
                                                                      attributes: placeholderAttributes)
-            locationField.attributedPlaceholder = NSAttributedString(string: "Location",
+            locationField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("LocationPlaceholder", comment: "Placeholder text for the user's location as it is displayed to others."),
                                                                      attributes: placeholderAttributes)
             
             // Background
@@ -82,37 +108,13 @@ class DisplaynameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
         }
     }
     
-    @IBOutlet private var displaynameField: UITextField! {
-        didSet {
-            NSNotificationCenter.defaultCenter().addObserver(self,
-                                                             selector: #selector(textFieldDidChange(_:)),
-                                                             name: UITextFieldTextDidChangeNotification,
-                                                             object: displaynameField)
-        }
-    }
-    @IBOutlet private var locationField: UITextField! {
-        didSet {
-            NSNotificationCenter.defaultCenter().addObserver(self,
-                                                             selector: #selector(textFieldDidChange(_:)),
-                                                             name: UITextFieldTextDidChangeNotification,
-                                                             object: locationField)
-        }
-    }
-    @IBOutlet private weak var avatarView: AvatarView! {
-        didSet {
-            avatarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tappedOnAvatar(_:))))
-        }
-    }
-    
-    // MARK: - API
-    
     func beginEditing() {
         displaynameField.becomeFirstResponder()
     }
     
     // MARK: - Target / Action
     
-    @objc func tappedOnAvatar(gesture: UITapGestureRecognizer) {
+    @objc private func tappedOnAvatar(gesture: UITapGestureRecognizer) {
         switch gesture.state {
             case .Ended:
                 self.onAvatarSelected?()
@@ -123,7 +125,7 @@ class DisplaynameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
     
     // MARK: - UITextFieldDelegate
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    @objc func textFieldShouldReturn(textField: UITextField) -> Bool {
         if textField == displaynameField {
             locationField.becomeFirstResponder()
             return false
@@ -136,7 +138,7 @@ class DisplaynameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
 
     // MARK: - Notification Handlers
     
-    func textFieldDidChange(notification: NSNotification) {
+    @objc private func textFieldDidChange(notification: NSNotification) {
         onDataChange?()
     }
 }
