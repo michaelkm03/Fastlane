@@ -36,7 +36,11 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     @IBOutlet weak private var restoreButton: UIButton!
     @IBOutlet weak private var privacyPolicyButton: UIButton!
     @IBOutlet weak private var termsOfServiceButton: UIButton!
-    @IBOutlet weak private var closeButton: UIButton!
+    @IBOutlet weak private var closeButton: TouchableInsetAdjustableButton! {
+        didSet {
+            closeButton.touchInsets = UIEdgeInsetsMake(-12, -12, -12, -12)
+        }
+    }
     
     @IBOutlet private var labelWidthConstraint: NSLayoutConstraint!
     @IBOutlet private var scrollViewInsetConstraints: [NSLayoutConstraint]!
