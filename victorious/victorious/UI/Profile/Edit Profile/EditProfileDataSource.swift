@@ -27,9 +27,7 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
     /// A callback to be notified when the user has made any changes to their information
     var onUserUpdateData: (() -> ())?
     
-    init(dependencyManager: VDependencyManager,
-         tableView: UITableView,
-         userModel: UserModel) {
+    init(dependencyManager: VDependencyManager, tableView: UITableView, userModel: UserModel) {
         self.dependencyManager = dependencyManager
         self.tableView = tableView
         self.user = userModel
