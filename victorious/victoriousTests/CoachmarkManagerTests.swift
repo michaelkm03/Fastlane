@@ -49,6 +49,7 @@ class CoachmarkManagerTests: XCTestCase {
     
     func testSetsCoachmarkShown() {
         let manager = createTestManager()
+        manager.resetShownCoachmarks()
         let initialShownCoachmarks = manager.fetchShownCoachmarkIDs()
         XCTAssertEqual(initialShownCoachmarks.count, 0)
         
