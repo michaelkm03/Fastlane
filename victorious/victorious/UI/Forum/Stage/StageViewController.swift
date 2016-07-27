@@ -8,7 +8,7 @@
 
 import UIKit
 
-class StageViewController: UIViewController, Stage, CaptionBarViewControllerDelegate, TileCardDelegate {
+class StageViewController: UIViewController, Stage, CaptionBarViewControllerDelegate, TileCardDelegate, MediaContentViewDelegate {
     private struct Constants {
         static let contentSizeAnimationDuration: NSTimeInterval = 0.5
         static let defaultAspectRatio: CGFloat = 16 / 9
@@ -234,6 +234,12 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         let router = Router(originViewController: self, dependencyManager: dependencyManager)
         let destination = DeeplinkDestination(userID: user.id)
         router.navigate(to: destination)
+    }
+
+    // MARK: - MediaContentViewDelegate
+
+    func didFinishLoadingContent(content: ContentModel) {
+        print("didFinishLoadingContent in StageVC")
     }
 
     // MARK: - StageShrinkingAnimatorDelegate

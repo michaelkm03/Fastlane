@@ -12,8 +12,7 @@ protocol CloseUpViewDelegate: class {
     func didSelectProfileForUserID(userID: Int)
 }
 
-
-class CloseUpView: UIView, ConfigurableGridStreamHeader {
+class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegate {
     
     // MARK: - Configuration
     
@@ -37,7 +36,6 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     @IBOutlet weak var avatarView: AvatarView!
     @IBOutlet weak var userNameButton: UIButton!
     @IBOutlet weak var createdAtLabel: UILabel!
-    @IBOutlet weak var mediaContentView: MediaContentView!
     @IBOutlet weak var captionLabel: UILabel!
     @IBOutlet weak var relatedLabel: UILabel!
     @IBOutlet weak var closeUpContentContainerView: UIView!
@@ -50,6 +48,11 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     
     private lazy var errorView: ErrorStateView = {
         return ErrorStateView.v_fromNib()
+    }()
+
+    private lazy var mediaContentView: MediaContentView = {
+        let mediaContentView = MediaContentView()
+        return mediaContentView
     }()
     
     private var videoPlayer: VVideoPlayer?
@@ -85,6 +88,10 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
             object: nil
         )
         blurredImageView.alpha = Constants.blurredImageAlpha
+    }
+
+    func setupMediaContentView() {
+        //insert logic here
     }
     
     // MARK: - Setting Content
@@ -295,6 +302,12 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
                 self.relatedLabel.alpha = items.count == 0 ? 0 : 1
             })
         })
+    }
+
+    // MARK: - MediaContentViewDelegate
+
+    func didFinishLoadingContent(content: ContentModel) {
+        print("didFinishLoadingContent in CUV")
     }
 }
 
