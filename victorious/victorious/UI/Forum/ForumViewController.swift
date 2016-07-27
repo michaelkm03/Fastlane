@@ -67,10 +67,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                 navBarTitleView?.activeUserCount = userCount.userCount
             case .filterContent(let path):
                 // path will be nil for home feed, and non nil for filtered feed
-                let hasFilter = path != nil
-                chatFeed?.showPendingContents = !hasFilter
-                composer?.setComposerVisible(!hasFilter, animated: true)
-                stage?.setStageEnabled(!hasFilter, animated: true)
+                composer?.setComposerVisible(path == nil, animated: true)
+                stage?.setStageEnabled(path == nil, animated: true)
             case .closeVIP():
                 onClose()
             case .setOptimisticPostingEnabled(let enabled):

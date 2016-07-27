@@ -12,8 +12,7 @@ protocol ChatFeed: class, ForumEventSender, ForumEventReceiver {
     var nextSender: ForumEventSender? { get set }
     var delegate: ChatFeedDelegate? { get set }
     var dependencyManager: VDependencyManager! { get set }
-    var showPendingContents: Bool { get set }
-
+    
     var newItemsController: NewItemsController? { get }
     var collectionView: UICollectionView! { get }
     var chatInterfaceDataSource: ChatInterfaceDataSource { get }
@@ -74,9 +73,7 @@ extension ChatFeed {
         let oldPendingItemCount = max(0, chatInterfaceDataSource.pendingItems.count - newPendingContentCount)
         let insertingAbovePendingContent = oldPendingItemCount > 0 && newPendingContentCount <= 0
         
-        let items = newItems.filter { $0.creationState != .sent ? showPendingContents : true }
-        
-        updateCollectionView(with: items, loadingType: loadingType, newPendingContentCount: newPendingContentCount, removedPendingContentIndices: removedPendingContentIndices) {
+        updateCollectionView(with: newItems, loadingType: loadingType, newPendingContentCount: newPendingContentCount, removedPendingContentIndices: removedPendingContentIndices) {
             collectionView.collectionViewLayout.invalidateLayout()
             
             CATransaction.commit()

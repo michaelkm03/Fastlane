@@ -35,7 +35,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     
     weak var delegate: ChatFeedDelegate?
     var dependencyManager: VDependencyManager!
-    var showPendingContents: Bool = true
     
     @IBOutlet private(set) weak var collectionView: UICollectionView!
     @IBOutlet private(set) var newItemsController: NewItemsController?

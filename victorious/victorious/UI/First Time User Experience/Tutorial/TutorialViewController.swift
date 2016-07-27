@@ -31,7 +31,6 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
     
     weak var nextSender: ForumEventSender? = nil
     var dependencyManager: VDependencyManager!
-    var showPendingContents: Bool = false
     
     @IBOutlet private(set) weak var collectionView: UICollectionView! {
         didSet {
