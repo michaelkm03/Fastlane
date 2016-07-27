@@ -61,10 +61,10 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
     @IBOutlet private var nameLabel: UILabel!
     @IBOutlet private var vipIconImageView: UIImageView!
     @IBOutlet private var statsContainerView: UIView!
-    @IBOutlet private var likesGivenValueLabel: UILabel!
-    @IBOutlet private var likesGivenTitleLabel: UILabel!
-    @IBOutlet private var likesReceivedValueLabel: UILabel!
-    @IBOutlet private var likesReceivedTitleLabel: UILabel!
+    @IBOutlet private var upvotesGivenValueLabel: UILabel!
+    @IBOutlet private var upvotesGivenTitleLabel: UILabel!
+    @IBOutlet private var upvotesReceivedValueLabel: UILabel!
+    @IBOutlet private var upvotesReceivedTitleLabel: UILabel!
     @IBOutlet private var tierValueLabel: UILabel!
     @IBOutlet private var tierTitleLabel: UILabel!
     @IBOutlet private var locationLabel: UILabel!
@@ -96,20 +96,20 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         tintColor = appearanceDependencyManager?.accentColor
         
         nameLabel.textColor = appearanceDependencyManager?.headerTextColor
-        likesGivenValueLabel.textColor = appearanceDependencyManager?.statValueTextColor
-        likesGivenTitleLabel.textColor = appearanceDependencyManager?.statLabelTextColor
-        likesReceivedValueLabel.textColor = appearanceDependencyManager?.statValueTextColor
-        likesReceivedTitleLabel.textColor = appearanceDependencyManager?.statLabelTextColor
+        upvotesGivenValueLabel.textColor = appearanceDependencyManager?.statValueTextColor
+        upvotesGivenTitleLabel.textColor = appearanceDependencyManager?.statLabelTextColor
+        upvotesReceivedValueLabel.textColor = appearanceDependencyManager?.statValueTextColor
+        upvotesReceivedTitleLabel.textColor = appearanceDependencyManager?.statLabelTextColor
         tierValueLabel.textColor = appearanceDependencyManager?.statValueTextColor
         tierTitleLabel.textColor = appearanceDependencyManager?.statLabelTextColor
         locationLabel.textColor = appearanceDependencyManager?.infoTextColor
         taglineLabel.textColor = appearanceDependencyManager?.infoTextColor
         
         nameLabel.font = appearanceDependencyManager?.headerFont
-        likesGivenValueLabel.font = appearanceDependencyManager?.statValueFont
-        likesGivenTitleLabel.font = appearanceDependencyManager?.statLabelFont
-        likesReceivedValueLabel.font = appearanceDependencyManager?.statValueFont
-        likesReceivedTitleLabel.font = appearanceDependencyManager?.statLabelFont
+        upvotesGivenValueLabel.font = appearanceDependencyManager?.statValueFont
+        upvotesGivenTitleLabel.font = appearanceDependencyManager?.statLabelFont
+        upvotesReceivedValueLabel.font = appearanceDependencyManager?.statValueFont
+        upvotesReceivedTitleLabel.font = appearanceDependencyManager?.statLabelFont
         tierValueLabel.font = appearanceDependencyManager?.statValueFont
         tierTitleLabel.font = appearanceDependencyManager?.statLabelFont
         locationLabel.font = appearanceDependencyManager?.infoFont
@@ -119,8 +119,8 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         
         loadingSpinner.color = appearanceDependencyManager?.loadingSpinnerColor
         
-        likesReceivedTitleLabel.text = appearanceDependencyManager?.receivedUpvotesTitle
-        likesGivenTitleLabel.text = appearanceDependencyManager?.givenUpvotesTitle
+        upvotesReceivedTitleLabel.text = appearanceDependencyManager?.receivedUpvotesTitle
+        upvotesGivenTitleLabel.text = appearanceDependencyManager?.givenUpvotesTitle
     }
     
     // MARK: - Populating content
@@ -135,8 +135,8 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         locationLabel.text = user?.location
         taglineLabel.text = user?.tagline
         vipIconImageView.hidden = user?.isVIPSubscriber?.boolValue != true
-        likesGivenValueLabel?.text = numberFormatter.stringForInteger(user?.likesGiven ?? 0)
-        likesReceivedValueLabel?.text = numberFormatter.stringForInteger(user?.likesReceived ?? 0)
+        upvotesGivenValueLabel?.text = numberFormatter.stringForInteger(user?.likesGiven ?? 0)
+        upvotesReceivedValueLabel?.text = numberFormatter.stringForInteger(user?.likesReceived ?? 0)
         
         let tier = user?.tier
         let shouldDisplayTier = tier?.isEmpty == false
