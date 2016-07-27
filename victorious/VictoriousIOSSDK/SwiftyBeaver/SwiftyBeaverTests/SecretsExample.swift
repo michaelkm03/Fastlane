@@ -23,8 +23,8 @@ import Foundation
 struct Secrets {
 
     struct Platform {
-        static let appID = ""
-        static let appSecret = ""
-        static let encryptionKey = ""
+        static let appID = "m5OOEr"
+        static let appSecret = "Bpjf42wjbtflv6xcaevhrvvo5adhnojU"
+        static let encryptionKey = "eZuffjwc7jpjkvqujuweg9nkhi0slleE"
     }
 }
