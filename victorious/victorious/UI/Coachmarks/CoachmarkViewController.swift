@@ -31,7 +31,7 @@ private struct Constants {
     static let highlightCircleRadius: CGFloat = 50
     static let highlightStrokeColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8).CGColor
     static let userMacro = "%%USER%%"
-    static let animationDuration: NSTimeInterval = 1
+    static let animationDuration: NSTimeInterval = 0.3
     static let closeButtonStrokeWidth: CGFloat = 1
     static let closeButtonStrokeColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.2).CGColor
     static let textContainerBackgroundColor = UIColor(red: 255, green: 255, blue: 255, alpha: 0.5)
@@ -42,7 +42,6 @@ private struct Constants {
 
 class CoachmarkViewController: UIViewController, VBackgroundContainer {
     private let backgroundView = UIView()
-    private let detailsView = CoachmarkTextContainerView()
     
     init(coachmark: Coachmark, containerFrame: CGRect, highlightFrame: CGRect? = nil) {
         super.init(nibName: nil, bundle: nil)
@@ -54,6 +53,7 @@ class CoachmarkViewController: UIViewController, VBackgroundContainer {
         view.addSubview(backgroundView)
         view.v_addFitToParentConstraintsToSubview(backgroundView)
         
+        let detailsView = CoachmarkTextContainerView()
         let titleLabel = UILabel()
         titleLabel.text = dependencyManager.title
         titleLabel.font = dependencyManager.titleFont
@@ -171,12 +171,10 @@ class CoachmarkViewController: UIViewController, VBackgroundContainer {
     func animate(intoDisplayer displayer: CoachmarkDisplayer) {
         //Animate the coachmark
         view.alpha = 0
-        detailsView.transform = CGAffineTransformScale(detailsView.transform, 0.0, 0.0)
         displayer.addCoachmark(self)
         
         UIView.animateWithDuration(Constants.animationDuration) {
             self.view.alpha = 1
-            self.detailsView.transform = CGAffineTransformIdentity
         }
     }
     
@@ -185,7 +183,6 @@ class CoachmarkViewController: UIViewController, VBackgroundContainer {
             Constants.animationDuration,
             animations: {
                 self.view.alpha = 0
-                self.detailsView.transform = CGAffineTransformScale(self.detailsView.transform, 0.0, 0.0)
             })
         { _ in
             self.dismissViewControllerAnimated(false, completion: nil)
