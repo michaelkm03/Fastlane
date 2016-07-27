@@ -216,12 +216,13 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
             if
                 let videoDuration = self?.mediaContentView.videoCoordinator?.duration,
                 let content = self?.currentStageContent?.content
-                where content.seekAheadTime() < videoDuration
             {
-                self?.mediaContentView.videoCoordinator?.playVideo(true)
-            }
-            else {
-                self?.hideStage(animated: true)
+                if content.seekAheadTime() < videoDuration {
+                    self?.mediaContentView.videoCoordinator?.playVideo(true)
+                }
+                else {
+                    self?.hideStage(animated: true)
+                }
             }
         }
         visible = true
