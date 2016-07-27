@@ -46,8 +46,13 @@ struct Router {
         let displayModifier = ShowCloseUpDisplayModifier(dependencyManager: dependencyManager, originViewController: originViewController)
 
         switch contentWrapper {
-            case .content(let content): ShowCloseUpOperation.showOperation(forContent: content, displayModifier: displayModifier).queue()
-            case .contentID(let id): ShowCloseUpOperation.showOperation(forContentID: id, displayModifier: displayModifier).queue()
+            case .content(let content):
+                guard content.type != .text else {
+                    return
+                }
+                ShowCloseUpOperation.showOperation(forContent: content, displayModifier: displayModifier).queue()
+            case .contentID(let id):
+                ShowCloseUpOperation.showOperation(forContentID: id, displayModifier: displayModifier).queue()
         }
     }
     

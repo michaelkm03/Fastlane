@@ -47,10 +47,6 @@ class DeeplinkDestinationTests: XCTestCase {
         let imageContent = Content(id: "12345", createdAt: Timestamp(date: NSDate()) , postedAt: Timestamp(date: NSDate()), type: .image, text: "abc", assets: [], previewImages: [], author: User(id: 123))
         let destination1 = DeeplinkDestination(content: imageContent)
         XCTAssertEqual(destination1, .closeUp(contentWrapper: .content(content: imageContent)))
-        
-        let textContent = Content(id: "12346", createdAt: Timestamp(date: NSDate()) , postedAt: Timestamp(date: NSDate()), type: .text, text: "abc", assets: [], previewImages: [], author: User(id: 123))
-        let destination2 = DeeplinkDestination(content: textContent)
-        XCTAssertNil(destination2)
     }
     
     func testInitializeWithUserID() {

@@ -64,7 +64,7 @@ enum DeeplinkDestination: Equatable {
     
     init?(content: ContentModel) {
         switch content.type {
-        case .image, .video, .gif:
+        case .image, .video, .gif, .text:
             self = .closeUp(contentWrapper: .content(content: content))
         case .link:
             guard
@@ -74,8 +74,6 @@ enum DeeplinkDestination: Equatable {
                 return nil
             }
             self = validDestination
-        case .text:
-            return nil
         }
     }
     
