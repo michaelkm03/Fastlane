@@ -30,7 +30,6 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         static let textAlignment = NSTextAlignment.Center
         static let minimumScaleFactor: CGFloat = 0.8
         static let textPostPadding = 25
-        static let defaultTextBackgroundColor = UIColor.blackColor()
         static let defaultTextColor = UIColor.whiteColor()
         static let defaultTextFont = UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline)
     }
@@ -65,9 +64,11 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     }()
     
     // MARK: - Initializing
-    
-    init(showsBackground: Bool = true) {
-        self.showsBackground = showsBackground
+
+    /// Sets up the content view with a zero frame. Use this initializer if created from code.
+    /// showsBlurredBackground decides if the system blur is applied to the background view.
+    init(showsBlurredBackground: Bool = true) {
+        self.showsBlurredBackground = showsBlurredBackground
         super.init(frame: CGRect.zero)
         setup()
     }
@@ -110,9 +111,9 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     var animatesBetweenContent = true
     
     /// Whether or not the blurred preview image background is shown behind the media.
-    var showsBackground = true {
+    var showsBlurredBackground = true {
         didSet {
-            if showsBackground != oldValue {
+            if showsBlurredBackground != oldValue {
                 configureBackground()
             }
         }
@@ -129,15 +130,13 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     private func configureBackground() {
         previewImageView.contentMode = (fillMode == .fit) ? .ScaleAspectFit : .ScaleAspectFill
         
-        if showsBackground {
-            let backgroundView = UIImageView()
-            self.backgroundView = backgroundView
-            backgroundView.contentMode = .ScaleAspectFill
-            insertSubview(backgroundView, atIndex: 0)
-        }
-        else {
-            backgroundView?.removeFromSuperview()
-            backgroundView = nil
+        let backgroundView = UIImageView()
+        self.backgroundView = backgroundView
+        backgroundView.contentMode = .ScaleAspectFill
+        insertSubview(backgroundView, atIndex: 0)
+
+        if !showsBlurredBackground {
+            backgroundView.image = nil
         }
     }
     
@@ -312,11 +311,12 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         textPostLabel.textColor = textPostDependency?.textPostColor ?? Constants.defaultTextColor
         
         textPostLabel.hidden = true //Hide while we set up the view for the next post
-        
-        if
-            let url = textPostDependency?.textPostBackgroundImageURL,
-            let content = content
-        {
+
+        guard let url = textPostDependency?.textPostBackgroundImageURL, let content = content else {
+            return
+        }
+
+        if showsBlurredBackground {
             let imageAsset = ImageAsset(url: url, size: frame.size)
             setBackgroundBlur(withImageAsset: imageAsset, forContent: content) { [weak self] in
                 guard let currentContentID = self?.content?.id where currentContentID == content.id else {
@@ -326,11 +326,10 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
             }
         }
         else {
-            backgroundView?.image = nil
-            backgroundView?.backgroundColor = Constants.defaultTextBackgroundColor
-            renderText(content?.text)
+            backgroundView?.sd_setImageWithURL(url, completed: { [weak self] (_, _, _, _) in
+                self?.renderText(content.text)
+            })
         }
-
     }
     
     private func tearDownTextLabel() {
@@ -375,7 +374,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         }
         
         let minWidth = UIScreen.mainScreen().bounds.size.width
-        if let imageAsset = content.previewImage(ofMinimumWidth: minWidth) {
+        if let imageAsset = content.previewImage(ofMinimumWidth: minWidth) where showsBlurredBackground {
             setBackgroundBlur(withImageAsset: imageAsset, forContent: content)
         }
         else {

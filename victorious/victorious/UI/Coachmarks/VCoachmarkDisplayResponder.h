@@ -36,6 +36,6 @@ typedef void (^VMenuItemDiscoveryBlock) (BOOL found, CGRect location);
     @param identifier The identifier of the screen whose menu button that should be located.
     @param completion The block that should be called on after a menu button is located.
  */
-- (void)findOnScreenMenuItemWithIdentifier:(NSString * _Nonnull)identifier andCompletion:(_Nonnull VMenuItemDiscoveryBlock)completion;
+- (void)findOnScreenMenuItemWithIdentifier:(NSString *_Nonnull)identifier andCompletion:(_Nonnull VMenuItemDiscoveryBlock)completion;
 
 @end

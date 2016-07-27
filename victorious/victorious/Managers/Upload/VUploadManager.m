@@ -259,12 +259,7 @@ static inline BOOL isSessionQueue()
         [self.taskInformation addObject:uploadTask];
         [self.tasksInProgressSerializer saveUploadTasks:self.taskInformation];
         
-        NSMutableURLRequest *request = [uploadTask.request mutableCopy];
-        [request v_setAuthorizationHeaderWithPersistentStore:self.persistentStore];
-        [request v_setOSVersionHeader];
-        [request v_setPlatformHeader];
-        
-        NSURLSessionUploadTask *uploadSessionTask = [self.urlSession uploadTaskWithRequest:request fromFile:uploadBodyFileURL];
+        NSURLSessionUploadTask *uploadSessionTask = [self.urlSession uploadTaskWithRequest:uploadTask.request fromFile:uploadBodyFileURL];
         
         if ( uploadSessionTask == nil )
         {

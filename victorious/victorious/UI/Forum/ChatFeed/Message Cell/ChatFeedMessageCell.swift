@@ -167,7 +167,6 @@ class ChatFeedMessageCell: UICollectionViewCell {
                 // Videos and images
                 let previewView = createContentPreviewViewIfNeeded()
                 ChatFeedMessageCell.layoutContent(for: self)
-                previewView.loadingSpinnerEnabled = true
                 previewView.content = content
             }
             previewView?.hidden = false
@@ -184,7 +183,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
             return existingPreviewView
         }
         
-        let previewView = ContentPreviewView()
+        let previewView = ContentPreviewView(loadingSpinnerEnabled: true)
         previewView.dependencyManager = dependencyManager
         setupPreviewView(previewView)
         return previewView
@@ -195,7 +194,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
             return existingMediaView
         }
         
-        let previewView = MediaContentView(showsBackground: false)
+        let previewView = MediaContentView(showsBlurredBackground: false)
         previewView.animatesBetweenContent = false
         previewView.allowsVideoControls = false
         previewView.fillMode = .fill
