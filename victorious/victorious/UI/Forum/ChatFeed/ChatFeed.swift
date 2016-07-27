@@ -75,7 +75,6 @@ extension ChatFeed {
         
         updateCollectionView(with: newItems, loadingType: loadingType, newPendingContentCount: newPendingContentCount, removedPendingContentIndices: removedPendingContentIndices) {
             collectionView.collectionViewLayout.invalidateLayout()
-            
             CATransaction.commit()
             
             // If we loaded newer items and we were scrolled to the bottom, or if we refreshed the feed, scroll down to
@@ -91,12 +90,17 @@ extension ChatFeed {
     }
     
     private func updateCollectionView(with newItems: [ChatFeedContent], loadingType: PaginatedLoadingType, newPendingContentCount: Int, removedPendingContentIndices: [Int], completion: () -> Void) {
+        let collectionView = self.collectionView
         if loadingType == .refresh {
-            collectionView.reloadData()
-            completion()
+            // Perform refresh inside a performBatchUpdates block to avoid race condition where completion is called before refresh completes
+            collectionView.performBatchUpdates({
+                // Calling reloadData in here causes a crash
+                collectionView.reloadSections(NSIndexSet(index: 0))
+            }, completion: { _ in
+                completion()
+            })
         }
         else {
-            let collectionView = self.collectionView
             let visibleItemCount = chatInterfaceDataSource.visibleItems.count
             let oldVisibleItemCount = visibleItemCount - newItems.count
             let itemCount = chatInterfaceDataSource.itemCount
