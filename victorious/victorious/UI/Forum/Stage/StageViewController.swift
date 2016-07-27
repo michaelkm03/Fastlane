@@ -46,6 +46,10 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         }
     }
 
+    private var isOnScreen: Bool {
+        return self.view.window != nil
+    }
+
     /// Shows meta data about the current item on the stage.
     private var titleCardViewController: TitleCardViewController?
 
@@ -56,6 +60,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     private var enabled = true
     
     weak var delegate: StageDelegate?
+    private let audioSession = AVAudioSession.sharedInstance()
 
     var dependencyManager: VDependencyManager! {
         didSet {
@@ -73,6 +78,13 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         mediaContentView.dependencyManager = dependencyManager
         mediaContentView.allowsVideoControls = false
         mediaContentView.showsBlurredBackground = false
+        
+        audioSession.addObserver(
+            self,
+            forKeyPath: "outputVolume",
+            options: [.New, .Old],
+            context: nil
+        )
     }
     
     private func setupDataSource(dependencyManager: VDependencyManager) -> StageDataSource {
@@ -81,14 +93,28 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         return dataSource
     }
     
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        mediaContentView.videoCoordinator?.playVideo()
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        if let content = currentStageContent?.content {
+            mediaContentView.content = content
+            setStageEnabled(true, animated: false)
+        }
     }
 
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        mediaContentView.videoCoordinator?.pauseVideo()
+        
+        hideStage(animated: false)
+    }
+    
+    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+        if keyPath == "outputVolume" && view.window != nil {
+            VAudioManager.sharedInstance().focusedPlaybackDidBegin(muted: false)
+        }
+    }
+    
+    deinit {
+        audioSession.removeObserver(self, forKeyPath: "outputVolume")
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -111,16 +137,17 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     }
 
     func addStageContent(stageContent: StageContent) {
-        guard isViewLoaded() && enabled else {
+        currentStageContent = stageContent
+        
+        guard isOnScreen && enabled else {
             return
         }
-        currentStageContent = stageContent
 
         titleCardViewController?.populate(with: stageContent)
 
         mediaContentView.videoCoordinator?.pauseVideo()
         mediaContentView.content = stageContent.content
-
+        
         updateStageHeight()
 
         showStage(animated: true)
@@ -184,9 +211,18 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         guard !visible else {
             return
         }
-
+        
         mediaContentView.showContent(animated: animated) { [weak self] _ in
-            self?.mediaContentView.playVideo()
+            if
+                let videoDuration = self?.mediaContentView.videoCoordinator?.duration,
+                let content = self?.currentStageContent?.content
+                where content.seekAheadTime() < videoDuration
+            {
+                self?.mediaContentView.videoCoordinator?.playVideo(true)
+            }
+            else {
+                self?.hideStage(animated: true)
+            }
         }
         visible = true
         UIView.animateWithDuration(animated ? Constants.contentSizeAnimationDuration : 0) {
