@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
@@ -55,11 +55,6 @@
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </view>
-                        <view contentMode="scaleAspectFit" id="Oai-Hq-HeT" userLabel="mediaContentView" customClass="MediaContentView" customModule="victorious" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="70" width="320" height="98"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" red="1" green="0.4045170092" blue="0.51572655150000002" alpha="1" colorSpace="calibratedRGB"/>
-                        </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="dho-2P-v81">
                             <rect key="frame" x="15" y="162" width="290" height="295"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
@@ -88,7 +83,6 @@
                 <outlet property="createdAtLabel" destination="Vmn-ZP-QUH" id="u8w-eE-8ut"/>
                 <outlet property="headerSection" destination="TF1-tJ-TCB" id="Xlj-vI-6Tr"/>
                 <outlet property="lightOverlayView" destination="r6Z-rq-Xpm" id="FRR-Wm-HWs"/>
-                <outlet property="mediaContentView" destination="Oai-Hq-HeT" id="9E2-cn-CPj"/>
                 <outlet property="relatedLabel" destination="yDO-Pi-1ty" id="ixi-Ie-rb7"/>
                 <outlet property="userNameButton" destination="KXm-IF-yUA" id="JES-yG-JXZ"/>
             </connections>

@@ -8,6 +8,13 @@
 
 import UIKit
 
+protocol MediaContentViewDelegate: class {
+    /// Tells the delegate that a particular content is loaded.
+    func didFinishLoadingContent(content: ContentModel)
+
+//    func failedToLoadContent(content: ContentModel, error: NSError?)
+}
+
 enum FillMode {
     case fill
     case fit
@@ -17,6 +24,8 @@ enum FillMode {
 class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGestureRecognizerDelegate {
 
     var dependencyManager: VDependencyManager?
+
+    weak var delegate: MediaContentViewDelegate?
 
     // MARK: - Private
 
