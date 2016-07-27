@@ -195,7 +195,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
             return existingMediaView
         }
         
-        let previewView = MediaContentView(showsBackground: false)
+        let previewView = MediaContentView(showsBlurredBackground: false)
         previewView.animatesBetweenContent = false
         previewView.allowsVideoControls = false
         previewView.fillMode = .fill

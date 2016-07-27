@@ -35,7 +35,7 @@ class ContentUpvoteToggleOperation: FetcherOperation {
                 ContentUpvoteOperation(
                     contentID: self.contentID,
                     contentUpvoteURL: self.upvoteURL
-                ).rechainAfter(self).queue()
+                    ).rechainAfter(self).queue()
             }
         }
     }
