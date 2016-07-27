@@ -108,9 +108,7 @@ class ContentPreviewView: UIView {
     
     private func setupForContent(content: ContentModel) {
         spinner?.startAnimating()
-        
-        let userCanViewContent = VCurrentUser.user()?.canView(content) == true
-        vipIcon.hidden = userCanViewContent
+        vipIcon.hidden = !content.isVIPOnly
         
         setupImage(forContent: content)
         

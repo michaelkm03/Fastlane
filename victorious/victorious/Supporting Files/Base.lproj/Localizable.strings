@@ -161,7 +161,7 @@
 "Vote this"             =   "Vote this";
 "Vote that"             =   "Vote that";
 
-"Uploading"             =   "Your content is uploading...";
+"Uploading"             =   "Your post is uploading...";
 "UploadFinalizing"      =   "We are finalizing your post, it will be available soon.";
 "UploadFailed"          =   "Sorry, your upload failed. Please check your connection and try again.";
 "UploadSuccess"         =   "Success! Your post has been uploaded.";
