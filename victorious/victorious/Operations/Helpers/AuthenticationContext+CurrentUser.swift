@@ -10,8 +10,8 @@ import Foundation
 import VictoriousIOSSDK
 
 extension AuthenticationContext {
-    init?(currentUser: VUser?) {
-        guard let currentUser = currentUser, let token = currentUser.token else {
+    init?(currentUser: VUser) {
+        guard let token = currentUser.token else {
             return nil
         }
         

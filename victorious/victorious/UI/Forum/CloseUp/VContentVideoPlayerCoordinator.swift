@@ -37,12 +37,6 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         }
     }
     private var content: ContentModel
-    private var shouldLoop: Bool {
-        return content.type == .gif
-    }
-    private var shouldMute: Bool {
-        return content.type == .gif
-    }
     
     weak var delegate: ContentVideoPlayerCoordinatorDelegate?
     
@@ -92,8 +86,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         }
         
         if let item = item {
-            item.muted = shouldMute
-            item.loop = shouldLoop
+            item.loop = content.shouldLoop
             item.useAspectFit = true
             videoPlayer.setItem(item)
         }
@@ -102,6 +95,10 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     // MARK: - Managing the video player
     
     private let videoPlayer: VVideoPlayer
+    
+    var duration: Double {
+        return videoPlayer.durationSeconds
+    }
     
     func setupVideoPlayer(in superview: UIView) {
         superview.addSubview(videoPlayer.view)
@@ -124,10 +121,18 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     }
     
     // MARK: - Managing playback
-    
-    func playVideo() {
+
+    /// Plays the video belonging to the content passed in during initialization.
+    /// `synced` can be used to enable the syncing feature where the video would be synced between all users of the app.
+    func playVideo(synced: Bool = false) {
+        if synced {
+            let seekAheadTime = content.seekAheadTime()
+            if Int(videoPlayer.currentTimeSeconds) <= Int(seekAheadTime) {
+                videoPlayer.seekToTimeSeconds(seekAheadTime)
+            }
+        }
         videoPlayer.play()
-        self.state = .Playing
+        state = .Playing
     }
     
     func pauseVideo() {
@@ -139,7 +144,8 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     }
     
     private func prepareToPlay() {
-        if let seekAheadTime = self.content.seekAheadTime where Int(videoPlayer.currentTimeSeconds) <= Int(seekAheadTime) {
+        let seekAheadTime = content.seekAheadTime()
+        if Int(videoPlayer.currentTimeSeconds) <= Int(seekAheadTime) {
             videoPlayer.seekToTimeSeconds(seekAheadTime)
         }
         delegate?.coordinatorDidBecomeReady()
@@ -162,7 +168,6 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         else {
             videoPlayer.view.frame = bounds
         }
-
     }
     
     // MARK: - VVideoPlayerDelegate
@@ -172,7 +177,6 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
             return
         }
         prepareToPlay()
-
     }
     
     func videoPlayerItemIsReadyToPlay(videoPlayer: VVideoPlayer) {
@@ -230,5 +234,11 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     func videoToolbar(videoToolbar: VideoToolbarView, didStartScrubbingToLocation location: Float) {
         state = .Scrubbing
         videoPlayer.pause()
+    }
+}
+
+private extension ContentModel {
+    var shouldLoop: Bool {
+        return type == .gif
     }
 }

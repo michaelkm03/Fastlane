@@ -71,15 +71,15 @@ extension ForumViewController {
         }
         
         let content = Content(
-            createdAt: Timestamp(),
-            text: (text == nil) ? nil : "\(totalCount) :: \(text!)",
-            previewImages: [previewImage].flatMap { $0 },
-            type: type, 
             author: User(
                 id: 1000 + Int(arc4random() % 9999),
                 displayName: randName(),
                 previewImages: [randPreviewImage()]
-            )
+            ),
+            createdAt: Timestamp(),
+            text: (text == nil) ? nil : "\(totalCount) :: \(text!)",
+            previewImages: [previewImage].flatMap { $0 },
+            type: type
         )
         
         totalCount += 1
@@ -88,6 +88,10 @@ extension ForumViewController {
     
     func debug_createStageEvents() {
         stageNext()
+        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(stageNext))
+        gestureRecognizer.numberOfTouchesRequired = 3
+        gestureRecognizer.numberOfTapsRequired = 3
+        UIApplication.sharedApplication().windows.first?.addGestureRecognizer(gestureRecognizer)
     }
     
     func stageNext() {
@@ -112,32 +116,21 @@ extension ForumViewController {
         }
         
         let content = Content(
-            id: String(1000 + Int(arc4random() % 9999)),
-            type: contentType,
-            text: next["text"] ?? randomText(),
-            assets: assets,
-            previewImages: [previewAsset],
             author: User(
                 id: 1000 + Int(arc4random() % 9999),
                 displayName: randName(),
                 previewImages: [randPreviewImage()]
-            )
+            ),
+            id: String(1000 + Int(arc4random() % 9999)),
+            type: contentType,
+            text: next["text"] ?? randomText(),
+            assets: assets,
+            previewImages: [previewAsset]
         )
+        print("Test harness adding content")
         let stageContent = StageContent(content: content)
         stage?.addStageContent(stageContent)
         stageCount += 1
-        
-        let time = next["length"] != nil ? Double(next["length"]!)! : ForumViewController.defaultStageContentLength
-        
-        VTimerManager.addTimerManagerWithTimeInterval(
-            time,
-            target: self,
-            selector: #selector(stageNext),
-            userInfo: nil,
-            repeats: false,
-            toRunLoop: NSRunLoop.mainRunLoop(),
-            withRunMode: NSRunLoopCommonModes
-        )
     }
 
 }

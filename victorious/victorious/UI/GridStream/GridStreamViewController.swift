@@ -9,7 +9,7 @@
 import UIKit
 
 struct GridStreamConfiguration {
-    var sectionInset = UIEdgeInsetsMake(3, 0, 3, 0)
+    var sectionInset = UIEdgeInsetsMake(0, 0, 3, 0)
     var interItemSpacing = CGFloat(3)
     var cellsPerRow = 3
     var allowsForRefresh = true
@@ -35,7 +35,6 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         self.hasError = hasError
         updateTrackingParameters()
         dataSource.setContent(content, withError: hasError)
-        collectionView.reloadSections(NSIndexSet(index: 0))
     }
     
     private let refreshControl = UIRefreshControl()
@@ -131,6 +130,10 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     
     // MARK: - Refreshing
     
+    func reloadHeader() {
+        collectionView.reloadSections(NSIndexSet(index: GridStreamSection.Header.rawValue))
+    }
+    
     func refresh() {
         loadContent(.refresh)
         header?.gridStreamShouldRefresh()
@@ -173,9 +176,13 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         collectionViewLayout: UICollectionViewLayout,
         referenceSizeForHeaderInSection section: Int) -> CGSize {
         
-        guard let header = header else {
+        guard
+            section == GridStreamSection.Header.rawValue,
+            let header = header
+        else {
             return CGSizeZero
         }
+        
         let size = header.sizeForHeader(
             dependencyManager,
             maxHeight: CGRectGetHeight(collectionView.bounds),
@@ -219,6 +226,10 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     func collectionView(collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         referenceSizeForFooterInSection section: Int) -> CGSize {
+        guard section == GridStreamSection.Contents.rawValue else {
+            return CGSizeZero
+        }
+        
         return dataSource.isLoading ? VFooterActivityIndicatorView.desiredSizeWithCollectionViewBounds(collectionView.bounds) : CGSizeZero
     }
 

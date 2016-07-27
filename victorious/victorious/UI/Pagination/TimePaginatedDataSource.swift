@@ -62,7 +62,7 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
     
     /// Whether the data source is currently loading a page of items or not.
     var isLoading: Bool {
-        return currentOperation != nil
+        return (currentOperation?.cancelled == false)
     }
     
     /// Loads a new page of items.
