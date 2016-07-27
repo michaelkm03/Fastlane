@@ -159,9 +159,8 @@ class ChatFeedMessageCell: UICollectionViewCell {
         
         if let content = content where content.type.hasMedia {
             if content.type == .gif && VCurrentUser.user()?.canView(content) == true {
-                let previewView = createMediaViewIfNeeded(for: content)
+                createMediaViewIfNeeded(for: content)
                 ChatFeedMessageCell.layoutContent(for: self)
-                previewView.content = content
             }
             else {
                 // Videos and images

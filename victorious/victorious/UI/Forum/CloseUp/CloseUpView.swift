@@ -50,10 +50,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
         return ErrorStateView.v_fromNib()
     }()
 
-    private lazy var mediaContentView: MediaContentView = {
-        let mediaContentView = MediaContentView()
-        return mediaContentView
-    }()
+    private var mediaContentView: MediaContentView?
     
     private var videoPlayer: VVideoPlayer?
 
@@ -90,8 +87,21 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
         blurredImageView.alpha = Constants.blurredImageAlpha
     }
 
-    func setupMediaContentView() {
-        //insert logic here
+    func setupMediaContentView(for content: ContentModel) -> MediaContentView {
+        let configuration = MediaContentViewConfiguration(
+            showsBlurredBackground: false,
+            allowsVideoControls: false,
+            fillMode: .fill
+        )
+        
+        let mediaContentView = MediaContentView(
+            content: content,
+            dependencyManager: dependencyManager,
+            configuration: configuration
+        )
+        mediaContentView.delegate = self
+        
+        return mediaContentView
     }
     
     // MARK: - Setting Content
@@ -113,6 +123,8 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
                 return
             }
             
+            self.mediaContentView?.removeFromSuperview()
+            
             let author = content.author
             
             setHeader(for: content, author: author)
@@ -131,7 +143,11 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
             
             createdAtLabel.text = NSDate(timestamp: content.createdAt).stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds) ?? ""
             captionLabel.text = content.text
-            mediaContentView.content = content
+            
+            let mediaContentView = setupMediaContentView(for: content)
+            addSubview(mediaContentView)
+            
+            self.mediaContentView = mediaContentView
             
             // Update size
             self.frame.size = sizeForContent(content)
@@ -159,28 +175,29 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
             bounds.size.height = bounds.size.height - relatedLabel.frame.size.height
             errorView.frame = bounds
             
+            mediaContentView?.removeFromSuperview()
+            mediaContentView = nil
+        }
+        else {
+            guard let mediaContentView = mediaContentView else {
+                return
+            }
+            
+            // Content
             var mediaContentViewFrame = mediaContentView.frame
             mediaContentViewFrame.origin.y = totalHeight
-            mediaContentViewFrame.size.height = self.frame.size.height - totalHeight
+            mediaContentViewFrame.size.height = height(for: content)
             mediaContentView.frame = mediaContentViewFrame
-            return
+            
+            totalHeight = totalHeight + mediaContentView.bounds.size.height
+            
+            // Caption
+            var frame = captionLabel.frame
+            frame.origin.y = totalHeight + Constants.verticalMargins
+            frame.size.width = bounds.size.width - 2 * Constants.horizontalMargins
+            captionLabel.frame = frame
+            captionLabel.sizeToFit()
         }
-        
-        // Content
-        var mediaContentViewFrame = mediaContentView.frame
-        mediaContentViewFrame.origin.y = totalHeight
-        mediaContentViewFrame.size.height = height(for: content)
-        mediaContentView.frame = mediaContentViewFrame
-        
-        totalHeight = totalHeight + mediaContentView.bounds.size.height
-        
-        // Caption
-        var frame = captionLabel.frame
-        frame.origin.y = totalHeight + Constants.verticalMargins
-        frame.size.width = bounds.size.width - 2 * Constants.horizontalMargins
-        captionLabel.frame = frame
-        captionLabel.sizeToFit()
-        
     }
     
     func sizeForContent(content: ContentModel?) -> CGSize {
@@ -289,11 +306,11 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
     }
     
     func headerWillAppear() {
-        mediaContentView.videoCoordinator?.playVideo()
+        mediaContentView?.videoCoordinator?.playVideo()
     }
     
     func headerDidDisappear() {
-        mediaContentView.videoCoordinator?.pauseVideo()
+        mediaContentView?.videoCoordinator?.pauseVideo()
     }
     
     func gridStreamDidUpdateDataSource(with items: [ContentModel]) {
