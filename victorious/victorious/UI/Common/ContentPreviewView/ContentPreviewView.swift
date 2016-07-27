@@ -86,7 +86,7 @@ class ContentPreviewView: UIView {
         vipIcon.contentMode = .ScaleAspectFit
         addSubview(playButton)
         
-        if let spinner = self.spinner {
+        if let spinner = spinner {
             addSubview(spinner)
             sendSubviewToBack(spinner)
         }
