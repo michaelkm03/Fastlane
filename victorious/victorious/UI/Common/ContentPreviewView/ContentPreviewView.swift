@@ -26,7 +26,11 @@ class ContentPreviewView: UIView {
     private let previewImageView = UIImageView()
     private let vipIcon = UIImageView()
     private let playButton: UIView
-    private let spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+    
+    private let loadingSpinnerEnabled: Bool
+    private lazy var spinner: UIActivityIndicatorView? = {
+        return self.loadingSpinnerEnabled ? UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge) : nil
+    }()
     
     private var lastSize = CGSizeZero
     
@@ -38,15 +42,6 @@ class ContentPreviewView: UIView {
             {
                 vipIcon.image = dependencyManager.vipIcon
             }
-        }
-    }
-    
-    var loadingSpinnerEnabled: Bool {
-        get {
-            return !spinner.hidden
-        }
-        set {
-            spinner.hidden = !loadingSpinnerEnabled
         }
     }
     
@@ -67,16 +62,19 @@ class ContentPreviewView: UIView {
             setupImage(forContent: content)
         }
         
-        spinner.center = CGPoint(x: bounds.midX, y: bounds.midY)
+        spinner?.center = CGPoint(x: bounds.midX, y: bounds.midY)
     }
     
-    init() {
-        /// Play Button
+    init(loadingSpinnerEnabled: Bool = false) {
+        self.loadingSpinnerEnabled = loadingSpinnerEnabled
+        
+        // Play Button
         playButton = UIImageView(image: UIImage(named: Constants.playButtonPlayImageName))
         playButton.contentMode = UIViewContentMode.ScaleAspectFill
         playButton.alpha = 0
         
         super.init(frame: CGRectZero)
+        
         backgroundColor = Constants.loadingColor
         previewImageView.backgroundColor = .clearColor()
         
@@ -88,8 +86,10 @@ class ContentPreviewView: UIView {
         vipIcon.contentMode = .ScaleAspectFit
         addSubview(playButton)
         
-        addSubview(spinner)
-        sendSubviewToBack(spinner)
+        if let spinner = spinner {
+            addSubview(spinner)
+            sendSubviewToBack(spinner)
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -107,7 +107,7 @@ class ContentPreviewView: UIView {
     }
     
     private func setupForContent(content: ContentModel) {
-        spinner.startAnimating()
+        spinner?.startAnimating()
         vipIcon.hidden = !content.isVIPOnly
         
         setupImage(forContent: content)
@@ -125,13 +125,13 @@ class ContentPreviewView: UIView {
                 previewImageView.applyBlurToImageURL(imageAsset.url, withRadius: Constants.imageViewBlurEffectRadius) { [weak self] in
                     self?.previewImageView.alpha = 1
                     self?.playButton.alpha = 1
-                    self?.spinner.stopAnimating()
+                    self?.spinner?.stopAnimating()
                 }
             }
             else {
                 previewImageView.setImageAsset(imageAsset) { [weak self] _ in
                     self?.playButton.alpha = 1
-                    self?.spinner.stopAnimating()
+                    self?.spinner?.stopAnimating()
                 }
             }
         }
