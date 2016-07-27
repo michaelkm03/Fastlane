@@ -109,7 +109,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
             headerView.dependencyManager = dependencyManager.hashtagsChildDependency
         }
 
-        #if V_INTERNAL_TESTING
+        #if V_BACKDOOR_ACCESS_TO_VIP
             // A custom accessoryButton is added to the first headerView to allow entry into the VIPForum and is not related to the actual section header.
             headerView.accessoryButton = indexPath.section == 0 ? subscribeButton : nil
         #endif
