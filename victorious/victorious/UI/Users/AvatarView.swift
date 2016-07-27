@@ -135,7 +135,13 @@ class AvatarView: UIView {
     
     var user: UserModel? {
         didSet {
-            guard user?.id != oldValue?.id else {
+            var persistentUser: VUser?
+            if let user = user as? VUser {
+                persistentUser = user
+            }
+            
+            guard user?.id != oldValue?.id || persistentUser == nil else {
+                // Only prevent updating for a persistent user since we can KVO values related to that object
                 return
             }
             
@@ -143,8 +149,8 @@ class AvatarView: UIView {
             
             kvoController.unobserveAll()
             
-            if let newUser = user as? AnyObject {
-                let keyPaths = ["previewAssets", "name"]
+            if let newUser = persistentUser {
+                let keyPaths = ["previewAssets", "displayName"]
                 
                 kvoController.observe(newUser, keyPaths: keyPaths, options: []) { [weak self] _, _, _ in
                     self?.setNeedsContentUpdate()
