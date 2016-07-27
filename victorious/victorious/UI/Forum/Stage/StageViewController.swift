@@ -73,7 +73,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         captionBarViewController = childViewControllers.flatMap({ $0 as? CaptionBarViewController }).first
         mediaContentView.dependencyManager = dependencyManager
         mediaContentView.allowsVideoControls = false
-        mediaContentView.showsBackground = false
+        mediaContentView.showsBlurredBackground = false
         
         audioSession.addObserver(
             self,
