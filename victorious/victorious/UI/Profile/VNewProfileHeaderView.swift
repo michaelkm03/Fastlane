@@ -33,9 +33,6 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
     
     var user: VUser? {
         didSet {
-            if user == oldValue {
-                return
-            }
             populateUserContent()
             
             if let oldValue = oldValue {
