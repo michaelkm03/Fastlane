@@ -16,12 +16,13 @@ private struct Constants {
     static let animationDuration = 0.5
 }
 
-class CoachmarkManager {
+class CoachmarkManager: NSObject {
     let dependencyManager: VDependencyManager
     var coachmarks: [Coachmark] = []
     
     init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
+        super.init()
         reloadCoachmarks()
     }
     
