@@ -46,6 +46,10 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         }
     }
 
+    private var isOnScreen: Bool {
+        return self.view.window != nil
+    }
+
     /// Shows meta data about the current item on the stage.
     private var titleCardViewController: TitleCardViewController?
 
@@ -124,10 +128,6 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     }
 
     // MARK: - Stage
-    
-    var isOnScreen: Bool {
-        return self.view.window != nil
-    }
     
     func addCaptionContent(content: ContentModel) {
         guard let text = content.text else {
