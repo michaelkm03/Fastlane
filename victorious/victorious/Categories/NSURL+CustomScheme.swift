@@ -10,12 +10,11 @@ import Foundation
 
 extension NSURL {
     /// Returns the path of a URL without the leading slash
-    func pathWithoutLeadingSlash() -> String? {
-        guard var path = self.path else {
+    var pathWithoutLeadingSlash: String? {
+        guard let path = self.path where !path.isEmpty else {
             return nil
         }
         
-        path.removeAtIndex(path.startIndex)
-        return path
+        return path[path.startIndex.successor() ..< path.endIndex]
     }
 }

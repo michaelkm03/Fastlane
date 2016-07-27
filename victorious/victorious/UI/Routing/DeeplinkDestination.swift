@@ -29,11 +29,11 @@ enum DeeplinkDestination: Equatable {
         
         switch host {
             case "content":
-                guard let contentID = url.pathWithoutLeadingSlash() else { return nil }
+                guard let contentID = url.pathWithoutLeadingSlash else { return nil }
                 self = .closeUp(contentWrapper: .contentID(id: contentID))
             case "profile":
                 guard
-                    let path = url.pathWithoutLeadingSlash(),
+                    let path = url.pathWithoutLeadingSlash,
                     let userID = Int(path)
                 else {
                     return nil
@@ -43,7 +43,7 @@ enum DeeplinkDestination: Equatable {
                 self = .vipForum
             case "webURL":
                 guard
-                    let path = url.pathWithoutLeadingSlash(),
+                    let path = url.pathWithoutLeadingSlash,
                     let externalURL = NSURL(string: path)
                 else {
                     return nil
@@ -51,7 +51,7 @@ enum DeeplinkDestination: Equatable {
                 self = .externalURL(url: externalURL, addressBarVisible: true)
             case "hiddenWebURL":
                 guard
-                    let path = url.pathWithoutLeadingSlash(),
+                    let path = url.pathWithoutLeadingSlash,
                     let externalURL = NSURL(string: path)
                 else {
                     return nil
