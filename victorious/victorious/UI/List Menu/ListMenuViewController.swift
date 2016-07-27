@@ -65,7 +65,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        dependencyManager.coachmarkManager?.displayCoachmark(inCoachmarkDisplayer: self, withContainerView: coachmarkContainerView)
+        dependencyManager.coachmarkManager?.displayCoachmark(in: self, withContainerView: coachmarkContainerView)
     }
     
     // MARK: - Notifications
@@ -180,13 +180,8 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         return validIndices ~= indexPath.row
     }
     
-    // MARK - VCoachmarkDisplayer
-    
-    var screenIdentifier : String {
-        return dependencyManager.stringForKey(VDependencyManagerIDKey) ?? "" 
-    }
-    
-    func highlightFrame(forIdentifier: String) -> CGRect? {
+    //MARK: - CoachmarkDisplayer
+    func highlightFrame(forIdentifier forIdentifier: String) -> CGRect? {
         return nil 
     }
     

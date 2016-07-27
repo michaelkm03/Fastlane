@@ -9,7 +9,7 @@
 import XCTest
 @testable import victorious
 
-private class dummyDisplayer : CoachmarkDisplayer {
+private class DummyDisplayer: CoachmarkDisplayer {
     var screenIdentifier: String {
         return "578d299a4323f"
     }
@@ -18,9 +18,7 @@ private class dummyDisplayer : CoachmarkDisplayer {
         return nil
     }
     
-    private func addCoachmark(viewController: CoachmarkViewController) {
-        return
-    }
+    private func addCoachmark(viewController: CoachmarkViewController) {}
 }
 
 class CoachmarkManagerTests: XCTestCase {
@@ -28,13 +26,12 @@ class CoachmarkManagerTests: XCTestCase {
     func createTestManager() -> CoachmarkManager  {
        let file = NSBundle(forClass: CoachmarkManagerTests.self).pathForResource("coachmarks", ofType: "json")
         
-        var configuration = [NSObject : AnyObject]()
+        var configuration = [NSObject: AnyObject]()
         do {
-            configuration =  try NSJSONSerialization.JSONObjectWithData(NSData(contentsOfFile: file!)!, options: []) as! [NSObject : AnyObject]
+            configuration =  try NSJSONSerialization.JSONObjectWithData(NSData(contentsOfFile: file!)!, options: []) as! [NSObject: AnyObject]
         }
-        
         catch {
-            print ("error parsing JSON")
+            XCTFail("Error parsing coachmark JSON")
         }
         
         let manager = CoachmarkManager(dependencyManager: VDependencyManager(parentManager: nil, configuration: configuration, dictionaryOfClassesByTemplateName: nil))

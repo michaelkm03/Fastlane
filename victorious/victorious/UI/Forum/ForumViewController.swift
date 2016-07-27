@@ -8,6 +8,10 @@
 
 import UIKit
 
+private struct Constants {
+    static let coachmarkDisplayDelay = 1.0
+}
+
 /// A template driven .screen component that sets up, houses and mediates the interaction
 /// between the Forum's required concrete implementations and abstract dependencies.
 class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocusable, UploadManagerHost, ContentPublisherDelegate, CoachmarkDisplayer {
@@ -72,10 +76,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                 stage?.setStageEnabled(path == nil, animated: true)
             case .closeVIP():
                 onClose()
-            case .refreshStage:
-                break
-                //Try to display the coachmark for stage once the stage has been loaded 
-                //dependencyManager.coachmarkManager?.displayCoachmark(inCoachmarkDisplayer: self, withContainerView: coachmarkContainerView)
+            case .refreshStage(let _):
+                self.dependencyManager.coachmarkManager?.displayCoachmark(in: self, withContainerView: self.coachmarkContainerView)
             case .setOptimisticPostingEnabled(let enabled):
                 publisher?.optimisticPostingEnabled = enabled
             default:
@@ -185,9 +187,6 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         
         // Set up the network source if needed.
         forumNetworkSource?.setUpIfNeeded()
-        
-        dependencyManager.coachmarkManager?.displayCoachmark(inCoachmarkDisplayer: self, withContainerView: coachmarkContainerView)
-        
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -395,30 +394,15 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         }
     }
     
-     // MARK: - Coachmark Displayer
+    // MARK: - Coachmark Displayer
     
     var screenIdentifier: String {
         return dependencyManager.stringForKey(VDependencyManagerIDKey)
     }
     
-    func highlightFrame(identifier: String) -> CGRect? {
+    func highlightFrame(forIdentifier identifier: String) -> CGRect? {
         return nil
     }
-    
-    func coachmarkDidShow() {
-        isDisplayingCoachmark = true
-    }
-    
-    func coachmarkDidDismiss() {
-        isDisplayingCoachmark = false
-    }
-    
-    // MARK: - GestureRecognizerDelegate
-    
-    func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
-        return !isDisplayingCoachmark
-    }
-
 }
 
 private extension VDependencyManager {

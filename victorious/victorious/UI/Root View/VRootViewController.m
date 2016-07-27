@@ -241,7 +241,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     /// Body removed alongside FetchTemplateProductIdentifiersOperation
     
     [[InterstitialManager sharedInstance] setDependencyManager:self.dependencyManager];
-    
 }
 
 - (void)showAgeGateViewController

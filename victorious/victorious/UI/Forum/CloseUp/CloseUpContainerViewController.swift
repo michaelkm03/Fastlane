@@ -20,7 +20,7 @@ private struct Constants {
 
 class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, ContentCellTracker, CoachmarkDisplayer {
     private let gridStreamController: GridStreamViewController<CloseUpView>
-    private var dependencyManager: VDependencyManager
+    var dependencyManager: VDependencyManager!
     private var content: VContent? {
         didSet {
             updateAudioSessionCategory()
@@ -118,7 +118,6 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        dependencyManager.coachmarkManager?.displayCoachmark(inCoachmarkDisplayer: self, withContainerView: coachmarkContainerView)
     }
     
     // MARK: - ContentCellTracker
@@ -191,6 +190,10 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         router.navigate(to: destination)
     }
     
+    func gridStreamDidUpdate() {
+        dependencyManager.coachmarkManager?.displayCoachmark(in: self, withContainerView: coachmarkContainerView)
+    }
+    
     func share() {
         guard let content = content else {
             return
@@ -245,18 +248,14 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     
     // MARK: - Coachmark Displayer
     
-    var screenIdentifier: String {
-        return dependencyManager.stringForKey(VDependencyManagerIDKey)
-    }
-    
-    func highlightFrame(identifier: String) -> CGRect? {
+    func highlightFrame(forIdentifier identifier: String) -> CGRect? {
         if let barFrame = navigationController?.navigationBar.frame where identifier == "bump" {
             return CGRect(
-                        x: barFrame.width - Constants.estimatedBarButtonWidth - Constants.navigationBarRightPadding,
-                        y: Constants.estimatedStatusBarHeight,
-                        width: Constants.estimatedBarButtonWidth,
-                        height: barFrame.height
-                    )
+                    x: barFrame.width - Constants.estimatedBarButtonWidth - Constants.navigationBarRightPadding,
+                    y: Constants.estimatedStatusBarHeight,
+                    width: Constants.estimatedBarButtonWidth,
+                    height: barFrame.height
+            )
         }
         return nil
     }

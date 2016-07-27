@@ -1078,7 +1078,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     return NO;
 }
 
-#pragma mark - VCoachmarkDisplayer
+#pragma mark - CoachmarkDisplayer
 
 - (NSString *)screenIdentifier
 {

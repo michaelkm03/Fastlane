@@ -44,7 +44,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         
     // MARK: Dependency Manager
     
-    let dependencyManager: VDependencyManager
+    let dependencyManager: VDependencyManager!
     
     // MARK: Model Data
     
@@ -181,7 +181,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     // MARK: - ViewController lifecycle
     
     override func viewDidAppear(animated: Bool) {
-        dependencyManager.coachmarkManager?.displayCoachmark(inCoachmarkDisplayer: self, withContainerView: coachmarkContainerView, withContext: profileScreenContext?.coachmarkContext)
+        dependencyManager.coachmarkManager?.displayCoachmark(in: self, withContainerView: coachmarkContainerView, withContext: profileScreenContext?.coachmarkContext)
     }
 
     // MARK: - Buttons
@@ -374,7 +374,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         return dependencyManager.stringForKey(VDependencyManagerIDKey)
     }
     
-    func highlightFrame(identifier: String) -> CGRect? {
+    func highlightFrame(forIdentifier identifier: String) -> CGRect? {
         if let barFrame = navigationController?.navigationBar.frame where identifier == "bump" {
             return CGRect(
                 x: barFrame.width - VNewProfileViewController.estimatedBarButtonWidth - VNewProfileViewController.estimatedNavBarRightPadding,

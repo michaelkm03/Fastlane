@@ -596,7 +596,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
     }
 }
 
-#pragma mark - VCoachmarkDisplayer
+#pragma mark - CoachmarkDisplayer
 
 - (NSString *)screenIdentifier
 {

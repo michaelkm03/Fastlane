@@ -1,5 +1,5 @@
 //
-//  CoachmarkView.swift
+//  CoachmarkViewController.swift
 //  victorious
 //
 //  Created by Darvish Kamalia on 7/14/16.
@@ -45,8 +45,8 @@ class CoachmarkViewController: UIViewController, VBackgroundContainer {
     
     init(coachmark: Coachmark, containerFrame: CGRect, highlightFrame: CGRect? = nil) {
         super.init(nibName: nil, bundle: nil)
-        self.view = UIView(frame: containerFrame)
-        self.modalPresentationStyle = .OverFullScreen
+        view = UIView(frame: containerFrame)
+        modalPresentationStyle = .OverFullScreen
         let dependencyManager = coachmark.dependencyManager
         
         dependencyManager.addBackgroundToBackgroundHost(self)
@@ -87,7 +87,7 @@ class CoachmarkViewController: UIViewController, VBackgroundContainer {
         detailsView.sendSubviewToBack(blurView)
         detailsView.v_addFitToParentConstraintsToSubview(blurView)
         dependencyManager.addBackgroundToBackgroundHost(detailsView, forKey: Constants.textBackgroundKey)
-        self.view.addSubview(detailsView)
+        view.addSubview(detailsView)
         
         //Setup constraints
         detailsView.bottomAnchor.constraintEqualToAnchor(view.bottomAnchor).active = true
@@ -125,10 +125,9 @@ class CoachmarkViewController: UIViewController, VBackgroundContainer {
         let maskPath = UIBezierPath(rect: CGRect(
             origin: containerFrame.origin,
             size: CGSize(width: containerFrame.width, height: containerFrame.height - detailsView.frame.height)
-            )
-        )
+        ))
         
-        let backgroundMaskLayer =  CAShapeLayer()
+        let backgroundMaskLayer = CAShapeLayer()
         
         if let highlightFrame = highlightFrame {
             // The following code creates a "hole" in the view's layer
@@ -166,12 +165,12 @@ class CoachmarkViewController: UIViewController, VBackgroundContainer {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK : - Animations
+    // MARK: - Animations
     
-    func animate(intoDisplayer displayer: CoachmarkDisplayer) {
+    func animate(into displayer: CoachmarkDisplayer) {
         //Animate the coachmark
         view.alpha = 0
-        displayer.addCoachmark(self)
+        displayer.addCoachmark(from: self)
         
         UIView.animateWithDuration(Constants.animationDuration) {
             self.view.alpha = 1
@@ -183,19 +182,19 @@ class CoachmarkViewController: UIViewController, VBackgroundContainer {
             Constants.animationDuration,
             animations: {
                 self.view.alpha = 0
-            })
-        { _ in
+            }
+        ){ _ in
             self.dismissViewControllerAnimated(false, completion: nil)
         }
     }
     
-    // MARK : - Button Actions
+    // MARK: - Button Actions
     
     func closeButtonAction() {
         animateOut()
     }
     
-    // MARK : - VBackgroundContainer Methods 
+    // MARK: - VBackgroundContainer Methods
     
     func backgroundContainerView() -> UIView {
         return backgroundView
@@ -216,20 +215,19 @@ private class CoachmarkTextContainerView: UIView, VBackgroundContainer {
 
 private extension VDependencyManager {
     var title: String {
-        if let titleString = stringForKey(Constants.titleKey) {
-            if let name = VCurrentUser.user()?.displayName {
-                return titleString.stringByReplacingOccurrencesOfString(Constants.userMacro, withString: name)
-            }
-            return titleString.stringByReplacingOccurrencesOfString(Constants.userMacro, withString: "")
+        guard let titleString = stringForKey(Constants.titleKey) else {
+            return ""
         }
-        return ""
+        
+        let name = VCurrentUser.user()?.displayName ?? ""
+        return titleString.stringByReplacingOccurrencesOfString(Constants.userMacro, withString: name)
     }
     
     var titleFont: UIFont {
         return fontForKey(Constants.titleFontKey) ?? UIFont.systemFontOfSize(12.0)
     }
     
-    var titleColor : UIColor {
+    var titleColor: UIColor {
         return colorForKey(Constants.titleColorKey) ?? UIColor.blackColor()
     }
     
@@ -245,7 +243,7 @@ private extension VDependencyManager {
         return fontForKey(Constants.textFontKey) ?? UIFont.systemFontOfSize(10.0)
     }
     
-    var closeButton : UIButton {
+    var closeButton: UIButton {
         return buttonForKey(Constants.closeButtonKey) ?? UIButton()
     }
     

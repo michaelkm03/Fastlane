@@ -377,7 +377,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     }
 }
 
-#pragma mark - VCoachmarkDisplayer
+#pragma mark - CoachmarkDisplayer
 
 - (NSString *)screenIdentifier
 {

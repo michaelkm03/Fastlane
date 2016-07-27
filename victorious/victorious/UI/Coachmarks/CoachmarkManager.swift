@@ -16,17 +16,12 @@ private struct Constants {
     static let animationDuration = 0.5
 }
 
-class CoachmarkManager : NSObject {
+class CoachmarkManager {
     let dependencyManager: VDependencyManager
     var coachmarks: [Coachmark] = []
     
-    private var trackingManager: VTrackingManager {
-        return VTrackingManager.sharedInstance()
-    }
-    
     init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
-        super.init()
         reloadCoachmarks()
     }
     
@@ -37,15 +32,13 @@ class CoachmarkManager : NSObject {
         }
         coachmarks = []
         let shownCoachmarks = fetchShownCoachmarkIDs()
-        for coachmarkConfiguration in coachmarkConfigurations {
+        coachmarks = coachmarkConfigurations.map() { coachmarkConfiguration in
             let childDependency = dependencyManager.childDependencyManagerWithAddedConfiguration(coachmarkConfiguration)
             let coachmark = Coachmark(dependencyManager: childDependency)
-            if (shownCoachmarks.contains(){ shownCoachmarkID in
-                return shownCoachmarkID == coachmark.remoteID
-            }) {
+            if shownCoachmarks.contains(coachmark.remoteID) {
                 coachmark.hasBeenShown = true
             }
-            coachmarks.append(coachmark)
+            return coachmark
         }
     }
 
@@ -59,20 +52,17 @@ class CoachmarkManager : NSObject {
     }
     
     private func saveCoachmarkState() {
-        let shownCoachmarkIDs = coachmarks.filter { (coachmark) -> Bool in
-            return coachmark.hasBeenShown
-            }.map { return $0.remoteID }
+        let shownCoachmarkIDs = coachmarks.filter { $0.hasBeenShown }.map { $0.remoteID }
         NSUserDefaults.standardUserDefaults().setObject(shownCoachmarkIDs, forKey: Constants.shownCoachmarksKey)
     }
     
-    /**
-     Creates the coachmark and displays it over the viewController. This performs calculations
-     on view frames, hence it must be called after these have been set, for example in viewDidAppear
-     
-     - parameter displayer: The object that will provide the frames for the coachmark, and will handle callbacks
-     - parameter container: The container frame of the coachmark, usually the entire screen
-    */
-    func displayCoachmark(inCoachmarkDisplayer displayer: CoachmarkDisplayer, withContainerView container: UIView, withContext viewContext: String? = nil) {
+    /// Creates the coachmark and displays it over the viewController. This performs calculations
+    /// on view frames, hence it must be called after these have been set, for example in viewDidAppear
+    ///
+    /// - parameter displayer: The object that will provide the frames for the coachmark, and will handle callbacks
+    /// - parameter container: The container frame of the coachmark, usually the entire screen
+    /// - parameter context: The context string used to differentiate between different coachmarks on the same screen, such as profile
+    func displayCoachmark(in displayer: CoachmarkDisplayer, withContainerView container: UIView, withContext viewContext: String? = nil) {
         resetShownCoachmarks() // REMOVE BEFORE RELEASE
         let screenIdentifier = displayer.screenIdentifier
         if let index = coachmarks.indexOf({ coachmark in
@@ -84,27 +74,30 @@ class CoachmarkManager : NSObject {
         }) {
             let coachmarkToDisplay = coachmarks[index]
             
+            guard !coachmarkToDisplay.hasBeenShown else {
+                return
+            }
+            
             var highlightFrame: CGRect? = nil
             if
                 let highlightIdentifier = coachmarkToDisplay.highlightIdentifier,
-                let frame = displayer.highlightFrame(highlightIdentifier)
+                let frame = displayer.highlightFrame(forIdentifier: highlightIdentifier)
             {
                 highlightFrame = frame
             }
             
-            if (!coachmarkToDisplay.hasBeenShown) {
-                let containerFrame = container.bounds
-                let coachmarkViewController = CoachmarkViewController(coachmark: coachmarkToDisplay, containerFrame: containerFrame, highlightFrame: highlightFrame)
-                
-                coachmarkViewController.animate(intoDisplayer: displayer)
-                
-                coachmarkToDisplay.hasBeenShown = true
-                self.saveCoachmarkState()
-                
-                if let urls = self.dependencyManager.arrayForKey(Constants.trackingURLsKey) as? [String] {
-                    self.trackingManager.trackEvent(Constants.trackingEventName, parameters: [ VTrackingKeyUrls : urls])
-                }
+            let containerFrame = container.bounds
+            let coachmarkViewController = CoachmarkViewController(coachmark: coachmarkToDisplay, containerFrame: containerFrame, highlightFrame: highlightFrame)
+            
+            coachmarkViewController.animate(into: displayer)
+            
+            coachmarkToDisplay.hasBeenShown = true
+            saveCoachmarkState()
+            
+            if let urls = dependencyManager.arrayForKey(Constants.trackingURLsKey) as? [String] {
+                VTrackingManager.sharedInstance().trackEvent(Constants.trackingEventName, parameters: [ VTrackingKeyUrls : urls])
             }
+    
         }
     }
 }
