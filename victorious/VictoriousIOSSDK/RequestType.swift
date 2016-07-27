@@ -31,7 +31,7 @@ public protocol RequestType {
     /// - parameter responseJSON: A JSON object parsed from responseData, if available
     func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> ResultType
     
-    /// Returns the url request decorated with headers based on the provided contexts
+    /// Returns a copy of the url request decorated with headers based on the provided contexts
     ///
     /// - parameter requestContext: Describes metadata related to the execution of this request
     /// - parameter authenticationContext: Describes authentication data
