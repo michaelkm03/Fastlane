@@ -71,15 +71,15 @@ import VictoriousIOSSDK
             }
             
             let content = Content(
-                createdAt: Timestamp(),
-                text: (text == nil) ? nil : "\(totalCount) :: \(text!)",
-                previewImages: [previewImage].flatMap { $0 },
-                type: type, 
                 author: User(
                     id: 1000 + Int(arc4random() % 9999),
                     displayName: randName(),
                     previewImages: [randPreviewImage()]
-                )
+                ),
+                createdAt: Timestamp(),
+                text: (text == nil) ? nil : "\(totalCount) :: \(text!)",
+                previewImages: [previewImage].flatMap { $0 },
+                type: type
             )
             
             totalCount += 1
@@ -112,16 +112,16 @@ import VictoriousIOSSDK
             }
             
             let content = Content(
-                id: String(1000 + Int(arc4random() % 9999)),
-                type: contentType,
-                text: next["text"] ?? randomText(),
-                assets: assets,
-                previewImages: [previewAsset],
                 author: User(
                     id: 1000 + Int(arc4random() % 9999),
                     displayName: randName(),
                     previewImages: [randPreviewImage()]
-                )
+                ),
+                id: String(1000 + Int(arc4random() % 9999)),
+                type: contentType,
+                text: next["text"] ?? randomText(),
+                assets: assets,
+                previewImages: [previewAsset]
             )
             let stageContent = StageContent(content: content)
             stage?.addStageContent(stageContent)
