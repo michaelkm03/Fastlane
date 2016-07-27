@@ -309,7 +309,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
             level: user.fanLoyalty?.tier
         )
         
-        guard let oldComparableUser = comparableUser where newComparableUser != oldComparableUser else {
+        guard newComparableUser != comparableUser else {
             return
         }
         
@@ -364,12 +364,12 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     }
 }
 
-private func !=(lhs: VNewProfileViewController.UserDetails, rhs: VNewProfileViewController.UserDetails) -> Bool {
-    return lhs.id != rhs.id
-        || lhs.displayName != rhs.displayName
-        || lhs.likesGiven != rhs.likesGiven
-        || lhs.likesReceived != rhs.likesReceived
-        || lhs.level != rhs.level
+private func !=(lhs: VNewProfileViewController.UserDetails?, rhs: VNewProfileViewController.UserDetails?) -> Bool {
+    return lhs?.id != rhs?.id
+        || lhs?.displayName != rhs?.displayName
+        || lhs?.likesGiven != rhs?.likesGiven
+        || lhs?.likesReceived != rhs?.likesReceived
+        || lhs?.level != rhs?.level
 }
 
 private extension VDependencyManager {

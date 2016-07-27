@@ -106,13 +106,15 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
     private var header: HeaderType?
 
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        switch section {
-            case GridStreamSection.Header.rawValue:
+        guard let gridStreamSection = GridStreamSection(rawValue: section) else {
+            return 0
+        }
+        
+        switch gridStreamSection {
+            case .Header:
                 return 0
-            case GridStreamSection.Contents.rawValue:
+            case .Contents:
                 return items.count
-            default:
-                return 0
         }
     }
     
