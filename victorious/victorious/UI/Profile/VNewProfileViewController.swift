@@ -45,7 +45,12 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
             return gridStreamController.content
         }
     }
-    private var comparableUser: UserDetails?
+    private var comparableUser: UserDetails? {
+        didSet {
+            // Call a reload of the header every time the user's details change
+            gridStreamController.reloadHeader()
+        }
+    }
     
     private lazy var overflowButton: UIBarButtonItem = {
         return UIBarButtonItem(

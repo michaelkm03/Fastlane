@@ -9,7 +9,7 @@
 import UIKit
 
 struct GridStreamConfiguration {
-    var sectionInset = UIEdgeInsetsMake(3, 0, 3, 0)
+    var sectionInset = UIEdgeInsetsMake(0, 0, 3, 0)
     var interItemSpacing = CGFloat(3)
     var cellsPerRow = 3
     var allowsForRefresh = true
@@ -127,6 +127,10 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     }
     
     // MARK: - Refreshing
+    
+    func reloadHeader() {
+        collectionView.reloadSections(NSIndexSet(index: GridStreamSection.Header.rawValue))
+    }
     
     func refresh() {
         loadContent(.refresh)
