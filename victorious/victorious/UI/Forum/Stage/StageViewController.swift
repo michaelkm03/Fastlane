@@ -75,9 +75,6 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         super.viewDidLoad()
         
         captionBarViewController = childViewControllers.flatMap({ $0 as? CaptionBarViewController }).first
-        mediaContentView.dependencyManager = dependencyManager
-        mediaContentView.allowsVideoControls = false
-        mediaContentView.showsBlurredBackground = false
         
         audioSession.addObserver(
             self,
@@ -96,7 +93,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         if let content = currentStageContent?.content {
-            mediaContentView.content = content
+//            mediaContentView.content = content
             setStageEnabled(true, animated: false)
         }
     }
@@ -146,7 +143,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         titleCardViewController?.populate(with: stageContent)
 
         mediaContentView.videoCoordinator?.pauseVideo()
-        mediaContentView.content = stageContent.content
+//        mediaContentView.content = stageContent.content
         
         updateStageHeight()
 
@@ -248,12 +245,8 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     // MARK: - Deep linking content
 
     @objc private func didTapOnContent() {
-        guard let targetContent = mediaContentView.content else {
-            return
-        }
-
         let router = Router(originViewController: self, dependencyManager: dependencyManager)
-        let destination = DeeplinkDestination(content: targetContent)
+        let destination = DeeplinkDestination(content: mediaContentView.content)
         router.navigate(to: destination)
     }
 

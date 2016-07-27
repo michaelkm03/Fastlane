@@ -159,7 +159,7 @@ class ChatFeedMessageCell: UICollectionViewCell {
         
         if let content = content where content.type.hasMedia {
             if content.type == .gif && VCurrentUser.user()?.canView(content) == true {
-                let previewView = createMediaViewIfNeeded()
+                let previewView = createMediaViewIfNeeded(for: content)
                 ChatFeedMessageCell.layoutContent(for: self)
                 previewView.content = content
             }
@@ -190,15 +190,20 @@ class ChatFeedMessageCell: UICollectionViewCell {
         return previewView
     }
     
-    private func createMediaViewIfNeeded() -> MediaContentView {
+    private func createMediaViewIfNeeded(for content: ContentModel) -> MediaContentView {
         if let existingMediaView = self.previewView as? MediaContentView {
             return existingMediaView
         }
         
-        let previewView = MediaContentView(showsBlurredBackground: false)
-        previewView.animatesBetweenContent = false
-        previewView.allowsVideoControls = false
-        previewView.fillMode = .fill
+        let previewView = MediaContentView(
+            content: content,
+            dependencyManager: dependencyManager,
+            configuration: MediaContentViewConfiguration(
+                showsBlurredBackground: false,
+                allowsVideoControls: false,
+                fillMode: .fill
+            )
+        )
         setupPreviewView(previewView)
         return previewView
     }

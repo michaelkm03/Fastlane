@@ -13,10 +13,21 @@ enum FillMode {
     case fit
 }
 
+struct MediaContentViewConfiguration {
+    /// Whether or not the blurred preview image background is shown behind the media.
+    let showsBlurredBackground: Bool
+    
+    /// Determines whether we want video control for video content. E.g.: Stage disables video control for video content
+    let allowsVideoControls: Bool
+    
+    let fillMode: FillMode
+}
+
 /// Displays an image/video/GIF/Youtube video/text post upon setting the content property.
 class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGestureRecognizerDelegate {
 
-    var dependencyManager: VDependencyManager?
+    let dependencyManager: VDependencyManager
+    let content: ContentModel
 
     // MARK: - Private
 
@@ -67,15 +78,23 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
 
     /// Sets up the content view with a zero frame. Use this initializer if created from code.
     /// showsBlurredBackground decides if the system blur is applied to the background view.
-    init(showsBlurredBackground: Bool = true) {
-        self.showsBlurredBackground = showsBlurredBackground
+    init(
+        content: ContentModel,
+        dependencyManager: VDependencyManager,
+        configuration: MediaContentViewConfiguration
+    ) {
+        self.content = content
+        self.dependencyManager = dependencyManager
+        self.configuration = configuration
+        
         super.init(frame: CGRect.zero)
+        
         setup()
+        configureBackground()
     }
     
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        setup()
+        fatalError("Cannot create MCV from a storyboard.")
     }
     
     private func setup() {
@@ -104,64 +123,27 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     
     // MARK: - Configuration
     
-    /// Determines whether we want video control for video content. E.g.: Stage disables video control for video content
-    var allowsVideoControls = true
-    
-    /// Whether or not the view performs an animated transition whenever new content is displayed.
-    var animatesBetweenContent = true
-    
-    /// Whether or not the blurred preview image background is shown behind the media.
-    var showsBlurredBackground = true {
-        didSet {
-            if showsBlurredBackground != oldValue {
-                configureBackground()
-            }
-        }
-    }
-
-    var fillMode: FillMode = .fit {
-        didSet {
-            if fillMode != oldValue {
-                setNeedsLayout()
-            }
-        }
-    }
+    private var configuration: MediaContentViewConfiguration
     
     private func configureBackground() {
-        previewImageView.contentMode = (fillMode == .fit) ? .ScaleAspectFit : .ScaleAspectFill
+        previewImageView.contentMode = (configuration.fillMode == .fit) ? .ScaleAspectFit : .ScaleAspectFill
         
         let backgroundView = UIImageView()
         self.backgroundView = backgroundView
         backgroundView.contentMode = .ScaleAspectFill
         insertSubview(backgroundView, atIndex: 0)
 
-        if !showsBlurredBackground {
+        if !configuration.showsBlurredBackground {
             backgroundView.image = nil
         }
     }
     
     // MARK: - Managing content
     
-    var content: ContentModel? {
-        didSet {
-            guard content?.id != oldValue?.id || content?.id == nil else {
-                return
-            }
-            
-            if let content = content {
-                displayContent(content)
-            }
-            else {
-                displayNoContent()
-            }
-            
-            setNeedsLayout()
-        }
-    }
     
     private func displayContent(content: ContentModel) {
         spinner.startAnimating()
-        hideContent(animated: animatesBetweenContent) { [weak self] _ in
+        hideContent(animated: true) { [weak self] _ in
             guard let strongSelf = self else {
                 return
             }
@@ -179,12 +161,6 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
                 strongSelf.setUpTextLabel()
             }
         }
-    }
-    
-    private func displayNoContent() {
-        tearDownPreviewImage()
-        tearDownVideoPlayer()
-        tearDownTextLabel()
     }
     
     func hideContent(animated animated: Bool = true, completion: ((Bool) -> Void)? = nil) {
@@ -276,7 +252,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         videoCoordinator = VContentVideoPlayerCoordinator(content: content)
         videoCoordinator?.setupVideoPlayer(in: videoContainerView)
         
-        if allowsVideoControls {
+        if configuration.allowsVideoControls {
             videoCoordinator?.setupToolbar(in: self, initallyVisible: false)
         }
         
@@ -306,28 +282,34 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         tearDownPreviewImage()
         tearDownVideoPlayer()
         
-        let textPostDependency = self.dependencyManager?.textPostDependency
+        let textPostDependency = self.dependencyManager.textPostDependency
         textPostLabel.font = textPostDependency?.textPostFont ?? Constants.defaultTextFont
         textPostLabel.textColor = textPostDependency?.textPostColor ?? Constants.defaultTextColor
         
         textPostLabel.hidden = true //Hide while we set up the view for the next post
 
-        guard let url = textPostDependency?.textPostBackgroundImageURL, let content = content else {
+        guard let url = textPostDependency?.textPostBackgroundImageURL else {
             return
         }
 
-        if showsBlurredBackground {
+        if configuration.showsBlurredBackground {
             let imageAsset = ImageAsset(url: url, size: frame.size)
             setBackgroundBlur(withImageAsset: imageAsset, forContent: content) { [weak self] in
-                guard let currentContentID = self?.content?.id where currentContentID == content.id else {
+                guard let currentContentID = self?.content.id where currentContentID == self?.content.id else {
                     return
                 }
-                self?.renderText(content.text)
+                guard let text = self?.content.text else {
+                    return
+                }
+                self?.renderText(text)
             }
         }
         else {
             backgroundView?.sd_setImageWithURL(url, completed: { [weak self] (_, _, _, _) in
-                self?.renderText(content.text)
+                guard let text = self?.content.text else {
+                    return
+                }
+                self?.renderText(text)
             })
         }
     }
@@ -356,25 +338,23 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         textPostLabel.frame = CGRect(x: bounds.origin.x + CGFloat(Constants.textPostPadding), y: bounds.origin.y, width: bounds.width - CGFloat(2 * Constants.textPostPadding), height: bounds.height)
         backgroundView?.frame = computeBackgroundBounds()
         spinner.center = CGPoint(x: bounds.midX, y: bounds.midY)
-        videoCoordinator?.layout(in: videoContainerView.bounds, with: fillMode)
+        videoCoordinator?.layout(in: videoContainerView.bounds, with: configuration.fillMode)
     }
     
     private func updatePreviewImageIfReady() {
-        guard
-            let content = content where
-            downloadedPreviewImage != nil
-        else {
+        guard downloadedPreviewImage != nil else {
             return
         }
+        
         spinner.stopAnimating()
         previewImageView.image = downloadedPreviewImage
         downloadedPreviewImage = nil
-        showContent(animated: animatesBetweenContent) { [weak self] _ in
+        showContent(animated: true) { [weak self] _ in
             self?.playVideo()
         }
         
         let minWidth = UIScreen.mainScreen().bounds.size.width
-        if let imageAsset = content.previewImage(ofMinimumWidth: minWidth) where showsBlurredBackground {
+        if let imageAsset = content.previewImage(ofMinimumWidth: minWidth) where configuration.showsBlurredBackground {
             setBackgroundBlur(withImageAsset: imageAsset, forContent: content)
         }
         else {
@@ -395,7 +375,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     
     private func setBackgroundBlur(withImageAsset imageAsset: ImageAssetModel, forContent content: ContentModel, completion: (()->())? = nil) {
         backgroundView?.applyBlurToImageURL(imageAsset.url, withRadius: Constants.blurRadius) { [weak self] in
-            guard let currentContentID = content.id where currentContentID == self?.content?.id else {
+            guard let currentContentID = content.id where currentContentID == self?.content.id else {
                 return
             }
             self?.backgroundView?.alpha = 1
@@ -406,7 +386,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     // MARK: - Actions
 
     func onContentTap() {
-        if allowsVideoControls && content?.type == .video {
+        if configuration.allowsVideoControls && content.type == .video {
             videoCoordinator?.toggleToolbarVisibility(true)
         }
     }
