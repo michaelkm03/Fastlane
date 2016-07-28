@@ -163,7 +163,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     func setupMediaContentView(for content: ContentModel) -> MediaContentView {
         let configuration = MediaContentViewConfiguration(
             allowsVideoControls: false,
-            fillMode: .fit
+            fillMode: (content.type == .text ? .fill : .fit)
         )
         
         let mediaContentView = MediaContentView(
@@ -227,10 +227,10 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
             return
         }
         
-        // Pause the video if necessary
+        // Let MVC know it is being dismissed from the screen.
         mediaContentView?.willBeDismissed()
         
-        // Fade MCV Out
+        // Fade MCV Out.
         let animations: ()->() = {
             self.mediaContentView?.alpha = 0
         }
