@@ -31,7 +31,7 @@ struct MediaContentViewConfiguration {
 }
 
 /// Displays an image/video/GIF/Youtube video/text post upon setting the content property.
-class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGestureRecognizerDelegate {
+class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGestureRecognizerDelegate, Presentable {
 
     let dependencyManager: VDependencyManager
     let content: ContentModel
@@ -147,7 +147,17 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
             backgroundView.image = nil
         }
     }
-    
+
+    // MARK: - Presentable
+
+    func willBePresented() {
+        // TODO: play
+    }
+
+    func willBeDismissed() {
+        // TODO: pause
+    }
+
     // MARK: - Managing content
     
     
