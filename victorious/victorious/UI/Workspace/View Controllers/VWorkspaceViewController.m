@@ -18,13 +18,12 @@
 #import "VVideoToolController.h"
 #import "VImageToolController.h"
 #import "VCanvasView.h"
-#import "VCoachmarkDisplayer.h"
 
 #import "VAbstractImageVideoCreationFlowController.h"
 
 #import "victorious-Swift.h"
 
-@interface VWorkspaceViewController() <VCoachmarkDisplayer>
+@interface VWorkspaceViewController() 
 
 @property (nonatomic, weak) IBOutlet UIImageView *blurredBackgroundImageView;
 
@@ -150,7 +149,7 @@
     
 }
 
-#pragma mark - VCoachmarkDisplayer
+#pragma mark - CoachmarkDisplayer
 
 - (NSString *)screenIdentifier
 {

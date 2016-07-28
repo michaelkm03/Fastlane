@@ -8,9 +8,13 @@
 
 import UIKit
 
+private struct Constants {
+    static let coachmarkDisplayDelay = 1.0
+}
+
 /// A template driven .screen component that sets up, houses and mediates the interaction
 /// between the Forum's required concrete implementations and abstract dependencies.
-class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocusable, UploadManagerHost, ContentPublisherDelegate {
+class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocusable, UploadManagerHost, ContentPublisherDelegate, CoachmarkDisplayer {
     @IBOutlet private weak var stageContainer: UIView!
     @IBOutlet private weak var stageViewControllerContainer: VPassthroughContainerView!
     @IBOutlet private weak var stageTouchView: UIView!
@@ -30,6 +34,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     #endif
 
     private var navBarTitleView : ForumNavBarTitleView?
+    private var isDisplayingCoachmark = false
     
     // MARK: - Initialization
     
@@ -71,6 +76,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                 stage?.setStageEnabled(path == nil, animated: true)
             case .closeVIP():
                 onClose()
+            case .refreshStage(_):
+                triggerCoachmark()
             case .setOptimisticPostingEnabled(let enabled):
                 publisher?.optimisticPostingEnabled = enabled
             default:
@@ -161,7 +168,6 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             navigationController?.navigationBar.topItem?.titleView = navBarTitleView
         }
         navBarTitleView?.sizeToFit()
-        
         #if V_ENABLE_WEBSOCKET_DEBUG_MENU
             if let webSocketForumNetworkSource = forumNetworkSource as? WebSocketForumNetworkSource,
                 let navigationController = navigationController {
@@ -388,10 +394,10 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         }
     }
     
-    // MARK: - VCoachmarkDisplayer
+    // MARK: - Coachmark Displayer
     
-    func screenIdentifier() -> String! {
-        return dependencyManager.stringForKey(VDependencyManagerIDKey)
+    func highlightFrame(forIdentifier identifier: String) -> CGRect? {
+        return nil
     }
 }
 

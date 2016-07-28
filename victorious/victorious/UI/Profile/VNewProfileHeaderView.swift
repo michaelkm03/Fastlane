@@ -118,6 +118,7 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         
         upvotesReceivedTitleLabel.text = appearanceDependencyManager?.receivedUpvotesTitle
         upvotesGivenTitleLabel.text = appearanceDependencyManager?.givenUpvotesTitle
+        tierTitleLabel.text = appearanceDependencyManager?.tierTitle
     }
     
     // MARK: - Populating content
@@ -234,5 +235,9 @@ private extension VDependencyManager {
     
     var givenUpvotesTitle: String? {
         return stringForKey("upvoted.text")
+    }
+    
+    var tierTitle: String? {
+        return stringForKey("status.text")
     }
 }

@@ -19,7 +19,6 @@
 #import "VAppInfo.h"
 #import "VDependencyManager+VAccessoryScreens.h"
 #import "VDependencyManager+VNavigationItem.h"
-#import "VCoachmarkManager.h"
 #import "VEnvironmentManager.h"
 #import "VDependencyManager+VTracking.h"
 #import "VLikedContentStreamCollectionViewController.h"
