@@ -176,7 +176,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         
         // TODO: Load MCV
         
-        guard isOnScreen && enabled else {
+        guard isOnScreen else {
             return
         }
 
@@ -190,7 +190,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     }
 
     func removeContent() {
-        hideStage()
+        hide(true)
         currentStageContent = nil
         titleCardViewController?.hide()
     }
@@ -212,7 +212,11 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
 
     // MARK: - Show/Hide Stage
 
-    func hideStage(animated animated: Bool = false) {
+    func show(animated: Bool) {
+
+    }
+
+    func hide(animated: Bool) {
         guard visible else {
             return
         }
@@ -259,7 +263,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
             return
         }
         
-        showStage(animated: true)
+        show(true)
         
         let animations = {
             mediaContentView.alpha = 1.0
