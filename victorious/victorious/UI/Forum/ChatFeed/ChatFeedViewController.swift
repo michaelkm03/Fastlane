@@ -164,7 +164,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     }
     
     private func removePendingContent(contentToRemove: [ChatFeedContent], loadingType: PaginatedLoadingType) -> [Int] {
-        guard let publisher = delegate?.publisher(for: self) where loadingType == .newer else {
+        guard let publisher = delegate?.publisher(for: self) else {
             return []
         }
         
