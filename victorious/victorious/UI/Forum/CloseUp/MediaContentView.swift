@@ -159,33 +159,24 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     }
 
     // MARK: - Managing content
-    
-    
-    private func displayContent(content: ContentModel) {
-        spinner.startAnimating()
-        hideContent(animated: true) { [weak self] _ in
-            guard let strongSelf = self else {
-                return
-            }
-            
-            // Set up image view if content is image
-            let minWidth = strongSelf.frame.size.width
-            
-            if content.type.displaysAsImage, let imageAsset = content.previewImage(ofMinimumWidth: minWidth) {
-                strongSelf.setUpPreviewImage(from: imageAsset)
-            }
-            else if content.type.displaysAsVideo {
-                strongSelf.setUpVideoPlayer(for: content)
-            }
-            else if content.type == .text {
-                strongSelf.setUpTextLabel()
-            }
+
+    /// Can we seek ahead into the item with the current seekAheadTime stored in the content.
+    var seekableWithinBounds: Bool {
+        if content.type != .video {
+            return true
         }
+
+        // Duration will be NaN if the item hasn't loaded yet.
+        guard let videoCoordinator = videoCoordinator where !videoCoordinator.duration.isNaN else {
+            return false
+        }
+
+        return (videoCoordinator.duration >= content.seekAheadTime())
     }
-    
+
     func hideContent(animated animated: Bool = true, completion: ((Bool) -> Void)? = nil) {
         let animationDuration = animated ? Constants.fadeDuration * Constants.fadeOutDurationMultiplier : 0
-        
+
         UIView.animateWithDuration(
             animationDuration,
             delay: 0,
@@ -229,6 +220,28 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
                 completion?(didFinish)
             }
         )
+    }
+
+    private func displayContent(content: ContentModel) {
+        spinner.startAnimating()
+        hideContent(animated: true) { [weak self] _ in
+            guard let strongSelf = self else {
+                return
+            }
+            
+            // Set up image view if content is image
+            let minWidth = strongSelf.frame.size.width
+            
+            if content.type.displaysAsImage, let imageAsset = content.previewImage(ofMinimumWidth: minWidth) {
+                strongSelf.setUpPreviewImage(from: imageAsset)
+            }
+            else if content.type.displaysAsVideo {
+                strongSelf.setUpVideoPlayer(for: content)
+            }
+            else if content.type == .text {
+                strongSelf.setUpTextLabel()
+            }
+        }
     }
     
     // MARK: - Managing preview image
