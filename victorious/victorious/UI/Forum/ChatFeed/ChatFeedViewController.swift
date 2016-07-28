@@ -71,6 +71,11 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
                 bottom: Layout.bottomMargin,
                 right: 0.0
             )
+            
+            UIView.performWithoutAnimation {
+                self.collectionView.collectionViewLayout.invalidateLayout()
+                self.collectionView.layoutIfNeeded()
+            }
         }
     }
     

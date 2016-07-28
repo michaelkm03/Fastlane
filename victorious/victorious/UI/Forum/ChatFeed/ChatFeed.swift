@@ -69,7 +69,7 @@ extension ChatFeed {
         CATransaction.setDisableActions(true)
         
         let collectionView = self.collectionView
-        let wasScrolledToBottom = collectionView.isScrolledToBottom()
+        let wasScrolledToBottom = collectionView.isScrolledToBottom(withTolerance: 5.0)
         let oldPendingItemCount = max(0, chatInterfaceDataSource.pendingItems.count - newPendingContentCount)
         let insertingAbovePendingContent = oldPendingItemCount > 0 && newPendingContentCount <= 0
         
@@ -100,37 +100,37 @@ extension ChatFeed {
         // though, so we have to do that separately.
         collectionView.performBatchUpdates({
             switch loadingType {
-            case .newer:
-                collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
-                    NSIndexPath(forItem: oldVisibleItemCount + $0, inSection: 0)
+                case .newer:
+                    collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
+                        NSIndexPath(forItem: oldVisibleItemCount + $0, inSection: 0)
                     })
                 
-            case .older:
-                if let layout = collectionView.collectionViewLayout as? ChatFeedCollectionViewLayout {
-                    layout.contentSizeWhenInsertingAbove = collectionView.contentSize
-                }
-                else {
-                    assertionFailure("Chat feed's collection view did not have the required layout type ChatFeedCollectionViewLayout.")
-                }
-                
-                collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
-                    NSIndexPath(forItem: $0, inSection: 0)
+                case .older:
+                    if let layout = collectionView.collectionViewLayout as? ChatFeedCollectionViewLayout {
+                        layout.contentSizeWhenInsertingAbove = collectionView.contentSize
+                    }
+                    else {
+                        assertionFailure("Chat feed's collection view did not have the required layout type ChatFeedCollectionViewLayout.")
+                    }
+                    
+                    collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
+                        NSIndexPath(forItem: $0, inSection: 0)
                     })
                 
-            case .refresh:
-                // Calling reloadData in here causes a crash
-                collectionView.reloadSections(NSIndexSet(index: 0))
+                case .refresh:
+                    // Calling reloadData in here causes a crash
+                    collectionView.reloadSections(NSIndexSet(index: 0))
             }
             
             collectionView.insertItemsAtIndexPaths((0 ..< newPendingContentCount).map {
                 NSIndexPath(forItem: itemCount - 1 - $0, inSection: 0)
-                })
+            })
             
             collectionView.deleteItemsAtIndexPaths(removedPendingContentIndices.map {
                 NSIndexPath(forItem: oldVisibleItemCount + $0, inSection: 0)
-                })
-            }, completion: { _ in
-                completion()
+            })
+        }, completion: { _ in
+            completion()
         })
     }
 }

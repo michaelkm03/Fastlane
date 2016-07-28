@@ -16,7 +16,7 @@ extension UIScrollView {
     
     /// The `contentOffset` value that scrolls the content to the bottom.
     var bottomOffset: CGPoint {
-        return CGPoint(x: 0.0, y: max(contentSize.height + contentInset.bottom - bounds.height, 0.0))
+        return CGPoint(x: 0.0, y: max(contentSize.height + contentInset.bottom - bounds.height, topOffset.y))
     }
     
     /// Whether or not the scroll view is currently scrolled to the top, optionally with a tolerance value.
@@ -31,21 +31,11 @@ extension UIScrollView {
     
     /// Scrolls the receiver to the top of its content.
     func scrollToTop(animated animated: Bool, completion: (() -> Void)? = nil) {
-        guard !isScrolledToTop() else {
-            completion?()
-            return
-        }
-        
         scrollTo(topOffset, animated: animated)
     }
     
     /// Scrolls the receiver to the bottom of its content.
     func scrollToBottom(animated animated: Bool, completion: (() -> Void)? = nil) {
-        guard !isScrolledToBottom() else {
-            completion?()
-            return
-        }
-        
         scrollTo(bottomOffset, animated: animated)
     }
     
