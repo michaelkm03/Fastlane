@@ -65,7 +65,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         }
     }
 
-    // MARK: - UIViewController Life cycle
+    // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,44 +80,26 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         )
     }
     
-    private func setupDataSource(dependencyManager: VDependencyManager) -> StageDataSource {
-        let dataSource = StageDataSource(dependencyManager: dependencyManager)
-        dataSource.delegate = self
-        return dataSource
-    }
-    
-    private func swapStageContent(to content: ContentModel) {
-        if let oldMediaContentView = self.mediaContentView {
-            let animations = {
-                oldMediaContentView.alpha = 0
-            }
-            
-            UIView.animateWithDuration(1, animations: animations) { _ in
-                oldMediaContentView.removeFromSuperview()
-            }
-        }
-        
-        let mediaContentView = setupMediaContentView(for: content)
-        view.addSubview(mediaContentView)
-        view.v_addPinToLeadingTrailingToSubview(mediaContentView)
-        view.v_addPinToTopToSubview(mediaContentView)
-
-        // TODO: Fix this?
-        view.v_addPinToBottomToSubview(mediaContentView, bottomMargin: captionBarContainerView.frame.size.height)
-        
-        self.mediaContentView = mediaContentView
-        
-//        setStageEnabled(true, animated: false)
-    }
-    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         mediaContentView?.willBePresented()
     }
-
+    
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         mediaContentView?.willBeDismissed()
+    }
+    
+    deinit {
+        audioSession.removeObserver(self, forKeyPath: "outputVolume")
+    }
+    
+    // MARK: - Setup
+    
+    private func setupDataSource(dependencyManager: VDependencyManager) -> StageDataSource {
+        let dataSource = StageDataSource(dependencyManager: dependencyManager)
+        dataSource.delegate = self
+        return dataSource
     }
     
     override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
@@ -126,8 +108,33 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         }
     }
     
-    deinit {
-        audioSession.removeObserver(self, forKeyPath: "outputVolume")
+    private func swapStageContent(to content: ContentModel) {
+        if let mediaContentView = mediaContentView {
+            tearDownMediaContentView(mediaContentView)
+        }
+        self.mediaContentView = newMediaContentView(for: content)
+    }
+    
+    private func tearDownMediaContentView(mediaContentView: MediaContentView) {
+        let animations = {
+            mediaContentView.alpha = 0
+        }
+        
+        UIView.animateWithDuration(1, animations: animations) { _ in
+            mediaContentView.removeFromSuperview()
+        }
+    }
+    
+    private func newMediaContentView(for content: ContentModel) -> MediaContentView {
+        let mediaContentView = setupMediaContentView(for: content)
+        view.addSubview(mediaContentView)
+        view.v_addPinToLeadingTrailingToSubview(mediaContentView)
+        view.v_addPinToTopToSubview(mediaContentView)
+        
+        // TODO: Fix this?
+        view.v_addPinToBottomToSubview(mediaContentView, bottomMargin: captionBarContainerView.frame.size.height)
+        
+        return mediaContentView
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -171,15 +178,8 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     }
 
     func addStageContent(stageContent: StageContent) {
-        currentStageContent = stageContent
-        // TODO: hide preview MCV, pause
+        swapStageContent(to: stageContent.content)
         
-        // TODO: Load MCV
-        
-        guard isOnScreen else {
-            return
-        }
-
         titleCardViewController?.populate(with: stageContent)
 
         updateStageHeight()
@@ -212,17 +212,22 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
 
     // MARK: - Show/Hide Stage
 
-    func show(animated: Bool) {
-
-    }
-
     func hide(animated: Bool) {
         guard visible else {
             return
         }
         
-        // TODO: Pause MCV
-        // TODO: Fade MCV out
+        // Pause the video if necessary
+        mediaContentView?.willBeDismissed()
+        
+        // Fade MCV Out
+        let animations: ()->() = {
+            self.mediaContentView?.alpha = 0
+        }
+        UIView.animateWithDuration(animated ? Constants.contentSizeAnimationDuration : 0, animations: animations) { _ in
+            self.mediaContentView?.removeFromSuperview()
+            self.mediaContentView = nil
+        }
         
         visible = false
         UIView.animateWithDuration(animated ? Constants.contentSizeAnimationDuration : 0) {
@@ -232,7 +237,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         titleCardViewController?.hide()
     }
 
-    func showStage(animated: Bool = false) {
+    func show(animated: Bool) {
         guard !visible else {
             return
         }
@@ -258,12 +263,11 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     func didFinishLoadingContent(content: ContentModel) {
         print("didFinishLoadingContent in StageVC")
         
+        // TODO: Check if we are on screen
         // TODO: Check seek ahead time
         guard let mediaContentView = mediaContentView else {
             return
         }
-        
-        show(true)
         
         let animations = {
             mediaContentView.alpha = 1.0
