@@ -21,9 +21,6 @@ enum FillMode {
 }
 
 struct MediaContentViewConfiguration {
-    /// Whether or not the blurred preview image background is shown behind the media.
-    let showsBlurredBackground: Bool
-    
     /// Determines whether we want video control for video content. E.g.: Stage disables video control for video content
     let allowsVideoControls: Bool
     
@@ -86,21 +83,21 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     // MARK: - Initializing
 
     /// Sets up the content view with a zero frame. Use this initializer if created from code.
-    /// showsBlurredBackground decides if the system blur is applied to the background view.
     init(
         content: ContentModel,
         dependencyManager: VDependencyManager,
-        configuration: MediaContentViewConfiguration
+        configuration: MediaContentViewConfiguration,
+        delegate: MediaContentViewDelegate? = nil
     ) {
         self.content = content
         self.dependencyManager = dependencyManager
         self.configuration = configuration
+        self.delegate = delegate
         
         super.init(frame: CGRect.zero)
         
         setup()
         configureBackground()
-        loadContent()
     }
     
     required init?(coder: NSCoder) {
@@ -137,21 +134,15 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         self.backgroundView = backgroundView
         backgroundView.contentMode = .ScaleAspectFill
         insertSubview(backgroundView, atIndex: 0)
-
-        if !configuration.showsBlurredBackground {
-            backgroundView.image = nil
-        }
     }
 
     // MARK: - Presentable
 
     func willBePresented() {
-        // TODO: play
         videoCoordinator?.playVideo()
     }
 
     func willBeDismissed() {
-        // TODO: pause
         videoCoordinator?.pauseVideo()
     }
 
@@ -171,7 +162,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         return (videoCoordinator.duration >= content.seekAheadTime())
     }
 
-    private func loadContent() {
+    func loadContent() {
         spinner.startAnimating()
         
         // Set up image view if content is image
@@ -193,14 +184,16 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     
     // MARK: - Managing preview image
     
-    private func setUpPreviewImage(from imageAsset: ImageAssetModel) {
-        //Images don't need a video player and a text label
+    private func setUpPreviewImage(from imageAsset: ImageAssetModel? = nil) {
         tearDownVideoPlayer()
-        tearDownTextLabel()
         
         previewImageView.hidden = false
         
-        switch imageAsset.imageSource {
+        guard let imageSource = imageAsset?.imageSource else {
+            return
+        }
+        
+        switch imageSource {
             case .remote(let url):
                 previewImageView.sd_setImageWithURL(
                     url,
@@ -252,12 +245,11 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         videoCoordinator?.tearDown()
         videoCoordinator = nil
     }
-        
+    
     // MARK: - Managing Text 
     
     private func setUpTextLabel() {
-        tearDownPreviewImage()
-        tearDownVideoPlayer()
+        setUpPreviewImage()
         
         let textPostDependency = self.dependencyManager.textPostDependency
         textPostLabel.font = textPostDependency?.textPostFont ?? Constants.defaultTextFont
@@ -269,40 +261,20 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
             return
         }
 
-        if configuration.showsBlurredBackground {
-            let imageAsset = ImageAsset(url: url, size: frame.size)
-            setBackgroundBlur(withImageAsset: imageAsset, forContent: content) { [weak self] in
-                guard let currentContentID = self?.content.id where currentContentID == self?.content.id else {
-                    return
-                }
-                guard let text = self?.content.text else {
-                    return
-                }
-                self?.renderText(text)
+        previewImageView.sd_setImageWithURL(url) { [weak self] (_, _, _, _) in
+            guard let text = self?.content.text else {
+                return
             }
-        }
-        else {
-            backgroundView?.sd_setImageWithURL(url, completed: { [weak self] (_, _, _, _) in
-                guard let text = self?.content.text else {
-                    return
-                }
-                self?.renderText(text)
-            })
+            self?.textPostLabel.text = text
+            self?.textPostLabel.hidden = false
+            
+            self?.finishedLoadingContent()
         }
     }
     
     private func tearDownTextLabel() {
         textPostLabel.hidden = true
         textPostLabel.text = ""
-    }
-    
-    private func renderText(text: String?) {
-        guard let text = text else {
-            return
-        }
-        textPostLabel.text = text
-        spinner.stopAnimating()
-        textPostLabel.hidden = false
     }
     
     // MARK: - Layout

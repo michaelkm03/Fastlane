@@ -70,6 +70,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = .blackColor()
         captionBarViewController = childViewControllers.flatMap({ $0 as? CaptionBarViewController }).first
         
         audioSession.addObserver(
@@ -118,7 +119,9 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         if let mediaContentView = mediaContentView {
             tearDownMediaContentView(mediaContentView)
         }
+        self.mediaContentView = nil
         self.mediaContentView = newMediaContentView(for: content)
+        self.mediaContentView?.loadContent()
     }
     
     private func tearDownMediaContentView(mediaContentView: MediaContentView) {
@@ -134,6 +137,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     private func newMediaContentView(for content: ContentModel) -> MediaContentView {
         let mediaContentView = setupMediaContentView(for: content)
         view.addSubview(mediaContentView)
+        view.sendSubviewToBack(mediaContentView)
         view.v_addPinToLeadingTrailingToSubview(mediaContentView)
         view.v_addPinToTopToSubview(mediaContentView)
         
@@ -155,19 +159,18 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     
     func setupMediaContentView(for content: ContentModel) -> MediaContentView {
         let configuration = MediaContentViewConfiguration(
-            showsBlurredBackground: false,
             allowsVideoControls: false,
-            fillMode: .fill
+            fillMode: .fit
         )
         
         let mediaContentView = MediaContentView(
             content: content,
             dependencyManager: dependencyManager,
-            configuration: configuration
+            configuration: configuration,
+            delegate: self
         )
         
         mediaContentView.alpha = 0
-        mediaContentView.delegate = self
         
         mediaContentView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOnContent)))
         
@@ -269,8 +272,6 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     // MARK: - MediaContentViewDelegate
 
     func didFinishLoadingContent(content: ContentModel) {
-        print("didFinishLoadingContent in StageVC")
-        
         guard isOnScreen else {
             return
         }

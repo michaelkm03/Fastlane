@@ -89,7 +89,6 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
 
     func setupMediaContentView(for content: ContentModel) -> MediaContentView {
         let configuration = MediaContentViewConfiguration(
-            showsBlurredBackground: false,
             allowsVideoControls: false,
             fillMode: .fill
         )
@@ -97,9 +96,9 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
         let mediaContentView = MediaContentView(
             content: content,
             dependencyManager: dependencyManager,
-            configuration: configuration
+            configuration: configuration,
+            delegate: self
         )
-        mediaContentView.delegate = self
         
         return mediaContentView
     }

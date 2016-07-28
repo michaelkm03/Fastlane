@@ -198,7 +198,6 @@ class ChatFeedMessageCell: UICollectionViewCell {
             content: content,
             dependencyManager: dependencyManager,
             configuration: MediaContentViewConfiguration(
-                showsBlurredBackground: false,
                 allowsVideoControls: false,
                 fillMode: .fill
             )
