@@ -84,10 +84,10 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         super.viewWillAppear(animated)
 
         if mediaContentView?.seekableWithinBounds == true {
-            show(animated)
+            show(false)
         }
         else {
-            hide(animated)
+            hide(false)
         }
     }
     
@@ -244,11 +244,11 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     }
 
     func show(animated: Bool) {
+        mediaContentView?.willBePresented()
+        
         guard !visible else {
             return
         }
-        
-        mediaContentView?.willBePresented()
         
         visible = true
         UIView.animateWithDuration(animated ? Constants.contentSizeAnimationDuration : 0) {
@@ -269,14 +269,20 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     func didFinishLoadingContent(content: ContentModel) {
         print("didFinishLoadingContent in StageVC")
         
-        // TODO: Check if we are on screen
-        // TODO: Check seek ahead time
-        guard let mediaContentView = mediaContentView else {
+        guard isOnScreen else {
             return
         }
         
+        guard mediaContentView?.seekableWithinBounds == true else {
+            hide(true)
+            return
+        }
+        
+        show(true)
+        
         let animations = {
-            mediaContentView.alpha = 1.0
+            self.mediaContentView?.alpha = 1.0
+            return
         }
         
         UIView.animateWithDuration(1, animations: animations) { _ in
