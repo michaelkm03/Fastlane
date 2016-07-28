@@ -54,7 +54,6 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     private var currentStageContent: StageContent?
 
     private var stageDataSource: StageDataSource?
-    private var enabled = true
     
     weak var delegate: StageDelegate?
     private let audioSession = AVAudioSession.sharedInstance()
@@ -113,19 +112,12 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
-        if let content = currentStageContent?.content {
-            showStage(animated: false)
-        }
-        else {
-            hideStage(animated: false)
-        }
+        mediaContentView?.willBePresented()
     }
 
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        
-        hideStage(animated: false)
+        mediaContentView?.willBeDismissed()
     }
     
     override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
@@ -203,17 +195,6 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         titleCardViewController?.hide()
     }
     
-    func setStageEnabled(enabled: Bool, animated: Bool) {
-        self.enabled = enabled
-        
-        if enabled {
-            showStage(animated: animated)
-        }
-        else {
-            hideStage(animated: animated)
-        }
-    }
-    
     var overlayUIAlpha: CGFloat {
         get {
             return captionBarViewController?.view.alpha ?? 0
@@ -231,7 +212,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
 
     // MARK: - Show/Hide Stage
 
-    private func hideStage(animated animated: Bool = false) {
+    func hideStage(animated animated: Bool = false) {
         guard visible else {
             return
         }
@@ -247,29 +228,12 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         titleCardViewController?.hide()
     }
 
-    private func showStage(for content:ContentModel, animated: Bool = false) {
+    func showStage(animated: Bool = false) {
         guard !visible else {
-            // TODO: Play + Sync
             return
         }
         
-        if mediaContentView?.content.id == content.id {
-            // TODO: play+Sync
-        }
-        else {
-            swapStageContent(to: content)
-        }
-
-        
-        // TODO: Animate content in, check seek ahead time, play with sync
-//        if
-//            let videoDuration = self?.mediaContentView.videoCoordinator?.duration,
-//            let content = self?.currentStageContent?.content
-//        {
-//            if content.seekAheadTime() < videoDuration {
-//                self?.mediaContentView.videoCoordinator?.playVideo(true)
-//            }
-//        }
+        mediaContentView?.willBePresented()
         
         visible = true
         UIView.animateWithDuration(animated ? Constants.contentSizeAnimationDuration : 0) {
