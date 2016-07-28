@@ -10,19 +10,13 @@ import UIKit
 
 class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, TutorialNetworkDataSourceDelegate, VBackgroundContainer {
     
+    @IBOutlet var continueButtonBottomConstraint: NSLayoutConstraint!
     @IBOutlet private weak var continueButton: UIButton! {
         didSet {
-            continueButton.hidden = true
-            continueButton.alpha = 0
             continueButton.setTitleColor(dependencyManager.continueButtonTitleColor, forState: .Normal)
             continueButton.setTitle(dependencyManager.continueButtonTitleText, forState: .Normal)
             continueButton.titleLabel?.font = dependencyManager.continueButtonTitleFont
             continueButton.backgroundColor = dependencyManager.continueButtonBackgroundColor
-            let frame = continueButton.bounds
-            let strokeView = UIView(frame: CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.width, height: 2))
-            strokeView.backgroundColor = UIColor(red: 255, green: 255, blue: 255, alpha: 0.06)
-            continueButton.addSubview(strokeView)
-            
         }
     }
     
@@ -111,9 +105,9 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
     }
 
     func didFinishFetchingAllItems() {
-        continueButton.hidden = false
-        UIView.animateWithDuration(1.0) { [weak self] in
-            self?.continueButton.alpha = 1.0
+        continueButtonBottomConstraint.constant = 0.0
+        UIView.animateWithDuration(0.5) { [weak self] in
+            self?.view.layoutIfNeeded()
         }
     }
     
