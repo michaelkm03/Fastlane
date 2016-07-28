@@ -200,7 +200,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     // MARK: - ChatFeedDataSourceDelegate
     
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didLoadItems newItems: [ChatFeedContent], loadingType: PaginatedLoadingType) {
-        let removedPendingContentIndices = removePendingContent(newItems, loadingType: loadingType)
+        let removedPendingContentIndices = removePendingContent(newItems)
         handleNewItems(newItems, loadingType: loadingType, removedPendingContentIndices: removedPendingContentIndices)
         updateInsets()
     }
@@ -218,7 +218,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didUnstashItems unstashedItems: [ChatFeedContent]) {
         newItemsController?.hide()
         
-        let removedPendingContentIndices = removePendingContent(unstashedItems, loadingType: .newer)
+        let removedPendingContentIndices = removePendingContent(unstashedItems)
         
         handleNewItems(unstashedItems, loadingType: .newer, removedPendingContentIndices: removedPendingContentIndices) { [weak self] in
             self?.collectionView.scrollToBottom(animated: true)
@@ -235,8 +235,8 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         return delegate?.publisher(for: self)?.pendingItems ?? []
     }
     
-    private func removePendingContent(contentToRemove: [ChatFeedContent], loadingType: PaginatedLoadingType) -> [Int] {
-        guard let publisher = delegate?.publisher(for: self) where loadingType == .newer else {
+    private func removePendingContent(contentToRemove: [ChatFeedContent]) -> [Int] {
+        guard let publisher = delegate?.publisher(for: self) else {
             return []
         }
         

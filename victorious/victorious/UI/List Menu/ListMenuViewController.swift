@@ -15,7 +15,7 @@ struct ListMenuSelectedItem {
 
 /// View Controller for the entire List Menu Component, which is currently being displayed as the left navigation pane
 /// of a sliding scaffold.
-class ListMenuViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, VCoachmarkDisplayer, VNavigationDestination, VBackgroundContainer {
+class ListMenuViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, CoachmarkDisplayer, VNavigationDestination, VBackgroundContainer {
     
     // MARK: - Configuration
     
@@ -62,7 +62,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
             collectionView?.selectItemAtIndexPath(indexPath, animated: false, scrollPosition: .None)
         }
     }
-    
+
     // MARK: - Notifications
     
     private func selectCreator(atIndex index: Int) {
@@ -175,10 +175,10 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         return validIndices ~= indexPath.row
     }
     
-    // MARK - VCoachmarkDisplayer
+    // MARK: - CoachmarkDisplayer
     
-    func screenIdentifier() -> String! {
-        return dependencyManager.stringForKey(VDependencyManagerIDKey)
+    func highlightFrame(forIdentifier forIdentifier: String) -> CGRect? {
+        return nil 
     }
     
     // MARK: - VBackgroundContainer

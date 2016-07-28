@@ -96,8 +96,7 @@ extension ChatFeed {
         let itemCount = chatInterfaceDataSource.itemCount
         
         // The collection view's layout information is guaranteed to be updated properly in the completion handler
-        // of this method, which allows us to properly manage scrolling. We can't call `reloadData` in this method,
-        // though, so we have to do that separately.
+        // of this method, which allows us to properly manage scrolling.
         collectionView.performBatchUpdates({
             switch loadingType {
                 case .newer:

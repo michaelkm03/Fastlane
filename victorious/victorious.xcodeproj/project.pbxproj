@@ -820,8 +820,13 @@
 		7C582CA21D22E80300707CBE /* VSettingsSwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C582CA11D22E80300707CBE /* VSettingsSwitchCell.xib */; };
 		7C582CA61D23270000707CBE /* NotificationSettingsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C582CA51D23270000707CBE /* NotificationSettingsViewControllerTests.swift */; };
 		7C6547D61CF4CDAE005F58A1 /* UIView+ShakeAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C9C61D31CEF81400072349B /* UIView+ShakeAnimation.swift */; };
+		7C894B861D38475200E124C8 /* CoachmarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C894B851D38475200E124C8 /* CoachmarkViewController.swift */; };
+		7C894B881D39A04100E124C8 /* Coachmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C894B871D39A04100E124C8 /* Coachmark.swift */; };
+		7C894B8A1D39A4C500E124C8 /* CoachmarkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C894B891D39A4C400E124C8 /* CoachmarkManager.swift */; };
+		7C894B8E1D39BC1B00E124C8 /* CoachmarkDisplayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C894B8D1D39BC1B00E124C8 /* CoachmarkDisplayer.swift */; };
 		7CC982211D0104EC00583B70 /* VDependencyManager+ForumNetworkSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC982201D0104EC00583B70 /* VDependencyManager+ForumNetworkSource.swift */; };
 		7CC982241D0235D300583B70 /* ForumNavBarTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC982231D0235D300583B70 /* ForumNavBarTitleView.swift */; };
+		7CCBF2B91D413C7D0075A087 /* CoachmarkManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBF2B81D413C7D0075A087 /* CoachmarkManagerTests.swift */; };
 		A601FB491B4354D10050536C /* VAbstractImageVideoCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB481B4354D10050536C /* VAbstractImageVideoCreationFlowController.m */; };
 		A601FB4F1B4355A30050536C /* VCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB4E1B4355A30050536C /* VCreationFlowController.m */; };
 		A601FB531B4363240050536C /* VCreationFlowPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB521B4363240050536C /* VCreationFlowPresenter.m */; };
@@ -1393,9 +1398,6 @@
 		A7D9526F1CD41D9300AD1D1D /* VPurchaseCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7D9526D1CD41D9300AD1D1D /* VPurchaseCell.xib */; };
 		A7DCA4D41C128A78004E35B4 /* VAbstractMarqueeControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE9674F919E335060072E87A /* VAbstractMarqueeControllerTests.m */; };
 		A7DCA4D61C128A78004E35B4 /* VActionBarTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D8DCE5911ADD85820004B782 /* VActionBarTests.m */; };
-		A7DCA4DC1C128A78004E35B4 /* VCoachmarkManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C83A3A1B0F9EF900A6EC1A /* VCoachmarkManagerTests.m */; };
-		A7DCA4DD1C128A78004E35B4 /* VCoachmarkPassthroughContainerViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C83A321B0ED7DA00A6EC1A /* VCoachmarkPassthroughContainerViewTests.m */; };
-		A7DCA4DE1C128A78004E35B4 /* VCoachmarkViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C83A341B0F87EF00A6EC1A /* VCoachmarkViewTests.m */; };
 		A7DCA4E01C128A78004E35B4 /* VContentViewFactoryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0329B99F1ACBAAFB003BBCC5 /* VContentViewFactoryTests.m */; };
 		A7DCA4E11C128A78004E35B4 /* VDefaultTemplateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 035ABE7D1AD8871F00B6B1A5 /* VDefaultTemplateTests.m */; };
 		A7DCA4E21C128A78004E35B4 /* VDependencyManager_VNavigationMenuItemTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 035FA7771AE188CD0002EE63 /* VDependencyManager_VNavigationMenuItemTests.m */; };
@@ -1977,9 +1979,6 @@
 		F06FC1FC1C97437900A014C7 /* ComposerTextViewManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06FC1F91C97437900A014C7 /* ComposerTextViewManagerDelegate.swift */; };
 		F06FC1FD1C97437900A014C7 /* Composer.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F06FC1FA1C97437900A014C7 /* Composer.storyboard */; };
 		F07228261AD8846A00085653 /* VNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = F07228251AD8846A00085653 /* VNotification.m */; };
-		F07409751B05876200C44623 /* VCoachmarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = F07409741B05876200C44623 /* VCoachmarkView.m */; };
-		F074097F1B059CA200C44623 /* VCoachmarkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F074097E1B059CA200C44623 /* VCoachmarkManager.m */; };
-		F07409841B059FEA00C44623 /* VCoachmark.m in Sources */ = {isa = PBXBuildFile; fileRef = F07409831B059FEA00C44623 /* VCoachmark.m */; };
 		F07557E61B73B49F00BB2648 /* VStreamItem.m in Sources */ = {isa = PBXBuildFile; fileRef = F07557E51B73B49F00BB2648 /* VStreamItem.m */; };
 		F07557EC1B751F5300BB2648 /* VDirectoryContentCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07557EB1B751F5300BB2648 /* VDirectoryContentCellFactory.swift */; };
 		F07557EE1B751F8C00BB2648 /* VSequenceContentCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07557ED1B751F8C00BB2648 /* VSequenceContentCellFactory.swift */; };
@@ -2031,9 +2030,7 @@
 		F0BD812B1C9B645F0062D079 /* CreationFlowTypeHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0BD812A1C9B645F0062D079 /* CreationFlowTypeHelperTests.swift */; };
 		F0BD812D1C9B67150062D079 /* ComposerAttachmentTabBarButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0BD812C1C9B67150062D079 /* ComposerAttachmentTabBarButtonTests.swift */; };
 		F0BF9F6E1B72DC1600B24225 /* VStreamContentCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0BF9F6D1B72DC1600B24225 /* VStreamContentCellFactory.swift */; };
-		F0C83A2D1B0D599000A6EC1A /* VCoachmarkPassthroughContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C83A2C1B0D599000A6EC1A /* VCoachmarkPassthroughContainerView.m */; };
 		F0C83A451B0FDD2B00A6EC1A /* coachmarks.json in Resources */ = {isa = PBXBuildFile; fileRef = F0C83A441B0FDD2B00A6EC1A /* coachmarks.json */; };
-		F0C83A551B156D1700A6EC1A /* VCoachmarkManager+VObjectAssociation.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C83A541B156D1700A6EC1A /* VCoachmarkManager+VObjectAssociation.m */; };
 		F0C83A581B161BF500A6EC1A /* VStreamItemPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C83A571B161BF500A6EC1A /* VStreamItemPreviewView.m */; };
 		F0C83A5C1B16214C00A6EC1A /* VStreamPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C83A5B1B16214C00A6EC1A /* VStreamPreviewView.m */; };
 		F0C83A631B162DE200A6EC1A /* VImageStreamPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C83A621B162DE200A6EC1A /* VImageStreamPreviewView.m */; };
@@ -3118,9 +3115,14 @@
 		7C582CA11D22E80300707CBE /* VSettingsSwitchCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VSettingsSwitchCell.xib; sourceTree = "<group>"; };
 		7C582CA51D23270000707CBE /* NotificationSettingsViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationSettingsViewControllerTests.swift; sourceTree = "<group>"; };
 		7C68CA9BC5F670F063DA6A87 /* Pods-victoriousPersistenceTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victoriousPersistenceTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-victoriousPersistenceTests/Pods-victoriousPersistenceTests.release.xcconfig"; sourceTree = "<group>"; };
+		7C894B851D38475200E124C8 /* CoachmarkViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachmarkViewController.swift; sourceTree = "<group>"; };
+		7C894B871D39A04100E124C8 /* Coachmark.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coachmark.swift; sourceTree = "<group>"; };
+		7C894B891D39A4C400E124C8 /* CoachmarkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachmarkManager.swift; sourceTree = "<group>"; };
+		7C894B8D1D39BC1B00E124C8 /* CoachmarkDisplayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachmarkDisplayer.swift; sourceTree = "<group>"; };
 		7C9C61D31CEF81400072349B /* UIView+ShakeAnimation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+ShakeAnimation.swift"; sourceTree = "<group>"; };
 		7CC982201D0104EC00583B70 /* VDependencyManager+ForumNetworkSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VDependencyManager+ForumNetworkSource.swift"; sourceTree = "<group>"; };
 		7CC982231D0235D300583B70 /* ForumNavBarTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ForumNavBarTitleView.swift; path = NavBar/ForumNavBarTitleView.swift; sourceTree = "<group>"; };
+		7CCBF2B81D413C7D0075A087 /* CoachmarkManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachmarkManagerTests.swift; sourceTree = "<group>"; };
 		7DBC132F24BC8F3441D72FC8 /* Pods-VictoriousIOSSDKTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousIOSSDKTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousIOSSDKTests/Pods-VictoriousIOSSDKTests.release.xcconfig"; sourceTree = "<group>"; };
 		83063D73BF2679FF010A2245 /* Pods-victorious.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.qa.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.qa.xcconfig"; sourceTree = "<group>"; };
 		861888B7B5EA1C709A7ABB6B /* Pods-VictoriousCommonOSX.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.debug.xcconfig"; sourceTree = "<group>"; };
@@ -4743,12 +4745,6 @@
 		F06FC1FA1C97437900A014C7 /* Composer.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Composer.storyboard; sourceTree = "<group>"; };
 		F07228241AD8846A00085653 /* VNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotification.h; sourceTree = "<group>"; };
 		F07228251AD8846A00085653 /* VNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotification.m; sourceTree = "<group>"; };
-		F07409731B05876200C44623 /* VCoachmarkView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCoachmarkView.h; sourceTree = "<group>"; };
-		F07409741B05876200C44623 /* VCoachmarkView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCoachmarkView.m; sourceTree = "<group>"; };
-		F074097D1B059CA200C44623 /* VCoachmarkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCoachmarkManager.h; sourceTree = "<group>"; };
-		F074097E1B059CA200C44623 /* VCoachmarkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCoachmarkManager.m; sourceTree = "<group>"; };
-		F07409821B059FEA00C44623 /* VCoachmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCoachmark.h; sourceTree = "<group>"; };
-		F07409831B059FEA00C44623 /* VCoachmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCoachmark.m; sourceTree = "<group>"; };
 		F07557E41B73B49F00BB2648 /* VStreamItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamItem.h; sourceTree = "<group>"; };
 		F07557E51B73B49F00BB2648 /* VStreamItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamItem.m; sourceTree = "<group>"; };
 		F07557EA1B73EBD400BB2648 /* VStreamContentCellFactoryDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamContentCellFactoryDelegate.h; sourceTree = "<group>"; };
@@ -4824,16 +4820,7 @@
 		F0BD812A1C9B645F0062D079 /* CreationFlowTypeHelperTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreationFlowTypeHelperTests.swift; sourceTree = "<group>"; };
 		F0BD812C1C9B67150062D079 /* ComposerAttachmentTabBarButtonTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposerAttachmentTabBarButtonTests.swift; sourceTree = "<group>"; };
 		F0BF9F6D1B72DC1600B24225 /* VStreamContentCellFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VStreamContentCellFactory.swift; sourceTree = "<group>"; };
-		F0C83A231B0B86EB00A6EC1A /* VCoachmarkDisplayResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCoachmarkDisplayResponder.h; sourceTree = "<group>"; };
-		F0C83A241B0B893A00A6EC1A /* VCoachmarkDisplayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCoachmarkDisplayer.h; sourceTree = "<group>"; };
-		F0C83A2B1B0D599000A6EC1A /* VCoachmarkPassthroughContainerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCoachmarkPassthroughContainerView.h; sourceTree = "<group>"; };
-		F0C83A2C1B0D599000A6EC1A /* VCoachmarkPassthroughContainerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCoachmarkPassthroughContainerView.m; sourceTree = "<group>"; };
-		F0C83A321B0ED7DA00A6EC1A /* VCoachmarkPassthroughContainerViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCoachmarkPassthroughContainerViewTests.m; sourceTree = "<group>"; };
-		F0C83A341B0F87EF00A6EC1A /* VCoachmarkViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCoachmarkViewTests.m; sourceTree = "<group>"; };
-		F0C83A3A1B0F9EF900A6EC1A /* VCoachmarkManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCoachmarkManagerTests.m; sourceTree = "<group>"; };
 		F0C83A441B0FDD2B00A6EC1A /* coachmarks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = coachmarks.json; sourceTree = "<group>"; };
-		F0C83A531B156D1700A6EC1A /* VCoachmarkManager+VObjectAssociation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VCoachmarkManager+VObjectAssociation.h"; sourceTree = "<group>"; };
-		F0C83A541B156D1700A6EC1A /* VCoachmarkManager+VObjectAssociation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VCoachmarkManager+VObjectAssociation.m"; sourceTree = "<group>"; };
 		F0C83A561B161BF500A6EC1A /* VStreamItemPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamItemPreviewView.h; sourceTree = "<group>"; };
 		F0C83A571B161BF500A6EC1A /* VStreamItemPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStreamItemPreviewView.m; sourceTree = "<group>"; };
 		F0C83A5A1B16214C00A6EC1A /* VStreamPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VStreamPreviewView.h; sourceTree = "<group>"; };
@@ -8778,9 +8765,6 @@
 				D8DCE5911ADD85820004B782 /* VActionBarTests.m */,
 				F028F3E81AC0F2BB00ABFDDC /* VAppInfoTests.m */,
 				A709640419F0738200CE6633 /* VApplicationTrackingTests.m */,
-				F0C83A3A1B0F9EF900A6EC1A /* VCoachmarkManagerTests.m */,
-				F0C83A321B0ED7DA00A6EC1A /* VCoachmarkPassthroughContainerViewTests.m */,
-				F0C83A341B0F87EF00A6EC1A /* VCoachmarkViewTests.m */,
 				0329B99F1ACBAAFB003BBCC5 /* VContentViewFactoryTests.m */,
 				035ABE7D1AD8871F00B6B1A5 /* VDefaultTemplateTests.m */,
 				035FA7771AE188CD0002EE63 /* VDependencyManager_VNavigationMenuItemTests.m */,
@@ -8828,6 +8812,7 @@
 				A73AFB7B19F573AB0005A9EA /* VVideoTrackingTests.m */,
 				A7AB4FE819F5A6A300BFFE35 /* VVoteTypeFetcherTests.m */,
 				7C582CA51D23270000707CBE /* NotificationSettingsViewControllerTests.swift */,
+				7CCBF2B81D413C7D0075A087 /* CoachmarkManagerTests.swift */,
 			);
 			path = victoriousTests;
 			sourceTree = "<group>";
@@ -9808,18 +9793,10 @@
 		F07409801B059CAD00C44623 /* Coachmarks */ = {
 			isa = PBXGroup;
 			children = (
-				F07409821B059FEA00C44623 /* VCoachmark.h */,
-				F07409831B059FEA00C44623 /* VCoachmark.m */,
-				F0C83A241B0B893A00A6EC1A /* VCoachmarkDisplayer.h */,
-				F0C83A231B0B86EB00A6EC1A /* VCoachmarkDisplayResponder.h */,
-				F074097D1B059CA200C44623 /* VCoachmarkManager.h */,
-				F074097E1B059CA200C44623 /* VCoachmarkManager.m */,
-				F0C83A531B156D1700A6EC1A /* VCoachmarkManager+VObjectAssociation.h */,
-				F0C83A541B156D1700A6EC1A /* VCoachmarkManager+VObjectAssociation.m */,
-				F0C83A2B1B0D599000A6EC1A /* VCoachmarkPassthroughContainerView.h */,
-				F0C83A2C1B0D599000A6EC1A /* VCoachmarkPassthroughContainerView.m */,
-				F07409731B05876200C44623 /* VCoachmarkView.h */,
-				F07409741B05876200C44623 /* VCoachmarkView.m */,
+				7C894B851D38475200E124C8 /* CoachmarkViewController.swift */,
+				7C894B871D39A04100E124C8 /* Coachmark.swift */,
+				7C894B891D39A4C400E124C8 /* CoachmarkManager.swift */,
+				7C894B8D1D39BC1B00E124C8 /* CoachmarkDisplayer.swift */,
 			);
 			path = Coachmarks;
 			sourceTree = "<group>";
@@ -11848,6 +11825,7 @@
 				670A3B1C1CA9F5AF004C5F57 /* InterstitialAlertViewController.swift in Sources */,
 				A60658251B56FF7200414DB7 /* VCollectionListPresentationController.m in Sources */,
 				A73A877D1A76BD71008C6355 /* VStreamWebViewController.m in Sources */,
+				7C894B861D38475200E124C8 /* CoachmarkViewController.swift in Sources */,
 				67F231591CBD7667006BDBA5 /* ListMenuHashtagCollectionViewCell.swift in Sources */,
 				A75ED0901AB77E3300C35063 /* VFilterPickerDataSource.m in Sources */,
 				03CA69621C5485200039BD01 /* PersistenceTemplateDownloader.swift in Sources */,
@@ -11870,6 +11848,7 @@
 				A7D69C711C0E879300B462C3 /* VContentViewViewModel.swift in Sources */,
 				F06B41C31B7FBE0D008709E8 /* VListPlaylistShelfCollectionViewCell.swift in Sources */,
 				A72C86091C977FF500E97D4F /* DeviceExperimentsOperation.swift in Sources */,
+				7C894B8A1D39A4C500E124C8 /* CoachmarkManager.swift in Sources */,
 				A75ED0C71AB7971400C35063 /* VColorOptionCell.m in Sources */,
 				A73C3EB91C45890E00A8452C /* MediaSearchDataSource.swift in Sources */,
 				A721E95E1B572454000B7901 /* UIView+RecursiveSearch.swift in Sources */,
@@ -12062,7 +12041,6 @@
 				F06B41BD1B7ED7FD008709E8 /* UIResponder+typedResponder.swift in Sources */,
 				F07228261AD8846A00085653 /* VNotification.m in Sources */,
 				F0F04AF41B29E8FE00F6F401 /* VShareMenuItem.m in Sources */,
-				F07409751B05876200C44623 /* VCoachmarkView.m in Sources */,
 				7A52F0321CFF904A00AE7F3F /* VDependencyManager+APIPath.swift in Sources */,
 				A7B1335A1C6178FD006EC4F5 /* ActivityFooterCollectionDataSource.swift in Sources */,
 				A706FE261C236AE100C2CBFF /* NSManagedObject+Copy.swift in Sources */,
@@ -12327,6 +12305,7 @@
 				F03A01261D18D49E00BC0040 /* VTracking.swift in Sources */,
 				A77951061B27D22D00D9DB0A /* VSuggestedUsersViewController.m in Sources */,
 				A77951121B27DDB800D9DB0A /* VSuggestedUserCell.m in Sources */,
+				7C894B881D39A04100E124C8 /* Coachmark.swift in Sources */,
 				D8E39BDF19CB7C80007FD86A /* VContentBackgroundSupplementaryView.m in Sources */,
 				A65F4D551B5D9E4900C96F1F /* VNoAssetsCell.m in Sources */,
 				BE799B9519C8A91C0023CE88 /* VAnswer.m in Sources */,
@@ -12362,7 +12341,6 @@
 				7A87376A1CB4785E00D2FF74 /* VContentOnlyCell.swift in Sources */,
 				A72C863A1C977FF500E97D4F /* TrendingHashtagOperation.swift in Sources */,
 				A721E9591B572454000B7901 /* UIScrollView+VCenterContent.m in Sources */,
-				F0C83A2D1B0D599000A6EC1A /* VCoachmarkPassthroughContainerView.m in Sources */,
 				A721E93E1B572454000B7901 /* NSLayoutConstraint+CenterConstraints.m in Sources */,
 				A76711EC1C1B5C6C006568DF /* AppTimingStreamHelper.swift in Sources */,
 				BE46F02A19D0C4B700CD7EF6 /* VMessage.m in Sources */,
@@ -12388,7 +12366,6 @@
 				F0BD3A661CD95A8000B4AB3E /* UIViewController+Alert.swift in Sources */,
 				A7EECAD81A37802500A8BAE1 /* VPurchaseCell.m in Sources */,
 				A76567141B3B1DAA002721F3 /* VSleekActionButton.m in Sources */,
-				F07409841B059FEA00C44623 /* VCoachmark.m in Sources */,
 				6725A9FE1CDBE6E8003E9168 /* NetworkDataSource.swift in Sources */,
 				A7C565DD1C4051E300E4DF6A /* InterstitialManager+Debug.swift in Sources */,
 				035ABE7C1AD7ABE500B6B1A5 /* VDependencyManager+VDefaultTemplate.m in Sources */,
@@ -12461,7 +12438,6 @@
 				A780ED5F1A933D9300A8CD5D /* VPhotoFilterSerialization.m in Sources */,
 				0E8BC7151CEE27870074F41D /* DebugMenuHandler.swift in Sources */,
 				A77723DF1C34823B002351B5 /* SampleMigrationPolicies.swift in Sources */,
-				F074097F1B059CA200C44623 /* VCoachmarkManager.m in Sources */,
 				A70FC1131A2D61A000F5BBDE /* VProductsRequest.m in Sources */,
 				A7B0E0791BC4423500593B21 /* YouTubeVideoPlayer.swift in Sources */,
 				BF2AE2C21CD280CB00A9967A /* GridStreamViewController.swift in Sources */,
@@ -12497,7 +12473,6 @@
 				F0EBAAAD1B8002E100515D4C /* VListShelfCollectionViewFlowLayout.swift in Sources */,
 				A75FAF1719E8AC1E00EB87C1 /* VDiscoverSuggestedPeopleSectionCell.m in Sources */,
 				A72C85FA1C977FF500E97D4F /* AccountUpdateOperation.swift in Sources */,
-				F0C83A551B156D1700A6EC1A /* VCoachmarkManager+VObjectAssociation.m in Sources */,
 				0314D4B319B46B5E00FA363C /* VImageLightboxViewController.m in Sources */,
 				F06B417F1B7ADA4B008709E8 /* VTrendingShelfCollectionViewCell.swift in Sources */,
 				F089E35D1AC4863F0076DC4D /* VBlurredMarqueeController.m in Sources */,
@@ -12508,6 +12483,7 @@
 				A720055E1A030E4700285A9C /* VApplicationTracking.m in Sources */,
 				039420431AB7D1A70087ADFA /* VDependencyManager+VTracking.m in Sources */,
 				67D38B0B1CF6192F003F1D5F /* VUser.swift in Sources */,
+				7C894B8E1D39BC1B00E124C8 /* CoachmarkDisplayer.swift in Sources */,
 				A72A03281C8F55680067ADBD /* NSURL+OptionalString.swift in Sources */,
 				D8758D221B0FDEE3008C6C0D /* VDependencyManager+VKeyboardStyle.m in Sources */,
 				A705F44A1B3CC00D007DBD3C /* VUserCell.m in Sources */,
@@ -12772,8 +12748,8 @@
 				A7DCA4EE1C128A78004E35B4 /* VHashTagTextViewTests.m in Sources */,
 				A7DCA5121C128A78004E35B4 /* VURLDetectorTests.m in Sources */,
 				62BA8BCE1C59E0C700FFDF9F /* TestVAdViewController.swift in Sources */,
-				A7DCA4DD1C128A78004E35B4 /* VCoachmarkPassthroughContainerViewTests.m in Sources */,
 				A7D920441C055589002A6503 /* ExperimentSettingsTests.swift in Sources */,
+				7CCBF2B91D413C7D0075A087 /* CoachmarkManagerTests.swift in Sources */,
 				A7DCA5051C128A78004E35B4 /* VSuggestedPeopleTests.m in Sources */,
 				A7DCA4E21C128A78004E35B4 /* VDependencyManager_VNavigationMenuItemTests.m in Sources */,
 				A7DCA4E61C128A78004E35B4 /* VElapsedTimeFormatterTests.m in Sources */,
@@ -12797,7 +12773,6 @@
 				F0BD812B1C9B645F0062D079 /* CreationFlowTypeHelperTests.swift in Sources */,
 				03EE1DE21C4D77E000C25287 /* NSURL+DefaultSchemeTests.swift in Sources */,
 				A7DCA50F1C128A78004E35B4 /* VUploadTaskCreatorTests.m in Sources */,
-				A7DCA4DE1C128A78004E35B4 /* VCoachmarkViewTests.m in Sources */,
 				A7DCA4ED1C128A78004E35B4 /* VHashTagsTest.m in Sources */,
 				A7DCA50C1C128A78004E35B4 /* VTrackingManagerTests.m in Sources */,
 				7AC194631D2DD2FC001B15B8 /* String+InitialsTests.swift in Sources */,
@@ -12806,7 +12781,6 @@
 				A7EBF5111C2B2AB80080C7CF /* VTestHelpers.m in Sources */,
 				A7DCA4EF1C128A78004E35B4 /* VImageAssetFinderTests.m in Sources */,
 				A7DCA4F71C128A78004E35B4 /* VNoContentCollectionViewControllerFactoryTests.m in Sources */,
-				A7DCA4DC1C128A78004E35B4 /* VCoachmarkManagerTests.m in Sources */,
 				A76AEA571BFED31B00E8A26F /* FirstInstallManagerTests.swift in Sources */,
 				7AC1BA001D3FFD9100FA3CF6 /* CGPoint+InitializersTests.swift in Sources */,
 				A7DCA4E41C128A78004E35B4 /* VDependencyManagerTests.m in Sources */,

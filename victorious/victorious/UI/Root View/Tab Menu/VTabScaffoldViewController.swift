@@ -14,9 +14,8 @@ class VTabScaffoldViewController: UIViewController, Scaffold, UITabBarController
     
     init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
-        coachmarkManager = VCoachmarkManager(dependencyManager: dependencyManager)
         tabShim = dependencyManager.templateValueOfType(VTabMenuShim.self, forKey: "menu") as? VTabMenuShim
-        
+        self.coachmarkManager = CoachmarkManager(dependencyManager: dependencyManager)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -158,7 +157,7 @@ class VTabScaffoldViewController: UIViewController, Scaffold, UITabBarController
     
     // MARK: - Scaffold
     
-    let coachmarkManager: VCoachmarkManager
+    let coachmarkManager: CoachmarkManager
     
     var navigationDestinations: [VNavigationDestination] {
         return internalTabBarController.viewControllers?.flatMap { viewController in
@@ -170,29 +169,6 @@ class VTabScaffoldViewController: UIViewController, Scaffold, UITabBarController
         } ?? []
     }
     
-    // MARK: - VCoachmarkDisplayResponder
-    
-    func findOnScreenMenuItemWithIdentifier(identifier: String, andCompletion completion: VMenuItemDiscoveryBlock) {
-        for (index, navigationDestination) in navigationDestinations.enumerate() {
-            if let coachmarkDisplayer = navigationDestination as? VCoachmarkDisplayer where coachmarkDisplayer.screenIdentifier() == identifier {
-                var frame = internalTabBarController.tabBar.frame
-                let itemCount = internalTabBarController.tabBar.items?.count ?? 0
-                let width = frame.width / CGFloat(max(itemCount, 1))
-                frame.size.width = width
-                frame.origin.x = width * CGFloat(index)
-                completion(true, CGRectZero)
-                return
-            }
-        }
-        
-        let selector = #selector(findOnScreenMenuItemWithIdentifier(_: andCompletion:))
-        
-        if let nextCoachmarkDisplayResponder = nextResponder()?.targetForAction(selector, withSender: nil) as? VCoachmarkDisplayResponder {
-            nextCoachmarkDisplayResponder.findOnScreenMenuItemWithIdentifier(identifier, andCompletion: completion)
-        } else {
-            completion(false, CGRectZero)
-        }
-    }
     
     // MARK: - UITabBarControllerDelegate
     

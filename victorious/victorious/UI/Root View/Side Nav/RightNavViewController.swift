@@ -11,7 +11,7 @@ import UIKit
 // FUTURE: Remove this class
 
 /// A view controller that displays the right navigation area of a `SideNavScaffoldViewController`.
-class RightNavViewController: UIViewController, VCoachmarkDisplayer, VNavigationDestination {
+class RightNavViewController: UIViewController, CoachmarkDisplayer, VNavigationDestination {
     // MARK: - Initializing
     
     init(dependencyManager: VDependencyManager) {
@@ -28,7 +28,7 @@ class RightNavViewController: UIViewController, VCoachmarkDisplayer, VNavigation
     
     // MARK: - Dependency manager
     
-    let dependencyManager: VDependencyManager
+    let dependencyManager: VDependencyManager!
     
     // MARK: - View controllers
     
@@ -56,9 +56,9 @@ class RightNavViewController: UIViewController, VCoachmarkDisplayer, VNavigation
         v_addBadgingToAccessoryScreensWithDependencyManager(dependencyManager)
     }
     
-    // MARK - VCoachmarkDisplayer
+    // MARK: - CoachmarkDisplayer
     
-    func screenIdentifier() -> String! {
-        return dependencyManager.stringForKey(VDependencyManagerIDKey)
+    func highlightFrame(forIdentifier forIdentifier: String) -> CGRect? {
+        return nil 
     }
 }
