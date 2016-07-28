@@ -173,12 +173,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
 
     /// Every piece of content has it's own instance of MediaContentView, it is destroyed and recreated for each one.
     private func tearDownMediaContentView(mediaContentView: MediaContentView) {
-        let animations = {
-            mediaContentView.alpha = 0
-        }
-
-        let duration = Constants.mediaContentViewAnimationDuration * Constants.mediaContentViewAnimationDurationMultiplier
-        UIView.animateWithDuration(duration, animations: animations) { _ in
+        hideMediaContentView(mediaContentView, animated: true) { (completed) in
             mediaContentView.removeFromSuperview()
         }
     }
@@ -189,13 +184,28 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         view.sendSubviewToBack(mediaContentView)
         view.v_addPinToLeadingTrailingToSubview(mediaContentView)
         view.v_addPinToTopToSubview(mediaContentView)
-
         // TODO: Fix this?
         view.v_addPinToBottomToSubview(mediaContentView, bottomMargin: captionBarContainerView.frame.size.height)
 
         return mediaContentView
     }
 
+    private func showMediaContentView(mediaContentView: MediaContentView, animated: Bool, completion: ((Bool) -> Void)? = nil) {
+        print("showMediaContentView")
+        let animations = {
+            mediaContentView.alpha = 1
+        }
+        UIView.animateWithDuration((animated ? Constants.mediaContentViewAnimationDuration : 0), animations: animations, completion: completion)
+    }
+
+    private func hideMediaContentView(mediaContentView: MediaContentView, animated: Bool, completion: ((Bool) -> Void)? = nil) {
+        print("hideMediaContentView")
+        let animations = {
+            mediaContentView.alpha = 0
+        }
+        let duration = Constants.mediaContentViewAnimationDuration * Constants.mediaContentViewAnimationDurationMultiplier
+        UIView.animateWithDuration((animated ? duration : 0), animations: animations, completion: completion)
+    }
 
     // MARK: - Stage
     
@@ -306,17 +316,14 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
 
         loadingIndicator.stopAnimating()
 
-        UIView.animateWithDuration(Constants.mediaContentViewAnimationDuration) {
-            mediaContentView.alpha = 1.0
-        }
+        showMediaContentView(mediaContentView, animated: true)
     }
 
     func mediaContentView(mediaContentView: MediaContentView, didFinishPlaybackOfContent content: ContentModel) {
+        print("mediaContentView didFinishPlaybackOfContent didFinishPlaybackOfContent didFinishPlaybackOfContent")
         // When the playback of a video is done we want to hide the MCV.
         if content.type == .video {
-            UIView.animateWithDuration(Constants.mediaContentViewAnimationDuration) {
-                mediaContentView.alpha = 1.0
-            }
+            hideMediaContentView(mediaContentView, animated: true)
         }
     }
 
