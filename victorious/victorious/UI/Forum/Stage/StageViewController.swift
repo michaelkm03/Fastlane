@@ -18,18 +18,15 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     private lazy var defaultStageHeight: CGFloat = {
         return self.view.bounds.width / Constants.defaultAspectRatio
     }()
-
-    @IBOutlet private var mediaContentView: MediaContentView! {
-        didSet {
-            mediaContentView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOnContent)))
-        }
-    }
-
+    
+    @IBOutlet weak var captionBarContainerView: UIView!
     @IBOutlet private var captionBarHeightConstraint: NSLayoutConstraint! {
         didSet {
             captionBarHeightConstraint.constant = 0
         }
     }
+    
+    private var mediaContentView: MediaContentView?
 
     private var captionBarViewController: CaptionBarViewController? {
         didSet {
@@ -90,11 +87,38 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         return dataSource
     }
     
+    private func swapStageContent(to content: ContentModel) {
+        if let oldMediaContentView = self.mediaContentView {
+            let animations = {
+                oldMediaContentView.alpha = 0
+            }
+            
+            UIView.animateWithDuration(1, animations: animations) { _ in
+                oldMediaContentView.removeFromSuperview()
+            }
+        }
+        
+        let mediaContentView = setupMediaContentView(for: content)
+        view.addSubview(mediaContentView)
+        view.v_addPinToLeadingTrailingToSubview(mediaContentView)
+        view.v_addPinToTopToSubview(mediaContentView)
+
+        // TODO: Fix this?
+        view.v_addPinToBottomToSubview(mediaContentView, bottomMargin: captionBarContainerView.frame.size.height)
+        
+        self.mediaContentView = mediaContentView
+        
+//        setStageEnabled(true, animated: false)
+    }
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
         if let content = currentStageContent?.content {
-//            mediaContentView.content = content
-            setStageEnabled(true, animated: false)
+            showStage(animated: false)
+        }
+        else {
+            hideStage(animated: false)
         }
     }
 
@@ -123,6 +147,27 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
             self.titleCardViewController = titleCardViewController
         }
     }
+    
+    func setupMediaContentView(for content: ContentModel) -> MediaContentView {
+        let configuration = MediaContentViewConfiguration(
+            showsBlurredBackground: false,
+            allowsVideoControls: false,
+            fillMode: .fill
+        )
+        
+        let mediaContentView = MediaContentView(
+            content: content,
+            dependencyManager: dependencyManager,
+            configuration: configuration
+        )
+        
+        mediaContentView.alpha = 0
+        mediaContentView.delegate = self
+        
+        mediaContentView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOnContent)))
+        
+        return mediaContentView
+    }
 
     // MARK: - Stage
     
@@ -135,6 +180,9 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
 
     func addStageContent(stageContent: StageContent) {
         currentStageContent = stageContent
+        // TODO: hide preview MCV, pause
+        
+        // TODO: Load MCV
         
         guard isOnScreen && enabled else {
             return
@@ -142,13 +190,8 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
 
         titleCardViewController?.populate(with: stageContent)
 
-        mediaContentView.videoCoordinator?.pauseVideo()
-//        mediaContentView.content = stageContent.content
-        
         updateStageHeight()
-
-        showStage(animated: true)
-
+        
         dispatch_after(Constants.titleCardDelayedShow) {
             self.titleCardViewController?.show()
         }
@@ -192,10 +235,10 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         guard visible else {
             return
         }
-
-        mediaContentView.hideContent(animated: animated) { [weak self] _ in
-            self?.mediaContentView.pauseVideo()
-        }
+        
+        // TODO: Pause MCV
+        // TODO: Fade MCV out
+        
         visible = false
         UIView.animateWithDuration(animated ? Constants.contentSizeAnimationDuration : 0) {
             self.view.layoutIfNeeded()
@@ -204,24 +247,30 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         titleCardViewController?.hide()
     }
 
-    private func showStage(animated animated: Bool = false) {
+    private func showStage(for content:ContentModel, animated: Bool = false) {
         guard !visible else {
+            // TODO: Play + Sync
             return
         }
         
-        mediaContentView.showContent(animated: animated) { [weak self] _ in
-            if
-                let videoDuration = self?.mediaContentView.videoCoordinator?.duration,
-                let content = self?.currentStageContent?.content
-            {
-                if content.seekAheadTime() < videoDuration {
-                    self?.mediaContentView.videoCoordinator?.playVideo(true)
-                }
-                else {
-                    self?.hideStage(animated: true)
-                }
-            }
+        if mediaContentView?.content.id == content.id {
+            // TODO: play+Sync
         }
+        else {
+            swapStageContent(to: content)
+        }
+
+        
+        // TODO: Animate content in, check seek ahead time, play with sync
+//        if
+//            let videoDuration = self?.mediaContentView.videoCoordinator?.duration,
+//            let content = self?.currentStageContent?.content
+//        {
+//            if content.seekAheadTime() < videoDuration {
+//                self?.mediaContentView.videoCoordinator?.playVideo(true)
+//            }
+//        }
+        
         visible = true
         UIView.animateWithDuration(animated ? Constants.contentSizeAnimationDuration : 0) {
             self.view.layoutIfNeeded()
@@ -240,6 +289,21 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
 
     func didFinishLoadingContent(content: ContentModel) {
         print("didFinishLoadingContent in StageVC")
+        
+        // TODO: Check seek ahead time
+        guard let mediaContentView = mediaContentView else {
+            return
+        }
+        
+        showStage(animated: true)
+        
+        let animations = {
+            mediaContentView.alpha = 1.0
+        }
+        
+        UIView.animateWithDuration(1, animations: animations) { _ in
+            // TODO: Stop spinner
+        }
     }
 
     // MARK: - StageShrinkingAnimatorDelegate
@@ -251,8 +315,12 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     // MARK: - Deep linking content
 
     @objc private func didTapOnContent() {
+        guard let content = currentStageContent?.content else {
+            return
+        }
+        
         let router = Router(originViewController: self, dependencyManager: dependencyManager)
-        let destination = DeeplinkDestination(content: mediaContentView.content)
+        let destination = DeeplinkDestination(content: content)
         router.navigate(to: destination)
     }
 

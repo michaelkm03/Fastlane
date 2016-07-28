@@ -100,6 +100,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         
         setup()
         configureBackground()
+        // TODO: Load content
     }
     
     required init?(coder: NSCoder) {
