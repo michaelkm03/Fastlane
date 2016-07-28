@@ -396,10 +396,6 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     // MARK: - Coachmark Displayer
     
-    var screenIdentifier: String {
-        return dependencyManager.stringForKey(VDependencyManagerIDKey)
-    }
-    
     func highlightFrame(forIdentifier identifier: String) -> CGRect? {
         return nil
     }

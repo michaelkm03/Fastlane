@@ -56,7 +56,8 @@ class RightNavViewController: UIViewController, CoachmarkDisplayer, VNavigationD
         v_addBadgingToAccessoryScreensWithDependencyManager(dependencyManager)
     }
     
-    // MARK - CoachmarkDisplayer
+    // MARK: - CoachmarkDisplayer
+    
     func highlightFrame(forIdentifier forIdentifier: String) -> CGRect? {
         return nil 
     }

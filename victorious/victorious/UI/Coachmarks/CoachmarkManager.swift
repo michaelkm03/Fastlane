@@ -30,9 +30,8 @@ class CoachmarkManager: NSObject {
         guard let coachmarkConfigurations = dependencyManager.arrayForKey(Constants.coachmarksArrayKey) as? [[NSObject : AnyObject]] else {
             return
         }
-        coachmarks = []
         let shownCoachmarks = fetchShownCoachmarkIDs()
-        coachmarks = coachmarkConfigurations.map() { coachmarkConfiguration in
+        coachmarks = coachmarkConfigurations.map { coachmarkConfiguration in
             let childDependency = dependencyManager.childDependencyManagerWithAddedConfiguration(coachmarkConfiguration)
             let coachmark = Coachmark(dependencyManager: childDependency)
             if shownCoachmarks.contains(coachmark.remoteID) {

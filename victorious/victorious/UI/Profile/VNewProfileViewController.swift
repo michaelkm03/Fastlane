@@ -25,9 +25,9 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     static let userAppearanceKey = "userAppearance"
     static let creatorAppearanceKey = "creatorAppearance"
     static let upgradeButtonID = "Accessory paygate"
-    static let estimatedBarButtonWidth: CGFloat = 60.0
-    static let estimatedStatusBarHeight: CGFloat = 20.0
-    static let estimatedNavBarRightPadding: CGFloat = 10.0
+    static let estimatedBarButtonWidth =  CGFloat(60.0)
+    static let estimatedStatusBarHeight = CGFloat(20.0)
+    static let estimatedNavBarRightPadding = CGFloat(10.0)
     static let goVIPButtonID = "Accessory Go VIP"
     
     private enum ProfileScreenContext: String {

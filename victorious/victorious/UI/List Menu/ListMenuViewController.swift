@@ -175,7 +175,8 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         return validIndices ~= indexPath.row
     }
     
-    //MARK: - CoachmarkDisplayer
+    // MARK: - CoachmarkDisplayer
+    
     func highlightFrame(forIdentifier forIdentifier: String) -> CGRect? {
         return nil 
     }

@@ -10,7 +10,6 @@ import XCTest
 @testable import victorious
 
 private class DummyDisplayer: CoachmarkDisplayer {
-    
     var dependencyManager: VDependencyManager! = nil
     var coachmarkContainerView = UIView()
     
@@ -28,7 +27,6 @@ private class DummyDisplayer: CoachmarkDisplayer {
 }
 
 class CoachmarkManagerTests: XCTestCase {
-
     func createTestManager() -> CoachmarkManager  {
        let file = NSBundle(forClass: CoachmarkManagerTests.self).pathForResource("coachmarks", ofType: "json")
         
