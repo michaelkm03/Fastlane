@@ -69,9 +69,9 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                 // path will be nil for home feed, and non nil for filtered feed
                 composer?.setComposerVisible(path == nil, animated: true)
                 if path == nil {
-                    stage?.hide(true)
+                    stage?.hide(animated: true)
                 } else {
-                    stage?.show(true)
+                    stage?.show(animated: true)
                 }
             case .closeVIP():
                 onClose()

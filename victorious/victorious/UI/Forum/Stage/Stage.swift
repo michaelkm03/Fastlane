@@ -26,9 +26,9 @@ protocol Stage: class, ForumEventReceiver, StageShrinkingAnimatorDelegate {
     /// Removes the current content on the stage.
     func removeContent()
 
-    func show(animated: Bool)
+    func show(animated animated: Bool)
 
-    func hide(animated: Bool)
+    func hide(animated animated: Bool)
 }
 
 /// Conformers will recieve messages related to the stage resizing.

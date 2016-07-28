@@ -87,10 +87,10 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         super.viewWillAppear(animated)
 
         if mediaContentView?.seekableWithinBounds == true {
-            show(false)
+            show(animated: false)
         }
         else {
-            hide(false)
+            hide(animated: false)
         }
     }
     
@@ -121,9 +121,9 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         if let mediaContentView = mediaContentView {
             tearDownMediaContentView(mediaContentView)
         }
-        self.mediaContentView = nil
-        self.mediaContentView = newMediaContentView(for: content)
-        self.mediaContentView?.loadContent()
+        mediaContentView = nil
+        mediaContentView = newMediaContentView(for: content)
+        mediaContentView?.loadContent()
     }
     
     private func tearDownMediaContentView(mediaContentView: MediaContentView) {
@@ -200,7 +200,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     }
 
     func removeContent() {
-        hide(true)
+        hide(animated: true)
         currentStageContent = nil
         titleCardViewController?.hide()
     }
@@ -222,7 +222,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
 
     // MARK: - Show/Hide Stage
 
-    func hide(animated: Bool) {
+    func hide(animated animated: Bool) {
         guard visible else {
             return
         }
@@ -247,7 +247,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         titleCardViewController?.hide()
     }
 
-    func show(animated: Bool) {
+    func show(animated animated: Bool) {
         mediaContentView?.willBePresented()
 
         dispatch_after(Constants.titleCardDelayedShow) {
@@ -280,11 +280,11 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         }
         
         guard mediaContentView?.seekableWithinBounds == true else {
-            hide(true)
+            hide(animated: true)
             return
         }
         
-        show(true)
+        show(animated: true)
         
         let animations = {
             self.mediaContentView?.alpha = 1.0

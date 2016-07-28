@@ -12,6 +12,7 @@ protocol MediaContentViewDelegate: class {
     /// Tells the delegate that a particular content is loaded.
     func didFinishLoadingContent(content: ContentModel)
 
+    // FUTURE: handle error states for async content
 //    func failedToLoadContent(content: ContentModel, error: NSError?)
 }
 
@@ -95,7 +96,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     }
     
     required init?(coder: NSCoder) {
-        fatalError("Cannot create MCV from a storyboard.")
+        fatalError("Cannot create MCV from a Storyboard or NIB.")
     }
     
     private func setup() {
@@ -157,10 +158,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         // Set up image view if content is image
         let minWidth = frame.size.width
         
-        if
-            content.type.displaysAsImage,
-            let imageAsset = content.previewImage(ofMinimumWidth: minWidth)
-        {
+        if content.type.displaysAsImage, let imageAsset = content.previewImage(ofMinimumWidth: minWidth) {
             setUpPreviewImage(from: imageAsset)
         }
         else if content.type.displaysAsVideo {
