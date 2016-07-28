@@ -87,7 +87,7 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
         dependencyManager.applyStyleToNavigationBar(navigationController?.navigationBar)
         dependencyManager.configureNavigationItem(navigationController?.navigationBar.topItem)
         
-        navigationController?.navigationBar.shadowImage = nil
+        navigationController?.navigationBar.shadowImage = UIImage()
     }
     
     // MARK: - UICollectionViewFlowLayoutDelegate
