@@ -18,12 +18,12 @@ enum DeeplinkDestination: Equatable {
     
     init?(url: NSURL) {
         guard url.scheme == "vthisapp" else {
-            assertionFailure("Received links in wrong format. All links should be in deep link format according to https://wiki.victorious.com/display/ENG/Deep+Linking+Specification")
+            v_log("Received links in wrong format. All links should be in deep link format according to https://wiki.victorious.com/display/ENG/Deep+Linking+Specification")
             return nil
         }
         
         guard let host = url.host else {
-            assertionFailure("We got a deep link URL but no host component, so we don't know where to navigate")
+            v_log("We got a deep link URL but no host component, so we don't know where to navigate")
             return nil
         }
         
