@@ -17,17 +17,19 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         static let mediaContentViewAnimationDurationMultiplier = 1.25
     }
     
-    private lazy var defaultStageHeight: CGFloat = {
-        return self.view.bounds.width / Constants.defaultAspectRatio
-    }()
-    
-    @IBOutlet weak var captionBarContainerView: UIView!
+    @IBOutlet private weak var captionBarContainerView: UIView!
     @IBOutlet private var captionBarHeightConstraint: NSLayoutConstraint! {
         didSet {
             captionBarHeightConstraint.constant = 0
         }
     }
-    
+
+    @IBOutlet private weak var loadingIndicator: UIActivityIndicatorView!
+
+    private lazy var defaultStageHeight: CGFloat = {
+        return self.view.bounds.width / Constants.defaultAspectRatio
+    }()
+
     private var mediaContentView: MediaContentView?
 
     private var captionBarViewController: CaptionBarViewController? {
@@ -46,7 +48,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     }
 
     private var isOnScreen: Bool {
-        return self.view.window != nil
+        return view.window != nil
     }
 
     /// Shows meta data about the current item on the stage.
@@ -72,16 +74,8 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        view.backgroundColor = .blackColor()
-        captionBarViewController = childViewControllers.flatMap({ $0 as? CaptionBarViewController }).first
-        
-        audioSession.addObserver(
-            self,
-            forKeyPath: "outputVolume",
-            options: [.New, .Old],
-            context: nil
-        )
+
+        setupUI()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -105,7 +99,20 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     }
     
     // MARK: - Setup
-    
+
+    private func setupUI() {
+        view.backgroundColor = .blackColor()
+        loadingIndicator.stopAnimating()
+        captionBarViewController = childViewControllers.flatMap({ $0 as? CaptionBarViewController }).first
+
+        audioSession.addObserver(
+            self,
+            forKeyPath: "outputVolume",
+            options: [.New, .Old],
+            context: nil
+        )
+    }
+
     private func setupDataSource(dependencyManager: VDependencyManager) -> StageDataSource {
         let dataSource = StageDataSource(dependencyManager: dependencyManager)
         dataSource.delegate = self
@@ -114,7 +121,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     
     override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
         // Change the audio session category if the volume changes.
-        if keyPath == "outputVolume" && view.window != nil {
+        if keyPath == "outputVolume" && isOnScreen {
             VAudioManager.sharedInstance().focusedPlaybackDidBegin(muted: false)
         }
     }
@@ -124,6 +131,9 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         if let mediaContentView = mediaContentView {
             tearDownMediaContentView(mediaContentView)
         }
+
+        loadingIndicator.startAnimating()
+
         mediaContentView = nil
         mediaContentView = newMediaContentView(for: content)
         mediaContentView?.loadContent()
@@ -226,6 +236,23 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
 
     // MARK: - Show/Hide Stage
 
+    func show(animated animated: Bool) {
+        mediaContentView?.willBePresented()
+
+        dispatch_after(Constants.titleCardDelayedShow) {
+            self.titleCardViewController?.show()
+        }
+
+        guard !visible else {
+            return
+        }
+
+        visible = true
+        UIView.animateWithDuration(animated ? Constants.contentSizeAnimationDuration : 0) {
+            self.view.layoutIfNeeded()
+        }
+    }
+
     func hide(animated animated: Bool) {
         guard visible else {
             return
@@ -251,23 +278,6 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         titleCardViewController?.hide()
     }
 
-    func show(animated animated: Bool) {
-        mediaContentView?.willBePresented()
-
-        dispatch_after(Constants.titleCardDelayedShow) {
-            self.titleCardViewController?.show()
-        }
-
-        guard !visible else {
-            return
-        }
-        
-        visible = true
-        UIView.animateWithDuration(animated ? Constants.contentSizeAnimationDuration : 0) {
-            self.view.layoutIfNeeded()
-        }
-    }
-
     // MARK: - TileCardDelegate
 
     func didTap(on user: UserModel) {
@@ -289,14 +299,14 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         }
         
         show(animated: true)
+
+        loadingIndicator.stopAnimating()
         
         let animations = {
             self.mediaContentView?.alpha = 1.0
             return
         }
-        UIView.animateWithDuration(Constants.mediaContentViewAnimationDuration, animations: animations) { _ in
-            // TODO: Stop spinner
-        }
+        UIView.animateWithDuration(Constants.mediaContentViewAnimationDuration, animations: animations)
     }
 
     // MARK: - StageShrinkingAnimatorDelegate
