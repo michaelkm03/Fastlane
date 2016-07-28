@@ -126,7 +126,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
 
     /// Plays the video belonging to the content passed in during initialization.
     /// `synced` can be used to enable the syncing feature where the video would be synced between all users of the app.
-    func playVideo(synced: Bool = false) {
+    func playVideo(withSync synced: Bool = false) {
         if synced {
             let seekAheadTime = content.seekAheadTime()
             if Int(videoPlayer.currentTimeSeconds) <= Int(seekAheadTime) {

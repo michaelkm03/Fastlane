@@ -89,7 +89,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
 
     func setupMediaContentView(for content: ContentModel) -> MediaContentView {
         let configuration = MediaContentViewConfiguration(
-            allowsVideoControls: false,
+            allowsVideoControls: true,
             fillMode: .fill
         )
         
@@ -145,8 +145,8 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
             
             let mediaContentView = setupMediaContentView(for: content)
             addSubview(mediaContentView)
-            
             self.mediaContentView = mediaContentView
+            mediaContentView.loadContent()
             
             // Update size
             self.frame.size = sizeForContent(content)
@@ -186,6 +186,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
             var mediaContentViewFrame = mediaContentView.frame
             mediaContentViewFrame.origin.y = totalHeight
             mediaContentViewFrame.size.height = height(for: content)
+            mediaContentViewFrame.size.width = bounds.size.width
             mediaContentView.frame = mediaContentViewFrame
             
             totalHeight = totalHeight + mediaContentView.bounds.size.height
