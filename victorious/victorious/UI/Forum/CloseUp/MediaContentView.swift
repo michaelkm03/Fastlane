@@ -100,7 +100,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         
         setup()
         configureBackground()
-        // TODO: Load content
+        loadContent()
     }
     
     required init?(coder: NSCoder) {
@@ -122,11 +122,6 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
   
         addSubview(spinner)
         sendSubviewToBack(spinner)
-        
-        videoContainerView.alpha = 0.0
-        previewImageView.alpha = 0.0
-        textPostLabel.alpha = 0.0
-        backgroundView?.alpha = 0.0
         
         addGestureRecognizer(singleTapRecognizer)
     }
@@ -152,10 +147,12 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
 
     func willBePresented() {
         // TODO: play
+        videoCoordinator?.playVideo()
     }
 
     func willBeDismissed() {
         // TODO: pause
+        videoCoordinator?.pauseVideo()
     }
 
     // MARK: - Managing content
@@ -174,73 +171,23 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         return (videoCoordinator.duration >= content.seekAheadTime())
     }
 
-    func hideContent(animated animated: Bool = true, completion: ((Bool) -> Void)? = nil) {
-        let animationDuration = animated ? Constants.fadeDuration * Constants.fadeOutDurationMultiplier : 0
-
-        UIView.animateWithDuration(
-            animationDuration,
-            delay: 0,
-            options: [.BeginFromCurrentState, .AllowUserInteraction],
-            animations: {
-                self.videoContainerView.alpha = 0
-                self.previewImageView.alpha = 0
-                self.textPostLabel.alpha = 0
-                self.backgroundView?.alpha = 0
-            },
-            completion: { didFinish in
-                completion?(didFinish)
-            }
-        )
-    }
-    
-    func showContent(animated animated: Bool = true, completion: ((Bool) -> Void)? = nil) {
-        let animationDuration = animated ? Constants.fadeDuration : 0
-        
-        // Animate the backgroundView faster
-        UIView.animateWithDuration(
-            animationDuration * Constants.backgroundFadeInDurationMultiplier,
-            delay: 0,
-            options: [.AllowUserInteraction],
-            animations: {
-                self.backgroundView?.alpha = 1
-            },
-            completion: nil
-        )
-        
-        UIView.animateWithDuration(
-            animationDuration,
-            delay: 0,
-            options: [.AllowUserInteraction],
-            animations: {
-                self.videoContainerView.alpha = 1
-                self.previewImageView.alpha = 1
-                self.textPostLabel.alpha = 1
-            },
-            completion: { didFinish in
-                completion?(didFinish)
-            }
-        )
-    }
-
-    private func displayContent(content: ContentModel) {
+    private func loadContent() {
         spinner.startAnimating()
-        hideContent(animated: true) { [weak self] _ in
-            guard let strongSelf = self else {
-                return
-            }
-            
-            // Set up image view if content is image
-            let minWidth = strongSelf.frame.size.width
-            
-            if content.type.displaysAsImage, let imageAsset = content.previewImage(ofMinimumWidth: minWidth) {
-                strongSelf.setUpPreviewImage(from: imageAsset)
-            }
-            else if content.type.displaysAsVideo {
-                strongSelf.setUpVideoPlayer(for: content)
-            }
-            else if content.type == .text {
-                strongSelf.setUpTextLabel()
-            }
+        
+        // Set up image view if content is image
+        let minWidth = frame.size.width
+        
+        if
+            content.type.displaysAsImage,
+            let imageAsset = content.previewImage(ofMinimumWidth: minWidth)
+        {
+            setUpPreviewImage(from: imageAsset)
+        }
+        else if content.type.displaysAsVideo {
+            setUpVideoPlayer(for: content)
+        }
+        else if content.type == .text {
+            setUpTextLabel()
         }
     }
     
@@ -260,13 +207,18 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
                     placeholderImage: previewImageView.image, // Leave the image as is, since we want to wait until animation has finished before setting the image.
                     options: .AvoidAutoSetImage
                 ) { [weak self] image, _, _, _ in
-                    self?.downloadedPreviewImage = image
-                    self?.updatePreviewImageIfReady()
+                    self?.previewImageView.image = image
+                    self?.finishedLoadingContent()
                 }
             case .local(let image):
-                downloadedPreviewImage = image
-                updatePreviewImageIfReady()
-        }        
+                previewImageView.image = image
+                finishedLoadingContent()
+        }
+    }
+    
+    private func finishedLoadingContent() {
+        spinner.stopAnimating()
+        delegate?.didFinishLoadingContent(content)
     }
     
     private func tearDownPreviewImage() {
@@ -300,15 +252,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         videoCoordinator?.tearDown()
         videoCoordinator = nil
     }
-    
-    func playVideo() {
-        videoCoordinator?.playVideo()
-    }
-    
-    func pauseVideo() {
-        videoCoordinator?.pauseVideo()
-    }
-    
+        
     // MARK: - Managing Text 
     
     private func setUpTextLabel() {
@@ -359,7 +303,6 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         textPostLabel.text = text
         spinner.stopAnimating()
         textPostLabel.hidden = false
-        showContent()
     }
     
     // MARK: - Layout
@@ -372,27 +315,6 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         backgroundView?.frame = computeBackgroundBounds()
         spinner.center = CGPoint(x: bounds.midX, y: bounds.midY)
         videoCoordinator?.layout(in: videoContainerView.bounds, with: configuration.fillMode)
-    }
-    
-    private func updatePreviewImageIfReady() {
-        guard downloadedPreviewImage != nil else {
-            return
-        }
-        
-        spinner.stopAnimating()
-        previewImageView.image = downloadedPreviewImage
-        downloadedPreviewImage = nil
-        showContent(animated: true) { [weak self] _ in
-            self?.playVideo()
-        }
-        
-        let minWidth = UIScreen.mainScreen().bounds.size.width
-        if let imageAsset = content.previewImage(ofMinimumWidth: minWidth) where configuration.showsBlurredBackground {
-            setBackgroundBlur(withImageAsset: imageAsset, forContent: content)
-        }
-        else {
-            backgroundView?.image = nil
-        }
     }
     
     // Hack that ensure that the background extends a little beyond the frame bounds,
@@ -434,8 +356,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     // MARK: - ContentVideoPlayerCoordinatorDelegate
     
     func coordinatorDidBecomeReady() {
-        downloadedPreviewImage = UIImage() // FUTURE: Set this to the preview image of the video
-        updatePreviewImageIfReady()
+        finishedLoadingContent()
     }
 }
 

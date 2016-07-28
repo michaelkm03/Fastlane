@@ -184,15 +184,13 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     }
 
     func addStageContent(stageContent: StageContent) {
+        currentStageContent = stageContent
+        
         swapStageContent(to: stageContent.content)
         
         titleCardViewController?.populate(with: stageContent)
 
         updateStageHeight()
-        
-        dispatch_after(Constants.titleCardDelayedShow) {
-            self.titleCardViewController?.show()
-        }
     }
 
     func removeContent() {
@@ -245,7 +243,11 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
 
     func show(animated: Bool) {
         mediaContentView?.willBePresented()
-        
+
+        dispatch_after(Constants.titleCardDelayedShow) {
+            self.titleCardViewController?.show()
+        }
+
         guard !visible else {
             return
         }
