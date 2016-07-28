@@ -8,6 +8,10 @@
 
 import Foundation
 
+private struct Constants {
+    static let scrolledToBottomTolerance = CGFloat(5.0)
+}
+
 protocol ChatFeed: class, ForumEventSender, ForumEventReceiver {
     var nextSender: ForumEventSender? { get set }
     var delegate: ChatFeedDelegate? { get set }
@@ -69,7 +73,7 @@ extension ChatFeed {
         CATransaction.setDisableActions(true)
         
         let collectionView = self.collectionView
-        let wasScrolledToBottom = collectionView.isScrolledToBottom(withTolerance: 5.0)
+        let wasScrolledToBottom = collectionView.isScrolledToBottom(withTolerance: Constants.scrolledToBottomTolerance)
         let oldPendingItemCount = max(0, chatInterfaceDataSource.pendingItems.count - newPendingContentCount)
         let insertingAbovePendingContent = oldPendingItemCount > 0 && newPendingContentCount <= 0
         
