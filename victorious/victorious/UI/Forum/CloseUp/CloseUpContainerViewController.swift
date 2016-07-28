@@ -191,7 +191,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     }
     
     func gridStreamDidUpdate() {
-        dependencyManager.coachmarkManager?.displayCoachmark(in: self, withContainerView: coachmarkContainerView)
+        triggerCoachmark()
     }
     
     func share() {

@@ -181,7 +181,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     // MARK: - ViewController lifecycle
     
     override func viewDidAppear(animated: Bool) {
-        dependencyManager.coachmarkManager?.displayCoachmark(in: self, withContainerView: coachmarkContainerView, withContext: profileScreenContext?.coachmarkContext)
+        triggerCoachmark(withContext: profileScreenContext?.coachmarkContext)
     }
 
     // MARK: - Buttons

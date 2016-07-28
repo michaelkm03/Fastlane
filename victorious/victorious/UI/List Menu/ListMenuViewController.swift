@@ -62,12 +62,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
             collectionView?.selectItemAtIndexPath(indexPath, animated: false, scrollPosition: .None)
         }
     }
-    
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        dependencyManager.coachmarkManager?.displayCoachmark(in: self, withContainerView: coachmarkContainerView)
-    }
-    
+
     // MARK: - Notifications
     
     private func selectCreator(atIndex index: Int) {

@@ -63,8 +63,7 @@ class CoachmarkManager: NSObject {
     /// - parameter displayer: The object that will provide the frames for the coachmark, and will handle callbacks
     /// - parameter container: The container frame of the coachmark, usually the entire screen
     /// - parameter context: The context string used to differentiate between different coachmarks on the same screen, such as profile
-    func displayCoachmark(in displayer: CoachmarkDisplayer, withContainerView container: UIView, withContext viewContext: String? = nil) {
-        resetShownCoachmarks() // REMOVE BEFORE RELEASE
+    func setupCoachmark(in displayer: CoachmarkDisplayer, withContainerView container: UIView, withContext viewContext: String? = nil) {
         let screenIdentifier = displayer.screenIdentifier
         if let index = coachmarks.indexOf({ coachmark in
             var contextMatches = true
@@ -90,8 +89,7 @@ class CoachmarkManager: NSObject {
             let containerFrame = container.bounds
             let coachmarkViewController = CoachmarkViewController(coachmark: coachmarkToDisplay, containerFrame: containerFrame, highlightFrame: highlightFrame)
             
-            coachmarkViewController.animate(into: displayer)
-            
+            displayer.presentCoachmark(from: coachmarkViewController)
             coachmarkToDisplay.hasBeenShown = true
             saveCoachmarkState()
             

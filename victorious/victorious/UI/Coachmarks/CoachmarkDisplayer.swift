@@ -33,12 +33,17 @@ protocol CoachmarkDisplayer {
     func highlightFrame(forIdentifier identifier: String) -> CGRect?
     
 /// Called when the coachmark VC is ready for presentation
-    func addCoachmark(from viewController: CoachmarkViewController)
+/// Should only be called by coachmark manager. Use triggerCoachmark 
+/// to trigger the setup of the coachmark
+    func presentCoachmark(from viewController: CoachmarkViewController)
+    
+/// Triggers a coachmark display 
+    func triggerCoachmark(withContext context: String?)
 }
 
 extension CoachmarkDisplayer where Self: UIViewController {
-    func addCoachmark(from viewController: CoachmarkViewController) {
-        presentViewController(viewController, animated: false, completion: nil)
+    func presentCoachmark(from viewController: CoachmarkViewController) {
+        presentViewController(viewController, animated: true, completion:  nil)
     }
     
     var screenIdentifier: String {
@@ -47,5 +52,9 @@ extension CoachmarkDisplayer where Self: UIViewController {
 
      var coachmarkContainerView : UIView {
         return navigationController?.view ?? self.view
+    }
+    
+    func triggerCoachmark(withContext context: String? = nil) {
+        dependencyManager.coachmarkManager?.setupCoachmark(in: self, withContainerView: coachmarkContainerView, withContext: context)
     }
 }

@@ -28,18 +28,18 @@ class ShowTutorialsOperation: MainQueueOperation {
     override func start() {
         beganExecuting()
         
-//        guard let currentVersionString = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString") as? String else {
-//            finishedExecuting()
-//            return
-//        }
-//        
-//        let currentVersion = AppVersion(versionNumber: currentVersionString)
-//        
-//        guard !self.cancelled && shouldShowTutorials(currentVersion) else {
-//            finishedExecuting()
-//            return
-//        }
-//        
+        guard let currentVersionString = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString") as? String else {
+            finishedExecuting()
+            return
+        }
+        
+        let currentVersion = AppVersion(versionNumber: currentVersionString)
+        
+        guard !self.cancelled && shouldShowTutorials(currentVersion) else {
+            finishedExecuting()
+            return
+        }
+        
         guard let tutorialViewController = dependencyManager.templateValueOfType(TutorialViewController.self, forKey: "tutorial") as? TutorialViewController else {
             finishedExecuting()
             return

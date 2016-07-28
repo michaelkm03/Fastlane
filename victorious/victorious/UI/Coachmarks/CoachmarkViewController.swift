@@ -47,6 +47,7 @@ class CoachmarkViewController: UIViewController, VBackgroundContainer {
         super.init(nibName: nil, bundle: nil)
         view = UIView(frame: containerFrame)
         modalPresentationStyle = .OverFullScreen
+        modalTransitionStyle = .CrossDissolve
         let dependencyManager = coachmark.dependencyManager
         
         dependencyManager.addBackgroundToBackgroundHost(self)
@@ -165,33 +166,10 @@ class CoachmarkViewController: UIViewController, VBackgroundContainer {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Animations
-    
-    func animate(into displayer: CoachmarkDisplayer) {
-        //Animate the coachmark
-        view.alpha = 0
-        displayer.addCoachmark(from: self)
-        
-        UIView.animateWithDuration(Constants.animationDuration) {
-            self.view.alpha = 1
-        }
-    }
-    
-    func animateOut() {
-        UIView.animateWithDuration(
-            Constants.animationDuration,
-            animations: {
-                self.view.alpha = 0
-            }
-        ){ _ in
-            self.dismissViewControllerAnimated(false, completion: nil)
-        }
-    }
-    
     // MARK: - Button Actions
     
     func closeButtonAction() {
-        animateOut()
+        dismissViewControllerAnimated(true, completion: nil)
     }
     
     // MARK: - VBackgroundContainer Methods
