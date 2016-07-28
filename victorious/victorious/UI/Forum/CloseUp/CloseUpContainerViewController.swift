@@ -8,14 +8,19 @@
 
 import UIKit
 
-private let leftRightSectionInset = CGFloat(0)
-private let topBottomSectionInset = CGFloat(3)
-private let interItemSpacing = CGFloat(3)
-private let cellsPerRow = 3
+private struct Constants {
+    static let leftRightSectionInset = CGFloat(0)
+    static let topBottomSectionInset = CGFloat(3)
+    static let interItemSpacing = CGFloat(3)
+    static let cellsPerRow = 3
+    static let estimatedBarButtonWidth: CGFloat = 60.0
+    static let estimatedStatusBarHeight: CGFloat = 20.0
+    static let navigationBarRightPadding: CGFloat = 10.0 
+}
 
-class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, ContentCellTracker {
+class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, ContentCellTracker, CoachmarkDisplayer {
     private let gridStreamController: GridStreamViewController<CloseUpView>
-    private var dependencyManager: VDependencyManager
+    var dependencyManager: VDependencyManager!
     private var content: VContent? {
         didSet {
             updateAudioSessionCategory()
@@ -62,13 +67,13 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
                 
         let configuration = GridStreamConfiguration(
             sectionInset: UIEdgeInsets(
-                top: topBottomSectionInset,
-                left: leftRightSectionInset,
-                bottom: topBottomSectionInset,
-                right: leftRightSectionInset
+                top: Constants.topBottomSectionInset,
+                left: Constants.leftRightSectionInset,
+                bottom: Constants.topBottomSectionInset,
+                right: Constants.leftRightSectionInset
             ),
-            interItemSpacing: interItemSpacing,
-            cellsPerRow: cellsPerRow,
+            interItemSpacing: Constants.interItemSpacing,
+            cellsPerRow: Constants.cellsPerRow,
             allowsForRefresh: false,
             managesBackground: true
         )
@@ -93,7 +98,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         header.delegate = self
         
         updateHeader()
-                
+        
         addChildViewController(gridStreamController)
         view.addSubview(gridStreamController.view)
         view.v_addFitToParentConstraintsToSubview(gridStreamController.view)
@@ -109,6 +114,10 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         dependencyManager.trackViewWillDisappear(self)
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
     }
     
     // MARK: - ContentCellTracker
@@ -181,6 +190,10 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         router.navigate(to: destination)
     }
     
+    func gridStreamDidUpdate() {
+        triggerCoachmark()
+    }
+    
     func share() {
         guard let content = content else {
             return
@@ -231,6 +244,20 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
                 self?.navigationController?.popViewControllerAnimated(true)
             }
         }
+    }
+    
+    // MARK: - Coachmark Displayer
+    
+    func highlightFrame(forIdentifier identifier: String) -> CGRect? {
+        if let barFrame = navigationController?.navigationBar.frame where identifier == "bump" {
+            return CGRect(
+                    x: barFrame.width - Constants.estimatedBarButtonWidth - Constants.navigationBarRightPadding,
+                    y: Constants.estimatedStatusBarHeight,
+                    width: Constants.estimatedBarButtonWidth,
+                    height: barFrame.height
+            )
+        }
+        return nil
     }
 }
 

@@ -131,6 +131,7 @@ class SideMenuController: UIViewController {
         slideCenterViewToCurrentOffset(animated: animated) { [weak self] in
             self?.endRemoving(oldOpenSideController)
             self?.endAdding(newOpenSideController)
+            (newOpenSideController as? CoachmarkDisplayer)?.triggerCoachmark(withContext: nil)
             completion?()
         }
     }
@@ -395,7 +396,11 @@ class SideMenuController: UIViewController {
             // The user panned far enough, so we trigger an open or close.
             if let visibleEdge = visibleEdge where visibleEdge != openEdge {
                 openEdge = visibleEdge
-                slideCenterViewToCurrentOffset(animated: true)
+                slideCenterViewToCurrentOffset(animated: true) {
+                    if self.openEdge == .left {
+                        (self.leftViewController as? CoachmarkDisplayer)?.triggerCoachmark(withContext: nil)
+                    }
+                }
             }
             else if openEdge != nil {
                 closeSideViewController(animated: true)

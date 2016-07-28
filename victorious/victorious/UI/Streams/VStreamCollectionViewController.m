@@ -15,8 +15,6 @@
 #import "UIViewController+VLayoutInsets.h"
 #import "VAbstractMarqueeCollectionViewCell.h"
 #import "VAbstractMarqueeController.h"
-#import "VCoachmarkDisplayer.h"
-#import "VCoachmarkManager.h"
 #import "VCollectionViewStreamFocusHelper.h"
 #import "VConstants.h"
 #import "VContentViewFactory.h"
@@ -74,7 +72,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 static NSString * const kMarqueeDestinationDirectory = @"destinationDirectory";
 static NSString * const kStreamCollectionKey = @"destinationStream";
 
-@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder, VCoachmarkDisplayer, VStreamContentCellFactoryDelegate, VideoTracking, VContentPreviewViewProvider, VAccessoryNavigationSource, VSequenceActionControllerDelegate, VUploadManagerHost>
+@interface VStreamCollectionViewController () <VSequenceActionsDelegate, VUploadProgressViewControllerDelegate, UICollectionViewDelegateFlowLayout, VHashtagSelectionResponder, VStreamContentCellFactoryDelegate, VideoTracking, VContentPreviewViewProvider, VAccessoryNavigationSource, VSequenceActionControllerDelegate, VUploadManagerHost>
 
 @property (strong, nonatomic) VStreamCollectionViewDataSource *directoryDataSource;
 @property (strong, nonatomic) NSIndexPath *lastSelectedIndexPath;
@@ -273,7 +271,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     //Because a stream can be presented without refreshing, we need to refresh the user post icon here
     [self updateNavigationItems];
 
-    [[self.dependencyManager coachmarkManager] displayCoachmarkViewInViewController:self];
     
     [self updateNavigationBarScrollOffset];
     
@@ -288,7 +285,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 {
     [super viewWillDisappear:animated];
         
-    [[self.dependencyManager coachmarkManager] hideCoachmarkViewInViewController:self animated:animated];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -1082,7 +1078,7 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     return NO;
 }
 
-#pragma mark - VCoachmarkDisplayer
+#pragma mark - CoachmarkDisplayer
 
 - (NSString *)screenIdentifier
 {
