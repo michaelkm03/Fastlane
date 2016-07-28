@@ -19,6 +19,8 @@ enum VideoState {
 
 protocol ContentVideoPlayerCoordinatorDelegate: class {
     func coordinatorDidBecomeReady()
+
+    func coordinatorDidFinishPlaying()
 }
 
 /// A coordinator that holds a VVideoView object adjusting for different types of VContent 
@@ -185,6 +187,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     
     func videoPlayerDidReachEnd(videoPlayer: VVideoPlayer) {
         state = .Ended
+        delegate?.coordinatorDidFinishPlaying()
     }
     
     func videoPlayerDidStartBuffering(videoPlayer: VVideoPlayer) {

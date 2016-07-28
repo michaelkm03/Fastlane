@@ -323,8 +323,12 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
 
     // MARK: - MediaContentViewDelegate
 
-    func didFinishLoadingContent(content: ContentModel) {
+    func mediaContentView(mediaContentView: MediaContentView, didFinishLoadingContent content: ContentModel) {
         print("didFinishLoadingContent in CUV")
+    }
+
+    func mediaContentView(mediaContentView: MediaContentView, didFinishPlaybackOfContent content: ContentModel) {
+
     }
 }
 
