@@ -230,13 +230,13 @@ class ChatFeedMessageCell: UICollectionViewCell {
     /// and frees up resources that are no longer needed.
     func stopDisplaying() {
         if let previewView = previewView as? MediaContentView {
-            previewView.videoCoordinator?.pauseVideo()
+            previewView.willBeDismissed()
         }
     }
     
     func startDisplaying() {
         if let previewView = previewView as? MediaContentView {
-            previewView.videoCoordinator?.playVideo()
+            previewView.willBePresented()
         }
     }
     

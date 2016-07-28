@@ -33,7 +33,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     let dependencyManager: VDependencyManager
     let content: ContentModel
 
-    weak var delegate: MediaContentViewDelegate?
+    private weak var delegate: MediaContentViewDelegate?
 
     // MARK: - Private
 
@@ -51,7 +51,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         static let defaultTextFont = UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline)
     }
 
-    private(set) var videoCoordinator: VContentVideoPlayerCoordinator?
+    private var videoCoordinator: VContentVideoPlayerCoordinator?
     private var backgroundView: UIImageView?
     private let spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
     private var downloadedPreviewImage: UIImage?
