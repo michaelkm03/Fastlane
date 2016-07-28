@@ -274,14 +274,12 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         // Let MVC know it is being dismissed from the screen.
         mediaContentView?.willBeDismissed()
         
-        // Fade MCV Out.
-        let animations: ()->() = {
+        UIView.animateWithDuration(animated ? Constants.contentSizeAnimationDuration : 0, animations: {
             self.mediaContentView?.alpha = 0
-        }
-        UIView.animateWithDuration(animated ? Constants.contentSizeAnimationDuration : 0, animations: animations) { _ in
+        }, completion: { _ in
             self.mediaContentView?.removeFromSuperview()
             self.mediaContentView = nil
-        }
+        })
         
         visible = false
         UIView.animateWithDuration(animated ? Constants.contentSizeAnimationDuration : 0) {
