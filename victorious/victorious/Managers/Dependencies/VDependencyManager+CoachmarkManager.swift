@@ -7,7 +7,7 @@
 //
 
 extension VDependencyManager {
-    var coachmarkManager: VCoachmarkManager? {
+    var coachmarkManager: CoachmarkManager? {
         return (scaffoldViewController() as? Scaffold)?.coachmarkManager
     }
 }

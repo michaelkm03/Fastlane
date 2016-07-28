@@ -44,8 +44,7 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
             leftViewController: leftViewController
         )
         
-        coachmarkManager = VCoachmarkManager(dependencyManager: dependencyManager)
-        coachmarkManager.allowCoachmarks = true
+        coachmarkManager = CoachmarkManager(dependencyManager: dependencyManager)
         
         super.init(nibName: nil, bundle: nil)
         
@@ -98,7 +97,6 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
             InterstitialManager.sharedInstance.showNextInterstitial(onViewController: self)
         }
         
-        dependencyManager.coachmarkManager?.displayCoachmarkViewInViewController(centerViewController)
     }
     
     // MARK: - Setup
@@ -227,7 +225,7 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
     
     // MARK: - Scaffold
     
-    let coachmarkManager: VCoachmarkManager
+    let coachmarkManager: CoachmarkManager
     
     var navigationDestinations: [VNavigationDestination] {
         return [
@@ -244,25 +242,6 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
         }
     }
     
-    // MARK: - VCoachmarkDisplayResponder
-    
-    func findOnScreenMenuItemWithIdentifier(identifier: String, andCompletion completion: VMenuItemDiscoveryBlock) {
-        for navigationDestination in navigationDestinations {
-            if let coachmarkDisplayer = navigationDestination as? VCoachmarkDisplayer where coachmarkDisplayer.screenIdentifier() == identifier {
-                completion(true, frameForNavigationControl(to: navigationDestination))
-                return
-            }
-        }
-        
-        let selector = #selector(findOnScreenMenuItemWithIdentifier(_: andCompletion:))
-        
-        if let nextCoachmarkDisplayResponder = nextResponder()?.targetForAction(selector, withSender: nil) as? VCoachmarkDisplayResponder {
-            nextCoachmarkDisplayResponder.findOnScreenMenuItemWithIdentifier(identifier, andCompletion: completion)
-        }
-        else {
-            completion(false, CGRectZero)
-        }
-    }
     
     private func frameForNavigationControl(to destination: VNavigationDestination) -> CGRect {
         var frame = mainNavigationController.innerNavigationController.navigationBar.frame ?? CGRectZero

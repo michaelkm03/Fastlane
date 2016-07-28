@@ -213,9 +213,11 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         }
         
         mediaContentView.showContent(animated: animated) { [weak self] _ in
+            guard let content = self?.currentStageContent?.content where content.type == .video else {
+                return
+            }
             if
-                let videoDuration = self?.mediaContentView.videoCoordinator?.duration,
-                let content = self?.currentStageContent?.content
+                let videoDuration = self?.mediaContentView.videoCoordinator?.duration
                 where content.seekAheadTime() < videoDuration
             {
                 self?.mediaContentView.videoCoordinator?.playVideo(true)

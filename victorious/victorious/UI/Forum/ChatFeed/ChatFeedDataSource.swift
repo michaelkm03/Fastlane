@@ -36,10 +36,16 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     private(set) var stashedItems = [ChatFeedContent]()
     
     var pendingItems: [ChatFeedContent] {
-        return delegate?.pendingItems(for: self) ?? []
+        if shouldShowPendingItems {
+            return delegate?.pendingItems(for: self) ?? []
+        }
+        else {
+            return []
+        }
     }
     
     var stashingEnabled = false
+    var shouldShowPendingItems = true
     
     func unstash() {
         guard stashedItems.count > 0 else {
@@ -79,6 +85,9 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
                 stashedItems = []
                 delegate?.chatFeedDataSource(self, didLoadItems: newItems, loadingType: .refresh)
             
+            case .filterContent(let path):
+                let isFilteredFeed = path != nil
+                shouldShowPendingItems = !isFilteredFeed
             default:
                 break
         }

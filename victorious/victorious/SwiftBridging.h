@@ -60,8 +60,6 @@
 #import "VCaptureVideoPreviewView.h"
 #import "VCellWithProfileDelegate.h"
 #import "VChangePasswordViewController.h"
-#import "VCoachmarkDisplayResponder.h"
-#import "VCoachmarkManager.h"
 #import "VCollectionViewStreamFocusHelper.h"
 #import "VColorType.h"
 #import "VComment.h"
