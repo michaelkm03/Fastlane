@@ -113,6 +113,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     }
     
     override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+        // Change the audio session category if the volume changes.
         if keyPath == "outputVolume" && view.window != nil {
             VAudioManager.sharedInstance().focusedPlaybackDidBegin(muted: false)
         }
@@ -293,7 +294,6 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
             self.mediaContentView?.alpha = 1.0
             return
         }
-        
         UIView.animateWithDuration(Constants.mediaContentViewAnimationDuration, animations: animations) { _ in
             // TODO: Stop spinner
         }
@@ -344,9 +344,5 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
 private extension VDependencyManager {
     var captionBarDependency: VDependencyManager? {
         return childDependencyForKey("captionBar")
-    }
-    
-    var newItemButtonDependency: VDependencyManager? {
-        return childDependencyForKey("newItemButton")
     }
 }
