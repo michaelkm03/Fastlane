@@ -56,9 +56,10 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     private var currentStageContent: StageContent?
 
     private var stageDataSource: StageDataSource?
-    
-    weak var delegate: StageDelegate?
+
     private let audioSession = AVAudioSession.sharedInstance()
+
+    weak var delegate: StageDelegate?
 
     var dependencyManager: VDependencyManager! {
         didSet {
@@ -116,7 +117,8 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
             VAudioManager.sharedInstance().focusedPlaybackDidBegin(muted: false)
         }
     }
-    
+
+    /// Swapping content destroys the old MCV and creates a new instance.
     private func swapStageContent(to content: ContentModel) {
         if let mediaContentView = mediaContentView {
             tearDownMediaContentView(mediaContentView)
@@ -125,7 +127,8 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         mediaContentView = newMediaContentView(for: content)
         mediaContentView?.loadContent()
     }
-    
+
+    /// Every piece of content has it's own instance of MediaContentView, it is destroyed and recreated for each one.
     private func tearDownMediaContentView(mediaContentView: MediaContentView) {
         let animations = {
             mediaContentView.alpha = 0
