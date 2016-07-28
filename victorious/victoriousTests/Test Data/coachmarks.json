@@ -1,92 +1,92 @@
 {
-       "coachmarks": [
-                            {
-                               "id": "578d299a4323f",
-                               "name": "fullscreen.coachmark",
-                               "screen": "578d299a4323f",
-                               "highlight.target": "bump",
-                               "highlight.foreground": {
-                                  "name": "solidColor.background",
-                                  "color": {
-                                     "red": 255,
-                                     "green": 255,
-                                     "blue": 255,
-                                     "alpha": 100
-                                  }
-                               },
-                               "highlight.stroke": {
-                                  "red": 0,
-                                  "green": 0,
-                                  "blue": 0,
-                                  "alpha": 255
-                               },
-                               "background": {
-                                  "name": "solidColor.background",
-                                  "color": {
-                                     "red": 0,
-                                     "green": 0,
-                                     "blue": 0,
-                                     "alpha": 200
-                                  }
-                               },
-                               "close.button": {
-                                  "name": "textOnColor.button",
-                                  "id": "close.button",
-                                  "color.background": {
-                                     "red": 23,
-                                     "green": 23,
-                                     "blue": 23,
-                                     "alpha": 255
-                                  },
-                                  "color.foreground": {
-                                     "red": 255,
-                                     "green": 255,
-                                     "blue": 255,
-                                     "alpha": 255
-                                  },
-                                  "font.text.button": {
-                                     "fontName": "Roboto-Regular",
-                                     "fontSize": 14
-                                  },
-                                  "text.button": "Got It",
-                                  "tracking": {
-                                     "button_tap": "/v1/tracking/button_tap?button_name=closeButton",
-                                     "button_tap_cancel": "/v1/tracking/button_tap_cancel?button_name=closeButton"
-                                  },
-                                  "clickable": true
-                               },
-                               "title": "Close Up View",
-                               "color.title": {
-                                  "red": 23,
-                                  "green": 23,
-                                  "blue": 23,
-                                  "alpha": 255
-                               },
-                               "font.title": {
-                                  "fontName": "Roboto-Regular",
-                                  "fontSize": 30
-                               },
-                               "text": "Bump any post to send it up on stage",
-                               "color.text": {
-                                  "red": 23,
-                                  "green": 23,
-                                  "blue": 23,
-                                  "alpha": 255
-                               },
-                               "font.text": {
-                                  "fontName": "Roboto-Regular",
-                                  "fontSize": 21
-                               },
-                               "text.background": {
-                                  "name": "translucent.background",
-                                  "blurStyle": "light"
-                               },
-                               "color.stroke": {
-                                  "red": 23,
-                                  "green": 23,
-                                  "blue": 23,
-                                  "alpha": 255
-                               }
-                            }
-                         ]
+    "coachmarks":[
+                  {
+                  "id":"578d299a4323f",
+                  "name":"fullscreen.coachmark",
+                  "screen":"578d299a4323f",
+                  "highlight.target":"bump",
+                  "highlight.foreground":{
+                      "name":"solidColor.background",
+                       "color":{
+                              "red":255,
+                              "green":255,
+                              "blue":255,
+                              "alpha":100
+                        }
+                  },
+                  "highlight.stroke":{
+                      "red":0,
+                      "green":0,
+                      "blue":0,
+                      "alpha":255
+                  },
+                  "background":{
+                      "name":"solidColor.background",
+                      "color":{
+                          "red":0,
+                          "green":0,
+                          "blue":0,
+                          "alpha":200
+                      }
+                  },
+                  "close.button":{
+                      "name":"textOnColor.button",
+                      "id":"close.button",
+                      "color.background":{
+                          "red":23,
+                          "green":23,
+                          "blue":23,
+                          "alpha":255
+                      },
+                      "color.foreground":{
+                          "red":255,
+                          "green":255,
+                          "blue":255,
+                          "alpha":255
+                      },
+                      "font.text.button":{
+                          "fontName":"Roboto-Regular",
+                          "fontSize":14
+                      },
+                      "text.button":"Got It",
+                      "tracking":{
+                          "button_tap":"/v1/tracking/button_tap?button_name=closeButton",
+                          "button_tap_cancel":"/v1/tracking/button_tap_cancel?button_name=closeButton"
+                      },
+                      "clickable":true
+                  },
+                  "title":"Close Up View",
+                  "color.title":{
+                      "red":23,
+                      "green":23,
+                      "blue":23,
+                      "alpha":255
+                  },
+                  "font.title":{
+                      "fontName":"Roboto-Regular",
+                      "fontSize":30
+                  },
+                  "text":"Bump any post to send it up on stage",
+                  "color.text":{
+                      "red":23,
+                      "green":23,
+                      "blue":23,
+                      "alpha":255
+                  },
+                  "font.text":{
+                      "fontName":"Roboto-Regular",
+                      "fontSize":21
+                  },
+                  "text.background":{
+                      "name":"translucent.background",
+                      "blurStyle":"light"
+                  },
+                  "color.stroke":{
+                      "red":23,
+                      "green":23,
+                      "blue":23,
+                      "alpha":255
+                  }
+                  }
+    ]
 }

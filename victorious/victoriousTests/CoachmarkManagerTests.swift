@@ -10,15 +10,22 @@ import XCTest
 @testable import victorious
 
 private class DummyDisplayer: CoachmarkDisplayer {
+    
+    var dependencyManager: VDependencyManager! = nil
+    var coachmarkContainerView = UIView()
+    
     var screenIdentifier: String {
         return "578d299a4323f"
     }
     
-    private func highlightFrame(identifier: String) -> CGRect? {
+    private func highlightFrame(forIdentifier identifier: String) -> CGRect? {
         return nil
     }
     
     private func presentCoachmark(from viewController: CoachmarkViewController) {}
+    
+    private func triggerCoachmark(withContext context: String?) {}
+}
 
 class CoachmarkManagerTests: XCTestCase {
 
@@ -49,7 +56,7 @@ class CoachmarkManagerTests: XCTestCase {
         let initialShownCoachmarks = manager.fetchShownCoachmarkIDs()
         XCTAssertEqual(initialShownCoachmarks.count, 0)
         
-        manager.displayCoachmark(inCoachmarkDisplayer: dummyDisplayer(), withContainerView: UIView(frame: CGRectZero))
+        manager.setupCoachmark(in: DummyDisplayer(), withContainerView: UIView(frame: CGRectZero))
         
         let finalShownCoachmarks = manager.fetchShownCoachmarkIDs()
         XCTAssertEqual(finalShownCoachmarks.count, 1)

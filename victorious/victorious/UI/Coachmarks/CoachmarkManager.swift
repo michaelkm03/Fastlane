@@ -28,7 +28,6 @@ class CoachmarkManager: NSObject {
     
     func reloadCoachmarks() {
         guard let coachmarkConfigurations = dependencyManager.arrayForKey(Constants.coachmarksArrayKey) as? [[NSObject : AnyObject]] else {
-            assertionFailure("No coachmarks could be found in coachmark manager")
             return
         }
         coachmarks = []
