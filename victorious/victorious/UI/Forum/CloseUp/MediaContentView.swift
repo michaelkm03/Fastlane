@@ -80,7 +80,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         return singleTapRecognizer
     }()
     
-    // MARK: - Initializing
+    // MARK: - Life Cycle
 
     /// Sets up the content view with a zero frame. Use this initializer if created from code.
     init(
@@ -121,6 +121,11 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         sendSubviewToBack(spinner)
         
         addGestureRecognizer(singleTapRecognizer)
+    }
+    
+    deinit {
+        delegate = nil
+        videoCoordinator?.delegate = nil
     }
     
     // MARK: - Configuration
