@@ -298,6 +298,10 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     func coordinatorDidBecomeReady() {
         finishedLoadingContent()
     }
+
+    func coordinatorDidFinishPlaying() {
+        delegate?.mediaContentView(self, didFinishPlaybackOfContent: content)
+    }
 }
 
 // MARK: - VDependency Manager extension
