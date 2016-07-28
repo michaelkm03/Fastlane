@@ -38,10 +38,6 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     // MARK: - Private
 
     private struct Constants {
-        static let blurRadius: CGFloat = 12
-        static let fadeDuration: NSTimeInterval = 0.75
-        static let backgroundFadeInDurationMultiplier = 0.75
-        static let fadeOutDurationMultiplier = 1.25
         static let textPostLineSpacing: CGFloat = 2.0
         static let maxLineCount = 4
         static let textAlignment = NSTextAlignment.Center
@@ -52,7 +48,6 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     }
 
     private var videoCoordinator: VContentVideoPlayerCoordinator?
-    private var backgroundView: UIImageView?
     private let spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
     private var downloadedPreviewImage: UIImage?
 
@@ -97,7 +92,6 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         super.init(frame: CGRect.zero)
         
         setup()
-        configureBackground()
     }
     
     required init?(coder: NSCoder) {
@@ -107,8 +101,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     private func setup() {
         clipsToBounds = true
         backgroundColor = .clearColor()
-        
-        configureBackground()
+        previewImageView.contentMode = (configuration.fillMode == .fit) ? .ScaleAspectFit : .ScaleAspectFill
         
         addSubview(previewImageView)
         
@@ -131,15 +124,6 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     // MARK: - Configuration
     
     private var configuration: MediaContentViewConfiguration
-    
-    private func configureBackground() {
-        previewImageView.contentMode = (configuration.fillMode == .fit) ? .ScaleAspectFit : .ScaleAspectFill
-        
-        let backgroundView = UIImageView()
-        self.backgroundView = backgroundView
-        backgroundView.contentMode = .ScaleAspectFill
-        insertSubview(backgroundView, atIndex: 0)
-    }
 
     // MARK: - Presentable
 
@@ -289,32 +273,10 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         previewImageView.frame = bounds
         videoContainerView.frame = bounds
         textPostLabel.frame = CGRect(x: bounds.origin.x + CGFloat(Constants.textPostPadding), y: bounds.origin.y, width: bounds.width - CGFloat(2 * Constants.textPostPadding), height: bounds.height)
-        backgroundView?.frame = computeBackgroundBounds()
         spinner.center = CGPoint(x: bounds.midX, y: bounds.midY)
         videoCoordinator?.layout(in: videoContainerView.bounds, with: configuration.fillMode)
     }
     
-    // Hack that ensure that the background extends a little beyond the frame bounds,
-    // so that the guassian blur doesn't introduce shadow at the edges
-    private func computeBackgroundBounds() -> CGRect {
-        var backgroundBounds = bounds
-        backgroundBounds.origin.x -= 10
-        backgroundBounds.origin.y -= 10
-        backgroundBounds.size.height += 20
-        backgroundBounds.size.width += 20
-        return backgroundBounds
-    }
-    
-    private func setBackgroundBlur(withImageAsset imageAsset: ImageAssetModel, forContent content: ContentModel, completion: (()->())? = nil) {
-        backgroundView?.applyBlurToImageURL(imageAsset.url, withRadius: Constants.blurRadius) { [weak self] in
-            guard let currentContentID = content.id where currentContentID == self?.content.id else {
-                return
-            }
-            self?.backgroundView?.alpha = 1
-            completion?()
-        }
-    }
-
     // MARK: - Actions
 
     func onContentTap() {

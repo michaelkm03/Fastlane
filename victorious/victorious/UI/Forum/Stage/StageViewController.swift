@@ -10,9 +10,11 @@ import UIKit
 
 class StageViewController: UIViewController, Stage, CaptionBarViewControllerDelegate, TileCardDelegate, MediaContentViewDelegate {
     private struct Constants {
-        static let contentSizeAnimationDuration: NSTimeInterval = 0.5
+        static let contentSizeAnimationDuration = NSTimeInterval(0.5)
         static let defaultAspectRatio: CGFloat = 16 / 9
         static let titleCardDelayedShow = NSTimeInterval(1)
+        static let mediaContentViewAnimationDuration = NSTimeInterval(0.75)
+        static let mediaContentViewAnimationDurationMultiplier = 1.25
     }
     
     private lazy var defaultStageHeight: CGFloat = {
@@ -129,7 +131,8 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
             mediaContentView.alpha = 0
         }
         
-        UIView.animateWithDuration(1, animations: animations) { _ in
+        let duration = Constants.mediaContentViewAnimationDuration * Constants.mediaContentViewAnimationDurationMultiplier
+        UIView.animateWithDuration(duration, animations: animations) { _ in
             mediaContentView.removeFromSuperview()
         }
     }
@@ -288,7 +291,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
             return
         }
         
-        UIView.animateWithDuration(1, animations: animations) { _ in
+        UIView.animateWithDuration(Constants.mediaContentViewAnimationDuration, animations: animations) { _ in
             // TODO: Stop spinner
         }
     }
