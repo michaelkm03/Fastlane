@@ -10,7 +10,10 @@ import UIKit
 
 protocol MediaContentViewDelegate: class {
     /// Tells the delegate that a particular content is loaded.
-    func didFinishLoadingContent(content: ContentModel)
+    func mediaContentView(mediaContentView: MediaContentView, didFinishLoadingContent content: ContentModel)
+
+    /// A callback that tells the delegate that the piece of content has finished playing.
+    func mediaContentView(mediaContentView: MediaContentView, didFinishPlaybackOfContent content: ContentModel)
 
     // FUTURE: handle error states for async content
 //    func failedToLoadContent(content: ContentModel, error: NSError?)
@@ -198,7 +201,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     
     private func finishedLoadingContent() {
         spinner.stopAnimating()
-        delegate?.didFinishLoadingContent(content)
+        delegate?.mediaContentView(self, didFinishLoadingContent: content)
     }
     
     private func tearDownPreviewImage() {

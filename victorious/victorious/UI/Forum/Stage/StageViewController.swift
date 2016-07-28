@@ -126,6 +126,38 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         }
     }
 
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        super.prepareForSegue(segue, sender: sender)
+
+        let destination = segue.destinationViewController
+        if let titleCardViewController = destination as? TitleCardViewController {
+            titleCardViewController.delegate = self
+            self.titleCardViewController = titleCardViewController
+        }
+    }
+
+    // MARK: MediaContentView
+
+    func setupMediaContentView(for content: ContentModel) -> MediaContentView {
+        let configuration = MediaContentViewConfiguration(
+            allowsVideoControls: false,
+            fillMode: (content.type == .text ? .fill : .fit)
+        )
+
+        let mediaContentView = MediaContentView(
+            content: content,
+            dependencyManager: dependencyManager,
+            configuration: configuration,
+            delegate: self
+        )
+
+        mediaContentView.alpha = 0
+
+        mediaContentView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOnContent)))
+
+        return mediaContentView
+    }
+
     /// Swapping content destroys the old MCV and creates a new instance.
     private func swapStageContent(to content: ContentModel) {
         if let mediaContentView = mediaContentView {
@@ -144,55 +176,26 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         let animations = {
             mediaContentView.alpha = 0
         }
-        
+
         let duration = Constants.mediaContentViewAnimationDuration * Constants.mediaContentViewAnimationDurationMultiplier
         UIView.animateWithDuration(duration, animations: animations) { _ in
             mediaContentView.removeFromSuperview()
         }
     }
-    
+
     private func newMediaContentView(for content: ContentModel) -> MediaContentView {
         let mediaContentView = setupMediaContentView(for: content)
         view.addSubview(mediaContentView)
         view.sendSubviewToBack(mediaContentView)
         view.v_addPinToLeadingTrailingToSubview(mediaContentView)
         view.v_addPinToTopToSubview(mediaContentView)
-        
+
         // TODO: Fix this?
         view.v_addPinToBottomToSubview(mediaContentView, bottomMargin: captionBarContainerView.frame.size.height)
-        
+
         return mediaContentView
     }
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        super.prepareForSegue(segue, sender: sender)
-
-        let destination = segue.destinationViewController
-        if let titleCardViewController = destination as? TitleCardViewController {
-            titleCardViewController.delegate = self
-            self.titleCardViewController = titleCardViewController
-        }
-    }
-    
-    func setupMediaContentView(for content: ContentModel) -> MediaContentView {
-        let configuration = MediaContentViewConfiguration(
-            allowsVideoControls: false,
-            fillMode: (content.type == .text ? .fill : .fit)
-        )
-        
-        let mediaContentView = MediaContentView(
-            content: content,
-            dependencyManager: dependencyManager,
-            configuration: configuration,
-            delegate: self
-        )
-        
-        mediaContentView.alpha = 0
-        
-        mediaContentView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOnContent)))
-        
-        return mediaContentView
-    }
 
     // MARK: - Stage
     
@@ -288,12 +291,13 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
 
     // MARK: - MediaContentViewDelegate
 
-    func didFinishLoadingContent(content: ContentModel) {
+    func mediaContentView(mediaContentView: MediaContentView, didFinishLoadingContent content: ContentModel) {
         guard isOnScreen else {
             return
         }
-        
-        guard mediaContentView?.seekableWithinBounds == true else {
+
+        /// Instead of seeking past the end of the video we hide the stage.
+        guard mediaContentView.seekableWithinBounds == true else {
             hide(animated: true)
             return
         }
@@ -301,12 +305,19 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         show(animated: true)
 
         loadingIndicator.stopAnimating()
-        
-        let animations = {
-            self.mediaContentView?.alpha = 1.0
-            return
+
+        UIView.animateWithDuration(Constants.mediaContentViewAnimationDuration) {
+            mediaContentView.alpha = 1.0
         }
-        UIView.animateWithDuration(Constants.mediaContentViewAnimationDuration, animations: animations)
+    }
+
+    func mediaContentView(mediaContentView: MediaContentView, didFinishPlaybackOfContent content: ContentModel) {
+        // When the playback of a video is done we want to hide the MCV.
+        if content.type == .video {
+            UIView.animateWithDuration(Constants.mediaContentViewAnimationDuration) {
+                mediaContentView.alpha = 1.0
+            }
+        }
     }
 
     // MARK: - StageShrinkingAnimatorDelegate
