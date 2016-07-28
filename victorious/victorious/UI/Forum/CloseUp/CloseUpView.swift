@@ -184,7 +184,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
             
             // Content
             var mediaContentViewFrame = mediaContentView.frame
-            mediaContentViewFrame.origin.y = totalHeight
+            mediaContentViewFrame.origin.y = headerSection.bounds.size.height
             mediaContentViewFrame.size.height = height(for: content)
             mediaContentViewFrame.size.width = bounds.size.width
             mediaContentView.frame = mediaContentViewFrame
