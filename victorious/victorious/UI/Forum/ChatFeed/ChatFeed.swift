@@ -75,7 +75,6 @@ extension ChatFeed {
         
         updateCollectionView(with: newItems, loadingType: loadingType, newPendingContentCount: newPendingContentCount, removedPendingContentIndices: removedPendingContentIndices) {
             collectionView.collectionViewLayout.invalidateLayout()
-            
             CATransaction.commit()
             
             // If we loaded newer items and we were scrolled to the bottom, or if we refreshed the feed, scroll down to
@@ -91,51 +90,46 @@ extension ChatFeed {
     }
     
     private func updateCollectionView(with newItems: [ChatFeedContent], loadingType: PaginatedLoadingType, newPendingContentCount: Int, removedPendingContentIndices: [Int], completion: () -> Void) {
-        if loadingType == .refresh {
-            collectionView.reloadData()
-            completion()
-        }
-        else {
-            let collectionView = self.collectionView
-            let visibleItemCount = chatInterfaceDataSource.visibleItems.count
-            let oldVisibleItemCount = visibleItemCount - newItems.count
-            let itemCount = chatInterfaceDataSource.itemCount
-            
-            // The collection view's layout information is guaranteed to be updated properly in the completion handler
-            // of this method, which allows us to properly manage scrolling.
-            collectionView.performBatchUpdates({
-                switch loadingType {
-                    case .newer:
-                        collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
-                            NSIndexPath(forItem: oldVisibleItemCount + $0, inSection: 0)
-                        })
-                    
-                    case .older:
-                        if let layout = collectionView.collectionViewLayout as? ChatFeedCollectionViewLayout {
-                            layout.contentSizeWhenInsertingAbove = collectionView.contentSize
-                        }
-                        else {
-                            assertionFailure("Chat feed's collection view did not have the required layout type ChatFeedCollectionViewLayout.")
-                        }
-                        
-                        collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
-                            NSIndexPath(forItem: $0, inSection: 0)
-                        })
-                    
-                    case .refresh:
-                        break
+        let collectionView = self.collectionView
+        let visibleItemCount = chatInterfaceDataSource.visibleItems.count
+        let oldVisibleItemCount = visibleItemCount - newItems.count
+        let itemCount = chatInterfaceDataSource.itemCount
+        
+        // The collection view's layout information is guaranteed to be updated properly in the completion handler
+        // of this method, which allows us to properly manage scrolling.
+        collectionView.performBatchUpdates({
+            switch loadingType {
+            case .newer:
+                collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
+                    NSIndexPath(forItem: oldVisibleItemCount + $0, inSection: 0)
+                    })
+                
+            case .older:
+                if let layout = collectionView.collectionViewLayout as? ChatFeedCollectionViewLayout {
+                    layout.contentSizeWhenInsertingAbove = collectionView.contentSize
+                }
+                else {
+                    assertionFailure("Chat feed's collection view did not have the required layout type ChatFeedCollectionViewLayout.")
                 }
                 
-                collectionView.insertItemsAtIndexPaths((0 ..< newPendingContentCount).map {
-                    NSIndexPath(forItem: itemCount - 1 - $0, inSection: 0)
-                })
+                collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
+                    NSIndexPath(forItem: $0, inSection: 0)
+                    })
                 
-                collectionView.deleteItemsAtIndexPaths(removedPendingContentIndices.map {
-                    NSIndexPath(forItem: oldVisibleItemCount + $0, inSection: 0)
+            case .refresh:
+                // Calling reloadData in here causes a crash
+                collectionView.reloadSections(NSIndexSet(index: 0))
+            }
+            
+            collectionView.insertItemsAtIndexPaths((0 ..< newPendingContentCount).map {
+                NSIndexPath(forItem: itemCount - 1 - $0, inSection: 0)
+                })
+            
+            collectionView.deleteItemsAtIndexPaths(removedPendingContentIndices.map {
+                NSIndexPath(forItem: oldVisibleItemCount + $0, inSection: 0)
                 })
             }, completion: { _ in
                 completion()
-            })
-        }
+        })
     }
 }
