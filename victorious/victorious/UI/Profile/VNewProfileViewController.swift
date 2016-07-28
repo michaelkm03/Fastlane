@@ -20,7 +20,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     static let estimatedNavBarRightPadding: CGFloat = 10.0
     static let goVIPButtonID = "Accessory Go VIP"
     
-    private enum ProfileScreenContext : String {
+    private enum ProfileScreenContext: String {
         case selfUser, otherUser, selfCreator, otherCreator
         
         var accessoryScreensKey: String {
@@ -41,7 +41,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
             }
         }
     }
-        
+    
     // MARK: Dependency Manager
     
     let dependencyManager: VDependencyManager!
