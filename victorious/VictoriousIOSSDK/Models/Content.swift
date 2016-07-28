@@ -46,8 +46,9 @@ public protocol ContentModel: PreviewImageContainer, DictionaryConvertible {
     /// An array of media assets for the content, could be any media type
     var assets: [ContentMediaAssetModel] { get }
     
-    /// seekAheadTime to keep videos in sync for videos on VIP stage
-    var seekAheadTime: NSTimeInterval? { get set }
+    /// The time this piece of video content started in our device time.
+    /// It may be used in order to sync video content between sessions.
+    var localStartTime: NSDate? { get set }
     
     /// Keys correspond to an array of string-represented tracking urls
     var tracking: TrackingModel? { get }
@@ -95,6 +96,14 @@ extension ContentModel {
         
         return dictionary
     }
+    
+    public func seekAheadTime() -> NSTimeInterval {
+        guard let localStartTime = localStartTime else {
+            return 0
+        }
+        
+        return NSDate().timeIntervalSinceDate(localStartTime)
+    }
 }
 
 extension ContentModel {
@@ -129,8 +138,9 @@ public class Content: ContentModel {
     public let author: UserModel
     public let isLikedByCurrentUser: Bool
     
-    /// seekAheadTime for videos to be played on the VIP stage (which needs synchronization)
-    public var seekAheadTime : NSTimeInterval?
+    /// videoStartTime is the time this piece of video content started in our device time
+    /// It is used to keep videos in sync for videos on stage
+    public var localStartTime: NSDate?
     
     public let tracking: TrackingModel?
     
@@ -213,6 +223,7 @@ public class Content: ContentModel {
     }
     
     public init(
+        author: UserModel,
         id: String? = nil,
         createdAt: Timestamp = Timestamp(),
         postedAt: Timestamp = Timestamp(),
@@ -220,8 +231,9 @@ public class Content: ContentModel {
         text: String? = nil,
         assets: [ContentMediaAssetModel] = [],
         previewImages: [ImageAssetModel] = [],
-        author: UserModel
+        localStartTime: NSDate? = nil
     ) {
+        self.author = author
         self.id = id
         self.postedAt = postedAt
         self.createdAt = createdAt
@@ -229,7 +241,7 @@ public class Content: ContentModel {
         self.text = text
         self.assets = assets
         self.previewImages = previewImages
-        self.author = author
+        self.localStartTime = localStartTime
         
         self.status = nil
         self.hashtags = []

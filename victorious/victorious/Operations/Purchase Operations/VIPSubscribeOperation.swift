@@ -9,17 +9,15 @@
 import Foundation
 
 class VIPSubscribeOperation: BackgroundOperation {
-    
-    let productIdentifier: String
+    let product: VProduct
     
     var purchaseManager: VPurchaseManagerType = VPurchaseManager.sharedInstance()
     
-    init(productIdentifier: String) {
-        self.productIdentifier = productIdentifier
+    init(product: VProduct) {
+        self.product = product
     }
     
     override func start() {
-        
         guard didConfirmActionFromDependencies else {
             cancel()
             finishedExecuting()
@@ -34,21 +32,19 @@ class VIPSubscribeOperation: BackgroundOperation {
     }
     
     func purchaseSubscription() {
-    
-        purchaseManager.purchaseProductWithIdentifier(productIdentifier,
-            success: { results in
-                // Force success because we have to deliver the product even if the sever fails for any reason
-                VIPValidateSuscriptionOperation(shouldForceSuccess: true).rechainAfter(self).queue()
-                self.finishedExecuting()
-            },
-            failure: { error in
-                if error == nil {
-                    self.cancel()
-                } else {
-                    self.error = error
-                }
-                self.finishedExecuting()
+        let success = { (results: Set<NSObject>?) in
+            // Force success because we have to deliver the product even if the sever fails for any reason
+            VIPValidateSuscriptionOperation(shouldForceSuccess: true).rechainAfter(self).queue()
+            self.finishedExecuting()
+        }
+        let failure = { (error: NSError?) in
+            if error == nil {
+                self.cancel()
+            } else {
+                self.error = error
             }
-        )
+            self.finishedExecuting()
+        }
+        purchaseManager.purchaseProduct(product, success: success, failure: failure)
     }
 }
