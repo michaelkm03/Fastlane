@@ -33,13 +33,19 @@ protocol Composer: class, ForumEventReceiver, ForumEventSender, ComposerAttachme
 extension Composer {
     
     func sendMessage(text text: String, currentUser: UserModel) {
-        let content = Content(text: text, author: currentUser)
+        let content = Content(author: currentUser, text: text)
         send(.sendContent(content))
     }
     
     func sendMessage(asset asset: ContentMediaAsset, previewImage: UIImage, text: String?, currentUser: UserModel) {
         let previewImageAsset = ImageAsset(image: previewImage)
-        let content = Content(text: text, assets: [asset], previewImages: [previewImageAsset], type: asset.contentType, author: currentUser)
+        let content = Content(
+            author: currentUser,
+            text: text,
+            assets: [asset],
+            previewImages: [previewImageAsset],
+            type: asset.contentType
+        )
         send(.sendContent(content))
     }
 }

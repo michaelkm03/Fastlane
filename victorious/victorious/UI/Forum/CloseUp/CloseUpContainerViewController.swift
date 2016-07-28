@@ -16,8 +16,9 @@ private let cellsPerRow = 3
 class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, ContentCellTracker {
     private let gridStreamController: GridStreamViewController<CloseUpView>
     private var dependencyManager: VDependencyManager
-    private var content: ContentModel? {
+    private var content: VContent? {
         didSet {
+            updateAudioSessionCategory()
             trackContentView()
         }
     }
@@ -48,6 +49,12 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         return button
     }()
     
+    private func updateAudioSessionCategory() {
+        if content?.type == .video {
+            VAudioManager.sharedInstance().focusedPlaybackDidBegin(muted: false)
+        }
+    }
+    
     init(dependencyManager: VDependencyManager, contentID: String, content: ContentModel? = nil, streamAPIPath: APIPath) {
         self.dependencyManager = dependencyManager
         
@@ -74,9 +81,14 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
             streamAPIPath: streamAPIPath
         )
         self.contentID = contentID
-        self.content = content
         
         super.init(nibName: nil, bundle: nil)
+        
+        updateAudioSessionCategory()
+
+        if let content = content {
+            updateContent(content)
+        }
         
         header.delegate = self
         
@@ -143,9 +155,22 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     }
     
     func updateContent(content: ContentModel) {
-        self.content = content
-        updateHeader()
-        gridStreamController.setContent(content, withError: false)
+        guard let findOrCreateOperation = ContentFindOrCreateOperation(contentModel: content) else {
+            return
+        }
+        
+        findOrCreateOperation.queue() { [weak self] results, _, _ in
+            guard
+                let strongSelf = self,
+                let content = results?.first as? VContent
+            else {
+                return
+            }
+            
+            strongSelf.content = content
+            strongSelf.updateHeader()
+            strongSelf.gridStreamController.setContent(content, withError: false)
+        }
     }
     
     // MARK: - CloseUpViewDelegate
@@ -168,8 +193,12 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     }
     
     func toggleUpvote() {
+        guard let content = content else {
+            return
+        }
+        
         ContentUpvoteToggleOperation(
-            contentID: contentID,
+            contentID: content.v_remoteID,
             upvoteURL: dependencyManager.contentUpvoteURL,
             unupvoteURL: dependencyManager.contentUnupvoteURL
         ).queue { [weak self] _ in

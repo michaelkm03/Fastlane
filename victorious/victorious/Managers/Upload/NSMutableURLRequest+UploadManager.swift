@@ -10,16 +10,16 @@ import Foundation
 import VictoriousIOSSDK
 
 extension NSMutableURLRequest {
-    
     func v_setAuthorizationHeader(persistentStore persistentStore: PersistentStoreType) {
-        
-        let currentEnvironment = VEnvironmentManager.sharedInstance().currentEnvironment
-        let requestContext = RequestContext(environment: currentEnvironment)
-        
-        let authenticationContext = persistentStore.mainContext.v_performBlockAndWait() { _ in
-            return AuthenticationContext(currentUser: VCurrentUser.user())
+        let requestContext = RequestContext()
+
+        let authenticationContext: AuthenticationContext? = persistentStore.mainContext.v_performBlockAndWait() { _ in
+            guard let user = VCurrentUser.user() else {
+                return nil
+            }
+            return AuthenticationContext(currentUser: user)
         }
-        
+
         if let authenticationContext = authenticationContext {
             self.vsdk_setAuthorizationHeader(requestContext: requestContext, authenticationContext: authenticationContext)
         } else {
