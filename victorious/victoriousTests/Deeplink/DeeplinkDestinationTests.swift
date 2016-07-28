@@ -44,9 +44,9 @@ class DeeplinkDestinationTests: XCTestCase {
     }
     
     func testInitializeWithContent() {
-        let imageContent = Content(id: "12345", createdAt: Timestamp(date: NSDate()) , postedAt: Timestamp(date: NSDate()), type: .image, text: "abc", assets: [], previewImages: [], author: User(id: 123))
-        let destination1 = DeeplinkDestination(content: imageContent)
-        XCTAssertEqual(destination1, .closeUp(contentWrapper: .content(content: imageContent)))
+        let imageContent = Content(author: User(id: 123))
+        let destination = DeeplinkDestination(content: imageContent)
+        XCTAssertEqual(destination, .closeUp(contentWrapper: .content(content: imageContent)))
     }
     
     func testInitializeWithUserID() {
