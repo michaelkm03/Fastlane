@@ -10,6 +10,16 @@ import UIKit
 
 /// A view controller that displays the contents of a user's profile.
 class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderDelegate, AccessoryScreenContainer, VAccessoryNavigationSource, CoachmarkDisplayer {
+    /// Private struct within NewProfileViewController for comparison. Since we use Core Data, 
+    /// the user is modified beneath us and every time we call setUser(...), the fields will be the same as oldValue
+    private struct UserDetails {
+        let id: Int
+        let displayName: String?
+        let likesGiven: Int?
+        let likesReceived: Int?
+        let level: String?
+    }
+    
     // MARK: - Constants
     
     static let userAppearanceKey = "userAppearance"
@@ -51,6 +61,12 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     var user: UserModel? {
         get {
             return gridStreamController.content
+        }
+    }
+    private var comparableUser: UserDetails? {
+        didSet {
+            // Call a reload of the header every time the user's details change
+            gridStreamController.reloadHeader()
         }
     }
     
@@ -320,6 +336,20 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
             return
         }
         
+        let newComparableUser = UserDetails(
+            id: user.id,
+            displayName: user.displayName,
+            likesGiven: user.likesGiven,
+            likesReceived: user.likesReceived,
+            level: user.fanLoyalty?.tier
+        )
+        
+        guard newComparableUser != comparableUser else {
+            return
+        }
+        
+        comparableUser = newComparableUser
+        
         gridStreamController.setContent(user, withError: false)
         
         let appearanceKey = user.isCreator?.boolValue ?? false ? VNewProfileViewController.creatorAppearanceKey : VNewProfileViewController.userAppearanceKey
@@ -360,7 +390,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
             return
         }
         
-        userInfoOperation.queue { [weak self] results, error, cancelled in
+        userInfoOperation.queue { [weak self] _ in
             guard let dependencyManager = self?.dependencyManager else {
                 return
             }
@@ -385,6 +415,14 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         }
         return nil
     }
+}
+
+private func !=(lhs: VNewProfileViewController.UserDetails?, rhs: VNewProfileViewController.UserDetails?) -> Bool {
+    return lhs?.id != rhs?.id
+        || lhs?.displayName != rhs?.displayName
+        || lhs?.likesGiven != rhs?.likesGiven
+        || lhs?.likesReceived != rhs?.likesReceived
+        || lhs?.level != rhs?.level
 }
 
 private extension VDependencyManager {

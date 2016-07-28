@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
@@ -57,7 +57,7 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="Oq0-Ng-kiL" userLabel="Stats Container View">
-                                    <rect key="frame" x="0.0" y="90" width="470" height="47"/>
+                                    <rect key="frame" x="0.0" y="90" width="470" height="48"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" text="21k" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tHB-8Y-wZj">
                                             <rect key="frame" x="0.0" y="0.0" width="47" height="34"/>
@@ -115,7 +115,7 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jZ0-KI-x9y" userLabel="Info Container View">
-                                    <rect key="frame" x="0.0" y="147" width="470" height="74"/>
+                                    <rect key="frame" x="0.0" y="148" width="470" height="73"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Location" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N0X-TC-SDG" userLabel="Location Label">
                                             <rect key="frame" x="0.0" y="0.0" width="470" height="18"/>
@@ -205,10 +205,6 @@
                 <outlet property="avatarView" destination="FKn-rI-PqV" id="Jbl-DF-LPg"/>
                 <outlet property="backgroundImageView" destination="DZh-MG-aDe" id="1k6-lk-sZX"/>
                 <outlet property="contentContainerView" destination="2CI-b7-Xcv" id="ml5-Iz-uiy"/>
-                <outlet property="likesGivenTitleLabel" destination="Frk-wp-9IV" id="tqR-T8-V2k"/>
-                <outlet property="likesGivenValueLabel" destination="aCd-TB-02i" id="sTB-yC-nzO"/>
-                <outlet property="likesReceivedTitleLabel" destination="iNH-VM-vjT" id="sNb-JW-kd2"/>
-                <outlet property="likesReceivedValueLabel" destination="tHB-8Y-wZj" id="0A4-pp-Qv1"/>
                 <outlet property="loadingContainerView" destination="UTa-SH-v5N" id="6aI-vo-3bD"/>
                 <outlet property="loadingSpinner" destination="b9t-c7-QRb" id="yhN-eb-J9Z"/>
                 <outlet property="locationLabel" destination="N0X-TC-SDG" id="jtd-xD-ri6"/>
@@ -218,6 +214,10 @@
                 <outlet property="taglineLabel" destination="rmr-dF-jED" id="IfZ-PY-HxS"/>
                 <outlet property="tierTitleLabel" destination="4hh-3S-gqM" id="1Wu-lI-OX2"/>
                 <outlet property="tierValueLabel" destination="shj-SJ-r0b" id="oky-vd-o0l"/>
+                <outlet property="upvotesGivenTitleLabel" destination="Frk-wp-9IV" id="xA0-JT-cjb"/>
+                <outlet property="upvotesGivenValueLabel" destination="aCd-TB-02i" id="TFV-Mb-eGb"/>
+                <outlet property="upvotesReceivedTitleLabel" destination="iNH-VM-vjT" id="1ev-dD-V7W"/>
+                <outlet property="upvotesReceivedValueLabel" destination="tHB-8Y-wZj" id="TnM-Lv-dds"/>
                 <outlet property="vipIconImageView" destination="hAC-I1-EEO" id="byi-9X-dqK"/>
             </connections>
             <point key="canvasLocation" x="781" y="-165"/>

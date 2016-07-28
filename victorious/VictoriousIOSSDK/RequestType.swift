@@ -29,7 +29,13 @@ public protocol RequestType {
     /// - parameter request: The NSURLRequest that was sent to the server
     /// - parameter responseData: The raw data returned by the server
     /// - parameter responseJSON: A JSON object parsed from responseData, if available
-    func parseResponse( response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON ) throws -> ResultType
+    func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> ResultType
+    
+    /// Returns a copy of the url request decorated with headers based on the provided contexts
+    ///
+    /// - parameter requestContext: Describes metadata related to the execution of this request
+    /// - parameter authenticationContext: Describes authentication data
+    func urlRequestWithHeaders(using requestContext: RequestContext, authenticationContext: AuthenticationContext?) -> NSURLRequest
 }
 
 /// For RequestType implementations that have no results, this extension provides a default implementation of
@@ -66,32 +72,11 @@ extension RequestType {
     /// - returns: A Cancelable reference that can be used to cancel the network request before it completes
     public func execute(baseURL baseURL: NSURL, requestContext: RequestContext, authenticationContext: AuthenticationContext?, callback: ResultCallback? = nil) -> Cancelable {
         let urlSession = NSURLSession.sharedSession()
-        let mutableRequest = urlRequest.mutableCopy() as! NSMutableURLRequest
+        let mutableRequest = urlRequestWithHeaders(using: requestContext, authenticationContext: authenticationContext).mutableCopy() as! NSMutableURLRequest
         
         // Combine only if current path is relative, not full
         if let requestURLString = mutableRequest.URL?.absoluteString where !providesFullURL {
             mutableRequest.URL = NSURL(string: requestURLString, relativeToURL: baseURL)
-        }
-        
-        if let authenticationContext = authenticationContext {
-            mutableRequest.vsdk_setAuthorizationHeader(requestContext: requestContext, authenticationContext: authenticationContext)
-        } else {
-            mutableRequest.vsdk_setAuthorizationHeader(requestContext: requestContext)
-        }
-#if os(iOS)
-        mutableRequest.vsdk_setOSVersionHeader()
-#endif
-        mutableRequest.vsdk_setAppIDHeader(to: requestContext.appID)
-        mutableRequest.vsdk_setPlatformHeader()
-        mutableRequest.vsdk_setAppVersionHeaderValue(requestContext.appVersion)
-        mutableRequest.vsdk_setIdentiferForVendorHeader(firstInstallDeviceID: requestContext.firstInstallDeviceID)
-        
-        if let sessionID = requestContext.sessionID {
-            mutableRequest.vsdk_setSessionIDHeaderValue(sessionID)
-        }
-        if !requestContext.experimentIDs.isEmpty {
-            let experiments = requestContext.experimentIDs.map { String($0) }.joinWithSeparator( "," )
-            mutableRequest.vsdk_setExperimentsHeaderValue(experiments)
         }
         
         let dataTask = urlSession.dataTaskWithRequest(mutableRequest) { (data: NSData?, response: NSURLResponse?, requestError: NSError?) in
@@ -128,6 +113,33 @@ extension RequestType {
         }
         dataTask.resume()
         return dataTask
+    }
+    
+    public func urlRequestWithHeaders(using requestContext: RequestContext, authenticationContext: AuthenticationContext?) -> NSURLRequest {
+        let mutableRequest = urlRequest.mutableCopy() as! NSMutableURLRequest
+        
+        if let authenticationContext = authenticationContext {
+            mutableRequest.vsdk_setAuthorizationHeader(requestContext: requestContext, authenticationContext: authenticationContext)
+        } else {
+            mutableRequest.vsdk_setAuthorizationHeader(requestContext: requestContext)
+        }
+        #if os(iOS)
+            mutableRequest.vsdk_setOSVersionHeader()
+        #endif
+        mutableRequest.vsdk_setAppIDHeader(to: requestContext.appID)
+        mutableRequest.vsdk_setPlatformHeader()
+        mutableRequest.vsdk_setAppVersionHeaderValue(requestContext.appVersion)
+        mutableRequest.vsdk_setIdentiferForVendorHeader(firstInstallDeviceID: requestContext.firstInstallDeviceID)
+        
+        if let sessionID = requestContext.sessionID {
+            mutableRequest.vsdk_setSessionIDHeaderValue(sessionID)
+        }
+        if !requestContext.experimentIDs.isEmpty {
+            let experiments = requestContext.experimentIDs.map { String($0) }.joinWithSeparator( "," )
+            mutableRequest.vsdk_setExperimentsHeaderValue(experiments)
+        }
+        
+        return mutableRequest.copy() as! NSURLRequest
     }
     
     private func parseError(responseJSON: JSON) throws {
