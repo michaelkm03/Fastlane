@@ -210,7 +210,7 @@ private extension VDependencyManager {
     }
     
     var text: String {
-        return stringForKey(Constants.textKey) ?? "Test Coachmark text"
+        return stringForKey(Constants.textKey) ?? ""
     }
     
     var textColor: UIColor {
