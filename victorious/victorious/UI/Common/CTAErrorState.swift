@@ -43,11 +43,11 @@ class CTAErrorState: UIView {
     }
 
     private func setupViews() {
-        messageLabel.text = dependencyManager.stringForKey(Constants.messageTextKey)
+        messageLabel.text = dependencyManager.messageLabelText
         messageLabel.numberOfLines = 0
         messageLabel.textAlignment = .Center
-        messageLabel.font = dependencyManager.fontForKey(Constants.messageFontKey)
-        messageLabel.textColor = dependencyManager.colorForKey(Constants.messageColorKey)
+        messageLabel.font = dependencyManager.messageLabelFont
+        messageLabel.textColor = dependencyManager.messageLabelColor
         
         actionButton.dependencyManager = dependencyManager.childDependencyForKey(Constants.actionButtonKey)
         actionButton.roundingType = .roundedRect(radius: Constants.buttonCornerRadius)
@@ -74,5 +74,19 @@ class CTAErrorState: UIView {
                     UIApplication.sharedApplication().openURL(url)
                 }
         }
+    }
+}
+
+private extension VDependencyManager {
+    var messageLabelText: String {
+        return stringForKey(Constants.messageTextKey)
+    }
+    
+    var messageLabelFont: UIFont? {
+        return fontForKey(Constants.messageFontKey)
+    }
+    
+    var messageLabelColor: UIColor? {
+        return colorForKey(Constants.messageColorKey)
     }
 }
