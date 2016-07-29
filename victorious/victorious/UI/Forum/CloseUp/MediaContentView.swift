@@ -123,9 +123,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     // MARK: - Presentable
 
     func willBePresented() {
-        if seekableWithinBounds {
-            videoCoordinator?.playVideo(withSync: true)
-        }
+        videoCoordinator?.playVideo(withSync: true)
     }
 
     func willBeDismissed() {
@@ -263,11 +261,16 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     
     override func layoutSubviews() {
         super.layoutSubviews()
+
         imageView.frame = bounds
         videoContainerView.frame = bounds
         textPostLabel.frame = CGRect(x: bounds.origin.x + CGFloat(Constants.textPostPadding), y: bounds.origin.y, width: bounds.width - CGFloat(2 * Constants.textPostPadding), height: bounds.height)
         spinner.center = CGPoint(x: bounds.midX, y: bounds.midY)
         videoCoordinator?.layout(in: videoContainerView.bounds, with: fillMode)
+
+        if content.type == .image {
+            loadContent()
+        }
     }
     
     // MARK: - Actions
