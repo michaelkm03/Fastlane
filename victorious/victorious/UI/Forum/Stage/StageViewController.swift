@@ -25,7 +25,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
 
     @IBOutlet private weak var loadingIndicator: UIActivityIndicatorView!
 
-    private lazy var defaultStageHeight: CGFloat = {
+    private lazy var stageHeight: CGFloat = {
         return self.view.bounds.width / Constants.defaultAspectRatio
     }()
 
@@ -357,7 +357,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     private func updateStageHeight() {
         var height = captionBarHeightConstraint.constant
         if visible {
-            height += defaultStageHeight
+            height += stageHeight
         }
         delegate?.stage(self, wantsUpdateToContentHeight: height)
     }
