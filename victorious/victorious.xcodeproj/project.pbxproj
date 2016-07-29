@@ -455,6 +455,7 @@
 		0E2369191D493C5600D9E45C /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E2369121D493C5600D9E45C /* Filter.swift */; };
 		0E23691A1D493C5600D9E45C /* SBPlatformDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E2369131D493C5600D9E45C /* SBPlatformDestination.swift */; };
 		0E23691B1D493C5600D9E45C /* SwiftyBeaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E2369141D493C5600D9E45C /* SwiftyBeaver.swift */; };
+		0E2369201D4BC77000D9E45C /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23691F1D4BC77000D9E45C /* Logger.swift */; };
 		0E279B641CB854A80023156F /* CreateChatServiceTokenOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E279B631CB854A80023156F /* CreateChatServiceTokenOperationTests.swift */; };
 		0E4BF6B31CA60B5400B8A456 /* WebSocketEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E4BF6B21CA60B5400B8A456 /* WebSocketEvent.swift */; };
 		0E5C69661D47E1B200363DBB /* Forum+TestHarness.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E5C69651D47E1B200363DBB /* Forum+TestHarness.swift */; };
@@ -2737,6 +2738,7 @@
 		0E2369121D493C5600D9E45C /* Filter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Filter.swift; sourceTree = "<group>"; };
 		0E2369131D493C5600D9E45C /* SBPlatformDestination.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SBPlatformDestination.swift; sourceTree = "<group>"; };
 		0E2369141D493C5600D9E45C /* SwiftyBeaver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyBeaver.swift; sourceTree = "<group>"; };
+		0E23691F1D4BC77000D9E45C /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Logger.swift; path = Logger/Logger.swift; sourceTree = "<group>"; };
 		0E279B631CB854A80023156F /* CreateChatServiceTokenOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateChatServiceTokenOperationTests.swift; sourceTree = "<group>"; };
 		0E4BF6B21CA60B5400B8A456 /* WebSocketEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebSocketEvent.swift; path = WebSocket/WebSocketEvents/WebSocketEvent.swift; sourceTree = "<group>"; };
 		0E5C69651D47E1B200363DBB /* Forum+TestHarness.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Forum+TestHarness.swift"; path = "Debugging/Forum+TestHarness.swift"; sourceTree = "<group>"; };
@@ -5485,6 +5487,7 @@
 				BF20227D1D00B9A4006B59C5 /* ContentUpvoteRequest.swift */,
 				A7039CE01C24867C0023DE6F /* CreateAlertRequest.swift */,
 				0EFE50551CB5BA64000D1C95 /* CreateChatServiceTokenRequest.swift */,
+				0E23691E1D4BC74B00D9E45C /* Logger */,
 				67D3DBAD1CCA95AB00D9D374 /* CreatorListRequest.swift */,
 				79004DB71BF53A050027E344 /* DateFormat.swift */,
 				67FD54C01BF6938100CF52F7 /* DeleteSequenceRequest.swift */,
@@ -6629,6 +6632,14 @@
 			name = SwiftyBeaver;
 			path = VictoriousIOSSDK/SwiftyBeaver/sources;
 			sourceTree = SOURCE_ROOT;
+		};
+		0E23691E1D4BC74B00D9E45C /* Logger */ = {
+			isa = PBXGroup;
+			children = (
+				0E23691F1D4BC77000D9E45C /* Logger.swift */,
+			);
+			name = Logger;
+			sourceTree = "<group>";
 		};
 		0EBF417A1CAB5C20002966B3 /* ForumEvents */ = {
 			isa = PBXGroup;
@@ -11361,6 +11372,7 @@
 				A7F843621BFD0BFD004C3D55 /* Tracking.swift in Sources */,
 				7AFEB1491D413B7600FA972D /* Timestamp.swift in Sources */,
 				670C658B1C52AC0F00BD7F3F /* ListShelf.swift in Sources */,
+				0E2369201D4BC77000D9E45C /* Logger.swift in Sources */,
 				A7039CE11C24867C0023DE6F /* CreateAlertRequest.swift in Sources */,
 				67C5C5351C0009FC00F99C8C /* SequenceDetailListByUserRequest.swift in Sources */,
 			);
