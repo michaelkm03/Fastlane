@@ -123,7 +123,9 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     // MARK: - Presentable
 
     func willBePresented() {
-        videoCoordinator?.playVideo(withSync: true)
+        if seekableWithinBounds {
+            videoCoordinator?.playVideo(withSync: true)
+        }
     }
 
     func willBeDismissed() {
