@@ -32,8 +32,8 @@ extension VSettingsViewController: VBackgroundContainer {
         }
         let headerLabel = UILabel()
         headerLabel.text = Constants.sectionHeaderTitles[section]
-        headerLabel.font = dependencyManager.fontForKey(Constants.sectionTitleFontKey)
-        headerLabel.textColor = dependencyManager.colorForKey(Constants.sectionTitleFontColor)
+        headerLabel.font = dependencyManager.headerLabelFont
+        headerLabel.textColor = dependencyManager.headerLabelColor
         headerLabel.sizeToFit()
         return headerLabel
     }
@@ -47,8 +47,8 @@ extension VSettingsViewController: VBackgroundContainer {
             return
         }
         
-        label.font = dependencyManager.fontForKey(Constants.cellFontKey)
-        label.textColor = dependencyManager.colorForKey(Constants.cellColorKey)
+        label.font = dependencyManager.cellFont
+        label.textColor = dependencyManager.cellTextColor
         label.backgroundColor = UIColor.clearColor()
         
         if cell.contentView.subviews.contains(versionString) {
@@ -65,7 +65,7 @@ extension VSettingsViewController: VBackgroundContainer {
         tableView.accessibilityIdentifier = VAutomationIdentifierSettingsTableView
         tableView.backgroundView = UIView()
         dependencyManager.addBackgroundToBackgroundHost(self)
-        tableView.separatorColor = dependencyManager.colorForKey(Constants.separatorColorKey)
+        tableView.separatorColor = dependencyManager.separatorColor
     }
     
     public func backgroundContainerView() -> UIView {
@@ -80,5 +80,27 @@ extension VSettingsViewController: VBackgroundContainer {
             case 3: ShowWebContentOperation(originViewController: self, type: .PrivacyPolicy, dependencyManager: dependencyManager).queue()
             default: break
         }
+    }
+}
+
+private extension VDependencyManager {
+    var headerLabelFont: UIFont? {
+        return fontForKey(Constants.sectionTitleFontKey)
+    }
+    
+    var headerLabelColor: UIColor? {
+        return colorForKey(Constants.sectionTitleFontColor)
+    }
+    
+    var cellFont: UIFont? {
+        return fontForKey(Constants.cellFontKey)
+    }
+    
+    var cellTextColor: UIColor? {
+        return colorForKey(Constants.cellColorKey)
+    }
+    
+    var separatorColor: UIColor? {
+        return colorForKey(Constants.separatorColorKey)
     }
 }
