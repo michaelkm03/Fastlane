@@ -65,8 +65,6 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     
     weak var delegate: ChatFeedMessageCellDelegate?
     
-    private let spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
-    
     var dependencyManager: VDependencyManager! {
         didSet {
             if dependencyManager != oldValue {
@@ -114,16 +112,14 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     
     let failureButton = UIButton(type: .Custom)
     
+    let spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+    
     // MARK: - Layout
     
     override func layoutSubviews() {
         super.layoutSubviews()
         contentView.alpha = chatFeedContent?.creationState?.alpha ?? 1.0
         ChatFeedMessageCell.layoutContent(for: self)
-        
-        if let spinnerSuperviewSize = spinner.superview?.bounds.size {
-            spinner.center = CGPoint(x: spinnerSuperviewSize.width/2, y: spinnerSuperviewSize.height/2)
-        }
     }
     
     // MARK: - Gesture Recognizer Actions
@@ -221,6 +217,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         
         previewView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOnPreview)))
         
+        // FUTURE: Reuse the bubble view so that we don't keep removing + adding subviews.
         previewBubbleView?.removeFromSuperview()
         
         let bubbleView = ChatBubbleView()
@@ -307,7 +304,9 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
                 mediaContentView.alpha = 1.0
             },
             completion: { [weak self]  _ in
-                self?.spinner.stopAnimating()
+                if mediaContentView === self?.previewView {
+                    self?.spinner.stopAnimating()
+                }
             }
         )
     }
