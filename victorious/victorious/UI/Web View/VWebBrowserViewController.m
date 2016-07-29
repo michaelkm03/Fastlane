@@ -14,7 +14,6 @@
 #import "VWebBrowserActions.h"
 #import "VSequence+Fetcher.h"
 #import "VConstants.h"
-#import "NSURL+VCustomScheme.h"
 #import "UIColor+VBrightness.h"
 #import "VNavigationController.h"
 #import "UIView+AutoLayout.h"
@@ -331,15 +330,6 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
 {
-    if ( [navigationAction.request.URL v_hasCustomScheme] )
-    {
-        [[UIApplication sharedApplication] openURL:navigationAction.request.URL];
-        decisionHandler( WKNavigationActionPolicyCancel );
-    }
-    else
-    {
-        decisionHandler( WKNavigationActionPolicyAllow );
-    }
 }
 
 #pragma mark - WKUIDelegate

@@ -18,9 +18,27 @@ class Coachmark {
     
     init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
-        self.screenIdentifier = dependencyManager.stringForKey("screen")
-        self.highlightIdentifier = dependencyManager.stringForKey("highlight.target")
-        self.remoteID = dependencyManager.stringForKey("id")
-        self.context = dependencyManager.stringForKey("context") 
+        self.screenIdentifier = dependencyManager.screenIdentifier ?? ""
+        self.highlightIdentifier = dependencyManager.highlightIdentifier
+        self.remoteID = dependencyManager.remoteID ?? ""
+        self.context = dependencyManager.context
+    }
+}
+
+private extension VDependencyManager {
+    var screenIdentifier: String? {
+        return stringForKey("screen")
+    }
+    
+    var highlightIdentifier: String? {
+        return stringForKey("highlight.target")
+    }
+    
+    var remoteID: String? {
+        return stringForKey("id")
+    }
+    
+    var context: String? {
+        return stringForKey("context")
     }
 }

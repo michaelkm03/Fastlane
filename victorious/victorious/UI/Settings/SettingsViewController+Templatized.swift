@@ -21,6 +21,7 @@ private struct Constants {
     static let bundleShortVersionStringKey = "CFBundleShortVersionString"
     static let supportEmailKey = "email.support"
     static let sectionHeaderTitles = ["Account", "About"]
+    static let headerLabelLeftPadding = CGFloat(10.0)
 }
 
 /// This extension handles all template based decoration for the settings page, as well as
@@ -32,10 +33,14 @@ extension VSettingsViewController: VBackgroundContainer {
         }
         let headerLabel = UILabel()
         headerLabel.text = Constants.sectionHeaderTitles[section]
-        headerLabel.font = dependencyManager.fontForKey(Constants.sectionTitleFontKey)
-        headerLabel.textColor = dependencyManager.colorForKey(Constants.sectionTitleFontColor)
+        headerLabel.font = dependencyManager.headerLabelFont
+        headerLabel.textColor = dependencyManager.headerLabelColor
         headerLabel.sizeToFit()
-        return headerLabel
+        
+        let containerView = UIView()
+        containerView.addSubview(headerLabel)
+        containerView.v_addFitToParentConstraintsToSubview(headerLabel, leading: Constants.headerLabelLeftPadding, trailing: 0.0, top: 0.0, bottom: 0.0)
+        return containerView
     }
     
     override public func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -47,8 +52,8 @@ extension VSettingsViewController: VBackgroundContainer {
             return
         }
         
-        label.font = dependencyManager.fontForKey(Constants.cellFontKey)
-        label.textColor = dependencyManager.colorForKey(Constants.cellColorKey)
+        label.font = dependencyManager.cellFont
+        label.textColor = dependencyManager.cellTextColor
         label.backgroundColor = UIColor.clearColor()
         
         if cell.contentView.subviews.contains(versionString) {
@@ -65,7 +70,7 @@ extension VSettingsViewController: VBackgroundContainer {
         tableView.accessibilityIdentifier = VAutomationIdentifierSettingsTableView
         tableView.backgroundView = UIView()
         dependencyManager.addBackgroundToBackgroundHost(self)
-        tableView.separatorColor = dependencyManager.colorForKey(Constants.separatorColorKey)
+        tableView.separatorColor = dependencyManager.separatorColor
     }
     
     public func backgroundContainerView() -> UIView {
@@ -80,5 +85,27 @@ extension VSettingsViewController: VBackgroundContainer {
             case 3: ShowWebContentOperation(originViewController: self, type: .PrivacyPolicy, dependencyManager: dependencyManager).queue()
             default: break
         }
+    }
+}
+
+private extension VDependencyManager {
+    var headerLabelFont: UIFont? {
+        return fontForKey(Constants.sectionTitleFontKey)
+    }
+    
+    var headerLabelColor: UIColor? {
+        return colorForKey(Constants.sectionTitleFontColor)
+    }
+    
+    var cellFont: UIFont? {
+        return fontForKey(Constants.cellFontKey)
+    }
+    
+    var cellTextColor: UIColor? {
+        return colorForKey(Constants.cellColorKey)
+    }
+    
+    var separatorColor: UIColor? {
+        return colorForKey(Constants.separatorColorKey)
     }
 }

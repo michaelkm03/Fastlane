@@ -8,13 +8,10 @@
 
 import UIKit
 
-class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDelegate, UICollectionViewDelegateFlowLayout, VScrollPaginatorDelegate, NewItemsControllerDelegate, ChatFeedMessageCellDelegate {
+class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDelegate, UICollectionViewDelegateFlowLayout, NewItemsControllerDelegate, ChatFeedMessageCellDelegate {
     private struct Layout {
         private static let bottomMargin: CGFloat = 20.0
-        private static let topMargin: CGFloat = 64.0
     }
-    
-    private var edgeInsets = UIEdgeInsets(top: Layout.topMargin, left: 0.0, bottom: Layout.bottomMargin, right: 0.0)
     
     private lazy var dataSource: ChatFeedDataSource = {
         return ChatFeedDataSource(dependencyManager: self.dependencyManager)
@@ -24,12 +21,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         return VCollectionViewStreamFocusHelper(collectionView: self.collectionView)
     }()
     
-    private let scrollPaginator = VScrollPaginator()
-    
-    // Used to create a temporary window where immediate re-stashing is disabled after unstashing
-    private var canStashNewItems: Bool = true
-    
-    @IBOutlet private var collectionViewBottom: NSLayoutConstraint!
+    private var scrollPaginator = ScrollPaginator()
     
     // MARK: - ChatFeed
     
@@ -43,19 +35,70 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         return dataSource
     }
     
-    func setTopInset(value: CGFloat) {
-        edgeInsets.top = value + Layout.topMargin
+    // MARK: - Managing insets
+    
+    @IBOutlet private var collectionViewBottom: NSLayoutConstraint!
+    
+    var addedTopInset = CGFloat(0.0) {
+        didSet {
+            updateInsets()
+        }
     }
     
-    func setBottomInset(value: CGFloat) {
-        collectionViewBottom.constant = value
-        collectionView.superview?.layoutIfNeeded()
+    var addedBottomInset = CGFloat(0.0) {
+        didSet {
+            updateInsets()
+            collectionViewBottom.constant = addedBottomInset
+            collectionView.superview?.layoutIfNeeded()
+        }
+    }
+    
+    private func updateInsets() {
+        if collectionView.numberOfItemsInSection(0) == 0 {
+            // When there are no items, we display a centered activity indicator, which becomes misaligned if there are
+            // any insets, so we zero them out while in this state.
+            collectionView.contentInset = UIEdgeInsetsZero
+        }
+        else {
+            // The added bottom inset value actually needs to get added to the top inset because of the way the bottom
+            // inset works. Instead of adjusting the bottom content inset, the added bottom inset will shift the entire
+            // collection view upward in its container without adjusting its height. This fixes the scrolling behavior when
+            // the keyboard appears, but causes the top of the collection view to be clipped. Increasing the top inset
+            // keeps all of the content accessible by pushing it down below the clipped portion of the collection view.
+            collectionView.contentInset = UIEdgeInsets(
+                top: addedTopInset + addedBottomInset,
+                left: 0.0,
+                bottom: Layout.bottomMargin,
+                right: 0.0
+            )
+            
+            UIView.performWithoutAnimation {
+                self.collectionView.collectionViewLayout.invalidateLayout()
+                self.collectionView.layoutIfNeeded()
+            }
+        }
+    }
+    
+    // MARK: - Managing the activity indicator
+    
+    /// Whether or not the activity indicator above the chat messages is enabled.
+    private var activityIndicatorEnabled = false {
+        didSet {
+            collectionView.collectionViewLayout.invalidateLayout()
+        }
     }
     
     // MARK: - ForumEventReceiver
-        
+    
     var childEventReceivers: [ForumEventReceiver] {
         return [dataSource]
+    }
+    
+    func receive(event: ForumEvent) {
+        switch event {
+            case .setChatActivityIndicatorEnabled(let enabled): activityIndicatorEnabled = enabled
+            default: break
+        }
     }
     
     // MARK: - ForumEventSender
@@ -76,20 +119,29 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         edgesForExtendedLayout = .None
         extendedLayoutIncludesOpaqueBars = true
         automaticallyAdjustsScrollViewInsets = false
+        updateInsets()
         
         dataSource.delegate = self
         dataSource.registerCells(for: collectionView)
         
+        collectionView.registerNib(
+            VFooterActivityIndicatorView.nibForSupplementaryView(),
+            forSupplementaryViewOfKind: UICollectionElementKindSectionHeader,
+            withReuseIdentifier: VFooterActivityIndicatorView.reuseIdentifier()
+        )
+        
         collectionView.dataSource = dataSource
         collectionView.delegate = self
-        
-        scrollPaginator.delegate = self
         
         dataSource.nextSender = self
         
         newItemsController?.dependencyManager = dependencyManager
         newItemsController?.delegate = self
         newItemsController?.hide(animated: false)
+        
+        scrollPaginator.loadItemsAbove = { [weak self] in
+            self?.send(.loadOldContent)
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -122,8 +174,27 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         return dataSource.collectionView(collectionView, sizeForItemAtIndexPath: indexPath)
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        return edgeInsets
+    func collectionView(collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, atIndexPath indexPath: NSIndexPath) {
+        if let activityView = view as? VFooterActivityIndicatorView {
+            activityView.activityIndicator.color = dependencyManager.activityIndicatorColor
+            activityView.setActivityIndicatorVisible(activityIndicatorEnabled, animated: false)
+        }
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        guard activityIndicatorEnabled else {
+            return CGSize.zero
+        }
+        
+        var size = VFooterActivityIndicatorView.desiredSizeWithCollectionViewBounds(collectionView.bounds)
+        
+        if collectionView.numberOfItemsInSection(0) == 0 {
+            // If the collection view is empty, we want to center the activity indicator vertically, so we size it to
+            // the collection view's height.
+            size.height = collectionView.bounds.height - collectionView.contentInset.vertical
+        }
+        
+        return size
     }
     
     // MARK: - ChatFeedDataSourceDelegate
@@ -131,6 +202,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didLoadItems newItems: [ChatFeedContent], loadingType: PaginatedLoadingType) {
         let removedPendingContentIndices = removePendingContent(newItems)
         handleNewItems(newItems, loadingType: loadingType, removedPendingContentIndices: removedPendingContentIndices)
+        updateInsets()
     }
     
     func chatFeedDataSource(dataSource: ChatFeedDataSource, didStashItems stashedItems: [ChatFeedContent]) {
@@ -149,10 +221,10 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         let removedPendingContentIndices = removePendingContent(unstashedItems)
         
         handleNewItems(unstashedItems, loadingType: .newer, removedPendingContentIndices: removedPendingContentIndices) { [weak self] in
-            if self?.collectionView.v_isScrolledToBottom == false {
-                self?.collectionView.v_scrollToBottomAnimated(true)
-            }
+            self?.collectionView.scrollToBottom(animated: true)
         }
+        
+        updateInsets()
     }
     
     var chatFeedItemWidth: CGFloat {
@@ -173,12 +245,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         }
         
         return publisher.remove(contentToRemove)
-    }
-    
-    // MARK: - VScrollPaginatorDelegate
-    
-    func shouldLoadPreviousPage() {
-        send(.loadOldContent)
     }
     
     // MARK: - ChatFeedMessageCellDelegate
@@ -214,7 +280,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     func scrollViewDidScroll(scrollView: UIScrollView) {
         scrollPaginator.scrollViewDidScroll(scrollView)
         
-        if scrollView.v_isScrolledToBottom {
+        if scrollView.isScrolledToBottom() {
             if unstashingViaScrollingIsEnabled {
                 dataSource.unstash()
             }
@@ -269,5 +335,11 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     
     private dynamic func onTimerTick() {
         dataSource.updateTimestamps(in: collectionView)
+    }
+}
+
+private extension VDependencyManager {
+    var activityIndicatorColor: UIColor? {
+        return colorForKey("color.message.text")
     }
 }

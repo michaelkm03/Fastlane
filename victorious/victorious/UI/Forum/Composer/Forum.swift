@@ -58,14 +58,14 @@ extension Forum {
     }
 
     func composer(composer: Composer, didUpdateContentHeight height: CGFloat) {
-        chatFeed?.setBottomInset(height)
+        chatFeed?.addedBottomInset = height
     }
 
     // MARK: - StageDelegate
     
     func stage(stage: Stage, wantsUpdateToContentHeight height: CGFloat) {
         setStageHeight(height)
-        chatFeed?.setTopInset(height)
+        chatFeed?.addedTopInset = height
     }
 }
 
