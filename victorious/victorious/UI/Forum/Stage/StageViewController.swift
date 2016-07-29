@@ -244,7 +244,15 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
 
     // MARK: - Show/Hide Stage
 
-    func show(animated animated: Bool) {
+    func setHidden(hidden: Bool, animated: Bool) {
+        if hidden {
+            hide(animated: animated)
+        } else {
+            show(animated: animated)
+        }
+    }
+
+    private func show(animated animated: Bool) {
         mediaContentView?.willBePresented()
 
         dispatch_after(Constants.titleCardDelayedShow) {
@@ -261,7 +269,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         }
     }
 
-    func hide(animated animated: Bool) {
+    private func hide(animated animated: Bool) {
         guard visible else {
             return
         }
