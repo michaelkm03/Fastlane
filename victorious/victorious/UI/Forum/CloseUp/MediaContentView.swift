@@ -168,16 +168,13 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     
     // MARK: - Managing preview image
     
-    private func setUpImageView(from imageAsset: ImageAssetModel? = nil) {
+    private func setUpImageView(from imageAsset: ImageAssetModel) {
         tearDownVideoPlayer()
+        tearDownTextLabel()
         
         imageView.hidden = false
-        
-        guard let imageSource = imageAsset?.imageSource else {
-            return
-        }
-        
-        switch imageSource {
+
+        switch imageAsset.imageSource {
             case .remote(let url):
                 imageView.sd_setImageWithURL(
                     url,
@@ -200,6 +197,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     
     private func tearDownImageView() {
         imageView.hidden = true
+        imageView.image = nil
     }
     
     // MARK: - Managing video
@@ -232,7 +230,8 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     // MARK: - Managing Text 
     
     private func setUpTextLabel() {
-        setUpImageView()
+        tearDownVideoPlayer()
+        tearDownImageView()
         
         let textPostDependency = self.dependencyManager.textPostDependency
         textPostLabel.font = textPostDependency?.textPostFont ?? Constants.defaultTextFont
@@ -250,7 +249,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
             }
             self?.textPostLabel.text = text
             self?.textPostLabel.hidden = false
-            
+            self?.imageView.hidden = false
             self?.finishedLoadingContent()
         }
     }
