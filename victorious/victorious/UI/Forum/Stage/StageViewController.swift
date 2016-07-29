@@ -259,7 +259,10 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
             return
         }
 
-        mediaContentView?.willBePresented()
+        if let mediaContentView = mediaContentView {
+            showMediaContentView(mediaContentView, animated: animated)
+            mediaContentView.willBePresented()
+        }
 
         dispatch_after(Constants.titleCardDelayedShow) {
             self.titleCardViewController?.show()
@@ -281,10 +284,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
             // Let MVC know it is being dismissed from the screen.
             mediaContentView.willBeDismissed()
 
-            hideMediaContentView(mediaContentView, animated: true, completion: { (completed) in
-                mediaContentView.removeFromSuperview()
-                self.mediaContentView = nil
-            })
+            hideMediaContentView(mediaContentView, animated: true)
         }
 
         visible = false
