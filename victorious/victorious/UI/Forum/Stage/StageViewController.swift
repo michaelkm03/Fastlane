@@ -49,6 +49,15 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         return view.window != nil
     }
 
+    /// An internal state to the Stage, where it can enable and disable itself depending on where in the feed the user is.
+    private var enabled: Bool = true {
+        didSet {
+            if enabled && mediaContentView?.seekableWithinBounds == true {
+                show(animated: true)
+            }
+        }
+    }
+
     /// Shows meta data about the current item on the stage.
     private var titleCardViewController: TitleCardViewController?
 
@@ -226,22 +235,27 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     }
     
     // MARK: - ForumEventReceiver
-    
+
+    func receive(event: ForumEvent) {
+        switch event {
+            case .filterContent(let path):
+                let isMainFeed = path == nil
+                enabled = isMainFeed
+            default: break
+        }
+    }
+
     var childEventReceivers: [ForumEventReceiver] {
         return [stageDataSource].flatMap { $0 }
     }
 
     // MARK: - Show/Hide Stage
 
-    func setHidden(hidden: Bool, animated: Bool) {
-        if hidden {
-            hide(animated: animated)
-        } else {
-            show(animated: animated)
-        }
-    }
-
     private func show(animated animated: Bool) {
+        guard enabled else {
+            return
+        }
+
         mediaContentView?.willBePresented()
 
         dispatch_after(Constants.titleCardDelayedShow) {
