@@ -64,9 +64,11 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
     var enteredDataIsValid: Bool {
         get {
             let username = nameAndLocationCell.displayname
-            guard let trimmedUsername = username?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) where
-                !trimmedUsername.isEmpty else {
-                    return false
+            guard
+                let trimmedUsername = username?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+                where !trimmedUsername.isEmpty
+            else {
+                return false
             }
             guard trimmedUsername.characters.count < 255 else {
                 return false
@@ -75,7 +77,7 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
         }
     }
     
-    /// This function will update the UI with the provided `previewImage` and returns it in the
+    /// This function will update the UI with the provided `previewImage`
     func useNewAvatar(previewImage: UIImage, fileURL: NSURL) {
         // Create a new userModel with the new preview image
         newAvatarFileURL = fileURL

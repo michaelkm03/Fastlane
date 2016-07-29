@@ -12,10 +12,8 @@ import UIKit
 /// Uses a save button that enables/disables when the entered data is valid.
 /// Navigates away with a storyboard segue back to settings when complete.
 class EditProfileViewController: UITableViewController {
-    
-    private static let unwindToSettingsSegueKey = "unwindToSettings"
-
     var dependencyManager: VDependencyManager?
+    private static let unwindToSettingsSegueKey = "unwindToSettings"
     private var dataSource: EditProfileDataSource?
     private var profilePicturePresenter: VEditProfilePicturePresenter?
     @IBOutlet private weak var saveButton: UIBarButtonItem!
@@ -24,7 +22,6 @@ class EditProfileViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupDataSource()
         tableView.estimatedRowHeight = 44
         tableView.rowHeight = UITableViewAutomaticDimension
