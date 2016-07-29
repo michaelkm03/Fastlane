@@ -48,9 +48,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
 
     private let spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
 
-    private var downloadedPreviewImage: UIImage?
-
-    private lazy var previewImageView = {
+    private lazy var imageView = {
         return UIImageView()
     }()
 
@@ -104,9 +102,9 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     private func setup() {
         clipsToBounds = true
         backgroundColor = .clearColor()
-        previewImageView.contentMode = (fillMode == .fit) ? .ScaleAspectFit : .ScaleAspectFill
+        imageView.contentMode = (fillMode == .fit) ? .ScaleAspectFit : .ScaleAspectFill
         
-        addSubview(previewImageView)
+        addSubview(imageView)
         
         videoContainerView.backgroundColor = .clearColor()
         addSubview(videoContainerView)
@@ -152,7 +150,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         let minWidth = frame.size.width
         
         if content.type.displaysAsImage, let imageAsset = content.previewImage(ofMinimumWidth: minWidth) {
-            setUpPreviewImage(from: imageAsset)
+            setUpImageView(from: imageAsset)
         }
         else if content.type.displaysAsVideo {
             setUpVideoPlayer(for: content)
@@ -164,10 +162,10 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     
     // MARK: - Managing preview image
     
-    private func setUpPreviewImage(from imageAsset: ImageAssetModel? = nil) {
+    private func setUpImageView(from imageAsset: ImageAssetModel? = nil) {
         tearDownVideoPlayer()
         
-        previewImageView.hidden = false
+        imageView.hidden = false
         
         guard let imageSource = imageAsset?.imageSource else {
             return
@@ -175,16 +173,16 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         
         switch imageSource {
             case .remote(let url):
-                previewImageView.sd_setImageWithURL(
+                imageView.sd_setImageWithURL(
                     url,
-                    placeholderImage: previewImageView.image, // Leave the image as is, since we want to wait until animation has finished before setting the image.
+                    placeholderImage: imageView.image, // Leave the image as is, since we want to wait until animation has finished before setting the image.
                     options: .AvoidAutoSetImage
                 ) { [weak self] image, _, _, _ in
-                    self?.previewImageView.image = image
+                    self?.imageView.image = image
                     self?.finishedLoadingContent()
                 }
             case .local(let image):
-                previewImageView.image = image
+                imageView.image = image
                 finishedLoadingContent()
         }
     }
@@ -194,16 +192,15 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         delegate?.mediaContentView(self, didFinishLoadingContent: content)
     }
     
-    private func tearDownPreviewImage() {
-        previewImageView.hidden = true
-        downloadedPreviewImage = nil
+    private func tearDownImageView() {
+        imageView.hidden = true
     }
     
     // MARK: - Managing video
     
     private func setUpVideoPlayer(for content: ContentModel) {
         tearDownTextLabel()
-        tearDownPreviewImage()
+        tearDownImageView()
         
         videoContainerView.hidden = false
         videoCoordinator?.tearDown()
@@ -229,7 +226,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     // MARK: - Managing Text 
     
     private func setUpTextLabel() {
-        setUpPreviewImage()
+        setUpImageView()
         
         let textPostDependency = self.dependencyManager.textPostDependency
         textPostLabel.font = textPostDependency?.textPostFont ?? Constants.defaultTextFont
@@ -241,7 +238,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
             return
         }
 
-        previewImageView.sd_setImageWithURL(url) { [weak self] (_, _, _, _) in
+        imageView.sd_setImageWithURL(url) { [weak self] (_, _, _, _) in
             guard let text = self?.content.text else {
                 return
             }
@@ -261,7 +258,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        previewImageView.frame = bounds
+        imageView.frame = bounds
         videoContainerView.frame = bounds
         textPostLabel.frame = CGRect(x: bounds.origin.x + CGFloat(Constants.textPostPadding), y: bounds.origin.y, width: bounds.width - CGFloat(2 * Constants.textPostPadding), height: bounds.height)
         spinner.center = CGPoint(x: bounds.midX, y: bounds.midY)
