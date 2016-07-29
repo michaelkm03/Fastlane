@@ -140,6 +140,10 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
     // MARK: Private
     
     private func expandWebSocketURLString(url: String, withToken token: String, applicationID: String) -> NSURL? {
+        guard !url.isEmpty else {
+            return nil
+        }
+        
         let webSocketEndPointUserID = url.stringByReplacingOccurrencesOfString(Constants.appIdExpander, withString: applicationID)
         let webSocketEndPoint = webSocketEndPointUserID.stringByReplacingOccurrencesOfString(Constants.tokenExpander, withString: token)
         return NSURL(string: webSocketEndPoint)
@@ -176,10 +180,10 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
 
 private extension VDependencyManager {
     var expandableTokenURL: String {
-        return stringForKey("authURL")
+        return stringForKey("authURL") ?? ""
     }
     
     var expandableSocketURL: String {
-        return stringForKey("socketURL")
+        return stringForKey("socketURL") ?? ""
     }
 }
