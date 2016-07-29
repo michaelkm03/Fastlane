@@ -55,6 +55,7 @@ class AvatarView: UIView {
         static let shadowOffset = CGSize(width: 0.0, height: 1.0)
         
         static let verifiedBadgeAngle = CGFloat(M_PI * 0.25)
+        static let observationKeys = ["displayName", "previewImages"]
     }
     
     // MARK: - Initializing
@@ -86,6 +87,12 @@ class AvatarView: UIView {
         addSubview(shadowView)
         addSubview(imageView)
         addSubview(initialsLabel)
+    }
+    
+    // MARK: - Deinit
+    
+    deinit {
+        tearDownKVO()
     }
     
     // MARK: - Views
@@ -147,19 +154,41 @@ class AvatarView: UIView {
             
             setNeedsContentUpdate()
             
-            kvoController.unobserveAll()
-            
-            if let newUser = persistentUser {
-                let keyPaths = ["previewAssets", "displayName"]
-                
-                kvoController.observe(newUser, keyPaths: keyPaths, options: []) { [weak self] _, _, _ in
-                    self?.setNeedsContentUpdate()
-                }
-            }
+            setupKVO()
         }
     }
     
-    private let kvoController = KVOController()
+    // MARK: - KVO 
+    
+    private var didSetupKVO = false
+    
+    private func setupKVO() {
+        guard let user = self.user as? NSObject where !didSetupKVO else {
+            return
+        }
+        
+        for key in Constants.observationKeys {
+            user.addObserver(self, forKeyPath: key, options: [], context: nil)
+        }
+        
+        didSetupKVO = true
+    }
+    
+    private func tearDownKVO() {
+        guard let user = self.user as? NSObject where didSetupKVO else {
+            return
+        }
+        
+        for key in Constants.observationKeys {
+            user.removeObserver(self, forKeyPath: key)
+        }
+        
+        didSetupKVO = false
+    }
+    
+    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+        self.setNeedsContentUpdate()
+    }
     
     // MARK: - Updating content
     
