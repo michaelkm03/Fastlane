@@ -16,7 +16,7 @@ struct GridStreamConfiguration {
     var managesBackground = true
 }
 
-class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, VScrollPaginatorDelegate, VBackgroundContainer, ContentCellTracker {
+class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, VBackgroundContainer, ContentCellTracker {
     
     // MARK: Variables
     
@@ -39,7 +39,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     
     private let refreshControl = UIRefreshControl()
     
-    private let scrollPaginator = VScrollPaginator()
+    private var scrollPaginator = ScrollPaginator()
     private let configuration: GridStreamConfiguration
     
     private var header: HeaderType?
@@ -90,8 +90,6 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
             withReuseIdentifier: VFooterActivityIndicatorView.reuseIdentifier()
         )
         
-        scrollPaginator.delegate = self
-        
         edgesForExtendedLayout = .Bottom
         extendedLayoutIncludesOpaqueBars = true
         automaticallyAdjustsScrollViewInsets = false
@@ -117,6 +115,10 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
                 forControlEvents: .ValueChanged
             )
             collectionView.insertSubview(refreshControl, atIndex: 0)
+        }
+        
+        scrollPaginator.loadItemsBelow = { [weak self] in
+            self?.loadContent(.older)
         }
         
         loadContent(.refresh)
@@ -154,12 +156,6 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
         return [.Portrait]
-    }
-    
-    // MARK: - VScrollPaginatorDelegate
-    
-    func shouldLoadNextPage() {
-        loadContent(.older)
     }
     
     // MARK: - UIScrollViewDelegate

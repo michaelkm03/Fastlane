@@ -50,4 +50,7 @@ public enum ForumEvent {
     
     /// Enables or disables optimistic posting for different forums
     case setOptimisticPostingEnabled(Bool)
+    
+    /// Enables or disables the chat feed activity indicator for different forums.
+    case setChatActivityIndicatorEnabled(Bool)
 }

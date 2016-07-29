@@ -809,6 +809,8 @@
 		7AEB29531CCED68500B98C3B /* VDependencyManager+CoachmarkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AEB29521CCED68500B98C3B /* VDependencyManager+CoachmarkManager.swift */; };
 		7AFEB1491D413B7600FA972D /* Timestamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFEB1481D413B7600FA972D /* Timestamp.swift */; };
 		7AFEB14B1D413D7B00FA972D /* TimestampTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFEB14A1D413D7B00FA972D /* TimestampTests.swift */; };
+		7AFEB1571D46C1C500FA972D /* UIScrollView+Offsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFEB1561D46C1C500FA972D /* UIScrollView+Offsets.swift */; };
+		7AFEB1591D46D6A900FA972D /* ScrollPaginator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFEB1581D46D6A900FA972D /* ScrollPaginator.swift */; };
 		7C268EFF1D138F6100E4A66A /* VButton+VBackgroundContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C268EFE1D138F6100E4A66A /* VButton+VBackgroundContainer.swift */; };
 		7C268F011D1484C300E4A66A /* WebViewHTMLFetchRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C268F001D1484C300E4A66A /* WebViewHTMLFetchRequestTests.swift */; };
 		7C268F031D14A11100E4A66A /* PrivacyPolicy.html in Resources */ = {isa = PBXBuildFile; fileRef = 7C268F021D14A11100E4A66A /* PrivacyPolicy.html */; };
@@ -1312,7 +1314,6 @@
 		A7B133611C6178FD006EC4F5 /* PaginatedDataSourceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B133531C6178FD006EC4F5 /* PaginatedDataSourceType.swift */; };
 		A7B133631C6178FD006EC4F5 /* UITableView+OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B133551C6178FD006EC4F5 /* UITableView+OrderedSet.swift */; };
 		A7B133641C6178FD006EC4F5 /* VNoContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B133571C6178FD006EC4F5 /* VNoContentView.m */; };
-		A7B133651C6178FD006EC4F5 /* VScrollPaginator.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B133591C6178FD006EC4F5 /* VScrollPaginator.m */; };
 		A7B514551A4517A80074282F /* VSwipeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B514501A4517A80074282F /* VSwipeViewController.m */; };
 		A7B514561A4517A80074282F /* VUtilityButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B514521A4517A80074282F /* VUtilityButtonCell.m */; };
 		A7B514581A464E770074282F /* VUtilityButtonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7B514571A464E770074282F /* VUtilityButtonCell.xib */; };
@@ -3102,6 +3103,8 @@
 		7AEB29521CCED68500B98C3B /* VDependencyManager+CoachmarkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VDependencyManager+CoachmarkManager.swift"; sourceTree = "<group>"; };
 		7AFEB1481D413B7600FA972D /* Timestamp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timestamp.swift; sourceTree = "<group>"; };
 		7AFEB14A1D413D7B00FA972D /* TimestampTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimestampTests.swift; sourceTree = "<group>"; };
+		7AFEB1561D46C1C500FA972D /* UIScrollView+Offsets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScrollView+Offsets.swift"; sourceTree = "<group>"; };
+		7AFEB1581D46D6A900FA972D /* ScrollPaginator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollPaginator.swift; sourceTree = "<group>"; };
 		7C268EFE1D138F6100E4A66A /* VButton+VBackgroundContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VButton+VBackgroundContainer.swift"; sourceTree = "<group>"; };
 		7C268F001D1484C300E4A66A /* WebViewHTMLFetchRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewHTMLFetchRequestTests.swift; sourceTree = "<group>"; };
 		7C268F021D14A11100E4A66A /* PrivacyPolicy.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = PrivacyPolicy.html; sourceTree = "<group>"; };
@@ -3851,8 +3854,6 @@
 		A7B133551C6178FD006EC4F5 /* UITableView+OrderedSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableView+OrderedSet.swift"; sourceTree = "<group>"; };
 		A7B133561C6178FD006EC4F5 /* VNoContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNoContentView.h; sourceTree = "<group>"; };
 		A7B133571C6178FD006EC4F5 /* VNoContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNoContentView.m; sourceTree = "<group>"; };
-		A7B133581C6178FD006EC4F5 /* VScrollPaginator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VScrollPaginator.h; sourceTree = "<group>"; };
-		A7B133591C6178FD006EC4F5 /* VScrollPaginator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VScrollPaginator.m; sourceTree = "<group>"; };
 		A7B5144F1A4517A80074282F /* VSwipeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSwipeViewController.h; sourceTree = "<group>"; };
 		A7B514501A4517A80074282F /* VSwipeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSwipeViewController.m; sourceTree = "<group>"; };
 		A7B514511A4517A80074282F /* VUtilityButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VUtilityButtonCell.h; sourceTree = "<group>"; };
@@ -7327,6 +7328,7 @@
 				F06B41BC1B7ED7FD008709E8 /* UIResponder+typedResponder.swift */,
 				A721E8EF1B572454000B7901 /* UIResponder+VResponderChain.h */,
 				A721E8F01B572454000B7901 /* UIResponder+VResponderChain.m */,
+				7AFEB1561D46C1C500FA972D /* UIScrollView+Offsets.swift */,
 				A721E8F11B572454000B7901 /* UIScrollView+VCenterContent.h */,
 				A721E8F21B572454000B7901 /* UIScrollView+VCenterContent.m */,
 				A7D7ED501B59BEB900FA346A /* UISearchBar+Extensions.swift */,
@@ -8379,14 +8381,13 @@
 				A7B133511C6178FD006EC4F5 /* ActivityIndicatorTableCell.xib */,
 				A7B133521C6178FD006EC4F5 /* PaginatedDataSource.swift */,
 				A7B133531C6178FD006EC4F5 /* PaginatedDataSourceType.swift */,
+				7AFEB1581D46D6A900FA972D /* ScrollPaginator.swift */,
 				7A67EC7D1CF9132300D022D1 /* TimePaginatedDataSource.swift */,
 				A7E234981C97763400383C54 /* UICollectionView+Pagination.swift */,
 				A7B133551C6178FD006EC4F5 /* UITableView+OrderedSet.swift */,
 				A7B133561C6178FD006EC4F5 /* VNoContentView.h */,
 				A7B133571C6178FD006EC4F5 /* VNoContentView.m */,
 				03EBF62F1C6D4FB300B938FB /* VPaginatedDataSourceDelegate.h */,
-				A7B133581C6178FD006EC4F5 /* VScrollPaginator.h */,
-				A7B133591C6178FD006EC4F5 /* VScrollPaginator.m */,
 			);
 			path = Pagination;
 			sourceTree = "<group>";
@@ -12175,6 +12176,7 @@
 				A72C860A1C977FF500E97D4F /* DevicePreferencesOperation.swift in Sources */,
 				67A7000F1CDD6DEA001E718E /* TutorialContentsRemoteOperation.swift in Sources */,
 				BF2677961CDA9CB60015F527 /* VDependencyManager+VUserProfile.swift in Sources */,
+				7AFEB1591D46D6A900FA972D /* ScrollPaginator.swift in Sources */,
 				A73BA2C91C9393ED008168B5 /* ChatFeedMessageCell.swift in Sources */,
 				A72C86381C977FF500E97D4F /* SuggestedUsersOperation.swift in Sources */,
 				A721E9481B572454000B7901 /* UIActivityViewController+VStatusBarHandling.m in Sources */,
@@ -12456,7 +12458,6 @@
 				A6A74D8A1B61AFA900325A57 /* VCameraPermissionsController.m in Sources */,
 				A72C862A1C977FF500E97D4F /* RegisterPushNotificationOperation.swift in Sources */,
 				BFCFFFFB1CEE909F00F512B1 /* VImageAsset.swift in Sources */,
-				A7B133651C6178FD006EC4F5 /* VScrollPaginator.m in Sources */,
 				A780ED591A933D9300A8CD5D /* CIFilter+VPhotoFilterComponentConformance.m in Sources */,
 				A72C863B1C977FF500E97D4F /* TrendingUsersOperation.swift in Sources */,
 				C30AA4E01B055EC60010CEFE /* VPermissionAlertAnimator.m in Sources */,
@@ -12639,6 +12640,7 @@
 				7AE363A11CC864B600F851E9 /* SideNavScaffoldViewController.swift in Sources */,
 				A6B9FD0C1B60413500166BE8 /* VCaptureVideoPreviewView.m in Sources */,
 				A769C3EB1A13176700698D0C /* VWebBrowserViewController.m in Sources */,
+				7AFEB1571D46C1C500FA972D /* UIScrollView+Offsets.swift in Sources */,
 				679C53681C23AB4000018E1C /* VStreamCollectionViewController+AccessoryButtonResponder.swift in Sources */,
 				C3E20B111B8659E400757F17 /* TrendingTopicShelfCollectionViewCell.swift in Sources */,
 				A74679611AFBE3AE005EB1D9 /* VWebBrowserHeaderLayoutManager.m in Sources */,

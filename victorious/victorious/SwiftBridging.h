@@ -171,7 +171,6 @@
 #import "VReposterTableViewController.h"
 #import "VRootViewController.h"
 #import "VSDKURLMacroReplacement.h"
-#import "VScrollPaginator.h"
 #import "VSequence+Fetcher.h"
 #import "VSequence.h"
 #import "VSequenceActionControllerDelegate.h"

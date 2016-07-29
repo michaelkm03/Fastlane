@@ -31,7 +31,7 @@ class MediaSearchOptions: NSObject {
 }
 
 /// View controller that allows users to search for media files as part of a content creation flow.
-class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UISearchBarDelegate, VPaginatedDataSourceDelegate, LoadingCancellableViewDelegate {
+class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginatedDataSourceDelegate, LoadingCancellableViewDelegate {
 
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var searchBar: UISearchBar!
@@ -47,7 +47,7 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
     var isScrollViewDecelerating = false
     private(set) var dependencyManager: VDependencyManager?
     
-    let scrollPaginator = VScrollPaginator()
+    private(set) var scrollPaginator = ScrollPaginator()
 	let dataSourceAdapter = MediaSearchDataSourceAdapter()
     private var mediaExporter: MediaSearchExporter?
     
@@ -75,7 +75,11 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
         
         self.collectionView.accessibilityIdentifier = AutomationId.MediaSearchCollection.rawValue
         
-        self.scrollPaginator.delegate = self
+        scrollPaginator.loadItemsBelow = { [weak self] in
+            // No need to pass in a search term, the data sources know how to discern based
+            // on the search term of the previous page.
+            self?.performSearch(searchTerm: nil, pageType: .Next)
+        }
         
         self.searchBar.delegate = self
         self.searchBar.accessibilityIdentifier = AutomationId.MediaSearchSearchbar.rawValue
@@ -333,12 +337,6 @@ class MediaSearchViewController: UIViewController, VScrollPaginatorDelegate, UIS
 	}
 	
 	// MARK: - UISearchBarDelegate
-	
-	func shouldLoadNextPage() {
-		// No need to pass in a search term, the data sources know how to discern based
-		// on the search term of the previous page.
-		self.performSearch(searchTerm: nil, pageType: .Next)
-	}
 	
 	func searchBarSearchButtonClicked(searchBar: UISearchBar) {
 		guard let searchTerm = searchBar.text where searchTerm.characters.count > 0 else {
