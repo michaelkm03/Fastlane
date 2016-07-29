@@ -244,7 +244,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
             return
         }
 
-        imageView.sd_setImageWithURL(url) { [weak self] (_, _, _, _) in
+        imageView.sd_setImageWithURL(url) { [weak self] _ in
             guard let text = self?.content.text else {
                 return
             }

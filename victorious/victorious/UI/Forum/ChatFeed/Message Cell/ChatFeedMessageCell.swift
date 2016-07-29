@@ -168,7 +168,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
                 let mediaContentView = setupMediaView(for: content)
                 mediaContentView.alpha = 0.0
                 spinner.startAnimating()
-                self.previewView = mediaContentView
+                previewView = mediaContentView
                 mediaContentView.loadContent()
                 
                 ChatFeedMessageCell.layoutContent(for: self)
