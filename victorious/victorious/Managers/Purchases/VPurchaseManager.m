@@ -37,7 +37,7 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^(void)
                   {
-#ifdef V_NO_ENFORCE_PURCHASABLE_BALLISTICS
+#ifdef V_FAKE_PURCHASES
                       instance = [[SimulatedPurchaseManager alloc] init];
 #else
                       instance = [[VPurchaseManager alloc] init];

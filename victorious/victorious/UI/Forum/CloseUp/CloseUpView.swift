@@ -10,6 +10,7 @@ import UIKit
 
 protocol CloseUpViewDelegate: class {
     func didSelectProfileForUserID(userID: Int)
+    func gridStreamDidUpdate()
 }
 
 class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegate {
@@ -322,6 +323,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
             UIView.animateWithDuration(Constants.relatedAnimationDuration, animations: {
                 self.relatedLabel.alpha = items.count == 0 ? 0 : 1
             })
+            self.delegate?.gridStreamDidUpdate()
         })
     }
 
