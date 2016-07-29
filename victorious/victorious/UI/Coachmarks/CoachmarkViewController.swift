@@ -31,6 +31,7 @@ private struct Constants {
     static let highlightCircleRadius: CGFloat = 50
     static let highlightStrokeColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8).CGColor
     static let userMacro = "%%USER%%"
+    static let creatorMacro = "%%CREATOR%%"
     static let animationDuration: NSTimeInterval = 0.3
     static let closeButtonStrokeWidth: CGFloat = 1
     static let closeButtonStrokeColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.2).CGColor
@@ -177,6 +178,12 @@ class CoachmarkViewController: UIViewController, VBackgroundContainer {
     func backgroundContainerView() -> UIView {
         return backgroundView
     }
+    
+    // MARK: - Configuration
+    
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+        return [.Portrait]
+    }
 }
 
 private class HighlightForegroundView : UIView, VBackgroundContainer {
@@ -210,7 +217,14 @@ private extension VDependencyManager {
     }
     
     var text: String {
-        return stringForKey(Constants.textKey) ?? ""
+        guard let coachmarkText = stringForKey(Constants.textKey) else {
+            return ""
+        }
+        
+        let appInfo = VAppInfo(dependencyManager: self)
+        let ownerName = appInfo.ownerName ?? ""
+        
+        return coachmarkText.stringByReplacingOccurrencesOfString(Constants.creatorMacro, withString: ownerName)
     }
     
     var textColor: UIColor {
