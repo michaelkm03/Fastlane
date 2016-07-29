@@ -221,7 +221,10 @@ class StageShrinkingAnimator: NSObject {
     }
     
     private func applyInterploatedValues(withProgress progress: CGFloat) {
-        stageContainer.transform = affineTransform(forProgress: progress)
+        guard let transform = affineTransform(forProgress: progress) else {
+            return
+        }
+        stageContainer.transform = transform
         stageViewControllerContainer.layer.cornerRadius = Constants.cornerRadius * progress * (1 / scaleFactor(forProgress: progress))
         stageViewControllerContainer.layer.borderColor = interpolatedBorderColor(forProgress: progress)
         
@@ -274,8 +277,11 @@ class StageShrinkingAnimator: NSObject {
         return UIColor(white: 1.0, alpha: interpolatedAlpha).CGColor
     }
     
-    private func affineTransform(forProgress progress: CGFloat) -> CGAffineTransform {
-        return CGAffineTransformConcat(scaleTransform(forProgress: progress), translation(forProgress: progress))
+    private func affineTransform(forProgress progress: CGFloat) -> CGAffineTransform? {
+        guard let translation = translation(forProgress: progress) else {
+            return nil
+        }
+        return CGAffineTransformConcat(scaleTransform(forProgress: progress), translation)
     }
     
     private func scaleTransform(forProgress progress: CGFloat) -> CGAffineTransform {
@@ -291,22 +297,30 @@ class StageShrinkingAnimator: NSObject {
         return CGSizeApplyAffineTransform(stageContainer.bounds.size, scaleTransform(forProgress: 1.0))
     }
     
-    private func translation(forProgress progress: CGFloat) -> CGAffineTransform {
-        let fullTranslation = fullCollapsedTranslation()
+    private func translation(forProgress progress: CGFloat) -> CGAffineTransform? {
+        guard let fullTranslation = fullCollapsedTranslation() else {
+            return nil
+        }
         return CGAffineTransformMakeTranslation(progress * fullTranslation.width, progress * fullTranslation.height)
     }
     
-    private func fullCollapsedTranslation() -> CGSize {
+    private func fullCollapsedTranslation() -> CGSize? {
+        let currentWidth = stageContainer.bounds.width
+        let currentHeight = stageContainer.bounds.height
+        guard currentWidth != 0 && currentHeight != 0 else {
+            return nil
+        }
+        
         let collapsedSize = self.collapsedSize()
         
-        let halfFullWidth = stageContainer.bounds.size.width / 2
+        let halfFullWidth = currentWidth / 2
         let halfShrunkenWidth = collapsedSize.width / 2
         let shrunkenXTranslation = halfFullWidth - halfShrunkenWidth - Constants.stageMargin.right
         
-        let halfFullHeight = stageContainer.bounds.size.height / 2
+        let halfFullHeight = currentHeight / 2
         let halfShrunkenHeight = collapsedSize.height / 2
         let shrunkenYTranslation = halfFullHeight - halfShrunkenHeight - Constants.stageMargin.top
-        
+
         return CGSize(width: shrunkenXTranslation, height: -shrunkenYTranslation)
     }
 
