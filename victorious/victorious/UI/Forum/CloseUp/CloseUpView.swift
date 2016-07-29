@@ -93,7 +93,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
         spinner.startAnimating()
     }
 
-    func setupMediaContentView(for content: ContentModel) -> MediaContentView {
+    private func setupMediaContentView(for content: ContentModel) -> MediaContentView {
         let mediaContentView = MediaContentView(
             content: content,
             dependencyManager: dependencyManager,

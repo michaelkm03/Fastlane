@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// The implementor can be notified of when it enters and leaves the screen.
 protocol Presentable {
     func willBePresented()
 
