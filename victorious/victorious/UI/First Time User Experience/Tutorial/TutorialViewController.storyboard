@@ -28,7 +28,7 @@
                                 <cells/>
                             </collectionView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e8G-pe-yiB">
-                                <rect key="frame" x="0.0" y="550" width="600" height="50"/>
+                                <rect key="frame" x="0.0" y="600" width="600" height="50"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="bV4-kf-ZDz"/>
@@ -38,11 +38,21 @@
                                     <action selector="didTapContinueButton:" destination="qOA-71-PhH" eventType="touchUpInside" id="AqR-qp-ATb"/>
                                 </connections>
                             </button>
+                            <view alpha="0.059999999999999998" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kwt-KU-JuR" userLabel="Stroke View">
+                                <rect key="frame" x="0.0" y="600" width="600" height="1"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="qCJ-94-0E2"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <constraints>
                             <constraint firstItem="e8G-pe-yiB" firstAttribute="leading" secondItem="t4s-eY-OvL" secondAttribute="leading" id="1Tp-uf-NtJ"/>
                             <constraint firstAttribute="bottomMargin" secondItem="erd-nL-BH5" secondAttribute="bottom" id="7Rs-rn-sYN"/>
-                            <constraint firstItem="ZFL-jS-xhD" firstAttribute="top" secondItem="e8G-pe-yiB" secondAttribute="bottom" id="CVf-Ni-MNW"/>
+                            <constraint firstItem="ZFL-jS-xhD" firstAttribute="top" secondItem="e8G-pe-yiB" secondAttribute="bottom" constant="-50" id="CVf-Ni-MNW"/>
+                            <constraint firstItem="kwt-KU-JuR" firstAttribute="width" secondItem="e8G-pe-yiB" secondAttribute="width" id="CXc-bH-iU5"/>
+                            <constraint firstItem="kwt-KU-JuR" firstAttribute="centerX" secondItem="e8G-pe-yiB" secondAttribute="centerX" id="M7c-ay-S2h"/>
+                            <constraint firstItem="kwt-KU-JuR" firstAttribute="top" secondItem="e8G-pe-yiB" secondAttribute="top" id="XzY-J1-iMg"/>
                             <constraint firstAttribute="topMargin" secondItem="erd-nL-BH5" secondAttribute="top" id="cI7-6O-uCH"/>
                             <constraint firstAttribute="trailing" secondItem="e8G-pe-yiB" secondAttribute="trailing" id="k3r-fr-UMc"/>
                             <constraint firstAttribute="trailing" secondItem="erd-nL-BH5" secondAttribute="trailing" id="kCU-IQ-n7W"/>
@@ -52,6 +62,7 @@
                     <connections>
                         <outlet property="collectionView" destination="erd-nL-BH5" id="oCM-68-Qg8"/>
                         <outlet property="continueButton" destination="e8G-pe-yiB" id="aUm-tE-09A"/>
+                        <outlet property="continueButtonBottomConstraint" destination="CVf-Ni-MNW" id="r3n-Rn-ApZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mLp-HX-r9c" userLabel="First Responder" sceneMemberID="firstResponder"/>

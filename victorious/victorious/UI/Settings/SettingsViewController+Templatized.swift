@@ -21,6 +21,7 @@ private struct Constants {
     static let bundleShortVersionStringKey = "CFBundleShortVersionString"
     static let supportEmailKey = "email.support"
     static let sectionHeaderTitles = ["Account", "About"]
+    static let headerLabelLeftPadding = CGFloat(10.0)
 }
 
 /// This extension handles all template based decoration for the settings page, as well as
@@ -35,7 +36,11 @@ extension VSettingsViewController: VBackgroundContainer {
         headerLabel.font = dependencyManager.fontForKey(Constants.sectionTitleFontKey)
         headerLabel.textColor = dependencyManager.colorForKey(Constants.sectionTitleFontColor)
         headerLabel.sizeToFit()
-        return headerLabel
+        
+        let containerView = UIView()
+        containerView.addSubview(headerLabel)
+        containerView.v_addFitToParentConstraintsToSubview(headerLabel, leading: Constants.headerLabelLeftPadding, trailing: 0.0, top: 0.0, bottom: 0.0)
+        return containerView
     }
     
     override public func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
