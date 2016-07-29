@@ -89,8 +89,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
         )
         blurredImageView.alpha = Constants.blurredImageAlpha
         
-        addSubview(spinner)
-        sendSubviewToBack(spinner)
+        insertSubview(spinner, aboveSubview: lightOverlayView)
         spinner.startAnimating()
     }
 
