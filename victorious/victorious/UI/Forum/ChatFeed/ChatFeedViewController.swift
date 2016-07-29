@@ -340,6 +340,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
 
 private extension VDependencyManager {
     var activityIndicatorColor: UIColor? {
-        return colorForKey("color.text")
+        return colorForKey("color.message.text")
     }
 }
