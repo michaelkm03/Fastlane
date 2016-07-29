@@ -140,7 +140,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
             return false
         }
 
-        return (videoCoordinator.duration >= content.seekAheadTime)
+        return videoCoordinator.duration >= content.seekAheadTime
     }
 
     func loadContent() {
