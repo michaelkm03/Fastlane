@@ -35,6 +35,15 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         self.hasError = hasError
         updateTrackingParameters()
         dataSource.setContent(content, withError: hasError)
+        
+        header?.decorateHeader(
+            dependencyManager,
+            maxHeight: CGRectGetHeight(collectionView.bounds),
+            content: content,
+            hasError: hasError
+        )
+        collectionView.reloadSections(NSIndexSet(index: GridStreamSection.Header.rawValue))
+
     }
     
     private let refreshControl = UIRefreshControl()
