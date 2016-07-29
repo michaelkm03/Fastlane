@@ -50,10 +50,13 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     }
 
     /// An internal state to the Stage, where it can enable and disable itself depending on where in the feed the user is.
+    /// This is needed so the Stage will not appear if a new content arrives when the user is inside a filtered feed.
     private var enabled: Bool = true {
         didSet {
             if enabled && mediaContentView?.seekableWithinBounds == true {
                 show(animated: true)
+            } else {
+                hide(animated: true)
             }
         }
     }
