@@ -99,10 +99,11 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
             hide(animated: false)
         }
     }
-    
-    override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
-        mediaContentView?.willBeDismissed()
+
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        hide(animated: false)
     }
     
     deinit {
@@ -183,6 +184,8 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     }
 
     private func showMediaContentView(mediaContentView: MediaContentView, animated: Bool, completion: ((Bool) -> Void)? = nil) {
+        mediaContentView.willBePresented()
+
         let animations = {
             mediaContentView.alpha = 1
         }
@@ -190,6 +193,8 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     }
 
     private func hideMediaContentView(mediaContentView: MediaContentView, animated: Bool, completion: ((Bool) -> Void)? = nil) {
+        mediaContentView.willBeDismissed()
+
         let animations = {
             mediaContentView.alpha = 0
         }
@@ -262,7 +267,6 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
 
         if let mediaContentView = mediaContentView {
             showMediaContentView(mediaContentView, animated: animated)
-            mediaContentView.willBePresented()
         }
 
         dispatch_after(Constants.titleCardDelayedShow) {
@@ -282,9 +286,6 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         }
 
         if let mediaContentView = mediaContentView {
-            // Let MVC know it is being dismissed from the screen.
-            mediaContentView.willBeDismissed()
-
             hideMediaContentView(mediaContentView, animated: true)
         }
 
@@ -317,8 +318,6 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         show(animated: true)
 
         loadingIndicator.stopAnimating()
-
-        showMediaContentView(mediaContentView, animated: true)
     }
 
     func mediaContentView(mediaContentView: MediaContentView, didFinishPlaybackOfContent content: ContentModel) {
