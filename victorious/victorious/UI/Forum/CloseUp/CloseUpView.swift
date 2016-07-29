@@ -46,6 +46,8 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
     
     weak var delegate: CloseUpViewDelegate?
     
+    private let spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+    
     private lazy var errorView: ErrorStateView = {
         return ErrorStateView.v_fromNib()
     }()
@@ -85,6 +87,10 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
             object: nil
         )
         blurredImageView.alpha = Constants.blurredImageAlpha
+        
+        addSubview(spinner)
+        sendSubviewToBack(spinner)
+        spinner.startAnimating()
     }
 
     func setupMediaContentView(for content: ContentModel) -> MediaContentView {
@@ -95,7 +101,8 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
             allowsVideoControls: true
         )
         mediaContentView.delegate = self
-
+        mediaContentView.alpha = 0
+        
         return mediaContentView
     }
     
@@ -140,7 +147,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
             captionLabel.text = content.text
             
             let mediaContentView = setupMediaContentView(for: content)
-            addSubview(mediaContentView)
+            insertSubview(mediaContentView, aboveSubview: spinner)
             self.mediaContentView = mediaContentView
             mediaContentView.loadContent()
             
@@ -194,6 +201,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
             captionLabel.frame = frame
             captionLabel.sizeToFit()
         }
+        spinner.center = center
     }
     
     func sizeForContent(content: ContentModel?) -> CGSize {
@@ -320,11 +328,19 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
     // MARK: - MediaContentViewDelegate
 
     func mediaContentView(mediaContentView: MediaContentView, didFinishLoadingContent content: ContentModel) {
-        print("didFinishLoadingContent in CUV")
+        UIView.animateWithDuration(
+            MediaContentView.AnimationConstants.mediaContentViewAnimationDuration,
+            animations: {
+                mediaContentView.alpha = 1.0
+            },
+            completion: { [weak self]  _ in
+                self?.spinner.stopAnimating()
+            }
+        )
     }
 
     func mediaContentView(mediaContentView: MediaContentView, didFinishPlaybackOfContent content: ContentModel) {
-
+        // No behavior yet
     }
 }
 

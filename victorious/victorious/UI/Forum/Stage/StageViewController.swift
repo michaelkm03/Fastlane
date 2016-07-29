@@ -12,7 +12,6 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     private struct Constants {
         static let defaultAspectRatio: CGFloat = 16 / 9
         static let titleCardDelayedShow = NSTimeInterval(1)
-        static let mediaContentViewAnimationDuration = NSTimeInterval(0.75)
         static let mediaContentViewAnimationDurationMultiplier = 1.25
     }
     
@@ -152,19 +151,6 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         return mediaContentView
     }
 
-    /// Swapping content destroys the old MCV and creates a new instance.
-    private func swapStageContent(to content: ContentModel) {
-        if let mediaContentView = mediaContentView {
-            tearDownMediaContentView(mediaContentView)
-        }
-
-        loadingIndicator.startAnimating()
-
-        mediaContentView = nil
-        mediaContentView = newMediaContentView(for: content)
-        mediaContentView?.loadContent()
-    }
-
     /// Every piece of content has it's own instance of MediaContentView, it is destroyed and recreated for each one.
     private func tearDownMediaContentView(mediaContentView: MediaContentView) {
         hideMediaContentView(mediaContentView, animated: true) { (completed) in
@@ -188,7 +174,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         let animations = {
             mediaContentView.alpha = 1
         }
-        UIView.animateWithDuration((animated ? Constants.mediaContentViewAnimationDuration : 0), animations: animations, completion: completion)
+        UIView.animateWithDuration((animated ? MediaContentView.AnimationConstants.mediaContentViewAnimationDuration : 0), animations: animations, completion: completion)
     }
 
     private func hideMediaContentView(mediaContentView: MediaContentView, animated: Bool, completion: ((Bool) -> Void)? = nil) {
@@ -196,7 +182,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         let animations = {
             mediaContentView.alpha = 0
         }
-        let duration = Constants.mediaContentViewAnimationDuration * Constants.mediaContentViewAnimationDurationMultiplier
+        let duration = MediaContentView.AnimationConstants.mediaContentViewAnimationDuration * Constants.mediaContentViewAnimationDurationMultiplier
         UIView.animateWithDuration((animated ? duration : 0), animations: animations, completion: completion)
     }
 
@@ -212,7 +198,14 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     func addStageContent(stageContent: StageContent) {
         currentStageContent = stageContent
         
-        swapStageContent(to: stageContent.content)
+        if let mediaContentView = mediaContentView {
+            tearDownMediaContentView(mediaContentView)
+        }
+
+        loadingIndicator.startAnimating()
+
+        mediaContentView = newMediaContentView(for: stageContent.content)
+        mediaContentView?.loadContent()
         
         titleCardViewController?.populate(with: stageContent)
 
@@ -300,7 +293,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         }
 
         /// Instead of seeking past the end of the video we hide the stage.
-        guard mediaContentView.seekableWithinBounds == true else {
+        guard mediaContentView.seekableWithinBounds else {
             hide(animated: true)
             return
         }
