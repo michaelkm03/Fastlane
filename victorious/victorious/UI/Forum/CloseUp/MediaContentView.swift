@@ -43,6 +43,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         static let textPostPadding = 25
         static let defaultTextColor = UIColor.whiteColor()
         static let defaultTextFont = UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline)
+        static let imageReloadThreshold = CGFloat(0.75)
     }
 
     private let dependencyManager: VDependencyManager
@@ -78,6 +79,8 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     private var allowsVideoControls: Bool
 
     private var fillMode: FillMode
+
+    private var lastFrameSize = CGSizeZero
     
     // MARK: - Life Cycle
 
@@ -268,7 +271,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         spinner.center = CGPoint(x: bounds.midX, y: bounds.midY)
         videoCoordinator?.layout(in: videoContainerView.bounds, with: fillMode)
 
-        if content.type == .image {
+        if content.type == .image && (lastFrameSize.area / bounds.size.area) < Constants.imageReloadThreshold {
             loadContent()
         }
     }
