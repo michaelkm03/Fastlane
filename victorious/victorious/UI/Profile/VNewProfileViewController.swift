@@ -400,10 +400,6 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     
     // MARK: - Coachmark Displayer
     
-    var screenIdentifier: String {
-        return dependencyManager.stringForKey(VDependencyManagerIDKey)
-    }
-    
     func highlightFrame(forIdentifier identifier: String) -> CGRect? {
         if let barFrame = navigationController?.navigationBar.frame where identifier == "bump" {
             return CGRect(
