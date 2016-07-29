@@ -19,6 +19,8 @@ enum VideoState {
 
 protocol ContentVideoPlayerCoordinatorDelegate: class {
     func coordinatorDidBecomeReady()
+
+    func coordinatorDidFinishPlaying()
 }
 
 /// A coordinator that holds a VVideoView object adjusting for different types of VContent 
@@ -124,9 +126,9 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
 
     /// Plays the video belonging to the content passed in during initialization.
     /// `synced` can be used to enable the syncing feature where the video would be synced between all users of the app.
-    func playVideo(synced: Bool = false) {
+    func playVideo(withSync synced: Bool = false) {
         if synced {
-            let seekAheadTime = content.seekAheadTime()
+            let seekAheadTime = content.seekAheadTime
             if Int(videoPlayer.currentTimeSeconds) <= Int(seekAheadTime) {
                 videoPlayer.seekToTimeSeconds(seekAheadTime)
             }
@@ -144,7 +146,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     }
     
     private func prepareToPlay() {
-        let seekAheadTime = content.seekAheadTime()
+        let seekAheadTime = content.seekAheadTime
         if Int(videoPlayer.currentTimeSeconds) <= Int(seekAheadTime) {
             videoPlayer.seekToTimeSeconds(seekAheadTime)
         }
@@ -185,6 +187,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     
     func videoPlayerDidReachEnd(videoPlayer: VVideoPlayer) {
         state = .Ended
+        delegate?.coordinatorDidFinishPlaying()
     }
     
     func videoPlayerDidStartBuffering(videoPlayer: VVideoPlayer) {

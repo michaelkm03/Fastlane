@@ -8,28 +8,28 @@
 
 import UIKit
 
-class StageViewController: UIViewController, Stage, CaptionBarViewControllerDelegate, TileCardDelegate {
+class StageViewController: UIViewController, Stage, CaptionBarViewControllerDelegate, TileCardDelegate, MediaContentViewDelegate {
     private struct Constants {
-        static let contentSizeAnimationDuration: NSTimeInterval = 0.5
         static let defaultAspectRatio: CGFloat = 16 / 9
         static let titleCardDelayedShow = NSTimeInterval(1)
+        static let mediaContentViewAnimationDurationMultiplier = 1.25
+        static let audioSessionOutputVolumeKeyPath = "outputVolume"
     }
     
-    private lazy var defaultStageHeight: CGFloat = {
-        return self.view.bounds.width / Constants.defaultAspectRatio
-    }()
-
-    @IBOutlet private var mediaContentView: MediaContentView! {
-        didSet {
-            mediaContentView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOnContent)))
-        }
-    }
-
+    @IBOutlet private weak var captionBarContainerView: UIView!
     @IBOutlet private var captionBarHeightConstraint: NSLayoutConstraint! {
         didSet {
             captionBarHeightConstraint.constant = 0
         }
     }
+
+    @IBOutlet private weak var loadingIndicator: UIActivityIndicatorView!
+
+    private lazy var stageHeight: CGFloat = {
+        return self.view.bounds.width / Constants.defaultAspectRatio
+    }()
+
+    private var mediaContentView: MediaContentView?
 
     private var captionBarViewController: CaptionBarViewController? {
         didSet {
@@ -47,7 +47,19 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     }
 
     private var isOnScreen: Bool {
-        return self.view.window != nil
+        return view.window != nil
+    }
+
+    /// An internal state to the Stage, where it can enable and disable itself depending on where in the feed the user is.
+    /// This is needed so the Stage will not appear if a new content arrives when the user is inside a filtered feed.
+    private var enabled: Bool = true {
+        didSet {
+            if enabled && mediaContentView?.seekableWithinBounds == true {
+                show(animated: true)
+            } else {
+                hide(animated: true)
+            }
+        }
     }
 
     /// Shows meta data about the current item on the stage.
@@ -57,10 +69,10 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     private var currentStageContent: StageContent?
 
     private var stageDataSource: StageDataSource?
-    private var enabled = true
-    
-    weak var delegate: StageDelegate?
+
     private let audioSession = AVAudioSession.sharedInstance()
+
+    weak var delegate: StageDelegate?
 
     var dependencyManager: VDependencyManager! {
         didSet {
@@ -69,52 +81,61 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         }
     }
 
-    // MARK: - UIViewController Life cycle
+    // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
+        setupUI()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+
+        if mediaContentView?.seekableWithinBounds == true {
+            show(animated: false)
+        }
+        else {
+            hide(animated: false)
+        }
+    }
+
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        hide(animated: false)
+    }
+    
+    deinit {
+        audioSession.removeObserver(self, forKeyPath: Constants.audioSessionOutputVolumeKeyPath)
+    }
+    
+    // MARK: - Setup
+
+    private func setupUI() {
+        view.backgroundColor = .blackColor()
+        loadingIndicator.stopAnimating()
         captionBarViewController = childViewControllers.flatMap({ $0 as? CaptionBarViewController }).first
-        mediaContentView.dependencyManager = dependencyManager
-        mediaContentView.allowsVideoControls = false
-        mediaContentView.showsBlurredBackground = false
-        
+
         audioSession.addObserver(
             self,
-            forKeyPath: "outputVolume",
+            forKeyPath: Constants.audioSessionOutputVolumeKeyPath,
             options: [.New, .Old],
             context: nil
         )
     }
-    
+
     private func setupDataSource(dependencyManager: VDependencyManager) -> StageDataSource {
         let dataSource = StageDataSource(dependencyManager: dependencyManager)
         dataSource.delegate = self
         return dataSource
     }
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        if let content = currentStageContent?.content {
-            mediaContentView.content = content
-            setStageEnabled(true, animated: false)
-        }
-    }
-
-    override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        hideStage(animated: false)
-    }
-    
     override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
-        if keyPath == "outputVolume" && view.window != nil {
+        // Change the audio session category if the volume changes.
+        if keyPath == Constants.audioSessionOutputVolumeKeyPath && isOnScreen {
             VAudioManager.sharedInstance().focusedPlaybackDidBegin(muted: false)
         }
-    }
-    
-    deinit {
-        audioSession.removeObserver(self, forKeyPath: "outputVolume")
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -125,6 +146,60 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
             titleCardViewController.delegate = self
             self.titleCardViewController = titleCardViewController
         }
+    }
+
+    // MARK: MediaContentView
+
+    func setupMediaContentView(for content: ContentModel) -> MediaContentView {
+        let mediaContentView = MediaContentView(
+            content: content,
+            dependencyManager: dependencyManager,
+            fillMode: (content.type == .text ? .fill : .fit),
+            allowsVideoControls: false
+        )
+
+        mediaContentView.delegate = self
+        mediaContentView.alpha = 0
+        mediaContentView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOnContent)))
+
+        return mediaContentView
+    }
+
+    /// Every piece of content has it's own instance of MediaContentView, it is destroyed and recreated for each one.
+    private func tearDownMediaContentView(mediaContentView: MediaContentView) {
+        hideMediaContentView(mediaContentView, animated: true) { (completed) in
+            mediaContentView.removeFromSuperview()
+        }
+    }
+
+    private func newMediaContentView(for content: ContentModel) -> MediaContentView {
+        let mediaContentView = setupMediaContentView(for: content)
+        view.insertSubview(mediaContentView, aboveSubview: loadingIndicator)
+        mediaContentView.translatesAutoresizingMaskIntoConstraints = false
+        view.leadingAnchor.constraintEqualToAnchor(mediaContentView.leadingAnchor).active = true
+        view.trailingAnchor.constraintEqualToAnchor(mediaContentView.trailingAnchor).active = true
+        view.topAnchor.constraintEqualToAnchor(mediaContentView.topAnchor).active = true
+        mediaContentView.bottomAnchor.constraintEqualToAnchor(captionBarContainerView.topAnchor).active = true
+        return mediaContentView
+    }
+
+    private func showMediaContentView(mediaContentView: MediaContentView, animated: Bool, completion: ((Bool) -> Void)? = nil) {
+        mediaContentView.willBePresented()
+
+        let animations = {
+            mediaContentView.alpha = 1
+        }
+        UIView.animateWithDuration((animated ? MediaContentView.AnimationConstants.mediaContentViewAnimationDuration : 0), animations: animations, completion: completion)
+    }
+
+    private func hideMediaContentView(mediaContentView: MediaContentView, animated: Bool, completion: ((Bool) -> Void)? = nil) {
+        mediaContentView.willBeDismissed()
+
+        let animations = {
+            mediaContentView.alpha = 0
+        }
+        let duration = MediaContentView.AnimationConstants.mediaContentViewAnimationDuration * Constants.mediaContentViewAnimationDurationMultiplier
+        UIView.animateWithDuration((animated ? duration : 0), animations: animations, completion: completion)
     }
 
     // MARK: - Stage
@@ -139,39 +214,24 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     func addStageContent(stageContent: StageContent) {
         currentStageContent = stageContent
         
-        guard isOnScreen && enabled else {
-            return
+        if let mediaContentView = mediaContentView {
+            tearDownMediaContentView(mediaContentView)
         }
 
+        loadingIndicator.startAnimating()
+
+        mediaContentView = newMediaContentView(for: stageContent.content)
+        mediaContentView?.loadContent()
+        
         titleCardViewController?.populate(with: stageContent)
 
-        mediaContentView.videoCoordinator?.pauseVideo()
-        mediaContentView.content = stageContent.content
-        
         updateStageHeight()
-
-        showStage(animated: true)
-
-        dispatch_after(Constants.titleCardDelayedShow) {
-            self.titleCardViewController?.show()
-        }
     }
 
     func removeContent() {
-        hideStage()
+        hide(animated: true)
         currentStageContent = nil
         titleCardViewController?.hide()
-    }
-    
-    func setStageEnabled(enabled: Bool, animated: Bool) {
-        self.enabled = enabled
-        
-        if enabled {
-            showStage(animated: animated)
-        }
-        else {
-            hideStage(animated: animated)
-        }
     }
     
     var overlayUIAlpha: CGFloat {
@@ -184,52 +244,54 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     }
     
     // MARK: - ForumEventReceiver
-    
+
+    func receive(event: ForumEvent) {
+        switch event {
+            case .filterContent(let path):
+                let isMainFeed = path == nil
+                enabled = isMainFeed
+            default: break
+        }
+    }
+
     var childEventReceivers: [ForumEventReceiver] {
         return [stageDataSource].flatMap { $0 }
     }
 
     // MARK: - Show/Hide Stage
 
-    private func hideStage(animated animated: Bool = false) {
+    private func show(animated animated: Bool) {
+        guard enabled else {
+            return
+        }
+
+        if let mediaContentView = mediaContentView {
+            showMediaContentView(mediaContentView, animated: animated)
+        }
+
+        dispatch_after(Constants.titleCardDelayedShow) {
+            self.titleCardViewController?.show()
+        }
+
+        guard !visible else {
+            return
+        }
+
+        visible = true
+    }
+
+    private func hide(animated animated: Bool) {
         guard visible else {
             return
         }
 
-        mediaContentView.hideContent(animated: animated) { [weak self] _ in
-            self?.mediaContentView.pauseVideo()
+        if let mediaContentView = mediaContentView {
+            hideMediaContentView(mediaContentView, animated: true)
         }
+
         visible = false
-        UIView.animateWithDuration(animated ? Constants.contentSizeAnimationDuration : 0) {
-            self.view.layoutIfNeeded()
-        }
 
         titleCardViewController?.hide()
-    }
-
-    private func showStage(animated animated: Bool = false) {
-        guard !visible else {
-            return
-        }
-        
-        mediaContentView.showContent(animated: animated) { [weak self] _ in
-            guard let content = self?.currentStageContent?.content where content.type == .video else {
-                return
-            }
-            if
-                let videoDuration = self?.mediaContentView.videoCoordinator?.duration
-                where content.seekAheadTime() < videoDuration
-            {
-                self?.mediaContentView.videoCoordinator?.playVideo(true)
-            }
-            else {
-                self?.hideStage(animated: true)
-            }
-        }
-        visible = true
-        UIView.animateWithDuration(animated ? Constants.contentSizeAnimationDuration : 0) {
-            self.view.layoutIfNeeded()
-        }
     }
 
     // MARK: - TileCardDelegate
@@ -238,6 +300,31 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         let router = Router(originViewController: self, dependencyManager: dependencyManager)
         let destination = DeeplinkDestination(userID: user.id)
         router.navigate(to: destination)
+    }
+
+    // MARK: - MediaContentViewDelegate
+
+    func mediaContentView(mediaContentView: MediaContentView, didFinishLoadingContent content: ContentModel) {
+        guard isOnScreen else {
+            return
+        }
+
+        /// Instead of seeking past the end of the video we hide the stage.
+        guard mediaContentView.seekableWithinBounds else {
+            hide(animated: true)
+            return
+        }
+        
+        show(animated: true)
+
+        loadingIndicator.stopAnimating()
+    }
+
+    func mediaContentView(mediaContentView: MediaContentView, didFinishPlaybackOfContent content: ContentModel) {
+        // When the playback of a video is done we want to hide the MCV.
+        if content.type == .video {
+            hideMediaContentView(mediaContentView, animated: true)
+        }
     }
 
     // MARK: - StageShrinkingAnimatorDelegate
@@ -249,12 +336,12 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     // MARK: - Deep linking content
 
     @objc private func didTapOnContent() {
-        guard let targetContent = mediaContentView.content else {
+        guard let content = currentStageContent?.content else {
             return
         }
-
+        
         let router = Router(originViewController: self, dependencyManager: dependencyManager)
-        let destination = DeeplinkDestination(content: targetContent)
+        let destination = DeeplinkDestination(content: content)
         router.navigate(to: destination)
     }
 
@@ -276,7 +363,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     private func updateStageHeight() {
         var height = captionBarHeightConstraint.constant
         if visible {
-            height += defaultStageHeight
+            height += stageHeight
         }
         delegate?.stage(self, wantsUpdateToContentHeight: height)
     }
@@ -285,9 +372,5 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
 private extension VDependencyManager {
     var captionBarDependency: VDependencyManager? {
         return childDependencyForKey("captionBar")
-    }
-    
-    var newItemButtonDependency: VDependencyManager? {
-        return childDependencyForKey("newItemButton")
     }
 }

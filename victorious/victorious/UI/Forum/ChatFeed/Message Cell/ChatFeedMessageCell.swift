@@ -15,7 +15,7 @@ protocol ChatFeedMessageCellDelegate: class {
     func messageCellDidSelectFailureButton(messageCell: ChatFeedMessageCell)
 }
 
-class ChatFeedMessageCell: UICollectionViewCell {
+class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     
     // MARK: - Constants
     
@@ -112,6 +112,8 @@ class ChatFeedMessageCell: UICollectionViewCell {
     
     let failureButton = UIButton(type: .Custom)
     
+    let spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+    
     // MARK: - Layout
     
     override func layoutSubviews() {
@@ -159,9 +161,13 @@ class ChatFeedMessageCell: UICollectionViewCell {
         
         if let content = content where content.type.hasMedia {
             if content.type == .gif && VCurrentUser.user()?.canView(content) == true {
-                let previewView = createMediaViewIfNeeded()
+                let mediaContentView = setupMediaView(for: content)
+                mediaContentView.alpha = 0.0
+                spinner.startAnimating()
+                previewView = mediaContentView
+                mediaContentView.loadContent()
+                
                 ChatFeedMessageCell.layoutContent(for: self)
-                previewView.content = content
             }
             else {
                 // Videos and images
@@ -189,15 +195,18 @@ class ChatFeedMessageCell: UICollectionViewCell {
         return previewView
     }
     
-    private func createMediaViewIfNeeded() -> MediaContentView {
-        if let existingMediaView = self.previewView as? MediaContentView {
-            return existingMediaView
-        }
+    private func setupMediaView(for content: ContentModel) -> MediaContentView {
+        self.previewView?.removeFromSuperview()
+        self.previewView = nil
         
-        let previewView = MediaContentView(showsBlurredBackground: false)
-        previewView.animatesBetweenContent = false
-        previewView.allowsVideoControls = false
-        previewView.fillMode = .fill
+        let previewView = MediaContentView(
+            content: content,
+            dependencyManager: dependencyManager,
+            fillMode: .fill,
+            allowsVideoControls: false
+        )
+        previewView.delegate = self
+        
         setupPreviewView(previewView)
         return previewView
     }
@@ -208,7 +217,12 @@ class ChatFeedMessageCell: UICollectionViewCell {
         
         previewView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOnPreview)))
         
+        // FUTURE: Reuse the bubble view so that we don't keep removing + adding subviews.
+        previewBubbleView?.removeFromSuperview()
+        
         let bubbleView = ChatBubbleView()
+        bubbleView.backgroundColor = dependencyManager.backgroundColor
+        bubbleView.contentView.addSubview(spinner)
         bubbleView.contentView.addSubview(previewView)
         contentView.addSubview(bubbleView)
         previewBubbleView = bubbleView
@@ -226,13 +240,13 @@ class ChatFeedMessageCell: UICollectionViewCell {
     /// and frees up resources that are no longer needed.
     func stopDisplaying() {
         if let previewView = previewView as? MediaContentView {
-            previewView.videoCoordinator?.pauseVideo()
+            previewView.willBeDismissed()
         }
     }
     
     func startDisplaying() {
         if let previewView = previewView as? MediaContentView {
-            previewView.videoCoordinator?.playVideo()
+            previewView.willBePresented()
         }
     }
     
@@ -279,6 +293,26 @@ class ChatFeedMessageCell: UICollectionViewCell {
     
     private static var nonContentWidth: CGFloat {
         return contentMargin.horizontal + avatarSize.width + horizontalSpacing
+    }
+    
+    // MARK: - MediaContentViewDelegate
+    
+    func mediaContentView(mediaContentView: MediaContentView, didFinishLoadingContent content: ContentModel) {
+        UIView.animateWithDuration(
+            MediaContentView.AnimationConstants.mediaContentViewAnimationDuration,
+            animations: {
+                mediaContentView.alpha = 1.0
+            },
+            completion: { [weak self]  _ in
+                if mediaContentView === self?.previewView {
+                    self?.spinner.stopAnimating()
+                }
+            }
+        )
+    }
+    
+    func mediaContentView(mediaContentView: MediaContentView, didFinishPlaybackOfContent content: ContentModel) {
+        // No behavior yet
     }
 }
 

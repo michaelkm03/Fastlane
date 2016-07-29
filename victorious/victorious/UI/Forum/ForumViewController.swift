@@ -71,9 +71,9 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                 InterstitialManager.sharedInstance.dismissCurrentInterstitial(of: .reconnectingError)
                 navBarTitleView?.activeUserCount = userCount.userCount
             case .filterContent(let path):
+                // FUTURE: the composer should listen to these events and hide itself so everything component in the forum handles it's own state
                 // path will be nil for home feed, and non nil for filtered feed
                 composer?.setComposerVisible(path == nil, animated: true)
-                stage?.setStageEnabled(path == nil, animated: true)
             case .closeVIP():
                 onClose()
             case .refreshStage(_):
