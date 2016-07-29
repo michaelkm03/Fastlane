@@ -10,35 +10,61 @@ import Foundation
 
 /// A deeplink destination that we can naviagte to within the app, or an external URL
 /// e.g. A piece of content, a user, or a specific screen that is deep linked to.
-enum DeeplinkDestination {
+enum DeeplinkDestination: Equatable {
     case profile(userID: Int)
     case closeUp(contentWrapper: CloseUpContentWrapper)
     case vipForum
-    case externalURL(url: NSURL)
+    case externalURL(url: NSURL, addressBarVisible: Bool)
     
     init?(url: NSURL) {
+        guard url.scheme == "vthisapp" else {
+            v_log("Received links in wrong format. All links should be in deep link format according to https://wiki.victorious.com/display/ENG/Deep+Linking+Specification")
+            return nil
+        }
+        
         guard let host = url.host else {
-            assertionFailure("We got a deep link URL but no host component, so we don't know where to navigate")
+            v_log("We got a deep link URL but no host component, so we don't know where to navigate")
             return nil
         }
         
         switch host {
             case "content":
-                guard let contentID = url.v_firstNonSlashPathComponent() else { return nil }
+                guard let contentID = url.pathWithoutLeadingSlash else { return nil }
                 self = .closeUp(contentWrapper: .contentID(id: contentID))
             case "profile":
-                guard let userID = Int(url.v_firstNonSlashPathComponent()) else { return nil }
+                guard
+                    let path = url.pathWithoutLeadingSlash,
+                    let userID = Int(path)
+                else {
+                    return nil
+                }
                 self = .profile(userID: userID)
             case "vipForum":
                 self = .vipForum
+            case "webURL":
+                guard
+                    let path = url.pathWithoutLeadingSlash,
+                    let externalURL = NSURL(string: path)
+                else {
+                    return nil
+                }
+                self = .externalURL(url: externalURL, addressBarVisible: true)
+            case "hiddenWebURL":
+                guard
+                    let path = url.pathWithoutLeadingSlash,
+                    let externalURL = NSURL(string: path)
+                else {
+                    return nil
+                }
+                self = .externalURL(url: externalURL, addressBarVisible: false)
             default:
-                self = .externalURL(url: url)
+                return nil
         }
     }
     
     init?(content: ContentModel) {
         switch content.type {
-        case .image, .video, .gif:
+        case .image, .video, .gif, .text:
             self = .closeUp(contentWrapper: .content(content: content))
         case .link:
             guard
@@ -48,8 +74,6 @@ enum DeeplinkDestination {
                 return nil
             }
             self = validDestination
-        case .text:
-            return nil
         }
     }
     
@@ -58,10 +82,28 @@ enum DeeplinkDestination {
     }
 }
 
+func ==(lhs: DeeplinkDestination, rhs: DeeplinkDestination) -> Bool {
+    switch (lhs, rhs) {
+        case (let .profile(id1), let .profile(id2)): return id1 == id2
+        case (let .closeUp(contentWrapper1), let .closeUp(contentWrapper2)): return contentWrapper1 == contentWrapper2
+        case (.vipForum, .vipForum): return true
+        case (let .externalURL(url1, visible1), let .externalURL(url2, visible2)): return url1 == url2 && visible1 == visible2
+        default: return false
+    }
+}
+
 /// A wrapper around content to be shown in close up view.
 /// This is needed because we could either pass a content object or content ID to close up view.
 /// If we pass a content object, it will be shown directly. While if we pass a content ID, it'll fetch the content from network.
-enum CloseUpContentWrapper {
+enum CloseUpContentWrapper: Equatable {
     case content(content: ContentModel)
     case contentID(id: Content.ID)
+}
+
+func ==(lhs: CloseUpContentWrapper, rhs: CloseUpContentWrapper) -> Bool {
+    switch (lhs, rhs) {
+        case (let .content(content1), let .content(content2)): return content1 == content2
+        case (let .contentID(id1), let.contentID(id2)): return id1 == id2
+        default: return false
+    }
 }
