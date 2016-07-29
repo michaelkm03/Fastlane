@@ -8,12 +8,11 @@
 
 #import "VWorkspaceShimDestination.h"
 #import "VDependencyManager.h"
-#import "VCoachmarkDisplayer.h"
 #import "VCreationFlowPresenter.h"
 #import "VRootViewController.h"
 #import "victorious-Swift.h"
 
-@interface VWorkspaceShimDestination () <VCoachmarkDisplayer>
+@interface VWorkspaceShimDestination ()
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 @property (nonatomic, strong) id<VNavigationDestination> workspaceDestination;
@@ -47,11 +46,5 @@
     return NO;
 }
 
-#pragma mark - VCoachmarkDisplayer
-
-- (NSString *)screenIdentifier
-{
-    return [self.dependencyManager stringForKey:VDependencyManagerIDKey];
-}
-
 @end
+
