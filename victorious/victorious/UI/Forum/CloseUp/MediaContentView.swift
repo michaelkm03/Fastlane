@@ -33,6 +33,9 @@ struct MediaContentViewConfiguration {
 
 /// Displays an image/video/GIF/Youtube video/text post upon setting the content property.
 class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGestureRecognizerDelegate, Presentable {
+    struct AnimationConstants {
+        static let mediaContentViewAnimationDuration = NSTimeInterval(0.75)
+    }
 
     let dependencyManager: VDependencyManager
     let content: ContentModel

@@ -99,6 +99,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
             configuration: configuration,
             delegate: self
         )
+        mediaContentView.alpha = 0
         
         return mediaContentView
     }
@@ -324,11 +325,13 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
     // MARK: - MediaContentViewDelegate
 
     func mediaContentView(mediaContentView: MediaContentView, didFinishLoadingContent content: ContentModel) {
-        print("didFinishLoadingContent in CUV")
+        UIView.animateWithDuration(MediaContentView.AnimationConstants.mediaContentViewAnimationDuration) {
+            mediaContentView.alpha = 1.0
+        }
     }
 
     func mediaContentView(mediaContentView: MediaContentView, didFinishPlaybackOfContent content: ContentModel) {
-
+        // No behavior yet
     }
 }
 

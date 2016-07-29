@@ -13,7 +13,6 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         static let contentSizeAnimationDuration = NSTimeInterval(0.5)
         static let defaultAspectRatio: CGFloat = 16 / 9
         static let titleCardDelayedShow = NSTimeInterval(1)
-        static let mediaContentViewAnimationDuration = NSTimeInterval(0.75)
         static let mediaContentViewAnimationDurationMultiplier = 1.25
     }
     
@@ -195,7 +194,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         let animations = {
             mediaContentView.alpha = 1
         }
-        UIView.animateWithDuration((animated ? Constants.mediaContentViewAnimationDuration : 0), animations: animations, completion: completion)
+        UIView.animateWithDuration((animated ? MediaContentView.AnimationConstants.mediaContentViewAnimationDuration : 0), animations: animations, completion: completion)
     }
 
     private func hideMediaContentView(mediaContentView: MediaContentView, animated: Bool, completion: ((Bool) -> Void)? = nil) {
@@ -203,7 +202,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         let animations = {
             mediaContentView.alpha = 0
         }
-        let duration = Constants.mediaContentViewAnimationDuration * Constants.mediaContentViewAnimationDurationMultiplier
+        let duration = MediaContentView.AnimationConstants.mediaContentViewAnimationDuration * Constants.mediaContentViewAnimationDurationMultiplier
         UIView.animateWithDuration((animated ? duration : 0), animations: animations, completion: completion)
     }
 
