@@ -34,7 +34,6 @@
 #import "VNewContentViewController.h"
 #import "VNode+Fetcher.h"
 #import "VPurchaseViewController.h"
-#import "VScrollPaginator.h"
 #import "VSectionHandleReusableView.h"
 #import "VSequence+Fetcher.h"
 #import "VSequenceActionControllerDelegate.h"
@@ -52,7 +51,7 @@
 
 static NSString * const kPollBallotIconKey = @"orIcon";
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, VExperienceEnhancerControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, NSUserActivityDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VExperienceEnhancerResponder, VSequencePreviewViewDetailDelegate, VContentPollBallotCellDelegate, AdLifecycleDelegate, VPaginatedDataSourceDelegate, VImageAnimationOperationDelegate, VSequenceActionControllerDelegate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, VExperienceEnhancerControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, NSUserActivityDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VExperienceEnhancerResponder, VSequencePreviewViewDetailDelegate, VContentPollBallotCellDelegate, AdLifecycleDelegate, VPaginatedDataSourceDelegate, VImageAnimationOperationDelegate, VSequenceActionControllerDelegate>
 
 @property (nonatomic, assign) BOOL hasAutoPlayed;
 @property (nonatomic, assign) BOOL hasBeenPresented;
@@ -79,7 +78,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, weak) IBOutlet UIButton *moreButton;
 @property (nonatomic, weak) IBOutlet UIImageView *blurredBackgroundImageView;
 @property (nonatomic, weak) IBOutlet VInputAccessoryCollectionView *contentCollectionView;
-@property (nonatomic, weak) IBOutlet VScrollPaginator *scrollPaginator;
 @property (nonatomic, weak) NSLayoutConstraint *bottomKeyboardToContainerBottomConstraint;
 @property (nonatomic, weak) UIView *snapshotView;
 @property (nonatomic, weak) VContentPollBallotCell *ballotCell;
@@ -494,12 +492,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
     [self.focusHelper endFocusOnCell:cell];
 }
 
-#pragma mark UIScrollViewDelegate
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-}
-
 #pragma mark - VExperienceEnhancerControllerDelegate
 
 - (void)experienceEnhancersDidUpdate
@@ -546,16 +538,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
              [self.viewModel.experienceEnhancerController updateData];
          }
      }];
-}
-
-#pragma mark - VScrollPaginatorDelegate
-
-- (void)shouldLoadNextPage
-{
-}
-
-- (void)shouldLoadPreviousPage
-{
 }
 
 #pragma mark - VSequenceActionsDelegate

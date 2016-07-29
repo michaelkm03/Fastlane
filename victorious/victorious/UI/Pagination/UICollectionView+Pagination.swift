@@ -8,33 +8,7 @@
 
 import UIKit
 
-extension UIScrollView {
-    
-    var v_bottomOffset: CGPoint {
-        let height = contentSize.height - (contentInset.top + contentInset.bottom) - bounds.height
-        let yValue = max(height, 0)
-        return CGPoint(x: 0, y: yValue)
-    }
-    
-    var v_isScrolledToBottom: Bool {
-        return floor(contentOffset.y) >= floor(v_bottomOffset.y)
-    }
-    
-    func v_scrollToBottomAnimated(animated: Bool, completion: (() -> ())? = nil) {
-        if v_isScrolledToBottom {
-            completion?()
-            return
-        }
-        CATransaction.begin()
-        CATransaction.setCompletionBlock(completion)
-        CATransaction.setAnimationDuration(0.5)
-        setContentOffset(v_bottomOffset, animated: animated)
-        CATransaction.commit()
-    }
-}
-
 extension UICollectionView {
-    
     func v_applyChangeInSection(section: NSInteger, from oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
         self.v_applyChangeInSection(section, from: oldValue, to: newValue, animated: false, completion: nil)
     }
