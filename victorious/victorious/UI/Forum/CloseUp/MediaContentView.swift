@@ -24,9 +24,7 @@ enum FillMode {
 /// Displays an image/video/GIF/Youtube video/text post upon setting the content property.
 class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGestureRecognizerDelegate, Presentable {
 
-    // MARK: - Public 
-
-    let dependencyManager: VDependencyManager
+    // MARK: - Public
 
     let content: ContentModel
 
@@ -44,8 +42,12 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         static let defaultTextFont = UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline)
     }
 
+    private let dependencyManager: VDependencyManager
+
     private var videoCoordinator: VContentVideoPlayerCoordinator?
+
     private let spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+
     private var downloadedPreviewImage: UIImage?
 
     private lazy var previewImageView = {
