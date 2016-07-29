@@ -14,9 +14,6 @@ protocol MediaContentViewDelegate: class {
 
     /// A callback that tells the delegate that the piece of content has finished playing.
     func mediaContentView(mediaContentView: MediaContentView, didFinishPlaybackOfContent content: ContentModel)
-
-    // FUTURE: handle error states for async content
-//    func failedToLoadContent(content: ContentModel, error: NSError?)
 }
 
 enum FillMode {
