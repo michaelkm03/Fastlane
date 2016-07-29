@@ -170,7 +170,6 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     }
 
     private func showMediaContentView(mediaContentView: MediaContentView, animated: Bool, completion: ((Bool) -> Void)? = nil) {
-        print("showMediaContentView")
         let animations = {
             mediaContentView.alpha = 1
         }
@@ -178,7 +177,6 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     }
 
     private func hideMediaContentView(mediaContentView: MediaContentView, animated: Bool, completion: ((Bool) -> Void)? = nil) {
-        print("hideMediaContentView")
         let animations = {
             mediaContentView.alpha = 0
         }
@@ -306,7 +304,6 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     }
 
     func mediaContentView(mediaContentView: MediaContentView, didFinishPlaybackOfContent content: ContentModel) {
-        print("mediaContentView didFinishPlaybackOfContent didFinishPlaybackOfContent didFinishPlaybackOfContent")
         // When the playback of a video is done we want to hide the MCV.
         if content.type == .video {
             hideMediaContentView(mediaContentView, animated: true)
