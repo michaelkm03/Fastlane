@@ -139,20 +139,15 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     // MARK: MediaContentView
 
     func setupMediaContentView(for content: ContentModel) -> MediaContentView {
-        let configuration = MediaContentViewConfiguration(
-            allowsVideoControls: false,
-            fillMode: (content.type == .text ? .fill : .fit)
-        )
-
         let mediaContentView = MediaContentView(
             content: content,
             dependencyManager: dependencyManager,
-            configuration: configuration,
-            delegate: self
+            fillMode: (content.type == .text ? .fill : .fit),
+            allowsVideoControls: false
         )
 
+        mediaContentView.delegate = self
         mediaContentView.alpha = 0
-
         mediaContentView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOnContent)))
 
         return mediaContentView
