@@ -10,7 +10,6 @@ import UIKit
 
 class StageViewController: UIViewController, Stage, CaptionBarViewControllerDelegate, TileCardDelegate, MediaContentViewDelegate {
     private struct Constants {
-        static let contentSizeAnimationDuration = NSTimeInterval(0.5)
         static let defaultAspectRatio: CGFloat = 16 / 9
         static let titleCardDelayedShow = NSTimeInterval(1)
         static let mediaContentViewAnimationDurationMultiplier = 1.25
@@ -25,7 +24,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
 
     @IBOutlet private weak var loadingIndicator: UIActivityIndicatorView!
 
-    private lazy var defaultStageHeight: CGFloat = {
+    private lazy var stageHeight: CGFloat = {
         return self.view.bounds.width / Constants.defaultAspectRatio
     }()
 
@@ -138,20 +137,15 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     // MARK: MediaContentView
 
     func setupMediaContentView(for content: ContentModel) -> MediaContentView {
-        let configuration = MediaContentViewConfiguration(
-            allowsVideoControls: false,
-            fillMode: (content.type == .text ? .fill : .fit)
-        )
-
         let mediaContentView = MediaContentView(
             content: content,
             dependencyManager: dependencyManager,
-            configuration: configuration,
-            delegate: self
+            fillMode: (content.type == .text ? .fill : .fit),
+            allowsVideoControls: false
         )
 
+        mediaContentView.delegate = self
         mediaContentView.alpha = 0
-
         mediaContentView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOnContent)))
 
         return mediaContentView
@@ -248,7 +242,15 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
 
     // MARK: - Show/Hide Stage
 
-    func show(animated animated: Bool) {
+    func setHidden(hidden: Bool, animated: Bool) {
+        if hidden {
+            hide(animated: animated)
+        } else {
+            show(animated: animated)
+        }
+    }
+
+    private func show(animated animated: Bool) {
         mediaContentView?.willBePresented()
 
         dispatch_after(Constants.titleCardDelayedShow) {
@@ -260,32 +262,24 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         }
 
         visible = true
-        UIView.animateWithDuration(animated ? Constants.contentSizeAnimationDuration : 0) {
-            self.view.layoutIfNeeded()
-        }
     }
 
-    func hide(animated animated: Bool) {
+    private func hide(animated animated: Bool) {
         guard visible else {
             return
         }
-        
-        // Let MVC know it is being dismissed from the screen.
-        mediaContentView?.willBeDismissed()
-        
-        // Fade MCV Out.
-        let animations: ()->() = {
-            self.mediaContentView?.alpha = 0
+
+        if let mediaContentView = mediaContentView {
+            // Let MVC know it is being dismissed from the screen.
+            mediaContentView.willBeDismissed()
+
+            hideMediaContentView(mediaContentView, animated: true, completion: { (completed) in
+                mediaContentView.removeFromSuperview()
+                self.mediaContentView = nil
+            })
         }
-        UIView.animateWithDuration(animated ? Constants.contentSizeAnimationDuration : 0, animations: animations) { _ in
-            self.mediaContentView?.removeFromSuperview()
-            self.mediaContentView = nil
-        }
-        
+
         visible = false
-        UIView.animateWithDuration(animated ? Constants.contentSizeAnimationDuration : 0) {
-            self.view.layoutIfNeeded()
-        }
 
         titleCardViewController?.hide()
     }
@@ -362,7 +356,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     private func updateStageHeight() {
         var height = captionBarHeightConstraint.constant
         if visible {
-            height += defaultStageHeight
+            height += stageHeight
         }
         delegate?.stage(self, wantsUpdateToContentHeight: height)
     }

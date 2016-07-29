@@ -197,10 +197,8 @@ class ChatFeedMessageCell: UICollectionViewCell {
         let previewView = MediaContentView(
             content: content,
             dependencyManager: dependencyManager,
-            configuration: MediaContentViewConfiguration(
-                allowsVideoControls: false,
-                fillMode: .fill
-            )
+            fillMode: .fill,
+            allowsVideoControls: false
         )
         setupPreviewView(previewView)
         return previewView

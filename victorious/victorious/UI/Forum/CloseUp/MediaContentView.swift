@@ -14,21 +14,11 @@ protocol MediaContentViewDelegate: class {
 
     /// A callback that tells the delegate that the piece of content has finished playing.
     func mediaContentView(mediaContentView: MediaContentView, didFinishPlaybackOfContent content: ContentModel)
-
-    // FUTURE: handle error states for async content
-//    func failedToLoadContent(content: ContentModel, error: NSError?)
 }
 
 enum FillMode {
     case fill
     case fit
-}
-
-struct MediaContentViewConfiguration {
-    /// Determines whether we want video control for video content. E.g.: Stage disables video control for video content
-    let allowsVideoControls: Bool
-    
-    let fillMode: FillMode
 }
 
 /// Displays an image/video/GIF/Youtube video/text post upon setting the content property.
@@ -37,10 +27,11 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         static let mediaContentViewAnimationDuration = NSTimeInterval(0.75)
     }
 
-    let dependencyManager: VDependencyManager
+    // MARK: - Public
+
     let content: ContentModel
 
-    private weak var delegate: MediaContentViewDelegate?
+    weak var delegate: MediaContentViewDelegate?
 
     // MARK: - Private
 
@@ -54,11 +45,13 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         static let defaultTextFont = UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline)
     }
 
-    private var videoCoordinator: VContentVideoPlayerCoordinator?
-    private let spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
-    private var downloadedPreviewImage: UIImage?
+    private let dependencyManager: VDependencyManager
 
-    private lazy var previewImageView = {
+    private var videoCoordinator: VContentVideoPlayerCoordinator?
+
+    private let spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+
+    private lazy var imageView = {
         return UIImageView()
     }()
 
@@ -81,6 +74,10 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         singleTapRecognizer.delegate = self
         return singleTapRecognizer
     }()
+
+    private var allowsVideoControls: Bool
+
+    private var fillMode: FillMode
     
     // MARK: - Life Cycle
 
@@ -88,14 +85,14 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     init(
         content: ContentModel,
         dependencyManager: VDependencyManager,
-        configuration: MediaContentViewConfiguration,
-        delegate: MediaContentViewDelegate? = nil
+        fillMode: FillMode,
+        allowsVideoControls: Bool = false
     ) {
         self.content = content
         self.dependencyManager = dependencyManager
-        self.configuration = configuration
-        self.delegate = delegate
-        
+        self.fillMode = fillMode
+        self.allowsVideoControls = allowsVideoControls
+
         super.init(frame: CGRect.zero)
         
         setup()
@@ -108,9 +105,9 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     private func setup() {
         clipsToBounds = true
         backgroundColor = .clearColor()
-        previewImageView.contentMode = (configuration.fillMode == .fit) ? .ScaleAspectFit : .ScaleAspectFill
+        imageView.contentMode = (fillMode == .fit) ? .ScaleAspectFit : .ScaleAspectFill
         
-        addSubview(previewImageView)
+        addSubview(imageView)
         
         videoContainerView.backgroundColor = .clearColor()
         addSubview(videoContainerView)
@@ -122,15 +119,6 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         
         addGestureRecognizer(singleTapRecognizer)
     }
-    
-    deinit {
-        delegate = nil
-        videoCoordinator?.delegate = nil
-    }
-    
-    // MARK: - Configuration
-    
-    private var configuration: MediaContentViewConfiguration
 
     // MARK: - Presentable
 
@@ -155,7 +143,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
             return false
         }
 
-        return (videoCoordinator.duration >= content.seekAheadTime())
+        return videoCoordinator.duration >= content.seekAheadTime
     }
 
     func loadContent() {
@@ -165,7 +153,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         let minWidth = frame.size.width
         
         if content.type.displaysAsImage, let imageAsset = content.previewImage(ofMinimumWidth: minWidth) {
-            setUpPreviewImage(from: imageAsset)
+            setUpImageView(from: imageAsset)
         }
         else if content.type.displaysAsVideo {
             setUpVideoPlayer(for: content)
@@ -177,10 +165,10 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     
     // MARK: - Managing preview image
     
-    private func setUpPreviewImage(from imageAsset: ImageAssetModel? = nil) {
+    private func setUpImageView(from imageAsset: ImageAssetModel? = nil) {
         tearDownVideoPlayer()
         
-        previewImageView.hidden = false
+        imageView.hidden = false
         
         guard let imageSource = imageAsset?.imageSource else {
             return
@@ -188,16 +176,16 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         
         switch imageSource {
             case .remote(let url):
-                previewImageView.sd_setImageWithURL(
+                imageView.sd_setImageWithURL(
                     url,
-                    placeholderImage: previewImageView.image, // Leave the image as is, since we want to wait until animation has finished before setting the image.
+                    placeholderImage: imageView.image, // Leave the image as is, since we want to wait until animation has finished before setting the image.
                     options: .AvoidAutoSetImage
                 ) { [weak self] image, _, _, _ in
-                    self?.previewImageView.image = image
+                    self?.imageView.image = image
                     self?.finishedLoadingContent()
                 }
             case .local(let image):
-                previewImageView.image = image
+                imageView.image = image
                 finishedLoadingContent()
         }
     }
@@ -207,23 +195,22 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         delegate?.mediaContentView(self, didFinishLoadingContent: content)
     }
     
-    private func tearDownPreviewImage() {
-        previewImageView.hidden = true
-        downloadedPreviewImage = nil
+    private func tearDownImageView() {
+        imageView.hidden = true
     }
     
     // MARK: - Managing video
     
     private func setUpVideoPlayer(for content: ContentModel) {
         tearDownTextLabel()
-        tearDownPreviewImage()
+        tearDownImageView()
         
         videoContainerView.hidden = false
         videoCoordinator?.tearDown()
         videoCoordinator = VContentVideoPlayerCoordinator(content: content)
         videoCoordinator?.setupVideoPlayer(in: videoContainerView)
         
-        if configuration.allowsVideoControls {
+        if allowsVideoControls {
             videoCoordinator?.setupToolbar(in: self, initallyVisible: false)
         }
         
@@ -242,7 +229,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     // MARK: - Managing Text 
     
     private func setUpTextLabel() {
-        setUpPreviewImage()
+        setUpImageView()
         
         let textPostDependency = self.dependencyManager.textPostDependency
         textPostLabel.font = textPostDependency?.textPostFont ?? Constants.defaultTextFont
@@ -254,7 +241,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
             return
         }
 
-        previewImageView.sd_setImageWithURL(url) { [weak self] (_, _, _, _) in
+        imageView.sd_setImageWithURL(url) { [weak self] (_, _, _, _) in
             guard let text = self?.content.text else {
                 return
             }
@@ -274,17 +261,17 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        previewImageView.frame = bounds
+        imageView.frame = bounds
         videoContainerView.frame = bounds
         textPostLabel.frame = CGRect(x: bounds.origin.x + CGFloat(Constants.textPostPadding), y: bounds.origin.y, width: bounds.width - CGFloat(2 * Constants.textPostPadding), height: bounds.height)
         spinner.center = CGPoint(x: bounds.midX, y: bounds.midY)
-        videoCoordinator?.layout(in: videoContainerView.bounds, with: configuration.fillMode)
+        videoCoordinator?.layout(in: videoContainerView.bounds, with: fillMode)
     }
     
     // MARK: - Actions
 
     func onContentTap() {
-        if configuration.allowsVideoControls && content.type == .video {
+        if allowsVideoControls && content.type == .video {
             videoCoordinator?.toggleToolbarVisibility(true)
         }
     }
