@@ -10,7 +10,6 @@ import UIKit
 
 class StageViewController: UIViewController, Stage, CaptionBarViewControllerDelegate, TileCardDelegate, MediaContentViewDelegate {
     private struct Constants {
-        static let contentSizeAnimationDuration = NSTimeInterval(0.5)
         static let defaultAspectRatio: CGFloat = 16 / 9
         static let titleCardDelayedShow = NSTimeInterval(1)
         static let mediaContentViewAnimationDuration = NSTimeInterval(0.75)
@@ -264,30 +263,24 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         }
 
         visible = true
-        UIView.animateWithDuration(animated ? Constants.contentSizeAnimationDuration : 0) {
-            self.view.layoutIfNeeded()
-        }
     }
 
     private func hide(animated animated: Bool) {
         guard visible else {
             return
         }
-        
-        // Let MVC know it is being dismissed from the screen.
-        mediaContentView?.willBeDismissed()
-        
-        UIView.animateWithDuration(animated ? Constants.contentSizeAnimationDuration : 0, animations: {
-            self.mediaContentView?.alpha = 0
-        }, completion: { _ in
-            self.mediaContentView?.removeFromSuperview()
-            self.mediaContentView = nil
-        })
-        
-        visible = false
-        UIView.animateWithDuration(animated ? Constants.contentSizeAnimationDuration : 0) {
-            self.view.layoutIfNeeded()
+
+        if let mediaContentView = mediaContentView {
+            // Let MVC know it is being dismissed from the screen.
+            mediaContentView.willBeDismissed()
+
+            hideMediaContentView(mediaContentView, animated: true, completion: { (completed) in
+                mediaContentView.removeFromSuperview()
+                self.mediaContentView = nil
+            })
         }
+
+        visible = false
 
         titleCardViewController?.hide()
     }
