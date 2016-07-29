@@ -174,13 +174,12 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
 
     private func newMediaContentView(for content: ContentModel) -> MediaContentView {
         let mediaContentView = setupMediaContentView(for: content)
-        view.addSubview(mediaContentView)
-        view.sendSubviewToBack(mediaContentView)
-        view.v_addPinToLeadingTrailingToSubview(mediaContentView)
-        view.v_addPinToTopToSubview(mediaContentView)
-        // TODO: Fix this?
-        view.v_addPinToBottomToSubview(mediaContentView, bottomMargin: captionBarContainerView.frame.size.height)
-
+        view.insertSubview(mediaContentView, aboveSubview: loadingIndicator)
+        mediaContentView.translatesAutoresizingMaskIntoConstraints = false
+        view.leadingAnchor.constraintEqualToAnchor(mediaContentView.leadingAnchor).active = true
+        view.trailingAnchor.constraintEqualToAnchor(mediaContentView.trailingAnchor).active = true
+        view.topAnchor.constraintEqualToAnchor(mediaContentView.topAnchor).active = true
+        mediaContentView.bottomAnchor.constraintEqualToAnchor(captionBarContainerView.topAnchor).active = true
         return mediaContentView
     }
 
