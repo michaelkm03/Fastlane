@@ -13,6 +13,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         static let defaultAspectRatio: CGFloat = 16 / 9
         static let titleCardDelayedShow = NSTimeInterval(1)
         static let mediaContentViewAnimationDurationMultiplier = 1.25
+        static let audioSessionOutputVolumeKeyPath = "outputVolume"
     }
     
     @IBOutlet private weak var captionBarContainerView: UIView!
@@ -105,7 +106,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     }
     
     deinit {
-        audioSession.removeObserver(self, forKeyPath: "outputVolume")
+        audioSession.removeObserver(self, forKeyPath: Constants.audioSessionOutputVolumeKeyPath)
     }
     
     // MARK: - Setup
@@ -117,7 +118,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
 
         audioSession.addObserver(
             self,
-            forKeyPath: "outputVolume",
+            forKeyPath: Constants.audioSessionOutputVolumeKeyPath,
             options: [.New, .Old],
             context: nil
         )
@@ -131,7 +132,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     
     override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
         // Change the audio session category if the volume changes.
-        if keyPath == "outputVolume" && isOnScreen {
+        if keyPath == Constants.audioSessionOutputVolumeKeyPath && isOnScreen {
             VAudioManager.sharedInstance().focusedPlaybackDidBegin(muted: false)
         }
     }
