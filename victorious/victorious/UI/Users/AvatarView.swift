@@ -55,7 +55,7 @@ class AvatarView: UIView {
         static let shadowOffset = CGSize(width: 0.0, height: 1.0)
         
         static let verifiedBadgeAngle = CGFloat(M_PI * 0.25)
-        static let observationKeys = ["displayName", "previewImages"]
+        static let observationKeys = ["displayName", "previewAssets"]
     }
     
     // MARK: - Initializing
