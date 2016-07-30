@@ -194,7 +194,8 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
 
     private func hideMediaContentView(mediaContentView: MediaContentView, animated: Bool, completion: ((Bool) -> Void)? = nil) {
         mediaContentView.willBeDismissed()
-
+        loadingIndicator.startAnimating()
+        
         let animations = {
             mediaContentView.alpha = 0
         }
