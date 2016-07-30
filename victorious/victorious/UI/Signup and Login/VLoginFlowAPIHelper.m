@@ -79,7 +79,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
                                               animated:YES];
     
-    [self queueUpdateProfileOperationWithUsername:username profileImageURL: nil completion:^(NSError *error)
+    [self queueUpdateProfileOperationWithDisplayname:username profileImageURL:nil completion:^(NSError *error)
      {
          [hud hide:YES];
          completion( error == nil, error);
@@ -287,7 +287,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
 - (void)updateProfilePictureWithPictureAtFilePath:(NSURL *)filePath
                                        completion:(void (^)(BOOL success, NSError *error))completion
 {
-    [self queueUpdateProfileOperationWithUsername:nil profileImageURL:filePath completion:^(NSError *error)
+    [self queueUpdateProfileOperationWithDisplayname:nil profileImageURL:filePath completion:^(NSError *error)
      {
          if (completion != nil)
          {

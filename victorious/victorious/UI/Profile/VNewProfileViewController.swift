@@ -196,6 +196,11 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     
     // MARK: - ViewController lifecycle
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        gridStreamController.reloadHeader()
+    }
+    
     override func viewDidAppear(animated: Bool) {
         triggerCoachmark(withContext: profileScreenContext?.coachmarkContext)
     }
