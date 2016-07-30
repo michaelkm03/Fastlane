@@ -10,7 +10,6 @@ import Foundation
 import XCTest
 @testable import victorious
 
-
 class EditProfileDataSourceTests: XCTestCase {
     func createTestDataSource() -> EditProfileDataSource {
         let dependencyManager = VDependencyManager(parentManager: nil, configuration: nil, dictionaryOfClassesByTemplateName: nil)
@@ -37,6 +36,8 @@ class EditProfileDataSourceTests: XCTestCase {
         let aboutMeCellIndexPath = NSIndexPath(forRow: 1, inSection: 0)
         let aboutMeCell = dataSource.tableView(UITableView(), cellForRowAtIndexPath: aboutMeCellIndexPath)
         XCTAssertNotNil(aboutMeCell)
+        
+        XCTAssertNotEqual(aboutMeCell, nameCell)
     }
     
     func testValidUsernames() {
