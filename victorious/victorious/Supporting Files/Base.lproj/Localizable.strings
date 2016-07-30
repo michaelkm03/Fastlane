@@ -50,6 +50,8 @@
 "ProfileRequired"       =   "Please provide the following:";
 "ProfileNameSpaces"     =   "Your profile name cannot be only spaces.";
 "ProfileRequiredName"   =   "Name";
+"DisplayNamePlaceholder"=   "Display Name";
+"LocationPlaceholder"   =   "Location";
 
 "User already exists"   =   "User already exists";
 "User already exists but the password is incorrect" = "User already exists but the password is incorrect";

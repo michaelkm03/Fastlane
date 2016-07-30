@@ -37,10 +37,7 @@ class AccountUpdateRequestBodyWriter: NSObject, RequestBodyWriterType {
         }
         
         // Write params for a profile update
-        if let email = parameters.profileUpdate?.email {
-            try writer.appendPlaintext(email, withFieldName: "email")
-        }
-        if let name = parameters.profileUpdate?.name {
+        if let name = parameters.profileUpdate?.displayName {
             try writer.appendPlaintext(name, withFieldName: "name")
         }
         if let location = parameters.profileUpdate?.location {

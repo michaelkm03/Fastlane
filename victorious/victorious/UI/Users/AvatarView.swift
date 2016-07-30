@@ -55,6 +55,7 @@ class AvatarView: UIView {
         static let shadowOffset = CGSize(width: 0.0, height: 1.0)
         
         static let verifiedBadgeAngle = CGFloat(M_PI * 0.25)
+        static let observationKeys = ["displayName", "previewAssets"]
     }
     
     // MARK: - Initializing
@@ -86,6 +87,12 @@ class AvatarView: UIView {
         addSubview(shadowView)
         addSubview(imageView)
         addSubview(initialsLabel)
+    }
+    
+    // MARK: - Deinit
+    
+    deinit {
+        tearDownKVO()
     }
     
     // MARK: - Views
@@ -134,6 +141,17 @@ class AvatarView: UIView {
     // MARK: - Content
     
     var user: UserModel? {
+        willSet {
+            if
+                let _ = (user as? VUser),
+                let _ = (newValue as? User)
+            {
+                // We tear down KVO if we're about to move away from
+                // a VUser
+                tearDownKVO()
+            }
+        }
+        
         didSet {
             var persistentUser: VUser?
             if let user = user as? VUser {
@@ -147,19 +165,47 @@ class AvatarView: UIView {
             
             setNeedsContentUpdate()
             
-            kvoController.unobserveAll()
-            
-            if let newUser = persistentUser {
-                let keyPaths = ["previewAssets", "displayName"]
-                
-                kvoController.observe(newUser, keyPaths: keyPaths, options: []) { [weak self] _, _, _ in
-                    self?.setNeedsContentUpdate()
-                }
-            }
+            setupKVO()
         }
     }
     
-    private let kvoController = KVOController()
+    // MARK: - KVO 
+    
+    /// This class handles KVO using the Foundation APIs since FBKVOController has a weird bug with multiple instances
+    /// of the same class observing the same object. 
+    /// Also, the user object can be a userModel, which may or may not be persistent. Only the persistent VUser can 
+    /// be KVO'd, hence we must check for this in the setup function. We also use the didSetupKVO flag to ensure 
+    /// that we only remove observers if we set them up (we will not set them up for non-persistent users). 
+    
+    private var didSetupKVO = false
+    
+    private func setupKVO() {
+        guard let user = self.user as? NSObject where !didSetupKVO else {
+            return
+        }
+        
+        for key in Constants.observationKeys {
+            user.addObserver(self, forKeyPath: key, options: [], context: nil)
+        }
+        
+        didSetupKVO = true
+    }
+    
+    private func tearDownKVO() {
+        guard let user = self.user as? VUser where didSetupKVO else {
+            return
+        }
+        
+        for key in Constants.observationKeys {
+            user.removeObserver(self, forKeyPath: key)
+        }
+        
+        didSetupKVO = false
+    }
+    
+    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+        self.setNeedsContentUpdate()
+    }
     
     // MARK: - Updating content
     
