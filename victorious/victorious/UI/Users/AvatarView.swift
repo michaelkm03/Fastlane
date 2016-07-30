@@ -141,6 +141,17 @@ class AvatarView: UIView {
     // MARK: - Content
     
     var user: UserModel? {
+        willSet {
+            if
+                let _ = (user as? VUser),
+                let _ = (newValue as? User)
+            {
+                // We tear down KVO if we're about to move away from
+                // a VUser
+                tearDownKVO()
+            }
+        }
+        
         didSet {
             var persistentUser: VUser?
             if let user = user as? VUser {
@@ -181,7 +192,7 @@ class AvatarView: UIView {
     }
     
     private func tearDownKVO() {
-        guard let user = self.user as? NSObject where didSetupKVO else {
+        guard let user = self.user as? VUser where didSetupKVO else {
             return
         }
         
