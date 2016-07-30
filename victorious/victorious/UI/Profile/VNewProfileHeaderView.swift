@@ -230,11 +230,11 @@ private extension VDependencyManager {
     }
     
     var receivedUpvotesTitle: String? {
-        return stringForKey("upvotes.text")
+        return stringForKey("upvoted.text")
     }
     
     var givenUpvotesTitle: String? {
-        return stringForKey("upvoted.text")
+        return stringForKey("upvotes.text")
     }
     
     var tierTitle: String? {
