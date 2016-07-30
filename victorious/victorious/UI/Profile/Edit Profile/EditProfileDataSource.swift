@@ -12,8 +12,8 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
     
     private let dependencyManager: VDependencyManager
     private let tableView: UITableView
-    private let nameAndLocationCell: DisplaynameLocationAvatarCell
-    private let aboutMeCell: AboutMeTextCell
+    let nameAndLocationCell: DisplaynameLocationAvatarCell
+    let aboutMeCell: AboutMeTextCell
     private var newAvatarFileURL: NSURL?
     private var user: UserModel {
         didSet {

@@ -824,6 +824,7 @@
 		7C28F1041D1DDD660070B8AE /* VDependencyManager+CTAErrorState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C28F1031D1DDD660070B8AE /* VDependencyManager+CTAErrorState.swift */; };
 		7C358BA61D1CBB300063CF66 /* VNotificationSettings+KeyAccessible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C358BA51D1CBB300063CF66 /* VNotificationSettings+KeyAccessible.swift */; };
 		7C37B8E71CF66CA200E83594 /* SystemBlurredImageBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C37B8E61CF66CA100E83594 /* SystemBlurredImageBackground.swift */; };
+		7C4C21EF1D4C272E00B85670 /* LoremIpsum.txt in Resources */ = {isa = PBXBuildFile; fileRef = 7C4C21EE1D4C272E00B85670 /* LoremIpsum.txt */; };
 		7C4CCE681D10D36F00784D30 /* SettingsViewController+Templatized.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4CCE671D10D36F00784D30 /* SettingsViewController+Templatized.swift */; };
 		7C582CA21D22E80300707CBE /* VSettingsSwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C582CA11D22E80300707CBE /* VSettingsSwitchCell.xib */; };
 		7C582CA61D23270000707CBE /* NotificationSettingsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C582CA51D23270000707CBE /* NotificationSettingsViewControllerTests.swift */; };
@@ -835,6 +836,7 @@
 		7CC982211D0104EC00583B70 /* VDependencyManager+ForumNetworkSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC982201D0104EC00583B70 /* VDependencyManager+ForumNetworkSource.swift */; };
 		7CC982241D0235D300583B70 /* ForumNavBarTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC982231D0235D300583B70 /* ForumNavBarTitleView.swift */; };
 		7CCBF2B91D413C7D0075A087 /* CoachmarkManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBF2B81D413C7D0075A087 /* CoachmarkManagerTests.swift */; };
+		7CEA74C71D4C0F5300EDA15C /* EditProfileDataSourceTests .swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEA74C61D4C0F5300EDA15C /* EditProfileDataSourceTests .swift */; };
 		A601FB491B4354D10050536C /* VAbstractImageVideoCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB481B4354D10050536C /* VAbstractImageVideoCreationFlowController.m */; };
 		A601FB4F1B4355A30050536C /* VCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB4E1B4355A30050536C /* VCreationFlowController.m */; };
 		A601FB531B4363240050536C /* VCreationFlowPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB521B4363240050536C /* VCreationFlowPresenter.m */; };
@@ -3123,6 +3125,7 @@
 		7C28F1031D1DDD660070B8AE /* VDependencyManager+CTAErrorState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VDependencyManager+CTAErrorState.swift"; sourceTree = "<group>"; };
 		7C358BA51D1CBB300063CF66 /* VNotificationSettings+KeyAccessible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VNotificationSettings+KeyAccessible.swift"; sourceTree = "<group>"; };
 		7C37B8E61CF66CA100E83594 /* SystemBlurredImageBackground.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SystemBlurredImageBackground.swift; sourceTree = "<group>"; };
+		7C4C21EE1D4C272E00B85670 /* LoremIpsum.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LoremIpsum.txt; sourceTree = "<group>"; };
 		7C4CCE671D10D36F00784D30 /* SettingsViewController+Templatized.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+Templatized.swift"; sourceTree = "<group>"; };
 		7C582CA11D22E80300707CBE /* VSettingsSwitchCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VSettingsSwitchCell.xib; sourceTree = "<group>"; };
 		7C582CA51D23270000707CBE /* NotificationSettingsViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationSettingsViewControllerTests.swift; sourceTree = "<group>"; };
@@ -3135,6 +3138,7 @@
 		7CC982201D0104EC00583B70 /* VDependencyManager+ForumNetworkSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VDependencyManager+ForumNetworkSource.swift"; sourceTree = "<group>"; };
 		7CC982231D0235D300583B70 /* ForumNavBarTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ForumNavBarTitleView.swift; path = NavBar/ForumNavBarTitleView.swift; sourceTree = "<group>"; };
 		7CCBF2B81D413C7D0075A087 /* CoachmarkManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachmarkManagerTests.swift; sourceTree = "<group>"; };
+		7CEA74C61D4C0F5300EDA15C /* EditProfileDataSourceTests .swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EditProfileDataSourceTests .swift"; sourceTree = "<group>"; };
 		7DBC132F24BC8F3441D72FC8 /* Pods-VictoriousIOSSDKTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousIOSSDKTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousIOSSDKTests/Pods-VictoriousIOSSDKTests.release.xcconfig"; sourceTree = "<group>"; };
 		83063D73BF2679FF010A2245 /* Pods-victorious.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.qa.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.qa.xcconfig"; sourceTree = "<group>"; };
 		861888B7B5EA1C709A7ABB6B /* Pods-VictoriousCommonOSX.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.debug.xcconfig"; sourceTree = "<group>"; };
@@ -6380,6 +6384,7 @@
 				03F2F7941B560B8E00F2EF16 /* sampleImage2.png */,
 				039D02B01A10443200DB9236 /* template.json */,
 				C3C7345A1B61CF3D00D6795D /* voteTypes.json */,
+				7C4C21EE1D4C272E00B85670 /* LoremIpsum.txt */,
 			);
 			path = "Test Data";
 			sourceTree = "<group>";
@@ -8841,6 +8846,7 @@
 				A7AB4FE819F5A6A300BFFE35 /* VVoteTypeFetcherTests.m */,
 				7C582CA51D23270000707CBE /* NotificationSettingsViewControllerTests.swift */,
 				7CCBF2B81D413C7D0075A087 /* CoachmarkManagerTests.swift */,
+				7CEA74C61D4C0F5300EDA15C /* EditProfileDataSourceTests .swift */,
 			);
 			path = victoriousTests;
 			sourceTree = "<group>";
@@ -10770,6 +10776,7 @@
 				0361B8F91C560F970038E9D6 /* alerts.json in Resources */,
 				7C268F051D14A12600E4A66A /* tos.html in Resources */,
 				F0C83A451B0FDD2B00A6EC1A /* coachmarks.json in Resources */,
+				7C4C21EF1D4C272E00B85670 /* LoremIpsum.txt in Resources */,
 				037CB73519CFE02C0084BBED /* sampleImage.jpg in Resources */,
 				03F2F7951B560B8E00F2EF16 /* sampleImage2.png in Resources */,
 				A7CFC1CA19FEE24300726772 /* front_landscape_right.m4v in Resources */,
@@ -12783,6 +12790,7 @@
 				A7D920441C055589002A6503 /* ExperimentSettingsTests.swift in Sources */,
 				7CCBF2B91D413C7D0075A087 /* CoachmarkManagerTests.swift in Sources */,
 				A7DCA5051C128A78004E35B4 /* VSuggestedPeopleTests.m in Sources */,
+				7CEA74C71D4C0F5300EDA15C /* EditProfileDataSourceTests .swift in Sources */,
 				A7DCA4E21C128A78004E35B4 /* VDependencyManager_VNavigationMenuItemTests.m in Sources */,
 				A7DCA4E61C128A78004E35B4 /* VElapsedTimeFormatterTests.m in Sources */,
 				67D3E0521CED4822008F9398 /* TestTrackingManager.swift in Sources */,
