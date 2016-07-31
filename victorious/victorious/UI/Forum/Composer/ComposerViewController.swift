@@ -492,11 +492,12 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         
         let publishParameters = creationFlowController.publishParameters
         if let remoteID = publishParameters.assetRemoteId {
-            let mediaParameters = ContentMediaAsset.LocalAssetParameters(contentType: contentType, remoteID: remoteID, source: publishParameters.source, url: capturedMediaURL)
+            let mediaParameters = ContentMediaAsset.LocalAssetParameters(contentType: contentType, remoteID: remoteID, source: publishParameters.source, size: CGSize(width: publishParameters.width, height: publishParameters.height), url: capturedMediaURL)
             selectedAsset = ContentMediaAsset(initializationParameters: mediaParameters)
         }
         else {
-            let mediaParameters = ContentMediaAsset.RemoteAssetParameters(contentType: contentType, url: capturedMediaURL, source: publishParameters.source)
+            let size = CGSize(width: publishParameters.width, height: publishParameters.height)
+            let mediaParameters = ContentMediaAsset.RemoteAssetParameters(contentType: contentType, url: capturedMediaURL, source: publishParameters.source, size: size)
             selectedAsset = ContentMediaAsset(initializationParameters: mediaParameters)
         }
         let maxDimension = view.bounds.width * Constants.maximumAttachmentWidthPercentage

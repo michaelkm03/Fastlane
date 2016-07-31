@@ -14,5 +14,8 @@ extension VContentMediaAsset: PersistenceParsable {
         v_source = sourceModel.source ?? v_source
         v_externalID = sourceModel.externalID ?? v_externalID
         v_uniqueID = sourceModel.resourceID
+        
+        v_width = Int(sourceModel.size.width)
+        v_height = Int(sourceModel.size.height)
     }
 }
