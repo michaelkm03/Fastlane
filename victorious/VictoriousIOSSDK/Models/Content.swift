@@ -186,7 +186,6 @@ public class Content: ContentModel {
             case .image:
                 self.assets = [ContentMediaAsset(contentType: type, sourceType: sourceType, json: json[typeString])].flatMap { $0 }
             case .gif, .video:
-                print(json[typeString][sourceType].array)
                 self.assets = (json[typeString][sourceType].array ?? []).flatMap { ContentMediaAsset(contentType: type, sourceType: sourceType, json: $0) }
             case .text, .link:
                 self.assets = []
