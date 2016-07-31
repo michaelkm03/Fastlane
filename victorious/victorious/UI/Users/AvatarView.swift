@@ -180,27 +180,23 @@ class AvatarView: UIView {
     private var didSetupKVO = false
     
     private func setupKVO() {
-        guard let user = self.user as? NSObject where !didSetupKVO else {
+        guard let user = self.user as? VUser else {
             return
         }
         
         for key in Constants.observationKeys {
             user.addObserver(self, forKeyPath: key, options: [], context: nil)
         }
-        
-        didSetupKVO = true
     }
     
     private func tearDownKVO() {
-        guard let user = self.user as? VUser where didSetupKVO else {
+        guard let user = self.user as? VUser else {
             return
         }
         
         for key in Constants.observationKeys {
             user.removeObserver(self, forKeyPath: key)
         }
-        
-        didSetupKVO = false
     }
     
     override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
