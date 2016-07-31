@@ -32,6 +32,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     let content: ContentModel
 
     weak var delegate: MediaContentViewDelegate?
+    var shouldSyncOnReappearance = true
 
     // MARK: - Private
 
@@ -126,7 +127,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     // MARK: - Presentable
 
     func willBePresented() {
-        videoCoordinator?.playVideo(withSync: true)
+        videoCoordinator?.playVideo(withSync: shouldSyncOnReappearance)
     }
 
     func willBeDismissed() {

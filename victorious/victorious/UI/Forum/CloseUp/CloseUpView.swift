@@ -102,6 +102,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
         )
         mediaContentView.delegate = self
         mediaContentView.alpha = 0
+        mediaContentView.shouldSyncOnReappearance = false
         
         return mediaContentView
     }
