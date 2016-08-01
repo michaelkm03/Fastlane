@@ -325,12 +325,7 @@ private extension ContentModel {
 
 private extension ContentCreationState {
     var alpha: CGFloat {
-        switch self {
-            case .failed, .sent:
-                return 1.0
-            case .sending, .waiting:
-                return ChatFeedMessageCell.pendingContentAlpha
-        }
+        return self == .failed ? 1.0 : ChatFeedMessageCell.pendingContentAlpha
     }
 }
 
