@@ -49,7 +49,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         didSet {
             updateInsets()
             collectionViewBottom.constant = addedBottomInset
-            collectionView.collectionViewLayout.invalidateLayout()
             collectionView.superview?.layoutIfNeeded()
         }
     }
