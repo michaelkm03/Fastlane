@@ -155,7 +155,8 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
             content: content,
             dependencyManager: dependencyManager,
             fillMode: (content.type == .text ? .fill : .fit),
-            allowsVideoControls: false
+            allowsVideoControls: false,
+            shouldSyncOnReappearance: true
         )
 
         mediaContentView.delegate = self

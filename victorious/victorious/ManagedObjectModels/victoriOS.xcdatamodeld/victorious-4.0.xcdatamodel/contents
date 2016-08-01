@@ -83,10 +83,10 @@
     <entity name="ContentMediaAsset" representedClassName=".VContentMediaAsset" syncable="YES">
         <attribute name="v_externalID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="v_height" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="v_width" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="v_remoteID" attributeType="String" syncable="YES"/>
         <attribute name="v_remoteSource" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="v_source" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="v_uniqueID" attributeType="String" syncable="YES"/>
-        <attribute name="v_width" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <relationship name="v_content" maxCount="1" deletionRule="Nullify" destinationEntity="Content" inverseName="v_contentMediaAssets" inverseEntity="Content" syncable="YES"/>
     </entity>
     <entity name="Conversation" representedClassName="VConversation" syncable="YES">
