@@ -32,7 +32,6 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     let content: ContentModel
 
     weak var delegate: MediaContentViewDelegate?
-    var shouldSyncOnReappearance = true
 
     // MARK: - Private
 
@@ -52,6 +51,8 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     private var videoCoordinator: VContentVideoPlayerCoordinator?
 
     private let spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+    
+    private let shouldSyncOnReappearance: Bool
 
     private lazy var imageView = {
         return UIImageView()
@@ -90,12 +91,14 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         content: ContentModel,
         dependencyManager: VDependencyManager,
         fillMode: FillMode,
-        allowsVideoControls: Bool = false
+        allowsVideoControls: Bool = false,
+        shouldSyncOnReappearance: Bool = false
     ) {
         self.content = content
         self.dependencyManager = dependencyManager
         self.fillMode = fillMode
         self.allowsVideoControls = allowsVideoControls
+        self.shouldSyncOnReappearance = shouldSyncOnReappearance
 
         super.init(frame: CGRect.zero)
         
