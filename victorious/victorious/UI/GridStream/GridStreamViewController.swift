@@ -43,7 +43,6 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
             hasError: hasError
         )
         collectionView.reloadSections(NSIndexSet(index: GridStreamSection.Header.rawValue))
-
     }
     
     private let refreshControl = UIRefreshControl()
@@ -54,6 +53,12 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     private var header: HeaderType?
     
     private var trackingParameters: [NSObject : AnyObject] = [:]
+    
+    var apiPath: APIPath {
+        didSet {
+            dataSource.apiPath = apiPath 
+        }
+    }
     
     // MARK: - ContentCellTracker
     
@@ -74,6 +79,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         self.header = header
         self.content = content
         self.configuration = configuration ?? GridStreamConfiguration()
+        self.apiPath = streamAPIPath
         
         dataSource = GridStreamDataSource<HeaderType>(
             dependencyManager: dependencyManager,

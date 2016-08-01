@@ -320,7 +320,12 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     // MARK: - Managing the user
     
     @objc private func userChanged() {
-        if user?.id == VCurrentUser.user()?.id {
+        if
+            let loggedInUser = VCurrentUser.user(),
+            let currentUser = self.user
+        where
+            currentUser.id != loggedInUser.id
+        {
             setUser(VCurrentUser.user(), using: dependencyManager)
         }
     }
@@ -357,13 +362,15 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         
         comparableUser = newComparableUser
         
+        gridStreamController.apiPath = dependencyManager.streamAPIPath(forUserID: user.id)
         gridStreamController.setContent(user, withError: false)
         
         let appearanceKey = user.isCreator?.boolValue ?? false ? VNewProfileViewController.creatorAppearanceKey : VNewProfileViewController.userAppearanceKey
         let appearanceDependencyManager = dependencyManager.childDependencyForKey(appearanceKey)
         appearanceDependencyManager?.addBackgroundToBackgroundHost(gridStreamController)
-        
+         
         updateBarButtonItems()
+        gridStreamController.refresh()
     }
     
     private static func getUserID(forDependencyManager dependencyManager: VDependencyManager) -> Int {
