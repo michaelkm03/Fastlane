@@ -326,7 +326,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         where
             currentUser.id != loggedInUser.id
         {
-            setUser(VCurrentUser.user(), using: dependencyManager)
+            setUser(loggedInUser, using: dependencyManager)
         }
     }
     
