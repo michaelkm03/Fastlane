@@ -118,7 +118,8 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        contentView.alpha = chatFeedContent?.creationState?.alpha ?? 1.0
+        
+        contentView.alpha = chatFeedContent?.alpha ?? 1.0
         ChatFeedMessageCell.layoutContent(for: self)
     }
     
@@ -325,6 +326,17 @@ private extension ContentModel {
 private extension ContentCreationState {
     var alpha: CGFloat {
         return self == .failed ? 1.0 : ChatFeedMessageCell.pendingContentAlpha
+    }
+}
+
+private extension ChatFeedContent {
+    var alpha: CGFloat {
+        switch content.type {
+            case .text:
+                return 1.0
+            case .gif, .image, .link, .video:
+                return creationState?.alpha ?? 1.0
+        }
     }
 }
 
