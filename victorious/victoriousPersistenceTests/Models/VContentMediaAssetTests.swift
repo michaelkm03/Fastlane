@@ -24,7 +24,7 @@ class VContentMediaAssetTests: BasePersistentStoreTestCase {
         XCTAssertNil(asset.v_externalID)
         XCTAssertNil(asset.v_source)
         XCTAssertEqual(asset.v_remoteSource, "VALID_URL")
-        XCTAssertEqual(asset.v_uniqueID, asset.v_remoteSource)
+        XCTAssertEqual(asset.v_remoteID, asset.v_remoteSource)
     }
     
     func testValidYoutube() {
@@ -40,7 +40,7 @@ class VContentMediaAssetTests: BasePersistentStoreTestCase {
         XCTAssertNil(asset.v_remoteSource)
         XCTAssertEqual(asset.v_source, "youtube")
         XCTAssertEqual(asset.v_externalID, "VALID_ID")
-        XCTAssertEqual(asset.v_uniqueID, asset.v_externalID)
+        XCTAssertEqual(asset.v_remoteID, asset.v_externalID)
     }
     
     func testValidGIF() {
@@ -56,7 +56,7 @@ class VContentMediaAssetTests: BasePersistentStoreTestCase {
         XCTAssertNil(asset.v_externalID)
         XCTAssertNil(asset.v_source)
         XCTAssertEqual(asset.v_remoteSource, "VALID_URL")
-        XCTAssertEqual(asset.v_uniqueID, asset.v_remoteSource)
+        XCTAssertEqual(asset.v_remoteID, asset.v_remoteSource)
     }
     
     func testValidImage() {
@@ -71,7 +71,7 @@ class VContentMediaAssetTests: BasePersistentStoreTestCase {
         
         XCTAssertNil(asset.v_externalID)
         XCTAssertEqual(asset.v_remoteSource, "VALID_URL")
-        XCTAssertEqual(asset.v_uniqueID, asset.v_remoteSource)
+        XCTAssertEqual(asset.v_remoteID, asset.v_remoteSource)
     }
     
     private func createContentMediaAssetFromJSON(fileName fileName: String, contentType: String, sourceType: String) -> VContentMediaAsset? {
