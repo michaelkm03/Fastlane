@@ -160,7 +160,7 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
                     }
                 
                 case .older:
-                    if newItems.count == 0 {
+                    if newItems.count == 0 && error == nil {
                         self?.olderItemsAreAvailable = false
                     }
                     
