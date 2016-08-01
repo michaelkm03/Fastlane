@@ -23,6 +23,10 @@ public enum ForumEvent {
     /// Sends content created by the user.
     case sendContent(ContentModel)
     
+    /// Notifies the chat UI that new messages are being loaded or have finished loading, indicating that a loading
+    /// state should be shown or hidden.
+    case setLoadingContent(Bool)
+    
     /// Notifies that a filter has been applied to the chat feed using the given API path. A nil value indicates that
     /// no filter is being applied.
     case filterContent(path: APIPath?)
