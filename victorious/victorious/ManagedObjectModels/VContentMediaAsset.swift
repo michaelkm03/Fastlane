@@ -73,7 +73,11 @@ class VContentMediaAsset: NSManagedObject, ContentMediaAssetModel {
         return v_externalID
     }
     
-    var size: CGSize {
+    var size: CGSize? {
+        guard v_width != 0 && v_height != 0 else {
+            return nil
+        }
+        
         return CGSize(width: v_width, height: v_height)
     }
 }

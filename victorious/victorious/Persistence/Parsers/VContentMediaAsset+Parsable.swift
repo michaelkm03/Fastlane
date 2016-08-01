@@ -15,7 +15,13 @@ extension VContentMediaAsset: PersistenceParsable {
         v_externalID = sourceModel.externalID ?? v_externalID
         v_uniqueID = sourceModel.resourceID
         
-        v_width = Int(sourceModel.size.width)
-        v_height = Int(sourceModel.size.height)
+        if let size = sourceModel.size {
+            v_width = Int(size.width)
+            v_height = Int(size.height)
+        }
+        else {
+            v_width = 0
+            v_height = 0
+        }
     }
 }
