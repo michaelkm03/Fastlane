@@ -83,10 +83,6 @@ class VIPFlowNavigationController: UINavigationController, VIPGateViewController
 }
 
 private extension VDependencyManager {
-    var isVIPEnabled: Bool? {
-        return vipSubscription?.enabled
-    }
-    
     var backgroundImage: UIImage? {
         return imageForKey("backgroundImage")
     }

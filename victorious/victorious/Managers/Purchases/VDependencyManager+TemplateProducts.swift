@@ -21,6 +21,10 @@ extension VDependencyManager: TemplateProductsDataSource {
         return Subscription(enabled: enabled, iconImage: iconImage)
     }
     
+    var isVIPEnabled: Bool? {
+        return vipSubscription?.enabled
+    }
+    
     var productIdentifiersForVoteTypes: [String] {
         return voteTypes.flatMap { $0.productIdentifier }
     }
