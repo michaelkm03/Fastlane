@@ -50,8 +50,9 @@ class ShowShareContentOperation: MainQueueOperation {
     }
     
     private func activityViewDidFinish(activityType activityType: String, completed: Bool, activityError: NSError?) {
-        if completed,
-        let trackingURLs = content.tracking?.trackingURLsForKey(.share)
+        if
+            completed,
+            let trackingURLs = content.tracking?.trackingURLsForKey(.share)
         {
             VTrackingManager.sharedInstance().trackEvent("event", parameters: [VTrackingKeyUrls : trackingURLs])
         }
