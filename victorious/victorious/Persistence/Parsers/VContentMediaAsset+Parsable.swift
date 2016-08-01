@@ -13,7 +13,7 @@ extension VContentMediaAsset: PersistenceParsable {
         v_remoteSource = sourceModel.url?.absoluteString ?? v_remoteSource
         v_source = sourceModel.source ?? v_source
         v_externalID = sourceModel.externalID ?? v_externalID
-        v_externalID = sourceModel.resourceID
+        v_remoteID = sourceModel.resourceID ?? v_remoteID
         
         if let size = sourceModel.size {
             v_width = Int(size.width)
