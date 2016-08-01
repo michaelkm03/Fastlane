@@ -97,9 +97,9 @@ extension ContentModel {
         return dictionary
     }
     
-    public var seekAheadTime: NSTimeInterval {
+    public var seekAheadTime: NSTimeInterval? {
         guard let localStartTime = localStartTime else {
-            return 0
+            return nil
         }
         
         return NSDate().timeIntervalSinceDate(localStartTime)
