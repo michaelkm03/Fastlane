@@ -74,24 +74,21 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
             assertionFailure("There were no assets for this piece of content.")
             return
         }
-        
-        let item: VVideoPlayerItem?
+
+        let item: VVideoPlayerItem
         
         if asset.videoSource == .youtube {
             item = VVideoPlayerItem(externalID: asset.resourceID)
         }
         else if let resourceURL = NSURL(string: asset.resourceID) {
             item = VVideoPlayerItem(URL: resourceURL)
-        }
-        else {
+        } else {
             return
         }
         
-        if let item = item {
-            item.loop = content.shouldLoop
-            item.useAspectFit = true
-            videoPlayer.setItem(item)
-        }
+        item.loop = content.shouldLoop
+        item.useAspectFit = true
+        videoPlayer.setItem(item)
     }
     
     // MARK: - Managing the video player
