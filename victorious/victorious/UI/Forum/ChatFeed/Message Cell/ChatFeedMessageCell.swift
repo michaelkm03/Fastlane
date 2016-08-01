@@ -119,8 +119,11 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     override func layoutSubviews() {
         super.layoutSubviews()
         var alpha: CGFloat = 1.0
-        if content?.type != .text {
-            alpha = chatFeedContent?.creationState?.alpha ?? 1.0
+        if
+            content?.type != .text,
+            let creationStateAlpha = chatFeedContent?.creationState?.alpha
+        {
+            alpha = creationStateAlpha
         }
         contentView.alpha = alpha
         ChatFeedMessageCell.layoutContent(for: self)
