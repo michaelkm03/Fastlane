@@ -39,19 +39,10 @@ extension VContent: PersistenceParsable {
         
         v_contentPreviewAssets = Set(persistentImageAssets)
         
-        let fetchRequest = NSFetchRequest(entityName: VContentMediaAsset.v_entityName())
-        fetchRequest.predicate = NSPredicate(block: { (asset, dictionary) -> Bool in
-            guard let asset = asset as? VContentMediaAsset else {
-                return false
-            }
-            return asset.v_content.id == self.id
-        })
-        v_managedObjectContext.v_deleteObjects(fetchRequest)
-        
         let persistentAssets: [VContentMediaAsset] = content.assets.flatMap { asset in
-            let data: VContentMediaAsset = self.v_managedObjectContext.v_createObject()
+            let remoteID = asset.resourceID
+            let data: VContentMediaAsset = self.v_managedObjectContext.v_findOrCreateObject(["v_remoteID": remoteID, "v_content": self])
             data.populate(fromSourceModel: asset)
-            data.v_remoteID = asset.resourceID
             data.v_content = self
             return data
         }
