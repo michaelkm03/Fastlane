@@ -36,12 +36,16 @@ extension ChatInterfaceDataSource {
         return visibleItems.count + pendingItems.count
     }
     
-    func content(at index: Int) -> ChatFeedContent {
-        if index < visibleItems.count {
+    func content(at index: Int) -> ChatFeedContent? {
+        let pendingIndex = index - visibleItems.count
+        if pendingIndex < 0 {
             return visibleItems[index]
         }
+        else if pendingIndex < pendingItems.count {
+            return pendingItems[pendingIndex]
+        }
         else {
-            return pendingItems[index - visibleItems.count]
+            return nil
         }
     }
     
@@ -51,9 +55,11 @@ extension ChatInterfaceDataSource {
     
     func cellForItem(for collectionView: UICollectionView, at indexPath: NSIndexPath) -> ChatFeedMessageCell {
         let chatFeedContent = content(at: indexPath.row)
-        let reuseIdentifier = chatFeedContent.content.reuseIdentifier
+        let reuseIdentifier = chatFeedContent?.content.reuseIdentifier ?? ChatFeedMessageCell.defaultReuseIdentifier
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! ChatFeedMessageCell
-        decorate(cell, with: chatFeedContent)
+        if let chatFeedContent = chatFeedContent {
+            decorate(cell, with: chatFeedContent)
+        }
         return cell
     }
     
@@ -61,10 +67,11 @@ extension ChatInterfaceDataSource {
         collectionView.registerClass(ChatFeedMessageCell.self, forCellWithReuseIdentifier: ChatFeedMessageCell.imagePreviewCellReuseIdentifier)
         collectionView.registerClass(ChatFeedMessageCell.self, forCellWithReuseIdentifier: ChatFeedMessageCell.videoPreviewCellReuseIdentifier)
         collectionView.registerClass(ChatFeedMessageCell.self, forCellWithReuseIdentifier: ChatFeedMessageCell.nonMediaCellReuseIdentifier)
+        collectionView.registerClass(ChatFeedMessageCell.self, forCellWithReuseIdentifier: ChatFeedMessageCell.defaultReuseIdentifier)
     }
     
     func desiredCellSize(for collectionView: UICollectionView, at indexPath: NSIndexPath) -> CGSize {
-        return content(at: indexPath.row).size
+        return content(at: indexPath.row)?.size ?? CGSizeZero
     }
     
     func decorate(cell: ChatFeedMessageCell, with chatFeedContent: ChatFeedContent) {

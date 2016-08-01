@@ -49,6 +49,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         didSet {
             updateInsets()
             collectionViewBottom.constant = addedBottomInset
+            collectionView.collectionViewLayout.invalidateLayout()
             collectionView.superview?.layoutIfNeeded()
         }
     }
@@ -60,6 +61,8 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
             collectionView.contentInset = UIEdgeInsetsZero
         }
         else {
+            self.collectionView.collectionViewLayout.invalidateLayout()
+            
             // The added bottom inset value actually needs to get added to the top inset because of the way the bottom
             // inset works. Instead of adjusting the bottom content inset, the added bottom inset will shift the entire
             // collection view upward in its container without adjusting its height. This fixes the scrolling behavior when
@@ -73,7 +76,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
             )
             
             UIView.performWithoutAnimation {
-                self.collectionView.collectionViewLayout.invalidateLayout()
                 self.collectionView.layoutIfNeeded()
             }
         }
