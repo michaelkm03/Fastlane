@@ -19,13 +19,6 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
     private let cellCornerRadius = CGFloat(6)
     private let cellBackgroundColor = UIColor.clearColor()
     private let cellContentBackgroundColor = UIColor.clearColor()
-    
-    var apiPath: APIPath {
-        didSet {
-            apiPath.queryParameters["filter_text"] = "true" 
-            paginatedDataSource.apiPath = apiPath
-        }
-    }
 
     // MARK: - Initializing
     
@@ -37,7 +30,6 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
         self.header = header
         self.content = content
         self.cellFactory = VContentOnlyCellFactory(dependencyManager: gridDependency)
-        self.apiPath = streamAPIPath
         
         streamAPIPath.queryParameters["filter_text"] = "true"
         
