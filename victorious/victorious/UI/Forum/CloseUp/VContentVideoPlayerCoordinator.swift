@@ -82,7 +82,8 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         }
         else if let resourceURL = NSURL(string: asset.resourceID) {
             item = VVideoPlayerItem(URL: resourceURL)
-        } else {
+        }
+        else {
             return
         }
         
