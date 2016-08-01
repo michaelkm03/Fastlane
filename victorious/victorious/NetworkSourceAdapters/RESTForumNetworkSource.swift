@@ -47,7 +47,7 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
             
             dataSource.apiPath = newAPIPath
             
-            loadContent(.refresh) { .replaceContent($0) }
+            loadContent(.refresh)
         }
     }
     
@@ -70,32 +70,32 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     }
     
     @objc private func pollForNewContent() {
-        loadContent(.newer) { .appendContent($0) }
+        loadContent(.newer)
     }
     
     // MARK: - Loading content
     
     /// Loads a page of content with the given `loadingType`.
-    ///
-    /// The caller must provide a `createContentEvent` closure which produces the `ForumEvent` that will append,
-    /// prepend, or replace the fetched content.
-    ///
-    private func loadContent(loadingType: PaginatedLoadingType, createContentEvent: (contents: [ContentModel]) -> ForumEvent) {
-        broadcast(.setLoadingContent(true))
-        
-        dataSource.loadItems(loadingType) { [weak self] contents, stageEvent, error in
+    private func loadContent(loadingType: PaginatedLoadingType) {
+        let itemsWereLoaded = dataSource.loadItems(loadingType) { [weak self] contents, stageEvent, error in
             guard let strongSelf = self else {
                 return
             }
             
-            let contentEvent = createContentEvent(contents: contents.reverse())
+            let contentEvent = loadingType.contentEvent(for: contents.reverse())
             strongSelf.broadcast(contentEvent)
             
             if let stageEvent = stageEvent {
                 strongSelf.broadcast(stageEvent)
             }
             
-            self?.broadcast(.setLoadingContent(false))
+            if loadingType.broadcastsLoading {
+                self?.broadcast(.setLoadingContent(false))
+            }
+        }
+        
+        if itemsWereLoaded && loadingType.broadcastsLoading {
+            broadcast(.setLoadingContent(true))
         }
     }
     
@@ -118,7 +118,7 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
         isSetUp = true
         broadcast(.setOptimisticPostingEnabled(true))
         broadcast(.setChatActivityIndicatorEnabled(true))
-        loadContent(.refresh) { .appendContent($0) }
+        loadContent(.refresh)
         startPolling()
     }
     
@@ -148,7 +148,7 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
         nextSender?.send(event)
         
         switch event {
-            case .loadOldContent: loadContent(.older) { .prependContent($0) }
+            case .loadOldContent: loadContent(.older)
             default: break
         }
     }
@@ -159,6 +159,23 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     
     func receive(event: ForumEvent) {
         // Nothing yet.
+    }
+}
+
+private extension PaginatedLoadingType {
+    var broadcastsLoading: Bool {
+        switch self {
+            case .newer: return false
+            case .older, .refresh: return true
+        }
+    }
+    
+    func contentEvent(for content: [ContentModel]) -> ForumEvent {
+        switch self {
+            case .newer: return .appendContent(content)
+            case .older: return .prependContent(content)
+            case .refresh: return .replaceContent(content)
+        }
     }
 }
 
