@@ -10,7 +10,6 @@ import AVFoundation
 import UIKit
 
 class NativeCameraCreationFlowController: VCreationFlowController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, VPassthroughContainerViewDelegate {
-    
     private var audioSessionCategory = AVAudioSessionCategoryAmbient
     
     private var trackedAppear = false
@@ -101,7 +100,7 @@ class NativeCameraCreationFlowController: VCreationFlowController, UIImagePicker
     
     // MARK: - Notification Response
     
-    func enteredBackground() {
+    dynamic private func enteredBackground() {
         audioSessionCategory = AVAudioSessionCategoryAmbient
     }
     

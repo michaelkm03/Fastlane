@@ -268,7 +268,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     
     // MARK: - Notification Response
     
-    @objc private func returnedFromBackground() {
+    dynamic private func returnedFromBackground() {
         updateAudioSessionCategory()
     }
 }
