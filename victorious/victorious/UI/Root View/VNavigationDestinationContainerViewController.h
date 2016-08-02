@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "VTabMenuContainedViewControllerNavigation.h"
 
 @protocol VNavigationDestination;
 
@@ -28,7 +27,7 @@
  navigationDestination.
  
  */
-@interface VNavigationDestinationContainerViewController : UIViewController <VTabMenuContainedViewControllerNavigation>
+@interface VNavigationDestinationContainerViewController : UIViewController
 
 /**
  *  The designated initializer for VNavigationDestinationContainerViewController.

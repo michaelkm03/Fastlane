@@ -98,8 +98,6 @@
 	<string>victorious.SideNavScaffoldViewController</string>
 	<key>rightNav.screen</key>
 	<string>victorious.RightNavViewController</string>
-	<key>tabMenu.scaffold</key>
-	<string>victorious.VTabScaffoldViewController</string>
 	<key>tab.menu</key>
 	<string>VTabMenuShim</string>
 	<key>stream.screen</key>

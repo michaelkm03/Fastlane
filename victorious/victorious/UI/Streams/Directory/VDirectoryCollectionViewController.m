@@ -384,14 +384,6 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     return [self.dependencyManager stringForKey:VDependencyManagerIDKey];
 }
 
-#pragma mark - VTabMenuContainedViewControllerNavigation
-
-- (void)reselected
-{
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
-    [self.collectionView setContentOffset:CGPointZero animated:YES];
-}
-
 #pragma mark - Paginated Data Source Delegate
 
 - (void)paginatedDataSource:(PaginatedDataSource *)paginatedDataSource didUpdateVisibleItemsFrom:(NSOrderedSet *)oldValue to:(NSOrderedSet *)newValue

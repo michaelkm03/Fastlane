@@ -95,14 +95,4 @@
     [self setNeedsStatusBarAppearanceUpdate];
 }
 
-#pragma mark - VTabMenuContainedViewControllerNavigation
-
-- (void)reselected
-{
-    if ([self.containedViewController conformsToProtocol:@protocol(VTabMenuContainedViewControllerNavigation) ])
-    {
-        [(id <VTabMenuContainedViewControllerNavigation>)self.containedViewController reselected];
-    }
-}
-
 @end

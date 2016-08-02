@@ -1090,14 +1090,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
     return !self.navigationController.navigationBarHidden;
 }
 
-#pragma mark - VTabMenuContainedViewControllerNavigation
-
-- (void)reselected
-{
-    [self.v_navigationController setNavigationBarHidden:NO];
-    [self.collectionView setContentOffset:CGPointZero animated:YES];
-}
-
 #pragma mark - Autoplay Tracking
 
 - (void)trackAutoplayEvent:(VideoTrackingEvent *__nonnull)event

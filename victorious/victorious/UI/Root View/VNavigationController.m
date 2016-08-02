@@ -522,22 +522,6 @@ static const CGFloat kStatusBarHeight = 20.0f;
     [self.delegate navigationController:self didShowViewController:viewController animated:animated];
 }
 
-#pragma mark - VTabMenuContainedViewControllerNavigation
-
-- (void)reselected
-{
-    NSArray *poppedControllers = [self.innerNavigationController popToRootViewControllerAnimated:YES];
-    
-    if ( poppedControllers == nil || [poppedControllers count] == 0 )
-    {
-        id viewController = self.innerNavigationController.viewControllers.firstObject;
-        if ( [viewController conformsToProtocol:@protocol(VTabMenuContainedViewControllerNavigation)] )
-        {
-            [((id<VTabMenuContainedViewControllerNavigation>)viewController) reselected];
-        }
-    }
-}
-
 @end
 
 #pragma mark -

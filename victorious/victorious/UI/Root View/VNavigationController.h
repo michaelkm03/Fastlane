@@ -7,12 +7,11 @@
 //
 
 #import "VHasManagedDependencies.h"
-#import "VTabMenuContainedViewControllerNavigation.h"
 #import <UIKit/UIKit.h>
 
 
 @class VNavigationControllerScrollDelegate;
-@protocol VTabMenuContainedViewControllerNavigation, VNavigationControllerDelegate;
+@protocol VNavigationControllerDelegate;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -20,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
  A wrapper around UINavigation controller 
  that adds some new functionality
  */
-@interface VNavigationController : UIViewController <VHasManagedDependencies, VTabMenuContainedViewControllerNavigation>
+@interface VNavigationController : UIViewController <VHasManagedDependencies>
 
 /**
  The navigation controller doing all the work. Please 

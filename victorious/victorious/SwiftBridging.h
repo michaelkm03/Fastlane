@@ -199,8 +199,6 @@
 #import "VSuggestedUsersDataSource.h"
 #import "VSwipeView.h"
 #import "VTFLog.h"
-#import "VTabMenuShim.h"
-#import "VTabScaffoldHidingHelper.h"
 #import "VTemplateDecorator.h"
 #import "VTextColorTool.h"
 #import "VTextPostTextView.h"
