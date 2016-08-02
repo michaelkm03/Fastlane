@@ -192,7 +192,7 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
             default:
                 XCTFail("Unexpected WebSocketEventType received. Type -> \(websocketEvent)")
             }
-        case .appendContent(_):
+        case .handleContent(_, _):
             expectationIncomingChatMessage?.fulfill()
         case .refreshStage(_):
             expectationRefreshStageMessage?.fulfill()
