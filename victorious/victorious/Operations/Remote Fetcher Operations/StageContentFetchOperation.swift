@@ -51,7 +51,7 @@ class StageContentFetchOperation: RemoteFetcherOperation, RequestOperation {
         
         let timeDiff = NSTimeInterval(serverTime.value - startTime.value)
         let workTime = NSDate().timeIntervalSinceDate(operationStartTime)
-        let seekAheadTime: Double = (timeDiff + workTime)/1000
+        let seekAheadTime: Double = (timeDiff + workTime) / 1000
         
         content.localStartTime = NSDate(timeIntervalSinceNow: -seekAheadTime)
         
