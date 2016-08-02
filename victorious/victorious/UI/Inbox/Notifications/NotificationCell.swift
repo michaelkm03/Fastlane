@@ -72,13 +72,17 @@ class NotificationCell: UITableViewCell, VBackgroundContainer {
     // MARK: - Views
     
     @IBOutlet private var containerView: UIView!
-    @IBOutlet private var avatarView: AvatarView!
+    @IBOutlet private var avatarView: AvatarView! {
+        didSet {
+            avatarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(profileButtonWasPressed)))
+        }
+    }
     @IBOutlet private var messageLabel: IntrinsicContentSizeHackLabel!
     @IBOutlet private var dateLabel: UILabel!
     
     // MARK: - Actions
     
-    @IBAction private func profileButtonWasPressed() {
+    @objc private func profileButtonWasPressed() {
         delegate?.cellDidSelectProfile(self)
     }
     
