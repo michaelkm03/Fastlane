@@ -89,8 +89,8 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         setupUI()
     }
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
 
         if mediaContentView?.seekableWithinBounds == true {
             show(animated: false)

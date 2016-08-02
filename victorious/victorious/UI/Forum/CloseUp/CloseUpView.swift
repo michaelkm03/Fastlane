@@ -309,11 +309,11 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
         }
     }
     
-    func headerWillAppear() {
+    func headerDidAppear() {
         mediaContentView?.willBePresented()
     }
     
-    func headerDidDisappear() {
+    func headerWillDisappear() {
         mediaContentView?.willBeDismissed()
     }
     
