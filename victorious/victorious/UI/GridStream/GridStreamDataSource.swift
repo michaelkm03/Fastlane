@@ -81,7 +81,10 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
             if loadingType == .refresh {
                 // Reloading the non-header section
                 // Also, collectionView.reloadData() was not properly reloading the cells.
-                collectionView.reloadSections(NSIndexSet(index: GridStreamSection.Contents.rawValue))
+                let desiredSection = GridStreamSection.Contents.rawValue
+                if collectionView.numberOfSections() > desiredSection {
+                    collectionView.reloadSections(NSIndexSet(index: desiredSection))
+                }
             }
             else if let totalItemCount = self?.items.count where newItems.count > 0 {
                 collectionView.collectionViewLayout.invalidateLayout()

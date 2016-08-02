@@ -15,7 +15,7 @@ class ContentPreviewView: UIView {
         static let playButtonSize = CGSize(width: 30, height: 30)
         
         static let loadingColor = UIColor.whiteColor().colorWithAlphaComponent(0.2)
-        static let imageViewBlurEffectRadius: CGFloat = 6.0
+        static let imageViewBlurEffectRadius: CGFloat = 12.0
         
         static let vipMargins: CGFloat = 6
         static let vipSize = CGSize(width: 30, height: 30)

@@ -6,7 +6,7 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 /// The source of where the video is hosted.
 /// - note: We currently only need to differentiate Youtube videos from other videos.
@@ -36,22 +36,26 @@ public protocol ContentMediaAssetModel {
     
     /// The YouTube or Giphy external ID of the content.
     var externalID: String? { get }
+    
+    var size: CGSize? { get }
 }
 
 public enum ContentMediaAsset: ContentMediaAssetModel {
-    case video(url: NSURL, source: String?)
+    case video(url: NSURL, source: String?, size: CGSize)
     case youtube(remoteID: String, source: String?)
-    case gif(remoteID: String?, url: NSURL, source: String?)
-    case image(url: NSURL)
+    case gif(remoteID: String?, url: NSURL, source: String?, size: CGSize)
+    case image(url: NSURL, size: CGSize)
     
     public struct RemoteAssetParameters {
         public let contentType: ContentType
         public let url: NSURL
         public let source: String?
-        public init(contentType: ContentType, url: NSURL, source: String?) {
+        public let size: CGSize
+        public init(contentType: ContentType, url: NSURL, source: String?, size: CGSize) {
             self.contentType = contentType
             self.url = url
             self.source = source
+            self.size = size
         }
     }
     
@@ -60,24 +64,30 @@ public enum ContentMediaAsset: ContentMediaAssetModel {
         public let remoteID: String
         public let source: String?
         public let url: NSURL?
-        public init(contentType: ContentType, remoteID: String, source: String?, url: NSURL? = nil) {
+        public let size: CGSize
+        public init(contentType: ContentType, remoteID: String, source: String?, size: CGSize, url: NSURL? = nil) {
             self.contentType = contentType
             self.remoteID = remoteID
             self.source = source
+            self.size = size
             self.url = url
         }
     }
     
     public init?(contentType: ContentType, sourceType: String, json: JSON) {
+        let width = CGFloat(json["width"].float ?? 0.0)
+        let height = CGFloat(json["height"].float ?? 0.0)
+        let size = CGSize(width: width, height: height)
+
         switch contentType {
             case .image:
                 guard let url = json["data"].URL else {
                     return nil
                 }
-                self = .image(url: url)
+                self = .image(url: url, size: size)
             case .video, .gif:
                 var url: NSURL?
-                
+
                 switch sourceType {
                 case "video_assets":
                     url = json["data"].URL
@@ -94,17 +104,21 @@ public enum ContentMediaAsset: ContentMediaAssetModel {
                     if let source = source,
                         let externalID = externalID where source == "youtube" {
                         self = .youtube(remoteID: externalID, source: source)
-                    } else if let url = url {
-                        self = .video(url: url, source: source)
-                    } else {
+                    }
+                    else if let url = url {
+                        self = .video(url: url, source: source, size: size)
+                    }
+                    else {
                         return nil
                     }
-                } else if contentType == .gif {
+                }
+                else if contentType == .gif {
                     guard let url = url else {
                         return nil
                     }
-                    self = .gif(remoteID: externalID, url: url, source: source)
-                } else {
+                    self = .gif(remoteID: externalID, url: url, source: source, size: size)
+                }
+                else {
                     return nil
                 }
             case .text, .link:
@@ -113,14 +127,25 @@ public enum ContentMediaAsset: ContentMediaAssetModel {
     }
     
     public init?(initializationParameters parameters: RemoteAssetParameters) {
-        self.init(contentType: parameters.contentType, source: parameters.source, url: parameters.url)
+        self.init(
+            contentType: parameters.contentType,
+            source: parameters.source,
+            size: parameters.size,
+            url: parameters.url
+        )
     }
     
     public init?(initializationParameters parameters: LocalAssetParameters) {
-        self.init(contentType: parameters.contentType, source: parameters.source, remoteID: parameters.remoteID, url: parameters.url)
+        self.init(
+            contentType: parameters.contentType,
+            source: parameters.source,
+            size: parameters.size,
+            remoteID: parameters.remoteID,
+            url: parameters.url
+        )
     }
     
-    private init?(contentType: ContentType, source: String?, remoteID: String? = nil, url: NSURL? = nil) {
+    private init?(contentType: ContentType, source: String?, size: CGSize, remoteID: String? = nil, url: NSURL? = nil) {
         guard url != nil || remoteID != nil else {
             // By using the initialziation structs, we should NEVER make it here
             assertionFailure("invalid initialization parameters provided to \(#function)")
@@ -141,30 +166,35 @@ public enum ContentMediaAsset: ContentMediaAssetModel {
                     guard let url = url else {
                         return nil
                     }
-                    self = .video(url: url, source: source)
+                    self = .video(url: url, source: source, size: size)
                 }
             case .gif:
                 guard let url = url else {
                     return nil
                 }
-                self = .gif(remoteID: remoteID, url: url, source: source)
+                self = .gif(remoteID: remoteID, url: url, source: source, size: size)
             case .image:
                 guard let url = url else {
                     return nil
                 }
-                self = .image(url: url)
+                self = .image(url: url, size: size)
         }
     }
     
     public init?(forumJSON json: JSON) {
-        guard let url = NSURL(vsdk_string: json["url"].string) else {
+        guard
+            let url = NSURL(vsdk_string: json["url"].string),
+            let width = json["width"].int,
+            let height = json["height"].int
+        else {
             return nil
         }
+        let size = CGSize(width: width, height: height)
         
         switch json["type"].stringValue.lowercaseString {
-            case "image": self = .image(url: url)
-            case "video": self = .video(url: url, source: nil)
-            case "gif": self = .gif(remoteID: nil, url: url, source: nil)
+            case "image": self = .image(url: url, size: size)
+            case "video": self = .video(url: url, source: nil, size: size)
+            case "gif": self = .gif(remoteID: nil, url: url, source: nil, size: size)
             default: return nil
         }
     }
@@ -173,9 +203,9 @@ public enum ContentMediaAsset: ContentMediaAssetModel {
     public var url: NSURL? {
         switch self {
             case .youtube(_, _): return nil
-            case .video(let url, _): return url
-            case .gif(_, let url, _): return url
-            case .image(let url): return url
+            case .video(let url, _, _): return url
+            case .gif(_, let url, _, _): return url
+            case .image(let url, _): return url
         }
     }
     
@@ -183,8 +213,8 @@ public enum ContentMediaAsset: ContentMediaAssetModel {
     public var source: String? {
         switch self {
             case .youtube(_, let source): return source
-            case .video(_, let source): return source
-            case .gif(_, _, let source): return source
+            case .video(_, let source, _): return source
+            case .gif(_, _, let source, _): return source
             default: return nil
         }
     }
@@ -193,7 +223,7 @@ public enum ContentMediaAsset: ContentMediaAssetModel {
     public var externalID: String? {
         switch self {
             case .youtube(let externalID, _): return externalID
-            case .gif(let externalID, _, _): return externalID
+            case .gif(let externalID, _, _, _): return externalID
             default: return nil
         }
     }
@@ -201,17 +231,17 @@ public enum ContentMediaAsset: ContentMediaAssetModel {
     public var uniqueID: String {
         switch self {
             case .youtube(let externalID, _): return externalID
-            case .video(let url, _): return url.absoluteString
-            case .gif(_, let url, _): return url.absoluteString
-            case .image(let url): return url.absoluteString
+            case .video(let url, _, _): return url.absoluteString
+            case .gif(_, let url, _, _): return url.absoluteString
+            case .image(let url, _): return url.absoluteString
         }
     }
     
     public var contentType: ContentType {
         switch self {
-            case .youtube(_, _), .video(_, _): return .video
-            case .gif(_, _, _): return .gif
-            case .image(_): return .image
+            case .youtube(_, _), .video(_, _, _): return .video
+            case .gif(_, _, _, _): return .gif
+            case .image(_, _): return .image
         }
     }
     
@@ -223,9 +253,22 @@ public enum ContentMediaAsset: ContentMediaAssetModel {
     
     public var videoSource: ContentVideoAssetSource? {
         switch self {
-            case .video(_, _), .gif(_, _, _): return .video
+            case .video(_, _, _), .gif(_, _, _, _): return .video
             case .youtube(_, _): return .youtube
-            case .image(_): return nil
+            case .image(_, _): return nil
+        }
+    }
+    
+    public var size: CGSize? {
+        switch self {
+            case .gif(_, _, _, let size):
+                return size
+            case .youtube(_):
+                return nil
+            case .video(_, _, let size):
+                return size
+            case.image(_, let size):
+                return size
         }
     }
 }

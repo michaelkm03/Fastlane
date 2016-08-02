@@ -174,33 +174,25 @@ class AvatarView: UIView {
     /// This class handles KVO using the Foundation APIs since FBKVOController has a weird bug with multiple instances
     /// of the same class observing the same object. 
     /// Also, the user object can be a userModel, which may or may not be persistent. Only the persistent VUser can 
-    /// be KVO'd, hence we must check for this in the setup function. We also use the didSetupKVO flag to ensure 
-    /// that we only remove observers if we set them up (we will not set them up for non-persistent users). 
-    
-    private var didSetupKVO = false
-    
+    /// be KVO'd, hence we must check for this in the setup function.
     private func setupKVO() {
-        guard let user = self.user as? NSObject where !didSetupKVO else {
+        guard let user = self.user as? VUser else {
             return
         }
         
         for key in Constants.observationKeys {
             user.addObserver(self, forKeyPath: key, options: [], context: nil)
         }
-        
-        didSetupKVO = true
     }
     
     private func tearDownKVO() {
-        guard let user = self.user as? VUser where didSetupKVO else {
+        guard let user = self.user as? VUser else {
             return
         }
         
         for key in Constants.observationKeys {
             user.removeObserver(self, forKeyPath: key)
         }
-        
-        didSetupKVO = false
     }
     
     override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
