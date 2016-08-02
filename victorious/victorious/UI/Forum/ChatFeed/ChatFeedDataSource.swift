@@ -64,26 +64,8 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     
     func receive(event: ForumEvent) {
         switch event {
-            case .appendContent(let newItems):
-                let newItems = createNewItemsArray(newItems)
-                if stashingEnabled {
-                    stashedItems.appendContentsOf(newItems)
-                    delegate?.chatFeedDataSource(self, didStashItems: newItems)
-                } else {
-                    visibleItems.appendContentsOf(newItems)
-                    delegate?.chatFeedDataSource(self, didLoadItems: newItems, loadingType: .newer)
-                }
-            
-            case .prependContent(let newItems):
-               let newItems = createNewItemsArray(newItems)
-                visibleItems = newItems + visibleItems
-                delegate?.chatFeedDataSource(self, didLoadItems: newItems, loadingType: .older)
-            
-            case .replaceContent(let newItems):
-                let newItems = createNewItemsArray(newItems)
-                visibleItems = newItems
-                stashedItems = []
-                delegate?.chatFeedDataSource(self, didLoadItems: newItems, loadingType: .refresh)
+            case .handleContent(let newItems, let loadingType):
+                handleItems(newItems, withLoadingType: loadingType)
             
             case .filterContent(let path):
                 let isFilteredFeed = path != nil
@@ -97,6 +79,32 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     
     // MARK: - Internal helpers
     
+    private func handleItems(newItems: [ContentModel], withLoadingType loadingType: PaginatedLoadingType) {
+        switch loadingType {
+            case .newer:
+                let newItems = createNewItemsArray(newItems)
+                
+                if stashingEnabled {
+                    stashedItems.appendContentsOf(newItems)
+                    delegate?.chatFeedDataSource(self, didStashItems: newItems)
+                }
+                else {
+                    visibleItems.appendContentsOf(newItems)
+                    delegate?.chatFeedDataSource(self, didLoadItems: newItems, loadingType: .newer)
+                }
+                
+            case .older:
+                let newItems = createNewItemsArray(newItems)
+                visibleItems = newItems + visibleItems
+                delegate?.chatFeedDataSource(self, didLoadItems: newItems, loadingType: .older)
+                
+            case .refresh:
+                let newItems = createNewItemsArray(newItems)
+                visibleItems = newItems
+                stashedItems = []
+                delegate?.chatFeedDataSource(self, didLoadItems: newItems, loadingType: .refresh)
+        }
+    }
     private func createNewItemsArray(contents: [ContentModel]) -> [ChatFeedContent] {
         guard let width = delegate?.chatFeedItemWidth else {
             return []

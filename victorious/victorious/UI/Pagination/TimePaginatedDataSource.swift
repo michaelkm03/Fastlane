@@ -11,18 +11,6 @@ protocol PaginatableItem {
     var createdAt: Timestamp { get }
 }
 
-/// The different ways that paginated items can be loaded.
-enum PaginatedLoadingType {
-    /// Loads the newest page of items, replacing any existing items.
-    case refresh
-    
-    /// Loads newer items, prepending them to the list.
-    case newer
-    
-    /// Loads older items, appending them to the list.
-    case older
-}
-
 /// An enum for expected ordering of paginated content.
 enum PaginatedOrdering {
     /// New items will be appended to the end of a `TimePaginatedDataSource`'s `items`.
@@ -58,6 +46,8 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
     /// The path to the resource that will be paginated. Must contain the appropriate pagination substitution macros.
     var apiPath: APIPath {
         didSet {
+            // Switching API paths means we have a new set of content, so older items are now potentially available
+            // again. If we don't reset this, we can get into a state where we prematurely stop loading older items.
             olderItemsAreAvailable = true
         }
     }

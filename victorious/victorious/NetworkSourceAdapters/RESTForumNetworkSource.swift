@@ -82,20 +82,17 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
                 return
             }
             
-            let contentEvent = loadingType.contentEvent(for: contents.reverse())
-            strongSelf.broadcast(contentEvent)
+            strongSelf.broadcast(.handleContent(contents.reverse(), loadingType))
             
             if let stageEvent = stageEvent {
                 strongSelf.broadcast(stageEvent)
             }
             
-            if loadingType.broadcastsLoading {
-                self?.broadcast(.setLoadingContent(false))
-            }
+            self?.broadcast(.setLoadingContent(false, loadingType))
         }
         
-        if itemsWereLoaded && loadingType.broadcastsLoading {
-            broadcast(.setLoadingContent(true))
+        if itemsWereLoaded {
+            broadcast(.setLoadingContent(true, loadingType))
         }
     }
     
@@ -159,23 +156,6 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     
     func receive(event: ForumEvent) {
         // Nothing yet.
-    }
-}
-
-private extension PaginatedLoadingType {
-    var broadcastsLoading: Bool {
-        switch self {
-            case .newer: return false
-            case .older, .refresh: return true
-        }
-    }
-    
-    func contentEvent(for content: [ContentModel]) -> ForumEvent {
-        switch self {
-            case .newer: return .appendContent(content)
-            case .older: return .prependContent(content)
-            case .refresh: return .replaceContent(content)
-        }
     }
 }
 

@@ -113,7 +113,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     func receive(event: ForumEvent) {
         switch event {
             case .setChatActivityIndicatorEnabled(let enabled): activityIndicatorEnabled = enabled
-            case .setLoadingContent(let isLoading): self.isLoading = isLoading
+            case .setLoadingContent(let isLoading, let loadingType): self.isLoading = isLoading && loadingType.showsLoadingState
             default: break
         }
     }
@@ -353,6 +353,15 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     
     private dynamic func onTimerTick() {
         dataSource.updateTimestamps(in: collectionView)
+    }
+}
+
+private extension PaginatedLoadingType {
+    var showsLoadingState: Bool {
+        switch self {
+            case .newer: return false
+            case .older, .refresh: return true
+        }
     }
 }
 
