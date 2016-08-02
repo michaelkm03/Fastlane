@@ -17,7 +17,6 @@ class CoachmarkDismissAnimationController: NSObject, UIViewControllerAnimatedTra
     func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
         guard
             let originVC = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey) as? CoachmarkViewController,
-            let containerView = transitionContext.containerView()
         else {
             return
         }
