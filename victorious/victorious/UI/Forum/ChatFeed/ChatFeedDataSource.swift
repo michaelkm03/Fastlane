@@ -88,6 +88,8 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
             case .filterContent(let path):
                 let isFilteredFeed = path != nil
                 shouldShowPendingItems = !isFilteredFeed
+                clearItems()
+            
             default:
                 break
         }
@@ -103,6 +105,12 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
         return contents.flatMap(){ content in
             ChatFeedContent(content: content, width: width, dependencyManager: dependencyManager)
         }
+    }
+    
+    private func clearItems() {
+        visibleItems = []
+        stashedItems = []
+        delegate?.chatFeedDataSource(self, didLoadItems: [], loadingType: .refresh)
     }
     
     // MARK: - ForumEventSender
