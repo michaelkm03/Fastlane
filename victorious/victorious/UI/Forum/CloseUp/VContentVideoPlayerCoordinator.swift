@@ -74,8 +74,8 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
             assertionFailure("There were no assets for this piece of content.")
             return
         }
-        
-        let item: VVideoPlayerItem?
+
+        let item: VVideoPlayerItem
         
         if asset.videoSource == .youtube {
             item = VVideoPlayerItem(externalID: asset.resourceID)
@@ -87,11 +87,9 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
             return
         }
         
-        if let item = item {
-            item.loop = content.shouldLoop
-            item.useAspectFit = true
-            videoPlayer.setItem(item)
-        }
+        item.loop = content.shouldLoop
+        item.useAspectFit = true
+        videoPlayer.setItem(item)
     }
     
     // MARK: - Managing the video player
@@ -127,8 +125,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     /// Plays the video belonging to the content passed in during initialization.
     /// `synced` can be used to enable the syncing feature where the video would be synced between all users of the app.
     func playVideo(withSync synced: Bool = false) {
-        if synced {
-            let seekAheadTime = content.seekAheadTime
+        if let seekAheadTime = content.seekAheadTime where synced {
             if Int(videoPlayer.currentTimeSeconds) <= Int(seekAheadTime) {
                 videoPlayer.seekToTimeSeconds(seekAheadTime)
             }
@@ -146,8 +143,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     }
     
     private func prepareToPlay() {
-        let seekAheadTime = content.seekAheadTime
-        if Int(videoPlayer.currentTimeSeconds) <= Int(seekAheadTime) {
+        if let seekAheadTime = content.seekAheadTime where Int(videoPlayer.currentTimeSeconds) <= Int(seekAheadTime) {
             videoPlayer.seekToTimeSeconds(seekAheadTime)
         }
         delegate?.coordinatorDidBecomeReady()
@@ -156,7 +152,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     // MARK: - Layout
 
     func layout(in bounds: CGRect, with fillMode: FillMode = .fit) {
-        let boundsAspectRatio = bounds.size.aspectRatio
+        let boundsAspectRatio = bounds.size.aspectRatio ?? 1
         
         if let contentAspectRatio = content.naturalMediaAspectRatio where contentAspectRatio != boundsAspectRatio && (fillMode == .fill) {
             // This expands the frame of the video player to fill the given bounds.

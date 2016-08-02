@@ -82,12 +82,14 @@ class CreateMediaUploadOperation: BackgroundOperation {
             "name": publishParameters.caption ?? "",
             "is_gif_style": publishParameters.isGIF ? "true" : "false",
             "did_crop": publishParameters.didCrop ? "true" : "false",
-            "did_trim": publishParameters.didTrim ? "true" : "false",
+            "did_trim": publishParameters.didTrim ? "true" : "false"
         ]
         
         /// Assumption here is that we don't need to send both the assetRemoteID and mediaURL
         if let assetRemoteID = publishParameters.assetRemoteId {
             dict["remote_id"] = assetRemoteID
+            dict["remote_width"] = "\(publishParameters.width)"
+            dict["remote_height"] = "\(publishParameters.height)"
         } else if let mediaURL = mediaURL {
             dict["media_data"] = mediaURL
         }

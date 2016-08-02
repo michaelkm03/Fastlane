@@ -139,11 +139,13 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         supplementalRightButtons = []
         
         let isCurrentUser = user?.isCurrentUser == true
-        let currentIsCreator = VCurrentUser.user()?.isCreator == true
         let isCreator = user?.accessLevel.isCreator == true
+        let currentIsCreator = VCurrentUser.user()?.isCreator == true
+        let currentIsVIP = VCurrentUser.user()?.hasValidVIPSubscription == true
+        let vipEnabled = dependencyManager.isVIPEnabled == true
         
         if !isCurrentUser {
-            if isCreator && VCurrentUser.user()?.hasValidVIPSubscription != true && !currentIsCreator {
+            if isCreator && !currentIsVIP && !currentIsCreator && vipEnabled {
                 supplementalRightButtons.append(UIBarButtonItem(customView: upgradeButton))
             }
             
