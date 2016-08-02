@@ -8,20 +8,18 @@
 
 /// An event that can be broadcast in the forum event chain.
 public enum ForumEvent {
-    /// Requests that the given content is appended to the chat feed.
-    case appendContent([ContentModel])
-    
-    /// Requests that the given content is prepended to the chat feed.
-    case prependContent([ContentModel])
-    
-    /// Requests that the current chat feed content is replaced with the given content.
-    case replaceContent([ContentModel])
+    /// Notifies that content has arrived with the given loading type.
+    case handleContent([ContentModel], PaginatedLoadingType)
     
     /// Requests loading of older content in the chat feed.
     case loadOldContent
     
     /// Sends content created by the user.
     case sendContent(ContentModel)
+    
+    /// Notifies the chat UI that new messages are being loaded or have finished loading with the given loading type,
+    /// indicating that a loading state should be shown or hidden.
+    case setLoadingContent(Bool, PaginatedLoadingType)
     
     /// Notifies that a filter has been applied to the chat feed using the given API path. A nil value indicates that
     /// no filter is being applied.

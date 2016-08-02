@@ -11,21 +11,13 @@ protocol PaginatableItem {
     var createdAt: Timestamp { get }
 }
 
-/// The different ways that paginated items can be loaded.
-enum PaginatedLoadingType {
-    /// Loads the newest page of items, replacing any existing items.
-    case refresh
-    
-    /// Loads newer items, prepending them to the list.
-    case newer
-    
-    /// Loads older items, appending them to the list.
-    case older
-}
-
 /// An enum for expected ordering of paginated content.
 enum PaginatedOrdering {
-    case ascending, descending
+    /// New items will be appended to the end of a `TimePaginatedDataSource`'s `items`.
+    case ascending
+    
+    /// New items will be prepended to the end of a `TimePaginatedDataSource`'s `items`.
+    case descending
 }
 
 /// An object that manages a paginated list of items retrieved from an operation using a time-based pagination system.
@@ -42,17 +34,34 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
     
     // MARK: - Initializing
     
-    init(apiPath: APIPath, ordering: PaginatedOrdering = .descending, createOperation: (url: NSURL) -> Operation) {
+    init(apiPath: APIPath, ordering: PaginatedOrdering = .descending, throttleTime: NSTimeInterval = 1.0, createOperation: (url: NSURL) -> Operation) {
         self.apiPath = apiPath
         self.ordering = ordering
+        self.throttleTime = throttleTime
         self.createOperation = createOperation
     }
     
     // MARK: - Configuration
     
-    var apiPath: APIPath
+    /// The path to the resource that will be paginated. Must contain the appropriate pagination substitution macros.
+    var apiPath: APIPath {
+        didSet {
+            // Switching API paths means we have a new set of content, so older items are now potentially available
+            // again. If we don't reset this, we can get into a state where we prematurely stop loading older items.
+            olderItemsAreAvailable = true
+        }
+    }
+    
+    /// The expected ordering of the items managed by the data source.
     let ordering: PaginatedOrdering
+    
+    /// The minimum time between requests for item loading.
+    let throttleTime: NSTimeInterval
+    
+    /// A function that converts a URL into an operation that loads a page of items.
     let createOperation: (url: NSURL) -> Operation
+    
+    /// The operation that is currently loading items, if any.
     private var currentOperation: Operation?
     
     // MARK: - Managing contents
@@ -65,27 +74,60 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
         return (currentOperation?.cancelled == false)
     }
     
+    /// Whether the data source has determined that additional older items are available or not.
+    ///
+    /// The data source will set this to false once it requests an older page and receives no items.
+    ///
+    private(set) var olderItemsAreAvailable = true
+    
+    /// The time that items were last requested.
+    private var lastLoadTime: NSDate?
+    
+    /// Whether the `lastLoadTime` was recent enough that we should throttle item loading.
+    private var shouldThrottle: Bool {
+        guard let lastLoadTime = lastLoadTime else {
+            return false
+        }
+        
+        return fabs(lastLoadTime.timeIntervalSinceNow) < throttleTime
+    }
+    
+    /// Whether the data source is in a state that should allow loading items for the given `loadingType`.
+    private func shouldLoadItems(for loadingType: PaginatedLoadingType) -> Bool {
+        guard !isLoading else {
+            return false
+        }
+        
+        switch loadingType {
+            case .newer: return !shouldThrottle
+            case .older: return olderItemsAreAvailable && !shouldThrottle
+            case .refresh: return true
+        }
+    }
+    
     /// Loads a new page of items.
     ///
     /// The `items` array will be updated automatically before `completion` is called.
     ///
-    /// This method does nothing if a page is already being loaded.
+    /// - RETURNS: Whether or not items were actually requested to be loaded. Items will not be loaded if a page is
+    /// already being loaded, or if loading is being throttled.
     ///
-    func loadItems(loadingType: PaginatedLoadingType, completion: ((newItems: [Item], stageEvent: ForumEvent?, error: NSError?) -> Void)? = nil) {
+    func loadItems(loadingType: PaginatedLoadingType, completion: ((newItems: [Item], stageEvent: ForumEvent?, error: NSError?) -> Void)? = nil) -> Bool {
         if loadingType == .refresh {
             currentOperation?.cancel()
             currentOperation = nil
         }
         
-        guard !isLoading else {
-            return
+        guard shouldLoadItems(for: loadingType) else {
+            return false
         }
         
         guard let url = processedURL(for: loadingType) else {
             assertionFailure("Failed to construct a valid URL when loading a page in TimePaginatedDataSource.")
-            return
+            return false
         }
         
+        lastLoadTime = NSDate()
         currentOperation = createOperation(url: url)
         
         currentOperation?.queue { [weak self] newItems, stageEvent, error in
@@ -108,6 +150,10 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
                     }
                 
                 case .older:
+                    if newItems.count == 0 && error == nil {
+                        self?.olderItemsAreAvailable = false
+                    }
+                    
                     switch ordering {
                         case .descending: self?.appendItems(newItems)
                         case .ascending: self?.prependItems(newItems)
@@ -116,6 +162,8 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
             
             self?.currentOperation = nil
         }
+        
+        return true
     }
     
     private func prependItems(newItems: [Item]) {
