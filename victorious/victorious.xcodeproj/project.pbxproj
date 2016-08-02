@@ -1212,8 +1212,6 @@
 		A76711E81C1B4F47006568DF /* DefaultTimingTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76711E51C1B4F47006568DF /* DefaultTimingTracker.swift */; };
 		A76711EA1C1B5067006568DF /* VAppTimingEventType.m in Sources */ = {isa = PBXBuildFile; fileRef = A76711E61C1B4F47006568DF /* VAppTimingEventType.m */; };
 		A76711EC1C1B5C6C006568DF /* AppTimingStreamHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76711EB1C1B5C6C006568DF /* AppTimingStreamHelper.swift */; };
-		A76711EE1C1B5FC1006568DF /* ContentViewAppTimingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76711ED1C1B5FC1006568DF /* ContentViewAppTimingHelper.swift */; };
-		A76711F51C1B7CCD006568DF /* ContentViewAppTimingHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76711F41C1B7CCD006568DF /* ContentViewAppTimingHelperTests.swift */; };
 		A76711FB1C1B7DD7006568DF /* TimingTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76711FA1C1B7DD7006568DF /* TimingTracker.swift */; };
 		A76711FD1C1B83FF006568DF /* AppTimingStreamHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76711FC1C1B83FF006568DF /* AppTimingStreamHelperTests.swift */; };
 		A76711FF1C1B8439006568DF /* MockTimingTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76711FE1C1B8439006568DF /* MockTimingTracker.swift */; };
@@ -3686,10 +3684,8 @@
 		A76711E61C1B4F47006568DF /* VAppTimingEventType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAppTimingEventType.m; sourceTree = "<group>"; };
 		A76711E71C1B4F47006568DF /* VAppTimingEventType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAppTimingEventType.h; sourceTree = "<group>"; };
 		A76711EB1C1B5C6C006568DF /* AppTimingStreamHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppTimingStreamHelper.swift; sourceTree = "<group>"; };
-		A76711ED1C1B5FC1006568DF /* ContentViewAppTimingHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentViewAppTimingHelper.swift; sourceTree = "<group>"; };
 		A76711EF1C1B6C94006568DF /* DefaultTimingTrackerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultTimingTrackerTests.swift; sourceTree = "<group>"; };
 		A76711F31C1B6E54006568DF /* VEventTracker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VEventTracker.h; sourceTree = "<group>"; };
-		A76711F41C1B7CCD006568DF /* ContentViewAppTimingHelperTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentViewAppTimingHelperTests.swift; sourceTree = "<group>"; };
 		A76711FA1C1B7DD7006568DF /* TimingTracker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimingTracker.swift; sourceTree = "<group>"; };
 		A76711FC1C1B83FF006568DF /* AppTimingStreamHelperTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppTimingStreamHelperTests.swift; sourceTree = "<group>"; };
 		A76711FE1C1B8439006568DF /* MockTimingTracker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockTimingTracker.swift; sourceTree = "<group>"; };
@@ -5214,7 +5210,6 @@
 				036E87B11ACB6B3F00E5AAAD /* VContentViewFactory.m */,
 				D8E39BB419CB7C3C007FD86A /* VContentViewViewModel.h */,
 				D8E39BB519CB7C3C007FD86A /* VContentViewViewModel.m */,
-				A76711ED1C1B5FC1006568DF /* ContentViewAppTimingHelper.swift */,
 				A7078D061BFC1367008FB7FF /* VContentViewViewModel.swift */,
 				D8E39BB619CB7C3C007FD86A /* VNewContentViewController.h */,
 				D8E39BB719CB7C3C007FD86A /* VNewContentViewController.m */,
@@ -8766,7 +8761,6 @@
 				7AB55FE61CADF06000EBE31E /* CGSize+CornerRadiusTests.swift */,
 				F0BD812C1C9B67150062D079 /* ComposerAttachmentTabBarButtonTests.swift */,
 				7A5519ED1D24778C00CD6BCF /* ContentMediaSizeTests.swift */,
-				A76711F41C1B7CCD006568DF /* ContentViewAppTimingHelperTests.swift */,
 				F0BD812A1C9B645F0062D079 /* CreationFlowTypeHelperTests.swift */,
 				6756BF471D469AC300CF5F2B /* Deeplink */,
 				A76711EF1C1B6C94006568DF /* DefaultTimingTrackerTests.swift */,
@@ -8779,7 +8773,6 @@
 				67CA1EAD1CB590F10023278F /* InterstitialManagerTests.swift */,
 				BF5857EB1C920276007684FE /* MediaSearchMediaExporterTests.swift */,
 				A7DCA51B1C128FD0004E35B4 /* NetworkActivityIndicatorTests.swift */,
-				7C582CA51D23270000707CBE /* NotificationSettingsViewControllerTests.swift */,
 				6236FF2F1C45E154006F4F23 /* NSBundle+TestBundleTests.swift */,
 				A7A2E0001A38C7B700F8C705 /* NSData+AESTests.m */,
 				BE49323519E338CE00C0912E /* NSDate+timeSinceTests.m */,
@@ -12403,7 +12396,6 @@
 				F022CFE01CFF447A00F040BB /* VDependencyManager+Buttons.swift in Sources */,
 				A7F843741BFD5A0B004C3D55 /* NSManagedObjectContext+Fetchers.swift in Sources */,
 				C3E7721A1B45EAF7005809A5 /* VActionSheetTextView.m in Sources */,
-				A76711EE1C1B5FC1006568DF /* ContentViewAppTimingHelper.swift in Sources */,
 				A72C86451C977FF500E97D4F /* MediaAttachment+PublishParameters.swift in Sources */,
 				A72C864C1C977FF500E97D4F /* AnonymousLoginOperation.swift in Sources */,
 				F0BD3A661CD95A8000B4AB3E /* UIViewController+Alert.swift in Sources */,
@@ -12807,7 +12799,6 @@
 				F022CFE41CFFA21B00F040BB /* VDependencyManager+SystemFontTests.swift in Sources */,
 				A7DCA50B1C128A78004E35B4 /* VTimerManagerTests.m in Sources */,
 				A7DCA4EC1C128A78004E35B4 /* VFollowersTextFormatterTests.m in Sources */,
-				A76711F51C1B7CCD006568DF /* ContentViewAppTimingHelperTests.swift in Sources */,
 				0332E97C1C404B4000B99BE5 /* VUploadManagerURLSessionTests.m in Sources */,
 				BF5857EC1C920276007684FE /* MediaSearchMediaExporterTests.swift in Sources */,
 				A70FC0F41A268FF100F5BBDE /* VNotificationSettingsTestDelegate.m in Sources */,
