@@ -75,13 +75,9 @@ public enum ContentMediaAsset: ContentMediaAssetModel {
     }
     
     public init?(contentType: ContentType, sourceType: String, json: JSON) {
-        guard
-            let width = json["width"].float,
-            let height = json["height"].float
-        else {
-            return nil
-        }
-        let size = CGSize(width: CGFloat(width), height: CGFloat(height))
+        let width = CGFloat(json["width"].float ?? 0.0)
+        let height = CGFloat(json["height"].float ?? 0.0)
+        let size = CGSize(width: width, height: height)
 
         switch contentType {
             case .image:
@@ -134,8 +130,8 @@ public enum ContentMediaAsset: ContentMediaAssetModel {
         self.init(
             contentType: parameters.contentType,
             source: parameters.source,
-            url: parameters.url,
-            size: parameters.size
+            size: parameters.size,
+            url: parameters.url
         )
     }
     
@@ -143,13 +139,13 @@ public enum ContentMediaAsset: ContentMediaAssetModel {
         self.init(
             contentType: parameters.contentType,
             source: parameters.source,
+            size: parameters.size,
             remoteID: parameters.remoteID,
-            url: parameters.url,
-            size: parameters.size
+            url: parameters.url
         )
     }
     
-    private init?(contentType: ContentType, source: String?, remoteID: String? = nil, url: NSURL? = nil, size: CGSize) {
+    private init?(contentType: ContentType, source: String?, size: CGSize, remoteID: String? = nil, url: NSURL? = nil) {
         guard url != nil || remoteID != nil else {
             // By using the initialziation structs, we should NEVER make it here
             assertionFailure("invalid initialization parameters provided to \(#function)")
