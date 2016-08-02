@@ -241,7 +241,6 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
         }
     }
     
-    
     private func frameForNavigationControl(to destination: VNavigationDestination) -> CGRect {
         var frame = mainNavigationController.navigationBar.frame ?? CGRectZero
         let width = SideNavScaffoldViewController.estimatedBarButtonWidth
@@ -261,12 +260,9 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
     
     // MARK: - UINavigationControllerDelegate
     
-    func navigationController(navigationController: UINavigationController, willShowViewController viewController: UIViewController, animated: Bool) {
-        sideMenuController.panningIsEnabled = navigationController.viewControllers.count <= 1
-        viewController.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
-    }
-    
     func navigationController(navigationController: UINavigationController, didShowViewController viewController: UIViewController, animated: Bool) {
         allowsRightNavigation = navigationController.viewControllers.count <= 1
+        sideMenuController.panningIsEnabled = navigationController.viewControllers.count <= 1
+        viewController.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
     }
 }
