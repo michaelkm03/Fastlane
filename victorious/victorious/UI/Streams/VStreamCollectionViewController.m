@@ -30,7 +30,6 @@
 #import "VFullscreenMarqueeSelectionDelegate.h"
 #import "VHashtagSelectionResponder.h"
 #import "VHashtagStreamCollectionViewController.h"
-#import "VNavigationController.h"
 #import "VNewContentViewController.h"
 #import "VNoContentCollectionViewCellFactory.h"
 #import "VNoContentView.h"
@@ -348,26 +347,6 @@ static NSString * const kStreamCollectionKey = @"destinationStream";
 
 - (void)updateNavigationBarScrollOffset
 {
-    // Currently the navigation bar catch offset only changes if our header cell has parallax,
-    // so return if it does not
-    BOOL hasParallax = [[self.dependencyManager numberForKey:kHasHeaderParallaxKey] boolValue];
-    if (!hasParallax)
-    {
-        return;
-    }
-    
-    if ([self hasMarqueeShelfAtTop])
-    {
-        // Set the size of the marquee on our navigation scroll delegate so it wont hide until we scroll past the marquee
-        CGSize marqueeSize = [self.marqueeCellController desiredSizeWithCollectionViewBounds:self.collectionView.bounds];
-        CGFloat offset = marqueeSize.height;
-        offset += [self.streamCellFactory minimumLineSpacing];
-        self.navigationControllerScrollDelegate.catchOffset = offset;
-    }
-    else
-    {
-        self.navigationControllerScrollDelegate.catchOffset = 0;
-    }
 }
 
 - (BOOL)hasMarqueeShelfAtTop

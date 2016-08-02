@@ -360,8 +360,6 @@
 		037CB74519CFE8D20084BBED /* VUploadTaskInformation.m in Sources */ = {isa = PBXBuildFile; fileRef = 037CB74419CFE8D20084BBED /* VUploadTaskInformation.m */; };
 		037D2D5F1A1A6D7400947A22 /* VDependencyManager+VNavigationMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 037D2D5E1A1A6D7400947A22 /* VDependencyManager+VNavigationMenuItem.m */; };
 		037FCF181A8DAF0E00E8ABFC /* VBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 037FCF121A8DAF0E00E8ABFC /* VBarButton.m */; };
-		037FCF1A1A8DAF0E00E8ABFC /* VNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 037FCF151A8DAF0E00E8ABFC /* VNavigationController.m */; };
-		037FCF1B1A8DAF0E00E8ABFC /* VNavigationControllerScrollDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 037FCF171A8DAF0E00E8ABFC /* VNavigationControllerScrollDelegate.m */; };
 		037FCF2B1A8DAF7600E8ABFC /* VDependencyManager+NavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 037FCF2A1A8DAF7600E8ABFC /* VDependencyManager+NavigationBar.m */; };
 		03803DE11B0C270300B63F05 /* Purchases.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03803DE31B0C270300B63F05 /* Purchases.storyboard */; };
 		03848F951B0A41090092C660 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 03848F971B0A41090092C660 /* InfoPlist.strings */; };
@@ -721,7 +719,6 @@
 		795B75981BFA80E000227647 /* WebViewHTMLFetchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795B75971BFA80E000227647 /* WebViewHTMLFetchRequest.swift */; };
 		795D100A1C34938300E88F5E /* TestUserSearchResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 795D10091C34938300E88F5E /* TestUserSearchResponse.json */; };
 		79610B9B1C3B59DB00D9254B /* FriendFindByEmailRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79610B9A1C3B59DB00D9254B /* FriendFindByEmailRequestTests.swift */; };
-		7962466D1B82CA2900608B58 /* NavigationBarHiddenTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7962466C1B82CA2900608B58 /* NavigationBarHiddenTabViewController.swift */; };
 		79714C761BF1358900CAC227 /* UnreadMessageCountRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79714C751BF1358900CAC227 /* UnreadMessageCountRequestTests.swift */; };
 		79714C781BF1368700CAC227 /* UnreadMessageCountRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79714C771BF1368700CAC227 /* UnreadMessageCountRequest.swift */; };
 		7979A0301C18B10400455FF8 /* NotificationSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7979A02F1C18B10400455FF8 /* NotificationSettingsViewController.swift */; };
@@ -1805,7 +1802,6 @@
 		D876E1FC1A9DA685002CAA29 /* VBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = D876E1FB1A9DA685002CAA29 /* VBackground.m */; };
 		D876E1FF1A9DA6CB002CAA29 /* VSolidColorBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = D876E1FE1A9DA6CB002CAA29 /* VSolidColorBackground.m */; };
 		D876E2051A9DA6EB002CAA29 /* VTranslucentBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = D876E2041A9DA6EB002CAA29 /* VTranslucentBackground.m */; };
-		D87D70961A9804CD002D4FED /* VNavigationDestinationContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D87D70951A9804CD002D4FED /* VNavigationDestinationContainerViewController.m */; };
 		D87E25EF1AE180DA008F0769 /* VAbstractActionView.m in Sources */ = {isa = PBXBuildFile; fileRef = D87E25EE1AE180DA008F0769 /* VAbstractActionView.m */; };
 		D888B52A1A86FC7800B34149 /* VRadialGradientLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = D888B5271A86FC7800B34149 /* VRadialGradientLayer.m */; };
 		D888B52B1A86FC7800B34149 /* VRadialGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = D888B5291A86FC7800B34149 /* VRadialGradientView.m */; };
@@ -2491,10 +2487,6 @@
 		037FCF111A8DAF0E00E8ABFC /* VBarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBarButton.h; sourceTree = "<group>"; };
 		037FCF121A8DAF0E00E8ABFC /* VBarButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VBarButton.m; sourceTree = "<group>"; };
 		037FCF131A8DAF0E00E8ABFC /* VBarButton.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VBarButton.xib; sourceTree = "<group>"; };
-		037FCF141A8DAF0E00E8ABFC /* VNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNavigationController.h; sourceTree = "<group>"; };
-		037FCF151A8DAF0E00E8ABFC /* VNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNavigationController.m; sourceTree = "<group>"; };
-		037FCF161A8DAF0E00E8ABFC /* VNavigationControllerScrollDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNavigationControllerScrollDelegate.h; sourceTree = "<group>"; };
-		037FCF171A8DAF0E00E8ABFC /* VNavigationControllerScrollDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNavigationControllerScrollDelegate.m; sourceTree = "<group>"; };
 		037FCF291A8DAF7600E8ABFC /* VDependencyManager+NavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VDependencyManager+NavigationBar.h"; sourceTree = "<group>"; };
 		037FCF2A1A8DAF7600E8ABFC /* VDependencyManager+NavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "VDependencyManager+NavigationBar.m"; sourceTree = "<group>"; };
 		03803DE21B0C270300B63F05 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Purchases.storyboard; sourceTree = "<group>"; };
@@ -3006,7 +2998,6 @@
 		795B75971BFA80E000227647 /* WebViewHTMLFetchRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewHTMLFetchRequest.swift; sourceTree = "<group>"; };
 		795D10091C34938300E88F5E /* TestUserSearchResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TestUserSearchResponse.json; sourceTree = "<group>"; };
 		79610B9A1C3B59DB00D9254B /* FriendFindByEmailRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendFindByEmailRequestTests.swift; sourceTree = "<group>"; };
-		7962466C1B82CA2900608B58 /* NavigationBarHiddenTabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationBarHiddenTabViewController.swift; sourceTree = "<group>"; };
 		79714C751BF1358900CAC227 /* UnreadMessageCountRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnreadMessageCountRequestTests.swift; sourceTree = "<group>"; };
 		79714C771BF1368700CAC227 /* UnreadMessageCountRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnreadMessageCountRequest.swift; sourceTree = "<group>"; };
 		7979A02F1C18B10400455FF8 /* NotificationSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationSettingsViewController.swift; sourceTree = "<group>"; };
@@ -4459,8 +4450,6 @@
 		D876E1FE1A9DA6CB002CAA29 /* VSolidColorBackground.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSolidColorBackground.m; sourceTree = "<group>"; };
 		D876E2031A9DA6EB002CAA29 /* VTranslucentBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTranslucentBackground.h; sourceTree = "<group>"; };
 		D876E2041A9DA6EB002CAA29 /* VTranslucentBackground.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTranslucentBackground.m; sourceTree = "<group>"; };
-		D87D70941A9804CD002D4FED /* VNavigationDestinationContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNavigationDestinationContainerViewController.h; sourceTree = "<group>"; };
-		D87D70951A9804CD002D4FED /* VNavigationDestinationContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNavigationDestinationContainerViewController.m; sourceTree = "<group>"; };
 		D87E25ED1AE180DA008F0769 /* VAbstractActionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractActionView.h; sourceTree = "<group>"; };
 		D87E25EE1AE180DA008F0769 /* VAbstractActionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractActionView.m; sourceTree = "<group>"; };
 		D888B43E1B01A32A00EA470D /* VFocusable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFocusable.h; sourceTree = "<group>"; };
@@ -5301,15 +5290,8 @@
 				C39864B41B22349200694AB3 /* Bar Buttons */,
 				0386F8841B38D32C00E8D459 /* Loading View */,
 				030931871A18425B004E9781 /* Menu */,
-				7962466C1B82CA2900608B58 /* NavigationBarHiddenTabViewController.swift */,
 				7AE363A61CC9BA9400F851E9 /* Scaffold.swift */,
 				7AE3639F1CC864A000F851E9 /* Side Nav */,
-				037FCF141A8DAF0E00E8ABFC /* VNavigationController.h */,
-				037FCF151A8DAF0E00E8ABFC /* VNavigationController.m */,
-				037FCF161A8DAF0E00E8ABFC /* VNavigationControllerScrollDelegate.h */,
-				037FCF171A8DAF0E00E8ABFC /* VNavigationControllerScrollDelegate.m */,
-				D87D70941A9804CD002D4FED /* VNavigationDestinationContainerViewController.h */,
-				D87D70951A9804CD002D4FED /* VNavigationDestinationContainerViewController.m */,
 				0314D3EB19B46B5E00FA363C /* VRootViewController.h */,
 				0314D3EC19B46B5E00FA363C /* VRootViewController.m */,
 				6780BD5F1D244DAD003F8141 /* VRootViewController.swift */,
@@ -11720,7 +11702,6 @@
 				A77951351B29021D00D9DB0A /* VContentThumbnailCell.m in Sources */,
 				7925A50E1BCDC20100BCA649 /* VCrashlyticsLogTracking.m in Sources */,
 				A721E93B1B572454000B7901 /* NSDictionary+VJSONLogging.m in Sources */,
-				037FCF1A1A8DAF0E00E8ABFC /* VNavigationController.m in Sources */,
 				A7815E1B1B6C5D9F007797B7 /* SettingsButtonCell.swift in Sources */,
 				D89367531ADDE98F001D2426 /* VInsetActionView.m in Sources */,
 				F07557EE1B751F8C00BB2648 /* VSequenceContentCellFactory.swift in Sources */,
@@ -12139,7 +12120,6 @@
 				0EFE50581CB5C10D000D1C95 /* CreateChatServiceTokenOperation.swift in Sources */,
 				A789F7301BF11F4900F5C87B /* VImageAsset+Parsable.swift in Sources */,
 				BF3CD8941D11EEA500CB7764 /* UserBlockToggleOperation.swift in Sources */,
-				D87D70961A9804CD002D4FED /* VNavigationDestinationContainerViewController.m in Sources */,
 				F0AD21761AF43DFA001BDCC6 /* VCollectionsDirectoryCellFactory.m in Sources */,
 				03C185BC19B42E5D00E27D05 /* TWSignedRequest.m in Sources */,
 				A72C864E1C977FF500E97D4F /* RequestPushNotificationPermissionOperation.swift in Sources */,
@@ -12212,7 +12192,6 @@
 				A721E9391B572454000B7901 /* NSData+AES.m in Sources */,
 				A75C64A71ADDDFC900245125 /* VTextBackgroundFrameMaker.swift in Sources */,
 				03F61E6D1C6ADF0700EEA8F9 /* YTPlayerView.m in Sources */,
-				037FCF1B1A8DAF0E00E8ABFC /* VNavigationControllerScrollDelegate.m in Sources */,
 				BE171D8C1868BE64004E5202 /* VAppDelegate.m in Sources */,
 				A7D69C701C0E725100B462C3 /* VComment+Parsable.swift in Sources */,
 				039ED29919C908F400305987 /* VCVideoPlayerToolbarSlider.m in Sources */,
@@ -12608,7 +12587,6 @@
 				7A02F8951D273C0F00F43B24 /* SettingsTableViewCell.swift in Sources */,
 				D8D812B51B14FE5B00E93B37 /* VLoginFlowAPIHelper.m in Sources */,
 				A721E95A1B572454000B7901 /* UIStoryboard+VMainStoryboard.m in Sources */,
-				7962466D1B82CA2900608B58 /* NavigationBarHiddenTabViewController.swift in Sources */,
 				F093A93A1CF3D96B009ACABF /* VIPFlowNavigationController.swift in Sources */,
 				A761C9D71A48CB9800F0D0F9 /* VSwipeView.m in Sources */,
 				7A47849D1CF374FD00894233 /* RESTForumNetworkSource.swift in Sources */,

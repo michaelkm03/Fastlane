@@ -11,7 +11,6 @@
 #import "VCardDirectoryCell.h"
 #import "MBProgressHUD.h"
 #import "UIViewController+VLayoutInsets.h"
-#import "VNavigationController.h"
 #import "VStreamItem+Fetcher.h"
 #import "VSequence.h"
 #import "VFooterActivityIndicatorView.h"
@@ -96,81 +95,8 @@
     self.collectionView.alwaysBounceVertical = YES;
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    [self.streamTrackingHelper onStreamViewWillAppearWithStream:self.currentStream];
-    
-    [self.dependencyManager trackViewWillAppear:self];
-    
-    if ( self.v_navigationController == nil && self.navigationController.navigationBarHidden )
-    {
-        [self.navigationController setNavigationBarHidden:NO animated:animated];
-    }
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-    [self.streamTrackingHelper onStreamViewDidAppearWithStream:self.currentStream isBeingPresented:self.isBeingPresented];
-    
-    if ( self.navigationBarShouldAutoHide )
-    {
-        [self addScrollDelegate];
-    }
-    
-    // Adjust our scroll indicator insets to account for nav bar
-    CGRect navBarFrame = self.v_navigationController.innerNavigationController.navigationBar.frame;
-    CGRect supplementaryViewFrame = self.v_navigationController.supplementaryHeaderView.frame;
-    CGFloat indicatorTopOffset = CGRectGetMaxY(navBarFrame) + CGRectGetHeight(supplementaryViewFrame);
-    UIEdgeInsets scrollIndicatorInsets = UIEdgeInsetsMake(indicatorTopOffset, 0, 0, 0);
-    self.collectionView.scrollIndicatorInsets = scrollIndicatorInsets;
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    
-    [self.dependencyManager trackViewWillDisappear:self];
-    
-    [self.streamTrackingHelper onStreamViewWillDisappearWithStream:self.currentStream
-                                                  isBeingDismissed:self.isBeingDismissed];
-    
-    self.navigationControllerScrollDelegate = nil;
-    [self.refreshControl endRefreshing];
-}
-
-- (void)viewDidLayoutSubviews
-{
-    [super viewDidLayoutSubviews];
-    
-    if ( self.v_navigationController == nil )
-    {
-        if ( self.topInset != self.topLayoutGuide.length )
-        {
-            self.topInset = self.topLayoutGuide.length;
-            [self.collectionView.collectionViewLayout invalidateLayout];
-        }
-    }
-    
-    //This has to be performed here, after invalidating the collection view layout
-    if ( self.targetStreamItem != nil )
-    {
-        NSUInteger index = [self.streamDataSource.visibleItems indexOfObject:self.targetStreamItem];
-        if ( index != NSNotFound && index < (NSUInteger)[self.collectionView numberOfItemsInSection:0] )
-        {
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
-            [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:NO];
-            self.targetStreamItem = nil;
-        }
-    }
-}
-
 - (void)addScrollDelegate
 {
-    self.navigationControllerScrollDelegate = [[VNavigationControllerScrollDelegate alloc] initWithNavigationController:[self v_navigationController]];
 }
 
 - (void)updateNavigationItems
@@ -199,24 +125,6 @@
     {
         [self.collectionView.collectionViewLayout invalidateLayout];
         [self positionRefreshControl];
-    }
-}
-
-- (void)setNavigationBarShouldAutoHide:(BOOL)navigationBarShouldAutoHide
-{
-    if ( navigationBarShouldAutoHide == _navigationBarShouldAutoHide )
-    {
-        return;
-    }
-    _navigationBarShouldAutoHide = navigationBarShouldAutoHide;
-    
-    if ( navigationBarShouldAutoHide )
-    {
-        [self addScrollDelegate];
-    }
-    else
-    {
-        self.navigationControllerScrollDelegate = nil;
     }
 }
 
@@ -310,35 +218,6 @@
                    {
                        [welf.collectionView flashScrollIndicators];
                    });
-}
-
-#pragma mark - UIScrollViewDelegate
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    [self.navigationControllerScrollDelegate scrollViewDidScroll:scrollView];
-    
-    [self.navigationViewfloatingController updateContentOffsetOnScroll:scrollView.contentOffset];
-}
-
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
-{
-    [self.navigationControllerScrollDelegate scrollViewWillBeginDragging:scrollView];
-}
-
-- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
-{
-    [self.navigationControllerScrollDelegate scrollViewWillEndDragging:scrollView withVelocity:velocity targetContentOffset:targetContentOffset];
-}
-
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
-{
-    [self.navigationControllerScrollDelegate scrollViewDidEndDecelerating:scrollView];
-}
-
-- (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView
-{
-    [self.navigationControllerScrollDelegate scrollViewDidScrollToTop:scrollView];
 }
 
 #pragma mark - VStreamCollectionDataDelegate

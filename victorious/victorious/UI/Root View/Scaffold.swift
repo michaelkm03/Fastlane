@@ -17,9 +17,6 @@ protocol Scaffold: InterstitialListener {
     /// The top-level navigation controller used by the scaffold.
     var mainNavigationController: UINavigationController { get }
     
-    /// A list of the view controllers that the scaffold can navigate to.
-    var navigationDestinations: [VNavigationDestination] { get }
-    
     func navigate(to deeplinkURL: NSURL)
 }
 

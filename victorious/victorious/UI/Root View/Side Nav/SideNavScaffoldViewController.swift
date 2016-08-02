@@ -226,21 +226,6 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
     
     let coachmarkManager: CoachmarkManager
     
-    var navigationDestinations: [VNavigationDestination] {
-        return [
-            sideMenuController.leftViewController,
-            sideMenuController.centerViewController,
-            sideMenuController.rightViewController,
-            rightNavViewController
-        ].flatMap { viewController in
-            if let containerViewController = viewController as? VNavigationDestinationContainerViewController {
-                return containerViewController.navigationDestination
-            } else {
-                return viewController as? VNavigationDestination
-            }
-        }
-    }
-    
     private func frameForNavigationControl(to destination: VNavigationDestination) -> CGRect {
         var frame = mainNavigationController.navigationBar.frame ?? CGRectZero
         let width = SideNavScaffoldViewController.estimatedBarButtonWidth
