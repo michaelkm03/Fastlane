@@ -54,6 +54,10 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     }
     
     private func updateInsets() {
+        // Always invalidate layout before adjusting insets as they impact the location of the spinner and will,
+        // otherwise, cause a crash.
+        self.collectionView.collectionViewLayout.invalidateLayout()
+        
         if collectionView.numberOfItemsInSection(0) == 0 {
             // When there are no items, we display a centered activity indicator, which becomes misaligned if there are
             // any insets, so we zero them out while in this state.
@@ -73,7 +77,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
             )
             
             UIView.performWithoutAnimation {
-                self.collectionView.collectionViewLayout.invalidateLayout()
                 self.collectionView.layoutIfNeeded()
             }
         }
