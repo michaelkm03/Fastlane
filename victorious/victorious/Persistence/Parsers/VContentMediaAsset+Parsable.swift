@@ -16,6 +16,6 @@ extension VContentMediaAsset: PersistenceParsable {
         v_remoteID = sourceModel.resourceID ?? v_remoteID
         
         v_width = Int(sourceModel.size?.width ?? 0.0)
-        v_height = Int(sourceModel.size?.width ?? 0.0)
+        v_height = Int(sourceModel.size?.height ?? 0.0)
     }
 }
