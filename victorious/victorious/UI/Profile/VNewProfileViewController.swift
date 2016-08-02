@@ -323,8 +323,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         if
             let loggedInUser = VCurrentUser.user(),
             let currentUser = self.user
-        where
-            currentUser.id != loggedInUser.id
+            where currentUser.id != loggedInUser.id
         {
             setUser(loggedInUser, using: dependencyManager)
         }
