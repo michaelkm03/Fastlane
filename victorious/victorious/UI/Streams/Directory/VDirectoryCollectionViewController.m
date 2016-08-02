@@ -298,39 +298,6 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 
 - (void)navigateToDisplayStreamItemWithEvent:(StreamCellContext *)event
 {
-    VStreamItem *streamItem = event.streamItem;
-    
-    if ( streamItem.isSingleStream )
-    {
-        VStreamCollectionViewController *streamCollection = [self.dependencyManager templateValueOfType:[VStreamCollectionViewController class]
-                                                                                                 forKey:kStreamCollectionKey
-                                                                                  withAddedDependencies:@{ kSequenceIDKey: streamItem.remoteId, VDependencyManagerTitleKey: streamItem.name }];
-        [self.navigationController pushViewController:streamCollection animated:YES];
-    }
-    else if ( streamItem.isContent )
-    {
-        [self.streamTrackingHelper onStreamCellSelectedWithCellEvent:event additionalInfo:nil];
-        
-        NSString *streamId = self.marqueeController.shelf.remoteId;
-        ContentViewContext *context = [[ContentViewContext alloc] init];
-        context.sequence = (VSequence *)streamItem;
-        context.streamId = streamId;
-        context.viewController = [self.dependencyManager scaffoldViewController].rootNavigationController;
-        context.originDependencyManager = self.dependencyManager;
-        UICollectionViewCell *cell = [event.collectionView cellForItemAtIndexPath:event.indexPath];
-        if ( [cell conformsToProtocol:@protocol(VContentPreviewViewProvider)] )
-        {
-            context.contentPreviewProvider = (id<VContentPreviewViewProvider>)cell;
-        }
-        [self.contentViewPresenter presentContentViewWithContext:context];
-    }
-    else if ( [streamItem isKindOfClass:[VStream class]] )
-    {
-        VDirectoryCollectionViewController *destinationDirectory = [self.dependencyManager templateValueOfType:[VDirectoryCollectionViewController class]
-                                                                                                                forKey:kDestinationDirectoryKey
-                                                                                                 withAddedDependencies:@{ kSequenceIDKey: streamItem.remoteId, VDependencyManagerTitleKey: streamItem.name }];
-        [self.navigationController pushViewController:destinationDirectory animated:YES];
-    }
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section

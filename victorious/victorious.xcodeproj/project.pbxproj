@@ -804,7 +804,6 @@
 		7AE3EA391CAF39C400272A6A /* UICollectionViewFlowLayout+CellSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE3EA381CAF39C400272A6A /* UICollectionViewFlowLayout+CellSize.swift */; };
 		7AE3EA3B1CAF3B3200272A6A /* UICollectionViewFlowLayout+CellSizeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE3EA3A1CAF3B3200272A6A /* UICollectionViewFlowLayout+CellSizeTests.swift */; };
 		7AEB1F421D13565400E93A64 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AEB1F411D13565400E93A64 /* UserModel.swift */; };
-		7AEB294F1CCED06200B98C3B /* UIViewController+RootNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AEB294E1CCED06200B98C3B /* UIViewController+RootNavigationController.swift */; };
 		7AEB29531CCED68500B98C3B /* VDependencyManager+CoachmarkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AEB29521CCED68500B98C3B /* VDependencyManager+CoachmarkManager.swift */; };
 		7AFEB1491D413B7600FA972D /* Timestamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFEB1481D413B7600FA972D /* Timestamp.swift */; };
 		7AFEB14B1D413D7B00FA972D /* TimestampTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AFEB14A1D413D7B00FA972D /* TimestampTests.swift */; };
@@ -3092,7 +3091,6 @@
 		7AE3EA381CAF39C400272A6A /* UICollectionViewFlowLayout+CellSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UICollectionViewFlowLayout+CellSize.swift"; sourceTree = "<group>"; };
 		7AE3EA3A1CAF3B3200272A6A /* UICollectionViewFlowLayout+CellSizeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UICollectionViewFlowLayout+CellSizeTests.swift"; sourceTree = "<group>"; };
 		7AEB1F411D13565400E93A64 /* UserModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
-		7AEB294E1CCED06200B98C3B /* UIViewController+RootNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+RootNavigationController.swift"; sourceTree = "<group>"; };
 		7AEB29521CCED68500B98C3B /* VDependencyManager+CoachmarkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VDependencyManager+CoachmarkManager.swift"; sourceTree = "<group>"; };
 		7AFEB1481D413B7600FA972D /* Timestamp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timestamp.swift; sourceTree = "<group>"; };
 		7AFEB14A1D413D7B00FA972D /* TimestampTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimestampTests.swift; sourceTree = "<group>"; };
@@ -5306,7 +5304,6 @@
 				7962466C1B82CA2900608B58 /* NavigationBarHiddenTabViewController.swift */,
 				7AE363A61CC9BA9400F851E9 /* Scaffold.swift */,
 				7AE3639F1CC864A000F851E9 /* Side Nav */,
-				7AEB294E1CCED06200B98C3B /* UIViewController+RootNavigationController.swift */,
 				037FCF141A8DAF0E00E8ABFC /* VNavigationController.h */,
 				037FCF151A8DAF0E00E8ABFC /* VNavigationController.m */,
 				037FCF161A8DAF0E00E8ABFC /* VNavigationControllerScrollDelegate.h */,
@@ -12675,7 +12672,6 @@
 				BFC7FAEA1CF515390061489B /* VDependencyManager+NetworkResources.swift in Sources */,
 				A721E9451B572454000B7901 /* NSURL+MediaType.m in Sources */,
 				A7039CD71C23CB5E0023DE6F /* VApplicationTracking.swift in Sources */,
-				7AEB294F1CCED06200B98C3B /* UIViewController+RootNavigationController.swift in Sources */,
 				0372587519D61B0800836B3F /* VUploadTaskCreator.m in Sources */,
 				0314D09019B4694600FA363C /* VInteractionManager.m in Sources */,
 				A650EFDA1B421F61005529E5 /* VAssetCollectionGridViewController.m in Sources */,

@@ -15,7 +15,7 @@ protocol Scaffold: InterstitialListener {
     var coachmarkManager: CoachmarkManager { get }
     
     /// The top-level navigation controller used by the scaffold.
-    var mainNavigationController: VNavigationController { get }
+    var mainNavigationController: UINavigationController { get }
     
     /// A list of the view controllers that the scaffold can navigate to.
     var navigationDestinations: [VNavigationDestination] { get }
@@ -72,7 +72,7 @@ extension Scaffold where Self: UIViewController {
     }
     
     func navigate(to deeplinkURL: NSURL) {
-        let router = Router(originViewController: self.mainNavigationController.innerNavigationController, dependencyManager: dependencyManager)
+        let router = Router(originViewController: self.mainNavigationController, dependencyManager: dependencyManager)
         let destination = DeeplinkDestination(url: deeplinkURL)
         router.navigate(to: destination)
     }
