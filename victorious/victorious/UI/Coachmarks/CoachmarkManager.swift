@@ -105,14 +105,17 @@ class CoachmarkManager: NSObject, UIViewControllerTransitioningDelegate {
         }
     }
     
-    // MARK: - UIViewControllerTransitioningDelegate 
+    // MARK: - UIViewControllerTransitioningDelegate
+
+    lazy var coachmarkPresentationController = CoachmarkPresentAnimationController()
+    lazy var coachmarkDismissalController = CoachmarkDismissAnimationController()
     
     func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return CoachmarkPresentAnimationController()
+        return coachmarkPresentationController
     }
     
     func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return CoachmarkDismissAnimationController()
+        return coachmarkDismissalController
     }
     
     // MARK: - Notification Handling 
