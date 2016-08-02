@@ -636,7 +636,6 @@
 		6791505F1CD4214700225151 /* TutorialViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6791505E1CD4214700225151 /* TutorialViewController.storyboard */; };
 		6798479E1BF135D300C01DE3 /* SuggestedUsersRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6798479D1BF135D300C01DE3 /* SuggestedUsersRequestTests.swift */; };
 		679847A01BF137C200C01DE3 /* SuggestedUsersResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 6798479F1BF137C200C01DE3 /* SuggestedUsersResponse.json */; };
-		679C53661C239F0900018E1C /* LoginScreenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBEA19B81BC4A76C00878B18 /* LoginScreenTests.swift */; };
 		679C53681C23AB4000018E1C /* VStreamCollectionViewController+AccessoryButtonResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 679C53671C23AB4000018E1C /* VStreamCollectionViewController+AccessoryButtonResponder.swift */; };
 		679C6AA51C9E8315003089A6 /* ActionSheet.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0390085619F38BC600FD7EDF /* ActionSheet.storyboard */; };
 		67A20A231CC6A20900629487 /* ListMenuSectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67A20A221CC6A20900629487 /* ListMenuSectionCell.swift */; };
@@ -1646,7 +1645,6 @@
 		C30AA4F31B067C370010CEFE /* VPermissionCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = C30AA4F21B067C370010CEFE /* VPermissionCamera.m */; };
 		C30AA4F61B06B82A0010CEFE /* VPermissionPhotoLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = C30AA4F51B06B82A0010CEFE /* VPermissionPhotoLibrary.m */; };
 		C30E3F9F1BE7E02500184F57 /* VAutomation.m in Sources */ = {isa = PBXBuildFile; fileRef = A7DB4D3D1B7AB6CB00199D10 /* VAutomation.m */; };
-		C30E3FA21BE959C200184F57 /* VAutomation.m in Sources */ = {isa = PBXBuildFile; fileRef = A7DB4D3D1B7AB6CB00199D10 /* VAutomation.m */; };
 		C314E6B91BF13AD800FB9591 /* TrendingHashtagRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C314E6B81BF13AD800FB9591 /* TrendingHashtagRequest.swift */; };
 		C314E6BB1BF13C0100FB9591 /* TrendingHashtagResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = C314E6BA1BF13C0100FB9591 /* TrendingHashtagResponse.json */; };
 		C314E6BD1BF13CD000FB9591 /* HashtagTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C314E6BC1BF13CD000FB9591 /* HashtagTests.swift */; };
@@ -2142,13 +2140,6 @@
 			remoteInfo = victorious;
 		};
 		BE171D9C1868BE64004E5202 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BE171D6E1868BE64004E5202 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = BE171D751868BE64004E5202;
-			remoteInfo = victorious;
-		};
-		EBEA19BB1BC4A76C00878B18 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BE171D6E1868BE64004E5202 /* Project object */;
 			proxyType = 1;
@@ -4185,7 +4176,6 @@
 		BFE31A831CD296A900585155 /* CloseUpView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CloseUpView.xib; sourceTree = "<group>"; };
 		BFE31A851CD296C000585155 /* MediaContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaContentView.swift; sourceTree = "<group>"; };
 		C30546B21BD96D05005F6712 /* LoginFlowLoadingScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginFlowLoadingScreen.swift; sourceTree = "<group>"; };
-		C30546B51BD9B2E4005F6712 /* VictoriousUITests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "VictoriousUITests-Bridging-Header.h"; sourceTree = "<group>"; };
 		C30AA4D61B043E890010CEFE /* PermissionAlert.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = PermissionAlert.storyboard; sourceTree = "<group>"; };
 		C30AA4D81B0517170010CEFE /* VPermissionAlertViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPermissionAlertViewController.h; sourceTree = "<group>"; };
 		C30AA4D91B0517170010CEFE /* VPermissionAlertViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPermissionAlertViewController.m; sourceTree = "<group>"; };
@@ -4612,9 +4602,6 @@
 		E781D16A8108A3A2E52805D8 /* Pods-UIAutomationTests.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIAutomationTests.staging.xcconfig"; path = "Pods/Target Support Files/Pods-UIAutomationTests/Pods-UIAutomationTests.staging.xcconfig"; sourceTree = "<group>"; };
 		E8193ED8CA9746EB7E3D7AD2 /* Pods-victorious-test.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.qa.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.qa.xcconfig"; sourceTree = "<group>"; };
 		EBD260F9D10C5B73D41754C7 /* Pods-UIAutomationTests.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIAutomationTests.qa.xcconfig"; path = "Pods/Target Support Files/Pods-UIAutomationTests/Pods-UIAutomationTests.qa.xcconfig"; sourceTree = "<group>"; };
-		EBEA19B61BC4A76C00878B18 /* victoriousUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = victoriousUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		EBEA19B81BC4A76C00878B18 /* LoginScreenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginScreenTests.swift; sourceTree = "<group>"; };
-		EBEA19BA1BC4A76C00878B18 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EC8FA86D5329A9BAEC085798 /* Pods_UIAutomationTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UIAutomationTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDFC6598311E32933A2C83A7 /* Pods-test.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.staging.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.staging.xcconfig"; sourceTree = "<group>"; };
 		F0024E3A1B730431000CF4FD /* VMarqueeCellFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VMarqueeCellFactory.swift; sourceTree = "<group>"; };
@@ -4973,13 +4960,6 @@
 				BE171D9A1868BE64004E5202 /* UIKit.framework in Frameworks */,
 				BE171D991868BE64004E5202 /* Foundation.framework in Frameworks */,
 				4616626D370D3BDB12948F99 /* Pods_victorious_test.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		EBEA19B31BC4A76C00878B18 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8576,7 +8556,6 @@
 				03314F2B1BE3E2DF00EE74FD /* VictoriousIOSSDKTests */,
 				A7EBF5211C2B8CA20080C7CF /* victoriousPersistenceTests */,
 				BE171D9E1868BE64004E5202 /* victoriousTests */,
-				EBEA19B71BC4A76C00878B18 /* victoriousUITests */,
 			);
 			sourceTree = "<group>";
 		};
@@ -8591,7 +8570,6 @@
 				0352FCBF1B72C60200DB6EAB /* downloadtemplate.app */,
 				03314F1C1BE3E2DE00EE74FD /* VictoriousIOSSDK.framework */,
 				03314F251BE3E2DF00EE74FD /* VictoriousIOSSDKTests.xctest */,
-				EBEA19B61BC4A76C00878B18 /* victoriousUITests.xctest */,
 				A7EBF5201C2B8CA20080C7CF /* victoriousPersistenceTests.xctest */,
 				0372BE671C84FA56004950CF /* VictoriousIOSSDK.framework */,
 			);
@@ -8961,15 +8939,6 @@
 				BFC673611CE3C9C4004F9D3C /* ContentPreviewView.swift */,
 			);
 			name = ContentPreviewView;
-			sourceTree = "<group>";
-		};
-		C30546B61BD9B9DC005F6712 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				EBEA19BA1BC4A76C00878B18 /* Info.plist */,
-				C30546B51BD9B2E4005F6712 /* VictoriousUITests-Bridging-Header.h */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		C30AA4D51B0439360010CEFE /* Permission Alert */ = {
@@ -9599,15 +9568,6 @@
 			path = Location;
 			sourceTree = "<group>";
 		};
-		EBEA19B71BC4A76C00878B18 /* victoriousUITests */ = {
-			isa = PBXGroup;
-			children = (
-				EBEA19B81BC4A76C00878B18 /* LoginScreenTests.swift */,
-				C30546B61BD9B9DC005F6712 /* Supporting Files */,
-			);
-			path = victoriousUITests;
-			sourceTree = "<group>";
-		};
 		F009BD051CE6547B00F81CAA /* HashtagBar */ = {
 			isa = PBXGroup;
 			children = (
@@ -10185,24 +10145,6 @@
 			productReference = BE171D961868BE64004E5202 /* victoriousTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		EBEA19B51BC4A76C00878B18 /* victoriousUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = EBEA19C21BC4A76C00878B18 /* Build configuration list for PBXNativeTarget "victoriousUITests" */;
-			buildPhases = (
-				EBEA19B21BC4A76C00878B18 /* Sources */,
-				EBEA19B31BC4A76C00878B18 /* Frameworks */,
-				EBEA19B41BC4A76C00878B18 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				EBEA19BC1BC4A76C00878B18 /* PBXTargetDependency */,
-			);
-			name = victoriousUITests;
-			productName = victoriousUITests;
-			productReference = EBEA19B61BC4A76C00878B18 /* victoriousUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -10255,10 +10197,6 @@
 					BE171D951868BE64004E5202 = {
 						TestTargetID = BE171D751868BE64004E5202;
 					};
-					EBEA19B51BC4A76C00878B18 = {
-						CreatedOnToolsVersion = 7.0.1;
-						TestTargetID = BE171D751868BE64004E5202;
-					};
 				};
 			};
 			buildConfigurationList = BE171D711868BE64004E5202 /* Build configuration list for PBXProject "victorious" */;
@@ -10292,7 +10230,6 @@
 				03314F1B1BE3E2DE00EE74FD /* VictoriousIOSSDK */,
 				03314F241BE3E2DF00EE74FD /* VictoriousIOSSDKTests */,
 				0372BE661C84FA56004950CF /* VictoriousIOSSDK-OSX */,
-				EBEA19B51BC4A76C00878B18 /* victoriousUITests */,
 				A7EBF51F1C2B8CA20080C7CF /* victoriousPersistenceTests */,
 			);
 		};
@@ -10707,13 +10644,6 @@
 				C3C7345B1B61CF3D00D6795D /* voteTypes.json in Resources */,
 				A7D378501AF0682B007FF197 /* component.json in Resources */,
 				A72004FB1A02FEC000285A9C /* sampleImage.png in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		EBEA19B41BC4A76C00878B18 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12786,15 +12716,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		EBEA19B21BC4A76C00878B18 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				679C53661C239F0900018E1C /* LoginScreenTests.swift in Sources */,
-				C30E3FA21BE959C200184F57 /* VAutomation.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -12862,11 +12783,6 @@
 			isa = PBXTargetDependency;
 			target = BE171D751868BE64004E5202 /* victorious */;
 			targetProxy = BE171D9C1868BE64004E5202 /* PBXContainerItemProxy */;
-		};
-		EBEA19BC1BC4A76C00878B18 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = BE171D751868BE64004E5202 /* victorious */;
-			targetProxy = EBEA19BB1BC4A76C00878B18 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -14957,105 +14873,6 @@
 			};
 			name = QA;
 		};
-		EBEA19BD1BC4A76C00878B18 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = victoriousUITests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.victoriousUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "victoriousUITests/VictoriousUITests-Bridging-Header.h";
-				TEST_TARGET_NAME = victorious;
-				USES_XCTRUNNER = YES;
-			};
-			name = Debug;
-		};
-		EBEA19BE1BC4A76C00878B18 /* QA */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = victoriousUITests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.victoriousUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "victoriousUITests/VictoriousUITests-Bridging-Header.h";
-				TEST_TARGET_NAME = victorious;
-				USES_XCTRUNNER = YES;
-			};
-			name = QA;
-		};
-		EBEA19BF1BC4A76C00878B18 /* Staging */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = victoriousUITests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.victoriousUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "victoriousUITests/VictoriousUITests-Bridging-Header.h";
-				TEST_TARGET_NAME = victorious;
-				USES_XCTRUNNER = YES;
-			};
-			name = Staging;
-		};
-		EBEA19C01BC4A76C00878B18 /* Stable */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = victoriousUITests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.victoriousUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "victoriousUITests/VictoriousUITests-Bridging-Header.h";
-				TEST_TARGET_NAME = victorious;
-				USES_XCTRUNNER = YES;
-			};
-			name = Stable;
-		};
-		EBEA19C11BC4A76C00878B18 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = victoriousUITests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.getvictorious.victoriousUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "victoriousUITests/VictoriousUITests-Bridging-Header.h";
-				TEST_TARGET_NAME = victorious;
-				USES_XCTRUNNER = YES;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -15187,18 +15004,6 @@
 				03D6382A191874590084FFC8 /* Staging */,
 				BE171DAD1868BE64004E5202 /* Stable */,
 				030E514C1AC342F20011C558 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		EBEA19C21BC4A76C00878B18 /* Build configuration list for PBXNativeTarget "victoriousUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				EBEA19BD1BC4A76C00878B18 /* Debug */,
-				EBEA19BE1BC4A76C00878B18 /* QA */,
-				EBEA19BF1BC4A76C00878B18 /* Staging */,
-				EBEA19C01BC4A76C00878B18 /* Stable */,
-				EBEA19C11BC4A76C00878B18 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
