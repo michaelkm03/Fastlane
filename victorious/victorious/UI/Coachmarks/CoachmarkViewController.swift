@@ -47,7 +47,6 @@ class CoachmarkViewController: UIViewController, VBackgroundContainer {
     
     init(coachmark: Coachmark, containerFrame: CGRect, highlightFrame: CGRect? = nil) {
         super.init(nibName: nil, bundle: nil)
-        view = UIView(frame: containerFrame)
         modalPresentationStyle = .OverFullScreen
         let dependencyManager = coachmark.dependencyManager
         
