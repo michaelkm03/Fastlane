@@ -15,9 +15,9 @@ extension CGSize {
         return width * height
     }
     
-    public var aspectRatio: CGFloat {
+    public var aspectRatio: CGFloat? {
         if height == 0.0 {
-            return 1
+            return nil
         }
         
         return width / height
