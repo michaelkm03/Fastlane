@@ -10,6 +10,7 @@ import AVFoundation
 import UIKit
 
 class NativeCameraCreationFlowController: VCreationFlowController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, VPassthroughContainerViewDelegate {
+    private var audioSessionCategory = AVAudioSessionCategoryAmbient
     
     private var trackedAppear = false
     
@@ -45,10 +46,16 @@ class NativeCameraCreationFlowController: VCreationFlowController, UIImagePicker
         return nativeCamera
     }()
     
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+    
     override func rootFlowController() -> UINavigationController! {
         if !trackedAppear {
             trackedAppear = true
             dependencyManager.trackViewWillAppear(self)
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(enteredBackground), name: UIApplicationDidEnterBackgroundNotification, object: nil)
+            audioSessionCategory = AVAudioSession.sharedInstance().category
         }
         
         //Return image picker controller or empty creation flow (by returning self)
@@ -63,12 +70,14 @@ class NativeCameraCreationFlowController: VCreationFlowController, UIImagePicker
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
         dependencyManager.trackViewWillDisappear(self)
+        let _ = try? AVAudioSession.sharedInstance().setCategory(audioSessionCategory)
         creationFlowDelegate.creationFlowControllerDidCancel?(self)
     }
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String: AnyObject]) {
         defer {
             dependencyManager.trackViewWillDisappear(self)
+            let _ = try? AVAudioSession.sharedInstance().setCategory(audioSessionCategory)
         }
         
         if let mediaURL = info[UIImagePickerControllerMediaURL] as? NSURL,
@@ -87,6 +96,12 @@ class NativeCameraCreationFlowController: VCreationFlowController, UIImagePicker
         } else {
             creationFlowDelegate.creationFlowControllerDidCancel?(self)
         }
+    }
+    
+    // MARK: - Notification Response
+    
+    dynamic private func enteredBackground() {
+        audioSessionCategory = AVAudioSessionCategoryAmbient
     }
     
     // MARK: - Editing mode hack

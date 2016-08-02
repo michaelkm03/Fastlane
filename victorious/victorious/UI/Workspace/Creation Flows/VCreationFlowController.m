@@ -31,6 +31,8 @@ static NSString * const kStatusBaryStleKey = @"statusBarStyle";
 
 @property (nonatomic, strong) VCreationFlowAnimator *animator;
 
+@property (nonatomic, strong) NSString *audioSessionCategory;
+
 @end
 
 @implementation VCreationFlowController
@@ -45,9 +47,15 @@ static NSString * const kStatusBaryStleKey = @"statusBarStyle";
         _dependencyManager = dependencyManager;
         _animator = [[VCreationFlowAnimator alloc] init];
         _publishParameters = [[VPublishParameters alloc] init];
+        _audioSessionCategory = [[AVAudioSession sharedInstance] category];
         self.transitioningDelegate = self;
     }
     return self;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - UIViewController
@@ -61,6 +69,8 @@ static NSString * const kStatusBaryStleKey = @"statusBarStyle";
     self.navigationBar.barTintColor = background.backgroundColor;
     self.navigationBar.translucent = NO;
     self.navigationBar.tintColor = [self.dependencyManager colorForKey:kBarTintColorKey];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enteredBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -72,6 +82,7 @@ static NSString * const kStatusBaryStleKey = @"statusBarStyle";
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    [[AVAudioSession sharedInstance] setCategory:self.audioSessionCategory error:nil];
     [self.dependencyManager trackViewWillDisappear:self];
 }
 
@@ -134,6 +145,13 @@ static NSString * const kStatusBaryStleKey = @"statusBarStyle";
 - (MediaType)mediaType
 {
     return MediaTypeUnknown;
+}
+
+#pragma mark - Notification Response
+
+- (void)enteredBackground
+{
+    self.audioSessionCategory = AVAudioSessionCategoryAmbient;
 }
 
 #pragma mark - UIViewControllerTransitioningDelegate

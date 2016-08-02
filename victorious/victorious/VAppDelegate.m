@@ -123,6 +123,7 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
