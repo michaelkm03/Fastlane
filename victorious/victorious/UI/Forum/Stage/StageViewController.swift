@@ -185,7 +185,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     }
 
     private func showMediaContentView(mediaContentView: MediaContentView, animated: Bool, completion: ((Bool) -> Void)? = nil) {
-        mediaContentView.willBePresented()
+        mediaContentView.didPresent()
 
         let animations = {
             mediaContentView.alpha = 1

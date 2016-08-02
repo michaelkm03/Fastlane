@@ -247,7 +247,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     
     func startDisplaying() {
         if let previewView = previewView as? MediaContentView {
-            previewView.willBePresented()
+            previewView.didPresent()
         }
     }
     
