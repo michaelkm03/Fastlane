@@ -16,7 +16,7 @@ private struct Constants {
     static let animationDuration = 0.5
 }
 
-class CoachmarkManager: NSObject {
+class CoachmarkManager: NSObject, UIViewControllerTransitioningDelegate {
     let dependencyManager: VDependencyManager
     var coachmarks: [Coachmark] = []
     
@@ -86,6 +86,7 @@ class CoachmarkManager: NSObject {
             
             let containerFrame = container.bounds
             let coachmarkViewController = CoachmarkViewController(coachmark: coachmarkToDisplay, containerFrame: containerFrame, highlightFrame: highlightFrame)
+            coachmarkViewController.transitioningDelegate = self
             
             displayer.presentCoachmark(from: coachmarkViewController)
             coachmarkToDisplay.hasBeenShown = true
@@ -96,5 +97,15 @@ class CoachmarkManager: NSObject {
             }
     
         }
+    }
+    
+    // MARK: - UIViewControllerTransitioningDelegate 
+    
+    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return CoachmarkPresentAnimationController()
+    }
+    
+    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return CoachmarkDismissAnimationController()
     }
 }

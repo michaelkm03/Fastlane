@@ -823,6 +823,8 @@
 		7C358BA61D1CBB300063CF66 /* VNotificationSettings+KeyAccessible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C358BA51D1CBB300063CF66 /* VNotificationSettings+KeyAccessible.swift */; };
 		7C37B8E71CF66CA200E83594 /* SystemBlurredImageBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C37B8E61CF66CA100E83594 /* SystemBlurredImageBackground.swift */; };
 		7C4C21EF1D4C272E00B85670 /* LoremIpsum.txt in Resources */ = {isa = PBXBuildFile; fileRef = 7C4C21EE1D4C272E00B85670 /* LoremIpsum.txt */; };
+		7C4C21F11D503C2C00B85670 /* CoachmarkPresentAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4C21F01D503C2C00B85670 /* CoachmarkPresentAnimationController.swift */; };
+		7C4C21F31D5122ED00B85670 /* CoachmarkDismissAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4C21F21D5122ED00B85670 /* CoachmarkDismissAnimationController.swift */; };
 		7C4CCE681D10D36F00784D30 /* SettingsViewController+Templatized.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4CCE671D10D36F00784D30 /* SettingsViewController+Templatized.swift */; };
 		7C582CA21D22E80300707CBE /* VSettingsSwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7C582CA11D22E80300707CBE /* VSettingsSwitchCell.xib */; };
 		7C582CA61D23270000707CBE /* NotificationSettingsViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C582CA51D23270000707CBE /* NotificationSettingsViewControllerTests.swift */; };
@@ -3099,6 +3101,8 @@
 		7C358BA51D1CBB300063CF66 /* VNotificationSettings+KeyAccessible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VNotificationSettings+KeyAccessible.swift"; sourceTree = "<group>"; };
 		7C37B8E61CF66CA100E83594 /* SystemBlurredImageBackground.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SystemBlurredImageBackground.swift; sourceTree = "<group>"; };
 		7C4C21EE1D4C272E00B85670 /* LoremIpsum.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LoremIpsum.txt; sourceTree = "<group>"; };
+		7C4C21F01D503C2C00B85670 /* CoachmarkPresentAnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachmarkPresentAnimationController.swift; sourceTree = "<group>"; };
+		7C4C21F21D5122ED00B85670 /* CoachmarkDismissAnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachmarkDismissAnimationController.swift; sourceTree = "<group>"; };
 		7C4CCE671D10D36F00784D30 /* SettingsViewController+Templatized.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SettingsViewController+Templatized.swift"; sourceTree = "<group>"; };
 		7C582CA11D22E80300707CBE /* VSettingsSwitchCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VSettingsSwitchCell.xib; sourceTree = "<group>"; };
 		7C582CA51D23270000707CBE /* NotificationSettingsViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationSettingsViewControllerTests.swift; sourceTree = "<group>"; };
@@ -9702,6 +9706,8 @@
 				7C894B871D39A04100E124C8 /* Coachmark.swift */,
 				7C894B891D39A4C400E124C8 /* CoachmarkManager.swift */,
 				7C894B8D1D39BC1B00E124C8 /* CoachmarkDisplayer.swift */,
+				7C4C21F01D503C2C00B85670 /* CoachmarkPresentAnimationController.swift */,
+				7C4C21F21D5122ED00B85670 /* CoachmarkDismissAnimationController.swift */,
 			);
 			path = Coachmarks;
 			sourceTree = "<group>";
@@ -12252,6 +12258,7 @@
 				D876E1FC1A9DA685002CAA29 /* VBackground.m in Sources */,
 				0314D4B419B46B5E00FA363C /* VLightboxDismissAnimator.m in Sources */,
 				A7B844E51CB84F4C00CE02DE /* SelectMediaAttachmentOperation.swift in Sources */,
+				7C4C21F11D503C2C00B85670 /* CoachmarkPresentAnimationController.swift in Sources */,
 				7AC1945F1D2DC283001B15B8 /* AvatarView.swift in Sources */,
 				7A02F8931D2486D400F43B24 /* CollectionType.swift in Sources */,
 				A7A390C51A32441E00709812 /* VButton.m in Sources */,
@@ -12471,6 +12478,7 @@
 				BFDC0B011C7F889300E5421B /* VSequenceActionController.swift in Sources */,
 				C3C734571B606BD500D6795D /* RadialAnimatingView.swift in Sources */,
 				BF3CD8801D11B65D00CB7764 /* UserUnupvoteOperation.swift in Sources */,
+				7C4C21F31D5122ED00B85670 /* CoachmarkDismissAnimationController.swift in Sources */,
 				A72C868B1C977FF600E97D4F /* BackgroundOperation.swift in Sources */,
 				A79825981C0FADAD00C53A07 /* KVODebugger.swift in Sources */,
 				F06350691CB00FA30047E30C /* MixedMediaCameraViewController.swift in Sources */,

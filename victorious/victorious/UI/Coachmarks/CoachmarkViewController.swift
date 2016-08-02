@@ -43,19 +43,18 @@ private struct Constants {
 
 class CoachmarkViewController: UIViewController, VBackgroundContainer {
     private let backgroundView = UIView()
+    private let detailsView = CoachmarkTextContainerView()
     
     init(coachmark: Coachmark, containerFrame: CGRect, highlightFrame: CGRect? = nil) {
         super.init(nibName: nil, bundle: nil)
         view = UIView(frame: containerFrame)
         modalPresentationStyle = .OverFullScreen
-        modalTransitionStyle = .CrossDissolve
         let dependencyManager = coachmark.dependencyManager
         
         dependencyManager.addBackgroundToBackgroundHost(self)
         view.addSubview(backgroundView)
         view.v_addFitToParentConstraintsToSubview(backgroundView)
         
-        let detailsView = CoachmarkTextContainerView()
         let titleLabel = UILabel()
         titleLabel.text = dependencyManager.title
         titleLabel.font = dependencyManager.titleFont
@@ -84,10 +83,6 @@ class CoachmarkViewController: UIViewController, VBackgroundContainer {
         detailsView.addSubview(strokeView)
         
         detailsView.translatesAutoresizingMaskIntoConstraints = false
-        let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .Light))
-        detailsView.addSubview(blurView)
-        detailsView.sendSubviewToBack(blurView)
-        detailsView.v_addFitToParentConstraintsToSubview(blurView)
         dependencyManager.addBackgroundToBackgroundHost(detailsView, forKey: Constants.textBackgroundKey)
         view.addSubview(detailsView)
         
@@ -161,6 +156,14 @@ class CoachmarkViewController: UIViewController, VBackgroundContainer {
         backgroundMaskLayer.path = maskPath.CGPath
         backgroundView.layer.mask = backgroundMaskLayer
         view.bringSubviewToFront(detailsView)
+    }
+    
+    func setupBlurView() -> UIVisualEffectView {
+        let blurView = UIVisualEffectView()
+        detailsView.addSubview(blurView)
+        detailsView.sendSubviewToBack(blurView)
+        detailsView.v_addFitToParentConstraintsToSubview(blurView)
+        return blurView
     }
     
     required init?(coder aDecoder: NSCoder) {
