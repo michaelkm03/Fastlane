@@ -38,7 +38,7 @@ final class ListMenuCreatorDataSource: ListMenuSectionDataSource {
         
         let operation = CreatorListRemoteOperation(urlString: endpointURLFromTemplate)
         operation.queue() { [weak self, weak operation] _, error, _ in
-            guard let users = operation?.creators else {
+            guard let users = operation?.creators where error == nil else {
                 self?.state = .failed(error: error)
                 return
             }
