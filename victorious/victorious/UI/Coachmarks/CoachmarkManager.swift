@@ -26,10 +26,6 @@ class CoachmarkManager: NSObject, UIViewControllerTransitioningDelegate {
         reloadCoachmarks()    
     }
     
-    deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
-    }
-    
     func reloadCoachmarks() {
         guard let coachmarkConfigurations = dependencyManager.arrayForKey(Constants.coachmarksArrayKey) as? [[NSObject : AnyObject]] else {
             return
