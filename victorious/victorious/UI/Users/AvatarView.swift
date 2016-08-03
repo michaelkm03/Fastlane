@@ -92,7 +92,7 @@ class AvatarView: UIView {
     // MARK: - Deinit
     
     deinit {
-        tearDownKVO()
+        KVOController.unobserveAll()
     }
     
     // MARK: - Views
@@ -141,17 +141,6 @@ class AvatarView: UIView {
     // MARK: - Content
     
     var user: UserModel? {
-        willSet {
-            if
-                let _ = (user as? VUser),
-                let _ = (newValue as? User)
-            {
-                // We tear down KVO if we're about to move away from
-                // a VUser
-                tearDownKVO()
-            }
-        }
-        
         didSet {
             var persistentUser: VUser?
             if let user = user as? VUser {
@@ -184,14 +173,6 @@ class AvatarView: UIView {
         KVOController.observe(user, keyPaths: Constants.observationKeys, options: [.Initial, .New]) { [weak self] _ in
             self?.setNeedsContentUpdate()
         }
-    }
-    
-    private func tearDownKVO() {
-        guard let _ = self.user as? VUser else {
-            return
-        }
-        
-        KVOController.unobserveAll()
     }
     
     // MARK: - Updating content
