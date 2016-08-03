@@ -16,7 +16,7 @@ private struct Constants {
     static let animationDuration = 0.5
 }
 
-class CoachmarkManager: NSObject {
+class CoachmarkManager: NSObject, UIViewControllerTransitioningDelegate {
     let dependencyManager: VDependencyManager
     var coachmarks: [Coachmark] = []
     
@@ -24,6 +24,12 @@ class CoachmarkManager: NSObject {
         self.dependencyManager = dependencyManager
         super.init()
         reloadCoachmarks()
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userChanged), name: kLoggedInChangedNotification, object: nil)
+    
+    }
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
     func reloadCoachmarks() {
@@ -86,6 +92,7 @@ class CoachmarkManager: NSObject {
             
             let containerFrame = container.bounds
             let coachmarkViewController = CoachmarkViewController(coachmark: coachmarkToDisplay, containerFrame: containerFrame, highlightFrame: highlightFrame)
+            coachmarkViewController.transitioningDelegate = self
             
             displayer.presentCoachmark(from: coachmarkViewController)
             coachmarkToDisplay.hasBeenShown = true
@@ -96,5 +103,24 @@ class CoachmarkManager: NSObject {
             }
     
         }
+    }
+    
+    // MARK: - UIViewControllerTransitioningDelegate
+
+    lazy var coachmarkPresentationController = CoachmarkPresentAnimationController()
+    lazy var coachmarkDismissalController = CoachmarkDismissAnimationController()
+    
+    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return coachmarkPresentationController
+    }
+    
+    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return coachmarkDismissalController
+    }
+    
+    // MARK: - Notification Handling 
+    
+    func userChanged() {
+        resetShownCoachmarks()
     }
 }
