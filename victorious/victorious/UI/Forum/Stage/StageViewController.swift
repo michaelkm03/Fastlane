@@ -168,6 +168,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
 
     /// Every piece of content has it's own instance of MediaContentView, it is destroyed and recreated for each one.
     private func tearDownMediaContentView(mediaContentView: MediaContentView) {
+        print("tearDownMediaContentView")
         hideMediaContentView(mediaContentView, animated: true) { (completed) in
             mediaContentView.removeFromSuperview()
         }
@@ -214,6 +215,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     }
 
     func addStageContent(stageContent: StageContent) {
+        print("addStageContent -> \(stageContent.content.id)")
         currentStageContent = stageContent
         
         if let mediaContentView = mediaContentView {
