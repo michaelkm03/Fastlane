@@ -362,12 +362,14 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         comparableUser = newComparableUser
         
         gridStreamController.setContent(user, withError: false)
+        gridStreamController.updateAPIPath(dependencyManager.streamAPIPath(forUserID: user.id))
         
         let appearanceKey = user.isCreator?.boolValue ?? false ? VNewProfileViewController.creatorAppearanceKey : VNewProfileViewController.userAppearanceKey
         let appearanceDependencyManager = dependencyManager.childDependencyForKey(appearanceKey)
         appearanceDependencyManager?.addBackgroundToBackgroundHost(gridStreamController)
         
         updateBarButtonItems()
+        gridStreamController.refresh()
     }
     
     private static func getUserID(forDependencyManager dependencyManager: VDependencyManager) -> Int {

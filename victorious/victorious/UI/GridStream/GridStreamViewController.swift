@@ -275,6 +275,12 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
             trackingParameters = [ VTrackingKeyParentContentId : contentId ]
         }
     }
+    
+    // MARK: - Helper functions 
+    
+    func updateAPIPath(path: APIPath) {
+        dataSource.updateAPIPath(path)
+    }
 }
 
 private extension VDependencyManager {
