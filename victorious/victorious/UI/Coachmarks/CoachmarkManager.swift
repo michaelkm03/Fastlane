@@ -23,9 +23,7 @@ class CoachmarkManager: NSObject, UIViewControllerTransitioningDelegate {
     init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
         super.init()
-        reloadCoachmarks()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userChanged), name: kLoggedInChangedNotification, object: nil)
-    
+        reloadCoachmarks()    
     }
     
     deinit {
@@ -116,11 +114,5 @@ class CoachmarkManager: NSObject, UIViewControllerTransitioningDelegate {
     
     func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return coachmarkDismissalController
-    }
-    
-    // MARK: - Notification Handling 
-    
-    func userChanged() {
-        resetShownCoachmarks()
     }
 }
