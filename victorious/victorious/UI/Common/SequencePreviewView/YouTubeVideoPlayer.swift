@@ -97,7 +97,6 @@ class YouTubeVideoPlayer: NSObject, VVideoPlayer, YTPlayerViewDelegate {
         let wasPlaying = isPlaying
         if !wasPlaying {
             isPlaying = true
-            playerView.mute()
             playerView.playVideo()
             delegate?.videoPlayerDidPlay?(self)
         }
