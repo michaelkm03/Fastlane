@@ -42,7 +42,7 @@ protocol CoachmarkDisplayer {
 
 extension CoachmarkDisplayer where Self: UIViewController {
     func presentCoachmark(from viewController: CoachmarkViewController) {
-        presentViewController(viewController, animated: true, completion:  nil)
+        presentViewController(viewController, animated: true, completion: nil)
     }
     
     var screenIdentifier: String {
@@ -54,6 +54,9 @@ extension CoachmarkDisplayer where Self: UIViewController {
     }
     
     func triggerCoachmark(withContext context: String? = nil) {
-        dependencyManager.coachmarkManager?.setupCoachmark(in: self, withContainerView: coachmarkContainerView, withContext: context)
+        //Only try to present the coachmark if this is the topmost viewcontroller
+        if (view.window != nil) {
+            dependencyManager.coachmarkManager?.setupCoachmark(in: self, withContainerView: coachmarkContainerView, withContext: context)
+        }
     }
 }

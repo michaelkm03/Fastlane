@@ -320,8 +320,12 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     // MARK: - Managing the user
     
     @objc private func userChanged() {
-        if user?.id == VCurrentUser.user()?.id {
-            setUser(VCurrentUser.user(), using: dependencyManager)
+        if
+            let loggedInUser = VCurrentUser.user(),
+            let currentUser = self.user
+            where currentUser.id != loggedInUser.id
+        {
+            setUser(loggedInUser, using: dependencyManager)
         }
     }
     
