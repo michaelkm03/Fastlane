@@ -180,23 +180,18 @@ class AvatarView: UIView {
             return
         }
         
-        for key in Constants.observationKeys {
-            user.addObserver(self, forKeyPath: key, options: [], context: nil)
+        KVOController.unobserveAll()
+        KVOController.observe(user, keyPaths: Constants.observationKeys, options: [.Initial, .New]) { [weak self] _ in
+            self?.setNeedsContentUpdate()
         }
     }
     
     private func tearDownKVO() {
-        guard let user = self.user as? VUser else {
+        guard let _ = self.user as? VUser else {
             return
         }
         
-        for key in Constants.observationKeys {
-            user.removeObserver(self, forKeyPath: key)
-        }
-    }
-    
-    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
-        self.setNeedsContentUpdate()
+        KVOController.unobserveAll()
     }
     
     // MARK: - Updating content
