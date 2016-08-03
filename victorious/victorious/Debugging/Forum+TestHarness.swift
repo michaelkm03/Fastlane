@@ -83,7 +83,7 @@ import VictoriousIOSSDK
             )
             
             totalCount += 1
-            broadcast(.appendContent([content]))
+            broadcast(.handleContent([content], .newer))
         }
         
         func debug_createStageEvents() {

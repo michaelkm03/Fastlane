@@ -84,11 +84,27 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     
     // MARK: - Managing the activity indicator
     
+    /// The most recently-displayed activity view. We need this because our loading state gets set after the activity
+    /// view displays, so we have to set the visibility of the activity indicator after the fact.
+    private var activityView: VFooterActivityIndicatorView?
+    
     /// Whether or not the activity indicator above the chat messages is enabled.
     private var activityIndicatorEnabled = false {
         didSet {
             collectionView.collectionViewLayout.invalidateLayout()
         }
+    }
+    
+    /// Whether or not we're currently loading messages, which is controlled by the `setLoadingContent` forum event.
+    private var isLoading = false {
+        didSet {
+            collectionView.collectionViewLayout.invalidateLayout()
+            updateActivityView()
+        }
+    }
+    
+    private func updateActivityView() {
+        activityView?.setActivityIndicatorVisible(activityIndicatorEnabled && isLoading, animated: false)
     }
     
     // MARK: - ForumEventReceiver
@@ -100,6 +116,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     func receive(event: ForumEvent) {
         switch event {
             case .setChatActivityIndicatorEnabled(let enabled): activityIndicatorEnabled = enabled
+            case .setLoadingContent(let isLoading, let loadingType): self.isLoading = isLoading && loadingType.showsLoadingState
             default: break
         }
     }
@@ -180,7 +197,8 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     func collectionView(collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, atIndexPath indexPath: NSIndexPath) {
         if let activityView = view as? VFooterActivityIndicatorView {
             activityView.activityIndicator.color = dependencyManager.activityIndicatorColor
-            activityView.setActivityIndicatorVisible(activityIndicatorEnabled, animated: false)
+            self.activityView = activityView
+            updateActivityView()
         }
     }
     
@@ -338,6 +356,15 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     
     private dynamic func onTimerTick() {
         dataSource.updateTimestamps(in: collectionView)
+    }
+}
+
+private extension PaginatedLoadingType {
+    var showsLoadingState: Bool {
+        switch self {
+            case .newer: return false
+            case .older, .refresh: return true
+        }
     }
 }
 
