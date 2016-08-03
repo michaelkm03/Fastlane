@@ -33,36 +33,12 @@ class YouTubeVideoPlayer: NSObject, VVideoPlayer, YTPlayerViewDelegate {
         playerView.alpha = 0.0
         playerView.userInteractionEnabled = false
         delegate?.videoPlayerDidStartBuffering?(self)
-//        playerView.loadWithVideoId(videoId, playerVars: playerVars)
-
-        let playerVars = [
-            "controls": NSNumber(integer: 0),
-            "rel": NSNumber(integer: 0),
-            "playsinline": NSNumber(integer: 1),
-            "autohide": NSNumber(integer: 1),
-            "showinfo": NSNumber(integer: 0),
-            "fs": NSNumber(integer: 0),
-            "modestbranding": NSNumber(integer: 1),
-            "enablejsapi": NSNumber(integer: 1),
-            "iv_load_policy": NSNumber(integer: 3), ///< Removes annotations
-            "autoplay": "0",
-        ]
 
         let container: [NSObject : AnyObject] = [
             "videoId": videoId,
             "playerVars": playerVars
         ]
-        print("container -> \(container)")
         playerView.loadWithPlayerParams(container)
-
-
-        // CUE VIDEO POOP
-//        playerView.cueVideoById(videoId, startSeconds: 0, suggestedQuality: YTPlaybackQuality.Auto)
-//
-//        dispatch_after(5) {
-//            print("PLAY AFTER 5s")
-//            self.playerView.playVideo()
-//        }
     }
     
     private var playerVars: [NSObject: AnyObject] {
@@ -77,7 +53,7 @@ class YouTubeVideoPlayer: NSObject, VVideoPlayer, YTPlayerViewDelegate {
             "modestbranding": NSNumber(integer: 1),
             "enablejsapi": NSNumber(integer: 1),
             "iv_load_policy": NSNumber(integer: 3), ///< Removes annotations
-            "autoplay": "1"
+            "autoplay": "0",
         ]
     }
     
@@ -118,18 +94,16 @@ class YouTubeVideoPlayer: NSObject, VVideoPlayer, YTPlayerViewDelegate {
     }
 
     func play() {
-//        let wasPlaying = isPlaying
-//        if !wasPlaying {
+        let wasPlaying = isPlaying
+        if !wasPlaying {
             isPlaying = true
-            print("PLAY")
             playerView.mute()
             playerView.playVideo()
             delegate?.videoPlayerDidPlay?(self)
-//        }
+        }
     }
     
     func pause() {
-        print("PAUSE")
         playerView.pauseVideo()
     }
     
@@ -139,30 +113,27 @@ class YouTubeVideoPlayer: NSObject, VVideoPlayer, YTPlayerViewDelegate {
     }
     
     func playFromStart() {
-//        let wasPlaying = isPlaying
-//        if !wasPlaying {
-            print("PLAY")
+        let wasPlaying = isPlaying
+        if !wasPlaying {
             playerView.seekToSeconds(0.0, allowSeekAhead: true)
             playerView.playVideo()
-//        }
+        }
     }
     
     // MARK: - YTPlayerViewDelegate
     
     func playerViewDidBecomeReady(playerView: YTPlayerView!) {
-        print("playerViewDidBecomeReady playerViewDidBecomeReady playerViewDidBecomeReady")
         playerView.webView?.backgroundColor = UIColor.clearColor()
         isPlaying = false
         delegate?.videoPlayerDidBecomeReady?(self)
         updateMute()
 
+        // This is a sad hack to allow the youtube payer to play at all when entering CUV.
         if playerView.window == nil {
-            print("off screen")
             playerView.pauseVideo()
         }
         else {
-            print("on screen")
-//            playerView.playVideo()
+            playerView.playVideo()
         }
         
         if playerView.alpha < 1.0 {
@@ -178,29 +149,21 @@ class YouTubeVideoPlayer: NSObject, VVideoPlayer, YTPlayerViewDelegate {
     }
     
     func playerView(playerView: YTPlayerView!, didChangeToState state: YTPlayerState) {
-        print("didChangeToState state -> \(state)")
         switch state {
             case .Ended:
-                print("Ended")
                 playerView.userInteractionEnabled = true
                 isPlaying = false
                 delegate?.videoPlayerDidReachEnd?(self)
             case .Paused:
-                print("Paused")
                 isPlaying = false
                 delegate?.videoPlayerDidPause?(self)
             case .Buffering:
-                print("Buffering")
                 playerView.mute()
                 delegate?.videoPlayerDidStartBuffering?(self)
-            case .Queued:
-                print("Queued")
+            case .Queued:()
             case .Unknown:()
-                print("Unknown")
-            case .Unstarted:
-                print("Unstarted")
+            case .Unstarted:()
             case .Playing:
-                print("Playing")
                 playerView.userInteractionEnabled = false
                 isPlaying = true
                 delegate?.videoPlayerDidStopBuffering?(self)
