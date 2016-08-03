@@ -30,7 +30,7 @@ struct PersistentStoreTestHelper {
                 content.v_author = author
                 content.v_createdAt = Timestamp().value
                 content.v_type = "image"
-                content.v_isLikedByCurrentUser = likedByCurrentUser
+                content.v_isRemotelyLikedByCurrentUser = likedByCurrentUser
             }
         }
     }
