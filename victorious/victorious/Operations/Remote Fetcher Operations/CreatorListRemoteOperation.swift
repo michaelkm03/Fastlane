@@ -15,6 +15,8 @@ final class CreatorListRemoteOperation: RemoteFetcherOperation {
     
     let request: CreatorListRequest
     
+    private(set) var creators: [UserModel] = []
+    
     required init(request: CreatorListRequest) {
         self.request = request
     }
@@ -29,12 +31,6 @@ final class CreatorListRemoteOperation: RemoteFetcherOperation {
     }
     
     private func onComplete( users: [User]) {
-        persistentStore.createBackgroundContext().v_performBlockAndWait { context in
-            for networkUser in users {
-                let persistentUser: VUser = context.v_findOrCreateObject(["remoteId": networkUser.id])
-                persistentUser.populate(fromSourceModel: networkUser)
-            }
-            context.v_save()
-        }
+        self.creators = users.flatMap { $0 as UserModel }
     }
 }

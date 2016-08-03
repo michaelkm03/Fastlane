@@ -19,7 +19,7 @@ final class ListMenuCreatorDataSource: ListMenuSectionDataSource {
     
     // MARK: - List Menu Section Data Source
     
-    private(set) var visibleItems: [VUser] = [] {
+    private(set) var visibleItems: [UserModel] = [] {
         didSet {
             state = visibleItems.isEmpty ? .noContent : .items
             delegate?.didUpdateVisibleItems(forSection: .creator)
@@ -31,10 +31,14 @@ final class ListMenuCreatorDataSource: ListMenuSectionDataSource {
     weak var delegate: ListMenuSectionDataSourceDelegate?
     
     func fetchRemoteData() {
-        let endpointURLFromTemplate = dependencyManager.listOfCreatorsURLString
-        let operation = CreatorListOperation(urlString: endpointURLFromTemplate)
-        operation.queue() { [weak self] results, error, cancelled in
-            guard let users = results as? [VUser] else {
+        guard let endpointURLFromTemplate = dependencyManager.listOfCreatorsURLString else {
+            v_log("nil endpoint url for list of creators on left nav")
+            return
+        }
+        
+        let operation = CreatorListRemoteOperation(urlString: endpointURLFromTemplate)
+        operation.queue() { [weak self, weak operation] _, error, _ in
+            guard let users = operation?.creators else {
                 self?.state = .failed(error: error)
                 return
             }
