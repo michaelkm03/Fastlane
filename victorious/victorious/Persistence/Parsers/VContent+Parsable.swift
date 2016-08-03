@@ -24,7 +24,7 @@ extension VContent: PersistenceParsable {
         /// If a user likes a piece of content, and the outgoing request fails, we don't want the user to know anything went wrong.
         /// Same thing if they want to unlike a piece of content. Therefore, we will show the user a state that they always expect,
         /// and we will update again on the next launch when our persistent store is cleared.
-        v_isLikedByCurrentUser = v_isLikedByCurrentUser ?? content.isLikedByCurrentUser
+        v_isRemotelyLikedByCurrentUser = v_isRemotelyLikedByCurrentUser ?? content.isRemotelyLikedByCurrentUser
         
         let author = content.author
         v_author = v_managedObjectContext.v_findOrCreateObject(["remoteId": author.id])

@@ -9,7 +9,6 @@
 import UIKit
 
 final class ContentFeedRemoteOperation: RemoteFetcherOperation {
-    private(set) var refreshStage: RefreshStage?
     
     // MARK: - Initializing
     
@@ -21,31 +20,20 @@ final class ContentFeedRemoteOperation: RemoteFetcherOperation {
         self.init(request: ContentFeedRequest(url: url))
     }
     
+    // MARK: - Output
+    
+    private(set) var items: [ContentModel]?
+    private(set) var refreshStage: RefreshStage?
+    
     // MARK: - Executing
     
     let request: ContentFeedRequest
     
     override func main() {
-        requestExecutor.executeRequest(request, onComplete: { [weak self] (contents, refreshStage) in
+        requestExecutor.executeRequest(request, onComplete: { [weak self] items, refreshStage in
+            // Map is a workaround for a compiler quirk. A crash will occur at runtime if we don't do it.
+            self?.items = items.map { $0 as ContentModel }
             self?.refreshStage = refreshStage
-            self?.onComplete(contents)
         }, onError: nil)
-    }
-    
-    func onComplete(contents: [Content]) {
-        // Make changes on background queue
-        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            self.results = contents.flatMap { sdkContent in
-                guard let id = sdkContent.id else {
-                    return nil
-                }
-                
-                let content: VContent = context.v_findOrCreateObject(["v_remoteID": id])
-                content.populate(fromSourceModel: sdkContent)
-                return content.id
-            }
-            
-            context.v_save()
-        }
     }
 }
