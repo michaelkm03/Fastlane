@@ -31,6 +31,6 @@ final class CreatorListRemoteOperation: RemoteFetcherOperation {
     }
     
     private func onComplete( users: [User]) {
-        self.creators = users.flatMap { $0 as UserModel }
+        self.creators = users.map { $0 as UserModel }
     }
 }
