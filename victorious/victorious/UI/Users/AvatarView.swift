@@ -89,12 +89,6 @@ class AvatarView: UIView {
         addSubview(initialsLabel)
     }
     
-    // MARK: - Deinit
-    
-    deinit {
-        KVOController.unobserveAll()
-    }
-    
     // MARK: - Views
     
     private let shadowView = UIView()
