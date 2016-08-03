@@ -38,6 +38,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
     @IBOutlet weak var captionLabel: UILabel!
     @IBOutlet weak var relatedLabel: UILabel!
     @IBOutlet weak var closeUpContentContainerView: UIView!
+    @IBOutlet weak var separatorBar: UIImageView!
     
     // MARK: - Variables
     
@@ -85,6 +86,8 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
         )
         insertSubview(spinner, atIndex: 0)
         spinner.startAnimating()
+        
+        separatorBar.image = UIImage.v_singlePixelImageWithColor(.whiteColor())
     }
 
     private func setupMediaContentView(for content: ContentModel) -> MediaContentView {
@@ -263,6 +266,9 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
         relatedLabel.textColor = dependencyManager.usernameColor
         relatedLabel.font = dependencyManager.relatedFont
         relatedLabel.text = dependencyManager.relatedText
+        if let relatedColor = dependencyManager.relatedColor {
+            separatorBar.image = UIImage.v_singlePixelImageWithColor(relatedColor)
+        }
     }
     
     private func clearContent() {

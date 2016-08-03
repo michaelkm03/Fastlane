@@ -19,6 +19,7 @@
 #import "UIImage+ImageCreation.h"
 #import "UIImage+Resize.h"
 #import "UIImage+Round.h"
+#import "UIImage+VSolidColor.h"
 #import "UIImage+VTint.h"
 #import "UIImageView+Blurring.h"
 #import "UIImageView+VLoadingAnimations.h"

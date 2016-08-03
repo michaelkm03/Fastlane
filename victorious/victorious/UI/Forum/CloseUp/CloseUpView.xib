@@ -55,6 +55,10 @@
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="WhO-Sg-4hR">
+                    <rect key="frame" x="20" y="523" width="280" height="1"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="yDO-Pi-1ty">
                     <rect key="frame" x="0.0" y="524" width="320" height="44"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
@@ -72,6 +76,7 @@
                 <outlet property="createdAtLabel" destination="Vmn-ZP-QUH" id="u8w-eE-8ut"/>
                 <outlet property="headerSection" destination="TF1-tJ-TCB" id="Xlj-vI-6Tr"/>
                 <outlet property="relatedLabel" destination="yDO-Pi-1ty" id="ixi-Ie-rb7"/>
+                <outlet property="separatorBar" destination="WhO-Sg-4hR" id="zCm-3M-9yS"/>
                 <outlet property="userNameButton" destination="KXm-IF-yUA" id="JES-yG-JXZ"/>
             </connections>
             <point key="canvasLocation" x="390" y="449"/>
