@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10174" systemVersion="15F34" minimumToolsVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10174" systemVersion="15G31" minimumToolsVersion="Automatic">
     <entity name="AdBreak" representedClassName="victorious.VAdBreak" syncable="YES">
         <attribute name="adSystemID" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="adTag" optional="YES" attributeType="String" syncable="YES"/>
@@ -82,11 +82,11 @@
     </entity>
     <entity name="ContentMediaAsset" representedClassName=".VContentMediaAsset" syncable="YES">
         <attribute name="v_externalID" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="v_height" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
-        <attribute name="v_width" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="v_height" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="v_remoteID" attributeType="String" syncable="YES"/>
         <attribute name="v_remoteSource" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="v_source" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="v_width" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <relationship name="v_content" maxCount="1" deletionRule="Nullify" destinationEntity="Content" inverseName="v_contentMediaAssets" inverseEntity="Content" syncable="YES"/>
     </entity>
     <entity name="Conversation" representedClassName="VConversation" syncable="YES">
