@@ -7,7 +7,6 @@
 //
 
 #import "VAppDelegate.h"
-#import "VForceUpgradeViewController.h"
 #import "VDependencyManager+VDefaultTemplate.h"
 #import "VDependencyManager+NavigationBar.h"
 #import "VLoadingViewController.h"
@@ -42,8 +41,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 @property (nonatomic, strong) VDependencyManager *rootDependencyManager; ///< The dependency manager at the top of the heirarchy--the one with no parent
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic) BOOL appearing;
-@property (nonatomic) BOOL shouldPresentForceUpgradeScreenOnNextAppearance;
 @property (nonatomic, strong, readwrite) UIViewController *currentViewController;
 @property (nonatomic, strong) VLoadingViewController *loadingViewController;
 @property (nonatomic, strong, readwrite) VSessionTimer *sessionTimer;
@@ -126,23 +123,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     [self showLoadingViewController];
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    self.appearing = YES;
-    if (self.shouldPresentForceUpgradeScreenOnNextAppearance)
-    {
-        self.shouldPresentForceUpgradeScreenOnNextAppearance = NO;
-        [self _presentForceUpgradeScreen];
-    }
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    self.appearing = NO;
-}
-
 #pragma mark - Status Bar Appearance
 
 - (UIViewController *)childViewControllerForStatusBarHidden
@@ -170,26 +150,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 - (CGSize)sizeForChildContentContainer:(id<UIContentContainer>)container withParentContainerSize:(CGSize)parentSize
 {
     return parentSize;
-}
-
-#pragma mark - Force Upgrade
-
-- (void)presentForceUpgradeScreen
-{
-    if (self.appearing)
-    {
-        [self _presentForceUpgradeScreen];
-    }
-    else
-    {
-        self.shouldPresentForceUpgradeScreenOnNextAppearance = YES;
-    }
-}
-
-- (void)_presentForceUpgradeScreen
-{
-    VForceUpgradeViewController *forceUpgradeViewController = [[VForceUpgradeViewController alloc] init];
-    [self presentViewController:forceUpgradeViewController animated:YES completion:nil];
 }
 
 #pragma mark - Child View Controllers
