@@ -184,9 +184,6 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         
         // Remove this once the way to animate the workspace in and out from forum has been figured out
         navigationController?.setNavigationBarHidden(false, animated: animated)
-        
-        // Set up the network source if needed.
-        forumNetworkSource?.setUpIfNeeded()
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {

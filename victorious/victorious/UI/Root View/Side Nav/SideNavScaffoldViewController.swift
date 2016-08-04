@@ -85,7 +85,10 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
         super.viewWillAppear(animated)
         if !AgeGate.isAnonymousUser() && !hasPerformedFirstLaunchSetup {
             hasPerformedFirstLaunchSetup = true
-            performSetup()
+            performSetup { [weak self] in
+                let forumVC = self?.centerViewController as! ForumViewController
+                forumVC.forumNetworkSource?.setUpIfNeeded()
+            }
             setupNavigationButtons()
         }
     }
