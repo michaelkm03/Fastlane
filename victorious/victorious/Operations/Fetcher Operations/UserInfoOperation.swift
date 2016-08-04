@@ -34,7 +34,7 @@ class UserInfoOperation: RemoteFetcherOperation, RequestOperation {
             context.v_save()
             let objectID = persistentUser.objectID;
             
-            self.persistentStore.mainContext.v_performBlock() { context in
+            self.persistentStore.mainContext.v_performBlockAndWait() { context in
                 self.user = context.objectWithID(objectID) as? VUser
             }
         }
