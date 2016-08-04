@@ -23,12 +23,17 @@ public struct ContentFeedRequest: RequestType {
         guard let contents = responseJSON["payload"]["viewed_contents"].array else {
             throw ResponseParsingError()
         }
-        let mainStageJSON = responseJSON["main_stage"]
         
         let parsedContents = contents.flatMap { Content(json: $0) }
-        let stageMetaData = StageMetaData(title: mainStageJSON["meta_data"]["name"].string)
-        let parsedRefreshStage = RefreshStage(json: mainStageJSON, stageMetaData: stageMetaData)
         
-        return (parsedContents, parsedRefreshStage)
+        var parsedRefreshStage: RefreshStage? = nil
+        let mainStageJSON = responseJSON["main_stage"]
+        
+        if mainStageJSON.isExists() {
+            let stageMetaData = StageMetaData(title: mainStageJSON["meta_data"]["name"].string)
+            parsedRefreshStage = RefreshStage(json: mainStageJSON, stageMetaData: stageMetaData)
+        }
+        
+        return (contents: parsedContents, refreshStage: parsedRefreshStage)
     }
 }
