@@ -131,8 +131,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateUser()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(updateUser), name: kLoggedInChangedNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userChanged), name: kLoggedInChangedNotification, object: nil)
     }
     
     // MARK: - View updating
@@ -321,7 +320,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     
     // MARK: - Managing the user
     
-    @objc private func updateUser() {
+    @objc private func userChanged() {
         if let loggedInUser = VCurrentUser.user() {
             setUser(loggedInUser, using: dependencyManager)
         }
