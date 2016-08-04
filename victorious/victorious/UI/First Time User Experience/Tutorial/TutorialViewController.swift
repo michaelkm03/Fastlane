@@ -90,6 +90,15 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
     
     // MARK: - UICollectionViewFlowLayoutDelegate
     
+    func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+        let messageCell = cell as! ChatFeedMessageCell
+        messageCell.startDisplaying()
+    }
+    
+    func collectionView(collectionView: UICollectionView, didEndDisplayingCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+        (cell as! ChatFeedMessageCell).stopDisplaying()
+    }
+    
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         return chatInterfaceDataSource.desiredCellSize(for: collectionView, at: indexPath)
     }

@@ -89,12 +89,6 @@ class AvatarView: UIView {
         addSubview(initialsLabel)
     }
     
-    // MARK: - Deinit
-    
-    deinit {
-        tearDownKVO()
-    }
-    
     // MARK: - Views
     
     private let shadowView = UIView()
@@ -141,17 +135,6 @@ class AvatarView: UIView {
     // MARK: - Content
     
     var user: UserModel? {
-        willSet {
-            if
-                let _ = (user as? VUser),
-                let _ = (newValue as? User)
-            {
-                // We tear down KVO if we're about to move away from
-                // a VUser
-                tearDownKVO()
-            }
-        }
-        
         didSet {
             var persistentUser: VUser?
             if let user = user as? VUser {
@@ -180,23 +163,10 @@ class AvatarView: UIView {
             return
         }
         
-        for key in Constants.observationKeys {
-            user.addObserver(self, forKeyPath: key, options: [], context: nil)
+        KVOController.unobserveAll()
+        KVOController.observe(user, keyPaths: Constants.observationKeys, options: [.Initial, .New]) { [weak self] _ in
+            self?.setNeedsContentUpdate()
         }
-    }
-    
-    private func tearDownKVO() {
-        guard let user = self.user as? VUser else {
-            return
-        }
-        
-        for key in Constants.observationKeys {
-            user.removeObserver(self, forKeyPath: key)
-        }
-    }
-    
-    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
-        self.setNeedsContentUpdate()
     }
     
     // MARK: - Updating content
