@@ -220,11 +220,6 @@ static CGFloat const kNotificationAddedVerticalInset = 8.0f;
 
 - (void)fetchNotificationCount
 {
-    if ([AgeGate isAnonymousUser])
-    {
-        return;
-    }
-    
     NotificationsUnreadCountOperation *operation = [[NotificationsUnreadCountOperation alloc] init];
     [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
     {

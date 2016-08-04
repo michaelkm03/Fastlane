@@ -8,7 +8,7 @@
 
 import UIKit
 
-extension VContent: PersistenceParsable {
+extension VContent {
     func populate(fromSourceModel content: Content) {
         v_isVIPOnly = content.isVIPOnly ?? v_isVIPOnly
         v_createdAt = content.createdAt.value ?? v_createdAt

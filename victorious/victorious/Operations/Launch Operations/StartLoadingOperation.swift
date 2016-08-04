@@ -60,7 +60,7 @@ class StartLoadingOperation: BackgroundOperation, VTemplateDownloadOperationDele
             )
         }
         
-        let loginOperation = AgeGate.isAnonymousUser() ? AnonymousLoginOperation() : StoredLoginOperation(dependencyManager: cachedTemplate)
+        let loginOperation = StoredLoginOperation(dependencyManager: cachedTemplate)
         
         loginOperation.rechainAfter(self)
         if template == nil {

@@ -56,16 +56,6 @@ static const CGFloat kTrendingTagCellRowHeight = 40.0f;
     return NSStringFromClass( self.class );
 }
 
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-    if ([AgeGate isAnonymousUser])
-    {
-        [self.followControl removeFromSuperview];
-        self.followControl = nil;
-    }
-}
-
 + (NSInteger)cellHeight
 {
     return kTrendingTagCellRowHeight;

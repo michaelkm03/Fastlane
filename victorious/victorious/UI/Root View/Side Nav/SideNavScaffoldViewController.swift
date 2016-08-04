@@ -82,7 +82,7 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        if !AgeGate.isAnonymousUser() && !hasPerformedFirstLaunchSetup {
+        if !hasPerformedFirstLaunchSetup {
             hasPerformedFirstLaunchSetup = true
             performSetup()
             setupNavigationButtons()

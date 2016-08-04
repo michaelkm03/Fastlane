@@ -193,12 +193,6 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
         // TODO: It should be removed once the URL is in the template.
         [self addAppTimingURL:templateDecorator];
         
-        // Add legal information accessory button to following stream if user is anonymous
-        if ([AgeGate isAnonymousUser])
-        {
-            [AgeGate decorateTemplateForLegalInfoAccessoryButton:templateDecorator];
-        }
-
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
                                                                                     configuration:templateDecorator.decoratedTemplate
                                                                 dictionaryOfClassesByTemplateName:nil];

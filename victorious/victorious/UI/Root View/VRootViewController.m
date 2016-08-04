@@ -38,7 +38,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     VAppLaunchStateLaunched ///< The scaffold is displayed and we're fully launched
 };
 
-@interface VRootViewController () <VLoadingViewControllerDelegate, AgeGateViewControllerDelegate>
+@interface VRootViewController () <VLoadingViewControllerDelegate>
 
 @property (nonatomic, strong) VDependencyManager *rootDependencyManager; ///< The dependency manager at the top of the heirarchy--the one with no parent
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -239,14 +239,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     /// Body removed alongside FetchTemplateProductIdentifiersOperation
     
     [[InterstitialManager sharedInstance] setDependencyManager:self.dependencyManager];
-}
-
-- (void)showAgeGateViewController
-{
-    self.launchState = VAppLaunchStateWaiting;
-    AgeGateViewController *ageGateViewController = [AgeGateViewController ageGateViewControllerWithAgeGateDelegate:self
-                                                                                                 dependencyManager:self.dependencyManager];
-    [self showViewController:ageGateViewController animated:NO completion:nil];
 }
 
 - (void)showLogin
@@ -488,27 +480,10 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     if ( loadingViewController == self.currentViewController && self.launchState == VAppLaunchStateWaiting )
     {
         self.launchState = VAppLaunchStateLaunching;
-        
-        BOOL ageGateActivated = [AgeGate isAgeGateEnabled];
-        BOOL userHasProvidedBirthday = [AgeGate hasBirthdayBeenProvided];
-        if (ageGateActivated && !userHasProvidedBirthday)
-        {
-            [self showAgeGateViewController];
-        }
-        else
-        {
-            [self showLogin];
-        }
+        [self showLogin];
     }
     
     [self initialSetupAfterLoading];
-}
-
-#pragma mark - AgeGateViewControllerDelegate
-
-- (void)continueButtonTapped:(BOOL)isAnonymousUser
-{
-    [self showLoadingViewController];
 }
 
 @end

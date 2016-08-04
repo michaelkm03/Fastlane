@@ -38,8 +38,6 @@
 	<string>664946900317058</string>
 	<key>FacebookDisplayName</key>
 	<string>Victorious-dev</string>
-	<key>IsAgeGateEnabled</key>
-	<string>no</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbapi</string>

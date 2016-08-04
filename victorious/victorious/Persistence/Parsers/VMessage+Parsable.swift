@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-extension VMessage: PersistenceParsable {
+extension VMessage {
     
     func populate( fromSourceModel message: Message ) {
         remoteId                    = message.messageID

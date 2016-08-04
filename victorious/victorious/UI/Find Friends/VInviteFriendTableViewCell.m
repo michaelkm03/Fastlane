@@ -30,12 +30,6 @@ static const CGFloat kInviteCellHeight = 50.0f;
 - (void)awakeFromNib
 {
     self.contentView.backgroundColor = [UIColor clearColor];
-    
-    if ([AgeGate isAnonymousUser])
-    {
-        [self.followUserControl removeFromSuperview];
-        self.followUserControl = nil;
-    }
 }
 
 #pragma mark - VSharedCollectionReusableViewMethods
