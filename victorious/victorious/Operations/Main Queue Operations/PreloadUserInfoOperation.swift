@@ -49,8 +49,6 @@ class PreloadUserInfoOperation: BackgroundOperation {
 
             VPushNotificationManager.sharedPushNotificationManager().sendTokenWithSuccessBlock(nil, failBlock: nil)
             
-            UsersFollowedByUserOperation(userID: userID).queue()
-            
             let request = HashtagSubscribedToListRequest(paginator: StandardPaginator(pageNumber: 1, itemsPerPage: 200))
             FollowedHashtagsRemoteOperation(request: request).queue()
         }
