@@ -87,8 +87,6 @@ class AvatarView: UIView {
         addSubview(shadowView)
         addSubview(imageView)
         addSubview(initialsLabel)
-        
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userChanged), name: kLoggedInChangedNotification, object: nil)
     }
     
     // MARK: - Views
@@ -264,11 +262,5 @@ class AvatarView: UIView {
             shadowBounds = newShadowBounds
             shadowView.layer.shadowPath = UIBezierPath(ovalInRect: newShadowBounds).CGPath
         }
-    }
-    
-    // MARK: - Observation 
-    
-    func userChanged() {
-        user = VCurrentUser.user()
     }
 }
