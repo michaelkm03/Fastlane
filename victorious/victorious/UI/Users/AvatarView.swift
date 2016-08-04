@@ -154,8 +154,8 @@ class AvatarView: UIView {
     
     // MARK: - KVO
     private func setupKVO() {
-        ///the user object can be a userModel, which may or may not be persistent. Only the persistent VUser can
-        /// be KVO'd, hence we must check for this in the setup function.
+        /// The user object can be a userModel, which may or may not be persistent. Only the persistent VUser can
+        /// be KVO'd, hence we must check for this 
         guard let user = self.user as? VUser else {
             return
         }
