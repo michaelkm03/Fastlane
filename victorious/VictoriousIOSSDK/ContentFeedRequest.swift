@@ -29,6 +29,7 @@ public struct ContentFeedRequest: RequestType {
         var parsedRefreshStage: RefreshStage? = nil
         let mainStageJSON = responseJSON["main_stage"]
         
+        // A missing "main_stage" node in JSON represents no content on the stage.
         if mainStageJSON.isExists() {
             let stageMetaData = StageMetaData(title: mainStageJSON["meta_data"]["name"].string)
             parsedRefreshStage = RefreshStage(json: mainStageJSON, stageMetaData: stageMetaData)
