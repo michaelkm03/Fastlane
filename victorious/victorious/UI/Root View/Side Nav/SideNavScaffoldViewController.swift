@@ -10,7 +10,7 @@ import SDWebImage
 import UIKit
 
 /// A scaffold view controller that uses a `SideMenuController` for its UI.
-class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationControllerDelegate {
+class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationControllerDelegate {
     // MARK: - Configuration
     
     private static let estimatedBarButtonWidth: CGFloat = 60.0
@@ -36,8 +36,7 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
         centerWrapperViewController.view.v_addFitToParentConstraintsToSubview(centerViewController.view)
         centerViewController.didMoveToParentViewController(centerWrapperViewController)
         
-        mainNavigationController = VNavigationController(dependencyManager: dependencyManager)
-        mainNavigationController.innerNavigationController.viewControllers = [centerWrapperViewController]
+        mainNavigationController = UINavigationController(rootViewController: centerWrapperViewController)
         
         sideMenuController = SideMenuController(
             centerViewController: mainNavigationController,
@@ -57,7 +56,7 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
         view.v_addFitToParentConstraintsToSubview(sideMenuController.view)
         sideMenuController.didMoveToParentViewController(self)
         
-        let navigationBar = mainNavigationController.innerNavigationController.navigationBar
+        let navigationBar = mainNavigationController.navigationBar
         navigationBar.translucent = false
         dependencyManager.applyStyleToNavigationBar(navigationBar)
         
@@ -134,7 +133,7 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
     let sideMenuController: SideMenuController
     
     /// The navigation controller that contains the center view controller.
-    let mainNavigationController: VNavigationController
+    let mainNavigationController: UINavigationController
     
     /// A view controller that wraps the `centerViewController` to allow configuration of navigation items.
     let centerWrapperViewController = UIViewController()
@@ -167,7 +166,7 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
         
         if let rightNavViewController = rightNavViewController {
             allowsRightNavigation = false
-            mainNavigationController.innerNavigationController.pushViewController(rightNavViewController, animated: true)
+            mainNavigationController.pushViewController(rightNavViewController, animated: true)
         }
     }
     
@@ -192,8 +191,8 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
     private dynamic func mainFeedFilterDidChange(notification: NSNotification) {
         sideMenuController.closeSideViewController(animated: true)
         if let title = (notification.userInfo?["selectedItem"] as? ReferenceWrapper<ListMenuSelectedItem>)?.value.title {
-            mainNavigationController.innerNavigationController.navigationBar.topItem?.titleView = nil
-            mainNavigationController.innerNavigationController.navigationBar.topItem?.title = title
+            mainNavigationController.navigationBar.topItem?.titleView = nil
+            mainNavigationController.navigationBar.topItem?.title = title
         }
         else {
             // Display Creator Logo/Name
@@ -203,7 +202,7 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
     
     private func loadNavigationBarTitle() {
         dispatch_async(dispatch_get_main_queue()) {
-            self.dependencyManager.childDependencyForKey("centerScreen")?.configureNavigationItem(self.mainNavigationController.innerNavigationController.navigationBar.topItem)
+            self.dependencyManager.childDependencyForKey("centerScreen")?.configureNavigationItem(self.mainNavigationController.navigationBar.topItem)
         }
     }
     
@@ -227,24 +226,8 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
     
     let coachmarkManager: CoachmarkManager
     
-    var navigationDestinations: [VNavigationDestination] {
-        return [
-            sideMenuController.leftViewController,
-            sideMenuController.centerViewController,
-            sideMenuController.rightViewController,
-            rightNavViewController
-        ].flatMap { viewController in
-            if let containerViewController = viewController as? VNavigationDestinationContainerViewController {
-                return containerViewController.navigationDestination
-            } else {
-                return viewController as? VNavigationDestination
-            }
-        }
-    }
-    
-    
     private func frameForNavigationControl(to destination: VNavigationDestination) -> CGRect {
-        var frame = mainNavigationController.innerNavigationController.navigationBar.frame ?? CGRectZero
+        var frame = mainNavigationController.navigationBar.frame ?? CGRectZero
         let width = SideNavScaffoldViewController.estimatedBarButtonWidth
         
         if destination === sideMenuController.leftViewController {
@@ -260,14 +243,11 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, VNavigationCont
         return CGRectZero
     }
     
-    // MARK: - VNavigationControllerDelegate
+    // MARK: - UINavigationControllerDelegate
     
-    func navigationController(navigationController: VNavigationController, willShowViewController viewController: UIViewController, animated: Bool) {
-        sideMenuController.panningIsEnabled = navigationController.innerNavigationController.viewControllers.count <= 1
+    func navigationController(navigationController: UINavigationController, didShowViewController viewController: UIViewController, animated: Bool) {
+        allowsRightNavigation = navigationController.viewControllers.count <= 1
+        sideMenuController.panningIsEnabled = navigationController.viewControllers.count <= 1
         viewController.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
-    }
-    
-    func navigationController(navigationController: VNavigationController, didShowViewController viewController: UIViewController, animated: Bool) {
-        allowsRightNavigation = navigationController.innerNavigationController.viewControllers.count <= 1
     }
 }

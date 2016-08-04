@@ -199,8 +199,6 @@ class SideMenuController: UIViewController {
         if let navigationController = viewController as? UINavigationController,
             let topViewController = navigationController.topViewController {
             addFocusWithType(focusType, toViewController: topViewController)
-        } else if let navigationController = viewController as? VNavigationController {
-            addFocusWithType(focusType, toViewController: navigationController.innerNavigationController)
         }
         
         for childViewController in viewController.childViewControllers {
