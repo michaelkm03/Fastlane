@@ -8,7 +8,8 @@
 
 /// A protocol that items managed by `TimePaginatedDataSource` must conform to.
 protocol PaginatableItem {
-    var createdAt: Timestamp { get }
+    /// The timestamp that pagination logic will be performed with.
+    var paginationTimestamp: Timestamp { get }
 }
 
 /// An enum for expected ordering of paginated content.
@@ -208,7 +209,7 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
     
     private var oldestTimestamp: Timestamp? {
         if let timestamp = items.reduce(nil, combine: { timestamp, item in
-            min(timestamp ?? Timestamp.max, (item as! PaginatableItem).createdAt)
+            min(timestamp ?? Timestamp.max, (item as! PaginatableItem).paginationTimestamp)
         }) {
             return Timestamp(value: timestamp.value - 1)
         }
@@ -218,7 +219,7 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
     
     private var newestTimestamp: Timestamp? {
         if let timestamp = items.reduce(nil, combine: { timestamp, item in
-            max(timestamp ?? Timestamp(value: 0), (item as! PaginatableItem).createdAt)
+            max(timestamp ?? Timestamp(value: 0), (item as! PaginatableItem).paginationTimestamp)
         }) {
             return Timestamp(value: timestamp.value + 1)
         }
