@@ -68,7 +68,7 @@ extension WebSocketEventDecoder {
                     forumEvent = .showCaptionContent(content)
                 }
                 else {
-                    forumEvent = .appendContent([content])
+                    forumEvent = .handleContent([content], .newer)
                 }
             case Types.stageRefresh:
                 let refreshJSON = rootNode[Keys.refreshStage]

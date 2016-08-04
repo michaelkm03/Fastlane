@@ -23,8 +23,8 @@ class VContentMediaAsset: NSManagedObject, ContentMediaAssetModel {
     @NSManaged var v_remoteID: String
     
     @NSManaged var v_content: VContent
-    @NSManaged var v_width: Int
-    @NSManaged var v_height: Int
+    @NSManaged var v_width: Float
+    @NSManaged var v_height: Float
     
     // MARK: - ContentMediaAssetModel
     
@@ -77,7 +77,9 @@ class VContentMediaAsset: NSManagedObject, ContentMediaAssetModel {
         guard v_width != 0 && v_height != 0 else {
             return nil
         }
+        let width = CGFloat(v_width)
+        let height = CGFloat(v_height)
         
-        return CGSize(width: v_width, height: v_height)
+        return CGSize(width: width, height: height)
     }
 }

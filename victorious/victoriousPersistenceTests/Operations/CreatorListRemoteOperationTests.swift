@@ -23,13 +23,8 @@ class CreatorListRemoteOperationTests: BaseFetcherOperationTestCase {
         operation.main()
         
         XCTAssertNil(operation.results)
-
-        guard let persistentUsers: [VUser] = testStore.mainContext.v_findObjects(["remoteId": userID]) else {
-            XCTFail("Unable to fetch the persistent user for CreatorListRemoteOperationTests")
-            return
-        }
         
-        XCTAssertEqual(persistentUsers.count, 1)
-        XCTAssertEqual(persistentUsers.first?.remoteId, userID)
+        XCTAssertEqual(operation.creators.count, 1)
+        XCTAssertEqual(operation.creators.first?.id , userID)
     }
 }

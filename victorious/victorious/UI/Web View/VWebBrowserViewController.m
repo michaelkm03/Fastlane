@@ -15,7 +15,6 @@
 #import "VSequence+Fetcher.h"
 #import "VConstants.h"
 #import "UIColor+VBrightness.h"
-#import "VNavigationController.h"
 #import "UIView+AutoLayout.h"
 #import "VWebBrowserHeaderLayoutManager.h"
 #import "VDependencyManager+VWebBrowser.h"
@@ -77,8 +76,8 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    [self.v_navigationController setNavigationBarHidden:YES];
+    
+    [self.navigationController setNavigationBarHidden:YES];
     self.headerViewController.layoutManager.exitButtonVisible = (self.presentingViewController != nil);
     
     self.actions = [[VWebBrowserActions alloc] init];

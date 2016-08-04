@@ -206,8 +206,9 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
         if case .sendContent(let content) = event {
             if content.author.accessLevel == .owner {
                 broadcast(.showCaptionContent(content))
-            } else {
-                broadcast(.appendContent([content]))
+            }
+            else {
+                broadcast(.handleContent([content], .newer))
             }
         }
     }

@@ -104,6 +104,12 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         view.addSubview(gridStreamController.view)
         view.v_addFitToParentConstraintsToSubview(gridStreamController.view)
         gridStreamController.didMoveToParentViewController(self)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(returnedFromBackground), name: UIApplicationDidBecomeActiveNotification, object: nil)
+    }
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -261,6 +267,12 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
             )
         }
         return nil
+    }
+    
+    // MARK: - Notification Response
+    
+    dynamic private func returnedFromBackground() {
+        updateAudioSessionCategory()
     }
 }
 

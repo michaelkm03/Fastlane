@@ -30,7 +30,6 @@
 #import "VImageLightboxViewController.h"
 #import "VLightboxTransitioningDelegate.h"
 #import "VMediaAttachmentPresenter.h"
-#import "VNavigationController.h"
 #import "VNewContentViewController.h"
 #import "VNode+Fetcher.h"
 #import "VPurchaseViewController.h"
