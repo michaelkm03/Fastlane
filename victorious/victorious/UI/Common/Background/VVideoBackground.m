@@ -8,9 +8,6 @@
 
 #import "VVideoBackground.h"
 #import "VDependencyManager.h"
-#import "VSequence+Fetcher.h"
-#import "VNode+Fetcher.h"
-#import "VAsset+Fetcher.h"
 #import "victorious-swift.h"
 
 static NSString * const kSequenceURLKey = @"sequenceURL";
@@ -28,32 +25,33 @@ static NSString * const kSequenceURLKey = @"sequenceURL";
     self = [super initWithDependencyManager:dependencyManager];
     if (self)
     {
-        _videoView = [[VVideoView alloc] initWithFrame:CGRectZero];
-        _videoView.delegate = self;
-        _videoView.backgroundColor = [UIColor blackColor];
-        
-        NSString *sequenceURL = [dependencyManager stringForKey:kSequenceURLKey];
-        NSString *sequenceID = [sequenceURL lastPathComponent];
-        if (sequenceID != nil)
-        {
-            SequenceFetchOperation *operation = [[SequenceFetchOperation alloc] initWithSequenceID:sequenceID streamID:nil];
-            [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
-             {
-                 VSequence *sequence = operation.result;
-                 if ( error == nil && sequence != nil )
-                 {
-                     VNode *node = (VNode *)[sequence firstNode];
-                     VAsset *asset = [node httpLiveStreamingAsset];
-                     if (asset.dataURL != nil)
-                     {
-                         VVideoPlayerItem *item = [[VVideoPlayerItem alloc] initWithURL:asset.dataURL];
-                         item.muted = YES;
-                         item.loop = YES;
-                         [self.videoView setItem:item];
-                     }
-                 }
-             }];
-        }
+#warning Fix me!
+//        _videoView = [[VVideoView alloc] initWithFrame:CGRectZero];
+//        _videoView.delegate = self;
+//        _videoView.backgroundColor = [UIColor blackColor];
+//        
+//        NSString *sequenceURL = [dependencyManager stringForKey:kSequenceURLKey];
+//        NSString *sequenceID = [sequenceURL lastPathComponent];
+//        if (sequenceID != nil)
+//        {
+//            SequenceFetchOperation *operation = [[SequenceFetchOperation alloc] initWithSequenceID:sequenceID streamID:nil];
+//            [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
+//             {
+//                 VSequence *sequence = operation.result;
+//                 if ( error == nil && sequence != nil )
+//                 {
+//                     VNode *node = (VNode *)[sequence firstNode];
+//                     VAsset *asset = [node httpLiveStreamingAsset];
+//                     if (asset.dataURL != nil)
+//                     {
+//                         VVideoPlayerItem *item = [[VVideoPlayerItem alloc] initWithURL:asset.dataURL];
+//                         item.muted = YES;
+//                         item.loop = YES;
+//                         [self.videoView setItem:item];
+//                     }
+//                 }
+//             }];
+//        }
     }
     return self;
 }

@@ -12,7 +12,6 @@
 #import "VDependencyManager+NavigationBar.h"
 #import "VWebBrowserHeaderViewController.h"
 #import "VWebBrowserActions.h"
-#import "VSequence+Fetcher.h"
 #import "VConstants.h"
 #import "UIColor+VBrightness.h"
 #import "UIView+AutoLayout.h"
@@ -223,14 +222,6 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
     }
     
     [self.headerViewController.layoutManager updateAnimated:YES];
-}
-
-#pragma mark - Data source
-
-- (void)setSequence:(VSequence *)sequence
-{
-    _sequence = sequence;
-    [self loadUrlString:_sequence.webContentUrl];
 }
 
 #pragma mark - Title
@@ -448,12 +439,7 @@ typedef NS_ENUM( NSUInteger, VWebBrowserViewControllerState )
 
 - (void)exportURL
 {
-    // Only provide share text if this is the root of the navigation history,
-    // i.e. the original announcement itself.
-    NSString *shareTextTitle = [self.webView canGoBack] ? nil : self.sequence.name;
-    NSString *shareTextDescription = [self.webView canGoBack] ? nil : self.sequence.sequenceDescription;
-    
-    [self.actions showInViewController:self withCurrentUrl:self.currentURL titleText:shareTextTitle descriptionText:shareTextDescription];
+    [self.actions showInViewController:self withCurrentUrl:self.currentURL titleText:nil descriptionText:nil];
 }
 
 - (void)exit

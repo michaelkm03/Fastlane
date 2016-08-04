@@ -6,9 +6,7 @@
 //  Copyright (c) 2015 Victorious. All rights reserved.
 //
 
-#import "VComment.h"
 #import "VConversation.h"
-#import "VStreamItem.h"
 #import "VFlaggedContent.h"
 
 @interface VFlaggedContent()

@@ -23,7 +23,6 @@
 #import "victorious-Swift.h"
 #import "VTwitterAccountsHelper.h"
 #import "VSocialLoginErrors.h"
-#import "VForcedWorkspaceContainerViewController.h"
 
 @import FBSDKCoreKit;
 @import FBSDKLoginKit;

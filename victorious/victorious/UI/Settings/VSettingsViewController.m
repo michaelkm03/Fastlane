@@ -21,7 +21,6 @@
 #import "VDependencyManager+VNavigationItem.h"
 #import "VEnvironmentManager.h"
 #import "VDependencyManager+VTracking.h"
-#import "VLikedContentStreamCollectionViewController.h"
 #import "UIAlertController+VSimpleAlert.h"
 #import "UIViewController+VAccessoryScreens.h"
 #import "victorious-Swift.h"
@@ -211,13 +210,6 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     [self.tableView endUpdates];
 }
 
-- (void)pushLikedContent
-{
-    VLikedContentStreamCollectionViewController *likedContentViewController = [self.dependencyManager templateValueOfType:[VLikedContentStreamCollectionViewController class]
-                                                                                                       forKey:kLikedContentScreenKey];
-    [self.navigationController pushViewController:likedContentViewController animated:YES];
-}
-
 - (BOOL)showLikedContent
 {
     BOOL likeButtonOn = [[self.dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey] boolValue];
@@ -246,7 +238,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     {
         if ( indexPath.row == VSettingsActionLikedContent )
         {
-            [self pushLikedContent];
+            // No liked content anymore.
         }
         else if ( indexPath.row == VSettingsActionResetCoachmarks )
         {

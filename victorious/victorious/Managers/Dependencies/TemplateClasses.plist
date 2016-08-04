@@ -78,8 +78,6 @@
 	<string>VAssetCollectionGridViewController</string>
 	<key>workspace</key>
 	<string>VWorkspaceShimDestination</string>
-	<key>text.creationFlow</key>
-	<string>VTextWorkspaceFlowController</string>
 	<key>library.creationFlow</key>
 	<string>victorious.LibraryCreationFlowController</string>
 	<key>mixedMediaCamera.creationFlow</key>

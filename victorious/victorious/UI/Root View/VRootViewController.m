@@ -16,12 +16,10 @@
 #import "VThemeManager.h"
 #import "VConstants.h"
 #import "VLocationManager.h"
-#import "VVoteType.h"
 #import "VAppInfo.h"
 #import "VUploadManager.h"
 #import "VApplicationTracking.h"
 #import "VEnvironment.h"
-#import "VURLSelectionResponder.h"
 #import "victorious-Swift.h"
 #import "VCrashlyticsLogTracking.h"
 
@@ -40,7 +38,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     VAppLaunchStateLaunched ///< The scaffold is displayed and we're fully launched
 };
 
-@interface VRootViewController () <VLoadingViewControllerDelegate, VURLSelectionResponder, AgeGateViewControllerDelegate>
+@interface VRootViewController () <VLoadingViewControllerDelegate, AgeGateViewControllerDelegate>
 
 @property (nonatomic, strong) VDependencyManager *rootDependencyManager; ///< The dependency manager at the top of the heirarchy--the one with no parent
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
@@ -449,11 +447,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     }
 #endif
     
-    NewSessionPrunePersistentStoreOperation *operation = [[NewSessionPrunePersistentStoreOperation alloc] init];
-    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
-     {
-         [self showLoadingViewController];
-     }];
+    [self showLoadingViewController];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification
@@ -515,22 +509,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 - (void)continueButtonTapped:(BOOL)isAnonymousUser
 {
     [self showLoadingViewController];
-}
-
-#pragma mark - VURLSelectionResponder
-
-- (void)URLSelected:(NSURL *)URL
-{
-    VContentViewFactory *contentViewFactory = [self.dependencyManager contentViewFactory];
-    UIViewController *contentView = [contentViewFactory webContentViewControllerWithURL:URL];
-    if ( contentView != nil )
-    {
-        if ( self.presentedViewController )
-        {
-            [self dismissViewControllerAnimated:NO completion:nil];
-        }
-        [self presentViewController:contentView animated:YES completion:nil];
-    }
 }
 
 @end

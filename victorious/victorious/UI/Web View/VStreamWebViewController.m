@@ -11,7 +11,6 @@
 #import "VStreamWebViewController.h"
 #import "UIView+Autolayout.h"
 #import "VThemeManager.h"
-#import "VSequence+Fetcher.h"
 
 static const NSTimeInterval kWebViewFirstLoadAnimationDelay      = 0.0f;
 static const NSTimeInterval kWebViewFirstLoadAnimationDuration   = 0.5f;

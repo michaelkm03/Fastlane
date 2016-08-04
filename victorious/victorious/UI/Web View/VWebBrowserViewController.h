@@ -11,7 +11,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class VSequence, VWebBrowserHeaderViewController;
+@class VWebBrowserHeaderViewController;
 
 /**
  A view controller that provides a web view and basic navigation controls
@@ -22,11 +22,6 @@
 @interface VWebBrowserViewController : UIViewController <VHasManagedDependencies>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-
-/**
- A related sequence, if any
- */
-@property (nonatomic, strong) VSequence *sequence;
 
 /**
  A template specifier that can determine alternate layouts
