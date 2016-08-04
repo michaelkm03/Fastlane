@@ -222,13 +222,13 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
             footerView.setActivityIndicatorVisible(dataSource.isLoading, animated: true)
         }
         else if elementKind == UICollectionElementKindSectionHeader {
-            header?.headerWillAppear()
+            header?.headerDidAppear()
         }
     }
     
     func collectionView(collectionView: UICollectionView, didEndDisplayingSupplementaryView view: UICollectionReusableView, forElementOfKind elementKind: String, atIndexPath indexPath: NSIndexPath) {
         if elementKind == UICollectionElementKindSectionHeader {
-            header?.headerDidDisappear()
+            header?.headerWillDisappear()
         }
     }
     
@@ -247,7 +247,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         let targetContent = dataSource.items[indexPath.row]
         let destination = DeeplinkDestination(content: targetContent)
         router.navigate(to: destination)
-        header?.headerDidDisappear()
+        header?.headerWillDisappear()
         
         guard let cell = collectionView.cellForItemAtIndexPath(indexPath) as? ContentCell else {
             return
