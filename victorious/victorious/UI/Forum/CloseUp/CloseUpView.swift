@@ -263,7 +263,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
         userNameButton.titleLabel!.font = dependencyManager.usernameFont
         createdAtLabel.font = dependencyManager.timestampFont
         captionLabel.font = dependencyManager.captionFont
-        relatedLabel.textColor = dependencyManager.usernameColor
+        relatedLabel.textColor = dependencyManager.relatedColor
         relatedLabel.font = dependencyManager.relatedFont
         relatedLabel.text = dependencyManager.relatedText
         if let relatedColor = dependencyManager.relatedColor {
