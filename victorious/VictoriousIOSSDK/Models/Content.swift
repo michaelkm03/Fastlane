@@ -37,6 +37,9 @@ public protocol ContentModel: PreviewImageContainer, DictionaryConvertible {
     /// The time that the content was created on the server.
     var createdAt: Timestamp { get }
     
+    /// The timestamp that pagination logic should be performed with.
+    var paginationTimestamp: Timestamp { get }
+    
     /// Whether this content is only accessible for VIPs
     var isVIPOnly: Bool { get }
     
@@ -120,7 +123,6 @@ extension ContentModel {
 }
 
 public class Content: ContentModel {
-    
     public typealias ID = String
     
     public let id: ID?
@@ -129,8 +131,9 @@ public class Content: ContentModel {
     public let hashtags: [Hashtag]
     public let shareURL: NSURL?
     public let linkedURL: NSURL?
-    public let createdAt: Timestamp
     public let postedAt: Timestamp?
+    public let createdAt: Timestamp
+    public let paginationTimestamp: Timestamp
     public let previewImages: [ImageAssetModel]
     public let assets: [ContentMediaAssetModel]
     public let type: ContentType
@@ -163,8 +166,9 @@ public class Content: ContentModel {
         self.id = id
         self.status = json["status"].string
         self.shareURL = json["share_url"].URL
-        self.createdAt = Timestamp(apiString: json["released_at"].stringValue) ?? Timestamp()
         self.postedAt = Timestamp(apiString: json["posted_at"].stringValue)
+        self.createdAt = Timestamp(apiString: json["released_at"].stringValue) ?? Timestamp()
+        self.paginationTimestamp = Timestamp(apiString: viewedContentJSON["pagination_timestamp"].stringValue) ?? Timestamp()
         self.hashtags = []
         self.type = type
         
@@ -202,6 +206,7 @@ public class Content: ContentModel {
         author = user
         createdAt = serverTime
         postedAt = nil
+        paginationTimestamp = serverTime
         text = json["text"].string
         assets = [ContentMediaAsset(forumJSON: json["asset"])].flatMap { $0 }
         
@@ -227,6 +232,7 @@ public class Content: ContentModel {
         id: String? = nil,
         createdAt: Timestamp = Timestamp(),
         postedAt: Timestamp = Timestamp(),
+        paginationTimestamp: Timestamp = Timestamp(),
         type: ContentType = .text,
         text: String? = nil,
         assets: [ContentMediaAssetModel] = [],
@@ -237,6 +243,7 @@ public class Content: ContentModel {
         self.id = id
         self.postedAt = postedAt
         self.createdAt = createdAt
+        self.paginationTimestamp = paginationTimestamp
         self.type = type
         self.text = text
         self.assets = assets
