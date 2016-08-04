@@ -208,8 +208,8 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
     // the timestamps by 1ms to make them exclusive.
     
     private var oldestTimestamp: Timestamp? {
-        if let timestamp: Timestamp = items.reduce(nil, combine: { timestamp, item in
-            return min(timestamp ?? Timestamp.max, (item as! PaginatableItem).paginationTimestamp)
+        if let timestamp = items.reduce(nil, combine: { timestamp, item in
+            min(timestamp ?? Timestamp.max, (item as! PaginatableItem).paginationTimestamp)
         }) {
             return Timestamp(value: timestamp.value - 1)
         }
@@ -218,8 +218,8 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
     }
     
     private var newestTimestamp: Timestamp? {
-        if let timestamp: Timestamp = items.reduce(nil, combine: { timestamp, item in
-            return max(timestamp ?? Timestamp(value: 0), (item as! PaginatableItem).paginationTimestamp)
+        if let timestamp = items.reduce(nil, combine: { timestamp, item in
+            max(timestamp ?? Timestamp(value: 0), (item as! PaginatableItem).paginationTimestamp)
         }) {
             return Timestamp(value: timestamp.value + 1)
         }
