@@ -87,6 +87,8 @@ class AvatarView: UIView {
         addSubview(shadowView)
         addSubview(imageView)
         addSubview(initialsLabel)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userChanged), name: kLoggedInChangedNotification, object: nil)
     }
     
     // MARK: - Views
@@ -152,13 +154,10 @@ class AvatarView: UIView {
         }
     }
     
-    // MARK: - KVO 
-    
-    /// This class handles KVO using the Foundation APIs since FBKVOController has a weird bug with multiple instances
-    /// of the same class observing the same object. 
-    /// Also, the user object can be a userModel, which may or may not be persistent. Only the persistent VUser can 
-    /// be KVO'd, hence we must check for this in the setup function.
+    // MARK: - KVO
     private func setupKVO() {
+        ///the user object can be a userModel, which may or may not be persistent. Only the persistent VUser can
+        /// be KVO'd, hence we must check for this in the setup function.
         guard let user = self.user as? VUser else {
             return
         }
@@ -265,5 +264,11 @@ class AvatarView: UIView {
             shadowBounds = newShadowBounds
             shadowView.layer.shadowPath = UIBezierPath(ovalInRect: newShadowBounds).CGPath
         }
+    }
+    
+    // MARK: - Observation 
+    
+    func userChanged() {
+        user = VCurrentUser.user()
     }
 }
