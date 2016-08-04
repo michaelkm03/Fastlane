@@ -18,6 +18,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         let likesGiven: Int?
         let likesReceived: Int?
         let level: String?
+        let isCreator: Bool
     }
     
     // MARK: - Constants
@@ -320,11 +321,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     // MARK: - Managing the user
     
     @objc private func userChanged() {
-        if
-            let loggedInUser = VCurrentUser.user(),
-            let currentUser = self.user
-            where currentUser.id != loggedInUser.id
-        {
+        if let loggedInUser = VCurrentUser.user() {
             setUser(loggedInUser, using: dependencyManager)
         }
     }
@@ -352,7 +349,8 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
             displayName: user.displayName,
             likesGiven: user.likesGiven,
             likesReceived: user.likesReceived,
-            level: user.fanLoyalty?.tier
+            level: user.fanLoyalty?.tier,
+            isCreator: user.accessLevel == .owner
         )
         
         guard newComparableUser != comparableUser else {
@@ -430,6 +428,7 @@ private func !=(lhs: VNewProfileViewController.UserDetails?, rhs: VNewProfileVie
         || lhs?.likesGiven != rhs?.likesGiven
         || lhs?.likesReceived != rhs?.likesReceived
         || lhs?.level != rhs?.level
+        || lhs?.isCreator != rhs?.isCreator
 }
 
 private extension VDependencyManager {

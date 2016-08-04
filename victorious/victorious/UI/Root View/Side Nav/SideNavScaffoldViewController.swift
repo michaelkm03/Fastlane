@@ -84,7 +84,16 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
         super.viewWillAppear(animated)
         if !AgeGate.isAnonymousUser() && !hasPerformedFirstLaunchSetup {
             hasPerformedFirstLaunchSetup = true
-            performSetup()
+            performSetup { [weak self] in
+                // FUTURE: This is bad architecture since we don't want side nav to know about ForumViewController at all.
+                // But this is required right now to guarantee that we start loading main feed after tutorials are dismissed.
+                // Otherwise, we have the bug that main feed shows up empty after dismissing tutorials.
+                // We filed a ticket to fix this properly by implementing some transition between flows
+                guard let forumVC = self?.centerViewController as? ForumViewController else {
+                    return
+                }
+                forumVC.forumNetworkSource?.setUpIfNeeded()
+            }
             setupNavigationButtons()
         }
     }
