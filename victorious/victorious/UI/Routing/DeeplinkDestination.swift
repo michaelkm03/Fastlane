@@ -12,7 +12,7 @@ import Foundation
 /// e.g. A piece of content, a user, or a specific screen that is deep linked to.
 enum DeeplinkDestination: Equatable {
     case profile(userID: Int)
-    case closeUp(contentWrapper: CloseUpContentWrapper)
+    case closeUp(contentID: Content.ID)
     case vipForum
     case externalURL(url: NSURL, addressBarVisible: Bool)
     
@@ -30,7 +30,7 @@ enum DeeplinkDestination: Equatable {
         switch host {
             case "content":
                 guard let contentID = url.pathWithoutLeadingSlash else { return nil }
-                self = .closeUp(contentWrapper: .contentID(id: contentID))
+                self = .closeUp(contentID: contentID)
             case "profile":
                 guard
                     let path = url.pathWithoutLeadingSlash,
@@ -65,7 +65,10 @@ enum DeeplinkDestination: Equatable {
     init?(content: ContentModel) {
         switch content.type {
         case .image, .video, .gif, .text:
-            self = .closeUp(contentWrapper: .content(content: content))
+            guard let id = content.id else {
+                return nil
+            }
+            self = .closeUp(contentID: id)
         case .link:
             guard
                 let url = content.linkedURL,
@@ -88,22 +91,6 @@ func ==(lhs: DeeplinkDestination, rhs: DeeplinkDestination) -> Bool {
         case (let .closeUp(contentWrapper1), let .closeUp(contentWrapper2)): return contentWrapper1 == contentWrapper2
         case (.vipForum, .vipForum): return true
         case (let .externalURL(url1, visible1), let .externalURL(url2, visible2)): return url1 == url2 && visible1 == visible2
-        default: return false
-    }
-}
-
-/// A wrapper around content to be shown in close up view.
-/// This is needed because we could either pass a content object or content ID to close up view.
-/// If we pass a content object, it will be shown directly. While if we pass a content ID, it'll fetch the content from network.
-enum CloseUpContentWrapper: Equatable {
-    case content(content: ContentModel)
-    case contentID(id: Content.ID)
-}
-
-func ==(lhs: CloseUpContentWrapper, rhs: CloseUpContentWrapper) -> Bool {
-    switch (lhs, rhs) {
-        case (let .content(content1), let .content(content2)): return content1 == content2
-        case (let .contentID(id1), let.contentID(id2)): return id1 == id2
         default: return false
     }
 }

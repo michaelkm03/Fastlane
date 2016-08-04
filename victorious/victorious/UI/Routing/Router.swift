@@ -34,7 +34,7 @@ struct Router {
         
         switch destination {
             case .profile(let userID): showProfile(for: userID)
-            case .closeUp(let contentWrapper): showCloseUpView(for: contentWrapper)
+            case .closeUp(let contentID): showCloseUpView(for: contentID)
             case .vipForum: showVIPForum()
             case .externalURL(let url, let addressBarVisible): showWebView(for: url, addressBarVisible: addressBarVisible)
         }
@@ -42,19 +42,10 @@ struct Router {
     
     // MARK: - Private Helper Functions
     
-    private func showCloseUpView(for contentWrapper: CloseUpContentWrapper) {
+    private func showCloseUpView(for contentID: Content.ID) {
         guard let originViewController = self.originViewController else { return }
         let displayModifier = ShowCloseUpDisplayModifier(dependencyManager: dependencyManager, originViewController: originViewController)
-
-        switch contentWrapper {
-            case .content(let content):
-                guard content.type != .text else {
-                    return
-                }
-                ShowCloseUpOperation.showOperation(forContent: content, displayModifier: displayModifier).queue()
-            case .contentID(let id):
-                ShowCloseUpOperation.showOperation(forContentID: id, displayModifier: displayModifier).queue()
-        }
+        ShowCloseUpOperation.showOperation(forContentID: contentID, displayModifier: displayModifier).queue()
     }
     
     private func showVIPForum() {
