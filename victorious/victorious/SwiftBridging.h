@@ -17,7 +17,6 @@
 #import "NSURL+VDataCacheID.h"
 #import "NSURL+VTemporaryFiles.h"
 #import "UIColor+VBrightness.h"
-#import "UIImage+ImageCreation.h"
 #import "UIImage+Resize.h"
 #import "UIImage+Round.h"
 #import "UIImage+VSolidColor.h"
