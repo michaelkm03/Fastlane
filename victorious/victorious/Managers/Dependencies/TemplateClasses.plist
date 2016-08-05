@@ -26,16 +26,12 @@
 	<string>VModernLoginAndRegistrationFlowViewController</string>
 	<key>image.creationFlow</key>
 	<string>VImageCreationFlowController</string>
-	<key>translucent.background</key>
-	<string>VTranslucentBackground</string>
 	<key>blurredImage.background</key>
 	<string>victorious.SystemBlurredImageBackground</string>
 	<key>solidColor.background</key>
 	<string>VSolidColorBackground</string>
 	<key>gradient.background</key>
 	<string>victorious.VGradientBackground</string>
-	<key>tilePattern.background</key>
-	<string>VTilePatternBackground</string>
 	<key>video.background</key>
 	<string>VVideoBackground</string>
 	<key>trim.video.tool</key>
