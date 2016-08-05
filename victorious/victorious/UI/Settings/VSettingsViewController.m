@@ -226,7 +226,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     else
     {
         VLoginType loginType = (VLoginType)currentUer.loginType.integerValue;
-        return loginType != VLoginTypeFacebook && loginType != VLoginTypeTwitter;
+        return loginType != VLoginTypeFacebook;
     }
 }
 

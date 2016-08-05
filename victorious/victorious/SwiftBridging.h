@@ -129,7 +129,6 @@
 #import "VTimerManager.h"
 #import "VTrackingManager.h"
 #import "VTransitionDelegate.h"
-#import "VTwitterManager.h"
 #import "VUploadManager.h"
 #import "VUploadProgressViewController.h"
 #import "VUploadTaskCreator.h"

@@ -29,7 +29,6 @@ static NSString * const kLogoKey = @"logo";
 static NSString * const kStatusBarStyle = @"statusBarStyle";
 static NSString * const kEmailKey = @"email";
 static NSString * const kFacebookKey = @"facebook";
-static NSString * const kTwitterKey = @"twitter";
 
 static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
 
@@ -37,7 +36,6 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
-@property (nonatomic, weak) IBOutlet UIButton *twitterButton;
 @property (nonatomic, weak) IBOutlet UIButton *emailButton;
 @property (nonatomic, weak) IBOutlet UIButton *facebookButton;
 @property (strong, nonatomic) IBOutlet UILabel *legalIntroLabel;
@@ -112,7 +110,6 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
     [self.privacyPolicyButton setAttributedTitle:ppText forState:UIControlStateNormal];
     [self.dependencyManager addBackgroundToBackgroundHost:self];
     
-    self.twitterButton.accessibilityIdentifier = VAutomationIdentifierLRegistrationTwitter;
     self.emailButton.accessibilityIdentifier = VAutomationIdentifierLRegistrationEmail;
     self.facebookButton.accessibilityIdentifier = VAutomationIdentifierLRegistrationFacebook;
     self.termsOfServiceButton.accessibilityIdentifier = VAutomationIdentifierLRegistrationTOS;
@@ -146,11 +143,6 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
 - (IBAction)toRegsiter:(id)sender
 {
     [self.delegate selectedRegister];
-}
-
-- (IBAction)loginWithTwitter:(id)sender
-{
-    [self.delegate selectedTwitterAuthorization];
 }
 
 - (IBAction)loginWithFacebook:(id)sender
@@ -190,7 +182,6 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
 - (void)setupSigninOptions
 {
     self.facebookButton.hidden = YES;
-    self.twitterButton.hidden = YES;
     self.emailButton.hidden = YES;
     
     NSArray *options = [self.dependencyManager arrayOfValuesOfType:[NSString class] forKey:kSigninOptionsKey];
@@ -250,10 +241,6 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
     else if ([loginType isEqualToString:kFacebookKey])
     {
         return self.facebookButton;
-    }
-    else if ([loginType isEqualToString:kTwitterKey])
-    {
-        return self.twitterButton;
     }
     else
     {

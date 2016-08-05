@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="yjK-eD-rfp">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="yjK-eD-rfp">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -18,13 +18,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bgF-ug-5AS">
-                                <rect key="frame" x="0.0" y="72" width="600" height="319"/>
+                                <rect key="frame" x="0.0" y="72" width="600" height="369"/>
                                 <connections>
                                     <segue destination="7eN-Fq-kx7" kind="embed" identifier="VPromptCarouselViewController" id="skB-QV-sz1"/>
                                 </connections>
                             </containerView>
                             <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="DE0-cf-VF8" userLabel="Legal Button Container">
-                                <rect key="frame" x="196" y="391" width="208" height="49"/>
+                                <rect key="frame" x="196" y="441" width="208" height="49"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="By signing up you agree to:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lKN-X9-uiX">
                                         <rect key="frame" x="0.0" y="0.0" width="208" height="21"/>
@@ -66,26 +66,10 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="KC9-5E-gDs" userLabel="LoginButtonContainer">
-                                <rect key="frame" x="0.0" y="450" width="600" height="150"/>
+                                <rect key="frame" x="0.0" y="500" width="600" height="100"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xpp-jF-2DP">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
-                                        <color key="backgroundColor" red="0.33333333333333331" green="0.67450980392156867" blue="0.93333333333333335" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="50" id="bUJ-ZK-J2u"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                        <inset key="imageEdgeInsets" minX="-30" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                        <state key="normal" title="Sign Up with Twitter" image="signup_twitter_">
-                                            <color key="titleColor" red="0.96078431372549022" green="0.97254901960784312" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="loginWithTwitter:" destination="yjK-eD-rfp" eventType="touchUpInside" id="RU3-Tz-j8b"/>
-                                        </connections>
-                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6q7-og-v17">
-                                        <rect key="frame" x="0.0" y="50" width="600" height="50"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
                                         <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="0.70000000000000007" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="lkl-fJ-LYN"/>
@@ -101,7 +85,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tTi-xz-WY3" userLabel="Facebook">
-                                        <rect key="frame" x="0.0" y="100" width="600" height="50"/>
+                                        <rect key="frame" x="0.0" y="50" width="600" height="50"/>
                                         <color key="backgroundColor" red="0.23921568627450979" green="0.3529411764705882" blue="0.58823529411764708" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="ygi-E7-03h"/>
@@ -120,15 +104,12 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="tTi-xz-WY3" secondAttribute="bottom" placeholder="YES" id="3EU-VT-GBm"/>
-                                    <constraint firstAttribute="trailing" secondItem="Xpp-jF-2DP" secondAttribute="trailing" id="8Qj-8g-2zQ"/>
                                     <constraint firstItem="tTi-xz-WY3" firstAttribute="leading" secondItem="KC9-5E-gDs" secondAttribute="leading" id="Hrd-q2-gLL"/>
                                     <constraint firstAttribute="trailing" secondItem="tTi-xz-WY3" secondAttribute="trailing" id="OIl-6d-D4J"/>
+                                    <constraint firstItem="6q7-og-v17" firstAttribute="top" secondItem="KC9-5E-gDs" secondAttribute="top" id="RFf-dK-nWz"/>
                                     <constraint firstItem="6q7-og-v17" firstAttribute="leading" secondItem="KC9-5E-gDs" secondAttribute="leading" id="Tde-vs-vQA"/>
-                                    <constraint firstItem="6q7-og-v17" firstAttribute="top" secondItem="Xpp-jF-2DP" secondAttribute="bottom" placeholder="YES" id="hxU-qO-ft1"/>
                                     <constraint firstAttribute="trailing" secondItem="6q7-og-v17" secondAttribute="trailing" id="ikp-r9-tT8"/>
                                     <constraint firstItem="tTi-xz-WY3" firstAttribute="top" secondItem="6q7-og-v17" secondAttribute="bottom" placeholder="YES" id="l8c-7o-iF0"/>
-                                    <constraint firstItem="Xpp-jF-2DP" firstAttribute="top" secondItem="KC9-5E-gDs" secondAttribute="top" placeholder="YES" id="q1s-Ex-xzw"/>
-                                    <constraint firstItem="Xpp-jF-2DP" firstAttribute="leading" secondItem="KC9-5E-gDs" secondAttribute="leading" id="t3X-kn-pYo"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -153,7 +134,6 @@
                         <outlet property="legalIntroLabel" destination="lKN-X9-uiX" id="BVI-Aw-Gm3"/>
                         <outlet property="privacyPolicyButton" destination="hnl-7M-et7" id="2Oi-mT-ZrE"/>
                         <outlet property="termsOfServiceButton" destination="cyi-4J-6yH" id="rd7-dm-Gfz"/>
-                        <outlet property="twitterButton" destination="Xpp-jF-2DP" id="dfL-1P-fUF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OH9-m2-xuT" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -169,15 +149,15 @@
                         <viewControllerLayoutGuide type="bottom" id="aaE-Cd-i5Z"/>
                     </layoutGuides>
                     <view key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="dWL-2Y-LP6">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="319"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="369"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kp6-JO-wGx" customClass="VLinearGradientView">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="319"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="369"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="E2O-F9-uLP">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="319"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="369"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="mJn-6r-rbT">
                                     <size key="itemSize" width="600" height="329"/>
@@ -187,7 +167,7 @@
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="VPromptCollectionViewCell" id="Q36-YS-6cW" customClass="VPromptCollectionViewCell">
-                                        <rect key="frame" x="0.0" y="-5" width="600" height="329"/>
+                                        <rect key="frame" x="0.0" y="20" width="600" height="329"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="329"/>
@@ -221,7 +201,7 @@
                                 </connections>
                             </collectionView>
                             <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="c88-pr-ZJo">
-                                <rect key="frame" x="281" y="282" width="39" height="37"/>
+                                <rect key="frame" x="281" y="332" width="39" height="37"/>
                                 <connections>
                                     <action selector="selectedPage:" destination="7eN-Fq-kx7" eventType="valueChanged" id="shZ-9A-WsQ"/>
                                 </connections>
@@ -257,6 +237,5 @@
     <resources>
         <image name="signup_email_" width="18" height="18"/>
         <image name="signup_facebook_" width="18" height="18"/>
-        <image name="signup_twitter_" width="18" height="18"/>
     </resources>
 </document>

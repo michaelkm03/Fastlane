@@ -24,8 +24,6 @@ extension VLoginType {
                 VTrackingManager.sharedInstance().trackEvent(VTrackingEventSignupWithFacebookDidSucceed)
             }
             VTrackingManager.sharedInstance().trackEvent(VTrackingEventLoginWithFacebookDidSucceed)
-        case .Twitter:
-            VTrackingManager.sharedInstance().trackEvent(VTrackingEventLoginWithTwitterDidSucceed)
         default:()
         }
     }
@@ -36,8 +34,6 @@ extension VLoginType {
             VTrackingManager.sharedInstance().trackEvent(VTrackingEventLoginWithEmailDidFail)
         case .Facebook:
             VTrackingManager.sharedInstance().trackEvent(VTrackingEventLoginWithFacebookDidFail)
-        case .Twitter:
-            VTrackingManager.sharedInstance().trackEvent(VTrackingEventLoginWithTwitterDidFailUnknown)
         default:
             return
         }

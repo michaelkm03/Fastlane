@@ -28,6 +28,4 @@
 
 - (void)handleFacebookLoginError:(NSError *)error;
 
-- (void)handleTwitterLoginError:(NSError *)error;
-
 @end

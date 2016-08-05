@@ -14,7 +14,6 @@
 #import "VSessionTimer.h"
 #import "VThemeManager.h"
 #import "VConstants.h"
-#import "VLocationManager.h"
 #import "VAppInfo.h"
 #import "VUploadManager.h"
 #import "VApplicationTracking.h"
@@ -114,12 +113,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    // Check if we have location services and start getting locations if we do
-    if ( [VLocationManager haveLocationServicesPermission] )
-    {
-        [[VLocationManager sharedInstance].locationManager startUpdatingLocation];
-    }
     [self showLoadingViewController];
 }
 

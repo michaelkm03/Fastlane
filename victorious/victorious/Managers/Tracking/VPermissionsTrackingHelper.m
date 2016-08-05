@@ -11,9 +11,7 @@
 #import "VPermissionCamera.h"
 #import "VPermissionMicrophone.h"
 #import "VPermissionPhotoLibrary.h"
-#import "VTwitterManager.h"
 #import "VNotificationSettings.h"
-#import "VLocationManager.h"
 
 @implementation VPermissionsTrackingHelper
 
