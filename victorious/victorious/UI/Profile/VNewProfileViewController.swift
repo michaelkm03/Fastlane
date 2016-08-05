@@ -52,6 +52,8 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         }
     }
     
+    private let spinner = UIActivityIndicatorView()
+    
     // MARK: Dependency Manager
     
     let dependencyManager: VDependencyManager!
@@ -60,13 +62,13 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     
     var user: UserModel? {
         get {
-            return gridStreamController.content
+            return gridStreamController?.content
         }
     }
     private var comparableUser: UserDetails? {
         didSet {
             // Call a reload of the header every time the user's details change
-            gridStreamController.reloadHeader()
+            gridStreamController?.reloadHeader()
         }
     }
     
@@ -90,30 +92,10 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
         
-        let userID = VNewProfileViewController.getUserID(forDependencyManager: dependencyManager)
-        let header = VNewProfileHeaderView.newWithDependencyManager(dependencyManager)
-        
-        var configuration = GridStreamConfiguration()
-        configuration.managesBackground = false
-        
-        gridStreamController = GridStreamViewController(
-            dependencyManager: dependencyManager,
-            header: header,
-            content: nil,
-            configuration: configuration,
-            streamAPIPath: dependencyManager.streamAPIPath(forUserID: userID)
-        )
-        
         super.init(nibName: nil, bundle: nil)
-        header.delegate = self
 
         // Applies a fallback background color while we fetch the user.
         view.backgroundColor = dependencyManager.colorForKey(VDependencyManagerBackgroundColorKey)
-        
-        addChildViewController(gridStreamController)
-        view.addSubview(gridStreamController.view)
-        view.v_addFitToParentConstraintsToSubview(gridStreamController.view)
-        gridStreamController.didMoveToParentViewController(self)
         
         fetchUser(using: dependencyManager)
     }
@@ -184,7 +166,14 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     
     // MARK: - View controllers
     
-    private let gridStreamController: GridStreamViewController<VNewProfileHeaderView>
+    private var gridStreamController: GridStreamViewController<VNewProfileHeaderView>? {
+        willSet {
+            if let existingController = gridStreamController {
+                existingController.view.removeFromSuperview()
+                existingController.removeFromParentViewController()
+            }
+        }
+    }
     
     // MARK: - Views
     
@@ -200,7 +189,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        gridStreamController.reloadHeader()
+        gridStreamController?.reloadHeader()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -361,15 +350,38 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         
         comparableUser = newComparableUser
         
-        gridStreamController.setContent(user, withError: false)
-        gridStreamController.updateAPIPath(dependencyManager.streamAPIPath(forUserID: user.id))
+        setupGridStreamController(for: user)
         
         let appearanceKey = user.isCreator?.boolValue ?? false ? VNewProfileViewController.creatorAppearanceKey : VNewProfileViewController.userAppearanceKey
         let appearanceDependencyManager = dependencyManager.childDependencyForKey(appearanceKey)
         appearanceDependencyManager?.addBackgroundToBackgroundHost(gridStreamController)
         
         updateBarButtonItems()
-        gridStreamController.refresh()
+    }
+    
+    private func setupGridStreamController(for user: VUser?) {
+        //Setup a new controller every time since the api path changes
+        let header = VNewProfileHeaderView.newWithDependencyManager(dependencyManager)
+        header.delegate = self
+        let userID = VNewProfileViewController.getUserID(forDependencyManager: dependencyManager)
+        var configuration = GridStreamConfiguration()
+        configuration.managesBackground = false
+        
+        let gridStreamController = GridStreamViewController(
+            dependencyManager: dependencyManager,
+            header: header,
+            content: nil,
+            configuration: configuration,
+            streamAPIPath: dependencyManager.streamAPIPath(forUserID: userID)
+        )
+        self.gridStreamController = gridStreamController
+        
+        addChildViewController(gridStreamController)
+        view.addSubview(gridStreamController.view)
+        view.v_addFitToParentConstraintsToSubview(gridStreamController.view)
+        gridStreamController.didMoveToParentViewController(self)
+        
+        gridStreamController.setContent(user, withError: false)
     }
     
     private static func getUserID(forDependencyManager dependencyManager: VDependencyManager) -> Int {
@@ -403,10 +415,16 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
             return
         }
         
+        spinner.frame = CGRect(center: view.bounds.center, size: CGSizeZero)
+        view.addSubview(spinner)
+        spinner.startAnimating()
+        
         userInfoOperation.queue { [weak self] _ in
             guard let dependencyManager = self?.dependencyManager else {
                 return
             }
+            self?.spinner.stopAnimating()
+            self?.spinner.removeFromSuperview()
             self?.setUser(userInfoOperation.user, using: dependencyManager)
         }
     }
