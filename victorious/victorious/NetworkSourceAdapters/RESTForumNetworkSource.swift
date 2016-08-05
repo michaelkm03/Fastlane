@@ -47,14 +47,7 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
             
             dataSource.apiPath = newAPIPath
             
-            dataSource.loadItems(.refresh) { [weak self] contents, _, _ in
-                guard let strongSelf = self else {
-                    return
-                }
-                
-                let contents = strongSelf.processContents(contents)
-                strongSelf.broadcast(.replaceContent(contents))
-            }
+            loadContent(.refresh)
         }
     }
     
@@ -77,22 +70,30 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     }
     
     @objc private func pollForNewContent() {
-        dataSource.loadItems(.newer) { [weak self] contents, stageEvent, _ in
-            guard let contents = self?.processContents(contents) else {
-                return
-            }
-            self?.broadcast(.appendContent(contents))
-            
-            if let stageEvent = stageEvent {
-                self?.broadcast(stageEvent)
-            }
-        }
+        loadContent(.newer)
     }
     
-    // MARK: - Processing content
+    // MARK: - Loading content
     
-    private func processContents(contents: [ContentModel]) -> [ContentModel] {
-        return contents.reverse()
+    /// Loads a page of content with the given `loadingType`.
+    private func loadContent(loadingType: PaginatedLoadingType) {
+        let itemsWereLoaded = dataSource.loadItems(loadingType) { [weak self] contents, stageEvent, error in
+            guard let strongSelf = self else {
+                return
+            }
+            
+            strongSelf.broadcast(.handleContent(contents.reverse(), loadingType))
+            
+            if let stageEvent = stageEvent {
+                strongSelf.broadcast(stageEvent)
+            }
+            
+            self?.broadcast(.setLoadingContent(false, loadingType))
+        }
+        
+        if itemsWereLoaded {
+            broadcast(.setLoadingContent(true, loadingType))
+        }
     }
     
     // MARK: - Notifications
@@ -113,20 +114,8 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     func setUp() {
         isSetUp = true
         broadcast(.setOptimisticPostingEnabled(true))
-        
-        dataSource.loadItems(.refresh) { [weak self] contents, stageEvent, error in
-            guard let strongSelf = self else {
-                return
-            }
-            
-            let contents = strongSelf.processContents(contents)
-            strongSelf.broadcast(.appendContent(contents))
-                
-            if let stageEvent = stageEvent {
-                strongSelf.broadcast(stageEvent)
-            }
-        }
-        
+        broadcast(.setChatActivityIndicatorEnabled(true))
+        loadContent(.refresh)
         startPolling()
     }
     
@@ -156,21 +145,8 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
         nextSender?.send(event)
         
         switch event {
-            case .loadOldContent:
-                dataSource.loadItems(.older) { [weak self] contents, stageEvent, error in
-                    guard let strongSelf = self else {
-                        return
-                    }
-                    
-                    let contents = strongSelf.processContents(contents)
-                    strongSelf.broadcast(.prependContent(contents))
-                        
-                    if let stageEvent = stageEvent {
-                        strongSelf.broadcast(stageEvent)
-                    }
-                }
-            default:
-                break
+            case .loadOldContent: loadContent(.older)
+            default: break
         }
     }
     

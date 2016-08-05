@@ -55,6 +55,7 @@ class AvatarView: UIView {
         static let shadowOffset = CGSize(width: 0.0, height: 1.0)
         
         static let verifiedBadgeAngle = CGFloat(M_PI * 0.25)
+        static let observationKeys = ["displayName", "previewAssets"]
     }
     
     // MARK: - Initializing
@@ -147,19 +148,26 @@ class AvatarView: UIView {
             
             setNeedsContentUpdate()
             
-            kvoController.unobserveAll()
-            
-            if let newUser = persistentUser {
-                let keyPaths = ["previewAssets", "displayName"]
-                
-                kvoController.observe(newUser, keyPaths: keyPaths, options: []) { [weak self] _, _, _ in
-                    self?.setNeedsContentUpdate()
-                }
-            }
+            setupKVO()
         }
     }
     
-    private let kvoController = KVOController()
+    // MARK: - KVO 
+    
+    /// This class handles KVO using the Foundation APIs since FBKVOController has a weird bug with multiple instances
+    /// of the same class observing the same object. 
+    /// Also, the user object can be a userModel, which may or may not be persistent. Only the persistent VUser can 
+    /// be KVO'd, hence we must check for this in the setup function.
+    private func setupKVO() {
+        guard let user = self.user as? VUser else {
+            return
+        }
+        
+        KVOController.unobserveAll()
+        KVOController.observe(user, keyPaths: Constants.observationKeys, options: [.Initial, .New]) { [weak self] _ in
+            self?.setNeedsContentUpdate()
+        }
+    }
     
     // MARK: - Updating content
     

@@ -10,10 +10,9 @@ import UIKit
 
 class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, TutorialNetworkDataSourceDelegate, VBackgroundContainer {
     
+    @IBOutlet var continueButtonBottomConstraint: NSLayoutConstraint!
     @IBOutlet private weak var continueButton: UIButton! {
         didSet {
-            continueButton.hidden = true
-            continueButton.alpha = 0
             continueButton.setTitleColor(dependencyManager.continueButtonTitleColor, forState: .Normal)
             continueButton.setTitle(dependencyManager.continueButtonTitleText, forState: .Normal)
             continueButton.titleLabel?.font = dependencyManager.continueButtonTitleFont
@@ -49,13 +48,11 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
         return dataSource
     }()
     
-    func setTopInset(value: CGFloat) {
-        // Do nothing for tutorial screen
-    }
+    // MARK: - Managing insets
     
-    func setBottomInset(value: CGFloat) {
-        // Do nothing for tutorial screen
-    }
+    // Added insets are not used for the tutorial screen.
+    var addedTopInset = CGFloat(0.0)
+    var addedBottomInset = CGFloat(0.0)
 
     // MARK: - Initialization
     
@@ -87,6 +84,8 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
         dependencyManager.addBackgroundToBackgroundHost(self)
         dependencyManager.applyStyleToNavigationBar(navigationController?.navigationBar)
         dependencyManager.configureNavigationItem(navigationController?.navigationBar.topItem)
+        
+        navigationController?.navigationBar.shadowImage = UIImage()
     }
     
     // MARK: - UICollectionViewFlowLayoutDelegate
@@ -106,9 +105,9 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
     }
 
     func didFinishFetchingAllItems() {
-        continueButton.hidden = false
-        UIView.animateWithDuration(1.0) { [weak self] in
-            self?.continueButton.alpha = 1.0
+        continueButtonBottomConstraint.constant = 0.0
+        UIView.animateWithDuration(0.5) { [weak self] in
+            self?.view.layoutIfNeeded()
         }
     }
     

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SafariServices
 
 // MARK: - Router
 
@@ -35,7 +36,7 @@ struct Router {
             case .profile(let userID): showProfile(for: userID)
             case .closeUp(let contentWrapper): showCloseUpView(for: contentWrapper)
             case .vipForum: showVIPForum()
-            case .externalURL(let url): showWebView(for: url)
+            case .externalURL(let url, let addressBarVisible): showWebView(for: url, addressBarVisible: addressBarVisible)
         }
     }
     
@@ -46,8 +47,13 @@ struct Router {
         let displayModifier = ShowCloseUpDisplayModifier(dependencyManager: dependencyManager, originViewController: originViewController)
 
         switch contentWrapper {
-            case .content(let content): ShowCloseUpOperation.showOperation(forContent: content, displayModifier: displayModifier).queue()
-            case .contentID(let id): ShowCloseUpOperation.showOperation(forContentID: id, displayModifier: displayModifier).queue()
+            case .content(let content):
+                guard content.type != .text else {
+                    return
+                }
+                ShowCloseUpOperation.showOperation(forContent: content, displayModifier: displayModifier).queue()
+            case .contentID(let id):
+                ShowCloseUpOperation.showOperation(forContentID: id, displayModifier: displayModifier).queue()
         }
     }
     
@@ -61,9 +67,10 @@ struct Router {
         ShowProfileOperation(originViewController: originViewController, dependencyManager: dependencyManager, userId: userID).queue()
     }
     
-    private func showWebView(for url: NSURL) {
-        // Future: Show the web view in close up properly
-        UIApplication.sharedApplication().openURL(url)
+    private func showWebView(for url: NSURL, addressBarVisible: Bool) {
+        // Future: We currently have no way to hide address bar. This will be handled when we implement close up web view.
+        let safariViewController = SFSafariViewController(URL: url)
+        originViewController?.presentViewController(safariViewController, animated: true, completion: nil)
     }
     
     private func showError() {

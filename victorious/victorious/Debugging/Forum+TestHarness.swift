@@ -83,7 +83,7 @@ import VictoriousIOSSDK
             )
             
             totalCount += 1
-            broadcast(.appendContent([content]))
+            broadcast(.handleContent([content], .newer))
         }
         
         func debug_createStageEvents() {
@@ -99,12 +99,12 @@ import VictoriousIOSSDK
             var assets: [ContentMediaAssetModel] = []
             var previewAsset = randPreviewImage()
             if let id = next["id"] {
-                let parameters = ContentMediaAsset.LocalAssetParameters(contentType: contentType, remoteID: id, source: source)
+                let parameters = ContentMediaAsset.LocalAssetParameters(contentType: contentType, remoteID: id, source: source, size: CGSize(width: 100, height: 100))
                 assets.append(ContentMediaAsset(initializationParameters: parameters)!)
             }
             else if (contentType != .text) {
                 let url = NSURL(string: next["url"]!)!
-                let parameters = ContentMediaAsset.RemoteAssetParameters(contentType: contentType, url: url, source: source)
+                let parameters = ContentMediaAsset.RemoteAssetParameters(contentType: contentType, url: url, source: source, size: CGSize(width: 100, height: 100))
                 assets.append(ContentMediaAsset(initializationParameters: parameters)!)
                 if contentType == .image {
                     previewAsset = ImageAsset(url: url, size: CGSizeMake(100, 100))

@@ -16,8 +16,6 @@
 #import "VStreamCollectionViewController.h"
 #import "VDirectoryCollectionFlowLayout.h"
 #import "VShowcaseDirectoryCell.h"
-#import "VCoachmarkDisplayer.h"
-#import "VCoachmarkManager.h"
 #import "VDependencyManager+VNavigationItem.h"
 #import "VDependencyManager+VTracking.h"
 #import "UIViewController+VAccessoryScreens.h"
@@ -34,7 +32,7 @@ static NSString * const kSequenceIDKey = @"sequenceID";
 static NSString * const kSequenceNameKey = @"sequenceName";
 static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
 
-@interface VDirectoryCollectionViewController () <VMarqueeSelectionDelegate, VMarqueeDataDelegate, VDirectoryCollectionFlowLayoutDelegate, VCoachmarkDisplayer, VStreamContentCellFactoryDelegate>
+@interface VDirectoryCollectionViewController () <VMarqueeSelectionDelegate, VMarqueeDataDelegate, VDirectoryCollectionFlowLayoutDelegate, VStreamContentCellFactoryDelegate>
 
 @property (nonatomic, strong) NSObject <VDirectoryCellFactory> *directoryCellFactory;
 
@@ -162,7 +160,6 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     
     [self v_addBadgingToAccessoryScreensWithDependencyManager:self.dependencyManager];
     
-    [[self.dependencyManager coachmarkManager] displayCoachmarkViewInViewController:self];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -171,7 +168,6 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     
     [self.dependencyManager trackViewWillDisappear:self];
     
-    [[self.dependencyManager coachmarkManager] hideCoachmarkViewInViewController:self animated:animated];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -381,7 +377,7 @@ static NSString * const kSequenceIDMacro = @"%%SEQUENCE_ID%%";
     }
 }
 
-#pragma mark - VCoachmarkDisplayer
+#pragma mark - CoachmarkDisplayer
 
 - (NSString *)screenIdentifier
 {

@@ -35,11 +35,11 @@ struct PersistentStoreTestHelper {
         }
     }
     
-    func createContentMediaAsset(uniqueID: String) -> VContentMediaAsset {
+    func createContentMediaAsset(remoteID: String) -> VContentMediaAsset {
         return persistentStore.mainContext.v_performBlockAndWait() { context in
             let content = self.createContent("1")
             return context.v_createObjectAndSave { asset in
-                asset.v_uniqueID = uniqueID
+                asset.v_remoteID = remoteID
                 asset.v_content = content
             }
         }

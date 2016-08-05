@@ -9,7 +9,6 @@
 @import WebKit;
 
 #import "VWebContentViewController.h"
-#import "NSURL+VCustomScheme.h"
 
 @interface VWebContentViewController () <WKNavigationDelegate>
 
@@ -146,15 +145,7 @@
 
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
 {
-    if ( [navigationAction.request.URL v_hasCustomScheme] )
-    {
-        [[UIApplication sharedApplication] openURL:navigationAction.request.URL];
-        decisionHandler( WKNavigationActionPolicyCancel );
-    }
-    else
-    {
-        decisionHandler( WKNavigationActionPolicyAllow );
-    }
+    decisionHandler(WKNavigationActionPolicyAllow);
 }
 
 @end

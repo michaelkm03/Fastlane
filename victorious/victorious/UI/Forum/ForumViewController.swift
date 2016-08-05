@@ -8,9 +8,13 @@
 
 import UIKit
 
+private struct Constants {
+    static let coachmarkDisplayDelay = 1.0
+}
+
 /// A template driven .screen component that sets up, houses and mediates the interaction
 /// between the Forum's required concrete implementations and abstract dependencies.
-class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocusable, UploadManagerHost, ContentPublisherDelegate {
+class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocusable, UploadManagerHost, ContentPublisherDelegate, CoachmarkDisplayer {
     @IBOutlet private weak var stageContainer: UIView!
     @IBOutlet private weak var stageViewControllerContainer: VPassthroughContainerView!
     @IBOutlet private weak var stageTouchView: UIView!
@@ -30,6 +34,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     #endif
 
     private var navBarTitleView : ForumNavBarTitleView?
+    private var isDisplayingCoachmark = false
     
     // MARK: - Initialization
     
@@ -66,11 +71,13 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                 InterstitialManager.sharedInstance.dismissCurrentInterstitial(of: .reconnectingError)
                 navBarTitleView?.activeUserCount = userCount.userCount
             case .filterContent(let path):
+                // FUTURE: the composer should listen to these events and hide itself so everything component in the forum handles it's own state
                 // path will be nil for home feed, and non nil for filtered feed
                 composer?.setComposerVisible(path == nil, animated: true)
-                stage?.setStageEnabled(path == nil, animated: true)
             case .closeVIP():
                 onClose()
+            case .refreshStage(_):
+                triggerCoachmark()
             case .setOptimisticPostingEnabled(let enabled):
                 publisher?.optimisticPostingEnabled = enabled
             default:
@@ -161,7 +168,6 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             navigationController?.navigationBar.topItem?.titleView = navBarTitleView
         }
         navBarTitleView?.sizeToFit()
-        
         #if V_ENABLE_WEBSOCKET_DEBUG_MENU
             if let webSocketForumNetworkSource = forumNetworkSource as? WebSocketForumNetworkSource,
                 let navigationController = navigationController {
@@ -169,6 +175,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                 debugMenuHandler.setupCurrentDebugMenu(type, targetView: navigationController.navigationBar)
             }
         #endif
+
+        
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -340,9 +348,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     func contentPublisher(contentPublisher: ContentPublisher, didQueue content: ChatFeedContent) {
         chatFeed?.handleNewItems([], loadingType: .newer, newPendingContentCount: 1) { [weak self] in
-            if self?.chatFeed?.collectionView.v_isScrolledToBottom == false {
-                self?.chatFeed?.collectionView.v_scrollToBottomAnimated(true)
-            }
+            self?.chatFeed?.collectionView.scrollToBottom(animated: true)
         }
     }
     
@@ -388,10 +394,10 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         }
     }
     
-    // MARK: - VCoachmarkDisplayer
+    // MARK: - Coachmark Displayer
     
-    func screenIdentifier() -> String! {
-        return dependencyManager.stringForKey(VDependencyManagerIDKey)
+    func highlightFrame(forIdentifier identifier: String) -> CGRect? {
+        return nil
     }
 }
 

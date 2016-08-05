@@ -9,7 +9,7 @@
 import UIKit
 
 /// A view controller that displays the contents of a user's profile.
-class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderDelegate, AccessoryScreenContainer, VAccessoryNavigationSource {
+class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderDelegate, AccessoryScreenContainer, VAccessoryNavigationSource, CoachmarkDisplayer {
     /// Private struct within NewProfileViewController for comparison. Since we use Core Data, 
     /// the user is modified beneath us and every time we call setUser(...), the fields will be the same as oldValue
     private struct UserDetails {
@@ -25,18 +25,36 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     static let userAppearanceKey = "userAppearance"
     static let creatorAppearanceKey = "creatorAppearance"
     static let upgradeButtonID = "Accessory paygate"
+    static let estimatedBarButtonWidth =  CGFloat(60.0)
+    static let estimatedStatusBarHeight = CGFloat(20.0)
+    static let estimatedNavBarRightPadding = CGFloat(10.0)
     static let goVIPButtonID = "Accessory Go VIP"
     
-    private struct AccessoryScreensKeys {
-        static let selfUser = "accessories.user.own"
-        static let otherUser = "accessories.user.other"
-        static let selfCreator = "accessories.creator.own"
-        static let otherCreator = "accessories.user.creator"
+    private enum ProfileScreenContext: String {
+        case selfUser, otherUser, selfCreator, otherCreator
+        
+        var accessoryScreensKey: String {
+            switch self {
+                case selfUser: return "accessories.user.own"
+                case otherUser: return "accessories.user.other"
+                case selfCreator: return "accessories.creator.own"
+                case otherCreator: return "accessories.user.creator"
+            }
+        }
+        
+        var coachmarkContext: String {
+            switch self {
+                case .selfUser: return "user"
+                case .otherUser: return "other"
+                case .selfCreator: return "self_creator"
+                case .otherCreator: return "creator"
+            }
+        }
     }
     
     // MARK: Dependency Manager
     
-    let dependencyManager: VDependencyManager
+    let dependencyManager: VDependencyManager!
     
     // MARK: Model Data
     
@@ -121,11 +139,13 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         supplementalRightButtons = []
         
         let isCurrentUser = user?.isCurrentUser == true
-        let currentIsCreator = VCurrentUser.user()?.isCreator == true
         let isCreator = user?.accessLevel.isCreator == true
+        let currentIsCreator = VCurrentUser.user()?.isCreator == true
+        let currentIsVIP = VCurrentUser.user()?.hasValidVIPSubscription == true
+        let vipEnabled = dependencyManager.isVIPEnabled == true
         
         if !isCurrentUser {
-            if isCreator && VCurrentUser.user()?.hasValidVIPSubscription != true && !currentIsCreator {
+            if isCreator && !currentIsVIP && !currentIsCreator && vipEnabled {
                 supplementalRightButtons.append(UIBarButtonItem(customView: upgradeButton))
             }
             
@@ -148,7 +168,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         }
         else if
             currentIsCreator,
-            let menuItems = dependencyManager.accessoryMenuItemsWithKey(AccessoryScreensKeys.selfCreator) as? [VNavigationMenuItem]
+            let menuItems = dependencyManager.accessoryMenuItemsWithKey(ProfileScreenContext.selfCreator.accessoryScreensKey) as? [VNavigationMenuItem]
         {
             let goVIPMenuItems = menuItems.filter() { $0.identifier == VNewProfileViewController.goVIPButtonID }
             if
@@ -176,6 +196,19 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         return button
     }()
     
+    // MARK: - ViewController lifecycle
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        gridStreamController.reloadHeader()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        triggerCoachmark(withContext: profileScreenContext?.coachmarkContext)
+    }
+
+    // MARK: - Buttons
+        
     private func goVIPButton(for menuItem: VNavigationMenuItem) -> UIButton {
         let button = BackgroundButton(type: .System)
         button.addTarget(self, action: #selector(goVIPButtonWasPressed), forControlEvents: .TouchUpInside)
@@ -245,17 +278,21 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     private var supplementalLeftButtons = [UIBarButtonItem]()
     private var supplementalRightButtons = [UIBarButtonItem]()
     
-    var accessoryScreensKey: String? {
+    private var profileScreenContext: ProfileScreenContext? {
         guard let user = self.user else {
             return nil
         }
         
         if user.accessLevel.isCreator == true {
-            return user.isCurrentUser ? AccessoryScreensKeys.selfCreator : AccessoryScreensKeys.otherCreator
+            return user.isCurrentUser ? ProfileScreenContext.selfCreator : ProfileScreenContext.otherCreator
         }
         else {
-            return user.isCurrentUser ? AccessoryScreensKeys.selfUser : AccessoryScreensKeys.otherUser
+            return user.isCurrentUser ? ProfileScreenContext.selfUser : ProfileScreenContext.otherUser
         }
+    }
+    
+    var accessoryScreensKey: String? {
+        return profileScreenContext?.accessoryScreensKey
     }
     
     func addCustomLeftItems(to items: [UIBarButtonItem]) -> [UIBarButtonItem] {
@@ -283,8 +320,12 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     // MARK: - Managing the user
     
     @objc private func userChanged() {
-        if user?.id == VCurrentUser.user()?.id {
-            setUser(VCurrentUser.user(), using: dependencyManager)
+        if
+            let loggedInUser = VCurrentUser.user(),
+            let currentUser = self.user
+            where currentUser.id != loggedInUser.id
+        {
+            setUser(loggedInUser, using: dependencyManager)
         }
     }
     
@@ -366,6 +407,20 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
             }
             self?.setUser(userInfoOperation.user, using: dependencyManager)
         }
+    }
+    
+    // MARK: - Coachmark Displayer
+    
+    func highlightFrame(forIdentifier identifier: String) -> CGRect? {
+        if let barFrame = navigationController?.navigationBar.frame where identifier == "bump" {
+            return CGRect(
+                x: barFrame.width - VNewProfileViewController.estimatedBarButtonWidth - VNewProfileViewController.estimatedNavBarRightPadding,
+                y: VNewProfileViewController.estimatedStatusBarHeight,
+                width: VNewProfileViewController.estimatedBarButtonWidth,
+                height: barFrame.height
+            )
+        }
+        return nil
     }
 }
 

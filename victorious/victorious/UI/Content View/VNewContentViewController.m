@@ -13,8 +13,6 @@
 #import "UIImage+ImageCreation.h"
 #import "UIImageView+Blurring.h"
 #import "UIView+AutoLayout.h"
-#import "VCoachmarkDisplayer.h"
-#import "VCoachmarkManager.h"
 #import "VCollectionViewStreamFocusHelper.h"
 #import "VContentBackgroundSupplementaryView.h"
 #import "VContentCell.h"
@@ -36,7 +34,6 @@
 #import "VNewContentViewController.h"
 #import "VNode+Fetcher.h"
 #import "VPurchaseViewController.h"
-#import "VScrollPaginator.h"
 #import "VSectionHandleReusableView.h"
 #import "VSequence+Fetcher.h"
 #import "VSequenceActionControllerDelegate.h"
@@ -54,7 +51,7 @@
 
 static NSString * const kPollBallotIconKey = @"orIcon";
 
-@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, VExperienceEnhancerControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, VScrollPaginatorDelegate, NSUserActivityDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VCoachmarkDisplayer, VExperienceEnhancerResponder, VSequencePreviewViewDetailDelegate, VContentPollBallotCellDelegate, AdLifecycleDelegate, VPaginatedDataSourceDelegate, VImageAnimationOperationDelegate, VSequenceActionControllerDelegate>
+@interface VNewContentViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, VExperienceEnhancerControllerDelegate, VPurchaseViewControllerDelegate, VContentViewViewModelDelegate, NSUserActivityDelegate, VHashtagSelectionResponder, VURLSelectionResponder, VExperienceEnhancerResponder, VSequencePreviewViewDetailDelegate, VContentPollBallotCellDelegate, AdLifecycleDelegate, VPaginatedDataSourceDelegate, VImageAnimationOperationDelegate, VSequenceActionControllerDelegate>
 
 @property (nonatomic, assign) BOOL hasAutoPlayed;
 @property (nonatomic, assign) BOOL hasBeenPresented;
@@ -81,7 +78,6 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 @property (nonatomic, weak) IBOutlet UIButton *moreButton;
 @property (nonatomic, weak) IBOutlet UIImageView *blurredBackgroundImageView;
 @property (nonatomic, weak) IBOutlet VInputAccessoryCollectionView *contentCollectionView;
-@property (nonatomic, weak) IBOutlet VScrollPaginator *scrollPaginator;
 @property (nonatomic, weak) NSLayoutConstraint *bottomKeyboardToContainerBottomConstraint;
 @property (nonatomic, weak) UIView *snapshotView;
 @property (nonatomic, weak) VContentPollBallotCell *ballotCell;
@@ -100,9 +96,9 @@ static NSString * const kPollBallotIconKey = @"orIcon";
 - (void)sequenceActionControllerDidDeleteSequence:(VSequence *)sequence
 {
     [self dismissViewControllerAnimated:true completion:^
-    {
-        [self.delegate sequenceActionControllerDidDeleteSequence:sequence];
-    }];
+     {
+         [self.delegate sequenceActionControllerDidDeleteSequence:sequence];
+     }];
 }
 
 - (void)sequenceActionControllerDidFlagSequence:(VSequence *)sequence
@@ -394,7 +390,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
         
         CGRect animationBounds = self.contentCell.bounds;
         CGPoint convertedCenterForAnimation = [self.experienceEnhancerCell.experienceEnhancerBar convertPoint:position toView:self.view];
-
+        
         animationImageView.image = enhancer.voteType.iconImage;
         animationImageView.contentMode = UIViewContentModeScaleAspectFill;
         
@@ -415,7 +411,7 @@ static NSString * const kPollBallotIconKey = @"orIcon";
             
             animationImageView.frame = animationFrameSize;
             animationImageView.center = convertedCenterForAnimation;
-
+            
             
             dispatch_async(dispatch_get_main_queue(), ^
                            {
@@ -496,12 +492,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
     [self.focusHelper endFocusOnCell:cell];
 }
 
-#pragma mark UIScrollViewDelegate
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-}
-
 #pragma mark - VExperienceEnhancerControllerDelegate
 
 - (void)experienceEnhancersDidUpdate
@@ -550,16 +540,6 @@ referenceSizeForHeaderInSection:(NSInteger)section
      }];
 }
 
-#pragma mark - VScrollPaginatorDelegate
-
-- (void)shouldLoadNextPage
-{
-}
-
-- (void)shouldLoadPreviousPage
-{
-}
-
 #pragma mark - VSequenceActionsDelegate
 
 - (void)willCommentOnSequence:(VSequence *)sequenceObject fromView:(UIView *)commentView
@@ -598,7 +578,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
     }
 }
 
-#pragma mark - VCoachmarkDisplayer
+#pragma mark - CoachmarkDisplayer
 
 - (NSString *)screenIdentifier
 {
@@ -611,7 +591,7 @@ referenceSizeForHeaderInSection:(NSInteger)section
 {
     NSDictionary *params = @{ VTrackingKeyProductIdentifier : voteType.productIdentifier ?: @"" };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectLockedVoteType parameters:params];
-
+    
     VPurchaseViewController *viewController = [VPurchaseViewController newWithDependencyManager:self.dependencyManager];
     viewController.voteType = voteType;
     
@@ -644,12 +624,12 @@ referenceSizeForHeaderInSection:(NSInteger)section
 - (void)answerASelected
 {
     [self.viewModel answerPoll:VPollAnswerA completion:^(NSError *_Nullable error)
-    {
-        if ( error == nil )
-        {
-            [self didUpdatePoll];
-        }
-    }];
+     {
+         if ( error == nil )
+         {
+             [self didUpdatePoll];
+         }
+     }];
 }
 
 - (void)answerBSelected

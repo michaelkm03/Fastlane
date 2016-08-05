@@ -10,10 +10,10 @@ import UIKit
 
 protocol CloseUpViewDelegate: class {
     func didSelectProfileForUserID(userID: Int)
+    func gridStreamDidUpdate()
 }
 
-
-class CloseUpView: UIView, ConfigurableGridStreamHeader {
+class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegate {
     
     // MARK: - Configuration
     
@@ -37,7 +37,6 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     @IBOutlet weak var avatarView: AvatarView!
     @IBOutlet weak var userNameButton: UIButton!
     @IBOutlet weak var createdAtLabel: UILabel!
-    @IBOutlet weak var mediaContentView: MediaContentView!
     @IBOutlet weak var captionLabel: UILabel!
     @IBOutlet weak var relatedLabel: UILabel!
     @IBOutlet weak var closeUpContentContainerView: UIView!
@@ -48,9 +47,13 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     
     weak var delegate: CloseUpViewDelegate?
     
+    private let spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+    
     private lazy var errorView: ErrorStateView = {
         return ErrorStateView.v_fromNib()
     }()
+
+    private var mediaContentView: MediaContentView?
     
     private var videoPlayer: VVideoPlayer?
 
@@ -85,6 +88,22 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
             object: nil
         )
         blurredImageView.alpha = Constants.blurredImageAlpha
+        
+        insertSubview(spinner, aboveSubview: lightOverlayView)
+        spinner.startAnimating()
+    }
+
+    private func setupMediaContentView(for content: ContentModel) -> MediaContentView {
+        let mediaContentView = MediaContentView(
+            content: content,
+            dependencyManager: dependencyManager,
+            fillMode: .fill,
+            allowsVideoControls: true
+        )
+        mediaContentView.delegate = self
+        mediaContentView.alpha = 0
+        
+        return mediaContentView
     }
     
     // MARK: - Setting Content
@@ -106,6 +125,8 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
                 return
             }
             
+            self.mediaContentView?.removeFromSuperview()
+            
             let author = content.author
             
             setHeader(for: content, author: author)
@@ -124,7 +145,11 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
             
             createdAtLabel.text = NSDate(timestamp: content.createdAt).stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds) ?? ""
             captionLabel.text = content.text
-            mediaContentView.content = content
+            
+            let mediaContentView = setupMediaContentView(for: content)
+            insertSubview(mediaContentView, aboveSubview: spinner)
+            self.mediaContentView = mediaContentView
+            mediaContentView.loadContent()
             
             // Update size
             self.frame.size = sizeForContent(content)
@@ -152,28 +177,31 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
             bounds.size.height = bounds.size.height - relatedLabel.frame.size.height
             errorView.frame = bounds
             
-            var mediaContentViewFrame = mediaContentView.frame
-            mediaContentViewFrame.origin.y = totalHeight
-            mediaContentViewFrame.size.height = self.frame.size.height - totalHeight
-            mediaContentView.frame = mediaContentViewFrame
-            return
+            mediaContentView?.removeFromSuperview()
+            mediaContentView = nil
         }
-        
-        // Content
-        var mediaContentViewFrame = mediaContentView.frame
-        mediaContentViewFrame.origin.y = totalHeight
-        mediaContentViewFrame.size.height = height(for: content)
-        mediaContentView.frame = mediaContentViewFrame
-        
-        totalHeight = totalHeight + mediaContentView.bounds.size.height
-        
-        // Caption
-        var frame = captionLabel.frame
-        frame.origin.y = totalHeight + Constants.verticalMargins
-        frame.size.width = bounds.size.width - 2 * Constants.horizontalMargins
-        captionLabel.frame = frame
-        captionLabel.sizeToFit()
-        
+        else {
+            guard let mediaContentView = mediaContentView else {
+                return
+            }
+            
+            // Content
+            var mediaContentViewFrame = mediaContentView.frame
+            mediaContentViewFrame.origin.y = headerSection.bounds.size.height
+            mediaContentViewFrame.size.height = height(for: content)
+            mediaContentViewFrame.size.width = bounds.size.width
+            mediaContentView.frame = mediaContentViewFrame
+            
+            totalHeight = totalHeight + mediaContentView.bounds.size.height
+            
+            // Caption
+            var frame = captionLabel.frame
+            frame.origin.y = totalHeight + Constants.verticalMargins
+            frame.size.width = bounds.size.width - 2 * Constants.horizontalMargins
+            captionLabel.frame = frame
+            captionLabel.sizeToFit()
+        }
+        spinner.center = center
     }
     
     func sizeForContent(content: ContentModel?) -> CGSize {
@@ -282,11 +310,11 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
     }
     
     func headerWillAppear() {
-        mediaContentView.videoCoordinator?.playVideo()
+        mediaContentView?.willBePresented()
     }
     
     func headerDidDisappear() {
-        mediaContentView.videoCoordinator?.pauseVideo()
+        mediaContentView?.willBeDismissed()
     }
     
     func gridStreamDidUpdateDataSource(with items: [ContentModel]) {
@@ -294,7 +322,26 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader {
             UIView.animateWithDuration(Constants.relatedAnimationDuration, animations: {
                 self.relatedLabel.alpha = items.count == 0 ? 0 : 1
             })
+            self.delegate?.gridStreamDidUpdate()
         })
+    }
+
+    // MARK: - MediaContentViewDelegate
+
+    func mediaContentView(mediaContentView: MediaContentView, didFinishLoadingContent content: ContentModel) {
+        UIView.animateWithDuration(
+            MediaContentView.AnimationConstants.mediaContentViewAnimationDuration,
+            animations: {
+                mediaContentView.alpha = 1.0
+            },
+            completion: { [weak self]  _ in
+                self?.spinner.stopAnimating()
+            }
+        )
+    }
+
+    func mediaContentView(mediaContentView: MediaContentView, didFinishPlaybackOfContent content: ContentModel) {
+        // No behavior yet
     }
 }
 

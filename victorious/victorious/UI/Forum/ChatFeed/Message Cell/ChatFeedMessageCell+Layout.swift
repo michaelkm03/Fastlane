@@ -37,6 +37,10 @@ extension ChatFeedMessageCell {
         let bubbleFrames = [previewFrame, captionFrame].flatMap { $0 }
         let firstBubbleFrame = bubbleFrames.first ?? CGRect.zero
         
+        if let previewFrame = previewFrame {
+            cell.spinner.center = CGPoint(x: previewFrame.size.width/2, y: previewFrame.size.height/2)
+        }
+        
         // Top label layout:
         
         cell.usernameLabel.frame = CGRect(

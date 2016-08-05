@@ -39,8 +39,7 @@ class AccountUpdateOperation: RemoteFetcherOperation, RequestOperation {
                 }
                 
                 // Update basic stats
-                user.displayName = profileUpdate.name ?? user.displayName
-                user.username = profileUpdate.email ?? user.username
+                user.displayName = profileUpdate.displayName ?? user.displayName
                 user.location = profileUpdate.location ?? user.location
                 user.tagline = profileUpdate.tagline ?? user.tagline
                 

@@ -15,6 +15,8 @@ var ids: Set<Content.ID> = Set()
 /// Consumers can directly use this type without caring what the concrete type is, persistent or not.
 public protocol ContentModel: PreviewImageContainer, DictionaryConvertible {
     var type: ContentType { get }
+    
+    /// `id` is optional because live chat messages don't have IDs
     var id: Content.ID? { get }
     var isLikedByCurrentUser: Bool { get }
     var text: String? { get }
@@ -52,6 +54,18 @@ public protocol ContentModel: PreviewImageContainer, DictionaryConvertible {
     var tracking: TrackingModel? { get }
 }
 
+public func ==(lhs: ContentModel, rhs: ContentModel) -> Bool {
+    guard lhs.id != nil && rhs.id != nil else {
+        return false
+    }
+    
+    return lhs.id == rhs.id
+}
+
+public func !=(lhs: ContentModel, rhs: ContentModel) -> Bool {
+    return !(lhs == rhs)
+}
+
 extension ContentModel {
     
     // MARK: - DictionaryConvertible
@@ -83,9 +97,9 @@ extension ContentModel {
         return dictionary
     }
     
-    public func seekAheadTime() -> NSTimeInterval {
+    public var seekAheadTime: NSTimeInterval? {
         guard let localStartTime = localStartTime else {
-            return 0
+            return nil
         }
         
         return NSDate().timeIntervalSinceDate(localStartTime)

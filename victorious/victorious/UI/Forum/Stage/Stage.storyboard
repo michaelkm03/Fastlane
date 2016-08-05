@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="RXE-Oi-dH9">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="RXE-Oi-dH9">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
@@ -16,22 +16,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a1k-JM-1LN" userLabel="Media Content Container View">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="520"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DfU-P8-ZhH" customClass="MediaContentView" customModule="victorious" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="520"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    </view>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="DfU-P8-ZhH" secondAttribute="trailing" id="0gl-1G-kyQ"/>
-                                    <constraint firstItem="DfU-P8-ZhH" firstAttribute="leading" secondItem="a1k-JM-1LN" secondAttribute="leading" id="7zd-OI-IH5"/>
-                                    <constraint firstAttribute="bottom" secondItem="DfU-P8-ZhH" secondAttribute="bottom" id="CW4-lj-9tA"/>
-                                    <constraint firstItem="DfU-P8-ZhH" firstAttribute="top" secondItem="a1k-JM-1LN" secondAttribute="top" id="ILF-E3-rYC"/>
-                                </constraints>
-                            </view>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="s93-5b-hkK">
+                                <rect key="frame" x="282" y="281" width="37" height="37"/>
+                            </activityIndicatorView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hIh-NH-2x7" userLabel="Title Card Container View">
                                 <rect key="frame" x="0.0" y="457" width="600" height="51"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -56,21 +43,20 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="wSh-lD-twH" firstAttribute="leading" secondItem="dPd-gY-gTf" secondAttribute="leading" id="3oL-8j-brd"/>
-                            <constraint firstItem="a1k-JM-1LN" firstAttribute="leading" secondItem="dPd-gY-gTf" secondAttribute="leading" id="OeU-pM-iYQ"/>
                             <constraint firstItem="hIh-NH-2x7" firstAttribute="leading" secondItem="dPd-gY-gTf" secondAttribute="leading" id="Orb-UE-xAs"/>
                             <constraint firstAttribute="trailing" secondItem="wSh-lD-twH" secondAttribute="trailing" id="QK3-4L-siD"/>
                             <constraint firstAttribute="trailing" secondItem="hIh-NH-2x7" secondAttribute="trailing" id="RTu-M9-7eH"/>
+                            <constraint firstItem="s93-5b-hkK" firstAttribute="centerX" secondItem="dPd-gY-gTf" secondAttribute="centerX" id="b4X-I0-65h"/>
+                            <constraint firstItem="s93-5b-hkK" firstAttribute="centerY" secondItem="dPd-gY-gTf" secondAttribute="centerY" id="cyH-Ev-RcG"/>
                             <constraint firstItem="Ldt-nB-e5k" firstAttribute="top" secondItem="wSh-lD-twH" secondAttribute="bottom" id="s1w-qo-3RR"/>
                             <constraint firstItem="wSh-lD-twH" firstAttribute="top" secondItem="hIh-NH-2x7" secondAttribute="bottom" constant="12" id="t92-7c-YjQ"/>
-                            <constraint firstItem="a1k-JM-1LN" firstAttribute="top" secondItem="dPd-gY-gTf" secondAttribute="top" id="txg-R1-cPS"/>
-                            <constraint firstItem="wSh-lD-twH" firstAttribute="top" secondItem="a1k-JM-1LN" secondAttribute="bottom" id="vrG-hh-Mxe"/>
-                            <constraint firstAttribute="trailing" secondItem="a1k-JM-1LN" secondAttribute="trailing" id="zqi-qs-Csp"/>
                         </constraints>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
+                        <outlet property="captionBarContainerView" destination="wSh-lD-twH" id="dhR-ZU-He8"/>
                         <outlet property="captionBarHeightConstraint" destination="OT1-tL-iiZ" id="nG7-V3-Mfn"/>
-                        <outlet property="mediaContentView" destination="DfU-P8-ZhH" id="JPI-87-IJO"/>
+                        <outlet property="loadingIndicator" destination="s93-5b-hkK" id="xQz-j0-UYw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nKP-kC-OcX" userLabel="First Responder" sceneMemberID="firstResponder"/>

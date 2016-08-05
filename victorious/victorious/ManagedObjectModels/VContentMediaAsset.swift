@@ -11,7 +11,7 @@ import CoreData
 import VictoriousIOSSDK
 
 class VContentMediaAsset: NSManagedObject, ContentMediaAssetModel {
-    /// External ID string of the remot content. Will be nil when remoteSource is not nil.
+    /// External ID string of the remote content. Will be nil when remoteSource is not nil.
     @NSManaged var v_externalID: String?
     
     /// Remote URL string of the content. Will be nil when externalID is not nil.
@@ -19,15 +19,17 @@ class VContentMediaAsset: NSManagedObject, ContentMediaAssetModel {
     
     @NSManaged var v_source: String?
     
-    /// Unique identifier based on either the remoteSource or externalID as exactly one of those will be nil at any time.
-    @NSManaged var v_uniqueID: String
+    /// Identifier based on either the remoteSource or externalID as exactly one of those will be nil at any time.
+    @NSManaged var v_remoteID: String
     
     @NSManaged var v_content: VContent
+    @NSManaged var v_width: Float
+    @NSManaged var v_height: Float
     
     // MARK: - ContentMediaAssetModel
     
     var resourceID: String {
-        return v_uniqueID
+        return v_remoteID
     }
     
     var source: String? {
@@ -69,5 +71,15 @@ class VContentMediaAsset: NSManagedObject, ContentMediaAssetModel {
     
     var externalID: String? {
         return v_externalID
+    }
+    
+    var size: CGSize? {
+        guard v_width != 0 && v_height != 0 else {
+            return nil
+        }
+        let width = CGFloat(v_width)
+        let height = CGFloat(v_height)
+        
+        return CGSize(width: width, height: height)
     }
 }

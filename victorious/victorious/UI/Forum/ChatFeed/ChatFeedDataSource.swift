@@ -36,10 +36,16 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     private(set) var stashedItems = [ChatFeedContent]()
     
     var pendingItems: [ChatFeedContent] {
-        return delegate?.pendingItems(for: self) ?? []
+        if shouldShowPendingItems {
+            return delegate?.pendingItems(for: self) ?? []
+        }
+        else {
+            return []
+        }
     }
     
     var stashingEnabled = false
+    var shouldShowPendingItems = true
     
     func unstash() {
         guard stashedItems.count > 0 else {
@@ -58,26 +64,13 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     
     func receive(event: ForumEvent) {
         switch event {
-            case .appendContent(let newItems):
-                let newItems = createNewItemsArray(newItems)
-                if stashingEnabled {
-                    stashedItems.appendContentsOf(newItems)
-                    delegate?.chatFeedDataSource(self, didStashItems: newItems)
-                } else {
-                    visibleItems.appendContentsOf(newItems)
-                    delegate?.chatFeedDataSource(self, didLoadItems: newItems, loadingType: .newer)
-                }
+            case .handleContent(let newItems, let loadingType):
+                handleItems(newItems, withLoadingType: loadingType)
             
-            case .prependContent(let newItems):
-               let newItems = createNewItemsArray(newItems)
-                visibleItems = newItems + visibleItems
-                delegate?.chatFeedDataSource(self, didLoadItems: newItems, loadingType: .older)
-            
-            case .replaceContent(let newItems):
-                let newItems = createNewItemsArray(newItems)
-                visibleItems = newItems
-                stashedItems = []
-                delegate?.chatFeedDataSource(self, didLoadItems: newItems, loadingType: .refresh)
+            case .filterContent(let path):
+                let isFilteredFeed = path != nil
+                shouldShowPendingItems = !isFilteredFeed
+                clearItems()
             
             default:
                 break
@@ -86,6 +79,32 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     
     // MARK: - Internal helpers
     
+    private func handleItems(newItems: [ContentModel], withLoadingType loadingType: PaginatedLoadingType) {
+        switch loadingType {
+            case .newer:
+                let newItems = createNewItemsArray(newItems)
+                
+                if stashingEnabled {
+                    stashedItems.appendContentsOf(newItems)
+                    delegate?.chatFeedDataSource(self, didStashItems: newItems)
+                }
+                else {
+                    visibleItems.appendContentsOf(newItems)
+                    delegate?.chatFeedDataSource(self, didLoadItems: newItems, loadingType: .newer)
+                }
+                
+            case .older:
+                let newItems = createNewItemsArray(newItems)
+                visibleItems = newItems + visibleItems
+                delegate?.chatFeedDataSource(self, didLoadItems: newItems, loadingType: .older)
+                
+            case .refresh:
+                let newItems = createNewItemsArray(newItems)
+                visibleItems = newItems
+                stashedItems = []
+                delegate?.chatFeedDataSource(self, didLoadItems: newItems, loadingType: .refresh)
+        }
+    }
     private func createNewItemsArray(contents: [ContentModel]) -> [ChatFeedContent] {
         guard let width = delegate?.chatFeedItemWidth else {
             return []
@@ -94,6 +113,12 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
         return contents.flatMap(){ content in
             ChatFeedContent(content: content, width: width, dependencyManager: dependencyManager)
         }
+    }
+    
+    private func clearItems() {
+        visibleItems = []
+        stashedItems = []
+        delegate?.chatFeedDataSource(self, didLoadItems: [], loadingType: .refresh)
     }
     
     // MARK: - ForumEventSender
@@ -118,5 +143,14 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     
     func collectionView(collectionView: UICollectionView, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         return desiredCellSize(for: collectionView, at: indexPath)
+    }
+    
+    func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+        if kind == UICollectionElementKindSectionHeader {
+            return collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: VFooterActivityIndicatorView.reuseIdentifier(), forIndexPath: indexPath) as! VFooterActivityIndicatorView
+        }
+        
+        assertionFailure("Unsupported supplementary view kind requested in ChatFeedDataSource.")
+        return UICollectionReusableView()
     }
 }

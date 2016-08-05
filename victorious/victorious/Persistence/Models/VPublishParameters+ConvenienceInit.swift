@@ -14,13 +14,15 @@ extension VPublishParameters {
         self.init()
         
         guard
-            let mediaAsset = content.assets.first where
-            mediaAsset.contentType != .text &&
-            mediaAsset.contentType != .link
-            else
-        {
+            let mediaAsset = content.assets.first,
+            let mediaPreview = content.largestPreviewImage
+            where mediaAsset.contentType != .text && mediaAsset.contentType != .link
+        else {
             return nil
         }
+        
+        width = Int(mediaPreview.size.width)
+        height = Int(mediaPreview.size.height)
         
         caption = content.text
         source = mediaAsset.source

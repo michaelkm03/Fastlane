@@ -19,7 +19,7 @@ import VictoriousIOSSDK
     func searchResultsViewControllerDidSelectResult(result: AnyObject)
 }
 
-class SearchResultsViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, VScrollPaginatorDelegate, VPaginatedDataSourceDelegate {
+class SearchResultsViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, VPaginatedDataSourceDelegate {
     
     private static let defaultSearchResultCellHeight: CGFloat = 50.0
     
@@ -50,12 +50,6 @@ class SearchResultsViewController: UIViewController, UISearchBarDelegate, UITabl
     @IBOutlet private var tableView: UITableView!
     
     var noContentView: VNoContentView?
-
-    private lazy var scrollPaginator: VScrollPaginator = {
-        let paginator = VScrollPaginator()
-        paginator.delegate = self
-        return paginator
-    }()
     
     // MARK: - Public
     
@@ -128,10 +122,6 @@ class SearchResultsViewController: UIViewController, UISearchBarDelegate, UITabl
         return SearchResultsViewController.defaultSearchResultCellHeight
     }
     
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-        scrollPaginator.scrollViewDidScroll(scrollView)
-    }
-    
     // MARK: - UISearchBarDelegate
     
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
@@ -156,16 +146,6 @@ class SearchResultsViewController: UIViewController, UISearchBarDelegate, UITabl
     
     var searchTerm: String? {
         return dataSource?.searchTerm
-    }
-    
-    // MARK: - VScrollPaginatorDelegate
-    
-    func shouldLoadNextPage() {
-        guard let dataSource = dataSource,
-            let searchTerm = dataSource.searchTerm where dataSource.state != .Loading else {
-                return
-        }
-        dataSource.search(searchTerm: searchTerm, pageType: .Next, completion: nil)
     }
     
     // MARK: - VPaginatedDataSourceDelegate

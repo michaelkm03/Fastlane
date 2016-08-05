@@ -8,6 +8,10 @@
 
 import Foundation
 
+private struct Constants {
+    static let scrolledToBottomTolerance = CGFloat(5.0)
+}
+
 protocol ChatFeed: class, ForumEventSender, ForumEventReceiver {
     var nextSender: ForumEventSender? { get set }
     var delegate: ChatFeedDelegate? { get set }
@@ -17,10 +21,10 @@ protocol ChatFeed: class, ForumEventSender, ForumEventReceiver {
     var collectionView: UICollectionView! { get }
     var chatInterfaceDataSource: ChatInterfaceDataSource { get }
     
-    // MARK: - Layout
+    // MARK: - Managing insets
     
-    func setTopInset(value: CGFloat)
-    func setBottomInset(value: CGFloat)
+    var addedTopInset: CGFloat { get set }
+    var addedBottomInset: CGFloat { get set }
 }
 
 protocol ChatFeedDelegate: class {
@@ -69,7 +73,7 @@ extension ChatFeed {
         CATransaction.setDisableActions(true)
         
         let collectionView = self.collectionView
-        let wasScrolledToBottom = collectionView.v_isScrolledToBottom
+        let wasScrolledToBottom = collectionView.isScrolledToBottom(withTolerance: Constants.scrolledToBottomTolerance)
         let oldPendingItemCount = max(0, chatInterfaceDataSource.pendingItems.count - newPendingContentCount)
         let insertingAbovePendingContent = oldPendingItemCount > 0 && newPendingContentCount <= 0
         
@@ -82,7 +86,7 @@ extension ChatFeed {
             if (loadingType == .newer && wasScrolledToBottom) || loadingType == .refresh {
                 // Animation disabled when inserting above pending items because it causes the pending items to warp
                 // past the bottom and scroll back up. This could use some work to make the transition better.
-                collectionView.setContentOffset(collectionView.v_bottomOffset, animated: loadingType != .refresh && !insertingAbovePendingContent)
+                collectionView.scrollToBottom(animated: loadingType != .refresh && !insertingAbovePendingContent)
             }
             
             completion?()
@@ -96,41 +100,40 @@ extension ChatFeed {
         let itemCount = chatInterfaceDataSource.itemCount
         
         // The collection view's layout information is guaranteed to be updated properly in the completion handler
-        // of this method, which allows us to properly manage scrolling. We can't call `reloadData` in this method,
-        // though, so we have to do that separately.
+        // of this method, which allows us to properly manage scrolling.
         collectionView.performBatchUpdates({
             switch loadingType {
-            case .newer:
-                collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
-                    NSIndexPath(forItem: oldVisibleItemCount + $0, inSection: 0)
+                case .newer:
+                    collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
+                        NSIndexPath(forItem: oldVisibleItemCount + $0, inSection: 0)
                     })
                 
-            case .older:
-                if let layout = collectionView.collectionViewLayout as? ChatFeedCollectionViewLayout {
-                    layout.contentSizeWhenInsertingAbove = collectionView.contentSize
-                }
-                else {
-                    assertionFailure("Chat feed's collection view did not have the required layout type ChatFeedCollectionViewLayout.")
-                }
-                
-                collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
-                    NSIndexPath(forItem: $0, inSection: 0)
+                case .older:
+                    if let layout = collectionView.collectionViewLayout as? ChatFeedCollectionViewLayout {
+                        layout.contentSizeWhenInsertingAbove = collectionView.contentSize
+                    }
+                    else {
+                        assertionFailure("Chat feed's collection view did not have the required layout type ChatFeedCollectionViewLayout.")
+                    }
+                    
+                    collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
+                        NSIndexPath(forItem: $0, inSection: 0)
                     })
                 
-            case .refresh:
-                // Calling reloadData in here causes a crash
-                collectionView.reloadSections(NSIndexSet(index: 0))
+                case .refresh:
+                    // Calling reloadData in here causes a crash
+                    collectionView.reloadSections(NSIndexSet(index: 0))
             }
             
             collectionView.insertItemsAtIndexPaths((0 ..< newPendingContentCount).map {
                 NSIndexPath(forItem: itemCount - 1 - $0, inSection: 0)
-                })
+            })
             
             collectionView.deleteItemsAtIndexPaths(removedPendingContentIndices.map {
                 NSIndexPath(forItem: oldVisibleItemCount + $0, inSection: 0)
-                })
-            }, completion: { _ in
-                completion()
+            })
+        }, completion: { _ in
+            completion()
         })
     }
 }

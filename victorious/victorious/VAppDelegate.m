@@ -28,24 +28,25 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    if ([NSBundle v_isTestBundle])
-    {
-        return YES;
-    }
-    
-    // We don't need this yet, but it must be initialized now (see comments for sharedInstance method)
-    [VPurchaseManager sharedInstance];
-    
+//    if ([NSBundle v_isTestBundle])
+//    {
+//        return YES;
+//    }
+
+//    // We don't need this yet, but it must be initialized now (see comments for sharedInstance method)
+//    [VPurchaseManager sharedInstance];
+
 #if V_ENABLE_TESTFAIRY
     [TestFairy begin:@"c03fa570f9415585437cbfedb6d09ae87c7182c8" withOptions:@{ TFSDKEnableCrashReporterKey: @NO }];
-    [self addLoginListener];
 #endif
-    
+
     if (![AgeGate isAgeGateEnabled])
     {
         [Crashlytics startWithAPIKey:@"58f61748f3d33b03387e43014fdfff29c5a1da73"];
     }
-    
+
+    [self addLoginListener];
+
     [[VReachability reachabilityForInternetConnection] startNotifier];
 
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];
@@ -123,6 +124,7 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -142,20 +144,26 @@
     [[persistentStore mainContext] save:nil];
 }
 
-#ifdef V_ENABLE_TESTFAIRY
 - (void)addLoginListener
 {
     [[NSNotificationCenter defaultCenter] addObserverForName:kLoggedInChangedNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *_Nonnull notification)
     {
         VUser *user = [VCurrentUser user];
-        if ( user != nil )
+        if (user != nil)
         {
-            [TestFairy identify:[user.remoteId stringValue] traits:@{TFSDKIdentityTraitNameKey: user.displayName ?: @"",
-                                                                     TFSDKIdentityTraitEmailAddressKey: user.username ?: @"",
-                                                                     }];
+            #ifdef V_ENABLE_TESTFAIRY
+                [TestFairy identify:[user.remoteId stringValue] traits:@{TFSDKIdentityTraitNameKey: user.displayName ?: @"", TFSDKIdentityTraitEmailAddressKey: user.username ?: @""}];
+            #endif
+
+            [Crashlytics setUserIdentifier:user.remoteId.stringValue ?: @""];
+            [Crashlytics setUserEmail:user.username ?: @""];
+            [Crashlytics setUserName:user.displayName ?: @""];
+
+//            NSString *test = [Apa logger];
+
+
         }
     }];
 }
-#endif
 
 @end
