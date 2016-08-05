@@ -31,7 +31,6 @@
 #import "VCompatibility.h"
 
 #import "VAutomation.h"
-#import "TestFairy.h"
 
 #ifdef DEBUG
 #define VLog(fmt, ...) NSLog((@"%s [Line %d] " fmt),  __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)

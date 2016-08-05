@@ -13,7 +13,6 @@
 #import "VSettingsViewController.h"
 #import "VWebContentViewController.h"
 #import "VEnvironment.h"
-#import "VAppDelegate.h"
 #import "VButton.h"
 #import "VPurchaseManager.h"
 #import "VAppInfo.h"

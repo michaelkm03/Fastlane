@@ -37,7 +37,6 @@
 #import "VAlternateCaptureOption.h"
 #import "VAnswer+Fetcher.h"
 #import "VAnswer.h"
-#import "VAppDelegate.h"
 #import "VAppInfo.h"
 #import "VAppTimingEventType.h"
 #import "VApplicationTracking.h"

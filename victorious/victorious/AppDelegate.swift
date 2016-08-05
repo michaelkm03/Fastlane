@@ -7,39 +7,53 @@
 //
 
 import UIKit
-
+import Crashlytics
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+
         guard !NSBundle.v_isTestBundle else {
             return true
         }
+
         #if V_ENABLE_TESTFAIRY
-            Testfairy.begin("xxx")
+            let options = [TFSDKEnableCrashReporterKey: false]
+            Testfairy.begin("c03fa570f9415585437cbfedb6d09ae87c7182c8", withOptions: options)
         #endif
 
-        
+        Crashlytics.startWithAPIKey("58f61748f3d33b03387e43014fdfff29c5a1da73")
 
-        return true
+        addLoginListener()
+
+        // TODO: this rly needed?
+        VReachability.reachabilityForInternetConnection().startNotifier()
+
+        configureAudioSessionCategory()
+
+        window = UIWindow(frame: UIScreen.mainScreen().bounds)
+        let mainStoryboard = UIStoryboard(name: kMainStoryboardName, bundle: nil)
+        window?.rootViewController = mainStoryboard.instantiateInitialViewController()
+        window?.makeKeyWindow()
+
+        let timingTracker = DefaultTimingTracker.sharedInstance()
+        timingTracker.startEvent(type: VAppTimingEventTypeAppStart)
+        timingTracker.startEvent(type: VAppTimingEventTypeShowRegistration)
+
+        return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
     }
 
-    func applicationWillResignActive(application: UIApplication) {
-        // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-        // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
-    }
+    func applicationWillResignActive(application: UIApplication) { }
 
     func applicationDidEnterBackground(application: UIApplication) {
-        // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-        // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        savePersistentChanges()
     }
 
     func applicationWillEnterForeground(application: UIApplication) {
-        // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+        configureAudioSessionCategory()
     }
 
     func applicationDidBecomeActive(application: UIApplication) {
@@ -48,6 +62,87 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillTerminate(application: UIApplication) {
-        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        savePersistentChanges()
+    }
+
+    func application(app: UIApplication, openURL url: NSURL, options: [String : AnyObject]) -> Bool {
+        if FacebookHelper.canOpenURL(url) {
+            let sourceApplication = options[UIApplicationOpenURLOptionsSourceApplicationKey] as! String
+            let annotation = options[UIApplicationOpenURLOptionsAnnotationKey]
+            return FBSDKApplicationDelegate.sharedInstance().application(app, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
+        }
+
+        VRootViewController.sharedRootViewController()?.applicationOpenURL(url)
+
+        return true
+    }
+
+    func application(application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: () -> Void) {
+        // TODO: add log with the identifier
+        let uploadManager = VUploadManager.sharedManager()
+        if uploadManager.isYourBackgroundURLSession(identifier) {
+            uploadManager.backgroundSessionEventsCompleteHandler = completionHandler
+            uploadManager.startURLSession()
+        }
+    }
+
+    // MARK: - Notifications
+
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
+        VRootViewController.sharedRootViewController()?.applicationDidReceiveRemoteNotification(userInfo)
+    }
+
+    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+        VPushNotificationManager.sharedPushNotificationManager().didRegisterForRemoteNotificationsWithDeviceToken(deviceToken)
+    }
+
+    func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
+        VPushNotificationManager.sharedPushNotificationManager().didFailToRegisterForRemoteNotificationsWithError(error)
+    }
+
+    // MARK: - Orientation
+
+    func application(application: UIApplication, supportedInterfaceOrientationsForWindow window: UIWindow?) -> UIInterfaceOrientationMask {
+        return .AllButUpsideDown
+    }
+
+    // MARK: - Private
+
+    /// Listens to the login user notification in order to `register` the user with our services.
+    private func addLoginListener() {
+        NSNotificationCenter.defaultCenter().addObserverForName(kLoggedInChangedNotification, object: nil, queue: NSOperationQueue.mainQueue()) { (notififcation) in
+            if let currentUser = VCurrentUser.user() {
+                #if V_ENABLE_TESTFAIRY
+                    let userTraits = [TFSDKIdentityTraitNameKey: currentUser.displayName ?? "",
+                                      TFSDKIdentityTraitEmailAddressKey: currentUser.username ?? ""]
+                    TestFairy.identify(currentUser.remoteId.stringValue, traits:userTraits)
+                #endif
+
+                Crashlytics.setUserIdentifier(currentUser.remoteId.stringValue)
+                Crashlytics.setUserEmail(currentUser.username ?? "")
+                Crashlytics.setUserName(currentUser.displayName ?? "")
+
+//                Log.setUserIdentifier(currentUser.remoteId.stringValue)
+                logger.debug("")
+
+            }
+        }
+    }
+
+    private func configureAudioSessionCategory() {
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
+        } catch {
+            // TODO: log failure
+        }
+    }
+
+    private func savePersistentChanges() {
+        let persistentStore = PersistentStoreSelector.defaultPersistentStore
+        do {
+            try persistentStore.mainContext.save()
+        } catch {
+            // TODO: log failure
+        }
     }
 }
