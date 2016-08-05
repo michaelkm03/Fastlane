@@ -421,7 +421,6 @@
 		03C185BB19B42E5D00E27D05 /* TWAPIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C185B519B42E5D00E27D05 /* TWAPIManager.m */; settings = {COMPILER_FLAGS = "-w"; }; };
 		03C185BC19B42E5D00E27D05 /* TWSignedRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C185B719B42E5D00E27D05 /* TWSignedRequest.m */; settings = {COMPILER_FLAGS = "-w"; }; };
 		03C185BF19B42F0E00E27D05 /* VSequenceUserInteractions.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C185BE19B42F0E00E27D05 /* VSequenceUserInteractions.m */; };
-		03C185C819B42FD600E27D05 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 03C185C519B42FD600E27D05 /* main.m */; };
 		03CA69621C5485200039BD01 /* PersistenceTemplateDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CA69611C5485200039BD01 /* PersistenceTemplateDownloader.swift */; };
 		03CE66F719B47B590011BB9E /* VTwitterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CE66F519B47B590011BB9E /* VTwitterManager.m */; };
 		03CE66FC19B59F260011BB9E /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 03CE66FB19B59F260011BB9E /* UIImage+ImageEffects.m */; };
@@ -2659,7 +2658,6 @@
 		03C185B719B42E5D00E27D05 /* TWSignedRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TWSignedRequest.m; sourceTree = "<group>"; };
 		03C185BD19B42F0E00E27D05 /* VSequenceUserInteractions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSequenceUserInteractions.h; sourceTree = "<group>"; };
 		03C185BE19B42F0E00E27D05 /* VSequenceUserInteractions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSequenceUserInteractions.m; sourceTree = "<group>"; };
-		03C185C519B42FD600E27D05 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		03C185C619B42FD600E27D05 /* victorious-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "victorious-Prefix.pch"; sourceTree = "<group>"; };
 		03CA69611C5485200039BD01 /* PersistenceTemplateDownloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistenceTemplateDownloader.swift; sourceTree = "<group>"; };
 		03CE66F419B47B590011BB9E /* VTwitterManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTwitterManager.h; sourceTree = "<group>"; };
@@ -8686,7 +8684,6 @@
 			children = (
 				03848F971B0A41090092C660 /* InfoPlist.strings */,
 				DB2A48F919DF2D1000CB687B /* Localizable.strings */,
-				03C185C519B42FD600E27D05 /* main.m */,
 				03C185C619B42FD600E27D05 /* victorious-Prefix.pch */,
 			);
 			path = "Supporting Files";
@@ -12550,7 +12547,6 @@
 				0349FD4D1C504748004F95FC /* NSMutableURLRequest+UploadManager.swift in Sources */,
 				A705F44C1B3CC00D007DBD3C /* VUsersViewController.m in Sources */,
 				C3623E611B9A78B4002B121D /* AnimatedBadgeView.swift in Sources */,
-				03C185C819B42FD600E27D05 /* main.m in Sources */,
 				A721E9531B572454000B7901 /* UIImage+VSolidColor.m in Sources */,
 				A72C860F1C977FF500E97D4F /* FollowedHashtagsOperation.swift in Sources */,
 				7A02F8951D273C0F00F43B24 /* SettingsTableViewCell.swift in Sources */,

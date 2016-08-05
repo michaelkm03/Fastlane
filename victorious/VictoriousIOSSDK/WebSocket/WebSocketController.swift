@@ -55,7 +55,7 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
     // MARK: - ForumNetworkSourceWebSocket
 
     public func replaceEndPoint(endPoint: NSURL) {
-        print("replaceEndPoint -> ", endPoint)
+        logger.verbose("WebSocket replaceEndPoint -> \(endPoint)")
 
         if let webSocket = webSocket {
             webSocket.disconnect()
@@ -66,7 +66,7 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
     }
 
     public func setDeviceID(deviceID: String) {
-        print("setDeviceID -> \(deviceID)")
+        logger.verbose("WebSocket setDeviceID -> \(deviceID)")
         uniqueIdentificationMessage.deviceID = deviceID
     }
 
@@ -132,6 +132,7 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
     // MARK: - WebSocketDelegate
     
     public func websocketDidConnect(socket: WebSocket) {
+        logger.verbose("WebSocket did connect to URL -> \(socket.currentURL)")
         let rawMessage = WebSocketRawMessage(messageString: "Connected to URL -> \(socket.currentURL)")
         webSocketMessageContainer.addMessage(rawMessage)
 
@@ -141,6 +142,7 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
     }
 
     public func websocketDidDisconnect(socket: WebSocket, error: NSError?) {
+        logger.verbose("WebSocket did disconnect from URL -> \(socket.currentURL) with error -> \(error)")
         let rawMessage = WebSocketRawMessage(messageString: "Disconnected -> \(socket) error -> \(error)")
         webSocketMessageContainer.addMessage(rawMessage)
         
@@ -157,6 +159,7 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
     }
 
     public func websocketDidReceiveMessage(socket: WebSocket, text: String) {
+        logger.verbose("WebSocket did receive text message -> \(text)")
         var rawMessage = WebSocketRawMessage(messageString: "websocketDidReceiveMessage -> \(text)")
 
         if let dataFromString = text.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false) {
@@ -164,7 +167,7 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
             rawMessage.json = json
 
             guard let event = (decodeEventFromJSON(json) ?? decodeErrorFromJSON(json)) else {
-                print("Unparsable WebSocket message returned -> \(text)")
+                logger.info("Unparsable WebSocket message returned -> \(text)")
                 return
             }
             
@@ -250,10 +253,10 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
         let toServerDictionary = dictionaryConvertible.toServerDictionaryWithIdentificationMessage(uniqueIdentificationMessage)
         
         if let jsonString = JSON(toServerDictionary).rawString() {
-            NSLog("sendOutboundForumEvent json -> \(jsonString)")
+            logger.verbose("sendOutboundForumEvent json -> \(jsonString)")
             webSocket.writeString(jsonString)
         } else {
-            NSLog("Failed to convert ForumEvent to JSON string. Dictionary -> \(toServerDictionary)")
+            logger.warning("Failed to convert ForumEvent to JSON string. Dictionary -> \(toServerDictionary)")
         }
     }
 

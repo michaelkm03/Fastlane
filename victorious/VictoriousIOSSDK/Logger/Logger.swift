@@ -8,12 +8,6 @@
 
 import Foundation
 
-@objc public class Apa: NSObject {
-    static func logger() -> NSString {
-        return ""
-    }
-}
-
 private struct Secrets {
     static let appID = "m5OOEr"
     static let appSecret = "Bpjf42wjbtflv6xcaevhrvvo5adhnojU"
@@ -28,7 +22,7 @@ private struct Config {
     static let showNSLog = false
 }
 
-public var Log: SwiftyBeaver.Type = {
+public var logger: SwiftyBeaver.Type = {
     let theBeaver = SwiftyBeaver.self
 
     #if DEBUG
@@ -46,13 +40,12 @@ public var Log: SwiftyBeaver.Type = {
 
 public extension SwiftyBeaver {
 
-    private var platformDestination: SBPlatformDestination? {
-        return nil
-//        return SwiftyBeaver.destinations.filter { ($0 is SBPlatformDestination) == true }.first
+    private class var platformDestination: SBPlatformDestination? {
+        return destinations.flatMap { ($0 as? SBPlatformDestination) }.first
     }
 
     /// Unique identifier of the user, should be set as early as possible.
-    func setUserIdentifier(identifier: String) {
+    class func setUserIdentifier(identifier: String) {
         platformDestination?.analyticsUserName = identifier
     }
 }

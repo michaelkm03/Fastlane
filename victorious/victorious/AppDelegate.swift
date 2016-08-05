@@ -29,7 +29,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         addLoginListener()
 
-        // TODO: this rly needed?
         VReachability.reachabilityForInternetConnection().startNotifier()
 
         configureAudioSessionCategory()
@@ -37,7 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         let mainStoryboard = UIStoryboard(name: kMainStoryboardName, bundle: nil)
         window?.rootViewController = mainStoryboard.instantiateInitialViewController()
-        window?.makeKeyWindow()
+        window?.makeKeyAndVisible()
 
         let timingTracker = DefaultTimingTracker.sharedInstance()
         timingTracker.startEvent(type: VAppTimingEventTypeAppStart)
@@ -78,7 +77,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: () -> Void) {
-        // TODO: add log with the identifier
+        logger.verbose("handling events for background identifier -> \(identifier)")
+
         let uploadManager = VUploadManager.sharedManager()
         if uploadManager.isYourBackgroundURLSession(identifier) {
             uploadManager.backgroundSessionEventsCompleteHandler = completionHandler
@@ -122,9 +122,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 Crashlytics.setUserEmail(currentUser.username ?? "")
                 Crashlytics.setUserName(currentUser.displayName ?? "")
 
-//                Log.setUserIdentifier(currentUser.remoteId.stringValue)
-                logger.debug("")
-
+                logger.setUserIdentifier(currentUser.remoteId.stringValue)
             }
         }
     }
@@ -133,7 +131,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         do {
             try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
         } catch {
-            // TODO: log failure
+            logger.warning("Failed to set the AudioSession category with error ->\(error)")
         }
     }
 
@@ -142,7 +140,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         do {
             try persistentStore.mainContext.save()
         } catch {
-            // TODO: log failure
+            logger.warning("Failed to save the persistent stores main context with error -> \(error)")
         }
     }
 }
