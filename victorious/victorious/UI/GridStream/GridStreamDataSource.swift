@@ -152,15 +152,6 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
         cell.contentView.backgroundColor = cellContentBackgroundColor
         return cell
     }
-    
-    //Helper functions 
-    
-    func updateAPIPath(path: APIPath) {
-        var filteredQueryParameters = path.queryParameters
-        filteredQueryParameters["filter_text"] = "true"
-        let pathWithFiltering = APIPath(templatePath: path.templatePath, macroReplacements: path.macroReplacements, queryParameters: filteredQueryParameters)
-        paginatedDataSource.apiPath = pathWithFiltering
-    }
 }
 
 private extension VDependencyManager {
