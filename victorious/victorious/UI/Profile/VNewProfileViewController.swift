@@ -52,7 +52,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         }
     }
     
-    private let spinner = UIActivityIndicatorView()
+    private let spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
     
     // MARK: Dependency Manager
     
@@ -404,10 +404,10 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         guard let userID = user?.id else {
             return
         }
-        fetchUser(withRemoteID: userID)
+        fetchUser(withRemoteID: userID, shouldShowSpinner: false)
     }
     
-    private func fetchUser(withRemoteID remoteID: Int) {
+    private func fetchUser(withRemoteID remoteID: Int, shouldShowSpinner: Bool = true) {
         guard
             let apiPath = dependencyManager.networkResources?.userFetchAPIPath,
             let userInfoOperation = UserInfoOperation(userID: remoteID, apiPath: apiPath)
@@ -415,9 +415,11 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
             return
         }
         
-        spinner.frame = CGRect(center: view.bounds.center, size: CGSizeZero)
-        view.addSubview(spinner)
-        spinner.startAnimating()
+        if (shouldShowSpinner) {
+            spinner.frame = CGRect(center: view.bounds.center, size: CGSizeZero)
+            view.addSubview(spinner)
+            spinner.startAnimating()
+        }
         
         userInfoOperation.queue { [weak self] _ in
             guard let dependencyManager = self?.dependencyManager else {
