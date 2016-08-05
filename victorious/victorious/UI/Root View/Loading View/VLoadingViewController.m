@@ -13,7 +13,6 @@
 #import "VEnvironment.h"
 #import "VReachability.h"
 #import "VSessionTimer.h"
-#import "VTemplateDecorator.h"
 #import "VTemplateDownloadOperation.h"
 #import "VLaunchScreenProvider.h"
 #import "UIView+AutoLayout.h"
@@ -165,36 +164,12 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
     self.progressHUD.taskInProgress = YES;
 }
 
-- (void)addAppTimingURL:(VTemplateDecorator *)templateDecorator
-{
-    VEnvironment *currentEnvironment = [VEnvironmentManager sharedInstance].currentEnvironment;
-    NSString *keyPath = @"tracking/app_time";
-    if ( [templateDecorator templateValueForKeyPath:keyPath] == nil && currentEnvironment != nil )
-    {
-        NSString *defaultURLString = @"/api/tracking/app_time?type=%%TYPE%%&subtype=%%SUBTYPE%%&time=%%DURATION%%";
-        NSString *fullURL = [currentEnvironment.baseURL.absoluteString stringByAppendingString:defaultURLString];
-        __unused BOOL success = [templateDecorator setTemplateValue:@[ fullURL ] forKeyPath:keyPath];
-        NSAssert(success, @"Template decorator failed");
-    }
-}
-
 - (void)onDoneLoadingWithTemplateConfiguration:(NSDictionary *)templateConfiguration
 {
     if ([self.delegate respondsToSelector:@selector(loadingViewController:didFinishLoadingWithDependencyManager:)])
     {
-        VTemplateDecorator *templateDecorator = [[VTemplateDecorator alloc] initWithTemplateDictionary:templateConfiguration];
-        if (self.templateConfigurationBlock != nil)
-        {
-            self.templateConfigurationBlock(templateDecorator);
-        }
-        
-        // Add app_time URL to template if it is not there already.
-        // This is done to ship with this tracking feature before the backend is ready to supply it in the template.
-        // TODO: It should be removed once the URL is in the template.
-        [self addAppTimingURL:templateDecorator];
-        
         VDependencyManager *dependencyManager = [[VDependencyManager alloc] initWithParentManager:self.parentDependencyManager
-                                                                                    configuration:templateDecorator.decoratedTemplate
+                                                                                    configuration:templateConfiguration
                                                                 dictionaryOfClassesByTemplateName:nil];
         [self.delegate loadingViewController:self didFinishLoadingWithDependencyManager:dependencyManager];
     }

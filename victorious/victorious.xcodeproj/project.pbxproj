@@ -1080,7 +1080,6 @@
 		A77723E01C348240002351B5 /* PersistenceTests.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A7B0A6431C347C20008B875C /* PersistenceTests.xcdatamodeld */; };
 		A778CB6A1C474BA8007DF0C2 /* NSPredicate+Pagination.swift in Sources */ = {isa = PBXBuildFile; fileRef = A778CB691C474BA8007DF0C2 /* NSPredicate+Pagination.swift */; };
 		A778CB6F1C4753E3007DF0C2 /* MediaAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = A778CB6E1C4753E3007DF0C2 /* MediaAttachment.swift */; };
-		A7792FD71AE8209200E2ECC1 /* VTemplateDecorator.m in Sources */ = {isa = PBXBuildFile; fileRef = A7792FD61AE8209200E2ECC1 /* VTemplateDecorator.m */; };
 		A779511A1B28AB9A00D9DB0A /* VEnvironmentManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A77951181B28AB9A00D9DB0A /* VEnvironmentManager.m */; };
 		A77D87B21CD7D33700D01FA1 /* PurchaseResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = A77D87B11CD7D33700D01FA1 /* PurchaseResponse.json */; };
 		A77D87B61CD7DCC000D01FA1 /* ValidateReceiptRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A77D87B51CD7DCC000D01FA1 /* ValidateReceiptRequestTests.swift */; };
@@ -1213,7 +1212,6 @@
 		A7DCA5001C128A78004E35B4 /* VSequencePermissionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A77B43CF1B2129050016F47B /* VSequencePermissionsTests.m */; };
 		A7DCA5021C128A78004E35B4 /* VStoredLoginTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D378621AF2F368007FF197 /* VStoredLoginTests.m */; };
 		A7DCA5031C128A78004E35B4 /* VStoredPasswordTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0315EACD1BEC529A00645071 /* VStoredPasswordTests.m */; };
-		A7DCA50A1C128A78004E35B4 /* VTemplateDecoratorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7792FDD1AE8497200E2ECC1 /* VTemplateDecoratorTests.m */; };
 		A7DCA50B1C128A78004E35B4 /* VTimerManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F0140BC31AA9468500B95642 /* VTimerManagerTests.m */; };
 		A7DCA50C1C128A78004E35B4 /* VTrackingManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A771D0231A043AE8007CB0A5 /* VTrackingManagerTests.m */; };
 		A7DCA50F1C128A78004E35B4 /* VUploadTaskCreatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE96750019E335060072E87A /* VUploadTaskCreatorTests.m */; };
@@ -3043,9 +3041,6 @@
 		A77723E31C3482C6002351B5 /* 2.0.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 2.0.xcdatamodel; sourceTree = "<group>"; };
 		A778CB691C474BA8007DF0C2 /* NSPredicate+Pagination.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSPredicate+Pagination.swift"; sourceTree = "<group>"; };
 		A778CB6E1C4753E3007DF0C2 /* MediaAttachment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaAttachment.swift; sourceTree = "<group>"; };
-		A7792FD51AE8209200E2ECC1 /* VTemplateDecorator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTemplateDecorator.h; sourceTree = "<group>"; };
-		A7792FD61AE8209200E2ECC1 /* VTemplateDecorator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTemplateDecorator.m; sourceTree = "<group>"; };
-		A7792FDD1AE8497200E2ECC1 /* VTemplateDecoratorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTemplateDecoratorTests.m; sourceTree = "<group>"; };
 		A77951151B28AB9A00D9DB0A /* VEnvironment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEnvironment.h; sourceTree = "<group>"; };
 		A77951161B28AB9A00D9DB0A /* VEnvironment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEnvironment.m; sourceTree = "<group>"; };
 		A77951171B28AB9A00D9DB0A /* VEnvironmentManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEnvironmentManager.h; sourceTree = "<group>"; };
@@ -6577,15 +6572,6 @@
 			path = Operations;
 			sourceTree = "<group>";
 		};
-		A7792FD41AE8207C00E2ECC1 /* Template Utils */ = {
-			isa = PBXGroup;
-			children = (
-				A7792FD51AE8209200E2ECC1 /* VTemplateDecorator.h */,
-				A7792FD61AE8209200E2ECC1 /* VTemplateDecorator.m */,
-			);
-			path = "Template Utils";
-			sourceTree = "<group>";
-		};
 		A77951141B28AB6700D9DB0A /* Environment */ = {
 			isa = PBXGroup;
 			children = (
@@ -7149,7 +7135,6 @@
 				7AB14CAF1CC04380006E674B /* VShowWebContentOperationTests.swift */,
 				A7D378621AF2F368007FF197 /* VStoredLoginTests.m */,
 				0315EACD1BEC529A00645071 /* VStoredPasswordTests.m */,
-				A7792FDD1AE8497200E2ECC1 /* VTemplateDecoratorTests.m */,
 				F0140BC31AA9468500B95642 /* VTimerManagerTests.m */,
 				A771D0231A043AE8007CB0A5 /* VTrackingManagerTests.m */,
 				BE9674FE19E335060072E87A /* VUploadManagerTests.m */,
@@ -7193,7 +7178,6 @@
 				0326BBB719A8181B00D995DA /* Push Notifications */,
 				036AE5EA18FF0C0600A74BDA /* Reachability */,
 				03449FE21A0C7EBB0070EC80 /* Session Timer */,
-				A7792FD41AE8207C00E2ECC1 /* Template Utils */,
 				0314D2DC19B46AF300FA363C /* Theme */,
 				F0140BC21AA9463600B95642 /* Timer */,
 				A790C81C1A01980F00C4F208 /* Tracking */,
@@ -10092,7 +10076,6 @@
 				0EF3775A1D370697006BF786 /* TitleCardViewController.swift in Sources */,
 				B0DDD5571B4DF7F80065E540 /* VPermissionsTrackingHelper.m in Sources */,
 				A6E104D31B56C88D0062392A /* VPublishSaveCollectionViewCell.m in Sources */,
-				A7792FD71AE8209200E2ECC1 /* VTemplateDecorator.m in Sources */,
 				D8D812A11B13CB9300E93B37 /* VModernEnterNameViewController.m in Sources */,
 				BF3CD8801D11B65D00CB7764 /* UserUnupvoteOperation.swift in Sources */,
 				7C4C21F31D5122ED00B85670 /* CoachmarkDismissAnimationController.swift in Sources */,
@@ -10276,7 +10259,6 @@
 				A7D0AD2F1C0D453D0018C63E /* NSData+AESTests.m in Sources */,
 				627FD7E01C5DC10000680B22 /* TestAdLifecycleDelegate.swift in Sources */,
 				A7C192B31C923C1800E5EB00 /* BasePersistentStoreTestCase.swift in Sources */,
-				A7DCA50A1C128A78004E35B4 /* VTemplateDecoratorTests.m in Sources */,
 				67CA1EAE1CB590F10023278F /* InterstitialManagerTests.swift in Sources */,
 				A7DCA4FB1C128A78004E35B4 /* VPasswordValidationTests.m in Sources */,
 				F06FC1ED1C971BD400A014C7 /* ComposerTextViewManagerTests.swift in Sources */,

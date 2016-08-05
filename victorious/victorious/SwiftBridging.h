@@ -128,7 +128,6 @@
 #import "VStoredLogin.h"
 #import "VStoredPassword.h"
 #import "VTFLog.h"
-#import "VTemplateDecorator.h"
 #import "VThemeManager.h"
 #import "VTimerManager.h"
 #import "VTrackingManager.h"
