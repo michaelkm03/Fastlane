@@ -121,7 +121,7 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
         
         if rightNavViewController != nil {
             let avatarView = AvatarView()
-            self.avatarView = AvatarView()
+            self.avatarView = avatarView
             avatarView.user = VCurrentUser.user()
             avatarView.sizeToFit()
             
