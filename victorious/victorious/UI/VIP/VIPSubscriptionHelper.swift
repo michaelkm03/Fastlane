@@ -27,28 +27,29 @@ class VIPSubscriptionHelper {
     }
     
     func subscribe() {
-        do {
-            let subscriptionFetchOperation = try VIPFetchSubscriptionRemoteOperation(urlString: subscriptionFetchURL)
-            delegate?.setIsLoading(true, title: nil)
-            subscriptionFetchOperation.queue() { [weak self] results, error, canceled in
-                guard !canceled else {
-                    self?.delegate?.setIsLoading(false, title: nil)
-                    return
-                }
-                
-                guard
-                    let productIdentifiers = results as? [String]
-                    where error == nil
-                    else {
-                        self?.delegate?.setIsLoading(false, title: nil)
-                        self?.originViewController?.showSubscriptionAlert(for: error)
-                        return
-                }
-                self?.fetchProductsForIdentifiers(productIdentifiers)
-            }
-        } catch let error as NSError {
-            originViewController?.showSubscriptionAlert(for: error)
+        guard let subscriptionFetchOperation = VIPFetchSubscriptionRemoteOperation(urlString: subscriptionFetchURL) else {
+            originViewController?.showSubscriptionAlert(for: VIPFetchSubscriptionRemoteOperation.initError)
+            return
         }
+        
+        delegate?.setIsLoading(true, title: nil)
+        subscriptionFetchOperation.queue() { [weak self] results, error, canceled in
+            guard !canceled else {
+                self?.delegate?.setIsLoading(false, title: nil)
+                return
+            }
+            
+            guard
+                let productIdentifiers = results as? [String]
+                where error == nil
+                else {
+                    self?.delegate?.setIsLoading(false, title: nil)
+                    self?.originViewController?.showSubscriptionAlert(for: error)
+                    return
+            }
+            self?.fetchProductsForIdentifiers(productIdentifiers)
+        }
+    
     }
     
     private func fetchProductsForIdentifiers(identifiers: [String]) {
