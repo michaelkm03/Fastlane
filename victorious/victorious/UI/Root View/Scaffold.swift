@@ -32,13 +32,10 @@ extension Scaffold where Self: UIViewController {
     /// Performs first-launch setup. Expected to be called only once from the first invocation of `viewDidAppear`.
     func performSetup(onReady: (() -> Void)? = nil) {
         let pushNotificationOperation = RequestPushNotificationPermissionOperation()
+        let tutorialOperation = ShowTutorialsOperation(originViewController: self, dependencyManager: dependencyManager)
+        pushNotificationOperation.addDependency(tutorialOperation)
         
-        if dependencyManager.festivalIsEnabled() {
-            let tutorialOperation = ShowTutorialsOperation(originViewController: self, dependencyManager: dependencyManager)
-            tutorialOperation.queue()
-            pushNotificationOperation.addDependency(tutorialOperation)
-        }
-        
+        tutorialOperation.queue()
         pushNotificationOperation.queue { error, cancelled in
             onReady?()
         }

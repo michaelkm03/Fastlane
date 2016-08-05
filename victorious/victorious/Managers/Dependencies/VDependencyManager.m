@@ -557,13 +557,6 @@ NSString * const VDependencyManagerNativeWorkspaceKey = @"nativeWorkspace";
     });
 }
 
-#pragma mark - Feature toggle flags
-
-- (BOOL)festivalIsEnabled
-{
-    return [[self numberForKey:@"festivalEnabled"] boolValue];
-}
-
 #pragma mark - Dependency getter primatives
 
 - (id)templateValueOfType:(Class)expectedType forKey:(NSString *)key
