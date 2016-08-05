@@ -220,7 +220,6 @@
 		0372BE791C84FF02004950CF /* AccountCreateRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F571BE40F3200EE74FD /* AccountCreateRequest.swift */; };
 		0372BE7A1C84FF02004950CF /* AccountUpdateRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0300AA5E1BF181A2000A121D /* AccountUpdateRequest.swift */; };
 		0372BE7B1C84FF02004950CF /* AccountUpdateRequestBodyWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEACE1BFFFF3800E8A26F /* AccountUpdateRequestBodyWriter.swift */; };
-		0372BE7C1C84FF02004950CF /* AcknowledgeAlertRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79174B3D1BFABA3B0087B054 /* AcknowledgeAlertRequest.swift */; };
 		0372BE7D1C84FF02004950CF /* ApplicationTrackingRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BF276C1C5AE50A0064A90B /* ApplicationTrackingRequest.swift */; };
 		0372BE7E1C84FF02004950CF /* Bool+Initializers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3348B201BF53EEE004183A1 /* Bool+Initializers.swift */; };
 		0372BE861C84FF02004950CF /* CreateAlertRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7039CE01C24867C0023DE6F /* CreateAlertRequest.swift */; };
@@ -638,7 +637,6 @@
 		79070A2D1CFE88590049CFC3 /* AppVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79070A2C1CFE88590049CFC3 /* AppVersion.swift */; };
 		79070A2F1CFE92B50049CFC3 /* AppVersionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79070A2E1CFE92B50049CFC3 /* AppVersionTests.swift */; };
 		79174B3C1BFAB9900087B054 /* AcknowledgeAlertRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79174B3B1BFAB9900087B054 /* AcknowledgeAlertRequestTests.swift */; };
-		79174B3E1BFABA3B0087B054 /* AcknowledgeAlertRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79174B3D1BFABA3B0087B054 /* AcknowledgeAlertRequest.swift */; };
 		7925A5091BCD9E2300BCA649 /* UIColor+Victorious.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7925A5081BCD9E2300BCA649 /* UIColor+Victorious.swift */; };
 		7925A50E1BCDC20100BCA649 /* VCrashlyticsLogTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = 7925A50D1BCDC20100BCA649 /* VCrashlyticsLogTracking.m */; };
 		7933BB611C3D945D00EFC374 /* UserSearchOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7933BB601C3D945D00EFC374 /* UserSearchOperationTests.swift */; };
@@ -729,6 +727,8 @@
 		7AC194631D2DD2FC001B15B8 /* String+InitialsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC194621D2DD2FC001B15B8 /* String+InitialsTests.swift */; };
 		7AC1B9FE1D3FF7CF00FA3CF6 /* CGPoint+Initializers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC1B9FD1D3FF7CF00FA3CF6 /* CGPoint+Initializers.swift */; };
 		7AC1BA001D3FFD9100FA3CF6 /* CGPoint+InitializersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC1B9FF1D3FFD9100FA3CF6 /* CGPoint+InitializersTests.swift */; };
+		7ADBB7AE1D5512EF00ED3CCE /* AcknowledgeAlertRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADBB7AD1D5512EF00ED3CCE /* AcknowledgeAlertRequest.swift */; };
+		7ADBB7B01D55130E00ED3CCE /* AlertAcknowledgeOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADBB7AF1D55130E00ED3CCE /* AlertAcknowledgeOperation.swift */; };
 		7AE363A11CC864B600F851E9 /* SideNavScaffoldViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE363A01CC864B600F851E9 /* SideNavScaffoldViewController.swift */; };
 		7AE363A51CC98F5D00F851E9 /* RightNavViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE363A41CC98F5D00F851E9 /* RightNavViewController.swift */; };
 		7AE363A71CC9BA9400F851E9 /* Scaffold.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE363A61CC9BA9400F851E9 /* Scaffold.swift */; };
@@ -875,7 +875,6 @@
 		A72A03281C8F55680067ADBD /* NSURL+OptionalString.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72A03271C8F55680067ADBD /* NSURL+OptionalString.swift */; };
 		A72C85F91C977FF500E97D4F /* AccountCreateOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85531C977FF500E97D4F /* AccountCreateOperation.swift */; };
 		A72C85FA1C977FF500E97D4F /* AccountUpdateOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85541C977FF500E97D4F /* AccountUpdateOperation.swift */; };
-		A72C85FB1C977FF500E97D4F /* AlertAcknowledgeOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85551C977FF500E97D4F /* AlertAcknowledgeOperation.swift */; };
 		A72C85FC1C977FF500E97D4F /* AlertCreateOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85561C977FF500E97D4F /* AlertCreateOperation.swift */; };
 		A72C86091C977FF500E97D4F /* DeviceExperimentsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85631C977FF500E97D4F /* DeviceExperimentsOperation.swift */; };
 		A72C860A1C977FF500E97D4F /* DevicePreferencesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85641C977FF500E97D4F /* DevicePreferencesOperation.swift */; };
@@ -1002,23 +1001,10 @@
 		A75ECFFE1AB0B6B400C35063 /* VCropOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ECFEA1AB0B6B400C35063 /* VCropOverlayView.m */; };
 		A75ECFFF1AB0B6B400C35063 /* VCropTool.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ECFEC1AB0B6B400C35063 /* VCropTool.m */; };
 		A75ED0001AB0B6B400C35063 /* VCropToolViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ECFEE1AB0B6B400C35063 /* VCropToolViewController.m */; };
-		A75ED0011AB0B6B400C35063 /* VCapitalizingTextStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ECFF21AB0B6B400C35063 /* VCapitalizingTextStorage.m */; };
-		A75ED0021AB0B6B400C35063 /* VTextTool.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ECFF41AB0B6B400C35063 /* VTextTool.m */; };
-		A75ED0031AB0B6B400C35063 /* VTextToolViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ECFF61AB0B6B400C35063 /* VTextToolViewController.m */; };
-		A75ED0041AB0B6B400C35063 /* VTextTypeTool.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ECFF81AB0B6B400C35063 /* VTextTypeTool.m */; };
 		A75ED00C1AB0B6D100C35063 /* VFilterTool.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0091AB0B6D100C35063 /* VFilterTool.m */; };
 		A75ED00D1AB0B6D100C35063 /* VFilterTypeTool.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED00B1AB0B6D100C35063 /* VFilterTypeTool.m */; };
 		A75ED08D1AB77C1800C35063 /* VBasicToolPickerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A75ED08C1AB77C1800C35063 /* VBasicToolPickerCell.xib */; };
 		A75ED0901AB77E3300C35063 /* VFilterPickerDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED08F1AB77E3300C35063 /* VFilterPickerDataSource.m */; };
-		A75ED0B71AB78C7400C35063 /* VHashtagOptionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0A91AB78C7400C35063 /* VHashtagOptionCell.m */; };
-		A75ED0B81AB78C7400C35063 /* VHashtagOptionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A75ED0AA1AB78C7400C35063 /* VHashtagOptionCell.xib */; };
-		A75ED0BA1AB78C7400C35063 /* VHashtagPickerDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0AE1AB78C7400C35063 /* VHashtagPickerDataSource.m */; };
-		A75ED0BE1AB7927A00C35063 /* VTextTypePickerDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0BD1AB7927A00C35063 /* VTextTypePickerDataSource.m */; };
-		A75ED0C71AB7971400C35063 /* VColorOptionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0C51AB7971400C35063 /* VColorOptionCell.m */; };
-		A75ED0C81AB7971400C35063 /* VColorOptionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A75ED0C61AB7971400C35063 /* VColorOptionCell.xib */; };
-		A75ED0CB1AB798F100C35063 /* VColorPickerDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0CA1AB798F100C35063 /* VColorPickerDataSource.m */; };
-		A75ED0DE1AB7BC3E00C35063 /* VHashtagType.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0DD1AB7BC3E00C35063 /* VHashtagType.m */; };
-		A75ED0E11AB7BEFC00C35063 /* VColorType.m in Sources */ = {isa = PBXBuildFile; fileRef = A75ED0E01AB7BEFC00C35063 /* VColorType.m */; };
 		A763635B1C5031E2000887C4 /* PaginatedObjectType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A763635A1C5031E2000887C4 /* PaginatedObjectType.swift */; };
 		A76711E81C1B4F47006568DF /* DefaultTimingTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76711E51C1B4F47006568DF /* DefaultTimingTracker.swift */; };
 		A76711EA1C1B5067006568DF /* VAppTimingEventType.m in Sources */ = {isa = PBXBuildFile; fileRef = A76711E61C1B4F47006568DF /* VAppTimingEventType.m */; };
@@ -2363,7 +2349,6 @@
 		79070A2C1CFE88590049CFC3 /* AppVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppVersion.swift; sourceTree = "<group>"; };
 		79070A2E1CFE92B50049CFC3 /* AppVersionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppVersionTests.swift; sourceTree = "<group>"; };
 		79174B3B1BFAB9900087B054 /* AcknowledgeAlertRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AcknowledgeAlertRequestTests.swift; sourceTree = "<group>"; };
-		79174B3D1BFABA3B0087B054 /* AcknowledgeAlertRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AcknowledgeAlertRequest.swift; sourceTree = "<group>"; };
 		7925A5081BCD9E2300BCA649 /* UIColor+Victorious.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Victorious.swift"; sourceTree = "<group>"; };
 		7925A50C1BCDC20100BCA649 /* VCrashlyticsLogTracking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCrashlyticsLogTracking.h; sourceTree = "<group>"; };
 		7925A50D1BCDC20100BCA649 /* VCrashlyticsLogTracking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCrashlyticsLogTracking.m; sourceTree = "<group>"; };
@@ -2461,6 +2446,8 @@
 		7AC194621D2DD2FC001B15B8 /* String+InitialsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+InitialsTests.swift"; sourceTree = "<group>"; };
 		7AC1B9FD1D3FF7CF00FA3CF6 /* CGPoint+Initializers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPoint+Initializers.swift"; sourceTree = "<group>"; };
 		7AC1B9FF1D3FFD9100FA3CF6 /* CGPoint+InitializersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPoint+InitializersTests.swift"; sourceTree = "<group>"; };
+		7ADBB7AD1D5512EF00ED3CCE /* AcknowledgeAlertRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AcknowledgeAlertRequest.swift; sourceTree = "<group>"; };
+		7ADBB7AF1D55130E00ED3CCE /* AlertAcknowledgeOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertAcknowledgeOperation.swift; sourceTree = "<group>"; };
 		7AE363A01CC864B600F851E9 /* SideNavScaffoldViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideNavScaffoldViewController.swift; sourceTree = "<group>"; };
 		7AE363A41CC98F5D00F851E9 /* RightNavViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RightNavViewController.swift; sourceTree = "<group>"; };
 		7AE363A61CC9BA9400F851E9 /* Scaffold.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scaffold.swift; sourceTree = "<group>"; };
@@ -2690,7 +2677,6 @@
 		A72A03271C8F55680067ADBD /* NSURL+OptionalString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSURL+OptionalString.swift"; sourceTree = "<group>"; };
 		A72C85531C977FF500E97D4F /* AccountCreateOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountCreateOperation.swift; sourceTree = "<group>"; };
 		A72C85541C977FF500E97D4F /* AccountUpdateOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountUpdateOperation.swift; sourceTree = "<group>"; };
-		A72C85551C977FF500E97D4F /* AlertAcknowledgeOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertAcknowledgeOperation.swift; sourceTree = "<group>"; };
 		A72C85561C977FF500E97D4F /* AlertCreateOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertCreateOperation.swift; sourceTree = "<group>"; };
 		A72C85631C977FF500E97D4F /* DeviceExperimentsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceExperimentsOperation.swift; sourceTree = "<group>"; };
 		A72C85641C977FF500E97D4F /* DevicePreferencesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DevicePreferencesOperation.swift; sourceTree = "<group>"; };
@@ -2832,14 +2818,6 @@
 		A75ECFEC1AB0B6B400C35063 /* VCropTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCropTool.m; sourceTree = "<group>"; };
 		A75ECFED1AB0B6B400C35063 /* VCropToolViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCropToolViewController.h; sourceTree = "<group>"; };
 		A75ECFEE1AB0B6B400C35063 /* VCropToolViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCropToolViewController.m; sourceTree = "<group>"; };
-		A75ECFF11AB0B6B400C35063 /* VCapitalizingTextStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCapitalizingTextStorage.h; sourceTree = "<group>"; };
-		A75ECFF21AB0B6B400C35063 /* VCapitalizingTextStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCapitalizingTextStorage.m; sourceTree = "<group>"; };
-		A75ECFF31AB0B6B400C35063 /* VTextTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextTool.h; sourceTree = "<group>"; };
-		A75ECFF41AB0B6B400C35063 /* VTextTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextTool.m; sourceTree = "<group>"; };
-		A75ECFF51AB0B6B400C35063 /* VTextToolViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextToolViewController.h; sourceTree = "<group>"; };
-		A75ECFF61AB0B6B400C35063 /* VTextToolViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextToolViewController.m; sourceTree = "<group>"; };
-		A75ECFF71AB0B6B400C35063 /* VTextTypeTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextTypeTool.h; sourceTree = "<group>"; };
-		A75ECFF81AB0B6B400C35063 /* VTextTypeTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextTypeTool.m; sourceTree = "<group>"; };
 		A75ED0081AB0B6D100C35063 /* VFilterTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFilterTool.h; sourceTree = "<group>"; };
 		A75ED0091AB0B6D100C35063 /* VFilterTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFilterTool.m; sourceTree = "<group>"; };
 		A75ED00A1AB0B6D100C35063 /* VFilterTypeTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFilterTypeTool.h; sourceTree = "<group>"; };
@@ -2847,22 +2825,6 @@
 		A75ED08C1AB77C1800C35063 /* VBasicToolPickerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VBasicToolPickerCell.xib; sourceTree = "<group>"; };
 		A75ED08E1AB77E3300C35063 /* VFilterPickerDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VFilterPickerDataSource.h; sourceTree = "<group>"; };
 		A75ED08F1AB77E3300C35063 /* VFilterPickerDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VFilterPickerDataSource.m; sourceTree = "<group>"; };
-		A75ED0A81AB78C7400C35063 /* VHashtagOptionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashtagOptionCell.h; sourceTree = "<group>"; };
-		A75ED0A91AB78C7400C35063 /* VHashtagOptionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashtagOptionCell.m; sourceTree = "<group>"; };
-		A75ED0AA1AB78C7400C35063 /* VHashtagOptionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VHashtagOptionCell.xib; sourceTree = "<group>"; };
-		A75ED0AD1AB78C7400C35063 /* VHashtagPickerDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashtagPickerDataSource.h; sourceTree = "<group>"; };
-		A75ED0AE1AB78C7400C35063 /* VHashtagPickerDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashtagPickerDataSource.m; sourceTree = "<group>"; };
-		A75ED0BC1AB7927A00C35063 /* VTextTypePickerDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTextTypePickerDataSource.h; sourceTree = "<group>"; };
-		A75ED0BD1AB7927A00C35063 /* VTextTypePickerDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTextTypePickerDataSource.m; sourceTree = "<group>"; };
-		A75ED0C41AB7971400C35063 /* VColorOptionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VColorOptionCell.h; sourceTree = "<group>"; };
-		A75ED0C51AB7971400C35063 /* VColorOptionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VColorOptionCell.m; sourceTree = "<group>"; };
-		A75ED0C61AB7971400C35063 /* VColorOptionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VColorOptionCell.xib; sourceTree = "<group>"; };
-		A75ED0C91AB798F100C35063 /* VColorPickerDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VColorPickerDataSource.h; sourceTree = "<group>"; };
-		A75ED0CA1AB798F100C35063 /* VColorPickerDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VColorPickerDataSource.m; sourceTree = "<group>"; };
-		A75ED0DC1AB7BC3E00C35063 /* VHashtagType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VHashtagType.h; sourceTree = "<group>"; };
-		A75ED0DD1AB7BC3E00C35063 /* VHashtagType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VHashtagType.m; sourceTree = "<group>"; };
-		A75ED0DF1AB7BEFC00C35063 /* VColorType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VColorType.h; sourceTree = "<group>"; };
-		A75ED0E01AB7BEFC00C35063 /* VColorType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VColorType.m; sourceTree = "<group>"; };
 		A75FAEFD19E8AB2C00EB87C1 /* VDummyModels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDummyModels.h; sourceTree = "<group>"; };
 		A75FAEFE19E8AB2C00EB87C1 /* VDummyModels.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VDummyModels.m; sourceTree = "<group>"; };
 		A763635A1C5031E2000887C4 /* PaginatedObjectType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaginatedObjectType.swift; sourceTree = "<group>"; };
@@ -3992,7 +3954,7 @@
 				03314F571BE40F3200EE74FD /* AccountCreateRequest.swift */,
 				0300AA5E1BF181A2000A121D /* AccountUpdateRequest.swift */,
 				A76AEACE1BFFFF3800E8A26F /* AccountUpdateRequestBodyWriter.swift */,
-				79174B3D1BFABA3B0087B054 /* AcknowledgeAlertRequest.swift */,
+				7ADBB7AD1D5512EF00ED3CCE /* AcknowledgeAlertRequest.swift */,
 				7A52F02F1CFF8B9600AE7F3F /* APIPath.swift */,
 				03BF276C1C5AE50A0064A90B /* ApplicationTrackingRequest.swift */,
 				C3348B201BF53EEE004183A1 /* Bool+Initializers.swift */,
@@ -5821,7 +5783,7 @@
 			children = (
 				A72C85531C977FF500E97D4F /* AccountCreateOperation.swift */,
 				A72C85541C977FF500E97D4F /* AccountUpdateOperation.swift */,
-				A72C85551C977FF500E97D4F /* AlertAcknowledgeOperation.swift */,
+				7ADBB7AF1D55130E00ED3CCE /* AlertAcknowledgeOperation.swift */,
 				A72C85561C977FF500E97D4F /* AlertCreateOperation.swift */,
 				F069E93F1D46BD9900F91CE6 /* ContentFindOrCreateOperation.swift */,
 				BFE25A441D0B7D8500F55653 /* ContentDeleteOperation.swift */,
@@ -6158,23 +6120,6 @@
 			path = "Image Crop Tool";
 			sourceTree = "<group>";
 		};
-		A75ECFF01AB0B6B400C35063 /* Image Text Tools */ = {
-			isa = PBXGroup;
-			children = (
-				A75ECFF11AB0B6B400C35063 /* VCapitalizingTextStorage.h */,
-				A75ECFF21AB0B6B400C35063 /* VCapitalizingTextStorage.m */,
-				A75ECFF31AB0B6B400C35063 /* VTextTool.h */,
-				A75ECFF41AB0B6B400C35063 /* VTextTool.m */,
-				A75ECFF51AB0B6B400C35063 /* VTextToolViewController.h */,
-				A75ECFF61AB0B6B400C35063 /* VTextToolViewController.m */,
-				A75ED0BC1AB7927A00C35063 /* VTextTypePickerDataSource.h */,
-				A75ED0BD1AB7927A00C35063 /* VTextTypePickerDataSource.m */,
-				A75ECFF71AB0B6B400C35063 /* VTextTypeTool.h */,
-				A75ECFF81AB0B6B400C35063 /* VTextTypeTool.m */,
-			);
-			path = "Image Text Tools";
-			sourceTree = "<group>";
-		};
 		A75ED0071AB0B6D100C35063 /* Image Fiter Tools */ = {
 			isa = PBXGroup;
 			children = (
@@ -6187,34 +6132,6 @@
 				A75ED00B1AB0B6D100C35063 /* VFilterTypeTool.m */,
 			);
 			path = "Image Fiter Tools";
-			sourceTree = "<group>";
-		};
-		A75ED09A1AB78C7400C35063 /* Text Color Tools */ = {
-			isa = PBXGroup;
-			children = (
-				A75ED0C41AB7971400C35063 /* VColorOptionCell.h */,
-				A75ED0C51AB7971400C35063 /* VColorOptionCell.m */,
-				A75ED0C61AB7971400C35063 /* VColorOptionCell.xib */,
-				A75ED0C91AB798F100C35063 /* VColorPickerDataSource.h */,
-				A75ED0CA1AB798F100C35063 /* VColorPickerDataSource.m */,
-				A75ED0DF1AB7BEFC00C35063 /* VColorType.h */,
-				A75ED0E01AB7BEFC00C35063 /* VColorType.m */,
-			);
-			path = "Text Color Tools";
-			sourceTree = "<group>";
-		};
-		A75ED0A71AB78C7400C35063 /* Text Hashtag Tools */ = {
-			isa = PBXGroup;
-			children = (
-				A75ED0A81AB78C7400C35063 /* VHashtagOptionCell.h */,
-				A75ED0A91AB78C7400C35063 /* VHashtagOptionCell.m */,
-				A75ED0AA1AB78C7400C35063 /* VHashtagOptionCell.xib */,
-				A75ED0AD1AB78C7400C35063 /* VHashtagPickerDataSource.h */,
-				A75ED0AE1AB78C7400C35063 /* VHashtagPickerDataSource.m */,
-				A75ED0DC1AB7BC3E00C35063 /* VHashtagType.h */,
-				A75ED0DD1AB7BC3E00C35063 /* VHashtagType.m */,
-			);
-			path = "Text Hashtag Tools";
 			sourceTree = "<group>";
 		};
 		A75FAEFC19E8AB2C00EB87C1 /* DummyModels */ = {
@@ -7279,9 +7196,6 @@
 			children = (
 				A75ECFE81AB0B6B400C35063 /* Image Crop Tool */,
 				A75ED0071AB0B6D100C35063 /* Image Fiter Tools */,
-				A75ECFF01AB0B6B400C35063 /* Image Text Tools */,
-				A75ED09A1AB78C7400C35063 /* Text Color Tools */,
-				A75ED0A71AB78C7400C35063 /* Text Hashtag Tools */,
 				D8D946011A2EBC120089D271 /* VWorkspaceTool.h */,
 			);
 			path = Tools;
@@ -8034,7 +7948,6 @@
 				C35265FB1B28EA09001F093F /* CreateSheet.storyboard in Resources */,
 				036F386B1A0C4DEA0014DF66 /* DroidSans-Bold.ttf in Resources */,
 				03F6E2671AB79E090017826E /* Workspace.storyboard in Resources */,
-				A75ED0B81AB78C7400C35063 /* VHashtagOptionCell.xib in Resources */,
 				036F387B1A0C4DEA0014DF66 /* MavenPro-Regular.ttf in Resources */,
 				0326C36019F8226200DBC341 /* Images.xcassets in Resources */,
 				037A643019F727AB0001C90B /* VVideoPlayerToolbarView.xib in Resources */,
@@ -8074,7 +7987,6 @@
 				036F38801A0C4DEA0014DF66 /* OpenSans-Bold.ttf in Resources */,
 				036F38761A0C4DEA0014DF66 /* Kreon-Regular.ttf in Resources */,
 				036F38731A0C4DEA0014DF66 /* Jura-DemiBold.ttf in Resources */,
-				A75ED0C81AB7971400C35063 /* VColorOptionCell.xib in Resources */,
 				036F38741A0C4DEA0014DF66 /* Jura-Medium.ttf in Resources */,
 				D8D812AD1B14EA1800E93B37 /* VModernResetPasswordViewController.storyboard in Resources */,
 				036F38681A0C4DEA0014DF66 /* Bitter-Regular.ttf in Resources */,
@@ -8547,7 +8459,6 @@
 				A7A583511C3B00CC0088A08A /* HashtagSearchRequest.swift in Sources */,
 				C3E7C0F71BF3F2F800AFE545 /* UnreadNotificationsCountRequest.swift in Sources */,
 				A7D9204D1C0636CC002A6503 /* APIError.swift in Sources */,
-				79174B3E1BFABA3B0087B054 /* AcknowledgeAlertRequest.swift in Sources */,
 				7A85D9CD1D1075DB00535EF3 /* PreviewImageContainer.swift in Sources */,
 				BF20227F1D00B9A4006B59C5 /* ContentUpvoteRequest.swift in Sources */,
 				C32D8BE61BF2E19100AB5085 /* ImageSearchResult.swift in Sources */,
@@ -8601,6 +8512,7 @@
 				5A8F46331C8AA2BA00629D82 /* ValidateReceiptRequest.swift in Sources */,
 				67D3DBAE1CCA95AB00D9D374 /* CreatorListRequest.swift in Sources */,
 				C32D8BD81BF2D45500AB5085 /* FollowHashtagRequest.swift in Sources */,
+				7ADBB7AE1D5512EF00ED3CCE /* AcknowledgeAlertRequest.swift in Sources */,
 				A7559A7A1CCFD93B00C37349 /* VIPStatus.swift in Sources */,
 				03314F661BE40F3200EE74FD /* NSMutableURLRequest+VictoriousIOSSDK.swift in Sources */,
 				7A85D9CF1D107D1D00535EF3 /* CGSize+Geometry.swift in Sources */,
@@ -8917,7 +8829,6 @@
 				0372BEB31C84FF02004950CF /* RequestBodyWriterType.swift in Sources */,
 				0372BE9F1C84FF02004950CF /* MediaUploadCreateRequest.swift in Sources */,
 				0372BEA71C84FF02004950CF /* NSURL+MimeType.swift in Sources */,
-				0372BE7C1C84FF02004950CF /* AcknowledgeAlertRequest.swift in Sources */,
 				0372BEF01C84FF19004950CF /* VMultipartFormDataWriter.m in Sources */,
 				0372BEEC1C84FF19004950CF /* UnreadMessageCountRequest.swift in Sources */,
 				0372BE7A1C84FF02004950CF /* AccountUpdateRequest.swift in Sources */,
@@ -9039,7 +8950,6 @@
 				A706FE221C23625400C2CBFF /* NSManagedObjectContext+Perform.swift in Sources */,
 				67BECC4D1CC9845900DFEE4B /* ListMenuCreatorDataSource.swift in Sources */,
 				F0BD811F1C99D5930062D079 /* ComposerAttachmentTabBarDelegate.swift in Sources */,
-				A75ED0021AB0B6B400C35063 /* VTextTool.m in Sources */,
 				A721E9401B572454000B7901 /* NSNotificationCenter+VNotificationDebugger.m in Sources */,
 				A6DAEB5F1B4C8DCA00935EA0 /* VVideoCreationFlowController.m in Sources */,
 				A763635B1C5031E2000887C4 /* PaginatedObjectType.swift in Sources */,
@@ -9118,7 +9028,6 @@
 				A73C3EC01C45890E00A8452C /* MediaSearchViewController+Layout.swift in Sources */,
 				D8C1FD081A69C2E40072892B /* VKeyboardNotificationManager.m in Sources */,
 				A7BA22001BA75A9A00F2CD37 /* UIView+Nib.swift in Sources */,
-				A75ED0011AB0B6B400C35063 /* VCapitalizingTextStorage.m in Sources */,
 				A76711FB1C1B7DD7006568DF /* TimingTracker.swift in Sources */,
 				A65318A21B59B35900389EA9 /* VCreationFlowAnimator.m in Sources */,
 				670A3B1C1CA9F5AF004C5F57 /* InterstitialAlertViewController.swift in Sources */,
@@ -9131,7 +9040,6 @@
 				A631F09B1B4DB52700CC6C80 /* VAlternateCaptureOption.m in Sources */,
 				D836884419C3718A00070F22 /* VBaseSupplementaryView.m in Sources */,
 				A721E93D1B572454000B7901 /* NSIndexSet+Map.m in Sources */,
-				A72C85FB1C977FF500E97D4F /* AlertAcknowledgeOperation.swift in Sources */,
 				F06FC1FC1C97437900A014C7 /* ComposerTextViewManagerDelegate.swift in Sources */,
 				BF3CD8961D11EEDD00CB7764 /* UserBlockOperation.swift in Sources */,
 				BF2022771D00B97E006B59C5 /* ContentUpvoteToggleOperation.swift in Sources */,
@@ -9139,7 +9047,6 @@
 				A7EECAD51A377FA000A8BAE1 /* VPurchaseSettingsViewController.m in Sources */,
 				A72C86091C977FF500E97D4F /* DeviceExperimentsOperation.swift in Sources */,
 				7C894B8A1D39A4C500E124C8 /* CoachmarkManager.swift in Sources */,
-				A75ED0C71AB7971400C35063 /* VColorOptionCell.m in Sources */,
 				A73C3EB91C45890E00A8452C /* MediaSearchDataSource.swift in Sources */,
 				A721E95E1B572454000B7901 /* UIView+RecursiveSearch.swift in Sources */,
 				BF79C7711C98D3D100222C8A /* LoadingCancellableView.swift in Sources */,
@@ -9170,7 +9077,6 @@
 				D876E1FF1A9DA6CB002CAA29 /* VSolidColorBackground.m in Sources */,
 				C39413B51B165F7800579A8E /* VPermissionAlertTextView.m in Sources */,
 				A6D51BE71B4F33D700703AB0 /* VLibraryAuthorizationCell.m in Sources */,
-				A75ED0B71AB78C7400C35063 /* VHashtagOptionCell.m in Sources */,
 				A75ECFFF1AB0B6B400C35063 /* VCropTool.m in Sources */,
 				A72C868E1C977FF600E97D4F /* RemoteFetcherOperation.swift in Sources */,
 				037D2D5F1A1A6D7400947A22 /* VDependencyManager+VNavigationMenuItem.m in Sources */,
@@ -9221,6 +9127,7 @@
 				F050D3461CAEF69D007A05ED /* NSPredicate+MediaType.swift in Sources */,
 				A74783DA1BA09AA3005654A6 /* VideoToolbarView.swift in Sources */,
 				F009BD131CE6855400F81CAA /* WebSocketMessageDetailViewController.swift in Sources */,
+				7ADBB7B01D55130E00ED3CCE /* AlertAcknowledgeOperation.swift in Sources */,
 				0E6628751CCEE5DF0049ECF8 /* StageDataSource.swift in Sources */,
 				A70564C319E781EE004A8387 /* VNoContentTableViewCell.m in Sources */,
 				A601FB591B43657F0050536C /* VMediaAttachmentPresenter.m in Sources */,
@@ -9238,7 +9145,6 @@
 				C30E3F9F1BE7E02500184F57 /* VAutomation.m in Sources */,
 				A72C86101C977FF500E97D4F /* FollowHashtagOperation.swift in Sources */,
 				6791505D1CD4201000225151 /* TutorialViewController.swift in Sources */,
-				A75ED0CB1AB798F100C35063 /* VColorPickerDataSource.m in Sources */,
 				D8D812B01B14EAA200E93B37 /* VModernResetTokenViewController.m in Sources */,
 				C35266071B2A0907001F093F /* VCreateSheetPresentationController.m in Sources */,
 				7A87376E1CB5C66900D2FF74 /* NotificationCell.swift in Sources */,
@@ -9272,7 +9178,6 @@
 				BF2AE2BE1CD280CB00A9967A /* ConfigurableGridStreamHeaderView.swift in Sources */,
 				BF2D25641CED3A3A0001A2AF /* VContentMediaAsset.swift in Sources */,
 				799B89D11D469E02006743FE /* EditProfileDataSource.swift in Sources */,
-				A75ED0E11AB7BEFC00C35063 /* VColorType.m in Sources */,
 				F027D8DF1B93A6FB00BC6322 /* UIEdgeInsets+Addition.swift in Sources */,
 				037FCF181A8DAF0E00E8ABFC /* VBarButton.m in Sources */,
 				A7A2DFFF1A37813D00F8C705 /* VPurchaseActionCell.m in Sources */,
@@ -9281,14 +9186,12 @@
 				F07DDE481CFCF33400C7FC8D /* ImageOnColorButton.swift in Sources */,
 				A66D76841B5B2E23004765EA /* VLibraryFolderControl.m in Sources */,
 				F0140BC11AA93AEB00B95642 /* VTimerManager.m in Sources */,
-				A75ED0031AB0B6B400C35063 /* VTextToolViewController.m in Sources */,
 				F00BBABF1CC995E800CBDB94 /* UIControl+NavigationBarEmbedding.swift in Sources */,
 				BFE31A821CD2969200585155 /* CloseUpView.swift in Sources */,
 				67DDA81F1D46CA2500C55494 /* NSURL+CustomScheme.swift in Sources */,
 				6780BD621D248392003F8141 /* DeeplinkDestination.swift in Sources */,
 				A75ECFFE1AB0B6B400C35063 /* VCropOverlayView.m in Sources */,
 				A7F0C8711CB3253C0007178A /* UIViewController+RootPresentationTarget.swift in Sources */,
-				A75ED0DE1AB7BC3E00C35063 /* VHashtagType.m in Sources */,
 				A7ECC1D71AD6178F0003E00A /* VBaseWorkspaceViewController.m in Sources */,
 				A6DAEB621B4C8DF900935EA0 /* VGIFCreationFlowController.m in Sources */,
 				0362656B1BAB99ED00C34C73 /* FacebookHelper.swift in Sources */,
@@ -9495,14 +9398,12 @@
 				D8DCE5901ADD835B0004B782 /* VFlexBar.m in Sources */,
 				A72C85FC1C977FF500E97D4F /* AlertCreateOperation.swift in Sources */,
 				A7F843731BFD5A0B004C3D55 /* NSManagedObjectContext+Generics.swift in Sources */,
-				A75ED0041AB0B6B400C35063 /* VTextTypeTool.m in Sources */,
 				C3D4E83F1BBDCF39000AD70A /* UIFont+Layout.swift in Sources */,
 				039ED29E19C908F400305987 /* VVideoDownloadProgressIndicatorView.m in Sources */,
 				A75ED00C1AB0B6D100C35063 /* VFilterTool.m in Sources */,
 				F07DDE491CFCF33400C7FC8D /* ImageOnImageButton.swift in Sources */,
 				7A3286061D356E10006F1FEB /* ContentPublisher.swift in Sources */,
 				7A63CD421D5427F8006A48E4 /* VSocialLoginErrors.m in Sources */,
-				A75ED0BA1AB78C7400C35063 /* VHashtagPickerDataSource.m in Sources */,
 				BF7AF9C61D22F9AF00539D90 /* ErrorStateView.swift in Sources */,
 				67BECC4B1CC9840C00DFEE4B /* ListMenuCreatorCollectionViewCell.swift in Sources */,
 				A72C86851C977FF600E97D4F /* AlertsRequestDecorator.swift in Sources */,
@@ -9617,7 +9518,6 @@
 				A790C8291A01980F00C4F208 /* VTrackingEvent.m in Sources */,
 				79B718FF1C56E93100578012 /* NSManagedObject+Deletable.swift in Sources */,
 				F00DEB9E1CC1863000C5C9EA /* CameraNextBarButtonItem.swift in Sources */,
-				A75ED0BE1AB7927A00C35063 /* VTextTypePickerDataSource.m in Sources */,
 				0EF3775A1D370697006BF786 /* TitleCardViewController.swift in Sources */,
 				B0DDD5571B4DF7F80065E540 /* VPermissionsTrackingHelper.m in Sources */,
 				D8D812A11B13CB9300E93B37 /* VModernEnterNameViewController.m in Sources */,

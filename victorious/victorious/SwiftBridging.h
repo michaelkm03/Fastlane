@@ -53,7 +53,6 @@
 #import "VCellWithProfileDelegate.h"
 #import "VChangePasswordViewController.h"
 #import "VCollectionViewStreamFocusHelper.h"
-#import "VColorType.h"
 #import "VCompatibility.h"
 #import "VCreateSheetViewController.h"
 #import "VCreationFlowPresenter.h"
