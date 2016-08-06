@@ -322,7 +322,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     }
 
     private func updateViewsForNewVisibleKeyboardHeight(visibleKeyboardHeight: CGFloat, animationOptions: UIViewAnimationOptions, animationDuration: Double) {
-        guard self.visibleKeyboardHeight != visibleKeyboardHeight else {
+        guard self.visibleKeyboardHeight != visibleKeyboardHeight && composerIsVisible else {
             return
         }
         self.visibleKeyboardHeight = visibleKeyboardHeight

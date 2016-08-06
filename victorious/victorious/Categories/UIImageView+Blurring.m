@@ -199,6 +199,7 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
     if (cachedImage)
     {
         self.image = cachedImage;
+        callbackBlock(); 
         return;
     }
     

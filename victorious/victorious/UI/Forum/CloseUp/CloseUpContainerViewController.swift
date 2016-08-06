@@ -29,6 +29,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     }
     private let contentID: Content.ID
     private var firstPresentation = true
+    private let closeUpView: CloseUpView
     
     private lazy var shareButton: UIBarButtonItem = {
         return UIBarButtonItem(
@@ -63,7 +64,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     init(dependencyManager: VDependencyManager, contentID: String, content: ContentModel? = nil, streamAPIPath: APIPath) {
         self.dependencyManager = dependencyManager
         
-        let header = CloseUpView.newWithDependencyManager(dependencyManager)
+        closeUpView = CloseUpView.newWithDependencyManager(dependencyManager)
                 
         let configuration = GridStreamConfiguration(
             sectionInset: UIEdgeInsets(
@@ -80,7 +81,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         
         gridStreamController = GridStreamViewController<CloseUpView>(
             dependencyManager: dependencyManager.gridStreamDependencyManager ?? dependencyManager,
-            header: header,
+            header: closeUpView,
             content: content,
             configuration: configuration,
             streamAPIPath: streamAPIPath
@@ -95,7 +96,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
             updateContent(content)
         }
         
-        header.delegate = self
+        closeUpView.delegate = self
         
         updateHeader()
         
@@ -120,10 +121,12 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         dependencyManager.trackViewWillDisappear(self)
+        closeUpView.headerWillDisappear()
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        closeUpView.headerDidAppear()
     }
     
     // MARK: - ContentCellTracker

@@ -15,10 +15,7 @@ protocol Scaffold: InterstitialListener {
     var coachmarkManager: CoachmarkManager { get }
     
     /// The top-level navigation controller used by the scaffold.
-    var mainNavigationController: VNavigationController { get }
-    
-    /// A list of the view controllers that the scaffold can navigate to.
-    var navigationDestinations: [VNavigationDestination] { get }
+    var mainNavigationController: UINavigationController { get }
     
     func navigate(to deeplinkURL: NSURL)
 }
@@ -35,13 +32,10 @@ extension Scaffold where Self: UIViewController {
     /// Performs first-launch setup. Expected to be called only once from the first invocation of `viewDidAppear`.
     func performSetup(onReady: (() -> Void)? = nil) {
         let pushNotificationOperation = RequestPushNotificationPermissionOperation()
+        let tutorialOperation = ShowTutorialsOperation(originViewController: self, dependencyManager: dependencyManager)
+        pushNotificationOperation.addDependency(tutorialOperation)
         
-        if dependencyManager.festivalIsEnabled() {
-            let tutorialOperation = ShowTutorialsOperation(originViewController: self, dependencyManager: dependencyManager)
-            tutorialOperation.queue()
-            pushNotificationOperation.addDependency(tutorialOperation)
-        }
-        
+        tutorialOperation.queue()
         pushNotificationOperation.queue { error, cancelled in
             onReady?()
         }
@@ -72,7 +66,7 @@ extension Scaffold where Self: UIViewController {
     }
     
     func navigate(to deeplinkURL: NSURL) {
-        let router = Router(originViewController: self.mainNavigationController.innerNavigationController, dependencyManager: dependencyManager)
+        let router = Router(originViewController: self.mainNavigationController, dependencyManager: dependencyManager)
         let destination = DeeplinkDestination(url: deeplinkURL)
         router.navigate(to: destination)
     }

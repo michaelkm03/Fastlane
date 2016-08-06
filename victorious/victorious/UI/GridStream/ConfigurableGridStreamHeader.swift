@@ -16,9 +16,9 @@ protocol ConfigurableGridStreamHeader {
 
     func sizeForHeader(dependencyManager: VDependencyManager, maxHeight: CGFloat, content: ContentType?, hasError: Bool) -> CGSize
 
-    func headerDidDisappear()
+    func headerWillDisappear()
 
-    func headerWillAppear()
+    func headerDidAppear()
     
     func gridStreamDidUpdateDataSource(with items: [ContentModel])
     
@@ -26,11 +26,11 @@ protocol ConfigurableGridStreamHeader {
 }
 
 extension ConfigurableGridStreamHeader {
-    func headerDidDisappear() {
+    func headerWillDisappear() {
         
     }
     
-    func headerWillAppear() {
+    func headerDidAppear() {
         
     }
     
