@@ -12,10 +12,7 @@ class VideoBackground: VBackground, VVideoPlayerDelegate {
     // MARK: - Initializing
     
     required init(dependencyManager: VDependencyManager) {
-        self.dependencyManager = dependencyManager
-        
         super.init(dependencyManager: dependencyManager)
-        
         videoView.backgroundColor = .blackColor()
         videoView.delegate = self
         fetchVideo(from: dependencyManager)
@@ -38,10 +35,6 @@ class VideoBackground: VBackground, VVideoPlayerDelegate {
             self?.videoView.setItem(item)
         }
     }
-    
-    // MARK: - Dependency manager
-    
-    private let dependencyManager: VDependencyManager
     
     // MARK: - Views
     
