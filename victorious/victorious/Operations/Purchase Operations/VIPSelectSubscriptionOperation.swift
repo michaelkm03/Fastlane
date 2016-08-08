@@ -23,7 +23,8 @@ class VIPSelectSubscriptionOperation: MainQueueOperation, UIAlertViewDelegate {
         self.originViewController = originViewController
     }
     
-    override func main() {
+    override func start() {
+        super.start()
         guard willShowPrompt else {
             selectedProduct = products.first
             finishedExecuting()

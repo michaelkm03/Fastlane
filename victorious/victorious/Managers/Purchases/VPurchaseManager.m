@@ -78,15 +78,7 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
 
 - (VPurchaseType)purchaseTypeForProductIdentifier:(NSString *)productIdentifier
 {
-    // TODO: VERY HACKY! Considering a template change but leaving for now to keep moving
-    if ( [productIdentifier containsString:@"ballistic"] )
-    {
-        return VPurchaseTypeProduct;
-    }
-    else
-    {
-        return VPurchaseTypeSubscription;
-    }
+    return VPurchaseTypeSubscription;
 }
 
 - (BOOL)shouldAddProductIdentifierToPurchaseRecord:(NSString *)productIdentifier
