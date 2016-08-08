@@ -136,7 +136,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
             captionLabel.text = content.text
             
             let mediaContentView = setupMediaContentView(for: content)
-            insertSubview(mediaContentView, aboveSubview: spinner)
+            closeUpContentContainerView.addSubview(mediaContentView)
             self.mediaContentView = mediaContentView
             mediaContentView.loadContent()
             
@@ -176,7 +176,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
             
             // Content
             var mediaContentViewFrame = mediaContentView.frame
-            mediaContentViewFrame.origin.y = headerSection.bounds.size.height
+            mediaContentViewFrame.origin.y = totalHeight
             mediaContentViewFrame.size.height = height(for: content)
             mediaContentViewFrame.size.width = bounds.size.width
             mediaContentView.frame = mediaContentViewFrame
@@ -301,11 +301,11 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
         }
     }
     
-    func headerWillAppear() {
-        mediaContentView?.willBePresented()
+    func headerDidAppear() {
+        mediaContentView?.didPresent()
     }
     
-    func headerDidDisappear() {
+    func headerWillDisappear() {
         mediaContentView?.willBeDismissed()
     }
     

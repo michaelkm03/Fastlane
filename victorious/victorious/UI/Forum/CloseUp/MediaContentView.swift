@@ -129,7 +129,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
 
     // MARK: - Presentable
 
-    func willBePresented() {
+    func didPresent() {
         videoCoordinator?.playVideo(withSync: shouldSyncOnReappearance)
     }
 

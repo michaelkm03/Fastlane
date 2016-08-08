@@ -106,7 +106,11 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
 {
     NSParameterAssert( failureCallback != nil );
     NSParameterAssert( successCallback != nil );
-    NSAssert( !self.isPurchaseRequestActive, @"A purchase is already in progress." );
+    if (self.isPurchaseRequestActive)
+    {
+        NSAssert(false, @"A purchase is already in progress.");
+        return;
+    }
     
     // This could happen if product requests are failing
     if ( product == nil )

@@ -13,13 +13,13 @@ let VIPFetchSubscriptionRemoteOperationErrorDomain = "VIPFetchSubscriptionRemote
 class VIPFetchSubscriptionRemoteOperation: RemoteFetcherOperation, RequestOperation {
     private static let initErrorDescription = NSLocalizedString("ProductsRequestError", comment: "")
 
-    private static let initError = NSError(domain: VIPFetchSubscriptionRemoteOperationErrorDomain, code: 0, userInfo: [ NSLocalizedDescriptionKey : initErrorDescription ] )
+    static let initError = NSError(domain: VIPFetchSubscriptionRemoteOperationErrorDomain, code: 0, userInfo: [ NSLocalizedDescriptionKey : initErrorDescription ] )
     
     let request: VIPFetchSubscriptionRequest!
     
-    init(urlString: String) throws {
+    init?(urlString: String) {
         guard let request = VIPFetchSubscriptionRequest(urlString: urlString) else {
-            throw VIPFetchSubscriptionRemoteOperation.initError
+            return nil
         }
         self.request = request
     }

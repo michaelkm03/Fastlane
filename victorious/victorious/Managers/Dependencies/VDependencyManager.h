@@ -257,11 +257,6 @@ extern NSString * const VDependencyManagerNativeWorkspaceKey;
 - (id)singletonObjectOfType:(Class)expectedType forKey:(NSString *)key;
 
 /**
- Returns whether "festival" (5.0) UI is enabled.
- */
-- (BOOL)festivalIsEnabled;
-
-/**
  Performs necessary cleanup before deallocating the receiver. 
  After calling this method, any further method calls to this
  object or its children and grandchildren should be avoided.

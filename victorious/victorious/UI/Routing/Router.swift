@@ -48,10 +48,10 @@ struct Router {
 
         switch contentWrapper {
             case .content(let content):
-                guard content.type != .text else {
+                guard content.type != .text, let contentID = content.id else {
                     return
                 }
-                ShowCloseUpOperation.showOperation(forContent: content, displayModifier: displayModifier).queue()
+                ShowCloseUpOperation.showOperation(forContentID: contentID, displayModifier: displayModifier).queue()
             case .contentID(let id):
                 ShowCloseUpOperation.showOperation(forContentID: id, displayModifier: displayModifier).queue()
         }

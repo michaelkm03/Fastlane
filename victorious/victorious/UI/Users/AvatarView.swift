@@ -152,13 +152,10 @@ class AvatarView: UIView {
         }
     }
     
-    // MARK: - KVO 
-    
-    /// This class handles KVO using the Foundation APIs since FBKVOController has a weird bug with multiple instances
-    /// of the same class observing the same object. 
-    /// Also, the user object can be a userModel, which may or may not be persistent. Only the persistent VUser can 
-    /// be KVO'd, hence we must check for this in the setup function.
+    // MARK: - KVO
     private func setupKVO() {
+        /// The user object can be a userModel, which may or may not be persistent. Only the persistent VUser can
+        /// be KVO'd, hence we must check for this 
         guard let user = self.user as? VUser else {
             return
         }
