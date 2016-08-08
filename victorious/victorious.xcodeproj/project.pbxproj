@@ -772,7 +772,6 @@
 		A72C86641C977FF600E97D4F /* ActionConfirmationOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85C71C977FF500E97D4F /* ActionConfirmationOperation.swift */; };
 		A72C86651C977FF600E97D4F /* ErrorOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85C81C977FF500E97D4F /* ErrorOperation.swift */; };
 		A72C86661C977FF600E97D4F /* NSOperationQueue+Queuable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85C91C977FF500E97D4F /* NSOperationQueue+Queuable.swift */; };
-		A72C86671C977FF600E97D4F /* PrefetchedResultsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85CA1C977FF500E97D4F /* PrefetchedResultsOperation.swift */; };
 		A72C86681C977FF600E97D4F /* Queueable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85CB1C977FF500E97D4F /* Queueable.swift */; };
 		A72C86761C977FF600E97D4F /* NotificationsRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85DA1C977FF500E97D4F /* NotificationsRemoteOperation.swift */; };
 		A72C86841C977FF600E97D4F /* AlertReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85E91C977FF500E97D4F /* AlertReceiver.swift */; };
@@ -2418,7 +2417,6 @@
 		A72C85C71C977FF500E97D4F /* ActionConfirmationOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionConfirmationOperation.swift; sourceTree = "<group>"; };
 		A72C85C81C977FF500E97D4F /* ErrorOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorOperation.swift; sourceTree = "<group>"; };
 		A72C85C91C977FF500E97D4F /* NSOperationQueue+Queuable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSOperationQueue+Queuable.swift"; sourceTree = "<group>"; };
-		A72C85CA1C977FF500E97D4F /* PrefetchedResultsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrefetchedResultsOperation.swift; sourceTree = "<group>"; };
 		A72C85CB1C977FF500E97D4F /* Queueable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queueable.swift; sourceTree = "<group>"; };
 		A72C85DA1C977FF500E97D4F /* NotificationsRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsRemoteOperation.swift; sourceTree = "<group>"; };
 		A72C85E91C977FF500E97D4F /* AlertReceiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertReceiver.swift; sourceTree = "<group>"; };
@@ -5391,7 +5389,6 @@
 				A72C85C71C977FF500E97D4F /* ActionConfirmationOperation.swift */,
 				A72C85C81C977FF500E97D4F /* ErrorOperation.swift */,
 				A72C85C91C977FF500E97D4F /* NSOperationQueue+Queuable.swift */,
-				A72C85CA1C977FF500E97D4F /* PrefetchedResultsOperation.swift */,
 				A72C85CB1C977FF500E97D4F /* Queueable.swift */,
 			);
 			path = Queueable;
@@ -8838,7 +8835,6 @@
 				A65F4D581B5DA69B00C96F1F /* VNoAssetsDataSource.m in Sources */,
 				0EFC27D91D38277200C84068 /* DraggableBehavior.swift in Sources */,
 				0E5C69661D47E1B200363DBB /* Forum+TestHarness.swift in Sources */,
-				A72C86671C977FF600E97D4F /* PrefetchedResultsOperation.swift in Sources */,
 				A72C86761C977FF600E97D4F /* NotificationsRemoteOperation.swift in Sources */,
 				F00DEBA01CC1940F00C5C9EA /* NSURL+PreviewImage.swift in Sources */,
 				677DCFE51CB47A3B00FC4394 /* InterstitialToastViewController.swift in Sources */,
