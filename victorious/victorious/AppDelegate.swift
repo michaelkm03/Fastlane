@@ -45,8 +45,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
     }
 
-    func applicationWillResignActive(application: UIApplication) { }
-
     func applicationDidEnterBackground(application: UIApplication) {
         savePersistentChanges()
     }
