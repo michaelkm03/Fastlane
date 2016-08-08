@@ -8599,6 +8599,7 @@
 		BE171D811868BE64004E5202 /* victorious */ = {
 			isa = PBXGroup;
 			children = (
+				0EC65B0B1D52D6280040A8F8 /* AppDelegate.swift */,
 				A721E8601B572452000B7901 /* Categories */,
 				0EC0F60B1CE64F85008760E8 /* Debugging */,
 				0326C35F19F8226200DBC341 /* Images.xcassets */,
@@ -8619,7 +8620,6 @@
 				034BA92D1C60272000C23D7E /* VLog.swift */,
 				034BA92F1C602B7F00C23D7E /* VTFLog.h */,
 				034BA9301C602B7F00C23D7E /* VTFLog.m */,
-				0EC65B0B1D52D6280040A8F8 /* AppDelegate.swift */,
 			);
 			path = victorious;
 			sourceTree = "<group>";
