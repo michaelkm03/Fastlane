@@ -55,7 +55,7 @@ class VideoBackground: VBackground, VVideoPlayerDelegate {
 }
 
 // The following is a legacy operation / request, converted from the old sequence fetch operation, since we use legacy
-// stream endpoints for video backgrounds. This should eventually be refactored and removed.
+// sequence endpoints for video backgrounds. This should eventually be refactored and removed.
 
 private class VideoBackgroundFetchOperation: RemoteFetcherOperation, RequestOperation {
     let request: VideoBackgroundFetchRequest!
