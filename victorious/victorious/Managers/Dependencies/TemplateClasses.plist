@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>suggestedUsers.screen</key>
-	<string>VSuggestedUsersViewController</string>
 	<key>addProfilePicture.screen</key>
 	<string>VEnterProfilePictureCameraViewController</string>
 	<key>forum.screen</key>
@@ -46,18 +44,8 @@
 	<string>VMultiplePickerViewController</string>
 	<key>filter.tool</key>
 	<string>VFilterTool</string>
-	<key>meme.tool</key>
-	<string>VMemeTool</string>
 	<key>crop.tool</key>
 	<string>VCropTool</string>
-	<key>textOverlay.tool</key>
-	<string>VTextTool</string>
-	<key>textType.tool</key>
-	<string>VTextTypeTool</string>
-	<key>hashtag.tool</key>
-	<string>VHashtagTool</string>
-	<key>textColor.tool</key>
-	<string>VTextColorTool</string>
 	<key>camera.screen</key>
 	<string>VCameraViewController</string>
 	<key>imageCamera.screen</key>
@@ -80,90 +68,38 @@
 	<string>victorious.MixedMediaCameraCreationFlowController</string>
 	<key>nativeCamera.creationFlow</key>
 	<string>victorious.NativeCameraCreationFlowController</string>
-	<key>poll.creationFlow</key>
-	<string>VPollCreationFlowController</string>
 	<key>video.creationFlow</key>
 	<string>VVideoCreationFlowController</string>
 	<key>gif.creationFlow</key>
 	<string>VGIFCreationFlowController</string>
-	<key>pollCreation.screen</key>
-	<string>VCreatePollViewController</string>
 	<key>sideNav.scaffold</key>
 	<string>victorious.SideNavScaffoldViewController</string>
 	<key>rightNav.screen</key>
 	<string>victorious.RightNavViewController</string>
-	<key>tab.menu</key>
-	<string>VTabMenuShim</string>
-	<key>stream.screen</key>
-	<string>VStreamCollectionViewController</string>
 	<key>closeupview.screen</key>
 	<string>victorious.CloseUpContainerViewController</string>
-	<key>likedContentStream.screen</key>
-	<string>VLikedContentStreamCollectionViewController</string>
 	<key>hashtagStream.screen</key>
 	<string>VHashtagStreamCollectionViewController</string>
-	<key>standard.contentView</key>
-	<string>VContentViewFactory</string>
-	<key>animated.voteType</key>
-	<string>VVoteType</string>
-	<key>followingStream.screen</key>
-	<string>VFollowingStreamCollectionViewController</string>
-	<key>directory.screen</key>
-	<string>VDirectoryCollectionViewController</string>
 	<key>livechat.screen</key>
 	<string>victorious.ChatFeedViewController</string>
 	<key>notifications.screen</key>
 	<string>VNotificationsViewController</string>
-	<key>findFriends.screen</key>
-	<string>VFindFriendsViewController</string>
 	<key>forumProfile.screen</key>
 	<string>victorious.VNewProfileViewController</string>
 	<key>settings.screen</key>
 	<string>VSettingsViewController</string>
 	<key>comments.screen</key>
 	<string>victorious.CommentsViewController</string>
-	<key>collections.directoryCell</key>
-	<string>VCollectionsDirectoryCellFactory</string>
-	<key>showcase.directoryCell</key>
-	<string>VShowcaseDirectoryCellFactory</string>
-	<key>card.directoryCell</key>
-	<string>VCardDirectoryCellFactory</string>
-	<key>inset.streamCell</key>
-	<string>VInsetStreamCellFactory</string>
-	<key>titleOverlay.streamCell</key>
-	<string>VTitleOverlayStreamCellFactory</string>
-	<key>sleek.streamCell</key>
-	<string>victorious.VSequenceContentCellFactory</string>
-	<key>trending.shelf</key>
-	<string>victorious.VTrendingShelfCellFactory</string>
-	<key>list.shelf</key>
-	<string>victorious.VListShelfCellFactory</string>
-	<key>fullscreen.marqueeCell</key>
-	<string>VFullscreenMarqueeController</string>
-	<key>blurred.marqueeCell</key>
-	<string>VBlurredMarqueeController</string>
-	<key>inset.marqueeCell</key>
-	<string>VInsetMarqueeController</string>
-	<key>explore.marqueeCell</key>
-	<string>victorious.ExploreMarqueeController</string>
 	<key>webView.screen</key>
 	<string>VWebBrowserViewController</string>
-	<key>standard.coachmark</key>
-	<string>VCoachmark</string>
 	<key>standard.permissionsAlert</key>
 	<string>VPermissionAlertViewController</string>
-	<key>standard.creationFlow</key>
-	<string>VCreationFlowShim</string>
 	<key>standard.createSheet</key>
 	<string>VCreateSheetViewController</string>
 	<key>forcedContentCreation.screen</key>
 	<string>VForcedWorkspaceContainerViewController</string>
-	<key>publish.screen</key>
-	<string>VPublishViewController</string>
 	<key>standard.badgeView</key>
 	<string>victorious.AvatarLevelBadgeView</string>
-	<key>trendingTopic.shelf</key>
-	<string>victorious.TrendingTopicShelfFactory</string>
 	<key>levelUp.interstitial</key>
 	<string>victorious.LevelUpViewController</string>
 	<key>animated.badgeView</key>
