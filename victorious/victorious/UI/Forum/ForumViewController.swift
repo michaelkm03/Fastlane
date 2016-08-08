@@ -175,8 +175,6 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                 debugMenuHandler.setupCurrentDebugMenu(type, targetView: navigationController.navigationBar)
             }
         #endif
-
-        
     }
 
     override func viewDidAppear(animated: Bool) {
