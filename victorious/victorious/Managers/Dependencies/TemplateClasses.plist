@@ -33,7 +33,7 @@
 	<key>gradient.background</key>
 	<string>victorious.VGradientBackground</string>
 	<key>video.background</key>
-	<string>VVideoBackground</string>
+	<string>victorious.VideoBackground</string>
 	<key>trim.video.tool</key>
 	<string>VTrimVideoTool</string>
 	<key>snapshot.video.tool</key>

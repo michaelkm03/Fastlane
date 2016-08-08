@@ -232,15 +232,13 @@ static NSString * const kAppStoreSubscriptionSettingsURL = @"itms-apps://buy.itu
     {
         if ( self.purchasedProductsIdentifiers.count > 0 )
         {
-#warning Fix me!
-//            NSString *identifier = NSStringFromClass( [VPurchaseCell class] );
-//            VPurchaseCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
-//            NSString *productIdentifier = [self.purchasedProductsIdentifiers objectAtIndex:indexPath.row];
-//            VProduct *product = [self.purchaseManager purchaseableProductForProductIdentifier:productIdentifier];
-//            VVoteType *voteType = [self.dependencyManager voteTypeForProductIdentifier:productIdentifier];
-//            cell.dependencyManager = self.dependencyManager;
-//            [cell setProductImage:voteType.iconImage title:product.localizedTitle];
-//            return cell;
+            NSString *identifier = NSStringFromClass( [VPurchaseCell class] );
+            VPurchaseCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
+            NSString *productIdentifier = [self.purchasedProductsIdentifiers objectAtIndex:indexPath.row];
+            VProduct *product = [self.purchaseManager purchaseableProductForProductIdentifier:productIdentifier];
+            cell.dependencyManager = self.dependencyManager;
+            [cell setProductImage:nil title:product.localizedTitle];
+            return cell;
         }
         else
         {

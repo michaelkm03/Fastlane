@@ -569,6 +569,7 @@
 		7A7348771D0B7552005225E4 /* ChatFeedContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7348761D0B7552005225E4 /* ChatFeedContent.swift */; };
 		7A85D9CD1D1075DB00535EF3 /* PreviewImageContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A215BA51CF537BE005034BF /* PreviewImageContainer.swift */; };
 		7A85D9CF1D107D1D00535EF3 /* CGSize+Geometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A85D9CE1D107D1D00535EF3 /* CGSize+Geometry.swift */; };
+		7A85F1721D59251900C2B7F3 /* VideoBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A85F1711D59251900C2B7F3 /* VideoBackground.swift */; };
 		7A87376A1CB4785E00D2FF74 /* VContentOnlyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8737691CB4785E00D2FF74 /* VContentOnlyCell.swift */; };
 		7A87376C1CB47C2D00D2FF74 /* VContentOnlyCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A87376B1CB47C2D00D2FF74 /* VContentOnlyCellFactory.swift */; };
 		7A87376E1CB5C66900D2FF74 /* NotificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A87376D1CB5C66900D2FF74 /* NotificationCell.swift */; };
@@ -1225,7 +1226,6 @@
 		D85B708F1B0ECC6D0038CA5B /* VModernLandingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D85B708E1B0ECC6D0038CA5B /* VModernLandingViewController.m */; };
 		D85B70981B0EED0D0038CA5B /* VModernLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D85B70971B0EED0D0038CA5B /* VModernLoginViewController.m */; };
 		D85B709B1B0EF0520038CA5B /* VModernRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D85B709A1B0EF0520038CA5B /* VModernRegisterViewController.m */; };
-		D85B709E1B0FA6340038CA5B /* VVideoBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = D85B709D1B0FA6340038CA5B /* VVideoBackground.m */; };
 		D86448A11A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = D86448A01A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m */; };
 		D87351881A3120F5006D97B2 /* VCanvasView.m in Sources */ = {isa = PBXBuildFile; fileRef = D87351871A3120F5006D97B2 /* VCanvasView.m */; };
 		D8758D1C1B0FCBF4008C6C0D /* VModernRegisterViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8758D1B1B0FCBF4008C6C0D /* VModernRegisterViewController.storyboard */; };
@@ -2114,6 +2114,7 @@
 		7A7348581D063E83005225E4 /* ReferenceWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferenceWrapper.swift; sourceTree = "<group>"; };
 		7A7348761D0B7552005225E4 /* ChatFeedContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedContent.swift; sourceTree = "<group>"; };
 		7A85D9CE1D107D1D00535EF3 /* CGSize+Geometry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGSize+Geometry.swift"; sourceTree = "<group>"; };
+		7A85F1711D59251900C2B7F3 /* VideoBackground.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoBackground.swift; sourceTree = "<group>"; };
 		7A8737691CB4785E00D2FF74 /* VContentOnlyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VContentOnlyCell.swift; sourceTree = "<group>"; };
 		7A87376B1CB47C2D00D2FF74 /* VContentOnlyCellFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VContentOnlyCellFactory.swift; sourceTree = "<group>"; };
 		7A87376D1CB5C66900D2FF74 /* NotificationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationCell.swift; sourceTree = "<group>"; };
@@ -2968,8 +2969,6 @@
 		D85B70971B0EED0D0038CA5B /* VModernLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VModernLoginViewController.m; path = Modern/VModernLoginViewController.m; sourceTree = "<group>"; };
 		D85B70991B0EF0520038CA5B /* VModernRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VModernRegisterViewController.h; path = Modern/VModernRegisterViewController.h; sourceTree = "<group>"; };
 		D85B709A1B0EF0520038CA5B /* VModernRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VModernRegisterViewController.m; path = Modern/VModernRegisterViewController.m; sourceTree = "<group>"; };
-		D85B709C1B0FA6340038CA5B /* VVideoBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VVideoBackground.h; sourceTree = "<group>"; };
-		D85B709D1B0FA6340038CA5B /* VVideoBackground.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoBackground.m; sourceTree = "<group>"; };
 		D864489F1A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VWorkspaceToWorkspaceAnimator.h; sourceTree = "<group>"; };
 		D86448A01A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VWorkspaceToWorkspaceAnimator.m; sourceTree = "<group>"; };
 		D87351861A3120F5006D97B2 /* VCanvasView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCanvasView.h; sourceTree = "<group>"; };
@@ -6543,8 +6542,7 @@
 				A79342EF1C9CDD0200C855BE /* VGradientBackground.swift */,
 				D876E1FD1A9DA6CB002CAA29 /* VSolidColorBackground.h */,
 				D876E1FE1A9DA6CB002CAA29 /* VSolidColorBackground.m */,
-				D85B709C1B0FA6340038CA5B /* VVideoBackground.h */,
-				D85B709D1B0FA6340038CA5B /* VVideoBackground.m */,
+				7A85F1711D59251900C2B7F3 /* VideoBackground.swift */,
 			);
 			path = Background;
 			sourceTree = "<group>";
@@ -8298,7 +8296,6 @@
 				A76711EA1C1B5067006568DF /* VAppTimingEventType.m in Sources */,
 				F009BD1B1CEBD3C800F81CAA /* String+SubstringHelpers.swift in Sources */,
 				7A87376C1CB47C2D00D2FF74 /* VContentOnlyCellFactory.swift in Sources */,
-				D85B709E1B0FA6340038CA5B /* VVideoBackground.m in Sources */,
 				A72C86681C977FF600E97D4F /* Queueable.swift in Sources */,
 				A7250A311CA090BF00B5EAE6 /* Forum.swift in Sources */,
 				A72C868F1C977FF600E97D4F /* CreateMediaUploadOperation.swift in Sources */,
@@ -8435,6 +8432,7 @@
 				A72C86651C977FF600E97D4F /* ErrorOperation.swift in Sources */,
 				6780BD601D244DAD003F8141 /* VRootViewController.swift in Sources */,
 				A72C86461C977FF500E97D4F /* RequestContext+Environment.swift in Sources */,
+				7A85F1721D59251900C2B7F3 /* VideoBackground.swift in Sources */,
 				7A5519EC1D24775900CD6BCF /* ContentMediaSize.swift in Sources */,
 				0EFE50581CB5C10D000D1C95 /* CreateChatServiceTokenOperation.swift in Sources */,
 				A789F7301BF11F4900F5C87B /* VImageAsset+Parsable.swift in Sources */,
