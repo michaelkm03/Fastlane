@@ -234,7 +234,6 @@
 		0372BEA21C84FF02004950CF /* NSCharacterSet+VSDKURLParts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F9A8351C6C1FF600962481 /* NSCharacterSet+VSDKURLParts.swift */; };
 		0372BEA31C84FF02004950CF /* NSDictionary+URLEncodedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F581BE40F3200EE74FD /* NSDictionary+URLEncodedString.swift */; };
 		0372BEA41C84FF02004950CF /* NSMutableURLRequest+VictoriousIOSSDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F5D1BE40F3200EE74FD /* NSMutableURLRequest+VictoriousIOSSDK.swift */; };
-		0372BEA51C84FF02004950CF /* NSPredicate+Pagination.swift in Sources */ = {isa = PBXBuildFile; fileRef = A778CB691C474BA8007DF0C2 /* NSPredicate+Pagination.swift */; };
 		0372BEA61C84FF02004950CF /* NSURL+Failable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7AF87361C46D2F100B49478 /* NSURL+Failable.swift */; };
 		0372BEA71C84FF02004950CF /* NSURL+MimeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0300AA601BF197FE000A121D /* NSURL+MimeType.swift */; };
 		0372BEA91C84FF02004950CF /* Pageable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BC6FAB1BE6E35B00CFCBEE /* Pageable.swift */; };
@@ -849,7 +848,6 @@
 		A77723DE1C34823B002351B5 /* SampleCoreDataModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B0A62A1C347A01008B875C /* SampleCoreDataModels.swift */; };
 		A77723DF1C34823B002351B5 /* SampleMigrationPolicies.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B0A62B1C347A01008B875C /* SampleMigrationPolicies.swift */; };
 		A77723E01C348240002351B5 /* PersistenceTests.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A7B0A6431C347C20008B875C /* PersistenceTests.xcdatamodeld */; };
-		A778CB6A1C474BA8007DF0C2 /* NSPredicate+Pagination.swift in Sources */ = {isa = PBXBuildFile; fileRef = A778CB691C474BA8007DF0C2 /* NSPredicate+Pagination.swift */; };
 		A778CB6F1C4753E3007DF0C2 /* MediaAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = A778CB6E1C4753E3007DF0C2 /* MediaAttachment.swift */; };
 		A779511A1B28AB9A00D9DB0A /* VEnvironmentManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A77951181B28AB9A00D9DB0A /* VEnvironmentManager.m */; };
 		A77D87B21CD7D33700D01FA1 /* PurchaseResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = A77D87B11CD7D33700D01FA1 /* PurchaseResponse.json */; };
@@ -2496,7 +2494,6 @@
 		A776EF1B1ACC99C20093992F /* VMultiplePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMultiplePickerViewController.m; sourceTree = "<group>"; };
 		A776EF1D1ACC9C460093992F /* VMultipleToolPicker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VMultipleToolPicker.h; sourceTree = "<group>"; };
 		A77723E31C3482C6002351B5 /* 2.0.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = 2.0.xcdatamodel; sourceTree = "<group>"; };
-		A778CB691C474BA8007DF0C2 /* NSPredicate+Pagination.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSPredicate+Pagination.swift"; sourceTree = "<group>"; };
 		A778CB6E1C4753E3007DF0C2 /* MediaAttachment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaAttachment.swift; sourceTree = "<group>"; };
 		A77951151B28AB9A00D9DB0A /* VEnvironment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VEnvironment.h; sourceTree = "<group>"; };
 		A77951161B28AB9A00D9DB0A /* VEnvironment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VEnvironment.m; sourceTree = "<group>"; };
@@ -3580,7 +3577,6 @@
 				03F9A8351C6C1FF600962481 /* NSCharacterSet+VSDKURLParts.swift */,
 				03314F581BE40F3200EE74FD /* NSDictionary+URLEncodedString.swift */,
 				03314F5D1BE40F3200EE74FD /* NSMutableURLRequest+VictoriousIOSSDK.swift */,
-				A778CB691C474BA8007DF0C2 /* NSPredicate+Pagination.swift */,
 				A7AF87361C46D2F100B49478 /* NSURL+Failable.swift */,
 				0300AA601BF197FE000A121D /* NSURL+MimeType.swift */,
 				03BC6FAB1BE6E35B00CFCBEE /* Pageable.swift */,
@@ -7834,7 +7830,6 @@
 				0EBF41861CAB5CAE002966B3 /* BlockUser.swift in Sources */,
 				A76AEACF1BFFFF3800E8A26F /* AccountUpdateRequestBodyWriter.swift in Sources */,
 				BF2022811D00BBCC006B59C5 /* ContentFlagRequest.swift in Sources */,
-				A778CB6A1C474BA8007DF0C2 /* NSPredicate+Pagination.swift in Sources */,
 				03BC6FAC1BE6E35B00CFCBEE /* Pageable.swift in Sources */,
 				A74679771BF6D01A0026FD2E /* UserInfoRequest.swift in Sources */,
 				79004DB81BF53A050027E344 /* DateFormat.swift in Sources */,
@@ -8060,7 +8055,6 @@
 				0372BEF71C84FF59004950CF /* APIError.swift in Sources */,
 				0372BE791C84FF02004950CF /* AccountCreateRequest.swift in Sources */,
 				0372BEAB1C84FF02004950CF /* PaginatorPageable.swift in Sources */,
-				0372BEA51C84FF02004950CF /* NSPredicate+Pagination.swift in Sources */,
 				0372BEFA1C84FF5E004950CF /* VRequestErrorConstants.m in Sources */,
 				0372BEE71C84FF19004950CF /* TrendingHashtagRequest.swift in Sources */,
 				0372BECA1C84FF0C004950CF /* GIFSearchResult.swift in Sources */,
