@@ -337,7 +337,6 @@
 		03E7305C1C974B04008CB191 /* AvatarBadgeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF68C4EE1C7CEE0000739D87 /* AvatarBadgeType.swift */; };
 		03E7305E1C974B11008CB191 /* ValidateReceiptRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8F46321C8AA2BA00629D82 /* ValidateReceiptRequest.swift */; };
 		03E7305F1C974B11008CB191 /* ValidateReceiptRequestBodyWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FFCE421C8FC88800B1BE49 /* ValidateReceiptRequestBodyWriter.swift */; };
-		03EE1DE01C4D77B200C25287 /* NSURL+DefaultScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03EE1DDF1C4D77B200C25287 /* NSURL+DefaultScheme.swift */; };
 		03EE1DE21C4D77E000C25287 /* NSURL+DefaultSchemeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03EE1DE11C4D77E000C25287 /* NSURL+DefaultSchemeTests.swift */; };
 		03F2F7951B560B8E00F2EF16 /* sampleImage2.png in Resources */ = {isa = PBXBuildFile; fileRef = 03F2F7941B560B8E00F2EF16 /* sampleImage2.png */; };
 		03F61E6C1C6ADF0700EEA8F9 /* Assets.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 03F61E691C6ADF0700EEA8F9 /* Assets.bundle */; };
@@ -709,9 +708,7 @@
 		A721E9391B572454000B7901 /* NSData+AES.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8B41B572453000B7901 /* NSData+AES.m */; };
 		A721E93B1B572454000B7901 /* NSDictionary+VJSONLogging.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8B81B572453000B7901 /* NSDictionary+VJSONLogging.m */; };
 		A721E93C1B572454000B7901 /* NSIndexSet+Convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8BA1B572453000B7901 /* NSIndexSet+Convenience.m */; };
-		A721E93E1B572454000B7901 /* NSLayoutConstraint+CenterConstraints.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8BE1B572453000B7901 /* NSLayoutConstraint+CenterConstraints.m */; };
 		A721E9401B572454000B7901 /* NSNotificationCenter+VNotificationDebugger.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8C21B572453000B7901 /* NSNotificationCenter+VNotificationDebugger.m */; };
-		A721E9411B572454000B7901 /* NSString+Unicode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721E8C31B572453000B7901 /* NSString+Unicode.swift */; };
 		A721E9431B572454000B7901 /* NSString+VParseHelp.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8C71B572453000B7901 /* NSString+VParseHelp.m */; };
 		A721E9441B572454000B7901 /* NSString+VStringWithData.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8C91B572453000B7901 /* NSString+VStringWithData.m */; };
 		A721E9451B572454000B7901 /* NSURL+MediaType.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8CB1B572453000B7901 /* NSURL+MediaType.m */; };
@@ -722,7 +719,6 @@
 		A721E9531B572454000B7901 /* UIImage+VSolidColor.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8E61B572453000B7901 /* UIImage+VSolidColor.m */; };
 		A721E9541B572454000B7901 /* UIImage+VTint.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8E81B572453000B7901 /* UIImage+VTint.m */; };
 		A721E9551B572454000B7901 /* UIImageView+Blurring.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8EA1B572453000B7901 /* UIImageView+Blurring.m */; };
-		A721E9561B572454000B7901 /* UIImageView+VLoadingAnimations.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8EC1B572453000B7901 /* UIImageView+VLoadingAnimations.m */; };
 		A721E9571B572454000B7901 /* UINavigationController+RotationMethodForwarding.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8EE1B572454000B7901 /* UINavigationController+RotationMethodForwarding.m */; };
 		A721E9581B572454000B7901 /* UIResponder+VResponderChain.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8F01B572454000B7901 /* UIResponder+VResponderChain.m */; };
 		A721E9591B572454000B7901 /* UIScrollView+VCenterContent.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8F21B572454000B7901 /* UIScrollView+VCenterContent.m */; };
@@ -731,8 +727,6 @@
 		A721E95D1B572454000B7901 /* UIView+MotionEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8FA1B572454000B7901 /* UIView+MotionEffects.m */; };
 		A721E95E1B572454000B7901 /* UIView+RecursiveSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721E8FB1B572454000B7901 /* UIView+RecursiveSearch.swift */; };
 		A721E95F1B572454000B7901 /* UIView+VDynamicsHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8FD1B572454000B7901 /* UIView+VDynamicsHelpers.m */; };
-		A721E9611B572454000B7901 /* UIView+VViewRendering.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E9011B572454000B7901 /* UIView+VViewRendering.m */; };
-		A721E9631B572454000B7901 /* UIViewController+VLayoutInsets.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E9051B572454000B7901 /* UIViewController+VLayoutInsets.m */; };
 		A722D9441C6E9836003C06C5 /* LoginSuccessOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A722D9431C6E9836003C06C5 /* LoginSuccessOperationTests.swift */; };
 		A7250A311CA090BF00B5EAE6 /* Forum.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7250A2F1CA090BF00B5EAE6 /* Forum.swift */; };
 		A728AC1F1BBDD4F800386641 /* VAudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A728AC1E1BBDD4F800386641 /* VAudioManager.swift */; };
@@ -866,7 +860,6 @@
 		A76AEAAD1BFFCB0900E8A26F /* VChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEAAC1BFFCB0900E8A26F /* VChangePasswordViewController.swift */; };
 		A76AEACF1BFFFF3800E8A26F /* AccountUpdateRequestBodyWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76AEACE1BFFFF3800E8A26F /* AccountUpdateRequestBodyWriter.swift */; };
 		A76E79C31C6FADA7006A0D35 /* UIViewController+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76E79C11C6FADA7006A0D35 /* UIViewController+Error.swift */; };
-		A76E79C41C6FADA7006A0D35 /* UIViewController+FlaggedContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76E79C21C6FADA7006A0D35 /* UIViewController+FlaggedContent.swift */; };
 		A776EF1C1ACC99C20093992F /* VMultiplePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A776EF1B1ACC99C20093992F /* VMultiplePickerViewController.m */; };
 		A77723DE1C34823B002351B5 /* SampleCoreDataModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B0A62A1C347A01008B875C /* SampleCoreDataModels.swift */; };
 		A77723DF1C34823B002351B5 /* SampleMigrationPolicies.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B0A62B1C347A01008B875C /* SampleMigrationPolicies.swift */; };
@@ -995,7 +988,6 @@
 		A7DCA5111C128A78004E35B4 /* VUploadTaskSerializerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE96750219E335060072E87A /* VUploadTaskSerializerTests.m */; };
 		A7DCA5121C128A78004E35B4 /* VURLDetectorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EB574E1AF841CC006AA1CF /* VURLDetectorTests.m */; };
 		A7DCA5141C128A78004E35B4 /* VVideoTrackingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A73AFB7B19F573AB0005A9EA /* VVideoTrackingTests.m */; };
-		A7DD35F31BB0BD5000C4DBC5 /* NSNumber+VBitmask.m in Sources */ = {isa = PBXBuildFile; fileRef = A7DD35F21BB0BD5000C4DBC5 /* NSNumber+VBitmask.m */; };
 		A7DDA6AA1B5F0018005CE55E /* Experiment.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DDA6A91B5F0018005CE55E /* Experiment.swift */; };
 		A7DDA6E31B601C95005CE55E /* SettingsEmptyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DDA6E21B601C95005CE55E /* SettingsEmptyCell.swift */; };
 		A7DDA6E51B601D0D005CE55E /* UIView+ReuseIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DDA6E41B601D0D005CE55E /* UIView+ReuseIdentifier.swift */; };
@@ -1018,7 +1010,6 @@
 		A7EECAD51A377FA000A8BAE1 /* VPurchaseSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EECAD41A377FA000A8BAE1 /* VPurchaseSettingsViewController.m */; };
 		A7EECAD81A37802500A8BAE1 /* VPurchaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EECAD71A37802500A8BAE1 /* VPurchaseCell.m */; };
 		A7F0C86A1CB2E51A0007178A /* SimulatedPurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F0C8691CB2E51A0007178A /* SimulatedPurchaseManager.swift */; };
-		A7F0C8711CB3253C0007178A /* UIViewController+RootPresentationTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F0C8701CB3253C0007178A /* UIViewController+RootPresentationTarget.swift */; };
 		A7F3F80F1C9D3A2200CC2374 /* WebViewHTMLFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F3F80E1C9D3A2200CC2374 /* WebViewHTMLFetchOperation.swift */; };
 		A7F7121B1AE5A3B10086F729 /* VLinearGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F7121A1AE5A3B10086F729 /* VLinearGradientView.m */; };
 		A7F843621BFD0BFD004C3D55 /* Tracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F843611BFD0BFD004C3D55 /* Tracking.swift */; };
@@ -1878,7 +1869,6 @@
 		03DB20DC1CC99AF500721C24 /* FilterNameLocalization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterNameLocalization.swift; sourceTree = "<group>"; };
 		03DE266A1B336E5D00C9F680 /* VDataCacheTests.cachedData */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VDataCacheTests.cachedData; sourceTree = "<group>"; };
 		03EBF62F1C6D4FB300B938FB /* VPaginatedDataSourceDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPaginatedDataSourceDelegate.h; sourceTree = "<group>"; };
-		03EE1DDF1C4D77B200C25287 /* NSURL+DefaultScheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSURL+DefaultScheme.swift"; sourceTree = "<group>"; };
 		03EE1DE11C4D77E000C25287 /* NSURL+DefaultSchemeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSURL+DefaultSchemeTests.swift"; sourceTree = "<group>"; };
 		03F24A8E1A23FC620011D46A /* VProvidesNavigationMenuItemBadge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VProvidesNavigationMenuItemBadge.h; sourceTree = "<group>"; };
 		03F2F7511B55828B00F2EF16 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/VModernEnterNameViewController.strings; sourceTree = "<group>"; };
@@ -2342,11 +2332,8 @@
 		A721E8B81B572453000B7901 /* NSDictionary+VJSONLogging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+VJSONLogging.m"; sourceTree = "<group>"; };
 		A721E8B91B572453000B7901 /* NSIndexSet+Convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSIndexSet+Convenience.h"; sourceTree = "<group>"; };
 		A721E8BA1B572453000B7901 /* NSIndexSet+Convenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSIndexSet+Convenience.m"; sourceTree = "<group>"; };
-		A721E8BD1B572453000B7901 /* NSLayoutConstraint+CenterConstraints.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSLayoutConstraint+CenterConstraints.h"; sourceTree = "<group>"; };
-		A721E8BE1B572453000B7901 /* NSLayoutConstraint+CenterConstraints.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSLayoutConstraint+CenterConstraints.m"; sourceTree = "<group>"; };
 		A721E8C11B572453000B7901 /* NSNotificationCenter+VNotificationDebugger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNotificationCenter+VNotificationDebugger.h"; sourceTree = "<group>"; };
 		A721E8C21B572453000B7901 /* NSNotificationCenter+VNotificationDebugger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNotificationCenter+VNotificationDebugger.m"; sourceTree = "<group>"; };
-		A721E8C31B572453000B7901 /* NSString+Unicode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSString+Unicode.swift"; sourceTree = "<group>"; };
 		A721E8C41B572453000B7901 /* NSString+VCrypto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+VCrypto.h"; sourceTree = "<group>"; };
 		A721E8C51B572453000B7901 /* NSString+VCrypto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+VCrypto.m"; sourceTree = "<group>"; };
 		A721E8C61B572453000B7901 /* NSString+VParseHelp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+VParseHelp.h"; sourceTree = "<group>"; };
@@ -2369,8 +2356,6 @@
 		A721E8E81B572453000B7901 /* UIImage+VTint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+VTint.m"; sourceTree = "<group>"; };
 		A721E8E91B572453000B7901 /* UIImageView+Blurring.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+Blurring.h"; sourceTree = "<group>"; };
 		A721E8EA1B572453000B7901 /* UIImageView+Blurring.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+Blurring.m"; sourceTree = "<group>"; };
-		A721E8EB1B572453000B7901 /* UIImageView+VLoadingAnimations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+VLoadingAnimations.h"; sourceTree = "<group>"; };
-		A721E8EC1B572453000B7901 /* UIImageView+VLoadingAnimations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+VLoadingAnimations.m"; sourceTree = "<group>"; };
 		A721E8ED1B572454000B7901 /* UINavigationController+RotationMethodForwarding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+RotationMethodForwarding.h"; sourceTree = "<group>"; };
 		A721E8EE1B572454000B7901 /* UINavigationController+RotationMethodForwarding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+RotationMethodForwarding.m"; sourceTree = "<group>"; };
 		A721E8EF1B572454000B7901 /* UIResponder+VResponderChain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIResponder+VResponderChain.h"; sourceTree = "<group>"; };
@@ -2386,10 +2371,6 @@
 		A721E8FB1B572454000B7901 /* UIView+RecursiveSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+RecursiveSearch.swift"; sourceTree = "<group>"; };
 		A721E8FC1B572454000B7901 /* UIView+VDynamicsHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+VDynamicsHelpers.h"; sourceTree = "<group>"; };
 		A721E8FD1B572454000B7901 /* UIView+VDynamicsHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+VDynamicsHelpers.m"; sourceTree = "<group>"; };
-		A721E9001B572454000B7901 /* UIView+VViewRendering.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+VViewRendering.h"; sourceTree = "<group>"; };
-		A721E9011B572454000B7901 /* UIView+VViewRendering.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+VViewRendering.m"; sourceTree = "<group>"; };
-		A721E9041B572454000B7901 /* UIViewController+VLayoutInsets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+VLayoutInsets.h"; sourceTree = "<group>"; };
-		A721E9051B572454000B7901 /* UIViewController+VLayoutInsets.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+VLayoutInsets.m"; sourceTree = "<group>"; };
 		A722D9431C6E9836003C06C5 /* LoginSuccessOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginSuccessOperationTests.swift; sourceTree = "<group>"; };
 		A7250A2F1CA090BF00B5EAE6 /* Forum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Forum.swift; path = Composer/Forum.swift; sourceTree = "<group>"; };
 		A728AC1E1BBDD4F800386641 /* VAudioManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VAudioManager.swift; sourceTree = "<group>"; };
@@ -2547,7 +2528,6 @@
 		A76AEACE1BFFFF3800E8A26F /* AccountUpdateRequestBodyWriter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountUpdateRequestBodyWriter.swift; sourceTree = "<group>"; };
 		A76D93A51B321E68007A150D /* VPageType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VPageType.h; sourceTree = "<group>"; };
 		A76E79C11C6FADA7006A0D35 /* UIViewController+Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Error.swift"; sourceTree = "<group>"; };
-		A76E79C21C6FADA7006A0D35 /* UIViewController+FlaggedContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+FlaggedContent.swift"; sourceTree = "<group>"; };
 		A771D0231A043AE8007CB0A5 /* VTrackingManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VTrackingManagerTests.m; sourceTree = "<group>"; };
 		A776EF191ACC94F00093992F /* VCollectionToolPicker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VCollectionToolPicker.h; sourceTree = "<group>"; };
 		A776EF1A1ACC99C20093992F /* VMultiplePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMultiplePickerViewController.h; sourceTree = "<group>"; };
@@ -2692,8 +2672,6 @@
 		A7DB4D3C1B7AB6CB00199D10 /* VAutomation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAutomation.h; sourceTree = "<group>"; };
 		A7DB4D3D1B7AB6CB00199D10 /* VAutomation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAutomation.m; sourceTree = "<group>"; };
 		A7DCA51B1C128FD0004E35B4 /* NetworkActivityIndicatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkActivityIndicatorTests.swift; sourceTree = "<group>"; };
-		A7DD35F11BB0BD5000C4DBC5 /* NSNumber+VBitmask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+VBitmask.h"; sourceTree = "<group>"; };
-		A7DD35F21BB0BD5000C4DBC5 /* NSNumber+VBitmask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+VBitmask.m"; sourceTree = "<group>"; };
 		A7DDA6A91B5F0018005CE55E /* Experiment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Experiment.swift; sourceTree = "<group>"; };
 		A7DDA6E21B601C95005CE55E /* SettingsEmptyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsEmptyCell.swift; sourceTree = "<group>"; };
 		A7DDA6E41B601D0D005CE55E /* UIView+ReuseIdentifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+ReuseIdentifier.swift"; sourceTree = "<group>"; };
@@ -2730,7 +2708,6 @@
 		A7EECAD61A37802500A8BAE1 /* VPurchaseCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPurchaseCell.h; sourceTree = "<group>"; };
 		A7EECAD71A37802500A8BAE1 /* VPurchaseCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPurchaseCell.m; sourceTree = "<group>"; };
 		A7F0C8691CB2E51A0007178A /* SimulatedPurchaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimulatedPurchaseManager.swift; sourceTree = "<group>"; };
-		A7F0C8701CB3253C0007178A /* UIViewController+RootPresentationTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+RootPresentationTarget.swift"; sourceTree = "<group>"; };
 		A7F3F80E1C9D3A2200CC2374 /* WebViewHTMLFetchOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewHTMLFetchOperation.swift; sourceTree = "<group>"; };
 		A7F712191AE5A3B10086F729 /* VLinearGradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLinearGradientView.h; sourceTree = "<group>"; };
 		A7F7121A1AE5A3B10086F729 /* VLinearGradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLinearGradientView.m; sourceTree = "<group>"; };
@@ -5199,20 +5176,14 @@
 				A721E8B81B572453000B7901 /* NSDictionary+VJSONLogging.m */,
 				A721E8B91B572453000B7901 /* NSIndexSet+Convenience.h */,
 				A721E8BA1B572453000B7901 /* NSIndexSet+Convenience.m */,
-				A721E8BD1B572453000B7901 /* NSLayoutConstraint+CenterConstraints.h */,
-				A721E8BE1B572453000B7901 /* NSLayoutConstraint+CenterConstraints.m */,
 				F0FBC44A1D2591AF0070873F /* NSMutableParagraphStyle+TextInsets.swift */,
 				A721E8C11B572453000B7901 /* NSNotificationCenter+VNotificationDebugger.h */,
 				A721E8C21B572453000B7901 /* NSNotificationCenter+VNotificationDebugger.m */,
-				A7DD35F11BB0BD5000C4DBC5 /* NSNumber+VBitmask.h */,
-				A7DD35F21BB0BD5000C4DBC5 /* NSNumber+VBitmask.m */,
-				A721E8C31B572453000B7901 /* NSString+Unicode.swift */,
 				A721E8C61B572453000B7901 /* NSString+VParseHelp.h */,
 				A721E8C71B572453000B7901 /* NSString+VParseHelp.m */,
 				A721E8C81B572453000B7901 /* NSString+VStringWithData.h */,
 				A721E8C91B572453000B7901 /* NSString+VStringWithData.m */,
 				67DDA81E1D46CA2500C55494 /* NSURL+CustomScheme.swift */,
-				03EE1DDF1C4D77B200C25287 /* NSURL+DefaultScheme.swift */,
 				A721E8CA1B572453000B7901 /* NSURL+MediaType.h */,
 				A721E8CB1B572453000B7901 /* NSURL+MediaType.m */,
 				A72A03271C8F55680067ADBD /* NSURL+OptionalString.swift */,
@@ -5244,8 +5215,6 @@
 				A721E8E91B572453000B7901 /* UIImageView+Blurring.h */,
 				A721E8EA1B572453000B7901 /* UIImageView+Blurring.m */,
 				6728F6DD1D3DADC000559A04 /* UIImageView+ImageAsset.swift */,
-				A721E8EB1B572453000B7901 /* UIImageView+VLoadingAnimations.h */,
-				A721E8EC1B572453000B7901 /* UIImageView+VLoadingAnimations.m */,
 				A721E8ED1B572454000B7901 /* UINavigationController+RotationMethodForwarding.h */,
 				A721E8EE1B572454000B7901 /* UINavigationController+RotationMethodForwarding.m */,
 				F06B41BC1B7ED7FD008709E8 /* UIResponder+typedResponder.swift */,
@@ -5269,17 +5238,11 @@
 				7A63CD391D5400F1006A48E4 /* UIView+ShakeAnimation.swift */,
 				A721E8FC1B572454000B7901 /* UIView+VDynamicsHelpers.h */,
 				A721E8FD1B572454000B7901 /* UIView+VDynamicsHelpers.m */,
-				A721E9001B572454000B7901 /* UIView+VViewRendering.h */,
-				A721E9011B572454000B7901 /* UIView+VViewRendering.m */,
 				F0BD3A651CD95A8000B4AB3E /* UIViewController+Alert.swift */,
 				A76E79C11C6FADA7006A0D35 /* UIViewController+Error.swift */,
-				A76E79C21C6FADA7006A0D35 /* UIViewController+FlaggedContent.swift */,
-				A7F0C8701CB3253C0007178A /* UIViewController+RootPresentationTarget.swift */,
 				79A809C51B7C07DF006AE04E /* UIViewController+Storyboard.swift */,
 				F0FC98121B61AAA10098AFCB /* UIViewController+VAccessoryScreens.h */,
 				F0FC98131B61AAA10098AFCB /* UIViewController+VAccessoryScreens.m */,
-				A721E9041B572454000B7901 /* UIViewController+VLayoutInsets.h */,
-				A721E9051B572454000B7901 /* UIViewController+VLayoutInsets.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -8520,7 +8483,6 @@
 				67DDA81F1D46CA2500C55494 /* NSURL+CustomScheme.swift in Sources */,
 				6780BD621D248392003F8141 /* DeeplinkDestination.swift in Sources */,
 				A75ECFFE1AB0B6B400C35063 /* VCropOverlayView.m in Sources */,
-				A7F0C8711CB3253C0007178A /* UIViewController+RootPresentationTarget.swift in Sources */,
 				A7ECC1D71AD6178F0003E00A /* VBaseWorkspaceViewController.m in Sources */,
 				A6DAEB621B4C8DF900935EA0 /* VGIFCreationFlowController.m in Sources */,
 				0362656B1BAB99ED00C34C73 /* FacebookHelper.swift in Sources */,
@@ -8532,7 +8494,6 @@
 				67F9EAA71CCE93030005A2EF /* CreatorListRemoteOperation.swift in Sources */,
 				0E23691D1D497C4100D9E45C /* Presentable.swift in Sources */,
 				A601FB4F1B4355A30050536C /* VCreationFlowController.m in Sources */,
-				A7DD35F31BB0BD5000C4DBC5 /* NSNumber+VBitmask.m in Sources */,
 				03DB20DD1CC99AF500721C24 /* FilterNameLocalization.swift in Sources */,
 				A721E9551B572454000B7901 /* UIImageView+Blurring.m in Sources */,
 				D85B709B1B0EF0520038CA5B /* VModernRegisterViewController.m in Sources */,
@@ -8543,7 +8504,6 @@
 				A78F17731B67F3AE009F6B8F /* ExperimentSettingsDataSource.swift in Sources */,
 				A7B1335C1C6178FD006EC4F5 /* ActivityIndicatorCollectionCell.swift in Sources */,
 				0314D07919B4685C00FA363C /* VConstants.m in Sources */,
-				A721E9561B572454000B7901 /* UIImageView+VLoadingAnimations.m in Sources */,
 				C39864B71B22358D00694AB3 /* VFadeButton.m in Sources */,
 				F0BD811D1C98D1AB0062D079 /* ActionBarFlexibleSpaceItem.swift in Sources */,
 				A7F7121B1AE5A3B10086F729 /* VLinearGradientView.m in Sources */,
@@ -8582,7 +8542,6 @@
 				A721E95F1B572454000B7901 /* UIView+VDynamicsHelpers.m in Sources */,
 				799B89D01D469E02006743FE /* AboutMeTextCell.swift in Sources */,
 				A73BA2CC1C9393ED008168B5 /* ChatFeedMessageCell+Layout.swift in Sources */,
-				A721E9411B572454000B7901 /* NSString+Unicode.swift in Sources */,
 				D89367491ADDBAA1001D2426 /* VActionBarFixedWidthItem.m in Sources */,
 				A7A9226A1AC9DB5F00F4755E /* VMultiplePickerSelection.m in Sources */,
 				A680CE8F1B62ECA2005934FF /* VCameraToWorkspaceAnimator.m in Sources */,
@@ -8682,7 +8641,6 @@
 				7A87376A1CB4785E00D2FF74 /* VContentOnlyCell.swift in Sources */,
 				A72C863A1C977FF500E97D4F /* TrendingHashtagOperation.swift in Sources */,
 				A721E9591B572454000B7901 /* UIScrollView+VCenterContent.m in Sources */,
-				A721E93E1B572454000B7901 /* NSLayoutConstraint+CenterConstraints.m in Sources */,
 				A7BB6C991CAEDF1A007FDD17 /* VIPSubscribeOperation.swift in Sources */,
 				C3623F261BA3AE54002B121D /* InterstitialManager.swift in Sources */,
 				BF8F57A31CEBE22F00188C0E /* ContentFeedRemoteOperation.swift in Sources */,
@@ -8802,7 +8760,6 @@
 				F0E6672E1D1496B8007BF537 /* ContentCell.swift in Sources */,
 				A733D8FC1A23D0980053E9F1 /* VNotificationSettings.m in Sources */,
 				A650EFDD1B422378005529E5 /* VAssetCollectionListViewController.m in Sources */,
-				03EE1DE01C4D77B200C25287 /* NSURL+DefaultScheme.swift in Sources */,
 				D888B52B1A86FC7800B34149 /* VRadialGradientView.m in Sources */,
 				A73BA2DA1C9394B6008168B5 /* ForumViewController.swift in Sources */,
 				D8D3B7241AB264D400CF966C /* AVAsset+VVideoCompositionWithFrameDuration.m in Sources */,
@@ -8832,7 +8789,6 @@
 				C3E772201B4DBA78005809A5 /* VStreamFocusHelper.m in Sources */,
 				D839D6921B16A64000FAFBD0 /* VEnterProfilePictureCameraViewController.m in Sources */,
 				A72C86481C977FF500E97D4F /* VLoginType+Credentials.swift in Sources */,
-				A721E9611B572454000B7901 /* UIView+VViewRendering.m in Sources */,
 				A7ECC1CC1AD617480003E00A /* VImageToolController.m in Sources */,
 				B074C5BC1B3B2CA800EA3FFC /* VTimeMarkView.m in Sources */,
 				C30AA4E31B057D290010CEFE /* VButtonWithCircularEmphasis.m in Sources */,
@@ -8877,7 +8833,6 @@
 				D80C615B19D0F692006AE41A /* VProgressBarView.m in Sources */,
 				BF3EE3AA1D10A67400074E71 /* UserUpvoteToggleOperation.swift in Sources */,
 				79A809C61B7C07DF006AE04E /* UIViewController+Storyboard.swift in Sources */,
-				A76E79C41C6FADA7006A0D35 /* UIViewController+FlaggedContent.swift in Sources */,
 				A72C86841C977FF600E97D4F /* AlertReceiver.swift in Sources */,
 				A7D7ED511B59BEB900FA346A /* UISearchBar+Extensions.swift in Sources */,
 				A65F4D581B5DA69B00C96F1F /* VNoAssetsDataSource.m in Sources */,
@@ -8911,7 +8866,6 @@
 				A7039CD71C23CB5E0023DE6F /* VApplicationTracking.swift in Sources */,
 				0372587519D61B0800836B3F /* VUploadTaskCreator.m in Sources */,
 				A650EFDA1B421F61005529E5 /* VAssetCollectionGridViewController.m in Sources */,
-				A721E9631B572454000B7901 /* UIViewController+VLayoutInsets.m in Sources */,
 				D888B52A1A86FC7800B34149 /* VRadialGradientLayer.m in Sources */,
 				A72C85F91C977FF500E97D4F /* AccountCreateOperation.swift in Sources */,
 				BF9C375E1C978B5F001841C5 /* TempDirectoryCleanupOperation.swift in Sources */,

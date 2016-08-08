@@ -13,7 +13,6 @@
 #import "VDependencyManager+VNavigationItem.h"
 #import "VNavigationDestination.h"
 #import "UIViewController+VAccessoryScreens.h"
-#import "UIViewController+VLayoutInsets.h"
 #import "VDependencyManager+VTracking.h"
 #import "victorious-Swift.h"
 
@@ -75,7 +74,7 @@ static CGFloat const kNotificationAddedVerticalInset = 8.0f;
     self.dataSource.delegate = self;
     self.tableView.dataSource = self.dataSource;
     
-    UIEdgeInsets contentInset = self.v_layoutInsets;
+    UIEdgeInsets contentInset = UIEdgeInsetsZero;
     
     contentInset.top += kNotificationAddedVerticalInset;
     contentInset.bottom += kNotificationAddedVerticalInset;
