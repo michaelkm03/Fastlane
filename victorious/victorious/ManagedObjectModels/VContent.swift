@@ -13,6 +13,7 @@ import VictoriousIOSSDK
 class VContent: NSManagedObject, ContentModel, PaginatableItem {
     @NSManaged var v_createdAt: Int64
     @NSManaged var v_postedAt: Int64
+    @NSManaged var v_paginationTimestamp: Int64
     @NSManaged var v_remoteID: String
     @NSManaged var v_shareURL: String?
     @NSManaged var v_linkedURL: String?
@@ -38,6 +39,10 @@ class VContent: NSManagedObject, ContentModel, PaginatableItem {
     
     var postedAt: Timestamp? {
         return Timestamp(value: v_postedAt)
+    }
+    
+    var paginationTimestamp: Timestamp {
+        return Timestamp(value: v_paginationTimestamp) ?? Timestamp()
     }
     
     var text: String? {

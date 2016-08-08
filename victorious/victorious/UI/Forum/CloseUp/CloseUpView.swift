@@ -18,14 +18,12 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
     // MARK: - Configuration
     
     private struct Constants {
-        static let blurredImageAlpha = CGFloat(0.5)
         static let relatedAnimationDuration = Double(1)
         static let horizontalMargins = CGFloat(16)
         static let verticalMargins = CGFloat(18)
         static let cornerRadius = CGFloat(6)
         static let topOffset = CGFloat(-20)
         static let defaultAspectRatio = CGFloat(1)
-        static let blurRadius = CGFloat(12)
     }
     
     /// Maximum height of the close up view (set from the outside). Defaults to CGFloat.max
@@ -40,8 +38,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
     @IBOutlet weak var captionLabel: UILabel!
     @IBOutlet weak var relatedLabel: UILabel!
     @IBOutlet weak var closeUpContentContainerView: UIView!
-    @IBOutlet weak var lightOverlayView: UIView!
-    @IBOutlet weak var blurredImageView: UIImageView!
+    @IBOutlet weak var separatorBar: UIImageView!
     
     // MARK: - Variables
     
@@ -87,10 +84,10 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
             name: "closeUpDismissed",
             object: nil
         )
-        blurredImageView.alpha = Constants.blurredImageAlpha
-        
-        insertSubview(spinner, aboveSubview: lightOverlayView)
+        insertSubview(spinner, atIndex: 0)
         spinner.startAnimating()
+        
+        separatorBar.image = UIImage.v_singlePixelImageWithColor(.whiteColor())
     }
 
     private func setupMediaContentView(for content: ContentModel) -> MediaContentView {
@@ -135,19 +132,11 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
             userNameButton.setTitle(author.displayName, forState: .Normal)
             avatarView.user = author
             
-            let minWidth = UIScreen.mainScreen().bounds.size.width
-            
-            if let imageAsset = content.previewImage(ofMinimumWidth: minWidth) {
-                blurredImageView.applyBlurToImageURL(imageAsset.url, withRadius: Constants.blurRadius) { [weak self] in
-                    self?.blurredImageView.alpha = Constants.blurredImageAlpha
-                }
-            }
-            
             createdAtLabel.text = NSDate(timestamp: content.createdAt).stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds) ?? ""
             captionLabel.text = content.text
             
             let mediaContentView = setupMediaContentView(for: content)
-            insertSubview(mediaContentView, aboveSubview: spinner)
+            closeUpContentContainerView.addSubview(mediaContentView)
             self.mediaContentView = mediaContentView
             mediaContentView.loadContent()
             
@@ -187,7 +176,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
             
             // Content
             var mediaContentViewFrame = mediaContentView.frame
-            mediaContentViewFrame.origin.y = headerSection.bounds.size.height
+            mediaContentViewFrame.origin.y = totalHeight
             mediaContentViewFrame.size.height = height(for: content)
             mediaContentViewFrame.size.width = bounds.size.width
             mediaContentView.frame = mediaContentViewFrame
@@ -274,9 +263,12 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
         userNameButton.titleLabel!.font = dependencyManager.usernameFont
         createdAtLabel.font = dependencyManager.timestampFont
         captionLabel.font = dependencyManager.captionFont
-        relatedLabel.textColor = dependencyManager.usernameColor
+        relatedLabel.textColor = dependencyManager.relatedColor
         relatedLabel.font = dependencyManager.relatedFont
         relatedLabel.text = dependencyManager.relatedText
+        if let relatedColor = dependencyManager.relatedColor {
+            separatorBar.image = UIImage.v_singlePixelImageWithColor(relatedColor)
+        }
     }
     
     private func clearContent() {
@@ -309,11 +301,11 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
         }
     }
     
-    func headerWillAppear() {
-        mediaContentView?.willBePresented()
+    func headerDidAppear() {
+        mediaContentView?.didPresent()
     }
     
-    func headerDidDisappear() {
+    func headerWillDisappear() {
         mediaContentView?.willBeDismissed()
     }
     

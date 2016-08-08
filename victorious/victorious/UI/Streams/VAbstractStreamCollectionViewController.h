@@ -11,8 +11,6 @@
 #import "VPageType.h"
 #import "VStreamCollectionViewDataSource.h"
 #import "VStreamTrackingHelper.h"
-#import "VNavigationViewFloatingController.h"
-#import "VNavigationControllerScrollDelegate.h"
 #import "VHasManagedDependencies.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -24,7 +22,7 @@ static const CGFloat VStreamMarqueeParallaxRatio = 0.5f;
 /**
     A view controller setup to display, track, and interact with stream content
  */
-@interface VAbstractStreamCollectionViewController : UIViewController <VStreamCollectionDataDelegate, UIScrollViewDelegate, UICollectionViewDelegateFlowLayout>
+@interface VAbstractStreamCollectionViewController : UIViewController <VStreamCollectionDataDelegate, UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic, strong) UIRefreshControl *refreshControl;///<Refresh control for the collectionview
 @property (nonatomic, strong) VStream *currentStream;///<The stream to display
@@ -41,8 +39,6 @@ static const CGFloat VStreamMarqueeParallaxRatio = 0.5f;
 @property (nonatomic) BOOL navigationBarShouldAutoHide; ///< Set to YES to hide the navigation bar on scroll
 
 @property (nonatomic, strong) VStreamTrackingHelper *streamTrackingHelper; ///< An aide for sending tracking events
-@property (nonatomic, strong, nullable) VNavigationControllerScrollDelegate *navigationControllerScrollDelegate;
-@property (nonatomic, strong, nullable) id<VNavigationViewFloatingController> navigationViewfloatingController;
 
 @property (nonatomic, strong, nullable) VStreamItem *targetStreamItem; ///< The stream item that should be scroll to once this VC becomes visible
 

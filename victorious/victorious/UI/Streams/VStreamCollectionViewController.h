@@ -13,7 +13,6 @@
 #import "VSequenceActionsDelegate.h"
 #import "VNewContentViewController.h"
 #import "VAccessoryNavigationSource.h"
-#import "VTabMenuContainedViewControllerNavigation.h"
 #import "VContentViewOriginViewController.h"
 #import "VNoContentView.h"
 
@@ -24,7 +23,7 @@ const CGFloat VStreamCollectionViewControllerCreateButtonHeight; ///< The height
 
 @class VStreamCollectionViewDataSource, VCollectionViewStreamFocusHelper, VUploadProgressViewController;
 
-@interface VStreamCollectionViewController : VAbstractStreamCollectionViewController <UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, VSequenceActionsDelegate, VHasManagedDependencies, VAccessoryNavigationSource, VTabMenuContainedViewControllerNavigation, VContentViewOriginViewController>
+@interface VStreamCollectionViewController : VAbstractStreamCollectionViewController <UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, VSequenceActionsDelegate, VHasManagedDependencies, VAccessoryNavigationSource, VContentViewOriginViewController>
 
 @property (nonatomic, weak) id<VSequenceActionsDelegate>actionDelegate;///<Optional param.  If this is not set, the collection view will act as the action delegate for the cells.  Use this if you are embedding this view controller somewhere (i.e. the page view controller)
 @property (nonatomic, strong) VNoContentView *noContentView;///<Sets this view as the background if it cannot fetch items for the current steam.

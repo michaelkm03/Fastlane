@@ -165,7 +165,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
         if let navBarTitleView = navBarTitleView {
-            navigationController?.navigationBar.topItem?.titleView = navBarTitleView
+            navigationItem.titleView = navBarTitleView
         }
         navBarTitleView?.sizeToFit()
         #if V_ENABLE_WEBSOCKET_DEBUG_MENU
@@ -184,9 +184,6 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         
         // Remove this once the way to animate the workspace in and out from forum has been figured out
         navigationController?.setNavigationBarHidden(false, animated: animated)
-        
-        // Set up the network source if needed.
-        forumNetworkSource?.setUpIfNeeded()
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {

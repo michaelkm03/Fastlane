@@ -14,16 +14,6 @@
                     <rect key="frame" x="0.0" y="-20" width="320" height="544"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <subviews>
-                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.5" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="axG-c0-dBU">
-                            <rect key="frame" x="0.0" y="20" width="320" height="524"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                        </imageView>
-                        <view alpha="0.14999999999999999" contentMode="scaleToFill" id="r6Z-rq-Xpm" userLabel="lightOverlayView">
-                            <rect key="frame" x="0.0" y="20" width="320" height="524"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        </view>
                         <view contentMode="scaleToFill" id="TF1-tJ-TCB" userLabel="closeUpHeader">
                             <rect key="frame" x="0.0" y="20" width="320" height="50"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
@@ -65,6 +55,10 @@
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="WhO-Sg-4hR">
+                    <rect key="frame" x="15" y="523" width="290" height="1"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="yDO-Pi-1ty">
                     <rect key="frame" x="0.0" y="524" width="320" height="44"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
@@ -77,13 +71,12 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="avatarView" destination="gzD-K4-ZYk" id="v6r-tb-GMR"/>
-                <outlet property="blurredImageView" destination="axG-c0-dBU" id="Uvj-cr-Y9n"/>
                 <outlet property="captionLabel" destination="dho-2P-v81" id="wr7-oi-Sbu"/>
                 <outlet property="closeUpContentContainerView" destination="oEy-rS-69c" id="9Rm-1a-6hH"/>
                 <outlet property="createdAtLabel" destination="Vmn-ZP-QUH" id="u8w-eE-8ut"/>
                 <outlet property="headerSection" destination="TF1-tJ-TCB" id="Xlj-vI-6Tr"/>
-                <outlet property="lightOverlayView" destination="r6Z-rq-Xpm" id="FRR-Wm-HWs"/>
                 <outlet property="relatedLabel" destination="yDO-Pi-1ty" id="ixi-Ie-rb7"/>
+                <outlet property="separatorBar" destination="WhO-Sg-4hR" id="zCm-3M-9yS"/>
                 <outlet property="userNameButton" destination="KXm-IF-yUA" id="JES-yG-JXZ"/>
             </connections>
             <point key="canvasLocation" x="390" y="449"/>

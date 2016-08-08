@@ -149,6 +149,9 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
                 self?.backgroundImageView.alpha = 1.0
             }
         }
+        else {
+            self.backgroundImageView.alpha = 0.0
+        }
         
         contentContainerView.hidden = user == nil
         loadingContainerView.hidden = user != nil
