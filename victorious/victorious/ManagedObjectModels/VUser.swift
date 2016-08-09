@@ -49,7 +49,6 @@ class VUser: NSManagedObject, UserModel {
     @NSManaged var accountIdentifier: String?
     @NSManaged var isNewUser: NSNumber?
     @NSManaged var isVIPSubscriber: NSNumber?
-    @NSManaged var vipEndDate: NSDate?
     @NSManaged var achievementsUnlocked: AnyObject?
     @NSManaged var v_avatarBadgeType: String?
     @NSManaged var content: Set<NSObject>?
@@ -111,6 +110,6 @@ class VUser: NSManagedObject, UserModel {
     
     var vipStatus: VIPStatus? {
         let isVIP = isVIPSubscriber?.boolValue ?? false
-        return VIPStatus(isVIP: isVIP, endDate: vipEndDate)
+        return VIPStatus(isVIP: isVIP)
     }
 }

@@ -35,14 +35,8 @@ class ValidateReceiptRequestTests: XCTestCase {
                 responseJSON: JSON(data: mockData)
             )
             
-            guard let vipEndDate = vipStatus.endDate else {
-                XCTFail("Although the `endDate` property is optional, in this test we are expecting it to be parsed.")
-                return
-            }
-            
             XCTAssertEqual(vipStatus.isVIP, true)
             let dateFormatter = NSDateFormatter(vsdk_format: .Standard)
-            XCTAssertEqual(dateFormatter.stringFromDate(vipEndDate), "2016-05-02 18:22:50")
             
         } catch {
             XCTFail("Failed to parse response to `ValidateReceiptRequest`.")
