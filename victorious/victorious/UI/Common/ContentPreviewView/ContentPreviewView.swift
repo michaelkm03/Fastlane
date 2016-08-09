@@ -45,25 +45,7 @@ class ContentPreviewView: UIView {
         }
     }
     
-    override func layoutSubviews() {
-        previewImageView.frame = self.bounds
-        
-        playButton.frame = CGRect(
-            origin: CGPoint(x: bounds.center.x - Constants.playButtonSize.width/2, y: bounds.center.y - Constants.playButtonSize.height/2),
-            size: Constants.playButtonSize
-        )
-
-        vipIcon.frame = CGRect(
-            origin: CGPoint(x: Constants.vipMargins, y: bounds.size.height - Constants.vipSize.height - Constants.vipMargins),
-            size: Constants.vipSize
-        )
-        
-        if let content = content where lastSize.area / bounds.size.area < Constants.imageReloadThreshold {
-            setupImage(forContent: content)
-        }
-        
-        spinner?.center = CGPoint(x: bounds.midX, y: bounds.midY)
-    }
+    // MARK: - Initialization
     
     init(loadingSpinnerEnabled: Bool = false) {
         self.loadingSpinnerEnabled = loadingSpinnerEnabled
@@ -90,11 +72,35 @@ class ContentPreviewView: UIView {
             addSubview(spinner)
             sendSubviewToBack(spinner)
         }
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userVIPStatusChanged), name: VIPSubscriptionHelper.userVIPStatusChangedNotificationKey, object: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    override func layoutSubviews() {
+        previewImageView.frame = self.bounds
+        
+        playButton.frame = CGRect(
+            origin: CGPoint(x: bounds.center.x - Constants.playButtonSize.width/2, y: bounds.center.y - Constants.playButtonSize.height/2),
+            size: Constants.playButtonSize
+        )
+
+        vipIcon.frame = CGRect(
+            origin: CGPoint(x: Constants.vipMargins, y: bounds.size.height - Constants.vipSize.height - Constants.vipMargins),
+            size: Constants.vipSize
+        )
+        
+        if let content = content where lastSize.area / bounds.size.area < Constants.imageReloadThreshold {
+            setupImage(forContent: content)
+        }
+        
+        spinner?.center = CGPoint(x: bounds.midX, y: bounds.midY)
+    }
+    
+    // MARK: - Content Setup
     
     var content: ContentModel? {
         didSet {
@@ -139,6 +145,15 @@ class ContentPreviewView: UIView {
             previewImageView.image = nil
         }
         lastSize = bounds.size
+    }
+    
+    // MARK: - Notification actions
+    
+    private dynamic func userVIPStatusChanged() {
+        guard let currentContent = content else {
+            return
+        }
+        setupForContent(currentContent)
     }
 }
 

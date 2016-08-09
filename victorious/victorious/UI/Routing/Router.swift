@@ -113,6 +113,16 @@ private class ShowForumOperation: MainQueueOperation {
         
         let navigationController = UINavigationController(rootViewController: viewController)
         originViewController?.presentViewController(navigationController, animated: animated) {
+            ///
+            /// FUTURE:
+            /// This HACK is added in order to avoid the other HACK related to the main feed going blank. 
+            /// The VIP forum had no way of initializing it's network source since this was done only once
+            /// per app launch for both of the Forums. More info in this ticket: https://jira.victorious.com/browse/IOS-5560
+            ///
+            if self.showVIP {
+                viewController.forumNetworkSource?.setUpIfNeeded()
+            }
+
             self.finishedExecuting()
         }
     }

@@ -19,14 +19,7 @@ class ContentUpvoteOperation: FetcherOperation {
     
     override func main() {
         // Make data change optimistically before executing the request
-        persistentStore.createBackgroundContext().v_performBlockAndWait { context in
-            guard let content: VContent = context.v_findObjects(["v_remoteID": self.contentID]).first else {
-                    return
-            }
-            
-            content.v_isLikedByCurrentUser = true
-            context.v_save()
-        }
+        Content.likeContent(withID: contentID)
         
         ContentUpvoteRemoteOperation(
             contentID: contentID,

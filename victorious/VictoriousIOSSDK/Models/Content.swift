@@ -9,8 +9,6 @@
 import CoreGraphics
 import Foundation
 
-var ids: Set<Content.ID> = Set()
-
 /// Conformers are models that store information about piece of content in the app
 /// Consumers can directly use this type without caring what the concrete type is, persistent or not.
 public protocol ContentModel: PreviewImageContainer, DictionaryConvertible {
@@ -18,7 +16,7 @@ public protocol ContentModel: PreviewImageContainer, DictionaryConvertible {
     
     /// `id` is optional because live chat messages don't have IDs
     var id: Content.ID? { get }
-    var isLikedByCurrentUser: Bool { get }
+    var isRemotelyLikedByCurrentUser: Bool { get }
     var text: String? { get }
     var hashtags: [Hashtag] { get }
     var shareURL: NSURL? { get }
@@ -109,16 +107,37 @@ extension ContentModel {
     }
 }
 
+private var hiddenContentIDs = Set<Content.ID>()
+private var likedContentIDs = Set<Content.ID>()
+
 extension ContentModel {
     
-    // MARK: Hidden Content
+    // MARK: - Hiding content
     
     public static func hideContent(withID id: Content.ID) {
-        ids.insert(id)
+        hiddenContentIDs.insert(id)
     }
     
     public static func contentIsHidden(withID id: Content.ID) -> Bool {
-        return ids.contains(id)
+        return hiddenContentIDs.contains(id)
+    }
+    
+    // MARK: - Liking content
+    
+    public static func likeContent(withID id: Content.ID) {
+        likedContentIDs.insert(id)
+    }
+    
+    public static func unlikeContent(withID id: Content.ID) {
+        likedContentIDs.remove(id)
+    }
+    
+    public var isLikedByCurrentUser: Bool {
+        if let id = id where likedContentIDs.contains(id) {
+            return true
+        }
+        
+        return isRemotelyLikedByCurrentUser
     }
 }
 
@@ -139,7 +158,7 @@ public class Content: ContentModel {
     public let type: ContentType
     public let isVIPOnly: Bool
     public let author: UserModel
-    public let isLikedByCurrentUser: Bool
+    public let isRemotelyLikedByCurrentUser: Bool
     
     /// videoStartTime is the time this piece of video content started in our device time
     /// It is used to keep videos in sync for videos on stage
@@ -161,7 +180,7 @@ public class Content: ContentModel {
             return nil
         }
         
-        self.isLikedByCurrentUser = viewedContentJSON["viewer_engagements"]["is_liking"].bool ?? false
+        self.isRemotelyLikedByCurrentUser = viewedContentJSON["viewer_engagements"]["is_liking"].bool ?? false
         self.isVIPOnly = json["is_vip"].bool ?? false
         self.id = id
         self.status = json["status"].string
@@ -218,7 +237,7 @@ public class Content: ContentModel {
         previewImages = []
         self.type = assets.first?.contentType ?? .text
         isVIPOnly = false
-        isLikedByCurrentUser = false
+        isRemotelyLikedByCurrentUser = false
         tracking = nil //Tracking is not returned on chat messages
         
         // Either one of these types are required to be counted as a chat message.
@@ -256,6 +275,6 @@ public class Content: ContentModel {
         self.linkedURL = nil
         self.isVIPOnly = false
         self.tracking = nil
-        isLikedByCurrentUser = false
+        isRemotelyLikedByCurrentUser = false
     }
 }
