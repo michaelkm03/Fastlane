@@ -352,11 +352,9 @@ static NSString * const kAppStoreSubscriptionSettingsURL = @"itms-apps://buy.itu
     VProduct *product = [self subscriptionProduct];
     cell.dependencyManager = self.dependencyManager;
     Subscription *vipSubscription = self.dependencyManager.vipSubscription;
-    NSDate *expirationDate = [VCurrentUser user].vipEndDate;
     [cell setSubscriptionImage:vipSubscription.iconImage
                          title:product.localizedTitle
-                localizedPrice:product.price
-                expirationDate:expirationDate];
+                localizedPrice:product.price];
 }
 
 #pragma mark - UITableViewDelegate
