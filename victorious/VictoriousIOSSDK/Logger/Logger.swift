@@ -39,9 +39,8 @@ public var logger: SwiftyBeaver.Type = {
 }()
 
 public extension SwiftyBeaver {
-
     private class var platformDestination: SBPlatformDestination? {
-        return destinations.flatMap { ($0 as? SBPlatformDestination) }.first
+        return destinations.flatMap { $0 as? SBPlatformDestination }.first
     }
 
     /// Unique identifier of the user, should be set as early as possible.
