@@ -12,6 +12,7 @@ import VictoriousIOSSDK
 protocol ChatFeedMessageCellDelegate: class {
     func messageCellDidSelectAvatarImage(messageCell: ChatFeedMessageCell)
     func messageCellDidSelectMedia(messageCell: ChatFeedMessageCell)
+    func messageCellDidLongPressContent(messageCell: ChatFeedMessageCell)
     func messageCellDidSelectFailureButton(messageCell: ChatFeedMessageCell)
 }
 
@@ -44,6 +45,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         super.init(frame: frame)
         
         avatarTapTarget.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOnAvatar)))
+        captionBubbleView.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(didLongPressBubble)))
         failureButton.addTarget(self, action: #selector(didTapOnFailureButton), forControlEvents: .TouchUpInside)
         captionLabel.numberOfLines = 0
         
@@ -131,6 +133,14 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     
     private dynamic func didTapOnPreview(sender: AnyObject?) {
         delegate?.messageCellDidSelectMedia(self)
+    }
+    
+    private dynamic func didLongPressBubble(recognizer: UILongPressGestureRecognizer) {
+        switch recognizer.state {
+            case .Began: delegate?.messageCellDidLongPressContent(self)
+            case .Changed, .Cancelled, .Ended, .Failed, .Possible: break
+        }
+        
     }
     
     private dynamic func didTapOnFailureButton(sender: UIButton) {
@@ -222,6 +232,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         previewBubbleView?.removeFromSuperview()
         
         let bubbleView = ChatBubbleView()
+        bubbleView.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(didLongPressBubble)))
         bubbleView.backgroundColor = dependencyManager.backgroundColor
         bubbleView.contentView.addSubview(spinner)
         bubbleView.contentView.addSubview(previewView)

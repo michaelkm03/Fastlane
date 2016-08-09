@@ -289,7 +289,18 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         view.endEditing(true)
     }
     
+    // MARK: - Content action sheet
+    
+    private func showActionSheet(forContent chatFeedContent: ChatFeedContent) {
+        let alertController = UIAlertController(actionsFor: chatFeedContent.content)
+        presentViewController(alertController, animated: true, completion: nil)
+    }
+    
     // MARK: - ChatFeedDelegate
+    
+    func chatFeed(chatFeed: ChatFeed, didLongPressContent chatFeedContent: ChatFeedContent) {
+        showActionSheet(forContent: chatFeedContent)
+    }
     
     func chatFeed(chatFeed: ChatFeed, didScroll scrollView: UIScrollView) {
         stageShrinkingAnimator?.chatFeed(chatFeed, didScroll: scrollView)
