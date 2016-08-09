@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class VImageAsset, VAsset, VAnswer;
+@class VImageAsset;
 
 @interface VImageAssetFinder : NSObject
 
@@ -43,10 +43,5 @@
  From the provided set, returns a sorted array of image assets desscending by area.
  */
 - (NSArray *)arrayDescendingByAreaFromAssets:(NSSet *)imageAssets;
-
-/**
- From the provided set, returns the VAsset corresponding to a text post
- */
-- (VAsset *)textAssetFromAssets:(NSSet *)assets;
 
 @end

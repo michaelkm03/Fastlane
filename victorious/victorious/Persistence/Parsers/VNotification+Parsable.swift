@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-extension VNotification: PersistenceParsable {
+extension VNotification {
     
     func populate(fromSourceModel sourceModel: Notification) {
         createdAt       = sourceModel.createdAt

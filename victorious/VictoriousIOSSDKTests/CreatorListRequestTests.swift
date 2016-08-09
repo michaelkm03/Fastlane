@@ -25,7 +25,7 @@ class CreatorListRequestTests: XCTestCase {
     }
     
     func testResponseParsing() {
-        guard let mockResponseDataURL = NSBundle(forClass: self.dynamicType).URLForResource("SequenceLikersResponse", withExtension: "json"),
+        guard let mockResponseDataURL = NSBundle(forClass: self.dynamicType).URLForResource("CreatorListResponse", withExtension: "json"),
             let mockData = NSData(contentsOfURL: mockResponseDataURL) else {
                 XCTFail("Error reading mock json data")
                 return

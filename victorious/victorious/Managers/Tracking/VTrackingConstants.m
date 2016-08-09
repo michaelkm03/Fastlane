@@ -98,13 +98,6 @@ NSString * const VTrackingEventSignupWithFacebookDidSucceed = @"SignupWithFacebo
 NSString * const VTrackingEventLoginWithFacebookDidSucceed = @"LoginWithFacebookDidSucceed";
 NSString * const VTrackingEventLoginWithFacebookDidFail = @"LoginWithFacebookDidFail";
 
-NSString * const VTrackingEventLoginWithTwitterSelected = @"LoginWithTwitterSelected";
-NSString * const VTrackingEventSignupWithTwitterDidSucceed = @"SignupWithTwitterDidSucceed";
-NSString * const VTrackingEventLoginWithTwitterDidSucceed = @"LoginWithTwitterDidSucceed";
-NSString * const VTrackingEventLoginWithTwitterDidFailUnknown = @"LoginWithTwitterDidFailUnknown";
-NSString * const VTrackingEventLoginWithTwitterDidFailNoAccounts = @"LoginWithTwitterDidFailNoAccounts";
-NSString * const VTrackingEventLoginWithTwitterDidFailDenied = @"LoginWithTwitterDidFailDenied";
-
 // Edt/Create Profile
 NSString * const VTrackingEventCreateProfileValidationDidFail = @"CreateProfileValidationDidFail";
 NSString * const VTrackingEventCreateProfileDidSucceed = @"CreateProfileDidSucceed";
@@ -265,7 +258,6 @@ NSString * const VTrackingKeyVoteCount = @"VoteCount";
 NSString * const VTrackingKeyUrls = @"Urls";
 NSString * const VTrackingKeyShareDestination = @"ShareDestination";
 NSString * const VTrackingKeySharedToFacebook = @"SharedToFacebook";
-NSString * const VTrackingKeySharedToTwitter = @"SharedToTwitter";
 NSString * const VTrackingKeySequenceCategory = @"SequenceCategory";
 NSString * const VTrackingKeyNotificationId = @"NotificationId";
 NSString * const VTrackingKeySessionTime = @"SessionTime";
@@ -333,7 +325,6 @@ NSString * const VTrackingValueCameraDidAllow = @"CameraDidAllow";
 NSString * const VTrackingValueMicrophoneDidAllow = @"MicrophoneDidAllow";
 NSString * const VTrackingValuePhotolibraryDidAllow = @"PhotolibraryDidAllow";
 NSString * const VTrackingValueFacebookDidAllow = @"FacebookDidAllow";
-NSString * const VTrackingValueTwitterDidAllow = @"TwitterDidAllow";
 NSString * const VTrackingValueLocationDidAllow = @"LocationDidAllow";
 NSString * const VTrackingValueUsertagInComment = @"UsertagInComment";
 NSString * const VTrackingValuePeopleLikeMyPost = @"PeopleLikeMyPost";

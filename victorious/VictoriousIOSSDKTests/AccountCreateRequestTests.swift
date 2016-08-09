@@ -49,28 +49,6 @@ class AccountCreateRequestTests: XCTestCase {
         XCTAssertNotNil(bodyString.rangeOfString("facebook_access_token=\(mockToken)"))
     }
     
-    func testTwitterRequest() {
-        let mockToken = "abc"
-        let mockSecret = "xyz"
-        let mockTwitterID = "31337"
-        let credentials = NewAccountCredentials.Twitter(accessToken: mockToken, accessSecret: mockSecret, twitterID: mockTwitterID)
-        
-        let accountCreateRequest = AccountCreateRequest(credentials: credentials)
-        let request = accountCreateRequest.urlRequest
-        
-        XCTAssertEqual(request.URL?.absoluteString, "/api/account/create/via_twitter_modern")
-        
-        guard let bodyData = request.HTTPBody else {
-            XCTFail("No HTTP Body!")
-            return
-        }
-        let bodyString = String(data: bodyData, encoding: NSUTF8StringEncoding)!
-        
-        XCTAssertNotNil(bodyString.rangeOfString("access_token=\(mockToken)"))
-        XCTAssertNotNil(bodyString.rangeOfString("access_secret=\(mockSecret)"))
-        XCTAssertNotNil(bodyString.rangeOfString("twitter_id=\(mockTwitterID)"))
-    }
-    
     func testResponseParsing() {
         guard let mockUserDataURL = NSBundle(forClass: self.dynamicType).URLForResource("AccountCreateResponse", withExtension: "json"),
             let mockData = NSData(contentsOfURL: mockUserDataURL) else {
