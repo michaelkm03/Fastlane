@@ -65,14 +65,14 @@
                                     <constraint firstAttribute="trailing" secondItem="hnl-7M-et7" secondAttribute="trailing" id="jCZ-nj-7Aq"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="KC9-5E-gDs" userLabel="LoginButtonContainer">
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="jz3-pf-TOX">
                                 <rect key="frame" x="0.0" y="500" width="600" height="100"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6q7-og-v17">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
                                         <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="0.70000000000000007" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="50" id="lkl-fJ-LYN"/>
+                                            <constraint firstAttribute="height" priority="999" constant="50" id="lkl-fJ-LYN"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                         <inset key="imageEdgeInsets" minX="-30" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -88,7 +88,7 @@
                                         <rect key="frame" x="0.0" y="50" width="600" height="50"/>
                                         <color key="backgroundColor" red="0.23921568627450979" green="0.3529411764705882" blue="0.58823529411764708" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="50" id="ygi-E7-03h"/>
+                                            <constraint firstAttribute="height" priority="999" constant="50" id="ygi-E7-03h"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                         <inset key="imageEdgeInsets" minX="-35" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -101,28 +101,18 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="tTi-xz-WY3" secondAttribute="bottom" placeholder="YES" id="3EU-VT-GBm"/>
-                                    <constraint firstItem="tTi-xz-WY3" firstAttribute="leading" secondItem="KC9-5E-gDs" secondAttribute="leading" id="Hrd-q2-gLL"/>
-                                    <constraint firstAttribute="trailing" secondItem="tTi-xz-WY3" secondAttribute="trailing" id="OIl-6d-D4J"/>
-                                    <constraint firstItem="6q7-og-v17" firstAttribute="top" secondItem="KC9-5E-gDs" secondAttribute="top" id="RFf-dK-nWz"/>
-                                    <constraint firstItem="6q7-og-v17" firstAttribute="leading" secondItem="KC9-5E-gDs" secondAttribute="leading" id="Tde-vs-vQA"/>
-                                    <constraint firstAttribute="trailing" secondItem="6q7-og-v17" secondAttribute="trailing" id="ikp-r9-tT8"/>
-                                    <constraint firstItem="tTi-xz-WY3" firstAttribute="top" secondItem="6q7-og-v17" secondAttribute="bottom" placeholder="YES" id="l8c-7o-iF0"/>
-                                </constraints>
-                            </view>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="DE0-cf-VF8" firstAttribute="top" secondItem="bgF-ug-5AS" secondAttribute="bottom" id="0jv-CR-74I"/>
+                            <constraint firstAttribute="trailing" secondItem="jz3-pf-TOX" secondAttribute="trailing" id="8nn-3U-bPI"/>
                             <constraint firstItem="bgF-ug-5AS" firstAttribute="leading" secondItem="bwi-3a-TBY" secondAttribute="leading" id="Awl-6J-qgg"/>
-                            <constraint firstItem="R8Q-wg-c7I" firstAttribute="top" secondItem="KC9-5E-gDs" secondAttribute="bottom" id="P6q-ab-Wp1"/>
                             <constraint firstItem="bgF-ug-5AS" firstAttribute="trailing" secondItem="bwi-3a-TBY" secondAttribute="trailing" id="PlI-bk-paS"/>
+                            <constraint firstItem="jz3-pf-TOX" firstAttribute="top" secondItem="DE0-cf-VF8" secondAttribute="bottom" constant="10" id="QM3-Zh-d4t"/>
+                            <constraint firstItem="jz3-pf-TOX" firstAttribute="leading" secondItem="bwi-3a-TBY" secondAttribute="leading" id="b8r-vC-2ob"/>
+                            <constraint firstItem="R8Q-wg-c7I" firstAttribute="top" secondItem="jz3-pf-TOX" secondAttribute="bottom" id="bNO-gN-BwG"/>
                             <constraint firstAttribute="centerX" secondItem="DE0-cf-VF8" secondAttribute="centerX" id="hG6-dR-nZh"/>
-                            <constraint firstItem="KC9-5E-gDs" firstAttribute="top" secondItem="DE0-cf-VF8" secondAttribute="bottom" constant="10" id="iFc-VZ-HGe"/>
-                            <constraint firstAttribute="trailing" secondItem="KC9-5E-gDs" secondAttribute="trailing" id="jVU-d4-AKv"/>
-                            <constraint firstItem="KC9-5E-gDs" firstAttribute="leading" secondItem="bwi-3a-TBY" secondAttribute="leading" id="rRc-1y-eXE"/>
                             <constraint firstItem="bgF-ug-5AS" firstAttribute="top" secondItem="6rv-rt-0vz" secondAttribute="bottom" constant="8" id="xcn-bA-iCG"/>
                         </constraints>
                     </view>
