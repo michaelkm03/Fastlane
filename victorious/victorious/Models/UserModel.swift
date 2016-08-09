@@ -19,11 +19,7 @@ extension UserModel {
     // MARK: - VIP information
     
     var hasValidVIPSubscription: Bool {
-        guard let endDate = vipStatus?.endDate where vipStatus?.isVIP == true else {
-            return false
-        }
-        
-        return endDate > NSDate()
+        return vipStatus?.isVIP == true
     }
     
     func canView(content: ContentModel) -> Bool {
