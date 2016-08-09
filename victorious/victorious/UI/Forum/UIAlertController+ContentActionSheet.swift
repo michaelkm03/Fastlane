@@ -14,7 +14,7 @@ extension UIAlertController {
     ///
     /// The provided content must have an ID.
     ///
-    convenience init?(actionsFor content: ContentModel, dependencyManager: VDependencyManager) {
+    convenience init?(actionsFor content: ContentModel, dependencyManager: VDependencyManager, completion: (action: ContentAlertAction) -> Void) {
         guard let id = content.id else {
             return nil
         }
@@ -25,9 +25,15 @@ extension UIAlertController {
             addAction(UIAlertAction(
                 title: "Unbump",
                 style: .Default,
-                handler: { alertAction in
-                    if let apiPath = dependencyManager.contentUnupvoteAPIPath {
-                        ContentUnupvoteOperation(contentID: id, apiPath: apiPath).queue()
+                handler: { _ in
+                    guard let apiPath = dependencyManager.contentUnupvoteAPIPath else {
+                        return
+                    }
+                    
+                    ContentUnupvoteOperation(contentID: id, apiPath: apiPath).queue { _, error, _ in
+                        if error == nil {
+                            completion(action: .unlike)
+                        }
                     }
                 }
             ))
@@ -36,9 +42,15 @@ extension UIAlertController {
             addAction(UIAlertAction(
                 title: "Bump",
                 style: .Default,
-                handler: { alertAction in
-                    if let apiPath = dependencyManager.contentUpvoteAPIPath {
-                        ContentUpvoteOperation(contentID: id, apiPath: apiPath).queue()
+                handler: { _ in
+                    guard let apiPath = dependencyManager.contentUpvoteAPIPath else {
+                        return
+                    }
+                    
+                    ContentUpvoteOperation(contentID: id, apiPath: apiPath).queue { _, error, _ in
+                        if error == nil {
+                            completion(action: .like)
+                        }
                     }
                 }
             ))
@@ -48,9 +60,15 @@ extension UIAlertController {
             addAction(UIAlertAction(
                 title: "Delete",
                 style: .Destructive,
-                handler: { alertAction in
-                    if let apiPath = dependencyManager.contentDeleteAPIPath {
-                        ContentDeleteOperation(contentID: id, apiPath: apiPath).queue()
+                handler: { _ in
+                    guard let apiPath = dependencyManager.contentDeleteAPIPath else {
+                        return
+                    }
+                    
+                    ContentDeleteOperation(contentID: id, apiPath: apiPath).queue { _, error, _ in
+                        if error == nil {
+                            completion(action: .delete)
+                        }
                     }
                 }
             ))
@@ -59,9 +77,15 @@ extension UIAlertController {
             addAction(UIAlertAction(
                 title: "Flag",
                 style: .Destructive,
-                handler: { alertAction in
-                    if let apiPath = dependencyManager.contentFlagAPIPath {
-                        ContentFlagOperation(contentID: id, apiPath: apiPath).queue()
+                handler: { _ in
+                    guard let apiPath = dependencyManager.contentFlagAPIPath else {
+                        return
+                    }
+                    
+                    ContentFlagOperation(contentID: id, apiPath: apiPath).queue { _, error, _ in
+                        if error == nil {
+                            completion(action: .flag)
+                        }
                     }
                 }
             ))
@@ -70,9 +94,16 @@ extension UIAlertController {
         addAction(UIAlertAction(
             title: NSLocalizedString("Cancel", comment: ""),
             style: .Cancel,
-            handler: { _ in }
+            handler: { _ in
+                completion(action: .cancel)
+            }
         ))
     }
+}
+
+/// Different actions that can be performed from a `UIAlertController` configured for content actions.
+enum ContentAlertAction {
+    case like, unlike, delete, flag, cancel
 }
 
 private extension VDependencyManager {
