@@ -9,13 +9,13 @@
 import UIKit
 
 class ContentDeleteOperation: FetcherOperation {
-    private let contentDeleteURL: String
     private let contentID: Content.ID
+    private let apiPath: APIPath
     private let flaggedContent = VFlaggedContent()
     
-    init(contentID: Content.ID, contentDeleteURL: String) {
+    init(contentID: Content.ID, apiPath: APIPath) {
         self.contentID = contentID
-        self.contentDeleteURL = contentDeleteURL
+        self.apiPath = apiPath
     }
     
     override func main() {
@@ -32,6 +32,6 @@ class ContentDeleteOperation: FetcherOperation {
             }
             context.deleteObject(content)
         }
-        ContentDeleteRemoteOperation(contentID: contentID, contentDeleteURL: contentDeleteURL)?.after(self).queue()
+        ContentDeleteRemoteOperation(contentID: contentID, apiPath: apiPath)?.after(self).queue()
     }
 }

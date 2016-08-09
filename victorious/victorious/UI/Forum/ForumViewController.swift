@@ -292,8 +292,9 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     // MARK: - Content action sheet
     
     private func showActionSheet(forContent chatFeedContent: ChatFeedContent) {
-        let alertController = UIAlertController(actionsFor: chatFeedContent.content)
-        presentViewController(alertController, animated: true, completion: nil)
+        if let alertController = UIAlertController(actionsFor: chatFeedContent.content, dependencyManager: dependencyManager) {
+            presentViewController(alertController, animated: true, completion: nil)
+        }
     }
     
     // MARK: - ChatFeedDelegate

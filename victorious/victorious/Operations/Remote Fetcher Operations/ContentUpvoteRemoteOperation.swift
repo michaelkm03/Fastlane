@@ -11,8 +11,8 @@ import UIKit
 class ContentUpvoteRemoteOperation: RemoteFetcherOperation, RequestOperation {
     let request: ContentUpvoteRequest!
     
-    init?(contentID: String, contentUpvoteURL: String) {
-        guard let request = ContentUpvoteRequest(contentID: contentID, contentUpvoteURL: contentUpvoteURL) else {
+    init?(contentID: Content.ID, apiPath: APIPath) {
+        guard let request = ContentUpvoteRequest(contentID: contentID, apiPath: apiPath) else {
             return nil
         }
         self.request = request
