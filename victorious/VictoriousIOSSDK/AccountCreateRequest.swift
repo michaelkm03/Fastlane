@@ -13,12 +13,9 @@ public enum NewAccountCredentials {
     
     /// An account based on a Facebook oauth token
     case Facebook(accessToken: String)
-    
-    /// An account based on a Twitter oauth token
-    case Twitter(accessToken: String, accessSecret: String, twitterID: String)
 }
 
-/// The endpoint that creates a new account, or logs into an existing social (Facebook/Twitter) account.
+/// The endpoint that creates a new account, or logs into an existing social (Facebook) account.
 ///
 /// Path: /api/account/create
 public struct AccountCreateRequest: RequestType {
@@ -36,15 +33,6 @@ public struct AccountCreateRequest: RequestType {
             case let .Facebook(accessToken):
                 urlRequest.URL = urlRequest.URL?.URLByAppendingPathComponent("via_facebook_modern")
                 urlRequest.vsdk_addURLEncodedFormPost(["facebook_access_token": accessToken])
-            
-            case let .Twitter(accessToken, accessSecret, twitterID):
-                urlRequest.URL = urlRequest.URL?.URLByAppendingPathComponent("via_twitter_modern")
-                
-                urlRequest.vsdk_addURLEncodedFormPost([
-                    "access_token": accessToken,
-                    "access_secret": accessSecret,
-                    "twitter_id": twitterID
-                ])
         }
         
         return urlRequest

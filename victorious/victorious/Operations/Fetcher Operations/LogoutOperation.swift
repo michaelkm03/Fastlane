@@ -22,11 +22,7 @@ class LogoutOperation: RemoteFetcherOperation {
         // Boost the priority of this operation
         self.qualityOfService = .UserInitiated
         
-        // Before cleaning out current user data, prune the persistent store first,
-        // and make the remote logout call to backend
-        let pruneOperation = LogoutPrunePersistentStoreOperation()
-        pruneOperation.before(self).queue()
-        LogoutRemoteOperation().rechainAfter(pruneOperation).queue()
+        LogoutRemoteOperation().before(self).queue()
     }
     
     convenience init(dependencyManager: VDependencyManager) {

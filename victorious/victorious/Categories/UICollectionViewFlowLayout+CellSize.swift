@@ -9,7 +9,6 @@
 import UIKit
 
 extension UICollectionViewFlowLayout {
-    
     /// Returns the optimal size of a square cell that fits into a collection view with this layout that has the given
     /// width and number of cells per row.
     func v_cellSize(fittingWidth containerWidth: CGFloat, cellsPerRow: Int) -> CGSize {
@@ -18,5 +17,4 @@ extension UICollectionViewFlowLayout {
         let length       = floor((containerWidth - outerSpacing - innerSpacing) / CGFloat(cellsPerRow))
         return CGSize(width: length, height: length)
     }
-    
 }

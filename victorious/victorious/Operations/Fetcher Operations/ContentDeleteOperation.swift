@@ -11,7 +11,6 @@ import UIKit
 class ContentDeleteOperation: FetcherOperation {
     private let contentID: Content.ID
     private let apiPath: APIPath
-    private let flaggedContent = VFlaggedContent()
     
     init(contentID: Content.ID, apiPath: APIPath) {
         self.contentID = contentID

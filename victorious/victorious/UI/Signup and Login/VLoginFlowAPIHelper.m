@@ -20,7 +20,6 @@
 #import <MBProgressHUD/MBProgressHUD.h>
 
 // API
-#import "VTwitterAccountsHelper.h"
 #import "VConstants.h"
 
 // Validation

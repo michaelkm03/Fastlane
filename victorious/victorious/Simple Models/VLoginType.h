@@ -16,7 +16,6 @@ typedef NS_ENUM( NSInteger, VLoginType )
     VLoginTypeNone,         ///< Default value, usually means there is currently no logged in session
     VLoginTypeEmail,        ///< User signed up with email and password
     VLoginTypeFacebook,     ///< User connected with their Facebook account
-    VLoginTypeTwitter,      ///< User connected with their Twitter account
     VLoginTypeAnonymous,    ///< User is anonymous, e.g. A child under certain age that we don't store info of
     VLoginTypeCount,
 };

@@ -48,24 +48,6 @@ extension VLoginFlowAPIHelper {
         return operation
     }
     
-    func queueLoginOperationWithTwitter(oauthToken: String, accessSecret: String, twitterID: String, identifier: String, completion: (NSError?) -> ()) -> NSOperation {
-        let loginType = VLoginType.Twitter
-        let credentials: NewAccountCredentials = .Twitter(accessToken: oauthToken, accessSecret: accessSecret, twitterID: twitterID)
-        let accountCreateRequest = AccountCreateRequest(credentials: credentials)
-        let operation = AccountCreateOperation(
-            dependencyManager: dependencyManager,
-            request: accountCreateRequest,
-            parameters: AccountCreateParameters(
-                loginType: loginType,
-                accountIdentifier: nil
-            )
-        )
-        operation.queue()  { results, error, cancelled in
-            completion(error)
-        }
-        return operation
-    }
-    
     func queueLoginOperationWithEmail(email: String, password: String, completion: ([AnyObject]?, NSError?, Bool) -> () ) -> NSOperation {
         let operation = LoginOperation(
             dependencyManager: dependencyManager,
