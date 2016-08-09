@@ -36,7 +36,7 @@ struct Router {
             case .profile(let userID): showProfile(for: userID)
             case .closeUp(let contentWrapper): showCloseUpView(for: contentWrapper)
             case .vipForum: showVIPForum()
-            case .externalURL(let url, let addressBarVisible): showWebView(for: url, addressBarVisible: addressBarVisible)
+            case .externalURL(let url, let addressBarVisible, let isVIPOnly): showWebView(for: url, addressBarVisible: addressBarVisible, isVIPOnly: isVIPOnly)
         }
     }
     
@@ -67,10 +67,22 @@ struct Router {
         ShowProfileOperation(originViewController: originViewController, dependencyManager: dependencyManager, userId: userID).queue()
     }
     
-    private func showWebView(for url: NSURL, addressBarVisible: Bool) {
+    private func showWebView(for url: NSURL, addressBarVisible: Bool, isVIPOnly: Bool = false) {
         // Future: We currently have no way to hide address bar. This will be handled when we implement close up web view.
-        let safariViewController = SFSafariViewController(URL: url)
-        originViewController?.presentViewController(safariViewController, animated: true, completion: nil)
+        
+        if isVIPOnly {
+            guard let originViewController = self.originViewController else { return }
+            let showVIPFlowOperation = ShowVIPFlowOperation(originViewController: originViewController, dependencyManager: dependencyManager) { success in
+                if success {
+                    let safariViewController = SFSafariViewController(URL: url)
+                    originViewController.presentViewController(safariViewController, animated: true, completion: nil)                }
+            }
+            showVIPFlowOperation.queue()
+        }
+        else {
+            let safariViewController = SFSafariViewController(URL: url)
+            originViewController?.presentViewController(safariViewController, animated: true, completion: nil)
+        }
     }
     
     private func showError() {
@@ -301,7 +313,8 @@ private class ShowFetchedCloseUpOperation: MainQueueOperation {
         super.init()
     }
     
-    override func main() {
+    override func start() {
+        super.start()
         defer {
             finishedExecuting()
         }
