@@ -48,4 +48,10 @@ public extension SwiftyBeaver {
     class func setUserIdentifier(identifier: String) {
         platformDestination?.analyticsUserName = identifier
     }
+
+    /// This will set the minimum log level for *all* destinations registered.
+    /// Defualt value is `info`.
+    class func setMinimumLogLevel(logLevel: SwiftyBeaver.Level) {
+        destinations.forEach { $0.minLevel = logLevel }
+    }
 }
