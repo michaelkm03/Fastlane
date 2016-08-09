@@ -274,16 +274,16 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         dispatch_after(Constants.titleCardDelayedShow) {
             self.titleCardViewController?.show()
         }
-
+        
+        if let content = currentStageContent?.content {
+            trackView(.stageView, showingContent: content)
+        }
+        
         guard !visible else {
             return
         }
 
         visible = true
-        
-        if let content = currentStageContent?.content {
-            trackView(.stageView, showingContent: content)
-        }
     }
 
     private func hide(animated animated: Bool) {
