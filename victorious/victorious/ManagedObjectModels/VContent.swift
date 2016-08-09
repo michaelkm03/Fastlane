@@ -21,7 +21,7 @@ class VContent: NSManagedObject, ContentModel, PaginatableItem {
     @NSManaged var v_text: String?
     @NSManaged var v_type: String
     @NSManaged var v_isVIPOnly: NSNumber?
-    @NSManaged var v_isLikedByCurrentUser: NSNumber?
+    @NSManaged var v_isRemotelyLikedByCurrentUser: NSNumber?
     @NSManaged var v_contentMediaAssets: Set<VContentMediaAsset>
     @NSManaged var v_author: VUser
     @NSManaged var v_contentPreviewAssets: Set<VImageAsset>
@@ -89,8 +89,8 @@ class VContent: NSManagedObject, ContentModel, PaginatableItem {
         return v_author
     }
     
-    var isLikedByCurrentUser: Bool {
-        return v_isLikedByCurrentUser == true
+    var isRemotelyLikedByCurrentUser: Bool {
+        return v_isRemotelyLikedByCurrentUser == true
     }
     
     /// Whether this content is only accessible for VIPs

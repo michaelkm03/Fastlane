@@ -7,9 +7,6 @@
 //
 
 #import "VImageAssetFinder.h"
-#import "VAsset.h"
-#import "VAnswer.h"
-#import "VNode.h"
 #import "victorious-Swift.h"
 
 static NSString * const kTextAsset = @"text";
@@ -78,21 +75,6 @@ static NSString * const kTextAsset = @"text";
             {
                 return [@(asset2.area) compare:@(asset1.area)];
             }];
-}
-
-- (VAsset *)textAssetFromAssets:(NSSet *)assets
-{
-    VAsset *textAsset = nil;
-    
-    for (VAsset *asset in assets)
-    {
-        if ( asset.data != nil && [asset.type isEqualToString:kTextAsset] && [asset.data isKindOfClass:[NSString class]] )
-        {
-            textAsset = asset;
-        }
-    }
-    
-    return textAsset;
 }
 
 @end

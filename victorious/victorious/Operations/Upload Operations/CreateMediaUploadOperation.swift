@@ -115,13 +115,6 @@ class CreateMediaUploadOperation: BackgroundOperation {
         case .Normal:
             break
         }
-        if publishParameters.shareToFacebook {
-            dict["facebook_access_token"] = FBSDKAccessToken.currentAccessToken().tokenString
-        }
-        if (publishParameters.shareToTwitter) {
-            dict["twitter_access_token"] = VTwitterManager.sharedManager().oauthToken
-            dict["twitter_access_secret"] = VTwitterManager.sharedManager().secret
-        }
         if let source = publishParameters.source {
             dict["source"] = source
         }

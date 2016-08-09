@@ -23,7 +23,6 @@ NSString * const VAutomationIdentifierLoginCancel                    = @"Login C
 NSString * const VAutomationIdentifierLoginForgotPassword            = @"Login Forgot Password";
 NSString * const VAutomationIdentifierLoginSignUp                    = @"Login Sign Up";
 NSString * const VAutomationIdentifierLoginFacebook                  = @"Login Facebook";
-NSString * const VAutomationIdentifierLoginTwitter                   = @"Login Twitter";
 
 NSString * const VAutomationIdentifierSignupEmailField               = @"Signup Email Field";
 NSString * const VAutomationIdentifierSignupEmailFieldValidation     = @"Signup Email Validation Field";
@@ -43,7 +42,6 @@ NSString * const VAutomationIdentifierProfileLogInButton             = @"Log In 
 
 NSString * const VAutomationIdentifierProfileUsernameTitle           = @"Profile Username Label";
 
-NSString * const VAutomationIdentifierLRegistrationTwitter           = @"Registration Twitter";
 NSString * const VAutomationIdentifierLRegistrationEmail             = @"Registration Email";
 NSString * const VAutomationIdentifierLRegistrationFacebook          = @"Registration Facebook";
 NSString * const VAutomationIdentifierLRegistrationTOS               = @"Registration TOS";

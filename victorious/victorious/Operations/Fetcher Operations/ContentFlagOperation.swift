@@ -11,7 +11,6 @@ import UIKit
 class ContentFlagOperation: FetcherOperation {
     private let contentFlagURL: String
     private let contentID: String
-    private let flaggedContent = VFlaggedContent()
 
     init(contentID: String, contentFlagURL: String) {
         self.contentID = contentID

@@ -9,8 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-extension Experiment: PersistenceParsable {
-    
+extension Experiment {
     func populate(fromSourceModel sourceModel: DeviceExperiment) {   
         name        = sourceModel.name
         id          = sourceModel.id

@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-extension VImageAsset: PersistenceParsable {
+extension VImageAsset {
     func populate(fromSourceModel imageAsset: ImageAssetModel) {
         height = imageAsset.size.height
         width = imageAsset.size.width

@@ -93,14 +93,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) BOOL shouldSaveToCameraRoll;
 
 /**
- *  A boolean indicating whether or not this asset shoudl be shared to facebook on publish
+ *  A boolean indicating whether or not this asset should be shared to facebook on publish
  */
 @property (nonatomic, assign) BOOL shareToFacebook;
-
-/**
- *  A boolean indicating whether or not this asset shoudl be shared to twitter on publish
- */
-@property (nonatomic, assign) BOOL shareToTwitter;
 
 /**
  *  The source of the asset.

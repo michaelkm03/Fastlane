@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-extension VUser: PersistenceParsable {
+extension VUser {
     func populate(fromSourceModel user: UserModel) {
         remoteId                    = user.id ?? remoteId
         v_completedProfile          = user.completedProfile ?? completedProfile

@@ -7,7 +7,6 @@
 //
 
 #import "VDummyModels.h"
-#import "VVoteResult.h"
 #import "victorious-Swift.h"
 
 static NSManagedObjectContext *context = nil;
@@ -55,22 +54,6 @@ NSString * const kMacroBallisticsCount = @"%%COUNT%%";
     return [NSArray arrayWithArray:models];
 }
 
-+ (NSArray *)createVoteTypes:(NSInteger)count
-{
-    NSDictionary *configuration = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:[[NSBundle bundleForClass:[self class]] pathForResource:@"voteTypes" ofType:@"json"]] options:0 error:nil];
-    NSArray *voteTypes = configuration[@"voteTypes"];
-    
-    NSMutableArray *models = [[NSMutableArray alloc] init];
-    for (NSDictionary *voteTypeDict in voteTypes)
-    {
-        VDependencyManager *dm = [[VDependencyManager alloc] initWithParentManager:nil configuration:voteTypeDict dictionaryOfClassesByTemplateName:nil];
-        VVoteType *voteType = [[VVoteType alloc] initWithDependencyManager:dm];
-        [models addObject:voteType];
-    }
-    
-    return [NSArray arrayWithArray:models];
-}
-
 + (NSArray *)createUsers:(NSInteger)count
 {
     NSMutableArray *models = [[NSMutableArray alloc] init];
@@ -80,19 +63,6 @@ NSString * const kMacroBallisticsCount = @"%%COUNT%%";
         user.displayName = [NSString stringWithFormat:@"user_%lu", (unsigned long)i];
         user.remoteId = @(i);
         [models addObject:user];
-    }
-    return [NSArray arrayWithArray:models];
-}
-
-+ (NSArray *)createVoteResults:(NSInteger)count
-{
-    NSMutableArray *models = [[NSMutableArray alloc] init];
-    for ( NSInteger i = 0; i < count; i++ )
-    {
-        VVoteResult *result = (VVoteResult *)[self objectWithEntityName:@"VoteResult" subclass:[VVoteResult class]];
-        result.count = @( arc4random() % 100 );
-        result.remoteId = @(i+1);
-        [models addObject:result];
     }
     return [NSArray arrayWithArray:models];
 }

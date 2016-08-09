@@ -10,9 +10,7 @@
 #import "VPurchaseManagerType.h"
 #import "VPurchaseCell.h"
 #import "VPurchaseActionCell.h"
-#import "VVoteType.h"
 #import "VNoContentTableViewCell.h"
-#import "VPurchaseStringMaker.h"
 #import "VThemeManager.h"
 #import "victorious-Swift.h"
 
@@ -46,7 +44,6 @@ static NSString * const kAppStoreSubscriptionSettingsURL = @"itms-apps://buy.itu
 
 @property (nonatomic, strong) id<VPurchaseManagerType> purchaseManager;
 @property (nonatomic, assign) BOOL isRestoringPurchases;
-@property (nonatomic, strong) VPurchaseStringMaker *stringMaker;
 @property (nonatomic, strong) NSArray *purchasedProductsIdentifiers;
 @property (nonatomic, strong) VPurchaseCell *subscriptionSizingCell;
 
@@ -63,7 +60,6 @@ static NSString * const kAppStoreSubscriptionSettingsURL = @"itms-apps://buy.itu
     self.subscriptionSizingCell = [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([VPurchaseCell class]) owner:self options:nil] firstObject];
     self.subscriptionSizingCell.dependencyManager = self.dependencyManager;
     
-    self.stringMaker = [[VPurchaseStringMaker alloc] init];
     self.purchaseManager = [VPurchaseManager sharedInstance];
     
     [VPurchaseCell registerNibWithTableView:self.tableView];
@@ -116,8 +112,8 @@ static NSString * const kAppStoreSubscriptionSettingsURL = @"itms-apps://buy.itu
          
          if ( restoredProductIdentifiers.count == 0 )
          {
-             [self showAlertWithTitle:[self.stringMaker localizedSuccessTitleWithProductsCount:0]
-                              message:[self.stringMaker localizedSuccessMessageWithProductsCount:0]];
+             [self showAlertWithTitle:[self localizedSuccessTitleWithProductsCount:0]
+                              message:[self localizedSuccessMessageWithProductsCount:0]];
              onRestoreComplete();
          }
          else if ( [restoredProductIdentifiers containsObject:[self.dependencyManager vipSubscription].productIdentifier] )
@@ -143,6 +139,34 @@ static NSString * const kAppStoreSubscriptionSettingsURL = @"itms-apps://buy.itu
          NSString *title = NSLocalizedString( @"RestorePurchasesErrorTitle", nil );
          [self showError:error withTitle:title];
      }];
+}
+
+- (NSString *)localizedSuccessMessageWithProductsCount:(NSUInteger)count
+{
+    if ( count == 0 )
+    {
+        return NSLocalizedString( @"RestorePurchasesNoPurchases", nil );
+    }
+    else
+    {
+        return NSLocalizedString( @"RestorePurchasesSuccess", nil);
+    }
+}
+
+- (NSString *)localizedSuccessTitleWithProductsCount:(NSUInteger)count
+{
+    if ( count == 0 )
+    {
+        return NSLocalizedString( @"RestorePurchasesNoPurchasesTitle", nil );
+    }
+    else if ( count == 1 )
+    {
+        return [NSString stringWithFormat:NSLocalizedString( @"RestorePurchasesSuccessTitleSingular", nil), count];
+    }
+    else
+    {
+        return [NSString stringWithFormat:NSLocalizedString( @"RestorePurchasesSuccessTitlePlural", nil), count];
+    }
 }
 
 - (void)showError:(NSError *)error withTitle:(NSString *)title
@@ -212,9 +236,8 @@ static NSString * const kAppStoreSubscriptionSettingsURL = @"itms-apps://buy.itu
             VPurchaseCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
             NSString *productIdentifier = [self.purchasedProductsIdentifiers objectAtIndex:indexPath.row];
             VProduct *product = [self.purchaseManager purchaseableProductForProductIdentifier:productIdentifier];
-            VVoteType *voteType = [self.dependencyManager voteTypeForProductIdentifier:productIdentifier];
             cell.dependencyManager = self.dependencyManager;
-            [cell setProductImage:voteType.iconImage title:product.localizedTitle];
+            [cell setProductImage:nil title:product.localizedTitle];
             return cell;
         }
         else

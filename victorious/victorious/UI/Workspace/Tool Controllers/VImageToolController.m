@@ -13,7 +13,6 @@
 #import "UIImage+Resize.h"
 #import "VCropTool.h"
 #import "VFilterTool.h"
-#import "VTextTool.h"
 #import "NSURL+VTemporaryFiles.h"
 #import "VCanvasView.h"
 
@@ -45,14 +44,6 @@ NSString * const VImageToolControllerShouldDisableTextOverlayKey = @"VImageToolC
 - (void)setDisableTextOverlay:(BOOL)disableTextOverlay
 {
     _disableTextOverlay = disableTextOverlay;
-    
-    for (id tool in self.tools)
-    {
-        if ([tool isKindOfClass:[VTextTool class]])
-        {
-            [self disableTool:tool];
-        }
-    }
 }
 
 - (void)setCanvasView:(VCanvasView *)canvasView
@@ -161,36 +152,12 @@ NSString * const VImageToolControllerShouldDisableTextOverlayKey = @"VImageToolC
 
 - (NSString *)embeddedText
 {
-    __block NSString *embeddedText;
-    [self.tools enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
-     {
-         if ([obj isKindOfClass:[VTextTool class]])
-         {
-             if ([obj respondsToSelector:@selector(embeddedText)])
-             {
-                 embeddedText = [obj embeddedText];
-                 *stop = YES;
-             }
-         }
-     }];
-    return embeddedText;
+    return nil;
 }
 
 - (NSString *)textToolType
 {
-    __block NSString *textToolType;
-    [self.tools enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop)
-     {
-         if ([obj isKindOfClass:[VTextTool class]])
-         {
-             if ([obj respondsToSelector:@selector(textStyleTitle)])
-             {
-                 textToolType = [obj textStyleTitle];
-                 *stop = YES;
-             }
-         }
-     }];
-    return textToolType;
+    return nil;
 }
 
 - (BOOL)didCrop
@@ -234,11 +201,6 @@ NSString * const VImageToolControllerShouldDisableTextOverlayKey = @"VImageToolC
                  }
                  break;
              case VImageToolControllerInitialImageEditStateText:
-                 if ([obj isKindOfClass:[VTextTool class]])
-                 {
-                     [self setSelectedTool:obj];
-                     *stop = YES;
-                 }
                  break;
              case VImageToolControllerInitialImageEditStateCrop:
              default:
