@@ -203,10 +203,6 @@ private class ShowCloseUpOperation: MainQueueOperation {
     private var contentID: String?
     private(set) var displayedCloseUpView: CloseUpContainerViewController?
     
-    static func showOperation(forContent content: ContentModel, displayModifier: ShowCloseUpDisplayModifier) -> MainQueueOperation {
-        return ShowPermissionedCloseUpOperation(content: content, displayModifier: displayModifier)
-    }
-    
     static func showOperation(forContentID contentID: String, displayModifier: ShowCloseUpDisplayModifier) -> MainQueueOperation {
         return ShowFetchedCloseUpOperation(contentID: contentID, displayModifier: displayModifier)
     }
@@ -255,49 +251,6 @@ private class ShowCloseUpOperation: MainQueueOperation {
             originViewController.pushViewController(closeUpViewController, animated: animated)
         } else {
             originViewController.navigationController?.pushViewController(closeUpViewController, animated: animated)
-        }
-    }
-}
-
-/// Shows a close up view for a given piece of content after checking
-/// permissions and displaying a vip gate as appropriate.
-private class ShowPermissionedCloseUpOperation: MainQueueOperation {
-    private let displayModifier: ShowCloseUpDisplayModifier
-    private var content: ContentModel
-    
-    init(content: ContentModel, displayModifier: ShowCloseUpDisplayModifier) {
-        self.displayModifier = displayModifier
-        self.content = content
-        super.init()
-    }
-    
-    override func start() {
-        defer {
-            finishedExecuting()
-        }
-        
-        guard !cancelled else {
-            return
-        }
-        
-        let displayModifier = self.displayModifier
-        let dependencyManager = displayModifier.dependencyManager
-        let content = self.content
-        
-        if content.isVIPOnly {
-            let scaffold = dependencyManager.scaffoldViewController()
-            let showVIPFlowOperation = ShowVIPFlowOperation(originViewController: scaffold, dependencyManager: dependencyManager) { success in
-                if success {
-                    ShowCloseUpOperation(content: content, displayModifier: displayModifier).queue()
-                }
-            }
-            
-            let completionBlock = self.completionBlock
-            showVIPFlowOperation.rechainAfter(self).queue() { _ in
-                completionBlock?()
-            }
-        } else {
-            ShowCloseUpOperation(content: content, displayModifier: displayModifier).rechainAfter(self).queue()
         }
     }
 }
