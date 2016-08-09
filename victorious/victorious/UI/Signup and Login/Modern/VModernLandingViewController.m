@@ -186,22 +186,10 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
     
     NSArray *options = [self.dependencyManager arrayOfValuesOfType:[NSString class] forKey:kSigninOptionsKey];
     
-    if ( ![VFacebookHelper facebookAppIDPresent] )
+    options = [options filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSString *evaluatedObject, NSDictionary *bindings)
     {
-        options = [options filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSString *evaluatedObject, NSDictionary *bindings)
-        {
-            return ![evaluatedObject isEqualToString:kFacebookKey];
-        }]];
-    }
-    
-    UIButton *firstButton = [self buttonForLoginType:[options firstObject]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.legalButtonContainer
-                                                          attribute:NSLayoutAttributeBottom
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:firstButton
-                                                          attribute:NSLayoutAttributeTop
-                                                         multiplier:1.0f
-                                                           constant:-kLoginButtonToTextViewSpacing]];
+        return [self buttonForLoginType:evaluatedObject] != nil && (VFacebookHelper.facebookAppIDPresent || ![evaluatedObject isEqualToString:kFacebookKey]);
+    }]];
     
     for (NSUInteger idx = 0; idx < options.count; idx++)
     {
