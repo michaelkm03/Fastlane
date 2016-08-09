@@ -27,6 +27,7 @@ public var logger: SwiftyBeaver.Type = {
 
     #if DEBUG
         let consoleDestination = ConsoleDestination()
+        consoleDestination.colored = false
         theBeaver.addDestination(consoleDestination)
     #else
         let remoteDestination = SBPlatformDestination(appID: Secrets.appID, appSecret: Secrets.appSecret, encryptionKey: Secrets.encryptionKey)
