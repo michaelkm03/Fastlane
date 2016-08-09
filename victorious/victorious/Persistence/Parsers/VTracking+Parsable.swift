@@ -26,5 +26,6 @@ extension VTracking: PersistenceParsable {
         videoStall          = tracking.trackingURLsForKey(.videoStall) ?? videoStall
         viewStart           = tracking.trackingURLsForKey(.viewStart) ?? viewStart
         viewStop            = tracking.trackingURLsForKey(.viewStop) ?? viewStop
+        stageView           = tracking.trackingURLsForKey(.stageView) ?? stageView
     }
 }

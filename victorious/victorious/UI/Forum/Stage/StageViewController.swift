@@ -8,7 +8,7 @@
 
 import UIKit
 
-class StageViewController: UIViewController, Stage, CaptionBarViewControllerDelegate, TileCardDelegate, MediaContentViewDelegate {
+class StageViewController: UIViewController, Stage, CaptionBarViewControllerDelegate, TileCardDelegate, MediaContentViewDelegate, ContentCellTracker {
     private struct Constants {
         static let defaultAspectRatio: CGFloat = 16 / 9
         static let titleCardDelayedShow = NSTimeInterval(1)
@@ -280,6 +280,10 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         }
 
         visible = true
+        
+        if let content = currentStageContent?.content {
+            trackView(.stageView, showingContent: content)
+        }
     }
 
     private func hide(animated animated: Bool) {
@@ -368,6 +372,12 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
             height += stageHeight
         }
         delegate?.stage(self, wantsUpdateToContentHeight: height)
+    }
+    
+    // MARK: - Content Cell Tracker 
+    
+    var sessionParameters: [NSObject : AnyObject] {
+        return [:]
     }
 }
 
