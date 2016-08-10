@@ -38,8 +38,6 @@
 	<string>664946900317058</string>
 	<key>FacebookDisplayName</key>
 	<string>Victorious-dev</string>
-	<key>IsAgeGateEnabled</key>
-	<string>no</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbapi</string>
@@ -71,10 +69,6 @@
 	<string>We use your location to serve you relevant info such as events in your area.</string>
 	<key>ProductPrefix</key>
 	<string>${ProductPrefix}</string>
-	<key>TWITTER_CONSUMER_KEY</key>
-	<string>MhDYRpVPTaGQgWBT7ChmxQ</string>
-	<key>TWITTER_CONSUMER_SECRET</key>
-	<string>damxXK28SCObMZ1CEMTLszm3v8mdRt0L1wuVnzXtH1E</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Roboto-Light.ttf</string>

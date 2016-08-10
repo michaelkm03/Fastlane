@@ -21,9 +21,7 @@
 #import "VLoginFlowControllerDelegate.h"
 #import "VPermissionsTrackingHelper.h"
 #import "victorious-Swift.h"
-#import "VTwitterAccountsHelper.h"
 #import "VSocialLoginErrors.h"
-#import "VForcedWorkspaceContainerViewController.h"
 
 @import FBSDKCoreKit;
 @import FBSDKLoginKit;
@@ -276,90 +274,6 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectSignupWithEmail];
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRegistrationOption];
-}
-
-- (void)selectedTwitterAuthorization
-{
-    if (self.actionsDisabled)
-    {
-        return;
-    }
-    
-    [self.appTimingTracker resetAllEventsWithType:VAppTimingEventTypeLogin];
-    [self.appTimingTracker resetAllEventsWithType:VAppTimingEventTypeSignup];
-    
-    [self.appTimingTracker startEventWithType:VAppTimingEventTypeSignup subtype:VAppTimingEventSubtypeTwitter];
-    [self.appTimingTracker startEventWithType:VAppTimingEventTypeLogin subtype:VAppTimingEventSubtypeTwitter];
-    
-    __weak typeof(self) weakSelf = self;
-    [self showLoadingScreenWithCompletion:^
-     {
-         self.loadingScreen.canCancel = NO;
-         
-         VTwitterManager *twitterManager = [[VTwitterManager alloc] init];
-         [twitterManager refreshTwitterTokenFromViewController:self
-                                               completionBlock:^(BOOL success, NSError *error)
-          {
-              if (error == nil)
-              {
-                  [weakSelf onTwitterTokenRefreshedWithTwitterManager:twitterManager];
-              }
-              else
-              {
-                  [weakSelf handleTwitterLoginError:error];
-              }
-          }];
-     }];
-    
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventLoginWithTwitterSelected];
-    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidSelectRegistrationOption];
-}
-
-- (void)onTwitterTokenRefreshedWithTwitterManager:(VTwitterManager *)twitterManager
-{
-    __weak typeof(self) weakSelf = self;
-    self.currentOperation = [self.loginFlowHelper queueLoginOperationWithTwitter:twitterManager.oauthToken
-                                                                    accessSecret:twitterManager.secret
-                                                                       twitterID:twitterManager.twitterId
-                                                                      identifier:twitterManager.identifier
-                                                                      completion:^(NSError *_Nullable error)
-    {
-        if ( [VCurrentUser user] != nil && error == nil)
-        {
-            weakSelf.actionsDisabled = NO;
-            weakSelf.isRegisteredAsNewUser = [VCurrentUser user].isNewUser.boolValue;
-            [weakSelf continueRegistrationFlowAfterSocialRegistration];
-        }
-        else
-        {
-            [weakSelf handleTwitterLoginError:error];
-        }
-    }];
-}
-
-- (void)handleTwitterLoginError:(NSError *)error
-{
-    switch ( error.code )
-    {
-        case VSocialLoginErrorCancelled:
-            [self dismissLoadingScreen];
-            break;
-            
-        case VSocialLoginErrorDenied:
-            [self showAlertErrorWithTitle:NSLocalizedString(@"TwitterDeniedTitle", @"")
-                                  message:NSLocalizedString(@"TwitterDenied", @"")];
-            break;
-            
-        case VSocialLoginErrorUnavailable:
-            [self showAlertErrorWithTitle:NSLocalizedString(@"NoTwitterTitle", @"")
-                                  message:NSLocalizedString(@"NoTwitterMessage", @"")];
-            break;
-            
-        default:
-            [self showAlertErrorWithTitle:NSLocalizedString(@"TwitterDeniedTitle", @"")
-                                  message:NSLocalizedString(@"TwitterTroubleshooting", @"")];
-            break;
-    }
 }
 
 - (void)showAlertErrorWithTitle:(NSString *)title message:(NSString *)message

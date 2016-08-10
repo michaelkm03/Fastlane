@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VVoteType.h"
+#import <Foundation/Foundation.h>
 
 @interface VDummyModels : NSObject
 
@@ -30,9 +30,5 @@
 // Add more convenience methods as you see fit
 
 + (NSArray *)createUsers:(NSInteger)count;
-
-+ (NSArray *)createVoteTypes:(NSInteger)count;
-
-+ (NSArray *)createVoteResults:(NSInteger)count;
 
 @end

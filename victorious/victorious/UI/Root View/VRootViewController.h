@@ -68,8 +68,6 @@ extern NSString * const VApplicationDidBecomeActiveNotification;
  */
 - (void)startNewSession;
 
-- (void)presentForceUpgradeScreen;
-
 @end
 
 NS_ASSUME_NONNULL_END

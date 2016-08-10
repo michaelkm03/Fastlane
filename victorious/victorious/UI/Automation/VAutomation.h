@@ -34,7 +34,6 @@ extern NSString * const VAutomationIdentifierLoginCancel;
 extern NSString * const VAutomationIdentifierLoginForgotPassword;
 extern NSString * const VAutomationIdentifierLoginSignUp;
 extern NSString * const VAutomationIdentifierLoginFacebook;
-extern NSString * const VAutomationIdentifierLoginTwitter;
 
 extern NSString * const VAutomationIdentifierSignupEmailField;
 extern NSString * const VAutomationIdentifierSignupEmailFieldValidation;
@@ -54,7 +53,6 @@ extern NSString * const VAutomationIdentifierProfileLogInButton;
 
 extern NSString * const VAutomationIdentifierProfileUsernameTitle;
 
-extern NSString * const VAutomationIdentifierLRegistrationTwitter;
 extern NSString * const VAutomationIdentifierLRegistrationEmail;
 extern NSString * const VAutomationIdentifierLRegistrationFacebook;
 extern NSString * const VAutomationIdentifierLRegistrationTOS;

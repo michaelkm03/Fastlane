@@ -11,7 +11,6 @@
 // Views + Helpers
 #import "VAssetCollectionViewCell.h"
 #import "NSIndexSet+Convenience.h"
-#import "UICollectionView+Convenience.h"
 #import "victorious-swift.h"
 
 static NSInteger const kScreenSizeCacheTrigger = 1 / 3.0f;
@@ -254,12 +253,12 @@ static NSInteger const kScreenSizeCacheTrigger = 1 / 3.0f;
                                    andRect:preheatRect
                             removedHandler:^(CGRect removedRect)
          {
-             NSArray *indexPaths = [self.collectionView indexPathsInRect:removedRect];
+             NSArray *indexPaths = [self indexPathsInRect:removedRect];
              [removedIndexPaths addObjectsFromArray:indexPaths];
          }
                               addedHandler:^(CGRect addedRect)
          {
-             NSArray *indexPaths = [self.collectionView indexPathsInRect:addedRect];
+             NSArray *indexPaths = [self indexPathsInRect:addedRect];
              [addedIndexPaths addObjectsFromArray:indexPaths];
          }];
         
@@ -277,6 +276,23 @@ static NSInteger const kScreenSizeCacheTrigger = 1 / 3.0f;
         
         self.previousPrefetchRect = preheatRect;
     }
+}
+
+- (NSArray *)indexPathsInRect:(CGRect)rect
+{
+    NSArray *allLayoutAttributes = [self.collectionView.collectionViewLayout layoutAttributesForElementsInRect:rect];
+    if (allLayoutAttributes.count == 0)
+    {
+        return nil;
+    }
+    
+    NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:allLayoutAttributes.count];
+    for (UICollectionViewLayoutAttributes *layoutAttributes in allLayoutAttributes)
+    {
+        NSIndexPath *indexPath = layoutAttributes.indexPath;
+        [indexPaths addObject:indexPath];
+    }
+    return indexPaths;
 }
 
 - (void)computeDifferenceBetweenRect:(CGRect)oldRect andRect:(CGRect)newRect removedHandler:(void (^)(CGRect removedRect))removedHandler addedHandler:(void (^)(CGRect addedRect))addedHandler

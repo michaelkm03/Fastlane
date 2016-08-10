@@ -8,25 +8,45 @@
 
 import Foundation
 
-public extension Bool {
-    init?( _ string: String ) {
+extension Bool {
+    init?(_ string: String) {
         let lowercaseString = string.lowercaseString
-        if ["true", "yes"].contains( lowercaseString ) {
+        
+        if ["true", "yes"].contains(lowercaseString) {
             self.init(true)
-        } else if ["false", "no"].contains( lowercaseString ) {
+        }
+        else if ["false", "no"].contains(lowercaseString) {
             self.init(false)
-        } else {
+        }
+        else {
             return nil
         }
     }
     
-    init?<T : IntegerType>( _ integer: T) {
+    init?<T : IntegerType>(_ integer: T) {
         if integer == 1 {
             self.init(true)
-        } else if integer == 0 {
+        }
+        else if integer == 0 {
             self.init(false)
-        } else {
+        }
+        else {
             return nil
+        }
+    }
+}
+
+extension JSON {
+    /// Optional bool or optional bool unwrapped and casted from integer or string
+    var v_boolFromAnyValue: Bool? {
+        if let integer = self.int {
+            return Bool(integer)
+        }
+        else if let string = self.string {
+            return Bool(string)
+        }
+        else {
+            return self.bool
         }
     }
 }

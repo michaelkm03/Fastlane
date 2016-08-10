@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-extension VUser: PersistenceParsable {
+extension VUser {
     func populate(fromSourceModel user: UserModel) {
         remoteId                    = user.id ?? remoteId
         v_completedProfile          = user.completedProfile ?? completedProfile
@@ -19,7 +19,6 @@ extension VUser: PersistenceParsable {
         tagline                     = user.tagline ?? tagline
         isBlockedByMainUser         = user.isBlockedByCurrentUser ?? isBlockedByMainUser
         isVIPSubscriber             = user.vipStatus?.isVIP ?? isVIPSubscriber
-        vipEndDate                  = user.vipStatus?.endDate ?? vipEndDate
         isCreator                   = user.accessLevel.isCreator ?? isCreator
         isFollowedByMainUser        = user.isFollowedByCurrentUser ?? isFollowedByMainUser
         v_likesGiven                = user.likesGiven ?? likesGiven
@@ -50,7 +49,6 @@ extension VUser: PersistenceParsable {
     
     func clearVIPStatus() {
         isVIPSubscriber = false
-        vipEndDate = nil
     }
     
     func populateVIPStatus(fromSourceModel vipStatus: VIPStatus) {

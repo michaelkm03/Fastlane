@@ -18,4 +18,3 @@ NSString * const VAppTimingEventTypeStreamRefresh       = @"stream_refresh";
     
 NSString * const VAppTimingEventSubtypeEmail            = @"email";
 NSString * const VAppTimingEventSubtypeFacebook         = @"facebook";
-NSString * const VAppTimingEventSubtypeTwitter          = @"twitter";

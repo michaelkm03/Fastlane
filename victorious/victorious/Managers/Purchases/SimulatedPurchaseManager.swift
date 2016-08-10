@@ -78,18 +78,6 @@ class SimulatedPurchaseManager: VPurchaseManager {
     // MARK: - Private
     
     func setProductPurchased(product: VProduct) {
-        
-        // In the case of subscriptions, set the current user as subscriped and provide expiration date
-        let type = self.purchaseTypeForProductIdentifier(product.productIdentifier)
-        if type == .Subscription, let currentUser =  VCurrentUser.user() {
-            let dateComponents = NSDateComponents()
-            dateComponents.month = 1
-            let now = NSDate()
-            let calendar = NSCalendar.currentCalendar()
-            let expirationDate = calendar.dateByAddingComponents(dateComponents, toDate: now, options: [])
-            currentUser.vipEndDate = expirationDate
-        }
-        
         self.purchaseRecord.addProductIdentifier(product.productIdentifier)
         self.simulatedProductIdentifiers.insert(product.productIdentifier)
     }
