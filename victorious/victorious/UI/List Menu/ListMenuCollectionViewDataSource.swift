@@ -100,14 +100,10 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
             case .hashtags: headerView.dependencyManager = dependencyManager.hashtagsChildDependency
         }
         
-        print("update header...")
-        
         if indexPath.section == 0 {
-            print("  \(VCurrentUser.user()?.isVIPSubscriber)")
             headerView.accessoryButton = VCurrentUser.user()?.isVIPSubscriber == true ? userIsVIPButton : subscribeButton
         }
         else {
-            print("  not section 0")
             headerView.accessoryButton = nil
         }
         
