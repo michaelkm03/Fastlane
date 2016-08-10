@@ -82,6 +82,12 @@ class VIPFlowNavigationController: UINavigationController, VIPGateViewController
             self?.completionBlock?(success)
         }
     }
+    
+    // MARK: - rotation management
+    
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+        return .Portrait
+    }
 }
 
 private extension VDependencyManager {
