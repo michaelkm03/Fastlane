@@ -51,7 +51,12 @@ struct Router {
                 guard content.type != .text, let contentID = content.id else {
                     return
                 }
-                ShowFetchedCloseUpOperation(contentID: contentID, displayModifier: displayModifier).queue()
+                checkForPermissionBeforeRouting(contentIsForVIPOnly: content.isVIPOnly) { success in
+                    if success {
+                        ShowFetchedCloseUpOperation(contentID: contentID, displayModifier: displayModifier).queue()
+                    }
+                }
+            
             case .contentID(let contentID):
                 ShowFetchedCloseUpOperation(contentID: contentID, displayModifier: displayModifier).queue()
         }
