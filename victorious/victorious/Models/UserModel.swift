@@ -26,8 +26,12 @@ extension UserModel {
         return endDate > NSDate()
     }
     
+    var isVIPOrCreator: Bool {
+        return hasValidVIPSubscription || accessLevel.isCreator
+    }
+    
     func canView(content: ContentModel) -> Bool {
-        return !content.isVIPOnly || hasValidVIPSubscription
+        return !content.isVIPOnly || isVIPOrCreator
     }
     
     // MARK: - Colors
