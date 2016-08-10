@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         #if V_ENABLE_TESTFAIRY
             let options = [TFSDKEnableCrashReporterKey: false]
-            Testfairy.begin("c03fa570f9415585437cbfedb6d09ae87c7182c8", withOptions: options)
+            TestFairy.begin("c03fa570f9415585437cbfedb6d09ae87c7182c8", withOptions: options)
         #endif
 
         Crashlytics.startWithAPIKey("58f61748f3d33b03387e43014fdfff29c5a1da73")
