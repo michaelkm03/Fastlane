@@ -11,6 +11,7 @@
  */
 
 #import <KVOController/FBKVOController.h>
+#import "TestFairy.h"
 #import "NSString+VCrypto.h"
 #import "NSString+VParseHelp.h"
 #import "NSURL+MediaType.h"

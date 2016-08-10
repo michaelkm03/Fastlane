@@ -50,6 +50,8 @@
     return [self.priceNumberFormatter stringFromNumber:decimalPrice];
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-property-ivar"
 - (NSString *)productIdentifier
 {
 #if SIMULATE_STOREKIT
@@ -59,6 +61,7 @@
     return _storeKitProduct.productIdentifier;
 #endif
 }
+#pragma clang diagnostic pop
 
 - (NSString *)localizedTitle
 {
