@@ -22,11 +22,6 @@ extension NSOperationQueue {
         return operations.filter { $0.dependencies.contains(operation) }
     }
     
-    func v_addOperation( operation: NSOperation, completion: (() -> ())? ) {
-        operation.completionBlock = completion
-        addOperation( operation )
-    }
-    
     func v_rechainOperation( operation: NSOperation, after dependency: NSOperation ) {
         
         // Rechain (transfer) completion block
@@ -53,13 +48,20 @@ extension NSOperationQueue {
 }
 
 extension NSOperationQueue {
-    
     func v_addOperation<T: Queueable where T : NSOperation>( operation: T, completion: T.CompletionBlockType? ) {
         if let completion = completion {
-            operation.completionBlock = { [weak operation] in
+            // Turn completion block into an operation.
+            let completionOperation = NSBlockOperation() {[weak operation] in
                 operation?.executeCompletionBlock(completion)
             }
+            // For all other dependent operations of the current operation, make them dependent on the completion block operation instead.
+            // This has to happen before we set up completion block operation's dependency to avoid a dead lock.
+            operations.filter { $0.dependencies.contains(operation) }.forEach { $0.addDependency(completionOperation) }
+            
+            // Set up dependency for completion block operation and add it to queue.
+            completionOperation.addDependency(operation)
+            addOperation(completionOperation)
         }
-        addOperation( operation )
+        addOperation(operation)
     }
 }
