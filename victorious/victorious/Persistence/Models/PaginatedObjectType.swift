@@ -17,11 +17,4 @@ import Foundation
 
 // Provide conformance models that already have defined `displayOrder` property
 
-extension VComment: PaginatedObjectType {}
-extension VMessage: PaginatedObjectType {}
-extension VStreamItemPointer: PaginatedObjectType {}
-extension VConversation: PaginatedObjectType {}
-extension VFollowedUser: PaginatedObjectType {}
 extension VNotification: PaginatedObjectType {}
-extension VSequenceLiker: PaginatedObjectType {}
-extension VPollResult: PaginatedObjectType {}

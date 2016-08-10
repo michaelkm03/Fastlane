@@ -8,7 +8,7 @@
 
 import UIKit
 
-extension VContentMediaAsset: PersistenceParsable {
+extension VContentMediaAsset {
     func populate(fromSourceModel sourceModel: ContentMediaAssetModel) {
         v_remoteSource = sourceModel.url?.absoluteString ?? v_remoteSource
         v_source = sourceModel.source ?? v_source

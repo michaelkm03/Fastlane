@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-extension VTracking: PersistenceParsable {
+extension VTracking {
     
     func populate( fromSourceModel tracking: TrackingModel ) {
         id                  = tracking.id

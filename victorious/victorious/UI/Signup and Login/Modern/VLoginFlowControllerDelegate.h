@@ -33,7 +33,7 @@
 
 /**
  * Indicates to the registration flow controller whether this screen should be displayed
- * after a successul sign up with Facebook or Twitter.  If not implemented, the registration
+ * after a successul sign up with Facebook.  If not implemented, the registration
  * flow will skip this screen.
  */
 - (BOOL)displaysAfterSocialRegistration;
@@ -51,11 +51,6 @@
  *  The user wants to proceed to registration.
  */
 - (void)selectedRegister;
-
-/**
- *  The user wants to authorize with their twitter account.
- */
-- (void)selectedTwitterAuthorization;
 
 /**
  *  The user wants to authorize with their facebook account.
