@@ -24,9 +24,7 @@ NSString * const VImageCreationFlowControllerKey = @"imageCreateFlow";
 static NSString * const kImageVideoLibrary = @"imageVideoLibrary";
 NSString * const VImageCreationFlowControllerDefaultSearchTermKey = @"defaultSearchTerm";
 
-@interface VImageCreationFlowController () <MediaSearchDelegate, VImageCameraViewControllerDelegate>
-
-@property (nonatomic, strong) MediaSearchViewController *mediaSearchViewController;
+@interface VImageCreationFlowController () <VImageCameraViewControllerDelegate>
 
 @end
 
@@ -38,13 +36,6 @@ NSString * const VImageCreationFlowControllerDefaultSearchTermKey = @"defaultSea
     if (self != nil)
     {
         [self setContext:VCameraContextImageContentCreation];
-        
-        NSString *dependencyManagerSearchTerm = [dependencyManager stringForKey:VImageCreationFlowControllerDefaultSearchTermKey];
-		
-        id<MediaSearchDataSource> dataSource = [[ImageSearchDataSource alloc] initWithDefaultSearchTerm:dependencyManagerSearchTerm ?: @""];
-		_mediaSearchViewController = [MediaSearchViewController mediaSearchViewControllerWithDataSource:dataSource
-                                                                                      dependencyManager:dependencyManager];
-		_mediaSearchViewController.delegate = self;
     }
     return self;
 }
@@ -110,15 +101,7 @@ NSString * const VImageCreationFlowControllerDefaultSearchTermKey = @"defaultSea
 												 __strong typeof(welf) strongSelf = welf;
 												 [strongSelf showCamera];
 											 }];
-	VAlternateCaptureOption *searchOption = [[VAlternateCaptureOption alloc] initWithTitle:NSLocalizedString(@"Search", nil)
-																					   icon:[UIImage imageNamed:@"contententry_searchbaricon"]
-																		  andSelectionBlock:^void()
-											  {
-												  __strong typeof(welf) strongSelf = welf;
-												  [strongSelf pushViewController:strongSelf.mediaSearchViewController animated:YES];
-											  }];
-	
-	return @[ cameraOption, searchOption ];
+	return @[cameraOption];
 }
 
 - (MediaType)mediaType

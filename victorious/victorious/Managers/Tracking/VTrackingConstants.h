@@ -10,8 +10,7 @@
 
 // An enum for use in the "VTrackingKeyErrorType" key on tracking calls
 typedef NS_ENUM(NSInteger, VAppErrorTrackingType) {
-    VAppErrorTrackingTypeFacebook = 1,
-    VAppErrorTrackingTypeTwitter = 2
+    VAppErrorTrackingTypeFacebook = 1
 };
 
 // Tracking Event Names
@@ -100,13 +99,6 @@ extern NSString * const VTrackingEventLoginWithFacebookSelected;
 extern NSString * const VTrackingEventSignupWithFacebookDidSucceed; 
 extern NSString * const VTrackingEventLoginWithFacebookDidSucceed; 
 extern NSString * const VTrackingEventLoginWithFacebookDidFail; //< Params: ErrorMessage
-
-extern NSString * const VTrackingEventLoginWithTwitterSelected; 
-extern NSString * const VTrackingEventSignupWithTwitterDidSucceed; 
-extern NSString * const VTrackingEventLoginWithTwitterDidSucceed; 
-extern NSString * const VTrackingEventLoginWithTwitterDidFailUnknown; //< Params: ErrorMessage
-extern NSString * const VTrackingEventLoginWithTwitterDidFailNoAccounts; //< Params: ErrorMessage
-extern NSString * const VTrackingEventLoginWithTwitterDidFailDenied; //< Params: ErrorMessage
 
 // Edt/Create Profile
 extern NSString * const VTrackingEventCreateProfileValidationDidFail; //< Params: ErrorMessage
@@ -268,9 +260,8 @@ extern NSString * const VTrackingKeyTimeStamp; //< A string containing a timesta
 extern NSString * const VTrackingKeySequenceId; //< Backend mapping: %%SEQUENCE_ID%%
 extern NSString * const VTrackingKeyVoteCount; //< The number of votes (emotive ballistic/experience enhancer throws) that occurred; Backend mapping: %%COUNT%%
 extern NSString * const VTrackingKeyUrls; //< An array of 1 or more URLs with replaceable macros received from the server
-extern NSString * const VTrackingKeyShareDestination; //< "An identifier for a share action, usually provided by the system (Facebook, Twitter, Email, SMS, etc.); Backend mapping: %%SHARE_DEST%%",
+extern NSString * const VTrackingKeyShareDestination; //< "An identifier for a share action, usually provided by the system (Facebook, Email, SMS, etc.); Backend mapping: %%SHARE_DEST%%",
 extern NSString * const VTrackingKeySharedToFacebook; //< An identifier for a share to Facebook not through the action sheet. Backend mapping: %%FACEBOOK_SHARE%%
-extern NSString * const VTrackingKeySharedToTwitter; //< An identifier for a share to Twitter not through the action sheet. Backend mapping: %%TWITTER_SHARE%%
 extern NSString * const VTrackingKeySequenceCategory; //< A string representing the 'category' property of a sequence
 extern NSString * const VTrackingKeyNotificationId; //< The ID of the push notification that spawned the process in which the tracking event has occurred; Backend mapping: %%NOTIF_ID%%
 extern NSString * const VTrackingKeySessionTime; //< An integer value representing milliseconds of an activity's duration; Backend mapping: %%SESSION_TIME%%
@@ -346,8 +337,7 @@ extern NSString * const VTrackingValueContactsDidAllow;
 extern NSString * const VTrackingValueCameraDidAllow; 
 extern NSString * const VTrackingValueMicrophoneDidAllow; 
 extern NSString * const VTrackingValuePhotolibraryDidAllow; 
-extern NSString * const VTrackingValueFacebookDidAllow; 
-extern NSString * const VTrackingValueTwitterDidAllow; 
+extern NSString * const VTrackingValueFacebookDidAllow;
 extern NSString * const VTrackingValueLocationDidAllow; 
 extern NSString * const VTrackingValueUsertagInComment;
 extern NSString * const VTrackingValuePeopleLikeMyPost;

@@ -66,7 +66,7 @@
     </entity>
     <entity name="Content" representedClassName=".VContent" syncable="YES">
         <attribute name="v_createdAt" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
-        <attribute name="v_isLikedByCurrentUser" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="v_isRemotelyLikedByCurrentUser" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="v_isVIPOnly" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="v_linkedURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="v_paginationTimestamp" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
@@ -334,7 +334,6 @@
         <attribute name="v_completedProfile" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="v_likesGiven" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="v_likesReceived" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
-        <attribute name="vipEndDate" optional="YES" attributeType="Date" syncable="YES"/>
         <relationship name="childSequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Sequence" inverseName="parentUser" inverseEntity="Sequence" syncable="YES"/>
         <relationship name="comments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Comment" inverseName="user" inverseEntity="Comment" syncable="YES"/>
         <relationship name="content" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Content" inverseName="v_author" inverseEntity="Content" syncable="YES"/>
@@ -393,7 +392,7 @@
         <element name="StreamItem" positionX="0" positionY="0" width="128" height="225"/>
         <element name="StreamItemPointer" positionX="0" positionY="0" width="128" height="105"/>
         <element name="Tracking" positionX="0" positionY="0" width="128" height="270"/>
-        <element name="User" positionX="0" positionY="0" width="128" height="690"/>
+        <element name="User" positionX="0" positionY="0" width="128" height="675"/>
         <element name="UserShelf" positionX="0" positionY="0" width="128" height="90"/>
         <element name="VoteResult" positionX="0" positionY="0" width="128" height="90"/>
     </elements>

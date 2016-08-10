@@ -132,10 +132,6 @@
 "No Hashtags Found In Search Title" = "NO TAGS WERE FOUND!";
 "No hashtags found in search" = "Refine your search and try again.";
 
-"TwitterDeniedTitle"    =   "Could not access your Twitter account";
-"TwitterDenied"         =   "Please grant access to your Twitter account in Settings -> Privacy -> Twitter";
-"TwitterTroubleshooting" =  "Please try removing and re-adding your twitter account in settings";
-
 "CameraRollDenied"      =   "Please grant access to your photos in Settings -> Privacy.";
 "CameraFailed"          =   "Unable to start camera";
 "Camera"                =   "Camera";   // Button that opens the camera
@@ -147,11 +143,6 @@
 "VideoCoachMessage"     =   "Press and hold to record";
 "MixedMediaCoachMessage" =  "Press and hold to record a video, tap to take a picture";
 "LibraryCaptureFailed"  =   "Unable to access item in library";
-
-"NoTwitterTitle"        =   "Can't find a Twitter account!";
-"NoTwitterMessage"      =   "Please open your device settings and add a new Twitter account";
-
-"SelectTwitter"         =   "Select a twitter account";
 
 "BlockInappropriate"    =   "Block";
 "ReportedTitle"         =   "Got It!";
@@ -310,7 +301,6 @@
 "App Version:"          = "App Version:";
 
 "ShareFacebook"         = "Share to Facebook";
-"ShareTwitter"          = "Share to Twitter";
 "OpenSafari"            = "Open in Safari";
 "ShareSMS"              = "Send as Text";
 

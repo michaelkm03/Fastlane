@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VForceUpgradeViewController.h"
 #import "VDependencyManager+VDefaultTemplate.h"
 #import "VDependencyManager+NavigationBar.h"
 #import "VLoadingViewController.h"
@@ -14,13 +13,10 @@
 #import "VSessionTimer.h"
 #import "VThemeManager.h"
 #import "VConstants.h"
-#import "VLocationManager.h"
-#import "VVoteType.h"
 #import "VAppInfo.h"
 #import "VUploadManager.h"
 #import "VApplicationTracking.h"
 #import "VEnvironment.h"
-#import "VURLSelectionResponder.h"
 #import "victorious-Swift.h"
 #import "VCrashlyticsLogTracking.h"
 
@@ -39,12 +35,10 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     VAppLaunchStateLaunched ///< The scaffold is displayed and we're fully launched
 };
 
-@interface VRootViewController () <VLoadingViewControllerDelegate, VURLSelectionResponder, AgeGateViewControllerDelegate>
+@interface VRootViewController () <VLoadingViewControllerDelegate>
 
 @property (nonatomic, strong) VDependencyManager *rootDependencyManager; ///< The dependency manager at the top of the heirarchy--the one with no parent
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic) BOOL appearing;
-@property (nonatomic) BOOL shouldPresentForceUpgradeScreenOnNextAppearance;
 @property (nonatomic, strong, readwrite) UIViewController *currentViewController;
 @property (nonatomic, strong) VLoadingViewController *loadingViewController;
 @property (nonatomic, strong, readwrite) VSessionTimer *sessionTimer;
@@ -118,30 +112,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    // Check if we have location services and start getting locations if we do
-    if ( [VLocationManager haveLocationServicesPermission] )
-    {
-        [[VLocationManager sharedInstance].locationManager startUpdatingLocation];
-    }
     [self showLoadingViewController];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    self.appearing = YES;
-    if (self.shouldPresentForceUpgradeScreenOnNextAppearance)
-    {
-        self.shouldPresentForceUpgradeScreenOnNextAppearance = NO;
-        [self _presentForceUpgradeScreen];
-    }
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    self.appearing = NO;
 }
 
 #pragma mark - Status Bar Appearance
@@ -171,26 +142,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 - (CGSize)sizeForChildContentContainer:(id<UIContentContainer>)container withParentContainerSize:(CGSize)parentSize
 {
     return parentSize;
-}
-
-#pragma mark - Force Upgrade
-
-- (void)presentForceUpgradeScreen
-{
-    if (self.appearing)
-    {
-        [self _presentForceUpgradeScreen];
-    }
-    else
-    {
-        self.shouldPresentForceUpgradeScreenOnNextAppearance = YES;
-    }
-}
-
-- (void)_presentForceUpgradeScreen
-{
-    VForceUpgradeViewController *forceUpgradeViewController = [[VForceUpgradeViewController alloc] init];
-    [self presentViewController:forceUpgradeViewController animated:YES completion:nil];
 }
 
 #pragma mark - Child View Controllers
@@ -240,14 +191,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     /// Body removed alongside FetchTemplateProductIdentifiersOperation
     
     [[InterstitialManager sharedInstance] setDependencyManager:self.dependencyManager];
-}
-
-- (void)showAgeGateViewController
-{
-    self.launchState = VAppLaunchStateWaiting;
-    AgeGateViewController *ageGateViewController = [AgeGateViewController ageGateViewControllerWithAgeGateDelegate:self
-                                                                                                 dependencyManager:self.dependencyManager];
-    [self showViewController:ageGateViewController animated:NO completion:nil];
 }
 
 - (void)showLogin
@@ -448,11 +391,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     }
 #endif
     
-    NewSessionPrunePersistentStoreOperation *operation = [[NewSessionPrunePersistentStoreOperation alloc] init];
-    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
-     {
-         [self showLoadingViewController];
-     }];
+    [self showLoadingViewController];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification
@@ -493,43 +432,10 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     if ( loadingViewController == self.currentViewController && self.launchState == VAppLaunchStateWaiting )
     {
         self.launchState = VAppLaunchStateLaunching;
-        
-        BOOL ageGateActivated = [AgeGate isAgeGateEnabled];
-        BOOL userHasProvidedBirthday = [AgeGate hasBirthdayBeenProvided];
-        if (ageGateActivated && !userHasProvidedBirthday)
-        {
-            [self showAgeGateViewController];
-        }
-        else
-        {
-            [self showLogin];
-        }
+        [self showLogin];
     }
     
     [self initialSetupAfterLoading];
-}
-
-#pragma mark - AgeGateViewControllerDelegate
-
-- (void)continueButtonTapped:(BOOL)isAnonymousUser
-{
-    [self showLoadingViewController];
-}
-
-#pragma mark - VURLSelectionResponder
-
-- (void)URLSelected:(NSURL *)URL
-{
-    VContentViewFactory *contentViewFactory = [self.dependencyManager contentViewFactory];
-    UIViewController *contentView = [contentViewFactory webContentViewControllerWithURL:URL];
-    if ( contentView != nil )
-    {
-        if ( self.presentedViewController )
-        {
-            [self dismissViewControllerAnimated:NO completion:nil];
-        }
-        [self presentViewController:contentView animated:YES completion:nil];
-    }
 }
 
 @end

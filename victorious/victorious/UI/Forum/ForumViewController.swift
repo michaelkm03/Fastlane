@@ -165,7 +165,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
         if let navBarTitleView = navBarTitleView {
-            navigationController?.navigationBar.topItem?.titleView = navBarTitleView
+            navigationItem.titleView = navBarTitleView
         }
         navBarTitleView?.sizeToFit()
         #if V_ENABLE_WEBSOCKET_DEBUG_MENU

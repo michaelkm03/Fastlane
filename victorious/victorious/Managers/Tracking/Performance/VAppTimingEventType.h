@@ -57,4 +57,3 @@ extern NSString * const VAppTimingEventTypeStreamRefresh;
 
 extern NSString * const VAppTimingEventSubtypeEmail;
 extern NSString * const VAppTimingEventSubtypeFacebook;
-extern NSString * const VAppTimingEventSubtypeTwitter;

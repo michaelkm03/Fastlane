@@ -18,7 +18,7 @@
 
 - (void)setProductImage:(UIImage *)image title:(NSString *)title;
 
-- (void)setSubscriptionImage:(UIImage *)image title:(NSString *)title localizedPrice:(NSString *)localizedPrice expirationDate:(NSDate *)expirationDate;
+- (void)setSubscriptionImage:(UIImage *)image title:(NSString *)title localizedPrice:(NSString *)localizedPrice;
 
 - (CGSize)cellSizeWithinBounds:(CGRect)bounds;
 

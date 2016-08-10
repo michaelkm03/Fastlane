@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-extension VNotificationSettings: PersistenceParsable {
+extension VNotificationSettings {
     
     func populate(fromSourceModel sourceModel: NotificationPreference) {
         self.isPostFromCreatorEnabled = sourceModel.contains(.creatorPost)

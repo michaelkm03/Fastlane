@@ -27,8 +27,6 @@
 #import "VImageToolController.h"
 
 // Publishing
-#import "VPublishPresenter.h"
-#import "VPublishViewController.h"
 #import "VPublishParameters.h"
 
 // Dependencies
@@ -52,8 +50,6 @@ static NSString * const kCreationFlowSourceSearch = @"search";
 @property (nonatomic, strong, readwrite) VAssetCollectionGridViewController *gridViewController;
 @property (nonatomic, strong) VAssetDownloader *downloader;
 @property (nonatomic, strong) VWorkspaceViewController *workspaceViewController;
-
-@property (nonatomic, strong) VPublishPresenter *publishPresenter;
 
 // These come from the workspace not capture
 @property (nonatomic, strong) NSURL *capturedMediaURL;
@@ -175,45 +171,6 @@ static NSString * const kCreationFlowSourceSearch = @"search";
     };
 }
 
-- (void)setupPublishPresenter
-{
-    self.publishPresenter = [[VPublishPresenter alloc] initWithDependencyManager:self.dependencyManager];
-
-    __weak typeof(self) welf = self;
-    self.publishPresenter.publishActionHandler = ^void(BOOL published)
-    {
-        __strong typeof(welf) strongSelf = welf;
-        if (published)
-        {
-            // Because of a bug in how presentations work we ened to grab a screenshot of the publish screen
-            // before we ened up being dismissed. The bug has to do with multi-level presentations if you
-            // present A -> B -> C then dismiss from A, C is cleared and you only see B animate away.
-            [strongSelf.view addSubview:[strongSelf.presentedViewController.view snapshotViewAfterScreenUpdates:YES]];
-            
-            strongSelf.delegate = nil;
-            strongSelf.interactivePopGestureRecognizer.delegate = nil;
-            strongSelf.publishPresenter = nil;
-            [strongSelf cleanupCapturedFile];
-            
-            // We're done!
-            [strongSelf.creationFlowDelegate creationFlowController:strongSelf
-                                           finishedWithPreviewImage:strongSelf.previewImage
-                                                   capturedMediaURL:strongSelf.renderedMediaURL];
-        }
-        else
-        {
-            if ([strongSelf.topViewController isKindOfClass:[VVideoCameraViewController class]])
-            {
-                VVideoCameraViewController *videoCamera = (VVideoCameraViewController *)strongSelf.topViewController;
-                [videoCamera resumeCapture];
-            }
-            [strongSelf.workspaceViewController gainedFocus];
-            [strongSelf dismissViewControllerAnimated:YES
-                                           completion:nil];
-        }
-    };
-}
-
 - (void)afterEditingFinishedUseCapturedMediaURL:(BOOL)shouldUseCapturedMediaURL
 {
     // Configure parameters
@@ -244,37 +201,6 @@ static NSString * const kCreationFlowSourceSearch = @"search";
                                      previewImage:self.previewImage
                                     fromWorkspace:self.workspaceViewController];
     }
-}
-
-- (void)toPublishScreenWithRenderedMediaURL:(NSURL *)renderedMediaURL
-                               previewImage:(UIImage *)previewImage
-                              fromWorkspace:(VWorkspaceViewController *)workspace
-{
-    [workspace lostFocus];
-    
-    // Setup presenter
-    [self setupPublishPresenter];
-    
-    // Configure parameters
-    self.publishParameters.source = [self sourceStringForSourceType:self.source];
-    self.publishParameters.previewImage = previewImage;
-    self.publishParameters.parentNodeID = self.parentNodeID;
-    self.publishParameters.parentSequenceID = self.parentSequenceID;
-    [self configurePublishParameters:self.publishParameters
-                       withWorkspace:workspace];
-    if ( self.publishParameters != nil && self.publishParameters.previewImage == nil )
-    {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
-                                                                       message:NSLocalizedString(@"GenericFailMessage", @"")
-                                                                preferredStyle:UIAlertControllerStyleAlert];
-        [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil)
-                                                  style:UIAlertActionStyleDefault
-                                                handler:nil]];
-        [self presentViewController:alert animated:YES completion:nil];
-        return;
-    }
-    self.publishPresenter.publishParameters = self.publishParameters;
-    [self.publishPresenter presentOnViewController:self];
 }
 
 - (void)cleanupCapturedFile
