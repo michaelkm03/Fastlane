@@ -25,6 +25,7 @@ public enum ViewTrackingKey: String {
     case videoStall = "view_stall"
     case videoSkip = "view_skip"
     case share = "share"
+    case stageView = "stage_view"
 }
 
 public protocol TrackingModel {

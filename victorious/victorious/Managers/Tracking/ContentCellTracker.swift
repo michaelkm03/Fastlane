@@ -77,7 +77,7 @@ extension ContentCellTracker {
         ]
         
         switch trackingKey {
-        case .viewStart: ()
+        case .viewStart, .stageView: ()
         default:
             assertionFailure("not implemented yet")
             return nil
