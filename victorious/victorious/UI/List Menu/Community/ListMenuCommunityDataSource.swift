@@ -34,6 +34,7 @@ final class ListMenuCommunityDataSource: ListMenuSectionDataSource {
     func fetchRemoteData() {
         guard let dependencies = dependencyManager.arrayForKey("items") as? [[String: AnyObject]] else {
             state = .failed(error: NSError(domain: "ListMenuCommunityDataSource", code: 1, userInfo: nil))
+            delegate?.didUpdateVisibleItems(forSection: .community)
             return
         }
         visibleItems = dependencies.flatMap { ListMenuCommunityItem($0) }
