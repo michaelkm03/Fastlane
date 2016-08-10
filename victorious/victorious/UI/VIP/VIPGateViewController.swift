@@ -36,8 +36,9 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     @IBOutlet weak private var restoreButton: UIButton!
     @IBOutlet weak private var privacyPolicyButton: UIButton!
     @IBOutlet weak private var termsOfServiceButton: UIButton!
-    @IBOutlet weak private var closeButton: TouchableInsetAdjustableButton! {
+    @IBOutlet weak private var closeButton: ImageOnColorButton! {
         didSet {
+            closeButton.dependencyManager = dependencyManager.closeButtonDependency
             closeButton.touchInsets = UIEdgeInsetsMake(-12, -12, -12, -12)
         }
     }
@@ -49,7 +50,7 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
         guard let subscriptionFetchURL = self.dependencyManager.subscriptionFetchURL else {
             return nil
         }
-        return VIPSubscriptionHelper(subscriptionFetchURL: subscriptionFetchURL, delegate: self, originViewController: self)
+        return VIPSubscriptionHelper(subscriptionFetchURL: subscriptionFetchURL, delegate: self, originViewController: self, dependencyManager: self.dependencyManager)
     }()
     
     weak var delegate: VIPGateViewControllerDelegate?
@@ -73,13 +74,14 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         updateViews()
     }
     
     // MARK: - IBActions
     
     @IBAction func onSubscribe(sender: UIButton? = nil) {
+        subscribeButton.dependencyManager?.trackButtonEvent(.tap)
         vipSubscriptionHelper?.subscribe()
     }
     
@@ -112,6 +114,7 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     }
     
     @IBAction func onCloseSelected() {
+        closeButton.dependencyManager?.trackButtonEvent(.tap)
         delegate?.vipGateExitedWithSuccess(false, afterPurchase: false)
     }
     
@@ -191,12 +194,6 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
         }
         if let font = dependencyManager.descriptionFont {
             detailLabel.font = font
-        }
-        
-        let icon = dependencyManager.closeIcon
-        closeButton.setBackgroundImage(icon, forState: .Normal)
-        if let color = dependencyManager.closeIconTintColor {
-            closeButton.tintColor = color
         }
         
         subscribeButton.dependencyManager = dependencyManager.subscribeButtonDependency
@@ -314,16 +311,12 @@ private extension VDependencyManager {
         return stringForKey("text.privacy")
     }
     
-    var closeIcon: UIImage? {
-        return imageForKey("closeIcon")
-    }
-    
-    var closeIconTintColor: UIColor? {
-        return colorForKey("color.closeIcon")
-    }
-    
     var subscribeButtonDependency: VDependencyManager? {
         return childDependencyForKey("subscribeButton")
+    }
+    
+    var closeButtonDependency: VDependencyManager? {
+        return childDependencyForKey("close.button")
     }
     
     var subscriptionFetchURL: String? {

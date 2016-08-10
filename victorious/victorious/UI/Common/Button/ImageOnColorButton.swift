@@ -10,7 +10,7 @@ import Foundation
 
 /// A template-styled button that displays an image on top of a solid-color background
 @objc(VImageOnColorButton)
-class ImageOnColorButton: UIButton, TrackableButton {
+class ImageOnColorButton: TouchableInsetAdjustableButton, TrackableButton {
     var dependencyManager: VDependencyManager? {
         didSet {
             backgroundColor = templateAppearanceValue(.backgroundColor)

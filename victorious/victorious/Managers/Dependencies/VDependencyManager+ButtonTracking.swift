@@ -10,6 +10,7 @@ import Foundation
 
 enum ButtonTrackingEvent: String {
     case tap = "button_tap"
+    case cancel = "button_tap_cancel"
 }
 
 extension VDependencyManager {

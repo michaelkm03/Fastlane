@@ -12,6 +12,8 @@ class VIPValidateSuscriptionOperation: RemoteFetcherOperation, RequestOperation 
     
     var receiptDataSource: ReceiptDataSource = NSBundle.mainBundle()
     
+    private(set) var validationSucceeded = false
+    
     lazy var request: ValidateReceiptRequest! = {
         let receiptData = self.receiptDataSource.readReceiptData() ?? NSData()
         return ValidateReceiptRequest(data: receiptData)
@@ -46,6 +48,7 @@ class VIPValidateSuscriptionOperation: RemoteFetcherOperation, RequestOperation 
     }
     
     func onComplete(status: VIPStatus) {
+        validationSucceeded = true
         updateUser(status: status)
     }
     

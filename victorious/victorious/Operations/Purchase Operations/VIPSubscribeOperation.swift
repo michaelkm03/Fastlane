@@ -10,11 +10,13 @@ import Foundation
 
 class VIPSubscribeOperation: BackgroundOperation {
     let product: VProduct
+    let trackingDependencyManager: VDependencyManager
     
     var purchaseManager: VPurchaseManagerType = VPurchaseManager.sharedInstance()
     
-    init(product: VProduct) {
+    init(product: VProduct, trackingDependencyManager: VDependencyManager) {
         self.product = product
+        self.trackingDependencyManager = trackingDependencyManager
     }
     
     override func start() {
@@ -34,7 +36,12 @@ class VIPSubscribeOperation: BackgroundOperation {
     func purchaseSubscription() {
         let success = { (results: Set<NSObject>?) in
             // Force success because we have to deliver the product even if the sever fails for any reason
-            VIPValidateSuscriptionOperation(shouldForceSuccess: true).rechainAfter(self).queue()
+            let validatationOperation = VIPValidateSuscriptionOperation(shouldForceSuccess: true)
+            validatationOperation.rechainAfter(self).queue() { _ in
+                if validatationOperation.validationSucceeded {
+                    VTrackingManager.sharedInstance().trackEvent(VTrackingEventRecievedProductReceiptFromBackend)
+                }
+            }
             self.finishedExecuting()
         }
         let failure = { (error: NSError?) in
@@ -45,6 +52,7 @@ class VIPSubscribeOperation: BackgroundOperation {
             }
             self.finishedExecuting()
         }
+        VTrackingManager.sharedInstance().trackEvent(VTrackingEventSentProductReceiptToBackend)
         purchaseManager.purchaseProduct(product, success: success, failure: failure)
     }
 }

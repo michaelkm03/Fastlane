@@ -121,12 +121,14 @@ NSString * const VTrackingEventUserDidSelectProfileFollowers = @"UserDidSelectPr
 
 // Purchases
 NSString * const VTrackingEventUserDidSelectLockedVoteType = @"UserDidSelectLockedVoteType";
-NSString * const VTrackingEventUserDidCompletePurchase = @"UserDidCompletePurchase";
 NSString * const VTrackingEventUserDidRestorePurchases = @"UserDidRestorePurchases";
 NSString * const VTrackingEventUserDidCancelPurchase = @"UserDidCancelPurchase";
-NSString * const VTrackingEventPurchaseDidFail = @"PurchaseDidFail";
 NSString * const VTrackingEventRestorePurchasesDidFail = @"RestorePurchasesDidFail";
 NSString * const VTrackingEventAppStoreProductRequestDidFail = @"AppStoreProductRequestDidFail";
+NSString * const VTrackingEventSentProductReceiptToBackend = @"subscription.send.receipt.to.backend";
+NSString * const VTrackingEventRecievedProductReceiptFromBackend = @"subscription.receipt.received.from.backend";
+NSString * const VTrackingEventSentPurchaseRequestToStore = @"subscription.send.user.to.store";
+NSString * const VTrackingEventRecievedPurchaseCompletionFromStore = @"subscription.receipt.received.from.store";
 
 // Content Interaction
 NSString * const VTrackingEventSequenceDidAppearInStream = @"SequenceDidAppearInStream";
