@@ -21,6 +21,9 @@ class ShowVIPFlowOperation: MainQueueOperation {
     }
     
     override func start() {
+        super.start()
+        beganExecuting()
+        
         defer {
             finishedExecuting()
         }

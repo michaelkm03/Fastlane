@@ -31,7 +31,8 @@ class ShowLoginOperation: MainQueueOperation {
     
     override func start() {
         super.start()
-        
+        self.beganExecuting()
+
         // Don't show login when running unit tests
         guard !cancelled && !VAutomation.shouldAlwaysShowLoginScreen() else {
             self.loginCompletion?()
@@ -45,8 +46,6 @@ class ShowLoginOperation: MainQueueOperation {
             finishedExecuting()
             return
         }
-        
-        self.beganExecuting()
         
         // User is not logged in, show login view
         guard
