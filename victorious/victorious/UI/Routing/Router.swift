@@ -70,18 +70,11 @@ struct Router {
     private func showWebView(for url: NSURL, addressBarVisible: Bool, isVIPOnly: Bool = false) {
         // Future: We currently have no way to hide address bar. This will be handled when we implement close up web view.
         
-        if isVIPOnly {
-            guard let originViewController = self.originViewController else { return }
-            let showVIPFlowOperation = ShowVIPFlowOperation(originViewController: originViewController, dependencyManager: dependencyManager) { success in
-                if success {
-                    let safariViewController = SFSafariViewController(URL: url)
-                    originViewController.presentViewController(safariViewController, animated: true, completion: nil)                }
+        checkForPermissionBeforeRouting(contentIsForVIPOnly: isVIPOnly) { success in
+            if success {
+                let safariViewController = SFSafariViewController(URL: url)
+                self.originViewController?.presentViewController(safariViewController, animated: true, completion: nil)
             }
-            showVIPFlowOperation.queue()
-        }
-        else {
-            let safariViewController = SFSafariViewController(URL: url)
-            originViewController?.presentViewController(safariViewController, animated: true, completion: nil)
         }
     }
     
@@ -89,6 +82,25 @@ struct Router {
         let title = NSLocalizedString("Missing Content", comment: "The title of the alert saying we can't find a piece of content")
         let message = NSLocalizedString("Missing Content Message", comment: "A deep linked content has a wrong destination URL that we can't navigate to")
         originViewController?.v_showAlert(title: title, message: message)
+    }
+    
+    func checkForPermissionBeforeRouting(contentIsForVIPOnly isVIPOnly: Bool = false, completion: ((Bool) -> Void)? = nil) {
+        guard let currentUser = VCurrentUser.user() else {
+            return
+        }
+        
+        if isVIPOnly && (currentUser.isCreator != true || currentUser.isVIPSubscriber != true) {
+            guard let originViewController = self.originViewController else {
+                return
+            }
+            let showVIPFlowOperation = ShowVIPFlowOperation(originViewController: originViewController, dependencyManager: dependencyManager) { success in
+                completion?(success)
+            }
+            showVIPFlowOperation.queue()
+        }
+        else {
+            completion?(true)
+        }
     }
 }
 
@@ -220,6 +232,8 @@ private class ShowCloseUpOperation: MainQueueOperation {
     }
     
     override func start() {
+        super.start()
+        
         defer {
             finishedExecuting()
         }
@@ -291,11 +305,8 @@ private class ShowFetchedCloseUpOperation: MainQueueOperation {
         )
         
         let completionBlock = showCloseUpOperation.completionBlock
-        contentFetchOperation.rechainAfter(showCloseUpOperation).queue() { [weak self] results, _, _ in
-            guard
-                let strongSelf = self,
-                let shownCloseUpView = showCloseUpOperation.displayedCloseUpView
-            else {
+        contentFetchOperation.rechainAfter(showCloseUpOperation).queue() { results, _, _ in
+            guard let shownCloseUpView = showCloseUpOperation.displayedCloseUpView else {
                 completionBlock?()
                 return
             }
@@ -307,24 +318,14 @@ private class ShowFetchedCloseUpOperation: MainQueueOperation {
                 return
             }
             
-            if content.isVIPOnly {
-                let dependencyManager = displayModifier.dependencyManager
-                let showVIPFlowOperation = ShowVIPFlowOperation(originViewController: shownCloseUpView, dependencyManager: dependencyManager) { success in
-                    if success {
-                        shownCloseUpView.updateContent(content)
-                    }
-                    else {
-                        shownCloseUpView.navigationController?.popViewControllerAnimated(true)
-                    }
+            let router = Router(originViewController: shownCloseUpView, dependencyManager: displayModifier.dependencyManager)
+            router.checkForPermissionBeforeRouting(contentIsForVIPOnly: content.isVIPOnly) { success in
+                if success {
+                    shownCloseUpView.updateContent(content)
                 }
-                
-                showVIPFlowOperation.rechainAfter(strongSelf).queue() { _ in
-                    completionBlock?()
+                else {
+                    shownCloseUpView.navigationController?.popViewControllerAnimated(true)
                 }
-            }
-            else {
-                shownCloseUpView.updateContent(content)
-                completionBlock?()
             }
         }
     }
