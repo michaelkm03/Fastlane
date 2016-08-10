@@ -33,12 +33,13 @@ class ListMenuSectionHeaderView: UICollectionReusableView {
     }
     
     var accessoryButton: UIButton? {
-        willSet {
-            if newValue == nil {
-                accessoryButton?.removeFromSuperview()
-            }
-        }
         didSet {
+            guard accessoryButton !== oldValue else {
+                return
+            }
+            
+            oldValue?.removeFromSuperview()
+            
             if let accessoryButton = accessoryButton {
                 addSubview(accessoryButton)
                 accessoryButton.translatesAutoresizingMaskIntoConstraints = false

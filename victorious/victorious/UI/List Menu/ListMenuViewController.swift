@@ -52,6 +52,8 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         
         // Hack to show the creator logo
         postListMenuSelection(nil)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userVIPStatusChanged), name: VIPSubscriptionHelper.userVIPStatusChangedNotificationKey, object: nil)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -64,6 +66,13 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     }
 
     // MARK: - Notifications
+    
+    private dynamic func userVIPStatusChanged(notification: NSNotification) {
+        // This allows the collection view to update the VIP button based on the new state.
+        collectionView?.reloadData()
+    }
+    
+    // MARK: - Selection
     
     private func selectCreator(atIndex index: Int) {
         guard let scaffold = VRootViewController.sharedRootViewController()?.scaffold as? Scaffold else {
