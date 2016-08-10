@@ -23,7 +23,7 @@ extension UIAlertController {
         
         if content.isLikedByCurrentUser {
             addAction(UIAlertAction(
-                title: "Unbump",
+                title: dependencyManager.unlikeTitle,
                 style: .Default,
                 handler: { _ in
                     guard let apiPath = dependencyManager.contentUnupvoteAPIPath else {
@@ -40,7 +40,7 @@ extension UIAlertController {
         }
         else {
             addAction(UIAlertAction(
-                title: "Bump",
+                title: dependencyManager.likeTitle,
                 style: .Default,
                 handler: { _ in
                     guard let apiPath = dependencyManager.contentUpvoteAPIPath else {
@@ -58,7 +58,7 @@ extension UIAlertController {
         
         if content.wasCreatedByCurrentUser {
             addAction(UIAlertAction(
-                title: "Delete",
+                title: dependencyManager.deleteTitle,
                 style: .Destructive,
                 handler: { _ in
                     guard let apiPath = dependencyManager.contentDeleteAPIPath else {
@@ -75,7 +75,7 @@ extension UIAlertController {
         }
         else {
             addAction(UIAlertAction(
-                title: "Flag",
+                title: dependencyManager.flagTitle,
                 style: .Destructive,
                 handler: { _ in
                     guard let apiPath = dependencyManager.contentFlagAPIPath else {
@@ -121,5 +121,21 @@ private extension VDependencyManager {
     
     private var contentFlagAPIPath: APIPath? {
         return networkResources?.apiPathForKey("contentFlagURL")
+    }
+    
+    private var likeTitle: String {
+        return stringForKey("action.upvote.text") ?? "Bump"
+    }
+    
+    private var unlikeTitle: String {
+        return stringForKey("action.unupvote.text") ?? "Unbump"
+    }
+    
+    private var flagTitle: String {
+        return stringForKey("action.flag.text") ?? "Flag"
+    }
+    
+    private var deleteTitle: String {
+        return stringForKey("action.delete.text") ?? "Delete"
     }
 }
