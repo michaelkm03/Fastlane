@@ -34,13 +34,13 @@ class DeeplinkDestinationTests: XCTestCase {
     func testInitializeWithExternalURL() {
         let destination = DeeplinkDestination(url: externalURL)
         let expectedURL = NSURL(string: "https://www.example.com")!
-        XCTAssertEqual(destination, .externalURL(url: expectedURL, addressBarVisible: true))
+        XCTAssertEqual(destination, .externalURL(url: expectedURL, addressBarVisible: true, isVIPOnly: false ))
     }
     
     func testInitializeWithHiddenURL() {
-        let destination = DeeplinkDestination(url: hiddenURL)
+        let destination = DeeplinkDestination(url: hiddenURL, isVIPOnly: true)
         let expectedURL = NSURL(string: "https://www.example.com")!
-        XCTAssertEqual(destination, .externalURL(url: expectedURL, addressBarVisible: false))
+        XCTAssertEqual(destination, .externalURL(url: expectedURL, addressBarVisible: false, isVIPOnly: true))
     }
     
     func testInitializeWithContent() {

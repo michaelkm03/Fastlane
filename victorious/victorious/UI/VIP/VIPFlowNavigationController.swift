@@ -77,8 +77,10 @@ class VIPFlowNavigationController: UINavigationController, VIPGateViewController
     // MARK: - Delegate notification
     
     func dismissAndCallCompletionWithSuccess(success: Bool) {
-        completionBlock?(success)
-        presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+        
+        presentingViewController?.dismissViewControllerAnimated(true) { [weak self] in
+            self?.completionBlock?(success)
+        }
     }
 }
 
