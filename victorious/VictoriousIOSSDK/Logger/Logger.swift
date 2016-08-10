@@ -20,6 +20,9 @@ private struct Config {
 
     /// Turn on to show logs in console even if on production build. `false` by default.
     static let showNSLog = false
+
+    /// The minimum log level for *all* destinations registered. Default value is `info`.
+    static let minimumLogLevel = SwiftyBeaver.Level.Info
 }
 
 public var logger: SwiftyBeaver.Type = {
@@ -28,11 +31,13 @@ public var logger: SwiftyBeaver.Type = {
     #if DEBUG
         let consoleDestination = ConsoleDestination()
         consoleDestination.colored = false
+        consoleDestination.minLevel = Config.minimumLogLevel
         theBeaver.addDestination(consoleDestination)
     #else
         let remoteDestination = SBPlatformDestination(appID: Secrets.appID, appSecret: Secrets.appSecret, encryptionKey: Secrets.encryptionKey)
         remoteDestination.asynchronously = Config.logAsynchronously
         remoteDestination.showNSLog = Config.showNSLog
+        remoteDestination.minLevel = Config.minimumLogLevel
         theBeaver.addDestination(remoteDestination)
     #endif
 
@@ -47,11 +52,5 @@ public extension SwiftyBeaver {
     /// Unique identifier of the user, should be set as early as possible.
     class func setUserIdentifier(identifier: String) {
         platformDestination?.analyticsUserName = identifier
-    }
-
-    /// This will set the minimum log level for *all* destinations registered.
-    /// Defualt value is `info`.
-    class func setMinimumLogLevel(logLevel: SwiftyBeaver.Level) {
-        destinations.forEach { $0.minLevel = logLevel }
     }
 }
