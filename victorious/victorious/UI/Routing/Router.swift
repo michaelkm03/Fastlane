@@ -51,9 +51,9 @@ struct Router {
                 guard content.type != .text, let contentID = content.id else {
                     return
                 }
-                ShowCloseUpOperation.showOperation(forContentID: contentID, displayModifier: displayModifier).queue()
-            case .contentID(let id):
-                ShowCloseUpOperation.showOperation(forContentID: id, displayModifier: displayModifier).queue()
+                ShowFetchedCloseUpOperation(contentID: contentID, displayModifier: displayModifier).queue()
+            case .contentID(let contentID):
+                ShowFetchedCloseUpOperation(contentID: contentID, displayModifier: displayModifier).queue()
         }
     }
     
@@ -215,16 +215,6 @@ private class ShowCloseUpOperation: MainQueueOperation {
     private var contentID: String?
     private(set) var displayedCloseUpView: CloseUpContainerViewController?
     
-    static func showOperation(forContentID contentID: String, displayModifier: ShowCloseUpDisplayModifier) -> MainQueueOperation {
-        return ShowFetchedCloseUpOperation(contentID: contentID, displayModifier: displayModifier)
-    }
-    
-    init(content: ContentModel, displayModifier: ShowCloseUpDisplayModifier) {
-        self.displayModifier = displayModifier
-        self.content = content
-        super.init()
-    }
-    
     init(contentID: String, displayModifier: ShowCloseUpDisplayModifier) {
         self.displayModifier = displayModifier
         self.contentID = contentID
@@ -274,7 +264,7 @@ private class ShowFetchedCloseUpOperation: MainQueueOperation {
     private let displayModifier: ShowCloseUpDisplayModifier
     private var contentID: String
     
-    init(contentID: String, displayModifier: ShowCloseUpDisplayModifier, checkPermissions: Bool = true) {
+    init(contentID: String, displayModifier: ShowCloseUpDisplayModifier) {
         self.displayModifier = displayModifier
         self.contentID = contentID
         super.init()
@@ -282,6 +272,7 @@ private class ShowFetchedCloseUpOperation: MainQueueOperation {
     
     override func start() {
         super.start()
+        
         defer {
             finishedExecuting()
         }
@@ -291,33 +282,36 @@ private class ShowFetchedCloseUpOperation: MainQueueOperation {
             !cancelled,
             let userID = VCurrentUser.user()?.remoteId.integerValue,
             let contentFetchURL = displayModifier.dependencyManager.contentFetchURL
-            else {
-                return
+        else {
+            return
         }
         
+        // Set up ShowCloseUpOperation and chain it
         let showCloseUpOperation = ShowCloseUpOperation(contentID: contentID, displayModifier: displayModifier)
-        showCloseUpOperation.rechainAfter(self).queue()
+        showCloseUpOperation.rechainAfter(self)
         
+        // Set up ContentFetchOperation and chain it
         let contentFetchOperation = ContentFetchOperation(
             macroURLString: contentFetchURL,
             currentUserID: String(userID),
             contentID: contentID
         )
+        contentFetchOperation.rechainAfter(showCloseUpOperation)
         
-        let completionBlock = showCloseUpOperation.completionBlock
-        contentFetchOperation.rechainAfter(showCloseUpOperation).queue() { results, _, _ in
+        // Queue operations. We queue the operations after setting up dependency graph for NSOperationQueue performance reasons.
+        showCloseUpOperation.queue()
+        contentFetchOperation.queue() { results, _, _ in
             guard let shownCloseUpView = showCloseUpOperation.displayedCloseUpView else {
-                completionBlock?()
                 return
             }
             
             guard let content = results?.first as? ContentModel else {
                 // Display error message.
                 shownCloseUpView.updateError()
-                completionBlock?()
                 return
             }
             
+            // Check for permissions before we continue to show the content
             let router = Router(originViewController: shownCloseUpView, dependencyManager: displayModifier.dependencyManager)
             router.checkForPermissionBeforeRouting(contentIsForVIPOnly: content.isVIPOnly) { success in
                 if success {
