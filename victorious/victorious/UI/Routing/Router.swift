@@ -98,7 +98,7 @@ struct Router {
             return
         }
         
-        if isVIPOnly && (currentUser.isCreator != true || currentUser.isVIPSubscriber != true) {
+        if isVIPOnly && !currentUser.hasValidVIPSubscription {
             guard let originViewController = self.originViewController else {
                 return
             }
