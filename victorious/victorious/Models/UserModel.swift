@@ -22,12 +22,8 @@ extension UserModel {
         return vipStatus?.isVIP == true
     }
     
-    var isVIPOrCreator: Bool {
-        return hasValidVIPSubscription || accessLevel.isCreator
-    }
-    
     func canView(content: ContentModel) -> Bool {
-        return !content.isVIPOnly || isVIPOrCreator
+        return !content.isVIPOnly || hasValidVIPSubscription
     }
     
     // MARK: - Colors

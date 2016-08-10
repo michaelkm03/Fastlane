@@ -33,7 +33,7 @@ class ShowVIPFlowOperation: MainQueueOperation {
             return
         }
         
-        guard VCurrentUser.user()?.isVIPOrCreator != true else {
+        guard VCurrentUser.user()?.hasValidVIPSubscription != true && VCurrentUser.user()?.isCreator != true else {
             completion?(true)
             return
         }
