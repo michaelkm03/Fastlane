@@ -160,14 +160,14 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
             operation.queue() { [weak self] results, error, canceled in
                 guard let strongSelf = self,
                     let token = results?.first as? String where !token.characters.isEmpty else {
-                        v_log("Failed to parse the token from the response. Results -> \(results)")
+                        logger.info("Failed to parse the token from the response. Results -> \(results) error -> \(error)")
                         return
                 }
 
                 let currentApplicationID = VEnvironmentManager.sharedInstance().currentEnvironment.appID
-                v_log("strongSelf.dependencyManager.expandableSocketURL -> \(strongSelf.dependencyManager.expandableSocketURL)  appId -> \(currentApplicationID.stringValue)")
+                logger.verbose("strongSelf.dependencyManager.expandableSocketURL -> \(strongSelf.dependencyManager.expandableSocketURL)  appId -> \(currentApplicationID.stringValue)")
                 guard let url = strongSelf.expandWebSocketURLString(strongSelf.dependencyManager.expandableSocketURL, withToken: token, applicationID: currentApplicationID.stringValue) else {
-                    v_log("Failed to generate the WebSocket endpoint using token (\(token)), userID (\(currentUserID)) and template URL (\(strongSelf.dependencyManager.expandableSocketURL)))")
+                    logger.info("Failed to generate the WebSocket endpoint using token (\(token)), userID (\(currentUserID)) and template URL (\(strongSelf.dependencyManager.expandableSocketURL)))")
                     return
                 }
                 

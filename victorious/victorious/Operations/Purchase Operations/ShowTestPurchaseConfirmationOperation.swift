@@ -61,7 +61,7 @@ class ShowTestPurchaseConfirmationOperation: BackgroundOperation, ActionConfirma
                 }
             )
         )
-        if let rootVC = (UIApplication.sharedApplication().delegate as! VAppDelegate).window.rootViewController {
+        if let rootVC = (UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController {
             let targetVC = rootVC.presentedViewController ?? rootVC
             targetVC.presentViewController(alertController, animated: true, completion: nil)
         }
