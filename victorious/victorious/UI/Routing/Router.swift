@@ -58,12 +58,21 @@ struct Router {
     }
     
     private func showVIPForum() {
-        guard let originViewController = self.originViewController else { return }
-        ShowForumOperation(originViewController: originViewController, dependencyManager: dependencyManager, showVIP: true, animated: true).queue()
+        guard let originViewController = self.originViewController else {
+            return
+        }
+        
+        checkForPermissionBeforeRouting(contentIsForVIPOnly: true) { success in
+            if success {
+                ShowForumOperation(originViewController: originViewController, dependencyManager: self.dependencyManager, showVIP: true, animated: true).queue()
+            }
+        }
     }
     
     private func showProfile(for userID: User.ID) {
-        guard let originViewController = self.originViewController else { return }
+        guard let originViewController = self.originViewController else {
+            return
+        }
         ShowProfileOperation(originViewController: originViewController, dependencyManager: dependencyManager, userId: userID).queue()
     }
     
