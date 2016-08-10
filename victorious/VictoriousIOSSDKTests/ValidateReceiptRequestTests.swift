@@ -36,8 +36,6 @@ class ValidateReceiptRequestTests: XCTestCase {
             )
             
             XCTAssertEqual(vipStatus.isVIP, true)
-            let dateFormatter = NSDateFormatter(vsdk_format: .Standard)
-            
         } catch {
             XCTFail("Failed to parse response to `ValidateReceiptRequest`.")
             return

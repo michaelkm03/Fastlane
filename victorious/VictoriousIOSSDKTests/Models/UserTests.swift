@@ -38,7 +38,6 @@ class UserTests: XCTestCase {
         }
         
         XCTAssertEqual(vipStatus.isVIP, true)
-        let dateFormatter = NSDateFormatter(vsdk_format: .Standard)
         
         let previewImages = user.previewImages
         if previewImages.count == 2 {

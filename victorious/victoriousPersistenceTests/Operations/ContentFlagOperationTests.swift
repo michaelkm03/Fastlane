@@ -11,7 +11,7 @@ import XCTest
 
 class ContentFlagOperationTests: BaseFetcherOperationTestCase {
     func testWithConfirmation() {
-        let operation = ContentFlagOperation(contentID: "12345", contentFlagURL: "")
+        let operation = ContentFlagOperation(contentID: "12345", apiPath: APIPath(templatePath: ""))
         
         let confirm = MockActionConfirmationOperation(shouldConfirm: true)
         confirm.before(operation).queue()
@@ -29,7 +29,7 @@ class ContentFlagOperationTests: BaseFetcherOperationTestCase {
     }
     
     func testWithoutConfirmation() {
-        let operation = ContentFlagOperation(contentID: "12345", contentFlagURL: "")
+        let operation = ContentFlagOperation(contentID: "12345", apiPath: APIPath(templatePath: ""))
         
         let confirm = MockActionConfirmationOperation(shouldConfirm: false)
         confirm.before(operation).queue()

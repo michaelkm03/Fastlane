@@ -26,7 +26,6 @@ class VUserTests: BasePersistentStoreTestCase {
         XCTAssertEqual(user.likesGiven, 99)
         XCTAssertEqual(user.likesReceived, 40)
         XCTAssertEqual(user.isVIPSubscriber, 1)
-        let dateFormatter = NSDateFormatter(vsdk_format: .Standard)
         XCTAssertEqual(user.previewAssets?.count, 2)
     }
     

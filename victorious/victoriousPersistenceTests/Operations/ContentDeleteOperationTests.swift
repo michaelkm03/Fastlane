@@ -11,7 +11,7 @@ import XCTest
 
 class ContentDeleteOperationTests: BaseFetcherOperationTestCase {
     func testWithConfirmation() {
-        let operation = ContentDeleteOperation(contentID: "12345", contentDeleteURL: "")
+        let operation = ContentDeleteOperation(contentID: "12345", apiPath: APIPath(templatePath: ""))
         
         let confirm = MockActionConfirmationOperation(shouldConfirm: true)
         confirm.before(operation).queue()
@@ -28,7 +28,7 @@ class ContentDeleteOperationTests: BaseFetcherOperationTestCase {
     }
     
     func testWithoutConfirmation() {
-        let operation = ContentDeleteOperation(contentID: "12345", contentDeleteURL: "")
+        let operation = ContentDeleteOperation(contentID: "12345", apiPath: APIPath(templatePath: ""))
         
         let confirm = MockActionConfirmationOperation(shouldConfirm: false)
         confirm.before(operation).queue()
