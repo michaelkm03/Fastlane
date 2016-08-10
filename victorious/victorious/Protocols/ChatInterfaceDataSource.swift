@@ -27,6 +27,9 @@ protocol ChatInterfaceDataSource: UICollectionViewDataSource {
     /// The size is based on the data object being displayed by the cell.
     func desiredCellSize(for collectionView: UICollectionView, at indexPath: NSIndexPath) -> CGSize
     
+    /// Removes the item in `visibleItems` at the given `index`.
+    func removeVisibleItem(at index: Int)
+    
     /// Decorates and configures a cell with its data object
     func decorate(cell: ChatFeedMessageCell, with chatFeedContent: ChatFeedContent)
 }

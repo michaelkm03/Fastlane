@@ -44,6 +44,10 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
         }
     }
     
+    func removeVisibleItem(at index: Int) {
+        visibleItems.removeAtIndex(index)
+    }
+    
     var stashingEnabled = false
     var shouldShowPendingItems = true
     

@@ -137,4 +137,15 @@ extension ChatFeed {
             completion()
         })
     }
+    
+    /// Removes the given content from the data source and from the collection view.
+    func remove(item: ChatFeedContent) {
+        guard let index = chatInterfaceDataSource.visibleItems.indexOf({ item.content.id == $0.content.id }) else {
+            assertionFailure("Tried to remove content from chat feed, but the chat feed didn't contain that content.")
+            return
+        }
+        
+        chatInterfaceDataSource.removeVisibleItem(at: index)
+        collectionView.deleteItemsAtIndexPaths([NSIndexPath(forItem: index, inSection: 0)])
+    }
 }
