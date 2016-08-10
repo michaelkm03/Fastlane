@@ -28,7 +28,6 @@
 #import "VAbstractImageVideoCreationFlowController.h"
 #import "VActionBarFixedWidthItem.h"
 #import "VAlternateCaptureOption.h"
-#import "VAppDelegate.h"
 #import "VAppInfo.h"
 #import "VAppTimingEventType.h"
 #import "VApplicationTracking.h"

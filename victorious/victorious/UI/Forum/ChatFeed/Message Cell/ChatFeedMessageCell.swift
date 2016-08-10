@@ -140,7 +140,6 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
             case .Began: delegate?.messageCellDidLongPressContent(self)
             case .Changed, .Cancelled, .Ended, .Failed, .Possible: break
         }
-        
     }
     
     private dynamic func didTapOnFailureButton(sender: UIButton) {

@@ -59,9 +59,9 @@ extern NSString * const VApplicationDidBecomeActiveNotification;
 - (void)applicationDidReceiveRemoteNotification:(NSDictionary *)userInfo;
 
 /**
- Please call this method from UIApplicationDelegate's method of the same name.
+ Please call this method from UIApplicationDelegate's method of a similar name.
  */
-- (void)applicationOpenURL:(NSURL *)url sourceApplication:(nullable NSString *)sourceApplication annotation:(id)annotation;
+- (void)applicationOpenURL:(NSURL *)url;
 
 /**
  Restarts the session of the app, returning it to a state as if it had just been launched.
