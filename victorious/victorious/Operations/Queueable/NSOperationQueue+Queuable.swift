@@ -43,7 +43,7 @@ extension NSOperationQueue {
             }
             // For all other dependent operations of the current operation, make them dependent on the completion block operation instead.
             // This has to happen before we set up completion block operation's dependency to avoid a dead lock.
-            operations.filter { $0.dependencies.contains(operation) }.forEach { $0.addDependency(completionOperation) }
+            v_dependentOperationsOf(operation).forEach { $0.addDependency(completionOperation) }
             
             // Set up dependency for completion block operation and add it to queue.
             completionOperation.addDependency(operation)
