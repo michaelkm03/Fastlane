@@ -13,7 +13,4 @@ func v_log(message: String, filename: String = #file, functionName: String = #fu
 #if DEBUG
     NSLog(logMessage)
 #endif
-#if V_ENABLE_TESTFAIRY
-    VTFLog(logMessage)
-#endif
 }
