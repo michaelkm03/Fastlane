@@ -2146,7 +2146,7 @@
 		7AC194621D2DD2FC001B15B8 /* String+InitialsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+InitialsTests.swift"; sourceTree = "<group>"; };
 		7AC1B9FD1D3FF7CF00FA3CF6 /* CGPoint+Initializers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPoint+Initializers.swift"; sourceTree = "<group>"; };
 		7AC1B9FF1D3FFD9100FA3CF6 /* CGPoint+InitializersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPoint+InitializersTests.swift"; sourceTree = "<group>"; };
-		7AC9E7C31D5A53EC000D8FD6 /* UIAlertController+ContentActionSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertController+ContentActionSheet.swift"; sourceTree = "<group>"; };
+		7AC9E7C31D5A53EC000D8FD6 /* UIAlertController+ContentActionSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIAlertController+ContentActionSheet.swift"; path = "../UI/Forum/UIAlertController+ContentActionSheet.swift"; sourceTree = "<group>"; };
 		7AE363A01CC864B600F851E9 /* SideNavScaffoldViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideNavScaffoldViewController.swift; sourceTree = "<group>"; };
 		7AE363A41CC98F5D00F851E9 /* RightNavViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RightNavViewController.swift; sourceTree = "<group>"; };
 		7AE363A61CC9BA9400F851E9 /* Scaffold.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scaffold.swift; sourceTree = "<group>"; };
@@ -5168,6 +5168,7 @@
 				C3A4C5B11BCC6455000B745B /* StatusBarUtils.swift */,
 				7AC194601D2DD1A9001B15B8 /* String+Initials.swift */,
 				F009BD1A1CEBD3C800F81CAA /* String+SubstringHelpers.swift */,
+				7AC9E7C31D5A53EC000D8FD6 /* UIAlertController+ContentActionSheet.swift */,
 				A721E8D21B572453000B7901 /* UIAlertController+VSimpleAlert.h */,
 				A721E8D31B572453000B7901 /* UIAlertController+VSimpleAlert.m */,
 				7AE3EA381CAF39C400272A6A /* UICollectionViewFlowLayout+CellSize.swift */,
@@ -5440,7 +5441,6 @@
 				A73BA2D71C9394B6008168B5 /* ForumViewController.swift */,
 				7CC982221D02353100583B70 /* NavBar */,
 				A73BA29C1C938B68008168B5 /* Stage */,
-				7AC9E7C31D5A53EC000D8FD6 /* UIAlertController+ContentActionSheet.swift */,
 			);
 			path = Forum;
 			sourceTree = "<group>";

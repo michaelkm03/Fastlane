@@ -96,8 +96,8 @@ extension ChatFeed {
     
     private func updateCollectionView(with newItems: [ChatFeedContent], loadingType: PaginatedLoadingType, newPendingContentCount: Int, removedPendingContentIndices: [Int], completion: () -> Void) {
         let collectionView = self.collectionView
-        let visibleItemCount = chatInterfaceDataSource.unstashedItems.count
-        let oldVisibleItemCount = visibleItemCount - newItems.count
+        let unstashedItemCount = chatInterfaceDataSource.unstashedItems.count
+        let oldUnstashedItemCount = unstashedItemCount - newItems.count
         let itemCount = chatInterfaceDataSource.itemCount
         
         // The collection view's layout information is guaranteed to be updated properly in the completion handler
@@ -106,7 +106,7 @@ extension ChatFeed {
             switch loadingType {
                 case .newer:
                     collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
-                        NSIndexPath(forItem: oldVisibleItemCount + $0, inSection: 0)
+                        NSIndexPath(forItem: oldUnstashedItemCount + $0, inSection: 0)
                     })
                 
                 case .older:
@@ -131,7 +131,7 @@ extension ChatFeed {
             })
             
             collectionView.deleteItemsAtIndexPaths(removedPendingContentIndices.map {
-                NSIndexPath(forItem: oldVisibleItemCount + $0, inSection: 0)
+                NSIndexPath(forItem: oldUnstashedItemCount + $0, inSection: 0)
             })
         }, completion: { _ in
             completion()
