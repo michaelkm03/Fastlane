@@ -11,6 +11,7 @@ import Foundation
 class TempDirectoryCleanupOperation: BackgroundOperation {
     
     override func start() {
+        super.start()
         beganExecuting()
         
         let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT

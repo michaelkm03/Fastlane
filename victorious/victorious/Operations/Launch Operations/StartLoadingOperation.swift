@@ -38,6 +38,7 @@ class StartLoadingOperation: BackgroundOperation, VTemplateDownloadOperationDele
     
     override func start() {
         super.start()
+        beganExecuting()
         
         defer {
             self.finishedExecuting()

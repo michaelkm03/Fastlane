@@ -44,7 +44,7 @@ class ContentFlagOperationTests: BaseFetcherOperationTestCase {
         operation.v_defaultQueue.suspended = true
         waitForExpectationsWithTimeout(expectationThreshold) { error in
             let dependentOperations = operation.v_defaultQueue.v_dependentOperationsOf(operation)
-            XCTAssertEqual( dependentOperations.count, 0 )
+            XCTAssertEqual(dependentOperations.count, 1)
         }
     }
 }

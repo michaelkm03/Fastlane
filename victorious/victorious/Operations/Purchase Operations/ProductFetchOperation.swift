@@ -20,14 +20,14 @@ class ProductFetchOperation: BackgroundOperation {
     }
     
     override func start() {
+        super.start()
+        beganExecuting()
+        
         guard didConfirmActionFromDependencies else {
             cancel()
             finishedExecuting()
             return
         }
-        
-        beganExecuting()
-        
         fetchProducts()
     }
     

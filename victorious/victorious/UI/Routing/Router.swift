@@ -134,13 +134,13 @@ private class ShowForumOperation: MainQueueOperation {
     }
     
     override func start() {
+        super.start()
+        beganExecuting()
         
         guard !self.cancelled else {
             finishedExecuting()
             return
         }
-        
-        beganExecuting()
         
         let templateKey = showVIP ? "vipForum" : "forum"
         let templateValue = dependencyManager.templateValueOfType(ForumViewController.self, forKey: templateKey)
@@ -183,6 +183,8 @@ private class ShowProfileOperation: MainQueueOperation {
     
     override func start() {
         super.start()
+        beganExecuting()
+        
         defer {
             finishedExecuting()
         }
@@ -237,6 +239,7 @@ private class ShowCloseUpOperation: MainQueueOperation {
     
     override func start() {
         super.start()
+        beganExecuting()
         
         defer {
             finishedExecuting()
@@ -286,6 +289,7 @@ private class ShowFetchedCloseUpOperation: MainQueueOperation {
     
     override func start() {
         super.start()
+        beganExecuting()
         
         defer {
             finishedExecuting()
