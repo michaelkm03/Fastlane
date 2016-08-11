@@ -104,11 +104,11 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     }
     
     @IBAction func onPrivacyPolicySelected() {
-        ShowWebContentOperation(originViewController: self, type: .PrivacyPolicy, forceModal: true, dependencyManager: dependencyManager).queue()
+        navigateToFixedWebContent(.PrivacyPolicy)
     }
     
     @IBAction func onTermsOfServiceSelected() {
-        ShowWebContentOperation(originViewController: self, type: .TermsOfService, forceModal: true, dependencyManager: dependencyManager).queue()
+        navigateToFixedWebContent(.TermsOfService)
     }
     
     @IBAction func onCloseSelected() {
@@ -116,6 +116,11 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     }
     
     // MARK: - Private
+    
+    private func navigateToFixedWebContent(type: FixedWebContentType) {
+        let router = Router(originViewController: self, dependencyManager: dependencyManager)
+        router.navigate(to: DeeplinkDestination.fixedWebContent(type: type, forceModal: true))
+    }
     
     private func HUDNeedsUpdateToTitle(title: String?) -> Bool {
         if let huds = MBProgressHUD.allHUDsForView(self.view) as? [MBProgressHUD] {

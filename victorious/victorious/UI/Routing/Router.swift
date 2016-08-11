@@ -37,6 +37,7 @@ struct Router {
             case .closeUp(let contentWrapper): showCloseUpView(for: contentWrapper)
             case .vipForum: showVIPForum()
             case .externalURL(let url, let addressBarVisible, let isVIPOnly): showWebView(for: url, addressBarVisible: addressBarVisible, isVIPOnly: isVIPOnly)
+            case .fixedWebContent(let type, let forceModal) : showFixedWebContent(type, forceModal: forceModal)
         }
     }
     
@@ -97,6 +98,14 @@ struct Router {
                 }
             }
         }
+    }
+    
+    private func showFixedWebContent(type: FixedWebContentType, forceModal: Bool) {
+        guard let originViewController = self.originViewController else {
+            return
+        }
+        
+        ShowWebContentOperation(originViewController: originViewController, type: type, forceModal: forceModal, animated: true, dependencyManager: dependencyManager).queue()
     }
     
     private func showError() {
