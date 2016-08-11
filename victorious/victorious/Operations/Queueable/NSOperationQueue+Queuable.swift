@@ -52,3 +52,13 @@ extension NSOperationQueue {
         addOperation(operation)
     }
 }
+
+extension NSOperation {
+    
+    func performUITask(task: () -> Void) {
+        v_defaultQueue.suspended = true
+        dispatch_async(dispatch_get_main_queue()) {
+            task()
+        }
+    }
+}
