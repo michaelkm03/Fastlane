@@ -8,7 +8,7 @@
 
 import Foundation
 
-class VIPSelectSubscriptionOperation: MainQueueOperation, UIAlertViewDelegate {
+class VIPSelectSubscriptionOperation: AsyncWaitingOperation, UIAlertViewDelegate {
     let products: [VProduct]
     
     let originViewController: UIViewController
@@ -23,30 +23,28 @@ class VIPSelectSubscriptionOperation: MainQueueOperation, UIAlertViewDelegate {
         self.originViewController = originViewController
     }
     
-    override func start() {
-        super.start()
-        beganExecuting()
-        
+    private func selectionHandler(for product: VProduct?) -> (UIAlertAction -> ()) {
+        return { [weak self] (alertAction: UIAlertAction) in
+            self?.asyncCallBack()
+            self?.selectedProduct = product
+        }
+    }
+    
+    override func main() {
         guard willShowPrompt else {
             selectedProduct = products.first
-            finishedExecuting()
             return
         }
         
-        let alert = UIAlertController(title: Strings.alertTitle, message: Strings.alertMessage, preferredStyle: .Alert)
-        for product in products {
-            let action = UIAlertAction(title: product.price + " " + product.localizedDescription, style: .Default, handler: selectionHandler(for: product))
+        performUITask { [unowned self] in
+            let alert = UIAlertController(title: Strings.alertTitle, message: Strings.alertMessage, preferredStyle: .Alert)
+            for product in self.products {
+                let action = UIAlertAction(title: product.price + " " + product.localizedDescription, style: .Default, handler: self.selectionHandler(for: product))
+                alert.addAction(action)
+            }
+            let action = UIAlertAction(title: Strings.cancel, style: .Default, handler: self.selectionHandler(for: nil))
             alert.addAction(action)
-        }
-        let action = UIAlertAction(title: Strings.cancel, style: .Default, handler: selectionHandler(for: nil))
-        alert.addAction(action)
-        originViewController.presentViewController(alert, animated: true, completion: nil)
-    }
-    
-    private func selectionHandler(for product: VProduct?) -> (UIAlertAction -> ()) {
-        return { (alertAction: UIAlertAction) in
-            self.selectedProduct = product
-            self.finishedExecuting()
+            self.originViewController.presentViewController(alert, animated: true, completion: nil)
         }
     }
     
