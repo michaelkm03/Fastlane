@@ -15,6 +15,7 @@
 @property (nonatomic, strong) NSURL *urlToView;
 @property (nonatomic, strong) WKWebView *webView;
 @property (nonatomic, assign) BOOL shouldShowLoadingState;
+@property (nonatomic, assign) BOOL shouldShowNavigationButtons;
 
 - (void)setFailureWithError:(NSError *)error;
 

@@ -32,6 +32,12 @@
     
     self.urlToView = self.urlToView;
     [self addConstraintsToWebView:self.webView];
+    
+    if (self.shouldShowNavigationButtons) {
+        [self configureNavigationButtons];
+    }
+    
+    
 }
 
 - (void)setFailureWithError:(NSError *)error
