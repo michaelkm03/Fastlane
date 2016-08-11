@@ -24,7 +24,7 @@ public struct GIFSearchRequest: PaginatorPageable, ResultBasedPageable {
 		
 		let url:  NSURL
 		if let searchTerm = searchTerm {
-			url = NSURL(string: "/api/image/gif_search")!.URLByAppendingPathComponent(searchTerm)
+			url = NSURL(string: "/api/image/gif_search")!.URLByAppendingPathComponent(searchTerm)!
 		} else {
 			url = NSURL(string: "/api/image/trending_gifs")!
 		}

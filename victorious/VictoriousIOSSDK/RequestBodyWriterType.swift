@@ -24,7 +24,7 @@ protocol RequestBodyWriterType: class {
 
 extension RequestBodyWriterType {
     
-    var bodyTempFileURL: NSURL {
+    var bodyTempFileURL: NSURL? {
         let tempDirectory = NSURL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
         return tempDirectory.URLByAppendingPathComponent("requestBody.tmp")
     }
