@@ -11,6 +11,7 @@
  */
 
 #import <KVOController/FBKVOController.h>
+#import "TestFairy.h"
 #import "NSString+VCrypto.h"
 #import "NSString+VParseHelp.h"
 #import "NSURL+MediaType.h"
@@ -116,7 +117,6 @@
 #import "VSolidColorBackground.h"
 #import "VStoredLogin.h"
 #import "VStoredPassword.h"
-#import "VTFLog.h"
 #import "VThemeManager.h"
 #import "VTimerManager.h"
 #import "VTrackingManager.h"
