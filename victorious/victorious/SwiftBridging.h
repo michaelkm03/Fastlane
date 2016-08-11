@@ -117,7 +117,6 @@
 #import "VSolidColorBackground.h"
 #import "VStoredLogin.h"
 #import "VStoredPassword.h"
-#import "VTFLog.h"
 #import "VThemeManager.h"
 #import "VTimerManager.h"
 #import "VTrackingManager.h"
