@@ -10,7 +10,19 @@ import UIKit
 
 class SettingsTableViewCell: UITableViewCell, VBackgroundContainer {
 
-    private var separatorView: UIView
+    private let separatorView: UIView
+
+    var separatorColor: UIColor {
+        get {
+            return separatorView.backgroundColor ?? UIColor.clearColor()
+        }
+
+        set {
+            separatorView.backgroundColor = newValue
+        }
+    }
+
+    // MARK: - Initializing
 
     required init?(coder aDecoder: NSCoder) {
         separatorView = UIView()
@@ -40,11 +52,5 @@ class SettingsTableViewCell: UITableViewCell, VBackgroundContainer {
     
     func backgroundContainerView() -> UIView {
         return backgroundView ?? contentView
-    }
-
-    // MARK: Styles
-
-    func updateSeparatorView(color: UIColor) {
-        separatorView.backgroundColor = color
     }
 }

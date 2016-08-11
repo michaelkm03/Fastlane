@@ -56,9 +56,8 @@ extension VSettingsViewController: VBackgroundContainer {
         label.textColor = dependencyManager.cellTextColor
         label.backgroundColor = UIColor.clearColor()
 
-        let separatorColor: UIColor = isLastCell(indexPath) || isLastSection(indexPath.section) ? UIColor.clearColor() : dependencyManager.separatorColor ?? UIColor.clearColor()
-        cell.updateSeparatorView(separatorColor)
-        
+        cell.separatorColor = isLastCell(indexPath) || isLastSection(indexPath.section) ? UIColor.clearColor() : dependencyManager.separatorColor ?? UIColor.clearColor()
+
         if cell.contentView.subviews.contains(versionString) {
             cell.backgroundColor = UIColor.clearColor()
         }
@@ -93,11 +92,11 @@ extension VSettingsViewController: VBackgroundContainer {
 
 private extension VSettingsViewController {
     private func isLastCell(indexPath: NSIndexPath) -> Bool {
-        return indexPath.row == tableView.numberOfRowsInSection(indexPath.section)-1
+        return indexPath.row == tableView.numberOfRowsInSection(indexPath.section) - 1
     }
 
     private func isLastSection(section: Int) -> Bool {
-        return section == tableView.numberOfSections-1
+        return section == tableView.numberOfSections - 1
     }
 }
 
