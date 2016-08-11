@@ -26,24 +26,11 @@ extension NSOperationQueue {
         
         // Rechain (transfer) completion block
         operation.addDependency( dependency )
-        operation.completionBlock = dependency.completionBlock
-        dependency.completionBlock = nil
         
         // Rechain (transfer) dependencies
         for dependent in v_dependentOperationsOf( dependency ) {
             dependent.addDependency( operation )
         }
-    }
-    
-    func v_chainOperations( operations: [NSOperation], completion: (() -> ())? = nil  ) {
-        var lastOp: NSOperation?
-        for nextOp in operations {
-            if let lastOp = lastOp {
-                nextOp.addDependency(lastOp)
-            }
-            lastOp = nextOp
-        }
-        operations.last?.completionBlock = completion
     }
 }
 
@@ -51,8 +38,8 @@ extension NSOperationQueue {
     func v_addOperation<T: Queueable where T : NSOperation>( operation: T, completion: T.CompletionBlockType? ) {
         if let completion = completion {
             // Turn completion block into an operation.
-            let completionOperation = NSBlockOperation() {[weak operation] in
-                operation?.executeCompletionBlock(completion)
+            let completionOperation = NSBlockOperation() {
+                operation.executeCompletionBlock(completion)
             }
             // For all other dependent operations of the current operation, make them dependent on the completion block operation instead.
             // This has to happen before we set up completion block operation's dependency to avoid a dead lock.
