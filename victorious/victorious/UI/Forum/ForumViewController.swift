@@ -386,7 +386,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         }
         
         if let retriedIndex = publisher?.retryPublish(chatFeedContent) {
-            let retriedIndexPath = NSIndexPath(forItem: dataSource.visibleItems.count + retriedIndex, inSection: 0)
+            let retriedIndexPath = NSIndexPath(forItem: dataSource.unstashedItems.count + retriedIndex, inSection: 0)
             chatFeed?.collectionView.reloadItemsAtIndexPaths([retriedIndexPath])
         }
     }
@@ -397,7 +397,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         }
         
         if let removedIndicies = publisher?.remove([chatFeedContent]) {
-            let indexPaths = removedIndicies.map { NSIndexPath(forItem: dataSource.visibleItems.count + $0, inSection: 0)}
+            let indexPaths = removedIndicies.map { NSIndexPath(forItem: dataSource.unstashedItems.count + $0, inSection: 0)}
             chatFeed?.collectionView.deleteItemsAtIndexPaths(indexPaths)
         }
     }

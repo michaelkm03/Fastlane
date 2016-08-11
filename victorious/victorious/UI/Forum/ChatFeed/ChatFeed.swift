@@ -96,7 +96,7 @@ extension ChatFeed {
     
     private func updateCollectionView(with newItems: [ChatFeedContent], loadingType: PaginatedLoadingType, newPendingContentCount: Int, removedPendingContentIndices: [Int], completion: () -> Void) {
         let collectionView = self.collectionView
-        let visibleItemCount = chatInterfaceDataSource.visibleItems.count
+        let visibleItemCount = chatInterfaceDataSource.unstashedItems.count
         let oldVisibleItemCount = visibleItemCount - newItems.count
         let itemCount = chatInterfaceDataSource.itemCount
         
@@ -140,12 +140,12 @@ extension ChatFeed {
     
     /// Removes the given content from the data source and from the collection view.
     func remove(item: ChatFeedContent) {
-        guard let index = chatInterfaceDataSource.visibleItems.indexOf({ item.content.id == $0.content.id }) else {
+        guard let index = chatInterfaceDataSource.unstashedItems.indexOf({ item.content.id == $0.content.id }) else {
             assertionFailure("Tried to remove content from chat feed, but the chat feed didn't contain that content.")
             return
         }
         
-        chatInterfaceDataSource.removeVisibleItem(at: index)
+        chatInterfaceDataSource.removeUnstashedItem(at: index)
         collectionView.deleteItemsAtIndexPaths([NSIndexPath(forItem: index, inSection: 0)])
     }
 }
