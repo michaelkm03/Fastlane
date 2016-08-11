@@ -86,8 +86,15 @@ struct Router {
         
         checkForPermissionBeforeRouting(contentIsForVIPOnly: isVIPOnly) { success in
             if success {
-                let safariViewController = SFSafariViewController(URL: url)
-                self.originViewController?.presentViewController(safariViewController, animated: true, completion: nil)
+                
+                if (addressBarVisible) {
+                    let safariViewController = SFSafariViewController(URL: url)
+                    self.originViewController?.presentViewController(safariViewController, animated: true, completion: nil)
+                }
+                
+                else if let originVC = self.originViewController {
+                    ShowWebContentOperation(originViewController: originVC, url: "https://services.creator.us", title: "", forceModal: true, animated: true, dependencyManager: self.dependencyManager, shouldShowNavigationButtons: true).queue()
+                }
             }
         }
     }
@@ -339,6 +346,111 @@ private class ShowFetchedCloseUpOperation: MainQueueOperation {
     }
 }
 
+// MARK: - Show Web Content
+
+@objc enum FixedWebContentType : Int {
+    case PrivacyPolicy
+    case HelpCenter
+    case TermsOfService
+    
+    var title: String {
+        switch self {
+            case .PrivacyPolicy: return NSLocalizedString("Privacy Policy", comment: "")
+            case .HelpCenter: return NSLocalizedString("Help", comment: "")
+            case .TermsOfService: return NSLocalizedString("Terms of Service", comment: "")
+        }
+    }
+    
+    var templateURLKey: String {
+        switch self {
+            case .PrivacyPolicy: return "privacyURL"
+            case .HelpCenter: return "helpCenterURL"
+            case .TermsOfService: return "tosURL"
+        }
+    }
+}
+
+private class ShowWebContentOperation: MainQueueOperation {
+    private let originViewController: UIViewController
+    private let title: String
+    private let createFetchOperation: () -> FetchWebContentOperation
+    private let forceModal: Bool
+    private let animated: Bool
+    private let shouldShowNavigationButtons: Bool
+    private let dependencyManager: VDependencyManager
+    
+    convenience init(originViewController: UIViewController, type: FixedWebContentType, forceModal: Bool = false, animated: Bool = true, dependencyManager: VDependencyManager) {
+        self.init(originViewController: originViewController, url: dependencyManager.urlForWebContent(type), title: type.title, forceModal: forceModal, animated: animated, dependencyManager: dependencyManager, shouldShowNavigationButtons: false)
+    }
+    
+    init (originViewController: UIViewController, url: String, title: String,  forceModal: Bool, animated: Bool, dependencyManager: VDependencyManager, shouldShowNavigationButtons: Bool) {
+        self.forceModal = forceModal
+        self.animated = animated
+        self.originViewController = originViewController
+        self.title = title
+        self.shouldShowNavigationButtons = shouldShowNavigationButtons
+        self.dependencyManager = dependencyManager
+        self.createFetchOperation = {
+            return WebViewHTMLFetchOperation(urlPath: url)
+        }
+    }
+    
+    override func start() {
+        beganExecuting()
+        
+        guard !cancelled else {
+            finishedExecuting()
+            return
+        }
+        
+        let viewController = VWebContentViewController(nibName: nil, bundle: nil)
+        viewController.shouldShowNavigationButtons = shouldShowNavigationButtons
+        
+        let fetchOperation = createFetchOperation()
+        
+        fetchOperation.after(self).queue { [weak fetchOperation] results, error, cancelled in
+            guard let fetchOperation = fetchOperation else {
+                return
+            }
+            
+            guard let htmlString = fetchOperation.resultHTMLString where error == nil else {
+                viewController.setFailureWithError(error)
+                return
+            }
+            
+            viewController.loadViewIfNeeded()
+            
+            viewController.webView.loadHTMLString(htmlString, baseURL: fetchOperation.publicBaseURL)
+        }
+        
+        viewController.shouldShowLoadingState = true
+        viewController.automaticallyAdjustsScrollViewInsets = false
+        viewController.edgesForExtendedLayout = .All
+        viewController.extendedLayoutIncludesOpaqueBars = true
+        viewController.title = title
+        
+        if let navigationController = (originViewController as? UINavigationController) ?? originViewController.navigationController where !forceModal {
+            navigationController.pushViewController(viewController, animated: animated)
+            finishedExecuting()
+        }
+        else {
+            let navigationController = UINavigationController(rootViewController: viewController)
+            dependencyManager
+            viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(
+                barButtonSystemItem: .Done,
+                target: viewController,
+                action: #selector(VWebContentViewController.dismissSelf)
+            )
+            
+            originViewController.presentViewController(navigationController, animated: animated) {
+                self.finishedExecuting()
+            }
+        }
+    }
+}
+
+// MARK: - Dependency Manager Extensions
+
 private extension VDependencyManager {
     var relatedContentURL: String {
         return stringForKey("streamURL") ?? ""
@@ -350,5 +462,9 @@ private extension VDependencyManager {
     
     var contentFetchURL: String? {
         return networkResources?.stringForKey("contentFetchURL")
+    }
+    
+    func urlForWebContent(type: FixedWebContentType) -> String {
+        return stringForKey(type.templateURLKey) ?? ""
     }
 }

@@ -9,6 +9,7 @@
 @import WebKit;
 
 #import "VWebContentViewController.h"
+#import "victorious-Swift.h"
 
 @interface VWebContentViewController () <WKNavigationDelegate>
 
@@ -32,12 +33,9 @@
     
     self.urlToView = self.urlToView;
     [self addConstraintsToWebView:self.webView];
-    
     if (self.shouldShowNavigationButtons) {
-        [self configureNavigationButtons];
+        [self configureNavigationButtons] ;
     }
-    
-    
 }
 
 - (void)setFailureWithError:(NSError *)error

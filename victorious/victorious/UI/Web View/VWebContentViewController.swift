@@ -9,16 +9,16 @@
 import UIKit
 
 extension VWebContentViewController {
-    func configureNavigationButtons() {
-        let backButton = UIBarButtonItem(image: UIImage(named: "forward"), style: .Plain, target: self, action: #selector(VWebContentViewController.backButtonPressed))
-        let forwardButton = UIBarButtonItem(image: UIImage(named: "back"), style: .Plain, target: self, action: #selector(VWebContentViewController.forwardButtonPressed))
-        let cancelButton = UIBarButtonItem(image: UIImage(named: "close"), style: .Plain, target: self, action: #selector(VWebContentViewController.cancelButtonPressed))
+     func configureNavigationButtons() {
+        let backButton = UIBarButtonItem(image: UIImage(named: "banner-next"), style: .Plain, target: self, action: #selector(VWebContentViewController.backButtonPressed))
+        let forwardButton = UIBarButtonItem(image: UIImage(named: "browser-back"), style: .Plain, target: self, action: #selector(VWebContentViewController.forwardButtonPressed))
+        let cancelButton = UIBarButtonItem(image: UIImage(named: "browser-close"), style: .Plain, target: self, action: #selector(VWebContentViewController.cancelButtonPressed))
         
         navigationItem.rightBarButtonItems = [forwardButton, backButton]
         navigationItem.leftBarButtonItem = cancelButton
     }
     
-    func backButtonPressed() {
+    public func backButtonPressed() {
         webView.goBack()
     }
     

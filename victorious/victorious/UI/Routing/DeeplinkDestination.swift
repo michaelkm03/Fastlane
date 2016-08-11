@@ -15,6 +15,7 @@ enum DeeplinkDestination: Equatable {
     case closeUp(contentWrapper: CloseUpContentWrapper)
     case vipForum
     case externalURL(url: NSURL, addressBarVisible: Bool, isVIPOnly: Bool)
+    case fixedWebContent(type: FixedWebContentType)
     
     init?(url: NSURL, isVIPOnly: Bool = false) {
         guard url.scheme == "vthisapp" else {

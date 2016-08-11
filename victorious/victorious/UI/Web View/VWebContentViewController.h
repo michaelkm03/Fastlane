@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VHasManagedDependencies.h"
 
 @class WKWebView;
 
-@interface VWebContentViewController : UIViewController
+@interface VWebContentViewController : UIViewController <VHasManagedDependencies>
 
 @property (nonatomic, strong) NSURL *urlToView;
 @property (nonatomic, strong) WKWebView *webView;
