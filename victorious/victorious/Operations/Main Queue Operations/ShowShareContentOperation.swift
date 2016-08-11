@@ -27,15 +27,12 @@ class ShowShareContentOperation: MainQueueOperation {
         
         let appInfo = VAppInfo(dependencyManager: dependencyManager)
         
-        let fbActivity: VFacebookActivity = VFacebookActivity()
         let activityViewController: UIActivityViewController = UIActivityViewController(
             activityItems: [
                 content.textForSharing(),
                 content.shareURL ?? NSNull()
             ],
-            applicationActivities: [
-                fbActivity
-            ]
+            applicationActivities: []
         )
         
         let creatorName = appInfo.appName

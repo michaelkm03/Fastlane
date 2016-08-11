@@ -29,15 +29,11 @@ static NSString * const kLogoKey = @"logo";
 static NSString * const kStatusBarStyle = @"statusBarStyle";
 static NSString * const kEmailKey = @"email";
 static NSString * const kFacebookKey = @"facebook";
-static NSString * const kTwitterKey = @"twitter";
-
-static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
 
 @interface VModernLandingViewController () <VBackgroundContainer, VLoginFlowScreen>
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
-@property (nonatomic, weak) IBOutlet UIButton *twitterButton;
 @property (nonatomic, weak) IBOutlet UIButton *emailButton;
 @property (nonatomic, weak) IBOutlet UIButton *facebookButton;
 @property (strong, nonatomic) IBOutlet UILabel *legalIntroLabel;
@@ -112,7 +108,6 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
     [self.privacyPolicyButton setAttributedTitle:ppText forState:UIControlStateNormal];
     [self.dependencyManager addBackgroundToBackgroundHost:self];
     
-    self.twitterButton.accessibilityIdentifier = VAutomationIdentifierLRegistrationTwitter;
     self.emailButton.accessibilityIdentifier = VAutomationIdentifierLRegistrationEmail;
     self.facebookButton.accessibilityIdentifier = VAutomationIdentifierLRegistrationFacebook;
     self.termsOfServiceButton.accessibilityIdentifier = VAutomationIdentifierLRegistrationTOS;
@@ -146,11 +141,6 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
 - (IBAction)toRegsiter:(id)sender
 {
     [self.delegate selectedRegister];
-}
-
-- (IBAction)loginWithTwitter:(id)sender
-{
-    [self.delegate selectedTwitterAuthorization];
 }
 
 - (IBAction)loginWithFacebook:(id)sender
@@ -189,13 +179,9 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
 
 - (void)setupSigninOptions
 {
-    self.facebookButton.hidden = YES;
-    self.twitterButton.hidden = YES;
-    self.emailButton.hidden = YES;
-    
     NSArray *options = [self.dependencyManager arrayOfValuesOfType:[NSString class] forKey:kSigninOptionsKey];
     
-    if ( ![VFacebookHelper facebookAppIDPresent] )
+    if (!VFacebookHelper.facebookAppIDPresent)
     {
         options = [options filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSString *evaluatedObject, NSDictionary *bindings)
         {
@@ -203,62 +189,9 @@ static CGFloat const kLoginButtonToTextViewSpacing = 8.0f;
         }]];
     }
     
-    UIButton *firstButton = [self buttonForLoginType:[options firstObject]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.legalButtonContainer
-                                                          attribute:NSLayoutAttributeBottom
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:firstButton
-                                                          attribute:NSLayoutAttributeTop
-                                                         multiplier:1.0f
-                                                           constant:-kLoginButtonToTextViewSpacing]];
-    
-    for (NSUInteger idx = 0; idx < options.count; idx++)
-    {
-        NSString *currentLoginType = options[idx];
-        UIButton *currentButton = [self buttonForLoginType:currentLoginType];
-        currentButton.hidden = NO;
-        if (idx > 0)
-        {
-            NSString *previousLoginType = options[idx - 1];
-            UIButton *previousButton = [self buttonForLoginType:previousLoginType];
-            [self.view addConstraint:[NSLayoutConstraint constraintWithItem:previousButton
-                                                                  attribute:NSLayoutAttributeBottom
-                                                                  relatedBy:NSLayoutRelationEqual
-                                                                     toItem:currentButton
-                                                                  attribute:NSLayoutAttributeTop
-                                                                 multiplier:1.0f
-                                                                   constant:0.0f]];
-        }
-    }
-    UIButton *lastButton = [self buttonForLoginType:[options lastObject]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:lastButton
-                                                          attribute:NSLayoutAttributeBottom
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeBottom
-                                                         multiplier:1.0f
-                                                           constant:0.0f]];
+    self.facebookButton.hidden = ![options containsObject:kFacebookKey];
+    self.emailButton.hidden = ![options containsObject:kEmailKey];
     [self.view setNeedsLayout];
-}
-
-- (UIButton *)buttonForLoginType:(NSString *)loginType
-{
-    if ([loginType isEqualToString:kEmailKey])
-    {
-        return self.emailButton;
-    }
-    else if ([loginType isEqualToString:kFacebookKey])
-    {
-        return self.facebookButton;
-    }
-    else if ([loginType isEqualToString:kTwitterKey])
-    {
-        return self.twitterButton;
-    }
-    else
-    {
-        return nil;
-    }
 }
 
 @end

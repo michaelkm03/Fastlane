@@ -19,6 +19,7 @@ class VIPSubscriptionHelper {
     weak var delegate: VIPSubscriptionHelperDelegate?
     
     let subscriptionFetchURL: String
+    static let userVIPStatusChangedNotificationKey = "victorious.VIPSubscriptionHelper.userVIPStatusChangedNotificationKey"
     
     let dependencyManager: VDependencyManager
     
@@ -116,6 +117,7 @@ class VIPSubscriptionHelper {
             }
             else {
                 strongSelf.delegate?.VIPSubscriptionHelperCompletedSubscription(strongSelf)
+                NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: VIPSubscriptionHelper.userVIPStatusChangedNotificationKey, object: nil))
             }
         }
     }

@@ -32,14 +32,12 @@ class UserTests: XCTestCase {
         XCTAssertEqual(user.likesGiven, 99)
         XCTAssertEqual(user.likesReceived, 40)
         
-        guard let vipStatus = user.vipStatus, let vipEndDate = vipStatus.endDate else {
+        guard let vipStatus = user.vipStatus else {
             XCTFail("Failed to parse `VIPStatus` of `User`.")
             return
         }
         
         XCTAssertEqual(vipStatus.isVIP, true)
-        let dateFormatter = NSDateFormatter(vsdk_format: .Standard)
-        XCTAssertEqual(dateFormatter.stringFromDate(vipEndDate), "2016-05-02 18:22:50")
         
         let previewImages = user.previewImages
         if previewImages.count == 2 {

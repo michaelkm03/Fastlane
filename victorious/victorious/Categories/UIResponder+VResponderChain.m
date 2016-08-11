@@ -28,33 +28,4 @@
     while ( responder != nil );
 }
 
-- (id)v_targetConformingToProtocol:(Protocol *)protocol
-{
-    NSParameterAssert( protocol != nil );
-    
-    UIResponder *responder = self;
-    do
-    {
-        if ( [responder conformsToProtocol:protocol] )
-        {
-            return responder;
-        }
-        responder = [responder nextResponder];
-    }
-    while ( responder != nil );
-    return nil;
-}
-
-- (void)v_logResponderChain
-{
-    __block NSString *output = @"";
-    __block NSString *tab = @"";
-    [self v_walkWithBlock:^(UIResponder *responder, BOOL *stop)
-    {
-        tab = [tab stringByAppendingString:@"\t"];
-        output = [output stringByAppendingFormat:@"\n%@%@", tab, responder];
-    }];
-    VLog( @"Responder Chain: \n%@", output );
-}
-
 @end

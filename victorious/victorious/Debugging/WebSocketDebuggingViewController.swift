@@ -69,7 +69,6 @@
             }
             
             guard rawMessageContainer.messageCount > currentRow else {
-                v_log("Trying to get an event out of bounds of the current events array")
                 cell.textLabel?.text = "error"
                 cell.detailTextLabel?.text = "error"
                 return cell
