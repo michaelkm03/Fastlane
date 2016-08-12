@@ -88,7 +88,7 @@ static CGFloat const kNotificationAddedVerticalInset = 8.0f;
     self.extendedLayoutIncludesOpaqueBars = NO;
     
     self.noContentView = [VNoContentView viewFromNibWithFrame:self.tableView.bounds];
-    self.noContentView.dependencyManager = self.dependencyManager.dependencyManagerForNavigationBar;
+    self.noContentView.dependencyManager = self.dependencyManager;
     self.noContentView.title = NSLocalizedString(@"NoNotificationsTitle", @"");
     self.noContentView.message = NSLocalizedString(@"NoNotificationsMessage", @"");
     self.noContentView.icon = [UIImage imageNamed:@"noNotificationsIcon"];
