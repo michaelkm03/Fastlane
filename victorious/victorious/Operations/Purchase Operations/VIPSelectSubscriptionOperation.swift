@@ -25,6 +25,8 @@ class VIPSelectSubscriptionOperation: MainQueueOperation, UIAlertViewDelegate {
     
     override func start() {
         super.start()
+        beganExecuting()
+        
         guard willShowPrompt else {
             selectedProduct = products.first
             finishedExecuting()
