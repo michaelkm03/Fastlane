@@ -36,10 +36,10 @@ extension VUser {
         
         if !user.previewImages.isEmpty {
             let newPreviewAssets: [VImageAsset] = user.previewImages.flatMap { imageAsset in
-                guard let assetURL = imageAsset.url else {
+                guard let assetURL = imageAsset.url?.absoluteString else {
                     return nil
                 }
-                let persistentImageAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject(["imageURL": assetURL.absoluteString])
+                let persistentImageAsset: VImageAsset = self.v_managedObjectContext.v_findOrCreateObject(["imageURL": assetURL])
                 persistentImageAsset.populate(fromSourceModel: imageAsset)
                 return persistentImageAsset
             }

@@ -25,6 +25,10 @@ class AccountUpdateRequestBodyWriter: NSObject, RequestBodyWriterType {
     }
     
     func write() throws -> Output {
+        guard let bodyTempFileURL = bodyTempFileURL else {
+            throw NSURLError.UnsupportedURL
+        }
+
         let writer = VMultipartFormDataWriter(outputFileURL: bodyTempFileURL)
         
         // Write params for a password update

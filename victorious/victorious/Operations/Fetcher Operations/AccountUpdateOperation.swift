@@ -44,11 +44,11 @@ class AccountUpdateOperation: RemoteFetcherOperation, RequestOperation {
                 user.tagline = profileUpdate.tagline ?? user.tagline
                 
                 // Update profile image
-                if let imageURL = profileUpdate.profileImageURL {
+                if let imageURL = profileUpdate.profileImageURL, let imageUrlString = imageURL.absoluteString {
                     if let data = NSData(contentsOfURL: imageURL),
                         let image = UIImage(data: data) {
                             let imageAsset: VImageAsset = context.v_createObject()
-                            imageAsset.imageURL = imageURL.absoluteString
+                            imageAsset.imageURL = imageUrlString
                             imageAsset.width = image.size.width
                             imageAsset.height = image.size.height
                             user.previewAssets = [imageAsset]

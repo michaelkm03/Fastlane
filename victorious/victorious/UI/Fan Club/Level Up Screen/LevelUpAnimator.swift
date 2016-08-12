@@ -22,10 +22,10 @@ class LevelUpAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     
     func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
         
-        if let containerView = transitionContext.containerView(),
-            let toView = transitionContext.viewForKey(UITransitionContextToViewKey),
+        if let toView = transitionContext.viewForKey(UITransitionContextToViewKey),
             let fromView = transitionContext.viewForKey(UITransitionContextFromViewKey) {
-            
+
+            let containerView = transitionContext.containerView()
             toView.frame = containerView.bounds
             fromView.frame = containerView.bounds
             

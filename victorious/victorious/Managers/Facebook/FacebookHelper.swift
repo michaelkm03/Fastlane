@@ -21,7 +21,11 @@ class FacebookHelper: NSObject {
     /// 
     /// - returns: true if the url is meant to be handled by Facebook, false otherwise
     class func canOpenURL(url: NSURL) -> Bool {
-        return !fbSchemeRegex.matchesInString(url.scheme, options: [], range: NSMakeRange(0, url.scheme.characters.count)).isEmpty
+        guard let urlScheme = url.scheme else {
+            return false
+        }
+
+        return !fbSchemeRegex.matchesInString(urlScheme, options: [], range: NSMakeRange(0, urlScheme.characters.count)).isEmpty
     }
     
     /// - returns: true if a Facebook app ID is present in the app's Info.plist file.

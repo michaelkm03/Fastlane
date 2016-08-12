@@ -64,7 +64,7 @@ class InterstitialAlertViewController: UIViewController, Interstitial, VBackgrou
         return InterstitialAlertAnimator(isDismissing: true)
     }
     
-    func presentationController(presentedViewController: UIViewController, presentingViewController: UIViewController) -> UIPresentationController {
+    func presentationController(presentedViewController: UIViewController, presentingViewController: UIViewController?) -> UIPresentationController {
         return InterstitialAlertPresentationController(presentedViewController: presentedViewController, presentingViewController: presentingViewController)
     }
     

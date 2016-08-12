@@ -86,7 +86,7 @@ class LevelUpViewController: UIViewController, Interstitial, VVideoPlayerDelegat
         return levelUpAnimator
     }
     
-    func presentationController(presentedViewController: UIViewController, presentingViewController: UIViewController) -> UIPresentationController {
+    func presentationController(presentedViewController: UIViewController, presentingViewController: UIViewController?) -> UIPresentationController {
         return UIPresentationController(presentedViewController: presentedViewController, presentingViewController: presentingViewController)
     }
     

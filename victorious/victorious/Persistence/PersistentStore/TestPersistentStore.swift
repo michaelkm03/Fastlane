@@ -27,7 +27,7 @@ class TestPersistentStore: NSObject, PersistentStoreType {
         }
         
         return CoreDataManager(
-            persistentStoreURL: persistentStoreURL,
+            persistentStoreURL: persistentStoreURL!,
             currentModelVersion: CoreDataManager.ModelVersion(
                 identifier: TestPersistentStore.managedObjectModelVersion,
                 managedObjectModelURL: momURLInBundle

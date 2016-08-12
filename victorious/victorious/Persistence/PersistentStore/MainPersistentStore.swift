@@ -29,7 +29,7 @@ class MainPersistentStore: NSObject, PersistentStoreType {
         }
         
         return CoreDataManager(
-            persistentStoreURL: persistentStoreURL,
+            persistentStoreURL: persistentStoreURL!,
             currentModelVersion: CoreDataManager.ModelVersion(
                 identifier: managedObjectModelVersion,
                 managedObjectModelURL: momURLInBundle

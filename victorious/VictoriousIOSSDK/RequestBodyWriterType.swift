@@ -16,7 +16,7 @@ protocol RequestBodyWriterType: class {
     associatedtype Output
     
     /// URL to the temporary file storing the information of request body
-    var bodyTempFileURL: NSURL { get }
+    var bodyTempFileURL: NSURL? { get }
     
     /// Writes a post body for an HTTP request to a temporary file and returns the URL of that file.
     func write() throws -> Output
@@ -30,6 +30,10 @@ extension RequestBodyWriterType {
     }
     
     func removeBodyTempFile() {
+        guard let bodyTempFileURL = bodyTempFileURL else {
+            return
+        }
+
         let _ = try? NSFileManager.defaultManager().removeItemAtURL(bodyTempFileURL)
     }
 }

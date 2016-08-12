@@ -15,13 +15,11 @@ class CoachmarkPresentAnimationController: NSObject, UIViewControllerAnimatedTra
     }
     
     func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
-        guard
-            let destinationVC = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey) as? CoachmarkViewController,
-            let containerView = transitionContext.containerView()
-        else {
+        guard let destinationVC = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey) as? CoachmarkViewController else {
             return
         }
-        
+
+        let containerView = transitionContext.containerView()
         containerView.addSubview(destinationVC.view)
         destinationVC.view.alpha = 0.0
         
