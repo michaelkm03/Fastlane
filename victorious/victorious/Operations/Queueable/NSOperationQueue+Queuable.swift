@@ -53,13 +53,26 @@ extension NSOperationQueue {
     }
 }
 
-/// This is designed to replace Queueable.
+/// This is designed to be a simplified version of Queueable and will replace it.
+/// Since FetcherOperation and FetcherRemoteOperatino still uses the original Queueable protocol,
+/// we'll perform the replacement once core data is removed. Which I'll do next.
 protocol Queueable2 {
+    
+    /// Conformers are required to define a completion block type that is
+    /// specific to the actions it performs.  This allows calling code to have
+    /// meaningful completion blocks that pass back results or other data.
     associatedtype Completion
     
+    /// Adds the receiver to its default queue, with a completion block that'll run after the receiver's finished executing,
+    /// and before the next operation starts.
     func queue(completion completion: Completion?)
+    
+    /// Adds the receiver to its default queue without completion block.
     func queue()
     
+    /// Conformers have to specify whether the operation's execution function should be running on the main queue.
+    /// If true, the operation will be executing on the main queue.
+    /// If false, the operation will be executing on the global background queue.
     var executeOnMainQueue: Bool { get }
 }
 
