@@ -260,7 +260,9 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         )
         confirm.before(toggleBlockedOperation)
         confirm.queue()
-        toggleBlockedOperation.queue()
+        toggleBlockedOperation.queue() { [weak self] _ in
+            self?.navigationController?.popViewControllerAnimated(true)
+        }
     }
     
     // MARK: - AccessoryScreenContainer
