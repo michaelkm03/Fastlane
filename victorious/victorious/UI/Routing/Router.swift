@@ -83,8 +83,6 @@ struct Router {
     }
     
     private func showWebView(for url: NSURL, addressBarVisible: Bool, isVIPOnly: Bool = false) {
-        // Future: We currently have no way to hide address bar. This will be handled when we implement close up web view.
-        
         checkForPermissionBeforeRouting(contentIsForVIPOnly: isVIPOnly) { success in
             if success {
                 
@@ -412,8 +410,7 @@ private class ShowWebContentOperation: MainQueueOperation {
             return
         }
         
-        let viewController = VWebContentViewController(nibName: nil, bundle: nil)
-        viewController.shouldShowNavigationButtons = shouldShowNavigationButtons
+        let viewController = WebContentViewController()
         
         let fetchOperation = createFetchOperation()
         
@@ -423,16 +420,14 @@ private class ShowWebContentOperation: MainQueueOperation {
             }
             
             guard let htmlString = fetchOperation.resultHTMLString where error == nil else {
-                viewController.setFailureWithError(error)
+                viewController.setFailure(withError: error)
                 return
             }
             
-            viewController.loadViewIfNeeded()
+            viewController.load(htmlString, baseURL: fetchOperation.publicBaseURL)
             
-            viewController.webView.loadHTMLString(htmlString, baseURL: fetchOperation.publicBaseURL)
         }
         
-        viewController.shouldShowLoadingState = true
         viewController.automaticallyAdjustsScrollViewInsets = false
         viewController.edgesForExtendedLayout = .All
         viewController.extendedLayoutIncludesOpaqueBars = true
@@ -445,12 +440,9 @@ private class ShowWebContentOperation: MainQueueOperation {
         else {
             let navigationController = UINavigationController(rootViewController: viewController)
             dependencyManager
-            viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(
-                barButtonSystemItem: .Done,
-                target: viewController,
-                action: #selector(VWebContentViewController.dismissSelf)
-            )
             
+            dependencyManager.applyStyleToNavigationBar(navigationController.navigationBar)
+        
             originViewController.presentViewController(navigationController, animated: animated) {
                 self.finishedExecuting()
             }
