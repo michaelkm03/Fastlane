@@ -82,22 +82,26 @@ protocol Queueable2 {
 
 extension Queueable2 where Self: NSOperation {
     func queue(completion completion: ((output: Output) -> Void)?) {
-        if let completion = completion {
-            let completionOperation = NSBlockOperation {
-                guard let output = self.output else {
-                    assertionFailure("Received no output from async operation to pass through the completion handler.")
-                    return
-                }
-                
-                dispatch_async(dispatch_get_main_queue()) {
-                    completion(output: output)
-                }
-            }
-            completionOperation.addDependency(self)
-            scheduleQueue.addOperation(completionOperation)
+        defer {
+            scheduleQueue.addOperation(self)
         }
         
-        scheduleQueue.addOperation(self)
+        guard let completion = completion else {
+            return
+        }
+        
+        let completionOperation = NSBlockOperation {
+            guard let output = self.output else {
+                assertionFailure("Received no output from async operation to pass through the completion handler.")
+                return
+            }
+            
+            dispatch_async(dispatch_get_main_queue()) {
+                completion(output: output)
+            }
+        }
+        completionOperation.addDependency(self)
+        scheduleQueue.addOperation(completionOperation)
     }
     
     func queue() {
