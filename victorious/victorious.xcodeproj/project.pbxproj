@@ -568,7 +568,6 @@
 		7A5519EE1D24778C00CD6BCF /* ContentMediaSizeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5519ED1D24778C00CD6BCF /* ContentMediaSizeTests.swift */; };
 		7A6073261CC58D7D002FD3C6 /* VUser+Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6073251CC58D7D002FD3C6 /* VUser+Assets.swift */; };
 		7A63CD3A1D5400F1006A48E4 /* UIView+ShakeAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A63CD391D5400F1006A48E4 /* UIView+ShakeAnimation.swift */; };
-		7A63CD3E1D542689006A48E4 /* VWebContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A63CD3D1D542689006A48E4 /* VWebContentViewController.m */; };
 		7A63CD421D5427F8006A48E4 /* VSocialLoginErrors.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A63CD411D5427F8006A48E4 /* VSocialLoginErrors.m */; };
 		7A67EC7E1CF9132300D022D1 /* TimePaginatedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A67EC7D1CF9132300D022D1 /* TimePaginatedDataSource.swift */; };
 		7A67EC801CFE41CC00D022D1 /* ForumEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A67EC7F1CFE41CC00D022D1 /* ForumEvent.swift */; };
@@ -629,7 +628,7 @@
 		7C894B8E1D39BC1B00E124C8 /* CoachmarkDisplayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C894B8D1D39BC1B00E124C8 /* CoachmarkDisplayer.swift */; };
 		7CC982211D0104EC00583B70 /* VDependencyManager+ForumNetworkSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC982201D0104EC00583B70 /* VDependencyManager+ForumNetworkSource.swift */; };
 		7CC982241D0235D300583B70 /* ForumNavBarTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC982231D0235D300583B70 /* ForumNavBarTitleView.swift */; };
-		7CCAB3551D5BEDA500ACE99D /* VWebContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCAB3541D5BEDA500ACE99D /* VWebContentViewController.swift */; };
+		7CCAB3551D5BEDA500ACE99D /* WebContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCAB3541D5BEDA500ACE99D /* WebContentViewController.swift */; };
 		7CCAB3571D5D2EC600ACE99D /* VModernLoginAndRegistrationFlowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCAB3561D5D2EC600ACE99D /* VModernLoginAndRegistrationFlowViewController.swift */; };
 		7CCBF2B91D413C7D0075A087 /* CoachmarkManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBF2B81D413C7D0075A087 /* CoachmarkManagerTests.swift */; };
 		7CEA74C71D4C0F5300EDA15C /* EditProfileDataSourceTests .swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEA74C61D4C0F5300EDA15C /* EditProfileDataSourceTests .swift */; };
@@ -2118,8 +2117,6 @@
 		7A5519ED1D24778C00CD6BCF /* ContentMediaSizeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentMediaSizeTests.swift; sourceTree = "<group>"; };
 		7A6073251CC58D7D002FD3C6 /* VUser+Assets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VUser+Assets.swift"; sourceTree = "<group>"; };
 		7A63CD391D5400F1006A48E4 /* UIView+ShakeAnimation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+ShakeAnimation.swift"; sourceTree = "<group>"; };
-		7A63CD3C1D542689006A48E4 /* VWebContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VWebContentViewController.h; sourceTree = "<group>"; };
-		7A63CD3D1D542689006A48E4 /* VWebContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VWebContentViewController.m; sourceTree = "<group>"; };
 		7A63CD401D5427F8006A48E4 /* VSocialLoginErrors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSocialLoginErrors.h; sourceTree = "<group>"; };
 		7A63CD411D5427F8006A48E4 /* VSocialLoginErrors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSocialLoginErrors.m; sourceTree = "<group>"; };
 		7A67EC7D1CF9132300D022D1 /* TimePaginatedDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimePaginatedDataSource.swift; sourceTree = "<group>"; };
@@ -2181,7 +2178,7 @@
 		7C894B8D1D39BC1B00E124C8 /* CoachmarkDisplayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachmarkDisplayer.swift; sourceTree = "<group>"; };
 		7CC982201D0104EC00583B70 /* VDependencyManager+ForumNetworkSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VDependencyManager+ForumNetworkSource.swift"; sourceTree = "<group>"; };
 		7CC982231D0235D300583B70 /* ForumNavBarTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ForumNavBarTitleView.swift; path = NavBar/ForumNavBarTitleView.swift; sourceTree = "<group>"; };
-		7CCAB3541D5BEDA500ACE99D /* VWebContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VWebContentViewController.swift; sourceTree = "<group>"; };
+		7CCAB3541D5BEDA500ACE99D /* WebContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebContentViewController.swift; sourceTree = "<group>"; };
 		7CCAB3561D5D2EC600ACE99D /* VModernLoginAndRegistrationFlowViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VModernLoginAndRegistrationFlowViewController.swift; sourceTree = "<group>"; };
 		7CCBF2B81D413C7D0075A087 /* CoachmarkManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachmarkManagerTests.swift; sourceTree = "<group>"; };
 		7CEA74C61D4C0F5300EDA15C /* EditProfileDataSourceTests .swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EditProfileDataSourceTests .swift"; sourceTree = "<group>"; };
@@ -4947,9 +4944,7 @@
 		7A63CD3B1D542610006A48E4 /* Web View */ = {
 			isa = PBXGroup;
 			children = (
-				7A63CD3C1D542689006A48E4 /* VWebContentViewController.h */,
-				7A63CD3D1D542689006A48E4 /* VWebContentViewController.m */,
-				7CCAB3541D5BEDA500ACE99D /* VWebContentViewController.swift */,
+				7CCAB3541D5BEDA500ACE99D /* WebContentViewController.swift */,
 			);
 			path = "Web View";
 			sourceTree = "<group>";
@@ -8218,7 +8213,7 @@
 				039ED28219C6AB0900305987 /* AVCaptureConnection+VOrientation.m in Sources */,
 				A7AAE58F1C7509D900AD7682 /* VNotificationsViewController.swift in Sources */,
 				F009BD091CE654D200F81CAA /* HashtagBarController.swift in Sources */,
-				7CCAB3551D5BEDA500ACE99D /* VWebContentViewController.swift in Sources */,
+				7CCAB3551D5BEDA500ACE99D /* WebContentViewController.swift in Sources */,
 				A7ECC1CE1AD617480003E00A /* VToolController.m in Sources */,
 				A6CC23C71B4B2A0600141DD6 /* VAssetGroupTableViewCell.m in Sources */,
 				62A7C9EB1C7FAE2A009F8200 /* NSBundle+AppStoreReceipt.swift in Sources */,
@@ -8470,7 +8465,6 @@
 				7AFEB1591D46D6A900FA972D /* ScrollPaginator.swift in Sources */,
 				A73BA2C91C9393ED008168B5 /* ChatFeedMessageCell.swift in Sources */,
 				F0BD3A441CD8208000B4AB3E /* PushTransitionAnimator.swift in Sources */,
-				7A63CD3E1D542689006A48E4 /* VWebContentViewController.m in Sources */,
 				F069E93D1D46995000F91CE6 /* ProductFetchOperation.swift in Sources */,
 				A780ED5B1A933D9300A8CD5D /* VCompositeImageFilter.m in Sources */,
 				D80BE58C1AB203E300219803 /* VLoopingCompositionGenerator.m in Sources */,

@@ -1,5 +1,5 @@
 //
-//  VWebContentViewController.swift
+//  WebContentViewController.swift
 //  victorious
 //
 //  Created by Darvish Kamalia on 8/10/16.
