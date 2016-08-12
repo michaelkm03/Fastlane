@@ -80,9 +80,6 @@ static NSString * const kVAnalyticsKeyValue            = @"value";
      */
     NSString *trackingLog = [NSString stringWithFormat:@"%@ - %@", eventName, [trackingLogComponents componentsJoinedByString:@", "]];
     CLSLog(@"%@", trackingLog);
-#if V_ENABLE_TESTFAIRY
-    TFLog(@"%@", trackingLog);
-#endif
 }
 
 @end

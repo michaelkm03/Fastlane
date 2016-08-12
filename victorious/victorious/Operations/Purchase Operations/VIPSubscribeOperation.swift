@@ -18,13 +18,14 @@ class VIPSubscribeOperation: BackgroundOperation {
     }
     
     override func start() {
+        super.start()
+        beganExecuting()
+        
         guard didConfirmActionFromDependencies else {
             cancel()
             finishedExecuting()
             return
         }
-        
-        beganExecuting()
         
         dispatch_async(dispatch_get_main_queue()) {
             self.purchaseSubscription()

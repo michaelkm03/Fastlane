@@ -117,7 +117,7 @@
 
 "UGCSharePollFormat"    =   "Check out this poll!";       //Check out this poll! <URL>
 "UGCShareVideoFormat"   =   "Check out this video!";      //Check out this video! <URL>
-"UGCShareGIFFormat"     =   "Check out this gif!";        //Check out this gif! <URL>
+"UGCShareGIFFormat"     =   "Check out this GIF!";        //Check out this GIF! <URL>
 "UGCShareImageFormat"   =   "Check out this photo!";      //Check out this photo! <URL>
 "UGCShareTextFormat"   =    "Check out this post!";      //Check out this post! <URL>
 "UGCShareLinkFormat"   =    "Check this out!";

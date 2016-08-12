@@ -26,6 +26,7 @@ class ShowTutorialsOperation: MainQueueOperation {
     }
     
     override func start() {
+        super.start()
         beganExecuting()
         
         guard let currentVersionString = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString") as? String else {
