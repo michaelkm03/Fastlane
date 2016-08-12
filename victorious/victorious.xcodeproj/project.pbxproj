@@ -562,7 +562,6 @@
 		7A47849F1CF374FD00894233 /* WebSocketForumNetworkSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A47849C1CF374FD00894233 /* WebSocketForumNetworkSource.swift */; };
 		7A52F0301CFF8B9600AE7F3F /* APIPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A52F02F1CFF8B9600AE7F3F /* APIPath.swift */; };
 		7A52F0321CFF904A00AE7F3F /* VDependencyManager+APIPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A52F0311CFF904A00AE7F3F /* VDependencyManager+APIPath.swift */; };
-		7A53C15F1CE2B19E00EBFD9E /* ShowVIPFlowOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A53C15E1CE2B19E00EBFD9E /* ShowVIPFlowOperation.swift */; };
 		7A5519EC1D24775900CD6BCF /* ContentMediaSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5519EB1D24775900CD6BCF /* ContentMediaSize.swift */; };
 		7A5519EE1D24778C00CD6BCF /* ContentMediaSizeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5519ED1D24778C00CD6BCF /* ContentMediaSizeTests.swift */; };
 		7A6073261CC58D7D002FD3C6 /* VUser+Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A6073251CC58D7D002FD3C6 /* VUser+Assets.swift */; };
@@ -2108,7 +2107,6 @@
 		7A47849C1CF374FD00894233 /* WebSocketForumNetworkSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebSocketForumNetworkSource.swift; sourceTree = "<group>"; };
 		7A52F02F1CFF8B9600AE7F3F /* APIPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIPath.swift; sourceTree = "<group>"; };
 		7A52F0311CFF904A00AE7F3F /* VDependencyManager+APIPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VDependencyManager+APIPath.swift"; sourceTree = "<group>"; };
-		7A53C15E1CE2B19E00EBFD9E /* ShowVIPFlowOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowVIPFlowOperation.swift; sourceTree = "<group>"; };
 		7A5519EB1D24775900CD6BCF /* ContentMediaSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentMediaSize.swift; sourceTree = "<group>"; };
 		7A5519ED1D24778C00CD6BCF /* ContentMediaSizeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentMediaSizeTests.swift; sourceTree = "<group>"; };
 		7A6073251CC58D7D002FD3C6 /* VUser+Assets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VUser+Assets.swift"; sourceTree = "<group>"; };
@@ -5324,7 +5322,6 @@
 				A72C85B21C977FF500E97D4F /* ShowCreateSheetOperation.swift */,
 				A72C85B51C977FF500E97D4F /* ShowLoginOperation.swift */,
 				BF0B35331CFE756900CE5DBB /* ShowShareContentOperation.swift */,
-				7A53C15E1CE2B19E00EBFD9E /* ShowVIPFlowOperation.swift */,
 				7AB14CAD1CBEF96B006E674B /* ShowWebContentOperation.swift */,
 				A72C85BD1C977FF500E97D4F /* StoredLoginOperation.swift */,
 			);
@@ -8542,7 +8539,6 @@
 				66AF79521B60A8E4006DDCD8 /* VVideoCameraViewController.m in Sources */,
 				F035DC1C1D3D38EA00209890 /* VDependencyManager+ButtonTracking.swift in Sources */,
 				7C4CCE681D10D36F00784D30 /* SettingsViewController+Templatized.swift in Sources */,
-				7A53C15F1CE2B19E00EBFD9E /* ShowVIPFlowOperation.swift in Sources */,
 				03B3D3D31A3BC4DD00F0634A /* VNumericalBadgeView.m in Sources */,
 				67486B761CC7147500B03926 /* ListMenuCommunityDataSource.swift in Sources */,
 				A7AA647D19E78EAA0068D2B1 /* victoriOS.xcdatamodeld in Sources */,

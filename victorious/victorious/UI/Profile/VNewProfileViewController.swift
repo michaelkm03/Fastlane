@@ -216,16 +216,19 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     // MARK: - Actions
     
     private dynamic func upgradeButtonWasPressed() {
-        ShowVIPFlowOperation(originViewController: self, dependencyManager: dependencyManager).queue()
+        guard let scaffold = VRootViewController.sharedRootViewController()?.scaffold else {
+            return
+        }
+        
+        Router(originViewController: scaffold, dependencyManager: dependencyManager).navigate(to: .vipSubscription)
     }
     
     private dynamic func goVIPButtonWasPressed() {
         guard let scaffold = VRootViewController.sharedRootViewController()?.scaffold else {
             return
         }
-        let router = Router(originViewController: scaffold, dependencyManager: dependencyManager)
-        let destination = DeeplinkDestination.vipForum
-        router.navigate(to: destination)
+        
+        Router(originViewController: scaffold, dependencyManager: dependencyManager).navigate(to: .vipForum)
     }
     
     private dynamic func toggleUpvote() {

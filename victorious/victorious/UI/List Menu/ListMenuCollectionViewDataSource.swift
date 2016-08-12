@@ -117,7 +117,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
             return
         }
         
-        ShowVIPFlowOperation(originViewController: scaffold, dependencyManager: dependencyManager).queue()
+        Router(originViewController: scaffold, dependencyManager: dependencyManager).navigate(to: .vipSubscription)
     }
     
     // MARK: - List Menu Network Data Source Delegate
