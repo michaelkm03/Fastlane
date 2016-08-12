@@ -124,6 +124,8 @@ protocol Queueable2 {
     associatedtype Output
     
     /// The result of executing the operation.
+    /// This is optional because we don't have the result at initialization time.
+    /// And confomers should verify this has been set before proceeding to completion block.
     var result: OperationResult<Output>? { get }
     
     /// Conformers should speficy which queue the operation should be scheduled(queued) on.

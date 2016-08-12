@@ -8,7 +8,7 @@
 
 import Foundation
 
-class VIPSelectSubscriptionOperation: AsyncOperation<VProduct?>, UIAlertViewDelegate {
+class VIPSelectSubscriptionOperation: AsyncOperation<VProduct>, UIAlertViewDelegate {
     let products: [VProduct]
     
     let originViewController: UIViewController
@@ -25,22 +25,28 @@ class VIPSelectSubscriptionOperation: AsyncOperation<VProduct?>, UIAlertViewDele
         return NSOperationQueue.mainQueue()
     }
     
-    override func execute(finish: (output: VProduct?) -> Void) {
+    override func execute(finish: (result: OperationResult<VProduct>) -> Void) {
         guard willShowPrompt else {
-            finish(output: products.first)
+            if let firstProduct = products.first {
+                finish(result: .success(firstProduct))
+            }
+            else {
+                let error = NSError(domain: "No valid product", code: -1, userInfo: ["products: ": products])
+                finish(result: .failure(error))
+            }
             return
         }
         
         let alert = UIAlertController(title: Strings.alertTitle, message: Strings.alertMessage, preferredStyle: .Alert)
         for product in self.products {
             let action = UIAlertAction(title: product.price + " " + product.localizedDescription, style: .Default) { action in
-                finish(output: product)
+                finish(result: .success(product))
             }
             alert.addAction(action)
         }
         
         let action = UIAlertAction(title: Strings.cancel, style: .Default) { action in
-            finish(output: nil)
+            finish(result: .cancelled)
         }
         alert.addAction(action)
         self.originViewController.presentViewController(alert, animated: true, completion: nil)

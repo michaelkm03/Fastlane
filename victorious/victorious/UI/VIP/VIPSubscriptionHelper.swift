@@ -76,18 +76,18 @@ class VIPSubscriptionHelper {
         if selectSubscription.willShowPrompt {
             delegate?.setIsLoading(false, title: nil)
         }
-        selectSubscription.queue() { [weak self] selectedProduct in
+        selectSubscription.queue() { [weak self] result in
             NSLog("completion block")
-            guard let selectedProduct = selectedProduct else {
-                self?.delegate?.setIsLoading(false, title: nil)
-                // FIXME: Bring back error handling
-//                if let error = selectSubscription.error {
-//                    originViewController.showSubscriptionAlert(for: error)
-//                }
-                return
+            switch result {
+                case .success(let selectedProduct):
+                    self?.delegate?.setIsLoading(true, title: nil)
+                    self?.subscribeToProduct(selectedProduct)
+                case .failure(let error):
+                    self?.delegate?.setIsLoading(false, title: nil)
+                    originViewController.showSubscriptionAlert(for: error as NSError)
+                case .cancelled:
+                    self?.delegate?.setIsLoading(false, title: nil)
             }
-            self?.delegate?.setIsLoading(true, title: nil)
-            self?.subscribeToProduct(selectedProduct)
         }
     }
     
