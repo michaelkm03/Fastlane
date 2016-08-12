@@ -57,6 +57,8 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
+        collectionView?.reloadData()
+        
         if collectionView?.indexPathsForSelectedItems()?.isEmpty != false {
             let indexPath = NSIndexPath(forRow: 0, inSection: ListMenuSection.community.rawValue)
             collectionView?.selectItemAtIndexPath(indexPath, animated: false, scrollPosition: .None)
