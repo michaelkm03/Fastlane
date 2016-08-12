@@ -77,7 +77,6 @@ class VIPSubscriptionHelper {
             delegate?.setIsLoading(false, title: nil)
         }
         selectSubscription.queue() { [weak self] result in
-            NSLog("completion block")
             switch result {
                 case .success(let selectedProduct):
                     self?.delegate?.setIsLoading(true, title: nil)
