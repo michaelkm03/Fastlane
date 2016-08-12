@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ConfirmDestructiveActionOperation: MainQueueOperation, ActionConfirmationOperation {
+class ConfirmDestructiveActionOperation: AsyncOperation<Void>, ActionConfirmationOperation {
     
     private let actionTitle: String
     private let dependencyManager: VDependencyManager
@@ -26,16 +26,13 @@ class ConfirmDestructiveActionOperation: MainQueueOperation, ActionConfirmationO
         self.dependencyManager = dependencyManager
     }
     
-    override func start() {
-        super.start()
-        self.beganExecuting()
-        
+    override func execute(finish: () -> Void) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
         alertController.addAction(
             UIAlertAction(title: self.cancelTitle,
                 style: .Cancel,
                 handler: { action in
-                    self.finishedExecuting()
+                    finish()
                 }
             )
         )
@@ -44,10 +41,14 @@ class ConfirmDestructiveActionOperation: MainQueueOperation, ActionConfirmationO
                 style: .Destructive,
                 handler: { action in
                     self.didConfirmAction = true
-                    self.finishedExecuting()
+                    finish()
                 }
             )
         )
         originViewController.presentViewController(alertController, animated: true, completion: nil)
+    }
+    
+    override var executionQueue: NSOperationQueue {
+        return .mainQueue()
     }
 }

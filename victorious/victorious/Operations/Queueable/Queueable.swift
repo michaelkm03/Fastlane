@@ -152,14 +152,11 @@ extension Queueable2 where Self: NSOperation {
                 assertionFailure("Received no output from async operation to pass through the completion handler.")
                 return
             }
-            
-            dispatch_async(dispatch_get_main_queue()) {
-                completion(output: output)
-            }
+            completion(output: output)
         }
         
         completionOperation.addDependency(self)
-        scheduleQueue.addOperation(completionOperation)
+        NSOperationQueue.mainQueue().addOperation(completionOperation)
     }
     
     func queue() {
