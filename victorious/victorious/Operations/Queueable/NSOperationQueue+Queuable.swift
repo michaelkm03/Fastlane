@@ -109,7 +109,6 @@ class SyncOperation<Output>: NSOperation, Operation {
     
     var executeOnMainQueue: Bool {
         fatalError()
-        return true
     }
     
     var queue: NSOperationQueue {
