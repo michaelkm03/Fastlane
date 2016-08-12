@@ -20,19 +20,19 @@ class ConfirmDestructiveActionOperation: AsyncOperation<Void>, ActionConfirmatio
     
     var didConfirmAction: Bool = false
     
-    init( actionTitle: String, originViewController: UIViewController, dependencyManager: VDependencyManager) {
+    init(actionTitle: String, originViewController: UIViewController, dependencyManager: VDependencyManager) {
         self.actionTitle = actionTitle
         self.originViewController = originViewController
         self.dependencyManager = dependencyManager
     }
     
-    override func execute(finish: () -> Void) {
+    override func execute(finish: (output: OperationResult<Void>) -> Void) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
         alertController.addAction(
             UIAlertAction(title: self.cancelTitle,
                 style: .Cancel,
                 handler: { action in
-                    finish()
+                    finish(output: .cancelled)
                 }
             )
         )
@@ -41,7 +41,7 @@ class ConfirmDestructiveActionOperation: AsyncOperation<Void>, ActionConfirmatio
                 style: .Destructive,
                 handler: { action in
                     self.didConfirmAction = true
-                    finish()
+                    finish(output: .success())
                 }
             )
         )
