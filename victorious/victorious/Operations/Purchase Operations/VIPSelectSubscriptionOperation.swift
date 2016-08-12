@@ -15,8 +15,6 @@ class VIPSelectSubscriptionOperation: AsyncOperation<VProduct?>, UIAlertViewDele
     
     let willShowPrompt: Bool
     
-    private(set) var selectedProduct: VProduct?
-    
     init(products: [VProduct], originViewController: UIViewController) {
         self.products = products
         self.willShowPrompt = products.count > 1
@@ -29,20 +27,19 @@ class VIPSelectSubscriptionOperation: AsyncOperation<VProduct?>, UIAlertViewDele
     
     override func execute(finish: (output: VProduct?) -> Void) {
         guard willShowPrompt else {
-            selectedProduct = products.first
+            finish(output: products.first)
             return
         }
         
         let alert = UIAlertController(title: Strings.alertTitle, message: Strings.alertMessage, preferredStyle: .Alert)
         for product in self.products {
-            let action = UIAlertAction(title: product.price + " " + product.localizedDescription, style: .Default) { [weak self] action in
-                self?.selectedProduct = product
+            let action = UIAlertAction(title: product.price + " " + product.localizedDescription, style: .Default) { action in
                 finish(output: product)
             }
             alert.addAction(action)
         }
-        let action = UIAlertAction(title: Strings.cancel, style: .Default) { [weak self] action in
-            self?.selectedProduct = nil
+        
+        let action = UIAlertAction(title: Strings.cancel, style: .Default) { action in
             finish(output: nil)
         }
         alert.addAction(action)

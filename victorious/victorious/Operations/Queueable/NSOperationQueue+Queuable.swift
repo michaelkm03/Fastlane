@@ -100,6 +100,7 @@ extension Queueable2 where Self: NSOperation {
                 completion(output: output)
             }
         }
+        
         completionOperation.addDependency(self)
         scheduleQueue.addOperation(completionOperation)
     }
