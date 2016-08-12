@@ -53,56 +53,23 @@ extension NSOperationQueue {
     }
 }
 
-class AsyncWaitingOperation: NSOperation, Queueable {
-    
-    // MARK: - Async
-    
-    func performUITask(task: () -> Void) {
-        v_defaultQueue.suspended = true
-        dispatch_async(dispatch_get_main_queue()) {
-            task()
-        }
-    }
-    
-    func asyncCallBack() {
-        v_defaultQueue.suspended = false
-    }
-    
-    // MARK: - Queueable
-    
-    var error: NSError?
-    
-    func executeCompletionBlock(completionBlock: (NSError?, Bool) -> ()) {
-        // This ensures that every subclass of `MainQueueOperation` has its completion block
-        // executed on the main queue, which saves the trouble of having to wrap
-        // in dispatch block in calling code.
-        dispatch_async( dispatch_get_main_queue() ) {
-            completionBlock(self.error, self.cancelled)
-        }
-    }
-    
-    override var v_defaultQueue: NSOperationQueue {
-        // By overriding `defaultQueue` we are selecting the queue on which to add operations
-        // when no other specifiec queue is provided by calling code.
-        return NSOperationQueue.v_globalBackgroundQueue
-    }
-}
-
-protocol Operation {
+/// This is designed to replace Queueable.
+protocol Queueable2 {
     associatedtype Completion
     
     func queue(completion completion: Completion?)
     func queue()
+    
+    var executeOnMainQueue: Bool { get }
 }
 
-extension Operation {
-    
+extension Queueable2 {
     func queue() {
         queue(completion: nil)
     }
 }
 
-class SyncOperation<Output>: NSOperation, Operation {
+class SyncOperation<Output>: NSOperation, Queueable2 {
     func execute() -> Output {
         fatalError()
     }
@@ -137,7 +104,7 @@ class SyncOperation<Output>: NSOperation, Operation {
     }
 }
 
-class AsyncOperation<Output>: NSOperation, Operation {
+class AsyncOperation<Output>: NSOperation, Queueable2 {
     func execute(finish: (output: Output) -> Void) {
         fatalError()
     }
