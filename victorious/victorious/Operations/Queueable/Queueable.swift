@@ -219,13 +219,13 @@ class AsyncOperation<Output>: NSOperation, Queueable2 {
     }
     
     override final func main() {
-        scheduleQueue.suspended = true
-        
+        let executeSemphore = dispatch_semaphore_create(0)
         executionQueue.addOperationWithBlock {
             self.execute { output in
                 self.output = output
-                self.scheduleQueue.suspended = false
+                dispatch_semaphore_signal(executeSemphore)
             }
         }
+        dispatch_semaphore_wait(executeSemphore, DISPATCH_TIME_FOREVER)
     }
 }
