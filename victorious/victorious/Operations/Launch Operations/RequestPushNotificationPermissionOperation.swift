@@ -8,31 +8,22 @@
 
 import UIKit
 
-class RequestPushNotificationPermissionOperation: MainQueueOperation {
+class RequestPushNotificationPermissionOperation: SyncOperation<Void> {
     
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
-    override func start() {
-        super.start()
-        
-        beganExecuting()
-        
-        guard !cancelled && !VPushNotificationManager.sharedPushNotificationManager().started else {
-            finishedExecuting()
-            return
-        }
-        
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userRespondedToPushNotification),
-            name: VPushNotificationManagerDidReceiveResponse,
-            object: VPushNotificationManager.sharedPushNotificationManager())
-        VPushNotificationManager.sharedPushNotificationManager().startPushNotificationManager()
+    override var scheduleQueue: NSOperationQueue {
+        return .mainQueue()
     }
     
-    // MARK: - Notification Observer
-    
-    func userRespondedToPushNotification() {
-        finishedExecuting()
+    override func execute() -> OperationResult<Void> {
+        guard !VPushNotificationManager.sharedPushNotificationManager().started else {
+            return .cancelled
+        }
+
+        VPushNotificationManager.sharedPushNotificationManager().startPushNotificationManager()
+        return .success()
     }
 }
