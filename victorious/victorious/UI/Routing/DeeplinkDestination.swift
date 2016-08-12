@@ -64,21 +64,25 @@ enum DeeplinkDestination: Equatable {
     
     init?(content: ContentModel) {
         switch content.type {
-        case .image, .video, .gif, .text:
-            self = .closeUp(contentWrapper: .content(content: content))
-        case .link:
-            guard
-                let url = content.linkedURL,
-                let validDestination = DeeplinkDestination(url: url)
-            else {
-                return nil
-            }
-            self = validDestination
+            case .image, .video, .gif, .text:
+                self = .closeUp(contentWrapper: .content(content: content))
+            case .link:
+                guard
+                    let url = content.linkedURL,
+                    let validDestination = DeeplinkDestination(url: url)
+                else {
+                    return nil
+                }
+                self = validDestination
         }
     }
     
     init(userID: User.ID) {
         self = .profile(userID: userID)
+    }
+
+    init(contentID: Content.ID) {
+        self = .closeUp(contentWrapper: .contentID(id: contentID))
     }
 }
 
