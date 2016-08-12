@@ -21,6 +21,7 @@ class StoredLoginOperation: BackgroundOperation {
 
     override func start() {
         super.start()
+        beganExecuting()
         
         defer {
             self.finishedExecuting()

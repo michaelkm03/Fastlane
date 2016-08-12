@@ -11,6 +11,7 @@
  */
 
 #import <KVOController/FBKVOController.h>
+#import "TestFairy.h"
 #import "NSString+VCrypto.h"
 #import "NSString+VParseHelp.h"
 #import "NSURL+MediaType.h"
@@ -28,7 +29,6 @@
 #import "VAbstractImageVideoCreationFlowController.h"
 #import "VActionBarFixedWidthItem.h"
 #import "VAlternateCaptureOption.h"
-#import "VAppDelegate.h"
 #import "VAppInfo.h"
 #import "VAppTimingEventType.h"
 #import "VApplicationTracking.h"
@@ -117,7 +117,6 @@
 #import "VSolidColorBackground.h"
 #import "VStoredLogin.h"
 #import "VStoredPassword.h"
-#import "VTFLog.h"
 #import "VThemeManager.h"
 #import "VTimerManager.h"
 #import "VTrackingManager.h"

@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Victorious. All rights reserved.
 //
 
-#import "VAppDelegate.h"
 #import "VDependencyManager+VDefaultTemplate.h"
 #import "VDependencyManager+NavigationBar.h"
 #import "VLoadingViewController.h"
@@ -92,7 +91,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 + (instancetype)sharedRootViewController
 {
-    VRootViewController *rootViewController = (VRootViewController *)[[(VAppDelegate *)[[UIApplication sharedApplication] delegate] window] rootViewController];
+    VRootViewController *rootViewController = (VRootViewController *)[[(AppDelegate *)[[UIApplication sharedApplication] delegate] window] rootViewController];
     if ([rootViewController isKindOfClass:self])
     {
         return rootViewController;
@@ -319,7 +318,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     }
 }
 
-- (void)applicationOpenURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+- (void)applicationOpenURL:(NSURL *)url
 {
     [self openURL:url fromExternalSourceWithOptionalNotificationID:nil];
 }

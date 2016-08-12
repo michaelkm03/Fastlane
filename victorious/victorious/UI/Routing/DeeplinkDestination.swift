@@ -14,16 +14,16 @@ enum DeeplinkDestination: Equatable {
     case profile(userID: Int)
     case closeUp(contentWrapper: CloseUpContentWrapper)
     case vipForum
-    case externalURL(url: NSURL, addressBarVisible: Bool)
+    case externalURL(url: NSURL, addressBarVisible: Bool, isVIPOnly: Bool)
     
-    init?(url: NSURL) {
+    init?(url: NSURL, isVIPOnly: Bool = false) {
         guard url.scheme == "vthisapp" else {
-            v_log("Received links in wrong format. All links should be in deep link format according to https://wiki.victorious.com/display/ENG/Deep+Linking+Specification")
+            logger.info("Received link (\(url.absoluteString)) in wrong format. All links should be in deep link format according to https://wiki.victorious.com/display/ENG/Deep+Linking+Specification")
             return nil
         }
         
         guard let host = url.host else {
-            v_log("We got a deep link URL but no host component, so we don't know where to navigate")
+            logger.info("Received link (\(url.absoluteString)) with no host component, so we don't know where to navigate.")
             return nil
         }
         
@@ -48,7 +48,7 @@ enum DeeplinkDestination: Equatable {
                 else {
                     return nil
                 }
-                self = .externalURL(url: externalURL, addressBarVisible: true)
+                self = .externalURL(url: externalURL, addressBarVisible: true, isVIPOnly: isVIPOnly)
             case "hiddenWebURL":
                 guard
                     let path = url.pathWithoutLeadingSlash,
@@ -56,7 +56,7 @@ enum DeeplinkDestination: Equatable {
                 else {
                     return nil
                 }
-                self = .externalURL(url: externalURL, addressBarVisible: false)
+                self = .externalURL(url: externalURL, addressBarVisible: false, isVIPOnly: isVIPOnly)
             default:
                 return nil
         }
@@ -69,7 +69,7 @@ enum DeeplinkDestination: Equatable {
         case .link:
             guard
                 let url = content.linkedURL,
-                let validDestination = DeeplinkDestination(url: url)
+                let validDestination = DeeplinkDestination(url: url, isVIPOnly: content.isVIPOnly)
             else {
                 return nil
             }
@@ -87,7 +87,7 @@ func ==(lhs: DeeplinkDestination, rhs: DeeplinkDestination) -> Bool {
         case (let .profile(id1), let .profile(id2)): return id1 == id2
         case (let .closeUp(contentWrapper1), let .closeUp(contentWrapper2)): return contentWrapper1 == contentWrapper2
         case (.vipForum, .vipForum): return true
-        case (let .externalURL(url1, visible1), let .externalURL(url2, visible2)): return url1 == url2 && visible1 == visible2
+        case (let .externalURL(url1, visible1, isVIPOnly1), let .externalURL(url2, visible2, isVIPOnly2)): return url1 == url2 && visible1 == visible2 && isVIPOnly1 == isVIPOnly2
         default: return false
     }
 }

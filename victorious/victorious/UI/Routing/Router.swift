@@ -36,7 +36,7 @@ struct Router {
             case .profile(let userID): showProfile(for: userID)
             case .closeUp(let contentWrapper): showCloseUpView(for: contentWrapper)
             case .vipForum: showVIPForum()
-            case .externalURL(let url, let addressBarVisible): showWebView(for: url, addressBarVisible: addressBarVisible)
+            case .externalURL(let url, let addressBarVisible, let isVIPOnly): showWebView(for: url, addressBarVisible: addressBarVisible, isVIPOnly: isVIPOnly)
         }
     }
     
@@ -51,32 +51,70 @@ struct Router {
                 guard content.type != .text, let contentID = content.id else {
                     return
                 }
-                ShowCloseUpOperation.showOperation(forContentID: contentID, displayModifier: displayModifier).queue()
-            case .contentID(let id):
-                ShowCloseUpOperation.showOperation(forContentID: id, displayModifier: displayModifier).queue()
+                checkForPermissionBeforeRouting(contentIsForVIPOnly: content.isVIPOnly) { success in
+                    if success {
+                        ShowFetchedCloseUpOperation(contentID: contentID, displayModifier: displayModifier).queue()
+                    }
+                }
+            
+            case .contentID(let contentID):
+                ShowFetchedCloseUpOperation(contentID: contentID, displayModifier: displayModifier).queue()
         }
     }
     
     private func showVIPForum() {
-        guard let originViewController = self.originViewController else { return }
-        ShowForumOperation(originViewController: originViewController, dependencyManager: dependencyManager, showVIP: true, animated: true).queue()
+        guard let originViewController = self.originViewController else {
+            return
+        }
+        
+        checkForPermissionBeforeRouting(contentIsForVIPOnly: true) { success in
+            if success {
+                ShowForumOperation(originViewController: originViewController, dependencyManager: self.dependencyManager, showVIP: true, animated: true).queue()
+            }
+        }
     }
     
     private func showProfile(for userID: User.ID) {
-        guard let originViewController = self.originViewController else { return }
+        guard let originViewController = self.originViewController else {
+            return
+        }
         ShowProfileOperation(originViewController: originViewController, dependencyManager: dependencyManager, userId: userID).queue()
     }
     
-    private func showWebView(for url: NSURL, addressBarVisible: Bool) {
+    private func showWebView(for url: NSURL, addressBarVisible: Bool, isVIPOnly: Bool = false) {
         // Future: We currently have no way to hide address bar. This will be handled when we implement close up web view.
-        let safariViewController = SFSafariViewController(URL: url)
-        originViewController?.presentViewController(safariViewController, animated: true, completion: nil)
+        
+        checkForPermissionBeforeRouting(contentIsForVIPOnly: isVIPOnly) { success in
+            if success {
+                let safariViewController = SFSafariViewController(URL: url)
+                self.originViewController?.presentViewController(safariViewController, animated: true, completion: nil)
+            }
+        }
     }
     
     private func showError() {
         let title = NSLocalizedString("Missing Content", comment: "The title of the alert saying we can't find a piece of content")
         let message = NSLocalizedString("Missing Content Message", comment: "A deep linked content has a wrong destination URL that we can't navigate to")
         originViewController?.v_showAlert(title: title, message: message)
+    }
+    
+    func checkForPermissionBeforeRouting(contentIsForVIPOnly isVIPOnly: Bool = false, completion: ((Bool) -> Void)? = nil) {
+        guard let currentUser = VCurrentUser.user() else {
+            return
+        }
+        
+        if isVIPOnly && !currentUser.hasValidVIPSubscription {
+            guard let originViewController = self.originViewController else {
+                return
+            }
+            let showVIPFlowOperation = ShowVIPFlowOperation(originViewController: originViewController, dependencyManager: dependencyManager) { success in
+                completion?(success)
+            }
+            showVIPFlowOperation.queue()
+        }
+        else {
+            completion?(true)
+        }
     }
 }
 
@@ -96,13 +134,13 @@ private class ShowForumOperation: MainQueueOperation {
     }
     
     override func start() {
+        super.start()
+        beganExecuting()
         
         guard !self.cancelled else {
             finishedExecuting()
             return
         }
-        
-        beganExecuting()
         
         let templateKey = showVIP ? "vipForum" : "forum"
         let templateValue = dependencyManager.templateValueOfType(ForumViewController.self, forKey: templateKey)
@@ -145,6 +183,8 @@ private class ShowProfileOperation: MainQueueOperation {
     
     override func start() {
         super.start()
+        beganExecuting()
+        
         defer {
             finishedExecuting()
         }
@@ -191,20 +231,6 @@ private class ShowCloseUpOperation: MainQueueOperation {
     private var contentID: String?
     private(set) var displayedCloseUpView: CloseUpContainerViewController?
     
-    static func showOperation(forContent content: ContentModel, displayModifier: ShowCloseUpDisplayModifier) -> MainQueueOperation {
-        return ShowPermissionedCloseUpOperation(content: content, displayModifier: displayModifier)
-    }
-    
-    static func showOperation(forContentID contentID: String, displayModifier: ShowCloseUpDisplayModifier) -> MainQueueOperation {
-        return ShowFetchedCloseUpOperation(contentID: contentID, displayModifier: displayModifier)
-    }
-    
-    init(content: ContentModel, displayModifier: ShowCloseUpDisplayModifier) {
-        self.displayModifier = displayModifier
-        self.content = content
-        super.init()
-    }
-    
     init(contentID: String, displayModifier: ShowCloseUpDisplayModifier) {
         self.displayModifier = displayModifier
         self.contentID = contentID
@@ -212,6 +238,9 @@ private class ShowCloseUpOperation: MainQueueOperation {
     }
     
     override func start() {
+        super.start()
+        beganExecuting()
+        
         defer {
             finishedExecuting()
         }
@@ -247,61 +276,21 @@ private class ShowCloseUpOperation: MainQueueOperation {
     }
 }
 
-/// Shows a close up view for a given piece of content after checking
-/// permissions and displaying a vip gate as appropriate.
-private class ShowPermissionedCloseUpOperation: MainQueueOperation {
-    private let displayModifier: ShowCloseUpDisplayModifier
-    private var content: ContentModel
-    
-    init(content: ContentModel, displayModifier: ShowCloseUpDisplayModifier) {
-        self.displayModifier = displayModifier
-        self.content = content
-        super.init()
-    }
-    
-    override func start() {
-        defer {
-            finishedExecuting()
-        }
-        
-        guard !cancelled else {
-            return
-        }
-        
-        let displayModifier = self.displayModifier
-        let dependencyManager = displayModifier.dependencyManager
-        let content = self.content
-        
-        if content.isVIPOnly {
-            let scaffold = dependencyManager.scaffoldViewController()
-            let showVIPFlowOperation = ShowVIPFlowOperation(originViewController: scaffold, dependencyManager: dependencyManager) { success in
-                if success {
-                    ShowCloseUpOperation(content: content, displayModifier: displayModifier).queue()
-                }
-            }
-            
-            let completionBlock = self.completionBlock
-            showVIPFlowOperation.rechainAfter(self).queue() { _ in
-                completionBlock?()
-            }
-        } else {
-            ShowCloseUpOperation(content: content, displayModifier: displayModifier).rechainAfter(self).queue()
-        }
-    }
-}
-
 /// Fetches a piece of content and shows a close up view containing it.
 private class ShowFetchedCloseUpOperation: MainQueueOperation {
     private let displayModifier: ShowCloseUpDisplayModifier
     private var contentID: String
     
-    init(contentID: String, displayModifier: ShowCloseUpDisplayModifier, checkPermissions: Bool = true) {
+    init(contentID: String, displayModifier: ShowCloseUpDisplayModifier) {
         self.displayModifier = displayModifier
         self.contentID = contentID
         super.init()
     }
     
-    override func main() {
+    override func start() {
+        super.start()
+        beganExecuting()
+        
         defer {
             finishedExecuting()
         }
@@ -311,54 +300,44 @@ private class ShowFetchedCloseUpOperation: MainQueueOperation {
             !cancelled,
             let userID = VCurrentUser.user()?.remoteId.integerValue,
             let contentFetchURL = displayModifier.dependencyManager.contentFetchURL
-            else {
-                return
+        else {
+            return
         }
         
+        // Set up ShowCloseUpOperation and chain it
         let showCloseUpOperation = ShowCloseUpOperation(contentID: contentID, displayModifier: displayModifier)
-        showCloseUpOperation.rechainAfter(self).queue()
+        showCloseUpOperation.rechainAfter(self)
         
+        // Set up ContentFetchOperation and chain it
         let contentFetchOperation = ContentFetchOperation(
             macroURLString: contentFetchURL,
             currentUserID: String(userID),
             contentID: contentID
         )
+        contentFetchOperation.rechainAfter(showCloseUpOperation)
         
-        let completionBlock = showCloseUpOperation.completionBlock
-        contentFetchOperation.rechainAfter(showCloseUpOperation).queue() { [weak self] results, _, _ in
-            guard
-                let strongSelf = self,
-                let shownCloseUpView = showCloseUpOperation.displayedCloseUpView
-            else {
-                completionBlock?()
+        // Queue operations. We queue the operations after setting up dependency graph for NSOperationQueue performance reasons.
+        showCloseUpOperation.queue()
+        contentFetchOperation.queue() { results, _, _ in
+            guard let shownCloseUpView = showCloseUpOperation.displayedCloseUpView else {
                 return
             }
             
             guard let content = results?.first as? ContentModel else {
                 // Display error message.
                 shownCloseUpView.updateError()
-                completionBlock?()
                 return
             }
             
-            if content.isVIPOnly {
-                let dependencyManager = displayModifier.dependencyManager
-                let showVIPFlowOperation = ShowVIPFlowOperation(originViewController: shownCloseUpView, dependencyManager: dependencyManager) { success in
-                    if success {
-                        shownCloseUpView.updateContent(content)
-                    }
-                    else {
-                        shownCloseUpView.navigationController?.popViewControllerAnimated(true)
-                    }
+            // Check for permissions before we continue to show the content
+            let router = Router(originViewController: shownCloseUpView, dependencyManager: displayModifier.dependencyManager)
+            router.checkForPermissionBeforeRouting(contentIsForVIPOnly: content.isVIPOnly) { success in
+                if success {
+                    shownCloseUpView.updateContent(content)
                 }
-                
-                showVIPFlowOperation.rechainAfter(strongSelf).queue() { _ in
-                    completionBlock?()
+                else {
+                    shownCloseUpView.navigationController?.popViewControllerAnimated(true)
                 }
-            }
-            else {
-                shownCloseUpView.updateContent(content)
-                completionBlock?()
             }
         }
     }
