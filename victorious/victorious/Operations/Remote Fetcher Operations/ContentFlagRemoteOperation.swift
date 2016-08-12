@@ -11,8 +11,8 @@ import UIKit
 class ContentFlagRemoteOperation: RemoteFetcherOperation, RequestOperation {
     let request: ContentFlagRequest!
     
-    init?(contentID: String, contentFlagURL: String) {
-        guard let request = ContentFlagRequest(contentID: contentID, contentFlagURL: contentFlagURL) else {
+    init?(contentID: Content.ID, apiPath: APIPath) {
+        guard let request = ContentFlagRequest(contentID: contentID, apiPath: apiPath) else {
             return nil
         }
         self.request = request

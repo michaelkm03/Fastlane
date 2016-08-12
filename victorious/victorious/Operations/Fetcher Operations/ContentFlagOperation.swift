@@ -9,12 +9,12 @@
 import UIKit
 
 class ContentFlagOperation: FetcherOperation {
-    private let contentFlagURL: String
-    private let contentID: String
+    private let contentID: Content.ID
+    private let apiPath: APIPath
 
-    init(contentID: String, contentFlagURL: String) {
+    init(contentID: Content.ID, apiPath: APIPath) {
         self.contentID = contentID
-        self.contentFlagURL = contentFlagURL
+        self.apiPath = apiPath
     }
     
     override func main() {
@@ -31,7 +31,6 @@ class ContentFlagOperation: FetcherOperation {
             }
             context.deleteObject(content)
         }
-        ContentFlagRemoteOperation(contentID: contentID, contentFlagURL: contentFlagURL)?.after(self).queue()
+        ContentFlagRemoteOperation(contentID: contentID, apiPath: apiPath)?.after(self).queue()
     }
-
 }

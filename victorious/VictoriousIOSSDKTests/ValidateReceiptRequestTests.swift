@@ -10,7 +10,6 @@ import XCTest
 @testable import VictoriousIOSSDK
 
 class ValidateReceiptRequestTests: XCTestCase {
-    
     func testParseResponse() {
         guard  let receiptData = "NSData whose `length` will be > 0 for testing.".dataUsingEncoding(NSUTF8StringEncoding),
             let request = ValidateReceiptRequest(data: receiptData) else {
@@ -18,8 +17,8 @@ class ValidateReceiptRequestTests: XCTestCase {
             return
         }
         
-        XCTAssertEqual(request.urlRequest.URL, NSURL(string: "/api/purchase") )
-        XCTAssertEqual(request.urlRequest.HTTPMethod, "POST" )
+        XCTAssertEqual(request.urlRequest.URL, NSURL(string: "/api/purchase"))
+        XCTAssertEqual(request.urlRequest.HTTPMethod, "POST")
         
         guard let mockUserDataURL = NSBundle(forClass: self.dynamicType).URLForResource("PurchaseResponse", withExtension: "json"),
             let mockData = NSData(contentsOfURL: mockUserDataURL) else {
@@ -36,7 +35,6 @@ class ValidateReceiptRequestTests: XCTestCase {
             )
             
             XCTAssertEqual(vipStatus.isVIP, true)
-            
         } catch {
             XCTFail("Failed to parse response to `ValidateReceiptRequest`.")
             return

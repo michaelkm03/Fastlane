@@ -17,15 +17,18 @@ public struct ContentDeleteRequest: RequestType {
     }
     
     private let contentDeleteURL: NSURL
-    private let contentID: String
+    private let contentID: Content.ID
     
-    public init?(contentID: String, contentDeleteURL: String) {
+    public init?(contentID: Content.ID, apiPath: APIPath) {
         self.contentID = contentID
-        let replacementDictionary: [String: String] = ["%%CONTENT_ID%%": contentID]
-        let replacedURL = VSDKURLMacroReplacement().urlByReplacingMacrosFromDictionary(replacementDictionary, inURLString: contentDeleteURL)
-        guard let validURL = NSURL(string: replacedURL) else {
+        
+        var apiPath = apiPath
+        apiPath.macroReplacements["%%CONTENT_ID%%"] = contentID
+        
+        guard let url = apiPath.url else {
             return nil
         }
-        self.contentDeleteURL = validURL
+        
+        contentDeleteURL = url
     }
 }
