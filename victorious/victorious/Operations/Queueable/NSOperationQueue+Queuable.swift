@@ -87,3 +87,95 @@ class AsyncWaitingOperation: NSOperation, Queueable {
         return NSOperationQueue.v_globalBackgroundQueue
     }
 }
+
+protocol Operation {
+    associatedtype Completion
+    
+    var defaultQueue: NSOperationQueue { get }
+    
+    func queue(on queue: NSOperationQueue, completion: Completion?)
+    func queue(completion completion: Completion?)
+    func queue()
+}
+
+extension Operation {
+    func queue(completion completion: Completion?) {
+        queue(on: defaultQueue, completion: completion)
+    }
+    
+    func queue() {
+        queue(completion: nil)
+    }
+}
+
+class SyncOperation<Output>: NSOperation, Operation {
+    func execute() -> Output {
+        fatalError()
+    }
+    
+    var defaultQueue: NSOperationQueue {
+        return NSOperationQueue.v_globalBackgroundQueue
+    }
+    
+    private var output: Output?
+    
+    override func main() {
+        output = execute()
+    }
+    
+    func queue(on queue: NSOperationQueue, completion: ((output: Output) -> Void)?) {
+        queue.addOperation(self)
+        
+        if let completion = completion {
+            queue.addOperationWithBlock {
+                guard let output = self.output else {
+                    assertionFailure("Received no output from sync operation to pass through the completion handler.")
+                    return
+                }
+                
+                completion(output: output)
+            }
+        }
+    }
+}
+
+class AsyncOperation<Output>: NSOperation, Operation {
+    func execute(finish: (output: Output) -> Void) {
+        fatalError()
+    }
+    
+    var defaultQueue: NSOperationQueue {
+        return NSOperationQueue.v_globalBackgroundQueue
+    }
+    
+    private var output: Output?
+    
+    override final func main() {
+        v_defaultQueue.suspended = true
+        
+        dispatch_async(dispatch_get_main_queue()) {
+            self.execute { output in
+                self.output = output
+                self.v_defaultQueue.suspended = false
+            }
+        }
+    }
+    
+    func queue(on queue: NSOperationQueue, completion: ((output: Output) -> Void)?) {
+        if let completion = completion {
+            let completionOperation = NSBlockOperation {
+                guard let output = self.output else {
+                    assertionFailure("Received no output from async operation to pass through the completion handler.")
+                    return
+                }
+                dispatch_async(dispatch_get_main_queue()) {
+                    completion(output: output)
+                }
+            }
+            completionOperation.addDependency(self)
+            queue.addOperation(completionOperation)
+        }
+        
+        queue.addOperation(self)
+    }
+}

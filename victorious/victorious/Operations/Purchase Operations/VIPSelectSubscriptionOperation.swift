@@ -8,7 +8,7 @@
 
 import Foundation
 
-class VIPSelectSubscriptionOperation: AsyncWaitingOperation, UIAlertViewDelegate {
+class VIPSelectSubscriptionOperation: AsyncOperation<VProduct?>, UIAlertViewDelegate {
     let products: [VProduct]
     
     let originViewController: UIViewController
@@ -25,27 +25,30 @@ class VIPSelectSubscriptionOperation: AsyncWaitingOperation, UIAlertViewDelegate
     
     private func selectionHandler(for product: VProduct?) -> (UIAlertAction -> ()) {
         return { [weak self] (alertAction: UIAlertAction) in
-            self?.asyncCallBack()
             self?.selectedProduct = product
         }
     }
     
-    override func main() {
+    override func execute(finish: (output: VProduct?) -> Void) {
         guard willShowPrompt else {
             selectedProduct = products.first
             return
         }
         
-        performUITask { [unowned self] in
-            let alert = UIAlertController(title: Strings.alertTitle, message: Strings.alertMessage, preferredStyle: .Alert)
-            for product in self.products {
-                let action = UIAlertAction(title: product.price + " " + product.localizedDescription, style: .Default, handler: self.selectionHandler(for: product))
-                alert.addAction(action)
+        let alert = UIAlertController(title: Strings.alertTitle, message: Strings.alertMessage, preferredStyle: .Alert)
+        for product in self.products {
+            let action = UIAlertAction(title: product.price + " " + product.localizedDescription, style: .Default) { [weak self] action in
+                self?.selectedProduct = product
+                finish(output: product)
             }
-            let action = UIAlertAction(title: Strings.cancel, style: .Default, handler: self.selectionHandler(for: nil))
             alert.addAction(action)
-            self.originViewController.presentViewController(alert, animated: true, completion: nil)
         }
+        let action = UIAlertAction(title: Strings.cancel, style: .Default) { [weak self] action in
+            self?.selectedProduct = nil
+            finish(output: nil)
+        }
+        alert.addAction(action)
+        self.originViewController.presentViewController(alert, animated: true, completion: nil)
     }
     
     private struct Strings {

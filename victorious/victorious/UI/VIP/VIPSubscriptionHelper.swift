@@ -77,11 +77,13 @@ class VIPSubscriptionHelper {
             delegate?.setIsLoading(false, title: nil)
         }
         selectSubscription.queue() { [weak self] _ in
+            NSLog("completion block")
             guard let selectedProduct = selectSubscription.selectedProduct else {
                 self?.delegate?.setIsLoading(false, title: nil)
-                if let error = selectSubscription.error {
-                    originViewController.showSubscriptionAlert(for: error)
-                }
+                // FIXME: Bring back error handling
+//                if let error = selectSubscription.error {
+//                    originViewController.showSubscriptionAlert(for: error)
+//                }
                 return
             }
             self?.delegate?.setIsLoading(true, title: nil)
