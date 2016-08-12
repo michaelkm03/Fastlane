@@ -37,7 +37,7 @@ class VIPSubscribeOperation: BackgroundOperation {
         let success = { (results: Set<NSObject>?) in
             // Force success because we have to deliver the product even if the sever fails for any reason
             let validatationOperation = VIPValidateSuscriptionOperation(shouldForceSuccess: true)
-            validatationOperation.rechainAfter(self).queue() { _ in
+            validatationOperation.after(self).queue() { _ in
                 if validatationOperation.validationSucceeded {
                     VTrackingManager.sharedInstance().trackEvent(VTrackingEventRecievedProductReceiptFromBackend)
                 }
