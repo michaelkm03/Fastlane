@@ -51,18 +51,6 @@ static CGFloat const kNotificationAddedVerticalInset = 8.0f;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-#pragma mark - VAuthorizationContextProvider
-
-- (BOOL)requiresAuthorization
-{
-    return YES;
-}
-
-- (VAuthorizationContext)authorizationContext
-{
-    return VAuthorizationContextNotification;
-}
-
 #pragma mark - View Lifecycle
 
 - (void)viewDidLoad

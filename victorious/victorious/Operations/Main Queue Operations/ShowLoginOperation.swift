@@ -11,20 +11,17 @@ import Foundation
 class ShowLoginOperation: MainQueueOperation {
     private weak var originViewController: UIViewController?
     private let dependencyManager: VDependencyManager
-    private let context: VAuthorizationContext
     private let animated: Bool
     private let loginCompletion: (()->())?
     
     required init(
         originViewController: UIViewController,
         dependencyManager: VDependencyManager,
-        context: VAuthorizationContext = .Default,
         animated: Bool = true,
         loginCompletion: (()->())? = nil
     ) {
         self.originViewController = originViewController
         self.dependencyManager = dependencyManager
-        self.context = context
         self.animated = animated
         self.loginCompletion = loginCompletion
     }
@@ -75,7 +72,6 @@ class ShowLoginOperation: MainQueueOperation {
                 originViewController?.dismissViewControllerAnimated(true, completion: nil)
             }
         }
-        loginFlow.setAuthorizationContext?( self.context )
         
         self.originViewController?.presentViewController(viewController, animated: animated) {
             self.finishedExecuting()

@@ -11,7 +11,6 @@
 #import "VDependencyManager+VNavigationMenuItem.h"
 #import "VNavigationMenuItem.h"
 #import "VNavigationDestination.h"
-#import "VAuthorizationContextProvider.h"
 #import "UIResponder+VResponderChain.h"
 #import "VProvidesNavigationMenuItemBadge.h"
 #import "VMenuItemControl.h"
@@ -62,27 +61,9 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
     
     for ( VNavigationMenuItem *menuItem in accessoryMenuItems )
     {
-        if ( ![self shouldDisplayMenuItem:menuItem fromSourceViewController:sourceViewController] )
-        {
-            continue;
-        }
-        
         VBarButtonItem *accessoryBarItem = nil;
         
-        // See if we have a custom control
-        UIControl *customControl = [self customControlForMenuItem:menuItem fromSourceViewController:sourceViewController];
-        
-        if ( customControl != nil )
-        {
-            [customControl addTarget:self action:@selector(accessoryMenuItemSelected:) forControlEvents:UIControlEventTouchUpInside];
-            
-            VMenuItemControl *menuItemControl = [[VMenuItemControl alloc] initWithFrame:customControl.bounds];
-            menuItemControl.menuItem = menuItem;
-            [menuItemControl addSubview:customControl];
-            
-            accessoryBarItem = [[VBarButtonItem alloc] initWithCustomView:menuItemControl];
-        }
-        else if ( menuItem.icon != nil )
+        if ( menuItem.icon != nil )
         {
             // If an icon is provided, a badge
             VBarButton *barButton = [VBarButton newWithDependencyManager:self];
@@ -151,17 +132,13 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
     {
         VNavigationMenuItem *menuItem = (VNavigationMenuItem *)barButton.menuItem;
         id<VProvidesNavigationMenuItemBadge> badgeProvider = menuItem.destination;
-        id<VProvidesNavigationMenuItemBadge> customBadgeProvider = nil;
-        id customBadgeSource = [sourceViewController targetForAction:@selector(customBadgeProviderForMenuItem:) withSender:self];
-        customBadgeProvider = [customBadgeSource customBadgeProviderForMenuItem:menuItem];
         [self registerBadgeUpdateBlockWithButton:barButton
                                       fromSource:sourceViewController
-                                 withDestination:customBadgeProvider ?: badgeProvider
-                                        isCustom:customBadgeProvider != nil];
+                                 withDestination:badgeProvider];
     }
 }
 
-- (void)registerBadgeUpdateBlockWithButton:(VBarButton *)barButton fromSource:(id)source withDestination:(id)destination isCustom:(BOOL)isCustom
+- (void)registerBadgeUpdateBlockWithButton:(VBarButton *)barButton fromSource:(id)source withDestination:(id)destination
 {
     if ( [destination conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)] )
     {
@@ -176,7 +153,7 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
             if ( strongBarButton != nil && strongSource != nil )
             {
                 [strongBarButton setBadgeNumber:badgeNumber];
-                if ( [strongSource conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)] && !isCustom )
+                if ([strongSource conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)])
                 {
                     id<VProvidesNavigationMenuItemBadge> sourceBadgeProvider = (id<VProvidesNavigationMenuItemBadge>)strongSource;
                     if ( sourceBadgeProvider.badgeNumberUpdateBlock != nil )
@@ -190,41 +167,6 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
         NSInteger badgeNumber = [badgeProvider badgeNumber];
         badgeNumberUpdateBlock( badgeNumber );
     }
-}
-
-- (BOOL)shouldDisplayMenuItem:(VNavigationMenuItem *)menuItem fromSourceViewController:(UIViewController *)sourceViewController
-{
-    // If anyone in the responder chain can and does say no, then we don't display
-    __block BOOL shouldDisplay = YES;
-    [sourceViewController v_walkWithBlock:^(UIResponder *responder, BOOL *stop)
-     {
-         if ( [responder respondsToSelector:@selector(shouldDisplayAccessoryMenuItem:fromSource:)] )
-         {
-             id<VAccessoryNavigationSource> source = (id<VAccessoryNavigationSource>)responder;
-             if ( ![source shouldDisplayAccessoryMenuItem:menuItem fromSource:sourceViewController] )
-             {
-                 shouldDisplay = NO;
-                 *stop = YES;
-             }
-         }
-     }];
-    return shouldDisplay;
-}
-
-- (UIControl *)customControlForMenuItem:(VNavigationMenuItem *)menuItem fromSourceViewController:(UIViewController *)sourceViewController
-{
-    // If anyone in the responder chain has a custom control, return the control
-    __block UIControl *customControl = nil;
-    [sourceViewController v_walkWithBlock:^(UIResponder *responder, BOOL *stop)
-     {
-         if ( [responder respondsToSelector:@selector(customControlForAccessoryMenuItem:)] )
-         {
-             id<VAccessoryNavigationSource> source = (id<VAccessoryNavigationSource>)responder;
-             customControl = [source customControlForAccessoryMenuItem:menuItem];
-             *stop = YES;
-         }
-     }];
-    return customControl;
 }
 
 - (NSOrderedSet *)accessoriesForSource:(UIResponder *)source
@@ -316,23 +258,10 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
 
 - (void)performNavigationFromSource:(UIViewController *)sourceViewController withMenuItem:(VNavigationMenuItem *)menuItem
 {
-    BOOL shouldNavigate = YES;
-    UIResponder *responder = sourceViewController;
-    do
-    {
-        id<VAccessoryNavigationSource> source = (id<VAccessoryNavigationSource>)responder;
-        if ( [source conformsToProtocol:@protocol(VAccessoryNavigationSource)] && ![source shouldNavigateWithAccessoryMenuItem:menuItem] )
-        {
-            shouldNavigate = NO;
-            break;
-        }
-    }
-    while (( responder = [responder nextResponder] ));
-    
     BOOL isValidNavController = sourceViewController.navigationController != nil;
     BOOL isNotOnNavigationStack = ![sourceViewController.navigationController.viewControllers containsObject:menuItem.destination];
     
-    if ( shouldNavigate && menuItem.hasValidDestination && isValidNavController && isNotOnNavigationStack)
+    if (menuItem.hasValidDestination && isValidNavController && isNotOnNavigationStack)
     {
         [sourceViewController.navigationController pushViewController:menuItem.destination animated:YES];
     }

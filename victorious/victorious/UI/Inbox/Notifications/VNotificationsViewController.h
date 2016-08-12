@@ -7,13 +7,11 @@
 //
 
 #import "VProvidesNavigationMenuItemBadge.h"
-#import "VAuthorizationContextProvider.h"
-#import "VAccessoryNavigationSource.h"
 #import "VNoContentView.h"
 
-@class VUnreadMessageCountCoordinator, VUser, VDependencyManager, NotificationsDataSource;
+@class VUser, VDependencyManager, NotificationsDataSource;
 
-@interface VNotificationsViewController : UIViewController <VAuthorizationContextProvider, VAccessoryNavigationSource>
+@interface VNotificationsViewController : UIViewController
 
 + (instancetype)newWithDependencyManager:(VDependencyManager *)dependencyManager;
 

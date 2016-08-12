@@ -8,7 +8,6 @@
 
 #import "VDependencyManager.h"
 #import "VNavigationMenuItem.h"
-#import "VAccessoryNavigationSource.h"
 #import "VBarButton.h"
 
 /**

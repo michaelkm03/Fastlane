@@ -440,16 +440,4 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     return YES;
 }
 
-#pragma mark - VAccessoryNavigationSource
-
-- (BOOL)shouldNavigateWithAccessoryMenuItem:(VNavigationMenuItem *)menuItem
-{
-    return YES;
-}
-
-- (BOOL)shouldDisplayAccessoryMenuItem:(VNavigationMenuItem *)menuItem fromSource:(UIViewController *)source
-{
-    return self.navigationController.viewControllers.count == 1;
-}
-
 @end

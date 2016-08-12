@@ -197,7 +197,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 {
     ShowLoginOperation *showLoginOperation = [[ShowLoginOperation alloc] initWithOriginViewController:self
                                                                                     dependencyManager:[self.dependencyManager childDependencyForKey:VDependencyManagerScaffoldViewControllerKey]
-                                                                                              context:VAuthorizationContextDefault
                                                                                              animated:NO
                                                                                       loginCompletion:^{
                                                                                           [self initializeScaffold];

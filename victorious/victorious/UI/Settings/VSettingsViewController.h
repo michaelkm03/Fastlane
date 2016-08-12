@@ -12,7 +12,7 @@
 #import "VNavigationDestination.h"
 #import "VDependencyManager+VAccessoryScreens.h"
 
-@interface VSettingsViewController : UITableViewController <VHasManagedDependencies, VNavigationDestination, VAccessoryNavigationSource>
+@interface VSettingsViewController : UITableViewController <VHasManagedDependencies, VNavigationDestination>
 
 // These are exposed here since they are used in the Swift extension
 @property (weak, nonatomic) IBOutlet UILabel *versionString;
