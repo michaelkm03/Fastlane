@@ -23,8 +23,8 @@ class VIPSelectSubscriptionOperation: AsyncOperation<VProduct?>, UIAlertViewDele
         self.originViewController = originViewController
     }
     
-    override var executeOnMainQueue: Bool {
-        return true
+    override var executionQueue: NSOperationQueue {
+        return NSOperationQueue.mainQueue()
     }
     
     override func execute(finish: (output: VProduct?) -> Void) {
