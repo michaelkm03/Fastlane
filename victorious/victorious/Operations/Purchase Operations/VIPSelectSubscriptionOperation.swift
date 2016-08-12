@@ -23,10 +23,8 @@ class VIPSelectSubscriptionOperation: AsyncOperation<VProduct?>, UIAlertViewDele
         self.originViewController = originViewController
     }
     
-    private func selectionHandler(for product: VProduct?) -> (UIAlertAction -> ()) {
-        return { [weak self] (alertAction: UIAlertAction) in
-            self?.selectedProduct = product
-        }
+    override var executeOnMainQueue: Bool {
+        return true
     }
     
     override func execute(finish: (output: VProduct?) -> Void) {
