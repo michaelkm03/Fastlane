@@ -8,7 +8,7 @@
 
 import Foundation
 
-class VIPSelectSubscriptionOperation: AsyncOperation<VProduct>, UIAlertViewDelegate {
+final class VIPSelectSubscriptionOperation: AsyncOperation<VProduct>, UIAlertViewDelegate {
     let products: [VProduct]
     
     let originViewController: UIViewController
@@ -22,7 +22,7 @@ class VIPSelectSubscriptionOperation: AsyncOperation<VProduct>, UIAlertViewDeleg
     }
     
     override var executionQueue: NSOperationQueue {
-        return NSOperationQueue.mainQueue()
+        return .mainQueue()
     }
     
     override func execute(finish: (result: OperationResult<VProduct>) -> Void) {
@@ -56,6 +56,5 @@ class VIPSelectSubscriptionOperation: AsyncOperation<VProduct>, UIAlertViewDeleg
         static let alertTitle = NSLocalizedString("Become a VIP", comment: "Prompt for purchasing VIP subscription")
         static let alertMessage = NSLocalizedString("Select payment schedule", comment: "Subtitle for VIP subscription dialog")
         static let cancel = NSLocalizedString("Cancel", comment: "Cancel on VIP subscription dialog")
-
     }
 }

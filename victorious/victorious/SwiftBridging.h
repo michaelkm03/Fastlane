@@ -10,7 +10,6 @@
  Use this file to import Objective-C headers that need to be exposed to any Swift code.
  */
 
-#import <KVOController/FBKVOController.h>
 #import "NSString+VCrypto.h"
 #import "NSString+VParseHelp.h"
 #import "NSURL+MediaType.h"
@@ -129,4 +128,4 @@
 #import "VWebContentViewController.h"
 #import "VWorkspaceViewController.h"
 #import "YTPlayerView.h"
-#import "VAuthorizationContext.h"
+#import <KVOController/FBKVOController.h>

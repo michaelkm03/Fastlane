@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ConfirmDestructiveActionOperation: AsyncOperation<Void>, ActionConfirmationOperation {
+final class ConfirmDestructiveActionOperation: AsyncOperation<Void>, ActionConfirmationOperation {
     
     private let actionTitle: String
     private let dependencyManager: VDependencyManager
@@ -24,6 +24,10 @@ class ConfirmDestructiveActionOperation: AsyncOperation<Void>, ActionConfirmatio
         self.actionTitle = actionTitle
         self.originViewController = originViewController
         self.dependencyManager = dependencyManager
+    }
+    
+    override var executionQueue: NSOperationQueue {
+        return .mainQueue()
     }
     
     override func execute(finish: (output: OperationResult<Void>) -> Void) {
@@ -46,9 +50,5 @@ class ConfirmDestructiveActionOperation: AsyncOperation<Void>, ActionConfirmatio
             )
         )
         originViewController.presentViewController(alertController, animated: true, completion: nil)
-    }
-    
-    override var executionQueue: NSOperationQueue {
-        return .mainQueue()
     }
 }

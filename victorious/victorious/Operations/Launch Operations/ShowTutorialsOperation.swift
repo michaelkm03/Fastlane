@@ -8,7 +8,7 @@
 
 import Foundation
 
-class ShowTutorialsOperation: AsyncOperation<Void> {
+final class ShowTutorialsOperation: AsyncOperation<Void> {
 
     private weak var originViewController: UIViewController?
     private let dependencyManager: VDependencyManager

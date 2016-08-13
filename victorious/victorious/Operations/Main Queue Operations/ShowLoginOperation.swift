@@ -8,7 +8,7 @@
 
 import Foundation
 
-class ShowLoginOperation: AsyncOperation<Void> {
+final class ShowLoginOperation: AsyncOperation<Void> {
     private weak var originViewController: UIViewController?
     private let dependencyManager: VDependencyManager
     private let context: VAuthorizationContext

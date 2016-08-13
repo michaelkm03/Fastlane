@@ -120,7 +120,7 @@ struct Router {
 
 // MARK: - Show Forum
 
-private class ShowForumOperation: AsyncOperation<Void> {
+private final class ShowForumOperation: AsyncOperation<Void> {
     private let dependencyManager: VDependencyManager
     private let animated: Bool
     private let showVIP: Bool
@@ -165,7 +165,7 @@ private class ShowForumOperation: AsyncOperation<Void> {
 
 // MARK: - Show Profile
 
-private class ShowProfileOperation: AsyncOperation<Void> {
+private final class ShowProfileOperation: AsyncOperation<Void> {
     private let dependencyManager: VDependencyManager
     private weak var originViewController: UIViewController?
     private let userId: Int
@@ -228,7 +228,7 @@ private struct ShowCloseUpDisplayModifier {
 }
 
 /// Shows a close up view displaying the provided content.
-private class ShowCloseUpOperation: AsyncOperation<Void> {
+private final class ShowCloseUpOperation: AsyncOperation<Void> {
     private let displayModifier: ShowCloseUpDisplayModifier
     private var content: ContentModel?
     private var contentID: String?
@@ -283,7 +283,7 @@ private class ShowCloseUpOperation: AsyncOperation<Void> {
 }
 
 /// Fetches a piece of content and shows a close up view containing it.
-private class ShowFetchedCloseUpOperation: AsyncOperation<Void> {
+private final class ShowFetchedCloseUpOperation: AsyncOperation<Void> {
     private let displayModifier: ShowCloseUpDisplayModifier
     private var contentID: String
     
@@ -347,15 +347,6 @@ private class ShowFetchedCloseUpOperation: AsyncOperation<Void> {
             }
         }
         finish(result: .success())
-    }
-}
-
-extension UINavigationController {
-    func pushViewController(viewController: UIViewController, animated: Bool, completion: Void -> Void) {
-        CATransaction.begin()
-        CATransaction.setCompletionBlock(completion)
-        pushViewController(viewController, animated: animated)
-        CATransaction.commit()
     }
 }
 

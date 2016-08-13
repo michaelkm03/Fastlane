@@ -110,13 +110,13 @@ extension NSOperation: Chainable {
     }
 }
 
-/// This is designed to be a simplified version of Queueable and will replace it.
+/// Future: 
+/// This is the new Queueable protocol that will replace the original one.
 /// Since FetcherOperation and FetcherRemoteOperatino still uses the original Queueable protocol,
 /// we'll perform the replacement once core data is removed. Which I'll do next.
 protocol Queueable2 {
-    
     /// Conformers are required to define a completion block type that is
-    /// specific to the actions it performs.  This allows calling code to have
+    /// specific to the actions it performs. This allows calling code to have
     /// meaningful completion blocks that pass back results or other data.
     associatedtype Completion
     
@@ -125,7 +125,7 @@ protocol Queueable2 {
     
     /// The result of executing the operation.
     /// This is optional because we don't have the result at initialization time.
-    /// And confomers should verify this has been set before proceeding to completion block.
+    /// Confomers should verify this has been set before proceeding to completion block.
     var result: OperationResult<Output>? { get }
     
     /// Conformers should speficy which queue the operation should be scheduled(queued) on.
@@ -198,7 +198,8 @@ class SyncOperation<Output>: NSOperation, Queueable2 {
 
 private let asyncScheduleQueue = NSOperationQueue()
 
-/// A asynchronous operation runs its execute() block and finish executing, suspend the queue it is scheduled on, and execute completion block after the async callback. Since it blocks the `scheduleQueue`, it is always scheduled on a separate global shared `asyncScheduleQueue`.
+/// A asynchronous operation runs its execute() block and finish executing, suspend the queue it is scheduled on, and execute completion block after the async callback. 
+/// Since it blocks the `scheduleQueue`, it is always scheduled on a separate global shared `asyncScheduleQueue`.
 /// - note:
 /// - Subclasses must override `var executionQueue` to specify which queue it gets executed on.
 /// - Subclasses must override `func execute()` to specify the main body of the operation.
@@ -240,6 +241,10 @@ class AsyncOperation<Output>: NSOperation, Queueable2 {
     }
 }
 
+/// This enum represents the result of executing an operation.
+/// - success: When the operation successfully finishes executing, and produces results of `Output` type. `Output` can be Void if no results is expected from the operation.
+/// - failure: When the operation failed with a specific error. Use this case when there's an error that should be surfaced to the user.
+/// - cancelled: When the operation was cancelled either by the caller, or determined to not be able to execute without a user facing error.
 enum OperationResult<Output> {
     case success(Output)
     case failure(ErrorType)

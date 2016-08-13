@@ -9,7 +9,7 @@
 
 import UIKit
 
-class ShowShareContentOperation: AsyncOperation<Void> {
+final class ShowShareContentOperation: AsyncOperation<Void> {
     
     private let dependencyManager: VDependencyManager
     private let content: ContentModel
