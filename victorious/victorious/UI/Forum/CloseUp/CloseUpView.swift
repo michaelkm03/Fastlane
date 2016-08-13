@@ -98,7 +98,8 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
             content: content,
             dependencyManager: dependencyManager,
             fillMode: .fill,
-            allowsVideoControls: true
+            allowsVideoControls: true,
+            shouldSyncOnReappearance: true
         )
         mediaContentView.delegate = self
         mediaContentView.alpha = 0
