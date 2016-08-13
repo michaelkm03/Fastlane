@@ -10,10 +10,6 @@ import UIKit
 
 class RequestPushNotificationPermissionOperation: SyncOperation<Void> {
     
-    deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
-    }
-    
     override var scheduleQueue: NSOperationQueue {
         return .mainQueue()
     }

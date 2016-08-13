@@ -120,7 +120,7 @@ struct Router {
 
 // MARK: - Show Forum
 
-private class ShowForumOperation: MainQueueOperation {
+private class ShowForumOperation: AsyncOperation<Void> {
     private let dependencyManager: VDependencyManager
     private let animated: Bool
     private let showVIP: Bool
@@ -133,19 +133,17 @@ private class ShowForumOperation: MainQueueOperation {
         self.animated = animated
     }
     
-    override func start() {
-        super.start()
-        beganExecuting()
-        
-        guard !self.cancelled else {
-            finishedExecuting()
-            return
-        }
-        
+    override var executionQueue: NSOperationQueue {
+        return .mainQueue()
+    }
+    
+    override func execute(finish: (result: OperationResult<Void>) -> Void) {
+
         let templateKey = showVIP ? "vipForum" : "forum"
         let templateValue = dependencyManager.templateValueOfType(ForumViewController.self, forKey: templateKey)
         guard let viewController = templateValue as? ForumViewController else {
-            finishedExecuting()
+            let error = NSError(domain: "ShowForumOperation", code: -1, userInfo: nil)
+            finish(result: .failure(error))
             return
         }
         
@@ -160,15 +158,14 @@ private class ShowForumOperation: MainQueueOperation {
             if self.showVIP {
                 viewController.forumNetworkSource?.setUpIfNeeded()
             }
-
-            self.finishedExecuting()
+            finish(result: .success())
         }
     }
 }
 
 // MARK: - Show Profile
 
-private class ShowProfileOperation: MainQueueOperation {
+private class ShowProfileOperation: AsyncOperation<Void> {
     private let dependencyManager: VDependencyManager
     private weak var originViewController: UIViewController?
     private let userId: Int
@@ -181,23 +178,25 @@ private class ShowProfileOperation: MainQueueOperation {
         self.userId = userId
     }
     
-    override func start() {
-        super.start()
-        beganExecuting()
-        
-        defer {
-            finishedExecuting()
-        }
+    private override var executionQueue: NSOperationQueue {
+        return .mainQueue()
+    }
+    
+    private override func execute(finish: (result: OperationResult<Void>) -> Void) {
         
         // Check if already showing the a user's profile
-        if let originViewControllerProfile = originViewController as? VNewProfileViewController
-            where originViewControllerProfile.user?.id == userId {
+        guard (originViewController as? VNewProfileViewController)?.user?.id != userId else {
+            finish(result: .success())
             return
         }
         
-        guard let profileViewController = dependencyManager.userProfileViewController(withRemoteID: userId),
-            let originViewController = originViewController else {
-                return
+        guard
+            let profileViewController = dependencyManager.userProfileViewController(withRemoteID: userId),
+            let originViewController = originViewController
+        else {
+            let error = NSError(domain: "ShowProfileOperation", code: -1, userInfo: nil)
+            finish(result: .failure(error))
+            return
         }
         
         if let originViewController = originViewController as? UINavigationController {
@@ -205,6 +204,8 @@ private class ShowProfileOperation: MainQueueOperation {
         } else {
             originViewController.navigationController?.pushViewController(profileViewController, animated: true)
         }
+        
+        finish(result: .success())
     }
 }
 
