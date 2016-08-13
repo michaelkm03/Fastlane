@@ -13,20 +13,17 @@ class ShowLoginOperation: AsyncOperation<Void> {
     private let dependencyManager: VDependencyManager
     private let context: VAuthorizationContext
     private let animated: Bool
-    private let loginCompletion: (()->())?
     
     required init(
         originViewController: UIViewController,
         dependencyManager: VDependencyManager,
         context: VAuthorizationContext = .Default,
-        animated: Bool = true,
-        loginCompletion: (()->())? = nil
+        animated: Bool = true
     ) {
         self.originViewController = originViewController
         self.dependencyManager = dependencyManager
         self.context = context
         self.animated = animated
-        self.loginCompletion = loginCompletion
     }
     
     override var executionQueue: NSOperationQueue {
@@ -37,8 +34,7 @@ class ShowLoginOperation: AsyncOperation<Void> {
         
         // Don't show login if the user is already logged in
         guard VCurrentUser.user() == nil else {
-            self.loginCompletion?()
-            finish(result: .cancelled)
+            finish(result: .success())
             return
         }
         
@@ -48,15 +44,15 @@ class ShowLoginOperation: AsyncOperation<Void> {
             let viewController = templateValue as? UIViewController,
             let loginFlow = templateValue as? VLoginRegistrationFlow
         else {
-            self.loginCompletion?()
-            finish(result: .cancelled)
+            let error = NSError(domain: "ShowLoginOperation", code: -1, userInfo: nil)
+            finish(result: .failure(error))
             return
         }
         
         let originViewController = self.originViewController
-        let loginCompletion = self.loginCompletion
+        
         loginFlow.onCompletionBlock = { didSucceed in
-            loginCompletion?()
+            finish(result: .success())
             
             guard didSucceed else {
                 return
@@ -72,8 +68,6 @@ class ShowLoginOperation: AsyncOperation<Void> {
         }
         
         loginFlow.setAuthorizationContext?( self.context )
-        originViewController?.presentViewController(viewController, animated: animated) {
-            finish(result: .success())
-        }
+        originViewController?.presentViewController(viewController, animated: animated, completion: nil)
     }
 }

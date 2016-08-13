@@ -25,9 +25,13 @@ extension VRootViewController {
             return
         }
         
-        ShowLoginOperation(originViewController: self, dependencyManager: scaffoldDependencyManager, context: .Default, animated: false) { [weak self] in
-            self?.initializeScaffold()
-        }.queue()
+        ShowLoginOperation(originViewController: self, dependencyManager: scaffoldDependencyManager, context: .Default, animated: false).queue { [weak self] result in
+            switch result {
+                case .success: self?.initializeScaffold()
+                case .failure: self?.v_showErrorDefaultError()
+                case .cancelled: break
+            }
+        }
     }
 }
 
