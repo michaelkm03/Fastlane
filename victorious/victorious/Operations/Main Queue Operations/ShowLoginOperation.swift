@@ -8,7 +8,7 @@
 
 import Foundation
 
-class ShowLoginOperation: MainQueueOperation {
+class ShowLoginOperation: AsyncOperation<Void> {
     private weak var originViewController: UIViewController?
     private let dependencyManager: VDependencyManager
     private let context: VAuthorizationContext
@@ -29,32 +29,27 @@ class ShowLoginOperation: MainQueueOperation {
         self.loginCompletion = loginCompletion
     }
     
-    override func start() {
-        super.start()
-        self.beganExecuting()
-
-        // Don't show login when running unit tests
-        guard !cancelled && !VAutomation.shouldAlwaysShowLoginScreen() else {
-            self.loginCompletion?()
-            finishedExecuting()
-            return
-        }
+    override var executionQueue: NSOperationQueue {
+        return .mainQueue()
+    }
+    
+    override func execute(finish: (result: OperationResult<Void>) -> Void) {
         
         // Don't show login if the user is already logged in
         guard VCurrentUser.user() == nil else {
             self.loginCompletion?()
-            finishedExecuting()
+            finish(result: .cancelled)
             return
         }
         
         // User is not logged in, show login view
         guard
-            let templateValue = self.dependencyManager.templateValueConformingToProtocol(VLoginRegistrationFlow.self,
-            forKey: "loginAndRegistrationView"),
+            let templateValue = self.dependencyManager.templateValueConformingToProtocol(VLoginRegistrationFlow.self, forKey: "loginAndRegistrationView"),
             let viewController = templateValue as? UIViewController,
             let loginFlow = templateValue as? VLoginRegistrationFlow
         else {
-            finishedExecuting()
+            self.loginCompletion?()
+            finish(result: .cancelled)
             return
         }
         
@@ -75,10 +70,10 @@ class ShowLoginOperation: MainQueueOperation {
                 originViewController?.dismissViewControllerAnimated(true, completion: nil)
             }
         }
-        loginFlow.setAuthorizationContext?( self.context )
         
-        self.originViewController?.presentViewController(viewController, animated: animated) {
-            self.finishedExecuting()
+        loginFlow.setAuthorizationContext?( self.context )
+        originViewController?.presentViewController(viewController, animated: animated) {
+            finish(result: .success())
         }
     }
 }
