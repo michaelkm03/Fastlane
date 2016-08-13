@@ -200,12 +200,14 @@ private class ShowProfileOperation: AsyncOperation<Void> {
         }
         
         if let originViewController = originViewController as? UINavigationController {
-            originViewController.pushViewController(profileViewController, animated: true)
+            originViewController.pushViewController(profileViewController, animated: true) {
+                finish(result: .success())
+            }
         } else {
-            originViewController.navigationController?.pushViewController(profileViewController, animated: true)
+            originViewController.navigationController?.pushViewController(profileViewController, animated: true) {
+                finish(result: .success())
+            }
         }
-        
-        finish(result: .success())
     }
 }
 
@@ -226,7 +228,7 @@ private struct ShowCloseUpDisplayModifier {
 }
 
 /// Shows a close up view displaying the provided content.
-private class ShowCloseUpOperation: MainQueueOperation {
+private class ShowCloseUpOperation: AsyncOperation<Void> {
     private let displayModifier: ShowCloseUpDisplayModifier
     private var content: ContentModel?
     private var contentID: String?
@@ -238,21 +240,20 @@ private class ShowCloseUpOperation: MainQueueOperation {
         super.init()
     }
     
-    override func start() {
-        super.start()
-        beganExecuting()
-        
-        defer {
-            finishedExecuting()
-        }
+    private override var executionQueue: NSOperationQueue {
+        return .mainQueue()
+    }
+    
+    private override func execute(finish: (result: OperationResult<Void>) -> Void) {
         
         guard
-            !cancelled,
             let childDependencyManager = displayModifier.dependencyManager.childDependencyForKey("closeUpView"),
             let originViewController = displayModifier.originViewController,
             let contentID = contentID ?? content?.id
-            else {
-                return
+        else {
+            let error = NSError(domain: "ShowCloseUpOperation", code: -1, userInfo: nil)
+            finish(result: .failure(error))
+            return
         }
         
         let apiPath = APIPath(templatePath: childDependencyManager.relatedContentURL, macroReplacements: [
@@ -270,9 +271,13 @@ private class ShowCloseUpOperation: MainQueueOperation {
         
         let animated = displayModifier.animated
         if let originViewController = originViewController as? UINavigationController {
-            originViewController.pushViewController(closeUpViewController, animated: animated)
+            originViewController.pushViewController(closeUpViewController, animated: animated) {
+                finish(result: .success())
+            }
         } else {
-            originViewController.navigationController?.pushViewController(closeUpViewController, animated: animated)
+            originViewController.navigationController?.pushViewController(closeUpViewController, animated: animated) {
+                finish(result: .success())
+            }
         }
     }
 }
@@ -341,6 +346,15 @@ private class ShowFetchedCloseUpOperation: MainQueueOperation {
                 }
             }
         }
+    }
+}
+
+extension UINavigationController {
+    func pushViewController(viewController: UIViewController, animated: Bool, completion: Void -> Void) {
+        CATransaction.begin()
+        CATransaction.setCompletionBlock(completion)
+        pushViewController(viewController, animated: animated)
+        CATransaction.commit()
     }
 }
 
