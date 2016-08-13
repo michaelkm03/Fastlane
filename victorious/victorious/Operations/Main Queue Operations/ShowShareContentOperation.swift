@@ -9,7 +9,7 @@
 
 import UIKit
 
-class ShowShareContentOperation: MainQueueOperation {
+class ShowShareContentOperation: AsyncOperation<Void> {
     
     private let dependencyManager: VDependencyManager
     private let content: ContentModel
@@ -21,10 +21,11 @@ class ShowShareContentOperation: MainQueueOperation {
         self.content = content
     }
     
-    override func start() {
-        super.start()
-        self.beganExecuting()
-        
+    override var executionQueue: NSOperationQueue {
+        return .mainQueue()
+    }
+    
+    override func execute(finish: (result: OperationResult<Void>) -> Void) {
         let appInfo = VAppInfo(dependencyManager: dependencyManager)
         
         let activityViewController: UIActivityViewController = UIActivityViewController(
@@ -40,20 +41,17 @@ class ShowShareContentOperation: MainQueueOperation {
         activityViewController.setValue(emailSubject, forKey: "subject")
         activityViewController.excludedActivityTypes = [UIActivityTypePostToFacebook]
         activityViewController.completionWithItemsHandler = { [weak self] activityType, completed, _, activityError in
-            self?.activityViewDidFinish(activityType: activityType ?? "", completed: completed, activityError: activityError)
+            if completed, let trackingURLs = self?.content.tracking?.trackingURLsForKey(.share)
+            {
+                VTrackingManager.sharedInstance().trackEvent("event", parameters: [VTrackingKeyUrls : trackingURLs])
+                finish(result: .success())
+            }
+            else {
+                let error = NSError(domain: "ShowShareContentOperation", code: -1, userInfo: nil)
+                finish(result: .failure(error))
+            }
         }
-        
         originViewController?.presentViewController(activityViewController, animated: true, completion: nil)
-    }
-    
-    private func activityViewDidFinish(activityType activityType: String, completed: Bool, activityError: NSError?) {
-        if
-            completed,
-            let trackingURLs = content.tracking?.trackingURLsForKey(.share)
-        {
-            VTrackingManager.sharedInstance().trackEvent("event", parameters: [VTrackingKeyUrls : trackingURLs])
-        }
-        finishedExecuting()
     }
 }
 
