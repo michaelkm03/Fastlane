@@ -46,7 +46,6 @@
 #import "VCameraVideoEncoder.h"
 #import "VCaptureContainerViewController.h"
 #import "VCaptureVideoPreviewView.h"
-#import "VCellWithProfileDelegate.h"
 #import "VChangePasswordViewController.h"
 #import "VCollectionViewStreamFocusHelper.h"
 #import "VCompatibility.h"

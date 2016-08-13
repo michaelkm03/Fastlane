@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NotificationsViewController: UIViewController, UITableViewDelegate, VNavigationDestination, VCellWithProfileDelegate, VPaginatedDataSourceDelegate, VBackgroundContainer {
+class NotificationsViewController: UIViewController, UITableViewDelegate, NotificationCellDelegate, VNavigationDestination, VPaginatedDataSourceDelegate, VBackgroundContainer {
     private struct Constants {
         static let contentInset = UIEdgeInsets(top: 8.0, left: 0.0, bottom: 8.0, right: 0.0)
         static let estimatedRowHeight = CGFloat(64.0)
@@ -230,8 +230,8 @@ class NotificationsViewController: UIViewController, UITableViewDelegate, VNavig
     
     // MARK: - VCellWithProfileDelegate
     
-    func cellDidSelectProfile(cell: UITableViewCell!) {
-        guard let cell = cell, let indexPath = tableView.indexPathForCell(cell) else {
+    func notificationCellDidSelectUser(cell: NotificationCell) {
+        guard let indexPath = tableView.indexPathForCell(cell) else {
             return
         }
         
