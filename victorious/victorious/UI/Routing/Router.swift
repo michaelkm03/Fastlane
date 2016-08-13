@@ -283,7 +283,7 @@ private class ShowCloseUpOperation: AsyncOperation<Void> {
 }
 
 /// Fetches a piece of content and shows a close up view containing it.
-private class ShowFetchedCloseUpOperation: MainQueueOperation {
+private class ShowFetchedCloseUpOperation: AsyncOperation<Void> {
     private let displayModifier: ShowCloseUpDisplayModifier
     private var contentID: String
     
@@ -293,20 +293,19 @@ private class ShowFetchedCloseUpOperation: MainQueueOperation {
         super.init()
     }
     
-    override func start() {
-        super.start()
-        beganExecuting()
-        
-        defer {
-            finishedExecuting()
-        }
+    private override var executionQueue: NSOperationQueue {
+        return .mainQueue()
+    }
+    
+    private override func execute(finish: (result: OperationResult<Void>) -> Void) {
         
         let displayModifier = self.displayModifier
         guard
-            !cancelled,
             let userID = VCurrentUser.user()?.remoteId.integerValue,
             let contentFetchURL = displayModifier.dependencyManager.contentFetchURL
         else {
+            let error = NSError(domain: "ShowFetchedCloseUpOperation", code: -1, userInfo: nil)
+            finish(result: .failure(error))
             return
         }
         
@@ -324,6 +323,7 @@ private class ShowFetchedCloseUpOperation: MainQueueOperation {
         
         // Queue operations. We queue the operations after setting up dependency graph for NSOperationQueue performance reasons.
         showCloseUpOperation.queue()
+        
         contentFetchOperation.queue() { results, _, _ in
             guard let shownCloseUpView = showCloseUpOperation.displayedCloseUpView else {
                 return
@@ -346,6 +346,7 @@ private class ShowFetchedCloseUpOperation: MainQueueOperation {
                 }
             }
         }
+        finish(result: .success())
     }
 }
 
