@@ -8,7 +8,7 @@
 
 import Foundation
 
-class ShowTutorialsOperation: MainQueueOperation {
+class ShowTutorialsOperation: AsyncOperation<Void> {
 
     private weak var originViewController: UIViewController?
     private let dependencyManager: VDependencyManager
@@ -25,29 +25,32 @@ class ShowTutorialsOperation: MainQueueOperation {
         self.animated = animated
     }
     
-    override func start() {
-        super.start()
-        beganExecuting()
+    override var executionQueue: NSOperationQueue {
+        return .mainQueue()
+    }
+    
+    override func execute(finish: (result: OperationResult<Void>) -> Void) {
+        let error = NSError(domain: "ShowTutorialsOperation", code: -1, userInfo: nil)
         
         guard let currentVersionString = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString") as? String else {
-            finishedExecuting()
+            finish(result: .failure(error))
             return
         }
         
         let currentVersion = AppVersion(versionNumber: currentVersionString)
         
-        guard !self.cancelled && shouldShowTutorials(currentVersion) else {
-            finishedExecuting()
+        guard shouldShowTutorials(currentVersion) else {
+            finish(result: .success())
             return
         }
         
         guard let tutorialViewController = dependencyManager.templateValueOfType(TutorialViewController.self, forKey: "tutorial") as? TutorialViewController else {
-            finishedExecuting()
+            finish(result: .failure(error))
             return
         }
         
-        tutorialViewController.onContinue = { [weak self] in
-            self?.finishedExecuting()
+        tutorialViewController.onContinue = {
+            finish(result: .success())
         }
         
         let tutorialNavigationController = UINavigationController(rootViewController: tutorialViewController)
