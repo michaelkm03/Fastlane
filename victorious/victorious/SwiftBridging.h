@@ -90,7 +90,6 @@
 #import "VNotification.h"
 #import "VNotificationSettings.h"
 #import "VNotificationSettingsStateManager.h"
-#import "VNotificationsViewController.h"
 #import "VPageType.h"
 #import "VPaginatedDataSourceDelegate.h"
 #import "VPassthroughContainerView.h"
