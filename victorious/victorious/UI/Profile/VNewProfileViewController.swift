@@ -57,8 +57,8 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     
     init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
-        userIsVIPButton = dependencyManager.userIsVIPButton
-        userIsVIPButton?.sizeToFit()
+        subscribeButton = SubscribeButton(dependencyManager: dependencyManager)
+        subscribeButton.sizeToFit()
         
         super.init(nibName: nil, bundle: nil)
 
@@ -66,8 +66,6 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         view.backgroundColor = dependencyManager.colorForKey(VDependencyManagerBackgroundColorKey)
         
         fetchUser(using: dependencyManager)
-        
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userVIPStatusChanged), name: VIPSubscriptionHelper.userVIPStatusChangedNotificationKey, object: nil)
     }
     
     required init?(coder: NSCoder) {
@@ -126,15 +124,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     
     // MARK: - Views
     
-    private let userIsVIPButton: UIButton?
-    
-    private lazy var upgradeButton: UIButton = {
-        let button = BackgroundButton(type: .System)
-        button.addTarget(self, action: #selector(upgradeButtonWasPressed), forControlEvents: .TouchUpInside)
-        button.setTitle(NSLocalizedString("Upgrade", comment: ""), forState: .Normal)
-        button.sizeToFit()
-        return button
-    }()
+    private let subscribeButton: SubscribeButton
     
     private lazy var overflowButton: UIBarButtonItem = {
         return UIBarButtonItem(
@@ -169,15 +159,11 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         let isCurrentUser = user?.isCurrentUser == true
         let isCreator = user?.accessLevel.isCreator == true
         let currentIsCreator = VCurrentUser.user()?.isCreator == true
-        let currentIsVIP = VCurrentUser.user()?.hasValidVIPSubscription == true
         let vipEnabled = dependencyManager.isVIPEnabled == true
         
         if !isCurrentUser {
-            if isCreator && !currentIsVIP && !currentIsCreator && vipEnabled {
-                supplementalRightButtons.append(UIBarButtonItem(customView: upgradeButton))
-            }
-            else if let userIsVIPButton = userIsVIPButton {
-                supplementalRightButtons.append(UIBarButtonItem(customView: userIsVIPButton))
+            if isCreator && !currentIsCreator && vipEnabled {
+                supplementalRightButtons.append(UIBarButtonItem(customView: subscribeButton))
             }
             
             if !isCreator {
@@ -214,14 +200,6 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     }
     
     // MARK: - Actions
-    
-    private dynamic func upgradeButtonWasPressed() {
-        guard let scaffold = VRootViewController.sharedRootViewController()?.scaffold else {
-            return
-        }
-        
-        Router(originViewController: scaffold, dependencyManager: dependencyManager).navigate(to: .vipSubscription)
-    }
     
     private dynamic func goVIPButtonWasPressed() {
         guard let scaffold = VRootViewController.sharedRootViewController()?.scaffold else {
@@ -270,13 +248,6 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         confirm.before(toggleBlockedOperation)
         confirm.queue()
         toggleBlockedOperation.queue()
-    }
-    
-    // MARK: - Notifications
-    
-    private dynamic func userVIPStatusChanged(notification: NSNotification) {
-        // This updates the VIP button.
-        updateBarButtonItems()
     }
     
     // MARK: - AccessoryScreenContainer
@@ -548,9 +519,5 @@ private extension VDependencyManager {
     
     var shareIcon: UIImage? {
         return imageForKey("share_icon")
-    }
-    
-    var userIsVIPButton: UIButton? {
-        return buttonForKey("button.vip")
     }
 }

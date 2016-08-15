@@ -31,24 +31,14 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
     let hashtagDataSource: ListMenuHashtagDataSource
     let creatorDataSource: ListMenuCreatorDataSource
     
-    private lazy var subscribeButton: UIButton = {
-        let button = BackgroundButton(type: .System)
-        button.tintColor = self.dependencyManager.subscribeButtonTextColor
-        button.backgroundColor = self.dependencyManager.subscribeButtonBackgroundColor
-        button.titleLabel?.font = self.dependencyManager.subscribeButtonFont
-        button.addTarget(self, action: #selector(onSubscribePressed), forControlEvents: .TouchUpInside)
-        button.setTitle("Go VIP", forState: .Normal)
-        return button
-    }()
-    
-    private let userIsVIPButton: UIButton?
+    private let subscribeButton: SubscribeButton
     
     // MARK: - Initialization
     
     init(dependencyManager: VDependencyManager, listMenuViewController: ListMenuViewController) {
         self.listMenuViewController = listMenuViewController
         self.dependencyManager = dependencyManager
-        userIsVIPButton = dependencyManager.userIsVIPButton
+        subscribeButton = SubscribeButton(dependencyManager: dependencyManager)
         
         creatorDataSource = ListMenuCreatorDataSource(dependencyManager: dependencyManager.creatorsChildDependency)
         communityDataSource = ListMenuCommunityDataSource(dependencyManager: dependencyManager.communityChildDependency)
@@ -100,24 +90,8 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
             case .hashtags: headerView.dependencyManager = dependencyManager.hashtagsChildDependency
         }
         
-        if indexPath.section == 0 {
-            headerView.accessoryButton = VCurrentUser.user()?.isVIPSubscriber == true ? userIsVIPButton : subscribeButton
-        }
-        else {
-            headerView.accessoryButton = nil
-        }
-        
+        headerView.accessoryView = indexPath.section == 0 ? subscribeButton : nil
         return headerView
-    }
-    
-    // MARK: - Actions
-    
-    private dynamic func onSubscribePressed() {
-        guard let scaffold = VRootViewController.sharedRootViewController()?.scaffold else {
-            return
-        }
-        
-        Router(originViewController: scaffold, dependencyManager: dependencyManager).navigate(to: .vipSubscription)
     }
     
     // MARK: - List Menu Network Data Source Delegate
@@ -173,23 +147,5 @@ private extension VDependencyManager {
     
     var activityIndicatorColor: UIColor? {
         return colorForKey(VDependencyManagerMainTextColorKey)
-    }
-    
-    var userIsVIPButton: UIButton? {
-        return buttonForKey("button.vip")
-    }
-    
-    // FUTURE: Make this styled via template once available
-    
-    var subscribeButtonFont: UIFont? {
-        return UIFont.systemFontOfSize(14.0, weight: UIFontWeightSemibold)
-    }
-    
-    var subscribeButtonTextColor: UIColor? {
-        return UIColor(white: 1.0, alpha: 1.0)
-    }
-    
-    var subscribeButtonBackgroundColor: UIColor? {
-        return UIColor(white: 1.0, alpha: 0.15)
     }
 }
