@@ -17,7 +17,6 @@ class TutorialCollectionViewDataSource: NSObject, ChatInterfaceDataSource, Tutor
     lazy var networkDataSource: NetworkDataSource = {
         let dataSource = TutorialNetworkDataSource(dependencyManager: self.dependencyManager)
         dataSource.delegate = self
-        
         return dataSource
     }()
     
@@ -27,14 +26,14 @@ class TutorialCollectionViewDataSource: NSObject, ChatInterfaceDataSource, Tutor
     
     // MARK: - ChatInterfaceDataSource
     
-    var visibleItems: [ChatFeedContent] {
+    var unstashedItems: [ChatFeedContent] {
         return networkDataSource.visibleItems
     }
     
     let pendingItems = [ChatFeedContent]()
     
-    func remove(chatFeedContent content: ChatFeedContent) {
-        // Does not support removing content from tutorial feed
+    func removeUnstashedItem(at index: Int) {
+        assertionFailure("Removing items is not supported in the tutorial.")
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

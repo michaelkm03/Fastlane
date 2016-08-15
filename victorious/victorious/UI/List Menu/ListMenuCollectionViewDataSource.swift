@@ -24,7 +24,7 @@ enum ListMenuSection: Int {
 /// To fetch data for each section, it delegates the fetching to specific data sources.
 /// So if another section is added, a corresponding data source should be added too.
 class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, ListMenuSectionDataSourceDelegate {
-    private let listMenuViewController: ListMenuViewController
+    private weak var listMenuViewController: ListMenuViewController?
     private let dependencyManager: VDependencyManager
     
     let communityDataSource: ListMenuCommunityDataSource
@@ -123,7 +123,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
     // MARK: - List Menu Network Data Source Delegate
     
     func didUpdateVisibleItems(forSection section: ListMenuSection) {
-        listMenuViewController.collectionView.reloadData()
+        listMenuViewController?.collectionView.reloadData()
     }
     
     // MARK: - Private Methods
