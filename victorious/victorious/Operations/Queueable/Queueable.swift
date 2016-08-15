@@ -126,13 +126,13 @@ protocol Queueable2 {
     
     /// The result of executing the operation.
     /// This is optional because we don't have the result at initialization time.
-    /// Confomers should verify this has been set before proceeding to completion block.
+    /// Conformers should verify this has been set before proceeding to completion block.
     var result: OperationResult<Output>? { get }
     
-    /// Conformers should speficy which queue the operation itself should be scheduled(queued) on.
+    /// Conformers should specify which queue the operation itself should be scheduled(queued) on.
     var scheduleQueue: NSOperationQueue { get }
     
-    /// Conformers should specify which queue the operaiton's code should be executed on.
+    /// Conformers should specify which queue the operation's code should be executed on.
     var executionQueue: NSOperationQueue { get }
     
     /// Adds the receiver to its default queue, with a completion block that'll run after the receiver's finished executing,
@@ -170,7 +170,7 @@ extension Queueable2 where Self: NSOperation {
     }
 }
 
-/// A synchronous operation runs its execute() block and finish executing without waiting for any async callback.
+/// A synchronous operation runs its `execute` method synchronously on the provided `executionQueue` and finishes without waiting for any async callback.
 /// - note: 
 /// - Subclasses must override `var executionQueue` to specify which queue it gets executed on.
 /// - Subclasses must override `func execute()` to specify the main body of the operation.
@@ -206,7 +206,7 @@ class SyncOperation<Output>: NSOperation, Queueable2 {
 
 private let asyncScheduleQueue = NSOperationQueue()
 
-/// A asynchronous operation runs its execute() block and finish executing, suspend the queue it is scheduled on, and execute completion block after the async callback. 
+/// An asynchronous operation runs its `execute` method on the provided `executionQueue`, and then waits indefinitely for `finish` to be called.
 /// Since it blocks the `scheduleQueue`, it is always scheduled on a separate global shared `asyncScheduleQueue`.
 /// - note:
 /// - Subclasses must override `var executionQueue` to specify which queue it gets executed on.
@@ -224,8 +224,6 @@ class AsyncOperation<Output>: NSOperation, Queueable2 {
     private(set) var result: OperationResult<Output>?
     
     // MARK: - Operation Execution
-    
-
     
     func execute(finish: (result: OperationResult<Output>) -> Void) {
         fatalError("Subclasses of AsyncOperation must override `execute()`!")
