@@ -73,15 +73,18 @@ class NotificationsViewController: UIViewController, UITableViewDelegate, Notifi
         super.viewWillAppear(animated)
         dependencyManager.trackViewWillAppear(self)
         v_addAccessoryScreensWithDependencyManager(dependencyManager)
-        refresh()
         updateTableView()
+        
+        // Setting the content offset is a hack to work around a bug where the refresh control's tint color won't take
+        // effect initially.
+        tableView.contentOffset.y = -refreshControl.frame.height
+        refresh()
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         VTrackingManager.sharedInstance().startEvent("Notifications")
         badgeNumber = 0
-        v_addBadgingToAccessoryScreensWithDependencyManager(dependencyManager)
     }
     
     override func viewWillDisappear(animated: Bool) {

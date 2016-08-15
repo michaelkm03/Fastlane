@@ -21,10 +21,4 @@
  */
 - (void)v_addAccessoryScreensWithDependencyManager:(VDependencyManager *)dependencyManager;
 
-/**
-    Adds badging to accessory screens to the view controller from the provided dependency manager.
-        Should be called from viewDidAppear:
- */
-- (void)v_addBadgingToAccessoryScreensWithDependencyManager:(VDependencyManager *)dependencyManager;
-
 @end

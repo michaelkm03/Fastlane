@@ -12,7 +12,6 @@
 #import "VNavigationMenuItem.h"
 #import "VNavigationDestination.h"
 #import "UIResponder+VResponderChain.h"
-#import "VProvidesNavigationMenuItemBadge.h"
 #import "VMenuItemControl.h"
 #import "victorious-Swift.h"
 
@@ -30,20 +29,7 @@
 
 @end
 
-NSString * const VDependencyManagerAccessoryItemMenu            = @"Accessory Menu";
-NSString * const VDependencyManagerAccessoryItemCompose         = @"Accessory Compose";
-NSString * const VDependencyManagerAccessoryItemInbox           = @"Accessory Inbox";
-NSString * const VDependencyManagerAccessoryItemFindFriends     = @"Accessory Find Friends";
-NSString * const VDependencyManagerAccessoryItemInvite          = @"Accessory Invite";
-NSString * const VDependencyManagerAccessoryItemCreatePost      = @"Accessory Create Post";
-NSString * const VDependencyManagerAccessoryItemFollowHashtag   = @"Accessory Follow Hashtag";
-NSString * const VDependencyManagerAccessoryItemMore            = @"Accessory More";
-NSString * const VDependencyManagerAccessoryNewMessage          = @"Accessory New Message";
-NSString * const VDependencyManagerAccessorySettings            = @"Accessory Menu Settings";
-NSString * const VDependencyManagerAccessoryItemLegalInfo       = @"Accessory Legal Information";
-
 static const char kAssociatedObjectSourceViewControllerKey;
-static const char kAssociatedObjectBadgeableBarButtonsKey;
 
 @implementation VDependencyManager (VAccessoryScreens)
 
@@ -57,8 +43,6 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
     NSMutableArray *newBarButtonItemsLeft = [[NSMutableArray alloc] init];
     NSMutableArray *newBarButtonItemsRight = [[NSMutableArray alloc] init];
     
-    NSMutableArray *badgeableBarButtons = [[NSMutableArray alloc] init];
-    
     for ( VNavigationMenuItem *menuItem in accessoryMenuItems )
     {
         VBarButtonItem *accessoryBarItem = nil;
@@ -71,7 +55,6 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
             [barButton setTintColor:menuItem.tintColor];
             [barButton addTarget:self action:@selector(accessoryMenuItemSelected:) forControlEvents:UIControlEventTouchUpInside];
             barButton.menuItem = menuItem;
-            [badgeableBarButtons addObject:barButton];
             
             accessoryBarItem = [[VBarButtonItem alloc] initWithCustomView:barButton];
             accessoryBarItem.menuItem = menuItem;
@@ -104,8 +87,6 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
         }
     }
     
-    objc_setAssociatedObject( sourceViewController, &kAssociatedObjectBadgeableBarButtonsKey, [badgeableBarButtons copy], OBJC_ASSOCIATION_RETAIN_NONATOMIC );
-    
     if ([sourceViewController conformsToProtocol:@protocol(AccessoryScreenContainer)])
     {
         id<AccessoryScreenContainer> container = (id<AccessoryScreenContainer>)sourceViewController;
@@ -122,51 +103,6 @@ static const char kAssociatedObjectBadgeableBarButtonsKey;
     
     shouldAnimate = newBarButtonItemsRight.count != navigationItem.rightBarButtonItems.count;
     [navigationItem setRightBarButtonItems:newBarButtonItemsRight animated:shouldAnimate];
-}
-
-- (void)addBadgingToAccessoryScreensInNavigationItem:(UINavigationItem *)navigationItem
-                                    fromViewController:(UIViewController *)sourceViewController
-{
-    NSArray *badgeableBarButtons = objc_getAssociatedObject(sourceViewController, &kAssociatedObjectBadgeableBarButtonsKey);
-    for ( VBarButton *barButton in badgeableBarButtons )
-    {
-        VNavigationMenuItem *menuItem = (VNavigationMenuItem *)barButton.menuItem;
-        id<VProvidesNavigationMenuItemBadge> badgeProvider = menuItem.destination;
-        [self registerBadgeUpdateBlockWithButton:barButton
-                                      fromSource:sourceViewController
-                                 withDestination:badgeProvider];
-    }
-}
-
-- (void)registerBadgeUpdateBlockWithButton:(VBarButton *)barButton fromSource:(id)source withDestination:(id)destination
-{
-    if ( [destination conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)] )
-    {
-        __weak typeof (barButton) weakBarButton = barButton;
-        __weak id weakSource = source;
-        id<VProvidesNavigationMenuItemBadge> badgeProvider = (id<VProvidesNavigationMenuItemBadge>)destination;
-        VNavigationMenuItemBadgeNumberUpdateBlock badgeNumberUpdateBlock = ^(NSInteger badgeNumber)
-        {
-            __strong typeof (weakBarButton) strongBarButton = weakBarButton;
-            __strong typeof (weakSource) strongSource = weakSource;
-            
-            if ( strongBarButton != nil && strongSource != nil )
-            {
-                [strongBarButton setBadgeNumber:badgeNumber];
-                if ([strongSource conformsToProtocol:@protocol(VProvidesNavigationMenuItemBadge)])
-                {
-                    id<VProvidesNavigationMenuItemBadge> sourceBadgeProvider = (id<VProvidesNavigationMenuItemBadge>)strongSource;
-                    if ( sourceBadgeProvider.badgeNumberUpdateBlock != nil )
-                    {
-                        sourceBadgeProvider.badgeNumberUpdateBlock( badgeNumber );
-                    }
-                }
-            }
-        };
-        [badgeProvider setBadgeNumberUpdateBlock:badgeNumberUpdateBlock];
-        NSInteger badgeNumber = [badgeProvider badgeNumber];
-        badgeNumberUpdateBlock( badgeNumber );
-    }
 }
 
 - (NSOrderedSet *)accessoriesForSource:(UIResponder *)source

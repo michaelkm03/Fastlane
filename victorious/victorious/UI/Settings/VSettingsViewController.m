@@ -161,7 +161,6 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 {
     [super viewDidAppear:animated];
     [[VTrackingManager sharedInstance] startEvent:VTrackingEventSettingsDidAppear];
-    [self v_addBadgingToAccessoryScreensWithDependencyManager:self.dependencyManager];
 }
 
 - (void)updateResetCoachmarksCell
