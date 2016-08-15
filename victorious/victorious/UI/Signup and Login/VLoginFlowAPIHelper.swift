@@ -21,8 +21,14 @@ extension VLoginFlowAPIHelper {
         )
         
         if let operation = updateOperation {
-            operation.queue() { results, error, cancelled in
+            operation.queue() { [weak self] results, error, cancelled in
                 completion?( error )
+                if error != nil {
+                    guard let dependencyManager = self?.dependencyManager else {
+                        return
+                    }
+                    PreloadUserInfoOperation(dependencyManager: dependencyManager).queue()
+                }
             }
             return operation
         }
