@@ -128,8 +128,11 @@ protocol Queueable2 {
     /// Confomers should verify this has been set before proceeding to completion block.
     var result: OperationResult<Output>? { get }
     
-    /// Conformers should speficy which queue the operation should be scheduled(queued) on.
+    /// Conformers should speficy which queue the operation itself should be scheduled(queued) on.
     var scheduleQueue: NSOperationQueue { get }
+    
+    /// Conformers should specify which queue the operaiton's code should be executed on.
+    var executionQueue: NSOperationQueue { get }
     
     /// Adds the receiver to its default queue, with a completion block that'll run after the receiver's finished executing,
     /// and before the next operation starts.
@@ -174,8 +177,12 @@ class SyncOperation<Output>: NSOperation, Queueable2 {
     
     // MARK: - Queueable2
     
-    var scheduleQueue: NSOperationQueue {
-        fatalError("Subclasses of SyncOperation must override `scheduleQueue`!")
+    final var scheduleQueue: NSOperationQueue {
+        return executionQueue
+    }
+    
+    var executionQueue: NSOperationQueue {
+        fatalError("Subclasses of SyncOperation must override `executionQueue`!")
     }
     
     private(set) var result: OperationResult<Output>?
@@ -207,17 +214,17 @@ class AsyncOperation<Output>: NSOperation, Queueable2 {
     
     // MARK: - Queueable2
     
-    let queue = NSOperationQueue.v_globalBackgroundQueue
-    
     let scheduleQueue = asyncScheduleQueue
+    
+    var executionQueue: NSOperationQueue {
+        fatalError("Subclasses of AsyncOperation must override `executionQueue`!")
+    }
     
     private(set) var result: OperationResult<Output>?
     
     // MARK: - Operation Execution
     
-    var executionQueue: NSOperationQueue {
-        fatalError("Subclasses of AsyncOperation must override `executionQueue`!")
-    }
+
     
     func execute(finish: (result: OperationResult<Output>) -> Void) {
         fatalError("Subclasses of AsyncOperation must override `execute()`!")

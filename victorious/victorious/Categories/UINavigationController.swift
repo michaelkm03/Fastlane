@@ -6,10 +6,8 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-// MARK: - Completion Block
-
 extension UINavigationController {
-    func pushViewController(viewController: UIViewController, animated: Bool, completion: Void -> Void) {
+    func pushViewController(viewController: UIViewController, animated: Bool, completion: () -> Void) {
         CATransaction.begin()
         CATransaction.setCompletionBlock(completion)
         pushViewController(viewController, animated: animated)

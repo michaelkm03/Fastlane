@@ -10,7 +10,7 @@ import UIKit
 
 final class RequestPushNotificationPermissionOperation: SyncOperation<Void> {
     
-    override var scheduleQueue: NSOperationQueue {
+    override var executionQueue: NSOperationQueue {
         return .mainQueue()
     }
     
