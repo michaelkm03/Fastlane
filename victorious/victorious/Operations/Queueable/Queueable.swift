@@ -114,6 +114,7 @@ extension NSOperation: Chainable {
 /// This is the new Queueable protocol that will replace the original one.
 /// Since FetcherOperation and FetcherRemoteOperatino still uses the original Queueable protocol,
 /// we'll perform the replacement once core data is removed. Which I'll do next.
+/// - note: No matter which queue the operation is scheduled and/or executed on, its completion block will be running on the main queue.
 protocol Queueable2 {
     /// Conformers are required to define a completion block type that is
     /// specific to the actions it performs. This allows calling code to have
