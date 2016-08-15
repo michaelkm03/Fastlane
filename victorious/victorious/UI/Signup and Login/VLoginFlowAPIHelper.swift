@@ -24,10 +24,13 @@ extension VLoginFlowAPIHelper {
             operation.queue() { [weak self] results, error, cancelled in
                 completion?( error )
                 if error != nil {
-                    guard let dependencyManager = self?.dependencyManager else {
+                    guard
+                        let dependencyManager = self?.dependencyManager,
+                        let userID = self?.registeredUserID?.integerValue
+                    else {
                         return
                     }
-                    PreloadUserInfoOperation(dependencyManager: dependencyManager).queue()
+                    PreloadUserInfoOperation(userID: userID, dependencyManager: dependencyManager).queue()
                 }
             }
             return operation
@@ -93,7 +96,11 @@ extension VLoginFlowAPIHelper {
                 accountIdentifier: email
             )
         )
-        operation.queue(completion: completion)
+        
+        operation.queue { [weak self] results, error, cancelled in
+            self?.registeredUserID = operation.registeredUserID
+            completion(results, error, cancelled)
+        }
         return operation
     }
 }
