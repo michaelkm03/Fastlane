@@ -86,13 +86,13 @@ struct Router {
         checkForPermissionBeforeRouting(contentIsForVIPOnly: isVIPOnly) { success in
             if success {
                 
-                if (addressBarVisible) {
+                if (false) {
                     let safariViewController = SFSafariViewController(URL: url)
                     self.originViewController?.presentViewController(safariViewController, animated: true, completion: nil)
                 }
                 
                 else if let originVC = self.originViewController {
-                    ShowWebContentOperation(originViewController: originVC, url: "https://services.creator.us", title: "", forceModal: true, animated: true, dependencyManager: self.dependencyManager, shouldShowNavigationButtons: true).queue()
+                    ShowWebContentOperation(originViewController: originVC, url: url.absoluteString, title: "", forceModal: true, animated: true, dependencyManager: self.dependencyManager, shouldShowNavigationButtons: true).queue()
                 }
             }
         }

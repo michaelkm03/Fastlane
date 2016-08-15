@@ -9,6 +9,11 @@
 import UIKit
 import WebKit
 
+/// This is a lightweight wrapper around WKWebView and provides back/forward navigation buttons if required. 
+/// Also, loading HTML strings directly into WKWebView breaks its back-forward list, so we must workaround this 
+/// by providing our own logic to handle going back/forward around a loaded HTML page. For now, the VC only handles 
+/// the case where loadHTML is only called to load the first page inside the viewcontroller. Subsequent calls to loadHTML
+/// may break this functionality. 
 class WebContentViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
     
     // MARK: - Properties 
@@ -108,11 +113,19 @@ class WebContentViewController: UIViewController, WKNavigationDelegate, WKUIDele
         }
         
         else if !webViewIsDisplayingInitialHTMLString {
+            // We've reach the end of the backlist, display the first page again.
             webView.loadHTMLString(initialHTMLString, baseURL: initialBaseURL)
         }
     }
     
     func forwardButtonPressed() {
+        
+        if let nextItem = webView.backForwardList.itemAtIndex(1) where webViewIsDisplayingInitialHTMLString {
+            // When the first page is displayed by the user hitting back, the backforward list doesn't update, so going forward
+            // from this page takes the user to the wrong page. So we force the webview to load the first item in the list
+            webView.goToBackForwardListItem(nextItem)
+        }
+        
         webView.goForward()
     }
     
