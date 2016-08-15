@@ -62,7 +62,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  The user has taken a profile picture send it to the backend.
  */
-- (void)updateProfilePictureWithPictureAtFilePath:(NSURL *)filePath
+- (void)updateProfilePictureWithPictureAtFilePath:(nullable NSURL *)filePath
                                        completion:(void (^)(BOOL success, NSError *error))completion;
 
 @end
