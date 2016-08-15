@@ -171,7 +171,7 @@ extension Queueable2 where Self: NSOperation {
 
 /// A synchronous operation runs its execute() block and finish executing without waiting for any async callback.
 /// - note: 
-/// - Subclasses must override `var scheduleQueue` to specify which queue it gets scheduled and executed on.
+/// - Subclasses must override `var executionQueue` to specify which queue it gets executed on.
 /// - Subclasses must override `func execute()` to specify the main body of the operation.
 class SyncOperation<Output>: NSOperation, Queueable2 {
     
