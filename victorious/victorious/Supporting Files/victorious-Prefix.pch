@@ -34,16 +34,10 @@
 
 #ifdef DEBUG
 #define VLog(fmt, ...) NSLog((@"%s [Line %d] " fmt),  __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
-#define TICK NSDate *tickTime = [NSDate date];
-#define TOCK VLog(@"%f", [[NSDate date] timeIntervalSinceDate:tickTime]);
-#elif V_ENABLE_TESTFAIRY
-#define VLog(fmt, ...) TFLog((@"%s [Line %d] " fmt),  __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
-#define TICK
-#define TOCK
+
 #else
 #define VLog(...)
-#define TICK
-#define TOCK
+
 #endif
 
 #define VSelectorName(s) NSStringFromSelector(@selector(s))

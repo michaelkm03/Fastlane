@@ -37,7 +37,8 @@ extension NSOperationQueue {
 extension NSOperationQueue {
     func v_addOperation<T: Queueable where T : NSOperation>( operation: T, completion: T.CompletionBlockType? ) {
         if let completion = completion {
-            // Turn completion block into an operation.
+            // Turn completion block into an operation. 
+            // This ensures that any dependent operations start executing after the completio block gets executed.
             let completionOperation = NSBlockOperation() {
                 operation.executeCompletionBlock(completion)
             }

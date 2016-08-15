@@ -55,7 +55,9 @@ extension VSettingsViewController: VBackgroundContainer {
         label.font = dependencyManager.cellFont
         label.textColor = dependencyManager.cellTextColor
         label.backgroundColor = UIColor.clearColor()
-        
+
+        cell.separatorColor = isLastCell(indexPath) || isLastSection(indexPath.section) ? UIColor.clearColor() : dependencyManager.separatorColor ?? UIColor.clearColor()
+
         if cell.contentView.subviews.contains(versionString) {
             cell.backgroundColor = UIColor.clearColor()
         }
@@ -70,7 +72,7 @@ extension VSettingsViewController: VBackgroundContainer {
         tableView.accessibilityIdentifier = VAutomationIdentifierSettingsTableView
         tableView.backgroundView = UIView()
         dependencyManager.addBackgroundToBackgroundHost(self)
-        tableView.separatorColor = dependencyManager.separatorColor
+        tableView.separatorStyle = .None
     }
     
     public func backgroundContainerView() -> UIView {
@@ -85,6 +87,16 @@ extension VSettingsViewController: VBackgroundContainer {
             case 3: ShowWebContentOperation(originViewController: self, type: .PrivacyPolicy, dependencyManager: dependencyManager).queue()
             default: break
         }
+    }
+}
+
+private extension VSettingsViewController {
+    private func isLastCell(indexPath: NSIndexPath) -> Bool {
+        return indexPath.row == tableView.numberOfRowsInSection(indexPath.section) - 1
+    }
+
+    private func isLastSection(section: Int) -> Bool {
+        return section == tableView.numberOfSections - 1
     }
 }
 

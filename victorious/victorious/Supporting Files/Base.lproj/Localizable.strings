@@ -79,7 +79,7 @@
 "Send a message to start chatting with other members of the community." = "Send a message to start chatting with other members of the community.";
 
 "NoNotificationsTitle"       =   "NO NOTIFICATIONS RIGHT NOW";
-"NoNotificationsMessage"     =   "As you engage with the community through commenting, remixing or posting new content, they'll engage more with you.  Find their reactions here.";
+"NoNotificationsMessage"     =   "As you engage with the community through posting new content, find reactions here.";
 
 "NoCommentsTitle"       =   "BE THE 1ST TO COMMENT!";
 "NoCommentsMessage"     =   "Post text, photo or video comments, and see what others say!";
@@ -117,7 +117,7 @@
 
 "UGCSharePollFormat"    =   "Check out this poll!";       //Check out this poll! <URL>
 "UGCShareVideoFormat"   =   "Check out this video!";      //Check out this video! <URL>
-"UGCShareGIFFormat"     =   "Check out this gif!";        //Check out this gif! <URL>
+"UGCShareGIFFormat"     =   "Check out this GIF!";        //Check out this GIF! <URL>
 "UGCShareImageFormat"   =   "Check out this photo!";      //Check out this photo! <URL>
 "UGCShareTextFormat"   =    "Check out this post!";      //Check out this post! <URL>
 "UGCShareLinkFormat"   =    "Check this out!";

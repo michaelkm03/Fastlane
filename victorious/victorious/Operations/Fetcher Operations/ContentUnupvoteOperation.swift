@@ -9,21 +9,18 @@
 import UIKit
 
 class ContentUnupvoteOperation: FetcherOperation {
-    private let contentUnupvoteURL: String
-    private let contentID: String
+    private let contentID: Content.ID
+    private let apiPath: APIPath
     
-    init(contentID: String, contentUnupvoteURL: String) {
+    init(contentID: Content.ID, apiPath: APIPath) {
         self.contentID = contentID
-        self.contentUnupvoteURL = contentUnupvoteURL
+        self.apiPath = apiPath
     }
     
     override func main() {
         // Make data change optimistically before executing the request
         Content.unlikeContent(withID: contentID)
         
-        ContentUnupvoteRemoteOperation(
-            contentID: contentID,
-            contentUnupvoteURL: contentUnupvoteURL
-        )?.after(self).queue()
+        ContentUnupvoteRemoteOperation(contentID: contentID, apiPath: apiPath)?.after(self).queue()
     }
 }

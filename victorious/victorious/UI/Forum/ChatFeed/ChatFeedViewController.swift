@@ -286,6 +286,14 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         delegate?.chatFeed(self, didSelectContent: content)
     }
     
+    func messageCellDidLongPressContent(messageCell: ChatFeedMessageCell) {
+        guard let content = messageCell.chatFeedContent else {
+            return
+        }
+        
+        delegate?.chatFeed(self, didLongPressContent: content)
+    }
+    
     func messageCellDidSelectFailureButton(messageCell: ChatFeedMessageCell) {
         guard let content = messageCell.chatFeedContent else {
             return

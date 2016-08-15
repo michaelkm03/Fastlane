@@ -17,12 +17,14 @@ public struct ContentFlagRequest: RequestType {
     
     private let contentFlagURL: NSURL
 
-    public init?(contentID: String, contentFlagURL: String) {
-        let replacementDictionary: [String: String] = ["%%CONTENT_ID%%": contentID]
-        let replacedURL = VSDKURLMacroReplacement().urlByReplacingMacrosFromDictionary(replacementDictionary, inURLString: contentFlagURL)
-        guard let validURL = NSURL(string: replacedURL) else {
+    public init?(contentID: String, apiPath: APIPath) {
+        var apiPath = apiPath
+        apiPath.macroReplacements["%%CONTENT_ID%%"] = contentID
+        
+        guard let url = apiPath.url else {
             return nil
         }
-        self.contentFlagURL = validURL
+        
+        contentFlagURL = url
     }
 }
