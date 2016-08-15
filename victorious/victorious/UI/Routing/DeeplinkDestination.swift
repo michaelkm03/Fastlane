@@ -14,6 +14,7 @@ enum DeeplinkDestination: Equatable {
     case profile(userID: Int)
     case closeUp(contentWrapper: CloseUpContentWrapper)
     case vipForum
+    case vipSubscription
     case externalURL(url: NSURL, addressBarVisible: Bool, isVIPOnly: Bool)
     
     init?(url: NSURL, isVIPOnly: Bool = false) {
@@ -64,16 +65,16 @@ enum DeeplinkDestination: Equatable {
     
     init?(content: ContentModel) {
         switch content.type {
-        case .image, .video, .gif, .text:
-            self = .closeUp(contentWrapper: .content(content: content))
-        case .link:
-            guard
-                let url = content.linkedURL,
-                let validDestination = DeeplinkDestination(url: url, isVIPOnly: content.isVIPOnly)
-            else {
-                return nil
-            }
-            self = validDestination
+            case .image, .video, .gif, .text:
+                self = .closeUp(contentWrapper: .content(content: content))
+            case .link:
+                guard
+                    let url = content.linkedURL,
+                    let validDestination = DeeplinkDestination(url: url, isVIPOnly: content.isVIPOnly)
+                else {
+                    return nil
+                }
+                self = validDestination
         }
     }
     
@@ -87,6 +88,7 @@ func ==(lhs: DeeplinkDestination, rhs: DeeplinkDestination) -> Bool {
         case (let .profile(id1), let .profile(id2)): return id1 == id2
         case (let .closeUp(contentWrapper1), let .closeUp(contentWrapper2)): return contentWrapper1 == contentWrapper2
         case (.vipForum, .vipForum): return true
+        case (.vipSubscription, .vipSubscription): return true
         case (let .externalURL(url1, visible1, isVIPOnly1), let .externalURL(url2, visible2, isVIPOnly2)): return url1 == url2 && visible1 == visible2 && isVIPOnly1 == isVIPOnly2
         default: return false
     }

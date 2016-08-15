@@ -9,8 +9,6 @@
 import Foundation
 import SafariServices
 
-// MARK: - Router
-
 /// A Router object that is able to navigate to a deeplink destination in the app
 struct Router {
     
@@ -36,6 +34,7 @@ struct Router {
             case .profile(let userID): showProfile(for: userID)
             case .closeUp(let contentWrapper): showCloseUpView(for: contentWrapper)
             case .vipForum: showVIPForum()
+            case .vipSubscription: showVIPSubscription()
             case .externalURL(let url, let addressBarVisible, let isVIPOnly): showWebView(for: url, addressBarVisible: addressBarVisible, isVIPOnly: isVIPOnly)
         }
     }
@@ -74,6 +73,14 @@ struct Router {
         }
     }
     
+    private func showVIPSubscription(completion completion: ((success: Bool) -> Void)? = nil) {
+        guard let originViewController = self.originViewController else {
+            return
+        }
+        
+        ShowVIPSubscriptionOperation(originViewController: originViewController, dependencyManager: dependencyManager, completion: completion).queue()
+    }
+    
     private func showProfile(for userID: User.ID) {
         guard let originViewController = self.originViewController else {
             return
@@ -98,22 +105,16 @@ struct Router {
         originViewController?.v_showAlert(title: title, message: message)
     }
     
-    func checkForPermissionBeforeRouting(contentIsForVIPOnly isVIPOnly: Bool = false, completion: ((Bool) -> Void)? = nil) {
+    func checkForPermissionBeforeRouting(contentIsForVIPOnly isVIPOnly: Bool = false, completion: ((success: Bool) -> Void)? = nil) {
         guard let currentUser = VCurrentUser.user() else {
             return
         }
         
         if isVIPOnly && !currentUser.hasValidVIPSubscription {
-            guard let originViewController = self.originViewController else {
-                return
-            }
-            let showVIPFlowOperation = ShowVIPFlowOperation(originViewController: originViewController, dependencyManager: dependencyManager) { success in
-                completion?(success)
-            }
-            showVIPFlowOperation.queue()
+            showVIPSubscription(completion: completion)
         }
         else {
-            completion?(true)
+            completion?(success: true)
         }
     }
 }
@@ -340,6 +341,47 @@ private class ShowFetchedCloseUpOperation: MainQueueOperation {
                 }
             }
         }
+    }
+}
+
+private class ShowVIPSubscriptionOperation: MainQueueOperation {
+    private let dependencyManager: VDependencyManager
+    private let animated: Bool
+    private let completion: VIPFlowCompletion?
+    private weak var originViewController: UIViewController?
+    private(set) var showedGate = false
+    
+    required init(originViewController: UIViewController, dependencyManager: VDependencyManager, animated: Bool = true, completion: VIPFlowCompletion? = nil) {
+        self.dependencyManager = dependencyManager
+        self.originViewController = originViewController
+        self.animated = animated
+        self.completion = completion
+    }
+    
+    override func start() {
+        super.start()
+        beganExecuting()
+        
+        defer {
+            finishedExecuting()
+        }
+        
+        guard
+            !cancelled,
+            let originViewController = originViewController,
+            let vipFlow = dependencyManager.templateValueOfType(VIPFlowNavigationController.self, forKey: "vipPaygateScreen") as? VIPFlowNavigationController
+            else {
+                return
+        }
+        
+        guard VCurrentUser.user()?.hasValidVIPSubscription != true else {
+            completion?(true)
+            return
+        }
+        
+        vipFlow.completionBlock = completion
+        showedGate = true
+        originViewController.presentViewController(vipFlow, animated: animated, completion: nil)
     }
 }
 
