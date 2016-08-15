@@ -14,22 +14,30 @@ class WebContentViewController: UIViewController, WKNavigationDelegate, WKUIDele
     // MARK: - Properties 
     
     private let webView = WKWebView()
-    private var backButton: UIBarButtonItem! = nil
-    private var forwardButton: UIBarButtonItem! = nil
-    private var cancelButton: UIBarButtonItem! = nil
+    private var backButton: UIBarButtonItem?
+    private var forwardButton: UIBarButtonItem?
+    private var cancelButton: UIBarButtonItem?
+    private var initialBaseURL: NSURL?
+    private var initialHTMLString = ""
     
     // MARK: - Initialization 
     
-    init() {
+    init(shouldShowNavigationButtons: Bool) {
         super.init(nibName: nil, bundle: nil)
         
-        backButton = UIBarButtonItem(image: UIImage(named: "browser-back"), style: .Plain, target: self, action: #selector(WebContentViewController.backButtonPressed))
-        forwardButton = UIBarButtonItem(image: UIImage(named: "banner_next"), style: .Plain, target: self, action: #selector(WebContentViewController.forwardButtonPressed))
-        cancelButton = UIBarButtonItem(image: UIImage(named: "browser-close"), style: .Plain, target: self, action: #selector(WebContentViewController.cancelButtonPressed))
+        if (shouldShowNavigationButtons) {
+            let backButton = UIBarButtonItem(image: UIImage(named: "browser-back"), style: .Plain, target: self, action: #selector(WebContentViewController.backButtonPressed))
+            let forwardButton = UIBarButtonItem(image: UIImage(named: "banner_next"), style: .Plain, target: self, action: #selector(WebContentViewController.forwardButtonPressed))
+            cancelButton = UIBarButtonItem(image: UIImage(named: "browser-close"), style: .Plain, target: self, action: #selector(WebContentViewController.cancelButtonPressed))
+            
+            self.backButton = backButton
+            self.forwardButton = forwardButton
+            
+            navigationItem.rightBarButtonItems = [forwardButton, backButton]
+            navigationItem.leftBarButtonItem = cancelButton
+            updateNavigationButtonState()
+        }
         
-        navigationItem.rightBarButtonItems = [forwardButton, backButton]
-        navigationItem.leftBarButtonItem = cancelButton
-        updateNavigationButtonState()
         webView.navigationDelegate = self
         webView.UIDelegate = self
     }
@@ -68,8 +76,8 @@ class WebContentViewController: UIViewController, WKNavigationDelegate, WKUIDele
     // MARK: - Private Helpers
    
     private func updateNavigationButtonState() {
-        backButton.enabled = webView.canGoBack
-        forwardButton.enabled = webView.canGoForward
+        backButton?.enabled = webView.canGoBack || !webViewIsDisplayingInitialHTMLString
+        forwardButton?.enabled = webView.canGoForward
     }
     
     private func showStatusBarActivityIndicator() {
@@ -83,17 +91,25 @@ class WebContentViewController: UIViewController, WKNavigationDelegate, WKUIDele
     // MARK: - External Helpers 
     
     func load(htmlString: String, baseURL: NSURL) {
+        initialBaseURL = baseURL
+        initialHTMLString = htmlString
         webView.loadHTMLString(htmlString, baseURL: baseURL)
     }
     
     func setFailure(withError error: NSError?) {
-        
+        hideStatusBarActivityIndicator()
     }
     
-    // MARK: - Button Actions
+    // MARK: - Navigation
     
     func backButtonPressed() {
-        webView.goBack()
+        if webView.canGoBack {
+            webView.goBack()
+        }
+        
+        else if !webViewIsDisplayingInitialHTMLString {
+            webView.loadHTMLString(initialHTMLString, baseURL: initialBaseURL)
+        }
     }
     
     func forwardButtonPressed() {
@@ -104,7 +120,16 @@ class WebContentViewController: UIViewController, WKNavigationDelegate, WKUIDele
         dismissViewControllerAnimated(true, completion: nil)
     }
     
-    // MARK: - WKNavigationDelegate 
+    var webViewIsDisplayingInitialHTMLString: Bool {
+         if
+            let webViewURL =  webView.URL?.absoluteString.stringByTrimmingCharactersInSet(NSCharacterSet(charactersInString: "/")),
+            let initialURL = initialBaseURL?.absoluteString
+        {
+                return webViewURL == initialURL
+        }
+        
+        return false
+    }
     
     func webView(webView: WKWebView, didFinishNavigation navigation: WKNavigation!) {
         hideStatusBarActivityIndicator()
@@ -124,7 +149,7 @@ class WebContentViewController: UIViewController, WKNavigationDelegate, WKUIDele
     }
     
     func webView(webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: NSError) {
-        print(error)
+        hideStatusBarActivityIndicator()
     }
     
     // MARK: - WKUIDelegate 
@@ -138,3 +163,4 @@ class WebContentViewController: UIViewController, WKNavigationDelegate, WKUIDele
         return nil
     }
 }
+        
