@@ -24,8 +24,7 @@ extension VIPGateViewControllerDelegate {
             return
         }
         let router = Router(originViewController: scaffold, dependencyManager: dependencyManager)
-        let destination = DeeplinkDestination.vipForum
-        router.navigate(to: destination)
+        router.navigate(to: .vipForum)
     }
 }
 
@@ -119,7 +118,7 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     
     private func navigateToFixedWebContent(type: FixedWebContentType) {
         let router = Router(originViewController: self, dependencyManager: dependencyManager)
-        router.navigate(to: DeeplinkDestination.fixedWebContent(type: type, forceModal: true))
+        router.navigate(to: .fixedWebContent(type: type, forceModal: true))
     }
     
     private func HUDNeedsUpdateToTitle(title: String?) -> Bool {
