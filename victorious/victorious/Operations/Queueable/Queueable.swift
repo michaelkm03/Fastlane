@@ -116,10 +116,6 @@ extension NSOperation: Chainable {
 /// we'll perform the replacement once core data is removed. Which I'll do next.
 /// - note: No matter which queue the operation is scheduled and/or executed on, its completion block will be running on the main queue.
 protocol Queueable2 {
-    /// Conformers are required to define a completion block type that is
-    /// specific to the actions it performs. This allows calling code to have
-    /// meaningful completion blocks that pass back results or other data.
-    associatedtype Completion
     
     /// Conformers should define what type of Output it will generate.
     associatedtype Output
@@ -137,7 +133,7 @@ protocol Queueable2 {
     
     /// Adds the receiver to its default queue, with a completion block that'll run after the receiver's finished executing,
     /// and before the next operation starts.
-    func queue(completion completion: Completion?)
+    func queue(completion completion: ((result: OperationResult<Output>) -> Void)?)
     
     /// Adds the receiver to its default queue without completion block.
     func queue()
