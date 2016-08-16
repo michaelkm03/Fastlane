@@ -31,7 +31,6 @@ class StoredLoginOperation: BackgroundOperation {
         
         let storedLogin = VStoredLogin()
         if let info = storedLogin.storedLoginInfo() {
-            
             // First, try to use a valid stored token to bypass login
             let user: VUser = persistentStore.mainContext.v_performBlockAndWait() { context in
                 let user: VUser = context.v_findOrCreateObject([ "remoteId" : info.userRemoteId ])
@@ -43,7 +42,7 @@ class StoredLoginOperation: BackgroundOperation {
             
             user.setAsCurrentUser()
             
-            let infoOperation = PreloadUserInfoOperation(dependencyManager: dependencyManager)
+            let infoOperation = PreloadUserInfoOperation(userID: info.userRemoteId.integerValue, dependencyManager: dependencyManager)
             infoOperation.after(self).queue() { _ in
                 infoOperation.user?.setAsCurrentUser()
             }
