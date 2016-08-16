@@ -19,7 +19,6 @@ class AccountCreateOperation: RemoteFetcherOperation, RequestOperation {
     private let dependencyManager: VDependencyManager
     let request: AccountCreateRequest!
     let parameters: AccountCreateParameters
-    private(set) var registeredUserID: Int?
     
     init(dependencyManager: VDependencyManager, request: AccountCreateRequest, parameters: AccountCreateParameters) {
         self.dependencyManager = dependencyManager
@@ -37,8 +36,6 @@ class AccountCreateOperation: RemoteFetcherOperation, RequestOperation {
     }
     
     func onComplete( response: AccountCreateResponse) {
-        registeredUserID = response.user.id
-        
         LoginSuccessOperation(
             dependencyManager: dependencyManager,
             response: response,
