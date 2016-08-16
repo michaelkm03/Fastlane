@@ -12,11 +12,9 @@ import Foundation
 /// profile data, profile stream, etc.  Intended to be called just after login.
 class PreloadUserInfoOperation: BackgroundOperation {
     private let dependencyManager: VDependencyManager
-    private let userID: User.ID
-    
-    init(userID: User.ID, dependencyManager: VDependencyManager) {
+
+    init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
-        self.userID = userID
         super.init()
     }
     
@@ -34,7 +32,7 @@ class PreloadUserInfoOperation: BackgroundOperation {
             }
             
             guard
-                let userID = self?.userID,
+                let userID = VCurrentUser.user(inManagedObjectContext: context)?.remoteId.integerValue,
                 let apiPath = self?.dependencyManager.networkResources?.userFetchAPIPath,
                 let infoOperation = UserInfoOperation(userID: userID, apiPath: apiPath)
             else {

@@ -41,7 +41,7 @@ class LoginSuccessOperation: FetcherOperation {
             
             // After saving, the objectID is available
             self.userObjectID = user.objectID
-            PreloadUserInfoOperation(userID: user.id, dependencyManager: self.dependencyManager).after(self).queue()
+            PreloadUserInfoOperation(dependencyManager: self.dependencyManager).after(self).queue()
         }
         
         persistentStore.mainContext.v_performBlockAndWait() { context in

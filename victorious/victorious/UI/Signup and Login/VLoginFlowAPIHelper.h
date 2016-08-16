@@ -15,14 +15,8 @@
  *  registration flows. All completion blocks are required parameters unless otherwise noted.
  *  All completion blocks are called on the main thread.
  */
-
-NS_ASSUME_NONNULL_BEGIN
-
-@class VUser;
-
 @interface VLoginFlowAPIHelper : NSObject
 @property (nonatomic, readonly, strong) VDependencyManager *dependencyManager;
-@property (nonatomic, assign, nullable) NSNumber *registeredUserID;
 
 /**
  *  Designated initializer for the class.
@@ -44,7 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  The user has forgot their password and would like a reset.
  */
-- (void)forgotPasswordWithStartingEmail:(nullable NSString *)startingEmail
+- (void)forgotPasswordWithStartingEmail:(NSString *)startingEmail
                              completion:(void (^)(BOOL success, NSError *error))completion;
 
 /**
@@ -63,7 +57,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  The user has taken a profile picture send it to the backend.
  */
 - (void)updateProfilePictureWithPictureAtFilePath:(NSURL *)filePath
-                                       completion:(nullable void (^)(BOOL success, NSError *error))completion;
+                                       completion:(void (^)(BOOL success, NSError *error))completion;
 
 @end
-NS_ASSUME_NONNULL_END
