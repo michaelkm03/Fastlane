@@ -82,10 +82,10 @@ extension VSettingsViewController: VBackgroundContainer {
     public func handleAboutSectionSelection(row: Int) {
         let router = Router(originViewController: self, dependencyManager: dependencyManager)
         switch row {
-            case 0: router.navigate(to: DeeplinkDestination.fixedWebContent(type: .HelpCenter, forceModal: false))
+            case 0: router.navigate(to: .fixedWebContent(type: .HelpCenter, forceModal: false))
             case 1: sendHelp()
-            case 2: router.navigate(to: DeeplinkDestination.fixedWebContent(type: .TermsOfService, forceModal: false))
-            case 3: router.navigate(to: DeeplinkDestination.fixedWebContent(type: .PrivacyPolicy, forceModal: false))
+            case 2: router.navigate(to: .fixedWebContent(type: .TermsOfService, forceModal: false))
+            case 3: router.navigate(to: .fixedWebContent(type: .PrivacyPolicy, forceModal: false))
             default: break
         }
     }

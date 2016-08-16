@@ -86,13 +86,13 @@ struct Router {
         checkForPermissionBeforeRouting(contentIsForVIPOnly: isVIPOnly) { success in
             if success {
                 
-                if (false) {
+                if (addressBarVisible) {
                     let safariViewController = SFSafariViewController(URL: url)
                     self.originViewController?.presentViewController(safariViewController, animated: true, completion: nil)
                 }
                 
                 else if let originVC = self.originViewController {
-                    ShowWebContentOperation(originViewController: originVC, url: url.absoluteString, title: "", forceModal: true, animated: true, dependencyManager: self.dependencyManager, shouldShowNavigationButtons: true).queue()
+                    ShowWebContentOperation(originViewController: originVC, url: url.absoluteString, title: "", forceModal: true, animated: true, dependencyManager: self.dependencyManager).queue()
                 }
             }
         }
@@ -387,19 +387,17 @@ private class ShowWebContentOperation: MainQueueOperation {
     private let createFetchOperation: () -> FetchWebContentOperation
     private let forceModal: Bool
     private let animated: Bool
-    private let shouldShowNavigationButtons: Bool
     private let dependencyManager: VDependencyManager
     
     convenience init(originViewController: UIViewController, type: FixedWebContentType, forceModal: Bool = false, animated: Bool = true, dependencyManager: VDependencyManager) {
-        self.init(originViewController: originViewController, url: dependencyManager.urlForWebContent(type), title: type.title, forceModal: forceModal, animated: animated, dependencyManager: dependencyManager, shouldShowNavigationButtons: false)
+        self.init(originViewController: originViewController, url: dependencyManager.urlForWebContent(type), title: type.title, forceModal: forceModal, animated: animated, dependencyManager: dependencyManager)
     }
     
-    init (originViewController: UIViewController, url: String, title: String,  forceModal: Bool, animated: Bool, dependencyManager: VDependencyManager, shouldShowNavigationButtons: Bool) {
+    init (originViewController: UIViewController, url: String, title: String,  forceModal: Bool, animated: Bool, dependencyManager: VDependencyManager) {
         self.forceModal = forceModal
         self.animated = animated
         self.originViewController = originViewController
         self.title = title
-        self.shouldShowNavigationButtons = shouldShowNavigationButtons
         self.dependencyManager = dependencyManager
         self.createFetchOperation = {
             return WebViewHTMLFetchOperation(urlPath: url)
@@ -414,7 +412,9 @@ private class ShowWebContentOperation: MainQueueOperation {
             return
         }
         
-        let viewController = WebContentViewController(shouldShowNavigationButtons: shouldShowNavigationButtons)
+        //We show the navigation and dismiss button if the view controller is presented modally, 
+        // since there would be no way to dimiss the view controller otherwise
+        let viewController = WebContentViewController(shouldShowNavigationButtons: forceModal)
         
         let fetchOperation = createFetchOperation()
         

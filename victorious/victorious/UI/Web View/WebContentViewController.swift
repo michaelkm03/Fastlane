@@ -38,6 +38,9 @@ class WebContentViewController: UIViewController, WKNavigationDelegate, WKUIDele
             self.backButton = backButton
             self.forwardButton = forwardButton
             
+            backButton.enabled = false
+            forwardButton.enabled = false
+            
             navigationItem.rightBarButtonItems = [forwardButton, backButton]
             navigationItem.leftBarButtonItem = cancelButton
             updateNavigationButtonState()
@@ -56,6 +59,7 @@ class WebContentViewController: UIViewController, WKNavigationDelegate, WKUIDele
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        edgesForExtendedLayout = .None
         webView.backgroundColor = UIColor.whiteColor()
         view.addSubview(webView)
         view.v_addFitToParentConstraintsToSubview(webView)

@@ -42,7 +42,6 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 @property (nonatomic, strong) UIScreenEdgePanGestureRecognizer *popGestureRecognizer;
 
 @property (nonatomic, assign) VAuthorizationContext authorizationContext;
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @property (nonatomic, strong) UIViewController<VLoginFlowScreen> *landingScreen;
 @property (nonatomic, strong) UIViewController<VLoginFlowScreen> *currentScreen;

@@ -10,6 +10,7 @@ import Foundation
 
 extension VModernLoginAndRegistrationFlowViewController {
     func showFixedWebContent(type: FixedWebContentType) {
-        
+        let router = Router(originViewController: self, dependencyManager: dependencyManager)
+        router.navigate(to: .fixedWebContent(type: type, forceModal: true))
     }
 }
