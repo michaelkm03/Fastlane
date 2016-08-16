@@ -126,7 +126,7 @@ protocol Queueable2 {
     
     /// The result of executing the operation.
     /// This is optional because we don't have the result at initialization time.
-    /// Conformers should verify this has been set before proceeding to completion block.
+    /// Conformers should verify this has been set before calling completion block.
     var result: OperationResult<Output>? { get }
     
     /// Conformers should specify which queue the operation itself should be scheduled(queued) on.
