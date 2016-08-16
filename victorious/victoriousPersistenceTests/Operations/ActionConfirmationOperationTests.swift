@@ -14,7 +14,7 @@ class ActionConfirmationOperationTests: XCTestCase {
     let queue = NSOperationQueue()
     
     func testConfirmationConfirmed() {
-        let confirmation = MockActionConfirmationOperation(shouldConfirm: true)
+        let confirmation = MockConfirmationOperation(shouldConfirm: true)
         let operation = MockOperationWithPreconfrmation()
         operation.addDependency( confirmation )
         queue.addOperations( [confirmation, operation], waitUntilFinished: true )
@@ -23,7 +23,7 @@ class ActionConfirmationOperationTests: XCTestCase {
     }
     
     func testConfirmationNotConfirmed() {
-        let confirmation = MockActionConfirmationOperation(shouldConfirm: false)
+        let confirmation = MockConfirmationOperation(shouldConfirm: false)
         let operation = MockOperationWithPreconfrmation()
         operation.addDependency( confirmation )
         queue.addOperations( [confirmation, operation], waitUntilFinished: true )
@@ -38,8 +38,8 @@ class ActionConfirmationOperationTests: XCTestCase {
     }
     
     func testConfirmationMultipleConfirmed() {
-        let confirmation1 = MockActionConfirmationOperation(shouldConfirm: true)
-        let confirmation2 = MockActionConfirmationOperation(shouldConfirm: true)
+        let confirmation1 = MockConfirmationOperation(shouldConfirm: true)
+        let confirmation2 = MockConfirmationOperation(shouldConfirm: true)
         let operation = MockOperationWithPreconfrmation()
         operation.addDependency( confirmation1 )
         operation.addDependency( confirmation2 )
@@ -49,8 +49,8 @@ class ActionConfirmationOperationTests: XCTestCase {
     }
     
     func testConfirmationMixedConfirmed() {
-        let confirmation1 = MockActionConfirmationOperation(shouldConfirm: true)
-        let confirmation2 = MockActionConfirmationOperation(shouldConfirm: false)
+        let confirmation1 = MockConfirmationOperation(shouldConfirm: true)
+        let confirmation2 = MockConfirmationOperation(shouldConfirm: false)
         let operation = MockOperationWithPreconfrmation()
         operation.addDependency( confirmation1 )
         operation.addDependency( confirmation2 )
@@ -70,5 +70,20 @@ private class MockOperationWithPreconfrmation: NSOperation {
             return
         }
         didExecute = true
+    }
+}
+
+private class MockConfirmationOperation: NSOperation, ActionConfirmationOperation {
+    
+    var didConfirmAction: Bool = false
+    
+    let shouldConfirm: Bool
+    
+    init(shouldConfirm: Bool) {
+        self.shouldConfirm = shouldConfirm
+    }
+    
+    override func main() {
+        didConfirmAction = shouldConfirm
     }
 }
