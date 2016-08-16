@@ -50,9 +50,9 @@ static NSString * const kMessageFontKey = @"font.heading4";
     {
         self.titleLabel.font = [dependencyManager fontForKey:kTitleFontKey];
         self.messageLabel.font = [dependencyManager fontForKey:kMessageFontKey];
-        self.titleLabel.textColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
-        self.messageLabel.textColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
-        self.iconImageView.tintColor = [dependencyManager colorForKey:VDependencyManagerContentTextColorKey];
+        self.titleLabel.textColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+        self.messageLabel.textColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
+        self.iconImageView.tintColor = [dependencyManager colorForKey:VDependencyManagerMainTextColorKey];
     }
 }
 

@@ -289,7 +289,28 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         view.endEditing(true)
     }
     
+    // MARK: - Content action sheet
+    
+    private func showActionSheet(forContent chatFeedContent: ChatFeedContent) {
+        guard let chatFeedDependencyManager = dependencyManager.chatFeedDependency else {
+            return
+        }
+        
+        if let alertController = UIAlertController(actionsFor: chatFeedContent.content, dependencyManager: chatFeedDependencyManager, completion: { [weak self] action in
+            switch action {
+                case .delete, .flag: self?.chatFeed?.remove(chatFeedContent)
+                case .like, .unlike, .cancel: break
+            }
+        }) {
+            presentViewController(alertController, animated: true, completion: nil)
+        }
+    }
+    
     // MARK: - ChatFeedDelegate
+    
+    func chatFeed(chatFeed: ChatFeed, didLongPressContent chatFeedContent: ChatFeedContent) {
+        showActionSheet(forContent: chatFeedContent)
+    }
     
     func chatFeed(chatFeed: ChatFeed, didScroll scrollView: UIScrollView) {
         stageShrinkingAnimator?.chatFeed(chatFeed, didScroll: scrollView)
@@ -365,7 +386,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         }
         
         if let retriedIndex = publisher?.retryPublish(chatFeedContent) {
-            let retriedIndexPath = NSIndexPath(forItem: dataSource.visibleItems.count + retriedIndex, inSection: 0)
+            let retriedIndexPath = NSIndexPath(forItem: dataSource.unstashedItems.count + retriedIndex, inSection: 0)
             chatFeed?.collectionView.reloadItemsAtIndexPaths([retriedIndexPath])
         }
     }
@@ -376,7 +397,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         }
         
         if let removedIndicies = publisher?.remove([chatFeedContent]) {
-            let indexPaths = removedIndicies.map { NSIndexPath(forItem: dataSource.visibleItems.count + $0, inSection: 0)}
+            let indexPaths = removedIndicies.map { NSIndexPath(forItem: dataSource.unstashedItems.count + $0, inSection: 0)}
             chatFeed?.collectionView.deleteItemsAtIndexPaths(indexPaths)
         }
     }

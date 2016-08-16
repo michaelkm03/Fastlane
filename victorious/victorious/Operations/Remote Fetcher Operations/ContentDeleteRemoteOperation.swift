@@ -11,8 +11,8 @@ import UIKit
 class ContentDeleteRemoteOperation: RemoteFetcherOperation, RequestOperation {
     let request: ContentDeleteRequest!
     
-    init?(contentID: String, contentDeleteURL: String) {
-        guard let request = ContentDeleteRequest(contentID: contentID, contentDeleteURL: contentDeleteURL) else {
+    init?(contentID: Content.ID, apiPath: APIPath) {
+        guard let request = ContentDeleteRequest(contentID: contentID, apiPath: apiPath) else {
             return nil
         }
         self.request = request
