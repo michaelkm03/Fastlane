@@ -68,28 +68,26 @@ extension ChatFeed {
             newItemsController?.hide()
         }
         
-        // Disable UICollectionView insertion animation.
-        CATransaction.begin()
-        CATransaction.setDisableActions(true)
-        
         let collectionView = self.collectionView
         let wasScrolledToBottom = collectionView.isScrolledToBottom(withTolerance: Constants.scrolledToBottomTolerance)
         let oldPendingItemCount = max(0, chatInterfaceDataSource.pendingItems.count - newPendingContentCount)
         let insertingAbovePendingContent = oldPendingItemCount > 0 && newPendingContentCount <= 0
-        
-        updateCollectionView(with: newItems, loadingType: loadingType, newPendingContentCount: newPendingContentCount, removedPendingContentIndices: removedPendingContentIndices) {
-            collectionView.collectionViewLayout.invalidateLayout()
-            CATransaction.commit()
-            
-            // If we loaded newer items and we were scrolled to the bottom, or if we refreshed the feed, scroll down to
-            // reveal the new content.
-            if (loadingType == .newer && wasScrolledToBottom) || loadingType == .refresh {
-                // Animation disabled when inserting above pending items because it causes the pending items to warp
-                // past the bottom and scroll back up. This could use some work to make the transition better.
-                collectionView.scrollToBottom(animated: loadingType != .refresh && !insertingAbovePendingContent)
+
+        /// Disabling animations so we can roll our own insertion animation.
+        UIView.performWithoutAnimation { [weak self] in
+            self?.updateCollectionView(with: newItems, loadingType: loadingType, newPendingContentCount: newPendingContentCount, removedPendingContentIndices: removedPendingContentIndices) {
+                collectionView.collectionViewLayout.invalidateLayout()
+
+                // If we loaded newer items and we were scrolled to the bottom, or if we refreshed the feed, scroll down to
+                // reveal the new content.
+                if (loadingType == .newer && wasScrolledToBottom) || loadingType == .refresh {
+                    // Animation disabled when inserting above pending items because it causes the pending items to warp
+                    // past the bottom and scroll back up. This could use some work to make the transition better.
+                    collectionView.scrollToBottom(animated: loadingType != .refresh && !insertingAbovePendingContent)
+                }
+                
+                completion?()
             }
-            
-            completion?()
         }
     }
     
