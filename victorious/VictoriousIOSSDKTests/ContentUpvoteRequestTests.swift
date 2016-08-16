@@ -11,12 +11,12 @@ import XCTest
 
 class ContentUpvoteRequestTests: XCTestCase {
     func testBadRequest() {
-        let request = ContentUpvoteRequest(contentID: "123", contentUpvoteURL: "#$%^&")
+        let request = ContentUpvoteRequest(contentID: "123", apiPath: APIPath(templatePath: "#$%^&"))
         XCTAssertNil(request)
     }
     
     func testRequest() {
-        let request = ContentUpvoteRequest(contentID: "123", contentUpvoteURL: "www.google.com/%%CONTENT_ID%%")
+        let request = ContentUpvoteRequest(contentID: "123", apiPath: APIPath(templatePath: "www.google.com/%%CONTENT_ID%%"))
         XCTAssertEqual(request?.urlRequest.URL?.absoluteString, "www.google.com/123")
     }
 }

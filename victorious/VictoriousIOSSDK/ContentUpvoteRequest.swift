@@ -17,12 +17,14 @@ public struct ContentUpvoteRequest: RequestType {
     
     private let contentUpvoteURL: NSURL
     
-    public init?(contentID: String, contentUpvoteURL: String) {
-        let replacementDictionary: [String: String] = ["%%CONTENT_ID%%": contentID]
-        let replacedURL = VSDKURLMacroReplacement().urlByReplacingMacrosFromDictionary(replacementDictionary, inURLString: contentUpvoteURL)
-        guard let validURL = NSURL(string: replacedURL) else {
+    public init?(contentID: Content.ID, apiPath: APIPath) {
+        var apiPath = apiPath
+        apiPath.macroReplacements["%%CONTENT_ID%%"] = contentID
+        
+        guard let url = apiPath.url else {
             return nil
         }
-        self.contentUpvoteURL = validURL
+        
+        self.contentUpvoteURL = url
     }
 }

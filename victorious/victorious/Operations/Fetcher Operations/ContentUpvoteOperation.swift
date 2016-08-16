@@ -9,21 +9,18 @@
 import UIKit
 
 class ContentUpvoteOperation: FetcherOperation {
-    private let contentUpvoteURL: String
-    private let contentID: String
+    private let contentID: Content.ID
+    private let apiPath: APIPath
     
-    init(contentID: String, contentUpvoteURL: String) {
+    init(contentID: Content.ID, apiPath: APIPath) {
         self.contentID = contentID
-        self.contentUpvoteURL = contentUpvoteURL
+        self.apiPath = apiPath
     }
     
     override func main() {
         // Make data change optimistically before executing the request
         Content.likeContent(withID: contentID)
         
-        ContentUpvoteRemoteOperation(
-            contentID: contentID,
-            contentUpvoteURL: contentUpvoteURL
-        )?.after(self).queue()
+        ContentUpvoteRemoteOperation(contentID: contentID, apiPath: apiPath)?.after(self).queue()
     }
 }

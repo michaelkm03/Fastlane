@@ -25,7 +25,7 @@ class ImageOnColorButton: TouchableInsetAdjustableButton, TrackableButton {
             let foregroundImage: UIImage? = templateAppearanceValue(.foregroundImage)
             setImage(foregroundImage?.imageWithRenderingMode(foregroundRenderingMode), forState: .Normal)
             
-            self.enabled = templateAppearanceValue(.clickable) ?? false
+            userInteractionEnabled = templateAppearanceValue(.clickable) ?? false
         }
     }
 }

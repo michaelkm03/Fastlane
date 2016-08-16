@@ -26,7 +26,7 @@ class ImageOnImageButton: TouchableInsetAdjustableButton, TrackableButton {
             setImage(foregroundImage?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
             
             backgroundColor = .clearColor()
-            self.enabled = templateAppearanceValue(.clickable) ?? false
+            userInteractionEnabled = templateAppearanceValue(.clickable) ?? false
         }
     }
 }

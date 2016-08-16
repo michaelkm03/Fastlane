@@ -11,7 +11,7 @@ import XCTest
 
 class ContentDeleteOperationTests: BaseFetcherOperationTestCase {
     func testWithConfirmation() {
-        let operation = ContentDeleteOperation(contentID: "12345", contentDeleteURL: "")
+        let operation = ContentDeleteOperation(contentID: "12345", apiPath: APIPath(templatePath: ""))
         
         let confirm = MockActionConfirmationOperation(shouldConfirm: true)
         confirm.before(operation).queue()
@@ -28,7 +28,7 @@ class ContentDeleteOperationTests: BaseFetcherOperationTestCase {
     }
     
     func testWithoutConfirmation() {
-        let operation = ContentDeleteOperation(contentID: "12345", contentDeleteURL: "")
+        let operation = ContentDeleteOperation(contentID: "12345", apiPath: APIPath(templatePath: ""))
         
         let confirm = MockActionConfirmationOperation(shouldConfirm: false)
         confirm.before(operation).queue()
@@ -43,7 +43,7 @@ class ContentDeleteOperationTests: BaseFetcherOperationTestCase {
         operation.v_defaultQueue.suspended = true
         waitForExpectationsWithTimeout(expectationThreshold) { error in
             let dependentOperations = operation.v_defaultQueue.v_dependentOperationsOf(operation)
-            XCTAssertEqual(dependentOperations.count, 0)
+            XCTAssertEqual(dependentOperations.count, 1)
         }
     }
 }
