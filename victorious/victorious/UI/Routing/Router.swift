@@ -442,7 +442,6 @@ private class ShowWebContentOperation: MainQueueOperation {
         }
         else {
             let navigationController = UINavigationController(rootViewController: viewController)
-            dependencyManager
             
             dependencyManager.applyStyleToNavigationBar(navigationController.navigationBar)
         
