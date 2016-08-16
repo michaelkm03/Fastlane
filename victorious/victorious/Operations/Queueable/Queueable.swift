@@ -196,7 +196,7 @@ class SyncOperation<Output>: NSOperation, Queueable2 {
     
     override final func main() {
         guard !cancelled else {
-            self.result = .cancelled
+            result = .cancelled
             return
         }
         
@@ -231,15 +231,21 @@ class AsyncOperation<Output>: NSOperation, Queueable2 {
     
     override final func main() {
         guard !cancelled else {
-            self.result = .cancelled
+            result = .cancelled
             return
         }
         
         let executeSemphore = dispatch_semaphore_create(0)
         executionQueue.addOperationWithBlock {
-            self.execute { result in
-                self.result = self.cancelled ? .cancelled : result
-                dispatch_semaphore_signal(executeSemphore)
+            self.execute { [weak self] result in
+                defer {
+                    dispatch_semaphore_signal(executeSemphore)
+                }
+                guard let strongSelf = self else {
+                    return
+                }
+                strongSelf.result = strongSelf.cancelled ? .cancelled : result
+                
             }
         }
         
@@ -248,11 +254,11 @@ class AsyncOperation<Output>: NSOperation, Queueable2 {
 }
 
 /// This enum represents the result of executing an operation.
-/// - success: When the operation successfully finishes executing, and produces results of `Output` type. `Output` can be Void if no results is expected from the operation.
-/// - failure: When the operation failed with a specific error. Use this case when there's an error that should be surfaced to the user.
-/// - cancelled: When the operation was cancelled either by the caller, or determined to not be able to execute without a user facing error.
 enum OperationResult<Output> {
+    /// When the operation successfully finishes executing, and produces results of `Output` type. `Output` can be Void if no results is expected from the operation.
     case success(Output)
+    /// When the operation failed with a specific error. Use this case when there's an error that should be surfaced to the user.
     case failure(ErrorType)
+    /// When the operation was cancelled either by the caller, or determined to not be able to execute without a user facing error.
     case cancelled
 }

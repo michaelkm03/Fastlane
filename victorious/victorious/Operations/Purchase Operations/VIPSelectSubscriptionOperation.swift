@@ -38,7 +38,7 @@ final class VIPSelectSubscriptionOperation: AsyncOperation<VProduct>, UIAlertVie
         }
         
         let alert = UIAlertController(title: Strings.alertTitle, message: Strings.alertMessage, preferredStyle: .Alert)
-        for product in self.products {
+        for product in products {
             let action = UIAlertAction(title: product.price + " " + product.localizedDescription, style: .Default) { action in
                 finish(result: .success(product))
             }
@@ -49,7 +49,7 @@ final class VIPSelectSubscriptionOperation: AsyncOperation<VProduct>, UIAlertVie
             finish(result: .cancelled)
         }
         alert.addAction(action)
-        self.originViewController.presentViewController(alert, animated: true, completion: nil)
+        originViewController.presentViewController(alert, animated: true, completion: nil)
     }
     
     private struct Strings {
