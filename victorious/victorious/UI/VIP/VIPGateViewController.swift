@@ -118,7 +118,8 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     
     private func navigateToFixedWebContent(type: FixedWebContentType) {
         let router = Router(originViewController: self, dependencyManager: dependencyManager)
-        router.navigate(to: .fixedWebContent(type: type, forceModal: true))
+        let configuration = ExternalLinkDisplayConfiguration(addressBarVisible: false, forceModal: true, isVIPOnly: false, title: type.title)
+        router.navigate(to: .externalURL(url: dependencyManager.urlForWebContent(type), configuration: configuration))
     }
     
     private func HUDNeedsUpdateToTitle(title: String?) -> Bool {

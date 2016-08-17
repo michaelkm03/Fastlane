@@ -80,14 +80,19 @@ extension VSettingsViewController: VBackgroundContainer {
     }
     
     public func handleAboutSectionSelection(row: Int) {
-        let router = Router(originViewController: self, dependencyManager: dependencyManager)
         switch row {
-            case 0: router.navigate(to: .fixedWebContent(type: .HelpCenter, forceModal: false))
+            case 0: showFixedWebContent(.HelpCenter)
             case 1: sendHelp()
-            case 2: router.navigate(to: .fixedWebContent(type: .TermsOfService, forceModal: false))
-            case 3: router.navigate(to: .fixedWebContent(type: .PrivacyPolicy, forceModal: false))
+            case 2: showFixedWebContent(.TermsOfService)
+            case 3: showFixedWebContent(.PrivacyPolicy)
             default: break
         }
+    }
+    
+    private func showFixedWebContent(type: FixedWebContentType) {
+        let router = Router(originViewController: self, dependencyManager: dependencyManager)
+        let configuration = ExternalLinkDisplayConfiguration(addressBarVisible: false, forceModal: false, isVIPOnly: false, title: type.title)
+        router.navigate(to: .externalURL(url: dependencyManager.urlForWebContent(type), configuration: configuration))
     }
 }
 

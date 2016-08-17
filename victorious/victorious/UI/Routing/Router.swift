@@ -35,8 +35,7 @@ struct Router {
             case .closeUp(let contentWrapper): showCloseUpView(for: contentWrapper)
             case .vipForum: showVIPForum()
             case .vipSubscription: showVIPSubscription()
-            case .externalURL(let url, let addressBarVisible, let isVIPOnly): showWebView(for: url, addressBarVisible: addressBarVisible, isVIPOnly: isVIPOnly)
-            case .fixedWebContent(let type, let forceModal) : showFixedWebContent(type, forceModal: forceModal)
+            case .externalURL(let url, let configuration): showWebView(for: url, configuration: configuration)
         }
     }
     
@@ -89,28 +88,20 @@ struct Router {
         ShowProfileOperation(originViewController: originViewController, dependencyManager: dependencyManager, userId: userID).queue()
     }
     
-    private func showWebView(for url: NSURL, addressBarVisible: Bool, isVIPOnly: Bool = false) {
-        checkForPermissionBeforeRouting(contentIsForVIPOnly: isVIPOnly) { success in
+    private func showWebView(for url: NSURL, configuration: ExternalLinkDisplayConfiguration) {
+        checkForPermissionBeforeRouting(contentIsForVIPOnly: configuration.isVIPOnly) { success in
             if success {
                 
-                if (addressBarVisible) {
+                if (configuration.addressBarVisible) {
                     let safariViewController = SFSafariViewController(URL: url)
                     self.originViewController?.presentViewController(safariViewController, animated: true, completion: nil)
                 }
                 
                 else if let originVC = self.originViewController {
-                    ShowWebContentOperation(originViewController: originVC, url: url.absoluteString, title: "", forceModal: true, animated: true, dependencyManager: self.dependencyManager).queue()
+                    ShowWebContentOperation(originViewController: originVC, url: url.absoluteString, dependencyManager: self.dependencyManager, configuration: configuration).queue()
                 }
             }
         }
-    }
-    
-    private func showFixedWebContent(type: FixedWebContentType, forceModal: Bool) {
-        guard let originViewController = self.originViewController else {
-            return
-        }
-        
-        ShowWebContentOperation(originViewController: originViewController, type: type, forceModal: forceModal, animated: true, dependencyManager: dependencyManager).queue()
     }
     
     private func showError() {
@@ -360,46 +351,16 @@ private class ShowFetchedCloseUpOperation: MainQueueOperation {
 
 // MARK: - Show Web Content
 
-@objc enum FixedWebContentType : Int {
-    case PrivacyPolicy
-    case HelpCenter
-    case TermsOfService
-    
-    var title: String {
-        switch self {
-            case .PrivacyPolicy: return NSLocalizedString("Privacy Policy", comment: "")
-            case .HelpCenter: return NSLocalizedString("Help", comment: "")
-            case .TermsOfService: return NSLocalizedString("Terms of Service", comment: "")
-        }
-    }
-    
-    var templateURLKey: String {
-        switch self {
-            case .PrivacyPolicy: return "privacyURL"
-            case .HelpCenter: return "helpCenterURL"
-            case .TermsOfService: return "tosURL"
-        }
-    }
-}
-
 private class ShowWebContentOperation: MainQueueOperation {
     private let originViewController: UIViewController
-    private let title: String
     private let createFetchOperation: () -> FetchWebContentOperation
-    private let forceModal: Bool
-    private let animated: Bool
     private let dependencyManager: VDependencyManager
+    private let configuration: ExternalLinkDisplayConfiguration
     
-    convenience init(originViewController: UIViewController, type: FixedWebContentType, forceModal: Bool = false, animated: Bool = true, dependencyManager: VDependencyManager) {
-        self.init(originViewController: originViewController, url: dependencyManager.urlForWebContent(type), title: type.title, forceModal: forceModal, animated: animated, dependencyManager: dependencyManager)
-    }
-    
-    init (originViewController: UIViewController, url: String, title: String,  forceModal: Bool, animated: Bool, dependencyManager: VDependencyManager) {
-        self.forceModal = forceModal
-        self.animated = animated
+    init (originViewController: UIViewController, url: String, dependencyManager: VDependencyManager, configuration: ExternalLinkDisplayConfiguration) {
         self.originViewController = originViewController
-        self.title = title
         self.dependencyManager = dependencyManager
+        self.configuration = configuration
         self.createFetchOperation = {
             return WebViewHTMLFetchOperation(urlPath: url)
         }
@@ -415,7 +376,7 @@ private class ShowWebContentOperation: MainQueueOperation {
         
         //We show the navigation and dismiss button if the view controller is presented modally, 
         // since there would be no way to dimiss the view controller otherwise
-        let viewController = WebContentViewController(shouldShowNavigationButtons: forceModal)
+        let viewController = WebContentViewController(shouldShowNavigationButtons: configuration.forceModal)
         
         let fetchOperation = createFetchOperation()
         
@@ -435,10 +396,10 @@ private class ShowWebContentOperation: MainQueueOperation {
         viewController.automaticallyAdjustsScrollViewInsets = false
         viewController.edgesForExtendedLayout = .All
         viewController.extendedLayoutIncludesOpaqueBars = true
-        viewController.title = title
+        viewController.title = configuration.title
         
-        if let navigationController = (originViewController as? UINavigationController) ?? originViewController.navigationController where !forceModal {
-            navigationController.pushViewController(viewController, animated: animated)
+        if let navigationController = (originViewController as? UINavigationController) ?? originViewController.navigationController where !configuration.forceModal {
+            navigationController.pushViewController(viewController, animated: configuration.transitionAnimated)
             finishedExecuting()
         }
         else {
@@ -446,7 +407,7 @@ private class ShowWebContentOperation: MainQueueOperation {
             
             dependencyManager.applyStyleToNavigationBar(navigationController.navigationBar)
         
-            originViewController.presentViewController(navigationController, animated: animated) {
+            originViewController.presentViewController(navigationController, animated: configuration.transitionAnimated) {
                 self.finishedExecuting()
             }
         }
@@ -511,7 +472,5 @@ private extension VDependencyManager {
         return networkResources?.stringForKey("contentFetchURL")
     }
     
-    func urlForWebContent(type: FixedWebContentType) -> String {
-        return stringForKey(type.templateURLKey) ?? ""
-    }
+  
 }
