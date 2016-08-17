@@ -286,8 +286,7 @@ private extension VDependencyManager {
         
         return [
             NSFontAttributeName: font,
-            NSForegroundColorAttributeName: color,
-            NSUnderlineStyleAttributeName: NSNumber(integer: NSUnderlineStyle.StyleSingle.rawValue)
+            NSForegroundColorAttributeName: color
         ]
     }
     
@@ -305,8 +304,7 @@ private extension VDependencyManager {
         
         return [
             NSFontAttributeName: font,
-            NSForegroundColorAttributeName: color,
-            NSUnderlineStyleAttributeName: NSNumber(integer: NSUnderlineStyle.StyleSingle.rawValue)
+            NSForegroundColorAttributeName: color
         ]
     }
     

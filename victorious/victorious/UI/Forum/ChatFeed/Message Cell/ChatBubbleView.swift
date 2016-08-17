@@ -20,6 +20,30 @@ class ChatBubbleView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        setupSubviews()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setupSubviews()
+    }
+    
+    // MARK: - Subviews
+    
+    private let borderView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.backgroundColor = .clearColor()
+        return imageView
+    }()
+    
+    let contentView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .clearColor()
+        return view
+    }()
+    
+    private func setupSubviews() {
+        backgroundColor = .clearColor()
         layer.cornerRadius = Constants.bubbleCornerRadius
         contentView.layer.cornerRadius = Constants.bubbleCornerRadius
         contentView.clipsToBounds = true
@@ -28,21 +52,21 @@ class ChatBubbleView: UIView {
         addSubview(borderView)
     }
     
-    required init(coder: NSCoder) {
-        fatalError("NSCoding not supported.")
-    }
-    
-    // MARK: - Subviews
-    
-    private let borderView = UIImageView()
-    
-    let contentView = UIView()
-    
     // MARK: - Layout
     
     override func layoutSubviews() {
         super.layoutSubviews()
         contentView.frame = bounds
         borderView.frame = bounds.insetBy(Constants.borderInsets)
+    }
+    
+    // MARK: - Subviews
+    
+    override func addSubview(view: UIView) {
+        if view == contentView || view == borderView {
+            super.addSubview(view)
+        } else {
+            contentView.addSubview(view)
+        }
     }
 }
