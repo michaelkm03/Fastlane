@@ -60,23 +60,17 @@ class WebContentViewController: UIViewController, WKNavigationDelegate, WKUIDele
     override func viewDidLoad() {
         super.viewDidLoad()
         edgesForExtendedLayout = .None
-        webView.backgroundColor = UIColor.whiteColor()
+        webView.backgroundColor = .whiteColor()
         view.addSubview(webView)
         view.v_addFitToParentConstraintsToSubview(webView)
     }
     
     override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(true)
-        webView.stopLoading()
-        webView.navigationDelegate = nil
+        super.viewWillDisappear(animated)
         hideStatusBarActivityIndicator()
     }
     
     // MARK: - Configuration 
-    
-    override func shouldAutorotate() -> Bool {
-        return false
-    }
     
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
         return [.Portrait]
@@ -90,11 +84,11 @@ class WebContentViewController: UIViewController, WKNavigationDelegate, WKUIDele
     }
     
     private func showStatusBarActivityIndicator() {
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        NetworkActivityIndicator.sharedInstance().start()
     }
     
     private func hideStatusBarActivityIndicator() {
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+        NetworkActivityIndicator.sharedInstance().stop()
     }
     
     // MARK: - External Helpers 
@@ -105,8 +99,9 @@ class WebContentViewController: UIViewController, WKNavigationDelegate, WKUIDele
         webView.loadHTMLString(htmlString, baseURL: baseURL)
     }
     
-    func setFailure(withError error: NSError?) {
+    func setFailure(with error: NSError?) {
         hideStatusBarActivityIndicator()
+        v_showErrorWithTitle(v_defaultErrorTitle, message: error?.localizedDescription)
     }
     
     // MARK: - Navigation
@@ -142,7 +137,7 @@ class WebContentViewController: UIViewController, WKNavigationDelegate, WKUIDele
             let webViewURL =  webView.URL?.absoluteString.stringByTrimmingCharactersInSet(NSCharacterSet(charactersInString: "/")),
             let initialURL = initialBaseURL?.absoluteString
         {
-                return webViewURL == initialURL
+            return webViewURL == initialURL
         }
         
         return false
