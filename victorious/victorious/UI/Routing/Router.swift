@@ -47,12 +47,12 @@ struct Router {
 
         switch contentWrapper {
             case .content(let content):
-                guard content.type != .text, let contentID = content.id else {
+                guard content.type != .text else {
                     return
                 }
                 checkForPermissionBeforeRouting(contentIsForVIPOnly: content.isVIPOnly) { success in
                     if success {
-                        ShowFetchedCloseUpOperation(contentID: contentID, displayModifier: displayModifier).queue()
+                        ShowCloseUpOperation(content: content, displayModifier: displayModifier).queue()
                     }
                 }
             
@@ -235,6 +235,12 @@ private class ShowCloseUpOperation: MainQueueOperation {
     init(contentID: String, displayModifier: ShowCloseUpDisplayModifier) {
         self.displayModifier = displayModifier
         self.contentID = contentID
+        super.init()
+    }
+    
+    init(content: ContentModel, displayModifier: ShowCloseUpDisplayModifier) {
+        self.displayModifier = displayModifier
+        self.content = content
         super.init()
     }
     
