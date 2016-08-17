@@ -212,6 +212,43 @@ private let asyncScheduleQueue = NSOperationQueue()
 /// Semaphore blocks threads but not queues, so we may want to revisit this if something goes wrong / we need concurrent operations.
 class AsyncOperation<Output>: NSOperation, Queueable2 {
     
+    // MARK: - KVO-able NSNotification State
+    
+    private var _executing = false
+    private var _finished = false
+    
+    final private func beganExecuting() {
+        executing = true
+        finished = false
+    }
+    
+    final private func finishedExecuting() {
+        executing = false
+        finished = true
+    }
+    
+    final override private(set) var executing: Bool {
+        get {
+            return _executing
+        }
+        set {
+            willChangeValueForKey("isExecuting")
+            _executing = newValue
+            didChangeValueForKey("isExecuting")
+        }
+    }
+    
+    final override private(set) var finished: Bool {
+        get {
+            return _finished
+        }
+        set {
+            willChangeValueForKey("isFinished")
+            _finished = newValue
+            didChangeValueForKey("isFinished")
+        }
+    }
+    
     // MARK: - Queueable2
     
     let scheduleQueue = asyncScheduleQueue
@@ -228,17 +265,22 @@ class AsyncOperation<Output>: NSOperation, Queueable2 {
         fatalError("Subclasses of AsyncOperation must override `execute()`!")
     }
     
-    override final func main() {
+    override final func start() {
         guard !cancelled else {
             result = .cancelled
+            finishedExecuting()
             return
         }
         
-        let executeSemaphore = dispatch_semaphore_create(0)
+        beganExecuting()
+        main()
+    }
+    
+    override final func main() {
         executionQueue.addOperationWithBlock {
             self.execute { [weak self] result in
                 defer {
-                    dispatch_semaphore_signal(executeSemaphore)
+                    self?.finishedExecuting()
                 }
                 guard let strongSelf = self else {
                     return
@@ -246,8 +288,6 @@ class AsyncOperation<Output>: NSOperation, Queueable2 {
                 strongSelf.result = strongSelf.cancelled ? .cancelled : result
             }
         }
-        
-        dispatch_semaphore_wait(executeSemaphore, DISPATCH_TIME_FOREVER)
     }
 }
 
