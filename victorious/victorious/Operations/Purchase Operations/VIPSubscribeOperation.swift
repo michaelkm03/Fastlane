@@ -10,13 +10,13 @@ import Foundation
 
 class VIPSubscribeOperation: BackgroundOperation {
     let product: VProduct
-    let trackingDependencyManager: VDependencyManager
+    let validationURL: NSURL?
     
     var purchaseManager: VPurchaseManagerType = VPurchaseManager.sharedInstance()
     
-    init(product: VProduct, trackingDependencyManager: VDependencyManager) {
+    init(product: VProduct, validationURL: NSURL?) {
         self.product = product
-        self.trackingDependencyManager = trackingDependencyManager
+        self.validationURL = validationURL
     }
     
     override func start() {
@@ -37,11 +37,9 @@ class VIPSubscribeOperation: BackgroundOperation {
     func purchaseSubscription() {
         let success = { (results: Set<NSObject>?) in
             // Force success because we have to deliver the product even if the sever fails for any reason
-            let validatationOperation = VIPValidateSuscriptionOperation(shouldForceSuccess: true)
-            validatationOperation.after(self).queue() { _ in
-                if validatationOperation.validationSucceeded {
-                    VTrackingManager.sharedInstance().trackEvent(VTrackingEventRecievedProductReceiptFromBackend)
-                }
+            let validatationOperation = VIPValidateSubscriptionOperation(url: self.validationURL, shouldForceSuccess: true)
+            validatationOperation?.after(self).queue() { _ in
+                //FUTURE: Once completion block is called properly after queueing this operation in the vip flow, add the "received receipt from backend" tracking event here and remove from the operation
             }
             self.finishedExecuting()
         }
@@ -53,7 +51,6 @@ class VIPSubscribeOperation: BackgroundOperation {
             }
             self.finishedExecuting()
         }
-        VTrackingManager.sharedInstance().trackEvent(VTrackingEventSentProductReceiptToBackend)
         purchaseManager.purchaseProduct(product, success: success, failure: failure)
     }
 }

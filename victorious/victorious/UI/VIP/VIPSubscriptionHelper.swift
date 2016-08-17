@@ -72,6 +72,7 @@ class VIPSubscriptionHelper {
     
     private func showSubscriptionSelectionForProducts(products: [VProduct]) {
         guard let originViewController = originViewController else {
+            delegate?.setIsLoading(false, title: nil)
             return
         }
         
@@ -105,7 +106,7 @@ class VIPSubscriptionHelper {
     }
     
     private func subscribeToProduct(product: VProduct) {
-        let subscribe = VIPSubscribeOperation(product: product, trackingDependencyManager: dependencyManager)
+        let subscribe = VIPSubscribeOperation(product: product, validationURL: dependencyManager.validationURL)
         subscribe.queue() { [weak self] error, canceled in
             self?.delegate?.setIsLoading(false, title: nil)
             guard let strongSelf = self where !canceled else {
@@ -143,5 +144,15 @@ private extension VDependencyManager {
     
     var selectionDialogDependency: VDependencyManager? {
         return childDependencyForKey("multiple.sku.dialog")
+    }
+    
+    var validationURL: NSURL? {
+        guard
+            let urlString = networkResources?.stringForKey("purchaseURL"),
+            let url = NSURL(string: urlString)
+        else {
+            return nil
+        }
+        return url
     }
 }

@@ -86,7 +86,7 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     }
     
     @IBAction func onRestore(sender: UIButton? = nil) {
-        let restore = RestorePurchasesOperation()
+        let restore = RestorePurchasesOperation(validationURL: dependencyManager.validationURL)
         
         setIsLoading(true, title: Strings.restoreInProgress)
         restore.queue() { [weak self] error, canceled in
@@ -321,5 +321,15 @@ private extension VDependencyManager {
     
     var subscriptionFetchURL: String? {
         return networkResources?.stringForKey("inapp.sku.URL")
+    }
+    
+    var validationURL: NSURL? {
+        guard
+            let urlString = networkResources?.stringForKey("purchaseURL"),
+            let url = NSURL(string: urlString)
+            else {
+                return nil
+        }
+        return url
     }
 }
