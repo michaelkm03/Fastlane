@@ -33,9 +33,10 @@ class AccountUpdateOperation: RemoteFetcherOperation, RequestOperation {
     override func main() {
         // For profile updates, optimistically update everything right away
         if let profileUpdate = self.request.profileUpdate {
-            persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
+            persistentStore.createBackgroundContext().v_performBlockAndWait() { [weak self] context in
                 guard let user = VCurrentUser.user(inManagedObjectContext: context) else {
-                    fatalError( "Expecting a current user to be set before now." )
+                    self?.error = NSError(domain: "AccountUpdateOperation", code: -1, userInfo: nil)
+                    return
                 }
                 
                 // Update basic stats
