@@ -43,7 +43,6 @@ class WebContentViewController: UIViewController, WKNavigationDelegate, WKUIDele
             
             navigationItem.rightBarButtonItems = [forwardButton, backButton]
             navigationItem.leftBarButtonItem = cancelButton
-            updateNavigationButtonState()
         }
         
         webView.navigationDelegate = self
