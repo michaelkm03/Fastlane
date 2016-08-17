@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NotificationsViewController: UIViewController, UITableViewDelegate, NotificationCellDelegate, VNavigationDestination, VPaginatedDataSourceDelegate, VBackgroundContainer {
+class NotificationsViewController: UIViewController, UITableViewDelegate, NotificationCellDelegate, VPaginatedDataSourceDelegate, VBackgroundContainer, AccessoryScreenContainer {
     private struct Constants {
         static let contentInset = UIEdgeInsets(top: 8.0, left: 0.0, bottom: 8.0, right: 0.0)
         static let estimatedRowHeight = CGFloat(64.0)
@@ -71,7 +71,7 @@ class NotificationsViewController: UIViewController, UITableViewDelegate, Notifi
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         dependencyManager.trackViewWillAppear(self)
-        v_addAccessoryScreensWithDependencyManager(dependencyManager)
+        addAccessoryScreens(to: navigationItem, from: dependencyManager)
         updateTableView()
         
         // Setting the content offset is a hack to work around a bug where the refresh control's tint color won't take

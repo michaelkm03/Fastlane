@@ -162,7 +162,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
             }
         }
         
-        v_addAccessoryScreensWithDependencyManager(dependencyManager)
+        addAccessoryScreens(to: navigationItem, from: dependencyManager)
     }
     
     // MARK: - View controllers

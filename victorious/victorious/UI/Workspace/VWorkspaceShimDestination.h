@@ -7,13 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "VNavigationDestination.h"
 #import "VHasManagedDependencies.h"
 
 /**
  *  Presents content creation on VRootViewController when VNavigationDestination's
  *  `-(BOOL)shouldNavigate` is called.
  */
-@interface VWorkspaceShimDestination : NSObject <VHasManagedDependencies, VNavigationDestination>
+@interface VWorkspaceShimDestination : NSObject <VHasManagedDependencies>
 
 @end

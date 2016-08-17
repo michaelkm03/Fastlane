@@ -15,7 +15,6 @@
 @interface VWorkspaceShimDestination ()
 
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
-@property (nonatomic, strong) id<VNavigationDestination> workspaceDestination;
 @property (nonatomic, strong) VCreationFlowPresenter *creationFlowPresenter;
 
 @end

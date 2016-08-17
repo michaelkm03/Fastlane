@@ -9,13 +9,12 @@
 #import <UIKit/UIKit.h>
 
 #import "VHasManagedDependencies.h"
-#import "VNavigationDestination.h"
-#import "VDependencyManager+VAccessoryScreens.h"
 
-@interface VSettingsViewController : UITableViewController <VHasManagedDependencies, VNavigationDestination>
+@interface VSettingsViewController : UITableViewController <VHasManagedDependencies>
 
 // These are exposed here since they are used in the Swift extension
 @property (weak, nonatomic) IBOutlet UILabel *versionString;
+@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 - (void)sendHelp;
 
