@@ -387,7 +387,7 @@ private class ShowWebContentOperation: MainQueueOperation {
             }
             
             guard let htmlString = fetchOperation.resultHTMLString where error == nil else {
-                viewController.setFailure(withError: error)
+                viewController.setFailure(with: error)
                 return
             }
             
