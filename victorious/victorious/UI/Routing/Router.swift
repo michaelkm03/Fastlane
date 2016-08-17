@@ -367,6 +367,7 @@ private class ShowWebContentOperation: MainQueueOperation {
     }
     
     override func start() {
+        super.start()
         beganExecuting()
         
         guard !cancelled else {

@@ -31,7 +31,7 @@ import Foundation
 }
 
 extension VDependencyManager {
-    func urlForWebContent(type: FixedWebContentType) -> NSURL {
+    func urlForFixedWebContent(type: FixedWebContentType) -> NSURL {
         return NSURL(string: stringForKey(type.templateURLKey)) ?? NSURL()
     }
 }

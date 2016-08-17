@@ -11,6 +11,7 @@ import Foundation
 extension VModernLoginAndRegistrationFlowViewController {
     func showFixedWebContent(type: FixedWebContentType) {
         let router = Router(originViewController: self, dependencyManager: dependencyManager)
-        router.navigate(to: DeeplinkDestination.externalURL(url: dependencyManager.urlForFixedWebContent(type), addressBarVisible: false, isVIPOnly: false, title: type.title))
+        let configuration = ExternalLinkDisplayConfiguration(addressBarVisible: false, forceModal: true, isVIPOnly: false, title: type.title)
+        router.navigate(to: DeeplinkDestination.externalURL(url: dependencyManager.urlForFixedWebContent(type), configuration: configuration))
     }
 }
