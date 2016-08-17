@@ -74,7 +74,6 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         updateViews()
     }
     
