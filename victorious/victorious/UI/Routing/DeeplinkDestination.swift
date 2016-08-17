@@ -81,6 +81,10 @@ enum DeeplinkDestination: Equatable {
     init(userID: User.ID) {
         self = .profile(userID: userID)
     }
+
+    init(contentID: Content.ID) {
+        self = .closeUp(contentWrapper: .contentID(id: contentID))
+    }
 }
 
 func ==(lhs: DeeplinkDestination, rhs: DeeplinkDestination) -> Bool {
