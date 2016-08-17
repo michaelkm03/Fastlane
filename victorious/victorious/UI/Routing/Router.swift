@@ -35,7 +35,7 @@ struct Router {
             case .closeUp(let contentWrapper): showCloseUpView(for: contentWrapper)
             case .vipForum: showVIPForum()
             case .vipSubscription: showVIPSubscription()
-            case .externalURL(let url, let addressBarVisible, let isVIPOnly): showWebView(for: url, addressBarVisible: addressBarVisible, isVIPOnly: isVIPOnly)
+            case .externalURL(let url, let configuration): showWebView(for: url, configuration: configuration)
         }
     }
     
@@ -88,13 +88,18 @@ struct Router {
         ShowProfileOperation(originViewController: originViewController, dependencyManager: dependencyManager, userId: userID).queue()
     }
     
-    private func showWebView(for url: NSURL, addressBarVisible: Bool, isVIPOnly: Bool = false) {
-        // Future: We currently have no way to hide address bar. This will be handled when we implement close up web view.
-        
-        checkForPermissionBeforeRouting(contentIsForVIPOnly: isVIPOnly) { success in
+    private func showWebView(for url: NSURL, configuration: ExternalLinkDisplayConfiguration) {
+        checkForPermissionBeforeRouting(contentIsForVIPOnly: configuration.isVIPOnly) { success in
             if success {
-                let safariViewController = SFSafariViewController(URL: url)
-                self.originViewController?.presentViewController(safariViewController, animated: true, completion: nil)
+                
+                if configuration.addressBarVisible {
+                    let safariViewController = SFSafariViewController(URL: url)
+                    self.originViewController?.presentViewController(safariViewController, animated: true, completion: nil)
+                }
+                
+                else if let originVC = self.originViewController {
+                    ShowWebContentOperation(originViewController: originVC, url: url.absoluteString, dependencyManager: self.dependencyManager, configuration: configuration).queue()
+                }
             }
         }
     }
@@ -350,6 +355,74 @@ private class ShowFetchedCloseUpOperation: MainQueueOperation {
     }
 }
 
+// MARK: - Show Web Content
+
+private class ShowWebContentOperation: MainQueueOperation {
+    private let originViewController: UIViewController
+    private let createFetchOperation: () -> FetchWebContentOperation
+    private let dependencyManager: VDependencyManager
+    private let configuration: ExternalLinkDisplayConfiguration
+    
+    init (originViewController: UIViewController, url: String, dependencyManager: VDependencyManager, configuration: ExternalLinkDisplayConfiguration) {
+        self.originViewController = originViewController
+        self.dependencyManager = dependencyManager
+        self.configuration = configuration
+        self.createFetchOperation = {
+            return WebViewHTMLFetchOperation(urlPath: url)
+        }
+    }
+    
+    override func start() {
+        super.start()
+        beganExecuting()
+        
+        guard !cancelled else {
+            finishedExecuting()
+            return
+        }
+        
+        //We show the navigation and dismiss button if the view controller is presented modally, 
+        // since there would be no way to dimiss the view controller otherwise
+        let viewController = WebContentViewController(shouldShowNavigationButtons: configuration.forceModal)
+        
+        let fetchOperation = createFetchOperation()
+        
+        fetchOperation.after(self).queue { [weak fetchOperation] results, error, cancelled in
+            guard let fetchOperation = fetchOperation else {
+                return
+            }
+            
+            guard let htmlString = fetchOperation.resultHTMLString where error == nil else {
+                viewController.setFailure(with: error)
+                return
+            }
+            
+            viewController.load(htmlString, baseURL: fetchOperation.publicBaseURL)
+        }
+        
+        viewController.automaticallyAdjustsScrollViewInsets = false
+        viewController.edgesForExtendedLayout = .All
+        viewController.extendedLayoutIncludesOpaqueBars = true
+        viewController.title = configuration.title
+        
+        if let navigationController = (originViewController as? UINavigationController) ?? originViewController.navigationController where !configuration.forceModal {
+            navigationController.pushViewController(viewController, animated: configuration.transitionAnimated)
+            finishedExecuting()
+        }
+        else {
+            let navigationController = UINavigationController(rootViewController: viewController)
+            
+            dependencyManager.applyStyleToNavigationBar(navigationController.navigationBar)
+        
+            originViewController.presentViewController(navigationController, animated: configuration.transitionAnimated) {
+                self.finishedExecuting()
+            }
+        }
+    }
+}
+
+// MARK: - Show VIP Flow Operation
+
 private class ShowVIPSubscriptionOperation: MainQueueOperation {
     private let dependencyManager: VDependencyManager
     private let animated: Bool
@@ -391,6 +464,8 @@ private class ShowVIPSubscriptionOperation: MainQueueOperation {
     }
 }
 
+// MARK: - Dependency Manager Extensions 
+
 private extension VDependencyManager {
     var relatedContentURL: String {
         return stringForKey("streamURL") ?? ""
@@ -403,4 +478,6 @@ private extension VDependencyManager {
     var contentFetchURL: String? {
         return networkResources?.stringForKey("contentFetchURL")
     }
+    
+  
 }
