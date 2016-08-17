@@ -125,7 +125,6 @@
 #import "VVideoAssetDownloader.h"
 #import "VVideoToolController.h"
 #import "VVideoView.h"
-#import "VWebContentViewController.h"
 #import "VWorkspaceViewController.h"
 #import "YTPlayerView.h"
 #import <KVOController/FBKVOController.h>

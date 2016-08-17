@@ -24,8 +24,7 @@ extension VIPGateViewControllerDelegate {
             return
         }
         let router = Router(originViewController: scaffold, dependencyManager: dependencyManager)
-        let destination = DeeplinkDestination.vipForum
-        router.navigate(to: destination)
+        router.navigate(to: .vipForum)
     }
 }
 
@@ -104,11 +103,11 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     }
     
     @IBAction func onPrivacyPolicySelected() {
-        ShowWebContentOperation(originViewController: self, type: .PrivacyPolicy, forceModal: true, dependencyManager: dependencyManager).queue()
+        navigateToFixedWebContent(.PrivacyPolicy)
     }
     
     @IBAction func onTermsOfServiceSelected() {
-        ShowWebContentOperation(originViewController: self, type: .TermsOfService, forceModal: true, dependencyManager: dependencyManager).queue()
+        navigateToFixedWebContent(.TermsOfService)
     }
     
     @IBAction func onCloseSelected() {
@@ -116,6 +115,12 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     }
     
     // MARK: - Private
+    
+    private func navigateToFixedWebContent(type: FixedWebContentType) {
+        let router = Router(originViewController: self, dependencyManager: dependencyManager)
+        let configuration = ExternalLinkDisplayConfiguration(addressBarVisible: false, forceModal: true, isVIPOnly: false, title: type.title)
+        router.navigate(to: .externalURL(url: dependencyManager.urlForFixedWebContent(type), configuration: configuration))
+    }
     
     private func HUDNeedsUpdateToTitle(title: String?) -> Bool {
         if let huds = MBProgressHUD.allHUDsForView(self.view) as? [MBProgressHUD] {
