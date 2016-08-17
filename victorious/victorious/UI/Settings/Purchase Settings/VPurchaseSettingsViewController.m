@@ -139,7 +139,7 @@ static NSString * const kAppStoreSubscriptionSettingsURL = @"itms-apps://buy.itu
          else if ( [restoredProductIdentifiers containsObject:[self.dependencyManager vipSubscription].productIdentifier] )
          {
              // Validate and force success since even if there's an error, we must deliver the product restores to the user
-             VIPValidateSuscriptionOperation *op = [[VIPValidateSuscriptionOperation alloc] initWithUrl:self.dependencyManager.validationURL shouldForceSuccess:YES];
+             VIPValidateSubscriptionOperation *op = [[VIPValidateSubscriptionOperation alloc] initWithUrl:self.dependencyManager.validationURL shouldForceSuccess:YES];
              [op queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
               {
                   onRestoreComplete();
