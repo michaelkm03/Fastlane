@@ -49,7 +49,7 @@ enum DeeplinkDestination: Equatable {
                 else {
                     return nil
                 }
-                let configuration = ExternalLinkDisplayConfiguration(addressBarVisible: true, forceModal: false, isVIPOnly: isVIPOnly, title: "")
+                let configuration = ExternalLinkDisplayConfiguration(addressBarVisible: true, forceModal: forceModal, isVIPOnly: isVIPOnly, title: "")
                 self = .externalURL(url: externalURL, configuration: configuration)
             case "hiddenWebURL":
                 guard
@@ -72,7 +72,7 @@ enum DeeplinkDestination: Equatable {
             case .link:
                 guard
                     let url = content.linkedURL,
-                    let validDestination = DeeplinkDestination(url: url, isVIPOnly: content.isVIPOnly, forceModal: false)
+                    let validDestination = DeeplinkDestination(url: url, isVIPOnly: content.isVIPOnly, forceModal: true)
                 else {
                     return nil
                 }

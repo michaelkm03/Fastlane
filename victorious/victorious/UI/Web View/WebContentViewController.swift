@@ -32,7 +32,7 @@ class WebContentViewController: UIViewController, WKNavigationDelegate, WKUIDele
         
         if (shouldShowNavigationButtons) {
             let backButton = UIBarButtonItem(image: UIImage(named: "browser-back"), style: .Plain, target: self, action: #selector(WebContentViewController.backButtonPressed))
-            let forwardButton = UIBarButtonItem(image: UIImage(named: "banner_next"), style: .Plain, target: self, action: #selector(WebContentViewController.forwardButtonPressed))
+            let forwardButton = UIBarButtonItem(image: UIImage(named: "browser-forward"), style: .Plain, target: self, action: #selector(WebContentViewController.forwardButtonPressed))
             cancelButton = UIBarButtonItem(image: UIImage(named: "browser-close"), style: .Plain, target: self, action: #selector(WebContentViewController.cancelButtonPressed))
             
             self.backButton = backButton
@@ -172,11 +172,11 @@ class WebContentViewController: UIViewController, WKNavigationDelegate, WKUIDele
     // MARK: - WKUIDelegate 
     
     func webView(webView: WKWebView, createWebViewWithConfiguration configuration: WKWebViewConfiguration, forNavigationAction navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
-        //Check if this is a new window navigation. If it is, load the new window's content in the current web view.
+        // Check if this is a new window navigation. If it is, load the new window's content in the current web view.
         if navigationAction.targetFrame == nil {
             webView.loadRequest(navigationAction.request)
         }
-        //Don't create a new webview since we're reusing the same one
+        // Don't create a new webview since we're reusing the same one
         return nil
     }
 }
