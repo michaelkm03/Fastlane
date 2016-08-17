@@ -61,7 +61,11 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         
         collectionView?.reloadData()
         
-        if collectionView?.indexPathsForSelectedItems()?.isEmpty != false {
+        
+        if let indexPath = lastSelectedIndexPath {
+            collectionView?.selectItemAtIndexPath(indexPath, animated: false, scrollPosition: .None)
+        }
+        else {
             let indexPath = NSIndexPath(forRow: 0, inSection: ListMenuSection.community.rawValue)
             collectionView?.selectItemAtIndexPath(indexPath, animated: false, scrollPosition: .None)
         }
