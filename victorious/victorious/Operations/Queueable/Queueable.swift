@@ -167,9 +167,9 @@ extension Queueable2 where Self: NSOperation {
 }
 
 /// A synchronous operation runs its `execute` method synchronously on the provided `executionQueue` and finishes without waiting for any async callback.
-/// - note: 
-/// - Subclasses must override `var executionQueue` to specify which queue it gets executed on.
-/// - Subclasses must override `func execute()` to specify the main body of the operation.
+/// - requires:
+/// * Subclasses must override `var executionQueue` to specify which queue it gets executed on.
+/// * Subclasses must override `func execute()` to specify the main body of the operation.
 class SyncOperation<Output>: NSOperation, Queueable2 {
     
     // MARK: - Queueable2
@@ -204,9 +204,12 @@ private let asyncScheduleQueue = NSOperationQueue()
 
 /// An asynchronous operation runs its `execute` method on the provided `executionQueue`, and then waits indefinitely for `finish` to be called.
 /// Since it blocks the `scheduleQueue`, it is always scheduled on a separate global shared `asyncScheduleQueue`.
+/// - requires:
+/// * Subclasses must override `var executionQueue` to specify which queue it gets executed on.
+/// * Subclasses must override `func execute()` to specify the main body of the operation.
 /// - note:
-/// - Subclasses must override `var executionQueue` to specify which queue it gets executed on.
-/// - Subclasses must override `func execute()` to specify the main body of the operation.
+/// * We use a semaphore to block the operation's execution, and only finishes when `finish` was called.
+/// Semaphore blocks threads but not queues, so we may want to revisit this if something goes wrong / we need concurrent operations.
 class AsyncOperation<Output>: NSOperation, Queueable2 {
     
     // MARK: - Queueable2
@@ -231,21 +234,20 @@ class AsyncOperation<Output>: NSOperation, Queueable2 {
             return
         }
         
-        let executeSemphore = dispatch_semaphore_create(0)
+        let executeSemaphore = dispatch_semaphore_create(0)
         executionQueue.addOperationWithBlock {
             self.execute { [weak self] result in
                 defer {
-                    dispatch_semaphore_signal(executeSemphore)
+                    dispatch_semaphore_signal(executeSemaphore)
                 }
                 guard let strongSelf = self else {
                     return
                 }
                 strongSelf.result = strongSelf.cancelled ? .cancelled : result
-                
             }
         }
         
-        dispatch_semaphore_wait(executeSemphore, DISPATCH_TIME_FOREVER)
+        dispatch_semaphore_wait(executeSemaphore, DISPATCH_TIME_FOREVER)
     }
 }
 
