@@ -245,9 +245,12 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         let router = Router(originViewController: self, dependencyManager: dependencyManager)
         let targetContent = dataSource.items[indexPath.row]
-        let destination = DeeplinkDestination(content: targetContent)
-        router.navigate(to: destination)
-        header?.headerWillDisappear()
+
+        if let contentID = targetContent.id {
+            let destination = DeeplinkDestination(contentID: contentID)
+            router.navigate(to: destination)
+            header?.headerWillDisappear()
+        }
         
         guard let cell = collectionView.cellForItemAtIndexPath(indexPath) as? ContentCell else {
             return
