@@ -597,6 +597,7 @@
 		7AC9E7C41D5A53EC000D8FD6 /* UIAlertController+ContentActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC9E7C31D5A53EC000D8FD6 /* UIAlertController+ContentActionSheet.swift */; };
 		7AE0A03D1D63943700769080 /* Callback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE0A03C1D63943700769080 /* Callback.swift */; };
 		7AE0A0401D63B3EE00769080 /* BadgeCountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE0A03F1D63B3EE00769080 /* BadgeCountManager.swift */; };
+		7AE0A0421D63EC7F00769080 /* VDependencyManager+AccessoryScreens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE0A0411D63EC7F00769080 /* VDependencyManager+AccessoryScreens.swift */; };
 		7AE363A11CC864B600F851E9 /* SideNavScaffoldViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE363A01CC864B600F851E9 /* SideNavScaffoldViewController.swift */; };
 		7AE363A51CC98F5D00F851E9 /* RightNavViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE363A41CC98F5D00F851E9 /* RightNavViewController.swift */; };
 		7AE363A71CC9BA9400F851E9 /* Scaffold.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE363A61CC9BA9400F851E9 /* Scaffold.swift */; };
@@ -2144,6 +2145,7 @@
 		7AC9E7C31D5A53EC000D8FD6 /* UIAlertController+ContentActionSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIAlertController+ContentActionSheet.swift"; path = "../UI/Forum/UIAlertController+ContentActionSheet.swift"; sourceTree = "<group>"; };
 		7AE0A03C1D63943700769080 /* Callback.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Callback.swift; sourceTree = "<group>"; };
 		7AE0A03F1D63B3EE00769080 /* BadgeCountManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BadgeCountManager.swift; sourceTree = "<group>"; };
+		7AE0A0411D63EC7F00769080 /* VDependencyManager+AccessoryScreens.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VDependencyManager+AccessoryScreens.swift"; sourceTree = "<group>"; };
 		7AE363A01CC864B600F851E9 /* SideNavScaffoldViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideNavScaffoldViewController.swift; sourceTree = "<group>"; };
 		7AE363A41CC98F5D00F851E9 /* RightNavViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RightNavViewController.swift; sourceTree = "<group>"; };
 		7AE363A61CC9BA9400F851E9 /* Scaffold.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scaffold.swift; sourceTree = "<group>"; };
@@ -4283,10 +4285,12 @@
 				039D02A81A1043D300DB9236 /* TemplateClasses.plist */,
 				039D02A91A1043D300DB9236 /* VDependencyManager.h */,
 				039D02AA1A1043D300DB9236 /* VDependencyManager.m */,
+				7AE0A0411D63EC7F00769080 /* VDependencyManager+AccessoryScreens.swift */,
 				7A52F0311CFF904A00AE7F3F /* VDependencyManager+APIPath.swift */,
 				F022CFDF1CFF447A00F040BB /* VDependencyManager+Buttons.swift */,
 				F035DC1B1D3D38EA00209890 /* VDependencyManager+ButtonTracking.swift */,
 				7AEB29521CCED68500B98C3B /* VDependencyManager+CoachmarkManager.swift */,
+				7C28F1031D1DDD660070B8AE /* VDependencyManager+CTAErrorState.swift */,
 				7CC982201D0104EC00583B70 /* VDependencyManager+ForumNetworkSource.swift */,
 				037FCF291A8DAF7600E8ABFC /* VDependencyManager+NavigationBar.h */,
 				037FCF2A1A8DAF7600E8ABFC /* VDependencyManager+NavigationBar.m */,
@@ -4317,7 +4321,6 @@
 				03A9CBEC1B06ABEB00C1AEA5 /* VDependencyManager+VWorkspace.h */,
 				03A9CBED1B06ABEB00C1AEA5 /* VDependencyManager+VWorkspace.m */,
 				039D02AB1A1043D300DB9236 /* VHasManagedDependencies.h */,
-				7C28F1031D1DDD660070B8AE /* VDependencyManager+CTAErrorState.swift */,
 			);
 			path = Dependencies;
 			sourceTree = "<group>";
@@ -8233,6 +8236,7 @@
 				A72C86491C977FF500E97D4F /* VLoginType+Tracking.swift in Sources */,
 				A72C865D1C977FF600E97D4F /* StoredLoginOperation.swift in Sources */,
 				BFC6735E1CE2BCF5004F9D3C /* VContentVideoPlayerCoordinator.swift in Sources */,
+				7AE0A0421D63EC7F00769080 /* VDependencyManager+AccessoryScreens.swift in Sources */,
 				BFCFFFFD1CEE912100F512B1 /* VImageAsset+Fetcher.swift in Sources */,
 				A721E95D1B572454000B7901 /* UIView+MotionEffects.m in Sources */,
 				A7F843751BFD5A0B004C3D55 /* PersistentStoreType.swift in Sources */,
