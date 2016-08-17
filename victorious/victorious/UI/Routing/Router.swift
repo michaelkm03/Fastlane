@@ -92,7 +92,7 @@ struct Router {
         checkForPermissionBeforeRouting(contentIsForVIPOnly: configuration.isVIPOnly) { success in
             if success {
                 
-                if (configuration.addressBarVisible) {
+                if configuration.addressBarVisible {
                     let safariViewController = SFSafariViewController(URL: url)
                     self.originViewController?.presentViewController(safariViewController, animated: true, completion: nil)
                 }
