@@ -343,7 +343,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         }
         
         let router = Router(originViewController: self, dependencyManager: dependencyManager)
-        let destination = DeeplinkDestination(content: content)
+        let destination = DeeplinkDestination(content: content, shouldFetch: false)
         router.navigate(to: destination)
     }
 

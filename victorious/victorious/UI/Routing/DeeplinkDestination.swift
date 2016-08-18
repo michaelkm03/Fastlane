@@ -62,10 +62,18 @@ enum DeeplinkDestination: Equatable {
         }
     }
     
-    init?(content: ContentModel) {
+    init?(content: ContentModel, shouldFetch: Bool = true) {
         switch content.type {
             case .image, .video, .gif, .text:
-                self = .closeUp(contentWrapper: .content(content: content))
+                if shouldFetch {
+                    guard let contentID = content.id else {
+                        return nil
+                    }
+                    self = .closeUp(contentWrapper: .contentID(id: contentID))
+                }
+                else {
+                    self = .closeUp(contentWrapper: .content(content: content))
+                }
             case .link:
                 guard
                     let url = content.linkedURL,
@@ -79,10 +87,6 @@ enum DeeplinkDestination: Equatable {
     
     init(userID: User.ID) {
         self = .profile(userID: userID)
-    }
-
-    init(contentID: Content.ID) {
-        self = .closeUp(contentWrapper: .contentID(id: contentID))
     }
 }
 
