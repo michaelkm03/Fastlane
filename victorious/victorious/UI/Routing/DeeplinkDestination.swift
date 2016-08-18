@@ -14,9 +14,10 @@ enum DeeplinkDestination: Equatable {
     case profile(userID: Int)
     case closeUp(contentWrapper: CloseUpContentWrapper)
     case vipForum
-    case externalURL(url: NSURL, addressBarVisible: Bool, isVIPOnly: Bool)
+    case vipSubscription
+    case externalURL(url: NSURL, configuration: ExternalLinkDisplayConfiguration)
     
-    init?(url: NSURL, isVIPOnly: Bool = false) {
+    init?(url: NSURL, isVIPOnly: Bool = false, title: String? = nil, forceModal: Bool = true) {
         guard url.scheme == "vthisapp" else {
             logger.info("Received link (\(url.absoluteString)) in wrong format. All links should be in deep link format according to https://wiki.victorious.com/display/ENG/Deep+Linking+Specification")
             return nil
@@ -48,7 +49,8 @@ enum DeeplinkDestination: Equatable {
                 else {
                     return nil
                 }
-                self = .externalURL(url: externalURL, addressBarVisible: true, isVIPOnly: isVIPOnly)
+                let configuration = ExternalLinkDisplayConfiguration(addressBarVisible: true, forceModal: forceModal, isVIPOnly: isVIPOnly, title: "")
+                self = .externalURL(url: externalURL, configuration: configuration)
             case "hiddenWebURL":
                 guard
                     let path = url.pathWithoutLeadingSlash,
@@ -56,7 +58,8 @@ enum DeeplinkDestination: Equatable {
                 else {
                     return nil
                 }
-                self = .externalURL(url: externalURL, addressBarVisible: false, isVIPOnly: isVIPOnly)
+                let configuration = ExternalLinkDisplayConfiguration(addressBarVisible: false, forceModal: forceModal, isVIPOnly: isVIPOnly, title: title)
+                self = .externalURL(url: externalURL, configuration: configuration)
             default:
                 return nil
         }
@@ -64,21 +67,25 @@ enum DeeplinkDestination: Equatable {
     
     init?(content: ContentModel) {
         switch content.type {
-        case .image, .video, .gif, .text:
-            self = .closeUp(contentWrapper: .content(content: content))
-        case .link:
-            guard
-                let url = content.linkedURL,
-                let validDestination = DeeplinkDestination(url: url, isVIPOnly: content.isVIPOnly)
-            else {
-                return nil
-            }
-            self = validDestination
+            case .image, .video, .gif, .text:
+                self = .closeUp(contentWrapper: .content(content: content))
+            case .link:
+                guard
+                    let url = content.linkedURL,
+                    let validDestination = DeeplinkDestination(url: url, isVIPOnly: content.isVIPOnly, forceModal: true)
+                else {
+                    return nil
+                }
+                self = validDestination
         }
     }
     
     init(userID: User.ID) {
         self = .profile(userID: userID)
+    }
+
+    init(contentID: Content.ID) {
+        self = .closeUp(contentWrapper: .contentID(id: contentID))
     }
 }
 
@@ -87,7 +94,9 @@ func ==(lhs: DeeplinkDestination, rhs: DeeplinkDestination) -> Bool {
         case (let .profile(id1), let .profile(id2)): return id1 == id2
         case (let .closeUp(contentWrapper1), let .closeUp(contentWrapper2)): return contentWrapper1 == contentWrapper2
         case (.vipForum, .vipForum): return true
-        case (let .externalURL(url1, visible1, isVIPOnly1), let .externalURL(url2, visible2, isVIPOnly2)): return url1 == url2 && visible1 == visible2 && isVIPOnly1 == isVIPOnly2
+        case (.vipSubscription, .vipSubscription): return true
+        // Don't need to check titles since they could differ based on the presenting view controller
+        case (let .externalURL(url1, _), let .externalURL(url2, _)): return url1 == url2
         default: return false
     }
 }
@@ -106,4 +115,13 @@ func ==(lhs: CloseUpContentWrapper, rhs: CloseUpContentWrapper) -> Bool {
         case (let .contentID(id1), let.contentID(id2)): return id1 == id2
         default: return false
     }
+}
+
+// Lets the presenting viewcontroller control how the webcontent will be displayed
+struct ExternalLinkDisplayConfiguration {
+    let addressBarVisible: Bool
+    let forceModal: Bool
+    let isVIPOnly: Bool
+    let title: String?
+    let transitionAnimated = true
 }

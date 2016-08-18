@@ -53,45 +53,12 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         }
     }
     
-    private let spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
-    
-    // MARK: Dependency Manager
-    
-    let dependencyManager: VDependencyManager!
-    
-    // MARK: Model Data
-    
-    var user: UserModel? {
-        get {
-            return gridStreamController?.content
-        }
-    }
-    private var comparableUser: UserDetails? {
-        didSet {
-            // Call a reload of the header every time the user's details change
-            gridStreamController?.reloadHeader()
-        }
-    }
-    
-    private lazy var overflowButton: UIBarButtonItem = {
-        return UIBarButtonItem(
-            image: self.dependencyManager.overflowIcon,
-            style: .Done,
-            target: self,
-            action: #selector(overflow)
-        )
-    }()
-    
-    private lazy var upvoteButton: UIButton = {
-        let button = BackgroundButton(type: .System)
-        button.addTarget(self, action: #selector(toggleUpvote), forControlEvents: .TouchUpInside)
-        return button
-    }()
-    
     // MARK: - Initializing
     
     init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
+        subscribeButton = SubscribeButton(dependencyManager: dependencyManager)
+        subscribeButton.sizeToFit()
         
         super.init(nibName: nil, bundle: nil)
 
@@ -116,6 +83,74 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userChanged), name: kLoggedInChangedNotification, object: nil)
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        gridStreamController?.reloadHeader()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        triggerCoachmark(withContext: profileScreenContext?.coachmarkContext)
+    }
+    
+    // MARK: - Dependency Manager
+    
+    let dependencyManager: VDependencyManager!
+    
+    // MARK: - Model Data
+    
+    var user: UserModel? {
+        get {
+            return gridStreamController?.content
+        }
+    }
+    
+    private var comparableUser: UserDetails? {
+        didSet {
+            // Call a reload of the header every time the user's details change
+            gridStreamController?.reloadHeader()
+        }
+    }
+    
+    // MARK: - View controllers
+    
+    private var gridStreamController: GridStreamViewController<VNewProfileHeaderView>? {
+        willSet {
+            if let existingController = gridStreamController {
+                existingController.view.removeFromSuperview()
+                existingController.removeFromParentViewController()
+            }
+        }
+    }
+    
+    // MARK: - Views
+    
+    private let subscribeButton: SubscribeButton
+    
+    private lazy var overflowButton: UIBarButtonItem = {
+        return UIBarButtonItem(
+            image: self.dependencyManager.overflowIcon,
+            style: .Done,
+            target: self,
+            action: #selector(overflow)
+        )
+    }()
+    
+    private lazy var upvoteButton: UIButton = {
+        let button = BackgroundButton(type: .System)
+        button.addTarget(self, action: #selector(toggleUpvote), forControlEvents: .TouchUpInside)
+        return button
+    }()
+    
+    private func goVIPButton(for menuItem: VNavigationMenuItem) -> UIButton {
+        let button = BackgroundButton(type: .System)
+        button.addTarget(self, action: #selector(goVIPButtonWasPressed), forControlEvents: .TouchUpInside)
+        button.setTitle(menuItem.title, forState: .Normal)
+        button.sizeToFit()
+        return button
+    }
+    
+    private let spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+    
     // MARK: - View updating
     
     private func updateBarButtonItems() {
@@ -124,12 +159,11 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         let isCurrentUser = user?.isCurrentUser == true
         let isCreator = user?.accessLevel.isCreator == true
         let currentIsCreator = VCurrentUser.user()?.isCreator == true
-        let currentIsVIP = VCurrentUser.user()?.hasValidVIPSubscription == true
         let vipEnabled = dependencyManager.isVIPEnabled == true
         
         if !isCurrentUser {
-            if isCreator && !currentIsVIP && !currentIsCreator && vipEnabled {
-                supplementalRightButtons.append(UIBarButtonItem(customView: upgradeButton))
+            if isCreator && !currentIsCreator && vipEnabled {
+                supplementalRightButtons.append(UIBarButtonItem(customView: subscribeButton))
             }
             
             if !isCreator {
@@ -165,64 +199,17 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         v_addAccessoryScreensWithDependencyManager(dependencyManager)
     }
     
-    // MARK: - View controllers
-    
-    private var gridStreamController: GridStreamViewController<VNewProfileHeaderView>? {
-        willSet {
-            if let existingController = gridStreamController {
-                existingController.view.removeFromSuperview()
-                existingController.removeFromParentViewController()
-            }
-        }
-    }
-    
-    // MARK: - Views
-    
-    private lazy var upgradeButton: UIButton = {
-        let button = BackgroundButton(type: .System)
-        button.addTarget(self, action: #selector(upgradeButtonWasPressed), forControlEvents: .TouchUpInside)
-        button.setTitle(NSLocalizedString("Upgrade", comment: ""), forState: .Normal)
-        button.sizeToFit()
-        return button
-    }()
-    
-    // MARK: - ViewController lifecycle
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        gridStreamController?.reloadHeader()
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        triggerCoachmark(withContext: profileScreenContext?.coachmarkContext)
-    }
-
-    // MARK: - Buttons
-        
-    private func goVIPButton(for menuItem: VNavigationMenuItem) -> UIButton {
-        let button = BackgroundButton(type: .System)
-        button.addTarget(self, action: #selector(goVIPButtonWasPressed), forControlEvents: .TouchUpInside)
-        button.setTitle(menuItem.title, forState: .Normal)
-        button.sizeToFit()
-        return button
-    }
-    
     // MARK: - Actions
-    
-    private dynamic func upgradeButtonWasPressed() {
-        ShowVIPFlowOperation(originViewController: self, dependencyManager: dependencyManager).queue()
-    }
     
     private dynamic func goVIPButtonWasPressed() {
         guard let scaffold = VRootViewController.sharedRootViewController()?.scaffold else {
             return
         }
-        let router = Router(originViewController: scaffold, dependencyManager: dependencyManager)
-        let destination = DeeplinkDestination.vipForum
-        router.navigate(to: destination)
+        
+        Router(originViewController: scaffold, dependencyManager: dependencyManager).navigate(to: .vipForum)
     }
     
-    func toggleUpvote() {
+    private dynamic func toggleUpvote() {
         guard let user = user else {
             return
         }
@@ -236,7 +223,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         }
     }
     
-    func overflow() {
+    private dynamic func overflow() {
         guard
             let isBlocked = user?.isBlockedByCurrentUser,
             let userID = user?.id
@@ -295,7 +282,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     
     // MARK: - Managing the user
     
-    @objc private func userChanged() {
+    private dynamic func userChanged() {
         if let loggedInUser = VCurrentUser.user() {
             setUser(loggedInUser, using: dependencyManager)
         }

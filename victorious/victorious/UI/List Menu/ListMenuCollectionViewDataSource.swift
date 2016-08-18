@@ -24,7 +24,6 @@ enum ListMenuSection: Int {
 /// To fetch data for each section, it delegates the fetching to specific data sources.
 /// So if another section is added, a corresponding data source should be added too.
 class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, ListMenuSectionDataSourceDelegate {
-    
     private weak var listMenuViewController: ListMenuViewController?
     private let dependencyManager: VDependencyManager
     
@@ -32,21 +31,14 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
     let hashtagDataSource: ListMenuHashtagDataSource
     let creatorDataSource: ListMenuCreatorDataSource
     
-    private lazy var subscribeButton: UIButton = {
-        let button = BackgroundButton(type: .System)
-        button.tintColor = self.dependencyManager.subscribeButtonTextColor
-        button.backgroundColor = self.dependencyManager.subscribeButtonBackgroundColor
-        button.titleLabel?.font = self.dependencyManager.subscribeButtonFont
-        button.addTarget(self, action: #selector(onSubscribePressed), forControlEvents: .TouchUpInside)
-        button.setTitle("Go VIP", forState: .Normal)
-        return button
-    }()
+    private let subscribeButton: SubscribeButton
     
     // MARK: - Initialization
     
     init(dependencyManager: VDependencyManager, listMenuViewController: ListMenuViewController) {
         self.listMenuViewController = listMenuViewController
         self.dependencyManager = dependencyManager
+        subscribeButton = SubscribeButton(dependencyManager: dependencyManager)
         
         creatorDataSource = ListMenuCreatorDataSource(dependencyManager: dependencyManager.creatorsChildDependency)
         communityDataSource = ListMenuCommunityDataSource(dependencyManager: dependencyManager.communityChildDependency)
@@ -71,27 +63,19 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         let listMenuSection = ListMenuSection(rawValue: section)!
         
         switch listMenuSection {
-        case .creator:
-            return creatorDataSource.numberOfItems
-        case .community:
-            return communityDataSource.numberOfItems
-        case .hashtags:
-            return hashtagDataSource.numberOfItems
+            case .creator: return creatorDataSource.numberOfItems
+            case .community: return communityDataSource.numberOfItems
+            case .hashtags: return hashtagDataSource.numberOfItems
         }
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        
         let listMenuSection = ListMenuSection(rawValue: indexPath.section)!
 
         switch listMenuSection {
-            
-        case .creator:
-            return dequeueProperCell(creatorDataSource, for: collectionView, at: indexPath)
-        case .community:
-            return dequeueProperCell(communityDataSource, for: collectionView, at: indexPath)
-        case .hashtags:
-            return dequeueProperCell(hashtagDataSource, for: collectionView, at: indexPath)
+            case .creator: return dequeueProperCell(creatorDataSource, for: collectionView, at: indexPath)
+            case .community: return dequeueProperCell(communityDataSource, for: collectionView, at: indexPath)
+            case .hashtags: return dequeueProperCell(hashtagDataSource, for: collectionView, at: indexPath)
         }
     }
     
@@ -101,31 +85,13 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         let listMenuSection = ListMenuSection(rawValue: indexPath.section)!
         
         switch listMenuSection {
-        case .creator:
-            headerView.dependencyManager = dependencyManager.creatorsChildDependency
-        case .community:
-            headerView.dependencyManager = dependencyManager.communityChildDependency
-        case .hashtags:
-            headerView.dependencyManager = dependencyManager.hashtagsChildDependency
+            case .creator: headerView.dependencyManager = dependencyManager.creatorsChildDependency
+            case .community: headerView.dependencyManager = dependencyManager.communityChildDependency
+            case .hashtags: headerView.dependencyManager = dependencyManager.hashtagsChildDependency
         }
-
-        #if V_BACKDOOR_ACCESS_TO_VIP
-            // A custom accessoryButton is added to the first headerView to allow entry into the VIPForum and is not related to the actual section header.
-            headerView.accessoryButton = indexPath.section == 0 ? subscribeButton : nil
-        #endif
         
+        headerView.accessoryView = indexPath.section == 0 ? subscribeButton : nil
         return headerView
-    }
-    
-    // MARK: - Actions
-    
-    @objc private func onSubscribePressed() {
-        guard let scaffold = VRootViewController.sharedRootViewController()?.scaffold else {
-            return
-        }
-        let router = Router(originViewController: scaffold, dependencyManager: dependencyManager)
-        let destination = DeeplinkDestination.vipForum
-        router.navigate(to: destination)
     }
     
     // MARK: - List Menu Network Data Source Delegate
@@ -145,7 +111,6 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
     private func dequeueLoadingCell(from collectionView: UICollectionView, at indexPath: NSIndexPath) -> ActivityIndicatorCollectionCell {
         let loadingCell = collectionView.dequeueReusableCellWithReuseIdentifier(ActivityIndicatorCollectionCell.defaultReuseIdentifier, forIndexPath: indexPath) as! ActivityIndicatorCollectionCell
         loadingCell.color = dependencyManager.activityIndicatorColor
-        
         return loadingCell
     }
     
@@ -160,12 +125,9 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
 
     private func dequeueProperCell<DataSource: ListMenuSectionDataSource where DataSource.Cell: UICollectionViewCell>(dataSource: DataSource, for collectionView: UICollectionView, at indexPath: NSIndexPath) -> UICollectionViewCell {
         switch dataSource.state {
-        case .loading:
-            return dequeueLoadingCell(from: collectionView, at: indexPath)
-        case .items:
-            return dataSource.dequeueItemCell(from: collectionView, at: indexPath)
-        case .failed, .noContent:
-            return dequeueNoContentCell(from: collectionView, at: indexPath)
+            case .loading: return dequeueLoadingCell(from: collectionView, at: indexPath)
+            case .items: return dataSource.dequeueItemCell(from: collectionView, at: indexPath)
+            case .failed, .noContent: return dequeueNoContentCell(from: collectionView, at: indexPath)
         }
     }
 }
@@ -185,19 +147,5 @@ private extension VDependencyManager {
     
     var activityIndicatorColor: UIColor? {
         return colorForKey(VDependencyManagerMainTextColorKey)
-    }
-    
-    // FUTURE: Make this styled via template once available
-    
-    var subscribeButtonFont: UIFont? {
-        return UIFont.systemFontOfSize(14.0, weight: UIFontWeightSemibold)
-    }
-    
-    var subscribeButtonTextColor: UIColor? {
-        return UIColor(white: 1.0, alpha: 1.0)
-    }
-    
-    var subscribeButtonBackgroundColor: UIColor? {
-        return UIColor(white: 1.0, alpha: 0.15)
     }
 }

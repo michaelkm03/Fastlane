@@ -9,8 +9,6 @@
 import Foundation
 import SafariServices
 
-// MARK: - Router
-
 /// A Router object that is able to navigate to a deeplink destination in the app
 struct Router {
     
@@ -36,7 +34,8 @@ struct Router {
             case .profile(let userID): showProfile(for: userID)
             case .closeUp(let contentWrapper): showCloseUpView(for: contentWrapper)
             case .vipForum: showVIPForum()
-            case .externalURL(let url, let addressBarVisible, let isVIPOnly): showWebView(for: url, addressBarVisible: addressBarVisible, isVIPOnly: isVIPOnly)
+            case .vipSubscription: showVIPSubscription()
+            case .externalURL(let url, let configuration): showWebView(for: url, configuration: configuration)
         }
     }
     
@@ -48,12 +47,12 @@ struct Router {
 
         switch contentWrapper {
             case .content(let content):
-                guard content.type != .text, let contentID = content.id else {
+                guard content.type != .text else {
                     return
                 }
                 checkForPermissionBeforeRouting(contentIsForVIPOnly: content.isVIPOnly) { success in
                     if success {
-                        ShowFetchedCloseUpOperation(contentID: contentID, displayModifier: displayModifier).queue()
+                        ShowCloseUpOperation(content: content, displayModifier: displayModifier).queue()
                     }
                 }
             
@@ -74,6 +73,14 @@ struct Router {
         }
     }
     
+    private func showVIPSubscription(completion completion: ((success: Bool) -> Void)? = nil) {
+        guard let originViewController = self.originViewController else {
+            return
+        }
+        
+        ShowVIPSubscriptionOperation(originViewController: originViewController, dependencyManager: dependencyManager, completion: completion).queue()
+    }
+    
     private func showProfile(for userID: User.ID) {
         guard let originViewController = self.originViewController else {
             return
@@ -81,13 +88,18 @@ struct Router {
         ShowProfileOperation(originViewController: originViewController, dependencyManager: dependencyManager, userId: userID).queue()
     }
     
-    private func showWebView(for url: NSURL, addressBarVisible: Bool, isVIPOnly: Bool = false) {
-        // Future: We currently have no way to hide address bar. This will be handled when we implement close up web view.
-        
-        checkForPermissionBeforeRouting(contentIsForVIPOnly: isVIPOnly) { success in
+    private func showWebView(for url: NSURL, configuration: ExternalLinkDisplayConfiguration) {
+        checkForPermissionBeforeRouting(contentIsForVIPOnly: configuration.isVIPOnly) { success in
             if success {
-                let safariViewController = SFSafariViewController(URL: url)
-                self.originViewController?.presentViewController(safariViewController, animated: true, completion: nil)
+                
+                if configuration.addressBarVisible {
+                    let safariViewController = SFSafariViewController(URL: url)
+                    self.originViewController?.presentViewController(safariViewController, animated: true, completion: nil)
+                }
+                
+                else if let originVC = self.originViewController {
+                    ShowWebContentOperation(originViewController: originVC, url: url.absoluteString, dependencyManager: self.dependencyManager, configuration: configuration).queue()
+                }
             }
         }
     }
@@ -98,22 +110,16 @@ struct Router {
         originViewController?.v_showAlert(title: title, message: message)
     }
     
-    func checkForPermissionBeforeRouting(contentIsForVIPOnly isVIPOnly: Bool = false, completion: ((Bool) -> Void)? = nil) {
+    func checkForPermissionBeforeRouting(contentIsForVIPOnly isVIPOnly: Bool = false, completion: ((success: Bool) -> Void)? = nil) {
         guard let currentUser = VCurrentUser.user() else {
             return
         }
         
         if isVIPOnly && !currentUser.hasValidVIPSubscription {
-            guard let originViewController = self.originViewController else {
-                return
-            }
-            let showVIPFlowOperation = ShowVIPFlowOperation(originViewController: originViewController, dependencyManager: dependencyManager) { success in
-                completion?(success)
-            }
-            showVIPFlowOperation.queue()
+            showVIPSubscription(completion: completion)
         }
         else {
-            completion?(true)
+            completion?(success: true)
         }
     }
 }
@@ -237,6 +243,12 @@ private class ShowCloseUpOperation: MainQueueOperation {
         super.init()
     }
     
+    init(content: ContentModel, displayModifier: ShowCloseUpDisplayModifier) {
+        self.displayModifier = displayModifier
+        self.content = content
+        super.init()
+    }
+    
     override func start() {
         super.start()
         beganExecuting()
@@ -343,6 +355,117 @@ private class ShowFetchedCloseUpOperation: MainQueueOperation {
     }
 }
 
+// MARK: - Show Web Content
+
+private class ShowWebContentOperation: MainQueueOperation {
+    private let originViewController: UIViewController
+    private let createFetchOperation: () -> FetchWebContentOperation
+    private let dependencyManager: VDependencyManager
+    private let configuration: ExternalLinkDisplayConfiguration
+    
+    init (originViewController: UIViewController, url: String, dependencyManager: VDependencyManager, configuration: ExternalLinkDisplayConfiguration) {
+        self.originViewController = originViewController
+        self.dependencyManager = dependencyManager
+        self.configuration = configuration
+        self.createFetchOperation = {
+            return WebViewHTMLFetchOperation(urlPath: url)
+        }
+    }
+    
+    override func start() {
+        super.start()
+        beganExecuting()
+        
+        guard !cancelled else {
+            finishedExecuting()
+            return
+        }
+        
+        //We show the navigation and dismiss button if the view controller is presented modally, 
+        // since there would be no way to dimiss the view controller otherwise
+        let viewController = WebContentViewController(shouldShowNavigationButtons: configuration.forceModal)
+        
+        let fetchOperation = createFetchOperation()
+        
+        fetchOperation.after(self).queue { [weak fetchOperation] results, error, cancelled in
+            guard let fetchOperation = fetchOperation else {
+                return
+            }
+            
+            guard let htmlString = fetchOperation.resultHTMLString where error == nil else {
+                viewController.setFailure(with: error)
+                return
+            }
+            
+            viewController.load(htmlString, baseURL: fetchOperation.publicBaseURL)
+        }
+        
+        viewController.automaticallyAdjustsScrollViewInsets = false
+        viewController.edgesForExtendedLayout = .All
+        viewController.extendedLayoutIncludesOpaqueBars = true
+        viewController.title = configuration.title
+        
+        if let navigationController = (originViewController as? UINavigationController) ?? originViewController.navigationController where !configuration.forceModal {
+            navigationController.pushViewController(viewController, animated: configuration.transitionAnimated)
+            finishedExecuting()
+        }
+        else {
+            let navigationController = UINavigationController(rootViewController: viewController)
+            
+            dependencyManager.applyStyleToNavigationBar(navigationController.navigationBar)
+        
+            originViewController.presentViewController(navigationController, animated: configuration.transitionAnimated) {
+                self.finishedExecuting()
+            }
+        }
+    }
+}
+
+// MARK: - Show VIP Flow Operation
+
+private class ShowVIPSubscriptionOperation: MainQueueOperation {
+    private let dependencyManager: VDependencyManager
+    private let animated: Bool
+    private let completion: VIPFlowCompletion?
+    private weak var originViewController: UIViewController?
+    private(set) var showedGate = false
+    
+    required init(originViewController: UIViewController, dependencyManager: VDependencyManager, animated: Bool = true, completion: VIPFlowCompletion? = nil) {
+        self.dependencyManager = dependencyManager
+        self.originViewController = originViewController
+        self.animated = animated
+        self.completion = completion
+    }
+    
+    override func start() {
+        super.start()
+        beganExecuting()
+        
+        defer {
+            finishedExecuting()
+        }
+        
+        guard
+            !cancelled,
+            let originViewController = originViewController,
+            let vipFlow = dependencyManager.templateValueOfType(VIPFlowNavigationController.self, forKey: "vipPaygateScreen") as? VIPFlowNavigationController
+            else {
+                return
+        }
+        
+        guard VCurrentUser.user()?.hasValidVIPSubscription != true else {
+            completion?(true)
+            return
+        }
+        
+        vipFlow.completionBlock = completion
+        showedGate = true
+        originViewController.presentViewController(vipFlow, animated: animated, completion: nil)
+    }
+}
+
+// MARK: - Dependency Manager Extensions 
+
 private extension VDependencyManager {
     var relatedContentURL: String {
         return stringForKey("streamURL") ?? ""
@@ -355,4 +478,6 @@ private extension VDependencyManager {
     var contentFetchURL: String? {
         return networkResources?.stringForKey("contentFetchURL")
     }
+    
+  
 }
