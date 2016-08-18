@@ -193,18 +193,6 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
     [[InterstitialManager sharedInstance] setDependencyManager:self.dependencyManager];
 }
 
-- (void)showLogin
-{
-    ShowLoginOperation *showLoginOperation = [[ShowLoginOperation alloc] initWithOriginViewController:self
-                                                                                    dependencyManager:[self.dependencyManager childDependencyForKey:VDependencyManagerScaffoldViewControllerKey]
-                                                                                             animated:NO
-                                                                                      loginCompletion:^{
-                                                                                          [self initializeScaffold];
-                                                                                      }];
-    
-    [showLoginOperation queueWithCompletion:nil];
-}
-
 - (void)initializeScaffold
 {
     self.applicationTracking.dependencyManager = self.dependencyManager;

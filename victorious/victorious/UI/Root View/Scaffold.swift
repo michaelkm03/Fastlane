@@ -36,7 +36,7 @@ extension Scaffold where Self: UIViewController {
         pushNotificationOperation.addDependency(tutorialOperation)
         
         tutorialOperation.queue()
-        pushNotificationOperation.queue { error, cancelled in
+        pushNotificationOperation.queue { _ in
             onReady?()
         }
     }

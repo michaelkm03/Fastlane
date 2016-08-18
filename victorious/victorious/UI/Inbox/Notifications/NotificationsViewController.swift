@@ -87,6 +87,10 @@ class NotificationsViewController: UIViewController, UITableViewDelegate, Notifi
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         dependencyManager.trackViewWillDisappear(self)
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
         VTrackingManager.sharedInstance().endEvent("Notifications")
     }
     
