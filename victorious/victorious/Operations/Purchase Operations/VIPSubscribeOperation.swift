@@ -8,7 +8,7 @@
 
 import Foundation
 
-class VIPSubscribeOperation: BackgroundOperation {
+class VIPSubscribeOperation: AsyncOperation<Void> {
     let product: VProduct
     
     var purchaseManager: VPurchaseManagerType = VPurchaseManager.sharedInstance()
@@ -17,35 +17,27 @@ class VIPSubscribeOperation: BackgroundOperation {
         self.product = product
     }
     
-    override func start() {
-        super.start()
-        beganExecuting()
-        
-        guard didConfirmActionFromDependencies else {
-            cancel()
-            finishedExecuting()
-            return
-        }
-        
-        dispatch_async(dispatch_get_main_queue()) {
-            self.purchaseSubscription()
-        }
+    override var executionQueue: NSOperationQueue {
+        return .mainQueue()
     }
     
-    func purchaseSubscription() {
+    override func execute(finish: (result: OperationResult<Void>) -> Void) {
         let success = { (results: Set<NSObject>?) in
             // Force success because we have to deliver the product even if the sever fails for any reason
+            // FIXME: Why?
             VIPValidateSuscriptionOperation(shouldForceSuccess: true).rechainAfter(self).queue()
-            self.finishedExecuting()
+            finish(result: .success())
         }
+        
         let failure = { (error: NSError?) in
-            if error == nil {
-                self.cancel()
-            } else {
-                self.error = error
+            if let error = error {
+                finish(result: .failure(error))
             }
-            self.finishedExecuting()
+            else {
+                finish(result: .cancelled)
+            }
         }
+        
         purchaseManager.purchaseProduct(product, success: success, failure: failure)
     }
 }
