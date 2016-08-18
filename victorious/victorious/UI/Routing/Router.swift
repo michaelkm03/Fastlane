@@ -423,12 +423,11 @@ private class ShowWebContentOperation: AsyncOperation<Void> {
 
 // MARK: - Show VIP Flow Operation
 
-private class ShowVIPSubscriptionOperation: MainQueueOperation {
+private class ShowVIPSubscriptionOperation: AsyncOperation<Void> {
     private let dependencyManager: VDependencyManager
     private let animated: Bool
     private let completion: VIPFlowCompletion?
     private weak var originViewController: UIViewController?
-    private(set) var showedGate = false
     
     required init(originViewController: UIViewController, dependencyManager: VDependencyManager, animated: Bool = true, completion: VIPFlowCompletion? = nil) {
         self.dependencyManager = dependencyManager
@@ -437,30 +436,30 @@ private class ShowVIPSubscriptionOperation: MainQueueOperation {
         self.completion = completion
     }
     
-    override func start() {
-        super.start()
-        beganExecuting()
-        
-        defer {
-            finishedExecuting()
+    override var executionQueue: NSOperationQueue {
+        return .mainQueue()
+    }
+    
+    override func execute(finish: (result: OperationResult<Void>) -> Void) {
+        // Jump to success if current user is already VIP
+        if VCurrentUser.user()?.hasValidVIPSubscription == true {
+            completion?(true)
+            finish(result: .success())
+            return
         }
         
         guard
-            !cancelled,
             let originViewController = originViewController,
             let vipFlow = dependencyManager.templateValueOfType(VIPFlowNavigationController.self, forKey: "vipPaygateScreen") as? VIPFlowNavigationController
-            else {
-                return
-        }
-        
-        guard VCurrentUser.user()?.hasValidVIPSubscription != true else {
-            completion?(true)
+        else {
+            finish(result: .cancelled)
             return
         }
         
         vipFlow.completionBlock = completion
-        showedGate = true
-        originViewController.presentViewController(vipFlow, animated: animated, completion: nil)
+        originViewController.presentViewController(vipFlow, animated: animated) {
+            finish(result: .success())
+        }
     }
 }
 
