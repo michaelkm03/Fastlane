@@ -135,7 +135,7 @@ struct Router {
 
 // MARK: - Show Forum
 
-private class ShowForumOperation: MainQueueOperation {
+private final class ShowForumOperation: AsyncOperation<Void> {
     private let dependencyManager: VDependencyManager
     private let animated: Bool
     private let showVIP: Bool
@@ -148,19 +148,17 @@ private class ShowForumOperation: MainQueueOperation {
         self.animated = animated
     }
     
-    override func start() {
-        super.start()
-        beganExecuting()
-        
-        guard !self.cancelled else {
-            finishedExecuting()
-            return
-        }
-        
+    override var executionQueue: NSOperationQueue {
+        return .mainQueue()
+    }
+    
+    override func execute(finish: (result: OperationResult<Void>) -> Void) {
+
         let templateKey = showVIP ? "vipForum" : "forum"
         let templateValue = dependencyManager.templateValueOfType(ForumViewController.self, forKey: templateKey)
         guard let viewController = templateValue as? ForumViewController else {
-            finishedExecuting()
+            let error = NSError(domain: "ShowForumOperation", code: -1, userInfo: nil)
+            finish(result: .failure(error))
             return
         }
         
@@ -175,15 +173,14 @@ private class ShowForumOperation: MainQueueOperation {
             if self.showVIP {
                 viewController.forumNetworkSource?.setUpIfNeeded()
             }
-
-            self.finishedExecuting()
+            finish(result: .success())
         }
     }
 }
 
 // MARK: - Show Profile
 
-private class ShowProfileOperation: MainQueueOperation {
+private final class ShowProfileOperation: AsyncOperation<Void> {
     private let dependencyManager: VDependencyManager
     private weak var originViewController: UIViewController?
     private let userId: Int
@@ -196,29 +193,35 @@ private class ShowProfileOperation: MainQueueOperation {
         self.userId = userId
     }
     
-    override func start() {
-        super.start()
-        beganExecuting()
-        
-        defer {
-            finishedExecuting()
-        }
+    private override var executionQueue: NSOperationQueue {
+        return .mainQueue()
+    }
+    
+    private override func execute(finish: (result: OperationResult<Void>) -> Void) {
         
         // Check if already showing the a user's profile
-        if let originViewControllerProfile = originViewController as? VNewProfileViewController
-            where originViewControllerProfile.user?.id == userId {
+        guard (originViewController as? VNewProfileViewController)?.user?.id != userId else {
+            finish(result: .success())
             return
         }
         
-        guard let profileViewController = dependencyManager.userProfileViewController(withRemoteID: userId),
-            let originViewController = originViewController else {
-                return
+        guard
+            let profileViewController = dependencyManager.userProfileViewController(withRemoteID: userId),
+            let originViewController = originViewController
+        else {
+            let error = NSError(domain: "ShowProfileOperation", code: -1, userInfo: nil)
+            finish(result: .failure(error))
+            return
         }
         
         if let originViewController = originViewController as? UINavigationController {
-            originViewController.pushViewController(profileViewController, animated: true)
+            originViewController.pushViewController(profileViewController, animated: true) {
+                finish(result: .success())
+            }
         } else {
-            originViewController.navigationController?.pushViewController(profileViewController, animated: true)
+            originViewController.navigationController?.pushViewController(profileViewController, animated: true) {
+                finish(result: .success())
+            }
         }
     }
 }
@@ -240,7 +243,7 @@ private struct ShowCloseUpDisplayModifier {
 }
 
 /// Shows a close up view displaying the provided content.
-private class ShowCloseUpOperation: MainQueueOperation {
+private final class ShowCloseUpOperation: AsyncOperation<Void> {
     private let displayModifier: ShowCloseUpDisplayModifier
     private var content: ContentModel?
     private var contentID: String?
@@ -258,21 +261,19 @@ private class ShowCloseUpOperation: MainQueueOperation {
         super.init()
     }
     
-    override func start() {
-        super.start()
-        beganExecuting()
-        
-        defer {
-            finishedExecuting()
-        }
-        
+    private override var executionQueue: NSOperationQueue {
+        return .mainQueue()
+    }
+    
+    private override func execute(finish: (result: OperationResult<Void>) -> Void) {
         guard
-            !cancelled,
             let childDependencyManager = displayModifier.dependencyManager.childDependencyForKey("closeUpView"),
             let originViewController = displayModifier.originViewController,
             let contentID = contentID ?? content?.id
-            else {
-                return
+        else {
+            let error = NSError(domain: "ShowCloseUpOperation", code: -1, userInfo: nil)
+            finish(result: .failure(error))
+            return
         }
         
         let apiPath = APIPath(templatePath: childDependencyManager.relatedContentURL, macroReplacements: [
@@ -290,15 +291,19 @@ private class ShowCloseUpOperation: MainQueueOperation {
         
         let animated = displayModifier.animated
         if let originViewController = originViewController as? UINavigationController {
-            originViewController.pushViewController(closeUpViewController, animated: animated)
+            originViewController.pushViewController(closeUpViewController, animated: animated) {
+                finish(result: .success())
+            }
         } else {
-            originViewController.navigationController?.pushViewController(closeUpViewController, animated: animated)
+            originViewController.navigationController?.pushViewController(closeUpViewController, animated: animated) {
+                finish(result: .success())
+            }
         }
     }
 }
 
 /// Fetches a piece of content and shows a close up view containing it.
-private class ShowFetchedCloseUpOperation: MainQueueOperation {
+private final class ShowFetchedCloseUpOperation: AsyncOperation<Void> {
     private let displayModifier: ShowCloseUpDisplayModifier
     private var contentID: String
     
@@ -308,20 +313,19 @@ private class ShowFetchedCloseUpOperation: MainQueueOperation {
         super.init()
     }
     
-    override func start() {
-        super.start()
-        beganExecuting()
-        
-        defer {
-            finishedExecuting()
-        }
+    private override var executionQueue: NSOperationQueue {
+        return .mainQueue()
+    }
+    
+    private override func execute(finish: (result: OperationResult<Void>) -> Void) {
         
         let displayModifier = self.displayModifier
         guard
-            !cancelled,
             let userID = VCurrentUser.user()?.remoteId.integerValue,
             let contentFetchURL = displayModifier.dependencyManager.contentFetchURL
         else {
+            let error = NSError(domain: "ShowFetchedCloseUpOperation", code: -1, userInfo: nil)
+            finish(result: .failure(error))
             return
         }
         
@@ -339,6 +343,7 @@ private class ShowFetchedCloseUpOperation: MainQueueOperation {
         
         // Queue operations. We queue the operations after setting up dependency graph for NSOperationQueue performance reasons.
         showCloseUpOperation.queue()
+        
         contentFetchOperation.queue() { results, _, _ in
             guard let shownCloseUpView = showCloseUpOperation.displayedCloseUpView else {
                 return
@@ -361,6 +366,7 @@ private class ShowFetchedCloseUpOperation: MainQueueOperation {
                 }
             }
         }
+        finish(result: .success())
     }
 }
 

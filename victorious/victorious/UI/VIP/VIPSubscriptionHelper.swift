@@ -81,27 +81,30 @@ class VIPSubscriptionHelper {
         if willShowPrompt {
             delegate?.setIsLoading(false, title: nil)
         }
-        selectSubscription.queue() { [weak self] _ in
+        selectSubscription.queue() { [weak self] result in
             guard let strongSelf = self else {
                 return
             }
             
             let selectionDependency = strongSelf.dependencyManager.selectionDialogDependency
-            guard let selectedProduct = selectSubscription.selectedProduct else {
+            switch result {
+            case .success(let selectedProduct):
+                if willShowPrompt {
+                    selectionDependency?.trackButtonEvent(.tap)
+                }
+                self?.delegate?.setIsLoading(true, title: nil)
+                self?.subscribeToProduct(selectedProduct)
+            case .failure(let error):
                 if willShowPrompt {
                     selectionDependency?.trackButtonEvent(.cancel)
                 }
                 strongSelf.delegate?.setIsLoading(false, title: nil)
-                if let error = selectSubscription.error {
-                    originViewController.showSubscriptionAlert(for: error)
-                }
-                return
+                originViewController.showSubscriptionAlert(for: error as NSError)
+                self?.delegate?.setIsLoading(false, title: nil)
+                originViewController.showSubscriptionAlert(for: error as NSError)
+            case .cancelled:
+                self?.delegate?.setIsLoading(false, title: nil)
             }
-            if willShowPrompt {
-                selectionDependency?.trackButtonEvent(.tap)
-            }
-            strongSelf.delegate?.setIsLoading(true, title: nil)
-            strongSelf.subscribeToProduct(selectedProduct)
         }
     }
     
