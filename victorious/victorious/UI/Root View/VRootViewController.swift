@@ -24,7 +24,7 @@ extension VRootViewController {
         guard let scaffoldDependencyManager = dependencyManager.scaffoldDependencyManager else {
             return
         }
-        
+        NSLog("\(NSOperationQueue.mainQueue().operations)")
         ShowLoginOperation(originViewController: self, dependencyManager: scaffoldDependencyManager, context: .Default, animated: false).queue { [weak self] result in
             switch result {
                 case .success: self?.initializeScaffold()

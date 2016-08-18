@@ -24,7 +24,6 @@ class VIPSubscribeOperation: AsyncOperation<Void> {
     override func execute(finish: (result: OperationResult<Void>) -> Void) {
         let success = { (results: Set<NSObject>?) in
             // Force success because we have to deliver the product even if the sever fails for any reason
-            // FIXME: Why?
             VIPValidateSuscriptionOperation(shouldForceSuccess: true).rechainAfter(self).queue()
             finish(result: .success())
         }

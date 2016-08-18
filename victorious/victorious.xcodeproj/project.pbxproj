@@ -439,6 +439,7 @@
 		672894351BFA9874001146DB /* MuseoSans-500.otf in Resources */ = {isa = PBXBuildFile; fileRef = 672894321BFA9874001146DB /* MuseoSans-500.otf */; };
 		6728F6DE1D3DADC000559A04 /* UIImageView+ImageAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6728F6DD1D3DADC000559A04 /* UIImageView+ImageAsset.swift */; };
 		6731B2611BF182F100B9FFFE /* FanLoyaltyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6731B2601BF182F100B9FFFE /* FanLoyaltyTests.swift */; };
+		67376B281D666ADC002DE72E /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67376B271D666ADC002DE72E /* LoadingViewController.swift */; };
 		67486B741CC7145300B03926 /* ListMenuCommunityCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67486B731CC7145300B03926 /* ListMenuCommunityCollectionViewCell.swift */; };
 		67486B761CC7147500B03926 /* ListMenuCommunityDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67486B751CC7147500B03926 /* ListMenuCommunityDataSource.swift */; };
 		67486B781CC85AD000B03926 /* ListMenuSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67486B771CC85AD000B03926 /* ListMenuSectionHeaderView.swift */; };
@@ -1971,6 +1972,7 @@
 		6728F6DD1D3DADC000559A04 /* UIImageView+ImageAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+ImageAsset.swift"; sourceTree = "<group>"; };
 		6731B2601BF182F100B9FFFE /* FanLoyaltyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FanLoyaltyTests.swift; sourceTree = "<group>"; };
 		6731B2641BF1834700B9FFFE /* FanLoyalty.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FanLoyalty.json; sourceTree = "<group>"; };
+		67376B271D666ADC002DE72E /* LoadingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
 		67486B731CC7145300B03926 /* ListMenuCommunityCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListMenuCommunityCollectionViewCell.swift; path = "List Menu/Community/ListMenuCommunityCollectionViewCell.swift"; sourceTree = "<group>"; };
 		67486B751CC7147500B03926 /* ListMenuCommunityDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListMenuCommunityDataSource.swift; path = "List Menu/Community/ListMenuCommunityDataSource.swift"; sourceTree = "<group>"; };
 		67486B771CC85AD000B03926 /* ListMenuSectionHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListMenuSectionHeaderView.swift; path = "List Menu/ListMenuSectionHeaderView.swift"; sourceTree = "<group>"; };
@@ -4207,6 +4209,7 @@
 				03CA69611C5485200039BD01 /* PersistenceTemplateDownloader.swift */,
 				0314D3E719B46B5E00FA363C /* VLoadingViewController.h */,
 				0314D3E819B46B5E00FA363C /* VLoadingViewController.m */,
+				67376B271D666ADC002DE72E /* LoadingViewController.swift */,
 			);
 			path = "Loading View";
 			sourceTree = "<group>";
@@ -8368,6 +8371,7 @@
 				0E23691D1D497C4100D9E45C /* Presentable.swift in Sources */,
 				A601FB4F1B4355A30050536C /* VCreationFlowController.m in Sources */,
 				03DB20DD1CC99AF500721C24 /* FilterNameLocalization.swift in Sources */,
+				67376B281D666ADC002DE72E /* LoadingViewController.swift in Sources */,
 				A721E9551B572454000B7901 /* UIImageView+Blurring.m in Sources */,
 				D85B709B1B0EF0520038CA5B /* VModernRegisterViewController.m in Sources */,
 				A72C86971C98D43F00E97D4F /* NetworkActivityIndicator.swift in Sources */,
