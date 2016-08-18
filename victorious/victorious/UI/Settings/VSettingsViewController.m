@@ -11,7 +11,6 @@
 #import "VDependencyManager.h"
 #import "VDeviceInfo.h"
 #import "VSettingsViewController.h"
-#import "VWebContentViewController.h"
 #import "VEnvironment.h"
 #import "VButton.h"
 #import "VPurchaseManager.h"

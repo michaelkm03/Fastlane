@@ -26,7 +26,7 @@ class TextOnImageButton: UIButton, TrackableButton {
             titleLabel?.font = templateAppearanceValue(.font)
             
             backgroundColor = .clearColor()
-            self.enabled = templateAppearanceValue(.clickable) ?? false
+            userInteractionEnabled = templateAppearanceValue(.clickable) ?? false
         }
     }
 }

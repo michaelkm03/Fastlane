@@ -15,6 +15,7 @@ class DeeplinkDestinationTests: XCTestCase {
     let vipForumURL = NSURL(string: "vthisapp://vipForum")!
     let externalURL = NSURL(string: "vthisapp://webURL/https://www.example.com")!
     let hiddenURL = NSURL(string: "vthisapp://hiddenWebURL/https://www.example.com")!
+    let defaultConfiguration = ExternalLinkDisplayConfiguration(addressBarVisible: true, forceModal: true, isVIPOnly: false, title: "")
 
     func testInitializeWithContentURL() {
         let destination = DeeplinkDestination(url: contentURL)
@@ -34,13 +35,13 @@ class DeeplinkDestinationTests: XCTestCase {
     func testInitializeWithExternalURL() {
         let destination = DeeplinkDestination(url: externalURL)
         let expectedURL = NSURL(string: "https://www.example.com")!
-        XCTAssertEqual(destination, .externalURL(url: expectedURL, addressBarVisible: true, isVIPOnly: false ))
+        XCTAssertEqual(destination, .externalURL(url: expectedURL, configuration: defaultConfiguration))
     }
     
     func testInitializeWithHiddenURL() {
         let destination = DeeplinkDestination(url: hiddenURL, isVIPOnly: true)
         let expectedURL = NSURL(string: "https://www.example.com")!
-        XCTAssertEqual(destination, .externalURL(url: expectedURL, addressBarVisible: false, isVIPOnly: true))
+        XCTAssertEqual(destination, .externalURL(url: expectedURL, configuration: defaultConfiguration))
     }
     
     func testInitializeWithContent() {
