@@ -25,6 +25,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     
     static let userAppearanceKey = "userAppearance"
     static let creatorAppearanceKey = "creatorAppearance"
+    static let upgradeButtonID = "Accessory paygate"
     static let estimatedBarButtonWidth =  CGFloat(60.0)
     static let estimatedStatusBarHeight = CGFloat(20.0)
     static let estimatedNavBarRightPadding = CGFloat(10.0)
@@ -279,6 +280,10 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         return items + supplementalRightButtons
     }
     
+    func shouldDisplay(screen: AccessoryScreen) -> Bool {
+        return screen.id != VNewProfileViewController.upgradeButtonID
+    }
+    
     func navigate(to destination: UIViewController, from accessoryScreen: AccessoryScreen) {
         navigationController?.pushViewController(destination, animated: true)
     }
@@ -389,7 +394,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
             return
         }
         
-        if (shouldShowSpinner) {
+        if shouldShowSpinner {
             spinner.frame = CGRect(center: view.bounds.center, size: CGSizeZero)
             view.addSubview(spinner)
             spinner.startAnimating()
