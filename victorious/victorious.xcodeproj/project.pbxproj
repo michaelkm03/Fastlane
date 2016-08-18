@@ -731,7 +731,6 @@
 		A72C86091C977FF500E97D4F /* DeviceExperimentsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85631C977FF500E97D4F /* DeviceExperimentsOperation.swift */; };
 		A72C860A1C977FF500E97D4F /* DevicePreferencesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85641C977FF500E97D4F /* DevicePreferencesOperation.swift */; };
 		A72C860C1C977FF500E97D4F /* FetchFromMainContextOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85661C977FF500E97D4F /* FetchFromMainContextOperation.swift */; };
-		A72C860D1C977FF500E97D4F /* FetchUserOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85671C977FF500E97D4F /* FetchUserOperation.swift */; };
 		A72C860E1C977FF500E97D4F /* FollowCountOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85681C977FF500E97D4F /* FollowCountOperation.swift */; };
 		A72C86161C977FF500E97D4F /* GIFSearchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85701C977FF500E97D4F /* GIFSearchOperation.swift */; };
 		A72C86171C977FF500E97D4F /* GIFSearchResultObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85711C977FF500E97D4F /* GIFSearchResultObject.swift */; };
@@ -2346,7 +2345,6 @@
 		A72C85631C977FF500E97D4F /* DeviceExperimentsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceExperimentsOperation.swift; sourceTree = "<group>"; };
 		A72C85641C977FF500E97D4F /* DevicePreferencesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DevicePreferencesOperation.swift; sourceTree = "<group>"; };
 		A72C85661C977FF500E97D4F /* FetchFromMainContextOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchFromMainContextOperation.swift; sourceTree = "<group>"; };
-		A72C85671C977FF500E97D4F /* FetchUserOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchUserOperation.swift; sourceTree = "<group>"; };
 		A72C85681C977FF500E97D4F /* FollowCountOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowCountOperation.swift; sourceTree = "<group>"; };
 		A72C85701C977FF500E97D4F /* GIFSearchOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchOperation.swift; sourceTree = "<group>"; };
 		A72C85711C977FF500E97D4F /* GIFSearchResultObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchResultObject.swift; sourceTree = "<group>"; };
@@ -5242,7 +5240,6 @@
 				A72C85631C977FF500E97D4F /* DeviceExperimentsOperation.swift */,
 				A72C85641C977FF500E97D4F /* DevicePreferencesOperation.swift */,
 				A72C85661C977FF500E97D4F /* FetchFromMainContextOperation.swift */,
-				A72C85671C977FF500E97D4F /* FetchUserOperation.swift */,
 				7AB14CAB1CBEF8AE006E674B /* FetchWebContentOperation.swift */,
 				A72C85681C977FF500E97D4F /* FollowCountOperation.swift */,
 				A72C85701C977FF500E97D4F /* GIFSearchOperation.swift */,
@@ -8151,7 +8148,6 @@
 				F0FC98141B61AAA10098AFCB /* UIViewController+VAccessoryScreens.m in Sources */,
 				7979A0301C18B10400455FF8 /* NotificationSettingsViewController.swift in Sources */,
 				A70E846F1C3F00C800689EFA /* TestPersistentStore.swift in Sources */,
-				A72C860D1C977FF500E97D4F /* FetchUserOperation.swift in Sources */,
 				A7DDA6E51B601D0D005CE55E /* UIView+ReuseIdentifier.swift in Sources */,
 				0395575A19C14439005E32FB /* VCameraCaptureController.m in Sources */,
 				A721E9571B572454000B7901 /* UINavigationController+RotationMethodForwarding.m in Sources */,
