@@ -246,11 +246,9 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         let router = Router(originViewController: self, dependencyManager: dependencyManager)
         let targetContent = dataSource.items[indexPath.row]
 
-        if let contentID = targetContent.id {
-            let destination = DeeplinkDestination(contentID: contentID)
-            router.navigate(to: destination)
-            header?.headerDidDisappear()
-        }
+        let destination = DeeplinkDestination(content: targetContent)
+        router.navigate(to: destination)
+        header?.headerDidDisappear()
 
         guard let cell = collectionView.cellForItemAtIndexPath(indexPath) as? ContentCell else {
             return
