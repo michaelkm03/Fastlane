@@ -17,6 +17,7 @@ public struct ValidateReceiptRequest: RequestType {
     public var urlRequest: NSURLRequest {
         let request = NSMutableURLRequest(URL: url)
         request.HTTPBodyStream = NSInputStream(URL: requestBody.fileURL)
+        request.HTTPMethod = "POST"
         request.addValue( requestBody.contentType, forHTTPHeaderField: "Content-Type" )
         return request
     }
