@@ -326,8 +326,8 @@ private extension VDependencyManager {
         guard
             let urlString = networkResources?.stringForKey("purchaseURL"),
             let url = NSURL(string: urlString)
-            else {
-                return nil
+        else {
+            return nil
         }
         return url
     }
