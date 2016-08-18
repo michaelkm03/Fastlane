@@ -51,7 +51,7 @@ class BackgroundOperation: NSOperation, Queueable {
     }
     
     func executeCompletionBlock(completionBlock: (NSError?, Bool) -> ()) {
-        // This ensures that every subclass of `MainQueueOperation` has its completion block
+        // This ensures that every subclass of `BackgroundOperation` has its completion block
         // executed on the main queue, which saves the trouble of having to wrap
         // in dispatch block in calling code.
         dispatch_async( dispatch_get_main_queue() ) {
