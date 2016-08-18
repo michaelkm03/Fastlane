@@ -143,8 +143,6 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
         return;
     }
     self.isLoading = YES;
-    
-    [[[TempDirectoryCleanupOperation alloc] init] queueWithCompletion:nil];
 
     StartLoadingOperation *operation = [[StartLoadingOperation alloc] init];
     [operation queueWithCompletion:^(NSError *_Nullable error, BOOL success) {

@@ -8,19 +8,16 @@
 
 import Foundation
 
-class TempDirectoryCleanupOperation: BackgroundOperation {
+class TempDirectoryCleanupOperation: SyncOperation<Void> {
     
-    override func start() {
-        super.start()
-        beganExecuting()
-        
-        let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
-        dispatch_async(dispatch_get_global_queue(priority, 0)) {
-            let url = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent(kContentCreationDirectory)
-            let fileManager = NSFileManager.defaultManager()
-            let _ = try? fileManager.removeItemAtURL(url)
-            
-            self.finishedExecuting()
-        }
+    override var executionQueue: NSOperationQueue {
+        return .v_globalBackgroundQueue
+    }
+    
+    override func execute() -> OperationResult<Void> {
+        let url = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent(kContentCreationDirectory)
+        let fileManager = NSFileManager.defaultManager()
+        let _ = try? fileManager.removeItemAtURL(url)
+        return .success()
     }
 }

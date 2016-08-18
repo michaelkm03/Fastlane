@@ -59,6 +59,8 @@ class StartLoadingOperation: BackgroundOperation, VTemplateDownloadOperationDele
             )
         }
         
+        TempDirectoryCleanupOperation().queue()
+        
         let loginOperation = StoredLoginOperation(dependencyManager: cachedTemplate)
         
         loginOperation.rechainAfter(self)
