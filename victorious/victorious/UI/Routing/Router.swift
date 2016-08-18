@@ -363,9 +363,9 @@ private final class ShowFetchedCloseUpOperation: AsyncOperation<Void> {
 
 // MARK: - Show Web Content
 
-private class ShowWebContentOperation: MainQueueOperation {
+private class ShowWebContentOperation: AsyncOperation<Void> {
     private let originViewController: UIViewController
-    private let createFetchOperation: () -> FetchWebContentOperation
+    private let urlToFetchFrom: String
     private let dependencyManager: VDependencyManager
     private let configuration: ExternalLinkDisplayConfiguration
     
@@ -373,37 +373,30 @@ private class ShowWebContentOperation: MainQueueOperation {
         self.originViewController = originViewController
         self.dependencyManager = dependencyManager
         self.configuration = configuration
-        self.createFetchOperation = {
-            return WebViewHTMLFetchOperation(urlPath: url)
-        }
+        self.urlToFetchFrom = url
     }
     
-    override func start() {
-        super.start()
-        beganExecuting()
-        
-        guard !cancelled else {
-            finishedExecuting()
-            return
-        }
+    override var executionQueue: NSOperationQueue {
+        return .mainQueue()
+    }
+    
+    override func execute(finish: (result: OperationResult<Void>) -> Void) {
         
         //We show the navigation and dismiss button if the view controller is presented modally, 
         // since there would be no way to dimiss the view controller otherwise
         let viewController = WebContentViewController(shouldShowNavigationButtons: configuration.forceModal)
         
-        let fetchOperation = createFetchOperation()
-        
+        let fetchOperation = WebViewHTMLFetchOperation(urlPath: urlToFetchFrom)
         fetchOperation.after(self).queue { [weak fetchOperation] results, error, cancelled in
-            guard let fetchOperation = fetchOperation else {
-                return
-            }
-            
-            guard let htmlString = fetchOperation.resultHTMLString where error == nil else {
+            guard
+                let htmlString = fetchOperation?.resultHTMLString where error == nil,
+                let baseURL = fetchOperation?.publicBaseURL
+            else {
                 viewController.setFailure(with: error)
                 return
             }
             
-            viewController.load(htmlString, baseURL: fetchOperation.publicBaseURL)
+            viewController.load(htmlString, baseURL: baseURL)
         }
         
         viewController.automaticallyAdjustsScrollViewInsets = false
@@ -412,8 +405,9 @@ private class ShowWebContentOperation: MainQueueOperation {
         viewController.title = configuration.title
         
         if let navigationController = (originViewController as? UINavigationController) ?? originViewController.navigationController where !configuration.forceModal {
-            navigationController.pushViewController(viewController, animated: configuration.transitionAnimated)
-            finishedExecuting()
+            navigationController.pushViewController(viewController, animated: configuration.transitionAnimated) {
+                finish(result: .success())
+            }
         }
         else {
             let navigationController = UINavigationController(rootViewController: viewController)
@@ -421,7 +415,7 @@ private class ShowWebContentOperation: MainQueueOperation {
             dependencyManager.applyStyleToNavigationBar(navigationController.navigationBar)
         
             originViewController.presentViewController(navigationController, animated: configuration.transitionAnimated) {
-                self.finishedExecuting()
+                finish(result: .success())
             }
         }
     }
