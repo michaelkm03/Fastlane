@@ -2127,7 +2127,7 @@
 		7AE0A03A1D624E2B00769080 /* SubscribeButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscribeButton.swift; sourceTree = "<group>"; };
 		7AE0A03C1D63943700769080 /* Callback.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Callback.swift; sourceTree = "<group>"; };
 		7AE0A03F1D63B3EE00769080 /* BadgeCountManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BadgeCountManager.swift; sourceTree = "<group>"; };
-		7AE0A0411D63EC7F00769080 /* AccessoryScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AccessoryScreen.swift; path = ../Managers/Dependencies/AccessoryScreen.swift; sourceTree = "<group>"; };
+		7AE0A0411D63EC7F00769080 /* AccessoryScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessoryScreen.swift; sourceTree = "<group>"; };
 		7AE0A0461D64EA8100769080 /* AccessoryScreenTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessoryScreenTest.swift; sourceTree = "<group>"; };
 		7AE0A0481D64EAF500769080 /* VDependencyManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VDependencyManager.swift; sourceTree = "<group>"; };
 		7AE363A01CC864B600F851E9 /* SideNavScaffoldViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideNavScaffoldViewController.swift; sourceTree = "<group>"; };
@@ -4244,7 +4244,6 @@
 		039D02A71A1043D300DB9236 /* Dependencies */ = {
 			isa = PBXGroup;
 			children = (
-				79883BD91D1211310082D998 /* AccessoryScreenContainer.swift */,
 				035ABE781AD7AB8B00B6B1A5 /* defaultTemplate.json */,
 				039D02A81A1043D300DB9236 /* TemplateClasses.plist */,
 				039D02A91A1043D300DB9236 /* VDependencyManager.h */,
@@ -4432,8 +4431,8 @@
 			children = (
 				67B666691CDA6AF80096F18C /* ChatInterfaceDataSource.swift */,
 				6725A9FD1CDBE6E8003E9168 /* NetworkDataSource.swift */,
-				D8F8B1F01AC4C89E00AA2DB7 /* VBackgroundContainer.h */,
 				0E23691C1D497C4100D9E45C /* Presentable.swift */,
+				D8F8B1F01AC4C89E00AA2DB7 /* VBackgroundContainer.h */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -4928,14 +4927,6 @@
 			path = "Badge Count";
 			sourceTree = "<group>";
 		};
-		7AE0A0451D64EA5700769080 /* Simple Models */ = {
-			isa = PBXGroup;
-			children = (
-				7AE0A0461D64EA8100769080 /* AccessoryScreenTest.swift */,
-			);
-			path = "Simple Models";
-			sourceTree = "<group>";
-		};
 		7AE3639F1CC864A000F851E9 /* Side Nav */ = {
 			isa = PBXGroup;
 			children = (
@@ -4943,6 +4934,23 @@
 				7AE363A01CC864B600F851E9 /* SideNavScaffoldViewController.swift */,
 			);
 			path = "Side Nav";
+			sourceTree = "<group>";
+		};
+		7AFE92051D6634E2005D51A4 /* Accessory Screens */ = {
+			isa = PBXGroup;
+			children = (
+				79883BD91D1211310082D998 /* AccessoryScreenContainer.swift */,
+				7AE0A0411D63EC7F00769080 /* AccessoryScreen.swift */,
+			);
+			path = "Accessory Screens";
+			sourceTree = "<group>";
+		};
+		7AFE92061D663533005D51A4 /* Accessory Screens */ = {
+			isa = PBXGroup;
+			children = (
+				7AE0A0461D64EA8100769080 /* AccessoryScreenTest.swift */,
+			);
+			path = "Accessory Screens";
 			sourceTree = "<group>";
 		};
 		7CC982221D02353100583B70 /* NavBar */ = {
@@ -6088,6 +6096,7 @@
 		BE171D811868BE64004E5202 /* victorious */ = {
 			isa = PBXGroup;
 			children = (
+				7AFE92051D6634E2005D51A4 /* Accessory Screens */,
 				0EC65B0B1D52D6280040A8F8 /* AppDelegate.swift */,
 				A721E8601B572452000B7901 /* Categories */,
 				0EC0F60B1CE64F85008760E8 /* Debugging */,
@@ -6124,6 +6133,7 @@
 		BE171D9E1868BE64004E5202 /* victoriousTests */ = {
 			isa = PBXGroup;
 			children = (
+				7AFE92061D663533005D51A4 /* Accessory Screens */,
 				79070A2E1CFE92B50049CFC3 /* AppVersionTests.swift */,
 				03D94C2719DE155400BFAA27 /* AsyncTestHelper */,
 				7AC1B9FF1D3FFD9100FA3CF6 /* CGPoint+InitializersTests.swift */,
@@ -6155,7 +6165,6 @@
 				03A7614E1B3232970016B69D /* NSURL+VDataCacheIDTests.m */,
 				7987D7981B8A66C400EE4A39 /* NSURL+VTemporaryFilesTests.m */,
 				79070A2A1CFE73570049CFC3 /* ShowTutorialsOperationTests.swift */,
-				7AE0A0451D64EA5700769080 /* Simple Models */,
 				7AC194621D2DD2FC001B15B8 /* String+InitialsTests.swift */,
 				F093A9361CEFA008009ACABF /* String+SubstringHelpersTests.swift */,
 				BE171D9F1868BE64004E5202 /* Supporting Files */,
@@ -6562,7 +6571,6 @@
 		D8B0500E19AD2A740048E2BE /* Simple Models */ = {
 			isa = PBXGroup;
 			children = (
-				7AE0A0411D63EC7F00769080 /* AccessoryScreen.swift */,
 				7AE0A03C1D63943700769080 /* Callback.swift */,
 				7A7348581D063E83005225E4 /* ReferenceWrapper.swift */,
 				F028F3E51AC0D9E800ABFDDC /* VAppInfo.h */,

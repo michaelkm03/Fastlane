@@ -8,6 +8,7 @@
 
 /// A singleton object that manages global badge counts used across the app.
 final class BadgeCountManager {
+    
     // MARK: - Initializing
     
     private init() {

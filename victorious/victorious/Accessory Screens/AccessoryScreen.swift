@@ -10,6 +10,7 @@ import UIKit
 
 /// A struct that represents an accessory screen that comes from a template.
 struct AccessoryScreen {
+    
     // MARK: - Initializing
     
     init?(dependencyManager: VDependencyManager) {
