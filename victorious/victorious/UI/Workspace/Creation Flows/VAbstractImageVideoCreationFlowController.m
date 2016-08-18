@@ -157,18 +157,22 @@ static NSString * const kCreationFlowSourceSearch = @"search";
     __weak typeof(self) welf = self;
     _workspaceViewController.completionBlock = ^void(BOOL finished, UIImage *previewImage, NSURL *renderedMediaURL)
     {
-        __strong typeof(welf) strongSelf = welf;
-        if (finished)
-        {
-            strongSelf.renderedMediaURL = renderedMediaURL;
-            strongSelf.previewImage = previewImage;
-            [strongSelf afterEditingFinishedUseCapturedMediaURL:NO];
-        }
-        else
-        {
-            [strongSelf popViewControllerAnimated:YES];
-        }
+        [welf workspaceFinished:finished withPreviewImage:previewImage mediaURL:renderedMediaURL];
     };
+}
+
+- (void)workspaceFinished:(BOOL)finished withPreviewImage:(UIImage *)previewImage mediaURL:(NSURL *)mediaURL
+{
+    if (finished)
+    {
+        self.renderedMediaURL = mediaURL;
+        self.previewImage = previewImage;
+        [self afterEditingFinishedUseCapturedMediaURL:NO];
+    }
+    else
+    {
+        [self popViewControllerAnimated:YES];
+    }
 }
 
 - (void)afterEditingFinishedUseCapturedMediaURL:(BOOL)shouldUseCapturedMediaURL
@@ -250,6 +254,12 @@ static NSString * const kCreationFlowSourceSearch = @"search";
     {
         [self prepareWorkspaceWithMediaURL:mediaURL
                            andPreviewImage:previewImage];
+        BOOL shouldSkipWorkspace = self.workspaceViewController.toolController.tools.count == 0 && [self mediaType] == MediaTypeImage;
+        if (shouldSkipWorkspace) {
+            [self workspaceFinished:YES withPreviewImage:previewImage mediaURL:mediaURL];
+            return;
+        }
+        
         if ([self.workspaceViewController isKindOfClass:[NativeWorkspaceViewController class]])
         {
             //The navive workspace view controller must be

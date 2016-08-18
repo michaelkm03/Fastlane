@@ -24,8 +24,7 @@ extension VIPGateViewControllerDelegate {
             return
         }
         let router = Router(originViewController: scaffold, dependencyManager: dependencyManager)
-        let destination = DeeplinkDestination.vipForum
-        router.navigate(to: destination)
+        router.navigate(to: .vipForum)
     }
 }
 
@@ -33,7 +32,7 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     @IBOutlet weak private var headlineLabel: UILabel!
     @IBOutlet weak private var detailLabel: UILabel!
     @IBOutlet weak private var subscribeButton: TextOnColorButton!
-    @IBOutlet weak private var restoreButton: UIButton!
+    @IBOutlet weak private var restoreButton: TextOnColorButton!
     @IBOutlet weak private var privacyPolicyButton: UIButton!
     @IBOutlet weak private var termsOfServiceButton: UIButton!
     @IBOutlet weak private var closeButton: ImageOnColorButton! {
@@ -85,8 +84,8 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     }
     
     @IBAction func onRestore(sender: UIButton? = nil) {
+        restoreButton.dependencyManager?.trackButtonEvent(.tap)
         let restore = RestorePurchasesOperation(validationURL: dependencyManager.validationURL)
-        
         setIsLoading(true, title: Strings.restoreInProgress)
         restore.queue() { [weak self] error, canceled in
             self?.setIsLoading(false)
@@ -105,11 +104,11 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     }
     
     @IBAction func onPrivacyPolicySelected() {
-        ShowWebContentOperation(originViewController: self, type: .PrivacyPolicy, forceModal: true, dependencyManager: dependencyManager).queue()
+        navigateToFixedWebContent(.PrivacyPolicy)
     }
     
     @IBAction func onTermsOfServiceSelected() {
-        ShowWebContentOperation(originViewController: self, type: .TermsOfService, forceModal: true, dependencyManager: dependencyManager).queue()
+        navigateToFixedWebContent(.TermsOfService)
     }
     
     @IBAction func onCloseSelected() {
@@ -118,6 +117,12 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     }
     
     // MARK: - Private
+    
+    private func navigateToFixedWebContent(type: FixedWebContentType) {
+        let router = Router(originViewController: self, dependencyManager: dependencyManager)
+        let configuration = ExternalLinkDisplayConfiguration(addressBarVisible: false, forceModal: true, isVIPOnly: false, title: type.title)
+        router.navigate(to: .externalURL(url: dependencyManager.urlForFixedWebContent(type), configuration: configuration))
+    }
     
     private func HUDNeedsUpdateToTitle(title: String?) -> Bool {
         if let huds = MBProgressHUD.allHUDsForView(self.view) as? [MBProgressHUD] {
@@ -196,6 +201,7 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
         }
         
         subscribeButton.dependencyManager = dependencyManager.subscribeButtonDependency
+        restoreButton.dependencyManager = dependencyManager.restoreButtonDependency
     }
     
     override func updateViewConstraints() {
@@ -316,6 +322,10 @@ private extension VDependencyManager {
     
     var closeButtonDependency: VDependencyManager? {
         return childDependencyForKey("close.button")
+    }
+    
+    var restoreButtonDependency: VDependencyManager? {
+        return childDependencyForKey("restore.button")
     }
     
     var subscriptionFetchURL: String? {

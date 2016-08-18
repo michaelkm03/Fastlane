@@ -21,6 +21,7 @@
 @property (nonatomic, assign) BOOL actionsDisabled;
 
 @property (nonatomic, assign) BOOL isRegisteredAsNewUser;
+@property (nonatomic, strong) VDependencyManager *dependencyManager; //Exposed here for access in Swift extension
 
 - (instancetype)initWithDependencyManager:(VDependencyManager *)dependencyManager NS_DESIGNATED_INITIALIZER;
 

@@ -42,7 +42,6 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 @property (nonatomic, strong) UIScreenEdgePanGestureRecognizer *popGestureRecognizer;
 
 @property (nonatomic, assign) VAuthorizationContext authorizationContext;
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @property (nonatomic, strong) UIViewController<VLoginFlowScreen> *landingScreen;
 @property (nonatomic, strong) UIViewController<VLoginFlowScreen> *currentScreen;
@@ -553,14 +552,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
      }];
 }
 
-- (void)showWebContentOperationWithType:(WebContentOperationType)type
-{
-    [[[ShowWebContentOperation alloc] initWithOriginViewController:self
-                                                              type:type
-                                                        forceModal:YES
-                                                          animated:YES
-                                                 dependencyManager:self.dependencyManager] queueWithCompletion:nil];
-}
+
 
 - (void)showPrivacyPolicy
 {
@@ -569,7 +561,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         return;
     }
     
-    [self showWebContentOperationWithType:WebContentOperationTypePrivacyPolicy];
+    [self showFixedWebContent:FixedWebContentTypePrivacyPolicy];
 }
 
 - (void)showTermsOfService
@@ -579,7 +571,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         return;
     }
     
-    [self showWebContentOperationWithType:WebContentOperationTypeTermsOfService];
+    [self showFixedWebContent:FixedWebContentTypeTermsOfService];
 }
 
 - (void)setProfilePictureFilePath:(NSURL *)profilePictureFilePath
