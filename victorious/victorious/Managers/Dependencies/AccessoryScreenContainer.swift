@@ -103,6 +103,12 @@ class BadgeButton: UIButton {
 }
 
 private class AccessoryScreenBarButtonItem: UIBarButtonItem {
+    // MARK: - Constants
+    
+    private struct Constants {
+        static let extraWidth = CGFloat(16.0)
+    }
+    
     // MARK: - Initializing
     
     init(accessoryScreen: AccessoryScreen, container: AccessoryScreenContainer) {
@@ -113,7 +119,10 @@ private class AccessoryScreenBarButtonItem: UIBarButtonItem {
         
         button.setImage(accessoryScreen.icon, forState: .Normal)
         button.addTarget(self, action: #selector(buttonWasPressed), forControlEvents: .TouchUpInside)
-        button.sizeToFit()
+        
+        var buttonSize = button.intrinsicContentSize()
+        buttonSize.width += Constants.extraWidth
+        button.frame.size = buttonSize
         customView = button
     }
     
