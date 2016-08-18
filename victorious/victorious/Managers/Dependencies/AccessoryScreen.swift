@@ -18,12 +18,16 @@ struct AccessoryScreen {
             return nil
         }
         
+        self.dependencyManager = dependencyManager
         self.id = id
         title = dependencyManager.stringForKey("title")
         icon = dependencyManager.imageForKey("icon")
-        destinationID = dependencyManager.stringForKey("destination")
         position = AccessoryScreenPosition(string: dependencyManager.stringForKey("position") ?? "") ?? .left
     }
+    
+    // MARK: - Dependency manager
+    
+    private let dependencyManager: VDependencyManager
     
     // MARK: - Accessing values
     
@@ -36,16 +40,14 @@ struct AccessoryScreen {
     /// An icon that can be used to display a button that navigates to this accessory screen.
     var icon: UIImage?
     
-    /// The component ID of the accessory screen's destination, if any.
-    var destinationID: String?
-    
     /// The position of the accessory screen's button when displayed in a navigation bar.
     var position: AccessoryScreenPosition
     
     // MARK: - Loading the destination
     
-    func loadDestination() {
-        // TODO: Implement me!
+    /// Loads the accessory screen's destination view controller and returns it if it exists.
+    func loadDestination() -> UIViewController? {
+        return dependencyManager.viewControllerForKey("destination")
     }
 }
 
@@ -66,7 +68,7 @@ extension VDependencyManager {
     /// Returns all of the accessory screens contained in the dependency manager at the given `key`, or nil if no
     /// accessory screens exist.
     @warn_unused_result func accessoryScreens(for key: String) -> [AccessoryScreen]? {
-        guard let accessoryScreenDependencyManagers = childDependencies(for: key + "fake") else {
+        guard let accessoryScreenDependencyManagers = childDependencies(for: key) else {
             logger.warning("Tried to get accessory screens from dependency manager for key '\(key)', but a value for that key was not found.")
             return nil
         }

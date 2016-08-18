@@ -91,13 +91,8 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
     [self.dependencyManager configureNavigationItem:self.navigationItem];
-    
-    [self addAccessoryScreens];
-    
     [self.dependencyManager trackViewWillAppear:self];
-        
     self.serverEnvironmentCell.detailTextLabel.text = [[[VEnvironmentManager sharedInstance] currentEnvironment] name];
     
 #ifdef V_SWITCH_ENVIRONMENTS

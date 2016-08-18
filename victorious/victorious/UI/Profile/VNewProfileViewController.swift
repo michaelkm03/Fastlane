@@ -25,7 +25,6 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     
     static let userAppearanceKey = "userAppearance"
     static let creatorAppearanceKey = "creatorAppearance"
-    static let upgradeButtonID = "Accessory paygate"
     static let estimatedBarButtonWidth =  CGFloat(60.0)
     static let estimatedStatusBarHeight = CGFloat(20.0)
     static let estimatedNavBarRightPadding = CGFloat(10.0)
@@ -162,7 +161,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
             }
         }
         
-        addAccessoryScreens(to: navigationItem, from: dependencyManager)
+        applyAccessoryScreens(to: navigationItem, from: dependencyManager)
     }
     
     // MARK: - View controllers
@@ -291,6 +290,10 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     
     func addCustomRightItems(to items: [UIBarButtonItem]) -> [UIBarButtonItem] {
         return items + supplementalRightButtons
+    }
+    
+    func navigate(to destination: UIViewController, from accessoryScreen: AccessoryScreen) {
+        navigationController?.pushViewController(destination, animated: true)
     }
     
     // MARK: - Managing the user
