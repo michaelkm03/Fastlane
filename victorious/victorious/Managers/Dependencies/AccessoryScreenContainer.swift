@@ -98,10 +98,6 @@ extension AccessoryScreenContainer {
     }
 }
 
-class BadgeButton: UIButton {
-    
-}
-
 private class AccessoryScreenBarButtonItem: UIBarButtonItem {
     // MARK: - Constants
     
@@ -132,7 +128,7 @@ private class AccessoryScreenBarButtonItem: UIBarButtonItem {
     
     // MARK: - Views
     
-    private let button = BadgeButton(type: .System)
+    private let button = UIButton(type: .System)
     
     // MARK: - Navigating
     
