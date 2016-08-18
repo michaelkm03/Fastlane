@@ -62,18 +62,12 @@ enum DeeplinkDestination: Equatable {
         }
     }
     
-    init?(content: ContentModel, shouldFetch: Bool = true) {
+    /// Specifies a content destination to route to.
+    ///
+    init?(content: ContentModel, forceFetch: Bool = true) {
         switch content.type {
             case .image, .video, .gif, .text:
-                if shouldFetch {
-                    guard let contentID = content.id else {
-                        return nil
-                    }
-                    self = .closeUp(contentWrapper: .contentID(id: contentID))
-                }
-                else {
-                    self = .closeUp(contentWrapper: .content(content: content))
-                }
+                self = .closeUp(contentWrapper: .content(content: content, forceFetch: forceFetch))
             case .link:
                 guard
                     let url = content.linkedURL,
@@ -104,13 +98,13 @@ func ==(lhs: DeeplinkDestination, rhs: DeeplinkDestination) -> Bool {
 /// This is needed because we could either pass a content object or content ID to close up view.
 /// If we pass a content object, it will be shown directly. While if we pass a content ID, it'll fetch the content from network.
 enum CloseUpContentWrapper: Equatable {
-    case content(content: ContentModel)
+    case content(content: ContentModel, forceFetch: Bool)
     case contentID(id: Content.ID)
 }
 
 func ==(lhs: CloseUpContentWrapper, rhs: CloseUpContentWrapper) -> Bool {
     switch (lhs, rhs) {
-        case (let .content(content1), let .content(content2)): return content1 == content2
+        case (let .content(content1, _), let .content(content2, _)): return content1 == content2
         case (let .contentID(id1), let.contentID(id2)): return id1 == id2
         default: return false
     }
