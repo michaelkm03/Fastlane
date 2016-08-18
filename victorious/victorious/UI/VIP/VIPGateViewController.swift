@@ -32,7 +32,7 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     @IBOutlet weak private var headlineLabel: UILabel!
     @IBOutlet weak private var detailLabel: UILabel!
     @IBOutlet weak private var subscribeButton: TextOnColorButton!
-    @IBOutlet weak private var restoreButton: UIButton!
+    @IBOutlet weak private var restoreButton: TextOnColorButton!
     @IBOutlet weak private var privacyPolicyButton: UIButton!
     @IBOutlet weak private var termsOfServiceButton: UIButton!
     @IBOutlet weak private var closeButton: TouchableInsetAdjustableButton! {
@@ -83,6 +83,8 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     }
     
     @IBAction func onRestore(sender: UIButton? = nil) {
+        restoreButton.dependencyManager?.trackButtonEvent(.tap)
+        
         let restore = RestorePurchasesOperation()
         
         setIsLoading(true, title: Strings.restoreInProgress)
@@ -205,6 +207,7 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
         }
         
         subscribeButton.dependencyManager = dependencyManager.subscribeButtonDependency
+        restoreButton.dependencyManager = dependencyManager.restoreButtonDependency
     }
     
     override func updateViewConstraints() {
@@ -329,6 +332,10 @@ private extension VDependencyManager {
     
     var subscribeButtonDependency: VDependencyManager? {
         return childDependencyForKey("subscribeButton")
+    }
+    
+    var restoreButtonDependency: VDependencyManager? {
+        return childDependencyForKey("restore.button")
     }
     
     var subscriptionFetchURL: String? {
