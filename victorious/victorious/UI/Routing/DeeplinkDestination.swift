@@ -65,10 +65,17 @@ enum DeeplinkDestination: Equatable {
         }
     }
     
-    init?(content: ContentModel) {
+    /// Specifies a content destination to route to.
+    /// - parameters:
+    ///     - content: The content we are routing to.
+    ///     - forceFetch: Should we perform a content fetch when we reach the destination.
+    /// - note:
+    /// In mose cases, we want to fetch the content after routing because backend may send us lightweight content in many contexts, e.g. in grid stream or chat feed.
+    /// However, when transitioning from a stage content, we don't want to fetch again because we want to keep the video playback in sync.
+    init?(content: ContentModel, forceFetch: Bool = true) {
         switch content.type {
             case .image, .video, .gif, .text:
-                self = .closeUp(contentWrapper: .content(content: content))
+                self = .closeUp(contentWrapper: .content(content: content, forceFetch: forceFetch))
             case .link:
                 guard
                     let url = content.linkedURL,
@@ -82,10 +89,6 @@ enum DeeplinkDestination: Equatable {
     
     init(userID: User.ID) {
         self = .profile(userID: userID)
-    }
-
-    init(contentID: Content.ID) {
-        self = .closeUp(contentWrapper: .contentID(id: contentID))
     }
 }
 
@@ -105,13 +108,13 @@ func ==(lhs: DeeplinkDestination, rhs: DeeplinkDestination) -> Bool {
 /// This is needed because we could either pass a content object or content ID to close up view.
 /// If we pass a content object, it will be shown directly. While if we pass a content ID, it'll fetch the content from network.
 enum CloseUpContentWrapper: Equatable {
-    case content(content: ContentModel)
+    case content(content: ContentModel, forceFetch: Bool)
     case contentID(id: Content.ID)
 }
 
 func ==(lhs: CloseUpContentWrapper, rhs: CloseUpContentWrapper) -> Bool {
     switch (lhs, rhs) {
-        case (let .content(content1), let .content(content2)): return content1 == content2
+        case (let .content(content1, _), let .content(content2, _)): return content1 == content2
         case (let .contentID(id1), let.contentID(id2)): return id1 == id2
         default: return false
     }

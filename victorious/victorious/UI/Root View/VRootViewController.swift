@@ -19,4 +19,24 @@ extension VRootViewController {
             scaffold.navigate(to: deeplink)
         }
     }
+    
+    func showLogin() {
+        guard let scaffoldDependencyManager = dependencyManager.scaffoldDependencyManager else {
+            return
+        }
+        
+        ShowLoginOperation(originViewController: self, dependencyManager: scaffoldDependencyManager, animated: false).queue { [weak self] result in
+            switch result {
+                case .success: self?.initializeScaffold()
+                case .failure: self?.v_showErrorDefaultError()
+                case .cancelled: break
+            }
+        }
+    }
+}
+
+private extension VDependencyManager {
+    var scaffoldDependencyManager: VDependencyManager? {
+        return childDependencyForKey(VDependencyManagerScaffoldViewControllerKey)
+    }
 }

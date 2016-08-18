@@ -9,7 +9,7 @@
 import UIKit
 @testable import victorious
 
-class MockActionConfirmationOperation: MainQueueOperation, ActionConfirmationOperation {
+final class MockActionConfirmationOperation: AsyncOperation<Void>, ActionConfirmationOperation {
     
     var didConfirmAction: Bool = false
     let shouldConfirm: Bool
@@ -18,10 +18,12 @@ class MockActionConfirmationOperation: MainQueueOperation, ActionConfirmationOpe
         self.shouldConfirm = shouldConfirm
     }
     
-    override func start() {
-        super.start()
-        self.beganExecuting()
+    override var executionQueue: NSOperationQueue {
+        return .mainQueue()
+    }
+    
+    override func execute(finish: (result: OperationResult<Output>) -> Void) {
         didConfirmAction = shouldConfirm
-        self.finishedExecuting()
+        finish(result: .success())
     }
 }

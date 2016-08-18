@@ -9,11 +9,6 @@
 #import <Foundation/Foundation.h>
 
 /**
- Posted when the user responds to the remote notification prompt.
- */
-extern NSString *const VPushNotificationManagerDidReceiveResponse;
-
-/**
  This class registers for push notifications,
  notifies the server of the push token,
  keeps the server updated of login changes.

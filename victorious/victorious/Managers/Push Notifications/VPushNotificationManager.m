@@ -12,8 +12,6 @@
 
 #import "victorious-Swift.h"
 
-NSString *const VPushNotificationManagerDidReceiveResponse = @"com.getvictorious.PushNotificationManagerDidRegister";
-
 static NSString * kPushNotificationTokenDefaultsKey = @"com.getvictorious.PushNotificationTokenDefaultsKey";
 
 @interface VPushNotificationManager ()
@@ -76,8 +74,6 @@ static NSString * kPushNotificationTokenDefaultsKey = @"com.getvictorious.PushNo
 
 - (void)didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:VPushNotificationManagerDidReceiveResponse object:self];
-
     if ( [self storeNewToken:deviceToken] )
     {
         [self sendTokenWithSuccessBlock:nil failBlock:nil];
@@ -118,7 +114,6 @@ static NSString * kPushNotificationTokenDefaultsKey = @"com.getvictorious.PushNo
 
 - (void)didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:VPushNotificationManagerDidReceiveResponse object:self];
     VLog(@"Error registering for push notifications: %@", [error localizedDescription]);
 }
 
