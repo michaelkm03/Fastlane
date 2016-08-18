@@ -63,7 +63,12 @@ enum DeeplinkDestination: Equatable {
     }
     
     /// Specifies a content destination to route to.
-    ///
+    /// - parameters:
+    ///     - content: The content we are routing to.
+    ///     - forceFetch: Should we perform a content fetch when we reach the destination.
+    /// - note:
+    /// In mose cases, we want to fetch the content after routing because backend may send us lightweight content in many contexts, e.g. in grid stream or chat feed.
+    /// However, when transitioning from a stage content, we don't want to fetch again because we want to keep the video playback in sync.
     init?(content: ContentModel, forceFetch: Bool = true) {
         switch content.type {
             case .image, .video, .gif, .text:
