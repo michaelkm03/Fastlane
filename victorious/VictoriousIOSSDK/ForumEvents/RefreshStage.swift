@@ -30,8 +30,8 @@ public struct RefreshStage {
         }
         
         self.contentID = contentID
-        if let title = json["meta_data"]["name"].string {
-            self.stageMetaData = StageMetaData(title: title)
+        if let metaData = json["meta_data"].dictionary {
+            self.stageMetaData = StageMetaData(title: metaData["name"]?.string)
         }
         else {
             self.stageMetaData = nil
