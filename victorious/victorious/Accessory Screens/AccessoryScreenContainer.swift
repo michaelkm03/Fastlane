@@ -6,8 +6,6 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-// TODO: Group this with AccessoryScreen
-
 import UIKit
 
 /// A protocol that can be conformed to, typically by a view controller, to handle automatic conversion of templatized
