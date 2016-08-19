@@ -333,9 +333,7 @@ private extension VDependencyManager {
     var contentUnupvoteAPIPath: APIPath? {
         return networkResources?.apiPathForKey("contentUnupvoteURL")
     }
-}
-
-private extension VDependencyManager {
+    
     var gridStreamDependencyManager: VDependencyManager? {
         return childDependencyForKey("gridStream")
     }

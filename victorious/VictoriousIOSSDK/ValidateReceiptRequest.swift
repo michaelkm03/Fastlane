@@ -12,16 +12,18 @@ public struct ValidateReceiptRequest: RequestType {
     
     private let requestBodyWriter: ValidateReceiptRequestBodyWriter
     private let requestBody: ValidateReceiptRequestBodyWriter.Output
+    private let url: NSURL
     
     public var urlRequest: NSURLRequest {
-        let request = NSMutableURLRequest(URL: NSURL(string: "/api/purchase")!)
-        request.HTTPMethod = "POST"
+        let request = NSMutableURLRequest(URL: url)
         request.HTTPBodyStream = NSInputStream(URL: requestBody.fileURL)
+        request.HTTPMethod = "POST"
         request.addValue( requestBody.contentType, forHTTPHeaderField: "Content-Type" )
         return request
     }
     
-    public init?(data: NSData) {
+    public init?(data: NSData, url: NSURL) {
+        self.url = url
         guard data.length > 0 else {
             return nil
         }

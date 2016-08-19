@@ -116,12 +116,14 @@ extern NSString * const VTrackingEventUserDidSelectProfileFollowers;
 
 // Purchases
 extern NSString * const VTrackingEventUserDidSelectLockedVoteType; //< Params: ProductIdentifier
-extern NSString * const VTrackingEventUserDidCompletePurchase; //< Params: ProductIdentifier
 extern NSString * const VTrackingEventUserDidRestorePurchases; //< "Params: Count, CurrentSection"
 extern NSString * const VTrackingEventUserDidCancelPurchase; //< User exited from the purchase prompt without making a purchase; Params: ProductIdentifier
-extern NSString * const VTrackingEventPurchaseDidFail; //< "Params: ErrorMessage, ProductIdentifier"
 extern NSString * const VTrackingEventRestorePurchasesDidFail; //< Params: ErrorMessage
 extern NSString * const VTrackingEventAppStoreProductRequestDidFail; //< Params: ErrorMessage
+extern NSString * const VTrackingEventSentProductReceiptToBackend; //< Params: None
+extern NSString * const VTrackingEventRecievedProductReceiptFromBackend; //< Params: None
+extern NSString * const VTrackingEventSentPurchaseRequestToStore; //< Params: None
+extern NSString * const VTrackingEventRecievedPurchaseCompletionFromStore; //< Params: None
 
 // Content Interaction
 extern NSString * const VTrackingEventSequenceDidAppearInStream; //< Stream cell became visible while scrolling stream (once per view); Backend mapping: cell-view
