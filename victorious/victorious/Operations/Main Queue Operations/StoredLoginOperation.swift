@@ -20,7 +20,7 @@ class StoredLoginOperation: SyncOperation<Void> {
     }
     
     override var executionQueue: NSOperationQueue {
-        return .v_globalBackgroundQueue
+        return .mainQueue()
     }
     
     override func execute() -> OperationResult<Void> {
