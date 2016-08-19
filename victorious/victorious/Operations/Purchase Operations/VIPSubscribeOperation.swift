@@ -10,11 +10,13 @@ import Foundation
 
 class VIPSubscribeOperation: BackgroundOperation {
     let product: VProduct
+    let validationURL: NSURL?
     
     var purchaseManager: VPurchaseManagerType = VPurchaseManager.sharedInstance()
     
-    init(product: VProduct) {
+    init(product: VProduct, validationURL: NSURL?) {
         self.product = product
+        self.validationURL = validationURL
     }
     
     override func start() {
@@ -35,7 +37,10 @@ class VIPSubscribeOperation: BackgroundOperation {
     func purchaseSubscription() {
         let success = { (results: Set<NSObject>?) in
             // Force success because we have to deliver the product even if the sever fails for any reason
-            VIPValidateSuscriptionOperation(shouldForceSuccess: true).rechainAfter(self).queue()
+            let validatationOperation = VIPValidateSubscriptionOperation(url: self.validationURL, shouldForceSuccess: true)
+            validatationOperation?.after(self).queue() { _ in
+                //FUTURE: Once completion block is called properly after queueing this operation in the vip flow, add the "received receipt from backend" tracking event here and remove from the operation
+            }
             self.finishedExecuting()
         }
         let failure = { (error: NSError?) in

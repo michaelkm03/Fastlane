@@ -1,5 +1,5 @@
 //
-//  VIPValidateSuscriptionOperation.swift
+//  VIPValidateSubscriptionOperation.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 3/4/16.
@@ -8,13 +8,17 @@
 
 import Foundation
 
-class VIPValidateSuscriptionOperation: RemoteFetcherOperation, RequestOperation {
+class VIPValidateSubscriptionOperation: RemoteFetcherOperation, RequestOperation {
     
     var receiptDataSource: ReceiptDataSource = NSBundle.mainBundle()
     
+    private let url: NSURL
+    
+    private(set) var validationSucceeded = false
+    
     lazy var request: ValidateReceiptRequest! = {
         let receiptData = self.receiptDataSource.readReceiptData() ?? NSData()
-        return ValidateReceiptRequest(data: receiptData)
+        return ValidateReceiptRequest(data: receiptData, url: self.url)
     }()
     
     let shouldForceSuccess: Bool
@@ -28,7 +32,18 @@ class VIPValidateSuscriptionOperation: RemoteFetcherOperation, RequestOperation 
     /// the validation on the server fails.  In such a case, we err in favor of the
     /// user to ensure we deliver any digital products immediately after purchase,
     /// as per Apple's IAP UX requirements.
-    init(shouldForceSuccess: Bool = false) {
+    convenience init?(url: NSURL?, shouldForceSuccess: Bool = false) {
+        if let url = url {
+            self.init(url: url, shouldForceSuccess: shouldForceSuccess)
+        } else if shouldForceSuccess {
+            self.init(url: NSURL(), shouldForceSuccess: true)
+        } else {
+            return nil
+        }
+    }
+    
+    private init(url: NSURL, shouldForceSuccess: Bool) {
+        self.url = url
         self.shouldForceSuccess = shouldForceSuccess
     }
     
@@ -40,12 +55,16 @@ class VIPValidateSuscriptionOperation: RemoteFetcherOperation, RequestOperation 
             return
         }
         
+        VTrackingManager.sharedInstance().trackEvent(VTrackingEventSentProductReceiptToBackend)
         // Let the backend validate the receipt and they will let us know at next login
         // whether or not the user is a VIP user
         requestExecutor.executeRequest(request, onComplete: onComplete, onError: onError)
     }
     
     func onComplete(status: VIPStatus) {
+        //FUTURE: Once completion block is called properly after queueing this operation in the vip flow, add this tracking event in the callback from `queue` instead of here
+        VTrackingManager.sharedInstance().trackEvent(VTrackingEventRecievedProductReceiptFromBackend)
+        validationSucceeded = true
         updateUser(status: status)
     }
     
