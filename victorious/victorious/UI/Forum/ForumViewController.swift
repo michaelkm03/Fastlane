@@ -24,6 +24,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         }
     }
     @IBOutlet private weak var chatFeedContainer: VPassthroughContainerView!
+    
+    static var showVIPForum = true
 
     private var stageShrinkingAnimator: StageShrinkingAnimator?
     
@@ -216,12 +218,10 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         //Initialize the title view. This will later be resized in the viewWillAppear, once it has actually been added to the navigation stack
         navBarTitleView = ForumNavBarTitleView(dependencyManager: self.dependencyManager, frame: CGRect(x: 0, y: 0, width: 200, height: 45))
         navigationController?.navigationBar.barStyle = .Black
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: dependencyManager.exitButtonIcon,
-            style: .Plain,
-            target: self,
-            action: #selector(onClose)
-        )
+        if let button = dependencyManager.closeButton {
+            button.addTarget(self, action: #selector(onClose), forControlEvents: .TouchUpInside)
+            navigationItem.leftBarButtonItem = UIBarButtonItem(customView: button)
+        }
         updateStyle()
         
         if let forumNetworkSource = dependencyManager.forumNetworkSource {
@@ -232,6 +232,11 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             forumNetworkSource.addChildReceiver(self)
             
             self.forumNetworkSource = forumNetworkSource
+        }
+        
+        if ForumViewController.showVIPForum {
+            ForumViewController.showVIPForum = false
+            Router(originViewController: self, dependencyManager: dependencyManager).showVIPForum()
         }
     }
 
@@ -435,8 +440,8 @@ private extension VDependencyManager {
         return childDependencyForKey("stage")
     }
     
-    var exitButtonIcon: UIImage? {
-        return imageForKey("closeIcon") ?? UIImage(named: "x_icon") //Template is currently returning incorrect path, so use the close icon in the image assets
+    var closeButton: ImageOnColorButton? {
+        return buttonForKey("close.button") as? ImageOnColorButton
     }
     
     var contentDeleteURL: String {
