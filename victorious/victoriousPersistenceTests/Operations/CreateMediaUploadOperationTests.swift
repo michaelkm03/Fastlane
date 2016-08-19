@@ -19,8 +19,7 @@ class CreateMediaUploadOperationTests: BaseFetcherOperationTestCase {
         mockParameters.mediaToUploadURL = NSURL(string: "www.google.com")!
         
         let expectation = expectationWithDescription("CreateMediaUploadOperation Tests")
-        let operation = CreateMediaUploadOperation(publishParameters: mockParameters, uploadManager: uploadManager, apiPath: APIPath(templatePath: "")) { error in
-        }
+        let operation = CreateMediaUploadOperation(publishParameters: mockParameters, uploadManager: uploadManager, apiPath: APIPath(templatePath: ""))
         
         operation.queue() { _ in
             XCTAssertEqual(1, self.uploadManager.enqueuedTasksCount)
@@ -34,8 +33,7 @@ class CreateMediaUploadOperationTests: BaseFetcherOperationTestCase {
         let invalidParameters = VPublishParameters()
         
         let expectation = expectationWithDescription("CreateMediaUploadOperation Tests")
-        let operation = CreateMediaUploadOperation(publishParameters: invalidParameters, uploadManager: uploadManager, apiPath: APIPath(templatePath: "")) { error in
-        }
+        let operation = CreateMediaUploadOperation(publishParameters: invalidParameters, uploadManager: uploadManager, apiPath: APIPath(templatePath: ""))
         
         operation.queue() { _ in
             XCTAssertEqual(0, self.uploadManager.enqueuedTasksCount)
@@ -51,8 +49,7 @@ class CreateMediaUploadOperationTests: BaseFetcherOperationTestCase {
         mockParameters.assetRemoteId = "ABCDEF"
         
         let expectation = expectationWithDescription("CreateMediaUploadOperation Tests")
-        let operation = CreateMediaUploadOperation(publishParameters: mockParameters, uploadManager: uploadManager, apiPath: APIPath(templatePath: "")) { error in
-        }
+        let operation = CreateMediaUploadOperation(publishParameters: mockParameters, uploadManager: uploadManager, apiPath: APIPath(templatePath: ""))
         
         operation.queue() { _ in
             XCTAssertEqual(1, self.uploadManager.enqueuedTasksCount)
