@@ -22,8 +22,8 @@ class BasePersistentStoreTestCase: XCTestCase {
         (testStore as? TestPersistentStore)?.deletePersistentStore()
         persistentStoreHelper = PersistentStoreTestHelper(persistentStore: testStore)
         
-        NSOperationQueue.v_globalBackgroundQueue.cancelAllOperations()
-        NSOperationQueue.v_globalBackgroundQueue.suspended = false
+        Queue.background.operationQueue.cancelAllOperations()
+        Queue.background.operationQueue.suspended = false
         
         NSOperationQueue.mainQueue().cancelAllOperations()
         NSOperationQueue.mainQueue().suspended = false
@@ -32,8 +32,8 @@ class BasePersistentStoreTestCase: XCTestCase {
     override func tearDown() {
         super.tearDown()
         
-        NSOperationQueue.v_globalBackgroundQueue.cancelAllOperations()
-        NSOperationQueue.v_globalBackgroundQueue.suspended = true
+        Queue.background.operationQueue.cancelAllOperations()
+        Queue.background.operationQueue.suspended = true
         
         NSOperationQueue.mainQueue().cancelAllOperations()
         NSOperationQueue.mainQueue().suspended = true

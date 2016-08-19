@@ -68,7 +68,7 @@ final class StartLoadingOperation: SyncOperation<Void>, VTemplateDownloadOperati
         }
         
         loginOperation.queue()
-        let backgroundQueue = NSOperationQueue.v_globalBackgroundQueue
+        let backgroundQueue = Queue.background.operationQueue
         backgroundQueue.addOperation(templateDownloadOperation)
         
         return .success()
