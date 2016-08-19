@@ -27,8 +27,6 @@ final class VIPSubscribeOperation: AsyncOperation<Void> {
         let success = { (results: Set<NSObject>?) in
             // Force success because we have to deliver the product even if the sever fails for any reason
             VIPValidateSubscriptionOperation(url: self.validationURL, shouldForceSuccess: true)?.after(self).queue(){ _ in
-                // FIXME: Can we do this correctly now? Verify with feef
-                
                 //FUTURE: Once completion block is called properly after queueing this operation in the vip flow, add the "received receipt from backend" tracking event here and remove from the operation
             }
             finish(result: .success())
