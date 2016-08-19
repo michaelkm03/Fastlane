@@ -139,8 +139,8 @@ private final class ShowForumOperation: AsyncOperation<Void> {
         self.animated = animated
     }
     
-    override var executionQueue: NSOperationQueue {
-        return .mainQueue()
+    override var executionQueue: Queue {
+        return .main
     }
     
     override func execute(finish: (result: OperationResult<Void>) -> Void) {
@@ -184,11 +184,11 @@ private final class ShowProfileOperation: AsyncOperation<Void> {
         self.userId = userId
     }
     
-    private override var executionQueue: NSOperationQueue {
-        return .mainQueue()
+    override var executionQueue: Queue {
+        return .main
     }
     
-    private override func execute(finish: (result: OperationResult<Void>) -> Void) {
+    override func execute(finish: (result: OperationResult<Void>) -> Void) {
         
         // Check if already showing the a user's profile
         guard (originViewController as? VNewProfileViewController)?.user?.id != userId else {
@@ -252,11 +252,11 @@ private final class ShowCloseUpOperation: AsyncOperation<Void> {
         super.init()
     }
     
-    private override var executionQueue: NSOperationQueue {
-        return .mainQueue()
+    override var executionQueue: Queue {
+        return .main
     }
     
-    private override func execute(finish: (result: OperationResult<Void>) -> Void) {
+    override func execute(finish: (result: OperationResult<Void>) -> Void) {
         guard
             let childDependencyManager = displayModifier.dependencyManager.childDependencyForKey("closeUpView"),
             let originViewController = displayModifier.originViewController,
@@ -304,11 +304,11 @@ private final class ShowFetchedCloseUpOperation: AsyncOperation<Void> {
         super.init()
     }
     
-    private override var executionQueue: NSOperationQueue {
-        return .mainQueue()
+    override var executionQueue: Queue {
+        return .main
     }
     
-    private override func execute(finish: (result: OperationResult<Void>) -> Void) {
+    override func execute(finish: (result: OperationResult<Void>) -> Void) {
         
         let displayModifier = self.displayModifier
         guard
@@ -376,8 +376,8 @@ private class ShowWebContentOperation: AsyncOperation<Void> {
         self.urlToFetchFrom = url
     }
     
-    override var executionQueue: NSOperationQueue {
-        return .mainQueue()
+    override var executionQueue: Queue {
+        return .main
     }
     
     override func execute(finish: (result: OperationResult<Void>) -> Void) {
@@ -436,8 +436,8 @@ private class ShowVIPSubscriptionOperation: AsyncOperation<Void> {
         self.completion = completion
     }
     
-    override var executionQueue: NSOperationQueue {
-        return .mainQueue()
+    override var executionQueue: Queue {
+        return .main
     }
     
     override func execute(finish: (result: OperationResult<Void>) -> Void) {

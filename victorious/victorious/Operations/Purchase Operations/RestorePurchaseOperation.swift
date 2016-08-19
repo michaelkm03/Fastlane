@@ -8,12 +8,12 @@
 
 import Foundation
 
-class RestorePurchasesOperation: AsyncOperation<Void> {
+final class RestorePurchasesOperation: AsyncOperation<Void> {
     
     var purchaseManager: VPurchaseManagerType = VPurchaseManager.sharedInstance()
     
-    override var executionQueue: NSOperationQueue {
-        return .v_globalBackgroundQueue
+    override var executionQueue: Queue {
+        return .background
     }
     
     override func execute(finish: (result: OperationResult<Void>) -> Void) {

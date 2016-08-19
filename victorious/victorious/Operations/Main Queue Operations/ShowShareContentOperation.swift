@@ -21,8 +21,8 @@ final class ShowShareContentOperation: AsyncOperation<Void> {
         self.content = content
     }
     
-    override var executionQueue: NSOperationQueue {
-        return .mainQueue()
+    override var executionQueue: Queue {
+        return .main
     }
     
     override func execute(finish: (result: OperationResult<Void>) -> Void) {

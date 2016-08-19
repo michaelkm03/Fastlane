@@ -17,8 +17,8 @@ class VIPSubscribeOperation: AsyncOperation<Void> {
         self.product = product
     }
     
-    override var executionQueue: NSOperationQueue {
-        return .mainQueue()
+    override var executionQueue: Queue {
+        return .main
     }
     
     override func execute(finish: (result: OperationResult<Void>) -> Void) {

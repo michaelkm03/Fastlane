@@ -8,10 +8,10 @@
 
 import Foundation
 
-class TempDirectoryCleanupOperation: SyncOperation<Void> {
+final class TempDirectoryCleanupOperation: SyncOperation<Void> {
     
-    override var executionQueue: NSOperationQueue {
-        return .v_globalBackgroundQueue
+    override var executionQueue: Queue {
+        return .background
     }
     
     override func execute() -> OperationResult<Void> {

@@ -26,8 +26,8 @@ final class ShowLoginOperation: AsyncOperation<Void> {
         self.animated = animated
     }
     
-    override var executionQueue: NSOperationQueue {
-        return .mainQueue()
+    override var executionQueue: Queue {
+        return .main
     }
     
     override func execute(finish: (result: OperationResult<Void>) -> Void) {

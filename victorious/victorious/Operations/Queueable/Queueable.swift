@@ -65,12 +65,6 @@ protocol Chainable {
     /// also takes on the completion block and any dependent operations in operation's
     /// `v_defaultQueue`, essentially "rechaining" the order of execution.
     func rechainAfter(dependency: NSOperation) -> Self
-    
-    /// Add the provided operation as a dependency to the receiver, i.e. the operation
-    /// becomes dependent and will not execute until the receiver is finished.  The receiver
-    /// also takes on the completion block and any dependent operations in the
-    /// provided queue, essentially "rechaining" the order of execution.
-    func rechainOn(queue: NSOperationQueue, after dependency: NSOperation) -> Self
 }
 
 extension Queueable where Self : NSOperation {
@@ -100,13 +94,9 @@ extension NSOperation: Chainable {
         return self
     }
     
-    func rechainOn(queue: NSOperationQueue, after dependency: NSOperation) -> Self {
-        queue.v_rechainOperation(self, after: dependency)
-        return self
-    }
-    
     func rechainAfter(dependency: NSOperation) -> Self {
-        return rechainOn(v_defaultQueue, after: dependency)
+        v_defaultQueue.v_rechainOperation(self, after: dependency)
+        return self
     }
 }
 
@@ -126,10 +116,10 @@ protocol Queueable2 {
     var result: OperationResult<Output>? { get }
     
     /// Conformers should specify which queue the operation itself should be scheduled(queued) on.
-    var scheduleQueue: NSOperationQueue { get }
+    var scheduleQueue: Queue { get }
     
     /// Conformers should specify which queue the operation's code should be executed on.
-    var executionQueue: NSOperationQueue { get }
+    var executionQueue: Queue { get }
     
     /// Adds the receiver to its default queue, with a completion block that'll run after the receiver's finished executing,
     /// and before the next operation starts.
@@ -142,7 +132,7 @@ protocol Queueable2 {
 extension Queueable2 where Self: NSOperation {
     func queue(completion completion: ((result: OperationResult<Output>) -> Void)?) {
         defer {
-            scheduleQueue.addOperation(self)
+            Queue.asyncSchedule.operationQueue.addOperation(self)
         }
         
         guard let completion = completion else {
@@ -174,11 +164,11 @@ class SyncOperation<Output>: NSOperation, Queueable2 {
     
     // MARK: - Queueable2
     
-    final var scheduleQueue: NSOperationQueue {
+    final var scheduleQueue: Queue {
         return executionQueue
     }
     
-    var executionQueue: NSOperationQueue {
+    var executionQueue: Queue {
         fatalError("Subclasses of SyncOperation must override `executionQueue`!")
     }
     
@@ -251,9 +241,9 @@ class AsyncOperation<Output>: NSOperation, Queueable2 {
     
     // MARK: - Queueable2
     
-    let scheduleQueue = asyncScheduleQueue
+    let scheduleQueue = Queue.asyncSchedule
     
-    var executionQueue: NSOperationQueue {
+    var executionQueue: Queue {
         fatalError("Subclasses of AsyncOperation must override `executionQueue`!")
     }
     
@@ -277,7 +267,7 @@ class AsyncOperation<Output>: NSOperation, Queueable2 {
     }
     
     override final func main() {
-        executionQueue.addOperationWithBlock {
+        executionQueue.operationQueue.addOperationWithBlock {
             self.execute { [weak self] result in
                 defer {
                     self?.finishedExecuting()
@@ -299,4 +289,24 @@ enum OperationResult<Output> {
     case failure(ErrorType)
     /// When the operation was cancelled either by the caller, or determined to not be able to execute without a user facing error.
     case cancelled
+}
+
+enum Queue {
+    var operationQueue: NSOperationQueue {
+        switch self {
+            case .main: return NSOperationQueue.mainQueue()
+            case .background: return NSOperationQueue.v_globalBackgroundQueue
+            case .asyncSchedule: return asyncScheduleQueue
+        }
+    }
+    
+    static let allCases = [main, background, asyncSchedule]
+    
+    static var allQueues: [NSOperationQueue] {
+        return Queue.allCases.map { $0.operationQueue }
+    }
+    
+    case main
+    case background
+    case asyncSchedule
 }

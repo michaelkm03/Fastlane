@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-class StoredLoginOperation: SyncOperation<Void> {
+final class StoredLoginOperation: SyncOperation<Void> {
     
     private let dependencyManager: VDependencyManager
     private let persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
@@ -19,8 +19,8 @@ class StoredLoginOperation: SyncOperation<Void> {
         super.init()
     }
     
-    override var executionQueue: NSOperationQueue {
-        return .mainQueue()
+    override var executionQueue: Queue {
+        return .main
     }
     
     override func execute() -> OperationResult<Void> {

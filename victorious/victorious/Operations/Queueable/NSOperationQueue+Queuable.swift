@@ -19,7 +19,12 @@ extension NSOperationQueue {
     }
     
     func v_dependentOperationsOf(operation: NSOperation) -> [NSOperation] {
-        return operations.filter { $0.dependencies.contains(operation) }
+        return Queue.allQueues
+            .flatMap {
+                $0.operations
+            }.filter {
+                $0.dependencies.contains(operation)
+            }
     }
     
     func v_rechainOperation( operation: NSOperation, after dependency: NSOperation ) {

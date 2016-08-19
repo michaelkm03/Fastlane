@@ -8,7 +8,7 @@
 
 import UIKit
 
-class StartLoadingOperation: SyncOperation<Void>, VTemplateDownloadOperationDelegate {
+final class StartLoadingOperation: SyncOperation<Void>, VTemplateDownloadOperationDelegate {
 
     var template: NSDictionary? {
         if let templateConfiguration = self.templateDownloadOperation.templateConfiguration {
@@ -36,8 +36,8 @@ class StartLoadingOperation: SyncOperation<Void>, VTemplateDownloadOperationDele
         VTemplateDownloadOperation(downloader: PersistenceTemplateDownloader(), andDelegate: self)
     }()
     
-    override var executionQueue: NSOperationQueue {
-        return .v_globalBackgroundQueue
+    override var executionQueue: Queue {
+        return .background
     }
     
     override func execute() -> OperationResult<Void> {
