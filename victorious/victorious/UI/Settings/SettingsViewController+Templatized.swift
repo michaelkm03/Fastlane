@@ -81,12 +81,18 @@ extension VSettingsViewController: VBackgroundContainer {
     
     public func handleAboutSectionSelection(row: Int) {
         switch row {
-            case 0: ShowWebContentOperation(originViewController: self, type: .HelpCenter, dependencyManager: dependencyManager).queue()
+            case 0: showFixedWebContent(.HelpCenter)
             case 1: sendHelp()
-            case 2: ShowWebContentOperation(originViewController: self, type: .TermsOfService, dependencyManager: dependencyManager).queue()
-            case 3: ShowWebContentOperation(originViewController: self, type: .PrivacyPolicy, dependencyManager: dependencyManager).queue()
+            case 2: showFixedWebContent(.TermsOfService)
+            case 3: showFixedWebContent(.PrivacyPolicy)
             default: break
         }
+    }
+    
+    private func showFixedWebContent(type: FixedWebContentType) {
+        let router = Router(originViewController: self, dependencyManager: dependencyManager)
+        let configuration = ExternalLinkDisplayConfiguration(addressBarVisible: false, forceModal: false, isVIPOnly: false, title: type.title)
+        router.navigate(to: .externalURL(url: dependencyManager.urlForFixedWebContent(type), configuration: configuration))
     }
 }
 

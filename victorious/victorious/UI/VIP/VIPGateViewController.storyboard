@@ -39,7 +39,7 @@
                                     <constraint firstItem="Agc-D1-PHE" firstAttribute="top" secondItem="Oe3-k2-KT1" secondAttribute="top" id="tNi-Ze-5l4"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a7h-W7-OqM">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a7h-W7-OqM" customClass="VTextOnColorButton">
                                 <rect key="frame" x="15" y="497" width="345" height="29"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -139,7 +139,7 @@
                                     <constraint firstItem="Luh-5W-Dz6" firstAttribute="top" secondItem="bxh-9R-vDH" secondAttribute="top" id="ubW-48-RQN"/>
                                 </constraints>
                             </scrollView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VEf-11-zqv" userLabel="Close Button" customClass="TouchableInsetAdjustableButton" customModule="victorious" customModuleProvider="target">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VEf-11-zqv" userLabel="Close Button" customClass="VImageOnColorButton">
                                 <rect key="frame" x="15" y="16" width="30" height="30"/>
                                 <connections>
                                     <action selector="onCloseSelected" destination="MQ0-ua-9uX" eventType="touchUpInside" id="dBF-8g-tlQ"/>
