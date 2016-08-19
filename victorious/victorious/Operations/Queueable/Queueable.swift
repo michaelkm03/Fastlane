@@ -106,6 +106,16 @@ extension NSOperation: Chainable {
     }
 }
 
+extension NSOperation {
+    var dependentOperations: [NSOperation] {
+        return Queue.allQueues.flatMap {
+            $0.operations
+            }.filter {
+                $0.dependencies.contains(self)
+        }
+    }
+}
+
 /// Future: 
 /// This is the new Queueable protocol that will replace the original one.
 /// Since FetcherOperation and FetcherRemoteOperatino still uses the original Queueable protocol,
@@ -295,17 +305,33 @@ enum OperationResult<Output> {
     case cancelled
 }
 
+/// This enum represents the NSOperationQueues we use in the app. Each case is supported by an NSOperationQueue instance underneath.
+/// - note: 
+/// This doesn't represent any of the GCD queues. Only the NSOperationQueues we use in our Operation Architecture.
+/// If you add new cases to this enum, make sure to update its `allCases` property to guarantee correct behavior.
 enum Queue {
+    /// System Main Queue
     case main
+    /// A background queue for to perform background tasks
     case background
+    /// A queue to schedule all the async operations.
+    /// - note: 
+    /// This queue will be blocked while an asnyc operation is waiting for its callback.
+    /// If you are writing an operation subclass, don't use this queue as an `executionQueue`.
     case asyncSchedule
     
+    /// All cases in this enum.
+    /// - note:
+    /// It's unfortunate that Swift doesn't provide this functionality yet. 
+    /// So please make sure to manually update this array if you add a new case to this enum.
     static let allCases: [Queue] = [.main, .background, .asyncSchedule]
     
+    /// All NSOperaitonQueue instances represented in this enum
     static var allQueues: [NSOperationQueue] {
         return Queue.allCases.map { $0.operationQueue }
     }
     
+    /// Returns the supporting NSOperationQueue based on which case `self` is.
     var operationQueue: NSOperationQueue {
         switch self {
             case .main: return NSOperationQueue.mainQueue()
@@ -316,14 +342,4 @@ enum Queue {
     
     private static let backgroundQueue = NSOperationQueue()
     private static let asyncScheduleQueue = NSOperationQueue()
-}
-
-extension NSOperation {
-    var dependentOperations: [NSOperation] {
-        return Queue.allQueues.flatMap {
-            $0.operations
-        }.filter {
-            $0.dependencies.contains(self)
-        }
-    }
 }
