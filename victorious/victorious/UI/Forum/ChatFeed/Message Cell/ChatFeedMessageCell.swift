@@ -107,10 +107,10 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     let avatarView = AvatarView()
     let avatarTapTarget = UIView()
     
-    let captionBubbleView = ChatBubbleView()
+    let captionBubbleView = BubbleView()
     let captionLabel = UILabel()
     
-    var previewBubbleView: ChatBubbleView?
+    var previewBubbleView: BubbleView?
     var previewView: UIView?
     
     let failureButton = UIButton(type: .Custom)
@@ -231,7 +231,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         // FUTURE: Reuse the bubble view so that we don't keep removing + adding subviews.
         previewBubbleView?.removeFromSuperview()
         
-        let bubbleView = ChatBubbleView()
+        let bubbleView = BubbleView()
         bubbleView.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(didLongPressBubble)))
         bubbleView.backgroundColor = dependencyManager.backgroundColor
         bubbleView.contentView.addSubview(spinner)
