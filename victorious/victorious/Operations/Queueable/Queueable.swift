@@ -306,7 +306,7 @@ enum OperationResult<Output> {
 }
 
 /// This enum represents the NSOperationQueues we use in the app. Each case is supported by an NSOperationQueue instance underneath.
-/// - note: 
+/// - note:
 /// This doesn't represent any of the GCD queues. Only the NSOperationQueues we use in our Operation Architecture.
 /// If you add new cases to this enum, make sure to update its `allCases` property to guarantee correct behavior.
 enum Queue {
@@ -326,7 +326,7 @@ enum Queue {
     /// So please make sure to manually update this array if you add a new case to this enum.
     static let allCases: [Queue] = [.main, .background, .asyncSchedule]
     
-    /// All NSOperaitonQueue instances represented in this enum
+    /// All `NSOperationQueue` instances represented in this enum
     static var allQueues: [NSOperationQueue] {
         return Queue.allCases.map { $0.operationQueue }
     }
