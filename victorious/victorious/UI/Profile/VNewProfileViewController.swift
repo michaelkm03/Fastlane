@@ -283,7 +283,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     }
     
     func shouldDisplay(screen: AccessoryScreen) -> Bool {
-        return screen.id != VNewProfileViewController.upgradeButtonID
+        return ![VNewProfileViewController.upgradeButtonID, VNewProfileViewController.goVIPButtonID].contains(screen.id)
     }
     
     func navigate(to destination: UIViewController, from accessoryScreen: AccessoryScreen) {
