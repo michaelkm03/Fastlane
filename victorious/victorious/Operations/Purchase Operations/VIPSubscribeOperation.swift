@@ -39,7 +39,7 @@ class VIPSubscribeOperation: BackgroundOperation {
             // Force success because we have to deliver the product even if the sever fails for any reason
             let validatationOperation = VIPValidateSubscriptionOperation(url: self.validationURL, shouldForceSuccess: true)
             validatationOperation?.after(self).queue() { _ in
-                //FUTURE: Once completion block is called properly after queueing this operation in the vip flow, add the "received receipt from backend" tracking event here and remove from the operation
+                VTrackingManager.sharedInstance().trackEvent(VTrackingEventRecievedProductReceiptFromBackend)
             }
             self.finishedExecuting()
         }
