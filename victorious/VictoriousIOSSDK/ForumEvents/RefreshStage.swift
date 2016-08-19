@@ -30,11 +30,11 @@ public struct RefreshStage {
         }
         
         self.contentID = contentID
-        if let metaData = json["meta_data"].dictionary {
-            self.stageMetaData = StageMetaData(title: metaData["name"]?.string)
+        if let metaData = json["meta_data"]["name"].string {
+            stageMetaData = StageMetaData(title: metaData)
         }
         else {
-            self.stageMetaData = nil
+            stageMetaData = nil
         }
         
         // The server time could either be present inside the stage message or at a higher level 
