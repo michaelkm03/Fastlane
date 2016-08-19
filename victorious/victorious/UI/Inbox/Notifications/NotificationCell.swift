@@ -7,6 +7,12 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
+
+/// A delegate protocol for `NotificationCell`.
+protocol NotificationCellDelegate: class {
+    func notificationCellDidSelectUser(notificationCell: NotificationCell)
+}
 
 /// The table view cell used to display notifications.
 class NotificationCell: UITableViewCell, VBackgroundContainer {
@@ -67,7 +73,7 @@ class NotificationCell: UITableViewCell, VBackgroundContainer {
     
     // MARK: - Delegate
     
-    weak var delegate: VCellWithProfileDelegate?
+    weak var delegate: NotificationCellDelegate?
     
     // MARK: - Views
     
@@ -83,7 +89,7 @@ class NotificationCell: UITableViewCell, VBackgroundContainer {
     // MARK: - Actions
     
     @objc private func profileButtonWasPressed() {
-        delegate?.cellDidSelectProfile(self)
+        delegate?.notificationCellDidSelectUser(self)
     }
     
     // MARK: - VBackgroundContainer

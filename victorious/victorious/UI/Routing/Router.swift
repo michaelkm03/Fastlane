@@ -46,16 +46,25 @@ struct Router {
         let displayModifier = ShowCloseUpDisplayModifier(dependencyManager: dependencyManager, originViewController: originViewController)
 
         switch contentWrapper {
-            case .content(let content):
+            case .content(let content, let forceFetch):
                 guard content.type != .text else {
                     return
                 }
+                
                 checkForPermissionBeforeRouting(contentIsForVIPOnly: content.isVIPOnly) { success in
                     if success {
-                        ShowCloseUpOperation(content: content, displayModifier: displayModifier).queue()
+                        if !forceFetch {
+                            ShowCloseUpOperation(content: content, displayModifier: displayModifier).queue()
+                        }
+                        else {
+                            guard let contentID = content.id else {
+                                assertionFailure("We are routing to a content with no ID")
+                                return
+                            }
+                            ShowFetchedCloseUpOperation(contentID: contentID, displayModifier: displayModifier).queue()
+                        }
                     }
                 }
-            
             case .contentID(let contentID):
                 ShowFetchedCloseUpOperation(contentID: contentID, displayModifier: displayModifier).queue()
         }

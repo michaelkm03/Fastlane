@@ -24,14 +24,19 @@ public struct RefreshStage {
 
     public let stageMetaData: StageMetaData?
     
-    public init?(json: JSON, serverTime: Timestamp? = nil, stageMetaData: StageMetaData? = nil) {
+    public init?(json: JSON, serverTime: Timestamp? = nil) {
         guard let contentID = json["content_id"].string else {
             return nil
         }
         
         self.contentID = contentID
-        self.stageMetaData = stageMetaData
-
+        if let metaData = json["meta_data"]["name"].string {
+            stageMetaData = StageMetaData(title: metaData)
+        }
+        else {
+            stageMetaData = nil
+        }
+        
         // The server time could either be present inside the stage message or at a higher level 
         // depending on what part of the API we get it from. :/
         if let parsedServerTime = Timestamp(apiString: json["server_time"].stringValue) {

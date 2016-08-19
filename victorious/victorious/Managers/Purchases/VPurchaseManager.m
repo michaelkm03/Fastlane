@@ -113,6 +113,8 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
         return;
     }
     
+    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventSentPurchaseRequestToStore];
+    
     self.activePurchase = [[VPurchase alloc] initWithProduct:product success:successCallback failure:failureCallback];
     SKPayment *payment = [SKPayment paymentWithProduct:product.storeKitProduct];
     [[SKPaymentQueue defaultQueue] addPayment:payment];
@@ -216,10 +218,6 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
     }
     else if ( self.activePurchase != nil )
     {
-        NSDictionary *params = @{ VTrackingKeyProductIdentifier : productIdentifier ?: @"",
-                                  VTrackingKeyErrorMessage : error.localizedDescription ?: @""};
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventPurchaseDidFail parameters:params];
-        
         self.activePurchase.failureCallback( error );
         self.activePurchase = nil;
     }
@@ -230,8 +228,7 @@ static NSString * const kDocumentDirectoryRelativePath = @"com.getvictorious.dev
     BOOL isValidProduct = [self.activePurchase.product.storeKitProduct.productIdentifier isEqualToString:productIdentifier];
     if ( self.activePurchase != nil && isValidProduct )
     {
-        NSDictionary *params = @{ VTrackingKeyProductIdentifier : productIdentifier ?: @"" };
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidCompletePurchase parameters:params];
+        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventRecievedPurchaseCompletionFromStore];
         
         if ( [self shouldAddProductIdentifierToPurchaseRecord:productIdentifier] )
         {

@@ -15,7 +15,7 @@ enum TextOnColorButtonRoundingType {
 
 /// A template-styled button that displays text on top of a solid-color background
 @objc(VTextOnColorButton)
-class TextOnColorButton: UIButton, TrackableButton {
+class TextOnColorButton: TouchableInsetAdjustableButton, TrackableButton {
     var dependencyManager: VDependencyManager? {
         didSet {
             hidden = dependencyManager == nil

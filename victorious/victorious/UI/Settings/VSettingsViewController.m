@@ -160,7 +160,6 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 {
     [super viewDidAppear:animated];
     [[VTrackingManager sharedInstance] startEvent:VTrackingEventSettingsDidAppear];
-    [self v_addBadgingToAccessoryScreensWithDependencyManager:self.dependencyManager];
 }
 
 - (void)updateResetCoachmarksCell
@@ -437,18 +436,6 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 - (BOOL)shouldNavigate
 {
     return YES;
-}
-
-#pragma mark - VAccessoryNavigationSource
-
-- (BOOL)shouldNavigateWithAccessoryMenuItem:(VNavigationMenuItem *)menuItem
-{
-    return YES;
-}
-
-- (BOOL)shouldDisplayAccessoryMenuItem:(VNavigationMenuItem *)menuItem fromSource:(UIViewController *)source
-{
-    return self.navigationController.viewControllers.count == 1;
 }
 
 @end

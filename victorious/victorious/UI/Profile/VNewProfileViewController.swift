@@ -9,7 +9,7 @@
 import UIKit
 
 /// A view controller that displays the contents of a user's profile.
-class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderDelegate, AccessoryScreenContainer, VAccessoryNavigationSource, CoachmarkDisplayer {
+class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderDelegate, AccessoryScreenContainer, CoachmarkDisplayer {
     /// Private struct within NewProfileViewController for comparison. Since we use Core Data, 
     /// the user is modified beneath us and every time we call setUser(...), the fields will be the same as oldValue
     private struct UserDetails {
@@ -280,20 +280,6 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     
     func addCustomRightItems(to items: [UIBarButtonItem]) -> [UIBarButtonItem] {
         return items + supplementalRightButtons
-    }
-    
-    func shouldDisplayAccessoryItem(withIdentifier identifier: String) -> Bool {
-        return identifier != VNewProfileViewController.upgradeButtonID && identifier != VNewProfileViewController.goVIPButtonID
-    }
-    
-    // MARK: - VAccessoryNavigationSource
-    
-    func shouldNavigateWithAccessoryMenuItem(menuItem: VNavigationMenuItem!) -> Bool {
-        return true
-    }
-    
-    func shouldDisplayAccessoryMenuItem(menuItem: VNavigationMenuItem!, fromSource source: UIViewController!) -> Bool {
-        return shouldDisplayAccessoryItem(withIdentifier: menuItem.identifier)
     }
     
     // MARK: - Managing the user

@@ -270,9 +270,11 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         if let mediaContentView = mediaContentView {
             showMediaContentView(mediaContentView, animated: animated)
         }
-
-        dispatch_after(Constants.titleCardDelayedShow) {
-            self.titleCardViewController?.show()
+        
+        if (currentStageContent?.metaData != nil) {
+            dispatch_after(Constants.titleCardDelayedShow) {
+                self.titleCardViewController?.show()
+            }
         }
         
         if let content = currentStageContent?.content {
@@ -347,7 +349,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         }
         
         let router = Router(originViewController: self, dependencyManager: dependencyManager)
-        let destination = DeeplinkDestination(content: content)
+        let destination = DeeplinkDestination(content: content, forceFetch: false)
         router.navigate(to: destination)
     }
 

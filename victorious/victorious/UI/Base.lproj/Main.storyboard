@@ -236,45 +236,6 @@
             </objects>
             <point key="canvasLocation" x="-2979" y="-1344.5"/>
         </scene>
-        <!--Notifications View Controller-->
-        <scene sceneID="eaX-lv-JEH">
-            <objects>
-                <viewController storyboardIdentifier="VNotificationsViewController" extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="rx2-mH-CAj" customClass="VNotificationsViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="wBe-xA-GTA"/>
-                        <viewControllerLayoutGuide type="bottom" id="Ygg-MF-rlt"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="7N8-1T-d2Q">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <tableView opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="8lg-GT-Q7v">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                <connections>
-                                    <outlet property="dataSource" destination="rx2-mH-CAj" id="Zrq-zD-9Cr"/>
-                                    <outlet property="delegate" destination="rx2-mH-CAj" id="01N-c0-9c6"/>
-                                </connections>
-                            </tableView>
-                        </subviews>
-                        <constraints>
-                            <constraint firstItem="Ygg-MF-rlt" firstAttribute="top" secondItem="8lg-GT-Q7v" secondAttribute="bottom" id="J3i-2W-q4V"/>
-                            <constraint firstItem="8lg-GT-Q7v" firstAttribute="leading" secondItem="7N8-1T-d2Q" secondAttribute="leading" id="R0P-MV-HTA"/>
-                            <constraint firstAttribute="trailing" secondItem="8lg-GT-Q7v" secondAttribute="trailing" id="YjI-hT-7v8"/>
-                            <constraint firstItem="8lg-GT-Q7v" firstAttribute="top" secondItem="7N8-1T-d2Q" secondAttribute="top" id="oZ1-rQ-hfH"/>
-                        </constraints>
-                    </view>
-                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics" translucent="NO"/>
-                    <connections>
-                        <outlet property="tableView" destination="8lg-GT-Q7v" id="iXj-C8-IId"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="MCP-7e-aCz" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-4282" y="-250"/>
-        </scene>
     </scenes>
     <resources>
         <image name="Close" width="17" height="17"/>
