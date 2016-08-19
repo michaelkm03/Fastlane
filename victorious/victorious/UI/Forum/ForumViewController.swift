@@ -26,6 +26,10 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     @IBOutlet private weak var chatFeedContainer: VPassthroughContainerView!
     
     static var showVIPForum = true
+    
+    private lazy var closeButton: ImageOnColorButton? = {
+       return self.dependencyManager.closeButton
+    }()
 
     private var stageShrinkingAnimator: StageShrinkingAnimator?
     
@@ -170,6 +174,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             navigationItem.titleView = navBarTitleView
         }
         navBarTitleView?.sizeToFit()
+        dependencyManager.trackViewWillAppear(self)
         #if V_ENABLE_WEBSOCKET_DEBUG_MENU
             if let webSocketForumNetworkSource = forumNetworkSource as? WebSocketForumNetworkSource,
                 let navigationController = navigationController {
@@ -186,6 +191,11 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         
         // Remove this once the way to animate the workspace in and out from forum has been figured out
         navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        dependencyManager.trackViewWillDisappear(self)
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -218,8 +228,9 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         //Initialize the title view. This will later be resized in the viewWillAppear, once it has actually been added to the navigation stack
         navBarTitleView = ForumNavBarTitleView(dependencyManager: self.dependencyManager, frame: CGRect(x: 0, y: 0, width: 200, height: 45))
         navigationController?.navigationBar.barStyle = .Black
-        if let button = dependencyManager.closeButton {
+        if let button = closeButton {
             button.addTarget(self, action: #selector(onClose), forControlEvents: .TouchUpInside)
+            button.sizeToFit()
             navigationItem.leftBarButtonItem = UIBarButtonItem(customView: button)
         }
         updateStyle()
@@ -232,11 +243,6 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             forumNetworkSource.addChildReceiver(self)
             
             self.forumNetworkSource = forumNetworkSource
-        }
-        
-        if ForumViewController.showVIPForum {
-            ForumViewController.showVIPForum = false
-            Router(originViewController: self, dependencyManager: dependencyManager).showVIPForum()
         }
     }
 
@@ -269,6 +275,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     // MARK: - Actions
     
     @objc private func onClose() {
+        closeButton?.dependencyManager?.trackButtonEvent(.tap)
+        
         navigationController?.dismissViewControllerAnimated(true, completion: nil)
 
         // Close connection to network source when we close the forum.
