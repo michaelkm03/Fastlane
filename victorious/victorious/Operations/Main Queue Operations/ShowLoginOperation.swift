@@ -11,18 +11,15 @@ import Foundation
 final class ShowLoginOperation: AsyncOperation<Void> {
     private weak var originViewController: UIViewController?
     private let dependencyManager: VDependencyManager
-    private let context: VAuthorizationContext
     private let animated: Bool
     
     required init(
         originViewController: UIViewController,
         dependencyManager: VDependencyManager,
-        context: VAuthorizationContext = .Default,
         animated: Bool = true
     ) {
         self.originViewController = originViewController
         self.dependencyManager = dependencyManager
-        self.context = context
         self.animated = animated
     }
     
@@ -67,7 +64,6 @@ final class ShowLoginOperation: AsyncOperation<Void> {
             }
         }
         
-        loginFlow.setAuthorizationContext?( self.context )
         originViewController?.presentViewController(viewController, animated: animated, completion: nil)
     }
 }

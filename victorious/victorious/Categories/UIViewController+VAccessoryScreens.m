@@ -17,12 +17,6 @@
     [dependencyManager addAccessoryScreensToNavigationItem:navigationItem fromViewController:self];
 }
 
-- (void)v_addBadgingToAccessoryScreensWithDependencyManager:(VDependencyManager *)dependencyManager
-{
-    UINavigationItem *navigationItem = [self navigationItemForAccessoryItems];
-    [dependencyManager addBadgingToAccessoryScreensInNavigationItem:navigationItem fromViewController:self];
-}
-
 - (UINavigationItem *)navigationItemForAccessoryItems
 {
     return self.navigationItem;

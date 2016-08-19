@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "VAuthorizationContext.h"
 
 /**
  *  VLoginFlowCompletionBlock is a completion block for VLoginFlow conformers to call upon completion.
@@ -25,13 +24,5 @@ typedef void (^VLoginFlowCompletionBlock) (BOOL authorized);
  *  when they are finished.
  */
 @property (nonatomic, copy) VLoginFlowCompletionBlock onCompletionBlock;
-
-@optional
-
-/**
- *  The authorization context for this flow appearing. If VLoginRegistrationFlow objects need to configure 
- *  themselves based off of this context they should implement this method.
- */
-- (void)setAuthorizationContext:(VAuthorizationContext)authorizationContext;
 
 @end
