@@ -10,6 +10,9 @@ import UIKit
 
 /// A button that can display a badge on its corner.
 class BadgeButton: UIButton {
+    private struct Constants {
+        static let badgePadding = CGFloat(1.0)
+    }
     
     // MARK: - Accessing badge content
     
@@ -34,7 +37,9 @@ class BadgeButton: UIButton {
         label.textAlignment = .Center
         label.textColor = .whiteColor()
         label.backgroundColor = .redColor()
+        label.font = UIFont.systemFontOfSize(13.0, weight: UIFontWeightRegular)
         label.clipsToBounds = true
+        label.userInteractionEnabled = false
         return label
     }()
     
@@ -44,12 +49,13 @@ class BadgeButton: UIButton {
         super.layoutSubviews()
         
         let intrinsicBadgeSize = badgeLabel.intrinsicContentSize()
-        let badgeLength = max(intrinsicBadgeSize.width, intrinsicBadgeSize.height)
+        let badgeSize = CGSize(width: max(intrinsicBadgeSize.width, intrinsicBadgeSize.height), height: intrinsicBadgeSize.height)
+        let badgeAnchorFrame = imageView?.frame ?? bounds
         
-        badgeLabel.frame = CGSize(width: badgeLength, height: badgeLength).centered(on: CGPoint(
-            x: bounds.maxX,
-            y: bounds.maxY
-        ))
+        badgeLabel.frame = badgeSize.centered(on: CGPoint(
+            x: badgeAnchorFrame.maxX,
+            y: badgeAnchorFrame.maxY
+        )).insetBy(dx: -Constants.badgePadding, dy: -Constants.badgePadding)
         
         badgeLabel.layer.cornerRadius = badgeLabel.frame.size.v_roundCornerRadius
     }

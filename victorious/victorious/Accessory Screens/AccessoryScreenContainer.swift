@@ -119,7 +119,7 @@ private class AccessoryScreenBarButtonItem: UIBarButtonItem {
         button.frame.size = buttonSize
         customView = button
         
-        button.badgeString = "5"
+        button.badgeString = "38"
     }
     
     required init?(coder: NSCoder) {
