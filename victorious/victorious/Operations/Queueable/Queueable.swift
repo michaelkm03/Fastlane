@@ -326,7 +326,7 @@ enum Queue {
     /// So please make sure to manually update this array if you add a new case to this enum.
     static let allCases: [Queue] = [.main, .background, .asyncSchedule]
     
-    /// All NSOperaitonQueue instances represented in this enum
+    /// All `NSOperationQueue` instances represented in this enum
     static var allQueues: [NSOperationQueue] {
         return Queue.allCases.map { $0.operationQueue }
     }
