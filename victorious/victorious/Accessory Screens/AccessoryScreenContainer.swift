@@ -28,6 +28,9 @@ protocol AccessoryScreenContainer: class {
     /// Allows conformers to specify whether a particular screen should be shown.
     func shouldDisplay(screen: AccessoryScreen) -> Bool
     
+    /// Allows conformers to specify which type of badge count should be associated with this accessory screen, if any.
+    func badgeCountType(for screen: AccessoryScreen) -> BadgeCountType?
+    
     /// Called whenever an accessory screen's navigation button is pressed. Conformers must implement this to define
     /// how navigation to an accessory screen is performed.
     func navigate(to destination: UIViewController, from accessoryScreen: AccessoryScreen)
@@ -47,6 +50,10 @@ extension AccessoryScreenContainer {
     
     func addCustomRightItems(to items: [UIBarButtonItem]) -> [UIBarButtonItem] {
         return items
+    }
+    
+    func badgeCountType(for screen: AccessoryScreen) -> BadgeCountType? {
+        return nil
     }
     
     func shouldDisplay(screen: AccessoryScreen) -> Bool {
@@ -119,11 +126,31 @@ private class AccessoryScreenBarButtonItem: UIBarButtonItem {
         button.frame.size = buttonSize
         customView = button
         
-        button.badgeString = "38"
+        if let badgeCountType = container.badgeCountType(for: accessoryScreen) {
+            updateBadgeCount()
+            
+            BadgeCountManager.shared.whenBadgeCountChanges(for: badgeCountType) { [weak self] in
+                self?.updateBadgeCount()
+            }
+        }
     }
     
     required init?(coder: NSCoder) {
         fatalError("NSCoding not supported.")
+    }
+    
+    private func updateBadgeCount() {
+        guard let badgeCountType = container?.badgeCountType(for: accessoryScreen) else {
+            return
+        }
+        
+        if let count = BadgeCountManager.shared.badgeCount(for: badgeCountType) where count > 0 {
+            // TODO: number formatter
+            button.badgeString = "\(count)"
+        }
+        else {
+            button.badgeString = nil
+        }
     }
     
     // MARK: - Views
