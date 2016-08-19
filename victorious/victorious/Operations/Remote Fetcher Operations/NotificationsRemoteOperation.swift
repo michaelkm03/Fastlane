@@ -12,15 +12,15 @@ final class NotificationsRemoteOperation: RemoteFetcherOperation, PaginatedReque
     
     var request: NotificationsRequest
     
-    required init( request: NotificationsRequest = NotificationsRequest() ) {
+    required init(request: NotificationsRequest = NotificationsRequest()) {
         self.request = request
     }
     
     override func main() {
-        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
+        requestExecutor.executeRequest(request, onComplete: onComplete, onError: onError)
     }
     
-    func onComplete( results: NotificationsRequest.ResultType) {
+    func onComplete(results: NotificationsRequest.ResultType) {
         guard !results.isEmpty else {
             return
         }
@@ -42,5 +42,9 @@ final class NotificationsRemoteOperation: RemoteFetcherOperation, PaginatedReque
             }
             context.v_save()
         }
+    }
+    
+    func onError(error: NSError?) {
+        self.error = error
     }
 }
