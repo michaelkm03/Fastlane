@@ -24,9 +24,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         }
     }
     @IBOutlet private weak var chatFeedContainer: VPassthroughContainerView!
-    
-    static var showVIPForum = true
-    
+        
     private lazy var closeButton: ImageOnColorButton? = {
        return self.dependencyManager.closeButton
     }()
