@@ -13,7 +13,7 @@ extension NSOperation {
     /// to add operations when a more specialized queue is not needed.  May be
     /// overridden by subclasses to select a different queue as the default.
     var v_defaultQueue: NSOperationQueue {
-        return NSOperationQueue.v_globalBackgroundQueue
+        return Queue.background.operationQueue
     }
 }
 
@@ -196,8 +196,6 @@ class SyncOperation<Output>: NSOperation, Queueable2 {
     }
 }
 
-private let asyncScheduleQueue = NSOperationQueue()
-
 /// An asynchronous operation runs its `execute` method on the provided `executionQueue`, and then waits indefinitely for `finish` to be called.
 /// Since it blocks the `scheduleQueue`, it is always scheduled on a separate global shared `asyncScheduleQueue`.
 /// - requires:
@@ -311,8 +309,21 @@ enum Queue {
     var operationQueue: NSOperationQueue {
         switch self {
             case .main: return NSOperationQueue.mainQueue()
-            case .background: return NSOperationQueue.v_globalBackgroundQueue
-            case .asyncSchedule: return asyncScheduleQueue
+            case .background: return Queue.backgroundQueue
+            case .asyncSchedule: return Queue.asyncScheduleQueue
+        }
+    }
+    
+    private static let backgroundQueue = NSOperationQueue()
+    private static let asyncScheduleQueue = NSOperationQueue()
+}
+
+extension NSOperation {
+    var dependentOperations: [NSOperation] {
+        return Queue.allQueues.flatMap {
+            $0.operations
+        }.filter {
+            $0.dependencies.contains(self)
         }
     }
 }

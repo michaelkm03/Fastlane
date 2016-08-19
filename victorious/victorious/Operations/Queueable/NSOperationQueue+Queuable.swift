@@ -8,27 +8,6 @@
 
 import Foundation
 
-private let sharedOperationQueue = NSOperationQueue()
-
-extension NSOperationQueue {
-    
-    /// An application-wide default queue for all operations that are not required to
-    /// execute on the main queue.
-    static var v_globalBackgroundQueue: NSOperationQueue {
-        return sharedOperationQueue
-    }
-}
-
-extension NSOperation {
-    var dependentOperations: [NSOperation] {
-        return Queue.allQueues.flatMap {
-            $0.operations
-        }.filter {
-            $0.dependencies.contains(self)
-        }
-    }
-}
-
 extension NSOperationQueue {
     func v_addOperation<T: Queueable where T : NSOperation>( operation: T, completion: T.CompletionBlockType? ) {
         if let completion = completion {
