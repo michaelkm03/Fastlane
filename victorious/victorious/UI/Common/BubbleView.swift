@@ -1,5 +1,5 @@
 //
-//  ChatBubbleView.swift
+//  BubbleView.swift
 //  victorious
 //
 //  Created by Jarod Long on 7/5/16.
@@ -10,7 +10,7 @@
 ///
 /// Subviews can be added to `contentView` to display content in the bubble.
 ///
-class ChatBubbleView: UIView {
+class BubbleView: UIView {
     private struct Constants {
         static let borderInsets = UIEdgeInsets(top: -1.0, left: -2.0, bottom: -3.0, right: -2.0)
         static let bubbleCornerRadius = CGFloat(6.0)
@@ -20,53 +20,43 @@ class ChatBubbleView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        contentView = UIView()
+        borderView = UIImageView()
+        backgroundColor = .clearColor()
         setupSubviews()
+        contentView.backgroundColor = .clearColor()
+        borderView.backgroundColor = .clearColor()
+        addSubview(contentView)
+        addSubview(borderView)
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+    }
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
         setupSubviews()
     }
     
     // MARK: - Subviews
     
-    private let borderView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.backgroundColor = .clearColor()
-        return imageView
-    }()
+    @IBOutlet private var borderView: UIImageView!
     
-    let contentView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .clearColor()
-        return view
-    }()
+    @IBOutlet var contentView: UIView!
     
     private func setupSubviews() {
-        backgroundColor = .clearColor()
         layer.cornerRadius = Constants.bubbleCornerRadius
         contentView.layer.cornerRadius = Constants.bubbleCornerRadius
         contentView.clipsToBounds = true
         borderView.image = UIImage(named: "chat-cell-border")
-        addSubview(contentView)
-        addSubview(borderView)
     }
     
     // MARK: - Layout
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        contentView.frame = bounds
-        borderView.frame = bounds.insetBy(Constants.borderInsets)
-    }
-    
-    // MARK: - Subviews
-    
-    override func addSubview(view: UIView) {
-        if view == contentView || view == borderView {
-            super.addSubview(view)
-        } else {
-            contentView.addSubview(view)
-        }
+        contentView?.frame = bounds
+        borderView?.frame = bounds.insetBy(Constants.borderInsets)
     }
 }

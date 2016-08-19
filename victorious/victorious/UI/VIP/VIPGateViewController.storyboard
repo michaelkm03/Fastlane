@@ -16,28 +16,48 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Oe3-k2-KT1" customClass="ChatBubbleView" customModule="victorious" customModuleProvider="target">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Oe3-k2-KT1" customClass="BubbleView" customModule="victorious" customModuleProvider="target">
                                 <rect key="frame" x="15" y="427" width="345" height="50"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Agc-D1-PHE" customClass="VTextOnColorButton">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gRj-bL-FLn">
                                         <rect key="frame" x="0.0" y="0.0" width="345" height="50"/>
-                                        <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        <state key="normal" title="Lorem ipsum ">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="onSubscribe:" destination="MQ0-ua-9uX" eventType="touchUpInside" id="eKT-EE-ehu"/>
-                                        </connections>
-                                    </button>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Agc-D1-PHE" customClass="VTextOnColorButton">
+                                                <rect key="frame" x="0.0" y="0.0" width="345" height="50"/>
+                                                <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                <state key="normal" title="Lorem ipsum ">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="onSubscribe:" destination="MQ0-ua-9uX" eventType="touchUpInside" id="eKT-EE-ehu"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstItem="Agc-D1-PHE" firstAttribute="top" secondItem="gRj-bL-FLn" secondAttribute="top" id="Uc7-Gh-qle"/>
+                                            <constraint firstAttribute="trailing" secondItem="Agc-D1-PHE" secondAttribute="trailing" id="hDH-i1-M4A"/>
+                                            <constraint firstItem="Agc-D1-PHE" firstAttribute="leading" secondItem="gRj-bL-FLn" secondAttribute="leading" id="vDL-wv-slu"/>
+                                            <constraint firstAttribute="bottom" secondItem="Agc-D1-PHE" secondAttribute="bottom" id="vj9-11-NSQ"/>
+                                        </constraints>
+                                    </view>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bTL-u3-LZj">
+                                        <rect key="frame" x="0.0" y="0.0" width="345" height="50"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </imageView>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="0ym-o9-RIB"/>
-                                    <constraint firstAttribute="trailing" secondItem="Agc-D1-PHE" secondAttribute="trailing" id="4XJ-GJ-ytQ"/>
-                                    <constraint firstItem="Agc-D1-PHE" firstAttribute="leading" secondItem="Oe3-k2-KT1" secondAttribute="leading" id="XjG-hB-DSp"/>
-                                    <constraint firstAttribute="bottom" secondItem="Agc-D1-PHE" secondAttribute="bottom" id="lMt-uL-Cdh"/>
-                                    <constraint firstItem="Agc-D1-PHE" firstAttribute="top" secondItem="Oe3-k2-KT1" secondAttribute="top" id="tNi-Ze-5l4"/>
+                                    <constraint firstItem="gRj-bL-FLn" firstAttribute="leading" secondItem="Oe3-k2-KT1" secondAttribute="leading" id="1Ys-DL-cbB"/>
+                                    <constraint firstItem="gRj-bL-FLn" firstAttribute="top" secondItem="Oe3-k2-KT1" secondAttribute="top" id="6MG-QU-AVk"/>
+                                    <constraint firstAttribute="bottom" secondItem="gRj-bL-FLn" secondAttribute="bottom" id="Fh3-iT-2KF"/>
+                                    <constraint firstAttribute="trailing" secondItem="gRj-bL-FLn" secondAttribute="trailing" id="qGd-hG-oqC"/>
                                 </constraints>
+                                <connections>
+                                    <outlet property="borderView" destination="bTL-u3-LZj" id="sAo-FV-dGk"/>
+                                    <outlet property="contentView" destination="gRj-bL-FLn" id="VNC-Nv-PSH"/>
+                                </connections>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a7h-W7-OqM" customClass="VTextOnColorButton">
                                 <rect key="frame" x="15" y="497" width="345" height="29"/>
