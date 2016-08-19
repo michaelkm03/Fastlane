@@ -10,7 +10,7 @@ import Foundation
 import VictoriousIOSSDK
 import FBSDKCoreKit
 
-class CreateMediaUploadOperation: SyncOperation<Void> {
+final class CreateMediaUploadOperation: SyncOperation<Void> {
     
     let request: MediaUploadCreateRequest
     let uploadManager: VUploadManager

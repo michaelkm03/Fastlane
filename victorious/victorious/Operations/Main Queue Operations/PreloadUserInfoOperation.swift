@@ -10,7 +10,7 @@ import Foundation
 
 /// Executes several sub operations that pre-load user info including conversations, poll responses,
 /// profile data, profile stream, etc.  Intended to be called just after login.
-class PreloadUserInfoOperation: AsyncOperation<VUser> {
+final class PreloadUserInfoOperation: AsyncOperation<VUser> {
     private let dependencyManager: VDependencyManager
 
     init(dependencyManager: VDependencyManager) {

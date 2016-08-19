@@ -363,7 +363,7 @@ private final class ShowFetchedCloseUpOperation: AsyncOperation<Void> {
 
 // MARK: - Show Web Content
 
-private class ShowWebContentOperation: AsyncOperation<Void> {
+private final class ShowWebContentOperation: AsyncOperation<Void> {
     private let originViewController: UIViewController
     private let urlToFetchFrom: String
     private let dependencyManager: VDependencyManager
@@ -423,7 +423,7 @@ private class ShowWebContentOperation: AsyncOperation<Void> {
 
 // MARK: - Show VIP Flow Operation
 
-private class ShowVIPSubscriptionOperation: AsyncOperation<Void> {
+private final class ShowVIPSubscriptionOperation: AsyncOperation<Void> {
     private let dependencyManager: VDependencyManager
     private let animated: Bool
     private let completion: VIPFlowCompletion?

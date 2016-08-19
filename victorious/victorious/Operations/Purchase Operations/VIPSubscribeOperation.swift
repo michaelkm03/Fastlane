@@ -8,7 +8,7 @@
 
 import Foundation
 
-class VIPSubscribeOperation: AsyncOperation<Void> {
+final class VIPSubscribeOperation: AsyncOperation<Void> {
     let product: VProduct
     
     var purchaseManager: VPurchaseManagerType = VPurchaseManager.sharedInstance()

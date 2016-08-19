@@ -8,7 +8,7 @@
 
 import Foundation
 
-class ProductFetchOperation: AsyncOperation<[VProduct]> {
+final class ProductFetchOperation: AsyncOperation<[VProduct]> {
     let productIdentifiers: Set<String>
     
     private let purchaseManager: VPurchaseManagerType = VPurchaseManager.sharedInstance()
