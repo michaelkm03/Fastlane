@@ -774,7 +774,6 @@
 		A72C86881C977FF600E97D4F /* RequestErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85ED1C977FF500E97D4F /* RequestErrorHandler.swift */; };
 		A72C86891C977FF600E97D4F /* RequestExecutorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85EE1C977FF500E97D4F /* RequestExecutorType.swift */; };
 		A72C868A1C977FF600E97D4F /* UnauthorizedErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85EF1C977FF500E97D4F /* UnauthorizedErrorHandler.swift */; };
-		A72C868B1C977FF600E97D4F /* BackgroundOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85F11C977FF500E97D4F /* BackgroundOperation.swift */; };
 		A72C868C1C977FF600E97D4F /* FetcherOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85F21C977FF500E97D4F /* FetcherOperation.swift */; };
 		A72C868E1C977FF600E97D4F /* RemoteFetcherOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85F41C977FF500E97D4F /* RemoteFetcherOperation.swift */; };
 		A72C868F1C977FF600E97D4F /* CreateMediaUploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85F61C977FF500E97D4F /* CreateMediaUploadOperation.swift */; };
@@ -2389,7 +2388,6 @@
 		A72C85ED1C977FF500E97D4F /* RequestErrorHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestErrorHandler.swift; sourceTree = "<group>"; };
 		A72C85EE1C977FF500E97D4F /* RequestExecutorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestExecutorType.swift; sourceTree = "<group>"; };
 		A72C85EF1C977FF500E97D4F /* UnauthorizedErrorHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnauthorizedErrorHandler.swift; sourceTree = "<group>"; };
-		A72C85F11C977FF500E97D4F /* BackgroundOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundOperation.swift; sourceTree = "<group>"; };
 		A72C85F21C977FF500E97D4F /* FetcherOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetcherOperation.swift; sourceTree = "<group>"; };
 		A72C85F41C977FF500E97D4F /* RemoteFetcherOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteFetcherOperation.swift; sourceTree = "<group>"; };
 		A72C85F61C977FF500E97D4F /* CreateMediaUploadOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateMediaUploadOperation.swift; sourceTree = "<group>"; };
@@ -5382,7 +5380,6 @@
 		A72C85F01C977FF500E97D4F /* Superclasses */ = {
 			isa = PBXGroup;
 			children = (
-				A72C85F11C977FF500E97D4F /* BackgroundOperation.swift */,
 				A72C85F21C977FF500E97D4F /* FetcherOperation.swift */,
 				A72C85F41C977FF500E97D4F /* RemoteFetcherOperation.swift */,
 			);
@@ -8671,7 +8668,6 @@
 				D8D812A11B13CB9300E93B37 /* VModernEnterNameViewController.m in Sources */,
 				BF3CD8801D11B65D00CB7764 /* UserUnupvoteOperation.swift in Sources */,
 				7C4C21F31D5122ED00B85670 /* CoachmarkDismissAnimationController.swift in Sources */,
-				A72C868B1C977FF600E97D4F /* BackgroundOperation.swift in Sources */,
 				A79825981C0FADAD00C53A07 /* KVODebugger.swift in Sources */,
 				F06350691CB00FA30047E30C /* MixedMediaCameraViewController.swift in Sources */,
 				A721E9371B572454000B7901 /* NSArray+VMap.m in Sources */,
