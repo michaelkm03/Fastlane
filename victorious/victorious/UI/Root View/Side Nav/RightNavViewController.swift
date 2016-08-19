@@ -51,11 +51,6 @@ class RightNavViewController: UIViewController, CoachmarkDisplayer, VNavigationD
         }
     }
     
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        v_addBadgingToAccessoryScreensWithDependencyManager(dependencyManager)
-    }
-    
     // MARK: - CoachmarkDisplayer
     
     func highlightFrame(forIdentifier forIdentifier: String) -> CGRect? {

@@ -60,8 +60,6 @@
 	<string>victorious.NativeWorkspaceViewController</string>
 	<key>imageVideoGallery.screen</key>
 	<string>VAssetCollectionGridViewController</string>
-	<key>workspace</key>
-	<string>VWorkspaceShimDestination</string>
 	<key>library.creationFlow</key>
 	<string>victorious.LibraryCreationFlowController</string>
 	<key>mixedMediaCamera.creationFlow</key>
@@ -83,7 +81,7 @@
 	<key>livechat.screen</key>
 	<string>victorious.ChatFeedViewController</string>
 	<key>notifications.screen</key>
-	<string>VNotificationsViewController</string>
+	<string>victorious.NotificationsViewController</string>
 	<key>forumProfile.screen</key>
 	<string>victorious.VNewProfileViewController</string>
 	<key>settings.screen</key>
@@ -94,8 +92,6 @@
 	<string>VWebBrowserViewController</string>
 	<key>standard.permissionsAlert</key>
 	<string>VPermissionAlertViewController</string>
-	<key>standard.createSheet</key>
-	<string>VCreateSheetViewController</string>
 	<key>forcedContentCreation.screen</key>
 	<string>VForcedWorkspaceContainerViewController</string>
 	<key>standard.badgeView</key>

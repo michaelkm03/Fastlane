@@ -100,7 +100,11 @@ static NSString * const kMacroSubtype                = @"%%SUBTYPE%%";
                                  VTrackingEventUserDidSelectRegistrationOption     : VTrackingRegisteButtonTapKey,
                                  VTrackingEventUserDidSelectSignUpSubmit           : VTrackingSignUpButtonTapKey,
                                  VTrackingEventUserPermissionDidChange             : VTrackingPermissionChangeKey,
-                                 VTrackingEventLoginWithFacebookDidFail            : VTrackingAppErrorKey };
+                                 VTrackingEventLoginWithFacebookDidFail            : VTrackingAppErrorKey,
+                                 VTrackingEventSentPurchaseRequestToStore          : VTrackingEventSentPurchaseRequestToStore,
+                                 VTrackingEventSentProductReceiptToBackend         : VTrackingEventSentProductReceiptToBackend,
+                                 VTrackingEventRecievedPurchaseCompletionFromStore : VTrackingEventRecievedPurchaseCompletionFromStore,
+                                 VTrackingEventRecievedProductReceiptFromBackend   : VTrackingEventRecievedProductReceiptFromBackend };
         
         _macroReplacement = [[VSDKURLMacroReplacement alloc] init];
         _requestCounter = NSUIntegerMax;

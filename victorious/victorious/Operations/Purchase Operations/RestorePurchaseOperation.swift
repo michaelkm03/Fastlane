@@ -9,8 +9,13 @@
 import Foundation
 
 class RestorePurchasesOperation: BackgroundOperation {
+    let validationURL:NSURL?
     
     var purchaseManager: VPurchaseManagerType = VPurchaseManager.sharedInstance()
+    
+    init(validationURL: NSURL?) {
+        self.validationURL = validationURL
+    }
     
     override func start() {
         super.start()
@@ -19,7 +24,7 @@ class RestorePurchasesOperation: BackgroundOperation {
         purchaseManager.restorePurchasesSuccess(
             { results in
                 // Force success because we have to deliver the product even if the sever fails for any reason
-                VIPValidateSuscriptionOperation(shouldForceSuccess: true).rechainAfter(self).queue()
+                VIPValidateSubscriptionOperation(url: self.validationURL, shouldForceSuccess: true)?.rechainAfter(self).queue()
                 self.finishedExecuting()
             },
             failure: { error in

@@ -11,13 +11,14 @@ import XCTest
 
 class ValidateReceiptRequestTests: XCTestCase {
     func testParseResponse() {
+        let urlString = "urlString"
         guard  let receiptData = "NSData whose `length` will be > 0 for testing.".dataUsingEncoding(NSUTF8StringEncoding),
-            let request = ValidateReceiptRequest(data: receiptData) else {
+            let request = ValidateReceiptRequest(data: receiptData, url: NSURL(string: urlString)!) else {
             XCTFail("Error preparing mock input data.")
             return
         }
         
-        XCTAssertEqual(request.urlRequest.URL, NSURL(string: "/api/purchase"))
+        XCTAssertEqual(request.urlRequest.URL, NSURL(string: urlString))
         XCTAssertEqual(request.urlRequest.HTTPMethod, "POST")
         
         guard let mockUserDataURL = NSBundle(forClass: self.dynamicType).URLForResource("PurchaseResponse", withExtension: "json"),

@@ -109,3 +109,154 @@ extension NSOperation: Chainable {
         return rechainOn(v_defaultQueue, after: dependency)
     }
 }
+
+/// Future: 
+/// This is the new Queueable protocol that will replace the original one.
+/// Since FetcherOperation and FetcherRemoteOperatino still uses the original Queueable protocol,
+/// we'll perform the replacement once core data is removed. Which I'll do next.
+/// - note: No matter which queue the operation is scheduled and/or executed on, its completion block will be running on the main queue.
+protocol Queueable2 {
+    
+    /// Conformers should define what type of Output it will generate.
+    associatedtype Output
+    
+    /// The result of executing the operation.
+    /// This is optional because we don't have the result at initialization time.
+    /// Conformers should verify this has been set before calling completion block.
+    var result: OperationResult<Output>? { get }
+    
+    /// Conformers should specify which queue the operation itself should be scheduled(queued) on.
+    var scheduleQueue: NSOperationQueue { get }
+    
+    /// Conformers should specify which queue the operation's code should be executed on.
+    var executionQueue: NSOperationQueue { get }
+    
+    /// Adds the receiver to its default queue, with a completion block that'll run after the receiver's finished executing,
+    /// and before the next operation starts.
+    func queue(completion completion: ((result: OperationResult<Output>) -> Void)?)
+    
+    /// Adds the receiver to its default queue without completion block.
+    func queue()
+}
+
+extension Queueable2 where Self: NSOperation {
+    func queue(completion completion: ((result: OperationResult<Output>) -> Void)?) {
+        defer {
+            scheduleQueue.addOperation(self)
+        }
+        
+        guard let completion = completion else {
+            return
+        }
+        
+        let completionOperation = NSBlockOperation {
+            guard let result = self.result else {
+                assertionFailure("Received no result from async operation to pass through the completion handler.")
+                return
+            }
+            completion(result: result)
+        }
+        
+        completionOperation.addDependency(self)
+        NSOperationQueue.mainQueue().addOperation(completionOperation)
+    }
+    
+    func queue() {
+        queue(completion: nil)
+    }
+}
+
+/// A synchronous operation runs its `execute` method synchronously on the provided `executionQueue` and finishes without waiting for any async callback.
+/// - requires:
+/// * Subclasses must override `var executionQueue` to specify which queue it gets executed on.
+/// * Subclasses must override `func execute()` to specify the main body of the operation.
+class SyncOperation<Output>: NSOperation, Queueable2 {
+    
+    // MARK: - Queueable2
+    
+    final var scheduleQueue: NSOperationQueue {
+        return executionQueue
+    }
+    
+    var executionQueue: NSOperationQueue {
+        fatalError("Subclasses of SyncOperation must override `executionQueue`!")
+    }
+    
+    private(set) var result: OperationResult<Output>?
+    
+    // MARK: - Operation Execution
+    
+    func execute() -> OperationResult<Output> {
+        fatalError("Subclasses of SyncOperation must override `execute()`!")
+    }
+    
+    override final func main() {
+        guard !cancelled else {
+            result = .cancelled
+            return
+        }
+        
+        result = execute()
+    }
+}
+
+private let asyncScheduleQueue = NSOperationQueue()
+
+/// An asynchronous operation runs its `execute` method on the provided `executionQueue`, and then waits indefinitely for `finish` to be called.
+/// Since it blocks the `scheduleQueue`, it is always scheduled on a separate global shared `asyncScheduleQueue`.
+/// - requires:
+/// * Subclasses must override `var executionQueue` to specify which queue it gets executed on.
+/// * Subclasses must override `func execute()` to specify the main body of the operation.
+/// - note:
+/// * We use a semaphore to block the operation's execution, and only finishes when `finish` was called.
+/// Semaphore blocks threads but not queues, so we may want to revisit this if something goes wrong / we need concurrent operations.
+class AsyncOperation<Output>: NSOperation, Queueable2 {
+    
+    // MARK: - Queueable2
+    
+    let scheduleQueue = asyncScheduleQueue
+    
+    var executionQueue: NSOperationQueue {
+        fatalError("Subclasses of AsyncOperation must override `executionQueue`!")
+    }
+    
+    private(set) var result: OperationResult<Output>?
+    
+    // MARK: - Operation Execution
+    
+    func execute(finish: (result: OperationResult<Output>) -> Void) {
+        fatalError("Subclasses of AsyncOperation must override `execute()`!")
+    }
+    
+    override final func main() {
+        guard !cancelled else {
+            result = .cancelled
+            return
+        }
+        
+        let executeSemaphore = dispatch_semaphore_create(0)
+        executionQueue.addOperationWithBlock {
+            self.execute { [weak self] result in
+                defer {
+                    dispatch_semaphore_signal(executeSemaphore)
+                }
+                guard let strongSelf = self else {
+                    return
+                }
+                strongSelf.result = strongSelf.cancelled ? .cancelled : result
+            }
+        }
+        
+        dispatch_semaphore_wait(executeSemaphore, DISPATCH_TIME_FOREVER)
+    }
+}
+
+/// This enum represents the result of executing an operation.
+enum OperationResult<Output> {
+    /// When the operation successfully finishes executing, and produces results of `Output` type. `Output` can be Void if no results is expected from the operation.
+    case success(Output)
+    /// When the operation failed with a specific error. Use this case when there's an error that should be surfaced to the user.
+    case failure(ErrorType)
+    /// When the operation was cancelled either by the caller, or determined to not be able to execute without a user facing error.
+    case cancelled
+}

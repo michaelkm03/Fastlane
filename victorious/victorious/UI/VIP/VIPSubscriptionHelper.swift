@@ -21,10 +21,13 @@ class VIPSubscriptionHelper {
     let subscriptionFetchURL: String
     static let userVIPStatusChangedNotificationKey = "victorious.VIPSubscriptionHelper.userVIPStatusChangedNotificationKey"
     
-    init(subscriptionFetchURL: String, delegate: VIPSubscriptionHelperDelegate, originViewController: UIViewController) {
+    let dependencyManager: VDependencyManager
+    
+    init(subscriptionFetchURL: String, delegate: VIPSubscriptionHelperDelegate, originViewController: UIViewController, dependencyManager: VDependencyManager) {
         self.subscriptionFetchURL = subscriptionFetchURL
         self.delegate = delegate
         self.originViewController = originViewController
+        self.dependencyManager = dependencyManager
     }
     
     func subscribe() {
@@ -69,28 +72,44 @@ class VIPSubscriptionHelper {
     
     private func showSubscriptionSelectionForProducts(products: [VProduct]) {
         guard let originViewController = originViewController else {
+            delegate?.setIsLoading(false, title: nil)
             return
         }
         
         let selectSubscription = VIPSelectSubscriptionOperation(products: products, originViewController: originViewController)
-        if selectSubscription.willShowPrompt {
+        let willShowPrompt = selectSubscription.willShowPrompt
+        if willShowPrompt {
             delegate?.setIsLoading(false, title: nil)
         }
-        selectSubscription.queue() { [weak self] _ in
-            guard let selectedProduct = selectSubscription.selectedProduct else {
-                self?.delegate?.setIsLoading(false, title: nil)
-                if let error = selectSubscription.error {
-                    originViewController.showSubscriptionAlert(for: error)
-                }
+        selectSubscription.queue() { [weak self] result in
+            guard let strongSelf = self else {
                 return
             }
-            self?.delegate?.setIsLoading(true, title: nil)
-            self?.subscribeToProduct(selectedProduct)
+            
+            let selectionDependency = strongSelf.dependencyManager.selectionDialogDependency
+            switch result {
+            case .success(let selectedProduct):
+                if willShowPrompt {
+                    selectionDependency?.trackButtonEvent(.tap)
+                }
+                self?.delegate?.setIsLoading(true, title: nil)
+                self?.subscribeToProduct(selectedProduct)
+            case .failure(let error):
+                if willShowPrompt {
+                    selectionDependency?.trackButtonEvent(.cancel)
+                }
+                strongSelf.delegate?.setIsLoading(false, title: nil)
+                originViewController.showSubscriptionAlert(for: error as NSError)
+                self?.delegate?.setIsLoading(false, title: nil)
+                originViewController.showSubscriptionAlert(for: error as NSError)
+            case .cancelled:
+                self?.delegate?.setIsLoading(false, title: nil)
+            }
         }
     }
     
     private func subscribeToProduct(product: VProduct) {
-        let subscribe = VIPSubscribeOperation(product: product)
+        let subscribe = VIPSubscribeOperation(product: product, validationURL: dependencyManager.validationURL)
         subscribe.queue() { [weak self] error, canceled in
             self?.delegate?.setIsLoading(false, title: nil)
             guard let strongSelf = self where !canceled else {
@@ -118,5 +137,25 @@ private struct Strings {
 private extension UIViewController {
     func showSubscriptionAlert(for error: NSError?) {
         v_showErrorWithTitle(Strings.subscriptionFailed, message: error?.localizedDescription)
+    }
+}
+
+private extension VDependencyManager {
+    var purchaseDialogDependency: VDependencyManager? {
+        return childDependencyForKey("native.store.dialog")
+    }
+    
+    var selectionDialogDependency: VDependencyManager? {
+        return childDependencyForKey("multiple.sku.dialog")
+    }
+    
+    var validationURL: NSURL? {
+        guard
+            let urlString = networkResources?.stringForKey("purchaseURL"),
+            let url = NSURL(string: urlString)
+        else {
+            return nil
+        }
+        return url
     }
 }

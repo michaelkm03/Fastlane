@@ -9,11 +9,9 @@
 #import "VCreationFlowPresenter.h"
 #import "VDependencyManager.h"
 #import "VCreationFlowController.h"
-#import "VCreateSheetViewController.h"
 #import "VTrackingManager.h"
 #import "victorious-Swift.h"
 
-static NSString * const kCreateSheetKey = @"createSheet";
 static NSString * const kCreationFlowKey = @"createFlow";
 static NSString * const kImageCreationFlowKey = @"imageCreateFlow";
 static NSString * const kGIFCreationFlowKey = @"gifCreateFlow";

@@ -8,7 +8,7 @@
 
 @import UIKit;
 
-@class VSessionTimer;
+@class VSessionTimer, VDependencyManager;
 @protocol Scaffold;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -46,6 +46,8 @@ extern NSString * const VApplicationDidBecomeActiveNotification;
 
 @property (nonatomic, strong, readonly) UIViewController<Scaffold> *scaffold;
 
+@property (nonatomic, strong ,readonly) VDependencyManager *dependencyManager;
+
 /**
  Returns the instance of VRootViewController that is set as the main 
  window's rootViewController property. If no such instance exists,
@@ -67,6 +69,12 @@ extern NSString * const VApplicationDidBecomeActiveNotification;
  Restarts the session of the app, returning it to a state as if it had just been launched.
  */
 - (void)startNewSession;
+
+/**
+ Exposed for Swift extension of VRootViewController. 
+ Do not call from outside of VRootViewController.
+ */
+- (void)initializeScaffold;
 
 @end
 

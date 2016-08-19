@@ -64,8 +64,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             case .websocket(let websocketEvent):
                 switch websocketEvent {
                     case .disconnected(_) where isViewLoaded():
-                        // FUTURE: fetch the localized string from a new node in the template, depending on what the error type is.
-                        let alert = Alert(title: "Reconnecting to server...", type: .reconnectingError)
+                        let alert = Alert(title: NSLocalizedString("Reconnecting...", comment: "Reconnecting to server."), type: .reconnectingError)
                         InterstitialManager.sharedInstance.receive(alert)
                     default:
                         break

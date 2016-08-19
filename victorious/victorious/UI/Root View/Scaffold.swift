@@ -36,7 +36,7 @@ extension Scaffold where Self: UIViewController {
         pushNotificationOperation.addDependency(tutorialOperation)
         
         tutorialOperation.queue()
-        pushNotificationOperation.queue { error, cancelled in
+        pushNotificationOperation.queue { _ in
             onReady?()
         }
     }
@@ -46,7 +46,7 @@ extension Scaffold where Self: UIViewController {
     /// Handles a change in logged-in status. Expected to be called from a handler of `kLoggedInChangedNotification`.
     func handleLoggedInStatusChange() {
         if VCurrentUser.user() == nil {
-            ShowLoginOperation(originViewController: self, dependencyManager: dependencyManager, context: .Default, animated: true).queue()
+            ShowLoginOperation(originViewController: self, dependencyManager: dependencyManager, animated: true).queue()
         }
     }
     
