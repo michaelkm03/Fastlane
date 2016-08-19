@@ -50,20 +50,19 @@ class VIPSubscriptionHelper {
             }
             self?.fetchProductsForIdentifiers(productIdentifiers)
         }
-    
     }
     
     private func fetchProductsForIdentifiers(identifiers: [String]) {
         let productFetchOperation = ProductFetchOperation(productIdentifiers: identifiers)
-        productFetchOperation.queue() { [weak self] _ in
-            
-            guard let products = productFetchOperation.products else {
-                self?.delegate?.setIsLoading(false, title: nil)
-                self?.originViewController?.showSubscriptionAlert(for: productFetchOperation.error)
-                return
+        productFetchOperation.queue() { [weak self] result in
+            switch result {
+                case .success(let products):
+                    self?.showSubscriptionSelectionForProducts(products)
+                case .failure(let error):
+                    self?.delegate?.setIsLoading(false, title: nil)
+                    self?.originViewController?.showSubscriptionAlert(for: error as NSError)
+                case .cancelled: break
             }
-            
-            self?.showSubscriptionSelectionForProducts(products)
         }
     }
     
