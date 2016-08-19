@@ -10,7 +10,7 @@ import Foundation
 
 /// Executes several sub operations that pre-load user info including conversations, poll responses,
 /// profile data, profile stream, etc.  Intended to be called just after login.
-class PreloadUserInfoOperation: BackgroundOperation {
+class PreloadUserInfoOperation: AsyncOperation<VUser> {
     private let dependencyManager: VDependencyManager
 
     init(dependencyManager: VDependencyManager) {
@@ -18,36 +18,32 @@ class PreloadUserInfoOperation: BackgroundOperation {
         super.init()
     }
     
-    private(set) var user: VUser?
+    private let persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
     
-    var persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
+    override var executionQueue: Queue {
+        return .background
+    }
     
-    override func start() {
-        super.start()
-        beganExecuting()
-        
+    override func execute(finish: (result: OperationResult<VUser>) -> Void) {
         persistentStore.createBackgroundContext().v_performBlockAndWait() { [weak self] context in
-            guard let strongSelf = self else {
-                return
-            }
-            
             guard
                 let userID = VCurrentUser.user(inManagedObjectContext: context)?.remoteId.integerValue,
                 let apiPath = self?.dependencyManager.networkResources?.userFetchAPIPath,
                 let infoOperation = UserInfoOperation(userID: userID, apiPath: apiPath)
             else {
-                strongSelf.finishedExecuting()
+                finish(result: .failure(NSError(domain: "PreloadUserInfoOperation", code: -1, userInfo: nil)))
                 return
             }
             
             infoOperation.queue() { _ in
-                strongSelf.user = infoOperation.user
-                strongSelf.finishedExecuting()
+                guard let user = infoOperation.user else {
+                    finish(result: .failure(NSError(domain: "PreloadUserInfoOperation", code: -1, userInfo: nil)))
+                    return
+                }
+                finish(result: .success(user))
             }
             
             FollowCountOperation(userID: userID).queue()
-
-            VPushNotificationManager.sharedPushNotificationManager().sendTokenWithSuccessBlock(nil, failBlock: nil)
         }
     }
 }

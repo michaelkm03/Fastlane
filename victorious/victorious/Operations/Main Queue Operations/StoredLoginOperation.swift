@@ -42,8 +42,12 @@ final class StoredLoginOperation: SyncOperation<Void> {
             user.setAsCurrentUser()
             
             let infoOperation = PreloadUserInfoOperation(dependencyManager: dependencyManager)
-            infoOperation.after(self).queue() { _ in
-                infoOperation.user?.setAsCurrentUser()
+            infoOperation.after(self).queue() { result in
+                switch result {
+                    case .success(let user): user.setAsCurrentUser()
+                    case .failure: break
+                    case .cancelled: break
+                }
             }
             
         } else if let loginType = VLoginType(rawValue: defaults.integerForKey(kLastLoginTypeUserDefaultsKey)),
