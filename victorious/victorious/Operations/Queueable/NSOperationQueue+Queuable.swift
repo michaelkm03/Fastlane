@@ -17,24 +17,14 @@ extension NSOperationQueue {
     static var v_globalBackgroundQueue: NSOperationQueue {
         return sharedOperationQueue
     }
-    
-    func v_dependentOperationsOf(operation: NSOperation) -> [NSOperation] {
-        return Queue.allQueues
-            .flatMap {
-                $0.operations
-            }.filter {
-                $0.dependencies.contains(operation)
-            }
-    }
-    
-    func v_rechainOperation( operation: NSOperation, after dependency: NSOperation ) {
-        
-        // Rechain (transfer) completion block
-        operation.addDependency( dependency )
-        
-        // Rechain (transfer) dependencies
-        for dependent in v_dependentOperationsOf( dependency ) {
-            dependent.addDependency( operation )
+}
+
+extension NSOperation {
+    var dependentOperations: [NSOperation] {
+        return Queue.allQueues.flatMap {
+            $0.operations
+        }.filter {
+            $0.dependencies.contains(self)
         }
     }
 }
@@ -49,7 +39,7 @@ extension NSOperationQueue {
             }
             // For all other dependent operations of the current operation, make them dependent on the completion block operation instead.
             // This has to happen before we set up completion block operation's dependency to avoid a dead lock.
-            v_dependentOperationsOf(operation).forEach { $0.addDependency(completionOperation) }
+            operation.dependentOperations.forEach { $0.addDependency(completionOperation) }
             
             // Set up dependency for completion block operation and add it to queue.
             completionOperation.addDependency(operation)

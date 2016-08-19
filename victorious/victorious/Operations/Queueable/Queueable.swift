@@ -95,7 +95,13 @@ extension NSOperation: Chainable {
     }
     
     func rechainAfter(dependency: NSOperation) -> Self {
-        v_defaultQueue.v_rechainOperation(self, after: dependency)
+        addDependency(dependency)
+        
+        // Rechain (transfer) dependencies
+        for dependent in dependency.dependentOperations {
+            dependent.addDependency(self)
+        }
+        
         return self
     }
 }
@@ -292,6 +298,16 @@ enum OperationResult<Output> {
 }
 
 enum Queue {
+    case main
+    case background
+    case asyncSchedule
+    
+    static let allCases: [Queue] = [.main, .background, .asyncSchedule]
+    
+    static var allQueues: [NSOperationQueue] {
+        return Queue.allCases.map { $0.operationQueue }
+    }
+    
     var operationQueue: NSOperationQueue {
         switch self {
             case .main: return NSOperationQueue.mainQueue()
@@ -299,14 +315,4 @@ enum Queue {
             case .asyncSchedule: return asyncScheduleQueue
         }
     }
-    
-    static let allCases = [main, background, asyncSchedule]
-    
-    static var allQueues: [NSOperationQueue] {
-        return Queue.allCases.map { $0.operationQueue }
-    }
-    
-    case main
-    case background
-    case asyncSchedule
 }
