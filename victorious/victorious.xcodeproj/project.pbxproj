@@ -581,7 +581,6 @@
 		7AB55FE31CADABF000EBE31E /* VNewProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB55FE21CADABF000EBE31E /* VNewProfileViewController.swift */; };
 		7AB55FE51CADF00A00EBE31E /* CGSize+CornerRadius.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB55FE41CADF00A00EBE31E /* CGSize+CornerRadius.swift */; };
 		7AB55FE71CADF06000EBE31E /* CGSize+CornerRadiusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB55FE61CADF06000EBE31E /* CGSize+CornerRadiusTests.swift */; };
-		7AC1945B1D2C9002001B15B8 /* ChatBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC1945A1D2C9002001B15B8 /* ChatBubbleView.swift */; };
 		7AC1945D1D2DB9BB001B15B8 /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC1945C1D2DB9BB001B15B8 /* UIColor+Hex.swift */; };
 		7AC1945F1D2DC283001B15B8 /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC1945E1D2DC283001B15B8 /* AvatarView.swift */; };
 		7AC194611D2DD1A9001B15B8 /* String+Initials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC194601D2DD1A9001B15B8 /* String+Initials.swift */; };
@@ -1300,6 +1299,7 @@
 		F029B56D1CA1AA6200A01703 /* LibraryCreationFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F029B56C1CA1AA6200A01703 /* LibraryCreationFlowController.swift */; };
 		F035DC1C1D3D38EA00209890 /* VDependencyManager+ButtonTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = F035DC1B1D3D38EA00209890 /* VDependencyManager+ButtonTracking.swift */; };
 		F03A01261D18D49E00BC0040 /* VTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03A01241D18D49E00BC0040 /* VTracking.swift */; };
+		F04489001D67AED500B6C529 /* BubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F04488FF1D67AED500B6C529 /* BubbleView.swift */; };
 		F0457DD41CC07873009769A1 /* CameraFlashBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0457DD31CC07873009769A1 /* CameraFlashBarButtonItem.swift */; };
 		F0457DD61CC07C0F009769A1 /* CameraDirectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0457DD51CC07C0F009769A1 /* CameraDirectionButton.swift */; };
 		F050D33C1CAB6B30007A05ED /* ComposerInputAttachmentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F050D33B1CAB6B30007A05ED /* ComposerInputAttachmentType.swift */; };
@@ -2111,7 +2111,6 @@
 		7AB55FE21CADABF000EBE31E /* VNewProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VNewProfileViewController.swift; sourceTree = "<group>"; };
 		7AB55FE41CADF00A00EBE31E /* CGSize+CornerRadius.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGSize+CornerRadius.swift"; sourceTree = "<group>"; };
 		7AB55FE61CADF06000EBE31E /* CGSize+CornerRadiusTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGSize+CornerRadiusTests.swift"; sourceTree = "<group>"; };
-		7AC1945A1D2C9002001B15B8 /* ChatBubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatBubbleView.swift; sourceTree = "<group>"; };
 		7AC1945C1D2DB9BB001B15B8 /* UIColor+Hex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
 		7AC1945E1D2DC283001B15B8 /* AvatarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AvatarView.swift; sourceTree = "<group>"; };
 		7AC194601D2DD1A9001B15B8 /* String+Initials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Initials.swift"; sourceTree = "<group>"; };
@@ -3067,6 +3066,7 @@
 		F029B56C1CA1AA6200A01703 /* LibraryCreationFlowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryCreationFlowController.swift; sourceTree = "<group>"; };
 		F035DC1B1D3D38EA00209890 /* VDependencyManager+ButtonTracking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VDependencyManager+ButtonTracking.swift"; sourceTree = "<group>"; };
 		F03A01241D18D49E00BC0040 /* VTracking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VTracking.swift; sourceTree = "<group>"; };
+		F04488FF1D67AED500B6C529 /* BubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleView.swift; sourceTree = "<group>"; };
 		F0457DD31CC07873009769A1 /* CameraFlashBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraFlashBarButtonItem.swift; sourceTree = "<group>"; };
 		F0457DD51CC07C0F009769A1 /* CameraDirectionButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraDirectionButton.swift; sourceTree = "<group>"; };
 		F050D33B1CAB6B30007A05ED /* ComposerInputAttachmentType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposerInputAttachmentType.swift; sourceTree = "<group>"; };
@@ -3304,6 +3304,7 @@
 				D8DCE58D1ADD834C0004B782 /* Action Bar */,
 				D876E1F91A9DA685002CAA29 /* Background */,
 				7A1E1D771D30724A00A39FE5 /* BackgroundButton.swift */,
+				F04488FF1D67AED500B6C529 /* BubbleView.swift */,
 				F07DDE2F1CFCC4F400C7FC8D /* Button */,
 				BFC673631CE3C9C8004F9D3C /* ContentPreviewView */,
 				D89A50071A000D540010D050 /* Controls */,
@@ -5468,7 +5469,6 @@
 		A73BA2B61C9393ED008168B5 /* Message Cell */ = {
 			isa = PBXGroup;
 			children = (
-				7AC1945A1D2C9002001B15B8 /* ChatBubbleView.swift */,
 				A73BA2B71C9393ED008168B5 /* ChatFeedMessageCell.swift */,
 				A73BA2BA1C9393ED008168B5 /* ChatFeedMessageCell+Layout.swift */,
 			);
@@ -8423,6 +8423,7 @@
 				7AFE92041D654481005D51A4 /* VDependencyManager+FixedWebContent.swift in Sources */,
 				A72C865E1C977FF600E97D4F /* Paginated.swift in Sources */,
 				D88CEAE81A92EEED00F5A837 /* VSnapshotViewController.m in Sources */,
+				F04489001D67AED500B6C529 /* BubbleView.swift in Sources */,
 				F0457DD41CC07873009769A1 /* CameraFlashBarButtonItem.swift in Sources */,
 				D86448A11A9ACCE700CD01AC /* VWorkspaceToWorkspaceAnimator.m in Sources */,
 				A72C868A1C977FF600E97D4F /* UnauthorizedErrorHandler.swift in Sources */,
@@ -8594,7 +8595,6 @@
 				D8758D221B0FDEE3008C6C0D /* VDependencyManager+VKeyboardStyle.m in Sources */,
 				A769FE451ABCFCE900888ED8 /* VTrackingSettingsViewController.m in Sources */,
 				BF2022751D00B97E006B59C5 /* ContentUnupvoteOperation.swift in Sources */,
-				7AC1945B1D2C9002001B15B8 /* ChatBubbleView.swift in Sources */,
 				C3623F2B1BA3AF3A002B121D /* Interstitial.swift in Sources */,
 				A7F0C86A1CB2E51A0007178A /* SimulatedPurchaseManager.swift in Sources */,
 				675A9AFC1BC372DE009CE633 /* FirstInstallManager.swift in Sources */,
