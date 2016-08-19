@@ -46,6 +46,16 @@ class VIPFlowNavigationController: UINavigationController, VIPGateViewController
         gateDependencyManager?.addBackgroundToBackgroundHost(self)
         delegate = animationDelegate
     }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        dependencyManager.trackViewWillAppear(self)
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        dependencyManager.trackViewWillDisappear(self)
+    }
 
     // MARK: - VBackgroundContainer
 
