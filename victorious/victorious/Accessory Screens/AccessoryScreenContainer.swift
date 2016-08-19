@@ -118,6 +118,8 @@ private class AccessoryScreenBarButtonItem: UIBarButtonItem {
         buttonSize.width += Constants.extraWidth
         button.frame.size = buttonSize
         customView = button
+        
+        button.badgeString = "5"
     }
     
     required init?(coder: NSCoder) {
@@ -126,7 +128,7 @@ private class AccessoryScreenBarButtonItem: UIBarButtonItem {
     
     // MARK: - Views
     
-    private let button = UIButton(type: .System)
+    private let button = BadgeButton(type: .System)
     
     // MARK: - Navigating
     
