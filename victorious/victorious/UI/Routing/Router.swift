@@ -61,7 +61,7 @@ struct Router {
         }
     }
     
-    func showVIPForum() {
+    private func showVIPForum() {
         guard let originViewController = self.originViewController else {
             return
         }
