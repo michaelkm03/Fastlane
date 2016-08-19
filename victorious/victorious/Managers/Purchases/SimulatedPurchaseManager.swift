@@ -53,12 +53,15 @@ class SimulatedPurchaseManager: VPurchaseManager {
                 duration: product.localizedDescription,
                 price: product.price
             )
-            operation.queue() { error, canceled in
-                if !canceled {
-                    self?.setProductPurchased(product)
-                    successCallback( Set<NSObject>([product]) )
-                } else {
-                    failureCallback(nil)
+            operation.queue() { result in
+                switch result {
+                    case .success:
+                        self?.setProductPurchased(product)
+                        successCallback(Set<NSObject>([product]))
+                    case .failure(let error):
+                        failureCallback(error as NSError)
+                    case .cancelled:
+                        failureCallback(nil)
                 }
             }
         }
