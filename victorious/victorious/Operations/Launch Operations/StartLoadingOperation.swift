@@ -41,7 +41,6 @@ final class StartLoadingOperation: SyncOperation<Void>, VTemplateDownloadOperati
     }
     
     override func execute() -> OperationResult<Void> {
-        NSLog("Loading operation executing")
         var cachedTemplate = VDependencyManager.dependencyManagerWithDefaultValuesForColorsAndFonts()
         if let template = template as? [NSObject: AnyObject] {
             let parentManager = VDependencyManager(
