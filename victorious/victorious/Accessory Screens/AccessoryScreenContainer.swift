@@ -104,6 +104,7 @@ extension AccessoryScreenContainer {
 }
 
 private class AccessoryScreenBarButtonItem: UIBarButtonItem {
+    
     // MARK: - Constants
     
     private struct Constants {

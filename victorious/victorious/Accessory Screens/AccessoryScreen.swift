@@ -1,5 +1,5 @@
 //
-//  VDependencyManager+AccessoryScreens.swift
+//  AccessoryScreen.swift
 //  victorious
 //
 //  Created by Jarod Long on 8/16/16.
