@@ -19,7 +19,7 @@ class YouTubeVideoPlayer: NSObject, VVideoPlayer, YTPlayerViewDelegate {
             playerView.mute()
         }
         else {
-            playerView.mute()
+            playerView.unmute()
         }
     }
     
@@ -157,7 +157,6 @@ class YouTubeVideoPlayer: NSObject, VVideoPlayer, YTPlayerViewDelegate {
                 isPlaying = false
                 delegate?.videoPlayerDidPause?(self)
             case .Buffering:
-                playerView.mute()
                 delegate?.videoPlayerDidStartBuffering?(self)
             case .Queued:()
             case .Unknown:()
