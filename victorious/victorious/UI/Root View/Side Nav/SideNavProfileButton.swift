@@ -10,7 +10,7 @@ import UIKit
 
 /// The button that displays the user's profile image in the side nav scaffold and takes them to their profile.
 ///
-/// It inherits from `BadgeButton` to support badging into the 
+/// It inherits from `BadgeButton` to support displaying badges relevant to the user's profile. 
 ///
 class SideNavProfileButton: BadgeButton {
     
