@@ -26,8 +26,8 @@ final class ConfirmDestructiveActionOperation: AsyncOperation<Void>, ActionConfi
         self.dependencyManager = dependencyManager
     }
     
-    override var executionQueue: NSOperationQueue {
-        return .mainQueue()
+    override var executionQueue: Queue {
+        return .main
     }
     
     override func execute(finish: (output: OperationResult<Void>) -> Void) {

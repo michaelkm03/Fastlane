@@ -53,20 +53,19 @@ class VIPSubscriptionHelper {
             }
             self?.fetchProductsForIdentifiers(productIdentifiers)
         }
-    
     }
     
     private func fetchProductsForIdentifiers(identifiers: [String]) {
         let productFetchOperation = ProductFetchOperation(productIdentifiers: identifiers)
-        productFetchOperation.queue() { [weak self] _ in
-            
-            guard let products = productFetchOperation.products else {
-                self?.delegate?.setIsLoading(false, title: nil)
-                self?.originViewController?.showSubscriptionAlert(for: productFetchOperation.error)
-                return
+        productFetchOperation.queue() { [weak self] result in
+            switch result {
+                case .success(let products):
+                    self?.showSubscriptionSelectionForProducts(products)
+                case .failure(let error):
+                    self?.delegate?.setIsLoading(false, title: nil)
+                    self?.originViewController?.showSubscriptionAlert(for: error as NSError)
+                case .cancelled: break
             }
-            
-            self?.showSubscriptionSelectionForProducts(products)
         }
     }
     
@@ -110,18 +109,21 @@ class VIPSubscriptionHelper {
     
     private func subscribeToProduct(product: VProduct) {
         let subscribe = VIPSubscribeOperation(product: product, validationURL: dependencyManager.validationURL)
-        subscribe.queue() { [weak self] error, canceled in
+        subscribe.queue() { [weak self] result in
             self?.delegate?.setIsLoading(false, title: nil)
-            guard let strongSelf = self where !canceled else {
+            
+            guard let strongSelf = self  else {
                 return
             }
             
-            if let error = error {
-                strongSelf.originViewController?.showSubscriptionAlert(for: error)
-            }
-            else {
-                strongSelf.delegate?.VIPSubscriptionHelperCompletedSubscription(strongSelf)
-                NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: VIPSubscriptionHelper.userVIPStatusChangedNotificationKey, object: nil))
+            switch result {
+                case .success:
+                    strongSelf.delegate?.VIPSubscriptionHelperCompletedSubscription(strongSelf)
+                    NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: VIPSubscriptionHelper.userVIPStatusChangedNotificationKey, object: nil))
+                case .failure(let error):
+                    strongSelf.originViewController?.showSubscriptionAlert(for: error as NSError)
+                case .cancelled:
+                    break
             }
         }
     }

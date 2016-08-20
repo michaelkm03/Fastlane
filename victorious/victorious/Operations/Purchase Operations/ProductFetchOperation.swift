@@ -8,49 +8,42 @@
 
 import Foundation
 
-class ProductFetchOperation: BackgroundOperation {
+final class ProductFetchOperation: AsyncOperation<[VProduct]> {
     let productIdentifiers: Set<String>
     
-    private(set) var products: [VProduct]?
-    
-    private var purchaseManager: VPurchaseManagerType = VPurchaseManager.sharedInstance()
+    private let purchaseManager: VPurchaseManagerType = VPurchaseManager.sharedInstance()
     
     init(productIdentifiers: [String]) {
         self.productIdentifiers = Set(productIdentifiers.map { $0 })
     }
     
-    override func start() {
-        super.start()
-        beganExecuting()
-        
-        guard didConfirmActionFromDependencies else {
-            cancel()
-            finishedExecuting()
-            return
-        }
-        fetchProducts()
+    override var executionQueue: Queue {
+        return .background
     }
     
-    func fetchProducts() {
+    override func execute(finish: (result: OperationResult<[VProduct]>) -> Void) {
+        guard didConfirmActionFromDependencies else {
+            finish(result: .cancelled)
+            return
+        }
+        
         let success = { (fetchedProducts: Set<NSObject>?) in
-            defer {
-                self.finishedExecuting()
-            }
             guard let products = fetchedProducts?.flatMap({ $0 as? VProduct }) else {
+                finish(result: .failure(NSError(domain: "ProductFetchOperation", code: -1, userInfo: nil)))
                 return
             }
-            self.products = products
+            finish(result: .success(products))
         }
+        
         let failure = { (error: NSError?) in
-            defer {
-                self.finishedExecuting()
+            if let error = error {
+                finish(result: .failure(error))
             }
-            if error == nil {
-                self.cancel()
-            } else {
-                self.error = error
+            else {
+                finish(result: .cancelled)
             }
         }
+        
         purchaseManager.fetchProductsWithIdentifiers(productIdentifiers, success: success, failure: failure)
     }
 }
