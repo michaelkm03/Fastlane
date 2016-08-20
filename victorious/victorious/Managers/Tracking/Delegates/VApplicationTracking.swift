@@ -13,14 +13,15 @@ extension VApplicationTracking {
     
     func sendRequest(url: NSURL, eventIndex: Int, completion: NSError? -> Void) {
         let request = ApplicationTrackingRequest(trackingURL: url, eventIndex: eventIndex)
-        
-        MainRequestExecutor().executeRequest(request,
-            onComplete: { _ in
-                completion(nil)
-            },
-            onError: { error in
-                completion(error)
-            }
-        )
+        dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0)) {
+            MainRequestExecutor().executeRequest(request,
+                onComplete: { _ in
+                    completion(nil)
+                },
+                onError: { error in
+                    completion(error)
+                }
+            )
+        }
     }
 }

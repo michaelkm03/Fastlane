@@ -196,9 +196,7 @@
     
     [self.delegates enumerateObjectsUsingBlock:^(id<VTrackingDelegate> delegate, NSUInteger idx, BOOL *stop)
      {
-         dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0), ^{
-             [delegate trackEventWithName:eventName parameters:completeParams];
-         });
+         [delegate trackEventWithName:eventName parameters:completeParams];
      }];
 }
 
