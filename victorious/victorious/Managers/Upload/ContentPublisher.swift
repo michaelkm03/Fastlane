@@ -146,11 +146,12 @@ class ContentPublisher {
             
             CreateMediaUploadOperation(publishParameters: publishParameters, uploadManager: VUploadManager.sharedManager(), apiPath: apiPath).queue() { result in
                 switch result {
-                    case .success: break
+                    case .success:
                         completion?(nil)
                     case .failure(let error):
                         completion?(error)
-                    case .cancelled: break
+                    case .cancelled:
+                        break
                 }
             }
         }

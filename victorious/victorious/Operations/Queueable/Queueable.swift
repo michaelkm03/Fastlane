@@ -110,8 +110,8 @@ extension NSOperation {
     var dependentOperations: [NSOperation] {
         return Queue.allQueues.flatMap {
             $0.operations
-            }.filter {
-                $0.dependencies.contains(self)
+        }.filter {
+            $0.dependencies.contains(self)
         }
     }
 }
