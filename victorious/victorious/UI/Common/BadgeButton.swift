@@ -45,17 +45,26 @@ class BadgeButton: UIButton {
     
     // MARK: - Layout
     
+    /// The point on which the badge will be centered. Can be overridden to customize the badge position.
+    var badgeAnchorPoint: CGPoint {
+        let anchorFrame = imageView?.image == nil ? bounds : imageView?.frame ?? bounds
+        
+        return CGPoint(
+            x: anchorFrame.maxX,
+            y: anchorFrame.maxY
+        )
+    }
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         
         let intrinsicBadgeSize = badgeLabel.intrinsicContentSize()
         let badgeSize = CGSize(width: max(intrinsicBadgeSize.width, intrinsicBadgeSize.height), height: intrinsicBadgeSize.height)
-        let badgeAnchorFrame = imageView?.frame ?? bounds
         
-        badgeLabel.frame = badgeSize.centered(on: CGPoint(
-            x: badgeAnchorFrame.maxX,
-            y: badgeAnchorFrame.maxY
-        )).insetBy(dx: -Constants.badgePadding, dy: -Constants.badgePadding)
+        badgeLabel.frame = badgeSize.centered(on: badgeAnchorPoint).insetBy(
+            dx: -Constants.badgePadding,
+            dy: -Constants.badgePadding
+        )
         
         badgeLabel.layer.cornerRadius = badgeLabel.frame.size.v_roundCornerRadius
     }

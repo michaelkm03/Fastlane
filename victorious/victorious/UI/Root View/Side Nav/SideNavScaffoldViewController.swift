@@ -120,15 +120,13 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
         )
         
         if rightNavViewController != nil {
-            let avatarView = AvatarView()
-            self.avatarView = avatarView
-            avatarView.user = VCurrentUser.user()
-            avatarView.sizeToFit()
+            let profileButton = SideNavProfileButton(type: .System)
+            self.profileButton = profileButton
+            profileButton.addTarget(self, action: #selector(profileButtonWasPressed), forControlEvents: .TouchUpInside)
+            profileButton.user = VCurrentUser.user()
+            profileButton.sizeToFit()
             
-            let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(rightNavButtonWasPressed))
-            avatarView.addGestureRecognizer(tapRecognizer)
-            
-            centerWrapperViewController.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: avatarView)
+            centerWrapperViewController.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: profileButton)
         }
     }
     
@@ -154,7 +152,7 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
     let rightNavViewController: UIViewController?
     
     /// The avatar view used as the right navigation button.
-    private var avatarView: AvatarView?
+    private var profileButton: SideNavProfileButton?
     
     // MARK: - Actions
     
@@ -168,7 +166,7 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
     /// property, so we can't check that it's already been pushed that way. Thus, this flag is born.
     private var allowsRightNavigation = true
     
-    @objc private func rightNavButtonWasPressed() {
+    @objc private func profileButtonWasPressed() {
         guard allowsRightNavigation else {
             return
         }
@@ -194,7 +192,7 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
     
     private dynamic func loggedInStatusDidChange(notification: NSNotification) {
         handleLoggedInStatusChange()
-        avatarView?.user = VCurrentUser.user()
+        profileButton?.user = VCurrentUser.user()
     }
     
     private dynamic func mainFeedFilterDidChange(notification: NSNotification) {
@@ -227,8 +225,8 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
         super.viewDidLayoutSubviews()
         
         // Shouldn't be necessary, but UIBarButtonItem doesn't trigger layoutSubviews properly otherwise.
-        avatarView?.setNeedsLayout()
-        avatarView?.layoutIfNeeded()
+        profileButton?.setNeedsLayout()
+        profileButton?.layoutIfNeeded()
     }
     
     // MARK: - Scaffold
