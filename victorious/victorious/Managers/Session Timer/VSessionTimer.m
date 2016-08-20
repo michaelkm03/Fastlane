@@ -91,11 +91,6 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
     
     if ( [self shouldNewSessionStartNow] )
     {
-        // Requests lingering from an old session are irrelevant and should therefore be canceled.
-        // This has to be done ASAP and not when `VSessionTimerNewSessionShouldStart` is broadcasted because of the latency.
-        NSOperationQueue *globalQueue = [NSOperationQueue v_globalBackgroundQueue];
-        [globalQueue cancelAllOperations];
-
         [[NSNotificationCenter defaultCenter] postNotificationName:VSessionTimerNewSessionShouldStart object:self];
         [self.delegate sessionTimerDidResetSession:self];
     }

@@ -8,7 +8,7 @@
 
 import Foundation
 
-class VIPSubscribeOperation: BackgroundOperation {
+final class VIPSubscribeOperation: AsyncOperation<Void> {
     let product: VProduct
     let validationURL: NSURL?
     
@@ -19,38 +19,29 @@ class VIPSubscribeOperation: BackgroundOperation {
         self.validationURL = validationURL
     }
     
-    override func start() {
-        super.start()
-        beganExecuting()
-        
-        guard didConfirmActionFromDependencies else {
-            cancel()
-            finishedExecuting()
-            return
-        }
-        
-        dispatch_async(dispatch_get_main_queue()) {
-            self.purchaseSubscription()
-        }
+    override var executionQueue: Queue {
+        return .main
     }
     
-    func purchaseSubscription() {
+    override func execute(finish: (result: OperationResult<Void>) -> Void) {
         let success = { (results: Set<NSObject>?) in
             // Force success because we have to deliver the product even if the sever fails for any reason
             let validatationOperation = VIPValidateSubscriptionOperation(url: self.validationURL, shouldForceSuccess: true)
             validatationOperation?.after(self).queue() { _ in
                 VTrackingManager.sharedInstance().trackEvent(VTrackingEventRecievedProductReceiptFromBackend)
             }
-            self.finishedExecuting()
+            finish(result: .success())
         }
+        
         let failure = { (error: NSError?) in
-            if error == nil {
-                self.cancel()
-            } else {
-                self.error = error
+            if let error = error {
+                finish(result: .failure(error))
             }
-            self.finishedExecuting()
+            else {
+                finish(result: .cancelled)
+            }
         }
+        
         purchaseManager.purchaseProduct(product, success: success, failure: failure)
     }
 }

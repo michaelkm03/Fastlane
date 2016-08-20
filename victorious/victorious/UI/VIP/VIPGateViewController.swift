@@ -87,18 +87,18 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
         restoreButton.dependencyManager?.trackButtonEvent(.tap)
         let restore = RestorePurchasesOperation(validationURL: dependencyManager.validationURL)
         setIsLoading(true, title: Strings.restoreInProgress)
-        restore.queue() { [weak self] error, canceled in
+        restore.queue() { [weak self] result in
             self?.setIsLoading(false)
-            guard !canceled else {
-                return
-            }
             
-            if let error = error {
-                let title = Strings.restoreFailed
-                let message = error.localizedDescription
-                self?.v_showErrorWithTitle(title, message: message)
-            } else {
-                self?.openGate(afterPurchase: false)
+            switch result {
+                case .success:
+                    self?.openGate(afterPurchase: false)
+                case .failure(let error):
+                    let title = Strings.restoreFailed
+                    let message = (error as NSError).localizedDescription
+                    self?.v_showErrorWithTitle(title, message: message)
+                case .cancelled:
+                    break
             }
         }
     }
@@ -288,8 +288,7 @@ private extension VDependencyManager {
         
         return [
             NSFontAttributeName: font,
-            NSForegroundColorAttributeName: color,
-            NSUnderlineStyleAttributeName: NSNumber(integer: NSUnderlineStyle.StyleSingle.rawValue)
+            NSForegroundColorAttributeName: color
         ]
     }
     
@@ -307,8 +306,7 @@ private extension VDependencyManager {
         
         return [
             NSFontAttributeName: font,
-            NSForegroundColorAttributeName: color,
-            NSUnderlineStyleAttributeName: NSNumber(integer: NSUnderlineStyle.StyleSingle.rawValue)
+            NSForegroundColorAttributeName: color
         ]
     }
     

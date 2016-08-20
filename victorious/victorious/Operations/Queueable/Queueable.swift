@@ -13,7 +13,7 @@ extension NSOperation {
     /// to add operations when a more specialized queue is not needed.  May be
     /// overridden by subclasses to select a different queue as the default.
     var v_defaultQueue: NSOperationQueue {
-        return NSOperationQueue.v_globalBackgroundQueue
+        return Queue.background.operationQueue
     }
 }
 
@@ -65,12 +65,6 @@ protocol Chainable {
     /// also takes on the completion block and any dependent operations in operation's
     /// `v_defaultQueue`, essentially "rechaining" the order of execution.
     func rechainAfter(dependency: NSOperation) -> Self
-    
-    /// Add the provided operation as a dependency to the receiver, i.e. the operation
-    /// becomes dependent and will not execute until the receiver is finished.  The receiver
-    /// also takes on the completion block and any dependent operations in the
-    /// provided queue, essentially "rechaining" the order of execution.
-    func rechainOn(queue: NSOperationQueue, after dependency: NSOperation) -> Self
 }
 
 extension Queueable where Self : NSOperation {
@@ -100,13 +94,25 @@ extension NSOperation: Chainable {
         return self
     }
     
-    func rechainOn(queue: NSOperationQueue, after dependency: NSOperation) -> Self {
-        queue.v_rechainOperation(self, after: dependency)
+    func rechainAfter(dependency: NSOperation) -> Self {
+        addDependency(dependency)
+        
+        // Rechain (transfer) dependencies
+        for dependent in dependency.dependentOperations {
+            dependent.addDependency(self)
+        }
+        
         return self
     }
-    
-    func rechainAfter(dependency: NSOperation) -> Self {
-        return rechainOn(v_defaultQueue, after: dependency)
+}
+
+extension NSOperation {
+    var dependentOperations: [NSOperation] {
+        return Queue.allQueues.flatMap {
+            $0.operations
+        }.filter {
+            $0.dependencies.contains(self)
+        }
     }
 }
 
@@ -126,10 +132,10 @@ protocol Queueable2 {
     var result: OperationResult<Output>? { get }
     
     /// Conformers should specify which queue the operation itself should be scheduled(queued) on.
-    var scheduleQueue: NSOperationQueue { get }
+    var scheduleQueue: Queue { get }
     
     /// Conformers should specify which queue the operation's code should be executed on.
-    var executionQueue: NSOperationQueue { get }
+    var executionQueue: Queue { get }
     
     /// Adds the receiver to its default queue, with a completion block that'll run after the receiver's finished executing,
     /// and before the next operation starts.
@@ -142,7 +148,7 @@ protocol Queueable2 {
 extension Queueable2 where Self: NSOperation {
     func queue(completion completion: ((result: OperationResult<Output>) -> Void)?) {
         defer {
-            scheduleQueue.addOperation(self)
+            Queue.asyncSchedule.operationQueue.addOperation(self)
         }
         
         guard let completion = completion else {
@@ -174,11 +180,11 @@ class SyncOperation<Output>: NSOperation, Queueable2 {
     
     // MARK: - Queueable2
     
-    final var scheduleQueue: NSOperationQueue {
+    final var scheduleQueue: Queue {
         return executionQueue
     }
     
-    var executionQueue: NSOperationQueue {
+    var executionQueue: Queue {
         fatalError("Subclasses of SyncOperation must override `executionQueue`!")
     }
     
@@ -200,8 +206,6 @@ class SyncOperation<Output>: NSOperation, Queueable2 {
     }
 }
 
-private let asyncScheduleQueue = NSOperationQueue()
-
 /// An asynchronous operation runs its `execute` method on the provided `executionQueue`, and then waits indefinitely for `finish` to be called.
 /// Since it blocks the `scheduleQueue`, it is always scheduled on a separate global shared `asyncScheduleQueue`.
 /// - requires:
@@ -212,11 +216,48 @@ private let asyncScheduleQueue = NSOperationQueue()
 /// Semaphore blocks threads but not queues, so we may want to revisit this if something goes wrong / we need concurrent operations.
 class AsyncOperation<Output>: NSOperation, Queueable2 {
     
+    // MARK: - KVO-able NSNotification State
+    
+    private var _executing = false
+    private var _finished = false
+    
+    final private func beganExecuting() {
+        executing = true
+        finished = false
+    }
+    
+    final private func finishedExecuting() {
+        executing = false
+        finished = true
+    }
+    
+    final override private(set) var executing: Bool {
+        get {
+            return _executing
+        }
+        set {
+            willChangeValueForKey("isExecuting")
+            _executing = newValue
+            didChangeValueForKey("isExecuting")
+        }
+    }
+    
+    final override private(set) var finished: Bool {
+        get {
+            return _finished
+        }
+        set {
+            willChangeValueForKey("isFinished")
+            _finished = newValue
+            didChangeValueForKey("isFinished")
+        }
+    }
+    
     // MARK: - Queueable2
     
-    let scheduleQueue = asyncScheduleQueue
+    let scheduleQueue = Queue.asyncSchedule
     
-    var executionQueue: NSOperationQueue {
+    var executionQueue: Queue {
         fatalError("Subclasses of AsyncOperation must override `executionQueue`!")
     }
     
@@ -228,17 +269,22 @@ class AsyncOperation<Output>: NSOperation, Queueable2 {
         fatalError("Subclasses of AsyncOperation must override `execute()`!")
     }
     
-    override final func main() {
+    override final func start() {
         guard !cancelled else {
             result = .cancelled
+            finishedExecuting()
             return
         }
         
-        let executeSemaphore = dispatch_semaphore_create(0)
-        executionQueue.addOperationWithBlock {
+        beganExecuting()
+        main()
+    }
+    
+    override final func main() {
+        executionQueue.operationQueue.addOperationWithBlock {
             self.execute { [weak self] result in
                 defer {
-                    dispatch_semaphore_signal(executeSemaphore)
+                    self?.finishedExecuting()
                 }
                 guard let strongSelf = self else {
                     return
@@ -246,8 +292,6 @@ class AsyncOperation<Output>: NSOperation, Queueable2 {
                 strongSelf.result = strongSelf.cancelled ? .cancelled : result
             }
         }
-        
-        dispatch_semaphore_wait(executeSemaphore, DISPATCH_TIME_FOREVER)
     }
 }
 
@@ -259,4 +303,43 @@ enum OperationResult<Output> {
     case failure(ErrorType)
     /// When the operation was cancelled either by the caller, or determined to not be able to execute without a user facing error.
     case cancelled
+}
+
+/// This enum represents the NSOperationQueues we use in the app. Each case is supported by an NSOperationQueue instance underneath.
+/// - note:
+/// This doesn't represent any of the GCD queues. Only the NSOperationQueues we use in our Operation Architecture.
+/// If you add new cases to this enum, make sure to update its `allCases` property to guarantee correct behavior.
+enum Queue {
+    /// System Main Queue
+    case main
+    /// A background queue for to perform background tasks
+    case background
+    /// A queue to schedule all the async operations.
+    /// - note: 
+    /// This queue will be blocked while an asnyc operation is waiting for its callback.
+    /// If you are writing an operation subclass, don't use this queue as an `executionQueue`.
+    case asyncSchedule
+    
+    /// All cases in this enum.
+    /// - note:
+    /// It's unfortunate that Swift doesn't provide this functionality yet. 
+    /// So please make sure to manually update this array if you add a new case to this enum.
+    static let allCases: [Queue] = [.main, .background, .asyncSchedule]
+    
+    /// All `NSOperationQueue` instances represented in this enum
+    static var allQueues: [NSOperationQueue] {
+        return Queue.allCases.map { $0.operationQueue }
+    }
+    
+    /// Returns the supporting NSOperationQueue based on which case `self` is.
+    var operationQueue: NSOperationQueue {
+        switch self {
+            case .main: return NSOperationQueue.mainQueue()
+            case .background: return Queue.backgroundQueue
+            case .asyncSchedule: return Queue.asyncScheduleQueue
+        }
+    }
+    
+    private static let backgroundQueue = NSOperationQueue()
+    private static let asyncScheduleQueue = NSOperationQueue()
 }

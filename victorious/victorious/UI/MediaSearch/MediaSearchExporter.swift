@@ -13,7 +13,6 @@ import VictoriousIOSSDK
 /// to a file using asynchronous operations.
 class MediaSearchExporter {
     
-    private let operationQueue = NSOperationQueue()
     private let mediaSearchResult: MediaSearchResult
     private let uuidString = NSUUID().UUIDString
     
