@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-class StoredLoginOperation: BackgroundOperation {
+final class StoredLoginOperation: SyncOperation<Void> {
     
     private let dependencyManager: VDependencyManager
     private let persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
@@ -18,15 +18,12 @@ class StoredLoginOperation: BackgroundOperation {
         self.dependencyManager = dependencyManager
         super.init()
     }
-
-    override func start() {
-        super.start()
-        beganExecuting()
-        
-        defer {
-            self.finishedExecuting()
-        }
-        
+    
+    override var executionQueue: Queue {
+        return .main
+    }
+    
+    override func execute() -> OperationResult<Void> {
         let defaults = NSUserDefaults.standardUserDefaults()
         let accountIdentifier: String? = defaults.stringForKey(kAccountIdentifierDefaultsKey)
         
@@ -45,28 +42,34 @@ class StoredLoginOperation: BackgroundOperation {
             user.setAsCurrentUser()
             
             let infoOperation = PreloadUserInfoOperation(dependencyManager: dependencyManager)
-            infoOperation.after(self).queue() { _ in
-                infoOperation.user?.setAsCurrentUser()
+            infoOperation.after(self).queue() { result in
+                switch result {
+                    case .success(let user): user.setAsCurrentUser()
+                    case .failure: break
+                    case .cancelled: break
+                }
             }
             
         } else if let loginType = VLoginType(rawValue: defaults.integerForKey(kLastLoginTypeUserDefaultsKey)),
             let credentials = loginType.storedCredentials( accountIdentifier ) {
-                
-                // Next, if login with a stored token failed, use any stored credentials to login automatically
-                let accountCreateRequest = AccountCreateRequest(credentials: credentials)
-                let accountCreateOperation = AccountCreateOperation(
-                    dependencyManager: dependencyManager,
-                    request: accountCreateRequest,
-                    parameters: AccountCreateParameters(
-                        loginType: loginType,
-                        accountIdentifier: accountIdentifier
-                    )
+            
+            // Next, if login with a stored token failed, use any stored credentials to login automatically
+            let accountCreateRequest = AccountCreateRequest(credentials: credentials)
+            let accountCreateOperation = AccountCreateOperation(
+                dependencyManager: dependencyManager,
+                request: accountCreateRequest,
+                parameters: AccountCreateParameters(
+                    loginType: loginType,
+                    accountIdentifier: accountIdentifier
                 )
-                accountCreateOperation.rechainAfter(self).queue()
-                
+            )
+            accountCreateOperation.rechainAfter(self).queue()
+            
         } else {
             // Or finally, just let this operation finish up without doing anthing.
             // Subsequent operations in the queue will handle logging in the user.
         }
+        
+        return .success()
     }
 }

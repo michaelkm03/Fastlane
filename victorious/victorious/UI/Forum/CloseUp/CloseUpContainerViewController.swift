@@ -18,7 +18,7 @@ private struct Constants {
     static let navigationBarRightPadding: CGFloat = 10.0 
 }
 
-class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, ContentCellTracker, CoachmarkDisplayer {
+class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, ContentCellTracker, CoachmarkDisplayer, VBackgroundContainer {
     private let gridStreamController: GridStreamViewController<CloseUpView>
     var dependencyManager: VDependencyManager!
     private var content: VContent? {
@@ -75,8 +75,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
             ),
             interItemSpacing: Constants.interItemSpacing,
             cellsPerRow: Constants.cellsPerRow,
-            allowsForRefresh: false,
-            managesBackground: true
+            allowsForRefresh: false
         )
         
         gridStreamController = GridStreamViewController<CloseUpView>(
@@ -110,6 +109,10 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+    
+    override func viewDidLoad() {
+        dependencyManager.addBackgroundToBackgroundHost(self)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -189,6 +192,12 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
             strongSelf.updateHeader()
             strongSelf.gridStreamController.setContent(content, withError: false)
         }
+    }
+    
+    // MARK: - VBackgroundContainer
+    
+    func backgroundContainerView() -> UIView {
+        return view
     }
     
     // MARK: - CloseUpViewDelegate

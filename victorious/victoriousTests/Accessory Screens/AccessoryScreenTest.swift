@@ -14,12 +14,12 @@ class AccessoryScreenTest: XCTestCase {
         let screen1 = AccessoryScreen(dependencyManager: VDependencyManager(dictionary: [
             "identifier": "cool_screen",
             "title": "Cool Screen",
-            "position": "right"
+            "position": "left"
         ]))
         
         XCTAssertEqual(screen1?.id, "cool_screen")
         XCTAssertEqual(screen1?.title, "Cool Screen")
-        XCTAssertEqual(screen1?.position, .right)
+        XCTAssertEqual(screen1?.position, .left)
         
         let screen2 = AccessoryScreen(dependencyManager: VDependencyManager(dictionary: [
             "identifier": "empty_screen"
@@ -27,7 +27,7 @@ class AccessoryScreenTest: XCTestCase {
         
         XCTAssertEqual(screen2?.id, "empty_screen")
         XCTAssertNil(screen2?.title)
-        XCTAssertEqual(screen2?.position, .left)
+        XCTAssertEqual(screen2?.position, .right)
         
         let screen3 = AccessoryScreen(dependencyManager: VDependencyManager(dictionary: [:]))
         XCTAssertNil(screen3)

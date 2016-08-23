@@ -8,7 +8,7 @@
 
 import UIKit
 
-class StartLoadingOperation: BackgroundOperation, VTemplateDownloadOperationDelegate {
+final class StartLoadingOperation: SyncOperation<Void>, VTemplateDownloadOperationDelegate {
 
     var template: NSDictionary? {
         if let templateConfiguration = self.templateDownloadOperation.templateConfiguration {
@@ -36,14 +36,11 @@ class StartLoadingOperation: BackgroundOperation, VTemplateDownloadOperationDele
         VTemplateDownloadOperation(downloader: PersistenceTemplateDownloader(), andDelegate: self)
     }()
     
-    override func start() {
-        super.start()
-        beganExecuting()
-        
-        defer {
-            self.finishedExecuting()
-        }
-        
+    override var executionQueue: Queue {
+        return .background
+    }
+    
+    override func execute() -> OperationResult<Void> {
         var cachedTemplate = VDependencyManager.dependencyManagerWithDefaultValuesForColorsAndFonts()
         if let template = template as? [NSObject: AnyObject] {
             let parentManager = VDependencyManager(
@@ -59,6 +56,8 @@ class StartLoadingOperation: BackgroundOperation, VTemplateDownloadOperationDele
             )
         }
         
+        TempDirectoryCleanupOperation().queue()
+        
         let loginOperation = StoredLoginOperation(dependencyManager: cachedTemplate)
         
         loginOperation.rechainAfter(self)
@@ -69,8 +68,10 @@ class StartLoadingOperation: BackgroundOperation, VTemplateDownloadOperationDele
         }
         
         loginOperation.queue()
-        let backgroundQueue = NSOperationQueue.v_globalBackgroundQueue
+        let backgroundQueue = Queue.background.operationQueue
         backgroundQueue.addOperation(templateDownloadOperation)
+        
+        return .success()
     }
     
     // MARK: - VTemplateDownloadOperationDelegate methods

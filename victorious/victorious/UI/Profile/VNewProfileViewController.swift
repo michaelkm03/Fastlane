@@ -9,7 +9,7 @@
 import UIKit
 
 /// A view controller that displays the contents of a user's profile.
-class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderDelegate, AccessoryScreenContainer, CoachmarkDisplayer {
+class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderDelegate, AccessoryScreenContainer, CoachmarkDisplayer, VBackgroundContainer {
     /// Private struct within NewProfileViewController for comparison. Since we use Core Data, 
     /// the user is modified beneath us and every time we call setUser(...), the fields will be the same as oldValue
     private struct UserDetails {
@@ -82,6 +82,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     override func viewDidLoad() {
         super.viewDidLoad()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userChanged), name: kLoggedInChangedNotification, object: nil)
+        dependencyManager.addBackgroundToBackgroundHost(self)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -340,11 +341,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         comparableUser = newComparableUser
         
         setupGridStreamController(for: user)
-        
-        let appearanceKey = user.isCreator?.boolValue ?? false ? VNewProfileViewController.creatorAppearanceKey : VNewProfileViewController.userAppearanceKey
-        let appearanceDependencyManager = dependencyManager.childDependencyForKey(appearanceKey)
-        appearanceDependencyManager?.addBackgroundToBackgroundHost(gridStreamController)
-        
+                
         updateBarButtonItems()
     }
     
@@ -353,14 +350,11 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         let header = VNewProfileHeaderView.newWithDependencyManager(dependencyManager)
         header.delegate = self
         let userID = VNewProfileViewController.getUserID(forDependencyManager: dependencyManager)
-        var configuration = GridStreamConfiguration()
-        configuration.managesBackground = false
         
         let gridStreamController = GridStreamViewController(
             dependencyManager: dependencyManager,
             header: header,
             content: nil,
-            configuration: configuration,
             streamAPIPath: dependencyManager.streamAPIPath(forUserID: userID)
         )
         self.gridStreamController = gridStreamController
@@ -432,6 +426,12 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
             )
         }
         return nil
+    }
+    
+    // MARK: - VBackgroundContainer
+    
+    func backgroundContainerView() -> UIView {
+        return view
     }
 }
 

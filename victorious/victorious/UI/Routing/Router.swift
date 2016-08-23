@@ -100,7 +100,11 @@ struct Router {
     private func showWebView(for url: NSURL, configuration: ExternalLinkDisplayConfiguration) {
         checkForPermissionBeforeRouting(contentIsForVIPOnly: configuration.isVIPOnly) { success in
             if success {
-                
+                guard url.isHTTPScheme else {
+                    self.showError()
+                    return
+                }
+                    
                 if configuration.addressBarVisible {
                     let safariViewController = SFSafariViewController(URL: url)
                     self.originViewController?.presentViewController(safariViewController, animated: true, completion: nil)
@@ -148,8 +152,8 @@ private final class ShowForumOperation: AsyncOperation<Void> {
         self.animated = animated
     }
     
-    override var executionQueue: NSOperationQueue {
-        return .mainQueue()
+    override var executionQueue: Queue {
+        return .main
     }
     
     override func execute(finish: (result: OperationResult<Void>) -> Void) {
@@ -193,11 +197,11 @@ private final class ShowProfileOperation: AsyncOperation<Void> {
         self.userId = userId
     }
     
-    private override var executionQueue: NSOperationQueue {
-        return .mainQueue()
+    override var executionQueue: Queue {
+        return .main
     }
     
-    private override func execute(finish: (result: OperationResult<Void>) -> Void) {
+    override func execute(finish: (result: OperationResult<Void>) -> Void) {
         
         // Check if already showing the a user's profile
         guard (originViewController as? VNewProfileViewController)?.user?.id != userId else {
@@ -261,11 +265,11 @@ private final class ShowCloseUpOperation: AsyncOperation<Void> {
         super.init()
     }
     
-    private override var executionQueue: NSOperationQueue {
-        return .mainQueue()
+    override var executionQueue: Queue {
+        return .main
     }
     
-    private override func execute(finish: (result: OperationResult<Void>) -> Void) {
+    override func execute(finish: (result: OperationResult<Void>) -> Void) {
         guard
             let childDependencyManager = displayModifier.dependencyManager.childDependencyForKey("closeUpView"),
             let originViewController = displayModifier.originViewController,
@@ -313,11 +317,11 @@ private final class ShowFetchedCloseUpOperation: AsyncOperation<Void> {
         super.init()
     }
     
-    private override var executionQueue: NSOperationQueue {
-        return .mainQueue()
+    override var executionQueue: Queue {
+        return .main
     }
     
-    private override func execute(finish: (result: OperationResult<Void>) -> Void) {
+    override func execute(finish: (result: OperationResult<Void>) -> Void) {
         
         let displayModifier = self.displayModifier
         guard
@@ -372,9 +376,9 @@ private final class ShowFetchedCloseUpOperation: AsyncOperation<Void> {
 
 // MARK: - Show Web Content
 
-private class ShowWebContentOperation: MainQueueOperation {
+private final class ShowWebContentOperation: AsyncOperation<Void> {
     private let originViewController: UIViewController
-    private let createFetchOperation: () -> FetchWebContentOperation
+    private let urlToFetchFrom: String
     private let dependencyManager: VDependencyManager
     private let configuration: ExternalLinkDisplayConfiguration
     
@@ -382,37 +386,30 @@ private class ShowWebContentOperation: MainQueueOperation {
         self.originViewController = originViewController
         self.dependencyManager = dependencyManager
         self.configuration = configuration
-        self.createFetchOperation = {
-            return WebViewHTMLFetchOperation(urlPath: url)
-        }
+        self.urlToFetchFrom = url
     }
     
-    override func start() {
-        super.start()
-        beganExecuting()
-        
-        guard !cancelled else {
-            finishedExecuting()
-            return
-        }
+    override var executionQueue: Queue {
+        return .main
+    }
+    
+    override func execute(finish: (result: OperationResult<Void>) -> Void) {
         
         //We show the navigation and dismiss button if the view controller is presented modally, 
         // since there would be no way to dimiss the view controller otherwise
         let viewController = WebContentViewController(shouldShowNavigationButtons: configuration.forceModal)
         
-        let fetchOperation = createFetchOperation()
-        
+        let fetchOperation = WebViewHTMLFetchOperation(urlPath: urlToFetchFrom)
         fetchOperation.after(self).queue { [weak fetchOperation] results, error, cancelled in
-            guard let fetchOperation = fetchOperation else {
-                return
-            }
-            
-            guard let htmlString = fetchOperation.resultHTMLString where error == nil else {
+            guard
+                let htmlString = fetchOperation?.resultHTMLString where error == nil,
+                let baseURL = fetchOperation?.publicBaseURL
+            else {
                 viewController.setFailure(with: error)
                 return
             }
             
-            viewController.load(htmlString, baseURL: fetchOperation.publicBaseURL)
+            viewController.load(htmlString, baseURL: baseURL)
         }
         
         viewController.automaticallyAdjustsScrollViewInsets = false
@@ -421,8 +418,9 @@ private class ShowWebContentOperation: MainQueueOperation {
         viewController.title = configuration.title
         
         if let navigationController = (originViewController as? UINavigationController) ?? originViewController.navigationController where !configuration.forceModal {
-            navigationController.pushViewController(viewController, animated: configuration.transitionAnimated)
-            finishedExecuting()
+            navigationController.pushViewController(viewController, animated: configuration.transitionAnimated) {
+                finish(result: .success())
+            }
         }
         else {
             let navigationController = UINavigationController(rootViewController: viewController)
@@ -430,7 +428,7 @@ private class ShowWebContentOperation: MainQueueOperation {
             dependencyManager.applyStyleToNavigationBar(navigationController.navigationBar)
         
             originViewController.presentViewController(navigationController, animated: configuration.transitionAnimated) {
-                self.finishedExecuting()
+                finish(result: .success())
             }
         }
     }
@@ -438,12 +436,11 @@ private class ShowWebContentOperation: MainQueueOperation {
 
 // MARK: - Show VIP Flow Operation
 
-private class ShowVIPSubscriptionOperation: MainQueueOperation {
+private final class ShowVIPSubscriptionOperation: AsyncOperation<Void> {
     private let dependencyManager: VDependencyManager
     private let animated: Bool
     private let completion: VIPFlowCompletion?
     private weak var originViewController: UIViewController?
-    private(set) var showedGate = false
     
     required init(originViewController: UIViewController, dependencyManager: VDependencyManager, animated: Bool = true, completion: VIPFlowCompletion? = nil) {
         self.dependencyManager = dependencyManager
@@ -452,30 +449,30 @@ private class ShowVIPSubscriptionOperation: MainQueueOperation {
         self.completion = completion
     }
     
-    override func start() {
-        super.start()
-        beganExecuting()
-        
-        defer {
-            finishedExecuting()
+    override var executionQueue: Queue {
+        return .main
+    }
+    
+    override func execute(finish: (result: OperationResult<Void>) -> Void) {
+        // Jump to success if current user is already VIP
+        if VCurrentUser.user()?.hasValidVIPSubscription == true {
+            completion?(true)
+            finish(result: .success())
+            return
         }
         
         guard
-            !cancelled,
             let originViewController = originViewController,
             let vipFlow = dependencyManager.templateValueOfType(VIPFlowNavigationController.self, forKey: "vipPaygateScreen") as? VIPFlowNavigationController
-            else {
-                return
-        }
-        
-        guard VCurrentUser.user()?.hasValidVIPSubscription != true else {
-            completion?(true)
+        else {
+            finish(result: .cancelled)
             return
         }
         
         vipFlow.completionBlock = completion
-        showedGate = true
-        originViewController.presentViewController(vipFlow, animated: animated, completion: nil)
+        originViewController.presentViewController(vipFlow, animated: animated) {
+            finish(result: .success())
+        }
     }
 }
 

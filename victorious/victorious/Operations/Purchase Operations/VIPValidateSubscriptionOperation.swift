@@ -62,8 +62,6 @@ class VIPValidateSubscriptionOperation: RemoteFetcherOperation, RequestOperation
     }
     
     func onComplete(status: VIPStatus) {
-        //FUTURE: Once completion block is called properly after queueing this operation in the vip flow, add this tracking event in the callback from `queue` instead of here
-        VTrackingManager.sharedInstance().trackEvent(VTrackingEventRecievedProductReceiptFromBackend)
         validationSucceeded = true
         updateUser(status: status)
     }
