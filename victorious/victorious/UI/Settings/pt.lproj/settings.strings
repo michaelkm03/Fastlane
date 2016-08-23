@@ -1,8 +1,11 @@
 /* Class = "UITableViewController"; title = "Server Environment"; ObjectID = "0nf-aa-3V6"; */
 "0nf-aa-3V6.title" = "Ambiente de servidor";
 
-/* Class = "UITableViewController"; title = "Push Notifications"; ObjectID = "2cC-vU-QEc"; */
-"2cC-vU-QEc.title" = "Notificações por Push";
+/* Class = "UILabel"; text = "Edit Profile"; ObjectID = "3vi-dw-AX2"; */
+"3vi-dw-AX2.text" = "Editar perfil";
+
+/* Class = "UINavigationItem"; title = "In-App Purchases & Subscription"; ObjectID = "5FP-jo-7Mh"; */
+"5FP-jo-7Mh.title" = "Compras no Aplicativo & Assinaturas";
 
 /* Class = "UITableViewController"; title = "Server Environment"; ObjectID = "6fa-Sd-wUR"; */
 "6fa-Sd-wUR.title" = "Ambiente de servidor";
@@ -10,8 +13,8 @@
 /* Class = "UITableViewController"; title = "Experiments"; ObjectID = "6nd-lx-w31"; */
 "6nd-lx-w31.title" = "Experiências";
 
-/* Class = "UILabel"; text = "TITLE"; ObjectID = "8Fn-0A-Ctn"; */
-"8Fn-0A-Ctn.text" = "TITULO";
+/* Class = "UILabel"; text = "In-App Purchases & Subscription"; ObjectID = "16U-jQ-75p"; */
+"16U-jQ-75p.text" = "Compras no Aplicativo & Assinaturas";
 
 /* Class = "UILabel"; text = "Register Test Toast Alert"; ObjectID = "A07-FV-K6D"; */
 "A07-FV-K6D.text" = "Registrar o alerta de torrada teste";
@@ -37,14 +40,17 @@
 /* Class = "UITextField"; placeholder = "Confirm Password"; ObjectID = "Hdx-TS-3uZ"; */
 "Hdx-TS-3uZ.placeholder" = "Confirmar Senha";
 
+/* Class = "UILabel"; text = "Title"; ObjectID = "IJf-ZD-6J8"; */
+"IJf-ZD-6J8.text" = "Título";
+
+/* Class = "UILabel"; text = "Log Out"; ObjectID = "Ib2-0x-W7O"; */
+"Ib2-0x-W7O.text" = "Fazer logout";
+
 /* Class = "UITextField"; placeholder = "App ID"; ObjectID = "J9J-EQ-egU"; */
 "J9J-EQ-egU.placeholder" = "ID do App";
 
 /* Class = "UINavigationItem"; title = "Change Password"; ObjectID = "LKP-Bv-quY"; */
 "LKP-Bv-quY.title" = "Alterar senha";
-
-/* Class = "UIButton"; normalTitle = "Log out"; ObjectID = "LM5-sK-eej"; */
-"LM5-sK-eej.normalTitle" = "Fazer Logout";
 
 /* Class = "UITextField"; placeholder = "Your Current Password"; ObjectID = "LgC-0q-Axl"; */
 "LgC-0q-Axl.placeholder" = "Sua Senha Atual";
@@ -73,11 +79,11 @@
 /* Class = "UILabel"; text = "TITLE"; ObjectID = "Uxb-Bx-b8P"; */
 "Uxb-Bx-b8P.text" = "TÍTULO";
 
-/* Class = "UINavigationItem"; title = "Push Notifications"; ObjectID = "WVz-KR-Hhr"; */
-"WVz-KR-Hhr.title" = "Notificações por Push";
+/* Class = "UILabel"; text = "Help"; ObjectID = "YUJ-gc-OLy"; */
+"YUJ-gc-OLy.text" = "Ajuda";
 
-/* Class = "UILabel"; text = "Feedback/Help"; ObjectID = "Ywp-Nm-FQ2"; */
-"Ywp-Nm-FQ2.text" = "Feedback/Ajuda";
+/* Class = "UILabel"; text = "Feedback"; ObjectID = "Ywp-Nm-FQ2"; */
+"Ywp-Nm-FQ2.text" = "Feedback";
 
 /* Class = "UINavigationItem"; title = "New Environment"; ObjectID = "ab7-E6-f3T"; */
 "ab7-E6-f3T.title" = "Novo ambiente";
@@ -118,8 +124,8 @@
 /* Class = "UITableViewSection"; headerTitle = "About"; ObjectID = "pML-Pk-7g5"; */
 "pML-Pk-7g5.headerTitle" = "Sobre";
 
-/* Class = "UILabel"; text = "Posts I've Liked"; ObjectID = "r0B-CY-cMb"; */
-"r0B-CY-cMb.text" = "Postagens que curti";
+/* Class = "UILabel"; text = "Posts I've Bumped"; ObjectID = "r0B-CY-cMb"; */
+"r0B-CY-cMb.text" = "Postagens que movi para cima";
 
 /* Class = "UIButton"; normalTitle = "Save"; ObjectID = "sgT-oS-cdk"; */
 "sgT-oS-cdk.normalTitle" = "Salvar";
