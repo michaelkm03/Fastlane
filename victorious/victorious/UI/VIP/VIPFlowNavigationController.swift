@@ -10,7 +10,7 @@ import UIKit
 
 typealias VIPFlowCompletion = (Bool -> ())
 
-class VIPFlowNavigationController: UINavigationController, VIPGateViewControllerDelegate, VIPSuccessViewControllerDelegate, VBackgroundContainer, VNavigationDestination {
+class VIPFlowNavigationController: UINavigationController, VIPGateViewControllerDelegate, VIPSuccessViewControllerDelegate, VBackgroundContainer {
     let animationDelegate: CrossFadingNavigationControllerDelegate = {
         let delegate = CrossFadingNavigationControllerDelegate()
         delegate.fadingEnabled = false

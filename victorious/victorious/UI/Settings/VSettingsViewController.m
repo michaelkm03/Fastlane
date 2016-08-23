@@ -15,12 +15,10 @@
 #import "VButton.h"
 #import "VPurchaseManager.h"
 #import "VAppInfo.h"
-#import "VDependencyManager+VAccessoryScreens.h"
 #import "VDependencyManager+VNavigationItem.h"
 #import "VEnvironmentManager.h"
 #import "VDependencyManager+VTracking.h"
 #import "UIAlertController+VSimpleAlert.h"
-#import "UIViewController+VAccessoryScreens.h"
 #import "victorious-Swift.h"
 
 static const NSInteger kSettingsSectionIndex = 0;
@@ -71,8 +69,6 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *labels;
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *rightLabels;
 
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
-
 @end
 
 @implementation VSettingsViewController
@@ -94,13 +90,8 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
     [self.dependencyManager configureNavigationItem:self.navigationItem];
-    
-    [self v_addAccessoryScreensWithDependencyManager:self.dependencyManager];
-    
     [self.dependencyManager trackViewWillAppear:self];
-        
     self.serverEnvironmentCell.detailTextLabel.text = [[[VEnvironmentManager sharedInstance] currentEnvironment] name];
     
 #ifdef V_SWITCH_ENVIRONMENTS

@@ -15,7 +15,7 @@ struct ListMenuSelectedItem {
 
 /// View Controller for the entire List Menu Component, which is currently being displayed as the left navigation pane
 /// of a sliding scaffold.
-class ListMenuViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, CoachmarkDisplayer, VNavigationDestination, VBackgroundContainer {
+class ListMenuViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, CoachmarkDisplayer, VBackgroundContainer {
     
     // MARK: - Configuration
     
