@@ -100,7 +100,11 @@ struct Router {
     private func showWebView(for url: NSURL, configuration: ExternalLinkDisplayConfiguration) {
         checkForPermissionBeforeRouting(contentIsForVIPOnly: configuration.isVIPOnly) { success in
             if success {
-                
+                guard url.isHTTPScheme else {
+                    self.showError()
+                    return
+                }
+                    
                 if configuration.addressBarVisible {
                     let safariViewController = SFSafariViewController(URL: url)
                     self.originViewController?.presentViewController(safariViewController, animated: true, completion: nil)
