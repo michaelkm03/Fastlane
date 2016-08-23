@@ -1,8 +1,11 @@
 /* Class = "UITableViewController"; title = "Server Environment"; ObjectID = "0nf-aa-3V6"; */
 "0nf-aa-3V6.title" = "서버 환경";
 
-/* Class = "UITableViewController"; title = "Push Notifications"; ObjectID = "2cC-vU-QEc"; */
-"2cC-vU-QEc.title" = "푸시 알림";
+/* Class = "UILabel"; text = "Edit Profile"; ObjectID = "3vi-dw-AX2"; */
+"3vi-dw-AX2.text" = "프로필 편집";
+
+/* Class = "UINavigationItem"; title = "In-App Purchases & Subscription"; ObjectID = "5FP-jo-7Mh"; */
+"5FP-jo-7Mh.title" = "인앱 구매 및 구독";
 
 /* Class = "UITableViewController"; title = "Server Environment"; ObjectID = "6fa-Sd-wUR"; */
 "6fa-Sd-wUR.title" = "서버 환경";
@@ -10,8 +13,8 @@
 /* Class = "UITableViewController"; title = "Experiments"; ObjectID = "6nd-lx-w31"; */
 "6nd-lx-w31.title" = "실험";
 
-/* Class = "UILabel"; text = "TITLE"; ObjectID = "8Fn-0A-Ctn"; */
-"8Fn-0A-Ctn.text" = "제목";
+/* Class = "UILabel"; text = "In-App Purchases & Subscription"; ObjectID = "16U-jQ-75p"; */
+"16U-jQ-75p.text" = "인앱 구매 및 구독";
 
 /* Class = "UILabel"; text = "Register Test Toast Alert"; ObjectID = "A07-FV-K6D"; */
 "A07-FV-K6D.text" = "테스트 토스트 알림 등록";
@@ -37,14 +40,17 @@
 /* Class = "UITextField"; placeholder = "Confirm Password"; ObjectID = "Hdx-TS-3uZ"; */
 "Hdx-TS-3uZ.placeholder" = "비밀번호 확인";
 
+/* Class = "UILabel"; text = "Title"; ObjectID = "IJf-ZD-6J8"; */
+"IJf-ZD-6J8.text" = "제목";
+
+/* Class = "UILabel"; text = "Log Out"; ObjectID = "Ib2-0x-W7O"; */
+"Ib2-0x-W7O.text" = "로그아웃";
+
 /* Class = "UITextField"; placeholder = "App ID"; ObjectID = "J9J-EQ-egU"; */
 "J9J-EQ-egU.placeholder" = "앱 ID";
 
 /* Class = "UINavigationItem"; title = "Change Password"; ObjectID = "LKP-Bv-quY"; */
 "LKP-Bv-quY.title" = "비밀번호 변경";
-
-/* Class = "UIButton"; normalTitle = "Log out"; ObjectID = "LM5-sK-eej"; */
-"LM5-sK-eej.normalTitle" = "로그아웃";
 
 /* Class = "UITextField"; placeholder = "Your Current Password"; ObjectID = "LgC-0q-Axl"; */
 "LgC-0q-Axl.placeholder" = "현재 비밀번호";
@@ -73,11 +79,11 @@
 /* Class = "UILabel"; text = "TITLE"; ObjectID = "Uxb-Bx-b8P"; */
 "Uxb-Bx-b8P.text" = "제목";
 
-/* Class = "UINavigationItem"; title = "Push Notifications"; ObjectID = "WVz-KR-Hhr"; */
-"WVz-KR-Hhr.title" = "푸시 알림";
+/* Class = "UILabel"; text = "Help"; ObjectID = "YUJ-gc-OLy"; */
+"YUJ-gc-OLy.text" = "도움말";
 
-/* Class = "UILabel"; text = "Feedback/Help"; ObjectID = "Ywp-Nm-FQ2"; */
-"Ywp-Nm-FQ2.text" = "피드백/도움말";
+/* Class = "UILabel"; text = "Feedback"; ObjectID = "Ywp-Nm-FQ2"; */
+"Ywp-Nm-FQ2.text" = "피드백";
 
 /* Class = "UINavigationItem"; title = "New Environment"; ObjectID = "ab7-E6-f3T"; */
 "ab7-E6-f3T.title" = "새 환경";
@@ -118,7 +124,7 @@
 /* Class = "UITableViewSection"; headerTitle = "About"; ObjectID = "pML-Pk-7g5"; */
 "pML-Pk-7g5.headerTitle" = "정보";
 
-/* Class = "UILabel"; text = "Posts I've Liked"; ObjectID = "r0B-CY-cMb"; */
+/* Class = "UILabel"; text = "Posts I've Bumped"; ObjectID = "r0B-CY-cMb"; */
 "r0B-CY-cMb.text" = "내가 좋아한 글";
 
 /* Class = "UIButton"; normalTitle = "Save"; ObjectID = "sgT-oS-cdk"; */
