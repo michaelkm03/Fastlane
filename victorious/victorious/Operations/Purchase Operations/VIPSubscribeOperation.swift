@@ -26,8 +26,13 @@ final class VIPSubscribeOperation: AsyncOperation<Void> {
     override func execute(finish: (result: OperationResult<Void>) -> Void) {
         let success = { (results: Set<NSObject>?) in
             // Force success because we have to deliver the product even if the sever fails for any reason
-            VIPValidateSubscriptionOperation(url: self.validationURL, shouldForceSuccess: true)?.after(self).queue(){ _ in
-                //FUTURE: Once completion block is called properly after queueing this operation in the vip flow, add the "received receipt from backend" tracking event here and remove from the operation
+            let validationOperation = VIPValidateSubscriptionOperation(url: self.validationURL, shouldForceSuccess: true)
+            validationOperation?.rechainAfter(self).queue() { _ in
+                // We optimistically finish with success if purchase has finished, no matter what the validation result it.
+                // But we only send the tracking call if validation succeeded
+                if validationOperation?.validationSucceeded == true {
+                    VTrackingManager.sharedInstance().trackEvent(VTrackingEventRecievedProductReceiptFromBackend)
+                }
             }
             finish(result: .success())
         }
