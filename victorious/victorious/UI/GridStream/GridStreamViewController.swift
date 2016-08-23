@@ -15,7 +15,7 @@ struct GridStreamConfiguration {
     var allowsForRefresh = true
 }
 
-class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, VBackgroundContainer, ContentCellTracker {
+class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, ContentCellTracker {
     
     // MARK: Variables
     
@@ -166,12 +166,6 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         scrollPaginator.scrollViewDidScroll(scrollView)
-    }
-    
-    // MARK: - VBackgroundContainer
-    
-    func backgroundContainerView() -> UIView {
-        return view
     }
     
     // MARK: - UICollectionViewDelegateFlowLayout

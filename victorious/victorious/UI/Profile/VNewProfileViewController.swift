@@ -333,11 +333,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         comparableUser = newComparableUser
         
         setupGridStreamController(for: user)
-        
-        let appearanceKey = user.isCreator?.boolValue ?? false ? VNewProfileViewController.creatorAppearanceKey : VNewProfileViewController.userAppearanceKey
-        let appearanceDependencyManager = dependencyManager.childDependencyForKey(appearanceKey)
-        appearanceDependencyManager?.addBackgroundToBackgroundHost(gridStreamController)
-        
+                
         updateBarButtonItems()
     }
     
@@ -346,13 +342,11 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         let header = VNewProfileHeaderView.newWithDependencyManager(dependencyManager)
         header.delegate = self
         let userID = VNewProfileViewController.getUserID(forDependencyManager: dependencyManager)
-        var configuration = GridStreamConfiguration()
         
         let gridStreamController = GridStreamViewController(
             dependencyManager: dependencyManager,
             header: header,
             content: nil,
-            configuration: configuration,
             streamAPIPath: dependencyManager.streamAPIPath(forUserID: userID)
         )
         self.gridStreamController = gridStreamController
