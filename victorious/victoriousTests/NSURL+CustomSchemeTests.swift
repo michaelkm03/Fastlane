@@ -15,6 +15,7 @@ class NSURL_CustomSchemeTests: XCTestCase {
         let url = NSURL(string: "vthisapp://webURL/\(expectedURLString)")!
         let path = url.pathWithoutLeadingSlash
         XCTAssertEqual(path, expectedURLString)
+        XCTAssertFalse(url.isHTTPScheme)
     }
     
     func testEmptyPath() {
@@ -22,6 +23,7 @@ class NSURL_CustomSchemeTests: XCTestCase {
         let url = NSURL(string: urlString)!
         let path = url.pathWithoutLeadingSlash
         XCTAssertNil(path)
+        XCTAssert(url.isHTTPScheme)
     }
     
     func testEmptyURL() {
@@ -29,5 +31,12 @@ class NSURL_CustomSchemeTests: XCTestCase {
         let url = NSURL(string: urlString)!
         let path = url.pathWithoutLeadingSlash
         XCTAssertNil(path)
+        XCTAssertFalse(url.isHTTPScheme)
+    }
+    
+    func testNonHTTPScheme() {
+        let urlString = "spotify://search:asdf"
+        let url = NSURL(string: urlString)!
+        XCTAssertFalse(url.isHTTPScheme)
     }
 }
