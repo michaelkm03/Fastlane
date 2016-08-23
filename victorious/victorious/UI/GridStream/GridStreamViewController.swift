@@ -13,7 +13,6 @@ struct GridStreamConfiguration {
     var interItemSpacing = CGFloat(3)
     var cellsPerRow = 3
     var allowsForRefresh = true
-    var managesBackground = true
 }
 
 class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, VBackgroundContainer, ContentCellTracker {
@@ -102,10 +101,6 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         edgesForExtendedLayout = .Bottom
         extendedLayoutIncludesOpaqueBars = true
         automaticallyAdjustsScrollViewInsets = false
-        
-        if self.configuration.managesBackground {
-            dependencyManager.addBackgroundToBackgroundHost(self)
-        }
         
         view.addSubview(collectionView)
         view.v_addFitToParentConstraintsToSubview(collectionView)
