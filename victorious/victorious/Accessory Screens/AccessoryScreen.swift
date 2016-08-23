@@ -23,7 +23,7 @@ struct AccessoryScreen {
         self.id = id
         title = dependencyManager.stringForKey("title")
         icon = dependencyManager.imageForKey("icon")
-        position = AccessoryScreenPosition(string: dependencyManager.stringForKey("position") ?? "") ?? .left
+        position = AccessoryScreenPosition(string: dependencyManager.stringForKey("position") ?? "") ?? .right
     }
     
     // MARK: - Dependency manager

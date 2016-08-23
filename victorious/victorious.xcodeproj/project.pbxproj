@@ -588,6 +588,7 @@
 		7AC1B9FE1D3FF7CF00FA3CF6 /* CGPoint+Initializers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC1B9FD1D3FF7CF00FA3CF6 /* CGPoint+Initializers.swift */; };
 		7AC1BA001D3FFD9100FA3CF6 /* CGPoint+InitializersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC1B9FF1D3FFD9100FA3CF6 /* CGPoint+InitializersTests.swift */; };
 		7AC9E7C41D5A53EC000D8FD6 /* UIAlertController+ContentActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC9E7C31D5A53EC000D8FD6 /* UIAlertController+ContentActionSheet.swift */; };
+		7ACB6B111D6CBE1F008084EF /* AccessoryScreenBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACB6B101D6CBE1F008084EF /* AccessoryScreenBarButtonItem.swift */; };
 		7AE0A03B1D624E2B00769080 /* SubscribeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE0A03A1D624E2B00769080 /* SubscribeButton.swift */; };
 		7AE0A03D1D63943700769080 /* Callback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE0A03C1D63943700769080 /* Callback.swift */; };
 		7AE0A0401D63B3EE00769080 /* BadgeCountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE0A03F1D63B3EE00769080 /* BadgeCountManager.swift */; };
@@ -2118,6 +2119,7 @@
 		7AC1B9FD1D3FF7CF00FA3CF6 /* CGPoint+Initializers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPoint+Initializers.swift"; sourceTree = "<group>"; };
 		7AC1B9FF1D3FFD9100FA3CF6 /* CGPoint+InitializersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPoint+InitializersTests.swift"; sourceTree = "<group>"; };
 		7AC9E7C31D5A53EC000D8FD6 /* UIAlertController+ContentActionSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIAlertController+ContentActionSheet.swift"; path = "../UI/Forum/UIAlertController+ContentActionSheet.swift"; sourceTree = "<group>"; };
+		7ACB6B101D6CBE1F008084EF /* AccessoryScreenBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessoryScreenBarButtonItem.swift; sourceTree = "<group>"; };
 		7AE0A03A1D624E2B00769080 /* SubscribeButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscribeButton.swift; sourceTree = "<group>"; };
 		7AE0A03C1D63943700769080 /* Callback.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Callback.swift; sourceTree = "<group>"; };
 		7AE0A03F1D63B3EE00769080 /* BadgeCountManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BadgeCountManager.swift; sourceTree = "<group>"; };
@@ -4922,8 +4924,9 @@
 		7AFE92051D6634E2005D51A4 /* Accessory Screens */ = {
 			isa = PBXGroup;
 			children = (
-				79883BD91D1211310082D998 /* AccessoryScreenContainer.swift */,
 				7AE0A0411D63EC7F00769080 /* AccessoryScreen.swift */,
+				7ACB6B101D6CBE1F008084EF /* AccessoryScreenBarButtonItem.swift */,
+				79883BD91D1211310082D998 /* AccessoryScreenContainer.swift */,
 			);
 			path = "Accessory Screens";
 			sourceTree = "<group>";
@@ -8670,6 +8673,7 @@
 				BFE25A471D0B7DBA00F55653 /* ContentDeleteRemoteOperation.swift in Sources */,
 				C3623E591B9A77E0002B121D /* LevelUpViewController.swift in Sources */,
 				A721E9431B572454000B7901 /* NSString+VParseHelp.m in Sources */,
+				7ACB6B111D6CBE1F008084EF /* AccessoryScreenBarButtonItem.swift in Sources */,
 				A782D6A21CDBFD800084DDE6 /* VPurchaseSettingsViewController.swift in Sources */,
 				0349FD4D1C504748004F95FC /* NSMutableURLRequest+UploadManager.swift in Sources */,
 				C3623E611B9A78B4002B121D /* AnimatedBadgeView.swift in Sources */,

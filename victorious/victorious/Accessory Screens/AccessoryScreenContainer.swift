@@ -19,14 +19,11 @@ protocol AccessoryScreenContainer: class {
     ///
     var accessoryScreensKey: String? { get }
     
-    /// Allows conformers to augment the left bar button items created from the template with their own custom items.
-    func addCustomLeftItems(to items: [UIBarButtonItem]) -> [UIBarButtonItem]
+    /// Allows conformers to manipulate the left bar button items created from the template.
+    func addCustomLeftItems(to items: [AccessoryScreenBarButtonItem]) -> [UIBarButtonItem]
     
-    /// Allows conformers to augment the right bar button items created from the template with their own custom items.
-    func addCustomRightItems(to items: [UIBarButtonItem]) -> [UIBarButtonItem]
-    
-    /// Allows conformers to specify whether a particular screen should be shown.
-    func shouldDisplay(screen: AccessoryScreen) -> Bool
+    /// Allows conformers to manipulate the right bar button items created from the template.
+    func addCustomRightItems(to items: [AccessoryScreenBarButtonItem]) -> [UIBarButtonItem]
     
     /// Called whenever an accessory screen's navigation button is pressed. Conformers must implement this to define
     /// how navigation to an accessory screen is performed.
@@ -41,16 +38,12 @@ extension AccessoryScreenContainer {
         return "accessoryScreens"
     }
     
-    func addCustomLeftItems(to items: [UIBarButtonItem]) -> [UIBarButtonItem] {
+    func addCustomLeftItems(to items: [AccessoryScreenBarButtonItem]) -> [UIBarButtonItem] {
         return items
     }
     
-    func addCustomRightItems(to items: [UIBarButtonItem]) -> [UIBarButtonItem] {
+    func addCustomRightItems(to items: [AccessoryScreenBarButtonItem]) -> [UIBarButtonItem] {
         return items
-    }
-    
-    func shouldDisplay(screen: AccessoryScreen) -> Bool {
-        return true
     }
     
     // MARK: - Adding accessory screens
@@ -67,15 +60,14 @@ extension AccessoryScreenContainer {
     /// custom items change.
     ///
     func applyAccessoryScreens(to navigationItem: UINavigationItem, from dependencyManager: VDependencyManager) {
-        guard let key = accessoryScreensKey, let unfilteredScreens = dependencyManager.accessoryScreens(for: key) else {
+        guard let key = accessoryScreensKey, let screens = dependencyManager.accessoryScreens(for: key) else {
             return
         }
         
-        let filteredScreens = unfilteredScreens.filter { shouldDisplay($0) }
         var leftScreens = [AccessoryScreen]()
         var rightScreens = [AccessoryScreen]()
         
-        for screen in filteredScreens {
+        for screen in screens {
             switch screen.position {
                 case .left: leftScreens.append(screen)
                 case .right: rightScreens.append(screen)
@@ -93,52 +85,5 @@ extension AccessoryScreenContainer {
         navigationItem.leftItemsSupplementBackButton = true
         navigationItem.setLeftBarButtonItems(leftItems, animated: false)
         navigationItem.setRightBarButtonItems(rightItems, animated: false)
-    }
-}
-
-private class AccessoryScreenBarButtonItem: UIBarButtonItem {
-    
-    // MARK: - Constants
-    
-    private struct Constants {
-        static let extraWidth = CGFloat(16.0)
-    }
-    
-    // MARK: - Initializing
-    
-    init(accessoryScreen: AccessoryScreen, container: AccessoryScreenContainer) {
-        self.accessoryScreen = accessoryScreen
-        self.container = container
-        
-        super.init()
-        
-        button.setImage(accessoryScreen.icon, forState: .Normal)
-        button.addTarget(self, action: #selector(buttonWasPressed), forControlEvents: .TouchUpInside)
-        
-        var buttonSize = button.intrinsicContentSize()
-        buttonSize.width += Constants.extraWidth
-        button.frame.size = buttonSize
-        customView = button
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("NSCoding not supported.")
-    }
-    
-    // MARK: - Views
-    
-    private let button = UIButton(type: .System)
-    
-    // MARK: - Navigating
-    
-    private let accessoryScreen: AccessoryScreen
-    private weak var container: AccessoryScreenContainer?
-    
-    private dynamic func buttonWasPressed() {
-        guard let destination = accessoryScreen.loadDestination() else {
-            return
-        }
-        
-        container?.navigate(to: destination, from: accessoryScreen)
     }
 }
