@@ -576,6 +576,7 @@
 		7A87376A1CB4785E00D2FF74 /* VContentOnlyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A8737691CB4785E00D2FF74 /* VContentOnlyCell.swift */; };
 		7A87376C1CB47C2D00D2FF74 /* VContentOnlyCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A87376B1CB47C2D00D2FF74 /* VContentOnlyCellFactory.swift */; };
 		7A87376E1CB5C66900D2FF74 /* NotificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A87376D1CB5C66900D2FF74 /* NotificationCell.swift */; };
+		7A9B72631D6CC3B4007540E2 /* NSNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9B72621D6CC3B4007540E2 /* NSNumberFormatter.swift */; };
 		7AB14CAC1CBEF8AE006E674B /* FetchWebContentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB14CAB1CBEF8AE006E674B /* FetchWebContentOperation.swift */; };
 		7AB55FE31CADABF000EBE31E /* VNewProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB55FE21CADABF000EBE31E /* VNewProfileViewController.swift */; };
 		7AB55FE51CADF00A00EBE31E /* CGSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AB55FE41CADF00A00EBE31E /* CGSize.swift */; };
@@ -588,6 +589,7 @@
 		7AC1BA001D3FFD9100FA3CF6 /* CGPoint+InitializersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC1B9FF1D3FFD9100FA3CF6 /* CGPoint+InitializersTests.swift */; };
 		7AC9E7C41D5A53EC000D8FD6 /* UIAlertController+ContentActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC9E7C31D5A53EC000D8FD6 /* UIAlertController+ContentActionSheet.swift */; };
 		7ACB6B0F1D67DDE5008084EF /* SideNavProfileButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACB6B0E1D67DDE5008084EF /* SideNavProfileButton.swift */; };
+		7ACB6B111D6CBE1F008084EF /* AccessoryScreenBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACB6B101D6CBE1F008084EF /* AccessoryScreenBarButtonItem.swift */; };
 		7AE0A03B1D624E2B00769080 /* SubscribeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE0A03A1D624E2B00769080 /* SubscribeButton.swift */; };
 		7AE0A03D1D63943700769080 /* Callback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE0A03C1D63943700769080 /* Callback.swift */; };
 		7AE0A0401D63B3EE00769080 /* BadgeCountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE0A03F1D63B3EE00769080 /* BadgeCountManager.swift */; };
@@ -2106,6 +2108,7 @@
 		7A8737691CB4785E00D2FF74 /* VContentOnlyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VContentOnlyCell.swift; sourceTree = "<group>"; };
 		7A87376B1CB47C2D00D2FF74 /* VContentOnlyCellFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VContentOnlyCellFactory.swift; sourceTree = "<group>"; };
 		7A87376D1CB5C66900D2FF74 /* NotificationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationCell.swift; sourceTree = "<group>"; };
+		7A9B72621D6CC3B4007540E2 /* NSNumberFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSNumberFormatter.swift; sourceTree = "<group>"; };
 		7AB14CAB1CBEF8AE006E674B /* FetchWebContentOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchWebContentOperation.swift; sourceTree = "<group>"; };
 		7AB55FE21CADABF000EBE31E /* VNewProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VNewProfileViewController.swift; sourceTree = "<group>"; };
 		7AB55FE41CADF00A00EBE31E /* CGSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGSize.swift; sourceTree = "<group>"; };
@@ -2118,6 +2121,7 @@
 		7AC1B9FF1D3FFD9100FA3CF6 /* CGPoint+InitializersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPoint+InitializersTests.swift"; sourceTree = "<group>"; };
 		7AC9E7C31D5A53EC000D8FD6 /* UIAlertController+ContentActionSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIAlertController+ContentActionSheet.swift"; path = "../UI/Forum/UIAlertController+ContentActionSheet.swift"; sourceTree = "<group>"; };
 		7ACB6B0E1D67DDE5008084EF /* SideNavProfileButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideNavProfileButton.swift; sourceTree = "<group>"; };
+		7ACB6B101D6CBE1F008084EF /* AccessoryScreenBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessoryScreenBarButtonItem.swift; sourceTree = "<group>"; };
 		7AE0A03A1D624E2B00769080 /* SubscribeButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscribeButton.swift; sourceTree = "<group>"; };
 		7AE0A03C1D63943700769080 /* Callback.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Callback.swift; sourceTree = "<group>"; };
 		7AE0A03F1D63B3EE00769080 /* BadgeCountManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BadgeCountManager.swift; sourceTree = "<group>"; };
@@ -4924,8 +4928,9 @@
 		7AFE92051D6634E2005D51A4 /* Accessory Screens */ = {
 			isa = PBXGroup;
 			children = (
-				79883BD91D1211310082D998 /* AccessoryScreenContainer.swift */,
 				7AE0A0411D63EC7F00769080 /* AccessoryScreen.swift */,
+				7ACB6B101D6CBE1F008084EF /* AccessoryScreenBarButtonItem.swift */,
+				79883BD91D1211310082D998 /* AccessoryScreenContainer.swift */,
 			);
 			path = "Accessory Screens";
 			sourceTree = "<group>";
@@ -5094,7 +5099,7 @@
 			path = Delegates;
 			sourceTree = "<group>";
 		};
-		A721E8601B572452000B7901 /* Categories */ = {
+		A721E8601B572452000B7901 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
 				C3CF52761BB5D78100411F40 /* CGPoint+Addition.swift */,
@@ -5121,6 +5126,7 @@
 				F0FBC44A1D2591AF0070873F /* NSMutableParagraphStyle+TextInsets.swift */,
 				A721E8C11B572453000B7901 /* NSNotificationCenter+VNotificationDebugger.h */,
 				A721E8C21B572453000B7901 /* NSNotificationCenter+VNotificationDebugger.m */,
+				7A9B72621D6CC3B4007540E2 /* NSNumberFormatter.swift */,
 				A721E8C61B572453000B7901 /* NSString+VParseHelp.h */,
 				A721E8C71B572453000B7901 /* NSString+VParseHelp.m */,
 				A721E8C81B572453000B7901 /* NSString+VStringWithData.h */,
@@ -5186,6 +5192,7 @@
 				A76E79C11C6FADA7006A0D35 /* UIViewController+Error.swift */,
 				79A809C51B7C07DF006AE04E /* UIViewController+Storyboard.swift */,
 			);
+			name = Extensions;
 			path = Categories;
 			sourceTree = "<group>";
 		};
@@ -6088,8 +6095,8 @@
 			children = (
 				7AFE92051D6634E2005D51A4 /* Accessory Screens */,
 				0EC65B0B1D52D6280040A8F8 /* AppDelegate.swift */,
-				A721E8601B572452000B7901 /* Categories */,
 				0EC0F60B1CE64F85008760E8 /* Debugging */,
+				A721E8601B572452000B7901 /* Extensions */,
 				0326C35F19F8226200DBC341 /* Images.xcassets */,
 				BE171DE91868C211004E5202 /* ManagedObjectModels */,
 				BE171DD91868C211004E5202 /* Managers */,
@@ -8403,6 +8410,7 @@
 				A706FE241C236AC900C2CBFF /* NSManagedObject+EditRelationship.swift in Sources */,
 				67AB0C761D21A38A00394598 /* Router.swift in Sources */,
 				039ED29D19C908F400305987 /* VElapsedTimeFormatter.m in Sources */,
+				7A9B72631D6CC3B4007540E2 /* NSNumberFormatter.swift in Sources */,
 				D80536271B17B5CB0049B77A /* VPromptCollectionViewCell.m in Sources */,
 				DB8D3A1319803A03005DD36D /* VHashTags.m in Sources */,
 				7A7348771D0B7552005225E4 /* ChatFeedContent.swift in Sources */,
@@ -8670,6 +8678,7 @@
 				BFE25A471D0B7DBA00F55653 /* ContentDeleteRemoteOperation.swift in Sources */,
 				C3623E591B9A77E0002B121D /* LevelUpViewController.swift in Sources */,
 				A721E9431B572454000B7901 /* NSString+VParseHelp.m in Sources */,
+				7ACB6B111D6CBE1F008084EF /* AccessoryScreenBarButtonItem.swift in Sources */,
 				A782D6A21CDBFD800084DDE6 /* VPurchaseSettingsViewController.swift in Sources */,
 				0349FD4D1C504748004F95FC /* NSMutableURLRequest+UploadManager.swift in Sources */,
 				C3623E611B9A78B4002B121D /* AnimatedBadgeView.swift in Sources */,

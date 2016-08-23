@@ -10,6 +10,9 @@ import UIKit
 
 /// A button that can display a badge on its corner.
 class BadgeButton: UIButton {
+    
+    // MARK: - Constants
+    
     private struct Constants {
         static let badgePadding = CGFloat(1.0)
     }

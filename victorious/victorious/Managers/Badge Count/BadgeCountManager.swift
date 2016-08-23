@@ -24,10 +24,6 @@ final class BadgeCountManager {
         fetchUnreadNotificationCount()
     }
     
-    deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
-    }
-    
     // MARK: - Accessing the shared instance
     
     static let shared = BadgeCountManager()

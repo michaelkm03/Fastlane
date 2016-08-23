@@ -275,15 +275,15 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         return profileScreenContext?.accessoryScreensKey
     }
     
-    func addCustomLeftItems(to items: [UIBarButtonItem]) -> [UIBarButtonItem] {
-        return items + supplementalLeftButtons
+    func addCustomLeftItems(to items: [AccessoryScreenBarButtonItem]) -> [UIBarButtonItem] {
+        return items.filter({ shouldDisplay($0.accessoryScreen) }) + supplementalLeftButtons
     }
     
-    func addCustomRightItems(to items: [UIBarButtonItem]) -> [UIBarButtonItem] {
-        return items + supplementalRightButtons
+    func addCustomRightItems(to items: [AccessoryScreenBarButtonItem]) -> [UIBarButtonItem] {
+        return items.filter({ shouldDisplay($0.accessoryScreen) }) + supplementalRightButtons
     }
     
-    func shouldDisplay(screen: AccessoryScreen) -> Bool {
+    private func shouldDisplay(screen: AccessoryScreen) -> Bool {
         return ![VNewProfileViewController.upgradeButtonID, VNewProfileViewController.goVIPButtonID].contains(screen.id)
     }
     

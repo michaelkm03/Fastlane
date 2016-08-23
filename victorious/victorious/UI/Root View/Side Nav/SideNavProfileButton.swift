@@ -14,8 +14,27 @@ import UIKit
 ///
 class SideNavProfileButton: BadgeButton {
     
+    // MARK: - Constants
+    
     private struct Constants {
         static let badgeAngle = CGFloat(M_PI * 0.25)
+        static let badgeCountType = BadgeCountType.unreadNotifications
+    }
+    
+    // MARK: - Initializing
+    
+    override init(frame: CGRect) {
+        super.init(frame: CGRect.zero)
+        addSubview(avatarView)
+        updateBadgeCount()
+        
+        BadgeCountManager.shared.whenBadgeCountChanges(for: Constants.badgeCountType) { [weak self] in
+            self?.updateBadgeCount()
+        }
+    }
+    
+    required init(coder: NSCoder) {
+        fatalError("NSCoding not supported.")
     }
     
     // MARK: - Accessing the user
@@ -27,8 +46,6 @@ class SideNavProfileButton: BadgeButton {
         }
         set {
             avatarView.user = newValue
-            addSubview(avatarView)
-            badgeString = "12"
         }
     }
     
@@ -39,6 +56,17 @@ class SideNavProfileButton: BadgeButton {
         view.userInteractionEnabled = false
         return view
     }()
+    
+    // MARK: - Managing badge count
+    
+    private func updateBadgeCount() {
+        if let count = BadgeCountManager.shared.badgeCount(for: Constants.badgeCountType) where count > 0 {
+            badgeString = NSNumberFormatter.integerFormatter.stringFromNumber(count) ?? "\(count)"
+        }
+        else {
+            badgeString = nil
+        }
+    }
     
     // MARK: - Layout
     
