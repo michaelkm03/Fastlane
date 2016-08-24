@@ -15,7 +15,7 @@ struct AccessoryScreen {
     
     init?(dependencyManager: VDependencyManager) {
         guard let id = dependencyManager.stringForKey("identifier") else {
-            logger.warning("Tried to initialize an accessory screen without an identifier.")
+            Log.warning("Tried to initialize an accessory screen without an identifier.")
             return nil
         }
         
@@ -70,7 +70,7 @@ extension VDependencyManager {
     /// accessory screens exist.
     @warn_unused_result func accessoryScreens(for key: String) -> [AccessoryScreen]? {
         guard let accessoryScreenDependencyManagers = childDependencies(for: key) else {
-            logger.warning("Tried to get accessory screens from dependency manager for key '\(key)', but a value for that key was not found.")
+            Log.warning("Tried to get accessory screens from dependency manager for key '\(key)', but a value for that key was not found.")
             return nil
         }
         
