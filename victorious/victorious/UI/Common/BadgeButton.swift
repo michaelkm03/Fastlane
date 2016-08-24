@@ -15,6 +15,9 @@ class BadgeButton: UIButton {
     
     private struct Constants {
         static let badgePadding = CGFloat(1.0)
+        static let badgeTextColor = UIColor.whiteColor()
+        static let badgeBackgroundColor = UIColor(red: 0.95, green: 0.05, blue: 0.05, alpha: 1.0)
+        static let badgeFont = UIFont.systemFontOfSize(13.0, weight: UIFontWeightRegular)
     }
     
     // MARK: - Accessing badge content
@@ -43,9 +46,9 @@ class BadgeButton: UIButton {
     private let badgeLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .Center
-        label.textColor = .whiteColor()
-        label.backgroundColor = .redColor()
-        label.font = UIFont.systemFontOfSize(13.0, weight: UIFontWeightRegular)
+        label.textColor = Constants.badgeTextColor
+        label.backgroundColor = Constants.badgeBackgroundColor
+        label.font = Constants.badgeFont
         label.clipsToBounds = true
         label.userInteractionEnabled = false
         return label
