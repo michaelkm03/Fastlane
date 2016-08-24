@@ -95,7 +95,7 @@ final class BadgeCountManager {
         
         operation.queue { [weak self, weak operation] results, error, cancelled in
             if let count = operation?.unreadNotificationsCount?.integerValue where error == nil {
-                self?.unreadNotificationCount = count + 3
+                self?.unreadNotificationCount = count
             }
         }
     }

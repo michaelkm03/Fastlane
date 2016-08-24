@@ -60,12 +60,7 @@ class SideNavProfileButton: BadgeButton {
     // MARK: - Managing badge count
     
     private func updateBadgeCount() {
-        if let count = BadgeCountManager.shared.badgeCount(for: Constants.badgeCountType) where count > 0 {
-            badgeString = NSNumberFormatter.integerFormatter.stringFromNumber(count) ?? "\(count)"
-        }
-        else {
-            badgeString = nil
-        }
+        setBadgeNumber(BadgeCountManager.shared.badgeCount(for: Constants.badgeCountType) ?? 0)
     }
     
     // MARK: - Layout

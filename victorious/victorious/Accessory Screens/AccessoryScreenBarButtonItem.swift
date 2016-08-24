@@ -60,12 +60,7 @@ class AccessoryScreenBarButtonItem: UIBarButtonItem {
             return
         }
         
-        if let count = BadgeCountManager.shared.badgeCount(for: badgeCountType) where count > 0 {
-            button.badgeString = NSNumberFormatter.integerFormatter.stringFromNumber(count) ?? "\(count)"
-        }
-        else {
-            button.badgeString = nil
-        }
+        button.setBadgeNumber(BadgeCountManager.shared.badgeCount(for: badgeCountType) ?? 0)
     }
     
     // MARK: - Navigating
