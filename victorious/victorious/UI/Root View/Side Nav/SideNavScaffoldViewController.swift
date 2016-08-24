@@ -49,8 +49,6 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
         
         mainNavigationController.delegate = self
         
-        setupNavigationButtons()
-        
         addChildViewController(sideMenuController)
         view.addSubview(sideMenuController.view)
         view.v_addFitToParentConstraintsToSubview(sideMenuController.view)
