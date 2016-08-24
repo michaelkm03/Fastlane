@@ -45,7 +45,7 @@ final class StoredLoginOperation: SyncOperation<Void> {
             infoOperation.after(self).queue() { result in
                 switch result {
                     case .success(let user): user.setAsCurrentUser()
-                    case .failure: break
+                    case .failure(let error): Log.warning("Fetching user failed with error: \(error)")
                     case .cancelled: break
                 }
             }
