@@ -148,7 +148,7 @@ protocol Queueable2 {
 extension Queueable2 where Self: NSOperation {
     func queue(completion completion: ((result: OperationResult<Output>) -> Void)?) {
         defer {
-            Queue.asyncSchedule.operationQueue.addOperation(self)
+            scheduleQueue.operationQueue.addOperation(self)
         }
         
         guard let completion = completion else {

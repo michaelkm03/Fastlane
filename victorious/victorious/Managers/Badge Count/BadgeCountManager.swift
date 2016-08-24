@@ -56,8 +56,8 @@ final class BadgeCountManager {
     private func fetchUnreadNotificationCount() {
         let operation = NotificationsUnreadCountOperation()
         
-        operation.queue { [weak self, weak operation] results, error, cancelled in
-            if let count = operation?.unreadNotificationsCount?.integerValue where error == nil {
+        operation.queue { [weak self] results, error, cancelled in
+            if let count = operation.unreadNotificationsCount?.integerValue where error == nil {
                 self?.unreadNotificationCount = count
             }
         }
