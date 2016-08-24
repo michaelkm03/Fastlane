@@ -42,8 +42,6 @@ final class PreloadUserInfoOperation: AsyncOperation<VUser> {
                 }
                 finish(result: .success(user))
             }
-            
-            FollowCountOperation(userID: userID).queue()
         }
     }
 }
