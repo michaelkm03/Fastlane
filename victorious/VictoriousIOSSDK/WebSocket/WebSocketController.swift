@@ -55,7 +55,7 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
     // MARK: - ForumNetworkSourceWebSocket
 
     public func replaceEndPoint(endPoint: NSURL) {
-        logger.verbose("WebSocket replaceEndPoint -> \(endPoint)")
+        Log.verbose("WebSocket replaceEndPoint -> \(endPoint)")
 
         if let webSocket = webSocket {
             webSocket.disconnect()
@@ -66,7 +66,7 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
     }
 
     public func setDeviceID(deviceID: String) {
-        logger.verbose("WebSocket setDeviceID -> \(deviceID)")
+        Log.verbose("WebSocket setDeviceID -> \(deviceID)")
         uniqueIdentificationMessage.deviceID = deviceID
     }
 
@@ -132,7 +132,7 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
     // MARK: - WebSocketDelegate
     
     public func websocketDidConnect(socket: WebSocket) {
-        logger.verbose("WebSocket did connect to URL -> \(socket.currentURL)")
+        Log.verbose("WebSocket did connect to URL -> \(socket.currentURL)")
         let rawMessage = WebSocketRawMessage(messageString: "Connected to URL -> \(socket.currentURL)")
         webSocketMessageContainer.addMessage(rawMessage)
 
@@ -142,7 +142,7 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
     }
 
     public func websocketDidDisconnect(socket: WebSocket, error: NSError?) {
-        logger.verbose("WebSocket did disconnect from URL -> \(socket.currentURL) with error -> \(error)")
+        Log.verbose("WebSocket did disconnect from URL -> \(socket.currentURL) with error -> \(error)")
         let rawMessage = WebSocketRawMessage(messageString: "Disconnected -> \(socket) error -> \(error)")
         webSocketMessageContainer.addMessage(rawMessage)
         
@@ -159,7 +159,7 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
     }
 
     public func websocketDidReceiveMessage(socket: WebSocket, text: String) {
-        logger.verbose("WebSocket did receive text message -> \(text)")
+        Log.verbose("WebSocket did receive text message -> \(text)")
         var rawMessage = WebSocketRawMessage(messageString: "websocketDidReceiveMessage -> \(text)")
 
         if let dataFromString = text.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false) {
@@ -167,7 +167,7 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
             rawMessage.json = json
 
             guard let event = (decodeEventFromJSON(json) ?? decodeErrorFromJSON(json)) else {
-                logger.info("Unparsable WebSocket message returned -> \(text)")
+                Log.info("Unparsable WebSocket message returned -> \(text)")
                 return
             }
             
@@ -194,13 +194,13 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
 
     private func sendOutboundForumEvent(event: ForumEvent) {
         switch event {
-        case .sendContent(let content):
-            sendJSON(from: content)
-            bounceBackOutboundEvent(event)
-        case .blockUser(let blockUser):
-            sendJSON(from: blockUser)
-        default:
-            break
+            case .sendContent(let content):
+                sendJSON(from: content)
+                bounceBackOutboundEvent(event)
+            case .blockUser(let blockUser):
+                sendJSON(from: blockUser)
+            default:
+                break
         }
     }
 
@@ -253,10 +253,11 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
         let toServerDictionary = dictionaryConvertible.toServerDictionaryWithIdentificationMessage(uniqueIdentificationMessage)
         
         if let jsonString = JSON(toServerDictionary).rawString() {
-            logger.verbose("sendOutboundForumEvent json -> \(jsonString)")
+            Log.verbose("sendOutboundForumEvent json -> \(jsonString)")
             webSocket.writeString(jsonString)
-        } else {
-            logger.warning("Failed to convert ForumEvent to JSON string. Dictionary -> \(toServerDictionary)")
+        }
+        else {
+            Log.warning("Failed to convert ForumEvent to JSON string. Dictionary -> \(toServerDictionary)")
         }
     }
 
