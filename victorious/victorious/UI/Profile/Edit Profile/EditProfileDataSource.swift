@@ -32,6 +32,9 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
         nameAndLocationCell.onDataChange = { [weak self] in
             self?.onUserUpdateData?()
         }
+        aboutMeCell.onDataChange = { [weak self] in
+            self?.onUserUpdateData?()
+        }
     }
     
     // MARK: - UITableViewDataSource
@@ -71,6 +74,9 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
                 return false
             }
             guard trimmedUsername.characters.count < 255 else {
+                return false
+            }
+            guard aboutMeCell.isWithinValidLength else {
                 return false
             }
             return true

@@ -78,6 +78,10 @@ class AboutMeTextCell: UITableViewCell, UITextViewDelegate {
         }
         onDesiredHeightChangeClosure?(desiredHeight: textSize.height)
     }
+    
+    var isWithinValidLength: Bool {
+        return textView.text.characters.count <= 255
+    }
 }
 
 private extension VDependencyManager {
