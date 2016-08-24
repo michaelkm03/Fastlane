@@ -757,7 +757,6 @@
 		A72C864B1C977FF500E97D4F /* VStoredPassword.m in Sources */ = {isa = PBXBuildFile; fileRef = A72C85A91C977FF500E97D4F /* VStoredPassword.m */; };
 		A72C864E1C977FF500E97D4F /* RequestPushNotificationPermissionOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85AD1C977FF500E97D4F /* RequestPushNotificationPermissionOperation.swift */; };
 		A72C864F1C977FF500E97D4F /* ConfirmDestructiveActionOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85AF1C977FF500E97D4F /* ConfirmDestructiveActionOperation.swift */; };
-		A72C86501C977FF500E97D4F /* PreloadUserInfoOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85B01C977FF500E97D4F /* PreloadUserInfoOperation.swift */; };
 		A72C86551C977FF500E97D4F /* ShowLoginOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85B51C977FF500E97D4F /* ShowLoginOperation.swift */; };
 		A72C865D1C977FF600E97D4F /* StoredLoginOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85BD1C977FF500E97D4F /* StoredLoginOperation.swift */; };
 		A72C865E1C977FF600E97D4F /* Paginated.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85BF1C977FF500E97D4F /* Paginated.swift */; };
@@ -2357,7 +2356,6 @@
 		A72C85A91C977FF500E97D4F /* VStoredPassword.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VStoredPassword.m; sourceTree = "<group>"; };
 		A72C85AD1C977FF500E97D4F /* RequestPushNotificationPermissionOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestPushNotificationPermissionOperation.swift; sourceTree = "<group>"; };
 		A72C85AF1C977FF500E97D4F /* ConfirmDestructiveActionOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfirmDestructiveActionOperation.swift; sourceTree = "<group>"; };
-		A72C85B01C977FF500E97D4F /* PreloadUserInfoOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreloadUserInfoOperation.swift; sourceTree = "<group>"; };
 		A72C85B51C977FF500E97D4F /* ShowLoginOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowLoginOperation.swift; sourceTree = "<group>"; };
 		A72C85BD1C977FF500E97D4F /* StoredLoginOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoredLoginOperation.swift; sourceTree = "<group>"; };
 		A72C85BF1C977FF500E97D4F /* Paginated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Paginated.swift; sourceTree = "<group>"; };
@@ -5275,7 +5273,6 @@
 			isa = PBXGroup;
 			children = (
 				A72C85AF1C977FF500E97D4F /* ConfirmDestructiveActionOperation.swift */,
-				A72C85B01C977FF500E97D4F /* PreloadUserInfoOperation.swift */,
 				A72C85B51C977FF500E97D4F /* ShowLoginOperation.swift */,
 				BF0B35331CFE756900CE5DBB /* ShowShareContentOperation.swift */,
 				A72C85BD1C977FF500E97D4F /* StoredLoginOperation.swift */,
@@ -8515,7 +8512,6 @@
 				A72C86851C977FF600E97D4F /* AlertsRequestDecorator.swift in Sources */,
 				F0FBC43E1D21D4120070873F /* CaptionBar.swift in Sources */,
 				79B51FD41B853A1900F826F3 /* NSDate+ComparableEquatable.swift in Sources */,
-				A72C86501C977FF500E97D4F /* PreloadUserInfoOperation.swift in Sources */,
 				F009BD041CE6541F00F81CAA /* HashtagBarViewController.swift in Sources */,
 				7CC982241D0235D300583B70 /* ForumNavBarTitleView.swift in Sources */,
 				A73C3EB61C45890E00A8452C /* MediaSearchResultCell.swift in Sources */,
