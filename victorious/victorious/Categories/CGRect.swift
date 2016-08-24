@@ -1,5 +1,5 @@
 //
-//  CGRect+Aspect.swift
+//  CGRect.swift
 //  victorious
 //
 //  Created by Michael Sena on 11/18/15.
