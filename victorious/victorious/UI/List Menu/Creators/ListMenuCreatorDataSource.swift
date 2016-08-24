@@ -32,7 +32,7 @@ final class ListMenuCreatorDataSource: ListMenuSectionDataSource {
     
     func fetchRemoteData() {
         guard let endpointURLFromTemplate = dependencyManager.listOfCreatorsURLString else {
-            logger.info("nil endpoint url for list of creators on left nav")
+            Log.info("nil endpoint url for list of creators on left nav")
             return
         }
         
