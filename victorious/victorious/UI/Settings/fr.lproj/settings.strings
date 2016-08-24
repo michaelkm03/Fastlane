@@ -1,8 +1,11 @@
 /* Class = "UITableViewController"; title = "Server Environment"; ObjectID = "0nf-aa-3V6"; */
 "0nf-aa-3V6.title" = "Environnement du serveur";
 
-/* Class = "UITableViewController"; title = "Push Notifications"; ObjectID = "2cC-vU-QEc"; */
-"2cC-vU-QEc.title" = "Notifications push";
+/* Class = "UILabel"; text = "Edit Profile"; ObjectID = "3vi-dw-AX2"; */
+"3vi-dw-AX2.text" = "Modifier le profil";
+
+/* Class = "UINavigationItem"; title = "In-App Purchases & Subscription"; ObjectID = "5FP-jo-7Mh"; */
+"5FP-jo-7Mh.title" = "Achats intégrés & Abonnements";
 
 /* Class = "UITableViewController"; title = "Server Environment"; ObjectID = "6fa-Sd-wUR"; */
 "6fa-Sd-wUR.title" = "Environnement du serveur";
@@ -10,8 +13,8 @@
 /* Class = "UITableViewController"; title = "Experiments"; ObjectID = "6nd-lx-w31"; */
 "6nd-lx-w31.title" = "Expériences";
 
-/* Class = "UILabel"; text = "TITLE"; ObjectID = "8Fn-0A-Ctn"; */
-"8Fn-0A-Ctn.text" = "TITRE";
+/* Class = "UILabel"; text = "In-App Purchases & Subscription"; ObjectID = "16U-jQ-75p"; */
+"16U-jQ-75p.text" = "Achats intégrés & Abonnements";
 
 /* Class = "UILabel"; text = "Register Test Toast Alert"; ObjectID = "A07-FV-K6D"; */
 "A07-FV-K6D.text" = "S'inscrire à l'alerte de test Toast";
@@ -20,7 +23,7 @@
 "A70-cw-6uE.text" = "Suivi";
 
 /* Class = "UITextField"; placeholder = "Base URL"; ObjectID = "EhD-iU-YcX"; */
-"EhD-iU-YcX.placeholder" = "URL de base";
+"EhD-iU-YcX.placeholder" = "URL";
 
 /* Class = "UINavigationItem"; title = "Tracking"; ObjectID = "Er4-Xd-8gm"; */
 "Er4-Xd-8gm.title" = "Suivi";
@@ -37,14 +40,17 @@
 /* Class = "UITextField"; placeholder = "Confirm Password"; ObjectID = "Hdx-TS-3uZ"; */
 "Hdx-TS-3uZ.placeholder" = "Confirmer le mot de passe";
 
+/* Class = "UILabel"; text = "Title"; ObjectID = "IJf-ZD-6J8"; */
+"IJf-ZD-6J8.text" = "Titre";
+
+/* Class = "UILabel"; text = "Log Out"; ObjectID = "Ib2-0x-W7O"; */
+"Ib2-0x-W7O.text" = "Déconnexion";
+
 /* Class = "UITextField"; placeholder = "App ID"; ObjectID = "J9J-EQ-egU"; */
-"J9J-EQ-egU.placeholder" = "ID App";
+"J9J-EQ-egU.placeholder" = "App ID";
 
 /* Class = "UINavigationItem"; title = "Change Password"; ObjectID = "LKP-Bv-quY"; */
 "LKP-Bv-quY.title" = "Modifier le mot de passe";
-
-/* Class = "UIButton"; normalTitle = "Log out"; ObjectID = "LM5-sK-eej"; */
-"LM5-sK-eej.normalTitle" = "Déconnexion";
 
 /* Class = "UITextField"; placeholder = "Your Current Password"; ObjectID = "LgC-0q-Axl"; */
 "LgC-0q-Axl.placeholder" = "Votre mot de passe actuel";
@@ -59,7 +65,7 @@
 "T6U-i1-p3F.placeholder" = "Nom";
 
 /* Class = "UITableViewController"; title = "Test Alerts"; ObjectID = "THc-ec-WSZ"; */
-"THc-ec-WSZ.title" = "Alerte de test";
+"THc-ec-WSZ.title" = "Alertes de test";
 
 /* Class = "UIViewController"; title = "Change Password"; ObjectID = "Tch-Qc-dzd"; */
 "Tch-Qc-dzd.title" = "Modifier le mot de passe";
@@ -73,26 +79,26 @@
 /* Class = "UILabel"; text = "TITLE"; ObjectID = "Uxb-Bx-b8P"; */
 "Uxb-Bx-b8P.text" = "TITRE";
 
-/* Class = "UINavigationItem"; title = "Push Notifications"; ObjectID = "WVz-KR-Hhr"; */
-"WVz-KR-Hhr.title" = "Notifications push";
+/* Class = "UILabel"; text = "Help"; ObjectID = "YUJ-gc-OLy"; */
+"YUJ-gc-OLy.text" = "Aide";
 
-/* Class = "UILabel"; text = "Feedback/Help"; ObjectID = "Ywp-Nm-FQ2"; */
-"Ywp-Nm-FQ2.text" = "Suggestions/Aide";
+/* Class = "UILabel"; text = "Feedback"; ObjectID = "Ywp-Nm-FQ2"; */
+"Ywp-Nm-FQ2.text" = "Commentaires";
 
 /* Class = "UINavigationItem"; title = "New Environment"; ObjectID = "ab7-E6-f3T"; */
 "ab7-E6-f3T.title" = "Nouvel environnement";
 
 /* Class = "UILabel"; text = "Push Notifications"; ObjectID = "c84-Tn-JWi"; */
-"c84-Tn-JWi.text" = "Notifications push";
+"c84-Tn-JWi.text" = "Push Notifications";
 
 /* Class = "UILabel"; text = "Experiments"; ObjectID = "f7G-BC-zp9"; */
 "f7G-BC-zp9.text" = "Expériences";
 
 /* Class = "UILabel"; text = "Register Test Level Up Alert"; ObjectID = "gY1-3u-QH1"; */
-"gY1-3u-QH1.text" = "Enregistrer alerte de test niveau sup";
+"gY1-3u-QH1.text" = "Enregistrer alerte de test 'level up'";
 
 /* Class = "UIButton"; normalTitle = "Save"; ObjectID = "jLQ-YW-sES"; */
-"jLQ-YW-sES.normalTitle" = "Sauvegarder";
+"jLQ-YW-sES.normalTitle" = "Enregistrer";
 
 /* Class = "UILabel"; text = "Register Test Alerts"; ObjectID = "jfn-8g-oUa"; */
 "jfn-8g-oUa.text" = "Enregistrer alertes de test";
@@ -118,11 +124,11 @@
 /* Class = "UITableViewSection"; headerTitle = "About"; ObjectID = "pML-Pk-7g5"; */
 "pML-Pk-7g5.headerTitle" = "À propos";
 
-/* Class = "UILabel"; text = "Posts I've Liked"; ObjectID = "r0B-CY-cMb"; */
-"r0B-CY-cMb.text" = "Mes likes";
+/* Class = "UILabel"; text = "Posts I've Bumped"; ObjectID = "r0B-CY-cMb"; */
+"r0B-CY-cMb.text" = "Publications que j'ai remontées";
 
 /* Class = "UIButton"; normalTitle = "Save"; ObjectID = "sgT-oS-cdk"; */
-"sgT-oS-cdk.normalTitle" = "Sauvegarder";
+"sgT-oS-cdk.normalTitle" = "Enregistrer";
 
 /* Class = "UINavigationItem"; title = "Settings"; ObjectID = "udt-VU-0Rh"; */
 "udt-VU-0Rh.title" = "Paramètres";

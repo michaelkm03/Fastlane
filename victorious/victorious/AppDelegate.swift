@@ -74,7 +74,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: () -> Void) {
-        logger.verbose("handling events for background identifier -> \(identifier)")
+        Log.verbose("handling events for background identifier -> \(identifier)")
 
         let uploadManager = VUploadManager.sharedManager()
         if uploadManager.isYourBackgroundURLSession(identifier) {
@@ -119,7 +119,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 Crashlytics.setUserEmail(currentUser.username ?? "")
                 Crashlytics.setUserName(currentUser.displayName ?? "")
 
-                logger.setUserIdentifier(currentUser.remoteId.stringValue)
+                Log.setUserIdentifier(currentUser.remoteId.stringValue)
             }
         }
     }
@@ -128,7 +128,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         do {
             try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
         } catch {
-            logger.warning("Failed to set the AudioSession category with error ->\(error)")
+            Log.warning("Failed to set the AudioSession category with error ->\(error)")
         }
     }
 
@@ -137,7 +137,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         do {
             try persistentStore.mainContext.save()
         } catch {
-            logger.warning("Failed to save the persistent stores main context with error -> \(error)")
+            Log.warning("Failed to save the persistent stores main context with error -> \(error)")
         }
     }
 }

@@ -1,35 +1,11 @@
-/* Class = "UITextField"; placeholder = "Search people"; ObjectID = "5Iu-Sq-opf"; */
-"5Iu-Sq-opf.placeholder" = "사람 검색";
-
-/* Class = "UILabel"; text = "No Results"; ObjectID = "5uI-FR-NGs"; */
-"5uI-FR-NGs.text" = "결과 없음";
-
-/* Class = "UILabel"; text = "We weren't able to find that user. You can try again or go to that user's profile and send a message from there!"; ObjectID = "9Sb-ui-Qjq"; */
-"9Sb-ui-Qjq.text" = "해당 사용자를 찾을 수 없었습니다. 다시 시도하거나 해당 사용자의 프로필로 가서 거기서 메시지를 보내세요!";
-
 /* Class = "UILabel"; text = "No Internet Connection."; ObjectID = "9lr-kw-Rjm"; */
 "9lr-kw-Rjm.text" = "인터넷 연결 없음.";
-
-/* Class = "UINavigationItem"; title = "Messages"; ObjectID = "AHd-Fh-04G"; */
-"AHd-Fh-04G.title" = "메세지";
-
-/* Class = "UILabel"; text = "Pull up for more..."; ObjectID = "O7q-AE-sOJ"; */
-"O7q-AE-sOJ.text" = "더 보려면 올리세요...";
 
 /* Class = "UILabel"; text = "Type a reply..."; ObjectID = "SNG-eg-mA3"; */
 "SNG-eg-mA3.text" = "답변을 입력하세요...";
 
-/* Class = "UINavigationItem"; title = "Messages"; ObjectID = "YF4-gT-XTx"; */
-"YF4-gT-XTx.title" = "메세지";
-
-/* Class = "UILabel"; text = "NO USERS FOUND"; ObjectID = "a8q-j6-UKa"; */
-"a8q-j6-UKa.text" = "사용자를 찾을 수 없었습니다";
-
 /* Class = "UILabel"; text = "Type a reply..."; ObjectID = "gwv-3A-zYK"; */
 "gwv-3A-zYK.text" = "답변을 입력하세요...";
-
-/* Class = "UILabel"; text = "By signing up you agree to:"; ObjectID = "pAa-W5-W1B"; */
-"pAa-W5-W1B.text" = "가입하시면 다음에 동의하시는 것입니다:";
 
 /* Class = "UIButton"; normalTitle = "Send"; ObjectID = "vPi-i8-4bG"; */
 "vPi-i8-4bG.normalTitle" = "전송";
