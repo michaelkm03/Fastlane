@@ -36,7 +36,7 @@ final class PreloadUserInfoOperation: AsyncOperation<VUser> {
         
         infoOperation.queue() { _ in
             guard let user = infoOperation.user else {
-                finish(result: .failure(NSError(domain: "PreloadUserInfoOperation", code: -1, userInfo: nil)))
+                finish(result: .failure(NSError(domain: "PreloadUserInfoOperation", code: -2, userInfo: nil)))
                 return
             }
             finish(result: .success(user))
