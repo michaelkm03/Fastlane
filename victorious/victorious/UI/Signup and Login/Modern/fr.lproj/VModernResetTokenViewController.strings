@@ -1,5 +1,5 @@
 /* Class = "UILabel"; text = "An email was sent to this address containing reset password instructions."; ObjectID = "5BC-gw-Wf8"; */
-"5BC-gw-Wf8.text" = "Un e-mail contenant les instructions de réinitialisation du mot de passe a été envoyé à cette adresse.";
+"5BC-gw-Wf8.text" = "Le code de réinitialisation du mot de passe a été envoyé à cette adresse e-mail.";
 
 /* Class = "UILabel"; text = "Enter Code:"; ObjectID = "La3-Ik-eVI"; */
 "La3-Ik-eVI.text" = "Saisir le code :";

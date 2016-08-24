@@ -1,35 +1,11 @@
-/* Class = "UITextField"; placeholder = "Search people"; ObjectID = "5Iu-Sq-opf"; */
-"5Iu-Sq-opf.placeholder" = "人を探す";
-
-/* Class = "UILabel"; text = "No Results"; ObjectID = "5uI-FR-NGs"; */
-"5uI-FR-NGs.text" = "該当結果なし";
-
-/* Class = "UILabel"; text = "We weren't able to find that user. You can try again or go to that user's profile and send a message from there!"; ObjectID = "9Sb-ui-Qjq"; */
-"9Sb-ui-Qjq.text" = "指定のユーザーを見つけられませんでした。もう一度試すか、指定のユーザーのプロフィールからメッセージを送信しましょう！";
-
 /* Class = "UILabel"; text = "No Internet Connection."; ObjectID = "9lr-kw-Rjm"; */
 "9lr-kw-Rjm.text" = "インターネット接続がありません。";
-
-/* Class = "UINavigationItem"; title = "Messages"; ObjectID = "AHd-Fh-04G"; */
-"AHd-Fh-04G.title" = "メッセージ";
-
-/* Class = "UILabel"; text = "Pull up for more..."; ObjectID = "O7q-AE-sOJ"; */
-"O7q-AE-sOJ.text" = "上へ引っぱってさらに表示…";
 
 /* Class = "UILabel"; text = "Type a reply..."; ObjectID = "SNG-eg-mA3"; */
 "SNG-eg-mA3.text" = "返信内容を入力…";
 
-/* Class = "UINavigationItem"; title = "Messages"; ObjectID = "YF4-gT-XTx"; */
-"YF4-gT-XTx.title" = "メッセージ";
-
-/* Class = "UILabel"; text = "NO USERS FOUND"; ObjectID = "a8q-j6-UKa"; */
-"a8q-j6-UKa.text" = "ユーザーが見つかりません";
-
 /* Class = "UILabel"; text = "Type a reply..."; ObjectID = "gwv-3A-zYK"; */
 "gwv-3A-zYK.text" = "返信内容を入力…";
-
-/* Class = "UILabel"; text = "By signing up you agree to:"; ObjectID = "pAa-W5-W1B"; */
-"pAa-W5-W1B.text" = "サインアップすることであなたは次に同意したものとみなされます:";
 
 /* Class = "UIButton"; normalTitle = "Send"; ObjectID = "vPi-i8-4bG"; */
 "vPi-i8-4bG.normalTitle" = "送信";

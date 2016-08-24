@@ -4,7 +4,23 @@
 
   Created by Gary Philipp on 12/23/13.
   Copyright (c) 2013 Victorious Inc. All rights reserved.
-*/
+*/"ReportPost"            =   "投稿を報告";
+"What do you think?"    =   "どう思いますか？";
+
+"DeletePost"            =   "投稿を削除";
+"Send"                  =   "送信";
+"DisplayNamePlaceholder"=   "ディスプレイネーム";
+"LocationPlaceholder"   =   "場所";
+
+"Select payment schedule"               = "無料トライアル後の支払いスケジュールを選択します";
+
+"Become a VIP"                          = "VIPになる";
+"Upgrade"                               = "アップグレード";
+
+"SubscriptionFetchFailed"               = "購入するサブスクリプションが見つかりませんでした。";
+"Help" = "ヘルプ";
+"Try Again" = "もう一度お試しください";
+
 
 "Back"                  =   "戻る";
 "ImageCaptureFailed"    =   "写真を撮ることができません";
@@ -12,29 +28,29 @@
 "SettingsManageSubscriptions"           = "サブスクリプションを管理";
 "SettingsSubscriptionSettingsPrompt"    = "アプリストアでサブスクリプションの設定を管理するには、[サブスクリプションを管理]をタップします。";
 "SettingsNoSubcriptionPrompt"           = "このデバイスにはアクティブなサブスクリプションがありません。\n別のデバイスで購入した場合は、[購入を復元]をタップして復元してください。";
-"SubscriptionDescriptionFormat"         = "月額%@。サブスクリプション期間は%@で終了します。";  // e.g. "$2.99 per month.  Subscription period ends on Janurary 1, 2054."
+
+/* e.g. "$2.99 per month.  Subscription period ends on Janurary 1, 2054." */
+"SubscriptionDescriptionFormat" = "月額%@。サブスクリプション期間は%@で終了します。";
 "SubscriptionDescriptionNoDateFormat"   = "月額%@。";  // e.g. "$2.99 per month"
 "PurchasesSettingsTitle"                = "アプリ内購入";
 "SubscriptionsSettingsTitle"            = "サブスクリプション";
-
 "OK"                    =   "OK";
-"DeleteButton"          =   "削除";
+"DeleteButton" = "削除";
 "ResetButton"           =   "リセット";
 "Publish"               =   "公開";
 "Next"                  =   "次へ";
 "Done"                  =   "完了";
-"More"                  =   "詳細";
-"Share"                 =   "シェア";
-"Continue"              =   "続行";
-"Loading..."            =   "読み込み中…";
+
+"More" = "詳細";
+"Share" = "シェア";
+"Continue" = "続行";
+"Loading..." = "読み込み中…";
 "Finding fans to connect with..." = "ファン検索中";
-
-"Following"             =   "フォロー中";
-"FOLLOWERS"             =   "フォロワー";
-"FOLLOWING"             =   "フォロー中";
-"NumStreams"            =   "%@ ストリーム件数";
-"NumItems"              =   "%@ アイテム";
-
+"Following" = "フォロー中";
+"FOLLOWERS" = "フォロワー";
+"FOLLOWING" = "フォロー中";
+"NumStreams" = "%@ ストリーム件数";
+"NumItems" = "%@ アイテム";
 "TimeSeparator"         =   ":";
 "InvalidTimePlaceholder"=   "-:--";
 "%ld+"                  =   "%ld+";
@@ -49,19 +65,18 @@
 "GenericFailMessage"    =   "問題が起きたようです";
 "FacebookLoginFailed"   =   "Facebookでのログインに失敗。もう一度お試しください。";
 "SignupFail"            =   "アカウント作成に失敗";
-"You're not logged in!" =   "現在ログインしていません！";
+"You're not logged in!" = "現在ログインしていません！";
 "ProfileNotLoggedInMessage" = "まだ閲覧できる内容がありません！ とりあえずは私達のコミュニティに参加していただき、ありがとうございます。アカウントを作成してあなたらしさを皆に見せてあげましょう。";
-"ProfileSave"           =   "あなたのプロフィールをアップロード中";
-"ProfileIncomplete"     =   "プロフィールが未完成です";
-"ProfileRequired"       =   "次のご提供をお願いします:";
-"ProfileNameSpaces"     =   "プロフィール名を空白にすることはできません。";
-"ProfileRequiredName"   =   "あなたのお名前";
-
+"ProfileSave" = "あなたのプロフィールをアップロード中";
+"ProfileIncomplete" = "プロフィールが未完成です";
+"ProfileRequired" = "次のご提供をお願いします:";
+"ProfileNameSpaces" = "プロフィール名を空白にすることはできません。";
+"ProfileRequiredName" = "あなたのお名前";
 "User already exists"   =   "このユーザーはすでに存在します";
 "User already exists but the password is incorrect" = "既存のユーザーですがパスワードが間違っています。";
 "Invalid email address or password" = "無効なメールアドレスもしくはパスワードです";
-"Sorry, I can't display that right now" = "現在表示できません";
 
+"Sorry, I can't display that right now" = "現在表示できません";
 "WereSorry"             =   "ごめんなさい";
 "ErrorOccured"          =   "何かしらの理由でサーバーに接続できません。また後ほどお試しください！";
 
@@ -72,75 +87,62 @@
 "Missing Content"           =   "あらら！";
 "Missing Content Message"   =   "お探しのものを見つけられませんでした！";
 
-"MissingMedia"          =   "写真が2枚必要です。";
-"QuestionTextToShort"   =   "質問は２文字以上を記入してください";
-"AnswerTextToShort"     =   "回答は２文字以上を記入してください";
-
-"NoMessagesTitle"       =   "新着メッセージなし";
-"NoMessagesMessage"     =   "このアプリを利用している人なら誰にでもメッセージを送れます！ その人のプロフィールを開いて、画面右上の新規作成アイコンをクリックするだけ。";
-
+"MissingMedia" = "写真が2枚必要です。";
+"QuestionTextToShort" = "質問は２文字以上を記入してください";
+"AnswerTextToShort" = "回答は２文字以上を記入してください";
+"NoMessagesTitle" = "新着メッセージなし";
+"NoMessagesMessage" = "このアプリを利用している人なら誰にでもメッセージを送れます！ その人のプロフィールを開いて、画面右上の新規作成アイコンをクリックするだけ。";
 "SAY HELLO!" = "声をかけてみよう！";
 "Send a message to start chatting with other members of the community." = "コミュニティーの他のメンバーにメッセージを送信してチャットを開始します。";
-
 "NoNotificationsTitle"       =   "新着の通知はありません";
-"NoNotificationsMessage"     =   "コメントやリミックス、新規コンテンツの投稿などでコミュニティに関わっていくことで、皆もあなたに関わってくれます。彼らの反応はこちらから見られます。";
+"NoNotificationsMessage"     =   "新規コンテンツの投稿などでコミュニティに関わっていくと、それに対するコミュニティ内の反応がここに表示されます。";
 
-"NoCommentsTitle"       =   "最初のコメントを投稿しましょう！";
-"NoCommentsMessage"     =   "テキスト、写真もしくは動画コメントを投稿して、ファンの反応を見てみましょう";
-
+"NoCommentsTitle" = "最初のコメントを投稿しましょう！";
+"NoCommentsMessage" = "テキスト、写真もしくは動画コメントを投稿して、ファンの反応を見てみましょう";
 "Start a new conversation" = "新しい会話を始める";
-
-"NoUserSearchResultsTitle"       =   "ユーザーが見つかりません";
-"NoUserSearchResultsMessage"     =   "指定のユーザーを見つけられませんでした。もう一度試すか、指定のユーザーのプロフィールからメッセージを送信しましょう！";
-
-"NoFollowersTitle"      =   "まだ誰もあなたをフォローしていません";
-"NoFollowersMessage"    =   "コメントやリミックス、新規コンテンツの投稿などでコミュニティに関わって、あなた自身のフォロワーを募りましょう。";
-
-"NotFollowingTitle"     =   "まだ誰もフォローしていません";
-"NotFollowingMessage"   =   "他の人をフォローして、あなたのストリーム上に彼らのコンテンツを表示できます。新たなコンテンツを探したり、新しい友達を作ったりするのに最適です。";
-
-"NoLikersMessage"       =   "お気に入りのコンテンツを「いいね」してあなたにとって大事なものをコミュニティーに見せよう。";
-"NoLikersTitle"         =   "誰も「いいね」していません...今はまだ！";
-
-"ProfileNoFollowersTitle"      =   "このユーザー最初のフォロワーになりましょう";
-"ProfileNoFollowersMessage"    =   "他のユーザーをフォローしてコミュニティを形成しましょう。その人が新しいコンテンツを投稿すると通知を受け取れます。";
-
-"ProfileNotFollowingTitle"     =   "あれっ！ この人はまだ誰もフォローしてません";
-"ProfileNotFollowingMessage"   =   "他のユーザーをフォローしてコミュニティを作り、彼らにあなたをフォローしてもらいましょう。";
-
+"NoUserSearchResultsTitle" = "ユーザーが見つかりません";
+"NoUserSearchResultsMessage" = "指定のユーザーを見つけられませんでした。もう一度試すか、指定のユーザーのプロフィールからメッセージを送信しましょう！";
+"NoFollowersTitle" = "まだ誰もあなたをフォローしていません";
+"NoFollowersMessage" = "コメントやリミックス、新規コンテンツの投稿などでコミュニティに関わって、あなた自身のフォロワーを募りましょう。";
+"NotFollowingTitle" = "まだ誰もフォローしていません";
+"NotFollowingMessage" = "他の人をフォローして、あなたのストリーム上に彼らのコンテンツを表示できます。新たなコンテンツを探したり、新しい友達を作ったりするのに最適です。";
+"NoLikersMessage" = "お気に入りのコンテンツを「いいね」してあなたにとって大事なものをコミュニティーに見せよう。";
+"NoLikersTitle" = "誰も「いいね」していません...今はまだ！";
+"ProfileNoFollowersTitle" = "このユーザー最初のフォロワーになりましょう";
+"ProfileNoFollowersMessage" = "他のユーザーをフォローしてコミュニティを形成しましょう。その人が新しいコンテンツを投稿すると通知を受け取れます。";
+"ProfileNotFollowingTitle" = "あれっ！ この人はまだ誰もフォローしてません";
+"ProfileNotFollowingMessage" = "他のユーザーをフォローしてコミュニティを作り、彼らにあなたをフォローしてもらいましょう。";
 "SuggestedFollowersNone" =   "フォロワーなし";
 "SuggestedFollowersSing" =   "%@人のフォロワー";
 "SuggestedFollowersPlur" =   "%@人のフォロワー";
 "SuggestedFollowersK"    =   "%@人のフォロワー";
 
-"NoRepostersTitle"      =   "最初に再投稿しちゃいましょう！";
-"NoRepostersMessage"    =   "このコンテンツをあなたのフォロワーたちと共有しましょう！";
+"NoRepostersTitle" = "最初に再投稿しちゃいましょう！";
+"NoRepostersMessage" = "このコンテンツをあなたのフォロワーたちと共有しましょう！";
+"NoMemersTitle" = "最初にミームにしちゃいましょう！";
+"NoMemersMessage" = "ミームを作ってこのコンテンツを自分の作品にして他のファンとシェアしよう！";
 
-"NoMemersTitle"       =   "最初にミームにしちゃいましょう！";
-"NoMemersMessage"     =   "ミームを作ってこのコンテンツを自分の作品にして他のファンとシェアしよう！";
-
-"UGCSharePollFormat"    =   "このアンケートを見て";       // Check out this poll! <URL>
+/* Check out this poll! <URL> */
+"UGCSharePollFormat" = "このアンケートを見て";
 "UGCShareVideoFormat"   =   "この動画を見て！";      // Check out this video! <URL>
-"UGCShareGIFFormat"     =   "このGIFアニメを見て！";        // Check out this gif! <URL>
+"UGCShareGIFFormat"     =   "このGIFアニメを見て！";        // Check out this GIF! <URL>
 "UGCShareImageFormat"   =   "この写真を見て";      // Check out this photo! <URL>
 "UGCShareTextFormat"   =    "この投稿を見て！";      // Check out this post! <URL>
 "UGCShareLinkFormat"   =    "これを見て！";
 
 "EmailShareSubjectFormat"   =   "%@アプリのこの投稿を見て！"; // Check out this post from the <creator name> app!
 
-"Facebook"              =   "Facebook";
 
-"Search people and hashtags"  =  "人の名前もしくはハッシュタグで検索";
+"Facebook" = "Facebook";
+"Search people and hashtags" = "人の名前もしくはハッシュタグで検索";
 "No People Found In Search Title" = "該当する人が見つかりませんでした";
 "No people found in search" = "検索内容を調整してもう一度お試しください。";
 "No Hashtags Found In Search Title" = "タグが見つかりませんでした！";
 "No hashtags found in search" = "検索内容を調整してもう一度お試しください。";
-
-"TwitterDeniedTitle"    =   "あなたのツイッターアカウントにアクセスできませんでした";
-"TwitterDenied"         =   "[設定] > [プライバシー] > [ツイッター]からツイッターアカウントへのアクセスを許可してください";
-"TwitterTroubleshooting" =  "設定メニューであなたのTwitterアカウントの削除と再度追加をお試しください";
-
-"CameraRollDenied"      =   "[設定] > [プライバシー]から写真へのアクセスを許可してください";
+"TwitterDeniedTitle" = "あなたのツイッターアカウントにアクセスできませんでした";
+"TwitterDenied" = "[設定] > [プライバシー] > [ツイッター]からツイッターアカウントへのアクセスを許可してください";
+"TwitterTroubleshooting" = "設定メニューであなたのTwitterアカウントの削除と再度追加をお試しください";
+"CameraRollDenied" = "[設定] > [プライバシー]から写真へのアクセスを許可してください";
 "CameraFailed"          =   "カメラを起動できませんでした";
 "Camera"                =   "カメラ";   // Button that opens the camera
 "Search"                =   "検索する";   // Button that opens web search for images
@@ -150,22 +152,18 @@
 "VideoCoachMessage"     =   "ロングタップで録画開始";
 "LibraryCaptureFailed"  =   "ライブラリのアイテムにアクセスできません";
 
-"NoTwitterTitle"        =   "Twitterアカウントが見つかりません！";
-"NoTwitterMessage"      =   "デバイス設定を開いて、新しいTwitterアカウントを追加してください。";
-
-"SelectTwitter"         =   "Twitterアカウントを選択してください";
-
-"BlockInappropriate"    =   "ブロック";
-"ReportedTitle"         =   "了解！";
-"ReportContentMessage"  =   "このコンテンツは24時間以内に審査されます。";
-"ReportCommentMessage"  =   "このコンテンツは24時間以内に審査されます。";
-"ReportUserMessage"     =   "このユーザーメッセージは24時間以内に審査されます";
-
-"Ask a question..."     =   "質問する…";
-"Vote this"             =   "これに投票する";
-"Vote that"             =   "あれに投票する";
-
-"Uploading"             =   "あなたのコンテンツをアップロード中…";
+"NoTwitterTitle" = "Twitterアカウントが見つかりません！";
+"NoTwitterMessage" = "デバイス設定を開いて、新しいTwitterアカウントを追加してください。";
+"SelectTwitter" = "Twitterアカウントを選択してください";
+"BlockInappropriate" = "ブロック";
+"ReportedTitle" = "了解！";
+"ReportContentMessage" = "このコンテンツは24時間以内に審査されます。";
+"ReportCommentMessage" = "このコンテンツは24時間以内に審査されます。";
+"ReportUserMessage" = "このユーザーメッセージは24時間以内に審査されます";
+"Ask a question..." = "質問する…";
+"Vote this" = "これに投票する";
+"Vote that" = "あれに投票する";
+"Uploading"             =   "投稿をアップロード中…";
 "UploadFinalizing"      =   "あなたの投稿は最終段階に入っています、あと少しで表示されます。";
 "UploadFailed"          =   "ごめんなさい、アップロードが失敗してしまいました。ご利用の接続を確認の上、もう一度お試しください。";
 "UploadSuccess"         =   "成功です！ 投稿がアップロードされました。";
@@ -174,13 +172,11 @@
 "NoKeepUploading"       =   "いいえ、アップロードを続けます";
 "Cancelling..."         =   "キャンセルしています…";
 
-"FollowError"           =   "このユーザーのフォロー開始中にエラーが発生しました。";
-"UnfollowError"         =   "このユーザーのフォロー解除中にエラーが発生しました。";
-
-"FollowingSectionHeader"            =   "すでにフォロー中です";
-"FacebookFollowingSectionHeader"    =   "Facebookフレンドをフォロー";
-"AddressBookFollowingSectionHeader" =   "連絡先に登録している人をフォロー";
-
+"FollowError" = "このユーザーのフォロー開始中にエラーが発生しました。";
+"UnfollowError" = "このユーザーのフォロー解除中にエラーが発生しました。";
+"FollowingSectionHeader" = "すでにフォロー中です";
+"FacebookFollowingSectionHeader" = "Facebookフレンドをフォロー";
+"AddressBookFollowingSectionHeader" = "連絡先に登録している人をフォロー";
 "Sorry, we were having some trouble on our end. Please retry." = "申し訳ありません。こちら側で問題があったようです。もう一度お試しください。";
 "Retry"                 =   "再試行";
 
@@ -215,15 +211,17 @@
 "LastYear Verbose"   	= "1年前";
 "YearsAgo Verbose"   	= "%d年前";
 
-"JustAMoment"           =   "少々お待ちください";
-
+"JustAMoment" = "少々お待ちください";
 "Edit"                  =   "編集する";
-"editProfileButton"     =   "プロフィール編集";
-"followers"             =   "フォロワー";
-"followersCount"        =   "%@人のフォロワー"; // Where %@ is the quantity of followers, e.g. "10 Followers"
-"following"             =   "フォロー中";
-"follow"                =   "フォロー中";
 
+"editProfileButton" = "プロフィール編集";
+"followers" = "フォロワー";
+
+/* Where %@ is the quantity of followers, e.g. "10 Followers" */
+"followersCount" = "%@人のフォロワー";
+
+"following" = "フォロー中";
+"follow" = "フォロー中";
 "ResetPassword"         =   "パスワードのリセット";
 "ResetPasswordPrompt"   =   "あなたのメールアドレスを入力してください。";
 
@@ -246,93 +244,84 @@
 "CannotVerify"          =   "アカウントの認証できません";
 "IncorrectCode"         =   "アカウントの認証に使用されたコードが間違っています";
 
-"Image Search"          =   "画像検索";
+"Image Search" = "画像検索";
 "No results"            =   "該当結果なし";
 
-"InviteYourFriends"     =   "お友達を招待しましょう！";
-"InviteUsingEmail"      =   "メールで招待";
-"InviteUsingSMS"        =   "SMSで招待";
-"InviteFriendsSubject"  =   "%@の新しいアプリを試してみて";
-"InviteFriendsBody"     =   "やっほー！\n\n%@から新しいアプリをダウンロードしてみました。私達の様な人達が交流するためのコミュニティなんです。ダウンロードはこちら：";
-
-"FindContacts"          =   "連絡先リストからフレンドを探す";
-"Access Your Contacts"  =   "あなたの連絡先にアクセス";
-"ContactsSafety"        =   "ご心配なく、ご連絡先の情報は安全です！フレンドを探すにはご連絡先情報を当社サーバーまで安全性の高い接続を介して送信する必要があります。";
-
+"InviteYourFriends" = "お友達を招待しましょう！";
+"InviteUsingEmail" = "メールで招待";
+"InviteUsingSMS" = "SMSで招待";
+"InviteFriendsSubject" = "%@の新しいアプリを試してみて";
+"InviteFriendsBody" = "やっほー！\n\n%@から新しいアプリをダウンロードしてみました。私達の様な人達が交流するためのコミュニティなんです。ダウンロードはこちら：";
+"FindContacts" = "連絡先リストからフレンドを探す";
+"Access Your Contacts" = "あなたの連絡先にアクセス";
+"ContactsSafety" = "ご心配なく、ご連絡先の情報は安全です！フレンドを探すにはご連絡先情報を当社サーバーまで安全性の高い接続を介して送信する必要があります。";
 "AccessCameraDenied"    =   "カメラを使用するには、[設定] > [プライバシー]からアクセスを許可してください";
 "AccessCameraRestricted" =  "お使いのデバイスにおける制限により、カメラにアクセスできませんでした。";
 
-"AccessContactsDenied"  =   "連絡先からフレンドを検索するには、[設定] > [プライバシー] > [連絡先]からアクセスを許可してください";
-"AccessContactsRestricted" =  "お使いのデバイスにおける制限により、連絡先にアクセスできませんでした。";
-
-"FindFBFriends"         =   "Facebookからフレンドを探す";
-"Connect to Facebook"   =   "Facebookに接続する";
-"FBSafety"              =   "当社ではパスワードを保存せず、あなたの許可なしに何かを投稿することは決してありません。";
-
-"Logout"                =   "ログアウト";
+"AccessContactsDenied" = "連絡先からフレンドを検索するには、[設定] > [プライバシー] > [連絡先]からアクセスを許可してください";
+"AccessContactsRestricted" = "お使いのデバイスにおける制限により、連絡先にアクセスできませんでした。";
+"FindFBFriends" = "Facebookからフレンドを探す";
+"Connect to Facebook" = "Facebookに接続する";
+"FBSafety" = "当社ではパスワードを保存せず、あなたの許可なしに何かを投稿することは決してありません。";
+"Logout" = "ログアウト";
 "Login"                 =   "ログイン";
 
 "Version"               =   "バージョン %@";
 
-"NoFriends"             =   "一致する結果なし";
-"NoFriendsDetail"       =   "このアプリをご利用中のお友達が見つかりませんでした。逆に彼らを招待しちゃいましょう！";
-
-"Report/Flag"           =   "報告/フラグ";
+"NoFriends" = "一致する結果なし";
+"NoFriendsDetail" = "このアプリをご利用中のお友達が見つかりませんでした。逆に彼らを招待しちゃいましょう！";
+"Report/Flag" = "報告/フラグ";
 "BlockUser"             =   "ユーザーをブロック";
 "UnblockUser"           =   "ユーザーのブロックを解除";
-"REPOSTERS"             =   "再投稿者"; // Title for a list of users who have reposted something
-"Repost"                =   "再投稿";
-"Reposted"              =   "再投稿済";
 
-"repostedByFormat"      =   "%@が再投稿";
+
+/* Title for a list of users who have reposted something */
+"REPOSTERS" = "再投稿者";
+
+"Repost" = "再投稿";
+"Reposted" = "再投稿済";
+"repostedByFormat" = "%@が再投稿";
 "doubleRepostedByFormat" = "%@と他1人が再投稿";
-"+ %lu others"          = "+ %lu人の人々";
-"remixedFromFormat"     =   "%@からのリミックス";
-"giffedFromFormat"      =   "%@からのGIFアニメ";
-
+"+ %lu others" = "+ %lu人の人々";
+"remixedFromFormat" = "%@からのリミックス";
+"giffedFromFormat" = "%@からのGIFアニメ";
 "SupportEmailSubject"   =   "フィードバック";
 "SupportEmailSubjectWithName" = "%@に関するフィードバック";
 
-"DiscoverSuggestedPeopleError"  = "申し訳ありません、提案されるユーザーを読み込めませんでした。";
-"DiscoverTrendingTagsError"     = "申し訳ありません、トレンド中のタグを読み込めませんでした。";
-"Suggested People"      = "提案されるユーザー";
-"Trending Tags"         = "トレンド中のタグ";
-"%@ Voters"             = "%@投票者";
-"%@ Voter"              = "%@人の投票者";
-
-"NoFollowingHashtagsTitle"      =   "まだフォローしているタグがありません";
-"NoFollowingHashtagsMessage"    =   "タグ付けされたアイテムをタップすることで、お気に入りコンテンツのリストを作成することができます。";
-
-"NoHashtagsTitle"      =   "こちらにハッシュタグがありません！";
-"NoHashtagsMessage"    =   "ハッシュタグ #%@ の付いた投稿はありませんでした。";
-
+"DiscoverSuggestedPeopleError" = "申し訳ありません、提案されるユーザーを読み込めませんでした。";
+"DiscoverTrendingTagsError" = "申し訳ありません、トレンド中のタグを読み込めませんでした。";
+"Suggested People" = "提案されるユーザー";
+"Trending Tags" = "トレンド中のタグ";
+"%@ Voters" = "%@投票者";
+"%@ Voter" = "%@人の投票者";
+"NoFollowingHashtagsTitle" = "まだフォローしているタグがありません";
+"NoFollowingHashtagsMessage" = "タグ付けされたアイテムをタップすることで、お気に入りコンテンツのリストを作成することができます。";
+"NoHashtagsTitle" = "こちらにハッシュタグがありません！";
+"NoHashtagsMessage" = "ハッシュタグ #%@ の付いた投稿はありませんでした。";
 "Type your feedback here..." = "あなたのフィードバックはこちらに入力…";
 "Device:"               = "デバイス：";
 "OS Version:"           = "OSバージョン：";
 "App Version:"          = "アプリバージョン：";
 
-"ShareFacebook"         = "Fjacebookでシェア";
-"ShareTwitter"          = "Twitterでシェア";
-"OpenSafari"            = "Safariで開く";
-"ShareSMS"              = "SMSとして送信";
-
+"ShareFacebook" = "Fjacebookでシェア";
+"ShareTwitter" = "Twitterでシェア";
+"OpenSafari" = "Safariで開く";
+"ShareSMS" = "SMSとして送信";
 "Delete this content and select something else?" = "このコンテンツを削除して別のものを選択しますか？";
 "Delete" = "削除";
 "Cancel" = "キャンセル";
 
-"PostFromCreator"       = "%@からの投稿";
-"PostFromFollowed"      = "あなたのフォロー中の人からの投稿";
-"NewComment"            = "あなたの投稿に対する新着コメント";
+"PostFromCreator" = "%@からの投稿";
+"PostFromFollowed" = "あなたのフォロー中の人からの投稿";
+"NewComment" = "あなたの投稿に対する新着コメント";
 "PostOnFollowedHashTag" = "フォロー中のハッシュタグへの投稿";
-"NewPrivateMessage"     = "新着のプライベートメッセージ";
-"NewFollower"           = "あなたをフォロー中の人";
-"TagInComment"          = "あなたの事を話した人";
-"LikePost"              = "だれかが私の投稿を「いいね」しました";
-
+"NewPrivateMessage" = "新着のプライベートメッセージ";
+"NewFollower" = "あなたをフォロー中の人";
+"TagInComment" = "あなたの事を話した人";
+"LikePost" = "だれかが私の投稿を「いいね」しました";
 "NotificationSettingSectionFeeds" = "フィードバック";
 "NotificationSettingSectionPeople" = "人々";
 "Open Settings" = "設定を開く";
-
 "ErrorPushNotificationsNotEnabled"      = "お使いのデバイスではプッシュ通知が有効になっていません。\nプッシュ通知を有効にするには、デバイス設定から有効にしてください。";
 "ErrorPushNotificationsUnknown"         = "通知設定の読み込み中にエラーが発生しました。\n後ほど改めてお試しください。";
 "ErrorPushNotificationsNotSaved"        = "個人設定の保存エラー";
@@ -342,8 +331,8 @@
 "We need access to this permission."               = "この権限にアクセスする必要があります。";
 "Maybe Later"                                      = "また後で";
 
-"RestorePurchaseDescription"            = "別のデバイスで購入済みですか？\n以下をタップすればすべての購入を復元することができます。";
-"PurchaseErrorTitle"                    = "購入中のエラー";
+"RestorePurchaseDescription" = "別のデバイスで購入済みですか？\n以下をタップすればすべての購入を復元することができます。";
+"PurchaseErrorTitle" = "購入中のエラー";
 "PurchaseErrorProductNotAvailable"      = "申し訳ありません、この商品は現在利用できません。後ほど改めてお試しください。";
 "PurchaseErrorTransaction"              = "取引を完了できませんでした。また後ほどお試しください。";
 "RestorePurchasesNoPurchasesTitle"      = "復元された購入はありません";
@@ -355,30 +344,32 @@
 "RestorePurchasesSuccessTitlePlural"    = "%lu個の購入を復元しました！"; // e.g. "5 PurchaseS Restored!""
 "RestorePurchasesSuccess"               = "これまでの購入内容は「設定」画面から確認できます。";
 "ActivityRestoring"                     = " 復元しています…";
-"ActivityPurchasing"                    = " 購入処理中です…";
-"PurchaseUnlockWithPrice"               = "%@でアンロック"; // e.g. "Unlock for $0.99"
+"ActivityPurchasing" = " 購入処理中です…";
+
+/* e.g. "Unlock for $0.99" */
+"PurchaseUnlockWithPrice" = "%@でアンロック";
 "SettingsRestorePurchases"              = "購入を復元";
 "SettingsRestorePurchasesPrompt"        = "このデバイスで購入されたものはありません。\n別のデバイスで購入されている場合は、[購入を復元]ボタンをタップして復元してください。";
 "Reset Purchases"                       = "購入をリセットする";
 "SubscriptionRestoreFailed"             = "サブスクリプションの復元に失敗しました。";
-"SubscriptionSucceeded"                 = "サブスクリプションが完了しました！";
-"SubscriptionLegalPrompt"               = "サブスクライブすることで、次に同意したものとみなされます: 当社の";
+"SubscriptionSucceeded" = "サブスクリプションが完了しました！";
+"SubscriptionLegalPrompt" = "サブスクライブすることで、次に同意したものとみなされます: 当社の";
 "SubscriptionActivityRestoring"         = "サブスクリプションを確認中…";
 "SubscriptionRestorePrompt"             = "すでにサブスクライブ済みですか？";
-"SubscriptionRestoreSucceeded"          = "サブスクリプションが復元されました！";
+"SubscriptionRestoreSucceeded" = "サブスクリプションが復元されました！";
 "SubscriptionFailed"                    = "サブスクリプションに失敗しました。";
-
 "This will discard any content added to your post" = "これによりあなたの投稿に追加された全コンテンツが破棄されます";
 
-"No Color"  = "色なし";    // No color selected
-"Standard"  = "通常";   // The default color before a selection is made
+/* No color selected */
+"No Color" = "色なし";
 
+/* The default color before a selection is made */
+"Standard" = "通常";
 
 "Failed to fetch products" = "商品の取得に失敗";
 "This will discard any content from the camera" = "これによりカメラからのあらゆるコンテンツが破棄されます";
 "Video failed to load" = "動画が読み込めませんでした";
 "We encountered an error trying to edit this video." = "この動画の編集開始時にエラーが発生しました。";
-
 "No Photos" = "写真がありません";
 "No Videos" = "動画がありません";
 "No Media" = "メディアがありません";
@@ -417,20 +408,26 @@
 "Open Image" = "画像を開く";
 "Watch Video" = "動画を観る";
 "Watch GIF" = "GIFを観る";
-
 "See all" = "すべて見る";
 "View previous comments" = "前のコメントを見る";
-"CommentsSingularFormat" = "%@件のコメント";  // e.g. "1 Comment"
-"CommentsPluralFormat" = "%@件のコメント";  // e.g. "20 Comments"
-"LikesSingularFormat" = "%@件のいいね";  // e.g. "1 Like", where "Like" is a noun
-"LikesPluralFormat" = "%@件のいいね";  // e.g. "20 Likes", where "Like" is a noun
-"LikersTitle" = "いいねした人";
 
+/* e.g. "1 Comment" */
+"CommentsSingularFormat" = "%@件のコメント";
+
+/* e.g. "20 Comments" */
+"CommentsPluralFormat" = "%@件のコメント";
+
+/* e.g. "1 Like", where "Like" is a noun */
+"LikesSingularFormat" = "%@件のいいね";
+
+/* e.g. "20 Likes", where "Like" is a noun */
+"LikesPluralFormat" = "%@件のいいね";
+
+"LikersTitle" = "いいねした人";
 "postsFormat" = "%@件の投稿";
 "postsPluralFormat" = "%@件の投稿";
 "HashtagPostsCountFormat" = "%@件の投稿に入っています";
 "HashtagPostsCountPluralFormat" = "%@件の投稿に入っています";
-
 "Barcelona" = "バルセロナ";
 "London" = "ロンドン";
 "Paris" = "パリ";
@@ -452,8 +449,8 @@
 "TestAlertsViewControllerFooter" = "アラート登録後、ストリームまたはプロフィールに戻り、引っ張ってリフレッシュします。これでアラートが表示されるはずです。";
 
 "Enter birthday before continuing" = "先に進む前に、あなたの誕生日を入力してください";
-
 "NewMessagesFormatPlural" = "新しいメッセージ：%@件"; // i.e. "20 New Messages"
 "NewMessagesFormatSingular" = "新しいメッセージ：%@件"; // i.e. "1 New Message"
+
 
 "Exit" = "終了";

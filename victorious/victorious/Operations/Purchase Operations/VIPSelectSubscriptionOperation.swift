@@ -55,6 +55,6 @@ final class VIPSelectSubscriptionOperation: AsyncOperation<VProduct>, UIAlertVie
     private struct Strings {
         static let alertTitle = NSLocalizedString("Become a VIP", comment: "Prompt for purchasing VIP subscription")
         static let alertMessage = NSLocalizedString("Select payment schedule", comment: "Subtitle for VIP subscription dialog")
-        static let cancel = NSLocalizedString("Cancel", comment: "Cancel on VIP subscription dialog")
+        static let cancel = NSLocalizedString("Cancel", comment: "")
     }
 }
