@@ -49,25 +49,25 @@ public struct User: UserModel {
     
     public typealias ID = Int
     
-    public let id: ID
-    public let username: String?
-    public let displayName: String?
-    public let completedProfile: Bool?
-    public let location: String?
-    public let tagline: String?
-    public let fanLoyalty: FanLoyalty?
-    public let isBlockedByCurrentUser: Bool?
-    public let accessLevel: AccessLevel
-    public let isDirectMessagingDisabled: Bool?
-    public let isFollowedByCurrentUser: Bool?
-    public let numberOfFollowers: Int?
-    public let numberOfFollowing: Int?
-    public let likesGiven: Int?
-    public let likesReceived: Int?
-    public let previewImages: [ImageAssetModel]
-    public let maxVideoUploadDuration: Int?
-    public let avatarBadgeType: AvatarBadgeType?
-    public let vipStatus: VIPStatus?
+    public var id: ID
+    public var username: String?
+    public var displayName: String?
+    public var completedProfile: Bool?
+    public var location: String?
+    public var tagline: String?
+    public var fanLoyalty: FanLoyalty?
+    public var isBlockedByCurrentUser: Bool?
+    public var accessLevel: AccessLevel
+    public var isDirectMessagingDisabled: Bool?
+    public var isFollowedByCurrentUser: Bool?
+    public var numberOfFollowers: Int?
+    public var numberOfFollowing: Int?
+    public var likesGiven: Int?
+    public var likesReceived: Int?
+    public var previewImages: [ImageAssetModel]
+    public var maxVideoUploadDuration: Int?
+    public var avatarBadgeType: AvatarBadgeType?
+    public var vipStatus: VIPStatus?
     
     // NOTE: If you add a parameter here, be sure to add it in any calls to this initializer that need to be
     // comprehensive.
