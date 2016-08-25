@@ -12,7 +12,7 @@ import MBProgressHUD
 /// Conformers will receive a message when the vip gate
 /// will dismiss or has permitted the user to pass through.
 protocol VIPGateViewControllerDelegate: class {
-    func vipGateExitedWithSuccess(success: Bool, afterPurchase purchased: Bool)
+    func vipGateExitedWithSuccess(success: Bool)
     
     /// Presents a VIP flow on the scaffold using values found in the provided dependency manager.
     func showVIPForumFromDependencyManager(dependencyManager: VDependencyManager)
@@ -92,7 +92,7 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
             
             switch result {
                 case .success:
-                    self?.openGate(afterPurchase: false)
+                    self?.openGate()
                 case .failure(let error):
                     let title = Strings.restoreFailed
                     let message = (error as NSError).localizedDescription
@@ -113,7 +113,7 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     
     @IBAction func onCloseSelected() {
         closeButton.dependencyManager?.trackButtonEvent(.tap)
-        delegate?.vipGateExitedWithSuccess(false, afterPurchase: false)
+        delegate?.vipGateExitedWithSuccess(false)
     }
     
     // MARK: - Private
@@ -149,8 +149,8 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
         }
     }
     
-    private func openGate(afterPurchase purchased: Bool) {
-        delegate?.vipGateExitedWithSuccess(true, afterPurchase: purchased)
+    private func openGate() {
+        delegate?.vipGateExitedWithSuccess(true)
         NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: VIPSubscriptionHelper.userVIPStatusChangedNotificationKey, object: nil))
     }
     
@@ -210,7 +210,7 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     // MARK: - VIPSubscriptionHelperDelegate
     
     func VIPSubscriptionHelperCompletedSubscription(helper: VIPSubscriptionHelper) {
-        openGate(afterPurchase: true)
+        openGate()
     }
     
     func setIsLoading(isLoading: Bool, title: String? = nil) {
