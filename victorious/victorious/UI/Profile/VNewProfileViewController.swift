@@ -160,7 +160,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         
         let isCurrentUser = user?.isCurrentUser == true
         let isCreator = user?.accessLevel.isCreator == true
-        let currentIsCreator = VCurrentUser.user()?.isCreator == true
+        let currentIsCreator = VCurrentUser.user?.isCreator == true
         let vipEnabled = dependencyManager.isVIPEnabled == true
         
         if !isCurrentUser {
@@ -302,7 +302,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     // MARK: - Managing the user
     
     private dynamic func userChanged() {
-        if let loggedInUser = VCurrentUser.user() {
+        if let loggedInUser = VCurrentUser.user {
             setUser(loggedInUser, using: dependencyManager)
         }
     }
@@ -315,7 +315,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
             fetchUser(withRemoteID: userRemoteID.integerValue)
         }
         else {
-            setUser(VCurrentUser.user(), using: dependencyManager)
+            setUser(VCurrentUser.user, using: dependencyManager)
         }
     }
     
@@ -375,7 +375,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
             return userRemoteID.integerValue
         }
         else {
-            let user = VCurrentUser.user()
+            let user = VCurrentUser.user
             assert(user != nil, "User should not be nil")
             return user?.remoteId.integerValue ?? 0
         }

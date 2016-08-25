@@ -182,7 +182,7 @@ class LevelUpViewController: UIViewController, Interstitial, VVideoPlayerDelegat
         
         // Assuming this level up alert contains the most up-to-date fanloyalty info,
         // we update the user's level and level progress when the interstitial appears
-        if let currentUser = VCurrentUser.user() {
+        if let currentUser = VCurrentUser.user {
             currentUser.level = fanLoyalty.level
             currentUser.levelProgressPercentage = fanLoyalty.progress
         }

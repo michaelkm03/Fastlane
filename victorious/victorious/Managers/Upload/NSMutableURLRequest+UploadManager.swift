@@ -14,7 +14,7 @@ extension NSMutableURLRequest {
         let requestContext = RequestContext()
 
         let authenticationContext: AuthenticationContext? = persistentStore.mainContext.v_performBlockAndWait() { _ in
-            guard let user = VCurrentUser.user() else {
+            guard let user = VCurrentUser.user else {
                 return nil
             }
             return AuthenticationContext(currentUser: user)

@@ -33,8 +33,8 @@ class StageDataSource: ForumEventReceiver {
         
         switch event {
             case .refreshStage(let stageEvent):
-                guard let currentUserID = VCurrentUser.user()?.remoteId.stringValue where VCurrentUser.isLoggedIn() else {
-                    v_log("The current user is not logged in and got a refresh stage message. App is in an inconsistent state. VCurrentUser -> \(VCurrentUser.user())")
+                guard let currentUserID = VCurrentUser.user?.remoteId.stringValue where VCurrentUser.isLoggedIn() else {
+                    v_log("The current user is not logged in and got a refresh stage message. App is in an inconsistent state. VCurrentUser -> \(VCurrentUser.user)")
                     return
                 }
                 

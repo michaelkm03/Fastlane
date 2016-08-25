@@ -118,7 +118,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     }
     
     private var userIsOwner: Bool {
-        return VCurrentUser.user()?.isCreator?.boolValue ?? false
+        return VCurrentUser.user?.isCreator?.boolValue ?? false
     }
     
     var dependencyManager: VDependencyManager! {
@@ -543,7 +543,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     // MARK: - Actions
     
     @IBAction private func pressedConfirmButton() {
-        guard let user = VCurrentUser.user() else {
+        guard let user = VCurrentUser.user else {
             assertionFailure("Failed to send message due to missing a valid logged in user")
             return
         }
@@ -566,7 +566,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     // MARK: - Notification response
     
     func userChanged() {
-        guard let user = VCurrentUser.user() else {
+        guard let user = VCurrentUser.user else {
             KVOController.unobserveAll()
             return
         }

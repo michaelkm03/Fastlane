@@ -125,7 +125,7 @@ class ContentPreviewView: UIView {
     }
     
     private func setupImage(forContent content: ContentModel) {
-        let userCanViewContent = VCurrentUser.user()?.canView(content) == true
+        let userCanViewContent = VCurrentUser.user?.canView(content) == true
         if let imageAsset = content.previewImage(ofMinimumWidth: bounds.size.width) {
             if !userCanViewContent {
                 previewImageView.applyBlurToImageURL(imageAsset.url, withRadius: Constants.imageViewBlurEffectRadius) { [weak self] in

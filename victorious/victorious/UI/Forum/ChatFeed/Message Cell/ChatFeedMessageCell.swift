@@ -171,7 +171,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         timestampLabel.hidden = shouldHideTopLabels
         
         if let content = content where content.type.hasMedia {
-            if content.type == .gif && VCurrentUser.user()?.canView(content) == true {
+            if content.type == .gif && VCurrentUser.user?.canView(content) == true {
                 let mediaContentView = setupMediaView(for: content)
                 mediaContentView.alpha = 0.0
                 spinner.startAnimating()

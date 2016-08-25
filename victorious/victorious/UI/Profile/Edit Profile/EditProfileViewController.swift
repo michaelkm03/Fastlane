@@ -50,7 +50,7 @@ class EditProfileViewController: UITableViewController {
     private func setupDataSource() {
         guard
             let dependencyManager = dependencyManager,
-            let currentUser = VCurrentUser.user() else {
+            let currentUser = VCurrentUser.user else {
                 v_log("We need a dependencyManager in the edit profile VC!")
                 return
         }

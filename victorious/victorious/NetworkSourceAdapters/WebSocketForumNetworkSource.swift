@@ -150,7 +150,7 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
     }
     
     private func refreshToken() {
-        guard let currentUserID = VCurrentUser.user()?.remoteId
+        guard let currentUserID = VCurrentUser.user?.remoteId
         where VCurrentUser.isLoggedIn() else {
             assertionFailure("No current user is logged in, how did they even get this far?")
             return

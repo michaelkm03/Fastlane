@@ -83,7 +83,7 @@ class SubscribeButton: UIView {
     }
     
     private func updateVIPState() {
-        userIsVIP = VCurrentUser.user()?.hasValidVIPSubscription == true
+        userIsVIP = VCurrentUser.user?.hasValidVIPSubscription == true
     }
     
     private dynamic func userVIPStatusDidChange(notification: NSNotification) {

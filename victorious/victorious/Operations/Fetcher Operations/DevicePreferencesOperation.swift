@@ -44,7 +44,7 @@ class DevicePreferencesOperation: RemoteFetcherOperation, RequestOperation {
         // Provide the main queue current user for calling code.
         persistentStore.mainContext.performBlockAndWait() { context in
             // Provide the main queue current user for calling code.
-            let mainQueueCurrentUser = VCurrentUser.user()
+            let mainQueueCurrentUser = VCurrentUser.user
             self.mainQueueSettings = mainQueueCurrentUser?.notificationSettings
         }
     }

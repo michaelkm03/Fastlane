@@ -64,7 +64,7 @@ class MixedMediaCameraViewController: UIViewController, VCaptureVideoPreviewView
     private var previewImage: UIImage? = nil
     
     lazy private var maximumRecordingDuration: Float64 = {
-        guard let user = VCurrentUser.user() else {
+        guard let user = VCurrentUser.user else {
             return 0
         }
         

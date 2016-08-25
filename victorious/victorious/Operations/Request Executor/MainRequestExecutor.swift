@@ -44,7 +44,7 @@ class MainRequestExecutor: RequestExecutorType {
         
         var authenticationContext: AuthenticationContext?
         dispatch_sync(dispatch_get_main_queue()) {
-            if let user = VCurrentUser.user() {
+            if let user = VCurrentUser.user {
                 authenticationContext = AuthenticationContext(currentUser: user)
             }
         }

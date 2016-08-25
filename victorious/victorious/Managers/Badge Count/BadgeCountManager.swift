@@ -118,13 +118,13 @@ final class BadgeCountManager {
     // MARK: - Notifications
     
     private dynamic func applicationDidBecomeActive(notification: NSNotification?) {
-        if VCurrentUser.user() != nil {
+        if VCurrentUser.user != nil {
             fetchUnreadNotificationCount()
         }
     }
     
     private dynamic func loggedInStatusDidChange(notification: NSNotification?) {
-        if VCurrentUser.user() != nil {
+        if VCurrentUser.user != nil {
             fetchUnreadNotificationCount()
         }
         else {

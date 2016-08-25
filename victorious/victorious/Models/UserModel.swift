@@ -13,7 +13,7 @@ extension UserModel {
     // MARK: - Current user information
     
     var isCurrentUser: Bool {
-        return id == VCurrentUser.user()?.remoteId.integerValue
+        return id == VCurrentUser.user?.remoteId.integerValue
     }
     
     // MARK: - VIP information

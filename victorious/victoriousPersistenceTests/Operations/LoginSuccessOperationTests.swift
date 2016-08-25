@@ -44,8 +44,8 @@ class LoginSuccessOperationTests: BaseFetcherOperationTestCase {
 //        XCTAssertEqual( persistentUser.loginType.integerValue, VLoginType.Email.rawValue )
 //        XCTAssertEqual( persistentUser.token, token )
 //        
-//        let currentUser = VCurrentUser.user()
-//        XCTAssertNotNil( VCurrentUser.user() )
+//        let currentUser = VCurrentUser.user
+//        XCTAssertNotNil( VCurrentUser.user )
 //        XCTAssertEqual( persistentUser.objectID, currentUser?.objectID )
 //    }
 //    
