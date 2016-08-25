@@ -74,7 +74,7 @@ class VIPFlowNavigationController: UINavigationController, VIPGateViewController
             showViewController(successViewController, sender: nil)
         }
         else {
-            dismissAndCallCompletionWithSuccess(false)
+            dismissAndCallCompletionWithSuccess(success)
         }
     }
     
