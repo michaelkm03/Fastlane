@@ -13,13 +13,17 @@ final class NotificationsOperation: FetcherOperation, PaginatedOperation {
     
     let paginator: StandardPaginator
     
+    private var remoteOperation: NotificationsRemoteOperation?
+    
     required init(paginator: StandardPaginator = StandardPaginator()) {
         self.paginator = paginator
+        
         super.init()
         
         if !localFetch {
             let request = NotificationsRequest(paginator: paginator)
-            NotificationsRemoteOperation(request: request).before(self).queue()
+            remoteOperation = NotificationsRemoteOperation(request: request)
+            remoteOperation?.before(self).queue()
         }
     }
     
@@ -28,6 +32,8 @@ final class NotificationsOperation: FetcherOperation, PaginatedOperation {
     }
     
     override func main() {
+        error = remoteOperation?.error
+        
         persistentStore.mainContext.v_performBlockAndWait() { context in
             let fetchRequest = NSFetchRequest(entityName: VNotification.v_entityName())
             fetchRequest.sortDescriptors = [ NSSortDescriptor(key: "displayOrder", ascending: true) ]

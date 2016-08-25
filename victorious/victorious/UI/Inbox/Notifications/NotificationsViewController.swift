@@ -138,7 +138,7 @@ class NotificationsViewController: UIViewController, UITableViewDelegate, Notifi
             self?.redecorateVisibleCells()
             
             if error == nil {
-                BadgeCountManager.shared.markAllNotificationsAsRead()
+                BadgeCountManager.shared.resetBadgeCount(for: .unreadNotifications)
             }
         }
     }

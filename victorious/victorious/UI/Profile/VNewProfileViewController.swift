@@ -26,6 +26,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     static let userAppearanceKey = "userAppearance"
     static let creatorAppearanceKey = "creatorAppearance"
     static let upgradeButtonID = "Accessory paygate"
+    static let notificationsButtonID = "Accessory notifications"
     static let estimatedBarButtonWidth =  CGFloat(60.0)
     static let estimatedStatusBarHeight = CGFloat(20.0)
     static let estimatedNavBarRightPadding = CGFloat(10.0)
@@ -285,6 +286,13 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     
     private func shouldDisplay(screen: AccessoryScreen) -> Bool {
         return ![VNewProfileViewController.upgradeButtonID, VNewProfileViewController.goVIPButtonID].contains(screen.id)
+    }
+    
+    func badgeCountType(for screen: AccessoryScreen) -> BadgeCountType? {
+        switch screen.id {
+            case VNewProfileViewController.notificationsButtonID: return .unreadNotifications
+            default: return nil
+        }
     }
     
     func navigate(to destination: UIViewController, from accessoryScreen: AccessoryScreen) {

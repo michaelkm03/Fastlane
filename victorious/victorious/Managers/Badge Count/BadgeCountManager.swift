@@ -6,6 +6,13 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
+/// An enum for different types of badge counts that are used in the app.
+enum BadgeCountType {
+    case unreadNotifications
+    
+    static let all: [BadgeCountType] = [.unreadNotifications]
+}
+
 /// A singleton object that manages global badge counts used across the app.
 final class BadgeCountManager {
     
@@ -25,8 +32,7 @@ final class BadgeCountManager {
     
     /// The total badge count to be displayed for the app.
     var totalBadgeCount: Int {
-        // Just notifications for now, but we should add other counts once we have them.
-        return unreadNotificationCount ?? 0
+        return BadgeCountType.all.reduce(0) { $0 + (badgeCount(for: $1) ?? 0) }
     }
     
     private func updateApplicationBadgeCount() {
@@ -35,13 +41,44 @@ final class BadgeCountManager {
     
     // MARK: - Listening for badge count changes
     
-    /// A callback that triggers whenever the `unreadNotificationCount` changes.
-    var whenUnreadNotificationCountChanges = Callback<Void>()
+    /// Listens for changes in the badge count of the given `type`.
+    func whenBadgeCountChanges(for type: BadgeCountType, callback: () -> Void) {
+        switch type {
+            case .unreadNotifications: whenUnreadNotificationCountChanges.add(callback)
+        }
+    }
     
-    // MARK: - Managing the unread notification count
+    /// A callback that triggers whenever the `unreadNotificationCount` changes.
+    private var whenUnreadNotificationCountChanges = Callback<Void>()
+    
+    // MARK: - Managing badge counts
+    
+    /// Returns the badge count for the given `type`, or nil if that count hasn't been fetched yet.
+    func badgeCount(for type: BadgeCountType) -> Int? {
+        switch type {
+            case .unreadNotifications: return unreadNotificationCount
+        }
+    }
+    
+    /// Fetches the badge count of the given `type`. A callback for the type will be triggered if the count changes.
+    func fetchBadgeCount(for type: BadgeCountType) {
+        switch type {
+            case .unreadNotifications: fetchUnreadNotificationCount()
+        }
+    }
+    
+    /// Resets the badge count of the given `type` to zero. A callback for the type will be triggered if the count
+    /// changes.
+    func resetBadgeCount(for type: BadgeCountType) {
+        switch type {
+            case .unreadNotifications: markAllNotificationsAsRead()
+        }
+    }
+    
+    // MARK: - Managing unread notification count
     
     /// The total number of unread notifications that the user has, or nil if we haven't fetched the count yet.
-    private(set) var unreadNotificationCount: Int? {
+    private var unreadNotificationCount: Int? {
         didSet {
             guard unreadNotificationCount != oldValue else {
                 return
@@ -64,7 +101,7 @@ final class BadgeCountManager {
     }
     
     /// Marks all of the user's notifications as read, resetting the `unreadNotificationCount` to zero.
-    func markAllNotificationsAsRead() {
+    private func markAllNotificationsAsRead() {
         let previousCount = unreadNotificationCount
         
         // Optimistically reset to zero.
