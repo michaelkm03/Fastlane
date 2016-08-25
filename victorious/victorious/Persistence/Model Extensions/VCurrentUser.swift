@@ -27,6 +27,10 @@ final class VCurrentUser: NSObject {
     static func clear() {
         user = nil
     }
+    
+    static var loginType: VLoginType?
+    static var token: String?
+    
 }
 
 extension VUser {

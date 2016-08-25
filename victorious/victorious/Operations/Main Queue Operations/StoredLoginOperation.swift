@@ -29,18 +29,10 @@ final class StoredLoginOperation: SyncOperation<Void> {
         
         let storedLogin = VStoredLogin()
         if let info = storedLogin.storedLoginInfo() {
-            
-            // First, try to use a valid stored token to bypass login
-            let user: VUser = persistentStore.mainContext.v_performBlockAndWait() { context in
-                let user: VUser = context.v_findOrCreateObject([ "remoteId" : info.userRemoteId ])
-                user.loginType = info.lastLoginType.rawValue
-                user.token = info.token
-                context.v_save()
-                return user
-            }
-            
-            // This is needed here so that our request will be authorized with the correct user ID
-            user.setAsCurrentUser()
+            let user = User(id: info.userRemoteId.integerValue)
+            VCurrentUser.update(to: user)
+            VCurrentUser.loginType = info.lastLoginType
+            VCurrentUser.token = info.token
             
             guard
                 let apiPath = dependencyManager.networkResources?.userFetchAPIPath,
@@ -56,7 +48,7 @@ final class StoredLoginOperation: SyncOperation<Void> {
                     Log.warning("User info fetch failed with error: \(error)")
                     return
                 }
-                user.setAsCurrentUser()
+                VCurrentUser.update(to: user)
             }
             
         } else if let loginType = VLoginType(rawValue: defaults.integerForKey(kLastLoginTypeUserDefaultsKey)),
