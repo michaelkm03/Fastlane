@@ -28,15 +28,12 @@ class UserInfoOperation: RemoteFetcherOperation, RequestOperation {
     }
     
     private func onComplete( user: UserInfoRequest.ResultType) {
-        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
+        persistentStore.mainContext.v_performBlockAndWait() { context in
             let persistentUser: VUser = context.v_findOrCreateObject([ "remoteId" : user.id ])
             persistentUser.populate(fromSourceModel: user)
-            context.v_save()
-            let objectID = persistentUser.objectID;
+            self.user = persistentUser
             
-            self.persistentStore.mainContext.v_performBlockAndWait() { context in
-                self.user = context.objectWithID(objectID) as? VUser
-            }
+            context.v_save()
         }
     }
 }

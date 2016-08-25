@@ -1,5 +1,5 @@
 /* Class = "UILabel"; text = "You can send messages to anyone on the app!  Just go to their profile and click the compose icon in the top right corner."; ObjectID = "1Uw-A9-zfF"; */
-"1Uw-A9-zfF.text" = "Vous pouvez envoyer des messages à tous les utilisateurs de l'application ! Cliquez sur l'icône « composer » dans le coin supérieur droit et recherchez la personne de votre choix pour lui envoyer un message.";
+"1Uw-A9-zfF.text" = "Tu peux envoyer des messages à tous les utilisateurs de l'application ! Clique sur l'icône « composer » en haut à droite et recherche la personne de ton choix pour lui envoyer un message.";
 
 /* Class = "UILabel"; text = "NO MESSAGES YET"; ObjectID = "hx0-YK-T9j"; */
 "hx0-YK-T9j.text" = "AUCUN MESSAGE";

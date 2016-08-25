@@ -25,6 +25,9 @@ protocol AccessoryScreenContainer: class {
     /// Allows conformers to manipulate the right bar button items created from the template.
     func addCustomRightItems(to items: [AccessoryScreenBarButtonItem]) -> [UIBarButtonItem]
     
+    /// Allows conformers to specify which type of badge count should be associated with this accessory screen, if any.
+    func badgeCountType(for screen: AccessoryScreen) -> BadgeCountType?
+    
     /// Called whenever an accessory screen's navigation button is pressed. Conformers must implement this to define
     /// how navigation to an accessory screen is performed.
     func navigate(to destination: UIViewController, from accessoryScreen: AccessoryScreen)
@@ -44,6 +47,10 @@ extension AccessoryScreenContainer {
     
     func addCustomRightItems(to items: [AccessoryScreenBarButtonItem]) -> [UIBarButtonItem] {
         return items
+    }
+    
+    func badgeCountType(for screen: AccessoryScreen) -> BadgeCountType? {
+        return nil
     }
     
     // MARK: - Adding accessory screens

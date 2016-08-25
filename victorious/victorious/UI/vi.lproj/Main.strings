@@ -1,35 +1,11 @@
-/* Class = "UITextField"; placeholder = "Search people"; ObjectID = "5Iu-Sq-opf"; */
-"5Iu-Sq-opf.placeholder" = "Tìm kiếm mọi người";
-
-/* Class = "UILabel"; text = "No Results"; ObjectID = "5uI-FR-NGs"; */
-"5uI-FR-NGs.text" = "Không có Kết quả";
-
-/* Class = "UILabel"; text = "We weren't able to find that user. You can try again or go to that user's profile and send a message from there!"; ObjectID = "9Sb-ui-Qjq"; */
-"9Sb-ui-Qjq.text" = "Chúng tôi không thể tìm thấy người dùng đó. Bạn có thể thử lại hoặc ghé thăm hồ sơ của người dùng và gửi tin nhắn từ đó!";
-
 /* Class = "UILabel"; text = "No Internet Connection."; ObjectID = "9lr-kw-Rjm"; */
 "9lr-kw-Rjm.text" = "Không có Kết nối Internet.";
-
-/* Class = "UINavigationItem"; title = "Messages"; ObjectID = "AHd-Fh-04G"; */
-"AHd-Fh-04G.title" = "Tin nhắn";
-
-/* Class = "UILabel"; text = "Pull up for more..."; ObjectID = "O7q-AE-sOJ"; */
-"O7q-AE-sOJ.text" = "Kéo lên để xem thêm...";
 
 /* Class = "UILabel"; text = "Type a reply..."; ObjectID = "SNG-eg-mA3"; */
 "SNG-eg-mA3.text" = "Gõ vào một hồi đáp...";
 
-/* Class = "UINavigationItem"; title = "Messages"; ObjectID = "YF4-gT-XTx"; */
-"YF4-gT-XTx.title" = "Tin nhắn";
-
-/* Class = "UILabel"; text = "NO USERS FOUND"; ObjectID = "a8q-j6-UKa"; */
-"a8q-j6-UKa.text" = "KHÔNG TÌM THẤY NGƯỜI DÙNG";
-
 /* Class = "UILabel"; text = "Type a reply..."; ObjectID = "gwv-3A-zYK"; */
 "gwv-3A-zYK.text" = "Nhập vào hồi đáp...";
-
-/* Class = "UILabel"; text = "By signing up you agree to:"; ObjectID = "pAa-W5-W1B"; */
-"pAa-W5-W1B.text" = "Thông qua việc đăng ký, bạn đồng ý rằng:";
 
 /* Class = "UIButton"; normalTitle = "Send"; ObjectID = "vPi-i8-4bG"; */
 "vPi-i8-4bG.normalTitle" = "Gửi";
