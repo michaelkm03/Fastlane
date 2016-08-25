@@ -119,7 +119,6 @@ class VIPSubscriptionHelper {
             switch result {
                 case .success:
                     strongSelf.delegate?.VIPSubscriptionHelperCompletedSubscription(strongSelf)
-                    NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: VIPSubscriptionHelper.userVIPStatusChangedNotificationKey, object: nil))
                 case .failure(let error):
                     strongSelf.originViewController?.showSubscriptionAlert(for: error as NSError)
                 case .cancelled:
