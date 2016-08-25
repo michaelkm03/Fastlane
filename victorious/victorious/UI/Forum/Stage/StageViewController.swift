@@ -342,7 +342,6 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     }
     
     func shouldSwtich(to state: StageState) -> Bool {
-        NSLog("Visible: \(visible)")
         switch state {
             case .enlarged: return true
             case .shrunken: return visible

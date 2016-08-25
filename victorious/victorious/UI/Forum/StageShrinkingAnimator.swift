@@ -202,7 +202,6 @@ class StageShrinkingAnimator: NSObject {
     // MARK: - Stage Shrinking Support
     
     private func goTo(state: StageState) {
-        NSLog("Going to state: \(state)")
         guard delegate?.shouldSwtich(to: state) == true else {
             return
         }
