@@ -340,6 +340,14 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     func willSwitch(to state: StageState) {
         titleCardViewController?.hide()
     }
+    
+    func shouldSwtich(to state: StageState) -> Bool {
+        NSLog("Visible: \(visible)")
+        switch state {
+            case .enlarged: return true
+            case .shrunken: return visible
+        }
+    }
 
     // MARK: - Deep linking content
 
