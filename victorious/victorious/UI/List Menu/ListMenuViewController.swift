@@ -49,10 +49,6 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         collectionView?.contentInset = ListMenuViewController.contentInset
         dependencyManager.addBackgroundToBackgroundHost(self)
         view.layoutIfNeeded()
-        
-        // Hack to show the creator logo
-        postListMenuSelection(nil)
-        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userVIPStatusChanged), name: VIPSubscriptionHelper.userVIPStatusChangedNotificationKey, object: nil)
     }
     

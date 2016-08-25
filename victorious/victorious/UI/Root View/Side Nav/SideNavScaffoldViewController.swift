@@ -76,6 +76,8 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(loggedInStatusDidChange), name: kLoggedInChangedNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(mainFeedFilterDidChange), name: RESTForumNetworkSource.updateStreamURLNotification, object: nil)
+        
+        showCreatorLogoTitle()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -102,7 +104,6 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
         if presentedViewController == nil {
             InterstitialManager.sharedInstance.showNextInterstitial(onViewController: self)
         }
-        
     }
     
     // MARK: - Setup
@@ -200,15 +201,12 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
             mainNavigationController.navigationBar.topItem?.title = title
         }
         else {
-            // Display Creator Logo/Name
-            loadNavigationBarTitle()
+            showCreatorLogoTitle()
         }
     }
     
-    private func loadNavigationBarTitle() {
-        dispatch_async(dispatch_get_main_queue()) {
-            self.dependencyManager.childDependencyForKey("centerScreen")?.configureNavigationItem(self.mainNavigationController.navigationBar.topItem)
-        }
+    private func showCreatorLogoTitle() {
+        dependencyManager.childDependencyForKey("centerScreen")?.configureNavigationItem(mainNavigationController.navigationBar.topItem)
     }
     
     // MARK: - Orientation
