@@ -42,14 +42,14 @@ class TitleCardViewController: UIViewController {
         static let horizontalDragLimit = CGFloat(10)
     }
 
+    @IBOutlet weak var marqueeView: MarqueeView!
+
     @IBOutlet private weak var avatarView: AvatarView! {
         didSet {
             avatarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(avatarTapped)))
         }
     }
 
-    @IBOutlet private weak var authorLabel: UILabel!
-    @IBOutlet private weak var titleLabel: UILabel!
 
     /// The draggable container view - the actual title card that is animated.
     @IBOutlet private weak var draggableView: UIView!
@@ -80,6 +80,9 @@ class TitleCardViewController: UIViewController {
 
     /// Sets the content on the title card, call before `show` to have the right content be present before it animates in.
     func populate(with stageContent: StageContent?) {
+        if currentState == .shown {
+            hide()
+        }
         self.stageContent = stageContent
         populateUI(with: stageContent)
     }
@@ -95,7 +98,14 @@ class TitleCardViewController: UIViewController {
         animateTitleCard(withInitialVelocity: CGPointZero)
 
         autoHideTimer?.invalidate()
-        autoHideTimer = VTimerManager.scheduledTimerManagerWithTimeInterval(autoHideDelay, target: self, selector: #selector(hide), userInfo: nil, repeats: false)
+
+        let delay = marqueeView.maxAnimationDuration > autoHideDelay ? marqueeView.maxAnimationDuration : autoHideDelay
+        autoHideTimer = VTimerManager.scheduledTimerManagerWithTimeInterval(delay, target: self, selector: #selector(autoHideTimerDidFire), userInfo: nil, repeats: false)
+    }
+
+    func autoHideTimerDidFire() {
+        autoHideTimer?.invalidate()
+        hide()
     }
 
     /// Slides out the title card from the screen.
@@ -191,8 +201,9 @@ class TitleCardViewController: UIViewController {
             return
         }
 
-        authorLabel.text = stageContent?.content.author.displayName ?? ""
-        titleLabel.text = stageContent?.metaData?.title ?? ""
+        let author = stageContent?.content.author.displayName ?? ""
+        let title = stageContent?.metaData?.title ?? ""
+        marqueeView.update(author: author, title: title)
         avatarView.user = stageContent?.content.author
     }
 
