@@ -43,8 +43,7 @@ class AboutMeTextCell: UITableViewCell, UITextViewDelegate {
     
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
         let newText = (textView.text as NSString).stringByReplacingCharactersInRange(range, withString: text)
-        let numberOfChars = newText.characters.count
-        let isValid = numberOfChars < 256;
+        let isValid = newText.characters.count < 256;
         if !isValid {
             textView.v_performShakeAnimation()
         }
