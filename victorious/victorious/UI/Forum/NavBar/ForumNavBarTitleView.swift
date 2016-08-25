@@ -64,7 +64,7 @@ class ForumNavBarTitleView: UIView {
     
     //Creates the string for the subtitle label
     private func getSubtitleText() -> String {
-        let numberOfUsersText = activeUserCount > 1 ? configuration.pluralNumberOfUsersText : configuration.singularNumberOfUsersText
+        let numberOfUsersText = activeUserCount == 1 ? configuration.singularNumberOfUsersText : configuration.pluralNumberOfUsersText
         
         return numberOfUsersText
             .stringByReplacingOccurrencesOfString(Keys.visitorsMacro, withString: VLargeNumberFormatter()
