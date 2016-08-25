@@ -15,13 +15,6 @@ class MarqueeView: UIView {
     private var titleLabelB = UILabel()
     var maxAnimationDuration = 0.0
 
-    private struct Constants {
-        static let padding = CGFloat(10.0)
-        static let gradientWidth = CGFloat(10.0)
-        static let authorFont = UIFont.systemFontOfSize(14.0, weight: UIFontWeightSemibold)
-        static let titleFont = UIFont.systemFontOfSize(12.0, weight: UIFontWeightRegular)
-    }
-
     private lazy var gradientView: VLinearGradientView = {
         let gradientView = VLinearGradientView()
         gradientView.setColors([UIColor.clearColor(), UIColor.whiteColor(), UIColor.whiteColor(), UIColor.clearColor()])
@@ -29,6 +22,17 @@ class MarqueeView: UIView {
         gradientView.endPoint = CGPoint(x: 1, y: 0.5)
         return gradientView
     }()
+
+    // MARK: - Constants
+
+    private struct Constants {
+        static let padding = CGFloat(10.0)
+        static let gradientWidth = CGFloat(10.0)
+        static let authorFont = UIFont.systemFontOfSize(14.0, weight: UIFontWeightSemibold)
+        static let titleFont = UIFont.systemFontOfSize(12.0, weight: UIFontWeightRegular)
+    }
+
+    // MARK: - Initialization
 
     required init?(coder aDecoder: NSCoder) {
         authorLabelA.font = Constants.authorFont
@@ -47,7 +51,9 @@ class MarqueeView: UIView {
         clipsToBounds = true
     }
 
-    func update(author author: String, title: String) {
+    // MARK: - Configuration
+
+    func updateLabels(author author: String, title: String) -> CGFloat {
         removeAnimations()
         authorLabelA.text = author
         authorLabelB.text = author
@@ -55,7 +61,7 @@ class MarqueeView: UIView {
         let authorLabelSize = authorLabelA.intrinsicContentSize()
         authorLabelA.frame = CGRect(x: Constants.gradientWidth,
                                     y: 0.0,
-                                    width: authorLabelSize.width,
+                                    width: Constants.gradientWidth + authorLabelSize.width,
                                     height: authorLabelSize.height)
 
         authorLabelB.frame = CGRect(x: Constants.gradientWidth + authorLabelSize.width + Constants.padding,
@@ -69,7 +75,7 @@ class MarqueeView: UIView {
         let titleLabelSize = titleLabelA.intrinsicContentSize()
         titleLabelA.frame = CGRect(x: Constants.gradientWidth,
                                    y: authorLabelSize.height,
-                                   width: titleLabelSize.width,
+                                   width: Constants.gradientWidth + titleLabelSize.width,
                                    height: titleLabelSize.height)
 
         titleLabelB.frame = CGRect(x: Constants.gradientWidth + titleLabelSize.width + Constants.padding,
@@ -77,10 +83,18 @@ class MarqueeView: UIView {
                                    width: titleLabelSize.width,
                                    height: titleLabelSize.height)
 
-        let shouldAnimateAuthor = authorLabelSize.width > frame.size.width
-        let shouldAnimateTitle = titleLabelSize.width > frame.size.width
+        return max(authorLabelA.frame.size.width, titleLabelA.frame.size.width)
+    }
 
-        addGradientView()
+    // MARK: - Animation
+
+    func scroll() {
+        let shouldAnimateAuthor = authorLabelA.frame.size.width > frame.size.width
+        let shouldAnimateTitle = titleLabelA.frame.size.width > frame.size.width
+
+        if shouldAnimateAuthor || shouldAnimateTitle {
+            addGradientView()
+        }
 
         authorLabelB.hidden = !shouldAnimateAuthor
         titleLabelB.hidden = !shouldAnimateTitle
@@ -92,14 +106,6 @@ class MarqueeView: UIView {
         if shouldAnimateTitle {
             animate(aLabel: titleLabelA, bLabel: titleLabelB)
         }
-    }
-
-    func removeAnimations() {
-        maxAnimationDuration = 0.0
-        authorLabelA.layer.removeAllAnimations()
-        authorLabelB.layer.removeAllAnimations()
-        titleLabelA.layer.removeAllAnimations()
-        titleLabelB.layer.removeAllAnimations()
     }
 }
 
@@ -128,6 +134,14 @@ private extension MarqueeView {
     private func animationDuration(for width: CGFloat) -> Double {
         let speed = 30.0
         return Double(width) / speed
+    }
+
+    private func removeAnimations() {
+        maxAnimationDuration = 0.0
+        authorLabelA.layer.removeAllAnimations()
+        authorLabelB.layer.removeAllAnimations()
+        titleLabelA.layer.removeAllAnimations()
+        titleLabelB.layer.removeAllAnimations()
     }
 
     private func addGradientView() {

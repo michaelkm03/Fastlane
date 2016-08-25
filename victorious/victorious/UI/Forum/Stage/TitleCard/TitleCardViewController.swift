@@ -34,6 +34,7 @@ class TitleCardViewController: UIViewController {
         static let cornerRadius = CGFloat(6)
         static let borderWidth = CGFloat(1)
         static let borderColor = UIColor(white: 0.0, alpha: 0.1).CGColor
+        static let maxMarqueeViewWidth = CGFloat(182.0)
 
         /// This offset is so we clip the left side of the view to create the slide out title card effect.
         static let leadingEdgeOffset = CGFloat(-5)
@@ -43,7 +44,7 @@ class TitleCardViewController: UIViewController {
     }
 
     @IBOutlet weak var marqueeView: MarqueeView!
-
+    @IBOutlet weak var marqueeViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet private weak var avatarView: AvatarView! {
         didSet {
             avatarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(avatarTapped)))
@@ -83,6 +84,7 @@ class TitleCardViewController: UIViewController {
         if currentState == .shown {
             hide()
         }
+
         self.stageContent = stageContent
         populateUI(with: stageContent)
     }
@@ -203,7 +205,10 @@ class TitleCardViewController: UIViewController {
 
         let author = stageContent?.content.author.displayName ?? ""
         let title = stageContent?.metaData?.title ?? ""
-        marqueeView.update(author: author, title: title)
+        let marqueeWidth = marqueeView.updateLabels(author: author, title: title)
+        marqueeViewWidthConstraint.constant = min(marqueeWidth, Constants.maxMarqueeViewWidth)
+        marqueeView.layoutIfNeeded()
+        marqueeView.scroll()
         avatarView.user = stageContent?.content.author
     }
 

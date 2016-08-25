@@ -29,12 +29,12 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="250" height="44"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </view>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kHj-qj-69e" userLabel="Marquee View" customClass="MarqueeView" customModule="victorious" customModuleProvider="target">
+                                                <view contentMode="scaleToFill" placeholderIntrinsicWidth="182" placeholderIntrinsicHeight="32" translatesAutoresizingMaskIntoConstraints="NO" id="kHj-qj-69e" userLabel="Marquee View" customClass="MarqueeView" customModule="victorious" customModuleProvider="target">
                                                     <rect key="frame" x="56" y="5" width="182" height="32"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="182" id="0Uw-yR-qwh"/>
                                                         <constraint firstAttribute="height" constant="32" id="3Ym-35-eI6"/>
+                                                        <constraint firstAttribute="width" constant="182" id="FhH-gL-WJU"/>
                                                     </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="giT-8C-waV" customClass="AvatarView" customModule="victorious" customModuleProvider="target">
@@ -88,6 +88,7 @@
                         <outlet property="avatarView" destination="giT-8C-waV" id="RbR-uD-ZLi"/>
                         <outlet property="draggableView" destination="s8A-QO-Jkh" id="doC-mh-4TD"/>
                         <outlet property="marqueeView" destination="kHj-qj-69e" id="GOr-Lc-6bc"/>
+                        <outlet property="marqueeViewWidthConstraint" destination="FhH-gL-WJU" id="TMa-MH-XK0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X7M-Rc-AjM" userLabel="First Responder" sceneMemberID="firstResponder"/>
