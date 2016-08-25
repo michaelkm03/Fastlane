@@ -42,14 +42,18 @@ final class StoredLoginOperation: SyncOperation<Void> {
             // This is needed here so that our request will be authorized with the correct user ID
             user.setAsCurrentUser()
             
-            guard let apiPath = dependencyManager.networkResources?.userFetchAPIPath else {
-                return .failure(NSError(domain: "StoredLoginOperation-BadUserFetchAPIPath", code: -1, userInfo: ["DependencyManager": dependencyManager]))
+            guard
+                let apiPath = dependencyManager.networkResources?.userFetchAPIPath,
+                let userInfoOperation = UserInfoOperation(userID: user.id, apiPath: apiPath)
+            else {
+                let error = NSError(domain: "StoredLoginOperation-BadUserFetchAPIPath", code: -1, userInfo: ["DependencyManager": dependencyManager])
+                Log.warning("Unable to initialize first user info fetch during StoredLoginOperation with error: \(error)")
+                return .failure(error)
             }
             
-            let userInfoOperation = UserInfoOperation(userID: user.id, apiPath: apiPath)
-            userInfoOperation?.after(self).queue { _, error, _ in
-                guard let user = userInfoOperation?.user else {
-                    Log.warning("User info fetch failed with: \(error)")
+            userInfoOperation.after(self).queue { _, error, _ in
+                guard let user = userInfoOperation.user else {
+                    Log.warning("User info fetch failed with error: \(error)")
                     return
                 }
                 user.setAsCurrentUser()
