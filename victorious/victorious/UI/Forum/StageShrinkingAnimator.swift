@@ -157,13 +157,14 @@ class StageShrinkingAnimator: NSObject {
         let progress = progressThroughPanOnStage(forTranslation: translation)
         switch gesture.state {
             case .Changed:
-                // We only care about going a certain direction from either enlarged or shrunken
+                // We only perform animation if the translation matches our current state, and delegate permits the state change
                 let shouldShrink = stageState == .enlarged && translation.y < 0 && delegate?.shouldSwtich(to: .shrunken) == true
-                let shouldEnlarge = stageState == .shrunken && translation.y > 0
+                let shouldEnlarge = stageState == .shrunken && translation.y > 0 && delegate?.shouldSwtich(to: .shrunken) == true
                 
                 guard shouldShrink || shouldEnlarge else {
                     return
                 }
+                
                 applyInterploatedValues(withProgress: progress)
             case .Ended:
                 animateInProgressSnap(withAnimations: {
