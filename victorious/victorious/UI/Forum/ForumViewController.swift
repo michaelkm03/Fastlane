@@ -212,7 +212,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         stageShrinkingAnimator = StageShrinkingAnimator(
             stageContainer: stageContainer,
             stageTouchView: stageTouchView,
-            stageViewControllerContainer: stageViewControllerContainer
+            stageViewControllerContainer: stageViewControllerContainer,
+            delegate: stage
         )
         stageShrinkingAnimator?.shouldHideKeyboardHandler = { [weak self] in
             self?.view.endEditing(true)

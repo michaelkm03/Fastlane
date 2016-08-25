@@ -39,15 +39,20 @@ final class StoredLoginOperation: SyncOperation<Void> {
                 return user
             }
             
+            // This is needed here so that our request will be authorized with the correct user ID
             user.setAsCurrentUser()
             
-            let infoOperation = PreloadUserInfoOperation(dependencyManager: dependencyManager)
-            infoOperation.after(self).queue() { result in
-                switch result {
-                    case .success(let user): user.setAsCurrentUser()
-                    case .failure: break
-                    case .cancelled: break
+            guard let apiPath = dependencyManager.networkResources?.userFetchAPIPath else {
+                return .failure(NSError(domain: "StoredLoginOperation-BadUserFetchAPIPath", code: -1, userInfo: ["DependencyManager": dependencyManager]))
+            }
+            
+            let userInfoOperation = UserInfoOperation(userID: user.id, apiPath: apiPath)
+            userInfoOperation?.after(self).queue { _, error, _ in
+                guard let user = userInfoOperation?.user else {
+                    Log.warning("User info fetch failed with: \(error)")
+                    return
                 }
+                user.setAsCurrentUser()
             }
             
         } else if let loginType = VLoginType(rawValue: defaults.integerForKey(kLastLoginTypeUserDefaultsKey)),

@@ -31,6 +31,14 @@ class AccessoryScreenBarButtonItem: UIBarButtonItem {
         buttonSize.width += Constants.extraWidth
         button.frame.size = buttonSize
         customView = button
+        
+        if let badgeCountType = container.badgeCountType(for: accessoryScreen) {
+            updateBadgeCount()
+            
+            BadgeCountManager.shared.whenBadgeCountChanges(for: badgeCountType) { [weak self] in
+                self?.updateBadgeCount()
+            }
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -39,11 +47,21 @@ class AccessoryScreenBarButtonItem: UIBarButtonItem {
     
     // MARK: - Views
     
-    private let button = UIButton(type: .System)
+    private let button = BadgeButton(type: .System)
     
     // MARK: - Accessing the accessory screen
     
     let accessoryScreen: AccessoryScreen
+    
+    // MARK: - Managing badge count
+    
+    private func updateBadgeCount() {
+        guard let badgeCountType = container?.badgeCountType(for: accessoryScreen) else {
+            return
+        }
+        
+        button.setBadgeNumber(BadgeCountManager.shared.badgeCount(for: badgeCountType) ?? 0)
+    }
     
     // MARK: - Navigating
     

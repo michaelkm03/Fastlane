@@ -38,13 +38,13 @@ final class ListMenuCreatorDataSource: ListMenuSectionDataSource {
         
         let operation = CreatorListRemoteOperation(urlString: endpointURLFromTemplate)
         
-        operation.queue { [weak self, weak operation] _, error, _ in
-            guard let users = operation?.creators where error == nil else {
+        operation.queue { [weak self] _, error, _ in
+            guard error == nil else {
                 self?.state = .failed(error: error)
                 self?.delegate?.didUpdateVisibleItems(forSection: .creator)
                 return
             }
-            self?.visibleItems = users
+            self?.visibleItems = operation.creators
         }
     }
 }
