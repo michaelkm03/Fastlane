@@ -137,10 +137,6 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
         return true
     }
     
-    private func onSubcriptionValidated() {
-        self.openGate(afterPurchase: true)
-    }
-    
     private func showResultWithMessage(message: String, completion: (() -> ())? = nil) {
         MBProgressHUD.hideAllHUDsForView(self.view, animated: false)
         let progressHUD = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
