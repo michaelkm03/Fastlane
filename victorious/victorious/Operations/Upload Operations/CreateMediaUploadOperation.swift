@@ -37,12 +37,8 @@ final class CreateMediaUploadOperation: SyncOperation<Void> {
         }
         
         let taskCreator = VUploadTaskCreator(uploadManager: uploadManager)
-        var authenticationContext: AuthenticationContext?
-        dispatch_sync(dispatch_get_main_queue()) {
-            if let user = VCurrentUser.user {
-                authenticationContext = AuthenticationContext(currentUser: user)
-            }
-        }
+        let authenticationContext = AuthenticationContext()
+        
         taskCreator.request = request.urlRequestWithHeaders(using: RequestContext(), authenticationContext: authenticationContext)
         taskCreator.formFields = formFields
         taskCreator.previewImage = publishParameters.previewImage

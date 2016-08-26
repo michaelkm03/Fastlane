@@ -115,11 +115,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     TestFairy.identify(currentUser.remoteId.stringValue, traits:userTraits)
                 #endif
 
-                Crashlytics.setUserIdentifier(currentUser.remoteId.stringValue)
+                Crashlytics.setUserIdentifier(String(currentUser.id))
                 Crashlytics.setUserEmail(currentUser.username ?? "")
                 Crashlytics.setUserName(currentUser.displayName ?? "")
 
-                Log.setUserIdentifier(currentUser.remoteId.stringValue)
+                Log.setUserIdentifier(String(currentUser.id))
             }
         }
     }

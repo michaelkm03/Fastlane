@@ -33,7 +33,7 @@ class StageDataSource: ForumEventReceiver {
         
         switch event {
             case .refreshStage(let stageEvent):
-                guard let currentUserID = VCurrentUser.user?.remoteId.stringValue where VCurrentUser.isLoggedIn() else {
+                guard let currentUserID = VCurrentUser.user?.id else {
                     v_log("The current user is not logged in and got a refresh stage message. App is in an inconsistent state. VCurrentUser -> \(VCurrentUser.user)")
                     return
                 }
@@ -50,7 +50,7 @@ class StageDataSource: ForumEventReceiver {
                 
                 currentContentFetchOperation?.cancel()
                 
-                currentContentFetchOperation = StageContentFetchOperation(macroURLString: contentFetchURL, currentUserID: currentUserID, refreshStageEvent: stageEvent)
+                currentContentFetchOperation = StageContentFetchOperation(macroURLString: contentFetchURL, currentUserID: String(currentUserID), refreshStageEvent: stageEvent)
                 
                 currentContentFetchOperation?.queue() { [weak self] results, error, canceled in
                     guard
