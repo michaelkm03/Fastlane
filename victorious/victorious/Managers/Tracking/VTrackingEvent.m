@@ -8,12 +8,6 @@
 
 #import "VTrackingEvent.h"
 
-@interface VTrackingEvent ()
-
-@property (nonatomic, readwrite) NSArray *urls;
-
-@end
-
 @implementation VTrackingEvent
 
 - (instancetype)initWithName:(NSString *)name parameters:(NSDictionary *)parameters eventId:(NSString *)eventId
@@ -24,16 +18,9 @@
         _eventId = eventId;
         _parameters = parameters;
         _name = name;
-        
         _dateCreated = [NSDate date];
     }
     return self;
-}
-
-- (void)minimize
-{
-    _parameters = nil;
-    _name = nil;
 }
 
 @end
