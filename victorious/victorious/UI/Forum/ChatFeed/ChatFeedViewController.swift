@@ -9,10 +9,6 @@
 import UIKit
 
 class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDelegate, UICollectionViewDelegateFlowLayout, NewItemsControllerDelegate, ChatFeedMessageCellDelegate {
-    private struct Constants {
-        private static let filteredStreamChangeTrackingEventName = "Filtered Stream Change"
-    }
-    
     private struct Layout {
         private static let bottomMargin: CGFloat = 20.0
     }
