@@ -91,22 +91,41 @@ class AvatarView: UIView {
     
     // MARK: - Views
     
-    private let shadowView = UIView()
-    private let imageView = UIImageView()
-    private let initialsLabel = UILabel()
-    private var verifiedBadgeView: UIImageView?
+    private lazy var shadowView: UIView = {
+        let frame = CGRect(origin: CGPointZero, size: self.size.value)
+        return UIView(frame: frame)
+    }()
     
-    private func getOrCreateVerifiedBadgeView() -> UIImageView {
-        if let verifiedBadgeView = self.verifiedBadgeView {
-            return verifiedBadgeView
-        }
+    private lazy var imageView: UIImageView = {
+        let frame = CGRect(origin: CGPointZero, size: self.size.value)
+        return UIImageView(frame: frame)
+    }()
+    
+    private lazy var initialsLabel: UILabel = {
+        let frame = CGRect(origin: CGPointZero, size: self.size.value)
+        return UILabel(frame: frame)
+    }()
+    
+    private lazy var verifiedBadgeView: UIImageView = {
+        let selfFrame = CGRect(origin: CGPointZero, size: self.size.value)
         
-        let verifiedBadgeView = UIImageView()
-        self.verifiedBadgeView = verifiedBadgeView
-        addSubview(verifiedBadgeView)
-        updateVerifiedBadge()
-        return verifiedBadgeView
-    }
+        let pointOnCircle = CGPoint(
+            angle: Constants.verifiedBadgeAngle,
+            onEdgeOfCircleWithRadius: selfFrame.width / 2.0,
+            origin: selfFrame.center
+        )
+        
+        
+        let badgeImage = self.size.verifiedBadgeImage
+        
+        let frame = CGRect(center: pointOnCircle, size: badgeImage?.size ?? CGSizeZero)
+        let badgeView = UIImageView(frame: frame)
+        badgeView.image = badgeImage
+        
+        self.addSubview(badgeView)
+        
+        return badgeView
+    }()
     
     // MARK: - Configuration
     
@@ -129,7 +148,7 @@ class AvatarView: UIView {
     }
     
     private func updateVerifiedBadge() {
-        verifiedBadgeView?.image = size.verifiedBadgeImage
+        verifiedBadgeView.image = size.verifiedBadgeImage
     }
     
     // MARK: - Content
@@ -234,20 +253,10 @@ class AvatarView: UIView {
     
     private func layoutVerifiedBadge() {
         guard user?.avatarBadgeType == .verified else {
-            self.verifiedBadgeView?.hidden = true
+            self.verifiedBadgeView.hidden = true
             return
         }
         
-        let verifiedBadgeView = getOrCreateVerifiedBadgeView()
-        let size = verifiedBadgeView.intrinsicContentSize()
-        
-        let pointOnCircle = CGPoint(
-            angle: Constants.verifiedBadgeAngle,
-            onEdgeOfCircleWithRadius: bounds.width / 2.0,
-            origin: bounds.center
-        )
-        
-        verifiedBadgeView.frame = CGRect(center: pointOnCircle, size: size)
         verifiedBadgeView.hidden = false
     }
     
