@@ -224,7 +224,10 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
                          toCacheWithURL:url
                           andBlurRadius:blurRadius];
             
-            callbackBlock(blurredImage, nil);
+            dispatch_async(dispatch_get_main_queue(), ^
+            {
+                callbackBlock(blurredImage, nil);
+            });
         });
     }];
 }

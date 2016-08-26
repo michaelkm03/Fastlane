@@ -154,12 +154,10 @@ class ContentPreviewView: UIView {
             return
         }
         
-        dispatch_async(dispatch_get_main_queue()) {
-            self.previewImageView.image = image
-            self.previewImageView.alpha = 1
-            self.playButton.alpha = 1
-            self.spinner?.stopAnimating()
-        }
+        self.previewImageView.image = image
+        self.previewImageView.alpha = 1
+        self.playButton.alpha = 1
+        self.spinner?.stopAnimating()
     }
     
     // MARK: - Notification actions
