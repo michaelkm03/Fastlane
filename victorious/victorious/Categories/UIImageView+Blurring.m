@@ -213,7 +213,6 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
         {
             if ( error != nil )
             {
-                weakSelf.image = nil;
                 weakSelf.alpha = 1.0f;
                 callbackBlock(image, error);
                 return;
