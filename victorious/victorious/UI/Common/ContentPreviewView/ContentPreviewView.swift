@@ -133,24 +133,12 @@ class ContentPreviewView: UIView {
                 }
                 
                 previewImageView.applyBlurToImageURL(imageAssetURL, withRadius: Constants.imageViewBlurEffectRadius) { [weak self] image, _ in
-                    let contentID = self?.content?.id
-                    guard content.id == contentID || contentID == nil else {
-                        return
-                    }
-                    
-                    // Blurring calls the callback on a background thread. 
-                    // We call finishedLoadingPreviewImage which sets everything on the main thread.
-                    self?.finishedLoadingPreviewImage(image)
+                    self?.finishedLoadingPreviewImage(image, for: content)
                 }
             }
             else {
                 previewImageView.setImageAsset(imageAsset) { [weak self] image, _ in
-                    let contentID = self?.content?.id
-                    guard content.id == contentID || contentID == nil else {
-                        return
-                    }
-
-                    self?.finishedLoadingPreviewImage(image)
+                    self?.finishedLoadingPreviewImage(image, for: content)
                 }
             }
         }
@@ -160,7 +148,12 @@ class ContentPreviewView: UIView {
         lastSize = bounds.size
     }
     
-    private func finishedLoadingPreviewImage(image: UIImage?) {
+    private func finishedLoadingPreviewImage(image: UIImage?, for content: ContentModel) {
+        let contentID = self.content?.id
+        guard content.id == contentID || contentID == nil else {
+            return
+        }
+        
         dispatch_async(dispatch_get_main_queue()) {
             self.previewImageView.image = image
             self.previewImageView.alpha = 1
