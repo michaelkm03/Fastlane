@@ -10,7 +10,8 @@ import UIKit
 import SDWebImage
 
 extension UIImageView {
-    func setImageAsset(imageAsset: ImageAssetModel, completion: (UIImage?, NSError?) -> Void) {
+    /// Downloads the image from the image asset or grabs the cached version to return in the completion block
+    func getImageAsset(imageAsset: ImageAssetModel, completion: (UIImage?, NSError?) -> Void) {
         switch imageAsset.imageSource {
             case .remote(let url):
                 sd_setImageWithURL(
@@ -22,7 +23,6 @@ extension UIImageView {
                 }
 
             case .local(let image):
-                self.image = image
                 completion(image, nil)
         }
     }

@@ -186,7 +186,7 @@ class AvatarView: UIView {
         imageView.backgroundColor = user?.color
         
         if let imageAsset = user?.previewImage(ofMinimumSize: bounds.size) {
-            imageView.setImageAsset(imageAsset) { [weak self] image, _ in
+            imageView.getImageAsset(imageAsset) { [weak self] image, _ in
                 if image == nil {
                     self?.showInitials()
                 }

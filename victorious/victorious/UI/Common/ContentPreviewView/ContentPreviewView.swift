@@ -137,7 +137,7 @@ class ContentPreviewView: UIView {
                 }
             }
             else {
-                previewImageView.setImageAsset(imageAsset) { [weak self] image, _ in
+                previewImageView.getImageAsset(imageAsset) { [weak self] image, _ in
                     self?.finishedLoadingPreviewImage(image, for: content)
                 }
             }
