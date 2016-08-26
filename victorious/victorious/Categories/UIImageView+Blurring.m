@@ -187,7 +187,7 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
      }];
 }
 
-- (void)applyBlurToImageURL:(NSURL *)url withRadius:(CGFloat)blurRadius completion:(void (^)())callbackBlock
+- (void)applyBlurToImageURL:(NSURL *)url withRadius:(CGFloat)blurRadius completion:(void (^)(UIImage *, NSError *))callbackBlock
 {
     if (url == nil)
     {
@@ -198,8 +198,7 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
     UIImage *cachedImage = [self cachedBlurredImageForURL:url andBlurRadius:blurRadius];
     if (cachedImage)
     {
-        self.image = cachedImage;
-        callbackBlock(); 
+        callbackBlock(cachedImage, nil);
         return;
     }
     
@@ -211,8 +210,11 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
         {
             if ( error != nil )
             {
-                weakSelf.image = nil;
                 weakSelf.alpha = 1.0f;
+                dispatch_async(dispatch_get_main_queue(), ^
+                {
+                    callbackBlock(image, error);
+                });
                 return;
             }
             
@@ -226,8 +228,7 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
             
             dispatch_async(dispatch_get_main_queue(), ^
             {
-                weakSelf.image = blurredImage;
-                callbackBlock();
+                callbackBlock(blurredImage, nil);
             });
         });
     }];
