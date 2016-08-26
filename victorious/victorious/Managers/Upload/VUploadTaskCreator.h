@@ -47,6 +47,11 @@
 @property (nonatomic, strong) NSString *uploadDescription;
 
 /**
+ A boolean that indicates if the content being uploaded is a GIF
+ */
+@property (nonatomic, assign) BOOL isGIF;
+
+/**
  Creates a new VUploadTaskCreator instance
  
  @param uploadManager The instance of VUploadManager that will
