@@ -41,6 +41,16 @@ class AboutMeTextCell: UITableViewCell, UITextViewDelegate {
     
     // MARK: - UITextViewDelegate
     
+    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        let newText = (textView.text as NSString).stringByReplacingCharactersInRange(range, withString: text)
+        let isValid = newText.characters.count < 256;
+        if !isValid {
+            textView.v_performShakeAnimation()
+        }
+        
+        return isValid
+    }
+    
     func textViewDidChange(textView: UITextView) {
         onDataChange?()
         notifySizeChangeIfNeeded()
