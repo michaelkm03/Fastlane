@@ -128,16 +128,29 @@ class ContentPreviewView: UIView {
         let userCanViewContent = VCurrentUser.user()?.canView(content) == true
         if let imageAsset = content.previewImage(ofMinimumWidth: bounds.size.width) {
             if !userCanViewContent {
-                previewImageView.applyBlurToImageURL(imageAsset.url, withRadius: Constants.imageViewBlurEffectRadius) { [weak self] in
-                    self?.previewImageView.alpha = 1
-                    self?.playButton.alpha = 1
-                    self?.spinner?.stopAnimating()
+                guard let imageAssetURL = imageAsset.url else {
+                    return
+                }
+                
+                previewImageView.applyBlurToImageURL(imageAssetURL, withRadius: Constants.imageViewBlurEffectRadius) { [weak self] image, _ in
+                    let contentID = self?.content?.id
+                    guard content.id == contentID || contentID == nil else {
+                        return
+                    }
+                    
+                    // Blurring calls the callback on a background thread. 
+                    // We call finishedLoadingPreviewImage which sets everything on the main thread.
+                    self?.finishedLoadingPreviewImage(image)
                 }
             }
             else {
-                previewImageView.setImageAsset(imageAsset) { [weak self] _ in
-                    self?.playButton.alpha = 1
-                    self?.spinner?.stopAnimating()
+                previewImageView.setImageAsset(imageAsset) { [weak self] image, _ in
+                    let contentID = self?.content?.id
+                    guard content.id == contentID || contentID == nil else {
+                        return
+                    }
+
+                    self?.finishedLoadingPreviewImage(image)
                 }
             }
         }
@@ -145,6 +158,15 @@ class ContentPreviewView: UIView {
             previewImageView.image = nil
         }
         lastSize = bounds.size
+    }
+    
+    private func finishedLoadingPreviewImage(image: UIImage?) {
+        dispatch_async(dispatch_get_main_queue()) {
+            self.previewImageView.image = image
+            self.previewImageView.alpha = 1
+            self.playButton.alpha = 1
+            self.spinner?.stopAnimating()
+        }
     }
     
     // MARK: - Notification actions

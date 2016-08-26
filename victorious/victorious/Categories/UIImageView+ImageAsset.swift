@@ -13,9 +13,14 @@ extension UIImageView {
     func setImageAsset(imageAsset: ImageAssetModel, completion: (UIImage?, NSError?) -> Void) {
         switch imageAsset.imageSource {
             case .remote(let url):
-                sd_setImageWithURL(url) { image, error, _, _ in
+                sd_setImageWithURL(
+                    url,
+                    placeholderImage: image,
+                    options: .AvoidAutoSetImage
+                ) { image, error, _, _ in
                     completion(image, error)
                 }
+
             case .local(let image):
                 self.image = image
                 completion(image, nil)

@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)applyLightBlurAndAnimateImageWithURLToVisible:(NSURL *)url;
 - (void)setExtraLightBlurredImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholderImage;
 - (void)applyExtraLightBlurAndAnimateImageWithURLToVisible:(NSURL *)url;
-- (void)applyBlurToImageURL:(nullable NSURL *)url withRadius:(CGFloat)blurRadius completion:(void (^)())callbackBlock;
+- (void)applyBlurToImageURL:(NSURL *)url withRadius:(CGFloat)blurRadius completion:(void (^)(UIImage *, NSError *))callbackBlock;
 
 /**
  *  Sets a blurred image to the receiving UIImageView applying any tint color and animating the image from 0.0f alpha to 1.0f over the duration parameter.

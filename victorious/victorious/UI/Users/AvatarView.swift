@@ -191,6 +191,14 @@ class AvatarView: UIView {
                     self?.showInitials()
                 }
                 else {
+                    guard
+                        let strongSelf = self
+                        where strongSelf.user?.previewImage(ofMinimumSize: strongSelf.bounds.size)?.url == imageAsset.url
+                    else {
+                        return
+                    }
+                    
+                    self?.imageView.image = image
                     self?.initialsLabel.hidden = true
                 }
             }
