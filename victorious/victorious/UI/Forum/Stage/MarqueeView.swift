@@ -8,12 +8,20 @@
 
 import UIKit
 
+/// A view that contains a scrolling author and title label, each label scrolls only when the size of the labels is larger than the size of the view.
+///
+/// Usage:  updateLabels(author: author, title: title) - sets the label text and their frames, returns the width of the longest label
+///         scroll() - determines if the labels should scroll and animates if needed, also applies gradient if label should scroll
+///         maxAnimationDuration = 0.0 - set to the scroll duration
+
 class MarqueeView: UIView {
+
+    // MARK: - Views
+
     private var authorLabelA = UILabel()
     private var authorLabelB = UILabel()
     private var titleLabelA = UILabel()
     private var titleLabelB = UILabel()
-    var maxAnimationDuration = 0.0
 
     private lazy var gradientView: VLinearGradientView = {
         let gradientView = VLinearGradientView()
@@ -22,6 +30,10 @@ class MarqueeView: UIView {
         gradientView.endPoint = CGPoint(x: 1, y: 0.5)
         return gradientView
     }()
+
+    // MARK: - Animation
+
+    var maxAnimationDuration = 0.0
 
     // MARK: - Constants
 
@@ -51,37 +63,62 @@ class MarqueeView: UIView {
         clipsToBounds = true
     }
 
+    override init(frame: CGRect) {
+        authorLabelA.font = Constants.authorFont
+        authorLabelB.font = Constants.authorFont
+        titleLabelA.font = Constants.titleFont
+        titleLabelB.font = Constants.titleFont
+
+        super.init(frame: frame)
+
+        addSubview(authorLabelA)
+        addSubview(authorLabelB)
+        addSubview(titleLabelA)
+        addSubview(titleLabelB)
+
+        backgroundColor = UIColor.clearColor()
+        clipsToBounds = true
+    }
+
     // MARK: - Configuration
 
+    /// Sets the label text and their frames, returns the width of the longest label.
     func updateLabels(author author: String, title: String) -> CGFloat {
         removeAnimations()
         authorLabelA.text = author
         authorLabelB.text = author
 
         let authorLabelSize = authorLabelA.intrinsicContentSize()
-        authorLabelA.frame = CGRect(x: Constants.gradientWidth,
-                                    y: 0.0,
-                                    width: Constants.gradientWidth + authorLabelSize.width,
-                                    height: authorLabelSize.height)
+        authorLabelA.frame = CGRect(
+            x: Constants.gradientWidth,
+            y: 0.0,
+            width: Constants.gradientWidth + authorLabelSize.width,
+            height: authorLabelSize.height)
 
-        authorLabelB.frame = CGRect(x: Constants.gradientWidth + authorLabelSize.width + Constants.padding,
-                                    y: 0.0,
-                                    width: authorLabelSize.width,
-                                    height: authorLabelSize.height)
+        authorLabelB.frame = CGRect(
+            x: Constants.gradientWidth + authorLabelSize.width + Constants.padding,
+            y: 0.0,
+            width: authorLabelSize.width,
+            height: authorLabelSize.height
+        )
 
         titleLabelA.text = title
         titleLabelB.text = title
 
         let titleLabelSize = titleLabelA.intrinsicContentSize()
-        titleLabelA.frame = CGRect(x: Constants.gradientWidth,
-                                   y: authorLabelSize.height,
-                                   width: Constants.gradientWidth + titleLabelSize.width,
-                                   height: titleLabelSize.height)
+        titleLabelA.frame = CGRect(
+            x: Constants.gradientWidth,
+            y: authorLabelSize.height,
+            width: Constants.gradientWidth + titleLabelSize.width,
+            height: titleLabelSize.height
+        )
 
-        titleLabelB.frame = CGRect(x: Constants.gradientWidth + titleLabelSize.width + Constants.padding,
-                                   y: authorLabelSize.height,
-                                   width: titleLabelSize.width,
-                                   height: titleLabelSize.height)
+        titleLabelB.frame = CGRect(
+            x: Constants.gradientWidth + titleLabelSize.width + Constants.padding,
+            y: authorLabelSize.height,
+            width: titleLabelSize.width,
+            height: titleLabelSize.height
+        )
 
         return max(authorLabelA.frame.size.width, titleLabelA.frame.size.width)
     }
@@ -107,28 +144,26 @@ class MarqueeView: UIView {
             animate(aLabel: titleLabelA, bLabel: titleLabelB)
         }
     }
-}
 
-// MARK: - Private
+    // MARK: - Private
 
-private extension MarqueeView {
     private func animate(aLabel aLabel: UILabel, bLabel: UILabel) {
         let labelSize = aLabel.intrinsicContentSize()
         let paddedWidth = labelSize.width + Constants.padding
 
-        var endLabelAFrame = aLabel.frame
-        endLabelAFrame.origin.x -= paddedWidth
-
-        let endLabelBFrame = aLabel.frame
+        let endALabelFrame = aLabel.frame.offsetBy(dx: -paddedWidth, dy: 0.0)
+        let endBLabelFrame = aLabel.frame
 
         let initialDelay = 3.0
         let duration = animationDuration(for: paddedWidth)
         maxAnimationDuration = max(maxAnimationDuration, duration + initialDelay)
 
         UIView.animateWithDuration(duration, delay: initialDelay, options: .CurveLinear, animations: {
-            aLabel.frame = endLabelAFrame
-            bLabel.frame = endLabelBFrame
-        }) { (finish) in }
+            aLabel.frame = endALabelFrame
+            bLabel.frame = endBLabelFrame
+        }) { [weak self] (finished) in
+            self?.maxAnimationDuration = 0.0
+        }
     }
 
     private func animationDuration(for width: CGFloat) -> Double {
@@ -146,7 +181,7 @@ private extension MarqueeView {
 
     private func addGradientView() {
         gradientView.frame = bounds
-        let stop = (Constants.gradientWidth)/frame.size.width
+        let stop = Constants.gradientWidth / frame.size.width
         let nextStop = 1.0 - stop
         gradientView.locations = [0.0, stop, nextStop, 1.0]
         maskView = gradientView

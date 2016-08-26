@@ -81,6 +81,7 @@ class TitleCardViewController: UIViewController {
 
     /// Sets the content on the title card, call before `show` to have the right content be present before it animates in.
     func populate(with stageContent: StageContent?) {
+        /// check if the title card is on the stage and hide it before populating with new content.
         if currentState == .shown {
             hide()
         }
@@ -103,11 +104,6 @@ class TitleCardViewController: UIViewController {
 
         let delay = marqueeView.maxAnimationDuration > autoHideDelay ? marqueeView.maxAnimationDuration : autoHideDelay
         autoHideTimer = VTimerManager.scheduledTimerManagerWithTimeInterval(delay, target: self, selector: #selector(autoHideTimerDidFire), userInfo: nil, repeats: false)
-    }
-
-    func autoHideTimerDidFire() {
-        autoHideTimer?.invalidate()
-        hide()
     }
 
     /// Slides out the title card from the screen.
@@ -210,6 +206,11 @@ class TitleCardViewController: UIViewController {
         marqueeView.layoutIfNeeded()
         marqueeView.scroll()
         avatarView.user = stageContent?.content.author
+    }
+
+    @objc private func autoHideTimerDidFire() {
+        autoHideTimer?.invalidate()
+        hide()
     }
 
     @objc private func avatarTapped() {

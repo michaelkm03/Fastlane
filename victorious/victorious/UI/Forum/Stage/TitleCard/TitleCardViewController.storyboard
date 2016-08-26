@@ -17,20 +17,20 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s8A-QO-Jkh">
-                                <rect key="frame" x="-250" y="0.0" width="250" height="44"/>
+                                <rect key="frame" x="-250" y="0.0" width="240" height="44"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="YL4-zM-YYK">
-                                    <rect key="frame" x="0.0" y="0.0" width="250" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="240" height="44"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QlM-8X-Q80" userLabel="Container">
-                                            <rect key="frame" x="0.0" y="0.0" width="250" height="44"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="240" height="44"/>
                                             <subviews>
                                                 <view alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oJe-8G-a1t" userLabel="White Effects View">
-                                                    <rect key="frame" x="0.0" y="0.0" width="250" height="44"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="240" height="44"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </view>
                                                 <view contentMode="scaleToFill" placeholderIntrinsicWidth="182" placeholderIntrinsicHeight="32" translatesAutoresizingMaskIntoConstraints="NO" id="kHj-qj-69e" userLabel="Marquee View" customClass="MarqueeView" customModule="victorious" customModuleProvider="target">
-                                                    <rect key="frame" x="56" y="5" width="182" height="32"/>
+                                                    <rect key="frame" x="46" y="5" width="182" height="32"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="32" id="3Ym-35-eI6"/>
@@ -52,7 +52,7 @@
                                                 <constraint firstAttribute="trailing" secondItem="oJe-8G-a1t" secondAttribute="trailing" id="5uo-Cw-4Yd"/>
                                                 <constraint firstItem="kHj-qj-69e" firstAttribute="top" secondItem="QlM-8X-Q80" secondAttribute="top" constant="5" id="6w6-H6-l0f"/>
                                                 <constraint firstItem="giT-8C-waV" firstAttribute="leading" secondItem="QlM-8X-Q80" secondAttribute="leading" constant="14" id="HQB-aD-EHQ"/>
-                                                <constraint firstItem="kHj-qj-69e" firstAttribute="leading" secondItem="giT-8C-waV" secondAttribute="trailing" constant="12" id="MRX-tb-ypw"/>
+                                                <constraint firstItem="kHj-qj-69e" firstAttribute="leading" secondItem="giT-8C-waV" secondAttribute="trailing" constant="2" id="MRX-tb-ypw"/>
                                                 <constraint firstItem="oJe-8G-a1t" firstAttribute="leading" secondItem="QlM-8X-Q80" secondAttribute="leading" id="Mxc-Dt-rht"/>
                                                 <constraint firstItem="oJe-8G-a1t" firstAttribute="top" secondItem="QlM-8X-Q80" secondAttribute="top" id="NVR-5o-i2q"/>
                                                 <constraint firstAttribute="bottom" secondItem="kHj-qj-69e" secondAttribute="bottom" constant="7" id="eE6-K5-3OS"/>
