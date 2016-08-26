@@ -106,7 +106,7 @@ static NSMutableDictionary *associatedUploadManagers;
 
 - (void)addUpload:(VUploadTaskInformation *)uploadTask withState:(VUploadProgressViewState)state animated:(BOOL)animated
 {
-    if (uploadTask.isGif) {
+    if (uploadTask.isGIF) {
         return;
     }
 

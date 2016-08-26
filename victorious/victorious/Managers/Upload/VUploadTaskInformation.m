@@ -9,7 +9,10 @@
 #import "VConstants.h"
 #import "VUploadTaskInformation.h"
 
+
 @implementation VUploadTaskInformation
+
+static NSString * const kIsGIFKey = @"isGIF";
 
 - (id)init
 {
@@ -22,7 +25,7 @@
     return self;
 }
 
-- (instancetype)initWithRequest:(NSURLRequest *)request previewImage:(UIImage *)previewImage bodyFilename:(NSString *)bodyFilename description:(NSString *)uploadDescription isGif:(BOOL)isGif
+- (instancetype)initWithRequest:(NSURLRequest *)request previewImage:(UIImage *)previewImage bodyFilename:(NSString *)bodyFilename description:(NSString *)uploadDescription isGIF:(BOOL)isGIF
 {
     self = [self init];
     if ( self != nil )
@@ -31,7 +34,7 @@
         _previewImage = previewImage;
         _bodyFilename = bodyFilename;
         _uploadDescription = [uploadDescription copy];
-        _isGif = isGif;
+        _isGIF = isGIF;
     }
     return self;
 }
@@ -45,8 +48,8 @@
         _bodyFilename = [aDecoder decodeObjectOfClass:[NSString class] forKey:NSStringFromSelector(@selector(bodyFilename))];
         _uploadDescription = [aDecoder decodeObjectOfClass:[NSString class] forKey:NSStringFromSelector(@selector(uploadDescription))];
         _identifier = [aDecoder decodeObjectOfClass:[NSUUID class] forKey:NSStringFromSelector(@selector(identifier))];
-        _isGif = [aDecoder decodeBoolForKey:@"isGif"];
-        
+        _isGIF = [aDecoder decodeBoolForKey:kIsGIFKey];
+
         NSData *previewImageData = [aDecoder decodeObjectOfClass:[NSData class] forKey:NSStringFromSelector(@selector(previewImage))];
         if (previewImageData)
         {
@@ -69,7 +72,7 @@
     [aCoder encodeObject:self.bodyFilename forKey:NSStringFromSelector(@selector(bodyFilename))];
     [aCoder encodeObject:self.uploadDescription forKey:NSStringFromSelector(@selector(uploadDescription))];
     [aCoder encodeObject:self.identifier forKey:NSStringFromSelector(@selector(identifier))];
-    [aCoder encodeBool:self.isGif forKey:@"isGif"];
+    [aCoder encodeBool:self.isGIF forKey:kIsGIFKey];
     [aCoder encodeObject:UIImageJPEGRepresentation(self.previewImage, VConstantJPEGCompressionQuality) forKey:NSStringFromSelector(@selector(previewImage))];
 }
 
@@ -92,7 +95,7 @@
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"%@, identifier: %@, request: %@, bodyFileName: %@, uploadDescription: %@, isGifType: %s", [super description], self.identifier, self.request, self.bodyFilename, self.uploadDescription, self.isGif ? "true" : "false"];
+    return [NSString stringWithFormat:@"%@, identifier: %@, request: %@, bodyFileName: %@, uploadDescription: %@, isGifType: %s", [super description], self.identifier, self.request, self.bodyFilename, self.uploadDescription, self.isGIF ? "true" : "false"];
 }
 
 @end

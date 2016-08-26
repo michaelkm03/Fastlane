@@ -73,7 +73,7 @@
                                                          previewImage:nil
                                                          bodyFilename:[self.bodyFileURL lastPathComponent]
                                                           description:nil
-                                                                isGif:nil];
+                                                                isGIF:nil];
 }
 
 - (void)tearDown

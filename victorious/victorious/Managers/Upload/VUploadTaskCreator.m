@@ -43,7 +43,6 @@
     VMultipartFormDataWriter *multipartWriter = [[VMultipartFormDataWriter alloc] initWithOutputFileURL:bodyFileURL];
     
     __block BOOL success = YES;
-    __block BOOL isGif = NO;
     [self.formFields enumerateKeysAndObjectsUsingBlock:^(NSString *fieldName, id value, BOOL *stop)
     {
         NSAssert([fieldName isKindOfClass:[NSString class]], @"The formFields dictionary has an incorrect key type");
@@ -53,10 +52,6 @@
             if (![multipartWriter appendPlaintext:value withFieldName:fieldName error:error])
             {
                 success = NO;
-            }
-
-            if ([fieldName isEqualToString:@"is_gif_style"]) {
-                isGif = ([value isEqualToString:@"true"]) ? YES : NO;
             }
         }
         else if ([value isKindOfClass:[NSURL class]])
@@ -107,7 +102,7 @@
     NSMutableURLRequest *request = [self.request mutableCopy] ?: [[NSMutableURLRequest alloc] init];
     [request setValue:[multipartWriter contentTypeHeader] forHTTPHeaderField:@"Content-Type"];
 
-    VUploadTaskInformation *uploadTask = [[VUploadTaskInformation alloc] initWithRequest:request previewImage:self.previewImage bodyFilename:bodyFileURL.lastPathComponent description:self.uploadDescription isGif:isGif];
+    VUploadTaskInformation *uploadTask = [[VUploadTaskInformation alloc] initWithRequest:request previewImage:self.previewImage bodyFilename:bodyFileURL.lastPathComponent description:self.uploadDescription isGIF:self.isGIF];
     return uploadTask;
 }
 
