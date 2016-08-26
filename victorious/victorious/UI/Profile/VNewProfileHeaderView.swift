@@ -31,7 +31,7 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
     
     // MARK: - Models
     
-    var user: VUser? {
+    var user: UserModel? {
         didSet {
             populateUserContent()
             
@@ -161,12 +161,12 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
     
     // MARK: - ConfigurableGridStreamHeader
     
-    func decorateHeader(dependencyManager: VDependencyManager, maxHeight: CGFloat, content: VUser?, hasError: Bool) {
+    func decorateHeader(dependencyManager: VDependencyManager, maxHeight: CGFloat, content: UserModel?, hasError: Bool) {
         // No error states for profiles
         self.user = content
     }
     
-    func sizeForHeader(dependencyManager: VDependencyManager, maxHeight: CGFloat, content: VUser?, hasError: Bool) -> CGSize {
+    func sizeForHeader(dependencyManager: VDependencyManager, maxHeight: CGFloat, content: UserModel?, hasError: Bool) -> CGSize {
         // No error states for profiles
         self.user = content
         

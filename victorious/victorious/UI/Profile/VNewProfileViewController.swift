@@ -160,7 +160,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         
         let isCurrentUser = user?.isCurrentUser == true
         let isCreator = user?.accessLevel.isCreator == true
-        let currentIsCreator = VCurrentUser.user?.isCreator == true
+        let currentIsCreator = VCurrentUser.user?.accessLevel.isCreator == true
         let vipEnabled = dependencyManager.isVIPEnabled == true
         
         if !isCurrentUser {
@@ -319,7 +319,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         }
     }
     
-    private func setUser(user: VUser?, using dependencyManager: VDependencyManager) {
+    private func setUser(user: UserModel?, using dependencyManager: VDependencyManager) {
         guard let user = user else {
             assertionFailure("Failed to fetch user for profile view controller.")
             return
@@ -345,7 +345,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         updateBarButtonItems()
     }
     
-    private func setupGridStreamController(for user: VUser?) {
+    private func setupGridStreamController(for user: UserModel?) {
         //Setup a new controller every time since the api path changes
         let header = VNewProfileHeaderView.newWithDependencyManager(dependencyManager)
         header.delegate = self
@@ -377,7 +377,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         else {
             let user = VCurrentUser.user
             assert(user != nil, "User should not be nil")
-            return user?.remoteId.integerValue ?? 0
+            return user?.id ?? 0
         }
     }
     
