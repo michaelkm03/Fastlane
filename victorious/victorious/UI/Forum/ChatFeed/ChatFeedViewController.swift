@@ -166,8 +166,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         scrollPaginator.loadItemsAbove = { [weak self] in
             self?.send(.loadOldContent)
         }
-        
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(streamURLDidChange), name: RESTForumNetworkSource.updateStreamURLNotification, object: nil)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -182,16 +180,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         dataSource.stashingEnabled = true
         focusHelper.endFocusOnAllCells()
         stopTimestampUpdate()
-    }
-    
-    // MARK: - Notifications
-    
-    private dynamic func streamURLDidChange(notification: NSNotification) {
-        if let trackingURLs = dependencyManager.trackingURLs {
-            VTrackingManager.sharedInstance().trackEvent(Constants.filteredStreamChangeTrackingEventName, parameters: [
-                VTrackingKeyUrls: trackingURLs
-            ])
-        }
     }
     
     // MARK: - UICollectionViewDelegateFlowLayout
@@ -395,9 +383,5 @@ private extension PaginatedLoadingType {
 private extension VDependencyManager {
     var activityIndicatorColor: UIColor? {
         return colorForKey("color.message.text")
-    }
-    
-    var trackingURLs: [String]? {
-        return trackingURLsForKey("view.following.stream") as? [String]
     }
 }
