@@ -71,8 +71,9 @@
     
     self.uploadTask = [[VUploadTaskInformation alloc] initWithRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.example.com/"]]
                                                          previewImage:nil
-                                                          bodyFilename:[self.bodyFileURL lastPathComponent]
-                                                          description:nil];
+                                                         bodyFilename:[self.bodyFileURL lastPathComponent]
+                                                          description:nil
+                                                                isGif:nil];
 }
 
 - (void)tearDown
