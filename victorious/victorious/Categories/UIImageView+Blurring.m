@@ -198,7 +198,10 @@ static NSString * const kBlurredImageCachePathExtension = @"blurred";
     UIImage *cachedImage = [self cachedBlurredImageForURL:url andBlurRadius:blurRadius];
     if (cachedImage)
     {
-        callbackBlock(cachedImage, nil);
+        dispatch_async(dispatch_get_main_queue(), ^
+        {
+            callbackBlock(cachedImage, nil);
+        });
         return;
     }
     
