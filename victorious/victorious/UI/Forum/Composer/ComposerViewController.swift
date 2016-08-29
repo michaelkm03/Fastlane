@@ -295,7 +295,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userChanged), name: kLoggedInChangedNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(setupUserDependentUI), name: kLoggedInChangedNotification, object: nil)
         setupUserDependentUI()
         
         //Setup once-initialized properties that cannot be created on initialization
@@ -401,7 +401,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     // MARK: - Subview setup
     
-    @objc private func setupUserDependentUI() {
+    private dynamic func setupUserDependentUI() {
         let isOwner = userIsOwner
         maximumTextLength = dependencyManager.maximumTextLengthForOwner(isOwner)
         attachmentMenuItems = dependencyManager.attachmentMenuItemsForOwner(isOwner)
@@ -561,17 +561,6 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
         composerTextViewManager?.resetTextView(textView)
         selectedAsset = nil
-    }
-    
-    // MARK: - Notification response
-    
-    func userChanged() {
-        guard let user = VCurrentUser.user else {
-            KVOController.unobserveAll()
-            return
-        }
-        
-        KVOController.observe(user, keyPath: "isCreator", options: [.New, .Initial], action: #selector(setupUserDependentUI))
     }
 }
 
