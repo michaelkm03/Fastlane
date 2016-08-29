@@ -179,13 +179,14 @@ class LevelUpViewController: UIViewController, Interstitial, VVideoPlayerDelegat
             videoPlayerItem.muted = true
             self.videoBackground.setItem( videoPlayerItem )
         }
-        
-        // Assuming this level up alert contains the most up-to-date fanloyalty info,
-        // we update the user's level and level progress when the interstitial appears
-        if let currentUser = VCurrentUser.user {
-            currentUser.level = fanLoyalty.level
-            currentUser.levelProgressPercentage = fanLoyalty.progress
-        }
+
+        // FIXME: We shouldn't need this anymore. Confirm
+//        // Assuming this level up alert contains the most up-to-date fanloyalty info,
+//        // we update the user's level and level progress when the interstitial appears
+//        if let currentUser = VCurrentUser.user {
+//            currentUser.level = fanLoyalty.level
+//            currentUser.levelProgressPercentage = fanLoyalty.progress
+//        }
     }
     
     override func prefersStatusBarHidden() -> Bool {

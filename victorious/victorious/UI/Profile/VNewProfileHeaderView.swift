@@ -27,6 +27,8 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         super.awakeFromNib()
         avatarView.size = .large
         populateUserContent()
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(populateUserContent), name: VCurrentUser.userDidUpdateNotificationKey, object: nil)
     }
     
     // MARK: - Models
@@ -34,16 +36,6 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
     var user: UserModel? {
         didSet {
             populateUserContent()
-            
-            if let oldValue = oldValue {
-                KVOController.unobserve(oldValue)
-            }
-            
-            if let user = user {
-                KVOController.observe(user, keyPaths: VNewProfileHeaderView.observedUserProperties, options: [.New]) { [weak self] _, _, _ in
-                    self?.populateUserContent()
-                }
-            }
         }
     }
     
@@ -87,7 +79,7 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
     }
     
     private func applyDependencyManagerStyles() {
-        let appearanceKey = user?.isCreator == true ? VNewProfileViewController.creatorAppearanceKey : VNewProfileViewController.userAppearanceKey
+        let appearanceKey = user?.accessLevel.isCreator == true ? VNewProfileViewController.creatorAppearanceKey : VNewProfileViewController.userAppearanceKey
         let appearanceDependencyManager = dependencyManager?.childDependencyForKey(appearanceKey)
         
         tintColor = appearanceDependencyManager?.accentColor
@@ -123,8 +115,8 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
     
     // MARK: - Populating content
     
-    private func populateUserContent() {
-        let userIsCreator = user?.isCreator == true
+    private dynamic func populateUserContent() {
+        let userIsCreator = user?.accessLevel.isCreator == true
         
         profilePictureBottomSpacingConstraint.active = userIsCreator
         statsContainerView.hidden = userIsCreator
@@ -132,11 +124,11 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         nameLabel.text = user?.displayName
         locationLabel.text = user?.location
         taglineLabel.text = user?.tagline
-        vipIconImageView.hidden = user?.isVIPSubscriber?.boolValue != true
+        vipIconImageView.hidden = user?.hasValidVIPSubscription != true
         upvotesGivenValueLabel?.text = numberFormatter.stringForInteger(user?.likesGiven ?? 0)
         upvotesReceivedValueLabel?.text = numberFormatter.stringForInteger(user?.likesReceived ?? 0)
         
-        let tier = user?.tier
+        let tier = user?.fanLoyalty?.tier
         let shouldDisplayTier = tier?.isEmpty == false
         tierValueLabel.text = tier
         tierTitleLabel.hidden = !shouldDisplayTier
@@ -144,7 +136,7 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         
         avatarView.user = user
         
-        if let backgroundPictureURL = user?.pictureURL(ofMinimumSize: backgroundImageView.frame.size) {
+        if let backgroundPictureURL = user?.previewImage(ofMinimumSize: backgroundImageView.frame.size)?.url {
             backgroundImageView.applyBlurToImageURL(backgroundPictureURL, withRadius: 12.0) { [weak self] in
                 self?.backgroundImageView.alpha = 1.0
             }
