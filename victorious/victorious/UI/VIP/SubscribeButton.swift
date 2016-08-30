@@ -21,6 +21,11 @@ class SubscribeButton: UIView {
         
         super.init(frame: CGRect.zero)
         
+        guard dependencyManager.subscriptionEnabled else {
+            hidden = true
+            return
+        }
+        
         subscribeButton.translatesAutoresizingMaskIntoConstraints = false
         userIsVIPButton?.translatesAutoresizingMaskIntoConstraints = false
         
@@ -32,6 +37,7 @@ class SubscribeButton: UIView {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userStatusDidChange), name: VIPSubscriptionHelper.userVIPStatusChangedNotificationKey, object: nil)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userStatusDidChange), name: kLoggedInChangedNotification, object: nil)
+        
     }
     
     required init(coder: NSCoder) {
@@ -106,5 +112,9 @@ class SubscribeButton: UIView {
 private extension VDependencyManager {
     var userIsVIPButton: UIButton? {
         return buttonForKey("button.vip")
+    }
+    
+    var subscriptionEnabled: Bool {
+        return childDependencyForKey("subscription")?.numberForKey("enabled")?.boolValue == true
     }
 }
