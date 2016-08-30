@@ -19,7 +19,6 @@ static const CGFloat kBlurRadius = 12.5f;
 static const CGFloat kSaturationDeltaFactor = 1.8f;
 
 static const char kAssociatedImageKey;
-static const char kAssociatedURLKey;
 static const char kAssociatedBlurredOriginalImageKey;
 
 static NSString * const kBlurredImageCachePathExtension = @"blurred";
