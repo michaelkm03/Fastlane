@@ -10,8 +10,7 @@ import Foundation
 import VictoriousIOSSDK
 
 extension VTracking {
-    
-    func populate( fromSourceModel tracking: TrackingModel ) {
+    func populate(fromSourceModel tracking: TrackingModel) {
         id                  = tracking.id
         cellClick           = tracking.trackingURLsForKey(.cellClick) ?? cellClick
         cellView            = tracking.trackingURLsForKey(.cellView) ?? cellView
@@ -26,6 +25,5 @@ extension VTracking {
         videoStall          = tracking.trackingURLsForKey(.videoStall) ?? videoStall
         viewStart           = tracking.trackingURLsForKey(.viewStart) ?? viewStart
         viewStop            = tracking.trackingURLsForKey(.viewStop) ?? viewStop
-        stageView           = tracking.trackingURLsForKey(.stageView) ?? stageView
     }
 }
