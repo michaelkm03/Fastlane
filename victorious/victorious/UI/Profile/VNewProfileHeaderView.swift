@@ -15,6 +15,8 @@ protocol ConfigurableGridStreamHeaderDelegate: class {
 /// The collection header view used for `VNewProfileViewController`.
 class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHeader {
     
+    private static let blurRadius = CGFloat(12)
+    
     // MARK: - Initializing
     
     class func newWithDependencyManager(dependencyManager: VDependencyManager) -> VNewProfileHeaderView {
@@ -144,8 +146,8 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         
         avatarView.user = user
         
-        if let backgroundPictureURL = user?.pictureURL(ofMinimumSize: backgroundImageView.frame.size) {
-            backgroundImageView.applyBlurToImageURL(backgroundPictureURL, withRadius: 12.0) { [weak self] image, error in
+        if let imageAsset = user?.previewImage(ofMinimumSize: backgroundImageView.frame.size) {
+            backgroundImageView.getImageAsset(imageAsset, blurRadius: VNewProfileHeaderView.blurRadius) { [weak self] image, error in
                 self?.backgroundImageView.image = image
                 self?.backgroundImageView.alpha = 1.0
             }
