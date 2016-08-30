@@ -28,9 +28,11 @@ final class VCurrentUser: NSObject {
         user = nil
     }
     
-    static var loginType: VLoginType?
+    static var loginType: NSNumber?
     static var token: String?
-    
+    static var isNewUser: NSNumber?
+    static var accountIdentifier: String?
+
 }
 
 extension VUser {
@@ -38,5 +40,32 @@ extension VUser {
     /// current user will lose its current status, as there can be only one.
     func setAsCurrentUser() {
         // FIXME: remove
+    }
+}
+
+// Objc compatibility
+extension VCurrentUser {
+    static var userID: NSNumber? {
+        return user?.id
+    }
+    
+    static var maxVideoUploadDuration: NSNumber? {
+        return user?.maxVideoUploadDuration
+    }
+    
+    static var isCreator: NSNumber? {
+        return user?.accessLevel.isCreator
+    }
+    
+    static var isVIPSubScriber: NSNumber? {
+        return user?.hasValidVIPSubscription
+    }
+    
+    static var exists: NSNumber? {
+        return user != nil
+    }
+    
+    static var completedProfile: NSNumber? {
+        return user?.completedProfile
     }
 }

@@ -336,7 +336,7 @@ static const NSTimeInterval kErrorMessageDisplayDuration = 2.0;
 {
     self.totalTimeRecorded = totalRecorded;
     
-    Float64 maxUploadDuration = [VCurrentUser user].maxUploadDuration.integerValue;
+    Float64 maxUploadDuration = VCurrentUser.maxVideoUploadDuration.integerValue;
     CGFloat progress = ABS( totalRecorded / maxUploadDuration);
     [self.cameraControl setRecordingProgress:progress
                                     animated:YES];
@@ -419,7 +419,7 @@ static const NSTimeInterval kErrorMessageDisplayDuration = 2.0;
     dispatch_async(dispatch_get_main_queue(), ^(void)
                    {
                        [self updateProgressForSecond:CMTimeGetSeconds(time)];
-                       Float64 maxUploadDuration = [VCurrentUser user].maxUploadDuration.integerValue;
+                       Float64 maxUploadDuration = VCurrentUser.maxVideoUploadDuration.integerValue;
                        if (CMTimeGetSeconds(time) >= maxUploadDuration)
                        {
                            [self endRecording:nil];

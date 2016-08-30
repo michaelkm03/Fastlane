@@ -226,7 +226,7 @@ static NSString * const kAppStoreSubscriptionSettingsURL = @"itms-apps://buy.itu
 
 - (BOOL)shouldShowPurchasedSubscription
 {
-    BOOL isVIPSubscriber = [VCurrentUser user].isVIPSubscriber.boolValue;
+    BOOL isVIPSubscriber = VCurrentUser.isVIPSubScriber.boolValue;
     VProduct *subscriptionProduct = [self subscriptionProduct];
     return subscriptionProduct != nil && isVIPSubscriber;
 }
@@ -381,7 +381,7 @@ static NSString * const kAppStoreSubscriptionSettingsURL = @"itms-apps://buy.itu
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    const BOOL isSubscribed = [VCurrentUser user].isVIPSubscriber.boolValue;
+    const BOOL isSubscribed = VCurrentUser.isVIPSubScriber.boolValue;
     const BOOL showNoSubscription = indexPath.section == VPurchaseSettingsTableViewSectionPurchases && !isSubscribed;
     const BOOL showNoProducts = indexPath.section == VPurchaseSettingsTableViewSectionPurchases && self.purchasedProductsIdentifiers.count == 0;
     const BOOL isNoContentCell = showNoSubscription || showNoProducts;

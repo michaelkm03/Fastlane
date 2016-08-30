@@ -409,7 +409,7 @@ static inline BOOL isSessionQueue()
 {
     NSAssert(isSessionQueue(), @"This method must be run on the sessionQueue");
     
-    if ( ![VCurrentUser isLoggedIn] )
+    if ( !VCurrentUser.exists )
     {
         return;
     }

@@ -107,7 +107,7 @@ static Float64 const kMaxVideoLengthForEditing = 15.0f;
 
 - (BOOL)shouldSkipTrimmerForVideoLength
 {
-    if ([VCurrentUser user].isCreator.boolValue)
+    if (VCurrentUser.isCreator.boolValue)
     {
         return self.currentVideoLength > kMaxVideoLengthForEditing;
     }

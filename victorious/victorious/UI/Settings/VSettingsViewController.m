@@ -201,19 +201,18 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 - (BOOL)showLikedContent
 {
     BOOL likeButtonOn = [[self.dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey] boolValue];
-    return [VCurrentUser user] != nil && likeButtonOn;
+    return VCurrentUser.exists && likeButtonOn;
 }
 
 - (BOOL)showChangePassword
 {
-    VUser *currentUer = [VCurrentUser user];
-    if ( currentUer == nil )
+    if ( !VCurrentUser.exists )
     {
         return NO;
     }
     else
     {
-        VLoginType loginType = (VLoginType)currentUer.loginType.integerValue;
+        VLoginType loginType = (VLoginType)VCurrentUser.loginType.integerValue;
         return loginType != VLoginTypeFacebook;
     }
 }
@@ -289,7 +288,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     }
     else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionRegisterTestAlert)
     {
-        BOOL shouldShow = self.showTestAlertCell && [VCurrentUser user] != nil;
+        BOOL shouldShow = self.showTestAlertCell && VCurrentUser.exists;
         return shouldShow ? self.tableView.rowHeight : 0.0;
     }
     else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionChangePassword)
@@ -298,7 +297,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     }
     else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionNotifications)
     {
-        BOOL shouldShow = self.showPushNotificationSettings && [VCurrentUser user] != nil;
+        BOOL shouldShow = self.showPushNotificationSettings && VCurrentUser.exists;
         return shouldShow ? self.tableView.rowHeight : 0.0;
     }
     else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionResetPurchases)

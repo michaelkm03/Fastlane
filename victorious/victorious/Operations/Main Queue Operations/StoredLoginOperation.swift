@@ -31,7 +31,7 @@ final class StoredLoginOperation: SyncOperation<Void> {
         if let info = storedLogin.storedLoginInfo() {
             let user = User(id: info.userRemoteId.integerValue)
             VCurrentUser.update(to: user)
-            VCurrentUser.loginType = info.lastLoginType
+            VCurrentUser.loginType = info.lastLoginType.rawValue
             VCurrentUser.token = info.token
             
             guard

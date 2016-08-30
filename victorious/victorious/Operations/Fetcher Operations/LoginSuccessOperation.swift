@@ -29,6 +29,7 @@ class LoginSuccessOperation: FetcherOperation {
         
         persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
             
+            // FIXME: This needs to be converted to User
             // First, find or create the new user who just logged in
             let user: VUser = context.v_findOrCreateObject([ "remoteId" : self.response.user.id ])
             user.populate(fromSourceModel: self.response.user)
