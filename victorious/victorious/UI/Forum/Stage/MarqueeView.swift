@@ -16,6 +16,15 @@ import UIKit
 
 class MarqueeView: UIView {
 
+    // MARK: - Constants
+
+    private struct Constants {
+        static let padding = CGFloat(10.0)
+        static let gradientWidth = CGFloat(10.0)
+        static let authorFont = UIFont.systemFontOfSize(14.0, weight: UIFontWeightSemibold)
+        static let titleFont = UIFont.systemFontOfSize(12.0, weight: UIFontWeightRegular)
+    }
+
     // MARK: - Views
 
     private var authorLabelA = UILabel()
@@ -35,49 +44,16 @@ class MarqueeView: UIView {
 
     var maxAnimationDuration = 0.0
 
-    // MARK: - Constants
-
-    private struct Constants {
-        static let padding = CGFloat(10.0)
-        static let gradientWidth = CGFloat(10.0)
-        static let authorFont = UIFont.systemFontOfSize(14.0, weight: UIFontWeightSemibold)
-        static let titleFont = UIFont.systemFontOfSize(12.0, weight: UIFontWeightRegular)
-    }
-
     // MARK: - Initialization
 
     required init?(coder aDecoder: NSCoder) {
-        authorLabelA.font = Constants.authorFont
-        authorLabelB.font = Constants.authorFont
-        titleLabelA.font = Constants.titleFont
-        titleLabelB.font = Constants.titleFont
-
         super.init(coder: aDecoder)
-
-        addSubview(authorLabelA)
-        addSubview(authorLabelB)
-        addSubview(titleLabelA)
-        addSubview(titleLabelB)
-
-        backgroundColor = UIColor.clearColor()
-        clipsToBounds = true
+        setup()
     }
 
     override init(frame: CGRect) {
-        authorLabelA.font = Constants.authorFont
-        authorLabelB.font = Constants.authorFont
-        titleLabelA.font = Constants.titleFont
-        titleLabelB.font = Constants.titleFont
-
         super.init(frame: frame)
-
-        addSubview(authorLabelA)
-        addSubview(authorLabelB)
-        addSubview(titleLabelA)
-        addSubview(titleLabelB)
-
-        backgroundColor = UIColor.clearColor()
-        clipsToBounds = true
+        setup()
     }
 
     // MARK: - Configuration
@@ -93,7 +69,8 @@ class MarqueeView: UIView {
             x: Constants.gradientWidth,
             y: 0.0,
             width: Constants.gradientWidth + authorLabelSize.width,
-            height: authorLabelSize.height)
+            height: authorLabelSize.height
+        )
 
         authorLabelB.frame = CGRect(
             x: Constants.gradientWidth + authorLabelSize.width + Constants.padding,
@@ -145,7 +122,27 @@ class MarqueeView: UIView {
         }
     }
 
+    // MARK:
     // MARK: - Private
+
+    // MARK: - Initialization
+
+    private func setup() {
+        authorLabelA.font = Constants.authorFont
+        authorLabelB.font = Constants.authorFont
+        titleLabelA.font = Constants.titleFont
+        titleLabelB.font = Constants.titleFont
+
+        addSubview(authorLabelA)
+        addSubview(authorLabelB)
+        addSubview(titleLabelA)
+        addSubview(titleLabelB)
+
+        backgroundColor = UIColor.clearColor()
+        clipsToBounds = true
+    }
+
+    // MARK: - Animation
 
     private func animate(aLabel aLabel: UILabel, bLabel: UILabel) {
         let labelSize = aLabel.intrinsicContentSize()
@@ -161,7 +158,7 @@ class MarqueeView: UIView {
         UIView.animateWithDuration(duration, delay: initialDelay, options: .CurveLinear, animations: {
             aLabel.frame = endALabelFrame
             bLabel.frame = endBLabelFrame
-        }) { [weak self] (finished) in
+        }) { [weak self] _ in
             self?.maxAnimationDuration = 0.0
         }
     }
@@ -178,6 +175,8 @@ class MarqueeView: UIView {
         titleLabelA.layer.removeAllAnimations()
         titleLabelB.layer.removeAllAnimations()
     }
+
+    // MARK: - Configuration
 
     private func addGradientView() {
         gradientView.frame = bounds
