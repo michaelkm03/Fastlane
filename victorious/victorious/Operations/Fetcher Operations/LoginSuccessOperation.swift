@@ -27,41 +27,27 @@ class LoginSuccessOperation: FetcherOperation {
             return
         }
         
-        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
+        let currentUser = self.response.user
             
-            // FIXME: This needs to be converted to User
-            // First, find or create the new user who just logged in
-            let user: VUser = context.v_findOrCreateObject([ "remoteId" : self.response.user.id ])
-            user.populate(fromSourceModel: self.response.user)
-            user.loginType = self.parameters.loginType.rawValue
-            user.token = self.response.token
-            user.accountIdentifier = self.parameters.accountIdentifier
-            user.isNewUser = self.response.newUser
-            
-            context.v_save()
-            
-            // After saving, the objectID is available
-            self.userObjectID = user.objectID
+        VCurrentUser.loginType = self.parameters.loginType.rawValue
+        VCurrentUser.token = self.response.token
+        VCurrentUser.accountIdentifier = self.parameters.accountIdentifier
+        VCurrentUser.isNewUser = self.response.newUser
+        
+        dispatch_sync(dispatch_get_main_queue()) {
+            VCurrentUser.update(to: currentUser)
         }
         
-        persistentStore.mainContext.v_performBlockAndWait() { context in
-            
-            // Reload from main context to continue login process
-            guard let userObjectID = self.userObjectID, let user = context.objectWithID(userObjectID) as? VUser else {
-                assertionFailure( "Cannot retrieve user by objectID." )
-                return
-            }
-            
-            user.setAsCurrentUser()
-            self.updateStoredCredentials( user )
-            VLoginType(rawValue: user.loginType.integerValue)?.trackSuccess( user.isNewUser?.boolValue ?? false )
-        }
+        self.updateStoredCredentials(currentUser)
+        VLoginType(rawValue: self.parameters.loginType.rawValue)?.trackSuccess(VCurrentUser.isNewUser?.boolValue ?? false)
     }
     
-    private func updateStoredCredentials( user: VUser ) {
-        VStoredLogin().saveLoggedInUserToDisk( user )
-        NSUserDefaults.standardUserDefaults().setInteger( user.loginType.integerValue, forKey: kLastLoginTypeUserDefaultsKey)
-        if let accountIdentifier = user.accountIdentifier {
+    private func updateStoredCredentials( user: User ) {
+        VStoredLogin().saveLoggedInUserToDisk()
+        if let loginTypeValue = VCurrentUser.loginType?.integerValue {
+            NSUserDefaults.standardUserDefaults().setInteger(loginTypeValue, forKey: kLastLoginTypeUserDefaultsKey)
+        }
+        if let accountIdentifier = VCurrentUser.accountIdentifier {
             NSUserDefaults.standardUserDefaults().setObject( accountIdentifier, forKey: kAccountIdentifierDefaultsKey)
         }
     }

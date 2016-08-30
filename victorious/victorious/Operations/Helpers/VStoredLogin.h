@@ -40,10 +40,9 @@ extern NSString * const kLoggedInChangedNotification;
  
  @see userFromDisk
  
- @param user The currently logged in user to save.
  @return Whether or not the write operation was successful.
  */
-- (BOOL)saveLoggedInUserToDisk:(VUser *)user;
+- (BOOL)saveLoggedInUserToDisk;
 
 /**
  Removes any data stored on the device about the last logged in user.  This
