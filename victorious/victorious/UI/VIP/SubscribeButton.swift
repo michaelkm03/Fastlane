@@ -37,7 +37,6 @@ class SubscribeButton: UIView {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userStatusDidChange), name: VIPSubscriptionHelper.userVIPStatusChangedNotificationKey, object: nil)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userStatusDidChange), name: kLoggedInChangedNotification, object: nil)
-        
     }
     
     required init(coder: NSCoder) {
