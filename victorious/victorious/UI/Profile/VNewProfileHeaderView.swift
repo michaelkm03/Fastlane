@@ -14,7 +14,6 @@ protocol ConfigurableGridStreamHeaderDelegate: class {
 
 /// The collection header view used for `VNewProfileViewController`.
 class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHeader {
-    
     private static let blurRadius = CGFloat(12)
     
     // MARK: - Initializing

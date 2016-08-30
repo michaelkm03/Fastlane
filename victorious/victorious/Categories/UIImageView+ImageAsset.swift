@@ -13,6 +13,7 @@ typealias ImageCompletion = ((UIImage?, NSError?)->())?
 
 extension UIImageView {
     private static let blurredImageCachePathExtension = "blurred"
+    
     /// Downloads the image from the image asset or grabs the cached version to return in the completion block
     func getImageAsset(imageAsset: ImageAssetModel, blurRadius: CGFloat = 0, completion: ImageCompletion) {
         image = nil
@@ -45,12 +46,12 @@ extension UIImageView {
         }
     }
     
-    func cachedBlurredImage(for url: NSURL, blurRadius: CGFloat) -> UIImage? {
+    private func cachedBlurredImage(for url: NSURL, blurRadius: CGFloat) -> UIImage? {
         let key = blurredImageKey(for: url, blurRadius: blurRadius)
         return SDWebImageManager.sharedManager().imageCache.imageFromMemoryCacheForKey(key)
     }
     
-    func addBlurredImage(image: UIImage, toCacheWithURL url: NSURL, blurRadius: CGFloat) {
+    private func addBlurredImage(image: UIImage, toCacheWithURL url: NSURL, blurRadius: CGFloat) {
         SDWebImageManager.sharedManager().imageCache.storeImage(
             image,
             forKey: blurredImageKey(for: url, blurRadius: blurRadius)
