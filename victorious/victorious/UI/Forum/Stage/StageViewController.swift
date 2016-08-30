@@ -278,7 +278,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         }
         
         if let content = currentStageContent?.content {
-            trackView(.stageView, showingContent: content)
+            trackView(.cellView, showingContent: content)
         }
         
         guard !visible else {
@@ -385,8 +385,8 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     
     // MARK: - Content Cell Tracker 
     
-    var sessionParameters: [NSObject : AnyObject] {
-        return [:]
+    var sessionParameters: [NSObject: AnyObject] {
+        return [VTrackingKeyParentContentId: "STAGE"]
     }
 }
 

@@ -239,20 +239,21 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         router.navigate(to: destination)
         header?.headerWillDisappear()
 
-        guard let cell = collectionView.cellForItemAtIndexPath(indexPath) as? ContentCell else {
+        guard let content = (collectionView.cellForItemAtIndexPath(indexPath) as? ContentCell)?.content else {
             return
         }
-        trackCell(cell, trackingKey: .cellClick)
+        
+        trackView(.cellClick, showingContent: content)
     }
     
     // MARK: - UICollectionViewDelegate
     
     func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
-        guard let cell = cell as? ContentCell else {
+        guard let content = (cell as? ContentCell)?.content else {
             return
         }
         
-        trackCell(cell, trackingKey: .cellView)
+        trackView(.cellView, showingContent: content)
     }
     
     // MARK: - Tracking updating
