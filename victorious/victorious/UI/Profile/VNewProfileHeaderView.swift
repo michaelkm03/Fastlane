@@ -28,7 +28,7 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         avatarView.size = .large
         populateUserContent()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(populateUserContent), name: VCurrentUser.userDidUpdateNotificationKey, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(currentUserDidUpdate), name: VCurrentUser.userDidUpdateNotificationKey, object: nil)
     }
     
     // MARK: - Models
@@ -115,7 +115,12 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
     
     // MARK: - Populating content
     
-    private dynamic func populateUserContent() {
+    private dynamic func currentUserDidUpdate() {
+        user = VCurrentUser.user
+        populateUserContent()
+    }
+    
+    private func populateUserContent() {
         let userIsCreator = user?.accessLevel.isCreator == true
         
         profilePictureBottomSpacingConstraint.active = userIsCreator

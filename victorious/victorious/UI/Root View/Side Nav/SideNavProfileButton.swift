@@ -31,6 +31,8 @@ class SideNavProfileButton: BadgeButton {
         BadgeCountManager.shared.whenBadgeCountChanges(for: Constants.badgeCountType) { [weak self] in
             self?.updateBadgeCount()
         }
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(currentUserDidChange), name: VCurrentUser.userDidUpdateNotificationKey, object: nil)
     }
     
     required init(coder: NSCoder) {
@@ -47,6 +49,10 @@ class SideNavProfileButton: BadgeButton {
         set {
             avatarView.user = newValue
         }
+    }
+    
+    private dynamic func currentUserDidChange() {
+        user = VCurrentUser.user
     }
     
     // MARK: - Views

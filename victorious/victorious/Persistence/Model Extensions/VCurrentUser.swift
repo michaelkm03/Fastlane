@@ -20,8 +20,8 @@ final class VCurrentUser: NSObject {
     // Must be called on main queue
     static func update(to user: User) {
         assert(NSThread.isMainThread())
-        NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: userDidUpdateNotificationKey, object: nil))
         self.user = user
+        NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: userDidUpdateNotificationKey, object: nil))
     }
     
     static func clear() {

@@ -67,6 +67,8 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         view.backgroundColor = dependencyManager.colorForKey(VDependencyManagerBackgroundColorKey)
         
         fetchUser(using: dependencyManager)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(currentUserDidUpdate), name: VCurrentUser.userDidUpdateNotificationKey, object: nil)
     }
     
     required init?(coder: NSCoder) {
@@ -81,7 +83,6 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userChanged), name: kLoggedInChangedNotification, object: nil)
         dependencyManager.addBackgroundToBackgroundHost(self)
     }
     
@@ -301,9 +302,9 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     
     // MARK: - Managing the user
     
-    private dynamic func userChanged() {
-        if let loggedInUser = VCurrentUser.user {
-            setUser(loggedInUser, using: dependencyManager)
+    private dynamic func currentUserDidUpdate() {
+        if user?.isCurrentUser == true {
+            setUser(VCurrentUser.user, using: dependencyManager)
         }
     }
     
