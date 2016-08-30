@@ -154,7 +154,11 @@ class AvatarView: UIView {
             origin: bounds.center
         )
 
-        vipBadgeView.frame = CGRect(center: pointOnCircle, size: CGSize(width: Constants.vipBadgeViewDiameter, height: Constants.vipBadgeViewDiameter))
+        vipBadgeView.frame = CGRect(
+            center: pointOnCircle,
+            size: CGSize(width: Constants.vipBadgeViewDiameter, height: Constants.vipBadgeViewDiameter)
+        )
+
         vipBadgeView.layer.cornerRadius = vipBadgeView.frame.size.width / 2
         vipBadgeView.clipsToBounds = true
 
