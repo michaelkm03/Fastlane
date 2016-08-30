@@ -128,16 +128,17 @@ class ContentPreviewView: UIView {
         let userCanViewContent = VCurrentUser.user()?.canView(content) == true
         if let imageAsset = content.previewImage(ofMinimumWidth: bounds.size.width) {
             if !userCanViewContent {
-                previewImageView.applyBlurToImageURL(imageAsset.url, withRadius: Constants.imageViewBlurEffectRadius) { [weak self] in
-                    self?.previewImageView.alpha = 1
-                    self?.playButton.alpha = 1
-                    self?.spinner?.stopAnimating()
+                guard let imageAssetURL = imageAsset.url else {
+                    return
+                }
+                
+                previewImageView.applyBlurToImageURL(imageAssetURL, withRadius: Constants.imageViewBlurEffectRadius) { [weak self] image, _ in
+                    self?.finishedLoadingPreviewImage(image, for: content)
                 }
             }
             else {
-                previewImageView.setImageAsset(imageAsset) { [weak self] _ in
-                    self?.playButton.alpha = 1
-                    self?.spinner?.stopAnimating()
+                previewImageView.getImageAsset(imageAsset) { [weak self] image, _ in
+                    self?.finishedLoadingPreviewImage(image, for: content)
                 }
             }
         }
@@ -145,6 +146,18 @@ class ContentPreviewView: UIView {
             previewImageView.image = nil
         }
         lastSize = bounds.size
+    }
+    
+    private func finishedLoadingPreviewImage(image: UIImage?, for content: ContentModel) {
+        let contentID = self.content?.id
+        guard content.id == contentID || contentID == nil else {
+            return
+        }
+        
+        self.previewImageView.image = image
+        self.previewImageView.alpha = 1
+        self.playButton.alpha = 1
+        self.spinner?.stopAnimating()
     }
     
     // MARK: - Notification actions

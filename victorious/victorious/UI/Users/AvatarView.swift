@@ -107,6 +107,12 @@ class AvatarView: UIView {
         addSubview(shadowView)
         addSubview(imageView)
         addSubview(initialsLabel)
+        
+        // This sets all of the subview's initial frames immediately without animation so that they don't animate from
+        // initial frames of zero, which can create awkward transitions.
+        UIView.performWithoutAnimation {
+            self.layoutIfNeeded()
+        }
     }
     
     // MARK: - Views
@@ -283,11 +289,19 @@ class AvatarView: UIView {
         imageView.backgroundColor = user?.color
         
         if let imageAsset = user?.previewImage(ofMinimumSize: bounds.size) {
-            imageView.setImageAsset(imageAsset) { [weak self] image, _ in
+            imageView.getImageAsset(imageAsset) { [weak self] image, _ in
                 if image == nil {
                     self?.showInitials()
                 }
                 else {
+                    guard
+                        let strongSelf = self
+                        where strongSelf.user?.previewImage(ofMinimumSize: strongSelf.bounds.size)?.url == imageAsset.url
+                    else {
+                        return
+                    }
+                    
+                    self?.imageView.image = image
                     self?.initialsLabel.hidden = true
                 }
             }
@@ -347,7 +361,7 @@ class AvatarView: UIView {
         )
         
         verifiedBadgeView.frame = CGRect(center: pointOnCircle, size: size)
-        verifiedBadgeView.hidden = false
+        verifiedBadgeView.hidden = user?.avatarBadgeType != .verified
     }
 
     private func layoutVIPBadge() {

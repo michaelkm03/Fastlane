@@ -145,7 +145,8 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         avatarView.user = user
         
         if let backgroundPictureURL = user?.pictureURL(ofMinimumSize: backgroundImageView.frame.size) {
-            backgroundImageView.applyBlurToImageURL(backgroundPictureURL, withRadius: 12.0) { [weak self] in
+            backgroundImageView.applyBlurToImageURL(backgroundPictureURL, withRadius: 12.0) { [weak self] image, error in
+                self?.backgroundImageView.image = image
                 self?.backgroundImageView.alpha = 1.0
             }
         }
