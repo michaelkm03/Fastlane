@@ -20,7 +20,7 @@ class MarqueeView: UIView {
 
     private struct Constants {
         static let padding = CGFloat(10.0)
-        static let gradientWidth = CGFloat(10.0)
+        static let gradientWidth = CGFloat(5.0)
         static let authorFont = UIFont.systemFontOfSize(14.0, weight: UIFontWeightSemibold)
         static let titleFont = UIFont.systemFontOfSize(12.0, weight: UIFontWeightRegular)
     }
