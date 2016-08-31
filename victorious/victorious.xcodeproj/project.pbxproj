@@ -1318,7 +1318,6 @@
 		F093A9451CF4D220009ACABF /* VIPSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F093A9441CF4D220009ACABF /* VIPSuccessViewController.swift */; };
 		F093A9471CF4D24E009ACABF /* VIPSuccessViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F093A9461CF4D24E009ACABF /* VIPSuccessViewController.storyboard */; };
 		F09E8C681C88CBF300437ACD /* Asset.json in Resources */ = {isa = PBXBuildFile; fileRef = F09E8C671C88CBF300437ACD /* Asset.json */; };
-		F0A34AA81BA89F91000D70EF /* AvatarLevelBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A34AA61BA89F91000D70EF /* AvatarLevelBadgeView.swift */; };
 		F0ABAA7C1D1CA8F800DAD4B3 /* TouchableInsetAdjustableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0ABAA7B1D1CA8F700DAD4B3 /* TouchableInsetAdjustableButton.swift */; };
 		F0B6F08D1D3EB3350037EACE /* VIPGateViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A748BD171C8A7302003D5F5F /* VIPGateViewController.storyboard */; };
 		F0B6F08F1D3ECDE10037EACE /* VIPFetchSubscriptionRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B6F08E1D3ECDE10037EACE /* VIPFetchSubscriptionRemoteOperation.swift */; };
@@ -3066,8 +3065,6 @@
 		F093A9441CF4D220009ACABF /* VIPSuccessViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VIPSuccessViewController.swift; sourceTree = "<group>"; };
 		F093A9461CF4D24E009ACABF /* VIPSuccessViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VIPSuccessViewController.storyboard; sourceTree = "<group>"; };
 		F09E8C671C88CBF300437ACD /* Asset.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Asset.json; sourceTree = "<group>"; };
-		F0A34AA61BA89F91000D70EF /* AvatarLevelBadgeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AvatarLevelBadgeView.swift; sourceTree = "<group>"; };
-		F0A34AA71BA89F91000D70EF /* VBadgeImageType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VBadgeImageType.h; sourceTree = "<group>"; };
 		F0ABAA7B1D1CA8F700DAD4B3 /* TouchableInsetAdjustableButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchableInsetAdjustableButton.swift; sourceTree = "<group>"; };
 		F0B6F08E1D3ECDE10037EACE /* VIPFetchSubscriptionRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VIPFetchSubscriptionRemoteOperation.swift; sourceTree = "<group>"; };
 		F0B6F0901D3ED0C10037EACE /* VIPFetchSubscriptionRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VIPFetchSubscriptionRequest.swift; sourceTree = "<group>"; };
@@ -6326,7 +6323,6 @@
 		C3623E561B9A779A002B121D /* Fan Club */ = {
 			isa = PBXGroup;
 			children = (
-				F0A34AA91BA89F95000D70EF /* Avatar Badging */,
 				670A3B1A1CA9ED92004C5F57 /* Interstitial Alert */,
 				677DCFE11CB479FC00FC4394 /* Interstitial Toast */,
 			);
@@ -6589,15 +6585,6 @@
 				F07DDE401CFCDB1500C7FC8D /* TrackableButton.swift */,
 			);
 			name = Button;
-			sourceTree = "<group>";
-		};
-		F0A34AA91BA89F95000D70EF /* Avatar Badging */ = {
-			isa = PBXGroup;
-			children = (
-				F0A34AA61BA89F91000D70EF /* AvatarLevelBadgeView.swift */,
-				F0A34AA71BA89F91000D70EF /* VBadgeImageType.h */,
-			);
-			path = "Avatar Badging";
 			sourceTree = "<group>";
 		};
 		F0FBC4471D22F0E60070873F /* CaptionBar */ = {
@@ -8484,7 +8471,6 @@
 				0314D2E219B46AF300FA363C /* VThemeManager.m in Sources */,
 				7AB55FE51CADF00A00EBE31E /* CGSize.swift in Sources */,
 				F020B35A1D3564F800388043 /* CrossFadingAnimationController.swift in Sources */,
-				F0A34AA81BA89F91000D70EF /* AvatarLevelBadgeView.swift in Sources */,
 				F0FBFA641CE14819006318FC /* VPublishParameters+ConvenienceInit.swift in Sources */,
 				F069E9401D46BD9900F91CE6 /* ContentFindOrCreateOperation.swift in Sources */,
 				A780ED5F1A933D9300A8CD5D /* VPhotoFilterSerialization.m in Sources */,

@@ -33,7 +33,6 @@
 #import "VAssetDownloader.h"
 #import "VAutomation.h"
 #import "VBackgroundContainer.h"
-#import "VBadgeImageType.h"
 #import "VBaseCollectionViewCell.h"
 #import "VBaseWorkspaceViewController.h"
 #import "VButton.h"
