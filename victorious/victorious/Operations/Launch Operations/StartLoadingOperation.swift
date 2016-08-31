@@ -55,6 +55,9 @@ final class StartLoadingOperation: SyncOperation<Void>, VTemplateDownloadOperati
                 dictionaryOfClassesByTemplateName: nil
             )
         }
+        else {
+            Log.error("Failed to access the downloaded template: \(template)")
+        }
         
         TempDirectoryCleanupOperation().queue()
         

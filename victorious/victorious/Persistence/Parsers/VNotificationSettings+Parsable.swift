@@ -9,9 +9,81 @@
 import Foundation
 import VictoriousIOSSDK
 
-extension VNotificationSettings {
+struct VNotificationSettings {
+    var isPostFromCreatorEnabled: Bool = true
+    var isNewFollowerEnabled: Bool = true
+    var isNewPrivateMessageEnabled: Bool = true
+    var isNewCommentOnMyPostEnabled: Bool = true
+    var isPostFromFollowedEnabled: Bool = true
+    var isPostOnFollowedHashTagEnabled: Bool = true
+    var isUserTagInCommentEnabled: Bool = true
+    var isPeopleLikeMyPostEnabled: Bool = true
     
-    func populate(fromSourceModel sourceModel: NotificationPreference) {
+    func isKeyEnabled(key: String) -> Bool {
+        guard let settingType = VNotificationSettingType(rawValue: key) else {
+            return false
+        }
+        
+        switch settingType {
+        case .postFromCreator:
+            return isPostFromCreatorEnabled
+        case .postFromFavorite:
+            return isPostFromFollowedEnabled
+        case .mentionsUser:
+            return isUserTagInCommentEnabled
+        case .upvotePost:
+            return isPeopleLikeMyPostEnabled
+        case .favoritesUser:
+            return isNewFollowerEnabled
+        case .privateMessage:
+            return isNewPrivateMessageEnabled
+        }
+    }
+    
+    mutating func updateValue(forKey key: String, newValue: Bool) {
+        guard let settingType = VNotificationSettingType(rawValue: key) else {
+            return
+        }
+        
+        switch settingType {
+        case .postFromCreator:
+            isPostFromCreatorEnabled = newValue
+        case .postFromFavorite:
+            isPostFromFollowedEnabled = newValue
+        case .mentionsUser:
+            isUserTagInCommentEnabled = newValue
+        case .upvotePost:
+            isPeopleLikeMyPostEnabled = newValue
+        case .favoritesUser:
+            isNewFollowerEnabled = newValue
+        case .privateMessage:
+            isNewPrivateMessageEnabled = newValue
+        }
+    }
+    
+    //Refer to VTrackingConstants
+    func trackingName(forKey key: String) -> String {
+        guard let settingType = VNotificationSettingType(rawValue: key) else {
+            return ""
+        }
+        
+        switch settingType {
+        case .postFromCreator:
+            return VTrackingValuePostFromCreator
+        case .postFromFavorite:
+            return VTrackingValuePostFromFollowed
+        case .mentionsUser:
+            return VTrackingValueUsertagInComment
+        case .upvotePost:
+            return VTrackingValuePeopleLikeMyPost
+        case .favoritesUser:
+            return VTrackingValueNewFollower
+        case .privateMessage:
+            return VTrackingValueNewPrivateMessage
+        }
+    }
+    
+    mutating func populate(fromSourceModel sourceModel: NotificationPreference) {
         self.isPostFromCreatorEnabled = sourceModel.contains(.creatorPost)
         self.isNewFollowerEnabled = sourceModel.contains(.newFollower)
         self.isNewPrivateMessageEnabled = sourceModel.contains(.privateMessage)
@@ -22,23 +94,18 @@ extension VNotificationSettings {
         self.isPeopleLikeMyPostEnabled = sourceModel.contains(.likePost)
     }
     
-}
-
-extension VNotificationSettings {
-    
-    func networkPreferences() -> [NotificationPreference: Bool] {
+    var networkPreferences: [NotificationPreference: Bool] {
         var networkPreferences = [NotificationPreference: Bool]()
         
-        networkPreferences[.creatorPost] = self.isPostFromCreatorEnabled?.boolValue ?? false
-        networkPreferences[.followPost] = self.isPostFromFollowedEnabled?.boolValue ?? false
-        networkPreferences[.commentPost] = self.isNewCommentOnMyPostEnabled?.boolValue ?? false
-        networkPreferences[.privateMessage] = self.isNewPrivateMessageEnabled?.boolValue ?? false
-        networkPreferences[.tagPost] = self.isPostOnFollowedHashTagEnabled?.boolValue ?? false
-        networkPreferences[.mention] = self.isUserTagInCommentEnabled?.boolValue ?? false
-        networkPreferences[.likePost] = self.isPeopleLikeMyPostEnabled?.boolValue ?? false
-        networkPreferences[.newFollower] = self.isNewFollowerEnabled?.boolValue ?? false
+        networkPreferences[.creatorPost] = self.isPostFromCreatorEnabled
+        networkPreferences[.followPost] = self.isPostFromFollowedEnabled
+        networkPreferences[.commentPost] = self.isNewCommentOnMyPostEnabled
+        networkPreferences[.privateMessage] = self.isNewPrivateMessageEnabled
+        networkPreferences[.tagPost] = self.isPostOnFollowedHashTagEnabled
+        networkPreferences[.mention] = self.isUserTagInCommentEnabled
+        networkPreferences[.likePost] = self.isPeopleLikeMyPostEnabled
+        networkPreferences[.newFollower] = self.isNewFollowerEnabled
         
         return networkPreferences
     }
-    
 }

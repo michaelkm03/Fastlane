@@ -213,10 +213,11 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
     // MARK: - SettingsSwitchCell Delegate
     
     func settingsDidUpdateFromCell(cell: VSettingsSwitchCell, newValue: Bool, key: String) {
-        guard let settings = self.settings else {
+        guard var settings = self.settings else {
             return
         }
         settings.updateValue(forKey: key, newValue: newValue)
+        self.settings = settings
         
         //Update tracking
         let newStateString = newValue ? Constants.trackingPermissionAuthorizedString : Constants.trackingPermissionDeniedString
