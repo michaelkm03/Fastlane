@@ -618,7 +618,6 @@
 		7C268F051D14A12600E4A66A /* tos.html in Resources */ = {isa = PBXBuildFile; fileRef = 7C268F041D14A12600E4A66A /* tos.html */; };
 		7C28F1021D1DD94A0070B8AE /* CTAErrorState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C28F1011D1DD94A0070B8AE /* CTAErrorState.swift */; };
 		7C28F1041D1DDD660070B8AE /* VDependencyManager+CTAErrorState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C28F1031D1DDD660070B8AE /* VDependencyManager+CTAErrorState.swift */; };
-		7C358BA61D1CBB300063CF66 /* VNotificationSettings+KeyAccessible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C358BA51D1CBB300063CF66 /* VNotificationSettings+KeyAccessible.swift */; };
 		7C37B8E71CF66CA200E83594 /* SystemBlurredImageBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C37B8E61CF66CA100E83594 /* SystemBlurredImageBackground.swift */; };
 		7C4C21EF1D4C272E00B85670 /* LoremIpsum.txt in Resources */ = {isa = PBXBuildFile; fileRef = 7C4C21EE1D4C272E00B85670 /* LoremIpsum.txt */; };
 		7C4C21F11D503C2C00B85670 /* CoachmarkPresentAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C4C21F01D503C2C00B85670 /* CoachmarkPresentAnimationController.swift */; };
@@ -2139,7 +2138,6 @@
 		7C268F041D14A12600E4A66A /* tos.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = tos.html; sourceTree = "<group>"; };
 		7C28F1011D1DD94A0070B8AE /* CTAErrorState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CTAErrorState.swift; sourceTree = "<group>"; };
 		7C28F1031D1DDD660070B8AE /* VDependencyManager+CTAErrorState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VDependencyManager+CTAErrorState.swift"; sourceTree = "<group>"; };
-		7C358BA51D1CBB300063CF66 /* VNotificationSettings+KeyAccessible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VNotificationSettings+KeyAccessible.swift"; sourceTree = "<group>"; };
 		7C37B8E61CF66CA100E83594 /* SystemBlurredImageBackground.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SystemBlurredImageBackground.swift; sourceTree = "<group>"; };
 		7C4C21EE1D4C272E00B85670 /* LoremIpsum.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LoremIpsum.txt; sourceTree = "<group>"; };
 		7C4C21F01D503C2C00B85670 /* CoachmarkPresentAnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoachmarkPresentAnimationController.swift; sourceTree = "<group>"; };
@@ -5893,7 +5891,6 @@
 				A7EBF5621C2F3BF40080C7CF /* VCurrentUser.swift */,
 				7A6073251CC58D7D002FD3C6 /* VUser+Assets.swift */,
 				A7AF17B31C599331007BCAFE /* VUser+Following.swift */,
-				7C358BA51D1CBB300063CF66 /* VNotificationSettings+KeyAccessible.swift */,
 			);
 			path = "Model Extensions";
 			sourceTree = "<group>";
@@ -8233,7 +8230,6 @@
 				A73BA41F1C93B174008168B5 /* MediaSearchResult.swift in Sources */,
 				F009BD0B1CE654EE00F81CAA /* HashtagBarCell.swift in Sources */,
 				A789F7341BF11F4900F5C87B /* VUser+Parsable.swift in Sources */,
-				7C358BA61D1CBB300063CF66 /* VNotificationSettings+KeyAccessible.swift in Sources */,
 				C39B220E1B0A693600D3DFE7 /* VPermissionProfilePicture.m in Sources */,
 				A6886CFC1B5612F300D4F6F8 /* VAssetDownloader.m in Sources */,
 				A7F843721BFD5A0B004C3D55 /* CoreDataManager.swift in Sources */,

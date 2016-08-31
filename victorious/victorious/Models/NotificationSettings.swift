@@ -19,70 +19,6 @@ struct NotificationSettings {
     var isUserTagInCommentEnabled: Bool = true
     var isPeopleLikeMyPostEnabled: Bool = true
     
-    func isKeyEnabled(key: String) -> Bool {
-        guard let settingType = VNotificationSettingType(rawValue: key) else {
-            return false
-        }
-        
-        switch settingType {
-        case .postFromCreator:
-            return isPostFromCreatorEnabled
-        case .postFromFavorite:
-            return isPostFromFollowedEnabled
-        case .mentionsUser:
-            return isUserTagInCommentEnabled
-        case .upvotePost:
-            return isPeopleLikeMyPostEnabled
-        case .favoritesUser:
-            return isNewFollowerEnabled
-        case .privateMessage:
-            return isNewPrivateMessageEnabled
-        }
-    }
-    
-    mutating func updateValue(forKey key: String, newValue: Bool) {
-        guard let settingType = VNotificationSettingType(rawValue: key) else {
-            return
-        }
-        
-        switch settingType {
-        case .postFromCreator:
-            isPostFromCreatorEnabled = newValue
-        case .postFromFavorite:
-            isPostFromFollowedEnabled = newValue
-        case .mentionsUser:
-            isUserTagInCommentEnabled = newValue
-        case .upvotePost:
-            isPeopleLikeMyPostEnabled = newValue
-        case .favoritesUser:
-            isNewFollowerEnabled = newValue
-        case .privateMessage:
-            isNewPrivateMessageEnabled = newValue
-        }
-    }
-    
-    //Refer to VTrackingConstants
-    func trackingName(forKey key: String) -> String {
-        guard let settingType = VNotificationSettingType(rawValue: key) else {
-            return ""
-        }
-        
-        switch settingType {
-        case .postFromCreator:
-            return VTrackingValuePostFromCreator
-        case .postFromFavorite:
-            return VTrackingValuePostFromFollowed
-        case .mentionsUser:
-            return VTrackingValueUsertagInComment
-        case .upvotePost:
-            return VTrackingValuePeopleLikeMyPost
-        case .favoritesUser:
-            return VTrackingValueNewFollower
-        case .privateMessage:
-            return VTrackingValueNewPrivateMessage
-        }
-    }
-    
     mutating func populate(fromSourceModel sourceModel: NotificationPreference) {
         self.isPostFromCreatorEnabled = sourceModel.contains(.creatorPost)
         self.isNewFollowerEnabled = sourceModel.contains(.newFollower)
@@ -92,6 +28,70 @@ struct NotificationSettings {
         self.isPostOnFollowedHashTagEnabled = sourceModel.contains(.tagPost)
         self.isUserTagInCommentEnabled = sourceModel.contains(.mention)
         self.isPeopleLikeMyPostEnabled = sourceModel.contains(.likePost)
+    }
+    
+    mutating func updateValue(forKey key: String, newValue: Bool) {
+        guard let settingType = NotificationSettingType(rawValue: key) else {
+            return
+        }
+        
+        switch settingType {
+            case .postFromCreator:
+                isPostFromCreatorEnabled = newValue
+            case .postFromFavorite:
+                isPostFromFollowedEnabled = newValue
+            case .mentionsUser:
+                isUserTagInCommentEnabled = newValue
+            case .upvotePost:
+                isPeopleLikeMyPostEnabled = newValue
+            case .favoritesUser:
+                isNewFollowerEnabled = newValue
+            case .privateMessage:
+                isNewPrivateMessageEnabled = newValue
+        }
+    }
+    
+    func isKeyEnabled(key: String) -> Bool {
+        guard let settingType = NotificationSettingType(rawValue: key) else {
+            return false
+        }
+        
+        switch settingType {
+            case .postFromCreator:
+                return isPostFromCreatorEnabled
+            case .postFromFavorite:
+                return isPostFromFollowedEnabled
+            case .mentionsUser:
+                return isUserTagInCommentEnabled
+            case .upvotePost:
+                return isPeopleLikeMyPostEnabled
+            case .favoritesUser:
+                return isNewFollowerEnabled
+            case .privateMessage:
+                return isNewPrivateMessageEnabled
+        }
+    }
+    
+    /// Refer to VTrackingConstants
+    func trackingName(forKey key: String) -> String {
+        guard let settingType = NotificationSettingType(rawValue: key) else {
+            return ""
+        }
+        
+        switch settingType {
+            case .postFromCreator:
+                return VTrackingValuePostFromCreator
+            case .postFromFavorite:
+                return VTrackingValuePostFromFollowed
+            case .mentionsUser:
+                return VTrackingValueUsertagInComment
+            case .upvotePost:
+                return VTrackingValuePeopleLikeMyPost
+            case .favoritesUser:
+                return VTrackingValueNewFollower
+            case .privateMessage:
+                return VTrackingValueNewPrivateMessage
+        }
     }
     
     var networkPreferences: [NotificationPreference: Bool] {
@@ -109,3 +109,13 @@ struct NotificationSettings {
         return networkPreferences
     }
 }
+
+enum NotificationSettingType : String {
+    case postFromCreator = "notification_creator_post"
+    case postFromFavorite = "notification_follow_post"
+    case mentionsUser = "notification_mention"
+    case upvotePost = "notification_like_post"
+    case favoritesUser = "notification_new_follower"
+    case privateMessage = "notification_private_message"
+}
+

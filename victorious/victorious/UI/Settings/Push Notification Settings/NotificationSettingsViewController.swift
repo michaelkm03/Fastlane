@@ -248,7 +248,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
                         var rowTitle = rowDictionary["title"] as? String,
                         let rowKey = rowDictionary["key"] as? String
                     {
-                        if (rowKey == VNotificationSettingType.postFromCreator.rawValue) {
+                        if (rowKey == NotificationSettingType.postFromCreator.rawValue) {
                             let appInfo = VAppInfo(dependencyManager: dependencyManager)
                             rowTitle = rowTitle.stringByReplacingOccurrencesOfString(Constants.creatorNameMacro, withString: appInfo.ownerName ?? "Creator")
                         }
