@@ -18,15 +18,7 @@ class UserUnupvoteOperation: FetcherOperation {
     }
     
     override func main() {
-        // Make data change optimistically before executing the request
-        persistentStore.createBackgroundContext().v_performBlockAndWait { context in
-            guard let user: VUser = context.v_findObjects(["remoteId": self.userID]).first else {
-                return
-            }
-            
-            user.isFollowedByMainUser = false
-            context.v_save()
-        }
+        VCurrentUser.unUpvoteUser(with: userID)
         
         UserUnupvoteRemoteOperation(
             userID: userID,

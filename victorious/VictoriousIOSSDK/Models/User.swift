@@ -114,6 +114,8 @@ public struct User: UserModel {
     }
 }
 
+// FIXME: When parsing a user, we should update the blocked/upvoted user ID Set too
+
 extension User {
     public init?(json: JSON) {
         // Check for "id" as either a string or a number, because the back-end is inconsistent.

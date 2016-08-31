@@ -43,6 +43,22 @@ extension VUser {
     }
 }
 
+private var upvotedUserIDs = Set<User.ID>()
+
+extension VCurrentUser {
+    static func upvoteUser(with id: User.ID) {
+        upvotedUserIDs.insert(id)
+    }
+    
+    static func unUpvoteUser(with id: User.ID) {
+        upvotedUserIDs.remove(id)
+    }
+    
+    static func hasUpvotedUser(with id: User.ID) -> Bool {
+        return upvotedUserIDs.contains(id)
+    }
+}
+
 // Objc compatibility
 extension VCurrentUser {
     static var userID: NSNumber? {

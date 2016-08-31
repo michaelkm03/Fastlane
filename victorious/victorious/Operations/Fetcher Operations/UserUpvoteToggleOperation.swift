@@ -20,7 +20,7 @@ class UserUpvoteToggleOperation: FetcherOperation {
     }
     
     override func main() {
-        if user.isFollowedByCurrentUser == true {
+        if VCurrentUser.hasUpvotedUser(with: user.id) == true {
             UserUnupvoteOperation(userID: user.id, userUnupvoteAPIPath: self.unupvoteAPIPath).rechainAfter(self).queue()
         }
         else {

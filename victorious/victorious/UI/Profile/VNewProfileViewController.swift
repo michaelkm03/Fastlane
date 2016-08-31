@@ -159,8 +159,12 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     private func updateBarButtonItems() {
         supplementalRightButtons = []
         
-        let isCurrentUser = user?.isCurrentUser == true
-        let isCreator = user?.accessLevel.isCreator == true
+        guard let user = user else {
+            return
+        }
+        
+        let isCurrentUser = user.isCurrentUser
+        let isCreator = user.accessLevel.isCreator
         let currentIsCreator = VCurrentUser.user?.accessLevel.isCreator == true
         let vipEnabled = dependencyManager.isVIPEnabled == true
         
@@ -170,7 +174,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
             }
             
             if !isCreator {
-                if user?.isFollowedByCurrentUser == true {
+                if VCurrentUser.hasUpvotedUser(with: user.id) {
                     upvoteButton.setImage(dependencyManager.upvoteIconSelected, forState: .Normal)
                     upvoteButton.backgroundColor = dependencyManager.upvoteIconSelectedBackgroundColor
                     upvoteButton.tintColor = dependencyManager.upvoteIconTint
