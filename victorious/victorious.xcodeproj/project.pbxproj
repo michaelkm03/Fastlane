@@ -642,7 +642,6 @@
 		A601FB5C1B4369550050536C /* VEditProfilePicturePresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB5B1B4369550050536C /* VEditProfilePicturePresenter.m */; };
 		A601FB5F1B437E2B0050536C /* VAbstractPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB5E1B437E2B0050536C /* VAbstractPresenter.m */; };
 		A60658251B56FF7200414DB7 /* VCollectionListPresentationController.m in Sources */ = {isa = PBXBuildFile; fileRef = A60658241B56FF7200414DB7 /* VCollectionListPresentationController.m */; };
-		A60C990F1C5AE4830096691D /* FetchFromMainContextOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60C990E1C5AE4830096691D /* FetchFromMainContextOperationTests.swift */; };
 		A631F0961B4D99B600CC6C80 /* VAssetCollectionGridViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A631F0951B4D99B600CC6C80 /* VAssetCollectionGridViewController.storyboard */; };
 		A631F09B1B4DB52700CC6C80 /* VAlternateCaptureOption.m in Sources */ = {isa = PBXBuildFile; fileRef = A631F09A1B4DB52700CC6C80 /* VAlternateCaptureOption.m */; };
 		A650EFDA1B421F61005529E5 /* VAssetCollectionGridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A650EFD91B421F61005529E5 /* VAssetCollectionGridViewController.m */; };
@@ -733,7 +732,6 @@
 		A72C85FC1C977FF500E97D4F /* AlertCreateOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85561C977FF500E97D4F /* AlertCreateOperation.swift */; };
 		A72C86091C977FF500E97D4F /* DeviceExperimentsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85631C977FF500E97D4F /* DeviceExperimentsOperation.swift */; };
 		A72C860A1C977FF500E97D4F /* DevicePreferencesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85641C977FF500E97D4F /* DevicePreferencesOperation.swift */; };
-		A72C860C1C977FF500E97D4F /* FetchFromMainContextOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85661C977FF500E97D4F /* FetchFromMainContextOperation.swift */; };
 		A72C86161C977FF500E97D4F /* GIFSearchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85701C977FF500E97D4F /* GIFSearchOperation.swift */; };
 		A72C86171C977FF500E97D4F /* GIFSearchResultObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85711C977FF500E97D4F /* GIFSearchResultObject.swift */; };
 		A72C86191C977FF500E97D4F /* HashtagSearchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85731C977FF500E97D4F /* HashtagSearchOperation.swift */; };
@@ -2171,7 +2169,6 @@
 		A601FB5E1B437E2B0050536C /* VAbstractPresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAbstractPresenter.m; sourceTree = "<group>"; };
 		A60658231B56FF7200414DB7 /* VCollectionListPresentationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCollectionListPresentationController.h; sourceTree = "<group>"; };
 		A60658241B56FF7200414DB7 /* VCollectionListPresentationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCollectionListPresentationController.m; sourceTree = "<group>"; };
-		A60C990E1C5AE4830096691D /* FetchFromMainContextOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchFromMainContextOperationTests.swift; sourceTree = "<group>"; };
 		A631F0951B4D99B600CC6C80 /* VAssetCollectionGridViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VAssetCollectionGridViewController.storyboard; sourceTree = "<group>"; };
 		A631F0991B4DB52700CC6C80 /* VAlternateCaptureOption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAlternateCaptureOption.h; sourceTree = "<group>"; };
 		A631F09A1B4DB52700CC6C80 /* VAlternateCaptureOption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VAlternateCaptureOption.m; sourceTree = "<group>"; };
@@ -2322,7 +2319,6 @@
 		A72C85561C977FF500E97D4F /* AlertCreateOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertCreateOperation.swift; sourceTree = "<group>"; };
 		A72C85631C977FF500E97D4F /* DeviceExperimentsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceExperimentsOperation.swift; sourceTree = "<group>"; };
 		A72C85641C977FF500E97D4F /* DevicePreferencesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DevicePreferencesOperation.swift; sourceTree = "<group>"; };
-		A72C85661C977FF500E97D4F /* FetchFromMainContextOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchFromMainContextOperation.swift; sourceTree = "<group>"; };
 		A72C85701C977FF500E97D4F /* GIFSearchOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchOperation.swift; sourceTree = "<group>"; };
 		A72C85711C977FF500E97D4F /* GIFSearchResultObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchResultObject.swift; sourceTree = "<group>"; };
 		A72C85731C977FF500E97D4F /* HashtagSearchOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagSearchOperation.swift; sourceTree = "<group>"; };
@@ -5198,7 +5194,6 @@
 				BF2022731D00B97E006B59C5 /* ContentUpvoteOperation.swift */,
 				A72C85631C977FF500E97D4F /* DeviceExperimentsOperation.swift */,
 				A72C85641C977FF500E97D4F /* DevicePreferencesOperation.swift */,
-				A72C85661C977FF500E97D4F /* FetchFromMainContextOperation.swift */,
 				7AB14CAB1CBEF8AE006E674B /* FetchWebContentOperation.swift */,
 				A72C85701C977FF500E97D4F /* GIFSearchOperation.swift */,
 				A72C85711C977FF500E97D4F /* GIFSearchResultObject.swift */,
@@ -5572,7 +5567,6 @@
 				678C43C61C545F6B00EBE83A /* CreateMediaUploadOperationTests.swift */,
 				67F9EAAA1CCEA6210005A2EF /* CreatorListRemoteOperationTests.swift */,
 				623989831C3607F200D0E4D0 /* FetcherOperationTests.swift */,
-				A60C990E1C5AE4830096691D /* FetchFromMainContextOperationTests.swift */,
 				A7C192B11C9220A000E5EB00 /* GIFSearchOperationTests.swift */,
 				622103481C65354A00A77A73 /* LoginOperationTests.swift */,
 				A722D9431C6E9836003C06C5 /* LoginSuccessOperationTests.swift */,
@@ -8009,7 +8003,6 @@
 				67A3C9F31C4D99470068E4F5 /* TrendingHashtagOperationTests.swift in Sources */,
 				678AC1731C403CAE002E3FEA /* ValidatePasswordResetTokenOperationTests.swift in Sources */,
 				6700848B1C3F05D2001A3D9F /* RequestPasswordResetOperationTests.swift in Sources */,
-				A60C990F1C5AE4830096691D /* FetchFromMainContextOperationTests.swift in Sources */,
 				622103491C65354A00A77A73 /* LoginOperationTests.swift in Sources */,
 				A7FCFB9B1C3F568F000B2C20 /* AcknowledgeAlertOperationTests.swift in Sources */,
 				BF3CD8A21D12152C00CB7764 /* UserBlockToggleOperationTests.swift in Sources */,
@@ -8218,7 +8211,6 @@
 				7A87376E1CB5C66900D2FF74 /* NotificationCell.swift in Sources */,
 				A73BA2AC1C938B68008168B5 /* Stage.swift in Sources */,
 				D87351881A3120F5006D97B2 /* VCanvasView.m in Sources */,
-				A72C860C1C977FF500E97D4F /* FetchFromMainContextOperation.swift in Sources */,
 				D83AC7AA1AB201A600F63603 /* VPlayerView.m in Sources */,
 				7AC1945D1D2DB9BB001B15B8 /* UIColor+Hex.swift in Sources */,
 				A72C864A1C977FF500E97D4F /* VStoredLogin.m in Sources */,
