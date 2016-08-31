@@ -783,7 +783,6 @@
 		A72EDF8B1C03E225003D6177 /* ProfileUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72EDF8A1C03E225003D6177 /* ProfileUpdate.swift */; };
 		A72EDF8D1C03E23B003D6177 /* PasswordUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72EDF8C1C03E23B003D6177 /* PasswordUpdate.swift */; };
 		A72EDF8F1C03E4D0003D6177 /* LogoutRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72EDF8E1C03E4D0003D6177 /* LogoutRequest.swift */; };
-		A733D8FC1A23D0980053E9F1 /* VNotificationSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = A733D8FB1A23D0980053E9F1 /* VNotificationSettings.m */; };
 		A734AF181C499B5500ECA324 /* RequestBodyWriterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A734AF171C499B5500ECA324 /* RequestBodyWriterType.swift */; };
 		A735989C1BACCB0D00B5B630 /* VVideoPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A735989B1BACCB0D00B5B630 /* VVideoPlayer.m */; };
 		A73BA2A51C938B68008168B5 /* CloseUpMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73BA2941C938B68008168B5 /* CloseUpMenuItem.swift */; };
@@ -2382,8 +2381,6 @@
 		A72EDF8A1C03E225003D6177 /* ProfileUpdate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileUpdate.swift; sourceTree = "<group>"; };
 		A72EDF8C1C03E23B003D6177 /* PasswordUpdate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordUpdate.swift; sourceTree = "<group>"; };
 		A72EDF8E1C03E4D0003D6177 /* LogoutRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogoutRequest.swift; sourceTree = "<group>"; };
-		A733D8FA1A23D0980053E9F1 /* VNotificationSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNotificationSettings.h; sourceTree = "<group>"; };
-		A733D8FB1A23D0980053E9F1 /* VNotificationSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNotificationSettings.m; sourceTree = "<group>"; };
 		A734AF171C499B5500ECA324 /* RequestBodyWriterType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestBodyWriterType.swift; sourceTree = "<group>"; };
 		A735989B1BACCB0D00B5B630 /* VVideoPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoPlayer.m; sourceTree = "<group>"; };
 		A73AFB7B19F573AB0005A9EA /* VVideoTrackingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VVideoTrackingTests.m; sourceTree = "<group>"; };
@@ -6223,8 +6220,6 @@
 				BFCFFFF91CEE909F00F512B1 /* VImageAsset.swift */,
 				F07228241AD8846A00085653 /* VNotification.h */,
 				F07228251AD8846A00085653 /* VNotification.m */,
-				A733D8FA1A23D0980053E9F1 /* VNotificationSettings.h */,
-				A733D8FB1A23D0980053E9F1 /* VNotificationSettings.m */,
 				F03A01241D18D49E00BC0040 /* VTracking.swift */,
 				67D38B0A1CF6192F003F1D5F /* VUser.swift */,
 			);
@@ -8582,7 +8577,6 @@
 				BF3CD8841D11BB8400CB7764 /* UserUnupvoteRemoteOperation.swift in Sources */,
 				79FE185A1C531E2A00170E5B /* NumericPaginator+Predicate.swift in Sources */,
 				F0E6672E1D1496B8007BF537 /* ContentCell.swift in Sources */,
-				A733D8FC1A23D0980053E9F1 /* VNotificationSettings.m in Sources */,
 				A650EFDD1B422378005529E5 /* VAssetCollectionListViewController.m in Sources */,
 				D888B52B1A86FC7800B34149 /* VRadialGradientView.m in Sources */,
 				A73BA2DA1C9394B6008168B5 /* ForumViewController.swift in Sources */,
