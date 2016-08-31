@@ -74,6 +74,14 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         updateViews()
+        
+        vipSubscriptionHelper?.fetchProducts { [weak self] products in
+            guard let products = products else {
+                return
+            }
+            
+            self?.detailLabel.text = self?.dependencyManager.descriptionText(for: products)
+        }
     }
     
     // MARK: - IBActions
@@ -189,7 +197,6 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
             headlineLabel.font = font
         }
         
-        detailLabel.text = dependencyManager.descriptionText
         if let color = dependencyManager.descriptionTextColor {
             detailLabel.textColor = color
         }
@@ -251,8 +258,16 @@ private extension VDependencyManager {
         return colorForKey("color.header")
     }
     
-    var descriptionText: String? {
-        return stringForKey("text.description")
+    func descriptionText(for products: [VProduct]) -> String? {
+        guard let description = stringForKey("text.description") else {
+            return nil
+        }
+        
+        guard let lowestPriceProduct = products.select({ $1.storeKitProduct?.price.doubleValue < $0.storeKitProduct?.price.doubleValue }) else {
+            return nil
+        }
+        
+        return description.stringByReplacingOccurrencesOfString("%%PRICE_TAG%%", withString: lowestPriceProduct.price)
     }
     
     var descriptionFont: UIFont? {
