@@ -1146,15 +1146,9 @@
 		C3348B211BF53EEE004183A1 /* Bool+Initializers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3348B201BF53EEE004183A1 /* Bool+Initializers.swift */; };
 		C352CF361BF2804F00790921 /* FollowUserResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = C352CF351BF2804F00790921 /* FollowUserResponse.json */; };
 		C35AB0A61AF9843700B2AE1B /* VCVideoPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = C35AB0A51AF9843700B2AE1B /* VCVideoPlayerView.m */; };
-		C3623E591B9A77E0002B121D /* LevelUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623E581B9A77E0002B121D /* LevelUpViewController.swift */; };
-		C3623E5D1B9A7843002B121D /* LevelUpIconCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623E5C1B9A7843002B121D /* LevelUpIconCollectionViewCell.swift */; };
-		C3623E5F1B9A7874002B121D /* HexagonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623E5E1B9A7874002B121D /* HexagonView.swift */; };
-		C3623E611B9A78B4002B121D /* AnimatedBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623E601B9A78B4002B121D /* AnimatedBadgeView.swift */; };
-		C3623E631B9A7BDD002B121D /* LevelUpViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C3623E621B9A7BDD002B121D /* LevelUpViewController.storyboard */; };
 		C3623F261BA3AE54002B121D /* InterstitialManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623F231BA3AE54002B121D /* InterstitialManager.swift */; };
 		C3623F271BA3AE54002B121D /* VDependencyManager+Interstitial.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623F241BA3AE54002B121D /* VDependencyManager+Interstitial.swift */; };
 		C3623F2B1BA3AF3A002B121D /* Interstitial.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623F2A1BA3AF3A002B121D /* Interstitial.swift */; };
-		C3623F2D1BA7A4A3002B121D /* LevelUpAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3623F2C1BA7A4A2002B121D /* LevelUpAnimator.swift */; };
 		C36792601BB4BC4000B71092 /* TestAlertsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C367925F1BB4BC4000B71092 /* TestAlertsViewController.swift */; };
 		C37CCC5A1BFA78B2008B8D80 /* FanLoyalty.json in Resources */ = {isa = PBXBuildFile; fileRef = 6731B2641BF1834700B9FFFE /* FanLoyalty.json */; };
 		C39413B51B165F7800579A8E /* VPermissionAlertTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C39413B41B165F7800579A8E /* VPermissionAlertTextView.m */; };
@@ -2808,15 +2802,9 @@
 		C352CF351BF2804F00790921 /* FollowUserResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FollowUserResponse.json; sourceTree = "<group>"; };
 		C35AB0A41AF9843700B2AE1B /* VCVideoPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCVideoPlayerView.h; sourceTree = "<group>"; };
 		C35AB0A51AF9843700B2AE1B /* VCVideoPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCVideoPlayerView.m; sourceTree = "<group>"; };
-		C3623E581B9A77E0002B121D /* LevelUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LevelUpViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		C3623E5C1B9A7843002B121D /* LevelUpIconCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelUpIconCollectionViewCell.swift; sourceTree = "<group>"; };
-		C3623E5E1B9A7874002B121D /* HexagonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HexagonView.swift; sourceTree = "<group>"; };
-		C3623E601B9A78B4002B121D /* AnimatedBadgeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatedBadgeView.swift; sourceTree = "<group>"; };
-		C3623E621B9A7BDD002B121D /* LevelUpViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LevelUpViewController.storyboard; sourceTree = "<group>"; };
 		C3623F231BA3AE54002B121D /* InterstitialManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = InterstitialManager.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C3623F241BA3AE54002B121D /* VDependencyManager+Interstitial.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "VDependencyManager+Interstitial.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C3623F2A1BA3AF3A002B121D /* Interstitial.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Interstitial.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		C3623F2C1BA7A4A2002B121D /* LevelUpAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelUpAnimator.swift; sourceTree = "<group>"; };
 		C367925F1BB4BC4000B71092 /* TestAlertsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestAlertsViewController.swift; sourceTree = "<group>"; };
 		C39413B31B165F7800579A8E /* VPermissionAlertTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPermissionAlertTextView.h; sourceTree = "<group>"; };
 		C39413B41B165F7800579A8E /* VPermissionAlertTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPermissionAlertTextView.m; sourceTree = "<group>"; };
@@ -6341,22 +6329,8 @@
 				F0A34AA91BA89F95000D70EF /* Avatar Badging */,
 				670A3B1A1CA9ED92004C5F57 /* Interstitial Alert */,
 				677DCFE11CB479FC00FC4394 /* Interstitial Toast */,
-				C3623E571B9A77B2002B121D /* Level Up Screen */,
 			);
 			path = "Fan Club";
-			sourceTree = "<group>";
-		};
-		C3623E571B9A77B2002B121D /* Level Up Screen */ = {
-			isa = PBXGroup;
-			children = (
-				C3623E601B9A78B4002B121D /* AnimatedBadgeView.swift */,
-				C3623E5E1B9A7874002B121D /* HexagonView.swift */,
-				C3623F2C1BA7A4A2002B121D /* LevelUpAnimator.swift */,
-				C3623E5C1B9A7843002B121D /* LevelUpIconCollectionViewCell.swift */,
-				C3623E621B9A7BDD002B121D /* LevelUpViewController.storyboard */,
-				C3623E581B9A77E0002B121D /* LevelUpViewController.swift */,
-			);
-			path = "Level Up Screen";
 			sourceTree = "<group>";
 		};
 		C3623F211BA3AE54002B121D /* Interstitials */ = {
@@ -7207,7 +7181,6 @@
 				A73C3EBB1C45890E00A8452C /* MediaSearch.storyboard in Resources */,
 				036F387D1A0C4DEA0014DF66 /* Merriweather-Regular.ttf in Resources */,
 				036F38641A0C4DEA0014DF66 /* Arimo-Regular.ttf in Resources */,
-				C3623E631B9A7BDD002B121D /* LevelUpViewController.storyboard in Resources */,
 				D858E0C81B1FAD2F00437DDE /* VModernLandingViewController.storyboard in Resources */,
 				DB81FB631AAE49FE00EA4E3C /* LaunchImage@2x.png in Resources */,
 				0314D08819B4688E00FA363C /* Icon-60@2x.png in Resources */,
@@ -8188,7 +8161,6 @@
 				7AEB29531CCED68500B98C3B /* VDependencyManager+CoachmarkManager.swift in Sources */,
 				F020B35C1D35654700388043 /* CrossFadingNavigationControllerDelegate.swift in Sources */,
 				D8EC36EC1AB3F96700FB0CEB /* AVComposition+VTrimmedLoopingComposition.m in Sources */,
-				C3623E5F1B9A7874002B121D /* HexagonView.swift in Sources */,
 				D876E1FF1A9DA6CB002CAA29 /* VSolidColorBackground.m in Sources */,
 				C39413B51B165F7800579A8E /* VPermissionAlertTextView.m in Sources */,
 				A6D51BE71B4F33D700703AB0 /* VLibraryAuthorizationCell.m in Sources */,
@@ -8263,7 +8235,6 @@
 				D83AC7AA1AB201A600F63603 /* VPlayerView.m in Sources */,
 				7AC1945D1D2DB9BB001B15B8 /* UIColor+Hex.swift in Sources */,
 				A72C864A1C977FF500E97D4F /* VStoredLogin.m in Sources */,
-				C3623F2D1BA7A4A3002B121D /* LevelUpAnimator.swift in Sources */,
 				A73BA2A51C938B68008168B5 /* CloseUpMenuItem.swift in Sources */,
 				F0FBC4441D22EB580070873F /* CaptionBarPopulator.swift in Sources */,
 				A743E7EA1A081FFF00339CB3 /* VStringValidator.m in Sources */,
@@ -8273,7 +8244,6 @@
 				A7EBF5681C2F3BF40080C7CF /* VCurrentUser.swift in Sources */,
 				67E1502C1D774FCD002CC5A3 /* NotificationSettings.swift in Sources */,
 				03A9CBEE1B06ABEB00C1AEA5 /* VDependencyManager+VWorkspace.m in Sources */,
-				C3623E5D1B9A7843002B121D /* LevelUpIconCollectionViewCell.swift in Sources */,
 				BFE31A861CD296C000585155 /* MediaContentView.swift in Sources */,
 				037CB74219CFE8B20084BBED /* VUploadManager.m in Sources */,
 				03B83B6219E0D2CC00DC04E4 /* VUploadProgressViewController.m in Sources */,
@@ -8628,12 +8598,10 @@
 				A7D7ED571B5D6B0000FA346A /* VScaleAnimator.m in Sources */,
 				A73BA2AF1C938B68008168B5 /* StageViewController.swift in Sources */,
 				BFE25A471D0B7DBA00F55653 /* ContentDeleteRemoteOperation.swift in Sources */,
-				C3623E591B9A77E0002B121D /* LevelUpViewController.swift in Sources */,
 				A721E9431B572454000B7901 /* NSString+VParseHelp.m in Sources */,
 				7ACB6B111D6CBE1F008084EF /* AccessoryScreenBarButtonItem.swift in Sources */,
 				A782D6A21CDBFD800084DDE6 /* VPurchaseSettingsViewController.swift in Sources */,
 				0349FD4D1C504748004F95FC /* NSMutableURLRequest+UploadManager.swift in Sources */,
-				C3623E611B9A78B4002B121D /* AnimatedBadgeView.swift in Sources */,
 				A721E9531B572454000B7901 /* UIImage+VSolidColor.m in Sources */,
 				7A02F8951D273C0F00F43B24 /* SettingsTableViewCell.swift in Sources */,
 				D8D812B51B14FE5B00E93B37 /* VLoginFlowAPIHelper.m in Sources */,
