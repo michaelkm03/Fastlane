@@ -36,7 +36,8 @@ static NSString * const kFacebookKey = @"facebook";
 
 @property (nonatomic, weak) IBOutlet UIButton *emailButton;
 @property (nonatomic, weak) IBOutlet UIButton *facebookButton;
-@property (strong, nonatomic) IBOutlet UILabel *legalIntroLabel;
+@property (nonatomic, strong) IBOutlet UILabel *legalIntroLabel;
+@property (nonatomic, strong) IBOutlet UILabel *andLabel;
 @property (nonatomic, strong) IBOutlet UIButton *termsOfServiceButton;
 @property (nonatomic, strong) IBOutlet UIButton *privacyPolicyButton;
 @property (nonatomic, strong) IBOutlet UIView *legalButtonContainer;
@@ -101,10 +102,13 @@ static NSString * const kFacebookKey = @"facebook";
                                                                         attributes:legalAttributes];
     NSAttributedString *tosText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Terms of Service", nil)
                                                                   attributes:legalAttributesWithUnderline];
+    NSAttributedString *andText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"and", nil)
+                                                                  attributes:legalAttributes];
     NSAttributedString *ppText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Privacy Policy", nil)
                                                                  attributes:legalAttributesWithUnderline];
     self.legalIntroLabel.attributedText = legalIntoText;
     [self.termsOfServiceButton setAttributedTitle:tosText forState:UIControlStateNormal];
+    self.andLabel.attributedText = andText;
     [self.privacyPolicyButton setAttributedTitle:ppText forState:UIControlStateNormal];
     [self.dependencyManager addBackgroundToBackgroundHost:self];
     
