@@ -21,9 +21,6 @@ class TitleCardViewController: UIViewController {
 
     weak var delegate: TileCardDelegate?
 
-    /// Time after `show` is called to automatically slide out the card.
-    var autoHideDelay = NSTimeInterval(4)
-
     private var autoHideTimer: VTimerManager?
 
     private var currentState = State.hidden
@@ -35,6 +32,7 @@ class TitleCardViewController: UIViewController {
         static let borderWidth = CGFloat(1)
         static let borderColor = UIColor(white: 0.0, alpha: 0.1).CGColor
         static let maxMarqueeViewWidth = CGFloat(182.0)
+        static let minDelay = NSTimeInterval(4)
 
         /// This offset is so we clip the left side of the view to create the slide out title card effect.
         static let leadingEdgeOffset = CGFloat(-5)
@@ -102,8 +100,8 @@ class TitleCardViewController: UIViewController {
 
         autoHideTimer?.invalidate()
 
-        let delay = marqueeView.maxAnimationDuration > autoHideDelay ? marqueeView.maxAnimationDuration : autoHideDelay
-        autoHideTimer = VTimerManager.scheduledTimerManagerWithTimeInterval(delay, target: self, selector: #selector(autoHideTimerDidFire), userInfo: nil, repeats: false)
+        let autoHideDelay = marqueeView.maxAnimationDuration > Constants.minDelay ? marqueeView.maxAnimationDuration : Constants.minDelay
+        autoHideTimer = VTimerManager.scheduledTimerManagerWithTimeInterval(autoHideDelay, target: self, selector: #selector(autoHideTimerDidFire), userInfo: nil, repeats: false)
     }
 
     /// Slides out the title card from the screen.

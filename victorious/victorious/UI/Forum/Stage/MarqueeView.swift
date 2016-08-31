@@ -158,8 +158,10 @@ class MarqueeView: UIView {
         UIView.animateWithDuration(duration, delay: initialDelay, options: .CurveLinear, animations: {
             aLabel.frame = endALabelFrame
             bLabel.frame = endBLabelFrame
-        }) { [weak self] _ in
-            self?.maxAnimationDuration = 0.0
+        }) { [weak self] (finished) in
+            if finished {
+                self?.maxAnimationDuration = 0.0
+            }
         }
     }
 
