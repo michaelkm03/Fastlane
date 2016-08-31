@@ -218,7 +218,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         }
         
         UserUpvoteToggleOperation(
-            userID: user.id,
+            user: user,
             upvoteAPIPath: dependencyManager.userUpvoteAPIPath,
             unupvoteAPIPath: dependencyManager.userUnupvoteAPIPath
         ).queue { [weak self] _ in
