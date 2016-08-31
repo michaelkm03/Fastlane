@@ -83,7 +83,6 @@
 #import "VModernLoginAndRegistrationFlowViewController.h"
 #import "VNoContentView.h"
 #import "VNotification.h"
-#import "VNotificationSettings.h"
 #import "VNotificationSettingsStateManager.h"
 #import "VPageType.h"
 #import "VPaginatedDataSourceDelegate.h"

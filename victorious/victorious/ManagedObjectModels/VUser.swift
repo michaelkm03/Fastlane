@@ -44,7 +44,6 @@ class VUser: NSManagedObject, UserModel {
     @NSManaged var repostedSequences: Set<NSObject>?
     @NSManaged var maxUploadDuration: NSNumber
     @NSManaged var loginType: NSNumber
-    @NSManaged var notificationSettings: VNotificationSettings?
     @NSManaged var likedSequences: NSOrderedSet?
     @NSManaged var accountIdentifier: String?
     @NSManaged var isNewUser: NSNumber?

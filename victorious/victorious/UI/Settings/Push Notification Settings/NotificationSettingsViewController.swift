@@ -138,7 +138,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
             return
         }
         
-        let notificationUpdateOperation = DevicePreferencesOperation(newPreferences: settings.networkPreferences())
+        let notificationUpdateOperation = DevicePreferencesOperation(newPreferences: settings.networkPreferences)
         
         notificationUpdateOperation.queue() { [weak navigationController] results, error, cancelled in
             if let _ = error where navigationController != nil {
