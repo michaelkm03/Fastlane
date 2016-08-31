@@ -56,7 +56,7 @@ final class StartLoadingOperation: SyncOperation<Void>, VTemplateDownloadOperati
             )
         }
         else {
-            Log.error("Failed to access the downloaded template: \(template)")
+            Log.warning("Failed to access the downloaded template: \(template)")
         }
         
         TempDirectoryCleanupOperation().queue()

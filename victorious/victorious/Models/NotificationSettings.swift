@@ -1,5 +1,5 @@
 //
-//  VNotificationSettings+Parsable.swift
+//  NotificationSettings.swift
 //  victorious
 //
 //  Created by Michael Sena on 12/9/15.
@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-struct VNotificationSettings {
+struct NotificationSettings {
     var isPostFromCreatorEnabled: Bool = true
     var isNewFollowerEnabled: Bool = true
     var isNewPrivateMessageEnabled: Bool = true

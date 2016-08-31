@@ -1,5 +1,5 @@
 //
-//  VNotificationSettings+KeyAccessible.swift
+//  NotificationSettings+KeyAccessible.swift
 //  victorious
 //
 //  Created by Darvish Kamalia on 6/23/16.

@@ -495,6 +495,7 @@
 		67D3E0521CED4822008F9398 /* TestTrackingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6232D46F1C86539E00B1D9B8 /* TestTrackingManager.swift */; };
 		67DDA81F1D46CA2500C55494 /* NSURL+CustomScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67DDA81E1D46CA2500C55494 /* NSURL+CustomScheme.swift */; };
 		67DDA8211D46D64B00C55494 /* NSURL+CustomSchemeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67DDA8201D46D64B00C55494 /* NSURL+CustomSchemeTests.swift */; };
+		67E1502C1D774FCD002CC5A3 /* NotificationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67E1502B1D774FCD002CC5A3 /* NotificationSettings.swift */; };
 		67F2314D1CBC8A9F006BDBA5 /* ListMenuHashtagDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67F2314C1CBC8A9F006BDBA5 /* ListMenuHashtagDataSource.swift */; };
 		67F231531CBD6134006BDBA5 /* ListMenuViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 67F231521CBD6134006BDBA5 /* ListMenuViewController.storyboard */; };
 		67F231551CBD6178006BDBA5 /* ListMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67F231541CBD6178006BDBA5 /* ListMenuViewController.swift */; };
@@ -519,7 +520,6 @@
 		795B75901BFA686200227647 /* tos.json in Resources */ = {isa = PBXBuildFile; fileRef = 795B758F1BFA686200227647 /* tos.json */; };
 		795B75981BFA80E000227647 /* WebViewHTMLFetchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795B75971BFA80E000227647 /* WebViewHTMLFetchRequest.swift */; };
 		7979A0301C18B10400455FF8 /* NotificationSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7979A02F1C18B10400455FF8 /* NotificationSettingsViewController.swift */; };
-		7979A0341C18EAE300455FF8 /* VNotificationSettings+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7979A0331C18EAE300455FF8 /* VNotificationSettings+Parsable.swift */; };
 		797FD2611BFAA19900BFFB08 /* UserInteractionsTest.json in Resources */ = {isa = PBXBuildFile; fileRef = 797FD2601BFAA19900BFFB08 /* UserInteractionsTest.json */; };
 		7987D79A1B8A66E400EE4A39 /* NSURL+VTemporaryFiles.m in Sources */ = {isa = PBXBuildFile; fileRef = A6B9FD0E1B60630900166BE8 /* NSURL+VTemporaryFiles.m */; };
 		79883BDA1D1211310082D998 /* AccessoryScreenContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79883BD91D1211310082D998 /* AccessoryScreenContainer.swift */; };
@@ -2007,6 +2007,7 @@
 		67D3E0501CECEE70008F9398 /* ShowTutorialsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowTutorialsOperation.swift; sourceTree = "<group>"; };
 		67DDA81E1D46CA2500C55494 /* NSURL+CustomScheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSURL+CustomScheme.swift"; sourceTree = "<group>"; };
 		67DDA8201D46D64B00C55494 /* NSURL+CustomSchemeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSURL+CustomSchemeTests.swift"; sourceTree = "<group>"; };
+		67E1502B1D774FCD002CC5A3 /* NotificationSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationSettings.swift; sourceTree = "<group>"; };
 		67F2314C1CBC8A9F006BDBA5 /* ListMenuHashtagDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = ListMenuHashtagDataSource.swift; path = "List Menu/Trending Hashtags/ListMenuHashtagDataSource.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		67F231521CBD6134006BDBA5 /* ListMenuViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = ListMenuViewController.storyboard; path = "List Menu/ListMenuViewController.storyboard"; sourceTree = "<group>"; };
 		67F231541CBD6178006BDBA5 /* ListMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListMenuViewController.swift; path = "List Menu/ListMenuViewController.swift"; sourceTree = "<group>"; };
@@ -2037,7 +2038,6 @@
 		795B758F1BFA686200227647 /* tos.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = tos.json; sourceTree = "<group>"; };
 		795B75971BFA80E000227647 /* WebViewHTMLFetchRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewHTMLFetchRequest.swift; sourceTree = "<group>"; };
 		7979A02F1C18B10400455FF8 /* NotificationSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationSettingsViewController.swift; sourceTree = "<group>"; };
-		7979A0331C18EAE300455FF8 /* VNotificationSettings+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VNotificationSettings+Parsable.swift"; sourceTree = "<group>"; };
 		797FD2601BFAA19900BFFB08 /* UserInteractionsTest.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = UserInteractionsTest.json; sourceTree = "<group>"; };
 		7987D7981B8A66C400EE4A39 /* NSURL+VTemporaryFilesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+VTemporaryFilesTests.m"; sourceTree = "<group>"; };
 		79883BD91D1211310082D998 /* AccessoryScreenContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessoryScreenContainer.swift; sourceTree = "<group>"; };
@@ -4748,6 +4748,7 @@
 		673C3A881CF3E817008E477C /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				67E1502B1D774FCD002CC5A3 /* NotificationSettings.swift */,
 				79070A2C1CFE88590049CFC3 /* AppVersion.swift */,
 				7A5519EB1D24775900CD6BCF /* ContentMediaSize.swift */,
 				7A2747CD1D10AC37005168BA /* ContentModel.swift */,
@@ -5664,7 +5665,6 @@
 				BF1769C31CE10E0D00211FBA /* VContentMediaAsset+Parsable.swift */,
 				A789F7201BF11F4900F5C87B /* VImageAsset+Parsable.swift */,
 				A7C565E51C442FEA00E4DF6A /* VNotification+Parsable.swift */,
-				7979A0331C18EAE300455FF8 /* VNotificationSettings+Parsable.swift */,
 				A7F843631BFD0ED0004C3D55 /* VTracking+Parsable.swift */,
 				A789F7241BF11F4900F5C87B /* VUser+Parsable.swift */,
 			);
@@ -8275,6 +8275,7 @@
 				A72C86871C977FF600E97D4F /* MainRequestExecutor.swift in Sources */,
 				67BECC4F1CC985C000DFEE4B /* ListMenuCommunityItem.swift in Sources */,
 				A7EBF5681C2F3BF40080C7CF /* VCurrentUser.swift in Sources */,
+				67E1502C1D774FCD002CC5A3 /* NotificationSettings.swift in Sources */,
 				03A9CBEE1B06ABEB00C1AEA5 /* VDependencyManager+VWorkspace.m in Sources */,
 				C3623E5D1B9A7843002B121D /* LevelUpIconCollectionViewCell.swift in Sources */,
 				BFE31A861CD296C000585155 /* MediaContentView.swift in Sources */,
@@ -8549,7 +8550,6 @@
 				F0B6F08F1D3ECDE10037EACE /* VIPFetchSubscriptionRemoteOperation.swift in Sources */,
 				A72C85FA1C977FF500E97D4F /* AccountUpdateOperation.swift in Sources */,
 				F050D33C1CAB6B30007A05ED /* ComposerInputAttachmentType.swift in Sources */,
-				7979A0341C18EAE300455FF8 /* VNotificationSettings+Parsable.swift in Sources */,
 				A72C86211C977FF500E97D4F /* NotificationsOperation.swift in Sources */,
 				A72C86221C977FF500E97D4F /* NotificationsUnreadCountOperation.swift in Sources */,
 				A720055E1A030E4700285A9C /* VApplicationTracking.m in Sources */,

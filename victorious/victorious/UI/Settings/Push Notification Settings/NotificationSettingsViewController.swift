@@ -46,7 +46,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
     // MARK : - Properties
     
     private var dependencyManager: VDependencyManager!
-    var settings : VNotificationSettings? {
+    var settings : NotificationSettings? {
         didSet {
             initializeSections()
             tableView.reloadData()
