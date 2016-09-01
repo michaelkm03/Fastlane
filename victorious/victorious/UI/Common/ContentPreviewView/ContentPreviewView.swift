@@ -136,7 +136,6 @@ class ContentPreviewView: UIView {
                     case .failure(_):
                         self?.finishedLoadingPreviewImage(nil, for: content)
                 }
-
             }
         }
         else {
