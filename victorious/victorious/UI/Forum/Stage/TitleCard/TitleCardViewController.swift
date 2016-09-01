@@ -21,9 +21,6 @@ class TitleCardViewController: UIViewController {
 
     weak var delegate: TileCardDelegate?
 
-    /// Time after `show` is called to automatically slide out the card.
-    var autoHideDelay = NSTimeInterval(4)
-
     private var autoHideTimer: VTimerManager?
 
     private var currentState = State.hidden
@@ -34,6 +31,8 @@ class TitleCardViewController: UIViewController {
         static let cornerRadius = CGFloat(6)
         static let borderWidth = CGFloat(1)
         static let borderColor = UIColor(white: 0.0, alpha: 0.1).CGColor
+        static let maxMarqueeViewWidth = CGFloat(182.0)
+        static let minDelay = NSTimeInterval(4)
 
         /// This offset is so we clip the left side of the view to create the slide out title card effect.
         static let leadingEdgeOffset = CGFloat(-5)
@@ -42,14 +41,14 @@ class TitleCardViewController: UIViewController {
         static let horizontalDragLimit = CGFloat(10)
     }
 
+    @IBOutlet weak var marqueeView: MarqueeView!
+    @IBOutlet weak var marqueeViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet private weak var avatarView: AvatarView! {
         didSet {
             avatarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(avatarTapped)))
         }
     }
 
-    @IBOutlet private weak var authorLabel: UILabel!
-    @IBOutlet private weak var titleLabel: UILabel!
 
     /// The draggable container view - the actual title card that is animated.
     @IBOutlet private weak var draggableView: UIView!
@@ -80,6 +79,11 @@ class TitleCardViewController: UIViewController {
 
     /// Sets the content on the title card, call before `show` to have the right content be present before it animates in.
     func populate(with stageContent: StageContent?) {
+        /// check if the title card is on the stage and hide it before populating with new content.
+        if currentState == .shown {
+            hide()
+        }
+
         self.stageContent = stageContent
         populateUI(with: stageContent)
     }
@@ -95,7 +99,9 @@ class TitleCardViewController: UIViewController {
         animateTitleCard(withInitialVelocity: CGPointZero)
 
         autoHideTimer?.invalidate()
-        autoHideTimer = VTimerManager.scheduledTimerManagerWithTimeInterval(autoHideDelay, target: self, selector: #selector(hide), userInfo: nil, repeats: false)
+
+        let autoHideDelay = marqueeView.maxAnimationDuration > Constants.minDelay ? marqueeView.maxAnimationDuration : Constants.minDelay
+        autoHideTimer = VTimerManager.scheduledTimerManagerWithTimeInterval(autoHideDelay, target: self, selector: #selector(autoHideTimerDidFire), userInfo: nil, repeats: false)
     }
 
     /// Slides out the title card from the screen.
@@ -191,9 +197,18 @@ class TitleCardViewController: UIViewController {
             return
         }
 
-        authorLabel.text = stageContent?.content.author.displayName ?? ""
-        titleLabel.text = stageContent?.metaData?.title ?? ""
+        let author = stageContent?.content.author.displayName ?? ""
+        let title = stageContent?.metaData?.title ?? ""
+        let marqueeWidth = marqueeView.updateLabels(author: author, title: title)
+        marqueeViewWidthConstraint.constant = min(marqueeWidth, Constants.maxMarqueeViewWidth)
+        marqueeView.layoutIfNeeded()
+        marqueeView.scroll()
         avatarView.user = stageContent?.content.author
+    }
+
+    @objc private func autoHideTimerDidFire() {
+        autoHideTimer?.invalidate()
+        hide()
     }
 
     @objc private func avatarTapped() {

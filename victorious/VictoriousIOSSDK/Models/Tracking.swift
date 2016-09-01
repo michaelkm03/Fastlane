@@ -8,13 +8,10 @@
 
 import Foundation
 
-public enum CellTrackingKey: String {
+public enum ViewTrackingKey: String {
     case cellView = "cell_view"
     case cellClick = "cell_click"
     case cellLoad = "cell_load"
-}
-
-public enum ViewTrackingKey: String {
     case viewStart = "view_start"
     case viewStop = "view_stop"
     case videoComplete25 = "view_25_complete"
@@ -25,12 +22,10 @@ public enum ViewTrackingKey: String {
     case videoStall = "view_stall"
     case videoSkip = "view_skip"
     case share = "share"
-    case stageView = "stage_view"
 }
 
 public protocol TrackingModel {
     var id: String { get }
-    func trackingURLsForKey(key: CellTrackingKey) -> [String]?
     func trackingURLsForKey(key: ViewTrackingKey) -> [String]?
 }
 
@@ -38,10 +33,6 @@ public struct Tracking: TrackingModel {
     public let id: String
     
     private let trackingMap: [String : [String]]?
-    
-    public func trackingURLsForKey(key: CellTrackingKey) -> [String]? {
-        return trackingMap?[key.rawValue]
-    }
     
     public func trackingURLsForKey(key: ViewTrackingKey) -> [String]? {
         return trackingMap?[key.rawValue]
@@ -53,10 +44,7 @@ extension Tracking {
         var map = [String : [String]]()
         var id = ""
         json.dictionary?.forEach() { key, value in
-            if
-                CellTrackingKey(rawValue: key) != nil ||
-                ViewTrackingKey(rawValue: key) != nil
-            {
+            if ViewTrackingKey(rawValue: key) != nil {
                 let urlStrings = value.arrayValue.flatMap { $0.string }
                 map[key] = urlStrings
                 if id != "" {

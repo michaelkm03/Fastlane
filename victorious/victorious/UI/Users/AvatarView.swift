@@ -87,6 +87,12 @@ class AvatarView: UIView {
         addSubview(shadowView)
         addSubview(imageView)
         addSubview(initialsLabel)
+        
+        // This sets all of the subview's initial frames immediately without animation so that they don't animate from
+        // initial frames of zero, which can create awkward transitions.
+        UIView.performWithoutAnimation {
+            self.layoutIfNeeded()
+        }
     }
     
     // MARK: - Views
@@ -186,12 +192,21 @@ class AvatarView: UIView {
         imageView.backgroundColor = user?.color
         
         if let imageAsset = user?.previewImage(ofMinimumSize: bounds.size) {
-            imageView.setImageAsset(imageAsset) { [weak self] image, _ in
-                if image == nil {
-                    self?.showInitials()
-                }
-                else {
-                    self?.initialsLabel.hidden = true
+            imageView.getImageAsset(imageAsset) { [weak self] result in
+                switch result {
+                    case .success(let image):
+                        guard
+                            let strongSelf = self
+                            where strongSelf.user?.previewImage(ofMinimumSize: strongSelf.bounds.size)?.url == imageAsset.url
+                        else {
+                            return
+                        }
+                        
+                        self?.imageView.image = image
+                        self?.initialsLabel.hidden = true
+                    
+                    case .failure(_):
+                        self?.showInitials()
                 }
             }
         }
@@ -233,11 +248,6 @@ class AvatarView: UIView {
     }
     
     private func layoutVerifiedBadge() {
-        guard user?.avatarBadgeType == .verified else {
-            self.verifiedBadgeView?.hidden = true
-            return
-        }
-        
         let verifiedBadgeView = getOrCreateVerifiedBadgeView()
         let size = verifiedBadgeView.intrinsicContentSize()
         
@@ -248,7 +258,7 @@ class AvatarView: UIView {
         )
         
         verifiedBadgeView.frame = CGRect(center: pointOnCircle, size: size)
-        verifiedBadgeView.hidden = false
+        verifiedBadgeView.hidden = user?.avatarBadgeType != .verified
     }
     
     // MARK: - Shadow
