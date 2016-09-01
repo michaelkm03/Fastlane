@@ -52,6 +52,15 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
                 case .otherCreator: return "creator"
             }
         }
+        
+        var trackingString: String {
+            switch self {
+                case .selfUser: return "SELF_USER"
+                case .otherUser: return "OTHER_USER"
+                case .selfCreator: return "SELF_CREATOR"
+                case .otherCreator: return "OTHER_CREATOR"
+            }
+        }
     }
     
     // MARK: - Initializing
@@ -88,10 +97,12 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         gridStreamController?.reloadHeader()
+        trackViewWillAppearIfReady()
     }
     
     override func viewDidAppear(animated: Bool) {
         triggerCoachmark(withContext: profileScreenContext?.coachmarkContext)
+        dependencyManager.trackViewWillDisappear(self)
     }
     
     // MARK: - Dependency Manager
@@ -101,9 +112,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     // MARK: - Model Data
     
     var user: UserModel? {
-        get {
-            return gridStreamController?.content
-        }
+        return gridStreamController?.content
     }
     
     private var comparableUser: UserDetails? {
@@ -341,8 +350,10 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         comparableUser = newComparableUser
         
         setupGridStreamController(for: user)
-                
+        
         updateBarButtonItems()
+        
+        trackViewWillAppearIfNeeded()
     }
     
     private func setupGridStreamController(for user: VUser?) {
@@ -379,6 +390,29 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
             assert(user != nil, "User should not be nil")
             return user?.remoteId.integerValue ?? 0
         }
+    }
+    
+    // MARK: - Tracking
+    
+    private var wantsToTrackViewWillAppear = false
+    
+    private func trackViewWillAppearIfNeeded() {
+        if wantsToTrackViewWillAppear {
+            trackViewWillAppearIfReady()
+        }
+    }
+    
+    private func trackViewWillAppearIfReady() {
+        guard let context = profileScreenContext else {
+            wantsToTrackViewWillAppear = true
+            return
+        }
+        
+        wantsToTrackViewWillAppear = false
+        
+        dependencyManager.trackViewWillAppear(self, withParameters: [
+            VTrackingKeyProfileContext: context.trackingString
+        ])
     }
     
     // MARK: - ConfigurableGridStreamContainer
