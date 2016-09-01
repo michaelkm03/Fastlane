@@ -40,30 +40,38 @@ final class StartLoadingOperation: SyncOperation<Void>, VTemplateDownloadOperati
         return .background
     }
     
-    override func execute() -> OperationResult<Void> {
-        var cachedTemplate = VDependencyManager.dependencyManagerWithDefaultValuesForColorsAndFonts()
+    private var dependencyManager: VDependencyManager {
+        var defaultDependencyManager = VDependencyManager.dependencyManagerWithDefaultValuesForColorsAndFonts()
         if let template = template as? [NSObject: AnyObject] {
             let parentManager = VDependencyManager(
-                parentManager: cachedTemplate,
+                parentManager: defaultDependencyManager,
                 configuration: nil,
                 dictionaryOfClassesByTemplateName: nil
             )
             
-            cachedTemplate = VDependencyManager(
+            defaultDependencyManager = VDependencyManager(
                 parentManager: parentManager,
                 configuration: template,
                 dictionaryOfClassesByTemplateName: nil
             )
         }
         
+        return defaultDependencyManager
+    }
+    
+    private lazy var loginOperation: StoredLoginOperation = {
+        return StoredLoginOperation(dependencyManager: self.dependencyManager)
+    }()
+    
+    override func execute() -> OperationResult<Void> {
         TempDirectoryCleanupOperation().queue()
         
-        let loginOperation = StoredLoginOperation(dependencyManager: cachedTemplate)
-        
-        loginOperation.rechainAfter(self)
         if template == nil {
-            templateDownloadOperation.rechainAfter(loginOperation)
+            templateDownloadOperation.completionBlock = {
+                self.loginOperation.queue()
+            }
         } else {
+            loginOperation.rechainAfter(self)
             templateDownloadOperation.after(loginOperation)
         }
         
