@@ -9,6 +9,7 @@
 import Foundation
 
 class StageDataSource: ForumEventReceiver {
+    private static let backendStartTimeThreshold: Int64 = 1000
     
     weak var delegate: Stage?
     
@@ -43,9 +44,12 @@ class StageDataSource: ForumEventReceiver {
                     return
                 }
 
-                // Don't replace the content on the Main Stage if it's the same content since we might be getting 
-                // multiple Main stage messages during the contents lifetime.
-                if currentContent?.id == stageEvent.contentID && stageEvent.section == .main {
+                // Don't replace the content on the Main Stage if it's the same content and start time 
+                // is the same since we might be getting multiple Main stage messages during the contents lifetime.
+                let sameContent = currentContent?.id == stageEvent.contentID
+                let oldStartTime = currentContentFetchOperation?.refreshStageEvent.startTime ?? Timestamp(value: 0)
+                let sameStartTime = stageEvent.startTime?.within(StageDataSource.backendStartTimeThreshold, of: oldStartTime) ?? false
+                if sameContent && sameStartTime && stageEvent.section == .main {
                     return
                 }
                 

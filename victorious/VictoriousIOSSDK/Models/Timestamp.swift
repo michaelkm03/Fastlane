@@ -55,6 +55,12 @@ public struct Timestamp: Comparable, CustomStringConvertible {
     
     public static let max = Timestamp(value: Int64.max)
     public static let min = Timestamp(value: Int64.min)
+    
+    // MARK: - Compare
+    
+    public func within(threshold: Int64, of timeStamp: Timestamp) -> Bool {
+        return abs(self.value - timeStamp.value) < threshold
+    }
 }
 
 public func == (lhs: Timestamp, rhs: Timestamp) -> Bool {
