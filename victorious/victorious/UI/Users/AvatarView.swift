@@ -91,12 +91,6 @@ class AvatarView: UIView {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(currentUserDidChange), name: VCurrentUser.userDidUpdateNotificationKey, object: nil)
     }
     
-    private dynamic func currentUserDidChange() {
-        if user?.id == VCurrentUser.user?.id {
-            user = VCurrentUser.user
-        }
-    }
-    
     // MARK: - Views
     
     private let shadowView = UIView()
@@ -193,6 +187,12 @@ class AvatarView: UIView {
         
         initialsLabel.hidden = false
         initialsLabel.text = initials
+    }
+    
+    private dynamic func currentUserDidChange() {
+        if user?.id == VCurrentUser.user?.id {
+            user = VCurrentUser.user
+        }
     }
     
     // MARK: - Layout
