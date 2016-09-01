@@ -103,8 +103,8 @@ class MarqueeView: UIView {
     // MARK: - Animation
 
     func scroll() {
-        let shouldAnimateAuthor = authorLabelA.frame.size.width > frame.size.width
-        let shouldAnimateTitle = titleLabelA.frame.size.width > frame.size.width
+        let shouldAnimateAuthor = floor(authorLabelA.frame.size.width) > floor(frame.size.width)
+        let shouldAnimateTitle = floor(titleLabelA.frame.size.width) > floor(frame.size.width)
 
         if shouldAnimateAuthor || shouldAnimateTitle {
             addGradientView()
