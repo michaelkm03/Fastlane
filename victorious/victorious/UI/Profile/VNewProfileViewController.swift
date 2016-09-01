@@ -311,10 +311,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     }
     
     private func fetchUser(using dependencyManager: VDependencyManager) {
-        if let user = dependencyManager.templateValueOfType(VUser.self, forKey: VDependencyManager.userKey) as? VUser {
-            setUser(user, using: dependencyManager)
-        }
-        else if let userRemoteID = dependencyManager.templateValueOfType(NSNumber.self, forKey: VDependencyManager.userRemoteIdKey) as? NSNumber {
+        if let userRemoteID = dependencyManager.templateValueOfType(NSNumber.self, forKey: VDependencyManager.userRemoteIdKey) as? NSNumber {
             fetchUser(withRemoteID: userRemoteID.integerValue)
         }
         else {
