@@ -8,6 +8,8 @@
 
 import UIKit
 
+/// A reusable collection view supplementary view that displays an activity indicator, which can be useful for
+/// displaying loading states during pagination.
 final class CollectionLoadingView: UICollectionReusableView {
     
     // MARK: - Constants
@@ -42,6 +44,7 @@ final class CollectionLoadingView: UICollectionReusableView {
     
     // MARK: - Configuration
     
+    /// The color of the activity indicator inside the view.
     var color: UIColor? {
         get {
             return activityIndicatorView.color
@@ -51,6 +54,7 @@ final class CollectionLoadingView: UICollectionReusableView {
         }
     }
     
+    /// Whether or not the view is currently displaying a loading state.
     var isLoading: Bool {
         get {
             return activityIndicatorView.isAnimating()
@@ -67,18 +71,21 @@ final class CollectionLoadingView: UICollectionReusableView {
     
     // MARK: - Registering
     
+    /// Registers the view to be dequeued later in `collectionView`.
     static func register(in collectionView: UICollectionView, forSupplementaryViewKind kind: String) {
         collectionView.registerClass(self, forSupplementaryViewOfKind: kind, withReuseIdentifier: defaultReuseIdentifier)
     }
     
     // MARK: - Dequeueing
     
+    /// Dequeues a loading view from `collectionView` to be displayed.
     static func dequeue(from collectionView: UICollectionView, forSupplementaryViewKind kind: String, at indexPath: NSIndexPath) -> CollectionLoadingView {
         return collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: defaultReuseIdentifier, forIndexPath: indexPath) as! CollectionLoadingView
     }
     
     // MARK: - Sizing
     
+    /// The size that the view prefers to be when displayed in a collection view with the given `bounds`.
     static func preferredSize(in bounds: CGRect) -> CGSize {
         return CGSize(width: bounds.width, height: Constants.preferredHeight)
     }
