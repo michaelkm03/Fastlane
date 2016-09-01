@@ -113,8 +113,10 @@ class AvatarView: UIView {
         UIView.performWithoutAnimation {
             self.layoutIfNeeded()
         }
+
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userStatusDidChange), name: VIPSubscriptionHelper.userVIPStatusChangedNotificationKey, object: nil)
     }
-    
+
     // MARK: - Views
     
     private let shadowView = UIView()
@@ -136,9 +138,9 @@ class AvatarView: UIView {
         return verifiedBadgeView
     }
 
-    private func getOrCreateVIPBadgeView() -> UIView {
-        if let vipBadgeView = self.vipBadgeView {
-            return vipBadgeView
+    private func setOrCreateVIPBadgeView() {
+        if self.vipBadgeView != nil {
+            return
         }
 
         let vipBadgeView = UIView()
@@ -146,7 +148,6 @@ class AvatarView: UIView {
         self.vipBadgeView = vipBadgeView
 
         addSubview(vipBadgeView)
-        updateVIPBadge()
 
         let pointOnCircle = CGPoint(
             angle: Constants.vipBadgeViewAngle,
@@ -176,13 +177,11 @@ class AvatarView: UIView {
 
         vipLabel.frame = centeredFrame
         vipBadgeView.addSubview(vipLabel)
-
-        return vipBadgeView
     }
 
-    private func getOrCreateVIPBorderView() -> UIView {
-        if let vipBorderView = self.vipBorderView {
-            return vipBorderView
+    private func setOrCreateVIPBorderView() {
+        if self.vipBorderView != nil {
+            return
         }
 
         let vipBorderView = UIView()
@@ -201,8 +200,6 @@ class AvatarView: UIView {
         vipBorderView.layer.cornerRadius = vipBorderView.frame.size.width / 2
 
         self.vipBorderView = vipBorderView
-
-        return vipBorderView
     }
 
     // MARK: - Configuration
@@ -232,11 +229,13 @@ class AvatarView: UIView {
     }
 
     private func updateVIPBadge() {
-        vipBadgeView?.hidden = !size.shouldShowVIPBadge
+        let shouldShowVIPBadge = user?.hasValidVIPSubscription == true && size.shouldShowVIPBorder
+        vipBadgeView?.hidden = !shouldShowVIPBadge
     }
 
     private func updateVIPBorderView() {
-        vipBorderView?.hidden = !size.shouldShowVIPBorder
+        let shouldShowVIPBorder = user?.hasValidVIPSubscription == true && size.shouldShowVIPBorder
+        vipBorderView?.hidden = !shouldShowVIPBorder
     }
     
     // MARK: - Content
@@ -369,23 +368,21 @@ class AvatarView: UIView {
     }
 
     private func layoutVIPBadge() {
-        guard let vipStatus = user?.vipStatus where vipStatus.isVIP == true && size.shouldShowVIPBadge else {
-            self.vipBadgeView?.hidden = true
+        guard size.shouldShowVIPBadge else {
             return
         }
 
-        let vipBadgeView = getOrCreateVIPBadgeView()
-        vipBadgeView.hidden = false
+        setOrCreateVIPBadgeView()
+        updateVIPBadge()
     }
 
     private func layoutVIPBorderView() {
-        guard let vipStatus = user?.vipStatus where vipStatus.isVIP == true && size.shouldShowVIPBorder else {
-            self.vipBorderView?.hidden = true
+        guard size.shouldShowVIPBorder else {
             return
         }
 
-        let vipBorderView = getOrCreateVIPBorderView()
-        vipBorderView.hidden = false
+        setOrCreateVIPBorderView()
+        updateVIPBorderView()
     }
 
     // MARK: - Shadow
@@ -399,5 +396,22 @@ class AvatarView: UIView {
             shadowBounds = newShadowBounds
             shadowView.layer.shadowPath = UIBezierPath(ovalInRect: newShadowBounds).CGPath
         }
+    }
+
+    // MARK: - Responding to VIP changes
+
+    private var userIsVIP: Bool? {
+        didSet {
+            guard userIsVIP != oldValue else {
+                return
+            }
+
+            updateVIPBadge()
+            updateVIPBorderView()
+        }
+    }
+
+    private dynamic func userStatusDidChange(notification: NSNotification) {
+        userIsVIP = VCurrentUser.user()?.hasValidVIPSubscription == true
     }
 }
