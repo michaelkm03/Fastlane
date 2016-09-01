@@ -92,12 +92,6 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         collectionView.backgroundColor = UIColor.clearColor()
         collectionView.alwaysBounceVertical = true
         
-        collectionView.registerNib(
-            VFooterActivityIndicatorView.nibForSupplementaryView(),
-            forSupplementaryViewOfKind: UICollectionElementKindSectionFooter,
-            withReuseIdentifier: VFooterActivityIndicatorView.reuseIdentifier()
-        )
-        
         edgesForExtendedLayout = .Bottom
         extendedLayoutIncludesOpaqueBars = true
         automaticallyAdjustsScrollViewInsets = false
@@ -203,9 +197,9 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     }
     
     func collectionView(collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, atIndexPath indexPath: NSIndexPath) {
-        if let footerView = view as? VFooterActivityIndicatorView {
-            footerView.activityIndicator.color = dependencyManager.refreshControlColor
-            footerView.setActivityIndicatorVisible(dataSource.isLoading, animated: false)
+        if let loadingView = view as? CollectionLoadingView {
+            loadingView.color = dependencyManager.refreshControlColor
+            loadingView.isLoading = dataSource.isLoading
         }
         else if elementKind == UICollectionElementKindSectionHeader {
             header?.headerDidAppear()
@@ -223,7 +217,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
             return CGSizeZero
         }
         
-        return dataSource.isLoading ? VFooterActivityIndicatorView.desiredSizeWithCollectionViewBounds(collectionView.bounds) : CGSizeZero
+        return dataSource.isLoading ? CollectionLoadingView.preferredSize(in: collectionView.bounds) : CGSizeZero
     }
 
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {

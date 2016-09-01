@@ -48,6 +48,7 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
     func registerViewsFor(collectionView: UICollectionView) {
         let headerNib = UINib(nibName: headerName, bundle: nil)
         collectionView.registerNib(headerNib, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerName)
+        CollectionLoadingView.register(in: collectionView, forSupplementaryViewKind: UICollectionElementKindSectionFooter)
     }
     
     // MARK: - Managing content
@@ -127,7 +128,7 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
     
     func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
         if kind == UICollectionElementKindSectionFooter && indexPath.section == GridStreamSection.Contents.rawValue {
-            return collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: VFooterActivityIndicatorView.reuseIdentifier(), forIndexPath: indexPath) as! VFooterActivityIndicatorView
+            return CollectionLoadingView.dequeue(from: collectionView, forSupplementaryViewKind: kind, at: indexPath)
         }
         else if kind == UICollectionElementKindSectionHeader && indexPath.section == GridStreamSection.Header.rawValue {
             if headerView == nil {

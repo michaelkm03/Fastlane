@@ -64,7 +64,6 @@
 #import "VEnvironmentManager.h"
 #import "VFlexBar.h"
 #import "VFocusable.h"
-#import "VFooterActivityIndicatorView.h"
 #import "VGifCreationFlowController.h"
 #import "VHasManagedDependencies.h"
 #import "VHashTags.h"
