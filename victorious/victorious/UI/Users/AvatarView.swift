@@ -198,8 +198,8 @@ class AvatarView: UIView {
                         guard
                             let strongSelf = self
                             where strongSelf.user?.previewImage(ofMinimumSize: strongSelf.bounds.size)?.url == imageAsset.url
-                            else {
-                                return
+                        else {
+                            return
                         }
                         
                         self?.imageView.image = image
