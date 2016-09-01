@@ -127,18 +127,14 @@ class ContentPreviewView: UIView {
     private func setupImage(forContent content: ContentModel) {
         let userCanViewContent = VCurrentUser.user()?.canView(content) == true
         if let imageAsset = content.previewImage(ofMinimumWidth: bounds.size.width) {
-            if !userCanViewContent {
-                guard let imageAssetURL = imageAsset.url else {
-                    return
-                }
-                
-                previewImageView.applyBlurToImageURL(imageAssetURL, withRadius: Constants.imageViewBlurEffectRadius) { [weak self] image, _ in
-                    self?.finishedLoadingPreviewImage(image, for: content)
-                }
-            }
-            else {
-                previewImageView.getImageAsset(imageAsset) { [weak self] image, _ in
-                    self?.finishedLoadingPreviewImage(image, for: content)
+            let blurRadius = userCanViewContent ? 0 : Constants.imageViewBlurEffectRadius
+            previewImageView.getImageAsset(imageAsset, blurRadius: blurRadius) { [weak self] result in
+                switch result {
+                    case .success(let image):
+                        self?.finishedLoadingPreviewImage(image, for: content)
+                        
+                    case .failure(_):
+                        self?.finishedLoadingPreviewImage(nil, for: content)
                 }
             }
         }
