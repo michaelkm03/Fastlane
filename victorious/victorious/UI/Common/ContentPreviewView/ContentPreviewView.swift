@@ -128,8 +128,15 @@ class ContentPreviewView: UIView {
         let userCanViewContent = VCurrentUser.user()?.canView(content) == true
         if let imageAsset = content.previewImage(ofMinimumWidth: bounds.size.width) {
             let blurRadius = userCanViewContent ? 0 : Constants.imageViewBlurEffectRadius
-            previewImageView.getImageAsset(imageAsset, blurRadius: blurRadius) { [weak self] image, _ in
-                self?.finishedLoadingPreviewImage(image, for: content)
+            previewImageView.getImageAsset(imageAsset, blurRadius: blurRadius) { [weak self] result in
+                switch result {
+                    case .success(let image):
+                        self?.finishedLoadingPreviewImage(image, for: content)
+                        
+                    case .failure(_):
+                        self?.finishedLoadingPreviewImage(nil, for: content)
+                }
+
             }
         }
         else {

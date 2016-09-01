@@ -9,7 +9,7 @@
 import UIKit
 import SDWebImage
 
-typealias ImageCompletion = ((UIImage?, NSError?)->())?
+typealias ImageCompletion = (Result<UIImage> -> Void)?
 
 extension UIImageView {
     private static let blurredImageCachePathExtension = "blurred"
@@ -18,9 +18,9 @@ extension UIImageView {
     func getImageAsset(imageAsset: ImageAssetModel, blurRadius: CGFloat = 0, completion: ImageCompletion) {
         image = nil
         
-        let imageBlurBlock: (UIImage?, NSURL?, NSError?)->() = { [weak self] image, url, error in
+        let imageBlurBlock: (UIImage?, NSURL?, NSError?) -> Void = { [weak self] image, url, error in
             guard let image = image else {
-                completion?(nil, error)
+                completion?(.failure(error))
                 return
             }
             
@@ -28,7 +28,7 @@ extension UIImageView {
                 self?.applyBlur(to: image, with: url, radius: blurRadius, completion: completion)
             }
             else {
-                completion?(image, error)
+                completion?(.success(image))
             }
         }
         
@@ -66,12 +66,12 @@ extension UIImageView {
     private func blurImage(image: UIImage, withRadius radius: CGFloat, completion: ImageCompletion) {
         dispatch_async(dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0)) {
             guard let blurredImage = image.applyBlur(withRadius: radius) else {
-                completion?(nil, nil)
+                completion?(.failure(nil))
                 return
             }
             
             dispatch_async(dispatch_get_main_queue()) {
-                completion?(blurredImage, nil)
+                completion?(.success(blurredImage))
             }
         }
     }
@@ -85,20 +85,20 @@ extension UIImageView {
         
         // If we have the blurred image cached, return that copy
         if let cachedImage = cachedBlurredImage(for: url, blurRadius: radius) {
-            completion?(cachedImage, nil)
+            completion?(.success(cachedImage))
             return
         }
         
         // Otherwise, blur the image and cache it
-        blurImage(image, withRadius: radius) { [weak self] blurredImage, error in
-            guard let blurredImage = blurredImage else {
-                completion?(nil, error)
-                return
+        blurImage(image, withRadius: radius) { [weak self] result in
+            switch result {
+                case .success(let blurredImage):
+                    self?.addBlurredImage(blurredImage, toCacheWithURL: url, blurRadius: radius)
+                    completion?(.success(blurredImage))
+
+                case .failure(let error):
+                    completion?(.failure(error))
             }
-            
-            self?.addBlurredImage(blurredImage, toCacheWithURL: url, blurRadius: radius)
-            
-            completion?(blurredImage, nil)
         }
     }
 }

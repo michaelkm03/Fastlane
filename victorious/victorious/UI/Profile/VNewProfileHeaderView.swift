@@ -146,8 +146,12 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         avatarView.user = user
         
         if let imageAsset = user?.previewImage(ofMinimumSize: backgroundImageView.frame.size) {
-            backgroundImageView.getImageAsset(imageAsset, blurRadius: VNewProfileHeaderView.blurRadius) { [weak self] image, error in
-                self?.backgroundImageView.image = image
+            backgroundImageView.getImageAsset(imageAsset, blurRadius: VNewProfileHeaderView.blurRadius) { [weak self] result in
+                switch result {
+                    case .success(let image): self?.backgroundImageView.image = image
+                    case .failure(_): break
+                }
+
                 self?.backgroundImageView.alpha = 1.0
             }
         }
