@@ -32,52 +32,45 @@
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cyi-4J-6yH" userLabel="termsOfServiceButton">
-                                        <rect key="frame" x="0.0" y="19" width="87" height="30"/>
-                                        <state key="normal" title="Button">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="showTermsOfService:" destination="yjK-eD-rfp" eventType="touchUpInside" id="LDQ-aZ-79B"/>
-                                        </connections>
-                                    </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="and" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VOv-1T-G3Z">
-                                        <rect key="frame" x="90" y="23" width="29" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hnl-7M-et7" userLabel="privacyPolicyButton">
-                                        <rect key="frame" x="122" y="19" width="86" height="30"/>
-                                        <state key="normal" title="Button">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="showPrivacyPolicy:" destination="yjK-eD-rfp" eventType="touchUpInside" id="dYt-Ya-AOl"/>
-                                        </connections>
-                                    </button>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="hfH-vD-0ll">
+                                        <rect key="frame" x="41" y="19" width="127" height="30"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cyi-4J-6yH" userLabel="termsOfServiceButton">
+                                                <rect key="frame" x="0.0" y="0.0" width="46" height="30"/>
+                                                <state key="normal" title="Button">
+                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="showTermsOfService:" destination="yjK-eD-rfp" eventType="touchUpInside" id="LDQ-aZ-79B"/>
+                                                </connections>
+                                            </button>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="and" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VOv-1T-G3Z">
+                                                <rect key="frame" x="49" y="0.0" width="29" height="30"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hnl-7M-et7" userLabel="privacyPolicyButton">
+                                                <rect key="frame" x="81" y="0.0" width="46" height="30"/>
+                                                <state key="normal" title="Button">
+                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="showPrivacyPolicy:" destination="yjK-eD-rfp" eventType="touchUpInside" id="dYt-Ya-AOl"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="lKN-X9-uiX" secondAttribute="trailing" id="0KL-m2-7eN"/>
-                                    <constraint firstItem="hnl-7M-et7" firstAttribute="baseline" secondItem="cyi-4J-6yH" secondAttribute="baseline" id="3P0-jz-TBD"/>
-                                    <constraint firstItem="VOv-1T-G3Z" firstAttribute="baseline" secondItem="cyi-4J-6yH" secondAttribute="baseline" id="6pt-ND-w3N"/>
                                     <constraint firstItem="lKN-X9-uiX" firstAttribute="top" secondItem="DE0-cf-VF8" secondAttribute="top" id="AkZ-RM-x8A"/>
-                                    <constraint firstItem="cyi-4J-6yH" firstAttribute="leading" secondItem="DE0-cf-VF8" secondAttribute="leading" id="JtE-B6-iFn"/>
-                                    <constraint firstItem="hnl-7M-et7" firstAttribute="width" secondItem="cyi-4J-6yH" secondAttribute="width" id="LYb-j0-otA"/>
-                                    <constraint firstItem="hnl-7M-et7" firstAttribute="leading" secondItem="cyi-4J-6yH" secondAttribute="trailing" constant="3" id="PTY-5o-REv"/>
-                                    <constraint firstAttribute="bottom" secondItem="cyi-4J-6yH" secondAttribute="bottom" id="RTZ-Fk-mnI"/>
-                                    <constraint firstItem="hnl-7M-et7" firstAttribute="leading" secondItem="VOv-1T-G3Z" secondAttribute="trailing" constant="3" id="ZfE-Tw-B6Y"/>
-                                    <constraint firstItem="cyi-4J-6yH" firstAttribute="top" secondItem="lKN-X9-uiX" secondAttribute="bottom" constant="-2" id="dPc-RV-xMx"/>
+                                    <constraint firstItem="hfH-vD-0ll" firstAttribute="top" secondItem="lKN-X9-uiX" secondAttribute="bottom" constant="-2" id="aLI-dD-OWK"/>
                                     <constraint firstItem="lKN-X9-uiX" firstAttribute="leading" secondItem="DE0-cf-VF8" secondAttribute="leading" id="g16-Fr-r6z"/>
-                                    <constraint firstAttribute="trailing" secondItem="hnl-7M-et7" secondAttribute="trailing" id="jCZ-nj-7Aq"/>
-                                    <constraint firstItem="VOv-1T-G3Z" firstAttribute="leading" secondItem="cyi-4J-6yH" secondAttribute="trailing" constant="3" id="w7G-Qf-zej"/>
+                                    <constraint firstItem="hfH-vD-0ll" firstAttribute="centerX" secondItem="DE0-cf-VF8" secondAttribute="centerX" id="k2E-zC-jJP"/>
+                                    <constraint firstAttribute="bottom" secondItem="hfH-vD-0ll" secondAttribute="bottom" id="mJg-gL-Dco"/>
                                 </constraints>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="PTY-5o-REv"/>
-                                    </mask>
-                                </variation>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="jz3-pf-TOX">
                                 <rect key="frame" x="0.0" y="500" width="600" height="100"/>
