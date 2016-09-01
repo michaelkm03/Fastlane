@@ -9,6 +9,7 @@
 import Foundation
 
 class StageDataSource: ForumEventReceiver {
+    private static let backendStartTimeThreshold: Int64 = 1000
     
     weak var delegate: Stage?
     
@@ -27,24 +28,28 @@ class StageDataSource: ForumEventReceiver {
     
     func receive(event: ForumEvent) {
         guard let dependencyManager = dependencyManager else {
-            v_log("No dependency manager avaliable in StageDataSource, bailing.")
+            Log.error("No dependency manager avaliable in StageDataSource, bailing.")
             return
         }
         
         switch event {
             case .refreshStage(let stageEvent):
                 guard let currentUserID = VCurrentUser.user?.id else {
-                    v_log("The current user is not logged in and got a refresh stage message. App is in an inconsistent state. VCurrentUser -> \(VCurrentUser.user)")
+                    Log.error("The current user is not logged in and got a refresh stage message. App is in an inconsistent state. VCurrentUser -> \(VCurrentUser.user)")
                     return
                 }
                 
                 guard let contentFetchURL = dependencyManager.contentFetchURL else {
+                    Log.warning("Missing contentFetchURL to fetch stage content. DependencyManager: \(dependencyManager)")
                     return
                 }
 
-                // Don't replace the content on the Main Stage if it's the same content since we might be getting 
-                // multiple Main stage messages during the contents lifetime.
-                if currentContent?.id == stageEvent.contentID && stageEvent.section == .main {
+                // Don't replace the content on the Main Stage if it's the same content and start time 
+                // is the same since we might be getting multiple Main stage messages during the contents lifetime.
+                let sameContent = currentContent?.id == stageEvent.contentID
+                let oldStartTime = currentContentFetchOperation?.refreshStageEvent.startTime ?? Timestamp(value: 0)
+                let sameStartTime = stageEvent.startTime?.within(StageDataSource.backendStartTimeThreshold, of: oldStartTime) ?? false
+                if sameContent && sameStartTime && stageEvent.section == .main {
                     return
                 }
                 
@@ -57,6 +62,7 @@ class StageDataSource: ForumEventReceiver {
                         !canceled,
                         let content = results?.first as? ContentModel
                     else {
+                        Log.warning("content fetch failed after receiving stage refresh event: \(stageEvent), Error: \(error)")
                         return
                     }
 

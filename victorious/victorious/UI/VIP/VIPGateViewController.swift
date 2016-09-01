@@ -12,7 +12,7 @@ import MBProgressHUD
 /// Conformers will receive a message when the vip gate
 /// will dismiss or has permitted the user to pass through.
 protocol VIPGateViewControllerDelegate: class {
-    func vipGateExitedWithSuccess(success: Bool, afterPurchase purchased: Bool)
+    func vipGateExitedWithSuccess(success: Bool)
     
     /// Presents a VIP flow on the scaffold using values found in the provided dependency manager.
     func showVIPForumFromDependencyManager(dependencyManager: VDependencyManager)
@@ -74,6 +74,14 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         updateViews()
+        
+        vipSubscriptionHelper?.fetchProducts { [weak self] products in
+            guard let products = products else {
+                return
+            }
+            
+            self?.detailLabel.text = self?.dependencyManager.descriptionText(for: products)
+        }
     }
     
     // MARK: - IBActions
@@ -92,7 +100,7 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
             
             switch result {
                 case .success:
-                    self?.openGate(afterPurchase: false)
+                    self?.openGate()
                 case .failure(let error):
                     let title = Strings.restoreFailed
                     let message = (error as NSError).localizedDescription
@@ -113,7 +121,7 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     
     @IBAction func onCloseSelected() {
         closeButton.dependencyManager?.trackButtonEvent(.tap)
-        delegate?.vipGateExitedWithSuccess(false, afterPurchase: false)
+        delegate?.vipGateExitedWithSuccess(false)
     }
     
     // MARK: - Private
@@ -137,10 +145,6 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
         return true
     }
     
-    private func onSubcriptionValidated() {
-        self.openGate(afterPurchase: true)
-    }
-    
     private func showResultWithMessage(message: String, completion: (() -> ())? = nil) {
         MBProgressHUD.hideAllHUDsForView(self.view, animated: false)
         let progressHUD = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
@@ -153,8 +157,9 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
         }
     }
     
-    private func openGate(afterPurchase purchased: Bool) {
-        delegate?.vipGateExitedWithSuccess(true, afterPurchase: purchased)
+    private func openGate() {
+        delegate?.vipGateExitedWithSuccess(true)
+        NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: VIPSubscriptionHelper.userVIPStatusChangedNotificationKey, object: nil))
     }
     
     private func updateViews() {
@@ -192,7 +197,6 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
             headlineLabel.font = font
         }
         
-        detailLabel.text = dependencyManager.descriptionText
         if let color = dependencyManager.descriptionTextColor {
             detailLabel.textColor = color
         }
@@ -213,7 +217,7 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     // MARK: - VIPSubscriptionHelperDelegate
     
     func VIPSubscriptionHelperCompletedSubscription(helper: VIPSubscriptionHelper) {
-        openGate(afterPurchase: true)
+        openGate()
     }
     
     func setIsLoading(isLoading: Bool, title: String? = nil) {
@@ -254,8 +258,16 @@ private extension VDependencyManager {
         return colorForKey("color.header")
     }
     
-    var descriptionText: String? {
-        return stringForKey("text.description")
+    func descriptionText(for products: [VProduct]) -> String? {
+        guard let description = stringForKey("text.description") else {
+            return nil
+        }
+        
+        guard let lowestPriceProduct = products.select({ $1.storeKitProduct?.price.doubleValue < $0.storeKitProduct?.price.doubleValue }) else {
+            return nil
+        }
+        
+        return description.stringByReplacingOccurrencesOfString("%%PRICE_TAG%%", withString: lowestPriceProduct.price)
     }
     
     var descriptionFont: UIFont? {

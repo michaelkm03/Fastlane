@@ -15,7 +15,7 @@ class StageContentFetchOperation: RemoteFetcherOperation, RequestOperation {
     // Used to calculated the offset in videos.
     private var operationStartTime: NSDate?
     
-    private var refreshStageEvent: RefreshStage
+    private(set) var refreshStageEvent: RefreshStage
 
     init(macroURLString: String, currentUserID: String, refreshStageEvent: RefreshStage) {
         let request = ContentFetchRequest(macroURLString: macroURLString, currentUserID: currentUserID, contentID: refreshStageEvent.contentID)

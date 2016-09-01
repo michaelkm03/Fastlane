@@ -106,6 +106,10 @@ static NSMutableDictionary *associatedUploadManagers;
 
 - (void)addUpload:(VUploadTaskInformation *)uploadTask withState:(VUploadProgressViewState)state animated:(BOOL)animated
 {
+    if (uploadTask.isGIF) {
+        return;
+    }
+
     NSArray *existingProgressViews = [self.uploadProgressViews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"%K==%@", NSStringFromSelector(@selector(uploadTask)), uploadTask]];
     if ( existingProgressViews.count != 0 )
     {

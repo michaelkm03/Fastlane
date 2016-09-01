@@ -45,7 +45,12 @@ import VictoriousIOSSDK
             let rnd = Int(arc4random() % UInt32(names.count) )
             return names[rnd]
         }
-        
+
+        private func randTitle() -> String {
+            let rnd = Int(arc4random() % UInt32(titles.count) )
+            return titles[rnd]
+        }
+
         private func randAsset() -> ContentMediaAsset {
             let rnd = Int(arc4random() % UInt32(sampleMedia.count) )
             let json = JSON(sampleMedia[rnd])
@@ -123,7 +128,9 @@ import VictoriousIOSSDK
                 assets: assets,
                 previewImages: [previewAsset]
             )
-            let stageContent = StageContent(content: content)
+
+            let metaData = StageMetaData(title: randTitle())
+            let stageContent = StageContent(content: content, metaData: metaData)
             stage?.addStageContent(stageContent)
             stageCount += 1
             
@@ -229,7 +236,11 @@ import VictoriousIOSSDK
     ]
 
     private let names = [
-        "Carl", "James", "Micelle", "Franky", "Bernadette", "Julia", "Patrick", "Sebastian", "Sharif"
+        "James", "Micelle Prescott", "Bernadette With The Long Name", "Julia", "Patrick", "Sebastian", "Sharif - He Went to the Land of the 🐨 & Kangaroos", "Mariana", "Sky", "Vincent", "Jarod", "Alex",
+    ]
+
+    private let titles = [
+        "Little Green Army Guys", "Top Spin", "The Lemon Grove Kids Meet the Green Grasshopper", "Smile", "Hahahahaha!!! 😂 That is so funny. 🤔 You are SO funny.", "Don't Panic"
     ]
 
     private let previewImageURLs = [

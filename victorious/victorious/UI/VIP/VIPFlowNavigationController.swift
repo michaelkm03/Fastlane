@@ -65,8 +65,8 @@ class VIPFlowNavigationController: UINavigationController, VIPGateViewController
     
     // MARK: - VIPGateViewControllerDelegate
     
-    func vipGateExitedWithSuccess(success: Bool, afterPurchase purchased: Bool) {
-        if success && purchased {
+    func vipGateExitedWithSuccess(success: Bool) {
+        if success {
             //Transition to success state
             animationDelegate.fadingEnabled = true
             let successViewController = VIPSuccessViewController.newWithDependencyManager(successDependencyManager)
@@ -74,7 +74,7 @@ class VIPFlowNavigationController: UINavigationController, VIPGateViewController
             showViewController(successViewController, sender: nil)
         }
         else {
-            dismissAndCallCompletionWithSuccess(false)
+            dismissAndCallCompletionWithSuccess(success)
         }
     }
     

@@ -41,6 +41,7 @@ final class CreateMediaUploadOperation: SyncOperation<Void> {
         
         taskCreator.request = request.urlRequestWithHeaders(using: RequestContext(), authenticationContext: authenticationContext)
         taskCreator.formFields = formFields
+        taskCreator.isGIF = publishParameters.isGIF
         taskCreator.previewImage = publishParameters.previewImage
         
         do {

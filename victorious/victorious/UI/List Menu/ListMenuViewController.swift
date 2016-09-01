@@ -60,6 +60,13 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         let homeFeedIndexPath = NSIndexPath(forRow: 0, inSection: ListMenuSection.community.rawValue)
         let indexPath = lastSelectedIndexPath ?? homeFeedIndexPath
         collectionView?.selectItemAtIndexPath(indexPath, animated: false, scrollPosition: .None)
+        
+        dependencyManager.trackViewWillAppear(self)
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        dependencyManager.trackViewWillDisappear(self)
     }
 
     // MARK: - Notifications
