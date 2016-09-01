@@ -113,6 +113,7 @@ public struct User: UserModel {
         self.vipStatus = vipStatus
         
         updateFollowingRelationship()
+        updateBlockRelationship()
     }
 }
 
@@ -146,10 +147,8 @@ extension User {
         self.previewImages = previewImages.flatMap { ImageAsset(json: $0) }
         
         updateFollowingRelationship()
+        updateBlockRelationship()
     }
-    
-    /// Since we don't persist `upvotedUserIDs`, we need to make sure to update it when 
-
 }
 
 // MARK: - Upvote User
@@ -169,12 +168,40 @@ extension UserModel {
         return upvotedUserIDs.contains(id)
     }
     
+    /// Since we don't persist the following relationship, we need to update it when we parse a user from backend
     private func updateFollowingRelationship() {
         if isFollowedByCurrentUser == true {
             upvote()
         }
         else {
             unUpvote()
+        }
+    }
+}
+
+// MARK: - Block User
+
+private var blockedUserIDs = Set<User.ID>()
+
+extension UserModel {
+    public func block() {
+        blockedUserIDs.insert(id)
+    }
+    
+    public func unblock() {
+        blockedUserIDs.remove(id)
+    }
+    
+    public var isBlocked: Bool {
+        return blockedUserIDs.contains(id)
+    }
+    
+    private func updateBlockRelationship() {
+        if isBlockedByCurrentUser == true {
+            block()
+        }
+        else {
+            unblock()
         }
     }
 }

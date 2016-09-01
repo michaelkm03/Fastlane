@@ -232,20 +232,17 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     }
     
     private dynamic func overflow() {
-        guard
-            let isBlocked = user?.isBlockedByCurrentUser,
-            let userID = user?.id
-        else {
+        guard let user = user else {
             return
         }
         
         let toggleBlockedOperation = UserBlockToggleOperation(
-            userID: userID,
+            user: user,
             blockAPIPath: dependencyManager.userBlockAPIPath,
             unblockAPIPath: dependencyManager.userUnblockAPIPath
         )
         
-        let actionTitle = isBlocked
+        let actionTitle = user.isBlocked
             ? NSLocalizedString("UnblockUser", comment: "")
             : NSLocalizedString("BlockUser", comment: "")
         let confirm = ConfirmDestructiveActionOperation(
