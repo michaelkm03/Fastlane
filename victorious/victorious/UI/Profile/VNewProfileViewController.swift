@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 /// A view controller that displays the contents of a user's profile.
 class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderDelegate, AccessoryScreenContainer, CoachmarkDisplayer, VBackgroundContainer {
@@ -174,7 +175,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
             }
             
             if !isCreator {
-                if VCurrentUser.hasUpvotedUser(with: user.id) {
+                if user.isUpvoted {
                     upvoteButton.setImage(dependencyManager.upvoteIconSelected, forState: .Normal)
                     upvoteButton.backgroundColor = dependencyManager.upvoteIconSelectedBackgroundColor
                     upvoteButton.tintColor = dependencyManager.upvoteIconTint

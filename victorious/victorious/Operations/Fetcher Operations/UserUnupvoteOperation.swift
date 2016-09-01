@@ -7,21 +7,22 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 class UserUnupvoteOperation: FetcherOperation {
     private let userUnupvoteAPIPath: APIPath
-    private let userID: Int
+    private let user: UserModel
     
-    init(userID: Int, userUnupvoteAPIPath: APIPath) {
-        self.userID = userID
+    init(user: UserModel, userUnupvoteAPIPath: APIPath) {
+        self.user = user
         self.userUnupvoteAPIPath = userUnupvoteAPIPath
     }
     
     override func main() {
-        VCurrentUser.unUpvoteUser(with: userID)
+        user.unUpvote()
         
         UserUnupvoteRemoteOperation(
-            userID: userID,
+            userID: user.id,
             userUnupvoteAPIPath: userUnupvoteAPIPath
         )?.after(self).queue()
     }

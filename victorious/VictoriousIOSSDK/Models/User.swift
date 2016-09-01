@@ -111,10 +111,10 @@ public struct User: UserModel {
         self.maxVideoUploadDuration = maxVideoUploadDuration
         self.avatarBadgeType = avatarBadgeType
         self.vipStatus = vipStatus
+        
+        updateFollowingRelationship()
     }
 }
-
-// FIXME: When parsing a user, we should update the blocked/upvoted user ID Set too
 
 extension User {
     public init?(json: JSON) {
@@ -144,5 +144,37 @@ extension User {
         
         let previewImages = json["preview"]["assets"].array ?? json["preview"]["media"]["assets"].arrayValue
         self.previewImages = previewImages.flatMap { ImageAsset(json: $0) }
+        
+        updateFollowingRelationship()
+    }
+    
+    /// Since we don't persist `upvotedUserIDs`, we need to make sure to update it when 
+
+}
+
+// MARK: - Upvote User
+
+private var upvotedUserIDs = Set<User.ID>()
+
+extension UserModel {
+    public func upvote() {
+        upvotedUserIDs.insert(id)
+    }
+    
+    public func unUpvote() {
+        upvotedUserIDs.remove(id)
+    }
+    
+    public var isUpvoted: Bool {
+        return upvotedUserIDs.contains(id)
+    }
+    
+    private func updateFollowingRelationship() {
+        if isFollowedByCurrentUser == true {
+            upvote()
+        }
+        else {
+            unUpvote()
+        }
     }
 }

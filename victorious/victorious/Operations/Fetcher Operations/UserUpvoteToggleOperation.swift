@@ -20,11 +20,11 @@ class UserUpvoteToggleOperation: FetcherOperation {
     }
     
     override func main() {
-        if VCurrentUser.hasUpvotedUser(with: user.id) == true {
-            UserUnupvoteOperation(userID: user.id, userUnupvoteAPIPath: self.unupvoteAPIPath).rechainAfter(self).queue()
+        if user.isUpvoted {
+            UserUnupvoteOperation(user: user, userUnupvoteAPIPath: self.unupvoteAPIPath).rechainAfter(self).queue()
         }
         else {
-            UserUpvoteOperation(userID: user.id, userUpvoteAPIPath: self.upvoteAPIPath).rechainAfter(self).queue()
+            UserUpvoteOperation(user: user, userUpvoteAPIPath: self.upvoteAPIPath).rechainAfter(self).queue()
         }
     }
 }
