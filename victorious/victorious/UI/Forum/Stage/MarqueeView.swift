@@ -20,7 +20,7 @@ class MarqueeView: UIView {
 
     private struct Constants {
         static let padding = CGFloat(10.0)
-        static let gradientWidth = CGFloat(10.0)
+        static let gradientWidth = CGFloat(2.0)
         static let authorFont = UIFont.systemFontOfSize(14.0, weight: UIFontWeightSemibold)
         static let titleFont = UIFont.systemFontOfSize(12.0, weight: UIFontWeightRegular)
     }
@@ -103,8 +103,8 @@ class MarqueeView: UIView {
     // MARK: - Animation
 
     func scroll() {
-        let shouldAnimateAuthor = authorLabelA.frame.size.width > frame.size.width
-        let shouldAnimateTitle = titleLabelA.frame.size.width > frame.size.width
+        let shouldAnimateAuthor = floor(authorLabelA.frame.size.width) > floor(frame.size.width)
+        let shouldAnimateTitle = floor(titleLabelA.frame.size.width) > floor(frame.size.width)
 
         if shouldAnimateAuthor || shouldAnimateTitle {
             addGradientView()
@@ -158,8 +158,10 @@ class MarqueeView: UIView {
         UIView.animateWithDuration(duration, delay: initialDelay, options: .CurveLinear, animations: {
             aLabel.frame = endALabelFrame
             bLabel.frame = endBLabelFrame
-        }) { [weak self] _ in
-            self?.maxAnimationDuration = 0.0
+        }) { [weak self] (finished) in
+            if finished {
+                self?.maxAnimationDuration = 0.0
+            }
         }
     }
 

@@ -1021,6 +1021,7 @@
 		BE171D991868BE64004E5202 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE171D791868BE64004E5202 /* Foundation.framework */; };
 		BE171D9A1868BE64004E5202 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE171D7D1868BE64004E5202 /* UIKit.framework */; };
 		BE171D9B1868BE64004E5202 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE171D7F1868BE64004E5202 /* CoreData.framework */; };
+		BF01F3771D7892640066D9DC /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF01F3761D7892640066D9DC /* Result.swift */; };
 		BF0B35341CFE756900CE5DBB /* ShowShareContentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0B35331CFE756900CE5DBB /* ShowShareContentOperation.swift */; };
 		BF1769BC1CE109C000211FBA /* VContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1769B61CE109C000211FBA /* VContent.swift */; };
 		BF1769C01CE10A2600211FBA /* VContent+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1769BF1CE10A2600211FBA /* VContent+Parsable.swift */; };
@@ -2693,6 +2694,7 @@
 		BE96750019E335060072E87A /* VUploadTaskCreatorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUploadTaskCreatorTests.m; sourceTree = "<group>"; };
 		BE96750119E335060072E87A /* VUploadTaskInformationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUploadTaskInformationTests.m; sourceTree = "<group>"; };
 		BE96750219E335060072E87A /* VUploadTaskSerializerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUploadTaskSerializerTests.m; sourceTree = "<group>"; };
+		BF01F3761D7892640066D9DC /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		BF0B35331CFE756900CE5DBB /* ShowShareContentOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowShareContentOperation.swift; sourceTree = "<group>"; };
 		BF1769B61CE109C000211FBA /* VContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VContent.swift; sourceTree = "<group>"; };
 		BF1769BF1CE10A2600211FBA /* VContent+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VContent+Parsable.swift"; sourceTree = "<group>"; };
@@ -6526,6 +6528,7 @@
 			isa = PBXGroup;
 			children = (
 				7AE0A03C1D63943700769080 /* Callback.swift */,
+				BF01F3761D7892640066D9DC /* Result.swift */,
 				7A7348581D063E83005225E4 /* ReferenceWrapper.swift */,
 				F028F3E51AC0D9E800ABFDDC /* VAppInfo.h */,
 				F028F3E61AC0D9E800ABFDDC /* VAppInfo.m */,
@@ -8574,6 +8577,7 @@
 				675A9AFC1BC372DE009CE633 /* FirstInstallManager.swift in Sources */,
 				67F231571CBD69CD006BDBA5 /* ListMenuCollectionViewDataSource.swift in Sources */,
 				C30AA4E91B0595AA0010CEFE /* VRoundedImageView.m in Sources */,
+				BF01F3771D7892640066D9DC /* Result.swift in Sources */,
 				7AE0A0491D64EAF500769080 /* VDependencyManager.swift in Sources */,
 				7AFE92111D667BA7005D51A4 /* BadgeButton.swift in Sources */,
 				0326BBBA19A8183800D995DA /* VPushNotificationManager.m in Sources */,

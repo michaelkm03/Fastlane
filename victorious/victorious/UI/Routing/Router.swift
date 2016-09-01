@@ -125,6 +125,9 @@ struct Router {
     
     func checkForPermissionBeforeRouting(contentIsForVIPOnly isVIPOnly: Bool = false, completion: ((success: Bool) -> Void)? = nil) {
         guard let currentUser = VCurrentUser.user() else {
+            // If there's no current user, then we fail automatically if VIP is required since the user can't subscribe
+            // if they're not logged in, and we succeed automatically if VIP is not required.
+            completion?(success: !isVIPOnly)
             return
         }
         
