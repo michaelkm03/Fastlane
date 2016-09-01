@@ -87,6 +87,14 @@ class AvatarView: UIView {
         addSubview(shadowView)
         addSubview(imageView)
         addSubview(initialsLabel)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(currentUserDidChange), name: VCurrentUser.userDidUpdateNotificationKey, object: nil)
+    }
+    
+    private dynamic func currentUserDidChange() {
+        if user?.id == VCurrentUser.user?.id {
+            user = VCurrentUser.user
+        }
     }
     
     // MARK: - Views
@@ -136,33 +144,10 @@ class AvatarView: UIView {
     
     var user: UserModel? {
         didSet {
-            var persistentUser: VUser?
-            if let user = user as? VUser {
-                persistentUser = user
-            }
-            
-            guard user?.id != oldValue?.id || persistentUser == nil else {
-                // Only prevent updating for a persistent user since we can KVO values related to that object
-                return
-            }
-            
             setNeedsContentUpdate()
             
-            setupKVO()
-        }
-    }
-    
-    // MARK: - KVO
-    private func setupKVO() {
-        /// The user object can be a userModel, which may or may not be persistent. Only the persistent VUser can
-        /// be KVO'd, hence we must check for this 
-        guard let user = self.user as? VUser else {
-            return
-        }
-        
-        KVOController.unobserveAll()
-        KVOController.observe(user, keyPaths: Constants.observationKeys, options: [.Initial, .New]) { [weak self] _ in
-            self?.setNeedsContentUpdate()
+            // Force content update here because when we finish editing profile, the main feed chat bubble's avatar doesn't get it layout pass.
+            updateContentIfNeeded()
         }
     }
     
