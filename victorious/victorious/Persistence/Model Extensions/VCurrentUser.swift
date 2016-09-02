@@ -19,12 +19,19 @@ final class VCurrentUser: NSObject {
     // Must be called on main queue
     static func update(to user: User) {
         assert(NSThread.isMainThread())
+        
+        let loggedInUserChanged = self.user == nil
+        
         self.user = user
         NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: userDidUpdateNotificationKey, object: nil))
+        if loggedInUserChanged {
+            NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: kLoggedInChangedNotification, object: nil))
+        }
     }
     
     static func clear() {
         user = nil
+        NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: kLoggedInChangedNotification, object: nil))
     }
     
     static var loginType: VLoginType = .None
