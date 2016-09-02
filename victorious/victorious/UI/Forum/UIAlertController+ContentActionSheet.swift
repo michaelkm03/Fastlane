@@ -124,18 +124,18 @@ private extension VDependencyManager {
     }
     
     private var likeTitle: String {
-        return stringForKey("action.upvote.text") ?? "Bump"
+        return childDependencyForKey("actions")?.stringForKey("upvote.text") ?? "Bump"
     }
     
     private var unlikeTitle: String {
-        return stringForKey("action.unupvote.text") ?? "Unbump"
+        return childDependencyForKey("actions")?.stringForKey("unupvote.text") ?? "Unbump"
     }
     
     private var flagTitle: String {
-        return stringForKey("action.flag.text") ?? "Flag"
+        return childDependencyForKey("actions")?.stringForKey("flag.text") ?? "Flag"
     }
     
     private var deleteTitle: String {
-        return stringForKey("action.delete.text") ?? "Delete"
+        return childDependencyForKey("actions")?.stringForKey("delete.text") ?? "Delete"
     }
 }
