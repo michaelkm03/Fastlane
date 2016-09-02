@@ -12,7 +12,6 @@ import CoreData
 let kLastLoginTypeUserDefaultsKey = "com.getvictorious.VUserManager.LoginType"
 let kAccountIdentifierDefaultsKey = "com.getvictorious.VUserManager.AccountIdentifier"
 
-
 final class VCurrentUser: NSObject {
     private(set) static var user: User?
     static let userDidUpdateNotificationKey = "com.getvictorious.CurrentUser.DidUpdate"
@@ -32,7 +31,6 @@ final class VCurrentUser: NSObject {
     static var token: String?
     static var isNewUser: NSNumber?
     static var accountIdentifier: String?
-
 }
 
 // Objc compatibility
