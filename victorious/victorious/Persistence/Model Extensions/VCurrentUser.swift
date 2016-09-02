@@ -35,14 +35,6 @@ final class VCurrentUser: NSObject {
 
 }
 
-extension VUser {
-    /// Sets the receiver as the current user returned in `currentUser()` method.  Any previous
-    /// current user will lose its current status, as there can be only one.
-    func setAsCurrentUser() {
-        // FIXME: remove
-    }
-}
-
 // Objc compatibility
 extension VCurrentUser {
     static var userID: NSNumber? {

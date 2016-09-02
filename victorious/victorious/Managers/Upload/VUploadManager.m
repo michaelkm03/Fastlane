@@ -706,15 +706,4 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
     return sharedManager;
 }
 
-- (void)mockCurrentUser
-{
-    id<PersistentStoreType> persistentStore = [PersistentStoreSelector defaultPersistentStore];
-    VUser *user = (VUser *)[[persistentStore mainContext] v_createObjectAndSaveWithEntityName:@"User" configurations:^(NSManagedObject *_Nonnull object) {
-        VUser *user = (VUser *)object;
-        user.remoteId = @123;
-        user.token = @"abcd";
-    }];
-    [user setAsCurrentUser];
-}
-
 @end

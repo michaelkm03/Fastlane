@@ -450,6 +450,7 @@
 		676B84E11CDD568200F8FCED /* TutorialContentsRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 676B84E01CDD568200F8FCED /* TutorialContentsRequestTests.swift */; };
 		676C891D1CAB367F00B606ED /* InterstitialAlertAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 676C891B1CAB367F00B606ED /* InterstitialAlertAnimator.swift */; };
 		676C891E1CAB367F00B606ED /* InterstitialAlertPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 676C891C1CAB367F00B606ED /* InterstitialAlertPresentationController.swift */; };
+		67713FCF1D79E6FC00DA4D6C /* VUploadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67713FCE1D79E6FC00DA4D6C /* VUploadManager.swift */; };
 		67787BA81CDD734300439EAE /* TutorialContentsRemoteOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67787BA71CDD734300439EAE /* TutorialContentsRemoteOperationTests.swift */; };
 		677DCFE51CB47A3B00FC4394 /* InterstitialToastViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 677DCFE41CB47A3B00FC4394 /* InterstitialToastViewController.swift */; };
 		677DCFE71CB47A5300FC4394 /* InterstitialToastViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 677DCFE61CB47A5300FC4394 /* InterstitialToastViewController.storyboard */; };
@@ -1959,6 +1960,7 @@
 		676B84E01CDD568200F8FCED /* TutorialContentsRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialContentsRequestTests.swift; sourceTree = "<group>"; };
 		676C891B1CAB367F00B606ED /* InterstitialAlertAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InterstitialAlertAnimator.swift; path = "Custom Alert Views/InterstitialAlertAnimator.swift"; sourceTree = "<group>"; };
 		676C891C1CAB367F00B606ED /* InterstitialAlertPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InterstitialAlertPresentationController.swift; path = "Custom Alert Views/InterstitialAlertPresentationController.swift"; sourceTree = "<group>"; };
+		67713FCE1D79E6FC00DA4D6C /* VUploadManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VUploadManager.swift; sourceTree = "<group>"; };
 		67787BA71CDD734300439EAE /* TutorialContentsRemoteOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialContentsRemoteOperationTests.swift; sourceTree = "<group>"; };
 		677DCFE41CB47A3B00FC4394 /* InterstitialToastViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InterstitialToastViewController.swift; path = "Interstitial Toast/InterstitialToastViewController.swift"; sourceTree = "<group>"; };
 		677DCFE61CB47A5300FC4394 /* InterstitialToastViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = InterstitialToastViewController.storyboard; path = "Interstitial Toast/InterstitialToastViewController.storyboard"; sourceTree = "<group>"; };
@@ -4120,6 +4122,7 @@
 				F009BCFE1CE24A0B00F81CAA /* UploadManagerHost.swift */,
 				037CB74019CFE8B20084BBED /* VUploadManager.h */,
 				037CB74119CFE8B20084BBED /* VUploadManager.m */,
+				67713FCE1D79E6FC00DA4D6C /* VUploadManager.swift */,
 				0372587319D61B0800836B3F /* VUploadTaskCreator.h */,
 				0372587419D61B0800836B3F /* VUploadTaskCreator.m */,
 				037CB74319CFE8D20084BBED /* VUploadTaskInformation.h */,
@@ -8394,6 +8397,7 @@
 				67486B761CC7147500B03926 /* ListMenuCommunityDataSource.swift in Sources */,
 				A7AA647D19E78EAA0068D2B1 /* victoriOS.xcdatamodeld in Sources */,
 				A72C86661C977FF600E97D4F /* NSOperationQueue+Queuable.swift in Sources */,
+				67713FCF1D79E6FC00DA4D6C /* VUploadManager.swift in Sources */,
 				F069E93E1D46995C00F91CE6 /* VIPSelectSubscriptionOperation.swift in Sources */,
 				669EBBE41A30239100DE317D /* VBasicToolPickerCell.m in Sources */,
 				A72C86401C977FF500E97D4F /* UserInfoOperation.swift in Sources */,
