@@ -386,15 +386,13 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         searchTextChanged = false
         
         let previousContentOffset = textView.contentOffset
-        UIView.animateWithDuration(Constants.animationDuration, delay: 0, options: .AllowUserInteraction, animations: {
-            self.delegate?.composer(self, didUpdateContentHeight: self.totalComposerHeight)
+        self.delegate?.composer(self, didUpdateContentHeight: self.totalComposerHeight)
+        if textViewHeightNeedsUpdate {
             self.textView.layoutIfNeeded()
-            if textViewHeightNeedsUpdate {
-                self.textView.setContentOffset(previousContentOffset, animated: true)
-            }
-            self.attachmentContainerView.layoutIfNeeded()
-            self.interactiveContainerView.layoutIfNeeded()
-        }, completion: nil)
+            self.textView.setContentOffset(previousContentOffset, animated: false)
+        }
+        self.attachmentContainerView.layoutIfNeeded()
+        self.interactiveContainerView.layoutIfNeeded()
         
         super.updateViewConstraints()
     }
