@@ -16,7 +16,9 @@ final class VCurrentUser: NSObject {
     private(set) static var user: User?
     static let userDidUpdateNotificationKey = "com.getvictorious.CurrentUser.DidUpdate"
     
-    // Must be called on main queue
+    /// updates current user to the passed in user parameter.
+    /// Will trigger `userDidUpdateNotificationKey` and `kLoggedInChangedNotification` notifications appropriately.
+    /// - note: Must be called on the main thread because it modifies the user
     static func update(to user: User) {
         assert(NSThread.isMainThread())
         
@@ -29,7 +31,10 @@ final class VCurrentUser: NSObject {
         }
     }
     
+    /// Clears current user. 
+    /// - note: Must be called on the main queue because it modifies the user
     static func clear() {
+        assert(NSThread.isMainThread())
         user = nil
         NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: kLoggedInChangedNotification, object: nil))
     }

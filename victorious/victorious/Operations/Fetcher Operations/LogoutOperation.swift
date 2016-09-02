@@ -53,11 +53,11 @@ class LogoutOperation: RemoteFetcherOperation {
                let forumNetworkSource = dependencyManager.forumNetworkSource { //Try to reset the network resource token
                 forumNetworkSource.tearDown()
             }
+            
+            // And finally, clear the user.  Don't do this early because
+            // some of the stuff above requires knowing the current user
+            VCurrentUser.clear()
         }
-        
-        // And finally, clear the user.  Don't do this early because
-        // some of the stuff above requires knowing the current user
-        VCurrentUser.clear()
     }
 }
 
