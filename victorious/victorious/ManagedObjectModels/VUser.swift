@@ -74,7 +74,7 @@ class VUser: NSManagedObject, UserModel {
         return FanLoyalty(level: level, progress: progress, points: levelProgressPoints?.integerValue, tier: self.tier, achievementsUnlocked: achievements)
     }
     
-    var isBlockedByCurrentUser: Bool? {
+    var isRemotelyBlockedByCurrentUser: Bool? {
         return isBlockedByMainUser?.boolValue
     }
     
@@ -83,7 +83,7 @@ class VUser: NSManagedObject, UserModel {
         return isCreator ? .owner : .user
     }
     
-    var isFollowedByCurrentUser: Bool? {
+    var isRemotelyFollowedByCurrentUser: Bool? {
         return isFollowedByMainUser?.boolValue
     }
     

@@ -19,10 +19,9 @@ class UserBlockToggleOperationTests: BaseFetcherOperationTestCase {
         VCurrentUser.update(to: user)
     }
     
-    func testInitiallyFollowed() {
-        var user = User(id: remoteUserID)
-        user.isBlockedByCurrentUser = true
-        XCTAssertTrue(user.isBlockedByCurrentUser == true)
+    func testInitiallyBlocked() {
+        let user = User(id: remoteUserID)
+        user.block()
         
         let expectation = expectationWithDescription("UserBlockToggleOperation")
         
@@ -33,16 +32,15 @@ class UserBlockToggleOperationTests: BaseFetcherOperationTestCase {
         )
         
         operation.queue { results, error, cancelled in
-            XCTAssertFalse(user.isBlockedByCurrentUser == true)
+            XCTAssertFalse(user.isBlocked)
             expectation.fulfill()
         }
         waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
     }
     
-    func testInitiallyUnupvoted() {
-        var user = User(id: remoteUserID)
-        user.isBlockedByCurrentUser = false
-        XCTAssertFalse(user.isBlockedByCurrentUser == true)
+    func testInitiallyUnblocked() {
+        let user = User(id: remoteUserID)
+        user.unblock()
         
         let expectation = expectationWithDescription("UserBlockToggleOperation")
         
@@ -53,7 +51,7 @@ class UserBlockToggleOperationTests: BaseFetcherOperationTestCase {
         )
         
         operation.queue { results, error, cancelled in
-            XCTAssertTrue(user.isBlockedByCurrentUser == true)
+            XCTAssertTrue(user.isBlocked)
             expectation.fulfill()
         }
         waitForExpectationsWithTimeout(expectationThreshold, handler: nil)

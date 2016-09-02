@@ -20,9 +20,8 @@ class UserUpvoteToggleOperationTests: BaseFetcherOperationTestCase {
     }
     
     func testInitiallyFollowed() {
-        var user = User(id: remoteUserID)
-        user.isFollowedByCurrentUser = true
-        XCTAssertTrue(user.isFollowedByCurrentUser == true)
+        let user = User(id: remoteUserID)
+        user.upvote()
         
         let expectation = expectationWithDescription("UserUpvoteToggleOperation")
         
@@ -33,16 +32,16 @@ class UserUpvoteToggleOperationTests: BaseFetcherOperationTestCase {
         )
         
         operation.queue { results, error, cancelled in
-            XCTAssertFalse(user.isFollowedByCurrentUser == true)
+            XCTAssertFalse(user.isUpvoted)
             expectation.fulfill()
         }
         waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
     }
     
     func testInitiallyUnupvoted() {
-        var user = User(id: remoteUserID)
-        user.isFollowedByCurrentUser = false
-        XCTAssertFalse(user.isFollowedByCurrentUser == true)
+        let user = User(id: remoteUserID)
+        user.unUpvote()
+        XCTAssertFalse(user.isRemotelyFollowedByCurrentUser == true)
         
         let expectation = expectationWithDescription("UserUpvoteToggleOperation")
         
@@ -53,7 +52,7 @@ class UserUpvoteToggleOperationTests: BaseFetcherOperationTestCase {
         )
         
         operation.queue { results, error, cancelled in
-            XCTAssertTrue(user.isFollowedByCurrentUser == true)
+            XCTAssertTrue(user.isUpvoted)
             expectation.fulfill()
         }
         waitForExpectationsWithTimeout(expectationThreshold, handler: nil)

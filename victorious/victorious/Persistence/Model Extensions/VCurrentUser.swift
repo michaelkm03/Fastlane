@@ -1,5 +1,5 @@
 //
-//  VUser+Current.swift
+//  VCurrentUser.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 11/11/15.

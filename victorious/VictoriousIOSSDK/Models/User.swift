@@ -16,9 +16,9 @@ public protocol UserModel: PreviewImageContainer {
     var location: String? { get }
     var tagline: String? { get }
     var fanLoyalty: FanLoyalty? { get }
-    var isBlockedByCurrentUser: Bool? { get }
+    var isRemotelyBlockedByCurrentUser: Bool? { get }
     var accessLevel: User.AccessLevel { get }
-    var isFollowedByCurrentUser: Bool? { get }
+    var isRemotelyFollowedByCurrentUser: Bool? { get }
     var likesGiven: Int? { get }
     var likesReceived: Int? { get }
     var previewImages: [ImageAssetModel] { get }
@@ -56,10 +56,10 @@ public struct User: UserModel {
     public var location: String?
     public var tagline: String?
     public var fanLoyalty: FanLoyalty?
-    public var isBlockedByCurrentUser: Bool?
+    public var isRemotelyBlockedByCurrentUser: Bool?
     public var accessLevel: AccessLevel
     public var isDirectMessagingDisabled: Bool?
-    public var isFollowedByCurrentUser: Bool?
+    public var isRemotelyFollowedByCurrentUser: Bool?
     public var numberOfFollowers: Int?
     public var numberOfFollowing: Int?
     public var likesGiven: Int?
@@ -79,10 +79,10 @@ public struct User: UserModel {
         location: String? = nil,
         tagline: String? = nil,
         fanLoyalty: FanLoyalty? = nil,
-        isBlockedByCurrentUser: Bool? = nil,
+        isRemotelyBlockedByCurrentUser: Bool? = nil,
         accessLevel: AccessLevel = .user,
         isDirectMessagingDisabled: Bool? = nil,
-        isFollowedByCurrentUser: Bool? = nil,
+        isRemotelyFollowedByCurrentUser: Bool? = nil,
         numberOfFollowers: Int? = nil,
         numberOfFollowing: Int? = nil,
         likesGiven: Int? = nil,
@@ -99,10 +99,10 @@ public struct User: UserModel {
         self.location = location
         self.tagline = tagline
         self.fanLoyalty = fanLoyalty
-        self.isBlockedByCurrentUser = isBlockedByCurrentUser
+        self.isRemotelyBlockedByCurrentUser = isRemotelyBlockedByCurrentUser
         self.accessLevel = accessLevel
         self.isDirectMessagingDisabled = isDirectMessagingDisabled
-        self.isFollowedByCurrentUser = isFollowedByCurrentUser
+        self.isRemotelyFollowedByCurrentUser = isRemotelyFollowedByCurrentUser
         self.numberOfFollowers = numberOfFollowers
         self.numberOfFollowing = numberOfFollowing
         self.likesGiven = likesGiven
@@ -111,9 +111,6 @@ public struct User: UserModel {
         self.maxVideoUploadDuration = maxVideoUploadDuration
         self.avatarBadgeType = avatarBadgeType
         self.vipStatus = vipStatus
-        
-        updateFollowingRelationship()
-        updateBlockRelationship()
     }
 }
 
@@ -132,11 +129,11 @@ extension User {
         location                  = json["profile_location"].string
         tagline                   = json["profile_tagline"].string
         fanLoyalty                = FanLoyalty(json: json["fanloyalty"])
-        isBlockedByCurrentUser    = json["is_blocked"].bool
+        isRemotelyBlockedByCurrentUser    = json["is_blocked"].bool
         vipStatus                 = VIPStatus(json: json["vip"])
         accessLevel               = AccessLevel(json: json["access_level"])
         isDirectMessagingDisabled = json["is_direct_message_disabled"].bool
-        isFollowedByCurrentUser   = json["am_following"].bool
+        isRemotelyFollowedByCurrentUser   = json["am_following"].bool
         numberOfFollowers         = Int(json["number_of_followers"].stringValue)
         numberOfFollowing         = Int(json["number_of_following"].stringValue)
         likesGiven                = json["engagements"]["likes_given"].int
@@ -145,9 +142,6 @@ extension User {
         
         let previewImages = json["preview"]["assets"].array ?? json["preview"]["media"]["assets"].arrayValue
         self.previewImages = previewImages.flatMap { ImageAsset(json: $0) }
-        
-        updateFollowingRelationship()
-        updateBlockRelationship()
     }
 }
 
@@ -165,16 +159,11 @@ extension UserModel {
     }
     
     public var isUpvoted: Bool {
-        return upvotedUserIDs.contains(id)
-    }
-    
-    /// Since we don't persist the following relationship, we need to update it when we parse a user from backend
-    private func updateFollowingRelationship() {
-        if isFollowedByCurrentUser == true {
-            upvote()
+        if upvotedUserIDs.contains(id) {
+            return true
         }
         else {
-            unUpvote()
+            return isRemotelyFollowedByCurrentUser ?? false
         }
     }
 }
@@ -193,15 +182,11 @@ extension UserModel {
     }
     
     public var isBlocked: Bool {
-        return blockedUserIDs.contains(id)
-    }
-    
-    private func updateBlockRelationship() {
-        if isBlockedByCurrentUser == true {
-            block()
+        if blockedUserIDs.contains(id) {
+            return true
         }
         else {
-            unblock()
+            return isRemotelyBlockedByCurrentUser ?? false
         }
     }
 }
