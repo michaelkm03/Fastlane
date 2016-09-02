@@ -15,19 +15,19 @@ class UserUpvoteToggleOperationTests: BaseFetcherOperationTestCase {
     
     override func setUp() {
         super.setUp()
-        let user = persistentStoreHelper.createUser(remoteId: currentUserID)
-        user.setAsCurrentUser()
+        let user = User(id: currentUserID)
+        VCurrentUser.update(to: user)
     }
     
     func testInitiallyFollowed() {
-        let user: VUser = persistentStoreHelper.createUser(remoteId: remoteUserID)
-        user.isFollowedByMainUser = true
+        var user = User(id: remoteUserID)
+        user.isFollowedByCurrentUser = true
         XCTAssertTrue(user.isFollowedByCurrentUser == true)
         
         let expectation = expectationWithDescription("UserUpvoteToggleOperation")
         
         let operation = UserUpvoteToggleOperation(
-            userID: remoteUserID,
+            user: user,
             upvoteAPIPath: APIPath(templatePath: ""),
             unupvoteAPIPath: APIPath(templatePath: "")
         )
@@ -40,14 +40,14 @@ class UserUpvoteToggleOperationTests: BaseFetcherOperationTestCase {
     }
     
     func testInitiallyUnupvoted() {
-        let user: VUser = persistentStoreHelper.createUser(remoteId: remoteUserID)
-        user.isFollowedByMainUser = false
+        var user = User(id: remoteUserID)
+        user.isFollowedByCurrentUser = false
         XCTAssertFalse(user.isFollowedByCurrentUser == true)
         
         let expectation = expectationWithDescription("UserUpvoteToggleOperation")
         
         let operation = UserUpvoteToggleOperation(
-            userID: remoteUserID,
+            user: user,
             upvoteAPIPath: APIPath(templatePath: ""),
             unupvoteAPIPath: APIPath(templatePath: "")
         )

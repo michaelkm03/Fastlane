@@ -15,19 +15,19 @@ class UserBlockToggleOperationTests: BaseFetcherOperationTestCase {
     
     override func setUp() {
         super.setUp()
-        let user = persistentStoreHelper.createUser(remoteId: currentUserID)
-        user.setAsCurrentUser()
+        let user = User(id: currentUserID)
+        VCurrentUser.update(to: user)
     }
     
     func testInitiallyFollowed() {
-        let user: VUser = persistentStoreHelper.createUser(remoteId: remoteUserID)
-        user.isBlockedByMainUser = true
+        var user = User(id: remoteUserID)
+        user.isBlockedByCurrentUser = true
         XCTAssertTrue(user.isBlockedByCurrentUser == true)
         
         let expectation = expectationWithDescription("UserBlockToggleOperation")
         
         let operation = UserBlockToggleOperation(
-            userID: user.id,
+            user: user,
             blockAPIPath: APIPath(templatePath: ""),
             unblockAPIPath: APIPath(templatePath: "")
         )
@@ -40,14 +40,14 @@ class UserBlockToggleOperationTests: BaseFetcherOperationTestCase {
     }
     
     func testInitiallyUnupvoted() {
-        let user: VUser = persistentStoreHelper.createUser(remoteId: remoteUserID)
-        user.isBlockedByMainUser = false
+        var user = User(id: remoteUserID)
+        user.isBlockedByCurrentUser = false
         XCTAssertFalse(user.isBlockedByCurrentUser == true)
         
         let expectation = expectationWithDescription("UserBlockToggleOperation")
         
         let operation = UserBlockToggleOperation(
-            userID: user.id,
+            user: user,
             blockAPIPath: APIPath(templatePath: ""),
             unblockAPIPath: APIPath(templatePath: "")
         )
