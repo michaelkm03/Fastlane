@@ -8,8 +8,7 @@
 
 import UIKit
 
-final class StartLoadingOperation: SyncOperation<Void>, VTemplateDownloadOperationDelegate {
-
+final class StartLoadingOperation: NSObject, VTemplateDownloadOperationDelegate {
     var template: NSDictionary? {
         if let templateConfiguration = self.templateDownloadOperation.templateConfiguration {
             return templateConfiguration
@@ -32,13 +31,11 @@ final class StartLoadingOperation: SyncOperation<Void>, VTemplateDownloadOperati
         }
     }
     
+    var completion: (Void -> Void)?
+    
     private lazy var templateDownloadOperation: VTemplateDownloadOperation = {
         VTemplateDownloadOperation(downloader: PersistenceTemplateDownloader(), andDelegate: self)
     }()
-    
-    override var executionQueue: Queue {
-        return .background
-    }
     
     private var dependencyManager: VDependencyManager {
         var defaultDependencyManager = VDependencyManager.dependencyManagerWithDefaultValuesForColorsAndFonts()
@@ -63,24 +60,25 @@ final class StartLoadingOperation: SyncOperation<Void>, VTemplateDownloadOperati
         return StoredLoginOperation(dependencyManager: self.dependencyManager)
     }()
     
-    override func execute() -> OperationResult<Void> {
+    func execute() {
         TempDirectoryCleanupOperation().queue()
         
         if template == nil {
             templateDownloadOperation.completionBlock = {
-                self.loginOperation.queue()
+                self.loginOperation.queue() { _ in
+                    self.completion?()
+                }
             }
         }
         else {
-            loginOperation.rechainAfter(self)
             templateDownloadOperation.after(loginOperation)
-            loginOperation.queue()
+            loginOperation.queue() { _ in
+                self.completion?()
+            }
         }
         
         let backgroundQueue = Queue.background.operationQueue
         backgroundQueue.addOperation(templateDownloadOperation)
-        
-        return .success()
     }
     
     // MARK: - VTemplateDownloadOperationDelegate methods
@@ -101,5 +99,4 @@ final class StartLoadingOperation: SyncOperation<Void>, VTemplateDownloadOperati
             }
         })
     }
-    
 }

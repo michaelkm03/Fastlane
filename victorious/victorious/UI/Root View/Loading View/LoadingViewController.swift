@@ -17,7 +17,7 @@ extension VLoadingViewController {
         isLoading = true
         
         let loadingOperation = StartLoadingOperation()
-        loadingOperation.queue { [weak self] result in
+        loadingOperation.completion = { [weak self] in
             self?.isLoading = false
             self?.progressHUD.taskInProgress = false
             self?.progressHUD.hide(true)
@@ -26,6 +26,7 @@ extension VLoadingViewController {
             }
             self?.onDoneLoadingWithTemplateConfiguration(template as [NSObject: AnyObject])
         }
+        loadingOperation.execute()
         
         progressHUD = MBProgressHUD.showHUDAddedTo(view, animated: true)
         progressHUD.mode = .Indeterminate
