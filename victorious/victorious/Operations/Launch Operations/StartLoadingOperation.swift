@@ -70,12 +70,13 @@ final class StartLoadingOperation: SyncOperation<Void>, VTemplateDownloadOperati
             templateDownloadOperation.completionBlock = {
                 self.loginOperation.queue()
             }
-        } else {
+        }
+        else {
             loginOperation.rechainAfter(self)
             templateDownloadOperation.after(loginOperation)
+            loginOperation.queue()
         }
         
-        loginOperation.queue()
         let backgroundQueue = Queue.background.operationQueue
         backgroundQueue.addOperation(templateDownloadOperation)
         
