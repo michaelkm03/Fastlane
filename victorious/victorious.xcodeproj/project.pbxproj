@@ -636,6 +636,7 @@
 		7CCAB3571D5D2EC600ACE99D /* VModernLoginAndRegistrationFlowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCAB3561D5D2EC600ACE99D /* VModernLoginAndRegistrationFlowViewController.swift */; };
 		7CCBF2B91D413C7D0075A087 /* CoachmarkManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBF2B81D413C7D0075A087 /* CoachmarkManagerTests.swift */; };
 		7CEA74C71D4C0F5300EDA15C /* EditProfileDataSourceTests .swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEA74C61D4C0F5300EDA15C /* EditProfileDataSourceTests .swift */; };
+		968B40071D6EA42900DDD5A5 /* MarqueeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968B40061D6EA42900DDD5A5 /* MarqueeView.swift */; };
 		A601FB491B4354D10050536C /* VAbstractImageVideoCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB481B4354D10050536C /* VAbstractImageVideoCreationFlowController.m */; };
 		A601FB4F1B4355A30050536C /* VCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB4E1B4355A30050536C /* VCreationFlowController.m */; };
 		A601FB531B4363240050536C /* VCreationFlowPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB521B4363240050536C /* VCreationFlowPresenter.m */; };
@@ -1020,6 +1021,7 @@
 		BE171D991868BE64004E5202 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE171D791868BE64004E5202 /* Foundation.framework */; };
 		BE171D9A1868BE64004E5202 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE171D7D1868BE64004E5202 /* UIKit.framework */; };
 		BE171D9B1868BE64004E5202 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE171D7F1868BE64004E5202 /* CoreData.framework */; };
+		BF01F3771D7892640066D9DC /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF01F3761D7892640066D9DC /* Result.swift */; };
 		BF0B35341CFE756900CE5DBB /* ShowShareContentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0B35331CFE756900CE5DBB /* ShowShareContentOperation.swift */; };
 		BF1769BC1CE109C000211FBA /* VContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1769B61CE109C000211FBA /* VContent.swift */; };
 		BF1769C01CE10A2600211FBA /* VContent+Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1769BF1CE10A2600211FBA /* VContent+Parsable.swift */; };
@@ -2165,6 +2167,7 @@
 		8C2BB19912E006FE37A461E5 /* Pods_victorious.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_victorious.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E360EC509E852CE3E872948 /* Pods-victorious-test.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.debug.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.debug.xcconfig"; sourceTree = "<group>"; };
 		910A7A7036C6609BF5F7723D /* Pods-victorious-test.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.staging.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.staging.xcconfig"; sourceTree = "<group>"; };
+		968B40061D6EA42900DDD5A5 /* MarqueeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarqueeView.swift; sourceTree = "<group>"; };
 		A0CB9853103CFBEFFF1BF6FF /* Pods-VictoriousCommon.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommon.staging.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommon/Pods-VictoriousCommon.staging.xcconfig"; sourceTree = "<group>"; };
 		A5C5A0342449CFD4C4768B97 /* Pods_victorious_test.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_victorious_test.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A601FB471B4354D10050536C /* VAbstractImageVideoCreationFlowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractImageVideoCreationFlowController.h; sourceTree = "<group>"; };
@@ -2691,6 +2694,7 @@
 		BE96750019E335060072E87A /* VUploadTaskCreatorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUploadTaskCreatorTests.m; sourceTree = "<group>"; };
 		BE96750119E335060072E87A /* VUploadTaskInformationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUploadTaskInformationTests.m; sourceTree = "<group>"; };
 		BE96750219E335060072E87A /* VUploadTaskSerializerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VUploadTaskSerializerTests.m; sourceTree = "<group>"; };
+		BF01F3761D7892640066D9DC /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		BF0B35331CFE756900CE5DBB /* ShowShareContentOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowShareContentOperation.swift; sourceTree = "<group>"; };
 		BF1769B61CE109C000211FBA /* VContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VContent.swift; sourceTree = "<group>"; };
 		BF1769BF1CE10A2600211FBA /* VContent+Parsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VContent+Parsable.swift"; sourceTree = "<group>"; };
@@ -4527,6 +4531,7 @@
 		0EF377561D37065F006BF786 /* TitleCard */ = {
 			isa = PBXGroup;
 			children = (
+				968B40061D6EA42900DDD5A5 /* MarqueeView.swift */,
 				0EF377571D370673006BF786 /* TitleCardViewController.storyboard */,
 				0EF377591D370697006BF786 /* TitleCardViewController.swift */,
 			);
@@ -6523,6 +6528,7 @@
 			isa = PBXGroup;
 			children = (
 				7AE0A03C1D63943700769080 /* Callback.swift */,
+				BF01F3761D7892640066D9DC /* Result.swift */,
 				7A7348581D063E83005225E4 /* ReferenceWrapper.swift */,
 				F028F3E51AC0D9E800ABFDDC /* VAppInfo.h */,
 				F028F3E61AC0D9E800ABFDDC /* VAppInfo.m */,
@@ -8306,6 +8312,7 @@
 				BFE31A821CD2969200585155 /* CloseUpView.swift in Sources */,
 				67DDA81F1D46CA2500C55494 /* NSURL+CustomScheme.swift in Sources */,
 				6780BD621D248392003F8141 /* DeeplinkDestination.swift in Sources */,
+				968B40071D6EA42900DDD5A5 /* MarqueeView.swift in Sources */,
 				A75ECFFE1AB0B6B400C35063 /* VCropOverlayView.m in Sources */,
 				A7ECC1D71AD6178F0003E00A /* VBaseWorkspaceViewController.m in Sources */,
 				A6DAEB621B4C8DF900935EA0 /* VGIFCreationFlowController.m in Sources */,
@@ -8570,6 +8577,7 @@
 				675A9AFC1BC372DE009CE633 /* FirstInstallManager.swift in Sources */,
 				67F231571CBD69CD006BDBA5 /* ListMenuCollectionViewDataSource.swift in Sources */,
 				C30AA4E91B0595AA0010CEFE /* VRoundedImageView.m in Sources */,
+				BF01F3771D7892640066D9DC /* Result.swift in Sources */,
 				7AE0A0491D64EAF500769080 /* VDependencyManager.swift in Sources */,
 				7AFE92111D667BA7005D51A4 /* BadgeButton.swift in Sources */,
 				0326BBBA19A8183800D995DA /* VPushNotificationManager.m in Sources */,

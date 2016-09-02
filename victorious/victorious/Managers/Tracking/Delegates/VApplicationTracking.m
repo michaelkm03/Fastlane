@@ -39,6 +39,7 @@ static NSString * const kMacroErrorDetails           = @"%%ERROR_DETAILS%%";
 static NSString * const kMacroDuration               = @"%%DURATION%%";
 static NSString * const kMacroType                   = @"%%TYPE%%";
 static NSString * const kMacroSubtype                = @"%%SUBTYPE%%";
+static NSString * const kMacroProfileContext         = @"%%PROFILE_CONTEXT%%";
 
 #define APPLICATION_TRACKING_LOGGING_ENABLED 0
 #define APPLICATION_TEMPLATE_MAPPING_LOGGING_ENABLED 0
@@ -91,7 +92,8 @@ static NSString * const kMacroSubtype                = @"%%SUBTYPE%%";
                                     VTrackingKeyErrorDetails       : kMacroErrorDetails,
                                     VTrackingKeyType               : kMacroType,
                                     VTrackingKeySubtype            : kMacroSubtype,
-                                    VTrackingKeyDuration           : kMacroDuration };
+                                    VTrackingKeyDuration           : kMacroDuration,
+                                    VTrackingKeyProfileContext     : kMacroProfileContext };
         
         _keyForEventMapping = @{ VTrackingEventUserDidStartCreateProfile           : VTrackingCreateProfileStartKey,
                                  VTrackingEventUserDidStartRegistration            : VTrackingRegistrationStartKey,
