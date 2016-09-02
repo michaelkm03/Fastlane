@@ -159,7 +159,6 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     
     private func openGate() {
         delegate?.vipGateExitedWithSuccess(true)
-        NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: VIPSubscriptionHelper.userVIPStatusChangedNotificationKey, object: nil))
     }
     
     private func updateViews() {

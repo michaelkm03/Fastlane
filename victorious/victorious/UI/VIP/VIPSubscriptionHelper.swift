@@ -17,8 +17,6 @@ class VIPSubscriptionHelper {
     
     // MARK: - Constants
     
-    static let userVIPStatusChangedNotificationKey = "victorious.VIPSubscriptionHelper.userVIPStatusChangedNotificationKey"
-    
     // MARK: - Initializing
     
     init(subscriptionFetchURL: String, delegate: VIPSubscriptionHelperDelegate, originViewController: UIViewController, dependencyManager: VDependencyManager) {

@@ -80,9 +80,14 @@ class VIPValidateSubscriptionOperation: RemoteFetcherOperation, RequestOperation
             return
         }
         
-        if let status = status where currentUser.vipStatus?.isVIP != true {
-            currentUser.vipStatus = status
-        } else {
+        if let status = status {
+            // We only want to update a user's vip status from false to true
+            // If it's already true, we let next app launch's parsing handle the user's VIP status.
+            if currentUser.vipStatus?.isVIP != true {
+                currentUser.vipStatus = status
+            }
+        }
+        else {
             currentUser.vipStatus = nil
         }
         

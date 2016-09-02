@@ -73,7 +73,7 @@ class ContentPreviewView: UIView {
             sendSubviewToBack(spinner)
         }
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userVIPStatusChanged), name: VIPSubscriptionHelper.userVIPStatusChangedNotificationKey, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userVIPStatusChanged), name: VCurrentUser.userDidUpdateNotificationKey, object: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
