@@ -35,7 +35,7 @@ class LoginOperationTests: BaseFetcherOperationTestCase {
             XCTAssertNotNil(VCurrentUser.user)
             XCTAssertEqual(currentUser?.id, 36179)
             
-            XCTAssertEqual(VCurrentUser.loginType, VLoginType.Email.rawValue)
+            XCTAssertEqual(VCurrentUser.loginType, VLoginType.Email)
             expectation.fulfill()
         }
         
