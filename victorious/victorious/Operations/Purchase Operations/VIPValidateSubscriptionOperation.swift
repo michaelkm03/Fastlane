@@ -85,7 +85,10 @@ class VIPValidateSubscriptionOperation: RemoteFetcherOperation, RequestOperation
         } else {
             currentUser.vipStatus = nil
         }
-        VCurrentUser.update(to: currentUser)
+        
+        dispatch_sync(dispatch_get_main_queue()) {
+            VCurrentUser.update(to: currentUser)
+        }
     }
 }
 
