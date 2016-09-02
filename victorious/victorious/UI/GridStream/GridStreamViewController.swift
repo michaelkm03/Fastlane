@@ -151,6 +151,8 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
             if error != nil {
                 (self?.navigationController ?? self)?.v_showErrorDefaultError()
             }
+            
+            self?.collectionView.collectionViewLayout.invalidateLayout()
         }
         
         collectionView.collectionViewLayout.invalidateLayout()
@@ -199,7 +201,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     func collectionView(collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, atIndexPath indexPath: NSIndexPath) {
         if let loadingView = view as? CollectionLoadingView {
             loadingView.color = dependencyManager.refreshControlColor
-            loadingView.isLoading = dataSource.isLoading
+            loadingView.isLoading = true
         }
         else if elementKind == UICollectionElementKindSectionHeader {
             header?.headerDidAppear()
@@ -214,10 +216,10 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
         guard section == GridStreamSection.Contents.rawValue else {
-            return CGSizeZero
+            return CGSize.zero
         }
         
-        return dataSource.isLoading ? CollectionLoadingView.preferredSize(in: collectionView.bounds) : CGSizeZero
+        return dataSource.hasLoadedAllItems ? CGSize.zero : CollectionLoadingView.preferredSize(in: collectionView.bounds)
     }
 
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
