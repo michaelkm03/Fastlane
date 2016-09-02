@@ -144,8 +144,11 @@ class AvatarView: UIView {
     
     var user: UserModel? {
         didSet {
-            setNeedsContentUpdate()
+            guard user?.id != oldValue?.id else {
+                return
+            }
             
+            setNeedsContentUpdate()
             // Force content update here because when we finish editing profile, the main feed chat bubble's avatar doesn't get it layout pass.
             updateContentIfNeeded()
         }
@@ -206,6 +209,10 @@ class AvatarView: UIView {
     
     private dynamic func currentUserDidChange() {
         if user?.id == VCurrentUser.user?.id {
+            // We may be updating the same user with more information here.
+            // So we nil out the user property first before we set it.
+            // Otherwise the user update may return early because we are setting the user with same userID
+            user = nil
             user = VCurrentUser.user
         }
     }
