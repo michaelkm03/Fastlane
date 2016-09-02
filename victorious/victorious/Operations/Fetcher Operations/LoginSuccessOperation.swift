@@ -29,7 +29,7 @@ class LoginSuccessOperation: FetcherOperation {
         
         let currentUser = self.response.user
             
-        VCurrentUser.loginType = self.parameters.loginType.rawValue
+        VCurrentUser.loginType = self.parameters.loginType
         VCurrentUser.token = self.response.token
         VCurrentUser.accountIdentifier = self.parameters.accountIdentifier
         VCurrentUser.isNewUser = self.response.newUser
@@ -43,10 +43,19 @@ class LoginSuccessOperation: FetcherOperation {
     }
     
     private func updateStoredCredentials( user: User ) {
-        VStoredLogin().saveLoggedInUserToDisk()
-        if let loginTypeValue = VCurrentUser.loginType?.integerValue {
-            NSUserDefaults.standardUserDefaults().setInteger(loginTypeValue, forKey: kLastLoginTypeUserDefaultsKey)
+        guard
+            let id = VCurrentUser.userID,
+            let token = VCurrentUser.token
+        else {
+            return
         }
+        
+        let info = VStoredLoginInfo(id, withToken: token, withLoginType: VCurrentUser.loginType)
+        
+        VStoredLogin().saveLoggedInUserToDisk(info)
+        
+        NSUserDefaults.standardUserDefaults().setInteger(VCurrentUser.loginType.rawValue, forKey: kLastLoginTypeUserDefaultsKey)
+        
         if let accountIdentifier = VCurrentUser.accountIdentifier {
             NSUserDefaults.standardUserDefaults().setObject( accountIdentifier, forKey: kAccountIdentifierDefaultsKey)
         }

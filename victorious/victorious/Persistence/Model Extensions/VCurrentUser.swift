@@ -28,7 +28,7 @@ final class VCurrentUser: NSObject {
         user = nil
     }
     
-    static var loginType: NSNumber?
+    static var loginType: VLoginType = .None
     static var token: String?
     static var isNewUser: NSNumber?
     static var accountIdentifier: String?

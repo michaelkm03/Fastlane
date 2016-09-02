@@ -16,7 +16,6 @@
 
 @interface VStoredLogin()
 
-- (VUser *)createNewUserWithRemoteId:(NSNumber *)remoteId token:(NSString *)token;
 - (BOOL)isTokenExpirationDateExpired:(NSDate *)creationDate;
 
 @end
@@ -38,22 +37,6 @@ static NSString * const kTestToken = @"dsadasdsa8ga7fb976dafga8bs6fgabdsfdsa";
     
     self.storedLogin = [[VStoredLogin alloc] init];
     [self.storedLogin clearLoggedInUserFromDisk];
-    
-    SEL selector = @selector(createNewUserWithRemoteId:token:);
-    self.createUserImplementation =  [VStoredLogin v_swizzleMethod:selector withBlock:^VUser *(id obj, NSNumber *remoteId, NSString *token)
-                                      {
-                                          VUser *user = [VDummyModels objectWithEntityName:[VUser v_entityName] subclass:[VUser class]];
-                                          user.remoteId = remoteId;
-                                          user.token = token;
-                                          return user;
-                                      }];
-}
-
-- (void)tearDown
-{
-    [super tearDown];
-    
-    [VStoredLogin v_restoreOriginalImplementation:self.createUserImplementation forMethod:@selector(createNewUserWithRemoteId:token:)];
 }
 
 - (void)testSaveLoggedInUser

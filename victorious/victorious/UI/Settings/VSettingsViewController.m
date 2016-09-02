@@ -212,7 +212,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     }
     else
     {
-        VLoginType loginType = (VLoginType)VCurrentUser.loginType.integerValue;
+        VLoginType loginType = VCurrentUser.loginType;
         return loginType != VLoginTypeFacebook;
     }
 }
