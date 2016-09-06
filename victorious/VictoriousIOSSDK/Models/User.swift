@@ -26,6 +26,25 @@ public protocol UserModel: PreviewImageContainer {
     var vipStatus: VIPStatus? { get }
 }
 
+public func ==(lhs: UserModel?, rhs: UserModel?) -> Bool {
+    guard let lhs = lhs, let rhs = rhs else {
+        return false
+    }
+    
+    return lhs.id == rhs.id
+        && lhs.displayName == rhs.displayName
+        && lhs.likesGiven == rhs.likesGiven
+        && lhs.likesReceived == rhs.likesReceived
+        && lhs.fanLoyalty?.tier == rhs.fanLoyalty?.tier
+        && lhs.accessLevel == rhs.accessLevel
+        && lhs.vipStatus?.isVIP == rhs.vipStatus?.isVIP
+        && lhs.avatarBadgeType == rhs.avatarBadgeType
+}
+
+public func !=(lhs: UserModel?, rhs: UserModel?) -> Bool {
+    return !(lhs == rhs)
+}
+
 /// A struct representing a user's information
 public struct User: UserModel {
     public enum AccessLevel {
