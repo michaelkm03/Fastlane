@@ -38,6 +38,7 @@ extension VLoadingViewController {
 private class LoadingHelper: NSObject {
     var completion: (() -> Void)?
     var template: NSDictionary? {
+        // If the new template has been downloaded use that, otherwise we pull the template out of the cache
         if let templateConfiguration = self.templateDownloadOperation.templateConfiguration {
             return templateConfiguration
         }
@@ -90,6 +91,8 @@ private class LoadingHelper: NSObject {
     func execute() {
         TempDirectoryCleanupOperation().queue()
         
+        // If the downloaded template does not exist (which will be the case when we switch build numbers),
+        // We will wait for the template download operation to finish before attempting login.
         if template == nil {
             templateDownloadOperation.completionBlock = { [weak self] in
                 self?.loginOperation.queue() { _ in
