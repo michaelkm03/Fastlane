@@ -33,6 +33,8 @@ public func ==(lhs: UserModel?, rhs: UserModel?) -> Bool {
     
     return lhs.id == rhs.id
         && lhs.displayName == rhs.displayName
+        && lhs.location == rhs.location
+        && lhs.tagline == rhs.tagline
         && lhs.likesGiven == rhs.likesGiven
         && lhs.likesReceived == rhs.likesReceived
         && lhs.fanLoyalty?.tier == rhs.fanLoyalty?.tier
