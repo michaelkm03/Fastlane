@@ -125,14 +125,14 @@ class VIPSubscriptionHelper {
                     self?.delegate?.setIsLoading(true, title: nil)
                     self?.subscribeToProduct(selectedProduct)
                 case .failure(let error):
-                    if willShowPrompt {
-                        selectionDependency?.trackButtonEvent(.cancel)
-                    }
                     strongSelf.delegate?.setIsLoading(false, title: nil)
                     originViewController.showSubscriptionAlert(for: error as NSError)
                     self?.delegate?.setIsLoading(false, title: nil)
                     originViewController.showSubscriptionAlert(for: error as NSError)
                 case .cancelled:
+                    if willShowPrompt {
+                        selectionDependency?.trackButtonEvent(.cancel)
+                    }
                     self?.delegate?.setIsLoading(false, title: nil)
             }
         }
