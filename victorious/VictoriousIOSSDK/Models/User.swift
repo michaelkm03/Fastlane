@@ -54,7 +54,7 @@ public struct User: UserModel {
         
         public init(json: JSON) {
             switch json.stringValue.lowercaseString {
-                case "api_owner": self = .owner
+                case "api_owner": self = .owner	
                 case "api_user": self = .user
                 default: self = .user
             }
