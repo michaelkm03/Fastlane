@@ -11,16 +11,6 @@ import VictoriousIOSSDK
 
 /// A view controller that displays the contents of a user's profile.
 class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderDelegate, AccessoryScreenContainer, CoachmarkDisplayer, VBackgroundContainer {
-    /// Private struct within NewProfileViewController for comparison. Since we use Core Data, 
-    /// the user is modified beneath us and every time we call setUser(...), the fields will be the same as oldValue
-    private struct UserDetails {
-        let id: Int
-        let displayName: String?
-        let likesGiven: Int?
-        let likesReceived: Int?
-        let level: String?
-        let isCreator: Bool
-    }
     
     // MARK: - Constants
     
@@ -115,13 +105,6 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     
     var user: UserModel? {
         return gridStreamController?.content
-    }
-    
-    private var comparableUser: UserDetails? {
-        didSet {
-            // Call a reload of the header every time the user's details change
-            gridStreamController?.reloadHeader()
-        }
     }
     
     // MARK: - View controllers
@@ -334,20 +317,10 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
             return
         }
         
-        let newComparableUser = UserDetails(
-            id: user.id,
-            displayName: user.displayName,
-            likesGiven: user.likesGiven,
-            likesReceived: user.likesReceived,
-            level: user.fanLoyalty?.tier,
-            isCreator: user.accessLevel == .owner
-        )
-        
-        guard newComparableUser != comparableUser else {
+        // If the user has not changed, we don't want to perform all the UI updates
+        guard user != self.user else {
             return
         }
-        
-        comparableUser = newComparableUser
         
         setupGridStreamController(for: user)
         
@@ -464,15 +437,6 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     func backgroundContainerView() -> UIView {
         return view
     }
-}
-
-private func !=(lhs: VNewProfileViewController.UserDetails?, rhs: VNewProfileViewController.UserDetails?) -> Bool {
-    return lhs?.id != rhs?.id
-        || lhs?.displayName != rhs?.displayName
-        || lhs?.likesGiven != rhs?.likesGiven
-        || lhs?.likesReceived != rhs?.likesReceived
-        || lhs?.level != rhs?.level
-        || lhs?.isCreator != rhs?.isCreator
 }
 
 private extension VDependencyManager {
