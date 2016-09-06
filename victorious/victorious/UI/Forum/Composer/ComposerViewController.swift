@@ -391,8 +391,6 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             self.textView.layoutIfNeeded()
             self.textView.setContentOffset(previousContentOffset, animated: false)
         }
-        self.attachmentContainerView.layoutIfNeeded()
-        self.interactiveContainerView.layoutIfNeeded()
         
         super.updateViewConstraints()
     }
