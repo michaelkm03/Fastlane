@@ -325,7 +325,7 @@
 "ErrorPushNotificationsNotEnabled"      = "Các thông báo đẩy không được kích hoạt cho thiết bị của bạn.\nHãy để các thông báo trong thiết lập thiết bị của bạn kích hoạt chúng.";
 "ErrorPushNotificationsUnknown"         = "Có lỗi khi đang tải các thiết lập thông báo.\nVui lòng thử lại sau.";
 "ErrorPushNotificationsNotSaved"        = "Lỗi khi đang Lưu các Ưu tiên";
-"ErrorPushNotificationsNotSavedMessage" = "Vui lòng thử lại sau.";
+"PleaseTryAgainLater" = "Vui lòng thử lại sau.";
 
 "We need permission to access your photo library." = "Chúng tôi cần bạn cho phép để truy cập vào thư viện ảnh của bạn.";
 "We need access to this permission."               = "Chúng tôi cần cấp quyền truy cập này.";

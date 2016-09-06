@@ -328,7 +328,7 @@ Tu recevras des notifications pour chacune de leurs publications.";
 "ErrorPushNotificationsNotEnabled"      = "Les notifications push ne sont pas activées sur cet appareil.\nVeuillez autoriser les notifications dans les réglages de l'appareil pour les activer.";
 "ErrorPushNotificationsUnknown"         = "Le chargement des paramètres de notifications a échoué.\nVeuillez réessayer ultérieurement.";
 "ErrorPushNotificationsNotSaved"        = "Erreur lors de la sauvegarde des préférences";
-"ErrorPushNotificationsNotSavedMessage" = "Veuillez réessayer ultérieurement.";
+"PleaseTryAgainLater" = "Veuillez réessayer ultérieurement.";
 
 "We need permission to access your photo library." = "Nous avons besoin de ton autorisation pour accéder à la bibliothèque photo.";
 "We need access to this permission."               = "Nous avons besoin de ton autorisation.";
