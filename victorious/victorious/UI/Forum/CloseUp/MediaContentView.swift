@@ -138,10 +138,21 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     }
 
     // MARK: - Managing content
+    
+    var hasValidMedia: Bool {
+        switch content.type {
+            case .gif, .image, .link, .text:
+                return true
+            case .video:
+                return seekableWithinBounds
+        }
+    }
 
     /// Can we seek ahead into the item with the current seekAheadTime stored in the content.
-    var seekableWithinBounds: Bool {
-        if content.type != .video {
+    private var seekableWithinBounds: Bool {
+        // Since the youtube player will return duration = 0 for live streams, we check if the 
+        // duration is 0. If that is the case, we return true for seekable.
+        if content.assets.first?.videoSource == .youtube && videoCoordinator?.duration == 0 {
             return true
         }
 

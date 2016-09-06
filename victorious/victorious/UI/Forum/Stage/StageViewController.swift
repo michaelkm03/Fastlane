@@ -54,7 +54,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     /// This is needed so the Stage will not appear if a new content arrives when the user is inside a filtered feed.
     private var enabled: Bool = true {
         didSet {
-            if enabled && mediaContentView?.seekableWithinBounds == true {
+            if enabled && mediaContentView?.hasValidMedia == true {
                 show(animated: true)
             } else {
                 hide(animated: true)
@@ -92,7 +92,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
-        if mediaContentView?.seekableWithinBounds == true {
+        if mediaContentView?.hasValidMedia == true {
             show(animated: false)
         }
         else {
@@ -318,7 +318,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         }
 
         /// Instead of seeking past the end of the video we hide the stage.
-        guard mediaContentView.seekableWithinBounds else {
+        guard mediaContentView.hasValidMedia else {
             hide(animated: true)
             return
         }
