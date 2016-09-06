@@ -59,37 +59,6 @@
 
 #pragma mark -
 
-@interface VTemplateDownloadOperationTestDelegate : NSObject <VTemplateDownloadOperationDelegate>
-
-@property (nonatomic, copy) void (^failed)();
-@property (nonatomic, strong) NSOperationQueue *operationQueue;
-
-@end
-
-@implementation VTemplateDownloadOperationTestDelegate
-
-- (instancetype)initWithOperationQueue:(NSOperationQueue *)operationQueue
-{
-    self = [super init];
-    if ( self != nil)
-    {
-        _operationQueue = operationQueue;
-    }
-    return self;
-}
-
-- (void)templateDownloadOperationFailed:(VTemplateDownloadOperation *)downloadOperation
-{
-    if ( self.failed != nil )
-    {
-        self.failed();
-    }
-}
-
-@end
-
-#pragma mark -
-
 /**
  This mock will fail a set number of times before it succeeds
  */
@@ -183,8 +152,7 @@
 - (void)testDefaultCache
 {
     VBasicTemplateDownloaderMock *downloader = [[VBasicTemplateDownloaderMock alloc] init];
-    VTemplateDownloadOperationTestDelegate *delegate = [[VTemplateDownloadOperationTestDelegate alloc] initWithOperationQueue:self.operationQueue];
-    VTemplateDownloadOperation *operation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader andDelegate:delegate];
+    VTemplateDownloadOperation *operation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader];
     XCTAssertNotNil(operation.dataCache);
 }
 
@@ -193,9 +161,7 @@
     VBasicTemplateDownloaderMock *downloader = [[VBasicTemplateDownloaderMock alloc] init];
     downloader.mockTemplateDictionary = @{ @"hello": @"world" };
     
-    VTemplateDownloadOperationTestDelegate *delegate = [[VTemplateDownloadOperationTestDelegate alloc] initWithOperationQueue:self.operationQueue];
-    
-    VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader andDelegate:delegate];
+    VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader];
     [self.operationQueue addOperations:@[downloadOperation] waitUntilFinished:YES];
     
     NSDictionary *expected = downloader.mockTemplateDictionary;
@@ -212,9 +178,7 @@
     VEnvironment *environment = [[VEnvironment alloc] initWithName:@"acme" baseURL:[NSURL URLWithString:@"http://www.example.com"] appID:@1];
     TemplateCache *templateCache = [[TemplateCache alloc] initWithDataCache:self.dataCache environment:environment buildNumber:@"1"];
     
-    VTemplateDownloadOperationTestDelegate *delegate = [[VTemplateDownloadOperationTestDelegate alloc] initWithOperationQueue:self.operationQueue];
-    
-    VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader andDelegate:delegate];
+    VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader];
     downloadOperation.templateCache = templateCache;
     downloadOperation.dataCache = self.dataCache;
     [self.operationQueue addOperations:@[downloadOperation] waitUntilFinished:YES];
@@ -241,9 +205,7 @@
         [successExpectation fulfill];
     };
     
-    VTemplateDownloadOperationTestDelegate *delegate = [[VTemplateDownloadOperationTestDelegate alloc] initWithOperationQueue:self.operationQueue];
-    
-    VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader andDelegate:delegate];
+    VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader];
     downloadOperation.dataCache = self.dataCache;
     downloadOperation.templateDownloadTimeout = 0.1;
     
@@ -254,7 +216,7 @@
 - (void)testRetryDefault
 {
     VFailingTemplateDownloaderMock *downloader = [[VFailingTemplateDownloaderMock alloc] init];
-    VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader andDelegate:nil];
+    VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader];
     XCTAssertTrue(downloadOperation.shouldRetry);
 }
 
@@ -264,9 +226,7 @@
     downloader.mockTemplateDictionary = @{ @"hello": @"world" };
     downloader.failCount = 1;
     
-    VTemplateDownloadOperationTestDelegate *delegate = [[VTemplateDownloadOperationTestDelegate alloc] initWithOperationQueue:self.operationQueue];
-    
-    VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader andDelegate:delegate];
+    VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader];
     downloadOperation.templateDownloadTimeout = 0.01;
     downloadOperation.shouldRetry = NO;
     [self.operationQueue addOperations:@[downloadOperation] waitUntilFinished:YES];
@@ -284,9 +244,7 @@
     NSData *imageData = [NSData dataWithBytes:bytes length:5];
     stubRequest(@"GET", imageURL.absoluteString).andReturn(200).withBody(imageData);
     
-    VTemplateDownloadOperationTestDelegate *delegate = [[VTemplateDownloadOperationTestDelegate alloc] initWithOperationQueue:self.operationQueue];
-    
-    VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader andDelegate:delegate];
+    VTemplateDownloadOperation *downloadOperation = [[VTemplateDownloadOperation alloc] initWithDownloader:downloader];
     downloadOperation.dataCache = self.dataCache;
     [self.operationQueue addOperations:@[downloadOperation] waitUntilFinished:YES];
     
