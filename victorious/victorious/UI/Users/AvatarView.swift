@@ -387,21 +387,4 @@ class AvatarView: UIView {
             shadowView.layer.shadowPath = UIBezierPath(ovalInRect: newShadowBounds).CGPath
         }
     }
-
-    // MARK: - Responding to VIP changes
-
-    private var userIsVIP: Bool? {
-        didSet {
-            guard userIsVIP != oldValue else {
-                return
-            }
-
-            updateVIPBadge()
-            updateVIPBorderView()
-        }
-    }
-
-    private dynamic func userStatusDidChange(notification: NSNotification) {
-        userIsVIP = VCurrentUser.user()?.hasValidVIPSubscription == true
-    }
 }
