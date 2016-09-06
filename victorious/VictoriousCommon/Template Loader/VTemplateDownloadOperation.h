@@ -35,21 +35,6 @@ typedef void (^VTemplateDownloaderCompletion)(NSData *__nullable templateData, N
 
 #pragma mark -
 
-@class VTemplateDownloadOperation;
-
-@protocol VTemplateDownloadOperationDelegate <NSObject>
-
-@optional
-
-/**
- Notifies the delegate that the template download operation failed.
- */
-- (void)templateDownloadOperationFailed:(VTemplateDownloadOperation *)downloadOperation;
-
-@end
-
-#pragma mark -
-
 @class TemplateCache;
 @class VDataCache;
 
@@ -78,11 +63,6 @@ typedef void (^VTemplateDownloaderCompletion)(NSData *__nullable templateData, N
  The downloader that was provided at initialization time
  */
 @property (nonatomic, readonly) id<VTemplateDownloader> downloader;
-
-/**
- The delegate that was provided at initialization time
- */
-@property (nonatomic, weak, readonly, nullable) id<VTemplateDownloadOperationDelegate> delegate;
 
 /**
  The manager will give the downloader this much time 
@@ -117,9 +97,9 @@ typedef void (^VTemplateDownloaderCompletion)(NSData *__nullable templateData, N
 @property (nonatomic, readonly, nullable) NSDictionary *templateConfiguration;
 
 /**
- Initializes a new template download manager with a downloader and a delegate
+ Initializes a new template download manager with a downloader.
  */
-- (instancetype)initWithDownloader:(id<VTemplateDownloader>)downloader andDelegate:(id<VTemplateDownloadOperationDelegate> __nullable)delegate NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithDownloader:(id<VTemplateDownloader>)downloader NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)init NS_UNAVAILABLE;
 

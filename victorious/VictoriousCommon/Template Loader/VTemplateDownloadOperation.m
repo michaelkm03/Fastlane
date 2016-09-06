@@ -46,7 +46,7 @@ static char kPrivateQueueSpecific;
     return nil;
 }
 
-- (instancetype)initWithDownloader:(id<VTemplateDownloader>)downloader andDelegate:(id<VTemplateDownloadOperationDelegate>)delegate
+- (instancetype)initWithDownloader:(id<VTemplateDownloader>)downloader
 {
     NSParameterAssert(downloader != nil);
     self = [super init];
@@ -55,7 +55,6 @@ static char kPrivateQueueSpecific;
         _privateQueue = dispatch_queue_create("com.getvictorious.VTemplateDownloadManager", DISPATCH_QUEUE_SERIAL);
         dispatch_queue_set_specific(_privateQueue, &kPrivateQueueSpecific, &kPrivateQueueSpecific, NULL);
         _semaphore = dispatch_semaphore_create(0);
-        _delegate = delegate;
         _cacheUsed = NO;
         _templateDownloaded = NO;
         _completedSuccessfully = NO;

@@ -35,8 +35,8 @@ extension VLoadingViewController {
     }
 }
 
-private class LoadingHelper: NSObject, VTemplateDownloadOperationDelegate {
-    var completion: (Void -> Void)?
+private class LoadingHelper: NSObject {
+    var completion: (() -> Void)?
     var template: NSDictionary? {
         if let templateConfiguration = self.templateDownloadOperation.templateConfiguration {
             return templateConfiguration
@@ -61,7 +61,7 @@ private class LoadingHelper: NSObject, VTemplateDownloadOperationDelegate {
     }
     
     private lazy var templateDownloadOperation: VTemplateDownloadOperation = {
-        VTemplateDownloadOperation(downloader: PersistenceTemplateDownloader(), andDelegate: self)
+        VTemplateDownloadOperation(downloader: PersistenceTemplateDownloader())
     }()
     
     private var dependencyManager: VDependencyManager {
@@ -106,27 +106,5 @@ private class LoadingHelper: NSObject, VTemplateDownloadOperationDelegate {
         
         let backgroundQueue = Queue.background.operationQueue
         backgroundQueue.addOperation(templateDownloadOperation)
-    }
-    
-    // MARK: - VTemplateDownloadOperationDelegate
-    
-    @objc private func templateDownloadOperationFailed(downloadOperation: VTemplateDownloadOperation) {
-        dispatch_async(dispatch_get_main_queue()) {
-            /// If the template download failed and we're using a user environment, then we should switch back to the default
-            if VEnvironmentManager.sharedInstance().currentEnvironment.isUserEnvironment {
-                downloadOperation.cancel()
-                VEnvironmentManager.sharedInstance().revertToPreviousEnvironment()
-                
-                let userInfo = [
-                    VEnvironmentDidFailToLoad: true
-                ]
-                
-                NSNotificationCenter.defaultCenter().postNotificationName(
-                    VSessionTimerNewSessionShouldStart,
-                    object: self,
-                    userInfo: userInfo
-                )
-            }
-        }
     }
 }
