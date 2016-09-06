@@ -23,7 +23,7 @@ class ForumNavBarTitleView: UIView {
     
     init?(dependencyManager: VDependencyManager, frame: CGRect) {
         self.dependencyManager = dependencyManager
-        activeUserCount = 0
+        activeUserCount = 1
         
         guard let configuration = dependencyManager.titleViewConfiguration() else {
             // No valid configuration was set. We should not show a titleView
