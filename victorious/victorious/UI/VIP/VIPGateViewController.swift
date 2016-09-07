@@ -246,15 +246,15 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
 
 private extension VDependencyManager {
     var headerText: String? {
-        return stringForKey("text.header")
+        return stringForKey("text.title")
     }
     
     var headerFont: UIFont? {
-        return fontForKey("font.header")
+        return fontForKey("font.title")
     }
     
     var headerTextColor: UIColor? {
-        return colorForKey("color.header")
+        return colorForKey("color.title")
     }
     
     func descriptionText(for products: [VProduct]) -> String? {
