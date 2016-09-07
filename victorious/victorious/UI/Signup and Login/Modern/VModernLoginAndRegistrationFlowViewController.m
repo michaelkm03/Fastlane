@@ -360,10 +360,10 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
      {
          [weakSelf.loginFlowHelper queueFacebookLoginOperationWithCompletion:^(NSError *_Nullable error)
           {
-              if ( [VCurrentUser user] != nil && error == nil )
+              if ( VCurrentUser.exists && error == nil )
               {
                   weakSelf.actionsDisabled = NO;
-                  weakSelf.isRegisteredAsNewUser = [VCurrentUser user].isNewUser.boolValue;
+                  weakSelf.isRegisteredAsNewUser = VCurrentUser.isNewUser.boolValue;
                   [weakSelf continueRegistrationFlowAfterSocialRegistration];
               }
               else
@@ -433,10 +433,10 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         self.currentOperation = [weakSelf.loginFlowHelper queueAccountCreateOperationWithEmail:email
                                                                                       password:password
                                                                                     completion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled) {
-            weakSelf.isRegisteredAsNewUser = [VCurrentUser user].isNewUser.boolValue;
+            weakSelf.isRegisteredAsNewUser = VCurrentUser.isNewUser.boolValue;
             if ( error == nil )
             {
-                BOOL completeProfile = [VCurrentUser user].v_completedProfile.boolValue;
+                BOOL completeProfile = VCurrentUser.completedProfile.boolValue;
                 completion(YES, completeProfile, nil);
                 if (completeProfile)
                 {

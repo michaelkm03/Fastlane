@@ -14,11 +14,6 @@ extension VDependencyManager {
         var interstitial: Interstitial?
 
         switch alert.type {
-            case .levelUp:
-                let tempalteValue = templateValueOfType(LevelUpViewController.self, forKey: "levelUpScreen")
-                if let viewController = tempalteValue as? LevelUpViewController {
-                    interstitial = viewController
-                }
             case .statusUpdate, .achievement, .clientSideCreated:
                 let templateValue = templateValueOfType(InterstitialAlertViewController.self, forKey: "statusUpdateScreen")
                 if let imageAlertVC = templateValue as? InterstitialAlertViewController {

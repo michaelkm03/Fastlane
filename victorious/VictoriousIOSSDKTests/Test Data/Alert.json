@@ -1,6 +1,6 @@
 {
     "id": "1341",
-    "type": "levelUp",
+    "type": "statusUpdate",
     "acknowledged_at": "2015-12-18 20:40:43",
     "params": {
         "backgroundVideo": "http://www.video.com",

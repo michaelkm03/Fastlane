@@ -113,8 +113,7 @@ class AvatarView: UIView {
         UIView.performWithoutAnimation {
             self.layoutIfNeeded()
         }
-
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userStatusDidChange), name: VIPSubscriptionHelper.userVIPStatusChangedNotificationKey, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(currentUserDidChange), name: VCurrentUser.userDidUpdateNotificationKey, object: nil)
     }
 
     // MARK: - Views
@@ -242,33 +241,13 @@ class AvatarView: UIView {
     
     var user: UserModel? {
         didSet {
-            var persistentUser: VUser?
-            if let user = user as? VUser {
-                persistentUser = user
-            }
-            
-            guard user?.id != oldValue?.id || persistentUser == nil else {
-                // Only prevent updating for a persistent user since we can KVO values related to that object
+            guard user?.id != oldValue?.id else {
                 return
             }
             
             setNeedsContentUpdate()
-            
-            setupKVO()
-        }
-    }
-    
-    // MARK: - KVO
-    private func setupKVO() {
-        /// The user object can be a userModel, which may or may not be persistent. Only the persistent VUser can
-        /// be KVO'd, hence we must check for this 
-        guard let user = self.user as? VUser else {
-            return
-        }
-        
-        KVOController.unobserveAll()
-        KVOController.observe(user, keyPaths: Constants.observationKeys, options: [.Initial, .New]) { [weak self] _ in
-            self?.setNeedsContentUpdate()
+            // Force content update here because when we finish editing profile, the main feed chat bubble's avatar doesn't get it layout pass.
+            updateContentIfNeeded()
         }
     }
     
@@ -323,6 +302,16 @@ class AvatarView: UIView {
         
         initialsLabel.hidden = false
         initialsLabel.text = initials
+    }
+    
+    private dynamic func currentUserDidChange() {
+        if user?.id == VCurrentUser.user?.id {
+            // We may be updating the same user with more information here.
+            // So we nil out the user property first before we set it.
+            // Otherwise the user update may return early because we are setting the user with same userID
+            user = nil
+            user = VCurrentUser.user
+        }
     }
     
     // MARK: - Layout
@@ -397,22 +386,5 @@ class AvatarView: UIView {
             shadowBounds = newShadowBounds
             shadowView.layer.shadowPath = UIBezierPath(ovalInRect: newShadowBounds).CGPath
         }
-    }
-
-    // MARK: - Responding to VIP changes
-
-    private var userIsVIP: Bool? {
-        didSet {
-            guard userIsVIP != oldValue else {
-                return
-            }
-
-            updateVIPBadge()
-            updateVIPBorderView()
-        }
-    }
-
-    private dynamic func userStatusDidChange(notification: NSNotification) {
-        userIsVIP = VCurrentUser.user()?.hasValidVIPSubscription == true
     }
 }

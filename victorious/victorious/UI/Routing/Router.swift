@@ -124,7 +124,7 @@ struct Router {
     }
     
     func checkForPermissionBeforeRouting(contentIsForVIPOnly isVIPOnly: Bool = false, completion: ((success: Bool) -> Void)? = nil) {
-        guard let currentUser = VCurrentUser.user() else {
+        guard let currentUser = VCurrentUser.user else {
             // If there's no current user, then we fail automatically if VIP is required since the user can't subscribe
             // if they're not logged in, and we succeed automatically if VIP is not required.
             completion?(success: !isVIPOnly)
@@ -328,7 +328,7 @@ private final class ShowFetchedCloseUpOperation: AsyncOperation<Void> {
         
         let displayModifier = self.displayModifier
         guard
-            let userID = VCurrentUser.user()?.remoteId.integerValue,
+            let userID = VCurrentUser.user?.id,
             let contentFetchURL = displayModifier.dependencyManager.contentFetchURL
         else {
             let error = NSError(domain: "ShowFetchedCloseUpOperation", code: -1, userInfo: nil)
@@ -458,7 +458,7 @@ private final class ShowVIPSubscriptionOperation: AsyncOperation<Void> {
     
     override func execute(finish: (result: OperationResult<Void>) -> Void) {
         // Jump to success if current user is already VIP
-        if VCurrentUser.user()?.hasValidVIPSubscription == true {
+        if VCurrentUser.user?.hasValidVIPSubscription == true {
             completion?(true)
             finish(result: .success())
             return

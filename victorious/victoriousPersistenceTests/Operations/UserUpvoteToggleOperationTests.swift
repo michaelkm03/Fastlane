@@ -15,45 +15,44 @@ class UserUpvoteToggleOperationTests: BaseFetcherOperationTestCase {
     
     override func setUp() {
         super.setUp()
-        let user = persistentStoreHelper.createUser(remoteId: currentUserID)
-        user.setAsCurrentUser()
+        let user = User(id: currentUserID)
+        VCurrentUser.update(to: user)
     }
     
     func testInitiallyFollowed() {
-        let user: VUser = persistentStoreHelper.createUser(remoteId: remoteUserID)
-        user.isFollowedByMainUser = true
-        XCTAssertTrue(user.isFollowedByCurrentUser == true)
+        let user = User(id: remoteUserID)
+        user.upvote()
         
         let expectation = expectationWithDescription("UserUpvoteToggleOperation")
         
         let operation = UserUpvoteToggleOperation(
-            userID: remoteUserID,
+            user: user,
             upvoteAPIPath: APIPath(templatePath: ""),
             unupvoteAPIPath: APIPath(templatePath: "")
         )
         
         operation.queue { results, error, cancelled in
-            XCTAssertFalse(user.isFollowedByCurrentUser == true)
+            XCTAssertFalse(user.isUpvoted)
             expectation.fulfill()
         }
         waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
     }
     
     func testInitiallyUnupvoted() {
-        let user: VUser = persistentStoreHelper.createUser(remoteId: remoteUserID)
-        user.isFollowedByMainUser = false
-        XCTAssertFalse(user.isFollowedByCurrentUser == true)
+        let user = User(id: remoteUserID)
+        user.unUpvote()
+        XCTAssertFalse(user.isRemotelyFollowedByCurrentUser == true)
         
         let expectation = expectationWithDescription("UserUpvoteToggleOperation")
         
         let operation = UserUpvoteToggleOperation(
-            userID: remoteUserID,
+            user: user,
             upvoteAPIPath: APIPath(templatePath: ""),
             unupvoteAPIPath: APIPath(templatePath: "")
         )
         
         operation.queue { results, error, cancelled in
-            XCTAssertTrue(user.isFollowedByCurrentUser == true)
+            XCTAssertTrue(user.isUpvoted)
             expectation.fulfill()
         }
         waitForExpectationsWithTimeout(expectationThreshold, handler: nil)

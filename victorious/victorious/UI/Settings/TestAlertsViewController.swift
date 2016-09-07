@@ -12,10 +12,9 @@ import Foundation
 class TestAlertsViewController: UITableViewController {
     
     private enum TestAlertIndex: Int {
-        case levelUp = 0
-        case achievement = 1
-        case statusUpdate = 2
-        case toast = 3
+        case achievement = 0
+        case statusUpdate = 1
+        case toast = 2
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -33,14 +32,12 @@ class TestAlertsViewController: UITableViewController {
         }
         
         switch index {
-        case .levelUp:
-            InterstitialManager.sharedInstance.debug_registerTestLevelUpAlert()
-        case .achievement:
-            InterstitialManager.sharedInstance.debug_registerTestAchievementAlert()
-        case .statusUpdate:
-            InterstitialManager.sharedInstance.debug_registerTestStatusUpdateAlert()
-        case .toast:
-            InterstitialManager.sharedInstance.debug_registerTestToastAlert()
+            case .achievement:
+                InterstitialManager.sharedInstance.debug_registerTestAchievementAlert()
+            case .statusUpdate:
+                InterstitialManager.sharedInstance.debug_registerTestStatusUpdateAlert()
+            case .toast:
+                InterstitialManager.sharedInstance.debug_registerTestToastAlert()
         }
     }
     

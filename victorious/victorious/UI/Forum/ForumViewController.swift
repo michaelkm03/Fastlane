@@ -38,7 +38,6 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     #endif
 
     private var navBarTitleView : ForumNavBarTitleView?
-    private var isDisplayingCoachmark = false
     
     // MARK: - Initialization
     

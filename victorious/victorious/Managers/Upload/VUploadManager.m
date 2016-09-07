@@ -409,7 +409,7 @@ static inline BOOL isSessionQueue()
 {
     NSAssert(isSessionQueue(), @"This method must be run on the sessionQueue");
     
-    if ( ![VCurrentUser isLoggedIn] )
+    if ( !VCurrentUser.exists )
     {
         return;
     }
@@ -704,17 +704,6 @@ totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
         sharedManager = [[VUploadManager alloc] init];
     });
     return sharedManager;
-}
-
-- (void)mockCurrentUser
-{
-    id<PersistentStoreType> persistentStore = [PersistentStoreSelector defaultPersistentStore];
-    VUser *user = (VUser *)[[persistentStore mainContext] v_createObjectAndSaveWithEntityName:@"User" configurations:^(NSManagedObject *_Nonnull object) {
-        VUser *user = (VUser *)object;
-        user.remoteId = @123;
-        user.token = @"abcd";
-    }];
-    [user setAsCurrentUser];
 }
 
 @end

@@ -29,30 +29,26 @@ final class StoredLoginOperation: SyncOperation<Void> {
         
         let storedLogin = VStoredLogin()
         if let info = storedLogin.storedLoginInfo() {
+            let user = User(id: info.userRemoteId.integerValue)
+            VCurrentUser.update(to: user)
+            VCurrentUser.loginType = info.lastLoginType
+            VCurrentUser.token = info.token
             
-            // First, try to use a valid stored token to bypass login
-            let user: VUser = persistentStore.mainContext.v_performBlockAndWait() { context in
-                let user: VUser = context.v_findOrCreateObject([ "remoteId" : info.userRemoteId ])
-                user.loginType = info.lastLoginType.rawValue
-                user.token = info.token
-                context.v_save()
-                return user
+            guard
+                let apiPath = dependencyManager.networkResources?.userFetchAPIPath,
+                let userInfoOperation = UserInfoOperation(userID: user.id, apiPath: apiPath)
+            else {
+                let error = NSError(domain: "StoredLoginOperation-BadUserFetchAPIPath", code: -1, userInfo: ["DependencyManager": dependencyManager])
+                Log.warning("Unable to initialize first user info fetch during StoredLoginOperation with error: \(error)")
+                return .failure(error)
             }
             
-            // This is needed here so that our request will be authorized with the correct user ID
-            user.setAsCurrentUser()
-            
-            guard let apiPath = dependencyManager.networkResources?.userFetchAPIPath else {
-                return .failure(NSError(domain: "StoredLoginOperation-BadUserFetchAPIPath", code: -1, userInfo: ["DependencyManager": dependencyManager]))
-            }
-            
-            let userInfoOperation = UserInfoOperation(userID: user.id, apiPath: apiPath)
-            userInfoOperation?.after(self).queue { _, error, _ in
-                guard let user = userInfoOperation?.user else {
-                    Log.warning("User info fetch failed with: \(error)")
+            userInfoOperation.after(self).queue { _, error, _ in
+                guard let user = userInfoOperation.user else {
+                    Log.warning("User info fetch failed with error: \(error)")
                     return
                 }
-                user.setAsCurrentUser()
+                VCurrentUser.update(to: user)
             }
             
         } else if let loginType = VLoginType(rawValue: defaults.integerForKey(kLastLoginTypeUserDefaultsKey)),

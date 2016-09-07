@@ -31,18 +31,11 @@ class LoginOperationTests: BaseFetcherOperationTestCase {
         
         let expectation = expectationWithDescription("testLoginWithEmailAndPassword")
         operation.queue() { results, error, cancelled in
+            let currentUser = VCurrentUser.user
+            XCTAssertNotNil(VCurrentUser.user)
+            XCTAssertEqual(currentUser?.id, 36179)
             
-            guard let persistentUser: VUser = self.testStore.mainContext.v_findObjects(["remoteId" : user.id ]).first else {
-                XCTFail( "Unable to load the user the operation should have parsed." )
-                return
-            }
-            
-            XCTAssertEqual( persistentUser.loginType, VLoginType.Email.rawValue )
-            
-            let currentUser = VCurrentUser.user()
-            XCTAssertNotNil( VCurrentUser.user() )
-            XCTAssertEqual( persistentUser.objectID, currentUser?.objectID )
-            
+            XCTAssertEqual(VCurrentUser.loginType, VLoginType.Email)
             expectation.fulfill()
         }
         

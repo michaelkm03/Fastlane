@@ -46,7 +46,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
     // MARK : - Properties
     
     private var dependencyManager: VDependencyManager!
-    var settings : VNotificationSettings? {
+    var settings : NotificationSettings? {
         didSet {
             initializeSections()
             tableView.reloadData()
@@ -138,7 +138,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
             return
         }
         
-        let notificationUpdateOperation = DevicePreferencesOperation(newPreferences: settings.networkPreferences())
+        let notificationUpdateOperation = DevicePreferencesOperation(newPreferences: settings.networkPreferences)
         
         notificationUpdateOperation.queue() { [weak navigationController] results, error, cancelled in
             if let _ = error where navigationController != nil {
@@ -213,10 +213,11 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
     // MARK: - SettingsSwitchCell Delegate
     
     func settingsDidUpdateFromCell(cell: VSettingsSwitchCell, newValue: Bool, key: String) {
-        guard let settings = self.settings else {
+        guard var settings = self.settings else {
             return
         }
         settings.updateValue(forKey: key, newValue: newValue)
+        self.settings = settings
         
         //Update tracking
         let newStateString = newValue ? Constants.trackingPermissionAuthorizedString : Constants.trackingPermissionDeniedString
@@ -247,7 +248,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
                         var rowTitle = rowDictionary["title"] as? String,
                         let rowKey = rowDictionary["key"] as? String
                     {
-                        if (rowKey == VNotificationSettingType.postFromCreator.rawValue) {
+                        if (rowKey == NotificationSettingType.postFromCreator.rawValue) {
                             let appInfo = VAppInfo(dependencyManager: dependencyManager)
                             rowTitle = rowTitle.stringByReplacingOccurrencesOfString(Constants.creatorNameMacro, withString: appInfo.ownerName ?? "Creator")
                         }

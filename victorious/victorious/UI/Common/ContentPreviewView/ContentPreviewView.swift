@@ -73,7 +73,7 @@ class ContentPreviewView: UIView {
             sendSubviewToBack(spinner)
         }
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userVIPStatusChanged), name: VIPSubscriptionHelper.userVIPStatusChangedNotificationKey, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userVIPStatusChanged), name: VCurrentUser.userDidUpdateNotificationKey, object: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -125,7 +125,7 @@ class ContentPreviewView: UIView {
     }
     
     private func setupImage(forContent content: ContentModel) {
-        let userCanViewContent = VCurrentUser.user()?.canView(content) == true
+        let userCanViewContent = VCurrentUser.user?.canView(content) == true
         if let imageAsset = content.previewImage(ofMinimumWidth: bounds.size.width) {
             let blurRadius = userCanViewContent ? 0 : Constants.imageViewBlurEffectRadius
             previewImageView.getImageAsset(imageAsset, blurRadius: blurRadius) { [weak self] result in

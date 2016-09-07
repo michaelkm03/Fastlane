@@ -44,7 +44,6 @@ class VUser: NSManagedObject, UserModel {
     @NSManaged var repostedSequences: Set<NSObject>?
     @NSManaged var maxUploadDuration: NSNumber
     @NSManaged var loginType: NSNumber
-    @NSManaged var notificationSettings: VNotificationSettings?
     @NSManaged var likedSequences: NSOrderedSet?
     @NSManaged var accountIdentifier: String?
     @NSManaged var isNewUser: NSNumber?
@@ -75,7 +74,7 @@ class VUser: NSManagedObject, UserModel {
         return FanLoyalty(level: level, progress: progress, points: levelProgressPoints?.integerValue, tier: self.tier, achievementsUnlocked: achievements)
     }
     
-    var isBlockedByCurrentUser: Bool? {
+    var isRemotelyBlockedByCurrentUser: Bool? {
         return isBlockedByMainUser?.boolValue
     }
     
@@ -84,7 +83,7 @@ class VUser: NSManagedObject, UserModel {
         return isCreator ? .owner : .user
     }
     
-    var isFollowedByCurrentUser: Bool? {
+    var isRemotelyFollowedByCurrentUser: Bool? {
         return isFollowedByMainUser?.boolValue
     }
     

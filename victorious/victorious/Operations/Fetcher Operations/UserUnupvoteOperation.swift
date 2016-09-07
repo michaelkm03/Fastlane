@@ -7,29 +7,22 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 class UserUnupvoteOperation: FetcherOperation {
     private let userUnupvoteAPIPath: APIPath
-    private let userID: Int
+    private let user: UserModel
     
-    init(userID: Int, userUnupvoteAPIPath: APIPath) {
-        self.userID = userID
+    init(user: UserModel, userUnupvoteAPIPath: APIPath) {
+        self.user = user
         self.userUnupvoteAPIPath = userUnupvoteAPIPath
     }
     
     override func main() {
-        // Make data change optimistically before executing the request
-        persistentStore.createBackgroundContext().v_performBlockAndWait { context in
-            guard let user: VUser = context.v_findObjects(["remoteId": self.userID]).first else {
-                return
-            }
-            
-            user.isFollowedByMainUser = false
-            context.v_save()
-        }
+        user.unUpvote()
         
         UserUnupvoteRemoteOperation(
-            userID: userID,
+            userID: user.id,
             userUnupvoteAPIPath: userUnupvoteAPIPath
         )?.after(self).queue()
     }
