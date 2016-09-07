@@ -16,13 +16,6 @@ protocol CaptionBarViewControllerDelegate: class {
 /// Shows and manages the display of a bar showing a user's avatar, text they've posted, and,
 /// when appropriate, an expansion button to allow all of the text to be scrolled through.
 class CaptionBarViewController: UIViewController {
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        captionBar.captionTextView.alpha = 0
-        captionBar.captionLabel.alpha = 0
-    }
-    
     @IBOutlet private weak var captionBar: CaptionBar!
     private var displayingUser: UserModel?
     private var isShowingCaption: Bool {
@@ -64,6 +57,9 @@ class CaptionBarViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         captionBarDecorator?.decorate(captionBar)
+        
+        captionBar.captionTextView.alpha = 0
+        captionBar.captionLabel.alpha = 0
     }
     
     // MARK: - Public
