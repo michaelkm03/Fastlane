@@ -246,7 +246,9 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         guard
             let content = content,
             let deleteAPIPath = dependencyManager.contentDeleteAPIPath,
-            let flagAPIPath = dependencyManager.contentFlagAPIPath
+            let flagAPIPath = dependencyManager.contentFlagAPIPath,
+            let deleteRequest = ContentDeleteRequest(contentID: contentID, apiPath: deleteAPIPath),
+            let flagRequest = ContentFlagRequest(contentID: contentID, apiPath: flagAPIPath)
         else {
             return
         }
@@ -254,8 +256,8 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         let isCreatorOfContent = content.wasCreatedByCurrentUser
         
         let flagOrDeleteOperation = isCreatorOfContent
-            ? ContentDeleteOperation(contentID: contentID, apiPath: deleteAPIPath)
-            : ContentFlagOperation(contentID: contentID, apiPath: flagAPIPath)
+            ? RequestOperation(request: flagRequest)
+            : RequestOperation(request: deleteRequest)
         
         let actionTitle = isCreatorOfContent
             ? NSLocalizedString("DeletePost", comment: "Delete this user's post")
@@ -269,10 +271,11 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         
         confirm.before(flagOrDeleteOperation)
         confirm.queue()
-        flagOrDeleteOperation.queue { [weak self] _, _, cancelled in
+        flagOrDeleteOperation.queue { [weak self] result in
             /// FUTURE: Update parent view controller to remove content
-            if !cancelled {
-                self?.navigationController?.popViewControllerAnimated(true)
+            switch result {
+                case .success(_), .failure(_): self?.navigationController?.popViewControllerAnimated(true)
+                case .cancelled: break
             }
         }
     }

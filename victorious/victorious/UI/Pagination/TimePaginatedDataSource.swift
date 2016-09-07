@@ -35,7 +35,7 @@ class TimePaginatedDataSource<Item, Operation: Queueable2 where Operation: NSOpe
     
     // MARK: - Initializing
     
-    init(apiPath: APIPath, ordering: PaginatedOrdering = .descending, throttleTime: NSTimeInterval = 1.0, createOperation: (url: NSURL) -> Operation, processOutput: (output: Operation.Output) -> [Item]) {
+    init(apiPath: APIPath, ordering: PaginatedOrdering = .descending, throttleTime: NSTimeInterval = 1.0, createOperation: (apiPath: APIPath) -> Operation, processOutput: (output: Operation.Output) -> [Item]) {
         self.apiPath = apiPath
         self.ordering = ordering
         self.throttleTime = throttleTime
@@ -60,8 +60,8 @@ class TimePaginatedDataSource<Item, Operation: Queueable2 where Operation: NSOpe
     /// The minimum time between requests for item loading.
     let throttleTime: NSTimeInterval
     
-    /// A function that converts a URL into an operation that loads a page of items.
-    private let createOperation: (url: NSURL) -> Operation
+    /// A function that converts an API path into an operation that loads a page of items.
+    private let createOperation: (apiPath: APIPath) -> Operation
     
     /// A function that converts the output of the data source's operation into a list of items.
     private let processOutput: (output: Operation.Output) -> [Item]
@@ -127,13 +127,13 @@ class TimePaginatedDataSource<Item, Operation: Queueable2 where Operation: NSOpe
             return false
         }
         
-        guard let url = processedURL(for: loadingType) else {
-            assertionFailure("Failed to construct a valid URL when loading a page in TimePaginatedDataSource.")
+        guard let apiPath = processedAPIPath(for: loadingType) else {
+            assertionFailure("Failed to construct a valid API path when loading a page in TimePaginatedDataSource.")
             return false
         }
         
         lastLoadTime = NSDate()
-        currentOperation = createOperation(url: url)
+        currentOperation = createOperation(apiPath: apiPath)
         
         currentOperation?.queue { [weak self] result in
             defer {
@@ -185,7 +185,7 @@ class TimePaginatedDataSource<Item, Operation: Queueable2 where Operation: NSOpe
         items.appendContentsOf(newItems)
     }
     
-    private func processedURL(for loadingType: PaginatedLoadingType) -> NSURL? {
+    private func processedAPIPath(for loadingType: PaginatedLoadingType) -> APIPath? {
         let (fromTime, toTime) = paginationTimestamps(for: loadingType)
         
         // The from-time should always come after the to-time.
@@ -194,10 +194,10 @@ class TimePaginatedDataSource<Item, Operation: Queueable2 where Operation: NSOpe
             return nil
         }
         
-        apiPath.macroReplacements["%%FROM_TIME%%"] = "\(fromTime)"
-        apiPath.macroReplacements["%%TO_TIME%%"] = "\(toTime)"
-        
-        return apiPath.url
+        var processedAPIPath = apiPath
+        processedAPIPath.macroReplacements["%%FROM_TIME%%"] = "\(fromTime)"
+        processedAPIPath.macroReplacements["%%TO_TIME%%"] = "\(toTime)"
+        return processedAPIPath
     }
     
     /// Returns the range of timestamps needed to load new content for `loadingType`.

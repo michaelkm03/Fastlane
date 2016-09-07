@@ -31,4 +31,8 @@ public struct ContentDeleteRequest: RequestType {
         
         contentDeleteURL = url
     }
+    
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws {
+        Content.hideContent(withID: contentID)
+    }
 }

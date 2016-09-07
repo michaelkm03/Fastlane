@@ -9,14 +9,14 @@
 import UIKit
 
 public struct ContentFeedRequest: RequestType {
-    public let url: NSURL
+    public let apiPath: APIPath
     
-    public init(url: NSURL) {
-        self.url = url
+    public init(apiPath: APIPath) {
+        self.apiPath = apiPath
     }
     
     public var urlRequest: NSURLRequest {
-        return NSURLRequest(URL: url)
+        return NSURLRequest(URL: apiPath.url ?? NSURL())
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> (contents: [ContentModel], refreshStage: RefreshStage?) {
@@ -24,13 +24,7 @@ public struct ContentFeedRequest: RequestType {
             throw ResponseParsingError()
         }
         
-        let parsedContents = contents.flatMap { Content(json: $0) }.filter { content in
-            guard let id = content.id else {
-                return true
-            }
-            
-            return !Content.contentIsHidden(withID: id)
-        }
+        let parsedContents = contents.flatMap { Content(json: $0) } as [ContentModel]
         
         var parsedRefreshStage: RefreshStage? = nil
         let mainStageJSON = responseJSON["main_stage"]

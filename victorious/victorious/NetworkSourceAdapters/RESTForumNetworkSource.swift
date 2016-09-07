@@ -14,8 +14,8 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
         self.dependencyManager = dependencyManager.networkResources ?? dependencyManager
         
         dataSource = TimePaginatedDataSource(
-            apiPath: dependencyManager.mainFeedAPIPath,
-            createOperation: { RequestOperation(request: ContentFeedRequest(url: $0)) },
+            apiPath: self.dependencyManager.mainFeedAPIPath,
+            createOperation: { ContentFeedOperation(apiPath: $0) },
             processOutput: { $0.contents }
         )
         
@@ -35,7 +35,7 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     
     // MARK: - Data source
     
-    let dataSource: TimePaginatedDataSource<ContentModel, RequestOperation<ContentFeedRequest>>
+    let dataSource: TimePaginatedDataSource<ContentModel, ContentFeedOperation>
     
     private var filteredStreamAPIPath: APIPath? {
         didSet {
