@@ -24,7 +24,17 @@ class RequestOperation<Request: RequestType>: AsyncOperation<Request.ResultType>
     }
     
     override func execute(finish: (result: OperationResult<Request.ResultType>) -> Void) {
-        MainRequestExecutor().executeRequest(
+        let executor = MainRequestExecutor()
+        
+        if !executor.errorHandlers.contains({ $0 is UnauthorizedErrorHandler }) {
+            executor.errorHandlers.append(UnauthorizedErrorHandler())
+        }
+        
+        if !executor.errorHandlers.contains({ $0 is DebugErrorHandler }) {
+            executor.errorHandlers.append(DebugErrorHandler(requestIdentifier: "\(self.dynamicType)"))
+        }
+        
+        executor.executeRequest(
             request,
             onComplete: { result in
                 finish(result: .success(result))

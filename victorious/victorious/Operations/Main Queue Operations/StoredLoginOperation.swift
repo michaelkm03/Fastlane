@@ -55,10 +55,9 @@ final class StoredLoginOperation: SyncOperation<Void> {
             let credentials = loginType.storedCredentials( accountIdentifier ) {
             
             // Next, if login with a stored token failed, use any stored credentials to login automatically
-            let accountCreateRequest = AccountCreateRequest(credentials: credentials)
             let accountCreateOperation = AccountCreateOperation(
                 dependencyManager: dependencyManager,
-                request: accountCreateRequest,
+                credentials: credentials,
                 parameters: AccountCreateParameters(
                     loginType: loginType,
                     accountIdentifier: accountIdentifier

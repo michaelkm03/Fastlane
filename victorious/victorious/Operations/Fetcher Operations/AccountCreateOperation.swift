@@ -14,32 +14,35 @@ struct AccountCreateParameters {
     let accountIdentifier: String?
 }
 
-class AccountCreateOperation: RemoteFetcherOperation {
+class AccountCreateOperation: RequestOperation<AccountCreateRequest> {
     
-    private let dependencyManager: VDependencyManager
-    let request: AccountCreateRequest!
-    let parameters: AccountCreateParameters
+    // MARK: - Initializing
     
-    init(dependencyManager: VDependencyManager, request: AccountCreateRequest, parameters: AccountCreateParameters) {
+    init(dependencyManager: VDependencyManager, credentials: NewAccountCredentials, parameters: AccountCreateParameters) {
         self.dependencyManager = dependencyManager
         self.parameters = parameters
-        self.request = request
-        super.init()
-        
-        requiresAuthorization = false
+        super.init(request: AccountCreateRequest(credentials: credentials))
     }
     
-    // MARK: - Operation overrides
+    // MARK: - Executing
     
-    override func main() {
-        requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
-    }
+    private let dependencyManager: VDependencyManager
+    private let parameters: AccountCreateParameters
     
-    func onComplete( response: AccountCreateResponse) {
-        LoginSuccessOperation(
-            dependencyManager: dependencyManager,
-            response: response,
-            parameters: self.parameters
-        ).rechainAfter(self).queue()
+    override func execute(finish: (result: OperationResult<AccountCreateRequest.ResultType>) -> Void) {
+        super.execute { [weak self] result in
+            if
+                let strongSelf = self,
+                case let .success(response) = result
+            {
+                LoginSuccessOperation(
+                    dependencyManager: strongSelf.dependencyManager,
+                    response: response,
+                    parameters: strongSelf.parameters
+                ).rechainAfter(strongSelf).queue()
+            }
+            
+            finish(result: result)
+        }
     }
 }

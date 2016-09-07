@@ -2313,7 +2313,7 @@
 		A7250A2F1CA090BF00B5EAE6 /* Forum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Forum.swift; path = Composer/Forum.swift; sourceTree = "<group>"; };
 		A728AC1E1BBDD4F800386641 /* VAudioManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VAudioManager.swift; sourceTree = "<group>"; };
 		A72A03271C8F55680067ADBD /* NSURL+OptionalString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSURL+OptionalString.swift"; sourceTree = "<group>"; };
-		A72C85531C977FF500E97D4F /* AccountCreateOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountCreateOperation.swift; sourceTree = "<group>"; };
+		A72C85531C977FF500E97D4F /* AccountCreateOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AccountCreateOperation.swift; path = "../Fetcher Operations/AccountCreateOperation.swift"; sourceTree = "<group>"; };
 		A72C85541C977FF500E97D4F /* AccountUpdateOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountUpdateOperation.swift; sourceTree = "<group>"; };
 		A72C85561C977FF500E97D4F /* AlertCreateOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertCreateOperation.swift; sourceTree = "<group>"; };
 		A72C85631C977FF500E97D4F /* DeviceExperimentsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceExperimentsOperation.swift; sourceTree = "<group>"; };
@@ -4835,6 +4835,7 @@
 		7A254FDE1D7FA5B9007D1D6B /* Request Operations */ = {
 			isa = PBXGroup;
 			children = (
+				A72C85531C977FF500E97D4F /* AccountCreateOperation.swift */,
 				BFE25A441D0B7D8500F55653 /* ContentDeleteOperation.swift */,
 				7A1DEC9D1D80B618003F5C37 /* ContentFeedOperation.swift */,
 				BF2022841D00BBE8006B59C5 /* ContentFlagOperation.swift */,
@@ -5188,7 +5189,6 @@
 		A72C85521C977FF500E97D4F /* Fetcher Operations */ = {
 			isa = PBXGroup;
 			children = (
-				A72C85531C977FF500E97D4F /* AccountCreateOperation.swift */,
 				A72C85541C977FF500E97D4F /* AccountUpdateOperation.swift */,
 				7A38C0881D5A81B300771F62 /* AlertAcknowledgeOperation.swift */,
 				A72C85561C977FF500E97D4F /* AlertCreateOperation.swift */,

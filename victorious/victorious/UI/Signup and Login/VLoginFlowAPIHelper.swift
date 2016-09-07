@@ -33,17 +33,19 @@ extension VLoginFlowAPIHelper {
     func queueFacebookLoginOperationWithCompletion(completion: (NSError?) -> ()) -> NSOperation {
         let loginType = VLoginType.Facebook
         let credentials: NewAccountCredentials = loginType.storedCredentials()!
-        let accountCreateRequest = AccountCreateRequest(credentials: credentials)
         let operation = AccountCreateOperation(
             dependencyManager: dependencyManager,
-            request: accountCreateRequest,
+            credentials: credentials,
             parameters: AccountCreateParameters(
                 loginType: loginType,
                 accountIdentifier: nil
             )
         )
-        operation.queue() { results, error, cancelled in
-            completion(error)
+        operation.queue { result in
+            switch result {
+                case .success(_), .cancelled: completion(nil)
+                case .failure(let error): completion(error as NSError)
+            }
         }
         return operation
     }
@@ -55,21 +57,28 @@ extension VLoginFlowAPIHelper {
             password: password
         )
         
-        operation.queue( completion: completion )
+        operation.queue(completion: completion)
         return operation
     }
     
     func queueAccountCreateOperationWithEmail(email: String, password: String, completion: ([AnyObject]?, NSError?, Bool) -> () ) -> NSOperation {
-        let accountCreateRequest = AccountCreateRequest(credentials: .UsernamePassword(username: email, password: password))
         let operation = AccountCreateOperation(
             dependencyManager: dependencyManager,
-            request: accountCreateRequest,
+            credentials: .UsernamePassword(username: email, password: password),
             parameters: AccountCreateParameters(
                 loginType: .Email,
                 accountIdentifier: email
             )
         )
-        operation.queue(completion: completion)
+        
+        operation.queue { result in
+            switch result {
+                case .success(_): completion(nil, nil, false)
+                case .failure(let error): completion(nil, error as NSError, false)
+                case .cancelled: completion(nil, nil, true)
+            }
+        }
+        
         return operation
     }
 }
