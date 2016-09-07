@@ -246,9 +246,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         guard
             let content = content,
             let deleteAPIPath = dependencyManager.contentDeleteAPIPath,
-            let flagAPIPath = dependencyManager.contentFlagAPIPath,
-            let deleteRequest = ContentDeleteRequest(contentID: contentID, apiPath: deleteAPIPath),
-            let flagRequest = ContentFlagRequest(contentID: contentID, apiPath: flagAPIPath)
+            let flagAPIPath = dependencyManager.contentFlagAPIPath
         else {
             return
         }
@@ -256,8 +254,8 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         let isCreatorOfContent = content.wasCreatedByCurrentUser
         
         let flagOrDeleteOperation = isCreatorOfContent
-            ? RequestOperation(request: flagRequest)
-            : RequestOperation(request: deleteRequest)
+            ? ContentDeleteOperation(contentID: contentID, apiPath: deleteAPIPath)
+            : ContentFlagOperation(contentID: contentID, apiPath: flagAPIPath)
         
         let actionTitle = isCreatorOfContent
             ? NSLocalizedString("DeletePost", comment: "Delete this user's post")

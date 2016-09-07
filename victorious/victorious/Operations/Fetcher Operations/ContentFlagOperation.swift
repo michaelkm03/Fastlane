@@ -8,29 +8,26 @@
 
 import UIKit
 
-class ContentFlagOperation: FetcherOperation {
+final class ContentFlagOperation: RequestOperation<ContentFlagRequest> {
     private let contentID: Content.ID
-    private let apiPath: APIPath
-
+    
     init(contentID: Content.ID, apiPath: APIPath) {
         self.contentID = contentID
-        self.apiPath = apiPath
+        super.init(request: ContentFlagRequest(contentID: contentID, apiPath: apiPath))
     }
     
-    override func main() {
-        guard didConfirmActionFromDependencies else {
-            cancel()
-            return
-        }
+    override func execute(finish: (result: OperationResult<ContentFlagRequest.ResultType>) -> Void) {
+        let contentID = self.contentID
         
-        Content.hideContent(withID: contentID)
-        
-        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            guard let content: VContent = context.v_findObjects( ["v_remoteID" : self.contentID] ).first else {
-                return
+        super.execute { result in
+            switch result {
+                case .success(_):
+                    Content.hideContent(withID: contentID)
+                case .failure(_), .cancelled:
+                    break
             }
-            context.deleteObject(content)
+            
+            finish(result: result)
         }
-        ContentFlagRemoteOperation(contentID: contentID, apiPath: apiPath)?.after(self).queue()
     }
 }

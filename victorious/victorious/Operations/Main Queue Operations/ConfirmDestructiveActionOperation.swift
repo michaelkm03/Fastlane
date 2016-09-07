@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class ConfirmDestructiveActionOperation: AsyncOperation<Void>, ActionConfirmationOperation {
+final class ConfirmDestructiveActionOperation: AsyncOperation<Void> {
     
     private let actionTitle: String
     private let dependencyManager: VDependencyManager
@@ -17,8 +17,6 @@ final class ConfirmDestructiveActionOperation: AsyncOperation<Void>, ActionConfi
     private let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel Button")
     
     // MARK: - ActionConfirmationOperation
-    
-    var didConfirmAction: Bool = false
     
     init(actionTitle: String, originViewController: UIViewController, dependencyManager: VDependencyManager) {
         self.actionTitle = actionTitle
@@ -35,20 +33,25 @@ final class ConfirmDestructiveActionOperation: AsyncOperation<Void>, ActionConfi
         alertController.addAction(
             UIAlertAction(title: self.cancelTitle,
                 style: .Cancel,
-                handler: { action in
+                handler: { [weak self] action in
+                    for dependentOperation in self?.dependentOperations ?? [] {
+                        dependentOperation.cancel()
+                    }
+                    
                     finish(output: .cancelled)
                 }
             )
         )
+        
         alertController.addAction(
             UIAlertAction(title: self.actionTitle,
                 style: .Destructive,
                 handler: { action in
-                    self.didConfirmAction = true
                     finish(output: .success())
                 }
             )
         )
+        
         originViewController.presentViewController(alertController, animated: true, completion: nil)
     }
 }

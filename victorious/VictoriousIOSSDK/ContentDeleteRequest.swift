@@ -19,17 +19,13 @@ public struct ContentDeleteRequest: RequestType {
     private let contentDeleteURL: NSURL
     private let contentID: Content.ID
     
-    public init?(contentID: Content.ID, apiPath: APIPath) {
+    public init(contentID: Content.ID, apiPath: APIPath) {
         self.contentID = contentID
         
         var apiPath = apiPath
         apiPath.macroReplacements["%%CONTENT_ID%%"] = contentID
         
-        guard let url = apiPath.url else {
-            return nil
-        }
-        
-        contentDeleteURL = url
+        contentDeleteURL = apiPath.url ?? NSURL()
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws {

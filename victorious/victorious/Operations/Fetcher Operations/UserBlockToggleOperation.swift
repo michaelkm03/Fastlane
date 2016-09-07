@@ -21,23 +21,17 @@ class UserBlockToggleOperation: FetcherOperation {
     }
     
     override func main() {
-        guard didConfirmActionFromDependencies else {
-            cancel()
-            return
-        }
-        
         if user.isBlocked {
             UserUnblockOperation(
                 user: user,
                 unblockAPIPath: self.unblockAPIPath
-                ).rechainAfter(self).queue()
+            ).rechainAfter(self).queue()
         }
         else {
             UserBlockOperation(
                 user: user,
                 blockAPIPath: self.blockAPIPath
-                ).rechainAfter(self).queue()
+            ).rechainAfter(self).queue()
         }
-
     }
 }

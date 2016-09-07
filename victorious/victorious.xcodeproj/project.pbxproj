@@ -763,7 +763,6 @@
 		A72C865D1C977FF600E97D4F /* StoredLoginOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85BD1C977FF500E97D4F /* StoredLoginOperation.swift */; };
 		A72C865E1C977FF600E97D4F /* Paginated.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85BF1C977FF500E97D4F /* Paginated.swift */; };
 		A72C86601C977FF600E97D4F /* RestorePurchaseOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85C21C977FF500E97D4F /* RestorePurchaseOperation.swift */; };
-		A72C86641C977FF600E97D4F /* ActionConfirmationOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85C71C977FF500E97D4F /* ActionConfirmationOperation.swift */; };
 		A72C86661C977FF600E97D4F /* NSOperationQueue+Queuable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85C91C977FF500E97D4F /* NSOperationQueue+Queuable.swift */; };
 		A72C86681C977FF600E97D4F /* Queueable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85CB1C977FF500E97D4F /* Queueable.swift */; };
 		A72C86761C977FF600E97D4F /* NotificationsRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85DA1C977FF500E97D4F /* NotificationsRemoteOperation.swift */; };
@@ -1030,7 +1029,6 @@
 		BF20227E1D00B9A4006B59C5 /* ContentUnupvoteRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF20227C1D00B9A4006B59C5 /* ContentUnupvoteRequest.swift */; };
 		BF20227F1D00B9A4006B59C5 /* ContentUpvoteRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF20227D1D00B9A4006B59C5 /* ContentUpvoteRequest.swift */; };
 		BF2022811D00BBCC006B59C5 /* ContentFlagRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2022801D00BBCC006B59C5 /* ContentFlagRequest.swift */; };
-		BF2022831D00BBDB006B59C5 /* ContentFlagRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2022821D00BBDB006B59C5 /* ContentFlagRemoteOperation.swift */; };
 		BF2022851D00BBE8006B59C5 /* ContentFlagOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2022841D00BBE8006B59C5 /* ContentFlagOperation.swift */; };
 		BF2677961CDA9CB60015F527 /* VDependencyManager+VUserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2677951CDA9CB60015F527 /* VDependencyManager+VUserProfile.swift */; };
 		BF2AE2BD1CD280CB00A9967A /* ConfigurableGridStreamHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2AE2B71CD280CB00A9967A /* ConfigurableGridStreamHeader.swift */; };
@@ -2350,7 +2348,6 @@
 		A72C85BD1C977FF500E97D4F /* StoredLoginOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoredLoginOperation.swift; sourceTree = "<group>"; };
 		A72C85BF1C977FF500E97D4F /* Paginated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Paginated.swift; sourceTree = "<group>"; };
 		A72C85C21C977FF500E97D4F /* RestorePurchaseOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestorePurchaseOperation.swift; sourceTree = "<group>"; };
-		A72C85C71C977FF500E97D4F /* ActionConfirmationOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ActionConfirmationOperation.swift; path = ../Queueable/ActionConfirmationOperation.swift; sourceTree = "<group>"; };
 		A72C85C91C977FF500E97D4F /* NSOperationQueue+Queuable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSOperationQueue+Queuable.swift"; sourceTree = "<group>"; };
 		A72C85CB1C977FF500E97D4F /* Queueable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queueable.swift; sourceTree = "<group>"; };
 		A72C85DA1C977FF500E97D4F /* NotificationsRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsRemoteOperation.swift; sourceTree = "<group>"; };
@@ -2687,8 +2684,7 @@
 		BF20227C1D00B9A4006B59C5 /* ContentUnupvoteRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentUnupvoteRequest.swift; sourceTree = "<group>"; };
 		BF20227D1D00B9A4006B59C5 /* ContentUpvoteRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentUpvoteRequest.swift; sourceTree = "<group>"; };
 		BF2022801D00BBCC006B59C5 /* ContentFlagRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentFlagRequest.swift; sourceTree = "<group>"; };
-		BF2022821D00BBDB006B59C5 /* ContentFlagRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentFlagRemoteOperation.swift; sourceTree = "<group>"; };
-		BF2022841D00BBE8006B59C5 /* ContentFlagOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentFlagOperation.swift; sourceTree = "<group>"; };
+		BF2022841D00BBE8006B59C5 /* ContentFlagOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContentFlagOperation.swift; path = "../Fetcher Operations/ContentFlagOperation.swift"; sourceTree = "<group>"; };
 		BF2677951CDA9CB60015F527 /* VDependencyManager+VUserProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VDependencyManager+VUserProfile.swift"; sourceTree = "<group>"; };
 		BF2AE2B71CD280CB00A9967A /* ConfigurableGridStreamHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ConfigurableGridStreamHeader.swift; path = GridStream/ConfigurableGridStreamHeader.swift; sourceTree = "<group>"; };
 		BF2AE2B81CD280CB00A9967A /* ConfigurableGridStreamHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ConfigurableGridStreamHeaderView.swift; path = GridStream/ConfigurableGridStreamHeaderView.swift; sourceTree = "<group>"; };
@@ -2758,7 +2754,7 @@
 		BFCFFFFC1CEE912100F512B1 /* VImageAsset+Fetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VImageAsset+Fetcher.swift"; sourceTree = "<group>"; };
 		BFDB802D1CEF6EC300E66614 /* CloseUpContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloseUpContainerViewController.swift; sourceTree = "<group>"; };
 		BFE098501CEFAC6E00C97F21 /* ContentFeedRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentFeedRequestTests.swift; sourceTree = "<group>"; };
-		BFE25A441D0B7D8500F55653 /* ContentDeleteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentDeleteOperation.swift; sourceTree = "<group>"; };
+		BFE25A441D0B7D8500F55653 /* ContentDeleteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContentDeleteOperation.swift; path = "../Fetcher Operations/ContentDeleteOperation.swift"; sourceTree = "<group>"; };
 		BFE25A481D0B7E2B00F55653 /* ContentDeleteRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentDeleteRequest.swift; sourceTree = "<group>"; };
 		BFE25A4C1D0B806E00F55653 /* ContentDeleteRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentDeleteRequestTests.swift; sourceTree = "<group>"; };
 		BFE31A811CD2969200585155 /* CloseUpView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloseUpView.swift; sourceTree = "<group>"; };
@@ -4839,7 +4835,9 @@
 		7A254FDE1D7FA5B9007D1D6B /* Request Operations */ = {
 			isa = PBXGroup;
 			children = (
+				BFE25A441D0B7D8500F55653 /* ContentDeleteOperation.swift */,
 				7A1DEC9D1D80B618003F5C37 /* ContentFeedOperation.swift */,
+				BF2022841D00BBE8006B59C5 /* ContentFlagOperation.swift */,
 				7A254FDF1D7FA696007D1D6B /* RequestOperation.swift */,
 			);
 			path = "Request Operations";
@@ -5195,8 +5193,6 @@
 				7A38C0881D5A81B300771F62 /* AlertAcknowledgeOperation.swift */,
 				A72C85561C977FF500E97D4F /* AlertCreateOperation.swift */,
 				F069E93F1D46BD9900F91CE6 /* ContentFindOrCreateOperation.swift */,
-				BFE25A441D0B7D8500F55653 /* ContentDeleteOperation.swift */,
-				BF2022841D00BBE8006B59C5 /* ContentFlagOperation.swift */,
 				BF2022721D00B97E006B59C5 /* ContentUnupvoteOperation.swift */,
 				BF2022731D00B97E006B59C5 /* ContentUpvoteOperation.swift */,
 				A72C85631C977FF500E97D4F /* DeviceExperimentsOperation.swift */,
@@ -5269,7 +5265,6 @@
 		A72C85BE1C977FF500E97D4F /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				A72C85C71C977FF500E97D4F /* ActionConfirmationOperation.swift */,
 				A72C85BF1C977FF500E97D4F /* Paginated.swift */,
 			);
 			path = Protocols;
@@ -5303,7 +5298,6 @@
 			isa = PBXGroup;
 			children = (
 				BFA4C9071CDD4AD500E496FD /* ContentFetchOperation.swift */,
-				BF2022821D00BBDB006B59C5 /* ContentFlagRemoteOperation.swift */,
 				BF2022781D00B997006B59C5 /* ContentUnupvoteRemoteOperation.swift */,
 				BF2022791D00B997006B59C5 /* ContentUpvoteRemoteOperation.swift */,
 				0EFE50571CB5C10D000D1C95 /* CreateChatServiceTokenOperation.swift */,
@@ -8164,7 +8158,6 @@
 				A721E93C1B572454000B7901 /* NSIndexSet+Convenience.m in Sources */,
 				0349126E1B7EA5C200EA8A07 /* ExperimentSettings.swift in Sources */,
 				0314D4D919B46B5E00FA363C /* VServerEnvironmentTableViewController.m in Sources */,
-				BF2022831D00BBDB006B59C5 /* ContentFlagRemoteOperation.swift in Sources */,
 				7A67EC7E1CF9132300D022D1 /* TimePaginatedDataSource.swift in Sources */,
 				F06BEABE1C97989E00F35694 /* ComposerAttachmentTabBarButton.swift in Sources */,
 				D8332DBD1A7C275800C3FEE0 /* VCameraControl.m in Sources */,
@@ -8485,7 +8478,6 @@
 				A7E234991C97763400383C54 /* UICollectionView+Pagination.swift in Sources */,
 				A769FE4B1ABD051A00888ED8 /* VTrackingEventLog.m in Sources */,
 				D8D3B7211AB2643500CF966C /* AVComposition+VMutedAudioMix.m in Sources */,
-				A72C86641C977FF600E97D4F /* ActionConfirmationOperation.swift in Sources */,
 				A77723DE1C34823B002351B5 /* SampleCoreDataModels.swift in Sources */,
 				A7A1CF611C62E03400B08F07 /* NSPredicate+Operators.swift in Sources */,
 				BF3CD8861D11BB8C00CB7764 /* UserUpvoteRemoteOperation.swift in Sources */,

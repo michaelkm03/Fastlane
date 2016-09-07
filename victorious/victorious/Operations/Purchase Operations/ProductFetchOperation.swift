@@ -22,11 +22,6 @@ final class ProductFetchOperation: AsyncOperation<[VProduct]> {
     }
     
     override func execute(finish: (result: OperationResult<[VProduct]>) -> Void) {
-        guard didConfirmActionFromDependencies else {
-            finish(result: .cancelled)
-            return
-        }
-        
         let success = { (fetchedProducts: Set<NSObject>?) in
             guard let products = fetchedProducts?.flatMap({ $0 as? VProduct }) else {
                 finish(result: .failure(NSError(domain: "ProductFetchOperation", code: -1, userInfo: nil)))

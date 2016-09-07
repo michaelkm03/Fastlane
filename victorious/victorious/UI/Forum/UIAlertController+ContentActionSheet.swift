@@ -61,14 +61,11 @@ extension UIAlertController {
                 title: dependencyManager.deleteTitle,
                 style: .Destructive,
                 handler: { _ in
-                    guard
-                        let apiPath = dependencyManager.contentDeleteAPIPath,
-                        let request = ContentDeleteRequest(contentID: id, apiPath: apiPath)
-                    else {
+                    guard let apiPath = dependencyManager.contentDeleteAPIPath else {
                         return
                     }
                     
-                    RequestOperation(request: request).queue { result in
+                    ContentDeleteOperation(contentID: id, apiPath: apiPath).queue { result in
                         switch result {
                             case .success(_): completion(action: .delete)
                             case .failure(_), .cancelled: break
@@ -82,14 +79,11 @@ extension UIAlertController {
                 title: dependencyManager.flagTitle,
                 style: .Destructive,
                 handler: { _ in
-                    guard
-                        let apiPath = dependencyManager.contentFlagAPIPath,
-                        let request = ContentFlagRequest(contentID: id, apiPath: apiPath)
-                    else {
+                    guard let apiPath = dependencyManager.contentFlagAPIPath else {
                         return
                     }
                     
-                    RequestOperation(request: request).queue { result in
+                    ContentFlagOperation(contentID: id, apiPath: apiPath).queue { result in
                         switch result {
                             case .success(_): completion(action: .flag)
                             case .failure(_), .cancelled: break

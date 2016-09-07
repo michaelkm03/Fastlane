@@ -17,14 +17,9 @@ public struct ContentFlagRequest: RequestType {
     
     private let contentFlagURL: NSURL
 
-    public init?(contentID: String, apiPath: APIPath) {
+    public init(contentID: String, apiPath: APIPath) {
         var apiPath = apiPath
         apiPath.macroReplacements["%%CONTENT_ID%%"] = contentID
-        
-        guard let url = apiPath.url else {
-            return nil
-        }
-        
-        contentFlagURL = url
+        contentFlagURL = apiPath.url ?? NSURL()
     }
 }

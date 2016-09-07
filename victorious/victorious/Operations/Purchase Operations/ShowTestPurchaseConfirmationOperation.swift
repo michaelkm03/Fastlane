@@ -8,7 +8,7 @@
 
 import Foundation
 
-final class ShowTestPurchaseConfirmationOperation: AsyncOperation<Void>, ActionConfirmationOperation {
+final class ShowTestPurchaseConfirmationOperation: AsyncOperation<Void> {
     
     private let type: VPurchaseType
     private let title: String?
@@ -40,8 +40,13 @@ final class ShowTestPurchaseConfirmationOperation: AsyncOperation<Void>, ActionC
             UIAlertAction(
                 title: "Cancel",
                 style: .Cancel,
-                handler: { action in
-                    self.cancel()
+                handler: { [weak self] action in
+                    for dependentOperation in self?.dependentOperations ?? [] {
+                        dependentOperation.cancel()
+                    }
+                    
+                    self?.cancel()
+                    
                     finish(result: .cancelled)
                 }
             )

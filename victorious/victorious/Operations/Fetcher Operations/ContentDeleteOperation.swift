@@ -8,27 +8,26 @@
 
 import UIKit
 
-class ContentDeleteOperation: FetcherOperation {
+final class ContentDeleteOperation: RequestOperation<ContentDeleteRequest> {
     private let contentID: Content.ID
-    private let apiPath: APIPath
     
     init(contentID: Content.ID, apiPath: APIPath) {
         self.contentID = contentID
-        self.apiPath = apiPath
+        super.init(request: ContentDeleteRequest(contentID: contentID, apiPath: apiPath))
     }
     
-    override func main() {
-        guard
-            didConfirmActionFromDependencies,
-            let request = ContentDeleteRequest(contentID: contentID, apiPath: apiPath)
-        else {
-            cancel()
-            return
+    override func execute(finish: (result: OperationResult<ContentDeleteRequest.ResultType>) -> Void) {
+        let contentID = self.contentID
+        
+        super.execute { result in
+            switch result {
+                case .success(_):
+                    Content.hideContent(withID: contentID)
+                case .failure(_), .cancelled:
+                    break
+            }
+            
+            finish(result: result)
         }
-        
-        Content.hideContent(withID: contentID)
-        
-        let requestOperation = RequestOperation(request: request)
-        requestOperation.after(self).queue()
     }
 }
