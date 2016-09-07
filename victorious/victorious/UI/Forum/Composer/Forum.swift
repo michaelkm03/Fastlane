@@ -42,13 +42,13 @@ extension Forum {
     func chatFeed(chatFeed: ChatFeed, didSelectUserWithUserID userID: Int) {
         let router = Router(originViewController: originViewController, dependencyManager: dependencyManager)
         let destination = DeeplinkDestination(userID: userID)
-        router.navigate(to: destination)
+        router.navigate(to: destination, from: .feed)
     }
     
     func chatFeed(chatFeed: ChatFeed, didSelectContent chatFeedContent: ChatFeedContent) {
         let router = Router(originViewController: originViewController, dependencyManager: dependencyManager)
         let destination = DeeplinkDestination(content: chatFeedContent.content)
-        router.navigate(to: destination)
+        router.navigate(to: destination, from: .feed)
     }
     
     // MARK: - ComposerDelegate

@@ -200,6 +200,9 @@
      }];
 }
 
+// event name -
+// parameters are macro replacements (see template)
+
 - (void)trackEvent:(NSString *)eventName parameters:(NSDictionary *_Nullable)parameters
 {
     [self trackEvent:eventName parameters:parameters sessionParameters:self.sessionParameters];

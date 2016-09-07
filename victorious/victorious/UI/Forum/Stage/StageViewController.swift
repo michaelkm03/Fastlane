@@ -278,7 +278,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         }
         
         if let content = currentStageContent?.content {
-            trackView(.cellView, showingContent: content)
+            trackView(.cellView, showingContent: content, parameters: [:])
         }
         
         guard !visible else {
@@ -307,7 +307,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     func didTap(on user: UserModel) {
         let router = Router(originViewController: self, dependencyManager: dependencyManager)
         let destination = DeeplinkDestination(userID: user.id)
-        router.navigate(to: destination)
+        router.navigate(to: destination, from: .stage)
     }
 
     // MARK: - MediaContentViewDelegate
@@ -357,7 +357,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         
         let router = Router(originViewController: self, dependencyManager: dependencyManager)
         let destination = DeeplinkDestination(content: content, forceFetch: false)
-        router.navigate(to: destination)
+        router.navigate(to: destination, from: .stage)
     }
 
     // MARK: - CaptionBarViewControllerDelegate
@@ -365,7 +365,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     func captionBarViewController(captionBarViewController: CaptionBarViewController, didTapOnUser user: UserModel) {
         let router = Router(originViewController: self, dependencyManager: dependencyManager)
         let destination = DeeplinkDestination(userID: user.id)
-        router.navigate(to: destination)
+        router.navigate(to: destination, from: .stage)
     }
     
     func captionBarViewController(captionBarViewController: CaptionBarViewController, wantsUpdateToContentHeight height: CGFloat) {

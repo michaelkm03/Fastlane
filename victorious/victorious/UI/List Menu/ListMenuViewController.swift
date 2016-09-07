@@ -88,8 +88,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         
         // Had to trace down the inner navigation controller because List Menu has no idea where it is - and it doesn't have navigation stack either.
         let router = Router(originViewController: scaffold.mainNavigationController, dependencyManager: dependencyManager)
-        
-        router.navigate(to: destination)
+        router.navigate(to: destination, from: .listMenu)
         
         // This notification closes the side view controller
         NSNotificationCenter.defaultCenter().postNotificationName(

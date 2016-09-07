@@ -30,6 +30,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     private let contentID: Content.ID
     private var firstPresentation = true
     private let closeUpView: CloseUpView
+    private var context: DeeplinkContext
     
     private lazy var shareButton: UIBarButtonItem = {
         return UIBarButtonItem(
@@ -60,8 +61,9 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
             VAudioManager.sharedInstance().focusedPlaybackDidBegin(muted: false)
         }
     }
-    
-    init(dependencyManager: VDependencyManager, contentID: String, content: ContentModel? = nil, streamAPIPath: APIPath) {
+
+    init(dependencyManager: VDependencyManager, contentID: String, content: ContentModel? = nil, streamAPIPath: APIPath, context: DeeplinkContext) {
+        self.context = context
         self.dependencyManager = dependencyManager
         
         closeUpView = CloseUpView.newWithDependencyManager(dependencyManager)
@@ -140,7 +142,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     
     private func trackContentView() {
         if let content = content where firstPresentation {
-            trackView(.viewStart, showingContent: content)
+            trackView(.viewStart, showingContent: content, parameters: [VTrackingKeyContext:context.rawValue])
             firstPresentation = false
         }
     }
@@ -205,7 +207,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     func didSelectProfileForUserID(userID: Int) {
         let router = Router(originViewController: self, dependencyManager: dependencyManager)
         let destination = DeeplinkDestination(userID: userID)
-        router.navigate(to: destination)
+        router.navigate(to: destination, from: .closeUpView)
     }
     
     func gridStreamDidUpdate() {

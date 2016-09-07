@@ -24,7 +24,7 @@ extension VIPGateViewControllerDelegate {
             return
         }
         let router = Router(originViewController: scaffold, dependencyManager: dependencyManager)
-        router.navigate(to: .vipForum)
+        router.navigate(to: .vipForum, from: .vipGate)
     }
 }
 
@@ -129,7 +129,7 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     private func navigateToFixedWebContent(type: FixedWebContentType) {
         let router = Router(originViewController: self, dependencyManager: dependencyManager)
         let configuration = ExternalLinkDisplayConfiguration(addressBarVisible: false, forceModal: true, isVIPOnly: false, title: type.title)
-        router.navigate(to: .externalURL(url: dependencyManager.urlForFixedWebContent(type), configuration: configuration))
+        router.navigate(to: .externalURL(url: dependencyManager.urlForFixedWebContent(type), configuration: configuration), from: .vipGate)
     }
     
     private func HUDNeedsUpdateToTitle(title: String?) -> Bool {
