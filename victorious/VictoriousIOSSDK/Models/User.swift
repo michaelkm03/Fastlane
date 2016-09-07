@@ -27,20 +27,25 @@ public protocol UserModel: PreviewImageContainer {
 }
 
 public func ==(lhs: UserModel?, rhs: UserModel?) -> Bool {
-    guard let lhs = lhs, let rhs = rhs else {
-        return false
+    switch (lhs, rhs) {
+        case (.None, .None):
+            return true
+        case (.Some(_), .None):
+            return false
+        case (.None, .Some(_)):
+            return false
+        case (.Some(let lhs), .Some(let rhs)):
+            return lhs.id == rhs.id
+                && lhs.displayName == rhs.displayName
+                && lhs.location == rhs.location
+                && lhs.tagline == rhs.tagline
+                && lhs.likesGiven == rhs.likesGiven
+                && lhs.likesReceived == rhs.likesReceived
+                && lhs.fanLoyalty?.tier == rhs.fanLoyalty?.tier
+                && lhs.accessLevel == rhs.accessLevel
+                && lhs.vipStatus?.isVIP == rhs.vipStatus?.isVIP
+                && lhs.avatarBadgeType == rhs.avatarBadgeType
     }
-    
-    return lhs.id == rhs.id
-        && lhs.displayName == rhs.displayName
-        && lhs.location == rhs.location
-        && lhs.tagline == rhs.tagline
-        && lhs.likesGiven == rhs.likesGiven
-        && lhs.likesReceived == rhs.likesReceived
-        && lhs.fanLoyalty?.tier == rhs.fanLoyalty?.tier
-        && lhs.accessLevel == rhs.accessLevel
-        && lhs.vipStatus?.isVIP == rhs.vipStatus?.isVIP
-        && lhs.avatarBadgeType == rhs.avatarBadgeType
 }
 
 public func !=(lhs: UserModel?, rhs: UserModel?) -> Bool {
