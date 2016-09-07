@@ -297,9 +297,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     // MARK: - Managing the user
     
     private dynamic func currentUserDidUpdate() {
-        if user?.isCurrentUser == true {
-            setUser(VCurrentUser.user, using: dependencyManager)
-        }
+        setUser(VCurrentUser.user, using: dependencyManager)
     }
     
     private func fetchUser(using dependencyManager: VDependencyManager) {
