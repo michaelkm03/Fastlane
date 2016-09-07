@@ -18,19 +18,17 @@ class ContentDeleteOperation: FetcherOperation {
     }
     
     override func main() {
-        guard didConfirmActionFromDependencies else {
+        guard
+            didConfirmActionFromDependencies,
+            let request = ContentDeleteRequest(contentID: contentID, apiPath: apiPath)
+        else {
             cancel()
             return
         }
         
         Content.hideContent(withID: contentID)
         
-        persistentStore.createBackgroundContext().v_performBlockAndWait { context in
-            guard let content: VContent = context.v_findObjects(["v_remoteID": self.contentID]).first else {
-                return
-            }
-            context.deleteObject(content)
-        }
-        ContentDeleteRemoteOperation(contentID: contentID, apiPath: apiPath)?.after(self).queue()
+        let requestOperation = RequestOperation(request: request)
+        requestOperation.after(self).queue()
     }
 }

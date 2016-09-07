@@ -161,8 +161,13 @@ class ContentPublisher {
                 return
             }
             
-            ChatMessageCreateRemoteOperation(apiPath: apiPath, text: text).queue { _, error, _ in
-                completion?(error)
+            RequestOperation(
+                request: ChatMessageCreateRequest(apiPath: apiPath, text: text)
+            ).queue { result in
+                switch result {
+                    case .success, .cancelled: completion?(nil)
+                    case .failure(let error): completion?(error)
+                }
             }
         }
         else {

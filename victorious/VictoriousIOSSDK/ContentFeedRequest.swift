@@ -19,12 +19,18 @@ public struct ContentFeedRequest: RequestType {
         return NSURLRequest(URL: url)
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> (contents: [Content], refreshStage: RefreshStage?) {
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> (contents: [ContentModel], refreshStage: RefreshStage?) {
         guard let contents = responseJSON["payload"]["viewed_contents"].array else {
             throw ResponseParsingError()
         }
         
-        let parsedContents = contents.flatMap { Content(json: $0) }
+        let parsedContents = contents.flatMap { Content(json: $0) }.filter { content in
+            guard let id = content.id else {
+                return true
+            }
+            
+            return !Content.contentIsHidden(withID: id)
+        }
         
         var parsedRefreshStage: RefreshStage? = nil
         let mainStageJSON = responseJSON["main_stage"]
