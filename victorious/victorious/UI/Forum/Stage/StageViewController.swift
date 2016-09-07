@@ -29,6 +29,10 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         return self.view.bounds.width / Constants.defaultAspectRatio
     }()
 
+    private var stageContext: DeeplinkContext {
+        return DeeplinkContext(rawValue: dependencyManager.stageType) ?? .stage
+    }
+
     private var mediaContentView: MediaContentView?
 
     private var captionBarViewController: CaptionBarViewController? {
@@ -307,7 +311,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     func didTap(on user: UserModel) {
         let router = Router(originViewController: self, dependencyManager: dependencyManager)
         let destination = DeeplinkDestination(userID: user.id)
-        router.navigate(to: destination, from: .stage)
+        router.navigate(to: destination, from: stageContext)
     }
 
     // MARK: - MediaContentViewDelegate
@@ -357,7 +361,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         
         let router = Router(originViewController: self, dependencyManager: dependencyManager)
         let destination = DeeplinkDestination(content: content, forceFetch: false)
-        router.navigate(to: destination, from: .stage)
+        router.navigate(to: destination, from: stageContext)
     }
 
     // MARK: - CaptionBarViewControllerDelegate
@@ -365,7 +369,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     func captionBarViewController(captionBarViewController: CaptionBarViewController, didTapOnUser user: UserModel) {
         let router = Router(originViewController: self, dependencyManager: dependencyManager)
         let destination = DeeplinkDestination(userID: user.id)
-        router.navigate(to: destination, from: .stage)
+        router.navigate(to: destination, from: stageContext)
     }
     
     func captionBarViewController(captionBarViewController: CaptionBarViewController, wantsUpdateToContentHeight height: CGFloat) {
@@ -388,12 +392,16 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     var sessionParameters: [NSObject: AnyObject] {
         // FUTURE: This should be returning "VIP_STAGE" or "MAIN_STAGE" depending on which stage this is, but we don't
         // have the infrastructure to do that easily right now.
-        return [VTrackingKeyParentContentId: "STAGE"]
+        return [VTrackingKeyParentContentId: dependencyManager.stageType]
     }
 }
 
 private extension VDependencyManager {
     var captionBarDependency: VDependencyManager? {
         return childDependencyForKey("captionBar")
+    }
+
+    var stageType: String {
+        return stringForKey("type") ?? "STAGE"
     }
 }
