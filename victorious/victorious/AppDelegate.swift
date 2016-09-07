@@ -112,7 +112,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 #if V_ENABLE_TESTFAIRY
                     let userTraits = [TFSDKIdentityTraitNameKey: currentUser.displayName ?? "",
                                       TFSDKIdentityTraitEmailAddressKey: currentUser.username ?? ""]
-                    TestFairy.identify(currentUser.remoteId.stringValue, traits:userTraits)
+                    TestFairy.identify(String(currentUser.id), traits:userTraits)
                 #endif
 
                 Crashlytics.setUserIdentifier(String(currentUser.id))
