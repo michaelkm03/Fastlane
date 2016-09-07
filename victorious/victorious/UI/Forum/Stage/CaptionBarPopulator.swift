@@ -33,6 +33,38 @@ struct CaptionBarPopulator {
         
         let captionTextView = captionBar.captionTextView
         let captionLabel = captionBar.captionLabel
+        
+        let animationCompletion: (Bool -> Void) = { _ in
+            // Configure the textView
+            captionTextView.text = caption
+            captionTextView.hidden = true
+            
+            // Configure the label
+            captionLabel.numberOfLines = captionBar.collapsedNumberOfLines
+            let textAttributes = textAttributesForLabel(captionLabel, matchingTextView: captionTextView)
+            captionLabel.attributedText = NSAttributedString(string: caption, attributes: textAttributes)
+            captionLabel.hidden = false
+            
+            // Check if we should show the expand button
+            var collapsedRect = captionLabel.textRectForBounds(captionTextView.bounds, limitedToNumberOfLines: captionBar.collapsedNumberOfLines)
+            let unboundedRect = captionLabel.textRectForBounds(captionTextView.bounds, limitedToNumberOfLines: 0)
+            captionBar.expandButton.hidden = collapsedRect == unboundedRect
+            
+            // Update constraints as needed
+            let textInsets = captionTextView.v_textInsets
+            collapsedRect.size = CGSize(width: collapsedRect.width + textInsets.horizontal, height: collapsedRect.height + textInsets.vertical)
+            captionBar.labelWidthConstraint.constant = collapsedRect.width
+            let avatarVerticalDelta = collapsedRect.height - captionBar.avatarButtonHeightConstraint.constant
+            captionBar.avatarButtonTopConstraint.constant = -max(ceil(avatarVerticalDelta / 2), 0)
+            
+            completion?()
+            
+            // Animate back
+            UIView.animateWithDuration(CaptionBarPopulator.animationDuration) {
+                captionTextView.alpha = 1
+                captionLabel.alpha = 1
+            }
+        }
 
         // Animate to alpha 0 with 0.2 seconds
         UIView.animateWithDuration(
@@ -41,37 +73,7 @@ struct CaptionBarPopulator {
                 captionTextView.alpha = 0
                 captionLabel.alpha = 0
             },
-            completion: { finished in
-                // Configure the textView
-                captionTextView.text = caption
-                captionTextView.hidden = true
-                
-                // Configure the label
-                captionLabel.numberOfLines = captionBar.collapsedNumberOfLines
-                let textAttributes = textAttributesForLabel(captionLabel, matchingTextView: captionTextView)
-                captionLabel.attributedText = NSAttributedString(string: caption, attributes: textAttributes)
-                captionLabel.hidden = false
-                
-                // Check if we should show the expand button
-                var collapsedRect = captionLabel.textRectForBounds(captionTextView.bounds, limitedToNumberOfLines: captionBar.collapsedNumberOfLines)
-                let unboundedRect = captionLabel.textRectForBounds(captionTextView.bounds, limitedToNumberOfLines: 0)
-                captionBar.expandButton.hidden = collapsedRect == unboundedRect
-                
-                // Update constraints as needed
-                let textInsets = captionTextView.v_textInsets
-                collapsedRect.size = CGSize(width: collapsedRect.width + textInsets.horizontal, height: collapsedRect.height + textInsets.vertical)
-                captionBar.labelWidthConstraint.constant = collapsedRect.width
-                let avatarVerticalDelta = collapsedRect.height - captionBar.avatarButtonHeightConstraint.constant
-                captionBar.avatarButtonTopConstraint.constant = -max(ceil(avatarVerticalDelta / 2), 0)
-                
-                completion?()
-                
-                // Animate back
-                UIView.animateWithDuration(CaptionBarPopulator.animationDuration) {
-                    captionTextView.alpha = 1
-                    captionLabel.alpha = 1
-                }
-            }
+            completion: animationCompletion
         )
     }
     
