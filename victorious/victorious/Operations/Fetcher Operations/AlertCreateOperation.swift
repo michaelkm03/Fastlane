@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-class AlertCreateOperation: RemoteFetcherOperation, RequestOperation {
+class AlertCreateOperation: RemoteFetcherOperation {
     
     let request: CreateAlertRequest!
     

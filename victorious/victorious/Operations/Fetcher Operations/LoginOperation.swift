@@ -6,7 +6,7 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-class LoginOperation: RemoteFetcherOperation, RequestOperation {
+class LoginOperation: RemoteFetcherOperation {
     
     private let dependencyManager: VDependencyManager
     let request: LoginRequest!

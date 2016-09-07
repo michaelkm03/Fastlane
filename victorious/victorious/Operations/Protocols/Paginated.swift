@@ -37,20 +37,6 @@ protocol Paginated: ResultsOperation {
     func prev() -> Self?
 }
 
-/// Defines an object that must use a RequestType to perform its function
-protocol RequestOperation {
-    
-    /// The type of RequestType request used by this operation
-    associatedtype SingleRequestType: RequestType
-    
-    /// The current request used for this operation
-    ///
-    /// `request` is implicitly unwrapped to solve the failable initializer EXC_BAD_ACCESS bug when returning nil
-    /// Reference: Swift Documentation, Section "Failable Initialization for Classes":
-    /// https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Initialization.html
-    var request: SingleRequestType! { get }
-}
-
 protocol PaginatedOperation: Paginated {
     
     /// Required initializer that takes a value typed to PaginatorType

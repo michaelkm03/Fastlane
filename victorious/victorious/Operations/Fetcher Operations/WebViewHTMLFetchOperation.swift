@@ -8,7 +8,7 @@
 
 import Foundation
 
-class WebViewHTMLFetchOperation: FetchWebContentOperation, RequestOperation {
+class WebViewHTMLFetchOperation: FetchWebContentOperation {
     let request: WebViewHTMLFetchRequest!
     
     init(urlPath: String) {

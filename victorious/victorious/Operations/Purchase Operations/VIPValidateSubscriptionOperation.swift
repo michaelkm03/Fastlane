@@ -8,7 +8,7 @@
 
 import Foundation
 
-class VIPValidateSubscriptionOperation: RemoteFetcherOperation, RequestOperation {
+class VIPValidateSubscriptionOperation: RemoteFetcherOperation {
     
     var receiptDataSource: ReceiptDataSource = NSBundle.mainBundle()
     

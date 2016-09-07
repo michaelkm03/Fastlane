@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class PasswordResetOperation: RemoteFetcherOperation, RequestOperation {
+final class PasswordResetOperation: RemoteFetcherOperation {
     
     let request: PasswordResetRequest!
     

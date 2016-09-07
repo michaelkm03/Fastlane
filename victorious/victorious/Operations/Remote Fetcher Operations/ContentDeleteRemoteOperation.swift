@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ContentDeleteRemoteOperation: RemoteFetcherOperation, RequestOperation {
+class ContentDeleteRemoteOperation: RemoteFetcherOperation {
     let request: ContentDeleteRequest!
     
     init?(contentID: Content.ID, apiPath: APIPath) {

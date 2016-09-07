@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ContentFetchOperation: RemoteFetcherOperation, RequestOperation {
+class ContentFetchOperation: RemoteFetcherOperation {
     
     internal let request: ContentFetchRequest!
     

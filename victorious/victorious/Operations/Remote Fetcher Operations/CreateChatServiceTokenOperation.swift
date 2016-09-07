@@ -10,7 +10,7 @@ import Foundation
 import VictoriousIOSSDK
 
 /// Encapsulates fetching the use once authentication token for a specific user.
-class CreateChatServiceTokenOperation: RemoteFetcherOperation, RequestOperation {
+class CreateChatServiceTokenOperation: RemoteFetcherOperation {
 
     let request: CreateChatServiceTokenRequest!
 

@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class PasswordValidateResetTokenOperation: RemoteFetcherOperation, RequestOperation {
+final class PasswordValidateResetTokenOperation: RemoteFetcherOperation {
     
     let request: PasswordResetRequest!
     

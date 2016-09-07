@@ -8,7 +8,7 @@
 
 import UIKit
 
-class UserBlockRemoteOperation: RemoteFetcherOperation, RequestOperation {
+class UserBlockRemoteOperation: RemoteFetcherOperation {
     let request: UserBlockRequest!
     
     init?(userID: Int, userBlockAPIPath: APIPath) {

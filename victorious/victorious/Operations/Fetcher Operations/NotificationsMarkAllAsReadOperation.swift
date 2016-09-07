@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class NotificationsMarkAllAsReadOperation: RemoteFetcherOperation, RequestOperation {
+final class NotificationsMarkAllAsReadOperation: RemoteFetcherOperation {
     
     let request: MarkAllNotificationsAsReadRequest! = MarkAllNotificationsAsReadRequest()
     

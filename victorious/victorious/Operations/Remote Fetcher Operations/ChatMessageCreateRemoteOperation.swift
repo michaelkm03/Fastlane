@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-class ChatMessageCreateRemoteOperation: RemoteFetcherOperation, RequestOperation {
+class ChatMessageCreateRemoteOperation: RemoteFetcherOperation {
     let request: ChatMessageCreateRequest!
     
     var trackingManager: VEventTracker = VTrackingManager.sharedInstance()

@@ -14,7 +14,7 @@ struct AccountCreateParameters {
     let accountIdentifier: String?
 }
 
-class AccountCreateOperation: RemoteFetcherOperation, RequestOperation {
+class AccountCreateOperation: RemoteFetcherOperation {
     
     private let dependencyManager: VDependencyManager
     let request: AccountCreateRequest!

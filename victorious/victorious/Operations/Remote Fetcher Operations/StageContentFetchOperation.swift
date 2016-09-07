@@ -8,7 +8,7 @@
 
 import Foundation
 
-class StageContentFetchOperation: RemoteFetcherOperation, RequestOperation {
+class StageContentFetchOperation: RemoteFetcherOperation {
     
     internal let request: ContentFetchRequest!
     

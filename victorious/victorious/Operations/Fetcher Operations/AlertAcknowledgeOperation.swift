@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-class AlertAcknowledgeOperation: RemoteFetcherOperation, RequestOperation {
+class AlertAcknowledgeOperation: RemoteFetcherOperation {
 
     let request: AcknowledgeAlertRequest!
 

@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-class DeviceExperimentsOperation: RemoteFetcherOperation, RequestOperation {
+class DeviceExperimentsOperation: RemoteFetcherOperation {
     
     let request: DeviceExperimentsRequest! = DeviceExperimentsRequest()
     

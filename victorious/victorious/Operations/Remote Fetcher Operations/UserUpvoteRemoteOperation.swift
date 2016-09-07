@@ -8,7 +8,7 @@
 
 import UIKit
 
-class UserUpvoteRemoteOperation: RemoteFetcherOperation, RequestOperation {
+class UserUpvoteRemoteOperation: RemoteFetcherOperation {
     let request: UserUpvoteRequest!
     
     init?(userID: Int, userUpvoteAPIPath: APIPath) {

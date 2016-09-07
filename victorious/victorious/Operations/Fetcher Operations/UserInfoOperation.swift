@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-class UserInfoOperation: RemoteFetcherOperation, RequestOperation {
+class UserInfoOperation: RemoteFetcherOperation {
     
     let request: UserInfoRequest!
 

@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-class DevicePreferencesOperation: RemoteFetcherOperation, RequestOperation {
+class DevicePreferencesOperation: RemoteFetcherOperation {
     
     // These settings were created with an appropriate ManagedObjectContext for main queue use
     var mainQueueSettings: NotificationSettings?

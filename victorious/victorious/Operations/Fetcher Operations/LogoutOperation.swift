@@ -61,7 +61,7 @@ class LogoutOperation: RemoteFetcherOperation {
     }
 }
 
-private class LogoutRemoteOperation: RemoteFetcherOperation, RequestOperation {
+private class LogoutRemoteOperation: RemoteFetcherOperation {
     
     let request: LogoutRequest! = LogoutRequest()
     

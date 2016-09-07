@@ -10,7 +10,7 @@ import Foundation
 
 let VIPFetchSubscriptionRemoteOperationErrorDomain = "VIPFetchSubscriptionRemoteOperationError"
 
-class VIPFetchSubscriptionRemoteOperation: RemoteFetcherOperation, RequestOperation {
+class VIPFetchSubscriptionRemoteOperation: RemoteFetcherOperation {
     private static let initErrorDescription = NSLocalizedString("ProductsRequestError", comment: "")
 
     static let initError = NSError(domain: VIPFetchSubscriptionRemoteOperationErrorDomain, code: 0, userInfo: [ NSLocalizedDescriptionKey : initErrorDescription ] )
