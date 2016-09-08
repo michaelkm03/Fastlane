@@ -388,12 +388,16 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     var sessionParameters: [NSObject: AnyObject] {
         // FUTURE: This should be returning "VIP_STAGE" or "MAIN_STAGE" depending on which stage this is, but we don't
         // have the infrastructure to do that easily right now.
-        return [VTrackingKeyParentContentId: "STAGE"]
+        return [VTrackingKeyParentContentId: dependencyManager.stageType]
     }
 }
 
 private extension VDependencyManager {
     var captionBarDependency: VDependencyManager? {
         return childDependencyForKey("captionBar")
+    }
+    
+    var stageType: String {
+        return stringForKey("type") ?? "STAGE"
     }
 }
