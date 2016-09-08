@@ -31,7 +31,7 @@ final class ListMenuHashtagDataSource: ListMenuSectionDataSource {
     
     /// An array of visible hashtags. This array starts with no hashtags,
     /// and gets populated after `fetchRemoteData` is called
-    private(set) var visibleItems: [HashtagSearchResultObject] = [] {
+    private(set) var visibleItems: [Hashtag] = [] {
         didSet {
             state = visibleItems.isEmpty ? .noContent : .items
             delegate?.didUpdateVisibleItems(forSection: .hashtags)
@@ -47,13 +47,22 @@ final class ListMenuHashtagDataSource: ListMenuSectionDataSource {
             return
         }
         
-        TrendingHashtagOperation(url: trendingHashtagsURL).queue { [weak self] results, error, cancelled in
-            guard let hashtags = results as? [HashtagSearchResultObject] else {
-                self?.state = .failed(error: error)
-                self?.delegate?.didUpdateVisibleItems(forSection: .hashtags)
-                return
+        let operation = RequestOperation(
+            request: TrendingHashtagRequest(url: trendingHashtagsURL)
+        )
+        
+        operation.queue { [weak self] result in
+            switch result {
+                case .success(let hashtags):
+                    self?.visibleItems = hashtags
+                
+                case .failure(let error):
+                    self?.state = .failed(error: error)
+                    self?.delegate?.didUpdateVisibleItems(forSection: .hashtags)
+                
+                case .cancelled:
+                    self?.delegate?.didUpdateVisibleItems(forSection: .hashtags)
             }
-            self?.visibleItems = hashtags
         }
     }
 }

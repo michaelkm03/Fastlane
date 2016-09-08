@@ -48,7 +48,7 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
         }
     }
     
-    private var currentFetchOperation: RemoteFetcherOperation? {
+    private var currentFetchOperation: AsyncOperation<[Hashtag]>? {
         didSet {
             if oldValue != currentFetchOperation {
                 oldValue?.cancel()
@@ -131,18 +131,21 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
             return
         }
         
-        currentFetchOperation = HashtagSearchOperation(searchTerm: text, apiPath: searchAPIPath)
-        currentFetchOperation?.queue() { [weak self] results, error, success in
-            guard let results = results as? [HashtagSearchResultObject] else {
-                return
-            }
-            let tags = results.map({ return $0.tag })
-            self?.searchResults = tags.filter() { tag -> Bool in
-                let matchRange = (tag as NSString).rangeOfString(text)
-                guard matchRange.location == 0 else {
-                    return false
-                }
-                return tag != text
+        currentFetchOperation = RequestOperation(request: HashtagSearchRequest(searchTerm: text, apiPath: searchAPIPath))
+        
+        currentFetchOperation?.queue { [weak self] result in
+            switch result {
+                case .success(let hashtags):
+                    self?.searchResults = hashtags.map { $0.tag }.filter { tag in
+                        let matchRange = (tag as NSString).rangeOfString(text)
+                        guard matchRange.location == 0 else {
+                            return false
+                        }
+                        return tag != text
+                    }
+                
+                case .failure(_), .cancelled:
+                    break
             }
         }
     }
@@ -153,17 +156,17 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
         }
         
         searchResults = currentTrendingTags
-        currentFetchOperation = TrendingHashtagOperation(url: trendingURL)
-        currentFetchOperation?.queue() { [weak self] results, error, success in
-            guard let results = results as? [HashtagSearchResultObject] else {
-                return
+        
+        currentFetchOperation = RequestOperation(request: TrendingHashtagRequest(url: trendingURL))
+        
+        currentFetchOperation?.queue { [weak self] result in
+            switch result {
+                case .success(let hashtags): self?.currentTrendingTags = hashtags.map { $0.tag }
+                case .failure(_), .cancelled: break
             }
-            let tags = results.map({ return $0.tag })
-            self?.currentTrendingTags = tags
         }
     }
 
-    
     // MARK: - Helpers
     
     private func hashtagAtIndex(index: Int) -> String? {

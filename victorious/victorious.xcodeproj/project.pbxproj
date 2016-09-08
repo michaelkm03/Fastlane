@@ -560,8 +560,6 @@
 		7A1DECB81D80E00C003F5C37 /* TutorialContentsRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECAC1D80E00C003F5C37 /* TutorialContentsRemoteOperation.swift */; };
 		7A1DECBC1D80E02C003F5C37 /* GIFSearchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECBA1D80E02C003F5C37 /* GIFSearchOperation.swift */; };
 		7A1DECBD1D80E02C003F5C37 /* GIFSearchResultObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECBB1D80E02C003F5C37 /* GIFSearchResultObject.swift */; };
-		7A1DECC11D80E051003F5C37 /* HashtagSearchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECBF1D80E051003F5C37 /* HashtagSearchOperation.swift */; };
-		7A1DECC21D80E051003F5C37 /* TrendingHashtagOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECC01D80E051003F5C37 /* TrendingHashtagOperation.swift */; };
 		7A1DECC91D80E075003F5C37 /* LoginOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECC41D80E075003F5C37 /* LoginOperation.swift */; };
 		7A1DECCA1D80E075003F5C37 /* LoginSuccessOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECC51D80E075003F5C37 /* LoginSuccessOperation.swift */; };
 		7A1DECCB1D80E075003F5C37 /* LogoutOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECC61D80E075003F5C37 /* LogoutOperation.swift */; };
@@ -2066,8 +2064,6 @@
 		7A1DECAC1D80E00C003F5C37 /* TutorialContentsRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialContentsRemoteOperation.swift; sourceTree = "<group>"; };
 		7A1DECBA1D80E02C003F5C37 /* GIFSearchOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchOperation.swift; sourceTree = "<group>"; };
 		7A1DECBB1D80E02C003F5C37 /* GIFSearchResultObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchResultObject.swift; sourceTree = "<group>"; };
-		7A1DECBF1D80E051003F5C37 /* HashtagSearchOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagSearchOperation.swift; sourceTree = "<group>"; };
-		7A1DECC01D80E051003F5C37 /* TrendingHashtagOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrendingHashtagOperation.swift; sourceTree = "<group>"; };
 		7A1DECC41D80E075003F5C37 /* LoginOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginOperation.swift; sourceTree = "<group>"; };
 		7A1DECC51D80E075003F5C37 /* LoginSuccessOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginSuccessOperation.swift; sourceTree = "<group>"; };
 		7A1DECC61D80E075003F5C37 /* LogoutOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogoutOperation.swift; sourceTree = "<group>"; };
@@ -4872,15 +4868,6 @@
 			path = GIF;
 			sourceTree = "<group>";
 		};
-		7A1DECBE1D80E034003F5C37 /* Hashtag */ = {
-			isa = PBXGroup;
-			children = (
-				7A1DECBF1D80E051003F5C37 /* HashtagSearchOperation.swift */,
-				7A1DECC01D80E051003F5C37 /* TrendingHashtagOperation.swift */,
-			);
-			path = Hashtag;
-			sourceTree = "<group>";
-		};
 		7A1DECC31D80E06B003F5C37 /* Login */ = {
 			isa = PBXGroup;
 			children = (
@@ -5285,7 +5272,6 @@
 				7A1DECA01D80DFF9003F5C37 /* Content */,
 				A72C85521C977FF500E97D4F /* Fetcher Operations */,
 				7A1DECB91D80E021003F5C37 /* GIF */,
-				7A1DECBE1D80E034003F5C37 /* Hashtag */,
 				A72C859E1C977FF500E97D4F /* Helpers */,
 				A72C85AA1C977FF500E97D4F /* Launch */,
 				7A1DECC31D80E06B003F5C37 /* Login */,
@@ -8210,7 +8196,6 @@
 				F06BEABE1C97989E00F35694 /* ComposerAttachmentTabBarButton.swift in Sources */,
 				D8332DBD1A7C275800C3FEE0 /* VCameraControl.m in Sources */,
 				A72C86441C977FF500E97D4F /* AuthenticationContext+CurrentUser.swift in Sources */,
-				7A1DECC21D80E051003F5C37 /* TrendingHashtagOperation.swift in Sources */,
 				A7ECC1CF1AD617480003E00A /* VVideoToolController.m in Sources */,
 				A73C3EBA1C45890E00A8452C /* MediaSearchDataSourceAdapter.swift in Sources */,
 				F06BEABC1C97982900F35694 /* ComposerAttachmentTabBar.swift in Sources */,
@@ -8247,7 +8232,6 @@
 				A73BA5751C93CAA0008168B5 /* ShowTestPurchaseConfirmationOperation.swift in Sources */,
 				030931931A184285004E9781 /* VNavigationMenuItem.m in Sources */,
 				C30E3F9F1BE7E02500184F57 /* VAutomation.m in Sources */,
-				7A1DECC11D80E051003F5C37 /* HashtagSearchOperation.swift in Sources */,
 				6791505D1CD4201000225151 /* TutorialViewController.swift in Sources */,
 				D8D812B01B14EAA200E93B37 /* VModernResetTokenViewController.m in Sources */,
 				7A87376E1CB5C66900D2FF74 /* NotificationCell.swift in Sources */,
