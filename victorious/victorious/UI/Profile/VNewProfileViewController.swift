@@ -395,7 +395,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     private func fetchUser(withRemoteID remoteID: Int, shouldShowSpinner: Bool = true) {
         guard
             let apiPath = dependencyManager.networkResources?.userFetchAPIPath,
-            let userInfoOperation = UserInfoOperation(userID: remoteID, apiPath: apiPath)
+            let request = UserInfoRequest(userID: remoteID, apiPath: apiPath)
         else {
             return
         }
@@ -406,13 +406,23 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
             spinner.startAnimating()
         }
         
-        userInfoOperation.queue { [weak self] _ in
+        let operation = RequestOperation(request: request)
+        operation.queue { [weak self] result in
             guard let dependencyManager = self?.dependencyManager else {
                 return
             }
+            
             self?.spinner.stopAnimating()
             self?.spinner.removeFromSuperview()
-            self?.setUser(userInfoOperation.user, using: dependencyManager)
+            
+            switch result {
+                case .success(let user):
+                    self?.setUser(user, using: dependencyManager)
+                case .failure(let error):
+                    Log.warning("Failed to fetch user information with error: \(error)")
+                case .cancelled:
+                    break
+            }
         }
     }
     

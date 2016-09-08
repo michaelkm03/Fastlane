@@ -575,7 +575,6 @@
 		7A1DECEB1D80E0F2003F5C37 /* UserBlockOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECE01D80E0F2003F5C37 /* UserBlockOperation.swift */; };
 		7A1DECEC1D80E0F2003F5C37 /* UserBlockRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECE11D80E0F2003F5C37 /* UserBlockRemoteOperation.swift */; };
 		7A1DECED1D80E0F2003F5C37 /* UserBlockToggleOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECE21D80E0F2003F5C37 /* UserBlockToggleOperation.swift */; };
-		7A1DECEE1D80E0F2003F5C37 /* UserInfoOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECE31D80E0F2003F5C37 /* UserInfoOperation.swift */; };
 		7A1DECEF1D80E0F2003F5C37 /* UserUnblockOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECE41D80E0F2003F5C37 /* UserUnblockOperation.swift */; };
 		7A1DECF01D80E0F2003F5C37 /* UserUnblockRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECE51D80E0F2003F5C37 /* UserUnblockRemoteOperation.swift */; };
 		7A1DECF11D80E0F2003F5C37 /* UserUnupvoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECE61D80E0F2003F5C37 /* UserUnupvoteOperation.swift */; };
@@ -2079,7 +2078,6 @@
 		7A1DECE01D80E0F2003F5C37 /* UserBlockOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserBlockOperation.swift; sourceTree = "<group>"; };
 		7A1DECE11D80E0F2003F5C37 /* UserBlockRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserBlockRemoteOperation.swift; sourceTree = "<group>"; };
 		7A1DECE21D80E0F2003F5C37 /* UserBlockToggleOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserBlockToggleOperation.swift; sourceTree = "<group>"; };
-		7A1DECE31D80E0F2003F5C37 /* UserInfoOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserInfoOperation.swift; sourceTree = "<group>"; };
 		7A1DECE41D80E0F2003F5C37 /* UserUnblockOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserUnblockOperation.swift; sourceTree = "<group>"; };
 		7A1DECE51D80E0F2003F5C37 /* UserUnblockRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserUnblockRemoteOperation.swift; sourceTree = "<group>"; };
 		7A1DECE61D80E0F2003F5C37 /* UserUnupvoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserUnupvoteOperation.swift; sourceTree = "<group>"; };
@@ -4907,7 +4905,6 @@
 				7A1DECE01D80E0F2003F5C37 /* UserBlockOperation.swift */,
 				7A1DECE11D80E0F2003F5C37 /* UserBlockRemoteOperation.swift */,
 				7A1DECE21D80E0F2003F5C37 /* UserBlockToggleOperation.swift */,
-				7A1DECE31D80E0F2003F5C37 /* UserInfoOperation.swift */,
 				7A1DECE41D80E0F2003F5C37 /* UserUnblockOperation.swift */,
 				7A1DECE51D80E0F2003F5C37 /* UserUnblockRemoteOperation.swift */,
 				7A1DECE61D80E0F2003F5C37 /* UserUnupvoteOperation.swift */,
@@ -8073,7 +8070,6 @@
 				A7EB574D1AF8402A006AA1CF /* VURLDetector.m in Sources */,
 				A6E2E76B1B544D79008A1CA9 /* VImageAssetDownloader.m in Sources */,
 				A78F17741B67F3AE009F6B8F /* ExperimentSettingsViewController.swift in Sources */,
-				7A1DECEE1D80E0F2003F5C37 /* UserInfoOperation.swift in Sources */,
 				6708F7021CD83CB2004332CF /* TutorialCollectionViewDataSource.swift in Sources */,
 				A71DAF241B695FC200E0BE53 /* AutomationId.swift in Sources */,
 				7979A0301C18B10400455FF8 /* NotificationSettingsViewController.swift in Sources */,
