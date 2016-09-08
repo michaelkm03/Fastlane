@@ -36,19 +36,23 @@ final class StoredLoginOperation: SyncOperation<Void> {
             
             guard
                 let apiPath = dependencyManager.networkResources?.userFetchAPIPath,
-                let userInfoOperation = UserInfoOperation(userID: user.id, apiPath: apiPath)
+                let request = UserInfoRequest(userID: user.id, apiPath: apiPath)
             else {
                 let error = NSError(domain: "StoredLoginOperation-BadUserFetchAPIPath", code: -1, userInfo: ["DependencyManager": dependencyManager])
                 Log.warning("Unable to initialize first user info fetch during StoredLoginOperation with error: \(error)")
                 return .failure(error)
             }
             
-            userInfoOperation.after(self).queue { _, error, _ in
-                guard let user = userInfoOperation.user else {
-                    Log.warning("User info fetch failed with error: \(error)")
-                    return
+            let operation = RequestOperation(request: request)
+            operation.after(self).queue { result in
+                switch result {
+                    case .success(let user):
+                        VCurrentUser.update(to: user)
+                    case .failure(let error):
+                        Log.warning("User info fetch failed with error: \(error)")
+                    case .cancelled:
+                        break
                 }
-                VCurrentUser.update(to: user)
             }
             
         } else if let loginType = VLoginType(rawValue: defaults.integerForKey(kLastLoginTypeUserDefaultsKey)),
