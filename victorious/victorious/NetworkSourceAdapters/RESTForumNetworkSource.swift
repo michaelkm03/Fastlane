@@ -85,10 +85,10 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
             }
             
             switch result {
-                case .success(let contents, let refreshStage):
-                    strongSelf.broadcast(.handleContent(contents.reverse(), loadingType))
+                case .success(let feedResult):
+                    strongSelf.broadcast(.handleContent(feedResult.contents.reverse(), loadingType))
                     
-                    if let refreshStage = refreshStage {
+                    if let refreshStage = feedResult.refreshStage {
                         strongSelf.broadcast(.refreshStage(refreshStage))
                     }
                     else {

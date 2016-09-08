@@ -6,16 +6,28 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-final class ContentFeedOperation: RequestOperation<ContentFeedRequest> {
+final class ContentFeedOperation: AsyncOperation<ContentFeedResult> {
+    
+    // MARK: - Initializing
+    
     init(apiPath: APIPath) {
-        super.init(request: ContentFeedRequest(apiPath: apiPath))
+        self.apiPath = apiPath
+        super.init()
     }
     
-    override func execute(finish: (result: OperationResult<ContentFeedRequest.ResultType>) -> Void) {
-        super.execute { result in
+    // MARK: - Executing
+    
+    private let apiPath: APIPath
+    
+    override var executionQueue: Queue {
+        return .main
+    }
+    
+    override func execute(finish: (result: OperationResult<ContentFeedResult>) -> Void) {
+        RequestOperation(request: ContentFeedRequest(apiPath: apiPath)).queue { result in
             switch result {
-                case .success(let items, let refreshStage):
-                    let unhiddenContents = items.filter { content in
+                case .success(var feedResult):
+                    feedResult.contents = feedResult.contents.filter { content in
                         guard let id = content.id else {
                             return true
                         }
@@ -23,10 +35,7 @@ final class ContentFeedOperation: RequestOperation<ContentFeedRequest> {
                         return !Content.contentIsHidden(withID: id)
                     }
                     
-                    finish(result: .success((
-                        contents: unhiddenContents,
-                        refreshStage: refreshStage
-                    )))
+                    finish(result: .success(feedResult))
                 
                 case .failure(_), .cancelled:
                     finish(result: result)

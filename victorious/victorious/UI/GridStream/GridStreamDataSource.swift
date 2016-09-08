@@ -83,7 +83,7 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
             let newItems: [ContentModel]
             
             switch result {
-                case .success(let items, _): newItems = items
+                case .success(let feedResult): newItems = feedResult.contents
                 case .failure(_), .cancelled: newItems = []
             }
             
@@ -108,7 +108,7 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
             }
             
             switch result {
-                case .success(let items, _): completion?(result: .success(items))
+                case .success(let feedResult): completion?(result: .success(feedResult.contents))
                 case .failure(let error): completion?(result: .failure(error))
                 case .cancelled: completion?(result: .success([]))
             }

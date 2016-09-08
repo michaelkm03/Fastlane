@@ -19,7 +19,7 @@ public struct ContentFeedRequest: RequestType {
         return NSURLRequest(URL: apiPath.url ?? NSURL())
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> (contents: [ContentModel], refreshStage: RefreshStage?) {
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> ContentFeedResult {
         guard let contents = responseJSON["payload"]["viewed_contents"].array else {
             throw ResponseParsingError()
         }
@@ -34,6 +34,11 @@ public struct ContentFeedRequest: RequestType {
             parsedRefreshStage = RefreshStage(json: mainStageJSON)
         }
         
-        return (contents: parsedContents, refreshStage: parsedRefreshStage)
+        return ContentFeedResult(contents: parsedContents, refreshStage: parsedRefreshStage)
     }
+}
+
+public struct ContentFeedResult {
+    public var contents: [ContentModel]
+    public var refreshStage: RefreshStage?
 }

@@ -8,20 +8,31 @@
 
 import UIKit
 
-final class ContentDeleteOperation: RequestOperation<ContentDeleteRequest> {
-    private let contentID: Content.ID
+final class ContentDeleteOperation: AsyncOperation<Void> {
+    
+    // MARK: - Initializing
     
     init(contentID: Content.ID, apiPath: APIPath) {
         self.contentID = contentID
-        super.init(request: ContentDeleteRequest(contentID: contentID, apiPath: apiPath))
+        self.apiPath = apiPath
+        super.init()
     }
     
-    override func execute(finish: (result: OperationResult<ContentDeleteRequest.ResultType>) -> Void) {
+    // MARK: - Executing
+    
+    private let contentID: Content.ID
+    private let apiPath: APIPath
+    
+    override var executionQueue: Queue {
+        return .main
+    }
+    
+    override func execute(finish: (result: OperationResult<Void>) -> Void) {
         let contentID = self.contentID
         
-        super.execute { result in
+        RequestOperation(request: ContentDeleteRequest(contentID: contentID, apiPath: apiPath)).queue { result in
             switch result {
-                case .success(_):
+                case .success:
                     Content.hideContent(withID: contentID)
                 case .failure(_), .cancelled:
                     break
