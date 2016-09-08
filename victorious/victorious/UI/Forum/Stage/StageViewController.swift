@@ -236,13 +236,6 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         titleCardViewController?.hide()
     }
     
-    var overlayUIAlpha: CGFloat {
-        get {
-            return 0
-        }
-        set { }
-    }
-    
     // MARK: - ForumEventReceiver
 
     func receive(event: ForumEvent) {
