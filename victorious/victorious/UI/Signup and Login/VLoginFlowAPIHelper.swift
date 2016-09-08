@@ -21,9 +21,13 @@ extension VLoginFlowAPIHelper {
         )
         
         if let operation = updateOperation {
-            operation.queue() { results, error, cancelled in
-                completion?( error )
+            operation.queue { result in
+                switch result {
+                    case .success, .cancelled: completion?(nil)
+                    case .failure(let error): completion?(error as NSError)
+                }
             }
+            
             return operation
         }
         

@@ -14,7 +14,7 @@ struct AccountCreateParameters {
     let accountIdentifier: String?
 }
 
-class AccountCreateOperation: AsyncOperation<AccountCreateResponse> {
+final class AccountCreateOperation: AsyncOperation<AccountCreateResponse> {
     
     // MARK: - Initializing
     

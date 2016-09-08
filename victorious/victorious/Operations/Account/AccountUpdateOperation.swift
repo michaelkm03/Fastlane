@@ -9,10 +9,9 @@
 import Foundation
 import VictoriousIOSSDK
 
-class AccountUpdateOperation: RemoteFetcherOperation {
-    private let storedPassword = VStoredPassword()
+final class AccountUpdateOperation: AsyncOperation<Void> {
     
-    let request: AccountUpdateRequest!
+    // MARK: - Initializing
     
     init?(passwordUpdate: PasswordUpdate) {
         self.request = AccountUpdateRequest(passwordUpdate: passwordUpdate)
@@ -30,12 +29,20 @@ class AccountUpdateOperation: RemoteFetcherOperation {
         }
     }
     
-    override func main() {
+    // MARK: - Executing
+    
+    private let request: AccountUpdateRequest!
+    
+    override var executionQueue: Queue {
+        return .background
+    }
+    
+    override func execute(finish: (result: OperationResult<Void>) -> Void) {
         // For profile updates, optimistically update everything right away
         
-        if let profileUpdate = self.request.profileUpdate {
+        if let profileUpdate = request.profileUpdate {
             guard var user = VCurrentUser.user else {
-                error = NSError(domain: "AccountUpdateOperation", code: -1, userInfo: nil)
+                finish(result: .failure(NSError(domain: "AccountUpdateOperation", code: -1, userInfo: nil)))
                 return
             }
             
@@ -48,9 +55,10 @@ class AccountUpdateOperation: RemoteFetcherOperation {
             if
                 let imageURL = profileUpdate.profileImageURL,
                 let data = NSData(contentsOfURL: imageURL),
-                let image = UIImage(data: data) {
-                    let imageAsset = ImageAsset(image: image)
-                    user.previewImages = [imageAsset]
+                let image = UIImage(data: data)
+            {
+                let imageAsset = ImageAsset(image: image)
+                user.previewImages = [imageAsset]
             }
             
             dispatch_async(dispatch_get_main_queue()) {
@@ -59,12 +67,10 @@ class AccountUpdateOperation: RemoteFetcherOperation {
         }
         
         // Then send out the request the server
-        requestExecutor.executeRequest(request, onComplete: onComplete, onError: nil)
-    }
-    
-    private func onComplete(sequence: AccountUpdateRequest.ResultType) {
-        if let passwordUpdate = request.passwordUpdate {
-            storedPassword.savePassword(passwordUpdate.newPassword, forUsername: passwordUpdate.username)
+        RequestOperation(request: request).queue { [weak self] _ in
+            if let passwordUpdate = self?.request.passwordUpdate {
+                VStoredPassword().savePassword(passwordUpdate.newPassword, forUsername: passwordUpdate.username)
+            }
         }
     }
 }
