@@ -9,7 +9,7 @@
 import UIKit
 import VictoriousIOSSDK
 
-class UserBlockOperation: FetcherOperation {
+class UserBlockOperation: SyncOperation<Void> {
     private let blockAPIPath: APIPath
     private let user: UserModel
     
@@ -18,12 +18,22 @@ class UserBlockOperation: FetcherOperation {
         self.blockAPIPath = blockAPIPath
     }
     
-    override func main() {
+    override var executionQueue: Queue {
+        return .background
+    }
+    
+    override func execute() -> OperationResult<Void> {
         user.block()
         
-        UserBlockRemoteOperation(
-            userID: user.id,
-            userBlockAPIPath: blockAPIPath
-        )?.after(self).queue()
+        guard let request = UserBlockRequest(userID: user.id, userBlockAPIPath: blockAPIPath) else {
+            Log.warning("Failed to instantie UserBlockRequest")
+            let error = NSError(domain: "UserBlockOperation-RequestInitializationFailed", code: 1, userInfo: nil)
+            return .failure(error)
+        }
+        
+        let operation = RequestOperation(request: request)
+        operation.after(self).queue()
+        
+        return .success()
     }
 }
