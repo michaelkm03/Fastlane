@@ -769,7 +769,6 @@
 		A72C85FC1C977FF500E97D4F /* AlertCreateOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85561C977FF500E97D4F /* AlertCreateOperation.swift */; };
 		A72C86091C977FF500E97D4F /* DeviceExperimentsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85631C977FF500E97D4F /* DeviceExperimentsOperation.swift */; };
 		A72C860A1C977FF500E97D4F /* DevicePreferencesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85641C977FF500E97D4F /* DevicePreferencesOperation.swift */; };
-		A72C86231C977FF500E97D4F /* PasswordRequestResetOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C857D1C977FF500E97D4F /* PasswordRequestResetOperation.swift */; };
 		A72C86241C977FF500E97D4F /* PasswordResetOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C857E1C977FF500E97D4F /* PasswordResetOperation.swift */; };
 		A72C86251C977FF500E97D4F /* PasswordValidateResetTokenOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C857F1C977FF500E97D4F /* PasswordValidateResetTokenOperation.swift */; };
 		A72C86441C977FF500E97D4F /* AuthenticationContext+CurrentUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C859F1C977FF500E97D4F /* AuthenticationContext+CurrentUser.swift */; };
@@ -2341,7 +2340,6 @@
 		A72C85561C977FF500E97D4F /* AlertCreateOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertCreateOperation.swift; sourceTree = "<group>"; };
 		A72C85631C977FF500E97D4F /* DeviceExperimentsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceExperimentsOperation.swift; sourceTree = "<group>"; };
 		A72C85641C977FF500E97D4F /* DevicePreferencesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DevicePreferencesOperation.swift; sourceTree = "<group>"; };
-		A72C857D1C977FF500E97D4F /* PasswordRequestResetOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordRequestResetOperation.swift; sourceTree = "<group>"; };
 		A72C857E1C977FF500E97D4F /* PasswordResetOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordResetOperation.swift; sourceTree = "<group>"; };
 		A72C857F1C977FF500E97D4F /* PasswordValidateResetTokenOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordValidateResetTokenOperation.swift; sourceTree = "<group>"; };
 		A72C859F1C977FF500E97D4F /* AuthenticationContext+CurrentUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AuthenticationContext+CurrentUser.swift"; sourceTree = "<group>"; };
@@ -4815,7 +4813,6 @@
 			children = (
 				A72C85531C977FF500E97D4F /* AccountCreateOperation.swift */,
 				A72C85541C977FF500E97D4F /* AccountUpdateOperation.swift */,
-				A72C857D1C977FF500E97D4F /* PasswordRequestResetOperation.swift */,
 				A72C857E1C977FF500E97D4F /* PasswordResetOperation.swift */,
 				A72C857F1C977FF500E97D4F /* PasswordValidateResetTokenOperation.swift */,
 			);
@@ -8598,7 +8595,6 @@
 				67486B741CC7145300B03926 /* ListMenuCommunityCollectionViewCell.swift in Sources */,
 				5A6F11B71C386E8A000BF7F3 /* NSNumber+Operators.swift in Sources */,
 				A73BA2AA1C938B68008168B5 /* ComposerViewController.swift in Sources */,
-				A72C86231C977FF500E97D4F /* PasswordRequestResetOperation.swift in Sources */,
 				7AE3EA391CAF39C400272A6A /* UICollectionViewFlowLayout+CellSize.swift in Sources */,
 				799B89D31D469E02006743FE /* EditProfileViewController.swift in Sources */,
 				A7A2E0121A391A7D00F8C705 /* VPurchaseRecord.m in Sources */,
