@@ -21,7 +21,7 @@ class UserBlockToggleOperation: SyncOperation<Void> {
     }
     
     override var executionQueue: Queue {
-        return .background
+        return .main
     }
     
     override func execute() -> OperationResult<Void> {
@@ -32,7 +32,7 @@ class UserBlockToggleOperation: SyncOperation<Void> {
                 return .failure(error)
             }
             let unblockOperation = RequestOperation(request: unblockRequest)
-            unblockOperation.rechainAfter(self).queue()
+            unblockOperation.after(self).queue()
         }
         else {
             user.block()
@@ -42,7 +42,7 @@ class UserBlockToggleOperation: SyncOperation<Void> {
             }
             
             let blockOperation = RequestOperation(request: blockRequest)
-            blockOperation.rechainAfter(self).queue()
+            blockOperation.after(self).queue()
         }
 
         return .success()

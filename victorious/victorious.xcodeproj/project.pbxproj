@@ -573,10 +573,6 @@
 		7A1DECDC1D80E09E003F5C37 /* Queueable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECD91D80E09E003F5C37 /* Queueable.swift */; };
 		7A1DECDD1D80E09E003F5C37 /* RequestOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECDA1D80E09E003F5C37 /* RequestOperation.swift */; };
 		7A1DECED1D80E0F2003F5C37 /* UserBlockToggleOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECE21D80E0F2003F5C37 /* UserBlockToggleOperation.swift */; };
-		7A1DECF11D80E0F2003F5C37 /* UserUnupvoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECE61D80E0F2003F5C37 /* UserUnupvoteOperation.swift */; };
-		7A1DECF21D80E0F2003F5C37 /* UserUnupvoteRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECE71D80E0F2003F5C37 /* UserUnupvoteRemoteOperation.swift */; };
-		7A1DECF31D80E0F2003F5C37 /* UserUpvoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECE81D80E0F2003F5C37 /* UserUpvoteOperation.swift */; };
-		7A1DECF41D80E0F2003F5C37 /* UserUpvoteRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECE91D80E0F2003F5C37 /* UserUpvoteRemoteOperation.swift */; };
 		7A1DECF51D80E0F2003F5C37 /* UserUpvoteToggleOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECEA1D80E0F2003F5C37 /* UserUpvoteToggleOperation.swift */; };
 		7A1DECF81D80E101003F5C37 /* ConfirmDestructiveActionOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECF71D80E101003F5C37 /* ConfirmDestructiveActionOperation.swift */; };
 		7A1DED021D80E130003F5C37 /* AlertReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECFA1D80E130003F5C37 /* AlertReceiver.swift */; };
@@ -2072,10 +2068,6 @@
 		7A1DECD91D80E09E003F5C37 /* Queueable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queueable.swift; sourceTree = "<group>"; };
 		7A1DECDA1D80E09E003F5C37 /* RequestOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestOperation.swift; sourceTree = "<group>"; };
 		7A1DECE21D80E0F2003F5C37 /* UserBlockToggleOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserBlockToggleOperation.swift; sourceTree = "<group>"; };
-		7A1DECE61D80E0F2003F5C37 /* UserUnupvoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserUnupvoteOperation.swift; sourceTree = "<group>"; };
-		7A1DECE71D80E0F2003F5C37 /* UserUnupvoteRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserUnupvoteRemoteOperation.swift; sourceTree = "<group>"; };
-		7A1DECE81D80E0F2003F5C37 /* UserUpvoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserUpvoteOperation.swift; sourceTree = "<group>"; };
-		7A1DECE91D80E0F2003F5C37 /* UserUpvoteRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserUpvoteRemoteOperation.swift; sourceTree = "<group>"; };
 		7A1DECEA1D80E0F2003F5C37 /* UserUpvoteToggleOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserUpvoteToggleOperation.swift; sourceTree = "<group>"; };
 		7A1DECF71D80E101003F5C37 /* ConfirmDestructiveActionOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfirmDestructiveActionOperation.swift; sourceTree = "<group>"; };
 		7A1DECFA1D80E130003F5C37 /* AlertReceiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertReceiver.swift; sourceTree = "<group>"; };
@@ -4895,10 +4887,6 @@
 			isa = PBXGroup;
 			children = (
 				7A1DECE21D80E0F2003F5C37 /* UserBlockToggleOperation.swift */,
-				7A1DECE61D80E0F2003F5C37 /* UserUnupvoteOperation.swift */,
-				7A1DECE71D80E0F2003F5C37 /* UserUnupvoteRemoteOperation.swift */,
-				7A1DECE81D80E0F2003F5C37 /* UserUpvoteOperation.swift */,
-				7A1DECE91D80E0F2003F5C37 /* UserUpvoteRemoteOperation.swift */,
 				7A1DECEA1D80E0F2003F5C37 /* UserUpvoteToggleOperation.swift */,
 			);
 			path = User;
@@ -8269,7 +8257,6 @@
 				C39B220B1B0A58EF00D3DFE7 /* VPermissionMicrophone.m in Sources */,
 				A7DDA6AA1B5F0018005CE55E /* Experiment.swift in Sources */,
 				0E23691D1D497C4100D9E45C /* Presentable.swift in Sources */,
-				7A1DECF21D80E0F2003F5C37 /* UserUnupvoteRemoteOperation.swift in Sources */,
 				A601FB4F1B4355A30050536C /* VCreationFlowController.m in Sources */,
 				03DB20DD1CC99AF500721C24 /* FilterNameLocalization.swift in Sources */,
 				67376B281D666ADC002DE72E /* LoadingViewController.swift in Sources */,
@@ -8392,7 +8379,6 @@
 				7C4CCE681D10D36F00784D30 /* SettingsViewController+Templatized.swift in Sources */,
 				67486B761CC7147500B03926 /* ListMenuCommunityDataSource.swift in Sources */,
 				A7AA647D19E78EAA0068D2B1 /* victoriOS.xcdatamodeld in Sources */,
-				7A1DECF11D80E0F2003F5C37 /* UserUnupvoteOperation.swift in Sources */,
 				7A1DECED1D80E0F2003F5C37 /* UserBlockToggleOperation.swift in Sources */,
 				67713FCF1D79E6FC00DA4D6C /* VUploadManager.swift in Sources */,
 				7A1DECB21D80E00C003F5C37 /* ContentUnupvoteOperation.swift in Sources */,
@@ -8499,7 +8485,6 @@
 				A72C85FA1C977FF500E97D4F /* AccountUpdateOperation.swift in Sources */,
 				F050D33C1CAB6B30007A05ED /* ComposerInputAttachmentType.swift in Sources */,
 				7A1DECB71D80E00C003F5C37 /* StageContentFetchOperation.swift in Sources */,
-				7A1DECF31D80E0F2003F5C37 /* UserUpvoteOperation.swift in Sources */,
 				A720055E1A030E4700285A9C /* VApplicationTracking.m in Sources */,
 				039420431AB7D1A70087ADFA /* VDependencyManager+VTracking.m in Sources */,
 				67D38B0B1CF6192F003F1D5F /* VUser.swift in Sources */,
@@ -8610,7 +8595,6 @@
 				7AE0A0401D63B3EE00769080 /* BadgeCountManager.swift in Sources */,
 				A7FFCE511C8FCDD900B1BE49 /* VIPValidateSubscriptionOperation.swift in Sources */,
 				A6B9FD071B603FC600166BE8 /* VImageCameraViewController.m in Sources */,
-				7A1DECF41D80E0F2003F5C37 /* UserUpvoteRemoteOperation.swift in Sources */,
 				67486B741CC7145300B03926 /* ListMenuCommunityCollectionViewCell.swift in Sources */,
 				5A6F11B71C386E8A000BF7F3 /* NSNumber+Operators.swift in Sources */,
 				A73BA2AA1C938B68008168B5 /* ComposerViewController.swift in Sources */,
