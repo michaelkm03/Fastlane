@@ -11,6 +11,7 @@ import UIKit
 struct ListMenuSelectedItem {
     let streamAPIPath: APIPath
     let title: String?
+    let trackingURLs: [String]
 }
 
 /// View Controller for the entire List Menu Component, which is currently being displayed as the left navigation pane
@@ -19,7 +20,10 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     
     // MARK: - Configuration
     
-    private static let contentInset = UIEdgeInsets(top: 20.0, left: 0.0, bottom: 0.0, right: 0.0)
+    private struct Constants {
+        static let contentInset = UIEdgeInsets(top: 20.0, left: 0.0, bottom: 0.0, right: 0.0)
+        static let selectStreamTrackingEventName = "Select Stream"
+    }
     
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
@@ -46,7 +50,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        collectionView?.contentInset = ListMenuViewController.contentInset
+        collectionView?.contentInset = Constants.contentInset
         dependencyManager.addBackgroundToBackgroundHost(self)
         view.layoutIfNeeded()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userVIPStatusChanged), name: VCurrentUser.userDidUpdateNotificationKey, object: nil)
@@ -103,14 +107,25 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         let item = collectionViewDataSource.communityDataSource.visibleItems[index]
         
         // Index 0 should correspond to the home feed, so we broadcast a nil path to denote an unfiltered feed.
-        postListMenuSelection(index == 0 ? nil : ListMenuSelectedItem(streamAPIPath: item.streamAPIPath, title: item.title))
+        postListMenuSelection(index == 0 ? nil : ListMenuSelectedItem(
+            streamAPIPath: item.streamAPIPath,
+            title: item.title,
+            trackingURLs: item.trackingURLs
+        ))
     }
     
     private func selectHashtag(atIndex index: Int) {
         let item = collectionViewDataSource.hashtagDataSource.visibleItems[index]
         var apiPath = collectionViewDataSource.hashtagDataSource.hashtagStreamAPIPath
         apiPath.macroReplacements["%%HASHTAG%%"] = item.tag
-        let selectedTagItem = ListMenuSelectedItem(streamAPIPath: apiPath, title: "#\(item.tag)")
+        
+        let selectedTagItem = ListMenuSelectedItem(
+            streamAPIPath: apiPath,
+            title: "#\(item.tag)",
+            trackingURLs: collectionViewDataSource.hashtagDataSource.hashtagStreamTrackingURLs.map {
+                VSDKURLMacroReplacement().urlByReplacingMacrosFromDictionary(["%%HASHTAG%%": item.tag], inURLString: $0)
+            }
+        )
         
         postListMenuSelection(selectedTagItem)
     }
@@ -121,6 +136,12 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
             object: nil,
             userInfo: listMenuSelection.flatMap { ["selectedItem": ReferenceWrapper($0)] }
         )
+        
+        if let trackingURLs = listMenuSelection?.trackingURLs {
+            VTrackingManager.sharedInstance().trackEvent(Constants.selectStreamTrackingEventName, parameters: [
+                VTrackingKeyUrls: trackingURLs
+            ])
+        }
     }
     
     // MARK: - UIViewController overrides

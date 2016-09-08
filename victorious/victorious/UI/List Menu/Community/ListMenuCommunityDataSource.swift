@@ -32,7 +32,7 @@ final class ListMenuCommunityDataSource: ListMenuSectionDataSource {
     weak var delegate: ListMenuSectionDataSourceDelegate?
     
     func fetchRemoteData() {
-        guard let dependencies = dependencyManager.arrayForKey("items") as? [[String: AnyObject]] else {
+        guard let dependencies = dependencyManager.childDependencies(for: "items") else {
             state = .failed(error: NSError(domain: "ListMenuCommunityDataSource", code: 1, userInfo: nil))
             delegate?.didUpdateVisibleItems(forSection: .community)
             return
