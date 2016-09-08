@@ -108,7 +108,7 @@ extension ContentModel {
 }
 
 private var hiddenContentIDs = Set<Content.ID>()
-private var likedContentIDs = Set<Content.ID>()
+private var likedContentIDs: [Content.ID: Bool] = [:]
 
 extension ContentModel {
     
@@ -125,19 +125,20 @@ extension ContentModel {
     // MARK: - Liking content
     
     public static func likeContent(withID id: Content.ID) {
-        likedContentIDs.insert(id)
+        likedContentIDs[id] = true
     }
     
     public static func unlikeContent(withID id: Content.ID) {
-        likedContentIDs.remove(id)
+        likedContentIDs[id] = false
     }
     
     public var isLikedByCurrentUser: Bool {
-        if let id = id where likedContentIDs.contains(id) {
-            return true
+        if let id = id, let record = likedContentIDs[id] {
+            return record
         }
-        
-        return isRemotelyLikedByCurrentUser
+        else {
+            return isRemotelyLikedByCurrentUser
+        }
     }
 }
 
