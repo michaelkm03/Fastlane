@@ -8,13 +8,11 @@
 
 import Foundation
 
-class LoginSuccessOperation: FetcherOperation {
+/// An operation that should be run after creating an account or logging in to set up and persist the current user's
+/// information.
+class LoginSuccessOperation: SyncOperation<Void> {
     
-    private let dependencyManager: VDependencyManager
-    let parameters: AccountCreateParameters
-    let response: AccountCreateResponse
-    
-    private var userObjectID: NSManagedObjectID?
+    // MARK: - Initializing
     
     init(dependencyManager: VDependencyManager, response: AccountCreateResponse, parameters: AccountCreateParameters) {
         self.dependencyManager = dependencyManager
@@ -22,31 +20,32 @@ class LoginSuccessOperation: FetcherOperation {
         self.parameters = parameters
     }
     
-    override func main() {
-        guard !cancelled else {
-            return
-        }
-        
-        let currentUser = self.response.user
-            
-        VCurrentUser.loginType = self.parameters.loginType
-        VCurrentUser.token = self.response.token
-        VCurrentUser.accountIdentifier = self.parameters.accountIdentifier
-        VCurrentUser.isNewUser = self.response.newUser
-        
-        dispatch_sync(dispatch_get_main_queue()) {
-            VCurrentUser.update(to: currentUser)
-        }
-        
-        self.updateStoredCredentials(currentUser)
-        VLoginType(rawValue: self.parameters.loginType.rawValue)?.trackSuccess(VCurrentUser.isNewUser?.boolValue ?? false)
+    // MARK: - Executing
+    
+    private let dependencyManager: VDependencyManager
+    let parameters: AccountCreateParameters
+    let response: AccountCreateResponse
+    
+    override var executionQueue: Queue {
+        return .main
     }
     
-    private func updateStoredCredentials( user: User ) {
-        guard
-            let id = VCurrentUser.userID,
-            let token = VCurrentUser.token
-        else {
+    override func execute() -> OperationResult<Void> {
+        let currentUser = response.user
+            
+        VCurrentUser.loginType = parameters.loginType
+        VCurrentUser.token = response.token
+        VCurrentUser.accountIdentifier = parameters.accountIdentifier
+        VCurrentUser.isNewUser = response.newUser
+        VCurrentUser.update(to: currentUser)
+        
+        updateStoredCredentials(currentUser)
+        VLoginType(rawValue: parameters.loginType.rawValue)?.trackSuccess(VCurrentUser.isNewUser?.boolValue ?? false)
+        return .success()
+    }
+    
+    private func updateStoredCredentials(user: User) {
+        guard let id = VCurrentUser.userID, let token = VCurrentUser.token else {
             return
         }
         
