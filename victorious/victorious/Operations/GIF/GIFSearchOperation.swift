@@ -9,31 +9,44 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class GIFSearchOperation: RemoteFetcherOperation, PaginatedRequestOperation {
+final class GIFSearchOperation: AsyncOperation<[AnyObject]>, PaginatedRequestOperation {
     
     let request: GIFSearchRequest
     
     private let searchTerm: String?
     
-    required init( request: GIFSearchRequest ) {
+    var results: [AnyObject]?
+    
+    required init(request: GIFSearchRequest) {
         self.searchTerm = request.searchTerm
         self.request = request
     }
     
-    convenience init( searchTerm: String? ) {
+    convenience init(searchTerm: String?) {
         let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 20)
-        self.init( request: GIFSearchRequest(searchTerm: searchTerm, paginator: paginator) )
+        self.init(request: GIFSearchRequest(searchTerm: searchTerm, paginator: paginator))
     }
     
-    override func main() {
-        requestExecutor.executeRequest( request, onComplete: self.onComplete, onError: self.onError )
+    override var executionQueue: Queue {
+        return .background
     }
     
-    func onError( error: NSError) {
-        self.results = []
-    }
-    
-    func onComplete( results: GIFSearchRequest.ResultType) {
-        self.results = results.map { GIFSearchResultObject( $0 ) }
+    override func execute(finish: (result: OperationResult<[AnyObject]>) -> Void) {
+        RequestOperation(request: request).queue { [weak self] result in
+            switch result {
+                case .success(let searchResults):
+                    let searchResultObjects = searchResults.map { GIFSearchResultObject( $0 ) }
+                    self?.results = searchResultObjects
+                    finish(result: .success(searchResultObjects))
+                
+                case .failure(let error):
+                    self?.results = []
+                    finish(result: .failure(error))
+                
+                case .cancelled:
+                    self?.results = []
+                    finish(result: .cancelled)
+            }
+        }
     }
 }
