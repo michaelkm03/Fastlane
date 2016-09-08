@@ -214,9 +214,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
                                               animated:YES];
     
-    PasswordValidateResetTokenOperation *operation = [[PasswordValidateResetTokenOperation alloc] initWithUserToken:self.userToken deviceToken:self.deviceToken];
-    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
-    {
+    [self queuePasswordResetOperationWithUserToken:self.userToken deviceToken:self.deviceToken completion: ^(NSError *_Nullable error) {
         if (error == nil)
         {
             [hud hide:YES];

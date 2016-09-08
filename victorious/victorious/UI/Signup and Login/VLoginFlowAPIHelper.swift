@@ -114,4 +114,8 @@ extension VLoginFlowAPIHelper {
         
         return operation
     }
+    
+    func queuePasswordResetOperationWithUserToken(userToken: String, deviceToken: String, completion: (error: NSError?) -> Void) -> NSOperation {
+        return queuePasswordResetOperationWithNewPassword("", userToken: userToken, deviceToken: deviceToken, completion: completion)
+    }
 }
