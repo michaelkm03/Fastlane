@@ -325,7 +325,7 @@
 "ErrorPushNotificationsNotEnabled"      = "Notificações por push não estão habilitadas para o seu dispositivo.\nAtive notificações nas configurações do seu dispositivo para habilitá-las.";
 "ErrorPushNotificationsUnknown"         = "Erro ao carregar configurações de notificação.\nTente novamente mais tarde.";
 "ErrorPushNotificationsNotSaved"        = "Erro ao Salvar Preferências";
-"ErrorPushNotificationsNotSavedMessage" = "Tente novamente mais tarde.";
+"PleaseTryAgainLater" = "Tente novamente mais tarde.";
 
 "We need permission to access your photo library." = "Precisamos de autorização para acessar sua biblioteca de fotos.";
 "We need access to this permission."               = "Precisamos ter acesso a esta autorização.";

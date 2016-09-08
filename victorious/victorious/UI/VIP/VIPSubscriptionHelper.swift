@@ -159,16 +159,13 @@ class VIPSubscriptionHelper {
     }
 }
 
-// MARK: - String Constants
-
-private struct Strings {
-    static let subscriptionFailed       = NSLocalizedString("SubscriptionFailed", comment: "")
-    static let subscriptionFetchFailed  = NSLocalizedString("SubscriptionFetchFailed", comment: "")
-}
-
 private extension UIViewController {
     func showSubscriptionAlert(for error: NSError?) {
-        v_showErrorWithTitle(Strings.subscriptionFailed, message: error?.localizedDescription)
+        v_showErrorWithTitle(
+            NSLocalizedString("SubscriptionFailed", comment: "Subscription failed for the user"),
+            message: NSLocalizedString("PleaseTryAgainLater", comment: "Tells the user to try again later")
+        )
+        Log.warning("Subscription failed with error: \(error)")
     }
 }
 

@@ -143,7 +143,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
         notificationUpdateOperation.queue() { [weak navigationController] results, error, cancelled in
             if let _ = error where navigationController != nil {
                 let title = NSLocalizedString("ErrorPushNotificationsNotSaved", comment: "" )
-                let message = NSLocalizedString("ErrorPushNotificationsNotSavedMessage", comment: "" )
+                let message = NSLocalizedString("PleaseTryAgainLater", comment: "" )
 
                 let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
                 alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .Cancel, handler: nil))

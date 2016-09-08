@@ -325,7 +325,7 @@
 "ErrorPushNotificationsNotEnabled"      = "お使いのデバイスではプッシュ通知が有効になっていません。\nプッシュ通知を有効にするには、デバイス設定から有効にしてください。";
 "ErrorPushNotificationsUnknown"         = "通知設定の読み込み中にエラーが発生しました。\n後ほど改めてお試しください。";
 "ErrorPushNotificationsNotSaved"        = "個人設定の保存エラー";
-"ErrorPushNotificationsNotSavedMessage" = "後ほど改めてお試しください。";
+"PleaseTryAgainLater" = "後ほど改めてお試しください。";
 
 "We need permission to access your photo library." = "あなたの写真ライブラリにアクセスする必要があります。";
 "We need access to this permission."               = "この権限にアクセスする必要があります。";
