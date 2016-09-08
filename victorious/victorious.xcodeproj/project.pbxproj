@@ -769,7 +769,6 @@
 		A72C85FC1C977FF500E97D4F /* AlertCreateOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85561C977FF500E97D4F /* AlertCreateOperation.swift */; };
 		A72C86091C977FF500E97D4F /* DeviceExperimentsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85631C977FF500E97D4F /* DeviceExperimentsOperation.swift */; };
 		A72C860A1C977FF500E97D4F /* DevicePreferencesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85641C977FF500E97D4F /* DevicePreferencesOperation.swift */; };
-		A72C86241C977FF500E97D4F /* PasswordResetOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C857E1C977FF500E97D4F /* PasswordResetOperation.swift */; };
 		A72C86251C977FF500E97D4F /* PasswordValidateResetTokenOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C857F1C977FF500E97D4F /* PasswordValidateResetTokenOperation.swift */; };
 		A72C86441C977FF500E97D4F /* AuthenticationContext+CurrentUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C859F1C977FF500E97D4F /* AuthenticationContext+CurrentUser.swift */; };
 		A72C86451C977FF500E97D4F /* MediaAttachment+PublishParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85A01C977FF500E97D4F /* MediaAttachment+PublishParameters.swift */; };
@@ -2340,7 +2339,6 @@
 		A72C85561C977FF500E97D4F /* AlertCreateOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertCreateOperation.swift; sourceTree = "<group>"; };
 		A72C85631C977FF500E97D4F /* DeviceExperimentsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceExperimentsOperation.swift; sourceTree = "<group>"; };
 		A72C85641C977FF500E97D4F /* DevicePreferencesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DevicePreferencesOperation.swift; sourceTree = "<group>"; };
-		A72C857E1C977FF500E97D4F /* PasswordResetOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordResetOperation.swift; sourceTree = "<group>"; };
 		A72C857F1C977FF500E97D4F /* PasswordValidateResetTokenOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordValidateResetTokenOperation.swift; sourceTree = "<group>"; };
 		A72C859F1C977FF500E97D4F /* AuthenticationContext+CurrentUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AuthenticationContext+CurrentUser.swift"; sourceTree = "<group>"; };
 		A72C85A01C977FF500E97D4F /* MediaAttachment+PublishParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MediaAttachment+PublishParameters.swift"; sourceTree = "<group>"; };
@@ -4813,7 +4811,6 @@
 			children = (
 				A72C85531C977FF500E97D4F /* AccountCreateOperation.swift */,
 				A72C85541C977FF500E97D4F /* AccountUpdateOperation.swift */,
-				A72C857E1C977FF500E97D4F /* PasswordResetOperation.swift */,
 				A72C857F1C977FF500E97D4F /* PasswordValidateResetTokenOperation.swift */,
 			);
 			path = Account;
@@ -8121,7 +8118,6 @@
 				F028F3E71AC0D9E800ABFDDC /* VAppInfo.m in Sources */,
 				F01307FC1CD2A4C100C0156C /* NativeWorkspaceViewController.swift in Sources */,
 				A7F843761BFD5A0B004C3D55 /* NSManagedObject+Entity.swift in Sources */,
-				A72C86241C977FF500E97D4F /* PasswordResetOperation.swift in Sources */,
 				F069E93C1D46993500F91CE6 /* VIPSubscriptionHelper.swift in Sources */,
 				D85B708F1B0ECC6D0038CA5B /* VModernLandingViewController.m in Sources */,
 				A76AEAAD1BFFCB0900E8A26F /* VChangePasswordViewController.swift in Sources */,

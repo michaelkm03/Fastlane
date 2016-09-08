@@ -162,7 +162,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.viewControllerToPresentOn.view
                                               animated:YES];
     
-    [self queuePasswordResetOperationWithEmail:email completion: ^(NSString *_Nullable deviceToken, NSError *_Nullable error) {
+    [self queueRequestPasswordResetOperationWithEmail:email completion: ^(NSString *_Nullable deviceToken, NSError *_Nullable error) {
         if (error == nil)
          {
              self.deviceToken = deviceToken;
@@ -252,11 +252,7 @@ static NSString *kKeyboardStyleKey = @"keyboardStyle";
                                               animated:YES];
     __weak typeof(self) weakSelf = self;
     
-    PasswordResetOperation *operation = [[PasswordResetOperation alloc] initWithNewPassword:password
-                                                                                    userToken:self.userToken
-                                                                                  deviceToken:self.deviceToken];
-    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
-    {
+    [self queuePasswordResetOperationWithNewPassword:password userToken:self.userToken deviceToken:self.deviceToken completion: ^(NSError *_Nullable error) {
         if (error == nil)
         {
             [hud hide:YES];

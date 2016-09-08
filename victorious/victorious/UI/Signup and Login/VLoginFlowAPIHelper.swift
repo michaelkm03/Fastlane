@@ -86,7 +86,7 @@ extension VLoginFlowAPIHelper {
         return operation
     }
     
-    func queuePasswordResetOperationWithEmail(email: String, completion: (deviceToken: String?, error: NSError?) -> Void) -> NSOperation {
+    func queueRequestPasswordResetOperationWithEmail(email: String, completion: (deviceToken: String?, error: NSError?) -> Void) -> NSOperation {
         let operation = RequestOperation(request: RequestPasswordResetRequest(email: email))
         
         operation.queue { result in
@@ -94,6 +94,21 @@ extension VLoginFlowAPIHelper {
                 case .success(let deviceToken): completion(deviceToken: deviceToken, error: nil)
                 case .failure(let error): completion(deviceToken: nil, error: error as NSError)
                 case .cancelled: completion(deviceToken: nil, error: nil)
+            }
+        }
+        
+        return operation
+    }
+    
+    func queuePasswordResetOperationWithNewPassword(password: String, userToken: String, deviceToken: String, completion: (error: NSError?) -> Void) -> NSOperation {
+        let operation = RequestOperation(
+            request: PasswordResetRequest(newPassword: password, userToken: userToken, deviceToken: deviceToken)
+        )
+        
+        operation.queue { result in
+            switch result {
+                case .success, .cancelled: completion(error: nil)
+                case .failure(let error): completion(error: error as NSError)
             }
         }
         
