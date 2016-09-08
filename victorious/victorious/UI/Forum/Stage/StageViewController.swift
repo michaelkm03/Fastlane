@@ -238,11 +238,9 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     
     var overlayUIAlpha: CGFloat {
         get {
-            return captionBarViewController?.view.alpha ?? 0
+            return 0
         }
-        set {
-            captionBarViewController?.view.alpha = newValue
-        }
+        set { }
     }
     
     // MARK: - ForumEventReceiver
