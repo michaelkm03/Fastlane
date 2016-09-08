@@ -9,7 +9,7 @@
 import UIKit
 import VictoriousIOSSDK
 
-class UserBlockToggleOperation: FetcherOperation {
+class UserBlockToggleOperation: SyncOperation<Void> {
     private let user: UserModel
     private let blockAPIPath: APIPath
     private let unblockAPIPath: APIPath
@@ -20,18 +20,31 @@ class UserBlockToggleOperation: FetcherOperation {
         self.unblockAPIPath = unblockAPIPath
     }
     
-    override func main() {
+    override var executionQueue: Queue {
+        return .background
+    }
+    
+    override func execute() -> OperationResult<Void> {
         if user.isBlocked {
-            UserUnblockOperation(
-                user: user,
-                unblockAPIPath: self.unblockAPIPath
-            ).rechainAfter(self).queue()
+            user.unblock()
+            guard let unblockRequest = UserUnblockRequest(userID: user.id, userUnblockAPIPath: unblockAPIPath) else {
+                let error = NSError(domain: "UnblockRequest", code: 1, userInfo: nil)
+                return .failure(error)
+            }
+            let unblockOperation = RequestOperation(request: unblockRequest)
+            unblockOperation.rechainAfter(self).queue()
         }
         else {
-            UserBlockOperation(
-                user: user,
-                blockAPIPath: self.blockAPIPath
-            ).rechainAfter(self).queue()
+            user.block()
+            guard let blockRequest = UserBlockRequest(userID: user.id, userBlockAPIPath: blockAPIPath) else {
+                let error = NSError(domain: "BlockRequest", code: 2, userInfo: nil)
+                return .failure(error)
+            }
+            
+            let blockOperation = RequestOperation(request: blockRequest)
+            blockOperation.rechainAfter(self).queue()
         }
+
+        return .success()
     }
 }

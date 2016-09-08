@@ -572,10 +572,7 @@
 		7A1DECDB1D80E09E003F5C37 /* NSOperationQueue+Queuable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECD81D80E09E003F5C37 /* NSOperationQueue+Queuable.swift */; };
 		7A1DECDC1D80E09E003F5C37 /* Queueable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECD91D80E09E003F5C37 /* Queueable.swift */; };
 		7A1DECDD1D80E09E003F5C37 /* RequestOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECDA1D80E09E003F5C37 /* RequestOperation.swift */; };
-		7A1DECEB1D80E0F2003F5C37 /* UserBlockOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECE01D80E0F2003F5C37 /* UserBlockOperation.swift */; };
 		7A1DECED1D80E0F2003F5C37 /* UserBlockToggleOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECE21D80E0F2003F5C37 /* UserBlockToggleOperation.swift */; };
-		7A1DECEF1D80E0F2003F5C37 /* UserUnblockOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECE41D80E0F2003F5C37 /* UserUnblockOperation.swift */; };
-		7A1DECF01D80E0F2003F5C37 /* UserUnblockRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECE51D80E0F2003F5C37 /* UserUnblockRemoteOperation.swift */; };
 		7A1DECF11D80E0F2003F5C37 /* UserUnupvoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECE61D80E0F2003F5C37 /* UserUnupvoteOperation.swift */; };
 		7A1DECF21D80E0F2003F5C37 /* UserUnupvoteRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECE71D80E0F2003F5C37 /* UserUnupvoteRemoteOperation.swift */; };
 		7A1DECF31D80E0F2003F5C37 /* UserUpvoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECE81D80E0F2003F5C37 /* UserUpvoteOperation.swift */; };
@@ -2074,10 +2071,7 @@
 		7A1DECD81D80E09E003F5C37 /* NSOperationQueue+Queuable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSOperationQueue+Queuable.swift"; sourceTree = "<group>"; };
 		7A1DECD91D80E09E003F5C37 /* Queueable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queueable.swift; sourceTree = "<group>"; };
 		7A1DECDA1D80E09E003F5C37 /* RequestOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestOperation.swift; sourceTree = "<group>"; };
-		7A1DECE01D80E0F2003F5C37 /* UserBlockOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserBlockOperation.swift; sourceTree = "<group>"; };
 		7A1DECE21D80E0F2003F5C37 /* UserBlockToggleOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserBlockToggleOperation.swift; sourceTree = "<group>"; };
-		7A1DECE41D80E0F2003F5C37 /* UserUnblockOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserUnblockOperation.swift; sourceTree = "<group>"; };
-		7A1DECE51D80E0F2003F5C37 /* UserUnblockRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserUnblockRemoteOperation.swift; sourceTree = "<group>"; };
 		7A1DECE61D80E0F2003F5C37 /* UserUnupvoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserUnupvoteOperation.swift; sourceTree = "<group>"; };
 		7A1DECE71D80E0F2003F5C37 /* UserUnupvoteRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserUnupvoteRemoteOperation.swift; sourceTree = "<group>"; };
 		7A1DECE81D80E0F2003F5C37 /* UserUpvoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserUpvoteOperation.swift; sourceTree = "<group>"; };
@@ -4900,10 +4894,7 @@
 		7A1DECDF1D80E0E5003F5C37 /* User */ = {
 			isa = PBXGroup;
 			children = (
-				7A1DECE01D80E0F2003F5C37 /* UserBlockOperation.swift */,
 				7A1DECE21D80E0F2003F5C37 /* UserBlockToggleOperation.swift */,
-				7A1DECE41D80E0F2003F5C37 /* UserUnblockOperation.swift */,
-				7A1DECE51D80E0F2003F5C37 /* UserUnblockRemoteOperation.swift */,
 				7A1DECE61D80E0F2003F5C37 /* UserUnupvoteOperation.swift */,
 				7A1DECE71D80E0F2003F5C37 /* UserUnupvoteRemoteOperation.swift */,
 				7A1DECE81D80E0F2003F5C37 /* UserUpvoteOperation.swift */,
@@ -8182,7 +8173,6 @@
 				67D3E0511CECEE70008F9398 /* ShowTutorialsOperation.swift in Sources */,
 				BF1769C41CE10E0D00211FBA /* VContentMediaAsset+Parsable.swift in Sources */,
 				A721E93C1B572454000B7901 /* NSIndexSet+Convenience.m in Sources */,
-				7A1DECF01D80E0F2003F5C37 /* UserUnblockRemoteOperation.swift in Sources */,
 				0349126E1B7EA5C200EA8A07 /* ExperimentSettings.swift in Sources */,
 				0314D4D919B46B5E00FA363C /* VServerEnvironmentTableViewController.m in Sources */,
 				7A67EC7E1CF9132300D022D1 /* TimePaginatedDataSource.swift in Sources */,
@@ -8484,7 +8474,6 @@
 				A780ED5F1A933D9300A8CD5D /* VPhotoFilterSerialization.m in Sources */,
 				0E8BC7151CEE27870074F41D /* DebugMenuHandler.swift in Sources */,
 				A77723DF1C34823B002351B5 /* SampleMigrationPolicies.swift in Sources */,
-				7A1DECEF1D80E0F2003F5C37 /* UserUnblockOperation.swift in Sources */,
 				A70FC1131A2D61A000F5BBDE /* VProductsRequest.m in Sources */,
 				A7B0E0791BC4423500593B21 /* YouTubeVideoPlayer.swift in Sources */,
 				BF2AE2C21CD280CB00A9967A /* GridStreamViewController.swift in Sources */,
@@ -8656,7 +8645,6 @@
 				A6BB61201B582815002C3B7C /* VAssetCollectionGridDataSource.m in Sources */,
 				A73C3EB41C45890E00A8452C /* MediaSearchNoContentCell.swift in Sources */,
 				A6E2E76E1B545328008A1CA9 /* VVideoAssetDownloader.m in Sources */,
-				7A1DECEB1D80E0F2003F5C37 /* UserBlockOperation.swift in Sources */,
 				7A26E0151CB6D57B006C99DF /* NSDate+timeSince.swift in Sources */,
 				67F2315B1CBD9762006BDBA5 /* ListMenuSectionDataSource.swift in Sources */,
 				A650EFE01B42297A005529E5 /* VAssetCollectionViewCell.m in Sources */,
