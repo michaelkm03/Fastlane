@@ -351,28 +351,29 @@ private final class ShowFetchedCloseUpOperation: AsyncOperation<Void> {
         // Queue operations. We queue the operations after setting up dependency graph for NSOperationQueue performance reasons.
         showCloseUpOperation.queue()
         
-        contentFetchOperation.queue() { results, _, _ in
+        contentFetchOperation.queue { result in
             guard let shownCloseUpView = showCloseUpOperation.displayedCloseUpView else {
                 return
             }
             
-            guard let content = results?.first as? ContentModel else {
-                // Display error message.
-                shownCloseUpView.updateError()
-                return
-            }
-            
-            // Check for permissions before we continue to show the content
-            let router = Router(originViewController: shownCloseUpView, dependencyManager: displayModifier.dependencyManager)
-            router.checkForPermissionBeforeRouting(contentIsForVIPOnly: content.isVIPOnly) { success in
-                if success {
-                    shownCloseUpView.updateContent(content)
-                }
-                else {
-                    shownCloseUpView.navigationController?.popViewControllerAnimated(true)
-                }
+            switch result {
+                case .success(let content):
+                    // Check for permissions before we continue to show the content
+                    let router = Router(originViewController: shownCloseUpView, dependencyManager: displayModifier.dependencyManager)
+                    router.checkForPermissionBeforeRouting(contentIsForVIPOnly: content.isVIPOnly) { success in
+                        if success {
+                            shownCloseUpView.updateContent(content)
+                        }
+                        else {
+                            shownCloseUpView.navigationController?.popViewControllerAnimated(true)
+                        }
+                    }
+                
+                case .failure(_), .cancelled:
+                    shownCloseUpView.updateError()
             }
         }
+        
         finish(result: .success())
     }
 }

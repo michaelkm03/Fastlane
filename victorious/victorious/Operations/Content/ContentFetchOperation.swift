@@ -8,43 +8,36 @@
 
 import UIKit
 
-class ContentFetchOperation: RemoteFetcherOperation {
+final class ContentFetchOperation: AsyncOperation<Content> {
     
-    internal let request: ContentFetchRequest!
+    // MARK: - Initializing
     
-    required init(request: ContentFetchRequest) {
-        self.request = request
+    init(macroURLString: String, currentUserID: String, contentID: String) {
+        self.request = ContentFetchRequest(macroURLString: macroURLString, currentUserID: currentUserID, contentID: contentID)
+        super.init()
     }
     
-    convenience init(macroURLString: String,
-                      currentUserID: String,
-                      contentID: String) {
-        
-        let request = ContentFetchRequest(macroURLString: macroURLString,
-                                          currentUserID: currentUserID,
-                                          contentID: contentID)
-        self.init(request: request)
+    // MARK: - Executing
+    
+    private let request: ContentFetchRequest
+    
+    override var executionQueue: Queue {
+        return .main
     }
     
-    override func main() {
-        requestExecutor.executeRequest(request, onComplete: onComplete, onError: nil)
-    }
-    
-    func onComplete(result: ContentFetchRequest.ResultType) {
-        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            guard let id = result.id where !Content.contentIsHidden(withID: id) else {
-                self.results = []
-                return
-            }
-            
-            let content: VContent = context.v_findOrCreateObject(["v_remoteID": id])
-
-            content.populate(fromSourceModel: result)
-            context.v_save()
-            let contentID = content.objectID
-
-            self.persistentStore.mainContext.v_performBlockAndWait() { context in
-                self.results = [ context.objectWithID(contentID) ]
+    override func execute(finish: (result: OperationResult<Content>) -> Void) {
+        RequestOperation(request: request).queue { result in
+            switch result {
+                case .success(let content):
+                    if let id = content.id where Content.contentIsHidden(withID: id) {
+                        finish(result: .failure(NSError(domain: "ContentFetchOperation", code: -1, userInfo: nil)))
+                    }
+                    else {
+                        finish(result: result)
+                    }
+                
+                case .failure(_), .cancelled:
+                    finish(result: result)
             }
         }
     }
