@@ -20,11 +20,10 @@ extension InterstitialManager {
                             "description": "Thanks for creating your first text post!",
                             "icons": ["http://i.imgur.com/ietHgk6.png"]]]
             
-            if let addtionalParameters = params["params"] as? [String : AnyObject],
-                let type = params["type"] as? String {
-                    AlertCreateOperation(type: type, addtionalParameters: addtionalParameters).queue() { results, error, cancelled in
-                        self.disabled = false
-                    }
+            if let additionalParameters = params["params"] as? [String : AnyObject], let type = params["type"] as? String {
+                RequestOperation(request: CreateAlertRequest(type: type, additionalParameters: additionalParameters)).queue { _ in
+                    self.disabled = false
+                }
             }
             
         #endif
@@ -40,9 +39,9 @@ extension InterstitialManager {
                             "description": "You status has been upgraded to gold",
                             "icons": ["http://i.imgur.com/ietHgk6.png"]]]
             
-            if let addtionalParameters = params["params"] as? [String : AnyObject],
+            if let additionalParameters = params["params"] as? [String : AnyObject],
                 let type = params["type"] as? String {
-                AlertCreateOperation(type: type, addtionalParameters: addtionalParameters).queue() { results, error, cancelled in
+                RequestOperation(request: CreateAlertRequest(type: type, additionalParameters: additionalParameters)).queue { _ in
                     self.disabled = false
                 }
             }
@@ -59,9 +58,9 @@ extension InterstitialManager {
 //                            "description" : "You have earned a new photographer badge",
 //                            "icons" : ["http://i.imgur.com/ietHgk6.png"]
                 ]]
-            if let addtionalParameters = params["params"] as? [String : AnyObject],
+            if let additionalParameters = params["params"] as? [String : AnyObject],
                 let type = params["type"] as? String {
-                AlertCreateOperation(type: type, addtionalParameters: addtionalParameters).queue() { results, error, cancelled in
+                RequestOperation(request: CreateAlertRequest(type: type, additionalParameters: additionalParameters)).queue { _ in
                     self.disabled = false
                 }
             }

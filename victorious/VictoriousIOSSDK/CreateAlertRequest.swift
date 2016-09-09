@@ -17,8 +17,8 @@ public struct CreateAlertRequest: RequestType {
         let urlRequest = NSMutableURLRequest(URL: NSURL(string: "/api/alert/create")!)
         
         var requestParameters: [String : AnyObject] = [ "type" : type ]
-        if let addtionalParameters = self.addtionalParameters {
-            let jsonData = try! NSJSONSerialization.dataWithJSONObject(addtionalParameters, options: [])
+        if let additionalParameters = self.addtionalParameters {
+            let jsonData = try! NSJSONSerialization.dataWithJSONObject(additionalParameters, options: [])
             let paramsString = String(data: jsonData, encoding: NSUTF8StringEncoding)
             requestParameters[ "params" ] = paramsString
         }
@@ -26,8 +26,8 @@ public struct CreateAlertRequest: RequestType {
         return urlRequest
     }
     
-    public init(type: String, addtionalParameters: [String: AnyObject]? = nil) {
+    public init(type: String, additionalParameters: [String: AnyObject]? = nil) {
         self.type = type
-        self.addtionalParameters = addtionalParameters
+        self.addtionalParameters = additionalParameters
     }
 }

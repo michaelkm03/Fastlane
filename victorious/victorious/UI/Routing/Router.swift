@@ -403,17 +403,17 @@ private final class ShowWebContentOperation: AsyncOperation<Void> {
         // since there would be no way to dimiss the view controller otherwise
         let viewController = WebContentViewController(shouldShowNavigationButtons: configuration.forceModal)
         
-        let fetchOperation = WebViewHTMLFetchOperation(urlPath: urlToFetchFrom)
-        fetchOperation.after(self).queue { [weak fetchOperation] results, error, cancelled in
-            guard
-                let htmlString = fetchOperation?.resultHTMLString where error == nil,
-                let baseURL = fetchOperation?.publicBaseURL
-            else {
-                viewController.setFailure(with: error)
-                return
+        let request = WebViewHTMLFetchRequest(urlPath: urlToFetchFrom)
+        let operation = RequestOperation(request: request)
+        
+        operation.after(self).queue { result in
+            switch result {
+                case .success(let htmlString):
+                    viewController.load(htmlString, baseURL: request.publicBaseURL ?? NSURL())
+                
+                case .failure(_), .cancelled:
+                    viewController.setFailure(with: result.error as? NSError)
             }
-            
-            viewController.load(htmlString, baseURL: baseURL)
         }
         
         viewController.automaticallyAdjustsScrollViewInsets = false
