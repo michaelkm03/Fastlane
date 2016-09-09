@@ -34,7 +34,7 @@ class NotificationCell: UITableViewCell, VBackgroundContainer {
     
     // MARK: - Content
     
-    func updateContent(with notification: VNotification, dependencyManager: VDependencyManager) {
+    func updateContent(with notification: Notification, dependencyManager: VDependencyManager) {
         avatarView.user = notification.user
         dateLabel.text = notification.createdAt.stringDescribingTimeIntervalSinceNow(format: .verbose, precision: .minutes) ?? ""
         dateLabel.font = dependencyManager.dateFont

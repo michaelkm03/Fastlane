@@ -107,9 +107,9 @@ final class BadgeCountManager {
         // Optimistically reset to zero.
         unreadNotificationCount = 0
         
-        NotificationsMarkAllAsReadOperation().queue { [weak self] results, error, cancelled in
+        RequestOperation(request: MarkAllNotificationsAsReadRequest()).queue { [weak self] result in
             // Reset back to the old count if the request failed.
-            if error != nil {
+            if result.error != nil {
                 self?.unreadNotificationCount = previousCount
             }
         }

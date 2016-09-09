@@ -561,9 +561,7 @@
 		7A1DECCB1D80E075003F5C37 /* LogoutOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECC61D80E075003F5C37 /* LogoutOperation.swift */; };
 		7A1DECCC1D80E075003F5C37 /* ShowLoginOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECC71D80E075003F5C37 /* ShowLoginOperation.swift */; };
 		7A1DECCD1D80E075003F5C37 /* StoredLoginOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECC81D80E075003F5C37 /* StoredLoginOperation.swift */; };
-		7A1DECD31D80E08B003F5C37 /* NotificationsMarkAllAsReadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECCF1D80E08B003F5C37 /* NotificationsMarkAllAsReadOperation.swift */; };
 		7A1DECD41D80E08B003F5C37 /* NotificationsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECD01D80E08B003F5C37 /* NotificationsOperation.swift */; };
-		7A1DECD51D80E08B003F5C37 /* NotificationsRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECD11D80E08B003F5C37 /* NotificationsRemoteOperation.swift */; };
 		7A1DECD61D80E08B003F5C37 /* NotificationsUnreadCountOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECD21D80E08B003F5C37 /* NotificationsUnreadCountOperation.swift */; };
 		7A1DECDB1D80E09E003F5C37 /* NSOperationQueue+Queuable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECD81D80E09E003F5C37 /* NSOperationQueue+Queuable.swift */; };
 		7A1DECDC1D80E09E003F5C37 /* Queueable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECD91D80E09E003F5C37 /* Queueable.swift */; };
@@ -2044,9 +2042,7 @@
 		7A1DECC61D80E075003F5C37 /* LogoutOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogoutOperation.swift; sourceTree = "<group>"; };
 		7A1DECC71D80E075003F5C37 /* ShowLoginOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowLoginOperation.swift; sourceTree = "<group>"; };
 		7A1DECC81D80E075003F5C37 /* StoredLoginOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoredLoginOperation.swift; sourceTree = "<group>"; };
-		7A1DECCF1D80E08B003F5C37 /* NotificationsMarkAllAsReadOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsMarkAllAsReadOperation.swift; sourceTree = "<group>"; };
 		7A1DECD01D80E08B003F5C37 /* NotificationsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsOperation.swift; sourceTree = "<group>"; };
-		7A1DECD11D80E08B003F5C37 /* NotificationsRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsRemoteOperation.swift; sourceTree = "<group>"; };
 		7A1DECD21D80E08B003F5C37 /* NotificationsUnreadCountOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsUnreadCountOperation.swift; sourceTree = "<group>"; };
 		7A1DECD81D80E09E003F5C37 /* NSOperationQueue+Queuable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSOperationQueue+Queuable.swift"; sourceTree = "<group>"; };
 		7A1DECD91D80E09E003F5C37 /* Queueable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queueable.swift; sourceTree = "<group>"; };
@@ -4836,9 +4832,7 @@
 		7A1DECCE1D80E080003F5C37 /* Notifications */ = {
 			isa = PBXGroup;
 			children = (
-				7A1DECCF1D80E08B003F5C37 /* NotificationsMarkAllAsReadOperation.swift */,
 				7A1DECD01D80E08B003F5C37 /* NotificationsOperation.swift */,
-				7A1DECD11D80E08B003F5C37 /* NotificationsRemoteOperation.swift */,
 				7A1DECD21D80E08B003F5C37 /* NotificationsUnreadCountOperation.swift */,
 			);
 			path = Notifications;
@@ -8040,7 +8034,6 @@
 				A7F843751BFD5A0B004C3D55 /* PersistentStoreType.swift in Sources */,
 				7AE0A03B1D624E2B00769080 /* SubscribeButton.swift in Sources */,
 				A6DAEB6E1B4CBDCB00935EA0 /* VCaptureContainerViewController.m in Sources */,
-				7A1DECD31D80E08B003F5C37 /* NotificationsMarkAllAsReadOperation.swift in Sources */,
 				7ACB6B0F1D67DDE5008084EF /* SideNavProfileButton.swift in Sources */,
 				A601FB531B4363240050536C /* VCreationFlowPresenter.m in Sources */,
 				A728AC1F1BBDD4F800386641 /* VAudioManager.swift in Sources */,
@@ -8212,7 +8205,6 @@
 				67376B281D666ADC002DE72E /* LoadingViewController.swift in Sources */,
 				A721E9551B572454000B7901 /* UIImageView+Blurring.m in Sources */,
 				D85B709B1B0EF0520038CA5B /* VModernRegisterViewController.m in Sources */,
-				7A1DECD51D80E08B003F5C37 /* NotificationsRemoteOperation.swift in Sources */,
 				A70FC10A1A2D558200F5BBDE /* VPurchase.m in Sources */,
 				A7C565E81C4438AF00E4DF6A /* NotificationsDataSource.swift in Sources */,
 				A78F17731B67F3AE009F6B8F /* ExperimentSettingsDataSource.swift in Sources */,
