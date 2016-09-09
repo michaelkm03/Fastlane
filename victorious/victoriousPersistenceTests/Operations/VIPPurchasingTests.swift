@@ -11,15 +11,10 @@ import XCTest
 
 class VIPPurchasingTests: BasePersistentStoreTestCase {
     
-    var currentUser: VUser!
-    var objectUser: VUser!
-    
     override func setUp() {
         super.setUp()
-        objectUser = persistentStoreHelper.createUser(remoteId: 1)
-        currentUser = persistentStoreHelper.createUser(remoteId: 2)
-        currentUser.setAsCurrentUser()
-        testStore.mainContext.v_save()
+        let user = User(id: 12345)
+        VCurrentUser.update(to: user)
     }
     
     func testSubscribeSuccess() {
@@ -29,7 +24,7 @@ class VIPPurchasingTests: BasePersistentStoreTestCase {
         let expectation = expectationWithDescription("VIPSubscribeOperation")
         operation.queue() { op in
             XCTAssertNil(operation.error)
-            XCTAssert(self.currentUser.isVIPSubscriber.boolValue)
+            XCTAssertTrue(VCurrentUser.isVIPSubscriber?.boolValue)
             expectation.fulfill()
         }
         waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
@@ -43,7 +38,7 @@ class VIPPurchasingTests: BasePersistentStoreTestCase {
         let expectation = expectationWithDescription("VIPSubscribeOperation")
         operation.queue() { op in
             XCTAssertEqual(operation.error, expectedError)
-            guard let isVIPSubscriber = self.currentUser.isVIPSubscriber else {
+            guard let isVIPSubscriber = VCurrentUser.isVIPSubscriber?.boolValue else {
                 XCTFail()
                 return
             }
@@ -60,7 +55,7 @@ class VIPPurchasingTests: BasePersistentStoreTestCase {
         let expectation = expectationWithDescription("RestorePurchasesOperation")
         operation.queue() { op in
             XCTAssertNil(operation.error)
-            XCTAssert(self.currentUser.isVIPSubscriber.boolValue)
+            XCTAssert(VCurrentUser.isVIPSubscriber.boolValue)
             expectation.fulfill()
         }
         waitForExpectationsWithTimeout(expectationThreshold, handler: nil)

@@ -86,7 +86,7 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
     }
     
     private func receiveDisconnectEventWithError(error: WebSocketError?) {
-        guard let _ = error where currentReconnectTimeout > 0 && VCurrentUser.isLoggedIn() else {
+        guard let _ = error where currentReconnectTimeout > 0 && VCurrentUser.user != nil else {
             return
         }
 
@@ -150,13 +150,12 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
     }
     
     private func refreshToken() {
-        guard let currentUserID = VCurrentUser.user()?.remoteId
-        where VCurrentUser.isLoggedIn() else {
+        guard let currentUserID = VCurrentUser.user?.id else {
             assertionFailure("No current user is logged in, how did they even get this far?")
             return
         }
 
-        if let operation = CreateChatServiceTokenOperation(expandableURLString: dependencyManager.expandableTokenURL, currentUserID: currentUserID.integerValue) {
+        if let operation = CreateChatServiceTokenOperation(expandableURLString: dependencyManager.expandableTokenURL, currentUserID: currentUserID) {
             operation.queue() { [weak self] results, error, canceled in
                 guard let strongSelf = self,
                     let token = results?.first as? String where !token.characters.isEmpty else {

@@ -122,7 +122,7 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
             let profileButton = SideNavProfileButton(type: .System)
             self.profileButton = profileButton
             profileButton.addTarget(self, action: #selector(profileButtonWasPressed), forControlEvents: .TouchUpInside)
-            profileButton.user = VCurrentUser.user()
+            profileButton.user = VCurrentUser.user
             profileButton.sizeToFit()
             
             centerWrapperViewController.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: profileButton)
@@ -191,7 +191,7 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
     
     private dynamic func loggedInStatusDidChange(notification: NSNotification) {
         handleLoggedInStatusChange()
-        profileButton?.user = VCurrentUser.user()
+        profileButton?.user = VCurrentUser.user
     }
     
     private dynamic func mainFeedFilterDidChange(notification: NSNotification) {

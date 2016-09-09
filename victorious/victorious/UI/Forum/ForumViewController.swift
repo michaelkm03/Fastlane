@@ -38,7 +38,6 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     #endif
 
     private var navBarTitleView : ForumNavBarTitleView?
-    private var isDisplayingCoachmark = false
     
     // MARK: - Initialization
     
@@ -234,9 +233,6 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         )
         stageShrinkingAnimator?.shouldHideKeyboardHandler = { [weak self] in
             self?.view.endEditing(true)
-        }
-        stageShrinkingAnimator?.interpolateAlongside = {[weak self] percentage in
-            self?.stage?.overlayUIAlpha = 1 - percentage
         }
         
         chatFeed?.nextSender = self

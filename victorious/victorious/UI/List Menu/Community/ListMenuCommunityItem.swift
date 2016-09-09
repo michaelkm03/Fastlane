@@ -12,17 +12,20 @@ struct ListMenuCommunityItem {
     let title: String
     let name: String
     let streamAPIPath: APIPath
+    let trackingURLs: [String]
     
-    init?(_ dependencyDictionary: [String: AnyObject]) {
+    init?(_ dependencyManager: VDependencyManager) {
         guard
-            let title = dependencyDictionary["title"] as? String,
-            let name = dependencyDictionary["name"] as? String,
-            let streamURL = dependencyDictionary["streamURL"] as? String
+            let title = dependencyManager.stringForKey("title"),
+            let name = dependencyManager.stringForKey("name"),
+            let streamAPIPath = dependencyManager.apiPathForKey("streamURL"),
+            let trackingURLs = dependencyManager.trackingURLsForKey("view") as? [String]
         else {
-                return nil
+            return nil
         }
         self.title = title
         self.name = name
-        self.streamAPIPath = APIPath(templatePath: streamURL)
+        self.streamAPIPath = streamAPIPath
+        self.trackingURLs = trackingURLs
     }
 }

@@ -71,7 +71,7 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
         switch alert.type {
             case .toast, .reconnectingError:
                 addInterstitial(interstitialViewController, toParent: presentingViewController)
-            case .achievement, .levelUp, .statusUpdate, .clientSideCreated:
+            case .achievement, .statusUpdate, .clientSideCreated:
                 interstitialViewController.transitioningDelegate = self
                 interstitialViewController.modalPresentationStyle = interstitial.preferredModalPresentationStyle()
                 presentingViewController.presentViewController(interstitialViewController, animated: true, completion: nil)
@@ -82,7 +82,7 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
 
     private func acknowledgeAlert(alert: Alert) {
         switch alert.type {
-            case .achievement, .levelUp, .statusUpdate, .toast:
+            case .achievement, .statusUpdate, .toast:
                 AlertAcknowledgeOperation(alertID: alert.alertID).queue()
             case .clientSideCreated, .reconnectingError:
                 break

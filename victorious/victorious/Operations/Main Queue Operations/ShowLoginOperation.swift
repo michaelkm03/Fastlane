@@ -30,7 +30,7 @@ final class ShowLoginOperation: AsyncOperation<Void> {
     override func execute(finish: (result: OperationResult<Void>) -> Void) {
         
         // Don't show login if the user is already logged in
-        guard VCurrentUser.user() == nil else {
+        guard VCurrentUser.user == nil else {
             finish(result: .success())
             return
         }

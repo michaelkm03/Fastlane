@@ -16,14 +16,40 @@ public protocol UserModel: PreviewImageContainer {
     var location: String? { get }
     var tagline: String? { get }
     var fanLoyalty: FanLoyalty? { get }
-    var isBlockedByCurrentUser: Bool? { get }
+    var isRemotelyBlockedByCurrentUser: Bool? { get }
     var accessLevel: User.AccessLevel { get }
-    var isFollowedByCurrentUser: Bool? { get }
+    var isRemotelyFollowedByCurrentUser: Bool? { get }
     var likesGiven: Int? { get }
     var likesReceived: Int? { get }
     var previewImages: [ImageAssetModel] { get }
     var avatarBadgeType: AvatarBadgeType? { get }
     var vipStatus: VIPStatus? { get }
+}
+
+public func ==(lhs: UserModel?, rhs: UserModel?) -> Bool {
+    switch (lhs, rhs) {
+        case (.None, .None):
+            return true
+        case (.Some(_), .None):
+            return false
+        case (.None, .Some(_)):
+            return false
+        case (.Some(let lhs), .Some(let rhs)):
+            return lhs.id == rhs.id
+                && lhs.displayName == rhs.displayName
+                && lhs.location == rhs.location
+                && lhs.tagline == rhs.tagline
+                && lhs.likesGiven == rhs.likesGiven
+                && lhs.likesReceived == rhs.likesReceived
+                && lhs.fanLoyalty?.tier == rhs.fanLoyalty?.tier
+                && lhs.accessLevel == rhs.accessLevel
+                && lhs.vipStatus?.isVIP == rhs.vipStatus?.isVIP
+                && lhs.avatarBadgeType == rhs.avatarBadgeType
+    }
+}
+
+public func !=(lhs: UserModel?, rhs: UserModel?) -> Bool {
+    return !(lhs == rhs)
 }
 
 /// A struct representing a user's information
@@ -33,7 +59,7 @@ public struct User: UserModel {
         
         public init(json: JSON) {
             switch json.stringValue.lowercaseString {
-                case "api_owner": self = .owner
+                case "api_owner": self = .owner	
                 case "api_user": self = .user
                 default: self = .user
             }
@@ -49,25 +75,25 @@ public struct User: UserModel {
     
     public typealias ID = Int
     
-    public let id: ID
-    public let username: String?
-    public let displayName: String?
-    public let completedProfile: Bool?
-    public let location: String?
-    public let tagline: String?
-    public let fanLoyalty: FanLoyalty?
-    public let isBlockedByCurrentUser: Bool?
-    public let accessLevel: AccessLevel
-    public let isDirectMessagingDisabled: Bool?
-    public let isFollowedByCurrentUser: Bool?
-    public let numberOfFollowers: Int?
-    public let numberOfFollowing: Int?
-    public let likesGiven: Int?
-    public let likesReceived: Int?
-    public let previewImages: [ImageAssetModel]
-    public let maxVideoUploadDuration: Int?
-    public let avatarBadgeType: AvatarBadgeType?
-    public let vipStatus: VIPStatus?
+    public var id: ID
+    public var username: String?
+    public var displayName: String?
+    public var completedProfile: Bool?
+    public var location: String?
+    public var tagline: String?
+    public var fanLoyalty: FanLoyalty?
+    public var isRemotelyBlockedByCurrentUser: Bool?
+    public var accessLevel: AccessLevel
+    public var isDirectMessagingDisabled: Bool?
+    public var isRemotelyFollowedByCurrentUser: Bool?
+    public var numberOfFollowers: Int?
+    public var numberOfFollowing: Int?
+    public var likesGiven: Int?
+    public var likesReceived: Int?
+    public var previewImages: [ImageAssetModel]
+    public var maxVideoUploadDuration: Int?
+    public var avatarBadgeType: AvatarBadgeType?
+    public var vipStatus: VIPStatus?
     
     // NOTE: If you add a parameter here, be sure to add it in any calls to this initializer that need to be
     // comprehensive.
@@ -79,10 +105,10 @@ public struct User: UserModel {
         location: String? = nil,
         tagline: String? = nil,
         fanLoyalty: FanLoyalty? = nil,
-        isBlockedByCurrentUser: Bool? = nil,
+        isRemotelyBlockedByCurrentUser: Bool? = nil,
         accessLevel: AccessLevel = .user,
         isDirectMessagingDisabled: Bool? = nil,
-        isFollowedByCurrentUser: Bool? = nil,
+        isRemotelyFollowedByCurrentUser: Bool? = nil,
         numberOfFollowers: Int? = nil,
         numberOfFollowing: Int? = nil,
         likesGiven: Int? = nil,
@@ -99,10 +125,10 @@ public struct User: UserModel {
         self.location = location
         self.tagline = tagline
         self.fanLoyalty = fanLoyalty
-        self.isBlockedByCurrentUser = isBlockedByCurrentUser
+        self.isRemotelyBlockedByCurrentUser = isRemotelyBlockedByCurrentUser
         self.accessLevel = accessLevel
         self.isDirectMessagingDisabled = isDirectMessagingDisabled
-        self.isFollowedByCurrentUser = isFollowedByCurrentUser
+        self.isRemotelyFollowedByCurrentUser = isRemotelyFollowedByCurrentUser
         self.numberOfFollowers = numberOfFollowers
         self.numberOfFollowing = numberOfFollowing
         self.likesGiven = likesGiven
@@ -129,11 +155,11 @@ extension User {
         location                  = json["profile_location"].string
         tagline                   = json["profile_tagline"].string
         fanLoyalty                = FanLoyalty(json: json["fanloyalty"])
-        isBlockedByCurrentUser    = json["is_blocked"].bool
+        isRemotelyBlockedByCurrentUser    = json["is_blocked"].bool
         vipStatus                 = VIPStatus(json: json["vip"])
         accessLevel               = AccessLevel(json: json["access_level"])
         isDirectMessagingDisabled = json["is_direct_message_disabled"].bool
-        isFollowedByCurrentUser   = json["am_following"].bool
+        isRemotelyFollowedByCurrentUser   = json["am_following"].bool
         numberOfFollowers         = Int(json["number_of_followers"].stringValue)
         numberOfFollowing         = Int(json["number_of_following"].stringValue)
         likesGiven                = json["engagements"]["likes_given"].int
@@ -142,5 +168,51 @@ extension User {
         
         let previewImages = json["preview"]["assets"].array ?? json["preview"]["media"]["assets"].arrayValue
         self.previewImages = previewImages.flatMap { ImageAsset(json: $0) }
+    }
+}
+
+// MARK: - Upvote User
+
+private var upvotedUserIDs = Set<User.ID>()
+
+extension UserModel {
+    public func upvote() {
+        upvotedUserIDs.insert(id)
+    }
+    
+    public func unUpvote() {
+        upvotedUserIDs.remove(id)
+    }
+    
+    public var isUpvoted: Bool {
+        if upvotedUserIDs.contains(id) {
+            return true
+        }
+        else {
+            return isRemotelyFollowedByCurrentUser ?? false
+        }
+    }
+}
+
+// MARK: - Block User
+
+private var blockedUserIDs = Set<User.ID>()
+
+extension UserModel {
+    public func block() {
+        blockedUserIDs.insert(id)
+    }
+    
+    public func unblock() {
+        blockedUserIDs.remove(id)
+    }
+    
+    public var isBlocked: Bool {
+        if blockedUserIDs.contains(id) {
+            return true
+        }
+        else {
+            return isRemotelyBlockedByCurrentUser ?? false
+        }
     }
 }

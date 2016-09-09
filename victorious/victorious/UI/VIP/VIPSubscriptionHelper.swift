@@ -17,8 +17,6 @@ class VIPSubscriptionHelper {
     
     // MARK: - Constants
     
-    static let userVIPStatusChangedNotificationKey = "victorious.VIPSubscriptionHelper.userVIPStatusChangedNotificationKey"
-    
     // MARK: - Initializing
     
     init(subscriptionFetchURL: String, delegate: VIPSubscriptionHelperDelegate, originViewController: UIViewController, dependencyManager: VDependencyManager) {
@@ -127,14 +125,14 @@ class VIPSubscriptionHelper {
                     self?.delegate?.setIsLoading(true, title: nil)
                     self?.subscribeToProduct(selectedProduct)
                 case .failure(let error):
-                    if willShowPrompt {
-                        selectionDependency?.trackButtonEvent(.cancel)
-                    }
                     strongSelf.delegate?.setIsLoading(false, title: nil)
                     originViewController.showSubscriptionAlert(for: error as NSError)
                     self?.delegate?.setIsLoading(false, title: nil)
                     originViewController.showSubscriptionAlert(for: error as NSError)
                 case .cancelled:
+                    if willShowPrompt {
+                        selectionDependency?.trackButtonEvent(.cancel)
+                    }
                     self?.delegate?.setIsLoading(false, title: nil)
             }
         }
@@ -161,16 +159,13 @@ class VIPSubscriptionHelper {
     }
 }
 
-// MARK: - String Constants
-
-private struct Strings {
-    static let subscriptionFailed       = NSLocalizedString("SubscriptionFailed", comment: "")
-    static let subscriptionFetchFailed  = NSLocalizedString("SubscriptionFetchFailed", comment: "")
-}
-
 private extension UIViewController {
     func showSubscriptionAlert(for error: NSError?) {
-        v_showErrorWithTitle(Strings.subscriptionFailed, message: error?.localizedDescription)
+        v_showErrorWithTitle(
+            NSLocalizedString("SubscriptionFailed", comment: "Subscription failed for the user"),
+            message: NSLocalizedString("PleaseTryAgainLater", comment: "Tells the user to try again later")
+        )
+        Log.warning("Subscription failed with error: \(error)")
     }
 }
 

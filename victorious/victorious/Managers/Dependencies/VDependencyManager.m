@@ -849,7 +849,7 @@ NSString * const VDependencyManagerNativeWorkspaceKey = @"nativeWorkspace";
 
 - (NSDictionary *)componentByAddingIDToComponent:(NSDictionary *)component
 {
-    if ( ![self componentHasID:component] )
+    if ( ![self componentHasValidID:component] )
     {
         NSMutableDictionary *preparedComponent = [component mutableCopy];
         preparedComponent[VDependencyManagerIDKey] = [[NSUUID UUID] UUIDString];
@@ -899,9 +899,9 @@ NSString * const VDependencyManagerNativeWorkspaceKey = @"nativeWorkspace";
     return possibleComponent[kClassNameKey] != nil;
 }
 
-- (BOOL)componentHasID:(NSDictionary *)component
+- (BOOL)componentHasValidID:(NSDictionary *)component
 {
-    return component[VDependencyManagerIDKey] != nil;
+    return [component[VDependencyManagerIDKey] isKindOfClass:[NSString class]];
 }
 
 - (VDependencyManager *)childDependencyManagerWithAddedConfiguration:(NSDictionary *)configuration

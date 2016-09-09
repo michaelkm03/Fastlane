@@ -7,19 +7,10 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 /// A view controller that displays the contents of a user's profile.
 class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderDelegate, AccessoryScreenContainer, CoachmarkDisplayer, VBackgroundContainer {
-    /// Private struct within NewProfileViewController for comparison. Since we use Core Data, 
-    /// the user is modified beneath us and every time we call setUser(...), the fields will be the same as oldValue
-    private struct UserDetails {
-        let id: Int
-        let displayName: String?
-        let likesGiven: Int?
-        let likesReceived: Int?
-        let level: String?
-        let isCreator: Bool
-    }
     
     // MARK: - Constants
     
@@ -76,6 +67,8 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         view.backgroundColor = dependencyManager.colorForKey(VDependencyManagerBackgroundColorKey)
         
         fetchUser(using: dependencyManager)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(currentUserDidUpdate), name: VCurrentUser.userDidUpdateNotificationKey, object: nil)
     }
     
     required init?(coder: NSCoder) {
@@ -90,7 +83,6 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userChanged), name: kLoggedInChangedNotification, object: nil)
         dependencyManager.addBackgroundToBackgroundHost(self)
     }
     
@@ -113,13 +105,6 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     
     var user: UserModel? {
         return gridStreamController?.content
-    }
-    
-    private var comparableUser: UserDetails? {
-        didSet {
-            // Call a reload of the header every time the user's details change
-            gridStreamController?.reloadHeader()
-        }
     }
     
     // MARK: - View controllers
@@ -167,9 +152,13 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     private func updateBarButtonItems() {
         supplementalRightButtons = []
         
-        let isCurrentUser = user?.isCurrentUser == true
-        let isCreator = user?.accessLevel.isCreator == true
-        let currentIsCreator = VCurrentUser.user()?.isCreator == true
+        guard let user = user else {
+            return
+        }
+        
+        let isCurrentUser = user.isCurrentUser
+        let isCreator = user.accessLevel.isCreator
+        let currentIsCreator = VCurrentUser.user?.accessLevel.isCreator == true
         let vipEnabled = dependencyManager.isVIPEnabled == true
         
         if !isCurrentUser {
@@ -178,7 +167,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
             }
             
             if !isCreator {
-                if user?.isFollowedByCurrentUser == true {
+                if user.isUpvoted {
                     upvoteButton.setImage(dependencyManager.upvoteIconSelected, forState: .Normal)
                     upvoteButton.backgroundColor = dependencyManager.upvoteIconSelectedBackgroundColor
                     upvoteButton.tintColor = dependencyManager.upvoteIconTint
@@ -225,7 +214,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         }
         
         UserUpvoteToggleOperation(
-            userID: user.id,
+            user: user,
             upvoteAPIPath: dependencyManager.userUpvoteAPIPath,
             unupvoteAPIPath: dependencyManager.userUnupvoteAPIPath
         ).queue { [weak self] _ in
@@ -234,20 +223,17 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     }
     
     private dynamic func overflow() {
-        guard
-            let isBlocked = user?.isBlockedByCurrentUser,
-            let userID = user?.id
-        else {
+        guard let user = user else {
             return
         }
         
         let toggleBlockedOperation = UserBlockToggleOperation(
-            userID: userID,
+            user: user,
             blockAPIPath: dependencyManager.userBlockAPIPath,
             unblockAPIPath: dependencyManager.userUnblockAPIPath
         )
         
-        let actionTitle = isBlocked
+        let actionTitle = user.isBlocked
             ? NSLocalizedString("UnblockUser", comment: "")
             : NSLocalizedString("BlockUser", comment: "")
         let confirm = ConfirmDestructiveActionOperation(
@@ -309,44 +295,29 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     
     // MARK: - Managing the user
     
-    private dynamic func userChanged() {
-        if let loggedInUser = VCurrentUser.user() {
-            setUser(loggedInUser, using: dependencyManager)
-        }
+    private dynamic func currentUserDidUpdate() {
+        setUser(VCurrentUser.user, using: dependencyManager)
     }
     
     private func fetchUser(using dependencyManager: VDependencyManager) {
-        if let user = dependencyManager.templateValueOfType(VUser.self, forKey: VDependencyManager.userKey) as? VUser {
-            setUser(user, using: dependencyManager)
-        }
-        else if let userRemoteID = dependencyManager.templateValueOfType(NSNumber.self, forKey: VDependencyManager.userRemoteIdKey) as? NSNumber {
+        if let userRemoteID = dependencyManager.templateValueOfType(NSNumber.self, forKey: VDependencyManager.userRemoteIdKey) as? NSNumber {
             fetchUser(withRemoteID: userRemoteID.integerValue)
         }
         else {
-            setUser(VCurrentUser.user(), using: dependencyManager)
+            setUser(VCurrentUser.user, using: dependencyManager)
         }
     }
     
-    private func setUser(user: VUser?, using dependencyManager: VDependencyManager) {
+    private func setUser(user: UserModel?, using dependencyManager: VDependencyManager) {
         guard let user = user else {
             assertionFailure("Failed to fetch user for profile view controller.")
             return
         }
         
-        let newComparableUser = UserDetails(
-            id: user.id,
-            displayName: user.displayName,
-            likesGiven: user.likesGiven,
-            likesReceived: user.likesReceived,
-            level: user.fanLoyalty?.tier,
-            isCreator: user.accessLevel == .owner
-        )
-        
-        guard newComparableUser != comparableUser else {
+        // If the user has not changed, we don't want to perform all the UI updates
+        guard user != self.user else {
             return
         }
-        
-        comparableUser = newComparableUser
         
         setupGridStreamController(for: user)
         
@@ -355,7 +326,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         trackViewWillAppearIfNeeded()
     }
     
-    private func setupGridStreamController(for user: VUser?) {
+    private func setupGridStreamController(for user: UserModel?) {
         //Setup a new controller every time since the api path changes
         let header = VNewProfileHeaderView.newWithDependencyManager(dependencyManager)
         header.delegate = self
@@ -378,16 +349,13 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     }
     
     private static func getUserID(forDependencyManager dependencyManager: VDependencyManager) -> Int {
-        if let user = dependencyManager.templateValueOfType(VUser.self, forKey: VDependencyManager.userKey) as? VUser {
-            return user.remoteId.integerValue
-        }
-        else if let userRemoteID = dependencyManager.templateValueOfType(NSNumber.self, forKey: VDependencyManager.userRemoteIdKey) as? NSNumber {
+        if let userRemoteID = dependencyManager.templateValueOfType(NSNumber.self, forKey: VDependencyManager.userRemoteIdKey) as? NSNumber {
             return userRemoteID.integerValue
         }
         else {
-            let user = VCurrentUser.user()
+            let user = VCurrentUser.user
             assert(user != nil, "User should not be nil")
-            return user?.remoteId.integerValue ?? 0
+            return user?.id ?? 0
         }
     }
     
@@ -466,15 +434,6 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     func backgroundContainerView() -> UIView {
         return view
     }
-}
-
-private func !=(lhs: VNewProfileViewController.UserDetails?, rhs: VNewProfileViewController.UserDetails?) -> Bool {
-    return lhs?.id != rhs?.id
-        || lhs?.displayName != rhs?.displayName
-        || lhs?.likesGiven != rhs?.likesGiven
-        || lhs?.likesReceived != rhs?.likesReceived
-        || lhs?.level != rhs?.level
-        || lhs?.isCreator != rhs?.isCreator
 }
 
 private extension VDependencyManager {

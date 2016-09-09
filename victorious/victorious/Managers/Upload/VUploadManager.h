@@ -138,9 +138,4 @@ extern const NSInteger VUploadManagerBadHTTPResponseErrorCode; ///< Indicates th
  */
 - (BOOL)isTaskInProgress:(VUploadTaskInformation *)task;
 
-/**
- Creates a new, fake VUser object and sets it as the current user. This is only here for testing purposes. Do not use in production.
- */
-- (void)mockCurrentUser;
-
 @end

@@ -27,6 +27,10 @@ final class ListMenuHashtagDataSource: ListMenuSectionDataSource {
         return dependencyManager.apiPathForKey("streamURL") ?? APIPath(templatePath: "")
     }
     
+    var hashtagStreamTrackingURLs: [String] {
+        return dependencyManager.trackingURLsForKey("view") as? [String] ?? []
+    }
+    
     // MARK: - List Menu Section Data Source
     
     /// An array of visible hashtags. This array starts with no hashtags,

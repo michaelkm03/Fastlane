@@ -12,8 +12,6 @@
 
 - (instancetype)initWithName:(NSString *)name parameters:(NSDictionary *)parameters eventId:(NSString *)eventId;
 
-- (void)minimize;
-
 @property (nonatomic, readonly) NSString *eventId;
 @property (nonatomic, readonly) NSDictionary *parameters;
 @property (nonatomic, readonly) NSString *name;

@@ -229,7 +229,7 @@ static NSString * const kSelectedIconKey = @"selectedIcon";
 
 - (void)setupMaxDuration
 {
-    NSNumber *userUploadDuration = [VCurrentUser user].maxUploadDuration;
+    NSNumber *userUploadDuration = VCurrentUser.maxVideoUploadDuration;
     if (userUploadDuration != nil)
     {
         _maxDuration = userUploadDuration;

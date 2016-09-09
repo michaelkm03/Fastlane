@@ -34,7 +34,7 @@ class SubscribeButton: UIView {
         subscribeButton.addTarget(self, action: #selector(subscribeButtonWasPressed), forControlEvents: .TouchUpInside)
         updateVIPState()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userStatusDidChange), name: VIPSubscriptionHelper.userVIPStatusChangedNotificationKey, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userStatusDidChange), name: VCurrentUser.userDidUpdateNotificationKey, object: nil)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userStatusDidChange), name: kLoggedInChangedNotification, object: nil)
     }
@@ -90,7 +90,7 @@ class SubscribeButton: UIView {
     }
     
     private func updateVIPState() {
-        userIsVIP = VCurrentUser.user()?.hasValidVIPSubscription == true
+        userIsVIP = VCurrentUser.user?.hasValidVIPSubscription == true
     }
     
     private dynamic func userStatusDidChange(notification: NSNotification) {

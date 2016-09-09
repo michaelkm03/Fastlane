@@ -10,6 +10,8 @@ import Foundation
 
 /// Configures and updates the expanded state of a caption bar
 struct CaptionBarPopulator {
+    private static let animationDuration = NSTimeInterval(0.2)
+    
     private static func textAttributesForLabel(label: UILabel, matchingTextView textView: UITextView) -> [String : AnyObject] {
         // Create a paragraph style to imitate the text padding around the text view
         let paragraphStyle = NSMutableParagraphStyle()
@@ -25,33 +27,54 @@ struct CaptionBarPopulator {
         ]
     }
     
-    static func populate(captionBar: CaptionBar, withUser user: UserModel, andCaption caption: String) {
+    static func populate(captionBar: CaptionBar, withUser user: UserModel, andCaption caption: String, completion: (() -> Void)?) {
         // Configure the avatar view
         captionBar.avatarView.user = user
         
-        // Configure the textView
         let captionTextView = captionBar.captionTextView
-        captionTextView.text = caption
-        captionTextView.hidden = true
-        
-        // Configure the label
         let captionLabel = captionBar.captionLabel
-        captionLabel.numberOfLines = captionBar.collapsedNumberOfLines
-        let textAttributes = textAttributesForLabel(captionLabel, matchingTextView: captionTextView)
-        captionLabel.attributedText = NSAttributedString(string: caption, attributes: textAttributes)
-        captionLabel.hidden = false
         
-        // Check if we should show the expand button
-        var collapsedRect = captionLabel.textRectForBounds(captionTextView.bounds, limitedToNumberOfLines: captionBar.collapsedNumberOfLines)
-        let unboundedRect = captionLabel.textRectForBounds(captionTextView.bounds, limitedToNumberOfLines: 0)
-        captionBar.expandButton.hidden = collapsedRect == unboundedRect
-        
-        // Update constraints as needed
-        let textInsets = captionTextView.v_textInsets
-        collapsedRect.size = CGSize(width: collapsedRect.width + textInsets.horizontal, height: collapsedRect.height + textInsets.vertical)
-        captionBar.labelWidthConstraint.constant = collapsedRect.width
-        let avatarVerticalDelta = collapsedRect.height - captionBar.avatarButtonHeightConstraint.constant
-        captionBar.avatarButtonTopConstraint.constant = -max(ceil(avatarVerticalDelta / 2), 0)
+        let animationCompletion: (Bool -> Void) = { _ in
+            // Configure the textView
+            captionTextView.text = caption
+            captionTextView.hidden = true
+            
+            // Configure the label
+            captionLabel.numberOfLines = captionBar.collapsedNumberOfLines
+            let textAttributes = textAttributesForLabel(captionLabel, matchingTextView: captionTextView)
+            captionLabel.attributedText = NSAttributedString(string: caption, attributes: textAttributes)
+            captionLabel.hidden = false
+            
+            // Check if we should show the expand button
+            var collapsedRect = captionLabel.textRectForBounds(captionTextView.bounds, limitedToNumberOfLines: captionBar.collapsedNumberOfLines)
+            let unboundedRect = captionLabel.textRectForBounds(captionTextView.bounds, limitedToNumberOfLines: 0)
+            captionBar.expandButton.hidden = collapsedRect == unboundedRect
+            
+            // Update constraints as needed
+            let textInsets = captionTextView.v_textInsets
+            collapsedRect.size = CGSize(width: collapsedRect.width + textInsets.horizontal, height: collapsedRect.height + textInsets.vertical)
+            captionBar.labelWidthConstraint.constant = collapsedRect.width
+            let avatarVerticalDelta = collapsedRect.height - captionBar.avatarButtonHeightConstraint.constant
+            captionBar.avatarButtonTopConstraint.constant = -max(ceil(avatarVerticalDelta / 2), 0)
+            
+            completion?()
+            
+            // Animate back
+            UIView.animateWithDuration(CaptionBarPopulator.animationDuration) {
+                captionTextView.alpha = 1
+                captionLabel.alpha = 1
+            }
+        }
+
+        // Animate to alpha 0 with 0.2 seconds
+        UIView.animateWithDuration(
+            CaptionBarPopulator.animationDuration,
+            animations: {
+                captionTextView.alpha = 0
+                captionLabel.alpha = 0
+            },
+            completion: animationCompletion
+        )
     }
     
     static func toggle(captionBar: CaptionBar, toCollapsed collapsed: Bool) -> CGFloat {

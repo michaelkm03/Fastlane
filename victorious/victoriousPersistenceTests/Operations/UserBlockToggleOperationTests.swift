@@ -15,45 +15,43 @@ class UserBlockToggleOperationTests: BaseFetcherOperationTestCase {
     
     override func setUp() {
         super.setUp()
-        let user = persistentStoreHelper.createUser(remoteId: currentUserID)
-        user.setAsCurrentUser()
+        let user = User(id: currentUserID)
+        VCurrentUser.update(to: user)
     }
     
-    func testInitiallyFollowed() {
-        let user: VUser = persistentStoreHelper.createUser(remoteId: remoteUserID)
-        user.isBlockedByMainUser = true
-        XCTAssertTrue(user.isBlockedByCurrentUser == true)
+    func testInitiallyBlocked() {
+        let user = User(id: remoteUserID)
+        user.block()
         
         let expectation = expectationWithDescription("UserBlockToggleOperation")
         
         let operation = UserBlockToggleOperation(
-            userID: user.id,
+            user: user,
             blockAPIPath: APIPath(templatePath: ""),
             unblockAPIPath: APIPath(templatePath: "")
         )
         
         operation.queue { results, error, cancelled in
-            XCTAssertFalse(user.isBlockedByCurrentUser == true)
+            XCTAssertFalse(user.isBlocked)
             expectation.fulfill()
         }
         waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
     }
     
-    func testInitiallyUnupvoted() {
-        let user: VUser = persistentStoreHelper.createUser(remoteId: remoteUserID)
-        user.isBlockedByMainUser = false
-        XCTAssertFalse(user.isBlockedByCurrentUser == true)
+    func testInitiallyUnblocked() {
+        let user = User(id: remoteUserID)
+        user.unblock()
         
         let expectation = expectationWithDescription("UserBlockToggleOperation")
         
         let operation = UserBlockToggleOperation(
-            userID: user.id,
+            user: user,
             blockAPIPath: APIPath(templatePath: ""),
             unblockAPIPath: APIPath(templatePath: "")
         )
         
         operation.queue { results, error, cancelled in
-            XCTAssertTrue(user.isBlockedByCurrentUser == true)
+            XCTAssertTrue(user.isBlocked)
             expectation.fulfill()
         }
         waitForExpectationsWithTimeout(expectationThreshold, handler: nil)

@@ -13,8 +13,7 @@ import QuartzCore
 public enum AlertType: String {
 
     // MARK: Backend driven alerts.
-
-    case levelUp            = "levelUp"
+    
     case achievement        = "achievement"
     case statusUpdate       = "statusUpdate"
     case toast              = "toast"

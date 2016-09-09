@@ -208,12 +208,8 @@ class NotificationsViewController: UIViewController, UITableViewDelegate, Notifi
         }
         
         let notification = dataSource.visibleItems[indexPath.row]
-        
-        guard let profileViewController = dependencyManager.userProfileViewController(for: notification.user) else {
-            return
-        }
-        
-        navigationController?.pushViewController(profileViewController, animated: true)
+        let router = Router(originViewController: self, dependencyManager: dependencyManager)
+        router.navigate(to: .profile(userID: notification.user.remoteId.integerValue), from: nil)
     }
     
     // MARK: - VBackgroundContainer

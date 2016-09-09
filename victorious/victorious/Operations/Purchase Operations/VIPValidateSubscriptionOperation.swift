@@ -76,16 +76,23 @@ class VIPValidateSubscriptionOperation: RemoteFetcherOperation, RequestOperation
     }
     
     private func updateUser(status status: VIPStatus?) {
-        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            guard let currentUser = VCurrentUser.user(inManagedObjectContext: context) else {
-                return
+        guard var currentUser = VCurrentUser.user else {
+            return
+        }
+        
+        if let status = status {
+            // We only want to update a user's vip status from false to true
+            // If it's already true, we let next app launch's parsing handle the user's VIP status.
+            if currentUser.vipStatus?.isVIP != true {
+                currentUser.vipStatus = status
             }
-            if let status = status {
-                currentUser.populateVIPStatus(fromSourceModel: status)
-            } else {
-                currentUser.clearVIPStatus()
-            }
-            context.v_save()
+        }
+        else {
+            currentUser.vipStatus = nil
+        }
+        
+        dispatch_sync(dispatch_get_main_queue()) {
+            VCurrentUser.update(to: currentUser)
         }
     }
 }
@@ -93,12 +100,10 @@ class VIPValidateSubscriptionOperation: RemoteFetcherOperation, RequestOperation
 class VIPClearSubscriptionOperation: FetcherOperation {
     
     override func main() {
-        persistentStore.mainContext.v_performBlockAndWait() { context in
-            guard let currentUser = VCurrentUser.user(inManagedObjectContext: context) else {
-                return
-            }
-            currentUser.clearVIPStatus()
-            context.v_save()
+        guard var user = VCurrentUser.user else {
+            return
         }
+        user.vipStatus = nil
+        VCurrentUser.update(to: user)
     }
 }

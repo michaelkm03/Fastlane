@@ -54,8 +54,8 @@ class AccountCreateOperationTests: BaseFetcherOperationTestCase {
             XCTAssertEqual( persistentUser.loginType?.integerValue ?? -1, VLoginType.Facebook.rawValue )
             XCTAssertEqual( persistentUser.token, self.token )
 
-            let currentUser = VCurrentUser.user()
-            XCTAssertNotNil( VCurrentUser.user() )
+            let currentUser = VCurrentUser.user
+            XCTAssertNotNil( VCurrentUser.user )
             XCTAssertEqual( persistentUser.objectID, currentUser?.objectID )
 
             expectation.fulfill()
@@ -93,8 +93,8 @@ class AccountCreateOperationTests: BaseFetcherOperationTestCase {
             XCTAssertEqual( persistentUser.loginType?.integerValue ?? -1, VLoginType.Email.rawValue )
             XCTAssertEqual( persistentUser.token, self.token )
             
-            let currentUser = VCurrentUser.user()
-            XCTAssertNotNil( VCurrentUser.user() )
+            let currentUser = VCurrentUser.user
+            XCTAssertNotNil( VCurrentUser.user )
             XCTAssertEqual( persistentUser.objectID, currentUser?.objectID )
             
             expectation.fulfill()
@@ -132,8 +132,8 @@ class AccountCreateOperationTests: BaseFetcherOperationTestCase {
             XCTAssertEqual( persistentUser.loginType?.integerValue ?? -1, VLoginType.Twitter.rawValue )
             XCTAssertEqual( persistentUser.token, self.token )
             
-            let currentUser = VCurrentUser.user()
-            XCTAssertNotNil( VCurrentUser.user() )
+            let currentUser = VCurrentUser.user
+            XCTAssertNotNil( VCurrentUser.user )
             XCTAssertEqual( persistentUser.objectID, currentUser?.objectID )
             
             expectation.fulfill()

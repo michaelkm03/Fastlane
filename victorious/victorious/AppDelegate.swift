@@ -108,18 +108,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Listens to the login user notification in order to `register` the user with our services.
     private func addLoginListener() {
         NSNotificationCenter.defaultCenter().addObserverForName(kLoggedInChangedNotification, object: nil, queue: NSOperationQueue.mainQueue()) { (notififcation) in
-            if let currentUser = VCurrentUser.user() {
+            if let currentUser = VCurrentUser.user {
                 #if V_ENABLE_TESTFAIRY
                     let userTraits = [TFSDKIdentityTraitNameKey: currentUser.displayName ?? "",
                                       TFSDKIdentityTraitEmailAddressKey: currentUser.username ?? ""]
-                    TestFairy.identify(currentUser.remoteId.stringValue, traits:userTraits)
+                    TestFairy.identify(String(currentUser.id), traits:userTraits)
                 #endif
 
-                Crashlytics.setUserIdentifier(currentUser.remoteId.stringValue)
+                Crashlytics.setUserIdentifier(String(currentUser.id))
                 Crashlytics.setUserEmail(currentUser.username ?? "")
                 Crashlytics.setUserName(currentUser.displayName ?? "")
 
-                Log.setUserIdentifier(currentUser.remoteId.stringValue)
+                Log.setUserIdentifier(String(currentUser.id))
             }
         }
     }
