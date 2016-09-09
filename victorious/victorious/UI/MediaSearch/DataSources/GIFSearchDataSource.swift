@@ -22,7 +22,8 @@ class GIFSearchDataSource: PaginatedDataSource, MediaSearchDataSource {
 		
 		self.loadPage( pageType,
 			createOperation: {
-				return GIFSearchOperation(searchTerm: searchTerm)
+//                let searchOptions = GIFSearchOptions(searchURL: "/api/image/gif_search", trendingURL: "/api/image/trending_gifs", searchTerm: searchTerm)
+                return GIFSearchOperation(searchOptions: "test")
 			},
 			completion:{ (results, error, cancelled) in
 				completion?( error )

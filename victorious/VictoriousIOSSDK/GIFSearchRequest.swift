@@ -12,28 +12,28 @@ import Foundation
 public struct GIFSearchRequest: PaginatorPageable, ResultBasedPageable {
     
     public let urlRequest: NSURLRequest
-    public let searchTerm: String?
+    public let searchOptions: GIFSearchOptions
     
     public let paginator: StandardPaginator
     
     public init(request: GIFSearchRequest, paginator: StandardPaginator ) {
-        self.init( searchTerm: request.searchTerm, paginator: paginator )
+        self.init( searchOptions: request.searchOptions, paginator: paginator )
     }
     
-    public init(searchTerm: String? = nil, paginator: StandardPaginator = StandardPaginator(pageNumber: 1, itemsPerPage: 20) ) {
+    public init(searchOptions: GIFSearchOptions, paginator: StandardPaginator = StandardPaginator(pageNumber: 1, itemsPerPage: 20) ) {
 		
-		let url:  NSURL
-		if let searchTerm = searchTerm {
-			url = NSURL(string: "/api/image/gif_search")!.URLByAppendingPathComponent(searchTerm)
-		} else {
-			url = NSURL(string: "/api/image/trending_gifs")!
-		}
+//		let url:  NSURL
+//		if let searchTerm = searchOptions.searchTerm {
+//			url = NSURL(string: searchOptions.searchURL)!.URLByAppendingPathComponent(searchTerm)
+//		} else {
+//			url = NSURL(string: searchOptions.trendingURL)!
+//		}
 		
-        let mutableURLRequest = NSMutableURLRequest(URL: url)
+        let mutableURLRequest = NSMutableURLRequest(URL: NSURL())
         paginator.addPaginationArgumentsToRequest(mutableURLRequest)
         urlRequest = mutableURLRequest
         
-        self.searchTerm = searchTerm
+        self.searchOptions = searchOptions
         self.paginator = paginator
     }
     

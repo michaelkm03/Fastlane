@@ -18,6 +18,7 @@ class CreationFlowTypeHelperTests: XCTestCase {
         XCTAssertEqual(CreationFlowTypeHelper.creationFlowTypeForIdentifier("Create Poll"), VCreationFlowType.Poll)
         XCTAssertEqual(CreationFlowTypeHelper.creationFlowTypeForIdentifier("Create Text"), VCreationFlowType.Text)
         XCTAssertEqual(CreationFlowTypeHelper.creationFlowTypeForIdentifier("Create GIF"), VCreationFlowType.GIF)
+        XCTAssertEqual(CreationFlowTypeHelper.creationFlowTypeForIdentifier("Create Sticker"), VCreationFlowType.Sticker)
         XCTAssertEqual(CreationFlowTypeHelper.creationFlowTypeForIdentifier("Create from Library"), VCreationFlowType.Library)
         XCTAssertEqual(CreationFlowTypeHelper.creationFlowTypeForIdentifier("Create from Mixed Media Camera"), VCreationFlowType.MixedMediaCamera)
         XCTAssertEqual(CreationFlowTypeHelper.creationFlowTypeForIdentifier("Create from Native Camera"), VCreationFlowType.NativeCamera)

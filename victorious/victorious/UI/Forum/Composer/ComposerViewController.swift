@@ -13,7 +13,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     private struct Constants {
         static let animationDuration = 0.2
-        static let maximumNumberOfTabs = 4
+        static let maximumNumberOfTabs = 5
         static let maximumComposerToScreenRatio: CGFloat = 0.2
         static let defaultMaximumTextLength = 0
         static let maximumAttachmentWidthPercentage: CGFloat = 480.0 / 667.0

@@ -18,6 +18,7 @@ static NSString * const kGIFCreationFlowKey = @"gifCreateFlow";
 static NSString * const kVideoCreateFlow = @"videoCreateFlow";
 static NSString * const kPollCreateFlow = @"pollCreateFlow";
 static NSString * const kTextCreateFlow = @"textCreateFlow";
+static NSString * const kStickerCreateFlow = @"stickerCreateFlow";
 static NSString * const kLibraryCreateFlow = @"libraryCreateFlow";
 static NSString * const kMixedMediaCameraCreateFlow = @"mixedMediaCameraCreateFlow";
 static NSString * const kNativeCameraCreateFlow = @"nativeCameraCreateFlow";
@@ -64,6 +65,10 @@ static NSString * const kNativeCameraCreateFlow = @"nativeCameraCreateFlow";
         case VCreationFlowTypePoll:
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreatePollSelected];
             [self presentCreateFlowWithKey:kPollCreateFlow];
+            break;
+        case VCreationFlowTypeSticker:
+            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateStickerSelected];
+            [self presentCreateFlowWithKey:kStickerCreateFlow];
             break;
         case VCreationFlowTypeLibrary:
             [[VTrackingManager sharedInstance] trackEvent:VTrackingEventCreateFromLibrarySelected];

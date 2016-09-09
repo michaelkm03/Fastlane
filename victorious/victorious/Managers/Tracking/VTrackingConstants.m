@@ -27,6 +27,7 @@ NSString * const VTrackingEventCreatePollSelected = @"CreatePollSelected";
 NSString * const VTrackingEventCreateFromLibrarySelected = @"CreateFromLibrarySelected";
 NSString * const VTrackingEventCreateFromMixedMediaCameraSelected = @"CreateFromMixedMediaCameraSelected";
 NSString * const VTrackingEventCreateFromNativeCameraSelected = @"CreateFromNativeCameraSelected";
+NSString * const VTrackingEventCreateStickerSelected = @"CreateStickerSelected";
 NSString * const VTrackingEventCreateImagePostSelected = @"CreateImagePostSelected";
 NSString * const VTrackingEventCreateTextOnlyPostSelected = @"CreateTextOnlyPostSelected";
 NSString * const VTrackingEventCreateVideoPostSelected = @"CreateVideoPostSelected";

@@ -70,6 +70,8 @@
 	<string>VVideoCreationFlowController</string>
 	<key>gif.creationFlow</key>
 	<string>VGIFCreationFlowController</string>
+	<key>sticker.creationFlow</key>
+	<string>victorious.StickerCreationFlowController</string>
 	<key>sideNav.scaffold</key>
 	<string>victorious.SideNavScaffoldViewController</string>
 	<key>rightNav.screen</key>
