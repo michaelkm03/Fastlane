@@ -60,7 +60,7 @@ class StageDataSource: ForumEventReceiver {
                 currentContentFetchOperation?.queue() { [weak self] results, error, canceled in
                     guard
                         !canceled,
-                        let content = results?.first as? ContentModel
+                        let content = results?.first as? Content
                     else {
                         Log.warning("content fetch failed after receiving stage refresh event: \(stageEvent), Error: \(error)")
                         return

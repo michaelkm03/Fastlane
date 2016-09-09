@@ -21,7 +21,7 @@ private struct Constants {
 class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, ContentCellTracker, CoachmarkDisplayer, VBackgroundContainer {
     private let gridStreamController: GridStreamViewController<CloseUpView>
     var dependencyManager: VDependencyManager!
-    private var content: VContent? {
+    private var content: Content? {
         didSet {
             updateAudioSessionCategory()
             trackContentView()
@@ -61,7 +61,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         }
     }
     
-    init(dependencyManager: VDependencyManager, contentID: String, content: ContentModel? = nil, streamAPIPath: APIPath) {
+    init(dependencyManager: VDependencyManager, contentID: String, content: Content? = nil, streamAPIPath: APIPath) {
         self.dependencyManager = dependencyManager
         
         closeUpView = CloseUpView.newWithDependencyManager(dependencyManager)
@@ -175,23 +175,10 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         gridStreamController.setContent(nil, withError: true)
     }
     
-    func updateContent(content: ContentModel) {
-        guard let findOrCreateOperation = ContentFindOrCreateOperation(contentModel: content) else {
-            return
-        }
-        
-        findOrCreateOperation.queue() { [weak self] results, _, _ in
-            guard
-                let strongSelf = self,
-                let content = results?.first as? VContent
-            else {
-                return
-            }
-            
-            strongSelf.content = content
-            strongSelf.updateHeader()
-            strongSelf.gridStreamController.setContent(content, withError: false)
-        }
+    func updateContent(content: Content) {
+        self.content = content
+        updateHeader()
+        gridStreamController.setContent(content, withError: false)
     }
     
     // MARK: - VBackgroundContainer

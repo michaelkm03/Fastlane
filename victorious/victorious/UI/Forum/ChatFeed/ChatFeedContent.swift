@@ -8,10 +8,10 @@
 
 import Foundation
 
-/// A wrapper around a `ContentModel` that contains extra information specific to the chat feed.
+/// A wrapper around a `Content` that contains extra information specific to the chat feed.
 struct ChatFeedContent {
     /// The content model.
-    var content: ContentModel
+    var content: Content
     
     /// The calculated size of the content's `ChatFeedMessageCell`, which we cache for performance.
     var size: CGSize
@@ -21,7 +21,7 @@ struct ChatFeedContent {
     ///
     var creationState: ContentCreationState?
     
-    init?(content: ContentModel, width: CGFloat, dependencyManager: VDependencyManager, creationState: ContentCreationState? = nil) {
+    init?(content: Content, width: CGFloat, dependencyManager: VDependencyManager, creationState: ContentCreationState? = nil) {
         guard let height = ChatFeedMessageCell.cellHeight(displaying: content, inWidth: width, dependencyManager: dependencyManager) else {
             return nil
         }

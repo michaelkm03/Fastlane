@@ -252,7 +252,7 @@ private struct ShowCloseUpDisplayModifier {
 /// Shows a close up view displaying the provided content.
 private final class ShowCloseUpOperation: AsyncOperation<Void> {
     private let displayModifier: ShowCloseUpDisplayModifier
-    private var content: ContentModel?
+    private var content: Content?
     private var contentID: String?
     private(set) var displayedCloseUpView: CloseUpContainerViewController?
     
@@ -262,7 +262,7 @@ private final class ShowCloseUpOperation: AsyncOperation<Void> {
         super.init()
     }
     
-    init(content: ContentModel, displayModifier: ShowCloseUpDisplayModifier) {
+    init(content: Content, displayModifier: ShowCloseUpDisplayModifier) {
         self.displayModifier = displayModifier
         self.content = content
         super.init()

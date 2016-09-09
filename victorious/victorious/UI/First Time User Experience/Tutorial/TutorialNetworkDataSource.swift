@@ -18,7 +18,7 @@ protocol TutorialNetworkDataSourceDelegate: class {
 class TutorialNetworkDataSource: NSObject, NetworkDataSource {
     private(set) var visibleItems: [ChatFeedContent] = []
     
-    private var queuedTutorialMessages: [ContentModel] = []
+    private var queuedTutorialMessages: [Content] = []
     
     private var timerManager: VTimerManager? = nil
     
@@ -38,7 +38,7 @@ class TutorialNetworkDataSource: NSObject, NetworkDataSource {
         
         let operation = TutorialContentsRemoteOperation(urlString: urlString)
         operation.queue { [weak self] results, error, cancelled in
-            self?.queuedTutorialMessages = results?.flatMap { $0 as? ContentModel } ?? []
+            self?.queuedTutorialMessages = results?.flatMap { $0 as? Content } ?? []
             
             self?.dequeueTutorialMessage()
             self?.timerManager = VTimerManager.scheduledTimerManagerWithTimeInterval(3.0, target: self, selector: #selector(self?.dequeueTutorialMessage), userInfo: nil, repeats: true)

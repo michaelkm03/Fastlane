@@ -59,7 +59,7 @@ class ContentPublisher {
     private(set) var pendingItems = [ChatFeedContent]()
     
     /// Queues `content` for publishing.
-    func publish(content: ContentModel, withWidth width: CGFloat) {
+    func publish(content: Content, withWidth width: CGFloat) {
         if optimisticPostingEnabled {
             guard let chatFeedContent = ChatFeedContent(content: content, width: width, dependencyManager: dependencyManager, creationState: .waiting) else {
                 assertionFailure("Failed to calculate height for chat feed content")

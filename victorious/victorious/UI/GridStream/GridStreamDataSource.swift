@@ -64,9 +64,9 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
     
     // MARK: - Managing items
     
-    private let paginatedDataSource: TimePaginatedDataSource<ContentModel, ContentFeedOperation>
+    private let paginatedDataSource: TimePaginatedDataSource<Content, ContentFeedOperation>
     
-    var items: [ContentModel] {
+    var items: [Content] {
         return paginatedDataSource.items
     }
     
@@ -74,13 +74,13 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
         return paginatedDataSource.isLoading
     }
     
-    func loadContent(for collectionView: UICollectionView, loadingType: PaginatedLoadingType, completion: ((result: Result<[ContentModel]>) -> Void)? = nil) {
+    func loadContent(for collectionView: UICollectionView, loadingType: PaginatedLoadingType, completion: ((result: Result<[Content]>) -> Void)? = nil) {
         paginatedDataSource.loadItems(loadingType) { [weak self] result in
             if let items = self?.paginatedDataSource.items {
                 self?.header?.gridStreamDidUpdateDataSource(with: items)
             }
             
-            let newItems: [ContentModel]
+            let newItems: [Content]
             
             switch result {
                 case .success(let feedResult): newItems = feedResult.contents

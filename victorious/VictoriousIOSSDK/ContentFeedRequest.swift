@@ -24,7 +24,7 @@ public struct ContentFeedRequest: RequestType {
             throw ResponseParsingError()
         }
         
-        let parsedContents = contents.flatMap { Content(json: $0) } as [ContentModel]
+        let parsedContents = contents.flatMap { Content(json: $0) }
         
         var parsedRefreshStage: RefreshStage? = nil
         let mainStageJSON = responseJSON["main_stage"]
@@ -39,6 +39,6 @@ public struct ContentFeedRequest: RequestType {
 }
 
 public struct ContentFeedResult {
-    public var contents: [ContentModel]
+    public var contents: [Content]
     public var refreshStage: RefreshStage?
 }

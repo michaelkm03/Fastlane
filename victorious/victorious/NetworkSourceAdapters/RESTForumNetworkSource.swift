@@ -35,7 +35,7 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     
     // MARK: - Data source
     
-    let dataSource: TimePaginatedDataSource<ContentModel, ContentFeedOperation>
+    let dataSource: TimePaginatedDataSource<Content, ContentFeedOperation>
     
     private var filteredStreamAPIPath: APIPath? {
         didSet {
