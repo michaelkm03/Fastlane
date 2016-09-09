@@ -36,20 +36,3 @@ import VictoriousIOSSDK
     /// Remove any items that are marked for deletion
     func removeDeletedItems()
 }
-
-protocol GenericPaginatedDataSourceType: PaginatedDataSourceType {
-
-    /// Uses the provided operation or a sebsequent operation create from the original operation
-    /// (i.e. the one provided by calling the `createOperation` closure) to load a page of results
-    /// from the network.  When finished, internal state changes and changes to the backing store
-    /// may occur, which will in turn call the appropriate delegate methods.
-    func loadPage<T: Paginated where T.PaginatorType : NumericPaginator>( pageType: VPageType,
-                  @noescape createOperation: () -> T,
-                            completion: ((results: [AnyObject]?, error: NSError?, cancelled: Bool) -> Void)? )
-    
-    /// Uses the provided operation to load new results from the network.
-    /// When finished, internal state changes and changes to the backing store
-    /// may occur, which will in turn call the appropriate delegate methods.
-    func loadNewItems( @noescape createOperation createOperation: () -> FetcherOperation,
-                                                 completion: (([AnyObject]?, NSError?, Bool) -> Void)?)
-}

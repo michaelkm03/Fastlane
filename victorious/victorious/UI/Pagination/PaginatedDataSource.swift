@@ -12,7 +12,7 @@ import VictoriousIOSSDK
 /// A utility that abstracts the interaction between UI code and paginated `FetcherOperation`s
 /// into an API that is more concise and reuable between any paginated view controllers that have
 /// a simple collection or table view layout.
-@objc public class PaginatedDataSource: NSObject, PaginatedDataSourceType, GenericPaginatedDataSourceType {
+@objc public class PaginatedDataSource: NSObject, PaginatedDataSourceType {
     
     private(set) var currentPaginatedOperation: NSOperation?
     
@@ -127,36 +127,6 @@ import VictoriousIOSSDK
             // do that if there was content previously.  Otherwise, the view could simply
             // not be finished loading yet.
             self.state = .NoResults
-        }
-    }
-    
-    /// Reloads the first page into `visibleItems` using a descendent of `PaginatedRequestOperation`, which
-    /// operates by sending a network request to retreive results, then parses them into the persistent store.
-    func loadNewItems( @noescape createOperation createOperation: () -> FetcherOperation, completion: (([AnyObject]?, NSError?, Bool) -> Void)?) {
-        
-        let operation: FetcherOperation = createOperation()
-        
-        self.state = .Loading
-        operation.queue() { results, error, cancelled in
-            
-            if let error = error {
-                self.delegate?.paginatedDataSource(self, didReceiveError: error)
-                self.state = .Error
-                completion?( [], error, cancelled )
-                
-            } else {
-                let results = operation.results ?? []
-                let newResults = results.filter { !self.visibleItems.containsObject( $0 ) }
-                if !newResults.isEmpty {
-                    if self.shouldStashNewItems {
-                        self.stashedItems = self.stashedItems.v_orderedSet(byAddingObjects: newResults, sortOrder: self.sortOrder)
-                    } else {
-                        self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: newResults, sortOrder: self.sortOrder)
-                    }
-                    self.state = self.visibleItems.count == 0 ? .NoResults : .Results
-                }
-                completion?( newResults, error, cancelled )
-            }
         }
     }
     

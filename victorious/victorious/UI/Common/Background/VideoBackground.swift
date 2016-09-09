@@ -25,8 +25,8 @@ class VideoBackground: VBackground, VVideoPlayerDelegate {
             return
         }
         
-        VideoBackgroundFetchOperation(sequenceURL: sequenceURL).queue { [weak self] results, _, _ in
-            guard let item = results?.first as? VVideoPlayerItem else {
+        RequestOperation(request: VideoBackgroundFetchRequest(sequenceURL: sequenceURL)).queue { [weak self] result in
+            guard let item = result.output else {
                 return
             }
             
@@ -54,26 +54,8 @@ class VideoBackground: VBackground, VVideoPlayerDelegate {
     }
 }
 
-// The following is a legacy operation / request, converted from the old sequence fetch operation, since we use legacy
+// The following is a legacy request, converted from the old sequence fetch operation, since we use legacy
 // sequence endpoints for video backgrounds. This should eventually be refactored and removed.
-
-private class VideoBackgroundFetchOperation: RemoteFetcherOperation {
-    let request: VideoBackgroundFetchRequest!
-    
-    init(sequenceURL: NSURL) {
-        request = VideoBackgroundFetchRequest(sequenceURL: sequenceURL)
-        super.init()
-        qualityOfService = .UserInitiated
-    }
-    
-    override func main() {
-        requestExecutor.executeRequest(request, onComplete: onComplete, onError: nil)
-    }
-    
-    private func onComplete(videoPlayerItem: VideoBackgroundFetchRequest.ResultType) {
-        results = [videoPlayerItem]
-    }
-}
 
 private struct VideoBackgroundFetchRequest: RequestType {
     let urlRequest: NSURLRequest

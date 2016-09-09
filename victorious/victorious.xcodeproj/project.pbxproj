@@ -768,8 +768,6 @@
 		A72C864E1C977FF500E97D4F /* RequestPushNotificationPermissionOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85AD1C977FF500E97D4F /* RequestPushNotificationPermissionOperation.swift */; };
 		A72C865E1C977FF600E97D4F /* Paginated.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85BF1C977FF500E97D4F /* Paginated.swift */; };
 		A72C86601C977FF600E97D4F /* RestorePurchaseOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85C21C977FF500E97D4F /* RestorePurchaseOperation.swift */; };
-		A72C868C1C977FF600E97D4F /* FetcherOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85F21C977FF500E97D4F /* FetcherOperation.swift */; };
-		A72C868E1C977FF600E97D4F /* RemoteFetcherOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85F41C977FF500E97D4F /* RemoteFetcherOperation.swift */; };
 		A72C868F1C977FF600E97D4F /* CreateMediaUploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72C85F61C977FF500E97D4F /* CreateMediaUploadOperation.swift */; };
 		A72EB4601C3C99FC00C0C893 /* User.json in Resources */ = {isa = PBXBuildFile; fileRef = 03314F4D1BE40F0100EE74FD /* User.json */; };
 		A72EDF8B1C03E225003D6177 /* ProfileUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72EDF8A1C03E225003D6177 /* ProfileUpdate.swift */; };
@@ -2326,8 +2324,6 @@
 		A72C85AD1C977FF500E97D4F /* RequestPushNotificationPermissionOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestPushNotificationPermissionOperation.swift; sourceTree = "<group>"; };
 		A72C85BF1C977FF500E97D4F /* Paginated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Paginated.swift; sourceTree = "<group>"; };
 		A72C85C21C977FF500E97D4F /* RestorePurchaseOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestorePurchaseOperation.swift; sourceTree = "<group>"; };
-		A72C85F21C977FF500E97D4F /* FetcherOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetcherOperation.swift; sourceTree = "<group>"; };
-		A72C85F41C977FF500E97D4F /* RemoteFetcherOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteFetcherOperation.swift; sourceTree = "<group>"; };
 		A72C85F61C977FF500E97D4F /* CreateMediaUploadOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateMediaUploadOperation.swift; sourceTree = "<group>"; };
 		A72EDF8A1C03E225003D6177 /* ProfileUpdate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileUpdate.swift; sourceTree = "<group>"; };
 		A72EDF8C1C03E23B003D6177 /* PasswordUpdate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordUpdate.swift; sourceTree = "<group>"; };
@@ -5210,7 +5206,6 @@
 				7A1DECD71D80E093003F5C37 /* Operation Infrastructure */,
 				A72C85BE1C977FF500E97D4F /* Pagination */,
 				A72C85C01C977FF500E97D4F /* Purchase */,
-				A72C85F01C977FF500E97D4F /* Superclasses */,
 				A72C85F51C977FF500E97D4F /* Upload */,
 				7A1DECDF1D80E0E5003F5C37 /* User */,
 				7A1DECF61D80E0F5003F5C37 /* Utility */,
@@ -5265,15 +5260,6 @@
 				A7FFCE4D1C8FCDD900B1BE49 /* VIPValidateSubscriptionOperation.swift */,
 			);
 			path = Purchase;
-			sourceTree = "<group>";
-		};
-		A72C85F01C977FF500E97D4F /* Superclasses */ = {
-			isa = PBXGroup;
-			children = (
-				A72C85F21C977FF500E97D4F /* FetcherOperation.swift */,
-				A72C85F41C977FF500E97D4F /* RemoteFetcherOperation.swift */,
-			);
-			path = Superclasses;
 			sourceTree = "<group>";
 		};
 		A72C85F51C977FF500E97D4F /* Upload */ = {
@@ -8073,7 +8059,6 @@
 				C39413B51B165F7800579A8E /* VPermissionAlertTextView.m in Sources */,
 				A6D51BE71B4F33D700703AB0 /* VLibraryAuthorizationCell.m in Sources */,
 				A75ECFFF1AB0B6B400C35063 /* VCropTool.m in Sources */,
-				A72C868E1C977FF600E97D4F /* RemoteFetcherOperation.swift in Sources */,
 				037D2D5F1A1A6D7400947A22 /* VDependencyManager+VNavigationMenuItem.m in Sources */,
 				0EC65B0C1D52D6280040A8F8 /* AppDelegate.swift in Sources */,
 				7AC1B9FE1D3FF7CF00FA3CF6 /* CGPoint+Initializers.swift in Sources */,
@@ -8309,7 +8294,6 @@
 				F069E93E1D46995C00F91CE6 /* VIPSelectSubscriptionOperation.swift in Sources */,
 				669EBBE41A30239100DE317D /* VBasicToolPickerCell.m in Sources */,
 				79BFDC3B1D206DA900E1EA0C /* UIView+CornerRadius.swift in Sources */,
-				A72C868C1C977FF600E97D4F /* FetcherOperation.swift in Sources */,
 				7A1DED111D824BD6003F5C37 /* VSettingsViewController.swift in Sources */,
 				A7B133641C6178FD006EC4F5 /* VNoContentView.m in Sources */,
 				67F6B7B81CCFE41200232CAF /* ListMenuNoContentCollectionViewCell.swift in Sources */,
