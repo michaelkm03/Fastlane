@@ -146,7 +146,7 @@ class TimePaginatedDataSource<Item, Operation: Queueable2 where Operation: NSOpe
             
             strongSelf.currentOperation = nil
             
-            guard case let .success(output) = result else {
+            guard let output = result.output else {
                 return
             }
             

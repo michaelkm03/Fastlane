@@ -57,19 +57,17 @@ class StageDataSource: ForumEventReceiver {
                 
                 currentContentFetchOperation = StageContentFetchOperation(macroURLString: contentFetchURL, currentUserID: String(currentUserID), refreshStageEvent: stageEvent)
                 
-                currentContentFetchOperation?.queue() { [weak self] results, error, canceled in
-                    guard
-                        !canceled,
-                        let content = results?.first as? Content
-                    else {
-                        Log.warning("content fetch failed after receiving stage refresh event: \(stageEvent), Error: \(error)")
-                        return
+                currentContentFetchOperation?.queue { [weak self] result in
+                    switch result {
+                        case .success(let content):
+                            // The meta data is transferred over to the StageContent object in order to simplify the usage by only having one model.
+                            let stageContent = StageContent(content: content, metaData: stageEvent.stageMetaData)
+                            self?.delegate?.addStageContent(stageContent)
+                            self?.currentContent = content
+                        
+                        case .failure(_), .cancelled:
+                            Log.warning("content fetch failed after receiving stage refresh event: \(stageEvent), Error: \(result.error)")
                     }
-
-                    // The meta data is transferred over to the StageContent object in order to simplify the usage by only having one model.
-                    let stageContent = StageContent(content: content, metaData: stageEvent.stageMetaData)
-                    self?.delegate?.addStageContent(stageContent)
-                    self?.currentContent = content
                 }
                 
             case .closeStage(_):

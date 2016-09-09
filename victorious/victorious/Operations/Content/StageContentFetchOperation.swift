@@ -8,42 +8,49 @@
 
 import Foundation
 
-class StageContentFetchOperation: RemoteFetcherOperation {
+final class StageContentFetchOperation: AsyncOperation<Content> {
     
-    internal let request: ContentFetchRequest!
-    
-    // Used to calculated the offset in videos.
-    private var operationStartTime: NSDate?
-    
-    private(set) var refreshStageEvent: RefreshStage
+    // MARK: - Initializing
 
     init(macroURLString: String, currentUserID: String, refreshStageEvent: RefreshStage) {
-        let request = ContentFetchRequest(macroURLString: macroURLString, currentUserID: currentUserID, contentID: refreshStageEvent.contentID)
-        self.request = request
+        self.request = ContentFetchRequest(macroURLString: macroURLString, currentUserID: currentUserID, contentID: refreshStageEvent.contentID)
         self.refreshStageEvent = refreshStageEvent
     }
-
-    override func main() {
-        guard !cancelled else {
-            return
-        }
-        
-        operationStartTime = NSDate()
-        requestExecutor.executeRequest(request, onComplete: onComplete, onError: nil)
+    
+    // MARK: - Executing
+    
+    private let request: ContentFetchRequest
+    private(set) var refreshStageEvent: RefreshStage
+    
+    override var executionQueue: Queue {
+        return .main
     }
-
-    func onComplete(content: ContentFetchRequest.ResultType) {
-        let result = calculateSeekAheadTime(for: content)
-        self.results = [result]
+    
+    override func execute(finish: (result: OperationResult<Content>) -> Void) {
+        let operationStartTime = NSDate()
+        
+        RequestOperation(request: request).queue { [weak self] result in
+            guard let strongSelf = self else {
+                finish(result: .cancelled)
+                return
+            }
+            
+            switch result {
+                case .success(let content):
+                    finish(result: .success(strongSelf.calculateSeekAheadTime(for: content, from: operationStartTime)))
+                
+                case .failure(_), .cancelled:
+                    finish(result: result)
+            }
+        }
     }
     
     /// Calculated time diff, used to sync users in the video on stage.
     /// seekAheadTime = serverTime - startTime + workTime
-    private func calculateSeekAheadTime(for content: Content) -> Content {
+    private func calculateSeekAheadTime(for content: Content, from operationStartTime: NSDate) -> Content {
         guard
             let startTime = refreshStageEvent.startTime,
-            let serverTime = refreshStageEvent.serverTime,
-            let operationStartTime = operationStartTime
+            let serverTime = refreshStageEvent.serverTime
             where content.type == .video
         else {
             return content
