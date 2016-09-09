@@ -39,27 +39,24 @@ final class AccountCreateOperation: AsyncOperation<AccountCreateResponse> {
         let requestOperation = RequestOperation(request: AccountCreateRequest(credentials: credentials))
         
         requestOperation.queue { [weak self] requestResult in
-            guard let strongSelf = self else {
+            guard
+                let strongSelf = self,
+                let response = requestResult.output
+            else {
                 finish(result: requestResult)
                 return
             }
             
-            switch requestResult {
-                case .success(let response):
-                    LoginSuccessOperation(
-                        dependencyManager: strongSelf.dependencyManager,
-                        response: response,
-                        parameters: strongSelf.parameters
-                    ).queue { loginSuccessResult in
-                        switch loginSuccessResult {
-                            case .success: finish(result: requestResult)
-                            case .failure(let error): finish(result: .failure(error))
-                            case .cancelled: finish(result: .cancelled)
-                        }
-                    }
-                
-                case .failure(_), .cancelled:
-                    finish(result: requestResult)
+            LoginSuccessOperation(
+                dependencyManager: strongSelf.dependencyManager,
+                response: response,
+                parameters: strongSelf.parameters
+            ).queue { loginSuccessResult in
+                switch loginSuccessResult {
+                    case .success: finish(result: requestResult)
+                    case .failure(let error): finish(result: .failure(error))
+                    case .cancelled: finish(result: .cancelled)
+                }
             }
         }
     }

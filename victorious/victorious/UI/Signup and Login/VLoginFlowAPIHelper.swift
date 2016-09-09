@@ -61,7 +61,14 @@ extension VLoginFlowAPIHelper {
             password: password
         )
         
-        operation.queue(completion: completion)
+        operation.queue { result in
+            switch result {
+                case .success(_): completion(nil, nil, false)
+                case .failure(let error): completion(nil, error as NSError, false)
+                case .cancelled: completion(nil, nil, true)
+            }
+        }
+        
         return operation
     }
     

@@ -6,32 +6,49 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-class LoginOperation: RemoteFetcherOperation {
+class LoginOperation: AsyncOperation<AccountCreateResponse> {
     
-    private let dependencyManager: VDependencyManager
-    let request: LoginRequest!
+    // MARK: - Initializing
     
     init(dependencyManager: VDependencyManager, email: String, password: String) {
         self.dependencyManager = dependencyManager
         request = LoginRequest(email: email, password: password)
         super.init()
+    }
+    
+    // MARK: - Executing
+    
+    private let dependencyManager: VDependencyManager
+    private let request: LoginRequest
+    
+    override var executionQueue: Queue {
+        return .background
+    }
+    
+    override func execute(finish: (result: OperationResult<AccountCreateResponse>) -> Void) {
+        let parameters = AccountCreateParameters(loginType: .Email, accountIdentifier: request.email)
+        let requestOperation = RequestOperation(request: request)
         
-        requiresAuthorization = false
-    }
-    
-    override func main() {
-        guard !cancelled else {
-            return
+        requestOperation.queue { [weak self] requestResult in
+            guard
+                let strongSelf = self,
+                let response = requestResult.output
+            else {
+                finish(result: requestResult)
+                return
+            }
+            
+            LoginSuccessOperation(
+                dependencyManager: strongSelf.dependencyManager,
+                response: response,
+                parameters: parameters
+            ).queue { loginSuccessResult in
+                switch loginSuccessResult {
+                    case .success: finish(result: requestResult)
+                    case .failure(let error): finish(result: .failure(error))
+                    case .cancelled: finish(result: .cancelled)
+                }
+            }
         }
-        requestExecutor.executeRequest(request, onComplete: onComplete, onError: nil)
-    }
-    
-    func onComplete(response: AccountCreateResponse) {
-        let parameters = AccountCreateParameters(loginType: .Email, accountIdentifier: self.request.email)
-        LoginSuccessOperation(
-            dependencyManager: dependencyManager,
-            response: response,
-            parameters: parameters
-        ).rechainAfter(self).queue()
     }
 }
