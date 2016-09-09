@@ -11,15 +11,12 @@ import VictoriousIOSSDK
 
 final class GIFSearchOperation: AsyncOperation<[AnyObject]>, PaginatedRequestOperation {
     
-    let request: GIFSearchRequest
-    
-    private let searchTerm: String?
-    
-    var results: [AnyObject]?
+    // MARK: - Initializing
     
     required init(request: GIFSearchRequest) {
         self.searchTerm = request.searchTerm
         self.request = request
+        self.requestOperation = RequestOperation(request: request)
     }
     
     convenience init(searchTerm: String?) {
@@ -27,12 +24,31 @@ final class GIFSearchOperation: AsyncOperation<[AnyObject]>, PaginatedRequestOpe
         self.init(request: GIFSearchRequest(searchTerm: searchTerm, paginator: paginator))
     }
     
+    // MARK: - Executing
+    
+    private let searchTerm: String?
+    
+    var request: GIFSearchRequest
+    
+    private let requestOperation: RequestOperation<GIFSearchRequest>
+    
+    var results: [AnyObject]?
+    
+    var requestExecutor: RequestExecutorType {
+        get {
+            return requestOperation.requestExecutor
+        }
+        set {
+            requestOperation.requestExecutor = newValue
+        }
+    }
+    
     override var executionQueue: Queue {
         return .background
     }
     
     override func execute(finish: (result: OperationResult<[AnyObject]>) -> Void) {
-        RequestOperation(request: request).queue { [weak self] result in
+        requestOperation.queue { [weak self] result in
             switch result {
                 case .success(let searchResults):
                     let searchResultObjects = searchResults.map { GIFSearchResultObject( $0 ) }

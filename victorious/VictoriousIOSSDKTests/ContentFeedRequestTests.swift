@@ -12,9 +12,9 @@ import XCTest
 class ContentFeedRequestTests: XCTestCase {
     
     func testConfiguredRequest() {
-        let apiPath: String = "API_PATH"
-        let request = ContentFeedRequest(url: NSURL(string: apiPath)!)
-        XCTAssertEqual( request.urlRequest.URL?.absoluteString, apiPath)
+        let apiPath = APIPath(templatePath: "API_PATH")
+        let request = ContentFeedRequest(apiPath: apiPath)
+        XCTAssertEqual( request.urlRequest.URL?.absoluteString, apiPath.url!.absoluteString)
         XCTAssertEqual( request.urlRequest.HTTPMethod, "GET" )
     }
     
@@ -26,15 +26,15 @@ class ContentFeedRequestTests: XCTestCase {
                 return
         }
         
-        let apiPath: String = "API_PATH"
-        let request = ContentFeedRequest(url: NSURL(string: apiPath)!)
+        let apiPath = APIPath(templatePath: "API_PATH")
+        let request = ContentFeedRequest(apiPath: apiPath)
         do {
-            let (contents, refreshStage) = try request.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
-            XCTAssertEqual(contents.count, 2)
-            XCTAssertEqual(contents.first?.id, "20711")
-            XCTAssertEqual(contents.last?.id, "20712")
-            XCTAssertEqual(refreshStage?.contentID, "21253")
-            XCTAssertEqual(refreshStage?.section, StageSection.main)
+            let feedResult = try request.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
+            XCTAssertEqual(feedResult.contents.count, 2)
+            XCTAssertEqual(feedResult.contents.first?.id, "20711")
+            XCTAssertEqual(feedResult.contents.last?.id, "20712")
+            XCTAssertEqual(feedResult.refreshStage?.contentID, "21253")
+            XCTAssertEqual(feedResult.refreshStage?.section, StageSection.main)
         } catch {
             XCTFail("parseResponse is not supposed to throw")
             return

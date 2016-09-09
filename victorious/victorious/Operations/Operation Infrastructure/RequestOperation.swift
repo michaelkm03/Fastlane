@@ -17,24 +17,27 @@ class RequestOperation<Request: RequestType>: AsyncOperation<Request.ResultType>
     
     // MARK: - Executing
     
-    private let request: Request
+    /// The request's executor. Defaults to a `MainRequestExecutor`, but can be swapped out before the operation
+    /// executes.
+    var requestExecutor: RequestExecutorType = MainRequestExecutor()
+    
+    /// The request that will be executed.
+    let request: Request
     
     override var executionQueue: Queue {
         return .background
     }
     
     override func execute(finish: (result: OperationResult<Request.ResultType>) -> Void) {
-        let executor = MainRequestExecutor()
-        
-        if !executor.errorHandlers.contains({ $0 is UnauthorizedErrorHandler }) {
-            executor.errorHandlers.append(UnauthorizedErrorHandler())
+        if !requestExecutor.errorHandlers.contains({ $0 is UnauthorizedErrorHandler }) {
+            requestExecutor.errorHandlers.append(UnauthorizedErrorHandler())
         }
         
-        if !executor.errorHandlers.contains({ $0 is DebugErrorHandler }) {
-            executor.errorHandlers.append(DebugErrorHandler(requestIdentifier: "\(self.dynamicType)"))
+        if !requestExecutor.errorHandlers.contains({ $0 is DebugErrorHandler }) {
+            requestExecutor.errorHandlers.append(DebugErrorHandler(requestIdentifier: "\(self.dynamicType)"))
         }
         
-        executor.executeRequest(
+        requestExecutor.executeRequest(
             request,
             onComplete: { result in
                 finish(result: .success(result))

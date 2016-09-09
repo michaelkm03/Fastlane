@@ -12,22 +12,30 @@ class LoginOperation: AsyncOperation<AccountCreateResponse> {
     
     init(dependencyManager: VDependencyManager, email: String, password: String) {
         self.dependencyManager = dependencyManager
-        request = LoginRequest(email: email, password: password)
+        requestOperation = RequestOperation(request: LoginRequest(email: email, password: password))
         super.init()
     }
     
     // MARK: - Executing
     
     private let dependencyManager: VDependencyManager
-    private let request: LoginRequest
+    private let requestOperation: RequestOperation<LoginRequest>
+    
+    var requestExecutor: RequestExecutorType {
+        get {
+            return requestOperation.requestExecutor
+        }
+        set {
+            requestOperation.requestExecutor = newValue
+        }
+    }
     
     override var executionQueue: Queue {
         return .background
     }
     
     override func execute(finish: (result: OperationResult<AccountCreateResponse>) -> Void) {
-        let parameters = AccountCreateParameters(loginType: .Email, accountIdentifier: request.email)
-        let requestOperation = RequestOperation(request: request)
+        let parameters = AccountCreateParameters(loginType: .Email, accountIdentifier: requestOperation.request.email)
         
         requestOperation.queue { [weak self] requestResult in
             guard

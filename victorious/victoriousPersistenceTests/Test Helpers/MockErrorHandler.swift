@@ -27,20 +27,3 @@ class MockErrorHandler: NSObject, RequestErrorHandler {
         return false
     }
 }
-
-class MockFetcherOperation: RemoteFetcherOperation, RequestOperation {
-    
-    let request: MockRequest! = MockRequest()
-    
-    override func main() {
-        requestExecutor.executeRequest(request, onComplete: onComplete, onError: onError)
-    }
-    
-    private func onComplete(sequence: MockRequest.ResultType) {
-        self.results = [NSObject(), NSObject()]
-    }
-    
-    private func onError(error: NSError) {
-        self.error = error
-    }
-}
