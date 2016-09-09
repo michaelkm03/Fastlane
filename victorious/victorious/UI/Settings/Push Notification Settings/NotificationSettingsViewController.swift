@@ -149,7 +149,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
                 
                 case .failure(_):
                     let title = NSLocalizedString("ErrorPushNotificationsNotSaved", comment: "")
-                    let message = NSLocalizedString("ErrorPushNotificationsNotSavedMessage", comment: "")
+                    let message = NSLocalizedString("PleaseTryAgainLater", comment: "")
                     let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
                     alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .Cancel, handler: nil))
                     self?.navigationController?.presentViewController(alertController, animated: true, completion: nil)

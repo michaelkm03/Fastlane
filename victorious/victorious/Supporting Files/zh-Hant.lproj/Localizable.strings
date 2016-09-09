@@ -325,7 +325,7 @@
 "ErrorPushNotificationsNotEnabled"      = "你的裝置未啟用推播通知。\n請在你的裝置設定中啟用通知。";
 "ErrorPushNotificationsUnknown"         = "載入通知設定時發生錯誤。\n請稍後再試。";
 "ErrorPushNotificationsNotSaved"        = "儲存喜好設定時發生錯誤";
-"ErrorPushNotificationsNotSavedMessage" = "請稍後再試。";
+"PleaseTryAgainLater" = "請稍後再試。";
 
 "We need permission to access your photo library." = "請授權我們存取你的相片媒體櫃。";
 "We need access to this permission."               = "我們需要存取權限。";

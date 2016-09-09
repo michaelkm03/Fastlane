@@ -217,9 +217,6 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         stageShrinkingAnimator?.shouldHideKeyboardHandler = { [weak self] in
             self?.view.endEditing(true)
         }
-        stageShrinkingAnimator?.interpolateAlongside = {[weak self] percentage in
-            self?.stage?.overlayUIAlpha = 1 - percentage
-        }
         
         chatFeed?.nextSender = self
         //Initialize the title view. This will later be resized in the viewWillAppear, once it has actually been added to the navigation stack

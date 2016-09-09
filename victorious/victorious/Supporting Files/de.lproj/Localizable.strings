@@ -325,7 +325,7 @@
 "ErrorPushNotificationsNotEnabled"      = "Push-Benachrichtigungen sind für dein Gerät nicht aktiviert.\nBitte erlaube Benachrichtigungen in den Einstellungen deines Gerätes.";
 "ErrorPushNotificationsUnknown"         = "Fehler beim Laden der Benachrichtigungseinstellungen.\nBitte versuche es später erneut.";
 "ErrorPushNotificationsNotSaved"        = "Fehler beim Speichern der Einstellungen";
-"ErrorPushNotificationsNotSavedMessage" = "Bitte versuche es später erneut.";
+"PleaseTryAgainLater" = "Bitte versuche es später erneut.";
 
 "We need permission to access your photo library." = "Wir benötigen Zugang zu deiner Fotobibliothek.";
 "We need access to this permission."               = "Wir benötigen Zugriff auf diese Berechtigung.";

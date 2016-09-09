@@ -325,7 +325,7 @@
 "ErrorPushNotificationsNotEnabled"      = "Las notificaciones no están habilitadas para su dispositivo.\n";
 "ErrorPushNotificationsUnknown"         = "Error al cargar las notificaciones .\nPor favor, intentar más tarde.";
 "ErrorPushNotificationsNotSaved"        = "Error al guardar las preferencias";
-"ErrorPushNotificationsNotSavedMessage" = "Por favor, intentar más tarde.";
+"PleaseTryAgainLater" = "Por favor, intentar más tarde.";
 
 "We need permission to access your photo library." = "Necesitamos permiso para acceder a tu archivo de fotografías.";
 "We need access to this permission."               = "Necesitamos acceder a este permiso.";

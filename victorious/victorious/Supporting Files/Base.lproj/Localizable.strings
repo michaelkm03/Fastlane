@@ -167,7 +167,7 @@
 "ErrorPushNotificationsNotEnabled"      = "Push notifications are not enabled for your device.\nPlease allow notifications in your device settings to enable them.";
 "ErrorPushNotificationsUnknown"         = "Error loading notification settings.\nPlease try again later.";
 "ErrorPushNotificationsNotSaved"        = "Error Saving Preferences";
-"ErrorPushNotificationsNotSavedMessage" = "Please try again later.";
+"PleaseTryAgainLater" = "Please try again later.";
 
 "We need permission to access your photo library." = "We need permission to access your photo library.";
 "We need access to this permission."               = "We need access to this permission.";

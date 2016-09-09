@@ -325,7 +325,7 @@
 "ErrorPushNotificationsNotEnabled"      = "푸시 알림이 기기에서 활성화되어 있지 않습니다.\n기기 설정에서 알림을 허용해서 푸시 알림을 켜세요.";
 "ErrorPushNotificationsUnknown"         = "알림 설정을 불러오는 중 오류가 있었습니다.\n나중에 다시 시도하세요.";
 "ErrorPushNotificationsNotSaved"        = "환경설정 저장 중 오류 발생";
-"ErrorPushNotificationsNotSavedMessage" = "나중에 다시 시도하세요.";
+"PleaseTryAgainLater" = "나중에 다시 시도하세요.";
 
 "We need permission to access your photo library." = "사진 라이브러리 접근 권한이 필요합니다.";
 "We need access to this permission."               = "이 권한이 필요합니다.";
