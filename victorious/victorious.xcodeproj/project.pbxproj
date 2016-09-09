@@ -385,7 +385,6 @@
 		0EF716911C9904D20005CF86 /* WebSocketError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF716901C9904D20005CF86 /* WebSocketError.swift */; };
 		0EFC27D91D38277200C84068 /* DraggableBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFC27D81D38277200C84068 /* DraggableBehavior.swift */; };
 		0EFE50561CB5BA64000D1C95 /* CreateChatServiceTokenRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFE50551CB5BA64000D1C95 /* CreateChatServiceTokenRequest.swift */; };
-		0EFE50581CB5C10D000D1C95 /* CreateChatServiceTokenOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFE50571CB5C10D000D1C95 /* CreateChatServiceTokenOperation.swift */; };
 		1094009C31AC4618020BBB01 /* Pods_victorious_test.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5C5A0342449CFD4C4768B97 /* Pods_victorious_test.framework */; };
 		1A13B0B8089E4C2FE24A9666 /* Pods_victorious.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C2BB19912E006FE37A461E5 /* Pods_victorious.framework */; };
 		24757BE6782D2DCE2572AD42 /* Pods_victoriousPersistenceTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEADE095630ECF74F385112E /* Pods_victoriousPersistenceTests.framework */; };
@@ -1848,7 +1847,6 @@
 		0EF716901C9904D20005CF86 /* WebSocketError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebSocketError.swift; path = WebSocket/WebSocketError.swift; sourceTree = "<group>"; };
 		0EFC27D81D38277200C84068 /* DraggableBehavior.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DraggableBehavior.swift; sourceTree = "<group>"; };
 		0EFE50551CB5BA64000D1C95 /* CreateChatServiceTokenRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateChatServiceTokenRequest.swift; sourceTree = "<group>"; };
-		0EFE50571CB5C10D000D1C95 /* CreateChatServiceTokenOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateChatServiceTokenOperation.swift; sourceTree = "<group>"; };
 		138B5A4A675BB6176F7DA761 /* Pods-victorious.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious.release.xcconfig"; path = "Pods/Target Support Files/Pods-victorious/Pods-victorious.release.xcconfig"; sourceTree = "<group>"; };
 		173ED609974346F850624A73 /* Pods-test.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.release.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.release.xcconfig"; sourceTree = "<group>"; };
 		1DA862548DC74022C5FD6121 /* Pods-VictoriousIOSSDKTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousIOSSDKTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousIOSSDKTests/Pods-VictoriousIOSSDKTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -5212,7 +5210,6 @@
 				7A1DECD71D80E093003F5C37 /* Operation Infrastructure */,
 				A72C85BE1C977FF500E97D4F /* Pagination */,
 				A72C85C01C977FF500E97D4F /* Purchase */,
-				A72C85CC1C977FF500E97D4F /* Remote Fetcher Operations */,
 				A72C85F01C977FF500E97D4F /* Superclasses */,
 				A72C85F51C977FF500E97D4F /* Upload */,
 				7A1DECDF1D80E0E5003F5C37 /* User */,
@@ -5268,14 +5265,6 @@
 				A7FFCE4D1C8FCDD900B1BE49 /* VIPValidateSubscriptionOperation.swift */,
 			);
 			path = Purchase;
-			sourceTree = "<group>";
-		};
-		A72C85CC1C977FF500E97D4F /* Remote Fetcher Operations */ = {
-			isa = PBXGroup;
-			children = (
-				0EFE50571CB5C10D000D1C95 /* CreateChatServiceTokenOperation.swift */,
-			);
-			path = "Remote Fetcher Operations";
 			sourceTree = "<group>";
 		};
 		A72C85F01C977FF500E97D4F /* Superclasses */ = {
@@ -8222,7 +8211,6 @@
 				A72C86461C977FF500E97D4F /* RequestContext+Environment.swift in Sources */,
 				7A85F1721D59251900C2B7F3 /* VideoBackground.swift in Sources */,
 				7A5519EC1D24775900CD6BCF /* ContentMediaSize.swift in Sources */,
-				0EFE50581CB5C10D000D1C95 /* CreateChatServiceTokenOperation.swift in Sources */,
 				A789F7301BF11F4900F5C87B /* VImageAsset+Parsable.swift in Sources */,
 				A72C864E1C977FF500E97D4F /* RequestPushNotificationPermissionOperation.swift in Sources */,
 				671B01B51BFD5AB800E47902 /* DismissButton.swift in Sources */,
