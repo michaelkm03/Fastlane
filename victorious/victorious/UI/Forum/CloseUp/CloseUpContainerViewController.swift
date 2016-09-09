@@ -18,6 +18,20 @@ private struct Constants {
     static let navigationBarRightPadding: CGFloat = 10.0 
 }
 
+struct DeeplinkContext {
+    let value: String?
+
+    init(value: String?) {
+        if value == "favorite.stream" {
+            self.value = "bumped_feed"
+        } else if value == "home.stream" {
+            self.value = "main_feed"
+        } else {
+            self.value = value
+        }
+    }
+}
+
 class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, ContentCellTracker, CoachmarkDisplayer, VBackgroundContainer {
     private let gridStreamController: GridStreamViewController<CloseUpView>
     var dependencyManager: VDependencyManager!
@@ -30,7 +44,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     private let contentID: Content.ID
     private var firstPresentation = true
     private let closeUpView: CloseUpView
-    private var context: DeeplinkContext
+    private var context: DeeplinkContext?
     
     private lazy var shareButton: UIBarButtonItem = {
         return UIBarButtonItem(
@@ -62,7 +76,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         }
     }
 
-    init(dependencyManager: VDependencyManager, contentID: String, content: ContentModel? = nil, streamAPIPath: APIPath, context: DeeplinkContext) {
+    init(dependencyManager: VDependencyManager, contentID: String, content: ContentModel? = nil, streamAPIPath: APIPath, context: DeeplinkContext?) {
         self.context = context
         self.dependencyManager = dependencyManager
         
@@ -142,7 +156,8 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     
     private func trackContentView() {
         if let content = content where firstPresentation {
-            trackView(.viewStart, showingContent: content, parameters: [VTrackingKeyContext:context.rawValue])
+            let value = context?.value ?? ""
+            trackView(.viewStart, showingContent: content, parameters: [VTrackingKeyContext:value])
             firstPresentation = false
         }
     }
@@ -207,7 +222,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     func didSelectProfileForUserID(userID: Int) {
         let router = Router(originViewController: self, dependencyManager: dependencyManager)
         let destination = DeeplinkDestination(userID: userID)
-        router.navigate(to: destination, from: .closeUpView)
+        router.navigate(to: destination, from: DeeplinkContext(value: "closeup_view"))
     }
     
     func gridStreamDidUpdate() {

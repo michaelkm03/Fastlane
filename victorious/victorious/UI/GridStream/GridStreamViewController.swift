@@ -236,13 +236,15 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         let targetContent = dataSource.items[indexPath.row]
         
         let destination = DeeplinkDestination(content: targetContent)
-        let context: DeeplinkContext
+        let context: DeeplinkContext?
         if header?.dynamicType == CloseUpView.self {
-            context = .closeUpView
-        } else if header?.dynamicType == VNewProfileHeaderView.self {
-            context = .userProfile
-        } else {
-            context = .grid
+            context = DeeplinkContext(value: "closeup_view")
+        }
+        else if header?.dynamicType == VNewProfileHeaderView.self {
+            context = DeeplinkContext(value: "user_profile")
+        }
+        else {
+            context = nil
         }
         router.navigate(to: destination, from: context)
         header?.headerWillDisappear()

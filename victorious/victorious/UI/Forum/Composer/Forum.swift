@@ -16,6 +16,7 @@ protocol Forum: ForumEventReceiver, ForumEventSender, ChatFeedDelegate, Composer
     
     var dependencyManager: VDependencyManager! { get }
     var originViewController: UIViewController { get }
+    var chatFeedContext: DeeplinkContext? { get }
     func creationFlowPresenter() -> VCreationFlowPresenter?
     
     // MARK: - Abstract subcomponents/dependencies
@@ -36,19 +37,18 @@ protocol Forum: ForumEventReceiver, ForumEventSender, ChatFeedDelegate, Composer
 /// intended as a concise and flexible mini-architecture and defines the
 /// most fundamental interaction between parent and subcomponents.
 extension Forum {
-    
     // MARK: - ChatFeedDelegate
     
     func chatFeed(chatFeed: ChatFeed, didSelectUserWithUserID userID: Int) {
         let router = Router(originViewController: originViewController, dependencyManager: dependencyManager)
         let destination = DeeplinkDestination(userID: userID)
-        router.navigate(to: destination, from: .feed)
+        router.navigate(to: destination, from: chatFeedContext)
     }
     
     func chatFeed(chatFeed: ChatFeed, didSelectContent chatFeedContent: ChatFeedContent) {
         let router = Router(originViewController: originViewController, dependencyManager: dependencyManager)
         let destination = DeeplinkDestination(content: chatFeedContent.content)
-        router.navigate(to: destination, from: .feed)
+        router.navigate(to: destination, from: chatFeedContext)
     }
     
     // MARK: - ComposerDelegate

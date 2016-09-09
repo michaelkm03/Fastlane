@@ -168,7 +168,7 @@ class NotificationsViewController: UIViewController, UITableViewDelegate, Notifi
         
         let destination = DeeplinkDestination(url: url)
         let router = Router(originViewController: self, dependencyManager: dependencyManager)
-        router.navigate(to: destination, from: .notifications)
+        router.navigate(to: destination, from: nil)
     }
     
     // MARK: - UITableViewDelegate

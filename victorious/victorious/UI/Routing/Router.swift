@@ -24,7 +24,7 @@ struct Router {
     
     // MARK: - API
 
-    func navigate(to destination: DeeplinkDestination?, from context: DeeplinkContext) {
+    func navigate(to destination: DeeplinkDestination?, from context: DeeplinkContext?) {
         guard let destination = destination else {
             showError()
             return
@@ -41,7 +41,7 @@ struct Router {
     
     // MARK: - Private Helper Functions
     
-    private func showCloseUpView(for contentWrapper: CloseUpContentWrapper, from context: DeeplinkContext) {
+    private func showCloseUpView(for contentWrapper: CloseUpContentWrapper, from context: DeeplinkContext?) {
         guard let originViewController = self.originViewController else { return }
         let displayModifier = ShowCloseUpDisplayModifier(dependencyManager: dependencyManager, originViewController: originViewController)
 
@@ -254,17 +254,17 @@ private final class ShowCloseUpOperation: AsyncOperation<Void> {
     private let displayModifier: ShowCloseUpDisplayModifier
     private var content: ContentModel?
     private var contentID: String?
-    private var context: DeeplinkContext
+    private var context: DeeplinkContext?
     private(set) var displayedCloseUpView: CloseUpContainerViewController?
 
-    init(contentID: String, context: DeeplinkContext, displayModifier: ShowCloseUpDisplayModifier) {
+    init(contentID: String, context: DeeplinkContext?, displayModifier: ShowCloseUpDisplayModifier) {
         self.displayModifier = displayModifier
         self.contentID = contentID
         self.context = context
         super.init()
     }
 
-    init(content: ContentModel, context: DeeplinkContext, displayModifier: ShowCloseUpDisplayModifier) {
+    init(content: ContentModel, context: DeeplinkContext?, displayModifier: ShowCloseUpDisplayModifier) {
         self.displayModifier = displayModifier
         self.content = content
         self.context = context
@@ -317,9 +317,9 @@ private final class ShowCloseUpOperation: AsyncOperation<Void> {
 private final class ShowFetchedCloseUpOperation: AsyncOperation<Void> {
     private let displayModifier: ShowCloseUpDisplayModifier
     private var contentID: String
-    private var context: DeeplinkContext
+    private var context: DeeplinkContext?
 
-    init(contentID: String, context: DeeplinkContext, displayModifier: ShowCloseUpDisplayModifier) {
+    init(contentID: String, context: DeeplinkContext?, displayModifier: ShowCloseUpDisplayModifier) {
         self.displayModifier = displayModifier
         self.contentID = contentID
         self.context = context

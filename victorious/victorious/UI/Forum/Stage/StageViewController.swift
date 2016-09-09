@@ -30,7 +30,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     }()
 
     private var stageContext: DeeplinkContext {
-        return DeeplinkContext(rawValue: dependencyManager.stageType) ?? .stage
+        return DeeplinkContext(value: dependencyManager.context)
     }
 
     private var mediaContentView: MediaContentView?
@@ -390,9 +390,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     // MARK: - Content Cell Tracker 
     
     var sessionParameters: [NSObject: AnyObject] {
-        // FUTURE: This should be returning "VIP_STAGE" or "MAIN_STAGE" depending on which stage this is, but we don't
-        // have the infrastructure to do that easily right now.
-        return [VTrackingKeyParentContentId: dependencyManager.stageType]
+        return [VTrackingKeyParentContentId: dependencyManager.context]
     }
 }
 
@@ -401,7 +399,7 @@ private extension VDependencyManager {
         return childDependencyForKey("captionBar")
     }
 
-    var stageType: String {
-        return stringForKey("type") ?? "STAGE"
+    var context: String {
+        return stringForKey("context") ?? "STAGE"
     }
 }

@@ -216,7 +216,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         guard let scaffold = VRootViewController.sharedRootViewController()?.scaffold else {
             return
         }
-        Router(originViewController: scaffold, dependencyManager: dependencyManager).navigate(to: .vipForum, from: .userProfile)
+        Router(originViewController: scaffold, dependencyManager: dependencyManager).navigate(to: .vipForum, from: DeeplinkContext(value:"user_profile"))
     }
     
     private dynamic func toggleUpvote() {

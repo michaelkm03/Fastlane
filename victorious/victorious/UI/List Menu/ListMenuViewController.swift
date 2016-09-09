@@ -11,6 +11,7 @@ import UIKit
 struct ListMenuSelectedItem {
     let streamAPIPath: APIPath
     let title: String?
+    let context: DeeplinkContext?
 }
 
 /// View Controller for the entire List Menu Component, which is currently being displayed as the left navigation pane
@@ -88,7 +89,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         
         // Had to trace down the inner navigation controller because List Menu has no idea where it is - and it doesn't have navigation stack either.
         let router = Router(originViewController: scaffold.mainNavigationController, dependencyManager: dependencyManager)
-        router.navigate(to: destination, from: .listMenu)
+        router.navigate(to: destination, from: nil)
         
         // This notification closes the side view controller
         NSNotificationCenter.defaultCenter().postNotificationName(
@@ -100,17 +101,19 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     
     private func selectCommunity(atIndex index: Int) {
         let item = collectionViewDataSource.communityDataSource.visibleItems[index]
-        
+        let context = DeeplinkContext(value: item.name)
         // Index 0 should correspond to the home feed, so we broadcast a nil path to denote an unfiltered feed.
-        postListMenuSelection(index == 0 ? nil : ListMenuSelectedItem(streamAPIPath: item.streamAPIPath, title: item.title))
+        postListMenuSelection(index == 0 ? nil : ListMenuSelectedItem(streamAPIPath: item.streamAPIPath, title: item.title, context: context))
     }
     
     private func selectHashtag(atIndex index: Int) {
         let item = collectionViewDataSource.hashtagDataSource.visibleItems[index]
         var apiPath = collectionViewDataSource.hashtagDataSource.hashtagStreamAPIPath
         apiPath.macroReplacements["%%HASHTAG%%"] = item.tag
-        let selectedTagItem = ListMenuSelectedItem(streamAPIPath: apiPath, title: "#\(item.tag)")
-        
+
+        let context = DeeplinkContext(value: item.tag)
+        let selectedTagItem = ListMenuSelectedItem(streamAPIPath: apiPath, title: "#\(item.tag)", context: context)
+
         postListMenuSelection(selectedTagItem)
     }
     
