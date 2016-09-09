@@ -10,47 +10,45 @@ import FBSDKLoginKit
 import Foundation
 import VictoriousIOSSDK
 
-class LogoutOperation: RemoteFetcherOperation {
+class LogoutOperation: AsyncOperation<Void> {
     
-    private var dependencyManager: VDependencyManager? = nil
+    // MARK: - Initializing
     
-    override init() {
-        super.init()
-        
-        requiresAuthorization = false
-        
-        // Boost the priority of this operation
-        self.qualityOfService = .UserInitiated
-        
-        LogoutRemoteOperation().before(self).queue()
-    }
-    
-    convenience init(dependencyManager: VDependencyManager) {
-        self.init()
+    init(dependencyManager: VDependencyManager? = nil) {
         self.dependencyManager = dependencyManager
+        super.init()
+        qualityOfService = .UserInitiated
     }
     
-    override func main() {
+    // MARK: - Initializing
+    
+    private let dependencyManager: VDependencyManager?
+    
+    override var executionQueue: Queue {
+        return .background
+    }
+    
+    override func execute(finish: (result: OperationResult<Void>) -> Void) {
         guard VCurrentUser.user != nil else {
             // Cannot logout without a current (logged-in) user
+            finish(result: .failure(NSError(domain: "LogoutOperation", code: -1, userInfo: [:])))
             return
         }
         
-        dispatch_sync( dispatch_get_main_queue() ) {
-            
+        RequestOperation(request: LogoutRequest()).queue { [weak self] result in
             InterstitialManager.sharedInstance.clearAllRegisteredAlerts()
             
-            NSUserDefaults.standardUserDefaults().removeObjectForKey( kLastLoginTypeUserDefaultsKey )
-            NSUserDefaults.standardUserDefaults().removeObjectForKey( kAccountIdentifierDefaultsKey )
+            NSUserDefaults.standardUserDefaults().removeObjectForKey(kLastLoginTypeUserDefaultsKey)
+            NSUserDefaults.standardUserDefaults().removeObjectForKey(kAccountIdentifierDefaultsKey)
             
             VStoredLogin().clearLoggedInUserFromDisk()
             VStoredPassword().clearSavedPassword()
             FBSDKLoginManager().logOut()
             
-            VTrackingManager.sharedInstance().trackEvent( VTrackingEventUserDidLogOut )
+            VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidLogOut)
             
-            if let dependencyManager = self.dependencyManager,
-               let forumNetworkSource = dependencyManager.forumNetworkSource { //Try to reset the network resource token
+            // Try to reset the network resource token.
+            if let dependencyManager = self?.dependencyManager, let forumNetworkSource = dependencyManager.forumNetworkSource {
                 forumNetworkSource.tearDown()
             }
             
@@ -58,20 +56,5 @@ class LogoutOperation: RemoteFetcherOperation {
             // some of the stuff above requires knowing the current user
             VCurrentUser.clear()
         }
-    }
-}
-
-private class LogoutRemoteOperation: RemoteFetcherOperation {
-    
-    let request: LogoutRequest! = LogoutRequest()
-    
-    override init() {
-        super.init()
-        
-        requiresAuthorization = false
-    }
-    
-    override func main() {
-        requestExecutor.executeRequest( request, onComplete: nil, onError: nil )
     }
 }
