@@ -562,7 +562,6 @@
 		7A1DECCC1D80E075003F5C37 /* ShowLoginOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECC71D80E075003F5C37 /* ShowLoginOperation.swift */; };
 		7A1DECCD1D80E075003F5C37 /* StoredLoginOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECC81D80E075003F5C37 /* StoredLoginOperation.swift */; };
 		7A1DECD41D80E08B003F5C37 /* NotificationsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECD01D80E08B003F5C37 /* NotificationsOperation.swift */; };
-		7A1DECD61D80E08B003F5C37 /* NotificationsUnreadCountOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECD21D80E08B003F5C37 /* NotificationsUnreadCountOperation.swift */; };
 		7A1DECDB1D80E09E003F5C37 /* NSOperationQueue+Queuable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECD81D80E09E003F5C37 /* NSOperationQueue+Queuable.swift */; };
 		7A1DECDC1D80E09E003F5C37 /* Queueable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECD91D80E09E003F5C37 /* Queueable.swift */; };
 		7A1DECDD1D80E09E003F5C37 /* RequestOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECDA1D80E09E003F5C37 /* RequestOperation.swift */; };
@@ -2043,7 +2042,6 @@
 		7A1DECC71D80E075003F5C37 /* ShowLoginOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowLoginOperation.swift; sourceTree = "<group>"; };
 		7A1DECC81D80E075003F5C37 /* StoredLoginOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoredLoginOperation.swift; sourceTree = "<group>"; };
 		7A1DECD01D80E08B003F5C37 /* NotificationsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsOperation.swift; sourceTree = "<group>"; };
-		7A1DECD21D80E08B003F5C37 /* NotificationsUnreadCountOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsUnreadCountOperation.swift; sourceTree = "<group>"; };
 		7A1DECD81D80E09E003F5C37 /* NSOperationQueue+Queuable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSOperationQueue+Queuable.swift"; sourceTree = "<group>"; };
 		7A1DECD91D80E09E003F5C37 /* Queueable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queueable.swift; sourceTree = "<group>"; };
 		7A1DECDA1D80E09E003F5C37 /* RequestOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestOperation.swift; sourceTree = "<group>"; };
@@ -4833,7 +4831,6 @@
 			isa = PBXGroup;
 			children = (
 				7A1DECD01D80E08B003F5C37 /* NotificationsOperation.swift */,
-				7A1DECD21D80E08B003F5C37 /* NotificationsUnreadCountOperation.swift */,
 			);
 			path = Notifications;
 			sourceTree = "<group>";
@@ -8521,7 +8518,6 @@
 				A65F4D581B5DA69B00C96F1F /* VNoAssetsDataSource.m in Sources */,
 				0EFC27D91D38277200C84068 /* DraggableBehavior.swift in Sources */,
 				0E5C69661D47E1B200363DBB /* Forum+TestHarness.swift in Sources */,
-				7A1DECD61D80E08B003F5C37 /* NotificationsUnreadCountOperation.swift in Sources */,
 				F00DEBA01CC1940F00C5C9EA /* NSURL+PreviewImage.swift in Sources */,
 				677DCFE51CB47A3B00FC4394 /* InterstitialToastViewController.swift in Sources */,
 				034BA92E1C60272000C23D7E /* VLog.swift in Sources */,

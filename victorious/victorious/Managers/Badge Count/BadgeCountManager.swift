@@ -91,11 +91,10 @@ final class BadgeCountManager {
     
     /// Retrieves the user's current unread notification count and updates `unreadNotificationCount` accordingly.
     private func fetchUnreadNotificationCount() {
-        let operation = NotificationsUnreadCountOperation()
-        
-        operation.queue { [weak self] results, error, cancelled in
-            if let count = operation.unreadNotificationsCount?.integerValue where error == nil {
-                self?.unreadNotificationCount = count
+        RequestOperation(request: UnreadNotificationsCountRequest()).queue { [weak self] result in
+            switch result {
+                case .success(let count): self?.unreadNotificationCount = count
+                case .failure(_), .cancelled: break
             }
         }
     }
