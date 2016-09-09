@@ -551,9 +551,7 @@
 		7A1DECAF1D80E00C003F5C37 /* ContentFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECA31D80E00C003F5C37 /* ContentFetchOperation.swift */; };
 		7A1DECB11D80E00C003F5C37 /* ContentFlagOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECA51D80E00C003F5C37 /* ContentFlagOperation.swift */; };
 		7A1DECB21D80E00C003F5C37 /* ContentUnupvoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECA61D80E00C003F5C37 /* ContentUnupvoteOperation.swift */; };
-		7A1DECB31D80E00C003F5C37 /* ContentUnupvoteRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECA71D80E00C003F5C37 /* ContentUnupvoteRemoteOperation.swift */; };
 		7A1DECB41D80E00C003F5C37 /* ContentUpvoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECA81D80E00C003F5C37 /* ContentUpvoteOperation.swift */; };
-		7A1DECB51D80E00C003F5C37 /* ContentUpvoteRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECA91D80E00C003F5C37 /* ContentUpvoteRemoteOperation.swift */; };
 		7A1DECB61D80E00C003F5C37 /* ShowShareContentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECAA1D80E00C003F5C37 /* ShowShareContentOperation.swift */; };
 		7A1DECB71D80E00C003F5C37 /* StageContentFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECAB1D80E00C003F5C37 /* StageContentFetchOperation.swift */; };
 		7A1DECB81D80E00C003F5C37 /* TutorialContentsRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECAC1D80E00C003F5C37 /* TutorialContentsRemoteOperation.swift */; };
@@ -2042,9 +2040,7 @@
 		7A1DECA31D80E00C003F5C37 /* ContentFetchOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentFetchOperation.swift; sourceTree = "<group>"; };
 		7A1DECA51D80E00C003F5C37 /* ContentFlagOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentFlagOperation.swift; sourceTree = "<group>"; };
 		7A1DECA61D80E00C003F5C37 /* ContentUnupvoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentUnupvoteOperation.swift; sourceTree = "<group>"; };
-		7A1DECA71D80E00C003F5C37 /* ContentUnupvoteRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentUnupvoteRemoteOperation.swift; sourceTree = "<group>"; };
 		7A1DECA81D80E00C003F5C37 /* ContentUpvoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentUpvoteOperation.swift; sourceTree = "<group>"; };
-		7A1DECA91D80E00C003F5C37 /* ContentUpvoteRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentUpvoteRemoteOperation.swift; sourceTree = "<group>"; };
 		7A1DECAA1D80E00C003F5C37 /* ShowShareContentOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowShareContentOperation.swift; sourceTree = "<group>"; };
 		7A1DECAB1D80E00C003F5C37 /* StageContentFetchOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StageContentFetchOperation.swift; sourceTree = "<group>"; };
 		7A1DECAC1D80E00C003F5C37 /* TutorialContentsRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialContentsRemoteOperation.swift; sourceTree = "<group>"; };
@@ -4819,9 +4815,7 @@
 				7A1DECA31D80E00C003F5C37 /* ContentFetchOperation.swift */,
 				7A1DECA51D80E00C003F5C37 /* ContentFlagOperation.swift */,
 				7A1DECA61D80E00C003F5C37 /* ContentUnupvoteOperation.swift */,
-				7A1DECA71D80E00C003F5C37 /* ContentUnupvoteRemoteOperation.swift */,
 				7A1DECA81D80E00C003F5C37 /* ContentUpvoteOperation.swift */,
-				7A1DECA91D80E00C003F5C37 /* ContentUpvoteRemoteOperation.swift */,
 				7A1DECAA1D80E00C003F5C37 /* ShowShareContentOperation.swift */,
 				7A1DECAB1D80E00C003F5C37 /* StageContentFetchOperation.swift */,
 				7A1DECAC1D80E00C003F5C37 /* TutorialContentsRemoteOperation.swift */,
@@ -8078,7 +8072,6 @@
 				A601FB531B4363240050536C /* VCreationFlowPresenter.m in Sources */,
 				A728AC1F1BBDD4F800386641 /* VAudioManager.swift in Sources */,
 				67486B781CC85AD000B03926 /* ListMenuSectionHeaderView.swift in Sources */,
-				7A1DECB31D80E00C003F5C37 /* ContentUnupvoteRemoteOperation.swift in Sources */,
 				D80A94E91A546E5E0035D788 /* VThumbnailCell.m in Sources */,
 				A7AEF9B11A83F1C300A3D3A0 /* VFooterActivityIndicatorView.m in Sources */,
 				7A1DECDB1D80E09E003F5C37 /* NSOperationQueue+Queuable.swift in Sources */,
@@ -8209,7 +8202,6 @@
 				BFE31A861CD296C000585155 /* MediaContentView.swift in Sources */,
 				037CB74219CFE8B20084BBED /* VUploadManager.m in Sources */,
 				03B83B6219E0D2CC00DC04E4 /* VUploadProgressViewController.m in Sources */,
-				7A1DECB51D80E00C003F5C37 /* ContentUpvoteRemoteOperation.swift in Sources */,
 				0314D4D619B46B5E00FA363C /* VChangePasswordViewController.m in Sources */,
 				F06B41BD1B7ED7FD008709E8 /* UIResponder+typedResponder.swift in Sources */,
 				F07228261AD8846A00085653 /* VNotification.m in Sources */,

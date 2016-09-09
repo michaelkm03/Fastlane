@@ -17,14 +17,9 @@ public struct ContentUpvoteRequest: RequestType {
     
     private let contentUpvoteURL: NSURL
     
-    public init?(contentID: Content.ID, apiPath: APIPath) {
+    public init(contentID: Content.ID, apiPath: APIPath) {
         var apiPath = apiPath
         apiPath.macroReplacements["%%CONTENT_ID%%"] = contentID
-        
-        guard let url = apiPath.url else {
-            return nil
-        }
-        
-        self.contentUpvoteURL = url
+        contentUpvoteURL = apiPath.url ?? NSURL()
     }
 }

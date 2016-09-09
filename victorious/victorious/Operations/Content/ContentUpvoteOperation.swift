@@ -6,21 +6,27 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-import UIKit
-
-class ContentUpvoteOperation: FetcherOperation {
-    private let contentID: Content.ID
-    private let apiPath: APIPath
+final class ContentUpvoteOperation: AsyncOperation<Void> {
+    
+    // MARK: - Initializing
     
     init(contentID: Content.ID, apiPath: APIPath) {
         self.contentID = contentID
         self.apiPath = apiPath
+        super.init()
     }
     
-    override func main() {
-        // Make data change optimistically before executing the request
+    // MARK: - Executing
+    
+    private let contentID: Content.ID
+    private let apiPath: APIPath
+    
+    override var executionQueue: Queue {
+        return .main
+    }
+    
+    override func execute(finish: (result: OperationResult<Void>) -> Void) {
         Content.likeContent(withID: contentID)
-        
-        ContentUpvoteRemoteOperation(contentID: contentID, apiPath: apiPath)?.after(self).queue()
+        RequestOperation(request: ContentUpvoteRequest(contentID: contentID, apiPath: apiPath)).queue(completion: finish)
     }
 }

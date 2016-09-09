@@ -30,9 +30,10 @@ extension UIAlertController {
                         return
                     }
                     
-                    ContentUnupvoteOperation(contentID: id, apiPath: apiPath).queue { _, error, _ in
-                        if error == nil {
-                            completion(action: .unlike)
+                    ContentUnupvoteOperation(contentID: id, apiPath: apiPath).queue { result in
+                        switch result {
+                            case .success(_): completion(action: .unlike)
+                            case .failure(_), .cancelled: break
                         }
                     }
                 }
@@ -47,9 +48,10 @@ extension UIAlertController {
                         return
                     }
                     
-                    ContentUpvoteOperation(contentID: id, apiPath: apiPath).queue { _, error, _ in
-                        if error == nil {
-                            completion(action: .like)
+                    ContentUpvoteOperation(contentID: id, apiPath: apiPath).queue { result in
+                        switch result {
+                            case .success(_): completion(action: .like)
+                            case .failure(_), .cancelled: break
                         }
                     }
                 }
