@@ -15,11 +15,8 @@ public struct VIPFetchSubscriptionRequest: RequestType {
         return NSURLRequest(URL: url)
     }
     
-    public init?(urlString: String) {
-        guard let url = NSURL(string: urlString) else {
-            return nil
-        }
-        self.url = url
+    public init(urlString: String) {
+        self.url = NSURL(string: urlString) ?? NSURL()
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [String] {

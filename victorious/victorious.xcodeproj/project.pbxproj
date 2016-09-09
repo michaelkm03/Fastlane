@@ -1288,7 +1288,6 @@
 		F09E8C681C88CBF300437ACD /* Asset.json in Resources */ = {isa = PBXBuildFile; fileRef = F09E8C671C88CBF300437ACD /* Asset.json */; };
 		F0ABAA7C1D1CA8F800DAD4B3 /* TouchableInsetAdjustableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0ABAA7B1D1CA8F700DAD4B3 /* TouchableInsetAdjustableButton.swift */; };
 		F0B6F08D1D3EB3350037EACE /* VIPGateViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A748BD171C8A7302003D5F5F /* VIPGateViewController.storyboard */; };
-		F0B6F08F1D3ECDE10037EACE /* VIPFetchSubscriptionRemoteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B6F08E1D3ECDE10037EACE /* VIPFetchSubscriptionRemoteOperation.swift */; };
 		F0B6F0911D3ED0C10037EACE /* VIPFetchSubscriptionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B6F0901D3ED0C10037EACE /* VIPFetchSubscriptionRequest.swift */; };
 		F0BD3A441CD8208000B4AB3E /* PushTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0BD3A431CD8208000B4AB3E /* PushTransitionAnimator.swift */; };
 		F0BD3A661CD95A8000B4AB3E /* UIViewController+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0BD3A651CD95A8000B4AB3E /* UIViewController+Alert.swift */; };
@@ -3002,7 +3001,6 @@
 		F093A9461CF4D24E009ACABF /* VIPSuccessViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VIPSuccessViewController.storyboard; sourceTree = "<group>"; };
 		F09E8C671C88CBF300437ACD /* Asset.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Asset.json; sourceTree = "<group>"; };
 		F0ABAA7B1D1CA8F700DAD4B3 /* TouchableInsetAdjustableButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchableInsetAdjustableButton.swift; sourceTree = "<group>"; };
-		F0B6F08E1D3ECDE10037EACE /* VIPFetchSubscriptionRemoteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VIPFetchSubscriptionRemoteOperation.swift; sourceTree = "<group>"; };
 		F0B6F0901D3ED0C10037EACE /* VIPFetchSubscriptionRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VIPFetchSubscriptionRequest.swift; sourceTree = "<group>"; };
 		F0B6F0921D405FDB0037EACE /* VIPSelectSubscriptionOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VIPSelectSubscriptionOperation.swift; sourceTree = "<group>"; };
 		F0B6F0941D41275F0037EACE /* ProductFetchOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductFetchOperation.swift; sourceTree = "<group>"; };
@@ -5263,7 +5261,6 @@
 				F0B6F0941D41275F0037EACE /* ProductFetchOperation.swift */,
 				A72C85C21C977FF500E97D4F /* RestorePurchaseOperation.swift */,
 				A73BA5741C93CAA0008168B5 /* ShowTestPurchaseConfirmationOperation.swift */,
-				F0B6F08E1D3ECDE10037EACE /* VIPFetchSubscriptionRemoteOperation.swift */,
 				F0B6F0921D405FDB0037EACE /* VIPSelectSubscriptionOperation.swift */,
 				A7BB6C981CAEDF1A007FDD17 /* VIPSubscribeOperation.swift */,
 				A7FFCE4D1C8FCDD900B1BE49 /* VIPValidateSubscriptionOperation.swift */,
@@ -8416,7 +8413,6 @@
 				A77723DE1C34823B002351B5 /* SampleCoreDataModels.swift in Sources */,
 				A7A1CF611C62E03400B08F07 /* NSPredicate+Operators.swift in Sources */,
 				79BA44AF1BFBEBEF00594F9F /* UIImageOrientation+TiffOrientation.swift in Sources */,
-				F0B6F08F1D3ECDE10037EACE /* VIPFetchSubscriptionRemoteOperation.swift in Sources */,
 				A72C85FA1C977FF500E97D4F /* AccountUpdateOperation.swift in Sources */,
 				F050D33C1CAB6B30007A05ED /* ComposerInputAttachmentType.swift in Sources */,
 				7A1DECB71D80E00C003F5C37 /* StageContentFetchOperation.swift in Sources */,

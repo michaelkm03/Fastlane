@@ -44,39 +44,31 @@ class VIPSubscriptionHelper {
     private var products: [VProduct]?
     
     func fetchProducts(completion: ([VProduct]?) -> Void) {
-        guard let subscriptionFetchOperation = VIPFetchSubscriptionRemoteOperation(urlString: subscriptionFetchURL) else {
-            originViewController?.showSubscriptionAlert(for: VIPFetchSubscriptionRemoteOperation.initError)
-            return
-        }
+        let subscriptionFetchOperation = RequestOperation(request: VIPFetchSubscriptionRequest(urlString: subscriptionFetchURL))
         
         delegate?.setIsLoading(true, title: nil)
         
-        subscriptionFetchOperation.queue { [weak self] results, error, canceled in
-            guard !canceled else {
-                self?.delegate?.setIsLoading(false, title: nil)
-                return
-            }
-            
-            guard
-                let productIdentifiers = results as? [String]
-                where error == nil
-            else {
-                self?.delegate?.setIsLoading(false, title: nil)
-                self?.originViewController?.showSubscriptionAlert(for: error)
-                return
-            }
-            
-            ProductFetchOperation(productIdentifiers: productIdentifiers).queue { [weak self] result in
-                self?.delegate?.setIsLoading(false, title: nil)
+        subscriptionFetchOperation.queue { [weak self] result in
+            switch result {
+                case .success(let productIdentifiers):
+                    ProductFetchOperation(productIdentifiers: productIdentifiers).queue { [weak self] result in
+                        self?.delegate?.setIsLoading(false, title: nil)
+                        
+                        switch result {
+                            case .success(let products):
+                                self?.products = products
+                                completion(products)
+                            case .failure(let error):
+                                self?.originViewController?.showSubscriptionAlert(for: error as NSError)
+                            case .cancelled: break
+                        }
+                    }
                 
-                switch result {
-                    case .success(let products):
-                        self?.products = products
-                        completion(products)
-                    case .failure(let error):
-                        self?.originViewController?.showSubscriptionAlert(for: error as NSError)
-                    case .cancelled: break
-                }
+                case .failure(let error):
+                    self?.originViewController?.showSubscriptionAlert(for: error as NSError)
+                
+                case .cancelled:
+                    self?.delegate?.setIsLoading(false, title: nil)
             }
         }
     }
