@@ -561,7 +561,6 @@
 		7A1DECCC1D80E075003F5C37 /* ShowLoginOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECC71D80E075003F5C37 /* ShowLoginOperation.swift */; };
 		7A1DECCD1D80E075003F5C37 /* StoredLoginOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECC81D80E075003F5C37 /* StoredLoginOperation.swift */; };
 		7A1DECD41D80E08B003F5C37 /* NotificationsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECD01D80E08B003F5C37 /* NotificationsOperation.swift */; };
-		7A1DECDB1D80E09E003F5C37 /* NSOperationQueue+Queuable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECD81D80E09E003F5C37 /* NSOperationQueue+Queuable.swift */; };
 		7A1DECDC1D80E09E003F5C37 /* Queueable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECD91D80E09E003F5C37 /* Queueable.swift */; };
 		7A1DECDD1D80E09E003F5C37 /* RequestOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECDA1D80E09E003F5C37 /* RequestOperation.swift */; };
 		7A1DECED1D80E0F2003F5C37 /* UserBlockToggleOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECE21D80E0F2003F5C37 /* UserBlockToggleOperation.swift */; };
@@ -578,6 +577,12 @@
 		7A1DED0F1D824819003F5C37 /* VPushNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DED0E1D824819003F5C37 /* VPushNotificationManager.swift */; };
 		7A1DED111D824BD6003F5C37 /* VSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DED101D824BD6003F5C37 /* VSettingsViewController.swift */; };
 		7A1DED131D82533D003F5C37 /* VIPClearSubscriptionOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DED121D82533D003F5C37 /* VIPClearSubscriptionOperation.swift */; };
+		7A1DED161D8257EF003F5C37 /* Chainable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DED151D8257EF003F5C37 /* Chainable.swift */; };
+		7A1DED181D825838003F5C37 /* NSOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DED171D825838003F5C37 /* NSOperation.swift */; };
+		7A1DED1A1D825858003F5C37 /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DED191D825858003F5C37 /* AsyncOperation.swift */; };
+		7A1DED1C1D825860003F5C37 /* SyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DED1B1D825860003F5C37 /* SyncOperation.swift */; };
+		7A1DED1E1D825899003F5C37 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DED1D1D825899003F5C37 /* Queue.swift */; };
+		7A1DED201D8258AB003F5C37 /* OperationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DED1F1D8258AB003F5C37 /* OperationResult.swift */; };
 		7A1E1D781D30724A00A39FE5 /* BackgroundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1E1D771D30724A00A39FE5 /* BackgroundButton.swift */; };
 		7A26E0151CB6D57B006C99DF /* NSDate+timeSince.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A26E0141CB6D57B006C99DF /* NSDate+timeSince.swift */; };
 		7A2747CE1D10AC37005168BA /* ContentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2747CD1D10AC37005168BA /* ContentModel.swift */; };
@@ -2038,7 +2043,6 @@
 		7A1DECC71D80E075003F5C37 /* ShowLoginOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowLoginOperation.swift; sourceTree = "<group>"; };
 		7A1DECC81D80E075003F5C37 /* StoredLoginOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoredLoginOperation.swift; sourceTree = "<group>"; };
 		7A1DECD01D80E08B003F5C37 /* NotificationsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsOperation.swift; sourceTree = "<group>"; };
-		7A1DECD81D80E09E003F5C37 /* NSOperationQueue+Queuable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSOperationQueue+Queuable.swift"; sourceTree = "<group>"; };
 		7A1DECD91D80E09E003F5C37 /* Queueable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queueable.swift; sourceTree = "<group>"; };
 		7A1DECDA1D80E09E003F5C37 /* RequestOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestOperation.swift; sourceTree = "<group>"; };
 		7A1DECE21D80E0F2003F5C37 /* UserBlockToggleOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserBlockToggleOperation.swift; sourceTree = "<group>"; };
@@ -2055,6 +2059,12 @@
 		7A1DED0E1D824819003F5C37 /* VPushNotificationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VPushNotificationManager.swift; sourceTree = "<group>"; };
 		7A1DED101D824BD6003F5C37 /* VSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VSettingsViewController.swift; sourceTree = "<group>"; };
 		7A1DED121D82533D003F5C37 /* VIPClearSubscriptionOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VIPClearSubscriptionOperation.swift; sourceTree = "<group>"; };
+		7A1DED151D8257EF003F5C37 /* Chainable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chainable.swift; sourceTree = "<group>"; };
+		7A1DED171D825838003F5C37 /* NSOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSOperation.swift; sourceTree = "<group>"; };
+		7A1DED191D825858003F5C37 /* AsyncOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
+		7A1DED1B1D825860003F5C37 /* SyncOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncOperation.swift; sourceTree = "<group>"; };
+		7A1DED1D1D825899003F5C37 /* Queue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
+		7A1DED1F1D8258AB003F5C37 /* OperationResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationResult.swift; sourceTree = "<group>"; };
 		7A1E1D771D30724A00A39FE5 /* BackgroundButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundButton.swift; sourceTree = "<group>"; };
 		7A215BA51CF537BE005034BF /* PreviewImageContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewImageContainer.swift; sourceTree = "<group>"; };
 		7A26E0141CB6D57B006C99DF /* NSDate+timeSince.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+timeSince.swift"; sourceTree = "<group>"; };
@@ -4831,9 +4841,13 @@
 		7A1DECD71D80E093003F5C37 /* Operation Infrastructure */ = {
 			isa = PBXGroup;
 			children = (
-				7A1DECD81D80E09E003F5C37 /* NSOperationQueue+Queuable.swift */,
+				7A1DED191D825858003F5C37 /* AsyncOperation.swift */,
+				7A1DED151D8257EF003F5C37 /* Chainable.swift */,
+				7A1DED1F1D8258AB003F5C37 /* OperationResult.swift */,
+				7A1DED1D1D825899003F5C37 /* Queue.swift */,
 				7A1DECD91D80E09E003F5C37 /* Queueable.swift */,
 				7A1DECDA1D80E09E003F5C37 /* RequestOperation.swift */,
+				7A1DED1B1D825860003F5C37 /* SyncOperation.swift */,
 			);
 			path = "Operation Infrastructure";
 			sourceTree = "<group>";
@@ -5116,6 +5130,7 @@
 				A721E8C11B572453000B7901 /* NSNotificationCenter+VNotificationDebugger.h */,
 				A721E8C21B572453000B7901 /* NSNotificationCenter+VNotificationDebugger.m */,
 				7A9B72621D6CC3B4007540E2 /* NSNumberFormatter.swift */,
+				7A1DED171D825838003F5C37 /* NSOperation.swift */,
 				A721E8C61B572453000B7901 /* NSString+VParseHelp.h */,
 				A721E8C71B572453000B7901 /* NSString+VParseHelp.m */,
 				A721E8C81B572453000B7901 /* NSString+VStringWithData.h */,
@@ -7982,6 +7997,7 @@
 				F009BD091CE654D200F81CAA /* HashtagBarController.swift in Sources */,
 				7CCAB3551D5BEDA500ACE99D /* WebContentViewController.swift in Sources */,
 				A7ECC1CE1AD617480003E00A /* VToolController.m in Sources */,
+				7A1DED1A1D825858003F5C37 /* AsyncOperation.swift in Sources */,
 				A6CC23C71B4B2A0600141DD6 /* VAssetGroupTableViewCell.m in Sources */,
 				62A7C9EB1C7FAE2A009F8200 /* NSBundle+AppStoreReceipt.swift in Sources */,
 				BFDB802E1CEF6EC300E66614 /* CloseUpContainerViewController.swift in Sources */,
@@ -8010,7 +8026,6 @@
 				67486B781CC85AD000B03926 /* ListMenuSectionHeaderView.swift in Sources */,
 				D80A94E91A546E5E0035D788 /* VThumbnailCell.m in Sources */,
 				A7AEF9B11A83F1C300A3D3A0 /* VFooterActivityIndicatorView.m in Sources */,
-				7A1DECDB1D80E09E003F5C37 /* NSOperationQueue+Queuable.swift in Sources */,
 				A73C3EC01C45890E00A8452C /* MediaSearchViewController+Layout.swift in Sources */,
 				D8C1FD081A69C2E40072892B /* VKeyboardNotificationManager.m in Sources */,
 				A7BA22001BA75A9A00F2CD37 /* UIView+Nib.swift in Sources */,
@@ -8029,6 +8044,7 @@
 				7A1DED071D80E130003F5C37 /* RequestErrorHandler.swift in Sources */,
 				D836884419C3718A00070F22 /* VBaseSupplementaryView.m in Sources */,
 				F06FC1FC1C97437900A014C7 /* ComposerTextViewManagerDelegate.swift in Sources */,
+				7A1DED161D8257EF003F5C37 /* Chainable.swift in Sources */,
 				F07DDE2C1CFCB93B00C7FC8D /* HashtagBarCellPopulator.swift in Sources */,
 				A7EECAD51A377FA000A8BAE1 /* VPurchaseSettingsViewController.m in Sources */,
 				7C894B8A1D39A4C500E124C8 /* CoachmarkManager.swift in Sources */,
@@ -8062,10 +8078,12 @@
 				037D2D5F1A1A6D7400947A22 /* VDependencyManager+VNavigationMenuItem.m in Sources */,
 				0EC65B0C1D52D6280040A8F8 /* AppDelegate.swift in Sources */,
 				7AC1B9FE1D3FF7CF00FA3CF6 /* CGPoint+Initializers.swift in Sources */,
+				7A1DED201D8258AB003F5C37 /* OperationResult.swift in Sources */,
 				7A1DED061D80E130003F5C37 /* NetworkActivityIndicator.swift in Sources */,
 				D85B708C1B0EC7230038CA5B /* VModernLoginAndRegistrationFlowViewController.m in Sources */,
 				A73C3EB71C45890E00A8452C /* GIFSearchDataSource.swift in Sources */,
 				5AC41CDF1C9AB3FD00603FE5 /* VDependencyManager+Subcomponent.swift in Sources */,
+				7A1DED1C1D825860003F5C37 /* SyncOperation.swift in Sources */,
 				A7AEF9D11A83F2F500A3D3A0 /* VVideoView.m in Sources */,
 				A76711EA1C1B5067006568DF /* VAppTimingEventType.m in Sources */,
 				F009BD1B1CEBD3C800F81CAA /* String+SubstringHelpers.swift in Sources */,
@@ -8105,6 +8123,7 @@
 				0E6628751CCEE5DF0049ECF8 /* StageDataSource.swift in Sources */,
 				A70564C319E781EE004A8387 /* VNoContentTableViewCell.m in Sources */,
 				7A1DED041D80E130003F5C37 /* DebugErrorHandler.swift in Sources */,
+				7A1DED181D825838003F5C37 /* NSOperation.swift in Sources */,
 				A601FB591B43657F0050536C /* VMediaAttachmentPresenter.m in Sources */,
 				B074C5B41B39D41F00EA3FFC /* VHashmarkView.m in Sources */,
 				A73C3EBF1C45890E00A8452C /* MediaSearchViewController+Delegates.swift in Sources */,
@@ -8140,6 +8159,7 @@
 				0314D4D619B46B5E00FA363C /* VChangePasswordViewController.m in Sources */,
 				F06B41BD1B7ED7FD008709E8 /* UIResponder+typedResponder.swift in Sources */,
 				F07228261AD8846A00085653 /* VNotification.m in Sources */,
+				7A1DED1E1D825899003F5C37 /* Queue.swift in Sources */,
 				7A52F0321CFF904A00AE7F3F /* VDependencyManager+APIPath.swift in Sources */,
 				A7B1335A1C6178FD006EC4F5 /* ActivityFooterCollectionDataSource.swift in Sources */,
 				A706FE261C236AE100C2CBFF /* NSManagedObject+Copy.swift in Sources */,

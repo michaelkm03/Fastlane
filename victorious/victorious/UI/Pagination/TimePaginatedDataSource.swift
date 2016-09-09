@@ -31,7 +31,7 @@ enum PaginatedOrdering {
 ///
 /// - NOTE: This should be renamed to `PaginatedDataSource` once the other `PaginatedDataSource` is removed.
 ///
-class TimePaginatedDataSource<Item, Operation: Queueable2 where Operation: NSOperation> {
+class TimePaginatedDataSource<Item, Operation: Queueable where Operation: NSOperation> {
     
     // MARK: - Initializing
     
