@@ -95,9 +95,8 @@ static NSString * kPushNotificationTokenDefaultsKey = @"com.getvictorious.PushNo
     }
     
     NSString *pushNotificationID = [NSString v_stringWithData:storedToken];
-    RegisterPushNotificationOperation *operation = [[RegisterPushNotificationOperation alloc] initWithPushNotificationID:pushNotificationID];
-    [operation queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
-    {
+    
+    [self queueRegisterPushNotificationOperationWithPushNotificationID:pushNotificationID completion: ^(NSError *_Nullable error) {
         if (error == nil)
         {
             if (success != nil)

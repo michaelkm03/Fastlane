@@ -579,7 +579,7 @@
 		7A1DED071D80E130003F5C37 /* RequestErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECFF1D80E130003F5C37 /* RequestErrorHandler.swift */; };
 		7A1DED081D80E130003F5C37 /* RequestExecutorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DED001D80E130003F5C37 /* RequestExecutorType.swift */; };
 		7A1DED091D80E130003F5C37 /* UnauthorizedErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DED011D80E130003F5C37 /* UnauthorizedErrorHandler.swift */; };
-		7A1DED0B1D80E1AC003F5C37 /* RegisterPushNotificationOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DED0A1D80E1AC003F5C37 /* RegisterPushNotificationOperation.swift */; };
+		7A1DED0F1D824819003F5C37 /* VPushNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DED0E1D824819003F5C37 /* VPushNotificationManager.swift */; };
 		7A1E1D781D30724A00A39FE5 /* BackgroundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1E1D771D30724A00A39FE5 /* BackgroundButton.swift */; };
 		7A26E0151CB6D57B006C99DF /* NSDate+timeSince.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A26E0141CB6D57B006C99DF /* NSDate+timeSince.swift */; };
 		7A2747CE1D10AC37005168BA /* ContentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2747CD1D10AC37005168BA /* ContentModel.swift */; };
@@ -2061,7 +2061,7 @@
 		7A1DECFF1D80E130003F5C37 /* RequestErrorHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestErrorHandler.swift; sourceTree = "<group>"; };
 		7A1DED001D80E130003F5C37 /* RequestExecutorType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestExecutorType.swift; sourceTree = "<group>"; };
 		7A1DED011D80E130003F5C37 /* UnauthorizedErrorHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnauthorizedErrorHandler.swift; sourceTree = "<group>"; };
-		7A1DED0A1D80E1AC003F5C37 /* RegisterPushNotificationOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterPushNotificationOperation.swift; sourceTree = "<group>"; };
+		7A1DED0E1D824819003F5C37 /* VPushNotificationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VPushNotificationManager.swift; sourceTree = "<group>"; };
 		7A1E1D771D30724A00A39FE5 /* BackgroundButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundButton.swift; sourceTree = "<group>"; };
 		7A215BA51CF537BE005034BF /* PreviewImageContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewImageContainer.swift; sourceTree = "<group>"; };
 		7A26E0141CB6D57B006C99DF /* NSDate+timeSince.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+timeSince.swift"; sourceTree = "<group>"; };
@@ -3388,6 +3388,7 @@
 			children = (
 				0326BBB819A8183800D995DA /* VPushNotificationManager.h */,
 				0326BBB919A8183800D995DA /* VPushNotificationManager.m */,
+				7A1DED0E1D824819003F5C37 /* VPushNotificationManager.swift */,
 			);
 			path = "Push Notifications";
 			sourceTree = "<group>";
@@ -5247,7 +5248,6 @@
 		A72C85AA1C977FF500E97D4F /* Launch */ = {
 			isa = PBXGroup;
 			children = (
-				7A1DED0A1D80E1AC003F5C37 /* RegisterPushNotificationOperation.swift */,
 				A72C85AD1C977FF500E97D4F /* RequestPushNotificationPermissionOperation.swift */,
 				67D3E0501CECEE70008F9398 /* ShowTutorialsOperation.swift */,
 				BF9C375D1C978B5F001841C5 /* TempDirectoryCleanupOperation.swift */,
@@ -8222,6 +8222,7 @@
 				A77723E01C348240002351B5 /* PersistenceTests.xcdatamodeld in Sources */,
 				F0FBC44B1D2591AF0070873F /* NSMutableParagraphStyle+TextInsets.swift in Sources */,
 				F00BBAB51CC5E98400CBDB94 /* NativeCameraCreationFlowController.swift in Sources */,
+				7A1DED0F1D824819003F5C37 /* VPushNotificationManager.swift in Sources */,
 				039D02AD1A1043D300DB9236 /* VDependencyManager.m in Sources */,
 				6287BE101C7E87390057D116 /* VIPGateViewController.swift in Sources */,
 				F07DDE411CFCDB1500C7FC8D /* TrackableButton.swift in Sources */,
@@ -8473,7 +8474,6 @@
 				D8FC09071A51DBC100E5FBE4 /* VPlaceholderTextView.m in Sources */,
 				A7AEF9C61A83F2AD00A3D3A0 /* VFollowersTextFormatter.m in Sources */,
 				7A1DECCB1D80E075003F5C37 /* LogoutOperation.swift in Sources */,
-				7A1DED0B1D80E1AC003F5C37 /* RegisterPushNotificationOperation.swift in Sources */,
 				A743E7E71A08173B00339CB3 /* VEmailValidator.m in Sources */,
 				C30546B31BD96D05005F6712 /* LoginFlowLoadingScreen.swift in Sources */,
 				A73BA2C81C9393ED008168B5 /* ChatFeedViewController.swift in Sources */,
