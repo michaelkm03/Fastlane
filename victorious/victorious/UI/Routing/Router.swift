@@ -46,27 +46,27 @@ struct Router {
         let displayModifier = ShowCloseUpDisplayModifier(dependencyManager: dependencyManager, originViewController: originViewController)
 
         switch contentWrapper {
-        case .content(let content, let forceFetch):
-            guard content.type != .text else {
-                return
-            }
+            case .content(let content, let forceFetch):
+                guard content.type != .text else {
+                    return
+                }
 
-            checkForPermissionBeforeRouting(contentIsForVIPOnly: content.isVIPOnly) { success in
-                if success {
-                    if !forceFetch {
-                        ShowCloseUpOperation(content: content, context: context, displayModifier: displayModifier).queue()
-                    }
-                    else {
-                        guard let contentID = content.id else {
-                            assertionFailure("We are routing to a content with no ID")
-                            return
+                checkForPermissionBeforeRouting(contentIsForVIPOnly: content.isVIPOnly) { success in
+                    if success {
+                        if !forceFetch {
+                            ShowCloseUpOperation(content: content, context: context, displayModifier: displayModifier).queue()
                         }
-                        ShowFetchedCloseUpOperation(contentID: contentID, context: context, displayModifier: displayModifier).queue()
+                        else {
+                            guard let contentID = content.id else {
+                                assertionFailure("We are routing to a content with no ID")
+                                return
+                            }
+                            ShowFetchedCloseUpOperation(contentID: contentID, context: context, displayModifier: displayModifier).queue()
+                        }
                     }
                 }
-            }
-        case .contentID(let contentID):
-            ShowFetchedCloseUpOperation(contentID: contentID, context: context, displayModifier: displayModifier).queue()
+            case .contentID(let contentID):
+                ShowFetchedCloseUpOperation(contentID: contentID, context: context, displayModifier: displayModifier).queue()
         }
     }
 
