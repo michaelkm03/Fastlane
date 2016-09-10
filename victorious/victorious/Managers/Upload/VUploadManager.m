@@ -47,7 +47,6 @@ static inline BOOL isSessionQueue()
 @interface VUploadManager () <NSURLSessionDataDelegate>
 
 @property (nonatomic, strong) NSURLSession *urlSession;
-@property (nonatomic, strong) id<PersistentStoreType> persistentStore;
 @property (nonatomic, strong) dispatch_queue_t sessionQueue; ///< serializes all URL session operations
 @property (nonatomic, readonly) dispatch_queue_t callbackQueue; ///< all callbacks should be made asynchronously on this queue
 @property (nonatomic, strong) NSMapTable *taskInformationBySessionTask; ///< Stores all VUploadTaskInformation objects referenced by their associated NSURLSessionTasks
@@ -69,7 +68,6 @@ static inline BOOL isSessionQueue()
     self = [super init];
     if ( self != nil )
     {
-        _persistentStore = [PersistentStoreSelector defaultPersistentStore];
         _useBackgroundSession = YES;
         _sessionQueue = dispatch_queue_create("com.victorious.VUploadManager.sessionQueue", DISPATCH_QUEUE_SERIAL);
         _taskInformationBySessionTask = [NSMapTable mapTableWithKeyOptions:NSMapTableObjectPointerPersonality valueOptions:NSMapTableStrongMemory];

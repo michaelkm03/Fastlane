@@ -9,7 +9,7 @@
 import XCTest
 @testable import victorious
 
-class UserBlockToggleOperationTests: BaseFetcherOperationTestCase {
+class UserBlockToggleOperationTests: XCTestCase {
     let remoteUserID = 12345
     let currentUserID = 54321
     
@@ -35,7 +35,7 @@ class UserBlockToggleOperationTests: BaseFetcherOperationTestCase {
             XCTAssertFalse(user.isBlocked)
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
+        waitForExpectationsWithTimeout(1.0, handler: nil)
     }
     
     func testInitiallyUnblocked() {
@@ -54,6 +54,6 @@ class UserBlockToggleOperationTests: BaseFetcherOperationTestCase {
             XCTAssertTrue(user.isBlocked)
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
+        waitForExpectationsWithTimeout(1.0, handler: nil)
     }
 }

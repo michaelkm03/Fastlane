@@ -10,7 +10,7 @@ import XCTest
 import VictoriousIOSSDK
 @testable import victorious
 
-class CreateMediaUploadOperationTests: BaseFetcherOperationTestCase {
+class CreateMediaUploadOperationTests: XCTestCase {
     
     let uploadManager = TestUploadManager()
     
@@ -26,7 +26,7 @@ class CreateMediaUploadOperationTests: BaseFetcherOperationTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
+        waitForExpectationsWithTimeout(1.0, handler: nil)
     }
     
     func testParameterNoURL() {
@@ -39,7 +39,7 @@ class CreateMediaUploadOperationTests: BaseFetcherOperationTestCase {
             XCTAssertEqual(0, self.uploadManager.enqueuedTasksCount)
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
+        waitForExpectationsWithTimeout(1.0, handler: nil)
 
     }
     
@@ -56,6 +56,6 @@ class CreateMediaUploadOperationTests: BaseFetcherOperationTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
+        waitForExpectationsWithTimeout(1.0, handler: nil)
     }
 }
