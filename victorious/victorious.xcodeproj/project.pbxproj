@@ -730,7 +730,6 @@
 		A721E9591B572454000B7901 /* UIScrollView+VCenterContent.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8F21B572454000B7901 /* UIScrollView+VCenterContent.m */; };
 		A721E95A1B572454000B7901 /* UIStoryboard+VMainStoryboard.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8F41B572454000B7901 /* UIStoryboard+VMainStoryboard.m */; };
 		A721E95B1B572454000B7901 /* UIView+AutoLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8F61B572454000B7901 /* UIView+AutoLayout.m */; };
-		A721E95D1B572454000B7901 /* UIView+MotionEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8FA1B572454000B7901 /* UIView+MotionEffects.m */; };
 		A721E95E1B572454000B7901 /* UIView+RecursiveSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = A721E8FB1B572454000B7901 /* UIView+RecursiveSearch.swift */; };
 		A721E95F1B572454000B7901 /* UIView+VDynamicsHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8FD1B572454000B7901 /* UIView+VDynamicsHelpers.m */; };
 		A722D9441C6E9836003C06C5 /* LoginSuccessOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A722D9431C6E9836003C06C5 /* LoginSuccessOperationTests.swift */; };
@@ -1195,7 +1194,6 @@
 		F069E93C1D46993500F91CE6 /* VIPSubscriptionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B6F0961D414B6D0037EACE /* VIPSubscriptionHelper.swift */; };
 		F069E93D1D46995000F91CE6 /* ProductFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B6F0941D41275F0037EACE /* ProductFetchOperation.swift */; };
 		F069E93E1D46995C00F91CE6 /* VIPSelectSubscriptionOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B6F0921D405FDB0037EACE /* VIPSelectSubscriptionOperation.swift */; };
-		F06B41BD1B7ED7FD008709E8 /* UIResponder+typedResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06B41BC1B7ED7FD008709E8 /* UIResponder+typedResponder.swift */; };
 		F06BEABC1C97982900F35694 /* ComposerAttachmentTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06BEABB1C97982900F35694 /* ComposerAttachmentTabBar.swift */; };
 		F06BEABE1C97989E00F35694 /* ComposerAttachmentTabBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06BEABD1C97989E00F35694 /* ComposerAttachmentTabBarButton.swift */; };
 		F06FC1ED1C971BD400A014C7 /* ComposerTextViewManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06FC1EC1C971BD400A014C7 /* ComposerTextViewManagerTests.swift */; };
@@ -2216,8 +2214,6 @@
 		A721E8F41B572454000B7901 /* UIStoryboard+VMainStoryboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIStoryboard+VMainStoryboard.m"; sourceTree = "<group>"; };
 		A721E8F51B572454000B7901 /* UIView+AutoLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+AutoLayout.h"; sourceTree = "<group>"; };
 		A721E8F61B572454000B7901 /* UIView+AutoLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+AutoLayout.m"; sourceTree = "<group>"; };
-		A721E8F91B572454000B7901 /* UIView+MotionEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+MotionEffects.h"; sourceTree = "<group>"; };
-		A721E8FA1B572454000B7901 /* UIView+MotionEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+MotionEffects.m"; sourceTree = "<group>"; };
 		A721E8FB1B572454000B7901 /* UIView+RecursiveSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+RecursiveSearch.swift"; sourceTree = "<group>"; };
 		A721E8FC1B572454000B7901 /* UIView+VDynamicsHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+VDynamicsHelpers.h"; sourceTree = "<group>"; };
 		A721E8FD1B572454000B7901 /* UIView+VDynamicsHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+VDynamicsHelpers.m"; sourceTree = "<group>"; };
@@ -2828,7 +2824,6 @@
 		F063506A1CB2FBCA0047E30C /* MixedMediaCameraViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MixedMediaCameraViewController.storyboard; sourceTree = "<group>"; };
 		F06350701CBC16840047E30C /* MixedMediaCameraViewControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MixedMediaCameraViewControllerDelegate.swift; sourceTree = "<group>"; };
 		F06350741CBC6D240047E30C /* MixedMediaCameraCreationFlowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MixedMediaCameraCreationFlowController.swift; sourceTree = "<group>"; };
-		F06B41BC1B7ED7FD008709E8 /* UIResponder+typedResponder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIResponder+typedResponder.swift"; sourceTree = "<group>"; };
 		F06BEABB1C97982900F35694 /* ComposerAttachmentTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposerAttachmentTabBar.swift; sourceTree = "<group>"; };
 		F06BEABD1C97989E00F35694 /* ComposerAttachmentTabBarButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposerAttachmentTabBarButton.swift; sourceTree = "<group>"; };
 		F06FC1EC1C971BD400A014C7 /* ComposerTextViewManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposerTextViewManagerTests.swift; sourceTree = "<group>"; };
@@ -5003,7 +4998,6 @@
 				6764784B1D5EC23C00772177 /* UINavigationController.swift */,
 				A721E8ED1B572454000B7901 /* UINavigationController+RotationMethodForwarding.h */,
 				A721E8EE1B572454000B7901 /* UINavigationController+RotationMethodForwarding.m */,
-				F06B41BC1B7ED7FD008709E8 /* UIResponder+typedResponder.swift */,
 				A721E8EF1B572454000B7901 /* UIResponder+VResponderChain.h */,
 				A721E8F01B572454000B7901 /* UIResponder+VResponderChain.m */,
 				7AFEB1561D46C1C500FA972D /* UIScrollView+Offsets.swift */,
@@ -5016,8 +5010,6 @@
 				A721E8F51B572454000B7901 /* UIView+AutoLayout.h */,
 				A721E8F61B572454000B7901 /* UIView+AutoLayout.m */,
 				79BFDC3A1D206DA900E1EA0C /* UIView+CornerRadius.swift */,
-				A721E8F91B572454000B7901 /* UIView+MotionEffects.h */,
-				A721E8FA1B572454000B7901 /* UIView+MotionEffects.m */,
 				A7BA21FF1BA75A9A00F2CD37 /* UIView+Nib.swift */,
 				A721E8FB1B572454000B7901 /* UIView+RecursiveSearch.swift */,
 				A7DDA6E41B601D0D005CE55E /* UIView+ReuseIdentifier.swift */,
@@ -7673,7 +7665,6 @@
 				A72C86491C977FF500E97D4F /* VLoginType+Tracking.swift in Sources */,
 				BFC6735E1CE2BCF5004F9D3C /* VContentVideoPlayerCoordinator.swift in Sources */,
 				7AE0A0421D63EC7F00769080 /* AccessoryScreen.swift in Sources */,
-				A721E95D1B572454000B7901 /* UIView+MotionEffects.m in Sources */,
 				7AE0A03B1D624E2B00769080 /* SubscribeButton.swift in Sources */,
 				A6DAEB6E1B4CBDCB00935EA0 /* VCaptureContainerViewController.m in Sources */,
 				7ACB6B0F1D67DDE5008084EF /* SideNavProfileButton.swift in Sources */,
@@ -7808,7 +7799,6 @@
 				037CB74219CFE8B20084BBED /* VUploadManager.m in Sources */,
 				03B83B6219E0D2CC00DC04E4 /* VUploadProgressViewController.m in Sources */,
 				0314D4D619B46B5E00FA363C /* VChangePasswordViewController.m in Sources */,
-				F06B41BD1B7ED7FD008709E8 /* UIResponder+typedResponder.swift in Sources */,
 				7A1DED1E1D825899003F5C37 /* Queue.swift in Sources */,
 				7A52F0321CFF904A00AE7F3F /* VDependencyManager+APIPath.swift in Sources */,
 				A7B1335A1C6178FD006EC4F5 /* ActivityFooterCollectionDataSource.swift in Sources */,
