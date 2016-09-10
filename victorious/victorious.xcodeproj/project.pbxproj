@@ -715,7 +715,6 @@
 		A721E9391B572454000B7901 /* NSData+AES.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8B41B572453000B7901 /* NSData+AES.m */; };
 		A721E93B1B572454000B7901 /* NSDictionary+VJSONLogging.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8B81B572453000B7901 /* NSDictionary+VJSONLogging.m */; };
 		A721E93C1B572454000B7901 /* NSIndexSet+Convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8BA1B572453000B7901 /* NSIndexSet+Convenience.m */; };
-		A721E9401B572454000B7901 /* NSNotificationCenter+VNotificationDebugger.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8C21B572453000B7901 /* NSNotificationCenter+VNotificationDebugger.m */; };
 		A721E9431B572454000B7901 /* NSString+VParseHelp.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8C71B572453000B7901 /* NSString+VParseHelp.m */; };
 		A721E9441B572454000B7901 /* NSString+VStringWithData.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8C91B572453000B7901 /* NSString+VStringWithData.m */; };
 		A721E9451B572454000B7901 /* NSURL+MediaType.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8CB1B572453000B7901 /* NSURL+MediaType.m */; };
@@ -2186,8 +2185,6 @@
 		A721E8B81B572453000B7901 /* NSDictionary+VJSONLogging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+VJSONLogging.m"; sourceTree = "<group>"; };
 		A721E8B91B572453000B7901 /* NSIndexSet+Convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSIndexSet+Convenience.h"; sourceTree = "<group>"; };
 		A721E8BA1B572453000B7901 /* NSIndexSet+Convenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSIndexSet+Convenience.m"; sourceTree = "<group>"; };
-		A721E8C11B572453000B7901 /* NSNotificationCenter+VNotificationDebugger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNotificationCenter+VNotificationDebugger.h"; sourceTree = "<group>"; };
-		A721E8C21B572453000B7901 /* NSNotificationCenter+VNotificationDebugger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNotificationCenter+VNotificationDebugger.m"; sourceTree = "<group>"; };
 		A721E8C41B572453000B7901 /* NSString+VCrypto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+VCrypto.h"; sourceTree = "<group>"; };
 		A721E8C51B572453000B7901 /* NSString+VCrypto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+VCrypto.m"; sourceTree = "<group>"; };
 		A721E8C61B572453000B7901 /* NSString+VParseHelp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+VParseHelp.h"; sourceTree = "<group>"; };
@@ -4967,8 +4964,6 @@
 				A721E8B91B572453000B7901 /* NSIndexSet+Convenience.h */,
 				A721E8BA1B572453000B7901 /* NSIndexSet+Convenience.m */,
 				F0FBC44A1D2591AF0070873F /* NSMutableParagraphStyle+TextInsets.swift */,
-				A721E8C11B572453000B7901 /* NSNotificationCenter+VNotificationDebugger.h */,
-				A721E8C21B572453000B7901 /* NSNotificationCenter+VNotificationDebugger.m */,
 				7A9B72621D6CC3B4007540E2 /* NSNumberFormatter.swift */,
 				7A1DED171D825838003F5C37 /* NSOperation.swift */,
 				A721E8C61B572453000B7901 /* NSString+VParseHelp.h */,
@@ -7642,7 +7637,6 @@
 				7C37B8E71CF66CA200E83594 /* SystemBlurredImageBackground.swift in Sources */,
 				67BECC4D1CC9845900DFEE4B /* ListMenuCreatorDataSource.swift in Sources */,
 				F0BD811F1C99D5930062D079 /* ComposerAttachmentTabBarDelegate.swift in Sources */,
-				A721E9401B572454000B7901 /* NSNotificationCenter+VNotificationDebugger.m in Sources */,
 				A6DAEB5F1B4C8DCA00935EA0 /* VVideoCreationFlowController.m in Sources */,
 				A73C3EBE1C45890E00A8452C /* MediaSearchExporter.swift in Sources */,
 				79C593511BFD5C3C00EC76ED /* CGRect.swift in Sources */,
