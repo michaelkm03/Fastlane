@@ -16,7 +16,7 @@ protocol Forum: ForumEventReceiver, ForumEventSender, ChatFeedDelegate, Composer
     
     var dependencyManager: VDependencyManager! { get }
     var originViewController: UIViewController { get }
-    var chatFeedContext: DeeplinkContext? { get }
+    var chatFeedContext: DeeplinkContext { get }
     func creationFlowPresenter() -> VCreationFlowPresenter?
     
     // MARK: - Abstract subcomponents/dependencies
