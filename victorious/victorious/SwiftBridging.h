@@ -65,7 +65,6 @@
 #import "VFocusable.h"
 #import "VGifCreationFlowController.h"
 #import "VHasManagedDependencies.h"
-#import "VHashTags.h"
 #import "VImageAssetDownloader.h"
 #import "VImageToolController.h"
 #import "VKeyboardNotificationManager.h"
