@@ -328,7 +328,6 @@ extern NSString * const VTrackingValueCreatePoll;
 extern NSString * const VTrackingEventCreateFromLibrarySelected;
 extern NSString * const VTrackingEventCreateFromMixedMediaCameraSelected;
 extern NSString * const VTrackingEventCreateFromNativeCameraSelected;
-extern NSString * const VTrackingEventCreateStickerSelected;
 extern NSString * const VTrackingValueCreatePost; 
 extern NSString * const VTrackingValueMessage; 
 

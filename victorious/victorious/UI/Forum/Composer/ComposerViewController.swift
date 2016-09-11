@@ -468,8 +468,14 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         let creationFlowType = CreationFlowTypeHelper.creationFlowTypeForIdentifier(identifier)
         if creationFlowType != .Unknown {
             delegate?.composer(self, didSelectCreationFlowType: creationFlowType)
-        } else if let composerInputAttachmentType = ComposerInputAttachmentType(rawValue: identifier) where composerInputAttachmentType == .Hashtag {
-            composerTextViewManager?.appendTextIfPossible(textView, text: "#")
+        } else if let composerInputAttachmentType = ComposerInputAttachmentType(rawValue: identifier) {
+            switch composerInputAttachmentType {
+            case .Hashtag:
+                composerTextViewManager?.appendTextIfPossible(textView, text: "#")
+            case .Sticker:
+                //TODO: Show sticker tray inside composer!
+                NSLog("sticker")
+            }
         }
     }
     

@@ -14,16 +14,25 @@ class GIFSearchDataSource: PaginatedDataSource, MediaSearchDataSource {
     private(set) var options = MediaSearchOptions()
     
     override init() {
-        options.showAttribution = true
         options.showPreview = true
+        guard let giphyImage = UIImage(named: "giphy_attribution") else {
+            Log.warning("Failed to find giphy attribution image!")
+            return
+        }
+        options.attributionImage = giphyImage
     }
 	
 	func performSearch( searchTerm searchTerm: String?, pageType: VPageType, completion: (NSError? -> ())? ) {
 		
+        let searchOptions: GIFSearchOptions
+        if let searchTerm = searchTerm {
+            searchOptions = GIFSearchOptions.Search(term: searchTerm, url: "/api/image/gif_search")
+        } else {
+            searchOptions = GIFSearchOptions.Trending(url: "/api/image/trending_gifs")
+        }
 		self.loadPage( pageType,
 			createOperation: {
-//                let searchOptions = GIFSearchOptions(searchURL: "/api/image/gif_search", trendingURL: "/api/image/trending_gifs", searchTerm: searchTerm)
-                return GIFSearchOperation(searchOptions: "test")
+                return GIFSearchOperation(searchOptions: searchOptions)
 			},
 			completion:{ (results, error, cancelled) in
 				completion?( error )

@@ -13,19 +13,17 @@ class StickerSearchDataSource: PaginatedDataSource, MediaSearchDataSource {
     private(set) var options = MediaSearchOptions()
     
     override init() {
-        options.showAttribution = true
+        options.searchEnabled = false
         options.showPreview = true
     }
     
     func performSearch( searchTerm searchTerm: String?, pageType: VPageType, completion: (NSError? -> ())? ) {
         
-        //TODO: Look here!!
-        let options = GIFSearchOptions.Search(term: "test", url: "test")
+        //TODO: REPLACE WITH REAL STICKER FETCH ENDPOINTS
+        let searchOptions = GIFSearchOptions.Trending(url: "/api/image/trending_gifs")
         self.loadPage( pageType,
             createOperation: {
-                //Uncomment the line below for compile failure
-                //let options = GIFSearchOptions.Search(term: "test", url: "test")
-                return GIFSearchOperation(searchOptions: "test")
+                return GIFSearchOperation(searchOptions: searchOptions)
             },
             completion:{ (results, error, cancelled) in
                 completion?( error )

@@ -21,9 +21,13 @@ import UIKit
 
 class MediaSearchOptions: NSObject {
     var showPreview: Bool = false
-    var showAttribution: Bool = false
+    var searchEnabled: Bool = true
+    var attributionImage: UIImage? = nil
     var clearSelectionOnAppearance: Bool = false
     var shouldSkipExportRendering: Bool = false
+    var showAttribution: Bool {
+        return attributionImage != nil
+    }
     
     static var defaultOptions: MediaSearchOptions {
         return MediaSearchOptions()
@@ -53,16 +57,16 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
     
 	weak var delegate: MediaSearchDelegate?
 	
-	class func mediaSearchViewController( dataSource dataSource: MediaSearchDataSource, dependencyManager: VDependencyManager ) -> MediaSearchViewController {
+    class func mediaSearchViewController( dataSource dataSource: MediaSearchDataSource, dependencyManager: VDependencyManager ) -> MediaSearchViewController {
         
         let bundle = UIStoryboard(name: "MediaSearch", bundle: nil)
-        if let viewController = bundle.instantiateInitialViewController() as? MediaSearchViewController {
-            viewController.dependencyManager = dependencyManager
-			viewController.dataSourceAdapter.dataSource = dataSource
-            dataSource.delegate = viewController
-            return viewController
+        guard let viewController = bundle.instantiateInitialViewController() as? MediaSearchViewController else {
+            fatalError( "Could not load MediaSearchViewController from storyboard." )
         }
-        fatalError( "Could not load MediaSearchViewController from storyboard." )
+        viewController.dependencyManager = dependencyManager
+        viewController.dataSourceAdapter.dataSource = dataSource
+        dataSource.delegate = viewController
+        return viewController
     }
     
     private var progressHUD: MBProgressHUD?
@@ -73,7 +77,7 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.collectionView.accessibilityIdentifier = AutomationId.MediaSearchCollection.rawValue
+        collectionView.accessibilityIdentifier = AutomationId.MediaSearchCollection.rawValue
         
         scrollPaginator.loadItemsBelow = { [weak self] in
             // No need to pass in a search term, the data sources know how to discern based
@@ -81,22 +85,23 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
             self?.performSearch(searchTerm: nil, pageType: .Next)
         }
         
-        self.searchBar.delegate = self
-        self.searchBar.accessibilityIdentifier = AutomationId.MediaSearchSearchbar.rawValue
-        if let searchTextField = self.searchBar.v_textField {
-            searchTextField.tintColor = self.dependencyManager?.colorForKey(VDependencyManagerLinkColorKey)
-            searchTextField.font = self.dependencyManager?.fontForKey(VDependencyManagerHeading4FontKey)
+        searchBar.hidden = !options.searchEnabled
+        searchBar.delegate = self
+        searchBar.accessibilityIdentifier = AutomationId.MediaSearchSearchbar.rawValue
+        if let searchTextField = searchBar.v_textField {
+            searchTextField.tintColor = dependencyManager?.colorForKey(VDependencyManagerLinkColorKey)
+            searchTextField.font = dependencyManager?.fontForKey(VDependencyManagerHeading4FontKey)
             searchTextField.textColor = UIColor.whiteColor()
             searchTextField.backgroundColor = UIColor(white: 0.2, alpha: 1.0)
         }
         
-        self.collectionView.dataSource = self.dataSourceAdapter
-        self.collectionView.delegate = self
-        self.searchBar.placeholder = NSLocalizedString( "Search", comment:"" )
+        collectionView.dataSource = dataSourceAdapter
+        collectionView.delegate = self
+        searchBar.placeholder = NSLocalizedString( "Search", comment:"" )
         
-        self.navigationItem.titleView = self.titleViewWithTitle( self.dataSourceAdapter.dataSource?.title ?? "" )
+        navigationItem.titleView = titleViewWithTitle( dataSourceAdapter.dataSource?.title ?? "" )
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
             title: NSLocalizedString("Next", comment: ""),
             style: .Plain,
             target: self,
@@ -104,13 +109,13 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
         )
 		
 		// Load with no search term for default results (determined by data sources)
-		self.performSearch(searchTerm: nil)
+		performSearch(searchTerm: nil)
 		
-        self.updateNavigationItemState()
+        updateNavigationItemState()
         
         // Only modify the left navigaiton item if we are the root of the nav stack
-        if self.navigationController?.viewControllers.first == self {
-            self.navigationItem.leftBarButtonItem = UIBarButtonItem(
+        if navigationController?.viewControllers.first == self {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(
                 title: NSLocalizedString("Cancel", comment: ""),
                 style: .Plain,
                 target: self,
@@ -118,9 +123,9 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
             )
         }
         
-        self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
-        self.navigationController?.navigationBar.barTintColor = UIColor.blackColor()
-        self.navigationController?.navigationBar.titleTextAttributes = [
+        navigationController?.navigationBar.tintColor = UIColor.whiteColor()
+        navigationController?.navigationBar.barTintColor = UIColor.blackColor()
+        navigationController?.navigationBar.titleTextAttributes = [
             NSForegroundColorAttributeName: UIColor.whiteColor()
         ]
     }

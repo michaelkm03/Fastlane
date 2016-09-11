@@ -1255,6 +1255,7 @@
 		DBD02A8019F5863500E0AC95 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBD02A7D19F5863500E0AC95 /* CoreMedia.framework */; };
 		F0015E251D82D5D900DF9BF0 /* StickerCreationFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0015E241D82D5D900DF9BF0 /* StickerCreationFlowController.swift */; };
 		F0015E271D82DA1F00DF9BF0 /* StickerSearchDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0015E261D82DA1F00DF9BF0 /* StickerSearchDataSource.swift */; };
+		F00974501D852F71008D3930 /* AttributionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F009744F1D852F71008D3930 /* AttributionHeaderView.swift */; };
 		F009BCFF1CE24A0B00F81CAA /* UploadManagerHost.swift in Sources */ = {isa = PBXBuildFile; fileRef = F009BCFE1CE24A0B00F81CAA /* UploadManagerHost.swift */; };
 		F009BD041CE6541F00F81CAA /* HashtagBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F009BD031CE6541F00F81CAA /* HashtagBarViewController.swift */; };
 		F009BD091CE654D200F81CAA /* HashtagBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F009BD081CE654D200F81CAA /* HashtagBarController.swift */; };
@@ -3002,6 +3003,7 @@
 		EDFC6598311E32933A2C83A7 /* Pods-test.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.staging.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.staging.xcconfig"; sourceTree = "<group>"; };
 		F0015E241D82D5D900DF9BF0 /* StickerCreationFlowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickerCreationFlowController.swift; sourceTree = "<group>"; };
 		F0015E261D82DA1F00DF9BF0 /* StickerSearchDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickerSearchDataSource.swift; sourceTree = "<group>"; };
+		F009744F1D852F71008D3930 /* AttributionHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributionHeaderView.swift; sourceTree = "<group>"; };
 		F009BCFE1CE24A0B00F81CAA /* UploadManagerHost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadManagerHost.swift; sourceTree = "<group>"; };
 		F009BD031CE6541F00F81CAA /* HashtagBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagBarViewController.swift; sourceTree = "<group>"; };
 		F009BD081CE654D200F81CAA /* HashtagBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagBarController.swift; sourceTree = "<group>"; };
@@ -5455,6 +5457,7 @@
 				A73C3EAE1C45890E00A8452C /* MediaSearchActivityFooter.swift */,
 				A73C3EB01C45890E00A8452C /* MediaSearchExporter.swift */,
 				A73C3EB31C45890E00A8452C /* MediaSearchViewController.swift */,
+				F009744F1D852F71008D3930 /* AttributionHeaderView.swift */,
 				A73C3EB11C45890E00A8452C /* MediaSearchViewController+Delegates.swift */,
 				A73C3EB21C45890E00A8452C /* MediaSearchViewController+Layout.swift */,
 			);
@@ -8060,6 +8063,7 @@
 				A721E93B1B572454000B7901 /* NSDictionary+VJSONLogging.m in Sources */,
 				A7815E1B1B6C5D9F007797B7 /* SettingsButtonCell.swift in Sources */,
 				A72C86161C977FF500E97D4F /* GIFSearchOperation.swift in Sources */,
+				F00974501D852F71008D3930 /* AttributionHeaderView.swift in Sources */,
 				D80A94EE1A5472FB0035D788 /* VTrimVideoTool.m in Sources */,
 				039ED28219C6AB0900305987 /* AVCaptureConnection+VOrientation.m in Sources */,
 				F009BD091CE654D200F81CAA /* HashtagBarController.swift in Sources */,

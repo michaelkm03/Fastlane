@@ -20,9 +20,9 @@ final class GIFSearchOperation: RemoteFetcherOperation, PaginatedRequestOperatio
         self.request = request
     }
     
-    convenience init( searchOptions: String ) {
+    convenience init( searchOptions: GIFSearchOptions ) {
         let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 20)
-        self.init( request: GIFSearchRequest(searchOptions: GIFSearchOptions.Search(term: searchOptions, url: "junk"), paginator: paginator) )
+        self.init( request: GIFSearchRequest(searchOptions: searchOptions, paginator: paginator) )
     }
     
     override func main() {

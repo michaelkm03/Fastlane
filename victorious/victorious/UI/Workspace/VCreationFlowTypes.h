@@ -19,7 +19,6 @@ typedef NS_ENUM(NSInteger, VCreationFlowType)
     VCreationFlowTypePoll,
     VCreationFlowTypeText,
     VCreationFlowTypeGIF,
-    VCreationFlowTypeSticker,
     VCreationFlowTypeLibrary,
     VCreationFlowTypeMixedMediaCamera,
     VCreationFlowTypeNativeCamera,

@@ -17,7 +17,6 @@ class CreationFlowTypeHelper: NSObject {
         "Create Poll": .Poll,
         "Create Text": .Text,
         "Create GIF": .GIF,
-        "Create Sticker": .Sticker,
         "Create from Library": .Library,
         "Create from Mixed Media Camera": .MixedMediaCamera,
         "Create from Native Camera": .NativeCamera]

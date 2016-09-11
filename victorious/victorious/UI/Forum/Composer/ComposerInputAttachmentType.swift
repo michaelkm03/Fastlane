@@ -10,4 +10,5 @@ import Foundation
 
 enum ComposerInputAttachmentType: String {
     case Hashtag = "Add Hashtag"
+    case Sticker = "Add Sticker"
 }
