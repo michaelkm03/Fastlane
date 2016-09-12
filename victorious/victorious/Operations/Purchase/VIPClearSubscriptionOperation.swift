@@ -7,7 +7,6 @@
 //
 
 class VIPClearSubscriptionOperation: SyncOperation<Void> {
-    
     override var executionQueue: Queue {
         return .main
     }

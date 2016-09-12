@@ -13,7 +13,7 @@ final class ContentFetchOperation: AsyncOperation<Content> {
     // MARK: - Initializing
     
     init(macroURLString: String, currentUserID: String, contentID: String) {
-        self.request = ContentFetchRequest(macroURLString: macroURLString, currentUserID: currentUserID, contentID: contentID)
+        request = ContentFetchRequest(macroURLString: macroURLString, currentUserID: currentUserID, contentID: contentID)
         super.init()
     }
     

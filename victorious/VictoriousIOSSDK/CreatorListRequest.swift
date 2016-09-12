@@ -11,7 +11,6 @@ import Foundation
 /// A network request to retrive the list of creators (API Owners)
 /// Response of this request should be `[User]`
 public struct CreatorListRequest: RequestType {
-    
     public private(set) var apiPath: APIPath
     
     public init(apiPath: APIPath) {
@@ -20,7 +19,7 @@ public struct CreatorListRequest: RequestType {
     
     public var urlRequest: NSURLRequest {
         guard let url = apiPath.url else {
-            assertionFailure("Invalid API path provided to CreatorListRequest.")
+            Log.warning("Invalid API path provided to CreatorListRequest.")
             return NSURLRequest(URL: NSURL())
         }
         

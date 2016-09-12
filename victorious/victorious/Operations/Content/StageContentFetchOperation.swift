@@ -13,7 +13,7 @@ final class StageContentFetchOperation: AsyncOperation<Content> {
     // MARK: - Initializing
 
     init(macroURLString: String, currentUserID: String, refreshStageEvent: RefreshStage) {
-        self.request = ContentFetchRequest(macroURLString: macroURLString, currentUserID: currentUserID, contentID: refreshStageEvent.contentID)
+        request = ContentFetchRequest(macroURLString: macroURLString, currentUserID: currentUserID, contentID: refreshStageEvent.contentID)
         self.refreshStageEvent = refreshStageEvent
     }
     
