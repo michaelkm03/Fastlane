@@ -125,7 +125,8 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
             title: "#\(item.tag)",
             context: context,
             trackingURLs: collectionViewDataSource.hashtagDataSource.hashtagStreamTrackingURLs.map {
-                VSDKURLMacroReplacement().urlByReplacingMacrosFromDictionary(["%%HASHTAG%%": item.tag], inURLString: $0)}
+                VSDKURLMacroReplacement().urlByReplacingMacrosFromDictionary(["%%HASHTAG%%": item.tag], inURLString: $0)
+            }
         )
         postListMenuSelection(selectedTagItem)
     }

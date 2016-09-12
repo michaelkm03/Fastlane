@@ -200,8 +200,7 @@
      }];
 }
 
-// event name -
-// parameters are macro replacements (see template)
+/// event name - parameters are macro replacements (see template)
 
 - (void)trackEvent:(NSString *)eventName parameters:(NSDictionary *_Nullable)parameters
 {

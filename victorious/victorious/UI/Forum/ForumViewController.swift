@@ -10,7 +10,6 @@ import UIKit
 
 private struct Constants {
     static let coachmarkDisplayDelay = 1.0
-    static let mainFeed = "main_feed"
 }
 
 /// A template driven .screen component that sets up, houses and mediates the interaction
@@ -129,14 +128,14 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         return self
     }
 
-    private(set) var chatFeedContext: DeeplinkContext = DeeplinkContext(value: Constants.mainFeed)
+    private(set) var chatFeedContext: DeeplinkContext = DeeplinkContext(value: DeeplinkContext.mainFeed)
 
     private dynamic func mainFeedFilterDidChange(notification: NSNotification) {
         if let context = (notification.userInfo?["selectedItem"] as? ReferenceWrapper<ListMenuSelectedItem>)?.value.context {
             chatFeedContext = context
         }
         else {
-            chatFeedContext = DeeplinkContext(value: Constants.mainFeed)
+            chatFeedContext = DeeplinkContext(value: DeeplinkContext.mainFeed)
         }
     }
 
@@ -462,9 +461,5 @@ private extension VDependencyManager {
     
     var contentDeleteURL: String {
         return networkResources?.stringForKey("contentDeleteURL") ?? ""
-    }
-
-    var context: String {
-        return chatFeedDependency?.stringForKey("context") ?? ""
     }
 }

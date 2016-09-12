@@ -229,10 +229,10 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         let destination = DeeplinkDestination(content: targetContent)
         let context: DeeplinkContext?
         if header?.dynamicType == CloseUpView.self {
-            context = DeeplinkContext(value: "closeup_view")
+            context = DeeplinkContext(value: DeeplinkContext.closeupView)
         }
         else if header?.dynamicType == VNewProfileHeaderView.self {
-            context = DeeplinkContext(value: "user_profile")
+            context = DeeplinkContext(value: DeeplinkContext.userProfile)
         }
         else {
             context = nil

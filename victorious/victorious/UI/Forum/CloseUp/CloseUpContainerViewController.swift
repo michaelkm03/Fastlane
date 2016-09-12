@@ -18,20 +18,6 @@ private struct Constants {
     static let navigationBarRightPadding: CGFloat = 10.0 
 }
 
-struct DeeplinkContext {
-    let value: String?
-
-    init(value: String?) {
-        if value == "favorite.stream" {
-            self.value = "bumped_feed"
-        } else if value == "home.stream" {
-            self.value = "main_feed"
-        } else {
-            self.value = value
-        }
-    }
-}
-
 class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, ContentCellTracker, CoachmarkDisplayer, VBackgroundContainer {
     private let gridStreamController: GridStreamViewController<CloseUpView>
     var dependencyManager: VDependencyManager!
@@ -76,7 +62,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         }
     }
 
-    init(dependencyManager: VDependencyManager, contentID: String, content: ContentModel? = nil, streamAPIPath: APIPath, context: DeeplinkContext?) {
+    init(dependencyManager: VDependencyManager, contentID: String, streamAPIPath: APIPath, context: DeeplinkContext? = nil, content: ContentModel? = nil) {
         self.context = context
         self.dependencyManager = dependencyManager
         
@@ -222,7 +208,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     func didSelectProfileForUserID(userID: Int) {
         let router = Router(originViewController: self, dependencyManager: dependencyManager)
         let destination = DeeplinkDestination(userID: userID)
-        router.navigate(to: destination, from: DeeplinkContext(value: "closeup_view"))
+        router.navigate(to: destination, from: DeeplinkContext(value: DeeplinkContext.closeupView))
     }
     
     func gridStreamDidUpdate() {

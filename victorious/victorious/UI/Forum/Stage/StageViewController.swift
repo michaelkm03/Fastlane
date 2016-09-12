@@ -390,6 +390,7 @@ private extension VDependencyManager {
         return childDependencyForKey("captionBar")
     }
 
+    /// STAGE has historically been used to track stage content before there was main_stage, vip_stage. Leaving this in until vip stage has been released, then it should be revisited.
     var context: String {
         return stringForKey("context") ?? "STAGE"
     }
