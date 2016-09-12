@@ -127,7 +127,7 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     // MARK: - Private
     
     private func navigateToFixedWebContent(type: FixedWebContentType) {
-        let router = Router(originViewController: self, dependencyManager: dependencyManager)
+        let router = Router(originViewController: self, dependencyManager: dependencyManager.navBarDependency)
         let configuration = ExternalLinkDisplayConfiguration(addressBarVisible: false, forceModal: true, isVIPOnly: false, title: type.title)
         router.navigate(to: .externalURL(url: dependencyManager.urlForFixedWebContent(type), configuration: configuration), from: nil)
     }
@@ -245,6 +245,10 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
 }
 
 private extension VDependencyManager {
+    var navBarDependency: VDependencyManager {
+        return childDependencyForKey("navigation.bar.appearance") ?? self
+    }
+    
     var headerText: String? {
         return stringForKey("text.header")
     }
