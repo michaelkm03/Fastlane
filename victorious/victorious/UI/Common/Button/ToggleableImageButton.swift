@@ -46,5 +46,6 @@ class ToggleableImageButton: TouchableInsetAdjustableButton, TrackableButton {
     
     private dynamic func toggle() {
         selected = !selected
+        delegate?.didToggle(to: selected)
     }
 }

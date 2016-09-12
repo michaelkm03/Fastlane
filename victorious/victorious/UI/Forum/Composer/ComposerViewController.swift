@@ -462,9 +462,15 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     }
     
     private func createVIPButtonIfNeeded() {
+        guard VCurrentUser.user?.accessLevel == .owner else {
+            vipButton = nil
+            return
+        }
+        
         if vipButton != nil {
             return
         }
+        
         vipButton = dependencyManager.toggleableVIPButton
         if let vipButton = vipButton as? ToggleableImageButton {
             vipLockContainerView.addSubview(vipButton)
@@ -473,7 +479,11 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
     }
     
-    private var vipButton: UIButton?
+    private var vipButton: UIButton? {
+        willSet {
+            vipButton?.removeFromSuperview()
+        }
+    }
     
     // MARK: - ToggleableImageButtonDelegate
     
