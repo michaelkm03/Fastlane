@@ -9,14 +9,18 @@
 import UIKit
 
 public struct ContentFeedRequest: RequestType {
-    public let apiPath: APIPath
+    private let url: NSURL
     
-    public init(apiPath: APIPath) {
-        self.apiPath = apiPath
+    public init?(apiPath: APIPath) {
+        guard let url = apiPath.url else {
+            return nil
+        }
+        
+        self.url = url
     }
     
     public var urlRequest: NSURLRequest {
-        return NSURLRequest(URL: apiPath.url ?? NSURL())
+        return NSURLRequest(URL: url)
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> ContentFeedResult {

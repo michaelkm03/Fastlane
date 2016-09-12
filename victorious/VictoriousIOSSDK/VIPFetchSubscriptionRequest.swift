@@ -11,12 +11,16 @@ import Foundation
 public struct VIPFetchSubscriptionRequest: RequestType {
     public let url: NSURL
     
-    public var urlRequest: NSURLRequest {
-        return NSURLRequest(URL: url)
+    public init?(apiPath: APIPath) {
+        guard let url = apiPath.url else {
+            return nil
+        }
+        
+        self.url = url
     }
     
-    public init(urlString: String) {
-        self.url = NSURL(string: urlString) ?? NSURL()
+    public var urlRequest: NSURLRequest {
+        return NSURLRequest(URL: url)
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [String] {

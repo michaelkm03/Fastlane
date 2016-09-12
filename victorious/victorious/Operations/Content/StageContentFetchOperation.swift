@@ -12,8 +12,12 @@ final class StageContentFetchOperation: AsyncOperation<Content> {
     
     // MARK: - Initializing
 
-    init(macroURLString: String, currentUserID: String, refreshStageEvent: RefreshStage) {
-        request = ContentFetchRequest(macroURLString: macroURLString, currentUserID: currentUserID, contentID: refreshStageEvent.contentID)
+    init?(apiPath: APIPath, currentUserID: String, refreshStageEvent: RefreshStage) {
+        guard let request = ContentFetchRequest(apiPath: apiPath, currentUserID: currentUserID, contentID: refreshStageEvent.contentID) else {
+            return nil
+        }
+        
+        self.request = request
         self.refreshStageEvent = refreshStageEvent
     }
     

@@ -11,7 +11,7 @@ import XCTest
 
 class ContentUpvoteRequestTests: XCTestCase {
     func testRequest() {
-        let request = ContentUpvoteRequest(contentID: "123", apiPath: APIPath(templatePath: "www.google.com/%%CONTENT_ID%%"))
-        XCTAssertEqual(request.urlRequest.URL?.absoluteString, "www.google.com/123")
+        let request = ContentUpvoteRequest(apiPath: APIPath(templatePath: "www.google.com/%%CONTENT_ID%%"), contentID: "123")
+        XCTAssertEqual(request?.urlRequest.URL?.absoluteString, "www.google.com/123")
     }
 }

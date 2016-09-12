@@ -31,16 +31,15 @@ final class ListMenuCreatorDataSource: ListMenuSectionDataSource {
     weak var delegate: ListMenuSectionDataSourceDelegate?
     
     func fetchRemoteData() {
-        guard let creatorListAPIPath = dependencyManager.creatorListAPIPath else {
-            Log.info("nil endpoint url for list of creators on left nav")
+        guard
+            let apiPath = dependencyManager.creatorListAPIPath,
+            let request = CreatorListRequest(apiPath: apiPath)
+        else {
+            Log.info("Missing or invalid creator list API path: \(dependencyManager.creatorListAPIPath)")
             return
         }
         
-        let operation = RequestOperation(
-            request: CreatorListRequest(apiPath: creatorListAPIPath)
-        )
-        
-        operation.queue { [weak self] result in
+        RequestOperation(request: request).queue { [weak self] result in
             switch result {
                 case .success(let users):
                     self?.visibleItems = users

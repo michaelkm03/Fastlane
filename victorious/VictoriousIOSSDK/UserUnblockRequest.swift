@@ -9,24 +9,25 @@
 import Foundation
 
 public struct UserUnblockRequest: RequestType {
-    public var urlRequest: NSURLRequest {
-        let request = NSMutableURLRequest(URL: userUnblockURL)
-        request.HTTPMethod = "POST"
-        request.vsdk_addURLEncodedFormPost(["user_id": userID])
-        return request
-    }
+    private let url: NSURL
+    private let userID: User.ID
     
-    private let userUnblockURL: NSURL
-    private let userID: String
-    
-    public init?(userID: Int, userUnblockAPIPath: APIPath) {
-        var userUnblockAPIPath = userUnblockAPIPath
-        self.userID = String(userID)
+    public init?(apiPath: APIPath, userID: User.ID) {
+        var apiPath = apiPath
+        apiPath.macroReplacements["%%USER_ID%%"] = String(userID)
         
-        userUnblockAPIPath.macroReplacements["%%USER_ID%%"] = self.userID
-        guard let validURL = userUnblockAPIPath.url else {
+        guard let url = apiPath.url else {
             return nil
         }
-        self.userUnblockURL = validURL
+        
+        self.url = url
+        self.userID = userID
+    }
+    
+    public var urlRequest: NSURLRequest {
+        let request = NSMutableURLRequest(URL: url)
+        request.HTTPMethod = "POST"
+        request.vsdk_addURLEncodedFormPost(["user_id": String(userID)])
+        return request
     }
 }

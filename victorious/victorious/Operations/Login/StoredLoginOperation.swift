@@ -36,7 +36,7 @@ final class StoredLoginOperation: SyncOperation<Void> {
             
             guard
                 let apiPath = dependencyManager.networkResources?.userFetchAPIPath,
-                let request = UserInfoRequest(userID: user.id, apiPath: apiPath)
+                let request = UserInfoRequest(apiPath: apiPath, userID: user.id)
             else {
                 let error = NSError(domain: "StoredLoginOperation-BadUserFetchAPIPath", code: -1, userInfo: ["DependencyManager": dependencyManager])
                 Log.warning("Unable to initialize first user info fetch during StoredLoginOperation with error: \(error)")

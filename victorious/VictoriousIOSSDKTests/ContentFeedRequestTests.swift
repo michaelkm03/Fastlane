@@ -13,21 +13,22 @@ class ContentFeedRequestTests: XCTestCase {
     
     func testConfiguredRequest() {
         let apiPath = APIPath(templatePath: "API_PATH")
-        let request = ContentFeedRequest(apiPath: apiPath)
-        XCTAssertEqual( request.urlRequest.URL?.absoluteString, apiPath.url!.absoluteString)
-        XCTAssertEqual( request.urlRequest.HTTPMethod, "GET" )
+        let request = ContentFeedRequest(apiPath: apiPath)!
+        XCTAssertEqual(request.urlRequest.URL?.absoluteString, apiPath.url!.absoluteString)
+        XCTAssertEqual(request.urlRequest.HTTPMethod, "GET")
     }
     
     func testParseResponse() {
-        
-        guard let mockUserDataURL = NSBundle(forClass: self.dynamicType).URLForResource("ViewedContentsResponse", withExtension: "json"),
-            let mockData = NSData(contentsOfURL: mockUserDataURL) else {
-                XCTFail("Error reading mock json data")
-                return
+        guard
+            let mockUserDataURL = NSBundle(forClass: self.dynamicType).URLForResource("ViewedContentsResponse", withExtension: "json"),
+            let mockData = NSData(contentsOfURL: mockUserDataURL)
+        else {
+            XCTFail("Error reading mock json data")
+            return
         }
         
         let apiPath = APIPath(templatePath: "API_PATH")
-        let request = ContentFeedRequest(apiPath: apiPath)
+        let request = ContentFeedRequest(apiPath: apiPath)!
         do {
             let feedResult = try request.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(feedResult.contents.count, 2)

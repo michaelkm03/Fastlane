@@ -329,7 +329,12 @@ private final class ShowFetchedCloseUpOperation: AsyncOperation<Void> {
         let displayModifier = self.displayModifier
         guard
             let userID = VCurrentUser.user?.id,
-            let contentFetchURL = displayModifier.dependencyManager.contentFetchURL
+            let contentFetchAPIPath = displayModifier.dependencyManager.contentFetchAPIPath,
+            let contentFetchOperation = ContentFetchOperation(
+                apiPath: contentFetchAPIPath,
+                currentUserID: String(userID),
+                contentID: contentID
+            )
         else {
             let error = NSError(domain: "ShowFetchedCloseUpOperation", code: -1, userInfo: nil)
             finish(result: .failure(error))
@@ -341,11 +346,6 @@ private final class ShowFetchedCloseUpOperation: AsyncOperation<Void> {
         showCloseUpOperation.rechainAfter(self)
         
         // Set up ContentFetchOperation and chain it
-        let contentFetchOperation = ContentFetchOperation(
-            macroURLString: contentFetchURL,
-            currentUserID: String(userID),
-            contentID: contentID
-        )
         contentFetchOperation.rechainAfter(showCloseUpOperation)
         
         // Queue operations. We queue the operations after setting up dependency graph for NSOperationQueue performance reasons.
@@ -491,9 +491,7 @@ private extension VDependencyManager {
         return stringForKey("related.content.context") ?? ""
     }
     
-    var contentFetchURL: String? {
-        return networkResources?.stringForKey("contentFetchURL")
+    var contentFetchAPIPath: APIPath? {
+        return networkResources?.apiPathForKey("contentFetchURL")
     }
-    
-  
 }

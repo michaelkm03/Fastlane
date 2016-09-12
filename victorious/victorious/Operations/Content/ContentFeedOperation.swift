@@ -10,21 +10,25 @@ final class ContentFeedOperation: AsyncOperation<ContentFeedResult> {
     
     // MARK: - Initializing
     
-    init(apiPath: APIPath) {
-        self.apiPath = apiPath
+    init?(apiPath: APIPath) {
+        guard let request = ContentFeedRequest(apiPath: apiPath) else {
+            return nil
+        }
+        
+        self.request = request
         super.init()
     }
     
     // MARK: - Executing
     
-    private let apiPath: APIPath
+    private let request: ContentFeedRequest
     
     override var executionQueue: Queue {
         return .main
     }
     
     override func execute(finish: (result: OperationResult<ContentFeedResult>) -> Void) {
-        RequestOperation(request: ContentFeedRequest(apiPath: apiPath)).queue { result in
+        RequestOperation(request: request).queue { result in
             switch result {
                 case .success(var feedResult):
                     feedResult.contents = feedResult.contents.filter { content in

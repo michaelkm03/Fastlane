@@ -12,8 +12,12 @@ final class ContentFetchOperation: AsyncOperation<Content> {
     
     // MARK: - Initializing
     
-    init(macroURLString: String, currentUserID: String, contentID: String) {
-        request = ContentFetchRequest(macroURLString: macroURLString, currentUserID: currentUserID, contentID: contentID)
+    init?(apiPath: APIPath, currentUserID: String, contentID: String) {
+        guard let request = ContentFetchRequest(apiPath: apiPath, currentUserID: currentUserID, contentID: contentID) else {
+            return nil
+        }
+        
+        self.request = request
         super.init()
     }
     

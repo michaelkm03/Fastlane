@@ -215,14 +215,13 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
             let content = content,
             let contentID = content.id,
             let upvoteAPIPath = dependencyManager.contentUpvoteAPIPath,
-            let unupvoteAPIPath = dependencyManager.contentUnupvoteAPIPath
+            let unupvoteAPIPath = dependencyManager.contentUnupvoteAPIPath,
+            let upvoteOperation: AsyncOperation<Void> = content.isLikedByCurrentUser
+                ? ContentUnupvoteOperation(apiPath: unupvoteAPIPath, contentID: contentID)
+                : ContentUpvoteOperation(apiPath: upvoteAPIPath, contentID: contentID)
         else {
             return
         }
-        
-        let upvoteOperation = content.isLikedByCurrentUser
-            ? ContentUnupvoteOperation(contentID: contentID, apiPath: unupvoteAPIPath)
-            : ContentUpvoteOperation(contentID: contentID, apiPath: upvoteAPIPath)
         
         upvoteOperation.queue { [weak self] _ in
             self?.updateHeader()
@@ -230,19 +229,17 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     }
     
     func overflow() {
+        let isCreatorOfContent = content?.wasCreatedByCurrentUser == true
+        
         guard
-            let content = content,
             let deleteAPIPath = dependencyManager.contentDeleteAPIPath,
-            let flagAPIPath = dependencyManager.contentFlagAPIPath
+            let flagAPIPath = dependencyManager.contentFlagAPIPath,
+            let flagOrDeleteOperation: AsyncOperation<Void> = isCreatorOfContent
+                ? ContentDeleteOperation(apiPath: deleteAPIPath, contentID: contentID)
+                : ContentFlagOperation(apiPath: flagAPIPath, contentID: contentID)
         else {
             return
         }
-        
-        let isCreatorOfContent = content.wasCreatedByCurrentUser
-        
-        let flagOrDeleteOperation = isCreatorOfContent
-            ? ContentDeleteOperation(contentID: contentID, apiPath: deleteAPIPath)
-            : ContentFlagOperation(contentID: contentID, apiPath: flagAPIPath)
         
         let actionTitle = isCreatorOfContent
             ? NSLocalizedString("DeletePost", comment: "Delete this user's post")

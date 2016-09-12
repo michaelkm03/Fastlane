@@ -26,7 +26,7 @@ class UserUpvoteToggleOperation: SyncOperation<Void> {
     override func execute() -> OperationResult<Void> {
         if user.isUpvoted {
             user.unUpvote()
-            guard let unUpvoteRequest = UserUnupvoteRequest(userID: user.id, userUnupvoteAPIPath: unupvoteAPIPath) else {
+            guard let unUpvoteRequest = UserUnupvoteRequest(apiPath: unupvoteAPIPath, userID: user.id) else {
                 let error = NSError(domain: "UnUpvoteRequest", code: 1, userInfo: nil)
                 return .failure(error)
             }
@@ -36,7 +36,7 @@ class UserUpvoteToggleOperation: SyncOperation<Void> {
         }
         else {
             user.upvote()
-            guard let upvoteRequest = UserUpvoteRequest(userID: user.id, userUpvoteAPIPath: upvoteAPIPath) else {
+            guard let upvoteRequest = UserUpvoteRequest(apiPath: upvoteAPIPath, userID: user.id) else {
                 let error = NSError(domain: "UpvoteRequest", code: 2, userInfo: nil)
                 return .failure(error)
             }

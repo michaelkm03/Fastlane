@@ -10,13 +10,13 @@ import Foundation
 
 final class VIPSubscribeOperation: AsyncOperation<Void> {
     let product: VProduct
-    let validationURL: NSURL?
+    let validationAPIPath: APIPath
     
     var purchaseManager: VPurchaseManagerType = VPurchaseManager.sharedInstance()
     
-    init(product: VProduct, validationURL: NSURL?) {
+    init(product: VProduct, validationAPIPath: APIPath) {
         self.product = product
-        self.validationURL = validationURL
+        self.validationAPIPath = validationAPIPath
     }
     
     override var executionQueue: Queue {
@@ -26,7 +26,7 @@ final class VIPSubscribeOperation: AsyncOperation<Void> {
     override func execute(finish: (result: OperationResult<Void>) -> Void) {
         let success = { (results: Set<NSObject>?) in
             // Force success because we have to deliver the product even if the sever fails for any reason
-            let validationOperation = VIPValidateSubscriptionOperation(url: self.validationURL, shouldForceSuccess: true)
+            let validationOperation = VIPValidateSubscriptionOperation(apiPath: self.validationAPIPath, shouldForceSuccess: true)
             validationOperation?.rechainAfter(self).queue() { _ in
                 // We optimistically finish with success if purchase has finished, no matter what the validation result it.
                 // But we only send the tracking call if validation succeeded

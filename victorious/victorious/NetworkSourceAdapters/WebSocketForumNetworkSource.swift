@@ -155,7 +155,10 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
             return
         }
         
-        guard let request = CreateChatServiceTokenRequest(expandableURLString: dependencyManager.expandableTokenURL, currentUserID: currentUserID) else {
+        guard
+            let apiPath = dependencyManager.expandableTokenAPIPath,
+            let request = CreateChatServiceTokenRequest(apiPath: apiPath, currentUserID: currentUserID)
+        else {
             return
         }
         
@@ -185,8 +188,8 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
 }
 
 private extension VDependencyManager {
-    var expandableTokenURL: String {
-        return stringForKey("authURL") ?? ""
+    var expandableTokenAPIPath: APIPath? {
+        return apiPathForKey("authURL")
     }
     
     var expandableSocketURL: String {

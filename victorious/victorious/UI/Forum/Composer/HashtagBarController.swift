@@ -77,7 +77,7 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
     
     private let searchAPIPath: APIPath?
     
-    private let trendingURL: NSURL?
+    private let trendingAPIPath: APIPath?
     
     weak var selectionDelegate: HashtagBarControllerSelectionDelegate?
     
@@ -86,7 +86,7 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
     init(dependencyManager: VDependencyManager, collectionView: UICollectionView) {
         cellDecorator = HashtagBarCellDecorator(dependencyManager: dependencyManager)
         searchAPIPath = dependencyManager.hashtagSearchAPIPath
-        trendingURL = dependencyManager.trendingHashtagsURL
+        trendingAPIPath = dependencyManager.trendingHashtagsAPIPath
         self.collectionView = collectionView
         super.init()
         collectionView.dataSource = self
@@ -127,11 +127,14 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
     // MARK: - Hashtag updating
     
     private func searchForText(text: String) {
-        guard let searchAPIPath = searchAPIPath else {
+        guard
+            let searchAPIPath = searchAPIPath,
+            let request = HashtagSearchRequest(apiPath: searchAPIPath, searchTerm: text)
+        else {
             return
         }
         
-        currentFetchOperation = RequestOperation(request: HashtagSearchRequest(searchTerm: text, apiPath: searchAPIPath))
+        currentFetchOperation = RequestOperation(request: request)
         
         currentFetchOperation?.queue { [weak self] result in
             switch result {
@@ -151,13 +154,16 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
     }
     
     private func getTrendingHashtags() {
-        guard let trendingURL = trendingURL else {
+        guard
+            let trendingAPIPath = trendingAPIPath,
+            let request = TrendingHashtagRequest(apiPath: trendingAPIPath)
+        else {
             return
         }
         
         searchResults = currentTrendingTags
         
-        currentFetchOperation = RequestOperation(request: TrendingHashtagRequest(url: trendingURL))
+        currentFetchOperation = RequestOperation(request: request)
         
         currentFetchOperation?.queue { [weak self] result in
             switch result {
@@ -223,10 +229,7 @@ private extension VDependencyManager {
         return networkResources?.apiPathForKey("hashtag.search.URL")
     }
     
-    var trendingHashtagsURL: NSURL? {
-        guard let urlString = networkResources?.stringForKey("trendingHashtagsURL") else {
-            return nil
-        }
-        return NSURL(string: urlString)
+    var trendingHashtagsAPIPath: APIPath? {
+        return networkResources?.apiPathForKey("trendingHashtagsURL")
     }
 }

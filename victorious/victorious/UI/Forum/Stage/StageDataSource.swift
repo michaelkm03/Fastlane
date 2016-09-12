@@ -39,7 +39,7 @@ class StageDataSource: ForumEventReceiver {
                     return
                 }
                 
-                guard let contentFetchURL = dependencyManager.contentFetchURL else {
+                guard let contentFetchAPIPath = dependencyManager.contentFetchAPIPath else {
                     Log.warning("Missing contentFetchURL to fetch stage content. DependencyManager: \(dependencyManager)")
                     return
                 }
@@ -55,7 +55,7 @@ class StageDataSource: ForumEventReceiver {
                 
                 currentContentFetchOperation?.cancel()
                 
-                currentContentFetchOperation = StageContentFetchOperation(macroURLString: contentFetchURL, currentUserID: String(currentUserID), refreshStageEvent: stageEvent)
+                currentContentFetchOperation = StageContentFetchOperation(apiPath: contentFetchAPIPath, currentUserID: String(currentUserID), refreshStageEvent: stageEvent)
                 
                 currentContentFetchOperation?.queue { [weak self] result in
                     switch result {
@@ -85,7 +85,7 @@ class StageDataSource: ForumEventReceiver {
 }
 
 private extension VDependencyManager {
-    var contentFetchURL: String? {
-        return stringForKey("contentFetchURL")
+    var contentFetchAPIPath: APIPath? {
+        return apiPathForKey("contentFetchURL")
     }
 }

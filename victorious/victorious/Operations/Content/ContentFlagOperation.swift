@@ -12,16 +12,20 @@ final class ContentFlagOperation: AsyncOperation<Void> {
     
     // MARK: - Initializing
     
-    init(contentID: Content.ID, apiPath: APIPath) {
+    init?(apiPath: APIPath, contentID: Content.ID) {
+        guard let request = ContentFlagRequest(apiPath: apiPath, contentID: contentID) else {
+            return nil
+        }
+        
+        self.request = request
         self.contentID = contentID
-        self.apiPath = apiPath
         super.init()
     }
     
     // MARK: - Executing
     
+    private let request: ContentFlagRequest
     private let contentID: Content.ID
-    private let apiPath: APIPath
     
     override var executionQueue: Queue {
         return .main
@@ -30,7 +34,7 @@ final class ContentFlagOperation: AsyncOperation<Void> {
     override func execute(finish: (result: OperationResult<Void>) -> Void) {
         let contentID = self.contentID
         
-        RequestOperation(request: ContentFlagRequest(contentID: contentID, apiPath: apiPath)).queue { result in
+        RequestOperation(request: request).queue { result in
             switch result {
                 case .success(_):
                     Content.hideContent(withID: contentID)

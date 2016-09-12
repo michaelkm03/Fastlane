@@ -10,16 +10,20 @@ final class ContentUnupvoteOperation: AsyncOperation<Void> {
     
     // MARK: - Initializing
     
-    init(contentID: Content.ID, apiPath: APIPath) {
+    init?(apiPath: APIPath, contentID: Content.ID) {
+        guard let request = ContentUnupvoteRequest(apiPath: apiPath, contentID: contentID) else {
+            return nil
+        }
+        
         self.contentID = contentID
-        self.apiPath = apiPath
+        self.request = request
         super.init()
     }
     
     // MARK: - Executing
     
     private let contentID: Content.ID
-    private let apiPath: APIPath
+    private let request: ContentUnupvoteRequest
     
     override var executionQueue: Queue {
         return .main
@@ -27,6 +31,6 @@ final class ContentUnupvoteOperation: AsyncOperation<Void> {
     
     override func execute(finish: (result: OperationResult<Void>) -> Void) {
         Content.unlikeContent(withID: contentID)
-        RequestOperation(request: ContentUnupvoteRequest(contentID: contentID, apiPath: apiPath)).queue(completion: finish)
+        RequestOperation(request: request).queue(completion: finish)
     }
 }
