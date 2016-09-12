@@ -216,7 +216,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
             let contentID = content.id,
             let upvoteAPIPath = dependencyManager.contentUpvoteAPIPath,
             let unupvoteAPIPath = dependencyManager.contentUnupvoteAPIPath,
-            let upvoteOperation: AsyncOperation<Void> = content.isLikedByCurrentUser
+            let upvoteOperation: SyncOperation<Void> = content.isLikedByCurrentUser
                 ? ContentUnupvoteOperation(apiPath: unupvoteAPIPath, contentID: contentID)
                 : ContentUpvoteOperation(apiPath: upvoteAPIPath, contentID: contentID)
         else {
@@ -234,7 +234,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         guard
             let deleteAPIPath = dependencyManager.contentDeleteAPIPath,
             let flagAPIPath = dependencyManager.contentFlagAPIPath,
-            let flagOrDeleteOperation: AsyncOperation<Void> = isCreatorOfContent
+            let flagOrDeleteOperation: SyncOperation<Void> = isCreatorOfContent
                 ? ContentDeleteOperation(apiPath: deleteAPIPath, contentID: contentID)
                 : ContentFlagOperation(apiPath: flagAPIPath, contentID: contentID)
         else {
