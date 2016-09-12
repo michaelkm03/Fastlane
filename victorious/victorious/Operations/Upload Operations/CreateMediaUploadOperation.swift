@@ -67,7 +67,8 @@ final class CreateMediaUploadOperation: SyncOperation<Void> {
             "name": publishParameters.caption ?? "",
             "is_gif_style": publishParameters.isGIF ? "true" : "false",
             "did_crop": publishParameters.didCrop ? "true" : "false",
-            "did_trim": publishParameters.didTrim ? "true" : "false"
+            "did_trim": publishParameters.didTrim ? "true" : "false",
+            "is_vip": publishParameters.isVIPContent ? "true" : "false"
         ]
         
         /// Assumption here is that we don't need to send both the assetRemoteID and mediaURL

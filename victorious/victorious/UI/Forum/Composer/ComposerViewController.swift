@@ -489,7 +489,10 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     func didToggle(to selected: Bool) {
         NSLog("isVIP: \(selected)")
+        isVIP = selected
     }
+    
+    private var isVIP: Bool = false
     
     // MARK: - VBackgroundContainer
     
@@ -586,7 +589,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             let asset = selectedAsset,
             let previewImage = textViewPrependedImage
         {
-            sendMessage(asset: asset, previewImage: previewImage, text: text, currentUser: user)
+            sendMessage(asset: asset, previewImage: previewImage, text: text, currentUser: user, vipStatus: isVIP)
         }
         else if let text = text {
             sendMessage(text: text, currentUser: user)

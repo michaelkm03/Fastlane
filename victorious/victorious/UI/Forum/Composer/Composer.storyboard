@@ -62,7 +62,7 @@
                                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
                                                     </textView>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xjx-IZ-D2a" userLabel="vipLockContainerView">
-                                                        <rect key="frame" x="0.0" y="2.5" width="22" height="22"/>
+                                                        <rect key="frame" x="0.0" y="3" width="22" height="22"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="22" id="a1R-8g-rAC"/>

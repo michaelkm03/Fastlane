@@ -118,6 +118,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, assign) NSInteger height;
 
+/**
+ *  Whether this piece of content is only available to VIP users.
+ */
+@property (nonatomic, assign) BOOL isVIPContent;
+
 @end
 
 NS_ASSUME_NONNULL_END
