@@ -102,8 +102,6 @@ class VIPValidateSubscriptionOperation: AsyncOperation<VIPStatus> {
             currentUser.vipStatus = nil
         }
         
-        dispatch_sync(dispatch_get_main_queue()) {
-            VCurrentUser.update(to: currentUser)
-        }
+        VCurrentUser.update(to: currentUser)
     }
 }
