@@ -29,7 +29,7 @@ private struct Types {
 //
 // If we get back a stage refresh message with a custom content id (specified below) we are to treat it as a close stage message.
 //
-private struct StageClose {
+private struct SocketClose {
     static let contentIdKey         = "content_id"
     static let magicKey             = "close socket"
 }
@@ -72,8 +72,8 @@ extension WebSocketEventDecoder {
                 }
             case Types.stageRefresh:
                 let refreshJSON = rootNode[Keys.refreshStage]
-                if refreshJSON[StageClose.contentIdKey].string == StageClose.magicKey {
-                    forumEvent = .closeStage(.vip)
+                if refreshJSON[SocketClose.contentIdKey].string == SocketClose.magicKey {
+                    forumEvent = .closeVIP()
                 }
                 else if let refresh = RefreshStage(json: refreshJSON, serverTime: serverTime) {
                     forumEvent = .refreshStage(refresh)
