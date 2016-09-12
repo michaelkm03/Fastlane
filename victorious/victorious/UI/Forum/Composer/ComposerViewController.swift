@@ -297,7 +297,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(setupUserDependentUI), name: kLoggedInChangedNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(setupUserDependentUI), name: VCurrentUser.userDidUpdateNotificationKey, object: nil)
         setupUserDependentUI()
         
         //Setup once-initialized properties that cannot be created on initialization
@@ -403,6 +403,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         let isOwner = userIsOwner
         maximumTextLength = dependencyManager.maximumTextLengthForOwner(isOwner)
         attachmentMenuItems = dependencyManager.attachmentMenuItemsForOwner(isOwner)
+        updateAppearanceFromDependencyManager()
     }
     
     private func setupTextView() {
