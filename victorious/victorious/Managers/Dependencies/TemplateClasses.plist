@@ -112,6 +112,8 @@
 	<string>victorious.TutorialViewController</string>
 	<key>imageOnImage.button</key>
 	<string>VImageOnImageButton</string>
+	<key>toggleableImage.button</key>
+	<string>VToggleableImageButton</string>
 	<key>imageOnColor.button</key>
 	<string>VImageOnColorButton</string>
 	<key>textOnImage.button</key>

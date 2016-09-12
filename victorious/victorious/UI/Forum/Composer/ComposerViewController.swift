@@ -9,7 +9,7 @@
 import UIKit
 
 /// Handles view manipulation and message sending related to the composer. Could definitely use a refactor to make it less stateful.
-class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate, ComposerAttachmentTabBarDelegate, VBackgroundContainer, VCreationFlowControllerDelegate, HashtagBarControllerSelectionDelegate, HashtagBarViewControllerAnimationDelegate {
+class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate, ComposerAttachmentTabBarDelegate, VBackgroundContainer, VCreationFlowControllerDelegate, HashtagBarControllerSelectionDelegate, HashtagBarViewControllerAnimationDelegate, ToggleableImageButtonDelegate {
     
     private struct Constants {
         static let animationDuration = 0.2
@@ -43,6 +43,8 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     @IBOutlet weak private(set) var hashtagBarContainerHeightConstraint: NSLayoutConstraint!
     
     @IBOutlet weak private var hashtagBarContainerView: UIView!
+    @IBOutlet weak var vipLockContainerView: UIView!
+    @IBOutlet weak var vipLockWidthConstraint: NSLayoutConstraint!
     
     @IBOutlet weak private var passthroughContainerView: VPassthroughContainerView!
     
@@ -452,7 +454,31 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         confirmButton.setTitle(dependencyManager.confirmKeyText, forState: .Normal)
         dependencyManager.addBackgroundToBackgroundHost(self)
         
+        createVIPButtonIfNeeded()
+        
+        vipLockWidthConstraint.constant = vipButton?.intrinsicContentSize().width ?? 0
+        
         view.layoutIfNeeded()
+    }
+    
+    private func createVIPButtonIfNeeded() {
+        if vipButton != nil {
+            return
+        }
+        vipButton = dependencyManager.toggleableVIPButton
+        if let vipButton = vipButton as? ToggleableImageButton {
+            vipLockContainerView.addSubview(vipButton)
+            vipLockContainerView.v_addFitToParentConstraintsToSubview(vipButton)
+            vipButton.delegate = self
+        }
+    }
+    
+    private var vipButton: UIButton?
+    
+    // MARK: - ToggleableImageButtonDelegate
+    
+    func didToggle(to selected: Bool) {
+        NSLog("isVIP: \(selected)")
     }
     
     // MARK: - VBackgroundContainer
@@ -562,6 +588,9 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
 
 // Update this extension to parse real values once they're returned in template
 private extension VDependencyManager {
+    var toggleableVIPButton: UIButton? {
+        return buttonForKey("creator.vip.toggle")
+    }
     
     func maximumTextLengthForOwner(owner: Bool) -> Int {
         return owner ? 0 : numberForKey("maximumTextLength").integerValue

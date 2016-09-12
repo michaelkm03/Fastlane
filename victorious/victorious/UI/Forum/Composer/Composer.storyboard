@@ -31,10 +31,10 @@
                                         <rect key="frame" x="8" y="0.0" width="524" height="80"/>
                                         <subviews>
                                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5MN-kC-AjT">
-                                                <rect key="frame" x="8" y="27" width="516" height="53"/>
+                                                <rect key="frame" x="0.0" y="27" width="524" height="53"/>
                                                 <subviews>
                                                     <view autoresizesSubviews="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="joT-P4-Pfz" customClass="ComposerAttachmentTabBar" customModule="victorious" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="0.0" width="516" height="53"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="524" height="53"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     </view>
                                                 </subviews>
@@ -49,10 +49,10 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7nb-cq-ZtM" userLabel="Input container view">
-                                                <rect key="frame" x="8" y="0.0" width="516" height="27"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="524" height="27"/>
                                                 <subviews>
                                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="FNU-QM-fIQ" customClass="VPlaceholderTextView">
-                                                        <rect key="frame" x="19" y="14" width="497" height="0.0"/>
+                                                        <rect key="frame" x="30" y="14" width="494" height="0.0"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" priority="996" id="ciC-0O-1WA"/>
@@ -61,10 +61,11 @@
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
                                                     </textView>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xjx-IZ-D2a">
-                                                        <rect key="frame" x="0.0" y="8" width="11" height="11"/>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xjx-IZ-D2a" userLabel="vipLockContainerView">
+                                                        <rect key="frame" x="0.0" y="2.5" width="22" height="22"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                         <constraints>
+                                                            <constraint firstAttribute="width" constant="22" id="a1R-8g-rAC"/>
                                                             <constraint firstAttribute="width" secondItem="Xjx-IZ-D2a" secondAttribute="height" multiplier="1:1" id="nhi-FJ-zfc"/>
                                                         </constraints>
                                                     </view>
@@ -72,14 +73,13 @@
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" priority="998" constant="27" id="4PX-UV-qLv"/>
-                                                    <constraint firstAttribute="bottom" secondItem="Xjx-IZ-D2a" secondAttribute="bottom" constant="8" id="5J7-KA-ZSJ"/>
                                                     <constraint firstAttribute="trailing" secondItem="FNU-QM-fIQ" secondAttribute="trailing" id="AVr-Dj-QAM"/>
                                                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="FNU-QM-fIQ" secondAttribute="bottom" constant="8" id="F0Y-Rd-1ae"/>
                                                     <constraint firstItem="Xjx-IZ-D2a" firstAttribute="leading" secondItem="7nb-cq-ZtM" secondAttribute="leading" id="Ggx-4n-oMZ"/>
                                                     <constraint firstItem="FNU-QM-fIQ" firstAttribute="leading" secondItem="Xjx-IZ-D2a" secondAttribute="trailing" constant="8" id="Lj4-t2-0a1"/>
                                                     <constraint firstItem="FNU-QM-fIQ" firstAttribute="top" relation="greaterThanOrEqual" secondItem="7nb-cq-ZtM" secondAttribute="top" constant="8" id="Ljo-LZ-G5S"/>
                                                     <constraint firstItem="FNU-QM-fIQ" firstAttribute="centerY" secondItem="7nb-cq-ZtM" secondAttribute="centerY" id="Q1J-vv-1qp"/>
-                                                    <constraint firstItem="Xjx-IZ-D2a" firstAttribute="top" secondItem="7nb-cq-ZtM" secondAttribute="top" constant="8" id="ipp-o2-MwQ"/>
+                                                    <constraint firstItem="Xjx-IZ-D2a" firstAttribute="centerY" secondItem="7nb-cq-ZtM" secondAttribute="centerY" id="oWq-8V-fPT"/>
                                                 </constraints>
                                             </view>
                                         </subviews>
@@ -88,7 +88,7 @@
                                             <constraint firstAttribute="trailing" secondItem="7nb-cq-ZtM" secondAttribute="trailing" id="Je9-Os-amh"/>
                                             <constraint firstItem="5MN-kC-AjT" firstAttribute="top" secondItem="7nb-cq-ZtM" secondAttribute="bottom" id="iwV-1I-zqi"/>
                                             <constraint firstAttribute="bottom" secondItem="5MN-kC-AjT" secondAttribute="bottom" id="qYm-Ya-Kcj"/>
-                                            <constraint firstItem="7nb-cq-ZtM" firstAttribute="leading" secondItem="Koq-m5-Wlb" secondAttribute="leading" constant="8" id="w09-jH-cyJ"/>
+                                            <constraint firstItem="7nb-cq-ZtM" firstAttribute="leading" secondItem="Koq-m5-Wlb" secondAttribute="leading" id="w09-jH-cyJ"/>
                                             <constraint firstItem="5MN-kC-AjT" firstAttribute="leading" secondItem="7nb-cq-ZtM" secondAttribute="leading" id="wqW-It-scT"/>
                                             <constraint firstItem="5MN-kC-AjT" firstAttribute="trailing" secondItem="7nb-cq-ZtM" secondAttribute="trailing" id="zdu-io-I9M"/>
                                             <constraint firstItem="7nb-cq-ZtM" firstAttribute="top" secondItem="Koq-m5-Wlb" secondAttribute="top" id="zrB-SN-q6r"/>
@@ -161,6 +161,8 @@
                         <outlet property="textView" destination="FNU-QM-fIQ" id="Iaw-x1-tj0"/>
                         <outlet property="textViewContainerHeightConstraint" destination="4PX-UV-qLv" id="0ih-yq-hJK"/>
                         <outlet property="textViewHeightConstraint" destination="ciC-0O-1WA" id="zlJ-WN-OOp"/>
+                        <outlet property="vipLockContainerView" destination="Xjx-IZ-D2a" id="xhe-Fs-pRW"/>
+                        <outlet property="vipLockWidthConstraint" destination="a1R-8g-rAC" id="MEL-wT-Q4y"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pv6-ay-D6e" userLabel="First Responder" sceneMemberID="firstResponder"/>
