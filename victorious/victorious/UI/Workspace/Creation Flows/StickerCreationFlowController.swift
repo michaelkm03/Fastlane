@@ -19,8 +19,13 @@ class StickerCreationFlowController: UIViewController, MediaSearchDelegate {
         return mediaSearchViewController
     }()
     
-    func new(dependencyManager: VDependencyManager) {
-        
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .redColor()
+    }
+    
+    static func new(dependencyManager: VDependencyManager) -> StickerCreationFlowController {
+        return StickerCreationFlowController()
     }
     
     //MARK: MediaSearchDelegate

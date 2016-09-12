@@ -25,6 +25,7 @@ class MediaSearchOptions: NSObject {
     var attributionImage: UIImage? = nil
     var clearSelectionOnAppearance: Bool = false
     var shouldSkipExportRendering: Bool = false
+    var scrollDirection: UICollectionViewScrollDirection = .Vertical
     var showAttribution: Bool {
         return attributionImage != nil
     }
@@ -76,6 +77,12 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            layout.scrollDirection = options.scrollDirection
+        } else {
+            Log.warning("Encountered an unexpected collection view layout in MediaSearchViewController")
+        }
         
         collectionView.accessibilityIdentifier = AutomationId.MediaSearchCollection.rawValue
         

@@ -8,6 +8,16 @@
 
 import UIKit
 
+enum CustomInputAreaState {
+    case Hidden
+    case Visible(inputController: CustomInputController)
+}
+
+struct CustomInputController {
+    let viewController: UIViewController
+    let desiredHeight: CGFloat
+}
+
 /// Handles view manipulation and message sending related to the composer. Could definitely use a refactor to make it less stateful.
 class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate, ComposerAttachmentTabBarDelegate, VBackgroundContainer, VCreationFlowControllerDelegate, HashtagBarControllerSelectionDelegate, HashtagBarViewControllerAnimationDelegate {
     
@@ -20,6 +30,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         static let minimumConfirmButtonContainerHeight: CGFloat = 52
         static let composerTextInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         static let confirmButtonHorizontalInset: CGFloat = 16
+        static let stickerInputAreaHeight: CGFloat = 100
     }
     
     /// ForumEventSender
@@ -28,6 +39,49 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     }
     
     private var visibleKeyboardHeight: CGFloat = 0
+    
+    private var customInputAreaState: CustomInputAreaState = .Hidden {
+        didSet {
+            switch customInputAreaState {
+                case .Hidden:
+                    customInputAreaHeight = 0
+                case .Visible(let inputController):
+                    customInputViewController = inputController.viewController
+                    customInputAreaHeight = inputController.desiredHeight
+                    textView.resignFirstResponder()
+            }
+            updateCustomInputAreaHeight(animated: true)
+        }
+    }
+    
+    private var customInputAreaHeight: CGFloat = 0
+    
+    @IBOutlet private var customInputViewContainer: UIView!
+    
+    private var customInputViewController: UIViewController? {
+        didSet {
+            if oldValue != customInputViewController {
+                if let oldInputViewController = oldValue {
+                    oldInputViewController.willMoveToParentViewController(nil)
+                    oldInputViewController.view.removeFromSuperview()
+                    oldInputViewController.removeFromParentViewController()
+                }
+                if let newInputViewController = customInputViewController {
+                    addChildViewController(newInputViewController)
+                    let inputView = newInputViewController.view
+                    customInputViewContainer.addSubview(inputView)
+                    customInputViewContainer.topAnchor.constraintEqualToAnchor(inputView.topAnchor).active = true
+                    customInputViewContainer.rightAnchor.constraintEqualToAnchor(inputView.rightAnchor).active = true
+                    customInputViewContainer.bottomAnchor.constraintEqualToAnchor(inputView.bottomAnchor).active = true
+                    customInputViewContainer.leftAnchor.constraintEqualToAnchor(inputView.leftAnchor).active = true
+                }
+            }
+        }
+    }
+    
+    lazy var stickerInputController: CustomInputController = {
+        return CustomInputController(viewController: StickerCreationFlowController.new(self.dependencyManager), desiredHeight: Constants.stickerInputAreaHeight)
+    }()
     
     /// Referenced so that it can be set toggled between 0 and it's default
     /// height when shouldShowAttachmentContainer is true
@@ -38,6 +92,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
     }
     @IBOutlet weak private var inputViewToBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak private var customInputAreaHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak private var textViewContainerHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak private var textViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak private(set) var hashtagBarContainerHeightConstraint: NSLayoutConstraint!
@@ -52,6 +107,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     @IBOutlet weak private var attachmentContainerView: UIView!
     @IBOutlet weak private var interactiveContainerView: UIView!
+    @IBOutlet weak private var composerBackgroundContainerView: UIView!
     @IBOutlet weak private var confirmButton: TouchableInsetAdjustableButton! {
         didSet {
             confirmButton.applyCornerRadius()
@@ -79,6 +135,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             + textViewContainerHeightConstraint.constant
             + attachmentContainerHeightConstraint.constant
             + hashtagBarContainerHeightConstraint.constant
+            + customInputAreaHeightConstraint.constant
     }
     
     /// The maximum number of characters a user can input into
@@ -240,6 +297,9 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     var textViewIsEditing: Bool = false {
         didSet {
             if oldValue != textViewIsEditing {
+                if textViewIsEditing {
+                    customInputAreaState = .Hidden
+                }
                 view.setNeedsUpdateConstraints()
             }
         }
@@ -258,7 +318,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     }
     
     var textViewCanDismiss: Bool {
-        return interactiveContainerView.layer.animationKeys() == nil
+        return interactiveContainerView.layer.animationKeys() == nil && composerBackgroundContainerView.layer.animationKeys() == nil
     }
     
     var textViewCurrentHashtag: (String, NSRange)? {
@@ -330,6 +390,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         if animationDuration != 0 {
             UIView.animateWithDuration(animationDuration, delay: 0, options: animationOptions, animations: {
                 self.inputViewToBottomConstraint.constant = visibleKeyboardHeight
+                self.updateCustomInputAreaHeight(animated: false)
                 self.delegate?.composer(self, didUpdateContentHeight: self.totalComposerHeight)
                 self.view.layoutIfNeeded()
             }, completion: nil)
@@ -337,6 +398,17 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             inputViewToBottomConstraint.constant = visibleKeyboardHeight
             self.view.setNeedsLayout()
             self.delegate?.composer(self, didUpdateContentHeight: self.totalComposerHeight)
+        }
+    }
+    
+    private func updateCustomInputAreaHeight(animated animated: Bool) {
+        if animated {
+            UIView.animateWithDuration(Constants.animationDuration) {
+                self.updateCustomInputAreaHeight(animated: false)
+            }
+        } else {
+            customInputAreaHeightConstraint.constant = customInputAreaHeight
+            view.layoutIfNeeded()
         }
     }
     
@@ -458,7 +530,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     // MARK: - VBackgroundContainer
     
     func backgroundContainerView() -> UIView {
-        return interactiveContainerView
+        return composerBackgroundContainerView
     }
     
     // MARK: - ComposerAttachmentTabBarDelegate
@@ -473,8 +545,8 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             case .Hashtag:
                 composerTextViewManager?.appendTextIfPossible(textView, text: "#")
             case .Sticker:
-                //TODO: Show sticker tray inside composer!
-                NSLog("sticker")
+                customInputAreaState = .Visible(inputController: stickerInputController)
+                
             }
         }
     }

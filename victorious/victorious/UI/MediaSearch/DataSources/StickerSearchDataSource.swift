@@ -14,7 +14,8 @@ class StickerSearchDataSource: PaginatedDataSource, MediaSearchDataSource {
     
     override init() {
         options.searchEnabled = false
-        options.showPreview = true
+        options.showPreview = false
+        options.scrollDirection = .Horizontal
     }
     
     func performSearch( searchTerm searchTerm: String?, pageType: VPageType, completion: (NSError? -> ())? ) {
