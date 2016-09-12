@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class ContentDeleteOperation: AsyncOperation<Void> {
+final class ContentDeleteOperation: SyncOperation<Void> {
     
     // MARK: - Initializing
     
@@ -31,18 +31,9 @@ final class ContentDeleteOperation: AsyncOperation<Void> {
         return .main
     }
     
-    override func execute(finish: (result: OperationResult<Void>) -> Void) {
-        let contentID = self.contentID
-        
-        RequestOperation(request: request).queue { result in
-            switch result {
-                case .success:
-                    Content.hideContent(withID: contentID)
-                case .failure(_), .cancelled:
-                    break
-            }
-            
-            finish(result: result)
-        }
+    override func execute() -> OperationResult<Void> {
+        Content.hideContent(withID: contentID)
+        RequestOperation(request: request).queue()
+        return .success()
     }
 }

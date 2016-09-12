@@ -180,8 +180,11 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
                     strongSelf.webSocketController.replaceEndPoint(url)
                     strongSelf.webSocketController.setUp()
                 
-                case .failure(_), .cancelled:
-                    Log.warning("Failed to parse the token from the response. Results -> \(result)")
+                case .failure(let error):
+                    Log.warning("Failed to parse the token from the response. Error -> \(error)")
+                
+                case .cancelled:
+                    break
             }
         }
     }

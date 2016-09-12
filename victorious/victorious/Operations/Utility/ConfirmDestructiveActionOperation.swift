@@ -34,10 +34,7 @@ final class ConfirmDestructiveActionOperation: AsyncOperation<Void> {
             UIAlertAction(title: self.cancelTitle,
                 style: .Cancel,
                 handler: { [weak self] action in
-                    for dependentOperation in self?.dependentOperations ?? [] {
-                        dependentOperation.cancel()
-                    }
-                    
+                    self?.cancelDependentOperations()
                     finish(output: .cancelled)
                 }
             )

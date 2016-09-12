@@ -16,4 +16,10 @@ extension NSOperation {
             $0.dependencies.contains(self)
         }
     }
+    
+    func cancelDependentOperations() {
+        for dependentOperation in dependentOperations {
+            dependentOperation.cancel()
+        }
+    }
 }

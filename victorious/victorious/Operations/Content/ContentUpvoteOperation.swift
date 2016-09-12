@@ -6,7 +6,7 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-final class ContentUpvoteOperation: AsyncOperation<Void> {
+final class ContentUpvoteOperation: SyncOperation<Void> {
     
     // MARK: - Initializing
     
@@ -29,8 +29,9 @@ final class ContentUpvoteOperation: AsyncOperation<Void> {
         return .main
     }
     
-    override func execute(finish: (result: OperationResult<Void>) -> Void) {
+    override func execute() -> OperationResult<Void> {
         Content.likeContent(withID: contentID)
-        RequestOperation(request: request).queue(completion: finish)
+        RequestOperation(request: request).queue()
+        return .success()
     }
 }
