@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class AccountUpdateOperation: AsyncOperation<Void> {
+final class AccountUpdateOperation: SyncOperation<Void> {
     
     // MARK: - Initializing
     
@@ -34,16 +34,14 @@ final class AccountUpdateOperation: AsyncOperation<Void> {
     private let request: AccountUpdateRequest!
     
     override var executionQueue: Queue {
-        return .background
+        return .main
     }
     
-    override func execute(finish: (result: OperationResult<Void>) -> Void) {
+    override func execute() -> OperationResult<Void> {
         // For profile updates, optimistically update everything right away
-        
         if let profileUpdate = request.profileUpdate {
             guard var user = VCurrentUser.user else {
-                finish(result: .failure(NSError(domain: "AccountUpdateOperation", code: -1, userInfo: nil)))
-                return
+                return .failure(NSError(domain: "AccountUpdateOperation", code: -1, userInfo: nil))
             }
             
             // Update basic stats
@@ -61,9 +59,7 @@ final class AccountUpdateOperation: AsyncOperation<Void> {
                 user.previewImages = [imageAsset]
             }
             
-            dispatch_async(dispatch_get_main_queue()) {
-                VCurrentUser.update(to: user)
-            }
+            VCurrentUser.update(to: user)
         }
         
         // Then send out the request the server
@@ -72,5 +68,7 @@ final class AccountUpdateOperation: AsyncOperation<Void> {
                 VStoredPassword().savePassword(passwordUpdate.newPassword, forUsername: passwordUpdate.username)
             }
         }
+        
+        return .success()
     }
 }
