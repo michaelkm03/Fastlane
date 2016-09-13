@@ -119,7 +119,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         let item = collectionViewDataSource.hashtagDataSource.visibleItems[index]
         var apiPath = collectionViewDataSource.hashtagDataSource.hashtagStreamAPIPath
         apiPath.macroReplacements["%%HASHTAG%%"] = item.tag
-        let context = DeeplinkContext(value: item.tag)
+        let context = DeeplinkContext(value: DeeplinkContext.hashTagFeed, subContext: "#\(item.tag)")
         let selectedTagItem = ListMenuSelectedItem(
             streamAPIPath: apiPath,
             title: "#\(item.tag)",
