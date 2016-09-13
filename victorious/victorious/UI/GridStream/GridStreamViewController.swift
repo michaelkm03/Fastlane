@@ -228,24 +228,34 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         let targetContent = dataSource.items[indexPath.row]
         
         let destination = DeeplinkDestination(content: targetContent)
-        router.navigate(to: destination)
+        let context: DeeplinkContext?
+        if header?.dynamicType == CloseUpView.self {
+            context = DeeplinkContext(value: DeeplinkContext.closeupView)
+        }
+        else if header?.dynamicType == VNewProfileHeaderView.self {
+            context = DeeplinkContext(value: DeeplinkContext.userProfile)
+        }
+        else {
+            context = nil
+        }
+        router.navigate(to: destination, from: context)
         header?.headerWillDisappear()
 
         guard let content = (collectionView.cellForItemAtIndexPath(indexPath) as? ContentCell)?.content else {
             return
         }
-        
-        trackView(.cellClick, showingContent: content)
+
+        trackView(.cellClick, showingContent: content, parameters: [:])
     }
-    
+
     // MARK: - UICollectionViewDelegate
     
     func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
         guard let content = (cell as? ContentCell)?.content else {
             return
         }
-        
-        trackView(.cellView, showingContent: content)
+
+        trackView(.cellView, showingContent: content, parameters: [:])
     }
     
     // MARK: - Tracking updating
