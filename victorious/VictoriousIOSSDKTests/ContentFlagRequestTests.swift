@@ -10,15 +10,9 @@ import XCTest
 import VictoriousIOSSDK
 
 class ContentFlagRequestTests: XCTestCase {
-    func testInvalidRequest() {
-        let contentID: String = "123"
-        let request = ContentFlagRequest(contentID: contentID, apiPath: APIPath(templatePath: "$%^&"))
-        XCTAssertNil(request)
-    }
-
     func testValidFlaggingSequenceRequest() {
         let contentID: String = "123"
-        let request = ContentFlagRequest(contentID: contentID, apiPath: APIPath(templatePath: "www.google.com/%%CONTENT_ID%%"))
+        let request = ContentFlagRequest(apiPath: APIPath(templatePath: "www.google.com/%%CONTENT_ID%%"), contentID: contentID)
         XCTAssertEqual(request?.urlRequest.URL?.absoluteString, "www.google.com/123")
     }
 }

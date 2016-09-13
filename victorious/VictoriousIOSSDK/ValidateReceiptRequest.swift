@@ -9,24 +9,21 @@
 import Foundation
 
 public struct ValidateReceiptRequest: RequestType {
-    
     private let requestBodyWriter: ValidateReceiptRequestBodyWriter
     private let requestBody: ValidateReceiptRequestBodyWriter.Output
     private let url: NSURL
     
-    public var urlRequest: NSURLRequest {
-        let request = NSMutableURLRequest(URL: url)
-        request.HTTPBodyStream = NSInputStream(URL: requestBody.fileURL)
-        request.HTTPMethod = "POST"
-        request.addValue( requestBody.contentType, forHTTPHeaderField: "Content-Type" )
-        return request
-    }
-    
-    public init?(data: NSData, url: NSURL) {
-        self.url = url
+    public init?(apiPath: APIPath, data: NSData) {
+        guard let url = apiPath.url else {
+            return nil
+        }
+        
         guard data.length > 0 else {
             return nil
         }
+        
+        self.url = url
+        
         do {
             requestBodyWriter = ValidateReceiptRequestBodyWriter(data: data)
             requestBody = try requestBodyWriter.write()
@@ -35,12 +32,21 @@ public struct ValidateReceiptRequest: RequestType {
         }
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> VIPStatus  {
+    public var urlRequest: NSURLRequest {
+        let request = NSMutableURLRequest(URL: url)
+        request.HTTPBodyStream = NSInputStream(URL: requestBody.fileURL)
+        request.HTTPMethod = "POST"
+        request.addValue(requestBody.contentType, forHTTPHeaderField: "Content-Type")
+        return request
+    }
+    
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> VIPStatus {
         requestBodyWriter.removeBodyTempFile()
         
-        if let vipStatus = responseJSON["payload"].arrayValue.flatMap({ VIPStatus(json: $0["vip"]) }).first {
-            return vipStatus
+        guard let vipStatus = responseJSON["payload"].arrayValue.flatMap({ VIPStatus(json: $0["vip"]) }).first else {
+            throw ResponseParsingError()
         }
-        throw ResponseParsingError()
+        
+        return vipStatus
     }
 }

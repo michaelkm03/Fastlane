@@ -33,9 +33,11 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
         
         streamAPIPath.queryParameters["filter_text"] = "true"
         
-        paginatedDataSource = TimePaginatedDataSource(apiPath: streamAPIPath) {
-            ContentFeedOperation(url: $0)
-        }
+        paginatedDataSource = TimePaginatedDataSource(
+            apiPath: streamAPIPath,
+            createOperation: { ContentFeedOperation(apiPath: $0) },
+            processOutput: { $0.contents }
+        )
     }
     
     // MARK: - Dependency manager
@@ -63,9 +65,9 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
     
     // MARK: - Managing items
     
-    private let paginatedDataSource: TimePaginatedDataSource<ContentModel, ContentFeedOperation>
+    private let paginatedDataSource: TimePaginatedDataSource<Content, ContentFeedOperation>
     
-    var items: [ContentModel] {
+    var items: [Content] {
         return paginatedDataSource.items
     }
     
@@ -77,10 +79,17 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
         return !paginatedDataSource.olderItemsAreAvailable
     }
     
-    func loadContent(for collectionView: UICollectionView, loadingType: PaginatedLoadingType, completion: ((newItems: [ContentModel], error: NSError?) -> Void)? = nil) {
-        paginatedDataSource.loadItems(loadingType) { [weak self] newItems, stageEvent, error in
+    func loadContent(for collectionView: UICollectionView, loadingType: PaginatedLoadingType, completion: ((result: Result<[Content]>) -> Void)? = nil) {
+        paginatedDataSource.loadItems(loadingType) { [weak self] result in
             if let items = self?.paginatedDataSource.items {
                 self?.header?.gridStreamDidUpdateDataSource(with: items)
+            }
+            
+            let newItems: [Content]
+            
+            switch result {
+                case .success(let feedResult): newItems = feedResult.contents
+                case .failure(_), .cancelled: newItems = []
             }
             
             if loadingType == .refresh {
@@ -103,7 +112,11 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
                 collectionView.insertItemsAtIndexPaths(indexPaths)
             }
             
-            completion?(newItems: newItems, error: error)
+            switch result {
+                case .success(let feedResult): completion?(result: .success(feedResult.contents))
+                case .failure(let error): completion?(result: .failure(error))
+                case .cancelled: completion?(result: .success([]))
+            }
         }
     }
     

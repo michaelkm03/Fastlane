@@ -100,7 +100,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     private var publisher: ContentPublisher?
     
-    private func publish(content: ContentModel) {
+    private func publish(content: Content) {
         guard let width = chatFeed?.collectionView.frame.width else {
             return
         }

@@ -9,21 +9,21 @@
 import Foundation
 
 public struct UserInfoRequest: RequestType {
-    public let urlRequest: NSURLRequest
+    private let url: NSURL
     
-    public init?(userID: Int, apiPath: String) {
-        let macroReplacer = VSDKURLMacroReplacement()
+    public init?(apiPath: APIPath, userID: User.ID) {
+        var apiPath = apiPath
+        apiPath.macroReplacements["%%USER_ID%%"] = String(userID)
         
-        let processedAPIPath = macroReplacer.urlByReplacingMacrosFromDictionary(
-            ["%%USER_ID%%": String(userID)],
-            inURLString: apiPath
-        )
-        
-        guard let url = NSURL(string: processedAPIPath) else {
+        guard let url = apiPath.url else {
             return nil
         }
         
-        urlRequest = NSURLRequest(URL: url)
+        self.url = url
+    }
+    
+    public var urlRequest: NSURLRequest {
+        return NSURLRequest(URL: url)
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> User {

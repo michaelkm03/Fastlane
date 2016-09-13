@@ -28,7 +28,7 @@ class ListMenuHashtagCollectionViewCell: UICollectionViewCell, ListMenuSectionCe
         }
     }
 
-    func configureCell(with hashtag: HashtagSearchResultObject) {
+    func configureCell(with hashtag: Hashtag) {
         titleLabel.text = "#\(hashtag.tag)"
     }
     

@@ -16,11 +16,11 @@ class MediaUploadCreateRequestTests: XCTestCase {
     func testRequest() {
         let request = MediaUploadCreateRequest(apiPath: APIPath(templatePath: mockURLString))
         
-        XCTAssertEqual(request.urlRequest.URL?.absoluteString, "\(mockURLString)")
+        XCTAssertEqual(request?.urlRequest.URL?.absoluteString, "\(mockURLString)")
     }
     
     func testResponse() {
-        let request = MediaUploadCreateRequest(apiPath: APIPath(templatePath: mockURLString))
+        let request = MediaUploadCreateRequest(apiPath: APIPath(templatePath: mockURLString))!
         let mockSequenceID = "mockSequenceID"
         let mockJSON = JSON( [ "payload": ["sequence_id": mockSequenceID] ] )
         

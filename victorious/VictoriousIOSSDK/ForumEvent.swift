@@ -9,13 +9,13 @@
 /// An event that can be broadcast in the forum event chain.
 public enum ForumEvent {
     /// Notifies that content has arrived with the given loading type.
-    case handleContent([ContentModel], PaginatedLoadingType)
+    case handleContent([Content], PaginatedLoadingType)
     
     /// Requests loading of older content in the chat feed.
     case loadOldContent
     
     /// Sends content created by the user.
-    case sendContent(ContentModel)
+    case sendContent(Content)
     
     /// Notifies the chat UI that new messages are being loaded or have finished loading with the given loading type,
     /// indicating that a loading state should be shown or hidden.
@@ -26,7 +26,7 @@ public enum ForumEvent {
     case filterContent(path: APIPath?)
     
     /// Requests that the given content is shown in the caption bar
-    case showCaptionContent(ContentModel)
+    case showCaptionContent(Content)
     
     /// Notifies of the given websocket event.
     case websocket(WebSocketEvent)

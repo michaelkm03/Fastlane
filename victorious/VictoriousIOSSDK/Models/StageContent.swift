@@ -11,10 +11,10 @@ import Foundation
 /// A compound struct that contain both the actual content that goes on stage and 
 /// the meta data object that belongs to it.
 public struct StageContent {
-    public let content: ContentModel
+    public let content: Content
     public let metaData: StageMetaData?
 
-    public init(content: ContentModel, metaData: StageMetaData? = nil) {
+    public init(content: Content, metaData: StageMetaData? = nil) {
         self.content = content
         self.metaData = metaData
     }

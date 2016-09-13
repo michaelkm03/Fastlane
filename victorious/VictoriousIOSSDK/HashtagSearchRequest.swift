@@ -9,31 +9,20 @@
 import Foundation
 
 public struct HashtagSearchRequest: RequestType {
-    
-    public let searchTerm: String
-    
-    let url: NSURL
-    
-    public init(request: HashtagSearchRequest) {
-        self.searchTerm = request.searchTerm
-        self.url = request.url
-    }
+    private let url: NSURL
     
     // param: - searchTerm must be a urlPathPart percent encoded string
-    public init?(searchTerm: String, apiPath: APIPath) {
+    public init?(apiPath: APIPath, searchTerm: String) {
         let charSet = NSCharacterSet.vsdk_pathPartAllowedCharacterSet
-        guard let escapedSearchTerm = searchTerm.stringByAddingPercentEncodingWithAllowedCharacters(charSet) else {
-            return nil
-        }
-        
+        let escapedSearchTerm = searchTerm.stringByAddingPercentEncodingWithAllowedCharacters(charSet) ?? searchTerm
         var apiPath = apiPath
-        apiPath.queryParameters = ["hashtag" : escapedSearchTerm]
+        apiPath.queryParameters = ["hashtag": escapedSearchTerm]
+        
         guard let url = apiPath.url else {
             return nil
         }
         
         self.url = url
-        self.searchTerm = searchTerm
     }
     
     public var urlRequest: NSURLRequest {

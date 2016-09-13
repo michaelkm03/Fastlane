@@ -25,13 +25,6 @@ class NotificationsDataSource: PaginatedDataSource, UITableViewDataSource {
         )
     }
     
-    func refreshRemote(completion: (([AnyObject]?, NSError?, Bool) -> ())? = nil) {
-        loadNewItems(
-            createOperation: { NotificationsOperation() },
-            completion: completion
-        )
-    }
-    
     // MARK: - UITableViewDataSource
     
     func registerCells(for tableView: UITableView) {
@@ -51,7 +44,7 @@ class NotificationsDataSource: PaginatedDataSource, UITableViewDataSource {
     }
     
     func decorate(cell notificationCell: NotificationCell, atIndexPath indexPath: NSIndexPath) {
-        let notification = visibleItems[indexPath.row] as! VNotification
+        let notification = visibleItems[indexPath.row] as! Notification
         notificationCell.updateContent(with: notification, dependencyManager: dependencyManager)
     }
 }

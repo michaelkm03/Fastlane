@@ -9,12 +9,19 @@
 import Foundation
 
 /// Netowrk request to fetch an array of content which will be displayed as tutorial messages
-public struct TutorialContentsRequest: TemplateDrivenRequestType {
+public struct TutorialContentsRequest: RequestType {
+    private let url: NSURL
     
-    public private(set) var urlString: String
+    public init?(apiPath: APIPath) {
+        guard let url = apiPath.url else {
+            return nil
+        }
+        
+        self.url = url
+    }
     
-    public init(urlString: String) {
-        self.urlString = urlString
+    public var urlRequest: NSURLRequest {
+        return NSURLRequest(URL: url)
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [Content] {

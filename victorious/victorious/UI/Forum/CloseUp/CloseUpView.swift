@@ -310,7 +310,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
         mediaContentView?.willBeDismissed()
     }
     
-    func gridStreamDidUpdateDataSource(with items: [ContentModel]) {
+    func gridStreamDidUpdateDataSource(with items: [Content]) {
         dispatch_async(dispatch_get_main_queue(), {
             UIView.animateWithDuration(Constants.relatedAnimationDuration, animations: {
                 self.relatedLabel.alpha = items.count == 0 ? 0 : 1

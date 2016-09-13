@@ -83,7 +83,7 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
     private func acknowledgeAlert(alert: Alert) {
         switch alert.type {
             case .achievement, .statusUpdate, .toast:
-                AlertAcknowledgeOperation(alertID: alert.alertID).queue()
+                RequestOperation(request: AcknowledgeAlertRequest(alertID: alert.alertID)).queue()
             case .clientSideCreated, .reconnectingError:
                 break
         }
