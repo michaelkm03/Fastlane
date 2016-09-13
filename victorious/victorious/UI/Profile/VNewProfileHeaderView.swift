@@ -13,6 +13,7 @@ protocol ConfigurableGridStreamHeaderDelegate: class {
 }
 
 /// The collection header view used for `VNewProfileViewController`.
+@IBDesignable
 class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHeader {
     private static let blurRadius = CGFloat(12)
     
@@ -48,8 +49,8 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
     @IBOutlet private var loadingContainerView: UIView!
     @IBOutlet private var loadingSpinner: UIActivityIndicatorView!
     @IBOutlet private var backgroundImageView: UIImageView!
-    @IBOutlet private var nameLabel: UILabel!
-    @IBOutlet private var vipIconImageView: UIImageView!
+    @IBOutlet private var displayNameLabel: UILabel!
+    @IBOutlet private var usernameLabel: UILabel!
     @IBOutlet private var statsContainerView: UIView!
     @IBOutlet private var upvotesGivenValueLabel: UILabel!
     @IBOutlet private var upvotesGivenTitleLabel: UILabel!
@@ -64,11 +65,7 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
     // MARK: - Configuration
     
     weak var delegate: ConfigurableGridStreamHeaderDelegate?
-    
-    // MARK: - Constraints
-    
-    @IBOutlet private var profilePictureBottomSpacingConstraint: NSLayoutConstraint!
-    
+
     // MARK: - Dependency manager
     
     var dependencyManager: VDependencyManager? {
@@ -85,7 +82,7 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         
         tintColor = appearanceDependencyManager?.accentColor
         
-        nameLabel.textColor = appearanceDependencyManager?.headerTextColor
+        displayNameLabel.textColor = appearanceDependencyManager?.headerTextColor
         upvotesGivenValueLabel.textColor = appearanceDependencyManager?.statValueTextColor
         upvotesGivenTitleLabel.textColor = appearanceDependencyManager?.statLabelTextColor
         upvotesReceivedValueLabel.textColor = appearanceDependencyManager?.statValueTextColor
@@ -95,7 +92,7 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         locationLabel.textColor = appearanceDependencyManager?.infoTextColor
         taglineLabel.textColor = appearanceDependencyManager?.infoTextColor
         
-        nameLabel.font = appearanceDependencyManager?.headerFont
+        displayNameLabel.font = appearanceDependencyManager?.headerFont
         upvotesGivenValueLabel.font = appearanceDependencyManager?.statValueFont
         upvotesGivenTitleLabel.font = appearanceDependencyManager?.statLabelFont
         upvotesReceivedValueLabel.font = appearanceDependencyManager?.statValueFont
@@ -104,8 +101,6 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         tierTitleLabel.font = appearanceDependencyManager?.statLabelFont
         locationLabel.font = appearanceDependencyManager?.infoFont
         taglineLabel.font = appearanceDependencyManager?.infoFont
-        
-        vipIconImageView.image = appearanceDependencyManager?.vipIcon
         
         loadingSpinner.color = appearanceDependencyManager?.loadingSpinnerColor
         
@@ -124,13 +119,12 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
     private func populateUserContent() {
         let userIsCreator = user?.accessLevel.isCreator == true
         
-        profilePictureBottomSpacingConstraint.active = userIsCreator
         statsContainerView.hidden = userIsCreator
         
-        nameLabel.text = user?.displayName
+        displayNameLabel.text = user?.displayName
+        usernameLabel.text = user?.username
         locationLabel.text = user?.location
         taglineLabel.text = user?.tagline
-        vipIconImageView.hidden = user?.hasValidVIPSubscription != true
         upvotesGivenValueLabel?.text = numberFormatter.stringForInteger(user?.likesGiven ?? 0)
         upvotesReceivedValueLabel?.text = numberFormatter.stringForInteger(user?.likesReceived ?? 0)
         
