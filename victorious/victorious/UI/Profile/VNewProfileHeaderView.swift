@@ -83,6 +83,7 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         tintColor = appearanceDependencyManager?.accentColor
         
         displayNameLabel.textColor = appearanceDependencyManager?.headerTextColor
+        usernameLabel.textColor = appearanceDependencyManager?.statLabelTextColor
         upvotesGivenValueLabel.textColor = appearanceDependencyManager?.statValueTextColor
         upvotesGivenTitleLabel.textColor = appearanceDependencyManager?.statLabelTextColor
         upvotesReceivedValueLabel.textColor = appearanceDependencyManager?.statValueTextColor
@@ -93,6 +94,7 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         taglineLabel.textColor = appearanceDependencyManager?.infoTextColor
         
         displayNameLabel.font = appearanceDependencyManager?.headerFont
+        usernameLabel.font = appearanceDependencyManager?.statLabelFont
         upvotesGivenValueLabel.font = appearanceDependencyManager?.statValueFont
         upvotesGivenTitleLabel.font = appearanceDependencyManager?.statLabelFont
         upvotesReceivedValueLabel.font = appearanceDependencyManager?.statValueFont
