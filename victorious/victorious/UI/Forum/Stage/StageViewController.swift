@@ -54,7 +54,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     /// This is needed so the Stage will not appear if a new content arrives when the user is inside a filtered feed.
     private var enabled: Bool = true {
         didSet {
-            if enabled && mediaContentView?.seekableWithinBounds == true {
+            if enabled && mediaContentView?.hasValidMedia == true {
                 show(animated: true)
             } else {
                 hide(animated: true)
@@ -92,7 +92,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
-        if mediaContentView?.seekableWithinBounds == true {
+        if mediaContentView?.hasValidMedia == true {
             show(animated: false)
         }
         else {
@@ -236,15 +236,6 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         titleCardViewController?.hide()
     }
     
-    var overlayUIAlpha: CGFloat {
-        get {
-            return captionBarViewController?.view.alpha ?? 0
-        }
-        set {
-            captionBarViewController?.view.alpha = newValue
-        }
-    }
-    
     // MARK: - ForumEventReceiver
 
     func receive(event: ForumEvent) {
@@ -270,13 +261,15 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         if let mediaContentView = mediaContentView {
             showMediaContentView(mediaContentView, animated: animated)
         }
-
-        dispatch_after(Constants.titleCardDelayedShow) {
-            self.titleCardViewController?.show()
+        
+        if (currentStageContent?.metaData != nil) {
+            dispatch_after(Constants.titleCardDelayedShow) {
+                self.titleCardViewController?.show()
+            }
         }
         
         if let content = currentStageContent?.content {
-            trackView(.stageView, showingContent: content)
+            trackView(.cellView, showingContent: content)
         }
         
         guard !visible else {
@@ -316,7 +309,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         }
 
         /// Instead of seeking past the end of the video we hide the stage.
-        guard mediaContentView.seekableWithinBounds else {
+        guard mediaContentView.hasValidMedia else {
             hide(animated: true)
             return
         }
@@ -338,6 +331,13 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     func willSwitch(to state: StageState) {
         titleCardViewController?.hide()
     }
+    
+    func shouldSwtich(to state: StageState) -> Bool {
+        switch state {
+            case .enlarged: return true
+            case .shrunken: return visible
+        }
+    }
 
     // MARK: - Deep linking content
 
@@ -347,7 +347,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         }
         
         let router = Router(originViewController: self, dependencyManager: dependencyManager)
-        let destination = DeeplinkDestination(content: content)
+        let destination = DeeplinkDestination(content: content, forceFetch: false)
         router.navigate(to: destination)
     }
 
@@ -376,13 +376,19 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     
     // MARK: - Content Cell Tracker 
     
-    var sessionParameters: [NSObject : AnyObject] {
-        return [:]
+    var sessionParameters: [NSObject: AnyObject] {
+        // FUTURE: This should be returning "VIP_STAGE" or "MAIN_STAGE" depending on which stage this is, but we don't
+        // have the infrastructure to do that easily right now.
+        return [VTrackingKeyParentContentId: dependencyManager.stageType]
     }
 }
 
 private extension VDependencyManager {
     var captionBarDependency: VDependencyManager? {
         return childDependencyForKey("captionBar")
+    }
+    
+    var stageType: String {
+        return stringForKey("type") ?? "STAGE"
     }
 }

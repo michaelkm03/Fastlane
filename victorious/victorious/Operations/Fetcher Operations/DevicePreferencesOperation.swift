@@ -12,7 +12,7 @@ import VictoriousIOSSDK
 class DevicePreferencesOperation: RemoteFetcherOperation, RequestOperation {
     
     // These settings were created with an appropriate ManagedObjectContext for main queue use
-    var mainQueueSettings: VNotificationSettings?
+    var mainQueueSettings: NotificationSettings?
     
     let request: DevicePreferencesRequest!
 
@@ -31,21 +31,7 @@ class DevicePreferencesOperation: RemoteFetcherOperation, RequestOperation {
     }
     
     private func onComplete( result: DevicePreferencesRequest.ResultType ) {
-        
-        // Grab the background current user's notificationSettings, creating if none already exist
-        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            let currentUser = VCurrentUser.user(inManagedObjectContext: context)
-            let newSettings: VNotificationSettings = currentUser?.notificationSettings ?? context.v_createObject()
-            currentUser?.notificationSettings = newSettings
-            newSettings.populate(fromSourceModel: result)
-            context.v_save()
-        }
-        
-        // Provide the main queue current user for calling code.
-        persistentStore.mainContext.performBlockAndWait() { context in
-            // Provide the main queue current user for calling code.
-            let mainQueueCurrentUser = VCurrentUser.user()
-            self.mainQueueSettings = mainQueueCurrentUser?.notificationSettings
-        }
+        mainQueueSettings = NotificationSettings()
+        mainQueueSettings?.populate(fromSourceModel: result)
     }
 }

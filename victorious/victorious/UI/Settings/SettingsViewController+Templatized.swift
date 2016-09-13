@@ -55,7 +55,9 @@ extension VSettingsViewController: VBackgroundContainer {
         label.font = dependencyManager.cellFont
         label.textColor = dependencyManager.cellTextColor
         label.backgroundColor = UIColor.clearColor()
-        
+
+        cell.separatorColor = isLastCell(indexPath) || isLastSection(indexPath.section) ? UIColor.clearColor() : dependencyManager.separatorColor ?? UIColor.clearColor()
+
         if cell.contentView.subviews.contains(versionString) {
             cell.backgroundColor = UIColor.clearColor()
         }
@@ -70,7 +72,7 @@ extension VSettingsViewController: VBackgroundContainer {
         tableView.accessibilityIdentifier = VAutomationIdentifierSettingsTableView
         tableView.backgroundView = UIView()
         dependencyManager.addBackgroundToBackgroundHost(self)
-        tableView.separatorColor = dependencyManager.separatorColor
+        tableView.separatorStyle = .None
     }
     
     public func backgroundContainerView() -> UIView {
@@ -79,12 +81,28 @@ extension VSettingsViewController: VBackgroundContainer {
     
     public func handleAboutSectionSelection(row: Int) {
         switch row {
-            case 0: ShowWebContentOperation(originViewController: self, type: .HelpCenter, dependencyManager: dependencyManager).queue()
+            case 0: showFixedWebContent(.HelpCenter)
             case 1: sendHelp()
-            case 2: ShowWebContentOperation(originViewController: self, type: .TermsOfService, dependencyManager: dependencyManager).queue()
-            case 3: ShowWebContentOperation(originViewController: self, type: .PrivacyPolicy, dependencyManager: dependencyManager).queue()
+            case 2: showFixedWebContent(.TermsOfService)
+            case 3: showFixedWebContent(.PrivacyPolicy)
             default: break
         }
+    }
+    
+    private func showFixedWebContent(type: FixedWebContentType) {
+        let router = Router(originViewController: self, dependencyManager: dependencyManager)
+        let configuration = ExternalLinkDisplayConfiguration(addressBarVisible: false, forceModal: false, isVIPOnly: false, title: type.title)
+        router.navigate(to: .externalURL(url: dependencyManager.urlForFixedWebContent(type), configuration: configuration))
+    }
+}
+
+private extension VSettingsViewController {
+    private func isLastCell(indexPath: NSIndexPath) -> Bool {
+        return indexPath.row == tableView.numberOfRowsInSection(indexPath.section) - 1
+    }
+
+    private func isLastSection(section: Int) -> Bool {
+        return section == tableView.numberOfSections - 1
     }
 }
 

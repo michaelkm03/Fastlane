@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-class StoredLoginOperation: BackgroundOperation {
+final class StoredLoginOperation: SyncOperation<Void> {
     
     private let dependencyManager: VDependencyManager
     private let persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
@@ -18,54 +18,59 @@ class StoredLoginOperation: BackgroundOperation {
         self.dependencyManager = dependencyManager
         super.init()
     }
-
-    override func start() {
-        super.start()
-        
-        defer {
-            self.finishedExecuting()
-        }
-        
+    
+    override var executionQueue: Queue {
+        return .main
+    }
+    
+    override func execute() -> OperationResult<Void> {
         let defaults = NSUserDefaults.standardUserDefaults()
         let accountIdentifier: String? = defaults.stringForKey(kAccountIdentifierDefaultsKey)
         
         let storedLogin = VStoredLogin()
         if let info = storedLogin.storedLoginInfo() {
+            let user = User(id: info.userRemoteId.integerValue)
+            VCurrentUser.update(to: user)
+            VCurrentUser.loginType = info.lastLoginType
+            VCurrentUser.token = info.token
             
-            // First, try to use a valid stored token to bypass login
-            let user: VUser = persistentStore.mainContext.v_performBlockAndWait() { context in
-                let user: VUser = context.v_findOrCreateObject([ "remoteId" : info.userRemoteId ])
-                user.loginType = info.lastLoginType.rawValue
-                user.token = info.token
-                context.v_save()
-                return user
+            guard
+                let apiPath = dependencyManager.networkResources?.userFetchAPIPath,
+                let userInfoOperation = UserInfoOperation(userID: user.id, apiPath: apiPath)
+            else {
+                let error = NSError(domain: "StoredLoginOperation-BadUserFetchAPIPath", code: -1, userInfo: ["DependencyManager": dependencyManager])
+                Log.warning("Unable to initialize first user info fetch during StoredLoginOperation with error: \(error)")
+                return .failure(error)
             }
             
-            user.setAsCurrentUser()
-            
-            let infoOperation = PreloadUserInfoOperation(dependencyManager: dependencyManager)
-            infoOperation.after(self).queue() { _ in
-                infoOperation.user?.setAsCurrentUser()
+            userInfoOperation.after(self).queue { _, error, _ in
+                guard let user = userInfoOperation.user else {
+                    Log.warning("User info fetch failed with error: \(error)")
+                    return
+                }
+                VCurrentUser.update(to: user)
             }
             
         } else if let loginType = VLoginType(rawValue: defaults.integerForKey(kLastLoginTypeUserDefaultsKey)),
             let credentials = loginType.storedCredentials( accountIdentifier ) {
-                
-                // Next, if login with a stored token failed, use any stored credentials to login automatically
-                let accountCreateRequest = AccountCreateRequest(credentials: credentials)
-                let accountCreateOperation = AccountCreateOperation(
-                    dependencyManager: dependencyManager,
-                    request: accountCreateRequest,
-                    parameters: AccountCreateParameters(
-                        loginType: loginType,
-                        accountIdentifier: accountIdentifier
-                    )
+            
+            // Next, if login with a stored token failed, use any stored credentials to login automatically
+            let accountCreateRequest = AccountCreateRequest(credentials: credentials)
+            let accountCreateOperation = AccountCreateOperation(
+                dependencyManager: dependencyManager,
+                request: accountCreateRequest,
+                parameters: AccountCreateParameters(
+                    loginType: loginType,
+                    accountIdentifier: accountIdentifier
                 )
-                accountCreateOperation.rechainAfter(self).queue()
-                
+            )
+            accountCreateOperation.rechainAfter(self).queue()
+            
         } else {
             // Or finally, just let this operation finish up without doing anthing.
             // Subsequent operations in the queue will handle logging in the user.
         }
+        
+        return .success()
     }
 }

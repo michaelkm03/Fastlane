@@ -10,25 +10,13 @@
 "OK"                    =   "OK";
 "DeletePost"            =   "Delete Post";
 "ReportPost"            =   "Report Post";
-"DeleteButton"          =   "Delete";
 "ResetButton"           =   "Reset";
 "Publish"               =   "Publish";
 "Next"                  =   "Next";
 "Done"                  =   "Done";
-"More"                  =   "More";
-"Share"                 =   "Share";
-"Continue"              =   "Continue";
-"Loading..."            =   "Loading...";
-"Finding fans to connect with..." = "Finding fans to connect with...";
 
 "Send"                  =   "Send";
 "What do you think?"    =   "What do you think?";
-
-"Following"             =   "Following";
-"FOLLOWERS"             =   "FOLLOWERS";
-"FOLLOWING"             =   "FOLLOWING";
-"NumStreams"            =   "%@ STREAMS";
-"NumItems"              =   "%@ ITEMS";
 
 "TimeSeparator"         =   ":";
 "InvalidTimePlaceholder"=   "-:--";
@@ -43,20 +31,12 @@
 "GenericFailMessage"    =   "Oops! Something has gone wrong.";
 "FacebookLoginFailed"   =   "Oops! Facebook login failed. Please try again.";
 "SignupFail"            =   "Account Creation Failed";
-"You're not logged in!" =   "You're not logged in!";
-"ProfileNotLoggedInMessage" = "Nothing to see here yet! We are so excited to have you join our community. Create an account to show everyone how unique you are.";
-"ProfileSave"           =   "Uploading your Profile";
-"ProfileIncomplete"     =   "Profile Incomplete";
-"ProfileRequired"       =   "Please provide the following:";
-"ProfileNameSpaces"     =   "Your profile name cannot be only spaces.";
-"ProfileRequiredName"   =   "Name";
 "DisplayNamePlaceholder"=   "Display Name";
 "LocationPlaceholder"   =   "Location";
 
 "User already exists"   =   "User already exists";
 "User already exists but the password is incorrect" = "User already exists but the password is incorrect";
 "Invalid email address or password" = "Invalid email address or password";
-"Sorry, I can't display that right now" = "Sorry, I can't display that right now";
 
 "WereSorry"             =   "We're Sorry";
 "ErrorOccured"          =   "For some reason we can't connect to the server. Please try again later!";
@@ -68,54 +48,14 @@
 "Missing Content"           =   "Uh Oh!";
 "Missing Content Message"   =   "We can't find what you're looking for!";
 
-"MissingMedia"          =   "You must have 2 photos.";
-"QuestionTextToShort"   =   "Your question must be at least 2 characters long.";
-"AnswerTextToShort"     =   "Your answers must be at least 2 characters long.";
-
-"NoMessagesTitle"       =   "NO MESSAGES YET";
-"NoMessagesMessage"     =   "You can send messages to anyone on the app!  Just go to their profile and click the compose icon in the top right corner.";
-
-"SAY HELLO!" = "SAY HELLO!";
-"Send a message to start chatting with other members of the community." = "Send a message to start chatting with other members of the community.";
-
 "NoNotificationsTitle"       =   "NO NOTIFICATIONS RIGHT NOW";
-"NoNotificationsMessage"     =   "As you engage with the community through commenting, remixing or posting new content, they'll engage more with you.  Find their reactions here.";
-
-"NoCommentsTitle"       =   "BE THE 1ST TO COMMENT!";
-"NoCommentsMessage"     =   "Post text, photo or video comments, and see what others say!";
-
-"Start a new conversation" = "Start a new conversation";
-
-"NoUserSearchResultsTitle"       =   "NO USERS FOUND";
-"NoUserSearchResultsMessage"     =   "We weren't able to find that user. You can try again or go to that user's profile and send a message from there!";
-
-"NoFollowersTitle"      =   "WOMP WOMP! NO ONE HAS FOLLOWED YOU YET";
-"NoFollowersMessage"    =   "Build your own following by engaging with the community through commenting, remixing or posting new content.";
-
-"NotFollowingTitle"     =   "RUH-ROH! YOU HAVEN'T FOLLOWED ANYONE YET";
-"NotFollowingMessage"   =   "Follow other people to see their content in your stream. It's a great way to find new content or make new friends.";
-
-"NoLikersMessage"       =   "Show the community what you think is important by liking your favorite content.";
-"NoLikersTitle"         =   "NOBODY LIKES THIS...YET!";
-
-"ProfileNoFollowersTitle"      =   "BE THE FIRST TO FOLLOW THIS USER";
-"ProfileNoFollowersMessage"    =   "Build your community by following other users. You'll be alerted when they post new content.";
-
-"ProfileNotFollowingTitle"     =   "UH-OH! THIS PERSON ISN'T FOLLOWING ANYONE YET";
-"ProfileNotFollowingMessage"   =   "Create a community by following other users and encouraging them to follow you.";
+"NoNotificationsMessage"     =   "As you engage with the community through posting new content, find reactions here.";
 
 "SuggestedFollowersNone" =   "No Followers";
 "SuggestedFollowersSing" =   "%@ Follower";
 "SuggestedFollowersPlur" =   "%@ Followers";
 "SuggestedFollowersK"    =   "%@ Followers";
 
-"NoRepostersTitle"      =   "BE THE 1st TO REPOST!";
-"NoRepostersMessage"    =   "Share this content with all of your followers!";
-
-"NoMemersTitle"       =   "BE THE 1ST TO MEME!";
-"NoMemersMessage"     =   "Make this content your own by making it into a meme and sharing it with other fans!";
-
-"UGCSharePollFormat"    =   "Check out this poll!";       //Check out this poll! <URL>
 "UGCShareVideoFormat"   =   "Check out this video!";      //Check out this video! <URL>
 "UGCShareGIFFormat"     =   "Check out this GIF!";        //Check out this GIF! <URL>
 "UGCShareImageFormat"   =   "Check out this photo!";      //Check out this photo! <URL>
@@ -124,15 +64,6 @@
 
 "EmailShareSubjectFormat"   =   "Check out this post from the %@ app!"; //Check out this post from the <creator name> app!
 
-"Facebook"              =   "Facebook";
-
-"Search people and hashtags"  =  "Search people or hashtags";
-"No People Found In Search Title" = "NO PEOPLE WERE FOUND";
-"No people found in search" = "Refine your search and try again.";
-"No Hashtags Found In Search Title" = "NO TAGS WERE FOUND!";
-"No hashtags found in search" = "Refine your search and try again.";
-
-"CameraRollDenied"      =   "Please grant access to your photos in Settings -> Privacy.";
 "CameraFailed"          =   "Unable to start camera";
 "Camera"                =   "Camera";   // Button that opens the camera
 "Search"                =   "Search";   // Button that opens web search for images
@@ -144,16 +75,6 @@
 "MixedMediaCoachMessage" =  "Press and hold to record a video, tap to take a picture";
 "LibraryCaptureFailed"  =   "Unable to access item in library";
 
-"BlockInappropriate"    =   "Block";
-"ReportedTitle"         =   "Got It!";
-"ReportContentMessage"  =   "We will review this content within 24 hours.";
-"ReportCommentMessage"  =   "We will review this content within 24 hours.";
-"ReportUserMessage"     =   "This user will be reviewed within 24 hours";
-
-"Ask a question..."     =   "Ask a question...";
-"Vote this"             =   "Vote this";
-"Vote that"             =   "Vote that";
-
 "Uploading"             =   "Your post is uploading...";
 "UploadFinalizing"      =   "We are finalizing your post, it will be available soon.";
 "UploadFailed"          =   "Sorry, your upload failed. Please check your connection and try again.";
@@ -163,14 +84,6 @@
 "NoKeepUploading"       =   "No, keep uploading";
 "Cancelling..."         =   "Cancelling...";
 
-"FollowError"           =   "There was an error following this user.";
-"UnfollowError"         =   "There was an error unfollowing this user.";
-
-"FollowingSectionHeader"            =   "Already Following";
-"FacebookFollowingSectionHeader"    =   "Follow Your Facebook Friends";
-"AddressBookFollowingSectionHeader" =   "Follow Your Contacts";
-
-"Sorry, we were having some trouble on our end. Please retry." = "Sorry, we were having some trouble on our end. Please retry.";
 "Retry"                 =   "Retry";
 
 "Now"                   =   "Now";
@@ -204,14 +117,7 @@
 "LastYear Verbose"   	= "1 year ago";
 "YearsAgo Verbose"   	= "%d years ago";
 
-"JustAMoment"           =   "Just a moment";
-
 "Edit"                  =   "Edit";
-"editProfileButton"     =   "Edit Profile";
-"followers"             =   "Followers";
-"followersCount"        =   "%@ Followers"; // Where %@ is the quantity of followers, e.g. "10 Followers"
-"following"             =   "Following";
-"follow"                =   "Follow";
 
 "ResetPassword"         =   "Reset Password";
 "ResetPasswordPrompt"   =   "Please enter your e-mail address.";
@@ -235,103 +141,38 @@
 "CannotVerify"          =   "Cannot Verify Account";
 "IncorrectCode"         =   "The code used for account verification is incorrect.";
 
-"Image Search"          =   "Image Search";
 "No results"            =   "No results";
-
-"InviteYourFriends"     =   "Invite your Friends!";
-"InviteUsingEmail"      =   "Invite using Email";
-"InviteUsingSMS"        =   "Invite using SMS";
-"InviteFriendsSubject"  =   "Check out %@'s new app";
-"InviteFriendsBody"     =   "Hey!\n\nI downloaded a new app from %@. It's a community for people like us to interact. Download it now at:";
-
-"FindContacts"          =   "Find friends from your contacts";
-"Access Your Contacts"  =   "Access your Contacts";
-"ContactsSafety"        =   "Your contacts are safe with us! In order to find your friends, we need to send your contact information to our servers using a secure connection.";
 
 "AccessCameraDenied"    =   "In order to use the camera, please grant access by going to Settings -> Privacy";
 "AccessCameraRestricted" =  "Unable to access your camera due to restrictions on your device.";
 
-"AccessContactsDenied"  =   "To search for friends using your address book, please grant access by going to Settings -> Privacy -> Contacts";
-"AccessContactsRestricted" =  "Unable access contacts due to restrictions on your device.";
-
-"FindFBFriends"         =   "Find friends from Facebook";
-"Connect to Facebook"   =   "Connect to Facebook";
-"FBSafety"              =   "We don't store your passwords and will never post anything without your permission.";
-
-"Logout"                =   "Log Out";
 "Login"                 =   "Log In";
 
 "Version"               =   "Version %@";
 
-"NoFriends"             =   "No Matches";
-"NoFriendsDetail"       =   "We could not find any of your friends who use our app. Go ahead and invite them!";
-
-"Report/Flag"           =   "Report/Flag";
 "BlockUser"             =   "Block User";
 "UnblockUser"           =   "Unblock User";
-"REPOSTERS"             =   "Reposters"; // Title for a list of users who have reposted something
-"Repost"                =   "Repost";
-"Reposted"              =   "Reposted";
-
-"repostedByFormat"      =   "Reposted by %@";
-"doubleRepostedByFormat" = "Reposted by %@ + 1 other";
-"+ %lu others"          = "+ %lu others";
-"remixedFromFormat"     =   "Remix from %@";
-"giffedFromFormat"      =   "GIF from %@";
 
 "SupportEmailSubject"   =   "Feedback";
 "SupportEmailSubjectWithName" = "Feedback on %@";
-
-"DiscoverSuggestedPeopleError"  = "Sorry, unable to load suggested people.";
-"DiscoverTrendingTagsError"     = "Sorry, unable to load trending tags.";
-"Suggested People"      = "Suggested People";
-"Trending Tags"         = "Trending Tags";
-"%@ Voters"             = "%@ Voters";
-"%@ Voter"              = "%@ Voter";
-
-"NoFollowingHashtagsTitle"      =   "RUH-ROH! YOU HAVEN'T FOLLOWED ANY TAGS YET";
-"NoFollowingHashtagsMessage"    =   "Build a list of your favorite content by tapping items that have been tagged.";
-
-"NoHashtagsTitle"      =   "No hash tags here!";
-"NoHashtagsMessage"    =   "There were no posts found with the hashtag #%@.";
 
 "Type your feedback here..." = "Type your feedback here...";
 "Device:"               = "Device:";
 "OS Version:"           = "OS Version:";
 "App Version:"          = "App Version:";
 
-"ShareFacebook"         = "Share to Facebook";
-"OpenSafari"            = "Open in Safari";
-"ShareSMS"              = "Send as Text";
-
-"Delete this content and select something else?" = "Delete this content and select something else?";
 "Delete" = "Delete";
 "Cancel" = "Cancel";
-
-"PostFromCreator"       = "Post from %@";
-"PostFromFollowed"      = "Post from someone I follow";
-"NewComment"            = "New comments on my post";
-"PostOnFollowedHashTag" = "Post on followed hashtag";
-"NewPrivateMessage"     = "New Private Message";
-"NewFollower"           = "Someone follows me";
-"TagInComment"          = "Someone mentions me";
-"LikePost"              = "Someone likes my post";
-
-"NotificationSettingSectionFeeds" = "Feeds";
-"NotificationSettingSectionPeople" = "People";
-"Open Settings" = "Open Settings";
 
 "ErrorPushNotificationsNotEnabled"      = "Push notifications are not enabled for your device.\nPlease allow notifications in your device settings to enable them.";
 "ErrorPushNotificationsUnknown"         = "Error loading notification settings.\nPlease try again later.";
 "ErrorPushNotificationsNotSaved"        = "Error Saving Preferences";
-"ErrorPushNotificationsNotSavedMessage" = "Please try again later.";
+"PleaseTryAgainLater" = "Please try again later.";
 
 "We need permission to access your photo library." = "We need permission to access your photo library.";
 "We need access to this permission."               = "We need access to this permission.";
 "Maybe Later"                                      = "Maybe Later";
 
-"RestorePurchaseDescription"            = "Already purchased on another device?\nTap below to restore all of your purchases.";
-"PurchaseErrorTitle"                    = "Error Making Purchase";
 "PurchaseErrorProductNotAvailable"      = "Sorry, this product is not currently available. Please try again later.";
 "PurchaseErrorTransaction"              = "Unable to complete transaction. Please try again later.";
 "RestorePurchasesNoPurchasesTitle"      = "No Purchases Restored";
@@ -343,15 +184,12 @@
 "RestorePurchasesSuccessTitlePlural"    = "%lu Purchases Restored!"; //e.g. "5 PurchaseS Restored!""
 "RestorePurchasesSuccess"               = "You can review your purchases in the Settings section.";
 "ActivityRestoring"                     = "  Restoring...";
-"ActivityPurchasing"                    = "  Purchasing...";
-"PurchaseUnlockWithPrice"               = "Unlock for %@"; //e.g. "Unlock for $0.99"
 "SettingsRestorePurchases"              = "Restore Purchases";
 "SettingsManageSubscriptions"           = "Manage Subscriptions";
 "SettingsRestorePurchasesPrompt"        = "You haven't purchased anything on this device.\nIf you've made purchases on another device, tap Restore Purchases to restore them.";
 "SettingsNoSubcriptionPrompt"           = "You do not have any active subscriptions on this device.\nIf you've subscribed on another device, tap Restore Purchases to restore them.";
 "SettingsSubscriptionSettingsPrompt"    = "To manage your subscription settings in the App Store, tap Manage Subscription.";
 "Reset Purchases"                       = "Reset Purchases";
-"SubscriptionDescriptionFormat"         = "%@ per month.  Subscription period ends on %@.";  // e.g. "$2.99 per month.  Subscription period ends on Janurary 1, 2054."
 "SubscriptionDescriptionNoDateFormat"   = "%@ per month.";  // e.g. "$2.99 per month"
 "PurchasesSettingsTitle"                = "In-App Purchases";
 "SubscriptionsSettingsTitle"            = "Subscriptions";
@@ -365,21 +203,11 @@
 "SubscriptionFetchFailed"               = "Failed to find subscriptions for purchase.";
 "Upgrade"                               = "Upgrade";
 
-"This will discard any content added to your post" = "This will discard any content added to your post";
-
-"No Color"  = "No Color";    // No color selected
-"Standard"  = "Standard";   // The default color before a selection is made
-
-"This will discard any content from the camera" = "This will discard any content from the camera";
-"Video failed to load" = "Video failed to load";
-"We encountered an error trying to edit this video." = "We encountered an error trying to edit this video.";
-
 "No Photos" = "No Photos";
 "No Videos" = "No Videos";
 "No Media" = "No Media";
 
 "#nofilter" = "#nofilter";
-"Create a meme" = "Create a meme";
 "Pick an attachment style" = "Pick an attachment style";
 "Image" = "Image";
 "Video" = "Video";
@@ -389,14 +217,12 @@
 "Downloading..." = "Downloading...";
 "Exporting..." = "Exporting...";
 "Render failure" = "Render failure";
-"Publishing..." = "Publishing...";
-"Upload failure" = "Upload failure";
 "Error loading results" = "Error loading results";
 "Error rendering media" = "Error rendering media";
 
-"By continuing you are agreeing to our" = "By continuing you are agreeing to our";
 "By signing up you are agreeing to our" = "By signing up you are agreeing to our";
 "Terms of Service" = "Terms of Service";
+"and" = "and";
 "Privacy Policy" = "Privacy Policy";
 "Help" = "Help";
 "Enter Email" = "Enter Email";
@@ -409,23 +235,6 @@
 "Code" = "Code"; // A code the user can use to verify their identitiy when resetting their password via email
 "Enter a new Password" = "Enter a new Password";
 "Confirm your new password" = "Confirm your new password";
-
-"Open Image" = "Open Image";
-"Watch Video" = "Watch Video";
-"Watch GIF" = "Watch GIF";
-
-"See all" = "See all";
-"View previous comments" = "View previous comments";
-"CommentsSingularFormat" = "%@ Comment";  // e.g. "1 Comment"
-"CommentsPluralFormat" = "%@ Comments";  // e.g. "20 Comments"
-"LikesSingularFormat" = "%@ Like";  // e.g. "1 Like", where "Like" is a noun
-"LikesPluralFormat" = "%@ Likes";  // e.g. "20 Likes", where "Like" is a noun
-"LikersTitle" = "Likers";
-
-"postsFormat" = "%@ Post";
-"postsPluralFormat" = "%@ Posts";
-"HashtagPostsCountFormat" = "In %@ Post";
-"HashtagPostsCountPluralFormat" = "In %@ Posts";
 
 "Barcelona" = "Barcelona";
 "London" = "London";
@@ -443,15 +252,11 @@
 "Seoul" = "Seoul";
 "Montreal" = "Montreal";
 
-"LevelFormat" = "LEVEL %@";
 "LEVEL" = "LEVEL";
 "TestAlertsViewControllerFooter" = "After you register an alert, go back to the stream or profile and pull to refresh. The alert should appear.";
-
-"Enter birthday before continuing" = "Please enter your birthday before continuing: ";
 
 "NewMessagesFormatPlural" = "%@ New Messages"; // i.e. "20 New Messages"
 "NewMessagesFormatSingular" = "%@ New Message"; // i.e. "1 New Message"
 
-"Exit" = "Exit";
-
 "Try Again" = "Try Again";
+"Reconnecting..." = "Reconnecting...";

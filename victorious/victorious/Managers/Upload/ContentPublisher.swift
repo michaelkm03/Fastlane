@@ -144,7 +144,16 @@ class ContentPublisher {
                 return
             }
             
-            CreateMediaUploadOperation(publishParameters: publishParameters, uploadManager: VUploadManager.sharedManager(), apiPath: apiPath, uploadCompletion: completion).queue()
+            CreateMediaUploadOperation(publishParameters: publishParameters, uploadManager: VUploadManager.sharedManager(), apiPath: apiPath).queue() { result in
+                switch result {
+                    case .success:
+                        completion?(nil)
+                    case .failure(let error):
+                        completion?(error)
+                    case .cancelled:
+                        break
+                }
+            }
         }
         else if let text = content.text {
             guard let apiPath = dependencyManager.textCreationAPIPath(for: content) else {

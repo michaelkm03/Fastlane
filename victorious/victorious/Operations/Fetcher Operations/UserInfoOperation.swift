@@ -12,9 +12,8 @@ import VictoriousIOSSDK
 class UserInfoOperation: RemoteFetcherOperation, RequestOperation {
     
     let request: UserInfoRequest!
-    
-    /// The result (if successfuly), a user loaded from the main context
-    var user: VUser?
+
+    private(set) var user: User?
     
     init?(userID: Int, apiPath: String) {
         guard let request = UserInfoRequest(userID: userID, apiPath: apiPath) else {
@@ -27,16 +26,7 @@ class UserInfoOperation: RemoteFetcherOperation, RequestOperation {
         requestExecutor.executeRequest( request, onComplete: onComplete, onError: nil )
     }
     
-    private func onComplete( user: UserInfoRequest.ResultType) {
-        persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-            let persistentUser: VUser = context.v_findOrCreateObject([ "remoteId" : user.id ])
-            persistentUser.populate(fromSourceModel: user)
-            context.v_save()
-            let objectID = persistentUser.objectID;
-            
-            self.persistentStore.mainContext.v_performBlockAndWait() { context in
-                self.user = context.objectWithID(objectID) as? VUser
-            }
-        }
+    private func onComplete( user: User) {
+        self.user = user
     }
 }

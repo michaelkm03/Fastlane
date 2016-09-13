@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class VDependencyManager, VLoadingViewController;
+@class VDependencyManager, VLoadingViewController, MBProgressHUD;
 
 @protocol VLoadingViewControllerDelegate <NSObject>
 
@@ -25,7 +25,10 @@
 
 @property (nonatomic, weak) id<VLoadingViewControllerDelegate> delegate;
 @property (nonatomic, strong) VDependencyManager *parentDependencyManager; ///< This VDependencyManager instance will be the parent of the one returned from the server
+@property (nonatomic, strong) MBProgressHUD *progressHUD;
+@property (nonatomic, assign) BOOL isLoading;
 
 + (VLoadingViewController *)loadingViewController; ///< Instantiates VLoadingViewController from the storyboard
+- (void)onDoneLoadingWithTemplateConfiguration:(NSDictionary *)templateConfiguration;
 
 @end

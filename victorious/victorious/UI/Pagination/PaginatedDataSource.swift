@@ -199,8 +199,8 @@ import VictoriousIOSSDK
         // since that would require callers to conform to that requirement, but doing so currently produces mysterious compiler
         // errors. We should revisit this later -- Swift 3 might give us less mysterious errors, or if not, we should put in
         // the time to investigate this properly.
-        (operation as? FetcherOperation)?.queue() { [weak self, weak operation] results, error, cancelled in
-            guard let strongSelf = self, operation = operation else {
+        (operation as? FetcherOperation)?.queue() { [weak self] results, error, cancelled in
+            guard let strongSelf = self else {
                 return
             }
             

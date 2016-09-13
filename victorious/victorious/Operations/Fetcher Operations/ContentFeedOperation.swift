@@ -45,8 +45,16 @@ final class ContentFeedOperation: NSOperation, Queueable {
     }
     
     func executeCompletionBlock(completionBlock: (newItems: [ContentModel], stageEvent: ForumEvent?, error: NSError?) -> Void) {
+        let filteredItems = items?.filter { item in
+            guard let id = item.id else {
+                return true
+            }
+            
+            return !Content.contentIsHidden(withID: id)
+        }
+        
         dispatch_async(dispatch_get_main_queue()) {
-            completionBlock(newItems: self.items ?? [], stageEvent: self.stageEvent, error: self.error)
+            completionBlock(newItems: filteredItems ?? [], stageEvent: self.stageEvent, error: self.error)
         }
     }
 }

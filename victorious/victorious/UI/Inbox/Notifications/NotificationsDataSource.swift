@@ -12,52 +12,46 @@ class NotificationsDataSource: PaginatedDataSource, UITableViewDataSource {
     
     let dependencyManager: VDependencyManager
     
-    required init( dependencyManager: VDependencyManager ) {
+    required init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
     }
     
-    func loadNotifications( pageType: VPageType, completion: ((NSError?) -> ())? = nil ) {
-        self.loadPage( pageType,
-            createOperation: {
-                return NotificationsOperation()
-            },
+    func loadNotifications(pageType: VPageType, completion: ((NSError?) -> ())? = nil ) {
+        loadPage( pageType,
+            createOperation: { NotificationsOperation() },
             completion: { (results, error, cancelled) in
                 completion?(error)
             }
         )
     }
     
-    func refreshRemote( completion: (([AnyObject]?, NSError?, Bool) -> ())? = nil) {
-        self.loadNewItems(
-            createOperation: {
-                return NotificationsOperation()
-            },
+    func refreshRemote(completion: (([AnyObject]?, NSError?, Bool) -> ())? = nil) {
+        loadNewItems(
+            createOperation: { NotificationsOperation() },
             completion: completion
         )
     }
     
     // MARK: - UITableViewDataSource
     
-    func registerCells( tableView: UITableView ) {
+    func registerCells(for tableView: UITableView) {
         let identifier = "NotificationCell"
         let nib = UINib(nibName: identifier, bundle: NSBundle(forClass:self.dynamicType) )
-        tableView.registerNib( nib, forCellReuseIdentifier: identifier)
+        tableView.registerNib(nib, forCellReuseIdentifier: identifier)
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return visibleItems.count
     }
     
-    func tableView( tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath ) -> UITableViewCell {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("NotificationCell", forIndexPath: indexPath) as! NotificationCell
         decorate(cell: cell, atIndexPath: indexPath)
         return cell
     }
     
     func decorate(cell notificationCell: NotificationCell, atIndexPath indexPath: NSIndexPath) {
-        let notification = visibleItems[ indexPath.row ] as! VNotification
+        let notification = visibleItems[indexPath.row] as! VNotification
         notificationCell.updateContent(with: notification, dependencyManager: dependencyManager)
     }
-    
-    
 }

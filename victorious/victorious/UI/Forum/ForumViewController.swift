@@ -24,6 +24,10 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         }
     }
     @IBOutlet private weak var chatFeedContainer: VPassthroughContainerView!
+        
+    private lazy var closeButton: ImageOnColorButton? = {
+       return self.dependencyManager.closeButton
+    }()
 
     private var stageShrinkingAnimator: StageShrinkingAnimator?
     
@@ -34,7 +38,6 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     #endif
 
     private var navBarTitleView : ForumNavBarTitleView?
-    private var isDisplayingCoachmark = false
     
     // MARK: - Initialization
     
@@ -60,8 +63,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             case .websocket(let websocketEvent):
                 switch websocketEvent {
                     case .disconnected(_) where isViewLoaded():
-                        // FUTURE: fetch the localized string from a new node in the template, depending on what the error type is.
-                        let alert = Alert(title: "Reconnecting to server...", type: .reconnectingError)
+                        let alert = Alert(title: NSLocalizedString("Reconnecting...", comment: "Reconnecting to server."), type: .reconnectingError)
                         InterstitialManager.sharedInstance.receive(alert)
                     default:
                         break
@@ -75,7 +77,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                 // path will be nil for home feed, and non nil for filtered feed
                 composer?.setComposerVisible(path == nil, animated: true)
             case .closeVIP():
-                onClose()
+                onClose(nil)
             case .refreshStage(_):
                 triggerCoachmark()
             case .setOptimisticPostingEnabled(let enabled):
@@ -168,6 +170,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             navigationItem.titleView = navBarTitleView
         }
         navBarTitleView?.sizeToFit()
+        dependencyManager.trackViewWillAppear(self)
         #if V_ENABLE_WEBSOCKET_DEBUG_MENU
             if let webSocketForumNetworkSource = forumNetworkSource as? WebSocketForumNetworkSource,
                 let navigationController = navigationController {
@@ -184,6 +187,11 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         
         // Remove this once the way to animate the workspace in and out from forum has been figured out
         navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        dependencyManager.trackViewWillDisappear(self)
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -203,25 +211,22 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         stageShrinkingAnimator = StageShrinkingAnimator(
             stageContainer: stageContainer,
             stageTouchView: stageTouchView,
-            stageViewControllerContainer: stageViewControllerContainer
+            stageViewControllerContainer: stageViewControllerContainer,
+            delegate: stage
         )
         stageShrinkingAnimator?.shouldHideKeyboardHandler = { [weak self] in
             self?.view.endEditing(true)
-        }
-        stageShrinkingAnimator?.interpolateAlongside = {[weak self] percentage in
-            self?.stage?.overlayUIAlpha = 1 - percentage
         }
         
         chatFeed?.nextSender = self
         //Initialize the title view. This will later be resized in the viewWillAppear, once it has actually been added to the navigation stack
         navBarTitleView = ForumNavBarTitleView(dependencyManager: self.dependencyManager, frame: CGRect(x: 0, y: 0, width: 200, height: 45))
         navigationController?.navigationBar.barStyle = .Black
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: dependencyManager.exitButtonIcon,
-            style: .Plain,
-            target: self,
-            action: #selector(onClose)
-        )
+        if let button = closeButton {
+            button.addTarget(self, action: #selector(onClose), forControlEvents: .TouchUpInside)
+            button.sizeToFit()
+            navigationItem.leftBarButtonItem = UIBarButtonItem(customView: button)
+        }
         updateStyle()
         
         if let forumNetworkSource = dependencyManager.forumNetworkSource {
@@ -263,7 +268,11 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     // MARK: - Actions
     
-    @objc private func onClose() {
+    @objc private func onClose(sender: UIButton?) {
+        if sender != nil {
+            closeButton?.dependencyManager?.trackButtonEvent(.tap)
+        }
+        
         navigationController?.dismissViewControllerAnimated(true, completion: nil)
 
         // Close connection to network source when we close the forum.
@@ -289,7 +298,28 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         view.endEditing(true)
     }
     
+    // MARK: - Content action sheet
+    
+    private func showActionSheet(forContent chatFeedContent: ChatFeedContent) {
+        guard let chatFeedDependencyManager = dependencyManager.chatFeedDependency else {
+            return
+        }
+        
+        if let alertController = UIAlertController(actionsFor: chatFeedContent.content, dependencyManager: chatFeedDependencyManager, completion: { [weak self] action in
+            switch action {
+                case .delete, .flag: self?.chatFeed?.remove(chatFeedContent)
+                case .like, .unlike, .cancel: break
+            }
+        }) {
+            presentViewController(alertController, animated: true, completion: nil)
+        }
+    }
+    
     // MARK: - ChatFeedDelegate
+    
+    func chatFeed(chatFeed: ChatFeed, didLongPressContent chatFeedContent: ChatFeedContent) {
+        showActionSheet(forContent: chatFeedContent)
+    }
     
     func chatFeed(chatFeed: ChatFeed, didScroll scrollView: UIScrollView) {
         stageShrinkingAnimator?.chatFeed(chatFeed, didScroll: scrollView)
@@ -365,7 +395,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         }
         
         if let retriedIndex = publisher?.retryPublish(chatFeedContent) {
-            let retriedIndexPath = NSIndexPath(forItem: dataSource.visibleItems.count + retriedIndex, inSection: 0)
+            let retriedIndexPath = NSIndexPath(forItem: dataSource.unstashedItems.count + retriedIndex, inSection: 0)
             chatFeed?.collectionView.reloadItemsAtIndexPaths([retriedIndexPath])
         }
     }
@@ -376,7 +406,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         }
         
         if let removedIndicies = publisher?.remove([chatFeedContent]) {
-            let indexPaths = removedIndicies.map { NSIndexPath(forItem: dataSource.visibleItems.count + $0, inSection: 0)}
+            let indexPaths = removedIndicies.map { NSIndexPath(forItem: dataSource.unstashedItems.count + $0, inSection: 0)}
             chatFeed?.collectionView.deleteItemsAtIndexPaths(indexPaths)
         }
     }
@@ -414,8 +444,8 @@ private extension VDependencyManager {
         return childDependencyForKey("stage")
     }
     
-    var exitButtonIcon: UIImage? {
-        return imageForKey("closeIcon") ?? UIImage(named: "x_icon") //Template is currently returning incorrect path, so use the close icon in the image assets
+    var closeButton: ImageOnColorButton? {
+        return buttonForKey("close.button") as? ImageOnColorButton
     }
     
     var contentDeleteURL: String {

@@ -17,10 +17,10 @@ extension VUser {
         displayName                 = user.displayName ?? displayName
         location                    = user.location ?? location
         tagline                     = user.tagline ?? tagline
-        isBlockedByMainUser         = user.isBlockedByCurrentUser ?? isBlockedByMainUser
+        isBlockedByMainUser         = user.isRemotelyBlockedByCurrentUser ?? isBlockedByMainUser
         isVIPSubscriber             = user.vipStatus?.isVIP ?? isVIPSubscriber
         isCreator                   = user.accessLevel.isCreator ?? isCreator
-        isFollowedByMainUser        = user.isFollowedByCurrentUser ?? isFollowedByMainUser
+        isFollowedByMainUser        = user.isRemotelyFollowedByCurrentUser ?? isFollowedByMainUser
         v_likesGiven                = user.likesGiven ?? likesGiven
         v_likesReceived             = user.likesReceived ?? likesReceived
         levelProgressPoints         = user.fanLoyalty?.points ?? levelProgressPoints

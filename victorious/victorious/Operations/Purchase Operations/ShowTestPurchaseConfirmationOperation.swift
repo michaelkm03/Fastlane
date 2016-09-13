@@ -8,7 +8,7 @@
 
 import Foundation
 
-class ShowTestPurchaseConfirmationOperation: BackgroundOperation, ActionConfirmationOperation {
+final class ShowTestPurchaseConfirmationOperation: AsyncOperation<Void>, ActionConfirmationOperation {
     
     private let type: VPurchaseType
     private let title: String?
@@ -26,16 +26,11 @@ class ShowTestPurchaseConfirmationOperation: BackgroundOperation, ActionConfirma
         self.duration = duration
     }
     
-    override func start() {
-        beganExecuting()
-        
-        dispatch_async( dispatch_get_main_queue() ) {
-            self.showAlert()
-        }
+    override var executionQueue: Queue {
+        return .main
     }
     
-    private func showAlert() {
-        
+    override func execute(finish: (result: OperationResult<Void>) -> Void) {
         let alertController = UIAlertController(
             title: type.tite,
             message: type.messageWithTitle(title ?? "[ITEM]", duration: duration ?? "[DESCRIPTION]", price: price ?? "[PRICE]") + "\n\n[Simulated for testing]",
@@ -47,7 +42,7 @@ class ShowTestPurchaseConfirmationOperation: BackgroundOperation, ActionConfirma
                 style: .Cancel,
                 handler: { action in
                     self.cancel()
-                    self.finishedExecuting()
+                    finish(result: .cancelled)
                 }
             )
         )
@@ -57,7 +52,7 @@ class ShowTestPurchaseConfirmationOperation: BackgroundOperation, ActionConfirma
                 style: .Default,
                 handler: { action in
                     self.didConfirmAction = true
-                    self.finishedExecuting()
+                    finish(result: .success())
                 }
             )
         )

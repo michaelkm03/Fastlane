@@ -40,6 +40,26 @@ static const CGFloat kPurchasedItemCellRowHeight    = 60.0f;
 
 static NSString * const kAppStoreSubscriptionSettingsURL = @"itms-apps://buy.itunes.apple.com/WebObjects/MZFinance.woa/wa/manageSubscriptions";
 
+@interface VDependencyManager(accessors)
+
+- (NSURL *)validationURL;
+
+@end
+
+@implementation VDependencyManager(accessors)
+
+- (NSURL *)validationURL
+{
+    NSString *urlString = [self stringForKey:@"purchaseURL"];
+    if (urlString != nil)
+    {
+        return [[NSURL alloc] initWithString:urlString];
+    }
+    return nil;
+}
+
+@end
+
 @interface VPurchaseSettingsViewController()
 
 @property (nonatomic, strong) id<VPurchaseManagerType> purchaseManager;
@@ -119,7 +139,7 @@ static NSString * const kAppStoreSubscriptionSettingsURL = @"itms-apps://buy.itu
          else if ( [restoredProductIdentifiers containsObject:[self.dependencyManager vipSubscription].productIdentifier] )
          {
              // Validate and force success since even if there's an error, we must deliver the product restores to the user
-             VIPValidateSuscriptionOperation *op = [[VIPValidateSuscriptionOperation alloc] initWithShouldForceSuccess:YES];
+             VIPValidateSubscriptionOperation *op = [[VIPValidateSubscriptionOperation alloc] initWithUrl:self.dependencyManager.validationURL shouldForceSuccess:YES];
              [op queueWithCompletion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled)
               {
                   onRestoreComplete();
@@ -206,7 +226,7 @@ static NSString * const kAppStoreSubscriptionSettingsURL = @"itms-apps://buy.itu
 
 - (BOOL)shouldShowPurchasedSubscription
 {
-    BOOL isVIPSubscriber = [VCurrentUser user].isVIPSubscriber.boolValue;
+    BOOL isVIPSubscriber = VCurrentUser.isVIPSubScriber.boolValue;
     VProduct *subscriptionProduct = [self subscriptionProduct];
     return subscriptionProduct != nil && isVIPSubscriber;
 }
@@ -361,7 +381,7 @@ static NSString * const kAppStoreSubscriptionSettingsURL = @"itms-apps://buy.itu
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    const BOOL isSubscribed = [VCurrentUser user].isVIPSubscriber.boolValue;
+    const BOOL isSubscribed = VCurrentUser.isVIPSubScriber.boolValue;
     const BOOL showNoSubscription = indexPath.section == VPurchaseSettingsTableViewSectionPurchases && !isSubscribed;
     const BOOL showNoProducts = indexPath.section == VPurchaseSettingsTableViewSectionPurchases && self.purchasedProductsIdentifiers.count == 0;
     const BOOL isNoContentCell = showNoSubscription || showNoProducts;

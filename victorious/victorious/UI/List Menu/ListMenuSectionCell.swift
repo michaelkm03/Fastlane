@@ -27,7 +27,6 @@ protocol ListMenuSectionCell: class {
 }
 
 extension ListMenuSectionCell {
-    
     static var preferredHeight: CGFloat {
         return 38
     }

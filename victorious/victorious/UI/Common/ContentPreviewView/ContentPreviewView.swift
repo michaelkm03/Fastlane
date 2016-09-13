@@ -24,7 +24,8 @@ class ContentPreviewView: UIView {
     }
 
     private let previewImageView = UIImageView()
-    private let vipIcon = UIImageView()
+    private var vipButton: UIButton?
+    
     private let playButton: UIView
     
     private let loadingSpinnerEnabled: Bool
@@ -40,8 +41,17 @@ class ContentPreviewView: UIView {
                 let dependencyManager = dependencyManager
                 where dependencyManager != oldValue
             {
-                vipIcon.image = dependencyManager.vipIcon
+                setupOrCreateVIPButton()
             }
+        }
+    }
+    
+    private func setupOrCreateVIPButton() {
+        vipButton?.removeFromSuperview()
+        vipButton = self.dependencyManager?.userIsVIPButton
+        
+        if let vipButton = vipButton {
+            addSubview(vipButton)
         }
     }
     
@@ -64,8 +74,6 @@ class ContentPreviewView: UIView {
         previewImageView.contentMode = .ScaleAspectFill
         addSubview(previewImageView)
         
-        addSubview(vipIcon)
-        vipIcon.contentMode = .ScaleAspectFit
         addSubview(playButton)
         
         if let spinner = spinner {
@@ -73,7 +81,7 @@ class ContentPreviewView: UIView {
             sendSubviewToBack(spinner)
         }
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userVIPStatusChanged), name: VIPSubscriptionHelper.userVIPStatusChangedNotificationKey, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userVIPStatusChanged), name: VCurrentUser.userDidUpdateNotificationKey, object: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -81,17 +89,21 @@ class ContentPreviewView: UIView {
     }
     
     override func layoutSubviews() {
+        super.layoutSubviews()
+        
         previewImageView.frame = self.bounds
         
         playButton.frame = CGRect(
             origin: CGPoint(x: bounds.center.x - Constants.playButtonSize.width/2, y: bounds.center.y - Constants.playButtonSize.height/2),
             size: Constants.playButtonSize
         )
-
-        vipIcon.frame = CGRect(
-            origin: CGPoint(x: Constants.vipMargins, y: bounds.size.height - Constants.vipSize.height - Constants.vipMargins),
-            size: Constants.vipSize
-        )
+        
+        if let vipButton = vipButton {
+            vipButton.frame = CGRect(
+                origin: CGPoint(x: Constants.vipMargins, y: bounds.size.height - Constants.vipSize.height - Constants.vipMargins),
+                size: vipButton.intrinsicContentSize()
+            )
+        }
         
         if let content = content where lastSize.area / bounds.size.area < Constants.imageReloadThreshold {
             setupImage(forContent: content)
@@ -114,7 +126,7 @@ class ContentPreviewView: UIView {
     
     private func setupForContent(content: ContentModel) {
         spinner?.startAnimating()
-        vipIcon.hidden = !content.isVIPOnly
+        vipButton?.hidden = !content.isVIPOnly
         
         setupImage(forContent: content)
         
@@ -125,19 +137,16 @@ class ContentPreviewView: UIView {
     }
     
     private func setupImage(forContent content: ContentModel) {
-        let userCanViewContent = VCurrentUser.user()?.canView(content) == true
+        let userCanViewContent = VCurrentUser.user?.canView(content) == true
         if let imageAsset = content.previewImage(ofMinimumWidth: bounds.size.width) {
-            if !userCanViewContent {
-                previewImageView.applyBlurToImageURL(imageAsset.url, withRadius: Constants.imageViewBlurEffectRadius) { [weak self] in
-                    self?.previewImageView.alpha = 1
-                    self?.playButton.alpha = 1
-                    self?.spinner?.stopAnimating()
-                }
-            }
-            else {
-                previewImageView.setImageAsset(imageAsset) { [weak self] _ in
-                    self?.playButton.alpha = 1
-                    self?.spinner?.stopAnimating()
+            let blurRadius = userCanViewContent ? 0 : Constants.imageViewBlurEffectRadius
+            previewImageView.getImageAsset(imageAsset, blurRadius: blurRadius) { [weak self] result in
+                switch result {
+                    case .success(let image):
+                        self?.finishedLoadingPreviewImage(image, for: content)
+                        
+                    case .failure(_):
+                        self?.finishedLoadingPreviewImage(nil, for: content)
                 }
             }
         }
@@ -145,6 +154,18 @@ class ContentPreviewView: UIView {
             previewImageView.image = nil
         }
         lastSize = bounds.size
+    }
+    
+    private func finishedLoadingPreviewImage(image: UIImage?, for content: ContentModel) {
+        let contentID = self.content?.id
+        guard content.id == contentID || contentID == nil else {
+            return
+        }
+        
+        self.previewImageView.image = image
+        self.previewImageView.alpha = 1
+        self.playButton.alpha = 1
+        self.spinner?.stopAnimating()
     }
     
     // MARK: - Notification actions
@@ -158,7 +179,7 @@ class ContentPreviewView: UIView {
 }
 
 private extension VDependencyManager {
-    var vipIcon: UIImage? {
-        return imageForKey("icon.vip")
+    var userIsVIPButton: UIButton? {
+        return buttonForKey("button.vip")
     }
 }

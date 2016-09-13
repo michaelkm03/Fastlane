@@ -206,7 +206,7 @@ private extension VDependencyManager {
             return ""
         }
         
-        let name = VCurrentUser.user()?.displayName ?? ""
+        let name = VCurrentUser.user?.displayName ?? ""
         return titleString.stringByReplacingOccurrencesOfString(Constants.userMacro, withString: name)
     }
     

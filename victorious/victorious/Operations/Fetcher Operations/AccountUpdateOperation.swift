@@ -32,29 +32,29 @@ class AccountUpdateOperation: RemoteFetcherOperation, RequestOperation {
     
     override func main() {
         // For profile updates, optimistically update everything right away
+        
         if let profileUpdate = self.request.profileUpdate {
-            persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-                guard let user = VCurrentUser.user(inManagedObjectContext: context) else {
-                    fatalError( "Expecting a current user to be set before now." )
-                }
-                
-                // Update basic stats
-                user.displayName = profileUpdate.displayName ?? user.displayName
-                user.location = profileUpdate.location ?? user.location
-                user.tagline = profileUpdate.tagline ?? user.tagline
-                
-                // Update profile image
-                if let imageURL = profileUpdate.profileImageURL, let imageUrlString = imageURL.absoluteString {
-                    if let data = NSData(contentsOfURL: imageURL),
-                        let image = UIImage(data: data) {
-                            let imageAsset: VImageAsset = context.v_createObject()
-                            imageAsset.imageURL = imageUrlString
-                            imageAsset.width = image.size.width
-                            imageAsset.height = image.size.height
-                            user.previewAssets = [imageAsset]
-                    }
-                }
-                context.v_save()
+            guard var user = VCurrentUser.user else {
+                error = NSError(domain: "AccountUpdateOperation", code: -1, userInfo: nil)
+                return
+            }
+            
+            // Update basic stats
+            user.displayName = profileUpdate.displayName ?? user.displayName
+            user.location = profileUpdate.location ?? user.location
+            user.tagline = profileUpdate.tagline ?? user.tagline
+            
+            // Update profile image
+            if
+                let imageURL = profileUpdate.profileImageURL,
+                let data = NSData(contentsOfURL: imageURL),
+                let image = UIImage(data: data) {
+                    let imageAsset = ImageAsset(image: image)
+                    user.previewImages = [imageAsset]
+            }
+            
+            dispatch_async(dispatch_get_main_queue()) {
+                VCurrentUser.update(to: user)
             }
         }
         

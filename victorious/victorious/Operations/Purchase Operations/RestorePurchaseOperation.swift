@@ -8,23 +8,27 @@
 
 import Foundation
 
-class RestorePurchasesOperation: BackgroundOperation {
+final class RestorePurchasesOperation: AsyncOperation<Void> {
+    let validationURL:NSURL?
+    private let purchaseManager: VPurchaseManagerType = VPurchaseManager.sharedInstance()
     
-    var purchaseManager: VPurchaseManagerType = VPurchaseManager.sharedInstance()
+    init(validationURL: NSURL?) {
+        self.validationURL = validationURL
+    }
     
-    override func start() {
-        super.start()
-        beganExecuting()
-        
+    override var executionQueue: Queue {
+        return .background
+    }
+    
+    override func execute(finish: (result: OperationResult<Void>) -> Void) {
         purchaseManager.restorePurchasesSuccess(
             { results in
                 // Force success because we have to deliver the product even if the sever fails for any reason
-                VIPValidateSuscriptionOperation(shouldForceSuccess: true).rechainAfter(self).queue()
-                self.finishedExecuting()
+                VIPValidateSubscriptionOperation(url: self.validationURL, shouldForceSuccess: true)?.rechainAfter(self).queue()
+                finish(result: .success())
             },
             failure: { error in
-                self.error = error
-                self.finishedExecuting()
+                finish(result: .failure(error))
             }
         )
     }

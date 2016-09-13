@@ -82,14 +82,14 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         }
     }
     
-    // MARK: - Managing the activity indicator
+    // MARK: - Managing the loading view
     
-    /// The most recently-displayed activity view. We need this because our loading state gets set after the activity
+    /// The most recently-displayed loading view. We need this because our loading state gets set after the loading
     /// view displays, so we have to set the visibility of the activity indicator after the fact.
-    private var activityView: VFooterActivityIndicatorView?
+    private var loadingView: CollectionLoadingView?
     
-    /// Whether or not the activity indicator above the chat messages is enabled.
-    private var activityIndicatorEnabled = false {
+    /// Whether or not the loading view above the chat messages is enabled.
+    private var loadingViewEnabled = false {
         didSet {
             collectionView.collectionViewLayout.invalidateLayout()
         }
@@ -99,12 +99,12 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     private var isLoading = false {
         didSet {
             collectionView.collectionViewLayout.invalidateLayout()
-            updateActivityView()
+            updateLoadingView()
         }
     }
     
-    private func updateActivityView() {
-        activityView?.setActivityIndicatorVisible(activityIndicatorEnabled && isLoading, animated: false)
+    private func updateLoadingView() {
+        loadingView?.isLoading = loadingViewEnabled && isLoading
     }
     
     // MARK: - ForumEventReceiver
@@ -115,7 +115,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     
     func receive(event: ForumEvent) {
         switch event {
-            case .setChatActivityIndicatorEnabled(let enabled): activityIndicatorEnabled = enabled
+            case .setChatActivityIndicatorEnabled(let enabled): loadingViewEnabled = enabled
             case .setLoadingContent(let isLoading, let loadingType): self.isLoading = isLoading && loadingType.showsLoadingState
             default: break
         }
@@ -143,12 +143,6 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         
         dataSource.delegate = self
         dataSource.registerCells(for: collectionView)
-        
-        collectionView.registerNib(
-            VFooterActivityIndicatorView.nibForSupplementaryView(),
-            forSupplementaryViewOfKind: UICollectionElementKindSectionHeader,
-            withReuseIdentifier: VFooterActivityIndicatorView.reuseIdentifier()
-        )
         
         collectionView.dataSource = dataSource
         collectionView.delegate = self
@@ -195,19 +189,19 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     }
     
     func collectionView(collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, atIndexPath indexPath: NSIndexPath) {
-        if let activityView = view as? VFooterActivityIndicatorView {
-            activityView.activityIndicator.color = dependencyManager.activityIndicatorColor
-            self.activityView = activityView
-            updateActivityView()
+        if let loadingView = view as? CollectionLoadingView {
+            loadingView.color = dependencyManager.activityIndicatorColor
+            self.loadingView = loadingView
+            updateLoadingView()
         }
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        guard activityIndicatorEnabled else {
+        guard loadingViewEnabled else {
             return CGSize.zero
         }
         
-        var size = VFooterActivityIndicatorView.desiredSizeWithCollectionViewBounds(collectionView.bounds)
+        var size = CollectionLoadingView.preferredSize(in: collectionView.bounds)
         
         if collectionView.numberOfItemsInSection(0) == 0 {
             // If the collection view is empty, we want to center the activity indicator vertically, so we size it to
@@ -284,6 +278,14 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         }
         
         delegate?.chatFeed(self, didSelectContent: content)
+    }
+    
+    func messageCellDidLongPressContent(messageCell: ChatFeedMessageCell) {
+        guard let content = messageCell.chatFeedContent else {
+            return
+        }
+        
+        delegate?.chatFeed(self, didLongPressContent: content)
     }
     
     func messageCellDidSelectFailureButton(messageCell: ChatFeedMessageCell) {

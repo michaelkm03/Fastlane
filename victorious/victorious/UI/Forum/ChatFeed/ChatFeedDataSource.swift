@@ -32,7 +32,7 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     
     // MARK: - Managing content
     
-    private(set) var visibleItems = [ChatFeedContent]()
+    private(set) var unstashedItems = [ChatFeedContent]()
     private(set) var stashedItems = [ChatFeedContent]()
     
     var pendingItems: [ChatFeedContent] {
@@ -42,6 +42,10 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
         else {
             return []
         }
+    }
+    
+    func removeUnstashedItem(at index: Int) {
+        unstashedItems.removeAtIndex(index)
     }
     
     var stashingEnabled = false
@@ -54,7 +58,7 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
         
         let previouslyStashedItems = stashedItems
         
-        visibleItems.appendContentsOf(stashedItems)
+        unstashedItems.appendContentsOf(stashedItems)
         stashedItems.removeAll()
         
         delegate?.chatFeedDataSource(self, didUnstashItems: previouslyStashedItems)
@@ -89,18 +93,18 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
                     delegate?.chatFeedDataSource(self, didStashItems: newItems)
                 }
                 else {
-                    visibleItems.appendContentsOf(newItems)
+                    unstashedItems.appendContentsOf(newItems)
                     delegate?.chatFeedDataSource(self, didLoadItems: newItems, loadingType: .newer)
                 }
                 
             case .older:
                 let newItems = createNewItemsArray(newItems)
-                visibleItems = newItems + visibleItems
+                unstashedItems = newItems + unstashedItems
                 delegate?.chatFeedDataSource(self, didLoadItems: newItems, loadingType: .older)
                 
             case .refresh:
                 let newItems = createNewItemsArray(newItems)
-                visibleItems = newItems
+                unstashedItems = newItems
                 stashedItems = []
                 delegate?.chatFeedDataSource(self, didLoadItems: newItems, loadingType: .refresh)
         }
@@ -116,7 +120,7 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     }
     
     private func clearItems() {
-        visibleItems = []
+        unstashedItems = []
         stashedItems = []
         delegate?.chatFeedDataSource(self, didLoadItems: [], loadingType: .refresh)
     }
@@ -147,7 +151,7 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     
     func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
         if kind == UICollectionElementKindSectionHeader {
-            return collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: VFooterActivityIndicatorView.reuseIdentifier(), forIndexPath: indexPath) as! VFooterActivityIndicatorView
+            return CollectionLoadingView.dequeue(from: collectionView, forSupplementaryViewKind: kind, at: indexPath)
         }
         
         assertionFailure("Unsupported supplementary view kind requested in ChatFeedDataSource.")

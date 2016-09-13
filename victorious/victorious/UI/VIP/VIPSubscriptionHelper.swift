@@ -14,27 +14,44 @@ protocol VIPSubscriptionHelperDelegate: class {
 }
 
 class VIPSubscriptionHelper {
-    weak var originViewController: UIViewController?
     
-    weak var delegate: VIPSubscriptionHelperDelegate?
+    // MARK: - Constants
     
-    let subscriptionFetchURL: String
-    static let userVIPStatusChangedNotificationKey = "victorious.VIPSubscriptionHelper.userVIPStatusChangedNotificationKey"
+    // MARK: - Initializing
     
-    init(subscriptionFetchURL: String, delegate: VIPSubscriptionHelperDelegate, originViewController: UIViewController) {
+    init(subscriptionFetchURL: String, delegate: VIPSubscriptionHelperDelegate, originViewController: UIViewController, dependencyManager: VDependencyManager) {
         self.subscriptionFetchURL = subscriptionFetchURL
         self.delegate = delegate
         self.originViewController = originViewController
+        self.dependencyManager = dependencyManager
     }
     
-    func subscribe() {
+    // MARK: - Delegate
+    
+    weak var delegate: VIPSubscriptionHelperDelegate?
+    
+    // MARK: - Dependency manager
+    
+    private let dependencyManager: VDependencyManager
+    
+    // MARK: - Navigating
+    
+    private weak var originViewController: UIViewController?
+    
+    // MARK: - Fetching products
+    
+    private let subscriptionFetchURL: String
+    private var products: [VProduct]?
+    
+    func fetchProducts(completion: ([VProduct]?) -> Void) {
         guard let subscriptionFetchOperation = VIPFetchSubscriptionRemoteOperation(urlString: subscriptionFetchURL) else {
             originViewController?.showSubscriptionAlert(for: VIPFetchSubscriptionRemoteOperation.initError)
             return
         }
         
         delegate?.setIsLoading(true, title: nil)
-        subscriptionFetchOperation.queue() { [weak self] results, error, canceled in
+        
+        subscriptionFetchOperation.queue { [weak self] results, error, canceled in
             guard !canceled else {
                 self?.delegate?.setIsLoading(false, title: nil)
                 return
@@ -43,80 +60,131 @@ class VIPSubscriptionHelper {
             guard
                 let productIdentifiers = results as? [String]
                 where error == nil
-                else {
-                    self?.delegate?.setIsLoading(false, title: nil)
-                    self?.originViewController?.showSubscriptionAlert(for: error)
-                    return
-            }
-            self?.fetchProductsForIdentifiers(productIdentifiers)
-        }
-    
-    }
-    
-    private func fetchProductsForIdentifiers(identifiers: [String]) {
-        let productFetchOperation = ProductFetchOperation(productIdentifiers: identifiers)
-        productFetchOperation.queue() { [weak self] _ in
-            
-            guard let products = productFetchOperation.products else {
+            else {
                 self?.delegate?.setIsLoading(false, title: nil)
-                self?.originViewController?.showSubscriptionAlert(for: productFetchOperation.error)
+                self?.originViewController?.showSubscriptionAlert(for: error)
                 return
             }
             
-            self?.showSubscriptionSelectionForProducts(products)
+            ProductFetchOperation(productIdentifiers: productIdentifiers).queue { [weak self] result in
+                self?.delegate?.setIsLoading(false, title: nil)
+                
+                switch result {
+                    case .success(let products):
+                        self?.products = products
+                        completion(products)
+                    case .failure(let error):
+                        self?.originViewController?.showSubscriptionAlert(for: error as NSError)
+                    case .cancelled: break
+                }
+            }
+        }
+    }
+    
+    // MARK: - Subscribing
+    
+    func subscribe() {
+        if let products = products {
+            showSubscriptionSelectionForProducts(products)
+        }
+        else {
+            fetchProducts { [weak self] products in
+                guard let products = products else {
+                    return
+                }
+                
+                self?.products = products
+                self?.subscribe()
+            }
         }
     }
     
     private func showSubscriptionSelectionForProducts(products: [VProduct]) {
         guard let originViewController = originViewController else {
+            delegate?.setIsLoading(false, title: nil)
             return
         }
         
         let selectSubscription = VIPSelectSubscriptionOperation(products: products, originViewController: originViewController)
-        if selectSubscription.willShowPrompt {
+        let willShowPrompt = selectSubscription.willShowPrompt
+        if willShowPrompt {
             delegate?.setIsLoading(false, title: nil)
         }
-        selectSubscription.queue() { [weak self] _ in
-            guard let selectedProduct = selectSubscription.selectedProduct else {
-                self?.delegate?.setIsLoading(false, title: nil)
-                if let error = selectSubscription.error {
-                    originViewController.showSubscriptionAlert(for: error)
-                }
+        selectSubscription.queue() { [weak self] result in
+            guard let strongSelf = self else {
                 return
             }
-            self?.delegate?.setIsLoading(true, title: nil)
-            self?.subscribeToProduct(selectedProduct)
+            
+            let selectionDependency = strongSelf.dependencyManager.selectionDialogDependency
+            
+            switch result {
+                case .success(let selectedProduct):
+                    if willShowPrompt {
+                        selectionDependency?.trackButtonEvent(.tap)
+                    }
+                    self?.delegate?.setIsLoading(true, title: nil)
+                    self?.subscribeToProduct(selectedProduct)
+                case .failure(let error):
+                    strongSelf.delegate?.setIsLoading(false, title: nil)
+                    originViewController.showSubscriptionAlert(for: error as NSError)
+                    self?.delegate?.setIsLoading(false, title: nil)
+                    originViewController.showSubscriptionAlert(for: error as NSError)
+                case .cancelled:
+                    if willShowPrompt {
+                        selectionDependency?.trackButtonEvent(.cancel)
+                    }
+                    self?.delegate?.setIsLoading(false, title: nil)
+            }
         }
     }
     
     private func subscribeToProduct(product: VProduct) {
-        let subscribe = VIPSubscribeOperation(product: product)
-        subscribe.queue() { [weak self] error, canceled in
+        let subscribe = VIPSubscribeOperation(product: product, validationURL: dependencyManager.validationURL)
+        subscribe.queue() { [weak self] result in
             self?.delegate?.setIsLoading(false, title: nil)
-            guard let strongSelf = self where !canceled else {
+            
+            guard let strongSelf = self  else {
                 return
             }
             
-            if let error = error {
-                strongSelf.originViewController?.showSubscriptionAlert(for: error)
-            }
-            else {
-                strongSelf.delegate?.VIPSubscriptionHelperCompletedSubscription(strongSelf)
-                NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: VIPSubscriptionHelper.userVIPStatusChangedNotificationKey, object: nil))
+            switch result {
+                case .success:
+                    strongSelf.delegate?.VIPSubscriptionHelperCompletedSubscription(strongSelf)
+                case .failure(let error):
+                    strongSelf.originViewController?.showSubscriptionAlert(for: error as NSError)
+                case .cancelled:
+                    break
             }
         }
     }
 }
 
-// MARK: - String Constants
-
-private struct Strings {
-    static let subscriptionFailed       = NSLocalizedString("SubscriptionFailed", comment: "")
-    static let subscriptionFetchFailed  = NSLocalizedString("SubscriptionFetchFailed", comment: "")
-}
-
 private extension UIViewController {
     func showSubscriptionAlert(for error: NSError?) {
-        v_showErrorWithTitle(Strings.subscriptionFailed, message: error?.localizedDescription)
+        v_showErrorWithTitle(
+            NSLocalizedString("SubscriptionFailed", comment: "Subscription failed for the user"),
+            message: NSLocalizedString("PleaseTryAgainLater", comment: "Tells the user to try again later")
+        )
+        Log.warning("Subscription failed with error: \(error)")
+    }
+}
+
+private extension VDependencyManager {
+    var purchaseDialogDependency: VDependencyManager? {
+        return childDependencyForKey("native.store.dialog")
+    }
+    
+    var selectionDialogDependency: VDependencyManager? {
+        return childDependencyForKey("multiple.sku.dialog")
+    }
+    
+    var validationURL: NSURL? {
+        guard
+            let urlString = networkResources?.stringForKey("purchaseURL"),
+            let url = NSURL(string: urlString)
+        else {
+            return nil
+        }
+        return url
     }
 }

@@ -10,28 +10,48 @@ import Foundation
 import VictoriousIOSSDK
 import FBSDKCoreKit
 
-class CreateMediaUploadOperation: BackgroundOperation {
+final class CreateMediaUploadOperation: SyncOperation<Void> {
     
     let request: MediaUploadCreateRequest
     let uploadManager: VUploadManager
     let publishParameters: VPublishParameters
     let mediaURL: NSURL?
-    let uploadCompletion: ((NSError?) -> Void)?
     
     private var currentUploadTask: VUploadTaskInformation?
     
-    init(publishParameters: VPublishParameters, uploadManager: VUploadManager, apiPath: APIPath, uploadCompletion: ((NSError?) -> Void)?) {
+    init(publishParameters: VPublishParameters, uploadManager: VUploadManager, apiPath: APIPath) {
         self.mediaURL = publishParameters.mediaToUploadURL
         self.request = MediaUploadCreateRequest(apiPath: apiPath)
         self.publishParameters = publishParameters
         self.uploadManager = uploadManager
-        self.uploadCompletion = uploadCompletion
     }
     
-    override func start() {
-        super.start()
-        self.beganExecuting()
-        upload(uploadManager)
+    override var executionQueue: Queue {
+        return .background
+    }
+    
+    override func execute() -> OperationResult<Void> {
+        let uploadError = NSError(domain: "UploadError", code: -1, userInfo: nil)
+        if !publishParameters.isGIF && mediaURL == nil {
+            return .failure(uploadError)
+        }
+        
+        let taskCreator = VUploadTaskCreator(uploadManager: uploadManager)
+        let authenticationContext = AuthenticationContext()
+        
+        taskCreator.request = request.urlRequestWithHeaders(using: RequestContext(), authenticationContext: authenticationContext)
+        taskCreator.formFields = formFields
+        taskCreator.isGIF = publishParameters.isGIF
+        taskCreator.previewImage = publishParameters.previewImage
+        
+        do {
+            currentUploadTask = try taskCreator.createUploadTask()
+            uploadManager.enqueueUploadTask(currentUploadTask) { _ in }
+        } catch {
+            return .failure(uploadError)
+        }
+        
+        return .success()
     }
     
     override func cancel() {
@@ -40,41 +60,6 @@ class CreateMediaUploadOperation: BackgroundOperation {
             return
         }
         uploadManager.cancelUploadTask(currentUploadTask)
-    }
-    
-    private func completionError(error: NSError?) {
-        dispatch_async(dispatch_get_main_queue()) {
-            self.uploadCompletion?(error)
-            self.finishedExecuting()
-        }
-    }
-    
-    private func upload(uploadManager: VUploadManager) {
-        if !publishParameters.isGIF && mediaURL == nil {
-            completionError(NSError(domain: "UploadError", code: -1, userInfo: nil))
-            return
-        }
-        
-        let taskCreator = VUploadTaskCreator(uploadManager: uploadManager)
-        var authenticationContext: AuthenticationContext?
-        dispatch_sync(dispatch_get_main_queue()) {
-            if let user = VCurrentUser.user() {
-                authenticationContext = AuthenticationContext(currentUser: user)
-            }
-        }
-        taskCreator.request = request.urlRequestWithHeaders(using: RequestContext(), authenticationContext: authenticationContext)
-        taskCreator.formFields = formFields
-        taskCreator.previewImage = publishParameters.previewImage
-        
-        do {
-            currentUploadTask = try taskCreator.createUploadTask()
-            uploadManager.enqueueUploadTask(currentUploadTask) { _ in }
-        } catch {
-            completionError(NSError(domain: "UploadError", code: -1, userInfo: nil))
-            return
-        }
-        
-        completionError(nil)
     }
     
     private var formFields: [NSObject : AnyObject] {

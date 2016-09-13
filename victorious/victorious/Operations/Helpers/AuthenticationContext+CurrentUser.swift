@@ -10,11 +10,14 @@ import Foundation
 import VictoriousIOSSDK
 
 extension AuthenticationContext {
-    init?(currentUser: VUser) {
-        guard let token = currentUser.token else {
+    init?() {
+        guard
+            let token = VCurrentUser.token,
+            let id = VCurrentUser.user?.id
+        else {
             return nil
         }
         
-        self.init(userID: currentUser.remoteId.integerValue, token: token)
+        self.init(userID: id, token: token)
     }
 }

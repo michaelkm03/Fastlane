@@ -64,11 +64,11 @@ class MixedMediaCameraViewController: UIViewController, VCaptureVideoPreviewView
     private var previewImage: UIImage? = nil
     
     lazy private var maximumRecordingDuration: Float64 = {
-        guard let user = VCurrentUser.user() else {
+        guard let duration = VCurrentUser.user?.maxVideoUploadDuration else {
             return 0
         }
         
-        return Float64(user.maxUploadDuration.integerValue)
+        return Float64(duration)
     }()
     
     private var previewViewRadialHypotenuse: CGFloat {

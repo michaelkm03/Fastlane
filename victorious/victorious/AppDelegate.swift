@@ -74,7 +74,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: () -> Void) {
-        logger.verbose("handling events for background identifier -> \(identifier)")
+        Log.verbose("handling events for background identifier -> \(identifier)")
 
         let uploadManager = VUploadManager.sharedManager()
         if uploadManager.isYourBackgroundURLSession(identifier) {
@@ -108,18 +108,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Listens to the login user notification in order to `register` the user with our services.
     private func addLoginListener() {
         NSNotificationCenter.defaultCenter().addObserverForName(kLoggedInChangedNotification, object: nil, queue: NSOperationQueue.mainQueue()) { (notififcation) in
-            if let currentUser = VCurrentUser.user() {
+            if let currentUser = VCurrentUser.user {
                 #if V_ENABLE_TESTFAIRY
                     let userTraits = [TFSDKIdentityTraitNameKey: currentUser.displayName ?? "",
                                       TFSDKIdentityTraitEmailAddressKey: currentUser.username ?? ""]
-                    TestFairy.identify(currentUser.remoteId.stringValue, traits:userTraits)
+                    TestFairy.identify(String(currentUser.id), traits:userTraits)
                 #endif
 
-                Crashlytics.setUserIdentifier(currentUser.remoteId.stringValue)
+                Crashlytics.setUserIdentifier(String(currentUser.id))
                 Crashlytics.setUserEmail(currentUser.username ?? "")
                 Crashlytics.setUserName(currentUser.displayName ?? "")
 
-                logger.setUserIdentifier(currentUser.remoteId.stringValue)
+                Log.setUserIdentifier(String(currentUser.id))
             }
         }
     }
@@ -128,7 +128,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         do {
             try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
         } catch {
-            logger.warning("Failed to set the AudioSession category with error ->\(error)")
+            Log.warning("Failed to set the AudioSession category with error ->\(error)")
         }
     }
 
@@ -137,7 +137,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         do {
             try persistentStore.mainContext.save()
         } catch {
-            logger.warning("Failed to save the persistent stores main context with error -> \(error)")
+            Log.warning("Failed to save the persistent stores main context with error -> \(error)")
         }
     }
 }

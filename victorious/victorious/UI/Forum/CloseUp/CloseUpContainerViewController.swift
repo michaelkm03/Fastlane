@@ -18,7 +18,7 @@ private struct Constants {
     static let navigationBarRightPadding: CGFloat = 10.0 
 }
 
-class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, ContentCellTracker, CoachmarkDisplayer {
+class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, ContentCellTracker, CoachmarkDisplayer, VBackgroundContainer {
     private let gridStreamController: GridStreamViewController<CloseUpView>
     var dependencyManager: VDependencyManager!
     private var content: VContent? {
@@ -75,8 +75,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
             ),
             interItemSpacing: Constants.interItemSpacing,
             cellsPerRow: Constants.cellsPerRow,
-            allowsForRefresh: false,
-            managesBackground: true
+            allowsForRefresh: false
         )
         
         gridStreamController = GridStreamViewController<CloseUpView>(
@@ -110,6 +109,10 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+    
+    override func viewDidLoad() {
+        dependencyManager.addBackgroundToBackgroundHost(self)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -191,6 +194,12 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         }
     }
     
+    // MARK: - VBackgroundContainer
+    
+    func backgroundContainerView() -> UIView {
+        return view
+    }
+    
     // MARK: - CloseUpViewDelegate
     
     func didSelectProfileForUserID(userID: Int) {
@@ -215,13 +224,18 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     }
     
     func toggleUpvote() {
-        guard let content = content, let contentID = content.id else {
+        guard
+            let content = content,
+            let contentID = content.id,
+            let upvoteAPIPath = dependencyManager.contentUpvoteAPIPath,
+            let unupvoteAPIPath = dependencyManager.contentUnupvoteAPIPath
+        else {
             return
         }
         
         let upvoteOperation = content.isLikedByCurrentUser
-            ? ContentUnupvoteOperation(contentID: contentID, contentUnupvoteURL: dependencyManager.contentUnupvoteURL)
-            : ContentUpvoteOperation(contentID: contentID, contentUpvoteURL: dependencyManager.contentUpvoteURL)
+            ? ContentUnupvoteOperation(contentID: contentID, apiPath: unupvoteAPIPath)
+            : ContentUpvoteOperation(contentID: contentID, apiPath: upvoteAPIPath)
         
         upvoteOperation.queue { [weak self] _ in
             self?.updateHeader()
@@ -229,11 +243,19 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     }
     
     func overflow() {
-        let isCreatorOfContent = content?.author.id == VCurrentUser.user()?.id
+        guard
+            let content = content,
+            let deleteAPIPath = dependencyManager.contentDeleteAPIPath,
+            let flagAPIPath = dependencyManager.contentFlagAPIPath
+        else {
+            return
+        }
+        
+        let isCreatorOfContent = content.wasCreatedByCurrentUser
         
         let flagOrDeleteOperation = isCreatorOfContent
-            ? ContentDeleteOperation(contentID: contentID, contentDeleteURL: dependencyManager.contentDeleteURL)
-            : ContentFlagOperation(contentID: contentID, contentFlagURL: dependencyManager.contentFlagURL)
+            ? ContentDeleteOperation(contentID: contentID, apiPath: deleteAPIPath)
+            : ContentFlagOperation(contentID: contentID, apiPath: flagAPIPath)
         
         let actionTitle = isCreatorOfContent
             ? NSLocalizedString("DeletePost", comment: "Delete this user's post")
@@ -305,24 +327,22 @@ private extension VDependencyManager {
         return imageForKey("share_icon")
     }
     
-    var contentFlagURL: String {
-        return networkResources?.stringForKey("contentFlagURL") ?? ""
+    var contentFlagAPIPath: APIPath? {
+        return networkResources?.apiPathForKey("contentFlagURL")
     }
     
-    var contentDeleteURL: String {
-        return networkResources?.stringForKey("contentDeleteURL") ?? ""
+    var contentDeleteAPIPath: APIPath? {
+        return networkResources?.apiPathForKey("contentDeleteURL")
     }
     
-    var contentUpvoteURL: String {
-        return networkResources?.stringForKey("contentUpvoteURL") ?? ""
+    var contentUpvoteAPIPath: APIPath? {
+        return networkResources?.apiPathForKey("contentUpvoteURL")
     }
     
-    var contentUnupvoteURL: String {
-        return networkResources?.stringForKey("contentUnupvoteURL") ?? ""
+    var contentUnupvoteAPIPath: APIPath? {
+        return networkResources?.apiPathForKey("contentUnupvoteURL")
     }
-}
-
-private extension VDependencyManager {
+    
     var gridStreamDependencyManager: VDependencyManager? {
         return childDependencyForKey("gridStream")
     }

@@ -10,7 +10,7 @@ import UIKit
 
 typealias VIPFlowCompletion = (Bool -> ())
 
-class VIPFlowNavigationController: UINavigationController, VIPGateViewControllerDelegate, VIPSuccessViewControllerDelegate, VBackgroundContainer, VNavigationDestination {
+class VIPFlowNavigationController: UINavigationController, VIPGateViewControllerDelegate, VIPSuccessViewControllerDelegate, VBackgroundContainer {
     let animationDelegate: CrossFadingNavigationControllerDelegate = {
         let delegate = CrossFadingNavigationControllerDelegate()
         delegate.fadingEnabled = false
@@ -26,7 +26,7 @@ class VIPFlowNavigationController: UINavigationController, VIPGateViewController
             dependencyManager.isVIPEnabled == true,
             let gateDependencyManager = dependencyManager.paygateDependency,
             let successDependencyManager = dependencyManager.successDependency
-            where VCurrentUser.isLoggedIn()
+            where VCurrentUser.user != nil
         else {
             return nil
         }
@@ -46,6 +46,16 @@ class VIPFlowNavigationController: UINavigationController, VIPGateViewController
         gateDependencyManager?.addBackgroundToBackgroundHost(self)
         delegate = animationDelegate
     }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        dependencyManager.trackViewWillAppear(self)
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        dependencyManager.trackViewWillDisappear(self)
+    }
 
     // MARK: - VBackgroundContainer
 
@@ -55,8 +65,8 @@ class VIPFlowNavigationController: UINavigationController, VIPGateViewController
     
     // MARK: - VIPGateViewControllerDelegate
     
-    func vipGateExitedWithSuccess(success: Bool, afterPurchase purchased: Bool) {
-        if success && purchased {
+    func vipGateExitedWithSuccess(success: Bool) {
+        if success {
             //Transition to success state
             animationDelegate.fadingEnabled = true
             let successViewController = VIPSuccessViewController.newWithDependencyManager(successDependencyManager)
@@ -64,7 +74,7 @@ class VIPFlowNavigationController: UINavigationController, VIPGateViewController
             showViewController(successViewController, sender: nil)
         }
         else {
-            dismissAndCallCompletionWithSuccess(false)
+            dismissAndCallCompletionWithSuccess(success)
         }
     }
     

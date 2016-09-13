@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10174" systemVersion="15F34" minimumToolsVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10174" systemVersion="15G31" minimumToolsVersion="Automatic">
     <entity name="AdBreak" representedClassName="victorious.VAdBreak" syncable="YES">
         <attribute name="adSystemID" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="adTag" optional="YES" attributeType="String" syncable="YES"/>
@@ -195,17 +195,6 @@
         <attribute name="updatedAt" optional="YES" attributeType="Date" syncable="YES"/>
         <relationship name="user" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="notifications" inverseEntity="User" syncable="YES"/>
     </entity>
-    <entity name="NotificationSettings" representedClassName="VNotificationSettings" syncable="YES">
-        <attribute name="isNewCommentOnMyPostEnabled" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="isNewFollowerEnabled" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="isNewPrivateMessageEnabled" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="isPeopleLikeMyPostEnabled" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="isPostFromCreatorEnabled" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="isPostFromFollowedEnabled" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="isPostOnFollowedHashTagEnabled" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="isUserTagInCommentEnabled" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <relationship name="owner" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="notificationSettings" inverseEntity="User" syncable="YES"/>
-    </entity>
     <entity name="PollResult" representedClassName="VPollResult" syncable="YES">
         <attribute name="answerId" optional="YES" attributeType="Integer 32" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="count" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -296,7 +285,6 @@
         <attribute name="cellView" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="share" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="stageView" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="videoComplete25" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="videoComplete50" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="videoComplete75" optional="YES" attributeType="Transformable" syncable="YES"/>
@@ -344,7 +332,6 @@
         <relationship name="likedSequences" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SequenceLiker" inverseName="user" inverseEntity="SequenceLiker" syncable="YES"/>
         <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="sender" inverseEntity="Message" syncable="YES"/>
         <relationship name="notifications" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Notification" inverseName="user" inverseEntity="Notification" syncable="YES"/>
-        <relationship name="notificationSettings" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="NotificationSettings" inverseName="owner" inverseEntity="NotificationSettings" syncable="YES"/>
         <relationship name="pollResults" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PollResult" inverseName="user" inverseEntity="PollResult" syncable="YES"/>
         <relationship name="previewAssets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ImageAsset" inverseName="user" inverseEntity="ImageAsset" syncable="YES"/>
         <relationship name="recentSequences" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Sequence" inverseName="recentUser" inverseEntity="Sequence" syncable="YES"/>
@@ -383,7 +370,6 @@
         <element name="Node" positionX="0" positionY="0" width="128" height="135"/>
         <element name="NodeAction" positionX="0" positionY="0" width="128" height="90"/>
         <element name="Notification" positionX="0" positionY="0" width="128" height="195"/>
-        <element name="NotificationSettings" positionX="0" positionY="0" width="128" height="180"/>
         <element name="PollResult" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Rule" positionX="0" positionY="0" width="128" height="75"/>
         <element name="Sequence" positionX="0" positionY="0" width="128" height="525"/>
@@ -392,7 +378,7 @@
         <element name="Stream" positionX="0" positionY="0" width="128" height="165"/>
         <element name="StreamItem" positionX="0" positionY="0" width="128" height="225"/>
         <element name="StreamItemPointer" positionX="0" positionY="0" width="128" height="105"/>
-        <element name="Tracking" positionX="0" positionY="0" width="128" height="285"/>
+        <element name="Tracking" positionX="0" positionY="0" width="128" height="270"/>
         <element name="User" positionX="0" positionY="0" width="128" height="690"/>
         <element name="UserShelf" positionX="0" positionY="0" width="128" height="90"/>
         <element name="VoteResult" positionX="0" positionY="0" width="128" height="90"/>

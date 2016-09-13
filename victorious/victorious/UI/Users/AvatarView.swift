@@ -32,6 +32,20 @@ enum AvatarViewSize {
             case .large: return UIImage(named: "verified_badge_large")
         }
     }
+
+    var shouldShowVIPBadge: Bool {
+        switch self {
+            case .small: return false
+            case .large: return true
+        }
+    }
+
+    var shouldShowVIPBorder: Bool {
+        switch self {
+            case .small: return false
+            case .large: return true
+        }
+    }
 }
 
 /// A reusable view for displaying a user's avatar that handles decoration and fallback images.
@@ -56,6 +70,12 @@ class AvatarView: UIView {
         
         static let verifiedBadgeAngle = CGFloat(M_PI * 0.25)
         static let observationKeys = ["displayName", "previewAssets"]
+
+        static let vipColor = UIColor(red: 0.03137, green: 0.6980, blue: 0.1569, alpha: 1.0)
+        static let vipBadgeViewAngle = CGFloat(M_PI * -0.75)
+        static let vipBadgeViewDiameter = CGFloat(32.0)
+        static let vipBadgeViewLabelFont = UIFont.systemFontOfSize(CGFloat(14), weight: UIFontWeightSemibold)
+        static let vipBorderWidth = CGFloat(2.0)
     }
     
     // MARK: - Initializing
@@ -87,14 +107,23 @@ class AvatarView: UIView {
         addSubview(shadowView)
         addSubview(imageView)
         addSubview(initialsLabel)
+        
+        // This sets all of the subview's initial frames immediately without animation so that they don't animate from
+        // initial frames of zero, which can create awkward transitions.
+        UIView.performWithoutAnimation {
+            self.layoutIfNeeded()
+        }
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(currentUserDidChange), name: VCurrentUser.userDidUpdateNotificationKey, object: nil)
     }
-    
+
     // MARK: - Views
     
     private let shadowView = UIView()
     private let imageView = UIImageView()
     private let initialsLabel = UILabel()
     private var verifiedBadgeView: UIImageView?
+    private var vipBadgeView: UIView?
+    private var vipBorderView: UIView?
     
     private func getOrCreateVerifiedBadgeView() -> UIImageView {
         if let verifiedBadgeView = self.verifiedBadgeView {
@@ -107,7 +136,71 @@ class AvatarView: UIView {
         updateVerifiedBadge()
         return verifiedBadgeView
     }
-    
+
+    private func setOrCreateVIPBadgeView() {
+        if self.vipBadgeView != nil {
+            return
+        }
+
+        let vipBadgeView = UIView()
+        vipBadgeView.backgroundColor = Constants.vipColor
+        self.vipBadgeView = vipBadgeView
+
+        addSubview(vipBadgeView)
+
+        let pointOnCircle = CGPoint(
+            angle: Constants.vipBadgeViewAngle,
+            onEdgeOfCircleWithRadius: bounds.width / 2.0,
+            origin: bounds.center
+        )
+
+        vipBadgeView.frame = CGRect(
+            center: pointOnCircle,
+            size: CGSize(width: Constants.vipBadgeViewDiameter, height: Constants.vipBadgeViewDiameter)
+        )
+
+        vipBadgeView.layer.cornerRadius = vipBadgeView.frame.size.width / 2
+        vipBadgeView.clipsToBounds = true
+
+        let vipLabel = UILabel()
+        vipLabel.font = Constants.vipBadgeViewLabelFont
+        vipLabel.textColor = UIColor.whiteColor()
+        vipLabel.text = "VIP"
+        vipLabel.sizeToFit()
+        let centeredFrame = CGRect(
+            x: (vipBadgeView.frame.size.width / 2) - (vipLabel.frame.size.width / 2) ,
+            y: (vipBadgeView.frame.size.height / 2) - (vipLabel.frame.size.height / 2) ,
+            width: vipLabel.frame.size.width,
+            height: vipLabel.frame.size.height
+        )
+
+        vipLabel.frame = centeredFrame
+        vipBadgeView.addSubview(vipLabel)
+    }
+
+    private func setOrCreateVIPBorderView() {
+        if self.vipBorderView != nil {
+            return
+        }
+
+        let vipBorderView = UIView()
+        vipBorderView.backgroundColor = Constants.vipColor
+
+        addSubview(vipBorderView)
+        sendSubviewToBack(vipBorderView)
+        updateVIPBorderView()
+
+        let vipBorderSize = CGSize(
+            width: bounds.width + Constants.vipBorderWidth * 2,
+            height: bounds.height + Constants.vipBorderWidth * 2
+        )
+
+        vipBorderView.frame = CGRect(center: bounds.center, size: vipBorderSize)
+        vipBorderView.layer.cornerRadius = vipBorderView.frame.size.width / 2
+
+        self.vipBorderView = vipBorderView
+    }
+
     // MARK: - Configuration
     
     var size = AvatarViewSize.small {
@@ -115,6 +208,8 @@ class AvatarView: UIView {
             if size != oldValue {
                 applyInitialsStyle()
                 updateVerifiedBadge()
+                updateVIPBadge()
+                updateVIPBorderView()
                 invalidateIntrinsicContentSize()
             }
         }
@@ -131,38 +226,28 @@ class AvatarView: UIView {
     private func updateVerifiedBadge() {
         verifiedBadgeView?.image = size.verifiedBadgeImage
     }
+
+    private func updateVIPBadge() {
+        let shouldShowVIPBadge = user?.hasValidVIPSubscription == true && size.shouldShowVIPBorder
+        vipBadgeView?.hidden = !shouldShowVIPBadge
+    }
+
+    private func updateVIPBorderView() {
+        let shouldShowVIPBorder = user?.hasValidVIPSubscription == true && size.shouldShowVIPBorder
+        vipBorderView?.hidden = !shouldShowVIPBorder
+    }
     
     // MARK: - Content
     
     var user: UserModel? {
         didSet {
-            var persistentUser: VUser?
-            if let user = user as? VUser {
-                persistentUser = user
-            }
-            
-            guard user?.id != oldValue?.id || persistentUser == nil else {
-                // Only prevent updating for a persistent user since we can KVO values related to that object
+            guard user?.id != oldValue?.id else {
                 return
             }
             
             setNeedsContentUpdate()
-            
-            setupKVO()
-        }
-    }
-    
-    // MARK: - KVO
-    private func setupKVO() {
-        /// The user object can be a userModel, which may or may not be persistent. Only the persistent VUser can
-        /// be KVO'd, hence we must check for this 
-        guard let user = self.user as? VUser else {
-            return
-        }
-        
-        KVOController.unobserveAll()
-        KVOController.observe(user, keyPaths: Constants.observationKeys, options: [.Initial, .New]) { [weak self] _ in
-            self?.setNeedsContentUpdate()
+            // Force content update here because when we finish editing profile, the main feed chat bubble's avatar doesn't get it layout pass.
+            updateContentIfNeeded()
         }
     }
     
@@ -186,12 +271,21 @@ class AvatarView: UIView {
         imageView.backgroundColor = user?.color
         
         if let imageAsset = user?.previewImage(ofMinimumSize: bounds.size) {
-            imageView.setImageAsset(imageAsset) { [weak self] image, _ in
-                if image == nil {
-                    self?.showInitials()
-                }
-                else {
-                    self?.initialsLabel.hidden = true
+            imageView.getImageAsset(imageAsset) { [weak self] result in
+                switch result {
+                    case .success(let image):
+                        guard
+                            let strongSelf = self
+                            where strongSelf.user?.previewImage(ofMinimumSize: strongSelf.bounds.size)?.url == imageAsset.url
+                        else {
+                            return
+                        }
+                        
+                        self?.imageView.image = image
+                        self?.initialsLabel.hidden = true
+                    
+                    case .failure(_):
+                        self?.showInitials()
                 }
             }
         }
@@ -208,6 +302,16 @@ class AvatarView: UIView {
         
         initialsLabel.hidden = false
         initialsLabel.text = initials
+    }
+    
+    private dynamic func currentUserDidChange() {
+        if user?.id == VCurrentUser.user?.id {
+            // We may be updating the same user with more information here.
+            // So we nil out the user property first before we set it.
+            // Otherwise the user update may return early because we are setting the user with same userID
+            user = nil
+            user = VCurrentUser.user
+        }
     }
     
     // MARK: - Layout
@@ -228,16 +332,18 @@ class AvatarView: UIView {
         imageView.layer.cornerRadius = imageView.frame.size.v_roundCornerRadius
         shadowView.layer.cornerRadius = shadowView.frame.size.v_roundCornerRadius
         layoutVerifiedBadge()
+        layoutVIPBadge()
+        layoutVIPBorderView()
         updateShadowPathIfNeeded()
         updateContentIfNeeded()
     }
-    
+
     private func layoutVerifiedBadge() {
         guard user?.avatarBadgeType == .verified else {
             self.verifiedBadgeView?.hidden = true
             return
         }
-        
+
         let verifiedBadgeView = getOrCreateVerifiedBadgeView()
         let size = verifiedBadgeView.intrinsicContentSize()
         
@@ -248,9 +354,27 @@ class AvatarView: UIView {
         )
         
         verifiedBadgeView.frame = CGRect(center: pointOnCircle, size: size)
-        verifiedBadgeView.hidden = false
+        verifiedBadgeView.hidden = user?.avatarBadgeType != .verified
     }
-    
+
+    private func layoutVIPBadge() {
+        guard size.shouldShowVIPBadge else {
+            return
+        }
+
+        setOrCreateVIPBadgeView()
+        updateVIPBadge()
+    }
+
+    private func layoutVIPBorderView() {
+        guard size.shouldShowVIPBorder else {
+            return
+        }
+
+        setOrCreateVIPBorderView()
+        updateVIPBorderView()
+    }
+
     // MARK: - Shadow
     
     private var shadowBounds: CGRect?

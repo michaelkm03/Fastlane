@@ -18,6 +18,9 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
     private var user: UserModel {
         didSet {
             updateUI()
+            if let currentUser = user as? User {
+                VCurrentUser.update(to: currentUser)
+            }
         }
     }
     

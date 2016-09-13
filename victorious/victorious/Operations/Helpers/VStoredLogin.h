@@ -21,6 +21,8 @@ extern NSString * const kLoggedInChangedNotification;
 @property (nonatomic, strong, readonly) NSNumber *userRemoteId;
 @property (nonatomic, assign, readonly) VLoginType lastLoginType;
 
+- (instancetype)init:(NSNumber *)userRemoteId withToken:(NSString *)token withLoginType:(VLoginType)loginType;
+
 @end
 
 /**
@@ -40,10 +42,9 @@ extern NSString * const kLoggedInChangedNotification;
  
  @see userFromDisk
  
- @param user The currently logged in user to save.
  @return Whether or not the write operation was successful.
  */
-- (BOOL)saveLoggedInUserToDisk:(VUser *)user;
+- (BOOL)saveLoggedInUserToDisk:(VStoredLoginInfo *)info;
 
 /**
  Removes any data stored on the device about the last logged in user.  This

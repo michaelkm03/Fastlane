@@ -27,6 +27,10 @@ final class ListMenuHashtagDataSource: ListMenuSectionDataSource {
         return dependencyManager.apiPathForKey("streamURL") ?? APIPath(templatePath: "")
     }
     
+    var hashtagStreamTrackingURLs: [String] {
+        return dependencyManager.trackingURLsForKey("view") as? [String] ?? []
+    }
+    
     // MARK: - List Menu Section Data Source
     
     /// An array of visible hashtags. This array starts with no hashtags,
@@ -47,10 +51,10 @@ final class ListMenuHashtagDataSource: ListMenuSectionDataSource {
             return
         }
         
-        let operation = TrendingHashtagOperation(url: trendingHashtagsURL)
-        operation.queue { [weak self] results, error, cancelled in
+        TrendingHashtagOperation(url: trendingHashtagsURL).queue { [weak self] results, error, cancelled in
             guard let hashtags = results as? [HashtagSearchResultObject] else {
                 self?.state = .failed(error: error)
+                self?.delegate?.didUpdateVisibleItems(forSection: .hashtags)
                 return
             }
             self?.visibleItems = hashtags

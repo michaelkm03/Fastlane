@@ -7,29 +7,21 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 /// A view controller that displays the contents of a user's profile.
-class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderDelegate, AccessoryScreenContainer, VAccessoryNavigationSource, CoachmarkDisplayer {
-    /// Private struct within NewProfileViewController for comparison. Since we use Core Data, 
-    /// the user is modified beneath us and every time we call setUser(...), the fields will be the same as oldValue
-    private struct UserDetails {
-        let id: Int
-        let displayName: String?
-        let likesGiven: Int?
-        let likesReceived: Int?
-        let level: String?
-        let isCreator: Bool
-    }
+class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderDelegate, AccessoryScreenContainer, CoachmarkDisplayer, VBackgroundContainer {
     
     // MARK: - Constants
     
     static let userAppearanceKey = "userAppearance"
     static let creatorAppearanceKey = "creatorAppearance"
     static let upgradeButtonID = "Accessory paygate"
+    static let notificationsButtonID = "Accessory notifications"
     static let estimatedBarButtonWidth =  CGFloat(60.0)
     static let estimatedStatusBarHeight = CGFloat(20.0)
     static let estimatedNavBarRightPadding = CGFloat(10.0)
-    static let goVIPButtonID = "Accessory Go VIP"
+    static let goVIPButtonID = "Accessory VIP Chat"
     
     private enum ProfileScreenContext: String {
         case selfUser, otherUser, selfCreator, otherCreator
@@ -51,27 +43,84 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
                 case .otherCreator: return "creator"
             }
         }
+        
+        var trackingString: String {
+            switch self {
+                case .selfUser: return "SELF_USER"
+                case .otherUser: return "OTHER_USER"
+                case .selfCreator: return "SELF_CREATOR"
+                case .otherCreator: return "OTHER_CREATOR"
+            }
+        }
     }
     
-    private let spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+    // MARK: - Initializing
     
-    // MARK: Dependency Manager
+    init(dependencyManager: VDependencyManager) {
+        self.dependencyManager = dependencyManager
+        subscribeButton = SubscribeButton(dependencyManager: dependencyManager)
+        subscribeButton.sizeToFit()
+        
+        super.init(nibName: nil, bundle: nil)
+
+        // Applies a fallback background color while we fetch the user.
+        view.backgroundColor = dependencyManager.colorForKey(VDependencyManagerBackgroundColorKey)
+        
+        fetchUser(using: dependencyManager)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(currentUserDidUpdate), name: VCurrentUser.userDidUpdateNotificationKey, object: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("NSCoding not supported.")
+    }
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+    
+    // MARK: - Lifecycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        dependencyManager.addBackgroundToBackgroundHost(self)
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        gridStreamController?.reloadHeader()
+        trackViewWillAppearIfReady()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        triggerCoachmark(withContext: profileScreenContext?.coachmarkContext)
+        dependencyManager.trackViewWillDisappear(self)
+    }
+    
+    // MARK: - Dependency Manager
     
     let dependencyManager: VDependencyManager!
     
-    // MARK: Model Data
+    // MARK: - Model Data
     
     var user: UserModel? {
-        get {
-            return gridStreamController?.content
+        return gridStreamController?.content
+    }
+    
+    // MARK: - View controllers
+    
+    private var gridStreamController: GridStreamViewController<VNewProfileHeaderView>? {
+        willSet {
+            if let existingController = gridStreamController {
+                existingController.view.removeFromSuperview()
+                existingController.removeFromParentViewController()
+            }
         }
     }
-    private var comparableUser: UserDetails? {
-        didSet {
-            // Call a reload of the header every time the user's details change
-            gridStreamController?.reloadHeader()
-        }
-    }
+    
+    // MARK: - Views
+    
+    private let subscribeButton: SubscribeButton
     
     private lazy var overflowButton: UIBarButtonItem = {
         return UIBarButtonItem(
@@ -88,52 +137,37 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         return button
     }()
     
-    // MARK: - Initializing
-    
-    init(dependencyManager: VDependencyManager) {
-        self.dependencyManager = dependencyManager
-        
-        super.init(nibName: nil, bundle: nil)
-
-        // Applies a fallback background color while we fetch the user.
-        view.backgroundColor = dependencyManager.colorForKey(VDependencyManagerBackgroundColorKey)
-        
-        fetchUser(using: dependencyManager)
+    private func goVIPButton(for menuItem: VNavigationMenuItem) -> UIButton {
+        let button = BackgroundButton(type: .System)
+        button.addTarget(self, action: #selector(goVIPButtonWasPressed), forControlEvents: .TouchUpInside)
+        button.setTitle(menuItem.title, forState: .Normal)
+        button.sizeToFit()
+        return button
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("NSCoding not supported.")
-    }
-    
-    deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
-    }
-    
-    // MARK: - Lifecycle
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userChanged), name: kLoggedInChangedNotification, object: nil)
-    }
+    private let spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
     
     // MARK: - View updating
     
     private func updateBarButtonItems() {
         supplementalRightButtons = []
         
-        let isCurrentUser = user?.isCurrentUser == true
-        let isCreator = user?.accessLevel.isCreator == true
-        let currentIsCreator = VCurrentUser.user()?.isCreator == true
-        let currentIsVIP = VCurrentUser.user()?.hasValidVIPSubscription == true
+        guard let user = user else {
+            return
+        }
+        
+        let isCurrentUser = user.isCurrentUser
+        let isCreator = user.accessLevel.isCreator
+        let currentIsCreator = VCurrentUser.user?.accessLevel.isCreator == true
         let vipEnabled = dependencyManager.isVIPEnabled == true
         
         if !isCurrentUser {
-            if isCreator && !currentIsVIP && !currentIsCreator && vipEnabled {
-                supplementalRightButtons.append(UIBarButtonItem(customView: upgradeButton))
+            if isCreator && !currentIsCreator && vipEnabled {
+                supplementalRightButtons.append(UIBarButtonItem(customView: subscribeButton))
             }
             
             if !isCreator {
-                if user?.isFollowedByCurrentUser == true {
+                if user.isUpvoted {
                     upvoteButton.setImage(dependencyManager.upvoteIconSelected, forState: .Normal)
                     upvoteButton.backgroundColor = dependencyManager.upvoteIconSelectedBackgroundColor
                     upvoteButton.tintColor = dependencyManager.upvoteIconTint
@@ -162,73 +196,26 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
             }
         }
         
-        v_addAccessoryScreensWithDependencyManager(dependencyManager)
-    }
-    
-    // MARK: - View controllers
-    
-    private var gridStreamController: GridStreamViewController<VNewProfileHeaderView>? {
-        willSet {
-            if let existingController = gridStreamController {
-                existingController.view.removeFromSuperview()
-                existingController.removeFromParentViewController()
-            }
-        }
-    }
-    
-    // MARK: - Views
-    
-    private lazy var upgradeButton: UIButton = {
-        let button = BackgroundButton(type: .System)
-        button.addTarget(self, action: #selector(upgradeButtonWasPressed), forControlEvents: .TouchUpInside)
-        button.setTitle(NSLocalizedString("Upgrade", comment: ""), forState: .Normal)
-        button.sizeToFit()
-        return button
-    }()
-    
-    // MARK: - ViewController lifecycle
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        gridStreamController?.reloadHeader()
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        triggerCoachmark(withContext: profileScreenContext?.coachmarkContext)
-    }
-
-    // MARK: - Buttons
-        
-    private func goVIPButton(for menuItem: VNavigationMenuItem) -> UIButton {
-        let button = BackgroundButton(type: .System)
-        button.addTarget(self, action: #selector(goVIPButtonWasPressed), forControlEvents: .TouchUpInside)
-        button.setTitle(menuItem.title, forState: .Normal)
-        button.sizeToFit()
-        return button
+        applyAccessoryScreens(to: navigationItem, from: dependencyManager)
     }
     
     // MARK: - Actions
-    
-    private dynamic func upgradeButtonWasPressed() {
-        ShowVIPFlowOperation(originViewController: self, dependencyManager: dependencyManager).queue()
-    }
     
     private dynamic func goVIPButtonWasPressed() {
         guard let scaffold = VRootViewController.sharedRootViewController()?.scaffold else {
             return
         }
-        let router = Router(originViewController: scaffold, dependencyManager: dependencyManager)
-        let destination = DeeplinkDestination.vipForum
-        router.navigate(to: destination)
+        
+        Router(originViewController: scaffold, dependencyManager: dependencyManager).navigate(to: .vipForum)
     }
     
-    func toggleUpvote() {
+    private dynamic func toggleUpvote() {
         guard let user = user else {
             return
         }
         
         UserUpvoteToggleOperation(
-            userID: user.id,
+            user: user,
             upvoteAPIPath: dependencyManager.userUpvoteAPIPath,
             unupvoteAPIPath: dependencyManager.userUnupvoteAPIPath
         ).queue { [weak self] _ in
@@ -236,21 +223,18 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         }
     }
     
-    func overflow() {
-        guard
-            let isBlocked = user?.isBlockedByCurrentUser,
-            let userID = user?.id
-        else {
+    private dynamic func overflow() {
+        guard let user = user else {
             return
         }
         
         let toggleBlockedOperation = UserBlockToggleOperation(
-            userID: userID,
+            user: user,
             blockAPIPath: dependencyManager.userBlockAPIPath,
             unblockAPIPath: dependencyManager.userUnblockAPIPath
         )
         
-        let actionTitle = isBlocked
+        let actionTitle = user.isBlocked
             ? NSLocalizedString("UnblockUser", comment: "")
             : NSLocalizedString("BlockUser", comment: "")
         let confirm = ConfirmDestructiveActionOperation(
@@ -260,7 +244,9 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         )
         confirm.before(toggleBlockedOperation)
         confirm.queue()
-        toggleBlockedOperation.queue()
+        toggleBlockedOperation.queue() { [weak self] _ in
+            self?.navigationController?.popViewControllerAnimated(true)
+        }
     }
     
     // MARK: - AccessoryScreenContainer
@@ -285,91 +271,72 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         return profileScreenContext?.accessoryScreensKey
     }
     
-    func addCustomLeftItems(to items: [UIBarButtonItem]) -> [UIBarButtonItem] {
-        return items + supplementalLeftButtons
+    func addCustomLeftItems(to items: [AccessoryScreenBarButtonItem]) -> [UIBarButtonItem] {
+        return items.filter({ shouldDisplay($0.accessoryScreen) }) + supplementalLeftButtons
     }
     
-    func addCustomRightItems(to items: [UIBarButtonItem]) -> [UIBarButtonItem] {
-        return items + supplementalRightButtons
+    func addCustomRightItems(to items: [AccessoryScreenBarButtonItem]) -> [UIBarButtonItem] {
+        return items.filter({ shouldDisplay($0.accessoryScreen) }) + supplementalRightButtons
     }
     
-    func shouldDisplayAccessoryItem(withIdentifier identifier: String) -> Bool {
-        return identifier != VNewProfileViewController.upgradeButtonID && identifier != VNewProfileViewController.goVIPButtonID
+    private func shouldDisplay(screen: AccessoryScreen) -> Bool {
+        return ![VNewProfileViewController.upgradeButtonID, VNewProfileViewController.goVIPButtonID].contains(screen.id)
     }
     
-    // MARK: - VAccessoryNavigationSource
-    
-    func shouldNavigateWithAccessoryMenuItem(menuItem: VNavigationMenuItem!) -> Bool {
-        return true
+    func badgeCountType(for screen: AccessoryScreen) -> BadgeCountType? {
+        switch screen.id {
+            case VNewProfileViewController.notificationsButtonID: return .unreadNotifications
+            default: return nil
+        }
     }
     
-    func shouldDisplayAccessoryMenuItem(menuItem: VNavigationMenuItem!, fromSource source: UIViewController!) -> Bool {
-        return shouldDisplayAccessoryItem(withIdentifier: menuItem.identifier)
+    func navigate(to destination: UIViewController, from accessoryScreen: AccessoryScreen) {
+        navigationController?.pushViewController(destination, animated: true)
     }
     
     // MARK: - Managing the user
     
-    @objc private func userChanged() {
-        if let loggedInUser = VCurrentUser.user() {
-            setUser(loggedInUser, using: dependencyManager)
-        }
+    private dynamic func currentUserDidUpdate() {
+        setUser(VCurrentUser.user, using: dependencyManager)
     }
     
     private func fetchUser(using dependencyManager: VDependencyManager) {
-        if let user = dependencyManager.templateValueOfType(VUser.self, forKey: VDependencyManager.userKey) as? VUser {
-            setUser(user, using: dependencyManager)
-        }
-        else if let userRemoteID = dependencyManager.templateValueOfType(NSNumber.self, forKey: VDependencyManager.userRemoteIdKey) as? NSNumber {
+        if let userRemoteID = dependencyManager.templateValueOfType(NSNumber.self, forKey: VDependencyManager.userRemoteIdKey) as? NSNumber {
             fetchUser(withRemoteID: userRemoteID.integerValue)
         }
         else {
-            setUser(VCurrentUser.user(), using: dependencyManager)
+            setUser(VCurrentUser.user, using: dependencyManager)
         }
     }
     
-    private func setUser(user: VUser?, using dependencyManager: VDependencyManager) {
+    private func setUser(user: UserModel?, using dependencyManager: VDependencyManager) {
         guard let user = user else {
             assertionFailure("Failed to fetch user for profile view controller.")
             return
         }
         
-        let newComparableUser = UserDetails(
-            id: user.id,
-            displayName: user.displayName,
-            likesGiven: user.likesGiven,
-            likesReceived: user.likesReceived,
-            level: user.fanLoyalty?.tier,
-            isCreator: user.accessLevel == .owner
-        )
-        
-        guard newComparableUser != comparableUser else {
+        // If the user has not changed, we don't want to perform all the UI updates
+        guard user != self.user else {
             return
         }
         
-        comparableUser = newComparableUser
-        
         setupGridStreamController(for: user)
         
-        let appearanceKey = user.isCreator?.boolValue ?? false ? VNewProfileViewController.creatorAppearanceKey : VNewProfileViewController.userAppearanceKey
-        let appearanceDependencyManager = dependencyManager.childDependencyForKey(appearanceKey)
-        appearanceDependencyManager?.addBackgroundToBackgroundHost(gridStreamController)
-        
         updateBarButtonItems()
+        
+        trackViewWillAppearIfNeeded()
     }
     
-    private func setupGridStreamController(for user: VUser?) {
+    private func setupGridStreamController(for user: UserModel?) {
         //Setup a new controller every time since the api path changes
         let header = VNewProfileHeaderView.newWithDependencyManager(dependencyManager)
         header.delegate = self
         let userID = VNewProfileViewController.getUserID(forDependencyManager: dependencyManager)
-        var configuration = GridStreamConfiguration()
-        configuration.managesBackground = false
         
         let gridStreamController = GridStreamViewController(
             dependencyManager: dependencyManager,
             header: header,
             content: nil,
-            configuration: configuration,
             streamAPIPath: dependencyManager.streamAPIPath(forUserID: userID)
         )
         self.gridStreamController = gridStreamController
@@ -383,17 +350,37 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     }
     
     private static func getUserID(forDependencyManager dependencyManager: VDependencyManager) -> Int {
-        if let user = dependencyManager.templateValueOfType(VUser.self, forKey: VDependencyManager.userKey) as? VUser {
-            return user.remoteId.integerValue
-        }
-        else if let userRemoteID = dependencyManager.templateValueOfType(NSNumber.self, forKey: VDependencyManager.userRemoteIdKey) as? NSNumber {
+        if let userRemoteID = dependencyManager.templateValueOfType(NSNumber.self, forKey: VDependencyManager.userRemoteIdKey) as? NSNumber {
             return userRemoteID.integerValue
         }
         else {
-            let user = VCurrentUser.user()
+            let user = VCurrentUser.user
             assert(user != nil, "User should not be nil")
-            return user?.remoteId.integerValue ?? 0
+            return user?.id ?? 0
         }
+    }
+    
+    // MARK: - Tracking
+    
+    private var wantsToTrackViewWillAppear = false
+    
+    private func trackViewWillAppearIfNeeded() {
+        if wantsToTrackViewWillAppear {
+            trackViewWillAppearIfReady()
+        }
+    }
+    
+    private func trackViewWillAppearIfReady() {
+        guard let context = profileScreenContext else {
+            wantsToTrackViewWillAppear = true
+            return
+        }
+        
+        wantsToTrackViewWillAppear = false
+        
+        dependencyManager.trackViewWillAppear(self, withParameters: [
+            VTrackingKeyProfileContext: context.trackingString
+        ])
     }
     
     // MARK: - ConfigurableGridStreamContainer
@@ -413,7 +400,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
             return
         }
         
-        if (shouldShowSpinner) {
+        if shouldShowSpinner {
             spinner.frame = CGRect(center: view.bounds.center, size: CGSizeZero)
             view.addSubview(spinner)
             spinner.startAnimating()
@@ -442,15 +429,12 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         }
         return nil
     }
-}
-
-private func !=(lhs: VNewProfileViewController.UserDetails?, rhs: VNewProfileViewController.UserDetails?) -> Bool {
-    return lhs?.id != rhs?.id
-        || lhs?.displayName != rhs?.displayName
-        || lhs?.likesGiven != rhs?.likesGiven
-        || lhs?.likesReceived != rhs?.likesReceived
-        || lhs?.level != rhs?.level
-        || lhs?.isCreator != rhs?.isCreator
+    
+    // MARK: - VBackgroundContainer
+    
+    func backgroundContainerView() -> UIView {
+        return view
+    }
 }
 
 private extension VDependencyManager {

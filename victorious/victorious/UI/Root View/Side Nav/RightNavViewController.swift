@@ -11,7 +11,7 @@ import UIKit
 // FUTURE: Remove this class
 
 /// A view controller that displays the right navigation area of a `SideNavScaffoldViewController`.
-class RightNavViewController: UIViewController, CoachmarkDisplayer, VNavigationDestination {
+class RightNavViewController: UIViewController, CoachmarkDisplayer {
     // MARK: - Initializing
     
     init(dependencyManager: VDependencyManager) {
@@ -39,7 +39,6 @@ class RightNavViewController: UIViewController, CoachmarkDisplayer, VNavigationD
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        v_addAccessoryScreensWithDependencyManager(dependencyManager)
         
         if contentViewController == nil {
             let contentViewController = dependencyManager.viewControllerForKey("contentScreen")
@@ -49,11 +48,6 @@ class RightNavViewController: UIViewController, CoachmarkDisplayer, VNavigationD
             contentViewController.didMoveToParentViewController(self)
             self.contentViewController = contentViewController
         }
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        v_addBadgingToAccessoryScreensWithDependencyManager(dependencyManager)
     }
     
     // MARK: - CoachmarkDisplayer

@@ -10,7 +10,7 @@ import Foundation
 
 /// A template-styled button that displays text on top of a background image
 @objc(VTextOnImageButton)
-class TextOnImageButton: UIButton, TrackableButton {
+class TextOnImageButton: TouchableInsetAdjustableButton, TrackableButton {
     var dependencyManager: VDependencyManager? {
         didSet {
             var backgroundRenderingMode = UIImageRenderingMode.AlwaysOriginal
@@ -26,7 +26,7 @@ class TextOnImageButton: UIButton, TrackableButton {
             titleLabel?.font = templateAppearanceValue(.font)
             
             backgroundColor = .clearColor()
-            self.enabled = templateAppearanceValue(.clickable) ?? false
+            userInteractionEnabled = templateAppearanceValue(.clickable) ?? false
         }
     }
 }

@@ -10,7 +10,7 @@ import Foundation
 
 /// A template-styled button that displays an image on top of a background image
 @objc(VImageOnImageButton)
-class ImageOnImageButton: UIButton, TrackableButton {
+class ImageOnImageButton: TouchableInsetAdjustableButton, TrackableButton {
     var dependencyManager: VDependencyManager? {
         didSet {
             var backgroundImage: UIImage? = templateAppearanceValue(.backgroundImage)
@@ -26,7 +26,7 @@ class ImageOnImageButton: UIButton, TrackableButton {
             setImage(foregroundImage?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
             
             backgroundColor = .clearColor()
-            self.enabled = templateAppearanceValue(.clickable) ?? false
+            userInteractionEnabled = templateAppearanceValue(.clickable) ?? false
         }
     }
 }

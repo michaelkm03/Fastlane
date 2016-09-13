@@ -21,6 +21,19 @@ NSString * const kLoggedInChangedNotification   = @"com.getvictorious.LoggedInCh
 
 @implementation VStoredLoginInfo
 
+-(instancetype)init:(NSNumber *)userRemoteId withToken:(NSString *)token withLoginType:(VLoginType)loginType
+{
+    self = [super init];
+    if (self != nil)
+    {
+        self.userRemoteId = userRemoteId;
+        self.token = token;
+        self.lastLoginType = loginType;
+    }
+    
+    return self;
+}
+
 @end
 
 static const NSTimeInterval kTokenExpirationTotalDuration           = 60 * 60 * 24 * 30; ///< 30 days in seconds
@@ -80,24 +93,24 @@ static NSString * const kKeychainTokenService                   = @"com.getvicto
     return (VLoginType)loginTypeNumber.integerValue;
 }
 
-- (BOOL)saveLoggedInUserToDisk:(VUser *)user
+- (BOOL)saveLoggedInUserToDisk:(VStoredLoginInfo *)info
 {
-    if ( user.loginType == nil ||
-         user.remoteId == nil || user.remoteId.integerValue == 0 ||
-         user.token == nil || user.token.length == 0 )
+    if ( info.lastLoginType == VLoginTypeNone ||
+         info.userRemoteId == nil || info.userRemoteId.integerValue == 0 ||
+         info.token == nil || info.token.length == 0 )
     {
         return NO;
     }
     
-    NSString *existingToken = [self savedTokenForUserId:user.remoteId];
-    const BOOL isNewToken = existingToken == nil || ![existingToken isEqualToString:user.token];
+    NSString *existingToken = [self savedTokenForUserId:info.userRemoteId];
+    const BOOL isNewToken = existingToken == nil || ![existingToken isEqualToString:info.token];
     if ( isNewToken ) //< We don't want to save the same token again otherwise we'll reset the creation date
     {
-        [[NSUserDefaults standardUserDefaults] setObject:user.remoteId forKey:kUserDefaultStoredUserIdKey];
+        [[NSUserDefaults standardUserDefaults] setObject:info.userRemoteId forKey:kUserDefaultStoredUserIdKey];
         [[NSUserDefaults standardUserDefaults] setObject:[self defaultExpirationDate] forKey:kUserDefaultStoredExpirationDateKey];
-        [[NSUserDefaults standardUserDefaults] setObject:user.loginType forKey:kUserDefaultLoginTypeKey];
+        [[NSUserDefaults standardUserDefaults] setObject:@(info.lastLoginType) forKey:kUserDefaultLoginTypeKey];
         [self clearSavedToken];
-        return [self saveToken:user.token withUserId:user.remoteId];
+        return [self saveToken:info.token withUserId:info.userRemoteId];
     }
     
     return NO;

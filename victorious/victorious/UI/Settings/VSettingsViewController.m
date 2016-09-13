@@ -11,17 +11,14 @@
 #import "VDependencyManager.h"
 #import "VDeviceInfo.h"
 #import "VSettingsViewController.h"
-#import "VWebContentViewController.h"
 #import "VEnvironment.h"
 #import "VButton.h"
 #import "VPurchaseManager.h"
 #import "VAppInfo.h"
-#import "VDependencyManager+VAccessoryScreens.h"
 #import "VDependencyManager+VNavigationItem.h"
 #import "VEnvironmentManager.h"
 #import "VDependencyManager+VTracking.h"
 #import "UIAlertController+VSimpleAlert.h"
-#import "UIViewController+VAccessoryScreens.h"
 #import "victorious-Swift.h"
 
 static const NSInteger kSettingsSectionIndex = 0;
@@ -72,8 +69,6 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *labels;
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *rightLabels;
 
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
-
 @end
 
 @implementation VSettingsViewController
@@ -95,13 +90,8 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
     [self.dependencyManager configureNavigationItem:self.navigationItem];
-    
-    [self v_addAccessoryScreensWithDependencyManager:self.dependencyManager];
-    
     [self.dependencyManager trackViewWillAppear:self];
-        
     self.serverEnvironmentCell.detailTextLabel.text = [[[VEnvironmentManager sharedInstance] currentEnvironment] name];
     
 #ifdef V_SWITCH_ENVIRONMENTS
@@ -161,7 +151,6 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 {
     [super viewDidAppear:animated];
     [[VTrackingManager sharedInstance] startEvent:VTrackingEventSettingsDidAppear];
-    [self v_addBadgingToAccessoryScreensWithDependencyManager:self.dependencyManager];
 }
 
 - (void)updateResetCoachmarksCell
@@ -212,19 +201,18 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 - (BOOL)showLikedContent
 {
     BOOL likeButtonOn = [[self.dependencyManager numberForKey:VDependencyManagerLikeButtonEnabledKey] boolValue];
-    return [VCurrentUser user] != nil && likeButtonOn;
+    return VCurrentUser.exists && likeButtonOn;
 }
 
 - (BOOL)showChangePassword
 {
-    VUser *currentUer = [VCurrentUser user];
-    if ( currentUer == nil )
+    if ( !VCurrentUser.exists )
     {
         return NO;
     }
     else
     {
-        VLoginType loginType = (VLoginType)currentUer.loginType.integerValue;
+        VLoginType loginType = VCurrentUser.loginType;
         return loginType != VLoginTypeFacebook;
     }
 }
@@ -300,7 +288,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     }
     else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionRegisterTestAlert)
     {
-        BOOL shouldShow = self.showTestAlertCell && [VCurrentUser user] != nil;
+        BOOL shouldShow = self.showTestAlertCell && VCurrentUser.exists;
         return shouldShow ? self.tableView.rowHeight : 0.0;
     }
     else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionChangePassword)
@@ -309,7 +297,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     }
     else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionNotifications)
     {
-        BOOL shouldShow = self.showPushNotificationSettings && [VCurrentUser user] != nil;
+        BOOL shouldShow = self.showPushNotificationSettings && VCurrentUser.exists;
         return shouldShow ? self.tableView.rowHeight : 0.0;
     }
     else if (indexPath.section == kSettingsSectionIndex && indexPath.row == VSettingsActionResetPurchases)
@@ -438,18 +426,6 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
 - (BOOL)shouldNavigate
 {
     return YES;
-}
-
-#pragma mark - VAccessoryNavigationSource
-
-- (BOOL)shouldNavigateWithAccessoryMenuItem:(VNavigationMenuItem *)menuItem
-{
-    return YES;
-}
-
-- (BOOL)shouldDisplayAccessoryMenuItem:(VNavigationMenuItem *)menuItem fromSource:(UIViewController *)source
-{
-    return self.navigationController.viewControllers.count == 1;
 }
 
 @end

@@ -31,10 +31,7 @@ class LogoutOperation: RemoteFetcherOperation {
     }
     
     override func main() {
-        let currentUser: VUser? = dispatch_sync( dispatch_get_main_queue() ) {
-            return VCurrentUser.user()
-        }
-        guard currentUser != nil else {
+        guard VCurrentUser.user != nil else {
             // Cannot logout without a current (logged-in) user
             return
         }
@@ -56,11 +53,11 @@ class LogoutOperation: RemoteFetcherOperation {
                let forumNetworkSource = dependencyManager.forumNetworkSource { //Try to reset the network resource token
                 forumNetworkSource.tearDown()
             }
+            
+            // And finally, clear the user.  Don't do this early because
+            // some of the stuff above requires knowing the current user
+            VCurrentUser.clear()
         }
-        
-        // And finally, clear the user.  Don't do this early because
-        // some of the stuff above requires knowing the current user
-        VCurrentUser.clear()
     }
 }
 

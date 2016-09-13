@@ -10,26 +10,18 @@ import UIKit
 
 class UserUnblockOperation: FetcherOperation {
     private let unblockAPIPath: APIPath
-    private let userID: Int
+    private let user: UserModel
     
-    init(userID: Int, unblockAPIPath: APIPath) {
-        self.userID = userID
+    init(user: UserModel, unblockAPIPath: APIPath) {
+        self.user = user
         self.unblockAPIPath = unblockAPIPath
     }
     
     override func main() {
-        // Make data change optimistically before executing the request
-        persistentStore.createBackgroundContext().v_performBlockAndWait { context in
-            guard let user: VUser = context.v_findObjects(["remoteId": self.userID]).first else {
-                return
-            }
-            
-            user.isBlockedByMainUser = false
-            context.v_save()
-        }
+        user.unblock()
         
         UserUnblockRemoteOperation(
-            userID: userID,
+            userID: user.id,
             userUnblockAPIPath: unblockAPIPath
         )?.after(self).queue()
     }

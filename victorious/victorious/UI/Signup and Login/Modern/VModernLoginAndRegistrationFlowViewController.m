@@ -41,9 +41,6 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 @property (nonatomic, strong) UIPercentDrivenInteractiveTransition *percentDrivenInteraction;
 @property (nonatomic, strong) UIScreenEdgePanGestureRecognizer *popGestureRecognizer;
 
-@property (nonatomic, assign) VAuthorizationContext authorizationContext;
-@property (nonatomic, strong) VDependencyManager *dependencyManager;
-
 @property (nonatomic, strong) UIViewController<VLoginFlowScreen> *landingScreen;
 @property (nonatomic, strong) UIViewController<VLoginFlowScreen> *currentScreen;
 @property (nonatomic, strong) UIViewController<LoginFlowLoadingScreen> *loadingScreen;
@@ -363,10 +360,10 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
      {
          [weakSelf.loginFlowHelper queueFacebookLoginOperationWithCompletion:^(NSError *_Nullable error)
           {
-              if ( [VCurrentUser user] != nil && error == nil )
+              if ( VCurrentUser.exists && error == nil )
               {
                   weakSelf.actionsDisabled = NO;
-                  weakSelf.isRegisteredAsNewUser = [VCurrentUser user].isNewUser.boolValue;
+                  weakSelf.isRegisteredAsNewUser = VCurrentUser.isNewUser.boolValue;
                   [weakSelf continueRegistrationFlowAfterSocialRegistration];
               }
               else
@@ -436,10 +433,10 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         self.currentOperation = [weakSelf.loginFlowHelper queueAccountCreateOperationWithEmail:email
                                                                                       password:password
                                                                                     completion:^(NSArray *_Nullable results, NSError *_Nullable error, BOOL cancelled) {
-            weakSelf.isRegisteredAsNewUser = [VCurrentUser user].isNewUser.boolValue;
+            weakSelf.isRegisteredAsNewUser = VCurrentUser.isNewUser.boolValue;
             if ( error == nil )
             {
-                BOOL completeProfile = [VCurrentUser user].v_completedProfile.boolValue;
+                BOOL completeProfile = VCurrentUser.completedProfile.boolValue;
                 completion(YES, completeProfile, nil);
                 if (completeProfile)
                 {
@@ -553,14 +550,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
      }];
 }
 
-- (void)showWebContentOperationWithType:(WebContentOperationType)type
-{
-    [[[ShowWebContentOperation alloc] initWithOriginViewController:self
-                                                              type:type
-                                                        forceModal:YES
-                                                          animated:YES
-                                                 dependencyManager:self.dependencyManager] queueWithCompletion:nil];
-}
+
 
 - (void)showPrivacyPolicy
 {
@@ -569,7 +559,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         return;
     }
     
-    [self showWebContentOperationWithType:WebContentOperationTypePrivacyPolicy];
+    [self showFixedWebContent:FixedWebContentTypePrivacyPolicy];
 }
 
 - (void)showTermsOfService
@@ -579,7 +569,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
         return;
     }
     
-    [self showWebContentOperationWithType:WebContentOperationTypeTermsOfService];
+    [self showFixedWebContent:FixedWebContentTypeTermsOfService];
 }
 
 - (void)setProfilePictureFilePath:(NSURL *)profilePictureFilePath

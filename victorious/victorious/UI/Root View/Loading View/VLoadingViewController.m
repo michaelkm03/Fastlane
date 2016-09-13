@@ -30,8 +30,6 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
 @property (nonatomic, weak) IBOutlet UILabel *reachabilityLabel;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *reachabilityLabelPositionConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *reachabilityLabelHeightConstraint;
-@property (nonatomic, strong) MBProgressHUD *progressHUD;
-@property (nonatomic, assign) BOOL isLoading;
 @property (nonatomic, assign) VNetworkStatus priorNetworkStatus;
 
 @end
@@ -135,34 +133,6 @@ static NSString * const kWorkspaceTemplateName = @"newWorkspaceTemplate";
 }
 
 #pragma mark - Loading
-
-- (void)startLoading
-{
-    if ( self.isLoading )
-    {
-        return;
-    }
-    self.isLoading = YES;
-    
-    [[[TempDirectoryCleanupOperation alloc] init] queueWithCompletion:nil];
-
-    StartLoadingOperation *operation = [[StartLoadingOperation alloc] init];
-    [operation queueWithCompletion:^(NSError *_Nullable error, BOOL success) {
-        dispatch_async(dispatch_get_main_queue(), ^
-        {
-            self.isLoading = NO;
-            self.progressHUD.taskInProgress = NO;
-            [self.progressHUD hide:YES];
-
-            [self onDoneLoadingWithTemplateConfiguration:operation.template];
-        });
-    }];
-    
-    self.progressHUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    self.progressHUD.mode = MBProgressHUDModeIndeterminate;
-    self.progressHUD.graceTime = 2.0f;
-    self.progressHUD.taskInProgress = YES;
-}
 
 - (void)onDoneLoadingWithTemplateConfiguration:(NSDictionary *)templateConfiguration
 {

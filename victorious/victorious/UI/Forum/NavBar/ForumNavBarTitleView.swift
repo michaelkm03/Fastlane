@@ -23,7 +23,7 @@ class ForumNavBarTitleView: UIView {
     
     init?(dependencyManager: VDependencyManager, frame: CGRect) {
         self.dependencyManager = dependencyManager
-        activeUserCount = 0
+        activeUserCount = 1
         
         guard let configuration = dependencyManager.titleViewConfiguration() else {
             // No valid configuration was set. We should not show a titleView
@@ -64,7 +64,9 @@ class ForumNavBarTitleView: UIView {
     
     //Creates the string for the subtitle label
     private func getSubtitleText() -> String {
-        return configuration.numberOfUsersText
+        let numberOfUsersText = activeUserCount == 1 ? configuration.singularNumberOfUsersText : configuration.pluralNumberOfUsersText
+        
+        return numberOfUsersText
             .stringByReplacingOccurrencesOfString(Keys.visitorsMacro, withString: VLargeNumberFormatter()
             .stringForInteger(activeUserCount))
     }
@@ -78,17 +80,20 @@ private extension VDependencyManager {
             let titleFont = fontForKey(Keys.titleFontKey),
             let subtitleFont = fontForKey(Keys.subtitleFontKey),
             let titleText = stringForKey(Keys.titleTextKey),
-            let numberOfUsersText = stringForKey(Keys.numberOfUsersTextKey)
+            let singularNumberOfUsersText = stringForKey(Keys.singularNumberOfUsersTextKey),
+            let pluralNumberOfUsersText = stringForKey(Keys.pluralNumberOfUsersTextKey)
         else {
             return nil
         }
+        
         return TitleViewConfiguration(
             titleColor: titleColor,
             subtitleColor: subtitleColor,
             titleFont: titleFont,
             subtitleFont: subtitleFont,
             titleText: titleText,
-            numberOfUsersText: numberOfUsersText
+            singularNumberOfUsersText: singularNumberOfUsersText,
+            pluralNumberOfUsersText: pluralNumberOfUsersText
         )
     }
 }
@@ -99,7 +104,8 @@ private struct TitleViewConfiguration {
     let titleFont: UIFont
     let subtitleFont: UIFont
     let titleText: String
-    let numberOfUsersText: String
+    let singularNumberOfUsersText: String
+    let pluralNumberOfUsersText: String
 }
 
 private struct Keys {
@@ -109,6 +115,7 @@ private struct Keys {
     static let titleFontKey = "font.title.vip"
     static let subtitleFontKey = "font.subtitle.vip"
     static let titleTextKey = "title.text"
-    static let numberOfUsersTextKey = "numberOfUsers.text"
+    static let singularNumberOfUsersTextKey = "numberOfUsers.singular.text"
+    static let pluralNumberOfUsersTextKey = "numberOfUsers.plural.text"
     static let visitorsMacro = "%%VISITORS%%"
 }

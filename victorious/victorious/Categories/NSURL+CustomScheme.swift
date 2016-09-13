@@ -17,4 +17,8 @@ extension NSURL {
         
         return path[path.startIndex.successor() ..< path.endIndex]
     }
+    
+    var isHTTPScheme: Bool {
+        return scheme == "http" || scheme == "https"
+    }
 }

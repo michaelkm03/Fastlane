@@ -86,7 +86,7 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
     }
     
     private func receiveDisconnectEventWithError(error: WebSocketError?) {
-        guard let _ = error where currentReconnectTimeout > 0 && VCurrentUser.isLoggedIn() else {
+        guard let _ = error where currentReconnectTimeout > 0 && VCurrentUser.user != nil else {
             return
         }
 
@@ -150,24 +150,23 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
     }
     
     private func refreshToken() {
-        guard let currentUserID = VCurrentUser.user()?.remoteId
-        where VCurrentUser.isLoggedIn() else {
+        guard let currentUserID = VCurrentUser.user?.id else {
             assertionFailure("No current user is logged in, how did they even get this far?")
             return
         }
 
-        if let operation = CreateChatServiceTokenOperation(expandableURLString: dependencyManager.expandableTokenURL, currentUserID: currentUserID.integerValue) {
+        if let operation = CreateChatServiceTokenOperation(expandableURLString: dependencyManager.expandableTokenURL, currentUserID: currentUserID) {
             operation.queue() { [weak self] results, error, canceled in
                 guard let strongSelf = self,
                     let token = results?.first as? String where !token.characters.isEmpty else {
-                        logger.info("Failed to parse the token from the response. Results -> \(results) error -> \(error)")
+                        Log.warning("Failed to parse the token from the response. Results -> \(results) error -> \(error)")
                         return
                 }
 
                 let currentApplicationID = VEnvironmentManager.sharedInstance().currentEnvironment.appID
-                logger.verbose("strongSelf.dependencyManager.expandableSocketURL -> \(strongSelf.dependencyManager.expandableSocketURL)  appId -> \(currentApplicationID.stringValue)")
+                Log.verbose("strongSelf.dependencyManager.expandableSocketURL -> \(strongSelf.dependencyManager.expandableSocketURL)  appId -> \(currentApplicationID.stringValue)")
                 guard let url = strongSelf.expandWebSocketURLString(strongSelf.dependencyManager.expandableSocketURL, withToken: token, applicationID: currentApplicationID.stringValue) else {
-                    logger.info("Failed to generate the WebSocket endpoint using token (\(token)), userID (\(currentUserID)) and template URL (\(strongSelf.dependencyManager.expandableSocketURL)))")
+                    Log.warning("Failed to generate the WebSocket endpoint using token (\(token)), userID (\(currentUserID)) and template URL (\(strongSelf.dependencyManager.expandableSocketURL)))")
                     return
                 }
                 

@@ -40,6 +40,11 @@
 @property (nonatomic, readonly) NSString *uploadDescription;
 
 /**
+ A boolean that indicates if the content being uploaded is a GIF
+*/
+@property (nonatomic, readonly) BOOL isGIF;
+
+/**
  A unique identifier for this upload task
  */
 @property (nonatomic, readonly) NSUUID *identifier;
@@ -60,6 +65,7 @@
 /**
  Creates a new instance of VUploadTaskInformation with the specified properties.
  */
-- (instancetype)initWithRequest:(NSURLRequest *)request previewImage:(UIImage *)previewImage bodyFilename:(NSString *)bodyFilename description:(NSString *)uploadDescription;
+
+- (instancetype)initWithRequest:(NSURLRequest *)request previewImage:(UIImage *)previewImage bodyFilename:(NSString *)bodyFilename description:(NSString *)uploadDescription isGIF:(BOOL)isGIF;
 
 @end

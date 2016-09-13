@@ -13,7 +13,6 @@ import VictoriousIOSSDK
 /// to a file using asynchronous operations.
 class MediaSearchExporter {
     
-    private let operationQueue = NSOperationQueue()
     private let mediaSearchResult: MediaSearchResult
     private let uuidString = NSUUID().UUIDString
     
@@ -121,7 +120,7 @@ class MediaSearchExporter {
             let mediaSearchResult: MediaSearchResult = self?.mediaSearchResult else {
                 let failureMessage = "Unable to find file path for temporary media download. Media search result -> \(self?.mediaSearchResult)"
                 assertionFailure(failureMessage)
-                logger.error(failureMessage)
+                Log.error(failureMessage)
                 return nil
         }
         
