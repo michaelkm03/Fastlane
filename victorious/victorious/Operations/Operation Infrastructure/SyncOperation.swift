@@ -32,6 +32,11 @@ class SyncOperation<Output>: NSOperation, Queueable {
         fatalError("Subclasses of SyncOperation must override `execute()`!")
     }
     
+    override func cancel() {
+        super.cancel()
+        result = .cancelled
+    }
+    
     override final func main() {
         guard !cancelled else {
             result = .cancelled

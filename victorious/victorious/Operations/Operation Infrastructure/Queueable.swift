@@ -44,7 +44,7 @@ extension Queueable where Self: NSOperation {
         
         let completionOperation = NSBlockOperation {
             guard let result = self.result else {
-                assertionFailure("Received no result from async operation to pass through the completion handler.")
+                Log.error("Received no result from async operation to pass through the completion handler. Operation: \(self)")
                 return
             }
             completion(result: result)
