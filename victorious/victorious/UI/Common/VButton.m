@@ -117,6 +117,7 @@ static const UIEdgeInsets kLabelEdgeInsets = { 0, 10, 0, 10 };
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
     [self updateAppearance];
 }
 
