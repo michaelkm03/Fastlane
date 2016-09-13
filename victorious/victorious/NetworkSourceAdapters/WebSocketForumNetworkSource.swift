@@ -154,32 +154,45 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
             assertionFailure("No current user is logged in, how did they even get this far?")
             return
         }
-
-        if let operation = CreateChatServiceTokenOperation(expandableURLString: dependencyManager.expandableTokenURL, currentUserID: currentUserID) {
-            operation.queue() { [weak self] results, error, canceled in
-                guard let strongSelf = self,
-                    let token = results?.first as? String where !token.characters.isEmpty else {
-                        Log.warning("Failed to parse the token from the response. Results -> \(results) error -> \(error)")
+        
+        guard
+            let apiPath = dependencyManager.expandableTokenAPIPath,
+            let request = CreateChatServiceTokenRequest(apiPath: apiPath, currentUserID: currentUserID)
+        else {
+            return
+        }
+        
+        RequestOperation(request: request).queue { [weak self] result in
+            guard let strongSelf = self else {
+                return
+            }
+            
+            switch result {
+                case .success(let token):
+                    let currentApplicationID = VEnvironmentManager.sharedInstance().currentEnvironment.appID
+                    Log.verbose("strongSelf.dependencyManager.expandableSocketURL -> \(strongSelf.dependencyManager.expandableSocketURL)  appId -> \(currentApplicationID.stringValue)")
+                    
+                    guard let url = strongSelf.expandWebSocketURLString(strongSelf.dependencyManager.expandableSocketURL, withToken: token, applicationID: currentApplicationID.stringValue) else {
+                        Log.warning("Failed to generate the WebSocket endpoint using token (\(token)), userID (\(currentUserID)) and template URL (\(strongSelf.dependencyManager.expandableSocketURL)))")
                         return
-                }
-
-                let currentApplicationID = VEnvironmentManager.sharedInstance().currentEnvironment.appID
-                Log.verbose("strongSelf.dependencyManager.expandableSocketURL -> \(strongSelf.dependencyManager.expandableSocketURL)  appId -> \(currentApplicationID.stringValue)")
-                guard let url = strongSelf.expandWebSocketURLString(strongSelf.dependencyManager.expandableSocketURL, withToken: token, applicationID: currentApplicationID.stringValue) else {
-                    Log.warning("Failed to generate the WebSocket endpoint using token (\(token)), userID (\(currentUserID)) and template URL (\(strongSelf.dependencyManager.expandableSocketURL)))")
-                    return
-                }
+                    }
+                    
+                    strongSelf.webSocketController.replaceEndPoint(url)
+                    strongSelf.webSocketController.setUp()
                 
-                strongSelf.webSocketController.replaceEndPoint(url)
-                strongSelf.webSocketController.setUp()
+                case .failure(let error):
+                    Log.warning("Failed to parse the token from the response. Error -> \(error)")
+                
+                case .cancelled:
+                    break
             }
         }
     }
 }
 
 private extension VDependencyManager {
-    var expandableTokenURL: String {
-        return stringForKey("authURL") ?? ""
+    var expandableTokenAPIPath: APIPath? {
+        return apiPathForKey("authURL")
     }
     
     var expandableSocketURL: String {

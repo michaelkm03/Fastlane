@@ -9,15 +9,9 @@
 import Foundation
 
 public struct ContentUpvoteRequest: RequestType {
-    public var urlRequest: NSURLRequest {
-        let request = NSMutableURLRequest(URL: contentUpvoteURL)
-        request.HTTPMethod = "POST"
-        return request
-    }
+    private let url: NSURL
     
-    private let contentUpvoteURL: NSURL
-    
-    public init?(contentID: Content.ID, apiPath: APIPath) {
+    public init?(apiPath: APIPath, contentID: Content.ID) {
         var apiPath = apiPath
         apiPath.macroReplacements["%%CONTENT_ID%%"] = contentID
         
@@ -25,6 +19,12 @@ public struct ContentUpvoteRequest: RequestType {
             return nil
         }
         
-        self.contentUpvoteURL = url
+        self.url = url
+    }
+    
+    public var urlRequest: NSURLRequest {
+        let request = NSMutableURLRequest(URL: url)
+        request.HTTPMethod = "POST"
+        return request
     }
 }

@@ -19,8 +19,8 @@ class VIPSubscriptionHelper {
     
     // MARK: - Initializing
     
-    init(subscriptionFetchURL: String, delegate: VIPSubscriptionHelperDelegate, originViewController: UIViewController, dependencyManager: VDependencyManager) {
-        self.subscriptionFetchURL = subscriptionFetchURL
+    init(subscriptionFetchAPIPath: APIPath, delegate: VIPSubscriptionHelperDelegate, originViewController: UIViewController, dependencyManager: VDependencyManager) {
+        self.subscriptionFetchAPIPath = subscriptionFetchAPIPath
         self.delegate = delegate
         self.originViewController = originViewController
         self.dependencyManager = dependencyManager
@@ -40,43 +40,37 @@ class VIPSubscriptionHelper {
     
     // MARK: - Fetching products
     
-    private let subscriptionFetchURL: String
+    private let subscriptionFetchAPIPath: APIPath
     private var products: [VProduct]?
     
     func fetchProducts(completion: ([VProduct]?) -> Void) {
-        guard let subscriptionFetchOperation = VIPFetchSubscriptionRemoteOperation(urlString: subscriptionFetchURL) else {
-            originViewController?.showSubscriptionAlert(for: VIPFetchSubscriptionRemoteOperation.initError)
+        guard let request = VIPFetchSubscriptionRequest(apiPath: subscriptionFetchAPIPath) else {
             return
         }
         
         delegate?.setIsLoading(true, title: nil)
         
-        subscriptionFetchOperation.queue { [weak self] results, error, canceled in
-            guard !canceled else {
-                self?.delegate?.setIsLoading(false, title: nil)
-                return
-            }
-            
-            guard
-                let productIdentifiers = results as? [String]
-                where error == nil
-            else {
-                self?.delegate?.setIsLoading(false, title: nil)
-                self?.originViewController?.showSubscriptionAlert(for: error)
-                return
-            }
-            
-            ProductFetchOperation(productIdentifiers: productIdentifiers).queue { [weak self] result in
-                self?.delegate?.setIsLoading(false, title: nil)
+        RequestOperation(request: request).queue { [weak self] result in
+            switch result {
+                case .success(let productIdentifiers):
+                    ProductFetchOperation(productIdentifiers: productIdentifiers).queue { [weak self] result in
+                        self?.delegate?.setIsLoading(false, title: nil)
+                        
+                        switch result {
+                            case .success(let products):
+                                self?.products = products
+                                completion(products)
+                            case .failure(let error):
+                                self?.originViewController?.showSubscriptionAlert(for: error as NSError)
+                            case .cancelled: break
+                        }
+                    }
                 
-                switch result {
-                    case .success(let products):
-                        self?.products = products
-                        completion(products)
-                    case .failure(let error):
-                        self?.originViewController?.showSubscriptionAlert(for: error as NSError)
-                    case .cancelled: break
-                }
+                case .failure(let error):
+                    self?.originViewController?.showSubscriptionAlert(for: error as NSError)
+                
+                case .cancelled:
+                    self?.delegate?.setIsLoading(false, title: nil)
             }
         }
     }
@@ -139,8 +133,13 @@ class VIPSubscriptionHelper {
     }
     
     private func subscribeToProduct(product: VProduct) {
-        let subscribe = VIPSubscribeOperation(product: product, validationURL: dependencyManager.validationURL)
-        subscribe.queue() { [weak self] result in
+        guard let validationAPIPath = dependencyManager.validationAPIPath else {
+            return
+        }
+        
+        let subscribe = VIPSubscribeOperation(product: product, validationAPIPath: validationAPIPath)
+        
+        subscribe.queue { [weak self] result in
             self?.delegate?.setIsLoading(false, title: nil)
             
             guard let strongSelf = self  else {
@@ -178,13 +177,7 @@ private extension VDependencyManager {
         return childDependencyForKey("multiple.sku.dialog")
     }
     
-    var validationURL: NSURL? {
-        guard
-            let urlString = networkResources?.stringForKey("purchaseURL"),
-            let url = NSURL(string: urlString)
-        else {
-            return nil
-        }
-        return url
+    var validationAPIPath: APIPath? {
+        return networkResources?.apiPathForKey("purchaseURL")
     }
 }

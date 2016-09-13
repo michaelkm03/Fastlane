@@ -9,24 +9,25 @@
 import Foundation
 
 public struct UserUpvoteRequest: RequestType {
-    public var urlRequest: NSURLRequest {
-        let request = NSMutableURLRequest(URL: userUpvoteURL)
-        request.HTTPMethod = "POST"
-        request.vsdk_addURLEncodedFormPost(["target_user_id": userID])
-        return request
-    }
+    private let url: NSURL
+    private let userID: User.ID
     
-    private let userUpvoteURL: NSURL
-    private let userID: String
-  
-    public init?(userID: Int, userUpvoteAPIPath: APIPath) {
-        var userUpvoteAPIPath = userUpvoteAPIPath
-        self.userID = String(userID)
+    public init?(apiPath: APIPath, userID: User.ID) {
+        var apiPath = apiPath
+        apiPath.macroReplacements["%%USER_ID%%"] = String(userID)
         
-        userUpvoteAPIPath.macroReplacements["%%USER_ID%%"] = self.userID
-        guard let validURL = userUpvoteAPIPath.url else {
+        guard let validURL = apiPath.url else {
             return nil
         }
-        self.userUpvoteURL = validURL
+        
+        self.url = validURL
+        self.userID = userID
+    }
+    
+    public var urlRequest: NSURLRequest {
+        let request = NSMutableURLRequest(URL: url)
+        request.HTTPMethod = "POST"
+        request.vsdk_addURLEncodedFormPost(["target_user_id": String(userID)])
+        return request
     }
 }

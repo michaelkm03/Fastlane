@@ -9,9 +9,13 @@
 import UIKit
 
 public struct ContentFeedRequest: RequestType {
-    public let url: NSURL
+    private let url: NSURL
     
-    public init(url: NSURL) {
+    public init?(apiPath: APIPath) {
+        guard let url = apiPath.url else {
+            return nil
+        }
+        
         self.url = url
     }
     
@@ -19,7 +23,7 @@ public struct ContentFeedRequest: RequestType {
         return NSURLRequest(URL: url)
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> (contents: [Content], refreshStage: RefreshStage?) {
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> ContentFeedResult {
         guard let contents = responseJSON["payload"]["viewed_contents"].array else {
             throw ResponseParsingError()
         }
@@ -34,6 +38,11 @@ public struct ContentFeedRequest: RequestType {
             parsedRefreshStage = RefreshStage(json: mainStageJSON)
         }
         
-        return (contents: parsedContents, refreshStage: parsedRefreshStage)
+        return ContentFeedResult(contents: parsedContents, refreshStage: parsedRefreshStage)
     }
+}
+
+public struct ContentFeedResult {
+    public var contents: [Content]
+    public var refreshStage: RefreshStage?
 }

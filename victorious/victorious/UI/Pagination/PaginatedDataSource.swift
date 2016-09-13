@@ -12,7 +12,7 @@ import VictoriousIOSSDK
 /// A utility that abstracts the interaction between UI code and paginated `FetcherOperation`s
 /// into an API that is more concise and reuable between any paginated view controllers that have
 /// a simple collection or table view layout.
-@objc public class PaginatedDataSource: NSObject, PaginatedDataSourceType, GenericPaginatedDataSourceType {
+@objc public class PaginatedDataSource: NSObject, PaginatedDataSourceType {
     
     private(set) var currentPaginatedOperation: NSOperation?
     
@@ -130,36 +130,6 @@ import VictoriousIOSSDK
         }
     }
     
-    /// Reloads the first page into `visibleItems` using a descendent of `PaginatedRequestOperation`, which
-    /// operates by sending a network request to retreive results, then parses them into the persistent store.
-    func loadNewItems( @noescape createOperation createOperation: () -> FetcherOperation, completion: (([AnyObject]?, NSError?, Bool) -> Void)?) {
-        
-        let operation: FetcherOperation = createOperation()
-        
-        self.state = .Loading
-        operation.queue() { results, error, cancelled in
-            
-            if let error = error {
-                self.delegate?.paginatedDataSource(self, didReceiveError: error)
-                self.state = .Error
-                completion?( [], error, cancelled )
-                
-            } else {
-                let results = operation.results ?? []
-                let newResults = results.filter { !self.visibleItems.containsObject( $0 ) }
-                if !newResults.isEmpty {
-                    if self.shouldStashNewItems {
-                        self.stashedItems = self.stashedItems.v_orderedSet(byAddingObjects: newResults, sortOrder: self.sortOrder)
-                    } else {
-                        self.visibleItems = self.visibleItems.v_orderedSet(byAddingObjects: newResults, sortOrder: self.sortOrder)
-                    }
-                    self.state = self.visibleItems.count == 0 ? .NoResults : .Results
-                }
-                completion?( newResults, error, cancelled )
-            }
-        }
-    }
-    
     func loadPage<Operation: Paginated where Operation.PaginatorType: NumericPaginator>(pageType: VPageType, @noescape createOperation: () -> Operation, completion: ((results: [AnyObject]?, error: NSError?, cancelled: Bool) -> Void)? = nil) {
         guard !isLoading() else {
             return
@@ -194,51 +164,52 @@ import VictoriousIOSSDK
         
         state = .Loading
         
-        // We need to cast to FetcherOperation here to call queue because we need a concrete operation type that defines its
-        // completion handler. A better solution would be to constrain the generic Operation type to be a FetcherOperation,
-        // since that would require callers to conform to that requirement, but doing so currently produces mysterious compiler
-        // errors. We should revisit this later -- Swift 3 might give us less mysterious errors, or if not, we should put in
-        // the time to investigate this properly.
-        (operation as? FetcherOperation)?.queue() { [weak self] results, error, cancelled in
+        // We need to cast to AsyncOperation<[AnyObject]> here to call queue because we need a concrete operation type
+        // that defines its result type.
+        (operation as? AsyncOperation<[AnyObject]>)?.queue { [weak self] result in
             guard let strongSelf = self else {
                 return
             }
             
-            if cancelled {
-                // Remove the page from `pagesLoaded` so that it can be attempted again
-                strongSelf.pagesLoaded.remove(operation.paginator.pageNumber)
-                strongSelf.state = strongSelf.visibleItems.count == 0 ? .NoResults : .Results
+            switch result {
+                case .success(let results):
+                    if results.isEmpty {
+                        // Nothing to do here.
+                    } else if results.flatMap({ $0 as? PaginatedObjectType }).isEmpty {
+                        // No conformance to `PaginatedObjectType` in the results, add according to `pageType`
+                        strongSelf.visibleItems = strongSelf.visibleItems.v_orderedSet(
+                            byAddingObjects: results,
+                            forPageType: pageType
+                        )
+                    } else {
+                        // Results conform to `PaginatedObjectType`, sort according to `displayOrder`
+                        strongSelf.visibleItems = strongSelf.visibleItems.v_orderedSet(
+                            byAddingObjects: results,
+                            sortOrder: strongSelf.sortOrder
+                        )
+                    }
+                    
+                    strongSelf.state = strongSelf.visibleItems.count == 0 ? .NoResults : .Results
+                    
+                    completion?(results: results, error: nil, cancelled: false)
                 
-            } else if let error = error {
-                // Remove the page from `pagesLoaded` so that it can be attempted again
-                strongSelf.pagesLoaded.remove(operation.paginator.pageNumber)
+                case .failure(let error):
+                    // Remove the page from `pagesLoaded` so that it can be attempted again
+                    strongSelf.pagesLoaded.remove(operation.paginator.pageNumber)
+                    
+                    // Return no results
+                    strongSelf.delegate?.paginatedDataSource(strongSelf, didReceiveError: error as NSError)
+                    strongSelf.state = .Error
+                    
+                    completion?(results: nil, error: error as NSError, cancelled: false)
                 
-                // Return no results
-                strongSelf.delegate?.paginatedDataSource(strongSelf, didReceiveError: error)
-                strongSelf.state = .Error
-            } else {
-                let results = operation.results ?? []
-                
-                if results.isEmpty {
-                    // Nothing to do here.
-                } else if results.flatMap({ $0 as? PaginatedObjectType }).isEmpty {
-                    // No conformance to `PaginatedObjectType` in the results, add according to `pageType`
-                    strongSelf.visibleItems = strongSelf.visibleItems.v_orderedSet(
-                        byAddingObjects: results,
-                        forPageType: pageType
-                    )
-                } else {
-                    // Results conform to `PaginatedObjectType`, sort according to `displayOrder`
-                    strongSelf.visibleItems = strongSelf.visibleItems.v_orderedSet(
-                        byAddingObjects: results,
-                        sortOrder: strongSelf.sortOrder
-                    )
-                }
-                
-                strongSelf.state = strongSelf.visibleItems.count == 0 ? .NoResults : .Results
+                case .cancelled:
+                    // Remove the page from `pagesLoaded` so that it can be attempted again
+                    strongSelf.pagesLoaded.remove(operation.paginator.pageNumber)
+                    strongSelf.state = strongSelf.visibleItems.count == 0 ? .NoResults : .Results
+                    
+                    completion?(results: nil, error: nil, cancelled: true)
             }
-            
-            completion?(results: results, error: error, cancelled: cancelled)
         }
         
         currentPaginatedOperation = operation as? NSOperation

@@ -13,7 +13,7 @@ class ValidateReceiptRequestTests: XCTestCase {
     func testParseResponse() {
         let urlString = "urlString"
         guard  let receiptData = "NSData whose `length` will be > 0 for testing.".dataUsingEncoding(NSUTF8StringEncoding),
-            let request = ValidateReceiptRequest(data: receiptData, url: NSURL(string: urlString)!) else {
+            let request = ValidateReceiptRequest(apiPath: APIPath(templatePath: urlString), data: receiptData) else {
             XCTFail("Error preparing mock input data.")
             return
         }

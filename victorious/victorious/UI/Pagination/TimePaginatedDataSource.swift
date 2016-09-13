@@ -31,15 +31,16 @@ enum PaginatedOrdering {
 ///
 /// - NOTE: This should be renamed to `PaginatedDataSource` once the other `PaginatedDataSource` is removed.
 ///
-class TimePaginatedDataSource<Item, Operation: Queueable where Operation.CompletionBlockType == (newItems: [Item], stageEvent: ForumEvent?, error: NSError?) -> Void, Operation: NSOperation> {
+class TimePaginatedDataSource<Item, Operation: Queueable where Operation: NSOperation> {
     
     // MARK: - Initializing
     
-    init(apiPath: APIPath, ordering: PaginatedOrdering = .descending, throttleTime: NSTimeInterval = 1.0, createOperation: (url: NSURL) -> Operation) {
+    init(apiPath: APIPath, ordering: PaginatedOrdering = .descending, throttleTime: NSTimeInterval = 1.0, createOperation: (apiPath: APIPath) -> Operation?, processOutput: (output: Operation.Output) -> [Item]) {
         self.apiPath = apiPath
         self.ordering = ordering
         self.throttleTime = throttleTime
         self.createOperation = createOperation
+        self.processOutput = processOutput
     }
     
     // MARK: - Configuration
@@ -59,8 +60,11 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
     /// The minimum time between requests for item loading.
     let throttleTime: NSTimeInterval
     
-    /// A function that converts a URL into an operation that loads a page of items.
-    let createOperation: (url: NSURL) -> Operation
+    /// A function that converts an API path into an operation that loads a page of items.
+    private let createOperation: (apiPath: APIPath) -> Operation?
+    
+    /// A function that converts the output of the data source's operation into a list of items.
+    private let processOutput: (output: Operation.Output) -> [Item]
     
     /// The operation that is currently loading items, if any.
     private var currentOperation: Operation?
@@ -113,7 +117,7 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
     /// - RETURNS: Whether or not items were actually requested to be loaded. Items will not be loaded if a page is
     /// already being loaded, or if loading is being throttled.
     ///
-    func loadItems(loadingType: PaginatedLoadingType, completion: ((newItems: [Item], stageEvent: ForumEvent?, error: NSError?) -> Void)? = nil) -> Bool {
+    func loadItems(loadingType: PaginatedLoadingType, completion: ((result: OperationResult<Operation.Output>) -> Void)? = nil) -> Bool {
         if loadingType == .refresh {
             currentOperation?.cancel()
             currentOperation = nil
@@ -123,45 +127,51 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
             return false
         }
         
-        guard let url = processedURL(for: loadingType) else {
-            assertionFailure("Failed to construct a valid URL when loading a page in TimePaginatedDataSource.")
+        guard let apiPath = processedAPIPath(for: loadingType) else {
+            assertionFailure("Failed to construct a valid API path when loading a page in TimePaginatedDataSource.")
             return false
         }
         
         lastLoadTime = NSDate()
-        currentOperation = createOperation(url: url)
+        currentOperation = createOperation(apiPath: apiPath)
         
-        currentOperation?.queue { [weak self] newItems, stageEvent, error in
+        currentOperation?.queue { [weak self] result in
             defer {
-                completion?(newItems: newItems, stageEvent: stageEvent, error: error)
+                completion?(result: result)
             }
             
-            guard let ordering = self?.ordering else {
+            guard let strongSelf = self else {
                 return
             }
             
+            strongSelf.currentOperation = nil
+            
+            guard let output = result.output else {
+                return
+            }
+            
+            let newItems = strongSelf.processOutput(output: output)
+            
             switch loadingType {
                 case .refresh:
-                    self?.items = newItems
+                    strongSelf.items = newItems
                 
                 case .newer:
-                    switch ordering {
-                        case .descending: self?.prependItems(newItems)
-                        case .ascending: self?.appendItems(newItems)
+                    switch strongSelf.ordering {
+                        case .descending: strongSelf.prependItems(newItems)
+                        case .ascending: strongSelf.appendItems(newItems)
                     }
                 
                 case .older:
-                    if newItems.count == 0 && error == nil {
-                        self?.olderItemsAreAvailable = false
+                    if newItems.count == 0 {
+                        strongSelf.olderItemsAreAvailable = false
                     }
                     
-                    switch ordering {
-                        case .descending: self?.appendItems(newItems)
-                        case .ascending: self?.prependItems(newItems)
+                    switch strongSelf.ordering {
+                        case .descending: strongSelf.appendItems(newItems)
+                        case .ascending: strongSelf.prependItems(newItems)
                     }
             }
-            
-            self?.currentOperation = nil
         }
         
         return true
@@ -175,7 +185,7 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
         items.appendContentsOf(newItems)
     }
     
-    private func processedURL(for loadingType: PaginatedLoadingType) -> NSURL? {
+    private func processedAPIPath(for loadingType: PaginatedLoadingType) -> APIPath? {
         let (fromTime, toTime) = paginationTimestamps(for: loadingType)
         
         // The from-time should always come after the to-time.
@@ -184,10 +194,10 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation.Complet
             return nil
         }
         
-        apiPath.macroReplacements["%%FROM_TIME%%"] = "\(fromTime)"
-        apiPath.macroReplacements["%%TO_TIME%%"] = "\(toTime)"
-        
-        return apiPath.url
+        var processedAPIPath = apiPath
+        processedAPIPath.macroReplacements["%%FROM_TIME%%"] = "\(fromTime)"
+        processedAPIPath.macroReplacements["%%TO_TIME%%"] = "\(toTime)"
+        return processedAPIPath
     }
     
     /// Returns the range of timestamps needed to load new content for `loadingType`.

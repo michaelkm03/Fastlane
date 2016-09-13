@@ -10,16 +10,17 @@ import VictoriousIOSSDK
 import XCTest
 
 class TrendingHashtagRequestTests: XCTestCase {
-    
     func testResponseParsing() {
-        guard let mockResponseDataURL = NSBundle(forClass: self.dynamicType).URLForResource("TrendingHashtagResponse", withExtension: "json"),
-            let mockData = NSData(contentsOfURL: mockResponseDataURL) else {
-                XCTFail("Error reading mock json data")
-                return
+        guard
+            let mockResponseDataURL = NSBundle(forClass: self.dynamicType).URLForResource("TrendingHashtagResponse", withExtension: "json"),
+            let mockData = NSData(contentsOfURL: mockResponseDataURL)
+        else {
+            XCTFail("Error reading mock json data")
+            return
         }
         
         do {
-            let trendingHashtagRequest = TrendingHashtagRequest(url: NSURL())
+            let trendingHashtagRequest = TrendingHashtagRequest(apiPath: APIPath(templatePath: ""))!
             let results = try trendingHashtagRequest.parseResponse(NSURLResponse(), toRequest: trendingHashtagRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(results.count, 2)
             XCTAssertEqual(results[0].tag, "surfing")
@@ -31,7 +32,7 @@ class TrendingHashtagRequestTests: XCTestCase {
     
     func testCustomTrendingRequest() {
         let urlString = "testingURL"
-        let trendingHashtagRequest = TrendingHashtagRequest(url: NSURL(string: urlString)!)
-        XCTAssertEqual(trendingHashtagRequest.urlRequest.URL?.absoluteString, urlString)
+        let trendingHashtagRequest = TrendingHashtagRequest(apiPath: APIPath(templatePath: urlString))
+        XCTAssertEqual(trendingHashtagRequest?.urlRequest.URL?.absoluteString, urlString)
     }
 }

@@ -77,7 +77,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                 // path will be nil for home feed, and non nil for filtered feed
                 composer?.setComposerVisible(path == nil, animated: true)
             case .closeVIP():
-                onClose()
+                onClose(nil)
             case .refreshStage(_):
                 triggerCoachmark()
             case .setOptimisticPostingEnabled(let enabled):
@@ -100,7 +100,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     private var publisher: ContentPublisher?
     
-    private func publish(content: ContentModel) {
+    private func publish(content: Content) {
         guard let width = chatFeed?.collectionView.frame.width else {
             return
         }
@@ -217,9 +217,6 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         stageShrinkingAnimator?.shouldHideKeyboardHandler = { [weak self] in
             self?.view.endEditing(true)
         }
-        stageShrinkingAnimator?.interpolateAlongside = {[weak self] percentage in
-            self?.stage?.overlayUIAlpha = 1 - percentage
-        }
         
         chatFeed?.nextSender = self
         //Initialize the title view. This will later be resized in the viewWillAppear, once it has actually been added to the navigation stack
@@ -271,8 +268,10 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     // MARK: - Actions
     
-    @objc private func onClose() {
-        closeButton?.dependencyManager?.trackButtonEvent(.tap)
+    @objc private func onClose(sender: UIButton?) {
+        if sender != nil {
+            closeButton?.dependencyManager?.trackButtonEvent(.tap)
+        }
         
         navigationController?.dismissViewControllerAnimated(true, completion: nil)
 

@@ -92,12 +92,6 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         collectionView.backgroundColor = UIColor.clearColor()
         collectionView.alwaysBounceVertical = true
         
-        collectionView.registerNib(
-            VFooterActivityIndicatorView.nibForSupplementaryView(),
-            forSupplementaryViewOfKind: UICollectionElementKindSectionFooter,
-            withReuseIdentifier: VFooterActivityIndicatorView.reuseIdentifier()
-        )
-        
         edgesForExtendedLayout = .Bottom
         extendedLayoutIncludesOpaqueBars = true
         automaticallyAdjustsScrollViewInsets = false
@@ -144,16 +138,25 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     }
     
     private func loadContent(loadingType: PaginatedLoadingType) {
-        dataSource.loadContent(for: collectionView, loadingType: loadingType) { [weak self] newItems, error in
+        guard !dataSource.isLoading else {
+            return
+        }
+        
+        dataSource.loadContent(for: collectionView, loadingType: loadingType) { [weak self] result in
             // Calling this method stops scrolling, so only do it if necessary.
             if self?.refreshControl.refreshing == true {
                 self?.refreshControl.endRefreshing()
             }
             
-            if error != nil {
-                (self?.navigationController ?? self)?.v_showErrorDefaultError()
+            switch result {
+                case .success(_): break
+                case .failure(_): (self?.navigationController ?? self)?.v_showErrorDefaultError()
             }
+            
+            self?.collectionView.collectionViewLayout.invalidateLayout()
         }
+        
+        collectionView.collectionViewLayout.invalidateLayout()
     }
     
     // MARK: - Configuration
@@ -170,10 +173,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     
     // MARK: - UICollectionViewDelegateFlowLayout
     
-    func collectionView(collectionView: UICollectionView, layout
-        collectionViewLayout: UICollectionViewLayout,
-        referenceSizeForHeaderInSection section: Int) -> CGSize {
-        
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         guard
             section == GridStreamSection.Header.rawValue,
             let header = header
@@ -190,10 +190,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         return size
     }
     
-    func collectionView(collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
         
         return flowLayout.v_cellSize(
@@ -202,13 +199,10 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         )
     }
     
-    func collectionView(collectionView: UICollectionView,
-                        willDisplaySupplementaryView view: UICollectionReusableView,
-                        forElementKind elementKind: String,
-                        atIndexPath indexPath: NSIndexPath) {
-        if let footerView = view as? VFooterActivityIndicatorView {
-            footerView.activityIndicator.color = dependencyManager.refreshControlColor
-            footerView.setActivityIndicatorVisible(dataSource.isLoading, animated: true)
+    func collectionView(collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, atIndexPath indexPath: NSIndexPath) {
+        if let loadingView = view as? CollectionLoadingView {
+            loadingView.color = dependencyManager.refreshControlColor
+            loadingView.isLoading = true
         }
         else if elementKind == UICollectionElementKindSectionHeader {
             header?.headerDidAppear()
@@ -221,14 +215,12 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         }
     }
     
-    func collectionView(collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        referenceSizeForFooterInSection section: Int) -> CGSize {
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
         guard section == GridStreamSection.Contents.rawValue else {
-            return CGSizeZero
+            return CGSize.zero
         }
         
-        return dataSource.isLoading ? VFooterActivityIndicatorView.desiredSizeWithCollectionViewBounds(collectionView.bounds) : CGSizeZero
+        return dataSource.hasLoadedAllItems ? CGSize.zero : CollectionLoadingView.preferredSize(in: collectionView.bounds)
     }
 
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
