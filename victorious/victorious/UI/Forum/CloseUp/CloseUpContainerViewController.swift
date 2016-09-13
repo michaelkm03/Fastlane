@@ -61,6 +61,8 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         }
     }
     
+    // MARK: - Initialization
+    
     init(dependencyManager: VDependencyManager, contentID: String, content: Content? = nil, streamAPIPath: APIPath) {
         self.dependencyManager = dependencyManager
         
@@ -111,6 +113,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
+    // MARK: - Life Cycle
     override func viewDidLoad() {
         dependencyManager.addBackgroundToBackgroundHost(self)
     }
@@ -278,7 +281,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     
     // MARK: - Notification Response
     
-    dynamic private func returnedFromBackground() {
+    private dynamic func returnedFromBackground() {
         updateAudioSessionCategory()
     }
 }
