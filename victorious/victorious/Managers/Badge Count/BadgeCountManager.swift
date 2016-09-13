@@ -144,6 +144,6 @@ final class BadgeCountManager {
 
 private extension VDependencyManager {
     var unreadNotificationCountAPIPath: APIPath? {
-        return networkResources?.apiPathForKey("contentUpvoteURL")
+        return networkResources?.apiPathForKey("notification.unread.count.URL")
     }
 }
