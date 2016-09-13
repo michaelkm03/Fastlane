@@ -436,7 +436,6 @@
 		676468CE1C3DC03600CC41D9 /* RequestPasswordResetRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 676468CD1C3DC03600CC41D9 /* RequestPasswordResetRequest.swift */; };
 		676468D01C3DC06300CC41D9 /* RequestPasswordResetRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 676468CF1C3DC06300CC41D9 /* RequestPasswordResetRequestTests.swift */; };
 		6764784C1D5EC23C00772177 /* UINavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6764784B1D5EC23C00772177 /* UINavigationController.swift */; };
-		676B84DF1CDD542B00F8FCED /* TemplateDrivenRequestType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 676B84DE1CDD542B00F8FCED /* TemplateDrivenRequestType.swift */; };
 		676B84E11CDD568200F8FCED /* TutorialContentsRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 676B84E01CDD568200F8FCED /* TutorialContentsRequestTests.swift */; };
 		676C891D1CAB367F00B606ED /* InterstitialAlertAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 676C891B1CAB367F00B606ED /* InterstitialAlertAnimator.swift */; };
 		676C891E1CAB367F00B606ED /* InterstitialAlertPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 676C891C1CAB367F00B606ED /* InterstitialAlertPresentationController.swift */; };
@@ -1840,7 +1839,6 @@
 		676468CD1C3DC03600CC41D9 /* RequestPasswordResetRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestPasswordResetRequest.swift; sourceTree = "<group>"; };
 		676468CF1C3DC06300CC41D9 /* RequestPasswordResetRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestPasswordResetRequestTests.swift; sourceTree = "<group>"; };
 		6764784B1D5EC23C00772177 /* UINavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UINavigationController.swift; sourceTree = "<group>"; };
-		676B84DE1CDD542B00F8FCED /* TemplateDrivenRequestType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemplateDrivenRequestType.swift; sourceTree = "<group>"; };
 		676B84E01CDD568200F8FCED /* TutorialContentsRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialContentsRequestTests.swift; sourceTree = "<group>"; };
 		676C891B1CAB367F00B606ED /* InterstitialAlertAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InterstitialAlertAnimator.swift; path = "Custom Alert Views/InterstitialAlertAnimator.swift"; sourceTree = "<group>"; };
 		676C891C1CAB367F00B606ED /* InterstitialAlertPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InterstitialAlertPresentationController.swift; path = "Custom Alert Views/InterstitialAlertPresentationController.swift"; sourceTree = "<group>"; };
@@ -3283,7 +3281,6 @@
 				0E23690D1D493C5600D9E45C /* SwiftyBeaver */,
 				0372BE721C84FADD004950CF /* Supporting Files */,
 				03503E711C81070F00359AAE /* SwiftyJSON */,
-				676B84DE1CDD542B00F8FCED /* TemplateDrivenRequestType.swift */,
 				0399E80D1C51D42900E090F7 /* TemplateRequest.swift */,
 				795B758D1BFA66D100227647 /* TermsOfServiceRequest.swift */,
 				C314E6B81BF13AD800FB9591 /* TrendingHashtagRequest.swift */,
@@ -7334,7 +7331,6 @@
 				03314F651BE40F3200EE74FD /* User.swift in Sources */,
 				BF68C4F01C7CEE9900739D87 /* AvatarBadgeType.swift in Sources */,
 				0300AA5F1BF181A2000A121D /* AccountUpdateRequest.swift in Sources */,
-				676B84DF1CDD542B00F8FCED /* TemplateDrivenRequestType.swift in Sources */,
 				A7D920491C06369C002A6503 /* RequestErrorType.swift in Sources */,
 				7A67EC801CFE41CC00D022D1 /* ForumEvent.swift in Sources */,
 				03F9A8361C6C1FF600962481 /* NSCharacterSet+VSDKURLParts.swift in Sources */,

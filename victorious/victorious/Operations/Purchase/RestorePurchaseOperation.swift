@@ -9,11 +9,11 @@
 import Foundation
 
 final class RestorePurchasesOperation: AsyncOperation<Void> {
-    let validationURL:NSURL?
+    let validationAPIPath: APIPath
     private let purchaseManager: VPurchaseManagerType = VPurchaseManager.sharedInstance()
     
-    init(validationURL: NSURL?) {
-        self.validationURL = validationURL
+    init(validationAPIPath: APIPath) {
+        self.validationAPIPath = validationAPIPath
     }
     
     override var executionQueue: Queue {
@@ -24,7 +24,7 @@ final class RestorePurchasesOperation: AsyncOperation<Void> {
         purchaseManager.restorePurchasesSuccess(
             { results in
                 // Force success because we have to deliver the product even if the sever fails for any reason
-                VIPValidateSubscriptionOperation(url: self.validationURL, shouldForceSuccess: true)?.rechainAfter(self).queue()
+                VIPValidateSubscriptionOperation(apiPath: self.validationAPIPath, shouldForceSuccess: true)?.rechainAfter(self).queue()
                 finish(result: .success())
             },
             failure: { error in

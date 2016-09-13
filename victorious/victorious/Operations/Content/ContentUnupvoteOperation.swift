@@ -6,27 +6,32 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-final class ContentUnupvoteOperation: AsyncOperation<Void> {
+final class ContentUnupvoteOperation: SyncOperation<Void> {
     
     // MARK: - Initializing
     
-    init(contentID: Content.ID, apiPath: APIPath) {
+    init?(apiPath: APIPath, contentID: Content.ID) {
+        guard let request = ContentUnupvoteRequest(apiPath: apiPath, contentID: contentID) else {
+            return nil
+        }
+        
         self.contentID = contentID
-        self.apiPath = apiPath
+        self.request = request
         super.init()
     }
     
     // MARK: - Executing
     
     private let contentID: Content.ID
-    private let apiPath: APIPath
+    private let request: ContentUnupvoteRequest
     
     override var executionQueue: Queue {
         return .main
     }
     
-    override func execute(finish: (result: OperationResult<Void>) -> Void) {
+    override func execute() -> OperationResult<Void> {
         Content.unlikeContent(withID: contentID)
-        RequestOperation(request: ContentUnupvoteRequest(contentID: contentID, apiPath: apiPath)).queue(completion: finish)
+        RequestOperation(request: request).queue()
+        return .success()
     }
 }

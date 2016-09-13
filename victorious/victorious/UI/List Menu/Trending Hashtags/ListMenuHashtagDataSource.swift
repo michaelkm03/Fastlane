@@ -47,15 +47,15 @@ final class ListMenuHashtagDataSource: ListMenuSectionDataSource {
     weak var delegate: ListMenuSectionDataSourceDelegate?
     
     func fetchRemoteData() {
-        guard let trendingHashtagsURL = dependencyManager.trendingHashtagsURL else {
+        guard
+            let apiPath = dependencyManager.trendingHashtagsAPIPath,
+            let request = TrendingHashtagRequest(apiPath: apiPath)
+        else {
+            Log.warning("Missing or invalid trending hashtags API path: \(dependencyManager.trendingHashtagsAPIPath)")
             return
         }
         
-        let operation = RequestOperation(
-            request: TrendingHashtagRequest(url: trendingHashtagsURL)
-        )
-        
-        operation.queue { [weak self] result in
+        RequestOperation(request: request).queue { [weak self] result in
             switch result {
                 case .success(let hashtags):
                     self?.visibleItems = hashtags
@@ -72,10 +72,7 @@ final class ListMenuHashtagDataSource: ListMenuSectionDataSource {
 }
 
 private extension VDependencyManager {
-    var trendingHashtagsURL: NSURL? {
-        guard let urlString = networkResources?.stringForKey("trendingHashtagsURL") else {
-            return nil
-        }
-        return NSURL(string: urlString)
+    var trendingHashtagsAPIPath: APIPath? {
+        return networkResources?.apiPathForKey("trendingHashtagsURL")
     }
 }

@@ -41,12 +41,8 @@ final class ShowTestPurchaseConfirmationOperation: AsyncOperation<Void> {
                 title: "Cancel",
                 style: .Cancel,
                 handler: { [weak self] action in
-                    for dependentOperation in self?.dependentOperations ?? [] {
-                        dependentOperation.cancel()
-                    }
-                    
+                    self?.cancelDependentOperations()
                     self?.cancel()
-                    
                     finish(result: .cancelled)
                 }
             )
@@ -55,8 +51,8 @@ final class ShowTestPurchaseConfirmationOperation: AsyncOperation<Void> {
             UIAlertAction(
                 title: type.confirmTitle,
                 style: .Default,
-                handler: { action in
-                    self.didConfirmAction = true
+                handler: { [weak self] action in
+                    self?.didConfirmAction = true
                     finish(result: .success())
                 }
             )

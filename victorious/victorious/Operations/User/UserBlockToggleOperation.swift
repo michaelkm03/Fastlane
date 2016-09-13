@@ -27,7 +27,7 @@ class UserBlockToggleOperation: SyncOperation<Void> {
     override func execute() -> OperationResult<Void> {
         if user.isBlocked {
             user.unblock()
-            guard let unblockRequest = UserUnblockRequest(userID: user.id, userUnblockAPIPath: unblockAPIPath) else {
+            guard let unblockRequest = UserUnblockRequest(apiPath: unblockAPIPath, userID: user.id) else {
                 let error = NSError(domain: "UnblockRequest", code: 1, userInfo: nil)
                 return .failure(error)
             }
@@ -36,7 +36,7 @@ class UserBlockToggleOperation: SyncOperation<Void> {
         }
         else {
             user.block()
-            guard let blockRequest = UserBlockRequest(userID: user.id, userBlockAPIPath: blockAPIPath) else {
+            guard let blockRequest = UserBlockRequest(apiPath: blockAPIPath, userID: user.id) else {
                 let error = NSError(domain: "BlockRequest", code: 2, userInfo: nil)
                 return .failure(error)
             }

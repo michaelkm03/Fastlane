@@ -10,7 +10,6 @@ import Foundation
 
 /// - note: No matter which queue the operation is scheduled and/or executed on, its completion block will be running on the main queue.
 protocol Queueable {
-    
     /// Conformers should define what type of Output it will generate.
     associatedtype Output
     

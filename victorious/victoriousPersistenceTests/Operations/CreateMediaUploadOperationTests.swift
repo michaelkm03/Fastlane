@@ -19,7 +19,7 @@ class CreateMediaUploadOperationTests: XCTestCase {
         mockParameters.mediaToUploadURL = NSURL(string: "www.google.com")!
         
         let expectation = expectationWithDescription("CreateMediaUploadOperation Tests")
-        let operation = CreateMediaUploadOperation(publishParameters: mockParameters, uploadManager: uploadManager, apiPath: APIPath(templatePath: ""))
+        let operation = CreateMediaUploadOperation(apiPath: APIPath(templatePath: ""), publishParameters: mockParameters, uploadManager: uploadManager)!
         
         operation.queue() { _ in
             XCTAssertEqual(1, self.uploadManager.enqueuedTasksCount)
@@ -33,7 +33,7 @@ class CreateMediaUploadOperationTests: XCTestCase {
         let invalidParameters = VPublishParameters()
         
         let expectation = expectationWithDescription("CreateMediaUploadOperation Tests")
-        let operation = CreateMediaUploadOperation(publishParameters: invalidParameters, uploadManager: uploadManager, apiPath: APIPath(templatePath: ""))
+        let operation = CreateMediaUploadOperation(apiPath: APIPath(templatePath: ""), publishParameters: invalidParameters, uploadManager: uploadManager)!
         
         operation.queue() { _ in
             XCTAssertEqual(0, self.uploadManager.enqueuedTasksCount)
@@ -49,7 +49,7 @@ class CreateMediaUploadOperationTests: XCTestCase {
         mockParameters.assetRemoteId = "ABCDEF"
         
         let expectation = expectationWithDescription("CreateMediaUploadOperation Tests")
-        let operation = CreateMediaUploadOperation(publishParameters: mockParameters, uploadManager: uploadManager, apiPath: APIPath(templatePath: ""))
+        let operation = CreateMediaUploadOperation(apiPath: APIPath(templatePath: ""), publishParameters: mockParameters, uploadManager: uploadManager)!
         
         operation.queue() { _ in
             XCTAssertEqual(1, self.uploadManager.enqueuedTasksCount)

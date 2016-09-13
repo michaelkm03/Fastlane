@@ -14,8 +14,7 @@ import Foundation
 /// * Subclasses must override `var executionQueue` to specify which queue it gets executed on.
 /// * Subclasses must override `func execute()` to specify the main body of the operation.
 /// - note:
-/// * We use a semaphore to block the operation's execution, and only finishes when `finish` was called.
-/// Semaphore blocks threads but not queues, so we may want to revisit this if something goes wrong / we need concurrent operations.
+/// * The operation will block its `executionQueue` only during the synchronous execution of the `execute` method.
 class AsyncOperation<Output>: NSOperation, Queueable {
     
     // MARK: - KVO-able NSNotification State

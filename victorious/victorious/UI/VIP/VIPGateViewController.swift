@@ -46,10 +46,11 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     @IBOutlet private var scrollViewInsetConstraints: [NSLayoutConstraint]!
     
     private lazy var vipSubscriptionHelper: VIPSubscriptionHelper? = {
-        guard let subscriptionFetchURL = self.dependencyManager.subscriptionFetchURL else {
+        guard let subscriptionFetchAPIPath = self.dependencyManager.subscriptionFetchAPIPath else {
             return nil
         }
-        return VIPSubscriptionHelper(subscriptionFetchURL: subscriptionFetchURL, delegate: self, originViewController: self, dependencyManager: self.dependencyManager)
+        
+        return VIPSubscriptionHelper(subscriptionFetchAPIPath: subscriptionFetchAPIPath, delegate: self, originViewController: self, dependencyManager: self.dependencyManager)
     }()
     
     weak var delegate: VIPGateViewControllerDelegate?
@@ -93,9 +94,16 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     
     @IBAction func onRestore(sender: UIButton? = nil) {
         restoreButton.dependencyManager?.trackButtonEvent(.tap)
-        let restore = RestorePurchasesOperation(validationURL: dependencyManager.validationURL)
+        
+        guard let validationAPIPath = dependencyManager.validationAPIPath else {
+            return
+        }
+        
+        let restore = RestorePurchasesOperation(validationAPIPath: validationAPIPath)
+        
         setIsLoading(true, title: Strings.restoreInProgress)
-        restore.queue() { [weak self] result in
+        
+        restore.queue { [weak self] result in
             self?.setIsLoading(false)
             
             switch result {
@@ -127,7 +135,7 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     // MARK: - Private
     
     private func navigateToFixedWebContent(type: FixedWebContentType) {
-        let router = Router(originViewController: self, dependencyManager: dependencyManager)
+        let router = Router(originViewController: self, dependencyManager: dependencyManager.navBarDependency)
         let configuration = ExternalLinkDisplayConfiguration(addressBarVisible: false, forceModal: true, isVIPOnly: false, title: type.title)
         router.navigate(to: .externalURL(url: dependencyManager.urlForFixedWebContent(type), configuration: configuration))
     }
@@ -245,6 +253,10 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
 }
 
 private extension VDependencyManager {
+    var navBarDependency: VDependencyManager {
+        return childDependencyForKey("navigation.bar.appearance") ?? self
+    }
+    
     var headerText: String? {
         return stringForKey("text.header")
     }
@@ -289,12 +301,12 @@ private extension VDependencyManager {
         return colorForKey("color.restore")
     }
     
-    var termsOfServiceLinkAttributes: [String : AnyObject]? {
+    var termsOfServiceLinkAttributes: [String: AnyObject]? {
         guard
             let font = fontForKey("font.tos"),
             let color = colorForKey("color.tos")
         else {
-                return nil
+            return nil
         }
         
         return [
@@ -312,7 +324,7 @@ private extension VDependencyManager {
             let font = fontForKey("font.privacy"),
             let color = colorForKey("color.privacy")
         else {
-                return nil
+            return nil
         }
         
         return [
@@ -337,17 +349,11 @@ private extension VDependencyManager {
         return childDependencyForKey("restore.button")
     }
     
-    var subscriptionFetchURL: String? {
-        return networkResources?.stringForKey("inapp.sku.URL")
+    var subscriptionFetchAPIPath: APIPath? {
+        return networkResources?.apiPathForKey("inapp.sku.URL")
     }
     
-    var validationURL: NSURL? {
-        guard
-            let urlString = networkResources?.stringForKey("purchaseURL"),
-            let url = NSURL(string: urlString)
-        else {
-            return nil
-        }
-        return url
+    var validationAPIPath: APIPath? {
+        return networkResources?.apiPathForKey("purchaseURL")
     }
 }

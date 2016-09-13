@@ -11,11 +11,11 @@ import XCTest
 
 class CreateChatServiceTokenRequestTests: XCTestCase {
     
-    private let expandableURLString = "https://vapi-dev.getvictorious.com/v1/users/%%USER_ID%%/chat/token"
+    private let apiPath = APIPath(templatePath: "https://vapi-dev.getvictorious.com/v1/users/%%USER_ID%%/chat/token")
     private let userID = 1337
     
     func testInitialization() {
-        let request = CreateChatServiceTokenRequest(expandableURLString: expandableURLString, currentUserID: userID)
+        let request = CreateChatServiceTokenRequest(apiPath: apiPath, currentUserID: userID)
         XCTAssertNotNil(request, "Expected CreateChatServiceTokenRequest to be created with valied data.")
         
         let expandedURLString = "https://vapi-dev.getvictorious.com/v1/users/1337/chat/token"

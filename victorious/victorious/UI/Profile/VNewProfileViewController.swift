@@ -395,7 +395,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     private func fetchUser(withRemoteID remoteID: Int, shouldShowSpinner: Bool = true) {
         guard
             let apiPath = dependencyManager.networkResources?.userFetchAPIPath,
-            let request = UserInfoRequest(userID: remoteID, apiPath: apiPath)
+            let request = UserInfoRequest(apiPath: apiPath, userID: remoteID)
         else {
             return
         }

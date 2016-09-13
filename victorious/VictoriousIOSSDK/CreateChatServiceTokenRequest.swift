@@ -11,27 +11,19 @@ import Foundation
 /// Request for creating a new authentication token at the backend used 
 /// to identify the client when a WebSocket connection opens.
 public struct CreateChatServiceTokenRequest: RequestType {
-
-    private let userIDExpander = "%%USER_ID%%"
-    
     private let url: NSURL
 
-    public init?(expandableURLString: String, currentUserID: Int) {
-        guard
-            !expandableURLString.isEmpty,
-            let expandedURLString = VSDKURLMacroReplacement().urlByReplacingMacrosFromDictionary([userIDExpander: String(currentUserID)], inURLString: expandableURLString),
-            let url = NSURL(string: expandedURLString)
-        else {
+    public init?(apiPath: APIPath, currentUserID: User.ID) {
+        var apiPath = apiPath
+        apiPath.macroReplacements["%%USER_ID%%"] = String(currentUserID)
+        
+        guard let url = apiPath.url else {
             return nil
         }
         
         self.url = url
     }
     
-    public var baseURL: NSURL? {
-        return url.baseURL
-    }
-
     public var urlRequest: NSURLRequest {
         let request = NSMutableURLRequest(URL: url)
         request.HTTPMethod = "POST"

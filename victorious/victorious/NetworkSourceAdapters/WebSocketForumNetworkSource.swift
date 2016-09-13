@@ -155,7 +155,10 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
             return
         }
         
-        guard let request = CreateChatServiceTokenRequest(expandableURLString: dependencyManager.expandableTokenURL, currentUserID: currentUserID) else {
+        guard
+            let apiPath = dependencyManager.expandableTokenAPIPath,
+            let request = CreateChatServiceTokenRequest(apiPath: apiPath, currentUserID: currentUserID)
+        else {
             return
         }
         
@@ -177,16 +180,19 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
                     strongSelf.webSocketController.replaceEndPoint(url)
                     strongSelf.webSocketController.setUp()
                 
-                case .failure(_), .cancelled:
-                    Log.warning("Failed to parse the token from the response. Results -> \(result)")
+                case .failure(let error):
+                    Log.warning("Failed to parse the token from the response. Error -> \(error)")
+                
+                case .cancelled:
+                    break
             }
         }
     }
 }
 
 private extension VDependencyManager {
-    var expandableTokenURL: String {
-        return stringForKey("authURL") ?? ""
+    var expandableTokenAPIPath: APIPath? {
+        return apiPathForKey("authURL")
     }
     
     var expandableSocketURL: String {

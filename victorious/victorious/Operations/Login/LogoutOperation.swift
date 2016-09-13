@@ -48,9 +48,7 @@ class LogoutOperation: AsyncOperation<Void> {
             VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidLogOut)
             
             // Try to reset the network resource token.
-            if let dependencyManager = self?.dependencyManager, let forumNetworkSource = dependencyManager.forumNetworkSource {
-                forumNetworkSource.tearDown()
-            }
+            self?.dependencyManager?.forumNetworkSource?.tearDown()
             
             // And finally, clear the user.  Don't do this early because
             // some of the stuff above requires knowing the current user

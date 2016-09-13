@@ -21,20 +21,15 @@ class VIPValidateSubscriptionOperation: AsyncOperation<VIPStatus> {
     /// the validation on the server fails.  In such a case, we err in favor of the
     /// user to ensure we deliver any digital products immediately after purchase,
     /// as per Apple's IAP UX requirements.
-    convenience init?(url: NSURL?, shouldForceSuccess: Bool = false) {
-        if let url = url {
-            self.init(url: url, shouldForceSuccess: shouldForceSuccess)
-        }
-        else if shouldForceSuccess {
-            self.init(url: NSURL(), shouldForceSuccess: true)
-        }
-        else {
+    init?(apiPath: APIPath, shouldForceSuccess: Bool = false) {
+        let receiptData = receiptDataSource.readReceiptData() ?? NSData()
+        let request = ValidateReceiptRequest(apiPath: apiPath, data: receiptData)
+        
+        if request == nil && !shouldForceSuccess {
             return nil
         }
-    }
-    
-    private init(url: NSURL, shouldForceSuccess: Bool) {
-        self.url = url
+        
+        self.request = request
         self.shouldForceSuccess = shouldForceSuccess
     }
     
@@ -42,14 +37,9 @@ class VIPValidateSubscriptionOperation: AsyncOperation<VIPStatus> {
     
     var receiptDataSource: ReceiptDataSource = NSBundle.mainBundle()
     
-    private let url: NSURL
-    
     private(set) var validationSucceeded = false
     
-    lazy var request: ValidateReceiptRequest! = {
-        let receiptData = self.receiptDataSource.readReceiptData() ?? NSData()
-        return ValidateReceiptRequest(data: receiptData, url: self.url)
-    }()
+    private let request: ValidateReceiptRequest?
     
     let shouldForceSuccess: Bool
     
@@ -58,7 +48,7 @@ class VIPValidateSubscriptionOperation: AsyncOperation<VIPStatus> {
     }
     
     override func execute(finish: (result: OperationResult<VIPStatus>) -> Void) {
-        guard request != nil else {
+        guard let request = request else {
             if shouldForceSuccess {
                 let status = VIPStatus(isVIP: true)
                 updateUser(status: status)
@@ -112,8 +102,6 @@ class VIPValidateSubscriptionOperation: AsyncOperation<VIPStatus> {
             currentUser.vipStatus = nil
         }
         
-        dispatch_sync(dispatch_get_main_queue()) {
-            VCurrentUser.update(to: currentUser)
-        }
+        VCurrentUser.update(to: currentUser)
     }
 }

@@ -139,12 +139,15 @@ class ContentPublisher {
                 return
             }
             
-            guard let apiPath = dependencyManager.mediaCreationAPIPath(for: content) else {
+            guard
+                let apiPath = dependencyManager.mediaCreationAPIPath(for: content),
+                let operation = CreateMediaUploadOperation(apiPath: apiPath, publishParameters: publishParameters, uploadManager: VUploadManager.sharedManager())
+            else {
                 completion?(ContentPublisherError.invalidNetworkResources)
                 return
             }
             
-            CreateMediaUploadOperation(publishParameters: publishParameters, uploadManager: VUploadManager.sharedManager(), apiPath: apiPath).queue() { result in
+            operation.queue { result in
                 switch result {
                     case .success:
                         completion?(nil)
@@ -156,14 +159,15 @@ class ContentPublisher {
             }
         }
         else if let text = content.text {
-            guard let apiPath = dependencyManager.textCreationAPIPath(for: content) else {
+            guard
+                let apiPath = dependencyManager.textCreationAPIPath(for: content),
+                let request = ChatMessageCreateRequest(apiPath: apiPath, text: text)
+            else {
                 completion?(ContentPublisherError.invalidNetworkResources)
                 return
             }
             
-            RequestOperation(
-                request: ChatMessageCreateRequest(apiPath: apiPath, text: text)
-            ).queue { result in
+            RequestOperation(request: request).queue { result in
                 switch result {
                     case .success, .cancelled: completion?(nil)
                     case .failure(let error): completion?(error)

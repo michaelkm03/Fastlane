@@ -35,7 +35,7 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation: NSOper
     
     // MARK: - Initializing
     
-    init(apiPath: APIPath, ordering: PaginatedOrdering = .descending, throttleTime: NSTimeInterval = 1.0, createOperation: (apiPath: APIPath) -> Operation, processOutput: (output: Operation.Output) -> [Item]) {
+    init(apiPath: APIPath, ordering: PaginatedOrdering = .descending, throttleTime: NSTimeInterval = 1.0, createOperation: (apiPath: APIPath) -> Operation?, processOutput: (output: Operation.Output) -> [Item]) {
         self.apiPath = apiPath
         self.ordering = ordering
         self.throttleTime = throttleTime
@@ -61,7 +61,7 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation: NSOper
     let throttleTime: NSTimeInterval
     
     /// A function that converts an API path into an operation that loads a page of items.
-    private let createOperation: (apiPath: APIPath) -> Operation
+    private let createOperation: (apiPath: APIPath) -> Operation?
     
     /// A function that converts the output of the data source's operation into a list of items.
     private let processOutput: (output: Operation.Output) -> [Item]

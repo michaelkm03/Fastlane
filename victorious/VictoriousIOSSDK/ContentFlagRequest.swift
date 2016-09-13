@@ -9,17 +9,22 @@
 import Foundation
 
 public struct ContentFlagRequest: RequestType {
-    public var urlRequest: NSURLRequest {
-        let request = NSMutableURLRequest(URL: contentFlagURL)
-        request.HTTPMethod = "POST"
-        return request
-    }
-    
-    private let contentFlagURL: NSURL
+    private let url: NSURL
 
-    public init(contentID: String, apiPath: APIPath) {
+    public init?(apiPath: APIPath, contentID: String) {
         var apiPath = apiPath
         apiPath.macroReplacements["%%CONTENT_ID%%"] = contentID
-        contentFlagURL = apiPath.url ?? NSURL()
+        
+        guard let url = apiPath.url else {
+            return nil
+        }
+        
+        self.url = url
+    }
+    
+    public var urlRequest: NSURLRequest {
+        let request = NSMutableURLRequest(URL: url)
+        request.HTTPMethod = "POST"
+        return request
     }
 }

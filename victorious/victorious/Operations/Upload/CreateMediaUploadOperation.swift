@@ -11,7 +11,6 @@ import VictoriousIOSSDK
 import FBSDKCoreKit
 
 final class CreateMediaUploadOperation: SyncOperation<Void> {
-    
     let request: MediaUploadCreateRequest
     let uploadManager: VUploadManager
     let publishParameters: VPublishParameters
@@ -19,9 +18,13 @@ final class CreateMediaUploadOperation: SyncOperation<Void> {
     
     private var currentUploadTask: VUploadTaskInformation?
     
-    init(publishParameters: VPublishParameters, uploadManager: VUploadManager, apiPath: APIPath) {
+    init?(apiPath: APIPath, publishParameters: VPublishParameters, uploadManager: VUploadManager) {
+        guard let request = MediaUploadCreateRequest(apiPath: apiPath) else {
+            return nil
+        }
+        
         self.mediaURL = publishParameters.mediaToUploadURL
-        self.request = MediaUploadCreateRequest(apiPath: apiPath)
+        self.request = request
         self.publishParameters = publishParameters
         self.uploadManager = uploadManager
     }

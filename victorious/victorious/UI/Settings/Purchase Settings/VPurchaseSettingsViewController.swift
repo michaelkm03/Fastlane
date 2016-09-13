@@ -23,7 +23,12 @@ extension VPurchaseSettingsViewController {
     }
     
     func queueValidateSubscriptionOperationWithURL(url: NSURL?, shouldForceSuccess: Bool, completion: () -> Void) {
-        VIPValidateSubscriptionOperation(url: url, shouldForceSuccess: shouldForceSuccess)?.queue { _ in
+        guard let url = url else {
+            completion()
+            return
+        }
+        
+        VIPValidateSubscriptionOperation(apiPath: APIPath(templatePath: url.absoluteString), shouldForceSuccess: shouldForceSuccess)?.queue { _ in
             completion()
         }
     }
