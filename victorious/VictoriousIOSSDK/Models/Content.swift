@@ -145,27 +145,92 @@ extension ContentModel {
 public class Content: ContentModel {
     public typealias ID = String
     
+    // MARK: - Identity
+    
+    /// The content's ID. Will be nil if the content was created from a VIP chat message, which doesn't have an ID.
     public let id: ID?
-    public let status: String?
-    public let text: String?
-    public let hashtags: [Hashtag]
-    public let shareURL: NSURL?
-    public let linkedURL: NSURL?
-    public let postedAt: Timestamp?
-    public let createdAt: Timestamp
-    public let paginationTimestamp: Timestamp
-    public let previewImages: [ImageAssetModel]
-    public let assets: [ContentMediaAssetModel]
-    public let type: ContentType
-    public let isVIPOnly: Bool
+    
+    // MARK: - Author
+    
+    /// The author of this content.
     public let author: UserModel
+    
+    // MARK: - Content
+    
+    /// The type of content that is contained by this model.
+    public let type: ContentType
+    
+    /// The content's text or media caption.
+    public let text: String?
+    
+    /// A list of images of different sizes that can be used as the content's preview.
+    public let previewImages: [ImageAssetModel]
+    
+    /// A list of assets of different sizes that are contained by this content.
+    public let assets: [ContentMediaAssetModel]
+    
+    /// A URL that this content links to, if any.
+    public let linkedURL: NSURL?
+    
+    /// Whether this content is only accessible for VIP users.
+    public let isVIPOnly: Bool
+    
+    // MARK: - Tagging
+    
+    /// The hashtags contained by the content.
+    public let hashtags: [Hashtag]
+    
+    /// A mapping of usernames to corresponding deep link URLs for users who are tagged in the content's `text`.
+    ///
+    /// When rendering the `text`, all occurrences of that username that are preceded by an @ character within the text
+    /// should be rendered as a tappable link to the corresponding deep link URL.
+    ///
+    public let userTags: [String: NSURL]
+    
+    // MARK: - Liking
+    
+    /// Whether the server has reported that this content was liked by the current user.
+    ///
+    /// The server updates content like state asynchronously, so it may not always report the most up-to-date value.
+    /// Using the `isLikedByCurrentUser` property is preferred because it will factor in our optimistic cache data as
+    /// well.
+    ///
     public let isRemotelyLikedByCurrentUser: Bool
     
-    /// videoStartTime is the time this piece of video content started in our device time
-    /// It is used to keep videos in sync for videos on stage
+    // MARK: - Timestamps
+    
+    /// The time that this content was created by the user and submitted to the server.
+    ///
+    /// This can be used to match locally-created content to content returned from the server. If content was created
+    /// by the same user and has the same `postedAt` date, then it is guaranteed to be the same content.
+    ///
+    /// Will be nil for chat messages.
+    ///
+    public let postedAt: Timestamp?
+    
+    /// The time that this content was created on the server at.
+    public let createdAt: Timestamp
+    
+    /// The timestamp value to use for pagination purposes.
+    public let paginationTimestamp: Timestamp
+    
+    // MARK: - Sharing
+    
+    /// The URL that should be used to link to this content when sharing outside of the app.
+    public let shareURL: NSURL?
+    
+    // MARK: - Tracking
+    
+    /// The content's tracking information.
+    public let tracking: TrackingModel?
+    
+    // MARK: - Syncing
+    
+    /// The time this piece of video content started in our device time. It may be used in order to sync video content
+    /// between sessions.
     public var localStartTime: NSDate?
     
-    public let tracking: TrackingModel?
+    // MARK: - Initializing
     
     public init?(json viewedContentJSON: JSON) {
         let json = viewedContentJSON["content"]
@@ -181,41 +246,45 @@ public class Content: ContentModel {
             return nil
         }
         
-        self.isRemotelyLikedByCurrentUser = viewedContentJSON["viewer_engagements"]["is_liking"].bool ?? false
-        self.isVIPOnly = json["is_vip"].bool ?? false
+        let sourceType = json[typeString]["type"].string ?? typeString
+        
         self.id = id
-        self.status = json["status"].string
-        self.shareURL = json["share_url"].URL
-        self.postedAt = Timestamp(apiString: json["posted_at"].stringValue)
-        self.createdAt = Timestamp(apiString: json["released_at"].stringValue) ?? Timestamp()
-        self.paginationTimestamp = Timestamp(apiString: viewedContentJSON["pagination_timestamp"].stringValue) ?? Timestamp()
-        self.hashtags = []
+        self.author = author
         self.type = type
         
         if type == .text {
-            self.text = json[typeString]["data"].string
+            text = json[typeString]["data"].string
         }
         else {
-            self.text = json["title"].string
+            text = json["title"].string
         }
         
-        self.author = author
-        self.linkedURL = NSURL(string: json[typeString]["data"].stringValue)
-        
-        self.previewImages = (json["preview"][previewType]["assets"].array ?? []).flatMap { ImageAsset(json: $0) }
-        
-        let sourceType = json[typeString]["type"].string ?? typeString
+        previewImages = (json["preview"][previewType]["assets"].array ?? []).flatMap { ImageAsset(json: $0) }
         
         switch type {
             case .image:
-                self.assets = [ContentMediaAsset(contentType: type, sourceType: sourceType, json: json[typeString])].flatMap { $0 }
+                assets = [ContentMediaAsset(contentType: type, sourceType: sourceType, json: json[typeString])].flatMap { $0 }
             case .gif, .video:
-                self.assets = (json[typeString][sourceType].array ?? []).flatMap { ContentMediaAsset(contentType: type, sourceType: sourceType, json: $0) }
+                assets = (json[typeString][sourceType].array ?? []).flatMap { ContentMediaAsset(contentType: type, sourceType: sourceType, json: $0) }
             case .text, .link:
-                self.assets = []
+                assets = []
         }
         
-        self.tracking = Tracking(json: json["tracking"])
+        linkedURL = NSURL(string: json[typeString]["data"].stringValue)
+        isVIPOnly = json["is_vip"].bool ?? false
+        hashtags = []
+        
+        // TODO: Get real data.
+        userTags = [
+            "jarod": NSURL(string: "vthisapp://profile/7256")!
+        ]
+        
+        isRemotelyLikedByCurrentUser = viewedContentJSON["viewer_engagements"]["is_liking"].bool ?? false
+        postedAt = Timestamp(apiString: json["posted_at"].stringValue)
+        createdAt = Timestamp(apiString: json["released_at"].stringValue) ?? Timestamp()
+        paginationTimestamp = Timestamp(apiString: viewedContentJSON["pagination_timestamp"].stringValue) ?? Timestamp()
+        shareURL = json["share_url"].URL
+        tracking = Tracking(json: json["tracking"])
     }
     
     public init?(chatMessageJSON json: JSON, serverTime: Timestamp) {
@@ -223,22 +292,21 @@ public class Content: ContentModel {
             return nil
         }
         
-        author = user
-        createdAt = serverTime
-        postedAt = nil
-        paginationTimestamp = serverTime
-        text = json["text"].string
-        assets = [ContentMediaAsset(forumJSON: json["asset"])].flatMap { $0 }
-        
         id = nil
-        status = nil
-        hashtags = []
-        shareURL = nil
-        linkedURL = nil
+        author = user
+        assets = [ContentMediaAsset(forumJSON: json["asset"])].flatMap { $0 }
+        type = assets.first?.contentType ?? .text
+        text = json["text"].string
         previewImages = []
-        self.type = assets.first?.contentType ?? .text
+        linkedURL = nil
         isVIPOnly = false
+        hashtags = []
+        userTags = [:]
         isRemotelyLikedByCurrentUser = false
+        postedAt = nil
+        createdAt = serverTime
+        paginationTimestamp = serverTime
+        shareURL = nil
         tracking = nil //Tracking is not returned on chat messages
         
         // Either one of these types are required to be counted as a chat message.
@@ -259,23 +327,22 @@ public class Content: ContentModel {
         previewImages: [ImageAssetModel] = [],
         localStartTime: NSDate? = nil
     ) {
-        self.author = author
         self.id = id
+        self.author = author
+        self.type = type
+        self.text = text
+        self.previewImages = previewImages
+        self.assets = assets
+        self.linkedURL = nil
+        self.isVIPOnly = false
+        self.hashtags = []
+        self.userTags = [:]
+        self.isRemotelyLikedByCurrentUser = false
         self.postedAt = postedAt
         self.createdAt = createdAt
         self.paginationTimestamp = paginationTimestamp
-        self.type = type
-        self.text = text
-        self.assets = assets
-        self.previewImages = previewImages
-        self.localStartTime = localStartTime
-        
-        self.status = nil
-        self.hashtags = []
         self.shareURL = nil
-        self.linkedURL = nil
-        self.isVIPOnly = false
         self.tracking = nil
-        isRemotelyLikedByCurrentUser = false
+        self.localStartTime = localStartTime
     }
 }
