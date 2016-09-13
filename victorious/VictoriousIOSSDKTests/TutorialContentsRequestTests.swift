@@ -12,12 +12,12 @@ import XCTest
 
 class TutorialContentsRequestTests: XCTestCase {
     
-    private let urlFromTemplate = "https://www.google.com"
+    private let apiPath = APIPath(templatePath: "https://www.google.com")
     
     func testRequest() {
-        let request = TutorialContentsRequest(urlString: urlFromTemplate)
+        let request = TutorialContentsRequest(apiPath: apiPath)
         XCTAssertNotNil(request)
-        XCTAssertEqual(request.urlRequest.URL?.absoluteString, urlFromTemplate)
+        XCTAssertEqual(request?.urlRequest.URL?.absoluteString, apiPath.url?.absoluteString)
     }
     
     func testParseResponse() {
@@ -28,7 +28,7 @@ class TutorialContentsRequestTests: XCTestCase {
         }
         
         do {
-            let request = TutorialContentsRequest(urlString: urlFromTemplate)
+            let request = TutorialContentsRequest(apiPath: apiPath)!
             let results = try request.parseResponse(NSURLResponse(), toRequest: request.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             
             XCTAssertEqual(results.count, 2)

@@ -13,7 +13,7 @@ extension VDependencyManager {
     
     /// This should only be called after calling networkResources
     /// e.g. dependencyManager.networkResources?.userFetchAPIPath
-    var userFetchAPIPath: String? {
-        return stringForKey("userInfoURL")
+    var userFetchAPIPath: APIPath? {
+        return apiPathForKey("userInfoURL")
     }
 }

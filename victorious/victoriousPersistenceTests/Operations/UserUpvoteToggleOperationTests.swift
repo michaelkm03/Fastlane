@@ -31,7 +31,7 @@ class UserUpvoteToggleOperationTests: BaseFetcherOperationTestCase {
             unupvoteAPIPath: APIPath(templatePath: "")
         )
         
-        operation.queue { results, error, cancelled in
+        operation.queue { result in
             XCTAssertFalse(user.isUpvoted)
             expectation.fulfill()
         }
@@ -51,7 +51,7 @@ class UserUpvoteToggleOperationTests: BaseFetcherOperationTestCase {
             unupvoteAPIPath: APIPath(templatePath: "")
         )
         
-        operation.queue { results, error, cancelled in
+        operation.queue { result in
             XCTAssertTrue(user.isUpvoted)
             expectation.fulfill()
         }

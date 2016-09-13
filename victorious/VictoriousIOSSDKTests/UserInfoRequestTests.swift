@@ -10,11 +10,11 @@ import XCTest
 @testable import VictoriousIOSSDK
 
 class UserInfoRequestTests: XCTestCase {
-    private static let macroAPIPath = "http://api.getvictorious.com/my/cool/path/%%USER_ID%%"
+    private static let apiPath = APIPath(templatePath: "http://api.getvictorious.com/my/cool/path/%%USER_ID%%")
     
     func testRequestConfigurationWithAPIPath() {
         let id = 9090
-        let request = UserInfoRequest(userID: id, apiPath: UserInfoRequestTests.macroAPIPath)!
+        let request = UserInfoRequest(apiPath: UserInfoRequestTests.apiPath, userID: id)!
         XCTAssertEqual(request.urlRequest.URL, NSURL(string: "http://api.getvictorious.com/my/cool/path/\(id)"))
     }
     
@@ -26,7 +26,7 @@ class UserInfoRequestTests: XCTestCase {
         }
         
         let id: Int = 3694
-        let request =  UserInfoRequest(userID: id, apiPath: UserInfoRequestTests.macroAPIPath)!
+        let request =  UserInfoRequest(apiPath: UserInfoRequestTests.apiPath, userID: id)!
         let user: User
         do {
             user = try request.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))

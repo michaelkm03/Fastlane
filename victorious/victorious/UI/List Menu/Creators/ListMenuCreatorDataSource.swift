@@ -31,26 +31,30 @@ final class ListMenuCreatorDataSource: ListMenuSectionDataSource {
     weak var delegate: ListMenuSectionDataSourceDelegate?
     
     func fetchRemoteData() {
-        guard let endpointURLFromTemplate = dependencyManager.listOfCreatorsURLString else {
-            Log.info("nil endpoint url for list of creators on left nav")
+        guard
+            let apiPath = dependencyManager.creatorListAPIPath,
+            let request = CreatorListRequest(apiPath: apiPath)
+        else {
+            Log.info("Missing or invalid creator list API path: \(dependencyManager.creatorListAPIPath)")
             return
         }
         
-        let operation = CreatorListRemoteOperation(urlString: endpointURLFromTemplate)
-        
-        operation.queue { [weak self] _, error, _ in
-            guard error == nil else {
-                self?.state = .failed(error: error)
-                self?.delegate?.didUpdateVisibleItems(forSection: .creator)
-                return
+        RequestOperation(request: request).queue { [weak self] result in
+            switch result {
+                case .success(let users):
+                    self?.visibleItems = users
+                case .failure(let error):
+                    self?.state = .failed(error: error)
+                    self?.delegate?.didUpdateVisibleItems(forSection: .creator)
+                case .cancelled:
+                    break
             }
-            self?.visibleItems = operation.creators
         }
     }
 }
 
 private extension VDependencyManager {
-    var listOfCreatorsURLString: String? {
-        return stringForKey("listOfCreatorsURL")
+    var creatorListAPIPath: APIPath? {
+        return apiPathForKey("listOfCreatorsURL")
     }
 }

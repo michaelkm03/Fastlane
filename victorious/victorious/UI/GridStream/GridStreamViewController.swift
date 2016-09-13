@@ -142,14 +142,15 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
             return
         }
         
-        dataSource.loadContent(for: collectionView, loadingType: loadingType) { [weak self] newItems, error in
+        dataSource.loadContent(for: collectionView, loadingType: loadingType) { [weak self] result in
             // Calling this method stops scrolling, so only do it if necessary.
             if self?.refreshControl.refreshing == true {
                 self?.refreshControl.endRefreshing()
             }
             
-            if error != nil {
-                (self?.navigationController ?? self)?.v_showErrorDefaultError()
+            switch result {
+                case .success(_): break
+                case .failure(_): (self?.navigationController ?? self)?.v_showErrorDefaultError()
             }
             
             self?.collectionView.collectionViewLayout.invalidateLayout()

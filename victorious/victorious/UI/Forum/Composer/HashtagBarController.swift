@@ -48,7 +48,7 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
         }
     }
     
-    private var currentFetchOperation: RemoteFetcherOperation? {
+    private var currentFetchOperation: AsyncOperation<[Hashtag]>? {
         didSet {
             if oldValue != currentFetchOperation {
                 oldValue?.cancel()
@@ -77,7 +77,7 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
     
     private let searchAPIPath: APIPath?
     
-    private let trendingURL: NSURL?
+    private let trendingAPIPath: APIPath?
     
     weak var selectionDelegate: HashtagBarControllerSelectionDelegate?
     
@@ -86,7 +86,7 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
     init(dependencyManager: VDependencyManager, collectionView: UICollectionView) {
         cellDecorator = HashtagBarCellDecorator(dependencyManager: dependencyManager)
         searchAPIPath = dependencyManager.hashtagSearchAPIPath
-        trendingURL = dependencyManager.trendingHashtagsURL
+        trendingAPIPath = dependencyManager.trendingHashtagsAPIPath
         self.collectionView = collectionView
         super.init()
         collectionView.dataSource = self
@@ -127,43 +127,52 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
     // MARK: - Hashtag updating
     
     private func searchForText(text: String) {
-        guard let searchAPIPath = searchAPIPath else {
+        guard
+            let searchAPIPath = searchAPIPath,
+            let request = HashtagSearchRequest(apiPath: searchAPIPath, searchTerm: text)
+        else {
             return
         }
         
-        currentFetchOperation = HashtagSearchOperation(searchTerm: text, apiPath: searchAPIPath)
-        currentFetchOperation?.queue() { [weak self] results, error, success in
-            guard let results = results as? [HashtagSearchResultObject] else {
-                return
-            }
-            let tags = results.map({ return $0.tag })
-            self?.searchResults = tags.filter() { tag -> Bool in
-                let matchRange = (tag as NSString).rangeOfString(text)
-                guard matchRange.location == 0 else {
-                    return false
-                }
-                return tag != text
+        currentFetchOperation = RequestOperation(request: request)
+        
+        currentFetchOperation?.queue { [weak self] result in
+            switch result {
+                case .success(let hashtags):
+                    self?.searchResults = hashtags.map { $0.tag }.filter { tag in
+                        let matchRange = (tag as NSString).rangeOfString(text)
+                        guard matchRange.location == 0 else {
+                            return false
+                        }
+                        return tag != text
+                    }
+                
+                case .failure(_), .cancelled:
+                    break
             }
         }
     }
     
     private func getTrendingHashtags() {
-        guard let trendingURL = trendingURL else {
+        guard
+            let trendingAPIPath = trendingAPIPath,
+            let request = TrendingHashtagRequest(apiPath: trendingAPIPath)
+        else {
             return
         }
         
         searchResults = currentTrendingTags
-        currentFetchOperation = TrendingHashtagOperation(url: trendingURL)
-        currentFetchOperation?.queue() { [weak self] results, error, success in
-            guard let results = results as? [HashtagSearchResultObject] else {
-                return
+        
+        currentFetchOperation = RequestOperation(request: request)
+        
+        currentFetchOperation?.queue { [weak self] result in
+            switch result {
+                case .success(let hashtags): self?.currentTrendingTags = hashtags.map { $0.tag }
+                case .failure(_), .cancelled: break
             }
-            let tags = results.map({ return $0.tag })
-            self?.currentTrendingTags = tags
         }
     }
 
-    
     // MARK: - Helpers
     
     private func hashtagAtIndex(index: Int) -> String? {
@@ -220,10 +229,7 @@ private extension VDependencyManager {
         return networkResources?.apiPathForKey("hashtag.search.URL")
     }
     
-    var trendingHashtagsURL: NSURL? {
-        guard let urlString = networkResources?.stringForKey("trendingHashtagsURL") else {
-            return nil
-        }
-        return NSURL(string: urlString)
+    var trendingHashtagsAPIPath: APIPath? {
+        return networkResources?.apiPathForKey("trendingHashtagsURL")
     }
 }

@@ -21,4 +21,21 @@ extension VPurchaseSettingsViewController {
             MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
         }
     }
+    
+    func queueValidateSubscriptionOperationWithURL(url: NSURL?, shouldForceSuccess: Bool, completion: () -> Void) {
+        guard let url = url else {
+            completion()
+            return
+        }
+        
+        VIPValidateSubscriptionOperation(apiPath: APIPath(templatePath: url.absoluteString), shouldForceSuccess: shouldForceSuccess)?.queue { _ in
+            completion()
+        }
+    }
+    
+    func queueClearSubscriptionOperationWithCompletion(completion: () -> Void) {
+        VIPClearSubscriptionOperation().queue { _ in
+            completion()
+        }
+    }
 }
