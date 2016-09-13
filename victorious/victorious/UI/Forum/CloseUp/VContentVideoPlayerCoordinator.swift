@@ -23,7 +23,7 @@ protocol ContentVideoPlayerCoordinatorDelegate: class {
     func coordinatorDidFinishPlaying()
 }
 
-/// A coordinator that holds a VVideoView object adjusting for different types of VContent 
+/// A coordinator that holds a VVideoView object adjusting for different types of Content 
 /// (currently supporting GIFs, videos, and youtube videos)
 /// Sets up the video view and handles replay/buffering/scrubbing logic
 class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolbarDelegate {
