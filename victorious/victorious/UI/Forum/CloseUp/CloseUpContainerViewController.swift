@@ -107,6 +107,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         gridStreamController.didMoveToParentViewController(self)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(returnedFromBackground), name: UIApplicationDidBecomeActiveNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(rotate), name: UIDeviceOrientationDidChangeNotification, object: nil)
     }
     
     deinit {
@@ -284,6 +285,21 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     private dynamic func returnedFromBackground() {
         updateAudioSessionCategory()
     }
+    
+    private dynamic func rotate() {
+        switch UIDevice.currentDevice().orientation {
+        case .LandscapeLeft, .LandscapeRight:
+            closeUpView.mediaContentView?.removeFromSuperview()
+            presentViewController(LightBoxViewController(mediaContentView: closeUpView.mediaContentView!), animated: true, completion: nil)
+        case .Portrait, .PortraitUpsideDown:
+            dismissViewControllerAnimated(true) {
+                self.closeUpView.headerDidAppear()
+                self.closeUpView.closeUpContentContainerView?.addSubview(self.closeUpView.mediaContentView!)
+                self.view.setNeedsLayout()
+            }
+        default: break
+        }
+    }
 }
 
 private extension VDependencyManager {
@@ -333,5 +349,36 @@ private extension VDependencyManager {
     
     var gridStreamDependencyManager: VDependencyManager? {
         return childDependencyForKey("gridStream")
+    }
+}
+
+class LightBoxViewController: UIViewController {
+    let mediaContentView: MediaContentView
+    
+    init(mediaContentView: MediaContentView) {
+        self.mediaContentView = mediaContentView
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+        return .All
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        view.addSubview(mediaContentView)
+        view.v_addFitToParentConstraintsToSubview(mediaContentView)
+        
+        view.backgroundColor = .blackColor()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        mediaContentView.didPresent()
     }
 }

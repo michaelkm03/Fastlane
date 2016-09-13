@@ -37,7 +37,11 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
     @IBOutlet weak var createdAtLabel: UILabel!
     @IBOutlet weak var captionLabel: UILabel!
     @IBOutlet weak var relatedLabel: UILabel!
-    @IBOutlet weak var closeUpContentContainerView: UIView!
+    @IBOutlet weak var closeUpContentContainerView: UIView! {
+        didSet {
+            closeUpContentContainerView.backgroundColor = .blueColor()
+        }
+    }
     @IBOutlet weak var separatorBar: UIImageView!
     
     // MARK: - Variables
@@ -50,7 +54,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
         return ErrorStateView.v_fromNib()
     }()
 
-    private var mediaContentView: MediaContentView?
+    private(set) var mediaContentView: MediaContentView?
     
     private var videoPlayer: VVideoPlayer?
 
