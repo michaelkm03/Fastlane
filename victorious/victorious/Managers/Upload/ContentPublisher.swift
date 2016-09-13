@@ -59,7 +59,7 @@ class ContentPublisher {
     private(set) var pendingItems = [ChatFeedContent]()
     
     /// Queues `content` for publishing.
-    func publish(content: ContentModel, withWidth width: CGFloat) {
+    func publish(content: Content, withWidth width: CGFloat) {
         if optimisticPostingEnabled {
             guard let chatFeedContent = ChatFeedContent(content: content, width: width, dependencyManager: dependencyManager, creationState: .waiting) else {
                 assertionFailure("Failed to calculate height for chat feed content")
@@ -139,12 +139,15 @@ class ContentPublisher {
                 return
             }
             
-            guard let apiPath = dependencyManager.mediaCreationAPIPath(for: content) else {
+            guard
+                let apiPath = dependencyManager.mediaCreationAPIPath(for: content),
+                let operation = CreateMediaUploadOperation(apiPath: apiPath, publishParameters: publishParameters, uploadManager: VUploadManager.sharedManager())
+            else {
                 completion?(ContentPublisherError.invalidNetworkResources)
                 return
             }
             
-            CreateMediaUploadOperation(publishParameters: publishParameters, uploadManager: VUploadManager.sharedManager(), apiPath: apiPath).queue() { result in
+            operation.queue { result in
                 switch result {
                     case .success:
                         completion?(nil)
@@ -156,13 +159,19 @@ class ContentPublisher {
             }
         }
         else if let text = content.text {
-            guard let apiPath = dependencyManager.textCreationAPIPath(for: content) else {
+            guard
+                let apiPath = dependencyManager.textCreationAPIPath(for: content),
+                let request = ChatMessageCreateRequest(apiPath: apiPath, text: text)
+            else {
                 completion?(ContentPublisherError.invalidNetworkResources)
                 return
             }
             
-            ChatMessageCreateRemoteOperation(apiPath: apiPath, text: text).queue { _, error, _ in
-                completion?(error)
+            RequestOperation(request: request).queue { result in
+                switch result {
+                    case .success, .cancelled: completion?(nil)
+                    case .failure(let error): completion?(error)
+                }
             }
         }
         else {

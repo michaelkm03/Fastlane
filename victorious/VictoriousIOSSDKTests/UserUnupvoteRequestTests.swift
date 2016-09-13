@@ -10,12 +10,12 @@ import XCTest
 
 class UserUnupvoteRequestTests: XCTestCase {
     func testBadRequest() {
-        let request = UserUnupvoteRequest(userID: 123, userUnupvoteAPIPath: APIPath(templatePath: "#$%^&"))
+        let request = UserUnupvoteRequest(apiPath: APIPath(templatePath: "#$%^&"), userID: 123)
         XCTAssertNil(request)
     }
     
     func testRequest() {
-        let request = UserUnupvoteRequest(userID: 123, userUnupvoteAPIPath: APIPath(templatePath: "www.google.com/%%USER_ID%%"))
+        let request = UserUnupvoteRequest(apiPath: APIPath(templatePath: "www.google.com/%%USER_ID%%"), userID: 123)
         XCTAssertEqual(request?.urlRequest.URL?.absoluteString, "www.google.com/123")
     }
 }

@@ -10,8 +10,6 @@ import Foundation
 @testable import victorious
 @testable import VictoriousIOSSDK
 
-private let numberOfPagesBeforeReachingEnd = 5
-
 struct MockPaginatedRequest: PaginatorPageable, ResultBasedPageable {
     
     let paginator: StandardPaginator
@@ -28,31 +26,4 @@ struct MockPaginatedRequest: PaginatorPageable, ResultBasedPageable {
 
 class MockPaginatedObject {
     var displayOrder: NSNumber!
-}
-
-final class MockPaginatedRemoteOperation: FetcherOperation, RequestOperation {
-    
-    let request: MockPaginatedRequest!
-    
-    required init( request: MockPaginatedRequest = MockPaginatedRequest() ) {
-        self.request = request
-    }
-    
-    override func main() {
-        
-    }
-    
-    func fetchResults() -> [AnyObject] {
-        var displayOrder = self.request.paginator.displayOrderCounterStart
-        var results = [MockPaginatedObject]()
-        if self.request.paginator.pageNumber < numberOfPagesBeforeReachingEnd {
-            for _ in 0..<self.request.paginator.itemsPerPage {
-                let object = MockPaginatedObject()
-                object.displayOrder = displayOrder
-                displayOrder += 1
-                results.append( object )
-            }
-        }
-        return results
-    }
 }

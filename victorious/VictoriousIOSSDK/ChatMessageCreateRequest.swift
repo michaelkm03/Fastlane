@@ -10,21 +10,20 @@ import Foundation
 
 public struct ChatMessageCreateRequest: RequestType {
     public var urlRequest: NSURLRequest {
-        guard let url = apiPath.url else {
-            assertionFailure("Failed to generate URL from API path for creating chat message.")
-            return NSURLRequest()
-        }
-        
         let request = NSMutableURLRequest(URL: url)
         request.vsdk_addURLEncodedFormPost(["content": text])
         return request
     }
     
-    private let apiPath: APIPath
+    private let url: NSURL
     private let text: String
     
-    public init(apiPath: APIPath, text: String) {
-        self.apiPath = apiPath
+    public init?(apiPath: APIPath, text: String) {
+        guard let url = apiPath.url else {
+            return nil
+        }
+        
+        self.url = url
         self.text = text
     }
 }

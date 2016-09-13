@@ -252,7 +252,7 @@ private struct ShowCloseUpDisplayModifier {
 /// Shows a close up view displaying the provided content.
 private final class ShowCloseUpOperation: AsyncOperation<Void> {
     private let displayModifier: ShowCloseUpDisplayModifier
-    private var content: ContentModel?
+    private var content: Content?
     private var contentID: String?
     private var context: DeeplinkContext?
     private(set) var displayedCloseUpView: CloseUpContainerViewController?
@@ -264,9 +264,9 @@ private final class ShowCloseUpOperation: AsyncOperation<Void> {
         super.init()
     }
 
-    init(content: ContentModel, displayModifier: ShowCloseUpDisplayModifier, context: DeeplinkContext? = nil) {
-        self.content = content
+    init(content: Content, displayModifier: ShowCloseUpDisplayModifier, context: DeeplinkContext? = nil) {
         self.displayModifier = displayModifier
+        self.content = content
         self.context = context
         super.init()
     }
@@ -335,7 +335,12 @@ private final class ShowFetchedCloseUpOperation: AsyncOperation<Void> {
         let displayModifier = self.displayModifier
         guard
             let userID = VCurrentUser.user?.id,
-            let contentFetchURL = displayModifier.dependencyManager.contentFetchURL
+            let contentFetchAPIPath = displayModifier.dependencyManager.contentFetchAPIPath,
+            let contentFetchOperation = ContentFetchOperation(
+                apiPath: contentFetchAPIPath,
+                currentUserID: String(userID),
+                contentID: contentID
+            )
         else {
             let error = NSError(domain: "ShowFetchedCloseUpOperation", code: -1, userInfo: nil)
             finish(result: .failure(error))
@@ -347,38 +352,34 @@ private final class ShowFetchedCloseUpOperation: AsyncOperation<Void> {
         showCloseUpOperation.rechainAfter(self)
         
         // Set up ContentFetchOperation and chain it
-        let contentFetchOperation = ContentFetchOperation(
-            macroURLString: contentFetchURL,
-            currentUserID: String(userID),
-            contentID: contentID
-        )
         contentFetchOperation.rechainAfter(showCloseUpOperation)
         
         // Queue operations. We queue the operations after setting up dependency graph for NSOperationQueue performance reasons.
         showCloseUpOperation.queue()
         
-        contentFetchOperation.queue() { results, _, _ in
+        contentFetchOperation.queue { result in
             guard let shownCloseUpView = showCloseUpOperation.displayedCloseUpView else {
                 return
             }
             
-            guard let content = results?.first as? ContentModel else {
-                // Display error message.
-                shownCloseUpView.updateError()
-                return
-            }
-            
-            // Check for permissions before we continue to show the content
-            let router = Router(originViewController: shownCloseUpView, dependencyManager: displayModifier.dependencyManager)
-            router.checkForPermissionBeforeRouting(contentIsForVIPOnly: content.isVIPOnly) { success in
-                if success {
-                    shownCloseUpView.updateContent(content)
-                }
-                else {
-                    shownCloseUpView.navigationController?.popViewControllerAnimated(true)
-                }
+            switch result {
+                case .success(let content):
+                    // Check for permissions before we continue to show the content
+                    let router = Router(originViewController: shownCloseUpView, dependencyManager: displayModifier.dependencyManager)
+                    router.checkForPermissionBeforeRouting(contentIsForVIPOnly: content.isVIPOnly) { success in
+                        if success {
+                            shownCloseUpView.updateContent(content)
+                        }
+                        else {
+                            shownCloseUpView.navigationController?.popViewControllerAnimated(true)
+                        }
+                    }
+                
+                case .failure(_), .cancelled:
+                    shownCloseUpView.updateError()
             }
         }
+        
         finish(result: .success())
     }
 }
@@ -408,17 +409,17 @@ private final class ShowWebContentOperation: AsyncOperation<Void> {
         // since there would be no way to dimiss the view controller otherwise
         let viewController = WebContentViewController(shouldShowNavigationButtons: configuration.forceModal)
         
-        let fetchOperation = WebViewHTMLFetchOperation(urlPath: urlToFetchFrom)
-        fetchOperation.after(self).queue { [weak fetchOperation] results, error, cancelled in
-            guard
-                let htmlString = fetchOperation?.resultHTMLString where error == nil,
-                let baseURL = fetchOperation?.publicBaseURL
-            else {
-                viewController.setFailure(with: error)
-                return
+        let request = WebViewHTMLFetchRequest(urlPath: urlToFetchFrom)
+        let operation = RequestOperation(request: request)
+        
+        operation.after(self).queue { result in
+            switch result {
+                case .success(let htmlString):
+                    viewController.load(htmlString, baseURL: request.publicBaseURL ?? NSURL())
+                
+                case .failure(_), .cancelled:
+                    viewController.setFailure(with: result.error as? NSError)
             }
-            
-            viewController.load(htmlString, baseURL: baseURL)
         }
         
         viewController.automaticallyAdjustsScrollViewInsets = false
@@ -496,7 +497,7 @@ private extension VDependencyManager {
         return stringForKey("related.content.context") ?? ""
     }
     
-    var contentFetchURL: String? {
-        return networkResources?.stringForKey("contentFetchURL")
+    var contentFetchAPIPath: APIPath? {
+        return networkResources?.apiPathForKey("contentFetchURL")
     }
 }

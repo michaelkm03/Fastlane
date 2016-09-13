@@ -77,7 +77,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                 // path will be nil for home feed, and non nil for filtered feed
                 composer?.setComposerVisible(path == nil, animated: true)
             case .closeVIP():
-                onClose()
+                onClose(nil)
             case .refreshStage(_):
                 triggerCoachmark()
             case .setOptimisticPostingEnabled(let enabled):
@@ -100,7 +100,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     private var publisher: ContentPublisher?
     
-    private func publish(content: ContentModel) {
+    private func publish(content: Content) {
         guard let width = chatFeed?.collectionView.frame.width else {
             return
         }
@@ -281,8 +281,10 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     // MARK: - Actions
     
-    @objc private func onClose() {
-        closeButton?.dependencyManager?.trackButtonEvent(.tap)
+    @objc private func onClose(sender: UIButton?) {
+        if sender != nil {
+            closeButton?.dependencyManager?.trackButtonEvent(.tap)
+        }
         
         navigationController?.dismissViewControllerAnimated(true, completion: nil)
 

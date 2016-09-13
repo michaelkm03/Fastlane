@@ -31,7 +31,7 @@ class UserBlockToggleOperationTests: BaseFetcherOperationTestCase {
             unblockAPIPath: APIPath(templatePath: "")
         )
         
-        operation.queue { results, error, cancelled in
+        operation.queue { result in
             XCTAssertFalse(user.isBlocked)
             expectation.fulfill()
         }
@@ -50,7 +50,7 @@ class UserBlockToggleOperationTests: BaseFetcherOperationTestCase {
             unblockAPIPath: APIPath(templatePath: "")
         )
         
-        operation.queue { results, error, cancelled in
+        operation.queue { result in
             XCTAssertTrue(user.isBlocked)
             expectation.fulfill()
         }

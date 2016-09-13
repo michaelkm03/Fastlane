@@ -246,7 +246,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     
     else if (indexPath.section == 2 && indexPath.row == 0)
     {
-        [[[LogoutOperation alloc] initWithDependencyManager: self.dependencyManager] queueWithCompletion:NULL];
+        [self queueLogoutOperation];
     }
     
     // Tracking
