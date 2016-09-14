@@ -162,7 +162,7 @@
                         <constraint firstItem="A0e-ce-L94" firstAttribute="leading" secondItem="2CI-b7-Xcv" secondAttribute="leading" id="mPV-vf-tNx"/>
                         <constraint firstAttribute="trailing" secondItem="DZh-MG-aDe" secondAttribute="trailing" id="nDZ-Zg-83U"/>
                         <constraint firstAttribute="trailing" secondItem="A0e-ce-L94" secondAttribute="trailing" id="pQv-no-9F2"/>
-                        <constraint firstItem="1u8-Qh-Rrn" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="FKn-rI-PqV" secondAttribute="leading" id="sRQ-Xv-PUq"/>
+                        <constraint firstItem="FKn-rI-PqV" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="1u8-Qh-Rrn" secondAttribute="trailing" constant="6" id="sRQ-Xv-PUq"/>
                     </constraints>
                     <variation key="default">
                         <mask key="constraints">
