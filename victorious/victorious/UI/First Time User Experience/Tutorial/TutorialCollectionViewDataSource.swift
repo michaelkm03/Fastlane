@@ -43,6 +43,7 @@ class TutorialCollectionViewDataSource: NSObject, ChatInterfaceDataSource, Tutor
     func collectionView( collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath ) -> UICollectionViewCell {
         let cell = cellForItem(for: collectionView, at: indexPath)
         cell.timestampLabel.hidden = true
+        cell.likeCountLabel.hidden = true
         
         return cell
     }

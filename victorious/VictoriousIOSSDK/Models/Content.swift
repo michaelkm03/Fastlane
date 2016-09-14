@@ -17,6 +17,7 @@ public protocol ContentModel: PreviewImageContainer, DictionaryConvertible {
     /// `id` is optional because live chat messages don't have IDs
     var id: Content.ID? { get }
     var isRemotelyLikedByCurrentUser: Bool { get }
+    var likeCount: Int? { get }
     var text: String? { get }
     var hashtags: [Hashtag] { get }
     var shareURL: NSURL? { get }
@@ -160,12 +161,15 @@ public class Content: ContentModel {
     public let isVIPOnly: Bool
     public let author: UserModel
     public let isRemotelyLikedByCurrentUser: Bool
+    public let likeCount: Int?
     
     /// videoStartTime is the time this piece of video content started in our device time
     /// It is used to keep videos in sync for videos on stage
     public var localStartTime: NSDate?
     
     public let tracking: TrackingModel?
+
+    // MARK: - Initializers
     
     public init?(json viewedContentJSON: JSON) {
         let json = viewedContentJSON["content"]
@@ -182,6 +186,7 @@ public class Content: ContentModel {
         }
         
         self.isRemotelyLikedByCurrentUser = viewedContentJSON["viewer_engagements"]["is_liking"].bool ?? false
+        self.likeCount = viewedContentJSON["total_engagements"]["likes"].int
         self.isVIPOnly = json["is_vip"].bool ?? false
         self.id = id
         self.status = json["status"].string
@@ -239,6 +244,8 @@ public class Content: ContentModel {
         self.type = assets.first?.contentType ?? .text
         isVIPOnly = false
         isRemotelyLikedByCurrentUser = false
+        self.likeCount = nil
+
         tracking = nil //Tracking is not returned on chat messages
         
         // Either one of these types are required to be counted as a chat message.
@@ -278,5 +285,6 @@ public class Content: ContentModel {
         self.linkedURL = nil
         self.tracking = nil
         isRemotelyLikedByCurrentUser = false
+        self.likeCount = nil
     }
 }

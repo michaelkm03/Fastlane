@@ -49,23 +49,30 @@ extension ChatFeedMessageCell {
             width: usernameSize.width,
             height: usernameSize.height
         )
-        
+
         cell.timestampLabel.frame = CGRect(
             x: firstBubbleFrame.origin.x + max(usernameSize.width + topLabelXInset * 2.0, firstBubbleFrame.width - timestampSize.width - topLabelXInset),
             y: firstBubbleFrame.origin.y - timestampSize.height - topLabelYSpacing,
             width: timestampSize.width,
             height: timestampSize.height
         )
-        
+
+        cell.likeCountLabel.frame = CGRect(
+            x: firstBubbleFrame.origin.x + max(usernameSize.width + topLabelXInset * 2.0, firstBubbleFrame.width - timestampSize.width - topLabelXInset),
+            y: firstBubbleFrame.origin.y - timestampSize.height - topLabelYSpacing,
+            width: timestampSize.width,
+            height: timestampSize.height
+        )
+
         // Avatar layout:
         
         cell.avatarView.frame = CGRect(
             origin: avatarOffset(forAlignment: alignment, withChatFeedContent: chatFeedContent, inBounds: cell.bounds),
             size: avatarSize
         )
-        
+
         cell.avatarTapTarget.frame = CGRect(center: cell.avatarView.center, size: avatarTapTargetSize)
-        
+
         // Preview / caption layout:
         
         cell.previewView?.frame = cell.previewBubbleView?.bounds ?? CGRect.zero
@@ -95,6 +102,50 @@ extension ChatFeedMessageCell {
         }
         else {
             cell.failureButton.frame = .zero
+        }
+
+
+        if alignment == .left {
+            var baseFrame: CGRect?
+            if content.type.hasMedia {
+                baseFrame = cell.previewView?.frame
+                baseFrame?.origin.x = cell.avatarView.frame.origin.x + cell.avatarView.frame.size.width + horizontalSpacing
+            } else {
+                baseFrame = cell.captionBubbleView.frame
+            }
+
+            if let baseFrame = baseFrame {
+                // Like button layout:
+
+                let likeButtonWidth = CGFloat(44.0)
+                let likeButtonHeight = CGFloat(44.0)
+
+                cell.likeButton.frame = CGRect(
+                    x: baseFrame.origin.x + baseFrame.width - (likeButtonWidth / 2),
+                    y: contentMargin.top + baseFrame.height - (likeButtonHeight / 2),
+                    width: likeButtonWidth,
+                    height: likeButtonHeight
+                )
+
+                cell.contentView.bringSubviewToFront(cell.likeButton)
+
+                // Reply button layout:
+
+                let replyButtonWidth = CGFloat(44.0)
+                let replyButtonHeight = CGFloat(44.0)
+
+                let replyButtonOriginX = cell.bounds.size.width - replyButtonWidth
+
+                cell.replyButton.frame = CGRect(
+                    x: replyButtonOriginX,
+                    y: baseFrame.center.y - replyButtonHeight / 2,
+                    width: replyButtonWidth,
+                    height: replyButtonHeight
+                )
+            }
+        } else {
+            cell.likeButton.frame = CGRect.zero
+            cell.replyButton.frame = CGRect.zero
         }
     }
     
