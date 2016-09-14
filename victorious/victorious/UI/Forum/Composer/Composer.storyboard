@@ -52,7 +52,7 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="524" height="27"/>
                                                 <subviews>
                                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="FNU-QM-fIQ" customClass="VPlaceholderTextView">
-                                                        <rect key="frame" x="30" y="14" width="494" height="0.0"/>
+                                                        <rect key="frame" x="30" y="14" width="486" height="0.0"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" priority="996" id="ciC-0O-1WA"/>
@@ -73,7 +73,7 @@
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" priority="998" constant="27" id="4PX-UV-qLv"/>
-                                                    <constraint firstAttribute="trailing" secondItem="FNU-QM-fIQ" secondAttribute="trailing" id="AVr-Dj-QAM"/>
+                                                    <constraint firstAttribute="trailing" secondItem="FNU-QM-fIQ" secondAttribute="trailing" constant="8" id="AVr-Dj-QAM"/>
                                                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="FNU-QM-fIQ" secondAttribute="bottom" constant="8" id="F0Y-Rd-1ae"/>
                                                     <constraint firstItem="Xjx-IZ-D2a" firstAttribute="leading" secondItem="7nb-cq-ZtM" secondAttribute="leading" id="Ggx-4n-oMZ"/>
                                                     <constraint firstItem="FNU-QM-fIQ" firstAttribute="leading" secondItem="Xjx-IZ-D2a" secondAttribute="trailing" constant="8" id="Lj4-t2-0a1"/>
