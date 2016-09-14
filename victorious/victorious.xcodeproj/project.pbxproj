@@ -323,7 +323,6 @@
 		03DB20DD1CC99AF500721C24 /* FilterNameLocalization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03DB20DC1CC99AF500721C24 /* FilterNameLocalization.swift */; };
 		03DE266B1B336E5D00C9F680 /* VDataCacheTests.cachedData in Resources */ = {isa = PBXBuildFile; fileRef = 03DE266A1B336E5D00C9F680 /* VDataCacheTests.cachedData */; };
 		03E7303C1C973F9A008CB191 /* NetworkActivityIndicatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7DCA51B1C128FD0004E35B4 /* NetworkActivityIndicatorTests.swift */; };
-		03E7305B1C974ADD008CB191 /* Dictionary+Union.swift in Sources */ = {isa = PBXBuildFile; fileRef = A748BCC81C87D9FB003D5F5F /* Dictionary+Union.swift */; };
 		03E7305C1C974B04008CB191 /* AvatarBadgeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF68C4EE1C7CEE0000739D87 /* AvatarBadgeType.swift */; };
 		03E7305E1C974B11008CB191 /* ValidateReceiptRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8F46321C8AA2BA00629D82 /* ValidateReceiptRequest.swift */; };
 		03E7305F1C974B11008CB191 /* ValidateReceiptRequestBodyWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FFCE421C8FC88800B1BE49 /* ValidateReceiptRequestBodyWriter.swift */; };
@@ -650,7 +649,9 @@
 		7CCAB3571D5D2EC600ACE99D /* VModernLoginAndRegistrationFlowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCAB3561D5D2EC600ACE99D /* VModernLoginAndRegistrationFlowViewController.swift */; };
 		7CCBF2B91D413C7D0075A087 /* CoachmarkManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBF2B81D413C7D0075A087 /* CoachmarkManagerTests.swift */; };
 		7CEA74C71D4C0F5300EDA15C /* EditProfileDataSourceTests .swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEA74C61D4C0F5300EDA15C /* EditProfileDataSourceTests .swift */; };
+		9619AC6F1D7A475300888BCE /* Dictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9619AC6E1D7A475300888BCE /* Dictionary.swift */; };
 		968B40071D6EA42900DDD5A5 /* MarqueeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968B40061D6EA42900DDD5A5 /* MarqueeView.swift */; };
+		96964A471D871D9D0090EA49 /* DeeplinkContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96964A461D871D9D0090EA49 /* DeeplinkContext.swift */; };
 		A601FB491B4354D10050536C /* VAbstractImageVideoCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB481B4354D10050536C /* VAbstractImageVideoCreationFlowController.m */; };
 		A601FB4F1B4355A30050536C /* VCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB4E1B4355A30050536C /* VCreationFlowController.m */; };
 		A601FB531B4363240050536C /* VCreationFlowPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB521B4363240050536C /* VCreationFlowPresenter.m */; };
@@ -792,6 +793,7 @@
 		A74783DA1BA09AA3005654A6 /* VideoToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74783D91BA09AA3005654A6 /* VideoToolbarView.swift */; };
 		A74783DF1BA09C10005654A6 /* VideoToolbarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A74783DE1BA09C10005654A6 /* VideoToolbarView.xib */; };
 		A7486A121BF5995B00547BAF /* VLoginFlowAPIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7486A111BF5995B00547BAF /* VLoginFlowAPIHelper.swift */; };
+		A748BCC31C87939E003D5F5F /* MockActionConfirmationOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A748BCC21C87939E003D5F5F /* MockActionConfirmationOperation.swift */; };
 		A748BCC91C87D9FB003D5F5F /* Dictionary+Union.swift in Sources */ = {isa = PBXBuildFile; fileRef = A748BCC81C87D9FB003D5F5F /* Dictionary+Union.swift */; };
 		A7559A7A1CCFD93B00C37349 /* VIPStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7559A791CCFD93B00C37349 /* VIPStatus.swift */; };
 		A75A639D1B58858500EC4D53 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A75A639C1B58858500EC4D53 /* MobileCoreServices.framework */; };
@@ -2064,7 +2066,9 @@
 		8C2BB19912E006FE37A461E5 /* Pods_victorious.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_victorious.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E360EC509E852CE3E872948 /* Pods-victorious-test.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.debug.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.debug.xcconfig"; sourceTree = "<group>"; };
 		910A7A7036C6609BF5F7723D /* Pods-victorious-test.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.staging.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.staging.xcconfig"; sourceTree = "<group>"; };
+		9619AC6E1D7A475300888BCE /* Dictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dictionary.swift; sourceTree = "<group>"; };
 		968B40061D6EA42900DDD5A5 /* MarqueeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarqueeView.swift; sourceTree = "<group>"; };
+		96964A461D871D9D0090EA49 /* DeeplinkContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeeplinkContext.swift; sourceTree = "<group>"; };
 		A0CB9853103CFBEFFF1BF6FF /* Pods-VictoriousCommon.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommon.staging.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommon/Pods-VictoriousCommon.staging.xcconfig"; sourceTree = "<group>"; };
 		A5C5A0342449CFD4C4768B97 /* Pods_victorious_test.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_victorious_test.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A601FB471B4354D10050536C /* VAbstractImageVideoCreationFlowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VAbstractImageVideoCreationFlowController.h; sourceTree = "<group>"; };
@@ -2284,6 +2288,7 @@
 		A74783D91BA09AA3005654A6 /* VideoToolbarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoToolbarView.swift; sourceTree = "<group>"; };
 		A74783DE1BA09C10005654A6 /* VideoToolbarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoToolbarView.xib; sourceTree = "<group>"; };
 		A7486A111BF5995B00547BAF /* VLoginFlowAPIHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VLoginFlowAPIHelper.swift; sourceTree = "<group>"; };
+		A748BCC21C87939E003D5F5F /* MockActionConfirmationOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockActionConfirmationOperation.swift; sourceTree = "<group>"; };
 		A748BCC81C87D9FB003D5F5F /* Dictionary+Union.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+Union.swift"; sourceTree = "<group>"; };
 		A748BD171C8A7302003D5F5F /* VIPGateViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VIPGateViewController.storyboard; sourceTree = "<group>"; };
 		A7559A791CCFD93B00C37349 /* VIPStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VIPStatus.swift; sourceTree = "<group>"; };
@@ -3249,7 +3254,6 @@
 				79004DB71BF53A050027E344 /* DateFormat.swift */,
 				7992DF661C17ACCF004007A1 /* DeviceExperimentsRequest.swift */,
 				0300AA7D1BF2BC8B000A121D /* DevicePreferencesRequest.swift */,
-				A748BCC81C87D9FB003D5F5F /* Dictionary+Union.swift */,
 				A7D15DD51CBED6610039761B /* DictionaryConvertible.swift */,
 				A7D920471C063682002A6503 /* Errors */,
 				0EBF417A1CAB5C20002966B3 /* ForumEvents */,
@@ -4560,6 +4564,7 @@
 		67AB0C721D21A31500394598 /* Routing */ = {
 			isa = PBXGroup;
 			children = (
+				96964A461D871D9D0090EA49 /* DeeplinkContext.swift */,
 				6780BD611D248392003F8141 /* DeeplinkDestination.swift */,
 				67AB0C751D21A38A00394598 /* Router.swift */,
 			);
@@ -4939,6 +4944,7 @@
 				A721E8631B572452000B7901 /* CIImage+VImage.h */,
 				A721E8641B572452000B7901 /* CIImage+VImage.m */,
 				7A02F8921D2486D400F43B24 /* CollectionType.swift */,
+				9619AC6E1D7A475300888BCE /* Dictionary.swift */,
 				A7C713B11B74450A00089B5E /* GCDUtils.swift */,
 				A721E8AF1B572453000B7901 /* NSArray+VMap.h */,
 				A721E8B01B572453000B7901 /* NSArray+VMap.m */,
@@ -7310,7 +7316,6 @@
 				C3FEA7A51BF26F24003446CC /* GIFSearchRequest.swift in Sources */,
 				0E5F7E401CA1E42000B3AF14 /* ForumNetworkSource.swift in Sources */,
 				0E0DF0CC1CDD3DE100C782EA /* UniqueIdentificationMessage.swift in Sources */,
-				A748BCC91C87D9FB003D5F5F /* Dictionary+Union.swift in Sources */,
 				0E23691B1D493C5600D9E45C /* SwiftyBeaver.swift in Sources */,
 				A734AF181C499B5500ECA324 /* RequestBodyWriterType.swift in Sources */,
 				0E0615091CA35D6800236D4A /* ForumEventSender.swift in Sources */,
@@ -7527,7 +7532,6 @@
 				0372BEED1C84FF19004950CF /* UnreadNotificationsCountRequest.swift in Sources */,
 				03E7305C1C974B04008CB191 /* AvatarBadgeType.swift in Sources */,
 				0372BEC91C84FF0C004950CF /* FanLoyalty.swift in Sources */,
-				03E7305B1C974ADD008CB191 /* Dictionary+Union.swift in Sources */,
 				0372BECD1C84FF0C004950CF /* ImageAsset.swift in Sources */,
 				0372BEA91C84FF02004950CF /* Pageable.swift in Sources */,
 				0372BEB11C84FF02004950CF /* RegisterPushNotificationRequest.swift in Sources */,
@@ -7785,6 +7789,7 @@
 				A73BA2A51C938B68008168B5 /* CloseUpMenuItem.swift in Sources */,
 				F0FBC4441D22EB580070873F /* CaptionBarPopulator.swift in Sources */,
 				A743E7EA1A081FFF00339CB3 /* VStringValidator.m in Sources */,
+				96964A471D871D9D0090EA49 /* DeeplinkContext.swift in Sources */,
 				671658FB1D2CA367000C7F62 /* ChatFeedCollectionViewLayout.swift in Sources */,
 				7A1DECCA1D80E075003F5C37 /* LoginSuccessOperation.swift in Sources */,
 				67BECC4F1CC985C000DFEE4B /* ListMenuCommunityItem.swift in Sources */,
@@ -7949,6 +7954,8 @@
 				79070A2D1CFE88590049CFC3 /* AppVersion.swift in Sources */,
 				A601FB5F1B437E2B0050536C /* VAbstractPresenter.m in Sources */,
 				7A87376A1CB4785E00D2FF74 /* VContentOnlyCell.swift in Sources */,
+				A72C863A1C977FF500E97D4F /* TrendingHashtagOperation.swift in Sources */,
+				9619AC6F1D7A475300888BCE /* Dictionary.swift in Sources */,
 				A721E9591B572454000B7901 /* UIScrollView+VCenterContent.m in Sources */,
 				A7BB6C991CAEDF1A007FDD17 /* VIPSubscribeOperation.swift in Sources */,
 				C3623F261BA3AE54002B121D /* InterstitialManager.swift in Sources */,

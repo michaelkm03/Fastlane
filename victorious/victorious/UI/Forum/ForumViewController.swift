@@ -127,7 +127,18 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     var originViewController: UIViewController {
         return self
     }
-    
+
+    private(set) var chatFeedContext: DeeplinkContext = DeeplinkContext(value: DeeplinkContext.mainFeed)
+
+    private dynamic func mainFeedFilterDidChange(notification: NSNotification) {
+        if let context = (notification.userInfo?["selectedItem"] as? ReferenceWrapper<ListMenuSelectedItem>)?.value.context {
+            chatFeedContext = context
+        }
+        else {
+            chatFeedContext = DeeplinkContext(value: DeeplinkContext.mainFeed)
+        }
+    }
+
     func setStageHeight(value: CGFloat) {
         stageContainerHeight.constant = value
         view.layoutIfNeeded()
@@ -204,7 +215,9 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(mainFeedFilterDidChange), name: RESTForumNetworkSource.updateStreamURLNotification, object: nil)
+
         publisher = ContentPublisher(dependencyManager: dependencyManager.networkResources ?? dependencyManager)
         publisher?.delegate = self
         
