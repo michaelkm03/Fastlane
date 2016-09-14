@@ -33,6 +33,10 @@ extension VRootViewController {
             }
         }
     }
+    
+    func setupBadgeCountDependency(dependencyManager: VDependencyManager?) {
+        BadgeCountManager.networkResources = dependencyManager?.networkResources
+    }
 }
 
 private extension VDependencyManager {

@@ -414,6 +414,7 @@ typedef NS_ENUM(NSInteger, VAppLaunchState)
 
 - (void)loadingViewController:(VLoadingViewController *)loadingViewController didFinishLoadingWithDependencyManager:(VDependencyManager *)dependencyManager
 {
+    [self setupBadgeCountDependency:dependencyManager];
     self.dependencyManager = dependencyManager;
     
     if ( loadingViewController == self.currentViewController && self.launchState == VAppLaunchStateWaiting )
