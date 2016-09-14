@@ -36,11 +36,6 @@ class LinkLabel: UILabel, NSLayoutManagerDelegate {
         }
     }
     
-    // MARK: - Callbacks
-    
-    /// A callback that triggers whenever a link is tapped.
-    var whenLinkIsTapped = Callback<String>()
-    
     // MARK: - Appearance
     
     override var textColor: UIColor! {
@@ -93,14 +88,10 @@ class LinkLabel: UILabel, NSLayoutManagerDelegate {
                 length: link.range.startIndex.distanceTo(link.range.endIndex)
             )
             
-            print("range...", range)
-            
             if range.location + range.length > attributedString.length {
-                print("no good", range.location + range.length, "vs", attributedString.length)
                 continue
             }
             
-            print("set attributes...", link, highlightedLink)
             attributedString.setAttributes(highlightAttributes(highlighted: link == highlightedLink), range: range)
         }
         
@@ -170,7 +161,6 @@ class LinkLabel: UILabel, NSLayoutManagerDelegate {
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         if let highlightedLink = highlightedLink, let text = text {
             let matchString = text.substringWithRange(highlightedLink.range)
-            whenLinkIsTapped.call(matchString)
             highlightedLink.callback?(matchString: matchString)
         }
         
