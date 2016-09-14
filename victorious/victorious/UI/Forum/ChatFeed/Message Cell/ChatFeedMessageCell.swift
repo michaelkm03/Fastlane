@@ -14,6 +14,7 @@ protocol ChatFeedMessageCellDelegate: class {
     func messageCellDidSelectMedia(messageCell: ChatFeedMessageCell)
     func messageCellDidLongPressContent(messageCell: ChatFeedMessageCell)
     func messageCellDidSelectFailureButton(messageCell: ChatFeedMessageCell)
+//    func messageCell(messageCell: ChatFeedMessageCell, didSelectLink: NSURL)
 }
 
 class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
@@ -49,6 +50,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         failureButton.addTarget(self, action: #selector(didTapOnFailureButton), forControlEvents: .TouchUpInside)
         captionLabel.numberOfLines = 0
         captionLabel.userInteractionEnabled = false
+        captionLabel.highlightedLinkColor = UIColor(red: 0.88, green: 0.45, blue: 0.715, alpha: 1.0)
         
         contentView.addSubview(usernameLabel)
         contentView.addSubview(timestampLabel)
@@ -95,7 +97,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     }
     
     /// Provides a private shorthand accessor within the implementation because we mostly deal with the ContentModel
-    private var content: ContentModel? {
+    private var content: Content? {
         return chatFeedContent?.content
     }
     
@@ -108,7 +110,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     let avatarTapTarget = UIView()
     
     let captionBubbleView = BubbleView()
-    let captionLabel = UILabel()
+    let captionLabel = LinkLabel()
     
     var previewBubbleView: BubbleView?
     var previewView: UIView?
@@ -150,6 +152,9 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     // MARK: - Private helper methods
     
     private func updateStyle() {
+        captionLabel.textColor = dependencyManager.messageTextColor
+        captionLabel.font = dependencyManager.messageFont
+        
         usernameLabel.font = dependencyManager.usernameFont
         usernameLabel.textColor = dependencyManager.usernameColor
         
@@ -162,7 +167,13 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     }
     
     private func populateData() {
-        captionLabel.attributedText = content?.attributedText(using: dependencyManager)
+        captionLabel.linkDetectors = content?.userTags.map { username, link in
+            return SubstringLinkDetector(substring: "@\(username)") { [weak self] _ in
+                print("tapped link...", username, link)
+            }
+        } ?? []
+        
+        captionLabel.text = content?.text
         usernameLabel.text = content?.author.displayName ?? ""
         updateTimestamp()
         

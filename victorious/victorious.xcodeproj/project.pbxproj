@@ -610,6 +610,8 @@
 		7AE0A0421D63EC7F00769080 /* AccessoryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE0A0411D63EC7F00769080 /* AccessoryScreen.swift */; };
 		7AE0A0471D64EA8100769080 /* AccessoryScreenTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE0A0461D64EA8100769080 /* AccessoryScreenTest.swift */; };
 		7AE0A0491D64EAF500769080 /* VDependencyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE0A0481D64EAF500769080 /* VDependencyManager.swift */; };
+		7AE14EAF1D88B6DB0088A13E /* LinkLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE14EAE1D88B6DB0088A13E /* LinkLabel.swift */; };
+		7AE14EB11D88B7940088A13E /* LinkDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE14EB01D88B7940088A13E /* LinkDetector.swift */; };
 		7AE363A11CC864B600F851E9 /* SideNavScaffoldViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE363A01CC864B600F851E9 /* SideNavScaffoldViewController.swift */; };
 		7AE363A51CC98F5D00F851E9 /* RightNavViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE363A41CC98F5D00F851E9 /* RightNavViewController.swift */; };
 		7AE363A71CC9BA9400F851E9 /* Scaffold.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE363A61CC9BA9400F851E9 /* Scaffold.swift */; };
@@ -2017,6 +2019,8 @@
 		7AE0A0411D63EC7F00769080 /* AccessoryScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessoryScreen.swift; sourceTree = "<group>"; };
 		7AE0A0461D64EA8100769080 /* AccessoryScreenTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessoryScreenTest.swift; sourceTree = "<group>"; };
 		7AE0A0481D64EAF500769080 /* VDependencyManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VDependencyManager.swift; sourceTree = "<group>"; };
+		7AE14EAE1D88B6DB0088A13E /* LinkLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkLabel.swift; sourceTree = "<group>"; };
+		7AE14EB01D88B7940088A13E /* LinkDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkDetector.swift; sourceTree = "<group>"; };
 		7AE363A01CC864B600F851E9 /* SideNavScaffoldViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideNavScaffoldViewController.swift; sourceTree = "<group>"; };
 		7AE363A41CC98F5D00F851E9 /* RightNavViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RightNavViewController.swift; sourceTree = "<group>"; };
 		7AE363A61CC9BA9400F851E9 /* Scaffold.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scaffold.swift; sourceTree = "<group>"; };
@@ -3050,6 +3054,8 @@
 				D89A50071A000D540010D050 /* Controls */,
 				7C28F1011D1DD94A0070B8AE /* CTAErrorState.swift */,
 				BF7AF9C41D22F98500539D90 /* Error States */,
+				7AE14EB01D88B7940088A13E /* LinkDetector.swift */,
+				7AE14EAE1D88B6DB0088A13E /* LinkLabel.swift */,
 				D85E427B1AFA982000A13BD3 /* SequencePreviewView */,
 				7A1C70A91CC8513B00A666F5 /* SideMenuController.swift */,
 				D836883C19C36FF200070F22 /* UICollectionView */,
@@ -8035,6 +8041,7 @@
 				C3623F2B1BA3AF3A002B121D /* Interstitial.swift in Sources */,
 				A7F0C86A1CB2E51A0007178A /* SimulatedPurchaseManager.swift in Sources */,
 				675A9AFC1BC372DE009CE633 /* FirstInstallManager.swift in Sources */,
+				7AE14EAF1D88B6DB0088A13E /* LinkLabel.swift in Sources */,
 				67F231571CBD69CD006BDBA5 /* ListMenuCollectionViewDataSource.swift in Sources */,
 				C30AA4E91B0595AA0010CEFE /* VRoundedImageView.m in Sources */,
 				BF01F3771D7892640066D9DC /* Result.swift in Sources */,
@@ -8065,6 +8072,7 @@
 				799B89D41D469E02006743FE /* DisplaynameLocationAvatarCell.swift in Sources */,
 				F029B56D1CA1AA6200A01703 /* LibraryCreationFlowController.swift in Sources */,
 				A743E7E41A0816D500339CB3 /* VPasswordValidator.m in Sources */,
+				7AE14EB11D88B7940088A13E /* LinkDetector.swift in Sources */,
 				037FCF2B1A8DAF7600E8ABFC /* VDependencyManager+NavigationBar.m in Sources */,
 				6764784C1D5EC23C00772177 /* UINavigationController.swift in Sources */,
 				D8FC09071A51DBC100E5FBE4 /* VPlaceholderTextView.m in Sources */,
