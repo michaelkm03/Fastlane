@@ -151,7 +151,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     
     private func updateStyle() {
         captionLabel.textColor = dependencyManager.messageTextColor
-        captionLabel.highlightedLinkColor = dependencyManager.messageLinkColor
+        captionLabel.tintColor = dependencyManager.messageLinkColor
         captionLabel.font = dependencyManager.messageFont
         
         usernameLabel.font = dependencyManager.usernameFont

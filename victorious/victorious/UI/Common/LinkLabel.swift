@@ -46,7 +46,7 @@ class LinkLabel: UILabel, NSLayoutManagerDelegate {
     
     var highlightedLinkColor: UIColor?
     
-    internal var effectiveHighlightedLinkColor: UIColor {
+    private var effectiveHighlightedLinkColor: UIColor {
         return highlightedLinkColor ?? tintColor.colorWithAlphaComponent(0.5)
     }
     
