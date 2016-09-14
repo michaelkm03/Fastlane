@@ -21,7 +21,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="76"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zd0-Zd-kLL" customClass="TouchableInsetAdjustableButton" customModule="victorious" customModuleProvider="target">
-                                        <rect key="frame" x="578" y="12" width="12" height="52"/>
+                                        <rect key="frame" x="578" y="27" width="12" height="22"/>
                                         <state key="normal" image="CaptionBarDisclosureButton"/>
                                         <connections>
                                             <action selector="pressedToggleButton" destination="s4g-pW-yus" eventType="touchUpInside" id="ubM-7L-4eC"/>
@@ -64,7 +64,6 @@
                                     <constraint firstItem="1J5-Re-xOT" firstAttribute="top" secondItem="Wes-gJ-PRU" secondAttribute="top" id="bHb-ki-YCL"/>
                                     <constraint firstItem="nZ4-wR-0sd" firstAttribute="centerY" secondItem="DEK-3L-V3o" secondAttribute="centerY" id="brT-ba-ntG"/>
                                     <constraint firstItem="1J5-Re-xOT" firstAttribute="bottom" secondItem="Wes-gJ-PRU" secondAttribute="bottom" id="cND-jj-c6h"/>
-                                    <constraint firstItem="Wes-gJ-PRU" firstAttribute="top" secondItem="nZ4-wR-0sd" secondAttribute="top" id="g58-Dr-dfd"/>
                                     <constraint firstItem="1J5-Re-xOT" firstAttribute="leading" secondItem="Wes-gJ-PRU" secondAttribute="leading" id="o1X-05-eUQ"/>
                                     <constraint firstAttribute="trailing" secondItem="zd0-Zd-kLL" secondAttribute="trailing" constant="10" id="om5-uC-wAE"/>
                                     <constraint firstItem="zd0-Zd-kLL" firstAttribute="centerY" secondItem="nZ4-wR-0sd" secondAttribute="centerY" id="pLA-9j-5Dj"/>
@@ -73,7 +72,7 @@
                                 </constraints>
                                 <variation key="default">
                                     <mask key="constraints">
-                                        <exclude reference="g58-Dr-dfd"/>
+                                        <exclude reference="BS7-B6-Jda"/>
                                     </mask>
                                 </variation>
                             </view>
@@ -87,7 +86,6 @@
                         </constraints>
                         <connections>
                             <outlet property="avatarButtonHeightConstraint" destination="XSO-Ys-vcX" id="krO-qd-zD6"/>
-                            <outlet property="avatarButtonTopConstraint" destination="g58-Dr-dfd" id="OYg-yU-CHs"/>
                             <outlet property="avatarView" destination="nZ4-wR-0sd" id="Eko-72-CSa"/>
                             <outlet property="captionLabel" destination="1J5-Re-xOT" id="m19-QW-uYb"/>
                             <outlet property="captionTextView" destination="Wes-gJ-PRU" id="dPL-KR-hh4"/>
