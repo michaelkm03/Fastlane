@@ -10,7 +10,7 @@ import VictoriousIOSSDK
 import XCTest
 
 class UnreadNotificationsCountRequestTests: XCTestCase {
-    private static let apiPath = APIPath(templatePath: "http://api.getvictorious.com/my/cool/path/")
+    private static let apiPath = APIPath(templatePath: "http://api.getvictorious.com//api/notification/unread_notification_count")
 
     func testResponseParsing() {
         guard let mockResponseDataURL = NSBundle(forClass: self.dynamicType).URLForResource("UnreadNotificationsCountResponse", withExtension: "json"),
@@ -31,6 +31,6 @@ class UnreadNotificationsCountRequestTests: XCTestCase {
     
     func testRequest() {
         let notificationCount = UnreadNotificationsCountRequest(apiPath: UnreadNotificationsCountRequestTests.apiPath)!
-        XCTAssertEqual(notificationCount.urlRequest.URL?.absoluteString, "/api/notification/unread_notification_count")
+        XCTAssertEqual(notificationCount.urlRequest.URL?.absoluteString, "http://api.getvictorious.com//api/notification/unread_notification_count")
     }
 }
