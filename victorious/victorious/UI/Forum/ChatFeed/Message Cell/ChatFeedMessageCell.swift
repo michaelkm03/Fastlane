@@ -14,7 +14,7 @@ protocol ChatFeedMessageCellDelegate: class {
     func messageCellDidSelectMedia(messageCell: ChatFeedMessageCell)
     func messageCellDidLongPressContent(messageCell: ChatFeedMessageCell)
     func messageCellDidSelectFailureButton(messageCell: ChatFeedMessageCell)
-//    func messageCell(messageCell: ChatFeedMessageCell, didSelectLink: NSURL)
+    func messageCell(messageCell: ChatFeedMessageCell, didSelectLink url: NSURL)
 }
 
 class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
@@ -49,8 +49,6 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         captionBubbleView.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(didLongPressBubble)))
         failureButton.addTarget(self, action: #selector(didTapOnFailureButton), forControlEvents: .TouchUpInside)
         captionLabel.numberOfLines = 0
-        captionLabel.userInteractionEnabled = false
-        captionLabel.highlightedLinkColor = UIColor(red: 0.88, green: 0.45, blue: 0.715, alpha: 1.0)
         
         contentView.addSubview(usernameLabel)
         contentView.addSubview(timestampLabel)
@@ -153,6 +151,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     
     private func updateStyle() {
         captionLabel.textColor = dependencyManager.messageTextColor
+        captionLabel.highlightedLinkColor = dependencyManager.messageLinkColor
         captionLabel.font = dependencyManager.messageFont
         
         usernameLabel.font = dependencyManager.usernameFont
@@ -169,7 +168,11 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     private func populateData() {
         captionLabel.linkDetectors = content?.userTags.map { username, link in
             return SubstringLinkDetector(substring: "@\(username)") { [weak self] _ in
-                print("tapped link...", username, link)
+                guard let strongSelf = self else {
+                    return
+                }
+                
+                strongSelf.delegate?.messageCell(strongSelf, didSelectLink: link)
             }
         } ?? []
         
@@ -366,17 +369,21 @@ private extension VDependencyManager {
     var messageTextColor: UIColor {
         return colorForKey("color.message.text") ?? .whiteColor()
     }
-
+    
+    var messageLinkColor: UIColor {
+        return colorForKey("color.message.link") ?? .blueColor()
+    }
+    
     var messageFont: UIFont {
         return fontForKey("font.message") ?? UIFont.systemFontOfSize(16.0)
     }
 
-    var backgroundColor: UIColor? {
+    var backgroundColor: UIColor {
         return colorForKey("color.message.bubble") ?? .darkGrayColor()
     }
     
     var usernameFont: UIFont {
-        return fontForKey("font.username.text")
+        return fontForKey("font.username.text") ?? UIFont.systemFontOfSize(12.0)
     }
     
     var usernameColor: UIColor {
@@ -384,7 +391,7 @@ private extension VDependencyManager {
     }
     
     var timestampFont: UIFont {
-        return fontForKey("font.timestamp.text")
+        return fontForKey("font.timestamp.text") ?? UIFont.systemFontOfSize(12.0)
     }
     
     var timestampColor: UIColor {
