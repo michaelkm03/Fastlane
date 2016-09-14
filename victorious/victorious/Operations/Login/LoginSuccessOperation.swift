@@ -48,7 +48,7 @@ class LoginSuccessOperation: SyncOperation<Void> {
             let apiPath = dependencyManager.networkResources?.userFetchAPIPath,
             let request = UserInfoRequest(apiPath: apiPath, userID: currentUser.id)
         else {
-            let error = NSError(domain: "StoredLoginOperation-BadUserFetchAPIPath", code: -1, userInfo: ["DependencyManager": dependencyManager])
+            let error = NSError(domain: "LoginSuccessOperation-BadUserFetchAPIPath", code: -1, userInfo: ["DependencyManager": dependencyManager])
             Log.warning("Unable to initialize first user info fetch during LoginSuccessOperation with error: \(error)")
             return .failure(error)
         }
