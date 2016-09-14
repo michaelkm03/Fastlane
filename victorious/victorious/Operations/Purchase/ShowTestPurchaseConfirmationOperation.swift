@@ -42,7 +42,6 @@ final class ShowTestPurchaseConfirmationOperation: AsyncOperation<Void> {
                 style: .Cancel,
                 handler: { [weak self] action in
                     self?.cancelDependentOperations()
-                    self?.cancel()
                     finish(result: .cancelled)
                 }
             )
