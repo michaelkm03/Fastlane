@@ -9,7 +9,7 @@
 import XCTest
 @testable import victorious
 
-class VIPValidateSuscriptionOperationTests: BaseFetcherOperationTestCase {
+class VIPValidateSuscriptionOperationTests: XCTestCase {
     
     var operation: VIPValidateSuscriptionOperation!
     
@@ -29,7 +29,7 @@ class VIPValidateSuscriptionOperationTests: BaseFetcherOperationTestCase {
             XCTAssertEqual( self.testRequestExecutor.executeRequestCallCount, 1)
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
+        waitForExpectationsWithTimeout(1.0, handler: nil)
     }
     
     func testInitializtionFailure() {
@@ -44,7 +44,7 @@ class VIPValidateSuscriptionOperationTests: BaseFetcherOperationTestCase {
             XCTAssertEqual( self.testRequestExecutor.executeRequestCallCount, 0)
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
+        waitForExpectationsWithTimeout(1.0, handler: nil)
     }
 }
 

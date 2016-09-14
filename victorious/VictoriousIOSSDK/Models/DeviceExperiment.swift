@@ -9,12 +9,13 @@
 import Foundation
 
 public struct DeviceExperiment {
-    public let id: Int
-    public let name: String
-    public let bucketType: String
-    public let numberOfBuckets: Int
-    public let layerID: Int
-    public let layerName: String
+    public var id: Int
+    public var name: String
+    public var bucketType: String
+    public var numberOfBuckets: Int
+    public var layerID: Int
+    public var layerName: String
+    public var isEnabled: Bool
 }
 
 extension DeviceExperiment {
@@ -36,5 +37,6 @@ extension DeviceExperiment {
         bucketType = json["bucket_type"].stringValue
         numberOfBuckets = Int(json["num_buckets"].stringValue) ?? 0
         layerName = json["layer_name"].stringValue
+        isEnabled = false
     }
 }

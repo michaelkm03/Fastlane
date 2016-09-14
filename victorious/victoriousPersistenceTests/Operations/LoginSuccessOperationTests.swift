@@ -9,7 +9,7 @@
 import XCTest
 @testable import victorious
 
-class LoginSuccessOperationTests: BaseFetcherOperationTestCase {
+class LoginSuccessOperationTests: XCTestCase {
 
 
 // FUTURE:  This test has been manually disabled beacuse it disrupts our workflow.
@@ -34,7 +34,7 @@ class LoginSuccessOperationTests: BaseFetcherOperationTestCase {
 //            XCTAssertNil(error)
 //            expectation.fulfill()
 //        }
-//        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
+//        waitForExpectationsWithTimeout(1.0, handler: nil)
 //        
 //        guard let persistentUser: VUser = operation.persistentStore.mainContext.v_findObjects(["remoteId" : user.id ]).first else {
 //            XCTFail( "Unable to load the user the operation should have parsed." )
