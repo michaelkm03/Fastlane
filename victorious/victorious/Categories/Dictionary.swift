@@ -1,15 +1,16 @@
 //
-//  Dictionary+Union.swift
+//  Dictionary.swift
 //  victorious
 //
-//  Created by Patrick Lynch on 3/2/16.
+//  Created by Mariana Lenetis on 9/2/16.
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
 import Foundation
 
 extension Dictionary {
-    mutating func vsdk_unionInPlace(dictionary: Dictionary<Key, Value>) {
+    /// Combines two dictionaries, favors passed in value in case of key collision
+    mutating func unionInPlace(dictionary: Dictionary) {
         for (key, value) in dictionary {
             self[key] = value
         }

@@ -23,8 +23,8 @@ struct Router {
     }
     
     // MARK: - API
-    
-    func navigate(to destination: DeeplinkDestination?) {
+
+    func navigate(to destination: DeeplinkDestination?, from context: DeeplinkContext?) {
         guard let destination = destination else {
             showError()
             return
@@ -32,7 +32,7 @@ struct Router {
         
         switch destination {
             case .profile(let userID): showProfile(for: userID)
-            case .closeUp(let contentWrapper): showCloseUpView(for: contentWrapper)
+            case .closeUp(let contentWrapper): showCloseUpView(for: contentWrapper, from: context)
             case .vipForum: showVIPForum()
             case .vipSubscription: showVIPSubscription()
             case .externalURL(let url, let configuration): showWebView(for: url, configuration: configuration)
@@ -41,7 +41,7 @@ struct Router {
     
     // MARK: - Private Helper Functions
     
-    private func showCloseUpView(for contentWrapper: CloseUpContentWrapper) {
+    private func showCloseUpView(for contentWrapper: CloseUpContentWrapper, from context: DeeplinkContext?) {
         guard let originViewController = self.originViewController else { return }
         let displayModifier = ShowCloseUpDisplayModifier(dependencyManager: dependencyManager, originViewController: originViewController)
 
@@ -50,26 +50,26 @@ struct Router {
                 guard content.type != .text else {
                     return
                 }
-                
+
                 checkForPermissionBeforeRouting(contentIsForVIPOnly: content.isVIPOnly) { success in
                     if success {
                         if !forceFetch {
-                            ShowCloseUpOperation(content: content, displayModifier: displayModifier).queue()
+                            ShowCloseUpOperation(content: content, displayModifier: displayModifier, context: context).queue()
                         }
                         else {
                             guard let contentID = content.id else {
                                 assertionFailure("We are routing to a content with no ID")
                                 return
                             }
-                            ShowFetchedCloseUpOperation(contentID: contentID, displayModifier: displayModifier).queue()
+                            ShowFetchedCloseUpOperation(contentID: contentID, displayModifier: displayModifier, context: context).queue()
                         }
                     }
                 }
             case .contentID(let contentID):
-                ShowFetchedCloseUpOperation(contentID: contentID, displayModifier: displayModifier).queue()
+                ShowFetchedCloseUpOperation(contentID: contentID, displayModifier: displayModifier, context: context).queue()
         }
     }
-    
+
     private func showVIPForum() {
         guard let originViewController = self.originViewController else {
             return
@@ -254,17 +254,20 @@ private final class ShowCloseUpOperation: AsyncOperation<Void> {
     private let displayModifier: ShowCloseUpDisplayModifier
     private var content: Content?
     private var contentID: String?
+    private var context: DeeplinkContext?
     private(set) var displayedCloseUpView: CloseUpContainerViewController?
-    
-    init(contentID: String, displayModifier: ShowCloseUpDisplayModifier) {
-        self.displayModifier = displayModifier
+
+    init(contentID: String, displayModifier: ShowCloseUpDisplayModifier, context: DeeplinkContext? = nil) {
         self.contentID = contentID
+        self.displayModifier = displayModifier
+        self.context = context
         super.init()
     }
-    
-    init(content: Content, displayModifier: ShowCloseUpDisplayModifier) {
+
+    init(content: Content, displayModifier: ShowCloseUpDisplayModifier, context: DeeplinkContext? = nil) {
         self.displayModifier = displayModifier
         self.content = content
+        self.context = context
         super.init()
     }
     
@@ -287,12 +290,13 @@ private final class ShowCloseUpOperation: AsyncOperation<Void> {
             "%%CONTENT_ID%%": contentID,
             "%%CONTEXT%%" : childDependencyManager.context
             ])
-        
+
         let closeUpViewController = CloseUpContainerViewController(
             dependencyManager: childDependencyManager,
             contentID: contentID,
+            streamAPIPath: apiPath,
             content: content,
-            streamAPIPath: apiPath
+            context: context
         )
         displayedCloseUpView = closeUpViewController
         
@@ -313,10 +317,12 @@ private final class ShowCloseUpOperation: AsyncOperation<Void> {
 private final class ShowFetchedCloseUpOperation: AsyncOperation<Void> {
     private let displayModifier: ShowCloseUpDisplayModifier
     private var contentID: String
-    
-    init(contentID: String, displayModifier: ShowCloseUpDisplayModifier) {
+    private var context: DeeplinkContext?
+
+    init(contentID: String, displayModifier: ShowCloseUpDisplayModifier, context: DeeplinkContext? = nil) {
         self.displayModifier = displayModifier
         self.contentID = contentID
+        self.context = context
         super.init()
     }
     
@@ -342,7 +348,7 @@ private final class ShowFetchedCloseUpOperation: AsyncOperation<Void> {
         }
         
         // Set up ShowCloseUpOperation and chain it
-        let showCloseUpOperation = ShowCloseUpOperation(contentID: contentID, displayModifier: displayModifier)
+        let showCloseUpOperation = ShowCloseUpOperation(contentID: contentID, displayModifier: displayModifier, context: context)
         showCloseUpOperation.rechainAfter(self)
         
         // Set up ContentFetchOperation and chain it
