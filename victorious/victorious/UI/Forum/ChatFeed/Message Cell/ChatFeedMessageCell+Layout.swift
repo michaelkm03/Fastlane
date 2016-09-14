@@ -57,13 +57,6 @@ extension ChatFeedMessageCell {
             height: timestampSize.height
         )
 
-        cell.likeCountLabel.frame = CGRect(
-            x: firstBubbleFrame.origin.x + max(usernameSize.width + topLabelXInset * 2.0, firstBubbleFrame.width - timestampSize.width - topLabelXInset),
-            y: firstBubbleFrame.origin.y - timestampSize.height - topLabelYSpacing,
-            width: timestampSize.width,
-            height: timestampSize.height
-        )
-
         // Avatar layout:
         
         cell.avatarView.frame = CGRect(
@@ -117,17 +110,31 @@ extension ChatFeedMessageCell {
             if let baseFrame = baseFrame {
                 // Like button layout:
 
-                let likeButtonWidth = CGFloat(44.0)
-                let likeButtonHeight = CGFloat(44.0)
+                let likeViewWidth = CGFloat(44.0)
+                let likeViewHeight = CGFloat(44.0)
 
-                cell.likeButton.frame = CGRect(
-                    x: baseFrame.origin.x + baseFrame.width - (likeButtonWidth / 2),
-                    y: contentMargin.top + baseFrame.height - (likeButtonHeight / 2),
-                    width: likeButtonWidth,
-                    height: likeButtonHeight
+                cell.likeView.frame = CGRect(
+                    x: baseFrame.origin.x + baseFrame.width - (likeViewWidth / 2),
+                    y: contentMargin.top + baseFrame.height - (likeViewHeight / 2),
+                    width: likeViewWidth,
+                    height: likeViewHeight
                 )
 
-                cell.contentView.bringSubviewToFront(cell.likeButton)
+                cell.likeImageView.sizeToFit()
+                cell.likeImageView.frame = CGRect(
+                    center: cell.likeView.bounds.center,
+                    size: cell.likeImageView.frame.size
+                )
+
+                cell.likeCountLabel.sizeToFit()
+                cell.likeCountLabel.frame = CGRect(
+                    x: CGRectGetMaxX(cell.likeImageView.frame) - 3.0,
+                    y: CGRectGetMaxY(cell.likeImageView.frame) - 8.0,
+                    width: CGRectGetWidth(cell.likeCountLabel.frame),
+                    height: CGRectGetHeight(cell.likeCountLabel.frame)
+                )
+
+                cell.contentView.bringSubviewToFront(cell.likeView)
 
                 // Reply button layout:
 
@@ -144,7 +151,7 @@ extension ChatFeedMessageCell {
                 )
             }
         } else {
-            cell.likeButton.frame = CGRect.zero
+            cell.likeView.frame = CGRect.zero
             cell.replyButton.frame = CGRect.zero
         }
     }

@@ -49,19 +49,21 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         failureButton.addTarget(self, action: #selector(didTapOnFailureButton), forControlEvents: .TouchUpInside)
         captionLabel.numberOfLines = 0
         captionLabel.userInteractionEnabled = false
-        likeButton.addTarget(self, action: #selector(didTapOnLikeButton), forControlEvents: .TouchUpInside)
+        likeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOnLikeView)))
         replyButton.addTarget(self, action: #selector(didTapOnReplyButton), forControlEvents: .TouchUpInside)
         
         contentView.addSubview(usernameLabel)
         contentView.addSubview(timestampLabel)
-        contentView.addSubview(likeCountLabel)
         contentView.addSubview(avatarView)
         contentView.addSubview(avatarTapTarget)
         contentView.addSubview(captionBubbleView)
         contentView.addSubview(failureButton)
-        contentView.addSubview(likeButton)
         contentView.addSubview(replyButton)
-        
+
+        likeView.addSubview(likeImageView)
+        likeView.addSubview(likeCountLabel)
+        contentView.addSubview(likeView)
+
         captionBubbleView.contentView.addSubview(captionLabel)
     }
     
@@ -108,22 +110,24 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     
     let usernameLabel = UILabel()
     let timestampLabel = UILabel()
-    let likeCountLabel = UILabel()
     
     let avatarView = AvatarView()
     let avatarTapTarget = UIView()
     
     let captionBubbleView = BubbleView()
     let captionLabel = UILabel()
-    
+
     var previewBubbleView: BubbleView?
     var previewView: UIView?
-    
+
     let failureButton = UIButton(type: .Custom)
-    
+
     let spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
 
-    let likeButton = UIButton()
+    let likeView = UIView()
+    let likeImageView = UIImageView()
+    let likeCountLabel = UILabel()
+
     let replyButton = UIButton()
     
     // MARK: - Layout
@@ -156,8 +160,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         delegate?.messageCellDidSelectFailureButton(self)
     }
 
-    private dynamic func didTapOnLikeButton(sender: UIButton) {
-        sender.selected = !sender.selected
+    private dynamic func didTapOnLikeView() {
         toggleUpvote()
     }
 
@@ -176,11 +179,11 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
 
         upvoteOperation.queue { [weak self] _ in
             self?.updateLikeCount()
+            self?.updateLikeImage()
         }
     }
 
     private dynamic func didTapOnReplyButton(sender: UIButton) {
-        print("Tapped on reply button")
     }
     
     // MARK: - Private helper methods
@@ -199,13 +202,9 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         
         failureButton.setImage(UIImage(named: "failed_error"), forState: .Normal)
 
-        likeButton.setImage(UIImage(named: "heart"), forState: .Normal)
-        likeButton.setImage(UIImage(named: "heart_tap"), forState: .Highlighted)
-        likeButton.setImage(UIImage(named: "heart_tap"), forState: .Selected)
-
         replyButton.setImage(UIImage(named: "reply"), forState: .Normal)
-        replyButton.setImage(UIImage(named: "heart_tap"), forState: .Highlighted)
-        replyButton.setImage(UIImage(named: "heart_tap"), forState: .Selected)
+        replyButton.setImage(UIImage(named: "reply_tap"), forState: .Highlighted)
+        replyButton.setImage(UIImage(named: "reply_tap"), forState: .Selected)
 
         // FUTURE: - Implemented by Community team
         replyButton.hidden = true
@@ -216,14 +215,12 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         usernameLabel.text = content?.author.username ?? ""
         updateTimestamp()
         updateLikeCount()
-        likeButton.selected = content?.isLikedByCurrentUser ?? false
+        updateLikeImage()
 
         let shouldHideTopLabels = content?.wasCreatedByCurrentUser == true
         usernameLabel.hidden = shouldHideTopLabels
         timestampLabel.hidden = shouldHideTopLabels
-        likeCountLabel.hidden = true
-        likeButton.selected = content?.isLikedByCurrentUser ?? false
-        
+
         if let content = content where content.type.hasMedia {
             if content.type == .gif && VCurrentUser.user?.canView(content) == true {
                 let mediaContentView = setupMediaView(for: content)
@@ -301,17 +298,21 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     }
 
     func updateLikeCount() {
-        var likesText = "0 likes"
-
-        if let content = content {
-            let likeCount = content.likeCount ?? 0
-            let localLike = content.isLikedByCurrentUser ? 1 : 0
-            let totalLikes = likeCount + localLike
-            likesText = totalLikes == 1 ? "1 like" : "\(likeCount) likes"
+        guard let content = content, likeCount = content.likeCount else {
+            return
         }
 
-        likeCountLabel.text = likesText
+        let likeText = "\(likeCount)"
+        likeCountLabel.text = likeText
         setNeedsLayout()
+    }
+
+    func updateLikeImage() {
+        guard let content = content else {
+            return
+        }
+
+        likeImageView.image = content.isLikedByCurrentUser ? UIImage(named: "heart_tap") : UIImage(named: "heart")
     }
 
     // MARK: - Managing lifecycle

@@ -79,7 +79,6 @@ extension ChatInterfaceDataSource {
     func updateTimestamps(in collectionView: UICollectionView) {
         for indexPath in collectionView.indexPathsForVisibleItems() {
             let cell = collectionView.cellForItemAtIndexPath(indexPath) as! ChatFeedMessageCell
-            cell.updateLikeCount()
             cell.updateTimestamp()
         }
     }
