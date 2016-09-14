@@ -88,7 +88,7 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     // MARK: - IBActions
     
     @IBAction func onSubscribe(sender: UIButton? = nil) {
-        subscribeButton.dependencyManager?.trackButtonEvent(.cancel)
+        subscribeButton.dependencyManager?.trackButtonEvent(.tap)
         vipSubscriptionHelper?.subscribe()
     }
     
@@ -128,7 +128,7 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     }
     
     @IBAction func onCloseSelected() {
-        closeButton.dependencyManager?.trackButtonEvent(.tap)
+        closeButton.dependencyManager?.trackButtonEvent(.cancel)
         delegate?.vipGateExitedWithSuccess(false)
     }
     
