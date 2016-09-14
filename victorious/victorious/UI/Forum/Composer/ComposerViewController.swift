@@ -9,7 +9,7 @@
 import UIKit
 
 /// Handles view manipulation and message sending related to the composer. Could definitely use a refactor to make it less stateful.
-class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate, ComposerAttachmentTabBarDelegate, VBackgroundContainer, VCreationFlowControllerDelegate, HashtagBarControllerSelectionDelegate, HashtagBarViewControllerAnimationDelegate, ToggleableImageButtonDelegate {
+class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate, ComposerAttachmentTabBarDelegate, VBackgroundContainer, VCreationFlowControllerDelegate, HashtagBarControllerSelectionDelegate, HashtagBarViewControllerAnimationDelegate {
     
     private struct Constants {
         static let animationDuration = 0.2
@@ -476,7 +476,6 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         if let vipButton = vipButton as? ToggleableImageButton {
             vipLockContainerView.addSubview(vipButton)
             vipLockContainerView.v_addFitToParentConstraintsToSubview(vipButton)
-            vipButton.delegate = self
         }
     }
     
@@ -485,15 +484,6 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             vipButton?.removeFromSuperview()
         }
     }
-    
-    // MARK: - ToggleableImageButtonDelegate
-    
-    func didToggle(to selected: Bool) {
-        NSLog("isVIP: \(selected)")
-        isVIP = selected
-    }
-    
-    private var isVIP: Bool = false
     
     // MARK: - VBackgroundContainer
     
@@ -590,7 +580,8 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             let asset = selectedAsset,
             let previewImage = textViewPrependedImage
         {
-            sendMessage(asset: asset, previewImage: previewImage, text: text, currentUser: user, vipStatus: isVIP)
+            let isVIPOnly = (vipButton as? ToggleableImageButton)?.selected ?? false
+            sendMessage(asset: asset, previewImage: previewImage, text: text, currentUser: user, isVIPOnly: isVIPOnly)
         }
         else if let text = text {
             sendMessage(text: text, currentUser: user)

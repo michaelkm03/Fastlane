@@ -8,25 +8,18 @@
 
 import Foundation
 
-protocol ToggleableImageButtonDelegate: class {
-    func didToggle(to selected: Bool)
-}
-
 /// A template-styled button that displays a toggleable image button
 @objc(VToggleableImageButton)
 class ToggleableImageButton: TouchableInsetAdjustableButton, TrackableButton {
-    weak var delegate: ToggleableImageButtonDelegate?
+    class func newWithDependencyManager(dependencyManager: VDependencyManager?) -> ToggleableImageButton {
+        let button = ToggleableImageButton()
+        button.dependencyManager = dependencyManager
+        button.addTarget(button, action: #selector(toggle), forControlEvents: .TouchUpInside)
+        return button
+    }
     
-    var dependencyManager: VDependencyManager? {
+    internal var dependencyManager: VDependencyManager? {
         didSet {
-            if dependencyManager != oldValue {
-                // Remove old action handler
-                removeTarget(self, action: #selector(toggle), forControlEvents: .TouchUpInside)
-                
-                // Add a new action handler
-                addTarget(self, action: #selector(toggle), forControlEvents: .TouchUpInside)
-            }
-            
             var unselectedImage: UIImage? = templateAppearanceValue(.unselectedImage)
             if let unselectedColor: UIColor = templateAppearanceValue(.unselectedColor) {
                 unselectedImage = unselectedImage?.v_tintedTemplateImageWithColor(unselectedColor)
@@ -43,9 +36,8 @@ class ToggleableImageButton: TouchableInsetAdjustableButton, TrackableButton {
             backgroundColor = .clearColor()
         }
     }
-    
+
     private dynamic func toggle() {
         selected = !selected
-        delegate?.didToggle(to: selected)
     }
 }
