@@ -18,7 +18,7 @@ class ToggleableImageButton: TouchableInsetAdjustableButton, TrackableButton {
         return button
     }
     
-    internal var dependencyManager: VDependencyManager? {
+    var dependencyManager: VDependencyManager? {
         didSet {
             var unselectedImage: UIImage? = templateAppearanceValue(.unselectedImage)
             if let unselectedColor: UIColor = templateAppearanceValue(.unselectedColor) {
