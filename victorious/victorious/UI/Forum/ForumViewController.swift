@@ -77,7 +77,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                 // path will be nil for home feed, and non nil for filtered feed
                 composer?.setComposerVisible(path == nil, animated: true)
             case .closeVIP():
-                onClose()
+                onClose(nil)
             case .refreshStage(_):
                 triggerCoachmark()
             case .setOptimisticPostingEnabled(let enabled):
@@ -127,7 +127,18 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     var originViewController: UIViewController {
         return self
     }
-    
+
+    private(set) var chatFeedContext: DeeplinkContext = DeeplinkContext(value: DeeplinkContext.mainFeed)
+
+    private dynamic func mainFeedFilterDidChange(notification: NSNotification) {
+        if let context = (notification.userInfo?["selectedItem"] as? ReferenceWrapper<ListMenuSelectedItem>)?.value.context {
+            chatFeedContext = context
+        }
+        else {
+            chatFeedContext = DeeplinkContext(value: DeeplinkContext.mainFeed)
+        }
+    }
+
     func setStageHeight(value: CGFloat) {
         stageContainerHeight.constant = value
         view.layoutIfNeeded()
@@ -204,7 +215,9 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(mainFeedFilterDidChange), name: RESTForumNetworkSource.updateStreamURLNotification, object: nil)
+
         publisher = ContentPublisher(dependencyManager: dependencyManager.networkResources ?? dependencyManager)
         publisher?.delegate = self
         
@@ -268,8 +281,10 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     // MARK: - Actions
     
-    @objc private func onClose() {
-        closeButton?.dependencyManager?.trackButtonEvent(.tap)
+    @objc private func onClose(sender: UIButton?) {
+        if sender != nil {
+            closeButton?.dependencyManager?.trackButtonEvent(.tap)
+        }
         
         navigationController?.dismissViewControllerAnimated(true, completion: nil)
 

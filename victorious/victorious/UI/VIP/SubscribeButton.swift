@@ -67,7 +67,7 @@ class SubscribeButton: UIView {
             return
         }
         
-        Router(originViewController: scaffold, dependencyManager: dependencyManager).navigate(to: .vipSubscription)
+        Router(originViewController: scaffold, dependencyManager: dependencyManager).navigate(to: .vipSubscription, from: nil)
     }
     
     // MARK: - Responding to VIP changes

@@ -70,6 +70,11 @@ class AsyncOperation<Output>: NSOperation, Queueable {
         fatalError("Subclasses of AsyncOperation must override `execute()`!")
     }
     
+    override func cancel() {
+        super.cancel()
+        result = .cancelled
+    }
+    
     override final func start() {
         guard !cancelled else {
             result = .cancelled

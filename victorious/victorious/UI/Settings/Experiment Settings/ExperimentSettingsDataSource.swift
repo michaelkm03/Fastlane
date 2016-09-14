@@ -79,20 +79,20 @@ class ExperimentSettingsDataSource: NSObject {
         RequestOperation(request: DeviceExperimentsRequest()).queue { result in
             switch result {
                 case .success(let experiments, let defaultExperimentIDs):
-                    // If we have (internal) user configured experiments use those, otherwise use defaults returned from the operation.
-                    let activeExperiments = self.experimentSettings.activeExperiments ?? defaultExperimentIDs
+                    let activeExperimentIDs = self.experimentSettings.activeExperiments ?? defaultExperimentIDs
                     
-                    // TODO: Fix me
-//                    for experiment in experiments {
-//                        experiment.isEnabled = activeExperiments.contains( experiment.id.integerValue )
-//                    }
-
                     self.updateTintColor()
                     
-                    let layers = Set<String>( experiments.map { $0.layerName } )
+                    let layers = Set<String>(experiments.map { $0.layerName })
+                    
                     for layer in layers {
-                        let experimentsInLayer = experiments.filter { $0.layerName == layer }
-                        self.sections.append( Section(title: layer, experiments: experimentsInLayer) )
+                        let experimentsInLayer: [DeviceExperiment] = experiments.filter { $0.layerName == layer }.map { experiment in
+                            var experiment = experiment
+                            experiment.isEnabled = activeExperimentIDs.contains(experiment.id)
+                            return experiment
+                        }
+                        
+                        self.sections.append(Section(title: layer, experiments: experimentsInLayer))
                     }
                     
                     self.state = self.sections.count > 0 ? .Content : .NoContent
