@@ -18,7 +18,6 @@ class ImageBackground: VBackground {
     }
     
     override func viewForBackground() -> UIView {
-        let backgroundImageView = UIImageView(image: backgroundImage)
-        return backgroundImageView
+        return UIImageView(image: backgroundImage)
     }
 }
