@@ -30,7 +30,7 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="afe-aX-5ec" userLabel="Name Container View">
                                     <rect key="frame" x="0.0" y="0.0" width="470" height="97"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" text="{{DISPLAYNAME}}" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1u8-Qh-Rrn" userLabel="Displayname Label">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" text="{{DISPLAYNAME}}" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.34999999999999998" translatesAutoresizingMaskIntoConstraints="NO" id="1u8-Qh-Rrn" userLabel="Displayname Label">
                                             <rect key="frame" x="0.0" y="0.0" width="271" height="39"/>
                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="32"/>
                                             <color key="textColor" white="0.34999999999999998" alpha="1" colorSpace="calibratedWhite"/>
