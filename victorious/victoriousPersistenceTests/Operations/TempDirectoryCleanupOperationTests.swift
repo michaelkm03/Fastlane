@@ -9,7 +9,7 @@
 import XCTest
 @testable import victorious
 
-class TempDirectoryCleanupOperationTests: BaseFetcherOperationTestCase {
+class TempDirectoryCleanupOperationTests: XCTestCase {
     
     var fileURLs: [NSURL] = []
     private let url = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent(kContentCreationDirectory)!
@@ -53,6 +53,6 @@ class TempDirectoryCleanupOperationTests: BaseFetcherOperationTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
+        waitForExpectationsWithTimeout(1.0, handler: nil)
     }
 }

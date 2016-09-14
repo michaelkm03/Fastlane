@@ -115,6 +115,8 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
             collectionView.insertSubview(refreshControl, atIndex: 0)
         }
         
+        scrollPaginator.tolerance += CollectionLoadingView.preferredHeight
+        
         scrollPaginator.loadItemsBelow = { [weak self] in
             self?.loadContent(.older)
         }
@@ -202,7 +204,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     func collectionView(collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, atIndexPath indexPath: NSIndexPath) {
         if let loadingView = view as? CollectionLoadingView {
             loadingView.color = dependencyManager.refreshControlColor
-            loadingView.isLoading = true
+            loadingView.isLoading = dataSource.isLoading
         }
         else if elementKind == UICollectionElementKindSectionHeader {
             header?.headerDidAppear()

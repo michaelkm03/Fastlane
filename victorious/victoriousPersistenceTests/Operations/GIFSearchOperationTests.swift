@@ -10,12 +10,11 @@ import XCTest
 import VictoriousIOSSDK
 @testable import victorious
 
-class GIFSearchOperationTests: BaseFetcherOperationTestCase {
-
+class GIFSearchOperationTests: XCTestCase {
     func testEmptyResult() {
         let operation = GIFSearchOperation(searchTerm: "fun")
         
-        testRequestExecutor = TestRequestExecutor(result: [GIFSearchResult]())
+        let testRequestExecutor = TestRequestExecutor(result: [GIFSearchResult]())
         operation.requestExecutor = testRequestExecutor
         
         let expectation = expectationWithDescription("GIFSearchOperation")
@@ -30,7 +29,7 @@ class GIFSearchOperationTests: BaseFetcherOperationTestCase {
                 XCTFail("operation.reesults should not be nil")
             }
         }
-        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
+        waitForExpectationsWithTimeout(1.0, handler: nil)
     }
 
     func testValidResult() {
@@ -46,7 +45,7 @@ class GIFSearchOperationTests: BaseFetcherOperationTestCase {
         
         let operation = GIFSearchOperation(searchTerm: "fun")
         
-        testRequestExecutor = TestRequestExecutor(result: result)
+        let testRequestExecutor = TestRequestExecutor(result: result)
         operation.requestExecutor = testRequestExecutor
         
         let expectation = expectationWithDescription("GIFSearchOperation")
@@ -62,7 +61,7 @@ class GIFSearchOperationTests: BaseFetcherOperationTestCase {
                 XCTFail("operation.reesults should not be nil or empty.")
             }
         }
-        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
+        waitForExpectationsWithTimeout(1.0, handler: nil)
     }
 
     func testOnError() {
@@ -70,7 +69,7 @@ class GIFSearchOperationTests: BaseFetcherOperationTestCase {
         
         let operation = GIFSearchOperation(searchTerm: "fun")
         
-        testRequestExecutor = TestRequestExecutor(error: expectedError)
+        let testRequestExecutor = TestRequestExecutor(error: expectedError)
         operation.requestExecutor = testRequestExecutor
         
         let expectation = expectationWithDescription("GIFSearchOperation")
@@ -78,6 +77,6 @@ class GIFSearchOperationTests: BaseFetcherOperationTestCase {
             expectation.fulfill()
             XCTAssertEqual(result.error as? NSError, expectedError)
         }
-        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
+        waitForExpectationsWithTimeout(1.0, handler: nil)
     }
 }

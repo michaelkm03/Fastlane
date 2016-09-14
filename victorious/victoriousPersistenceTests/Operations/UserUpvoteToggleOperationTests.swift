@@ -9,7 +9,7 @@
 import XCTest
 @testable import victorious
 
-class UserUpvoteToggleOperationTests: BaseFetcherOperationTestCase {
+class UserUpvoteToggleOperationTests: XCTestCase {
     let remoteUserID = 12345
     let currentUserID = 54321
     
@@ -35,7 +35,7 @@ class UserUpvoteToggleOperationTests: BaseFetcherOperationTestCase {
             XCTAssertFalse(user.isUpvoted)
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
+        waitForExpectationsWithTimeout(1.0, handler: nil)
     }
     
     func testInitiallyUnupvoted() {
@@ -55,6 +55,6 @@ class UserUpvoteToggleOperationTests: BaseFetcherOperationTestCase {
             XCTAssertTrue(user.isUpvoted)
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
+        waitForExpectationsWithTimeout(1.0, handler: nil)
     }
 }
