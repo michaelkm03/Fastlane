@@ -261,6 +261,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
         userNameButton.setTitleColor(dependencyManager.usernameColor, forState: .Normal)
         createdAtLabel.textColor = dependencyManager.timestampColor
         captionLabel.textColor = dependencyManager.captionColor
+        captionLabel.tintColor = dependencyManager.linkColor
         userNameButton.titleLabel!.font = dependencyManager.usernameFont
         createdAtLabel.font = dependencyManager.timestampFont
         captionLabel.font = dependencyManager.captionFont
@@ -355,6 +356,10 @@ private extension VDependencyManager {
     
     var captionColor: UIColor? {
         return colorForKey("color.text.content")
+    }
+    
+    var linkColor: UIColor? {
+        return colorForKey("color.text.link")
     }
     
     var relatedColor: UIColor? {

@@ -255,6 +255,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         let textPostDependency = self.dependencyManager.textPostDependency
         textPostLabel.font = textPostDependency?.textPostFont ?? Constants.defaultTextFont
         textPostLabel.textColor = textPostDependency?.textPostColor ?? Constants.defaultTextColor
+        textPostLabel.tintColor = textPostDependency?.linkColor
         
         textPostLabel.hidden = true //Hide while we set up the view for the next post
 
@@ -343,6 +344,10 @@ private extension VDependencyManager {
     
     var textPostColor: UIColor? {
         return colorForKey("color.textpost")
+    }
+    
+    var linkColor: UIColor? {
+        return colorForKey("color.link")
     }
     
     var textPostBackgroundImageURL: NSURL? {
