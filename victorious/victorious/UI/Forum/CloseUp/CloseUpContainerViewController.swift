@@ -288,16 +288,18 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     
     private dynamic func rotate() {
         switch UIDevice.currentDevice().orientation {
-        case .LandscapeLeft, .LandscapeRight:
-            closeUpView.mediaContentView?.removeFromSuperview()
-            presentViewController(LightBoxViewController(mediaContentView: closeUpView.mediaContentView!), animated: true, completion: nil)
-        case .Portrait, .PortraitUpsideDown:
-            dismissViewControllerAnimated(true) {
-                self.closeUpView.headerDidAppear()
-                self.closeUpView.closeUpContentContainerView?.addSubview(self.closeUpView.mediaContentView!)
-                self.view.setNeedsLayout()
-            }
-        default: break
+            case .LandscapeLeft, .LandscapeRight:
+                closeUpView.mediaContentView?.removeFromSuperview()
+                let lightbox = LightBoxViewController(mediaContentView: closeUpView.mediaContentView!)
+                lightbox.modalTransitionStyle = .CrossDissolve
+                presentViewController(lightbox, animated: true, completion: nil)
+            case .Portrait, .PortraitUpsideDown:
+                dismissViewControllerAnimated(true) {
+                    self.closeUpView.headerDidAppear()
+                    self.closeUpView.closeUpContentContainerView?.addSubview(self.closeUpView.mediaContentView!)
+                    self.view.setNeedsLayout()
+                }
+            default: break
         }
     }
 }
@@ -377,8 +379,8 @@ class LightBoxViewController: UIViewController {
         view.backgroundColor = .blackColor()
     }
     
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         mediaContentView.didPresent()
     }
 }
