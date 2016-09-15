@@ -218,7 +218,6 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
             return
         }
         
-        // TODO: Support links here.
         captionBarViewController?.populate(content.author, caption: text)
     }
 
