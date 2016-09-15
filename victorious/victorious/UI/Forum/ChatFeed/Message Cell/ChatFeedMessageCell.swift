@@ -152,26 +152,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     }
 
     private dynamic func didTapOnLikeView() {
-        toggleUpvote()
-    }
-
-    func toggleUpvote() {
-        guard
-            let content = content,
-            let contentID = content.id,
-            let upvoteAPIPath = dependencyManager.contentUpvoteAPIPath,
-            let unupvoteAPIPath = dependencyManager.contentUnupvoteAPIPath,
-            let upvoteOperation: SyncOperation<Void> = content.isLikedByCurrentUser
-                ? ContentUnupvoteOperation(apiPath: unupvoteAPIPath, contentID: contentID)
-                : ContentUpvoteOperation(apiPath: upvoteAPIPath, contentID: contentID)
-            else {
-                return
-        }
-
-        upvoteOperation.queue { [weak self] _ in
-            self?.updateLikeCount()
-            self?.updateLikeImage()
-        }
+        toggleLike()
     }
 
     private dynamic func didTapOnReplyButton(sender: UIButton) {
@@ -283,27 +264,46 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         self.previewView = previewView
     }
 
-    func updateTimestamp() {
-        timestampLabel.text = content?.timeLabel ?? ""
-        setNeedsLayout()
+    private func toggleLike() {
+        guard
+            let content = content,
+            let contentID = content.id,
+            let upvoteAPIPath = dependencyManager.contentUpvoteAPIPath,
+            let unupvoteAPIPath = dependencyManager.contentUnupvoteAPIPath,
+            let upvoteOperation: SyncOperation<Void> = content.isLikedByCurrentUser
+                ? ContentUnupvoteOperation(apiPath: unupvoteAPIPath, contentID: contentID)
+                : ContentUpvoteOperation(apiPath: upvoteAPIPath, contentID: contentID)
+            else {
+                return
+        }
+
+        upvoteOperation.queue { [weak self] _ in
+            self?.updateLikeCount()
+            self?.updateLikeImage()
+        }
     }
 
-    func updateLikeCount() {
+    private func updateLikeCount() {
         guard let content = content, likeCount = content.likeCount else {
             return
         }
 
-        let likeText = "\(likeCount)"
-        likeCountLabel.text = likeText
+        let totalCount = likeCount + content.currentUserLikeCount
+        likeCountLabel.text = "\(totalCount)"
         setNeedsLayout()
     }
 
-    func updateLikeImage() {
+    private func updateLikeImage() {
         guard let content = content else {
             return
         }
 
         likeImageView.image = content.isLikedByCurrentUser ? UIImage(named: "heart_tap") : UIImage(named: "heart")
+    }
+
+    func updateTimestamp() {
+        timestampLabel.text = content?.timeLabel ?? ""
+        setNeedsLayout()
     }
 
     // MARK: - Managing lifecycle

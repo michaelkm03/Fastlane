@@ -141,6 +141,20 @@ extension ContentModel {
             return isRemotelyLikedByCurrentUser
         }
     }
+
+    public var currentUserLikeCount: Int {
+        get {
+            if isRemotelyLikedByCurrentUser && !isLikedByCurrentUser && likeCount > 0 {
+                return -1
+            }
+
+            if !isRemotelyLikedByCurrentUser && isLikedByCurrentUser {
+                return 1
+            }
+
+            return 0
+        }
+    }
 }
 
 public class Content: ContentModel {
