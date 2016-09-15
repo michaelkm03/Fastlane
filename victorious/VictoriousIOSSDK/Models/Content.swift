@@ -325,7 +325,8 @@ public class Content: ContentModel {
         text: String? = nil,
         assets: [ContentMediaAssetModel] = [],
         previewImages: [ImageAssetModel] = [],
-        localStartTime: NSDate? = nil
+        localStartTime: NSDate? = nil,
+        isVIPOnly: Bool = false
     ) {
         self.id = id
         self.author = author
@@ -334,7 +335,7 @@ public class Content: ContentModel {
         self.previewImages = previewImages
         self.assets = assets
         self.linkedURL = nil
-        self.isVIPOnly = false
+        self.isVIPOnly = isVIPOnly
         self.hashtags = []
         self.userTags = [:]
         self.isRemotelyLikedByCurrentUser = false

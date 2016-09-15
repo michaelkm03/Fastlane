@@ -177,7 +177,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         } ?? []
         
         captionLabel.text = content?.text
-        usernameLabel.text = content?.author.displayName ?? ""
+        usernameLabel.text = content?.author.username ?? ""
         updateTimestamp()
         
         let shouldHideTopLabels = content?.wasCreatedByCurrentUser == true
