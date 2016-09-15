@@ -14,6 +14,9 @@ protocol MediaContentViewDelegate: class {
 
     /// A callback that tells the delegate that the piece of content has finished playing.
     func mediaContentView(mediaContentView: MediaContentView, didFinishPlaybackOfContent content: Content)
+    
+    /// A callback that tells the delegate that a URL has been selected from a link in the content's text.
+    func mediaContentView(mediaContentView: MediaContentView, didSelectLinkURL url: NSURL)
 }
 
 enum FillMode {
@@ -260,9 +263,18 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         }
 
         imageView.sd_setImageWithURL(url) { [weak self] _ in
+            self?.textPostLabel.detectUserTags(for: self?.content) { [weak self] url in
+                guard let strongSelf = self else {
+                    return
+                }
+                
+                strongSelf.delegate?.mediaContentView(strongSelf, didSelectLinkURL: url)
+            }
+            
             guard let text = self?.content.text else {
                 return
             }
+            
             self?.textPostLabel.text = text
             self?.textPostLabel.hidden = false
             self?.imageView.hidden = false

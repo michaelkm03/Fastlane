@@ -334,6 +334,13 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
             hideMediaContentView(mediaContentView, animated: true)
         }
     }
+    
+    func mediaContentView(mediaContentView: MediaContentView, didSelectLinkURL url: NSURL) {
+        Router(originViewController: self, dependencyManager: dependencyManager).navigate(
+            to: DeeplinkDestination(url: url),
+            from: stageContext
+        )
+    }
 
     // MARK: - StageShrinkingAnimatorDelegate
 

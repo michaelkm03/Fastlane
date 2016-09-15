@@ -338,6 +338,10 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     func mediaContentView(mediaContentView: MediaContentView, didFinishPlaybackOfContent content: Content) {
         // No behavior yet
     }
+    
+    func mediaContentView(mediaContentView: MediaContentView, didSelectLinkURL url: NSURL) {
+        delegate?.messageCell(self, didSelectLinkURL: url)
+    }
 }
 
 private extension Content {

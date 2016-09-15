@@ -336,6 +336,10 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
     func mediaContentView(mediaContentView: MediaContentView, didFinishPlaybackOfContent content: Content) {
         // No behavior yet
     }
+    
+    func mediaContentView(mediaContentView: MediaContentView, didSelectLinkURL url: NSURL) {
+        delegate?.closeUpView(self, didSelectLinkURL: url)
+    }
 }
 
 // MARK: - Dependencies
