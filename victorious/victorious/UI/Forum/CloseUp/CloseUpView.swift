@@ -94,7 +94,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
         let mediaContentView = MediaContentView(
             content: content,
             dependencyManager: dependencyManager,
-            fillMode: .fill,
+            fillMode: .fit,
             allowsVideoControls: true,
             shouldSyncOnReappearance: true
         )
