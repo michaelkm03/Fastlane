@@ -26,6 +26,8 @@
 	<string>VImageCreationFlowController</string>
 	<key>blurredImage.background</key>
 	<string>victorious.SystemBlurredImageBackground</string>
+	<key>image.background</key>
+	<string>victorious.ImageBackground</string>
 	<key>solidColor.background</key>
 	<string>VSolidColorBackground</string>
 	<key>gradient.background</key>
