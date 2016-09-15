@@ -294,9 +294,10 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
                 lightbox.modalTransitionStyle = .CrossDissolve
                 presentViewController(lightbox, animated: true, completion: nil)
             case .Portrait, .PortraitUpsideDown:
+                self.closeUpView.closeUpContentContainerView?.addSubview(self.closeUpView.mediaContentView!)
+                self.closeUpView.setupConstraintsForMediaContentView()
                 dismissViewControllerAnimated(true) {
                     self.closeUpView.headerDidAppear()
-                    self.closeUpView.closeUpContentContainerView?.addSubview(self.closeUpView.mediaContentView!)
                     self.view.setNeedsLayout()
                 }
             default: break

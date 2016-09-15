@@ -143,11 +143,20 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
             let mediaContentView = setupMediaContentView(for: content)
             closeUpContentContainerView.addSubview(mediaContentView)
             self.mediaContentView = mediaContentView
+            setupConstraintsForMediaContentView()
             mediaContentView.loadContent()
             
             // Update size
             self.frame.size = sizeForContent(content)
         }
+    }
+    
+    func setupConstraintsForMediaContentView() {
+        guard let mediaContentView = mediaContentView else { return }
+        mediaContentView.translatesAutoresizingMaskIntoConstraints = false
+        mediaContentView.topAnchor.constraintEqualToAnchor(headerSection.bottomAnchor).active = true
+        mediaContentView.widthAnchor.constraintEqualToConstant(UIScreen.mainScreen().bounds.width).active = true
+        mediaContentView.heightAnchor.constraintEqualToConstant(height(for: content)).active = true
     }
     
     // MARK: - Frame/Size Calculations
@@ -175,18 +184,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
             mediaContentView = nil
         }
         else {
-            guard let mediaContentView = mediaContentView else {
-                return
-            }
-            
-            // Content
-            var mediaContentViewFrame = mediaContentView.frame
-            mediaContentViewFrame.origin.y = totalHeight
-            mediaContentViewFrame.size.height = height(for: content)
-            mediaContentViewFrame.size.width = bounds.size.width
-            mediaContentView.frame = mediaContentViewFrame
-            
-            totalHeight = totalHeight + mediaContentView.bounds.size.height
+            totalHeight += height(for: content)
             
             // Caption
             var frame = captionLabel.frame
