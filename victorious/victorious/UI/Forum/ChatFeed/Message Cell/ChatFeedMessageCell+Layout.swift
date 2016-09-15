@@ -152,6 +152,8 @@ extension ChatFeedMessageCell {
             }
         } else {
             cell.likeView.frame = CGRect.zero
+            cell.likeImageView.frame = CGRect.zero
+            cell.likeCountLabel.frame = CGRect.zero
             cell.replyButton.frame = CGRect.zero
         }
     }
