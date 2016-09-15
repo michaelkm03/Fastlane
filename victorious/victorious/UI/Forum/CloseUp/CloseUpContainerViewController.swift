@@ -299,6 +299,11 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         switch UIDevice.currentDevice().orientation {
             case .LandscapeLeft, .LandscapeRight:
                 closeUpView.mediaContentView?.removeFromSuperview()
+                
+                if let heightConstraint = closeUpView.mediaContentHeightConstraint {
+                    closeUpView.mediaContentView?.removeConstraint(heightConstraint)
+                }
+                
                 let lightbox = LightBoxViewController(mediaContentView: closeUpView.mediaContentView!)
                 lightbox.modalTransitionStyle = .CrossDissolve
                 presentViewController(lightbox, animated: true, completion: nil)
@@ -369,6 +374,7 @@ class LightBoxViewController: UIViewController {
     
     init(mediaContentView: MediaContentView) {
         self.mediaContentView = mediaContentView
+        mediaContentView.translatesAutoresizingMaskIntoConstraints = false
         super.init(nibName: nil, bundle: nil)
     }
     

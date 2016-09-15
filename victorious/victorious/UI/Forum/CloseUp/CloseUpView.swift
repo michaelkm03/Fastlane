@@ -40,6 +40,8 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
     @IBOutlet weak var closeUpContentContainerView: UIView!
     @IBOutlet weak var separatorBar: UIImageView!
     
+    private(set) var mediaContentHeightConstraint: NSLayoutConstraint?
+    
     // MARK: - Variables
     
     weak var delegate: CloseUpViewDelegate?
@@ -147,8 +149,12 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
     
     override func updateConstraints() {
         mediaContentView?.topAnchor.constraintEqualToAnchor(headerSection.bottomAnchor).active = true
-        mediaContentView?.widthAnchor.constraintEqualToConstant(UIScreen.mainScreen().bounds.width).active = true
-        mediaContentView?.heightAnchor.constraintEqualToConstant(height(for: content)).active = true
+        mediaContentView?.widthAnchor.constraintEqualToAnchor(headerSection.widthAnchor).active = true
+        
+        // The height of mediaContentView is being constraint to a constant since it's dynamic to the content.
+        // In order to remove this constraint when we transition into a lightbox, we need to save this height constraint as a property.
+        mediaContentHeightConstraint = mediaContentView?.heightAnchor.constraintEqualToConstant(height(for: content))
+        mediaContentHeightConstraint?.active = true
         
         super.updateConstraints()
     }
