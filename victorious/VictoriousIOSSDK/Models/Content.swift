@@ -274,10 +274,8 @@ public class Content: ContentModel {
         isVIPOnly = json["is_vip"].bool ?? false
         hashtags = []
         
-        // TODO: Get real data.
-        userTags = [
-            "jarod": NSURL(string: "vthisapp://profile/7256")!
-        ]
+        // FUTURE: This should be retrieved from the JSON once the payload is defined.
+        userTags = [:]
         
         isRemotelyLikedByCurrentUser = viewedContentJSON["viewer_engagements"]["is_liking"].bool ?? false
         postedAt = Timestamp(apiString: json["posted_at"].stringValue)
