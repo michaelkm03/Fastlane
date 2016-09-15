@@ -325,6 +325,7 @@ public class Content: ContentModel {
         text: String? = nil,
         assets: [ContentMediaAssetModel] = [],
         previewImages: [ImageAssetModel] = [],
+        userTags: [String: NSURL] = [:],
         localStartTime: NSDate? = nil,
         isVIPOnly: Bool = false
     ) {
@@ -337,7 +338,7 @@ public class Content: ContentModel {
         self.linkedURL = nil
         self.isVIPOnly = isVIPOnly
         self.hashtags = []
-        self.userTags = [:]
+        self.userTags = userTags
         self.isRemotelyLikedByCurrentUser = false
         self.postedAt = postedAt
         self.createdAt = createdAt
