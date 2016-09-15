@@ -288,8 +288,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
             return
         }
 
-        let totalCount = likeCount + content.currentUserLikeCount
-        likeCountLabel.text = "\(totalCount)"
+        likeCountLabel.text = "\(likeCount + content.currentUserLikeCount)"
         setNeedsLayout()
     }
 

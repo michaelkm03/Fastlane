@@ -97,17 +97,10 @@ extension ChatFeedMessageCell {
             cell.failureButton.frame = .zero
         }
 
-
         if alignment == .left {
-            var baseFrame: CGRect?
-            if content.type.hasMedia {
-                baseFrame = cell.previewView?.frame
-                baseFrame?.origin.x = cell.avatarView.frame.origin.x + cell.avatarView.frame.size.width + horizontalSpacing
-            } else {
-                baseFrame = cell.captionBubbleView.frame
-            }
-
+            let baseFrame = bubbleFrames.last
             if let baseFrame = baseFrame {
+
                 // Like button layout:
 
                 let likeViewWidth = CGFloat(44.0)
@@ -115,7 +108,7 @@ extension ChatFeedMessageCell {
 
                 cell.likeView.frame = CGRect(
                     x: baseFrame.origin.x + baseFrame.width - (likeViewWidth / 2),
-                    y: contentMargin.top + baseFrame.height - (likeViewHeight / 2),
+                    y: baseFrame.origin.y + baseFrame.height - (likeViewHeight / 2),
                     width: likeViewWidth,
                     height: likeViewHeight
                 )
@@ -126,10 +119,12 @@ extension ChatFeedMessageCell {
                     size: cell.likeImageView.frame.size
                 )
 
+                let horizontalPadding = CGFloat(3.0)
+                let verticalPadding = CGFloat(8.0)
                 cell.likeCountLabel.sizeToFit()
                 cell.likeCountLabel.frame = CGRect(
-                    x: CGRectGetMaxX(cell.likeImageView.frame) - 3.0,
-                    y: CGRectGetMaxY(cell.likeImageView.frame) - 8.0,
+                    x: CGRectGetMaxX(cell.likeImageView.frame) - horizontalPadding,
+                    y: CGRectGetMaxY(cell.likeImageView.frame) - verticalPadding,
                     width: CGRectGetWidth(cell.likeCountLabel.frame),
                     height: CGRectGetHeight(cell.likeCountLabel.frame)
                 )
