@@ -124,10 +124,9 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
                 return
             }
             
-            self.mediaContentView?.removeFromSuperview()
+            removeMediaContentView()
             
             let author = content.author
-            
             setHeader(for: content, author: author)
             
             // Header
@@ -138,8 +137,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
             captionLabel.text = content.text
             
             let mediaContentView = setupMediaContentView(for: content)
-            closeUpContentContainerView.addSubview(mediaContentView)
-            self.mediaContentView = mediaContentView
+            addMediaContentView(mediaContentView)
             mediaContentView.loadContent()
             
             // Update size
@@ -176,8 +174,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
             bounds.size.height = bounds.size.height - relatedLabel.frame.size.height
             errorView.frame = bounds
             
-            mediaContentView?.removeFromSuperview()
-            mediaContentView = nil
+            removeMediaContentView()
         }
         else {
             totalHeight += height(for: content)
@@ -333,6 +330,18 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
 
     func mediaContentView(mediaContentView: MediaContentView, didFinishPlaybackOfContent content: ContentModel) {
         // No behavior yet
+    }
+    
+    // MARK: - 
+    
+    private func addMediaContentView(mediaContentView: MediaContentView) {
+        closeUpContentContainerView.addSubview(mediaContentView)
+        self.mediaContentView = mediaContentView
+    }
+    
+    private func removeMediaContentView() {
+        mediaContentView?.removeFromSuperview()
+        mediaContentView = nil
     }
 }
 
