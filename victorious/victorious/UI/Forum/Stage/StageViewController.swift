@@ -276,6 +276,8 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
             trackView(.cellView, showingContent: content, parameters: [:])
         }
         
+        loadingIndicator.hidden = false
+        
         guard !visible else {
             return
         }
@@ -291,7 +293,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         if let mediaContentView = mediaContentView {
             hideMediaContentView(mediaContentView, animated: true)
         }
-
+        loadingIndicator.hidden = true
         visible = false
 
         titleCardViewController?.hide()
@@ -326,7 +328,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     func mediaContentView(mediaContentView: MediaContentView, didFinishPlaybackOfContent content: ContentModel) {
         // When the playback of a video is done we want to hide the MCV.
         if content.type == .video {
-            hideMediaContentView(mediaContentView, animated: true)
+            hide(animated: true)
         }
     }
 
