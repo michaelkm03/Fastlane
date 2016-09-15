@@ -8,8 +8,6 @@
 
 @class VCVideoPlayerViewController;
 
-@class VTracking;
-
 @protocol VCVideoPlayerDelegate <NSObject>
 
 @optional
@@ -58,26 +56,6 @@
 @property (nonatomic, readonly) BOOL didFinishPlayingOnce;
 
 - (void)toggleToolbarHidden;
-
-/**
- 
- @return Whether tracking is enabled through VTrackingManager as set with
- a tracking item instance of type VTracking.
- */
-@property (nonatomic, readonly) BOOL isTrackingEnabled;
-
-/**
- Enables video tracking through an instance of VTrackingManager using data from
- a valid VTracking instance and a provided stream ID if this video was loaded
- from a  stream.
- */
-- (void)enableTrackingWithTrackingItem:(VTracking *)tracking  streamID:(NSString *)streamID;
-
-/**
- Disables tracking and releases reference to any current tracking item.  To re-enable, 
- call enableTrackingWithTrackingItem: and pass in a valid VTracking instance.
- */
-- (void)disableTracking;
 
 + (VCVideoPlayerViewController *)currentPlayer; ///< Returns a reference to a VCVideoPlayerViewController instance that is currently playing
 

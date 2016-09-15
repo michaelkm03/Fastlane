@@ -10,7 +10,7 @@ import XCTest
 import VictoriousIOSSDK
 @testable import victorious
 
-class AccountCreateOperationTests: BaseFetcherOperationTestCase {
+class AccountCreateOperationTests: XCTestCase {
     
     let token = "ads98j0yd08as7hd9s8a76dghsa87das"
     let twitterToken = "dsaliuho87ao2e"

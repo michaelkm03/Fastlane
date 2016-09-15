@@ -168,13 +168,13 @@ class NotificationsViewController: UIViewController, UITableViewDelegate, Notifi
         
         let destination = DeeplinkDestination(url: url)
         let router = Router(originViewController: self, dependencyManager: dependencyManager)
-        router.navigate(to: destination)
+        router.navigate(to: destination, from: nil)
     }
     
     // MARK: - UITableViewDelegate
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        guard let deepLink = (dataSource.visibleItems[indexPath.row] as? VNotification)?.deepLink where !deepLink.isEmpty else {
+        guard let deepLink = (dataSource.visibleItems[indexPath.row] as? Notification)?.deeplink where !deepLink.isEmpty else {
             return
         }
         
@@ -207,9 +207,9 @@ class NotificationsViewController: UIViewController, UITableViewDelegate, Notifi
             return
         }
         
-        let notification = dataSource.visibleItems[indexPath.row]
+        let notification = dataSource.visibleItems[indexPath.row] as! Notification
         let router = Router(originViewController: self, dependencyManager: dependencyManager)
-        router.navigate(to: .profile(userID: notification.user.remoteId.integerValue))
+        router.navigate(to: .profile(userID: notification.user.id), from: nil)
     }
     
     // MARK: - VBackgroundContainer

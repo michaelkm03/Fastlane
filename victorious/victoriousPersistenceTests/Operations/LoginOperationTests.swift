@@ -9,7 +9,7 @@
 import XCTest
 @testable import victorious
 
-class LoginOperationTests: BaseFetcherOperationTestCase {
+class LoginOperationTests: XCTestCase {
     func testLogin() {
         guard let user = self.loadUser(), let email = user.username else {
             XCTFail( "Failed to load sample user" )
@@ -36,7 +36,7 @@ class LoginOperationTests: BaseFetcherOperationTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
+        waitForExpectationsWithTimeout(1.0, handler: nil)
     }
     
     private func loadUser() -> User? {

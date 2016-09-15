@@ -12,7 +12,6 @@ import VictoriousIOSSDK
 final class StoredLoginOperation: SyncOperation<Void> {
     
     private let dependencyManager: VDependencyManager
-    private let persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
     
     init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager

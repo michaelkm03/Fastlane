@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import CoreData
 
 let kLastLoginTypeUserDefaultsKey = "com.getvictorious.VUserManager.LoginType"
 let kAccountIdentifierDefaultsKey = "com.getvictorious.VUserManager.AccountIdentifier"
