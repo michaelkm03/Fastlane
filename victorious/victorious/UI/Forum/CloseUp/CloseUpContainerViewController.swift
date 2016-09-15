@@ -304,7 +304,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
                 presentViewController(lightbox, animated: true, completion: nil)
             case .Portrait, .PortraitUpsideDown:
                 self.closeUpView.closeUpContentContainerView?.addSubview(self.closeUpView.mediaContentView!)
-                self.closeUpView.setupConstraintsForMediaContentView()
+                closeUpView.setNeedsUpdateConstraints()
                 dismissViewControllerAnimated(true) {
                     self.closeUpView.headerDidAppear()
                     self.view.setNeedsLayout()

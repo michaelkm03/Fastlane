@@ -100,6 +100,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
         )
         mediaContentView.delegate = self
         mediaContentView.alpha = 0
+        mediaContentView.translatesAutoresizingMaskIntoConstraints = false
         
         return mediaContentView
     }
@@ -139,7 +140,6 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
             let mediaContentView = setupMediaContentView(for: content)
             closeUpContentContainerView.addSubview(mediaContentView)
             self.mediaContentView = mediaContentView
-            setupConstraintsForMediaContentView()
             mediaContentView.loadContent()
             
             // Update size
@@ -147,12 +147,12 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
         }
     }
     
-    func setupConstraintsForMediaContentView() {
-        guard let mediaContentView = mediaContentView else { return }
-        mediaContentView.translatesAutoresizingMaskIntoConstraints = false
-        mediaContentView.topAnchor.constraintEqualToAnchor(headerSection.bottomAnchor).active = true
-        mediaContentView.widthAnchor.constraintEqualToConstant(UIScreen.mainScreen().bounds.width).active = true
-        mediaContentView.heightAnchor.constraintEqualToConstant(height(for: content)).active = true
+    override func updateConstraints() {
+        mediaContentView?.topAnchor.constraintEqualToAnchor(headerSection.bottomAnchor).active = true
+        mediaContentView?.widthAnchor.constraintEqualToConstant(UIScreen.mainScreen().bounds.width).active = true
+        mediaContentView?.heightAnchor.constraintEqualToConstant(height(for: content)).active = true
+        
+        super.updateConstraints()
     }
     
     // MARK: - Frame/Size Calculations
