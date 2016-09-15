@@ -15,11 +15,6 @@ class GIFSearchDataSource: PaginatedDataSource, MediaSearchDataSource {
     
     override init() {
         options.showPreview = true
-        guard let giphyImage = UIImage(named: "giphy_attribution") else {
-            Log.warning("Failed to find giphy attribution image!")
-            return
-        }
-        options.attributionImage = giphyImage
     }
 	
 	func performSearch( searchTerm searchTerm: String?, pageType: VPageType, completion: (NSError? -> ())? ) {

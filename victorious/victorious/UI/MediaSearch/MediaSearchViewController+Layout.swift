@@ -43,23 +43,14 @@ extension MediaSearchViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-       
+        
         if options.showAttribution {
             let headerHeight = self.shouldShowHeader(section) ? MediaSearchLayout.headerViewHeight : 0.0
             return CGSize(width: collectionView.bounds.width, height: headerHeight )
+            
         } else {
             return CGSize.zero
         }
-    }
-    
-    func collectionView(collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, atIndexPath indexPath: NSIndexPath) {
-        guard
-            let attributionHeader = view as? AttributionHeaderView,
-            let attributionImage = options.attributionImage
-        else {
-            return
-        }
-        attributionHeader.imageView.image = attributionImage
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {

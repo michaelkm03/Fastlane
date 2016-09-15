@@ -1,5 +1,5 @@
 //
-//  StickerSearchDataSource.swift
+//  StickerTrayDataSource.swift
 //  victorious
 //
 //  Created by Sharif Ahmed on 9/9/16.
@@ -8,16 +8,7 @@
 
 import Foundation
 
-class StickerSearchDataSource: PaginatedDataSource, MediaSearchDataSource {
-    
-    private(set) var options = MediaSearchOptions()
-    
-    override init() {
-        options.searchEnabled = false
-        options.showPreview = false
-        options.scrollDirection = .Horizontal
-    }
-    
+class StickerTrayDataSource: PaginatedDataSource, UICollectionViewDataSource {
     func performSearch( searchTerm searchTerm: String?, pageType: VPageType, completion: (NSError? -> ())? ) {
         
         //TODO: REPLACE WITH REAL STICKER FETCH ENDPOINTS
@@ -32,7 +23,15 @@ class StickerSearchDataSource: PaginatedDataSource, MediaSearchDataSource {
         )
     }
     
-    var title: String {
-        return NSLocalizedString( "Sticker Search", comment: "" )
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 0
+    }
+    
+    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+        return 0
+    }
+    
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        fatalError()
     }
 }
