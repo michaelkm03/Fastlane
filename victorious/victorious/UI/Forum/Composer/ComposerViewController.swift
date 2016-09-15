@@ -421,7 +421,6 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         if animationDuration != 0 {
             UIView.animateWithDuration(animationDuration, delay: 0, options: animationOptions, animations: {
                 self.inputViewToBottomConstraint.constant = visibleKeyboardHeight
-                self.updateCustomInputAreaHeight(animated: false)
                 self.delegate?.composer(self, didUpdateContentHeight: self.totalComposerHeight)
                 self.view.layoutIfNeeded()
             }, completion: nil)
