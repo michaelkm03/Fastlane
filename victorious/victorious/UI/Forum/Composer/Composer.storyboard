@@ -28,10 +28,10 @@
                                         </constraints>
                                     </containerView>
                                     <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Koq-m5-Wlb" userLabel="Input Options Container">
-                                        <rect key="frame" x="8" y="0.0" width="524" height="80"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="532" height="80"/>
                                         <subviews>
                                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5MN-kC-AjT">
-                                                <rect key="frame" x="0.0" y="27" width="524" height="53"/>
+                                                <rect key="frame" x="8" y="27" width="524" height="53"/>
                                                 <subviews>
                                                     <view autoresizesSubviews="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="joT-P4-Pfz" customClass="ComposerAttachmentTabBar" customModule="victorious" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="524" height="53"/>
@@ -49,7 +49,7 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7nb-cq-ZtM" userLabel="Input container view">
-                                                <rect key="frame" x="0.0" y="0.0" width="524" height="27"/>
+                                                <rect key="frame" x="8" y="0.0" width="524" height="27"/>
                                                 <subviews>
                                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="FNU-QM-fIQ" customClass="VPlaceholderTextView">
                                                         <rect key="frame" x="30" y="14" width="486" height="0.0"/>
@@ -76,9 +76,9 @@
                                                     <constraint firstAttribute="trailing" secondItem="FNU-QM-fIQ" secondAttribute="trailing" constant="8" id="AVr-Dj-QAM"/>
                                                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="FNU-QM-fIQ" secondAttribute="bottom" constant="8" id="F0Y-Rd-1ae"/>
                                                     <constraint firstItem="Xjx-IZ-D2a" firstAttribute="leading" secondItem="7nb-cq-ZtM" secondAttribute="leading" id="Ggx-4n-oMZ"/>
-                                                    <constraint firstItem="FNU-QM-fIQ" firstAttribute="leading" secondItem="Xjx-IZ-D2a" secondAttribute="trailing" constant="8" id="Lj4-t2-0a1"/>
                                                     <constraint firstItem="FNU-QM-fIQ" firstAttribute="top" relation="greaterThanOrEqual" secondItem="7nb-cq-ZtM" secondAttribute="top" constant="8" id="Ljo-LZ-G5S"/>
                                                     <constraint firstItem="FNU-QM-fIQ" firstAttribute="centerY" secondItem="7nb-cq-ZtM" secondAttribute="centerY" id="Q1J-vv-1qp"/>
+                                                    <constraint firstItem="FNU-QM-fIQ" firstAttribute="leading" secondItem="7nb-cq-ZtM" secondAttribute="leading" constant="30" id="nZX-MY-i5E"/>
                                                     <constraint firstItem="Xjx-IZ-D2a" firstAttribute="centerY" secondItem="7nb-cq-ZtM" secondAttribute="centerY" id="oWq-8V-fPT"/>
                                                 </constraints>
                                             </view>
@@ -88,7 +88,7 @@
                                             <constraint firstAttribute="trailing" secondItem="7nb-cq-ZtM" secondAttribute="trailing" id="Je9-Os-amh"/>
                                             <constraint firstItem="5MN-kC-AjT" firstAttribute="top" secondItem="7nb-cq-ZtM" secondAttribute="bottom" id="iwV-1I-zqi"/>
                                             <constraint firstAttribute="bottom" secondItem="5MN-kC-AjT" secondAttribute="bottom" id="qYm-Ya-Kcj"/>
-                                            <constraint firstItem="7nb-cq-ZtM" firstAttribute="leading" secondItem="Koq-m5-Wlb" secondAttribute="leading" id="w09-jH-cyJ"/>
+                                            <constraint firstItem="7nb-cq-ZtM" firstAttribute="leading" secondItem="Koq-m5-Wlb" secondAttribute="leading" constant="8" id="w09-jH-cyJ"/>
                                             <constraint firstItem="5MN-kC-AjT" firstAttribute="leading" secondItem="7nb-cq-ZtM" secondAttribute="leading" id="wqW-It-scT"/>
                                             <constraint firstItem="5MN-kC-AjT" firstAttribute="trailing" secondItem="7nb-cq-ZtM" secondAttribute="trailing" id="zdu-io-I9M"/>
                                             <constraint firstItem="7nb-cq-ZtM" firstAttribute="top" secondItem="Koq-m5-Wlb" secondAttribute="top" id="zrB-SN-q6r"/>
@@ -125,7 +125,7 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="Koq-m5-Wlb" firstAttribute="leading" secondItem="nKf-rE-KkT" secondAttribute="leading" constant="8" id="3dR-yA-V1B"/>
+                                    <constraint firstItem="Koq-m5-Wlb" firstAttribute="leading" secondItem="nKf-rE-KkT" secondAttribute="leading" id="3dR-yA-V1B"/>
                                     <constraint firstItem="Koq-m5-Wlb" firstAttribute="top" secondItem="xmy-Vi-14p" secondAttribute="bottom" id="8nO-QE-QQv"/>
                                     <constraint firstAttribute="trailing" secondItem="xmy-Vi-14p" secondAttribute="trailing" id="RlA-Wd-sqJ"/>
                                     <constraint firstAttribute="trailing" secondItem="6XI-Cd-FZ6" secondAttribute="trailing" id="S4E-vm-gwK"/>
@@ -150,6 +150,7 @@
                         <outlet property="attachmentContainerHeightConstraint" destination="RlM-AL-BQg" id="RWR-Gl-XJz"/>
                         <outlet property="attachmentContainerView" destination="5MN-kC-AjT" id="Myy-dz-PGb"/>
                         <outlet property="attachmentTabBar" destination="joT-P4-Pfz" id="LbM-S1-dyv"/>
+                        <outlet property="composerLeadingConstraint" destination="nZX-MY-i5E" id="MXU-Th-nLC"/>
                         <outlet property="confirmButton" destination="ytv-wP-GFy" id="aqt-MR-7fO"/>
                         <outlet property="confirmButtonContainer" destination="6XI-Cd-FZ6" id="vAw-BD-CQI"/>
                         <outlet property="confirmButtonContainerHeightConstraint" destination="jHC-no-EqS" id="Ire-Pl-V7k"/>

@@ -20,6 +20,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         static let minimumConfirmButtonContainerHeight: CGFloat = 52
         static let composerTextInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         static let confirmButtonHorizontalInset: CGFloat = 16
+        static let vipLockComposerMargin: CGFloat = 8
     }
     
     /// ForumEventSender
@@ -45,6 +46,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     @IBOutlet weak private var hashtagBarContainerView: UIView!
     @IBOutlet weak var vipLockContainerView: UIView!
     @IBOutlet weak var vipLockWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var composerLeadingConstraint: NSLayoutConstraint!
     
     @IBOutlet weak private var passthroughContainerView: VPassthroughContainerView!
     
@@ -457,7 +459,16 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         
         createVIPButtonIfNeeded()
         
-        vipLockWidthConstraint.constant = vipButton?.intrinsicContentSize().width ?? 0
+        if let width = vipButton?.intrinsicContentSize().width {
+            // If there is a lock
+            vipLockWidthConstraint.constant = width
+            composerLeadingConstraint.constant = width + Constants.vipLockComposerMargin
+        }
+        else {
+            // No lock
+            vipLockWidthConstraint.constant = 0
+            composerLeadingConstraint.constant = 0
+        }
         
         view.layoutIfNeeded()
     }
