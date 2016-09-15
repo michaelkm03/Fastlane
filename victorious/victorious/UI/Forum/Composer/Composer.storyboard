@@ -52,7 +52,7 @@
                                                 <rect key="frame" x="8" y="0.0" width="524" height="27"/>
                                                 <subviews>
                                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="FNU-QM-fIQ" customClass="VPlaceholderTextView">
-                                                        <rect key="frame" x="30" y="14" width="486" height="0.0"/>
+                                                        <rect key="frame" x="30" y="6" width="486" height="15"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" priority="996" id="ciC-0O-1WA"/>
@@ -74,10 +74,9 @@
                                                 <constraints>
                                                     <constraint firstAttribute="height" priority="998" constant="27" id="4PX-UV-qLv"/>
                                                     <constraint firstAttribute="trailing" secondItem="FNU-QM-fIQ" secondAttribute="trailing" constant="8" id="AVr-Dj-QAM"/>
-                                                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="FNU-QM-fIQ" secondAttribute="bottom" constant="8" id="F0Y-Rd-1ae"/>
+                                                    <constraint firstAttribute="bottom" secondItem="FNU-QM-fIQ" secondAttribute="bottom" constant="6" id="F0Y-Rd-1ae"/>
                                                     <constraint firstItem="Xjx-IZ-D2a" firstAttribute="leading" secondItem="7nb-cq-ZtM" secondAttribute="leading" id="Ggx-4n-oMZ"/>
-                                                    <constraint firstItem="FNU-QM-fIQ" firstAttribute="top" relation="greaterThanOrEqual" secondItem="7nb-cq-ZtM" secondAttribute="top" constant="8" id="Ljo-LZ-G5S"/>
-                                                    <constraint firstItem="FNU-QM-fIQ" firstAttribute="centerY" secondItem="7nb-cq-ZtM" secondAttribute="centerY" id="Q1J-vv-1qp"/>
+                                                    <constraint firstItem="FNU-QM-fIQ" firstAttribute="top" secondItem="7nb-cq-ZtM" secondAttribute="top" constant="6" id="Ljo-LZ-G5S"/>
                                                     <constraint firstItem="FNU-QM-fIQ" firstAttribute="leading" secondItem="7nb-cq-ZtM" secondAttribute="leading" constant="30" id="nZX-MY-i5E"/>
                                                     <constraint firstItem="Xjx-IZ-D2a" firstAttribute="centerY" secondItem="7nb-cq-ZtM" secondAttribute="centerY" id="oWq-8V-fPT"/>
                                                 </constraints>
@@ -95,13 +94,13 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6XI-Cd-FZ6">
-                                        <rect key="frame" x="532" y="25" width="68" height="55"/>
+                                        <rect key="frame" x="532" y="28" width="68" height="52"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ytv-wP-GFy" customClass="TouchableInsetAdjustableButton" customModule="victorious" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="8" width="60" height="39"/>
+                                                <rect key="frame" x="0.0" y="6" width="60" height="40"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="60" id="I1u-aw-0Wa"/>
-                                                    <constraint firstAttribute="height" constant="39" id="XKe-05-cSi"/>
+                                                    <constraint firstAttribute="height" constant="40" id="XKe-05-cSi"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                 <inset key="contentEdgeInsets" minX="6" minY="3" maxX="6" maxY="3"/>
@@ -115,8 +114,8 @@
                                         <constraints>
                                             <constraint firstItem="ytv-wP-GFy" firstAttribute="leading" secondItem="6XI-Cd-FZ6" secondAttribute="leading" id="3mp-RO-N8O"/>
                                             <constraint firstItem="ytv-wP-GFy" firstAttribute="centerY" secondItem="6XI-Cd-FZ6" secondAttribute="centerY" id="4pS-Nh-seG"/>
-                                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="ytv-wP-GFy" secondAttribute="bottom" id="THY-xX-zZA"/>
-                                            <constraint firstItem="ytv-wP-GFy" firstAttribute="top" relation="greaterThanOrEqual" secondItem="6XI-Cd-FZ6" secondAttribute="top" constant="8" id="cnO-ET-h0Q"/>
+                                            <constraint firstAttribute="bottom" secondItem="ytv-wP-GFy" secondAttribute="bottom" constant="6" id="THY-xX-zZA"/>
+                                            <constraint firstItem="ytv-wP-GFy" firstAttribute="top" relation="greaterThanOrEqual" secondItem="6XI-Cd-FZ6" secondAttribute="top" constant="6" id="cnO-ET-h0Q"/>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="60" id="h0T-me-15g"/>
                                             <constraint firstAttribute="height" priority="998" constant="39" id="jHC-no-EqS"/>
                                             <constraint firstAttribute="trailing" secondItem="ytv-wP-GFy" secondAttribute="trailing" constant="8" id="jMz-WL-Eun"/>
