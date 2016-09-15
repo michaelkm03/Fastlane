@@ -254,13 +254,19 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
             dependencyManager: dependencyManager
         )
         
-        confirm.before(flagOrDeleteOperation)
-        confirm.queue()
-        flagOrDeleteOperation.queue { [weak self] result in
-            /// FUTURE: Update parent view controller to remove content
+        
+        confirm.queue() { result in
             switch result {
-                case .success(_), .failure(_): self?.navigationController?.popViewControllerAnimated(true)
-                case .cancelled: break
+                case .success:
+                    flagOrDeleteOperation.queue { [weak self] result in
+                        /// FUTURE: Update parent view controller to remove content
+                        switch result {
+                            case .success(_), .failure(_): self?.navigationController?.popViewControllerAnimated(true)
+                            case .cancelled: break
+                        }
+                }
+                case .failure, .cancelled:
+                    break
             }
         }
     }
