@@ -10,7 +10,7 @@ import XCTest
 @testable import victorious
 
 class ListMenuCollectionViewDataSourceTests: XCTestCase {
-    func testCellInference() {
+    func testNoContentCell() {
         let dependencyManager = VDependencyManager(dictionary: [:])
         let listMenuViewController = ListMenuViewController.newWithDependencyManager(dependencyManager)
         listMenuViewController.beginAppearanceTransition(true, animated: false)
