@@ -184,6 +184,7 @@ class LinkLabel: UILabel, NSLayoutManagerDelegate {
     }
     
     private func getLink(at location: CGPoint) -> Link? {
+        let location = location + CGPoint(x: 0.0, y: -verticalOffsetToTopOfText)
         var fractionOfDistance = CGFloat(0.0)
         let characterIndex = layoutManager.characterIndexForPoint(location, inTextContainer: textContainer, fractionOfDistanceBetweenInsertionPoints: &fractionOfDistance)
         
@@ -206,6 +207,17 @@ class LinkLabel: UILabel, NSLayoutManagerDelegate {
         }
         
         return nil
+    }
+    
+    /// Returns the offset from the top of the label's bounds to the top of its text.
+    private var verticalOffsetToTopOfText: CGFloat {
+        // To get the offset, we need to know the size of the text, which requires setting the preferred max layout
+        // width. We don't want to actually change that value though, so we restore it when we're done.
+        let oldPreferredMaxLayoutWidth = preferredMaxLayoutWidth
+        preferredMaxLayoutWidth = frame.width
+        let naturalSize = intrinsicContentSize()
+        preferredMaxLayoutWidth = oldPreferredMaxLayoutWidth
+        return (frame.height - naturalSize.height) / 2.0
     }
     
     // MARK: - Layout
