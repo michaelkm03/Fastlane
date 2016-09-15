@@ -14,7 +14,7 @@ protocol ChatFeedMessageCellDelegate: class {
     func messageCellDidSelectMedia(messageCell: ChatFeedMessageCell)
     func messageCellDidLongPressContent(messageCell: ChatFeedMessageCell)
     func messageCellDidSelectFailureButton(messageCell: ChatFeedMessageCell)
-    func messageCell(messageCell: ChatFeedMessageCell, didSelectLink url: NSURL)
+    func messageCell(messageCell: ChatFeedMessageCell, didSelectLinkURL url: NSURL)
 }
 
 class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
@@ -94,7 +94,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         }
     }
     
-    /// Provides a private shorthand accessor within the implementation because we mostly deal with the ContentModel
+    /// Provides a private shorthand accessor within the implementation because we mostly deal with the Content
     private var content: Content? {
         return chatFeedContent?.content
     }
@@ -166,15 +166,13 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     }
     
     private func populateData() {
-        captionLabel.linkDetectors = content?.userTags.map { username, link in
-            return SubstringLinkDetector(substring: "@\(username)") { [weak self] _ in
-                guard let strongSelf = self else {
-                    return
-                }
-                
-                strongSelf.delegate?.messageCell(strongSelf, didSelectLink: link)
+        captionLabel.detectUserTags(for: content) { [weak self] url in
+            guard let strongSelf = self else {
+                return
             }
-        } ?? []
+            
+            strongSelf.delegate?.messageCell(strongSelf, didSelectLinkURL: url)
+        }
         
         captionLabel.text = content?.text
         usernameLabel.text = content?.author.username ?? ""
@@ -220,7 +218,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         return previewView
     }
     
-    private func setupMediaView(for content: ContentModel) -> MediaContentView {
+    private func setupMediaView(for content: Content) -> MediaContentView {
         self.previewView?.removeFromSuperview()
         self.previewView = nil
         
@@ -278,7 +276,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     
     // MARK: - Sizing
     
-    static func cellHeight(displaying content: ContentModel, inWidth width: CGFloat, dependencyManager: VDependencyManager) -> CGFloat? {
+    static func cellHeight(displaying content: Content, inWidth width: CGFloat, dependencyManager: VDependencyManager) -> CGFloat? {
         let captionHeight = captionSize(displaying: content, inWidth: width, dependencyManager: dependencyManager)?.height ?? 0.0
         let previewHeight = previewSize(displaying: content, inWidth: width)?.height ?? 0.0
         
@@ -290,7 +288,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         return contentMargin.top + contentMargin.bottom + contentHeight
     }
     
-    static func captionSize(displaying content: ContentModel, inWidth width: CGFloat, dependencyManager: VDependencyManager) -> CGSize? {
+    static func captionSize(displaying content: Content, inWidth width: CGFloat, dependencyManager: VDependencyManager) -> CGSize? {
         guard let attributedText = content.attributedText(using: dependencyManager) else {
             return nil
         }
@@ -309,7 +307,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         return size
     }
     
-    static func previewSize(displaying content: ContentModel, inWidth width: CGFloat) -> CGSize? {
+    static func previewSize(displaying content: Content, inWidth width: CGFloat) -> CGSize? {
         guard content.type.hasMedia else {
             return nil
         }
@@ -323,7 +321,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     
     // MARK: - MediaContentViewDelegate
     
-    func mediaContentView(mediaContentView: MediaContentView, didFinishLoadingContent content: ContentModel) {
+    func mediaContentView(mediaContentView: MediaContentView, didFinishLoadingContent content: Content) {
         UIView.animateWithDuration(
             MediaContentView.AnimationConstants.mediaContentViewAnimationDuration,
             animations: {
@@ -337,12 +335,12 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         )
     }
     
-    func mediaContentView(mediaContentView: MediaContentView, didFinishPlaybackOfContent content: ContentModel) {
+    func mediaContentView(mediaContentView: MediaContentView, didFinishPlaybackOfContent content: Content) {
         // No behavior yet
     }
 }
 
-private extension ContentModel {
+private extension Content {
     var timeLabel: String {
         return NSDate(timestamp: createdAt).stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds)
     }
@@ -399,7 +397,7 @@ private extension VDependencyManager {
     }
 }
 
-private extension ContentModel {
+private extension Content {
     func attributedText(using dependencyManager: VDependencyManager) -> NSAttributedString? {
         guard let text = text where text != "" else {
             return nil

@@ -566,6 +566,7 @@
 		7A1DED231D8331CE003F5C37 /* RequestOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DED221D8331CE003F5C37 /* RequestOperationTests.swift */; };
 		7A1E1D781D30724A00A39FE5 /* BackgroundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1E1D771D30724A00A39FE5 /* BackgroundButton.swift */; };
 		7A254FDD1D77A8F6007D1D6B /* CollectionLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A254FDC1D77A8F6007D1D6B /* CollectionLoadingView.swift */; };
+		7A26780B1D8B1AB500EC318A /* LinkLabel+Detection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A26780A1D8B1AB500EC318A /* LinkLabel+Detection.swift */; };
 		7A26E0151CB6D57B006C99DF /* NSDate+timeSince.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A26E0141CB6D57B006C99DF /* NSDate+timeSince.swift */; };
 		7A2747CE1D10AC37005168BA /* ContentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2747CD1D10AC37005168BA /* ContentModel.swift */; };
 		7A29D23B1D5116A200FE2B31 /* PaginatedLoadingType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A29D23A1D5116A200FE2B31 /* PaginatedLoadingType.swift */; };
@@ -1978,6 +1979,7 @@
 		7A1E1D771D30724A00A39FE5 /* BackgroundButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundButton.swift; sourceTree = "<group>"; };
 		7A215BA51CF537BE005034BF /* PreviewImageContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewImageContainer.swift; sourceTree = "<group>"; };
 		7A254FDC1D77A8F6007D1D6B /* CollectionLoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionLoadingView.swift; sourceTree = "<group>"; };
+		7A26780A1D8B1AB500EC318A /* LinkLabel+Detection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LinkLabel+Detection.swift"; sourceTree = "<group>"; };
 		7A26E0141CB6D57B006C99DF /* NSDate+timeSince.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+timeSince.swift"; sourceTree = "<group>"; };
 		7A2747CD1D10AC37005168BA /* ContentModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentModel.swift; sourceTree = "<group>"; };
 		7A29D23A1D5116A200FE2B31 /* PaginatedLoadingType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaginatedLoadingType.swift; sourceTree = "<group>"; };
@@ -2021,8 +2023,8 @@
 		7AE0A0411D63EC7F00769080 /* AccessoryScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessoryScreen.swift; sourceTree = "<group>"; };
 		7AE0A0461D64EA8100769080 /* AccessoryScreenTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessoryScreenTest.swift; sourceTree = "<group>"; };
 		7AE0A0481D64EAF500769080 /* VDependencyManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VDependencyManager.swift; sourceTree = "<group>"; };
-		7AE14EAE1D88B6DB0088A13E /* LinkLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LinkLabel.swift; path = ../Common/LinkLabel.swift; sourceTree = "<group>"; };
-		7AE14EB01D88B7940088A13E /* LinkDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LinkDetector.swift; path = ../Common/LinkDetector.swift; sourceTree = "<group>"; };
+		7AE14EAE1D88B6DB0088A13E /* LinkLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkLabel.swift; sourceTree = "<group>"; };
+		7AE14EB01D88B7940088A13E /* LinkDetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkDetector.swift; sourceTree = "<group>"; };
 		7AE363A01CC864B600F851E9 /* SideNavScaffoldViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideNavScaffoldViewController.swift; sourceTree = "<group>"; };
 		7AE363A41CC98F5D00F851E9 /* RightNavViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RightNavViewController.swift; sourceTree = "<group>"; };
 		7AE363A61CC9BA9400F851E9 /* Scaffold.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scaffold.swift; sourceTree = "<group>"; };
@@ -4726,6 +4728,7 @@
 			children = (
 				7AE14EB01D88B7940088A13E /* LinkDetector.swift */,
 				7AE14EAE1D88B6DB0088A13E /* LinkLabel.swift */,
+				7A26780A1D8B1AB500EC318A /* LinkLabel+Detection.swift */,
 			);
 			path = "Link Label";
 			sourceTree = "<group>";
@@ -7637,6 +7640,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A73C7E2F1B2608C70093F792 /* VAddServerEnvironmentViewController.m in Sources */,
+				7A26780B1D8B1AB500EC318A /* LinkLabel+Detection.swift in Sources */,
 				7C37B8E71CF66CA200E83594 /* SystemBlurredImageBackground.swift in Sources */,
 				67BECC4D1CC9845900DFEE4B /* ListMenuCreatorDataSource.swift in Sources */,
 				F0BD811F1C99D5930062D079 /* ComposerAttachmentTabBarDelegate.swift in Sources */,
@@ -7941,10 +7945,7 @@
 				D8D812B81B15819600E93B37 /* VModernFlowControllerAnimationController.m in Sources */,
 				7AE363A71CC9BA9400F851E9 /* Scaffold.swift in Sources */,
 				A7E8CF2E1C90B9BB00D126BF /* VDependencyManager+TemplateProducts.swift in Sources */,
-				A72C861C1C977FF500E97D4F /* LoginSuccessOperation.swift in Sources */,
-				A72C86891C977FF600E97D4F /* RequestExecutorType.swift in Sources */,
 				BF6FCA351D832E1500DB43BC /* ToggleableImageButton.swift in Sources */,
-				A72C86201C977FF500E97D4F /* NotificationsMarkAllAsReadOperation.swift in Sources */,
 				F0FBC4401D21EDF80070873F /* CaptionBarViewController.swift in Sources */,
 				A7BF9D141B5ECB1E002C0A98 /* VSettingsSwitchCell.m in Sources */,
 				A705F4571B3DF220007DBD3C /* VDependencyManager+VLoginAndRegistration.m in Sources */,

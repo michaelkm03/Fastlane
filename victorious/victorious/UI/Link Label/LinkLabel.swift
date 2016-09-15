@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 
+/// A `UILabel` subclass that supports showing tappable links by using `LinkDetector`s.
 class LinkLabel: UILabel, NSLayoutManagerDelegate {
     
     // MARK: - Initializing
@@ -149,19 +150,19 @@ class LinkLabel: UILabel, NSLayoutManagerDelegate {
     // MARK: - Events
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        highlightedLink = getLink(touches: touches)
+        highlightedLink = getLink(for: touches)
         super.touchesBegan(touches, withEvent: event)
     }
     
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        highlightedLink = getLink(touches: touches)
+        highlightedLink = getLink(for: touches)
         super.touchesMoved(touches, withEvent: event)
     }
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         if let highlightedLink = highlightedLink, let text = text {
-            let matchString = text.substringWithRange(highlightedLink.range)
-            highlightedLink.callback?(matchString: matchString)
+            let matchedString = text.substringWithRange(highlightedLink.range)
+            highlightedLink.callback?(matchedString: matchedString)
         }
         
         highlightedLink = nil
@@ -174,15 +175,15 @@ class LinkLabel: UILabel, NSLayoutManagerDelegate {
         super.touchesCancelled(touches, withEvent: event)
     }
     
-    private func getLink(touches touches: Set<UITouch>?) -> Link? {
+    private func getLink(for touches: Set<UITouch>?) -> Link? {
         if let touch = touches?.first {
-            return getLink(location: touch.locationInView(self))
+            return getLink(at: touch.locationInView(self))
         }
         
         return nil
     }
     
-    private func getLink(location location: CGPoint) -> Link? {
+    private func getLink(at location: CGPoint) -> Link? {
         var fractionOfDistance = CGFloat(0.0)
         let characterIndex = layoutManager.characterIndexForPoint(location, inTextContainer: textContainer, fractionOfDistanceBetweenInsertionPoints: &fractionOfDistance)
         
@@ -241,7 +242,7 @@ class LinkLabel: UILabel, NSLayoutManagerDelegate {
 
 private struct Link: Equatable {
     var range: Range<String.Index>
-    var callback: ((matchString: String) -> Void)?
+    var callback: ((matchedString: String) -> Void)?
 }
 
 private func ==(link1: Link, link2: Link) -> Bool {
