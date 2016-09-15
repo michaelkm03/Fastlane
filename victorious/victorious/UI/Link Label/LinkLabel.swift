@@ -71,7 +71,7 @@ class LinkLabel: UILabel, NSLayoutManagerDelegate {
     
     private func updateLinks() {
         links = linkDetectors.flatMap { detector in
-            detector.detectLinks(string: self.text ?? "").map { range in
+            detector.detectLinks(in: self.text ?? "").map { range in
                 Link(range: range, callback: detector.callback)
             }
         }

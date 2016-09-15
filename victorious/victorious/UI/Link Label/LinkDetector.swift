@@ -9,7 +9,7 @@
 import Foundation
 
 protocol LinkDetector {
-    func detectLinks(string string: String) -> [Range<String.Index>]
+    func detectLinks(in string: String) -> [Range<String.Index>]
     var callback: ((matchedString: String) -> Void)? { get }
 }
 
@@ -22,11 +22,15 @@ struct SubstringLinkDetector: LinkDetector {
         self.callback = callback
     }
     
-    func detectLinks(string string: String) -> [Range<String.Index>] {
-        if let range = string.rangeOfString(substring) {
-            return [range]
+    func detectLinks(in string: String) -> [Range<String.Index>] {
+        var searchRange = string.startIndex ..< string.endIndex
+        var ranges = [Range<String.Index>]()
+        
+        while let range = string.rangeOfString(substring, options: [], range: searchRange, locale: nil) {
+            searchRange = range.endIndex ..< string.endIndex
+            ranges.append(range)
         }
         
-        return []
+        return ranges
     }
 }
