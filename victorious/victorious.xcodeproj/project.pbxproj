@@ -1237,7 +1237,6 @@
 		F0FBC4491D258FD70070873F /* UITextView+TextInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0FBC4481D258FD70070873F /* UITextView+TextInsets.swift */; };
 		F0FBC44B1D2591AF0070873F /* NSMutableParagraphStyle+TextInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0FBC44A1D2591AF0070873F /* NSMutableParagraphStyle+TextInsets.swift */; };
 		F0FBFA641CE14819006318FC /* VPublishParameters+ConvenienceInit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0FBFA631CE14819006318FC /* VPublishParameters+ConvenienceInit.swift */; };
-		F0FC98221B6298620098AFCB /* VNavigationTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC98211B6298620098AFCB /* VNavigationTitleView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -2872,8 +2871,6 @@
 		F0FBC4481D258FD70070873F /* UITextView+TextInsets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITextView+TextInsets.swift"; sourceTree = "<group>"; };
 		F0FBC44A1D2591AF0070873F /* NSMutableParagraphStyle+TextInsets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSMutableParagraphStyle+TextInsets.swift"; sourceTree = "<group>"; };
 		F0FBFA631CE14819006318FC /* VPublishParameters+ConvenienceInit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VPublishParameters+ConvenienceInit.swift"; sourceTree = "<group>"; };
-		F0FC98201B6298620098AFCB /* VNavigationTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNavigationTitleView.h; sourceTree = "<group>"; };
-		F0FC98211B6298620098AFCB /* VNavigationTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNavigationTitleView.m; sourceTree = "<group>"; };
 		F9E2B8F5E9CB86284CF29B93 /* Pods-victoriousPersistenceTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victoriousPersistenceTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-victoriousPersistenceTests/Pods-victoriousPersistenceTests.debug.xcconfig"; sourceTree = "<group>"; };
 		FA858308053108D75BD7AC73 /* Pods-UIAutomationTests.stable.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIAutomationTests.stable.xcconfig"; path = "Pods/Target Support Files/Pods-UIAutomationTests/Pods-UIAutomationTests.stable.xcconfig"; sourceTree = "<group>"; };
 		FA9A96A39C05C50C7D098A8E /* Pods-test.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.qa.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.qa.xcconfig"; sourceTree = "<group>"; };
@@ -3075,8 +3072,6 @@
 				F0E0F1A91AE8811700143CBF /* VLaunchScreenProvider.m */,
 				A7F712191AE5A3B10086F729 /* VLinearGradientView.h */,
 				A7F7121A1AE5A3B10086F729 /* VLinearGradientView.m */,
-				F0FC98201B6298620098AFCB /* VNavigationTitleView.h */,
-				F0FC98211B6298620098AFCB /* VNavigationTitleView.m */,
 				A70564C019E781EE004A8387 /* VNoContentTableViewCell.h */,
 				A70564C119E781EE004A8387 /* VNoContentTableViewCell.m */,
 				03FD87D419F96F6900D93BAA /* VNoContentTableViewCell.xib */,
@@ -7927,10 +7922,7 @@
 				D8D812B81B15819600E93B37 /* VModernFlowControllerAnimationController.m in Sources */,
 				7AE363A71CC9BA9400F851E9 /* Scaffold.swift in Sources */,
 				A7E8CF2E1C90B9BB00D126BF /* VDependencyManager+TemplateProducts.swift in Sources */,
-				A72C861C1C977FF500E97D4F /* LoginSuccessOperation.swift in Sources */,
-				A72C86891C977FF600E97D4F /* RequestExecutorType.swift in Sources */,
 				BF6FCA351D832E1500DB43BC /* ToggleableImageButton.swift in Sources */,
-				A72C86201C977FF500E97D4F /* NotificationsMarkAllAsReadOperation.swift in Sources */,
 				F0FBC4401D21EDF80070873F /* CaptionBarViewController.swift in Sources */,
 				A7BF9D141B5ECB1E002C0A98 /* VSettingsSwitchCell.m in Sources */,
 				A705F4571B3DF220007DBD3C /* VDependencyManager+VLoginAndRegistration.m in Sources */,
@@ -8021,7 +8013,6 @@
 				A70FC1131A2D61A000F5BBDE /* VProductsRequest.m in Sources */,
 				A7B0E0791BC4423500593B21 /* YouTubeVideoPlayer.swift in Sources */,
 				BF2AE2C21CD280CB00A9967A /* GridStreamViewController.swift in Sources */,
-				F0FC98221B6298620098AFCB /* VNavigationTitleView.m in Sources */,
 				D8F8B1E91AC4C27600AA2DB7 /* VDependencyManager+VBackground.m in Sources */,
 				7A1DECC91D80E075003F5C37 /* LoginOperation.swift in Sources */,
 				036AE5ED18FF0C0600A74BDA /* VReachability.m in Sources */,
