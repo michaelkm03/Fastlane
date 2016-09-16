@@ -343,6 +343,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
     private func addMediaContentView(mediaContentView: MediaContentView) {
         closeUpContentContainerView.addSubview(mediaContentView)
         self.mediaContentView = mediaContentView
+        setNeedsUpdateConstraints()
     }
     
     private func removeMediaContentView() {
