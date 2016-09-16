@@ -281,6 +281,18 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
         relatedLabel.alpha = 0
     }
     
+    
+    private func addMediaContentView(mediaContentView: MediaContentView) {
+        closeUpContentContainerView.addSubview(mediaContentView)
+        self.mediaContentView = mediaContentView
+        setNeedsUpdateConstraints()
+    }
+    
+    private func removeMediaContentView() {
+        mediaContentView?.removeFromSuperview()
+        mediaContentView = nil
+    }
+    
     // MARK: - ConfigurableGridStreamHeader
     
     func decorateHeader(dependencyManager: VDependencyManager, maxHeight: CGFloat, content: ContentModel?, hasError: Bool) {
@@ -336,19 +348,6 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
 
     func mediaContentView(mediaContentView: MediaContentView, didFinishPlaybackOfContent content: ContentModel) {
         // No behavior yet
-    }
-    
-    // MARK: - 
-    
-    private func addMediaContentView(mediaContentView: MediaContentView) {
-        closeUpContentContainerView.addSubview(mediaContentView)
-        self.mediaContentView = mediaContentView
-        setNeedsUpdateConstraints()
-    }
-    
-    private func removeMediaContentView() {
-        mediaContentView?.removeFromSuperview()
-        mediaContentView = nil
     }
 }
 
