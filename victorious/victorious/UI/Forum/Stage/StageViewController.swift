@@ -211,10 +211,10 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     // MARK: - Stage
     
     func addCaptionContent(content: ContentModel) {
-        guard let text = content.text else {
+        guard let text = content.text, let author = content.author else {
             return
         }
-        captionBarViewController?.populate(content.author, caption: text)
+        captionBarViewController?.populate(author, caption: text)
     }
 
     func addStageContent(stageContent: StageContent) {

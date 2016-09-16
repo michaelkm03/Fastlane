@@ -163,7 +163,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     
     private func populateData() {
         captionLabel.attributedText = content?.attributedText(using: dependencyManager)
-        usernameLabel.text = content?.author.username ?? ""
+        usernameLabel.text = content?.author?.username ?? ""
         updateTimestamp()
         
         let shouldHideTopLabels = content?.wasCreatedByCurrentUser == true

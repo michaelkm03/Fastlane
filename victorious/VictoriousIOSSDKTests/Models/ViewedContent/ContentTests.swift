@@ -67,7 +67,7 @@ class ContentTests: XCTestCase {
         XCTAssertEqual(chatMessage.assets.count, 1)
         // FUTURE: Switch User.id to a String and enable this assertion.
 //        XCTAssertEqual(chatMessage.author.id, "1")
-        XCTAssertEqual(chatMessage.author.displayName, "Leetzor")
+        XCTAssertEqual(chatMessage.author?.displayName, "Leetzor")
     }
 
     private func createChatMessageFromJSON(fileName fileName: String) -> Content? {

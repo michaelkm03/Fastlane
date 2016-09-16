@@ -21,7 +21,7 @@ public protocol ContentModel: PreviewImageContainer, DictionaryConvertible {
     var hashtags: [Hashtag] { get }
     var shareURL: NSURL? { get }
     var linkedURL: NSURL? { get }
-    var author: UserModel { get }
+    var author: UserModel? { get }
     
     /// The time that the user created the content locally.
     ///
@@ -158,7 +158,7 @@ public class Content: ContentModel {
     public let assets: [ContentMediaAssetModel]
     public let type: ContentType
     public let isVIPOnly: Bool
-    public let author: UserModel
+    public let author: UserModel?
     public let isRemotelyLikedByCurrentUser: Bool
     
     /// videoStartTime is the time this piece of video content started in our device time
