@@ -8,14 +8,23 @@
 
 import UIKit
 
+/// A lightbox to display media full screen, with black background.
+/// - note: Initialize an instance and present it. Currently, lightbox only supports landscape mode. When rotating back to portrait, it'll dismiss it self.
 class LightBoxViewController: UIViewController {
-    let mediaContentView: MediaContentView
+    
+    // MARK: - Dismissal blocks
+    
     var afterDismissal: () -> Void = { }
     var beforeDismissal: () -> Void = { }
+    
+    // MARK: - Initialization
+    
+    let mediaContentView: MediaContentView
     
     init(mediaContentView: MediaContentView) {
         self.mediaContentView = mediaContentView
         mediaContentView.translatesAutoresizingMaskIntoConstraints = false
+        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -23,16 +32,13 @@ class LightBoxViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        return .All
-    }
+    // MARK: - UIViewController override
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.addSubview(mediaContentView)
         view.v_addFitToParentConstraintsToSubview(mediaContentView)
-        
         view.backgroundColor = .blackColor()
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(orientationChanged), name: UIDeviceOrientationDidChangeNotification, object: nil)
@@ -44,20 +50,20 @@ class LightBoxViewController: UIViewController {
         mediaContentView.didPresent()
     }
     
-    private dynamic func orientationChanged() {
-        if UIDevice.currentDevice().orientation == .Portrait {
-            beforeDismissal()
-            dismissViewControllerAnimated(true) {
-                self.afterDismissal()
-            }
-        }
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+        return .All
     }
     
-//    override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
-//        if toInterfaceOrientation == .Portrait {
-//            dismissViewControllerAnimated(true) {
-//                self.afterDismissal()
-//            }
-//        }
-//    }
+    // MARK: - Notification response
+    
+    private dynamic func orientationChanged() {
+        guard UIDevice.currentDevice().orientation == .Portrait else {
+            return
+        }
+        
+        beforeDismissal()
+        dismissViewControllerAnimated(true) {
+            self.afterDismissal()
+        }
+    }
 }
