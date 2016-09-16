@@ -103,8 +103,8 @@ extension ChatFeedMessageCell {
 
                 // Like button layout:
 
-                let likeViewWidth = CGFloat(44.0)
-                let likeViewHeight = CGFloat(44.0)
+                let likeViewWidth = CGFloat(66.0)
+                let likeViewHeight = CGFloat(66.0)
 
                 cell.likeView.frame = CGRect(
                     x: baseFrame.origin.x + baseFrame.width - (likeViewWidth / 2),
