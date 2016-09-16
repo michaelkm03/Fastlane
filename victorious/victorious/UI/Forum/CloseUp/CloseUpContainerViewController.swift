@@ -296,26 +296,33 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     }
     
     private dynamic func rotate() {
-        switch UIDevice.currentDevice().orientation {
-            case .LandscapeLeft, .LandscapeRight:
-                closeUpView.mediaContentView?.removeFromSuperview()
-                
-                if let heightConstraint = closeUpView.mediaContentHeightConstraint {
-                    closeUpView.mediaContentView?.removeConstraint(heightConstraint)
-                }
-                
-                let lightbox = LightBoxViewController(mediaContentView: closeUpView.mediaContentView!)
-                lightbox.modalTransitionStyle = .CrossDissolve
-                presentViewController(lightbox, animated: true, completion: nil)
-            case .Portrait, .PortraitUpsideDown:
-                self.closeUpView.closeUpContentContainerView?.addSubview(self.closeUpView.mediaContentView!)
-                closeUpView.setNeedsUpdateConstraints()
-                dismissViewControllerAnimated(true) {
-                    self.closeUpView.headerDidAppear()
-                    self.view.setNeedsLayout()
-                }
-            default: break
+        guard UIDevice.currentDevice().orientation.isLandscape else {
+            return
         }
+        closeUpView.mediaContentView?.removeFromSuperview()
+        
+        if let heightConstraint = closeUpView.mediaContentHeightConstraint {
+            closeUpView.mediaContentView?.removeConstraint(heightConstraint)
+        }
+        
+        let lightbox = LightBoxViewController(mediaContentView: closeUpView.mediaContentView!)
+        lightbox.modalTransitionStyle = .CrossDissolve
+        
+        lightbox.beforeDismissal = { [weak self] in
+            guard let mediaContentView = self?.closeUpView.mediaContentView else {
+                return
+            }
+            
+            self?.closeUpView.closeUpContentContainerView?.addSubview(mediaContentView)
+            self?.closeUpView.setNeedsUpdateConstraints()
+        }
+        
+        lightbox.afterDismissal = {
+            self.closeUpView.headerDidAppear()
+            self.view.setNeedsLayout()
+        }
+        
+        presentViewController(lightbox, animated: true, completion: nil)
     }
 }
 
@@ -399,4 +406,16 @@ class LightBoxViewController: UIViewController {
         super.viewWillAppear(animated)
         mediaContentView.didPresent()
     }
+    
+    override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
+        if toInterfaceOrientation == .Portrait {
+            beforeDismissal()
+            dismissViewControllerAnimated(true) {
+                self.afterDismissal()
+            }
+        }
+    }
+    
+    var afterDismissal: () -> Void = { }
+    var beforeDismissal: () -> Void = { }
 }
