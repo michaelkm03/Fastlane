@@ -167,7 +167,13 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         }
         
         upvoteButton.sizeToFit()
-        navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: upvoteButton), shareButton, overflowButton]
+        
+        if content.shareURL == nil {
+            navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: upvoteButton), overflowButton]
+        }
+        else {
+            navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: upvoteButton), shareButton, overflowButton]
+        }
     }
     
     required init?(coder: NSCoder) {
