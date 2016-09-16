@@ -312,10 +312,6 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         let lightbox = LightBoxViewController(mediaContentView: closeUpView.mediaContentView!)
         lightbox.modalTransitionStyle = .CrossDissolve
         
-        lightbox.beforeDismissal = { [weak self] in
-            
-        }
-        
         lightbox.afterDismissal = { [weak self] in
             guard let mediaContentView = self?.closeUpView.mediaContentView else {
                 return
@@ -323,9 +319,6 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
             
             self?.closeUpView.closeUpContentContainerView?.addSubview(mediaContentView)
             self?.closeUpView.setNeedsUpdateConstraints()
-            
-            self?.view.setNeedsLayout()
-            self?.view.layoutIfNeeded()
             
             self?.closeUpView.headerDidAppear()
         }
@@ -417,7 +410,6 @@ class LightBoxViewController: UIViewController {
     
     override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
         if toInterfaceOrientation == .Portrait {
-            beforeDismissal()
             dismissViewControllerAnimated(true) {
                 self.afterDismissal()
             }
@@ -425,5 +417,4 @@ class LightBoxViewController: UIViewController {
     }
     
     var afterDismissal: () -> Void = { }
-    var beforeDismissal: () -> Void = { }
 }
