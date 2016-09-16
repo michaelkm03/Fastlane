@@ -497,6 +497,7 @@
 		7925A50E1BCDC20100BCA649 /* VCrashlyticsLogTracking.m in Sources */ = {isa = PBXBuildFile; fileRef = 7925A50D1BCDC20100BCA649 /* VCrashlyticsLogTracking.m */; };
 		7938F0991C3CD055009CE091 /* FriendFindByEmailResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 7938F0981C3CD055009CE091 /* FriendFindByEmailResponse.json */; };
 		7956D41D1D2D724A00BC14AB /* StageShrinkingAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7956D41C1D2D724A00BC14AB /* StageShrinkingAnimator.swift */; };
+		7956EFEC1D8B566C0072780D /* NSCharacterSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7956EFEB1D8B566C0072780D /* NSCharacterSet.swift */; };
 		795B758E1BFA66D100227647 /* TermsOfServiceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795B758D1BFA66D100227647 /* TermsOfServiceRequest.swift */; };
 		795B75901BFA686200227647 /* tos.json in Resources */ = {isa = PBXBuildFile; fileRef = 795B758F1BFA686200227647 /* tos.json */; };
 		795B75981BFA80E000227647 /* WebViewHTMLFetchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795B75971BFA80E000227647 /* WebViewHTMLFetchRequest.swift */; };
@@ -1904,6 +1905,7 @@
 		792D46C81BD953F500DE662A /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reveal.framework; sourceTree = "<group>"; };
 		7938F0981C3CD055009CE091 /* FriendFindByEmailResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FriendFindByEmailResponse.json; sourceTree = "<group>"; };
 		7956D41C1D2D724A00BC14AB /* StageShrinkingAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = StageShrinkingAnimator.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		7956EFEB1D8B566C0072780D /* NSCharacterSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSCharacterSet.swift; sourceTree = "<group>"; };
 		795B758D1BFA66D100227647 /* TermsOfServiceRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TermsOfServiceRequest.swift; sourceTree = "<group>"; };
 		795B758F1BFA686200227647 /* tos.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = tos.json; sourceTree = "<group>"; };
 		795B75971BFA80E000227647 /* WebViewHTMLFetchRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewHTMLFetchRequest.swift; sourceTree = "<group>"; };
@@ -4941,6 +4943,7 @@
 				7AC1B9FD1D3FF7CF00FA3CF6 /* CGPoint+Initializers.swift */,
 				79C593501BFD5C3C00EC76ED /* CGRect.swift */,
 				7AB55FE41CADF00A00EBE31E /* CGSize.swift */,
+				7956EFEB1D8B566C0072780D /* NSCharacterSet.swift */,
 				A721E8631B572452000B7901 /* CIImage+VImage.h */,
 				A721E8641B572452000B7901 /* CIImage+VImage.m */,
 				7A02F8921D2486D400F43B24 /* CollectionType.swift */,
@@ -7789,6 +7792,7 @@
 				7AC1945D1D2DB9BB001B15B8 /* UIColor+Hex.swift in Sources */,
 				A72C864A1C977FF500E97D4F /* VStoredLogin.m in Sources */,
 				A73BA2A51C938B68008168B5 /* CloseUpMenuItem.swift in Sources */,
+				7956EFEC1D8B566C0072780D /* NSCharacterSet.swift in Sources */,
 				F0FBC4441D22EB580070873F /* CaptionBarPopulator.swift in Sources */,
 				A743E7EA1A081FFF00339CB3 /* VStringValidator.m in Sources */,
 				96964A471D871D9D0090EA49 /* DeeplinkContext.swift in Sources */,
@@ -7927,10 +7931,7 @@
 				D8D812B81B15819600E93B37 /* VModernFlowControllerAnimationController.m in Sources */,
 				7AE363A71CC9BA9400F851E9 /* Scaffold.swift in Sources */,
 				A7E8CF2E1C90B9BB00D126BF /* VDependencyManager+TemplateProducts.swift in Sources */,
-				A72C861C1C977FF500E97D4F /* LoginSuccessOperation.swift in Sources */,
-				A72C86891C977FF600E97D4F /* RequestExecutorType.swift in Sources */,
 				BF6FCA351D832E1500DB43BC /* ToggleableImageButton.swift in Sources */,
-				A72C86201C977FF500E97D4F /* NotificationsMarkAllAsReadOperation.swift in Sources */,
 				F0FBC4401D21EDF80070873F /* CaptionBarViewController.swift in Sources */,
 				A7BF9D141B5ECB1E002C0A98 /* VSettingsSwitchCell.m in Sources */,
 				A705F4571B3DF220007DBD3C /* VDependencyManager+VLoginAndRegistration.m in Sources */,
