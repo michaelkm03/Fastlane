@@ -143,17 +143,15 @@ extension ContentModel {
     }
 
     public var currentUserLikeCount: Int {
-        get {
-            if isRemotelyLikedByCurrentUser && !isLikedByCurrentUser && likeCount > 0 {
-                return -1
-            }
-
-            if !isRemotelyLikedByCurrentUser && isLikedByCurrentUser {
-                return 1
-            }
-
-            return 0
+        if isRemotelyLikedByCurrentUser && !isLikedByCurrentUser && likeCount > 0 {
+            return -1
         }
+
+        if !isRemotelyLikedByCurrentUser && isLikedByCurrentUser {
+            return 1
+        }
+
+        return 0
     }
 }
 

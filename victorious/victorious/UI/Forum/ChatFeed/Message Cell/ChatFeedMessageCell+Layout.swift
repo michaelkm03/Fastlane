@@ -98,23 +98,27 @@ extension ChatFeedMessageCell {
         }
 
         // Like button layout:
-        
-        if let likeView = cell.likeView where alignment == .left {
-            let baseFrame = bubbleFrames.last
-            if let baseFrame = baseFrame {
 
-                let likeViewWidth = CGFloat(66.0)
-                let likeViewHeight = CGFloat(66.0)
+        if alignment == .left {
+            cell.likeView?.hidden = false
+            if let likeView = cell.likeView {
+                if let baseFrame = bubbleFrames.last {
+                    let likeViewWidth = CGFloat(66.0)
+                    let likeViewHeight = CGFloat(66.0)
 
-                likeView.frame = CGRect(
-                    x: baseFrame.origin.x + baseFrame.width - (likeViewWidth / 2),
-                    y: baseFrame.origin.y + baseFrame.height - (likeViewHeight / 2),
-                    width: likeViewWidth,
-                    height: likeViewHeight
-                )
+                    likeView.frame = CGRect(
+                        x: baseFrame.maxX - (likeViewWidth / 2),
+                        y: baseFrame.maxY - (likeViewHeight / 2),
+                        width: likeViewWidth,
+                        height: likeViewHeight
+                    )
 
-                cell.contentView.bringSubviewToFront(likeView)
+                    cell.contentView.bringSubviewToFront(likeView)
+                }
             }
+        }
+        else {
+            cell.likeView?.hidden = true
         }
 
         // Reply button layout:
