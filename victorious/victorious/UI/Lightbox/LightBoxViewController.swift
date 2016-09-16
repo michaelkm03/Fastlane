@@ -11,6 +11,7 @@ import UIKit
 class LightBoxViewController: UIViewController {
     let mediaContentView: MediaContentView
     var afterDismissal: () -> Void = { }
+    var beforeDismissal: () -> Void = { }
     
     init(mediaContentView: MediaContentView) {
         self.mediaContentView = mediaContentView
@@ -33,6 +34,8 @@ class LightBoxViewController: UIViewController {
         view.v_addFitToParentConstraintsToSubview(mediaContentView)
         
         view.backgroundColor = .blackColor()
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(orientationChanged), name: UIDeviceOrientationDidChangeNotification, object: nil)
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -41,11 +44,20 @@ class LightBoxViewController: UIViewController {
         mediaContentView.didPresent()
     }
     
-    override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
-        if toInterfaceOrientation == .Portrait {
+    private dynamic func orientationChanged() {
+        if UIDevice.currentDevice().orientation == .Portrait {
+            beforeDismissal()
             dismissViewControllerAnimated(true) {
                 self.afterDismissal()
             }
         }
     }
+    
+//    override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
+//        if toInterfaceOrientation == .Portrait {
+//            dismissViewControllerAnimated(true) {
+//                self.afterDismissal()
+//            }
+//        }
+//    }
 }
