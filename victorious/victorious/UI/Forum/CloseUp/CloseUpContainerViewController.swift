@@ -302,6 +302,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         guard UIDevice.currentDevice().orientation.isLandscape else {
             return
         }
+        
         closeUpView.mediaContentView?.removeFromSuperview()
         
         if let heightConstraint = closeUpView.mediaContentHeightConstraint {
@@ -322,7 +323,6 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         
         lightbox.afterDismissal = {
             self.closeUpView.headerDidAppear()
-            self.view.setNeedsLayout()
         }
         
         presentViewController(lightbox, animated: true, completion: nil)
