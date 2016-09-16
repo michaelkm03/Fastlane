@@ -425,6 +425,7 @@
 		6728F6DE1D3DADC000559A04 /* UIImageView+ImageAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6728F6DD1D3DADC000559A04 /* UIImageView+ImageAsset.swift */; };
 		6731B2611BF182F100B9FFFE /* FanLoyaltyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6731B2601BF182F100B9FFFE /* FanLoyaltyTests.swift */; };
 		67376B281D666ADC002DE72E /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67376B271D666ADC002DE72E /* LoadingViewController.swift */; };
+		6747CF821D8C8AE500634FED /* LightBoxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6747CF811D8C8AE500634FED /* LightBoxViewController.swift */; };
 		67486B741CC7145300B03926 /* ListMenuCommunityCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67486B731CC7145300B03926 /* ListMenuCommunityCollectionViewCell.swift */; };
 		67486B761CC7147500B03926 /* ListMenuCommunityDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67486B751CC7147500B03926 /* ListMenuCommunityDataSource.swift */; };
 		67486B781CC85AD000B03926 /* ListMenuSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67486B771CC85AD000B03926 /* ListMenuSectionHeaderView.swift */; };
@@ -1830,6 +1831,7 @@
 		6731B2601BF182F100B9FFFE /* FanLoyaltyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FanLoyaltyTests.swift; sourceTree = "<group>"; };
 		6731B2641BF1834700B9FFFE /* FanLoyalty.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = FanLoyalty.json; sourceTree = "<group>"; };
 		67376B271D666ADC002DE72E /* LoadingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
+		6747CF811D8C8AE500634FED /* LightBoxViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LightBoxViewController.swift; sourceTree = "<group>"; };
 		67486B731CC7145300B03926 /* ListMenuCommunityCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListMenuCommunityCollectionViewCell.swift; path = "List Menu/Community/ListMenuCommunityCollectionViewCell.swift"; sourceTree = "<group>"; };
 		67486B751CC7147500B03926 /* ListMenuCommunityDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListMenuCommunityDataSource.swift; path = "List Menu/Community/ListMenuCommunityDataSource.swift"; sourceTree = "<group>"; };
 		67486B771CC85AD000B03926 /* ListMenuSectionHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListMenuSectionHeaderView.swift; path = "List Menu/ListMenuSectionHeaderView.swift"; sourceTree = "<group>"; };
@@ -3012,6 +3014,7 @@
 				A6EC32961B3B5AD800824022 /* ImageVideoLibrary */,
 				0314D39619B46B5E00FA363C /* Inbox */,
 				D89D7F7D1A9FF5F400B61783 /* Launch Screen.xib */,
+				6747CF7E1D8C871300634FED /* Lightbox */,
 				67F2314B1CBC8970006BDBA5 /* ListMenu */,
 				DB2A490119DF429700CB687B /* Main.storyboard */,
 				A73C3EA31C45890E00A8452C /* MediaSearch */,
@@ -4504,6 +4507,14 @@
 				7AEB1F411D13565400E93A64 /* UserModel.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		6747CF7E1D8C871300634FED /* Lightbox */ = {
+			isa = PBXGroup;
+			children = (
+				6747CF811D8C8AE500634FED /* LightBoxViewController.swift */,
+			);
+			path = Lightbox;
 			sourceTree = "<group>";
 		};
 		67486B711CC713AB00B03926 /* Community */ = {
@@ -7907,6 +7918,7 @@
 				669EBBE51A30239100DE317D /* VTickerPickerViewController.m in Sources */,
 				A780ED5C1A933D9300A8CD5D /* VPhotoFilter.m in Sources */,
 				A721E94C1B572454000B7901 /* UIColor+VBrightness.m in Sources */,
+				6747CF821D8C8AE500634FED /* LightBoxViewController.swift in Sources */,
 				676263E81D0B6F2500127D21 /* UIImage+Blurring.swift in Sources */,
 				A70FC1101A2D619300F5BBDE /* VProduct.m in Sources */,
 				7AC194611D2DD1A9001B15B8 /* String+Initials.swift in Sources */,
@@ -7927,10 +7939,7 @@
 				D8D812B81B15819600E93B37 /* VModernFlowControllerAnimationController.m in Sources */,
 				7AE363A71CC9BA9400F851E9 /* Scaffold.swift in Sources */,
 				A7E8CF2E1C90B9BB00D126BF /* VDependencyManager+TemplateProducts.swift in Sources */,
-				A72C861C1C977FF500E97D4F /* LoginSuccessOperation.swift in Sources */,
-				A72C86891C977FF600E97D4F /* RequestExecutorType.swift in Sources */,
 				BF6FCA351D832E1500DB43BC /* ToggleableImageButton.swift in Sources */,
-				A72C86201C977FF500E97D4F /* NotificationsMarkAllAsReadOperation.swift in Sources */,
 				F0FBC4401D21EDF80070873F /* CaptionBarViewController.swift in Sources */,
 				A7BF9D141B5ECB1E002C0A98 /* VSettingsSwitchCell.m in Sources */,
 				A705F4571B3DF220007DBD3C /* VDependencyManager+VLoginAndRegistration.m in Sources */,

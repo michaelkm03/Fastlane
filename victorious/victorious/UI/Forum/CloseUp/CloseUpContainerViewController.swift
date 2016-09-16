@@ -125,7 +125,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         dependencyManager.trackViewWillAppear(self)
         trackContentView()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(rotate), name: UIDeviceOrientationDidChangeNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(enterLandscapeMode), name: UIDeviceOrientationDidChangeNotification, object: nil)
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -298,25 +298,22 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         updateAudioSessionCategory()
     }
     
-    private dynamic func rotate() {
-        guard UIDevice.currentDevice().orientation.isLandscape else {
+    private dynamic func enterLandscapeMode() {
+        guard UIDevice.currentDevice().orientation.isLandscape,
+            let mediaContentView = closeUpView.mediaContentView
+        else {
             return
         }
         
-        closeUpView.mediaContentView?.removeFromSuperview()
+        mediaContentView.removeFromSuperview()
         
         if let heightConstraint = closeUpView.mediaContentHeightConstraint {
-            closeUpView.mediaContentView?.removeConstraint(heightConstraint)
+            mediaContentView.removeConstraint(heightConstraint)
         }
         
-        let lightbox = LightBoxViewController(mediaContentView: closeUpView.mediaContentView!)
+        let lightbox = LightBoxViewController(mediaContentView: mediaContentView)
         lightbox.modalTransitionStyle = .CrossDissolve
-        
         lightbox.afterDismissal = { [weak self] in
-            guard let mediaContentView = self?.closeUpView.mediaContentView else {
-                return
-            }
-            
             self?.closeUpView.closeUpContentContainerView?.addSubview(mediaContentView)
             self?.closeUpView.setNeedsUpdateConstraints()
             
@@ -375,46 +372,4 @@ private extension VDependencyManager {
     var gridStreamDependencyManager: VDependencyManager? {
         return childDependencyForKey("gridStream")
     }
-}
-
-class LightBoxViewController: UIViewController {
-    let mediaContentView: MediaContentView
-    
-    init(mediaContentView: MediaContentView) {
-        self.mediaContentView = mediaContentView
-        mediaContentView.translatesAutoresizingMaskIntoConstraints = false
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        return .All
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        view.addSubview(mediaContentView)
-        view.v_addFitToParentConstraintsToSubview(mediaContentView)
-        
-        view.backgroundColor = .blackColor()
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        mediaContentView.didPresent()
-    }
-    
-    override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
-        if toInterfaceOrientation == .Portrait {
-            dismissViewControllerAnimated(true) {
-                self.afterDismissal()
-            }
-        }
-    }
-    
-    var afterDismissal: () -> Void = { }
 }
