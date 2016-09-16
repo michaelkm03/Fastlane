@@ -66,16 +66,31 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
     /// Check this boolean to determine whether or not the entered data is currently valid
     var enteredDataIsValid: Bool {
         get {
-            let username = nameAndLocationCell.displayname
+            // Displayname Validation
+            let displayname = nameAndLocationCell.displayname
             guard
-                let trimmedUsername = username?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
-                where !trimmedUsername.isEmpty
+                let trimmedDisplayname = displayname?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+                where !trimmedDisplayname.isEmpty
             else {
                 return false
             }
-            guard trimmedUsername.characters.count < 255 else {
+            guard trimmedDisplayname.characters.count < 255 else {
                 return false
             }
+            
+            // Username Validation
+            
+            guard let username = nameAndLocationCell.username else {
+                return false
+            }
+            guard username.characters.count > 0 else {
+                return false
+            }
+            let usernameCharacterset = NSCharacterSet(charactersInString: username)
+            guard NSCharacterSet.validUsernameCharacterSet().isSupersetOfSet(usernameCharacterset) else {
+                return false
+            }
+            
             return true
         }
     }

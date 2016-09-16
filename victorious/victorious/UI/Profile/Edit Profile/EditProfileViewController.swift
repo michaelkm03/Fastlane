@@ -36,13 +36,17 @@ class EditProfileViewController: UITableViewController {
     // MARK: - Target Action
     
     @IBAction private func tappedSave(sender: UIBarButtonItem) {
-        self.performSegueWithIdentifier(EditProfileViewController.unwindToSettingsSegueKey, sender: self)
         
         guard let profileUpdate = dataSource?.accountUpdateDelta() else {
             return
         }
         
-        AccountUpdateOperation(profileUpdate: profileUpdate)?.queue()
+        AccountUpdateOperation(profileUpdate: profileUpdate)?.queue() { result in
+            switch result {
+                case .success: self.performSegueWithIdentifier(EditProfileViewController.unwindToSettingsSegueKey, sender: self)
+                default: print("failure!")
+            }
+        }
     }
     
     // MARK: - Miscellaneous Private Functions

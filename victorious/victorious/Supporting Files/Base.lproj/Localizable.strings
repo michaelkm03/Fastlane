@@ -32,6 +32,7 @@
 "FacebookLoginFailed"   =   "Oops! Facebook login failed. Please try again.";
 "SignupFail"            =   "Account Creation Failed";
 "DisplayNamePlaceholder"=   "Display Name";
+"UserNamePlaceholder"   =   "Username";
 "LocationPlaceholder"   =   "Location";
 
 "User already exists"   =   "User already exists";

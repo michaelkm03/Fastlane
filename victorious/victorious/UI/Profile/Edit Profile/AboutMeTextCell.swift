@@ -35,7 +35,7 @@ class AboutMeTextCell: UITableViewCell, UITextViewDelegate {
             textView.font = font
             textView.textContainerInset = Constants.textViewInsets
             
-            contentView.backgroundColor = dependencyManager.cellBackgroundColor
+            contentView.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.2)
         }
     }
     
@@ -102,9 +102,5 @@ private extension VDependencyManager {
     
     var enteredTextColor: UIColor? {
         return colorForKey("color.text")
-    }
-    
-    var cellBackgroundColor: UIColor? {
-        return colorForKey("color.accent")
     }
 }

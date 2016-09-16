@@ -25,6 +25,15 @@ class DisplaynameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
         }
     }
     
+    @IBOutlet private var usernameField: UITextField! {
+        didSet {
+            NSNotificationCenter.defaultCenter().addObserver(self,
+                                                             selector: #selector(textFieldDidChange(_:)),
+                                                             name: UITextFieldTextDidChangeNotification,
+                                                             object: usernameField)
+        }
+    }
+    
     @IBOutlet private var locationField: UITextField! {
         didSet {
             NSNotificationCenter.defaultCenter().addObserver(self,
@@ -36,6 +45,7 @@ class DisplaynameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
     
     @IBOutlet private var avatarView: AvatarView! {
         didSet {
+            avatarView.size = .large
             avatarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tappedOnAvatar(_:))))
         }
     }
@@ -70,6 +80,15 @@ class DisplaynameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
         }
     }
     
+    var username: String? {
+        get {
+            return usernameField.text
+        }
+        set {
+            usernameField.text = newValue
+        }
+    }
+    
     var location: String? {
         get {
             return locationField.text
@@ -92,19 +111,23 @@ class DisplaynameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
             
             // Font + Colors
             displaynameField.font = font
+            usernameField.font = font
             locationField.font = font
             displaynameField.textColor = enteredTextColor
+            usernameField.textColor = enteredTextColor
             locationField.textColor = enteredTextColor
             
             // Placeholder
             let placeholderAttributes = [NSForegroundColorAttributeName: placeholderTextColor.colorWithAlphaComponent(Constants.placeholderAlpha)]
             displaynameField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("DisplayNamePlaceholder", comment: "Placeholder text for the user's name as it is displayed to others."),
                                                                      attributes: placeholderAttributes)
+            usernameField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("UserNamePlaceholder", comment: "Placeholder text for the user's username that is globally unique as it is displayed to others."),
+                                                                        attributes: placeholderAttributes)
             locationField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("LocationPlaceholder", comment: "Placeholder text for the user's location as it is displayed to others."),
                                                                      attributes: placeholderAttributes)
             
             // Background
-            contentView.backgroundColor = dependencyManager.cellBackgroundColor
+            contentView.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.2)
         }
     }
     
@@ -127,8 +150,10 @@ class DisplaynameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
     
     @objc func textFieldShouldReturn(textField: UITextField) -> Bool {
         if textField == displaynameField {
-            locationField.becomeFirstResponder()
+            usernameField.becomeFirstResponder()
             return false
+        } else if textField == usernameField {
+            locationField.becomeFirstResponder()
         } else if textField == locationField {
             onReturnKeySelected?()
             return false
@@ -155,9 +180,5 @@ private extension VDependencyManager {
     
     var enteredTextColor: UIColor? {
         return colorForKey("color.text")
-    }
-    
-    var cellBackgroundColor: UIColor? {
-        return colorForKey("color.accent")
     }
 }
