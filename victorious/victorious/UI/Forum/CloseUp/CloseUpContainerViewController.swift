@@ -109,7 +109,6 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         gridStreamController.didMoveToParentViewController(self)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(returnedFromBackground), name: UIApplicationDidBecomeActiveNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(rotate), name: UIDeviceOrientationDidChangeNotification, object: nil)
     }
     
     deinit {
@@ -125,12 +124,16 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         super.viewWillAppear(animated)
         dependencyManager.trackViewWillAppear(self)
         trackContentView()
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(rotate), name: UIDeviceOrientationDidChangeNotification, object: nil)
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         dependencyManager.trackViewWillDisappear(self)
         closeUpView.headerWillDisappear()
+        
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIDeviceOrientationDidChangeNotification, object: nil)
     }
     
     override func viewDidAppear(animated: Bool) {
