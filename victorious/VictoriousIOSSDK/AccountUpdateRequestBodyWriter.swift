@@ -46,6 +46,7 @@ class AccountUpdateRequestBodyWriter: NSObject, RequestBodyWriterType {
         if let tagline = parameters.profileUpdate?.tagline {
             try writer.appendPlaintext(tagline, withFieldName: "profile_tagline")
         }
+        //TODO: Write the username to update here
         
         if let profileImageURL = parameters.profileUpdate?.profileImageURL,
             let pathExtension = profileImageURL.pathExtension,
