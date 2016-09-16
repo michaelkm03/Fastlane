@@ -110,10 +110,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
 
     let spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
 
-    var likeView: UIView?
-    var likeImageView: UIImageView?
-    var likeCountLabel: UILabel?
-
+    var likeView: LikeView?
     let replyButton = UIButton()
     
     // MARK: - Layout
@@ -167,15 +164,10 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         failureButton.setImage(UIImage(named: "failed_error"), forState: .Normal)
 
         if dependencyManager.upvoteType == UpvoteType.basic {
-            likeView = UIView()
-            likeImageView = UIImageView()
-            likeCountLabel = UILabel()
-            if let likeView = likeView, likeImageView = likeImageView, likeCountLabel = likeCountLabel {
-                likeCountLabel.font = dependencyManager.timestampFont
-                likeCountLabel.textColor = dependencyManager.timestampColor
-
-                likeView.addSubview(likeImageView)
-                likeView.addSubview(likeCountLabel)
+            likeView = LikeView()
+            if let likeView = likeView {
+                likeView.countLabel.font = dependencyManager.timestampFont
+                likeView.countLabel.textColor = dependencyManager.timestampColor
                 likeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOnLikeView)))
                 contentView.addSubview(likeView)
             }
@@ -295,7 +287,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
             return
         }
 
-        likeCountLabel?.text = "\(likeCount + content.currentUserLikeCount)"
+        likeView?.countLabel.text = "\(likeCount + content.currentUserLikeCount)"
         setNeedsLayout()
     }
 
@@ -304,7 +296,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
             return
         }
 
-        likeImageView?.image = content.isLikedByCurrentUser ? dependencyManager.upvoteIconSelected : dependencyManager.upvoteIconUnselected
+        likeView?.imageView.image = content.isLikedByCurrentUser ? dependencyManager.upvoteIconSelected : dependencyManager.upvoteIconUnselected
     }
 
     func updateTimestamp() {
