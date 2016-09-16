@@ -313,16 +313,21 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         lightbox.modalTransitionStyle = .CrossDissolve
         
         lightbox.beforeDismissal = { [weak self] in
+            
+        }
+        
+        lightbox.afterDismissal = { [weak self] in
             guard let mediaContentView = self?.closeUpView.mediaContentView else {
                 return
             }
             
             self?.closeUpView.closeUpContentContainerView?.addSubview(mediaContentView)
             self?.closeUpView.setNeedsUpdateConstraints()
-        }
-        
-        lightbox.afterDismissal = {
-            self.closeUpView.headerDidAppear()
+            
+            self?.view.setNeedsLayout()
+            self?.view.layoutIfNeeded()
+            
+            self?.closeUpView.headerDidAppear()
         }
         
         presentViewController(lightbox, animated: true, completion: nil)
