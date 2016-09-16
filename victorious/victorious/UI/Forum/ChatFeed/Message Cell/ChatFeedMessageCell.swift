@@ -91,7 +91,11 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     private var content: ContentModel? {
         return chatFeedContent?.content
     }
-    
+
+    // MARK: - Formatter
+
+    let largeNumberFormatter = VLargeNumberFormatter()
+
     // MARK: - Subviews
     
     let usernameLabel = UILabel()
@@ -163,7 +167,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
 
         failureButton.setImage(UIImage(named: "failed_error"), forState: .Normal)
 
-        if dependencyManager.upvoteType == UpvoteType.basic {
+        if dependencyManager.upvoteStyle == UpvoteStyle.basic {
             likeView = LikeView()
             if let likeView = likeView {
                 likeView.countLabel.font = dependencyManager.timestampFont
@@ -272,8 +276,8 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
             let upvoteOperation: SyncOperation<Void> = content.isLikedByCurrentUser
                 ? ContentUnupvoteOperation(apiPath: unupvoteAPIPath, contentID: contentID)
                 : ContentUpvoteOperation(apiPath: upvoteAPIPath, contentID: contentID)
-            else {
-                return
+        else {
+            return
         }
 
         upvoteOperation.queue { [weak self] _ in
@@ -287,8 +291,9 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
             return
         }
 
-        likeView?.countLabel.text = "\(likeCount + content.currentUserLikeCount)"
-        setNeedsLayout()
+        let totalLikes = likeCount + content.currentUserLikeCount
+        likeView?.countLabel.text = totalLikes > 0 ? largeNumberFormatter.stringForInteger(totalLikes) : ""
+        likeView?.setNeedsLayout()
     }
 
     private func updateLikeImage() {
@@ -438,9 +443,11 @@ private extension VDependencyManager {
         return colorForKey("color.timestamp.text") ?? .whiteColor()
     }
 
-    var upvoteType: UpvoteType {
-        let upvoteType = stringForKey("upvote.type")
-        return UpvoteType(rawValue: upvoteType) ?? .off
+    var upvoteStyle: UpvoteStyle {
+        guard let upvoteStyle = stringForKey("upvote.type") else {
+            return .off
+        }
+        return UpvoteStyle(rawValue: upvoteStyle) ?? .off
     }
 
     var upvoteIconSelected: UIImage? {
@@ -458,6 +465,12 @@ private extension VDependencyManager {
     var contentUnupvoteAPIPath: APIPath? {
         return networkResources?.apiPathForKey("contentUnupvoteURL")
     }
+}
+
+private enum UpvoteStyle: String {
+    case off = "off"
+    case basic = "basic"
+    case rightHandSide = "right_hand_side"
 }
 
 private extension ContentModel {

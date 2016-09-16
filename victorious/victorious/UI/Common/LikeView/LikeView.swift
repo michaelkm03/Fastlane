@@ -26,20 +26,18 @@ class LikeView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        imageView.sizeToFit()
         imageView.frame = CGRect(
             center: bounds.center,
-            size: imageView.frame.size
+            size: imageView.intrinsicContentSize()
         )
 
         let horizontalPadding = CGFloat(3.0)
         let verticalPadding = CGFloat(8.0)
-        countLabel.sizeToFit()
         countLabel.frame = CGRect(
             x: CGRectGetMaxX(imageView.frame) - horizontalPadding,
             y: CGRectGetMaxY(imageView.frame) - verticalPadding,
-            width: CGRectGetWidth(countLabel.frame),
-            height: CGRectGetHeight(countLabel.frame)
+            width: countLabel.intrinsicContentSize().width,
+            height: countLabel.intrinsicContentSize().height
         )
     }
 }
