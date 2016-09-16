@@ -299,7 +299,8 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     }
     
     private dynamic func enterLandscapeMode() {
-        guard UIDevice.currentDevice().orientation.isLandscape,
+        guard
+            UIDevice.currentDevice().orientation.isLandscape,
             let mediaContentView = closeUpView.mediaContentView
         else {
             return
@@ -307,6 +308,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         
         mediaContentView.removeFromSuperview()
         
+        // Remove the height constraint on media content view because we are going to make it adapt to the screen in lightbox mode
         if let heightConstraint = closeUpView.mediaContentHeightConstraint {
             mediaContentView.removeConstraint(heightConstraint)
         }
@@ -320,7 +322,6 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         }
         
         lightbox.afterDismissal = { [weak self] in
-            
             self?.closeUpView.headerDidAppear()
         }
         
