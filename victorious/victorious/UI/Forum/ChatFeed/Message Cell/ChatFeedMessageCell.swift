@@ -49,9 +49,8 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         failureButton.addTarget(self, action: #selector(didTapOnFailureButton), forControlEvents: .TouchUpInside)
         captionLabel.numberOfLines = 0
         captionLabel.userInteractionEnabled = false
-        likeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOnLikeView)))
         replyButton.addTarget(self, action: #selector(didTapOnReplyButton), forControlEvents: .TouchUpInside)
-        
+
         contentView.addSubview(usernameLabel)
         contentView.addSubview(timestampLabel)
         contentView.addSubview(avatarView)
@@ -59,10 +58,6 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         contentView.addSubview(captionBubbleView)
         contentView.addSubview(failureButton)
         contentView.addSubview(replyButton)
-
-        likeView.addSubview(likeImageView)
-        likeView.addSubview(likeCountLabel)
-        contentView.addSubview(likeView)
 
         captionBubbleView.contentView.addSubview(captionLabel)
     }
@@ -115,9 +110,9 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
 
     let spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
 
-    let likeView = UIView()
-    let likeImageView = UIImageView()
-    let likeCountLabel = UILabel()
+    var likeView: UIView?
+    var likeImageView: UIImageView?
+    var likeCountLabel: UILabel?
 
     let replyButton = UIButton()
     
@@ -167,12 +162,24 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         timestampLabel.font = dependencyManager.timestampFont
         timestampLabel.textColor = dependencyManager.timestampColor
 
-        likeCountLabel.font = dependencyManager.timestampFont
-        likeCountLabel.textColor = dependencyManager.timestampColor
-
         captionBubbleView.backgroundColor = dependencyManager.backgroundColor
-        
+
         failureButton.setImage(UIImage(named: "failed_error"), forState: .Normal)
+
+        if dependencyManager.upvoteType == UpvoteType.basic {
+            likeView = UIView()
+            likeImageView = UIImageView()
+            likeCountLabel = UILabel()
+            if let likeView = likeView, likeImageView = likeImageView, likeCountLabel = likeCountLabel {
+                likeCountLabel.font = dependencyManager.timestampFont
+                likeCountLabel.textColor = dependencyManager.timestampColor
+
+                likeView.addSubview(likeImageView)
+                likeView.addSubview(likeCountLabel)
+                likeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOnLikeView)))
+                contentView.addSubview(likeView)
+            }
+        }
 
         replyButton.setImage(UIImage(named: "reply"), forState: .Normal)
         replyButton.setImage(UIImage(named: "reply_tap"), forState: .Highlighted)
@@ -288,7 +295,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
             return
         }
 
-        likeCountLabel.text = "\(likeCount + content.currentUserLikeCount)"
+        likeCountLabel?.text = "\(likeCount + content.currentUserLikeCount)"
         setNeedsLayout()
     }
 
@@ -297,7 +304,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
             return
         }
 
-        likeImageView.image = content.isLikedByCurrentUser ? UIImage(named: "heart_tap") : UIImage(named: "heart")
+        likeImageView?.image = content.isLikedByCurrentUser ? dependencyManager.upvoteIconSelected : dependencyManager.upvoteIconUnselected
     }
 
     func updateTimestamp() {
@@ -437,6 +444,19 @@ private extension VDependencyManager {
     
     var timestampColor: UIColor {
         return colorForKey("color.timestamp.text") ?? .whiteColor()
+    }
+
+    var upvoteType: UpvoteType {
+        let upvoteType = stringForKey("upvote.type")
+        return UpvoteType(rawValue: upvoteType) ?? .off
+    }
+
+    var upvoteIconSelected: UIImage? {
+        return imageForKey("upvote.icon.selected")
+    }
+
+    var upvoteIconUnselected: UIImage? {
+        return imageForKey("upvote.icon.unselected")
     }
 
     var contentUpvoteAPIPath: APIPath? {

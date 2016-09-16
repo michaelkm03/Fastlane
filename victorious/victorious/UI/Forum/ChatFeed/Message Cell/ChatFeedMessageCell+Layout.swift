@@ -97,42 +97,45 @@ extension ChatFeedMessageCell {
             cell.failureButton.frame = .zero
         }
 
-        if alignment == .left {
+        if let likeView = cell.likeView, likeImageView = cell.likeImageView, likeCountLabel = cell.likeCountLabel where alignment == .left {
             let baseFrame = bubbleFrames.last
             if let baseFrame = baseFrame {
-
                 // Like button layout:
 
                 let likeViewWidth = CGFloat(66.0)
                 let likeViewHeight = CGFloat(66.0)
 
-                cell.likeView.frame = CGRect(
+                likeView.frame = CGRect(
                     x: baseFrame.origin.x + baseFrame.width - (likeViewWidth / 2),
                     y: baseFrame.origin.y + baseFrame.height - (likeViewHeight / 2),
                     width: likeViewWidth,
                     height: likeViewHeight
                 )
 
-                cell.likeImageView.sizeToFit()
-                cell.likeImageView.frame = CGRect(
-                    center: cell.likeView.bounds.center,
-                    size: cell.likeImageView.frame.size
+                likeImageView.sizeToFit()
+                likeImageView.frame = CGRect(
+                    center: likeView.bounds.center,
+                    size: likeImageView.frame.size
                 )
 
                 let horizontalPadding = CGFloat(3.0)
                 let verticalPadding = CGFloat(8.0)
-                cell.likeCountLabel.sizeToFit()
-                cell.likeCountLabel.frame = CGRect(
-                    x: CGRectGetMaxX(cell.likeImageView.frame) - horizontalPadding,
-                    y: CGRectGetMaxY(cell.likeImageView.frame) - verticalPadding,
-                    width: CGRectGetWidth(cell.likeCountLabel.frame),
-                    height: CGRectGetHeight(cell.likeCountLabel.frame)
+                likeCountLabel.sizeToFit()
+                likeCountLabel.frame = CGRect(
+                    x: CGRectGetMaxX(likeImageView.frame) - horizontalPadding,
+                    y: CGRectGetMaxY(likeImageView.frame) - verticalPadding,
+                    width: CGRectGetWidth(likeCountLabel.frame),
+                    height: CGRectGetHeight(likeCountLabel.frame)
                 )
 
-                cell.contentView.bringSubviewToFront(cell.likeView)
+                cell.contentView.bringSubviewToFront(likeView)
+            }
+        }
 
-                // Reply button layout:
+        // Reply button layout:
 
+        if alignment == .left {
+            if let baseFrame = bubbleFrames.last {
                 let replyButtonWidth = CGFloat(44.0)
                 let replyButtonHeight = CGFloat(44.0)
 
@@ -145,14 +148,9 @@ extension ChatFeedMessageCell {
                     height: replyButtonHeight
                 )
             }
-        } else {
-            cell.likeView.frame = CGRect.zero
-            cell.likeImageView.frame = CGRect.zero
-            cell.likeCountLabel.frame = CGRect.zero
-            cell.replyButton.frame = CGRect.zero
         }
     }
-    
+
     private static func layoutBubbleView(bubbleView: UIView?, forAlignment alignment: ChatFeedMessageCellAlignment, withChatFeedContent content: ChatFeedContent, size: CGSize?, precedingBubbleFrame: CGRect?, inBounds bounds: CGRect) -> CGRect? {
         guard let size = size else {
             bubbleView?.frame = CGRect.zero
