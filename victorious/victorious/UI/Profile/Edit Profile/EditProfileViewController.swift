@@ -18,6 +18,15 @@ class EditProfileViewController: UITableViewController {
     private var profilePicturePresenter: VEditProfilePicturePresenter?
     @IBOutlet private weak var saveButton: UIBarButtonItem!
     
+    var editingEnabled: Bool = true {
+        didSet {
+            for cell in tableView.visibleCells {
+                cell.alpha = editingEnabled ? 1.0 : 0.7
+                cell.userInteractionEnabled = editingEnabled
+            }
+        }
+    }
+    
     // MARK: - UIViewController Overrides
     
     override func viewDidLoad() {
@@ -26,6 +35,11 @@ class EditProfileViewController: UITableViewController {
         tableView.estimatedRowHeight = 44
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.backgroundView = dependencyManager?.background().viewForBackground()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        updateUI()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -41,10 +55,19 @@ class EditProfileViewController: UITableViewController {
             return
         }
         
+        navigationItem.leftBarButtonItem?.enabled = false
+        navigationItem.rightBarButtonItem?.enabled = false
+        editingEnabled = false
         AccountUpdateOperation(profileUpdate: profileUpdate)?.queue() { result in
+            
             switch result {
                 case .success: self.performSegueWithIdentifier(EditProfileViewController.unwindToSettingsSegueKey, sender: self)
-                default: print("failure!")
+                default:
+                    // TODO: Better error handling
+                    self.v_showErrorWithTitle("failure", message: "oh no")
+                    self.editingEnabled = true
+                    self.navigationItem.leftBarButtonItem?.enabled = true
+                    self.navigationItem.rightBarButtonItem?.enabled = true
             }
         }
     }
@@ -73,6 +96,7 @@ class EditProfileViewController: UITableViewController {
         guard let dataSource = self.dataSource else {
             return
         }
+        // TODO: Provide better feedback and error handling
         saveButton.enabled = dataSource.enteredDataIsValid
     }
     
@@ -91,4 +115,5 @@ class EditProfileViewController: UITableViewController {
         }
         profilePicturePresenter?.presentOnViewController(self)
     }
+
 }

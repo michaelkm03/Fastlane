@@ -56,6 +56,7 @@ final class AccountUpdateOperation: AsyncOperation <User> {
                         
                         // Update basic stats
                         user.displayName = profileUpdate.displayName ?? user.displayName
+                        user.username = profileUpdate.username ?? user.username
                         user.location = profileUpdate.location ?? user.location
                         user.tagline = profileUpdate.tagline ?? user.tagline
                         

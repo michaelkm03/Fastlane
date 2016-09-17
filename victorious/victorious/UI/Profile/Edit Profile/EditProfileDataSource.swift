@@ -114,6 +114,7 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
     
     func accountUpdateDelta() -> ProfileUpdate? {
         return ProfileUpdate(displayName: nameAndLocationCell.displayname,
+                             username: nameAndLocationCell.username,
                              location: nameAndLocationCell.location,
                              tagline: aboutMeCell.tagline,
                              profileImageURL: newAvatarFileURL)
@@ -126,7 +127,7 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
     // MARK: - Misc Private Funcitons
     
     private func updateUI() {
-        nameAndLocationCell.user = user
+        nameAndLocationCell.populate(withUser: user)
         aboutMeCell.tagline = user.tagline
     }
     

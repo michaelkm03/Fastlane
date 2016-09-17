@@ -37,8 +37,11 @@ class AccountUpdateRequestBodyWriter: NSObject, RequestBodyWriterType {
         }
         
         // Write params for a profile update
-        if let name = parameters.profileUpdate?.displayName {
-            try writer.appendPlaintext(name, withFieldName: "name")
+        if let displayName = parameters.profileUpdate?.displayName {
+            try writer.appendPlaintext(displayName, withFieldName: "name")
+        }
+        if let username = parameters.profileUpdate?.username {
+            try writer.appendPlaintext(username, withFieldName: "username")
         }
         if let location = parameters.profileUpdate?.location {
             try writer.appendPlaintext(location, withFieldName: "profile_location")
@@ -46,7 +49,6 @@ class AccountUpdateRequestBodyWriter: NSObject, RequestBodyWriterType {
         if let tagline = parameters.profileUpdate?.tagline {
             try writer.appendPlaintext(tagline, withFieldName: "profile_tagline")
         }
-        //TODO: Write the username to update here
         
         if let profileImageURL = parameters.profileUpdate?.profileImageURL,
             let pathExtension = profileImageURL.pathExtension,

@@ -63,14 +63,6 @@ class DisplaynameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
     /// Provide a closure to be notified when any data within the cell has changed.
     var onDataChange: (() -> Void)?
     
-    var user: UserModel? {
-        didSet {
-            displaynameField.text = user?.displayName
-            locationField.text = user?.location
-            avatarView.user = user
-        }
-    }
-    
     var displayname: String? {
         get {
             return displaynameField.text
@@ -165,6 +157,16 @@ class DisplaynameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
     
     @objc private func textFieldDidChange(notification: NSNotification) {
         onDataChange?()
+    }
+}
+
+extension DisplaynameLocationAvatarCell {
+    
+    func populate(withUser user: UserModel) {
+        displayname = user.displayName
+        username = user.username
+        location = user.location
+        avatarView.user = user
     }
 }
 
