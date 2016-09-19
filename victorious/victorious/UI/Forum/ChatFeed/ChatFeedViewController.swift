@@ -163,6 +163,9 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         dataSource.unstash()
         focusHelper.updateFocus()
         startTimestampUpdate()
+
+        // Needed to update the like state and count
+        collectionView.reloadData()
     }
     
     override func viewWillDisappear(animated: Bool) {
