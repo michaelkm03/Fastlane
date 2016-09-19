@@ -11,12 +11,12 @@ import UIKit
 /// Provides UI for editing the currently logged in user's metadata
 /// Uses a save button that enables/disables when the entered data is valid.
 /// Navigates away with a storyboard segue back to settings when complete.
-class EditProfileViewController: UITableViewController {
+class EditProfileViewController: UIViewController {
     var dependencyManager: VDependencyManager?
-    private static let unwindToSettingsSegueKey = "unwindToSettings"
     private var dataSource: EditProfileDataSource?
     private var profilePicturePresenter: VEditProfilePicturePresenter?
     @IBOutlet private weak var saveButton: UIBarButtonItem!
+    @IBOutlet private weak var tableView: UITableView!
     
     var editingEnabled: Bool = true {
         didSet {
@@ -49,6 +49,10 @@ class EditProfileViewController: UITableViewController {
     
     // MARK: - Target Action
     
+    @IBAction func tappedCancel(sender: UIBarButtonItem) {
+        self.navigationController?.popViewControllerAnimated(true)
+    }
+    
     @IBAction private func tappedSave(sender: UIBarButtonItem) {
         
         guard let profileUpdate = dataSource?.accountUpdateDelta() else {
@@ -61,7 +65,7 @@ class EditProfileViewController: UITableViewController {
         AccountUpdateOperation(profileUpdate: profileUpdate)?.queue() { result in
             
             switch result {
-                case .success: self.performSegueWithIdentifier(EditProfileViewController.unwindToSettingsSegueKey, sender: self)
+                case .success: self.navigationController?.popViewControllerAnimated(true)
                 default:
                     // TODO: Better error handling
                     self.v_showErrorWithTitle("failure", message: "oh no")
