@@ -49,6 +49,8 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         captionBubbleView.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(didLongPressBubble)))
         failureButton.addTarget(self, action: #selector(didTapOnFailureButton), forControlEvents: .TouchUpInside)
         captionLabel.numberOfLines = 0
+        captionLabel.userInteractionEnabled = false
+        replyButton.addTarget(self, action: #selector(didTapOnReplyButton), forControlEvents: .TouchUpInside)
         
         contentView.addSubview(usernameLabel)
         contentView.addSubview(timestampLabel)
@@ -56,7 +58,8 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         contentView.addSubview(avatarTapTarget)
         contentView.addSubview(captionBubbleView)
         contentView.addSubview(failureButton)
-        
+        contentView.addSubview(replyButton)
+
         captionBubbleView.contentView.addSubview(captionLabel)
     }
     
@@ -80,15 +83,6 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     
     var chatFeedContent: ChatFeedContent? {
         didSet {
-            // Updating the content is expensive, so we try to bail if we're setting the same content as before.
-            // However, chat message contents don't have IDs, so we can't do this if the ID is nil.
-            let oldID = oldValue?.content.id
-            let newID = chatFeedContent?.content.id
-            
-            guard newID != oldID || newID == nil else {
-                return
-            }
-            
             populateData()
             setNeedsLayout()
         }
@@ -98,7 +92,11 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     private var content: Content? {
         return chatFeedContent?.content
     }
-    
+
+    // MARK: - Formatter
+
+    let largeNumberFormatter = VLargeNumberFormatter()
+
     // MARK: - Subviews
     
     let usernameLabel = UILabel()
@@ -109,13 +107,15 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     
     let captionBubbleView = BubbleView()
     let captionLabel = LinkLabel()
-    
     var previewBubbleView: BubbleView?
     var previewView: UIView?
-    
+
     let failureButton = UIButton(type: .Custom)
-    
+
     let spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+
+    var likeView: LikeView?
+    let replyButton = UIButton()
     
     // MARK: - Layout
     
@@ -146,6 +146,13 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     private dynamic func didTapOnFailureButton(sender: UIButton) {
         delegate?.messageCellDidSelectFailureButton(self)
     }
+
+    private dynamic func didTapOnLikeView() {
+        toggleLike()
+    }
+
+    private dynamic func didTapOnReplyButton(sender: UIButton) {
+    }
     
     // MARK: - Private helper methods
     
@@ -156,15 +163,32 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         
         usernameLabel.font = dependencyManager.usernameFont
         usernameLabel.textColor = dependencyManager.usernameColor
-        
+
         timestampLabel.font = dependencyManager.timestampFont
         timestampLabel.textColor = dependencyManager.timestampColor
-        
+
         captionBubbleView.backgroundColor = dependencyManager.backgroundColor
-        
+
         failureButton.setImage(UIImage(named: "failed_error"), forState: .Normal)
+
+        if dependencyManager.upvoteStyle == UpvoteStyle.basic {
+            likeView = LikeView()
+            if let likeView = likeView {
+                likeView.countLabel.font = dependencyManager.timestampFont
+                likeView.countLabel.textColor = dependencyManager.timestampColor
+                likeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOnLikeView)))
+                contentView.addSubview(likeView)
+            }
+        }
+
+        replyButton.setImage(UIImage(named: "reply"), forState: .Normal)
+        replyButton.setImage(UIImage(named: "reply_tap"), forState: .Highlighted)
+        replyButton.setImage(UIImage(named: "reply_tap"), forState: .Selected)
+
+        // FUTURE: - Implemented by Community team
+        replyButton.hidden = true
     }
-    
+
     private func populateData() {
         captionLabel.detectUserTags(for: content) { [weak self] url in
             guard let strongSelf = self else {
@@ -177,11 +201,13 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         captionLabel.text = content?.text
         usernameLabel.text = content?.author.username ?? ""
         updateTimestamp()
-        
+        updateLikeCount()
+        updateLikeImage()
+
         let shouldHideTopLabels = content?.wasCreatedByCurrentUser == true
         usernameLabel.hidden = shouldHideTopLabels
         timestampLabel.hidden = shouldHideTopLabels
-        
+
         if let content = content where content.type.hasMedia {
             if content.type == .gif && VCurrentUser.user?.canView(content) == true {
                 let mediaContentView = setupMediaView(for: content)
@@ -252,12 +278,49 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         previewBubbleView = bubbleView
         self.previewView = previewView
     }
-    
+
+    private func toggleLike() {
+        guard
+            let content = content,
+            let contentID = content.id,
+            let upvoteAPIPath = dependencyManager.contentUpvoteAPIPath,
+            let unupvoteAPIPath = dependencyManager.contentUnupvoteAPIPath,
+            let upvoteOperation: SyncOperation<Void> = content.isLikedByCurrentUser
+                ? ContentUnupvoteOperation(apiPath: unupvoteAPIPath, contentID: contentID)
+                : ContentUpvoteOperation(apiPath: upvoteAPIPath, contentID: contentID)
+        else {
+            return
+        }
+
+        upvoteOperation.queue { [weak self] _ in
+            self?.updateLikeCount()
+            self?.updateLikeImage()
+        }
+    }
+
+    private func updateLikeCount() {
+        guard let content = content, likeCount = content.likeCount else {
+            return
+        }
+
+        let totalLikes = likeCount + content.currentUserLikeCount
+        likeView?.countLabel.text = totalLikes > 0 ? largeNumberFormatter.stringForInteger(totalLikes) : ""
+        likeView?.setNeedsLayout()
+    }
+
+    private func updateLikeImage() {
+        guard let content = content else {
+            return
+        }
+
+        likeView?.imageView.image = content.isLikedByCurrentUser ? dependencyManager.upvoteIconSelected : dependencyManager.upvoteIconUnselected
+    }
+
     func updateTimestamp() {
         timestampLabel.text = content?.timeLabel ?? ""
         setNeedsLayout()
     }
-    
+
     // MARK: - Managing lifecycle
     
     /// Expected to be called whenever the cell goes off-screen and is queued for later reuse. Stops media from playing
@@ -399,6 +462,35 @@ private extension VDependencyManager {
     var timestampColor: UIColor {
         return colorForKey("color.timestamp.text") ?? .whiteColor()
     }
+
+    var upvoteStyle: UpvoteStyle {
+        guard let upvoteStyle = stringForKey("upvote.type") else {
+            return .off
+        }
+        return UpvoteStyle(rawValue: upvoteStyle) ?? .off
+    }
+
+    var upvoteIconSelected: UIImage? {
+        return imageForKey("upvote.icon.selected")
+    }
+
+    var upvoteIconUnselected: UIImage? {
+        return imageForKey("upvote.icon.unselected")
+    }
+
+    var contentUpvoteAPIPath: APIPath? {
+        return networkResources?.apiPathForKey("contentUpvoteURL")
+    }
+
+    var contentUnupvoteAPIPath: APIPath? {
+        return networkResources?.apiPathForKey("contentUnupvoteURL")
+    }
+}
+
+private enum UpvoteStyle: String {
+    case off = "off"
+    case basic = "basic"
+    case rightHandSide = "right_hand_side"
 }
 
 private extension Content {

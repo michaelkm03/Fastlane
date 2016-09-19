@@ -313,9 +313,9 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
     
     func gridStreamDidUpdateDataSource(with items: [Content]) {
         dispatch_async(dispatch_get_main_queue(), {
-            UIView.animateWithDuration(Constants.relatedAnimationDuration, animations: {
+            UIView.animateWithDuration(Constants.relatedAnimationDuration) {
                 self.relatedLabel.alpha = items.count == 0 ? 0 : 1
-            })
+            }
             self.delegate?.closeUpViewGridStreamDidUpdate(self)
         })
     }

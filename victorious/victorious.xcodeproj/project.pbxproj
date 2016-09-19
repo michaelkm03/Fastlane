@@ -653,6 +653,7 @@
 		7CCBF2B91D413C7D0075A087 /* CoachmarkManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCBF2B81D413C7D0075A087 /* CoachmarkManagerTests.swift */; };
 		7CEA74C71D4C0F5300EDA15C /* EditProfileDataSourceTests .swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEA74C61D4C0F5300EDA15C /* EditProfileDataSourceTests .swift */; };
 		9619AC6F1D7A475300888BCE /* Dictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9619AC6E1D7A475300888BCE /* Dictionary.swift */; };
+		96485C901D8C7F9A00EDAC90 /* LikeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96485C8F1D8C7F9A00EDAC90 /* LikeView.swift */; };
 		968B40071D6EA42900DDD5A5 /* MarqueeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968B40061D6EA42900DDD5A5 /* MarqueeView.swift */; };
 		96964A471D871D9D0090EA49 /* DeeplinkContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96964A461D871D9D0090EA49 /* DeeplinkContext.swift */; };
 		A601FB491B4354D10050536C /* VAbstractImageVideoCreationFlowController.m in Sources */ = {isa = PBXBuildFile; fileRef = A601FB481B4354D10050536C /* VAbstractImageVideoCreationFlowController.m */; };
@@ -1240,7 +1241,6 @@
 		F0FBC4491D258FD70070873F /* UITextView+TextInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0FBC4481D258FD70070873F /* UITextView+TextInsets.swift */; };
 		F0FBC44B1D2591AF0070873F /* NSMutableParagraphStyle+TextInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0FBC44A1D2591AF0070873F /* NSMutableParagraphStyle+TextInsets.swift */; };
 		F0FBFA641CE14819006318FC /* VPublishParameters+ConvenienceInit.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0FBFA631CE14819006318FC /* VPublishParameters+ConvenienceInit.swift */; };
-		F0FC98221B6298620098AFCB /* VNavigationTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0FC98211B6298620098AFCB /* VNavigationTitleView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -2073,6 +2073,7 @@
 		8E360EC509E852CE3E872948 /* Pods-victorious-test.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.debug.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.debug.xcconfig"; sourceTree = "<group>"; };
 		910A7A7036C6609BF5F7723D /* Pods-victorious-test.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.staging.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.staging.xcconfig"; sourceTree = "<group>"; };
 		9619AC6E1D7A475300888BCE /* Dictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dictionary.swift; sourceTree = "<group>"; };
+		96485C8F1D8C7F9A00EDAC90 /* LikeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LikeView.swift; path = victorious/UI/Common/LikeView/LikeView.swift; sourceTree = SOURCE_ROOT; };
 		968B40061D6EA42900DDD5A5 /* MarqueeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarqueeView.swift; sourceTree = "<group>"; };
 		96964A461D871D9D0090EA49 /* DeeplinkContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeeplinkContext.swift; sourceTree = "<group>"; };
 		A0CB9853103CFBEFFF1BF6FF /* Pods-VictoriousCommon.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommon.staging.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommon/Pods-VictoriousCommon.staging.xcconfig"; sourceTree = "<group>"; };
@@ -2878,8 +2879,6 @@
 		F0FBC4481D258FD70070873F /* UITextView+TextInsets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITextView+TextInsets.swift"; sourceTree = "<group>"; };
 		F0FBC44A1D2591AF0070873F /* NSMutableParagraphStyle+TextInsets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSMutableParagraphStyle+TextInsets.swift"; sourceTree = "<group>"; };
 		F0FBFA631CE14819006318FC /* VPublishParameters+ConvenienceInit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VPublishParameters+ConvenienceInit.swift"; sourceTree = "<group>"; };
-		F0FC98201B6298620098AFCB /* VNavigationTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VNavigationTitleView.h; sourceTree = "<group>"; };
-		F0FC98211B6298620098AFCB /* VNavigationTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VNavigationTitleView.m; sourceTree = "<group>"; };
 		F9E2B8F5E9CB86284CF29B93 /* Pods-victoriousPersistenceTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victoriousPersistenceTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-victoriousPersistenceTests/Pods-victoriousPersistenceTests.debug.xcconfig"; sourceTree = "<group>"; };
 		FA858308053108D75BD7AC73 /* Pods-UIAutomationTests.stable.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIAutomationTests.stable.xcconfig"; path = "Pods/Target Support Files/Pods-UIAutomationTests/Pods-UIAutomationTests.stable.xcconfig"; sourceTree = "<group>"; };
 		FA9A96A39C05C50C7D098A8E /* Pods-test.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.qa.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.qa.xcconfig"; sourceTree = "<group>"; };
@@ -3064,6 +3063,7 @@
 				BF7AF9C41D22F98500539D90 /* Error States */,
 				D85E427B1AFA982000A13BD3 /* SequencePreviewView */,
 				7A1C70A91CC8513B00A666F5 /* SideMenuController.swift */,
+				96485C8C1D8C76AB00EDAC90 /* LikeView */,
 				D836883C19C36FF200070F22 /* UICollectionView */,
 				0EFC27DA1D38596E00C84068 /* UIDynamics */,
 				D84558FE1ABF4CFF00EA2FA9 /* VBadgeStringFormatter.h */,
@@ -3082,8 +3082,6 @@
 				F0E0F1A91AE8811700143CBF /* VLaunchScreenProvider.m */,
 				A7F712191AE5A3B10086F729 /* VLinearGradientView.h */,
 				A7F7121A1AE5A3B10086F729 /* VLinearGradientView.m */,
-				F0FC98201B6298620098AFCB /* VNavigationTitleView.h */,
-				F0FC98211B6298620098AFCB /* VNavigationTitleView.m */,
 				A70564C019E781EE004A8387 /* VNoContentTableViewCell.h */,
 				A70564C119E781EE004A8387 /* VNoContentTableViewCell.m */,
 				03FD87D419F96F6900D93BAA /* VNoContentTableViewCell.xib */,
@@ -4809,6 +4807,15 @@
 				7CC982231D0235D300583B70 /* ForumNavBarTitleView.swift */,
 			);
 			name = NavBar;
+			sourceTree = "<group>";
+		};
+		96485C8C1D8C76AB00EDAC90 /* LikeView */ = {
+			isa = PBXGroup;
+			children = (
+				96485C8F1D8C7F9A00EDAC90 /* LikeView.swift */,
+			);
+			name = LikeView;
+			path = UpvoteView;
 			sourceTree = "<group>";
 		};
 		A601FB461B4354750050536C /* Creation Flows */ = {
@@ -8036,7 +8043,6 @@
 				A70FC1131A2D61A000F5BBDE /* VProductsRequest.m in Sources */,
 				A7B0E0791BC4423500593B21 /* YouTubeVideoPlayer.swift in Sources */,
 				BF2AE2C21CD280CB00A9967A /* GridStreamViewController.swift in Sources */,
-				F0FC98221B6298620098AFCB /* VNavigationTitleView.m in Sources */,
 				D8F8B1E91AC4C27600AA2DB7 /* VDependencyManager+VBackground.m in Sources */,
 				7A1DECC91D80E075003F5C37 /* LoginOperation.swift in Sources */,
 				036AE5ED18FF0C0600A74BDA /* VReachability.m in Sources */,
@@ -8080,6 +8086,7 @@
 				D888B52B1A86FC7800B34149 /* VRadialGradientView.m in Sources */,
 				A73BA2DA1C9394B6008168B5 /* ForumViewController.swift in Sources */,
 				D8D3B7241AB264D400CF966C /* AVAsset+VVideoCompositionWithFrameDuration.m in Sources */,
+				96485C901D8C7F9A00EDAC90 /* LikeView.swift in Sources */,
 				7A7348591D063E83005225E4 /* ReferenceWrapper.swift in Sources */,
 				D8D812AB1B14EA0200E93B37 /* VModernResetPasswordViewController.m in Sources */,
 				C35AB0A61AF9843700B2AE1B /* VCVideoPlayerView.m in Sources */,

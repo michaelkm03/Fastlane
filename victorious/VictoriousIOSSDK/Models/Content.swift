@@ -56,6 +56,9 @@ public struct Content: Equatable {
     
     // MARK: - Liking
     
+    /// The number of likes that this piece of content has received.
+    public var likeCount: Int?
+    
     /// Whether the server has reported that this content was liked by the current user.
     ///
     /// The server updates content like state asynchronously, so it may not always report the most up-to-date value.
@@ -100,6 +103,8 @@ public struct Content: Equatable {
     // MARK: - Initializing
     
     public init?(json viewedContentJSON: JSON) {
+        
+        
         let json = viewedContentJSON["content"]
         
         guard
@@ -144,6 +149,7 @@ public struct Content: Equatable {
         // FUTURE: This should be retrieved from the JSON once the payload is defined.
         userTags = [:]
         
+        likeCount = viewedContentJSON["total_engagements"]["likes"].int
         isRemotelyLikedByCurrentUser = viewedContentJSON["viewer_engagements"]["is_liking"].bool ?? false
         postedAt = Timestamp(apiString: json["posted_at"].stringValue)
         createdAt = Timestamp(apiString: json["released_at"].stringValue) ?? Timestamp()
@@ -246,6 +252,18 @@ extension Content: PreviewImageContainer, DictionaryConvertible {
         else {
             return isRemotelyLikedByCurrentUser
         }
+    }
+    
+    public var currentUserLikeCount: Int {
+        if isRemotelyLikedByCurrentUser && !isLikedByCurrentUser && likeCount > 0 {
+            return -1
+        }
+        
+        if !isRemotelyLikedByCurrentUser && isLikedByCurrentUser {
+            return 1
+        }
+        
+        return 0
     }
 }
 
