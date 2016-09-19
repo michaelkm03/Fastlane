@@ -15,6 +15,7 @@ class EditProfileViewController: UIViewController {
     var dependencyManager: VDependencyManager?
     private var dataSource: EditProfileDataSource?
     private var profilePicturePresenter: VEditProfilePicturePresenter?
+    private var keyboardManager: VKeyboardNotificationManager?
     @IBOutlet private weak var saveButton: UIBarButtonItem!
     @IBOutlet private weak var tableView: UITableView!
     
@@ -35,6 +36,22 @@ class EditProfileViewController: UIViewController {
         tableView.estimatedRowHeight = 44
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.backgroundView = dependencyManager?.background().viewForBackground()
+
+        keyboardManager = VKeyboardNotificationManager(keyboardWillShowBlock: { [weak self] (_,endFrame: CGRect, _, _) in
+            if let existingInsets = self?.tableView.contentInset {
+                let newInsets = UIEdgeInsets(top: existingInsets.top, left: existingInsets.left, bottom: endFrame.height, right: existingInsets.right)
+                self?.tableView.contentInset = newInsets
+                self?.tableView.scrollIndicatorInsets = newInsets
+            }
+        }, willHideBlock: { (_, _, _, _) in
+                
+        }, willChangeFrameBlock: { [weak self](_, endFrame: CGRect, _, _) in
+            if let existingInsets = self?.tableView.contentInset {
+                let newInsets = UIEdgeInsets(top: existingInsets.top, left: existingInsets.left, bottom: endFrame.height, right: existingInsets.right)
+                self?.tableView.contentInset = newInsets
+                self?.tableView.scrollIndicatorInsets = newInsets
+            }
+        })
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -54,7 +71,6 @@ class EditProfileViewController: UIViewController {
     }
     
     @IBAction private func tappedSave(sender: UIBarButtonItem) {
-        
         guard let profileUpdate = dataSource?.accountUpdateDelta() else {
             return
         }
