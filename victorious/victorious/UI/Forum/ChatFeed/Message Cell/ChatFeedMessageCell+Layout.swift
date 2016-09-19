@@ -22,6 +22,7 @@ extension ChatFeedMessageCell {
         else {
             return
         }
+        
         let content = chatFeedContent.content
         let alignment: ChatFeedMessageCellAlignment = content.wasCreatedByCurrentUser ? .right : .left
         
@@ -89,7 +90,8 @@ extension ChatFeedMessageCell {
             cell.failureButton.frame = CGRect(
                 center: CGPoint(
                     x: avatarFrame.origin.x + avatarFrame.size.width + horizontalSpacing + failureButtonSize.width / 2,
-                    y: avatarFrame.center.y),
+                    y: avatarFrame.center.y
+                ),
                 size: failureButtonSize
             )
         }
