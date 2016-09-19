@@ -146,8 +146,15 @@ public struct Content: Equatable {
         isVIPOnly = json["is_vip"].bool ?? false
         hashtags = []
         
-        // FUTURE: This should be retrieved from the JSON once the payload is defined.
         userTags = [:]
+        
+        for (username, urlJSON) in viewedContentJSON["user_tags"].dictionary ?? [:] {
+            guard let urlString = urlJSON.string, let url = NSURL(string: urlString) else {
+                continue
+            }
+            
+            userTags[username] = url
+        }
         
         likeCount = viewedContentJSON["total_engagements"]["likes"].int
         isRemotelyLikedByCurrentUser = viewedContentJSON["viewer_engagements"]["is_liking"].bool ?? false
