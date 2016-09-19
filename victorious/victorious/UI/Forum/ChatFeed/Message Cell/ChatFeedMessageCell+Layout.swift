@@ -122,8 +122,6 @@ extension ChatFeedMessageCell {
         if alignment == .left, let topBubbleFrame = bubbleFrames.first, let bottomBubbleFrame = bubbleFrames.last {
             cell.replyButton.hidden = false
             
-            let replyButtonSize = cell.replyButton.intrinsicContentSize()
-            
             cell.replyButton.frame = CGRect(
                 x: cell.bounds.maxX - replyButtonSize.width - horizontalSpacing,
                 y: topBubbleFrame.minY + (bottomBubbleFrame.maxY - topBubbleFrame.minY - replyButtonSize.height) / 2.0,

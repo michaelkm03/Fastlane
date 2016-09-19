@@ -35,6 +35,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     static let bubbleSpacing = CGFloat(6.0)
     static let pendingContentAlpha = CGFloat(0.4)
     static let likeViewSize = CGSize(width: 66.0, height: 66.0)
+    static let replyButtonSize = CGSize(width: 44.0, height: 44.0)
     
     // MARK: - Reuse identifiers
     

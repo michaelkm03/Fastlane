@@ -41,9 +41,17 @@ class LinkLabel: UILabel, NSLayoutManagerDelegate {
     
     override var textColor: UIColor! {
         didSet {
+            baseTextColor = textColor
             highlightLinks()
         }
     }
+    
+    /// The text color that should apply to the non-link portions of the text.
+    ///
+    /// We would ideally be able to use `textColor` directly, but for unknown reasons, sometimes that property will
+    /// report the default black color rather than the color that was most recently set to it.
+    ///
+    private var baseTextColor = UIColor.blackColor()
     
     var highlightedLinkColor: UIColor?
     
@@ -106,7 +114,7 @@ class LinkLabel: UILabel, NSLayoutManagerDelegate {
         
         let attributes = [
             NSFontAttributeName: font,
-            NSForegroundColorAttributeName: textColor,
+            NSForegroundColorAttributeName: baseTextColor,
             NSParagraphStyleAttributeName: mutableParagraphStyle
         ]
         
