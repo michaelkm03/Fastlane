@@ -8,34 +8,94 @@
 
 import Foundation
 
-class GIFTrayDataSource: PaginatedDataSource, UICollectionViewDataSource {
-    func performSearch( searchTerm searchTerm: String?, pageType: VPageType, completion: (NSError? -> ())? ) {
-        
-        let searchOptions: GIFSearchOptions
-        if let searchTerm = searchTerm {
-            searchOptions = GIFSearchOptions.Search(term: searchTerm, url: "/api/image/gif_search")
-        } else {
-            searchOptions = GIFSearchOptions.Trending(url: "/api/image/trending_gifs")
+class GIFTrayDataSource: PaginatedDataSource, TrayDataSource {
+    private struct Constants {
+        static let emptyCellReuseIdentifier = UICollectionViewCell.defaultReuseIdentifier
+        static let gifCellReuseIdentifier = UICollectionViewCell.defaultReuseIdentifier
+    }
+    
+    let dependencyManager: VDependencyManager
+    var dataSourceDelegate: TrayDataSourceDelegate?
+    private var gifs: [GIFSearchResultObject] = []
+    private var trayState: TrayState = .Empty {
+        didSet {
+            if oldValue != trayState {
+                dataSourceDelegate?.trayDataSource(self, changedToState: trayState)
+            }
         }
-        self.loadPage( pageType,
+    }
+    
+    func asset(atIndex index: Int) -> GIFSearchResultObject? {
+        guard gifs.count > index else {
+            return nil
+        }
+        return gifs[index]
+    }
+    
+    init(dependencyManager: VDependencyManager) {
+        self.dependencyManager = dependencyManager
+    }
+    
+    func registerCells(withCollectionView collectionView: UICollectionView) {
+        collectionView.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: Constants.emptyCellReuseIdentifier)
+        collectionView.registerNib(MediaSearchPreviewCell.associatedNib, forCellWithReuseIdentifier: Constants.gifCellReuseIdentifier)
+    }
+    
+    func fetchGifs(completion: (NSError? -> ())? = nil) {
+        trayState = .Loading
+        let contentFetchEndpoint = dependencyManager.contentFetchEndpoint ?? ""
+        let searchOptions = GIFSearchOptions.Trending(url: contentFetchEndpoint)
+        self.loadPage( .First,
                        createOperation: {
                         return GIFSearchOperation(searchOptions: searchOptions)
             },
-                       completion:{ (results, error, cancelled) in
+                       completion:{ [weak self] (results, error, cancelled) in
+                        guard let strongSelf = self else {
+                            return
+                        }
+                        
+                        let gifs = results as? [GIFSearchResultObject]
+                        strongSelf.gifs = gifs ?? []
+                        guard let results = results else {
+                            strongSelf.trayState = .FailedToLoad
+                            return
+                        }
+                        strongSelf.trayState = results.count > 0 ? .Populated : .Empty
                         completion?( error )
             }
         )
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 0
+        switch trayState {
+        case .Empty, .FailedToLoad, .Loading:
+            return 1
+        case .Populated:
+            return gifs.count
+        }
     }
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return 0
+        return 1
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        fatalError()
+        switch trayState {
+        case .Populated:
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.gifCellReuseIdentifier, forIndexPath: indexPath) as! MediaSearchPreviewCell
+            if let gif = asset(atIndex: indexPath.row) {
+                cell.assetUrl = gif.sourceMediaURL
+                cell.previewAssetUrl = gif.thumbnailImageURL
+            }
+            return cell
+        default:
+            return collectionView.dequeueReusableCellWithReuseIdentifier(Constants.gifCellReuseIdentifier, forIndexPath: indexPath)
+        }
+    }
+}
+
+private extension VDependencyManager {
+    var contentFetchEndpoint: String? {
+        return stringForKey("default.content.endpoint")
     }
 }

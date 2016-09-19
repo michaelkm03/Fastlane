@@ -13,6 +13,8 @@ import UIKit
 /// from the list of GIF search results
 class MediaSearchPreviewCell: UICollectionViewCell {
     
+    static let associatedNib = UINib(nibName: "MediaSearchPreviewCell", bundle: nil)
+    
     var videoPlayer: VVideoPlayer?
     
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!

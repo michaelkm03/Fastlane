@@ -8,10 +8,10 @@
 
 import Foundation
 
-protocol Tray {
+protocol Tray: TrayDataSourceDelegate {
     weak var delegate: TrayDelegate? { get set }
 }
 
 protocol TrayDelegate: class {
-    func tray(tray: Tray, selectedItemWithPreviewImage: UIImage, mediaURL: NSURL)
+    func tray(tray: Tray, selectedItemWithPreviewImage previewImage: UIImage, mediaURL: NSURL)
 }

@@ -1257,6 +1257,8 @@
 		F004B3271D8912AA005D4A74 /* GIFTrayDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = F004B3261D8912AA005D4A74 /* GIFTrayDataSource.swift */; };
 		F004B32A1D8914E3005D4A74 /* GIFSearchOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F004B3291D8914E3005D4A74 /* GIFSearchOptions.swift */; };
 		F004B32C1D891908005D4A74 /* StickerTrayDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = F004B32B1D891908005D4A74 /* StickerTrayDataSource.swift */; };
+		F004B32E1D8B7A67005D4A74 /* TrayDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = F004B32D1D8B7A67005D4A74 /* TrayDataSource.swift */; };
+		F004B3301D8C04BB005D4A74 /* MediaSearchPreviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F004B32F1D8C04BB005D4A74 /* MediaSearchPreviewCell.xib */; };
 		F009BCFF1CE24A0B00F81CAA /* UploadManagerHost.swift in Sources */ = {isa = PBXBuildFile; fileRef = F009BCFE1CE24A0B00F81CAA /* UploadManagerHost.swift */; };
 		F009BD041CE6541F00F81CAA /* HashtagBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F009BD031CE6541F00F81CAA /* HashtagBarViewController.swift */; };
 		F009BD091CE654D200F81CAA /* HashtagBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F009BD081CE654D200F81CAA /* HashtagBarController.swift */; };
@@ -3006,6 +3008,8 @@
 		F004B3261D8912AA005D4A74 /* GIFTrayDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFTrayDataSource.swift; sourceTree = "<group>"; };
 		F004B3291D8914E3005D4A74 /* GIFSearchOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchOptions.swift; sourceTree = "<group>"; };
 		F004B32B1D891908005D4A74 /* StickerTrayDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickerTrayDataSource.swift; sourceTree = "<group>"; };
+		F004B32D1D8B7A67005D4A74 /* TrayDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrayDataSource.swift; sourceTree = "<group>"; };
+		F004B32F1D8C04BB005D4A74 /* MediaSearchPreviewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MediaSearchPreviewCell.xib; sourceTree = "<group>"; };
 		F009BCFE1CE24A0B00F81CAA /* UploadManagerHost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadManagerHost.swift; sourceTree = "<group>"; };
 		F009BD031CE6541F00F81CAA /* HashtagBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagBarViewController.swift; sourceTree = "<group>"; };
 		F009BD081CE654D200F81CAA /* HashtagBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagBarController.swift; sourceTree = "<group>"; };
@@ -5471,6 +5475,7 @@
 			children = (
 				A73C3EA51C45890E00A8452C /* MediaSearchNoContentCell.swift */,
 				A73C3EA61C45890E00A8452C /* MediaSearchPreviewCell.swift */,
+				F004B32F1D8C04BB005D4A74 /* MediaSearchPreviewCell.xib */,
 				A73C3EA71C45890E00A8452C /* MediaSearchResultCell.swift */,
 			);
 			path = Cells;
@@ -6561,6 +6566,7 @@
 				F004B3281D8913D0005D4A74 /* GIFTray */,
 				F004B32B1D891908005D4A74 /* StickerTrayDataSource.swift */,
 				F00FB8D11D88E2D100AAE752 /* Tray.swift */,
+				F004B32D1D8B7A67005D4A74 /* TrayDataSource.swift */,
 			);
 			name = Trays;
 			sourceTree = "<group>";
@@ -7213,6 +7219,7 @@
 				036F388B1A0C4DEA0014DF66 /* Raleway-Medium.ttf in Resources */,
 				F0B6F08D1D3EB3350037EACE /* VIPGateViewController.storyboard in Resources */,
 				036F387A1A0C4DEA0014DF66 /* MavenPro-Bold.ttf in Resources */,
+				F004B3301D8C04BB005D4A74 /* MediaSearchPreviewCell.xib in Resources */,
 				F009BD1D1CEBF73500F81CAA /* HashtagBarViewController.storyboard in Resources */,
 				B074C5B51B39D41F00EA3FFC /* VHashmarkView.xib in Resources */,
 				03F61E6C1C6ADF0700EEA8F9 /* Assets.bundle in Resources */,
@@ -8149,6 +8156,7 @@
 				BF79C7711C98D3D100222C8A /* LoadingCancellableView.swift in Sources */,
 				D836884119C370C400070F22 /* VBaseCollectionViewCell.m in Sources */,
 				6708F7041CD83E0E004332CF /* TutorialNetworkDataSource.swift in Sources */,
+				F004B32E1D8B7A67005D4A74 /* TrayDataSource.swift in Sources */,
 				F028F3E71AC0D9E800ABFDDC /* VAppInfo.m in Sources */,
 				F01307FC1CD2A4C100C0156C /* NativeWorkspaceViewController.swift in Sources */,
 				A7F843761BFD5A0B004C3D55 /* NSManagedObject+Entity.swift in Sources */,

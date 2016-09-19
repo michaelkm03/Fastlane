@@ -48,7 +48,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         static let composerTextInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         static let confirmButtonHorizontalInset: CGFloat = 16
         static let stickerInputAreaHeight: CGFloat = 100
-        static let gifInputAreaHeight: CGFloat = 120
+        static let gifInputAreaHeight: CGFloat = 90
     }
     
     /// ForumEventSender
@@ -92,6 +92,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
                 if let newInputViewController = customInputViewController {
                     addChildViewController(newInputViewController)
                     let inputView = newInputViewController.view
+                    inputView.translatesAutoresizingMaskIntoConstraints = false
                     customInputViewContainer.addSubview(inputView)
                     customInputViewContainer.topAnchor.constraintEqualToAnchor(inputView.topAnchor).active = true
                     customInputViewContainer.rightAnchor.constraintEqualToAnchor(inputView.rightAnchor).active = true
@@ -106,8 +107,11 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
 //        return CustomInputController(viewController: StickerTrayViewController.new(self.dependencyManager), desiredHeight: Constants.stickerInputAreaHeight)
 //    }()
     
-    lazy var gifTrayViewController: CustomInputController = {
-        return CustomInputController(viewController: GIFTrayViewController.new(self.dependencyManager), desiredHeight: Constants.gifInputAreaHeight)
+    lazy var gifTrayInputController: CustomInputController = {
+        let dependencyManager: VDependencyManager = self.dependencyManager.gifTrayDependency!
+        let gifTray = GIFTrayViewController.new(dependencyManager)
+        gifTray.delegate = self
+        return CustomInputController(viewController: gifTray, desiredHeight: Constants.gifInputAreaHeight)
     }()
     
     /// Referenced so that it can be set toggled between 0 and it's default
@@ -259,7 +263,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
         
         if animated {
-            UIView.animateWithDuration(0.3) {
+            UIView.animateWithDuration(Constants.animationDuration) {
                 self.setComposerVisible(visible, animated: false)
                 self.view.layoutIfNeeded()
             }
@@ -409,7 +413,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        textView.resignFirstResponder()
+        composerTextViewManager?.endEditing(self.textView)
     }
 
     private func updateViewsForNewVisibleKeyboardHeight(visibleKeyboardHeight: CGFloat, animationOptions: UIViewAnimationOptions, animationDuration: Double) {
@@ -591,7 +595,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
 //            case .StickerTray:
 //                customInputAreaState = .Visible(inputController: stickerInputController)
             case .GIFTray:
-                customInputAreaState = .Visible(inputController: gifTrayViewController)
+                customInputAreaState = .Visible(inputController: gifTrayInputController)
             default:()
                 
             }
@@ -765,5 +769,9 @@ private extension VDependencyManager {
     
     var confirmKeyText: String {
         return stringForKey("confirmKeyText") ?? NSLocalizedString("Send", comment: "")
+    }
+    
+    var gifTrayDependency: VDependencyManager? {
+        return childDependencyForKey("gifTray")
     }
 }

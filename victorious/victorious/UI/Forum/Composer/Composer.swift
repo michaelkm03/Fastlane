@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-protocol Composer: class, ForumEventReceiver, ForumEventSender, ComposerAttachmentTabBarDelegate {
+protocol Composer: class, ForumEventReceiver, ForumEventSender, ComposerAttachmentTabBarDelegate, TrayDelegate {
     
     /// The maximum height of the composer. Triggers a UI update if the composer
     /// could be updated to better represent its content inside a frame with the new height.
@@ -31,7 +31,6 @@ protocol Composer: class, ForumEventReceiver, ForumEventSender, ComposerAttachme
 }
 
 extension Composer {
-    
     func sendMessage(text text: String, currentUser: UserModel) {
         let content = Content(author: currentUser, text: text)
         send(.sendContent(content))
@@ -47,6 +46,16 @@ extension Composer {
             type: asset.contentType
         )
         send(.sendContent(content))
+    }
+    
+    // MARK: - TrayDelegate
+    
+    func tray(tray: Tray, selectedItemWithPreviewImage previewImage: UIImage, mediaURL: NSURL) {
+        guard let currentUser = VCurrentUser.user else {
+            Log.warning("Tried to send item from tray with no logged in user")
+            return
+        }
+        sendMessage(asset: ContentMediaAsset.gif(remoteID: nil, url: mediaURL, source: nil, size: .zero), previewImage: previewImage, text: nil, currentUser: currentUser)
     }
 }
 
