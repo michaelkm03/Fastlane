@@ -286,6 +286,7 @@ public class Content: ContentModel {
         self.tracking = Tracking(json: json["tracking"] )
         
         self.author = nil
+        self.likeCount = nil
         self.postedAt = nil
         self.createdAt = Timestamp()
         self.text = nil
