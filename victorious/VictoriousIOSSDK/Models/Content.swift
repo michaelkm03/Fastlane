@@ -103,7 +103,6 @@ public struct Content: Equatable {
     // MARK: - Initializing
     
     public init?(json viewedContentJSON: JSON) {
-        
         let json = viewedContentJSON["content"]
         
         guard

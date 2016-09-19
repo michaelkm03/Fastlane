@@ -26,33 +26,26 @@ public struct ContentFeedRequest: RequestType {
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> ContentFeedResult {
+        let contentsJSON: [JSON]?
+        let contentParser: (JSON) -> Content?
+        
         switch payloadType {
             case .regular:
-                guard let contents = responseJSON["payload"]["viewed_contents"].array else {
-                    throw ResponseParsingError()
-                }
-                
-                let parsedContents = contents.flatMap { Content(json: $0) }
-                
-                var parsedRefreshStage: RefreshStage? = nil
-                let mainStageJSON = responseJSON["main_stage"]
-                
-                // A missing "main_stage" node in JSON represents no content on the stage.
-                if mainStageJSON.isExists() {
-                    parsedRefreshStage = RefreshStage(json: mainStageJSON)
-                }
-                
-                return ContentFeedResult(contents: parsedContents, refreshStage: parsedRefreshStage)
-            
+                contentsJSON = responseJSON["payload"]["viewed_contents"].array
+                contentParser = { Content(json: $0) }
             case .lightweight:
-                guard let contents = responseJSON["payload"]["reference_list"].array else {
-                    throw ResponseParsingError()
-                }
-                
-                let parsedContents = contents.flatMap{ Content(lightweightJSON: $0) }
-                
-                return ContentFeedResult(contents: parsedContents, refreshStage: nil)
+                contentsJSON = responseJSON["payload"]["reference_list"].array
+                contentParser = { Content(lightweightJSON: $0) }
         }
+        
+        guard let contents = contentsJSON else {
+            throw ResponseParsingError()
+        }
+        
+        let parsedContents = contents.flatMap { contentParser($0) }
+        let parsedRefreshStage = RefreshStage(json: responseJSON["main_stage"])
+        
+        return ContentFeedResult(contents: parsedContents, refreshStage: parsedRefreshStage)
     }
 }
 
