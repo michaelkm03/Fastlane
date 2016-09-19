@@ -41,7 +41,9 @@ extension VContent {
         v_contentPreviewAssets = Set(persistentImageAssets)
         
         let persistentAssets: [VContentMediaAsset] = content.assets.flatMap { asset in
-            let remoteID = asset.resourceID
+            guard let remoteID = asset.resourceID else {
+                return nil
+            }
             let data: VContentMediaAsset = self.v_managedObjectContext.v_findOrCreateObject(["v_remoteID": remoteID, "v_content": self])
             data.populate(fromSourceModel: asset)
             data.v_content = self

@@ -28,7 +28,7 @@ class VContentMediaAsset: NSManagedObject, ContentMediaAssetModel {
     
     // MARK: - ContentMediaAssetModel
     
-    var resourceID: String {
+    var resourceID: String? {
         return v_remoteID
     }
     
