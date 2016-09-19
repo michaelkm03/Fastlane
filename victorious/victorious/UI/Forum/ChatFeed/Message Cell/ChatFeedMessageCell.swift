@@ -51,7 +51,6 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         captionBubbleView.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(didLongPressBubble)))
         failureButton.addTarget(self, action: #selector(didTapOnFailureButton), forControlEvents: .TouchUpInside)
         captionLabel.numberOfLines = 0
-        captionLabel.userInteractionEnabled = false
         replyButton.addTarget(self, action: #selector(didTapOnReplyButton), forControlEvents: .TouchUpInside)
         
         contentView.addSubview(usernameLabel)

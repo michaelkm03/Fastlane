@@ -146,7 +146,7 @@ public struct Content: Equatable {
         
         userTags = [:]
         
-        for (username, urlJSON) in viewedContentJSON["user_tags"].dictionary ?? [:] {
+        for (username, urlJSON) in json["user_tags"].dictionary ?? [:] {
             guard let urlString = urlJSON.string, let url = NSURL(string: urlString) else {
                 continue
             }
