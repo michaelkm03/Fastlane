@@ -21,7 +21,7 @@ private struct Constants {
 class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, ContentCellTracker, CoachmarkDisplayer, VBackgroundContainer {
     private let gridStreamController: GridStreamViewController<CloseUpView>
     var dependencyManager: VDependencyManager!
-    private var content: VContent? {
+    private var content: Content? {
         didSet {
             updateAudioSessionCategory()
             trackContentView()
@@ -30,6 +30,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     private let contentID: Content.ID
     private var firstPresentation = true
     private let closeUpView: CloseUpView
+    private var context: DeeplinkContext?
     
     private lazy var shareButton: UIBarButtonItem = {
         return UIBarButtonItem(
@@ -60,8 +61,9 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
             VAudioManager.sharedInstance().focusedPlaybackDidBegin(muted: false)
         }
     }
-    
-    init(dependencyManager: VDependencyManager, contentID: String, content: ContentModel? = nil, streamAPIPath: APIPath) {
+
+    init(dependencyManager: VDependencyManager, contentID: String, streamAPIPath: APIPath, context: DeeplinkContext? = nil, content: Content? = nil) {
+        self.context = context
         self.dependencyManager = dependencyManager
         
         closeUpView = CloseUpView.newWithDependencyManager(dependencyManager)
@@ -140,7 +142,8 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     
     private func trackContentView() {
         if let content = content where firstPresentation {
-            trackView(.viewStart, showingContent: content)
+            let value = context?.value ?? ""
+            trackView(.viewStart, showingContent: content, parameters: [VTrackingKeyContext:value])
             firstPresentation = false
         }
     }
@@ -164,7 +167,13 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         }
         
         upvoteButton.sizeToFit()
-        navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: upvoteButton), shareButton, overflowButton]
+        
+        if content.shareURL == nil {
+            navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: upvoteButton), overflowButton]
+        }
+        else {
+            navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: upvoteButton), shareButton, overflowButton]
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -175,23 +184,10 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         gridStreamController.setContent(nil, withError: true)
     }
     
-    func updateContent(content: ContentModel) {
-        guard let findOrCreateOperation = ContentFindOrCreateOperation(contentModel: content) else {
-            return
-        }
-        
-        findOrCreateOperation.queue() { [weak self] results, _, _ in
-            guard
-                let strongSelf = self,
-                let content = results?.first as? VContent
-            else {
-                return
-            }
-            
-            strongSelf.content = content
-            strongSelf.updateHeader()
-            strongSelf.gridStreamController.setContent(content, withError: false)
-        }
+    func updateContent(content: Content) {
+        self.content = content
+        updateHeader()
+        gridStreamController.setContent(content, withError: false)
     }
     
     // MARK: - VBackgroundContainer
@@ -205,7 +201,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     func didSelectProfileForUserID(userID: Int) {
         let router = Router(originViewController: self, dependencyManager: dependencyManager)
         let destination = DeeplinkDestination(userID: userID)
-        router.navigate(to: destination)
+        router.navigate(to: destination, from: DeeplinkContext(value: DeeplinkContext.closeupView))
     }
     
     func gridStreamDidUpdate() {
@@ -228,14 +224,13 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
             let content = content,
             let contentID = content.id,
             let upvoteAPIPath = dependencyManager.contentUpvoteAPIPath,
-            let unupvoteAPIPath = dependencyManager.contentUnupvoteAPIPath
+            let unupvoteAPIPath = dependencyManager.contentUnupvoteAPIPath,
+            let upvoteOperation: SyncOperation<Void> = content.isLikedByCurrentUser
+                ? ContentUnupvoteOperation(apiPath: unupvoteAPIPath, contentID: contentID)
+                : ContentUpvoteOperation(apiPath: upvoteAPIPath, contentID: contentID)
         else {
             return
         }
-        
-        let upvoteOperation = content.isLikedByCurrentUser
-            ? ContentUnupvoteOperation(contentID: contentID, apiPath: unupvoteAPIPath)
-            : ContentUpvoteOperation(contentID: contentID, apiPath: upvoteAPIPath)
         
         upvoteOperation.queue { [weak self] _ in
             self?.updateHeader()
@@ -243,19 +238,17 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     }
     
     func overflow() {
+        let isCreatorOfContent = content?.wasCreatedByCurrentUser == true
+        
         guard
-            let content = content,
             let deleteAPIPath = dependencyManager.contentDeleteAPIPath,
-            let flagAPIPath = dependencyManager.contentFlagAPIPath
+            let flagAPIPath = dependencyManager.contentFlagAPIPath,
+            let flagOrDeleteOperation: SyncOperation<Void> = isCreatorOfContent
+                ? ContentDeleteOperation(apiPath: deleteAPIPath, contentID: contentID)
+                : ContentFlagOperation(apiPath: flagAPIPath, contentID: contentID)
         else {
             return
         }
-        
-        let isCreatorOfContent = content.wasCreatedByCurrentUser
-        
-        let flagOrDeleteOperation = isCreatorOfContent
-            ? ContentDeleteOperation(contentID: contentID, apiPath: deleteAPIPath)
-            : ContentFlagOperation(contentID: contentID, apiPath: flagAPIPath)
         
         let actionTitle = isCreatorOfContent
             ? NSLocalizedString("DeletePost", comment: "Delete this user's post")
@@ -267,12 +260,19 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
             dependencyManager: dependencyManager
         )
         
-        confirm.before(flagOrDeleteOperation)
-        confirm.queue()
-        flagOrDeleteOperation.queue { [weak self] _, _, cancelled in
-            /// FUTURE: Update parent view controller to remove content
-            if !cancelled {
-                self?.navigationController?.popViewControllerAnimated(true)
+        
+        confirm.queue() { result in
+            switch result {
+                case .success:
+                    flagOrDeleteOperation.queue { [weak self] result in
+                        /// FUTURE: Update parent view controller to remove content
+                        switch result {
+                            case .success(_), .failure(_): self?.navigationController?.popViewControllerAnimated(true)
+                            case .cancelled: break
+                        }
+                }
+                case .failure, .cancelled:
+                    break
             }
         }
     }

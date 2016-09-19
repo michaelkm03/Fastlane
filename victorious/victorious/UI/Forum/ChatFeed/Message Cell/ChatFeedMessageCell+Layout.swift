@@ -49,23 +49,23 @@ extension ChatFeedMessageCell {
             width: usernameSize.width,
             height: usernameSize.height
         )
-        
+
         cell.timestampLabel.frame = CGRect(
             x: firstBubbleFrame.origin.x + max(usernameSize.width + topLabelXInset * 2.0, firstBubbleFrame.width - timestampSize.width - topLabelXInset),
             y: firstBubbleFrame.origin.y - timestampSize.height - topLabelYSpacing,
             width: timestampSize.width,
             height: timestampSize.height
         )
-        
+
         // Avatar layout:
         
         cell.avatarView.frame = CGRect(
             origin: avatarOffset(forAlignment: alignment, withChatFeedContent: chatFeedContent, inBounds: cell.bounds),
             size: avatarSize
         )
-        
+
         cell.avatarTapTarget.frame = CGRect(center: cell.avatarView.center, size: avatarTapTargetSize)
-        
+
         // Preview / caption layout:
         
         cell.previewView?.frame = cell.previewBubbleView?.bounds ?? CGRect.zero
@@ -96,8 +96,50 @@ extension ChatFeedMessageCell {
         else {
             cell.failureButton.frame = .zero
         }
+
+        // Like button layout:
+
+        if alignment == .left {
+            cell.likeView?.hidden = false
+            if let likeView = cell.likeView {
+                if let baseFrame = bubbleFrames.last {
+                    let likeViewWidth = CGFloat(66.0)
+                    let likeViewHeight = CGFloat(66.0)
+
+                    likeView.frame = CGRect(
+                        x: baseFrame.maxX - (likeViewWidth / 2),
+                        y: baseFrame.maxY - (likeViewHeight / 2),
+                        width: likeViewWidth,
+                        height: likeViewHeight
+                    )
+
+                    cell.contentView.bringSubviewToFront(likeView)
+                }
+            }
+        }
+        else {
+            cell.likeView?.hidden = true
+        }
+
+        // Reply button layout:
+
+        if alignment == .left {
+            if let baseFrame = bubbleFrames.last {
+                let replyButtonWidth = CGFloat(44.0)
+                let replyButtonHeight = CGFloat(44.0)
+
+                let replyButtonOriginX = cell.bounds.size.width - replyButtonWidth
+
+                cell.replyButton.frame = CGRect(
+                    x: replyButtonOriginX,
+                    y: baseFrame.center.y - replyButtonHeight / 2,
+                    width: replyButtonWidth,
+                    height: replyButtonHeight
+                )
+            }
+        }
     }
-    
+
     private static func layoutBubbleView(bubbleView: UIView?, forAlignment alignment: ChatFeedMessageCellAlignment, withChatFeedContent content: ChatFeedContent, size: CGSize?, precedingBubbleFrame: CGRect?, inBounds bounds: CGRect) -> CGRect? {
         guard let size = size else {
             bubbleView?.frame = CGRect.zero

@@ -28,6 +28,8 @@ final class BadgeCountManager {
     
     static let shared = BadgeCountManager()
     
+    static var networkResources: VDependencyManager?
+    
     // MARK: - Accessing the total badge count
     
     /// The total badge count to be displayed for the app.
@@ -91,11 +93,18 @@ final class BadgeCountManager {
     
     /// Retrieves the user's current unread notification count and updates `unreadNotificationCount` accordingly.
     private func fetchUnreadNotificationCount() {
-        let operation = NotificationsUnreadCountOperation()
-        
-        operation.queue { [weak self] results, error, cancelled in
-            if let count = operation.unreadNotificationsCount?.integerValue where error == nil {
-                self?.unreadNotificationCount = count
+        guard
+            let apiPath = BadgeCountManager.networkResources?.unreadNotificationCountAPIPath,
+            let request = UnreadNotificationsCountRequest(apiPath: apiPath)
+        else {
+            assertionFailure("There should be an apiPath and dependencyManager set.")
+            return
+        }
+            
+        RequestOperation(request: request).queue { [weak self] result in
+            switch result {
+                case .success(let count): self?.unreadNotificationCount = count
+                case .failure(_), .cancelled: break
             }
         }
     }
@@ -107,9 +116,9 @@ final class BadgeCountManager {
         // Optimistically reset to zero.
         unreadNotificationCount = 0
         
-        NotificationsMarkAllAsReadOperation().queue { [weak self] results, error, cancelled in
+        RequestOperation(request: MarkAllNotificationsAsReadRequest()).queue { [weak self] result in
             // Reset back to the old count if the request failed.
-            if error != nil {
+            if result.error != nil {
                 self?.unreadNotificationCount = previousCount
             }
         }
@@ -130,5 +139,11 @@ final class BadgeCountManager {
         else {
             unreadNotificationCount = 0
         }
+    }
+}
+
+private extension VDependencyManager {
+    var unreadNotificationCountAPIPath: APIPath? {
+        return networkResources?.apiPathForKey("notification.unread.count.URL")
     }
 }

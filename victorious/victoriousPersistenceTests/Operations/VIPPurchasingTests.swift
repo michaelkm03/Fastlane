@@ -27,7 +27,7 @@ class VIPPurchasingTests: BasePersistentStoreTestCase {
             XCTAssertTrue(VCurrentUser.isVIPSubscriber?.boolValue)
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
+        waitForExpectationsWithTimeout(1.0, handler: nil)
     }
     
     func testSubscribeError() {
@@ -45,7 +45,7 @@ class VIPPurchasingTests: BasePersistentStoreTestCase {
             XCTAssertFalse(isVIPSubscriber.boolValue)
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
+        waitForExpectationsWithTimeout(1.0, handler: nil)
     }
     
     func testRestoreSuccess() {
@@ -58,7 +58,7 @@ class VIPPurchasingTests: BasePersistentStoreTestCase {
             XCTAssert(VCurrentUser.isVIPSubscriber.boolValue)
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
+        waitForExpectationsWithTimeout(1.0, handler: nil)
     }
     
     func testRestoreError() {
@@ -71,6 +71,6 @@ class VIPPurchasingTests: BasePersistentStoreTestCase {
             XCTAssertEqual(operation.error, expectedError)
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
+        waitForExpectationsWithTimeout(1.0, handler: nil)
     }
 }

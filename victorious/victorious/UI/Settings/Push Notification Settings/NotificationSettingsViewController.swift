@@ -116,20 +116,24 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
     func loadSettings() {
         settings = nil
         startSpinner()
-        let notificationPreferencesOperation = DevicePreferencesOperation()
-        notificationPreferencesOperation.queue() { [weak self] results, error, cancelled in
+        
+        RequestOperation(request: DevicePreferencesRequest()).queue { [weak self] result in
             guard let strongSelf = self else {
                 return
             }
             
             strongSelf.stopSpinner()
-            guard error == nil, let mainQueueSettings = notificationPreferencesOperation.mainQueueSettings else {
-                strongSelf.settings = nil
-                strongSelf.stateManager?.errorDidOccur(error)
-
-                return
+            
+            switch result {
+                case .success(let preferences):
+                    var settings = NotificationSettings()
+                    settings.populate(fromSourceModel: preferences)
+                    strongSelf.settings = settings
+                
+                case .failure(_), .cancelled:
+                    strongSelf.settings = nil
+                    strongSelf.stateManager?.errorDidOccur(result.error as? NSError)
             }
-            strongSelf.settings = mainQueueSettings
         }
     }
     
@@ -138,16 +142,17 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
             return
         }
         
-        let notificationUpdateOperation = DevicePreferencesOperation(newPreferences: settings.networkPreferences)
-        
-        notificationUpdateOperation.queue() { [weak navigationController] results, error, cancelled in
-            if let _ = error where navigationController != nil {
-                let title = NSLocalizedString("ErrorPushNotificationsNotSaved", comment: "" )
-                let message = NSLocalizedString("PleaseTryAgainLater", comment: "" )
-
-                let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-                alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .Cancel, handler: nil))
-                navigationController?.presentViewController(alertController, animated: true, completion: nil)
+        RequestOperation(request: DevicePreferencesRequest(preferences: settings.networkPreferences)).queue { [weak self] result in
+            switch result {
+                case .success(_), .cancelled:
+                    break
+                
+                case .failure(_):
+                    let title = NSLocalizedString("ErrorPushNotificationsNotSaved", comment: "")
+                    let message = NSLocalizedString("PleaseTryAgainLater", comment: "")
+                    let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+                    alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .Cancel, handler: nil))
+                    self?.navigationController?.presentViewController(alertController, animated: true, completion: nil)
             }
         }
     }

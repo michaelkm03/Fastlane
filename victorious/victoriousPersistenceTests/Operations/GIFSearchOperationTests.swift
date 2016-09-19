@@ -10,20 +10,18 @@ import XCTest
 import VictoriousIOSSDK
 @testable import victorious
 
-class GIFSearchOperationTests: BaseFetcherOperationTestCase {
-
+class GIFSearchOperationTests: XCTestCase {
     func testEmptyResult() {
         let operation = GIFSearchOperation(searchTerm: "fun")
-        operation.persistentStore = testStore
         
-        testRequestExecutor = TestRequestExecutor(result: [GIFSearchResult]())
+        let testRequestExecutor = TestRequestExecutor(result: [GIFSearchResult]())
         operation.requestExecutor = testRequestExecutor
         
         let expectation = expectationWithDescription("GIFSearchOperation")
-        operation.queue() { results, error, cancelled in
+        operation.queue { result in
             expectation.fulfill()
             
-            if let searchResults = results {
+            if let searchResults = result.output {
                 XCTAssertTrue( searchResults.isEmpty)
                 XCTAssertNil( operation.next() )
                 XCTAssertNil( operation.prev() )
@@ -31,7 +29,7 @@ class GIFSearchOperationTests: BaseFetcherOperationTestCase {
                 XCTFail("operation.reesults should not be nil")
             }
         }
-        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
+        waitForExpectationsWithTimeout(1.0, handler: nil)
     }
 
     func testValidResult() {
@@ -46,16 +44,15 @@ class GIFSearchOperationTests: BaseFetcherOperationTestCase {
         let result: GIFSearchRequest.ResultType = [ GIFSearchResult(json: mockJSON)! ]
         
         let operation = GIFSearchOperation(searchTerm: "fun")
-        operation.persistentStore = testStore
         
-        testRequestExecutor = TestRequestExecutor(result: result)
+        let testRequestExecutor = TestRequestExecutor(result: result)
         operation.requestExecutor = testRequestExecutor
         
         let expectation = expectationWithDescription("GIFSearchOperation")
-        operation.queue() { results, error, cancelled in
+        operation.queue { result in
             expectation.fulfill()
-            XCTAssertNil(error)
-            if let searchResults = results as? [GIFSearchResultObject] where !searchResults.isEmpty {
+            XCTAssertNil(result.error)
+            if let searchResults = result.output as? [GIFSearchResultObject] where !searchResults.isEmpty {
                 XCTAssertEqual( searchResults.count, 1)
                 XCTAssertEqual( searchResults[0].remoteID, "1001" )
                 XCTAssertNotNil( operation.next() )
@@ -64,23 +61,22 @@ class GIFSearchOperationTests: BaseFetcherOperationTestCase {
                 XCTFail("operation.reesults should not be nil or empty.")
             }
         }
-        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
+        waitForExpectationsWithTimeout(1.0, handler: nil)
     }
 
     func testOnError() {
         let expectedError = NSError(domain: "test", code: 1, userInfo: nil)
         
         let operation = GIFSearchOperation(searchTerm: "fun")
-        operation.persistentStore = testStore
         
-        testRequestExecutor = TestRequestExecutor(error: expectedError)
+        let testRequestExecutor = TestRequestExecutor(error: expectedError)
         operation.requestExecutor = testRequestExecutor
         
         let expectation = expectationWithDescription("GIFSearchOperation")
-        operation.queue() { results, error, cancelled in
+        operation.queue { result in
             expectation.fulfill()
-            XCTAssertEqual( error, expectedError )
+            XCTAssertEqual(result.error as? NSError, expectedError)
         }
-        waitForExpectationsWithTimeout(expectationThreshold, handler: nil)
+        waitForExpectationsWithTimeout(1.0, handler: nil)
     }
 }

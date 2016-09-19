@@ -72,7 +72,7 @@ enum DeeplinkDestination: Equatable {
     /// - note:
     /// In mose cases, we want to fetch the content after routing because backend may send us lightweight content in many contexts, e.g. in grid stream or chat feed.
     /// However, when transitioning from a stage content, we don't want to fetch again because we want to keep the video playback in sync.
-    init?(content: ContentModel, forceFetch: Bool = true) {
+    init?(content: Content, forceFetch: Bool = true) {
         switch content.type {
             case .image, .video, .gif, .text:
                 self = .closeUp(contentWrapper: .content(content: content, forceFetch: forceFetch))
@@ -108,7 +108,7 @@ func ==(lhs: DeeplinkDestination, rhs: DeeplinkDestination) -> Bool {
 /// This is needed because we could either pass a content object or content ID to close up view.
 /// If we pass a content object, it will be shown directly. While if we pass a content ID, it'll fetch the content from network.
 enum CloseUpContentWrapper: Equatable {
-    case content(content: ContentModel, forceFetch: Bool)
+    case content(content: Content, forceFetch: Bool)
     case contentID(id: Content.ID)
 }
 

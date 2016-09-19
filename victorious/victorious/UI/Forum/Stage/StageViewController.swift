@@ -29,6 +29,10 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         return self.view.bounds.width / Constants.defaultAspectRatio
     }()
 
+    private var stageContext: DeeplinkContext {
+        return DeeplinkContext(value: dependencyManager.context)
+    }
+
     private var mediaContentView: MediaContentView?
 
     private var captionBarViewController: CaptionBarViewController? {
@@ -269,7 +273,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         }
         
         if let content = currentStageContent?.content {
-            trackView(.cellView, showingContent: content)
+            trackView(.cellView, showingContent: content, parameters: [:])
         }
         
         guard !visible else {
@@ -298,7 +302,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     func didTap(on user: UserModel) {
         let router = Router(originViewController: self, dependencyManager: dependencyManager)
         let destination = DeeplinkDestination(userID: user.id)
-        router.navigate(to: destination)
+        router.navigate(to: destination, from: stageContext)
     }
 
     // MARK: - MediaContentViewDelegate
@@ -348,7 +352,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         
         let router = Router(originViewController: self, dependencyManager: dependencyManager)
         let destination = DeeplinkDestination(content: content, forceFetch: false)
-        router.navigate(to: destination)
+        router.navigate(to: destination, from: stageContext)
     }
 
     // MARK: - CaptionBarViewControllerDelegate
@@ -356,7 +360,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     func captionBarViewController(captionBarViewController: CaptionBarViewController, didTapOnUser user: UserModel) {
         let router = Router(originViewController: self, dependencyManager: dependencyManager)
         let destination = DeeplinkDestination(userID: user.id)
-        router.navigate(to: destination)
+        router.navigate(to: destination, from: stageContext)
     }
     
     func captionBarViewController(captionBarViewController: CaptionBarViewController, wantsUpdateToContentHeight height: CGFloat) {
@@ -377,9 +381,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     // MARK: - Content Cell Tracker 
     
     var sessionParameters: [NSObject: AnyObject] {
-        // FUTURE: This should be returning "VIP_STAGE" or "MAIN_STAGE" depending on which stage this is, but we don't
-        // have the infrastructure to do that easily right now.
-        return [VTrackingKeyParentContentId: dependencyManager.stageType]
+        return [VTrackingKeyParentContentId: dependencyManager.context]
     }
 }
 
@@ -387,8 +389,9 @@ private extension VDependencyManager {
     var captionBarDependency: VDependencyManager? {
         return childDependencyForKey("captionBar")
     }
-    
-    var stageType: String {
-        return stringForKey("type") ?? "STAGE"
+
+    /// STAGE has historically been used to track stage content before there was main_stage, vip_stage. Leaving this in until vip stage has been released, then it should be revisited.
+    var context: String {
+        return stringForKey("context") ?? "STAGE"
     }
 }

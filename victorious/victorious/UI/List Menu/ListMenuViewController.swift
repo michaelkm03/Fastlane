@@ -11,6 +11,7 @@ import UIKit
 struct ListMenuSelectedItem {
     let streamAPIPath: APIPath
     let title: String?
+    let context: DeeplinkContext?
     let trackingURLs: [String]
 }
 
@@ -92,8 +93,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         
         // Had to trace down the inner navigation controller because List Menu has no idea where it is - and it doesn't have navigation stack either.
         let router = Router(originViewController: scaffold.mainNavigationController, dependencyManager: dependencyManager)
-        
-        router.navigate(to: destination)
+        router.navigate(to: destination, from: nil)
         
         // This notification closes the side view controller
         NSNotificationCenter.defaultCenter().postNotificationName(
@@ -105,11 +105,12 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     
     private func selectCommunity(atIndex index: Int) {
         let item = collectionViewDataSource.communityDataSource.visibleItems[index]
-        
+        let context = DeeplinkContext(value: item.name)
         // Index 0 should correspond to the home feed, so we broadcast a nil path to denote an unfiltered feed.
         postListMenuSelection(index == 0 ? nil : ListMenuSelectedItem(
             streamAPIPath: item.streamAPIPath,
             title: item.title,
+            context: context,
             trackingURLs: item.trackingURLs
         ))
     }
@@ -118,15 +119,15 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         let item = collectionViewDataSource.hashtagDataSource.visibleItems[index]
         var apiPath = collectionViewDataSource.hashtagDataSource.hashtagStreamAPIPath
         apiPath.macroReplacements["%%HASHTAG%%"] = item.tag
-        
+        let context = DeeplinkContext(value: DeeplinkContext.hashTagFeed, subContext: "#\(item.tag)")
         let selectedTagItem = ListMenuSelectedItem(
             streamAPIPath: apiPath,
             title: "#\(item.tag)",
+            context: context,
             trackingURLs: collectionViewDataSource.hashtagDataSource.hashtagStreamTrackingURLs.map {
                 VSDKURLMacroReplacement().urlByReplacingMacrosFromDictionary(["%%HASHTAG%%": item.tag], inURLString: $0)
             }
         )
-        
         postListMenuSelection(selectedTagItem)
     }
     

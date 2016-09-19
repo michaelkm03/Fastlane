@@ -13,9 +13,11 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager.networkResources ?? dependencyManager
         
-        dataSource = TimePaginatedDataSource(apiPath: self.dependencyManager.mainFeedAPIPath) {
-            ContentFeedOperation(url: $0)
-        }
+        dataSource = TimePaginatedDataSource(
+            apiPath: self.dependencyManager.mainFeedAPIPath,
+            createOperation: { ContentFeedOperation(apiPath: $0) },
+            processOutput: { $0.contents }
+        )
         
         super.init()
         
@@ -33,7 +35,7 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     
     // MARK: - Data source
     
-    let dataSource: TimePaginatedDataSource<ContentModel, ContentFeedOperation>
+    let dataSource: TimePaginatedDataSource<Content, ContentFeedOperation>
     
     private var filteredStreamAPIPath: APIPath? {
         didSet {
@@ -77,18 +79,27 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     
     /// Loads a page of content with the given `loadingType`.
     private func loadContent(loadingType: PaginatedLoadingType) {
-        let itemsWereLoaded = dataSource.loadItems(loadingType) { [weak self] contents, stageEvent, error in
+        let itemsWereLoaded = dataSource.loadItems(loadingType) { [weak self] result in
             guard let strongSelf = self else {
                 return
             }
             
-            strongSelf.broadcast(.handleContent(contents.reverse(), loadingType))
-            
-            if let stageEvent = stageEvent {
-                strongSelf.broadcast(stageEvent)
+            switch result {
+                case .success(let feedResult):
+                    strongSelf.broadcast(.handleContent(feedResult.contents.reverse(), loadingType))
+                    
+                    if let refreshStage = feedResult.refreshStage {
+                        strongSelf.broadcast(.refreshStage(refreshStage))
+                    }
+                    else {
+                        strongSelf.broadcast(.closeStage(.main))
+                    }
+                    
+                    strongSelf.broadcast(.setLoadingContent(false, loadingType))
+                
+                case .failure(_), .cancelled:
+                    break
             }
-            
-            self?.broadcast(.setLoadingContent(false, loadingType))
         }
         
         if itemsWereLoaded {

@@ -11,17 +11,17 @@ import XCTest
 
 class CreatorListRequestTests: XCTestCase {
     
-    private let urlFromTemplate = "https://vapi-dev.getvictorious.com/v1/user/owners/"
+    private let apiPathFromTemplate = APIPath(templatePath: "https://vapi-dev.getvictorious.com/v1/user/owners/")
     
     func testInitialization() {
-        let request = CreatorListRequest(urlString: urlFromTemplate)
+        let request = CreatorListRequest(apiPath: apiPathFromTemplate)
         XCTAssertNotNil(request)
         
         let expectedURLString = "https://vapi-dev.getvictorious.com/v1/user/owners/"
         let expectedURL = NSURL(string: expectedURLString)!
         
-        XCTAssertEqual(expectedURL, request.urlRequest.URL)
-        XCTAssertEqual(expectedURL.baseURL, request.baseURL)
+        XCTAssertEqual(expectedURL, request?.urlRequest.URL)
+        XCTAssertEqual(expectedURL.baseURL, request?.baseURL)
     }
     
     func testResponseParsing() {
@@ -32,7 +32,7 @@ class CreatorListRequestTests: XCTestCase {
         }
         
         do {
-            let request = CreatorListRequest(urlString: urlFromTemplate)
+            let request = CreatorListRequest(apiPath: apiPathFromTemplate)!
             let results = try request.parseResponse(NSURLResponse(), toRequest: request.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             
             XCTAssertEqual(results.count, 3)

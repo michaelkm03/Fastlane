@@ -551,13 +551,6 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         {
             [self.delegate videoPlayerDidFinishFirstQuartile:self];
         }
-        if ( self.isTrackingEnabled )
-        {
-            NSDictionary *params = @{ VTrackingKeyTimeCurrent : @( self.currentTimeMilliseconds ),
-                                      VTrackingKeyUrls : self.trackingData.videoComplete25,
-                                      VTrackingKeyStreamId : self.streamID };
-            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidComplete25 parameters:params];
-        }
         self.finishedFirstQuartile = YES;
     }
     if (!self.finishedMidpoint && percentElapsed >= 0.5f)
@@ -565,13 +558,6 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         if ([self.delegate respondsToSelector:@selector(videoPlayerDidReachMidpoint:)])
         {
             [self.delegate videoPlayerDidReachMidpoint:self];
-        }
-        if ( self.isTrackingEnabled )
-        {
-            NSDictionary *params = @{ VTrackingKeyTimeCurrent : @( self.currentTimeMilliseconds ),
-                                      VTrackingKeyUrls : self.trackingData.videoComplete50,
-                                      VTrackingKeyStreamId : self.streamID };
-            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidComplete50 parameters:params];
         }
         self.finishedMidpoint = YES;
     }
@@ -581,13 +567,6 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
         {
             [self.delegate videoPlayerDidFinishThirdQuartile:self];
         }
-        if ( self.isTrackingEnabled )
-        {
-            NSDictionary *params = @{ VTrackingKeyTimeCurrent : @( self.currentTimeMilliseconds ),
-                                      VTrackingKeyUrls : self.trackingData.videoComplete75,
-                                      VTrackingKeyStreamId : self.streamID };
-            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidComplete75 parameters:params];
-        }
         self.finishedThirdQuartile = YES;
     }
     
@@ -595,13 +574,6 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     // Tracking the final quartile for videos without composition-based looping occurrs in `playerItemDidPlayToEndTime`:
     if ( !self.shouldShowToolbar && !self.finishedFourthQuartile && percentElapsed >= 0.98f)
     {
-        if ( self.isTrackingEnabled )
-        {
-            NSDictionary *params = @{ VTrackingKeyTimeCurrent : @( self.currentTimeMilliseconds ),
-                                      VTrackingKeyUrls : self.trackingData.videoComplete100,
-                                      VTrackingKeyStreamId : self.streamID };
-            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidComplete100 parameters:params];
-        }
         self.finishedFourthQuartile = YES;
     }
     
@@ -813,22 +785,6 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 
 - (void)didCompleteTouchSliderInteraction
 {
-    CMTime currentTime = self.player.currentTime;
-    
-    if ( CMTIME_IS_INDEFINITE(currentTime) || CMTIME_IS_INVALID(self.sliderTouchInteractionStartTime) )
-    {
-        return;
-    }
-    
-    if ( self.isTrackingEnabled && self.shouldShowToolbar )
-    {
-        NSDictionary *params = @{ VTrackingKeyTimeCurrent : @( self.currentTimeMilliseconds ),
-                                  VTrackingKeyFromTime : @( CMTimeGetSeconds( self.sliderTouchInteractionStartTime ) ),
-                                  VTrackingKeyToTime : @( CMTimeGetSeconds( currentTime) ),
-                                  VTrackingKeyUrls : self.trackingData.videoSkip,
-                                  VTrackingKeyStreamId : self.streamID };
-        [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidSkip parameters:params];
-    }
 }
 
 #pragma mark - NSNotification handlers
@@ -863,14 +819,6 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
     
     if (!self.finishedFourthQuartile )
     {
-        if ( self.isTrackingEnabled )
-        {
-            NSDictionary *params = @{ VTrackingKeyTimeCurrent : @( self.currentTimeMilliseconds ),
-                                      VTrackingKeyUrls : self.trackingData.videoComplete100,
-                                      VTrackingKeyStreamId : self.streamID };
-            [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidComplete100 parameters:params];
-        }
-        
         self.finishedFourthQuartile = YES;
     }
 }
@@ -1023,22 +971,6 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
             [self notifyDelegateReadyToPlayIfReallyReady];
         }
     }
-    else if (object == self.player.currentItem && [keyPath isEqualToString:kPlaybackBufferEmpty])
-    {
-        if ( self.player.currentItem.playbackBufferEmpty )
-        {
-            if ( !self.isAtEnd )
-            {
-                if ( self.isTrackingEnabled )
-                {
-                    NSDictionary *params = @{ VTrackingKeyTimeCurrent : @( self.currentTimeMilliseconds ),
-                                              VTrackingKeyUrls : self.trackingData.videoStall,
-                                              VTrackingKeyStreamId : self.streamID };
-                    [[VTrackingManager sharedInstance] trackEvent:VTrackingEventVideoDidStall parameters:params];
-                }
-            }
-        }
-    }
     else if (object == self.player.currentItem && [keyPath isEqualToString:kPlaybackLikelyToKeepUp])
     {
         // This is where playback resumes after having been stalled.  Do nothing for now
@@ -1072,30 +1004,6 @@ static __weak VCVideoPlayerViewController *_currentPlayer = nil;
 }
 
 #pragma mark - Tracking
-
-- (BOOL)isTrackingEnabled
-{
-    return self.trackingData != nil;
-}
-
-- (void)enableTrackingWithTrackingItem:(VTracking *)trackingData streamID:(NSString *)streamID
-{
-    if ( trackingData == nil )
-    {
-        return;
-    }
-    
-    NSAssert( [trackingData isKindOfClass:[VTracking class]] && trackingData != nil,
-             @"Cannot track video events in VCVideoPlayerViewController because tracking data is missing or invalid." );
-    
-    self.trackingData = trackingData;
-    self.streamID = streamID ?: @"";
-}
-
-- (void)disableTracking
-{
-    self.trackingData = nil;
-}
 
 - (NSString *)streamID
 {

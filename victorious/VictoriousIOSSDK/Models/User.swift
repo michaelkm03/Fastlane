@@ -173,20 +173,20 @@ extension User {
 
 // MARK: - Upvote User
 
-private var upvotedUserIDs = Set<User.ID>()
+private var upvoteHistory: [User.ID: Bool] = [:]
 
 extension UserModel {
     public func upvote() {
-        upvotedUserIDs.insert(id)
+        upvoteHistory[id] = true
     }
     
     public func unUpvote() {
-        upvotedUserIDs.remove(id)
+        upvoteHistory[id] = false
     }
     
     public var isUpvoted: Bool {
-        if upvotedUserIDs.contains(id) {
-            return true
+        if let record = upvoteHistory[id] {
+            return record
         }
         else {
             return isRemotelyFollowedByCurrentUser ?? false
@@ -196,20 +196,20 @@ extension UserModel {
 
 // MARK: - Block User
 
-private var blockedUserIDs = Set<User.ID>()
+private var blockHistory: [User.ID: Bool] = [:]
 
 extension UserModel {
     public func block() {
-        blockedUserIDs.insert(id)
+        blockHistory[id] = true
     }
     
     public func unblock() {
-        blockedUserIDs.remove(id)
+        blockHistory[id] = false
     }
     
     public var isBlocked: Bool {
-        if blockedUserIDs.contains(id) {
-            return true
+        if let record = blockHistory[id] {
+            return record
         }
         else {
             return isRemotelyBlockedByCurrentUser ?? false

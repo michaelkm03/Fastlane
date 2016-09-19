@@ -18,7 +18,7 @@ protocol TutorialNetworkDataSourceDelegate: class {
 class TutorialNetworkDataSource: NSObject, NetworkDataSource {
     private(set) var visibleItems: [ChatFeedContent] = []
     
-    private var queuedTutorialMessages: [ContentModel] = []
+    private var queuedTutorialMessages: [Content] = []
     
     private var timerManager: VTimerManager? = nil
     
@@ -31,15 +31,16 @@ class TutorialNetworkDataSource: NSObject, NetworkDataSource {
         
         super.init()
 
-        guard let urlString = dependencyManager.tutorialContentsEndpoint else {
+        guard
+            let apiPath = dependencyManager.tutorialContentsAPIPath,
+            let request = TutorialContentsRequest(apiPath: apiPath)
+        else {
             delegate?.didFinishFetchingAllItems()
             return
         }
         
-        let operation = TutorialContentsRemoteOperation(urlString: urlString)
-        operation.queue { [weak self] results, error, cancelled in
-            self?.queuedTutorialMessages = results?.flatMap { $0 as? ContentModel } ?? []
-            
+        RequestOperation(request: request).queue { [weak self] result in
+            self?.queuedTutorialMessages = result.output ?? []
             self?.dequeueTutorialMessage()
             self?.timerManager = VTimerManager.scheduledTimerManagerWithTimeInterval(3.0, target: self, selector: #selector(self?.dequeueTutorialMessage), userInfo: nil, repeats: true)
         }
@@ -62,7 +63,7 @@ class TutorialNetworkDataSource: NSObject, NetworkDataSource {
 }
 
 private extension VDependencyManager {
-    var tutorialContentsEndpoint: String? {
-        return stringForKey("tutorialMessagesEndpoint")
+    var tutorialContentsAPIPath: APIPath? {
+        return apiPathForKey("tutorialMessagesEndpoint")
     }
 }

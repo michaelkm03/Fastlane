@@ -205,8 +205,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         guard let scaffold = VRootViewController.sharedRootViewController()?.scaffold else {
             return
         }
-        
-        Router(originViewController: scaffold, dependencyManager: dependencyManager).navigate(to: .vipForum)
+        Router(originViewController: scaffold, dependencyManager: dependencyManager).navigate(to: .vipForum, from: DeeplinkContext(value: DeeplinkContext.userProfile))
     }
     
     private dynamic func toggleUpvote() {
@@ -242,10 +241,16 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
             originViewController: self,
             dependencyManager: dependencyManager
         )
-        confirm.before(toggleBlockedOperation)
-        confirm.queue()
-        toggleBlockedOperation.queue() { [weak self] _ in
-            self?.navigationController?.popViewControllerAnimated(true)
+        
+        confirm.queue() { result in
+            switch result {
+                case .success:
+                    toggleBlockedOperation.queue() { [weak self] _ in
+                        self?.navigationController?.popViewControllerAnimated(true)
+                }
+                case .failure, .cancelled:
+                    break
+            }
         }
     }
     
@@ -395,7 +400,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     private func fetchUser(withRemoteID remoteID: Int, shouldShowSpinner: Bool = true) {
         guard
             let apiPath = dependencyManager.networkResources?.userFetchAPIPath,
-            let userInfoOperation = UserInfoOperation(userID: remoteID, apiPath: apiPath)
+            let request = UserInfoRequest(apiPath: apiPath, userID: remoteID)
         else {
             return
         }
@@ -406,13 +411,23 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
             spinner.startAnimating()
         }
         
-        userInfoOperation.queue { [weak self] _ in
+        let operation = RequestOperation(request: request)
+        operation.queue { [weak self] result in
             guard let dependencyManager = self?.dependencyManager else {
                 return
             }
+            
             self?.spinner.stopAnimating()
             self?.spinner.removeFromSuperview()
-            self?.setUser(userInfoOperation.user, using: dependencyManager)
+            
+            switch result {
+                case .success(let user):
+                    self?.setUser(user, using: dependencyManager)
+                case .failure(let error):
+                    Log.warning("Failed to fetch user information with error: \(error)")
+                case .cancelled:
+                    break
+            }
         }
     }
     

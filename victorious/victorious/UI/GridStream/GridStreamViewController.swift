@@ -115,6 +115,8 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
             collectionView.insertSubview(refreshControl, atIndex: 0)
         }
         
+        scrollPaginator.tolerance += CollectionLoadingView.preferredHeight
+        
         scrollPaginator.loadItemsBelow = { [weak self] in
             self?.loadContent(.older)
         }
@@ -142,14 +144,15 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
             return
         }
         
-        dataSource.loadContent(for: collectionView, loadingType: loadingType) { [weak self] newItems, error in
+        dataSource.loadContent(for: collectionView, loadingType: loadingType) { [weak self] result in
             // Calling this method stops scrolling, so only do it if necessary.
             if self?.refreshControl.refreshing == true {
                 self?.refreshControl.endRefreshing()
             }
             
-            if error != nil {
-                (self?.navigationController ?? self)?.v_showErrorDefaultError()
+            switch result {
+                case .success(_): break
+                case .failure(_): (self?.navigationController ?? self)?.v_showErrorDefaultError()
             }
             
             self?.collectionView.collectionViewLayout.invalidateLayout()
@@ -201,7 +204,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     func collectionView(collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, atIndexPath indexPath: NSIndexPath) {
         if let loadingView = view as? CollectionLoadingView {
             loadingView.color = dependencyManager.refreshControlColor
-            loadingView.isLoading = true
+            loadingView.isLoading = dataSource.isLoading
         }
         else if elementKind == UICollectionElementKindSectionHeader {
             header?.headerDidAppear()
@@ -227,24 +230,34 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         let targetContent = dataSource.items[indexPath.row]
         
         let destination = DeeplinkDestination(content: targetContent)
-        router.navigate(to: destination)
+        let context: DeeplinkContext?
+        if header?.dynamicType == CloseUpView.self {
+            context = DeeplinkContext(value: DeeplinkContext.closeupView)
+        }
+        else if header?.dynamicType == VNewProfileHeaderView.self {
+            context = DeeplinkContext(value: DeeplinkContext.userProfile)
+        }
+        else {
+            context = nil
+        }
+        router.navigate(to: destination, from: context)
         header?.headerWillDisappear()
 
         guard let content = (collectionView.cellForItemAtIndexPath(indexPath) as? ContentCell)?.content else {
             return
         }
-        
-        trackView(.cellClick, showingContent: content)
+
+        trackView(.cellClick, showingContent: content, parameters: [:])
     }
-    
+
     // MARK: - UICollectionViewDelegate
     
     func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
         guard let content = (cell as? ContentCell)?.content else {
             return
         }
-        
-        trackView(.cellView, showingContent: content)
+
+        trackView(.cellView, showingContent: content, parameters: [:])
     }
     
     // MARK: - Tracking updating

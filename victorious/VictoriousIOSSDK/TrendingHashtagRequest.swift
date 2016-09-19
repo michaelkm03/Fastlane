@@ -11,12 +11,16 @@ import Foundation
 public struct TrendingHashtagRequest: RequestType {
     private let url: NSURL
     
-    public init(url: NSURL) {
+    public init?(apiPath: APIPath) {
+        guard let url = apiPath.url else {
+            return nil
+        }
+        
         self.url = url
     }
     
     public var urlRequest: NSURLRequest {
-        return NSURLRequest(URL:url)
+        return NSURLRequest(URL: url)
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [Hashtag] {

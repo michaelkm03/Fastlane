@@ -25,7 +25,7 @@ protocol Composer: class, ForumEventReceiver, ForumEventSender, ComposerAttachme
     
     func sendMessage(text text: String, currentUser: UserModel)
     
-    func sendMessage(asset asset: ContentMediaAsset, previewImage: UIImage, text: String?, currentUser: UserModel)
+    func sendMessage(asset asset: ContentMediaAsset, previewImage: UIImage, text: String?, currentUser: UserModel, isVIPOnly: Bool)
     
     func setComposerVisible(visible: Bool, animated: Bool)
 }
@@ -36,26 +36,17 @@ extension Composer {
         send(.sendContent(content))
     }
     
-    func sendMessage(asset asset: ContentMediaAsset, previewImage: UIImage, text: String?, currentUser: UserModel) {
+    func sendMessage(asset asset: ContentMediaAsset, previewImage: UIImage, text: String?, currentUser: UserModel, isVIPOnly: Bool) {
         let previewImageAsset = ImageAsset(image: previewImage)
         let content = Content(
             author: currentUser,
+            type: asset.contentType,
             text: text,
             assets: [asset],
             previewImages: [previewImageAsset],
-            type: asset.contentType
+            isVIPOnly: isVIPOnly
         )
         send(.sendContent(content))
-    }
-    
-    // MARK: - TrayDelegate
-    
-    func tray(tray: Tray, selectedItemWithPreviewImage previewImage: UIImage, mediaURL: NSURL) {
-        guard let currentUser = VCurrentUser.user else {
-            Log.warning("Tried to send item from tray with no logged in user")
-            return
-        }
-        sendMessage(asset: ContentMediaAsset.gif(remoteID: nil, url: mediaURL, source: nil, size: .zero), previewImage: previewImage, text: nil, currentUser: currentUser)
     }
 }
 

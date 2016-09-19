@@ -83,7 +83,7 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     
     // MARK: - Internal helpers
     
-    private func handleItems(newItems: [ContentModel], withLoadingType loadingType: PaginatedLoadingType) {
+    private func handleItems(newItems: [Content], withLoadingType loadingType: PaginatedLoadingType) {
         switch loadingType {
             case .newer:
                 let newItems = createNewItemsArray(newItems)
@@ -109,7 +109,7 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
                 delegate?.chatFeedDataSource(self, didLoadItems: newItems, loadingType: .refresh)
         }
     }
-    private func createNewItemsArray(contents: [ContentModel]) -> [ChatFeedContent] {
+    private func createNewItemsArray(contents: [Content]) -> [ChatFeedContent] {
         guard let width = delegate?.chatFeedItemWidth else {
             return []
         }

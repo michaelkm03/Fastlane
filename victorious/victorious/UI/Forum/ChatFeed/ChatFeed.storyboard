@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="paS-vU-3hQ">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="paS-vU-3hQ">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
@@ -27,7 +27,7 @@
                                 </collectionViewFlowLayout>
                                 <cells/>
                             </collectionView>
-                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o9c-Bd-nvE" userLabel="New Items Container">
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o9c-Bd-nvE" userLabel="New Items Container" customClass="VPassthroughContainerView">
                                 <rect key="frame" x="0.0" y="560" width="600" height="40"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PqY-xF-WCZ" customClass="VTextOnColorButton">
@@ -71,7 +71,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6CL-ip-iM4" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <customObject id="HjE-OH-UhY" customClass="NewItemsController" customModule="victorious" customModuleProvider="target">
                     <connections>
-                        <outlet property="container" destination="o9c-Bd-nvE" id="AN3-zh-Y3L"/>
+                        <outlet property="container" destination="o9c-Bd-nvE" id="kI6-rj-SBN"/>
                         <outlet property="newItemIndicator" destination="PqY-xF-WCZ" id="w9P-k2-tI5"/>
                     </connections>
                 </customObject>

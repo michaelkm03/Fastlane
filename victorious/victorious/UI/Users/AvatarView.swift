@@ -9,13 +9,20 @@
 import UIKit
 
 /// A preset configurable size for an `AvatarView`.
+/// Uses a smaller size for iPhone 1-5s, and SE sized devices
 enum AvatarViewSize {
     case small, large
     
     var value: CGSize {
         switch self {
             case .small: return CGSize(width: 30.0, height: 30.0)
-            case .large: return CGSize(width: 90.0, height: 90.0)
+            case .large:
+                switch UIScreen.mainScreen().bounds.width {
+                    case 320.0:
+                        return CGSize(width: 75.0, height: 75.0)
+                    default:
+                        return CGSize(width: 90.0, height: 90.0)
+                }
         }
     }
     

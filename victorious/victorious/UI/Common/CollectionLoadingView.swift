@@ -12,12 +12,6 @@ import UIKit
 /// displaying loading states during pagination.
 final class CollectionLoadingView: UICollectionReusableView {
     
-    // MARK: - Constants
-    
-    private struct Constants {
-        static let preferredHeight = CGFloat(70.0)
-    }
-    
     // MARK: - Initializing
     
     override init(frame: CGRect) {
@@ -85,8 +79,11 @@ final class CollectionLoadingView: UICollectionReusableView {
     
     // MARK: - Sizing
     
+    /// The height that the view prefers to be.
+    static var preferredHeight = CGFloat(70.0)
+    
     /// The size that the view prefers to be when displayed in a collection view with the given `bounds`.
     static func preferredSize(in bounds: CGRect) -> CGSize {
-        return CGSize(width: bounds.width, height: Constants.preferredHeight)
+        return CGSize(width: bounds.width, height: CollectionLoadingView.preferredHeight)
     }
 }

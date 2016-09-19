@@ -10,13 +10,8 @@ import VictoriousIOSSDK
 import XCTest
 
 class ContentUnupvoteRequestTests: XCTestCase {
-    func testBadRequest() {
-        let request = ContentUnupvoteRequest(contentID: "123", apiPath: APIPath(templatePath: "#$%^&"))
-        XCTAssertNil(request)
-    }
-    
     func testRequest() {
-        let request = ContentUnupvoteRequest(contentID: "123", apiPath: APIPath(templatePath: "www.google.com/%%CONTENT_ID%%"))
+        let request = ContentUnupvoteRequest(apiPath: APIPath(templatePath: "www.google.com/%%CONTENT_ID%%"), contentID: "123")
         XCTAssertEqual(request?.urlRequest.URL?.absoluteString, "www.google.com/123")
     }
 }
