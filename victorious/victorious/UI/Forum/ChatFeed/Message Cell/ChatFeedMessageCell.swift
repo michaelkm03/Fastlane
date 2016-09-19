@@ -14,6 +14,7 @@ protocol ChatFeedMessageCellDelegate: class {
     func messageCellDidSelectMedia(messageCell: ChatFeedMessageCell)
     func messageCellDidLongPressContent(messageCell: ChatFeedMessageCell)
     func messageCellDidSelectFailureButton(messageCell: ChatFeedMessageCell)
+    func messageCellDidSelectReplyButton(messageCell: ChatFeedMessageCell)
 }
 
 class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
@@ -153,6 +154,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     }
 
     private dynamic func didTapOnReplyButton(sender: UIButton) {
+        delegate?.messageCellDidSelectReplyButton(self)
     }
     
     // MARK: - Private helper methods

@@ -169,6 +169,21 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
     }
     
+    func append(text: String) {
+        guard !text.isEmpty else {
+            return
+        }
+        
+        if let currentText = textView.text where !currentText.isEmpty {
+            textView.text = currentText + " " + text + " "
+        }
+        else {
+            textView.text = text + " "
+        }
+        
+        textViewHasText = true
+    }
+    
     private var composerIsVisible = true
     
     func setComposerVisible(visible: Bool, animated: Bool) {

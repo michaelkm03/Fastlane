@@ -28,10 +28,11 @@ protocol ChatFeed: class, ForumEventSender, ForumEventReceiver {
 }
 
 protocol ChatFeedDelegate: class {
-    func chatFeed(chatFeed: ChatFeed, didSelectUserWithUserID userID: Int)
-    func chatFeed(chatFeed: ChatFeed, didSelectContent content: ChatFeedContent)
-    func chatFeed(chatFeed: ChatFeed, didLongPressContent content: ChatFeedContent)
-    func chatFeed(chatFeed: ChatFeed, didSelectFailureButtonForContent content: ChatFeedContent)
+    func chatFeed(chatFeed: ChatFeed, didSelectUserWithUserID userID: User.ID)
+    func chatFeed(chatFeed: ChatFeed, didSelect chatFeedContent: ChatFeedContent)
+    func chatFeed(chatFeed: ChatFeed, didLongPress chatFeedContent: ChatFeedContent)
+    func chatFeed(chatFeed: ChatFeed, didSelectFailureButtonFor chatFeedContent: ChatFeedContent)
+    func chatFeed(chatFeed: ChatFeed, didSelectReplyButtonFor chatFeedContent: ChatFeedContent)
     
     func chatFeed(chatFeed: ChatFeed, didScroll scrollView: UIScrollView)
     func chatFeed(chatFeed: ChatFeed, willBeginDragging scrollView: UIScrollView)
