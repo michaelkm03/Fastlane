@@ -84,7 +84,7 @@ extension ChatInterfaceDataSource {
     }
 }
 
-extension ContentModel {
+extension Content {
     var reuseIdentifier: String {
         if type.previewsAsVideo {
             return ChatFeedMessageCell.videoPreviewCellReuseIdentifier

@@ -307,6 +307,13 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         delegate?.chatFeed(self, didSelectReplyButtonFor: content)
     }
     
+    func messageCell(messageCell: ChatFeedMessageCell, didSelectLinkURL url: NSURL) {
+        Router(originViewController: self, dependencyManager: dependencyManager).navigate(
+            to: DeeplinkDestination(url: url),
+            from: nil
+        )
+    }
+    
     // MARK: - UIScrollViewDelegate
     
     var unstashingViaScrollingIsEnabled = true
