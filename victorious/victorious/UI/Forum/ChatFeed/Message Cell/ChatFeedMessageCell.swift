@@ -32,6 +32,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     static let topLabelXInset = CGFloat(4.0)
     static let bubbleSpacing = CGFloat(6.0)
     static let pendingContentAlpha = CGFloat(0.4)
+    static let likeViewSize = CGSize(width: 66.0, height: 66.0)
     
     // MARK: - Reuse identifiers
     
@@ -180,9 +181,6 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         replyButton.setImage(UIImage(named: "reply"), forState: .Normal)
         replyButton.setImage(UIImage(named: "reply_tap"), forState: .Highlighted)
         replyButton.setImage(UIImage(named: "reply_tap"), forState: .Selected)
-
-        // FUTURE: - Implemented by Community team
-        replyButton.hidden = true
     }
 
     private func populateData() {
