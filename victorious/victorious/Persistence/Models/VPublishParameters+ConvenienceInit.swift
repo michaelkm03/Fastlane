@@ -10,7 +10,7 @@ import Foundation
 
 extension VPublishParameters {
     
-    convenience init?(content: ContentModel) {
+    convenience init?(content: Content) {
         self.init()
         
         guard
