@@ -62,6 +62,8 @@ public struct ContentFeedResult {
 }
 
 public enum ContentFeedPayloadType {
+    /// Each content in the payload contains all the information about the content and its author
     case regular
+    /// Each content in the payload only contains the basic information to be displayed in a grid stream
     case lightweight
 }
