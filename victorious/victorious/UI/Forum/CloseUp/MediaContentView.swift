@@ -10,10 +10,13 @@ import UIKit
 
 protocol MediaContentViewDelegate: class {
     /// Tells the delegate that a particular content is loaded.
-    func mediaContentView(mediaContentView: MediaContentView, didFinishLoadingContent content: ContentModel)
+    func mediaContentView(mediaContentView: MediaContentView, didFinishLoadingContent content: Content)
 
     /// A callback that tells the delegate that the piece of content has finished playing.
-    func mediaContentView(mediaContentView: MediaContentView, didFinishPlaybackOfContent content: ContentModel)
+    func mediaContentView(mediaContentView: MediaContentView, didFinishPlaybackOfContent content: Content)
+    
+    /// A callback that tells the delegate that a URL has been selected from a link in the content's text.
+    func mediaContentView(mediaContentView: MediaContentView, didSelectLinkURL url: NSURL)
 }
 
 enum FillMode {
@@ -29,7 +32,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
 
     // MARK: - Public
 
-    let content: ContentModel
+    let content: Content
 
     weak var delegate: MediaContentViewDelegate?
 
@@ -58,8 +61,8 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         return UIImageView()
     }()
 
-    private lazy var textPostLabel: UILabel = {
-        let label = UILabel()
+    private lazy var textPostLabel: LinkLabel = {
+        let label = LinkLabel()
         label.textAlignment = Constants.textAlignment
         label.numberOfLines = Constants.maxLineCount
         label.adjustsFontSizeToFitWidth = true
@@ -75,6 +78,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         let singleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(onContentTap))
         singleTapRecognizer.numberOfTapsRequired = 1
         singleTapRecognizer.delegate = self
+        singleTapRecognizer.cancelsTouchesInView = false
         return singleTapRecognizer
     }()
 
@@ -88,7 +92,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
 
     /// Sets up the content view with a zero frame. Use this initializer if created from code.
     init(
-        content: ContentModel,
+        content: Content,
         dependencyManager: VDependencyManager,
         fillMode: FillMode,
         allowsVideoControls: Bool = false,
@@ -217,7 +221,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     
     // MARK: - Managing video
     
-    private func setUpVideoPlayer(for content: ContentModel) {
+    private func setUpVideoPlayer(for content: Content) {
         tearDownTextLabel()
         tearDownImageView()
         
@@ -251,6 +255,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         let textPostDependency = self.dependencyManager.textPostDependency
         textPostLabel.font = textPostDependency?.textPostFont ?? Constants.defaultTextFont
         textPostLabel.textColor = textPostDependency?.textPostColor ?? Constants.defaultTextColor
+        textPostLabel.tintColor = textPostDependency?.linkColor
         
         textPostLabel.hidden = true //Hide while we set up the view for the next post
 
@@ -259,9 +264,18 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         }
 
         imageView.sd_setImageWithURL(url) { [weak self] _ in
+            self?.textPostLabel.detectUserTags(for: self?.content) { [weak self] url in
+                guard let strongSelf = self else {
+                    return
+                }
+                
+                strongSelf.delegate?.mediaContentView(strongSelf, didSelectLinkURL: url)
+            }
+            
             guard let text = self?.content.text else {
                 return
             }
+            
             self?.textPostLabel.text = text
             self?.textPostLabel.hidden = false
             self?.imageView.hidden = false
@@ -330,6 +344,10 @@ private extension VDependencyManager {
     
     var textPostColor: UIColor? {
         return colorForKey("color.textpost")
+    }
+    
+    var linkColor: UIColor? {
+        return colorForKey("color.link")
     }
     
     var textPostBackgroundImageURL: NSURL? {

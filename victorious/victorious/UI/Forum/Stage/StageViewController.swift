@@ -154,7 +154,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
 
     // MARK: MediaContentView
 
-    func setupMediaContentView(for content: ContentModel) -> MediaContentView {
+    func setupMediaContentView(for content: Content) -> MediaContentView {
         let mediaContentView = MediaContentView(
             content: content,
             dependencyManager: dependencyManager,
@@ -165,7 +165,10 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
 
         mediaContentView.delegate = self
         mediaContentView.alpha = 0
-        mediaContentView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOnContent)))
+        
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapOnContent))
+        tapRecognizer.cancelsTouchesInView = false
+        mediaContentView.addGestureRecognizer(tapRecognizer)
 
         return mediaContentView
     }
@@ -177,7 +180,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         }
     }
 
-    private func newMediaContentView(for content: ContentModel) -> MediaContentView {
+    private func newMediaContentView(for content: Content) -> MediaContentView {
         let mediaContentView = setupMediaContentView(for: content)
         view.insertSubview(mediaContentView, aboveSubview: loadingIndicator)
         mediaContentView.translatesAutoresizingMaskIntoConstraints = false
@@ -210,7 +213,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
 
     // MARK: - Stage
     
-    func addCaptionContent(content: ContentModel) {
+    func addCaptionContent(content: Content) {
         guard let text = content.text, let author = content.author else {
             return
         }
@@ -307,7 +310,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
 
     // MARK: - MediaContentViewDelegate
 
-    func mediaContentView(mediaContentView: MediaContentView, didFinishLoadingContent content: ContentModel) {
+    func mediaContentView(mediaContentView: MediaContentView, didFinishLoadingContent content: Content) {
         guard isOnScreen else {
             return
         }
@@ -323,11 +326,18 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         loadingIndicator.stopAnimating()
     }
 
-    func mediaContentView(mediaContentView: MediaContentView, didFinishPlaybackOfContent content: ContentModel) {
+    func mediaContentView(mediaContentView: MediaContentView, didFinishPlaybackOfContent content: Content) {
         // When the playback of a video is done we want to hide the MCV.
         if content.type == .video {
             hideMediaContentView(mediaContentView, animated: true)
         }
+    }
+    
+    func mediaContentView(mediaContentView: MediaContentView, didSelectLinkURL url: NSURL) {
+        Router(originViewController: self, dependencyManager: dependencyManager).navigate(
+            to: DeeplinkDestination(url: url),
+            from: stageContext
+        )
     }
 
     // MARK: - StageShrinkingAnimatorDelegate

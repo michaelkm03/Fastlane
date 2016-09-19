@@ -18,7 +18,6 @@ class ContentTests: XCTestCase {
         }
         
         XCTAssertEqual(content.id, "1")
-        XCTAssertEqual(content.status, "public")
         XCTAssertEqual(content.text, "TEST_TITLE")
         XCTAssertTrue(content.hashtags.isEmpty)
         XCTAssertEqual(content.shareURL?.absoluteString, "SHARE_URL")

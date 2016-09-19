@@ -189,6 +189,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                 debugMenuHandler.setupCurrentDebugMenu(type, targetView: navigationController.navigationBar)
             }
         #endif
+        
+        BadgeCountManager.shared.fetchBadgeCount(for: .unreadNotifications)
     }
 
     override func viewDidAppear(animated: Bool) {

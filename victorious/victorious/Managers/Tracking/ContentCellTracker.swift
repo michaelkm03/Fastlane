@@ -11,7 +11,7 @@ import Foundation
 protocol ContentCellTracker {
     var sessionParameters: [NSObject : AnyObject] { get }
     
-    func trackView(trackingKey: ViewTrackingKey, showingContent content: ContentModel, parameters: [NSObject : AnyObject])
+    func trackView(trackingKey: ViewTrackingKey, showingContent content: Content, parameters: [NSObject : AnyObject])
 }
 
 extension ContentCellTracker {
@@ -19,7 +19,7 @@ extension ContentCellTracker {
         return VTrackingManager.sharedInstance()
     }
 
-    func trackView(trackingKey: ViewTrackingKey, showingContent content: ContentModel, parameters: [NSObject : AnyObject] = [:]) {
+    func trackView(trackingKey: ViewTrackingKey, showingContent content: Content, parameters: [NSObject : AnyObject] = [:]) {
         guard
             let tracking = content.tracking,
             let trackingStrings = tracking.trackingURLsForKey(trackingKey),
