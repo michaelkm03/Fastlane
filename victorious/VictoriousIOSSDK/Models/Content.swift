@@ -174,12 +174,13 @@ public class Content: ContentModel {
             let id = json["id"].string,
             let typeString = json["type"].string,
             let type = ContentType(rawValue: typeString),
-            let previewType = json["preview"]["type"].string,
-            let author = User(json: viewedContentJSON["author"])
+            let previewType = json["preview"]["type"].string
         else {
             NSLog("Required field missing in content json -> \(viewedContentJSON)")
             return nil
         }
+        
+        self.author = User(json: viewedContentJSON["author"])
         
         self.isRemotelyLikedByCurrentUser = viewedContentJSON["viewer_engagements"]["is_liking"].bool ?? false
         self.isVIPOnly = json["is_vip"].bool ?? false
@@ -199,7 +200,6 @@ public class Content: ContentModel {
             self.text = json["title"].string
         }
         
-        self.author = author
         self.linkedURL = NSURL(string: json[typeString]["data"].stringValue)
         
         self.previewImages = (json["preview"][previewType]["assets"].array ?? []).flatMap { ImageAsset(json: $0) }
@@ -245,6 +245,37 @@ public class Content: ContentModel {
         guard text != nil || assets.count > 0 else {
             return nil
         }
+    }
+    
+    public init?(lightweightJSON json: JSON) {
+        guard
+            let id = json["id"].string,
+            let typeString = json["type"].string,
+            let type = ContentType(rawValue: typeString),
+            let previewType = json["preview"]["type"].string
+        else {
+            NSLog("Required field missing in content json -> \(json)")
+            return nil
+        }
+        self.id = id
+        self.type = type
+        self.isVIPOnly = json["is_vip"].bool ?? false
+        self.paginationTimestamp = Timestamp(apiString: json["pagination_timestamp"].stringValue) ?? Timestamp()
+        
+        self.previewImages = (json["preview"][previewType]["assets"].array ?? []).flatMap { ImageAsset(json: $0) }
+        
+        self.tracking = Tracking(json: json["tracking"] )
+        
+        self.author = nil
+        self.postedAt = nil
+        self.createdAt = Timestamp()
+        self.text = nil
+        self.status = nil
+        self.hashtags = []
+        self.shareURL = nil
+        self.linkedURL = nil
+        self.assets  = []
+        isRemotelyLikedByCurrentUser = false
     }
     
     public init(
