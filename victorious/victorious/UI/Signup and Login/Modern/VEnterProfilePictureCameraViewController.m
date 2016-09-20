@@ -13,6 +13,7 @@
 @import AudioToolbox;
 
 #import "VLoginFlowControllerDelegate.h"
+#import "victorious-Swift.h"
 
 // Dependencies
 #import "VDependencyManager.h"

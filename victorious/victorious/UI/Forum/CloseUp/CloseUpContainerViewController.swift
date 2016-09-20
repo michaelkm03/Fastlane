@@ -119,13 +119,13 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        dependencyManager.trackViewWillAppear(self)
+        dependencyManager.trackViewWillAppear(for: self)
         trackContentView()
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        dependencyManager.trackViewWillDisappear(self)
+        dependencyManager.trackViewWillDisappear(for: self)
         closeUpView.headerWillDisappear()
     }
     

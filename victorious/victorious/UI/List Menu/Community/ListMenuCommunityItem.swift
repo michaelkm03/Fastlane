@@ -14,26 +14,26 @@ import Foundation
 ///     title - title of the stream (navigation bar title)
 ///     name - type of stream, eg: main.stream
 ///     streamAPIPath - API path for the stream
-///     trackingURLs - array of urls used for tracking calls
+///     trackingURLs - array of API paths used for tracking calls
 
 struct ListMenuCommunityItem {
     let title: String
     let name: String
     let streamAPIPath: APIPath
-    let trackingURLs: [String]
+    let trackingAPIPaths: [APIPath]
     
     init?(_ dependencyManager: VDependencyManager) {
         guard
             let title = dependencyManager.stringForKey("title"),
             let name = dependencyManager.stringForKey("name"),
             let streamAPIPath = dependencyManager.apiPathForKey("streamURL"),
-            let trackingURLs = dependencyManager.trackingURLsForKey("view") as? [String]
+            let trackingAPIPaths = dependencyManager.trackingAPIPaths(forEventKey: "view")
         else {
             return nil
         }
         self.title = title
         self.name = name
         self.streamAPIPath = streamAPIPath
-        self.trackingURLs = trackingURLs
+        self.trackingAPIPaths = trackingAPIPaths
     }
 }

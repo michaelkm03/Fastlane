@@ -181,7 +181,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             navigationItem.titleView = navBarTitleView
         }
         navBarTitleView?.sizeToFit()
-        dependencyManager.trackViewWillAppear(self)
+        dependencyManager.trackViewWillAppear(for: self)
         #if V_ENABLE_WEBSOCKET_DEBUG_MENU
             if let webSocketForumNetworkSource = forumNetworkSource as? WebSocketForumNetworkSource,
                 let navigationController = navigationController {
@@ -204,7 +204,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        dependencyManager.trackViewWillDisappear(self)
+        dependencyManager.trackViewWillDisappear(for: self)
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {

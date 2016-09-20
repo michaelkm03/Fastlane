@@ -19,6 +19,7 @@
 #import "UIColor+VBrightness.h"
 #import "VDependencyManager+VTracking.h"
 #import "VInlineValidationView.h"
+#import "victorious-Swift.h"
 
 static NSString * const kPromptKey = @"prompt";
 static NSString * const kKeyboardStyleKey = @"keyboardStyle";

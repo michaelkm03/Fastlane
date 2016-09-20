@@ -7,6 +7,7 @@
 //
 
 #import "VModernEnterNameViewController.h"
+#import "victorious-Swift.h"
 
 // Dependencies
 #import "VDependencyManager.h"
