@@ -108,18 +108,22 @@ extension ChatFeedMessageCell {
             cell.failureButton.frame = .zero
         }
 
-        // Like button layout:        
-        if alignment == .left, let likeView = cell.likeView, let baseFrame = bubbleFrames.last {
-            likeView.hidden = false
-            
-            likeView.frame = CGRect(
-                x: baseFrame.maxX - (likeViewSize.width / 2),
-                y: baseFrame.maxY - (likeViewSize.height / 2),
-                width: likeViewSize.width,
-                height: likeViewSize.height
-            )
-            
-            cell.contentView.bringSubviewToFront(likeView)
+        // Like button layout:
+
+        if alignment == .left {
+            cell.likeView?.hidden = false
+            if let likeView = cell.likeView {
+                if let baseFrame = bubbleFrames.last {
+                    likeView.frame = CGRect(
+                        x: baseFrame.maxX - (Constants.likeViewWidth / 2),
+                        y: baseFrame.maxY - (Constants.likeViewHeight / 2),
+                        width: Constants.likeViewWidth,
+                        height: Constants.likeViewHeight
+                    )
+
+                    cell.contentView.bringSubviewToFront(likeView)
+                }
+            }
         }
         else {
             cell.likeView?.hidden = true
@@ -127,18 +131,17 @@ extension ChatFeedMessageCell {
 
         // Reply button layout:
 
-        if cell.showsReplyButton && alignment == .left, let topBubbleFrame = bubbleFrames.first, let bottomBubbleFrame = bubbleFrames.last {
-            cell.replyButton.hidden = false
-            
-            cell.replyButton.frame = CGRect(
-                x: cell.bounds.maxX - replyButtonSize.width - horizontalSpacing,
-                y: topBubbleFrame.minY + (bottomBubbleFrame.maxY - topBubbleFrame.minY - replyButtonSize.height) / 2.0,
-                width: replyButtonSize.width,
-                height: replyButtonSize.height
-            )
-        }
-        else {
-            cell.replyButton.hidden = true
+        if alignment == .left {
+            if let baseFrame = bubbleFrames.last {
+                let replyButtonOriginX = cell.bounds.size.width - Constants.replyButtonWidth
+
+                cell.replyButton.frame = CGRect(
+                    x: replyButtonOriginX,
+                    y: baseFrame.center.y - Constants.replyButtonHeight / 2,
+                    width: Constants.replyButtonWidth,
+                    height: Constants.replyButtonHeight
+                )
+            }
         }
     }
 
