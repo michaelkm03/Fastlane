@@ -94,6 +94,9 @@ class EditProfileViewController: UIViewController {
         navigationItem.leftBarButtonItem?.enabled = false
         navigationItem.rightBarButtonItem?.enabled = false
         editingEnabled = false
+        
+//        UsernameAvailabilityOperation(apiPath: APIPath(, usernameToCheck: <#T##String#>)
+        
         AccountUpdateOperation(profileUpdate: profileUpdate)?.queue() { result in
             
             switch result {
