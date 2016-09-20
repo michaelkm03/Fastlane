@@ -49,7 +49,7 @@ class NewItemsController: NSObject {
     
     weak var delegate: NewItemsControllerDelegate?
     
-    @IBOutlet private weak var container: UIView!
+    @IBOutlet private weak var container: VPassthroughContainerView!
     @IBOutlet private weak var newItemIndicator: TextOnColorButton!
     
     func show(animated animated: Bool = true) {

@@ -14,6 +14,7 @@ protocol ChatFeedMessageCellDelegate: class {
     func messageCellDidSelectMedia(messageCell: ChatFeedMessageCell)
     func messageCellDidLongPressContent(messageCell: ChatFeedMessageCell)
     func messageCellDidSelectFailureButton(messageCell: ChatFeedMessageCell)
+    func messageCell(messageCell: ChatFeedMessageCell, didSelectLinkURL url: NSURL)
 }
 
 class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
@@ -49,6 +50,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         failureButton.addTarget(self, action: #selector(didTapOnFailureButton), forControlEvents: .TouchUpInside)
         captionLabel.numberOfLines = 0
         captionLabel.userInteractionEnabled = false
+        replyButton.addTarget(self, action: #selector(didTapOnReplyButton), forControlEvents: .TouchUpInside)
         
         contentView.addSubview(usernameLabel)
         contentView.addSubview(timestampLabel)
@@ -56,7 +58,8 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         contentView.addSubview(avatarTapTarget)
         contentView.addSubview(captionBubbleView)
         contentView.addSubview(failureButton)
-        
+        contentView.addSubview(replyButton)
+
         captionBubbleView.contentView.addSubview(captionLabel)
     }
     
@@ -80,25 +83,20 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     
     var chatFeedContent: ChatFeedContent? {
         didSet {
-            // Updating the content is expensive, so we try to bail if we're setting the same content as before.
-            // However, chat message contents don't have IDs, so we can't do this if the ID is nil.
-            let oldID = oldValue?.content.id
-            let newID = chatFeedContent?.content.id
-            
-            guard newID != oldID || newID == nil else {
-                return
-            }
-            
             populateData()
             setNeedsLayout()
         }
     }
     
-    /// Provides a private shorthand accessor within the implementation because we mostly deal with the ContentModel
-    private var content: ContentModel? {
+    /// Provides a private shorthand accessor within the implementation because we mostly deal with the Content
+    private var content: Content? {
         return chatFeedContent?.content
     }
-    
+
+    // MARK: - Formatter
+
+    let largeNumberFormatter = VLargeNumberFormatter()
+
     // MARK: - Subviews
     
     let usernameLabel = UILabel()
@@ -108,14 +106,16 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     let avatarTapTarget = UIView()
     
     let captionBubbleView = BubbleView()
-    let captionLabel = UILabel()
-    
+    let captionLabel = LinkLabel()
     var previewBubbleView: BubbleView?
     var previewView: UIView?
-    
+
     let failureButton = UIButton(type: .Custom)
-    
+
     let spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+
+    var likeView: LikeView?
+    let replyButton = UIButton()
     
     // MARK: - Layout
     
@@ -146,30 +146,69 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     private dynamic func didTapOnFailureButton(sender: UIButton) {
         delegate?.messageCellDidSelectFailureButton(self)
     }
+
+    private dynamic func didTapOnLikeView() {
+        toggleLike()
+    }
+
+    private dynamic func didTapOnReplyButton(sender: UIButton) {
+    }
     
     // MARK: - Private helper methods
     
     private func updateStyle() {
+        captionLabel.textColor = dependencyManager.messageTextColor
+        captionLabel.tintColor = dependencyManager.messageLinkColor
+        captionLabel.font = dependencyManager.messageFont
+        
         usernameLabel.font = dependencyManager.usernameFont
         usernameLabel.textColor = dependencyManager.usernameColor
-        
+
         timestampLabel.font = dependencyManager.timestampFont
         timestampLabel.textColor = dependencyManager.timestampColor
-        
+
         captionBubbleView.backgroundColor = dependencyManager.backgroundColor
-        
+
         failureButton.setImage(UIImage(named: "failed_error"), forState: .Normal)
+
+        if dependencyManager.upvoteStyle == UpvoteStyle.basic {
+            likeView = LikeView()
+            if let likeView = likeView {
+                likeView.countLabel.font = dependencyManager.timestampFont
+                likeView.countLabel.textColor = dependencyManager.timestampColor
+                likeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOnLikeView)))
+                contentView.addSubview(likeView)
+            }
+        }
+
+        replyButton.setImage(UIImage(named: "reply"), forState: .Normal)
+        replyButton.setImage(UIImage(named: "reply_tap"), forState: .Highlighted)
+        replyButton.setImage(UIImage(named: "reply_tap"), forState: .Selected)
+
+        // FUTURE: - Implemented by Community team
+        replyButton.hidden = true
     }
-    
+
     private func populateData() {
-        captionLabel.attributedText = content?.attributedText(using: dependencyManager)
-        usernameLabel.text = content?.author.username ?? ""
-        updateTimestamp()
+        captionLabel.detectUserTags(for: content) { [weak self] url in
+            guard let strongSelf = self else {
+                return
+            }
+            
+            strongSelf.delegate?.messageCell(strongSelf, didSelectLinkURL: url)
+        }
         
+        captionLabel.text = content?.text
+        usernameLabel.text = content?.author?.username ?? ""
+        
+        updateTimestamp()
+        updateLikeCount()
+        updateLikeImage()
+
         let shouldHideTopLabels = content?.wasCreatedByCurrentUser == true
         usernameLabel.hidden = shouldHideTopLabels
         timestampLabel.hidden = shouldHideTopLabels
-        
+
         if let content = content where content.type.hasMedia {
             if content.type == .gif && VCurrentUser.user?.canView(content) == true {
                 let mediaContentView = setupMediaView(for: content)
@@ -206,7 +245,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         return previewView
     }
     
-    private func setupMediaView(for content: ContentModel) -> MediaContentView {
+    private func setupMediaView(for content: Content) -> MediaContentView {
         self.previewView?.removeFromSuperview()
         self.previewView = nil
         
@@ -240,12 +279,49 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         previewBubbleView = bubbleView
         self.previewView = previewView
     }
-    
+
+    private func toggleLike() {
+        guard
+            let content = content,
+            let contentID = content.id,
+            let upvoteAPIPath = dependencyManager.contentUpvoteAPIPath,
+            let unupvoteAPIPath = dependencyManager.contentUnupvoteAPIPath,
+            let upvoteOperation: SyncOperation<Void> = content.isLikedByCurrentUser
+                ? ContentUnupvoteOperation(apiPath: unupvoteAPIPath, contentID: contentID)
+                : ContentUpvoteOperation(apiPath: upvoteAPIPath, contentID: contentID)
+        else {
+            return
+        }
+
+        upvoteOperation.queue { [weak self] _ in
+            self?.updateLikeCount()
+            self?.updateLikeImage()
+        }
+    }
+
+    private func updateLikeCount() {
+        guard let content = content, likeCount = content.likeCount else {
+            return
+        }
+
+        let totalLikes = likeCount + content.currentUserLikeCount
+        likeView?.countLabel.text = totalLikes > 0 ? largeNumberFormatter.stringForInteger(totalLikes) : ""
+        likeView?.setNeedsLayout()
+    }
+
+    private func updateLikeImage() {
+        guard let content = content else {
+            return
+        }
+
+        likeView?.imageView.image = content.isLikedByCurrentUser ? dependencyManager.upvoteIconSelected : dependencyManager.upvoteIconUnselected
+    }
+
     func updateTimestamp() {
         timestampLabel.text = content?.timeLabel ?? ""
         setNeedsLayout()
     }
-    
+
     // MARK: - Managing lifecycle
     
     /// Expected to be called whenever the cell goes off-screen and is queued for later reuse. Stops media from playing
@@ -264,7 +340,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     
     // MARK: - Sizing
     
-    static func cellHeight(displaying content: ContentModel, inWidth width: CGFloat, dependencyManager: VDependencyManager) -> CGFloat? {
+    static func cellHeight(displaying content: Content, inWidth width: CGFloat, dependencyManager: VDependencyManager) -> CGFloat? {
         let captionHeight = captionSize(displaying: content, inWidth: width, dependencyManager: dependencyManager)?.height ?? 0.0
         let previewHeight = previewSize(displaying: content, inWidth: width)?.height ?? 0.0
         
@@ -276,7 +352,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         return contentMargin.top + contentMargin.bottom + contentHeight
     }
     
-    static func captionSize(displaying content: ContentModel, inWidth width: CGFloat, dependencyManager: VDependencyManager) -> CGSize? {
+    static func captionSize(displaying content: Content, inWidth width: CGFloat, dependencyManager: VDependencyManager) -> CGSize? {
         guard let attributedText = content.attributedText(using: dependencyManager) else {
             return nil
         }
@@ -295,7 +371,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         return size
     }
     
-    static func previewSize(displaying content: ContentModel, inWidth width: CGFloat) -> CGSize? {
+    static func previewSize(displaying content: Content, inWidth width: CGFloat) -> CGSize? {
         guard content.type.hasMedia else {
             return nil
         }
@@ -309,7 +385,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     
     // MARK: - MediaContentViewDelegate
     
-    func mediaContentView(mediaContentView: MediaContentView, didFinishLoadingContent content: ContentModel) {
+    func mediaContentView(mediaContentView: MediaContentView, didFinishLoadingContent content: Content) {
         UIView.animateWithDuration(
             MediaContentView.AnimationConstants.mediaContentViewAnimationDuration,
             animations: {
@@ -323,12 +399,16 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         )
     }
     
-    func mediaContentView(mediaContentView: MediaContentView, didFinishPlaybackOfContent content: ContentModel) {
+    func mediaContentView(mediaContentView: MediaContentView, didFinishPlaybackOfContent content: Content) {
         // No behavior yet
+    }
+    
+    func mediaContentView(mediaContentView: MediaContentView, didSelectLinkURL url: NSURL) {
+        delegate?.messageCell(self, didSelectLinkURL: url)
     }
 }
 
-private extension ContentModel {
+private extension Content {
     var timeLabel: String {
         return NSDate(timestamp: createdAt).stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds)
     }
@@ -355,17 +435,21 @@ private extension VDependencyManager {
     var messageTextColor: UIColor {
         return colorForKey("color.message.text") ?? .whiteColor()
     }
-
+    
+    var messageLinkColor: UIColor {
+        return colorForKey("color.message.link") ?? .blueColor()
+    }
+    
     var messageFont: UIFont {
         return fontForKey("font.message") ?? UIFont.systemFontOfSize(16.0)
     }
 
-    var backgroundColor: UIColor? {
+    var backgroundColor: UIColor {
         return colorForKey("color.message.bubble") ?? .darkGrayColor()
     }
     
     var usernameFont: UIFont {
-        return fontForKey("font.username.text")
+        return fontForKey("font.username.text") ?? UIFont.systemFontOfSize(12.0)
     }
     
     var usernameColor: UIColor {
@@ -373,15 +457,44 @@ private extension VDependencyManager {
     }
     
     var timestampFont: UIFont {
-        return fontForKey("font.timestamp.text")
+        return fontForKey("font.timestamp.text") ?? UIFont.systemFontOfSize(12.0)
     }
     
     var timestampColor: UIColor {
         return colorForKey("color.timestamp.text") ?? .whiteColor()
     }
+
+    var upvoteStyle: UpvoteStyle {
+        guard let upvoteStyle = stringForKey("upvote.type") else {
+            return .off
+        }
+        return UpvoteStyle(rawValue: upvoteStyle) ?? .off
+    }
+
+    var upvoteIconSelected: UIImage? {
+        return imageForKey("upvote.icon.selected")
+    }
+
+    var upvoteIconUnselected: UIImage? {
+        return imageForKey("upvote.icon.unselected")
+    }
+
+    var contentUpvoteAPIPath: APIPath? {
+        return networkResources?.apiPathForKey("contentUpvoteURL")
+    }
+
+    var contentUnupvoteAPIPath: APIPath? {
+        return networkResources?.apiPathForKey("contentUnupvoteURL")
+    }
 }
 
-private extension ContentModel {
+private enum UpvoteStyle: String {
+    case off = "off"
+    case basic = "basic"
+    case rightHandSide = "right_hand_side"
+}
+
+private extension Content {
     func attributedText(using dependencyManager: VDependencyManager) -> NSAttributedString? {
         guard let text = text where text != "" else {
             return nil

@@ -64,7 +64,7 @@ extension WebSocketEventDecoder {
                     return nil
                 }
                 
-                if content.author.accessLevel.isCreator {
+                if content.author?.accessLevel.isCreator == true {
                     forumEvent = .showCaptionContent(content)
                 }
                 else {

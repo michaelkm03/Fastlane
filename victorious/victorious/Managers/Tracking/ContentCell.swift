@@ -9,5 +9,5 @@
 import Foundation
 
 protocol ContentCell {
-    var content: ContentModel? { get }
+    var content: Content? { get }
 }

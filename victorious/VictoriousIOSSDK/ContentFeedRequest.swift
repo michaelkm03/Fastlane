@@ -10,13 +10,15 @@ import UIKit
 
 public struct ContentFeedRequest: RequestType {
     private let url: NSURL
+    private let payloadType: ContentFeedPayloadType
     
-    public init?(apiPath: APIPath) {
+    public init?(apiPath: APIPath, payloadType: ContentFeedPayloadType) {
         guard let url = apiPath.url else {
             return nil
         }
         
         self.url = url
+        self.payloadType = payloadType
     }
     
     public var urlRequest: NSURLRequest {
@@ -24,19 +26,24 @@ public struct ContentFeedRequest: RequestType {
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> ContentFeedResult {
-        guard let contents = responseJSON["payload"]["viewed_contents"].array else {
+        let contentsJSON: [JSON]?
+        let contentParser: (JSON) -> Content?
+        
+        switch payloadType {
+            case .regular:
+                contentsJSON = responseJSON["payload"]["viewed_contents"].array
+                contentParser = { Content(json: $0) }
+            case .lightweight:
+                contentsJSON = responseJSON["payload"]["reference_list"].array
+                contentParser = { Content(lightweightJSON: $0) }
+        }
+        
+        guard let contents = contentsJSON else {
             throw ResponseParsingError()
         }
         
-        let parsedContents = contents.flatMap { Content(json: $0) }
-        
-        var parsedRefreshStage: RefreshStage? = nil
-        let mainStageJSON = responseJSON["main_stage"]
-        
-        // A missing "main_stage" node in JSON represents no content on the stage.
-        if mainStageJSON.isExists() {
-            parsedRefreshStage = RefreshStage(json: mainStageJSON)
-        }
+        let parsedContents = contents.flatMap { contentParser($0) }
+        let parsedRefreshStage = RefreshStage(json: responseJSON["main_stage"])
         
         return ContentFeedResult(contents: parsedContents, refreshStage: parsedRefreshStage)
     }
@@ -45,4 +52,11 @@ public struct ContentFeedRequest: RequestType {
 public struct ContentFeedResult {
     public var contents: [Content]
     public var refreshStage: RefreshStage?
+}
+
+public enum ContentFeedPayloadType {
+    /// Each content in the payload contains all the information about the content and its author
+    case regular
+    /// Each content in the payload only contains the basic information to be displayed in a grid stream
+    case lightweight
 }

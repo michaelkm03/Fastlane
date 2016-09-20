@@ -18,7 +18,7 @@ protocol Stage: class, ForumEventReceiver, StageShrinkingAnimatorDelegate {
     func addStageContent(stageContent: StageContent)
     
     /// Shows the caption of the provided content in the caption bar (if provided in the template)
-    func addCaptionContent(content: ContentModel)
+    func addCaptionContent(content: Content)
     
     /// Removes the current content on the stage.
     func removeContent()
