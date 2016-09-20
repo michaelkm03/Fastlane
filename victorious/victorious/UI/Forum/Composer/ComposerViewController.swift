@@ -21,6 +21,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         static let minimumConfirmButtonContainerHeight: CGFloat = 52
         static let composerTextInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         static let confirmButtonHorizontalInset: CGFloat = 16
+        static let vipLockComposerMargin: CGFloat = 8
     }
     
     /// ForumEventSender
@@ -44,6 +45,9 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     @IBOutlet weak private(set) var hashtagBarContainerHeightConstraint: NSLayoutConstraint!
     
     @IBOutlet weak private var hashtagBarContainerView: UIView!
+    @IBOutlet weak var vipLockContainerView: UIView!
+    @IBOutlet weak var vipLockWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var composerLeadingConstraint: NSLayoutConstraint!
     
     @IBOutlet weak private var passthroughContainerView: VPassthroughContainerView!
     
@@ -296,7 +300,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(setupUserDependentUI), name: kLoggedInChangedNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(setupUserDependentUI), name: VCurrentUser.userDidUpdateNotificationKey, object: nil)
         setupUserDependentUI()
         
         //Setup once-initialized properties that cannot be created on initialization
@@ -401,6 +405,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         let isOwner = userIsOwner
         maximumTextLength = dependencyManager.maximumTextLengthForOwner(isOwner)
         attachmentMenuItems = dependencyManager.attachmentMenuItemsForOwner(isOwner)
+        updateAppearanceFromDependencyManager()
     }
     
     private func setupTextView() {
@@ -457,7 +462,43 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         confirmButton.setTitle(dependencyManager.confirmKeyText, forState: .Normal)
         dependencyManager.addBackgroundToBackgroundHost(self)
         
+        createVIPButtonIfNeeded()
+        
+        if let width = vipButton?.intrinsicContentSize().width {
+            // If there is a lock
+            vipLockWidthConstraint.constant = width
+            composerLeadingConstraint.constant = width + Constants.vipLockComposerMargin
+        }
+        else {
+            // No lock
+            vipLockWidthConstraint.constant = 0
+            composerLeadingConstraint.constant = 0
+        }
+        
         view.layoutIfNeeded()
+    }
+    
+    private func createVIPButtonIfNeeded() {
+        guard VCurrentUser.user?.accessLevel == .owner else {
+            vipButton = nil
+            return
+        }
+        
+        if vipButton != nil {
+            return
+        }
+        
+        vipButton = dependencyManager.toggleableVIPButton
+        if let vipButton = vipButton as? ToggleableImageButton {
+            vipLockContainerView.addSubview(vipButton)
+            vipLockContainerView.v_addFitToParentConstraintsToSubview(vipButton)
+        }
+    }
+    
+    private var vipButton: UIButton? {
+        willSet {
+            vipButton?.removeFromSuperview()
+        }
     }
     
     // MARK: - VBackgroundContainer
@@ -552,8 +593,12 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         
         let text = composerTextViewManager?.captionFromTextView(textView)
         
-        if let asset = selectedAsset, let previewImage = textViewPrependedImage {
-            sendMessage(asset: asset, previewImage: previewImage, text: text, currentUser: user)
+        if
+            let asset = selectedAsset,
+            let previewImage = textViewPrependedImage
+        {
+            let isVIPOnly = (vipButton as? ToggleableImageButton)?.selected ?? false
+            sendMessage(asset: asset, previewImage: previewImage, text: text, currentUser: user, isVIPOnly: isVIPOnly)
         }
         else if let text = text {
             sendMessage(text: text, currentUser: user)
@@ -585,13 +630,16 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         // TODO: find out if it's a gif, if not then set type to image
         let mediaParameters = ContentMediaAsset.RemoteAssetParameters(contentType: .gif, url: nil, source: nil, size: image.imageObject.size, data: image.imageData)
         if let selectedAsset = ContentMediaAsset(initializationParameters: mediaParameters) {
-            sendMessage(asset: selectedAsset, previewImage: image.imageObject, text: nil, currentUser: user)
+            sendMessage(asset: selectedAsset, previewImage: image.imageObject, text: nil, currentUser: user, isVIPOnly: false)
         }
     }
 }
 
 // Update this extension to parse real values once they're returned in template
 private extension VDependencyManager {
+    var toggleableVIPButton: UIButton? {
+        return buttonForKey("creator.vip.toggle")
+    }
     
     func maximumTextLengthForOwner(owner: Bool) -> Int {
         return owner ? 0 : numberForKey("maximumTextLength").integerValue

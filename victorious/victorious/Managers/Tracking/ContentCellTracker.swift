@@ -11,31 +11,32 @@ import Foundation
 protocol ContentCellTracker {
     var sessionParameters: [NSObject : AnyObject] { get }
     
-    func trackView(trackingKey: ViewTrackingKey, showingContent content: ContentModel)
+    func trackView(trackingKey: ViewTrackingKey, showingContent content: ContentModel, parameters: [NSObject : AnyObject])
 }
 
 extension ContentCellTracker {
     private var trackingManager: VTrackingManager {
         return VTrackingManager.sharedInstance()
     }
-    
-    func trackView(trackingKey: ViewTrackingKey, showingContent content: ContentModel) {
+
+    func trackView(trackingKey: ViewTrackingKey, showingContent content: ContentModel, parameters: [NSObject : AnyObject] = [:]) {
         guard
             let tracking = content.tracking,
             let trackingStrings = tracking.trackingURLsForKey(trackingKey),
-            let parameters = parametersForViewTrackingKey(trackingKey, trackingURLStrings: trackingStrings)
+            var combinedParameters = parametersForViewTrackingKey(trackingKey, trackingURLStrings: trackingStrings)
         else {
             return
         }
-        
+
+        combinedParameters.unionInPlace(parameters)
         trackingManager.queueEvent(
             trackingKey.rawValue,
-            parameters: parameters,
+            parameters: combinedParameters,
             eventId: tracking.id,
             sessionParameters: sessionParameters
         )
     }
-    
+
     private func parametersForViewTrackingKey(trackingKey: ViewTrackingKey, trackingURLStrings: [String]) -> [NSObject : AnyObject]? {
         let parameters = [
             VTrackingKeyTimeStamp: NSDate(),

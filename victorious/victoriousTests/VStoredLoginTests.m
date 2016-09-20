@@ -11,7 +11,6 @@
 
 #import "NSObject+VMethodSwizzling.h"
 #import "VStoredLogin.h"
-#import "VDummyModels.h"
 #import "victorious-swift.h"
 
 @interface VStoredLogin()

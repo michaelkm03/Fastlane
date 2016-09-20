@@ -205,8 +205,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         guard let scaffold = VRootViewController.sharedRootViewController()?.scaffold else {
             return
         }
-        
-        Router(originViewController: scaffold, dependencyManager: dependencyManager).navigate(to: .vipForum)
+        Router(originViewController: scaffold, dependencyManager: dependencyManager).navigate(to: .vipForum, from: DeeplinkContext(value: DeeplinkContext.userProfile))
     }
     
     private dynamic func toggleUpvote() {
@@ -242,10 +241,16 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
             originViewController: self,
             dependencyManager: dependencyManager
         )
-        confirm.before(toggleBlockedOperation)
-        confirm.queue()
-        toggleBlockedOperation.queue() { [weak self] _ in
-            self?.navigationController?.popViewControllerAnimated(true)
+        
+        confirm.queue() { result in
+            switch result {
+                case .success:
+                    toggleBlockedOperation.queue() { [weak self] _ in
+                        self?.navigationController?.popViewControllerAnimated(true)
+                }
+                case .failure, .cancelled:
+                    break
+            }
         }
     }
     

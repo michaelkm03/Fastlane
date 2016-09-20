@@ -19,8 +19,6 @@ protocol ExperimentSettingsDataSourceDelegate: class {
 
 class ExperimentSettingsDataSource: NSObject {
     
-    private let persistentStore: PersistentStoreType = PersistentStoreSelector.defaultPersistentStore
-    
     weak var delegate: ExperimentSettingsDataSourceDelegate?
     
     struct TintColor {
@@ -31,7 +29,9 @@ class ExperimentSettingsDataSource: NSObject {
     private var tintColor = TintColor()
     
     var selectedExperimentIds: Set<Int> {
-        return Set<Int>( self.sections.flatMap { $0.experiments.filter { $0.isEnabled.boolValue }.map { $0.id.integerValue } } )
+        return Set(sections.flatMap {
+            $0.experiments.filter { $0.isEnabled }.map { $0.id }
+        })
     }
     
     let experimentSettings = ExperimentSettings()
@@ -56,9 +56,10 @@ class ExperimentSettingsDataSource: NSObject {
     }
     
     struct Section {
-        let title: String
-        let experiments: [Experiment]
+        var title: String
+        var experiments: [DeviceExperiment]
     }
+    
     private var sections = [Section]()
     private var state: State = .Loading
     
@@ -77,33 +78,21 @@ class ExperimentSettingsDataSource: NSObject {
         
         RequestOperation(request: DeviceExperimentsRequest()).queue { result in
             switch result {
-                case .success(let deviceExperiments, let defaultExperimentIDs):
-                    self.persistentStore.createBackgroundContext().v_performBlockAndWait() { context in
-                        for experiment in deviceExperiments {
-                            let uniqueElements = [ "id": experiment.id, "layerId": experiment.layerID ]
-                            let persistentExperiment: Experiment = context.v_findOrCreateObject(uniqueElements)
-                            persistentExperiment.populate(fromSourceModel: experiment)
-                            context.v_save()
-                        }
-                    }
-                
-                    // Synchronously grab all experiments from the main queue context.
-                    let experiments: [Experiment] = self.persistentStore.mainContext.v_performBlockAndWait() { context in
-                        return context.v_findAllObjects()
-                    }
+                case .success(let experiments, let defaultExperimentIDs):
+                    let activeExperimentIDs = self.experimentSettings.activeExperiments ?? defaultExperimentIDs
                     
-                    // If we have (internal) user configured experiments use those, otherwise use defaults returned from the operation.
-                    let activeExperiments = self.experimentSettings.activeExperiments ?? defaultExperimentIDs
-                    for experiment in experiments {
-                        experiment.isEnabled = activeExperiments.contains( experiment.id.integerValue )
-                    }
-
                     self.updateTintColor()
                     
-                    let layers = Set<String>( experiments.map { $0.layerName } )
+                    let layers = Set<String>(experiments.map { $0.layerName })
+                    
                     for layer in layers {
-                        let experimentsInLayer = experiments.filter { $0.layerName == layer }
-                        self.sections.append( Section(title: layer, experiments: experimentsInLayer) )
+                        let experimentsInLayer: [DeviceExperiment] = experiments.filter { $0.layerName == layer }.map { experiment in
+                            var experiment = experiment
+                            experiment.isEnabled = activeExperimentIDs.contains(experiment.id)
+                            return experiment
+                        }
+                        
+                        self.sections.append(Section(title: layer, experiments: experimentsInLayer))
                     }
                     
                     self.state = self.sections.count > 0 ? .Content : .NoContent
@@ -128,7 +117,7 @@ class ExperimentSettingsDataSource: NSObject {
                     if let indexPath = tableView.indexPathForCell( switchCell ) {
                         let experiment = self.sections[ indexPath.section ].experiments[ indexPath.row ]
                         let nameWithID = "\(experiment.name) (\(experiment.id))"
-                        switchCell.setTitle( nameWithID, value: experiment.isEnabled.boolValue )
+                        switchCell.setTitle(nameWithID, value: experiment.isEnabled)
                     }
                 }
             }
@@ -139,26 +128,25 @@ class ExperimentSettingsDataSource: NSObject {
 extension ExperimentSettingsDataSource: VSettingsSwitchCellDelegate {
     
     func settingsDidUpdateFromCell(cell: VSettingsSwitchCell, newValue: Bool, key: String) {
-        if let indexPath = self.delegate?.tableView.indexPathForCell( cell ) {
+        if let indexPath = delegate?.tableView.indexPathForCell(cell) {
+            sections[indexPath.section].experiments[indexPath.row].isEnabled = newValue
             
-            let section = self.sections[ indexPath.section ]
-            let selectedExperiment = section.experiments[ indexPath.row ]
-            for experiment in section.experiments {
-                experiment.isEnabled = selectedExperiment == experiment ? cell.value : false
-            }
-            self.saveSettings()
+            saveSettings()
             
             // Update values only on visible cells that need updating
-            for i in 0..<section.experiments.count {
-                let otherCellIndexPath = NSIndexPath(forRow: i, inSection: indexPath.section)
-                if otherCellIndexPath != indexPath,
-                    let cell = self.delegate?.tableView.cellForRowAtIndexPath( otherCellIndexPath ) as? VSettingsSwitchCell {
-                        cell.setValue(false, animated: true)
+            for index in sections[indexPath.section].experiments.indices {
+                let otherCellIndexPath = NSIndexPath(forRow: index, inSection: indexPath.section)
+                
+                if
+                    otherCellIndexPath != indexPath,
+                    let cell = delegate?.tableView.cellForRowAtIndexPath(otherCellIndexPath) as? VSettingsSwitchCell
+                {
+                    cell.setValue(false, animated: true)
                 }
             }
             
-            self.updateTintColor()
-            self.updateVisibleCells()
+            updateTintColor()
+            updateVisibleCells()
         }
     }
 }

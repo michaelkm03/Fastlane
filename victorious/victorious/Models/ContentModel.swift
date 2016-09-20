@@ -38,3 +38,5 @@ extension ContentModel {
         return ContentMediaSize.supportedSize(closestToAspectRatio: aspectRatio)
     }
 }
+
+extension Content: PaginatableItem {}

@@ -30,6 +30,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     private let contentID: Content.ID
     private var firstPresentation = true
     private let closeUpView: CloseUpView
+    private var context: DeeplinkContext?
     
     private lazy var shareButton: UIBarButtonItem = {
         return UIBarButtonItem(
@@ -60,8 +61,9 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
             VAudioManager.sharedInstance().focusedPlaybackDidBegin(muted: false)
         }
     }
-    
-    init(dependencyManager: VDependencyManager, contentID: String, content: Content? = nil, streamAPIPath: APIPath) {
+
+    init(dependencyManager: VDependencyManager, contentID: String, streamAPIPath: APIPath, context: DeeplinkContext? = nil, content: Content? = nil) {
+        self.context = context
         self.dependencyManager = dependencyManager
         
         closeUpView = CloseUpView.newWithDependencyManager(dependencyManager)
@@ -140,7 +142,8 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     
     private func trackContentView() {
         if let content = content where firstPresentation {
-            trackView(.viewStart, showingContent: content)
+            let value = context?.value ?? ""
+            trackView(.viewStart, showingContent: content, parameters: [VTrackingKeyContext:value])
             firstPresentation = false
         }
     }
@@ -164,7 +167,13 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         }
         
         upvoteButton.sizeToFit()
-        navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: upvoteButton), shareButton, overflowButton]
+        
+        if content.shareURL == nil {
+            navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: upvoteButton), overflowButton]
+        }
+        else {
+            navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: upvoteButton), shareButton, overflowButton]
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -192,7 +201,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     func didSelectProfileForUserID(userID: Int) {
         let router = Router(originViewController: self, dependencyManager: dependencyManager)
         let destination = DeeplinkDestination(userID: userID)
-        router.navigate(to: destination)
+        router.navigate(to: destination, from: DeeplinkContext(value: DeeplinkContext.closeupView))
     }
     
     func gridStreamDidUpdate() {
@@ -251,13 +260,19 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
             dependencyManager: dependencyManager
         )
         
-        confirm.before(flagOrDeleteOperation)
-        confirm.queue()
-        flagOrDeleteOperation.queue { [weak self] result in
-            /// FUTURE: Update parent view controller to remove content
+        
+        confirm.queue() { result in
             switch result {
-                case .success(_), .failure(_): self?.navigationController?.popViewControllerAnimated(true)
-                case .cancelled: break
+                case .success:
+                    flagOrDeleteOperation.queue { [weak self] result in
+                        /// FUTURE: Update parent view controller to remove content
+                        switch result {
+                            case .success(_), .failure(_): self?.navigationController?.popViewControllerAnimated(true)
+                            case .cancelled: break
+                        }
+                }
+                case .failure, .cancelled:
+                    break
             }
         }
     }

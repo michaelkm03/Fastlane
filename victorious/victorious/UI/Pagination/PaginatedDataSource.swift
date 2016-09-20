@@ -34,7 +34,7 @@ import VictoriousIOSSDK
     
     func unstashAll() {
         shouldStashNewItems = false
-        visibleItems = visibleItems.v_orderedSet(byAddingObjects: stashedItems.array, sortOrder: self.sortOrder)
+        visibleItems = visibleItems.v_orderedSet(byAddingObjects: stashedItems.array)
         purgedStashedCount = 0
         stashedItems = NSOrderedSet()
     }
@@ -175,17 +175,11 @@ import VictoriousIOSSDK
                 case .success(let results):
                     if results.isEmpty {
                         // Nothing to do here.
-                    } else if results.flatMap({ $0 as? PaginatedObjectType }).isEmpty {
+                    } else {
                         // No conformance to `PaginatedObjectType` in the results, add according to `pageType`
                         strongSelf.visibleItems = strongSelf.visibleItems.v_orderedSet(
                             byAddingObjects: results,
                             forPageType: pageType
-                        )
-                    } else {
-                        // Results conform to `PaginatedObjectType`, sort according to `displayOrder`
-                        strongSelf.visibleItems = strongSelf.visibleItems.v_orderedSet(
-                            byAddingObjects: results,
-                            sortOrder: strongSelf.sortOrder
                         )
                     }
                     
@@ -219,14 +213,10 @@ import VictoriousIOSSDK
 private extension NSOrderedSet {
     
     func v_orderedSetFitleredForDeletedObjects() -> NSOrderedSet {
-        let predicate = NSPredicate() { (object, dictionary) -> Bool in
-            if let managedObject = object as? NSManagedObject {
-                return managedObject.hasBeenDeleted == false
-            }
+        let predicate = NSPredicate { object, dictionary in
             return true
         }
-        let results = self.filteredOrderedSetUsingPredicate( predicate )
-        return results
+        return filteredOrderedSetUsingPredicate(predicate)
     }
     
     func v_orderedSet( byAddingObjects objects: [AnyObject], forPageType pageType: VPageType ) -> NSOrderedSet {
@@ -247,12 +237,8 @@ private extension NSOrderedSet {
         return output.v_orderedSetFitleredForDeletedObjects()
     }
     
-    func v_orderedSet( byAddingObjects objects: [AnyObject], sortOrder: NSComparisonResult) -> NSOrderedSet {
-        let combinedArray = self.array + objects
-        let sortedArray = combinedArray
-            .flatMap { $0 as? PaginatedObjectType }
-            .sort { $0.displayOrder.compare($1.displayOrder) == sortOrder }
-        return NSOrderedSet(array: sortedArray)
+    func v_orderedSet(byAddingObjects objects: [AnyObject]) -> NSOrderedSet {
+        return NSOrderedSet(array: self.array + objects)
     }
     
     func v_orderedSetPurgedBy(limit: Int) -> NSOrderedSet {

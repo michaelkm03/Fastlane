@@ -30,6 +30,8 @@ extension VPublishParameters {
         isGIF = mediaAsset.contentType == .gif
         isVideo = mediaAsset.contentType == .video
         
+        isVIPContent = content.isVIPOnly
+        
         if isGIF {
             assetRemoteId = mediaAsset.externalID
         }

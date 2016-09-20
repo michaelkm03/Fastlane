@@ -43,11 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
     }
-
-    func applicationDidEnterBackground(application: UIApplication) {
-        savePersistentChanges()
-    }
-
+    
     func applicationWillEnterForeground(application: UIApplication) {
         configureAudioSessionCategory()
     }
@@ -56,11 +52,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // We don't need this yet, but it must be initialized now (see comments for sharedInstance method)
         VPurchaseManager.sharedInstance()
     }
-
-    func applicationWillTerminate(application: UIApplication) {
-        savePersistentChanges()
-    }
-
+    
     func application(app: UIApplication, openURL url: NSURL, options: [String : AnyObject]) -> Bool {
         if FacebookHelper.canOpenURL(url) {
             let sourceApplication = options[UIApplicationOpenURLOptionsSourceApplicationKey] as! String
@@ -129,15 +121,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
         } catch {
             Log.warning("Failed to set the AudioSession category with error ->\(error)")
-        }
-    }
-
-    private func savePersistentChanges() {
-        let persistentStore = PersistentStoreSelector.defaultPersistentStore
-        do {
-            try persistentStore.mainContext.save()
-        } catch {
-            Log.warning("Failed to save the persistent stores main context with error -> \(error)")
         }
     }
 }
