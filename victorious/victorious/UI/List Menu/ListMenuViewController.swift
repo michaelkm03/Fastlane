@@ -134,6 +134,24 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         
         postListMenuSelection(selectedTagItem)
     }
+
+    private func selectChatRoom(atIndex index: Int) {
+        let item = collectionViewDataSource.chatRoomsDataSource.visibleItems[index]
+        let itemString = "\(item.name)"
+        let macro = "%%CHATROOM%%"
+        var apiPath = collectionViewDataSource.chatRoomsDataSource.chatRoomStreamAPIPath
+        apiPath.macroReplacements[macro] = item.name
+        let context = DeeplinkContext(value: DeeplinkContext.chatRoomFeed, subContext: itemString)
+        let selectedItem = ListMenuSelectedItem(
+            streamAPIPath: apiPath,
+            title: itemString,
+            context: context,
+            trackingURLs: collectionViewDataSource.hashtagDataSource.hashtagStreamTrackingURLs.map {
+                VSDKURLMacroReplacement().urlByReplacingMacrosFromDictionary([macro: item.name], inURLString: $0)
+            }
+        )
+        postListMenuSelection(selectedItem)
+    }
     
     private func postListMenuSelection(listMenuSelection: ListMenuSelectedItem?) {
         NSNotificationCenter.defaultCenter().postNotificationName(
@@ -162,6 +180,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
             case .creator: return CGSize(width: view.bounds.width, height: ListMenuCreatorCollectionViewCell.preferredHeight)
             case .community: return CGSize(width: view.bounds.width, height: ListMenuCommunityCollectionViewCell.preferredHeight)
             case .hashtags: return CGSize(width: view.bounds.width, height: ListMenuHashtagCollectionViewCell.preferredHeight)
+            case .chatRooms: return CGSize(width: view.bounds.width, height: ListMenuChatRoomCollectionViewCell.preferredHeight)
         }
     }
     
@@ -200,6 +219,9 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
             case .hashtags:
                 selectHashtag(atIndex: indexPath.item)
                 lastSelectedIndexPath = indexPath
+            case .chatRooms:
+                selectChatRoom(atIndex: indexPath.item)
+                lastSelectedIndexPath = indexPath
         }
     }
     
@@ -210,6 +232,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
             case .creator: validIndices = collectionViewDataSource.creatorDataSource.visibleItems.indices
             case .community: validIndices = collectionViewDataSource.communityDataSource.visibleItems.indices
             case .hashtags: validIndices = collectionViewDataSource.hashtagDataSource.visibleItems.indices
+            case .chatRooms: validIndices = collectionViewDataSource.chatRoomsDataSource.visibleItems.indices
         }
         return validIndices ~= indexPath.row
     }

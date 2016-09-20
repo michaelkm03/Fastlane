@@ -7,14 +7,23 @@
 //
 
 import XCTest
-import victorious
+@testable import victorious
 
 class ListMenuChatRoomsDataSourceTests: XCTestCase {
     func testFetchRemoteData() {
         let mockChatRooms = [ChatRoom(name: "Cupcakes")]
         let requestExecutor = TestRequestExecutor(result: mockChatRooms)
-        let dependencyManager = VDependencyManager(parentManager: nil, configuration: [:], dictionaryOfClassesByTemplateName: [:])
-        let dataSource = ListMenuChatRoomsDataSource(dependencyManager: dependencyManager, requestExecutor: requestExecutor)
-        XCTAssertEqual(dataSource.visibleItems, mockChatRooms)
+        let config = ["networkResources":["chat.rooms.URL":"http://example.com"]]
+        let dependencyManager = VDependencyManager(parentManager: nil, configuration: config, dictionaryOfClassesByTemplateName: [:])
+        let dataSource = ListMenuChatRoomsDataSource(dependencyManager: dependencyManager)
+        dataSource.requestExecutor = requestExecutor
+        let expectation = expectationWithDescription("ListMenuChatRoomsDataSource data fetch")
+        dataSource.onFetchDataSuccess = {
+            expectation.fulfill()
+            XCTAssertEqual(dataSource.visibleItems.count, mockChatRooms.count)
+        }
+
+        dataSource.fetchRemoteData()
+        waitForExpectationsWithTimeout(1, handler: nil)
     }
 }

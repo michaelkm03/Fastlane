@@ -6,5 +6,17 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-final class ListMenuChatRoomCollectionViewCell: UICollectionViewCell {
+final class ListMenuChatRoomCollectionViewCell: UICollectionViewCell, ListMenuSectionCell {
+
+    // MARK: - Outlets
+
+    @IBOutlet private weak var titleLabel: UILabel!
+
+    // MARK: - ListMenuSectionCell
+
+    var dependencyManager: VDependencyManager?
+
+    func configureCell(with chatRoom: ChatRoom) {
+        titleLabel.text = "\(chatRoom.name)"
+    }
 }
