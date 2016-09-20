@@ -320,8 +320,6 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
             return
         }
         
-        mediaContentView.removeFromSuperview()
-        
         // Remove the height constraint on media content view because we are going to make it adapt to the screen in lightbox mode
         if let heightConstraint = closeUpView.mediaContentHeightConstraint {
             mediaContentView.removeConstraint(heightConstraint)
@@ -330,12 +328,12 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         let lightbox = LightBoxViewController(mediaContentView: mediaContentView)
         lightbox.modalTransitionStyle = .CrossDissolve
         
-        lightbox.beforeDismissal = { [weak self] in
+        lightbox.willDismiss = { [weak self] in
             self?.closeUpView.closeUpContentContainerView?.addSubview(mediaContentView)
             self?.closeUpView.setNeedsUpdateConstraints()
         }
         
-        lightbox.afterDismissal = { [weak self] in
+        lightbox.didDismiss = { [weak self] in
             self?.closeUpView.headerDidAppear()
         }
         

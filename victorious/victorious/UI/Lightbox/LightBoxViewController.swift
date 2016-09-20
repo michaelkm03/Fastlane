@@ -14,8 +14,8 @@ class LightBoxViewController: UIViewController {
     
     // MARK: - Dismissal blocks
     
-    var afterDismissal: () -> Void = { }
-    var beforeDismissal: () -> Void = { }
+    var didDismiss: () -> Void = { }
+    var willDismiss: () -> Void = { }
     
     // MARK: - Initialization
     
@@ -61,9 +61,9 @@ class LightBoxViewController: UIViewController {
             return
         }
         
-        beforeDismissal()
+        willDismiss()
         dismissViewControllerAnimated(true) {
-            self.afterDismissal()
+            self.didDismiss()
         }
     }
 }
