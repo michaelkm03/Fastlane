@@ -35,6 +35,12 @@
 "UserNamePlaceholder"   =   "Username";
 "LocationPlaceholder"   =   "Location";
 
+"EditProfile"           =   "Edit Profile";
+"Your display name is too long." = "Your display name is too long.";
+"Your username cannot be empty." = "Your username cannot be empty.";
+"Your username can only contain lowercase letters a-z, number 0-9, and underscores \"_\"." = "Your username can only contain lowercase letters a-z, number 0-9, and underscores \"_\".";
+"Your username can only be 20 characters long." = "Your username can only be 20 characters long.";
+
 "User already exists"   =   "User already exists";
 "User already exists but the password is incorrect" = "User already exists but the password is incorrect";
 "Invalid email address or password" = "Invalid email address or password";

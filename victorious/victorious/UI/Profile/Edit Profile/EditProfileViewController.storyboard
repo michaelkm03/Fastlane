@@ -176,9 +176,9 @@
                                 <sections/>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DTA-f8-NkW">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="36"/>
+                                <rect key="frame" x="0.0" y="-36" width="600" height="36"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="{{VALIDATION_ERROR}}" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Est-3c-Lg0">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="{{VALIDATION_ERROR}}" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Est-3c-Lg0">
                                         <rect key="frame" x="16" y="8" width="568" height="20"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -199,7 +199,7 @@
                             <constraint firstItem="sRu-SJ-NSO" firstAttribute="leading" secondItem="nKi-J2-ayk" secondAttribute="leading" id="4aX-xc-Gpn"/>
                             <constraint firstAttribute="trailing" secondItem="DTA-f8-NkW" secondAttribute="trailing" id="5Eh-b6-gbN"/>
                             <constraint firstAttribute="trailing" secondItem="sRu-SJ-NSO" secondAttribute="trailing" id="ANh-Zq-Oqp"/>
-                            <constraint firstItem="DTA-f8-NkW" firstAttribute="top" secondItem="EMg-a2-Z7u" secondAttribute="bottom" id="YII-Wm-GIf"/>
+                            <constraint firstItem="DTA-f8-NkW" firstAttribute="top" secondItem="EMg-a2-Z7u" secondAttribute="bottom" constant="-36" id="YII-Wm-GIf"/>
                             <constraint firstItem="iE0-yP-HUi" firstAttribute="top" secondItem="sRu-SJ-NSO" secondAttribute="bottom" id="awG-1g-vGK"/>
                             <constraint firstItem="DTA-f8-NkW" firstAttribute="leading" secondItem="nKi-J2-ayk" secondAttribute="leading" id="g3M-UV-BqK"/>
                             <constraint firstItem="sRu-SJ-NSO" firstAttribute="top" secondItem="nKi-J2-ayk" secondAttribute="top" id="n36-Vp-UUK"/>
@@ -221,6 +221,9 @@
                     <connections>
                         <outlet property="saveButton" destination="es0-Hc-iUs" id="53q-lw-BLV"/>
                         <outlet property="tableView" destination="sRu-SJ-NSO" id="srU-T6-eMy"/>
+                        <outlet property="validationErrorLabel" destination="Est-3c-Lg0" id="ok3-hK-eto"/>
+                        <outlet property="validationView" destination="DTA-f8-NkW" id="HtB-4T-mjh"/>
+                        <outlet property="validationViewTopToLayoutGuideBottomConstraint" destination="YII-Wm-GIf" id="U49-9Y-6UR"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wDj-5s-Z81" userLabel="First Responder" sceneMemberID="firstResponder"/>

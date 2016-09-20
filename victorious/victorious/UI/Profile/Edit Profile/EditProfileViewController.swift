@@ -12,10 +12,21 @@ import UIKit
 /// Uses a save button that enables/disables when the entered data is valid.
 /// Navigates away with a storyboard segue back to settings when complete.
 class EditProfileViewController: UIViewController {
+
+    private struct Constants {
+        static let animationDuration: NSTimeInterval = 0.25
+        static let errorOnScreenDuration: NSTimeInterval = 3.5
+        static let cellDisabledAlpha: CGFloat = 0.7
+    }
+
     var dependencyManager: VDependencyManager?
     private var dataSource: EditProfileDataSource?
     private var profilePicturePresenter: VEditProfilePicturePresenter?
     private var keyboardManager: VKeyboardNotificationManager?
+    
+    @IBOutlet private weak var validationErrorLabel: UILabel!
+    @IBOutlet private weak var validationView: UIView!
+    @IBOutlet private weak var validationViewTopToLayoutGuideBottomConstraint: NSLayoutConstraint!
     @IBOutlet private weak var saveButton: UIBarButtonItem!
     @IBOutlet private weak var tableView: UITableView!
     
@@ -33,6 +44,11 @@ class EditProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupDataSource()
+
+        dataSource?.onErrorUpdated = { [weak self] localizedErrorString in
+            self?.animateErrorInThenOut(localizedErrorString)
+        }
+
         tableView.estimatedRowHeight = 44
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.backgroundView = dependencyManager?.background().viewForBackground()
@@ -83,8 +99,7 @@ class EditProfileViewController: UIViewController {
             switch result {
                 case .success: self.navigationController?.popViewControllerAnimated(true)
                 default:
-                    // TODO: Better error handling
-                    self.v_showErrorWithTitle("failure", message: "oh no")
+                    self.v_showErrorDefaultError()
                     self.editingEnabled = true
                     self.navigationItem.leftBarButtonItem?.enabled = true
                     self.navigationItem.rightBarButtonItem?.enabled = true
@@ -116,7 +131,6 @@ class EditProfileViewController: UIViewController {
         guard let dataSource = self.dataSource else {
             return
         }
-        // TODO: Provide better feedback and error handling
         saveButton.enabled = dataSource.enteredDataIsValid
     }
     
@@ -134,6 +148,34 @@ class EditProfileViewController: UIViewController {
             self?.dataSource?.useNewAvatar(previewImage, fileURL: mediaURL)
         }
         profilePicturePresenter?.presentOnViewController(self)
+    }
+
+    private func animateErrorInThenOut(localizedErrorString: String) {
+        self.validationErrorLabel.text = localizedErrorString
+        // artificial delay to prevent animations from batching
+        dispatch_after(0.01) { [weak self] in
+            self?.animateErrorIn()
+        }
+    }
+    
+    private func animateErrorIn(){
+        UIView.animateWithDuration(Constants.animationDuration,
+                                   animations: {
+                                    self.validationViewTopToLayoutGuideBottomConstraint.constant = 0
+                                    self.view.layoutIfNeeded()
+            }, completion: { finished in
+                dispatch_after(Constants.errorOnScreenDuration){ [weak self] in
+                    self?.animateErrorOut()
+                }
+        })
+    }
+    
+    private func animateErrorOut(){
+        UIView.animateWithDuration(Constants.animationDuration){
+            let validationViewSize = self.validationView.systemLayoutSizeFittingSize(self.view.bounds.size)
+            self.validationViewTopToLayoutGuideBottomConstraint.constant = -validationViewSize.height
+            self.view.layoutIfNeeded()
+        }
     }
 
 }
