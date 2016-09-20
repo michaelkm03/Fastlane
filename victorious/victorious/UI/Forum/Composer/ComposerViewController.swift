@@ -9,7 +9,7 @@
 import UIKit
 
 /// Handles view manipulation and message sending related to the composer. Could definitely use a refactor to make it less stateful.
-class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate, ComposerAttachmentTabBarDelegate, VBackgroundContainer, VCreationFlowControllerDelegate, HashtagBarControllerSelectionDelegate, HashtagBarViewControllerAnimationDelegate {
+class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate, ComposerAttachmentTabBarDelegate, VBackgroundContainer, VCreationFlowControllerDelegate, HashtagBarControllerSelectionDelegate, HashtagBarViewControllerAnimationDelegate, ToggleableImageButtonDelegate {
     
     private struct Constants {
         static let animationDuration = 0.2
@@ -252,12 +252,25 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     var textViewPrependedImage: UIImage? {
         didSet {
             if oldValue != textViewPrependedImage {
-                attachmentTabBar.buttonsEnabled = !textViewHasPrependedImage
-                attachmentTabBar.enableButtonForIdentifier(ComposerInputAttachmentType.Hashtag.rawValue)
-                if !textViewHasPrependedImage {
-                    selectedAsset = nil
+                updateAttachmentButtons()
+                
+                vipButton?.enabled = vipButton?.enabled ?? false || !textViewHasPrependedImage
+                if selectedAsset?.contentType == .gif {
+                    vipButton?.selected = false
                 }
             }
+        }
+    }
+    
+    func updateAttachmentButtons() {
+        attachmentTabBar.buttonsEnabled = !textViewHasPrependedImage
+        attachmentTabBar.setButtonEnabled(true, forIdentifier: ComposerInputAttachmentType.Hashtag.rawValue)
+        
+        let gifEnabled = vipButton?.selected == true ? false : !textViewHasPrependedImage
+        attachmentTabBar.setButtonEnabled(gifEnabled, forIdentifier: ComposerInputAttachmentType.GIF.rawValue)
+        
+        if !textViewHasPrependedImage {
+            selectedAsset = nil
         }
     }
     
@@ -485,6 +498,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         
         vipButton = dependencyManager.toggleableVIPButton
         if let vipButton = vipButton as? ToggleableImageButton {
+            vipButton.delegate = self
             vipLockContainerView.addSubview(vipButton)
             vipLockContainerView.v_addFitToParentConstraintsToSubview(vipButton)
         }
@@ -494,6 +508,12 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         willSet {
             vipButton?.removeFromSuperview()
         }
+    }
+    
+    // MARK: - ToggleableImageButtonDelegate
+    
+    func button(button: ToggleableImageButton, setSelected selected: Bool) {
+        updateAttachmentButtons()
     }
     
     // MARK: - VBackgroundContainer
@@ -521,6 +541,9 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             creationFlowController.v_showErrorDefaultError()
             return
         }
+        
+        // Disable VIP button if we just selected a GIF
+        vipButton?.enabled = contentType != .gif
         
         var preview = previewImage
         if let image = capturedMediaURL.v_videoPreviewImage where contentType == .gif {

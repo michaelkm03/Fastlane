@@ -8,9 +8,21 @@
 
 import Foundation
 
+protocol ToggleableImageButtonDelegate: class {
+    func button(button: ToggleableImageButton, setSelected selected: Bool)
+}
+
 /// A template-styled button that displays a toggleable image button
 @objc(VToggleableImageButton)
 class ToggleableImageButton: TouchableInsetAdjustableButton, TrackableButton {
+    override var selected: Bool {
+        didSet {
+            delegate?.button(self, setSelected: selected)
+        }
+    }
+    
+    weak var delegate: ToggleableImageButtonDelegate?
+    
     class func newWithDependencyManager(dependencyManager: VDependencyManager?) -> ToggleableImageButton {
         let button = ToggleableImageButton()
         button.dependencyManager = dependencyManager
