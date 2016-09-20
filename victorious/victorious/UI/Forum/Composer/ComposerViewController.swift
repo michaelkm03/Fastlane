@@ -174,11 +174,13 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             return
         }
         
-        if let currentText = textView.text where !currentText.isEmpty {
-            textView.text = currentText + " " + text + " "
+        let whitespaceCharacterSet = NSCharacterSet.whitespaceAndNewlineCharacterSet()
+        
+        if let lastCharacter = textView.text?.utf16.last where !whitespaceCharacterSet.characterIsMember(lastCharacter) {
+            composerTextViewManager?.appendTextIfPossible(textView, text: " " + text + " ")
         }
         else {
-            textView.text = text + " "
+            composerTextViewManager?.appendTextIfPossible(textView, text: text + " ")
         }
         
         textViewHasText = true
