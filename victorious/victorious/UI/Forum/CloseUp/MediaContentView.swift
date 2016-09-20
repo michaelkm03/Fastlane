@@ -198,9 +198,8 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
                 imageView.sd_setImageWithURL(
                     url,
                     placeholderImage: imageView.image, // Leave the image as is, since we want to wait until animation has finished before setting the image.
-                    options: .AvoidAutoSetImage
-                ) { [weak self] image, _, _, _ in
-                    self?.imageView.image = image
+                    options: []
+                ) { [weak self] _ in
                     self?.finishedLoadingContent()
                 }
             case .local(let image):
