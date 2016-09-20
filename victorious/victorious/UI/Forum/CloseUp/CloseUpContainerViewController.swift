@@ -320,7 +320,8 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
             return
         }
         
-        // Remove the height constraint on media content view because we are going to make it adapt to the screen in lightbox mode
+        // Removing the previous height constraint to avoid layout constraint conflict warnings with the new height constraint on media content view in lightbox.
+        // Its previous height anchor was constraint to a constant, which would stick around after being removed from the view hierarchy.
         if let heightConstraint = closeUpView.mediaContentHeightConstraint {
             mediaContentView.removeConstraint(heightConstraint)
         }
