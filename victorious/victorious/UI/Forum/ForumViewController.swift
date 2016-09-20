@@ -382,7 +382,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     }
     
     func chatFeed(chatFeed: ChatFeed, didSelectReplyButtonFor chatFeedContent: ChatFeedContent) {
-        guard let username = chatFeedContent.content.author.username else {
+        guard let username = chatFeedContent.content.author?.username else {
             return
         }
         
