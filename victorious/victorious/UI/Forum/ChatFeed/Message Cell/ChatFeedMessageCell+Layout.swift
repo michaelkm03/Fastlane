@@ -14,6 +14,15 @@ private enum ChatFeedMessageCellAlignment {
 }
 
 extension ChatFeedMessageCell {
+    // MARK: - Constants
+
+    private struct Constants {
+        static let likeViewWidth = CGFloat(66.0)
+        static let likeViewHeight = CGFloat(66.0)
+        static let replyButtonWidth = CGFloat(44.0)
+        static let replyButtonHeight = CGFloat(44.0)
+    }
+
     /// Performs the view layout for `cell` based on its content.
     static func layoutContent(for cell: ChatFeedMessageCell) {
         guard
@@ -99,8 +108,7 @@ extension ChatFeedMessageCell {
             cell.failureButton.frame = .zero
         }
 
-        // Like button layout:
-        
+        // Like button layout:        
         if alignment == .left, let likeView = cell.likeView, let baseFrame = bubbleFrames.last {
             likeView.hidden = false
             
@@ -118,7 +126,7 @@ extension ChatFeedMessageCell {
         }
 
         // Reply button layout:
-        
+
         if cell.showsReplyButton && alignment == .left, let topBubbleFrame = bubbleFrames.first, let bottomBubbleFrame = bubbleFrames.last {
             cell.replyButton.hidden = false
             

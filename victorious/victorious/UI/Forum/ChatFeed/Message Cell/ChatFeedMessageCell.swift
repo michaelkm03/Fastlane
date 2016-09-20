@@ -101,10 +101,6 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         return chatFeedContent?.content
     }
 
-    // MARK: - Formatter
-
-    let largeNumberFormatter = VLargeNumberFormatter()
-
     // MARK: - Subviews
     
     let usernameLabel = UILabel()
@@ -175,16 +171,17 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
 
         timestampLabel.font = dependencyManager.timestampFont
         timestampLabel.textColor = dependencyManager.timestampColor
-
         captionBubbleView.backgroundColor = dependencyManager.backgroundColor
 
         failureButton.setImage(UIImage(named: "failed_error"), forState: .Normal)
 
         if dependencyManager.upvoteStyle == UpvoteStyle.basic {
-            likeView = LikeView()
+            likeView = LikeView(frame: CGRect.zero,
+                                textColor: dependencyManager.timestampColor,
+                                font: dependencyManager.timestampFont,
+                                selectedIcon: self.dependencyManager.upvoteIconSelected,
+                                unselectedIcon: self.dependencyManager.upvoteIconUnselected)
             if let likeView = likeView {
-                likeView.countLabel.font = dependencyManager.timestampFont
-                likeView.countLabel.textColor = dependencyManager.timestampColor
                 likeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOnLikeView)))
                 contentView.addSubview(likeView)
             }
@@ -208,8 +205,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         usernameLabel.text = content?.author?.username ?? ""
         
         updateTimestamp()
-        updateLikeCount()
-        updateLikeImage()
+        likeView?.updateLikeStatus(content)
 
         let shouldHideTopLabels = content?.wasCreatedByCurrentUser == true
         usernameLabel.hidden = shouldHideTopLabels
@@ -300,27 +296,8 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         }
 
         upvoteOperation.queue { [weak self] _ in
-            self?.updateLikeCount()
-            self?.updateLikeImage()
+            self?.likeView?.updateLikeStatus(content)
         }
-    }
-
-    private func updateLikeCount() {
-        guard let content = content, likeCount = content.likeCount else {
-            return
-        }
-
-        let totalLikes = likeCount + content.currentUserLikeCount
-        likeView?.countLabel.text = totalLikes > 0 ? largeNumberFormatter.stringForInteger(totalLikes) : ""
-        likeView?.setNeedsLayout()
-    }
-
-    private func updateLikeImage() {
-        guard let content = content else {
-            return
-        }
-
-        likeView?.imageView.image = content.isLikedByCurrentUser ? dependencyManager.upvoteIconSelected : dependencyManager.upvoteIconUnselected
     }
 
     func updateTimestamp() {

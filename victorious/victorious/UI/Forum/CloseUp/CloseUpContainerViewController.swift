@@ -49,13 +49,27 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
             action: #selector(overflow)
         )
     }()
-    
-    private lazy var upvoteButton: UIButton = {
-        let button = BackgroundButton(type: .System)
-        button.addTarget(self, action: #selector(toggleUpvote), forControlEvents: .TouchUpInside)
-        return button
+
+    private lazy var likeView: LikeView = {
+        let frame = CGRect(
+            x: 0.0,
+            y: 0.0,
+            width: 44.0,
+            height: 44.0
+        )
+
+        let likeView = LikeView(frame: frame,
+                                textColor: UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.501961),
+                                font: UIFont(name: ".SFUIText-Regular", size: 12.0),
+                                selectedIcon: self.dependencyManager.upvoteIconSelected,
+                                unselectedIcon: self.dependencyManager.upvoteIconUnselected)
+
+        likeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(toggleUpvote)))
+        likeView.updateLikeStatus(self.content)
+
+        return likeView
     }()
-    
+
     private func updateAudioSessionCategory() {
         if content?.type == .video {
             VAudioManager.sharedInstance().focusedPlaybackDidBegin(muted: false)
@@ -160,26 +174,21 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
             return
         }
         
-        upvoteButton.tintColor = UIColor.redColor()
-        
+        likeView.updateLikeStatus(content)
         if content.isLikedByCurrentUser {
-            upvoteButton.setImage(dependencyManager.upvoteIconSelected, forState: .Normal)
-            upvoteButton.backgroundColor = dependencyManager.upvoteIconSelectedBackgroundColor
-            upvoteButton.tintColor = dependencyManager.upvoteIconTint
+            likeView.backgroundColor = dependencyManager.upvoteIconSelectedBackgroundColor
+            likeView.tintColor = dependencyManager.upvoteIconTint
         }
         else {
-            upvoteButton.setImage(dependencyManager.upvoteIconUnselected, forState: .Normal)
-            upvoteButton.backgroundColor = dependencyManager.upvoteIconUnselectedBackgroundColor
-            upvoteButton.tintColor = nil
+            likeView.backgroundColor = dependencyManager.upvoteIconUnselectedBackgroundColor
+            likeView.tintColor = nil
         }
-        
-        upvoteButton.sizeToFit()
-        
+
         if content.shareURL == nil {
-            navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: upvoteButton), overflowButton]
+            navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: likeView), overflowButton]
         }
         else {
-            navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: upvoteButton), shareButton, overflowButton]
+            navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: likeView), shareButton, overflowButton]
         }
     }
     
