@@ -59,8 +59,8 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         )
 
         let likeView = LikeView(frame: frame,
-                                textColor: UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.501961),
-                                font: UIFont(name: ".SFUIText-Regular", size: 12.0),
+                                textColor: self.dependencyManager.upvoteCountColor,
+                                font: self.dependencyManager.upvoteCountFont,
                                 selectedIcon: self.dependencyManager.upvoteIconSelected,
                                 unselectedIcon: self.dependencyManager.upvoteIconUnselected)
 
@@ -352,6 +352,14 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
 }
 
 private extension VDependencyManager {
+    var upvoteCountFont: UIFont? {
+        return fontForKey("font.upvote.count.text") ?? UIFont(name: ".SFUIText-Regular", size: 12.0)
+    }
+
+    var upvoteCountColor: UIColor {
+        return colorForKey("color.upvote.count.text") ?? .whiteColor()
+    }
+
     var upvoteIconTint: UIColor? {
         return colorForKey("color.text.actionButton")
     }

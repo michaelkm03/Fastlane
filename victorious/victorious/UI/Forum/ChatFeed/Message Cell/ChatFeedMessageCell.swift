@@ -177,8 +177,8 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
 
         if dependencyManager.upvoteStyle == UpvoteStyle.basic {
             likeView = LikeView(frame: CGRect.zero,
-                                textColor: dependencyManager.timestampColor,
-                                font: dependencyManager.timestampFont,
+                                textColor: dependencyManager.upvoteCountColor,
+                                font: dependencyManager.upvoteCountFont,
                                 selectedIcon: self.dependencyManager.upvoteIconSelected,
                                 unselectedIcon: self.dependencyManager.upvoteIconUnselected)
             if let likeView = likeView {
@@ -445,6 +445,14 @@ private extension VDependencyManager {
     
     var timestampColor: UIColor {
         return colorForKey("color.timestamp.text") ?? .whiteColor()
+    }
+
+    var upvoteCountFont: UIFont? {
+        return fontForKey("font.upvote.count.text") ?? UIFont(name: ".SFUIText-Regular", size: 12.0)
+    }
+
+    var upvoteCountColor: UIColor {
+        return colorForKey("color.upvote.count.text") ?? .whiteColor()
     }
 
     var upvoteStyle: UpvoteStyle {
