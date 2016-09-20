@@ -1178,6 +1178,8 @@
 		F00DEBA01CC1940F00C5C9EA /* NSURL+PreviewImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00DEB9F1CC1940F00C5C9EA /* NSURL+PreviewImage.swift */; };
 		F00FB8D01D88E22C00AAE752 /* GIFTrayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00FB8CF1D88E22C00AAE752 /* GIFTrayViewController.swift */; };
 		F00FB8D21D88E2D100AAE752 /* Tray.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00FB8D11D88E2D100AAE752 /* Tray.swift */; };
+		F00FC2C41D90F54D00CFF79F /* TrayRetryLoadCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00FC2C31D90F54D00CFF79F /* TrayRetryLoadCollectionViewCell.swift */; };
+		F00FC2C61D90F73900CFF79F /* TrayLoadingCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00FC2C51D90F73900CFF79F /* TrayLoadingCollectionViewCell.swift */; };
 		F01307FC1CD2A4C100C0156C /* NativeWorkspaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F01307FB1CD2A4C100C0156C /* NativeWorkspaceViewController.swift */; };
 		F01307FE1CD2A89800C0156C /* NativeWorkspaceViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F01307FD1CD2A89800C0156C /* NativeWorkspaceViewController.storyboard */; };
 		F0140BC11AA93AEB00B95642 /* VTimerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F0140BC01AA93AEB00B95642 /* VTimerManager.m */; };
@@ -1224,6 +1226,8 @@
 		F093A9471CF4D24E009ACABF /* VIPSuccessViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F093A9461CF4D24E009ACABF /* VIPSuccessViewController.storyboard */; };
 		F09B253D1D90C89100F21C68 /* StickerTrayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09B253C1D90C89100F21C68 /* StickerTrayViewController.swift */; };
 		F09B253F1D90CC0200F21C68 /* StickerTrayViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F09B253E1D90CC0200F21C68 /* StickerTrayViewController.storyboard */; };
+		F09B25431D90EE8C00F21C68 /* CustomInputAreaState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09B25421D90EE8C00F21C68 /* CustomInputAreaState.swift */; };
+		F09B25451D90EEAA00F21C68 /* CustomInputDisplayOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09B25441D90EEAA00F21C68 /* CustomInputDisplayOptions.swift */; };
 		F09E8C681C88CBF300437ACD /* Asset.json in Resources */ = {isa = PBXBuildFile; fileRef = F09E8C671C88CBF300437ACD /* Asset.json */; };
 		F0ABAA7C1D1CA8F800DAD4B3 /* TouchableInsetAdjustableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0ABAA7B1D1CA8F700DAD4B3 /* TouchableInsetAdjustableButton.swift */; };
 		F0B6F08D1D3EB3350037EACE /* VIPGateViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A748BD171C8A7302003D5F5F /* VIPGateViewController.storyboard */; };
@@ -2819,6 +2823,8 @@
 		F00DEB9F1CC1940F00C5C9EA /* NSURL+PreviewImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSURL+PreviewImage.swift"; sourceTree = "<group>"; };
 		F00FB8CF1D88E22C00AAE752 /* GIFTrayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFTrayViewController.swift; sourceTree = "<group>"; };
 		F00FB8D11D88E2D100AAE752 /* Tray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tray.swift; sourceTree = "<group>"; };
+		F00FC2C31D90F54D00CFF79F /* TrayRetryLoadCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrayRetryLoadCollectionViewCell.swift; sourceTree = "<group>"; };
+		F00FC2C51D90F73900CFF79F /* TrayLoadingCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrayLoadingCollectionViewCell.swift; sourceTree = "<group>"; };
 		F01307FB1CD2A4C100C0156C /* NativeWorkspaceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NativeWorkspaceViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		F01307FD1CD2A89800C0156C /* NativeWorkspaceViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = NativeWorkspaceViewController.storyboard; sourceTree = "<group>"; };
 		F0140BBF1AA93AEB00B95642 /* VTimerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTimerManager.h; sourceTree = "<group>"; };
@@ -2865,6 +2871,8 @@
 		F093A9461CF4D24E009ACABF /* VIPSuccessViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VIPSuccessViewController.storyboard; sourceTree = "<group>"; };
 		F09B253C1D90C89100F21C68 /* StickerTrayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickerTrayViewController.swift; sourceTree = "<group>"; };
 		F09B253E1D90CC0200F21C68 /* StickerTrayViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = StickerTrayViewController.storyboard; sourceTree = "<group>"; };
+		F09B25421D90EE8C00F21C68 /* CustomInputAreaState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomInputAreaState.swift; sourceTree = "<group>"; };
+		F09B25441D90EEAA00F21C68 /* CustomInputDisplayOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomInputDisplayOptions.swift; sourceTree = "<group>"; };
 		F09E8C671C88CBF300437ACD /* Asset.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Asset.json; sourceTree = "<group>"; };
 		F0ABAA7B1D1CA8F700DAD4B3 /* TouchableInsetAdjustableButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchableInsetAdjustableButton.swift; sourceTree = "<group>"; };
 		F0B6F0901D3ED0C10037EACE /* VIPFetchSubscriptionRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VIPFetchSubscriptionRequest.swift; sourceTree = "<group>"; };
@@ -5165,6 +5173,7 @@
 		A73BA2961C938B68008168B5 /* Composer */ = {
 			isa = PBXGroup;
 			children = (
+				F09B25411D90EE7C00F21C68 /* CustomInput */,
 				F00FB8CE1D88E1FE00AAE752 /* Trays */,
 				F06FC1FA1C97437900A014C7 /* Composer.storyboard */,
 				A73BA2971C938B68008168B5 /* Composer.swift */,
@@ -6176,14 +6185,14 @@
 			path = "Action Bar";
 			sourceTree = "<group>";
 		};
-		F004B3281D8913D0005D4A74 /* GIFTray */ = {
+		F004B3281D8913D0005D4A74 /* GIF */ = {
 			isa = PBXGroup;
 			children = (
 				F004B3261D8912AA005D4A74 /* GIFTrayDataSource.swift */,
 				F004B3241D890C8D005D4A74 /* GIFTrayViewController.storyboard */,
 				F00FB8CF1D88E22C00AAE752 /* GIFTrayViewController.swift */,
 			);
-			name = GIFTray;
+			name = GIF;
 			sourceTree = "<group>";
 		};
 		F009BD051CE6547B00F81CAA /* HashtagBar */ = {
@@ -6203,12 +6212,22 @@
 		F00FB8CE1D88E1FE00AAE752 /* Trays */ = {
 			isa = PBXGroup;
 			children = (
-				F004B3281D8913D0005D4A74 /* GIFTray */,
-				F09B25401D90CC6700F21C68 /* StickerTray */,
+				F004B3281D8913D0005D4A74 /* GIF */,
+				F09B25401D90CC6700F21C68 /* Sticker */,
 				F00FB8D11D88E2D100AAE752 /* Tray.swift */,
 				F004B32D1D8B7A67005D4A74 /* TrayDataSource.swift */,
+				F00FC2C71D90FE4900CFF79F /* UtilityCells */,
 			);
 			name = Trays;
+			sourceTree = "<group>";
+		};
+		F00FC2C71D90FE4900CFF79F /* UtilityCells */ = {
+			isa = PBXGroup;
+			children = (
+				F00FC2C51D90F73900CFF79F /* TrayLoadingCollectionViewCell.swift */,
+				F00FC2C31D90F54D00CFF79F /* TrayRetryLoadCollectionViewCell.swift */,
+			);
+			name = UtilityCells;
 			sourceTree = "<group>";
 		};
 		F0140BC21AA9463600B95642 /* Timer */ = {
@@ -6255,14 +6274,23 @@
 			name = Button;
 			sourceTree = "<group>";
 		};
-		F09B25401D90CC6700F21C68 /* StickerTray */ = {
+		F09B25401D90CC6700F21C68 /* Sticker */ = {
 			isa = PBXGroup;
 			children = (
 				F004B32B1D891908005D4A74 /* StickerTrayDataSource.swift */,
 				F09B253E1D90CC0200F21C68 /* StickerTrayViewController.storyboard */,
 				F09B253C1D90C89100F21C68 /* StickerTrayViewController.swift */,
 			);
-			name = StickerTray;
+			name = Sticker;
+			sourceTree = "<group>";
+		};
+		F09B25411D90EE7C00F21C68 /* CustomInput */ = {
+			isa = PBXGroup;
+			children = (
+				F09B25421D90EE8C00F21C68 /* CustomInputAreaState.swift */,
+				F09B25441D90EEAA00F21C68 /* CustomInputDisplayOptions.swift */,
+			);
+			name = CustomInput;
 			sourceTree = "<group>";
 		};
 		F0FBC4471D22F0E60070873F /* CaptionBar */ = {
@@ -7756,6 +7784,7 @@
 				A721E9441B572454000B7901 /* NSString+VStringWithData.m in Sources */,
 				A631F09B1B4DB52700CC6C80 /* VAlternateCaptureOption.m in Sources */,
 				7A1DED071D80E130003F5C37 /* RequestErrorHandler.swift in Sources */,
+				F09B25451D90EEAA00F21C68 /* CustomInputDisplayOptions.swift in Sources */,
 				D836884419C3718A00070F22 /* VBaseSupplementaryView.m in Sources */,
 				F06FC1FC1C97437900A014C7 /* ComposerTextViewManagerDelegate.swift in Sources */,
 				7A1DED161D8257EF003F5C37 /* Chainable.swift in Sources */,
@@ -7841,6 +7870,7 @@
 				A73C3EBF1C45890E00A8452C /* MediaSearchViewController+Delegates.swift in Sources */,
 				C30AA4F61B06B82A0010CEFE /* VPermissionPhotoLibrary.m in Sources */,
 				B074C5B81B39ED6B00EA3FFC /* VTrimmerFlowLayout.m in Sources */,
+				F00FC2C41D90F54D00CFF79F /* TrayRetryLoadCollectionViewCell.swift in Sources */,
 				67B6666A1CDA6AF80096F18C /* ChatInterfaceDataSource.swift in Sources */,
 				039ED27E19C563B700305987 /* VCameraVideoEncoder.m in Sources */,
 				67A20A231CC6A20900629487 /* ListMenuSectionCell.swift in Sources */,
@@ -7927,6 +7957,7 @@
 				671B01B51BFD5AB800E47902 /* DismissButton.swift in Sources */,
 				A7AEF9D01A83F2F500A3D3A0 /* VVideoUtils.m in Sources */,
 				D84559001ABF4CFF00EA2FA9 /* VBadgeStringFormatter.m in Sources */,
+				F09B25431D90EE8C00F21C68 /* CustomInputAreaState.swift in Sources */,
 				D80A94DB1A536C8C0035D788 /* VTrimmerViewController.m in Sources */,
 				BF2677961CDA9CB60015F527 /* VDependencyManager+VUserProfile.swift in Sources */,
 				7AFEB1591D46D6A900FA972D /* ScrollPaginator.swift in Sources */,
@@ -8127,6 +8158,7 @@
 				D85B70981B0EED0D0038CA5B /* VModernLoginViewController.m in Sources */,
 				F009BCFF1CE24A0B00F81CAA /* UploadManagerHost.swift in Sources */,
 				F0E6672E1D1496B8007BF537 /* ContentCell.swift in Sources */,
+				F00FC2C61D90F73900CFF79F /* TrayLoadingCollectionViewCell.swift in Sources */,
 				A650EFDD1B422378005529E5 /* VAssetCollectionListViewController.m in Sources */,
 				D888B52B1A86FC7800B34149 /* VRadialGradientView.m in Sources */,
 				A73BA2DA1C9394B6008168B5 /* ForumViewController.swift in Sources */,

@@ -8,33 +8,6 @@
 
 import UIKit
 
-enum CustomInputAreaState {
-    case Hidden
-    case Visible(inputController: CustomInputDisplayOptions)
-    
-    var visibleInputController: CustomInputDisplayOptions? {
-        switch self {
-            case .Visible(let inputController):
-                return inputController
-            default:
-                return nil
-        }
-    }
-}
-
-func ==(lhs: CustomInputAreaState, rhs: CustomInputAreaState) -> Bool {
-    return lhs.visibleInputController == rhs.visibleInputController
-}
-
-struct CustomInputDisplayOptions {
-    let viewController: UIViewController
-    let desiredHeight: CGFloat
-}
-
-func ==(lhs: CustomInputDisplayOptions?, rhs: CustomInputDisplayOptions?) -> Bool {
-    return lhs?.viewController == rhs?.viewController && lhs?.desiredHeight == rhs?.desiredHeight
-}
-
 /// Handles view manipulation and message sending related to the composer. Could definitely use a refactor to make it less stateful.
 class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate, ComposerAttachmentTabBarDelegate, VBackgroundContainer, VCreationFlowControllerDelegate, HashtagBarControllerSelectionDelegate, HashtagBarViewControllerAnimationDelegate, VPassthroughContainerViewDelegate {
     

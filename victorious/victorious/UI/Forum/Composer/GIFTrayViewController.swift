@@ -52,9 +52,15 @@ class GIFTrayViewController: UIViewController, Tray, UICollectionViewDelegate, U
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         guard
             let gif = dataSource.asset(atIndex: indexPath.item),
-            let remoteID = gif.remoteID
+            let remoteID = gif.remoteID where
+            dataSource.trayState == .Populated
         else {
-            Log.debug("Selected asset from an unexpected index in Tray")
+            if let _ = collectionView.cellForItemAtIndexPath(indexPath) as? TrayRetryLoadCollectionViewCell {
+                dataSource.fetchGifs()
+            }
+            else {
+                Log.debug("Selected asset from an unexpected index in Tray")
+            }
             return
         }
         showExportingHUD()
@@ -81,8 +87,11 @@ class GIFTrayViewController: UIViewController, Tray, UICollectionViewDelegate, U
     // MARK: - UICollectionViewDelegateFlowLayout
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        guard let gif = dataSource.asset(atIndex: indexPath.row) else {
-            return CGSize.zero
+        guard
+            let gif = dataSource.asset(atIndex: indexPath.row) where
+            dataSource.trayState == .Populated
+        else {
+            return view.bounds.insetBy(Constants.collectionViewContentInsets).size
         }
         let height = view.bounds.height - Constants.collectionViewContentInsets.vertical
         return CGSize(width: height * gif.aspectRatio, height: height)

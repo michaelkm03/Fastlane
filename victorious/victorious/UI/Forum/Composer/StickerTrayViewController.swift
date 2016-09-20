@@ -52,29 +52,35 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         guard
-            let gif = dataSource.asset(atIndex: indexPath.item),
-            let remoteID = gif.remoteID
+            let sticker = dataSource.asset(atIndex: indexPath.item),
+            let remoteID = sticker.remoteID where
+            dataSource.trayState == .Populated
+        else {
+            if let _ = collectionView.cellForItemAtIndexPath(indexPath) as? TrayRetryLoadCollectionViewCell {
+                dataSource.fetchStickers()
+            }
             else {
                 Log.debug("Selected asset from an unexpected index in Tray")
-                return
+            }
+            return
         }
         showExportingHUD()
-        exportMedia(fromSearchResult: gif) { [weak self] state in
+        exportMedia(fromSearchResult: sticker) { [weak self] state in
             self?.dismissHUD()
             switch state {
-            case .success(let result):
-                let localAssetParameters = ContentMediaAsset.LocalAssetParameters(contentType: .gif, remoteID: remoteID, source: nil, size: gif.assetSize, url: gif.sourceMediaURL)
-                guard
-                    let strongSelf = self,
-                    let asset = ContentMediaAsset(initializationParameters: localAssetParameters),
-                    let previewImage = result.exportPreviewImage
-                    else {
-                        return
-                }
-                strongSelf.delegate?.tray(strongSelf, selectedAsset: asset, withPreviewImage: previewImage)
-            case .failure(let error):
-                self?.showHUD(renderingError: error)
-            case .canceled:()
+                case .success(let result):
+                    let localAssetParameters = ContentMediaAsset.LocalAssetParameters(contentType: .gif, remoteID: remoteID, source: nil, size: sticker.assetSize, url: sticker.sourceMediaURL)
+                    guard
+                        let strongSelf = self,
+                        let asset = ContentMediaAsset(initializationParameters: localAssetParameters),
+                        let previewImage = result.exportPreviewImage
+                        else {
+                            return
+                    }
+                    strongSelf.delegate?.tray(strongSelf, selectedAsset: asset, withPreviewImage: previewImage)
+                case .failure(let error):
+                    self?.showHUD(renderingError: error)
+                case .canceled:()
             }
         }
     }
@@ -82,8 +88,9 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
     // MARK: - UICollectionViewDelegateFlowLayout
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        guard let _ = dataSource.asset(atIndex: indexPath.row) else {
-            return CGSize.zero
+        guard let _ = dataSource.asset(atIndex: indexPath.row) where
+            dataSource.trayState == .Populated else {
+                return view.bounds.insetBy(Constants.collectionViewContentInsets).size
         }
         let numberOfRows = Constants.numberOfRows
         let emptySpace = Constants.collectionViewContentInsets.vertical + CGFloat(Constants.numberOfRows - 1) * Constants.interItemSpace

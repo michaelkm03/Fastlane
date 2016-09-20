@@ -8,6 +8,13 @@
 
 import Foundation
 
+enum TrayState {
+    case Empty
+    case Loading
+    case FailedToLoad
+    case Populated
+}
+
 protocol TrayDataSource: UICollectionViewDataSource {
     associatedtype AssetType
     weak var dataSourceDelegate: TrayDataSourceDelegate? { get set }
@@ -23,11 +30,4 @@ extension TrayDataSourceDelegate {
     func trayDataSource<DataSource: TrayDataSource>(trayDataSource: DataSource, changedToState state: TrayState) {
         collectionView.reloadData()
     }
-}
-
-enum TrayState {
-    case Empty
-    case Loading
-    case FailedToLoad
-    case Populated
 }
