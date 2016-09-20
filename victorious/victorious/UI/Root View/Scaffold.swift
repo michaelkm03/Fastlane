@@ -40,7 +40,7 @@ extension Scaffold where Self: UIViewController {
             onReady?()
         }
         
-        PreFetchProductOperation(dependencyManager: dependencyManager)?.queue()
+        ProductPrefetchOperation(dependencyManager: dependencyManager)?.queue()
     }
     
     // MARK: - Notifications
