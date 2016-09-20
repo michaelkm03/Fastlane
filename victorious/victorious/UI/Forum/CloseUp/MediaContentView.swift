@@ -301,6 +301,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
 
         // We need to reload the image content if the size has changed above the threshold since MCV is initialized with a 0 size.
         if content.type.displaysAsImage && (lastFrameSize.area / bounds.size.area) < Constants.imageReloadThreshold {
+            lastFrameSize = bounds.size
             loadContent()
         }
     }
