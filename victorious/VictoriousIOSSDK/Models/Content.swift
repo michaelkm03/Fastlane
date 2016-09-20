@@ -20,7 +20,7 @@ public struct Content: Equatable {
     // MARK: - Author
     
     /// The author of this content.
-    public var author: UserModel
+    public var author: UserModel?
     
     // MARK: - Content
     
@@ -103,25 +103,22 @@ public struct Content: Equatable {
     // MARK: - Initializing
     
     public init?(json viewedContentJSON: JSON) {
-        
-        
         let json = viewedContentJSON["content"]
         
         guard
             let id = json["id"].string,
             let typeString = json["type"].string,
             let type = ContentType(rawValue: typeString),
-            let previewType = json["preview"]["type"].string,
-            let author = User(json: viewedContentJSON["author"])
+            let previewType = json["preview"]["type"].string
         else {
-            NSLog("Required field missing in content json -> \(viewedContentJSON)")
+            Log.warning("Required field missing in content json -> \(viewedContentJSON)")
             return nil
         }
         
         let sourceType = json[typeString]["type"].string ?? typeString
         
         self.id = id
-        self.author = author
+        self.author = User(json: viewedContentJSON["author"])
         self.type = type
         
         if type == .text {
@@ -184,6 +181,37 @@ public struct Content: Equatable {
         guard text != nil || assets.count > 0 else {
             return nil
         }
+    }
+    
+    public init?(lightweightJSON json: JSON) {
+        guard
+            let id = json["id"].string,
+            let typeString = json["type"].string,
+            let type = ContentType(rawValue: typeString),
+            let previewType = json["preview"]["type"].string
+        else {
+            Log.warning("Required field missing in content json -> \(json)")
+            return nil
+        }
+        self.id = id
+        self.type = type
+        
+        isVIPOnly = json["is_vip"].bool ?? false
+        paginationTimestamp = Timestamp(apiString: json["pagination_timestamp"].stringValue) ?? Timestamp()
+        previewImages = (json["preview"][previewType]["assets"].array ?? []).flatMap { ImageAsset(json: $0) }
+        tracking = Tracking(json: json["tracking"] )
+        
+        author = nil
+        likeCount = nil
+        postedAt = nil
+        createdAt = Timestamp()
+        text = nil
+        hashtags = []
+        shareURL = nil
+        linkedURL = nil
+        assets  = []
+        userTags = [:]
+        isRemotelyLikedByCurrentUser = false
     }
     
     public init(

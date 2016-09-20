@@ -112,13 +112,12 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
             if oldValue?.id == content?.id {
                 return
             }
-            guard let content = content else {
+            guard let content = content, let author = content.author else {
                 return
             }
             
             self.mediaContentView?.removeFromSuperview()
             
-            let author = content.author
             
             // Header
             userNameButton.setTitle(author.displayName, forState: .Normal)
@@ -237,7 +236,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
     }
     
     private dynamic func showProfile() {
-        guard let userID = content?.author.id else {
+        guard let userID = content?.author?.id else {
             return
         }
         delegate?.closeUpView(self, didSelectProfileForUserID: userID)

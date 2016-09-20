@@ -268,7 +268,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     // MARK: - ChatFeedMessageCellDelegate
     
     func messageCellDidSelectAvatarImage(messageCell: ChatFeedMessageCell) {
-        guard let userID = messageCell.chatFeedContent?.content.author.id else {
+        guard let userID = messageCell.chatFeedContent?.content.author?.id else {
             return
         }
         

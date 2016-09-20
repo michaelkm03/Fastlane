@@ -15,7 +15,7 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
         
         dataSource = TimePaginatedDataSource(
             apiPath: self.dependencyManager.mainFeedAPIPath,
-            createOperation: { ContentFeedOperation(apiPath: $0) },
+            createOperation: { ContentFeedOperation(apiPath: $0, payloadType: .regular) },
             processOutput: { $0.contents }
         )
         
