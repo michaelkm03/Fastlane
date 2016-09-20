@@ -378,6 +378,7 @@
 		0EF377531D36EF4A006BF786 /* StageContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF377521D36EF4A006BF786 /* StageContent.swift */; };
 		0EF377581D370673006BF786 /* TitleCardViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0EF377571D370673006BF786 /* TitleCardViewController.storyboard */; };
 		0EF3775A1D370697006BF786 /* TitleCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF377591D370697006BF786 /* TitleCardViewController.swift */; };
+		0EF5235C1D91B40100A41082 /* TemporaryFileWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF5235B1D91B40100A41082 /* TemporaryFileWriter.swift */; };
 		0EF716891C98F8C60005CF86 /* SSLSecurity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF716871C98F8C60005CF86 /* SSLSecurity.swift */; };
 		0EF7168A1C98F8C60005CF86 /* WebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF716881C98F8C60005CF86 /* WebSocket.swift */; };
 		0EF7168D1C98FE5E0005CF86 /* WebSocketController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF7168C1C98FE5E0005CF86 /* WebSocketController.swift */; };
@@ -1769,6 +1770,7 @@
 		0EF377521D36EF4A006BF786 /* StageContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StageContent.swift; sourceTree = "<group>"; };
 		0EF377571D370673006BF786 /* TitleCardViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = TitleCardViewController.storyboard; path = TitleCard/TitleCardViewController.storyboard; sourceTree = "<group>"; };
 		0EF377591D370697006BF786 /* TitleCardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TitleCardViewController.swift; path = TitleCard/TitleCardViewController.swift; sourceTree = "<group>"; };
+		0EF5235B1D91B40100A41082 /* TemporaryFileWriter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemporaryFileWriter.swift; sourceTree = "<group>"; };
 		0EF716871C98F8C60005CF86 /* SSLSecurity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SSLSecurity.swift; path = Starscream/Source/SSLSecurity.swift; sourceTree = "<group>"; };
 		0EF716881C98F8C60005CF86 /* WebSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebSocket.swift; path = Starscream/Source/WebSocket.swift; sourceTree = "<group>"; };
 		0EF7168C1C98FE5E0005CF86 /* WebSocketController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebSocketController.swift; path = WebSocket/WebSocketController.swift; sourceTree = "<group>"; };
@@ -4291,6 +4293,14 @@
 			name = TitleCard;
 			sourceTree = "<group>";
 		};
+		0EF5235A1D91B3E800A41082 /* File Management */ = {
+			isa = PBXGroup;
+			children = (
+				0EF5235B1D91B40100A41082 /* TemporaryFileWriter.swift */,
+			);
+			name = "File Management";
+			sourceTree = "<group>";
+		};
 		0EF716851C98F89B0005CF86 /* Starscream */ = {
 			isa = PBXGroup;
 			children = (
@@ -5825,6 +5835,7 @@
 				03CE66FD19B640CD0011BB9E /* Device Info */,
 				A77951141B28AB6700D9DB0A /* Environment */,
 				03CE66F019B47B590011BB9E /* Facebook */,
+				0EF5235A1D91B3E800A41082 /* File Management */,
 				A7672B921A1BF6B40063AF46 /* First Install */,
 				A7AEF9C11A83F27600A3D3A0 /* Formatters */,
 				C3623F211BA3AE54002B121D /* Interstitials */,
@@ -7804,6 +7815,7 @@
 				96964A471D871D9D0090EA49 /* DeeplinkContext.swift in Sources */,
 				671658FB1D2CA367000C7F62 /* ChatFeedCollectionViewLayout.swift in Sources */,
 				7A1DECCA1D80E075003F5C37 /* LoginSuccessOperation.swift in Sources */,
+				0EF5235C1D91B40100A41082 /* TemporaryFileWriter.swift in Sources */,
 				67BECC4F1CC985C000DFEE4B /* ListMenuCommunityItem.swift in Sources */,
 				A7EBF5681C2F3BF40080C7CF /* VCurrentUser.swift in Sources */,
 				67E1502C1D774FCD002CC5A3 /* NotificationSettings.swift in Sources */,
