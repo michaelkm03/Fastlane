@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="RXE-Oi-dH9">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="RXE-Oi-dH9">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
@@ -16,7 +16,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="s93-5b-hkK">
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="s93-5b-hkK">
                                 <rect key="frame" x="282" y="281" width="37" height="37"/>
                             </activityIndicatorView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hIh-NH-2x7" userLabel="Title Card Container View">
@@ -46,8 +46,9 @@
                             <constraint firstItem="hIh-NH-2x7" firstAttribute="leading" secondItem="dPd-gY-gTf" secondAttribute="leading" id="Orb-UE-xAs"/>
                             <constraint firstAttribute="trailing" secondItem="wSh-lD-twH" secondAttribute="trailing" id="QK3-4L-siD"/>
                             <constraint firstAttribute="trailing" secondItem="hIh-NH-2x7" secondAttribute="trailing" id="RTu-M9-7eH"/>
+                            <constraint firstItem="wSh-lD-twH" firstAttribute="top" relation="greaterThanOrEqual" secondItem="s93-5b-hkK" secondAttribute="bottom" constant="50" id="YdX-Hf-vSl"/>
                             <constraint firstItem="s93-5b-hkK" firstAttribute="centerX" secondItem="dPd-gY-gTf" secondAttribute="centerX" id="b4X-I0-65h"/>
-                            <constraint firstItem="s93-5b-hkK" firstAttribute="centerY" secondItem="dPd-gY-gTf" secondAttribute="centerY" id="cyH-Ev-RcG"/>
+                            <constraint firstItem="s93-5b-hkK" firstAttribute="centerY" secondItem="dPd-gY-gTf" secondAttribute="centerY" priority="999" id="cyH-Ev-RcG"/>
                             <constraint firstItem="Ldt-nB-e5k" firstAttribute="top" secondItem="wSh-lD-twH" secondAttribute="bottom" id="s1w-qo-3RR"/>
                             <constraint firstItem="wSh-lD-twH" firstAttribute="top" secondItem="hIh-NH-2x7" secondAttribute="bottom" constant="12" id="t92-7c-YjQ"/>
                         </constraints>
