@@ -1222,6 +1222,8 @@
 		F093A93D1CF3D9D0009ACABF /* VIPFlowNavigationController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F093A93C1CF3D9D0009ACABF /* VIPFlowNavigationController.storyboard */; };
 		F093A9451CF4D220009ACABF /* VIPSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F093A9441CF4D220009ACABF /* VIPSuccessViewController.swift */; };
 		F093A9471CF4D24E009ACABF /* VIPSuccessViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F093A9461CF4D24E009ACABF /* VIPSuccessViewController.storyboard */; };
+		F09B253D1D90C89100F21C68 /* StickerTrayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09B253C1D90C89100F21C68 /* StickerTrayViewController.swift */; };
+		F09B253F1D90CC0200F21C68 /* StickerTrayViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F09B253E1D90CC0200F21C68 /* StickerTrayViewController.storyboard */; };
 		F09E8C681C88CBF300437ACD /* Asset.json in Resources */ = {isa = PBXBuildFile; fileRef = F09E8C671C88CBF300437ACD /* Asset.json */; };
 		F0ABAA7C1D1CA8F800DAD4B3 /* TouchableInsetAdjustableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0ABAA7B1D1CA8F700DAD4B3 /* TouchableInsetAdjustableButton.swift */; };
 		F0B6F08D1D3EB3350037EACE /* VIPGateViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A748BD171C8A7302003D5F5F /* VIPGateViewController.storyboard */; };
@@ -2861,6 +2863,8 @@
 		F093A93C1CF3D9D0009ACABF /* VIPFlowNavigationController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VIPFlowNavigationController.storyboard; sourceTree = "<group>"; };
 		F093A9441CF4D220009ACABF /* VIPSuccessViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VIPSuccessViewController.swift; sourceTree = "<group>"; };
 		F093A9461CF4D24E009ACABF /* VIPSuccessViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VIPSuccessViewController.storyboard; sourceTree = "<group>"; };
+		F09B253C1D90C89100F21C68 /* StickerTrayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickerTrayViewController.swift; sourceTree = "<group>"; };
+		F09B253E1D90CC0200F21C68 /* StickerTrayViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = StickerTrayViewController.storyboard; sourceTree = "<group>"; };
 		F09E8C671C88CBF300437ACD /* Asset.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Asset.json; sourceTree = "<group>"; };
 		F0ABAA7B1D1CA8F700DAD4B3 /* TouchableInsetAdjustableButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchableInsetAdjustableButton.swift; sourceTree = "<group>"; };
 		F0B6F0901D3ED0C10037EACE /* VIPFetchSubscriptionRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VIPFetchSubscriptionRequest.swift; sourceTree = "<group>"; };
@@ -6175,9 +6179,9 @@
 		F004B3281D8913D0005D4A74 /* GIFTray */ = {
 			isa = PBXGroup;
 			children = (
-				F00FB8CF1D88E22C00AAE752 /* GIFTrayViewController.swift */,
 				F004B3261D8912AA005D4A74 /* GIFTrayDataSource.swift */,
 				F004B3241D890C8D005D4A74 /* GIFTrayViewController.storyboard */,
+				F00FB8CF1D88E22C00AAE752 /* GIFTrayViewController.swift */,
 			);
 			name = GIFTray;
 			sourceTree = "<group>";
@@ -6200,7 +6204,7 @@
 			isa = PBXGroup;
 			children = (
 				F004B3281D8913D0005D4A74 /* GIFTray */,
-				F004B32B1D891908005D4A74 /* StickerTrayDataSource.swift */,
+				F09B25401D90CC6700F21C68 /* StickerTray */,
 				F00FB8D11D88E2D100AAE752 /* Tray.swift */,
 				F004B32D1D8B7A67005D4A74 /* TrayDataSource.swift */,
 			);
@@ -6249,6 +6253,16 @@
 				F07DDE401CFCDB1500C7FC8D /* TrackableButton.swift */,
 			);
 			name = Button;
+			sourceTree = "<group>";
+		};
+		F09B25401D90CC6700F21C68 /* StickerTray */ = {
+			isa = PBXGroup;
+			children = (
+				F004B32B1D891908005D4A74 /* StickerTrayDataSource.swift */,
+				F09B253E1D90CC0200F21C68 /* StickerTrayViewController.storyboard */,
+				F09B253C1D90C89100F21C68 /* StickerTrayViewController.swift */,
+			);
+			name = StickerTray;
 			sourceTree = "<group>";
 		};
 		F0FBC4471D22F0E60070873F /* CaptionBar */ = {
@@ -6890,6 +6904,7 @@
 				A7C565ED1C4461D000E4DF6A /* NotificationsResponse.json in Resources */,
 				036F386C1A0C4DEA0014DF66 /* DroidSans.ttf in Resources */,
 				66AF79541B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard in Resources */,
+				F09B253F1D90CC0200F21C68 /* StickerTrayViewController.storyboard in Resources */,
 				A74783DF1BA09C10005654A6 /* VideoToolbarView.xib in Resources */,
 				036F38871A0C4DEA0014DF66 /* PT_Sans-Web-Regular.ttf in Resources */,
 				A7FE8C3E19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf in Resources */,
@@ -7970,6 +7985,7 @@
 				A721E9581B572454000B7901 /* UIResponder+VResponderChain.m in Sources */,
 				0314D4D219B46B5E00FA363C /* VRootViewController.m in Sources */,
 				D8F8B1F31AC5E6CF00AA2DB7 /* VDependencyManager+VBackgroundContainer.m in Sources */,
+				F09B253D1D90C89100F21C68 /* StickerTrayViewController.swift in Sources */,
 				7C28F1041D1DDD660070B8AE /* VDependencyManager+CTAErrorState.swift in Sources */,
 				7AE363A51CC98F5D00F851E9 /* RightNavViewController.swift in Sources */,
 				7A47849F1CF374FD00894233 /* WebSocketForumNetworkSource.swift in Sources */,

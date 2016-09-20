@@ -11,7 +11,7 @@ import Foundation
 class GIFTrayDataSource: PaginatedDataSource, TrayDataSource {
     private struct Constants {
         static let emptyCellReuseIdentifier = UICollectionViewCell.defaultReuseIdentifier
-        static let gifCellReuseIdentifier = UICollectionViewCell.defaultReuseIdentifier
+        static let gifCellReuseIdentifier = MediaSearchPreviewCell.defaultReuseIdentifier
     }
     
     let dependencyManager: VDependencyManager
@@ -37,6 +37,7 @@ class GIFTrayDataSource: PaginatedDataSource, TrayDataSource {
     }
     
     func registerCells(withCollectionView collectionView: UICollectionView) {
+        //TODO: Handle failure with proper cells
         collectionView.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: Constants.emptyCellReuseIdentifier)
         collectionView.registerNib(MediaSearchPreviewCell.associatedNib, forCellWithReuseIdentifier: Constants.gifCellReuseIdentifier)
     }

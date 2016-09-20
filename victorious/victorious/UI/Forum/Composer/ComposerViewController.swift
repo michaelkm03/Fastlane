@@ -10,9 +10,9 @@ import UIKit
 
 enum CustomInputAreaState {
     case Hidden
-    case Visible(inputController: CustomInputController)
+    case Visible(inputController: CustomInputDisplayOptions)
     
-    var visibleInputController: CustomInputController? {
+    var visibleInputController: CustomInputDisplayOptions? {
         switch self {
             case .Visible(let inputController):
                 return inputController
@@ -26,12 +26,12 @@ func ==(lhs: CustomInputAreaState, rhs: CustomInputAreaState) -> Bool {
     return lhs.visibleInputController == rhs.visibleInputController
 }
 
-struct CustomInputController {
+struct CustomInputDisplayOptions {
     let viewController: UIViewController
     let desiredHeight: CGFloat
 }
 
-func ==(lhs: CustomInputController?, rhs: CustomInputController?) -> Bool {
+func ==(lhs: CustomInputDisplayOptions?, rhs: CustomInputDisplayOptions?) -> Bool {
     return lhs?.viewController == rhs?.viewController && lhs?.desiredHeight == rhs?.desiredHeight
 }
 
@@ -104,15 +104,18 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
     }
     
-//    lazy var stickerInputController: CustomInputController = {
-//        return CustomInputController(viewController: StickerTrayViewController.new(self.dependencyManager), desiredHeight: Constants.stickerInputAreaHeight)
-//    }()
+    lazy var stickerInputController: CustomInputDisplayOptions = {
+        let dependencyManager: VDependencyManager = self.dependencyManager.stickerTrayDependency!
+        let stickerTray = StickerTrayViewController.new(dependencyManager)
+        stickerTray.delegate = self
+        return CustomInputDisplayOptions(viewController: stickerTray, desiredHeight: Constants.stickerInputAreaHeight)
+    }()
     
-    lazy var gifTrayInputController: CustomInputController = {
+    lazy var gifTrayInputController: CustomInputDisplayOptions = {
         let dependencyManager: VDependencyManager = self.dependencyManager.gifTrayDependency!
         let gifTray = GIFTrayViewController.new(dependencyManager)
         gifTray.delegate = self
-        return CustomInputController(viewController: gifTray, desiredHeight: Constants.gifInputAreaHeight)
+        return CustomInputDisplayOptions(viewController: gifTray, desiredHeight: Constants.gifInputAreaHeight)
     }()
     
     /// Referenced so that it can be set toggled between 0 and it's default
@@ -230,7 +233,9 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     private lazy var showKeyboardBlock: VKeyboardManagerKeyboardChangeBlock = { startFrame, endFrame, animationDuration, animationCurve in
         
-        self.updateViewsForNewVisibleKeyboardHeight(endFrame.height, animationOptions: UIViewAnimationOptions(rawValue: UInt(animationCurve.rawValue << 16)), animationDuration: animationDuration)
+        if self.textView.isFirstResponder() {
+            self.updateViewsForNewVisibleKeyboardHeight(endFrame.height, animationOptions: UIViewAnimationOptions(rawValue: UInt(animationCurve.rawValue << 16)), animationDuration: animationDuration)
+        }
     }
     
     private lazy var hideKeyboardBlock: VKeyboardManagerKeyboardChangeBlock = { startFrame, endFrame, animationDuration, animationCurve in
@@ -632,12 +637,10 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
                     textView.becomeFirstResponder()
                 }
                 composerTextViewManager?.appendTextIfPossible(textView, text: "#")
-//            case .StickerTray:
-//                customInputAreaState = .Visible(inputController: stickerInputController)
+            case .StickerTray:
+                customInputAreaState = .Visible(inputController: stickerInputController)
             case .GIFTray:
                 customInputAreaState = .Visible(inputController: gifTrayInputController)
-            default:()
-                
             }
         }
     }
@@ -741,13 +744,13 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     // MARK: - TrayDelegate
     
-    func tray(tray: Tray, selectedItemWithPreviewImage previewImage: UIImage, mediaURL: NSURL) {
+    func tray(tray: Tray, selectedAsset asset: ContentMediaAsset, withPreviewImage previewImage: UIImage) {
         guard let currentUser = VCurrentUser.user else {
             Log.warning("Tried to send item from tray with no logged in user")
             return
         }
         let isVIPOnly = (vipButton as? ToggleableImageButton)?.selected ?? false
-        sendMessage(asset: ContentMediaAsset.gif(remoteID: nil, url: mediaURL, source: nil, size: .zero), previewImage: previewImage, text: nil, currentUser: currentUser, isVIPOnly: isVIPOnly)
+        sendMessage(asset: asset, previewImage: previewImage, text: nil, currentUser: currentUser, isVIPOnly: isVIPOnly)
     }
 }
 
@@ -828,5 +831,9 @@ private extension VDependencyManager {
     
     var gifTrayDependency: VDependencyManager? {
         return childDependencyForKey("gifTray")
+    }
+    
+    var stickerTrayDependency: VDependencyManager? {
+        return childDependencyForKey("stickerTray")
     }
 }
