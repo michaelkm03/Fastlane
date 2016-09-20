@@ -92,7 +92,7 @@ class StickerTrayDataSource: PaginatedDataSource, TrayDataSource {
                 let cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.stickerCellReuseIdentifier, forIndexPath: indexPath) as! MediaSearchPreviewCell
                 cell.activityIndicator.stopAnimating()
                 if let sticker = asset(atIndex: indexPath.row) {
-                    cell.assetUrl = sticker.sourceMediaURL
+                    cell.previewAssetUrl = sticker.thumbnailImageURL
                 }
                 return cell
             case .FailedToLoad:
