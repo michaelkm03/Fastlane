@@ -81,6 +81,12 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         }
     }
     
+    var showsReplyButton = true {
+        didSet {
+            setNeedsLayout()
+        }
+    }
+    
     // MARK: - Content
     
     var chatFeedContent: ChatFeedContent? {

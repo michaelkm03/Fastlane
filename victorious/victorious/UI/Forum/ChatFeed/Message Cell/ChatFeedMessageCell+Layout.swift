@@ -119,7 +119,7 @@ extension ChatFeedMessageCell {
         
         // Reply button layout:
         
-        if alignment == .left, let topBubbleFrame = bubbleFrames.first, let bottomBubbleFrame = bubbleFrames.last {
+        if cell.showsReplyButton && alignment == .left, let topBubbleFrame = bubbleFrames.first, let bottomBubbleFrame = bubbleFrames.last {
             cell.replyButton.hidden = false
             
             cell.replyButton.frame = CGRect(
