@@ -94,7 +94,7 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
         }
         let numberOfRows = Constants.numberOfRows
         let emptySpace = Constants.collectionViewContentInsets.vertical + CGFloat(Constants.numberOfRows - 1) * Constants.interItemSpace
-        let side = (view.bounds.height / CGFloat(numberOfRows)) - emptySpace
+        let side = (view.bounds.height - emptySpace) / CGFloat(numberOfRows)
         return CGSize(width: side, height: side)
     }
     
@@ -103,6 +103,10 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return Constants.interItemSpace
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
         return Constants.interItemSpace
     }
 }
