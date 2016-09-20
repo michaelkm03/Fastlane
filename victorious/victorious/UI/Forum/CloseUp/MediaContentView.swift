@@ -192,19 +192,15 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         tearDownTextLabel()
         
         imageView.hidden = false
-
-        switch imageAsset.imageSource {
-            case .remote(let url):
-                imageView.sd_setImageWithURL(
-                    url,
-                    placeholderImage: imageView.image, // Leave the image as is, since we want to wait until animation has finished before setting the image.
-                    options: []
-                ) { [weak self] _ in
+        
+        imageView.getImageAsset(imageAsset) { [weak self] result in
+            switch result {
+                case .success(let image):
+                    self?.imageView.image = image
                     self?.finishedLoadingContent()
-                }
-            case .local(let image):
-                imageView.image = image
-                finishedLoadingContent()
+                case .failure(_):
+                    break
+            }
         }
     }
     
