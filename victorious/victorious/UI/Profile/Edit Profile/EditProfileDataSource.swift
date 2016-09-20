@@ -107,6 +107,7 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
         newAvatarFileURL = fileURL
         let imageAsset = ImageAsset(url: fileURL, size: previewImage.size)
         let newUser = User(id: user.id,
+                           username: nameAndLocationCell.username ?? user.username,
                            displayName: nameAndLocationCell.displayname ?? user.displayName,
                            completedProfile: user.completedProfile,
                            location: nameAndLocationCell.location ?? user.location,
