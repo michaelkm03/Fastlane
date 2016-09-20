@@ -24,7 +24,7 @@ class VContentOnlyCellFactory: NSObject {
     
     private var registeredReuseIdentifiers = Set<String>()
     
-    func collectionView(collectionView: UICollectionView, cellForContent content: ContentModel, atIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func collectionView(collectionView: UICollectionView, cellForContent content: Content, atIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let reuseIdentifier = ContentPreviewView.defaultReuseIdentifier
         
         if !registeredReuseIdentifiers.contains(reuseIdentifier) {

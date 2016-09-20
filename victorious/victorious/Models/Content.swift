@@ -1,5 +1,5 @@
 //
-//  ContentModel.swift
+//  Content.swift
 //  victorious
 //
 //  Created by Tian Lan on 5/23/16.
@@ -8,11 +8,12 @@
 
 import VictoriousIOSSDK
 
-extension ContentModel {
+extension Content {
+    
     // MARK: - Author information
     
     var wasCreatedByCurrentUser: Bool {
-        return author.id == VCurrentUser.user?.id
+        return author?.id == VCurrentUser.user?.id
     }
     
     // MARK: - Media size

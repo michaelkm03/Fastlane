@@ -38,11 +38,11 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
             toolbar.paused = state != .Playing
         }
     }
-    private var content: ContentModel
+    private var content: Content
     
     weak var delegate: ContentVideoPlayerCoordinatorDelegate?
     
-    init?(content: ContentModel) {
+    init?(content: Content) {
         self.content = content
         
         guard let asset = content.assets.first else {
@@ -236,7 +236,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     }
 }
 
-private extension ContentModel {
+private extension Content {
     var shouldLoop: Bool {
         return type == .gif
     }

@@ -18,7 +18,6 @@ class ContentTests: XCTestCase {
         }
         
         XCTAssertEqual(content.id, "1")
-        XCTAssertEqual(content.status, "public")
         XCTAssertEqual(content.text, "TEST_TITLE")
         XCTAssertTrue(content.hashtags.isEmpty)
         XCTAssertEqual(content.shareURL?.absoluteString, "SHARE_URL")
@@ -67,7 +66,7 @@ class ContentTests: XCTestCase {
         XCTAssertEqual(chatMessage.assets.count, 1)
         // FUTURE: Switch User.id to a String and enable this assertion.
 //        XCTAssertEqual(chatMessage.author.id, "1")
-        XCTAssertEqual(chatMessage.author.displayName, "Leetzor")
+        XCTAssertEqual(chatMessage.author?.displayName, "Leetzor")
     }
 
     private func createChatMessageFromJSON(fileName fileName: String) -> Content? {

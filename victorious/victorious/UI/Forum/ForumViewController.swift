@@ -189,6 +189,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                 debugMenuHandler.setupCurrentDebugMenu(type, targetView: navigationController.navigationBar)
             }
         #endif
+        
+        BadgeCountManager.shared.fetchBadgeCount(for: .unreadNotifications)
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -321,7 +323,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         if let alertController = UIAlertController(actionsFor: chatFeedContent.content, dependencyManager: chatFeedDependencyManager, completion: { [weak self] action in
             switch action {
                 case .delete, .flag: self?.chatFeed?.remove(chatFeedContent)
-                case .like, .unlike, .cancel: break
+                case .like, .unlike: self?.chatFeed?.collectionView.reloadData()
+                case .cancel: break
             }
         }) {
             presentViewController(alertController, animated: true, completion: nil)

@@ -174,7 +174,13 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         }
         
         upvoteButton.sizeToFit()
-        navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: upvoteButton), shareButton, overflowButton]
+        
+        if content.shareURL == nil {
+            navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: upvoteButton), overflowButton]
+        }
+        else {
+            navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: upvoteButton), shareButton, overflowButton]
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -199,14 +205,22 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     
     // MARK: - CloseUpViewDelegate
     
-    func didSelectProfileForUserID(userID: Int) {
-        let router = Router(originViewController: self, dependencyManager: dependencyManager)
-        let destination = DeeplinkDestination(userID: userID)
-        router.navigate(to: destination, from: DeeplinkContext(value: DeeplinkContext.closeupView))
+    func closeUpView(closeUpView: CloseUpView, didSelectProfileForUserID userID: User.ID) {
+        Router(originViewController: self, dependencyManager: dependencyManager).navigate(
+            to: DeeplinkDestination(userID: userID),
+            from: DeeplinkContext(value: DeeplinkContext.closeupView)
+        )
     }
     
-    func gridStreamDidUpdate() {
+    func closeUpViewGridStreamDidUpdate(closeUpView: CloseUpView) {
         triggerCoachmark()
+    }
+    
+    func closeUpView(closeUpView: CloseUpView, didSelectLinkURL url: NSURL) {
+        Router(originViewController: self, dependencyManager: dependencyManager).navigate(
+            to: DeeplinkDestination(url: url),
+            from: DeeplinkContext(value: DeeplinkContext.closeupView)
+        )
     }
     
     func share() {

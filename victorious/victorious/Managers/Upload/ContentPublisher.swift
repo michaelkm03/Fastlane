@@ -132,7 +132,7 @@ class ContentPublisher {
     /// - Parameter content: The content that should be uploaded.
     /// - Parameter completion: The block to call after upload has completed or failed. Always called.
     ///
-    private func upload(content: ContentModel, completion: ((ErrorType?) -> Void)? = nil) {
+    private func upload(content: Content, completion: ((ErrorType?) -> Void)? = nil) {
         if !content.assets.isEmpty {
             guard let publishParameters = VPublishParameters(content: content) else {
                 completion?(ContentPublisherError.invalidContent)
@@ -226,13 +226,13 @@ enum ContentPublisherError: ErrorType {
 }
 
 private extension VDependencyManager {
-    func mediaCreationAPIPath(for content: ContentModel) -> APIPath? {
+    func mediaCreationAPIPath(for content: Content) -> APIPath? {
         return apiPathForKey("mediaCreationURL", macroReplacements: [
             "%%TIME_CURRENT%%": content.postedAt?.apiString ?? ""
         ])
     }
     
-    func textCreationAPIPath(for content: ContentModel) -> APIPath? {
+    func textCreationAPIPath(for content: Content) -> APIPath? {
         return apiPathForKey("textCreationURL", macroReplacements: [
             "%%TIME_CURRENT%%": content.postedAt?.apiString ?? ""
         ])
