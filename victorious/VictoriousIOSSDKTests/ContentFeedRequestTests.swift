@@ -10,10 +10,9 @@ import XCTest
 @testable import VictoriousIOSSDK
 
 class ContentFeedRequestTests: XCTestCase {
-    
     func testConfiguredRequest() {
         let apiPath = APIPath(templatePath: "API_PATH")
-        let request = ContentFeedRequest(apiPath: apiPath)!
+        let request = ContentFeedRequest(apiPath: apiPath, payloadType: .regular)!
         XCTAssertEqual(request.urlRequest.URL?.absoluteString, apiPath.url!.absoluteString)
         XCTAssertEqual(request.urlRequest.HTTPMethod, "GET")
     }
@@ -28,7 +27,7 @@ class ContentFeedRequestTests: XCTestCase {
         }
         
         let apiPath = APIPath(templatePath: "API_PATH")
-        let request = ContentFeedRequest(apiPath: apiPath)!
+        let request = ContentFeedRequest(apiPath: apiPath, payloadType: .regular)!
         do {
             let feedResult = try request.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(feedResult.contents.count, 2)
@@ -41,5 +40,4 @@ class ContentFeedRequestTests: XCTestCase {
             return
         }
     }
-    
 }

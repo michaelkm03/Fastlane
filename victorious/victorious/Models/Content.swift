@@ -13,7 +13,7 @@ extension Content {
     // MARK: - Author information
     
     var wasCreatedByCurrentUser: Bool {
-        return author.id == VCurrentUser.user?.id
+        return author?.id == VCurrentUser.user?.id
     }
     
     // MARK: - Media size

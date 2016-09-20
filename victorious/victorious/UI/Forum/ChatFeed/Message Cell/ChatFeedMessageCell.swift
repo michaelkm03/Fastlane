@@ -199,7 +199,8 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         }
         
         captionLabel.text = content?.text
-        usernameLabel.text = content?.author.username ?? ""
+        usernameLabel.text = content?.author?.username ?? ""
+        
         updateTimestamp()
         updateLikeCount()
         updateLikeImage()
