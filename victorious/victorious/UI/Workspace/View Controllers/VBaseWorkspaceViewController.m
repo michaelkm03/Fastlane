@@ -27,8 +27,6 @@
 
 // Video
 #import "VVideoWorkspaceTool.h"
-#import "VDependencyManager+VTracking.h"
-#import "VDependencyManager+VTracking.h"
 
 @import AVFoundation;
 

@@ -17,7 +17,6 @@
 #import "VAppInfo.h"
 #import "VDependencyManager+VNavigationItem.h"
 #import "VEnvironmentManager.h"
-#import "VDependencyManager+VTracking.h"
 #import "UIAlertController+VSimpleAlert.h"
 #import "victorious-Swift.h"
 

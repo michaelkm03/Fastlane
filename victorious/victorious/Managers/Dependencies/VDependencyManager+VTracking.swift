@@ -8,11 +8,22 @@
 
 private var associatedObjectViewWasHiddenKey = "viewWasHidden"
 
+@objc class TemplateTrackingKey: NSObject {
+    static let start = "start"
+    static let stop = "stop"
+    static let appInit = "init"
+    static let install = "install"
+    static let createProfileStart = "create_profile_start"
+    static let registrationStart = "registration_end"
+    static let registrationEnd = "registration_end"
+    static let createProfileDoneButtonTap = "create_profile_done_button_tap"
+    static let registerButtonTap = "register_button_tap"
+    static let signUpButtonTap = "sign_up_button_tap"
+    static let permissionChange = "permission_change"
+    static let appError = "error"
+}
+
 extension VDependencyManager {
-    
-    // MARK: - Keys
-    
-    // TODO: Migrate from objc
     
     // MARK: - API paths
     

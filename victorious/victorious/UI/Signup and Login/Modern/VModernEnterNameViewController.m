@@ -18,7 +18,6 @@
 // Views + Helpers
 #import "VInlineValidationTextField.h"
 #import "VLoginFlowControllerDelegate.h"
-#import "VDependencyManager+VTracking.h"
 
 @interface VModernEnterNameViewController () <VBackgroundContainer, UITextFieldDelegate, VLoginFlowScreen>
 

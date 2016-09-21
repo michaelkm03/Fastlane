@@ -23,7 +23,6 @@
 // Camera + Workspace
 #import "VEditProfilePicturePresenter.h"
 #import "VPermissionCamera.h"
-#import "VDependencyManager+VTracking.h"
 
 @interface VEnterProfilePictureCameraViewController () <VBackgroundContainer, VLoginFlowScreen>
 
