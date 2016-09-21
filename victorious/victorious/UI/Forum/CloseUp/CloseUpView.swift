@@ -240,6 +240,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
         guard let userID = content?.author?.id else {
             return
         }
+        
         delegate?.closeUpView(self, didSelectProfileForUserID: userID)
     }
     
@@ -250,10 +251,8 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
     }
     
     @objc private func closeUpDismissed() {
-        if let videoPlayer = videoPlayer {
-            dispatch_async(dispatch_get_main_queue(), {
-                videoPlayer.pause()
-            })
+        dispatch_async(dispatch_get_main_queue()) {
+            self.videoPlayer?.pause()
         }
     }
     
