@@ -200,7 +200,8 @@ public struct Content: Equatable {
         paginationTimestamp = Timestamp(apiString: json["pagination_timestamp"].stringValue) ?? Timestamp()
         previewImages = (json["preview"][previewType]["assets"].array ?? []).flatMap { ImageAsset(json: $0) }
         tracking = Tracking(json: json["tracking"] )
-        
+        linkedURL = NSURL(string: json[typeString]["data"].stringValue)
+
         author = nil
         likeCount = nil
         postedAt = nil
@@ -208,7 +209,6 @@ public struct Content: Equatable {
         text = nil
         hashtags = []
         shareURL = nil
-        linkedURL = nil
         assets  = []
         userTags = [:]
         isRemotelyLikedByCurrentUser = false
