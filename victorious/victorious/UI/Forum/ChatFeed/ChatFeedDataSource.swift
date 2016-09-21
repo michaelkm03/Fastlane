@@ -39,7 +39,7 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     private var shouldShowPendingItems = true
     
     /// Whether or not reply buttons in chat cells should be displayed.
-    private var shouldShowReplyButtons = true
+    private(set) var shouldShowReplyButtons = true
     
     // MARK: - Managing content
     
