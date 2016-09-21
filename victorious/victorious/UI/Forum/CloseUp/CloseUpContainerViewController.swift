@@ -314,8 +314,8 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     
     private dynamic func enterLandscapeMode() {
         guard
-            UIDevice.currentDevice().orientation.isLandscape,
             let mediaContentView = closeUpView.mediaContentView
+            where UIDevice.currentDevice().orientation.isLandscape && presentedViewController == nil
         else {
             return
         }
