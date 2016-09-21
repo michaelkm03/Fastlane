@@ -170,7 +170,7 @@ class LinkLabel: UILabel, NSLayoutManagerDelegate {
         super.touchesEnded(touches, withEvent: event)
     }
     
-    override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
+    override func touchesCancelled(touches: Set<UITouch>, withEvent event: UIEvent?) {
         highlightedLink = nil
         super.touchesCancelled(touches, withEvent: event)
     }
