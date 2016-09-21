@@ -272,7 +272,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
             return
         }
         
-        delegate?.chatFeed(self, didSelectUserWithUserID: userID)
+        delegate?.chatFeed(self, didSelectUserWithID: userID)
     }
     
     func messageCellDidSelectMedia(messageCell: ChatFeedMessageCell) {

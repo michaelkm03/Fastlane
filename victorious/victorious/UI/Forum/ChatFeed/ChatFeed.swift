@@ -28,7 +28,7 @@ protocol ChatFeed: class, ForumEventSender, ForumEventReceiver {
 }
 
 protocol ChatFeedDelegate: class {
-    func chatFeed(chatFeed: ChatFeed, didSelectUserWithUserID userID: User.ID)
+    func chatFeed(chatFeed: ChatFeed, didSelectUserWithID userID: User.ID)
     func chatFeed(chatFeed: ChatFeed, didSelect chatFeedContent: ChatFeedContent)
     func chatFeed(chatFeed: ChatFeed, didLongPress chatFeedContent: ChatFeedContent)
     func chatFeed(chatFeed: ChatFeed, didSelectFailureButtonFor chatFeedContent: ChatFeedContent)

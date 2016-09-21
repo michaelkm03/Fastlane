@@ -222,7 +222,7 @@ public struct Content: Equatable {
     }
     
     public init(
-        author: UserModel,
+        author: UserModel? = nil,
         id: String? = nil,
         createdAt: Timestamp = Timestamp(),
         postedAt: Timestamp = Timestamp(),

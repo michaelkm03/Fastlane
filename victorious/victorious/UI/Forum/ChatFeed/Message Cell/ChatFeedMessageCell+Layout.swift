@@ -116,7 +116,7 @@ extension ChatFeedMessageCell {
         else {
             cell.likeView?.hidden = true
         }
-        
+
         // Reply button layout:
         
         if cell.showsReplyButton && alignment == .left, let topBubbleFrame = bubbleFrames.first, let bottomBubbleFrame = bubbleFrames.last {
