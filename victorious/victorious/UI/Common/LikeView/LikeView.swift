@@ -8,7 +8,7 @@
 
 import UIKit
 
-// A class to toggle like count and visual image
+/// A class to display content like count and like image
 
 final class LikeView: UIView {
 
@@ -30,7 +30,6 @@ final class LikeView: UIView {
         set {
             countLabel.font = newValue
         }
-
     }
 
     private var textColor: UIColor {
@@ -110,10 +109,7 @@ final class LikeView: UIView {
     // MARK - Private helpers
 
     private func updateLikeCount(content: Content) {
-        guard let likeCount = content.likeCount else {
-            return
-        }
-
+        let likeCount = content.likeCount ?? 0
         let totalLikes = likeCount + content.currentUserLikeCount
         countLabel.text = totalLikes > 0 ? largeNumberFormatter.stringForInteger(totalLikes) : ""
         setNeedsLayout()

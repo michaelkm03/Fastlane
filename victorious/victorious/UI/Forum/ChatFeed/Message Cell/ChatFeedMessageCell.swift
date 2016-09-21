@@ -179,8 +179,8 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
             likeView = LikeView(frame: CGRect.zero,
                                 textColor: dependencyManager.upvoteCountColor,
                                 font: dependencyManager.upvoteCountFont,
-                                selectedIcon: self.dependencyManager.upvoteIconSelected,
-                                unselectedIcon: self.dependencyManager.upvoteIconUnselected)
+                                selectedIcon: dependencyManager.upvoteIconSelected,
+                                unselectedIcon: dependencyManager.upvoteIconUnselected)
             if let likeView = likeView {
                 likeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOnLikeView)))
                 contentView.addSubview(likeView)
