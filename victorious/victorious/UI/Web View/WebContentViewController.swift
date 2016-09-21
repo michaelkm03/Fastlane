@@ -67,7 +67,6 @@ class WebContentViewController: UIViewController, WKNavigationDelegate, WKUIDele
         view.addSubview(webView)
         view.v_addFitToParentConstraintsToSubview(webView)
         
-        // Setup with dependencyManager
         dependencyManager.addBackgroundToBackgroundHost(self)
     }
     
