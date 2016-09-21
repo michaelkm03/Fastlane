@@ -10,7 +10,19 @@ import UIKit
 
 /// A class to display content like count and like image
 
+enum LikeViewAlignment {
+    case left
+    case center
+}
+
 final class LikeView: UIView {
+    // MARK: - Constants
+
+    private struct Constants {
+        static let font: UIFont = UIFont(name: ".SFUIText-Regular", size: 12.0)
+            ?? UIFont.systemFontOfSize(12.0, weight: UIFontWeightRegular)
+    }
+
     // MARK: - Views
 
     private let imageView = UIImageView()
@@ -20,16 +32,7 @@ final class LikeView: UIView {
 
     private var selectedIcon: UIImage?
     private var unselectedIcon: UIImage?
-
-    private var font: UIFont? {
-        get {
-            return countLabel.font
-        }
-
-        set {
-            countLabel.font = newValue
-        }
-    }
+    private var alignment: LikeViewAlignment?
 
     private var textColor: UIColor {
         get {
@@ -47,16 +50,17 @@ final class LikeView: UIView {
 
     // MARK: - Initialization
 
-    init(frame: CGRect, textColor: UIColor, font: UIFont? = UIFont.preferredFontForTextStyle("UIFontTextStyleCaption1"), selectedIcon: UIImage? = nil, unselectedIcon: UIImage? = nil) {
+    init(frame: CGRect, textColor: UIColor, selectedIcon: UIImage? = nil, unselectedIcon: UIImage? = nil, alignment: LikeViewAlignment? = .center) {
         super.init(frame: frame)
 
         addSubview(imageView)
         addSubview(countLabel)
 
+        countLabel.font = Constants.font
         self.textColor = textColor
-        self.font = font
         self.selectedIcon = selectedIcon
         self.unselectedIcon = unselectedIcon
+        self.alignment = alignment
     }
 
     init() {
@@ -79,16 +83,28 @@ final class LikeView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        imageView.frame = CGRect(
-            center: bounds.center,
-            size: imageView.intrinsicContentSize()
-        )
+        let horizontalPadding: CGFloat
+        if alignment == LikeViewAlignment.left {
+            imageView.frame = CGRect(
+                x: 3.0,
+                y: bounds.center.y - (imageView.intrinsicContentSize().height / 2),
+                width: imageView.intrinsicContentSize().width,
+                height: imageView.intrinsicContentSize().height
+            )
 
-        let horizontalPadding = CGFloat(3.0)
-        let verticalPadding = CGFloat(8.0)
+            horizontalPadding = CGFloat(0.0)
+        } else {
+            imageView.frame = CGRect(
+                center: bounds.center,
+                size: imageView.intrinsicContentSize()
+            )
+
+            horizontalPadding = CGFloat(4.0)
+        }
+
         countLabel.frame = CGRect(
-            x: CGRectGetMaxX(imageView.frame) - horizontalPadding,
-            y: CGRectGetMaxY(imageView.frame) - verticalPadding,
+            x: imageView.frame.maxY + horizontalPadding,
+            y: bounds.center.y - (countLabel.intrinsicContentSize().height / 2),
             width: countLabel.intrinsicContentSize().width,
             height: countLabel.intrinsicContentSize().height
         )

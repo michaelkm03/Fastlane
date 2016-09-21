@@ -54,9 +54,10 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     private lazy var likeView: LikeView = {
         let likeView = LikeView(frame: Constants.likeViewFrame,
                                 textColor: self.dependencyManager.upvoteCountColor,
-                                font: self.dependencyManager.upvoteCountFont,
                                 selectedIcon: self.dependencyManager.upvoteIconSelected,
-                                unselectedIcon: self.dependencyManager.upvoteIconUnselected)
+                                unselectedIcon: self.dependencyManager.upvoteIconUnselected,
+                                alignment: .left
+        )
 
         likeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(toggleLike)))
         likeView.updateLikeStatus(self.content)

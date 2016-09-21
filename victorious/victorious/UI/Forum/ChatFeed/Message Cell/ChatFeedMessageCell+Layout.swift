@@ -108,39 +108,40 @@ extension ChatFeedMessageCell {
             cell.failureButton.frame = .zero
         }
 
-        // Like button layout:
+        // Reply button layout:
 
         if alignment == .left {
-            cell.likeView?.hidden = false
-            if let likeView = cell.likeView {
-                if let baseFrame = bubbleFrames.last {
-                    likeView.frame = CGRect(
-                        x: baseFrame.maxX - (Constants.likeViewWidth / 2),
-                        y: baseFrame.maxY - (Constants.likeViewHeight / 2),
-                        width: Constants.likeViewWidth,
-                        height: Constants.likeViewHeight
-                    )
+            cell.replyButton.hidden = false
+            let replyButton = cell.replyButton
+            if let baseFrame = bubbleFrames.last {
+                replyButton.frame = CGRect(
+                    x: baseFrame.maxX - (Constants.replyButtonWidth / 2),
+                    y: baseFrame.maxY - (Constants.replyButtonHeight / 2),
+                    width: Constants.replyButtonWidth,
+                    height: Constants.replyButtonHeight
+                )
 
-                    cell.contentView.bringSubviewToFront(likeView)
-                }
+                cell.contentView.bringSubviewToFront(replyButton)
             }
         }
         else {
             cell.likeView?.hidden = true
         }
 
-        // Reply button layout:
+        // Like view layout:
 
         if alignment == .left {
             if let baseFrame = bubbleFrames.last {
-                let replyButtonOriginX = cell.bounds.size.width - Constants.replyButtonWidth
+                let likeViewOriginX = cell.bounds.size.width - Constants.likeViewWidth - 16.0
 
-                cell.replyButton.frame = CGRect(
-                    x: replyButtonOriginX,
-                    y: baseFrame.center.y - Constants.replyButtonHeight / 2,
-                    width: Constants.replyButtonWidth,
-                    height: Constants.replyButtonHeight
-                )
+                if let likeView = cell.likeView {
+                    likeView.frame = CGRect(
+                        x: likeViewOriginX,
+                        y: baseFrame.center.y - Constants.likeViewHeight / 2,
+                        width: Constants.likeViewWidth,
+                        height: Constants.likeViewHeight
+                    )
+                }
             }
         }
     }
