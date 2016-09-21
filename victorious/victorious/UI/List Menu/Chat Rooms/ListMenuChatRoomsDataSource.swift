@@ -14,7 +14,12 @@ final class ListMenuChatRoomsDataSource: ListMenuSectionDataSource {
     let dependencyManager: VDependencyManager
     weak var delegate: ListMenuSectionDataSourceDelegate?
     private(set) var state: ListMenuDataSourceState = .loading
-    private(set) var visibleItems: [ChatRoom] = []
+    private(set) var visibleItems: [ChatRoom] = [] {
+        didSet {
+            state = visibleItems.isEmpty ? .noContent : .items
+            delegate?.didUpdateVisibleItems(forSection: .chatRooms)
+        }
+    }
 
     init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager

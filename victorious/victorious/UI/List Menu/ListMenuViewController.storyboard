@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="uIP-nM-PTs">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="uIP-nM-PTs">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -85,8 +85,33 @@
                                             <outlet property="titleLabel" destination="pkv-DF-vXY" id="lsJ-9X-fXF"/>
                                         </connections>
                                     </collectionViewCell>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ListMenuHashtagCollectionViewCell" id="AOw-BJ-JkJ" customClass="ListMenuHashtagCollectionViewCell" customModule="victorious" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ListMenuChatRoomCollectionViewCell" id="0Wq-wL-hCl" userLabel="ListMenuChatRoomCollectionViewCell" customClass="ListMenuChatRoomCollectionViewCell" customModule="victorious" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="118" width="600" height="38"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="38"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Chat Room Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WdA-kE-z1c" userLabel="Title Label">
+                                                    <rect key="frame" x="22" y="9" width="542" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </view>
+                                        <constraints>
+                                            <constraint firstItem="WdA-kE-z1c" firstAttribute="leading" secondItem="0Wq-wL-hCl" secondAttribute="leadingMargin" constant="14" id="0R9-13-EDv"/>
+                                            <constraint firstAttribute="trailingMargin" secondItem="WdA-kE-z1c" secondAttribute="trailing" constant="28" id="WBO-d3-nwj"/>
+                                            <constraint firstItem="WdA-kE-z1c" firstAttribute="centerY" secondItem="0Wq-wL-hCl" secondAttribute="centerY" id="qsn-RH-6Yr"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="titleLabel" destination="WdA-kE-z1c" id="Aco-Y8-F0L"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ListMenuHashtagCollectionViewCell" id="AOw-BJ-JkJ" customClass="ListMenuHashtagCollectionViewCell" customModule="victorious" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="162" width="600" height="38"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="38"/>
@@ -111,7 +136,7 @@
                                         </connections>
                                     </collectionViewCell>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ListMenuNoContentCollectionViewCell" id="Mme-Cf-5dM" customClass="ListMenuNoContentCollectionViewCell" customModule="victorious" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="162" width="600" height="38"/>
+                                        <rect key="frame" x="0.0" y="206" width="600" height="38"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="38"/>
