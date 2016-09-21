@@ -8,6 +8,7 @@
 
 import Foundation
 
+// A cell with a "retry" indicator in it's center
 class TrayRetryLoadCollectionViewCell: UICollectionViewCell {
     lazy var retryImageView: UIImageView = {
         let image = UIImage(named: "uploadRetryButton")?.imageWithRenderingMode(.AlwaysTemplate)

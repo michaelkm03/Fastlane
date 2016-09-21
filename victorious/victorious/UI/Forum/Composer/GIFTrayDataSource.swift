@@ -8,6 +8,7 @@
 
 import Foundation
 
+// A data source that fetches gifs and provides cells that load and auto-play these gifs
 class GIFTrayDataSource: PaginatedDataSource, TrayDataSource {
     private struct Constants {
         static let loadingCellReuseIdentifier = TrayLoadingCollectionViewCell.defaultReuseIdentifier
@@ -38,6 +39,7 @@ class GIFTrayDataSource: PaginatedDataSource, TrayDataSource {
         self.dependencyManager = dependencyManager
     }
     
+    // This method must be called on the collection view that this object will provide cells for prior to dequeueing any cells
     func registerCells(withCollectionView collectionView: UICollectionView) {
         collectionView.registerClass(TrayLoadingCollectionViewCell.self, forCellWithReuseIdentifier: Constants.loadingCellReuseIdentifier)
         collectionView.registerClass(TrayRetryLoadCollectionViewCell.self, forCellWithReuseIdentifier: Constants.retryCellReuseIdentifier)
@@ -69,6 +71,8 @@ class GIFTrayDataSource: PaginatedDataSource, TrayDataSource {
             }
         )
     }
+    
+    // MARK: - UICollectionViewDataSource
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch trayState {

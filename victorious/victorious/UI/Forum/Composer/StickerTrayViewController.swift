@@ -9,7 +9,9 @@
 import Foundation
 import MBProgressHUD
 
-class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+// A view controller that displays a side-scrolling double-row of stickers
+class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout,
+    LoadingCancellableViewDelegate {
     private struct Constants {
         static let collectionViewContentInsets = UIEdgeInsets(top: 2, left: 2, bottom: 2, right: 2)
         static let numberOfRows = 2
@@ -17,8 +19,8 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
     }
     
     weak var delegate: TrayDelegate?
-    var progressHUD: MBProgressHUD?
-    var mediaExporter: MediaSearchExporter?
+    private var progressHUD: MBProgressHUD?
+    private var mediaExporter: MediaSearchExporter?
     
     lazy var dataSource: StickerTrayDataSource = {
         let dataSource = StickerTrayDataSource(dependencyManager: self.dependencyManager)
@@ -64,9 +66,9 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
             }
             return
         }
-        showExportingHUD()
+        progressHUD = showExportingHUD(delegate: self)
         exportMedia(fromSearchResult: sticker) { [weak self] state in
-            self?.dismissHUD()
+            self?.progressHUD?.hide(true)
             switch state {
                 case .success(let result):
                     let localAssetParameters = ContentMediaAsset.LocalAssetParameters(contentType: .gif, remoteID: remoteID, source: nil, size: sticker.assetSize, url: sticker.sourceMediaURL)
@@ -79,7 +81,7 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
                     }
                     strongSelf.delegate?.tray(strongSelf, selectedAsset: asset, withPreviewImage: previewImage)
                 case .failure(let error):
-                    self?.showHUD(renderingError: error)
+                    self?.showHUD(forRenderingError: error)
                 case .canceled:()
             }
         }
@@ -108,5 +110,39 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
         return Constants.interItemSpace
+    }
+    
+    // MARK: - Media exporting
+    
+    func exportMedia(fromSearchResult mediaSearchResultObject: MediaSearchResult, completionBlock: (TrayMediaCompletionState) -> ()) {
+        self.mediaExporter?.cancelDownload()
+        self.mediaExporter = nil
+        
+        let mediaExporter = MediaSearchExporter(mediaSearchResult: mediaSearchResultObject)
+        mediaExporter.loadMedia() { (previewImage, mediaURL, error) in
+            dispatch_after(0.5) {
+                if mediaExporter.cancelled {
+                    completionBlock(.canceled)
+                } else if
+                    let previewImage = previewImage,
+                    let mediaURL = mediaURL {
+                    mediaSearchResultObject.exportPreviewImage = previewImage
+                    mediaSearchResultObject.exportMediaURL = mediaURL
+                    completionBlock(.success(mediaSearchResultObject))
+                } else if let error = error {
+                    completionBlock(.failure(error))
+                } else {
+                    Log.warning("Encountered unexpected media output state in tray")
+                }
+            }
+        }
+        self.mediaExporter = mediaExporter
+    }
+    
+    // MARK: - LoadingCancellableViewDelegate
+    
+    func cancel() {
+        progressHUD?.hide(true)
+        self.mediaExporter?.cancelDownload()
     }
 }

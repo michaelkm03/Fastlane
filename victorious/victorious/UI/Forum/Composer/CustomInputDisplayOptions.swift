@@ -8,6 +8,7 @@
 
 import Foundation
 
+// Encapsulates the height and view controller of an input area
 struct CustomInputDisplayOptions {
     let viewController: UIViewController
     let desiredHeight: CGFloat

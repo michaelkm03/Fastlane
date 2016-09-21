@@ -8,6 +8,7 @@
 
 import Foundation
 
+// A data source that fetches stickers and provides cells that show non-animating previews of these stickers
 class StickerTrayDataSource: PaginatedDataSource, TrayDataSource {
     private struct Constants {
         static let loadingCellReuseIdentifier = TrayLoadingCollectionViewCell.defaultReuseIdentifier
@@ -38,6 +39,7 @@ class StickerTrayDataSource: PaginatedDataSource, TrayDataSource {
         self.dependencyManager = dependencyManager
     }
     
+    // This method must be called on the collection view that this object will provide cells for prior to dequeueing any cells
     func registerCells(withCollectionView collectionView: UICollectionView) {
         collectionView.registerClass(TrayLoadingCollectionViewCell.self, forCellWithReuseIdentifier: Constants.loadingCellReuseIdentifier)
         collectionView.registerClass(TrayRetryLoadCollectionViewCell.self, forCellWithReuseIdentifier: Constants.retryCellReuseIdentifier)
@@ -69,6 +71,8 @@ class StickerTrayDataSource: PaginatedDataSource, TrayDataSource {
             }
         )
     }
+    
+    // MARK: - UICollectionViewDataSource
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch trayState {

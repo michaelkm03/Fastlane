@@ -9,11 +9,9 @@
 import Foundation
 import MBProgressHUD
 
-protocol Tray: TrayDataSourceDelegate, LoadingCancellableViewDelegate {
+// Conformers describe a
+protocol Tray: TrayDataSourceDelegate {
     weak var delegate: TrayDelegate? { get set }
-    
-    var mediaExporter: MediaSearchExporter? { get set }
-    var progressHUD: MBProgressHUD? { get set }
 }
 
 enum TrayMediaCompletionState {
@@ -22,35 +20,8 @@ enum TrayMediaCompletionState {
     case canceled
 }
 
-extension Tray {
-    func exportMedia(fromSearchResult mediaSearchResultObject: MediaSearchResult, completionBlock: (TrayMediaCompletionState) -> ()) {
-        self.mediaExporter?.cancelDownload()
-        self.mediaExporter = nil
-        
-        let mediaExporter = MediaSearchExporter(mediaSearchResult: mediaSearchResultObject)
-        mediaExporter.loadMedia() { (previewImage, mediaURL, error) in
-            dispatch_after(0.5) {
-                if mediaExporter.cancelled {
-                    completionBlock(.canceled)
-                } else if
-                    let previewImage = previewImage,
-                    let mediaURL = mediaURL {
-                    mediaSearchResultObject.exportPreviewImage = previewImage
-                    mediaSearchResultObject.exportMediaURL = mediaURL
-                    completionBlock(.success(mediaSearchResultObject))
-                } else if let error = error {
-                    completionBlock(.failure(error))
-                } else {
-                    Log.warning("Encountered unexpected media output state in tray")
-                }
-            }
-        }
-        self.mediaExporter = mediaExporter
-    }
-}
-
 extension Tray where Self: UIViewController {
-    func showHUD(renderingError error: NSError?) {
+    func showHUD(forRenderingError error: NSError?) {
         if error?.code != NSURLErrorCancelled {
             MBProgressHUD.hideAllHUDsForView(view, animated: false)
             let errorTitle = NSLocalizedString("Error rendering media", comment: "")
@@ -58,31 +29,24 @@ extension Tray where Self: UIViewController {
         }
     }
     
-    func showExportingHUD() {
+    func showExportingHUD(delegate delegate: LoadingCancellableViewDelegate) -> MBProgressHUD {
         guard let view = NSBundle.mainBundle().loadNibNamed("LoadingCancellableView", owner: self, options: nil).first as? LoadingCancellableView else {
-            return
+            fatalError()
         }
-        view.delegate = self
+        view.delegate = delegate
         
         MBProgressHUD.hideAllHUDsForView(self.view, animated: false)
-        progressHUD = MBProgressHUD.showHUDAddedTo( self.view.window, animated: true )
-        progressHUD?.mode = MBProgressHUDMode.CustomView
-        progressHUD?.customView = view
-        progressHUD?.square = true;
-        progressHUD?.dimBackground = true
-        progressHUD?.show(true)
-    }
-    
-    func dismissHUD() {
-        progressHUD?.hide(true)
-    }
-    
-    func cancel() {
-        dismissHUD()
-        mediaExporter?.cancelDownload()
+        let progressHUD = MBProgressHUD.showHUDAddedTo( self.view.window, animated: true )
+        progressHUD.mode = MBProgressHUDMode.CustomView
+        progressHUD.customView = view
+        progressHUD.square = true;
+        progressHUD.dimBackground = true
+        progressHUD.show(true)
+        return progressHUD
     }
 }
 
+// Conformers receive messages when an asset is selected from a tray
 protocol TrayDelegate: class {
     func tray(tray: Tray, selectedAsset asset: ContentMediaAsset, withPreviewImage previewImage: UIImage)
 }
