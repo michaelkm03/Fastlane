@@ -51,12 +51,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     }()
 
     private lazy var likeView: LikeView = {
-        let frame = CGRect(
-            x: 0.0,
-            y: 0.0,
-            width: 44.0,
-            height: 44.0
-        )
+        let frame = CGRect(x: 0.0, y: 0.0, width: 44.0, height: 44.0)
 
         let likeView = LikeView(frame: frame,
                                 textColor: self.dependencyManager.upvoteCountColor,
