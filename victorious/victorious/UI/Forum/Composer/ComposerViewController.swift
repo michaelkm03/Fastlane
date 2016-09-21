@@ -153,6 +153,15 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     var maximumTextInputHeight = CGFloat.max
     
+    var text: String {
+        get {
+            return textView?.text ?? ""
+        }
+        set {
+            textView?.text = newValue
+        }
+    }
+    
     func showKeyboard() {
         textView.becomeFirstResponder()
     }
@@ -626,7 +635,7 @@ private extension VDependencyManager {
     }
     
     func maximumTextLengthForOwner(owner: Bool) -> Int {
-        return owner ? 0 : numberForKey("maximumTextLength").integerValue
+        return owner ? 0 : numberForKey("maximumTextLength")?.integerValue ?? 0
     }
     
     var inputPromptText: String {

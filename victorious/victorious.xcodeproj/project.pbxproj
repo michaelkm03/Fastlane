@@ -524,6 +524,7 @@
 		7A02F8951D273C0F00F43B24 /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A02F8941D273C0F00F43B24 /* SettingsTableViewCell.swift */; };
 		7A126DF51CFF956800F9C86E /* APIPathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A126DF41CFF956800F9C86E /* APIPathTests.swift */; };
 		7A1389911D53E06E000F5C86 /* Subscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1389901D53E06E000F5C86 /* Subscription.swift */; };
+		7A1921B01D9207BA00EA71CF /* ComposerViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1921AF1D9207BA00EA71CF /* ComposerViewControllerTests.swift */; };
 		7A1C70AA1CC8513B00A666F5 /* SideMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1C70A91CC8513B00A666F5 /* SideMenuController.swift */; };
 		7A1DECAD1D80E00C003F5C37 /* ContentDeleteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECA11D80E00C003F5C37 /* ContentDeleteOperation.swift */; };
 		7A1DECAE1D80E00C003F5C37 /* ContentFeedOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECA21D80E00C003F5C37 /* ContentFeedOperation.swift */; };
@@ -1936,6 +1937,7 @@
 		7A02F8941D273C0F00F43B24 /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
 		7A126DF41CFF956800F9C86E /* APIPathTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIPathTests.swift; sourceTree = "<group>"; };
 		7A1389901D53E06E000F5C86 /* Subscription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Subscription.swift; sourceTree = "<group>"; };
+		7A1921AF1D9207BA00EA71CF /* ComposerViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposerViewControllerTests.swift; sourceTree = "<group>"; };
 		7A1C70A91CC8513B00A666F5 /* SideMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuController.swift; sourceTree = "<group>"; };
 		7A1DECA11D80E00C003F5C37 /* ContentDeleteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentDeleteOperation.swift; sourceTree = "<group>"; };
 		7A1DECA21D80E00C003F5C37 /* ContentFeedOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentFeedOperation.swift; sourceTree = "<group>"; };
@@ -5761,6 +5763,7 @@
 				7AB55FE61CADF06000EBE31E /* CGSize+CornerRadiusTests.swift */,
 				7CCBF2B81D413C7D0075A087 /* CoachmarkManagerTests.swift */,
 				F0BD812C1C9B67150062D079 /* ComposerAttachmentTabBarButtonTests.swift */,
+				7A1921AF1D9207BA00EA71CF /* ComposerViewControllerTests.swift */,
 				7A5519ED1D24778C00CD6BCF /* ContentMediaSizeTests.swift */,
 				F0BD812A1C9B645F0062D079 /* CreationFlowTypeHelperTests.swift */,
 				6756BF471D469AC300CF5F2B /* Deeplink */,
@@ -8228,6 +8231,7 @@
 				A7D69C5A1C0E51A000B462C3 /* VUploadTaskInformationTests.m in Sources */,
 				F050D3441CAEEFB7007A05ED /* NSPredicate+MediaTypeTests.swift in Sources */,
 				F0BD812B1C9B645F0062D079 /* CreationFlowTypeHelperTests.swift in Sources */,
+				7A1921B01D9207BA00EA71CF /* ComposerViewControllerTests.swift in Sources */,
 				A7DCA50F1C128A78004E35B4 /* VUploadTaskCreatorTests.m in Sources */,
 				7AFE92091D6636C9005D51A4 /* CallbackTests.swift in Sources */,
 				A7DCA50C1C128A78004E35B4 /* VTrackingManagerTests.m in Sources */,
