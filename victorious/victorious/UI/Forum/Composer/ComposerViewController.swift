@@ -512,7 +512,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     // MARK: - ToggleableImageButtonDelegate
     
-    func button(button: ToggleableImageButton, setSelected selected: Bool) {
+    func button(button: ToggleableImageButton, becameSelected selected: Bool) {
         updateAttachmentButtons()
     }
     

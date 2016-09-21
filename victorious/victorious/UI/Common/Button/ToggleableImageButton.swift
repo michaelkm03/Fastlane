@@ -9,7 +9,7 @@
 import Foundation
 
 protocol ToggleableImageButtonDelegate: class {
-    func button(button: ToggleableImageButton, setSelected selected: Bool)
+    func button(button: ToggleableImageButton, becameSelected selected: Bool)
 }
 
 /// A template-styled button that displays a toggleable image button
@@ -17,7 +17,7 @@ protocol ToggleableImageButtonDelegate: class {
 class ToggleableImageButton: TouchableInsetAdjustableButton, TrackableButton {
     override var selected: Bool {
         didSet {
-            delegate?.button(self, setSelected: selected)
+            delegate?.button(self, becameSelected: selected)
         }
     }
     
