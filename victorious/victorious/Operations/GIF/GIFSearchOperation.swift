@@ -10,7 +10,6 @@ import Foundation
 import VictoriousIOSSDK
 
 final class GIFSearchOperation: AsyncOperation<[AnyObject]>, PaginatedRequestOperation {
-    
     // MARK: - Initializing
     
     required init(request: GIFSearchRequest) {

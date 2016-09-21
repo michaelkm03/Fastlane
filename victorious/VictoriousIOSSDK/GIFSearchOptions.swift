@@ -8,6 +8,7 @@
 
 import Foundation
 
+// Encapsulates input parameters for fetching gifs from a remote source
 public enum GIFSearchOptions {
     case Search(term: String, url: String)
     case Trending(url: String)

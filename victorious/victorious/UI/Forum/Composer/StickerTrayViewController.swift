@@ -76,8 +76,8 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
                         let strongSelf = self,
                         let asset = ContentMediaAsset(initializationParameters: localAssetParameters),
                         let previewImage = result.exportPreviewImage
-                        else {
-                            return
+                    else {
+                        return
                     }
                     strongSelf.delegate?.tray(strongSelf, selectedAsset: asset, withPreviewImage: previewImage)
                 case .failure(let error):
@@ -90,9 +90,11 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
     // MARK: - UICollectionViewDelegateFlowLayout
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        guard let _ = dataSource.asset(atIndex: indexPath.row) where
-            dataSource.trayState == .Populated else {
-                return view.bounds.insetBy(Constants.collectionViewContentInsets).size
+        guard
+            let _ = dataSource.asset(atIndex: indexPath.row) where
+            dataSource.trayState == .Populated
+        else {
+            return view.bounds.insetBy(Constants.collectionViewContentInsets).size
         }
         let numberOfRows = Constants.numberOfRows
         let emptySpace = Constants.collectionViewContentInsets.vertical + CGFloat(Constants.numberOfRows - 1) * Constants.interItemSpace

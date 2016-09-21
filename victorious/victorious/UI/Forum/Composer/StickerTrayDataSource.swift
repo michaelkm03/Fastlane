@@ -51,25 +51,25 @@ class StickerTrayDataSource: PaginatedDataSource, TrayDataSource {
         trayState = .Loading
         let contentFetchEndpoint = dependencyManager.contentFetchEndpoint ?? ""
         let searchOptions = GIFSearchOptions.Trending(url: contentFetchEndpoint)
-        self.loadPage( .First,
-                       createOperation: {
-                        return GIFSearchOperation(searchOptions: searchOptions)
-            },
-                       completion:{ [weak self] (results, error, cancelled) in
-                        guard let strongSelf = self else {
-                            return
-                        }
-                        
-                        let stickers = results as? [GIFSearchResultObject]
-                        strongSelf.stickers = stickers ?? []
-                        guard let results = results else {
-                            strongSelf.trayState = .FailedToLoad
-                            return
-                        }
-                        strongSelf.trayState = results.count > 0 ? .Populated : .Empty
-                        completion?(error)
+        let createOperation = {
+            return GIFSearchOperation(searchOptions: searchOptions)
+        }
+        let pageLoadCompletion = {
+            [weak self] (results: [AnyObject]?, error: NSError?, cancelled: Bool) in
+            guard let strongSelf = self else {
+                return
             }
-        )
+            
+            let stickers = results as? [GIFSearchResultObject]
+            strongSelf.stickers = stickers ?? []
+            guard let results = results else {
+                strongSelf.trayState = .FailedToLoad
+                return
+            }
+            strongSelf.trayState = results.count > 0 ? .Populated : .Empty
+            completion?(error)
+        }
+        self.loadPage(.First, createOperation: createOperation, completion: pageLoadCompletion)
     }
     
     // MARK: - UICollectionViewDataSource

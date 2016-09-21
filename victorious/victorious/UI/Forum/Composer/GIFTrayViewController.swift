@@ -74,8 +74,8 @@ class GIFTrayViewController: UIViewController, Tray, UICollectionViewDelegate, U
                         let strongSelf = self,
                         let asset = ContentMediaAsset(initializationParameters: localAssetParameters),
                         let previewImage = result.exportPreviewImage
-                        else {
-                            return
+                    else {
+                        return
                     }
                     strongSelf.delegate?.tray(strongSelf, selectedAsset: asset, withPreviewImage: previewImage)
                 case .failure(let error):
