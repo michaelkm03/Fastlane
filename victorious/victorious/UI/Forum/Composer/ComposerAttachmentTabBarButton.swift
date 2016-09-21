@@ -9,12 +9,12 @@
 import UIKit
 
 class ComposerAttachmentTabBarButton: UIButton {
-    
     let navigationMenuItem: VNavigationMenuItem
     
     init(navigationMenuItem: VNavigationMenuItem, frame: CGRect = CGRect.zero) {
         self.navigationMenuItem = navigationMenuItem
         super.init(frame: frame)
+        adjustsImageWhenDisabled = true
         setImage(navigationMenuItem.icon, forState: .Normal)
     }
 

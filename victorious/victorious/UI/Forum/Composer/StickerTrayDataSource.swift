@@ -100,9 +100,13 @@ class StickerTrayDataSource: PaginatedDataSource, TrayDataSource {
                 }
                 return cell
             case .FailedToLoad:
-                cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.retryCellReuseIdentifier, forIndexPath: indexPath)
+                let retryCell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.retryCellReuseIdentifier, forIndexPath: indexPath) as! TrayRetryLoadCollectionViewCell
+                retryCell.imageView.tintColor = .blackColor()
+                cell = retryCell
             case .Loading:
-                cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.loadingCellReuseIdentifier, forIndexPath: indexPath)
+                let loadingCell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.loadingCellReuseIdentifier, forIndexPath: indexPath) as! TrayLoadingCollectionViewCell
+            loadingCell.activityIndicator.color = .blackColor()
+            cell = loadingCell
             case .Empty:
                 cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.defaultCellReuseIdentifier, forIndexPath: indexPath)
         }

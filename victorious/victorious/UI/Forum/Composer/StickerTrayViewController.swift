@@ -38,9 +38,15 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
         return tray
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        collectionView.hidden = true
+    }
+    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         dataSource.fetchStickers()
+        collectionView.hidden = false
     }
     
     override func viewDidLoad() {

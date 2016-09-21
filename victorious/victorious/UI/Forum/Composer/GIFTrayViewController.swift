@@ -36,9 +36,15 @@ class GIFTrayViewController: UIViewController, Tray, UICollectionViewDelegate, U
         return tray
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        collectionView.hidden = true
+    }
+    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         dataSource.fetchGifs()
+        collectionView.hidden = false
     }
 
     override func viewDidLoad() {

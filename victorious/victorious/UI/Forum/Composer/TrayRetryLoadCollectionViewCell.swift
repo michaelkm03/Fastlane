@@ -10,7 +10,7 @@ import Foundation
 
 // A cell with a "retry" indicator in it's center
 class TrayRetryLoadCollectionViewCell: UICollectionViewCell {
-    lazy var retryImageView: UIImageView = {
+    lazy var imageView: UIImageView = {
         let image = UIImage(named: "uploadRetryButton")?.imageWithRenderingMode(.AlwaysTemplate)
         let imageView = UIImageView(image: image)
         imageView.tintColor = .whiteColor()
@@ -20,6 +20,6 @@ class TrayRetryLoadCollectionViewCell: UICollectionViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        retryImageView.center = contentView.center
+        imageView.center = contentView.center
     }
 }
