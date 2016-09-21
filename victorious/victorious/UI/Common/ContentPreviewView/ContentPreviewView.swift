@@ -132,7 +132,7 @@ class ContentPreviewView: UIView {
         
         switch content.type {
             case .video: playButton.hidden = false
-            case .text, .link, .gif, .image: playButton.hidden = true
+            case .text, .link, .gif, .image, .sticker: playButton.hidden = true
         }
     }
     

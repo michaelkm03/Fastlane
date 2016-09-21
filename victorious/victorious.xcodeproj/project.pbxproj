@@ -718,7 +718,6 @@
 		A721E93C1B572454000B7901 /* NSIndexSet+Convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8BA1B572453000B7901 /* NSIndexSet+Convenience.m */; };
 		A721E9431B572454000B7901 /* NSString+VParseHelp.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8C71B572453000B7901 /* NSString+VParseHelp.m */; };
 		A721E9441B572454000B7901 /* NSString+VStringWithData.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8C91B572453000B7901 /* NSString+VStringWithData.m */; };
-		A721E9451B572454000B7901 /* NSURL+MediaType.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8CB1B572453000B7901 /* NSURL+MediaType.m */; };
 		A721E9491B572454000B7901 /* UIAlertController+VSimpleAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8D31B572453000B7901 /* UIAlertController+VSimpleAlert.m */; };
 		A721E94C1B572454000B7901 /* UIColor+VBrightness.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8D81B572453000B7901 /* UIColor+VBrightness.m */; };
 		A721E9511B572454000B7901 /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = A721E8E21B572453000B7901 /* UIImage+Resize.m */; };
@@ -1158,7 +1157,7 @@
 		DBD02A8019F5863500E0AC95 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBD02A7D19F5863500E0AC95 /* CoreMedia.framework */; };
 		F004B3251D890C8D005D4A74 /* GIFTrayViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F004B3241D890C8D005D4A74 /* GIFTrayViewController.storyboard */; };
 		F004B3271D8912AA005D4A74 /* GIFTrayDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = F004B3261D8912AA005D4A74 /* GIFTrayDataSource.swift */; };
-		F004B32A1D8914E3005D4A74 /* GIFSearchOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F004B3291D8914E3005D4A74 /* GIFSearchOptions.swift */; };
+		F004B32A1D8914E3005D4A74 /* AssetSearchOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F004B3291D8914E3005D4A74 /* AssetSearchOptions.swift */; };
 		F004B32C1D891908005D4A74 /* StickerTrayDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = F004B32B1D891908005D4A74 /* StickerTrayDataSource.swift */; };
 		F004B32E1D8B7A67005D4A74 /* TrayDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = F004B32D1D8B7A67005D4A74 /* TrayDataSource.swift */; };
 		F004B3301D8C04BB005D4A74 /* MediaSearchPreviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F004B32F1D8C04BB005D4A74 /* MediaSearchPreviewCell.xib */; };
@@ -1180,6 +1179,12 @@
 		F00FB8D21D88E2D100AAE752 /* Tray.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00FB8D11D88E2D100AAE752 /* Tray.swift */; };
 		F00FC2C41D90F54D00CFF79F /* TrayRetryLoadCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00FC2C31D90F54D00CFF79F /* TrayRetryLoadCollectionViewCell.swift */; };
 		F00FC2C61D90F73900CFF79F /* TrayLoadingCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00FC2C51D90F73900CFF79F /* TrayLoadingCollectionViewCell.swift */; };
+		F00FC2CD1D91FAC300CFF79F /* StickerSearchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00FC2CC1D91FAC300CFF79F /* StickerSearchOperation.swift */; };
+		F00FC2CF1D92061200CFF79F /* ContentSearchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00FC2CE1D92061200CFF79F /* ContentSearchRequest.swift */; };
+		F00FC2D61D92160E00CFF79F /* NSURL+MediaType.h in Headers */ = {isa = PBXBuildFile; fileRef = F00FC2D41D92160E00CFF79F /* NSURL+MediaType.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F00FC2D71D92160E00CFF79F /* NSURL+MediaType.m in Sources */ = {isa = PBXBuildFile; fileRef = F00FC2D51D92160E00CFF79F /* NSURL+MediaType.m */; };
+		F00FC2D81D92161700CFF79F /* NSURL+MediaType.h in Headers */ = {isa = PBXBuildFile; fileRef = F00FC2D41D92160E00CFF79F /* NSURL+MediaType.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F00FC2D91D92161E00CFF79F /* NSURL+MediaType.m in Sources */ = {isa = PBXBuildFile; fileRef = F00FC2D51D92160E00CFF79F /* NSURL+MediaType.m */; };
 		F01307FC1CD2A4C100C0156C /* NativeWorkspaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F01307FB1CD2A4C100C0156C /* NativeWorkspaceViewController.swift */; };
 		F01307FE1CD2A89800C0156C /* NativeWorkspaceViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F01307FD1CD2A89800C0156C /* NativeWorkspaceViewController.storyboard */; };
 		F0140BC11AA93AEB00B95642 /* VTimerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F0140BC01AA93AEB00B95642 /* VTimerManager.m */; };
@@ -2205,8 +2210,6 @@
 		A721E8C71B572453000B7901 /* NSString+VParseHelp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+VParseHelp.m"; sourceTree = "<group>"; };
 		A721E8C81B572453000B7901 /* NSString+VStringWithData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+VStringWithData.h"; sourceTree = "<group>"; };
 		A721E8C91B572453000B7901 /* NSString+VStringWithData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+VStringWithData.m"; sourceTree = "<group>"; };
-		A721E8CA1B572453000B7901 /* NSURL+MediaType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+MediaType.h"; sourceTree = "<group>"; };
-		A721E8CB1B572453000B7901 /* NSURL+MediaType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+MediaType.m"; sourceTree = "<group>"; };
 		A721E8D21B572453000B7901 /* UIAlertController+VSimpleAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertController+VSimpleAlert.h"; sourceTree = "<group>"; };
 		A721E8D31B572453000B7901 /* UIAlertController+VSimpleAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertController+VSimpleAlert.m"; sourceTree = "<group>"; };
 		A721E8D71B572453000B7901 /* UIColor+VBrightness.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+VBrightness.h"; sourceTree = "<group>"; };
@@ -2802,7 +2805,7 @@
 		EDFC6598311E32933A2C83A7 /* Pods-test.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.staging.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.staging.xcconfig"; sourceTree = "<group>"; };
 		F004B3241D890C8D005D4A74 /* GIFTrayViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = GIFTrayViewController.storyboard; sourceTree = "<group>"; };
 		F004B3261D8912AA005D4A74 /* GIFTrayDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFTrayDataSource.swift; sourceTree = "<group>"; };
-		F004B3291D8914E3005D4A74 /* GIFSearchOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchOptions.swift; sourceTree = "<group>"; };
+		F004B3291D8914E3005D4A74 /* AssetSearchOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetSearchOptions.swift; sourceTree = "<group>"; };
 		F004B32B1D891908005D4A74 /* StickerTrayDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickerTrayDataSource.swift; sourceTree = "<group>"; };
 		F004B32D1D8B7A67005D4A74 /* TrayDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrayDataSource.swift; sourceTree = "<group>"; };
 		F004B32F1D8C04BB005D4A74 /* MediaSearchPreviewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MediaSearchPreviewCell.xib; sourceTree = "<group>"; };
@@ -2825,6 +2828,10 @@
 		F00FB8D11D88E2D100AAE752 /* Tray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tray.swift; sourceTree = "<group>"; };
 		F00FC2C31D90F54D00CFF79F /* TrayRetryLoadCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrayRetryLoadCollectionViewCell.swift; sourceTree = "<group>"; };
 		F00FC2C51D90F73900CFF79F /* TrayLoadingCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrayLoadingCollectionViewCell.swift; sourceTree = "<group>"; };
+		F00FC2CC1D91FAC300CFF79F /* StickerSearchOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickerSearchOperation.swift; sourceTree = "<group>"; };
+		F00FC2CE1D92061200CFF79F /* ContentSearchRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentSearchRequest.swift; sourceTree = "<group>"; };
+		F00FC2D41D92160E00CFF79F /* NSURL+MediaType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+MediaType.h"; sourceTree = "<group>"; };
+		F00FC2D51D92160E00CFF79F /* NSURL+MediaType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+MediaType.m"; sourceTree = "<group>"; };
 		F01307FB1CD2A4C100C0156C /* NativeWorkspaceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NativeWorkspaceViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		F01307FD1CD2A89800C0156C /* NativeWorkspaceViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = NativeWorkspaceViewController.storyboard; sourceTree = "<group>"; };
 		F0140BBF1AA93AEB00B95642 /* VTimerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTimerManager.h; sourceTree = "<group>"; };
@@ -3284,7 +3291,8 @@
 				A7D920471C063682002A6503 /* Errors */,
 				0EBF417A1CAB5C20002966B3 /* ForumEvents */,
 				C3FEA7A41BF26F24003446CC /* GIFSearchRequest.swift */,
-				F004B3291D8914E3005D4A74 /* GIFSearchOptions.swift */,
+				F00FC2CE1D92061200CFF79F /* ContentSearchRequest.swift */,
+				F004B3291D8914E3005D4A74 /* AssetSearchOptions.swift */,
 				A7A583501C3B00CC0088A08A /* HashtagSearchRequest.swift */,
 				0315EAD21BED800A00645071 /* LoginRequest.swift */,
 				A72EDF8E1C03E4D0003D6177 /* LogoutRequest.swift */,
@@ -3330,6 +3338,8 @@
 				0300AA591BF17C20000A121D /* VMultipartFormDataWriter.m */,
 				03314F5F1BE40F3200EE74FD /* VSDKCrypto.h */,
 				03314F601BE40F3200EE74FD /* VSDKCrypto.m */,
+				F00FC2D41D92160E00CFF79F /* NSURL+MediaType.h */,
+				F00FC2D51D92160E00CFF79F /* NSURL+MediaType.m */,
 				A7BBB8EA1C167858009319D9 /* VSDKURLMacroReplacement.h */,
 				A7BBB8EB1C167858009319D9 /* VSDKURLMacroReplacement.m */,
 				0EF7168B1C98FD770005CF86 /* WebSocket */,
@@ -5002,8 +5012,6 @@
 				A721E8C81B572453000B7901 /* NSString+VStringWithData.h */,
 				A721E8C91B572453000B7901 /* NSString+VStringWithData.m */,
 				67DDA81E1D46CA2500C55494 /* NSURL+CustomScheme.swift */,
-				A721E8CA1B572453000B7901 /* NSURL+MediaType.h */,
-				A721E8CB1B572453000B7901 /* NSURL+MediaType.m */,
 				A72A03271C8F55680067ADBD /* NSURL+OptionalString.swift */,
 				F00DEB9F1CC1940F00C5C9EA /* NSURL+PreviewImage.swift */,
 				A6B9FD0D1B60630900166BE8 /* NSURL+VTemporaryFiles.h */,
@@ -5076,6 +5084,7 @@
 				7A1DECD71D80E093003F5C37 /* Operation Infrastructure */,
 				A72C85BE1C977FF500E97D4F /* Pagination */,
 				A72C85C01C977FF500E97D4F /* Purchase */,
+				F00FC2CB1D91FAB600CFF79F /* Sticker */,
 				A72C85F51C977FF500E97D4F /* Upload */,
 				7A1DECDF1D80E0E5003F5C37 /* User */,
 				7A1DECF61D80E0F5003F5C37 /* Utility */,
@@ -6230,6 +6239,14 @@
 			name = UtilityCells;
 			sourceTree = "<group>";
 		};
+		F00FC2CB1D91FAB600CFF79F /* Sticker */ = {
+			isa = PBXGroup;
+			children = (
+				F00FC2CC1D91FAC300CFF79F /* StickerSearchOperation.swift */,
+			);
+			name = Sticker;
+			sourceTree = "<group>";
+		};
 		F0140BC21AA9463600B95642 /* Timer */ = {
 			isa = PBXGroup;
 			children = (
@@ -6313,6 +6330,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A7BBB8EC1C167858009319D9 /* VSDKURLMacroReplacement.h in Headers */,
+				F00FC2D61D92160E00CFF79F /* NSURL+MediaType.h in Headers */,
 				03314F1F1BE3E2DE00EE74FD /* VictoriousIOSSDK.h in Headers */,
 				A7D920501C063705002A6503 /* VRequestErrorConstants.h in Headers */,
 				0300AA5A1BF17C20000A121D /* VMultipartFormDataWriter.h in Headers */,
@@ -6374,6 +6392,7 @@
 				0372BEFB1C84FF61004950CF /* VRequestErrorConstants.h in Headers */,
 				0372BEF31C84FF1F004950CF /* VictoriousIOSSDK.h in Headers */,
 				0372BEF41C84FF1F004950CF /* VMultipartFormDataWriter.h in Headers */,
+				F00FC2D81D92161700CFF79F /* NSURL+MediaType.h in Headers */,
 				0372BEF51C84FF1F004950CF /* VSDKCrypto.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -7410,6 +7429,7 @@
 				C3FEA7A51BF26F24003446CC /* GIFSearchRequest.swift in Sources */,
 				0E5F7E401CA1E42000B3AF14 /* ForumNetworkSource.swift in Sources */,
 				0E0DF0CC1CDD3DE100C782EA /* UniqueIdentificationMessage.swift in Sources */,
+				F00FC2D71D92160E00CFF79F /* NSURL+MediaType.m in Sources */,
 				0E23691B1D493C5600D9E45C /* SwiftyBeaver.swift in Sources */,
 				A734AF181C499B5500ECA324 /* RequestBodyWriterType.swift in Sources */,
 				0E0615091CA35D6800236D4A /* ForumEventSender.swift in Sources */,
@@ -7466,6 +7486,7 @@
 				A7D9204B1C0636B3002A6503 /* ResponseParsingError.swift in Sources */,
 				C3E7C0FB1BF3F4A600AFE545 /* MarkAllNotificationsAsReadRequest.swift in Sources */,
 				0E4BF6B31CA60B5400B8A456 /* WebSocketEvent.swift in Sources */,
+				F00FC2CF1D92061200CFF79F /* ContentSearchRequest.swift in Sources */,
 				BF78BF071CE27FB800AFB8F3 /* ContentMediaAsset.swift in Sources */,
 				0E2369151D493C5600D9E45C /* AES256CBC.swift in Sources */,
 				6759555F1BF157BA00D40A87 /* FanLoyalty.swift in Sources */,
@@ -7476,7 +7497,7 @@
 				A7F843621BFD0BFD004C3D55 /* Tracking.swift in Sources */,
 				7AFEB1491D413B7600FA972D /* Timestamp.swift in Sources */,
 				0E2369201D4BC77000D9E45C /* Logger.swift in Sources */,
-				F004B32A1D8914E3005D4A74 /* GIFSearchOptions.swift in Sources */,
+				F004B32A1D8914E3005D4A74 /* AssetSearchOptions.swift in Sources */,
 				A7039CE11C24867C0023DE6F /* CreateAlertRequest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -7648,6 +7669,7 @@
 				0372BEE71C84FF19004950CF /* TrendingHashtagRequest.swift in Sources */,
 				0372BECA1C84FF0C004950CF /* GIFSearchResult.swift in Sources */,
 				03E7305E1C974B11008CB191 /* ValidateReceiptRequest.swift in Sources */,
+				F00FC2D91D92161E00CFF79F /* NSURL+MediaType.m in Sources */,
 				0372BEF21C84FF19004950CF /* VSDKURLMacroReplacement.m in Sources */,
 				0372BEB41C84FF02004950CF /* RequestPasswordResetRequest.swift in Sources */,
 				0372BE7E1C84FF02004950CF /* Bool+Initializers.swift in Sources */,
@@ -7794,6 +7816,7 @@
 				7A1DECDD1D80E09E003F5C37 /* RequestOperation.swift in Sources */,
 				A73C3EB91C45890E00A8452C /* MediaSearchDataSource.swift in Sources */,
 				A721E95E1B572454000B7901 /* UIView+RecursiveSearch.swift in Sources */,
+				F00FC2CD1D91FAC300CFF79F /* StickerSearchOperation.swift in Sources */,
 				BF79C7711C98D3D100222C8A /* LoadingCancellableView.swift in Sources */,
 				D836884119C370C400070F22 /* VBaseCollectionViewCell.m in Sources */,
 				6708F7041CD83E0E004332CF /* TutorialNetworkDataSource.swift in Sources */,
@@ -8252,7 +8275,6 @@
 				A721E9491B572454000B7901 /* UIAlertController+VSimpleAlert.m in Sources */,
 				F07DDE351CFCC7B200C7FC8D /* TextOnColorButton.swift in Sources */,
 				BFC7FAEA1CF515390061489B /* VDependencyManager+NetworkResources.swift in Sources */,
-				A721E9451B572454000B7901 /* NSURL+MediaType.m in Sources */,
 				A7039CD71C23CB5E0023DE6F /* VApplicationTracking.swift in Sources */,
 				0372587519D61B0800836B3F /* VUploadTaskCreator.m in Sources */,
 				A650EFDA1B421F61005529E5 /* VAssetCollectionGridViewController.m in Sources */,

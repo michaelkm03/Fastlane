@@ -19,6 +19,12 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
     weak var delegate: TrayDelegate?
     var progressHUD: MBProgressHUD?
     var mediaExporter: MediaSearchExporter?
+    var cellSize: CGSize = .zero {
+        didSet {
+            self.dataSource.cellSize = cellSize
+            self.collectionView.reloadData()
+        }
+    }
     
     lazy var dataSource: StickerTrayDataSource = {
         let dataSource = StickerTrayDataSource(dependencyManager: self.dependencyManager)
@@ -41,6 +47,13 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
         dataSource.fetchStickers()
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        let emptySpace = Constants.collectionViewContentInsets.vertical + CGFloat(Constants.numberOfRows - 1) * Constants.interItemSpace
+        let side = (view.bounds.height - emptySpace) / CGFloat(Constants.numberOfRows)
+        cellSize = CGSize(width: side, height: side)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         dataSource.registerCells(withCollectionView: collectionView)
@@ -52,8 +65,7 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         guard
-            let sticker = dataSource.asset(atIndex: indexPath.item),
-            let remoteID = sticker.remoteID where
+            let sticker = dataSource.asset(atIndex: indexPath.item) where
             dataSource.trayState == .Populated
         else {
             if let _ = collectionView.cellForItemAtIndexPath(indexPath) as? TrayRetryLoadCollectionViewCell {
@@ -64,24 +76,33 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
             }
             return
         }
-        showExportingHUD()
-        exportMedia(fromSearchResult: sticker) { [weak self] state in
-            self?.dismissHUD()
-            switch state {
-                case .success(let result):
-                    let localAssetParameters = ContentMediaAsset.LocalAssetParameters(contentType: .gif, remoteID: remoteID, source: nil, size: sticker.assetSize, url: sticker.sourceMediaURL)
-                    guard
-                        let strongSelf = self,
-                        let asset = ContentMediaAsset(initializationParameters: localAssetParameters),
-                        let previewImage = result.exportPreviewImage
-                        else {
-                            return
-                    }
-                    strongSelf.delegate?.tray(strongSelf, selectedAsset: asset, withPreviewImage: previewImage)
-                case .failure(let error):
-                    self?.showHUD(renderingError: error)
-                case .canceled:()
+        
+        let imageAssets = sticker.assets.filter { return $0.url?.v_hasImageExtension() ?? false }
+        let largestAsset: ContentMediaAssetModel? = imageAssets.reduce(nil) { (largestAsset, newAsset) -> ContentMediaAssetModel? in
+            //TODO: Cleanup
+            if largestAsset == nil || (newAsset.size?.area > largestAsset?.size?.area && newAsset.url != nil) {
+                return newAsset
             }
+            return largestAsset
+        }
+        
+        guard
+            let stickerAsset = largestAsset as? ContentMediaAsset,
+            let imageURL = stickerAsset.url
+        else {
+            return
+        }
+        
+        showExportingHUD()
+        do {
+            let previewImageData = try NSData(contentsOfURL: imageURL, options: [])
+            self.dismissHUD()
+            guard let image = UIImage(data: previewImageData) else {
+                return
+            }
+            delegate?.tray(self, selectedAsset: stickerAsset, withPreviewImage: image)
+        } catch let error as NSError {
+            showHUD(renderingError: error)
         }
     }
     
@@ -92,10 +113,7 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
             dataSource.trayState == .Populated else {
                 return view.bounds.insetBy(Constants.collectionViewContentInsets).size
         }
-        let numberOfRows = Constants.numberOfRows
-        let emptySpace = Constants.collectionViewContentInsets.vertical + CGFloat(Constants.numberOfRows - 1) * Constants.interItemSpace
-        let side = (view.bounds.height - emptySpace) / CGFloat(numberOfRows)
-        return CGSize(width: side, height: side)
+        return cellSize
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {

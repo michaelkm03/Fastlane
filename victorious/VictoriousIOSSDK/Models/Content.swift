@@ -224,7 +224,7 @@ public class Content: ContentModel {
         let sourceType = json[typeString]["type"].string ?? typeString
         
         switch type {
-            case .image:
+            case .image, .sticker:
                 self.assets = [ContentMediaAsset(contentType: type, sourceType: sourceType, json: json[typeString])].flatMap { $0 }
             case .gif, .video:
                 self.assets = (json[typeString][sourceType].array ?? []).flatMap { ContentMediaAsset(contentType: type, sourceType: sourceType, json: $0) }

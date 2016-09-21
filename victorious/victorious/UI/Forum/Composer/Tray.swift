@@ -22,7 +22,7 @@ enum TrayMediaCompletionState {
     case canceled
 }
 
-extension Tray {
+extension Tray {    
     func exportMedia(fromSearchResult mediaSearchResultObject: MediaSearchResult, completionBlock: (TrayMediaCompletionState) -> ()) {
         self.mediaExporter?.cancelDownload()
         self.mediaExporter = nil

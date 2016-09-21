@@ -18,7 +18,7 @@ class StickerTrayDataSource: PaginatedDataSource, TrayDataSource {
     
     let dependencyManager: VDependencyManager
     var dataSourceDelegate: TrayDataSourceDelegate?
-    private var stickers: [GIFSearchResultObject] = []
+    private var stickers: [Content] = []
     private(set) var trayState: TrayState = .Empty {
         didSet {
             if oldValue != trayState {
@@ -26,8 +26,9 @@ class StickerTrayDataSource: PaginatedDataSource, TrayDataSource {
             }
         }
     }
+    var cellSize: CGSize = .zero
     
-    func asset(atIndex index: Int) -> GIFSearchResultObject? {
+    func asset(atIndex index: Int) -> Content? {
         guard stickers.count > index else {
             return nil
         }
@@ -48,17 +49,17 @@ class StickerTrayDataSource: PaginatedDataSource, TrayDataSource {
     func fetchStickers(completion: (NSError? -> ())? = nil) {
         trayState = .Loading
         let contentFetchEndpoint = dependencyManager.contentFetchEndpoint ?? ""
-        let searchOptions = GIFSearchOptions.Trending(url: contentFetchEndpoint)
+        let searchOptions = AssetSearchOptions.Trending(url: contentFetchEndpoint)
         self.loadPage( .First,
                        createOperation: {
-                        return GIFSearchOperation(searchOptions: searchOptions)
+                        return StickerSearchOperation(searchOptions: searchOptions)
             },
                        completion:{ [weak self] (results, error, cancelled) in
                         guard let strongSelf = self else {
                             return
                         }
                         
-                        let stickers = results as? [GIFSearchResultObject]
+                        let stickers = results as? [Content]
                         strongSelf.stickers = stickers ?? []
                         guard let results = results else {
                             strongSelf.trayState = .FailedToLoad
@@ -92,7 +93,7 @@ class StickerTrayDataSource: PaginatedDataSource, TrayDataSource {
                 let cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.stickerCellReuseIdentifier, forIndexPath: indexPath) as! MediaSearchPreviewCell
                 cell.activityIndicator.stopAnimating()
                 if let sticker = asset(atIndex: indexPath.row) {
-                    cell.previewAssetUrl = sticker.thumbnailImageURL
+                    cell.previewAssetUrl = sticker.assets.first?.url
                 }
                 return cell
             case .FailedToLoad:
