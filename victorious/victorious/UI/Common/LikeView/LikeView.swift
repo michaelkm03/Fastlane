@@ -110,7 +110,7 @@ final class LikeView: UIView {
 
     private func updateLikeCount(content: Content) {
         let likeCount = content.likeCount ?? 0
-        let totalLikes = likeCount + content.currentUserLikeCount
+        let totalLikes = likeCount > 0 ? likeCount + content.currentUserLikeCount : content.currentUserLikeCount
         countLabel.text = totalLikes > 0 ? largeNumberFormatter.stringForInteger(totalLikes) : ""
         setNeedsLayout()
     }

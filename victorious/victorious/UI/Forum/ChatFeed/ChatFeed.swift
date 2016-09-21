@@ -27,13 +27,15 @@ protocol ChatFeed: class, ForumEventSender, ForumEventReceiver {
     var addedBottomInset: CGFloat { get set }
 }
 
+// MARK: - ChatFeedDelegate
+
 protocol ChatFeedDelegate: class {
     func chatFeed(chatFeed: ChatFeed, didSelectUserWithID userID: User.ID)
     func chatFeed(chatFeed: ChatFeed, didSelect chatFeedContent: ChatFeedContent)
     func chatFeed(chatFeed: ChatFeed, didLongPress chatFeedContent: ChatFeedContent)
     func chatFeed(chatFeed: ChatFeed, didSelectFailureButtonFor chatFeedContent: ChatFeedContent)
     func chatFeed(chatFeed: ChatFeed, didSelectReplyButtonFor chatFeedContent: ChatFeedContent)
-    
+    func chatFeed(chatFeed: ChatFeed, didToggleLikeFor content: ChatFeedContent, completion: (() -> Void))
     func chatFeed(chatFeed: ChatFeed, didScroll scrollView: UIScrollView)
     func chatFeed(chatFeed: ChatFeed, willBeginDragging scrollView: UIScrollView)
     func chatFeed(chatFeed: ChatFeed, willEndDragging scrollView: UIScrollView, withVelocity velocity: CGPoint)

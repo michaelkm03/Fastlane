@@ -13,6 +13,7 @@ protocol ChatFeedMessageCellDelegate: class {
     func messageCellDidSelectAvatarImage(messageCell: ChatFeedMessageCell)
     func messageCellDidSelectMedia(messageCell: ChatFeedMessageCell)
     func messageCellDidLongPressContent(messageCell: ChatFeedMessageCell)
+    func messageCellDidToggleLikeContent(messageCell: ChatFeedMessageCell, completion: (() -> Void))
     func messageCellDidSelectFailureButton(messageCell: ChatFeedMessageCell)
     func messageCellDidSelectReplyButton(messageCell: ChatFeedMessageCell)
     func messageCell(messageCell: ChatFeedMessageCell, didSelectLinkURL url: NSURL)
@@ -283,19 +284,11 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     }
 
     private func toggleLike() {
-        guard
-            let content = content,
-            let contentID = content.id,
-            let upvoteAPIPath = dependencyManager.contentUpvoteAPIPath,
-            let unupvoteAPIPath = dependencyManager.contentUnupvoteAPIPath,
-            let upvoteOperation: SyncOperation<Void> = content.isLikedByCurrentUser
-                ? ContentUnupvoteOperation(apiPath: unupvoteAPIPath, contentID: contentID)
-                : ContentUpvoteOperation(apiPath: upvoteAPIPath, contentID: contentID)
-        else {
+        guard let content = content else {
             return
         }
 
-        upvoteOperation.queue { [weak self] _ in
+        delegate?.messageCellDidToggleLikeContent(self) { [weak self] in
             self?.likeView?.updateLikeStatus(content)
         }
     }
@@ -468,14 +461,6 @@ private extension VDependencyManager {
 
     var upvoteIconUnselected: UIImage? {
         return imageForKey("upvote.icon.unselected")
-    }
-
-    var contentUpvoteAPIPath: APIPath? {
-        return networkResources?.apiPathForKey("contentUpvoteURL")
-    }
-
-    var contentUnupvoteAPIPath: APIPath? {
-        return networkResources?.apiPathForKey("contentUnupvoteURL")
     }
 }
 

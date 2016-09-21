@@ -59,7 +59,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
                                 selectedIcon: self.dependencyManager.upvoteIconSelected,
                                 unselectedIcon: self.dependencyManager.upvoteIconUnselected)
 
-        likeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(toggleUpvote)))
+        likeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(toggleLike)))
         likeView.updateLikeStatus(self.content)
 
         return likeView
@@ -238,20 +238,20 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         ).queue()
     }
     
-    func toggleUpvote() {
+    func toggleLike() {
         guard
             let content = content,
             let contentID = content.id,
-            let upvoteAPIPath = dependencyManager.contentUpvoteAPIPath,
-            let unupvoteAPIPath = dependencyManager.contentUnupvoteAPIPath,
-            let upvoteOperation: SyncOperation<Void> = content.isLikedByCurrentUser
-                ? ContentUnupvoteOperation(apiPath: unupvoteAPIPath, contentID: contentID)
-                : ContentUpvoteOperation(apiPath: upvoteAPIPath, contentID: contentID)
-        else {
-            return
+            let likeAPIPath = dependencyManager.contentLikeAPIPath,
+            let unLikeAPIPath = dependencyManager.contentUnLikeAPIPath,
+            let toggleLikeOperation: SyncOperation<Void> = content.isLikedByCurrentUser
+                ? ContentUnupvoteOperation(apiPath: unLikeAPIPath, contentID: contentID)
+                : ContentUpvoteOperation(apiPath: likeAPIPath, contentID: contentID)
+            else {
+                return
         }
-        
-        upvoteOperation.queue { [weak self] _ in
+
+        toggleLikeOperation.queue { [weak self] _ in
             self?.updateHeader()
         }
     }
@@ -390,13 +390,13 @@ private extension VDependencyManager {
     var contentDeleteAPIPath: APIPath? {
         return networkResources?.apiPathForKey("contentDeleteURL")
     }
-    
-    var contentUpvoteAPIPath: APIPath? {
-        return networkResources?.apiPathForKey("contentUpvoteURL")
+
+    var contentLikeAPIPath: APIPath? {
+        return networkResources?.apiPathForKey("contentUpvoteURL", macroReplacements: ["%%CONTEXT%%": "closeup_view"])
     }
-    
-    var contentUnupvoteAPIPath: APIPath? {
-        return networkResources?.apiPathForKey("contentUnupvoteURL")
+
+    var contentUnLikeAPIPath: APIPath? {
+        return networkResources?.apiPathForKey("contentUnupvoteURL", macroReplacements: ["%%CONTEXT%%": "closeup_view"])
     }
     
     var gridStreamDependencyManager: VDependencyManager? {
