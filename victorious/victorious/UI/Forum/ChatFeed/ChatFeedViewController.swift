@@ -268,7 +268,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     // MARK: - ChatFeedMessageCellDelegate
     
     func messageCellDidSelectAvatarImage(messageCell: ChatFeedMessageCell) {
-        guard let userID = messageCell.chatFeedContent?.content.author.id else {
+        guard let userID = messageCell.chatFeedContent?.content.author?.id else {
             return
         }
         
@@ -297,6 +297,13 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         }
         
         delegate?.chatFeed(self, didSelectFailureButtonForContent: content)
+    }
+    
+    func messageCell(messageCell: ChatFeedMessageCell, didSelectLinkURL url: NSURL) {
+        Router(originViewController: self, dependencyManager: dependencyManager).navigate(
+            to: DeeplinkDestination(url: url),
+            from: nil
+        )
     }
     
     // MARK: - UIScrollViewDelegate

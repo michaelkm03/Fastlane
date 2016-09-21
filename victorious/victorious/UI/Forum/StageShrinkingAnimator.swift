@@ -11,7 +11,7 @@ import UIKit
 /// Implementors will be notified about the state of the animations.
 protocol StageShrinkingAnimatorDelegate: class {
     func willSwitch(to state: StageState)
-    func shouldSwtich(to state: StageState) -> Bool
+    func shouldSwitch(to state: StageState) -> Bool
 }
 
 /// Describes which state the stage can be in.
@@ -158,8 +158,8 @@ class StageShrinkingAnimator: NSObject {
         switch gesture.state {
             case .Changed:
                 // We only perform animation if the translation matches our current state, and delegate permits the state change
-                let shouldShrink = stageState == .enlarged && translation.y < 0 && delegate?.shouldSwtich(to: .shrunken) == true
-                let shouldEnlarge = stageState == .shrunken && translation.y > 0 && delegate?.shouldSwtich(to: .shrunken) == true
+                let shouldShrink = stageState == .enlarged && translation.y < 0 && delegate?.shouldSwitch(to: .shrunken) == true
+                let shouldEnlarge = stageState == .shrunken && translation.y > 0 && delegate?.shouldSwitch(to: .shrunken) == true
                 
                 guard shouldShrink || shouldEnlarge else {
                     return
@@ -202,7 +202,7 @@ class StageShrinkingAnimator: NSObject {
     // MARK: - Stage Shrinking Support
     
     private func goTo(state: StageState) {
-        guard delegate?.shouldSwtich(to: state) == true else {
+        guard delegate?.shouldSwitch(to: state) == true else {
             return
         }
         

@@ -16,7 +16,7 @@ class StageDataSource: ForumEventReceiver {
     private let dependencyManager: VDependencyManager?
     
     private var currentContentFetchOperation: StageContentFetchOperation?
-    private var currentContent: ContentModel?
+    private var currentContent: Content?
     
     // MARK: Initialiation
     

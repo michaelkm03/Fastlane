@@ -54,8 +54,6 @@ struct CaptionBarPopulator {
             let textInsets = captionTextView.v_textInsets
             collapsedRect.size = CGSize(width: collapsedRect.width + textInsets.horizontal, height: collapsedRect.height + textInsets.vertical)
             captionBar.labelWidthConstraint.constant = collapsedRect.width
-            let avatarVerticalDelta = collapsedRect.height - captionBar.avatarButtonHeightConstraint.constant
-            captionBar.avatarButtonTopConstraint.constant = -max(ceil(avatarVerticalDelta / 2), 0)
             
             completion?()
             

@@ -264,7 +264,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     
     private func updateTrackingParameters() {
         if
-            let content = content as? ContentModel,
+            let content = content as? Content,
             let contentId = content.id
         {
             trackingParameters = [ VTrackingKeyParentContentId : contentId ]

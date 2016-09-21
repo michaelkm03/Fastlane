@@ -407,7 +407,7 @@ private final class ShowWebContentOperation: AsyncOperation<Void> {
         
         //We show the navigation and dismiss button if the view controller is presented modally, 
         // since there would be no way to dimiss the view controller otherwise
-        let viewController = WebContentViewController(shouldShowNavigationButtons: configuration.forceModal)
+        let viewController = WebContentViewController(shouldShowNavigationButtons: configuration.forceModal, dependencyManager: dependencyManager)
         
         let request = WebViewHTMLFetchRequest(urlPath: urlToFetchFrom)
         let operation = RequestOperation(request: request)
