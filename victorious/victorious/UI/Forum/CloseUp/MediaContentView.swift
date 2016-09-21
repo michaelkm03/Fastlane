@@ -192,20 +192,15 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         tearDownTextLabel()
         
         imageView.hidden = false
-
-        switch imageAsset.imageSource {
-            case .remote(let url):
-                imageView.sd_setImageWithURL(
-                    url,
-                    placeholderImage: imageView.image, // Leave the image as is, since we want to wait until animation has finished before setting the image.
-                    options: .AvoidAutoSetImage
-                ) { [weak self] image, _, _, _ in
+        
+        imageView.getImageAsset(imageAsset) { [weak self] result in
+            switch result {
+                case .success(let image):
                     self?.imageView.image = image
                     self?.finishedLoadingContent()
-                }
-            case .local(let image):
-                imageView.image = image
-                finishedLoadingContent()
+                case .failure(_):
+                    break
+            }
         }
     }
     
@@ -301,6 +296,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
 
         // We need to reload the image content if the size has changed above the threshold since MCV is initialized with a 0 size.
         if content.type.displaysAsImage && (lastFrameSize.area / bounds.size.area) < Constants.imageReloadThreshold {
+            lastFrameSize = bounds.size
             loadContent()
         }
     }

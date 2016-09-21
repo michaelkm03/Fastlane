@@ -202,6 +202,8 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
 
     private func hideMediaContentView(mediaContentView: MediaContentView, animated: Bool, completion: ((Bool) -> Void)? = nil) {
         mediaContentView.willBeDismissed()
+        
+        // FUTURE: Show loading thumbnail
         loadingIndicator.startAnimating()
         
         let animations = {
@@ -226,8 +228,6 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         if let mediaContentView = mediaContentView {
             tearDownMediaContentView(mediaContentView)
         }
-
-        loadingIndicator.startAnimating()
 
         mediaContentView = newMediaContentView(for: stageContent.content)
         mediaContentView?.loadContent()
@@ -346,7 +346,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         titleCardViewController?.hide()
     }
     
-    func shouldSwtich(to state: StageState) -> Bool {
+    func shouldSwitch(to state: StageState) -> Bool {
         switch state {
             case .enlarged: return true
             case .shrunken: return visible

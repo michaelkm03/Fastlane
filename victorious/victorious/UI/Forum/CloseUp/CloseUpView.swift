@@ -41,6 +41,8 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
     @IBOutlet weak var closeUpContentContainerView: UIView!
     @IBOutlet weak var separatorBar: UIImageView!
     
+    private(set) var mediaContentHeightConstraint: NSLayoutConstraint?
+    
     // MARK: - Variables
     
     weak var delegate: CloseUpViewDelegate?
@@ -51,7 +53,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
         return ErrorStateView.v_fromNib()
     }()
 
-    private var mediaContentView: MediaContentView?
+    private(set) var mediaContentView: MediaContentView?
     
     private var videoPlayer: VVideoPlayer?
 
@@ -95,12 +97,13 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
         let mediaContentView = MediaContentView(
             content: content,
             dependencyManager: dependencyManager,
-            fillMode: .fill,
+            fillMode: .fit,
             allowsVideoControls: true,
             shouldSyncOnReappearance: true
         )
         mediaContentView.delegate = self
         mediaContentView.alpha = 0
+        mediaContentView.translatesAutoresizingMaskIntoConstraints = false
         
         return mediaContentView
     }
@@ -116,8 +119,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
                 return
             }
             
-            self.mediaContentView?.removeFromSuperview()
-            
+            removeMediaContentView()
             
             // Header
             userNameButton.setTitle(author.displayName, forState: .Normal)
@@ -136,13 +138,24 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
             captionLabel.text = content.text
             
             let mediaContentView = setupMediaContentView(for: content)
-            closeUpContentContainerView.addSubview(mediaContentView)
-            self.mediaContentView = mediaContentView
+            addMediaContentView(mediaContentView)
             mediaContentView.loadContent()
             
             // Update size
             self.frame.size = sizeForContent(content)
         }
+    }
+    
+    override func updateConstraints() {
+        mediaContentView?.topAnchor.constraintEqualToAnchor(headerSection.bottomAnchor).active = true
+        mediaContentView?.widthAnchor.constraintEqualToAnchor(headerSection.widthAnchor).active = true
+        
+        // The height of mediaContentView is being constraint to a constant since it's dynamic to the content.
+        // In order to remove this constraint when we transition into a lightbox, we need to save this height constraint as a property.
+        mediaContentHeightConstraint = mediaContentView?.heightAnchor.constraintEqualToConstant(height(for: content))
+        mediaContentHeightConstraint?.active = true
+        
+        super.updateConstraints()
     }
     
     // MARK: - Frame/Size Calculations
@@ -166,22 +179,10 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
             bounds.size.height = bounds.size.height - relatedLabel.frame.size.height
             errorView.frame = bounds
             
-            mediaContentView?.removeFromSuperview()
-            mediaContentView = nil
+            removeMediaContentView()
         }
         else {
-            guard let mediaContentView = mediaContentView else {
-                return
-            }
-            
-            // Content
-            var mediaContentViewFrame = mediaContentView.frame
-            mediaContentViewFrame.origin.y = totalHeight
-            mediaContentViewFrame.size.height = height(for: content)
-            mediaContentViewFrame.size.width = bounds.size.width
-            mediaContentView.frame = mediaContentViewFrame
-            
-            totalHeight = totalHeight + mediaContentView.bounds.size.height
+            totalHeight += height(for: content)
             
             // Caption
             var frame = captionLabel.frame
@@ -278,6 +279,18 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
         userNameButton.setTitle("", forState: .Normal)
         createdAtLabel.text = ""
         relatedLabel.alpha = 0
+    }
+    
+    
+    private func addMediaContentView(mediaContentView: MediaContentView) {
+        closeUpContentContainerView.addSubview(mediaContentView)
+        self.mediaContentView = mediaContentView
+        setNeedsUpdateConstraints()
+    }
+    
+    private func removeMediaContentView() {
+        mediaContentView?.removeFromSuperview()
+        mediaContentView = nil
     }
     
     // MARK: - ConfigurableGridStreamHeader

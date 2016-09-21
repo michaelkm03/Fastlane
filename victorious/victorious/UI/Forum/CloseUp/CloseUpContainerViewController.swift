@@ -61,6 +61,8 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
             VAudioManager.sharedInstance().focusedPlaybackDidBegin(muted: false)
         }
     }
+    
+    // MARK: - Initialization
 
     init(dependencyManager: VDependencyManager, contentID: String, streamAPIPath: APIPath, context: DeeplinkContext? = nil, content: Content? = nil) {
         self.context = context
@@ -113,6 +115,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
+    // MARK: - Life Cycle
     override func viewDidLoad() {
         dependencyManager.addBackgroundToBackgroundHost(self)
     }
@@ -121,12 +124,16 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         super.viewWillAppear(animated)
         dependencyManager.trackViewWillAppear(self)
         trackContentView()
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(enterLandscapeMode), name: UIDeviceOrientationDidChangeNotification, object: nil)
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         dependencyManager.trackViewWillDisappear(self)
         closeUpView.headerWillDisappear()
+        
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIDeviceOrientationDidChangeNotification, object: nil)
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -301,8 +308,37 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     
     // MARK: - Notification Response
     
-    dynamic private func returnedFromBackground() {
+    private dynamic func returnedFromBackground() {
         updateAudioSessionCategory()
+    }
+    
+    private dynamic func enterLandscapeMode() {
+        guard
+            let mediaContentView = closeUpView.mediaContentView
+            where UIDevice.currentDevice().orientation.isLandscape && presentedViewController == nil
+        else {
+            return
+        }
+        
+        // Removing the previous height constraint to avoid layout constraint conflict warnings with the new height constraint on media content view in lightbox.
+        // Its previous height anchor was constraint to a constant, which would stick around after being removed from the view hierarchy.
+        if let heightConstraint = closeUpView.mediaContentHeightConstraint {
+            mediaContentView.removeConstraint(heightConstraint)
+        }
+        
+        let lightbox = LightBoxViewController(mediaContentView: mediaContentView)
+        lightbox.modalTransitionStyle = .CrossDissolve
+        
+        lightbox.willDismiss = { [weak self] in
+            self?.closeUpView.closeUpContentContainerView?.addSubview(mediaContentView)
+            self?.closeUpView.setNeedsUpdateConstraints()
+        }
+        
+        lightbox.didDismiss = { [weak self] in
+            self?.closeUpView.headerDidAppear()
+        }
+        
+        presentViewController(lightbox, animated: true, completion: nil)
     }
 }
 
