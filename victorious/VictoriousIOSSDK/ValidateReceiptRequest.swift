@@ -43,7 +43,7 @@ public struct ValidateReceiptRequest: RequestType {
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> VIPStatus {
         requestBodyWriter.removeBodyTempFile()
         
-        guard let vipStatus = responseJSON["payload"].arrayValue.flatMap({ VIPStatus(json: $0["vip"]) }).first else {
+        guard let vipStatus = VIPStatus(json: responseJSON["payload"]["vip"]) else {
             throw ResponseParsingError()
         }
         
