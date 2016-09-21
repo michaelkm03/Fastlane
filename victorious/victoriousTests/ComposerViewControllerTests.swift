@@ -44,5 +44,8 @@ class ComposerViewControllerTests: XCTestCase {
         viewController.text = "here's some text"
         viewController.append("@thirduser")
         XCTAssertEqual(viewController.text, "here's some text @thirduser ")
+        
+        viewController.append("")
+        XCTAssertEqual(viewController.text, "here's some text @thirduser ")
     }
 }
