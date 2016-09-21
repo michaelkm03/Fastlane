@@ -16,7 +16,7 @@ protocol TutorialNetworkDataSourceDelegate: class {
 }
 
 class TutorialNetworkDataSource: NSObject, NetworkDataSource {
-    private(set) var visibleItems: [ChatFeedContent] = []
+    var visibleItems: [ChatFeedContent] = []
     
     private var queuedTutorialMessages: [Content] = []
     

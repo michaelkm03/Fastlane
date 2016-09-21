@@ -526,6 +526,7 @@
 		7A1389911D53E06E000F5C86 /* Subscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1389901D53E06E000F5C86 /* Subscription.swift */; };
 		7A1921B01D9207BA00EA71CF /* ComposerViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1921AF1D9207BA00EA71CF /* ComposerViewControllerTests.swift */; };
 		7A1921B21D92175A00EA71CF /* ChatFeedDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1921B11D92175A00EA71CF /* ChatFeedDataSourceTests.swift */; };
+		7A1921B41D9218F900EA71CF /* TutorialCollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1921B31D9218F900EA71CF /* TutorialCollectionViewDataSource.swift */; };
 		7A1C70AA1CC8513B00A666F5 /* SideMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1C70A91CC8513B00A666F5 /* SideMenuController.swift */; };
 		7A1DECAD1D80E00C003F5C37 /* ContentDeleteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECA11D80E00C003F5C37 /* ContentDeleteOperation.swift */; };
 		7A1DECAE1D80E00C003F5C37 /* ContentFeedOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECA21D80E00C003F5C37 /* ContentFeedOperation.swift */; };
@@ -1940,6 +1941,7 @@
 		7A1389901D53E06E000F5C86 /* Subscription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Subscription.swift; sourceTree = "<group>"; };
 		7A1921AF1D9207BA00EA71CF /* ComposerViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposerViewControllerTests.swift; sourceTree = "<group>"; };
 		7A1921B11D92175A00EA71CF /* ChatFeedDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedDataSourceTests.swift; sourceTree = "<group>"; };
+		7A1921B31D9218F900EA71CF /* TutorialCollectionViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialCollectionViewDataSource.swift; sourceTree = "<group>"; };
 		7A1C70A91CC8513B00A666F5 /* SideMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuController.swift; sourceTree = "<group>"; };
 		7A1DECA11D80E00C003F5C37 /* ContentDeleteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentDeleteOperation.swift; sourceTree = "<group>"; };
 		7A1DECA21D80E00C003F5C37 /* ContentFeedOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentFeedOperation.swift; sourceTree = "<group>"; };
@@ -5796,6 +5798,7 @@
 				BE171D9F1868BE64004E5202 /* Supporting Files */,
 				03D94C2A19DE155400BFAA27 /* Swizzling Support */,
 				039D2FD4197D93C600DFBE60 /* Test Data */,
+				7A1921B31D9218F900EA71CF /* TutorialCollectionViewDataSource.swift */,
 				62058B641C54DFCE00D3C8F9 /* UI */,
 				7AE3EA3A1CAF3B3200272A6A /* UICollectionViewFlowLayout+CellSizeTests.swift */,
 				D8DCE5911ADD85820004B782 /* VActionBarTests.m */,
@@ -8257,6 +8260,7 @@
 				A7D0AD301C0D453D0018C63E /* NSDate+timeSinceTests.m in Sources */,
 				A7DCA5021C128A78004E35B4 /* VStoredLoginTests.m in Sources */,
 				03E7303C1C973F9A008CB191 /* NetworkActivityIndicatorTests.swift in Sources */,
+				7A1921B41D9218F900EA71CF /* TutorialCollectionViewDataSource.swift in Sources */,
 				A7DCA4FE1C128A78004E35B4 /* VPushNotificationManagerTests.m in Sources */,
 				67F9515A1C20C03E005E2A4D /* VMockRequestRecorder.m in Sources */,
 				7AB55FE71CADF06000EBE31E /* CGSize+CornerRadiusTests.swift in Sources */,
