@@ -14,7 +14,7 @@ import WebKit
 /// by providing our own logic to handle going back/forward around a loaded HTML page. For now, the VC only handles 
 /// the case where loadHTML is only called to load the first page inside the viewcontroller. Subsequent calls to loadHTML
 /// may break this functionality. 
-class WebContentViewController: UIViewController, WKNavigationDelegate, WKUIDelegate {
+class WebContentViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, VBackgroundContainer {
     
     // MARK: - Properties 
     
@@ -24,10 +24,13 @@ class WebContentViewController: UIViewController, WKNavigationDelegate, WKUIDele
     private var cancelButton: UIBarButtonItem?
     private var initialBaseURL: NSURL?
     private var initialHTMLString = ""
+    private let dependencyManager: VDependencyManager
     
     // MARK: - Initialization 
     
-    init(shouldShowNavigationButtons: Bool) {
+    init(shouldShowNavigationButtons: Bool, dependencyManager: VDependencyManager) {
+        self.dependencyManager = dependencyManager
+        
         super.init(nibName: nil, bundle: nil)
         
         if (shouldShowNavigationButtons) {
@@ -47,26 +50,36 @@ class WebContentViewController: UIViewController, WKNavigationDelegate, WKUIDele
         
         webView.navigationDelegate = self
         webView.UIDelegate = self
+        
+        webView.backgroundColor = .clearColor()
+        webView.opaque = false
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
     // MARK: - ViewController lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         edgesForExtendedLayout = .None
-        webView.backgroundColor = .whiteColor()
         view.addSubview(webView)
         view.v_addFitToParentConstraintsToSubview(webView)
+        
+        // Setup with dependencyManager
+        dependencyManager.addBackgroundToBackgroundHost(self)
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         hideStatusBarActivityIndicator()
+    }
+    
+    // MARK: - VBackgroundContainer
+    
+    func backgroundContainerView() -> UIView {
+        return view
     }
     
     // MARK: - Configuration 
