@@ -156,7 +156,7 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
     private func getTrendingHashtags() {
         guard
             let trendingAPIPath = trendingAPIPath,
-            let request = TrendingHashtagRequest(apiPath: trendingAPIPath)
+            let request = TrendingHashtagsRequest(apiPath: trendingAPIPath)
         else {
             return
         }

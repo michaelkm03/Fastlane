@@ -49,7 +49,7 @@ final class ListMenuHashtagDataSource: ListMenuSectionDataSource {
     func fetchRemoteData() {
         guard
             let apiPath = dependencyManager.trendingHashtagsAPIPath,
-            let request = TrendingHashtagRequest(apiPath: apiPath)
+            let request = TrendingHashtagsRequest(apiPath: apiPath)
         else {
             Log.warning("Missing or invalid trending hashtags API path: \(dependencyManager.trendingHashtagsAPIPath)")
             return
