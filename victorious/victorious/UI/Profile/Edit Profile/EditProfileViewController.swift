@@ -45,9 +45,6 @@ class EditProfileViewController: UIViewController {
         super.viewDidLoad()
         setupDataSource()
 
-        dataSource?.onErrorUpdated = { [weak self] localizedErrorString in
-            self?.animateErrorInThenOut(localizedErrorString)
-        }
         navigationItem.title = NSLocalizedString("EditProfile", comment: "Title for edit profile screen.")
 
         tableView.estimatedRowHeight = 44
@@ -164,7 +161,11 @@ class EditProfileViewController: UIViewController {
         guard let dataSource = self.dataSource else {
             return
         }
-        saveButton.enabled = dataSource.enteredDataIsValid
+        let dataSourceStatus = dataSource.dataSourceStatus
+        saveButton.enabled = dataSourceStatus.valid
+        if let error = dataSourceStatus.localizedError {
+            self.animateErrorInThenOut(error)
+        }
     }
     
     private func presentCamera() {

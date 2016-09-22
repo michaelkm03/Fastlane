@@ -18,6 +18,7 @@ class EditProfileDataSourceTests: XCTestCase {
     func createTestDataSource() -> EditProfileDataSource {
         let dependencyManager = VDependencyManager(parentManager: nil, configuration: nil, dictionaryOfClassesByTemplateName: nil)
         let viewController: EditProfileViewController = EditProfileViewController.v_initialViewControllerFromStoryboard()
+        viewController.loadViewIfNeeded()
         let tableView = viewController.tableView
         XCTAssertNotNil(tableView)
         return EditProfileDataSource(dependencyManager: dependencyManager, tableView: tableView!, userModel: User(id: 1, username: Constants.testUsername))
@@ -48,24 +49,24 @@ class EditProfileDataSourceTests: XCTestCase {
         let dataSource = createTestDataSource()
         dataSource.nameAndLocationCell.username = "a_1"
         dataSource.nameAndLocationCell.displayname = nil
-        XCTAssertTrue(dataSource.enteredDataIsValid)
+        XCTAssertTrue(dataSource.dataSourceStatus.valid)
         
         dataSource.nameAndLocationCell.displayname = "012345678901234567890123456789"
         dataSource.nameAndLocationCell.username = "a"
-        XCTAssertTrue(dataSource.enteredDataIsValid)
+        XCTAssertTrue(dataSource.dataSourceStatus.valid)
     }
     
     func testInvalidUsernamesAndDisplayNames() {
         let dataSource = createTestDataSource()
         dataSource.nameAndLocationCell.username = "  % &^                       "
         dataSource.nameAndLocationCell.displayname = "012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789"
-        XCTAssertFalse(dataSource.enteredDataIsValid)
+        XCTAssertFalse(dataSource.dataSourceStatus.valid)
         
         dataSource.nameAndLocationCell.username = ""
-        XCTAssertFalse(dataSource.enteredDataIsValid)
+        XCTAssertFalse(dataSource.dataSourceStatus.valid)
         
         dataSource.nameAndLocationCell.username = "🏓"
-        XCTAssertFalse(dataSource.enteredDataIsValid)
+        XCTAssertFalse(dataSource.dataSourceStatus.valid)
         
         let testDataPath = NSBundle(forClass: EditProfileDataSourceTests.self).pathForResource("LoremIpsum", ofType: "txt")
         XCTAssertNotNil(testDataPath)
@@ -73,7 +74,7 @@ class EditProfileDataSourceTests: XCTestCase {
         do {
             let contents = try NSString(contentsOfFile: testDataPath!, usedEncoding: nil)
             dataSource.nameAndLocationCell.displayname = String(contents)
-            XCTAssertFalse(dataSource.enteredDataIsValid)
+            XCTAssertFalse(dataSource.dataSourceStatus.valid)
         }
         
         catch {

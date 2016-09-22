@@ -121,7 +121,7 @@ class DisplaynameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
                                                                      attributes: placeholderAttributes)
             
             // Background
-            contentView.backgroundColor = Constants.inputBackgroundColor
+            contentView.backgroundColor = dependencyManager.cellBackgroundColor
         }
     }
     

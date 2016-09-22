@@ -67,38 +67,34 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
     /// A callback to be notified when the user has made any changes to their information
     var onUserUpdateData: (() -> Void)?
     
-    /// Check this boolean to determine whether or not the entered data is currently valid
-    var enteredDataIsValid: Bool {
+    /// Check this to determine whether or not the entered data is currently valid
+    /// If the current configuration is invalid the valid property of the tuple will be false.
+    /// When the `valid` property is false there will be a localized string to present to the user.
+    /// When the `valid` property is true there will be no localized string in the localized error property of the tuple.
+    var dataSourceStatus: (valid: Bool, localizedError: String?) {
         get {
             // Displayname Validation
             let displayname = nameAndLocationCell.displayname
             guard displayname?.characters.count < Constants.displayNameLength else {
-                self.onErrorUpdated?(localizedError: NSLocalizedString("Your display name is too long.", comment: "While editing, error letting the user know their display name must be shorter."))
-                return false
+                return (false, NSLocalizedString("Your display name is too long.", comment: "While editing, error letting the user know their display name must be shorter."))
             }
             
             // Username Validation
             guard let username = nameAndLocationCell.username where !username.characters.isEmpty else {
-                self.onErrorUpdated?(localizedError: NSLocalizedString("Your username cannot be empty.", comment: "While editing, error to the user letting them know their username must not be empty."))
-                return false
+                return (false, NSLocalizedString("Your username cannot be empty.", comment: "While editing, error to the user letting them know their username must not be empty."))
             }
             let usernameCharacterset = NSCharacterSet(charactersInString: username)
             guard NSCharacterSet.validUsernameCharacters.isSupersetOfSet(usernameCharacterset) else {
-                self.onErrorUpdated?(localizedError: NSLocalizedString("Your username can only contain lowercase letters a-z, number 0-9, and underscores \"_\".",
+                return (false, NSLocalizedString("Your username can only contain lowercase letters a-z, number 0-9, and underscores \"_\".",
                     comment: "While editing, an error that informs they have entered and invalid characters and must remove the invalid character."))
-                return false
             }
             guard username.characters.count <= Constants.usernameLength else {
-                self.onErrorUpdated?(localizedError: NSLocalizedString("Your username can only be 20 characters long.",
-                    comment: "While editing, an error that informs they have entered and invalid characters and must remove the invalid character."))
-                return false
+                return (false, NSLocalizedString("Your username can only be 20 characters long.",
+                comment: "While editing, an error that informs they have entered and invalid characters and must remove the invalid character."))
             }
-            return true
+            return (true, nil)
         }
     }
-    
-    /// A callback to be notified when the current cause for edit profile validation changes
-    var onErrorUpdated: ((localizedError: String) -> Void)?
     
     /// This function will update the UI with the provided `previewImage`
     func useNewAvatar(previewImage: UIImage, fileURL: NSURL) {
