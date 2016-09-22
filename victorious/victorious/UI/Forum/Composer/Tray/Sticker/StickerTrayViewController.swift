@@ -74,7 +74,6 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
         }
         progressHUD = showExportingHUD(delegate: self)
         exportMedia(fromSearchResult: sticker) { [weak self] state in
-//            self?.progressHUD?.hide(true)
             switch state {
                 case .success(let result):
                     let localAssetParameters = ContentMediaAsset.LocalAssetParameters(contentType: .gif, remoteID: remoteID, source: nil, size: sticker.assetSize, url: sticker.sourceMediaURL)
