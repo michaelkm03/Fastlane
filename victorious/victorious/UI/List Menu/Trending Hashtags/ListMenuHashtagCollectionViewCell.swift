@@ -43,11 +43,16 @@ class ListMenuHashtagCollectionViewCell: UICollectionViewCell, ListMenuSectionCe
     // MARK: - Private methods
     
     private func applyTemplateAppearance(with dependencyManager: VDependencyManager) {
+        titleLabel.textColor = dependencyManager.titleColor
         titleLabel.font = dependencyManager.hashtagItemFont
     }
 }
 
 private extension VDependencyManager {
+    var titleColor: UIColor? {
+        return colorForKey("color.text.navItem")
+    }
+
     var hashtagItemFont: UIFont? {
         return fontForKey(VDependencyManagerParagraphFontKey)
     }

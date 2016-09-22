@@ -37,6 +37,7 @@ final class ListMenuChatRoomCollectionViewCell: UICollectionViewCell, ListMenuSe
     // MARK: - Private methods
 
     private func applyTemplateAppearance(with dependencyManager: VDependencyManager) {
+        titleLabel.textColor = dependencyManager.titleColor
         titleLabel.font = dependencyManager.chatRoomItemFont
     }
 }
@@ -49,5 +50,9 @@ private extension VDependencyManager {
 
     var selectedBackgroundColor: UIColor? {
         return colorForKey(VDependencyManagerAccentColorKey)
+    }
+
+    var titleColor: UIColor? {
+        return colorForKey("color.text.navItem")
     }
 }
