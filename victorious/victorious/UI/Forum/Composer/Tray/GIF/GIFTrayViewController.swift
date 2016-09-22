@@ -72,7 +72,6 @@ class GIFTrayViewController: UIViewController, Tray, UICollectionViewDelegate, U
         }
         progressHUD = showExportingHUD(delegate: self)
         exportMedia(fromSearchResult: gif) { [weak self] state in
-//            self?.progressHUD?.hide(true)
             switch state {
                 case .success(let result):
                     let localAssetParameters = ContentMediaAsset.LocalAssetParameters(contentType: .gif, remoteID: remoteID, source: nil, size: gif.assetSize, url: gif.sourceMediaURL)
