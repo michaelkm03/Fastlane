@@ -222,6 +222,8 @@ class AvatarView: UIView {
         }
     }
     
+    var dependencyManager: VDependencyManager?
+    
     private func applyInitialsStyle() {
         initialsLabel.textAlignment = .Center
         initialsLabel.adjustsFontSizeToFitWidth = true
@@ -235,12 +237,12 @@ class AvatarView: UIView {
     }
 
     private func updateVIPBadge() {
-        let shouldShowVIPBadge = user?.hasValidVIPSubscription == true && size.shouldShowVIPBorder
+        let shouldShowVIPBadge = user?.hasValidVIPSubscription == true && size.shouldShowVIPBorder && dependencyManager?.isVIPEnabled == true
         vipBadgeView?.hidden = !shouldShowVIPBadge
     }
 
     private func updateVIPBorderView() {
-        let shouldShowVIPBorder = user?.hasValidVIPSubscription == true && size.shouldShowVIPBorder
+        let shouldShowVIPBorder = user?.hasValidVIPSubscription == true && size.shouldShowVIPBorder && dependencyManager?.isVIPEnabled == true
         vipBorderView?.hidden = !shouldShowVIPBorder
     }
     
