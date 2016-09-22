@@ -222,6 +222,11 @@ class AvatarView: UIView {
         }
     }
     
+    /// - note: The dependency manager is here only because we wanted to know if VIP is enabled or not.
+    /// Ideally we shouldn't worry about that, and should solely rely on checking the user's vip status.
+    /// However, in this case our backend has limitations that it couldn't mark creators as non-VIP in apps with VIP disabled.
+    /// So we had to perform this check on the client.
+    /// Currently, this property is only set in user profile screen.
     var dependencyManager: VDependencyManager?
     
     private func applyInitialsStyle() {
