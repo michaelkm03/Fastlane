@@ -151,7 +151,12 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
             if headerView == nil {
                 headerView = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: headerName, forIndexPath: indexPath) as? ConfigurableGridStreamHeaderView
             }
-            header?.decorateHeader(dependencyManager, maxHeight: CGRectGetHeight(collectionView.bounds), content: content, hasError: hasError)
+            header?.decorateHeader(dependencyManager,
+                                   withWidth: collectionView.frame.size.width,
+                                   maxHeight: collectionView.frame.size.height,
+                                   content: content,
+                                   hasError: hasError
+            )
             
             guard let header = header as? UIView else {
                 assertionFailure("header is not a UIView")

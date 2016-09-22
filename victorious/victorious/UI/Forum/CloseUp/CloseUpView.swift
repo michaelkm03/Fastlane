@@ -294,19 +294,18 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
     
     // MARK: - ConfigurableGridStreamHeader
     
-    func decorateHeader(dependencyManager: VDependencyManager, maxHeight: CGFloat, content: Content?, hasError: Bool) {
+    func decorateHeader(dependencyManager: VDependencyManager, withWidth width: CGFloat, maxHeight: CGFloat, content: Content?, hasError: Bool) {
         self.content = content
         errorView.hidden = !hasError
         closeUpContentContainerView.hidden = hasError
     }
     
-    func sizeForHeader(dependencyManager: VDependencyManager, maxHeight: CGFloat, content: Content?, hasError: Bool) -> CGSize {
+    func sizeForHeader(dependencyManager: VDependencyManager, withWidth width: CGFloat, maxHeight: CGFloat, content: Content?, hasError: Bool) -> CGSize {
         if hasError {
-            let screenWidth = UIScreen.mainScreen().bounds.size.width
             let aspectRatio = Constants.defaultAspectRatio
             return CGSize(
-                width: screenWidth,
-                height: screenWidth / aspectRatio
+                width: width,
+                height: width / aspectRatio
             )
         }
         else {
