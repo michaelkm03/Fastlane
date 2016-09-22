@@ -161,10 +161,11 @@ class EditProfileViewController: UIViewController {
         guard let dataSource = self.dataSource else {
             return
         }
-        let dataSourceStatus = dataSource.dataSourceStatus
-        saveButton.enabled = dataSourceStatus.valid
-        if let error = dataSourceStatus.localizedError {
+        if let error = dataSource.localizedError {
             self.animateErrorInThenOut(error)
+            saveButton.enabled = false
+        } else {
+            saveButton.enabled = true
         }
     }
     

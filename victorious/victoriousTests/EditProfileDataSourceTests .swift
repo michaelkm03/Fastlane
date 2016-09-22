@@ -49,27 +49,27 @@ class EditProfileDataSourceTests: XCTestCase {
         let dataSource = createTestDataSource()
         dataSource.nameAndLocationCell.username = "a_1"
         dataSource.nameAndLocationCell.displayname = "Victorious L. Jackson"
-        XCTAssertTrue(dataSource.dataSourceStatus.valid)
+        XCTAssertNil(dataSource.localizedError)
         
         dataSource.nameAndLocationCell.displayname = "012345678901234567890123456789"
         dataSource.nameAndLocationCell.username = "a"
-        XCTAssertTrue(dataSource.dataSourceStatus.valid)
+        XCTAssertNil(dataSource.localizedError)
     }
     
     func testInvalidUsernamesAndDisplayNames() {
         let dataSource = createTestDataSource()
         dataSource.nameAndLocationCell.username = "  % &^                       "
         dataSource.nameAndLocationCell.displayname = "012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789"
-        XCTAssertFalse(dataSource.dataSourceStatus.valid)
+        XCTAssertNotNil(dataSource.localizedError)
         
         dataSource.nameAndLocationCell.username = ""
-        XCTAssertFalse(dataSource.dataSourceStatus.valid)
+        XCTAssertNotNil(dataSource.localizedError)
         
         dataSource.nameAndLocationCell.username = "🏓"
-        XCTAssertFalse(dataSource.dataSourceStatus.valid)
+        XCTAssertNotNil(dataSource.localizedError)
         
         dataSource.nameAndLocationCell.displayname = ""
-        XCTAssertFalse(dataSource.dataSourceStatus.valid)
+        XCTAssertNotNil(dataSource.localizedError)
         
         let testDataPath = NSBundle(forClass: EditProfileDataSourceTests.self).pathForResource("LoremIpsum", ofType: "txt")
         XCTAssertNotNil(testDataPath)
@@ -77,7 +77,7 @@ class EditProfileDataSourceTests: XCTestCase {
         do {
             let contents = try NSString(contentsOfFile: testDataPath!, usedEncoding: nil)
             dataSource.nameAndLocationCell.displayname = String(contents)
-            XCTAssertFalse(dataSource.dataSourceStatus.valid)
+            XCTAssertNotNil(dataSource.localizedError)
         }
         
         catch {
