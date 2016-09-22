@@ -93,17 +93,17 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Chat Room Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WdA-kE-z1c" userLabel="Title Label">
-                                                    <rect key="frame" x="22" y="9" width="542" height="21"/>
+                                                    <rect key="frame" x="14" y="9" width="558" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                         <constraints>
-                                            <constraint firstItem="WdA-kE-z1c" firstAttribute="leading" secondItem="0Wq-wL-hCl" secondAttribute="leadingMargin" constant="14" id="0R9-13-EDv"/>
-                                            <constraint firstAttribute="trailingMargin" secondItem="WdA-kE-z1c" secondAttribute="trailing" constant="28" id="WBO-d3-nwj"/>
+                                            <constraint firstItem="WdA-kE-z1c" firstAttribute="leading" secondItem="0Wq-wL-hCl" secondAttribute="leading" constant="14" id="0R9-13-EDv"/>
+                                            <constraint firstAttribute="trailing" secondItem="WdA-kE-z1c" secondAttribute="trailing" constant="28" id="WBO-d3-nwj"/>
                                             <constraint firstItem="WdA-kE-z1c" firstAttribute="centerY" secondItem="0Wq-wL-hCl" secondAttribute="centerY" id="qsn-RH-6Yr"/>
                                         </constraints>
                                         <connections>
