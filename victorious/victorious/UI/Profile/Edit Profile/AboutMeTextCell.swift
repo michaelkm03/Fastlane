@@ -12,7 +12,6 @@ import Foundation
 class AboutMeTextCell: UITableViewCell, UITextViewDelegate {
     private struct Constants {
         static let textViewInsets = UIEdgeInsets(top: 15, left: -4, bottom: 14, right: -5)
-        static let backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.2)
     }
     
     @IBOutlet private var textView: VPlaceholderTextView!
@@ -35,7 +34,7 @@ class AboutMeTextCell: UITableViewCell, UITextViewDelegate {
             textView.font = font
             textView.textContainerInset = Constants.textViewInsets
             
-            contentView.backgroundColor = Constants.backgroundColor
+            contentView.backgroundColor = dependencyManager.cellBackgroundColor
         }
     }
     
@@ -102,5 +101,9 @@ private extension VDependencyManager {
     
     var enteredTextColor: UIColor? {
         return colorForKey("color.text")
+    }
+    
+    var cellBackgroundColor: UIColor? {
+        return colorForKey("color.accent")
     }
 }

@@ -13,7 +13,6 @@ import Foundation
 class DisplaynameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
     private struct Constants {
         static let placeholderAlpha = CGFloat(0.5)
-        static let inputBackgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.2)
     }
     
     @IBOutlet private var displaynameField: UITextField! {
@@ -185,5 +184,9 @@ private extension VDependencyManager {
     
     var enteredTextColor: UIColor? {
         return colorForKey("color.text")
+    }
+    
+    var cellBackgroundColor: UIColor? {
+        return colorForKey("color.accent")
     }
 }
