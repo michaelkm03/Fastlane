@@ -105,7 +105,6 @@ static NSString * const kMacroProfileContext         = @"%%PROFILE_CONTEXT%%";
                                  VTrackingEventUserPermissionDidChange             : TemplateTrackingKey.permissionChange,
                                  VTrackingEventLoginWithFacebookDidFail            : TemplateTrackingKey.appError,
                                  VTrackingEventSentPurchaseRequestToStore          : VTrackingEventSentPurchaseRequestToStore,
-                                 VTrackingEventSentProductReceiptToBackend         : VTrackingEventSentProductReceiptToBackend,
                                  VTrackingEventRecievedPurchaseCompletionFromStore : VTrackingEventRecievedPurchaseCompletionFromStore,
                                  VTrackingEventRecievedProductReceiptFromBackend   : VTrackingEventRecievedProductReceiptFromBackend };
         
