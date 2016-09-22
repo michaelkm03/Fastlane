@@ -49,6 +49,7 @@ class EditProfileViewController: UIViewController {
         dataSource?.onErrorUpdated = { [weak self] localizedErrorString in
             self?.animateErrorInThenOut(localizedErrorString)
         }
+        navigationItem.title = NSLocalizedString("EditProfile", comment: "Title for edit profile screen.")
 
         tableView.estimatedRowHeight = 44
         tableView.rowHeight = UITableViewAutomaticDimension
