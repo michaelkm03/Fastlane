@@ -350,15 +350,16 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         let isLikedByCurrentUser = content.content.isLikedByCurrentUser
         let likeAPIPath = APIPath(templatePath: likeKey, macroReplacements: ["%%CONTEXT%%": context])
         let unLikeAPIPath = APIPath(templatePath: unLikeKey, macroReplacements: ["%%CONTEXT%%": context])
-        
-        guard let toggleLikeOperation: SyncOperation<Void> = isLikedByCurrentUser
+
+        let toggleLikeOperation: SyncOperation<Void>? = isLikedByCurrentUser
             ? ContentUnupvoteOperation(apiPath: unLikeAPIPath, contentID: contentID)
             : ContentUpvoteOperation(apiPath: likeAPIPath, contentID: contentID)
-        else {
+
+        guard let operation = toggleLikeOperation else {
             return
         }
 
-        toggleLikeOperation.queue { _ in
+        operation.queue { _ in
             completion()
         }
     }
