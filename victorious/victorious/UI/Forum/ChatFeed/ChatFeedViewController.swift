@@ -296,9 +296,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
             return
         }
 
-        delegate?.chatFeed(self, didToggleLikeFor: content, completion: {
-            completion()
-        })
+        delegate?.chatFeed(self, didToggleLikeFor: content, completion: completion)
     }
 
     func messageCellDidSelectFailureButton(messageCell: ChatFeedMessageCell) {

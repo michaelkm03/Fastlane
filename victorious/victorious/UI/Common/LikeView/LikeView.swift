@@ -11,7 +11,6 @@ import UIKit
 /// A class to display content like count and like image
 
 final class LikeView: UIView {
-
     // MARK: - Views
 
     private let imageView = UIImageView()

@@ -342,8 +342,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             let contentID = content.content.id,
             let likeKey = dependencyManager.contentLikeKey,
             let unLikeKey = dependencyManager.contentUnLikeKey
-            else {
-                return
+        else {
+            return
         }
 
         let context = chatFeedContext.value ?? "chat_feed"
@@ -354,8 +354,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         guard let toggleLikeOperation: SyncOperation<Void> = isLikedByCurrentUser
             ? ContentUnupvoteOperation(apiPath: unLikeAPIPath, contentID: contentID)
             : ContentUpvoteOperation(apiPath: likeAPIPath, contentID: contentID)
-            else {
-                return
+        else {
+            return
         }
 
         toggleLikeOperation.queue { _ in

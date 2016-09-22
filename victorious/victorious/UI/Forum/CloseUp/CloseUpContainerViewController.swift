@@ -15,7 +15,8 @@ private struct Constants {
     static let cellsPerRow = 3
     static let estimatedBarButtonWidth: CGFloat = 60.0
     static let estimatedStatusBarHeight: CGFloat = 20.0
-    static let navigationBarRightPadding: CGFloat = 10.0 
+    static let navigationBarRightPadding: CGFloat = 10.0
+    static let likeViewFrame = CGRect(x: 0.0, y: 0.0, width: 44.0, height: 44.0)
 }
 
 class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, ContentCellTracker, CoachmarkDisplayer, VBackgroundContainer {
@@ -51,9 +52,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     }()
 
     private lazy var likeView: LikeView = {
-        let frame = CGRect(x: 0.0, y: 0.0, width: 44.0, height: 44.0)
-
-        let likeView = LikeView(frame: frame,
+        let likeView = LikeView(frame: Constants.likeViewFrame,
                                 textColor: self.dependencyManager.upvoteCountColor,
                                 font: self.dependencyManager.upvoteCountFont,
                                 selectedIcon: self.dependencyManager.upvoteIconSelected,
