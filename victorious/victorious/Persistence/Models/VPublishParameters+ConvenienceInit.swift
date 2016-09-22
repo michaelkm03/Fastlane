@@ -31,12 +31,11 @@ extension VPublishParameters {
         isVideo = mediaAsset.contentType == .video
         
         isVIPContent = content.isVIPOnly
-        
-        if isGIF {
-            assetRemoteId = mediaAsset.externalID
+
+        // A GIF could either be a reference to a remote (externalID) or a file on disk.
+        if let externalID = mediaAsset.externalID where isGIF {
+            assetRemoteId = externalID
         }
-        else {
-            mediaToUploadURL = mediaAsset.url
-        }
+        mediaToUploadURL = mediaAsset.url
     }
 }

@@ -627,10 +627,16 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
 
 //        composerTextViewManager?.prependImage(image, toTextView: textView)
 
-        // TODO: find out if it's a gif, if not then set type to image
-        let mediaParameters = ContentMediaAsset.RemoteAssetParameters(contentType: .gif, url: nil, source: nil, size: image.imageObject.size, data: image.imageData)
-        if let selectedAsset = ContentMediaAsset(initializationParameters: mediaParameters) {
-            sendMessage(asset: selectedAsset, previewImage: image.imageObject, text: nil, currentUser: user, isVIPOnly: false)
+        do {
+            // TODO: get the file extension from the file info in UIImage
+            let fileUrl = try TemporaryFileWriter.writeTemporaryData(image.imageData, fileExtension: "gif")
+
+            let mediaParameters = ContentMediaAsset.RemoteAssetParameters(contentType: .gif, url: fileUrl, source: nil, size: image.imageObject.size)
+            if let selectedAsset = ContentMediaAsset(initializationParameters: mediaParameters) {
+                sendMessage(asset: selectedAsset, previewImage: image.imageObject, text: nil, currentUser: user, isVIPOnly: false)
+            }
+        } catch {
+            print("failed to write temp file to disk...")
         }
     }
 }
