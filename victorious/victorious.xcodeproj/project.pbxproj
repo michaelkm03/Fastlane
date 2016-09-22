@@ -490,7 +490,6 @@
 		67FAC0BA1C4083370051D47E /* MockErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67FAC0B91C4083370051D47E /* MockErrorHandler.swift */; };
 		79004DB81BF53A050027E344 /* DateFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79004DB71BF53A050027E344 /* DateFormat.swift */; };
 		790176471D91A63300F0A707 /* UsernameAvailabilityRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790176461D91A63300F0A707 /* UsernameAvailabilityRequest.swift */; };
-		790176491D91A77800F0A707 /* UsernameAvailabilityOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790176481D91A77800F0A707 /* UsernameAvailabilityOperation.swift */; };
 		790254751BF293E200D20AFE /* Hashtag.json in Resources */ = {isa = PBXBuildFile; fileRef = C314E6C01BF13E3F00FB9591 /* Hashtag.json */; };
 		79070A2B1CFE73570049CFC3 /* ShowTutorialsOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79070A2A1CFE73570049CFC3 /* ShowTutorialsOperationTests.swift */; };
 		79070A2D1CFE88590049CFC3 /* AppVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79070A2C1CFE88590049CFC3 /* AppVersion.swift */; };
@@ -1899,7 +1898,6 @@
 		7464A6F93EDF3FF8C98A2CD5 /* Pods-victoriousPersistenceTests.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victoriousPersistenceTests.qa.xcconfig"; path = "Pods/Target Support Files/Pods-victoriousPersistenceTests/Pods-victoriousPersistenceTests.qa.xcconfig"; sourceTree = "<group>"; };
 		79004DB71BF53A050027E344 /* DateFormat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateFormat.swift; sourceTree = "<group>"; };
 		790176461D91A63300F0A707 /* UsernameAvailabilityRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsernameAvailabilityRequest.swift; sourceTree = "<group>"; };
-		790176481D91A77800F0A707 /* UsernameAvailabilityOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsernameAvailabilityOperation.swift; sourceTree = "<group>"; };
 		79070A2A1CFE73570049CFC3 /* ShowTutorialsOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowTutorialsOperationTests.swift; sourceTree = "<group>"; };
 		79070A2C1CFE88590049CFC3 /* AppVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppVersion.swift; sourceTree = "<group>"; };
 		79070A2E1CFE92B50049CFC3 /* AppVersionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppVersionTests.swift; sourceTree = "<group>"; };
@@ -4688,7 +4686,6 @@
 			children = (
 				7A1DECE21D80E0F2003F5C37 /* UserBlockToggleOperation.swift */,
 				7A1DECEA1D80E0F2003F5C37 /* UserUpvoteToggleOperation.swift */,
-				790176481D91A77800F0A707 /* UsernameAvailabilityOperation.swift */,
 			);
 			path = User;
 			sourceTree = "<group>";
@@ -8098,7 +8095,6 @@
 				A72C86481C977FF500E97D4F /* VLoginType+Credentials.swift in Sources */,
 				7A254FDD1D77A8F6007D1D6B /* CollectionLoadingView.swift in Sources */,
 				A7ECC1CC1AD617480003E00A /* VImageToolController.m in Sources */,
-				790176491D91A77800F0A707 /* UsernameAvailabilityOperation.swift in Sources */,
 				B074C5BC1B3B2CA800EA3FFC /* VTimeMarkView.m in Sources */,
 				C30AA4E31B057D290010CEFE /* VButtonWithCircularEmphasis.m in Sources */,
 				A790C82A1A01980F00C4F208 /* VTrackingManager.m in Sources */,

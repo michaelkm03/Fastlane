@@ -113,20 +113,25 @@ class EditProfileViewController: UIViewController {
             }
         }
         
+        
         if let username = profileUpdate.username {
             let appID = VEnvironmentManager.sharedInstance().currentEnvironment.appID.stringValue
-
-            UsernameAvailabilityOperation(apiPath: apiPath, usernameToCheck: username, appID: appID)?.queue() { result in
+            guard let usernameAvailabilityRequest = UsernameAvailabilityRequest(apiPath: apiPath, usernameToCheck: username, appID: appID) else {
+                self.animateErrorInThenOut(NSLocalizedString("ErrorOccured", comment: ""))
+                enableUIClosure()
+                return
+            }
+            RequestOperation(request: usernameAvailabilityRequest).queue() { result in
                 switch result {
                     case .success(let available):
                         if available {
                             accountUpdateClosure()
                         } else {
-                            self.animateErrorInThenOut("Username is not available")
+                            self.animateErrorInThenOut(NSLocalizedString("That username is already taken.", comment: ""))
                             enableUIClosure()
                         }
                     case .failure(_), .cancelled:
-                        self.animateErrorInThenOut("Failureto check")
+                        self.animateErrorInThenOut(NSLocalizedString("ErrorOccured", comment: ""))
                         enableUIClosure()
                 }
             }
@@ -180,10 +185,7 @@ class EditProfileViewController: UIViewController {
 
     private func animateErrorInThenOut(localizedErrorString: String) {
         self.validationErrorLabel.text = localizedErrorString
-        // artificial delay to prevent animations from batching
-        dispatch_after(0.01) { [weak self] in
-            self?.animateErrorIn()
-        }
+        self.animateErrorIn()
     }
     
     private func animateErrorIn() {
