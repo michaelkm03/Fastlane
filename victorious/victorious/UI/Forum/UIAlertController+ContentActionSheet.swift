@@ -140,11 +140,11 @@ private extension VDependencyManager {
     }
     
     private var likeTitle: String {
-        return childDependencyForKey("actions")?.stringForKey("upvote.text") ?? "BUMP"
+        return childDependencyForKey("actions")?.stringForKey("upvote.text") ?? "LIKE"
     }
     
     private var unlikeTitle: String {
-        return childDependencyForKey("actions")?.stringForKey("unupvote.text") ?? "UNBUMP"
+        return childDependencyForKey("actions")?.stringForKey("unupvote.text") ?? "UNLIKE"
     }
     
     private var flagTitle: String {
