@@ -14,7 +14,7 @@ import Foundation
 ///     title - title of the stream (navigation bar title)
 ///     name - type of stream, eg: main.stream
 ///     streamAPIPath - API path for the stream
-///     trackingURLs - array of API paths used for tracking calls
+///     trackingAPIPaths - array of API paths used for tracking calls
 
 struct ListMenuCommunityItem {
     let title: String
