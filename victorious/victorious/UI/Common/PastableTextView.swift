@@ -13,6 +13,10 @@ protocol PastableTextViewDelegate: class {
 
     func canShowCopyMenu() -> Bool
 
+    func canShowCutMenu() -> Bool
+
+    func canShowSelectMenu() -> Bool
+
     func didPasteImage(image: (imageObject: UIImage, imageData: NSData))
 }
 
@@ -30,6 +34,10 @@ class PastableTextView: VPlaceholderTextView {
         switch action {
             case #selector(copy(_:) ):
                 canPerformAction = pastableDelegate.canShowCopyMenu()
+            case #selector(cut(_: ) ):
+                canPerformAction = pastableDelegate.canShowCutMenu()
+            case #selector(select(_: ) ):
+                canPerformAction = pastableDelegate.canShowSelectMenu()
             case #selector(paste(_:) ):
                 canPerformAction = pastableDelegate.canShowPasteMenu()
             default:

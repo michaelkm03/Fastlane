@@ -604,6 +604,13 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             sendMessage(text: text, currentUser: user)
         }
 
+        cleanup()
+    }
+
+    // MARK: - Send Message
+
+    /// Call after a message has been sent to reset the state.
+    private func cleanup() {
         composerTextViewManager?.resetTextView(textView)
         selectedAsset = nil
     }
@@ -612,11 +619,26 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
 
     func canShowPasteMenu() -> Bool {
         let generalPasteboard = UIPasteboard.generalPasteboard()
-        return generalPasteboard.containsPasteboardTypes(UIPasteboardTypeListString as! [String]) || generalPasteboard.containsPasteboardTypes(UIPasteboardTypeListImage as! [String])
+
+        var canShowPasteMenu = true
+
+        canShowPasteMenu = generalPasteboard.containsPasteboardTypes(UIPasteboardTypeListString as! [String])
+        canShowPasteMenu = generalPasteboard.containsPasteboardTypes(UIPasteboardTypeListImage as! [String])
+        canShowPasteMenu = dependencyManager.allowsPastingOfImages ?? false
+
+        return canShowPasteMenu
     }
 
     func canShowCopyMenu() -> Bool {
-        return true
+        return textViewHasText
+    }
+
+    func canShowCutMenu() -> Bool {
+        return textViewHasText
+    }
+
+    func canShowSelectMenu() -> Bool {
+        return textViewHasText
     }
 
     func didPasteImage(image: (imageObject: UIImage, imageData: NSData)) {
@@ -625,23 +647,35 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             return
         }
 
-//        composerTextViewManager?.prependImage(image, toTextView: textView)
+        guard let imageType = image.imageData.imageType() else {
+            Log.debug("Failed to detect the type of image the user pasted.")
+            return
+        }
 
         do {
-            // TODO: get the file extension from the file info in UIImage
-            let fileUrl = try TemporaryFileWriter.writeTemporaryData(image.imageData, fileExtension: "gif")
+            let fileUrl = try TemporaryFileWriter.writeTemporaryData(image.imageData, fileExtension: imageType.fileExtension)
 
-            let mediaParameters = ContentMediaAsset.RemoteAssetParameters(contentType: .gif, url: fileUrl, source: nil, size: image.imageObject.size)
-            if let selectedAsset = ContentMediaAsset(initializationParameters: mediaParameters) {
-                sendMessage(asset: selectedAsset, previewImage: image.imageObject, text: nil, currentUser: user, isVIPOnly: false)
+            let mediaParameters = ContentMediaAsset.RemoteAssetParameters(contentType: .image, url: fileUrl, source: nil, size: image.imageObject.size)
+            if let pastedImageAsset = ContentMediaAsset(initializationParameters: mediaParameters) {
+                selectedAsset = pastedImageAsset
+
+                // We want GIFs to autopost since they are to be considered as a reaction and not a content creation.
+                // We are also making the assumption that all GIFs are animated GIFs...
+                if imageType.fileExtension == "gif" {
+                    sendMessage(asset: pastedImageAsset, previewImage: image.imageObject, text: nil, currentUser: user, isVIPOnly: false)
+                    cleanup()
+                } else {
+                    composerTextViewManager?.prependImage(image.imageObject, toTextView: textView)
+                }
             }
         } catch {
-            print("failed to write temp file to disk...")
+            Log.debug("failed to write temp image file to disk with error -> \(error)")
         }
     }
 }
 
-// Update this extension to parse real values once they're returned in template
+// MARK: - DependecyManager Extension 
+
 private extension VDependencyManager {
     var toggleableVIPButton: UIButton? {
         return buttonForKey("creator.vip.toggle")
@@ -706,6 +740,10 @@ private extension VDependencyManager {
     
     var alwaysShowAttachmentBar: Bool? {
         return numberForKey("alwaysShowAttachmentBar")?.boolValue
+    }
+
+    var allowsPastingOfImages: Bool? {
+        return numberForKey("allowsPastingOfImages")?.boolValue
     }
     
     var keyboardAppearance: UIKeyboardAppearance {
