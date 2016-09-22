@@ -153,6 +153,15 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     var maximumTextInputHeight = CGFloat.max
     
+    var text: String {
+        get {
+            return textView?.text ?? ""
+        }
+        set {
+            textView?.text = newValue
+        }
+    }
+    
     func showKeyboard() {
         textView.becomeFirstResponder()
     }
@@ -167,6 +176,23 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
                 }
             }
         }
+    }
+    
+    func append(text: String) {
+        guard !text.isEmpty else {
+            return
+        }
+        
+        let whitespaceCharacterSet = NSCharacterSet.whitespaceAndNewlineCharacterSet()
+        
+        if let lastCharacter = textView.text?.utf16.last where !whitespaceCharacterSet.characterIsMember(lastCharacter) {
+            composerTextViewManager?.appendTextIfPossible(textView, text: " " + text + " ")
+        }
+        else {
+            composerTextViewManager?.appendTextIfPossible(textView, text: text + " ")
+        }
+        
+        textViewHasText = true
     }
     
     private var composerIsVisible = true
@@ -632,7 +658,7 @@ private extension VDependencyManager {
     }
     
     func maximumTextLengthForOwner(owner: Bool) -> Int {
-        return owner ? 0 : numberForKey("maximumTextLength").integerValue
+        return owner ? 0 : numberForKey("maximumTextLength")?.integerValue ?? 0
     }
     
     var inputPromptText: String {

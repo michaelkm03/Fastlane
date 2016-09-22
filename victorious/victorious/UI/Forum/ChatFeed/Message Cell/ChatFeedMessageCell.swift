@@ -14,6 +14,7 @@ protocol ChatFeedMessageCellDelegate: class {
     func messageCellDidSelectMedia(messageCell: ChatFeedMessageCell)
     func messageCellDidLongPressContent(messageCell: ChatFeedMessageCell)
     func messageCellDidSelectFailureButton(messageCell: ChatFeedMessageCell)
+    func messageCellDidSelectReplyButton(messageCell: ChatFeedMessageCell)
     func messageCell(messageCell: ChatFeedMessageCell, didSelectLinkURL url: NSURL)
 }
 
@@ -33,6 +34,8 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     static let topLabelXInset = CGFloat(4.0)
     static let bubbleSpacing = CGFloat(6.0)
     static let pendingContentAlpha = CGFloat(0.4)
+    static let likeViewSize = CGSize(width: 66.0, height: 66.0)
+    static let replyButtonSize = CGSize(width: 44.0, height: 44.0)
     
     // MARK: - Reuse identifiers
     
@@ -49,7 +52,6 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         captionBubbleView.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(didLongPressBubble)))
         failureButton.addTarget(self, action: #selector(didTapOnFailureButton), forControlEvents: .TouchUpInside)
         captionLabel.numberOfLines = 0
-        captionLabel.userInteractionEnabled = false
         replyButton.addTarget(self, action: #selector(didTapOnReplyButton), forControlEvents: .TouchUpInside)
         
         contentView.addSubview(usernameLabel)
@@ -76,6 +78,12 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
             if dependencyManager != oldValue {
                 updateStyle()
             }
+        }
+    }
+    
+    var showsReplyButton = true {
+        didSet {
+            setNeedsLayout()
         }
     }
     
@@ -152,6 +160,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     }
 
     private dynamic func didTapOnReplyButton(sender: UIButton) {
+        delegate?.messageCellDidSelectReplyButton(self)
     }
     
     // MARK: - Private helper methods
@@ -184,9 +193,6 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         replyButton.setImage(UIImage(named: "reply"), forState: .Normal)
         replyButton.setImage(UIImage(named: "reply_tap"), forState: .Highlighted)
         replyButton.setImage(UIImage(named: "reply_tap"), forState: .Selected)
-
-        // FUTURE: - Implemented by Community team
-        replyButton.hidden = true
     }
 
     private func populateData() {

@@ -525,6 +525,9 @@
 		7A02F8951D273C0F00F43B24 /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A02F8941D273C0F00F43B24 /* SettingsTableViewCell.swift */; };
 		7A126DF51CFF956800F9C86E /* APIPathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A126DF41CFF956800F9C86E /* APIPathTests.swift */; };
 		7A1389911D53E06E000F5C86 /* Subscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1389901D53E06E000F5C86 /* Subscription.swift */; };
+		7A1921B01D9207BA00EA71CF /* ComposerViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1921AF1D9207BA00EA71CF /* ComposerViewControllerTests.swift */; };
+		7A1921B21D92175A00EA71CF /* ChatFeedDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1921B11D92175A00EA71CF /* ChatFeedDataSourceTests.swift */; };
+		7A1921B41D9218F900EA71CF /* TutorialCollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1921B31D9218F900EA71CF /* TutorialCollectionViewDataSource.swift */; };
 		7A1C70AA1CC8513B00A666F5 /* SideMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1C70A91CC8513B00A666F5 /* SideMenuController.swift */; };
 		7A1DECAD1D80E00C003F5C37 /* ContentDeleteOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECA11D80E00C003F5C37 /* ContentDeleteOperation.swift */; };
 		7A1DECAE1D80E00C003F5C37 /* ContentFeedOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DECA21D80E00C003F5C37 /* ContentFeedOperation.swift */; };
@@ -1938,6 +1941,9 @@
 		7A02F8941D273C0F00F43B24 /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
 		7A126DF41CFF956800F9C86E /* APIPathTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIPathTests.swift; sourceTree = "<group>"; };
 		7A1389901D53E06E000F5C86 /* Subscription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Subscription.swift; sourceTree = "<group>"; };
+		7A1921AF1D9207BA00EA71CF /* ComposerViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposerViewControllerTests.swift; sourceTree = "<group>"; };
+		7A1921B11D92175A00EA71CF /* ChatFeedDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedDataSourceTests.swift; sourceTree = "<group>"; };
+		7A1921B31D9218F900EA71CF /* TutorialCollectionViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialCollectionViewDataSource.swift; sourceTree = "<group>"; };
 		7A1C70A91CC8513B00A666F5 /* SideMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuController.swift; sourceTree = "<group>"; };
 		7A1DECA11D80E00C003F5C37 /* ContentDeleteOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentDeleteOperation.swift; sourceTree = "<group>"; };
 		7A1DECA21D80E00C003F5C37 /* ContentFeedOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentFeedOperation.swift; sourceTree = "<group>"; };
@@ -5770,8 +5776,10 @@
 				7AC1B9FF1D3FFD9100FA3CF6 /* CGPoint+InitializersTests.swift */,
 				79C593521BFD5D1700EC76ED /* CGRect+AspectTests.swift */,
 				7AB55FE61CADF06000EBE31E /* CGSize+CornerRadiusTests.swift */,
+				7A1921B11D92175A00EA71CF /* ChatFeedDataSourceTests.swift */,
 				7CCBF2B81D413C7D0075A087 /* CoachmarkManagerTests.swift */,
 				F0BD812C1C9B67150062D079 /* ComposerAttachmentTabBarButtonTests.swift */,
+				7A1921AF1D9207BA00EA71CF /* ComposerViewControllerTests.swift */,
 				7A5519ED1D24778C00CD6BCF /* ContentMediaSizeTests.swift */,
 				F0BD812A1C9B645F0062D079 /* CreationFlowTypeHelperTests.swift */,
 				6756BF471D469AC300CF5F2B /* Deeplink */,
@@ -5801,6 +5809,7 @@
 				BE171D9F1868BE64004E5202 /* Supporting Files */,
 				03D94C2A19DE155400BFAA27 /* Swizzling Support */,
 				039D2FD4197D93C600DFBE60 /* Test Data */,
+				7A1921B31D9218F900EA71CF /* TutorialCollectionViewDataSource.swift */,
 				62058B641C54DFCE00D3C8F9 /* UI */,
 				7AE3EA3A1CAF3B3200272A6A /* UICollectionViewFlowLayout+CellSizeTests.swift */,
 				D8DCE5911ADD85820004B782 /* VActionBarTests.m */,
@@ -8231,6 +8240,7 @@
 				A7DCA4F51C128A78004E35B4 /* VLargeNumberFormatterTests.m in Sources */,
 				7C582CA61D23270000707CBE /* NotificationSettingsViewControllerTests.swift in Sources */,
 				A7DCA4E11C128A78004E35B4 /* VDefaultTemplateTests.m in Sources */,
+				7A1921B21D92175A00EA71CF /* ChatFeedDataSourceTests.swift in Sources */,
 				A76AEA5D1BFED31B00E8A26F /* NSURL+VTemporaryFilesTests.m in Sources */,
 				F022CFE41CFFA21B00F040BB /* VDependencyManager+SystemFontTests.swift in Sources */,
 				A7DCA50B1C128A78004E35B4 /* VTimerManagerTests.m in Sources */,
@@ -8240,6 +8250,7 @@
 				A7D69C5A1C0E51A000B462C3 /* VUploadTaskInformationTests.m in Sources */,
 				F050D3441CAEEFB7007A05ED /* NSPredicate+MediaTypeTests.swift in Sources */,
 				F0BD812B1C9B645F0062D079 /* CreationFlowTypeHelperTests.swift in Sources */,
+				7A1921B01D9207BA00EA71CF /* ComposerViewControllerTests.swift in Sources */,
 				A7DCA50F1C128A78004E35B4 /* VUploadTaskCreatorTests.m in Sources */,
 				7AFE92091D6636C9005D51A4 /* CallbackTests.swift in Sources */,
 				A7DCA50C1C128A78004E35B4 /* VTrackingManagerTests.m in Sources */,
@@ -8261,6 +8272,7 @@
 				A7D0AD301C0D453D0018C63E /* NSDate+timeSinceTests.m in Sources */,
 				A7DCA5021C128A78004E35B4 /* VStoredLoginTests.m in Sources */,
 				03E7303C1C973F9A008CB191 /* NetworkActivityIndicatorTests.swift in Sources */,
+				7A1921B41D9218F900EA71CF /* TutorialCollectionViewDataSource.swift in Sources */,
 				A7DCA4FE1C128A78004E35B4 /* VPushNotificationManagerTests.m in Sources */,
 				67F9515A1C20C03E005E2A4D /* VMockRequestRecorder.m in Sources */,
 				7AB55FE71CADF06000EBE31E /* CGSize+CornerRadiusTests.swift in Sources */,
