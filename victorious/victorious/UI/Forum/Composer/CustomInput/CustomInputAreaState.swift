@@ -8,7 +8,7 @@
 
 import Foundation
 
-// Describes the currently display state of an input area
+/// Describes the currently display state of an input area
 enum CustomInputAreaState {
     case Hidden
     case Visible(inputController: CustomInputDisplayOptions)
@@ -25,4 +25,8 @@ enum CustomInputAreaState {
 
 func ==(lhs: CustomInputAreaState, rhs: CustomInputAreaState) -> Bool {
     return lhs.visibleInputController == rhs.visibleInputController
+}
+
+func !=(lhs: CustomInputAreaState, rhs: CustomInputAreaState) -> Bool {
+    return !(lhs == rhs)
 }

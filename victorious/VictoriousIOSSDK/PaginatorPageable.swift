@@ -28,7 +28,7 @@ public protocol PaginatorPageable: Pageable {
     /// any appropriate modications for pagination purposes.
     /// - parameter paginator: A Paginator object used by this request to help with pagination
     /// configuring including mangaging page size and items per page.
-    init( request: Self, paginator: PaginatorType  )
+    init?( request: Self, paginator: PaginatorType  )
 }
 
 extension PaginatorPageable where Self : ResultBasedPageable {

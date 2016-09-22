@@ -34,7 +34,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     private var customInputAreaState: CustomInputAreaState = .Hidden {
         didSet {
-            guard !(oldValue == customInputAreaState) else {
+            guard oldValue != customInputAreaState else {
                 return
             }
             
@@ -358,7 +358,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     }
     
     var textViewCanDismiss: Bool {
-        return interactiveContainerView.layer.animationKeys() == nil && composerBackgroundContainerView.layer.animationKeys() == nil
+        return interactiveContainerView.layer.animationKeys() == nil
     }
     
     var textViewCurrentHashtag: (String, NSRange)? {
@@ -443,9 +443,9 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     }
     
     private func updateCustomInputAreaHeight(animated animated: Bool) {
+        self.customInputAreaHeightConstraint.constant = self.customInputAreaHeight
         if animated {
             UIView.animateWithDuration(Constants.animationDuration, delay: 0, options: [.CurveEaseOut, .AllowUserInteraction], animations: {
-                self.customInputAreaHeightConstraint.constant = self.customInputAreaHeight
                 self.delegate?.composer(self, didUpdateContentHeight: self.totalComposerHeight)
                 self.view.layoutIfNeeded()
                 }, completion: { _ in
@@ -453,7 +453,6 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
                 }
             )
         } else {
-            customInputAreaHeightConstraint.constant = customInputAreaHeight
             view.setNeedsUpdateConstraints()
             delegate?.composer(self, didUpdateContentHeight: totalComposerHeight)
             customInputViewControllerIsAppearing = false

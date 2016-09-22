@@ -1156,11 +1156,7 @@
 		DBD02A7E19F5863500E0AC95 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBD02A7B19F5863500E0AC95 /* AudioToolbox.framework */; };
 		DBD02A7F19F5863500E0AC95 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBD02A7C19F5863500E0AC95 /* AVFoundation.framework */; };
 		DBD02A8019F5863500E0AC95 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBD02A7D19F5863500E0AC95 /* CoreMedia.framework */; };
-		F004B3251D890C8D005D4A74 /* GIFTrayViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F004B3241D890C8D005D4A74 /* GIFTrayViewController.storyboard */; };
-		F004B3271D8912AA005D4A74 /* GIFTrayDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = F004B3261D8912AA005D4A74 /* GIFTrayDataSource.swift */; };
 		F004B32A1D8914E3005D4A74 /* GIFSearchOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F004B3291D8914E3005D4A74 /* GIFSearchOptions.swift */; };
-		F004B32C1D891908005D4A74 /* StickerTrayDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = F004B32B1D891908005D4A74 /* StickerTrayDataSource.swift */; };
-		F004B32E1D8B7A67005D4A74 /* TrayDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = F004B32D1D8B7A67005D4A74 /* TrayDataSource.swift */; };
 		F004B3301D8C04BB005D4A74 /* MediaSearchPreviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F004B32F1D8C04BB005D4A74 /* MediaSearchPreviewCell.xib */; };
 		F009BCFF1CE24A0B00F81CAA /* UploadManagerHost.swift in Sources */ = {isa = PBXBuildFile; fileRef = F009BCFE1CE24A0B00F81CAA /* UploadManagerHost.swift */; };
 		F009BD041CE6541F00F81CAA /* HashtagBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F009BD031CE6541F00F81CAA /* HashtagBarViewController.swift */; };
@@ -1176,10 +1172,6 @@
 		F00BBABF1CC995E800CBDB94 /* UIControl+NavigationBarEmbedding.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00BBABE1CC995E800CBDB94 /* UIControl+NavigationBarEmbedding.swift */; };
 		F00DEB9E1CC1863000C5C9EA /* CameraNextBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00DEB9D1CC1863000C5C9EA /* CameraNextBarButtonItem.swift */; };
 		F00DEBA01CC1940F00C5C9EA /* NSURL+PreviewImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00DEB9F1CC1940F00C5C9EA /* NSURL+PreviewImage.swift */; };
-		F00FB8D01D88E22C00AAE752 /* GIFTrayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00FB8CF1D88E22C00AAE752 /* GIFTrayViewController.swift */; };
-		F00FB8D21D88E2D100AAE752 /* Tray.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00FB8D11D88E2D100AAE752 /* Tray.swift */; };
-		F00FC2C41D90F54D00CFF79F /* TrayRetryLoadCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00FC2C31D90F54D00CFF79F /* TrayRetryLoadCollectionViewCell.swift */; };
-		F00FC2C61D90F73900CFF79F /* TrayLoadingCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00FC2C51D90F73900CFF79F /* TrayLoadingCollectionViewCell.swift */; };
 		F01307FC1CD2A4C100C0156C /* NativeWorkspaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F01307FB1CD2A4C100C0156C /* NativeWorkspaceViewController.swift */; };
 		F01307FE1CD2A89800C0156C /* NativeWorkspaceViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F01307FD1CD2A89800C0156C /* NativeWorkspaceViewController.storyboard */; };
 		F0140BC11AA93AEB00B95642 /* VTimerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F0140BC01AA93AEB00B95642 /* VTimerManager.m */; };
@@ -1219,15 +1211,23 @@
 		F07DDE481CFCF33400C7FC8D /* ImageOnColorButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07DDE451CFCF33400C7FC8D /* ImageOnColorButton.swift */; };
 		F07DDE491CFCF33400C7FC8D /* ImageOnImageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07DDE461CFCF33400C7FC8D /* ImageOnImageButton.swift */; };
 		F07DDE4A1CFCF33400C7FC8D /* TextOnImageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F07DDE471CFCF33400C7FC8D /* TextOnImageButton.swift */; };
+		F087E5B01D93B24B00034146 /* GIFTrayDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = F087E5AD1D93B24B00034146 /* GIFTrayDataSource.swift */; };
+		F087E5B11D93B24B00034146 /* GIFTrayViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F087E5AE1D93B24B00034146 /* GIFTrayViewController.storyboard */; };
+		F087E5B21D93B24B00034146 /* GIFTrayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F087E5AF1D93B24B00034146 /* GIFTrayViewController.swift */; };
+		F087E5B61D93B25900034146 /* StickerTrayDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = F087E5B31D93B25900034146 /* StickerTrayDataSource.swift */; };
+		F087E5B71D93B25900034146 /* StickerTrayViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F087E5B41D93B25900034146 /* StickerTrayViewController.storyboard */; };
+		F087E5B81D93B25900034146 /* StickerTrayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F087E5B51D93B25900034146 /* StickerTrayViewController.swift */; };
+		F087E5BB1D93B26700034146 /* Tray.swift in Sources */ = {isa = PBXBuildFile; fileRef = F087E5B91D93B26700034146 /* Tray.swift */; };
+		F087E5BC1D93B26700034146 /* TrayDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = F087E5BA1D93B26700034146 /* TrayDataSource.swift */; };
+		F087E5BF1D93B27200034146 /* TrayLoadingCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F087E5BD1D93B27200034146 /* TrayLoadingCollectionViewCell.swift */; };
+		F087E5C01D93B27200034146 /* TrayRetryLoadCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F087E5BE1D93B27200034146 /* TrayRetryLoadCollectionViewCell.swift */; };
+		F087E5C31D93B27D00034146 /* CustomInputAreaState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F087E5C11D93B27D00034146 /* CustomInputAreaState.swift */; };
+		F087E5C41D93B27D00034146 /* CustomInputDisplayOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F087E5C21D93B27D00034146 /* CustomInputDisplayOptions.swift */; };
 		F093A9371CEFA008009ACABF /* String+SubstringHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F093A9361CEFA008009ACABF /* String+SubstringHelpersTests.swift */; };
 		F093A93A1CF3D96B009ACABF /* VIPFlowNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F093A9381CF3D96B009ACABF /* VIPFlowNavigationController.swift */; };
 		F093A93D1CF3D9D0009ACABF /* VIPFlowNavigationController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F093A93C1CF3D9D0009ACABF /* VIPFlowNavigationController.storyboard */; };
 		F093A9451CF4D220009ACABF /* VIPSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F093A9441CF4D220009ACABF /* VIPSuccessViewController.swift */; };
 		F093A9471CF4D24E009ACABF /* VIPSuccessViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F093A9461CF4D24E009ACABF /* VIPSuccessViewController.storyboard */; };
-		F09B253D1D90C89100F21C68 /* StickerTrayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09B253C1D90C89100F21C68 /* StickerTrayViewController.swift */; };
-		F09B253F1D90CC0200F21C68 /* StickerTrayViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F09B253E1D90CC0200F21C68 /* StickerTrayViewController.storyboard */; };
-		F09B25431D90EE8C00F21C68 /* CustomInputAreaState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09B25421D90EE8C00F21C68 /* CustomInputAreaState.swift */; };
-		F09B25451D90EEAA00F21C68 /* CustomInputDisplayOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09B25441D90EEAA00F21C68 /* CustomInputDisplayOptions.swift */; };
 		F09E8C681C88CBF300437ACD /* Asset.json in Resources */ = {isa = PBXBuildFile; fileRef = F09E8C671C88CBF300437ACD /* Asset.json */; };
 		F0ABAA7C1D1CA8F800DAD4B3 /* TouchableInsetAdjustableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0ABAA7B1D1CA8F700DAD4B3 /* TouchableInsetAdjustableButton.swift */; };
 		F0B6F08D1D3EB3350037EACE /* VIPGateViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A748BD171C8A7302003D5F5F /* VIPGateViewController.storyboard */; };
@@ -2800,11 +2800,7 @@
 		EBD260F9D10C5B73D41754C7 /* Pods-UIAutomationTests.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UIAutomationTests.qa.xcconfig"; path = "Pods/Target Support Files/Pods-UIAutomationTests/Pods-UIAutomationTests.qa.xcconfig"; sourceTree = "<group>"; };
 		EC8FA86D5329A9BAEC085798 /* Pods_UIAutomationTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UIAutomationTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDFC6598311E32933A2C83A7 /* Pods-test.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-test.staging.xcconfig"; path = "Pods/Target Support Files/Pods-test/Pods-test.staging.xcconfig"; sourceTree = "<group>"; };
-		F004B3241D890C8D005D4A74 /* GIFTrayViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = GIFTrayViewController.storyboard; sourceTree = "<group>"; };
-		F004B3261D8912AA005D4A74 /* GIFTrayDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFTrayDataSource.swift; sourceTree = "<group>"; };
 		F004B3291D8914E3005D4A74 /* GIFSearchOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFSearchOptions.swift; sourceTree = "<group>"; };
-		F004B32B1D891908005D4A74 /* StickerTrayDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickerTrayDataSource.swift; sourceTree = "<group>"; };
-		F004B32D1D8B7A67005D4A74 /* TrayDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrayDataSource.swift; sourceTree = "<group>"; };
 		F004B32F1D8C04BB005D4A74 /* MediaSearchPreviewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MediaSearchPreviewCell.xib; sourceTree = "<group>"; };
 		F009BCFE1CE24A0B00F81CAA /* UploadManagerHost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadManagerHost.swift; sourceTree = "<group>"; };
 		F009BD031CE6541F00F81CAA /* HashtagBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashtagBarViewController.swift; sourceTree = "<group>"; };
@@ -2821,10 +2817,6 @@
 		F00BBABE1CC995E800CBDB94 /* UIControl+NavigationBarEmbedding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIControl+NavigationBarEmbedding.swift"; sourceTree = "<group>"; };
 		F00DEB9D1CC1863000C5C9EA /* CameraNextBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraNextBarButtonItem.swift; sourceTree = "<group>"; };
 		F00DEB9F1CC1940F00C5C9EA /* NSURL+PreviewImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSURL+PreviewImage.swift"; sourceTree = "<group>"; };
-		F00FB8CF1D88E22C00AAE752 /* GIFTrayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GIFTrayViewController.swift; sourceTree = "<group>"; };
-		F00FB8D11D88E2D100AAE752 /* Tray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tray.swift; sourceTree = "<group>"; };
-		F00FC2C31D90F54D00CFF79F /* TrayRetryLoadCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrayRetryLoadCollectionViewCell.swift; sourceTree = "<group>"; };
-		F00FC2C51D90F73900CFF79F /* TrayLoadingCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrayLoadingCollectionViewCell.swift; sourceTree = "<group>"; };
 		F01307FB1CD2A4C100C0156C /* NativeWorkspaceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NativeWorkspaceViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		F01307FD1CD2A89800C0156C /* NativeWorkspaceViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = NativeWorkspaceViewController.storyboard; sourceTree = "<group>"; };
 		F0140BBF1AA93AEB00B95642 /* VTimerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTimerManager.h; sourceTree = "<group>"; };
@@ -2864,15 +2856,23 @@
 		F07DDE451CFCF33400C7FC8D /* ImageOnColorButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImageOnColorButton.swift; path = Button/ImageOnColorButton.swift; sourceTree = "<group>"; };
 		F07DDE461CFCF33400C7FC8D /* ImageOnImageButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ImageOnImageButton.swift; path = Button/ImageOnImageButton.swift; sourceTree = "<group>"; };
 		F07DDE471CFCF33400C7FC8D /* TextOnImageButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TextOnImageButton.swift; path = Button/TextOnImageButton.swift; sourceTree = "<group>"; };
+		F087E5AD1D93B24B00034146 /* GIFTrayDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GIFTrayDataSource.swift; path = Tray/GIF/GIFTrayDataSource.swift; sourceTree = "<group>"; };
+		F087E5AE1D93B24B00034146 /* GIFTrayViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = GIFTrayViewController.storyboard; path = Tray/GIF/GIFTrayViewController.storyboard; sourceTree = "<group>"; };
+		F087E5AF1D93B24B00034146 /* GIFTrayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GIFTrayViewController.swift; path = Tray/GIF/GIFTrayViewController.swift; sourceTree = "<group>"; };
+		F087E5B31D93B25900034146 /* StickerTrayDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StickerTrayDataSource.swift; path = Tray/Sticker/StickerTrayDataSource.swift; sourceTree = "<group>"; };
+		F087E5B41D93B25900034146 /* StickerTrayViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = StickerTrayViewController.storyboard; path = Tray/Sticker/StickerTrayViewController.storyboard; sourceTree = "<group>"; };
+		F087E5B51D93B25900034146 /* StickerTrayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StickerTrayViewController.swift; path = Tray/Sticker/StickerTrayViewController.swift; sourceTree = "<group>"; };
+		F087E5B91D93B26700034146 /* Tray.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Tray.swift; path = Tray/Tray.swift; sourceTree = "<group>"; };
+		F087E5BA1D93B26700034146 /* TrayDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TrayDataSource.swift; path = Tray/TrayDataSource.swift; sourceTree = "<group>"; };
+		F087E5BD1D93B27200034146 /* TrayLoadingCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TrayLoadingCollectionViewCell.swift; path = Tray/UtilityCells/TrayLoadingCollectionViewCell.swift; sourceTree = "<group>"; };
+		F087E5BE1D93B27200034146 /* TrayRetryLoadCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TrayRetryLoadCollectionViewCell.swift; path = Tray/UtilityCells/TrayRetryLoadCollectionViewCell.swift; sourceTree = "<group>"; };
+		F087E5C11D93B27D00034146 /* CustomInputAreaState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomInputAreaState.swift; path = CustomInput/CustomInputAreaState.swift; sourceTree = "<group>"; };
+		F087E5C21D93B27D00034146 /* CustomInputDisplayOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomInputDisplayOptions.swift; path = CustomInput/CustomInputDisplayOptions.swift; sourceTree = "<group>"; };
 		F093A9361CEFA008009ACABF /* String+SubstringHelpersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+SubstringHelpersTests.swift"; sourceTree = "<group>"; };
 		F093A9381CF3D96B009ACABF /* VIPFlowNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VIPFlowNavigationController.swift; sourceTree = "<group>"; };
 		F093A93C1CF3D9D0009ACABF /* VIPFlowNavigationController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VIPFlowNavigationController.storyboard; sourceTree = "<group>"; };
 		F093A9441CF4D220009ACABF /* VIPSuccessViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VIPSuccessViewController.swift; sourceTree = "<group>"; };
 		F093A9461CF4D24E009ACABF /* VIPSuccessViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = VIPSuccessViewController.storyboard; sourceTree = "<group>"; };
-		F09B253C1D90C89100F21C68 /* StickerTrayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickerTrayViewController.swift; sourceTree = "<group>"; };
-		F09B253E1D90CC0200F21C68 /* StickerTrayViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = StickerTrayViewController.storyboard; sourceTree = "<group>"; };
-		F09B25421D90EE8C00F21C68 /* CustomInputAreaState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomInputAreaState.swift; sourceTree = "<group>"; };
-		F09B25441D90EEAA00F21C68 /* CustomInputDisplayOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomInputDisplayOptions.swift; sourceTree = "<group>"; };
 		F09E8C671C88CBF300437ACD /* Asset.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Asset.json; sourceTree = "<group>"; };
 		F0ABAA7B1D1CA8F700DAD4B3 /* TouchableInsetAdjustableButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchableInsetAdjustableButton.swift; sourceTree = "<group>"; };
 		F0B6F0901D3ED0C10037EACE /* VIPFetchSubscriptionRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VIPFetchSubscriptionRequest.swift; sourceTree = "<group>"; };
@@ -6188,9 +6188,9 @@
 		F004B3281D8913D0005D4A74 /* GIF */ = {
 			isa = PBXGroup;
 			children = (
-				F004B3261D8912AA005D4A74 /* GIFTrayDataSource.swift */,
-				F004B3241D890C8D005D4A74 /* GIFTrayViewController.storyboard */,
-				F00FB8CF1D88E22C00AAE752 /* GIFTrayViewController.swift */,
+				F087E5AD1D93B24B00034146 /* GIFTrayDataSource.swift */,
+				F087E5AE1D93B24B00034146 /* GIFTrayViewController.storyboard */,
+				F087E5AF1D93B24B00034146 /* GIFTrayViewController.swift */,
 			);
 			name = GIF;
 			sourceTree = "<group>";
@@ -6214,8 +6214,8 @@
 			children = (
 				F004B3281D8913D0005D4A74 /* GIF */,
 				F09B25401D90CC6700F21C68 /* Sticker */,
-				F00FB8D11D88E2D100AAE752 /* Tray.swift */,
-				F004B32D1D8B7A67005D4A74 /* TrayDataSource.swift */,
+				F087E5B91D93B26700034146 /* Tray.swift */,
+				F087E5BA1D93B26700034146 /* TrayDataSource.swift */,
 				F00FC2C71D90FE4900CFF79F /* UtilityCells */,
 			);
 			name = Trays;
@@ -6224,8 +6224,8 @@
 		F00FC2C71D90FE4900CFF79F /* UtilityCells */ = {
 			isa = PBXGroup;
 			children = (
-				F00FC2C51D90F73900CFF79F /* TrayLoadingCollectionViewCell.swift */,
-				F00FC2C31D90F54D00CFF79F /* TrayRetryLoadCollectionViewCell.swift */,
+				F087E5BD1D93B27200034146 /* TrayLoadingCollectionViewCell.swift */,
+				F087E5BE1D93B27200034146 /* TrayRetryLoadCollectionViewCell.swift */,
 			);
 			name = UtilityCells;
 			sourceTree = "<group>";
@@ -6277,9 +6277,9 @@
 		F09B25401D90CC6700F21C68 /* Sticker */ = {
 			isa = PBXGroup;
 			children = (
-				F004B32B1D891908005D4A74 /* StickerTrayDataSource.swift */,
-				F09B253E1D90CC0200F21C68 /* StickerTrayViewController.storyboard */,
-				F09B253C1D90C89100F21C68 /* StickerTrayViewController.swift */,
+				F087E5B31D93B25900034146 /* StickerTrayDataSource.swift */,
+				F087E5B41D93B25900034146 /* StickerTrayViewController.storyboard */,
+				F087E5B51D93B25900034146 /* StickerTrayViewController.swift */,
 			);
 			name = Sticker;
 			sourceTree = "<group>";
@@ -6287,8 +6287,8 @@
 		F09B25411D90EE7C00F21C68 /* CustomInput */ = {
 			isa = PBXGroup;
 			children = (
-				F09B25421D90EE8C00F21C68 /* CustomInputAreaState.swift */,
-				F09B25441D90EEAA00F21C68 /* CustomInputDisplayOptions.swift */,
+				F087E5C11D93B27D00034146 /* CustomInputAreaState.swift */,
+				F087E5C21D93B27D00034146 /* CustomInputDisplayOptions.swift */,
 			);
 			name = CustomInput;
 			sourceTree = "<group>";
@@ -6847,7 +6847,6 @@
 				036F38781A0C4DEA0014DF66 /* Lato-Regular.ttf in Resources */,
 				036F387E1A0C4DEA0014DF66 /* Montserrat-Bold.ttf in Resources */,
 				03C1858819B42C9100E27D05 /* Roboto-Medium.ttf in Resources */,
-				F004B3251D890C8D005D4A74 /* GIFTrayViewController.storyboard in Resources */,
 				036F387C1A0C4DEA0014DF66 /* Merriweather-Bold.ttf in Resources */,
 				A6DAEB701B4CBDDA00935EA0 /* VCaptureContainerViewController.storyboard in Resources */,
 				D8758D1C1B0FCBF4008C6C0D /* VModernRegisterViewController.storyboard in Resources */,
@@ -6918,6 +6917,7 @@
 				036F386B1A0C4DEA0014DF66 /* DroidSans-Bold.ttf in Resources */,
 				03F6E2671AB79E090017826E /* Workspace.storyboard in Resources */,
 				036F387B1A0C4DEA0014DF66 /* MavenPro-Regular.ttf in Resources */,
+				F087E5B11D93B24B00034146 /* GIFTrayViewController.storyboard in Resources */,
 				0326C36019F8226200DBC341 /* Images.xcassets in Resources */,
 				037A643019F727AB0001C90B /* VVideoPlayerToolbarView.xib in Resources */,
 				7C582CA21D22E80300707CBE /* VSettingsSwitchCell.xib in Resources */,
@@ -6932,7 +6932,6 @@
 				A7C565ED1C4461D000E4DF6A /* NotificationsResponse.json in Resources */,
 				036F386C1A0C4DEA0014DF66 /* DroidSans.ttf in Resources */,
 				66AF79541B60A8ED006DDCD8 /* VVideoCameraViewController.storyboard in Resources */,
-				F09B253F1D90CC0200F21C68 /* StickerTrayViewController.storyboard in Resources */,
 				A74783DF1BA09C10005654A6 /* VideoToolbarView.xib in Resources */,
 				036F38871A0C4DEA0014DF66 /* PT_Sans-Web-Regular.ttf in Resources */,
 				A7FE8C3E19EDE91100B91EF2 /* HelveticaNeueLightItalic.ttf in Resources */,
@@ -6940,6 +6939,7 @@
 				03C1858B19B42C9100E27D05 /* Roboto-Thin.ttf in Resources */,
 				799B89D21D469E02006743FE /* EditProfileViewController.storyboard in Resources */,
 				036F38811A0C4DEA0014DF66 /* OpenSans-Semibold.ttf in Resources */,
+				F087E5B71D93B25900034146 /* StickerTrayViewController.storyboard in Resources */,
 				036F38661A0C4DEA0014DF66 /* Arvo-Regular.ttf in Resources */,
 				F009BD151CE69B1600F81CAA /* WebSocketMessageDetailViewController.storyboard in Resources */,
 				036F38631A0C4DEA0014DF66 /* Arimo-Bold.ttf in Resources */,
@@ -7724,6 +7724,7 @@
 				79C593511BFD5C3C00EC76ED /* CGRect.swift in Sources */,
 				F06350711CBC16840047E30C /* MixedMediaCameraViewControllerDelegate.swift in Sources */,
 				7A1E1D781D30724A00A39FE5 /* BackgroundButton.swift in Sources */,
+				F087E5C41D93B27D00034146 /* CustomInputDisplayOptions.swift in Sources */,
 				A601FB491B4354D10050536C /* VAbstractImageVideoCreationFlowController.m in Sources */,
 				F0BD81271C9A18020062D079 /* CreationFlowTypeHelper.swift in Sources */,
 				A6E2E76B1B544D79008A1CA9 /* VImageAssetDownloader.m in Sources */,
@@ -7771,7 +7772,6 @@
 				D8C1FD081A69C2E40072892B /* VKeyboardNotificationManager.m in Sources */,
 				A7BA22001BA75A9A00F2CD37 /* UIView+Nib.swift in Sources */,
 				A76711FB1C1B7DD7006568DF /* TimingTracker.swift in Sources */,
-				F00FB8D01D88E22C00AAE752 /* GIFTrayViewController.swift in Sources */,
 				A65318A21B59B35900389EA9 /* VCreationFlowAnimator.m in Sources */,
 				670A3B1C1CA9F5AF004C5F57 /* InterstitialAlertViewController.swift in Sources */,
 				A60658251B56FF7200414DB7 /* VCollectionListPresentationController.m in Sources */,
@@ -7784,7 +7784,6 @@
 				A721E9441B572454000B7901 /* NSString+VStringWithData.m in Sources */,
 				A631F09B1B4DB52700CC6C80 /* VAlternateCaptureOption.m in Sources */,
 				7A1DED071D80E130003F5C37 /* RequestErrorHandler.swift in Sources */,
-				F09B25451D90EEAA00F21C68 /* CustomInputDisplayOptions.swift in Sources */,
 				D836884419C3718A00070F22 /* VBaseSupplementaryView.m in Sources */,
 				F06FC1FC1C97437900A014C7 /* ComposerTextViewManagerDelegate.swift in Sources */,
 				7A1DED161D8257EF003F5C37 /* Chainable.swift in Sources */,
@@ -7797,7 +7796,6 @@
 				BF79C7711C98D3D100222C8A /* LoadingCancellableView.swift in Sources */,
 				D836884119C370C400070F22 /* VBaseCollectionViewCell.m in Sources */,
 				6708F7041CD83E0E004332CF /* TutorialNetworkDataSource.swift in Sources */,
-				F004B32E1D8B7A67005D4A74 /* TrayDataSource.swift in Sources */,
 				F028F3E71AC0D9E800ABFDDC /* VAppInfo.m in Sources */,
 				F01307FC1CD2A4C100C0156C /* NativeWorkspaceViewController.swift in Sources */,
 				F069E93C1D46993500F91CE6 /* VIPSubscriptionHelper.swift in Sources */,
@@ -7810,6 +7808,7 @@
 				5A75EADF1C57653200B08056 /* VPublishParameters.swift in Sources */,
 				7A1DECD41D80E08B003F5C37 /* NotificationsOperation.swift in Sources */,
 				A72C864B1C977FF500E97D4F /* VStoredPassword.m in Sources */,
+				F087E5C31D93B27D00034146 /* CustomInputAreaState.swift in Sources */,
 				A73C3EB51C45890E00A8452C /* MediaSearchPreviewCell.swift in Sources */,
 				7AEB29531CCED68500B98C3B /* VDependencyManager+CoachmarkManager.swift in Sources */,
 				F020B35C1D35654700388043 /* CrossFadingNavigationControllerDelegate.swift in Sources */,
@@ -7839,7 +7838,6 @@
 				0314D4D919B46B5E00FA363C /* VServerEnvironmentTableViewController.m in Sources */,
 				7A67EC7E1CF9132300D022D1 /* TimePaginatedDataSource.swift in Sources */,
 				F06BEABE1C97989E00F35694 /* ComposerAttachmentTabBarButton.swift in Sources */,
-				F004B3271D8912AA005D4A74 /* GIFTrayDataSource.swift in Sources */,
 				D8332DBD1A7C275800C3FEE0 /* VCameraControl.m in Sources */,
 				A72C86441C977FF500E97D4F /* AuthenticationContext+CurrentUser.swift in Sources */,
 				A7ECC1CF1AD617480003E00A /* VVideoToolController.m in Sources */,
@@ -7870,7 +7868,6 @@
 				A73C3EBF1C45890E00A8452C /* MediaSearchViewController+Delegates.swift in Sources */,
 				C30AA4F61B06B82A0010CEFE /* VPermissionPhotoLibrary.m in Sources */,
 				B074C5B81B39ED6B00EA3FFC /* VTrimmerFlowLayout.m in Sources */,
-				F00FC2C41D90F54D00CFF79F /* TrayRetryLoadCollectionViewCell.swift in Sources */,
 				67B6666A1CDA6AF80096F18C /* ChatInterfaceDataSource.swift in Sources */,
 				039ED27E19C563B700305987 /* VCameraVideoEncoder.m in Sources */,
 				67A20A231CC6A20900629487 /* ListMenuSectionCell.swift in Sources */,
@@ -7918,7 +7915,6 @@
 				6780BD621D248392003F8141 /* DeeplinkDestination.swift in Sources */,
 				968B40071D6EA42900DDD5A5 /* MarqueeView.swift in Sources */,
 				A75ECFFE1AB0B6B400C35063 /* VCropOverlayView.m in Sources */,
-				F00FB8D21D88E2D100AAE752 /* Tray.swift in Sources */,
 				A7ECC1D71AD6178F0003E00A /* VBaseWorkspaceViewController.m in Sources */,
 				A6DAEB621B4C8DF900935EA0 /* VGIFCreationFlowController.m in Sources */,
 				7A1DED031D80E130003F5C37 /* AlertsRequestDecorator.swift in Sources */,
@@ -7957,7 +7953,6 @@
 				671B01B51BFD5AB800E47902 /* DismissButton.swift in Sources */,
 				A7AEF9D01A83F2F500A3D3A0 /* VVideoUtils.m in Sources */,
 				D84559001ABF4CFF00EA2FA9 /* VBadgeStringFormatter.m in Sources */,
-				F09B25431D90EE8C00F21C68 /* CustomInputAreaState.swift in Sources */,
 				D80A94DB1A536C8C0035D788 /* VTrimmerViewController.m in Sources */,
 				BF2677961CDA9CB60015F527 /* VDependencyManager+VUserProfile.swift in Sources */,
 				7AFEB1591D46D6A900FA972D /* ScrollPaginator.swift in Sources */,
@@ -8016,7 +8011,6 @@
 				A721E9581B572454000B7901 /* UIResponder+VResponderChain.m in Sources */,
 				0314D4D219B46B5E00FA363C /* VRootViewController.m in Sources */,
 				D8F8B1F31AC5E6CF00AA2DB7 /* VDependencyManager+VBackgroundContainer.m in Sources */,
-				F09B253D1D90C89100F21C68 /* StickerTrayViewController.swift in Sources */,
 				7C28F1041D1DDD660070B8AE /* VDependencyManager+CTAErrorState.swift in Sources */,
 				7AE363A51CC98F5D00F851E9 /* RightNavViewController.swift in Sources */,
 				7A47849F1CF374FD00894233 /* WebSocketForumNetworkSource.swift in Sources */,
@@ -8038,7 +8032,6 @@
 				A65F4D551B5D9E4900C96F1F /* VNoAssetsCell.m in Sources */,
 				D80536241B17B4310049B77A /* VPromptCarouselViewController.m in Sources */,
 				66AF79521B60A8E4006DDCD8 /* VVideoCameraViewController.m in Sources */,
-				F004B32C1D891908005D4A74 /* StickerTrayDataSource.swift in Sources */,
 				F035DC1C1D3D38EA00209890 /* VDependencyManager+ButtonTracking.swift in Sources */,
 				7C4CCE681D10D36F00784D30 /* SettingsViewController+Templatized.swift in Sources */,
 				67486B761CC7147500B03926 /* ListMenuCommunityDataSource.swift in Sources */,
@@ -8048,6 +8041,7 @@
 				F069E93E1D46995C00F91CE6 /* VIPSelectSubscriptionOperation.swift in Sources */,
 				669EBBE41A30239100DE317D /* VBasicToolPickerCell.m in Sources */,
 				79BFDC3B1D206DA900E1EA0C /* UIView+CornerRadius.swift in Sources */,
+				F087E5B61D93B25900034146 /* StickerTrayDataSource.swift in Sources */,
 				7A1DED111D824BD6003F5C37 /* VSettingsViewController.swift in Sources */,
 				A7B133641C6178FD006EC4F5 /* VNoContentView.m in Sources */,
 				67F6B7B81CCFE41200232CAF /* ListMenuNoContentCollectionViewCell.swift in Sources */,
@@ -8081,6 +8075,7 @@
 				7A1DECAE1D80E00C003F5C37 /* ContentFeedOperation.swift in Sources */,
 				035ABE7C1AD7ABE500B6B1A5 /* VDependencyManager+VDefaultTemplate.m in Sources */,
 				D876E1FC1A9DA685002CAA29 /* VBackground.m in Sources */,
+				F087E5B01D93B24B00034146 /* GIFTrayDataSource.swift in Sources */,
 				7C4C21F11D503C2C00B85670 /* CoachmarkPresentAnimationController.swift in Sources */,
 				7AC1945F1D2DC283001B15B8 /* AvatarView.swift in Sources */,
 				7A02F8931D2486D400F43B24 /* CollectionType.swift in Sources */,
@@ -8107,6 +8102,7 @@
 				67BECC4B1CC9840C00DFEE4B /* ListMenuCreatorCollectionViewCell.swift in Sources */,
 				F0FBC43E1D21D4120070873F /* CaptionBar.swift in Sources */,
 				79B51FD41B853A1900F826F3 /* NSDate+ComparableEquatable.swift in Sources */,
+				F087E5B21D93B24B00034146 /* GIFTrayViewController.swift in Sources */,
 				7A1DED091D80E130003F5C37 /* UnauthorizedErrorHandler.swift in Sources */,
 				F009BD041CE6541F00F81CAA /* HashtagBarViewController.swift in Sources */,
 				7CC982241D0235D300583B70 /* ForumNavBarTitleView.swift in Sources */,
@@ -8144,6 +8140,7 @@
 				D8758D221B0FDEE3008C6C0D /* VDependencyManager+VKeyboardStyle.m in Sources */,
 				A769FE451ABCFCE900888ED8 /* VTrackingSettingsViewController.m in Sources */,
 				C3623F2B1BA3AF3A002B121D /* Interstitial.swift in Sources */,
+				F087E5BF1D93B27200034146 /* TrayLoadingCollectionViewCell.swift in Sources */,
 				A7F0C86A1CB2E51A0007178A /* SimulatedPurchaseManager.swift in Sources */,
 				675A9AFC1BC372DE009CE633 /* FirstInstallManager.swift in Sources */,
 				67F231571CBD69CD006BDBA5 /* ListMenuCollectionViewDataSource.swift in Sources */,
@@ -8158,10 +8155,10 @@
 				D85B70981B0EED0D0038CA5B /* VModernLoginViewController.m in Sources */,
 				F009BCFF1CE24A0B00F81CAA /* UploadManagerHost.swift in Sources */,
 				F0E6672E1D1496B8007BF537 /* ContentCell.swift in Sources */,
-				F00FC2C61D90F73900CFF79F /* TrayLoadingCollectionViewCell.swift in Sources */,
 				A650EFDD1B422378005529E5 /* VAssetCollectionListViewController.m in Sources */,
 				D888B52B1A86FC7800B34149 /* VRadialGradientView.m in Sources */,
 				A73BA2DA1C9394B6008168B5 /* ForumViewController.swift in Sources */,
+				F087E5BC1D93B26700034146 /* TrayDataSource.swift in Sources */,
 				D8D3B7241AB264D400CF966C /* AVAsset+VVideoCompositionWithFrameDuration.m in Sources */,
 				96485C901D8C7F9A00EDAC90 /* LikeView.swift in Sources */,
 				7A7348591D063E83005225E4 /* ReferenceWrapper.swift in Sources */,
@@ -8218,6 +8215,7 @@
 				D8D812B51B14FE5B00E93B37 /* VLoginFlowAPIHelper.m in Sources */,
 				A721E95A1B572454000B7901 /* UIStoryboard+VMainStoryboard.m in Sources */,
 				7A63CD3A1D5400F1006A48E4 /* UIView+ShakeAnimation.swift in Sources */,
+				F087E5B81D93B25900034146 /* StickerTrayViewController.swift in Sources */,
 				7A1DECB11D80E00C003F5C37 /* ContentFlagOperation.swift in Sources */,
 				F093A93A1CF3D96B009ACABF /* VIPFlowNavigationController.swift in Sources */,
 				7A47849D1CF374FD00894233 /* RESTForumNetworkSource.swift in Sources */,
@@ -8228,9 +8226,11 @@
 				D80C615B19D0F692006AE41A /* VProgressBarView.m in Sources */,
 				79A809C61B7C07DF006AE04E /* UIViewController+Storyboard.swift in Sources */,
 				A7D7ED511B59BEB900FA346A /* UISearchBar+Extensions.swift in Sources */,
+				F087E5C01D93B27200034146 /* TrayRetryLoadCollectionViewCell.swift in Sources */,
 				A65F4D581B5DA69B00C96F1F /* VNoAssetsDataSource.m in Sources */,
 				0EFC27D91D38277200C84068 /* DraggableBehavior.swift in Sources */,
 				0E5C69661D47E1B200363DBB /* Forum+TestHarness.swift in Sources */,
+				F087E5BB1D93B26700034146 /* Tray.swift in Sources */,
 				F00DEBA01CC1940F00C5C9EA /* NSURL+PreviewImage.swift in Sources */,
 				677DCFE51CB47A3B00FC4394 /* InterstitialToastViewController.swift in Sources */,
 				034BA92E1C60272000C23D7E /* VLog.swift in Sources */,

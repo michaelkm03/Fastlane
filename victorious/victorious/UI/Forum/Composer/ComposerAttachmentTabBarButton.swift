@@ -8,6 +8,7 @@
 
 import UIKit
 
+/// FUTURE: We should not be subclassing UIButton (http://stackoverflow.com/questions/13202161/why-shouldnt-i-subclass-a-uibutton)
 class ComposerAttachmentTabBarButton: UIButton {
     let navigationMenuItem: VNavigationMenuItem
     

@@ -9,11 +9,12 @@
 import Foundation
 import MBProgressHUD
 
-// Conformers describe a
+/// Conformers describe a object that allows for the selection of a piece of media
 protocol Tray: TrayDataSourceDelegate {
     weak var delegate: TrayDelegate? { get set }
 }
 
+/// Encapsulates the result of media exporting functions within trays
 enum TrayMediaCompletionState {
     case success(MediaSearchResult)
     case failure(NSError?)
@@ -46,7 +47,7 @@ extension Tray where Self: UIViewController {
     }
 }
 
-// Conformers receive messages when an asset is selected from a tray
+/// Conformers receive messages when an asset is selected from a tray
 protocol TrayDelegate: class {
     func tray(tray: Tray, selectedAsset asset: ContentMediaAsset, withPreviewImage previewImage: UIImage)
 }

@@ -16,11 +16,11 @@ public struct GIFSearchRequest: PaginatorPageable, ResultBasedPageable {
     
     public let paginator: StandardPaginator
     
-    public init(request: GIFSearchRequest, paginator: StandardPaginator ) {
-        self.init( searchOptions: request.searchOptions, paginator: paginator )
+    public init(request: GIFSearchRequest, paginator: StandardPaginator) {
+        self.init(searchOptions: request.searchOptions, paginator: paginator)
     }
     
-    public init(searchOptions: GIFSearchOptions, paginator: StandardPaginator = StandardPaginator(pageNumber: 1, itemsPerPage: 20) ) {
+    public init(searchOptions: GIFSearchOptions, paginator: StandardPaginator = StandardPaginator(pageNumber: 1, itemsPerPage: 20)) {
 		
 		let url: NSURL?
         switch searchOptions {

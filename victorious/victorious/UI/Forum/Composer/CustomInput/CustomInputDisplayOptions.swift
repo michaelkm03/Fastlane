@@ -8,7 +8,7 @@
 
 import Foundation
 
-// Encapsulates the height and view controller of an input area
+/// Encapsulates the height and view controller of an input area
 struct CustomInputDisplayOptions {
     let viewController: UIViewController
     let desiredHeight: CGFloat
@@ -16,4 +16,8 @@ struct CustomInputDisplayOptions {
 
 func ==(lhs: CustomInputDisplayOptions?, rhs: CustomInputDisplayOptions?) -> Bool {
     return lhs?.viewController == rhs?.viewController && lhs?.desiredHeight == rhs?.desiredHeight
+}
+
+func !=(lhs: CustomInputDisplayOptions?, rhs: CustomInputDisplayOptions?) -> Bool {
+    return !(lhs == rhs)
 }
