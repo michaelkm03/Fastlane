@@ -13,4 +13,5 @@ enum ComposerInputAttachmentType: String {
     case Hashtag = "Add Hashtag"
     case StickerTray = "Add Sticker from Tray"
     case GIFTray = "Add GIF from Tray"
+    case GIFFlow = "Create GIF"
 }

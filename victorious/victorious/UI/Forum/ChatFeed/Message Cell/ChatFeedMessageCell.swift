@@ -14,6 +14,8 @@ protocol ChatFeedMessageCellDelegate: class {
     func messageCellDidSelectMedia(messageCell: ChatFeedMessageCell)
     func messageCellDidLongPressContent(messageCell: ChatFeedMessageCell)
     func messageCellDidSelectFailureButton(messageCell: ChatFeedMessageCell)
+    func messageCellDidSelectReplyButton(messageCell: ChatFeedMessageCell)
+    func messageCell(messageCell: ChatFeedMessageCell, didSelectLinkURL url: NSURL)
 }
 
 class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
@@ -32,6 +34,8 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     static let topLabelXInset = CGFloat(4.0)
     static let bubbleSpacing = CGFloat(6.0)
     static let pendingContentAlpha = CGFloat(0.4)
+    static let likeViewSize = CGSize(width: 66.0, height: 66.0)
+    static let replyButtonSize = CGSize(width: 44.0, height: 44.0)
     
     // MARK: - Reuse identifiers
     
@@ -48,9 +52,8 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         captionBubbleView.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(didLongPressBubble)))
         failureButton.addTarget(self, action: #selector(didTapOnFailureButton), forControlEvents: .TouchUpInside)
         captionLabel.numberOfLines = 0
-        captionLabel.userInteractionEnabled = false
         replyButton.addTarget(self, action: #selector(didTapOnReplyButton), forControlEvents: .TouchUpInside)
-
+        
         contentView.addSubview(usernameLabel)
         contentView.addSubview(timestampLabel)
         contentView.addSubview(avatarView)
@@ -78,6 +81,12 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         }
     }
     
+    var showsReplyButton = true {
+        didSet {
+            setNeedsLayout()
+        }
+    }
+    
     // MARK: - Content
     
     var chatFeedContent: ChatFeedContent? {
@@ -86,9 +95,9 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
             setNeedsLayout()
         }
     }
-
-    /// Provides a private shorthand accessor within the implementation because we mostly deal with the ContentModel
-    private var content: ContentModel? {
+    
+    /// Provides a private shorthand accessor within the implementation because we mostly deal with the Content
+    private var content: Content? {
         return chatFeedContent?.content
     }
 
@@ -105,8 +114,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     let avatarTapTarget = UIView()
     
     let captionBubbleView = BubbleView()
-    let captionLabel = UILabel()
-
+    let captionLabel = LinkLabel()
     var previewBubbleView: BubbleView?
     var previewView: UIView?
 
@@ -152,11 +160,16 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     }
 
     private dynamic func didTapOnReplyButton(sender: UIButton) {
+        delegate?.messageCellDidSelectReplyButton(self)
     }
     
     // MARK: - Private helper methods
     
     private func updateStyle() {
+        captionLabel.textColor = dependencyManager.messageTextColor
+        captionLabel.tintColor = dependencyManager.messageLinkColor
+        captionLabel.font = dependencyManager.messageFont
+        
         usernameLabel.font = dependencyManager.usernameFont
         usernameLabel.textColor = dependencyManager.usernameColor
 
@@ -180,14 +193,20 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         replyButton.setImage(UIImage(named: "reply"), forState: .Normal)
         replyButton.setImage(UIImage(named: "reply_tap"), forState: .Highlighted)
         replyButton.setImage(UIImage(named: "reply_tap"), forState: .Selected)
-
-        // FUTURE: - Implemented by Community team
-        replyButton.hidden = true
     }
 
     private func populateData() {
-        captionLabel.attributedText = content?.attributedText(using: dependencyManager)
-        usernameLabel.text = content?.author.username ?? ""
+        captionLabel.detectUserTags(for: content) { [weak self] url in
+            guard let strongSelf = self else {
+                return
+            }
+            
+            strongSelf.delegate?.messageCell(strongSelf, didSelectLinkURL: url)
+        }
+        
+        captionLabel.text = content?.text
+        usernameLabel.text = content?.author?.username ?? ""
+        
         updateTimestamp()
         updateLikeCount()
         updateLikeImage()
@@ -232,7 +251,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         return previewView
     }
     
-    private func setupMediaView(for content: ContentModel) -> MediaContentView {
+    private func setupMediaView(for content: Content) -> MediaContentView {
         self.previewView?.removeFromSuperview()
         self.previewView = nil
         
@@ -327,7 +346,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     
     // MARK: - Sizing
     
-    static func cellHeight(displaying content: ContentModel, inWidth width: CGFloat, dependencyManager: VDependencyManager) -> CGFloat? {
+    static func cellHeight(displaying content: Content, inWidth width: CGFloat, dependencyManager: VDependencyManager) -> CGFloat? {
         let captionHeight = captionSize(displaying: content, inWidth: width, dependencyManager: dependencyManager)?.height ?? 0.0
         let previewHeight = previewSize(displaying: content, inWidth: width)?.height ?? 0.0
         
@@ -339,7 +358,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         return contentMargin.top + contentMargin.bottom + contentHeight
     }
     
-    static func captionSize(displaying content: ContentModel, inWidth width: CGFloat, dependencyManager: VDependencyManager) -> CGSize? {
+    static func captionSize(displaying content: Content, inWidth width: CGFloat, dependencyManager: VDependencyManager) -> CGSize? {
         guard let attributedText = content.attributedText(using: dependencyManager) else {
             return nil
         }
@@ -358,7 +377,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         return size
     }
     
-    static func previewSize(displaying content: ContentModel, inWidth width: CGFloat) -> CGSize? {
+    static func previewSize(displaying content: Content, inWidth width: CGFloat) -> CGSize? {
         guard content.type.hasMedia else {
             return nil
         }
@@ -372,7 +391,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     
     // MARK: - MediaContentViewDelegate
     
-    func mediaContentView(mediaContentView: MediaContentView, didFinishLoadingContent content: ContentModel) {
+    func mediaContentView(mediaContentView: MediaContentView, didFinishLoadingContent content: Content) {
         UIView.animateWithDuration(
             MediaContentView.AnimationConstants.mediaContentViewAnimationDuration,
             animations: {
@@ -386,12 +405,16 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         )
     }
     
-    func mediaContentView(mediaContentView: MediaContentView, didFinishPlaybackOfContent content: ContentModel) {
+    func mediaContentView(mediaContentView: MediaContentView, didFinishPlaybackOfContent content: Content) {
         // No behavior yet
+    }
+    
+    func mediaContentView(mediaContentView: MediaContentView, didSelectLinkURL url: NSURL) {
+        delegate?.messageCell(self, didSelectLinkURL: url)
     }
 }
 
-private extension ContentModel {
+private extension Content {
     var timeLabel: String {
         return NSDate(timestamp: createdAt).stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds)
     }
@@ -418,17 +441,21 @@ private extension VDependencyManager {
     var messageTextColor: UIColor {
         return colorForKey("color.message.text") ?? .whiteColor()
     }
-
+    
+    var messageLinkColor: UIColor {
+        return colorForKey("color.message.link") ?? .blueColor()
+    }
+    
     var messageFont: UIFont {
         return fontForKey("font.message") ?? UIFont.systemFontOfSize(16.0)
     }
 
-    var backgroundColor: UIColor? {
+    var backgroundColor: UIColor {
         return colorForKey("color.message.bubble") ?? .darkGrayColor()
     }
     
     var usernameFont: UIFont {
-        return fontForKey("font.username.text")
+        return fontForKey("font.username.text") ?? UIFont.systemFontOfSize(12.0)
     }
     
     var usernameColor: UIColor {
@@ -436,7 +463,7 @@ private extension VDependencyManager {
     }
     
     var timestampFont: UIFont {
-        return fontForKey("font.timestamp.text")
+        return fontForKey("font.timestamp.text") ?? UIFont.systemFontOfSize(12.0)
     }
     
     var timestampColor: UIColor {
@@ -473,7 +500,7 @@ private enum UpvoteStyle: String {
     case rightHandSide = "right_hand_side"
 }
 
-private extension ContentModel {
+private extension Content {
     func attributedText(using dependencyManager: VDependencyManager) -> NSAttributedString? {
         guard let text = text where text != "" else {
             return nil

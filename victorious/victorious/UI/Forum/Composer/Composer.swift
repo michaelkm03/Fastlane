@@ -28,6 +28,10 @@ protocol Composer: class, ForumEventReceiver, ForumEventSender, ComposerAttachme
     func sendMessage(asset asset: ContentMediaAsset, previewImage: UIImage, text: String?, currentUser: UserModel, isVIPOnly: Bool)
     
     func setComposerVisible(visible: Bool, animated: Bool)
+    
+    func showKeyboard()
+    
+    func append(text: String)
 }
 
 extension Composer {

@@ -35,12 +35,22 @@ class SimulatedPurchaseManager: VPurchaseManager {
         )
     }
     
+    private var products = Set<VProduct>()
+    
     override func fetchProductsWithIdentifiers(productIdentifiers: Set<NSObject>, success successCallback: VProductsRequestSuccessBlock, failure failureCallback: VProductsRequestFailureBlock) {
+        guard products.isEmpty else {
+            successCallback(products)
+            return
+        }
+        
         let productIdentifiers = productIdentifiers.flatMap({ $0 as? String })
-        var products = Set<VProduct>()
         for productIdentifier in productIdentifiers {
             products.insert(purchaseableProductForProductIdentifier(productIdentifier))
         }
+        
+        // Pretend that we are fetching from the store
+        sleep(3)
+        
         successCallback( products )
     }
     

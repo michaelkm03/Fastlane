@@ -10,8 +10,8 @@ final class ContentFeedOperation: AsyncOperation<ContentFeedResult> {
     
     // MARK: - Initializing
     
-    init?(apiPath: APIPath) {
-        guard let request = ContentFeedRequest(apiPath: apiPath) else {
+    init?(apiPath: APIPath, payloadType: ContentFeedPayloadType) {
+        guard let request = ContentFeedRequest(apiPath: apiPath, payloadType: payloadType) else {
             return nil
         }
         

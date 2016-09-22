@@ -20,5 +20,4 @@ class CaptionBar: UIView {
     @IBOutlet var verticalLabelPaddingConstraints: [NSLayoutConstraint]!
     @IBOutlet var avatarButtonHeightConstraint: NSLayoutConstraint!
     @IBOutlet var labelWidthConstraint: NSLayoutConstraint!
-    @IBOutlet var avatarButtonTopConstraint: NSLayoutConstraint!
 }
