@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  *  A Change block for keyboard changes. CGRects should be converted from window coordinates via [someView convertRect:keyboardRect fromView:nil].
  *
@@ -26,9 +28,9 @@ typedef void (^VKeyboardManagerKeyboardChangeBlock) (CGRect keyboardFrameBegin,
 /**
  *  Initializer for VKeyboardManager. Blocks will be called when appropriate.
  */
-- (instancetype)initWithKeyboardWillShowBlock:(VKeyboardManagerKeyboardChangeBlock)willShowBlock
-                                willHideBlock:(VKeyboardManagerKeyboardChangeBlock)willHideBlock
-                         willChangeFrameBlock:(VKeyboardManagerKeyboardChangeBlock)willChangeFrameBlock NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithKeyboardWillShowBlock:(VKeyboardManagerKeyboardChangeBlock _Nullable)willShowBlock
+                                willHideBlock:(VKeyboardManagerKeyboardChangeBlock _Nullable)willHideBlock
+                         willChangeFrameBlock:(VKeyboardManagerKeyboardChangeBlock _Nullable)willChangeFrameBlock NS_DESIGNATED_INITIALIZER;
 /**
  *  When YES VKeyboardManagerKeyboardChangeBlocks do no get called. Defaults to NO.
  */
@@ -37,3 +39,5 @@ typedef void (^VKeyboardManagerKeyboardChangeBlock) (CGRect keyboardFrameBegin,
 - (instancetype)init NS_UNAVAILABLE;
 
 @end
+
+NS_ASSUME_NONNULL_END

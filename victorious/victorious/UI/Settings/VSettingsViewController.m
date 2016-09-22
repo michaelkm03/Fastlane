@@ -320,11 +320,6 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     return self.tableView.rowHeight;
 }
 
-- (IBAction)unwindToSettings:(UIStoryboardSegue *)sender
-{
-    // Empty meothd is necessary for unwinding from edit profile
-}
-
 - (void)sendHelp
 {
     if ([MFMailComposeViewController canSendMail])
