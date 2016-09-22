@@ -18,28 +18,31 @@ class DisplaynameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
     
     @IBOutlet private var displaynameField: UITextField! {
         didSet {
-            NSNotificationCenter.defaultCenter().addObserver(self,
-                                                             selector: #selector(textFieldDidChange(_:)),
-                                                             name: UITextFieldTextDidChangeNotification,
-                                                             object: displaynameField)
+            NSNotificationCenter.defaultCenter().addObserver(
+                self,
+                selector: #selector(textFieldDidChange(_:)),
+                name: UITextFieldTextDidChangeNotification,
+                object: displaynameField)
         }
     }
     
     @IBOutlet private var usernameField: UITextField! {
         didSet {
-            NSNotificationCenter.defaultCenter().addObserver(self,
-                                                             selector: #selector(textFieldDidChange(_:)),
-                                                             name: UITextFieldTextDidChangeNotification,
-                                                             object: usernameField)
+            NSNotificationCenter.defaultCenter().addObserver(
+                self,
+                selector: #selector(textFieldDidChange(_:)),
+                name: UITextFieldTextDidChangeNotification,
+                object: usernameField)
         }
     }
     
     @IBOutlet private var locationField: UITextField! {
         didSet {
-            NSNotificationCenter.defaultCenter().addObserver(self,
-                                                             selector: #selector(textFieldDidChange(_:)),
-                                                             name: UITextFieldTextDidChangeNotification,
-                                                             object: locationField)
+            NSNotificationCenter.defaultCenter().addObserver(
+                self,
+                selector: #selector(textFieldDidChange(_:)),
+                name: UITextFieldTextDidChangeNotification,
+                object: locationField)
         }
     }
     

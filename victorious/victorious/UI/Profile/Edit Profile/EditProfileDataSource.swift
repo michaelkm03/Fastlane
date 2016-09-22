@@ -9,7 +9,6 @@
 import Foundation
 
 class EditProfileDataSource: NSObject, UITableViewDataSource {
-    
     private struct Constants {
         static let displayNameLength = 40
         static let usernameLength = 20
@@ -84,7 +83,7 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
                 return false
             }
             let usernameCharacterset = NSCharacterSet(charactersInString: username)
-            guard NSCharacterSet.validUsernameCharacterSet().isSupersetOfSet(usernameCharacterset) else {
+            guard NSCharacterSet.validUsernameCharacters.isSupersetOfSet(usernameCharacterset) else {
                 self.onErrorUpdated?(localizedError: NSLocalizedString("Your username can only contain lowercase letters a-z, number 0-9, and underscores \"_\".",
                     comment: "While editing, an error that informs they have entered and invalid characters and must remove the invalid character."))
                 return false
