@@ -21,6 +21,8 @@ extension NSData {
     /// NOTE: Calling this function on an NSData not generated from an image could give unexpected results.
     ///
     func imageType() -> (contentType: String, fileExtension: String)? {
+        // Adapted solution from: http://stackoverflow.com/a/5042365/154915
+
         var byte: UInt8 = 0
         getBytes(&byte, length: sizeof(UInt8))
 
