@@ -14,6 +14,16 @@ private enum ChatFeedMessageCellAlignment {
 }
 
 extension ChatFeedMessageCell {
+    // MARK: - Constants
+
+    private struct Constants {
+        static let likeViewMargin = CGFloat(16.0)
+        static let likeViewWidth = CGFloat(66.0)
+        static let likeViewHeight = CGFloat(66.0)
+        static let replyButtonWidth = CGFloat(44.0)
+        static let replyButtonHeight = CGFloat(44.0)
+    }
+
     /// Performs the view layout for `cell` based on its content.
     static func layoutContent(for cell: ChatFeedMessageCell) {
         guard
@@ -22,6 +32,7 @@ extension ChatFeedMessageCell {
         else {
             return
         }
+        
         let content = chatFeedContent.content
         let alignment: ChatFeedMessageCellAlignment = content.wasCreatedByCurrentUser ? .right : .left
         
@@ -89,7 +100,8 @@ extension ChatFeedMessageCell {
             cell.failureButton.frame = CGRect(
                 center: CGPoint(
                     x: avatarFrame.origin.x + avatarFrame.size.width + horizontalSpacing + failureButtonSize.width / 2,
-                    y: avatarFrame.center.y),
+                    y: avatarFrame.center.y
+                ),
                 size: failureButtonSize
             )
         }
@@ -97,44 +109,36 @@ extension ChatFeedMessageCell {
             cell.failureButton.frame = .zero
         }
 
-        // Like button layout:
+        // Reply button layout:
 
-        if alignment == .left {
-            cell.likeView?.hidden = false
-            if let likeView = cell.likeView {
-                if let baseFrame = bubbleFrames.last {
-                    let likeViewWidth = CGFloat(66.0)
-                    let likeViewHeight = CGFloat(66.0)
+        if cell.showsReplyButton && alignment == .left {
+            cell.replyButton.hidden = false
+            let replyButton = cell.replyButton
+            if let baseFrame = bubbleFrames.last {
+                replyButton.frame = CGRect(
+                    x: baseFrame.maxX - (Constants.replyButtonWidth / 2),
+                    y: baseFrame.maxY - (Constants.replyButtonHeight / 2),
+                    width: Constants.replyButtonWidth,
+                    height: Constants.replyButtonHeight
+                )
 
-                    likeView.frame = CGRect(
-                        x: baseFrame.maxX - (likeViewWidth / 2),
-                        y: baseFrame.maxY - (likeViewHeight / 2),
-                        width: likeViewWidth,
-                        height: likeViewHeight
-                    )
-
-                    cell.contentView.bringSubviewToFront(likeView)
-                }
+                cell.contentView.bringSubviewToFront(replyButton)
             }
         }
         else {
-            cell.likeView?.hidden = true
+            cell.replyButton.hidden = true
         }
 
-        // Reply button layout:
+        // Like view layout:
 
-        if alignment == .left {
-            if let baseFrame = bubbleFrames.last {
-                let replyButtonWidth = CGFloat(44.0)
-                let replyButtonHeight = CGFloat(44.0)
-
-                let replyButtonOriginX = cell.bounds.size.width - replyButtonWidth
-
-                cell.replyButton.frame = CGRect(
-                    x: replyButtonOriginX,
-                    y: baseFrame.center.y - replyButtonHeight / 2,
-                    width: replyButtonWidth,
-                    height: replyButtonHeight
+        if let topBubbleFrame = bubbleFrames.first, let bottomBubbleFrame = bubbleFrames.last {
+            let likeViewOriginX = alignment == .left ? cell.bounds.size.width - Constants.likeViewWidth - Constants.likeViewMargin : Constants.likeViewMargin
+            if let likeView = cell.likeView {
+                likeView.frame = CGRect(
+                    x: likeViewOriginX,
+                    y: topBubbleFrame.minY + (bottomBubbleFrame.maxY - topBubbleFrame.minY - Constants.likeViewHeight) / 2.0,
+                    width: Constants.likeViewWidth,
+                    height: Constants.likeViewHeight
                 )
             }
         }

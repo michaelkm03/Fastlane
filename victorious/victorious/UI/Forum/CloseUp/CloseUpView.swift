@@ -9,8 +9,9 @@
 import UIKit
 
 protocol CloseUpViewDelegate: class {
-    func didSelectProfileForUserID(userID: Int)
-    func gridStreamDidUpdate()
+    func closeUpView(closeUpView: CloseUpView, didSelectProfileForUserID userID: User.ID)
+    func closeUpViewGridStreamDidUpdate(closeUpView: CloseUpView)
+    func closeUpView(closeUpView: CloseUpView, didSelectLinkURL url: NSURL)
 }
 
 class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegate {
@@ -35,10 +36,12 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
     @IBOutlet weak var avatarView: AvatarView!
     @IBOutlet weak var userNameButton: UIButton!
     @IBOutlet weak var createdAtLabel: UILabel!
-    @IBOutlet weak var captionLabel: UILabel!
+    @IBOutlet weak var captionLabel: LinkLabel!
     @IBOutlet weak var relatedLabel: UILabel!
     @IBOutlet weak var closeUpContentContainerView: UIView!
     @IBOutlet weak var separatorBar: UIImageView!
+    
+    private(set) var mediaContentHeightConstraint: NSLayoutConstraint?
     
     // MARK: - Variables
     
@@ -50,7 +53,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
         return ErrorStateView.v_fromNib()
     }()
 
-    private var mediaContentView: MediaContentView?
+    private(set) var mediaContentView: MediaContentView?
     
     private var videoPlayer: VVideoPlayer?
 
@@ -90,55 +93,52 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
         separatorBar.image = UIImage.v_singlePixelImageWithColor(.whiteColor())
     }
 
-    private func setupMediaContentView(for content: ContentModel) -> MediaContentView {
+    private func setupMediaContentView(for content: Content) -> MediaContentView {
         let mediaContentView = MediaContentView(
             content: content,
             dependencyManager: dependencyManager,
-            fillMode: .fill,
+            fillMode: .fit,
             allowsVideoControls: true,
             shouldSyncOnReappearance: true
         )
         mediaContentView.delegate = self
         mediaContentView.alpha = 0
+        mediaContentView.translatesAutoresizingMaskIntoConstraints = false
         
         return mediaContentView
     }
     
     // MARK: - Setting Content
     
-    func setHeader(for content: ContentModel, author: UserModel ) {
-        userNameButton.setTitle(author.displayName, forState: .Normal)
-        
-        avatarView.user = author
-        createdAtLabel.text = NSDate(timestamp: content.createdAt).stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds) ?? ""
-        captionLabel.text = content.text
-    }
-
-    var content: ContentModel? {
+    var content: Content? {
         didSet {
             if oldValue?.id == content?.id {
                 return
             }
-            guard let content = content else {
+            guard let content = content, let author = content.author else {
                 return
             }
             
-            self.mediaContentView?.removeFromSuperview()
-            
-            let author = content.author
-            
-            setHeader(for: content, author: author)
+            removeMediaContentView()
             
             // Header
             userNameButton.setTitle(author.displayName, forState: .Normal)
             avatarView.user = author
             
             createdAtLabel.text = NSDate(timestamp: content.createdAt).stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds) ?? ""
+            
+            captionLabel.detectUserTags(for: content) { [weak self] url in
+                guard let strongSelf = self else {
+                    return
+                }
+                
+                strongSelf.delegate?.closeUpView(strongSelf, didSelectLinkURL: url)
+            }
+            
             captionLabel.text = content.text
             
             let mediaContentView = setupMediaContentView(for: content)
-            closeUpContentContainerView.addSubview(mediaContentView)
-            self.mediaContentView = mediaContentView
+            addMediaContentView(mediaContentView)
             mediaContentView.loadContent()
             
             // Update size
@@ -146,9 +146,21 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
         }
     }
     
+    override func updateConstraints() {
+        mediaContentView?.topAnchor.constraintEqualToAnchor(headerSection.bottomAnchor).active = true
+        mediaContentView?.widthAnchor.constraintEqualToAnchor(headerSection.widthAnchor).active = true
+        
+        // The height of mediaContentView is being constraint to a constant since it's dynamic to the content.
+        // In order to remove this constraint when we transition into a lightbox, we need to save this height constraint as a property.
+        mediaContentHeightConstraint = mediaContentView?.heightAnchor.constraintEqualToConstant(height(for: content))
+        mediaContentHeightConstraint?.active = true
+        
+        super.updateConstraints()
+    }
+    
     // MARK: - Frame/Size Calculations
     
-    func height(for content: ContentModel?) -> CGFloat {
+    func height(for content: Content?) -> CGFloat {
         guard let aspectRatio = content?.naturalMediaAspectRatio else {
             return 0
         }
@@ -167,22 +179,10 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
             bounds.size.height = bounds.size.height - relatedLabel.frame.size.height
             errorView.frame = bounds
             
-            mediaContentView?.removeFromSuperview()
-            mediaContentView = nil
+            removeMediaContentView()
         }
         else {
-            guard let mediaContentView = mediaContentView else {
-                return
-            }
-            
-            // Content
-            var mediaContentViewFrame = mediaContentView.frame
-            mediaContentViewFrame.origin.y = totalHeight
-            mediaContentViewFrame.size.height = height(for: content)
-            mediaContentViewFrame.size.width = bounds.size.width
-            mediaContentView.frame = mediaContentViewFrame
-            
-            totalHeight = totalHeight + mediaContentView.bounds.size.height
+            totalHeight += height(for: content)
             
             // Caption
             var frame = captionLabel.frame
@@ -194,7 +194,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
         spinner.center = center
     }
     
-    func sizeForContent(content: ContentModel?) -> CGSize {
+    func sizeForContent(content: Content?) -> CGSize {
         guard let content = content else {
             let screenWidth = UIScreen.mainScreen().bounds.size.width
             let aspectRatio = Constants.defaultAspectRatio
@@ -237,15 +237,15 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
     }
     
     private dynamic func showProfile() {
-        guard let userID = content?.author.id else {
+        guard let userID = content?.author?.id else {
             return
         }
-        delegate?.didSelectProfileForUserID(userID)
+        delegate?.closeUpView(self, didSelectProfileForUserID: userID)
     }
     
     // MARK: - Helpers
     
-    private func contentHasText(content: ContentModel) -> Bool {
+    private func contentHasText(content: Content) -> Bool {
         return content.text?.stringByTrimmingCharactersInSet(.whitespaceCharacterSet()).characters.count > 0
     }
     
@@ -261,6 +261,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
         userNameButton.setTitleColor(dependencyManager.usernameColor, forState: .Normal)
         createdAtLabel.textColor = dependencyManager.timestampColor
         captionLabel.textColor = dependencyManager.captionColor
+        captionLabel.tintColor = dependencyManager.linkColor
         userNameButton.titleLabel!.font = dependencyManager.usernameFont
         createdAtLabel.font = dependencyManager.timestampFont
         captionLabel.font = dependencyManager.captionFont
@@ -280,15 +281,27 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
         relatedLabel.alpha = 0
     }
     
+    
+    private func addMediaContentView(mediaContentView: MediaContentView) {
+        closeUpContentContainerView.addSubview(mediaContentView)
+        self.mediaContentView = mediaContentView
+        setNeedsUpdateConstraints()
+    }
+    
+    private func removeMediaContentView() {
+        mediaContentView?.removeFromSuperview()
+        mediaContentView = nil
+    }
+    
     // MARK: - ConfigurableGridStreamHeader
     
-    func decorateHeader(dependencyManager: VDependencyManager, maxHeight: CGFloat, content: ContentModel?, hasError: Bool) {
+    func decorateHeader(dependencyManager: VDependencyManager, maxHeight: CGFloat, content: Content?, hasError: Bool) {
         self.content = content
         errorView.hidden = !hasError
         closeUpContentContainerView.hidden = hasError
     }
     
-    func sizeForHeader(dependencyManager: VDependencyManager, maxHeight: CGFloat, content: ContentModel?, hasError: Bool) -> CGSize {
+    func sizeForHeader(dependencyManager: VDependencyManager, maxHeight: CGFloat, content: Content?, hasError: Bool) -> CGSize {
         if hasError {
             let screenWidth = UIScreen.mainScreen().bounds.size.width
             let aspectRatio = Constants.defaultAspectRatio
@@ -312,16 +325,16 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
     
     func gridStreamDidUpdateDataSource(with items: [Content]) {
         dispatch_async(dispatch_get_main_queue(), {
-            UIView.animateWithDuration(Constants.relatedAnimationDuration, animations: {
+            UIView.animateWithDuration(Constants.relatedAnimationDuration) {
                 self.relatedLabel.alpha = items.count == 0 ? 0 : 1
-            })
-            self.delegate?.gridStreamDidUpdate()
+            }
+            self.delegate?.closeUpViewGridStreamDidUpdate(self)
         })
     }
 
     // MARK: - MediaContentViewDelegate
 
-    func mediaContentView(mediaContentView: MediaContentView, didFinishLoadingContent content: ContentModel) {
+    func mediaContentView(mediaContentView: MediaContentView, didFinishLoadingContent content: Content) {
         UIView.animateWithDuration(
             MediaContentView.AnimationConstants.mediaContentViewAnimationDuration,
             animations: {
@@ -333,8 +346,12 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
         )
     }
 
-    func mediaContentView(mediaContentView: MediaContentView, didFinishPlaybackOfContent content: ContentModel) {
+    func mediaContentView(mediaContentView: MediaContentView, didFinishPlaybackOfContent content: Content) {
         // No behavior yet
+    }
+    
+    func mediaContentView(mediaContentView: MediaContentView, didSelectLinkURL url: NSURL) {
+        delegate?.closeUpView(self, didSelectLinkURL: url)
     }
 }
 
@@ -351,6 +368,10 @@ private extension VDependencyManager {
     
     var captionColor: UIColor? {
         return colorForKey("color.text.content")
+    }
+    
+    var linkColor: UIColor? {
+        return colorForKey("color.text.link")
     }
     
     var relatedColor: UIColor? {

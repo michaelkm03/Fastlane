@@ -27,8 +27,8 @@ final class ListMenuHashtagDataSource: ListMenuSectionDataSource {
         return dependencyManager.apiPathForKey("streamURL") ?? APIPath(templatePath: "")
     }
     
-    var hashtagStreamTrackingURLs: [String] {
-        return dependencyManager.trackingURLsForKey("view") as? [String] ?? []
+    var hashtagStreamTrackingAPIPaths: [APIPath] {
+        return dependencyManager.trackingAPIPaths(forEventKey: "view") ?? []
     }
     
     // MARK: - List Menu Section Data Source

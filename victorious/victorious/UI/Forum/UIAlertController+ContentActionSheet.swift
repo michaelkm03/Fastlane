@@ -14,7 +14,7 @@ extension UIAlertController {
     ///
     /// The provided content must have an ID.
     ///
-    convenience init?(actionsFor content: ContentModel, dependencyManager: VDependencyManager, completion: (action: ContentAlertAction) -> Void) {
+    convenience init?(actionsFor content: Content, dependencyManager: VDependencyManager, completion: (action: ContentAlertAction) -> Void) {
         guard let id = content.id else {
             return nil
         }
@@ -140,11 +140,11 @@ private extension VDependencyManager {
     }
     
     private var likeTitle: String {
-        return childDependencyForKey("actions")?.stringForKey("upvote.text") ?? "BUMP"
+        return childDependencyForKey("actions")?.stringForKey("upvote.text") ?? "LIKE"
     }
     
     private var unlikeTitle: String {
-        return childDependencyForKey("actions")?.stringForKey("unupvote.text") ?? "UNBUMP"
+        return childDependencyForKey("actions")?.stringForKey("unupvote.text") ?? "UNLIKE"
     }
     
     private var flagTitle: String {

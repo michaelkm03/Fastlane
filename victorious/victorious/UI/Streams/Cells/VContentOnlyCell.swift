@@ -34,7 +34,7 @@ class VContentOnlyCell: UICollectionViewCell, ContentCell {
     
     // MARK: - Content
     
-    var content: ContentModel? {
+    var content: Content? {
         didSet {
             updatePreviewView()
         }

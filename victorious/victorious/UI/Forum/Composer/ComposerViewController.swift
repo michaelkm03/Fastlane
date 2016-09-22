@@ -10,8 +10,8 @@ import UIKit
 import FLAnimatedImage
 
 /// Handles view manipulation and message sending related to the composer. Could definitely use a refactor to make it less stateful.
-class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate, ComposerAttachmentTabBarDelegate, VBackgroundContainer, VCreationFlowControllerDelegate, HashtagBarControllerSelectionDelegate, HashtagBarViewControllerAnimationDelegate, PastableTextViewDelegate {
-    
+class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate, ComposerAttachmentTabBarDelegate, VBackgroundContainer, VCreationFlowControllerDelegate, HashtagBarControllerSelectionDelegate, HashtagBarViewControllerAnimationDelegate, PastableTextViewDelegate, ToggleableImageButtonDelegate {
+
     private struct Constants {
         static let animationDuration = 0.2
         static let maximumNumberOfTabs = 4
@@ -154,6 +154,15 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     var maximumTextInputHeight = CGFloat.max
     
+    var text: String {
+        get {
+            return textView?.text ?? ""
+        }
+        set {
+            textView?.text = newValue
+        }
+    }
+    
     func showKeyboard() {
         textView.becomeFirstResponder()
     }
@@ -168,6 +177,23 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
                 }
             }
         }
+    }
+    
+    func append(text: String) {
+        guard !text.isEmpty else {
+            return
+        }
+        
+        let whitespaceCharacterSet = NSCharacterSet.whitespaceAndNewlineCharacterSet()
+        
+        if let lastCharacter = textView.text?.utf16.last where !whitespaceCharacterSet.characterIsMember(lastCharacter) {
+            composerTextViewManager?.appendTextIfPossible(textView, text: " " + text + " ")
+        }
+        else {
+            composerTextViewManager?.appendTextIfPossible(textView, text: text + " ")
+        }
+        
+        textViewHasText = true
     }
     
     private var composerIsVisible = true
@@ -253,12 +279,25 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     var textViewPrependedImage: UIImage? {
         didSet {
             if oldValue != textViewPrependedImage {
-                attachmentTabBar.buttonsEnabled = !textViewHasPrependedImage
-                attachmentTabBar.enableButtonForIdentifier(ComposerInputAttachmentType.Hashtag.rawValue)
-                if !textViewHasPrependedImage {
-                    selectedAsset = nil
+                updateAttachmentButtons()
+                
+                vipButton?.enabled = vipButton?.enabled ?? false || !textViewHasPrependedImage
+                if selectedAsset?.contentType == .gif {
+                    vipButton?.selected = false
                 }
             }
+        }
+    }
+    
+    func updateAttachmentButtons() {
+        attachmentTabBar.buttonsEnabled = !textViewHasPrependedImage
+        attachmentTabBar.setButtonEnabled(true, forIdentifier: ComposerInputAttachmentType.Hashtag.rawValue)
+        
+        let gifEnabled = vipButton?.selected == true ? false : !textViewHasPrependedImage
+        attachmentTabBar.setButtonEnabled(gifEnabled, forIdentifier: ComposerInputAttachmentType.GIF.rawValue)
+        
+        if !textViewHasPrependedImage {
+            selectedAsset = nil
         }
     }
     
@@ -490,6 +529,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         
         vipButton = dependencyManager.toggleableVIPButton
         if let vipButton = vipButton as? ToggleableImageButton {
+            vipButton.delegate = self
             vipLockContainerView.addSubview(vipButton)
             vipLockContainerView.v_addFitToParentConstraintsToSubview(vipButton)
         }
@@ -499,6 +539,12 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         willSet {
             vipButton?.removeFromSuperview()
         }
+    }
+    
+    // MARK: - ToggleableImageButtonDelegate
+    
+    func button(button: ToggleableImageButton, becameSelected selected: Bool) {
+        updateAttachmentButtons()
     }
     
     // MARK: - VBackgroundContainer
@@ -526,6 +572,9 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             creationFlowController.v_showErrorDefaultError()
             return
         }
+
+        // Disable VIP button if we just selected a GIF
+        vipButton?.enabled = contentType != .gif
 
         var preview = previewImage
         if let image = capturedMediaURL.v_videoPreviewImage where contentType == .gif {
@@ -624,7 +673,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
 
         canShowPasteMenu = generalPasteboard.containsPasteboardTypes(UIPasteboardTypeListString as! [String])
         canShowPasteMenu = generalPasteboard.containsPasteboardTypes(UIPasteboardTypeListImage as! [String])
-        canShowPasteMenu = dependencyManager.allowsPastingOfImages ?? false
+        canShowPasteMenu = dependencyManager.allowsPastingOfImages ?? true
 
         return canShowPasteMenu
     }
@@ -682,7 +731,7 @@ private extension VDependencyManager {
     }
     
     func maximumTextLengthForOwner(owner: Bool) -> Int {
-        return owner ? 0 : numberForKey("maximumTextLength").integerValue
+        return owner ? 0 : numberForKey("maximumTextLength")?.integerValue ?? 0
     }
     
     var inputPromptText: String {

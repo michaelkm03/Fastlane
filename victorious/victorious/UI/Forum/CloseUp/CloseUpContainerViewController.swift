@@ -15,7 +15,8 @@ private struct Constants {
     static let cellsPerRow = 3
     static let estimatedBarButtonWidth: CGFloat = 60.0
     static let estimatedStatusBarHeight: CGFloat = 20.0
-    static let navigationBarRightPadding: CGFloat = 10.0 
+    static let navigationBarRightPadding: CGFloat = 10.0
+    static let likeViewFrame = CGRect(x: 0.0, y: 0.0, width: 44.0, height: 44.0)
 }
 
 class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, ContentCellTracker, CoachmarkDisplayer, VBackgroundContainer {
@@ -49,18 +50,28 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
             action: #selector(overflow)
         )
     }()
-    
-    private lazy var upvoteButton: UIButton = {
-        let button = BackgroundButton(type: .System)
-        button.addTarget(self, action: #selector(toggleUpvote), forControlEvents: .TouchUpInside)
-        return button
+
+    private lazy var likeView: LikeView = {
+        let likeView = LikeView(frame: Constants.likeViewFrame,
+                                textColor: self.dependencyManager.upvoteCountColor,
+                                selectedIcon: self.dependencyManager.upvoteIconSelected,
+                                unselectedIcon: self.dependencyManager.upvoteIconUnselected,
+                                alignment: .left
+        )
+
+        likeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(toggleLike)))
+        likeView.updateLikeStatus(self.content)
+
+        return likeView
     }()
-    
+
     private func updateAudioSessionCategory() {
         if content?.type == .video {
             VAudioManager.sharedInstance().focusedPlaybackDidBegin(muted: false)
         }
     }
+    
+    // MARK: - Initialization
 
     init(dependencyManager: VDependencyManager, contentID: String, streamAPIPath: APIPath, context: DeeplinkContext? = nil, content: Content? = nil) {
         self.context = context
@@ -113,20 +124,25 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
+    // MARK: - Life Cycle
     override func viewDidLoad() {
         dependencyManager.addBackgroundToBackgroundHost(self)
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        dependencyManager.trackViewWillAppear(self)
+        dependencyManager.trackViewWillAppear(for: self)
         trackContentView()
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(enterLandscapeMode), name: UIDeviceOrientationDidChangeNotification, object: nil)
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        dependencyManager.trackViewWillDisappear(self)
+        dependencyManager.trackViewWillDisappear(for: self)
         closeUpView.headerWillDisappear()
+        
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIDeviceOrientationDidChangeNotification, object: nil)
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -153,26 +169,21 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
             return
         }
         
-        upvoteButton.tintColor = UIColor.redColor()
-        
+        likeView.updateLikeStatus(content)
         if content.isLikedByCurrentUser {
-            upvoteButton.setImage(dependencyManager.upvoteIconSelected, forState: .Normal)
-            upvoteButton.backgroundColor = dependencyManager.upvoteIconSelectedBackgroundColor
-            upvoteButton.tintColor = dependencyManager.upvoteIconTint
+            likeView.backgroundColor = dependencyManager.upvoteIconSelectedBackgroundColor
+            likeView.tintColor = dependencyManager.upvoteIconTint
         }
         else {
-            upvoteButton.setImage(dependencyManager.upvoteIconUnselected, forState: .Normal)
-            upvoteButton.backgroundColor = dependencyManager.upvoteIconUnselectedBackgroundColor
-            upvoteButton.tintColor = nil
+            likeView.backgroundColor = dependencyManager.upvoteIconUnselectedBackgroundColor
+            likeView.tintColor = nil
         }
-        
-        upvoteButton.sizeToFit()
-        
+
         if content.shareURL == nil {
-            navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: upvoteButton), overflowButton]
+            navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: likeView), overflowButton]
         }
         else {
-            navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: upvoteButton), shareButton, overflowButton]
+            navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: likeView), shareButton, overflowButton]
         }
     }
     
@@ -198,14 +209,22 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     
     // MARK: - CloseUpViewDelegate
     
-    func didSelectProfileForUserID(userID: Int) {
-        let router = Router(originViewController: self, dependencyManager: dependencyManager)
-        let destination = DeeplinkDestination(userID: userID)
-        router.navigate(to: destination, from: DeeplinkContext(value: DeeplinkContext.closeupView))
+    func closeUpView(closeUpView: CloseUpView, didSelectProfileForUserID userID: User.ID) {
+        Router(originViewController: self, dependencyManager: dependencyManager).navigate(
+            to: DeeplinkDestination(userID: userID),
+            from: DeeplinkContext(value: DeeplinkContext.closeupView)
+        )
     }
     
-    func gridStreamDidUpdate() {
+    func closeUpViewGridStreamDidUpdate(closeUpView: CloseUpView) {
         triggerCoachmark()
+    }
+    
+    func closeUpView(closeUpView: CloseUpView, didSelectLinkURL url: NSURL) {
+        Router(originViewController: self, dependencyManager: dependencyManager).navigate(
+            to: DeeplinkDestination(url: url),
+            from: DeeplinkContext(value: DeeplinkContext.closeupView)
+        )
     }
     
     func share() {
@@ -219,20 +238,25 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         ).queue()
     }
     
-    func toggleUpvote() {
+    func toggleLike() {
         guard
             let content = content,
             let contentID = content.id,
-            let upvoteAPIPath = dependencyManager.contentUpvoteAPIPath,
-            let unupvoteAPIPath = dependencyManager.contentUnupvoteAPIPath,
-            let upvoteOperation: SyncOperation<Void> = content.isLikedByCurrentUser
-                ? ContentUnupvoteOperation(apiPath: unupvoteAPIPath, contentID: contentID)
-                : ContentUpvoteOperation(apiPath: upvoteAPIPath, contentID: contentID)
+            let likeAPIPath = dependencyManager.contentLikeAPIPath,
+            let unLikeAPIPath = dependencyManager.contentUnLikeAPIPath
         else {
             return
         }
-        
-        upvoteOperation.queue { [weak self] _ in
+
+        let toggleLikeOperation: SyncOperation<Void>? = content.isLikedByCurrentUser
+                ? ContentUnupvoteOperation(apiPath: unLikeAPIPath, contentID: contentID)
+                : ContentUpvoteOperation(apiPath: likeAPIPath, contentID: contentID)
+
+        guard let operation = toggleLikeOperation else {
+            return
+        }
+
+        operation.queue { [weak self] _ in
             self?.updateHeader()
         }
     }
@@ -293,12 +317,49 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     
     // MARK: - Notification Response
     
-    dynamic private func returnedFromBackground() {
+    private dynamic func returnedFromBackground() {
         updateAudioSessionCategory()
+    }
+    
+    private dynamic func enterLandscapeMode() {
+        guard
+            let mediaContentView = closeUpView.mediaContentView
+            where UIDevice.currentDevice().orientation.isLandscape && presentedViewController == nil
+        else {
+            return
+        }
+        
+        // Removing the previous height constraint to avoid layout constraint conflict warnings with the new height constraint on media content view in lightbox.
+        // Its previous height anchor was constraint to a constant, which would stick around after being removed from the view hierarchy.
+        if let heightConstraint = closeUpView.mediaContentHeightConstraint {
+            mediaContentView.removeConstraint(heightConstraint)
+        }
+        
+        let lightbox = LightBoxViewController(mediaContentView: mediaContentView)
+        lightbox.modalTransitionStyle = .CrossDissolve
+        
+        lightbox.willDismiss = { [weak self] in
+            self?.closeUpView.closeUpContentContainerView?.addSubview(mediaContentView)
+            self?.closeUpView.setNeedsUpdateConstraints()
+        }
+        
+        lightbox.didDismiss = { [weak self] in
+            self?.closeUpView.headerDidAppear()
+        }
+        
+        presentViewController(lightbox, animated: true, completion: nil)
     }
 }
 
 private extension VDependencyManager {
+    var upvoteCountFont: UIFont? {
+        return fontForKey("font.upvote.count.text") ?? UIFont(name: ".SFUIText-Regular", size: 12.0)
+    }
+
+    var upvoteCountColor: UIColor {
+        return colorForKey("color.upvote.count.text") ?? .whiteColor()
+    }
+
     var upvoteIconTint: UIColor? {
         return colorForKey("color.text.actionButton")
     }
@@ -334,13 +395,13 @@ private extension VDependencyManager {
     var contentDeleteAPIPath: APIPath? {
         return networkResources?.apiPathForKey("contentDeleteURL")
     }
-    
-    var contentUpvoteAPIPath: APIPath? {
-        return networkResources?.apiPathForKey("contentUpvoteURL")
+
+    var contentLikeAPIPath: APIPath? {
+        return networkResources?.apiPathForKey("contentUpvoteURL", macroReplacements: ["%%CONTEXT%%": "closeup_view"])
     }
-    
-    var contentUnupvoteAPIPath: APIPath? {
-        return networkResources?.apiPathForKey("contentUnupvoteURL")
+
+    var contentUnLikeAPIPath: APIPath? {
+        return networkResources?.apiPathForKey("contentUnupvoteURL", macroReplacements: ["%%CONTEXT%%": "closeup_view"])
     }
     
     var gridStreamDependencyManager: VDependencyManager? {

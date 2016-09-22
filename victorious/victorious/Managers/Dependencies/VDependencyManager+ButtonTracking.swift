@@ -14,10 +14,13 @@ enum ButtonTrackingEvent: String {
 }
 
 extension VDependencyManager {
-    func trackButtonEvent(event: ButtonTrackingEvent) {
-        guard let urls = trackingURLsForKey(event.rawValue) where !urls.isEmpty else {
+    func trackButtonEvent(event: ButtonTrackingEvent, forTrackingKey trackingKey: String = VDependencyManager.defaultTrackingKey) {
+        guard let apiPaths = trackingAPIPaths(forEventKey: event.rawValue, trackingKey: trackingKey) where !apiPaths.isEmpty else {
             return
         }
-        VTrackingManager.sharedInstance().trackEvent(event.rawValue, parameters: [ VTrackingKeyUrls : urls ])
+        
+        VTrackingManager.sharedInstance().trackEvent(event.rawValue, parameters: [
+            VTrackingKeyUrls: apiPaths.map { $0.templatePath }
+        ])
     }
 }

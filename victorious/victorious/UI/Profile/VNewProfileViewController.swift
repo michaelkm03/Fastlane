@@ -90,11 +90,12 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         super.viewWillAppear(animated)
         gridStreamController?.reloadHeader()
         trackViewWillAppearIfReady()
+        BadgeCountManager.shared.fetchBadgeCount(for: .unreadNotifications)
     }
     
     override func viewDidAppear(animated: Bool) {
         triggerCoachmark(withContext: profileScreenContext?.coachmarkContext)
-        dependencyManager.trackViewWillDisappear(self)
+        dependencyManager.trackViewWillDisappear(for: self)
     }
     
     // MARK: - Dependency Manager
@@ -383,7 +384,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         
         wantsToTrackViewWillAppear = false
         
-        dependencyManager.trackViewWillAppear(self, withParameters: [
+        dependencyManager.trackViewWillAppear(for: self, parameters: [
             VTrackingKeyProfileContext: context.trackingString
         ])
     }
