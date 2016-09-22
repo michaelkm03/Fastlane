@@ -384,7 +384,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         
         wantsToTrackViewWillAppear = false
         
-        dependencyManager.trackViewWillAppear(self, parameters: [
+        dependencyManager.trackViewWillAppear(for: self, parameters: [
             VTrackingKeyContext: context.trackingString
         ])
     }
