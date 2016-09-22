@@ -28,7 +28,8 @@ class EditProfileViewController: UIViewController {
     @IBOutlet private weak var validationView: UIView!
     @IBOutlet private weak var validationViewTopToLayoutGuideBottomConstraint: NSLayoutConstraint!
     @IBOutlet private weak var saveButton: UIBarButtonItem!
-    @IBOutlet private weak var tableView: UITableView!
+    // Exposed for tests since cells are registered in storybaord
+    @IBOutlet weak var tableView: UITableView!
     
     var editingEnabled: Bool = true {
         didSet {

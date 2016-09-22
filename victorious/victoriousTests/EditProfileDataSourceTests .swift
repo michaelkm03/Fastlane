@@ -11,17 +11,23 @@ import XCTest
 @testable import victorious
 
 class EditProfileDataSourceTests: XCTestCase {
+    
+    private struct Constants {
+        static let testUsername = "asdf"
+    }
+    
     func createTestDataSource() -> EditProfileDataSource {
         let dependencyManager = VDependencyManager(parentManager: nil, configuration: nil, dictionaryOfClassesByTemplateName: nil)
-        let viewController = EditProfileViewController.v_initialViewControllerFromStoryboard()
-        let tableView = viewController.view as? UITableView
+        let viewController: EditProfileViewController = EditProfileViewController.v_initialViewControllerFromStoryboard()
+        print(viewController.loadViewIfNeeded())
+        let tableView = viewController.tableView
         XCTAssertNotNil(tableView)
-        return EditProfileDataSource(dependencyManager: dependencyManager, tableView: tableView!, userModel: User(id: 1))
+        return EditProfileDataSource(dependencyManager: dependencyManager, tableView: tableView!, userModel: User(id: 1, username: Constants.testUsername))
     }
     
     func testInit() {
         let dataSource = createTestDataSource()
-        XCTAssertEqual(dataSource.nameAndLocationCell.user?.id, 1)
+        XCTAssertEqual(dataSource.nameAndLocationCell.username, Constants.testUsername)
         XCTAssertEqual(dataSource.aboutMeCell.tagline, "")
     }
     
@@ -40,18 +46,27 @@ class EditProfileDataSourceTests: XCTestCase {
         XCTAssertNotEqual(aboutMeCell, nameCell)
     }
     
-    func testValidUsernames() {
+    func testValidUsernamesAndDisplayNames() {
         let dataSource = createTestDataSource()
-        dataSource.nameAndLocationCell.displayname = "Vicky Victorious"
+        dataSource.nameAndLocationCell.username = "a_1"
+        dataSource.nameAndLocationCell.displayname = nil
         XCTAssertTrue(dataSource.enteredDataIsValid)
         
-        dataSource.nameAndLocationCell.displayname = "Vicky Victorious Vicky Victorious Vicky Victorious Vicky Victorious Vicky Victorious"
+        dataSource.nameAndLocationCell.displayname = "012345678901234567890123456789"
+        dataSource.nameAndLocationCell.username = "a"
         XCTAssertTrue(dataSource.enteredDataIsValid)
     }
     
-    func testInvalidUsernames() {
+    func testInvalidUsernamesAndDisplayNames() {
         let dataSource = createTestDataSource()
-        dataSource.nameAndLocationCell.displayname = "                         "
+        dataSource.nameAndLocationCell.username = "  % &^                       "
+        dataSource.nameAndLocationCell.displayname = "012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789"
+        XCTAssertFalse(dataSource.enteredDataIsValid)
+        
+        dataSource.nameAndLocationCell.username = ""
+        XCTAssertFalse(dataSource.enteredDataIsValid)
+        
+        dataSource.nameAndLocationCell.username = "🏓"
         XCTAssertFalse(dataSource.enteredDataIsValid)
         
         let testDataPath = NSBundle(forClass: EditProfileDataSourceTests.self).pathForResource("LoremIpsum", ofType: "txt")
