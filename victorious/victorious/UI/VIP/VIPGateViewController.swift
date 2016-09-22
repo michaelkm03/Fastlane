@@ -141,27 +141,11 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     }
     
     private func HUDNeedsUpdateToTitle(title: String?) -> Bool {
-        if let huds = MBProgressHUD.allHUDsForView(self.view) as? [MBProgressHUD] {
-            if
-                huds.count == 1,
-                let hud = huds.first
-                where hud.labelText == title
-            {
-                return false
-            }
+        if let currentTitle = progressHUD.labelText where currentTitle == title {
+            return false
         }
-        return true
-    }
-    
-    private func showResultWithMessage(message: String, completion: (() -> ())? = nil) {
-        MBProgressHUD.hideAllHUDsForView(self.view, animated: false)
-        let progressHUD = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-        progressHUD.mode = .Text
-        progressHUD.labelText = message
-        
-        dispatch_after(1.0) {
-            MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
-            completion?()
+        else {
+            return true
         }
     }
     
@@ -227,17 +211,27 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
         openGate()
     }
     
+    private lazy var progressHUD: MBProgressHUD = {
+        let progressHUD = MBProgressHUD(view: self.view)
+        progressHUD.mode = .Indeterminate
+        progressHUD.graceTime = 0.35
+        
+        self.view.addSubview(progressHUD)
+        
+        return progressHUD
+    }()
+    
     func setIsLoading(isLoading: Bool, title: String? = nil) {
         if isLoading {
             guard HUDNeedsUpdateToTitle(title) else {
                 return
             }
-            MBProgressHUD.hideAllHUDsForView(self.view, animated: false)
-            let progressHUD = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-            progressHUD.mode = .Indeterminate
             progressHUD.labelText = title
+            progressHUD.taskInProgress = true
+            progressHUD.show(true)
         } else {
-            MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
+            progressHUD.taskInProgress = false
+            progressHUD.hide(true)
         }
     }
     
