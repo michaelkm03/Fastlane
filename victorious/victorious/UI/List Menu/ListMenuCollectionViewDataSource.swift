@@ -29,7 +29,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
     private let dependencyManager: VDependencyManager
     
     let communityDataSource: ListMenuCommunityDataSource
-    let hashtagDataSource: ListMenuHashtagDataSource
+    let hashtagDataSource: ListMenuHashtagsDataSource
     let creatorDataSource: ListMenuCreatorDataSource
     let chatRoomsDataSource: ListMenuChatRoomsDataSource
     
@@ -44,7 +44,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         
         creatorDataSource = ListMenuCreatorDataSource(dependencyManager: dependencyManager.creatorsChildDependency)
         communityDataSource = ListMenuCommunityDataSource(dependencyManager: dependencyManager.communityChildDependency)
-        hashtagDataSource = ListMenuHashtagDataSource(dependencyManager: dependencyManager.hashtagsChildDependency)
+        hashtagDataSource = ListMenuHashtagsDataSource(dependencyManager: dependencyManager.hashtagsChildDependency)
         chatRoomsDataSource = ListMenuChatRoomsDataSource(dependencyManager: dependencyManager.chatRoomsChildDependency)
         chatRoomsDataSource.fetchRemoteData()
 
