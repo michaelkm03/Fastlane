@@ -13,6 +13,7 @@
 @import AudioToolbox;
 
 #import "VLoginFlowControllerDelegate.h"
+#import "victorious-Swift.h"
 
 // Dependencies
 #import "VDependencyManager.h"
@@ -22,7 +23,6 @@
 // Camera + Workspace
 #import "VEditProfilePicturePresenter.h"
 #import "VPermissionCamera.h"
-#import "VDependencyManager+VTracking.h"
 
 @interface VEnterProfilePictureCameraViewController () <VBackgroundContainer, VLoginFlowScreen>
 

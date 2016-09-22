@@ -7,7 +7,7 @@
 //
 
 #import "VModernResetPasswordViewController.h"
-#import "VDependencyManager+VTracking.h"
+#import "victorious-Swift.h"
 
 // Views + Helpers
 #import "VLoginFlowControllerDelegate.h"

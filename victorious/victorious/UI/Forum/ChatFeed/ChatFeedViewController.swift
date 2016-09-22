@@ -313,6 +313,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         }
         
         delegate?.chatFeed(self, didSelectReplyButtonFor: content)
+        dependencyManager.trackButtonEvent(.tap, forTrackingKey: "reply.tracking")
     }
     
     func messageCell(messageCell: ChatFeedMessageCell, didSelectLinkURL url: NSURL) {

@@ -120,7 +120,6 @@ extern NSString * const VTrackingEventUserDidRestorePurchases; //< "Params: Coun
 extern NSString * const VTrackingEventUserDidCancelPurchase; //< User exited from the purchase prompt without making a purchase; Params: ProductIdentifier
 extern NSString * const VTrackingEventRestorePurchasesDidFail; //< Params: ErrorMessage
 extern NSString * const VTrackingEventAppStoreProductRequestDidFail; //< Params: ErrorMessage
-extern NSString * const VTrackingEventSentProductReceiptToBackend; //< Params: None
 extern NSString * const VTrackingEventRecievedProductReceiptFromBackend; //< Params: None
 extern NSString * const VTrackingEventSentPurchaseRequestToStore; //< Params: None
 extern NSString * const VTrackingEventRecievedPurchaseCompletionFromStore; //< Params: None

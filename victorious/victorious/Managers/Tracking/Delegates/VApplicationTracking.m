@@ -7,7 +7,6 @@
 //
 
 #import "VApplicationTracking.h"
-#import "VDependencyManager+VTracking.h"
 #import "VSessionTimer.h"
 #import "VRootViewController.h"
 #import "victorious-Swift.h"
@@ -96,16 +95,15 @@ static NSString * const kMacroProfileContext         = @"%%PROFILE_CONTEXT%%";
                                     VTrackingKeySubtype            : kMacroSubtype,
                                     VTrackingKeyDuration           : kMacroDuration };
         
-        _keyForEventMapping = @{ VTrackingEventUserDidStartCreateProfile           : VTrackingCreateProfileStartKey,
-                                 VTrackingEventUserDidStartRegistration            : VTrackingRegistrationStartKey,
-                                 VTrackingEventUserDidFinishRegistration           : VTrackingRegistrationEndKey,
-                                 VTrackingEventUserDidSelectRegistrationDone       : VTrackingCreateProfileDoneButtonTapKey,
-                                 VTrackingEventUserDidSelectRegistrationOption     : VTrackingRegisteButtonTapKey,
-                                 VTrackingEventUserDidSelectSignUpSubmit           : VTrackingSignUpButtonTapKey,
-                                 VTrackingEventUserPermissionDidChange             : VTrackingPermissionChangeKey,
-                                 VTrackingEventLoginWithFacebookDidFail            : VTrackingAppErrorKey,
+        _keyForEventMapping = @{ VTrackingEventUserDidStartCreateProfile           : TemplateTrackingKey.createProfileStart,
+                                 VTrackingEventUserDidStartRegistration            : TemplateTrackingKey.registrationStart,
+                                 VTrackingEventUserDidFinishRegistration           : TemplateTrackingKey.registrationEnd,
+                                 VTrackingEventUserDidSelectRegistrationDone       : TemplateTrackingKey.createProfileDoneButtonTap,
+                                 VTrackingEventUserDidSelectRegistrationOption     : TemplateTrackingKey.registerButtonTap,
+                                 VTrackingEventUserDidSelectSignUpSubmit           : TemplateTrackingKey.signUpButtonTap,
+                                 VTrackingEventUserPermissionDidChange             : TemplateTrackingKey.permissionChange,
+                                 VTrackingEventLoginWithFacebookDidFail            : TemplateTrackingKey.appError,
                                  VTrackingEventSentPurchaseRequestToStore          : VTrackingEventSentPurchaseRequestToStore,
-                                 VTrackingEventSentProductReceiptToBackend         : VTrackingEventSentProductReceiptToBackend,
                                  VTrackingEventRecievedPurchaseCompletionFromStore : VTrackingEventRecievedPurchaseCompletionFromStore,
                                  VTrackingEventRecievedProductReceiptFromBackend   : VTrackingEventRecievedProductReceiptFromBackend };
         
