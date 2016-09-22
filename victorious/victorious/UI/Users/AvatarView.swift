@@ -222,6 +222,13 @@ class AvatarView: UIView {
         }
     }
     
+    /// This property describes whether VIP is enabled to this app.
+    /// Ideally we shouldn't worry about this, and can solely rely on checking the user's vip status.
+    /// However, in this case our backend has limitations that it couldn't mark creators as non-VIP in apps with VIP disabled.
+    /// So we had to perform this check on the client.
+    /// Currently, this property is only set in user profile screen.
+    var isVIPEnabled: Bool?
+    
     private func applyInitialsStyle() {
         initialsLabel.textAlignment = .Center
         initialsLabel.adjustsFontSizeToFitWidth = true
@@ -235,12 +242,12 @@ class AvatarView: UIView {
     }
 
     private func updateVIPBadge() {
-        let shouldShowVIPBadge = user?.hasValidVIPSubscription == true && size.shouldShowVIPBorder
+        let shouldShowVIPBadge = user?.hasValidVIPSubscription == true && size.shouldShowVIPBorder && isVIPEnabled == true
         vipBadgeView?.hidden = !shouldShowVIPBadge
     }
 
     private func updateVIPBorderView() {
-        let shouldShowVIPBorder = user?.hasValidVIPSubscription == true && size.shouldShowVIPBorder
+        let shouldShowVIPBorder = user?.hasValidVIPSubscription == true && size.shouldShowVIPBorder && isVIPEnabled == true
         vipBorderView?.hidden = !shouldShowVIPBorder
     }
     
