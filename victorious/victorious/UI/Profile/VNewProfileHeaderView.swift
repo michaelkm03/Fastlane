@@ -72,7 +72,7 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         didSet {
             if dependencyManager !== oldValue {
                 applyDependencyManagerStyles()
-                avatarView.dependencyManager = dependencyManager
+                avatarView.isVIPEnabled = dependencyManager?.isVIPEnabled
             }
         }
     }
