@@ -8,6 +8,7 @@
 
 #import "VBaseWorkspaceViewController.h"
 #import "VDependencyManager+VWorkspace.h"
+#import "victorious-Swift.h"
 
 // Views
 #import "VCanvasView.h"
@@ -26,8 +27,6 @@
 
 // Video
 #import "VVideoWorkspaceTool.h"
-#import "VDependencyManager+VTracking.h"
-#import "VDependencyManager+VTracking.h"
 
 @import AVFoundation;
 

@@ -7,7 +7,6 @@
 //
 
 #import "NSArray+VMap.h"
-#import "VDependencyManager+VTracking.h"
 #import "VRootViewController.h"
 #import "VSessionTimer.h"
 #import "victorious-Swift.h"
@@ -128,7 +127,7 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
 
 - (void)trackApplicationForeground
 {
-    NSArray *trackingURLs = [self.dependencyManager trackingURLsForKey:VTrackingStartKey] ?: @[];
+    NSArray *trackingURLs = [self.dependencyManager trackingURLsForKey:TemplateTrackingKey.start] ?: @[];
     NSDictionary *params = @{ VTrackingKeyUrls : trackingURLs };
     [self resetSessionID];
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidEnterForeground parameters:params];
@@ -136,7 +135,7 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
 
 - (void)trackApplicationBackground
 {
-    NSArray *trackingURLs = [self.dependencyManager trackingURLsForKey:VTrackingStopKey] ?: @[];
+    NSArray *trackingURLs = [self.dependencyManager trackingURLsForKey:TemplateTrackingKey.stop] ?: @[];
     NSDictionary *params = @{ VTrackingKeyUrls : trackingURLs, VTrackingKeySessionTime : [NSNumber numberWithUnsignedInteger:self.sessionDuration] };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidEnterBackground parameters:params];
 }
@@ -144,10 +143,10 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
 - (void)trackApplicationLaunch
 {
     // Track first install
-    [[[FirstInstallManager alloc] init] reportFirstInstallIfNeededWithTrackingURLs:[self.dependencyManager trackingURLsForKey:VTrackingInstallKey]];
+    [[[FirstInstallManager alloc] init] reportFirstInstallIfNeededWithTrackingURLs:[self.dependencyManager trackingURLsForKey:TemplateTrackingKey.install]];
     
     // Tracking init (cold start)
-    NSArray *trackingURLs = [self.dependencyManager trackingURLsForKey:VTrackingInitKey] ?: @[];
+    NSArray *trackingURLs = [self.dependencyManager trackingURLsForKey:TemplateTrackingKey.appInit] ?: @[];
     NSDictionary *params = @{ VTrackingKeyUrls : trackingURLs };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidLaunch parameters:params];
 }

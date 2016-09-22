@@ -53,7 +53,7 @@ class NativeCameraCreationFlowController: VCreationFlowController, UIImagePicker
     override func rootFlowController() -> UINavigationController! {
         if !trackedAppear {
             trackedAppear = true
-            dependencyManager.trackViewWillAppear(self)
+            dependencyManager.trackViewWillAppear(for: self)
             NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(enteredBackground), name: UIApplicationDidEnterBackgroundNotification, object: nil)
             audioSessionCategory = AVAudioSession.sharedInstance().category
         }
@@ -69,14 +69,14 @@ class NativeCameraCreationFlowController: VCreationFlowController, UIImagePicker
     // MARK: - UIImagePickerControllerDelegate
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
-        dependencyManager.trackViewWillDisappear(self)
+        dependencyManager.trackViewWillDisappear(for: self)
         let _ = try? AVAudioSession.sharedInstance().setCategory(audioSessionCategory)
         creationFlowDelegate.creationFlowControllerDidCancel?(self)
     }
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String: AnyObject]) {
         defer {
-            dependencyManager.trackViewWillDisappear(self)
+            dependencyManager.trackViewWillDisappear(for: self)
             let _ = try? AVAudioSession.sharedInstance().setCategory(audioSessionCategory)
         }
         

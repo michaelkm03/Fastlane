@@ -61,9 +61,9 @@ class DefaultTimingTrackerTests: XCTestCase {
     }
     
     func testInitializer() {
-        XCTAssertEqual(templateTracker.urls.count, 1)
-        XCTAssertEqual(templateTracker.urls[0], testTemplateURL)
-        XCTAssertEqual(trackerWithDefaultURL.urls.count, 1)
+        XCTAssertEqual(templateTracker.apiPaths.count, 1)
+        XCTAssertEqual(templateTracker.apiPaths[0].templatePath, testTemplateURL)
+        XCTAssertEqual(trackerWithDefaultURL.apiPaths.count, 1)
     }
     
     func testEvents() {
