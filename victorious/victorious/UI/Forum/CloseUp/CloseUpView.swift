@@ -110,7 +110,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
     
     // MARK: - Setting Content
     
-    var content: Content? {
+    private var content: Content? {
         didSet {
             if oldValue?.id == content?.id {
                 return
@@ -142,7 +142,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
             mediaContentView.loadContent()
             
             // Update size
-            self.frame.size = sizeForContent(content)
+            self.frame.size = sizeForContent(content, withWidth: self.bounds.size.width)
         }
     }
     
@@ -160,7 +160,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
     
     // MARK: - Frame/Size Calculations
     
-    func height(for content: Content?) -> CGFloat {
+    private func height(for content: Content?) -> CGFloat {
         guard let aspectRatio = content?.naturalMediaAspectRatio else {
             return 0
         }
@@ -194,13 +194,12 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
         spinner.center = center
     }
     
-    func sizeForContent(content: Content?) -> CGSize {
+    private func sizeForContent(content: Content?, withWidth width: CGFloat) -> CGSize {
         guard let content = content else {
-            let screenWidth = UIScreen.mainScreen().bounds.size.width
             let aspectRatio = Constants.defaultAspectRatio
             return CGSize(
-                width: screenWidth,
-                height: screenWidth / aspectRatio
+                width: width,
+                height: width / aspectRatio
             )
         }
         
@@ -309,7 +308,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
             )
         }
         else {
-            return sizeForContent(content)
+            return sizeForContent(content, withWidth: width)
         }
     }
     
