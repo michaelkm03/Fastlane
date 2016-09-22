@@ -75,6 +75,10 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
         get {
             // Displayname Validation
             let displayname = nameAndLocationCell.displayname
+            guard let trimmedDisplayName = displayname?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) where !trimmedDisplayName.isEmpty else {
+                return (false, NSLocalizedString("Your display name cannoot be blank.", comment: "While editing, error letting the user know their display name cannot be blank."))
+            }
+            
             guard displayname?.characters.count < Constants.displayNameLength else {
                 return (false, NSLocalizedString("Your display name is too long.", comment: "While editing, error letting the user know their display name must be shorter."))
             }
