@@ -45,7 +45,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
     
     // MARK: - Variables
     
-    private weak var delegate: CloseUpViewDelegate?
+     weak var delegate: CloseUpViewDelegate?
     
     private let spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
     
