@@ -142,7 +142,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
             mediaContentView.loadContent()
             
             // Update size
-            self.frame.size = sizeForContent(content, withWidth: self.bounds.size.width)
+            self.frame.size = sizeForContent(content, withWidth: self.bounds.width)
         }
     }
     
@@ -166,17 +166,17 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
         }
         
         // Hack since CUV should always be full screen width anyway, and the parent containers use autolayout.
-        return min(UIScreen.mainScreen().bounds.size.width / aspectRatio, maxContentHeight - headerSection.bounds.size.height)
+        return min(UIScreen.mainScreen().bounds.width / aspectRatio, maxContentHeight - headerSection.bounds.height)
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        var totalHeight = headerSection.bounds.size.height + headerSection.frame.origin.y
+        var totalHeight = headerSection.bounds.height + headerSection.frame.origin.y
         
         if content == nil {
             var bounds = self.bounds
-            bounds.size.height = bounds.size.height - relatedLabel.frame.size.height
+            bounds.size.height = bounds.height - relatedLabel.frame.height
             errorView.frame = bounds
             
             removeMediaContentView()
@@ -187,7 +187,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
             // Caption
             var frame = captionLabel.frame
             frame.origin.y = totalHeight + Constants.verticalMargins
-            frame.size.width = bounds.size.width - 2 * Constants.horizontalMargins
+            frame.size.width = bounds.width - 2 * Constants.horizontalMargins
             captionLabel.frame = frame
             captionLabel.sizeToFit()
         }
@@ -204,12 +204,12 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
         }
         
         let contentHeight = height(for: content)
-        let width = bounds.size.width
+        let width = bounds.width
         
         if !contentHasText(content) {
             return CGSize(
                 width: width,
-                height: headerSection.bounds.size.height + contentHeight + relatedLabel.bounds.size.height
+                height: headerSection.bounds.height + contentHeight + relatedLabel.bounds.height
             )
         }
         
@@ -219,11 +219,11 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
         captionLabel.text = content.text
         captionLabel.sizeToFit()
         
-        let totalHeight = headerSection.bounds.size.height +
+        let totalHeight = headerSection.bounds.height +
             contentHeight +
-            captionLabel.bounds.size.height +
+            captionLabel.bounds.height +
             2 * Constants.verticalMargins +
-            relatedLabel.bounds.size.height
+            relatedLabel.bounds.height
         
         return CGSize(
             width: width,

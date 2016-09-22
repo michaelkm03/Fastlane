@@ -186,8 +186,8 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         
         let size = header.sizeForHeader(
             dependencyManager,
-            withWidth: collectionView.frame.size.width,
-            maxHeight: collectionView.frame.size.height,
+            withWidth: collectionView.frame.width,
+            maxHeight: collectionView.frame.height,
             content: content,
             hasError: hasError
         )

@@ -152,8 +152,8 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
                 headerView = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: headerName, forIndexPath: indexPath) as? ConfigurableGridStreamHeaderView
             }
             header?.decorateHeader(dependencyManager,
-                                   withWidth: collectionView.frame.size.width,
-                                   maxHeight: collectionView.frame.size.height,
+                                   withWidth: collectionView.frame.width,
+                                   maxHeight: collectionView.frame.height,
                                    content: content,
                                    hasError: hasError
             )
