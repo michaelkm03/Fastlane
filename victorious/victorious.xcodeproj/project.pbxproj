@@ -379,6 +379,7 @@
 		0EF377581D370673006BF786 /* TitleCardViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0EF377571D370673006BF786 /* TitleCardViewController.storyboard */; };
 		0EF3775A1D370697006BF786 /* TitleCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF377591D370697006BF786 /* TitleCardViewController.swift */; };
 		0EF5235C1D91B40100A41082 /* TemporaryFileWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF5235B1D91B40100A41082 /* TemporaryFileWriter.swift */; };
+		0EF5235E1D936A5000A41082 /* NSData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF5235D1D936A5000A41082 /* NSData.swift */; };
 		0EF716891C98F8C60005CF86 /* SSLSecurity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF716871C98F8C60005CF86 /* SSLSecurity.swift */; };
 		0EF7168A1C98F8C60005CF86 /* WebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF716881C98F8C60005CF86 /* WebSocket.swift */; };
 		0EF7168D1C98FE5E0005CF86 /* WebSocketController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF7168C1C98FE5E0005CF86 /* WebSocketController.swift */; };
@@ -1771,6 +1772,7 @@
 		0EF377571D370673006BF786 /* TitleCardViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = TitleCardViewController.storyboard; path = TitleCard/TitleCardViewController.storyboard; sourceTree = "<group>"; };
 		0EF377591D370697006BF786 /* TitleCardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TitleCardViewController.swift; path = TitleCard/TitleCardViewController.swift; sourceTree = "<group>"; };
 		0EF5235B1D91B40100A41082 /* TemporaryFileWriter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TemporaryFileWriter.swift; sourceTree = "<group>"; };
+		0EF5235D1D936A5000A41082 /* NSData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSData.swift; sourceTree = "<group>"; };
 		0EF716871C98F8C60005CF86 /* SSLSecurity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SSLSecurity.swift; path = Starscream/Source/SSLSecurity.swift; sourceTree = "<group>"; };
 		0EF716881C98F8C60005CF86 /* WebSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebSocket.swift; path = Starscream/Source/WebSocket.swift; sourceTree = "<group>"; };
 		0EF7168C1C98FE5E0005CF86 /* WebSocketController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WebSocketController.swift; path = WebSocket/WebSocketController.swift; sourceTree = "<group>"; };
@@ -5042,6 +5044,7 @@
 				F0BD3A651CD95A8000B4AB3E /* UIViewController+Alert.swift */,
 				A76E79C11C6FADA7006A0D35 /* UIViewController+Error.swift */,
 				79A809C51B7C07DF006AE04E /* UIViewController+Storyboard.swift */,
+				0EF5235D1D936A5000A41082 /* NSData.swift */,
 			);
 			name = Extensions;
 			path = Categories;
@@ -7802,6 +7805,7 @@
 				030931931A184285004E9781 /* VNavigationMenuItem.m in Sources */,
 				C30E3F9F1BE7E02500184F57 /* VAutomation.m in Sources */,
 				6791505D1CD4201000225151 /* TutorialViewController.swift in Sources */,
+				0EF5235E1D936A5000A41082 /* NSData.swift in Sources */,
 				D8D812B01B14EAA200E93B37 /* VModernResetTokenViewController.m in Sources */,
 				7A87376E1CB5C66900D2FF74 /* NotificationCell.swift in Sources */,
 				A73BA2AC1C938B68008168B5 /* Stage.swift in Sources */,
