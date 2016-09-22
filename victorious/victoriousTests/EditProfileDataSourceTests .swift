@@ -48,7 +48,7 @@ class EditProfileDataSourceTests: XCTestCase {
     func testValidUsernamesAndDisplayNames() {
         let dataSource = createTestDataSource()
         dataSource.nameAndLocationCell.username = "a_1"
-        dataSource.nameAndLocationCell.displayname = nil
+        dataSource.nameAndLocationCell.displayname = "Victorious L. Jackson"
         XCTAssertTrue(dataSource.dataSourceStatus.valid)
         
         dataSource.nameAndLocationCell.displayname = "012345678901234567890123456789"
@@ -66,6 +66,9 @@ class EditProfileDataSourceTests: XCTestCase {
         XCTAssertFalse(dataSource.dataSourceStatus.valid)
         
         dataSource.nameAndLocationCell.username = "🏓"
+        XCTAssertFalse(dataSource.dataSourceStatus.valid)
+        
+        dataSource.nameAndLocationCell.displayname = ""
         XCTAssertFalse(dataSource.dataSourceStatus.valid)
         
         let testDataPath = NSBundle(forClass: EditProfileDataSourceTests.self).pathForResource("LoremIpsum", ofType: "txt")
