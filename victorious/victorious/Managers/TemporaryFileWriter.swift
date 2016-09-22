@@ -28,7 +28,6 @@ struct TemporaryFileWriter {
     /// If the file write succeeds a path is returned else nil is returned.
     static func writeTemporaryData(data: NSData, fileExtension: String = "", fileName: String = NSProcessInfo.processInfo().globallyUniqueString) throws -> NSURL {
         let fileURL = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent("\(fileName).\(fileExtension)")
-        print("unique temp file url -> \(fileURL)")
 
         do {
             try data.writeToURL(fileURL, options: .AtomicWrite)
