@@ -9,8 +9,8 @@
 import Foundation
 
 final class UsernameAvailabilityOperation: AsyncOperation<Bool> {
-    init?(apiPath: APIPath, usernameToCheck: String){
-        guard let request = UsernameAvailabilityRequest(apiPath: apiPath,usernameToCheck: usernameToCheck) else {
+    init?(apiPath: APIPath, usernameToCheck: String, appID: String){
+        guard let request = UsernameAvailabilityRequest(apiPath: apiPath, usernameToCheck: usernameToCheck, appID: appID) else {
             return nil
         }
         self.request = request

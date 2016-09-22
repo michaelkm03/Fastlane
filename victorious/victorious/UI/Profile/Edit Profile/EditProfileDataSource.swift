@@ -121,7 +121,7 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
     
     func accountUpdateDelta() -> ProfileUpdate? {
         return ProfileUpdate(displayName: nameAndLocationCell.displayname,
-                             username: nameAndLocationCell.username,
+                             username: nameAndLocationCell.username == VCurrentUser.user?.username ? nil : nameAndLocationCell.username,
                              location: nameAndLocationCell.location,
                              tagline: aboutMeCell.tagline,
                              profileImageURL: newAvatarFileURL)

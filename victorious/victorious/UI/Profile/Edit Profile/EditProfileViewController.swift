@@ -87,7 +87,7 @@ class EditProfileViewController: UIViewController {
     }
     
     @IBAction private func tappedSave(sender: UIBarButtonItem) {
-        guard let profileUpdate = dataSource?.accountUpdateDelta() else {
+        guard let profileUpdate = dataSource?.accountUpdateDelta(), dependencyManager = dependencyManager, let apiPath = dependencyManager.userValidationAPIPath else {
             return
         }
         
@@ -95,18 +95,42 @@ class EditProfileViewController: UIViewController {
         navigationItem.rightBarButtonItem?.enabled = false
         editingEnabled = false
         
-//        UsernameAvailabilityOperation(apiPath: APIPath(, usernameToCheck: <#T##String#>)
+        let enableUIClosure = {
+            self.editingEnabled = true
+            self.navigationItem.leftBarButtonItem?.enabled = true
+            self.navigationItem.rightBarButtonItem?.enabled = true
+        }
         
-        AccountUpdateOperation(profileUpdate: profileUpdate)?.queue() { result in
-            
-            switch result {
+        let accoundUpdateClosure = {
+            AccountUpdateOperation(profileUpdate: profileUpdate)?.queue() { result in
+                switch result {
                 case .success: self.navigationController?.popViewControllerAnimated(true)
                 default:
                     self.v_showErrorDefaultError()
-                    self.editingEnabled = true
-                    self.navigationItem.leftBarButtonItem?.enabled = true
-                    self.navigationItem.rightBarButtonItem?.enabled = true
+                    enableUIClosure()
+                }
             }
+        }
+        
+        if let username = profileUpdate.username {
+            let appID = VEnvironmentManager.sharedInstance().currentEnvironment.appID.stringValue
+
+            UsernameAvailabilityOperation(apiPath: apiPath, usernameToCheck: username, appID: appID)?.queue() { result in
+                switch result {
+                case .success(let available):
+                    if available {
+                        accoundUpdateClosure()
+                    } else {
+                        self.animateErrorInThenOut("Username is not available")
+                        enableUIClosure()
+                    }
+                case .failure(_), .cancelled:
+                    self.animateErrorInThenOut("Failureto check")
+                    enableUIClosure()
+                }
+            }
+        } else {
+            accoundUpdateClosure()
         }
     }
     
@@ -181,4 +205,10 @@ class EditProfileViewController: UIViewController {
         }
     }
 
+}
+
+private extension VDependencyManager {
+    var userValidationAPIPath: APIPath? {
+        return networkResources?.apiPathForKey("username.validity.URL")
+    }
 }

@@ -13,7 +13,15 @@ public struct UsernameAvailabilityRequest: RequestType {
     private let url: NSURL
     private let usernameToCheck: String
     
-    public init?(apiPath: APIPath, usernameToCheck: String) {
+    private struct Constants {
+        static let appIDMacro = "%%APP_ID%%"
+        static let usernameMacro = "%%USERNAME%%"
+    }
+    
+    public init?(apiPath: APIPath, usernameToCheck: String, appID: String) {
+        var apiPath = apiPath
+        apiPath.macroReplacements[Constants.appIDMacro] = appID
+        apiPath.macroReplacements[Constants.usernameMacro] = usernameToCheck
         guard let url = apiPath.url else {
             return nil
         }
@@ -27,8 +35,6 @@ public struct UsernameAvailabilityRequest: RequestType {
     }
     
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> Bool {
-        let json = responseJSON["payload"]
-        //TODO: Implement me properly
-        return true
+        return responseJSON["payload"]["success"].boolValue
     }
 }
