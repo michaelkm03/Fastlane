@@ -47,7 +47,7 @@ final class AccountUpdateOperation: AsyncOperation <User> {
                 VStoredPassword().savePassword(passwordUpdate.newPassword, forUsername: passwordUpdate.username)
             }
             switch requestResult {
-            case .success:
+                case .success:
                     if let profileUpdate = strongSelf.request.profileUpdate {
                         guard var user = VCurrentUser.user else {
                             finish(result: .failure(NSError(domain: "AccountUpdateOperation", code: -1, userInfo: nil)))

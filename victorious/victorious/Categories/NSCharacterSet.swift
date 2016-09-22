@@ -9,8 +9,7 @@
 import Foundation
 
 extension NSCharacterSet {
-    
-    public class func validUsernameCharacterSet() -> NSCharacterSet {
+    public static var validUsernameCharacters: NSCharacterSet {
         return NSCharacterSet(charactersInString: "abcdefghijklmnopqrstuvwxyz0123456789_")
     }
 

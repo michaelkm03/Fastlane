@@ -36,6 +36,7 @@ public func ==(lhs: UserModel?, rhs: UserModel?) -> Bool {
             return false
         case (.Some(let lhs), .Some(let rhs)):
             return lhs.id == rhs.id
+                && lhs.username == rhs.username
                 && lhs.displayName == rhs.displayName
                 && lhs.location == rhs.location
                 && lhs.tagline == rhs.tagline

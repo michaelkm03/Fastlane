@@ -11,7 +11,6 @@ import XCTest
 @testable import victorious
 
 class EditProfileDataSourceTests: XCTestCase {
-    
     private struct Constants {
         static let testUsername = "asdf"
     }
@@ -19,7 +18,6 @@ class EditProfileDataSourceTests: XCTestCase {
     func createTestDataSource() -> EditProfileDataSource {
         let dependencyManager = VDependencyManager(parentManager: nil, configuration: nil, dictionaryOfClassesByTemplateName: nil)
         let viewController: EditProfileViewController = EditProfileViewController.v_initialViewControllerFromStoryboard()
-        print(viewController.loadViewIfNeeded())
         let tableView = viewController.tableView
         XCTAssertNotNil(tableView)
         return EditProfileDataSource(dependencyManager: dependencyManager, tableView: tableView!, userModel: User(id: 1, username: Constants.testUsername))

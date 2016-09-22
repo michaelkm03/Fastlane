@@ -12,7 +12,6 @@ import UIKit
 /// Uses a save button that enables/disables when the entered data is valid.
 /// Navigates away with a storyboard segue back to settings when complete.
 class EditProfileViewController: UIViewController {
-
     private struct Constants {
         static let animationDuration: NSTimeInterval = 0.25
         static let errorOnScreenDuration: NSTimeInterval = 3.5
@@ -55,15 +54,15 @@ class EditProfileViewController: UIViewController {
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.backgroundView = dependencyManager?.background().viewForBackground()
 
-        keyboardManager = VKeyboardNotificationManager(keyboardWillShowBlock: { [weak self] (_,endFrame: CGRect, _, _) in
+        keyboardManager = VKeyboardNotificationManager(keyboardWillShowBlock: { [weak self] _,endFrame, _, _ in
             if let existingInsets = self?.tableView.contentInset {
                 let newInsets = UIEdgeInsets(top: existingInsets.top, left: existingInsets.left, bottom: endFrame.height, right: existingInsets.right)
                 self?.tableView.contentInset = newInsets
                 self?.tableView.scrollIndicatorInsets = newInsets
             }
-        }, willHideBlock: { (_, _, _, _) in
+        }, willHideBlock: { _, _, _, _ in
                 
-        }, willChangeFrameBlock: { [weak self](_, endFrame: CGRect, _, _) in
+        }, willChangeFrameBlock: { [weak self] _, endFrame, _, _ in
             if let existingInsets = self?.tableView.contentInset {
                 let newInsets = UIEdgeInsets(top: existingInsets.top, left: existingInsets.left, bottom: endFrame.height, right: existingInsets.right)
                 self?.tableView.contentInset = newInsets
@@ -103,13 +102,13 @@ class EditProfileViewController: UIViewController {
             self.navigationItem.rightBarButtonItem?.enabled = true
         }
         
-        let accoundUpdateClosure = {
+        let accountUpdateClosure = {
             AccountUpdateOperation(profileUpdate: profileUpdate)?.queue() { result in
                 switch result {
-                case .success: self.navigationController?.popViewControllerAnimated(true)
-                default:
-                    self.v_showErrorDefaultError()
-                    enableUIClosure()
+                    case .success: self.navigationController?.popViewControllerAnimated(true)
+                    default:
+                        self.v_showErrorDefaultError()
+                        enableUIClosure()
                 }
             }
         }
@@ -119,20 +118,20 @@ class EditProfileViewController: UIViewController {
 
             UsernameAvailabilityOperation(apiPath: apiPath, usernameToCheck: username, appID: appID)?.queue() { result in
                 switch result {
-                case .success(let available):
-                    if available {
-                        accoundUpdateClosure()
-                    } else {
-                        self.animateErrorInThenOut("Username is not available")
+                    case .success(let available):
+                        if available {
+                            accountUpdateClosure()
+                        } else {
+                            self.animateErrorInThenOut("Username is not available")
+                            enableUIClosure()
+                        }
+                    case .failure(_), .cancelled:
+                        self.animateErrorInThenOut("Failureto check")
                         enableUIClosure()
-                    }
-                case .failure(_), .cancelled:
-                    self.animateErrorInThenOut("Failureto check")
-                    enableUIClosure()
                 }
             }
         } else {
-            accoundUpdateClosure()
+            accountUpdateClosure()
         }
     }
     
@@ -187,26 +186,27 @@ class EditProfileViewController: UIViewController {
         }
     }
     
-    private func animateErrorIn(){
-        UIView.animateWithDuration(Constants.animationDuration,
-                                   animations: {
-                                    self.validationViewTopToLayoutGuideBottomConstraint.constant = 0
-                                    self.view.layoutIfNeeded()
+    private func animateErrorIn() {
+        UIView.animateWithDuration(
+            Constants.animationDuration,
+            animations: {
+                self.validationViewTopToLayoutGuideBottomConstraint.constant = 0
+                self.view.layoutIfNeeded()
             }, completion: { finished in
-                dispatch_after(Constants.errorOnScreenDuration){ [weak self] in
+                dispatch_after(Constants.errorOnScreenDuration) { [weak self] in
                     self?.animateErrorOut()
                 }
-        })
+            }
+        )
     }
     
-    private func animateErrorOut(){
+    private func animateErrorOut() {
         UIView.animateWithDuration(Constants.animationDuration){
             let validationViewSize = self.validationView.systemLayoutSizeFittingSize(self.view.bounds.size)
             self.validationViewTopToLayoutGuideBottomConstraint.constant = -validationViewSize.height
             self.view.layoutIfNeeded()
         }
     }
-
 }
 
 private extension VDependencyManager {

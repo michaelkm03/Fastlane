@@ -11,9 +11,9 @@ import Foundation
 /// Provides UI for editing the user's `name`, `location`, and `tagline` fields.
 /// Assign closures to be notified of events in the UI.
 class DisplaynameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
-    
     private struct Constants {
         static let placeholderAlpha = CGFloat(0.5)
+        static let inputBackgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.2)
     }
     
     @IBOutlet private var displaynameField: UITextField! {
@@ -119,7 +119,7 @@ class DisplaynameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
                                                                      attributes: placeholderAttributes)
             
             // Background
-            contentView.backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.2)
+            contentView.backgroundColor = Constants.inputBackgroundColor
         }
     }
     

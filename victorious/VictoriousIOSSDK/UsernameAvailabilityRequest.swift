@@ -9,7 +9,6 @@
 import Foundation
 
 public struct UsernameAvailabilityRequest: RequestType {
-    
     private let url: NSURL
     private let usernameToCheck: String
     
