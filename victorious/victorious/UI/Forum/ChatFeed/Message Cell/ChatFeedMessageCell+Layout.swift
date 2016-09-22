@@ -17,6 +17,7 @@ extension ChatFeedMessageCell {
     // MARK: - Constants
 
     private struct Constants {
+        static let likeViewMargin = CGFloat(16.0)
         static let likeViewWidth = CGFloat(66.0)
         static let likeViewHeight = CGFloat(66.0)
         static let replyButtonWidth = CGFloat(44.0)
@@ -110,7 +111,7 @@ extension ChatFeedMessageCell {
 
         // Reply button layout:
 
-        if alignment == .left {
+        if cell.showsReplyButton && alignment == .left {
             cell.replyButton.hidden = false
             let replyButton = cell.replyButton
             if let baseFrame = bubbleFrames.last {
@@ -125,23 +126,20 @@ extension ChatFeedMessageCell {
             }
         }
         else {
-            cell.likeView?.hidden = true
+            cell.replyButton.hidden = true
         }
 
         // Like view layout:
 
-        if alignment == .left {
-            if let baseFrame = bubbleFrames.last {
-                let likeViewOriginX = cell.bounds.size.width - Constants.likeViewWidth - 16.0
-
-                if let likeView = cell.likeView {
-                    likeView.frame = CGRect(
-                        x: likeViewOriginX,
-                        y: baseFrame.center.y - Constants.likeViewHeight / 2,
-                        width: Constants.likeViewWidth,
-                        height: Constants.likeViewHeight
-                    )
-                }
+        if let topBubbleFrame = bubbleFrames.first, let bottomBubbleFrame = bubbleFrames.last {
+            let likeViewOriginX = alignment == .left ? cell.bounds.size.width - Constants.likeViewWidth - Constants.likeViewMargin : Constants.likeViewMargin
+            if let likeView = cell.likeView {
+                likeView.frame = CGRect(
+                    x: likeViewOriginX,
+                    y: topBubbleFrame.minY + (bottomBubbleFrame.maxY - topBubbleFrame.minY - Constants.likeViewHeight) / 2.0,
+                    width: Constants.likeViewWidth,
+                    height: Constants.likeViewHeight
+                )
             }
         }
     }
