@@ -290,7 +290,15 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         
         delegate?.chatFeed(self, didLongPress: content)
     }
-    
+
+    func messageCellDidToggleLikeContent(messageCell: ChatFeedMessageCell, completion: (() -> Void)) {
+        guard let content = messageCell.chatFeedContent else {
+            return
+        }
+
+        delegate?.chatFeed(self, didToggleLikeFor: content, completion: completion)
+    }
+
     func messageCellDidSelectFailureButton(messageCell: ChatFeedMessageCell) {
         guard let content = messageCell.chatFeedContent else {
             return

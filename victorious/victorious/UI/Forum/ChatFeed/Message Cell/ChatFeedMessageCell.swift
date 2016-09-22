@@ -13,6 +13,7 @@ protocol ChatFeedMessageCellDelegate: class {
     func messageCellDidSelectAvatarImage(messageCell: ChatFeedMessageCell)
     func messageCellDidSelectMedia(messageCell: ChatFeedMessageCell)
     func messageCellDidLongPressContent(messageCell: ChatFeedMessageCell)
+    func messageCellDidToggleLikeContent(messageCell: ChatFeedMessageCell, completion: (() -> Void))
     func messageCellDidSelectFailureButton(messageCell: ChatFeedMessageCell)
     func messageCellDidSelectReplyButton(messageCell: ChatFeedMessageCell)
     func messageCell(messageCell: ChatFeedMessageCell, didSelectLinkURL url: NSURL)
@@ -101,10 +102,6 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         return chatFeedContent?.content
     }
 
-    // MARK: - Formatter
-
-    let largeNumberFormatter = VLargeNumberFormatter()
-
     // MARK: - Subviews
     
     let usernameLabel = UILabel()
@@ -175,16 +172,18 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
 
         timestampLabel.font = dependencyManager.timestampFont
         timestampLabel.textColor = dependencyManager.timestampColor
-
         captionBubbleView.backgroundColor = dependencyManager.backgroundColor
 
         failureButton.setImage(UIImage(named: "failed_error"), forState: .Normal)
 
         if dependencyManager.upvoteStyle == UpvoteStyle.basic {
-            likeView = LikeView()
+            likeView = LikeView(frame: CGRect.zero,
+                                textColor: dependencyManager.upvoteCountColor,
+                                selectedIcon: dependencyManager.upvoteIconSelected,
+                                unselectedIcon: dependencyManager.upvoteIconUnselected,
+                                alignment: .center
+            )
             if let likeView = likeView {
-                likeView.countLabel.font = dependencyManager.timestampFont
-                likeView.countLabel.textColor = dependencyManager.timestampColor
                 likeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOnLikeView)))
                 contentView.addSubview(likeView)
             }
@@ -208,8 +207,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         usernameLabel.text = content?.author?.username ?? ""
         
         updateTimestamp()
-        updateLikeCount()
-        updateLikeImage()
+        likeView?.updateLikeStatus(content)
 
         let shouldHideTopLabels = content?.wasCreatedByCurrentUser == true
         usernameLabel.hidden = shouldHideTopLabels
@@ -287,40 +285,13 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     }
 
     private func toggleLike() {
-        guard
-            let content = content,
-            let contentID = content.id,
-            let upvoteAPIPath = dependencyManager.contentUpvoteAPIPath,
-            let unupvoteAPIPath = dependencyManager.contentUnupvoteAPIPath,
-            let upvoteOperation: SyncOperation<Void> = content.isLikedByCurrentUser
-                ? ContentUnupvoteOperation(apiPath: unupvoteAPIPath, contentID: contentID)
-                : ContentUpvoteOperation(apiPath: upvoteAPIPath, contentID: contentID)
-        else {
-            return
-        }
-
-        upvoteOperation.queue { [weak self] _ in
-            self?.updateLikeCount()
-            self?.updateLikeImage()
-        }
-    }
-
-    private func updateLikeCount() {
-        guard let content = content, likeCount = content.likeCount else {
-            return
-        }
-
-        let totalLikes = likeCount + content.currentUserLikeCount
-        likeView?.countLabel.text = totalLikes > 0 ? largeNumberFormatter.stringForInteger(totalLikes) : ""
-        likeView?.setNeedsLayout()
-    }
-
-    private func updateLikeImage() {
         guard let content = content else {
             return
         }
 
-        likeView?.imageView.image = content.isLikedByCurrentUser ? dependencyManager.upvoteIconSelected : dependencyManager.upvoteIconUnselected
+        delegate?.messageCellDidToggleLikeContent(self) { [weak self] in
+            self?.likeView?.updateLikeStatus(content)
+        }
     }
 
     func updateTimestamp() {
@@ -469,6 +440,10 @@ private extension VDependencyManager {
     var timestampColor: UIColor {
         return colorForKey("color.timestamp.text") ?? .whiteColor()
     }
+    
+    var upvoteCountColor: UIColor {
+        return colorForKey("color.upvote.count.text") ?? .whiteColor()
+    }
 
     var upvoteStyle: UpvoteStyle {
         guard let upvoteStyle = stringForKey("upvote.type") else {
@@ -483,14 +458,6 @@ private extension VDependencyManager {
 
     var upvoteIconUnselected: UIImage? {
         return imageForKey("upvote.icon.unselected")
-    }
-
-    var contentUpvoteAPIPath: APIPath? {
-        return networkResources?.apiPathForKey("contentUpvoteURL")
-    }
-
-    var contentUnupvoteAPIPath: APIPath? {
-        return networkResources?.apiPathForKey("contentUnupvoteURL")
     }
 }
 
