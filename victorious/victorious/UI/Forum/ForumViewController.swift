@@ -336,7 +336,33 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     func chatFeed(chatFeed: ChatFeed, didLongPress chatFeedContent: ChatFeedContent) {
         showActionSheet(forContent: chatFeedContent)
     }
-    
+
+    func chatFeed(chatFeed: ChatFeed, didToggleLikeFor content: ChatFeedContent, completion: (() -> Void)) {
+        guard
+            let contentID = content.content.id,
+            let likeKey = dependencyManager.contentLikeKey,
+            let unLikeKey = dependencyManager.contentUnLikeKey
+        else {
+            return
+        }
+
+        let context = chatFeedContext.value ?? "chat_feed"
+        let isLikedByCurrentUser = content.content.isLikedByCurrentUser
+        let likeAPIPath = APIPath(templatePath: likeKey, macroReplacements: ["%%CONTEXT%%": context])
+        let unLikeAPIPath = APIPath(templatePath: unLikeKey, macroReplacements: ["%%CONTEXT%%": context])
+        
+        guard let toggleLikeOperation: SyncOperation<Void> = isLikedByCurrentUser
+            ? ContentUnupvoteOperation(apiPath: unLikeAPIPath, contentID: contentID)
+            : ContentUpvoteOperation(apiPath: likeAPIPath, contentID: contentID)
+        else {
+            return
+        }
+
+        toggleLikeOperation.queue { _ in
+            completion()
+        }
+    }
+
     func chatFeed(chatFeed: ChatFeed, didScroll scrollView: UIScrollView) {
         stageShrinkingAnimator?.chatFeed(chatFeed, didScroll: scrollView)
     }
@@ -475,5 +501,13 @@ private extension VDependencyManager {
     
     var contentDeleteURL: String {
         return networkResources?.stringForKey("contentDeleteURL") ?? ""
+    }
+
+    var contentLikeKey: String? {
+        return networkResources?.stringForKey("contentUpvoteURL")
+    }
+
+    var contentUnLikeKey: String? {
+        return networkResources?.stringForKey("contentUnupvoteURL")
     }
 }

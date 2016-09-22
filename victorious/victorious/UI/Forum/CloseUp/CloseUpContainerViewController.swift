@@ -15,7 +15,8 @@ private struct Constants {
     static let cellsPerRow = 3
     static let estimatedBarButtonWidth: CGFloat = 60.0
     static let estimatedStatusBarHeight: CGFloat = 20.0
-    static let navigationBarRightPadding: CGFloat = 10.0 
+    static let navigationBarRightPadding: CGFloat = 10.0
+    static let likeViewFrame = CGRect(x: 0.0, y: 0.0, width: 44.0, height: 44.0)
 }
 
 class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, ContentCellTracker, CoachmarkDisplayer, VBackgroundContainer {
@@ -49,13 +50,20 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
             action: #selector(overflow)
         )
     }()
-    
-    private lazy var upvoteButton: UIButton = {
-        let button = BackgroundButton(type: .System)
-        button.addTarget(self, action: #selector(toggleUpvote), forControlEvents: .TouchUpInside)
-        return button
+
+    private lazy var likeView: LikeView = {
+        let likeView = LikeView(frame: Constants.likeViewFrame,
+                                textColor: self.dependencyManager.upvoteCountColor,
+                                font: self.dependencyManager.upvoteCountFont,
+                                selectedIcon: self.dependencyManager.upvoteIconSelected,
+                                unselectedIcon: self.dependencyManager.upvoteIconUnselected)
+
+        likeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(toggleLike)))
+        likeView.updateLikeStatus(self.content)
+
+        return likeView
     }()
-    
+
     private func updateAudioSessionCategory() {
         if content?.type == .video {
             VAudioManager.sharedInstance().focusedPlaybackDidBegin(muted: false)
@@ -160,26 +168,21 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
             return
         }
         
-        upvoteButton.tintColor = UIColor.redColor()
-        
+        likeView.updateLikeStatus(content)
         if content.isLikedByCurrentUser {
-            upvoteButton.setImage(dependencyManager.upvoteIconSelected, forState: .Normal)
-            upvoteButton.backgroundColor = dependencyManager.upvoteIconSelectedBackgroundColor
-            upvoteButton.tintColor = dependencyManager.upvoteIconTint
+            likeView.backgroundColor = dependencyManager.upvoteIconSelectedBackgroundColor
+            likeView.tintColor = dependencyManager.upvoteIconTint
         }
         else {
-            upvoteButton.setImage(dependencyManager.upvoteIconUnselected, forState: .Normal)
-            upvoteButton.backgroundColor = dependencyManager.upvoteIconUnselectedBackgroundColor
-            upvoteButton.tintColor = nil
+            likeView.backgroundColor = dependencyManager.upvoteIconUnselectedBackgroundColor
+            likeView.tintColor = nil
         }
-        
-        upvoteButton.sizeToFit()
-        
+
         if content.shareURL == nil {
-            navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: upvoteButton), overflowButton]
+            navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: likeView), overflowButton]
         }
         else {
-            navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: upvoteButton), shareButton, overflowButton]
+            navigationItem.rightBarButtonItems = [UIBarButtonItem(customView: likeView), shareButton, overflowButton]
         }
     }
     
@@ -234,20 +237,20 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         ).queue()
     }
     
-    func toggleUpvote() {
+    func toggleLike() {
         guard
             let content = content,
             let contentID = content.id,
-            let upvoteAPIPath = dependencyManager.contentUpvoteAPIPath,
-            let unupvoteAPIPath = dependencyManager.contentUnupvoteAPIPath,
-            let upvoteOperation: SyncOperation<Void> = content.isLikedByCurrentUser
-                ? ContentUnupvoteOperation(apiPath: unupvoteAPIPath, contentID: contentID)
-                : ContentUpvoteOperation(apiPath: upvoteAPIPath, contentID: contentID)
-        else {
-            return
+            let likeAPIPath = dependencyManager.contentLikeAPIPath,
+            let unLikeAPIPath = dependencyManager.contentUnLikeAPIPath,
+            let toggleLikeOperation: SyncOperation<Void> = content.isLikedByCurrentUser
+                ? ContentUnupvoteOperation(apiPath: unLikeAPIPath, contentID: contentID)
+                : ContentUpvoteOperation(apiPath: likeAPIPath, contentID: contentID)
+            else {
+                return
         }
-        
-        upvoteOperation.queue { [weak self] _ in
+
+        toggleLikeOperation.queue { [weak self] _ in
             self?.updateHeader()
         }
     }
@@ -343,6 +346,14 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
 }
 
 private extension VDependencyManager {
+    var upvoteCountFont: UIFont? {
+        return fontForKey("font.upvote.count.text") ?? UIFont(name: ".SFUIText-Regular", size: 12.0)
+    }
+
+    var upvoteCountColor: UIColor {
+        return colorForKey("color.upvote.count.text") ?? .whiteColor()
+    }
+
     var upvoteIconTint: UIColor? {
         return colorForKey("color.text.actionButton")
     }
@@ -378,13 +389,13 @@ private extension VDependencyManager {
     var contentDeleteAPIPath: APIPath? {
         return networkResources?.apiPathForKey("contentDeleteURL")
     }
-    
-    var contentUpvoteAPIPath: APIPath? {
-        return networkResources?.apiPathForKey("contentUpvoteURL")
+
+    var contentLikeAPIPath: APIPath? {
+        return networkResources?.apiPathForKey("contentUpvoteURL", macroReplacements: ["%%CONTEXT%%": "closeup_view"])
     }
-    
-    var contentUnupvoteAPIPath: APIPath? {
-        return networkResources?.apiPathForKey("contentUnupvoteURL")
+
+    var contentUnLikeAPIPath: APIPath? {
+        return networkResources?.apiPathForKey("contentUnupvoteURL", macroReplacements: ["%%CONTEXT%%": "closeup_view"])
     }
     
     var gridStreamDependencyManager: VDependencyManager? {
