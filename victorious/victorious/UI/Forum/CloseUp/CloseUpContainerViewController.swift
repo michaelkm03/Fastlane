@@ -54,9 +54,10 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     private lazy var likeView: LikeView = {
         let likeView = LikeView(frame: Constants.likeViewFrame,
                                 textColor: self.dependencyManager.upvoteCountColor,
-                                font: self.dependencyManager.upvoteCountFont,
                                 selectedIcon: self.dependencyManager.upvoteIconSelected,
-                                unselectedIcon: self.dependencyManager.upvoteIconUnselected)
+                                unselectedIcon: self.dependencyManager.upvoteIconUnselected,
+                                alignment: .left
+        )
 
         likeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(toggleLike)))
         likeView.updateLikeStatus(self.content)
@@ -242,15 +243,20 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
             let content = content,
             let contentID = content.id,
             let likeAPIPath = dependencyManager.contentLikeAPIPath,
-            let unLikeAPIPath = dependencyManager.contentUnLikeAPIPath,
-            let toggleLikeOperation: SyncOperation<Void> = content.isLikedByCurrentUser
-                ? ContentUnupvoteOperation(apiPath: unLikeAPIPath, contentID: contentID)
-                : ContentUpvoteOperation(apiPath: likeAPIPath, contentID: contentID)
-            else {
-                return
+            let unLikeAPIPath = dependencyManager.contentUnLikeAPIPath
+        else {
+            return
         }
 
-        toggleLikeOperation.queue { [weak self] _ in
+        let toggleLikeOperation: SyncOperation<Void>? = content.isLikedByCurrentUser
+                ? ContentUnupvoteOperation(apiPath: unLikeAPIPath, contentID: contentID)
+                : ContentUpvoteOperation(apiPath: likeAPIPath, contentID: contentID)
+
+        guard let operation = toggleLikeOperation else {
+            return
+        }
+
+        operation.queue { [weak self] _ in
             self?.updateHeader()
         }
     }
