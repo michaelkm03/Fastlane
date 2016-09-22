@@ -28,7 +28,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
     }
     
     /// Maximum height of the close up view (set from the outside). Defaults to CGFloat.max
-    var maxContentHeight: CGFloat = CGFloat.max
+    private var maxContentHeight: CGFloat = CGFloat.max
     
     // MARK: - IBOutlets
     
@@ -45,7 +45,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
     
     // MARK: - Variables
     
-    weak var delegate: CloseUpViewDelegate?
+    private weak var delegate: CloseUpViewDelegate?
     
     private let spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
     
@@ -57,7 +57,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
     
     private var videoPlayer: VVideoPlayer?
 
-    var dependencyManager: VDependencyManager! {
+    private var dependencyManager: VDependencyManager! {
         didSet {
             errorView.dependencyManager = dependencyManager.errorStateDependency
             configureFontsAndColors()
