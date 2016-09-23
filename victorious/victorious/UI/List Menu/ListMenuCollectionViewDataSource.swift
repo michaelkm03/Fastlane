@@ -46,13 +46,13 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         communityDataSource = ListMenuCommunityDataSource(dependencyManager: dependencyManager.communityChildDependency)
         hashtagDataSource = ListMenuHashtagsDataSource(dependencyManager: dependencyManager.hashtagsChildDependency)
         chatRoomsDataSource = ListMenuChatRoomsDataSource(dependencyManager: dependencyManager.chatRoomsChildDependency)
-        chatRoomsDataSource.fetchRemoteData()
 
         super.init()
         
         creatorDataSource.setupDataSource(with: self)
         communityDataSource.setupDataSource(with: self)
         hashtagDataSource.setupDataSource(with: self)
+        chatRoomsDataSource.setupDataSource(with: self)
         
         registerNibs(for: listMenuViewController.collectionView)
     }

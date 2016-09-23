@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  ListMenuChatRoomCollectionViewCell.swift
 //  victorious
 //
 //  Created by Alex Tamoykin on 9/15/16.
@@ -31,7 +31,7 @@ final class ListMenuChatRoomCollectionViewCell: UICollectionViewCell, ListMenuSe
     }
 
     func configureCell(with chatRoom: ChatRoom) {
-        titleLabel.text = "\(chatRoom.name)"
+        titleLabel.text = chatRoom.name
     }
 
     // MARK: - Private methods

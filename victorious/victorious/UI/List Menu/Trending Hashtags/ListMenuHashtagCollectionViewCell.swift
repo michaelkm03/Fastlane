@@ -6,9 +6,7 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-import UIKit
-
-class ListMenuHashtagCollectionViewCell: UICollectionViewCell, ListMenuSectionCell {
+final class ListMenuHashtagCollectionViewCell: UICollectionViewCell, ListMenuSectionCell {
     
     @IBOutlet private weak var titleLabel: UILabel!
     
@@ -30,14 +28,6 @@ class ListMenuHashtagCollectionViewCell: UICollectionViewCell, ListMenuSectionCe
 
     func configureCell(with hashtag: Hashtag) {
         titleLabel.text = "#\(hashtag.tag)"
-    }
-    
-    func updateCellBackgroundColor(to backgroundContainer: UIView, selectedColor color: UIColor?, isSelected: Bool) {
-        if isSelected {
-            backgroundContainer.backgroundColor = color
-        } else {
-            backgroundContainer.backgroundColor = nil
-        }
     }
     
     // MARK: - Private methods

@@ -15,8 +15,6 @@ final class ListMenuHashtagsDataSource: ListMenuSectionDataSource {
     /// Initializes a ListMenuHashtagsDataSource, then start to fetch trending hashtags from backend
     init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
-        
-        fetchRemoteData()
     }
     
     // MARK - Dependency manager
