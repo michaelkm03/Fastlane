@@ -289,7 +289,6 @@ NSString * const VTrackingKeyErrorDetails = @"Details";
 NSString * const VTrackingKeyType = @"EventType";
 NSString * const VTrackingKeySubtype = @"EventSubtype";
 NSString * const VTrackingKeyDuration = @"Duration";
-NSString * const VTrackingKeyProfileContext = @"ProfileContext";
 
 // Tracking Event Values
 // ContentType values
