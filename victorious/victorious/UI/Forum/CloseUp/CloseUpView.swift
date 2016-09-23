@@ -45,7 +45,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
     
     // MARK: - Variables
     
-     weak var delegate: CloseUpViewDelegate?
+    weak var delegate: CloseUpViewDelegate?
     
     private let spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
     
@@ -172,7 +172,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        var totalHeight = headerSection.bounds.height + headerSection.frame.origin.y
+        var totalHeight = headerSection.frame.maxY
         
         if content == nil {
             var bounds = self.bounds
