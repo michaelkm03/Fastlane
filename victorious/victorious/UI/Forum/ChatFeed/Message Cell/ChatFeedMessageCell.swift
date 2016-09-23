@@ -153,6 +153,10 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     }
 
     private dynamic func didTapOnLikeView() {
+        if let content = content where !content.isLikedByCurrentUser {
+            likeView?.animateLike()
+        }
+
         toggleLike()
     }
 

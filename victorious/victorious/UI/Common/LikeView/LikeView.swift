@@ -21,12 +21,21 @@ final class LikeView: UIView {
     private struct Constants {
         static let font: UIFont = UIFont(name: ".SFUIText-Regular", size: 12.0)
             ?? UIFont.systemFontOfSize(12.0, weight: UIFontWeightRegular)
+        static let flutterFrameNames = [
+            "flutter_hearts_00", "flutter_hearts_01", "flutter_hearts_02",
+            "flutter_hearts_03", "flutter_hearts_04", "flutter_hearts_05",
+            "flutter_hearts_06", "flutter_hearts_07", "flutter_hearts_08",
+            "flutter_hearts_09", "flutter_hearts_10", "flutter_hearts_11",
+            "flutter_hearts_12", "flutter_hearts_13", "flutter_hearts_14"
+        ]
     }
 
     // MARK: - Views
 
     private let imageView = UIImageView()
+    private let flutterImageView = UIImageView()
     private let countLabel = UILabel()
+    private var flutterFrames = [UIImage]()
 
     // MARK: - Properties
 
@@ -54,6 +63,7 @@ final class LikeView: UIView {
         super.init(frame: frame)
 
         addSubview(imageView)
+        addSubview(flutterImageView)
         addSubview(countLabel)
 
         countLabel.font = Constants.font
@@ -61,6 +71,7 @@ final class LikeView: UIView {
         self.selectedIcon = selectedIcon
         self.unselectedIcon = unselectedIcon
         self.alignment = alignment
+        self.flutterFrames = self.createFlutterFrames()
     }
 
     init() {
@@ -102,6 +113,15 @@ final class LikeView: UIView {
             horizontalPadding = CGFloat(4.0)
         }
 
+        flutterImageView.image = flutterFrames.first
+        flutterImageView.frame = CGRect(
+            center: imageView.center,
+            size: CGSize(
+                width: flutterImageView.intrinsicContentSize().width,
+                height: flutterImageView.intrinsicContentSize().height
+            )
+        )
+
         countLabel.frame = CGRect(
             x: imageView.frame.maxY + horizontalPadding,
             y: bounds.center.y - (countLabel.intrinsicContentSize().height / 2),
@@ -132,5 +152,36 @@ final class LikeView: UIView {
 
     private func updateLikeImage(content: Content) {
         imageView.image = content.isLikedByCurrentUser ? selectedIcon : unselectedIcon
+    }
+
+    // MARK - Animation
+
+    func animateLike() {
+        animateFlutterHearts()
+    }
+
+    private func animateFlutterHearts() {
+        guard let imageSize = flutterFrames.first?.size else {
+            return
+        }
+
+        UIGraphicsBeginImageContextWithOptions(imageSize, false, 0)
+        UIGraphicsEndImageContext()
+
+        flutterImageView.animationImages = flutterFrames
+        flutterImageView.animationDuration = 0.5
+        flutterImageView.animationRepeatCount = 1
+        flutterImageView.startAnimating()
+    }
+
+    private func createFlutterFrames() -> [UIImage]{
+        var images = [UIImage]()
+        Constants.flutterFrameNames.forEach { (name) in
+            if let image = UIImage(named: name) {
+                images.append(image)
+            }
+        }
+        
+        return images
     }
 }

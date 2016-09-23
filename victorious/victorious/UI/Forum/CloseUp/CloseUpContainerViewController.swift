@@ -248,6 +248,10 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
             return
         }
 
+        if !content.isLikedByCurrentUser {
+            likeView.animateLike()
+        }
+
         let toggleLikeOperation: SyncOperation<Void>? = content.isLikedByCurrentUser
                 ? ContentUnupvoteOperation(apiPath: unLikeAPIPath, contentID: contentID)
                 : ContentUpvoteOperation(apiPath: likeAPIPath, contentID: contentID)
