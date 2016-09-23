@@ -74,6 +74,7 @@ class GIFTrayViewController: UIViewController, Tray, UICollectionViewDelegate, U
         exportMedia(fromSearchResult: gif) { [weak self] state in
             switch state {
                 case .success(let result):
+                    self?.progressHUD?.hide(true)
                     let localAssetParameters = ContentMediaAsset.LocalAssetParameters(contentType: .gif, remoteID: remoteID, source: nil, size: gif.assetSize, url: gif.sourceMediaURL)
                     guard
                         let strongSelf = self,
@@ -84,6 +85,7 @@ class GIFTrayViewController: UIViewController, Tray, UICollectionViewDelegate, U
                     }
                     strongSelf.delegate?.tray(strongSelf, selectedAsset: asset, withPreviewImage: previewImage)
                 case .failure(let error):
+                    self?.progressHUD?.hide(true)
                     self?.showHUD(forRenderingError: error)
                 case .canceled:()
             }
