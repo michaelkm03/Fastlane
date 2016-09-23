@@ -60,7 +60,7 @@ final class ListMenuChatRoomsDataSource: ListMenuSectionDataSource {
     }
 
     var chatRoomStreamTrackingURLs: [String] {
-        return dependencyManager.trackingURLsForKey(Constants.Keys.chatRoomViewTrackingURL) as? [String] ?? []
+        return dependencyManager.trackingURLsForKey(Constants.Keys.chatRoomViewTrackingURL) ?? []
     }
 
     // MARK: - Internals

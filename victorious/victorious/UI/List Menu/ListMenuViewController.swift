@@ -146,8 +146,10 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
             streamAPIPath: apiPath,
             title: itemString,
             context: context,
-            trackingURLs: collectionViewDataSource.hashtagDataSource.hashtagStreamTrackingURLs.map {
-                VSDKURLMacroReplacement().urlByReplacingMacrosFromDictionary([macro: item.name], inURLString: $0)
+            trackingAPIPaths: collectionViewDataSource.hashtagDataSource.hashtagStreamTrackingAPIPaths.map { path in
+                var path = path
+                path.macroReplacements[macro] = item.name
+                return path
             }
         )
         postListMenuSelection(selectedItem)
