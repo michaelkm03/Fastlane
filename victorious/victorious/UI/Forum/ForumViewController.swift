@@ -141,7 +141,9 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
 
     func setStageHeight(value: CGFloat) {
         stageContainerHeight.constant = value
-        view.layoutIfNeeded()
+        UIView.performWithoutAnimation() {
+            self.view.layoutIfNeeded()
+        }
     }
     
     // MARK: - UploadManagerHost
