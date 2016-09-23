@@ -51,7 +51,7 @@ final class StickerSearchOperation: AsyncOperation<[AnyObject]>, PaginatedReques
         requestOperation.queue { [weak self] result in
             switch result {
             case .success(let searchResults):
-                let searchResultObjects = searchResults
+                let searchResultObjects = searchResults.map { ContentSearchResultObject($0) }
                 self?.results = searchResultObjects
                 finish(result: .success(searchResultObjects))
                 

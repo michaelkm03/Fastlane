@@ -25,6 +25,7 @@ class GIFSearchDataSource: PaginatedDataSource, MediaSearchDataSource {
         } else {
             searchOptions = AssetSearchOptions.Trending(url: "/api/image/trending_gifs")
         }
+        
 		self.loadPage( pageType,
 			createOperation: {
                 return GIFSearchOperation(searchOptions: searchOptions)

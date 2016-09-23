@@ -189,6 +189,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                 debugMenuHandler.setupCurrentDebugMenu(type, targetView: navigationController.navigationBar)
             }
         #endif
+        
+        BadgeCountManager.shared.fetchBadgeCount(for: .unreadNotifications)
     }
 
     override func viewDidAppear(animated: Bool) {
@@ -331,7 +333,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     // MARK: - ChatFeedDelegate
     
-    func chatFeed(chatFeed: ChatFeed, didLongPressContent chatFeedContent: ChatFeedContent) {
+    func chatFeed(chatFeed: ChatFeed, didLongPress chatFeedContent: ChatFeedContent) {
         showActionSheet(forContent: chatFeedContent)
     }
     
@@ -347,7 +349,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         stageShrinkingAnimator?.chatFeed(chatFeed, willEndDragging: scrollView, withVelocity: velocity)
     }
     
-    func chatFeed(chatFeed: ChatFeed, didSelectFailureButtonForContent chatFeedContent: ChatFeedContent) {
+    func chatFeed(chatFeed: ChatFeed, didSelectFailureButtonFor chatFeedContent: ChatFeedContent) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
         alertController.addAction(
             UIAlertAction(
@@ -377,6 +379,15 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             )
         )
         presentViewController(alertController, animated: true, completion: nil)
+    }
+    
+    func chatFeed(chatFeed: ChatFeed, didSelectReplyButtonFor chatFeedContent: ChatFeedContent) {
+        guard let username = chatFeedContent.content.author?.username else {
+            return
+        }
+        
+        composer?.append("@\(username)")
+        composer?.showKeyboard()
     }
     
     func publisher(for chatFeed: ChatFeed) -> ContentPublisher? {

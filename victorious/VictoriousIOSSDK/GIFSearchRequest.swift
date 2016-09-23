@@ -21,7 +21,6 @@ public struct GIFSearchRequest: PaginatorPageable, ResultBasedPageable {
     }
     
     public init(searchOptions: AssetSearchOptions, paginator: StandardPaginator = StandardPaginator(pageNumber: 1, itemsPerPage: 20)) {
-		
 		let url: NSURL?
         switch searchOptions {
             case .Search(let searchTerm, let searchURL):

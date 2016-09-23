@@ -1,24 +1,25 @@
 //
-//  StickerTrayDataSource.swift
+//  GIFTrayDataSource.swift
 //  victorious
 //
-//  Created by Sharif Ahmed on 9/9/16.
+//  Created by Sharif Ahmed on 9/14/16.
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
 import Foundation
 
-class StickerTrayDataSource: PaginatedDataSource, TrayDataSource {
+/// A data source that fetches gifs and provides cells that load and auto-play these gifs
+class GIFTrayDataSource: PaginatedDataSource, TrayDataSource {
     private struct Constants {
         static let loadingCellReuseIdentifier = TrayLoadingCollectionViewCell.defaultReuseIdentifier
         static let retryCellReuseIdentifier = TrayRetryLoadCollectionViewCell.defaultReuseIdentifier
         static let defaultCellReuseIdentifier = UICollectionViewCell.defaultReuseIdentifier
-        static let stickerCellReuseIdentifier = MediaSearchPreviewCell.defaultReuseIdentifier
+        static let gifCellReuseIdentifier = MediaSearchPreviewCell.defaultReuseIdentifier
     }
     
     let dependencyManager: VDependencyManager
     var dataSourceDelegate: TrayDataSourceDelegate?
-    private var stickers: [Content] = []
+    private var gifs: [GIFSearchResultObject] = []
     private(set) var trayState: TrayState = .Empty {
         didSet {
             if oldValue != trayState {
@@ -26,50 +27,52 @@ class StickerTrayDataSource: PaginatedDataSource, TrayDataSource {
             }
         }
     }
-    var cellSize: CGSize = .zero
     
-    func asset(atIndex index: Int) -> Content? {
-        guard stickers.count > index else {
+    func asset(atIndex index: Int) -> GIFSearchResultObject? {
+        guard gifs.count > index else {
             return nil
         }
-        return stickers[index]
+        return gifs[index]
     }
     
     init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
     }
     
+    // This method must be called on the collection view that this object will provide cells for prior to dequeueing any cells
     func registerCells(withCollectionView collectionView: UICollectionView) {
         collectionView.registerClass(TrayLoadingCollectionViewCell.self, forCellWithReuseIdentifier: Constants.loadingCellReuseIdentifier)
         collectionView.registerClass(TrayRetryLoadCollectionViewCell.self, forCellWithReuseIdentifier: Constants.retryCellReuseIdentifier)
         collectionView.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: Constants.defaultCellReuseIdentifier)
-        collectionView.registerNib(MediaSearchPreviewCell.associatedNib, forCellWithReuseIdentifier: Constants.stickerCellReuseIdentifier)
+        collectionView.registerNib(MediaSearchPreviewCell.associatedNib, forCellWithReuseIdentifier: Constants.gifCellReuseIdentifier)
     }
     
-    func fetchStickers(completion: (NSError? -> ())? = nil) {
+    func fetchGifs(completion: (NSError? -> ())? = nil) {
         trayState = .Loading
         let contentFetchEndpoint = dependencyManager.contentFetchEndpoint ?? ""
         let searchOptions = AssetSearchOptions.Trending(url: contentFetchEndpoint)
-        self.loadPage( .First,
-                       createOperation: {
-                        return StickerSearchOperation(searchOptions: searchOptions)
-            },
-                       completion:{ [weak self] (results, error, cancelled) in
-                        guard let strongSelf = self else {
-                            return
-                        }
-                        
-                        let stickers = results as? [Content]
-                        strongSelf.stickers = stickers ?? []
-                        guard let results = results else {
-                            strongSelf.trayState = .FailedToLoad
-                            return
-                        }
-                        strongSelf.trayState = results.count > 0 ? .Populated : .Empty
-                        completion?(error)
+        let createOperation = {
+            return GIFSearchOperation(searchOptions: searchOptions)
+        }
+        let pageLoadCompletion = {
+            [weak self] (results: [AnyObject]?, error: NSError?, cancelled: Bool) in
+            guard let strongSelf = self else {
+                return
             }
-        )
+            
+            let gifs = results as? [GIFSearchResultObject] ?? strongSelf.gifs
+            strongSelf.gifs = gifs
+            guard gifs.count > 0 else {
+                strongSelf.trayState = .FailedToLoad
+                return
+            }
+            strongSelf.trayState = .Populated
+            completion?(error)
+        }
+        self.loadPage(.First, createOperation: createOperation, completion: pageLoadCompletion)
     }
+    
+    // MARK: - UICollectionViewDataSource
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch trayState {
@@ -78,24 +81,20 @@ class StickerTrayDataSource: PaginatedDataSource, TrayDataSource {
             case .FailedToLoad, .Loading:
                 return 1
             case .Populated:
-                return stickers.count
+                return gifs.count
         }
-    }
-    
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return 1
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell: UICollectionViewCell
         switch trayState {
             case .Populated:
-                let cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.stickerCellReuseIdentifier, forIndexPath: indexPath) as! MediaSearchPreviewCell
-                cell.activityIndicator.stopAnimating()
-                if let sticker = asset(atIndex: indexPath.row) {
-                    cell.previewAssetUrl = sticker.assets.first?.url
+                let gifCell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.gifCellReuseIdentifier, forIndexPath: indexPath) as! MediaSearchPreviewCell
+                if let gif = asset(atIndex: indexPath.row) {
+                    gifCell.assetUrl = gif.sourceMediaURL
+                    gifCell.previewAssetUrl = gif.thumbnailImageURL
                 }
-                return cell
+                cell = gifCell
             case .FailedToLoad:
                 cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.retryCellReuseIdentifier, forIndexPath: indexPath)
             case .Loading:

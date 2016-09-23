@@ -35,7 +35,7 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
         
         paginatedDataSource = TimePaginatedDataSource(
             apiPath: streamAPIPath,
-            createOperation: { ContentFeedOperation(apiPath: $0) },
+            createOperation: { ContentFeedOperation(apiPath: $0, payloadType: .lightweight) },
             processOutput: { $0.contents }
         )
     }

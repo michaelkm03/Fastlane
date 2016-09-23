@@ -9,15 +9,16 @@
 import Foundation
 import MBProgressHUD
 
-class GIFTrayViewController: UIViewController, Tray, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+/// A view controller that displays a side-scrolling single-row of gifs that play in-line
+class GIFTrayViewController: UIViewController, Tray, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, LoadingCancellableViewDelegate {
     private struct Constants {
         static let collectionViewContentInsets = UIEdgeInsets(top: 2, left: 2, bottom: 2, right: 2)
         static let interItemSpace = CGFloat(2)
     }
     
     weak var delegate: TrayDelegate?
-    var progressHUD: MBProgressHUD?
-    var mediaExporter: MediaSearchExporter?
+    private(set) var progressHUD: MBProgressHUD?
+    private(set) var mediaExporter: MediaSearchExporter?
     
     lazy var dataSource: GIFTrayDataSource = {
         let dataSource = GIFTrayDataSource(dependencyManager: self.dependencyManager)
@@ -35,9 +36,15 @@ class GIFTrayViewController: UIViewController, Tray, UICollectionViewDelegate, U
         return tray
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        collectionView.hidden = true
+    }
+    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         dataSource.fetchGifs()
+        collectionView.hidden = false
     }
 
     override func viewDidLoad() {
@@ -63,9 +70,10 @@ class GIFTrayViewController: UIViewController, Tray, UICollectionViewDelegate, U
             }
             return
         }
-        showExportingHUD()
-        exportMedia(fromSearchResult: gif) { [weak self] state in
-            self?.dismissHUD()
+        progressHUD = showExportingHUD(delegate: self)
+        mediaExporter?.cancelDownload()
+        mediaExporter = nil
+        let exporter = exportMedia(fromSearchResult: gif) { [weak self] state in
             switch state {
                 case .success(let result):
                     let localAssetParameters = ContentMediaAsset.LocalAssetParameters(contentType: .gif, remoteID: remoteID, source: nil, size: gif.assetSize, url: gif.sourceMediaURL)
@@ -73,15 +81,16 @@ class GIFTrayViewController: UIViewController, Tray, UICollectionViewDelegate, U
                         let strongSelf = self,
                         let asset = ContentMediaAsset(initializationParameters: localAssetParameters),
                         let previewImage = result.exportPreviewImage
-                        else {
-                            return
+                    else {
+                        return
                     }
                     strongSelf.delegate?.tray(strongSelf, selectedAsset: asset, withPreviewImage: previewImage)
                 case .failure(let error):
-                    self?.showHUD(renderingError: error)
+                    self?.showHUD(forRenderingError: error)
                 case .canceled:()
             }
         }
+        mediaExporter = exporter
     }
     
     // MARK: - UICollectionViewDelegateFlowLayout
@@ -103,5 +112,12 @@ class GIFTrayViewController: UIViewController, Tray, UICollectionViewDelegate, U
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
         return Constants.interItemSpace
+    }
+    
+    // MARK: - LoadingCancellableViewDelegate
+    
+    func cancel() {
+        progressHUD?.hide(true)
+        self.mediaExporter?.cancelDownload()
     }
 }

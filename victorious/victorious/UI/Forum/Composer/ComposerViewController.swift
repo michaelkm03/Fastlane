@@ -9,11 +9,11 @@
 import UIKit
 
 /// Handles view manipulation and message sending related to the composer. Could definitely use a refactor to make it less stateful.
-class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate, ComposerAttachmentTabBarDelegate, VBackgroundContainer, VCreationFlowControllerDelegate, HashtagBarControllerSelectionDelegate, HashtagBarViewControllerAnimationDelegate, VPassthroughContainerViewDelegate {
+class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate, ComposerAttachmentTabBarDelegate, VBackgroundContainer, VCreationFlowControllerDelegate, HashtagBarControllerSelectionDelegate, HashtagBarViewControllerAnimationDelegate, VPassthroughContainerViewDelegate, ToggleableImageButtonDelegate {
     
     private struct Constants {
         static let animationDuration = 0.2
-        static let maximumNumberOfTabs = 5
+        static let maximumNumberOfTabs = 4
         static let maximumComposerToScreenRatio: CGFloat = 0.2
         static let defaultMaximumTextLength = 0
         static let maximumAttachmentWidthPercentage: CGFloat = 480.0 / 667.0
@@ -32,50 +32,26 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     private var visibleKeyboardHeight: CGFloat = 0
     
-    private var customInputAreaState: CustomInputAreaState = .Hidden {
-        didSet {
-            guard !(oldValue == customInputAreaState) else {
-                return
-            }
-            
-            switch customInputAreaState {
-                case .Hidden:
-                    customInputAreaHeight = 0
-                case .Visible(let inputController):
-                    customInputViewController = inputController.viewController
-                    customInputAreaHeight = inputController.desiredHeight
-                    textView.resignFirstResponder()
-            }
-            updateCustomInputAreaHeight(animated: true)
-            view.setNeedsUpdateConstraints()
-        }
-    }
+    private var customInputAreaState: CustomInputAreaState = .Hidden
     
     private var customInputAreaHeight: CGFloat = 0
     
     @IBOutlet private var customInputViewContainer: UIView!
     
-    private var customInputViewController: UIViewController? {
+    private var customInputViewControllerIsAppearing = false {
         didSet {
-            if oldValue != customInputViewController {
-                if let oldInputViewController = oldValue {
-                    oldInputViewController.willMoveToParentViewController(nil)
-                    oldInputViewController.view.removeFromSuperview()
-                    oldInputViewController.removeFromParentViewController()
+            if oldValue != customInputViewControllerIsAppearing {
+                if customInputViewControllerIsAppearing {
+                    customInputViewController?.beginAppearanceTransition(true, animated: true)
                 }
-                if let newInputViewController = customInputViewController {
-                    addChildViewController(newInputViewController)
-                    let inputView = newInputViewController.view
-                    inputView.translatesAutoresizingMaskIntoConstraints = false
-                    customInputViewContainer.addSubview(inputView)
-                    customInputViewContainer.topAnchor.constraintEqualToAnchor(inputView.topAnchor).active = true
-                    customInputViewContainer.rightAnchor.constraintEqualToAnchor(inputView.rightAnchor).active = true
-                    customInputViewContainer.bottomAnchor.constraintEqualToAnchor(inputView.bottomAnchor).active = true
-                    customInputViewContainer.leftAnchor.constraintEqualToAnchor(inputView.leftAnchor).active = true
+                else {
+                    customInputViewController?.endAppearanceTransition()
                 }
             }
         }
     }
+    
+    private var customInputViewController: UIViewController?
     
     lazy var stickerInputController: CustomInputDisplayOptions = {
         let dependencyManager: VDependencyManager = self.dependencyManager.stickerTrayDependency!
@@ -84,7 +60,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         return CustomInputDisplayOptions(viewController: stickerTray, desiredHeight: Constants.stickerInputAreaHeight)
     }()
     
-    lazy var gifTrayInputController: CustomInputDisplayOptions = {
+    lazy var gifInputController: CustomInputDisplayOptions = {
         let dependencyManager: VDependencyManager = self.dependencyManager.gifTrayDependency!
         let gifTray = GIFTrayViewController.new(dependencyManager)
         gifTray.delegate = self
@@ -166,8 +142,16 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
     }
     
+    private var selectedButton: UIButton? {
+        didSet {
+            oldValue?.enabled = true
+            if let button = selectedButton {
+                button.enabled = false
+            }
+        }
+    }
+    
     private var shouldShowAttachmentContainer: Bool {
-        
         guard let attachmentMenuItems = attachmentMenuItems where isViewLoaded() else {
             return false
         }
@@ -221,6 +205,15 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     var maximumTextInputHeight = CGFloat.max
     
+    var text: String {
+        get {
+            return textView?.text ?? ""
+        }
+        set {
+            textView?.text = newValue
+        }
+    }
+    
     func showKeyboard() {
         textView.becomeFirstResponder()
     }
@@ -235,6 +228,23 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
                 }
             }
         }
+    }
+    
+    func append(text: String) {
+        guard !text.isEmpty else {
+            return
+        }
+        
+        let whitespaceCharacterSet = NSCharacterSet.whitespaceAndNewlineCharacterSet()
+        
+        if let lastCharacter = textView.text?.utf16.last where !whitespaceCharacterSet.characterIsMember(lastCharacter) {
+            composerTextViewManager?.appendTextIfPossible(textView, text: " " + text + " ")
+        }
+        else {
+            composerTextViewManager?.appendTextIfPossible(textView, text: text + " ")
+        }
+        
+        textViewHasText = true
     }
     
     private var composerIsVisible = true
@@ -313,7 +323,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         didSet {
             if oldValue != textViewIsEditing {
                 if textViewIsEditing {
-                    customInputAreaState = .Hidden
+                    update(toInputAreaState: .Hidden)
                 }
                 view.setNeedsUpdateConstraints()
             }
@@ -323,17 +333,30 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     var textViewPrependedImage: UIImage? {
         didSet {
             if oldValue != textViewPrependedImage {
-                attachmentTabBar.buttonsEnabled = !textViewHasPrependedImage
-                attachmentTabBar.enableButtonForIdentifier(ComposerInputAttachmentType.Hashtag.rawValue)
-                if !textViewHasPrependedImage {
-                    selectedAsset = nil
+                updateAttachmentButtons()
+                
+                vipButton?.enabled = vipButton?.enabled ?? false || !textViewHasPrependedImage
+                if selectedAsset?.contentType == .gif {
+                    vipButton?.selected = false
                 }
             }
         }
     }
     
+    func updateAttachmentButtons() {
+        attachmentTabBar.buttonsEnabled = !textViewHasPrependedImage
+        attachmentTabBar.setButtonEnabled(true, forIdentifier: ComposerInputAttachmentType.Hashtag.rawValue)
+        
+        let gifEnabled = vipButton?.selected == true ? false : !textViewHasPrependedImage
+        attachmentTabBar.setButtonEnabled(gifEnabled, forIdentifier: ComposerInputAttachmentType.GIFFlow.rawValue)
+        
+        if !textViewHasPrependedImage {
+            selectedAsset = nil
+        }
+    }
+    
     var textViewCanDismiss: Bool {
-        return interactiveContainerView.layer.animationKeys() == nil && composerBackgroundContainerView.layer.animationKeys() == nil
+        return interactiveContainerView.layer.animationKeys() == nil
     }
     
     var textViewCurrentHashtag: (String, NSRange)? {
@@ -361,7 +384,8 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     }
     
     private func updateConfirmButtonState() {
-        confirmButton.enabled = textViewHasText || selectedAsset != nil
+        let hasContentInTextView = textViewHasText || selectedAsset != nil
+        confirmButton.enabled = hasContentInTextView && customInputAreaState == .Hidden
         confirmButton.backgroundColor = confirmButton.enabled ? dependencyManager.confirmButtonBackgroundColorEnabled : dependencyManager.confirmButtonBackgroundColorDisabled
     }
     
@@ -395,39 +419,6 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         composerTextViewManager?.endEditing(self.textView)
-    }
-
-    private func updateViewsForNewVisibleKeyboardHeight(visibleKeyboardHeight: CGFloat, animationOptions: UIViewAnimationOptions, animationDuration: Double) {
-        guard self.visibleKeyboardHeight != visibleKeyboardHeight && composerIsVisible else {
-            return
-        }
-        self.visibleKeyboardHeight = visibleKeyboardHeight
-        updateViewConstraints()
-        if animationDuration != 0 {
-            UIView.animateWithDuration(animationDuration, delay: 0, options: animationOptions, animations: {
-                self.inputViewToBottomConstraint.constant = visibleKeyboardHeight
-                self.delegate?.composer(self, didUpdateContentHeight: self.totalComposerHeight)
-                self.view.layoutIfNeeded()
-            }, completion: nil)
-        } else {
-            inputViewToBottomConstraint.constant = visibleKeyboardHeight
-            self.view.setNeedsLayout()
-            self.delegate?.composer(self, didUpdateContentHeight: self.totalComposerHeight)
-        }
-    }
-    
-    private func updateCustomInputAreaHeight(animated animated: Bool) {
-        if animated {
-            UIView.animateWithDuration(Constants.animationDuration, delay: 0, options: [.CurveEaseOut, .AllowUserInteraction], animations: {
-                self.customInputAreaHeightConstraint.constant = self.customInputAreaHeight
-                self.delegate?.composer(self, didUpdateContentHeight: self.totalComposerHeight)
-                self.view.layoutIfNeeded()
-            }, completion: nil)
-        } else {
-            customInputAreaHeightConstraint.constant = customInputAreaHeight
-            view.setNeedsLayout()
-            delegate?.composer(self, didUpdateContentHeight: totalComposerHeight)
-        }
     }
     
     override func updateViewConstraints() {
@@ -464,7 +455,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             textViewHeightConstraint.constant = textViewContentHeight
         }
         
-        let customInputAreaHeightNeedsUpdate =             customInputAreaHeightConstraint.constant != customInputAreaHeight
+        let customInputAreaHeightNeedsUpdate = customInputAreaHeightConstraint.constant != customInputAreaHeight
         if customInputAreaHeightNeedsUpdate {
             customInputAreaHeightConstraint.constant = customInputAreaHeight
         }
@@ -491,6 +482,90 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }, completion: nil)
         
         super.updateViewConstraints()
+    }
+    
+    // MARK: - View updating
+    
+    private func updateViewsForNewVisibleKeyboardHeight(visibleKeyboardHeight: CGFloat, animationOptions: UIViewAnimationOptions, animationDuration: Double) {
+        guard self.visibleKeyboardHeight != visibleKeyboardHeight && composerIsVisible else {
+            return
+        }
+        self.visibleKeyboardHeight = visibleKeyboardHeight
+        updateViewConstraints()
+        if animationDuration != 0 {
+            UIView.animateWithDuration(animationDuration, delay: 0, options: animationOptions, animations: {
+                self.inputViewToBottomConstraint.constant = visibleKeyboardHeight
+                self.delegate?.composer(self, didUpdateContentHeight: self.totalComposerHeight)
+                self.view.layoutIfNeeded()
+                }, completion: nil)
+        } else {
+            inputViewToBottomConstraint.constant = visibleKeyboardHeight
+            self.view.setNeedsLayout()
+            self.delegate?.composer(self, didUpdateContentHeight: self.totalComposerHeight)
+        }
+    }
+    
+    private func updateCustomInputAreaHeight(animated animated: Bool) {
+        self.customInputAreaHeightConstraint.constant = self.customInputAreaHeight
+        if animated {
+            UIView.animateWithDuration(Constants.animationDuration, delay: 0, options: [.CurveEaseOut, .AllowUserInteraction], animations: {
+                self.delegate?.composer(self, didUpdateContentHeight: self.totalComposerHeight)
+                self.view.layoutIfNeeded()
+                }, completion: { _ in
+                    self.customInputViewControllerIsAppearing = false
+                }
+            )
+        } else {
+            view.setNeedsUpdateConstraints()
+            delegate?.composer(self, didUpdateContentHeight: totalComposerHeight)
+            customInputViewControllerIsAppearing = false
+        }
+    }
+    
+    private func update(toInputAreaState state: CustomInputAreaState) {
+        guard customInputAreaState != state else {
+            return
+        }
+        
+        customInputAreaState = state
+        
+        switch customInputAreaState {
+            case .Hidden:
+                customInputAreaHeight = 0
+            case .Visible(let inputController):
+                customInputAreaHeight = inputController.desiredHeight
+                update(toCustomInputViewController: inputController.viewController)
+                textView.resignFirstResponder()
+        }
+        updateConfirmButtonState()
+        updateCustomInputAreaHeight(animated: true)
+        view.setNeedsUpdateConstraints()
+    }
+    
+    private func update(toCustomInputViewController inputViewController: UIViewController) {
+        guard customInputViewController != inputViewController else {
+            return
+        }
+        
+        if let oldInputViewController = customInputViewController {
+            oldInputViewController.willMoveToParentViewController(nil)
+            oldInputViewController.view.removeFromSuperview()
+            oldInputViewController.removeFromParentViewController()
+        }
+        customInputViewController = inputViewController
+        if let newInputViewController = customInputViewController {
+            addChildViewController(newInputViewController)
+            customInputViewControllerIsAppearing = true
+            let inputView = newInputViewController.view
+            inputView.translatesAutoresizingMaskIntoConstraints = false
+            customInputViewContainer.addSubview(inputView)
+            customInputViewContainer.topAnchor.constraintEqualToAnchor(inputView.topAnchor).active = true
+            customInputViewContainer.bottomAnchor.constraintEqualToAnchor(inputView.bottomAnchor).active = true
+            customInputViewContainer.rightAnchor.constraintEqualToAnchor(inputView.rightAnchor).active = true
+            customInputViewContainer.leftAnchor.constraintEqualToAnchor(inputView.leftAnchor).active = true
+            customInputViewContainer.layoutIfNeeded()
+            newInputViewController.didMoveToParentViewController(self)
+        }
     }
     
     // MARK: - Subview setup
@@ -579,6 +654,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         
         vipButton = dependencyManager.toggleableVIPButton
         if let vipButton = vipButton as? ToggleableImageButton {
+            vipButton.delegate = self
             vipLockContainerView.addSubview(vipButton)
             vipLockContainerView.v_addFitToParentConstraintsToSubview(vipButton)
         }
@@ -590,6 +666,12 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
     }
     
+    // MARK: - ToggleableImageButtonDelegate
+    
+    func button(button: ToggleableImageButton, becameSelected selected: Bool) {
+        updateAttachmentButtons()
+    }
+    
     // MARK: - VBackgroundContainer
     
     func backgroundContainerView() -> UIView {
@@ -598,33 +680,42 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     // MARK: - ComposerAttachmentTabBarDelegate
     
-    func composerAttachmentTabBar(composerAttachmentTabBar: ComposerAttachmentTabBar, didSelectNavigationItem navigationItem: VNavigationMenuItem) {
+    func composerAttachmentTabBar(composerAttachmentTabBar: ComposerAttachmentTabBar, didSelectNavigationItem navigationItem: VNavigationMenuItem, fromButton button: UIButton) {
         let identifier = navigationItem.identifier
         let creationFlowType = CreationFlowTypeHelper.creationFlowTypeForIdentifier(identifier)
+        var selectedButton: UIButton? = nil
         if creationFlowType != .Unknown {
+            update(toInputAreaState: .Hidden)
             delegate?.composer(self, didSelectCreationFlowType: creationFlowType)
         } else if let composerInputAttachmentType = ComposerInputAttachmentType(rawValue: identifier) {
             switch composerInputAttachmentType {
-            case .Hashtag:
-                if !textViewIsEditing {
-                    textView.becomeFirstResponder()
-                }
-                composerTextViewManager?.appendTextIfPossible(textView, text: "#")
-            case .StickerTray:
-                customInputAreaState = .Visible(inputController: stickerInputController)
-            case .GIFTray:
-                customInputAreaState = .Visible(inputController: gifTrayInputController)
+                case .Hashtag:
+                    if !textViewIsEditing {
+                        textView.becomeFirstResponder()
+                    }
+                    composerTextViewManager?.appendTextIfPossible(textView, text: "#")
+                case .StickerTray:
+                    selectedButton = button
+                    update(toInputAreaState: .Visible(inputController: stickerInputController))
+                case .GIFTray:
+                    selectedButton = button
+                    update(toInputAreaState: .Visible(inputController: gifInputController))
+                default:
+                    Log.warning("Encountered unexpected attachment type identifier")
+                    update(toInputAreaState: .Hidden)
             }
         }
+        self.selectedButton = selectedButton
     }
     
     // MARK: - VPassthroughContainerViewDelegate
     
     func passthroughViewRecievedTouch(passthroughContainerView: VPassthroughContainerView!) {
+        selectedButton = nil
         switch customInputAreaState {
             case .Hidden:()
             default:
-                customInputAreaState = .Hidden
+                update(toInputAreaState: .Hidden)
         }
     }
     
@@ -635,6 +726,9 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             creationFlowController.v_showErrorDefaultError()
             return
         }
+        
+        // Disable VIP button if we just selected a GIF
+        vipButton?.enabled = contentType != .gif
         
         var preview = previewImage
         if let image = capturedMediaURL.v_videoPreviewImage where contentType == .gif {
@@ -734,7 +828,7 @@ private extension VDependencyManager {
     }
     
     func maximumTextLengthForOwner(owner: Bool) -> Int {
-        return owner ? 0 : numberForKey("maximumTextLength").integerValue
+        return owner ? 0 : numberForKey("maximumTextLength")?.integerValue ?? 0
     }
     
     var inputPromptText: String {

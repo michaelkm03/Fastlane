@@ -10,7 +10,6 @@ import Foundation
 import VictoriousIOSSDK
 
 final class GIFSearchOperation: AsyncOperation<[AnyObject]>, PaginatedRequestOperation {
-    
     // MARK: - Initializing
     
     required init(request: GIFSearchRequest) {
@@ -51,7 +50,7 @@ final class GIFSearchOperation: AsyncOperation<[AnyObject]>, PaginatedRequestOpe
         requestOperation.queue { [weak self] result in
             switch result {
                 case .success(let searchResults):
-                    let searchResultObjects = searchResults.map { GIFSearchResultObject( $0 ) }
+                    let searchResultObjects = searchResults.map { GIFSearchResultObject($0) }
                     self?.results = searchResultObjects
                     finish(result: .success(searchResultObjects))
                 

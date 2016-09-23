@@ -30,6 +30,17 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     
     let dependencyManager: VDependencyManager
     
+    // MARK: - Configuration
+    
+    /// When enabled, new items will be added to `stashedItems` rather than `unstashedItems`.
+    var stashingEnabled = false
+    
+    /// Whether or not the pending items from the delegate should be displayed.
+    private var shouldShowPendingItems = true
+    
+    /// Whether or not reply buttons in chat cells should be displayed.
+    private(set) var shouldShowReplyButtons = true
+    
     // MARK: - Managing content
     
     private(set) var unstashedItems = [ChatFeedContent]()
@@ -47,9 +58,6 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     func removeUnstashedItem(at index: Int) {
         unstashedItems.removeAtIndex(index)
     }
-    
-    var stashingEnabled = false
-    var shouldShowPendingItems = true
     
     func unstash() {
         guard stashedItems.count > 0 else {
@@ -74,6 +82,7 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
             case .filterContent(let path):
                 let isFilteredFeed = path != nil
                 shouldShowPendingItems = !isFilteredFeed
+                shouldShowReplyButtons = !isFilteredFeed
                 clearItems()
             
             default:
@@ -142,7 +151,9 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        return cellForItem(for: collectionView, at: indexPath)
+        let cell = cellForItem(for: collectionView, at: indexPath)
+        cell.showsReplyButton = shouldShowReplyButtons
+        return cell
     }
     
     func collectionView(collectionView: UICollectionView, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {

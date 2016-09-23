@@ -22,6 +22,7 @@ extension ChatFeedMessageCell {
         else {
             return
         }
+        
         let content = chatFeedContent.content
         let alignment: ChatFeedMessageCellAlignment = content.wasCreatedByCurrentUser ? .right : .left
         
@@ -89,7 +90,8 @@ extension ChatFeedMessageCell {
             cell.failureButton.frame = CGRect(
                 center: CGPoint(
                     x: avatarFrame.origin.x + avatarFrame.size.width + horizontalSpacing + failureButtonSize.width / 2,
-                    y: avatarFrame.center.y),
+                    y: avatarFrame.center.y
+                ),
                 size: failureButtonSize
             )
         }
@@ -98,45 +100,37 @@ extension ChatFeedMessageCell {
         }
 
         // Like button layout:
-
-        if alignment == .left {
-            cell.likeView?.hidden = false
-            if let likeView = cell.likeView {
-                if let baseFrame = bubbleFrames.last {
-                    let likeViewWidth = CGFloat(66.0)
-                    let likeViewHeight = CGFloat(66.0)
-
-                    likeView.frame = CGRect(
-                        x: baseFrame.maxX - (likeViewWidth / 2),
-                        y: baseFrame.maxY - (likeViewHeight / 2),
-                        width: likeViewWidth,
-                        height: likeViewHeight
-                    )
-
-                    cell.contentView.bringSubviewToFront(likeView)
-                }
-            }
+        
+        if alignment == .left, let likeView = cell.likeView, let baseFrame = bubbleFrames.last {
+            likeView.hidden = false
+            
+            likeView.frame = CGRect(
+                x: baseFrame.maxX - (likeViewSize.width / 2),
+                y: baseFrame.maxY - (likeViewSize.height / 2),
+                width: likeViewSize.width,
+                height: likeViewSize.height
+            )
+            
+            cell.contentView.bringSubviewToFront(likeView)
         }
         else {
             cell.likeView?.hidden = true
         }
 
         // Reply button layout:
-
-        if alignment == .left {
-            if let baseFrame = bubbleFrames.last {
-                let replyButtonWidth = CGFloat(44.0)
-                let replyButtonHeight = CGFloat(44.0)
-
-                let replyButtonOriginX = cell.bounds.size.width - replyButtonWidth
-
-                cell.replyButton.frame = CGRect(
-                    x: replyButtonOriginX,
-                    y: baseFrame.center.y - replyButtonHeight / 2,
-                    width: replyButtonWidth,
-                    height: replyButtonHeight
-                )
-            }
+        
+        if cell.showsReplyButton && alignment == .left, let topBubbleFrame = bubbleFrames.first, let bottomBubbleFrame = bubbleFrames.last {
+            cell.replyButton.hidden = false
+            
+            cell.replyButton.frame = CGRect(
+                x: cell.bounds.maxX - replyButtonSize.width - horizontalSpacing,
+                y: topBubbleFrame.minY + (bottomBubbleFrame.maxY - topBubbleFrame.minY - replyButtonSize.height) / 2.0,
+                width: replyButtonSize.width,
+                height: replyButtonSize.height
+            )
+        }
+        else {
+            cell.replyButton.hidden = true
         }
     }
 

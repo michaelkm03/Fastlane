@@ -114,7 +114,7 @@ class ContentPreviewView: UIView {
     
     // MARK: - Content Setup
     
-    var content: ContentModel? {
+    var content: Content? {
         didSet {
             guard let content = content else {
                 assertionFailure("Content cannot be nil in ContentPreviewView.")
@@ -124,7 +124,7 @@ class ContentPreviewView: UIView {
         }
     }
     
-    private func setupForContent(content: ContentModel) {
+    private func setupForContent(content: Content) {
         spinner?.startAnimating()
         vipButton?.hidden = !content.isVIPOnly
         
@@ -136,7 +136,7 @@ class ContentPreviewView: UIView {
         }
     }
     
-    private func setupImage(forContent content: ContentModel) {
+    private func setupImage(forContent content: Content) {
         let userCanViewContent = VCurrentUser.user?.canView(content) == true
         if let imageAsset = content.previewImage(ofMinimumWidth: bounds.size.width) {
             let blurRadius = userCanViewContent ? 0 : Constants.imageViewBlurEffectRadius
@@ -156,7 +156,7 @@ class ContentPreviewView: UIView {
         lastSize = bounds.size
     }
     
-    private func finishedLoadingPreviewImage(image: UIImage?, for content: ContentModel) {
+    private func finishedLoadingPreviewImage(image: UIImage?, for content: Content) {
         let contentID = self.content?.id
         guard content.id == contentID || contentID == nil else {
             return

@@ -64,8 +64,8 @@ final class StageContentFetchOperation: AsyncOperation<Content> {
         let workTime = NSDate().timeIntervalSinceDate(operationStartTime)
         let seekAheadTime: Double = (timeDiff + workTime) / 1000
         
+        var content = content
         content.localStartTime = NSDate(timeIntervalSinceNow: -seekAheadTime)
-        
         return content
     }
 }

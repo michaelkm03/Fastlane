@@ -9,7 +9,6 @@
 import Foundation
 
 public struct ContentSearchRequest: PaginatorPageable, ResultBasedPageable {
-    
     public let urlRequest: NSURLRequest
     public let searchOptions: AssetSearchOptions
     

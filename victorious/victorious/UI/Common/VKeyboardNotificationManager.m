@@ -94,7 +94,7 @@
     CGRect endFrame = [userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
     
     if (CGRectEqualToRect(startFrame, endFrame)) {
-        //No need to forward onto handlers
+        // The frame of the keyboard hasn't changed, so there's no change to propogate down to the handlers.
         return;
     }
     

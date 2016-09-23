@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// Encapsulates input parameters for fetching assets from a remote source
 public enum AssetSearchOptions {
     case Search(term: String, url: String)
     case Trending(url: String)

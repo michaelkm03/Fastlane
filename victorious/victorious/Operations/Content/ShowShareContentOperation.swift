@@ -12,10 +12,10 @@ import UIKit
 final class ShowShareContentOperation: AsyncOperation<Void> {
     
     private let dependencyManager: VDependencyManager
-    private let content: ContentModel
+    private let content: Content
     private weak var originViewController: UIViewController?
     
-    init(originViewController: UIViewController, dependencyManager: VDependencyManager, content: ContentModel) {
+    init(originViewController: UIViewController, dependencyManager: VDependencyManager, content: Content) {
         self.originViewController = originViewController
         self.dependencyManager = dependencyManager
         self.content = content
@@ -54,7 +54,7 @@ final class ShowShareContentOperation: AsyncOperation<Void> {
     }
 }
 
-private extension ContentModel {
+private extension Content {
     func textForSharing() -> String {
         let shareText: String
         

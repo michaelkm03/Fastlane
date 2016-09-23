@@ -9,6 +9,7 @@
 import Foundation
 import MBProgressHUD
 
+/// A view controller that displays a side-scrolling double-row of stickers
 class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     private struct Constants {
         static let collectionViewContentInsets = UIEdgeInsets(top: 2, left: 2, bottom: 2, right: 2)
@@ -17,14 +18,14 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
     }
     
     weak var delegate: TrayDelegate?
-    var progressHUD: MBProgressHUD?
-    var mediaExporter: MediaSearchExporter?
     var cellSize: CGSize = .zero {
         didSet {
             self.dataSource.cellSize = cellSize
             self.collectionView.reloadData()
         }
     }
+    private(set) var progressHUD: MBProgressHUD?
+    private(set) var mediaExporter: MediaSearchExporter?
     
     lazy var dataSource: StickerTrayDataSource = {
         let dataSource = StickerTrayDataSource(dependencyManager: self.dependencyManager)
@@ -42,9 +43,15 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
         return tray
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        collectionView.hidden = true
+    }
+    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         dataSource.fetchStickers()
+        collectionView.hidden = false
     }
     
     override func viewDidLayoutSubviews() {
@@ -65,53 +72,49 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         guard
-            let sticker = dataSource.asset(atIndex: indexPath.item) where
+            let sticker = dataSource.asset(atIndex: indexPath.item),
+            let remoteID = sticker.remoteID where
             dataSource.trayState == .Populated
-        else {
-            if let _ = collectionView.cellForItemAtIndexPath(indexPath) as? TrayRetryLoadCollectionViewCell {
-                dataSource.fetchStickers()
-            }
             else {
-                Log.debug("Selected asset from an unexpected index in Tray")
-            }
-            return
-        }
-        
-        let imageAssets = sticker.assets.filter { return $0.url?.v_hasImageExtension() ?? false }
-        let largestAsset: ContentMediaAssetModel? = imageAssets.reduce(nil) { (largestAsset, newAsset) -> ContentMediaAssetModel? in
-            //TODO: Cleanup
-            if largestAsset == nil || (newAsset.size?.area > largestAsset?.size?.area && newAsset.url != nil) {
-                return newAsset
-            }
-            return largestAsset
-        }
-        
-        guard
-            let stickerAsset = largestAsset as? ContentMediaAsset,
-            let imageURL = stickerAsset.url
-        else {
-            return
-        }
-        
-        showExportingHUD()
-        do {
-            let previewImageData = try NSData(contentsOfURL: imageURL, options: [])
-            self.dismissHUD()
-            guard let image = UIImage(data: previewImageData) else {
+                if let _ = collectionView.cellForItemAtIndexPath(indexPath) as? TrayRetryLoadCollectionViewCell {
+                    dataSource.fetchStickers()
+                }
+                else {
+                    Log.debug("Selected asset from an unexpected index in Tray")
+                }
                 return
-            }
-            delegate?.tray(self, selectedAsset: stickerAsset, withPreviewImage: image)
-        } catch let error as NSError {
-            showHUD(renderingError: error)
         }
+        progressHUD = showExportingHUD(delegate: self)
+        mediaExporter?.cancelDownload()
+        mediaExporter = nil
+        let exporter = exportMedia(fromSearchResult: sticker) { [weak self] state in
+            switch state {
+            case .success(let result):
+                let localAssetParameters = ContentMediaAsset.LocalAssetParameters(contentType: .gif, remoteID: remoteID, source: nil, size: sticker.assetSize, url: sticker.sourceMediaURL)
+                guard
+                    let strongSelf = self,
+                    let asset = ContentMediaAsset(initializationParameters: localAssetParameters),
+                    let previewImage = result.exportPreviewImage
+                    else {
+                        return
+                }
+                strongSelf.delegate?.tray(strongSelf, selectedAsset: asset, withPreviewImage: previewImage)
+            case .failure(let error):
+                self?.showHUD(forRenderingError: error)
+            case .canceled:()
+            }
+        }
+        mediaExporter = exporter
     }
     
     // MARK: - UICollectionViewDelegateFlowLayout
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        guard let _ = dataSource.asset(atIndex: indexPath.row) where
-            dataSource.trayState == .Populated else {
-                return view.bounds.insetBy(Constants.collectionViewContentInsets).size
+        guard
+            let _ = dataSource.asset(atIndex: indexPath.row) where
+            dataSource.trayState == .Populated
+        else {
+            return view.bounds.insetBy(Constants.collectionViewContentInsets).size
         }
         return cellSize
     }
@@ -126,5 +129,12 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
         return Constants.interItemSpace
+    }
+    
+    // MARK: - LoadingCancellableViewDelegate
+    
+    func cancel() {
+        progressHUD?.hide(true)
+        self.mediaExporter?.cancelDownload()
     }
 }
