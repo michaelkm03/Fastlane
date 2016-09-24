@@ -17,7 +17,6 @@
 #import "VAppInfo.h"
 #import "VDependencyManager+VNavigationItem.h"
 #import "VEnvironmentManager.h"
-#import "VDependencyManager+VTracking.h"
 #import "UIAlertController+VSimpleAlert.h"
 #import "victorious-Swift.h"
 
@@ -318,11 +317,6 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     }
     
     return self.tableView.rowHeight;
-}
-
-- (IBAction)unwindToSettings:(UIStoryboardSegue *)sender
-{
-    // Empty meothd is necessary for unwinding from edit profile
 }
 
 - (void)sendHelp

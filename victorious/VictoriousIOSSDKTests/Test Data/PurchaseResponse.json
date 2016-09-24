@@ -10,10 +10,10 @@
   "total_pages": 1,
   "experiment_ids": [38, 42],
   "alerts": [],
-  "payload": [{
+  "payload": {
     "vip": {
       "active": true,
       "subscriptionEnd": "2016-05-02 18:22:50"
     }
-  }]
+  }
 }

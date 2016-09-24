@@ -54,7 +54,6 @@
 #import "VDependencyManager+VKeyboardStyle.h"
 #import "VDependencyManager+VNavigationItem.h"
 #import "VDependencyManager+VNavigationMenuItem.h"
-#import "VDependencyManager+VTracking.h"
 #import "VDependencyManager.h"
 #import "VEditProfilePicturePresenter.h"
 #import "VElapsedTimeFormatter.h"

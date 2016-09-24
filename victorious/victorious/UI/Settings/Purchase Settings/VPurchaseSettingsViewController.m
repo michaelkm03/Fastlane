@@ -18,7 +18,6 @@
 // the big if-else and switch statements in most of the methods.
 typedef NS_ENUM( NSInteger, VPurchaseSettingsTableViewSections )
 {
-    VPurchaseSettingsTableViewSectionPurchases,
     VPurchaseSettingsTableViewSectionSubscriptions,
     VPurchaseSettingsTableViewSectionActions,
     VPurchaseSettingsTableViewSectionCount
@@ -235,8 +234,6 @@ static NSString * const kAppStoreSubscriptionSettingsURL = @"itms-apps://buy.itu
 {
     switch (section)
     {
-        case VPurchaseSettingsTableViewSectionPurchases:
-            return NSLocalizedString(@"PurchasesSettingsTitle", nil);
         case VPurchaseSettingsTableViewSectionSubscriptions:
             return NSLocalizedString(@"SubscriptionsSettingsTitle", nil);
         default:
@@ -246,26 +243,7 @@ static NSString * const kAppStoreSubscriptionSettingsURL = @"itms-apps://buy.itu
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ( indexPath.section == VPurchaseSettingsTableViewSectionPurchases )
-    {
-        if ( self.purchasedProductsIdentifiers.count > 0 )
-        {
-            NSString *identifier = NSStringFromClass( [VPurchaseCell class] );
-            VPurchaseCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
-            NSString *productIdentifier = [self.purchasedProductsIdentifiers objectAtIndex:indexPath.row];
-            VProduct *product = [self.purchaseManager purchaseableProductForProductIdentifier:productIdentifier];
-            cell.dependencyManager = self.dependencyManager;
-            [cell setProductImage:nil title:product.localizedTitle];
-            return cell;
-        }
-        else
-        {
-            VNoContentTableViewCell *cell = [VNoContentTableViewCell createCellFromTableView:tableView];
-            [cell setMessage:NSLocalizedString( @"SettingsRestorePurchasesPrompt", nil)];
-            return cell;
-        }
-    }
-    else if ( indexPath.section == VPurchaseSettingsTableViewSectionSubscriptions)
+    if ( indexPath.section == VPurchaseSettingsTableViewSectionSubscriptions)
     {
         if ( [self shouldShowPurchasedSubscription] )
         {
@@ -336,10 +314,6 @@ static NSString * const kAppStoreSubscriptionSettingsURL = @"itms-apps://buy.itu
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if ( section == VPurchaseSettingsTableViewSectionPurchases )
-    {
-        return MAX( self.purchasedProductsIdentifiers.count, (NSUInteger)1 );
-    }
     if ( section == VPurchaseSettingsTableViewSectionSubscriptions )
     {
         if ( [self shouldShowPurchasedSubscription] )
@@ -379,9 +353,8 @@ static NSString * const kAppStoreSubscriptionSettingsURL = @"itms-apps://buy.itu
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     const BOOL isSubscribed = VCurrentUser.isVIPSubScriber.boolValue;
-    const BOOL showNoSubscription = indexPath.section == VPurchaseSettingsTableViewSectionPurchases && !isSubscribed;
-    const BOOL showNoProducts = indexPath.section == VPurchaseSettingsTableViewSectionPurchases && self.purchasedProductsIdentifiers.count == 0;
-    const BOOL isNoContentCell = showNoSubscription || showNoProducts;
+    const BOOL showNoSubscription = indexPath.section == VPurchaseSettingsTableViewSectionSubscriptions && !isSubscribed;
+    const BOOL isNoContentCell = showNoSubscription;
     
     if ( isNoContentCell )
     {

@@ -15,6 +15,7 @@ class AccountUpdateRequestTests: XCTestCase {
         let updateRequest = AccountUpdateRequest(
             profileUpdate: ProfileUpdate(
                 displayName: "Joe Victorious",
+                username: "joe",
                 location: "Bethesda, MD",
                 tagline: "Example",
                 profileImageURL: nil
@@ -43,6 +44,7 @@ class AccountUpdateRequestTests: XCTestCase {
         
         guard let updateRequest = AccountUpdateRequest(profileUpdate: ProfileUpdate(
             displayName: "Joe Victorious",
+            username: "joe",
             location: "Bethesda, MD",
             tagline: "Example",
             profileImageURL: nil

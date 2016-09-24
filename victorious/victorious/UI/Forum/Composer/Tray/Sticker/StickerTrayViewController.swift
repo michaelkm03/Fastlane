@@ -91,6 +91,7 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
         let exporter = exportMedia(fromSearchResult: sticker) { [weak self] state in
             switch state {
             case .success(let result):
+                self?.progressHUD?.hide(true)
                 let localAssetParameters = ContentMediaAsset.LocalAssetParameters(contentType: .sticker, remoteID: remoteID, source: nil, size: sticker.assetSize, url: sticker.sourceMediaURL)
                 guard
                     let strongSelf = self,
@@ -101,6 +102,7 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
                 }
                 strongSelf.delegate?.tray(strongSelf, selectedAsset: asset, withPreviewImage: previewImage)
             case .failure(let error):
+                self?.progressHUD?.hide(true)
                 self?.showHUD(forRenderingError: error)
             case .canceled:()
             }
@@ -136,6 +138,6 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
     
     func cancel() {
         progressHUD?.hide(true)
-        self.mediaExporter?.cancelDownload()
+        mediaExporter?.cancelDownload()
     }
 }

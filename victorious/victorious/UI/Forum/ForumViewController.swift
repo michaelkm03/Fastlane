@@ -181,7 +181,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             navigationItem.titleView = navBarTitleView
         }
         navBarTitleView?.sizeToFit()
-        dependencyManager.trackViewWillAppear(self)
+        dependencyManager.trackViewWillAppear(for: self)
         #if V_ENABLE_WEBSOCKET_DEBUG_MENU
             if let webSocketForumNetworkSource = forumNetworkSource as? WebSocketForumNetworkSource,
                 let navigationController = navigationController {
@@ -204,7 +204,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        dependencyManager.trackViewWillDisappear(self)
+        dependencyManager.trackViewWillDisappear(for: self)
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -336,7 +336,34 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     func chatFeed(chatFeed: ChatFeed, didLongPress chatFeedContent: ChatFeedContent) {
         showActionSheet(forContent: chatFeedContent)
     }
-    
+
+    func chatFeed(chatFeed: ChatFeed, didToggleLikeFor content: ChatFeedContent, completion: (() -> Void)) {
+        guard
+            let contentID = content.content.id,
+            let likeKey = dependencyManager.contentLikeKey,
+            let unLikeKey = dependencyManager.contentUnLikeKey
+        else {
+            return
+        }
+
+        let context = chatFeedContext.value ?? "chat_feed"
+        let isLikedByCurrentUser = content.content.isLikedByCurrentUser
+        let likeAPIPath = APIPath(templatePath: likeKey, macroReplacements: ["%%CONTEXT%%": context])
+        let unLikeAPIPath = APIPath(templatePath: unLikeKey, macroReplacements: ["%%CONTEXT%%": context])
+
+        let toggleLikeOperation: SyncOperation<Void>? = isLikedByCurrentUser
+            ? ContentUnupvoteOperation(apiPath: unLikeAPIPath, contentID: contentID)
+            : ContentUpvoteOperation(apiPath: likeAPIPath, contentID: contentID)
+
+        guard let operation = toggleLikeOperation else {
+            return
+        }
+
+        operation.queue { _ in
+            completion()
+        }
+    }
+
     func chatFeed(chatFeed: ChatFeed, didScroll scrollView: UIScrollView) {
         stageShrinkingAnimator?.chatFeed(chatFeed, didScroll: scrollView)
     }
@@ -475,5 +502,13 @@ private extension VDependencyManager {
     
     var contentDeleteURL: String {
         return networkResources?.stringForKey("contentDeleteURL") ?? ""
+    }
+
+    var contentLikeKey: String? {
+        return networkResources?.stringForKey("contentUpvoteURL")
+    }
+
+    var contentUnLikeKey: String? {
+        return networkResources?.stringForKey("contentUnupvoteURL")
     }
 }

@@ -10,7 +10,6 @@ import Foundation
 
 /// Provides UI for the user to edit their `tagline`.
 class AboutMeTextCell: UITableViewCell, UITextViewDelegate {
-    
     private struct Constants {
         static let textViewInsets = UIEdgeInsets(top: 15, left: -4, bottom: 14, right: -5)
     }
