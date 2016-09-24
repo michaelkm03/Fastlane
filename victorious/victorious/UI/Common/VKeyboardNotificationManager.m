@@ -89,9 +89,14 @@
 {
     NSDictionary *userInfo = notification.userInfo;
     
-    NSValue *beingFrameValue = userInfo[UIKeyboardFrameBeginUserInfoKey];
+    CGRect startFrame = [userInfo[UIKeyboardFrameBeginUserInfoKey] CGRectValue];
     
-    NSValue *endFrameValue = userInfo[UIKeyboardFrameEndUserInfoKey];
+    CGRect endFrame = [userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    
+    if (CGRectEqualToRect(startFrame, endFrame)) {
+        // The frame of the keyboard hasn't changed, so there's no change to propogate down to the handlers.
+        return;
+    }
     
     NSNumber *durationValue = userInfo[UIKeyboardAnimationDurationUserInfoKey];
     NSTimeInterval animationDuration = durationValue.doubleValue;
@@ -101,8 +106,8 @@
     
     if (!self.stopCallingHandlerBlocks && handler != nil)
     {
-        handler(beingFrameValue.CGRectValue,
-                endFrameValue.CGRectValue,
+        handler(startFrame,
+                endFrame,
                 animationDuration,
                 animationCurve);
     }
