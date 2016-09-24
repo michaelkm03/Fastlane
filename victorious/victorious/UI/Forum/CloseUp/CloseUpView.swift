@@ -28,7 +28,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
     }
     
     /// Maximum height of the close up view (set from the outside). Defaults to CGFloat.max
-    var maxContentHeight: CGFloat = CGFloat.max
+    private var maxContentHeight: CGFloat = CGFloat.max
     
     // MARK: - IBOutlets
     
@@ -57,7 +57,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
     
     private var videoPlayer: VVideoPlayer?
 
-    var dependencyManager: VDependencyManager! {
+    private var dependencyManager: VDependencyManager! {
         didSet {
             errorView.dependencyManager = dependencyManager.errorStateDependency
             configureFontsAndColors()
@@ -110,7 +110,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
     
     // MARK: - Setting Content
     
-    var content: Content? {
+    private var content: Content? {
         didSet {
             if oldValue?.id == content?.id {
                 return
@@ -142,7 +142,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
             mediaContentView.loadContent()
             
             // Update size
-            self.frame.size = sizeForContent(content)
+            self.frame.size = sizeForContent(content, withWidth: self.bounds.width)
         }
     }
     
@@ -160,23 +160,23 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
     
     // MARK: - Frame/Size Calculations
     
-    func height(for content: Content?) -> CGFloat {
+    private func height(for content: Content?) -> CGFloat {
         guard let aspectRatio = content?.naturalMediaAspectRatio else {
             return 0
         }
         
         // Hack since CUV should always be full screen width anyway, and the parent containers use autolayout.
-        return min(UIScreen.mainScreen().bounds.size.width / aspectRatio, maxContentHeight - headerSection.bounds.size.height)
+        return min(UIScreen.mainScreen().bounds.width / aspectRatio, maxContentHeight - headerSection.bounds.height)
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        var totalHeight = headerSection.bounds.size.height + headerSection.frame.origin.y
+        var totalHeight = headerSection.frame.maxY
         
         if content == nil {
             var bounds = self.bounds
-            bounds.size.height = bounds.size.height - relatedLabel.frame.size.height
+            bounds.size.height = bounds.height - relatedLabel.frame.height
             errorView.frame = bounds
             
             removeMediaContentView()
@@ -187,30 +187,29 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
             // Caption
             var frame = captionLabel.frame
             frame.origin.y = totalHeight + Constants.verticalMargins
-            frame.size.width = bounds.size.width - 2 * Constants.horizontalMargins
+            frame.size.width = bounds.width - 2 * Constants.horizontalMargins
             captionLabel.frame = frame
             captionLabel.sizeToFit()
         }
         spinner.center = center
     }
     
-    func sizeForContent(content: Content?) -> CGSize {
+    private func sizeForContent(content: Content?, withWidth width: CGFloat) -> CGSize {
         guard let content = content else {
-            let screenWidth = UIScreen.mainScreen().bounds.size.width
             let aspectRatio = Constants.defaultAspectRatio
             return CGSize(
-                width: screenWidth,
-                height: screenWidth / aspectRatio
+                width: width,
+                height: width / aspectRatio
             )
         }
         
         let contentHeight = height(for: content)
-        let width = bounds.size.width
+        let width = bounds.width
         
         if !contentHasText(content) {
             return CGSize(
                 width: width,
-                height: headerSection.bounds.size.height + contentHeight + relatedLabel.bounds.size.height
+                height: headerSection.bounds.height + contentHeight + relatedLabel.bounds.height
             )
         }
         
@@ -220,11 +219,11 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
         captionLabel.text = content.text
         captionLabel.sizeToFit()
         
-        let totalHeight = headerSection.bounds.size.height +
+        let totalHeight = headerSection.bounds.height +
             contentHeight +
-            captionLabel.bounds.size.height +
+            captionLabel.bounds.height +
             2 * Constants.verticalMargins +
-            relatedLabel.bounds.size.height
+            relatedLabel.bounds.height
         
         return CGSize(
             width: width,
@@ -240,6 +239,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
         guard let userID = content?.author?.id else {
             return
         }
+        
         delegate?.closeUpView(self, didSelectProfileForUserID: userID)
     }
     
@@ -250,10 +250,8 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
     }
     
     @objc private func closeUpDismissed() {
-        if let videoPlayer = videoPlayer {
-            dispatch_async(dispatch_get_main_queue(), {
-                videoPlayer.pause()
-            })
+        dispatch_async(dispatch_get_main_queue()) {
+            self.videoPlayer?.pause()
         }
     }
     
@@ -295,23 +293,22 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
     
     // MARK: - ConfigurableGridStreamHeader
     
-    func decorateHeader(dependencyManager: VDependencyManager, maxHeight: CGFloat, content: Content?, hasError: Bool) {
+    func decorateHeader(dependencyManager: VDependencyManager, withWidth width: CGFloat, maxHeight: CGFloat, content: Content?, hasError: Bool) {
         self.content = content
         errorView.hidden = !hasError
         closeUpContentContainerView.hidden = hasError
     }
     
-    func sizeForHeader(dependencyManager: VDependencyManager, maxHeight: CGFloat, content: Content?, hasError: Bool) -> CGSize {
+    func sizeForHeader(dependencyManager: VDependencyManager, withWidth width: CGFloat, maxHeight: CGFloat, content: Content?, hasError: Bool) -> CGSize {
         if hasError {
-            let screenWidth = UIScreen.mainScreen().bounds.size.width
             let aspectRatio = Constants.defaultAspectRatio
             return CGSize(
-                width: screenWidth,
-                height: screenWidth / aspectRatio
+                width: width,
+                height: width / aspectRatio
             )
         }
         else {
-            return sizeForContent(content)
+            return sizeForContent(content, withWidth: width)
         }
     }
     

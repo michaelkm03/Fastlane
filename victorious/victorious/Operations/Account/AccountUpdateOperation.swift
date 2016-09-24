@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-final class AccountUpdateOperation: SyncOperation<Void> {
+final class AccountUpdateOperation: AsyncOperation <User> {
     
     // MARK: - Initializing
     
@@ -37,38 +37,45 @@ final class AccountUpdateOperation: SyncOperation<Void> {
         return .main
     }
     
-    override func execute() -> OperationResult<Void> {
-        // For profile updates, optimistically update everything right away
-        if let profileUpdate = request.profileUpdate {
-            guard var user = VCurrentUser.user else {
-                return .failure(NSError(domain: "AccountUpdateOperation", code: -1, userInfo: nil))
+    override func execute(finish: (result: OperationResult<User>) -> Void) {
+        RequestOperation(request: request).queue { [weak self] requestResult in
+            guard let strongSelf = self else {
+                finish(result: requestResult)
+                return
             }
-            
-            // Update basic stats
-            user.displayName = profileUpdate.displayName ?? user.displayName
-            user.location = profileUpdate.location ?? user.location
-            user.tagline = profileUpdate.tagline ?? user.tagline
-            
-            // Update profile image
-            if
-                let imageURL = profileUpdate.profileImageURL,
-                let data = NSData(contentsOfURL: imageURL),
-                let image = UIImage(data: data)
-            {
-                let imageAsset = ImageAsset(image: image)
-                user.previewImages = [imageAsset]
-            }
-            
-            VCurrentUser.update(to: user)
-        }
-        
-        // Then send out the request the server
-        RequestOperation(request: request).queue { [weak self] _ in
             if let passwordUpdate = self?.request.passwordUpdate {
                 VStoredPassword().savePassword(passwordUpdate.newPassword, forUsername: passwordUpdate.username)
             }
+            switch requestResult {
+                case .success:
+                    if let profileUpdate = strongSelf.request.profileUpdate {
+                        guard var user = VCurrentUser.user else {
+                            finish(result: .failure(NSError(domain: "AccountUpdateOperation", code: -1, userInfo: nil)))
+                            return
+                        }
+                        
+                        // Update basic stats
+                        user.displayName = profileUpdate.displayName ?? user.displayName
+                        user.username = profileUpdate.username ?? user.username
+                        user.location = profileUpdate.location ?? user.location
+                        user.tagline = profileUpdate.tagline ?? user.tagline
+                        
+                        // Update profile image
+                        if
+                            let imageURL = profileUpdate.profileImageURL,
+                            let data = NSData(contentsOfURL: imageURL),
+                            let image = UIImage(data: data)
+                        {
+                            let imageAsset = ImageAsset(image: image)
+                            user.previewImages = [imageAsset]
+                        }
+                        
+                        VCurrentUser.update(to: user)
+                    }
+                    finish(result: requestResult)
+                case .failure(let error): finish(result: .failure(error))
+                case .cancelled: finish(result: .cancelled)
+            }
         }
-        
-        return .success()
     }
 }

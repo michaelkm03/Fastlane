@@ -9,6 +9,10 @@
 import Foundation
 
 class EditProfileDataSource: NSObject, UITableViewDataSource {
+    private struct Constants {
+        static let displayNameLength = 40
+        static let usernameLength = 20
+    }
     
     private let dependencyManager: VDependencyManager
     private let tableView: UITableView
@@ -63,20 +67,33 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
     /// A callback to be notified when the user has made any changes to their information
     var onUserUpdateData: (() -> Void)?
     
-    /// Check this boolean to determine whether or not the entered data is currently valid
-    var enteredDataIsValid: Bool {
+    /// Check this to determine whether or not the entered data is currently valid. When this propery is `nil` the dataSource is considered valid.
+    var localizedError: String? {
         get {
-            let username = nameAndLocationCell.displayname
-            guard
-                let trimmedUsername = username?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
-                where !trimmedUsername.isEmpty
-            else {
-                return false
+            // Displayname Validation
+            let displayname = nameAndLocationCell.displayname
+            guard let trimmedDisplayName = displayname?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) where !trimmedDisplayName.isEmpty else {
+                return NSLocalizedString("Your display name cannoot be blank.", comment: "While editing, error letting the user know their display name cannot be blank.")
             }
-            guard trimmedUsername.characters.count < 255 else {
-                return false
+            
+            guard displayname?.characters.count < Constants.displayNameLength else {
+                return NSLocalizedString("Your display name is too long.", comment: "While editing, error letting the user know their display name must be shorter.")
             }
-            return true
+            
+            // Username Validation
+            guard let username = nameAndLocationCell.username where !username.characters.isEmpty else {
+                return NSLocalizedString("Your username cannot be empty.", comment: "While editing, error to the user letting them know their username must not be empty.")
+            }
+            let usernameCharacterset = NSCharacterSet(charactersInString: username)
+            guard NSCharacterSet.validUsernameCharacters.isSupersetOfSet(usernameCharacterset) else {
+                return NSLocalizedString("Your username can only contain lowercase letters a-z, number 0-9, and underscores \"_\".",
+                    comment: "While editing, an error that informs they have entered and invalid characters and must remove the invalid character.")
+            }
+            guard username.characters.count <= Constants.usernameLength else {
+                return NSLocalizedString("Your username can only be 20 characters long.",
+                comment: "While editing, an error that informs they have entered and invalid characters and must remove the invalid character.")
+            }
+            return nil
         }
     }
     
@@ -86,6 +103,7 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
         newAvatarFileURL = fileURL
         let imageAsset = ImageAsset(url: fileURL, size: previewImage.size)
         let newUser = User(id: user.id,
+                           username: nameAndLocationCell.username ?? user.username,
                            displayName: nameAndLocationCell.displayname ?? user.displayName,
                            completedProfile: user.completedProfile,
                            location: nameAndLocationCell.location ?? user.location,
@@ -99,6 +117,7 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
     
     func accountUpdateDelta() -> ProfileUpdate? {
         return ProfileUpdate(displayName: nameAndLocationCell.displayname,
+                             username: nameAndLocationCell.username == VCurrentUser.user?.username ? nil : nameAndLocationCell.username,
                              location: nameAndLocationCell.location,
                              tagline: aboutMeCell.tagline,
                              profileImageURL: newAvatarFileURL)
@@ -111,7 +130,7 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
     // MARK: - Misc Private Funcitons
     
     private func updateUI() {
-        nameAndLocationCell.user = user
+        nameAndLocationCell.populate(withUser: user)
         aboutMeCell.tagline = user.tagline
     }
     

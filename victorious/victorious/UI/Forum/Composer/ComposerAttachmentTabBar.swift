@@ -94,7 +94,7 @@ class ComposerAttachmentTabBar: VFlexBar {
     }
     
     @objc private func buttonPressed(button: ComposerAttachmentTabBarButton) {
-        delegate?.composerAttachmentTabBar(self, didSelectNavigationItem: button.navigationMenuItem)
+        delegate?.composerAttachmentTabBar(self, didSelectNavigationItem: button.navigationMenuItem, fromButton: button)
         button.navigationMenuItem.dependencyManager.trackButtonEvent(.tap)
     }
     

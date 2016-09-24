@@ -272,7 +272,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
             return
         }
         
-        delegate?.chatFeed(self, didSelectUserWithUserID: userID)
+        delegate?.chatFeed(self, didSelectUserWithID: userID)
     }
     
     func messageCellDidSelectMedia(messageCell: ChatFeedMessageCell) {
@@ -280,7 +280,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
             return
         }
         
-        delegate?.chatFeed(self, didSelectContent: content)
+        delegate?.chatFeed(self, didSelect: content)
     }
     
     func messageCellDidLongPressContent(messageCell: ChatFeedMessageCell) {
@@ -288,15 +288,32 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
             return
         }
         
-        delegate?.chatFeed(self, didLongPressContent: content)
+        delegate?.chatFeed(self, didLongPress: content)
     }
-    
+
+    func messageCellDidToggleLikeContent(messageCell: ChatFeedMessageCell, completion: (() -> Void)) {
+        guard let content = messageCell.chatFeedContent else {
+            return
+        }
+
+        delegate?.chatFeed(self, didToggleLikeFor: content, completion: completion)
+    }
+
     func messageCellDidSelectFailureButton(messageCell: ChatFeedMessageCell) {
         guard let content = messageCell.chatFeedContent else {
             return
         }
         
-        delegate?.chatFeed(self, didSelectFailureButtonForContent: content)
+        delegate?.chatFeed(self, didSelectFailureButtonFor: content)
+    }
+    
+    func messageCellDidSelectReplyButton(messageCell: ChatFeedMessageCell) {
+        guard let content = messageCell.chatFeedContent else {
+            return
+        }
+        
+        delegate?.chatFeed(self, didSelectReplyButtonFor: content)
+        dependencyManager.trackButtonEvent(.tap, forTrackingKey: "reply.tracking")
     }
     
     func messageCell(messageCell: ChatFeedMessageCell, didSelectLinkURL url: NSURL) {

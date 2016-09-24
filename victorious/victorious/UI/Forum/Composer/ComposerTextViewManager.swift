@@ -133,10 +133,17 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
     
     func textViewDidBeginEditing(textView: UITextView) {
         delegate?.textViewIsEditing = true
+        updateCurrentHashtag(forTextView: textView)
     }
     
-    func textViewDidEndEditing(textView: UITextView) {
+    func textViewShouldEndEditing(textView: UITextView) -> Bool {
+        endEditing(textView)
+        return true
+    }
+    
+    func endEditing(textView: UITextView) {
         delegate?.textViewIsEditing = false
+        updateCurrentHashtag(forTextView: textView, isDismissing: true)
     }
     
     func textViewDidChangeSelection(textView: UITextView) {
@@ -152,10 +159,16 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
             textView.selectedRange = NSMakeRange(attachmentStringLength, length)
         }
         
-        if textView.selectedRange.length == 0 {
-            delegate.textViewCurrentHashtag = hashtagStringAroundLocation(textView.selectedRange.location, inTextView: textView)
+        updateCurrentHashtag(forTextView: textView)
+    }
+    
+    private func updateCurrentHashtag(forTextView textView: UITextView, isDismissing: Bool = false) {
+        if !isDismissing &&
+            textView.isFirstResponder() &&
+            textView.selectedRange.length == 0 {
+            delegate?.textViewCurrentHashtag = hashtagStringAroundLocation(textView.selectedRange.location, inTextView: textView)
         } else {
-            delegate.textViewCurrentHashtag = nil
+            delegate?.textViewCurrentHashtag = nil
         }
     }
     

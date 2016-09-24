@@ -118,7 +118,6 @@ NSString * const VTrackingEventUserDidRestorePurchases = @"UserDidRestorePurchas
 NSString * const VTrackingEventUserDidCancelPurchase = @"UserDidCancelPurchase";
 NSString * const VTrackingEventRestorePurchasesDidFail = @"RestorePurchasesDidFail";
 NSString * const VTrackingEventAppStoreProductRequestDidFail = @"AppStoreProductRequestDidFail";
-NSString * const VTrackingEventSentProductReceiptToBackend = @"subscription.send.receipt.to.backend";
 NSString * const VTrackingEventRecievedProductReceiptFromBackend = @"subscription.receipt.received.from.backend";
 NSString * const VTrackingEventSentPurchaseRequestToStore = @"subscription.send.user.to.store";
 NSString * const VTrackingEventRecievedPurchaseCompletionFromStore = @"subscription.receipt.received.from.store";
@@ -290,7 +289,6 @@ NSString * const VTrackingKeyErrorDetails = @"Details";
 NSString * const VTrackingKeyType = @"EventType";
 NSString * const VTrackingKeySubtype = @"EventSubtype";
 NSString * const VTrackingKeyDuration = @"Duration";
-NSString * const VTrackingKeyProfileContext = @"ProfileContext";
 
 // Tracking Event Values
 // ContentType values

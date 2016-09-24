@@ -15,6 +15,7 @@ import Foundation
 /// retain the user's current email address).
 public struct ProfileUpdate {
     public let displayName: String?
+    public let username: String?
     public let location: String?
     public let tagline: String?
     
@@ -22,8 +23,9 @@ public struct ProfileUpdate {
     /// a file URL pointing to a new profile image on disk
     public let profileImageURL: NSURL?
     
-    public init(displayName: String?, location: String?, tagline: String?, profileImageURL: NSURL?) {
+    public init(displayName: String?, username: String?, location: String?, tagline: String?, profileImageURL: NSURL?) {
         self.displayName = displayName
+        self.username = username
         self.location = location
         self.tagline = tagline
         self.profileImageURL = profileImageURL

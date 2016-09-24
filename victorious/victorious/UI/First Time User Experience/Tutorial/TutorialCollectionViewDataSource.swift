@@ -40,11 +40,11 @@ class TutorialCollectionViewDataSource: NSObject, ChatInterfaceDataSource, Tutor
         return numberOfItems(for: collectionView, in: section)
     }
     
-    func collectionView( collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath ) -> UICollectionViewCell {
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = cellForItem(for: collectionView, at: indexPath)
         cell.timestampLabel.hidden = true
         cell.likeView?.hidden = true
-        
+        cell.showsReplyButton = false
         return cell
     }
     

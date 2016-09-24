@@ -143,8 +143,15 @@ public struct Content: Equatable {
         isVIPOnly = json["is_vip"].bool ?? false
         hashtags = []
         
-        // FUTURE: This should be retrieved from the JSON once the payload is defined.
         userTags = [:]
+        
+        for (username, urlJSON) in json["user_tags"].dictionary ?? [:] {
+            guard let urlString = urlJSON.string, let url = NSURL(string: urlString) else {
+                continue
+            }
+            
+            userTags[username] = url
+        }
         
         likeCount = viewedContentJSON["total_engagements"]["likes"].int
         isRemotelyLikedByCurrentUser = viewedContentJSON["viewer_engagements"]["is_liking"].bool ?? false
@@ -200,7 +207,8 @@ public struct Content: Equatable {
         paginationTimestamp = Timestamp(apiString: json["pagination_timestamp"].stringValue) ?? Timestamp()
         previewImages = (json["preview"][previewType]["assets"].array ?? []).flatMap { ImageAsset(json: $0) }
         tracking = Tracking(json: json["tracking"] )
-        
+        linkedURL = NSURL(string: json[typeString]["data"].stringValue)
+
         author = nil
         likeCount = nil
         postedAt = nil
@@ -208,14 +216,13 @@ public struct Content: Equatable {
         text = nil
         hashtags = []
         shareURL = nil
-        linkedURL = nil
         assets  = []
         userTags = [:]
         isRemotelyLikedByCurrentUser = false
     }
     
     public init(
-        author: UserModel,
+        author: UserModel? = nil,
         id: String? = nil,
         createdAt: Timestamp = Timestamp(),
         postedAt: Timestamp = Timestamp(),

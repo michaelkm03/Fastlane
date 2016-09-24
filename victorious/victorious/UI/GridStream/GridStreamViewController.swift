@@ -37,6 +37,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         
         header?.decorateHeader(
             dependencyManager,
+            withWidth: 0,
             maxHeight: CGRectGetHeight(collectionView.bounds),
             content: content,
             hasError: hasError
@@ -185,7 +186,8 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         
         let size = header.sizeForHeader(
             dependencyManager,
-            maxHeight: CGRectGetHeight(collectionView.bounds),
+            withWidth: collectionView.frame.width,
+            maxHeight: collectionView.frame.height,
             content: content,
             hasError: hasError
         )
