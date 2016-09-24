@@ -29,10 +29,11 @@ extension VPublishParameters {
         
         isGIF = mediaAsset.contentType == .gif
         isVideo = mediaAsset.contentType == .video
+        let isSticker = mediaAsset.contentType == .sticker
         
         isVIPContent = content.isVIPOnly
         
-        if isGIF {
+        if isGIF || isSticker {
             assetRemoteId = mediaAsset.externalID
         }
         else {

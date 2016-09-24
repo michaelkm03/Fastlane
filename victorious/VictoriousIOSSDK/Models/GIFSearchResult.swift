@@ -21,7 +21,6 @@ public struct GIFSearchResult {
 
 extension GIFSearchResult {
     public init?(json: JSON) {
-        
         guard let gifURLString = json["gif_url"].string,
             let mp4URLString = json["mp4_url"].string,
             let widthNumber = json["width"].int,

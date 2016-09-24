@@ -259,15 +259,7 @@ public enum ContentMediaAsset: ContentMediaAssetModel {
             case .youtube(_, _), .video(_, _, _): return .video
             case .gif(_, _, _, _): return .gif
             case .image(_, _): return .image
-            case .sticker(_, let url):
-                if url.v_hasVideoExtension() {
-                    return .gif
-                } else if url.v_hasImageExtension() {
-                    return .image
-                } else {
-                    Log.warning("encountered unexpected media type in sticker payload")
-                    return .image
-                }
+            case .sticker(_, _): return .sticker
         }
     }
     

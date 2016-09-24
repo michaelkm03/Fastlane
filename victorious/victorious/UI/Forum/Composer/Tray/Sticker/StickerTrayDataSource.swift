@@ -19,7 +19,7 @@ class StickerTrayDataSource: PaginatedDataSource, TrayDataSource {
     
     let dependencyManager: VDependencyManager
     var dataSourceDelegate: TrayDataSourceDelegate?
-    private var stickers: [ContentSearchResultObject] = []
+    private var stickers: [StickerSearchResultObject] = []
     private(set) var trayState: TrayState = .Empty {
         didSet {
             if oldValue != trayState {
@@ -29,7 +29,7 @@ class StickerTrayDataSource: PaginatedDataSource, TrayDataSource {
     }
     var cellSize: CGSize = .zero
     
-    func asset(atIndex index: Int) -> ContentSearchResultObject? {
+    func asset(atIndex index: Int) -> StickerSearchResultObject? {
         guard stickers.count > index else {
             return nil
         }
@@ -60,7 +60,7 @@ class StickerTrayDataSource: PaginatedDataSource, TrayDataSource {
                 return
             }
 
-            let stickers = results as? [ContentSearchResultObject] ?? strongSelf.stickers
+            let stickers = results as? [StickerSearchResultObject] ?? strongSelf.stickers
             strongSelf.stickers = stickers
             guard stickers.count > 0 else {
                 strongSelf.trayState = .FailedToLoad

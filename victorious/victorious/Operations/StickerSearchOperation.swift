@@ -13,7 +13,7 @@ final class StickerSearchOperation: AsyncOperation<[AnyObject]>, PaginatedReques
     
     // MARK: - Initializing
     
-    required init(request: ContentSearchRequest) {
+    required init(request: StickerSearchRequest) {
         self.searchOptions = request.searchOptions
         self.request = request
         self.requestOperation = RequestOperation(request: request)
@@ -21,16 +21,16 @@ final class StickerSearchOperation: AsyncOperation<[AnyObject]>, PaginatedReques
     
     convenience init(searchOptions: AssetSearchOptions) {
         let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 20)
-        self.init(request: ContentSearchRequest(searchOptions: searchOptions, paginator: paginator))
+        self.init(request: StickerSearchRequest(searchOptions: searchOptions, paginator: paginator))
     }
     
     // MARK: - Executing
     
     private let searchOptions: AssetSearchOptions?
     
-    var request: ContentSearchRequest
+    var request: StickerSearchRequest
     
-    private let requestOperation: RequestOperation<ContentSearchRequest>
+    private let requestOperation: RequestOperation<StickerSearchRequest>
     
     var results: [AnyObject]?
     
@@ -51,7 +51,7 @@ final class StickerSearchOperation: AsyncOperation<[AnyObject]>, PaginatedReques
         requestOperation.queue { [weak self] result in
             switch result {
             case .success(let searchResults):
-                let searchResultObjects = searchResults.map { ContentSearchResultObject($0) }
+                let searchResultObjects = searchResults.map { StickerSearchResultObject($0) }
                 self?.results = searchResultObjects
                 finish(result: .success(searchResultObjects))
                 

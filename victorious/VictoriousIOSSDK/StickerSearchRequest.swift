@@ -1,5 +1,5 @@
 //
-//  ContentSearchRequest.swift
+//  StickerSearchRequest.swift
 //  victorious
 //
 //  Created by Sharif Ahmed on 9/21/16.
@@ -8,13 +8,13 @@
 
 import Foundation
 
-public struct ContentSearchRequest: PaginatorPageable, ResultBasedPageable {
+public struct StickerSearchRequest: PaginatorPageable, ResultBasedPageable {
     public let urlRequest: NSURLRequest
     public let searchOptions: AssetSearchOptions
     
     public let paginator: StandardPaginator
     
-    public init(request: ContentSearchRequest, paginator: StandardPaginator) {
+    public init(request: StickerSearchRequest, paginator: StandardPaginator) {
         self.init(searchOptions: request.searchOptions, paginator: paginator)
     }
     
@@ -29,18 +29,19 @@ public struct ContentSearchRequest: PaginatorPageable, ResultBasedPageable {
         }
         
         let mutableURLRequest = NSMutableURLRequest(URL: url ?? NSURL())
-        paginator.addPaginationArgumentsToRequest(mutableURLRequest)
+        //FUTURE: Once pagination is enabled on the stickers endpoint, uncomment the following line
+//        paginator.addPaginationArgumentsToRequest(mutableURLRequest)
         urlRequest = mutableURLRequest
         
         self.searchOptions = searchOptions
         self.paginator = paginator
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [Content] {
-        guard let contentsJSON = responseJSON["payload"].array else {
+    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [StickerSearchResult] {
+        guard let contentsJSON = responseJSON["payload"]["stickers"].array else {
             throw ResponseParsingError()
         }
         
-        return contentsJSON.flatMap { Content(json: $0) }
+        return contentsJSON.flatMap { StickerSearchResult(json: $0) }
     }
 }

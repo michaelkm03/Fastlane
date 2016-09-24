@@ -18,4 +18,5 @@ import Foundation
     var aspectRatio: CGFloat { get }
     var assetSize: CGSize { get }
     var remoteID: String? { get }
+    var isVIP: Bool { get }
 }

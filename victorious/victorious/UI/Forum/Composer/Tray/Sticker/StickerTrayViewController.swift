@@ -90,7 +90,7 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
         let exporter = exportMedia(fromSearchResult: sticker) { [weak self] state in
             switch state {
             case .success(let result):
-                let localAssetParameters = ContentMediaAsset.LocalAssetParameters(contentType: .gif, remoteID: remoteID, source: nil, size: sticker.assetSize, url: sticker.sourceMediaURL)
+                let localAssetParameters = ContentMediaAsset.LocalAssetParameters(contentType: .sticker, remoteID: remoteID, source: nil, size: sticker.assetSize, url: sticker.sourceMediaURL)
                 guard
                     let strongSelf = self,
                     let asset = ContentMediaAsset(initializationParameters: localAssetParameters),
