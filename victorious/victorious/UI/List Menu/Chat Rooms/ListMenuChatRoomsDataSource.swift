@@ -7,6 +7,13 @@
 //
 
 final class ListMenuChatRoomsDataSource: ListMenuSectionDataSource {
+    private struct Constants {
+        struct Keys {
+            static let chatRoomsURL = "chat.rooms.URL"
+            static let chatRoomStreamURL = "streamURL"
+            static let chatRoomViewTrackingURL = "view"
+        }
+    }
 
     // MARK: - ListMenuSectionDataSource
 
@@ -23,15 +30,15 @@ final class ListMenuChatRoomsDataSource: ListMenuSectionDataSource {
 
     init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
-        self.requestExecutor = MainRequestExecutor()
     }
 
-    func fetchRemoteData() {
+    func fetchRemoteData(success success: FetchRemoteDataCallback?) {
         guard
             let apiPath = dependencyManager.networkResources?.apiPathForKey(Constants.Keys.chatRoomsURL),
             let request = ChatRoomsRequest(apiPath: apiPath)
         else {
             Log.warning("Missing chat rooms API path")
+            state = .failed(error: nil)
             return
         }
 
@@ -41,7 +48,7 @@ final class ListMenuChatRoomsDataSource: ListMenuSectionDataSource {
             switch result {
                 case .success(let chatRooms):
                     self?.visibleItems = chatRooms
-                    self?.onFetchDataSuccess?()
+                    success?()
 
                 case .failure(let error):
                     self?.state = .failed(error: error)
@@ -59,19 +66,7 @@ final class ListMenuChatRoomsDataSource: ListMenuSectionDataSource {
         return dependencyManager.apiPathForKey(Constants.Keys.chatRoomStreamURL) ?? APIPath(templatePath: "")
     }
 
-    var chatRoomStreamTrackingURLs: [String] {
-        return dependencyManager.trackingURLsForKey(Constants.Keys.chatRoomViewTrackingURL) ?? []
-    }
-
     // MARK: - Internals
 
-    var onFetchDataSuccess: (() -> ())?
     var requestExecutor: RequestExecutorType = MainRequestExecutor()
-    private struct Constants {
-        struct Keys {
-            static let chatRoomsURL = "chat.rooms.URL"
-            static let chatRoomStreamURL = "streamURL"
-            static let chatRoomViewTrackingURL = "view"
-        }
-    }
 }

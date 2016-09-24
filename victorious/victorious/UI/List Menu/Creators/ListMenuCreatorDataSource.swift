@@ -30,7 +30,7 @@ final class ListMenuCreatorDataSource: ListMenuSectionDataSource {
     
     weak var delegate: ListMenuSectionDataSourceDelegate?
     
-    func fetchRemoteData() {
+    func fetchRemoteData(success success: FetchRemoteDataCallback?) {
         guard
             let apiPath = dependencyManager.creatorListAPIPath,
             let request = CreatorListRequest(apiPath: apiPath)
@@ -43,6 +43,7 @@ final class ListMenuCreatorDataSource: ListMenuSectionDataSource {
             switch result {
                 case .success(let users):
                     self?.visibleItems = users
+                    success?()
                 case .failure(let error):
                     self?.state = .failed(error: error)
                     self?.delegate?.didUpdateVisibleItems(forSection: .creator)

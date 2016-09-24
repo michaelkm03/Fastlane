@@ -18,12 +18,11 @@ class ListMenuChatRoomsDataSourceTests: XCTestCase {
         let dataSource = ListMenuChatRoomsDataSource(dependencyManager: dependencyManager)
         dataSource.requestExecutor = requestExecutor
         let expectation = expectationWithDescription("ListMenuChatRoomsDataSource data fetch")
-        dataSource.onFetchDataSuccess = {
+
+        dataSource.fetchRemoteData() {
             expectation.fulfill()
             XCTAssertEqual(dataSource.visibleItems.count, mockChatRooms.count)
         }
-
-        dataSource.fetchRemoteData()
         waitForExpectationsWithTimeout(1, handler: nil)
     }
 }

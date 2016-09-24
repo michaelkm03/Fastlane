@@ -137,7 +137,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
 
     private func selectChatRoom(atIndex index: Int) {
         let item = collectionViewDataSource.chatRoomsDataSource.visibleItems[index]
-        let itemString = "\(item.name)"
+        let itemString = item.name
         let macro = "%%CHATROOM%%"
         var apiPath = collectionViewDataSource.chatRoomsDataSource.chatRoomStreamAPIPath
         apiPath.macroReplacements[macro] = item.name

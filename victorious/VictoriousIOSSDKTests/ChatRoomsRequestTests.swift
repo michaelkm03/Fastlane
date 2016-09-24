@@ -15,7 +15,7 @@ class ChatRoomsRequestTests: XCTestCase {
             let mockResponseDataURL = NSBundle(forClass: self.dynamicType).URLForResource("ChatRoomsResponse", withExtension: "json"),
             let mockData = NSData(contentsOfURL: mockResponseDataURL)
         else {
-            XCTFail("Erorr reading mock json data for Chat Rooms")
+            XCTFail("Error reading mock json data for Chat Rooms")
             return
         }
 

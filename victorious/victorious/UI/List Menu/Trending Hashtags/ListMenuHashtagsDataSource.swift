@@ -43,8 +43,8 @@ final class ListMenuHashtagsDataSource: ListMenuSectionDataSource {
     private(set) var state: ListMenuDataSourceState = .loading
     
     weak var delegate: ListMenuSectionDataSourceDelegate?
-    
-    func fetchRemoteData() {
+
+    func fetchRemoteData(success success: FetchRemoteDataCallback?) {
         guard
             let apiPath = dependencyManager.trendingHashtagsAPIPath,
             let request = TrendingHashtagsRequest(apiPath: apiPath)
@@ -57,6 +57,7 @@ final class ListMenuHashtagsDataSource: ListMenuSectionDataSource {
             switch result {
                 case .success(let hashtags):
                     self?.visibleItems = hashtags
+                    success?()
                 
                 case .failure(let error):
                     self?.state = .failed(error: error)
