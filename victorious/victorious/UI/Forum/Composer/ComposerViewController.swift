@@ -20,7 +20,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         static let minimumConfirmButtonContainerHeight: CGFloat = 52
         static let composerTextInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         static let confirmButtonHorizontalInset: CGFloat = 16
-        static let stickerInputAreaHeight: CGFloat = 100
+        static let stickerInputAreaHeight: CGFloat = 120
         static let gifInputAreaHeight: CGFloat = 90
         static let vipLockComposerMargin: CGFloat = 8
     }

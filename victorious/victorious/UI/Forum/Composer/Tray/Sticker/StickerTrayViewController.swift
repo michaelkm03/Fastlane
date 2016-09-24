@@ -12,9 +12,10 @@ import MBProgressHUD
 /// A view controller that displays a side-scrolling double-row of stickers
 class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     private struct Constants {
-        static let collectionViewContentInsets = UIEdgeInsets(top: 2, left: 2, bottom: 2, right: 2)
+        static let padding = CGFloat(5)
+        static let collectionViewContentInsets = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
         static let numberOfRows = 2
-        static let interItemSpace = CGFloat(2)
+        static let interItemSpace = padding
     }
     
     weak var delegate: TrayDelegate?
