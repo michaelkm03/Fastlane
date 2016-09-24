@@ -400,6 +400,8 @@
 		6287BE101C7E87390057D116 /* VIPGateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6287BE0F1C7E87390057D116 /* VIPGateViewController.swift */; };
 		62A40B521D9602FF009C3D29 /* ChatRoomsResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 62A40B511D9602FF009C3D29 /* ChatRoomsResponse.json */; };
 		62A7C9EB1C7FAE2A009F8200 /* NSBundle+AppStoreReceipt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62A7C9EA1C7FAE2A009F8200 /* NSBundle+AppStoreReceipt.swift */; };
+		62FCB9FE1D95CCCB005B16B8 /* NewListMenuSectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62FCB9FD1D95CCCB005B16B8 /* NewListMenuSectionCell.swift */; };
+		62FCBA001D95E10D005B16B8 /* NewListMenuSectionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62FCB9FF1D95E10D005B16B8 /* NewListMenuSectionDataSource.swift */; };
 		62FD64781D8A2D7C00E9BAF8 /* ChatRoomsRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62FD64771D8A2D7C00E9BAF8 /* ChatRoomsRequestTests.swift */; };
 		62FD647C1D8B1E8100E9BAF8 /* ChatRoomsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62FD647B1D8B1E8000E9BAF8 /* ChatRoomsRequest.swift */; };
 		62FD647E1D8B253200E9BAF8 /* ChatRoomTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62FD647D1D8B253200E9BAF8 /* ChatRoomTests.swift */; };
@@ -1842,6 +1844,8 @@
 		62A40B511D9602FF009C3D29 /* ChatRoomsResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ChatRoomsResponse.json; sourceTree = "<group>"; };
 		62A7C9EA1C7FAE2A009F8200 /* NSBundle+AppStoreReceipt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSBundle+AppStoreReceipt.swift"; sourceTree = "<group>"; };
 		62B9E8365153DC8C04105B08 /* Pods-victorious-test.stable.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.stable.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.stable.xcconfig"; sourceTree = "<group>"; };
+		62FCB9FD1D95CCCB005B16B8 /* NewListMenuSectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NewListMenuSectionCell.swift; path = "List Menu/NewListMenuSectionCell.swift"; sourceTree = "<group>"; };
+		62FCB9FF1D95E10D005B16B8 /* NewListMenuSectionDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NewListMenuSectionDataSource.swift; path = "List Menu/NewListMenuSectionDataSource.swift"; sourceTree = "<group>"; };
 		62FD64771D8A2D7C00E9BAF8 /* ChatRoomsRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatRoomsRequestTests.swift; sourceTree = "<group>"; };
 		62FD647B1D8B1E8000E9BAF8 /* ChatRoomsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatRoomsRequest.swift; sourceTree = "<group>"; };
 		62FD647D1D8B253200E9BAF8 /* ChatRoomTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatRoomTests.swift; sourceTree = "<group>"; };
@@ -4709,6 +4713,8 @@
 				67486B771CC85AD000B03926 /* ListMenuSectionHeaderView.swift */,
 				67F231521CBD6134006BDBA5 /* ListMenuViewController.storyboard */,
 				67F231541CBD6178006BDBA5 /* ListMenuViewController.swift */,
+				62FCB9FD1D95CCCB005B16B8 /* NewListMenuSectionCell.swift */,
+				62FCB9FF1D95E10D005B16B8 /* NewListMenuSectionDataSource.swift */,
 				67F2314E1CBC8EF1006BDBA5 /* Trending Hashtags */,
 			);
 			name = ListMenu;
@@ -8252,6 +8258,7 @@
 				D88CEAE41A92E17C00F5A837 /* VVideoSnapshotTool.m in Sources */,
 				7A1DECCC1D80E075003F5C37 /* ShowLoginOperation.swift in Sources */,
 				62FD648D1D8B837000E9BAF8 /* ListMenuChatRoomsDataSource.swift in Sources */,
+				62FCBA001D95E10D005B16B8 /* NewListMenuSectionDataSource.swift in Sources */,
 				F06350751CBC6D240047E30C /* MixedMediaCameraCreationFlowController.swift in Sources */,
 				67F2314D1CBC8A9F006BDBA5 /* ListMenuHashtagsDataSource.swift in Sources */,
 				D8DCE5901ADD835B0004B782 /* VFlexBar.m in Sources */,
@@ -8385,6 +8392,7 @@
 				F087E5B81D93B25900034146 /* StickerTrayViewController.swift in Sources */,
 				7A1DECB11D80E00C003F5C37 /* ContentFlagOperation.swift in Sources */,
 				F093A93A1CF3D96B009ACABF /* VIPFlowNavigationController.swift in Sources */,
+				62FCB9FE1D95CCCB005B16B8 /* NewListMenuSectionCell.swift in Sources */,
 				7A47849D1CF374FD00894233 /* RESTForumNetworkSource.swift in Sources */,
 				7A1DECAD1D80E00C003F5C37 /* ContentDeleteOperation.swift in Sources */,
 				7AE363A11CC864B600F851E9 /* SideNavScaffoldViewController.swift in Sources */,
