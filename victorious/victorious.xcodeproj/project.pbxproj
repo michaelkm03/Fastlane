@@ -397,10 +397,10 @@
 		6236FF301C45E154006F4F23 /* NSBundle+TestBundleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6236FF2F1C45E154006F4F23 /* NSBundle+TestBundleTests.swift */; };
 		624E39961C6AF153004E0C8E /* TestVideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624E39941C6AF120004E0C8E /* TestVideoPlayer.swift */; };
 		6287BE101C7E87390057D116 /* VIPGateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6287BE0F1C7E87390057D116 /* VIPGateViewController.swift */; };
+		62A40B521D9602FF009C3D29 /* ChatRoomsResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 62A40B511D9602FF009C3D29 /* ChatRoomsResponse.json */; };
 		62A625EF1D875C0200340407 /* ListMenuCollectionViewDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62A625EE1D875C0200340407 /* ListMenuCollectionViewDataSourceTests.swift */; };
 		62A7C9EB1C7FAE2A009F8200 /* NSBundle+AppStoreReceipt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62A7C9EA1C7FAE2A009F8200 /* NSBundle+AppStoreReceipt.swift */; };
 		62FD64781D8A2D7C00E9BAF8 /* ChatRoomsRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62FD64771D8A2D7C00E9BAF8 /* ChatRoomsRequestTests.swift */; };
-		62FD647A1D8B1DFD00E9BAF8 /* ChatRoomsResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 62FD64791D8B1DFD00E9BAF8 /* ChatRoomsResponse.json */; };
 		62FD647C1D8B1E8100E9BAF8 /* ChatRoomsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62FD647B1D8B1E8000E9BAF8 /* ChatRoomsRequest.swift */; };
 		62FD647E1D8B253200E9BAF8 /* ChatRoomTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62FD647D1D8B253200E9BAF8 /* ChatRoomTests.swift */; };
 		62FD64801D8B4CE100E9BAF8 /* ChatRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62FD647F1D8B4CE100E9BAF8 /* ChatRoom.swift */; };
@@ -1808,11 +1808,11 @@
 		6236FF2F1C45E154006F4F23 /* NSBundle+TestBundleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSBundle+TestBundleTests.swift"; sourceTree = "<group>"; };
 		624E39941C6AF120004E0C8E /* TestVideoPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestVideoPlayer.swift; sourceTree = "<group>"; };
 		6287BE0F1C7E87390057D116 /* VIPGateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = VIPGateViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		62A40B511D9602FF009C3D29 /* ChatRoomsResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ChatRoomsResponse.json; sourceTree = "<group>"; };
 		62A625EE1D875C0200340407 /* ListMenuCollectionViewDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListMenuCollectionViewDataSourceTests.swift; path = "List Menu/ListMenuCollectionViewDataSourceTests.swift"; sourceTree = "<group>"; };
 		62A7C9EA1C7FAE2A009F8200 /* NSBundle+AppStoreReceipt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSBundle+AppStoreReceipt.swift"; sourceTree = "<group>"; };
 		62B9E8365153DC8C04105B08 /* Pods-victorious-test.stable.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.stable.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.stable.xcconfig"; sourceTree = "<group>"; };
 		62FD64771D8A2D7C00E9BAF8 /* ChatRoomsRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatRoomsRequestTests.swift; sourceTree = "<group>"; };
-		62FD64791D8B1DFD00E9BAF8 /* ChatRoomsResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = ChatRoomsResponse.json; path = AdBreak/ChatRoomsResponse.json; sourceTree = "<group>"; };
 		62FD647B1D8B1E8000E9BAF8 /* ChatRoomsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatRoomsRequest.swift; sourceTree = "<group>"; };
 		62FD647D1D8B253200E9BAF8 /* ChatRoomTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatRoomTests.swift; sourceTree = "<group>"; };
 		62FD647F1D8B4CE100E9BAF8 /* ChatRoom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatRoom.swift; sourceTree = "<group>"; };
@@ -3424,8 +3424,8 @@
 				F09E8C671C88CBF300437ACD /* Asset.json */,
 				0E0EB0E91CF8BBD900DD7E22 /* ChatMessage.json */,
 				62FD64811D8B571B00E9BAF8 /* ChatRoom.json */,
+				62A40B511D9602FF009C3D29 /* ChatRoomsResponse.json */,
 				0ECECD2D1D010E7F0076CB92 /* ChatUserCount.json */,
-				62FD64791D8B1DFD00E9BAF8 /* ChatRoomsResponse.json */,
 				C3D9560E1BF4307A00069FD6 /* Comment.json */,
 				7A543CB01D5BB1CC005052FE /* CreatorListResponse.json */,
 				79EEC4A01C17B99B0004E6FC /* DeviceExperimentsResponse.json */,
@@ -6696,6 +6696,7 @@
 				A7BC35A21C18E12400732750 /* test_image.png in Resources */,
 				0E0EB0EA1CF8BBD900DD7E22 /* ChatMessage.json in Resources */,
 				79EEC4A11C17B99B0004E6FC /* DeviceExperimentsResponse.json in Resources */,
+				62A40B521D9602FF009C3D29 /* ChatRoomsResponse.json in Resources */,
 				C3FEA7991BF16F4C003446CC /* GIFSearchResult.json in Resources */,
 				67A42FC91BF29ABC0087FBE9 /* FollowersResponse.json in Resources */,
 				C3FEA79B1BF172FA003446CC /* GIFSearchResponse.json in Resources */,
@@ -6718,7 +6719,6 @@
 				0300AA7C1BF2999D000A121D /* AccountUpdateResponse.json in Resources */,
 				BF3777E01CEE4D5800AEF7F2 /* InvalidViewedContent.json in Resources */,
 				BF3777D61CEE4D5800AEF7F2 /* ContentInvalidID.json in Resources */,
-				62FD647A1D8B1DFD00E9BAF8 /* ChatRoomsResponse.json in Resources */,
 				03314F541BE40F0100EE74FD /* AccountCreateResponse.json in Resources */,
 				A746799B1BF6DA360026FD2E /* UserInfoResponse.json in Resources */,
 				A7039CF81C24A9270023DE6F /* Alert.json in Resources */,
