@@ -35,7 +35,8 @@ final class CreateMediaUploadOperation: SyncOperation<Void> {
     
     override func execute() -> OperationResult<Void> {
         let uploadError = NSError(domain: "UploadError", code: -1, userInfo: nil)
-        if !publishParameters.isGIF && mediaURL == nil {
+        let requiresURL = !(publishParameters.isGIF || publishParameters.isSticker)
+        if requiresURL && mediaURL == nil {
             return .failure(uploadError)
         }
         
