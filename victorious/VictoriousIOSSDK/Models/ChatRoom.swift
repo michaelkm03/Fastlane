@@ -16,7 +16,7 @@ public struct ChatRoom {
 
 extension ChatRoom {
     public init?(json: JSON) {
-        guard let name = json["roomname"].string else {
+        guard let name = json["name"].string else {
             return nil
         }
         self.name = name

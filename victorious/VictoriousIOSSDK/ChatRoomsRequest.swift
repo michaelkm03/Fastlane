@@ -18,7 +18,7 @@ public struct ChatRoomsRequest: RequestType {
     }
 
     public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [ChatRoom] {
-        guard let chatroomsResponse = responseJSON["payload"]["chatrooms"].array else {
+        guard let chatroomsResponse = responseJSON["payload"]["room_list"].array else {
             throw ResponseParsingError(localizedDescription: "Failed to parse chat rooms response payload")
         }
         return chatroomsResponse.flatMap { ChatRoom(json: $0) }
