@@ -104,9 +104,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         super.viewDidDisappear(animated)
         stagePreparer.stage(self, didBecomeVisible: false)
         
-        if let mediaContentView = mediaContentView {
-            hideMediaContentView(mediaContentView, animated: true)
-        }
+        hide(animated: false)
     }
     
     deinit {
@@ -324,9 +322,10 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
             return
         }
         
-        show(animated: true)
-
-        loadingIndicator.stopAnimating()
+        dispatch_async(dispatch_get_main_queue()) {
+            self.show(animated: true)
+            self.loadingIndicator.stopAnimating()
+        }
     }
 
     func mediaContentView(mediaContentView: MediaContentView, didFinishPlaybackOfContent content: Content) {
