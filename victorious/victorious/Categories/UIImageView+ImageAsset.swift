@@ -52,15 +52,23 @@ extension UIImageView {
     }
     
     private func addBlurredImage(image: UIImage, toCacheWithURL url: NSURL, blurRadius: CGFloat) {
+        guard let key = blurredImageKey(for: url, blurRadius: blurRadius) else {
+            return
+        }
+        
         SDWebImageManager.sharedManager().imageCache.storeImage(
             image,
-            forKey: blurredImageKey(for: url, blurRadius: blurRadius)
+            forKey: key
         )
     }
     
-    private func blurredImageKey(for url: NSURL, blurRadius: CGFloat) -> String {
+    private func blurredImageKey(for url: NSURL, blurRadius: CGFloat) -> String? {
         let imageExtension = "\(UIImageView.blurredImageCachePathExtension)/\(blurRadius)"
-        return url.URLByAppendingPathComponent(imageExtension).absoluteString
+        let key = url.URLByAppendingPathComponent(imageExtension)?.absoluteString
+        if key == nil {
+            Log.error("Failed to generate key for blurred image storage")
+        }
+        return key
     }
     
     private func blurImage(image: UIImage, withRadius radius: CGFloat, completion: ImageCompletion) {

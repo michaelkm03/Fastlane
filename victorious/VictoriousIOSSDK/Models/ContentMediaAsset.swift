@@ -231,9 +231,9 @@ public enum ContentMediaAsset: ContentMediaAssetModel {
     public var uniqueID: String {
         switch self {
             case .youtube(let externalID, _): return externalID
-            case .video(let url, _, _): return url.absoluteString
-            case .gif(_, let url, _, _): return url.absoluteString
-            case .image(let url, _): return url.absoluteString
+            case .video(let url, _, _): return url.absoluteString ?? ""
+            case .gif(_, let url, _, _): return url.absoluteString ?? ""
+            case .image(let url, _): return url.absoluteString ?? ""
         }
     }
     

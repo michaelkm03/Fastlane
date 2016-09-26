@@ -23,6 +23,7 @@
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
     self.serverEnvironments = [[VEnvironmentManager sharedInstance] allEnvironments];
 }
 

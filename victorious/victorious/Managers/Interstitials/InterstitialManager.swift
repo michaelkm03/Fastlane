@@ -152,8 +152,8 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
     func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return presentedInterstitial?.dismissalAnimator()
     }
-    
-    func presentationControllerForPresentedViewController(presented: UIViewController, presentingViewController presenting: UIViewController, sourceViewController source: UIViewController) -> UIPresentationController? {
+
+    func presentationControllerForPresentedViewController(presented: UIViewController, presentingViewController presenting: UIViewController?, sourceViewController source: UIViewController) -> UIPresentationController? {
         return presentedInterstitial?.presentationController(presented, presentingViewController: presenting)
     }
 }

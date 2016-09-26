@@ -324,10 +324,11 @@ extension Content {
         dictionary["text"] = text
         
         if let assetURL = assets.first?.url  {
-            dictionary["media"] = [
+            let media: [String: String] = [
                 "type": type.rawValue.uppercaseString,
-                "url": assetURL.absoluteString
+                "url": assetURL.absoluteString ?? ""
             ]
+            dictionary["media"] = media
         }
         
         return dictionary

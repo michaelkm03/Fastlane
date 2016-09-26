@@ -82,6 +82,7 @@ static NSString * const kAlbumCellReuseIdentifier = @"albumCell";
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
     self.fetchResults = [[NSMutableSet alloc] init];
     self.numberFormatter = [self createNumberFormatter];
 

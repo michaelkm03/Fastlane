@@ -171,7 +171,7 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
     }
     
     func exportMedia(fromSearchResult mediaSearchResultObject: MediaSearchResult) {
-        guard let view = NSBundle.mainBundle().loadNibNamed("LoadingCancellableView", owner: self, options: nil).first as? LoadingCancellableView else {
+        guard let view = NSBundle.mainBundle().loadNibNamed("LoadingCancellableView", owner: self, options: nil)?.first as? LoadingCancellableView else {
             return
         }
         view.delegate = self

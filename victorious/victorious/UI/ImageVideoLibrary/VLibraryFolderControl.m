@@ -32,6 +32,7 @@
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
     self.backgroundView.layer.cornerRadius = 5;
     self.backgroundView.layer.masksToBounds = YES;
 }

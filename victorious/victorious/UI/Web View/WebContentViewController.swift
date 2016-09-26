@@ -145,7 +145,7 @@ class WebContentViewController: UIViewController, WKNavigationDelegate, WKUIDele
     
     var webViewIsDisplayingInitialHTMLString: Bool {
          if
-            let webViewURL = webView.URL?.absoluteString.stringByTrimmingCharactersInSet(NSCharacterSet(charactersInString: "/")),
+            let webViewURL = webView.URL?.absoluteString?.stringByTrimmingCharactersInSet(NSCharacterSet(charactersInString: "/")),
             let initialURL = initialBaseURL?.absoluteString
         {
             return webViewURL == initialURL
