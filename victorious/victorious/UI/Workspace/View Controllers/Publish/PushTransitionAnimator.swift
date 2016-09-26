@@ -21,19 +21,18 @@ class PushTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
         
         guard let toView = transitionContext.viewForKey(UITransitionContextToViewKey),
-            let fromView = transitionContext.viewForKey(UITransitionContextFromViewKey),
-            let containerView = transitionContext.containerView() else {
+            let fromView = transitionContext.viewForKey(UITransitionContextFromViewKey) else {
                 return
         }
-        
+
+        let containerView = transitionContext.containerView()
         let backgroundView = presenting ? fromView : toView
         let foregroundView = presenting ? toView : fromView
 
         containerView.addSubview(backgroundView)
         containerView.addSubview(foregroundView)
         
-        if dismissing {
-            let snapshot = foregroundView.snapshotViewAfterScreenUpdates(false)
+        if let snapshot = foregroundView.snapshotViewAfterScreenUpdates(false) where dismissing {
             backgroundView.addSubview(snapshot)
             transitionContext.completeTransition(true)
             return

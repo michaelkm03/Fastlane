@@ -19,7 +19,7 @@
  Posted when a successful call to `fetchProductsWithIdentifiers:success:failure` returns.
  This is needed to update and UI that lists purchaseable products.
  */
-NSString * const VPurchaseManagerProductsDidUpdateNotification;
+extern NSString * const VPurchaseManagerProductsDidUpdateNotification;
 
 @interface VPurchaseManager : NSObject <VPurchaseManagerType>
 

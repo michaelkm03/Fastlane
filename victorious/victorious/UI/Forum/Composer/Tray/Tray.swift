@@ -34,7 +34,7 @@ extension Tray where Self: UIViewController {
     
     func showExportingHUD(delegate delegate: LoadingCancellableViewDelegate) -> MBProgressHUD? {
         guard
-            let cancelableView = NSBundle.mainBundle().loadNibNamed("LoadingCancellableView", owner: self, options: nil).first as? LoadingCancellableView,
+            let cancelableView = NSBundle.mainBundle().loadNibNamed("LoadingCancellableView", owner: self, options: nil)?.first as? LoadingCancellableView,
             let window = self.view.window
         else {
             assertionFailure("Failed to show exporting HUD")

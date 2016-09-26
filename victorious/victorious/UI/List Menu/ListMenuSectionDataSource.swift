@@ -16,12 +16,14 @@ enum ListMenuDataSourceState {
     case noContent
 }
 
+typealias FetchRemoteDataCallback = () -> Void
+
 /// Discrete data source for a section within a List Menu component.
 /// Mainly in charge of fetch data from backend, and notify its delegate
 protocol ListMenuSectionDataSource: class {
     associatedtype SectionItem
     associatedtype Cell
-    
+
     init(dependencyManager: VDependencyManager)
     
     /// The data source's dependency manager
@@ -40,7 +42,7 @@ protocol ListMenuSectionDataSource: class {
     var visibleItems: [SectionItem] { get }
     
     /// Kick off a network request to fetch data and fill `visibleItems`
-    func fetchRemoteData()
+    func fetchRemoteData(success success: FetchRemoteDataCallback?)
     
     /// Dequeues a cell from the data source that displays a valid item in the section. The return type `Cell` will be specified by conformer.
     /// Default implementation will dequeue the cell, configure the cell with `SectionItem`, and set `dependencyManager` on it
@@ -71,7 +73,7 @@ extension ListMenuSectionDataSource where Cell: UICollectionViewCell, Cell: List
     
     func setupDataSource(with delegate: ListMenuSectionDataSourceDelegate) {
         self.delegate = delegate
-        fetchRemoteData()
+        fetchRemoteData(success: nil)
     }
     
     var numberOfItems: Int {

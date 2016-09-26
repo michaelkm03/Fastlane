@@ -101,8 +101,8 @@ class StickerTrayDataSource: PaginatedDataSource, TrayDataSource {
                 cell = retryCell
             case .Loading:
                 let loadingCell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.loadingCellReuseIdentifier, forIndexPath: indexPath) as! TrayLoadingCollectionViewCell
-            loadingCell.activityIndicator.color = .blackColor()
-            cell = loadingCell
+                loadingCell.activityIndicator.color = .blackColor()
+                cell = loadingCell
             case .Empty:
                 cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.defaultCellReuseIdentifier, forIndexPath: indexPath)
         }

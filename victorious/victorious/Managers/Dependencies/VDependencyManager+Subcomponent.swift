@@ -9,7 +9,7 @@
 import Foundation
 
 extension VDependencyManager {
-    /// Using the provided key, attempts to retrieve a dictionary used to intantiate
+    /// Using the provided key, attempts to retrieve a dictionary used to instantiate
     /// a child dependency manager for a subcomponent, such as a "cell" component
     /// of a ".screen" component with a table or collection view.
     func childDependencyForKey(key: String) -> VDependencyManager? {

@@ -59,7 +59,7 @@ class InterstitialToastViewController: UIViewController, Interstitial, VBackgrou
         return nil
     }
     
-    func presentationController(presentedViewController: UIViewController, presentingViewController: UIViewController) -> UIPresentationController {
+    func presentationController(presentedViewController: UIViewController, presentingViewController: UIViewController?) -> UIPresentationController {
         return UIPresentationController(presentedViewController: presentedViewController, presentingViewController: presentingViewController)
     }
     
