@@ -24,6 +24,8 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     }
 
     @IBOutlet private weak var loadingIndicator: UIActivityIndicatorView!
+    
+    private let stagePreparer = StagePreparer()
 
     private lazy var stageHeight: CGFloat = {
         return self.view.bounds.width / Constants.defaultAspectRatio
@@ -50,7 +52,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         }
     }
 
-    private var isOnScreen: Bool {
+    var isOnScreen: Bool {
         return view.window != nil
     }
 
@@ -95,19 +97,16 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-
-        if mediaContentView?.hasValidMedia == true {
-            show(animated: false)
-        }
-        else {
-            hide(animated: false)
-        }
+        stagePreparer.stage(self, didBecomeVisible: true)
     }
 
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
-
-        hide(animated: false)
+        stagePreparer.stage(self, didBecomeVisible: false)
+        
+        if let mediaContentView = mediaContentView {
+            hideMediaContentView(mediaContentView, animated: true)
+        }
     }
     
     deinit {
@@ -223,6 +222,10 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     }
 
     func addStageContent(stageContent: StageContent) {
+        stagePreparer.prepareNextContent(stageContent, for: self)
+    }
+    
+    private func updateStageContent(stageContent: StageContent) {
         currentStageContent = stageContent
         
         if let mediaContentView = mediaContentView {
@@ -403,5 +406,22 @@ private extension VDependencyManager {
     /// STAGE has historically been used to track stage content before there was main_stage, vip_stage. Leaving this in until vip stage has been released, then it should be revisited.
     var context: String {
         return stringForKey("context") ?? "STAGE"
+    }
+}
+
+class StagePreparer {
+    var nextStageContent: StageContent?
+    func prepareNextContent(stageContent: StageContent, for stage: StageViewController) {
+        let isYoutube = stageContent.content.assets.first?.videoSource == .youtube
+        nextStageContent = stageContent
+        if stage.isOnScreen || !isYoutube {
+            stage.updateStageContent(stageContent)
+        }
+    }
+    
+    func stage(stage: StageViewController, didBecomeVisible visible: Bool) {
+        if let stageContent = nextStageContent where visible {
+            stage.updateStageContent(stageContent)
+        }
     }
 }
