@@ -8,8 +8,6 @@
 
 import UIKit
 
-/// A class to display content like count and like image
-
 enum LikeViewAlignment {
     case left
     case center
@@ -29,9 +27,12 @@ enum LikeViewAlignment {
     }
 }
 
-// MARK: - AnimationFrames
+/// A class to display content like count and like image
 
 final class LikeView: UIView {
+
+    // MARK: - AnimationFrames
+
     static let animationFrames: [UIImage]? = {
         guard let
             f00 = UIImage(named: "flutter_hearts_00"),
@@ -106,16 +107,6 @@ final class LikeView: UIView {
         self.alignment = alignment
     }
 
-    init() {
-        super.init(frame: CGRect.zero)
-        assertionFailure("init() has not been implemented")
-    }
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        assertionFailure("init(frame:) has not been implemented")
-    }
-
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         assertionFailure("init(coder:) has not been implemented")
@@ -156,13 +147,13 @@ final class LikeView: UIView {
         updateLikeCount(content)
     }
 
-    // MARK - Animation
+    // MARK: - Animation
 
     func animateLike() {
         animate()
     }
 
-    // MARK - Private helpers
+    // MARK: - Private helpers
 
     private func updateLikeCount(content: Content) {
         let likeCount = content.likeCount ?? 0
@@ -182,17 +173,14 @@ final class LikeView: UIView {
             return
         }
 
-        addAnimationView(size: imageSize)
-        UIGraphicsBeginImageContextWithOptions(imageSize, false, 0)
-        UIGraphicsEndImageContext()
-
+        addAnimationView(of: imageSize)
         animationImageView.animationImages = LikeView.animationFrames
         animationImageView.animationDuration = 0.5
         animationImageView.animationRepeatCount = 1
         animationImageView.startAnimating()
     }
 
-    private func addAnimationView(size size: CGSize) {
+    private func addAnimationView(of size: CGSize) {
         if subviews.contains(animationImageView) {
             return
         }

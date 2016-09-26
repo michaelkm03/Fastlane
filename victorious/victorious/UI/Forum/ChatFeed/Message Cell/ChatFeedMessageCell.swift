@@ -181,11 +181,12 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         failureButton.setImage(UIImage(named: "failed_error"), forState: .Normal)
 
         if dependencyManager.upvoteStyle == UpvoteStyle.basic {
-            likeView = LikeView(frame: CGRect.zero,
-                                textColor: dependencyManager.upvoteCountColor,
-                                alignment: .center,
-                                selectedIcon: dependencyManager.upvoteIconSelected,
-                                unselectedIcon: dependencyManager.upvoteIconUnselected
+            likeView = LikeView(
+                frame: CGRect.zero,
+                textColor: dependencyManager.upvoteCountColor,
+                alignment: .center,
+                selectedIcon: dependencyManager.upvoteIconSelected,
+                unselectedIcon: dependencyManager.upvoteIconUnselected
             )
             if let likeView = likeView {
                 likeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOnLikeView)))
