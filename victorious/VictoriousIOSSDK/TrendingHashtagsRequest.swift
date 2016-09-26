@@ -1,5 +1,5 @@
 //
-//  TrendingHashtagRequest.swift
+//  TrendingHashtagsRequest.swift
 //  victorious
 //
 //  Created by Cody Kolodziejzyk on 11/9/15.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct TrendingHashtagRequest: RequestType {
+public struct TrendingHashtagsRequest: RequestType {
     private let url: NSURL
     
     public init?(apiPath: APIPath) {

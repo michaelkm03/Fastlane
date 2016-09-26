@@ -1,22 +1,20 @@
 //
-//  ListMenuHashtagDataSource.swift
+//  ListMenuHashtagsDataSource.swift
 //  victorious
 //
 //  Created by Tian Lan on 4/11/16.
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-final class ListMenuHashtagDataSource: ListMenuSectionDataSource {
+final class ListMenuHashtagsDataSource: ListMenuSectionDataSource {
     
     typealias Cell = ListMenuHashtagCollectionViewCell
 
     // MARK: - Initialization
     
-    /// Initializes a ListMenuHashtagDataSource, then start to fetch trending hashtags from backend
+    /// Initializes a ListMenuHashtagsDataSource, then start to fetch trending hashtags from backend
     init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
-        
-        fetchRemoteData()
     }
     
     // MARK - Dependency manager
@@ -45,11 +43,11 @@ final class ListMenuHashtagDataSource: ListMenuSectionDataSource {
     private(set) var state: ListMenuDataSourceState = .loading
     
     weak var delegate: ListMenuSectionDataSourceDelegate?
-    
-    func fetchRemoteData() {
+
+    func fetchRemoteData(success success: FetchRemoteDataCallback?) {
         guard
             let apiPath = dependencyManager.trendingHashtagsAPIPath,
-            let request = TrendingHashtagRequest(apiPath: apiPath)
+            let request = TrendingHashtagsRequest(apiPath: apiPath)
         else {
             Log.warning("Missing or invalid trending hashtags API path: \(dependencyManager.trendingHashtagsAPIPath)")
             return
@@ -59,6 +57,7 @@ final class ListMenuHashtagDataSource: ListMenuSectionDataSource {
             switch result {
                 case .success(let hashtags):
                     self?.visibleItems = hashtags
+                    success?()
                 
                 case .failure(let error):
                     self?.state = .failed(error: error)
