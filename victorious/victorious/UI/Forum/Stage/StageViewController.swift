@@ -104,7 +104,9 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         super.viewDidDisappear(animated)
         stagePreparer.stage(self, didBecomeVisible: false)
         
-        hide(animated: false)
+        if let mediaContentView = mediaContentView {
+            hideMediaContentView(mediaContentView, animated: true)
+        }
     }
     
     deinit {
