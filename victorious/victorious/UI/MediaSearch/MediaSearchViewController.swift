@@ -32,7 +32,7 @@ class MediaSearchOptions: NSObject {
 
 /// View controller that allows users to search for media files as part of a content creation flow.
 class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginatedDataSourceDelegate, LoadingCancellableViewDelegate {
-
+    
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var searchBar: UISearchBar!
     
@@ -48,17 +48,17 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
     private(set) var dependencyManager: VDependencyManager?
     
     private(set) var scrollPaginator = ScrollPaginator()
-	let dataSourceAdapter = MediaSearchDataSourceAdapter()
+    let dataSourceAdapter = MediaSearchDataSourceAdapter()
     private var mediaExporter: MediaSearchExporter?
     
-	weak var delegate: MediaSearchDelegate?
-	
-	class func mediaSearchViewController( dataSource dataSource: MediaSearchDataSource, dependencyManager: VDependencyManager ) -> MediaSearchViewController {
+    weak var delegate: MediaSearchDelegate?
+    
+    class func mediaSearchViewController( dataSource dataSource: MediaSearchDataSource, dependencyManager: VDependencyManager ) -> MediaSearchViewController {
         
         let bundle = UIStoryboard(name: "MediaSearch", bundle: nil)
         if let viewController = bundle.instantiateInitialViewController() as? MediaSearchViewController {
             viewController.dependencyManager = dependencyManager
-			viewController.dataSourceAdapter.dataSource = dataSource
+            viewController.dataSourceAdapter.dataSource = dataSource
             dataSource.delegate = viewController
             return viewController
         }
@@ -102,10 +102,10 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
             target: self,
             action: #selector(continueWithSelectedItem(_: ))
         )
-		
-		// Load with no search term for default results (determined by data sources)
-		self.performSearch(searchTerm: nil)
-		
+        
+        // Load with no search term for default results (determined by data sources)
+        self.performSearch(searchTerm: nil)
+        
         self.updateNavigationItemState()
         
         // Only modify the left navigaiton item if we are the root of the nav stack
@@ -149,10 +149,10 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
     
     func continueWithSelectedItem(sender: AnyObject?) {
         guard let indexPath = self.selectedIndexPath else {
-			return
-		}
-		
-		let mediaSearchResultObject = self.dataSourceAdapter.sections[ indexPath.section ][ indexPath.row ]
+            return
+        }
+        
+        let mediaSearchResultObject = self.dataSourceAdapter.sections[ indexPath.section ][ indexPath.row ]
         
         if options.shouldSkipExportRendering {
             if let thumbnailImageURL = mediaSearchResultObject.thumbnailImageURL {
@@ -171,7 +171,7 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
     }
     
     func exportMedia(fromSearchResult mediaSearchResultObject: MediaSearchResult) {
-        guard let view = NSBundle.mainBundle().loadNibNamed("LoadingCancellableView", owner: self, options: nil).first as? LoadingCancellableView else {
+        guard let view = NSBundle.mainBundle().loadNibNamed("LoadingCancellableView", owner: self, options: nil)?.first as? LoadingCancellableView else {
             return
         }
         view.delegate = self
@@ -214,7 +214,7 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
             v_showErrorWithTitle(errorTitle, message: "")
         }
     }
-	
+    
     func selectCellAtSelectedIndexPath() {
         if let indexPath = self.selectedIndexPath {
             collectionView.selectItemAtIndexPath(indexPath, animated: false, scrollPosition: .None)
@@ -244,14 +244,14 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
         //  the current state of the paginated data source
         self.collectionView.performBatchUpdates({
             self.collectionView.reloadSections( NSIndexSet(index: 0) )
-        }, completion: nil)
+            }, completion: nil)
     }
     
     func updateViewWithResult( result: MediaSearchDataSourceAdapter.ChangeResult? ) {
         if let result = result where result.hasChanges {
             self.collectionView.performBatchUpdates({
                 self.collectionView.applyDataSourceChanges( result )
-            }, completion: nil)
+                }, completion: nil)
         }
         if result?.error != nil || (result?.hasChanges == false && (self.dataSourceAdapter.dataSource?.visibleItems.count ?? 0) == 0) {
             self.collectionView.reloadData()
@@ -262,7 +262,7 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
         self.collectionView.performBatchUpdates({
             let result = self.dataSourceAdapter.clear()
             self.collectionView.applyDataSourceChanges( result )
-        }, completion: nil)
+            }, completion: nil)
         
         self.selectedIndexPath = nil
         self.previewSection = nil
@@ -292,7 +292,7 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
             let result = self.dataSourceAdapter.addHighlightSection(forIndexPath: indexPath)
             sectionInserted = result.insertedSections?.indexGreaterThanIndex(0)
             self.collectionView.applyDataSourceChanges( result )
-        }, completion: nil)
+            }, completion: nil)
         
         if let sectionInserted = sectionInserted {
             let previewCellIndexPath = NSIndexPath(forRow: 0, inSection: sectionInserted)
@@ -303,8 +303,8 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
             self.previewSection = sectionInserted
             
             self.collectionView.scrollToItemAtIndexPath( previewCellIndexPath,
-                atScrollPosition: .CenteredVertically,
-                animated: true )
+                                                         atScrollPosition: .CenteredVertically,
+                                                         animated: true )
             
             self.updateLayout()
         }
@@ -316,7 +316,7 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
     private func updateLayout() {
         self.collectionView.performBatchUpdates({
             self.collectionView.collectionViewLayout.invalidateLayout()
-        }, completion: nil )
+            }, completion: nil )
     }
     
     /// Removes the section showing a search result preview at the specified index path
@@ -324,27 +324,27 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
         self.collectionView.performBatchUpdates({
             let result = self.dataSourceAdapter.removeHighlightSection()
             self.collectionView.applyDataSourceChanges( result )
-        }, completion: nil )
+            }, completion: nil )
         
         self.selectedIndexPath = nil
         self.previewSection = nil
         
         self.collectionView.performBatchUpdates({
             self.collectionView.collectionViewLayout.invalidateLayout()
-        }, completion: nil )
+            }, completion: nil )
         
         self.updateNavigationItemState()
-	}
-	
-	// MARK: - UISearchBarDelegate
-	
-	func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-		guard let searchTerm = searchBar.text where searchTerm.characters.count > 0 else {
-			return
+    }
+    
+    // MARK: - UISearchBarDelegate
+    
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        guard let searchTerm = searchBar.text where searchTerm.characters.count > 0 else {
+            return
         }
         self.clearSearch()
-		self.performSearch(searchTerm: searchTerm)
-		searchBar.resignFirstResponder()
+        self.performSearch(searchTerm: searchTerm)
+        searchBar.resignFirstResponder()
     }
     
     // MARK: - VPaginatedDataSourceDelegate

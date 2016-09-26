@@ -275,9 +275,12 @@ private extension WebSocket {
     /// and therefore also a new WebSocket instance. Since the token is appended to the URL.
     private convenience init(url: NSURL, socketListenerQueue: dispatch_queue_t? = nil, delegate: WebSocketDelegate? = nil, pongDelegate: WebSocketPongDelegate? = nil) {
         self.init(url: url, protocols: nil)
-        self.queue = socketListenerQueue
         self.delegate = delegate
         self.pongDelegate = pongDelegate
+
+        if let socketListenerQueue = socketListenerQueue {
+            self.callbackQueue = socketListenerQueue
+        }
     }
 }
 

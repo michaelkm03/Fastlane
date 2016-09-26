@@ -16,10 +16,11 @@ extension UIView {
     /// generic type T will be used.
     static func v_fromNib<T: UIView>(nibNameOrNil: String? = nil) -> T {
         let name = nibNameOrNil ?? String(self)
-        let nibViews = NSBundle.mainBundle().loadNibNamed(name, owner: nil, options: nil)
-        for view in nibViews {
-            if let typedView = view as? T {
-                return typedView
+        if let nibViews = NSBundle.mainBundle().loadNibNamed(name, owner: nil, options: nil) {
+            for view in nibViews {
+                if let typedView = view as? T {
+                    return typedView
+                }
             }
         }
         fatalError( "Could not load view from nib named: \(name)" )

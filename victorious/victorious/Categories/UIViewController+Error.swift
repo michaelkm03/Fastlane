@@ -20,17 +20,25 @@ extension UIViewController {
     }
     
     func v_showErrorDefaultError() {
-        v_showErrorWithTitle( v_defaultErrorTitle, message: v_defaultErrorMessage )
+        v_showErrorDefaultError(onView: self.view)
+    }
+    
+    func v_showErrorDefaultError(onView view: UIView) {
+        v_showErrorWithTitle(v_defaultErrorTitle, message: v_defaultErrorMessage, onView: view)
     }
     
     func v_showErrorWithTitle(title: String?, message: String?) {
+        v_showErrorWithTitle(title, message: message, onView: view)
+    }
+    
+    func v_showErrorWithTitle(title: String?, message: String?, onView view: UIView) {
         
-        MBProgressHUD.hideAllHUDsForView(self.view, animated: false)
+        MBProgressHUD.hideAllHUDsForView(view, animated: false)
         
         let customView = UIImageView(image: UIImage(named:"error")!.imageWithRenderingMode(.AlwaysTemplate))
         customView.tintColor = UIColor.whiteColor()
         
-        let progressHUD = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        let progressHUD = MBProgressHUD.showHUDAddedTo(view, animated: true)
         progressHUD.mode = .CustomView
         progressHUD.margin = 30.0
         progressHUD.customView = customView

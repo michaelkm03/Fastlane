@@ -12,7 +12,7 @@ import XCTest
 class TempDirectoryCleanupOperationTests: XCTestCase {
     
     var fileURLs: [NSURL] = []
-    private let url = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent(kContentCreationDirectory)
+    private let url = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent(kContentCreationDirectory)!
     private let fileManager = NSFileManager.defaultManager()
 
     override func setUp() {
@@ -23,7 +23,7 @@ class TempDirectoryCleanupOperationTests: XCTestCase {
         let _ = try? fileManager.createDirectoryAtPath(url.path!, withIntermediateDirectories: true, attributes: nil)
         
         for _ in 1...10 {
-            let newURL = url.URLByAppendingPathComponent(NSUUID().UUIDString)
+            let newURL = url.URLByAppendingPathComponent(NSUUID().UUIDString)!
             fileURLs.append(newURL)
             fileManager.createFileAtPath(newURL.path!, contents: NSData(), attributes: [:])
         }

@@ -46,10 +46,10 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         
         var trackingString: String {
             switch self {
-                case .selfUser: return "SELF_USER"
-                case .otherUser: return "OTHER_USER"
-                case .selfCreator: return "SELF_CREATOR"
-                case .otherCreator: return "OTHER_CREATOR"
+                case .selfUser: return "current_user"
+                case .otherUser: return "other_user"
+                case .selfCreator: return "current_user"
+                case .otherCreator: return "creator"
             }
         }
     }
@@ -385,7 +385,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         wantsToTrackViewWillAppear = false
         
         dependencyManager.trackViewWillAppear(for: self, parameters: [
-            VTrackingKeyProfileContext: context.trackingString
+            VTrackingKeyContext: context.trackingString
         ])
     }
     

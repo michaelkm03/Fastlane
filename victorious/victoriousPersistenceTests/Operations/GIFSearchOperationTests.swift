@@ -11,8 +11,10 @@ import VictoriousIOSSDK
 @testable import victorious
 
 class GIFSearchOperationTests: XCTestCase {
+    let searchOptions = GIFSearchOptions.Search(term: "fun", url: "testURL")
+    
     func testEmptyResult() {
-        let operation = GIFSearchOperation(searchTerm: "fun")
+        let operation = GIFSearchOperation(searchOptions: searchOptions)
         
         let testRequestExecutor = TestRequestExecutor(result: [GIFSearchResult]())
         operation.requestExecutor = testRequestExecutor
@@ -43,7 +45,7 @@ class GIFSearchOperationTests: XCTestCase {
         ]
         let result: GIFSearchRequest.ResultType = [ GIFSearchResult(json: mockJSON)! ]
         
-        let operation = GIFSearchOperation(searchTerm: "fun")
+        let operation = GIFSearchOperation(searchOptions: searchOptions)
         
         let testRequestExecutor = TestRequestExecutor(result: result)
         operation.requestExecutor = testRequestExecutor
@@ -67,7 +69,7 @@ class GIFSearchOperationTests: XCTestCase {
     func testOnError() {
         let expectedError = NSError(domain: "test", code: 1, userInfo: nil)
         
-        let operation = GIFSearchOperation(searchTerm: "fun")
+        let operation = GIFSearchOperation(searchOptions: searchOptions)
         
         let testRequestExecutor = TestRequestExecutor(error: expectedError)
         operation.requestExecutor = testRequestExecutor

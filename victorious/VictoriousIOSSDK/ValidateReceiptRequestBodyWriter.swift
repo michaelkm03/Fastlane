@@ -26,6 +26,9 @@ class ValidateReceiptRequestBodyWriter: NSObject, RequestBodyWriterType {
     }
     
     func write() throws -> Output {
+        guard let bodyTempFileURL = bodyTempFileURL else {
+            throw NSURLError.UnsupportedURL
+        }
         let writer = VMultipartFormDataWriter(outputFileURL: bodyTempFileURL)
         try writer.appendData(data.base64EncodedDataWithOptions([]), withFieldName: "apple_receipt")
         try writer.finishWriting()

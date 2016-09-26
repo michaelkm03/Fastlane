@@ -93,8 +93,7 @@ static NSString * const kMacroProfileContext         = @"%%PROFILE_CONTEXT%%";
                                     VTrackingKeyErrorDetails       : kMacroErrorDetails,
                                     VTrackingKeyType               : kMacroType,
                                     VTrackingKeySubtype            : kMacroSubtype,
-                                    VTrackingKeyDuration           : kMacroDuration,
-                                    VTrackingKeyProfileContext     : kMacroProfileContext };
+                                    VTrackingKeyDuration           : kMacroDuration };
         
         _keyForEventMapping = @{ VTrackingEventUserDidStartCreateProfile           : TemplateTrackingKey.createProfileStart,
                                  VTrackingEventUserDidStartRegistration            : TemplateTrackingKey.registrationStart,

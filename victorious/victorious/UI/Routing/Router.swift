@@ -110,8 +110,8 @@ struct Router {
                     self.originViewController?.presentViewController(safariViewController, animated: true, completion: nil)
                 }
                 
-                else if let originVC = self.originViewController {
-                    ShowWebContentOperation(originViewController: originVC, url: url.absoluteString, dependencyManager: self.dependencyManager, configuration: configuration).queue()
+                else if let originVC = self.originViewController, let url = url.absoluteString {
+                    ShowWebContentOperation(originViewController: originVC, url: url, dependencyManager: self.dependencyManager, configuration: configuration).queue()
                 }
             }
         }

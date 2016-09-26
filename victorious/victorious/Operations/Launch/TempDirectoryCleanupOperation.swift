@@ -9,13 +9,18 @@
 import Foundation
 
 final class TempDirectoryCleanupOperation: SyncOperation<Void> {
+    enum Error: ErrorType {
+        case NoFileFoundInTempDirectory
+    }
     
     override var executionQueue: Queue {
         return .background
     }
     
     override func execute() -> OperationResult<Void> {
-        let url = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent(kContentCreationDirectory)
+        guard let url = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent(kContentCreationDirectory) else {
+            return .failure(Error.NoFileFoundInTempDirectory)
+        }
         let fileManager = NSFileManager.defaultManager()
         let _ = try? fileManager.removeItemAtURL(url)
         return .success()

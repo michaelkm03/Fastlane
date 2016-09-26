@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="kSm-pP-cCV">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <scenes>
+        <!--Sticker Tray View Controller-->
+        <scene sceneID="Nys-OS-ayT">
+            <objects>
+                <viewController id="kSm-pP-cCV" customClass="StickerTrayViewController" customModule="victorious" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="iXr-lr-d0g"/>
+                        <viewControllerLayoutGuide type="bottom" id="TrI-ie-5hQ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="5p2-lO-egj">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="E4Y-qq-Rrl">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="2wo-hv-Ui3">
+                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                            </collectionView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="E4Y-qq-Rrl" secondAttribute="trailing" id="9Rw-xV-2wO"/>
+                            <constraint firstItem="E4Y-qq-Rrl" firstAttribute="top" secondItem="5p2-lO-egj" secondAttribute="top" id="cqr-vM-POu"/>
+                            <constraint firstItem="E4Y-qq-Rrl" firstAttribute="leading" secondItem="5p2-lO-egj" secondAttribute="leading" id="hlN-os-2dN"/>
+                            <constraint firstItem="TrI-ie-5hQ" firstAttribute="top" secondItem="E4Y-qq-Rrl" secondAttribute="bottom" id="zuP-5i-khA"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="collectionView" destination="E4Y-qq-Rrl" id="2HB-Rq-UZC"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Kn7-7m-thL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="555" y="273"/>
+        </scene>
+    </scenes>
+</document>

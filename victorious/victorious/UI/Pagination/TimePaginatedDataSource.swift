@@ -155,6 +155,7 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation: NSOper
             switch loadingType {
                 case .refresh:
                     strongSelf.items = newItems
+                    strongSelf.olderItemsAreAvailable = true
                 
                 case .newer:
                     switch strongSelf.ordering {

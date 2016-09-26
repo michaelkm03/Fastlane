@@ -299,7 +299,6 @@ extern NSString * const VTrackingKeyErrorDetails; //< For tracking any additiona
 extern NSString * const VTrackingKeyType;
 extern NSString * const VTrackingKeySubtype;
 extern NSString * const VTrackingKeyDuration; //< Milliseconds
-extern NSString * const VTrackingKeyProfileContext;
 
 // Tracking Event Values
 // ContentType values

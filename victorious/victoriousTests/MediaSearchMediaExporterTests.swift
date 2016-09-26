@@ -49,7 +49,9 @@ class MediaSearchMediaExporterTests: XCTestCase {
     
     func testDownloadFailed() {
         expectation = expectationWithDescription("MediaSearchMediaExporterTests")
-        let newURL = NSURL(string: "\(sampleImageURL.absoluteString)...\(sampleImageURL.absoluteString)")!
+        let string = sampleImageURL.absoluteString!
+        let urlString = string.substringToIndex(string.endIndex.predecessor())
+        let newURL = NSURL(string: urlString)!
         let mockSearchResult = MockSearchResult(source:
             MockSource(sourceMediaURL: newURL, thumbnailImageURL: newURL))
         mediaSearchExporter = MediaSearchExporter(mediaSearchResult: mockSearchResult)
@@ -68,7 +70,7 @@ class MediaSearchMediaExporterTests: XCTestCase {
             MockSource(sourceMediaURL: sampleImageURL, thumbnailImageURL: sampleImageURL))
         mediaSearchExporter = MediaSearchExporter(mediaSearchResult: mockSearchResult)
         
-        let path = mediaSearchExporter.downloadURL.path!
+        let path = mediaSearchExporter.downloadUrl!.path!
         XCTAssertFalse(NSFileManager.defaultManager().fileExistsAtPath(path))
         NSFileManager.defaultManager().createFileAtPath(path, contents: nil, attributes: nil)
         XCTAssert(NSFileManager.defaultManager().fileExistsAtPath(path))
@@ -91,7 +93,7 @@ class MediaSearchMediaExporterTests: XCTestCase {
             MockSource(sourceMediaURL: sampleImageURL))
         mediaSearchExporter = MediaSearchExporter(mediaSearchResult: mockSearchResult)
         
-        XCTAssert(mediaSearchExporter.downloadURL.absoluteString.hasSuffix(fileExtension))
+        XCTAssert(mediaSearchExporter.downloadUrl!.absoluteString!.hasSuffix(fileExtension))
     }
 }
 
