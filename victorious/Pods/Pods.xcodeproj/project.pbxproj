@@ -3125,51 +3125,66 @@
 					0D87F0D325CB547B7396E858090BE45C = {
 						DevelopmentTeam = ABHRJGEGKA;
 						LastSwiftMigration = 0800;
+						ProvisioningStyle = Manual;
 					};
 					1B1E08841421631EA2FFAF2DBA7AEF11 = {
 						DevelopmentTeam = ABHRJGEGKA;
+						ProvisioningStyle = Manual;
 					};
 					1D8290441F879C45F3445D7FCEA48754 = {
 						DevelopmentTeam = ABHRJGEGKA;
+						ProvisioningStyle = Manual;
 					};
 					274A652A8441A85CA80A7BAD4250DD13 = {
 						DevelopmentTeam = ABHRJGEGKA;
+						ProvisioningStyle = Manual;
 					};
 					3406A8567434607276382C6ED908FE61 = {
 						DevelopmentTeam = ABHRJGEGKA;
 						LastSwiftMigration = 0800;
+						ProvisioningStyle = Manual;
 					};
 					3B9694271FCF8D85DF5AA30AC8944B96 = {
 						DevelopmentTeam = ABHRJGEGKA;
+						ProvisioningStyle = Manual;
 					};
 					40FF54FFE75C8D9119528241B4B01526 = {
 						DevelopmentTeam = ABHRJGEGKA;
 						LastSwiftMigration = 0800;
+						ProvisioningStyle = Manual;
 					};
 					4F0C6468504898F0748B91607A1B458F = {
 						DevelopmentTeam = ABHRJGEGKA;
+						ProvisioningStyle = Manual;
 					};
 					50388460F7121A22AFE237EE76A29214 = {
 						DevelopmentTeam = ABHRJGEGKA;
+						ProvisioningStyle = Manual;
 					};
 					753B6FFC1E4B2A748188C765B1F8B313 = {
 						DevelopmentTeam = ABHRJGEGKA;
+						ProvisioningStyle = Manual;
 					};
 					A51B14CF86868A3A34F149444A9780E9 = {
 						DevelopmentTeam = ABHRJGEGKA;
+						ProvisioningStyle = Manual;
 					};
 					BC8EE48D3825933D6C1E4B1DFF96B971 = {
 						DevelopmentTeam = ABHRJGEGKA;
 						LastSwiftMigration = 0800;
+						ProvisioningStyle = Manual;
 					};
 					CA00FE29C86DE661CEE6A60E780134C6 = {
 						DevelopmentTeam = ABHRJGEGKA;
+						ProvisioningStyle = Manual;
 					};
 					CCD5B378DD5A44A8199694A0E49F2D05 = {
 						DevelopmentTeam = ABHRJGEGKA;
+						ProvisioningStyle = Manual;
 					};
 					FA8C2BE8B372DC5EBC64667417DCCDDB = {
 						DevelopmentTeam = ABHRJGEGKA;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -3854,7 +3869,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8A80AC50E09DDCD6D44FE6621DEDC415 /* Pods-victoriousPersistenceTests.release.xcconfig */;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = ABHRJGEGKA;
@@ -3949,7 +3964,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 929527219CCBCAC51962E7F495BD75CE /* Pods-VictoriousIOSSDKTests.release.xcconfig */;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = ABHRJGEGKA;
@@ -3982,7 +3997,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E7BDA65BE22F7331D8D1FC11145164EB /* CCHLinkTextView.xcconfig */;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = ABHRJGEGKA;
@@ -4011,7 +4026,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 39A7E4818321028B5594C98547346C70 /* OCMock.xcconfig */;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = ABHRJGEGKA;
@@ -4069,7 +4084,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A24C3D9D4580AE28C08DB226D1A21B55 /* Nocilla.xcconfig */;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = ABHRJGEGKA;
@@ -4131,7 +4146,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7CB60B786E72603C39F50AADFD083343 /* Pods-victorious-test.qa.xcconfig */;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = ABHRJGEGKA;
@@ -4164,7 +4179,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7B77DCAFEFCAD6C85781D767A8A2C4ED /* MBProgressHUD.xcconfig */;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = ABHRJGEGKA;
@@ -4346,7 +4361,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7D91BFCCD3DBAD6E11B60DBD9474C39E /* OAStackView.xcconfig */;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = ABHRJGEGKA;
@@ -4512,7 +4527,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A24C3D9D4580AE28C08DB226D1A21B55 /* Nocilla.xcconfig */;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = ABHRJGEGKA;
@@ -4686,7 +4701,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D95473BFC1FE30CCBE7C1FFF76E1C526 /* SDWebImage.xcconfig */;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = ABHRJGEGKA;
@@ -4880,7 +4895,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D95473BFC1FE30CCBE7C1FFF76E1C526 /* SDWebImage.xcconfig */;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = ABHRJGEGKA;
@@ -4938,7 +4953,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A179D37AC1F79F823B3A667ED9DCBDA5 /* FBSDKShareKit.xcconfig */;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = ABHRJGEGKA;
@@ -5025,7 +5040,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1C92EA4D3DB83F69DDA71F300F23528D /* Pods-victorious.qa.xcconfig */;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = ABHRJGEGKA;
@@ -5097,7 +5112,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C0FFCE329AC87DCA1A28A3DC75A82BEE /* KVOController.xcconfig */;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = ABHRJGEGKA;
@@ -5184,7 +5199,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 33A3A02F93E3C35F13BA708C59C91F3A /* FBSDKCoreKit.xcconfig */;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = ABHRJGEGKA;
@@ -5271,7 +5286,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3E8D512961E1740D702C2D6E39CEF0C6 /* FBSDKLoginKit.xcconfig */;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = ABHRJGEGKA;
@@ -5300,7 +5315,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7D91BFCCD3DBAD6E11B60DBD9474C39E /* OAStackView.xcconfig */;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = ABHRJGEGKA;
@@ -5358,7 +5373,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A179D37AC1F79F823B3A667ED9DCBDA5 /* FBSDKShareKit.xcconfig */;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = ABHRJGEGKA;
@@ -5387,7 +5402,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0977D94B1169EE69DE5FA477C02D289F /* Bolts.xcconfig */;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = ABHRJGEGKA;
@@ -5416,7 +5431,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 6F578BB65F6E9C635F9315215648771D /* Pods-VictoriousIOSSDKTests.qa.xcconfig */;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = ABHRJGEGKA;
@@ -5449,7 +5464,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0977D94B1169EE69DE5FA477C02D289F /* Bolts.xcconfig */;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = ABHRJGEGKA;
@@ -5478,7 +5493,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C0FFCE329AC87DCA1A28A3DC75A82BEE /* KVOController.xcconfig */;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = ABHRJGEGKA;
@@ -5631,7 +5646,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DB6FD0A06EC8FC0FEFD0D79F6B774E83 /* Pods-victorious-test.release.xcconfig */;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = ABHRJGEGKA;
@@ -5664,7 +5679,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3E8D512961E1740D702C2D6E39CEF0C6 /* FBSDKLoginKit.xcconfig */;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = ABHRJGEGKA;
@@ -5722,7 +5737,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7B77DCAFEFCAD6C85781D767A8A2C4ED /* MBProgressHUD.xcconfig */;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = ABHRJGEGKA;
@@ -5817,7 +5832,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 01DCDB44CB78F7003D432EDC3AD18154 /* Pods-victoriousPersistenceTests.qa.xcconfig */;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = ABHRJGEGKA;
@@ -6053,7 +6068,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E7BDA65BE22F7331D8D1FC11145164EB /* CCHLinkTextView.xcconfig */;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = ABHRJGEGKA;
@@ -6144,7 +6159,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A9016D54382322DF55F70780DA16D400 /* Pods-victorious.release.xcconfig */;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = ABHRJGEGKA;
@@ -6177,7 +6192,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 33A3A02F93E3C35F13BA708C59C91F3A /* FBSDKCoreKit.xcconfig */;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = ABHRJGEGKA;
@@ -6206,7 +6221,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 39A7E4818321028B5594C98547346C70 /* OCMock.xcconfig */;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = ABHRJGEGKA;
