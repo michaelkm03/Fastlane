@@ -35,7 +35,7 @@ import VictoriousIOSSDK
     }
     
     var assetSize: CGSize {
-        return .zero
+        return CGSize(width: sourceResult.width, height: sourceResult.height)
     }
     
     var remoteID: String? {

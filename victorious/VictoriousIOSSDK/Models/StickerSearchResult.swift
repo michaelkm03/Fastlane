@@ -19,15 +19,13 @@ extension StickerSearchResult {
         guard
             let remoteID = json["id"].string,
             let url = json["url"].string,
-            let isVIP = json["is_vip"].bool
+            let isVIP = json["is_vip"].bool,
+            let width = json["width"].int,
+            let height = json["height"].int
         else {
             return nil
         }
-        
-        //TODO: Once size is returned in stickers, put the following 2 lines (without the default values) back in the guard
-        let width = json["size"]["width"].int ?? 100
-        let height = json["size"]["height"].int ?? 100
-        
+
         self.url = url
         self.remoteID = remoteID
         self.width = width

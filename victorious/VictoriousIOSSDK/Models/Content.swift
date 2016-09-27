@@ -131,12 +131,15 @@ public struct Content: Equatable {
         previewImages = (json["preview"][previewType]["assets"].array ?? []).flatMap { ImageAsset(json: $0) }
         
         switch type {
-            case .image, .sticker:
+            case .image:
                 assets = [ContentMediaAsset(contentType: type, sourceType: sourceType, json: json[typeString])].flatMap { $0 }
             case .gif, .video:
                 assets = (json[typeString][sourceType].array ?? []).flatMap { ContentMediaAsset(contentType: type, sourceType: sourceType, json: $0) }
             case .text, .link:
                 assets = []
+            case .sticker:
+                assets = [ContentMediaAsset(contentType: type, sourceType: sourceType, json: json[typeString])].flatMap { $0 }
+
         }
         
         linkedURL = NSURL(string: json[typeString]["data"].stringValue)

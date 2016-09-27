@@ -1215,6 +1215,7 @@
 		F050D33C1CAB6B30007A05ED /* ComposerInputAttachmentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F050D33B1CAB6B30007A05ED /* ComposerInputAttachmentType.swift */; };
 		F050D3441CAEEFB7007A05ED /* NSPredicate+MediaTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F050D3431CAEEFB7007A05ED /* NSPredicate+MediaTypeTests.swift */; };
 		F050D3461CAEF69D007A05ED /* NSPredicate+MediaType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F050D3451CAEF69D007A05ED /* NSPredicate+MediaType.swift */; };
+		F0617D8D1D9A2AC100CEB994 /* CreateStickerOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0617D8C1D9A2AC100CEB994 /* CreateStickerOperation.swift */; };
 		F06350691CB00FA30047E30C /* MixedMediaCameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06350681CB00FA30047E30C /* MixedMediaCameraViewController.swift */; };
 		F063506B1CB2FBCA0047E30C /* MixedMediaCameraViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F063506A1CB2FBCA0047E30C /* MixedMediaCameraViewController.storyboard */; };
 		F06350711CBC16840047E30C /* MixedMediaCameraViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06350701CBC16840047E30C /* MixedMediaCameraViewControllerDelegate.swift */; };
@@ -1264,6 +1265,7 @@
 		F0BD81271C9A18020062D079 /* CreationFlowTypeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0BD81261C9A18020062D079 /* CreationFlowTypeHelper.swift */; };
 		F0BD812B1C9B645F0062D079 /* CreationFlowTypeHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0BD812A1C9B645F0062D079 /* CreationFlowTypeHelperTests.swift */; };
 		F0BD812D1C9B67150062D079 /* ComposerAttachmentTabBarButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0BD812C1C9B67150062D079 /* ComposerAttachmentTabBarButtonTests.swift */; };
+		F0C5AEDD1D9A397C0005EB0F /* StickerCreateRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C5AEDC1D9A397C0005EB0F /* StickerCreateRequest.swift */; };
 		F0C83A451B0FDD2B00A6EC1A /* coachmarks.json in Resources */ = {isa = PBXBuildFile; fileRef = F0C83A441B0FDD2B00A6EC1A /* coachmarks.json */; };
 		F0E0F1AA1AE8811700143CBF /* VLaunchScreenProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E0F1A91AE8811700143CBF /* VLaunchScreenProvider.m */; };
 		F0E6672A1D14964A007BF537 /* ContentCellTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E667291D14964A007BF537 /* ContentCellTracker.swift */; };
@@ -2881,6 +2883,7 @@
 		F050D33B1CAB6B30007A05ED /* ComposerInputAttachmentType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposerInputAttachmentType.swift; sourceTree = "<group>"; };
 		F050D3431CAEEFB7007A05ED /* NSPredicate+MediaTypeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSPredicate+MediaTypeTests.swift"; sourceTree = "<group>"; };
 		F050D3451CAEF69D007A05ED /* NSPredicate+MediaType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSPredicate+MediaType.swift"; sourceTree = "<group>"; };
+		F0617D8C1D9A2AC100CEB994 /* CreateStickerOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateStickerOperation.swift; sourceTree = "<group>"; };
 		F06350681CB00FA30047E30C /* MixedMediaCameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MixedMediaCameraViewController.swift; sourceTree = "<group>"; };
 		F063506A1CB2FBCA0047E30C /* MixedMediaCameraViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MixedMediaCameraViewController.storyboard; sourceTree = "<group>"; };
 		F06350701CBC16840047E30C /* MixedMediaCameraViewControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MixedMediaCameraViewControllerDelegate.swift; sourceTree = "<group>"; };
@@ -2928,6 +2931,7 @@
 		F0BD81261C9A18020062D079 /* CreationFlowTypeHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreationFlowTypeHelper.swift; sourceTree = "<group>"; };
 		F0BD812A1C9B645F0062D079 /* CreationFlowTypeHelperTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreationFlowTypeHelperTests.swift; sourceTree = "<group>"; };
 		F0BD812C1C9B67150062D079 /* ComposerAttachmentTabBarButtonTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposerAttachmentTabBarButtonTests.swift; sourceTree = "<group>"; };
+		F0C5AEDC1D9A397C0005EB0F /* StickerCreateRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickerCreateRequest.swift; sourceTree = "<group>"; };
 		F0C83A441B0FDD2B00A6EC1A /* coachmarks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = coachmarks.json; sourceTree = "<group>"; };
 		F0E0F1A81AE8811700143CBF /* VLaunchScreenProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLaunchScreenProvider.h; sourceTree = "<group>"; };
 		F0E0F1A91AE8811700143CBF /* VLaunchScreenProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLaunchScreenProvider.m; sourceTree = "<group>"; };
@@ -3310,6 +3314,7 @@
 				C3348B201BF53EEE004183A1 /* Bool+Initializers.swift */,
 				7A85D9CE1D107D1D00535EF3 /* CGSize+Geometry.swift */,
 				F022CFDB1CFE535500F040BB /* ChatMessageCreateRequest.swift */,
+				F0C5AEDC1D9A397C0005EB0F /* StickerCreateRequest.swift */,
 				62FD647B1D8B1E8000E9BAF8 /* ChatRoomsRequest.swift */,
 				BFE25A481D0B7E2B00F55653 /* ContentDeleteRequest.swift */,
 				BF8F57A41CEBE47400188C0E /* ContentFeedRequest.swift */,
@@ -6324,6 +6329,7 @@
 			children = (
 				F00FC2CC1D91FAC300CFF79F /* StickerSearchOperation.swift */,
 				F04C2B6A1D94F3B60073CE73 /* StickerSearchResultObject.swift */,
+				F0617D8C1D9A2AC100CEB994 /* CreateStickerOperation.swift */,
 			);
 			name = Sticker;
 			sourceTree = "<group>";
@@ -7575,6 +7581,7 @@
 				678C43C11C541B3700EBE83A /* MediaUploadCreateRequest.swift in Sources */,
 				03BC6FB01BE74E9B00CFCBEE /* StandardPaginator.swift in Sources */,
 				C3E7C0F11BF3EFEB00AFE545 /* NotificationsRequest.swift in Sources */,
+				F0C5AEDD1D9A397C0005EB0F /* StickerCreateRequest.swift in Sources */,
 				A7D9204B1C0636B3002A6503 /* ResponseParsingError.swift in Sources */,
 				C3E7C0FB1BF3F4A600AFE545 /* MarkAllNotificationsAsReadRequest.swift in Sources */,
 				0E4BF6B31CA60B5400B8A456 /* WebSocketEvent.swift in Sources */,
@@ -7966,6 +7973,7 @@
 				F06BEABC1C97982900F35694 /* ComposerAttachmentTabBar.swift in Sources */,
 				7A1DECDC1D80E09E003F5C37 /* Queueable.swift in Sources */,
 				C3623F271BA3AE54002B121D /* VDependencyManager+Interstitial.swift in Sources */,
+				F0617D8D1D9A2AC100CEB994 /* CreateStickerOperation.swift in Sources */,
 				0314D4D019B46B5E00FA363C /* VLoadingViewController.m in Sources */,
 				A7D15ED51CC05B510039761B /* UIDevice+UUID.swift in Sources */,
 				7CC982211D0104EC00583B70 /* VDependencyManager+ForumNetworkSource.swift in Sources */,
