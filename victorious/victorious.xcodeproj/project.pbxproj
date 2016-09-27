@@ -530,6 +530,7 @@
 		79EEC4A11C17B99B0004E6FC /* DeviceExperimentsResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 79EEC4A01C17B99B0004E6FC /* DeviceExperimentsResponse.json */; };
 		7A02F8931D2486D400F43B24 /* CollectionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A02F8921D2486D400F43B24 /* CollectionType.swift */; };
 		7A02F8951D273C0F00F43B24 /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A02F8941D273C0F00F43B24 /* SettingsTableViewCell.swift */; };
+		7A07385F1D9B2E570016D5D8 /* User+ValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A07385E1D9B2E570016D5D8 /* User+ValidationTests.swift */; };
 		7A126DF51CFF956800F9C86E /* APIPathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A126DF41CFF956800F9C86E /* APIPathTests.swift */; };
 		7A1389911D53E06E000F5C86 /* Subscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1389901D53E06E000F5C86 /* Subscription.swift */; };
 		7A1921AD1D91EF0200EA71CF /* VDependencyManager+Tracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1921AC1D91EF0200EA71CF /* VDependencyManager+Tracking.swift */; };
@@ -1968,6 +1969,7 @@
 		79EEC4A01C17B99B0004E6FC /* DeviceExperimentsResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DeviceExperimentsResponse.json; sourceTree = "<group>"; };
 		7A02F8921D2486D400F43B24 /* CollectionType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionType.swift; sourceTree = "<group>"; };
 		7A02F8941D273C0F00F43B24 /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
+		7A07385E1D9B2E570016D5D8 /* User+ValidationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "User+ValidationTests.swift"; sourceTree = "<group>"; };
 		7A126DF41CFF956800F9C86E /* APIPathTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIPathTests.swift; sourceTree = "<group>"; };
 		7A1389901D53E06E000F5C86 /* Subscription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Subscription.swift; sourceTree = "<group>"; };
 		7A1921AC1D91EF0200EA71CF /* VDependencyManager+Tracking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VDependencyManager+Tracking.swift"; sourceTree = "<group>"; };
@@ -3443,6 +3445,7 @@
 				0EF377501D36C6E5006BF786 /* StageMetaDataTests.swift */,
 				7AFEB14A1D413D7B00FA972D /* TimestampTests.swift */,
 				03314F481BE40F0100EE74FD /* UserTests.swift */,
+				7A07385E1D9B2E570016D5D8 /* User+ValidationTests.swift */,
 				BF2D25791CED40980001A2AF /* ViewedContent */,
 				0EC8ECF01D24488900A3272D /* WebSocketErrorTests.swift */,
 			);
@@ -7630,6 +7633,7 @@
 				0EC8ECF11D24488900A3272D /* WebSocketErrorTests.swift in Sources */,
 				C3E7C0EF1BF3ED9900AFE545 /* NotificationsRequestTests.swift in Sources */,
 				0300AA801BF2BCBB000A121D /* DevicePreferencesRequestTests.swift in Sources */,
+				7A07385F1D9B2E570016D5D8 /* User+ValidationTests.swift in Sources */,
 				BF3CD8901D11E44100CB7764 /* UserUpvoteRequestTests.swift in Sources */,
 				03314F4E1BE40F0100EE74FD /* AccountCreateRequestTests.swift in Sources */,
 				C3209CA41BF148DD00EA229D /* TrendingHashtagRequestTests.swift in Sources */,
