@@ -410,7 +410,7 @@ private extension VDependencyManager {
     }
 }
 
-private class StagePreparer {
+private final class StagePreparer {
     var nextStageContent: StageContent?
     func prepareNextContent(stageContent content: StageContent, for stage: StageViewController) {
         let isYouTube = content.content.assets.first?.videoSource == .youtube
