@@ -268,11 +268,14 @@ private extension VDependencyManager {
             return nil
         }
         
-        guard let lowestPriceProduct = products.select({ $1.storeKitProduct?.price.doubleValue < $0.storeKitProduct?.price.doubleValue }) else {
+        guard
+            let lowestPriceProduct = products.select({ $1.storeKitProduct.price.doubleValue < $0.storeKitProduct.price.doubleValue }),
+            let lowestPrice = lowestPriceProduct.price
+        else {
             return nil
         }
         
-        return description.stringByReplacingOccurrencesOfString("%%PRICE_TAG%%", withString: lowestPriceProduct.price)
+        return description.stringByReplacingOccurrencesOfString("%%PRICE_TAG%%", withString: lowestPrice)
     }
     
     var descriptionFont: UIFont? {
