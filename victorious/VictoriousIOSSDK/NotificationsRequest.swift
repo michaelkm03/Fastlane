@@ -24,7 +24,7 @@ public struct NotificationsRequest: PaginatorPageable, ResultBasedPageable {
     public var urlRequest: NSURLRequest {
         let url = NSURL(string: "/api/notification/notifications_list")!
         let request = NSMutableURLRequest(url: url as URL)
-        paginator.addPaginationArgumentsToRequest(request)
+        paginator.addPaginationArguments(to: request)
         return request
     }
     

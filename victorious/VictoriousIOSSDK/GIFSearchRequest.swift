@@ -22,16 +22,17 @@ public struct GIFSearchRequest: PaginatorPageable, ResultBasedPageable {
     
     public init(searchOptions: GIFSearchOptions, paginator: StandardPaginator = StandardPaginator(pageNumber: 1, itemsPerPage: 20)) {
 		
-		let url: NSURL?
+		var url: URL?
+        
         switch searchOptions {
             case .Search(let searchTerm, let searchURL):
-                url = NSURL(string: searchURL)?.URLByAppendingPathComponent(searchTerm)
+                url = URL(string: searchURL)?.appendingPathComponent(searchTerm)
             case .Trending(let trendingURL):
-                url = NSURL(string: trendingURL)
+                url = URL(string: trendingURL)
         }
         
-        let mutableURLRequest = NSMutableURLRequest(url: (url ?? NSURL()) as URL)
-        paginator.addPaginationArgumentsToRequest(mutableURLRequest)
+        let mutableURLRequest = NSMutableURLRequest(url: url ?? URL(string: "")!)
+        paginator.addPaginationArguments(to: mutableURLRequest)
         urlRequest = mutableURLRequest
         
         self.searchOptions = searchOptions

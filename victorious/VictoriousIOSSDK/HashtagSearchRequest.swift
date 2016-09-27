@@ -13,8 +13,8 @@ public struct HashtagSearchRequest: RequestType {
     
     // param: - searchTerm must be a urlPathPart percent encoded string
     public init?(apiPath: APIPath, searchTerm: String) {
-        let charSet = NSCharacterSet.vsdk_pathPartAllowedCharacterSet
-        let escapedSearchTerm = searchTerm.stringByAddingPercentEncodingWithAllowedCharacters(charSet) ?? searchTerm
+        let charSet = CharacterSet.vsdk_pathPartAllowedCharacterSet
+        let escapedSearchTerm = searchTerm.addingPercentEncoding(withAllowedCharacters: charSet) ?? searchTerm
         var apiPath = apiPath
         apiPath.queryParameters = ["hashtag": escapedSearchTerm]
         
