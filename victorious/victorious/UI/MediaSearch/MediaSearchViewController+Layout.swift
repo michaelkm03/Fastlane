@@ -43,11 +43,11 @@ extension MediaSearchViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-       
+        
         if options.showAttribution {
             let headerHeight = self.shouldShowHeader(section) ? MediaSearchLayout.headerViewHeight : 0.0
             return CGSize(width: collectionView.bounds.width, height: headerHeight )
-        
+            
         } else {
             return CGSize.zero
         }

@@ -37,7 +37,6 @@ extension MediaSearchViewController: UICollectionViewDelegate {
         if collectionView.cellForItemAtIndexPath( indexPath ) is MediaSearchResultCell {
             if self.options.showPreview {
                 showPreview(forItemAtIndexPath: indexPath)
-           
             } else {
                 self.selectedIndexPath = indexPath
                 selectAndExport(itemAtIndexPath: indexPath)

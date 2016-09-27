@@ -26,8 +26,7 @@ class CrossFadingAnimationController: NSObject, UIViewControllerAnimatedTransiti
     func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
         guard
             let toView = transitionContext.viewForKey(UITransitionContextToViewKey),
-            let fromView = transitionContext.viewForKey(UITransitionContextFromViewKey),
-            let containerView = transitionContext.containerView()
+            let fromView = transitionContext.viewForKey(UITransitionContextFromViewKey)
         else {
             return
         }
@@ -40,7 +39,7 @@ class CrossFadingAnimationController: NSObject, UIViewControllerAnimatedTransiti
         let animationOptions = self.animationOptions
         UIView.animateWithDuration(animationOptions.fadeOutDuration, animations: animations) { _ in
             fromView.removeFromSuperview()
-            containerView.addSubview(toView)
+            transitionContext.containerView().addSubview(toView)
             let animations = {
                 toView.alpha = 1.0
                 transitionContext.completeTransition(true)

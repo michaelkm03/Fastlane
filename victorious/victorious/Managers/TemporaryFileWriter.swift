@@ -27,7 +27,7 @@ struct TemporaryFileWriter {
     /// Writes the raw data to disk atomically with a file extension and a fileName. If no extension is specified none is used, if no filename is specified a new unique one is generated.
     /// If the file write succeeds a path is returned else nil is returned.
     static func writeTemporaryData(data: NSData, fileExtension: String = "", fileName: String = NSProcessInfo.processInfo().globallyUniqueString) throws -> NSURL {
-        let fileURL = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent("\(fileName).\(fileExtension)")
+        let fileURL = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent("\(fileName).\(fileExtension)") ?? NSURL()
 
         do {
             try data.writeToURL(fileURL, options: .AtomicWrite)

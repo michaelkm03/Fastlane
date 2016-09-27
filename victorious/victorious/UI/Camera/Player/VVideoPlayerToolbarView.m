@@ -40,6 +40,7 @@
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
     UIImage *pauseButton = [self.playButton imageForState:(UIControlStateSelected)];
     [self.playButton setImage:pauseButton forState:(UIControlStateSelected | UIControlStateHighlighted)];
 }

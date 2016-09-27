@@ -160,19 +160,18 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
     
     // MARK: - ConfigurableGridStreamHeader
     
-    func decorateHeader(dependencyManager: VDependencyManager, maxHeight: CGFloat, content: UserModel?, hasError: Bool) {
+    func decorateHeader(dependencyManager: VDependencyManager, withWidth width: CGFloat, maxHeight: CGFloat, content: UserModel?, hasError: Bool) {
         // No error states for profiles
         self.user = content
     }
     
-    func sizeForHeader(dependencyManager: VDependencyManager, maxHeight: CGFloat, content: UserModel?, hasError: Bool) -> CGSize {
+    func sizeForHeader(dependencyManager: VDependencyManager, withWidth width: CGFloat, maxHeight: CGFloat, content: UserModel?, hasError: Bool) -> CGSize {
         // No error states for profiles
         self.user = content
         
         setNeedsLayout()
         layoutIfNeeded()
         
-        let width = CGRectGetWidth(UIScreen.mainScreen().bounds)
         let widthConstraint = v_addWidthConstraint(width)
         let height = systemLayoutSizeFittingSize(UILayoutFittingCompressedSize).height
         

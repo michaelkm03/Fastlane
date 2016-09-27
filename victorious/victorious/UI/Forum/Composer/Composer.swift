@@ -9,7 +9,7 @@
 import Foundation
 import VictoriousIOSSDK
 
-protocol Composer: class, ForumEventReceiver, ForumEventSender, ComposerAttachmentTabBarDelegate {
+protocol Composer: class, ForumEventReceiver, ForumEventSender, ComposerAttachmentTabBarDelegate, TrayDelegate {
     
     /// The maximum height of the composer. Triggers a UI update if the composer
     /// could be updated to better represent its content inside a frame with the new height.
@@ -35,7 +35,6 @@ protocol Composer: class, ForumEventReceiver, ForumEventSender, ComposerAttachme
 }
 
 extension Composer {
-    
     func sendMessage(text text: String, currentUser: UserModel) {
         let content = Content(author: currentUser, text: text)
         send(.sendContent(content))

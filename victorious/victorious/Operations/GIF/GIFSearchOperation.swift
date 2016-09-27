@@ -10,23 +10,22 @@ import Foundation
 import VictoriousIOSSDK
 
 final class GIFSearchOperation: AsyncOperation<[AnyObject]>, PaginatedRequestOperation {
-    
     // MARK: - Initializing
     
     required init(request: GIFSearchRequest) {
-        self.searchTerm = request.searchTerm
+        self.searchOptions = request.searchOptions
         self.request = request
         self.requestOperation = RequestOperation(request: request)
     }
     
-    convenience init(searchTerm: String?) {
+    convenience init(searchOptions: GIFSearchOptions) {
         let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 20)
-        self.init(request: GIFSearchRequest(searchTerm: searchTerm, paginator: paginator))
+        self.init(request: GIFSearchRequest(searchOptions: searchOptions, paginator: paginator))
     }
     
     // MARK: - Executing
     
-    private let searchTerm: String?
+    private let searchOptions: GIFSearchOptions?
     
     var request: GIFSearchRequest
     

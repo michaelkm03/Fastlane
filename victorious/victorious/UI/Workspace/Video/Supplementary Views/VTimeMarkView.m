@@ -12,6 +12,7 @@
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
     self.timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
     self.timeLabel.text  = @"00:00";
     self.timeLabel.textColor = [UIColor lightGrayColor];

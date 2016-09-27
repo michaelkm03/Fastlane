@@ -12,9 +12,10 @@
 
 - (void)awakeFromNib
 {
-        UIView *hash = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 3, 15)];
-        hash.backgroundColor = [UIColor lightGrayColor];
-        [self addSubview:hash];
+    [super awakeFromNib];
+    UIView *hash = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 3, 15)];
+    hash.backgroundColor = [UIColor lightGrayColor];
+    [self addSubview:hash];
 }
 
 + (id)collectionReusableViewForCollectionView:(UICollectionView *)collectionView
