@@ -51,7 +51,7 @@ public protocol ForumNetworkSourceWebSocket: ForumNetworkSource {
     /// Replaces the endPoint used for opening a WebSocket connection. This URL has the use once token baked into it.
     /// - parameter endPoint: The actual URL to hit in the form: "ws:// or wss://"
     ///
-    func replaceEndPoint(endPoint: NSURL)
+    func replaceEndPoint(endPoint: URL)
 
     /// Will contain all incoming and outgoing messages over the WebSocket.
     var webSocketMessageContainer: WebSocketRawMessageContainer { get }

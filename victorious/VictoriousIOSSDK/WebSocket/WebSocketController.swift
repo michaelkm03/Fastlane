@@ -21,8 +21,8 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
     }
     
     /// Custom background queue for packing and unpacking messages over the WebSocket.
-    private lazy var socketListenerQueue: dispatch_queue_t = {
-        dispatch_queue_create("com.victorious.socket_listener", DISPATCH_QUEUE_SERIAL)
+    private lazy var socketListenerQueue: DispatchQueue = {
+        DispatchQueue(label: "com.victorious.socket_listener")
     }()
     
     /// The actual instance which has a WebSocket connection.
@@ -54,7 +54,7 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
 
     // MARK: - ForumNetworkSourceWebSocket
 
-    public func replaceEndPoint(endPoint: NSURL) {
+    public func replaceEndPoint(endPoint: URL) {
         Log.verbose("WebSocket replaceEndPoint -> \(endPoint)")
 
         if let webSocket = webSocket {
@@ -126,7 +126,7 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
     public let nextSender: ForumEventSender? = nil
     
     public func send(event: ForumEvent) {
-        sendOutboundForumEvent(event)
+        sendOutbound(event)
     }
     
     // MARK: - WebSocketDelegate
@@ -134,9 +134,9 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
     public func websocketDidConnect(socket: WebSocket) {
         Log.verbose("WebSocket did connect to URL -> \(socket.currentURL)")
         let rawMessage = WebSocketRawMessage(messageString: "Connected to URL -> \(socket.currentURL)")
-        webSocketMessageContainer.addMessage(rawMessage)
+        webSocketMessageContainer.add(rawMessage)
 
-        dispatch_async(dispatch_get_main_queue()) { [weak self] in
+        DispatchQueue.main.async { [weak self] in
             self?.broadcast(.websocket(.connected))
         }
     }
@@ -144,15 +144,15 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
     public func websocketDidDisconnect(socket: WebSocket, error: NSError?) {
         Log.verbose("WebSocket did disconnect from URL -> \(socket.currentURL) with error -> \(error)")
         let rawMessage = WebSocketRawMessage(messageString: "Disconnected -> \(socket) error -> \(error)")
-        webSocketMessageContainer.addMessage(rawMessage)
+        webSocketMessageContainer.add(rawMessage)
         
         // The WebSocket instance with the baked in token has been consumed. 
         // A new token has to be fetched and a new WebSocket instance has to be created.
         pingTimer?.invalidate()
         webSocket = nil
 
-        if let disconnectEvent = eventFromDisconnect(error) {
-            dispatch_async(dispatch_get_main_queue()) { [weak self] in
+        if let disconnectEvent = eventFromDisconnect(error: error) {
+            DispatchQueue.main.async { [weak self] in
                 self?.broadcast(disconnectEvent)
             }
         }
@@ -166,37 +166,37 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
             let json = JSON(data: dataFromString)
             rawMessage.json = json
 
-            guard let event = (decodeEventFromJSON(json) ?? decodeErrorFromJSON(json)) else {
+            guard let event = (decodeEvent(from: json) ?? decodeError(from: json)) else {
                 Log.info("Unparsable WebSocket message returned -> \(text)")
                 return
             }
             
-            dispatch_async(dispatch_get_main_queue()) { [weak self] in
+            DispatchQueue.main.async { [weak self] in
                 self?.broadcast(event)
             }
         }
 
-        webSocketMessageContainer.addMessage(rawMessage)
+        webSocketMessageContainer.add(rawMessage)
     }
 
-    public func websocketDidReceiveData(socket: WebSocket, data: NSData) {
+    public func websocketDidReceiveData(socket: WebSocket, data: Data) {
         // ignore incoming data
     }
     
     // MARK: WebSocketPongDelegate
     
-    public func websocketDidReceivePong(socket: WebSocket) {
+    public func websocketDidReceivePong(socket: WebSocket, data: Data?) {
         let rawMessage = WebSocketRawMessage(messageString: "Did receive pong message.")
-        webSocketMessageContainer.addMessage(rawMessage)
+        webSocketMessageContainer.add(rawMessage)
     }
 
     // MARK: Private
 
-    private func sendOutboundForumEvent(event: ForumEvent) {
+    private func sendOutbound(_ event: ForumEvent) {
         switch event {
             case .sendContent(let content):
                 sendJSON(from: content)
-                bounceBackOutboundEvent(event)
+                bounceBackOutbound(event)
             case .blockUser(let blockUser):
                 sendJSON(from: blockUser)
             default:
@@ -205,7 +205,7 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
     }
 
     /// Will send outgoing content events back over the event chain.
-    private func bounceBackOutboundEvent(event: ForumEvent) {
+    private func bounceBackOutbound(_ event: ForumEvent) {
         if case .sendContent(let content) = event {
             if content.author?.accessLevel.isCreator == true {
                 broadcast(.showCaptionContent(content))
@@ -224,14 +224,14 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
 
         // According to the RFC even if the client disconnects we should receive a close message with the error code 1000.
         // We still want to broadcast that to the rest of the app but without an error so it's explicit nothing went wrong.
-        if let error = error , clientInitiatedDisconnect && WebSocket.CloseCode(rawValue: UInt16(error.code)) == WebSocket.CloseCode.Normal {
+        if let error = error , clientInitiatedDisconnect && WebSocket.CloseCode(rawValue: UInt16(error.code)) == .normal {
             clientInitiatedDisconnect = false
             disconnectEvent = .websocket(.disconnected(webSocketError: nil))
         }
         else if let error = error, let errorMessageData = error.localizedDescription.data(using: String.Encoding.utf8, allowLossyConversion: false) {
             // Try to parse out custom error message.
             let errorJSON = JSON(data: errorMessageData)
-            if let webSocketError = decodeErrorFromJSON(errorJSON, didDisconnect: true) {
+            if let webSocketError = decodeError(from: errorJSON, didDisconnect: true) {
                 disconnectEvent = webSocketError
             }
         }
@@ -250,11 +250,11 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
             return
         }
         
-        let toServerDictionary = dictionaryConvertible.toServerDictionaryWithIdentificationMessage(uniqueIdentificationMessage)
+        let toServerDictionary = dictionaryConvertible.toServerDictionary(with: uniqueIdentificationMessage)
         
         if let jsonString = JSON(toServerDictionary).rawString() {
             Log.verbose("sendOutboundForumEvent json -> \(jsonString)")
-            webSocket.writeString(jsonString)
+            webSocket.write(string: jsonString)
         }
         else {
             Log.warning("Failed to convert ForumEvent to JSON string. Dictionary -> \(toServerDictionary)")
@@ -265,15 +265,15 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
         guard let webSocket = webSocket , webSocket.isConnected else {
             return
         }
-        webSocket.writePing(NSData())
+        webSocket.write(ping: Data())
     }
 }
 
-private extension WebSocket {
+fileprivate extension WebSocket {
  
     /// Everytime the token is invalidated (== everytime we drop the connection) we have a need to generate a new connection
     /// and therefore also a new WebSocket instance. Since the token is appended to the URL.
-    private convenience init(url: NSURL, socketListenerQueue: dispatch_queue_t? = nil, delegate: WebSocketDelegate? = nil, pongDelegate: WebSocketPongDelegate? = nil) {
+    fileprivate convenience init(url: URL, socketListenerQueue: DispatchQueue? = nil, delegate: WebSocketDelegate? = nil, pongDelegate: WebSocketPongDelegate? = nil) {
         self.init(url: url, protocols: nil)
         self.delegate = delegate
         self.pongDelegate = pongDelegate
@@ -284,7 +284,7 @@ private extension WebSocket {
     }
 }
 
-private extension DictionaryConvertible {
+fileprivate extension DictionaryConvertible {
 
     private var toServerRootKey: String {
         return "to_server"
@@ -299,7 +299,7 @@ private extension DictionaryConvertible {
     }
 
     /// A dictionary representation of the WebSocket JSON protocol. The `identificationMessage` is passed in to identify each outgoing message.
-    private func toServerDictionaryWithIdentificationMessage(identificationMessage: UniqueIdentificationMessage) -> [String: AnyObject] {
+    fileprivate func toServerDictionary(with identificationMessage: UniqueIdentificationMessage) -> [String: AnyObject] {
         var toServerDictionary: [String: AnyObject] = [:]
 
         if let rootTypeKey = rootTypeKey, let rootTypeValue = rootTypeValue {

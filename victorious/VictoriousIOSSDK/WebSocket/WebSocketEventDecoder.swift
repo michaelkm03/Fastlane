@@ -36,22 +36,22 @@ private struct SocketClose {
 
 protocol WebSocketEventDecoder {
     /// Parses out a ForumEvent from the JSON string coming in over the WebSocket.
-    func decodeEventFromJSON(json: JSON) -> ForumEvent?
+    func decodeEvent(from json: JSON) -> ForumEvent?
 
     /// `WebSocketError` is handled uniquely since it does not follow the layout as the other messages. 
     /// In theory we could get an error message without the connection being closed, use `didDisconnect` to specify this.
-    func decodeErrorFromJSON(json: JSON, didDisconnect: Bool) -> ForumEvent?
+    func decodeError(from json: JSON, didDisconnect: Bool) -> ForumEvent?
 }
 
 extension WebSocketEventDecoder {
     /// Returns a *single* ForumEvent from the JSON blob passed in if parsing succeeds.
     /// - NOTE: Don't pass in a JSON blob with multiple events, there is no guarantee which one will be returned.
-    func decodeEventFromJSON(json: JSON) -> ForumEvent? {
+    func decodeEvent(from json: JSON) -> ForumEvent? {
         var forumEvent: ForumEvent?
         let rootNode = json[Keys.root]
         
         guard
-            let serverTime = Timestamp(apiString: rootNode[Keys.serverTime].stringValue) , rootNode.isExists(),
+            let serverTime = Timestamp(apiString: rootNode[Keys.serverTime].stringValue), rootNode.isExists(),
             let type = rootNode[Keys.type].string
         else {
             return nil
@@ -89,7 +89,7 @@ extension WebSocketEventDecoder {
         return forumEvent
     }
 
-    func decodeErrorFromJSON(json: JSON, didDisconnect: Bool = false) -> ForumEvent? {
+    func decodeError(from json: JSON, didDisconnect: Bool = false) -> ForumEvent? {
         var webSocketEvent: ForumEvent?
 
         if let webSocketError = WebSocketError(json: json[Keys.root][Keys.error], didDisconnect: didDisconnect) {
