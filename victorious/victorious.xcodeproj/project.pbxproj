@@ -591,6 +591,8 @@
 		7A543CB11D5BB1CC005052FE /* CreatorListResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A543CB01D5BB1CC005052FE /* CreatorListResponse.json */; };
 		7A5519EC1D24775900CD6BCF /* ContentMediaSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5519EB1D24775900CD6BCF /* ContentMediaSize.swift */; };
 		7A5519EE1D24778C00CD6BCF /* ContentMediaSizeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5519ED1D24778C00CD6BCF /* ContentMediaSizeTests.swift */; };
+		7A57CDF81D9A016400DE9320 /* VModernEnterNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A57CDF71D9A016400DE9320 /* VModernEnterNameViewController.swift */; };
+		7A57CDFA1D9A023700DE9320 /* User+Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A57CDF91D9A023700DE9320 /* User+Validation.swift */; };
 		7A63CD3A1D5400F1006A48E4 /* UIView+ShakeAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A63CD391D5400F1006A48E4 /* UIView+ShakeAnimation.swift */; };
 		7A63CD421D5427F8006A48E4 /* VSocialLoginErrors.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A63CD411D5427F8006A48E4 /* VSocialLoginErrors.m */; };
 		7A67EC7E1CF9132300D022D1 /* TimePaginatedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A67EC7D1CF9132300D022D1 /* TimePaginatedDataSource.swift */; };
@@ -2028,6 +2030,8 @@
 		7A543CB01D5BB1CC005052FE /* CreatorListResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CreatorListResponse.json; sourceTree = "<group>"; };
 		7A5519EB1D24775900CD6BCF /* ContentMediaSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentMediaSize.swift; sourceTree = "<group>"; };
 		7A5519ED1D24778C00CD6BCF /* ContentMediaSizeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentMediaSizeTests.swift; sourceTree = "<group>"; };
+		7A57CDF71D9A016400DE9320 /* VModernEnterNameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VModernEnterNameViewController.swift; sourceTree = "<group>"; };
+		7A57CDF91D9A023700DE9320 /* User+Validation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "User+Validation.swift"; sourceTree = "<group>"; };
 		7A63CD391D5400F1006A48E4 /* UIView+ShakeAnimation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+ShakeAnimation.swift"; sourceTree = "<group>"; };
 		7A63CD401D5427F8006A48E4 /* VSocialLoginErrors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSocialLoginErrors.h; sourceTree = "<group>"; };
 		7A63CD411D5427F8006A48E4 /* VSocialLoginErrors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSocialLoginErrors.m; sourceTree = "<group>"; };
@@ -3237,6 +3241,7 @@
 				D8D8129F1B13CB9300E93B37 /* VModernEnterNameViewController.h */,
 				D8D812A01B13CB9300E93B37 /* VModernEnterNameViewController.m */,
 				D858E0D51B1FC32300437DDE /* VModernEnterNameViewController.storyboard */,
+				7A57CDF71D9A016400DE9320 /* VModernEnterNameViewController.swift */,
 				D8D812B61B15819600E93B37 /* VModernFlowControllerAnimationController.h */,
 				D8D812B71B15819600E93B37 /* VModernFlowControllerAnimationController.m */,
 				D85B708D1B0ECC6D0038CA5B /* VModernLandingViewController.h */,
@@ -3516,6 +3521,7 @@
 				7AFEB1481D413B7600FA972D /* Timestamp.swift */,
 				A7F843611BFD0BFD004C3D55 /* Tracking.swift */,
 				03314F5C1BE40F3200EE74FD /* User.swift */,
+				7A57CDF91D9A023700DE9320 /* User+Validation.swift */,
 				A7559A791CCFD93B00C37349 /* VIPStatus.swift */,
 			);
 			path = Models;
@@ -7525,6 +7531,7 @@
 				0E8EB2D11CCF0BCB0087D815 /* ContentFetchRequest.swift in Sources */,
 				BF8F57A51CEBE47400188C0E /* ContentFeedRequest.swift in Sources */,
 				BF20227E1D00B9A4006B59C5 /* ContentUnupvoteRequest.swift in Sources */,
+				7A57CDFA1D9A023700DE9320 /* User+Validation.swift in Sources */,
 				795B75981BFA80E000227647 /* WebViewHTMLFetchRequest.swift in Sources */,
 				C3E7C0ED1BF3E1BD00AFE545 /* Notification.swift in Sources */,
 				03314F611BE40F3200EE74FD /* AccountCreateRequest.swift in Sources */,
@@ -8009,6 +8016,7 @@
 				0362656B1BAB99ED00C34C73 /* FacebookHelper.swift in Sources */,
 				7A1DECBC1D80E02C003F5C37 /* GIFSearchOperation.swift in Sources */,
 				D80A94DE1A53941D0035D788 /* VTrimControl.m in Sources */,
+				7A57CDF81D9A016400DE9320 /* VModernEnterNameViewController.swift in Sources */,
 				A7B133601C6178FD006EC4F5 /* PaginatedDataSource.swift in Sources */,
 				C39B220B1B0A58EF00D3DFE7 /* VPermissionMicrophone.m in Sources */,
 				0E23691D1D497C4100D9E45C /* Presentable.swift in Sources */,

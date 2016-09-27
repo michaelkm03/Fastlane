@@ -7,13 +7,9 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 class EditProfileDataSource: NSObject, UITableViewDataSource {
-    private struct Constants {
-        static let displayNameLength = 40
-        static let usernameLength = 20
-    }
-    
     private let dependencyManager: VDependencyManager
     private let tableView: UITableView
     let nameAndLocationCell: DisplaynameLocationAvatarCell
@@ -49,7 +45,7 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
-            // Username, locaiton and camera
+            // Username, location and camera
             configureNameAndLocationCell(nameAndLocationCell)
             return nameAndLocationCell
         } else {
@@ -68,33 +64,11 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
     var onUserUpdateData: (() -> Void)?
     
     /// Check this to determine whether or not the entered data is currently valid. When this propery is `nil` the dataSource is considered valid.
-    var localizedError: String? {
-        get {
-            // Displayname Validation
-            let displayname = nameAndLocationCell.displayname
-            guard let trimmedDisplayName = displayname?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) where !trimmedDisplayName.isEmpty else {
-                return NSLocalizedString("Your display name cannoot be blank.", comment: "While editing, error letting the user know their display name cannot be blank.")
-            }
-            
-            guard displayname?.characters.count < Constants.displayNameLength else {
-                return NSLocalizedString("Your display name is too long.", comment: "While editing, error letting the user know their display name must be shorter.")
-            }
-            
-            // Username Validation
-            guard let username = nameAndLocationCell.username where !username.characters.isEmpty else {
-                return NSLocalizedString("Your username cannot be empty.", comment: "While editing, error to the user letting them know their username must not be empty.")
-            }
-            let usernameCharacterset = NSCharacterSet(charactersInString: username)
-            guard NSCharacterSet.validUsernameCharacters.isSupersetOfSet(usernameCharacterset) else {
-                return NSLocalizedString("Your username can only contain lowercase letters a-z, number 0-9, and underscores \"_\".",
-                    comment: "While editing, an error that informs they have entered and invalid characters and must remove the invalid character.")
-            }
-            guard username.characters.count <= Constants.usernameLength else {
-                return NSLocalizedString("Your username can only be 20 characters long.",
-                comment: "While editing, an error that informs they have entered and invalid characters and must remove the invalid character.")
-            }
-            return nil
-        }
+    var localizedError: ErrorType? {
+        return (
+            User.validationError(forUsername: nameAndLocationCell.username ?? "") ??
+            User.validationError(forDisplayName: nameAndLocationCell.displayname ?? "")
+        )
     }
     
     /// This function will update the UI with the provided `previewImage`

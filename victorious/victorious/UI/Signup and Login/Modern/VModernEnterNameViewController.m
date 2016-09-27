@@ -107,7 +107,7 @@
 
 - (void)onContinue:(id)sender
 {
-    if ([self shouldSetUsername:self.nameField.text])
+    if ([self validateUsernameFrom:self.nameField])
     {
         [self.view endEditing:YES];
         
@@ -129,25 +129,6 @@
 - (UIView *)backgroundContainerView
 {
     return self.view;
-}
-
-#pragma mark - Private Methods
-
-- (BOOL)shouldSetUsername:(NSString *)name
-{
-    NSString *trimmedString = [name stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    if (trimmedString.length == 0)
-    {
-        [self.nameField showInvalidText:NSLocalizedString(@"You must enter a name.", nil)
-                               animated:YES
-                                  shake:YES
-                                 forced:YES];
-        return NO;
-    }
-    else
-    {
-        return YES;
-    }
 }
 
 @end
