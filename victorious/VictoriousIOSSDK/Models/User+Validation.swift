@@ -23,15 +23,14 @@ extension User {
     
     // MARK: - Validating properties
     
-    // TODO: We want to auto-trim these names. Maybe these methods should return a Result<String> for a processed value
-    // or a validation error.
-    
     public static func validationError(forUsername username: String, errorFormat: UserValidationErrorFormat = .long) -> ErrorType? {
-        guard !username.isEmpty else {
+        let trimmedUsername = username.stringByTrimmingCharactersInSet(.whitespaceAndNewlineCharacterSet())
+        
+        guard !trimmedUsername.isEmpty else {
             return validationError(withDescription: NSLocalizedString("EmptyUsername", comment: ""))
         }
         
-        let usernameCharacters = NSCharacterSet(charactersInString: username)
+        let usernameCharacters = NSCharacterSet(charactersInString: trimmedUsername)
         
         guard Constants.validUsernameCharacters.isSupersetOfSet(usernameCharacters) else {
             return validationError(withDescription: {
@@ -42,7 +41,7 @@ extension User {
             }())
         }
         
-        guard username.characters.count <= Constants.maxUsernameLength else {
+        guard trimmedUsername.characters.count <= Constants.maxUsernameLength else {
             return validationError(withDescription: NSLocalizedString("UsernameTooLong", comment: ""))
         }
         
@@ -50,7 +49,9 @@ extension User {
     }
     
     public static func validationError(forDisplayName displayName: String) -> ErrorType? {
-        guard displayName.characters.count < Constants.maxDisplayNameLength else {
+        let trimmedDisplayName = displayName.stringByTrimmingCharactersInSet(.whitespaceAndNewlineCharacterSet())
+        
+        guard trimmedDisplayName.characters.count < Constants.maxDisplayNameLength else {
             return validationError(withDescription: NSLocalizedString("DisplayNameTooLong", comment: ""))
         }
         
