@@ -416,13 +416,13 @@ private class StagePreparer {
         let isYouTube = content.content.assets.first?.videoSource == .youtube
         nextStageContent = content
         if stage.isOnScreen || !isYouTube {
-            stage.updateStageContent(content)
+            stage.updateStageContent(stageContent: content)
         }
     }
     
     func stage(stage: StageViewController, didBecomeVisible visible: Bool) {
         if let stageContent = nextStageContent where visible {
-            stage.updateStageContent(stageContent)
+            stage.updateStageContent(stageContent: stageContent)
         }
     }
 }
