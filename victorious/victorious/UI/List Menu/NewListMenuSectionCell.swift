@@ -9,8 +9,8 @@
 class NewListMenuSectionCell: UICollectionViewCell {
     // MARK: - Outlets
 
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var avatarView: AvatarView!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var avatarView: AvatarView!
 
     // Cell Configuration
 
@@ -25,13 +25,13 @@ class NewListMenuSectionCell: UICollectionViewCell {
         }
     }
 
-    var titleColorKey = VDependencyManagerAccentColorKey
+    var titleColorKey = "color.text.navItem"
     var itemFontKey = VDependencyManagerParagraphFontKey
     var selectedBackgroundKey = VDependencyManagerAccentColorKey
 
     override var selected: Bool {
         didSet {
-            updateCellBackgroundColor(to: contentView, selectedColor: dependencyManager?.colorForKey(selectedBackgroundKey), isSelected: selected)
+            updateCellBackgroundColor(to: contentView, selectedColor: dependencyManager?.selectedBackgroundColor, isSelected: selected)
         }
     }
 
@@ -47,7 +47,21 @@ class NewListMenuSectionCell: UICollectionViewCell {
     // MARK: - Private methods
 
     private func applyTemplateAppearance(with dependencyManager: VDependencyManager) {
-        titleLabel.textColor = dependencyManager.colorForKey(titleColorKey)
-        titleLabel.font = dependencyManager.fontForKey(itemFontKey)
+        titleLabel.textColor = dependencyManager.titleColor
+        titleLabel.font = dependencyManager.itemFont
+    }
+}
+
+private extension VDependencyManager {
+    var itemFont: UIFont? {
+        return fontForKey(VDependencyManagerParagraphFontKey)
+    }
+
+    var selectedBackgroundColor: UIColor? {
+        return colorForKey(VDependencyManagerAccentColorKey)
+    }
+
+    var titleColor: UIColor? {
+        return colorForKey("color.text.navItem")
     }
 }

@@ -25,13 +25,24 @@ enum ListMenuSection: Int {
 /// To fetch data for each section, it delegates the fetching to specific data sources.
 /// So if another section is added, a corresponding data source should be added too.
 class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, ListMenuSectionDataSourceDelegate {
+    private struct Constants {
+        struct Keys {
+            static let chatRoomsURL = "chat.rooms.URL"
+            static let chatRoomStreamURL = "streamURL"
+            static let chatRoomViewTrackingURL = "view"
+        }
+    }
+
     private weak var listMenuViewController: ListMenuViewController?
     private let dependencyManager: VDependencyManager
+    var requestExecutor: RequestExecutorType = MainRequestExecutor()
     
     let communityDataSource: ListMenuCommunityDataSource
     let hashtagDataSource: ListMenuHashtagsDataSource
     let creatorDataSource: ListMenuCreatorDataSource
-    let chatRoomsDataSource: ListMenuChatRoomsDataSource
+    let newChatRoomsDataSource: NewListMenuSectionDataSource<ChatRoom>
+
+    private let subscribeButton: SubscribeButton
     
     // MARK: - Initialization
     
@@ -42,14 +53,46 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         creatorDataSource = ListMenuCreatorDataSource(dependencyManager: dependencyManager.creatorsChildDependency)
         communityDataSource = ListMenuCommunityDataSource(dependencyManager: dependencyManager.communityChildDependency)
         hashtagDataSource = ListMenuHashtagsDataSource(dependencyManager: dependencyManager.hashtagsChildDependency)
-        chatRoomsDataSource = ListMenuChatRoomsDataSource(dependencyManager: dependencyManager.chatRoomsChildDependency)
+
+        let requestExecutor = self.requestExecutor
+        let chatRoomsAPIPath = self.dependencyManager.networkResources?.apiPathForKey(Constants.Keys.chatRoomsURL)
+        newChatRoomsDataSource = NewListMenuSectionDataSource(dependencyManager: dependencyManager.chatRoomsChildDependency, cellConfigurationCallback: { cell, item in
+                cell.titleLabel.text = item.name
+            }, fetchRemoteDataCallback: { [weak requestExecutor, chatRoomsAPIPath] dataSource in
+                guard
+                    let apiPath = chatRoomsAPIPath,
+                    let request = ChatRoomsRequest(apiPath: apiPath),
+                    let requestExecutor = requestExecutor
+                else {
+                    Log.warning("Missing chat rooms API path or requestExecutor")
+                    dataSource.state = .failed(error: nil)
+                    return
+                }
+
+                let operation = RequestOperation(request: request)
+                operation.requestExecutor = requestExecutor
+                operation.queue() { [weak dataSource] result in
+                    switch result {
+                    case .success(let chatRooms):
+                        dataSource?.visibleItems = chatRooms
+
+                    case .failure(let error):
+                        dataSource?.state = .failed(error: error)
+                        dataSource?.delegate?.didUpdateVisibleItems(forSection: .chatRooms)
+
+                    case .cancelled:
+                        dataSource?.delegate?.didUpdateVisibleItems(forSection: .chatRooms)
+                    }
+                }
+            }
+        )
 
         super.init()
         
         creatorDataSource.setupDataSource(with: self)
         communityDataSource.setupDataSource(with: self)
         hashtagDataSource.setupDataSource(with: self)
-        chatRoomsDataSource.setupDataSource(with: self)
+        newChatRoomsDataSource.setupDataSource(with: self)
         
         registerNibs(for: listMenuViewController.collectionView)
     }
@@ -67,7 +110,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
             case .creator: return creatorDataSource.numberOfItems
             case .community: return communityDataSource.numberOfItems
             case .hashtags: return hashtagDataSource.numberOfItems
-            case .chatRooms: return chatRoomsDataSource.numberOfItems
+            case .chatRooms: return newChatRoomsDataSource.numberOfItems
         }
     }
     
@@ -78,7 +121,12 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
             case .creator: return dequeueProperCell(creatorDataSource, for: collectionView, at: indexPath)
             case .community: return dequeueProperCell(communityDataSource, for: collectionView, at: indexPath)
             case .hashtags: return dequeueProperCell(hashtagDataSource, for: collectionView, at: indexPath)
-            case .chatRooms: return dequeueProperCell(chatRoomsDataSource, for: collectionView, at: indexPath)
+            case .chatRooms:
+                switch newChatRoomsDataSource.state {
+                    case .loading: return dequeueLoadingCell(from: collectionView, at: indexPath)
+                    case .items: return newChatRoomsDataSource.dequeueItemCell(from: collectionView, at: indexPath)
+                    case .failed, .noContent: return dequeueNoContentCell(from: collectionView, at: indexPath)
+                }
         }
     }
     

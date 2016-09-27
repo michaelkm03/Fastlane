@@ -136,10 +136,10 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     }
 
     private func selectChatRoom(atIndex index: Int) {
-        let item = collectionViewDataSource.chatRoomsDataSource.visibleItems[index]
+        let item = collectionViewDataSource.newChatRoomsDataSource.visibleItems[index]
         let itemString = item.name
         let macro = "%%CHATROOM%%"
-        var apiPath = collectionViewDataSource.chatRoomsDataSource.chatRoomStreamAPIPath
+        var apiPath = collectionViewDataSource.newChatRoomsDataSource.streamAPIPath
         apiPath.macroReplacements[macro] = item.name
         let context = DeeplinkContext(value: DeeplinkContext.chatRoomFeed, subContext: itemString)
         let selectedItem = ListMenuSelectedItem(
@@ -234,7 +234,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
             case .creator: validIndices = collectionViewDataSource.creatorDataSource.visibleItems.indices
             case .community: validIndices = collectionViewDataSource.communityDataSource.visibleItems.indices
             case .hashtags: validIndices = collectionViewDataSource.hashtagDataSource.visibleItems.indices
-            case .chatRooms: validIndices = collectionViewDataSource.chatRoomsDataSource.visibleItems.indices
+            case .chatRooms: validIndices = collectionViewDataSource.newChatRoomsDataSource.visibleItems.indices
         }
         return validIndices ~= indexPath.row
     }

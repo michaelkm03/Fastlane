@@ -24,14 +24,17 @@ protocol NewListMenuSectionDataSourceDelegate: class {
 class NewListMenuSectionDataSource<CellData> {
 
     // MARK: - Initialization
-    typealias CellConfigurationCallback = (cell: UICollectionViewCell, with: CellData)  -> Void
-//    typealias fetchRemoteDataCallback = (
+    typealias CellConfigurationCallback = (cell: NewListMenuSectionCell, item: CellData)  -> Void
+    typealias FetchRemoteDataCallback = (dataSource: NewListMenuSectionDataSource) -> Void
     let cellConfigurationCallback: CellConfigurationCallback
+    let fetchRemoteDataCallback: FetchRemoteDataCallback
     weak var delegate: ListMenuSectionDataSourceDelegate?
-    private(set) var state: ListMenuDataSourceState = .loading
+    var state: ListMenuDataSourceState = .loading
 
-    init(dependencyManager: VDependencyManager, cellConfigurationCallback: CellConfigurationCallback) {
+    init(dependencyManager: VDependencyManager, cellConfigurationCallback: CellConfigurationCallback, fetchRemoteDataCallback: FetchRemoteDataCallback) {
         self.dependencyManager = dependencyManager
+        self.cellConfigurationCallback = cellConfigurationCallback
+        self.fetchRemoteDataCallback = fetchRemoteDataCallback
     }
 
     // MARK - Dependency manager
@@ -50,17 +53,17 @@ class NewListMenuSectionDataSource<CellData> {
 
     func dequeueItemCell(from collectionView: UICollectionView, at indexPath: NSIndexPath) -> NewListMenuSectionCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(NewListMenuSectionCell.defaultReuseIdentifier, forIndexPath: indexPath) as! NewListMenuSectionCell
-        cellConfigurationCallback(cell: cell, with: visibleItems[indexPath.row])
+        cellConfigurationCallback(cell: cell, item: visibleItems[indexPath.row])
         cell.dependencyManager = dependencyManager
         return cell
     }
 
     func setupDataSource(with delegate: ListMenuSectionDataSourceDelegate) {
         self.delegate = delegate
-        fetchRemoteData()
+        fetchRemoteDataCallback(dataSource: self)
     }
 
-    private(set) var visibleItems: [CellData] = [] {
+    var visibleItems: [CellData] = [] {
         didSet {
             state = visibleItems.isEmpty ? .noContent : .items
             delegate?.didUpdateVisibleItems(forSection: .hashtags)
