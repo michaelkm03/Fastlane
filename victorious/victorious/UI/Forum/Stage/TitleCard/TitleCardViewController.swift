@@ -200,7 +200,9 @@ class TitleCardViewController: UIViewController {
         let author = stageContent?.content.author?.displayName ?? ""
         let title = stageContent?.metaData?.title ?? ""
         let marqueeWidth = marqueeView.updateLabels(author: author, title: title)
-        marqueeViewWidthConstraint.constant = min(marqueeWidth, Constants.maxMarqueeViewWidth)
+        let minMarqueeWidth = min(marqueeWidth, Constants.maxMarqueeViewWidth)
+        
+        marqueeViewWidthConstraint.constant = minMarqueeWidth
         marqueeView.layoutIfNeeded()
         marqueeView.scroll()
         avatarView.user = stageContent?.content.author
