@@ -24,7 +24,7 @@ public struct PasswordResetRequest: RequestType {
     
     public var urlRequest: NSURLRequest {
         
-        let urlRequest = NSMutableURLRequest(URL: NSURL(string: "/api/password_reset")!)
+        let urlRequest = NSMutableURLRequest(url: NSURL(string: "/api/password_reset")! as URL)
         let passwordResetInfo = [
             "new_password": newPassword,
             "user_token": userToken,

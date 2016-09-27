@@ -10,5 +10,5 @@ import Foundation
 
 protocol MixedMediaCameraViewControllerDelegate: class {
     
-    func mixedMediaCameraViewController(mixedMediaCameraViewController: MixedMediaCameraViewController, capturedImageWithMediaURL mediaURL: NSURL, previewImage: UIImage)
+    func mixedMediaCameraViewController(_ mixedMediaCameraViewController: MixedMediaCameraViewController, capturedImageWithMediaURL mediaURL: URL, previewImage: UIImage)
 }

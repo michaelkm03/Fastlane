@@ -24,7 +24,7 @@ extension VLoadingViewController {
             guard let template = loadingHelper.template else {
                 return
             }
-            self?.onDoneLoadingWithTemplateConfiguration(template as [NSObject: AnyObject])
+            self?.onDoneLoadingWithTemplateConfiguration(template as [AnyHashable: Any])
         }
         loadingHelper.execute()
         
@@ -44,7 +44,7 @@ private class LoadingHelper: NSObject {
         }
         else {
             let environmentManager = VEnvironmentManager.sharedInstance()
-            guard let buildNumber = NSBundle.mainBundle().objectForInfoDictionaryKey(kCFBundleVersionKey as String) as? String else {
+            guard let buildNumber = Bundle.main.object(forInfoDictionaryKey: kCFBundleVersionKey as String) as? String else {
                 return nil
             }
             let templateCache = TemplateCache(dataCache: VDataCache(),
@@ -61,13 +61,13 @@ private class LoadingHelper: NSObject {
         }
     }
     
-    private lazy var templateDownloadOperation: VTemplateDownloadOperation = {
+    fileprivate lazy var templateDownloadOperation: VTemplateDownloadOperation = {
         VTemplateDownloadOperation(downloader: PersistenceTemplateDownloader())
     }()
     
-    private var dependencyManager: VDependencyManager {
+    fileprivate var dependencyManager: VDependencyManager {
         var defaultDependencyManager = VDependencyManager.dependencyManagerWithDefaultValuesForColorsAndFonts()
-        if let template = template as? [NSObject: AnyObject] {
+        if let template = template as? [AnyHashable: Any] {
             let parentManager = VDependencyManager(
                 parentManager: defaultDependencyManager,
                 configuration: nil,
@@ -84,7 +84,7 @@ private class LoadingHelper: NSObject {
         return defaultDependencyManager
     }
     
-    private lazy var loginOperation: StoredLoginOperation = {
+    fileprivate lazy var loginOperation: StoredLoginOperation = {
         return StoredLoginOperation(dependencyManager: self.dependencyManager)
     }()
     

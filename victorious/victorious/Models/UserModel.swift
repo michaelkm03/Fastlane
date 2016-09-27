@@ -22,7 +22,7 @@ extension UserModel {
         return vipStatus?.isVIP == true
     }
     
-    func canView(content: Content) -> Bool {
+    func canView(_ content: Content) -> Bool {
         return !content.isVIPOnly || hasValidVIPSubscription
     }
     

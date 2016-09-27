@@ -11,10 +11,10 @@ import UIKit
 class ListMenuCreatorCollectionViewCell: UICollectionViewCell, ListMenuSectionCell {
     typealias Cell = ListMenuCreatorCollectionViewCell
     
-    @IBOutlet private weak var avatarView: AvatarView!
-    @IBOutlet private weak var creatorNameLabel: UILabel!
+    @IBOutlet fileprivate weak var avatarView: AvatarView!
+    @IBOutlet fileprivate weak var creatorNameLabel: UILabel!
     
-    override var selected: Bool {
+    override var isSelected: Bool {
         didSet {
             updateCellBackgroundColor(to: contentView, selectedColor: dependencyManager?.highlightedBackgroundColor, isSelected: selected)
         }
@@ -37,7 +37,7 @@ class ListMenuCreatorCollectionViewCell: UICollectionViewCell, ListMenuSectionCe
     
     // MARK: - Private methods
     
-    private func applyTemplateAppearance(with dependencyManager: VDependencyManager) {
+    fileprivate func applyTemplateAppearance(with dependencyManager: VDependencyManager) {
         creatorNameLabel.textColor = dependencyManager.titleColor
         creatorNameLabel.font = dependencyManager.titleFont
     }

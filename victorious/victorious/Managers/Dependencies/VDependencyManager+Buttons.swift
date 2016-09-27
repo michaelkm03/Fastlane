@@ -11,7 +11,7 @@ import Foundation
 /// Public dependency manager extension for getting a button from the template.
 extension VDependencyManager {
     
-    func buttonForKey(key: String) -> UIButton? {
+    func buttonForKey(_ key: String) -> UIButton? {
         return templateValueOfType(UIButton.self, forKey: key) as? UIButton
     }
 }

@@ -28,13 +28,13 @@ class RequestOperation<Request: RequestType>: AsyncOperation<Request.ResultType>
         return .background
     }
     
-    override func execute(finish: (result: OperationResult<Request.ResultType>) -> Void) {
-        if !requestExecutor.errorHandlers.contains({ $0 is UnauthorizedErrorHandler }) {
+    override func execute(_ finish: (_ result: OperationResult<Request.ResultType>) -> Void) {
+        if !requestExecutor.errorHandlers.contains(where: { $0 is UnauthorizedErrorHandler }) {
             requestExecutor.errorHandlers.append(UnauthorizedErrorHandler())
         }
         
-        if !requestExecutor.errorHandlers.contains({ $0 is DebugErrorHandler }) {
-            requestExecutor.errorHandlers.append(DebugErrorHandler(requestIdentifier: "\(self.dynamicType)"))
+        if !requestExecutor.errorHandlers.contains(where: { $0 is DebugErrorHandler }) {
+            requestExecutor.errorHandlers.append(DebugErrorHandler(requestIdentifier: "\(type(of: self))"))
         }
         
         requestExecutor.executeRequest(

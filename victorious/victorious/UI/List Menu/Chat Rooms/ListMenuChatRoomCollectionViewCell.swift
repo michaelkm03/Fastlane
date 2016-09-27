@@ -10,7 +10,7 @@ final class ListMenuChatRoomCollectionViewCell: UICollectionViewCell, ListMenuSe
 
     // MARK: - Outlets
 
-    @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet fileprivate weak var titleLabel: UILabel!
 
     // MARK: - UICollectionViewCell
 
@@ -36,7 +36,7 @@ final class ListMenuChatRoomCollectionViewCell: UICollectionViewCell, ListMenuSe
 
     // MARK: - Private methods
 
-    private func applyTemplateAppearance(with dependencyManager: VDependencyManager) {
+    fileprivate func applyTemplateAppearance(with dependencyManager: VDependencyManager) {
         titleLabel.textColor = dependencyManager.titleColor
         titleLabel.font = dependencyManager.chatRoomItemFont
     }

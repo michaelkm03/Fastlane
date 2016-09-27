@@ -14,5 +14,5 @@ import UIKit
     
     var title: String { get }
 	
-	func performSearch( searchTerm searchTerm: String?, pageType: VPageType, completion: (NSError? -> ())? )
+	func performSearch( searchTerm: String?, pageType: VPageType, completion: ((NSError?) -> ())? )
 }

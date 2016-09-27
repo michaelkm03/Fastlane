@@ -16,7 +16,7 @@ class SideNavProfileButton: BadgeButton {
     
     // MARK: - Constants
     
-    private struct Constants {
+    fileprivate struct Constants {
         static let badgeAngle = CGFloat(M_PI * 0.25)
         static let badgeCountType = BadgeCountType.unreadNotifications
     }
@@ -51,15 +51,15 @@ class SideNavProfileButton: BadgeButton {
     
     // MARK: - Views
     
-    private let avatarView: AvatarView = {
+    fileprivate let avatarView: AvatarView = {
         let view = AvatarView()
-        view.userInteractionEnabled = false
+        view.isUserInteractionEnabled = false
         return view
     }()
     
     // MARK: - Managing badge count
     
-    private func updateBadgeCount() {
+    fileprivate func updateBadgeCount() {
         setBadgeNumber(BadgeCountManager.shared.badgeCount(for: Constants.badgeCountType) ?? 0)
     }
     
@@ -73,12 +73,12 @@ class SideNavProfileButton: BadgeButton {
         )
     }
     
-    override func intrinsicContentSize() -> CGSize {
+    override var intrinsicContentSize : CGSize {
         return avatarView.intrinsicContentSize()
     }
     
-    override func sizeThatFits(size: CGSize) -> CGSize {
-        return intrinsicContentSize()
+    override func sizeThatFits(_ size: CGSize) -> CGSize {
+        return intrinsicContentSize
     }
     
     override func layoutSubviews() {

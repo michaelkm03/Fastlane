@@ -11,20 +11,20 @@ import UIKit
 /// Cell to represent GIF search result in a collectin of search results
 class MediaSearchResultCell: UICollectionViewCell {
     
-    @IBOutlet private weak var emptyView: UIView!
-    @IBOutlet private weak var imageView: UIImageView!
-    @IBOutlet private weak var overlayView: UIView!
+    @IBOutlet fileprivate weak var emptyView: UIView!
+    @IBOutlet fileprivate weak var imageView: UIImageView!
+    @IBOutlet fileprivate weak var overlayView: UIView!
     
     /// Sets the image asset URL to show in this cell
-    var assetUrl: NSURL? {
+    var assetUrl: URL? {
         didSet {
-            if let url = self.assetUrl where self.assetUrl != oldValue {
+            if let url = self.assetUrl , self.assetUrl != oldValue {
                 self.loadImage( url )
             }
         }
     }
     
-    private func loadImage( url: NSURL ) {
+    fileprivate func loadImage( _ url: URL ) {
         self.imageView.alpha = 0.0
         self.imageView.sd_setImageWithURL( url, completed: { (image, error, cacheType, url) in
             if cacheType == .None {
@@ -38,10 +38,10 @@ class MediaSearchResultCell: UICollectionViewCell {
         })
     }
     
-    override var selected: Bool {
+    override var isSelected: Bool {
         didSet {
-            self.overlayView.alpha = self.selected ? 0.5 : 0.0
-            self.overlayView.backgroundColor = self.selected ? self.tintColor : UIColor.clearColor()
+            self.overlayView.alpha = self.isSelected ? 0.5 : 0.0
+            self.overlayView.backgroundColor = self.isSelected ? self.tintColor : UIColor.clear
         }
     }
 }

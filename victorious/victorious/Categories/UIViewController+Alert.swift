@@ -12,14 +12,14 @@ extension UIViewController {
     
     /// Displays an alert using the default error and message strings
     /// with a single action that calls on the completion block.
-    func v_showDefaultErrorAlert(completion: (Void -> ())? = nil) {
+    func v_showDefaultErrorAlert(_ completion: ((Void) -> ())? = nil) {
         v_showAlert(title: v_defaultErrorTitle, message: v_defaultErrorMessage, completion: completion)
     }
     
     /// Displays an alert with a single action that calls on the completion block.
-    func v_showAlert(title title: String?, message: String?, completion: (Void -> ())? = nil ) {
+    func v_showAlert(title: String?, message: String?, completion: ((Void) -> ())? = nil ) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-        let cancelAction = UIAlertAction(title: NSLocalizedString("OK", comment:""), style: .Cancel) { action in
+        let cancelAction = UIAlertAction(title: NSLocalizedString("OK", comment:""), style: .cancel) { action in
             completion?()
         }
         alertController.addAction( cancelAction )

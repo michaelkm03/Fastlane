@@ -10,10 +10,10 @@ import Foundation
 
 final class ShowTestPurchaseConfirmationOperation: AsyncOperation<Void> {
     
-    private let type: VPurchaseType
-    private let title: String?
-    private let price: String?
-    private let duration: String?
+    fileprivate let type: VPurchaseType
+    fileprivate let title: String?
+    fileprivate let price: String?
+    fileprivate let duration: String?
     
     // MARK: - ActionConfirmationOperation
     
@@ -30,7 +30,7 @@ final class ShowTestPurchaseConfirmationOperation: AsyncOperation<Void> {
         return .main
     }
     
-    override func execute(finish: (result: OperationResult<Void>) -> Void) {
+    override func execute(_ finish: @escaping (_ result: OperationResult<Void>) -> Void) {
         let alertController = UIAlertController(
             title: type.tite,
             message: type.messageWithTitle(title ?? "[ITEM]", duration: duration ?? "[DESCRIPTION]", price: price ?? "[PRICE]") + "\n\n[Simulated for testing]",
@@ -82,7 +82,7 @@ private extension VPurchaseType {
         }
     }
     
-    func messageWithTitle(title: String, duration: String, price: String) -> String {
+    func messageWithTitle(_ title: String, duration: String, price: String) -> String {
         switch self {
         case .Subscription:
             return "Do you want to subscribe to \(title) for \(duration) for \(price)?  This subscription will automatically renew until canceled."

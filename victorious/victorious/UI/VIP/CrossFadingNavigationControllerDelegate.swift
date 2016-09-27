@@ -18,7 +18,7 @@ class CrossFadingNavigationControllerDelegate: NSObject, UINavigationControllerD
     }
     
     func navigationController(
-        navigationController: UINavigationController,
+        _ navigationController: UINavigationController,
         animationControllerForOperation operation: UINavigationControllerOperation,
         fromViewController fromVC: UIViewController,
         toViewController toVC: UIViewController

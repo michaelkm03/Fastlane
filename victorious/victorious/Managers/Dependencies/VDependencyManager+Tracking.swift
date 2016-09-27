@@ -8,7 +8,7 @@
 
 private var associatedObjectViewWasHiddenKey = "viewWasHidden"
 
-@objc class TemplateTrackingKey: NSObject {
+class TemplateTrackingKey: NSObject {
     static let start = "start"
     static let stop = "stop"
     static let appInit = "init"
@@ -71,7 +71,7 @@ extension VDependencyManager {
             return
         }
         
-        guard let apiPaths = trackingAPIPaths(forEventKey: "view") where apiPaths.count > 0 else {
+        guard let apiPaths = trackingAPIPaths(forEventKey: "view") , apiPaths.count > 0 else {
             return
         }
         
@@ -95,15 +95,15 @@ extension VDependencyManager {
     
     // MARK: - Objective-C compatibility
     
-    func trackingURLsForKey(key: String) -> [String] {
+    func trackingURLsForKey(_ key: String) -> [String] {
         return trackingAPIPaths(forEventKey: key)?.flatMap { $0.url?.absoluteString } ?? []
     }
     
-    func trackViewWillAppear(viewController: UIViewController) {
+    func trackViewWillAppear(_ viewController: UIViewController) {
         trackViewWillAppear(for: viewController)
     }
     
-    func trackViewWillDisappear(viewController: UIViewController) {
+    func trackViewWillDisappear(_ viewController: UIViewController) {
         trackViewWillDisappear(for: viewController)
     }
 }

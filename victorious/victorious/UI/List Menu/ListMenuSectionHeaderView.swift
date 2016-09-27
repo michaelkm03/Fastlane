@@ -9,11 +9,11 @@
 import UIKit
 
 class ListMenuSectionHeaderView: UICollectionReusableView {
-    private struct Constants {
+    fileprivate struct Constants {
         static let accessoryButtonXMargin = CGFloat(12.0)
     }
     
-    @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet fileprivate weak var titleLabel: UILabel!
     
     var dependencyManager: VDependencyManager! {
         didSet {
@@ -21,7 +21,7 @@ class ListMenuSectionHeaderView: UICollectionReusableView {
         }
     }
     
-    private func applyTemplateAppearance(with dependencyManager: VDependencyManager) {
+    fileprivate func applyTemplateAppearance(with dependencyManager: VDependencyManager) {
         clipsToBounds = false
         titleLabel.text = dependencyManager.titleText
         titleLabel.textColor = dependencyManager.titleColor
@@ -43,8 +43,8 @@ class ListMenuSectionHeaderView: UICollectionReusableView {
             if let accessoryButton = accessoryView {
                 addSubview(accessoryButton)
                 accessoryButton.translatesAutoresizingMaskIntoConstraints = false
-                centerYAnchor.constraintEqualToAnchor(accessoryButton.centerYAnchor).active = true
-                trailingAnchor.constraintEqualToAnchor(accessoryButton.trailingAnchor, constant: Constants.accessoryButtonXMargin).active = true
+                centerYAnchor.constraint(equalTo: accessoryButton.centerYAnchor).isActive = true
+                trailingAnchor.constraint(equalTo: accessoryButton.trailingAnchor, constant: Constants.accessoryButtonXMargin).isActive = true
             }
         }
     }

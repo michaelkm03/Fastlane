@@ -25,8 +25,8 @@ public struct UserUnupvoteRequest: RequestType {
     }
     
     public var urlRequest: NSURLRequest {
-        let request = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "POST"
+        let request = NSMutableURLRequest(url: url as URL)
+        request.httpMethod = "POST"
         request.vsdk_addURLEncodedFormPost(["target_user_id": String(userID)])
         return request
     }

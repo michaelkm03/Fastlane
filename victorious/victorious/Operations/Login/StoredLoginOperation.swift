@@ -11,7 +11,7 @@ import VictoriousIOSSDK
 
 final class StoredLoginOperation: SyncOperation<Void> {
     
-    private let dependencyManager: VDependencyManager
+    fileprivate let dependencyManager: VDependencyManager
     
     init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
@@ -23,8 +23,8 @@ final class StoredLoginOperation: SyncOperation<Void> {
     }
     
     override func execute() -> OperationResult<Void> {
-        let defaults = NSUserDefaults.standardUserDefaults()
-        let accountIdentifier: String? = defaults.stringForKey(kAccountIdentifierDefaultsKey)
+        let defaults = UserDefaults.standard
+        let accountIdentifier: String? = defaults.string(forKey: kAccountIdentifierDefaultsKey)
         
         let storedLogin = VStoredLogin()
         if let info = storedLogin.storedLoginInfo() {

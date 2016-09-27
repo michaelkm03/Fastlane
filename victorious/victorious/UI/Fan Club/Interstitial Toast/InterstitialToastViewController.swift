@@ -13,17 +13,17 @@ import Foundation
 /// Or it can also be dismissed if the user swipe up on the toast.
 class InterstitialToastViewController: UIViewController, Interstitial, VBackgroundContainer {
 
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var descriptionLabel: UILabel!
-    @IBOutlet private weak var containerView: UIView!
+    @IBOutlet fileprivate weak var titleLabel: UILabel!
+    @IBOutlet fileprivate weak var descriptionLabel: UILabel!
+    @IBOutlet fileprivate weak var containerView: UIView!
     
-    private var dependencyManager: VDependencyManager!
-    private var topAnchorConstraint: NSLayoutConstraint!
-    private var timerManager: VTimerManager?
+    fileprivate var dependencyManager: VDependencyManager!
+    fileprivate var topAnchorConstraint: NSLayoutConstraint!
+    fileprivate var timerManager: VTimerManager?
     
-    private struct Constants {
-        static let slideInAnimationDuration = NSTimeInterval(0.4)
-        static let slideOutAnimationDuration = NSTimeInterval(0.4)
+    fileprivate struct Constants {
+        static let slideInAnimationDuration = TimeInterval(0.4)
+        static let slideOutAnimationDuration = TimeInterval(0.4)
         
         static let toastViewHeight: CGFloat = 40
         static let topOffset = CGFloat(0)
@@ -31,13 +31,13 @@ class InterstitialToastViewController: UIViewController, Interstitial, VBackgrou
     
     // MARK: - Initialization
     
-    class func newWithDependencyManager(dependencyManager: VDependencyManager) -> InterstitialToastViewController {
+    class func newWithDependencyManager(_ dependencyManager: VDependencyManager) -> InterstitialToastViewController {
         let toastViewController = InterstitialToastViewController.v_initialViewControllerFromStoryboard() as InterstitialToastViewController
         toastViewController.dependencyManager = dependencyManager
         return toastViewController
     }
 
-    private func configure(withTitle title: String, detailedDescription detail: String? = nil) {
+    fileprivate func configure(withTitle title: String, detailedDescription detail: String? = nil) {
         titleLabel.text = title
 
         // FUTURE: toasts don't support details any more, maybe they will in the future so don't want to rip this out
@@ -59,7 +59,7 @@ class InterstitialToastViewController: UIViewController, Interstitial, VBackgrou
         return nil
     }
     
-    func presentationController(presentedViewController: UIViewController, presentingViewController: UIViewController?) -> UIPresentationController {
+    func presentationController(_ presentedViewController: UIViewController, presentingViewController: UIViewController?) -> UIPresentationController {
         return UIPresentationController(presentedViewController: presentedViewController, presentingViewController: presentingViewController)
     }
     
@@ -87,7 +87,7 @@ class InterstitialToastViewController: UIViewController, Interstitial, VBackgrou
         return .Portrait
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         guard let dismissalTime = alert?.parameters.dismissalTime else {
@@ -102,7 +102,7 @@ class InterstitialToastViewController: UIViewController, Interstitial, VBackgrou
         )
     }
 
-    override func willMoveToParentViewController(parent: UIViewController?) {
+    override func willMoveToParentViewController(_ parent: UIViewController?) {
         guard let parent = parent else {
             return
         }
@@ -119,13 +119,13 @@ class InterstitialToastViewController: UIViewController, Interstitial, VBackgrou
     
     // MARK: - User Actions
     
-    @IBAction private func handlePan(sender: UIPanGestureRecognizer) {
+    @IBAction fileprivate func handlePan(_ sender: UIPanGestureRecognizer) {
         if sender.state == .Ended && sender.translationInView(view).y < 0 {
             dismiss()
         }
     }
     
-    @objc private func dismiss() {
+    @objc fileprivate func dismiss() {
         timerManager?.invalidate()
         slideOut() {
             self.interstitialDelegate?.dismissInterstitial(self)
@@ -134,7 +134,7 @@ class InterstitialToastViewController: UIViewController, Interstitial, VBackgrou
     
     // MARK: - Private Methods
     
-    private func styleComponents() {
+    fileprivate func styleComponents() {
         titleLabel.font = dependencyManager.titleFont
         titleLabel.textColor = dependencyManager.textColor
 
@@ -144,7 +144,7 @@ class InterstitialToastViewController: UIViewController, Interstitial, VBackgrou
         dependencyManager.addBackgroundToBackgroundHost(self)
     }
     
-    private func slideIn() {
+    fileprivate func slideIn() {
         view.layoutIfNeeded()
         UIView.animateWithDuration(Constants.slideInAnimationDuration) {
             self.topAnchorConstraint.constant = Constants.topOffset
@@ -152,7 +152,7 @@ class InterstitialToastViewController: UIViewController, Interstitial, VBackgrou
         }
     }
 
-    private func slideOut(completion: () -> Void) {
+    fileprivate func slideOut(_ completion: @escaping () -> Void) {
         view.layoutIfNeeded()
         UIView.animateWithDuration(Constants.slideOutAnimationDuration,
             animations: {

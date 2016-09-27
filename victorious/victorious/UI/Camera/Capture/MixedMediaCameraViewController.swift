@@ -12,58 +12,58 @@ import MBProgressHUD
 /// Manages a camera that allows the user to take a video or capture a still image
 class MixedMediaCameraViewController: UIViewController, VCaptureVideoPreviewViewDelegate, VCameraVideoEncoderDelegate {
     
-    private struct Constants {
+    fileprivate struct Constants {
         static let verySmallInnerRadius: CGFloat = 0
         static let verySmallOuterRadius: CGFloat = 0.01
         static let gradientDelta: CGFloat = 20
-        static let errorMessageDisplayDuration: NSTimeInterval = 2
+        static let errorMessageDisplayDuration: TimeInterval = 2
         static let maxImageDimension: CGFloat = 640
         static let videoSize = VCameraCaptureVideoSize(width: 640, height: 640)
     }
     
     weak var delegate: MixedMediaCameraViewControllerDelegate?
     
-    private var dependencyManager: VDependencyManager!
+    fileprivate var dependencyManager: VDependencyManager!
     
-    private var cameraContext: VCameraContext! {
+    fileprivate var cameraContext: VCameraContext! {
         didSet {
             cameraCaptureController.context = cameraContext
         }
     }
     
-    private let cameraCaptureController: VCameraCaptureController = {
+    fileprivate let cameraCaptureController: VCameraCaptureController = {
         let captureController = VCameraCaptureController()
         captureController.setSessionPreset(AVCaptureSessionPresetHigh, completion: { _ in })
         return captureController
     }()
     
-    private lazy var permissionsController: VCameraPermissionsController = VCameraPermissionsController.init(viewControllerToPresentOn: self)
+    fileprivate lazy var permissionsController: VCameraPermissionsController = VCameraPermissionsController.init(viewControllerToPresentOn: self)
     
     // MARK: - Views created after view loads
     
-    private var coachMarkAnimator: VCameraCoachMarkAnimator!
+    fileprivate var coachMarkAnimator: VCameraCoachMarkAnimator!
         
     // MARK: - State vars
     
-    private var isTrashOpen: Bool = false {
+    fileprivate var isTrashOpen: Bool = false {
         didSet {
             updateAppearanceOfTrashButton()
         }
     }
     
-    private var totalTimeRecorded: Float64 = 0 {
+    fileprivate var totalTimeRecorded: Float64 = 0 {
         didSet {
             updateRightBarButtonItem()
         }
     }
     
-    private var userDeniedPrePrompt: Bool = false
+    fileprivate var userDeniedPrePrompt: Bool = false
     
-    private var savedVideoURL: NSURL? = nil
+    fileprivate var savedVideoURL: URL? = nil
     
-    private var previewImage: UIImage? = nil
+    fileprivate var previewImage: UIImage? = nil
     
-    lazy private var maximumRecordingDuration: Float64 = {
+    lazy fileprivate var maximumRecordingDuration: Float64 = {
         guard let duration = VCurrentUser.user?.maxVideoUploadDuration else {
             return 0
         }
@@ -71,9 +71,9 @@ class MixedMediaCameraViewController: UIViewController, VCaptureVideoPreviewView
         return Float64(duration)
     }()
     
-    private var previewViewRadialHypotenuse: CGFloat {
+    fileprivate var previewViewRadialHypotenuse: CGFloat {
         
-        guard isViewLoaded() else {
+        guard isViewLoaded else {
             return 0
         }
         
@@ -87,34 +87,34 @@ class MixedMediaCameraViewController: UIViewController, VCaptureVideoPreviewView
     
     // Intentionally strong because they aren't subviews
     
-    @IBOutlet private var switchCameraButton: CameraDirectionButton!
+    @IBOutlet fileprivate var switchCameraButton: CameraDirectionButton!
     
-    @IBOutlet private var flashBarButtonItem: CameraFlashBarButtonItem!
+    @IBOutlet fileprivate var flashBarButtonItem: CameraFlashBarButtonItem!
     
-    @IBOutlet private var nextBarButtonItem: CameraNextBarButtonItem!
+    @IBOutlet fileprivate var nextBarButtonItem: CameraNextBarButtonItem!
     
     // Weak because these are always retained by view
     
-    @IBOutlet weak private var coachMarkLabel: UILabel!
+    @IBOutlet weak fileprivate var coachMarkLabel: UILabel!
     
-    @IBOutlet weak private var cameraControl: VCameraControl!
+    @IBOutlet weak fileprivate var cameraControl: VCameraControl!
     
-    @IBOutlet weak private var trashButton: UIButton!
+    @IBOutlet weak fileprivate var trashButton: UIButton!
     
-    @IBOutlet weak private var previewView: VCaptureVideoPreviewView!
+    @IBOutlet weak fileprivate var previewView: VCaptureVideoPreviewView!
     
-    @IBOutlet weak private var capturedImageView: UIImageView!
+    @IBOutlet weak fileprivate var capturedImageView: UIImageView!
     
-    @IBOutlet weak private var shutterView: VRadialGradientView!
+    @IBOutlet weak fileprivate var shutterView: VRadialGradientView!
     
-    class func newWithDependencyManager(dependencyManager: VDependencyManager) -> MixedMediaCameraViewController {
+    class func newWithDependencyManager(_ dependencyManager: VDependencyManager) -> MixedMediaCameraViewController {
         
         let cameraViewController: MixedMediaCameraViewController = self.v_initialViewControllerFromStoryboard()
         cameraViewController.dependencyManager = dependencyManager
         return cameraViewController
     }
     
-    class func mixedMediaCamera(dependencyManager: VDependencyManager, cameraContext: VCameraContext) -> MixedMediaCameraViewController {
+    class func mixedMediaCamera(_ dependencyManager: VDependencyManager, cameraContext: VCameraContext) -> MixedMediaCameraViewController {
         
         let cameraViewController = dependencyManager.templateValueOfType(MixedMediaCameraViewController.self, forKey: "mixedMediaCameraScreen") as! MixedMediaCameraViewController
         cameraViewController.cameraContext = cameraContext
@@ -136,13 +136,13 @@ class MixedMediaCameraViewController: UIViewController, VCaptureVideoPreviewView
         updateRightBarButtonItem()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         VTrackingManager.sharedInstance().trackEvent(VTrackingEventCameraUserDidEnter)
         checkPermissions(onSuccess: {
             self.startCaptureSession()
             self.cameraCaptureController.setVideoOrientation(UIDevice.currentDevice().orientation)
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.updateOrientation), name: UIDeviceOrientationDidChangeNotification, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(self.updateOrientation), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
         })
     }
     
@@ -154,13 +154,13 @@ class MixedMediaCameraViewController: UIViewController, VCaptureVideoPreviewView
         shutterView.outerCenter = boundsCenter
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         VTrackingManager.sharedInstance().trackEvent(VTrackingEventCameraDidAppear)
         coachMarkAnimator.fadeIn(1)
     }
     
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         VTrackingManager.sharedInstance().trackEvent(VTrackingEventCameraUserDidExit)
         cameraCaptureController.videoEncoder = nil
@@ -171,9 +171,9 @@ class MixedMediaCameraViewController: UIViewController, VCaptureVideoPreviewView
     
     // MARK: - Button setup
     
-    private func registerButtonActions() {
+    fileprivate func registerButtonActions() {
         
-        flashBarButtonItem.interactiveButton.addTarget(self, action: #selector(switchFlashAction), forControlEvents: .TouchUpInside)
+        flashBarButtonItem.interactiveButton.addTarget(self, action: #selector(switchFlashAction), for: .touchUpInside)
         
         cameraControl.addTarget(self, action: #selector(startRecordingVideo), forControlEvents: UIControlEvents(rawValue: UInt(VCameraControlEventStartRecordingVideo)))
         cameraControl.addTarget(self, action: #selector(endRecordingVideo), forControlEvents: UIControlEvents(rawValue: UInt(VCameraControlEventEndRecordingVideo)))
@@ -184,19 +184,19 @@ class MixedMediaCameraViewController: UIViewController, VCaptureVideoPreviewView
         nextBarButtonItem.action = #selector(nextAction)
     }
     
-    private func styleButtons() {
+    fileprivate func styleButtons() {
         
         flashBarButtonItem.dependencyManager = dependencyManager
         nextBarButtonItem.dependencyManager = dependencyManager
         switchCameraButton.dependencyManager = dependencyManager
     }
     
-    private func setupTrashButton() {
+    fileprivate func setupTrashButton() {
         trashButton.layer.masksToBounds = true
         trashButton.layer.cornerRadius = trashButton.bounds.width / 2
     }
     
-    private func setupShutterView() {
+    fileprivate func setupShutterView() {
         
         let boundsCenter = CGPoint(x: shutterView.bounds.midX, y: shutterView.bounds.midY)
         shutterView.innerRadius = 0
@@ -208,17 +208,17 @@ class MixedMediaCameraViewController: UIViewController, VCaptureVideoPreviewView
     
     // MARK: - View state updating
     
-    private func updateAppearanceOfTrashButton() {
+    fileprivate func updateAppearanceOfTrashButton() {
         if isTrashOpen {
-            trashButton.hidden = false
-            trashButton.backgroundColor = UIColor.redColor()
+            trashButton.isHidden = false
+            trashButton.backgroundColor = UIColor.red
         } else {
-            trashButton.hidden = true
-            trashButton.backgroundColor = UIColor.clearColor()
+            trashButton.isHidden = true
+            trashButton.backgroundColor = UIColor.clear
         }
     }
     
-    private func updateRightBarButtonItem() {
+    fileprivate func updateRightBarButtonItem() {
         let hasRecordedVideoContent = totalTimeRecorded > 0
         let rightBarButtonItem = hasRecordedVideoContent ? nextBarButtonItem : flashBarButtonItem
         self.navigationItem.rightBarButtonItem = rightBarButtonItem
@@ -226,11 +226,11 @@ class MixedMediaCameraViewController: UIViewController, VCaptureVideoPreviewView
     
     // MARK: - VCaptureVideoPreviewViewDelegate
     
-    func captureVideoPreviewView(previewView: VCaptureVideoPreviewView!, tappedLocation locationInCaptureDeviceCoordinates: CGPoint) {
+    func captureVideoPreviewView(_ previewView: VCaptureVideoPreviewView!, tappedLocation locationInCaptureDeviceCoordinates: CGPoint) {
         cameraCaptureController.focusAtPointOfInterest(locationInCaptureDeviceCoordinates, withCompletion: { _ in })
     }
     
-    func shouldShowTapsForVideoPreviewView(previewView: VCaptureVideoPreviewView!) -> Bool {
+    func shouldShowTapsForVideoPreviewView(_ previewView: VCaptureVideoPreviewView!) -> Bool {
         guard let currentDevice = cameraCaptureController.currentDevice else {
             return false
         }
@@ -240,30 +240,30 @@ class MixedMediaCameraViewController: UIViewController, VCaptureVideoPreviewView
     
     // MARK: - Notification response
     
-    @objc private func startRecordingVideo() {
+    @objc fileprivate func startRecordingVideo() {
         if setupEncoderIfNeeded() {
             cameraCaptureController.videoEncoder?.recording = true
         }
-        switchCameraButton.enabled = false
+        switchCameraButton.isEnabled = false
         coachMarkAnimator.fadeOut(1)
     }
     
-    @objc private func endRecordingVideo() {
+    @objc fileprivate func endRecordingVideo() {
         cameraCaptureController.videoEncoder?.recording = false
-        switchCameraButton.enabled = true
+        switchCameraButton.isEnabled = true
         updateOrientation()
     }
     
-    @objc private func failedRecordingVideo() {
+    @objc fileprivate func failedRecordingVideo() {
         coachMarkAnimator.flash()
     }
     
-    @objc private func takePicture() {
+    @objc fileprivate func takePicture() {
         coachMarkAnimator.fadeOut(1)
         cameraControl.flashGrowAnimations()
         VTrackingManager.sharedInstance().trackEvent(VTrackingEventCameraDidCapturePhoto)
-        switchCameraButton.enabled = false
-        flashBarButtonItem.enabled = false
+        switchCameraButton.isEnabled = false
+        flashBarButtonItem.isEnabled = false
         cameraCaptureController.captureStillWithCompletion { [weak self] image, error in
             
             guard let strongSelf = self else {
@@ -280,7 +280,7 @@ class MixedMediaCameraViewController: UIViewController, VCaptureVideoPreviewView
         }
     }
     
-    private func finishWithImage(image: UIImage?) {
+    fileprivate func finishWithImage(_ image: UIImage?) {
         guard let image = image,
             let currentDevice = cameraCaptureController.currentDevice else {
                 displayTemporaryHUDWithMessage(NSLocalizedString("ImageCaptureFailed", comment: ""))
@@ -288,31 +288,31 @@ class MixedMediaCameraViewController: UIViewController, VCaptureVideoPreviewView
         }
         
         let wasTakenByFrontCamera = currentDevice.position == .Front
-        self.capturedImageView.transform = wasTakenByFrontCamera ? CGAffineTransformMakeScale(-1, 1) : CGAffineTransformIdentity
+        self.capturedImageView.transform = wasTakenByFrontCamera ? CGAffineTransform(scaleX: -1, y: 1) : CGAffineTransform.identity
         self.capturedImageView.image = image
         self.previewView.hidden = true
         self.animateShutterOpenWithCompletion { [weak self] in
             
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+            DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async {
                 guard let strongSelf = self else {
                     return
                 }
                 
-                let previewImage = image.fixOrientation().scaledImageWithMaxDimension(Constants.maxImageDimension, upScaling: false).squareImageByCropping()
-                guard let savedFileURL = strongSelf.persistToFileWithImage(previewImage),
+                let previewImage = image.fixOrientation().scaledImage(withMaxDimension: Constants.maxImageDimension, upScaling: false).squareImageByCropping()
+                guard let savedFileURL = strongSelf.persistToFileWithImage(previewImage!),
                     let delegate = strongSelf.delegate else {
                     return
                 }
                 
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     delegate.mixedMediaCameraViewController(strongSelf, capturedImageWithMediaURL: savedFileURL, previewImage: previewImage)
                 }
             }
         }
     }
     
-    private func persistToFileWithImage(image: UIImage) -> NSURL? {
-        guard let fileURL = NSURL.v_temporaryFileURLWithExtension(VConstantMediaExtensionJPG, inDirectory: kCameraDirectory) else {
+    fileprivate func persistToFileWithImage(_ image: UIImage) -> URL? {
+        guard let fileURL = URL.v_temporaryFileURLWithExtension(VConstantMediaExtensionJPG, inDirectory: kCameraDirectory) else {
             return nil
         }
         let jpegData = UIImageJPEGRepresentation(image, VConstantJPEGCompressionQuality)
@@ -322,29 +322,29 @@ class MixedMediaCameraViewController: UIViewController, VCaptureVideoPreviewView
     
     // MARK: - Actions
     
-    @objc private func nextAction() {
+    @objc fileprivate func nextAction() {
         cameraCaptureController.videoEncoder?.finishRecording()
     }
     
-    @IBAction private func trashAction() {
-        trashButton.backgroundColor = isTrashOpen ? UIColor.clearColor() : UIColor.redColor()
+    @IBAction fileprivate func trashAction() {
+        trashButton.backgroundColor = isTrashOpen ? UIColor.clear : UIColor.red
         let eventName = isTrashOpen ? VTrackingEventCameraUserDidConfirmDelete : VTrackingEventCameraUserDidSelectDelete
         VTrackingManager.sharedInstance().trackEvent(eventName)
         if isTrashOpen {
             cameraCaptureController.videoEncoder = nil
             resetAllControls()
-            nextBarButtonItem.enabled = false
+            nextBarButtonItem.isEnabled = false
         }
         isTrashOpen = !isTrashOpen
     }
     
-    @IBAction private func reverseCameraAction() {
+    @IBAction fileprivate func reverseCameraAction() {
         guard let deviceForPosition = cameraCaptureController.firstAlternatePositionDevice() else {
             return
         }
         
         cameraCaptureController.setCurrentDevice(deviceForPosition) { [weak self] error in
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 guard error == nil else {
                     return
                 }
@@ -353,17 +353,17 @@ class MixedMediaCameraViewController: UIViewController, VCaptureVideoPreviewView
         }
     }
     
-    @objc private func switchFlashAction() {
+    @objc fileprivate func switchFlashAction() {
         
         cameraCaptureController.toggleFlashWithCompletion() { [weak self] error in
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 self?.updateFlashStateForCurrentDevice()
             }
         }
     }
     
-    @objc private func updateOrientation() {
-        if let videoEncoder = cameraCaptureController.videoEncoder where videoEncoder.recording {
+    @objc fileprivate func updateOrientation() {
+        if let videoEncoder = cameraCaptureController.videoEncoder , videoEncoder.recording {
             return
         }
         
@@ -372,17 +372,17 @@ class MixedMediaCameraViewController: UIViewController, VCaptureVideoPreviewView
     
     // MARK: - VCameraVideoEncoderDelegate
     
-    func videoEncoder(videoEncoder: VCameraVideoEncoder!, didEncounterError error: NSError!) {
-        dispatch_async(dispatch_get_main_queue()) {
+    func videoEncoder(_ videoEncoder: VCameraVideoEncoder!, didEncounterError error: NSError!) {
+        DispatchQueue.main.async {
             videoEncoder.recording = false
             self.updateRightBarButtonItem()
             self.displayTemporaryHUDWithMessage(NSLocalizedString("VideoCaptureFailed", comment: ""))
         }
     }
     
-    func videoEncoder(videoEncoder: VCameraVideoEncoder!, hasEncodedTotalTime time: CMTime) {
+    func videoEncoder(_ videoEncoder: VCameraVideoEncoder!, hasEncodedTotalTime time: CMTime) {
         
-        dispatch_async(dispatch_get_main_queue()) {
+        DispatchQueue.main.async {
             let seconds = CMTimeGetSeconds(time)
             self.updateProgressForSeconds(seconds)
             if seconds >= self.maximumRecordingDuration {
@@ -390,14 +390,14 @@ class MixedMediaCameraViewController: UIViewController, VCaptureVideoPreviewView
                 self.nextAction()
             }
             if seconds >= 0 {
-                self.nextBarButtonItem.enabled = true
-                self.trashButton.hidden = false
+                self.nextBarButtonItem.isEnabled = true
+                self.trashButton.isHidden = false
             }
         }
     }
     
-    func videoEncoderDidFinish(encoder: VCameraVideoEncoder, withError error: NSError?) {
-        dispatch_async(dispatch_get_main_queue()) {
+    func videoEncoderDidFinish(_ encoder: VCameraVideoEncoder, withError error: NSError?) {
+        DispatchQueue.main.async {
             MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
             
             guard error == nil else {
@@ -428,7 +428,7 @@ class MixedMediaCameraViewController: UIViewController, VCaptureVideoPreviewView
     
     // MARK: - Capture state management
     
-    private func checkPermissions(onSuccess completion: Void -> ()) {
+    fileprivate func checkPermissions(onSuccess completion: @escaping (Void) -> ()) {
         guard !userDeniedPrePrompt else {
             return
         }
@@ -458,7 +458,7 @@ class MixedMediaCameraViewController: UIViewController, VCaptureVideoPreviewView
         }
     }
     
-    private func startCaptureSession() {
+    fileprivate func startCaptureSession() {
         let captureSession = cameraCaptureController.captureSession
         previewView.session = captureSession
         guard !captureSession.running else {
@@ -468,7 +468,7 @@ class MixedMediaCameraViewController: UIViewController, VCaptureVideoPreviewView
         
         cameraCaptureController.startRunningWithVideoEnabled(true) { [weak self] error in
             
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 
                 guard let strongSelf = self else {
                     return
@@ -487,7 +487,7 @@ class MixedMediaCameraViewController: UIViewController, VCaptureVideoPreviewView
         }
     }
     
-    private func setupEncoderIfNeeded() -> Bool {
+    fileprivate func setupEncoderIfNeeded() -> Bool {
         guard cameraCaptureController.videoEncoder == nil else {
             return true
         }
@@ -500,12 +500,12 @@ class MixedMediaCameraViewController: UIViewController, VCaptureVideoPreviewView
             return true
         } catch {
             displayTemporaryHUDWithMessage(NSLocalizedString("VideoCaptureFailed", comment: ""))
-            nextBarButtonItem.enabled = false
+            nextBarButtonItem.isEnabled = false
             return false
         }
     }
     
-    private func setupCapturingKVO() {
+    fileprivate func setupCapturingKVO() {
         
         KVOController.observe(cameraCaptureController.imageOutput, keyPath: "capturingStillImage", options: [] as NSKeyValueObservingOptions) { [weak self] (observer, imageOutput, change) in
             
@@ -522,26 +522,26 @@ class MixedMediaCameraViewController: UIViewController, VCaptureVideoPreviewView
     
     // MARK: - View updating
     
-    private func resetAllControls() {
+    fileprivate func resetAllControls() {
         clearRecordedVideoAndResetControl()
         updateFlashStateForCurrentDevice()
         updateSwitchCameraButton()
     }
     
-    private func clearRecordedVideoAndResetControl() {
+    fileprivate func clearRecordedVideoAndResetControl() {
         updateProgressForSeconds(0)
         cameraControl.restoreCameraControlToDefault()
-        nextBarButtonItem.enabled = false
+        nextBarButtonItem.isEnabled = false
     }
     
-    private func updateProgressForSeconds(seconds: Float64) {
+    fileprivate func updateProgressForSeconds(_ seconds: Float64) {
         totalTimeRecorded = seconds
         
         let progress = CGFloat(seconds / maximumRecordingDuration)
         cameraControl.setRecordingProgress(progress, animated: true)
     }
     
-    private func updateFlashStateForCurrentDevice() {
+    fileprivate func updateFlashStateForCurrentDevice() {
 
         guard let currentDevice = cameraCaptureController.currentDevice else {
             assertionFailure("Mixed Media Camera's Camera Capture Controller cannot update flash")
@@ -555,7 +555,7 @@ class MixedMediaCameraViewController: UIViewController, VCaptureVideoPreviewView
         flashBarButtonItem.interactiveButton.selected = flashEnabled
     }
     
-    private func updateSwitchCameraButton() {
+    fileprivate func updateSwitchCameraButton() {
         let canSwitchCamera = cameraCaptureController.firstAlternatePositionDevice() != nil
         switchCameraButton.hidden = !canSwitchCamera
         switchCameraButton.enabled = canSwitchCamera
@@ -563,9 +563,9 @@ class MixedMediaCameraViewController: UIViewController, VCaptureVideoPreviewView
     
     // MARK: - Shutter management
     
-    private func animateShutterOpenWithCompletion(completion: (Void -> ())?) {
+    fileprivate func animateShutterOpenWithCompletion(_ completion: ((Void) -> ())?) {
         
-        UIView.animateWithDuration(0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: [] as UIViewAnimationOptions, animations: {
+        UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: [] as UIViewAnimationOptions, animations: {
             self.shutterView.innerRadius = self.previewViewRadialHypotenuse
             self.shutterView.outerRadius = self.previewViewRadialHypotenuse + Constants.gradientDelta
             }, completion: { _ in
@@ -573,9 +573,9 @@ class MixedMediaCameraViewController: UIViewController, VCaptureVideoPreviewView
         })
     }
     
-    private func animateShutterCloseWithCompletion(completion: (Void -> ())?) {
+    fileprivate func animateShutterCloseWithCompletion(_ completion: ((Void) -> ())?) {
         
-        UIView.animateWithDuration(0.15, delay: 0, options: [] as UIViewAnimationOptions, animations: {
+        UIView.animate(withDuration: 0.15, delay: 0, options: [] as UIViewAnimationOptions, animations: {
             self.cameraControl.flashShutterAnimations()
             self.shutterView.innerRadius = Constants.verySmallInnerRadius
             self.shutterView.outerRadius = Constants.verySmallOuterRadius
@@ -584,7 +584,7 @@ class MixedMediaCameraViewController: UIViewController, VCaptureVideoPreviewView
         })
     }
     
-    private func displayTemporaryHUDWithMessage(message: String) {
+    fileprivate func displayTemporaryHUDWithMessage(_ message: String) {
         let hud = MBProgressHUD.showHUDAddedTo(previewView, animated: true)
         hud.mode = .Text
         hud.labelText = message

@@ -8,9 +8,9 @@
 
 import Foundation
 
-extension NSCharacterSet {
-    public static var validUsernameCharacters: NSCharacterSet {
-        return NSCharacterSet(charactersInString: "abcdefghijklmnopqrstuvwxyz0123456789_")
+extension CharacterSet {
+    public static var validUsernameCharacters: CharacterSet {
+        return CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyz0123456789_")
     }
 
 }

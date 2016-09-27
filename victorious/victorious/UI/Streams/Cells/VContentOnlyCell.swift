@@ -12,8 +12,8 @@ import UIKit
 class VContentOnlyCell: UICollectionViewCell, ContentCell {
     // MARK: - Constants
     
-    private static let cornerRadius: CGFloat = 6.0
-    private static let highlightAlpha: CGFloat = 0.2
+    fileprivate static let cornerRadius: CGFloat = 6.0
+    fileprivate static let highlightAlpha: CGFloat = 0.2
     
     // MARK: - Initializing
     
@@ -27,7 +27,7 @@ class VContentOnlyCell: UICollectionViewCell, ContentCell {
         setup()
     }
     
-    private func setup() {
+    fileprivate func setup() {
         contentView.clipsToBounds = true
         contentView.layer.cornerRadius = VContentOnlyCell.cornerRadius
     }
@@ -52,9 +52,9 @@ class VContentOnlyCell: UICollectionViewCell, ContentCell {
     
     // MARK: - Views
     
-    private var contentPreviewView = ContentPreviewView()
+    fileprivate var contentPreviewView = ContentPreviewView()
     
-    private func updatePreviewView() {
+    fileprivate func updatePreviewView() {
         guard let content = content else {
             return
         }
@@ -75,9 +75,9 @@ class VContentOnlyCell: UICollectionViewCell, ContentCell {
     
     // MARK: Highlighting
     
-    override var highlighted: Bool {
+    override var isHighlighted: Bool {
         didSet {
-            contentView.alpha = highlighted ? VContentOnlyCell.highlightAlpha : 1.0
+            contentView.alpha = isHighlighted ? VContentOnlyCell.highlightAlpha : 1.0
         }
     }
 }

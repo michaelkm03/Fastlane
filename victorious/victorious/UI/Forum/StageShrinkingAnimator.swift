@@ -33,7 +33,7 @@ class StageShrinkingAnimator: NSObject {
 
     weak var delegate: StageShrinkingAnimatorDelegate?
 
-    private struct Constants {
+    fileprivate struct Constants {
         static let downDragIgnoredMagnitude = CGFloat(120)
         static let dragMagnitude = CGFloat(160)
         static let cornerRadius = CGFloat(6)
@@ -41,23 +41,23 @@ class StageShrinkingAnimator: NSObject {
         static let shadowRadius = CGFloat(4)
         static let shadowOpacity = Float(0.40)
         static let shadowOffset = CGSize(width:0, height:2)
-        static let shadowColor = UIColor.blackColor().CGColor
-        static let scaleTransform = CGAffineTransformMakeScale(scaleFactor, scaleFactor)
+        static let shadowColor = UIColor.black.cgColor
+        static let scaleTransform = CGAffineTransform(scaleX: scaleFactor, y: scaleFactor)
         static let stageMargin = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 10)
         static let borderEndingAlpha = CGFloat(0.3)
         static let openPanTriggerProgress = CGFloat(0.8)
         static let closePanTriggerProgress = CGFloat (0.25)
         static let velocityTargetShrink = CGFloat(0.3)
         static let velocityTargetGrow = CGFloat(1.5)
-        static let inProgressSnapAnimationDuration = NSTimeInterval(0.3)
-        static let fullSnapAnimationDuration = NSTimeInterval(0.4)
+        static let inProgressSnapAnimationDuration = TimeInterval(0.3)
+        static let fullSnapAnimationDuration = TimeInterval(0.4)
         static let springDamping = CGFloat(0.72)
         static let inProgressSpringInitialVelocity = CGFloat(0.2)
     }
     
-    private var ignoreScrollBehaviorUntilNextBegin = false
+    fileprivate var ignoreScrollBehaviorUntilNextBegin = false
     
-    private var stageState = StageState.enlarged
+    fileprivate var stageState = StageState.enlarged
     
     // MARK: - Handler Properties
 
@@ -65,17 +65,17 @@ class StageShrinkingAnimator: NSObject {
     var shouldHideKeyboardHandler: (() -> Void)?
     
     /// This handler will be called interactively during the animation transition. The progress value passed in the handler could be outside of the 0-1 range.
-    var interpolateAlongside: ((progress: CGFloat) -> Void)?
+    var interpolateAlongside: ((_ progress: CGFloat) -> Void)?
     
     // MARK: - Private Properties
-    private let stageContainer: UIView
+    fileprivate let stageContainer: UIView
 
     /// Blocks touches on the stage so that we can tap to expand
-    private let stageTouchView: UIView
-    private let stageViewControllerContainer: UIView
-    private var keyboardManager: VKeyboardNotificationManager!
-    private let stageTapGestureRecognizer = UITapGestureRecognizer()
-    private let stagePanGestureRecognizer = UIPanGestureRecognizer()
+    fileprivate let stageTouchView: UIView
+    fileprivate let stageViewControllerContainer: UIView
+    fileprivate var keyboardManager: VKeyboardNotificationManager!
+    fileprivate let stageTapGestureRecognizer = UITapGestureRecognizer()
+    fileprivate let stagePanGestureRecognizer = UIPanGestureRecognizer()
     
     // MARK: - API
 
@@ -97,23 +97,23 @@ class StageShrinkingAnimator: NSObject {
         configureKeyboardListener()
     }
     
-    func chatFeed(chatFeed: ChatFeed, didScroll scrollView: UIScrollView) {
+    func chatFeed(_ chatFeed: ChatFeed, didScroll scrollView: UIScrollView) {
         guard !ignoreScrollBehaviorUntilNextBegin else {
             return
         }
         
-        let translation = scrollView.panGestureRecognizer.translationInView(scrollView)
+        let translation = scrollView.panGestureRecognizer.translation(in: scrollView)
         guard translation.y > 0 && stageState == .enlarged else {
             return
         }
         applyInterploatedValues(withProgress: min(1, max(0, progressThrough(forTranslation: translation))))
     }
     
-    func chatFeed(chatFeed: ChatFeed, willBeginDragging scrollView: UIScrollView) {
+    func chatFeed(_ chatFeed: ChatFeed, willBeginDragging scrollView: UIScrollView) {
         ignoreScrollBehaviorUntilNextBegin = false
     }
     
-    func chatFeed(chatFeed: ChatFeed, willEndDragging scrollView: UIScrollView, withVelocity velocity: CGPoint) {
+    func chatFeed(_ chatFeed: ChatFeed, willEndDragging scrollView: UIScrollView, withVelocity velocity: CGPoint) {
         guard !ignoreScrollBehaviorUntilNextBegin else {
             return
         }
@@ -125,7 +125,7 @@ class StageShrinkingAnimator: NSObject {
         
         let scrollingDown = velocity.y < 0
         let currentState = stageState
-        let translation = scrollView.panGestureRecognizer.translationInView(scrollView)
+        let translation = scrollView.panGestureRecognizer.translation(in: scrollView)
         let targetState = scrollingDown ? StageState.shrunken : StageState.enlarged
         let progressTranslated = progressThrough(forTranslation: translation)
         
@@ -148,15 +148,15 @@ class StageShrinkingAnimator: NSObject {
 
     // MARK: - Actions
     
-    @objc private func pannedOnStage(gesture: UIPanGestureRecognizer) {
+    @objc fileprivate func pannedOnStage(_ gesture: UIPanGestureRecognizer) {
         guard let view = gesture.view else {
             assertionFailure("Failed to get pan recognizer view for stage shrinking animator.")
             return
         }
-        let translation = gesture.translationInView(view)
+        let translation = gesture.translation(in: view)
         let progress = progressThroughPanOnStage(forTranslation: translation)
         switch gesture.state {
-            case .Changed:
+            case .changed:
                 // We only perform animation if the translation matches our current state, and delegate permits the state change
                 let shouldShrink = stageState == .enlarged && translation.y < 0 && delegate?.shouldSwitch(to: .shrunken) == true
                 let shouldEnlarge = stageState == .shrunken && translation.y > 0 && delegate?.shouldSwitch(to: .shrunken) == true
@@ -166,7 +166,7 @@ class StageShrinkingAnimator: NSObject {
                 }
                 
                 applyInterploatedValues(withProgress: progress)
-            case .Ended:
+            case .ended:
                 animateInProgressSnap(withAnimations: {
                     if (self.stageState == .enlarged) && (progress > Constants.closePanTriggerProgress) {
                         self.goTo(.shrunken)
@@ -178,16 +178,16 @@ class StageShrinkingAnimator: NSObject {
                         self.goTo(self.stageState)
                     }
                 })
-            case .Possible, .Began, .Cancelled, .Failed:
+            case .possible, .began, .cancelled, .failed:
                 break
         }
     }
     
-    @objc private func tappedOnStage(sender: UITapGestureRecognizer) {
+    @objc fileprivate func tappedOnStage(_ sender: UITapGestureRecognizer) {
         shouldHideKeyboardHandler?()
         ignoreScrollBehaviorUntilNextBegin = true
-        UIView.animateWithDuration(
-            Constants.fullSnapAnimationDuration,
+        UIView.animate(
+            withDuration: Constants.fullSnapAnimationDuration,
             delay: 0,
             usingSpringWithDamping: 1.0,
             initialSpringVelocity: 0,
@@ -201,7 +201,7 @@ class StageShrinkingAnimator: NSObject {
     
     // MARK: - Stage Shrinking Support
     
-    private func goTo(state: StageState) {
+    fileprivate func goTo(_ state: StageState) {
         guard delegate?.shouldSwitch(to: state) == true else {
             return
         }
@@ -212,22 +212,22 @@ class StageShrinkingAnimator: NSObject {
         }
     }
     
-    private func shrinkStage() {
+    fileprivate func shrinkStage() {
         delegate?.willSwitch(to: .shrunken)
         applyInterploatedValues(withProgress: 1.0)
-        stageTouchView.hidden = false
+        stageTouchView.isHidden = false
         stageState = .shrunken
     }
     
-    private func enlargeStage() {
+    fileprivate func enlargeStage() {
         delegate?.willSwitch(to: .enlarged)
         applyInterploatedValues(withProgress: 0)
-        stageTouchView.hidden = true
-        stageViewControllerContainer.layer.borderColor = UIColor.clearColor().CGColor
+        stageTouchView.isHidden = true
+        stageViewControllerContainer.layer.borderColor = UIColor.clear.cgColor
         stageState = .enlarged
     }
     
-    private func applyInterploatedValues(withProgress progress: CGFloat) {
+    fileprivate func applyInterploatedValues(withProgress progress: CGFloat) {
         guard let transform = affineTransform(forProgress: progress) else {
             return
         }
@@ -235,13 +235,13 @@ class StageShrinkingAnimator: NSObject {
         stageViewControllerContainer.layer.cornerRadius = Constants.cornerRadius * progress * (1 / scaleFactor(forProgress: progress))
         stageViewControllerContainer.layer.borderColor = interpolatedBorderColor(forProgress: progress)
         
-        interpolateAlongside?(progress: progress)
+        interpolateAlongside?(progress)
     }
     
-    private func animateInProgressSnap(withAnimations animations:() -> Void) {
+    fileprivate func animateInProgressSnap(withAnimations animations:@escaping () -> Void) {
         ignoreScrollBehaviorUntilNextBegin = true
-        UIView.animateWithDuration(
-            Constants.inProgressSnapAnimationDuration,
+        UIView.animate(
+            withDuration: Constants.inProgressSnapAnimationDuration,
             delay: 0.0,
             usingSpringWithDamping: Constants.springDamping,
             initialSpringVelocity: Constants.inProgressSpringInitialVelocity,
@@ -258,7 +258,7 @@ class StageShrinkingAnimator: NSObject {
     /// should be fully grown. Input that result in a value of 1 indicate that the stage
     /// should be fully shrunken. The progress will apply a linear interpolation of values
     /// for all input in between.
-    private func progressThroughPanOnStage(forTranslation translation: CGPoint) -> CGFloat {
+    fileprivate func progressThroughPanOnStage(forTranslation translation: CGPoint) -> CGFloat {
         if stageState == .enlarged && translation.y > 0 {
             return 0
         }
@@ -271,7 +271,7 @@ class StageShrinkingAnimator: NSObject {
         }
     }
     
-    private func progressThrough(forTranslation translation: CGPoint) -> CGFloat {
+    fileprivate func progressThrough(forTranslation translation: CGPoint) -> CGFloat {
         var adjustedTranslation = translation
         if adjustedTranslation.y < 0 {
             adjustedTranslation.y = min(adjustedTranslation.y + Constants.downDragIgnoredMagnitude, 0)
@@ -279,39 +279,39 @@ class StageShrinkingAnimator: NSObject {
         return adjustedTranslation.y / Constants.dragMagnitude
     }
 
-    private func interpolatedBorderColor(forProgress progress: CGFloat) -> CGColor {
+    fileprivate func interpolatedBorderColor(forProgress progress: CGFloat) -> CGColor {
         let interpolatedAlpha = Constants.borderEndingAlpha * progress
-        return UIColor(white: 1.0, alpha: interpolatedAlpha).CGColor
+        return UIColor(white: 1.0, alpha: interpolatedAlpha).cgColor
     }
     
-    private func affineTransform(forProgress progress: CGFloat) -> CGAffineTransform? {
+    fileprivate func affineTransform(forProgress progress: CGFloat) -> CGAffineTransform? {
         guard let translation = translation(forProgress: progress) else {
             return nil
         }
-        return CGAffineTransformConcat(scaleTransform(forProgress: progress), translation)
+        return scaleTransform(forProgress: progress).concatenating(translation)
     }
     
-    private func scaleTransform(forProgress progress: CGFloat) -> CGAffineTransform {
+    fileprivate func scaleTransform(forProgress progress: CGFloat) -> CGAffineTransform {
         let transformScaleFactor = scaleFactor(forProgress: progress)
-        return CGAffineTransformMakeScale(transformScaleFactor, transformScaleFactor)
+        return CGAffineTransform(scaleX: transformScaleFactor, y: transformScaleFactor)
     }
     
-    private func scaleFactor(forProgress progress: CGFloat) -> CGFloat {
+    fileprivate func scaleFactor(forProgress progress: CGFloat) -> CGFloat {
         return 1 - ((1 - Constants.scaleFactor) * progress)
     }
     
-    private func collapsedSize() -> CGSize {
-        return CGSizeApplyAffineTransform(stageContainer.bounds.size, scaleTransform(forProgress: 1.0))
+    fileprivate func collapsedSize() -> CGSize {
+        return stageContainer.bounds.size.applying(scaleTransform(forProgress: 1.0))
     }
     
-    private func translation(forProgress progress: CGFloat) -> CGAffineTransform? {
+    fileprivate func translation(forProgress progress: CGFloat) -> CGAffineTransform? {
         guard let fullTranslation = fullCollapsedTranslation() else {
             return nil
         }
-        return CGAffineTransformMakeTranslation(progress * fullTranslation.width, progress * fullTranslation.height)
+        return CGAffineTransform(translationX: progress * fullTranslation.width, y: progress * fullTranslation.height)
     }
     
-    private func fullCollapsedTranslation() -> CGSize? {
+    fileprivate func fullCollapsedTranslation() -> CGSize? {
         let currentWidth = stageContainer.bounds.width
         let currentHeight = stageContainer.bounds.height
         guard currentWidth != 0 && currentHeight != 0 else {
@@ -333,32 +333,32 @@ class StageShrinkingAnimator: NSObject {
 
     // MARK: - Misc
     
-    private func configureShadow() {
+    fileprivate func configureShadow() {
         stageContainer.layer.shadowColor = Constants.shadowColor
         stageContainer.layer.shadowRadius = Constants.shadowRadius
         stageContainer.layer.shadowOpacity = Constants.shadowOpacity
         stageContainer.layer.shadowOffset = Constants.shadowOffset
     }
     
-    private func configureMaskingAndBorders() {
+    fileprivate func configureMaskingAndBorders() {
         stageViewControllerContainer.layer.masksToBounds = true
         
         // Want the border to be 1px after scaled transform.
         stageViewControllerContainer.layer.borderWidth = (1 / stageViewControllerContainer.contentScaleFactor)
-        stageViewControllerContainer.layer.borderColor = UIColor.clearColor().CGColor
+        stageViewControllerContainer.layer.borderColor = UIColor.clear.cgColor
     }
     
-    private func configureGestureRecognizers() {
+    fileprivate func configureGestureRecognizers() {
         stageTapGestureRecognizer.addTarget(self, action: #selector(tappedOnStage(_:)))
         stagePanGestureRecognizer.addTarget(self, action: #selector(pannedOnStage(_:)))
         stageTouchView.addGestureRecognizer(stageTapGestureRecognizer)
         stageContainer.addGestureRecognizer(stagePanGestureRecognizer)
 
         // Setup is in the larger state so hide the blocker.
-        stageTouchView.hidden = true
+        stageTouchView.isHidden = true
     }
     
-    private func configureKeyboardListener() {
+    fileprivate func configureKeyboardListener() {
         keyboardManager = VKeyboardNotificationManager(
             keyboardWillShowBlock: { [weak self] startFrame, endFrame, animationDuration, animationCurve in
                 UIView.animateWithDuration(Constants.fullSnapAnimationDuration,

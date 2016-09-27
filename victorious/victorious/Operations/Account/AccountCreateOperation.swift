@@ -27,15 +27,15 @@ final class AccountCreateOperation: AsyncOperation<AccountCreateResponse> {
     
     // MARK: - Executing
     
-    private let dependencyManager: VDependencyManager
-    private let credentials: NewAccountCredentials
-    private let parameters: AccountCreateParameters
+    fileprivate let dependencyManager: VDependencyManager
+    fileprivate let credentials: NewAccountCredentials
+    fileprivate let parameters: AccountCreateParameters
     
     override var executionQueue: Queue {
         return .background
     }
     
-    override func execute(finish: (result: OperationResult<AccountCreateResponse>) -> Void) {
+    override func execute(_ finish: (_ result: OperationResult<AccountCreateResponse>) -> Void) {
         let requestOperation = RequestOperation(request: AccountCreateRequest(credentials: credentials))
         
         requestOperation.queue { [weak self] requestResult in

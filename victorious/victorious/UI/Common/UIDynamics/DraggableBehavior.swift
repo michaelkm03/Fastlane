@@ -14,17 +14,17 @@ import UIKit
 class DraggableBehavior: UIDynamicBehavior {
 
     /// Setting targetPoint will change the anchorPoint of the item with this behavior attached.
-    var targetPoint = CGPointZero {
+    var targetPoint = CGPoint.zero {
         didSet {
             attachmentBehavior?.anchorPoint = targetPoint
         }
     }
 
-    var velocity = CGPointZero {
+    var velocity = CGPoint.zero {
         didSet {
-            if let currentVelocity = itemBehavior?.linearVelocityForItem(item) {
+            if let currentVelocity = itemBehavior?.linearVelocity(for: item) {
                 let velocityDelta = CGPoint(x: velocity.x - currentVelocity.x, y: velocity.y - currentVelocity.y)
-                itemBehavior?.addLinearVelocity(velocityDelta, forItem: item)
+                itemBehavior?.addLinearVelocity(velocityDelta, for: item)
             }
         }
     }
@@ -37,10 +37,10 @@ class DraggableBehavior: UIDynamicBehavior {
        var resistance = CGFloat(10)
     }
 
-    private var item: UIDynamicItem
-    private var attachmentBehavior: UIAttachmentBehavior?
-    private var itemBehavior: UIDynamicItemBehavior?
-    private var parameters: Parameters
+    fileprivate var item: UIDynamicItem
+    fileprivate var attachmentBehavior: UIAttachmentBehavior?
+    fileprivate var itemBehavior: UIDynamicItemBehavior?
+    fileprivate var parameters: Parameters
 
     /// Initialize with a `UIDynamicItem` which will be the item dragged around on the screen. 
     /// Pass in a `Parameters` struct in order to tweak the values that feeds into the physics engine.
@@ -51,8 +51,8 @@ class DraggableBehavior: UIDynamicBehavior {
         setup()
     }
 
-    private func setup() {
-        let attachmentBehavior = UIAttachmentBehavior(item: item, attachedToAnchor: CGPointZero)
+    fileprivate func setup() {
+        let attachmentBehavior = UIAttachmentBehavior(item: item, attachedToAnchor: CGPoint.zero)
         attachmentBehavior.frequency = parameters.frequency
         attachmentBehavior.damping = parameters.damping
         attachmentBehavior.length = parameters.length

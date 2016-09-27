@@ -10,7 +10,7 @@ import Foundation
 
 final class RestorePurchasesOperation: AsyncOperation<Void> {
     let validationAPIPath: APIPath
-    private let purchaseManager: VPurchaseManagerType = VPurchaseManager.sharedInstance()
+    fileprivate let purchaseManager: VPurchaseManagerType = VPurchaseManager.sharedInstance()
     
     init(validationAPIPath: APIPath) {
         self.validationAPIPath = validationAPIPath
@@ -20,7 +20,7 @@ final class RestorePurchasesOperation: AsyncOperation<Void> {
         return .background
     }
     
-    override func execute(finish: (result: OperationResult<Void>) -> Void) {
+    override func execute(_ finish: @escaping (_ result: OperationResult<Void>) -> Void) {
         purchaseManager.restorePurchasesSuccess(
             { results in
                 // Force success because we have to deliver the product even if the sever fails for any reason

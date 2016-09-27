@@ -30,15 +30,15 @@ protocol ChatFeed: class, ForumEventSender, ForumEventReceiver {
 // MARK: - ChatFeedDelegate
 
 protocol ChatFeedDelegate: class {
-    func chatFeed(chatFeed: ChatFeed, didSelectUserWithID userID: User.ID)
-    func chatFeed(chatFeed: ChatFeed, didSelect chatFeedContent: ChatFeedContent)
-    func chatFeed(chatFeed: ChatFeed, didLongPress chatFeedContent: ChatFeedContent)
-    func chatFeed(chatFeed: ChatFeed, didSelectFailureButtonFor chatFeedContent: ChatFeedContent)
-    func chatFeed(chatFeed: ChatFeed, didSelectReplyButtonFor chatFeedContent: ChatFeedContent)
-    func chatFeed(chatFeed: ChatFeed, didToggleLikeFor content: ChatFeedContent, completion: (() -> Void))
-    func chatFeed(chatFeed: ChatFeed, didScroll scrollView: UIScrollView)
-    func chatFeed(chatFeed: ChatFeed, willBeginDragging scrollView: UIScrollView)
-    func chatFeed(chatFeed: ChatFeed, willEndDragging scrollView: UIScrollView, withVelocity velocity: CGPoint)
+    func chatFeed(_ chatFeed: ChatFeed, didSelectUserWithID userID: User.ID)
+    func chatFeed(_ chatFeed: ChatFeed, didSelect chatFeedContent: ChatFeedContent)
+    func chatFeed(_ chatFeed: ChatFeed, didLongPress chatFeedContent: ChatFeedContent)
+    func chatFeed(_ chatFeed: ChatFeed, didSelectFailureButtonFor chatFeedContent: ChatFeedContent)
+    func chatFeed(_ chatFeed: ChatFeed, didSelectReplyButtonFor chatFeedContent: ChatFeedContent)
+    func chatFeed(_ chatFeed: ChatFeed, didToggleLikeFor content: ChatFeedContent, completion: (() -> Void))
+    func chatFeed(_ chatFeed: ChatFeed, didScroll scrollView: UIScrollView)
+    func chatFeed(_ chatFeed: ChatFeed, willBeginDragging scrollView: UIScrollView)
+    func chatFeed(_ chatFeed: ChatFeed, willEndDragging scrollView: UIScrollView, withVelocity velocity: CGPoint)
     func publisher(for chatFeed: ChatFeed) -> ContentPublisher?
 }
 
@@ -62,7 +62,7 @@ extension ChatFeed {
     /// If pending content has been added or removed, the added count or the indices of the removed items should be
     /// passed in via `newPendingContentCount` and `removedPendingContentIndices`.
     ///
-    func handleNewItems(newItems: [ChatFeedContent], loadingType: PaginatedLoadingType, newPendingContentCount: Int = 0, removedPendingContentIndices: [Int] = [], completion: (() -> Void)? = nil) {
+    func handleNewItems(_ newItems: [ChatFeedContent], loadingType: PaginatedLoadingType, newPendingContentCount: Int = 0, removedPendingContentIndices: [Int] = [], completion: (() -> Void)? = nil) {
         guard newItems.count > 0 || newPendingContentCount != 0 || removedPendingContentIndices.count > 0 || loadingType == .refresh else {
             return
         }
@@ -94,7 +94,7 @@ extension ChatFeed {
         }
     }
     
-    private func updateCollectionView(with newItems: [ChatFeedContent], loadingType: PaginatedLoadingType, newPendingContentCount: Int, removedPendingContentIndices: [Int], completion: () -> Void) {
+    fileprivate func updateCollectionView(with newItems: [ChatFeedContent], loadingType: PaginatedLoadingType, newPendingContentCount: Int, removedPendingContentIndices: [Int], completion: @escaping () -> Void) {
         let collectionView = self.collectionView
         let unstashedItemCount = chatInterfaceDataSource.unstashedItems.count
         let oldUnstashedItemCount = unstashedItemCount - newItems.count
@@ -139,13 +139,13 @@ extension ChatFeed {
     }
     
     /// Removes the given content from the data source and from the collection view.
-    func remove(item: ChatFeedContent) {
+    func remove(_ item: ChatFeedContent) {
         guard let index = chatInterfaceDataSource.unstashedItems.indexOf({ item.content.id == $0.content.id }) else {
             assertionFailure("Tried to remove content from chat feed, but the chat feed didn't contain that content.")
             return
         }
         
         chatInterfaceDataSource.removeUnstashedItem(at: index)
-        collectionView.deleteItemsAtIndexPaths([NSIndexPath(forItem: index, inSection: 0)])
+        collectionView.deleteItemsAtIndexPaths([IndexPath(forItem: index, inSection: 0)])
     }
 }

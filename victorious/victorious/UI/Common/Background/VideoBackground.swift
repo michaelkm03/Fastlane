@@ -20,7 +20,7 @@ class VideoBackground: VBackground, VVideoPlayerDelegate {
     
     // MARK: - Fetching the video
     
-    private func fetchVideo(from dependencyManager: VDependencyManager) {
+    fileprivate func fetchVideo(from dependencyManager: VDependencyManager) {
         guard let sequenceURL = dependencyManager.sequenceURL else {
             return
         }
@@ -39,7 +39,7 @@ class VideoBackground: VBackground, VVideoPlayerDelegate {
     // MARK: - Views
     
     /// The view that displays background video.
-    private let videoView = VVideoView()
+    fileprivate let videoView = VVideoView()
     
     // MARK: - VBackground
     
@@ -49,7 +49,7 @@ class VideoBackground: VBackground, VVideoPlayerDelegate {
     
     // MARK: - VVideoPlayerDelegate
     
-    func videoPlayerDidBecomeReady(videoPlayer: VVideoPlayer) {
+    func videoPlayerDidBecomeReady(_ videoPlayer: VVideoPlayer) {
         videoView.playFromStart()
     }
 }
@@ -58,13 +58,13 @@ class VideoBackground: VBackground, VVideoPlayerDelegate {
 // sequence endpoints for video backgrounds. This should eventually be refactored and removed.
 
 private struct VideoBackgroundFetchRequest: RequestType {
-    let urlRequest: NSURLRequest
+    let urlRequest: URLRequest
     
-    init(sequenceURL: NSURL) {
-        self.urlRequest = NSURLRequest(URL: sequenceURL)
+    init(sequenceURL: URL) {
+        self.urlRequest = URLRequest(url: sequenceURL)
     }
     
-    func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> VVideoPlayerItem {
+    func parseResponse(_ response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> VVideoPlayerItem {
         guard let payload = responseJSON["payload"].arrayValue.first, let url = url(from: payload) else {
             throw ResponseParsingError()
         }
@@ -72,10 +72,10 @@ private struct VideoBackgroundFetchRequest: RequestType {
         return VVideoPlayerItem(URL: url)
     }
     
-    func url(from payload: JSON) -> NSURL? {
+    func url(from payload: JSON) -> URL? {
         for nodeJSON in payload["nodes"].arrayValue {
             for assetJSON in nodeJSON["assets"].arrayValue {
-                guard let url = assetJSON["data"].URL where url.pathExtension == "m3u8" else {
+                guard let url = assetJSON["data"].URL , url.pathExtension == "m3u8" else {
                     continue
                 }
                 

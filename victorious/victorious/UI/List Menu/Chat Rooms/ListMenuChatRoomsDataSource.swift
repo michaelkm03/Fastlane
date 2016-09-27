@@ -7,7 +7,7 @@
 //
 
 final class ListMenuChatRoomsDataSource: ListMenuSectionDataSource {
-    private struct Constants {
+    fileprivate struct Constants {
         struct Keys {
             static let chatRoomsURL = "chat.rooms.URL"
             static let chatRoomStreamURL = "streamURL"
@@ -20,8 +20,8 @@ final class ListMenuChatRoomsDataSource: ListMenuSectionDataSource {
     typealias Cell = ListMenuChatRoomCollectionViewCell
     let dependencyManager: VDependencyManager
     weak var delegate: ListMenuSectionDataSourceDelegate?
-    private(set) var state: ListMenuDataSourceState = .loading
-    private(set) var visibleItems: [ChatRoom] = [] {
+    fileprivate(set) var state: ListMenuDataSourceState = .loading
+    fileprivate(set) var visibleItems: [ChatRoom] = [] {
         didSet {
             state = visibleItems.isEmpty ? .noContent : .items
             delegate?.didUpdateVisibleItems(forSection: .chatRooms)
@@ -32,7 +32,7 @@ final class ListMenuChatRoomsDataSource: ListMenuSectionDataSource {
         self.dependencyManager = dependencyManager
     }
 
-    func fetchRemoteData(success success: FetchRemoteDataCallback?) {
+    func fetchRemoteData(success: FetchRemoteDataCallback?) {
         guard
             let apiPath = dependencyManager.networkResources?.apiPathForKey(Constants.Keys.chatRoomsURL),
             let request = ChatRoomsRequest(apiPath: apiPath)

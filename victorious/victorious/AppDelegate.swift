@@ -14,8 +14,8 @@ import FBSDKCoreKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        guard !NSBundle.v_isTestBundle else {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        guard !Bundle.v_isTestBundle else {
             return true
         }
 
@@ -24,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             TestFairy.begin("c03fa570f9415585437cbfedb6d09ae87c7182c8", withOptions: options)
         #endif
 
-        Crashlytics.startWithAPIKey("58f61748f3d33b03387e43014fdfff29c5a1da73")
+        Crashlytics.start(withAPIKey: "58f61748f3d33b03387e43014fdfff29c5a1da73")
 
         addLoginListener()
 
@@ -32,7 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         configureAudioSessionCategory()
 
-        window = UIWindow(frame: UIScreen.mainScreen().bounds)
+        window = UIWindow(frame: UIScreen.main.bounds)
         let mainStoryboard = UIStoryboard(name: kMainStoryboardName, bundle: nil)
         window?.rootViewController = mainStoryboard.instantiateInitialViewController()
         window?.makeKeyAndVisible()
@@ -44,19 +44,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
     }
     
-    func applicationWillEnterForeground(application: UIApplication) {
+    func applicationWillEnterForeground(_ application: UIApplication) {
         configureAudioSessionCategory()
     }
 
-    func applicationDidBecomeActive(application: UIApplication) {
+    func applicationDidBecomeActive(_ application: UIApplication) {
         // We don't need this yet, but it must be initialized now (see comments for sharedInstance method)
         VPurchaseManager.sharedInstance()
     }
     
-    func application(app: UIApplication, openURL url: NSURL, options: [String : AnyObject]) -> Bool {
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any]) -> Bool {
         if FacebookHelper.canOpenURL(url) {
-            let sourceApplication = options[UIApplicationOpenURLOptionsSourceApplicationKey] as! String
-            let annotation = options[UIApplicationOpenURLOptionsAnnotationKey]
+            let sourceApplication = options[UIApplicationOpenURLOptionsKey.sourceApplication] as! String
+            let annotation = options[UIApplicationOpenURLOptionsKey.annotation]
             return FBSDKApplicationDelegate.sharedInstance().application(app, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
         }
 
@@ -65,7 +65,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
-    func application(application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: () -> Void) {
+    func application(_ application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: @escaping () -> Void) {
         Log.verbose("handling events for background identifier -> \(identifier)")
 
         let uploadManager = VUploadManager.sharedManager()
@@ -77,29 +77,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // MARK: - Notifications
 
-    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
         VRootViewController.sharedRootViewController()?.applicationDidReceiveRemoteNotification(userInfo)
     }
 
-    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         VPushNotificationManager.sharedPushNotificationManager().didRegisterForRemoteNotificationsWithDeviceToken(deviceToken)
     }
 
-    func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         VPushNotificationManager.sharedPushNotificationManager().didFailToRegisterForRemoteNotificationsWithError(error)
     }
 
     // MARK: - Orientation
 
-    func application(application: UIApplication, supportedInterfaceOrientationsForWindow window: UIWindow?) -> UIInterfaceOrientationMask {
-        return .AllButUpsideDown
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        return .allButUpsideDown
     }
 
     // MARK: - Private
 
     /// Listens to the login user notification in order to `register` the user with our services.
-    private func addLoginListener() {
-        NSNotificationCenter.defaultCenter().addObserverForName(kLoggedInChangedNotification, object: nil, queue: NSOperationQueue.mainQueue()) { (notififcation) in
+    fileprivate func addLoginListener() {
+        NotificationCenter.defaultCenter().addObserverForName(kLoggedInChangedNotification, object: nil, queue: OperationQueue.mainQueue()) { (notififcation) in
             if let currentUser = VCurrentUser.user {
                 #if V_ENABLE_TESTFAIRY
                     let userTraits = [TFSDKIdentityTraitNameKey: currentUser.displayName ?? "",
@@ -116,7 +116,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
-    private func configureAudioSessionCategory() {
+    fileprivate func configureAudioSessionCategory() {
         do {
             try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
         } catch {

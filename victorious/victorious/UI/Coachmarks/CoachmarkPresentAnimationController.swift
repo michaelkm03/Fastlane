@@ -10,16 +10,16 @@ import Foundation
 import UIKit
 
 class CoachmarkPresentAnimationController: NSObject, UIViewControllerAnimatedTransitioning {
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return 0.3
     }
     
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
-        guard let destinationVC = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey) as? CoachmarkViewController else {
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+        guard let destinationVC = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to) as? CoachmarkViewController else {
             return
         }
 
-        let containerView = transitionContext.containerView()
+        let containerView = transitionContext.containerView
         containerView.addSubview(destinationVC.view)
         destinationVC.view.alpha = 0.0
         
@@ -27,11 +27,11 @@ class CoachmarkPresentAnimationController: NSObject, UIViewControllerAnimatedTra
         // during the transition 
         let blurView = destinationVC.setupBlurView()
         
-        UIView.animateWithDuration(transitionDuration(transitionContext), animations: {
+        UIView.animate(withDuration: transitionDuration(using: transitionContext), animations: {
             destinationVC.view.alpha = 1.0
             blurView.effect = UIBlurEffect(style: .Light)
-        }) { didFinish in
+        }, completion: { didFinish in
             transitionContext.completeTransition(didFinish)
-        }
+        }) 
     }
 }

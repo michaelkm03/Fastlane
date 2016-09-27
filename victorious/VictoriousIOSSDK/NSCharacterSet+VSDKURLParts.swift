@@ -9,13 +9,13 @@
 import Foundation
 
 private let queryPartAllowedCharacterSet: NSCharacterSet = {
-    let mutableCharacterSet = NSCharacterSet.URLQueryAllowedCharacterSet().mutableCopy() as! NSMutableCharacterSet
+    let mutableCharacterSet = NSCharacterSet.URLQueryAllowedCharacterSet.mutableCopy() as! NSMutableCharacterSet
     mutableCharacterSet.removeCharactersInString(";/?:@&=+,$")
     return mutableCharacterSet.copy() as! NSCharacterSet
 }()
 
 private let pathPartAllowedCharacterSet: NSCharacterSet = {
-    let mutableCharacterSet = NSCharacterSet.URLPathAllowedCharacterSet().mutableCopy() as! NSMutableCharacterSet
+    let mutableCharacterSet = NSCharacterSet.URLPathAllowedCharacterSet.mutableCopy() as! NSMutableCharacterSet
     mutableCharacterSet.removeCharactersInString("/@:")
     return mutableCharacterSet.copy() as! NSCharacterSet
 }()

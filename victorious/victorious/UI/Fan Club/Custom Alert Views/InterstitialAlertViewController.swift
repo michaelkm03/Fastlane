@@ -13,44 +13,44 @@ class InterstitialAlertViewController: UIViewController, Interstitial, VBackgrou
     var alert: Alert?
     weak var interstitialDelegate: InterstitialDelegate?
     
-    @IBOutlet private weak var iconImageView: UIImageView?
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var detailLabel: UILabel!
-    @IBOutlet private weak var confirmButton: UIButton!
-    @IBOutlet private weak var semiTransparentBackgroundButton: UIButton!
-    @IBOutlet private weak var containerView: UIView!
+    @IBOutlet fileprivate weak var iconImageView: UIImageView?
+    @IBOutlet fileprivate weak var titleLabel: UILabel!
+    @IBOutlet fileprivate weak var detailLabel: UILabel!
+    @IBOutlet fileprivate weak var confirmButton: UIButton!
+    @IBOutlet fileprivate weak var semiTransparentBackgroundButton: UIButton!
+    @IBOutlet fileprivate weak var containerView: UIView!
     
-    private var dependencyManager: VDependencyManager!
+    fileprivate var dependencyManager: VDependencyManager!
     
-    private struct Constants {
+    fileprivate struct Constants {
         static let cornerRadius: CGFloat = 10
     }
     
     // MARK: - Initialization
     
-    class func newWithDependencyManager(dependencyManager: VDependencyManager) -> InterstitialAlertViewController {
+    class func newWithDependencyManager(_ dependencyManager: VDependencyManager) -> InterstitialAlertViewController {
         let imageAlertViewController = InterstitialAlertViewController.v_initialViewControllerFromStoryboard() as InterstitialAlertViewController
         imageAlertViewController.dependencyManager = dependencyManager
         
         return imageAlertViewController
     }
     
-    private func configure(withTitle title: String, detailedDescription detail: String?, iconImageURL iconURL: NSURL?) {
+    fileprivate func configure(withTitle title: String, detailedDescription detail: String?, iconImageURL iconURL: URL?) {
         titleLabel.text = title
         
         if let detail = detail {
-            detailLabel.hidden = false
+            detailLabel.isHidden = false
             detailLabel.text = detail
         } else {
-            detailLabel.hidden = true
+            detailLabel.isHidden = true
             detailLabel.text = nil
         }
         
         if let iconURL = iconURL {
-            iconImageView?.hidden = false
+            iconImageView?.isHidden = false
             iconImageView?.sd_setImageWithURL(iconURL)
         } else {
-            iconImageView?.hidden = true
+            iconImageView?.isHidden = true
         }
     }
     
@@ -64,12 +64,12 @@ class InterstitialAlertViewController: UIViewController, Interstitial, VBackgrou
         return InterstitialAlertAnimator(isDismissing: true)
     }
     
-    func presentationController(presentedViewController: UIViewController, presentingViewController: UIViewController?) -> UIPresentationController {
-        return InterstitialAlertPresentationController(presentedViewController: presentedViewController, presentingViewController: presentingViewController)
+    func presentationController(_ presentedViewController: UIViewController, presentingViewController: UIViewController?) -> UIPresentationController {
+        return InterstitialAlertPresentationController(presentedViewController: presentedViewController, presenting: presentingViewController)
     }
     
     func preferredModalPresentationStyle() -> UIModalPresentationStyle {
-        return .Custom
+        return .custom
     }
     
     // MARK: - VBackgroundContainer Protocol
@@ -88,17 +88,17 @@ class InterstitialAlertViewController: UIViewController, Interstitial, VBackgrou
         }
     }
     
-    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        return .Portrait
+    override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
+        return .portrait
     }
     
-    @IBAction func dismiss(sender: UIButton) {
+    @IBAction func dismiss(_ sender: UIButton) {
         interstitialDelegate?.dismissInterstitial(self)
     }
     
     // MARK: - Private Methods
     
-    private func styleComponents() {
+    fileprivate func styleComponents() {
         containerView.layer.cornerRadius = Constants.cornerRadius
         
         titleLabel.font = dependencyManager.titleFont
@@ -109,10 +109,10 @@ class InterstitialAlertViewController: UIViewController, Interstitial, VBackgrou
         
         confirmButton.layer.cornerRadius = Constants.cornerRadius
         confirmButton.titleLabel?.font = dependencyManager.confirmButtonTitleFont
-        confirmButton.setTitleColor(dependencyManager.confirmButtonTitleColor, forState: .Normal)
-        confirmButton.setTitleColor(dependencyManager.confirmButtonTitleColor?.colorWithAlphaComponent(0.5), forState: .Highlighted)
+        confirmButton.setTitleColor(dependencyManager.confirmButtonTitleColor, for: .Normal)
+        confirmButton.setTitleColor(dependencyManager.confirmButtonTitleColor?.colorWithAlphaComponent(0.5), for: .Highlighted)
         confirmButton.backgroundColor = dependencyManager.confirmButtonBackgroundColor
-        confirmButton.setTitle(dependencyManager.confirmButtonTitle, forState: .Normal)
+        confirmButton.setTitle(dependencyManager.confirmButtonTitle, for: .Normal)
         
         dependencyManager.addBackgroundToBackgroundHost(self)
     }

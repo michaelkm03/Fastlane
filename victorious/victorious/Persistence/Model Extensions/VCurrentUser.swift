@@ -12,30 +12,30 @@ let kLastLoginTypeUserDefaultsKey = "com.getvictorious.VUserManager.LoginType"
 let kAccountIdentifierDefaultsKey = "com.getvictorious.VUserManager.AccountIdentifier"
 
 final class VCurrentUser: NSObject {
-    private(set) static var user: User?
+    fileprivate(set) static var user: User?
     static let userDidUpdateNotificationKey = "com.getvictorious.CurrentUser.DidUpdate"
     
     /// updates current user to the passed in user parameter.
     /// Will trigger `userDidUpdateNotificationKey` and `kLoggedInChangedNotification` notifications appropriately.
     /// - note: Must be called on the main thread because it modifies the user
     static func update(to user: User) {
-        assert(NSThread.isMainThread())
+        assert(Thread.isMainThread)
         
         let loggedInUserChanged = self.user == nil
         
         self.user = user
-        NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: userDidUpdateNotificationKey, object: nil))
+        NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: userDidUpdateNotificationKey), object: nil))
         if loggedInUserChanged {
-            NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: kLoggedInChangedNotification, object: nil))
+            NotificationCenter.defaultCenter().postNotification(Notification(name: kLoggedInChangedNotification, object: nil))
         }
     }
     
     /// Clears current user. 
     /// - note: Must be called on the main queue because it modifies the user
     static func clear() {
-        assert(NSThread.isMainThread())
+        assert(Thread.isMainThread)
         user = nil
-        NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: kLoggedInChangedNotification, object: nil))
+        NotificationCenter.defaultCenter().postNotification(Notification(name: kLoggedInChangedNotification, object: nil))
     }
     
     static var loginType: VLoginType = .None

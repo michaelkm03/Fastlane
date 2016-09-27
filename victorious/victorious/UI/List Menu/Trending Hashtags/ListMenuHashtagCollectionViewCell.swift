@@ -8,7 +8,7 @@
 
 final class ListMenuHashtagCollectionViewCell: UICollectionViewCell, ListMenuSectionCell {
     
-    @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet fileprivate weak var titleLabel: UILabel!
     
     override var selected: Bool {
         didSet {
@@ -32,7 +32,7 @@ final class ListMenuHashtagCollectionViewCell: UICollectionViewCell, ListMenuSec
     
     // MARK: - Private methods
     
-    private func applyTemplateAppearance(with dependencyManager: VDependencyManager) {
+    fileprivate func applyTemplateAppearance(with dependencyManager: VDependencyManager) {
         titleLabel.textColor = dependencyManager.titleColor
         titleLabel.font = dependencyManager.hashtagItemFont
     }

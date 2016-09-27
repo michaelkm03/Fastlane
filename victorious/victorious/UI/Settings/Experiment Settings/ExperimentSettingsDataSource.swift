@@ -22,11 +22,11 @@ class ExperimentSettingsDataSource: NSObject {
     weak var delegate: ExperimentSettingsDataSourceDelegate?
     
     struct TintColor {
-        static let unmodified = UIColor.grayColor()
-        static let modified = UIColor.redColor()
+        static let unmodified = UIColor.gray
+        static let modified = UIColor.red
         var current = TintColor.unmodified
     }
-    private var tintColor = TintColor()
+    fileprivate var tintColor = TintColor()
     
     var selectedExperimentIds: Set<Int> {
         return Set(sections.flatMap {
@@ -36,18 +36,18 @@ class ExperimentSettingsDataSource: NSObject {
     
     let experimentSettings = ExperimentSettings()
     
-    private enum State: Int {
-        case Loading, Content, NoContent, Error
+    fileprivate enum State: Int {
+        case loading, content, noContent, error
         
         /// Returns a message to display to the user for this state.
         /// Non-localized, as this is for testing purposes only.
         var message: String {
             switch self {
-            case .Error:
+            case .error:
                 return "An error occured while loading the list of available experiments."
-            case .NoContent:
+            case .noContent:
                 return "There are no experiments running right now."
-            case .Loading:
+            case .loading:
                 return "  Loading experiments..."
             default:
                 return ""
@@ -60,8 +60,8 @@ class ExperimentSettingsDataSource: NSObject {
         var experiments: [DeviceExperiment]
     }
     
-    private var sections = [Section]()
-    private var state: State = .Loading
+    fileprivate var sections = [Section]()
+    fileprivate var state: State = .loading
     
     func saveSettings() {
         self.experimentSettings.activeExperiments = self.selectedExperimentIds
@@ -73,7 +73,7 @@ class ExperimentSettingsDataSource: NSObject {
     
     func loadSettings() {
         self.sections = []
-        self.state = .Loading
+        self.state = .loading
         self.delegate?.tableView.reloadData()
         
         RequestOperation(request: DeviceExperimentsRequest()).queue { result in
@@ -105,11 +105,11 @@ class ExperimentSettingsDataSource: NSObject {
         }
     }
     
-    private func updateTintColor() {
+    fileprivate func updateTintColor() {
         self.tintColor.current = self.experimentSettings.activeExperiments != nil ? TintColor.modified : TintColor.unmodified
     }
     
-    private func updateVisibleCells() {
+    fileprivate func updateVisibleCells() {
         if let tableView = self.delegate?.tableView {
             for cell in tableView.visibleCells {
                 if let switchCell = cell as? VSettingsSwitchCell {
@@ -127,7 +127,7 @@ class ExperimentSettingsDataSource: NSObject {
 
 extension ExperimentSettingsDataSource: VSettingsSwitchCellDelegate {
     
-    func settingsDidUpdateFromCell(cell: VSettingsSwitchCell, newValue: Bool, key: String) {
+    func settingsDidUpdateFromCell(_ cell: VSettingsSwitchCell, newValue: Bool, key: String) {
         if let indexPath = delegate?.tableView.indexPathForCell(cell) {
             sections[indexPath.section].experiments[indexPath.row].isEnabled = newValue
             
@@ -153,7 +153,7 @@ extension ExperimentSettingsDataSource: VSettingsSwitchCellDelegate {
 
 extension ExperimentSettingsDataSource: SettingsButtonCellDelegate {
     
-    func buttonPressed( button: UIButton ) {
+    func buttonPressed( _ button: UIButton ) {
         self.resetSettings()
         self.loadSettings()
     }
@@ -161,18 +161,18 @@ extension ExperimentSettingsDataSource: SettingsButtonCellDelegate {
 
 extension ExperimentSettingsDataSource: UITableViewDataSource {
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let noContentIdentifier = SettingsEmptyCell.defaultReuseIdentifier
-        if self.state != .Content,
-            let cell = tableView.dequeueReusableCellWithIdentifier( noContentIdentifier, forIndexPath: indexPath ) as? SettingsEmptyCell {
+        if self.state != .content,
+            let cell = tableView.dequeueReusableCell( withIdentifier: noContentIdentifier, for: indexPath ) as? SettingsEmptyCell {
                 cell.message = self.state.message
                 return cell
         }
         
         let buttonCellIdentifier = SettingsButtonCell.defaultReuseIdentifier
-        if self.state == .Content && indexPath.section == tableView.lastSection(),
-            let cell = tableView.dequeueReusableCellWithIdentifier( buttonCellIdentifier, forIndexPath: indexPath ) as? SettingsButtonCell {
+        if self.state == .content && (indexPath as NSIndexPath).section == tableView.lastSection(),
+            let cell = tableView.dequeueReusableCell( withIdentifier: buttonCellIdentifier, for: indexPath ) as? SettingsButtonCell {
                 if let button = cell.button as? VButton,
                     let color = self.delegate?.dependencyManager?.colorForKey( VDependencyManagerLinkColorKey ),
                     let font = self.delegate?.dependencyManager?.fontForKey( VDependencyManagerHeaderFontKey ) {
@@ -185,9 +185,9 @@ extension ExperimentSettingsDataSource: UITableViewDataSource {
         }
         
         let identifier = VSettingsSwitchCell.suggestedReuseIdentifier()
-        if self.state == .Content,
+        if self.state == .content,
             let cell = tableView.dequeueReusableCellWithIdentifier( identifier, forIndexPath: indexPath ) as? VSettingsSwitchCell {
-                let experiment = self.sections[ indexPath.section ].experiments[ indexPath.row ]
+                let experiment = self.sections[ (indexPath as NSIndexPath).section ].experiments[ indexPath.row ]
                 let nameWithID = "\(experiment.name) (\(experiment.id))"
                 cell.setTitle( nameWithID, value: experiment.isEnabled.boolValue )
                 cell.delegate = self
@@ -198,27 +198,27 @@ extension ExperimentSettingsDataSource: UITableViewDataSource {
         fatalError( "Could not load cell" )
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch state {
-        case .Content where section != tableView.lastSection():
+        case .content where section != tableView.lastSection():
             return self.sections[ section ].experiments.count
         default:
             return 1 // No content/loading cell
         }
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         switch state {
-        case .Content:
+        case .content:
             return self.sections.count + 1 // Reset button
         default:
             return 1 // No content/loading cell
         }
     }
     
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch state {
-        case .Content where section != tableView.lastSection():
+        case .content where section != tableView.lastSection():
             return self.sections[ section ].title
         default:
             return ""

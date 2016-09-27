@@ -11,11 +11,11 @@ import VictoriousIOSSDK
 
 class PersistenceTemplateDownloader: NSObject, VTemplateDownloader {
     
-    private let requestExecutor = MainRequestExecutor()
+    fileprivate let requestExecutor = MainRequestExecutor()
     
-    func downloadTemplateWithCompletion(completion: VTemplateDownloaderCompletion) {
+    func downloadTemplateWithCompletion(_ completion: VTemplateDownloaderCompletion) {
         let templateRequest = TemplateRequest()
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+        dispatch_get_global_queue(DispatchQueue.GlobalQueuePriority.default, 0).async {
             self.requestExecutor.executeRequest(templateRequest,
                 onComplete: { templateData in
                     completion(templateData, nil)

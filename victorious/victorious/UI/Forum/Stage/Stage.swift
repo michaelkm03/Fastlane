@@ -15,10 +15,10 @@ protocol Stage: class, ForumEventReceiver, StageShrinkingAnimatorDelegate {
 
     /// Replaces the current content on the stage with the content present in the StageContent.
     /// StageContent may also contain meta data about the item on stage.
-    func addStageContent(stageContent: StageContent)
+    func addStageContent(_ stageContent: StageContent)
     
     /// Shows the caption of the provided content in the caption bar (if provided in the template)
-    func addCaptionContent(content: Content)
+    func addCaptionContent(_ content: Content)
     
     /// Removes the current content on the stage.
     func removeContent()
@@ -26,5 +26,5 @@ protocol Stage: class, ForumEventReceiver, StageShrinkingAnimatorDelegate {
 
 /// Conformers will recieve messages related to the stage resizing.
 protocol StageDelegate: class {
-    func stage(stage: Stage, wantsUpdateToContentHeight size: CGFloat)
+    func stage(_ stage: Stage, wantsUpdateToContentHeight size: CGFloat)
 }

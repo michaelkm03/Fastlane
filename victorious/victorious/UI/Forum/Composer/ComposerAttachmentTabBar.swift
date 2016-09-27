@@ -10,7 +10,7 @@ import Foundation
 
 class ComposerAttachmentTabBar: VFlexBar {
     
-    private struct Constants {
+    fileprivate struct Constants {
         static let buttonSideLength: CGFloat = 22
         static let expandedHeight: CGFloat = 53
     }
@@ -21,7 +21,7 @@ class ComposerAttachmentTabBar: VFlexBar {
         didSet {
             let buttonItems = buttons()
             for button in buttonItems {
-                button.enabled = buttonsEnabled
+                button.isEnabled = buttonsEnabled
             }
         }
     }
@@ -38,7 +38,7 @@ class ComposerAttachmentTabBar: VFlexBar {
         }
     }
     
-    func setupWithAttachmentMenuItems(navigationMenuItems: [VNavigationMenuItem]?, maxNumberOfMenuItems: Int) {
+    func setupWithAttachmentMenuItems(_ navigationMenuItems: [VNavigationMenuItem]?, maxNumberOfMenuItems: Int) {
         
         var actionItems = [UIView]()
         
@@ -73,7 +73,7 @@ class ComposerAttachmentTabBar: VFlexBar {
         updateTintColorOfButtons()
     }
     
-    private func updateTintColorOfButtons() {
+    fileprivate func updateTintColorOfButtons() {
         let buttonItems = buttons()
         let renderingMode: UIImageRenderingMode = tabItemDeselectedTintColor != nil ? .AlwaysTemplate : .AlwaysOriginal
         for button in buttonItems {
@@ -85,22 +85,22 @@ class ComposerAttachmentTabBar: VFlexBar {
         }
     }
     
-    func setButtonEnabled(enabled: Bool, forIdentifier identifier: String) {
+    func setButtonEnabled(_ enabled: Bool, forIdentifier identifier: String) {
         for button in buttons() {
             if (button.navigationMenuItem.identifier == identifier) {
-                button.enabled = enabled
+                button.isEnabled = enabled
             }
         }
     }
     
-    @objc private func buttonPressed(button: ComposerAttachmentTabBarButton) {
+    @objc fileprivate func buttonPressed(_ button: ComposerAttachmentTabBarButton) {
         delegate?.composerAttachmentTabBar(self, didSelectNavigationItem: button.navigationMenuItem, fromButton: button)
         button.navigationMenuItem.dependencyManager.trackButtonEvent(.tap)
     }
     
-    private func buttons() -> [ComposerAttachmentTabBarButton] {
+    fileprivate func buttons() -> [ComposerAttachmentTabBarButton] {
         let buttons = actionItems.filter { (item: AnyObject) -> Bool in
-            item.dynamicType == ComposerAttachmentTabBarButton.self
+            type(of: item) == ComposerAttachmentTabBarButton.self
         }
         return buttons as? [ComposerAttachmentTabBarButton] ?? []
     }

@@ -11,7 +11,7 @@
 /// Subviews can be added to `contentView` to display content in the bubble.
 ///
 class BubbleView: UIView {
-    private struct Constants {
+    fileprivate struct Constants {
         static let borderInsets = UIEdgeInsets(top: -1.0, left: -2.0, bottom: -3.0, right: -2.0)
         static let bubbleCornerRadius = CGFloat(6.0)
     }
@@ -41,11 +41,11 @@ class BubbleView: UIView {
     
     // MARK: - Subviews
     
-    @IBOutlet private var borderView: UIImageView!
+    @IBOutlet fileprivate var borderView: UIImageView!
     
     @IBOutlet var contentView: UIView!
     
-    private func setupSubviews() {
+    fileprivate func setupSubviews() {
         layer.cornerRadius = Constants.bubbleCornerRadius
         contentView.layer.cornerRadius = Constants.bubbleCornerRadius
         contentView.clipsToBounds = true

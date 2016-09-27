@@ -28,7 +28,7 @@ struct AccessoryScreen {
     
     // MARK: - Dependency manager
     
-    private let dependencyManager: VDependencyManager
+    fileprivate let dependencyManager: VDependencyManager
     
     // MARK: - Accessing values
     
@@ -68,7 +68,7 @@ enum AccessoryScreenPosition {
 extension VDependencyManager {
     /// Returns all of the accessory screens contained in the dependency manager at the given `key`, or nil if no
     /// accessory screens exist.
-    @warn_unused_result func accessoryScreens(for key: String) -> [AccessoryScreen]? {
+    func accessoryScreens(for key: String) -> [AccessoryScreen]? {
         guard let accessoryScreenDependencyManagers = childDependencies(for: key) else {
             Log.warning("Tried to get accessory screens from dependency manager for key '\(key)', but a value for that key was not found.")
             return nil

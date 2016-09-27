@@ -107,7 +107,7 @@
         }
 
         @objc private func export() {
-            if let allMessagesString = rawMessageContainer?.exportAllMessages() where MFMailComposeViewController.canSendMail() {
+            if let allMessagesString = rawMessageContainer?.exportAllMessages() , MFMailComposeViewController.canSendMail() {
                 let mailComposerViewController = MFMailComposeViewController()
                 mailComposerViewController.mailComposeDelegate = self
                 mailComposerViewController.setSubject("WebSocket messages log 4 u <3")

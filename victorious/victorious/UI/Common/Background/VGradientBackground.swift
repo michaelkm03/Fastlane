@@ -9,14 +9,14 @@
 import Foundation
 
 @objc enum VGradientBackgroundDirection: Int {
-    case Horizontal
-    case Vertical
+    case horizontal
+    case vertical
 }
 
-@objc class VGradientBackground: VBackground {
+class VGradientBackground: VBackground {
     
-    private let dependencyManager: VDependencyManager
-    private let gradientView = VLinearGradientView()
+    fileprivate let dependencyManager: VDependencyManager
+    fileprivate let gradientView = VLinearGradientView()
     
     required init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
@@ -25,7 +25,7 @@ import Foundation
         updateStyle()
     }
     
-    private func updateStyle() {
+    fileprivate func updateStyle() {
         gradientView.setColors( [dependencyManager.startColor, dependencyManager.endColor] )
         switch dependencyManager.direction {
         case .Vertical:

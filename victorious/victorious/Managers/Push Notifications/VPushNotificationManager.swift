@@ -7,7 +7,7 @@
 //
 
 extension VPushNotificationManager {
-    func queueRegisterPushNotificationOperationWithPushNotificationID(pushNotificationID: String, completion: (error: NSError?) -> Void) {
+    func queueRegisterPushNotificationOperationWithPushNotificationID(_ pushNotificationID: String, completion: (_ error: NSError?) -> Void) {
         RequestOperation(request: RegisterPushNotificationRequest(pushNotificationID: pushNotificationID)).queue { result in
             completion(error: result.error as? NSError)
         }

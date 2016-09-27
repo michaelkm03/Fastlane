@@ -23,8 +23,8 @@ public struct AccountCreateRequest: RequestType {
     public let credentials: NewAccountCredentials
     
     public var urlRequest: NSURLRequest {
-        let urlRequest = NSMutableURLRequest(URL: AccountCreateRequest.basePath)
-        urlRequest.HTTPMethod = "POST"
+        let urlRequest = NSMutableURLRequest(url: AccountCreateRequest.basePath as URL)
+        urlRequest.httpMethod = "POST"
         
         switch credentials {
             case let .UsernamePassword(username, password):
@@ -42,7 +42,7 @@ public struct AccountCreateRequest: RequestType {
         self.credentials = credentials
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> AccountCreateResponse {
+    public func parseResponse(response: URLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> AccountCreateResponse {
         let payload = responseJSON["payload"]
         if let token = payload["token"].string,
            let user = User(json: payload) {

@@ -12,9 +12,9 @@ import Foundation
 /// a search results view controller.
 @objc protocol MediaSearchResult: class {
     var exportPreviewImage: UIImage? { get set }
-    var exportMediaURL: NSURL? { get set }
-    var sourceMediaURL: NSURL? { get }
-    var thumbnailImageURL: NSURL? { get }
+    var exportMediaURL: URL? { get set }
+    var sourceMediaURL: URL? { get }
+    var thumbnailImageURL: URL? { get }
     var aspectRatio: CGFloat { get }
     var assetSize: CGSize { get }
     var remoteID: String? { get }

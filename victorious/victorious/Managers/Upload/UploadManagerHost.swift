@@ -14,7 +14,7 @@ protocol UploadManagerHost: VUploadProgressViewControllerDelegate {
     
     var uploadProgressViewController: VUploadProgressViewController? { get set }
     
-    func addUploadManagerToViewController(viewController: UIViewController, topInset: CGFloat)
+    func addUploadManagerToViewController(_ viewController: UIViewController, topInset: CGFloat)
 }
 
 /// Intended to be utilized by types conforming to `UploadManagerHost` when
@@ -22,9 +22,9 @@ protocol UploadManagerHost: VUploadProgressViewControllerDelegate {
 @objc(VUploadManagerHelper)
 class UploadManagerHelper: NSObject {
     
-    static func addUploadManagerToViewController(viewController: UIViewController, topInset: CGFloat) {
+    static func addUploadManagerToViewController(_ viewController: UIViewController, topInset: CGFloat) {
         
-        guard let managerHost = viewController as? UploadManagerHost where
+        guard let managerHost = viewController as? UploadManagerHost ,
             managerHost.uploadProgressViewController == nil else {
                 return
         }
@@ -45,7 +45,7 @@ class UploadManagerHelper: NSObject {
         managerHost.uploadProgressViewController = uploadProgressViewController
     }
     
-    private static func removeUploadViewController(uploadViewController: VUploadProgressViewController, fromExistingParent existingParent: UIViewController) {
+    fileprivate static func removeUploadViewController(_ uploadViewController: VUploadProgressViewController, fromExistingParent existingParent: UIViewController) {
         
         if let parent = existingParent as? UploadManagerHost {
             parent.uploadProgressViewController = nil
@@ -55,7 +55,7 @@ class UploadManagerHelper: NSObject {
         uploadViewController.removeFromParentViewController()
     }
 
-    private static func addUploadViewController(uploadViewController: VUploadProgressViewController, toViewController viewController: UIViewController, withTopInset topInset: Float) {
+    fileprivate static func addUploadViewController(_ uploadViewController: VUploadProgressViewController, toViewController viewController: UIViewController, withTopInset topInset: Float) {
         
         viewController.addChildViewController(uploadViewController)
         let progressVCView = uploadViewController.view

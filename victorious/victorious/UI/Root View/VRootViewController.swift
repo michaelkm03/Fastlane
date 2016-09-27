@@ -12,7 +12,7 @@ extension VRootViewController {
     
     // MARK: - Bridging with Obj-C
     
-    func showDeeplink(deeplink: NSURL, on scaffold: UIViewController) {
+    func showDeeplink(_ deeplink: NSURL, on scaffold: UIViewController) {
         // Ideally we would pass in a `Scaffold` type to avoid this check, but this function is being called by
         // dear Obj-C so that was not an option.
         if let scaffold = scaffold as? Scaffold {
@@ -34,7 +34,7 @@ extension VRootViewController {
         }
     }
     
-    func setupBadgeCountDependency(dependencyManager: VDependencyManager?) {
+    func setupBadgeCountDependency(_ dependencyManager: VDependencyManager?) {
         BadgeCountManager.networkResources = dependencyManager?.networkResources
     }
 }

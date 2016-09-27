@@ -27,7 +27,7 @@ extension UIDevice {
                 return identifier
             }
         #else
-            return identifierForVendor?.UUIDString ?? ""
+            return identifierForVendor?.uuidString ?? ""
         #endif
     }
 }

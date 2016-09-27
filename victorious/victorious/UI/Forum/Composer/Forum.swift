@@ -30,7 +30,7 @@ protocol Forum: ForumEventReceiver, ForumEventSender, ChatFeedDelegate, Composer
     
     // MARK: - Behaviors
 
-    func setStageHeight(value: CGFloat)
+    func setStageHeight(_ value: CGFloat)
 }
 
 /// The default implementation of the highest-level, abstract Forum business logic,
@@ -39,31 +39,31 @@ protocol Forum: ForumEventReceiver, ForumEventSender, ChatFeedDelegate, Composer
 extension Forum {
     // MARK: - ChatFeedDelegate
     
-    func chatFeed(chatFeed: ChatFeed, didSelectUserWithID userID: Int) {
+    func chatFeed(_ chatFeed: ChatFeed, didSelectUserWithID userID: Int) {
         let router = Router(originViewController: originViewController, dependencyManager: dependencyManager)
-        let destination = DeeplinkDestination(userID: userID)
+        let destination = DeeplinkDestination(url: userID)
         router.navigate(to: destination, from: chatFeedContext)
     }
     
-    func chatFeed(chatFeed: ChatFeed, didSelect chatFeedContent: ChatFeedContent) {
+    func chatFeed(_ chatFeed: ChatFeed, didSelect chatFeedContent: ChatFeedContent) {
         let router = Router(originViewController: originViewController, dependencyManager: dependencyManager)
-        let destination = DeeplinkDestination(content: chatFeedContent.content)
+        let destination = DeeplinkDestination(url: chatFeedContent.content)
         router.navigate(to: destination, from: chatFeedContext)
     }
     
     // MARK: - ComposerDelegate
     
-    func composer(composer: Composer, didSelectCreationFlowType creationFlowType: VCreationFlowType) {
+    func composer(_ composer: Composer, didSelectCreationFlowType creationFlowType: VCreationFlowType) {
         creationFlowPresenter()?.presentWorkspaceOnViewController(originViewController, creationFlowType: creationFlowType)
     }
 
-    func composer(composer: Composer, didUpdateContentHeight height: CGFloat) {
+    func composer(_ composer: Composer, didUpdateContentHeight height: CGFloat) {
         chatFeed?.addedBottomInset = height
     }
 
     // MARK: - StageDelegate
     
-    func stage(stage: Stage, wantsUpdateToContentHeight height: CGFloat) {
+    func stage(_ stage: Stage, wantsUpdateToContentHeight height: CGFloat) {
         setStageHeight(height)
         chatFeed?.addedTopInset = height
     }

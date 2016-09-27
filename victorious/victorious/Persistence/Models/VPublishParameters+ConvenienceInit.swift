@@ -16,7 +16,7 @@ extension VPublishParameters {
         guard
             let mediaAsset = content.assets.first,
             let mediaPreview = content.largestPreviewImage
-            where mediaAsset.contentType != .text && mediaAsset.contentType != .link
+            , mediaAsset.contentType != .text && mediaAsset.contentType != .link
         else {
             return nil
         }

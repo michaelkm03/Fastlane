@@ -11,13 +11,13 @@ import Foundation
 
 class GIFSearchDataSource: PaginatedDataSource, MediaSearchDataSource {
     
-    private(set) var options = MediaSearchOptions()
+    fileprivate(set) var options = MediaSearchOptions()
     
     override init() {
         options.showPreview = true
     }
 	
-	func performSearch( searchTerm searchTerm: String?, pageType: VPageType, completion: (NSError? -> ())? ) {
+	func performSearch( searchTerm: String?, pageType: VPageType, completion: ((NSError?) -> ())? ) {
 		
         let searchOptions: GIFSearchOptions
         if let searchTerm = searchTerm {

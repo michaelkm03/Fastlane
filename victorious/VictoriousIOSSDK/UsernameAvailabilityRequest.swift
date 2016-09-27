@@ -30,10 +30,10 @@ public struct UsernameAvailabilityRequest: RequestType {
     }
     
     public var urlRequest: NSURLRequest {
-        return NSURLRequest(URL: self.url)
+        return NSURLRequest(url: self.url as URL)
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> Bool {
+    public func parseResponse(response: URLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> Bool {
         return responseJSON["payload"]["success"].boolValue
     }
 }

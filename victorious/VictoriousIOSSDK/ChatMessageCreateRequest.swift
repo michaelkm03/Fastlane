@@ -10,7 +10,7 @@ import Foundation
 
 public struct ChatMessageCreateRequest: RequestType {
     public var urlRequest: NSURLRequest {
-        let request = NSMutableURLRequest(URL: url)
+        let request = NSMutableURLRequest(url: url as URL)
         request.vsdk_addURLEncodedFormPost(["content": text])
         return request
     }

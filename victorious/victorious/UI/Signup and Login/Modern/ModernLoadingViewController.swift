@@ -34,8 +34,8 @@ class ModernLoadingViewController: UIViewController, LoginFlowLoadingScreen, VBa
         }
     }
     
-    private var cancelButton: UIBarButtonItem?
-    private var timerManager: VTimerManager?
+    fileprivate var cancelButton: UIBarButtonItem?
+    fileprivate var timerManager: VTimerManager?
     
     // MARK : Public properties
     
@@ -53,7 +53,7 @@ class ModernLoadingViewController: UIViewController, LoginFlowLoadingScreen, VBa
     
     var canCancel = true {
         didSet {
-            self.cancelButton?.enabled = canCancel
+            self.cancelButton?.isEnabled = canCancel
         }
     }
     
@@ -63,13 +63,13 @@ class ModernLoadingViewController: UIViewController, LoginFlowLoadingScreen, VBa
         
     // MARK: Factory method
     
-    class func newWithDependencyManager(dependencyManager: VDependencyManager) -> ModernLoadingViewController {
+    class func newWithDependencyManager(_ dependencyManager: VDependencyManager) -> ModernLoadingViewController {
         let facebookLoginLoadingViewController: ModernLoadingViewController = self.v_initialViewControllerFromStoryboard()
         facebookLoginLoadingViewController.dependencyManager = dependencyManager
         return facebookLoginLoadingViewController
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         timerManager?.invalidate()
         timerManager = VTimerManager.scheduledTimerManagerWithTimeInterval(0.3, target: self, selector: #selector(animate), userInfo: nil, repeats: true)
@@ -78,7 +78,7 @@ class ModernLoadingViewController: UIViewController, LoginFlowLoadingScreen, VBa
         }
     }
     
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         ellipsesLabel.text = ""
     }
@@ -91,11 +91,11 @@ class ModernLoadingViewController: UIViewController, LoginFlowLoadingScreen, VBa
     
     func animate() {
         let ellipses = "..."
-        if let range = ellipsesLabel.text?.rangeOfString(ellipses) {
-            ellipsesLabel.text = ellipsesLabel.text?.stringByReplacingCharactersInRange(range, withString: "")
+        if let range = ellipsesLabel.text?.range(of: ellipses) {
+            ellipsesLabel.text = ellipsesLabel.text?.replacingCharacters(in: range, with: "")
         }
         else {
-            ellipsesLabel.text = ellipsesLabel.text?.stringByAppendingString(".")
+            ellipsesLabel.text = (ellipsesLabel.text?)! + "."
         }
     }
     

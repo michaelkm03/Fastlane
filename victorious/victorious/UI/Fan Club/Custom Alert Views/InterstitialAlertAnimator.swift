@@ -15,19 +15,19 @@ class InterstitialAlertAnimator: NSObject, UIViewControllerAnimatedTransitioning
         self.isDismissing = isDismissing
     }
     
-    private struct Constants {
+    fileprivate struct Constants {
         static let dismissalDuration = 0.3
         static let presentationDuration = 0.5
     }
     
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
+    func transitionDuration(_ transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         if isDismissing {
             return Constants.dismissalDuration
         }
         return Constants.presentationDuration
     }
     
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
+    func animateTransition(_ transitionContext: UIViewControllerContextTransitioning) {
         
         if let toViewController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey),
             let fromViewController = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey) {

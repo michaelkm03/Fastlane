@@ -10,11 +10,11 @@ import UIKit
 
 final class ConfirmDestructiveActionOperation: AsyncOperation<Void> {
     
-    private let actionTitle: String
-    private let dependencyManager: VDependencyManager
-    private let originViewController: UIViewController
+    fileprivate let actionTitle: String
+    fileprivate let dependencyManager: VDependencyManager
+    fileprivate let originViewController: UIViewController
     
-    private let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel Button")
+    fileprivate let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel Button")
     
     // MARK: - ActionConfirmationOperation
     
@@ -28,7 +28,7 @@ final class ConfirmDestructiveActionOperation: AsyncOperation<Void> {
         return .main
     }
     
-    override func execute(finish: (output: OperationResult<Void>) -> Void) {
+    override func execute(_ finish: @escaping (_ output: OperationResult<Void>) -> Void) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
         alertController.addAction(
             UIAlertAction(title: self.cancelTitle,

@@ -20,10 +20,10 @@ public struct UnreadNotificationsCountRequest: RequestType {
     }
     
     public var urlRequest: NSURLRequest {
-        return NSURLRequest(URL: url)
+        return NSURLRequest(url: url as URL)
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> Int {
+    public func parseResponse(response: URLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> Int {
         guard let count = responseJSON["payload"]["unread_count"].int else {
             throw ResponseParsingError()
         }

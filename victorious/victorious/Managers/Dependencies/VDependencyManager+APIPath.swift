@@ -9,7 +9,7 @@
 import VictoriousIOSSDK
 
 extension VDependencyManager {
-    func apiPathForKey(key: String, macroReplacements: [String: String] = [:], queryParameters: [String: String] = [:]) -> APIPath? {
+    func apiPathForKey(_ key: String, macroReplacements: [String: String] = [:], queryParameters: [String: String] = [:]) -> APIPath? {
         guard let string = stringForKey(key) else {
             return nil
         }

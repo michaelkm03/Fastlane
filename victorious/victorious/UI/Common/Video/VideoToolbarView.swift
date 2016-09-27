@@ -11,14 +11,14 @@ import UIKit
 /// Defines an objec that can respond to UI and playback events that occur in a `VVideoToolbarView`
 @objc protocol VideoToolbarDelegate {
     
-    optional func animateAlongsideVideoToolbarWillAppear( videoToolbar: VideoToolbarView )
-    optional func animateAlongsideVideoToolbarWillDisappear( videoToolbar: VideoToolbarView )
+    @objc optional func animateAlongsideVideoToolbarWillAppear( _ videoToolbar: VideoToolbarView )
+    @objc optional func animateAlongsideVideoToolbarWillDisappear( _ videoToolbar: VideoToolbarView )
     
-    func videoToolbar( videoToolbar: VideoToolbarView, didScrubToLocation location: Float )
-    func videoToolbar( videoToolbar: VideoToolbarView, didStartScrubbingToLocation location: Float )
-    func videoToolbar( videoToolbar: VideoToolbarView, didEndScrubbingToLocation location: Float )
-    func videoToolbarDidPause( videoToolbar: VideoToolbarView )
-    func videoToolbarDidPlay( videoToolbar: VideoToolbarView )
+    func videoToolbar( _ videoToolbar: VideoToolbarView, didScrubToLocation location: Float )
+    func videoToolbar( _ videoToolbar: VideoToolbarView, didStartScrubbingToLocation location: Float )
+    func videoToolbar( _ videoToolbar: VideoToolbarView, didEndScrubbingToLocation location: Float )
+    func videoToolbarDidPause( _ videoToolbar: VideoToolbarView )
+    func videoToolbarDidPlay( _ videoToolbar: VideoToolbarView )
 }
 
 /// A generic video toolbar with controls for play, pause, seek (scrub), timeline and current time text.
@@ -26,27 +26,27 @@ class VideoToolbarView: UIView {
     
     weak var delegate: VideoToolbarDelegate?
     
-    private var autoVisibilityTimer = VTimerManager()
+    fileprivate var autoVisibilityTimer = VTimerManager()
     
-    private let kTimeLabelPlaceholderText = "--:--"
-    private let kPlayButtonPlayImageName = "player-play-icon"
-    private let kPlayButtonPauseImageName = "player-pause-icon"
+    fileprivate let kTimeLabelPlaceholderText = "--:--"
+    fileprivate let kPlayButtonPlayImageName = "player-play-icon"
+    fileprivate let kPlayButtonPauseImageName = "player-pause-icon"
     
-    private let kVisibilityAnimationDuration = 0.2
-    private let kMaxVisibilityTimerDuration = 4.0
+    fileprivate let kVisibilityAnimationDuration = 0.2
+    fileprivate let kMaxVisibilityTimerDuration = 4.0
     
-    @IBOutlet private weak var playButton: UIButton!
-    @IBOutlet private weak var slider: UISlider!
-    @IBOutlet private weak var elapsedTimeLabel: UILabel!
-    @IBOutlet private weak var remainingTimeLabel: UILabel!
-    @IBOutlet private weak var containerView: UIView!
+    @IBOutlet fileprivate weak var playButton: UIButton!
+    @IBOutlet fileprivate weak var slider: UISlider!
+    @IBOutlet fileprivate weak var elapsedTimeLabel: UILabel!
+    @IBOutlet fileprivate weak var remainingTimeLabel: UILabel!
+    @IBOutlet fileprivate weak var containerView: UIView!
     
-    @IBOutlet private weak var containerTopConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var containerBottomConstraint: NSLayoutConstraint!
+    @IBOutlet fileprivate weak var containerTopConstraint: NSLayoutConstraint!
+    @IBOutlet fileprivate weak var containerBottomConstraint: NSLayoutConstraint!
     
-    private var isSliderDown: Bool = false
-    private lazy var timeFormatter = VElapsedTimeFormatter()
-    private var lastInteractionDate = NSDate()
+    fileprivate var isSliderDown: Bool = false
+    fileprivate lazy var timeFormatter = VElapsedTimeFormatter()
+    fileprivate var lastInteractionDate = Date()
     
     func resetTime() {
         self.elapsedTimeLabel.text = kTimeLabelPlaceholderText
@@ -54,13 +54,13 @@ class VideoToolbarView: UIView {
         slider.value = 0.0
     }
     
-    func setCurrentTime( timeSeconds: Float64, duration: Float64 ) {
+    func setCurrentTime( _ timeSeconds: Float64, duration: Float64 ) {
         slider.value = clampRatio( Float(timeSeconds / duration) )
         elapsedTimeLabel.text = self.timeFormatter.stringForSeconds( clampTime(timeSeconds) )
         remainingTimeLabel.text = self.timeFormatter.stringForSeconds( clampTime(duration - timeSeconds) )
     }
     
-    func setProgress( progress: Float, duration: Float64 ) {
+    func setProgress( _ progress: Float, duration: Float64 ) {
         slider.value = clampRatio( progress )
         let elapsedTime = Float64(progress) * duration
         elapsedTimeLabel.text = self.timeFormatter.stringForSeconds( clampTime(elapsedTime) )
@@ -71,11 +71,11 @@ class VideoToolbarView: UIView {
         didSet {
             let imageName = paused ? kPlayButtonPlayImageName : kPlayButtonPauseImageName
             let image = UIImage(named: imageName)!
-            playButton.setImage( image, forState: .Normal )
+            playButton.setImage( image, for: UIControlState() )
         }
     }
     
-    private(set) var isVisible = true
+    fileprivate(set) var isVisible = true
     
     var autoVisibilityTimerEnabled = true {
         didSet {
@@ -104,7 +104,7 @@ class VideoToolbarView: UIView {
     
     // MARK: - Visibility
     
-    func setVisible(isVisible: Bool, animated: Bool = true) {
+    func setVisible(_ isVisible: Bool, animated: Bool = true) {
         guard isVisible != self.isVisible else {
             return
         }
@@ -126,7 +126,7 @@ class VideoToolbarView: UIView {
             }
         }
         
-        let completion: Bool -> Void = { finished in
+        let completion: (Bool) -> Void = { finished in
             if isVisible {
                 if self.autoVisibilityTimerEnabled {
                     self.resetTimer()
@@ -138,10 +138,10 @@ class VideoToolbarView: UIView {
         }
         
         if animated {
-            UIView.animateWithDuration(
-                kVisibilityAnimationDuration,
+            UIView.animate(
+                withDuration: kVisibilityAnimationDuration,
                 delay: 0.0,
-                options: .CurveEaseOut,
+                options: .curveEaseOut,
                 animations: animations,
                 completion: completion
             )
@@ -154,26 +154,26 @@ class VideoToolbarView: UIView {
     
     // MARK: - IBActions
     
-    @IBAction private func onSliderDown( slider: UISlider ) {
+    @IBAction fileprivate func onSliderDown( _ slider: UISlider ) {
         isSliderDown = true
         refreshVisibilityDate()
         delegate?.videoToolbar( self, didStartScrubbingToLocation: slider.value)
     }
     
-    @IBAction private func onSliderUp( slider: UISlider ) {
+    @IBAction fileprivate func onSliderUp( _ slider: UISlider ) {
         isSliderDown = false
         refreshVisibilityDate()
         delegate?.videoToolbar( self, didEndScrubbingToLocation: slider.value)
     }
     
-    @IBAction private func onSliderValueChanged( slider: UISlider ) {
+    @IBAction fileprivate func onSliderValueChanged( _ slider: UISlider ) {
         if isSliderDown {
             refreshVisibilityDate()
             delegate?.videoToolbar(self, didScrubToLocation: slider.value)
         }
     }
     
-    @IBAction private func onPlayButtonPressed( slider: UISlider ) {
+    @IBAction fileprivate func onPlayButtonPressed( _ slider: UISlider ) {
         paused = !paused
         if paused {
             delegate?.videoToolbarDidPause( self )
@@ -186,11 +186,11 @@ class VideoToolbarView: UIView {
     
     // MARK: - Helpers
     
-    private func clampTime( time: Float64 ) -> Float64 {
+    fileprivate func clampTime( _ time: Float64 ) -> Float64 {
         return time < 0.0 ? 0.0 : time
     }
     
-    private func clampRatio( time: Float ) -> Float {
+    fileprivate func clampRatio( _ time: Float ) -> Float {
         return time < 0.0 ? 0.0 : time > 1.0 ? 1.0 : time
     }
     
@@ -202,11 +202,11 @@ class VideoToolbarView: UIView {
         }
     }
     
-    private func refreshVisibilityDate() {
-        self.lastInteractionDate = NSDate()
+    fileprivate func refreshVisibilityDate() {
+        self.lastInteractionDate = Date()
     }
     
-    private func resetTimer() {
+    fileprivate func resetTimer() {
         if !self.autoVisibilityTimerEnabled {
             return
         }

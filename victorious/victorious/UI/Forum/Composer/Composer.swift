@@ -21,26 +21,26 @@ protocol Composer: class, ForumEventReceiver, ForumEventSender, ComposerAttachme
     
     var dependencyManager: VDependencyManager! { get set }
     
-    func dismissKeyboard(animated: Bool)
+    func dismissKeyboard(_ animated: Bool)
     
-    func sendMessage(text text: String, currentUser: UserModel)
+    func sendMessage(text: String, currentUser: UserModel)
     
-    func sendMessage(asset asset: ContentMediaAsset, previewImage: UIImage, text: String?, currentUser: UserModel, isVIPOnly: Bool)
+    func sendMessage(asset: ContentMediaAsset, previewImage: UIImage, text: String?, currentUser: UserModel, isVIPOnly: Bool)
     
-    func setComposerVisible(visible: Bool, animated: Bool)
+    func setComposerVisible(_ visible: Bool, animated: Bool)
     
     func showKeyboard()
     
-    func append(text: String)
+    func append(_ text: String)
 }
 
 extension Composer {
-    func sendMessage(text text: String, currentUser: UserModel) {
+    func sendMessage(text: String, currentUser: UserModel) {
         let content = Content(author: currentUser, text: text)
         send(.sendContent(content))
     }
     
-    func sendMessage(asset asset: ContentMediaAsset, previewImage: UIImage, text: String?, currentUser: UserModel, isVIPOnly: Bool) {
+    func sendMessage(asset: ContentMediaAsset, previewImage: UIImage, text: String?, currentUser: UserModel, isVIPOnly: Bool) {
         let previewImageAsset = ImageAsset(image: previewImage)
         let content = Content(
             author: currentUser,
@@ -58,10 +58,10 @@ extension Composer {
 /// a composer changes its height.
 protocol ComposerDelegate: class, ForumEventSender {
     
-    func composer(composer: Composer, didSelectCreationFlowType creationFlowType: VCreationFlowType)
+    func composer(_ composer: Composer, didSelectCreationFlowType creationFlowType: VCreationFlowType)
     
     /// Called when the composer updates to a new height. The returned value represents
     /// the total height of the composer content (including the keyboard) and can be more
     /// than the composer's maximumHeight.
-    func composer(composer: Composer, didUpdateContentHeight height: CGFloat)
+    func composer(_ composer: Composer, didUpdateContentHeight height: CGFloat)
 }

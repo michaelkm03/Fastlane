@@ -11,14 +11,14 @@ import MBProgressHUD
 
 /// A view controller that displays a side-scrolling single-row of gifs that play in-line
 class GIFTrayViewController: UIViewController, Tray, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, LoadingCancellableViewDelegate {
-    private struct Constants {
+    fileprivate struct Constants {
         static let collectionViewContentInsets = UIEdgeInsets(top: 2, left: 2, bottom: 2, right: 2)
         static let interItemSpace = CGFloat(2)
     }
     
     weak var delegate: TrayDelegate?
-    private var progressHUD: MBProgressHUD?
-    private var mediaExporter: MediaSearchExporter?
+    fileprivate var progressHUD: MBProgressHUD?
+    fileprivate var mediaExporter: MediaSearchExporter?
     
     lazy var dataSource: GIFTrayDataSource = {
         let dataSource = GIFTrayDataSource(dependencyManager: self.dependencyManager)
@@ -26,22 +26,22 @@ class GIFTrayViewController: UIViewController, Tray, UICollectionViewDelegate, U
         return dataSource
     }()
     
-    @IBOutlet private(set) var collectionView: UICollectionView!
+    @IBOutlet fileprivate(set) var collectionView: UICollectionView!
     
-    private var dependencyManager: VDependencyManager!
+    fileprivate var dependencyManager: VDependencyManager!
     
-    static func new(dependencyManager: VDependencyManager) -> GIFTrayViewController {
+    static func new(_ dependencyManager: VDependencyManager) -> GIFTrayViewController {
         let tray = GIFTrayViewController.v_initialViewControllerFromStoryboard() as GIFTrayViewController
         tray.dependencyManager = dependencyManager
         return tray
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         collectionView.hidden = true
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         dataSource.fetchGifs()
         collectionView.hidden = false
@@ -56,11 +56,11 @@ class GIFTrayViewController: UIViewController, Tray, UICollectionViewDelegate, U
     
     // MARK: - UICollectionViewDelegate
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: IndexPath) {
         guard
-            let gif = dataSource.asset(atIndex: indexPath.item),
-            let remoteID = gif.remoteID where
-            dataSource.trayState == .Populated
+            let gif = dataSource.asset(atIndex: (indexPath as NSIndexPath).item),
+            let remoteID = gif.remoteID ,
+            dataSource.trayState == .populated
         else {
             if let _ = collectionView.cellForItemAtIndexPath(indexPath) as? TrayRetryLoadCollectionViewCell {
                 dataSource.fetchGifs()
@@ -94,10 +94,10 @@ class GIFTrayViewController: UIViewController, Tray, UICollectionViewDelegate, U
     
     // MARK: - UICollectionViewDelegateFlowLayout
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         guard
-            let gif = dataSource.asset(atIndex: indexPath.row) where
-            dataSource.trayState == .Populated
+            let gif = dataSource.asset(atIndex: indexPath.row) ,
+            dataSource.trayState == .populated
         else {
             return view.bounds.insetBy(Constants.collectionViewContentInsets).size
         }
@@ -105,17 +105,17 @@ class GIFTrayViewController: UIViewController, Tray, UICollectionViewDelegate, U
         return CGSize(width: height * gif.aspectRatio, height: height)
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         return Constants.collectionViewContentInsets
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
         return Constants.interItemSpace
     }
     
     // MARK: - Media exporting
     
-    private func exportMedia(fromSearchResult mediaSearchResultObject: MediaSearchResult, completionBlock: (TrayMediaCompletionState) -> ()) {
+    fileprivate func exportMedia(fromSearchResult mediaSearchResultObject: MediaSearchResult, completionBlock: @escaping (TrayMediaCompletionState) -> ()) {
         self.mediaExporter?.cancelDownload()
         self.mediaExporter = nil
         

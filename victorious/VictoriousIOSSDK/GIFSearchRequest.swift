@@ -30,7 +30,7 @@ public struct GIFSearchRequest: PaginatorPageable, ResultBasedPageable {
                 url = NSURL(string: trendingURL)
         }
         
-        let mutableURLRequest = NSMutableURLRequest(URL: url ?? NSURL())
+        let mutableURLRequest = NSMutableURLRequest(url: (url ?? NSURL()) as URL)
         paginator.addPaginationArgumentsToRequest(mutableURLRequest)
         urlRequest = mutableURLRequest
         
@@ -38,7 +38,7 @@ public struct GIFSearchRequest: PaginatorPageable, ResultBasedPageable {
         self.paginator = paginator
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [GIFSearchResult] {
+    public func parseResponse(response: URLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [GIFSearchResult] {
         guard let gifsJSON = responseJSON["payload"].array else {
             throw ResponseParsingError()
         }

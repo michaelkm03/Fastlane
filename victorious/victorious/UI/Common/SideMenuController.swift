@@ -24,12 +24,12 @@ enum SideMenuControllerEdge {
 class SideMenuController: UIViewController {
     // MARK: - Config
     
-    private static let visibleCenterEdgeWidth: CGFloat = 54.0
-    private static let slideAnimationDuration: NSTimeInterval = 0.5
-    private static let statusBarAnimationDuration: NSTimeInterval = 0.2
-    private static let panTriggerThreshold: CGFloat = 80.0
+    fileprivate static let visibleCenterEdgeWidth: CGFloat = 54.0
+    fileprivate static let slideAnimationDuration: TimeInterval = 0.5
+    fileprivate static let statusBarAnimationDuration: TimeInterval = 0.2
+    fileprivate static let panTriggerThreshold: CGFloat = 80.0
     
-    private var associatedChildViewControllers = [UIView: UIViewController]()
+    fileprivate var associatedChildViewControllers = [UIView: UIViewController]()
     
     // MARK: - Initializing
     
@@ -46,7 +46,7 @@ class SideMenuController: UIViewController {
         setup()
     }
     
-    private func setup() {
+    fileprivate func setup() {
         view.addSubview(leftContainerView)
         view.addSubview(rightContainerView)
         view.addSubview(centerContainerView)
@@ -58,7 +58,7 @@ class SideMenuController: UIViewController {
         view.addGestureRecognizer(panRecognizer)
         
         tapRecognizer.addTarget(self, action: #selector(centerViewTapWasRecognized))
-        tapRecognizer.enabled = false
+        tapRecognizer.isEnabled = false
         centerContainerView.addGestureRecognizer(tapRecognizer)
     }
     
@@ -70,7 +70,7 @@ class SideMenuController: UIViewController {
         updateFocusOfContainedViews()
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
         closeSideViewController(animated: true)
@@ -78,31 +78,31 @@ class SideMenuController: UIViewController {
     
     // MARK: - Status bar
     
-    override func preferredStatusBarUpdateAnimation() -> UIStatusBarAnimation {
-        return .Slide
+    override var preferredStatusBarUpdateAnimation : UIStatusBarAnimation {
+        return .slide
     }
     
-    override func prefersStatusBarHidden() -> Bool {
-        return centerViewController?.prefersStatusBarHidden() == true
+    override var prefersStatusBarHidden : Bool {
+        return centerViewController?.prefersStatusBarHidden == true
     }
     
-    override func childViewControllerForStatusBarStyle() -> UIViewController? {
+    override var childViewControllerForStatusBarStyle : UIViewController? {
         return centerViewController ?? self
     }
     
-    private func animateStatusBarUpdate() {
-        UIView.animateWithDuration(SideMenuController.statusBarAnimationDuration) { [weak self] in
+    fileprivate func animateStatusBarUpdate() {
+        UIView.animate(withDuration: SideMenuController.statusBarAnimationDuration, animations: { [weak self] in
             self?.setNeedsStatusBarAppearanceUpdate()
-        }
+        }) 
     }
     
     // MARK: - Opening and closing side view controllers
     
     /// The edge of the the currently-open side view controller, if any.
-    private var openEdge: SideMenuControllerEdge? {
+    fileprivate var openEdge: SideMenuControllerEdge? {
         didSet {
             animateStatusBarUpdate()
-            tapRecognizer.enabled = openEdge != nil
+            tapRecognizer.isEnabled = openEdge != nil
             updateFocusOfContainedViews()
         }
     }
@@ -137,8 +137,8 @@ class SideMenuController: UIViewController {
     }
     
     /// Closes the currently-open side view controller, if any. Does nothing if no view controller is open.
-    func closeSideViewController(animated animated: Bool, completion: (() -> Void)? = nil) {
-        guard let openEdge = openEdge, openSideController = sideViewController(on: openEdge) else {
+    func closeSideViewController(animated: Bool, completion: (() -> Void)? = nil) {
+        guard let openEdge = openEdge, let openSideController = sideViewController(on: openEdge) else {
             return
         }
         
@@ -166,20 +166,20 @@ class SideMenuController: UIViewController {
     
     // MARK: - Focus management
     
-    private func updateFocusOfContainedViews() {
+    fileprivate func updateFocusOfContainedViews() {
         
         addFocusWithType(currentFocusTypeForEdge(.left), toControllerAssociatedWithContainer: leftContainerView)
         addFocusWithType(currentFocusTypeForEdge(nil), toControllerAssociatedWithContainer: centerContainerView)
         addFocusWithType(currentFocusTypeForEdge(.right), toControllerAssociatedWithContainer: rightContainerView)
     }
     
-    private func currentFocusTypeForEdge(edge: SideMenuControllerEdge?) -> VFocusType {
+    fileprivate func currentFocusTypeForEdge(_ edge: SideMenuControllerEdge?) -> VFocusType {
         
         let isFocused = panRecognizer.state != .Changed && openEdge == edge
         return isFocused ? .Stream : .None
     }
     
-    private func addFocusWithType(focusType: VFocusType, toControllerAssociatedWithContainer container: UIView) {
+    fileprivate func addFocusWithType(_ focusType: VFocusType, toControllerAssociatedWithContainer container: UIView) {
         guard let viewController = associatedChildViewControllers[container] else {
             return
         }
@@ -190,7 +190,7 @@ class SideMenuController: UIViewController {
     /// Calls recursively to adjust the focus of the provided view controller, any focusable
     /// view controller inside the provided viewController's `viewControllers` array (in the
     /// case of it being a navigation controller), and the viewController's child view controllers
-    private func addFocusWithType(focusType: VFocusType, toViewController viewController: UIViewController) {
+    fileprivate func addFocusWithType(_ focusType: VFocusType, toViewController viewController: UIViewController) {
         
         if let focusable = viewController as? VFocusable {
             focusable.focusType = focusType
@@ -219,14 +219,14 @@ class SideMenuController: UIViewController {
     
     /// The view controller hidden to the left of the `centerViewController`. If nil, the `centerViewController` cannot
     /// slide to the right.
-    private(set) var leftViewController: UIViewController?
+    fileprivate(set) var leftViewController: UIViewController?
     
     /// The view controller hidden to the right of the `centerViewController`. If nil, the `centerViewController`
     /// cannot slide to the left.
-    private(set) var rightViewController: UIViewController?
+    fileprivate(set) var rightViewController: UIViewController?
     
     /// The view controller associated with `edge`, if any.
-    private func sideViewController(on edge: SideMenuControllerEdge) -> UIViewController? {
+    fileprivate func sideViewController(on edge: SideMenuControllerEdge) -> UIViewController? {
         switch edge {
         case .left:
             return leftViewController
@@ -241,13 +241,13 @@ class SideMenuController: UIViewController {
     /// Being active doesn't necessarily mean that the view controller is open or visible. Side view controllers can be
     /// temporarily added during panning gestures.
     ///
-    private func viewControllerIsActive(on edge: SideMenuControllerEdge) -> Bool {
-        return sideViewController(on: edge)?.parentViewController === self
+    fileprivate func viewControllerIsActive(on edge: SideMenuControllerEdge) -> Bool {
+        return sideViewController(on: edge)?.parent === self
     }
     
     /// Adds `centerViewController` to the view hierarchy and establishes the containment relationship, removing
     /// `oldCenterViewController` if needed.
-    private func addCenterViewController(replacing oldCenterViewController: UIViewController? = nil) {
+    fileprivate func addCenterViewController(replacing oldCenterViewController: UIViewController? = nil) {
         if let oldCenterViewController = oldCenterViewController {
             beginRemoving(oldCenterViewController, animated: false)
             endRemoving(oldCenterViewController)
@@ -259,7 +259,7 @@ class SideMenuController: UIViewController {
         }
     }
     
-    private func beginAdding(childViewController: UIViewController?, toSuperview superview: UIView, animated: Bool) {
+    fileprivate func beginAdding(_ childViewController: UIViewController?, toSuperview superview: UIView, animated: Bool) {
         guard let childViewController = childViewController else {
             return
         }
@@ -270,19 +270,19 @@ class SideMenuController: UIViewController {
         superview.addSubview(childViewController.view)
     }
     
-    private func endAdding(childViewController: UIViewController?) {
+    fileprivate func endAdding(_ childViewController: UIViewController?) {
         childViewController?.endAppearanceTransition()
     }
     
-    private func beginRemoving(childViewController: UIViewController?, animated: Bool) {
+    fileprivate func beginRemoving(_ childViewController: UIViewController?, animated: Bool) {
         if let superview = childViewController?.view.superview {
             associatedChildViewControllers[superview] = nil
         }
         childViewController?.beginAppearanceTransition(false, animated: animated)
-        childViewController?.willMoveToParentViewController(nil)
+        childViewController?.willMove(toParentViewController: nil)
     }
     
-    private func endRemoving(childViewController: UIViewController?) {
+    fileprivate func endRemoving(_ childViewController: UIViewController?) {
         childViewController?.view.removeFromSuperview()
         childViewController?.removeFromParentViewController()
         childViewController?.endAppearanceTransition()
@@ -291,21 +291,21 @@ class SideMenuController: UIViewController {
     // MARK: - Helper views
     
     /// A container view for `centerViewController`'s view.
-    private let centerContainerView: UIView = {
+    fileprivate let centerContainerView: UIView = {
         let view = UIView()
-        view.layer.shadowColor = UIColor.blackColor().CGColor
+        view.layer.shadowColor = UIColor.black.cgColor
         view.layer.shadowOpacity = 0.65
         view.layer.shadowRadius = 8.0
         return view
     }()
     
     /// A container view for `leftViewController`'s view.
-    private let leftContainerView = UIView()
+    fileprivate let leftContainerView = UIView()
     
     /// A container view for `rightViewController`'s view.
-    private let rightContainerView = UIView()
+    fileprivate let rightContainerView = UIView()
     
-    private func containerView(on edge: SideMenuControllerEdge) -> UIView {
+    fileprivate func containerView(on edge: SideMenuControllerEdge) -> UIView {
         switch edge {
         case .left:
             return leftContainerView
@@ -316,47 +316,47 @@ class SideMenuController: UIViewController {
     
     // MARK: - Gesture recognizers
     
-    private let panRecognizer = UIPanGestureRecognizer()
-    private let tapRecognizer = UITapGestureRecognizer()
+    fileprivate let panRecognizer = UIPanGestureRecognizer()
+    fileprivate let tapRecognizer = UITapGestureRecognizer()
     
     /// The state of the current pan gesture. Will be nil if a pan gesture is not being performed.
-    private var panState: SideMenuControllerPanState?
+    fileprivate var panState: SideMenuControllerPanState?
     
     /// Whether or not the panning gesture to open or close side view controllers is enabled.
     var panningIsEnabled: Bool {
         get {
-            return panRecognizer.enabled
+            return panRecognizer.isEnabled
         }
         set {
-            panRecognizer.enabled = newValue
+            panRecognizer.isEnabled = newValue
         }
     }
     
-    @objc private func panWasRecognized() {
+    @objc fileprivate func panWasRecognized() {
         switch panRecognizer.state {
-        case .Began:
+        case .began:
             beginPan()
-        case .Changed:
+        case .changed:
             updatePan()
-        case .Ended:
+        case .ended:
             endPan()
         default:
             break
         }
     }
     
-    private func beginPan() {
+    fileprivate func beginPan() {
         panState = SideMenuControllerPanState(
             initialCenterViewXOffset: centerViewXOffset,
             hasShownSideMenu: false
         )
     }
     
-    private func updatePan() {
-        panXOffset = panRecognizer.translationInView(view).x
+    fileprivate func updatePan() {
+        panXOffset = panRecognizer.translation(in: view).x
         
         // Side view controllers that are revealed by panning need to be added immediately.
-        if let visibleEdge = visibleEdge, let visibleSideViewController = sideViewController(on: visibleEdge) where !viewControllerIsActive(on: visibleEdge) {
+        if let visibleEdge = visibleEdge, let visibleSideViewController = sideViewController(on: visibleEdge) , !viewControllerIsActive(on: visibleEdge) {
             beginAdding(visibleSideViewController, toSuperview: containerView(on: visibleEdge), animated: false)
             endAdding(visibleSideViewController)
             panState?.hasShownSideMenu = true
@@ -365,7 +365,7 @@ class SideMenuController: UIViewController {
         slideCenterViewToCurrentOffset(animated: false)
     }
     
-    private func endPan() {
+    fileprivate func endPan() {
         let visibleEdge = self.visibleEdge
         
         // If a side view controller was added during a pan, but is no longer visible, it needs to be removed.
@@ -389,10 +389,10 @@ class SideMenuController: UIViewController {
         animateStatusBarUpdate()
     }
     
-    private func triggerPanActionIfNeeded(with translation: CGFloat, from visibleEdge: SideMenuControllerEdge?) {
+    fileprivate func triggerPanActionIfNeeded(with translation: CGFloat, from visibleEdge: SideMenuControllerEdge?) {
         if translation >= SideMenuController.panTriggerThreshold {
             // The user panned far enough, so we trigger an open or close.
-            if let visibleEdge = visibleEdge where visibleEdge != openEdge {
+            if let visibleEdge = visibleEdge , visibleEdge != openEdge {
                 openEdge = visibleEdge
                 slideCenterViewToCurrentOffset(animated: true) {
                     if self.openEdge == .left {
@@ -424,19 +424,19 @@ class SideMenuController: UIViewController {
         }
     }
     
-    @objc private func centerViewTapWasRecognized() {
+    @objc fileprivate func centerViewTapWasRecognized() {
         closeSideViewController(animated: true)
     }
     
     // MARK: - Layout
     
     /// The width of an open side view controller.
-    private var sideViewControllerWidth: CGFloat {
+    fileprivate var sideViewControllerWidth: CGFloat {
         return view.bounds.width - SideMenuController.visibleCenterEdgeWidth
     }
     
     /// The constrained, calculated X offset to apply to the center view.
-    private var centerViewXOffset: CGFloat {
+    fileprivate var centerViewXOffset: CGFloat {
         let sideWidth = sideViewControllerWidth
         let minX = rightViewController == nil ? 0.0 : -sideWidth
         let maxX = leftViewController == nil ? 0.0 : sideWidth
@@ -444,7 +444,7 @@ class SideMenuController: UIViewController {
     }
     
     /// The X offset to apply to the center view based on the `openEdge`.
-    private var openEdgeXOffset: CGFloat {
+    fileprivate var openEdgeXOffset: CGFloat {
         guard let openEdge = openEdge else {
             return 0.0
         }
@@ -458,7 +458,7 @@ class SideMenuController: UIViewController {
     }
     
     /// The X offset to apply to the center view based on panning.
-    private var panXOffset: CGFloat = 0.0 {
+    fileprivate var panXOffset: CGFloat = 0.0 {
         didSet {
             animateStatusBarUpdate()
         }
@@ -468,7 +468,7 @@ class SideMenuController: UIViewController {
     ///
     /// A side view controller can be visible but not open during panning gestures.
     ///
-    private var visibleEdge: SideMenuControllerEdge? {
+    fileprivate var visibleEdge: SideMenuControllerEdge? {
         switch centerViewXOffset {
         case let offset where offset < 0.0:
             return .right
@@ -480,10 +480,10 @@ class SideMenuController: UIViewController {
     }
     
     /// Slides the center view to its appropriate offset given the state of the controller, optionally animated.
-    private func slideCenterViewToCurrentOffset(animated animated: Bool, completion: (() -> Void)? = nil) {
+    fileprivate func slideCenterViewToCurrentOffset(animated: Bool, completion: (() -> Void)? = nil) {
         if animated {
-            UIView.animateWithDuration(
-                SideMenuController.slideAnimationDuration,
+            UIView.animate(
+                withDuration: SideMenuController.slideAnimationDuration,
                 delay: 0.0,
                 usingSpringWithDamping: 1.0,
                 initialSpringVelocity: 0.5,
@@ -512,7 +512,7 @@ class SideMenuController: UIViewController {
         centerViewController?.view.frame = centerContainerView.bounds
         
         // Obfuscates the key string to prevent static analysis
-        if let statusBarWindow = UIApplication.sharedApplication().valueForKey("statusBar" + "Window") as? UIWindow {
+        if let statusBarWindow = UIApplication.shared.value(forKey: "statusBar" + "Window") as? UIWindow {
             statusBarWindow.frame = view.bounds.offsetBy(dx: centerViewXOffset, dy: 0)
         }
 

@@ -15,9 +15,9 @@ enum DeeplinkDestination: Equatable {
     case closeUp(contentWrapper: CloseUpContentWrapper)
     case vipForum
     case vipSubscription
-    case externalURL(url: NSURL, configuration: ExternalLinkDisplayConfiguration)
+    case externalURL(url: URL, configuration: ExternalLinkDisplayConfiguration)
     
-    init?(url: NSURL, isVIPOnly: Bool = false, title: String? = nil, forceModal: Bool = true) {
+    init?(url: URL, isVIPOnly: Bool = false, title: String? = nil, forceModal: Bool = true) {
         guard url.scheme == "vthisapp" else {
             Log.info("Received link (\(url.absoluteString)) in wrong format. All links should be in deep link format according to https://wiki.victorious.com/display/ENG/Deep+Linking+Specification")
             return nil
@@ -45,7 +45,7 @@ enum DeeplinkDestination: Equatable {
             case "webURL":
                 guard
                     let path = url.pathWithoutLeadingSlash,
-                    let externalURL = NSURL(string: path)
+                    let externalURL = URL(string: path)
                 else {
                     return nil
                 }
@@ -54,7 +54,7 @@ enum DeeplinkDestination: Equatable {
             case "hiddenWebURL":
                 guard
                     let path = url.pathWithoutLeadingSlash,
-                    let externalURL = NSURL(string: path)
+                    let externalURL = URL(string: path)
                 else {
                     return nil
                 }

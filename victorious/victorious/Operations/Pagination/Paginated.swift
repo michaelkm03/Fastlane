@@ -47,7 +47,7 @@ extension Paginated where Self : PaginatedOperation {
     
     func prev() -> Self? {
         if let previousPaginator = self.paginator.previousPage() {
-            return self.dynamicType.init(operation: self, paginator: previousPaginator)
+            return type(of: self).init(operation: self, paginator: previousPaginator)
         }
         return nil
     }
@@ -55,7 +55,7 @@ extension Paginated where Self : PaginatedOperation {
     func next() -> Self? {
         let results = self.results ?? []
         if let nextPaginator = self.paginator.nextPage( results.count ) {
-            return self.dynamicType.init(operation: self, paginator: nextPaginator)
+            return type(of: self).init(operation: self, paginator: nextPaginator)
         }
         return nil
     }
@@ -87,7 +87,7 @@ extension PaginatedRequestOperation {
     
     func prev() -> Self? {
         if let request = PaginatedRequestType(previousFromSourceRequest: self.request) {
-            return self.dynamicType.init(request: request)
+            return type(of: self).init(request: request)
         }
         return nil
     }
@@ -98,7 +98,7 @@ extension PaginatedRequestOperation where PaginatedRequestType : ResultBasedPage
     func next() -> Self? {
         let results = self.results ?? []
         if let request = PaginatedRequestType(nextRequestFromRequest: self.request, resultCount: results.count) {
-            return self.dynamicType.init(request: request)
+            return type(of: self).init(request: request)
         }
         return nil
     }

@@ -27,7 +27,7 @@ private struct Constants {
 /// This extension handles all template based decoration for the settings page, as well as
 /// other template based functionality.
 extension VSettingsViewController: VBackgroundContainer {
-    override public func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    override public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard section < Constants.sectionHeaderTitles.count else {
             return nil
         }
@@ -43,12 +43,12 @@ extension VSettingsViewController: VBackgroundContainer {
         return containerView
     }
     
-    override public func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    override public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 25
     }
     
-    override public func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        guard let label = cell.textLabel, cell = cell as? SettingsTableViewCell else {
+    override public func tableView(_ tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        guard let label = cell.textLabel, let cell = cell as? SettingsTableViewCell else {
             return
         }
         
@@ -79,7 +79,7 @@ extension VSettingsViewController: VBackgroundContainer {
         return tableView.backgroundView ?? self.view
     }
     
-    public func handleAboutSectionSelection(row: Int) {
+    public func handleAboutSectionSelection(_ row: Int) {
         switch row {
             case 0: showFixedWebContent(.HelpCenter)
             case 1: sendHelp()
@@ -89,7 +89,7 @@ extension VSettingsViewController: VBackgroundContainer {
         }
     }
     
-    private func showFixedWebContent(type: FixedWebContentType) {
+    fileprivate func showFixedWebContent(_ type: FixedWebContentType) {
         let router = Router(originViewController: self, dependencyManager: dependencyManager)
         let configuration = ExternalLinkDisplayConfiguration(addressBarVisible: false, forceModal: false, isVIPOnly: false, title: type.title)
         router.navigate(to: .externalURL(url: dependencyManager.urlForFixedWebContent(type), configuration: configuration), from: nil)
@@ -97,11 +97,11 @@ extension VSettingsViewController: VBackgroundContainer {
 }
 
 private extension VSettingsViewController {
-    private func isLastCell(indexPath: NSIndexPath) -> Bool {
+    func isLastCell(_ indexPath: NSIndexPath) -> Bool {
         return indexPath.row == tableView.numberOfRowsInSection(indexPath.section) - 1
     }
 
-    private func isLastSection(section: Int) -> Bool {
+    func isLastSection(_ section: Int) -> Bool {
         return section == tableView.numberOfSections - 1
     }
 }

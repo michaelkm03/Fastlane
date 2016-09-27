@@ -11,7 +11,7 @@ import VictoriousIOSSDK
 
 extension VApplicationTracking {
     
-    func sendRequest(url: NSURL, eventIndex: Int, completion: NSError? -> Void) {
+    func sendRequest(_ url: NSURL, eventIndex: Int, completion: @escaping (NSError?) -> Void) {
         let request = ApplicationTrackingRequest(trackingURL: url, eventIndex: eventIndex)
         dispatch_async(dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0)) {
             MainRequestExecutor().executeRequest(request,

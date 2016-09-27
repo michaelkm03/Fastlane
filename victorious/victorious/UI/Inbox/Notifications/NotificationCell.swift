@@ -11,12 +11,12 @@ import VictoriousIOSSDK
 
 /// A delegate protocol for `NotificationCell`.
 protocol NotificationCellDelegate: class {
-    func notificationCellDidSelectUser(notificationCell: NotificationCell)
+    func notificationCellDidSelectUser(_ notificationCell: NotificationCell)
 }
 
 /// The table view cell used to display notifications.
 class NotificationCell: UITableViewCell, VBackgroundContainer {
-    private struct Constants {
+    fileprivate struct Constants {
         static let containerCornerRadius = CGFloat(6.0)
     }
     
@@ -26,7 +26,7 @@ class NotificationCell: UITableViewCell, VBackgroundContainer {
         super.awakeFromNib()
         
         containerView.layer.cornerRadius = Constants.containerCornerRadius
-        selectionStyle = .None
+        selectionStyle = .none
         
         backgroundColor = nil
         backgroundView?.backgroundColor = nil
@@ -77,18 +77,18 @@ class NotificationCell: UITableViewCell, VBackgroundContainer {
     
     // MARK: - Views
     
-    @IBOutlet private var containerView: UIView!
-    @IBOutlet private var avatarView: AvatarView! {
+    @IBOutlet fileprivate var containerView: UIView!
+    @IBOutlet fileprivate var avatarView: AvatarView! {
         didSet {
             avatarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(profileButtonWasPressed)))
         }
     }
-    @IBOutlet private var messageLabel: IntrinsicContentSizeHackLabel!
-    @IBOutlet private var dateLabel: UILabel!
+    @IBOutlet fileprivate var messageLabel: IntrinsicContentSizeHackLabel!
+    @IBOutlet fileprivate var dateLabel: UILabel!
     
     // MARK: - Actions
     
-    @objc private func profileButtonWasPressed() {
+    @objc fileprivate func profileButtonWasPressed() {
         delegate?.notificationCellDidSelectUser(self)
     }
     
@@ -139,8 +139,8 @@ private extension VDependencyManager {
 /// A cleaner workaround would be welcomed if we can find one.
 ///
 class IntrinsicContentSizeHackLabel: UILabel {
-    override func intrinsicContentSize() -> CGSize {
-        var size = super.intrinsicContentSize()
+    override var intrinsicContentSize : CGSize {
+        var size = super.intrinsicContentSize
         size.height += 0.5
         return size
     }

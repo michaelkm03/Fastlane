@@ -24,34 +24,34 @@ import UIKit
         guard isFirstInstall else {
             // We record `App has launched for the first time` after the second time launch
             if isFirstLaunch {
-                NSUserDefaults.standardUserDefaults().setValue(true, forKey: appFirstLaunchDefaultsKey)
+                UserDefaults.standard.setValue(true, forKey: appFirstLaunchDefaultsKey)
             }
             
             return
         }
         
-        let installDate = NSDate()
+        let installDate = Date()
         let trackingParameters = [VTrackingKeyTimeStamp: installDate, VTrackingKeyUrls: urls]
         trackingManager.trackEvent(VTrackingEventApplicationFirstInstall, parameters: trackingParameters)
-        NSUserDefaults.standardUserDefaults().setValue(true, forKey: appFirstInstallDefaultsKey)
+        UserDefaults.standard.setValue(true, forKey: appFirstInstallDefaultsKey)
     }
     
     // Tracks whether the `app_install` tracking call is already fired
     var isFirstInstall: Bool {
-        return NSUserDefaults.standardUserDefaults().valueForKey(appFirstInstallDefaultsKey) == nil
+        return UserDefaults.standard.value(forKey: appFirstInstallDefaultsKey) == nil
     }
     
     // Tracks whether the app is running for the first time
     var isFirstLaunch: Bool {
-        return NSUserDefaults.standardUserDefaults().valueForKey(appFirstLaunchDefaultsKey) == nil
+        return UserDefaults.standard.value(forKey: appFirstLaunchDefaultsKey) == nil
     }
     
     // MARK: - Device ID
     
     static let defaultDeviceIDFileName = "FirstInstallDeviceID.txt"
-    private let fileManager = NSFileManager()
-    private var documentDirectory: NSURL? {
-        return fileManager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first
+    fileprivate let fileManager = FileManager()
+    fileprivate var documentDirectory: URL? {
+        return fileManager.urls(for: .documentDirectory, in: .userDomainMask).first
     }
     
     /// First try to read device id from a local file. If the file does not exists,
@@ -59,12 +59,12 @@ import UIKit
     /// - parameter withFileName: the name of the file to store device ID
     /// - returns: the device ID read from local file or generated from current device ID
     func generateFirstInstallDeviceID(withFileName filename: String = defaultDeviceIDFileName) -> String? {
-        guard let deviceIDFileURL = documentDirectory?.URLByAppendingPathComponent(filename),
+        guard let deviceIDFileURL = documentDirectory?.appendingPathComponent(filename),
             let path = deviceIDFileURL.path else {
                 return nil
         }
         
-        let currentDeviceID = UIDevice.currentDevice().v_authorizationDeviceID
+        let currentDeviceID = UIDevice.current.v_authorizationDeviceID
         
         // Tries to read from local file first
         if let retrievedDeviceID = readDeviceIDFromFile(path) {
@@ -78,13 +78,13 @@ import UIKit
         }
     }
     
-    private func readDeviceIDFromFile(path: String) -> String? {
-        if !fileManager.fileExistsAtPath(path) {
+    fileprivate func readDeviceIDFromFile(_ path: String) -> String? {
+        if !fileManager.fileExists(atPath: path) {
             return nil
         }
         
         do {
-            let retrivedDeviceID = try NSString(contentsOfFile: path, encoding: NSUTF8StringEncoding) as String
+            let retrivedDeviceID = try NSString(contentsOfFile: path, encoding: String.Encoding.utf8.rawValue) as String
             return retrivedDeviceID
         }
         catch {
@@ -93,9 +93,9 @@ import UIKit
         }
     }
     
-    private func writeDeviceIDToFile(path: String, deviceID id: String) -> Bool {
+    fileprivate func writeDeviceIDToFile(_ path: String, deviceID id: String) -> Bool {
         do {
-            try id.writeToFile(path, atomically: true, encoding: NSUTF8StringEncoding)
+            try id.write(toFile: path, atomically: true, encoding: String.Encoding.utf8)
             return true
         }
         catch {
@@ -104,13 +104,13 @@ import UIKit
         }
     }
 
-    private func excludeBackupForFile(url: NSURL, shouldExcludeFromBack flag: Bool) -> Bool {
+    fileprivate func excludeBackupForFile(_ url: URL, shouldExcludeFromBack flag: Bool) -> Bool {
         do {
-            try url.setResourceValue(flag, forKey: NSURLIsExcludedFromBackupKey)
+            try (url as NSURL).setResourceValue(flag, forKey: URLResourceKey.isExcludedFromBackupKey)
             return true
         }
         catch {
-            print("Could not set resource value for key \(NSURLIsExcludedFromBackupKey)")
+            print("Could not set resource value for key \(URLResourceKey.isExcludedFromBackupKey)")
             return false
         }
     }

@@ -19,18 +19,18 @@ final class ListMenuCreatorDataSource: ListMenuSectionDataSource {
     
     // MARK: - List Menu Section Data Source
     
-    private(set) var visibleItems: [UserModel] = [] {
+    fileprivate(set) var visibleItems: [UserModel] = [] {
         didSet {
             state = visibleItems.isEmpty ? .noContent : .items
             delegate?.didUpdateVisibleItems(forSection: .creator)
         }
     }
 
-    private(set) var state: ListMenuDataSourceState = .loading
+    fileprivate(set) var state: ListMenuDataSourceState = .loading
     
     weak var delegate: ListMenuSectionDataSourceDelegate?
     
-    func fetchRemoteData(success success: FetchRemoteDataCallback?) {
+    func fetchRemoteData(success: FetchRemoteDataCallback?) {
         guard
             let apiPath = dependencyManager.creatorListAPIPath,
             let request = CreatorListRequest(apiPath: apiPath)

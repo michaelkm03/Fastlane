@@ -25,7 +25,7 @@ final class VIPSelectSubscriptionOperation: AsyncOperation<VProduct>, UIAlertVie
         return .main
     }
     
-    override func execute(finish: (result: OperationResult<VProduct>) -> Void) {
+    override func execute(_ finish: (_ result: OperationResult<VProduct>) -> Void) {
         guard willShowPrompt else {
             if let firstProduct = products.first {
                 finish(result: .success(firstProduct))
@@ -52,7 +52,7 @@ final class VIPSelectSubscriptionOperation: AsyncOperation<VProduct>, UIAlertVie
         originViewController.presentViewController(alert, animated: true, completion: nil)
     }
     
-    private struct Strings {
+    fileprivate struct Strings {
         static let alertTitle = NSLocalizedString("Become a VIP", comment: "Prompt for purchasing VIP subscription")
         static let alertMessage = NSLocalizedString("Select payment schedule", comment: "Subtitle for VIP subscription dialog")
         static let cancel = NSLocalizedString("Cancel", comment: "")

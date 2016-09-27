@@ -30,9 +30,9 @@ extension Tray where Self: UIViewController {
         }
     }
     
-    func showExportingHUD(delegate delegate: LoadingCancellableViewDelegate) -> MBProgressHUD? {
+    func showExportingHUD(delegate: LoadingCancellableViewDelegate) -> MBProgressHUD? {
         guard
-            let cancelableView = NSBundle.mainBundle().loadNibNamed("LoadingCancellableView", owner: self, options: nil)?.first as? LoadingCancellableView,
+            let cancelableView = Bundle.mainBundle().loadNibNamed("LoadingCancellableView", owner: self, options: nil)?.first as? LoadingCancellableView,
             let window = self.view.window
         else {
             assertionFailure("Failed to show exporting HUD")
@@ -53,5 +53,5 @@ extension Tray where Self: UIViewController {
 
 /// Conformers receive messages when an asset is selected from a tray
 protocol TrayDelegate: class {
-    func tray(tray: Tray, selectedAsset asset: ContentMediaAsset, withPreviewImage previewImage: UIImage)
+    func tray(_ tray: Tray, selectedAsset asset: ContentMediaAsset, withPreviewImage previewImage: UIImage)
 }

@@ -21,14 +21,14 @@ import VictoriousIOSSDK
 	
 	var exportPreviewImage: UIImage?
 	
-	var exportMediaURL: NSURL?
+	var exportMediaURL: URL?
 	
-	var sourceMediaURL: NSURL? {
-		return NSURL(string: sourceResult.mp4URL)
+	var sourceMediaURL: URL? {
+		return URL(string: sourceResult.mp4URL)
 	}
 	
-	var thumbnailImageURL: NSURL? {
-		return NSURL(string: sourceResult.thumbnailStillURL)
+	var thumbnailImageURL: URL? {
+		return URL(string: sourceResult.thumbnailStillURL)
 	}
 	
 	var aspectRatio: CGFloat {

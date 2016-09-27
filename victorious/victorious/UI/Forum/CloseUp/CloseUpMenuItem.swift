@@ -10,7 +10,7 @@ import Foundation
 
 enum CloseUpMenuItem {
     
-    private struct Icon {
+    fileprivate struct Icon {
         
         static let share: UIImage! = nil
         static let report: UIImage! = nil
@@ -18,17 +18,17 @@ enum CloseUpMenuItem {
         static let promote: UIImage! = nil
     }
     
-    case Share, Report, BlockUser, Promote
+    case share, report, blockUser, promote
     
     func associatedIcon() -> UIImage {
         switch self {
-        case .Share:
+        case .share:
             return Icon.share
-        case .Report:
+        case .report:
             return Icon.report
-        case .BlockUser:
+        case .blockUser:
             return Icon.blockUser
-        case .Promote:
+        case .promote:
             return Icon.promote
         }
     }

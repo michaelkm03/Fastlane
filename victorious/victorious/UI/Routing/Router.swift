@@ -14,8 +14,8 @@ struct Router {
     
     // MARK: - Initialization
     
-    private weak var originViewController: UIViewController?
-    private let dependencyManager: VDependencyManager
+    fileprivate weak var originViewController: UIViewController?
+    fileprivate let dependencyManager: VDependencyManager
 
     init(originViewController: UIViewController, dependencyManager: VDependencyManager) {
         self.originViewController = originViewController
@@ -35,13 +35,13 @@ struct Router {
             case .closeUp(let contentWrapper): showCloseUpView(for: contentWrapper, from: context)
             case .vipForum: showVIPForum()
             case .vipSubscription: showVIPSubscription()
-            case .externalURL(let url, let configuration): showWebView(for: url, configuration: configuration)
+            case .externalURL(let url, let configuration): showWebView(for: url as URL, configuration: configuration)
         }
     }
     
     // MARK: - Private Helper Functions
     
-    private func showCloseUpView(for contentWrapper: CloseUpContentWrapper, from context: DeeplinkContext?) {
+    fileprivate func showCloseUpView(for contentWrapper: CloseUpContentWrapper, from context: DeeplinkContext?) {
         guard let originViewController = self.originViewController else { return }
         let displayModifier = ShowCloseUpDisplayModifier(dependencyManager: dependencyManager, originViewController: originViewController)
 
@@ -70,7 +70,7 @@ struct Router {
         }
     }
 
-    private func showVIPForum() {
+    fileprivate func showVIPForum() {
         guard let originViewController = self.originViewController else {
             return
         }
@@ -82,7 +82,7 @@ struct Router {
         }
     }
     
-    private func showVIPSubscription(completion completion: ((success: Bool) -> Void)? = nil) {
+    fileprivate func showVIPSubscription(completion: ((_ success: Bool) -> Void)? = nil) {
         guard let originViewController = self.originViewController else {
             return
         }
@@ -90,14 +90,14 @@ struct Router {
         ShowVIPSubscriptionOperation(originViewController: originViewController, dependencyManager: dependencyManager, completion: completion).queue()
     }
     
-    private func showProfile(for userID: User.ID) {
+    fileprivate func showProfile(for userID: User.ID) {
         guard let originViewController = self.originViewController else {
             return
         }
         ShowProfileOperation(originViewController: originViewController, dependencyManager: dependencyManager, userId: userID).queue()
     }
     
-    private func showWebView(for url: NSURL, configuration: ExternalLinkDisplayConfiguration) {
+    fileprivate func showWebView(for url: URL, configuration: ExternalLinkDisplayConfiguration) {
         checkForPermissionBeforeRouting(contentIsForVIPOnly: configuration.isVIPOnly) { success in
             if success {
                 guard url.isHTTPScheme else {
@@ -106,8 +106,8 @@ struct Router {
                 }
                     
                 if configuration.addressBarVisible {
-                    let safariViewController = SFSafariViewController(URL: url)
-                    self.originViewController?.presentViewController(safariViewController, animated: true, completion: nil)
+                    let safariViewController = SFSafariViewController(url: url)
+                    self.originViewController?.present(safariViewController, animated: true, completion: nil)
                 }
                 
                 else if let originVC = self.originViewController, let url = url.absoluteString {
@@ -117,17 +117,17 @@ struct Router {
         }
     }
     
-    private func showError() {
+    fileprivate func showError() {
         let title = NSLocalizedString("Missing Content", comment: "The title of the alert saying we can't find a piece of content")
         let message = NSLocalizedString("Missing Content Message", comment: "A deep linked content has a wrong destination URL that we can't navigate to")
         originViewController?.v_showAlert(title: title, message: message)
     }
     
-    func checkForPermissionBeforeRouting(contentIsForVIPOnly isVIPOnly: Bool = false, completion: ((success: Bool) -> Void)? = nil) {
+    func checkForPermissionBeforeRouting(contentIsForVIPOnly isVIPOnly: Bool = false, completion: ((_ success: Bool) -> Void)? = nil) {
         guard let currentUser = VCurrentUser.user else {
             // If there's no current user, then we fail automatically if VIP is required since the user can't subscribe
             // if they're not logged in, and we succeed automatically if VIP is not required.
-            completion?(success: !isVIPOnly)
+            completion?(!isVIPOnly)
             return
         }
         
@@ -135,7 +135,7 @@ struct Router {
             showVIPSubscription(completion: completion)
         }
         else {
-            completion?(success: true)
+            completion?(true)
         }
     }
 }
@@ -143,10 +143,10 @@ struct Router {
 // MARK: - Show Forum
 
 private final class ShowForumOperation: AsyncOperation<Void> {
-    private let dependencyManager: VDependencyManager
-    private let animated: Bool
-    private let showVIP: Bool
-    private weak var originViewController: UIViewController?
+    fileprivate let dependencyManager: VDependencyManager
+    fileprivate let animated: Bool
+    fileprivate let showVIP: Bool
+    fileprivate weak var originViewController: UIViewController?
     
     required init(originViewController: UIViewController, dependencyManager: VDependencyManager, showVIP: Bool = false, animated: Bool = true) {
         self.dependencyManager = dependencyManager
@@ -159,13 +159,13 @@ private final class ShowForumOperation: AsyncOperation<Void> {
         return .main
     }
     
-    override func execute(finish: (result: OperationResult<Void>) -> Void) {
+    override func execute(_ finish: @escaping (_ result: OperationResult<Void>) -> Void) {
 
         let templateKey = showVIP ? "vipForum" : "forum"
         let templateValue = dependencyManager.templateValueOfType(ForumViewController.self, forKey: templateKey)
         guard let viewController = templateValue as? ForumViewController else {
             let error = NSError(domain: "ShowForumOperation", code: -1, userInfo: nil)
-            finish(result: .failure(error))
+            finish(.failure(error))
             return
         }
         
@@ -188,9 +188,9 @@ private final class ShowForumOperation: AsyncOperation<Void> {
 // MARK: - Show Profile
 
 private final class ShowProfileOperation: AsyncOperation<Void> {
-    private let dependencyManager: VDependencyManager
-    private weak var originViewController: UIViewController?
-    private let userId: Int
+    fileprivate let dependencyManager: VDependencyManager
+    fileprivate weak var originViewController: UIViewController?
+    fileprivate let userId: Int
     
     init( originViewController: UIViewController,
           dependencyManager: VDependencyManager,
@@ -204,11 +204,11 @@ private final class ShowProfileOperation: AsyncOperation<Void> {
         return .main
     }
     
-    override func execute(finish: (result: OperationResult<Void>) -> Void) {
+    override func execute(_ finish: @escaping (_ result: OperationResult<Void>) -> Void) {
         
         // Check if already showing the a user's profile
         guard (originViewController as? VNewProfileViewController)?.user?.id != userId else {
-            finish(result: .success())
+            finish(.success())
             return
         }
         
@@ -217,7 +217,7 @@ private final class ShowProfileOperation: AsyncOperation<Void> {
             let originViewController = originViewController
         else {
             let error = NSError(domain: "ShowProfileOperation", code: -1, userInfo: nil)
-            finish(result: .failure(error))
+            finish(.failure(error))
             return
         }
         
@@ -251,11 +251,11 @@ private struct ShowCloseUpDisplayModifier {
 
 /// Shows a close up view displaying the provided content.
 private final class ShowCloseUpOperation: AsyncOperation<Void> {
-    private let displayModifier: ShowCloseUpDisplayModifier
-    private var content: Content?
-    private var contentID: String?
-    private var context: DeeplinkContext?
-    private(set) var displayedCloseUpView: CloseUpContainerViewController?
+    fileprivate let displayModifier: ShowCloseUpDisplayModifier
+    fileprivate var content: Content?
+    fileprivate var contentID: String?
+    fileprivate var context: DeeplinkContext?
+    fileprivate(set) var displayedCloseUpView: CloseUpContainerViewController?
 
     init(contentID: String, displayModifier: ShowCloseUpDisplayModifier, context: DeeplinkContext? = nil) {
         self.contentID = contentID
@@ -275,14 +275,14 @@ private final class ShowCloseUpOperation: AsyncOperation<Void> {
         return .main
     }
     
-    override func execute(finish: (result: OperationResult<Void>) -> Void) {
+    override func execute(_ finish: @escaping (_ result: OperationResult<Void>) -> Void) {
         guard
             let childDependencyManager = displayModifier.dependencyManager.childDependencyForKey("closeUpView"),
             let originViewController = displayModifier.originViewController,
             let contentID = contentID ?? content?.id
         else {
             let error = NSError(domain: "ShowCloseUpOperation", code: -1, userInfo: nil)
-            finish(result: .failure(error))
+            finish(.failure(error))
             return
         }
         
@@ -315,9 +315,9 @@ private final class ShowCloseUpOperation: AsyncOperation<Void> {
 
 /// Fetches a piece of content and shows a close up view containing it.
 private final class ShowFetchedCloseUpOperation: AsyncOperation<Void> {
-    private let displayModifier: ShowCloseUpDisplayModifier
-    private var contentID: String
-    private var context: DeeplinkContext?
+    fileprivate let displayModifier: ShowCloseUpDisplayModifier
+    fileprivate var contentID: String
+    fileprivate var context: DeeplinkContext?
 
     init(contentID: String, displayModifier: ShowCloseUpDisplayModifier, context: DeeplinkContext? = nil) {
         self.displayModifier = displayModifier
@@ -330,7 +330,7 @@ private final class ShowFetchedCloseUpOperation: AsyncOperation<Void> {
         return .main
     }
     
-    override func execute(finish: (result: OperationResult<Void>) -> Void) {
+    override func execute(_ finish: (_ result: OperationResult<Void>) -> Void) {
         
         let displayModifier = self.displayModifier
         guard
@@ -343,7 +343,7 @@ private final class ShowFetchedCloseUpOperation: AsyncOperation<Void> {
             )
         else {
             let error = NSError(domain: "ShowFetchedCloseUpOperation", code: -1, userInfo: nil)
-            finish(result: .failure(error))
+            finish(.failure(error))
             return
         }
         
@@ -380,17 +380,17 @@ private final class ShowFetchedCloseUpOperation: AsyncOperation<Void> {
             }
         }
         
-        finish(result: .success())
+        finish(.success())
     }
 }
 
 // MARK: - Show Web Content
 
 private final class ShowWebContentOperation: AsyncOperation<Void> {
-    private let originViewController: UIViewController
-    private let urlToFetchFrom: String
-    private let dependencyManager: VDependencyManager
-    private let configuration: ExternalLinkDisplayConfiguration
+    fileprivate let originViewController: UIViewController
+    fileprivate let urlToFetchFrom: String
+    fileprivate let dependencyManager: VDependencyManager
+    fileprivate let configuration: ExternalLinkDisplayConfiguration
     
     init (originViewController: UIViewController, url: String, dependencyManager: VDependencyManager, configuration: ExternalLinkDisplayConfiguration) {
         self.originViewController = originViewController
@@ -403,7 +403,7 @@ private final class ShowWebContentOperation: AsyncOperation<Void> {
         return .main
     }
     
-    override func execute(finish: (result: OperationResult<Void>) -> Void) {
+    override func execute(_ finish: @escaping (_ result: OperationResult<Void>) -> Void) {
         
         //We show the navigation and dismiss button if the view controller is presented modally, 
         // since there would be no way to dimiss the view controller otherwise
@@ -427,7 +427,7 @@ private final class ShowWebContentOperation: AsyncOperation<Void> {
         viewController.extendedLayoutIncludesOpaqueBars = true
         viewController.title = configuration.title
         
-        if let navigationController = (originViewController as? UINavigationController) ?? originViewController.navigationController where !configuration.forceModal {
+        if let navigationController = (originViewController as? UINavigationController) ?? originViewController.navigationController , !configuration.forceModal {
             navigationController.pushViewController(viewController, animated: configuration.transitionAnimated) {
                 finish(result: .success())
             }
@@ -447,10 +447,10 @@ private final class ShowWebContentOperation: AsyncOperation<Void> {
 // MARK: - Show VIP Flow Operation
 
 private final class ShowVIPSubscriptionOperation: AsyncOperation<Void> {
-    private let dependencyManager: VDependencyManager
-    private let animated: Bool
-    private let completion: VIPFlowCompletion?
-    private weak var originViewController: UIViewController?
+    fileprivate let dependencyManager: VDependencyManager
+    fileprivate let animated: Bool
+    fileprivate let completion: VIPFlowCompletion?
+    fileprivate weak var originViewController: UIViewController?
     
     required init(originViewController: UIViewController, dependencyManager: VDependencyManager, animated: Bool = true, completion: VIPFlowCompletion? = nil) {
         self.dependencyManager = dependencyManager
@@ -463,11 +463,11 @@ private final class ShowVIPSubscriptionOperation: AsyncOperation<Void> {
         return .main
     }
     
-    override func execute(finish: (result: OperationResult<Void>) -> Void) {
+    override func execute(_ finish: @escaping (_ result: OperationResult<Void>) -> Void) {
         // Jump to success if current user is already VIP
         if VCurrentUser.user?.hasValidVIPSubscription == true {
             completion?(true)
-            finish(result: .success())
+            finish(.success())
             return
         }
         
@@ -475,7 +475,7 @@ private final class ShowVIPSubscriptionOperation: AsyncOperation<Void> {
             let originViewController = originViewController,
             let vipFlow = dependencyManager.templateValueOfType(VIPFlowNavigationController.self, forKey: "vipPaygateScreen") as? VIPFlowNavigationController
         else {
-            finish(result: .cancelled)
+            finish(.cancelled)
             return
         }
         

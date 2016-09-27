@@ -10,7 +10,7 @@ import UIKit
 
 class ActivityIndicatorCollectionCell: UICollectionViewCell {
     
-    @IBOutlet weak private var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak fileprivate var activityIndicator: UIActivityIndicatorView!
     
     var color: UIColor! {
         didSet {

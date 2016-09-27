@@ -9,7 +9,7 @@
 import UIKit
 
 class NotificationsViewController: UIViewController, UITableViewDelegate, NotificationCellDelegate, VPaginatedDataSourceDelegate, VBackgroundContainer {
-    private struct Constants {
+    fileprivate struct Constants {
         static let contentInset = UIEdgeInsets(top: 8.0, left: 0.0, bottom: 8.0, right: 0.0)
         static let estimatedRowHeight = CGFloat(64.0)
     }
@@ -63,12 +63,12 @@ class NotificationsViewController: UIViewController, UITableViewDelegate, Notifi
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
     // MARK: - View lifecycle
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         dependencyManager.trackViewWillAppear(for: self)
         updateTableView()
@@ -79,17 +79,17 @@ class NotificationsViewController: UIViewController, UITableViewDelegate, Notifi
         refresh()
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         VTrackingManager.sharedInstance().startEvent("Notifications")
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         dependencyManager.trackViewWillDisappear(for: self)
     }
     
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         VTrackingManager.sharedInstance().endEvent("Notifications")
     }
@@ -100,16 +100,16 @@ class NotificationsViewController: UIViewController, UITableViewDelegate, Notifi
     
     // MARK: - Data source
     
-    private let dataSource: NotificationsDataSource
+    fileprivate let dataSource: NotificationsDataSource
     
     // MARK: - Views
     
-    private let tableView = UITableView()
-    private let refreshControl = UIRefreshControl()
-    private let noContentView: VNoContentView
+    fileprivate let tableView = UITableView()
+    fileprivate let refreshControl = UIRefreshControl()
+    fileprivate let noContentView: VNoContentView
     
-    private func updateTableView() {
-        tableView.separatorStyle = dataSource.visibleItems.count > 0 ? .SingleLine : .None
+    fileprivate func updateTableView() {
+        tableView.separatorStyle = dataSource.visibleItems.count > 0 ? .singleLine : .none
         
         let isAlreadyShowingNoContent = tableView.backgroundView == noContentView
         
@@ -129,7 +129,7 @@ class NotificationsViewController: UIViewController, UITableViewDelegate, Notifi
     
     // MARK: - Loading content
     
-    private dynamic func refresh() {
+    fileprivate dynamic func refresh() {
         refreshControl.beginRefreshing()
         
         dataSource.loadNotifications(.First) { [weak self] error in
@@ -143,9 +143,9 @@ class NotificationsViewController: UIViewController, UITableViewDelegate, Notifi
         }
     }
     
-    private func redecorateVisibleCells() {
+    fileprivate func redecorateVisibleCells() {
         for indexPath in tableView.indexPathsForVisibleRows ?? [] {
-            guard let cell = tableView.cellForRowAtIndexPath(indexPath) as? NotificationCell else {
+            guard let cell = tableView.cellForRow(at: indexPath) as? NotificationCell else {
                 continue
             }
             
@@ -155,14 +155,14 @@ class NotificationsViewController: UIViewController, UITableViewDelegate, Notifi
     
     // MARK: - Notifications
     
-    private dynamic func loggedInStatusDidChange(notification: NSNotification?) {
+    fileprivate dynamic func loggedInStatusDidChange(_ notification: Notification?) {
         dataSource.unload()
     }
     
     // MARK: - Deep links
     
-    func showDeepLink(deepLink: String) {
-        guard let url = NSURL(string: deepLink) else {
+    func showDeepLink(_ deepLink: String) {
+        guard let url = URL(string: deepLink) else {
             return
         }
         
@@ -173,8 +173,8 @@ class NotificationsViewController: UIViewController, UITableViewDelegate, Notifi
     
     // MARK: - UITableViewDelegate
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        guard let deepLink = (dataSource.visibleItems[indexPath.row] as? Notification)?.deeplink where !deepLink.isEmpty else {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let deepLink = (dataSource.visibleItems[indexPath.row] as? Notification)?.deeplink , !deepLink.isEmpty else {
             return
         }
         
@@ -182,28 +182,28 @@ class NotificationsViewController: UIViewController, UITableViewDelegate, Notifi
         showDeepLink(deepLink)
     }
     
-    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         (cell as? NotificationCell)?.delegate = self
     }
     
     // MARK: - VPaginatedDataSourceDelegate
     
-    func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
+    func paginatedDataSource(_ paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
         tableView.v_applyChangeInSection(0, from: oldValue, to: newValue)
     }
     
-    func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: VDataSourceState, to newState: VDataSourceState) {
+    func paginatedDataSource(_ paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: VDataSourceState, to newState: VDataSourceState) {
         updateTableView()
     }
     
-    func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didReceiveError error: NSError) {
+    func paginatedDataSource(_ paginatedDataSource: PaginatedDataSource, didReceiveError error: NSError) {
         (navigationController ?? self).v_showErrorDefaultError()
     }
     
     // MARK: - VCellWithProfileDelegate
     
-    func notificationCellDidSelectUser(cell: NotificationCell) {
-        guard let indexPath = tableView.indexPathForCell(cell) else {
+    func notificationCellDidSelectUser(_ cell: NotificationCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else {
             return
         }
         

@@ -22,10 +22,10 @@ public struct ContentFeedRequest: RequestType {
     }
     
     public var urlRequest: NSURLRequest {
-        return NSURLRequest(URL: url)
+        return NSURLRequest(url: url as URL)
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> ContentFeedResult {
+    public func parseResponse(response: URLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> ContentFeedResult {
         let contentsJSON: [JSON]?
         let contentParser: (JSON) -> Content?
         

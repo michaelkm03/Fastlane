@@ -17,7 +17,7 @@
 public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket, WebSocketEventDecoder, WebSocketPongDelegate {
 
     private struct Constants {
-        static let forceDisconnectTimeout: NSTimeInterval = 2
+        static let forceDisconnectTimeout: TimeInterval = 2
     }
     
     /// Custom background queue for packing and unpacking messages over the WebSocket.
@@ -29,13 +29,13 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
     private var webSocket: WebSocket?
     
     /// The timer that will fire at a specified interval to keep the connection alive.
-    private var pingTimer: NSTimer?
+    private var pingTimer: Timer?
 
     /// If the client disconnects we still get the disconnect event, this flag is there to help avoid passsing that event on.
     private var clientInitiatedDisconnect = false
     
     /// The interval to send of ping messages.
-    private let pingTimerInterval: NSTimeInterval = 15
+    private let pingTimerInterval: TimeInterval = 15
 
     /// Keeps record of the information needed in order to identify each message.
     internal let uniqueIdentificationMessage = UniqueIdentificationMessage()
@@ -77,12 +77,12 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
     /// Tries to open the WebSocket connection to the specified endpoint in the configuration.
     /// A `WebSocketEvent` of type `.Connected` will be broadcasted if the connection succeeds.
     public func setUp() {
-        guard let webSocket = webSocket where !webSocket.isConnected else {
+        guard let webSocket = webSocket , !webSocket.isConnected else {
             return
         }
 
         pingTimer?.invalidate()
-        pingTimer = NSTimer.scheduledTimerWithTimeInterval(pingTimerInterval, target: self, selector: #selector(self.sendPing), userInfo: nil, repeats: true)
+        pingTimer = Timer.scheduledTimer(timeInterval: pingTimerInterval, target: self, selector: #selector(self.sendPing), userInfo: nil, repeats: true)
         
         webSocket.connect()
     }
@@ -90,7 +90,7 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
     /// Sends the disconnect message to the server and waits for a certain amount of time before forcing the disconnect.
     /// When the disconnect has happened a `WebSocketEvent` of type `.disconnected` will be broadcasted.
     public func tearDown() {
-        guard let webSocket = webSocket where webSocket.isConnected else {
+        guard let webSocket = webSocket , webSocket.isConnected else {
             return
         }
 
@@ -105,8 +105,8 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
     }
 
     public func removeChildReceiver(receiver: ForumEventReceiver) {
-        if let index = childEventReceivers.indexOf( { $0 === receiver } ) {
-            childEventReceivers.removeAtIndex(index)
+        if let index = childEventReceivers.index( where: { $0 === receiver } ) {
+            childEventReceivers.remove(at: index)
         }
     }
     
@@ -162,7 +162,7 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
         Log.verbose("WebSocket did receive text message -> \(text)")
         var rawMessage = WebSocketRawMessage(messageString: "websocketDidReceiveMessage -> \(text)")
 
-        if let dataFromString = text.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false) {
+        if let dataFromString = text.data(using: String.Encoding.utf8, allowLossyConversion: false) {
             let json = JSON(data: dataFromString)
             rawMessage.json = json
 
@@ -224,11 +224,11 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
 
         // According to the RFC even if the client disconnects we should receive a close message with the error code 1000.
         // We still want to broadcast that to the rest of the app but without an error so it's explicit nothing went wrong.
-        if let error = error where clientInitiatedDisconnect && WebSocket.CloseCode(rawValue: UInt16(error.code)) == WebSocket.CloseCode.Normal {
+        if let error = error , clientInitiatedDisconnect && WebSocket.CloseCode(rawValue: UInt16(error.code)) == WebSocket.CloseCode.Normal {
             clientInitiatedDisconnect = false
             disconnectEvent = .websocket(.disconnected(webSocketError: nil))
         }
-        else if let error = error, let errorMessageData = error.localizedDescription.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false) {
+        else if let error = error, let errorMessageData = error.localizedDescription.data(using: String.Encoding.utf8, allowLossyConversion: false) {
             // Try to parse out custom error message.
             let errorJSON = JSON(data: errorMessageData)
             if let webSocketError = decodeErrorFromJSON(errorJSON, didDisconnect: true) {
@@ -246,7 +246,7 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
     }
 
     private func sendJSON(from dictionaryConvertible: DictionaryConvertible) {
-        guard let webSocket = webSocket where webSocket.isConnected else {
+        guard let webSocket = webSocket , webSocket.isConnected else {
             return
         }
         
@@ -262,7 +262,7 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
     }
 
     @objc private func sendPing() {
-        guard let webSocket = webSocket where webSocket.isConnected else {
+        guard let webSocket = webSocket , webSocket.isConnected else {
             return
         }
         webSocket.writePing(NSData())
@@ -303,15 +303,15 @@ private extension DictionaryConvertible {
         var toServerDictionary: [String: AnyObject] = [:]
 
         if let rootTypeKey = rootTypeKey, let rootTypeValue = rootTypeValue {
-            toServerDictionary[rootTypeKey] = rootTypeValue
+            toServerDictionary[rootTypeKey] = rootTypeValue as AnyObject?
         }
-        toServerDictionary[rootKey] = toDictionary()
+        toServerDictionary[rootKey] = toDictionary() as AnyObject?
 
-        var rootDictionary: [String: AnyObject] = [toServerTypeKey: toServerTypeValue]
-        rootDictionary[identificationMessage.rootKey] = identificationMessage.toDictionary()
+        var rootDictionary: [String: AnyObject] = [toServerTypeKey: toServerTypeValue as AnyObject]
+        rootDictionary[identificationMessage.rootKey] = identificationMessage.toDictionary() as AnyObject?
         identificationMessage.incrementSequenceCounter()
 
-        rootDictionary[toServerRootKey] = toServerDictionary
+        rootDictionary[toServerRootKey] = toServerDictionary as AnyObject?
 
         return rootDictionary
     }

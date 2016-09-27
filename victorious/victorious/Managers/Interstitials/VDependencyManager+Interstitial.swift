@@ -10,7 +10,7 @@ import Foundation
 import VictoriousIOSSDK
 
 extension VDependencyManager {
-    func interstitialViewController(alert alert: Alert) -> Interstitial? {
+    func interstitialViewController(alert: Alert) -> Interstitial? {
         var interstitial: Interstitial?
 
         switch alert.type {

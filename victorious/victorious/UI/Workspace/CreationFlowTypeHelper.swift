@@ -11,7 +11,7 @@ import Foundation
 @objc(VCreationFlowTypeHelper)
 class CreationFlowTypeHelper: NSObject {
     
-    private static let creationFlowTypes: [String : VCreationFlowType] = [
+    fileprivate static let creationFlowTypes: [String : VCreationFlowType] = [
         "Create Image": .Image,
         "Create Video": .Video,
         "Create Poll": .Poll,
@@ -21,7 +21,7 @@ class CreationFlowTypeHelper: NSObject {
         "Create from Mixed Media Camera": .MixedMediaCamera,
         "Create from Native Camera": .NativeCamera]
     
-    static func creationFlowTypeForIdentifier(identifier: String) -> VCreationFlowType {
+    static func creationFlowTypeForIdentifier(_ identifier: String) -> VCreationFlowType {
         return creationFlowTypes[identifier] ?? .Unknown
     }
 }

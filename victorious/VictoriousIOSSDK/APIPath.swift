@@ -39,13 +39,13 @@ public struct APIPath: Equatable {
         var processedPath = templatePath
         
         if macroReplacements.count > 0 {
-            processedPath = VSDKURLMacroReplacement().urlByReplacingMacrosFromDictionary(macroReplacements, inURLString: processedPath)
+            processedPath = VSDKURLMacroReplacement().urlByReplacingMacros(from: macroReplacements, inURLString: processedPath)
         }
         
         if queryParameters.count > 0 {
             if let components = NSURLComponents(string: processedPath) {
                 components.queryItems = (components.queryItems ?? []) + queryParameters.map {
-                    NSURLQueryItem(name: $0, value: $1)
+                    (NSURLQueryItem(name: $0, value: $1) as URLQueryItem)
                 }
                 
                 if let pathWithQueryParameters = components.string {

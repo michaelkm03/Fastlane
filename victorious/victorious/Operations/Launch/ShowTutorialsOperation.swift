@@ -10,9 +10,9 @@ import Foundation
 
 final class ShowTutorialsOperation: AsyncOperation<Void> {
 
-    private weak var originViewController: UIViewController?
-    private let dependencyManager: VDependencyManager
-    private let animated: Bool
+    fileprivate weak var originViewController: UIViewController?
+    fileprivate let dependencyManager: VDependencyManager
+    fileprivate let animated: Bool
     
     let lastShownVersionDefaultsKey = "com.victorious.tutorials.lastShownVersion"
     
@@ -29,23 +29,23 @@ final class ShowTutorialsOperation: AsyncOperation<Void> {
         return .main
     }
     
-    override func execute(finish: (result: OperationResult<Void>) -> Void) {
+    override func execute(_ finish: @escaping (_ result: OperationResult<Void>) -> Void) {
         let error = NSError(domain: "ShowTutorialsOperation", code: -1, userInfo: nil)
         
-        guard let currentVersionString = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString") as? String else {
-            finish(result: .failure(error))
+        guard let currentVersionString = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String else {
+            finish(.failure(error))
             return
         }
         
         let currentVersion = AppVersion(versionNumber: currentVersionString)
         
         guard shouldShowTutorials(currentVersion) else {
-            finish(result: .success())
+            finish(.success())
             return
         }
         
         guard let tutorialViewController = dependencyManager.templateValueOfType(TutorialViewController.self, forKey: "tutorial") as? TutorialViewController else {
-            finish(result: .failure(error))
+            finish(.failure(error))
             return
         }
         
@@ -57,7 +57,7 @@ final class ShowTutorialsOperation: AsyncOperation<Void> {
         originViewController?.presentViewController(tutorialNavigationController, animated: animated, completion: nil)
     }
     
-    func shouldShowTutorials(currentVersion: AppVersion, userDefaults: NSUserDefaults = NSUserDefaults.standardUserDefaults()) -> Bool {
+    func shouldShowTutorials(_ currentVersion: AppVersion, userDefaults: UserDefaults = UserDefaults.standard) -> Bool {
         defer {
             // Always set the current version as the last seen
             userDefaults.setValue(currentVersion.string, forKey: lastShownVersionDefaultsKey)
@@ -69,7 +69,7 @@ final class ShowTutorialsOperation: AsyncOperation<Void> {
         }
         
         // If this fails we have never seen a tutorial before so we should show
-        guard let lastShownVersionString = userDefaults.valueForKey(lastShownVersionDefaultsKey) as? String else {
+        guard let lastShownVersionString = userDefaults.value(forKey: lastShownVersionDefaultsKey) as? String else {
             return true
         }
         

@@ -31,13 +31,13 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     
     // MARK: - Dependency manager
     
-    private let dependencyManager: VDependencyManager
+    fileprivate let dependencyManager: VDependencyManager
     
     // MARK: - Data source
     
     let dataSource: TimePaginatedDataSource<Content, ContentFeedOperation>
     
-    private var filteredStreamAPIPath: APIPath? {
+    fileprivate var filteredStreamAPIPath: APIPath? {
         didSet {
             let newAPIPath = filteredStreamAPIPath ?? dependencyManager.mainFeedAPIPath
             
@@ -55,11 +55,11 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     
     // MARK: - Polling
     
-    private static let pollingInterval = NSTimeInterval(5.0)
+    fileprivate static let pollingInterval = NSTimeInterval(5.0)
     
-    private var pollingTimer: VTimerManager?
+    fileprivate var pollingTimer: VTimerManager?
     
-    private func startPolling() {
+    fileprivate func startPolling() {
         pollingTimer?.invalidate()
         
         pollingTimer = VTimerManager.scheduledTimerManagerWithTimeInterval(
@@ -71,14 +71,14 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
         )
     }
     
-    @objc private func pollForNewContent() {
+    @objc fileprivate func pollForNewContent() {
         loadContent(.newer)
     }
     
     // MARK: - Loading content
     
     /// Loads a page of content with the given `loadingType`.
-    private func loadContent(loadingType: PaginatedLoadingType) {
+    fileprivate func loadContent(_ loadingType: PaginatedLoadingType) {
         let itemsWereLoaded = dataSource.loadItems(loadingType) { [weak self] result in
             guard let strongSelf = self else {
                 return
@@ -116,7 +116,7 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     ///
     static let updateStreamURLNotification = "com.getvictorious.update-stream-url"
     
-    private dynamic func handleUpdateStreamURLNotification(notification: NSNotification) {
+    fileprivate dynamic func handleUpdateStreamURLNotification(_ notification: NSNotification) {
         filteredStreamAPIPath = (notification.userInfo?["selectedItem"] as? ReferenceWrapper<ListMenuSelectedItem>)?.value.streamAPIPath
     }
     
@@ -134,25 +134,25 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
         // Nothing to tear down.
     }
     
-    func addChildReceiver(receiver: ForumEventReceiver) {
+    func addChildReceiver(_ receiver: ForumEventReceiver) {
         if !childEventReceivers.contains({ $0 === receiver }) {
             childEventReceivers.append(receiver)
         }
     }
     
-    func removeChildReceiver(receiver: ForumEventReceiver) {
+    func removeChildReceiver(_ receiver: ForumEventReceiver) {
         if let index = childEventReceivers.indexOf({ $0 === receiver }) {
             childEventReceivers.removeAtIndex(index)
         }
     }
     
-    private(set) var isSetUp = false
+    fileprivate(set) var isSetUp = false
     
     // MARK: - ForumEventSender
     
-    private(set) weak var nextSender: ForumEventSender?
+    fileprivate(set) weak var nextSender: ForumEventSender?
     
-    func send(event: ForumEvent) {
+    func send(_ event: ForumEvent) {
         nextSender?.send(event)
         
         switch event {
@@ -163,9 +163,9 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     
     // MARK: - ForumEventReceiver
     
-    private(set) var childEventReceivers = [ForumEventReceiver]()
+    fileprivate(set) var childEventReceivers = [ForumEventReceiver]()
     
-    func receive(event: ForumEvent) {
+    func receive(_ event: ForumEvent) {
         // Nothing yet.
     }
 }

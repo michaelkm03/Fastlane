@@ -33,14 +33,14 @@ public struct ValidateReceiptRequest: RequestType {
     }
     
     public var urlRequest: NSURLRequest {
-        let request = NSMutableURLRequest(URL: url)
-        request.HTTPBodyStream = NSInputStream(URL: requestBody.fileURL)
-        request.HTTPMethod = "POST"
+        let request = NSMutableURLRequest(url: url as URL)
+        request.httpBodyStream = InputStream(url: requestBody.fileURL as URL)
+        request.httpMethod = "POST"
         request.addValue(requestBody.contentType, forHTTPHeaderField: "Content-Type")
         return request
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> VIPStatus {
+    public func parseResponse(response: URLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> VIPStatus {
         requestBodyWriter.removeBodyTempFile()
         
         guard let vipStatus = VIPStatus(json: responseJSON["payload"]["vip"]) else {

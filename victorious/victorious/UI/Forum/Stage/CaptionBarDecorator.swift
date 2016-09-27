@@ -9,14 +9,14 @@
 import Foundation
 
 struct CaptionBarDecorator {
-    private struct Constants {
+    fileprivate struct Constants {
         static let textAreaCornerRadius: CGFloat = 6
         static let expandButtonTouchInsets = UIEdgeInsetsMake(-6, -6, -6, -6)
     }
     
     let dependencyManager: VDependencyManager
     
-    func decorate(captionBar: CaptionBar) {
+    func decorate(_ captionBar: CaptionBar) {
         let captionTextView = captionBar.captionTextView
         captionTextView.font = dependencyManager.font
         captionTextView.textColor = dependencyManager.textColor ?? .whiteColor()

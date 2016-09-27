@@ -67,8 +67,8 @@ public final class Log {
     ///
     /// This should be used for spammy debugging messages that can help with diagnosing issues during development.
     ///
-    public static func verbose(@autoclosure message: () -> Any, file: StaticString = #file, function: StaticString = #function, line: UInt = #line) {
-        beaver.verbose(message, String(file), String(function), line: Int(line))
+    public static func verbose(message: @autoclosure () -> Any, file: StaticString = #file, function: StaticString = #function, line: UInt = #line) {
+        beaver.verbose(message, String(describing: file), String(describing: function), line: Int(line))
     }
     
     /// Logs a debug message. Not visible by default.
@@ -76,8 +76,8 @@ public final class Log {
     /// This should be used for high-level debugging messages such as websocket events to help with diagnosing issues
     /// during development.
     ///
-    public static func debug(@autoclosure message: () -> Any, file: StaticString = #file, function: StaticString = #function, line: UInt = #line) {
-        beaver.debug(message, String(file), String(function), line: Int(line))
+    public static func debug(message: @autoclosure () -> Any, file: StaticString = #file, function: StaticString = #function, line: UInt = #line) {
+        beaver.debug(message, String(describing: file), String(describing: function), line: Int(line))
     }
     
     /// Logs an info message. Visible by default.
@@ -88,8 +88,8 @@ public final class Log {
     /// Because this logs to the console and the platform by default, this shouldn't be used for things that happen
     /// under normal circumstances to keep our logs clean.
     ///
-    public static func info(@autoclosure message: () -> Any, file: StaticString = #file, function: StaticString = #function, line: UInt = #line) {
-        beaver.info(message, String(file), String(function), line: Int(line))
+    public static func info(message: @autoclosure () -> Any, file: StaticString = #file, function: StaticString = #function, line: UInt = #line) {
+        beaver.info(message, String(describing: file), String(describing: function), line: Int(line))
     }
     
     /// Logs a warning message. Visible by default.
@@ -97,8 +97,8 @@ public final class Log {
     /// This should be used to log serious issues that are presumed to be caused by an external dependency rather than
     /// a programming error, such as an HTTP request failure or parsing error.
     ///
-    public static func warning(@autoclosure message: () -> Any, file: StaticString = #file, function: StaticString = #function, line: UInt = #line) {
-        beaver.warning(message, String(file), String(function), line: Int(line))
+    public static func warning(message: @autoclosure () -> Any, file: StaticString = #file, function: StaticString = #function, line: UInt = #line) {
+        beaver.warning(message, String(describing: file), String(describing: function), line: Int(line))
     }
     
     /// Logs an error message. Visible by default and triggers an assertion failure.
@@ -106,8 +106,8 @@ public final class Log {
     /// This should be used to log serious errors that indicate a programming error and should halt execution during
     /// development.
     ///
-    public static func error(@autoclosure message: () -> Any, file: StaticString = #file, function: StaticString = #function, line: UInt = #line) {
+    public static func error(message: @autoclosure () -> Any, file: StaticString = #file, function: StaticString = #function, line: UInt = #line) {
         assertionFailure("\(message())", file: file, line: line)
-        beaver.error(message, String(file), String(function), line: Int(line))
+        beaver.error(message, String(describing: file), String(describing: function), line: Int(line))
     }
 }

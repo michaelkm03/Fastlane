@@ -11,18 +11,18 @@ import UIKit
 class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, TutorialNetworkDataSourceDelegate, VBackgroundContainer {
     
     @IBOutlet var continueButtonBottomConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var continueButton: UIButton! {
+    @IBOutlet fileprivate weak var continueButton: UIButton! {
         didSet {
-            continueButton.setTitleColor(dependencyManager.continueButtonTitleColor, forState: .Normal)
-            continueButton.setTitle(dependencyManager.continueButtonTitleText, forState: .Normal)
+            continueButton.setTitleColor(dependencyManager.continueButtonTitleColor, for: .Normal)
+            continueButton.setTitle(dependencyManager.continueButtonTitleText, for: .Normal)
             continueButton.titleLabel?.font = dependencyManager.continueButtonTitleFont
             continueButton.backgroundColor = dependencyManager.continueButtonBackgroundColor
         }
     }
     
-    private var edgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 60, right: 0)
+    fileprivate var edgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 60, right: 0)
     
-    private var timerManager: VTimerManager?
+    fileprivate var timerManager: VTimerManager?
     
     var onContinue: (() -> Void)?
     
@@ -31,7 +31,7 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
     weak var nextSender: ForumEventSender? = nil
     var dependencyManager: VDependencyManager!
     
-    @IBOutlet private(set) weak var collectionView: UICollectionView! {
+    @IBOutlet fileprivate(set) weak var collectionView: UICollectionView! {
         didSet {
             collectionView.dataSource = chatInterfaceDataSource
             collectionView.delegate = self
@@ -39,7 +39,7 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
         }
     }
     
-    lazy private(set) var chatInterfaceDataSource: ChatInterfaceDataSource = {
+    lazy fileprivate(set) var chatInterfaceDataSource: ChatInterfaceDataSource = {
         let mainFeedDependency: VDependencyManager = self.dependencyManager.childDependencyForKey("mainFeed") ?? self.dependencyManager
         let dataSource = TutorialCollectionViewDataSource(dependencyManager: mainFeedDependency)
         dataSource.delegate = self
@@ -56,7 +56,7 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
 
     // MARK: - Initialization
     
-    static func newWithDependencyManager(dependencyManager: VDependencyManager) -> TutorialViewController {
+    static func newWithDependencyManager(_ dependencyManager: VDependencyManager) -> TutorialViewController {
         let viewController: TutorialViewController = TutorialViewController.v_initialViewControllerFromStoryboard()
         viewController.dependencyManager = dependencyManager
         
@@ -65,15 +65,15 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
     
     // MARK: - View Controller Life Cycle
     
-    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        return .Portrait
+    override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
+        return .portrait
     }
     
-    @IBAction private func didTapContinueButton(sender: UIButton) {
+    @IBAction fileprivate func didTapContinueButton(_ sender: UIButton) {
         // We want the closure to be called after dismissing self, so we capture the closure locally first
         // and then call it in the completion block.
         let onContinue = self.onContinue
-        dismissViewControllerAnimated(true) {
+        dismiss(animated: true) {
             onContinue?()
         }
     }
@@ -90,34 +90,34 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
     
     // MARK: - UICollectionViewFlowLayoutDelegate
     
-    func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         let messageCell = cell as! ChatFeedMessageCell
         messageCell.startDisplaying()
     }
     
-    func collectionView(collectionView: UICollectionView, didEndDisplayingCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         (cell as! ChatFeedMessageCell).stopDisplaying()
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return chatInterfaceDataSource.desiredCellSize(for: collectionView, at: indexPath)
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return edgeInsets
     }
     
     // MARK: - TutorialNetworkDataSourceDelegate
     
-    func didReceiveNewMessage(message: ChatFeedContent) {
+    func didReceiveNewMessage(_ message: ChatFeedContent) {
         handleNewItems([message], loadingType: .newer)
     }
 
     func didFinishFetchingAllItems() {
         continueButtonBottomConstraint.constant = 0.0
-        UIView.animateWithDuration(0.5) { [weak self] in
+        UIView.animate(withDuration: 0.5, animations: { [weak self] in
             self?.view.layoutIfNeeded()
-        }
+        }) 
     }
     
     var chatFeedItemWidth: CGFloat {
@@ -132,7 +132,7 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
 }
 
 private extension VDependencyManager {
-    private var continueButtonChildDependency: VDependencyManager? {
+    var continueButtonChildDependency: VDependencyManager? {
         return childDependencyForKey("continueButton")
     }
     

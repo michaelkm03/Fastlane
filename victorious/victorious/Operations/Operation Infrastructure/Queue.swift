@@ -32,19 +32,19 @@ enum Queue {
     static let allCases: [Queue] = [.main, .background, .asyncSchedule]
     
     /// All `NSOperationQueue` instances represented in this enum
-    static var allQueues: [NSOperationQueue] {
+    static var allQueues: [OperationQueue] {
         return Queue.allCases.map { $0.operationQueue }
     }
     
     /// Returns the supporting NSOperationQueue based on which case `self` is.
-    var operationQueue: NSOperationQueue {
+    var operationQueue: OperationQueue {
         switch self {
-            case .main: return NSOperationQueue.mainQueue()
+            case .main: return OperationQueue.main
             case .background: return Queue.backgroundQueue
             case .asyncSchedule: return Queue.asyncScheduleQueue
         }
     }
     
-    private static let backgroundQueue = NSOperationQueue()
-    private static let asyncScheduleQueue = NSOperationQueue()
+    fileprivate static let backgroundQueue = OperationQueue()
+    fileprivate static let asyncScheduleQueue = OperationQueue()
 }

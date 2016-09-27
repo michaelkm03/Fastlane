@@ -16,7 +16,7 @@ import VictoriousIOSSDK
     extension ForumViewController {
         private static let defaultStageContentLength: Double = 5
         
-        func debug_startGeneratingMessages(interval interval: NSTimeInterval) {
+        func debug_startGeneratingMessages(interval: NSTimeInterval) {
             VTimerManager.addTimerManagerWithTimeInterval(interval,
                 target: self,
                 selector: #selector(debug_createMessages),

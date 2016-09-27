@@ -27,7 +27,7 @@ struct HashtagBarCellDecorator {
     }
     
     /// Applies text styling to a `HashtagBarCell`'s label
-    func decorateCell(cell: HashtagBarCell) {
+    func decorateCell(_ cell: HashtagBarCell) {
         
         cell.label.font = font
         cell.label.textColor = textColor

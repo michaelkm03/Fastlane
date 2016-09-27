@@ -84,32 +84,32 @@ private struct HTTPHeader {
 }
 
 extension NSMutableURLRequest {
-    private static let dateFormatter: NSDateFormatter = {
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
+    private static let dateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX") as Locale!
         dateFormatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss Z" // RFC2822 Format
-        dateFormatter.timeZone = NSTimeZone(abbreviation: "GMT")
+        dateFormatter.timeZone = NSTimeZone(abbreviation: "GMT") as TimeZone!
         return dateFormatter
     }()
     
     /// Sets the "Authorization" header appropriately for Victorious API requests. Since the Date and User-Agent headers are
     /// used in calculating the correct Authentication header, this method calculates and sets those, too.
-    public func vsdk_setAuthorizationHeader(requestContext requestContext: RequestContext, authenticationContext: AuthenticationContext = defaultAuthenticationContext) {
+    public func vsdk_setAuthorizationHeader(requestContext: RequestContext, authenticationContext: AuthenticationContext = defaultAuthenticationContext) {
         
-        let currentDate = NSMutableURLRequest.dateFormatter.stringFromDate(NSDate())
+        let currentDate = NSMutableURLRequest.dateFormatter.string(from: NSDate() as Date)
         setValue(currentDate, forHTTPHeaderField: HTTPHeader.date)
         
-        let previousUserAgent = valueForHTTPHeaderField(HTTPHeader.userAgent) ?? "victorious/\(requestContext.buildNumber)"
+        let previousUserAgent = value(forHTTPHeaderField: HTTPHeader.userAgent) ?? "victorious/\(requestContext.buildNumber)"
         let newUserAgent = "\(previousUserAgent) aid:\(requestContext.appID) uuid:\(requestContext.deviceID) build:\(requestContext.buildNumber)"
         setValue(newUserAgent, forHTTPHeaderField: HTTPHeader.userAgent)
         
         var path: String = ""
-        if let URL = self.URL,
-           let urlComponents = NSURLComponents(URL: URL, resolvingAgainstBaseURL: true),
+        if let URL = self.url,
+           let urlComponents = NSURLComponents(url: URL, resolvingAgainstBaseURL: true),
            let percentEncodedPath = urlComponents.percentEncodedPath {
             path = percentEncodedPath
         }
-        let sha1String = vsdk_sha1("\(currentDate)\(path)\(newUserAgent)\(authenticationContext.token)\(self.HTTPMethod)")
+        let sha1String = vsdk_sha1("\(currentDate)\(path)\(newUserAgent)\(authenticationContext.token)\(self.httpMethod)")
         setValue("Basic \(authenticationContext.userID):\(sha1String)", forHTTPHeaderField: HTTPHeader.authorization)
     }
     
@@ -133,7 +133,7 @@ extension NSMutableURLRequest {
 #if os(iOS)
     /// Sets the value of the "X-Client-OS-Version" header to the system version
     public func vsdk_setOSVersionHeader() {
-        setValue(UIDevice.currentDevice().systemVersion, forHTTPHeaderField: HTTPHeader.osVersion)
+        setValue(UIDevice.current.systemVersion, forHTTPHeaderField: HTTPHeader.osVersion)
     }
 #endif
     

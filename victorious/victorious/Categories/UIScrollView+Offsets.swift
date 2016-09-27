@@ -30,16 +30,16 @@ extension UIScrollView {
     }
     
     /// Scrolls the receiver to the top of its content.
-    func scrollToTop(animated animated: Bool, completion: (() -> Void)? = nil) {
+    func scrollToTop(animated: Bool, completion: (() -> Void)? = nil) {
         scrollTo(topOffset, animated: animated)
     }
     
     /// Scrolls the receiver to the bottom of its content.
-    func scrollToBottom(animated animated: Bool, completion: (() -> Void)? = nil) {
+    func scrollToBottom(animated: Bool, completion: (() -> Void)? = nil) {
         scrollTo(bottomOffset, animated: animated)
     }
     
-    private func scrollTo(offset: CGPoint, animated: Bool, completion: (() -> Void)? = nil) {
+    fileprivate func scrollTo(_ offset: CGPoint, animated: Bool, completion: (() -> Void)? = nil) {
         CATransaction.begin()
         CATransaction.setCompletionBlock(completion)
         CATransaction.setAnimationDuration(0.5)

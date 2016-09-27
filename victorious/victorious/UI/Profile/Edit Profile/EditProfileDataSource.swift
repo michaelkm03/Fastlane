@@ -7,19 +7,30 @@
 //
 
 import Foundation
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
 
 class EditProfileDataSource: NSObject, UITableViewDataSource {
-    private struct Constants {
+    fileprivate struct Constants {
         static let displayNameLength = 40
         static let usernameLength = 20
     }
     
-    private let dependencyManager: VDependencyManager
-    private let tableView: UITableView
+    fileprivate let dependencyManager: VDependencyManager
+    fileprivate let tableView: UITableView
     let nameAndLocationCell: DisplaynameLocationAvatarCell
     let aboutMeCell: AboutMeTextCell
-    private var newAvatarFileURL: NSURL?
-    private var user: UserModel {
+    fileprivate var newAvatarFileURL: URL?
+    fileprivate var user: UserModel {
         didSet {
             updateUI()
             if let currentUser = user as? User {
@@ -43,11 +54,11 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
     
     // MARK: - UITableViewDataSource
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 2
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
             // Username, locaiton and camera
             configureNameAndLocationCell(nameAndLocationCell)
@@ -72,7 +83,7 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
         get {
             // Displayname Validation
             let displayname = nameAndLocationCell.displayname
-            guard let trimmedDisplayName = displayname?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) where !trimmedDisplayName.isEmpty else {
+            guard let trimmedDisplayName = displayname?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines) , !trimmedDisplayName.isEmpty else {
                 return NSLocalizedString("Your display name cannoot be blank.", comment: "While editing, error letting the user know their display name cannot be blank.")
             }
             
@@ -81,11 +92,11 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
             }
             
             // Username Validation
-            guard let username = nameAndLocationCell.username where !username.characters.isEmpty else {
+            guard let username = nameAndLocationCell.username , !username.characters.isEmpty else {
                 return NSLocalizedString("Your username cannot be empty.", comment: "While editing, error to the user letting them know their username must not be empty.")
             }
-            let usernameCharacterset = NSCharacterSet(charactersInString: username)
-            guard NSCharacterSet.validUsernameCharacters.isSupersetOfSet(usernameCharacterset) else {
+            let usernameCharacterset = CharacterSet(charactersIn: username)
+            guard CharacterSet.validUsernameCharacters.isSuperset(of: usernameCharacterset) else {
                 return NSLocalizedString("Your username can only contain lowercase letters a-z, number 0-9, and underscores \"_\".",
                     comment: "While editing, an error that informs they have entered and invalid characters and must remove the invalid character.")
             }
@@ -98,7 +109,7 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
     }
     
     /// This function will update the UI with the provided `previewImage`
-    func useNewAvatar(previewImage: UIImage, fileURL: NSURL) {
+    func useNewAvatar(_ previewImage: UIImage, fileURL: URL) {
         // Create a new userModel with the new preview image
         newAvatarFileURL = fileURL
         let imageAsset = ImageAsset(url: fileURL, size: previewImage.size)
@@ -129,12 +140,12 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
     
     // MARK: - Misc Private Funcitons
     
-    private func updateUI() {
+    fileprivate func updateUI() {
         nameAndLocationCell.populate(withUser: user)
         aboutMeCell.tagline = user.tagline
     }
     
-    private func configureNameAndLocationCell(nameCell: DisplaynameLocationAvatarCell) {
+    fileprivate func configureNameAndLocationCell(_ nameCell: DisplaynameLocationAvatarCell) {
         nameCell.onReturnKeySelected = { [weak self] in
             self?.aboutMeCell.beginEditing()
         }
@@ -144,7 +155,7 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
         nameCell.dependencyManager = dependencyManager
     }
     
-    private func configueAboutMeCell(aboutMeCell: AboutMeTextCell) {
+    fileprivate func configueAboutMeCell(_ aboutMeCell: AboutMeTextCell) {
         // Support resizing
         aboutMeCell.onDesiredHeightChangeClosure = { [weak self] height in
             self?.tableView.beginUpdates()

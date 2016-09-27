@@ -10,9 +10,9 @@ import Foundation
 
 /// Configures and updates the expanded state of a caption bar
 struct CaptionBarPopulator {
-    private static let animationDuration = NSTimeInterval(0.2)
+    fileprivate static let animationDuration = TimeInterval(0.2)
     
-    private static func textAttributesForLabel(label: UILabel, matchingTextView textView: UITextView) -> [String : AnyObject] {
+    fileprivate static func textAttributesForLabel(_ label: UILabel, matchingTextView textView: UITextView) -> [String : AnyObject] {
         // Create a paragraph style to imitate the text padding around the text view
         let paragraphStyle = NSMutableParagraphStyle()
         let textInsets = textView.v_textInsets
@@ -27,14 +27,14 @@ struct CaptionBarPopulator {
         ]
     }
     
-    static func populate(captionBar: CaptionBar, withUser user: UserModel, andCaption caption: String, completion: (() -> Void)?) {
+    static func populate(_ captionBar: CaptionBar, withUser user: UserModel, andCaption caption: String, completion: (() -> Void)?) {
         // Configure the avatar view
         captionBar.avatarView.user = user
         
         let captionTextView = captionBar.captionTextView
         let captionLabel = captionBar.captionLabel
         
-        let animationCompletion: (Bool -> Void) = { _ in
+        let animationCompletion: ((Bool) -> Void) = { _ in
             // Configure the textView
             captionTextView.text = caption
             captionTextView.hidden = true
@@ -75,7 +75,7 @@ struct CaptionBarPopulator {
         )
     }
     
-    static func toggle(captionBar: CaptionBar, toCollapsed collapsed: Bool) -> CGFloat {
+    static func toggle(_ captionBar: CaptionBar, toCollapsed collapsed: Bool) -> CGFloat {
         let captionTextView = captionBar.captionTextView
         let captionLabel = captionBar.captionLabel
         

@@ -13,19 +13,19 @@ class CameraDirectionButton: UIButton {
     
     var dependencyManager: VDependencyManager? {
         didSet {
-            setImage(dependencyManager?.buttonImage, forState: .Normal)
+            setImage(dependencyManager?.buttonImage, for: .Normal)
         }
     }
     
     required init?(coder aDecoder: NSCoder) {
         
         super.init(coder: aDecoder)
-        hidden = true
-        enabled = false
+        isHidden = true
+        isEnabled = false
         frame = v_navigationBarFriendlyFrame
-        setBackgroundImage(nil, forState: .Selected)
-        imageView?.contentMode = .Center
-        setTitle(nil, forState: .Normal)
+        setBackgroundImage(nil, for: .selected)
+        imageView?.contentMode = .center
+        setTitle(nil, for: UIControlState())
     }
 }
 

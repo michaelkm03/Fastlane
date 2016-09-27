@@ -9,14 +9,14 @@
 import Foundation
 
 class StageDataSource: ForumEventReceiver {
-    private static let backendStartTimeThreshold: Int64 = 1000
+    fileprivate static let backendStartTimeThreshold: Int64 = 1000
     
     weak var delegate: Stage?
     
-    private let dependencyManager: VDependencyManager?
+    fileprivate let dependencyManager: VDependencyManager?
     
-    private var currentContentFetchOperation: StageContentFetchOperation?
-    private var currentContent: Content?
+    fileprivate var currentContentFetchOperation: StageContentFetchOperation?
+    fileprivate var currentContent: Content?
     
     // MARK: Initialiation
     
@@ -26,7 +26,7 @@ class StageDataSource: ForumEventReceiver {
     
     // MARK: ForumEventReceiver
     
-    func receive(event: ForumEvent) {
+    func receive(_ event: ForumEvent) {
         guard let dependencyManager = dependencyManager else {
             Log.error("No dependency manager avaliable in StageDataSource, bailing.")
             return

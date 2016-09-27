@@ -18,7 +18,7 @@ final class BadgeCountManager {
     
     // MARK: - Initializing
     
-    private init() {
+    fileprivate init() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(loggedInStatusDidChange), name: kLoggedInChangedNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(applicationDidBecomeActive), name: VApplicationDidBecomeActiveNotification, object: nil)
         fetchUnreadNotificationCount()
@@ -37,7 +37,7 @@ final class BadgeCountManager {
         return BadgeCountType.all.reduce(0) { $0 + (badgeCount(for: $1) ?? 0) }
     }
     
-    private func updateApplicationBadgeCount() {
+    fileprivate func updateApplicationBadgeCount() {
         UIApplication.sharedApplication().applicationIconBadgeNumber = totalBadgeCount
     }
     
@@ -51,7 +51,7 @@ final class BadgeCountManager {
     }
     
     /// A callback that triggers whenever the `unreadNotificationCount` changes.
-    private var whenUnreadNotificationCountChanges = Callback<Void>()
+    fileprivate var whenUnreadNotificationCountChanges = Callback<Void>()
     
     // MARK: - Managing badge counts
     
@@ -80,7 +80,7 @@ final class BadgeCountManager {
     // MARK: - Managing unread notification count
     
     /// The total number of unread notifications that the user has, or nil if we haven't fetched the count yet.
-    private var unreadNotificationCount: Int? {
+    fileprivate var unreadNotificationCount: Int? {
         didSet {
             guard unreadNotificationCount != oldValue else {
                 return
@@ -92,7 +92,7 @@ final class BadgeCountManager {
     }
     
     /// Retrieves the user's current unread notification count and updates `unreadNotificationCount` accordingly.
-    private func fetchUnreadNotificationCount() {
+    fileprivate func fetchUnreadNotificationCount() {
         guard
             let apiPath = BadgeCountManager.networkResources?.unreadNotificationCountAPIPath,
             let request = UnreadNotificationsCountRequest(apiPath: apiPath)
@@ -110,7 +110,7 @@ final class BadgeCountManager {
     }
     
     /// Marks all of the user's notifications as read, resetting the `unreadNotificationCount` to zero.
-    private func markAllNotificationsAsRead() {
+    fileprivate func markAllNotificationsAsRead() {
         let previousCount = unreadNotificationCount
         
         // Optimistically reset to zero.
@@ -126,13 +126,13 @@ final class BadgeCountManager {
     
     // MARK: - Notifications
     
-    private dynamic func applicationDidBecomeActive(notification: NSNotification?) {
+    fileprivate dynamic func applicationDidBecomeActive(_ notification: NSNotification?) {
         if VCurrentUser.user != nil {
             fetchUnreadNotificationCount()
         }
     }
     
-    private dynamic func loggedInStatusDidChange(notification: NSNotification?) {
+    fileprivate dynamic func loggedInStatusDidChange(_ notification: NSNotification?) {
         if VCurrentUser.user != nil {
             fetchUnreadNotificationCount()
         }

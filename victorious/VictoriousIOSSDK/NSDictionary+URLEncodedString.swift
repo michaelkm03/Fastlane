@@ -38,14 +38,14 @@ extension NSDictionary {
 private extension NSMutableString {
     func appendURLParameter(key: String, value: String, useArraySeperator: Bool = false) {
         if self.length != 0 {
-            self.appendString(keySeparator)
+            self.append(keySeparator)
         }
-        self.appendString(key)
+        self.append(key)
         if useArraySeperator {
-            self.appendString(arrayValueSeperator)
+            self.append(arrayValueSeperator)
         }
-        self.appendString(valueSeparator)
-        self.appendString(value)
+        self.append(valueSeparator)
+        self.append(value)
     }
 }
 
@@ -57,8 +57,8 @@ extension NSMutableURLRequest {
     ///
     /// - parameter postValues: The values to URL-encode and add to the HTTPBody
     public func vsdk_addURLEncodedFormPost(postValues: NSDictionary) {
-        HTTPMethod = "POST"
+        httpMethod = "POST"
         addValue("application/x-www-form-urlencoded; charset=utf-8", forHTTPHeaderField: "Content-Type")
-        HTTPBody = postValues.vsdk_urlEncodedString().dataUsingEncoding(NSUTF8StringEncoding)
+        httpBody = postValues.vsdk_urlEncodedString().data(using: String.Encoding.utf8)
     }
 }

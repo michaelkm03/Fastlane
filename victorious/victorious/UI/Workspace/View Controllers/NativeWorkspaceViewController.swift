@@ -15,7 +15,7 @@ class NativeWorkspaceViewController: VWorkspaceViewController, UIVideoEditorCont
     // Since we're not using initialization from VBaseWorkspaceViewController
     // and dependencyManager is read-only, we need to manage our own dependencyManager
     // by backing it with this internal var.
-    private var internalDependencyManager: VDependencyManager!
+    fileprivate var internalDependencyManager: VDependencyManager!
     
     override var dependencyManager: VDependencyManager! {
         return internalDependencyManager
@@ -23,22 +23,22 @@ class NativeWorkspaceViewController: VWorkspaceViewController, UIVideoEditorCont
     
     let animator = PushTransitionAnimator()
     
-    private static let videoMaximumDuration: NSTimeInterval = 600
+    fileprivate static let videoMaximumDuration: TimeInterval = 600
     
     override var supportsTools: Bool {
         return false
     }
     
-    override static func newWithDependencyManager(dependencyManager: VDependencyManager) -> NativeWorkspaceViewController {
+    override static func newWithDependencyManager(_ dependencyManager: VDependencyManager) -> NativeWorkspaceViewController {
         let nativeWorkspace: NativeWorkspaceViewController = v_initialViewControllerFromStoryboard()
         nativeWorkspace.transitioningDelegate = nativeWorkspace
         nativeWorkspace.internalDependencyManager = dependencyManager
         return nativeWorkspace
     }
     
-    private var videoEditorViewController: UIVideoEditorController! {
+    fileprivate var videoEditorViewController: UIVideoEditorController! {
         didSet {
-            videoEditorViewController.videoQuality = .TypeHigh
+            videoEditorViewController.videoQuality = .typeHigh
             videoEditorViewController.videoMaximumDuration = NativeWorkspaceViewController.videoMaximumDuration
             guard let path = mediaURL.path else {
                 assertionFailure("Somehow recieved a media url with no path in NativeWorkspaceViewController")
@@ -60,12 +60,12 @@ class NativeWorkspaceViewController: VWorkspaceViewController, UIVideoEditorCont
             dependencyManager.applyStyleToNavigationBar(navigationBar)
             // Reset the background image of the navigation bar so that it matches the
             // trimmer view that the editor places right below it
-            navigationBar.setBackgroundImage(nil, forBarMetrics: .Default)
+            navigationBar.setBackgroundImage(nil, for: .default)
         }
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return .LightContent
+        return .lightContent
     }
     
     override func viewDidLoad() {
@@ -78,40 +78,40 @@ class NativeWorkspaceViewController: VWorkspaceViewController, UIVideoEditorCont
     
     // MARK: - UIViewControllerTransitioningDelegate
     
-    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         animator.presenting = true
         return animator
     }
     
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         animator.presenting = false
         return animator
     }
 
     // MARK: - UINavigationControllerDelegate
 
-    func navigationController(navigationController: UINavigationController, willShowViewController viewController: UIViewController, animated: Bool) {
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         let navigationItem = viewController.navigationItem
         guard let oldLeftBarButton = navigationItem.leftBarButtonItem else {
             assertionFailure("UIVideoEditorViewController changed how it's cancel button works! It will be shown with the default cancel text instead.")
             return
         }
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Back", comment: ""), style: .Plain, target: oldLeftBarButton.target, action: oldLeftBarButton.action)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Back", comment: ""), style: .plain, target: oldLeftBarButton.target, action: oldLeftBarButton.action)
     }
     
     // MARK: - UIVideoEditorControllerDelegate
     
-    func videoEditorControllerDidCancel(editor: UIVideoEditorController) {
+    func videoEditorControllerDidCancel(_ editor: UIVideoEditorController) {
         presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    func videoEditorController(editor: UIVideoEditorController, didFailWithError error: NSError) {
+    func videoEditorController(_ editor: UIVideoEditorController, didFailWithError error: NSError) {
         v_showErrorDefaultError()
     }
     
-    func videoEditorController(editor: UIVideoEditorController, didSaveEditedVideoToPath editedVideoPath: String) {
+    func videoEditorController(_ editor: UIVideoEditorController, didSaveEditedVideoToPath editedVideoPath: String) {
         
-        let editedMediaURL = NSURL(fileURLWithPath: editedVideoPath)
+        let editedMediaURL = URL(fileURLWithPath: editedVideoPath)
         guard let previewImage = editedMediaURL.v_videoPreviewImage else {
             v_showErrorDefaultError()
             return

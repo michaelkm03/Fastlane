@@ -10,7 +10,7 @@ import Foundation
 
 extension VLoginType {
     
-    func trackSuccess(newUser: Bool) {
+    func trackSuccess(_ newUser: Bool) {
         switch self {
         case .Email:
             VTrackingManager.sharedInstance().trackEvent(VTrackingEventLoginWithEmailDidSucceed)

@@ -25,12 +25,12 @@ public struct CreateChatServiceTokenRequest: RequestType {
     }
     
     public var urlRequest: NSURLRequest {
-        let request = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "POST"
+        let request = NSMutableURLRequest(url: url as URL)
+        request.httpMethod = "POST"
         return request
     }
 
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> String {
+    public func parseResponse(response: URLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> String {
         guard let token = responseJSON["payload"]["token"].string ?? responseJSON["token"].string else {
             throw ResponseParsingError()
         }

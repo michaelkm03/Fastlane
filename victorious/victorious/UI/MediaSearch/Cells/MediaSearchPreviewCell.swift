@@ -18,16 +18,16 @@ class MediaSearchPreviewCell: UICollectionViewCell {
     var videoPlayer: VVideoPlayer?
     
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    @IBOutlet private weak var imageView: UIImageView!
+    @IBOutlet fileprivate weak var imageView: UIImageView!
     
-    var previewAssetUrl: NSURL? {
+    var previewAssetUrl: URL? {
         didSet {
             self.imageView.sd_setImageWithURL( self.previewAssetUrl )
         }
     }
     
     /// Sets the video asset URL to play in this cell and automatically beings playing it.
-    var assetUrl: NSURL? {
+    var assetUrl: URL? {
         didSet {
             self.videoPlayer?.view.removeFromSuperview()
             self.videoPlayer = nil

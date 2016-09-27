@@ -11,22 +11,22 @@ import UIKit
 @objc(VCameraFlashBarButtonItem)
 class CameraFlashBarButtonItem: UIBarButtonItem {
     
-    private(set) var interactiveButton: UIButton = {
-        let button = UIButton(type: .Custom)
-        button.hidden = true
-        button.enabled = false
+    fileprivate(set) var interactiveButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.isHidden = true
+        button.isEnabled = false
         button.frame = button.v_navigationBarFriendlyFrame
-        button.setBackgroundImage(nil, forState: .Selected)
-        button.imageView?.contentMode = .Center
-        button.setTitle(nil, forState: .Normal)
-        button.setTitle(nil, forState: .Selected)
+        button.setBackgroundImage(nil, for: .selected)
+        button.imageView?.contentMode = .center
+        button.setTitle(nil, for: UIControlState())
+        button.setTitle(nil, for: .selected)
         return button
     }()
 
     var dependencyManager: VDependencyManager? {
         didSet {
-            interactiveButton.setImage(dependencyManager?.normalStateImage, forState: .Normal)
-            interactiveButton.setImage(dependencyManager?.selectedStateImage, forState: .Selected)
+            interactiveButton.setImage(dependencyManager?.normalStateImage, for: .Normal)
+            interactiveButton.setImage(dependencyManager?.selectedStateImage, for: .Selected)
         }
     }
     
@@ -40,11 +40,11 @@ class CameraFlashBarButtonItem: UIBarButtonItem {
         setup()
     }
     
-    private func setup() {
+    fileprivate func setup() {
         customView = interactiveButton
         title = nil
-        setBackButtonBackgroundImage(nil, forState: .Normal, barMetrics: .Default)
-        setBackButtonBackgroundImage(nil, forState: .Selected, barMetrics: .Default)
+        setBackButtonBackgroundImage(nil, for: UIControlState(), barMetrics: .default)
+        setBackButtonBackgroundImage(nil, for: .selected, barMetrics: .default)
     }
 }
 

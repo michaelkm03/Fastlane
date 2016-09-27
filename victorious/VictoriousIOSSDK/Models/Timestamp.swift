@@ -73,6 +73,6 @@ public func < (lhs: Timestamp, rhs: Timestamp) -> Bool {
 
 extension NSDate {
     public convenience init(timestamp: Timestamp) {
-        self.init(timeIntervalSince1970: NSTimeInterval(timestamp.value) / 1000.0)
+        self.init(timeIntervalSince1970: TimeInterval(timestamp.value) / 1000.0)
     }
 }

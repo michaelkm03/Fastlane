@@ -10,7 +10,7 @@ import Foundation
 
 extension NSPredicate {
     
-    class func predicateWithAssetMediaType(mediaType: PHAssetMediaType) -> NSPredicate? {
+    class func predicateWithAssetMediaType(_ mediaType: PHAssetMediaType) -> NSPredicate? {
         
         guard mediaType != .Unknown else {
             return nil

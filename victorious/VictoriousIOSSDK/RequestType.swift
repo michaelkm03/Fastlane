@@ -29,7 +29,7 @@ public protocol RequestType {
     /// - parameter request: The NSURLRequest that was sent to the server
     /// - parameter responseData: The raw data returned by the server
     /// - parameter responseJSON: A JSON object parsed from responseData, if available
-    func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> ResultType
+    func parseResponse(response: URLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> ResultType
     
     /// Returns a copy of the url request decorated with headers based on the provided contexts
     ///
@@ -46,7 +46,7 @@ extension RequestType {
         return nil
     }
     
-    public func parseResponse( response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON ) throws {
+    public func parseResponse( response: URLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON ) throws {
         // This method intentionally left blank.
     }
 }
@@ -57,7 +57,7 @@ public protocol Cancelable: class {
     func cancel() -> ()
 }
 
-extension NSURLSessionTask: Cancelable {
+extension URLSessionTask: Cancelable {
 }
 
 extension RequestType {
@@ -65,26 +65,26 @@ extension RequestType {
     ///
     /// - parameter result: The results of this request, if available.
     /// - parameter error: If an error occurred while executing this request, this parameter will have details.
-    public typealias ResultCallback = ( result: ResultType?, error: ErrorType? ) -> ()
+    public typealias ResultCallback = ( _ result: ResultType?, _ error: Error? ) -> ()
     
     /// Executes this request
     ///
     /// - returns: A Cancelable reference that can be used to cancel the network request before it completes
-    public func execute(baseURL baseURL: NSURL, requestContext: RequestContext, authenticationContext: AuthenticationContext?, callback: ResultCallback? = nil) -> Cancelable {
-        let urlSession = NSURLSession.sharedSession()
+    public func execute(baseURL: NSURL, requestContext: RequestContext, authenticationContext: AuthenticationContext?, callback: ResultCallback? = nil) -> Cancelable {
+        let urlSession = URLSession.shared
         let mutableRequest = urlRequestWithHeaders(using: requestContext, authenticationContext: authenticationContext).mutableCopy() as! NSMutableURLRequest
         
         // Combine only if current path is relative, not full
-        if let requestURLString = mutableRequest.URL?.absoluteString where !providesFullURL {
-            mutableRequest.URL = NSURL(string: requestURLString, relativeToURL: baseURL)
+        if let requestURLString = mutableRequest.url?.absoluteString , !providesFullURL {
+            mutableRequest.URL = NSURL(string: requestURLString, relativeToURL: baseURL as URL)
         }
         
-        let dataTask = urlSession.dataTaskWithRequest(mutableRequest) { (data: NSData?, response: NSURLResponse?, requestError: NSError?) in
+        let dataTask = urlSession.dataTaskWithRequest(mutableRequest as URLRequest) { (data: NSData?, response: URLResponse?, requestError: NSError?) in
 
             let result: ResultType?
             let error: ErrorType?
             
-            if let response = response, data = data {
+            if let response = response, let data = data {
                 do {
                     // Try to parse formatted error (e.g. 401s)
                     let responseJSON = JSON(data: data)
@@ -135,7 +135,7 @@ extension RequestType {
             mutableRequest.vsdk_setSessionIDHeaderValue(sessionID)
         }
         if !requestContext.experimentIDs.isEmpty {
-            let experiments = requestContext.experimentIDs.map { String($0) }.joinWithSeparator( "," )
+            let experiments = requestContext.experimentIDs.map { String($0) }.joined( separator: "," )
             mutableRequest.vsdk_setExperimentsHeaderValue(experiments)
         }
         
@@ -143,13 +143,13 @@ extension RequestType {
     }
     
     private func parseError(responseJSON: JSON) throws {
-        if let errorCode = responseJSON["error"].int where errorCode != 0  {
+        if let errorCode = responseJSON["error"].int , errorCode != 0  {
             throw APIError(localizedDescription: responseJSON["message"].stringValue, code: errorCode)
         }
     }
     
-    private func parseError(httpURLResponse: NSURLResponse) throws {
-        if let httpURLResponse = httpURLResponse as? NSHTTPURLResponse where httpURLResponse.statusCode >= 400 {
+    private func parseError(httpURLResponse: URLResponse) throws {
+        if let httpURLResponse = httpURLResponse as? HTTPURLResponse , httpURLResponse.statusCode >= 400 {
             throw APIError(localizedDescription: "Received HTTP Response Error", code: httpURLResponse.statusCode)
         }
     }

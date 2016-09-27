@@ -17,7 +17,7 @@ public struct RegisterPushNotificationRequest: RequestType {
     }
     
     public var urlRequest: NSURLRequest {
-        let urlRequest = NSMutableURLRequest(URL: NSURL(string: "/api/device/register_push_id")!)
+        let urlRequest = NSMutableURLRequest(url: NSURL(string: "/api/device/register_push_id")! as URL)
         let deviceInfo = ["push_id": pushNotificationID]
         urlRequest.vsdk_addURLEncodedFormPost(deviceInfo)
         

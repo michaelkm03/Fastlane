@@ -9,7 +9,7 @@
 import FBSDKLoginKit
 import FBSDKShareKit
 
-@objc(VFacebookHelper)
+(VFacebookHelper)
 class FacebookHelper: NSObject {
     
     /// The set of read permissions that should be requested when logging in
@@ -20,7 +20,7 @@ class FacebookHelper: NSObject {
     /// - parameter url: A deeplink URL
     /// 
     /// - returns: true if the url is meant to be handled by Facebook, false otherwise
-    class func canOpenURL(url: NSURL) -> Bool {
+    class func canOpenURL(_ url: NSURL) -> Bool {
         guard let urlScheme = url.scheme else {
             return false
         }
@@ -53,5 +53,5 @@ class FacebookHelper: NSObject {
         return shareDialog
     }
     
-    private static let fbSchemeRegex = try! NSRegularExpression(pattern: "^fb\\d+", options: [.CaseInsensitive])
+    fileprivate static let fbSchemeRegex = try! NSRegularExpression(pattern: "^fb\\d+", options: [.CaseInsensitive])
 }

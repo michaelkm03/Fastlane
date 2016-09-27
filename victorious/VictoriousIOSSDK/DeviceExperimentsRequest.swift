@@ -17,10 +17,10 @@ public struct DeviceExperimentsRequest: RequestType {
     }
     
     public var urlRequest: NSURLRequest {
-        return NSURLRequest(URL: NSURL(string: "/api/device/experiments")!)
+        return NSURLRequest(url: NSURL(string: "/api/device/experiments")! as URL)
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> (experiments: [DeviceExperiment], defaultExperimentIDs: Set<Int>) {
+    public func parseResponse(response: URLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> (experiments: [DeviceExperiment], defaultExperimentIDs: Set<Int>) {
         guard let experimentsJSON = responseJSON["payload"].array,
             let defaultExperimentsJSON = responseJSON["experiment_ids"].array else {
                 throw ResponseParsingError()

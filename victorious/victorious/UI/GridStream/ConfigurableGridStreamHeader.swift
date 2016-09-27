@@ -12,9 +12,9 @@ import Foundation
 protocol ConfigurableGridStreamHeader {
     associatedtype ContentType
 
-    func decorateHeader(dependencyManager: VDependencyManager, withWidth width: CGFloat, maxHeight: CGFloat, content: ContentType?, hasError: Bool)
+    func decorateHeader(_ dependencyManager: VDependencyManager, withWidth width: CGFloat, maxHeight: CGFloat, content: ContentType?, hasError: Bool)
 
-    func sizeForHeader(dependencyManager: VDependencyManager, withWidth width: CGFloat, maxHeight: CGFloat, content: ContentType?, hasError: Bool) -> CGSize
+    func sizeForHeader(_ dependencyManager: VDependencyManager, withWidth width: CGFloat, maxHeight: CGFloat, content: ContentType?, hasError: Bool) -> CGSize
 
     func headerWillDisappear()
 

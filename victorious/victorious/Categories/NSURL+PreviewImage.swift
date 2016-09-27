@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension NSURL {
+extension URL {
     
     /// Creates and returns an image generated from the first
     /// moment of the video found at this url.

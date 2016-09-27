@@ -22,10 +22,10 @@ public struct CreatorListRequest: RequestType {
     }
     
     public var urlRequest: NSURLRequest {
-        return NSURLRequest(URL: url)
+        return NSURLRequest(url: url as URL)
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [UserModel] {
+    public func parseResponse(response: URLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [UserModel] {
         guard let json = responseJSON["payload"]["users"].array else {
             throw ResponseParsingError()
         }

@@ -33,7 +33,7 @@ final class NotificationsOperation: AsyncOperation<[AnyObject]>, PaginatedOperat
         return .background
     }
     
-    override func execute(finish: (result: OperationResult<[AnyObject]>) -> Void) {
+    override func execute(_ finish: @escaping (_ result: OperationResult<[AnyObject]>) -> Void) {
         RequestOperation(request: request).queue { [weak self] result in
             switch result {
                 case .success(let notifications):

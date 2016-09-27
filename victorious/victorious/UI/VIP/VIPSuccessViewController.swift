@@ -9,7 +9,7 @@
 import UIKit
 
 protocol VIPSuccessViewControllerDelegate: class {
-    func successViewControllerFinished(successViewController: VIPSuccessViewController)
+    func successViewControllerFinished(_ successViewController: VIPSuccessViewController)
 }
 
 class VIPSuccessViewController: UIViewController {
@@ -24,13 +24,13 @@ class VIPSuccessViewController: UIViewController {
     
     weak var delegate: VIPSuccessViewControllerDelegate?
     
-    private var dependencyManager: VDependencyManager! {
+    fileprivate var dependencyManager: VDependencyManager! {
         didSet {
             updateSubviewContents()
         }
     }
     
-    static func newWithDependencyManager(dependencyManager: VDependencyManager) -> VIPSuccessViewController {
+    static func newWithDependencyManager(_ dependencyManager: VDependencyManager) -> VIPSuccessViewController {
         let successViewController: VIPSuccessViewController = v_initialViewControllerFromStoryboard()
         successViewController.dependencyManager = dependencyManager
         return successViewController
@@ -52,8 +52,8 @@ class VIPSuccessViewController: UIViewController {
     
     // MARK: - Subview population
     
-    private func updateSubviewContents() {
-        guard isViewLoaded() else {
+    fileprivate func updateSubviewContents() {
+        guard isViewLoaded else {
             return
         }
         
@@ -88,7 +88,7 @@ class VIPSuccessViewController: UIViewController {
     
     // MARK: - Actions
     
-    @IBAction private func onConfirm() {
+    @IBAction fileprivate func onConfirm() {
         delegate?.successViewControllerFinished(self)
     }
 }
@@ -115,7 +115,7 @@ private extension VDependencyManager {
         }
         
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = .Center
+        paragraphStyle.alignment = .center
         return [
             NSFontAttributeName: font,
             NSForegroundColorAttributeName: color,
@@ -136,7 +136,7 @@ private extension VDependencyManager {
         }
         
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = .Center
+        paragraphStyle.alignment = .center
         return [
             NSFontAttributeName: font,
             NSForegroundColorAttributeName: color,

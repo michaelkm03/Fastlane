@@ -14,9 +14,9 @@ final class CreateMediaUploadOperation: SyncOperation<Void> {
     let request: MediaUploadCreateRequest
     let uploadManager: VUploadManager
     let publishParameters: VPublishParameters
-    let mediaURL: NSURL?
+    let mediaURL: URL?
     
-    private var currentUploadTask: VUploadTaskInformation?
+    fileprivate var currentUploadTask: VUploadTaskInformation?
     
     init?(apiPath: APIPath, publishParameters: VPublishParameters, uploadManager: VUploadManager) {
         guard let request = MediaUploadCreateRequest(apiPath: apiPath) else {
@@ -65,8 +65,8 @@ final class CreateMediaUploadOperation: SyncOperation<Void> {
         uploadManager.cancelUploadTask(currentUploadTask)
     }
     
-    private var formFields: [NSObject : AnyObject] {
-        var dict: [NSObject : AnyObject] = [
+    fileprivate var formFields: [AnyHashable: Any] {
+        var dict: [AnyHashable: Any] = [
             "name": publishParameters.caption ?? "",
             "is_gif_style": publishParameters.isGIF ? "true" : "false",
             "did_crop": publishParameters.didCrop ? "true" : "false",
@@ -92,10 +92,10 @@ final class CreateMediaUploadOperation: SyncOperation<Void> {
         if let textToolType = publishParameters.textToolType {
             dict["text_tool_type"] = textToolType
         }
-        if let parentNodeID = publishParameters.parentNodeID where !parentNodeID.isEqualToNumber(NSNumber(int: 0)) {
+        if let parentNodeID = publishParameters.parentNodeID , !parentNodeID.isEqualToNumber(NSNumber(int: 0)) {
             dict["parent_node_id"] = String(parentNodeID)
         }
-        if let parentSequenceID = publishParameters.parentSequenceID where !parentSequenceID.isEmpty {
+        if let parentSequenceID = publishParameters.parentSequenceID , !parentSequenceID.isEmpty {
             dict["parent_sequence_id"] = String(parentSequenceID)
         }
         switch publishParameters.captionType {

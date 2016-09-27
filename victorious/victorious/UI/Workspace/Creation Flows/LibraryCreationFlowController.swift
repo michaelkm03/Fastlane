@@ -11,7 +11,7 @@ import Foundation
 /// Displays a flow starting with a library from which the user can select either a photo or a video
 class LibraryCreationFlowController: VAbstractImageVideoCreationFlowController, MixedMediaCreationFlow {
     
-    private struct Constants {
+    fileprivate struct Constants {
         static let imageVideoLibraryKey = "imageVideoLibrary"
     }
     
@@ -24,12 +24,12 @@ class LibraryCreationFlowController: VAbstractImageVideoCreationFlowController, 
         return capturedMediaURL.v_hasVideoExtension() ? .Video : .Image
     }
     
-    override func gridViewControllerWithDependencyManager(dependencyManager: VDependencyManager) -> VAssetCollectionGridViewController? {
+    override func gridViewControllerWithDependencyManager(_ dependencyManager: VDependencyManager) -> VAssetCollectionGridViewController? {
         
         return dependencyManager.templateValueOfType(VAssetCollectionGridViewController.self, forKey: Constants.imageVideoLibraryKey, withAddedDependencies:[VAssetCollectionGridViewControllerMediaType : NSNumber(integer: PHAssetMediaType.Unknown.rawValue)]) as? VAssetCollectionGridViewController
     }
     
-    override func workspaceViewControllerWithDependencyManager(dependencyManager: VDependencyManager) -> VWorkspaceViewController? {
+    override func workspaceViewControllerWithDependencyManager(_ dependencyManager: VDependencyManager) -> VWorkspaceViewController? {
         
         let workspace: VWorkspaceViewController? = VCreationFlowPresenter.preferredWorkspaceForMediaType(mediaType(), fromDependencyManager: dependencyManager)
         
@@ -40,12 +40,12 @@ class LibraryCreationFlowController: VAbstractImageVideoCreationFlowController, 
         return selectedWorkspace
     }
     
-    override func configurePublishParameters(publishParameters: VPublishParameters, withWorkspace workspace: VWorkspaceViewController) {
+    override func configurePublishParameters(_ publishParameters: VPublishParameters, withWorkspace workspace: VWorkspaceViewController) {
         
         updatePublishParameters(publishParameters, workspace: workspace)
     }
     
-    override func downloaderWithAsset(asset: PHAsset) -> VAssetDownloader? {
+    override func downloaderWithAsset(_ asset: PHAsset) -> VAssetDownloader? {
         if asset.mediaType == .Image {
             return VImageAssetDownloader(asset: asset)
         } else if asset.mediaType == .Video {
@@ -65,7 +65,7 @@ class LibraryCreationFlowController: VAbstractImageVideoCreationFlowController, 
     
     // MARK: VAssetCollectionGridViewControllerDelegate
     
-    override func gridViewController(gridViewController: VAssetCollectionGridViewController, selectedAsset asset: PHAsset) {
+    override func gridViewController(_ gridViewController: VAssetCollectionGridViewController, selectedAsset asset: PHAsset) {
         source = .Library
         super.gridViewController(gridViewController, selectedAsset: asset)
     }

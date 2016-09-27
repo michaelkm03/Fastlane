@@ -12,11 +12,11 @@ import VictoriousIOSSDK
 /// A utility that abstracts the interaction between UI code and paginated `FetcherOperation`s
 /// into an API that is more concise and reuable between any paginated view controllers that have
 /// a simple collection or table view layout.
-@objc public class PaginatedDataSource: NSObject, PaginatedDataSourceType {
+@objc open class PaginatedDataSource: NSObject, PaginatedDataSourceType {
     
-    private(set) var currentPaginatedOperation: NSOperation?
+    fileprivate(set) var currentPaginatedOperation: Operation?
     
-    private(set) var state: VDataSourceState = .Cleared {
+    fileprivate(set) var state: VDataSourceState = .Cleared {
         didSet {
             if oldValue != state {
                 self.delegate?.paginatedDataSource?(self, didChangeStateFrom: oldValue, to: state)
@@ -28,9 +28,9 @@ import VictoriousIOSSDK
         shouldStashNewItems = true
     }
     
-    var sortOrder: NSComparisonResult = .OrderedAscending
+    var sortOrder: ComparisonResult = .orderedAscending
     
-    private var isPurging = false
+    fileprivate var isPurging = false
     
     func unstashAll() {
         shouldStashNewItems = false
@@ -42,20 +42,20 @@ import VictoriousIOSSDK
     var isStashingNewItems: Bool {
         return shouldStashNewItems
     }
-    private var shouldStashNewItems: Bool = false
+    fileprivate var shouldStashNewItems: Bool = false
     
     var shouldShowNextPageActivity: Bool {
         return state == .Loading && visibleItems.count > 0
     }
     
     // Tracks page numbers already loaded to prevent re-loading pages unecessarily
-    private var pagesLoaded = Set<Int>()
+    fileprivate var pagesLoaded = Set<Int>()
     
     func isLoading() -> Bool {
         return state == .Loading
     }
     
-    func purgeOlderItems(limit limit: Int) {
+    func purgeOlderItems(limit: Int) {
         if visibleItems.count > limit {
             isPurging = true
             visibleItems = visibleItems.v_orderedSetPurgedBy(limit)
@@ -63,15 +63,15 @@ import VictoriousIOSSDK
         }
     }
     
-    private var purgedStashedCount = 0
+    fileprivate var purgedStashedCount = 0
     
     var stashedItemsCount: Int {
         return stashedItems.count + purgedStashedCount
     }
     
-    private var _stashedItems = NSOrderedSet()
+    fileprivate var _stashedItems = NSOrderedSet()
     
-    private var stashedItems: NSOrderedSet {
+    fileprivate var stashedItems: NSOrderedSet {
         set {
             let oldValue = _stashedItems
             let shouldUpdateDelegate = _stashedItems.count != newValue.count
@@ -91,7 +91,7 @@ import VictoriousIOSSDK
         }
     }
     
-    private(set) var visibleItems = NSOrderedSet() {
+    fileprivate(set) var visibleItems = NSOrderedSet() {
         didSet {
             if oldValue != visibleItems {
                 if isPurging {
@@ -130,7 +130,7 @@ import VictoriousIOSSDK
         }
     }
     
-    func loadPage<Operation: Paginated where Operation.PaginatorType: NumericPaginator>(pageType: VPageType, @noescape createOperation: () -> Operation, completion: ((results: [AnyObject]?, error: NSError?, cancelled: Bool) -> Void)? = nil) {
+    func loadPage<Operation: Paginated>(_ pageType: VPageType, createOperation: () -> Operation, completion: ((_ results: [AnyObject]?, _ error: NSError?, _ cancelled: Bool) -> Void)? = nil) where Operation.PaginatorType: NumericPaginator {
         guard !isLoading() else {
             return
         }
@@ -206,7 +206,7 @@ import VictoriousIOSSDK
             }
         }
         
-        currentPaginatedOperation = operation as? NSOperation
+        currentPaginatedOperation = operation as? Foundation.Operation
     }
 }
 
@@ -216,7 +216,7 @@ private extension NSOrderedSet {
         let predicate = NSPredicate { object, dictionary in
             return true
         }
-        return filteredOrderedSetUsingPredicate(predicate)
+        return filtered(using: predicate)
     }
     
     func v_orderedSet( byAddingObjects objects: [AnyObject], forPageType pageType: VPageType ) -> NSOrderedSet {
@@ -241,7 +241,7 @@ private extension NSOrderedSet {
         return NSOrderedSet(array: self.array + objects)
     }
     
-    func v_orderedSetPurgedBy(limit: Int) -> NSOrderedSet {
+    func v_orderedSetPurgedBy(_ limit: Int) -> NSOrderedSet {
         let rangeStart = max(0, count - limit)
         let rangeEnd = count
         let remaining = Array(array[rangeStart..<rangeEnd])

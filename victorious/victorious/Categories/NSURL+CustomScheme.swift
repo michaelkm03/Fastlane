@@ -8,14 +8,14 @@
 
 import Foundation
 
-extension NSURL {
+extension URL {
     /// Returns the path of a URL without the leading slash
     var pathWithoutLeadingSlash: String? {
-        guard let path = self.path where !path.isEmpty else {
+        guard let path = self.path , !path.isEmpty else {
             return nil
         }
         
-        return path[path.startIndex.successor() ..< path.endIndex]
+        return path[path.characters.index(after: path.startIndex) ..< path.endIndex]
     }
     
     var isHTTPScheme: Bool {

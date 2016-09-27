@@ -21,13 +21,13 @@ final class ContentFeedOperation: AsyncOperation<ContentFeedResult> {
     
     // MARK: - Executing
     
-    private let request: ContentFeedRequest
+    fileprivate let request: ContentFeedRequest
     
     override var executionQueue: Queue {
         return .main
     }
     
-    override func execute(finish: (result: OperationResult<ContentFeedResult>) -> Void) {
+    override func execute(_ finish: (_ result: OperationResult<ContentFeedResult>) -> Void) {
         RequestOperation(request: request).queue { result in
             switch result {
                 case .success(var feedResult):

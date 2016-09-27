@@ -32,7 +32,7 @@ private struct Constants {
     static let highlightStrokeColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8).CGColor
     static let userMacro = "%%USER%%"
     static let creatorMacro = "%%CREATOR%%"
-    static let animationDuration: NSTimeInterval = 0.3
+    static let animationDuration: TimeInterval = 0.3
     static let closeButtonStrokeWidth: CGFloat = 1
     static let closeButtonStrokeColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.2).CGColor
     static let textContainerBackgroundColor = UIColor(red: 255, green: 255, blue: 255, alpha: 0.5)
@@ -42,8 +42,8 @@ private struct Constants {
 }
 
 class CoachmarkViewController: UIViewController, VBackgroundContainer {
-    private let backgroundView = UIView()
-    private let detailsView = CoachmarkTextContainerView()
+    fileprivate let backgroundView = UIView()
+    fileprivate let detailsView = CoachmarkTextContainerView()
     
     init(coachmark: Coachmark, containerFrame: CGRect, highlightFrame: CGRect? = nil) {
         super.init(nibName: nil, bundle: nil)

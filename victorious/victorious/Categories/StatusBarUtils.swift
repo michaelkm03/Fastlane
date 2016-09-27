@@ -10,7 +10,7 @@ import Foundation
 
 class StatusBarUtilities: NSObject {
     // Returns an appropriate status bar style based on the illuminance of a color
-    class func statusBarStyle(color color: UIColor) -> UIStatusBarStyle {
+    class func statusBarStyle(color: UIColor) -> UIStatusBarStyle {
         
         let luminance = color.v_colorLuminance()
         switch luminance {

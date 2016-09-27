@@ -9,17 +9,17 @@
 import Foundation
 
 protocol ContentCellTracker {
-    var sessionParameters: [NSObject : AnyObject] { get }
+    var sessionParameters: [AnyHashable: Any] { get }
     
-    func trackView(trackingKey: ViewTrackingKey, showingContent content: Content, parameters: [NSObject : AnyObject])
+    func trackView(_ trackingKey: ViewTrackingKey, showingContent content: Content, parameters: [AnyHashable: Any])
 }
 
 extension ContentCellTracker {
-    private var trackingManager: VTrackingManager {
+    fileprivate var trackingManager: VTrackingManager {
         return VTrackingManager.sharedInstance()
     }
 
-    func trackView(trackingKey: ViewTrackingKey, showingContent content: Content, parameters: [NSObject : AnyObject] = [:]) {
+    func trackView(_ trackingKey: ViewTrackingKey, showingContent content: Content, parameters: [AnyHashable: Any] = [:]) {
         guard
             let tracking = content.tracking,
             let trackingStrings = tracking.trackingURLsForKey(trackingKey),
@@ -37,9 +37,9 @@ extension ContentCellTracker {
         )
     }
 
-    private func parametersForViewTrackingKey(trackingKey: ViewTrackingKey, trackingURLStrings: [String]) -> [NSObject : AnyObject]? {
+    fileprivate func parametersForViewTrackingKey(_ trackingKey: ViewTrackingKey, trackingURLStrings: [String]) -> [AnyHashable: Any]? {
         let parameters = [
-            VTrackingKeyTimeStamp: NSDate(),
+            VTrackingKeyTimeStamp: Date(),
             VTrackingKeyUrls: trackingURLStrings
         ]
         

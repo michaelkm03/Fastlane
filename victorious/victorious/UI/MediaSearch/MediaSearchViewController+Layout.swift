@@ -19,10 +19,10 @@ private struct MediaSearchLayout {
 
 extension MediaSearchViewController: UICollectionViewDelegateFlowLayout {
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         let insets = (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionInset ?? UIEdgeInsets()
-        let numRowsInSection = collectionView.numberOfItemsInSection(indexPath.section)
+        let numRowsInSection = collectionView.numberOfItems(inSection: (indexPath as NSIndexPath).section)
         let totalWidth = collectionView.bounds.width - insets.left - insets.right - MediaSearchLayout.itemSpacing * CGFloat(numRowsInSection - 1)
         let totalHeight = collectionView.bounds.height - insets.top - insets.bottom
         let totalSize = CGSize(width: totalWidth, height: totalHeight)
@@ -31,18 +31,18 @@ extension MediaSearchViewController: UICollectionViewDelegateFlowLayout {
             return CGSize(width: totalSize.width, height: MediaSearchLayout.noContentCellHeight)
         }
         else {
-            let section = self.dataSourceAdapter.sections[ indexPath.section ]
+            let section = self.dataSourceAdapter.sections[ (indexPath as NSIndexPath).section ]
             if section.count == 1 {
                 return section.previewSectionCellSize(withinSize: totalSize)
             }
             else {
                 let sizes = section.resultSectionDisplaySizes( withinSize: totalSize )
-                return sizes[ indexPath.row ]
+                return sizes[ (indexPath as NSIndexPath).row ]
             }
         }
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         
         if options.showAttribution {
             let headerHeight = self.shouldShowHeader(section) ? MediaSearchLayout.headerViewHeight : 0.0
@@ -53,8 +53,8 @@ extension MediaSearchViewController: UICollectionViewDelegateFlowLayout {
         }
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        if let previewSection = self.previewSection where previewSection == section {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        if let previewSection = self.previewSection , previewSection == section {
             return UIEdgeInsets(
                 top: MediaSearchLayout.defaultSectionMargin,
                 left: MediaSearchLayout.defaultSectionMargin,
@@ -70,29 +70,29 @@ extension MediaSearchViewController: UICollectionViewDelegateFlowLayout {
         }
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 2
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
         let footerHeight = self.shouldShowFooter(section) ? MediaSearchLayout.footerViewHeight : 0.0
         return CGSize(width: collectionView.bounds.width, height: footerHeight )
     }
     
     // MARK: - Private
     
-    private func isLastSection( section: Int ) -> Bool {
-        let numSections = collectionView.numberOfSections()
+    fileprivate func isLastSection( _ section: Int ) -> Bool {
+        let numSections = collectionView.numberOfSections
         return section == numSections - 1
     }
     
-    private func shouldShowFooter( section: Int ) -> Bool {
-        let numSections = collectionView.numberOfSections()
+    fileprivate func shouldShowFooter( _ section: Int ) -> Bool {
+        let numSections = collectionView.numberOfSections
         let output = numSections > 1 && self.isLastSection(section)
         return output
     }
     
-    private func shouldShowHeader( section: Int ) -> Bool {
+    fileprivate func shouldShowHeader( _ section: Int ) -> Bool {
         return section == 0
     }
 }
@@ -109,7 +109,7 @@ private extension MediaSearchDataSourceAdapter.Section {
     func resultSectionDisplaySizes( withinSize totalSize: CGSize ) -> [CGSize] {
         assert( self.results.count == 2, "This method only calculates sizes for sections with exactly 2 results" )
         
-        var output = [CGSize](count: self.results.count, repeatedValue: CGSize.zero)
+        var output = [CGSize](repeating: CGSize.zero, count: self.results.count)
         
         let gifA = self.results[0]
         let gifB = self.results[1]

@@ -12,12 +12,12 @@ import FBSDKCoreKit
 import FBSDKLoginKit
 
 extension VLoginType {
-    func storedCredentials(accountIdentifier: String? = nil) -> NewAccountCredentials? {
+    func storedCredentials(_ accountIdentifier: String? = nil) -> NewAccountCredentials? {
         switch self {
             
         case .Facebook:
             guard let currentToken = FBSDKAccessToken.currentAccessToken()
-                where currentToken.expirationDate.timeIntervalSinceNow > 0.0 else {
+                , currentToken.expirationDate.timeIntervalSinceNow > 0.0 else {
                     return nil
             }
             return .Facebook(accessToken: currentToken.tokenString)

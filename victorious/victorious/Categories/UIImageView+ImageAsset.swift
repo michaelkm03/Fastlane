@@ -9,16 +9,16 @@
 import UIKit
 import SDWebImage
 
-typealias ImageCompletion = (Result<UIImage> -> Void)?
+typealias ImageCompletion = ((Result<UIImage>) -> Void)?
 
 extension UIImageView {
-    private static let blurredImageCachePathExtension = "blurred"
+    fileprivate static let blurredImageCachePathExtension = "blurred"
     
     /// Downloads the image from the image asset or grabs the cached version to return in the completion block
-    func getImageAsset(imageAsset: ImageAssetModel, blurRadius: CGFloat = 0, completion: ImageCompletion) {
+    func getImageAsset(_ imageAsset: ImageAssetModel, blurRadius: CGFloat = 0, completion: ImageCompletion) {
         image = nil
         
-        let imageBlurBlock: (UIImage?, NSURL?, NSError?) -> Void = { [weak self] image, url, error in
+        let imageBlurBlock: (UIImage?, URL?, NSError?) -> Void = { [weak self] image, url, error in
             guard let image = image else {
                 completion?(.failure(error))
                 return
@@ -46,12 +46,12 @@ extension UIImageView {
         }
     }
     
-    private func cachedBlurredImage(for url: NSURL, blurRadius: CGFloat) -> UIImage? {
+    fileprivate func cachedBlurredImage(for url: URL, blurRadius: CGFloat) -> UIImage? {
         let key = blurredImageKey(for: url, blurRadius: blurRadius)
         return SDWebImageManager.sharedManager().imageCache.imageFromMemoryCacheForKey(key)
     }
     
-    private func addBlurredImage(image: UIImage, toCacheWithURL url: NSURL, blurRadius: CGFloat) {
+    fileprivate func addBlurredImage(_ image: UIImage, toCacheWithURL url: URL, blurRadius: CGFloat) {
         guard let key = blurredImageKey(for: url, blurRadius: blurRadius) else {
             return
         }
@@ -62,29 +62,29 @@ extension UIImageView {
         )
     }
     
-    private func blurredImageKey(for url: NSURL, blurRadius: CGFloat) -> String? {
+    fileprivate func blurredImageKey(for url: URL, blurRadius: CGFloat) -> String? {
         let imageExtension = "\(UIImageView.blurredImageCachePathExtension)/\(blurRadius)"
-        let key = url.URLByAppendingPathComponent(imageExtension)?.absoluteString
+        let key = url.appendingPathComponent(imageExtension).absoluteString
         if key == nil {
             Log.error("Failed to generate key for blurred image storage")
         }
         return key
     }
     
-    private func blurImage(image: UIImage, withRadius radius: CGFloat, completion: ImageCompletion) {
-        dispatch_async(dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0)) {
+    fileprivate func blurImage(_ image: UIImage, withRadius radius: CGFloat, completion: ImageCompletion) {
+        DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async {
             guard let blurredImage = image.applyBlur(withRadius: radius) else {
                 completion?(.failure(nil))
                 return
             }
             
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 completion?(.success(blurredImage))
             }
         }
     }
     
-    private func applyBlur(to image: UIImage, with url: NSURL? = nil, radius: CGFloat, completion: ImageCompletion) {
+    fileprivate func applyBlur(to image: UIImage, with url: URL? = nil, radius: CGFloat, completion: ImageCompletion) {
         guard let url = url else {
             // No URL to cache to, blur the image and call completion
             blurImage(image, withRadius: radius, completion: completion)

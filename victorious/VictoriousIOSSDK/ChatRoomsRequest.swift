@@ -14,10 +14,10 @@ public struct ChatRoomsRequest: RequestType {
             return nil
         }
 
-        self.urlRequest = NSURLRequest(URL: url)
+        self.urlRequest = NSURLRequest(url: url as URL)
     }
 
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [ChatRoom] {
+    public func parseResponse(response: URLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [ChatRoom] {
         guard let chatroomsResponse = responseJSON["payload"]["room_list"].array else {
             throw ResponseParsingError(localizedDescription: "Failed to parse chat rooms response payload")
         }

@@ -20,7 +20,7 @@ struct DeeplinkContext {
     static let hashTagFeed = "hashtag_feed"
     static let chatRoomFeed = "chat_room_feed"
 
-    private(set) var value: String?
+    fileprivate(set) var value: String?
 
     init(value: String?, subContext: String? = nil) {
         if value == "favorite.stream" {
@@ -32,7 +32,7 @@ struct DeeplinkContext {
         }
 
         if let value = value,
-            subContext = subContext {
+            let subContext = subContext {
             self.value = "\(value)\(subContext)"
         }
     }

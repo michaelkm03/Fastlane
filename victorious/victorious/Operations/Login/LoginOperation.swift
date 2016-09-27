@@ -18,8 +18,8 @@ class LoginOperation: AsyncOperation<AccountCreateResponse> {
     
     // MARK: - Executing
     
-    private let dependencyManager: VDependencyManager
-    private let requestOperation: RequestOperation<LoginRequest>
+    fileprivate let dependencyManager: VDependencyManager
+    fileprivate let requestOperation: RequestOperation<LoginRequest>
     
     var requestExecutor: RequestExecutorType {
         get {
@@ -34,7 +34,7 @@ class LoginOperation: AsyncOperation<AccountCreateResponse> {
         return .background
     }
     
-    override func execute(finish: (result: OperationResult<AccountCreateResponse>) -> Void) {
+    override func execute(_ finish: (_ result: OperationResult<AccountCreateResponse>) -> Void) {
         let parameters = AccountCreateParameters(loginType: .Email, accountIdentifier: requestOperation.request.email)
         
         requestOperation.queue { [weak self] requestResult in

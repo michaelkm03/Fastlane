@@ -26,7 +26,7 @@ extension RequestBodyWriterType {
     
     var bodyTempFileURL: NSURL? {
         let tempDirectory = NSURL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)
-        return tempDirectory.URLByAppendingPathComponent("requestBody.tmp")
+        return tempDirectory.appendingPathComponent("requestBody.tmp")
     }
     
     func removeBodyTempFile() {
@@ -34,6 +34,6 @@ extension RequestBodyWriterType {
             return
         }
 
-        let _ = try? NSFileManager.defaultManager().removeItemAtURL(bodyTempFileURL)
+        let _ = try? FileManager.default.removeItem(at: bodyTempFileURL as URL)
     }
 }

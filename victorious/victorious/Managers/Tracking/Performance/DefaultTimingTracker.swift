@@ -11,7 +11,7 @@ import Foundation
 private struct AppTimingEvent: Hashable {
     let type: String
     let subtype: String?
-    let dateStarted = NSDate()
+    let dateStarted = Date()
     
     init(type: String, subtype: String?) {
         self.type = type
@@ -29,9 +29,9 @@ private func ==(lhs: AppTimingEvent, rhs: AppTimingEvent) -> Bool {
 
 /// Object that manages performance event tracking by measuring time between start and stop calls.
 class DefaultTimingTracker: NSObject, TimingTracker {
-    private(set) var apiPaths = [APIPath]()
-    private var activeEvents = Set<AppTimingEvent>()
-    private static let instance = DefaultTimingTracker()
+    fileprivate(set) var apiPaths = [APIPath]()
+    fileprivate var activeEvents = Set<AppTimingEvent>()
+    fileprivate static let instance = DefaultTimingTracker()
     
     /// Setter allowing calling code to provide an object to which the actual tracking
     /// request execution will be delegated once a performance event has been
@@ -46,7 +46,7 @@ class DefaultTimingTracker: NSObject, TimingTracker {
     }
     
     /// Provides a dependency manager from which the shared instance will parse out its dependencies.
-    func setDependencyManager(dependencyManager: VDependencyManager) {
+    func setDependencyManager(_ dependencyManager: VDependencyManager) {
         apiPaths = dependencyManager.trackingAPIPaths(forEventKey: "app_time") ?? []
     }
     
@@ -54,35 +54,35 @@ class DefaultTimingTracker: NSObject, TimingTracker {
         self.activeEvents.removeAll()
     }
     
-    func resetAllEvents(type type: String) {
+    func resetAllEvents(type: String) {
         let existing = self.activeEvents.filter({ $0.type == type })
         for event in existing {
             self.activeEvents.remove( event )
         }
     }
     
-    func resetEvent(type type: String) {
+    func resetEvent(type: String) {
         if let existing = self.activeEvents.lazy.filter({ $0.type == type }).first {
             self.activeEvents.remove( existing )
         }
     }
     
-    func startEvent(type type: String, subtype: String? = nil) {
+    func startEvent(type: String, subtype: String? = nil) {
         self.resetEvent(type: type)
         let event = AppTimingEvent(type: type, subtype: subtype)
         self.activeEvents.insert( event )
     }
     
-    func endEvent(type type: String, subtype: String? = nil) {
+    func endEvent(type: String, subtype: String? = nil) {
         if let event = self.activeEvents.lazy.filter({ $0.type == type }).first {
             trackEvent( event )
             self.activeEvents.remove( event )
         }
     }
     
-    private func trackEvent(event: AppTimingEvent) {
-        let durationMs = Int(NSDate().timeIntervalSinceDate(event.dateStarted) * 1000.0)
-        let params: [NSObject: AnyObject] = [
+    fileprivate func trackEvent(_ event: AppTimingEvent) {
+        let durationMs = Int(Date().timeIntervalSince(event.dateStarted) * 1000.0)
+        let params: [AnyHashable: Any] = [
             VTrackingKeyUrls: apiPaths.map { $0.templatePath },
             VTrackingKeyDuration: durationMs,
             VTrackingKeyType: event.type,

@@ -22,8 +22,8 @@ extension PreviewImageContainer {
         let minimumHeight = minimumSize.height
         
         for asset in previewImages ?? [] {
-            let lastWidth = qualifiedAsset?.size.width ?? CGFloat.max
-            let lastHeight = qualifiedAsset?.size.height ?? CGFloat.max
+            let lastWidth = qualifiedAsset?.size.width ?? CGFloat.greatestFiniteMagnitude
+            let lastHeight = qualifiedAsset?.size.height ?? CGFloat.greatestFiniteMagnitude
             let width = asset.size.width
             let height = asset.size.height
 
@@ -39,7 +39,7 @@ extension PreviewImageContainer {
         var qualifiedAsset: ImageAssetModel?
         
         for asset in previewImages ?? [] {
-            let lastWidth = qualifiedAsset?.size.width ?? CGFloat.max
+            let lastWidth = qualifiedAsset?.size.width ?? CGFloat.greatestFiniteMagnitude
             let width = asset.size.width
             
             if width >= minimumWidth && width <= lastWidth {
@@ -53,7 +53,7 @@ extension PreviewImageContainer {
     public var largestPreviewImage: ImageAssetModel? {
         var largestAsset: ImageAssetModel?
         
-        for asset in previewImages ?? [] where asset.size.area > largestAsset?.size.area {
+        for asset in previewImages ?? [] where asset.size.area > (largestAsset?.size.area)! {
             largestAsset = asset
         }
         

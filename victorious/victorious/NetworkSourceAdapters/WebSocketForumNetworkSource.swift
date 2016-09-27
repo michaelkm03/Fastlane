@@ -11,14 +11,14 @@ import VictoriousCommon
 
 class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
 
-    private struct Constants {
+    fileprivate struct Constants {
         static let appIdExpander = "%%APP_ID%%"
         static let tokenExpander = "%%AUTH_TOKEN%%"
     }
     
-    private var webSocketController = WebSocketController.sharedInstance
+    fileprivate var webSocketController = WebSocketController.sharedInstance
     
-    private let dependencyManager: VDependencyManager
+    fileprivate let dependencyManager: VDependencyManager
     
     // MARK: - Initialization
     
@@ -47,30 +47,30 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
     
     // MARK: - Configuration
 
-    private struct Reconnector {
+    fileprivate struct Reconnector {
         /// The initial time to wait before reconnecting upon disconnection.
-        static let initialTimeout = NSTimeInterval(2)
+        static let initialTimeout = TimeInterval(2)
 
         /// A randomized reconnect padding is added so all clients won't reconnect at the same time.
         static let timeoutPadding = UInt32(3)
 
         /// The cap that the reconnect timeout can increase to.
-        static let maxTimeout = NSTimeInterval(25)
+        static let maxTimeout = TimeInterval(25)
 
-        static func increaseReconnectTimeout(reconnectTimeout: NSTimeInterval) -> NSTimeInterval {
-            let increasedReconnectTimeout = reconnectTimeout + NSTimeInterval(arc4random_uniform(Reconnector.timeoutPadding)) + 1
+        static func increaseReconnectTimeout(_ reconnectTimeout: TimeInterval) -> TimeInterval {
+            let increasedReconnectTimeout = reconnectTimeout + TimeInterval(arc4random_uniform(Reconnector.timeoutPadding)) + 1
             return min(increasedReconnectTimeout, maxTimeout)
         }
     }
 
     /// The reconnect timeout used at the moment, will reset when we explicitly close the WS. Set to 0 to disable reconnecting.
-    private var currentReconnectTimeout: NSTimeInterval = Reconnector.initialTimeout
+    fileprivate var currentReconnectTimeout: TimeInterval = Reconnector.initialTimeout
 
     // MARK: - ForumEventReceiver
     
-    private(set) var childEventReceivers = [ForumEventReceiver]()
+    fileprivate(set) var childEventReceivers = [ForumEventReceiver]()
     
-    func receive(event: ForumEvent) {
+    func receive(_ event: ForumEvent) {
         switch event {
             case .websocket(let websocketEvent):
                 switch websocketEvent {
@@ -85,8 +85,8 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
         }
     }
     
-    private func receiveDisconnectEventWithError(error: WebSocketError?) {
-        guard let _ = error where currentReconnectTimeout > 0 && VCurrentUser.user != nil else {
+    fileprivate func receiveDisconnectEventWithError(_ error: WebSocketError?) {
+        guard let _ = error , currentReconnectTimeout > 0 && VCurrentUser.user != nil else {
             return
         }
 
@@ -119,13 +119,13 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
         return webSocketController.isSetUp
     }
     
-    func addChildReceiver(receiver: ForumEventReceiver) {
+    func addChildReceiver(_ receiver: ForumEventReceiver) {
         if !childEventReceivers.contains({ $0 === receiver }) {
             childEventReceivers.append(receiver)
         }
     }
 
-    func removeChildReceiver(receiver: ForumEventReceiver) {
+    func removeChildReceiver(_ receiver: ForumEventReceiver) {
         if let index = childEventReceivers.indexOf({ $0 === receiver }) {
             childEventReceivers.removeAtIndex(index)
         }
@@ -139,17 +139,17 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
 
     // MARK: Private
     
-    private func expandWebSocketURLString(url: String, withToken token: String, applicationID: String) -> NSURL? {
+    fileprivate func expandWebSocketURLString(_ url: String, withToken token: String, applicationID: String) -> URL? {
         guard !url.isEmpty else {
             return nil
         }
         
-        let webSocketEndPointUserID = url.stringByReplacingOccurrencesOfString(Constants.appIdExpander, withString: applicationID)
-        let webSocketEndPoint = webSocketEndPointUserID.stringByReplacingOccurrencesOfString(Constants.tokenExpander, withString: token)
-        return NSURL(string: webSocketEndPoint)
+        let webSocketEndPointUserID = url.replacingOccurrences(of: Constants.appIdExpander, with: applicationID)
+        let webSocketEndPoint = webSocketEndPointUserID.replacingOccurrences(of: Constants.tokenExpander, with: token)
+        return URL(string: webSocketEndPoint)
     }
     
-    private func refreshToken() {
+    fileprivate func refreshToken() {
         guard let currentUserID = VCurrentUser.user?.id else {
             assertionFailure("No current user is logged in, how did they even get this far?")
             return

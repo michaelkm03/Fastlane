@@ -22,7 +22,7 @@ class LoginSuccessOperation: SyncOperation<Void> {
     
     // MARK: - Executing
     
-    private let dependencyManager: VDependencyManager
+    fileprivate let dependencyManager: VDependencyManager
     let parameters: AccountCreateParameters
     let response: AccountCreateResponse
     
@@ -68,7 +68,7 @@ class LoginSuccessOperation: SyncOperation<Void> {
         return .success()
     }
     
-    private func updateStoredCredentials(user: User) {
+    fileprivate func updateStoredCredentials(_ user: User) {
         guard let id = VCurrentUser.userID, let token = VCurrentUser.token else {
             return
         }
@@ -77,10 +77,10 @@ class LoginSuccessOperation: SyncOperation<Void> {
         
         VStoredLogin().saveLoggedInUserToDisk(info)
         
-        NSUserDefaults.standardUserDefaults().setInteger(VCurrentUser.loginType.rawValue, forKey: kLastLoginTypeUserDefaultsKey)
+        UserDefaults.standard.setInteger(VCurrentUser.loginType.rawValue, forKey: kLastLoginTypeUserDefaultsKey)
         
         if let accountIdentifier = VCurrentUser.accountIdentifier {
-            NSUserDefaults.standardUserDefaults().setObject( accountIdentifier, forKey: kAccountIdentifierDefaultsKey)
+            UserDefaults.standard.set( accountIdentifier, forKey: kAccountIdentifierDefaultsKey)
         }
     }
 }

@@ -9,25 +9,25 @@
 import UIKit
 
 class ErrorStateView: UIView {
-    private struct Constants {
-        static let cornerRadii = CGSizeMake(10, 10)
+    fileprivate struct Constants {
+        static let cornerRadii = CGSize(width: 10, height: 10)
     }
     
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var messageLabel: UILabel!
-    private var lastBounds: CGRect? {
+    fileprivate var lastBounds: CGRect? {
         didSet {
             if lastBounds != oldValue {
                 let maskPath = UIBezierPath(
                     roundedRect: bounds,
-                    byRoundingCorners: [.BottomRight, .BottomLeft],
+                    byRoundingCorners: [.bottomRight, .bottomLeft],
                     cornerRadii: Constants.cornerRadii
                 )
                 
                 let maskLayer = CAShapeLayer()
                 maskLayer.frame = bounds
-                maskLayer.path = maskPath.CGPath
+                maskLayer.path = maskPath.cgPath
                 
                 layer.mask = maskLayer
             }

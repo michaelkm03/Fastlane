@@ -11,13 +11,13 @@ import Foundation
 /// Provides UI for editing the user's `name`, `location`, and `tagline` fields.
 /// Assign closures to be notified of events in the UI.
 class DisplaynameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
-    private struct Constants {
+    fileprivate struct Constants {
         static let placeholderAlpha = CGFloat(0.5)
     }
     
-    @IBOutlet private var displaynameField: UITextField! {
+    @IBOutlet fileprivate var displaynameField: UITextField! {
         didSet {
-            NSNotificationCenter.defaultCenter().addObserver(
+            NotificationCenter.defaultCenter().addObserver(
                 self,
                 selector: #selector(textFieldDidChange(_:)),
                 name: UITextFieldTextDidChangeNotification,
@@ -25,9 +25,9 @@ class DisplaynameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
         }
     }
     
-    @IBOutlet private var usernameField: UITextField! {
+    @IBOutlet fileprivate var usernameField: UITextField! {
         didSet {
-            NSNotificationCenter.defaultCenter().addObserver(
+            NotificationCenter.defaultCenter().addObserver(
                 self,
                 selector: #selector(textFieldDidChange(_:)),
                 name: UITextFieldTextDidChangeNotification,
@@ -35,9 +35,9 @@ class DisplaynameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
         }
     }
     
-    @IBOutlet private var locationField: UITextField! {
+    @IBOutlet fileprivate var locationField: UITextField! {
         didSet {
-            NSNotificationCenter.defaultCenter().addObserver(
+            NotificationCenter.defaultCenter().addObserver(
                 self,
                 selector: #selector(textFieldDidChange(_:)),
                 name: UITextFieldTextDidChangeNotification,
@@ -45,7 +45,7 @@ class DisplaynameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
         }
     }
     
-    @IBOutlet private var avatarView: AvatarView! {
+    @IBOutlet fileprivate var avatarView: AvatarView! {
         didSet {
             avatarView.size = .large
             avatarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tappedOnAvatar(_:))))
@@ -131,7 +131,7 @@ class DisplaynameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
     
     // MARK: - Target / Action
     
-    @objc private func tappedOnAvatar(gesture: UITapGestureRecognizer) {
+    @objc fileprivate func tappedOnAvatar(_ gesture: UITapGestureRecognizer) {
         switch gesture.state {
             case .Ended:
                 self.onAvatarSelected?()
@@ -142,7 +142,7 @@ class DisplaynameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
     
     // MARK: - UITextFieldDelegate
     
-    @objc func textFieldShouldReturn(textField: UITextField) -> Bool {
+    @objc func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == displaynameField {
             usernameField.becomeFirstResponder()
             return false
@@ -157,7 +157,7 @@ class DisplaynameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
 
     // MARK: - Notification Handlers
     
-    @objc private func textFieldDidChange(notification: NSNotification) {
+    @objc fileprivate func textFieldDidChange(_ notification: Notification) {
         onDataChange?()
     }
 }

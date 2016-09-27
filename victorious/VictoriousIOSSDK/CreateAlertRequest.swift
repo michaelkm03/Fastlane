@@ -13,14 +13,14 @@ public struct CreateAlertRequest: RequestType {
     public let type: String
     
     public var urlRequest: NSURLRequest {
-        let urlRequest = NSMutableURLRequest(URL: NSURL(string: "/api/alert/create")!)
+        let urlRequest = NSMutableURLRequest(url: NSURL(string: "/api/alert/create")! as URL)
         
-        var requestParameters: [String: AnyObject] = ["type": type]
+        var requestParameters: [String: AnyObject] = ["type": type as AnyObject]
         
         if let additionalParameters = additionalParameters {
-            let jsonData = try! NSJSONSerialization.dataWithJSONObject(additionalParameters, options: [])
-            let paramsString = String(data: jsonData, encoding: NSUTF8StringEncoding)
-            requestParameters["params"] = paramsString
+            let jsonData = try! JSONSerialization.data(withJSONObject: additionalParameters, options: [])
+            let paramsString = String(data: jsonData, encoding: String.Encoding.utf8)
+            requestParameters["params"] = paramsString as AnyObject?
         }
         
         urlRequest.vsdk_addURLEncodedFormPost(requestParameters)

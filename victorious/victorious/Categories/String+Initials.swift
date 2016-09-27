@@ -9,8 +9,8 @@
 extension String {
     /// Returns the initials of `self`, a concatenation of the uppercase first characters of each word (determined by
     /// splitting on whitespace) in the string.
-    func initials(maxCount maxCount: Int = 2) -> String {
-        let words = componentsSeparatedByCharactersInSet(.whitespaceAndNewlineCharacterSet())
+    func initials(maxCount: Int = 2) -> String {
+        let words = components(separatedBy: .whitespacesAndNewlines())
         let initialCount = min(words.count, maxCount)
         let lastIndex = initialCount - 1
         
@@ -22,14 +22,14 @@ extension String {
             }
         }
         
-        return initials.joinWithSeparator("")
+        return initials.joined(separator: "")
     }
     
-    private var uppercaseFirstCharacter: String {
+    fileprivate var uppercaseFirstCharacter: String {
         guard let character = characters.first else {
             return ""
         }
         
-        return String(character).uppercaseString
+        return String(character).uppercased()
     }
 }

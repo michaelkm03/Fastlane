@@ -22,16 +22,16 @@ class LogoutOperation: AsyncOperation<Void> {
     
     // MARK: - Initializing
     
-    private let dependencyManager: VDependencyManager?
+    fileprivate let dependencyManager: VDependencyManager?
     
     override var executionQueue: Queue {
         return .background
     }
     
-    override func execute(finish: (result: OperationResult<Void>) -> Void) {
+    override func execute(_ finish: (_ result: OperationResult<Void>) -> Void) {
         guard VCurrentUser.user != nil else {
             // Cannot logout without a current (logged-in) user
-            finish(result: .failure(NSError(domain: "LogoutOperation", code: -1, userInfo: [:])))
+            finish(.failure(NSError(domain: "LogoutOperation", code: -1, userInfo: [:])))
             return
         }
         

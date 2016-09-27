@@ -12,6 +12,6 @@ extension UIView {
 
     /// Returns `self`'s class name as a default reuse identifer
     static var defaultReuseIdentifier: String {
-        return String(self)
+        return String(describing: self)
     }
 }

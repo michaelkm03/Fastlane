@@ -36,11 +36,11 @@ class TutorialCollectionViewDataSource: NSObject, ChatInterfaceDataSource, Tutor
         assertionFailure("Removing items is not supported in the tutorial.")
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return numberOfItems(for: collectionView, in: section)
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = cellForItem(for: collectionView, at: indexPath)
         cell.timestampLabel.hidden = true
         cell.likeView?.hidden = true
@@ -50,7 +50,7 @@ class TutorialCollectionViewDataSource: NSObject, ChatInterfaceDataSource, Tutor
     
     // MARK: - TutorialNetworkDataSourceDelegate
     
-    func didReceiveNewMessage(message: ChatFeedContent) {
+    func didReceiveNewMessage(_ message: ChatFeedContent) {
         delegate?.didReceiveNewMessage(message)
     }
     

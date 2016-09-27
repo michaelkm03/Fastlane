@@ -13,10 +13,10 @@ import UIKit
 @objc protocol MediaSearchDelegate {
     
     /// The user selected a search result and wants to proceed with it in a creation flow.
-    func mediaSearchResultSelected( selectedMediaSearchResult: MediaSearchResult )
+    func mediaSearchResultSelected( _ selectedMediaSearchResult: MediaSearchResult )
     
     /// The user did not select a search result and wants to exit this view
-    optional func mediaSearchDidCancel()
+    @objc optional func mediaSearchDidCancel()
 }
 
 class MediaSearchOptions: NSObject {
@@ -40,20 +40,20 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
         return self.dataSourceAdapter.dataSource?.options ?? MediaSearchOptions()
     }
     
-    private var hasLoadedOnce = false
+    fileprivate var hasLoadedOnce = false
     
-    var selectedIndexPath: NSIndexPath?
+    var selectedIndexPath: IndexPath?
     var previewSection: Int?
     var isScrollViewDecelerating = false
-    private(set) var dependencyManager: VDependencyManager?
+    fileprivate(set) var dependencyManager: VDependencyManager?
     
-    private(set) var scrollPaginator = ScrollPaginator()
+    fileprivate(set) var scrollPaginator = ScrollPaginator()
     let dataSourceAdapter = MediaSearchDataSourceAdapter()
-    private var mediaExporter: MediaSearchExporter?
+    fileprivate var mediaExporter: MediaSearchExporter?
     
     weak var delegate: MediaSearchDelegate?
     
-    class func mediaSearchViewController( dataSource dataSource: MediaSearchDataSource, dependencyManager: VDependencyManager ) -> MediaSearchViewController {
+    class func mediaSearchViewController( dataSource: MediaSearchDataSource, dependencyManager: VDependencyManager ) -> MediaSearchViewController {
         
         let bundle = UIStoryboard(name: "MediaSearch", bundle: nil)
         if let viewController = bundle.instantiateInitialViewController() as? MediaSearchViewController {
@@ -65,7 +65,7 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
         fatalError( "Could not load MediaSearchViewController from storyboard." )
     }
     
-    private var progressHUD: MBProgressHUD?
+    fileprivate var progressHUD: MBProgressHUD?
     
     
     // MARK: - UIViewController
@@ -86,7 +86,7 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
         if let searchTextField = self.searchBar.v_textField {
             searchTextField.tintColor = self.dependencyManager?.colorForKey(VDependencyManagerLinkColorKey)
             searchTextField.font = self.dependencyManager?.fontForKey(VDependencyManagerHeading4FontKey)
-            searchTextField.textColor = UIColor.whiteColor()
+            searchTextField.textColor = UIColor.white
             searchTextField.backgroundColor = UIColor(white: 0.2, alpha: 1.0)
         }
         
@@ -98,7 +98,7 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(
             title: NSLocalizedString("Next", comment: ""),
-            style: .Plain,
+            style: .plain,
             target: self,
             action: #selector(continueWithSelectedItem(_: ))
         )
@@ -112,28 +112,28 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
         if self.navigationController?.viewControllers.first == self {
             self.navigationItem.leftBarButtonItem = UIBarButtonItem(
                 title: NSLocalizedString("Cancel", comment: ""),
-                style: .Plain,
+                style: .plain,
                 target: self,
                 action: #selector(cancel)
             )
         }
         
-        self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
-        self.navigationController?.navigationBar.barTintColor = UIColor.blackColor()
+        self.navigationController?.navigationBar.tintColor = UIColor.white
+        self.navigationController?.navigationBar.barTintColor = UIColor.black
         self.navigationController?.navigationBar.titleTextAttributes = [
-            NSForegroundColorAttributeName: UIColor.whiteColor()
+            NSForegroundColorAttributeName: UIColor.white
         ]
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return .LightContent
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return .lightContent
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         if self.options.clearSelectionOnAppearance {
-            collectionView?.selectItemAtIndexPath(nil, animated: true, scrollPosition: .None)
+            collectionView?.selectItem(at: nil, animated: true, scrollPosition: UICollectionViewScrollPosition())
         }
         
         setNeedsStatusBarAppearanceUpdate()
@@ -147,20 +147,20 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
     
     // MARK: - API
     
-    func continueWithSelectedItem(sender: AnyObject?) {
+    func continueWithSelectedItem(_ sender: AnyObject?) {
         guard let indexPath = self.selectedIndexPath else {
             return
         }
         
-        let mediaSearchResultObject = self.dataSourceAdapter.sections[ indexPath.section ][ indexPath.row ]
+        let mediaSearchResultObject = self.dataSourceAdapter.sections[ (indexPath as NSIndexPath).section ][ (indexPath as NSIndexPath).row ]
         
         if options.shouldSkipExportRendering {
             if let thumbnailImageURL = mediaSearchResultObject.thumbnailImageURL {
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) { [weak self] in
-                    if let previewImageData = try? NSData(contentsOfURL: thumbnailImageURL, options: []) {
+                DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.high).async { [weak self] in
+                    if let previewImageData = try? Data(contentsOf: thumbnailImageURL as URL, options: []) {
                         mediaSearchResultObject.exportPreviewImage = UIImage(data: previewImageData)
                     }
-                    dispatch_async(dispatch_get_main_queue()) {
+                    DispatchQueue.main.async {
                         self?.delegate?.mediaSearchResultSelected( mediaSearchResultObject )
                     }
                 }
@@ -171,7 +171,7 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
     }
     
     func exportMedia(fromSearchResult mediaSearchResultObject: MediaSearchResult) {
-        guard let view = NSBundle.mainBundle().loadNibNamed("LoadingCancellableView", owner: self, options: nil)?.first as? LoadingCancellableView else {
+        guard let view = Bundle.main.loadNibNamed("LoadingCancellableView", owner: self, options: nil)?.first as? LoadingCancellableView else {
             return
         }
         view.delegate = self
@@ -190,7 +190,7 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
         let mediaExporter = MediaSearchExporter(mediaSearchResult: mediaSearchResultObject)
         mediaExporter.loadMedia() { [weak self] (previewImage, mediaURL, error) in
             dispatch_after(0.5) {
-                guard let strongSelf = self where !mediaExporter.cancelled else {
+                guard let strongSelf = self , !mediaExporter.cancelled else {
                     return
                 }
                 strongSelf.progressHUD?.hide(true)
@@ -207,7 +207,7 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
         self.mediaExporter = mediaExporter
     }
     
-    private func showHud(renderingError error: NSError?) {
+    fileprivate func showHud(renderingError error: NSError?) {
         if error?.code != NSURLErrorCancelled {
             MBProgressHUD.hideAllHUDsForView(view, animated: false)
             let errorTitle = NSLocalizedString("Error rendering media", comment: "")
@@ -217,11 +217,11 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
     
     func selectCellAtSelectedIndexPath() {
         if let indexPath = self.selectedIndexPath {
-            collectionView.selectItemAtIndexPath(indexPath, animated: false, scrollPosition: .None)
+            collectionView.selectItem(at: indexPath, animated: false, scrollPosition: UICollectionViewScrollPosition())
         }
     }
     
-    func performSearch( searchTerm searchTerm: String?, pageType: VPageType = .First ) {
+    func performSearch( searchTerm: String?, pageType: VPageType = .First ) {
         if self.dataSourceAdapter.state != .Loading {
             self.dataSourceAdapter.performSearch( searchTerm: searchTerm, pageType: pageType ) { result in
                 self.updateViewWithResult( result )
@@ -243,12 +243,12 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
         // Now reload the no content cell's section so that it is accurately reflecting
         //  the current state of the paginated data source
         self.collectionView.performBatchUpdates({
-            self.collectionView.reloadSections( NSIndexSet(index: 0) )
+            self.collectionView.reloadSections( IndexSet(integer: 0) )
             }, completion: nil)
     }
     
-    func updateViewWithResult( result: MediaSearchDataSourceAdapter.ChangeResult? ) {
-        if let result = result where result.hasChanges {
+    func updateViewWithResult( _ result: MediaSearchDataSourceAdapter.ChangeResult? ) {
+        if let result = result , result.hasChanges {
             self.collectionView.performBatchUpdates({
                 self.collectionView.applyDataSourceChanges( result )
                 }, completion: nil)
@@ -270,40 +270,40 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
         self.updateLayout()
     }
     
-    private func titleViewWithTitle( text: String ) -> UIView {
+    fileprivate func titleViewWithTitle( _ text: String ) -> UIView {
         let label = UILabel()
         label.text = text
-        label.font = UIFont.preferredFontForTextStyle( UIFontTextStyleHeadline )
-        label.textColor = UIColor.whiteColor()
+        label.font = UIFont.preferredFont( forTextStyle: UIFontTextStyle.headline )
+        label.textColor = UIColor.white
         label.sizeToFit()
         return label
     }
     
-    private func updateNavigationItemState() {
-        self.navigationItem.rightBarButtonItem?.enabled = selectedIndexPath != nil
+    fileprivate func updateNavigationItemState() {
+        self.navigationItem.rightBarButtonItem?.isEnabled = selectedIndexPath != nil
         self.navigationItem.rightBarButtonItem?.accessibilityIdentifier = AutomationId.MediaSearchNext.rawValue
     }
     
     /// Inserts a new section into the collection view that shows a fullsize preview video for the search result
-    func showPreviewForResult( indexPath: NSIndexPath ) {
+    func showPreviewForResult( _ indexPath: IndexPath ) {
         var sectionInserted: Int?
         
         self.collectionView.performBatchUpdates({
             let result = self.dataSourceAdapter.addHighlightSection(forIndexPath: indexPath)
-            sectionInserted = result.insertedSections?.indexGreaterThanIndex(0)
+            sectionInserted = result.insertedSections?.integerGreaterThan(0)
             self.collectionView.applyDataSourceChanges( result )
             }, completion: nil)
         
         if let sectionInserted = sectionInserted {
-            let previewCellIndexPath = NSIndexPath(forRow: 0, inSection: sectionInserted)
-            if let cell = self.collectionView.cellForItemAtIndexPath( previewCellIndexPath ) {
-                self.collectionView.sendSubviewToBack( cell )
+            let previewCellIndexPath = IndexPath(row: 0, section: sectionInserted)
+            if let cell = self.collectionView.cellForItem( at: previewCellIndexPath ) {
+                self.collectionView.sendSubview( toBack: cell )
             }
-            self.selectedIndexPath = NSIndexPath(forRow: indexPath.row, inSection: sectionInserted - 1)
+            self.selectedIndexPath = IndexPath(row: (indexPath as NSIndexPath).row, section: sectionInserted - 1)
             self.previewSection = sectionInserted
             
-            self.collectionView.scrollToItemAtIndexPath( previewCellIndexPath,
-                                                         atScrollPosition: .CenteredVertically,
+            self.collectionView.scrollToItem( at: previewCellIndexPath,
+                                                         at: .centeredVertically,
                                                          animated: true )
             
             self.updateLayout()
@@ -313,14 +313,14 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
     }
     
     /// Invalidates the layout through a batch update so layout changes are animated
-    private func updateLayout() {
+    fileprivate func updateLayout() {
         self.collectionView.performBatchUpdates({
             self.collectionView.collectionViewLayout.invalidateLayout()
             }, completion: nil )
     }
     
     /// Removes the section showing a search result preview at the specified index path
-    func hidePreviewForResult( indexPath: NSIndexPath ) {
+    func hidePreviewForResult( _ indexPath: IndexPath ) {
         self.collectionView.performBatchUpdates({
             let result = self.dataSourceAdapter.removeHighlightSection()
             self.collectionView.applyDataSourceChanges( result )
@@ -338,8 +338,8 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
     
     // MARK: - UISearchBarDelegate
     
-    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        guard let searchTerm = searchBar.text where searchTerm.characters.count > 0 else {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let searchTerm = searchBar.text , searchTerm.characters.count > 0 else {
             return
         }
         self.clearSearch()
@@ -349,17 +349,17 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
     
     // MARK: - VPaginatedDataSourceDelegate
     
-    func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: VDataSourceState, to newState: VDataSourceState) {
+    func paginatedDataSource(_ paginatedDataSource: PaginatedDataSource, didChangeStateFrom oldState: VDataSourceState, to newState: VDataSourceState) {
         if hasLoadedOnce {
             self.updateLayout()
         }
     }
     
-    func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
+    func paginatedDataSource(_ paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
         // `MediaSearchDataSourceAdapter` handles errors in its own unique way
     }
     
-    func paginatedDataSource(paginatedDataSource: PaginatedDataSource, didReceiveError error: NSError) {
+    func paginatedDataSource(_ paginatedDataSource: PaginatedDataSource, didReceiveError error: NSError) {
         // `MediaSearchDataSourceAdapter` handles errors in its own unique way
     }
 }
@@ -370,13 +370,13 @@ private extension UICollectionView {
     /// Inserts or deletes sections according to the inserted and deleted sections indicated in the result
     ///
     /// - parameter result: A `MediaSearchDataSourceAdapter.ChangeResult` that contains info about which sections to insert or delete
-    func applyDataSourceChanges( result: MediaSearchDataSourceAdapter.ChangeResult ) {
+    func applyDataSourceChanges( _ result: MediaSearchDataSourceAdapter.ChangeResult ) {
         
         if let insertedSections = result.insertedSections {
-            self.insertSections( insertedSections )
+            self.insertSections( insertedSections as IndexSet )
         }
         if let deletedSections = result.deletedSections {
-            self.deleteSections( deletedSections )
+            self.deleteSections( deletedSections as IndexSet )
         }
     }
 }

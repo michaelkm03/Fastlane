@@ -13,7 +13,7 @@ import UIKit
 class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationControllerDelegate {
     // MARK: - Configuration
     
-    private static let estimatedBarButtonWidth: CGFloat = 60.0
+    fileprivate static let estimatedBarButtonWidth: CGFloat = 60.0
     
     // MARK: - Initializing
     
@@ -74,13 +74,13 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
         
         performCommonInitialSetup()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(loggedInStatusDidChange), name: kLoggedInChangedNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(mainFeedFilterDidChange), name: RESTForumNetworkSource.updateStreamURLNotification, object: nil)
+        NotificationCenter.defaultCenter().addObserver(self, selector: #selector(loggedInStatusDidChange), name: kLoggedInChangedNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(mainFeedFilterDidChange), name: NSNotification.Name(rawValue: RESTForumNetworkSource.updateStreamURLNotification), object: nil)
         
         showCreatorLogoTitle()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if !hasPerformedFirstLaunchSetup {
             hasPerformedFirstLaunchSetup = true
@@ -98,7 +98,7 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
         }
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         if presentedViewController == nil {
@@ -108,20 +108,20 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
     
     // MARK: - Setup
     
-    private var hasPerformedFirstLaunchSetup = false
+    fileprivate var hasPerformedFirstLaunchSetup = false
     
-    private func setupNavigationButtons() {
+    fileprivate func setupNavigationButtons() {
         centerWrapperViewController.navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: UIImage(named: "Hamburger"),
-            style: .Plain,
+            style: .plain,
             target: self,
             action: #selector(leftNavButtonWasPressed)
         )
         
         if rightNavViewController != nil {
-            let profileButton = SideNavProfileButton(type: .System)
+            let profileButton = SideNavProfileButton(type: .system)
             self.profileButton = profileButton
-            profileButton.addTarget(self, action: #selector(profileButtonWasPressed), forControlEvents: .TouchUpInside)
+            profileButton.addTarget(self, action: #selector(profileButtonWasPressed), for: .touchUpInside)
             profileButton.user = VCurrentUser.user
             profileButton.sizeToFit()
             
@@ -151,11 +151,11 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
     let rightNavViewController: UIViewController?
     
     /// The avatar view used as the right navigation button.
-    private var profileButton: SideNavProfileButton?
+    fileprivate var profileButton: SideNavProfileButton?
     
     // MARK: - Actions
     
-    @objc private func leftNavButtonWasPressed() {
+    @objc fileprivate func leftNavButtonWasPressed() {
         sideMenuController.toggleSideViewController(on: .left, animated: true)
     }
     
@@ -163,9 +163,9 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
     /// repeatedly during a navigation controller pop transition queues up multiple pushes of the same right-nav view
     /// controller. The navigation controller doesn't list the right nav view controller in its `viewControllers`
     /// property, so we can't check that it's already been pushed that way. Thus, this flag is born.
-    private var allowsRightNavigation = true
+    fileprivate var allowsRightNavigation = true
     
-    @objc private func profileButtonWasPressed() {
+    @objc fileprivate func profileButtonWasPressed() {
         guard allowsRightNavigation else {
             return
         }
@@ -178,25 +178,25 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
     
     // MARK: - Status bar
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+    override var preferredStatusBarStyle : UIStatusBarStyle {
         let navigationBarTextColor = dependencyManager.dependencyManagerForNavigationBar().colorForKey(VDependencyManagerMainTextColorKey)
         return StatusBarUtilities.statusBarStyle(color: navigationBarTextColor)
     }
     
-    override func childViewControllerForStatusBarHidden() -> UIViewController? {
+    override var childViewControllerForStatusBarHidden : UIViewController? {
         return sideMenuController
     }
     
     // MARK: - Notifications
     
-    private dynamic func loggedInStatusDidChange(notification: NSNotification) {
+    fileprivate dynamic func loggedInStatusDidChange(_ notification: Notification) {
         handleLoggedInStatusChange()
         profileButton?.user = VCurrentUser.user
     }
     
-    private dynamic func mainFeedFilterDidChange(notification: NSNotification) {
+    fileprivate dynamic func mainFeedFilterDidChange(_ notification: Notification) {
         sideMenuController.closeSideViewController(animated: true)
-        if let title = (notification.userInfo?["selectedItem"] as? ReferenceWrapper<ListMenuSelectedItem>)?.value.title {
+        if let title = ((notification as NSNotification).userInfo?["selectedItem"] as? ReferenceWrapper<ListMenuSelectedItem>)?.value.title {
             mainNavigationController.navigationBar.topItem?.titleView = nil
             mainNavigationController.navigationBar.topItem?.title = title
         }
@@ -205,14 +205,14 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
         }
     }
     
-    private func showCreatorLogoTitle() {
+    fileprivate func showCreatorLogoTitle() {
         dependencyManager.childDependencyForKey("centerScreen")?.configureNavigationItem(mainNavigationController.navigationBar.topItem)
     }
     
     // MARK: - Orientation
     
-    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        return [.Portrait]
+    override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
+        return [.portrait]
     }
     
     // MARK: - Layout
@@ -231,9 +231,9 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
     
     // MARK: - UINavigationControllerDelegate
     
-    func navigationController(navigationController: UINavigationController, didShowViewController viewController: UIViewController, animated: Bool) {
+    func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
         allowsRightNavigation = navigationController.viewControllers.count <= 1
         sideMenuController.panningIsEnabled = navigationController.viewControllers.count <= 1
-        viewController.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
+        viewController.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
 }

@@ -9,7 +9,7 @@
 import UIKit
 
 class ListMenuNoContentCollectionViewCell: UICollectionViewCell {
-    @IBOutlet private weak var noContentMessageLabel: UILabel!
+    @IBOutlet fileprivate weak var noContentMessageLabel: UILabel!
     
     var dependencyManager: VDependencyManager! {
         didSet {

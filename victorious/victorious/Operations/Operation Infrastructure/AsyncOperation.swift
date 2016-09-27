@@ -15,42 +15,42 @@ import Foundation
 /// * Subclasses must override `func execute()` to specify the main body of the operation.
 /// - note:
 /// * The operation will block its `executionQueue` only during the synchronous execution of the `execute` method.
-class AsyncOperation<Output>: NSOperation, Queueable {
+class AsyncOperation<Output>: Operation, Queueable {
     
     // MARK: - KVO-able NSNotification State
     
-    private var _executing = false
-    private var _finished = false
+    fileprivate var _executing = false
+    fileprivate var _finished = false
     
-    final private func beganExecuting() {
-        executing = true
-        finished = false
+    final fileprivate func beganExecuting() {
+        isExecuting = true
+        isFinished = false
     }
     
-    final private func finishedExecuting() {
-        executing = false
-        finished = true
+    final fileprivate func finishedExecuting() {
+        isExecuting = false
+        isFinished = true
     }
     
-    final override private(set) var executing: Bool {
+    final override fileprivate(set) var isExecuting: Bool {
         get {
             return _executing
         }
         set {
-            willChangeValueForKey("isExecuting")
+            willChangeValue(forKey: "isExecuting")
             _executing = newValue
-            didChangeValueForKey("isExecuting")
+            didChangeValue(forKey: "isExecuting")
         }
     }
     
-    final override private(set) var finished: Bool {
+    final override fileprivate(set) var isFinished: Bool {
         get {
             return _finished
         }
         set {
-            willChangeValueForKey("isFinished")
+            willChangeValue(forKey: "isFinished")
             _finished = newValue
-            didChangeValueForKey("isFinished")
+            didChangeValue(forKey: "isFinished")
         }
     }
     
@@ -62,11 +62,11 @@ class AsyncOperation<Output>: NSOperation, Queueable {
         fatalError("Subclasses of AsyncOperation must override `executionQueue`!")
     }
     
-    private(set) var result: OperationResult<Output>?
+    fileprivate(set) var result: OperationResult<Output>?
     
     // MARK: - Operation Execution
     
-    func execute(finish: (result: OperationResult<Output>) -> Void) {
+    func execute(_ finish: (_ result: OperationResult<Output>) -> Void) {
         fatalError("Subclasses of AsyncOperation must override `execute()`!")
     }
     
@@ -76,7 +76,7 @@ class AsyncOperation<Output>: NSOperation, Queueable {
     }
     
     override final func start() {
-        guard !cancelled else {
+        guard !isCancelled else {
             result = .cancelled
             finishedExecuting()
             return
@@ -87,7 +87,7 @@ class AsyncOperation<Output>: NSOperation, Queueable {
     }
     
     override final func main() {
-        executionQueue.operationQueue.addOperationWithBlock {
+        executionQueue.operationQueue.addOperation {
             self.execute { [weak self] result in
                 defer {
                     self?.finishedExecuting()
@@ -95,7 +95,7 @@ class AsyncOperation<Output>: NSOperation, Queueable {
                 guard let strongSelf = self else {
                     return
                 }
-                strongSelf.result = strongSelf.cancelled ? .cancelled : result
+                strongSelf.result = strongSelf.isCancelled ? .cancelled : result
             }
         }
     }

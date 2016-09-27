@@ -11,7 +11,7 @@ import MBProgressHUD
 
 extension VPurchaseSettingsViewController {
     
-    func setIsLoading(isLoading: Bool, title: String? = nil) {
+    func setIsLoading(_ isLoading: Bool, title: String? = nil) {
         if isLoading {
             MBProgressHUD.hideAllHUDsForView(self.view, animated: false)
             let progressHUD = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
@@ -22,7 +22,7 @@ extension VPurchaseSettingsViewController {
         }
     }
     
-    func queueValidateSubscriptionOperationWithURL(url: NSURL?, shouldForceSuccess: Bool, completion: () -> Void) {
+    func queueValidateSubscriptionOperationWithURL(_ url: NSURL?, shouldForceSuccess: Bool, completion: @escaping () -> Void) {
         guard let templatePath = url?.absoluteString else {
             completion()
             return
@@ -33,7 +33,7 @@ extension VPurchaseSettingsViewController {
         }
     }
     
-    func queueClearSubscriptionOperationWithCompletion(completion: () -> Void) {
+    func queueClearSubscriptionOperationWithCompletion(_ completion: @escaping () -> Void) {
         VIPClearSubscriptionOperation().queue { _ in
             completion()
         }

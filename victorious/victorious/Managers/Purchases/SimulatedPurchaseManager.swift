@@ -16,7 +16,7 @@ class SimulatedPurchaseManager: VPurchaseManager {
         static let title            = "[TITLE]"
     }
     
-    private var simulatedProductIdentifiers = Set<NSObject>()
+    fileprivate var simulatedProductIdentifiers = Set<NSObject>()
     
     override var purchasedProductIdentifiers: Set<NSObject> {
         return simulatedProductIdentifiers
@@ -26,7 +26,7 @@ class SimulatedPurchaseManager: VPurchaseManager {
         return false
     }
     
-    override func purchaseableProductForProductIdentifier(productIdentifier: String) -> VProduct {
+    override func purchaseableProductForProductIdentifier(_ productIdentifier: String) -> VProduct {
         return VPseudoProduct(
             productIdentifier: productIdentifier,
             price: PlaceholderStrings.price,
@@ -35,9 +35,9 @@ class SimulatedPurchaseManager: VPurchaseManager {
         )
     }
     
-    private var products = Set<VProduct>()
+    fileprivate var products = Set<VProduct>()
     
-    override func fetchProductsWithIdentifiers(productIdentifiers: Set<NSObject>, success successCallback: VProductsRequestSuccessBlock, failure failureCallback: VProductsRequestFailureBlock) {
+    override func fetchProductsWithIdentifiers(_ productIdentifiers: Set<NSObject>, success successCallback: VProductsRequestSuccessBlock, failure failureCallback: VProductsRequestFailureBlock) {
         guard products.isEmpty else {
             successCallback(products)
             return
@@ -54,7 +54,7 @@ class SimulatedPurchaseManager: VPurchaseManager {
         successCallback( products )
     }
     
-    override func purchaseProduct(product: VProduct, success successCallback: VPurchaseSuccessBlock, failure failureCallback: VPurchaseFailBlock) {
+    override func purchaseProduct(_ product: VProduct, success successCallback: VPurchaseSuccessBlock, failure failureCallback: VPurchaseFailBlock) {
         
         dispatch_after(1.0) { [weak self] in
             let operation = ShowTestPurchaseConfirmationOperation(
@@ -77,8 +77,8 @@ class SimulatedPurchaseManager: VPurchaseManager {
         }
     }
     
-    override func restorePurchasesSuccess(successCallback: VPurchaseSuccessBlock, failure failureCallback: VPurchaseFailBlock) {
-        dispatch_after( NSTimeInterval(arc4random_uniform(2) + 1) ) {
+    override func restorePurchasesSuccess(_ successCallback: VPurchaseSuccessBlock, failure failureCallback: VPurchaseFailBlock) {
+        dispatch_after( TimeInterval(arc4random_uniform(2) + 1) ) {
             successCallback( Set<NSObject>() )
         }
     }
@@ -90,7 +90,7 @@ class SimulatedPurchaseManager: VPurchaseManager {
     
     // MARK: - Private
     
-    func setProductPurchased(product: VProduct) {
+    func setProductPurchased(_ product: VProduct) {
         self.purchaseRecord.addProductIdentifier(product.productIdentifier)
         self.simulatedProductIdentifiers.insert(product.productIdentifier)
     }

@@ -8,6 +8,26 @@
 
 import UIKit
 import VictoriousIOSSDK
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 /// This object adapts the use of a `PaginatedDataSource` to the whackier
 /// multiple-section layout in of MediaSearchViewController.
@@ -23,8 +43,8 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 	/// A type used to record data source chanages that can then be applied to the collection
 	/// view in a `performBatchUpdates(_:completion)` call.
 	struct ChangeResult {
-		var deletedSections: NSIndexSet?
-		var insertedSections: NSIndexSet?
+		var deletedSections: IndexSet?
+		var insertedSections: IndexSet?
 		var error: NSError?
 		
 		var hasChanges: Bool {
@@ -56,13 +76,13 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
         return dataSource?.state ?? .Cleared
     }
     
-	private(set) var sections: [Section] = []
+	fileprivate(set) var sections: [Section] = []
 	
-	private var highlightedSection: (section: Section, indexPath: NSIndexPath)?
+	fileprivate var highlightedSection: (section: Section, indexPath: IndexPath)?
 	
     var dataSource: MediaSearchDataSource?
 	
-	func performSearch( searchTerm searchTerm: String?, pageType: VPageType, completion: ((ChangeResult?) -> ())? ) {
+	func performSearch( searchTerm: String?, pageType: VPageType, completion: ((ChangeResult?) -> ())? ) {
 		guard let dataSource = self.dataSource else {
 			fatalError( "Attempt to perform a search without configuring a data source" )
 		}
@@ -81,11 +101,11 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
         self.highlightedSection = nil
         if self.sections.count > 0 {
             let range = NSRange( location: 0, length: self.sections.count )
-            result.deletedSections = NSIndexSet(indexesInRange: range)
-            result.insertedSections = NSIndexSet(index:0)
+            result.deletedSections = IndexSet(integersIn: range.toRange() ?? 0..<0)
+            result.insertedSections = IndexSet(integer:0)
         } else {
-            result.deletedSections = NSIndexSet(index:0)
-            result.insertedSections = NSIndexSet(index:0)
+            result.deletedSections = IndexSet(integer:0)
+            result.insertedSections = IndexSet(integer:0)
         }
         self.sections = []
         self.dataSource?.cancelCurrentOperation()
@@ -97,46 +117,46 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
     func removeHighlightSection() -> ChangeResult {
         var result = ChangeResult()
         if let highlightedSection = self.highlightedSection {
-            let sectionIndex = highlightedSection.indexPath.section
-            self.sections.removeAtIndex( sectionIndex )
+            let sectionIndex = (highlightedSection.indexPath as NSIndexPath).section
+            self.sections.remove( at: sectionIndex )
             self.highlightedSection = nil
-            result.deletedSections = NSIndexSet(index: sectionIndex)
+            result.deletedSections = IndexSet(integer: sectionIndex)
         }
         return result
     }
     
     /// Adds a section beneath that shows the fullsize
     /// asset for the item at the index path.
-    func addHighlightSection( forIndexPath indexPath: NSIndexPath ) -> ChangeResult {
+    func addHighlightSection( forIndexPath indexPath: IndexPath ) -> ChangeResult {
         var result = self.removeHighlightSection()
         
-        let targetIndexPath: NSIndexPath = {
-            if let deletedSection = result.deletedSections?.indexGreaterThanIndex(0) where deletedSection < indexPath.nextSection() {
+        let targetIndexPath: IndexPath = {
+            if let deletedSection = result.deletedSections?.integerGreaterThan(0) , deletedSection < indexPath.nextSection() {
                 return indexPath.previousSectionIndexPath()
             }
             return indexPath
         }()
         
-        let resultToHighlight = self.sections[ targetIndexPath.section ][ targetIndexPath.row ]
+        let resultToHighlight = self.sections[ (targetIndexPath as NSIndexPath).section ][ (targetIndexPath as NSIndexPath).row ]
         let section = Section(results: [ resultToHighlight ], isFullSize: true )
-        self.sections.insert( section, atIndex: targetIndexPath.nextSection() )
+        self.sections.insert( section, at: targetIndexPath.nextSection() )
         self.highlightedSection = (section, targetIndexPath.nextSectionIndexPath())
         
-        result.insertedSections = NSIndexSet(index: targetIndexPath.nextSection())
+        result.insertedSections = IndexSet(integer: targetIndexPath.nextSection())
         return result
     }
     
     // MARK: - Private
     
-    private func updateDataSource( results: [MediaSearchResult], pageType: VPageType ) -> ChangeResult {
+    fileprivate func updateDataSource( _ results: [MediaSearchResult], pageType: VPageType ) -> ChangeResult {
         var result = ChangeResult()
         if pageType == .First {
             if self.sections.isEmpty && results.count > 0 {
-                result.deletedSections = NSIndexSet(index: 0) // No content cell
+                result.deletedSections = IndexSet(integer: 0) // No content cell
             }
             else if self.sections.count > 0 && results.isEmpty {
                 let range = NSRange( location: 0, length: self.sections.count )
-                result.deletedSections = NSIndexSet(indexesInRange: range)
+                result.deletedSections = IndexSet(integersIn: range.toRange() ?? 0..<0)
             }
             self.sections = []
         }
@@ -158,40 +178,40 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
             self.sections.append( section )
         }
         let range = NSRange( location: prevSectionCount, length: self.sections.count - prevSectionCount )
-        result.insertedSections = NSIndexSet(indexesInRange: range)
+        result.insertedSections = IndexSet(integersIn: range.toRange() ?? 0..<0)
         return result
 	}
 	
 	// MARK: - UICollectionViewDataSource
 	
-	func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 		return self.sections.isEmpty ? 1 : self.sections[ section ].count
 	}
 	
-	func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+	func numberOfSections(in collectionView: UICollectionView) -> Int {
 		return self.sections.isEmpty ? 1 : self.sections.count
 	}
 	
-	func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 		if self.sections.isEmpty,
-			let cell = collectionView.dequeueReusableCellWithReuseIdentifier( MediaSearchNoContentCell.defaultReuseIdentifier, forIndexPath: indexPath ) as? MediaSearchNoContentCell {
+			let cell = collectionView.dequeueReusableCell( withReuseIdentifier: MediaSearchNoContentCell.defaultReuseIdentifier, for: indexPath ) as? MediaSearchNoContentCell {
 				self.configureNoContentCell( cell, forState: self.state )
 				return cell
 		}
 		
-		let section = self.sections[ indexPath.section ]
-		let resultObject = section.results[ indexPath.row ]
+		let section = self.sections[ (indexPath as NSIndexPath).section ]
+		let resultObject = section.results[ (indexPath as NSIndexPath).row ]
 		if section.isFullSize,
-			let cell = collectionView.dequeueReusableCellWithReuseIdentifier( MediaSearchPreviewCell.defaultReuseIdentifier, forIndexPath: indexPath ) as? MediaSearchPreviewCell {
+			let cell = collectionView.dequeueReusableCell( withReuseIdentifier: MediaSearchPreviewCell.defaultReuseIdentifier, for: indexPath ) as? MediaSearchPreviewCell {
 				cell.previewAssetUrl = resultObject.thumbnailImageURL
 				cell.assetUrl = resultObject.sourceMediaURL
 				return cell
 				
-		} else if let cell = collectionView.dequeueReusableCellWithReuseIdentifier( MediaSearchResultCell.defaultReuseIdentifier, forIndexPath: indexPath ) as? MediaSearchResultCell {
+		} else if let cell = collectionView.dequeueReusableCell( withReuseIdentifier: MediaSearchResultCell.defaultReuseIdentifier, for: indexPath ) as? MediaSearchResultCell {
 			cell.assetUrl = resultObject.thumbnailImageURL
 			
-			if let indexPathsForSelectedItems = collectionView.indexPathsForSelectedItems() {
-				cell.selected = indexPathsForSelectedItems.contains( indexPath )
+			if let indexPathsForSelectedItems = collectionView.indexPathsForSelectedItems {
+				cell.isSelected = indexPathsForSelectedItems.contains( indexPath )
 			}
 			return cell
 		}
@@ -199,17 +219,17 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 		fatalError( "Could not find cell." )
 	}
 	
-	func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+	func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
 		
-		if indexPath.section == 0 {
-			return collectionView.dequeueReusableSupplementaryViewOfKind( UICollectionElementKindSectionHeader, withReuseIdentifier: ReuseIdentifier.attributionHeader, forIndexPath: indexPath )
+		if (indexPath as NSIndexPath).section == 0 {
+			return collectionView.dequeueReusableSupplementaryView( ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: ReuseIdentifier.attributionHeader, for: indexPath )
 		}
-		return collectionView.dequeueReusableSupplementaryViewOfKind( UICollectionElementKindSectionFooter, withReuseIdentifier: ReuseIdentifier.activityFooter, forIndexPath: indexPath )
+		return collectionView.dequeueReusableSupplementaryView( ofKind: UICollectionElementKindSectionFooter, withReuseIdentifier: ReuseIdentifier.activityFooter, for: indexPath )
 	}
 	
 	// MARK: - Helpers
 	
-    private func configureNoContentCell( cell: MediaSearchNoContentCell, forState state: VDataSourceState ) {
+    fileprivate func configureNoContentCell( _ cell: MediaSearchNoContentCell, forState state: VDataSourceState ) {
 		switch state {
 		case .Loading:
 			cell.text = ""
@@ -228,17 +248,17 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 }
 
 /// Some convenience methods to easily get next/prev sections as Int or NSIndexPath.
-private extension NSIndexPath {
+private extension IndexPath {
 	
-	func nextSection() -> Int { return self.section + 1 }
+	func nextSection() -> Int { return (self as NSIndexPath).section + 1 }
 	
-	func nextSectionIndexPath() -> NSIndexPath {
-		return NSIndexPath(forRow: self.row, inSection: self.nextSection() )
+	func nextSectionIndexPath() -> IndexPath {
+		return IndexPath(row: (self as NSIndexPath).row, section: self.nextSection() )
 	}
 	
-	func previousSection() -> Int { return self.section - 1 }
+	func previousSection() -> Int { return (self as NSIndexPath).section - 1 }
 	
-	func previousSectionIndexPath() -> NSIndexPath {
-		return NSIndexPath(forRow: self.row, inSection: self.previousSection() )
+	func previousSectionIndexPath() -> IndexPath {
+		return IndexPath(row: (self as NSIndexPath).row, section: self.previousSection() )
 	}
 }

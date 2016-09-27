@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct NotificationPreference: OptionSetType, Hashable {
+public struct NotificationPreference: OptionSet, Hashable {
     public let rawValue: Int
     private let stringValue: String
     
@@ -56,7 +56,7 @@ public struct DevicePreferencesRequest: RequestType {
     private let preferences: [NotificationPreference: Bool]?
     
     public var urlRequest: NSURLRequest {
-        let mutableURLRequest = NSMutableURLRequest(URL: url)
+        let mutableURLRequest = NSMutableURLRequest(url: url as URL)
         if let preferences = self.preferences {
             var formpost: [String: String] = [:]
             for preference in NotificationPreference.all {
@@ -89,7 +89,7 @@ public struct DevicePreferencesRequest: RequestType {
         return returnValue
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> NotificationPreference {
+    public func parseResponse(response: URLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> NotificationPreference {
         let payload = responseJSON["payload"]
         return preferencesFromJSON(payload)
     }

@@ -14,7 +14,7 @@ extension UIAlertController {
     ///
     /// The provided content must have an ID.
     ///
-    convenience init?(actionsFor content: Content, dependencyManager: VDependencyManager, completion: (action: ContentAlertAction) -> Void) {
+    convenience init?(actionsFor content: Content, dependencyManager: VDependencyManager, completion: (_ action: ContentAlertAction) -> Void) {
         guard let id = content.id else {
             return nil
         }
@@ -123,35 +123,35 @@ enum ContentAlertAction {
 }
 
 private extension VDependencyManager {
-    private var contentUnupvoteAPIPath: APIPath? {
+    var contentUnupvoteAPIPath: APIPath? {
         return networkResources?.apiPathForKey("contentUnupvoteURL")
     }
     
-    private var contentUpvoteAPIPath: APIPath? {
+    var contentUpvoteAPIPath: APIPath? {
         return networkResources?.apiPathForKey("contentUpvoteURL")
     }
     
-    private var contentDeleteAPIPath: APIPath? {
+    var contentDeleteAPIPath: APIPath? {
         return networkResources?.apiPathForKey("contentDeleteURL")
     }
     
-    private var contentFlagAPIPath: APIPath? {
+    var contentFlagAPIPath: APIPath? {
         return networkResources?.apiPathForKey("contentFlagURL")
     }
     
-    private var likeTitle: String {
+    var likeTitle: String {
         return childDependencyForKey("actions")?.stringForKey("upvote.text") ?? "LIKE"
     }
     
-    private var unlikeTitle: String {
+    var unlikeTitle: String {
         return childDependencyForKey("actions")?.stringForKey("unupvote.text") ?? "UNLIKE"
     }
     
-    private var flagTitle: String {
+    var flagTitle: String {
         return childDependencyForKey("actions")?.stringForKey("flag.text") ?? "Report Post"
     }
     
-    private var deleteTitle: String {
+    var deleteTitle: String {
         return childDependencyForKey("actions")?.stringForKey("delete.text") ?? "Delete Post"
     }
 }

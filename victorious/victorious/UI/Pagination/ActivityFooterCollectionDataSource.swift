@@ -12,7 +12,7 @@ class ActivityFooterCollectionDataSource: NSObject, UICollectionViewDataSource {
     
     let identifier = "ActivityIndicatorCollectionCell"
     
-    weak private var cell: UICollectionViewCell? {
+    weak fileprivate var cell: UICollectionViewCell? {
         didSet {
             cell?.hidden = hidden
         }
@@ -24,22 +24,22 @@ class ActivityFooterCollectionDataSource: NSObject, UICollectionViewDataSource {
         }
     }
     
-    func collectionView( collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath ) -> UICollectionViewCell {
+    func collectionView( _ collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath ) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath: indexPath)
         self.cell = cell
         return cell
     }
     
-    func registerCells( collectionView: UICollectionView ) {
-        let nib = UINib(nibName: identifier, bundle: NSBundle(forClass: ActivityIndicatorCollectionCell.self) )
+    func registerCells( _ collectionView: UICollectionView ) {
+        let nib = UINib(nibName: identifier, bundle: Bundle(forClass: ActivityIndicatorCollectionCell.self) )
         collectionView.registerNib(nib, forCellWithReuseIdentifier: identifier)
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 1
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         let height: CGFloat = self.hidden ? 0.0 : 50.0
         return CGSize(width: collectionView.bounds.width, height: height)
     }

@@ -9,27 +9,27 @@
 import UIKit
 
 class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDelegate, UICollectionViewDelegateFlowLayout, NewItemsControllerDelegate, ChatFeedMessageCellDelegate {
-    private struct Layout {
-        private static let bottomMargin: CGFloat = 20.0
+    fileprivate struct Layout {
+        fileprivate static let bottomMargin: CGFloat = 20.0
     }
     
-    private lazy var dataSource: ChatFeedDataSource = {
+    fileprivate lazy var dataSource: ChatFeedDataSource = {
         return ChatFeedDataSource(dependencyManager: self.dependencyManager)
     }()
     
-    private lazy var focusHelper: VCollectionViewStreamFocusHelper = {
+    fileprivate lazy var focusHelper: VCollectionViewStreamFocusHelper = {
         return VCollectionViewStreamFocusHelper(collectionView: self.collectionView)
     }()
     
-    private var scrollPaginator = ScrollPaginator()
+    fileprivate var scrollPaginator = ScrollPaginator()
     
     // MARK: - ChatFeed
     
     weak var delegate: ChatFeedDelegate?
     var dependencyManager: VDependencyManager!
     
-    @IBOutlet private(set) weak var collectionView: UICollectionView!
-    @IBOutlet private(set) var newItemsController: NewItemsController?
+    @IBOutlet fileprivate(set) weak var collectionView: UICollectionView!
+    @IBOutlet fileprivate(set) var newItemsController: NewItemsController?
     
     var chatInterfaceDataSource: ChatInterfaceDataSource {
         return dataSource
@@ -37,7 +37,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     
     // MARK: - Managing insets
     
-    @IBOutlet private var collectionViewBottom: NSLayoutConstraint!
+    @IBOutlet fileprivate var collectionViewBottom: NSLayoutConstraint!
     
     var addedTopInset = CGFloat(0.0) {
         didSet {
@@ -53,15 +53,15 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         }
     }
     
-    private func updateInsets() {
+    fileprivate func updateInsets() {
         // Always invalidate layout before adjusting insets as they impact the location of the spinner and will,
         // otherwise, cause a crash.
         self.collectionView.collectionViewLayout.invalidateLayout()
         
-        if collectionView.numberOfItemsInSection(0) == 0 {
+        if collectionView.numberOfItems(inSection: 0) == 0 {
             // When there are no items, we display a centered activity indicator, which becomes misaligned if there are
             // any insets, so we zero them out while in this state.
-            collectionView.contentInset = UIEdgeInsetsZero
+            collectionView.contentInset = UIEdgeInsets.zero
         }
         else {
             // The added bottom inset value actually needs to get added to the top inset because of the way the bottom
@@ -86,24 +86,24 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     
     /// The most recently-displayed loading view. We need this because our loading state gets set after the loading
     /// view displays, so we have to set the visibility of the activity indicator after the fact.
-    private var loadingView: CollectionLoadingView?
+    fileprivate var loadingView: CollectionLoadingView?
     
     /// Whether or not the loading view above the chat messages is enabled.
-    private var loadingViewEnabled = false {
+    fileprivate var loadingViewEnabled = false {
         didSet {
             collectionView.collectionViewLayout.invalidateLayout()
         }
     }
     
     /// Whether or not we're currently loading messages, which is controlled by the `setLoadingContent` forum event.
-    private var isLoading = false {
+    fileprivate var isLoading = false {
         didSet {
             collectionView.collectionViewLayout.invalidateLayout()
             updateLoadingView()
         }
     }
     
-    private func updateLoadingView() {
+    fileprivate func updateLoadingView() {
         loadingView?.isLoading = loadingViewEnabled && isLoading
     }
     
@@ -113,7 +113,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         return [dataSource]
     }
     
-    func receive(event: ForumEvent) {
+    func receive(_ event: ForumEvent) {
         switch event {
             case .setChatActivityIndicatorEnabled(let enabled): loadingViewEnabled = enabled
             case .setLoadingContent(let isLoading, let loadingType): self.isLoading = isLoading && loadingType.showsLoadingState
@@ -136,7 +136,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        edgesForExtendedLayout = .None
+        edgesForExtendedLayout = UIRectEdge()
         extendedLayoutIncludesOpaqueBars = true
         automaticallyAdjustsScrollViewInsets = false
         updateInsets()
@@ -158,7 +158,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         }
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         dataSource.unstash()
         focusHelper.updateFocus()
@@ -168,7 +168,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         collectionView.reloadData()
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         dataSource.stashingEnabled = true
         focusHelper.endFocusOnAllCells()
@@ -177,21 +177,21 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     
     // MARK: - UICollectionViewDelegateFlowLayout
     
-    func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         let messageCell = cell as! ChatFeedMessageCell
         messageCell.delegate = self
         messageCell.startDisplaying()
     }
     
-    func collectionView(collectionView: UICollectionView, didEndDisplayingCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         (cell as! ChatFeedMessageCell).stopDisplaying()
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return dataSource.collectionView(collectionView, sizeForItemAtIndexPath: indexPath)
     }
     
-    func collectionView(collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, atIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
         if let loadingView = view as? CollectionLoadingView {
             loadingView.color = dependencyManager.activityIndicatorColor
             self.loadingView = loadingView
@@ -199,14 +199,14 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         }
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         guard loadingViewEnabled else {
             return CGSize.zero
         }
         
         var size = CollectionLoadingView.preferredSize(in: collectionView.bounds)
         
-        if collectionView.numberOfItemsInSection(0) == 0 {
+        if collectionView.numberOfItems(inSection: 0) == 0 {
             // If the collection view is empty, we want to center the activity indicator vertically, so we size it to
             // the collection view's height.
             size.height = collectionView.bounds.height - collectionView.contentInset.vertical
@@ -217,13 +217,13 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     
     // MARK: - ChatFeedDataSourceDelegate
     
-    func chatFeedDataSource(dataSource: ChatFeedDataSource, didLoadItems newItems: [ChatFeedContent], loadingType: PaginatedLoadingType) {
+    func chatFeedDataSource(_ dataSource: ChatFeedDataSource, didLoadItems newItems: [ChatFeedContent], loadingType: PaginatedLoadingType) {
         let removedPendingContentIndices = removePendingContent(newItems)
         handleNewItems(newItems, loadingType: loadingType, removedPendingContentIndices: removedPendingContentIndices)
         updateInsets()
     }
     
-    func chatFeedDataSource(dataSource: ChatFeedDataSource, didStashItems stashedItems: [ChatFeedContent]) {
+    func chatFeedDataSource(_ dataSource: ChatFeedDataSource, didStashItems stashedItems: [ChatFeedContent]) {
         let itemsContainOtherUserMessage = stashedItems.contains { !$0.content.wasCreatedByCurrentUser }
         
         if itemsContainOtherUserMessage {
@@ -233,7 +233,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         }
     }
     
-    func chatFeedDataSource(dataSource: ChatFeedDataSource, didUnstashItems unstashedItems: [ChatFeedContent]) {
+    func chatFeedDataSource(_ dataSource: ChatFeedDataSource, didUnstashItems unstashedItems: [ChatFeedContent]) {
         newItemsController?.hide()
         
         let removedPendingContentIndices = removePendingContent(unstashedItems)
@@ -253,7 +253,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         return delegate?.publisher(for: self)?.pendingItems ?? []
     }
     
-    private func removePendingContent(contentToRemove: [ChatFeedContent]) -> [Int] {
+    fileprivate func removePendingContent(_ contentToRemove: [ChatFeedContent]) -> [Int] {
         guard let publisher = delegate?.publisher(for: self) else {
             return []
         }
@@ -267,7 +267,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     
     // MARK: - ChatFeedMessageCellDelegate
     
-    func messageCellDidSelectAvatarImage(messageCell: ChatFeedMessageCell) {
+    func messageCellDidSelectAvatarImage(_ messageCell: ChatFeedMessageCell) {
         guard let userID = messageCell.chatFeedContent?.content.author?.id else {
             return
         }
@@ -275,7 +275,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         delegate?.chatFeed(self, didSelectUserWithID: userID)
     }
     
-    func messageCellDidSelectMedia(messageCell: ChatFeedMessageCell) {
+    func messageCellDidSelectMedia(_ messageCell: ChatFeedMessageCell) {
         guard let content = messageCell.chatFeedContent else {
             return
         }
@@ -283,7 +283,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         delegate?.chatFeed(self, didSelect: content)
     }
     
-    func messageCellDidLongPressContent(messageCell: ChatFeedMessageCell) {
+    func messageCellDidLongPressContent(_ messageCell: ChatFeedMessageCell) {
         guard let content = messageCell.chatFeedContent else {
             return
         }
@@ -291,7 +291,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         delegate?.chatFeed(self, didLongPress: content)
     }
 
-    func messageCellDidToggleLikeContent(messageCell: ChatFeedMessageCell, completion: (() -> Void)) {
+    func messageCellDidToggleLikeContent(_ messageCell: ChatFeedMessageCell, completion: (() -> Void)) {
         guard let content = messageCell.chatFeedContent else {
             return
         }
@@ -299,7 +299,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         delegate?.chatFeed(self, didToggleLikeFor: content, completion: completion)
     }
 
-    func messageCellDidSelectFailureButton(messageCell: ChatFeedMessageCell) {
+    func messageCellDidSelectFailureButton(_ messageCell: ChatFeedMessageCell) {
         guard let content = messageCell.chatFeedContent else {
             return
         }
@@ -307,7 +307,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         delegate?.chatFeed(self, didSelectFailureButtonFor: content)
     }
     
-    func messageCellDidSelectReplyButton(messageCell: ChatFeedMessageCell) {
+    func messageCellDidSelectReplyButton(_ messageCell: ChatFeedMessageCell) {
         guard let content = messageCell.chatFeedContent else {
             return
         }
@@ -316,7 +316,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         dependencyManager.trackButtonEvent(.tap, forTrackingKey: "reply.tracking")
     }
     
-    func messageCell(messageCell: ChatFeedMessageCell, didSelectLinkURL url: NSURL) {
+    func messageCell(_ messageCell: ChatFeedMessageCell, didSelectLinkURL url: URL) {
         Router(originViewController: self, dependencyManager: dependencyManager).navigate(
             to: DeeplinkDestination(url: url),
             from: nil
@@ -327,7 +327,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     
     var unstashingViaScrollingIsEnabled = true
     
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         scrollPaginator.scrollViewDidScroll(scrollView)
         
         if scrollView.isScrolledToBottom() {
@@ -346,26 +346,26 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         delegate?.chatFeed(self, didScroll: scrollView)
     }
     
-    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         delegate?.chatFeed(self, willBeginDragging: scrollView)
     }
     
-    func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         delegate?.chatFeed(self, willEndDragging: scrollView, withVelocity: velocity)
     }
     
     // MARK: - Timestamp update timer
     
-    static let timestampUpdateInterval: NSTimeInterval = 1.0
+    static let timestampUpdateInterval: TimeInterval = 1.0
     
-    private var timerManager: VTimerManager?
+    fileprivate var timerManager: VTimerManager?
     
-    private func stopTimestampUpdate() {
+    fileprivate func stopTimestampUpdate() {
         timerManager?.invalidate()
         timerManager = nil
     }
     
-    private func startTimestampUpdate() {
+    fileprivate func startTimestampUpdate() {
         guard timerManager == nil else {
             return
         }
@@ -376,14 +376,14 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
             selector: #selector(onTimerTick),
             userInfo: nil,
             repeats: true,
-            toRunLoop: NSRunLoop.mainRunLoop(),
-            withRunMode: NSRunLoopCommonModes
+            toRunLoop: RunLoop.mainRunLoop(),
+            withRunMode: RunLoopMode.commonModes
         )
         
         onTimerTick()
     }
     
-    private dynamic func onTimerTick() {
+    fileprivate dynamic func onTimerTick() {
         dataSource.updateTimestamps(in: collectionView)
     }
 }

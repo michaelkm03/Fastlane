@@ -35,11 +35,11 @@ class VIPValidateSubscriptionOperation: AsyncOperation<VIPStatus> {
     
     // MARK: - Executing
     
-    var receiptDataSource: ReceiptDataSource = NSBundle.mainBundle()
+    var receiptDataSource: ReceiptDataSource = Bundle.main as! ReceiptDataSource
     
-    private(set) var validationSucceeded = false
+    fileprivate(set) var validationSucceeded = false
     
-    private let request: ValidateReceiptRequest?
+    fileprivate let request: ValidateReceiptRequest?
     
     let shouldForceSuccess: Bool
     
@@ -47,7 +47,7 @@ class VIPValidateSubscriptionOperation: AsyncOperation<VIPStatus> {
         return .main
     }
     
-    override func execute(finish: (result: OperationResult<VIPStatus>) -> Void) {
+    override func execute(_ finish: (_ result: OperationResult<VIPStatus>) -> Void) {
         guard let request = request else {
             if shouldForceSuccess {
                 let status = VIPStatus(isVIP: true)
@@ -84,7 +84,7 @@ class VIPValidateSubscriptionOperation: AsyncOperation<VIPStatus> {
         }
     }
     
-    private func updateUser(status status: VIPStatus?) {
+    fileprivate func updateUser(status: VIPStatus?) {
         guard var currentUser = VCurrentUser.user else {
             return
         }

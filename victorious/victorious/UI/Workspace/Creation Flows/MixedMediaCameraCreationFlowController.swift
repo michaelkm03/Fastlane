@@ -11,11 +11,11 @@ import Foundation
 /// Displays a flow starting with a camera that can take either a photo or a video
 class MixedMediaCameraCreationFlowController: VAbstractImageVideoCreationFlowController, MixedMediaCameraViewControllerDelegate, MixedMediaCreationFlow {
     
-    private struct Constants {
+    fileprivate struct Constants {
         static let mixedMediaCameraKey = "mixedMediaCameraScreen"
     }
     
-    private lazy var mixedMediaCameraViewController: MixedMediaCameraViewController = {
+    fileprivate lazy var mixedMediaCameraViewController: MixedMediaCameraViewController = {
         let mixedMediaCamera = MixedMediaCameraViewController.mixedMediaCamera(self.dependencyManager, cameraContext: .MixedMediaContentCreation)
         mixedMediaCamera.delegate = self
         return mixedMediaCamera
@@ -30,21 +30,21 @@ class MixedMediaCameraCreationFlowController: VAbstractImageVideoCreationFlowCon
         return capturedMediaURL.v_hasVideoExtension() ? .Video : .Image
     }
     
-    override func gridViewControllerWithDependencyManager(dependencyManager: VDependencyManager) -> VAssetCollectionGridViewController? {
+    override func gridViewControllerWithDependencyManager(_ dependencyManager: VDependencyManager) -> VAssetCollectionGridViewController? {
         return nil
     }
     
-    override func workspaceViewControllerWithDependencyManager(dependencyManager: VDependencyManager) -> VWorkspaceViewController? {
+    override func workspaceViewControllerWithDependencyManager(_ dependencyManager: VDependencyManager) -> VWorkspaceViewController? {
         
         return VCreationFlowPresenter.preferredWorkspaceForMediaType(mediaType(), fromDependencyManager: dependencyManager)
     }
     
-    override func configurePublishParameters(publishParameters: VPublishParameters, withWorkspace workspace: VWorkspaceViewController) {
+    override func configurePublishParameters(_ publishParameters: VPublishParameters, withWorkspace workspace: VWorkspaceViewController) {
         
         updatePublishParameters(publishParameters, workspace: workspace)
     }
     
-    override func downloaderWithAsset(asset: PHAsset) -> VAssetDownloader? {
+    override func downloaderWithAsset(_ asset: PHAsset) -> VAssetDownloader? {
         if asset.mediaType == .Image {
             return VImageAssetDownloader(asset: asset)
         } else if asset.mediaType == .Video {
@@ -65,7 +65,7 @@ class MixedMediaCameraCreationFlowController: VAbstractImageVideoCreationFlowCon
         return mixedMediaCameraViewController
     }
     
-    func mixedMediaCameraViewController(mixedMediaCameraViewController: MixedMediaCameraViewController, capturedImageWithMediaURL mediaURL: NSURL, previewImage: UIImage) {
+    func mixedMediaCameraViewController(_ mixedMediaCameraViewController: MixedMediaCameraViewController, capturedImageWithMediaURL mediaURL: URL, previewImage: UIImage) {
         source = .Camera
         self.captureFinishedWithMediaURL(mediaURL, previewImage: previewImage)
     }

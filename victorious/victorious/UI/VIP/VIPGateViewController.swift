@@ -12,14 +12,14 @@ import MBProgressHUD
 /// Conformers will receive a message when the vip gate
 /// will dismiss or has permitted the user to pass through.
 protocol VIPGateViewControllerDelegate: class {
-    func vipGateExitedWithSuccess(success: Bool)
+    func vipGateExitedWithSuccess(_ success: Bool)
     
     /// Presents a VIP flow on the scaffold using values found in the provided dependency manager.
-    func showVIPForumFromDependencyManager(dependencyManager: VDependencyManager)
+    func showVIPForumFromDependencyManager(_ dependencyManager: VDependencyManager)
 }
 
 extension VIPGateViewControllerDelegate {
-    func showVIPForumFromDependencyManager(dependencyManager: VDependencyManager) {
+    func showVIPForumFromDependencyManager(_ dependencyManager: VDependencyManager) {
         guard let scaffold = VRootViewController.sharedRootViewController()?.scaffold else {
             return
         }
@@ -29,23 +29,23 @@ extension VIPGateViewControllerDelegate {
 }
 
 class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
-    @IBOutlet weak private var headlineLabel: UILabel!
-    @IBOutlet weak private var detailLabel: UILabel!
-    @IBOutlet weak private var subscribeButton: TextOnColorButton!
-    @IBOutlet weak private var restoreButton: TextOnColorButton!
-    @IBOutlet weak private var privacyPolicyButton: UIButton!
-    @IBOutlet weak private var termsOfServiceButton: UIButton!
-    @IBOutlet weak private var closeButton: ImageOnColorButton! {
+    @IBOutlet weak fileprivate var headlineLabel: UILabel!
+    @IBOutlet weak fileprivate var detailLabel: UILabel!
+    @IBOutlet weak fileprivate var subscribeButton: TextOnColorButton!
+    @IBOutlet weak fileprivate var restoreButton: TextOnColorButton!
+    @IBOutlet weak fileprivate var privacyPolicyButton: UIButton!
+    @IBOutlet weak fileprivate var termsOfServiceButton: UIButton!
+    @IBOutlet weak fileprivate var closeButton: ImageOnColorButton! {
         didSet {
             closeButton.dependencyManager = dependencyManager.closeButtonDependency
             closeButton.touchInsets = UIEdgeInsetsMake(-12, -12, -12, -12)
         }
     }
     
-    @IBOutlet private var labelWidthConstraint: NSLayoutConstraint!
-    @IBOutlet private var scrollViewInsetConstraints: [NSLayoutConstraint]!
+    @IBOutlet fileprivate var labelWidthConstraint: NSLayoutConstraint!
+    @IBOutlet fileprivate var scrollViewInsetConstraints: [NSLayoutConstraint]!
     
-    private lazy var vipSubscriptionHelper: VIPSubscriptionHelper? = {
+    fileprivate lazy var vipSubscriptionHelper: VIPSubscriptionHelper? = {
         guard let subscriptionFetchAPIPath = self.dependencyManager.subscriptionFetchAPIPath else {
             return nil
         }
@@ -63,7 +63,7 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
 
     // MARK: - Initialization
 
-    class func newWithDependencyManager(dependencyManager: VDependencyManager) -> VIPGateViewController {
+    class func newWithDependencyManager(_ dependencyManager: VDependencyManager) -> VIPGateViewController {
         let viewController: VIPGateViewController = VIPGateViewController.v_initialViewControllerFromStoryboard()
         viewController.dependencyManager = dependencyManager
         viewController.title = dependencyManager.stringForKey("title")
@@ -87,12 +87,12 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     
     // MARK: - IBActions
     
-    @IBAction func onSubscribe(sender: UIButton? = nil) {
+    @IBAction func onSubscribe(_ sender: UIButton? = nil) {
         subscribeButton.dependencyManager?.trackButtonEvent(.tap)
         vipSubscriptionHelper?.subscribe()
     }
     
-    @IBAction func onRestore(sender: UIButton? = nil) {
+    @IBAction func onRestore(_ sender: UIButton? = nil) {
         restoreButton.dependencyManager?.trackButtonEvent(.tap)
         
         guard let validationAPIPath = dependencyManager.validationAPIPath else {
@@ -120,11 +120,11 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     }
     
     @IBAction func onPrivacyPolicySelected() {
-        navigateToFixedWebContent(.PrivacyPolicy)
+        navigateToFixedWebContent(.privacyPolicy)
     }
     
     @IBAction func onTermsOfServiceSelected() {
-        navigateToFixedWebContent(.TermsOfService)
+        navigateToFixedWebContent(.termsOfService)
     }
     
     @IBAction func onCloseSelected() {
@@ -134,14 +134,14 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     
     // MARK: - Private
     
-    private func navigateToFixedWebContent(type: FixedWebContentType) {
+    fileprivate func navigateToFixedWebContent(_ type: FixedWebContentType) {
         let router = Router(originViewController: self, dependencyManager: dependencyManager.navBarDependency)
         let configuration = ExternalLinkDisplayConfiguration(addressBarVisible: false, forceModal: true, isVIPOnly: false, title: type.title)
         router.navigate(to: .externalURL(url: dependencyManager.urlForFixedWebContent(type), configuration: configuration), from: nil)
     }
     
-    private func HUDNeedsUpdateToTitle(title: String?) -> Bool {
-        if let currentTitle = progressHUD.labelText where currentTitle == title {
+    fileprivate func HUDNeedsUpdateToTitle(_ title: String?) -> Bool {
+        if let currentTitle = progressHUD.labelText , currentTitle == title {
             return false
         }
         else {
@@ -149,12 +149,12 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
         }
     }
     
-    private func openGate() {
+    fileprivate func openGate() {
         delegate?.vipGateExitedWithSuccess(true)
     }
     
-    private func updateViews() {
-        guard isViewLoaded() else {
+    fileprivate func updateViews() {
+        guard isViewLoaded else {
             return
         }
         
@@ -174,8 +174,8 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
         }
         termsOfServiceButton.setAttributedTitle(termsOfServiceText, forState: .Normal)
         
-        restoreButton.setTitle(dependencyManager.restoreText ?? Strings.restorePrompt, forState: .Normal)
-        restoreButton.setTitleColor(dependencyManager.restoreTextColor, forState: .Normal)
+        restoreButton.setTitle(dependencyManager.restoreText ?? Strings.restorePrompt, for: .Normal)
+        restoreButton.setTitleColor(dependencyManager.restoreTextColor, for: .Normal)
         if let font = dependencyManager.restoreFont {
             restoreButton.titleLabel?.font = font
         }
@@ -200,18 +200,18 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     }
     
     override func updateViewConstraints() {
-        let inset = scrollViewInsetConstraints.reduce(0, combine: { $0 + $1.constant })
+        let inset = scrollViewInsetConstraints.reduce(0, { $0 + $1.constant })
         labelWidthConstraint.constant = view.bounds.width - inset
         super.updateViewConstraints()
     }
     
     // MARK: - VIPSubscriptionHelperDelegate
     
-    func VIPSubscriptionHelperCompletedSubscription(helper: VIPSubscriptionHelper) {
+    func VIPSubscriptionHelperCompletedSubscription(_ helper: VIPSubscriptionHelper) {
         openGate()
     }
     
-    private lazy var progressHUD: MBProgressHUD = {
+    fileprivate lazy var progressHUD: MBProgressHUD = {
         let progressHUD = MBProgressHUD(view: self.view)
         progressHUD.mode = .Indeterminate
         progressHUD.graceTime = 0.35
@@ -221,7 +221,7 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
         return progressHUD
     }()
     
-    func setIsLoading(isLoading: Bool, title: String? = nil) {
+    func setIsLoading(_ isLoading: Bool, title: String? = nil) {
         if isLoading {
             guard HUDNeedsUpdateToTitle(title) else {
                 return
@@ -237,7 +237,7 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     
     // MARK: - String Constants
     
-    private struct Strings {
+    fileprivate struct Strings {
         static let privacyPolicy            = NSLocalizedString("Privacy Policy", comment: "")
         static let termsOfService           = NSLocalizedString("Terms of Service", comment: "")
         static let restoreFailed            = NSLocalizedString("SubscriptionRestoreFailed", comment: "")

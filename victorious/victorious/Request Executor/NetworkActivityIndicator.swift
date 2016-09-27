@@ -8,24 +8,24 @@
 
 import Foundation
 
-public class NetworkActivityIndicator {
+open class NetworkActivityIndicator {
     
-    private(set) var activityCount: Int = 0
+    fileprivate(set) var activityCount: Int = 0
     
-    private static var instance = NetworkActivityIndicator()
+    fileprivate static var instance = NetworkActivityIndicator()
     
-    public static func sharedInstance() -> NetworkActivityIndicator {
+    open static func sharedInstance() -> NetworkActivityIndicator {
         return instance
     }
     
     init() {}
     
-    public func start() {
+    open func start() {
         activityCount += 1
         self.update()
     }
     
-    public func stop() {
+    open func stop() {
         if activityCount > 0 {
             activityCount -= 1
         }

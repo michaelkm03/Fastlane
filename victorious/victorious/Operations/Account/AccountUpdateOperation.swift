@@ -31,13 +31,13 @@ final class AccountUpdateOperation: AsyncOperation <User> {
     
     // MARK: - Executing
     
-    private let request: AccountUpdateRequest!
+    fileprivate let request: AccountUpdateRequest!
     
     override var executionQueue: Queue {
         return .main
     }
     
-    override func execute(finish: (result: OperationResult<User>) -> Void) {
+    override func execute(_ finish: (_ result: OperationResult<User>) -> Void) {
         RequestOperation(request: request).queue { [weak self] requestResult in
             guard let strongSelf = self else {
                 finish(result: requestResult)

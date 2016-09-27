@@ -45,24 +45,24 @@ class SubscribeButton: UIView {
     
     // MARK: - Dependency manager
     
-    private let dependencyManager: VDependencyManager
+    fileprivate let dependencyManager: VDependencyManager
     
     // MARK: - Subviews
     
-    private let subscribeButton = BackgroundButton(type: .System)
-    private let userIsVIPButton: UIButton?
+    fileprivate let subscribeButton = BackgroundButton(type: .system)
+    fileprivate let userIsVIPButton: UIButton?
     
-    private var visibleButton: UIButton? {
+    fileprivate var visibleButton: UIButton? {
         return userIsVIP == true ? userIsVIPButton : subscribeButton
     }
     
-    private var hiddenButton: UIButton? {
+    fileprivate var hiddenButton: UIButton? {
         return userIsVIP == true ? subscribeButton : userIsVIPButton
     }
     
     // MARK: - Actions
     
-    private dynamic func subscribeButtonWasPressed() {
+    fileprivate dynamic func subscribeButtonWasPressed() {
         guard let scaffold = VRootViewController.sharedRootViewController()?.scaffold else {
             return
         }
@@ -72,7 +72,7 @@ class SubscribeButton: UIView {
     
     // MARK: - Responding to VIP changes
     
-    private var userIsVIP: Bool? {
+    fileprivate var userIsVIP: Bool? {
         didSet {
             guard userIsVIP != oldValue else {
                 return
@@ -80,8 +80,8 @@ class SubscribeButton: UIView {
             
             if let visibleButton = visibleButton {
                 addSubview(visibleButton)
-                visibleButton.centerYAnchor.constraintEqualToAnchor(centerYAnchor).active = true
-                visibleButton.trailingAnchor.constraintEqualToAnchor(trailingAnchor).active = true
+                visibleButton.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+                visibleButton.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
             }
             
             hiddenButton?.removeFromSuperview()
@@ -89,22 +89,22 @@ class SubscribeButton: UIView {
         }
     }
     
-    private func updateVIPState() {
+    fileprivate func updateVIPState() {
         userIsVIP = VCurrentUser.user?.hasValidVIPSubscription == true
     }
     
-    private dynamic func userStatusDidChange(notification: NSNotification) {
+    fileprivate dynamic func userStatusDidChange(_ notification: Notification) {
         updateVIPState()
     }
     
     // MARK: - Layout
     
-    override func intrinsicContentSize() -> CGSize {
-        return (visibleButton ?? subscribeButton).intrinsicContentSize()
+    override var intrinsicContentSize : CGSize {
+        return (visibleButton ?? subscribeButton).intrinsicContentSize
     }
     
-    override func sizeThatFits(size: CGSize) -> CGSize {
-        return intrinsicContentSize()
+    override func sizeThatFits(_ size: CGSize) -> CGSize {
+        return intrinsicContentSize
     }
 }
 

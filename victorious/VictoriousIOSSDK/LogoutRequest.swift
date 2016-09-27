@@ -13,6 +13,6 @@ public struct LogoutRequest: RequestType {
     public init() {}
     
     public var urlRequest: NSURLRequest {
-        return NSURLRequest(URL: NSURL(string: "/api/logout")!)
+        return NSURLRequest(url: NSURL(string: "/api/logout")! as URL)
     }
 }

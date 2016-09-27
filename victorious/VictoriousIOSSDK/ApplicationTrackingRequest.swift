@@ -15,7 +15,7 @@ public struct ApplicationTrackingRequest: RequestType {
     public let eventIndex: Int
     
     public var urlRequest: NSURLRequest {
-        let urlRequest = NSMutableURLRequest(URL: trackingURL)
+        let urlRequest = NSMutableURLRequest(url: trackingURL as URL)
         urlRequest.setValue(String(eventIndex), forHTTPHeaderField: "X-Client-Event-Index")
         return urlRequest
     }

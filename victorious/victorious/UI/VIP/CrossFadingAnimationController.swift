@@ -9,9 +9,9 @@
 import Foundation
 
 struct CrossFadingAnimationControllerOptions {
-    let fadeOutDuration: NSTimeInterval
-    let fadeInDuration: NSTimeInterval
-    var transitionDuration: NSTimeInterval {
+    let fadeOutDuration: TimeInterval
+    let fadeInDuration: TimeInterval
+    var transitionDuration: TimeInterval {
         return fadeInDuration + fadeOutDuration
     }
 }
@@ -23,7 +23,7 @@ class CrossFadingAnimationController: NSObject, UIViewControllerAnimatedTransiti
         self.animationOptions = animationOptions
     }
     
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
+    func animateTransition(_ transitionContext: UIViewControllerContextTransitioning) {
         guard
             let toView = transitionContext.viewForKey(UITransitionContextToViewKey),
             let fromView = transitionContext.viewForKey(UITransitionContextFromViewKey)
@@ -48,7 +48,7 @@ class CrossFadingAnimationController: NSObject, UIViewControllerAnimatedTransiti
         }
     }
     
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
+    func transitionDuration(_ transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return animationOptions.transitionDuration
     }
 }
