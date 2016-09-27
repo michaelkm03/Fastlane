@@ -50,10 +50,6 @@ extension User {
     }
     
     public static func validationError(forDisplayName displayName: String) -> ErrorType? {
-        guard !displayName.isEmpty else {
-            return validationError(withDescription: NSLocalizedString("EmptyDisplayName", comment: ""))
-        }
-        
         guard displayName.characters.count < Constants.maxDisplayNameLength else {
             return validationError(withDescription: NSLocalizedString("DisplayNameTooLong", comment: ""))
         }
