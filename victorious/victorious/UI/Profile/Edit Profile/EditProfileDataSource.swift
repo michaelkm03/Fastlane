@@ -76,25 +76,28 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
         // Create a new userModel with the new preview image
         newAvatarFileURL = fileURL
         let imageAsset = ImageAsset(url: fileURL, size: previewImage.size)
-        let newUser = User(id: user.id,
-                           username: nameAndLocationCell.username ?? user.username,
-                           displayName: nameAndLocationCell.displayname ?? user.displayName,
-                           completedProfile: user.completedProfile,
-                           location: nameAndLocationCell.location ?? user.location,
-                           tagline: aboutMeCell.tagline,
-                           accessLevel: user.accessLevel,
-                           previewImages: [imageAsset],
-                           avatarBadgeType: user.avatarBadgeType,
-                           vipStatus: user.vipStatus)
-        self.user = newUser
+        self.user = User(
+            id: user.id,
+            username: nameAndLocationCell.username ?? user.username,
+            displayName: nameAndLocationCell.displayname ?? user.displayName,
+            completedProfile: user.completedProfile,
+            location: nameAndLocationCell.location ?? user.location,
+            tagline: aboutMeCell.tagline,
+            accessLevel: user.accessLevel,
+            previewImages: [imageAsset],
+            avatarBadgeType: user.avatarBadgeType,
+            vipStatus: user.vipStatus
+        )
     }
     
     func accountUpdateDelta() -> ProfileUpdate? {
-        return ProfileUpdate(displayName: nameAndLocationCell.displayname,
-                             username: nameAndLocationCell.username == VCurrentUser.user?.username ? nil : nameAndLocationCell.username,
-                             location: nameAndLocationCell.location,
-                             tagline: aboutMeCell.tagline,
-                             profileImageURL: newAvatarFileURL)
+        return ProfileUpdate(
+            displayName: nameAndLocationCell.displayname,
+            username: nameAndLocationCell.username == VCurrentUser.user?.username ? nil : nameAndLocationCell.username,
+            location: nameAndLocationCell.location,
+            tagline: aboutMeCell.tagline,
+            profileImageURL: newAvatarFileURL
+        )
     }
     
     func beginEditing() {

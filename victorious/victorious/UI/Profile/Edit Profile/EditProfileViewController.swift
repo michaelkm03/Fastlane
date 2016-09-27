@@ -110,7 +110,6 @@ class EditProfileViewController: UIViewController {
             }
         }
         
-        
         if let username = profileUpdate.username {
             let appID = VEnvironmentManager.sharedInstance().currentEnvironment.appID.stringValue
             guard let usernameAvailabilityRequest = UsernameAvailabilityRequest(apiPath: apiPath, usernameToCheck: username, appID: appID) else {
