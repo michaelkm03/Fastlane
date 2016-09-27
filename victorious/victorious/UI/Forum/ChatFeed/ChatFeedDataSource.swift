@@ -152,7 +152,7 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = cellForItem(for: collectionView, at: indexPath)
-        cell.showsReplyButton = shouldShowReplyButtons
+        cell.showsReplyButton = shouldShowReplyButtons && dependencyManager.replyButtonsAreEnabled
         return cell
     }
     
@@ -167,5 +167,11 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
         
         assertionFailure("Unsupported supplementary view kind requested in ChatFeedDataSource.")
         return UICollectionReusableView()
+    }
+}
+
+private extension VDependencyManager {
+    var replyButtonsAreEnabled: Bool {
+        return bool(for: "show.reply.button") ?? true
     }
 }
