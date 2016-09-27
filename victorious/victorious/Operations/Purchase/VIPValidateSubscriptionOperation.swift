@@ -61,8 +61,6 @@ class VIPValidateSubscriptionOperation: AsyncOperation<VIPStatus> {
             return
         }
         
-        VTrackingManager.sharedInstance().trackEvent(VTrackingEventSentProductReceiptToBackend)
-        
         RequestOperation(request: request).queue { [weak self] result in
             switch result {
                 case .success(let status):

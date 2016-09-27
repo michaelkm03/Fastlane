@@ -20,7 +20,6 @@
 // Dependencies
 #import "VDependencyManager.h"
 #import "VDependencyManager+VBackgroundContainer.h"
-#import "VDependencyManager+VTracking.h"
 
 @import CoreText;
 

@@ -7,6 +7,7 @@
 //
 
 #import "VModernEnterNameViewController.h"
+#import "victorious-Swift.h"
 
 // Dependencies
 #import "VDependencyManager.h"
@@ -17,7 +18,6 @@
 // Views + Helpers
 #import "VInlineValidationTextField.h"
 #import "VLoginFlowControllerDelegate.h"
-#import "VDependencyManager+VTracking.h"
 
 @interface VModernEnterNameViewController () <VBackgroundContainer, UITextFieldDelegate, VLoginFlowScreen>
 

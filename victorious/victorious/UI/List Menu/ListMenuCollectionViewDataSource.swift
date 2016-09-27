@@ -14,9 +14,10 @@ enum ListMenuSection: Int {
     case creator
     case community
     case hashtags
-    
+    case chatRooms
+
     static var numberOfSections: Int {
-        return 3
+        return 4
     }
 }
 
@@ -28,8 +29,9 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
     private let dependencyManager: VDependencyManager
     
     let communityDataSource: ListMenuCommunityDataSource
-    let hashtagDataSource: ListMenuHashtagDataSource
+    let hashtagDataSource: ListMenuHashtagsDataSource
     let creatorDataSource: ListMenuCreatorDataSource
+    let chatRoomsDataSource: ListMenuChatRoomsDataSource
     
     private let subscribeButton: SubscribeButton
     
@@ -42,13 +44,15 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         
         creatorDataSource = ListMenuCreatorDataSource(dependencyManager: dependencyManager.creatorsChildDependency)
         communityDataSource = ListMenuCommunityDataSource(dependencyManager: dependencyManager.communityChildDependency)
-        hashtagDataSource = ListMenuHashtagDataSource(dependencyManager: dependencyManager.hashtagsChildDependency)
-        
+        hashtagDataSource = ListMenuHashtagsDataSource(dependencyManager: dependencyManager.hashtagsChildDependency)
+        chatRoomsDataSource = ListMenuChatRoomsDataSource(dependencyManager: dependencyManager.chatRoomsChildDependency)
+
         super.init()
         
         creatorDataSource.setupDataSource(with: self)
         communityDataSource.setupDataSource(with: self)
         hashtagDataSource.setupDataSource(with: self)
+        chatRoomsDataSource.setupDataSource(with: self)
         
         registerNibs(for: listMenuViewController.collectionView)
     }
@@ -66,6 +70,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
             case .creator: return creatorDataSource.numberOfItems
             case .community: return communityDataSource.numberOfItems
             case .hashtags: return hashtagDataSource.numberOfItems
+            case .chatRooms: return chatRoomsDataSource.numberOfItems
         }
     }
     
@@ -76,6 +81,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
             case .creator: return dequeueProperCell(creatorDataSource, for: collectionView, at: indexPath)
             case .community: return dequeueProperCell(communityDataSource, for: collectionView, at: indexPath)
             case .hashtags: return dequeueProperCell(hashtagDataSource, for: collectionView, at: indexPath)
+            case .chatRooms: return dequeueProperCell(chatRoomsDataSource, for: collectionView, at: indexPath)
         }
     }
     
@@ -88,6 +94,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
             case .creator: headerView.dependencyManager = dependencyManager.creatorsChildDependency
             case .community: headerView.dependencyManager = dependencyManager.communityChildDependency
             case .hashtags: headerView.dependencyManager = dependencyManager.hashtagsChildDependency
+            case .chatRooms: headerView.dependencyManager = dependencyManager.chatRoomsChildDependency
         }
         
         headerView.accessoryView = indexPath.section == 0 ? subscribeButton : nil
@@ -143,6 +150,10 @@ private extension VDependencyManager {
     
     var hashtagsChildDependency: VDependencyManager {
         return self.childDependencyForKey("trendingHashtags") ?? self
+    }
+
+    var chatRoomsChildDependency: VDependencyManager {
+        return self.childDependencyForKey("chat.rooms") ?? self
     }
     
     var activityIndicatorColor: UIColor? {

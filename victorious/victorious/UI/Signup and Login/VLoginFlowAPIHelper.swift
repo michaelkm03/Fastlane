@@ -14,6 +14,7 @@ extension VLoginFlowAPIHelper {
         let updateOperation = AccountUpdateOperation(
             profileUpdate: ProfileUpdate(
                 displayName: displayname,
+                username: nil,
                 location: nil,
                 tagline: nil,
                 profileImageURL: profileImageURL

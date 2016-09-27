@@ -12,6 +12,7 @@ import VictoriousIOSSDK
 import XCTest
 
 class GIFSearchRequestTests: XCTestCase {
+    let searchOptions = GIFSearchOptions.Search(term: "lol", url: "testURL")
     
     func testResponseParsing() {
         guard let mockResponseDataURL = NSBundle(forClass: self.dynamicType).URLForResource("GIFSearchResponse", withExtension: "json"),
@@ -21,7 +22,7 @@ class GIFSearchRequestTests: XCTestCase {
         }
         
         do {
-            let searchGIFs = GIFSearchRequest(searchTerm: "lol")
+            let searchGIFs = GIFSearchRequest(searchOptions: searchOptions)
             let results = try searchGIFs.parseResponse(NSURLResponse(), toRequest: searchGIFs.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(results.count, 15)
             XCTAssertEqual(results[0].gifURL, "https://media2.giphy.com/media/KxufLEowgK7Xa/giphy.gif")
@@ -36,7 +37,12 @@ class GIFSearchRequestTests: XCTestCase {
     
     func testRequest() {
         let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 100)
-        let searchGIFs = GIFSearchRequest(searchTerm: "lol", paginator: paginator)
-        XCTAssertEqual(searchGIFs.urlRequest.URL?.absoluteString, "/api/image/gif_search/lol/1/100")
+        let searchGIFs = GIFSearchRequest(searchOptions: searchOptions, paginator: paginator)
+        switch searchOptions {
+        case .Search(let term, let url):
+            XCTAssertEqual(searchGIFs.urlRequest.URL?.absoluteString, "\(url)/\(term)/1/100")
+        default:
+            XCTFail("Test was setup incorrectly, should be searching")
+        }
     }
 }

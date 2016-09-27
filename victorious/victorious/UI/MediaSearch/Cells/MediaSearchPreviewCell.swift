@@ -13,9 +13,11 @@ import UIKit
 /// from the list of GIF search results
 class MediaSearchPreviewCell: UICollectionViewCell {
     
+    static let associatedNib = UINib(nibName: "MediaSearchPreviewCell", bundle: nil)
+    
     var videoPlayer: VVideoPlayer?
     
-    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet private weak var imageView: UIImageView!
     
     var previewAssetUrl: NSURL? {
@@ -31,15 +33,14 @@ class MediaSearchPreviewCell: UICollectionViewCell {
             self.videoPlayer = nil
             self.videoPlayer = VVideoView(frame: self.bounds)
             if let url = self.assetUrl, let videoPlayer = self.videoPlayer {
-                
-                self.addSubview( videoPlayer.view )
-                self.v_addFitToParentConstraintsToSubview( videoPlayer.view )
+                self.addSubview(videoPlayer.view)
+                self.v_addFitToParentConstraintsToSubview(videoPlayer.view)
                 
                 let videoPlayerItem = VVideoPlayerItem(URL: url)
                 videoPlayerItem.loop = true
                 videoPlayerItem.muted = true
                 videoPlayerItem.useAspectFit = true
-                videoPlayer.setItem( videoPlayerItem )
+                videoPlayer.setItem(videoPlayerItem)
                 videoPlayer.playFromStart()
             }
         }

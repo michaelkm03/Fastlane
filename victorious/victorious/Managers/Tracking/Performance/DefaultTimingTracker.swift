@@ -29,8 +29,7 @@ private func ==(lhs: AppTimingEvent, rhs: AppTimingEvent) -> Bool {
 
 /// Object that manages performance event tracking by measuring time between start and stop calls.
 class DefaultTimingTracker: NSObject, TimingTracker {
-    
-    private(set) var urls = [String]()
+    private(set) var apiPaths = [APIPath]()
     private var activeEvents = Set<AppTimingEvent>()
     private static let instance = DefaultTimingTracker()
     
@@ -47,8 +46,8 @@ class DefaultTimingTracker: NSObject, TimingTracker {
     }
     
     /// Provides a dependency manager from which the shared instance will parse out its dependencies.
-    func setDependencyManager( dependencyManager: VDependencyManager ) {
-        self.urls = dependencyManager.trackingURLsForKey( "app_time" ) as? [String] ?? []
+    func setDependencyManager(dependencyManager: VDependencyManager) {
+        apiPaths = dependencyManager.trackingAPIPaths(forEventKey: "app_time") ?? []
     }
     
     func resetAllEvents() {
@@ -81,10 +80,10 @@ class DefaultTimingTracker: NSObject, TimingTracker {
         }
     }
     
-    private func trackEvent( event: AppTimingEvent ) {
-        let durationMs = Int(NSDate().timeIntervalSinceDate( event.dateStarted ) * 1000.0)
-        let params: [NSObject : AnyObject] = [
-            VTrackingKeyUrls: self.urls,
+    private func trackEvent(event: AppTimingEvent) {
+        let durationMs = Int(NSDate().timeIntervalSinceDate(event.dateStarted) * 1000.0)
+        let params: [NSObject: AnyObject] = [
+            VTrackingKeyUrls: apiPaths.map { $0.templatePath },
             VTrackingKeyDuration: durationMs,
             VTrackingKeyType: event.type,
             VTrackingKeySubtype: event.subtype ?? ""

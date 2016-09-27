@@ -70,7 +70,7 @@ class NotificationsViewController: UIViewController, UITableViewDelegate, Notifi
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        dependencyManager.trackViewWillAppear(self)
+        dependencyManager.trackViewWillAppear(for: self)
         updateTableView()
         
         // Setting the content offset is a hack to work around a bug where the refresh control's tint color won't take
@@ -86,7 +86,7 @@ class NotificationsViewController: UIViewController, UITableViewDelegate, Notifi
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        dependencyManager.trackViewWillDisappear(self)
+        dependencyManager.trackViewWillDisappear(for: self)
     }
     
     override func viewDidDisappear(animated: Bool) {

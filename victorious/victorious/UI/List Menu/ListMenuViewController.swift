@@ -12,7 +12,7 @@ struct ListMenuSelectedItem {
     let streamAPIPath: APIPath
     let title: String?
     let context: DeeplinkContext?
-    let trackingURLs: [String]
+    let trackingAPIPaths: [APIPath]
 }
 
 /// View Controller for the entire List Menu Component, which is currently being displayed as the left navigation pane
@@ -66,12 +66,12 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         let indexPath = lastSelectedIndexPath ?? homeFeedIndexPath
         collectionView?.selectItemAtIndexPath(indexPath, animated: false, scrollPosition: .None)
         
-        dependencyManager.trackViewWillAppear(self)
+        dependencyManager.trackViewWillAppear(for: self)
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        dependencyManager.trackViewWillDisappear(self)
+        dependencyManager.trackViewWillDisappear(for: self)
     }
 
     // MARK: - Notifications
@@ -111,7 +111,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
             streamAPIPath: item.streamAPIPath,
             title: item.title,
             context: context,
-            trackingURLs: item.trackingURLs
+            trackingAPIPaths: item.trackingAPIPaths
         ))
     }
     
@@ -120,15 +120,39 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         var apiPath = collectionViewDataSource.hashtagDataSource.hashtagStreamAPIPath
         apiPath.macroReplacements["%%HASHTAG%%"] = item.tag
         let context = DeeplinkContext(value: DeeplinkContext.hashTagFeed, subContext: "#\(item.tag)")
+        
         let selectedTagItem = ListMenuSelectedItem(
             streamAPIPath: apiPath,
             title: "#\(item.tag)",
             context: context,
-            trackingURLs: collectionViewDataSource.hashtagDataSource.hashtagStreamTrackingURLs.map {
-                VSDKURLMacroReplacement().urlByReplacingMacrosFromDictionary(["%%HASHTAG%%": item.tag], inURLString: $0)
+            trackingAPIPaths: collectionViewDataSource.hashtagDataSource.hashtagStreamTrackingAPIPaths.map { path in
+                var path = path
+                path.macroReplacements["%%HASHTAG%%"] = item.tag
+                return path
             }
         )
+        
         postListMenuSelection(selectedTagItem)
+    }
+
+    private func selectChatRoom(atIndex index: Int) {
+        let item = collectionViewDataSource.chatRoomsDataSource.visibleItems[index]
+        let itemString = item.name
+        let macro = "%%CHATROOM%%"
+        var apiPath = collectionViewDataSource.chatRoomsDataSource.chatRoomStreamAPIPath
+        apiPath.macroReplacements[macro] = item.name
+        let context = DeeplinkContext(value: DeeplinkContext.chatRoomFeed, subContext: itemString)
+        let selectedItem = ListMenuSelectedItem(
+            streamAPIPath: apiPath,
+            title: itemString,
+            context: context,
+            trackingAPIPaths: collectionViewDataSource.hashtagDataSource.hashtagStreamTrackingAPIPaths.map { path in
+                var path = path
+                path.macroReplacements[macro] = item.name
+                return path
+            }
+        )
+        postListMenuSelection(selectedItem)
     }
     
     private func postListMenuSelection(listMenuSelection: ListMenuSelectedItem?) {
@@ -138,9 +162,9 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
             userInfo: listMenuSelection.flatMap { ["selectedItem": ReferenceWrapper($0)] }
         )
         
-        if let trackingURLs = listMenuSelection?.trackingURLs {
+        if let trackingAPIPaths = listMenuSelection?.trackingAPIPaths {
             VTrackingManager.sharedInstance().trackEvent(Constants.selectStreamTrackingEventName, parameters: [
-                VTrackingKeyUrls: trackingURLs
+                VTrackingKeyUrls: trackingAPIPaths.flatMap { $0.url?.absoluteString }
             ])
         }
     }
@@ -158,6 +182,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
             case .creator: return CGSize(width: view.bounds.width, height: ListMenuCreatorCollectionViewCell.preferredHeight)
             case .community: return CGSize(width: view.bounds.width, height: ListMenuCommunityCollectionViewCell.preferredHeight)
             case .hashtags: return CGSize(width: view.bounds.width, height: ListMenuHashtagCollectionViewCell.preferredHeight)
+            case .chatRooms: return CGSize(width: view.bounds.width, height: ListMenuChatRoomCollectionViewCell.preferredHeight)
         }
     }
     
@@ -196,6 +221,9 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
             case .hashtags:
                 selectHashtag(atIndex: indexPath.item)
                 lastSelectedIndexPath = indexPath
+            case .chatRooms:
+                selectChatRoom(atIndex: indexPath.item)
+                lastSelectedIndexPath = indexPath
         }
     }
     
@@ -206,6 +234,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
             case .creator: validIndices = collectionViewDataSource.creatorDataSource.visibleItems.indices
             case .community: validIndices = collectionViewDataSource.communityDataSource.visibleItems.indices
             case .hashtags: validIndices = collectionViewDataSource.hashtagDataSource.visibleItems.indices
+            case .chatRooms: validIndices = collectionViewDataSource.chatRoomsDataSource.visibleItems.indices
         }
         return validIndices ~= indexPath.row
     }

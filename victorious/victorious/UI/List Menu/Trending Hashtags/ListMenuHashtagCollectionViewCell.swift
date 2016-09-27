@@ -6,9 +6,7 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-import UIKit
-
-class ListMenuHashtagCollectionViewCell: UICollectionViewCell, ListMenuSectionCell {
+final class ListMenuHashtagCollectionViewCell: UICollectionViewCell, ListMenuSectionCell {
     
     @IBOutlet private weak var titleLabel: UILabel!
     
@@ -32,22 +30,19 @@ class ListMenuHashtagCollectionViewCell: UICollectionViewCell, ListMenuSectionCe
         titleLabel.text = "#\(hashtag.tag)"
     }
     
-    func updateCellBackgroundColor(to backgroundContainer: UIView, selectedColor color: UIColor?, isSelected: Bool) {
-        if isSelected {
-            backgroundContainer.backgroundColor = color
-        } else {
-            backgroundContainer.backgroundColor = nil
-        }
-    }
-    
     // MARK: - Private methods
     
     private func applyTemplateAppearance(with dependencyManager: VDependencyManager) {
+        titleLabel.textColor = dependencyManager.titleColor
         titleLabel.font = dependencyManager.hashtagItemFont
     }
 }
 
 private extension VDependencyManager {
+    var titleColor: UIColor? {
+        return colorForKey("color.text.navItem")
+    }
+
     var hashtagItemFont: UIFont? {
         return fontForKey(VDependencyManagerParagraphFontKey)
     }

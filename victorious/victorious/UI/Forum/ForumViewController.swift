@@ -181,7 +181,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             navigationItem.titleView = navBarTitleView
         }
         navBarTitleView?.sizeToFit()
-        dependencyManager.trackViewWillAppear(self)
+        dependencyManager.trackViewWillAppear(for: self)
         #if V_ENABLE_WEBSOCKET_DEBUG_MENU
             if let webSocketForumNetworkSource = forumNetworkSource as? WebSocketForumNetworkSource,
                 let navigationController = navigationController {
@@ -204,7 +204,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        dependencyManager.trackViewWillDisappear(self)
+        dependencyManager.trackViewWillDisappear(for: self)
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -333,10 +333,37 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     // MARK: - ChatFeedDelegate
     
-    func chatFeed(chatFeed: ChatFeed, didLongPressContent chatFeedContent: ChatFeedContent) {
+    func chatFeed(chatFeed: ChatFeed, didLongPress chatFeedContent: ChatFeedContent) {
         showActionSheet(forContent: chatFeedContent)
     }
-    
+
+    func chatFeed(chatFeed: ChatFeed, didToggleLikeFor content: ChatFeedContent, completion: (() -> Void)) {
+        guard
+            let contentID = content.content.id,
+            let likeKey = dependencyManager.contentLikeKey,
+            let unLikeKey = dependencyManager.contentUnLikeKey
+        else {
+            return
+        }
+
+        let context = chatFeedContext.value ?? "chat_feed"
+        let isLikedByCurrentUser = content.content.isLikedByCurrentUser
+        let likeAPIPath = APIPath(templatePath: likeKey, macroReplacements: ["%%CONTEXT%%": context])
+        let unLikeAPIPath = APIPath(templatePath: unLikeKey, macroReplacements: ["%%CONTEXT%%": context])
+
+        let toggleLikeOperation: SyncOperation<Void>? = isLikedByCurrentUser
+            ? ContentUnupvoteOperation(apiPath: unLikeAPIPath, contentID: contentID)
+            : ContentUpvoteOperation(apiPath: likeAPIPath, contentID: contentID)
+
+        guard let operation = toggleLikeOperation else {
+            return
+        }
+
+        operation.queue { _ in
+            completion()
+        }
+    }
+
     func chatFeed(chatFeed: ChatFeed, didScroll scrollView: UIScrollView) {
         stageShrinkingAnimator?.chatFeed(chatFeed, didScroll: scrollView)
     }
@@ -349,7 +376,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         stageShrinkingAnimator?.chatFeed(chatFeed, willEndDragging: scrollView, withVelocity: velocity)
     }
     
-    func chatFeed(chatFeed: ChatFeed, didSelectFailureButtonForContent chatFeedContent: ChatFeedContent) {
+    func chatFeed(chatFeed: ChatFeed, didSelectFailureButtonFor chatFeedContent: ChatFeedContent) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
         alertController.addAction(
             UIAlertAction(
@@ -379,6 +406,15 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             )
         )
         presentViewController(alertController, animated: true, completion: nil)
+    }
+    
+    func chatFeed(chatFeed: ChatFeed, didSelectReplyButtonFor chatFeedContent: ChatFeedContent) {
+        guard let username = chatFeedContent.content.author?.username else {
+            return
+        }
+        
+        composer?.append("@\(username)")
+        composer?.showKeyboard()
     }
     
     func publisher(for chatFeed: ChatFeed) -> ContentPublisher? {
@@ -466,5 +502,13 @@ private extension VDependencyManager {
     
     var contentDeleteURL: String {
         return networkResources?.stringForKey("contentDeleteURL") ?? ""
+    }
+
+    var contentLikeKey: String? {
+        return networkResources?.stringForKey("contentUpvoteURL")
+    }
+
+    var contentUnLikeKey: String? {
+        return networkResources?.stringForKey("contentUnupvoteURL")
     }
 }

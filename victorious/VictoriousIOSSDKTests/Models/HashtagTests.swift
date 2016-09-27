@@ -12,8 +12,9 @@ import XCTest
 class HashtagTests: XCTestCase {
     
     func testJSONParsing() {
-        guard let mockUserDataURL = NSBundle(forClass: self.dynamicType).URLForResource("Hashtag", withExtension: "json"),
-            let mockData = NSData(contentsOfURL: mockUserDataURL) else {
+        guard
+            let mockDataURL = NSBundle(forClass: self.dynamicType).URLForResource("Hashtag", withExtension: "json"),
+            let mockData = NSData(contentsOfURL: mockDataURL) else {
                 XCTFail("Error reading mock json data")
                 return
         }

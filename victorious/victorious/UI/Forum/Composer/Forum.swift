@@ -39,13 +39,13 @@ protocol Forum: ForumEventReceiver, ForumEventSender, ChatFeedDelegate, Composer
 extension Forum {
     // MARK: - ChatFeedDelegate
     
-    func chatFeed(chatFeed: ChatFeed, didSelectUserWithUserID userID: Int) {
+    func chatFeed(chatFeed: ChatFeed, didSelectUserWithID userID: Int) {
         let router = Router(originViewController: originViewController, dependencyManager: dependencyManager)
         let destination = DeeplinkDestination(userID: userID)
         router.navigate(to: destination, from: chatFeedContext)
     }
     
-    func chatFeed(chatFeed: ChatFeed, didSelectContent chatFeedContent: ChatFeedContent) {
+    func chatFeed(chatFeed: ChatFeed, didSelect chatFeedContent: ChatFeedContent) {
         let router = Router(originViewController: originViewController, dependencyManager: dependencyManager)
         let destination = DeeplinkDestination(content: chatFeedContent.content)
         router.navigate(to: destination, from: chatFeedContext)

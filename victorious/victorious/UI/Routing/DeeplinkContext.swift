@@ -18,6 +18,7 @@ struct DeeplinkContext {
     static let userProfile = "user_profile"
     static let mainFeed = "main_feed"
     static let hashTagFeed = "hashtag_feed"
+    static let chatRoomFeed = "chat_room_feed"
 
     private(set) var value: String?
 
