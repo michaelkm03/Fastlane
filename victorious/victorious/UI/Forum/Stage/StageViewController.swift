@@ -222,7 +222,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     }
 
     func addStageContent(stageContent: StageContent) {
-        stagePreparer.prepareNextContent(stageContent, for: self)
+        stagePreparer.prepareNextContent(stageContent: stageContent, for: self)
     }
     
     private func updateStageContent(stageContent: StageContent) {
@@ -410,13 +410,13 @@ private extension VDependencyManager {
     }
 }
 
-class StagePreparer {
+private class StagePreparer {
     var nextStageContent: StageContent?
-    func prepareNextContent(stageContent: StageContent, for stage: StageViewController) {
-        let isYoutube = stageContent.content.assets.first?.videoSource == .youtube
-        nextStageContent = stageContent
-        if stage.isOnScreen || !isYoutube {
-            stage.updateStageContent(stageContent)
+    func prepareNextContent(stageContent content: StageContent, for stage: StageViewController) {
+        let isYouTube = content.content.assets.first?.videoSource == .youtube
+        nextStageContent = content
+        if stage.isOnScreen || !isYouTube {
+            stage.updateStageContent(content)
         }
     }
     
