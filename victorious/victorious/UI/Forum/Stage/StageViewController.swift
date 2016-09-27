@@ -225,17 +225,17 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         stagePreparer.prepareNextContent(stageContent: stageContent, for: self)
     }
     
-    private func updateStageContent(stageContent: StageContent) {
-        currentStageContent = stageContent
+    private func updateStageContent(stageContent content: StageContent) {
+        currentStageContent = content
         
         if let mediaContentView = mediaContentView {
             tearDownMediaContentView(mediaContentView)
         }
 
-        mediaContentView = newMediaContentView(for: stageContent.content)
+        mediaContentView = newMediaContentView(for: content.content)
         mediaContentView?.loadContent()
         
-        titleCardViewController?.populate(with: stageContent)
+        titleCardViewController?.populate(with: content)
 
         updateStageHeight()
     }
