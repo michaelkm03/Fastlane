@@ -16,18 +16,18 @@ extension NSDictionary {
     public func vsdk_urlEncodedString() -> String {
         let encodedString = NSMutableString()
         for (key, value) in self {
-            if let key = String(key).stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.vsdk_queryPartAllowedCharacterSet) {
+            if let key = String(describing: key).addingPercentEncoding(withAllowedCharacters: .vsdk_queryPartAllowedCharacterSet) {
                 
                 // Checks for an array value and encodes it appropriately
                 if let valueArray = value as? NSArray {
                     for value in valueArray {
-                        if let value = String(value).stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.vsdk_queryPartAllowedCharacterSet) {
-                            encodedString.appendURLParameter(key, value: value, useArraySeperator: true)
+                        if let value = String(describing: value).addingPercentEncoding(withAllowedCharacters: .vsdk_queryPartAllowedCharacterSet) {
+                            encodedString.appendURLParameter(key: key, value: value, useArraySeperator: true)
                         }
                     }
                 }
-                else if let value = String(value).stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.vsdk_queryPartAllowedCharacterSet) {
-                    encodedString.appendURLParameter(key, value: value)
+                else if let value = String(describing: value).addingPercentEncoding(withAllowedCharacters: .vsdk_queryPartAllowedCharacterSet) {
+                    encodedString.appendURLParameter(key: key, value: value)
                 }
             }
         }
@@ -56,7 +56,7 @@ extension NSMutableURLRequest {
     /// - warning: This function will overwrite any existing HTTPBody!
     ///
     /// - parameter postValues: The values to URL-encode and add to the HTTPBody
-    public func vsdk_addURLEncodedFormPost(postValues: NSDictionary) {
+    public func vsdk_addURLEncodedFormPost(_ postValues: NSDictionary) {
         httpMethod = "POST"
         addValue("application/x-www-form-urlencoded; charset=utf-8", forHTTPHeaderField: "Content-Type")
         httpBody = postValues.vsdk_urlEncodedString().data(using: String.Encoding.utf8)

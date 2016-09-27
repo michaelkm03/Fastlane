@@ -8,26 +8,26 @@
 
 import Foundation
 
-private let queryPartAllowedCharacterSet: NSCharacterSet = {
-    let mutableCharacterSet = NSCharacterSet.URLQueryAllowedCharacterSet.mutableCopy() as! NSMutableCharacterSet
-    mutableCharacterSet.removeCharactersInString(";/?:@&=+,$")
-    return mutableCharacterSet.copy() as! NSCharacterSet
+private let queryPartAllowedCharacterSet: CharacterSet = {
+    var queryCharacterSet = CharacterSet.urlPathAllowed
+    queryCharacterSet.remove(charactersIn: ";/?:@&=+,$")
+    return queryCharacterSet
 }()
 
-private let pathPartAllowedCharacterSet: NSCharacterSet = {
-    let mutableCharacterSet = NSCharacterSet.URLPathAllowedCharacterSet.mutableCopy() as! NSMutableCharacterSet
-    mutableCharacterSet.removeCharactersInString("/@:")
-    return mutableCharacterSet.copy() as! NSCharacterSet
+private let pathPartAllowedCharacterSet: CharacterSet = {
+    var pathCharacterSet = CharacterSet.urlPathAllowed
+    pathCharacterSet.remove(charactersIn: "/@:")
+    return pathCharacterSet
 }()
 
-extension NSCharacterSet {
+extension CharacterSet {
     /// Returns the character set for characters allowed in a query URL component.
-    public static var vsdk_queryPartAllowedCharacterSet: NSCharacterSet {
+    public static var vsdk_queryPartAllowedCharacterSet: CharacterSet {
         return queryPartAllowedCharacterSet
     }
     
     /// Returns the character set for characters allowed in a path URL component.
-    public static var vsdk_pathPartAllowedCharacterSet: NSCharacterSet {
+    public static var vsdk_pathPartAllowedCharacterSet: CharacterSet {
         return pathPartAllowedCharacterSet
     }
 }
