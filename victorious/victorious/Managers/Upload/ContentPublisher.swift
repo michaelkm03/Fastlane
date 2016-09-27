@@ -227,9 +227,25 @@ enum ContentPublisherError: ErrorType {
 
 private extension VDependencyManager {
     func mediaCreationAPIPath(for content: Content) -> APIPath? {
-        return apiPathForKey("mediaCreationURL", macroReplacements: [
-            "%%TIME_CURRENT%%": content.postedAt?.apiString ?? ""
-        ])
+        let path: String
+        let macroReplacements: [String : String]
+        if content.type == .sticker {
+            guard let contentID = content.assets.first?.externalID else {
+                return nil
+            }
+            path = "stickerCreationURL"
+            macroReplacements = [
+                "%%TIME_CURRENT%%": content.postedAt?.apiString ?? "",
+                "%%CONTENT_ID%%": contentID
+            ]
+        }
+        else {
+            path = "mediaCreationURL"
+            macroReplacements = [
+                "%%TIME_CURRENT%%": content.postedAt?.apiString ?? "",
+            ]
+        }
+        return apiPathForKey(path, macroReplacements: macroReplacements)
     }
     
     func textCreationAPIPath(for content: Content) -> APIPath? {
