@@ -8,7 +8,7 @@
 
 public protocol ForumEventReceiver: class {
     var childEventReceivers: [ForumEventReceiver] { get }
-    func receive(event: ForumEvent)
+    func receive(_ event: ForumEvent)
 }
 
 public extension ForumEventReceiver {

@@ -51,7 +51,7 @@ extension WebSocketEventDecoder {
         let rootNode = json[Keys.root]
         
         guard
-            let serverTime = Timestamp(apiString: rootNode[Keys.serverTime].stringValue), rootNode.isExists(),
+            let serverTime = Timestamp(apiString: rootNode[Keys.serverTime].stringValue), rootNode.exists(),
             let type = rootNode[Keys.type].string
         else {
             return nil

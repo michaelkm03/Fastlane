@@ -325,7 +325,7 @@ extension Content {
         
         if let assetURL = assets.first?.url  {
             let media: [String: String] = [
-                "type": type.rawValue.uppercased,
+                "type": type.rawValue.uppercased(),
                 "url": assetURL.absoluteString ?? ""
             ]
             dictionary["media"] = media as AnyObject?
