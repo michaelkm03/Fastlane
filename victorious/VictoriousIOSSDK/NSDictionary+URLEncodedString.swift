@@ -12,9 +12,9 @@ private let keySeparator = "&"
 private let valueSeparator = "="
 private let arrayValueSeperator = "[]"
 
-extension NSDictionary {
+extension Dictionary {
     public func vsdk_urlEncodedString() -> String {
-        let encodedString = NSMutableString()
+        var encodedString = String()
         for (key, value) in self {
             if let key = String(describing: key).addingPercentEncoding(withAllowedCharacters: .vsdk_queryPartAllowedCharacterSet) {
                 
@@ -31,13 +31,13 @@ extension NSDictionary {
                 }
             }
         }
-        return encodedString as String
+        return encodedString
     }
 }
 
-private extension NSMutableString {
-    func appendURLParameter(key: String, value: String, useArraySeperator: Bool = false) {
-        if self.length != 0 {
+fileprivate extension String {
+    mutating func appendURLParameter(key: String, value: String, useArraySeperator: Bool = false) {
+        if self.characters.count != 0 {
             self.append(keySeparator)
         }
         self.append(key)
@@ -56,7 +56,7 @@ extension NSMutableURLRequest {
     /// - warning: This function will overwrite any existing HTTPBody!
     ///
     /// - parameter postValues: The values to URL-encode and add to the HTTPBody
-    public func vsdk_addURLEncodedFormPost(_ postValues: NSDictionary) {
+    public func vsdk_addURLEncodedFormPost(_ postValues: [String: String]) {
         httpMethod = "POST"
         addValue("application/x-www-form-urlencoded; charset=utf-8", forHTTPHeaderField: "Content-Type")
         httpBody = postValues.vsdk_urlEncodedString().data(using: String.Encoding.utf8)
