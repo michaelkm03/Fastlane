@@ -62,7 +62,7 @@
                                         </constraints>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" red="0.66568112970000004" green="0.55510333540000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="NaN-hT-1Us" secondAttribute="trailing" id="6SV-a3-0Ko"/>
                                     <constraint firstItem="NaN-hT-1Us" firstAttribute="top" secondItem="PLy-eP-4dP" secondAttribute="top" id="BjB-Rv-Ppg"/>
