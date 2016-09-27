@@ -26,7 +26,7 @@ extension User {
     // TODO: We want to auto-trim these names. Maybe these methods should return a Result<String> for a processed value
     // or a validation error.
     
-    public static func validationError(forUsername username: String) -> ErrorType? {
+    public static func validationError(forUsername username: String, errorFormat: UserValidationErrorFormat = .long) -> ErrorType? {
         guard !username.isEmpty else {
             return validationError(withDescription: NSLocalizedString("EmptyUsername", comment: ""))
         }
@@ -34,7 +34,12 @@ extension User {
         let usernameCharacters = NSCharacterSet(charactersInString: username)
         
         guard Constants.validUsernameCharacters.isSupersetOfSet(usernameCharacters) else {
-            return validationError(withDescription: NSLocalizedString("InvalidUsernameCharacters", comment: ""))
+            return validationError(withDescription: {
+                switch errorFormat {
+                    case .long: return NSLocalizedString("InvalidUsernameCharactersLong", comment: "")
+                    case .short: return NSLocalizedString("InvalidUsernameCharactersShort", comment: "")
+                }
+            }())
         }
         
         guard username.characters.count <= Constants.maxUsernameLength else {
@@ -64,4 +69,9 @@ extension User {
             NSLocalizedDescriptionKey: description
         ])
     }
+}
+
+/// An enum for different formats of error messages returned from validating `User` properties.
+public enum UserValidationErrorFormat {
+    case long, short
 }
