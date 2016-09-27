@@ -36,7 +36,6 @@
                                             <view contentMode="scaleToFill" placeholderIntrinsicWidth="182" placeholderIntrinsicHeight="32" translatesAutoresizingMaskIntoConstraints="NO" id="o3m-XP-KC0" userLabel="Marquee View" customClass="MarqueeView" customModule="victorious" customModuleProvider="target">
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="32" id="1Rm-Hn-AAz"/>
                                                     <constraint firstAttribute="width" constant="182" id="YqT-cM-aK8"/>
                                                 </constraints>
                                             </view>
@@ -51,7 +50,7 @@
                                         <constraints>
                                             <constraint firstAttribute="bottom" secondItem="o3m-XP-KC0" secondAttribute="bottom" constant="7" id="DaH-Ny-FBv"/>
                                             <constraint firstItem="Y4C-Kw-xXV" firstAttribute="top" secondItem="ufT-VK-ejn" secondAttribute="top" constant="7" id="I9E-fc-z3Q"/>
-                                            <constraint firstItem="o3m-XP-KC0" firstAttribute="top" secondItem="ufT-VK-ejn" secondAttribute="top" constant="5" id="Mag-FX-DOz"/>
+                                            <constraint firstItem="o3m-XP-KC0" firstAttribute="top" secondItem="ufT-VK-ejn" secondAttribute="top" constant="7" id="Mag-FX-DOz"/>
                                             <constraint firstAttribute="trailing" secondItem="o3m-XP-KC0" secondAttribute="trailing" constant="12" id="Nkz-Zb-7ye"/>
                                             <constraint firstItem="o3m-XP-KC0" firstAttribute="leading" secondItem="Y4C-Kw-xXV" secondAttribute="trailing" constant="10" id="P1p-Et-1QH"/>
                                             <constraint firstItem="ICo-zj-eCQ" firstAttribute="top" secondItem="ufT-VK-ejn" secondAttribute="top" id="g2M-Z9-XjO"/>
