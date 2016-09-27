@@ -3244,6 +3244,7 @@
 				D858E0CA1B1FAD2F00437DDE /* VModernLandingViewController.storyboard */,
 				D85B708A1B0EC7230038CA5B /* VModernLoginAndRegistrationFlowViewController.h */,
 				D85B708B1B0EC7230038CA5B /* VModernLoginAndRegistrationFlowViewController.m */,
+				7CCAB3561D5D2EC600ACE99D /* VModernLoginAndRegistrationFlowViewController.swift */,
 				D85B70961B0EED0D0038CA5B /* VModernLoginViewController.h */,
 				D85B70971B0EED0D0038CA5B /* VModernLoginViewController.m */,
 				D8D8129D1B13849E00E93B37 /* VModernLoginViewController.storyboard */,
@@ -3260,7 +3261,6 @@
 				D80536231B17B4310049B77A /* VPromptCarouselViewController.m */,
 				D80536251B17B5CB0049B77A /* VPromptCollectionViewCell.h */,
 				D80536261B17B5CB0049B77A /* VPromptCollectionViewCell.m */,
-				7CCAB3561D5D2EC600ACE99D /* VModernLoginAndRegistrationFlowViewController.swift */,
 			);
 			path = "Signup and Login";
 			sourceTree = "<group>";
