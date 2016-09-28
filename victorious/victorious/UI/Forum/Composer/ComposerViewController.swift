@@ -7,10 +7,10 @@
 //
 
 import UIKit
+import FLAnimatedImage
 
 /// Handles view manipulation and message sending related to the composer. Could definitely use a refactor to make it less stateful.
-class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate, ComposerAttachmentTabBarDelegate, VBackgroundContainer, VCreationFlowControllerDelegate, HashtagBarControllerSelectionDelegate, HashtagBarViewControllerAnimationDelegate, VPassthroughContainerViewDelegate, ToggleableImageButtonDelegate {
-    
+class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate, ComposerAttachmentTabBarDelegate, VBackgroundContainer, VCreationFlowControllerDelegate, HashtagBarControllerSelectionDelegate, HashtagBarViewControllerAnimationDelegate, VPassthroughContainerViewDelegate, PastableTextViewDelegate, ToggleableImageButtonDelegate {
     private struct Constants {
         static let animationDuration = 0.2
         static let maximumNumberOfTabs = 4
@@ -23,6 +23,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         static let stickerInputAreaHeight: CGFloat = 120
         static let gifInputAreaHeight: CGFloat = 90
         static let vipLockComposerMargin: CGFloat = 8
+        static let gifType = "gif"
     }
     
     /// ForumEventSender
@@ -104,7 +105,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     @IBOutlet weak private var confirmButtonContainer: UIView!
     
     private var searchTextChanged = false
-
+    
     private var selectedAsset: ContentMediaAsset? {
         didSet {
             updateConfirmButtonState()
@@ -393,7 +394,6 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         passthroughContainerView.delegate = self
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(setupUserDependentUI), name: VCurrentUser.userDidUpdateNotificationKey, object: nil)
         setupUserDependentUI()
@@ -422,12 +422,11 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     }
     
     override func updateViewConstraints() {
-        
         let confirmButtonContainerHeight = confirmButtonContainer.bounds.height
         if confirmButtonContainerHeight != abs(confirmButton.touchInsets.vertical) {
             confirmButton.touchInsets = UIEdgeInsetsMake(-confirmButtonContainerHeight / 2, -Constants.confirmButtonHorizontalInset, -confirmButtonContainerHeight / 2, -Constants.confirmButtonHorizontalInset)
         }
-
+        
         let desiredAttachmentContainerHeight = shouldShowAttachmentContainer ? confirmButtonContainer.bounds.height : 0
         let attachmentContainerHeightNeedsUpdate = attachmentContainerHeightConstraint.constant != desiredAttachmentContainerHeight
         if attachmentContainerHeightNeedsUpdate {
@@ -581,6 +580,10 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         textView.text = nil
         textView.lineFragmentPadding = 0
         textView.placeholderText = dependencyManager.inputPromptText
+
+        if let pastableTextView = textView as? PastableTextView {
+            pastableTextView.pastableDelegate = self
+        }
     }
     
     private func setupAttachmentTabBar() {
@@ -601,7 +604,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         hashtagBarViewController.animationDelegate = self
         hashtagBarController = hashtagBarViewController.hashtagBarController
     }
-
+    
     private func updateAppearanceFromDependencyManager() {
         guard isViewLoaded() else {
             return
@@ -747,9 +750,10 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
         let maxDimension = view.bounds.width * Constants.maximumAttachmentWidthPercentage
         let resizedImage = preview.scaledImageWithMaxDimension(maxDimension, upScaling: true)
+        
         composerTextViewManager?.prependImage(resizedImage, toTextView: textView)
+        
         self.dismissViewControllerAnimated(true) { [weak self] _ in
-            
             guard let strongSelf = self else {
                 return
             }
@@ -763,17 +767,17 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     private func contentType(for creationFlowController: VCreationFlowController) -> ContentType? {
         switch creationFlowController.mediaType() {
-        case .Image:
-            return .image
-        case .Video:
-            if creationFlowController.dynamicType == VGIFCreationFlowController.self {
-                return .gif
-            } else {
-                return .video
-            }
-        case .Unknown:
-            assertionFailure("Creation flow controller returned an invalid media type.")
-            return nil
+            case .Image:
+                return .image
+            case .Video:
+                if creationFlowController.dynamicType == VGIFCreationFlowController.self {
+                    return .gif
+                } else {
+                    return .video
+                }
+            case .Unknown:
+                assertionFailure("Creation flow controller returned an invalid media type.")
+                return nil
         }
     }
     
@@ -805,8 +809,76 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         else if let text = text {
             sendMessage(text: text, currentUser: user)
         }
+        
+        cleanup()
+    }
+
+    // MARK: - Send Message
+    
+    /// Call after a message has been sent to reset the state.
+    private func cleanup() {
         composerTextViewManager?.resetTextView(textView)
         selectedAsset = nil
+    }
+    
+    // MARK: - PastableTextViewDelegate
+    var canShowPasteMenu: Bool {
+        let generalPasteboard = UIPasteboard.generalPasteboard()
+        
+        let containsStringType = generalPasteboard.containsPasteboardTypes(UIPasteboardTypeListString as! [String])
+        let containsImageType = generalPasteboard.containsPasteboardTypes(UIPasteboardTypeListImage as! [String])
+        let allowsPastingOfImages = dependencyManager.allowsPastingOfImages ?? true
+        let allowsPasting = containsStringType || (containsImageType && allowsPastingOfImages)
+        
+        return allowsPasting
+    }
+    
+    var canShowCopyMenu: Bool {
+        return textViewHasText
+    }
+    
+    var canShowCutMenu: Bool {
+        return textViewHasText
+    }
+    
+    var canShowSelectMenu: Bool {
+        return textViewHasText
+    }
+    
+    func didPasteImage(image: (imageObject: UIImage, imageData: NSData)) {
+        guard let user = VCurrentUser.user else {
+            assertionFailure("Failed to send message due to missing a valid logged in user")
+            return
+        }
+        
+        guard let imageType = image.imageData.imageType() else {
+            Log.debug("Failed to detect the type of image the user pasted.")
+            return
+        }
+        
+        do {
+            let fileUrl = try TemporaryFileWriter.writeTemporaryData(image.imageData, fileExtension: imageType.fileExtension)
+            
+            let mediaParameters = ContentMediaAsset.RemoteAssetParameters(contentType: .image, url: fileUrl, source: nil, size: image.imageObject.size)
+            if let pastedImageAsset = ContentMediaAsset(initializationParameters: mediaParameters) {
+                selectedAsset = pastedImageAsset
+                
+                // We want GIFs to autopost since they are to be considered as a reaction and not a content creation.
+                // We are also making the assumption that all GIFs are animated GIFs...
+                if imageType.fileExtension == Constants.gifType {
+                    sendMessage(asset: pastedImageAsset, previewImage: image.imageObject, text: nil, currentUser: user, isVIPOnly: false)
+                    cleanup()
+                } else {
+                    composerTextViewManager?.prependImage(image.imageObject, toTextView: textView)
+                }
+            }
+        } catch {
+            Log.debug("failed to write temp image file to disk with error -> \(error)")
+        }
+    }
+    
+    func didPasteText(text: String) {
+        composerTextViewManager?.insertTextAtSelectionIfPossible(textView, text: text)
     }
     
     // MARK: - TrayDelegate
@@ -821,7 +893,8 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     }
 }
 
-// Update this extension to parse real values once they're returned in template
+// MARK: - DependecyManager Extension 
+
 private extension VDependencyManager {
     var toggleableVIPButton: UIButton? {
         return buttonForKey("creator.vip.toggle")
@@ -871,7 +944,7 @@ private extension VDependencyManager {
     var inputTextFont: UIFont? {
         return fontForKey(VDependencyManagerParagraphFontKey)
     }
-
+    
     var confirmButtonTextFont: UIFont? {
         return fontForKey(VDependencyManagerLabel4FontKey)
     }
@@ -886,6 +959,10 @@ private extension VDependencyManager {
     
     var alwaysShowAttachmentBar: Bool? {
         return numberForKey("alwaysShowAttachmentBar")?.boolValue
+    }
+    
+    var allowsPastingOfImages: Bool? {
+        return numberForKey("allowsPastingOfImages")?.boolValue
     }
     
     var keyboardAppearance: UIKeyboardAppearance {

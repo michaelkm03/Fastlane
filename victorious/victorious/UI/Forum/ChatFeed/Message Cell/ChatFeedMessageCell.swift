@@ -153,6 +153,10 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     }
 
     private dynamic func didTapOnLikeView() {
+        if let content = content where !content.isLikedByCurrentUser {
+            likeView?.animateLike()
+        }
+
         toggleLike()
     }
 
@@ -177,11 +181,12 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         failureButton.setImage(UIImage(named: "failed_error"), forState: .Normal)
 
         if dependencyManager.upvoteStyle == UpvoteStyle.basic {
-            likeView = LikeView(frame: CGRect.zero,
-                                textColor: dependencyManager.upvoteCountColor,
-                                selectedIcon: dependencyManager.upvoteIconSelected,
-                                unselectedIcon: dependencyManager.upvoteIconUnselected,
-                                alignment: .center
+            likeView = LikeView(
+                frame: CGRect.zero,
+                textColor: dependencyManager.upvoteCountColor,
+                alignment: .center,
+                selectedIcon: dependencyManager.upvoteIconSelected,
+                unselectedIcon: dependencyManager.upvoteIconUnselected
             )
             if let likeView = likeView {
                 likeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapOnLikeView)))
