@@ -828,9 +828,10 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
 
         let containsStringType = generalPasteboard.containsPasteboardTypes(UIPasteboardTypeListString as! [String])
         let containsImageType = generalPasteboard.containsPasteboardTypes(UIPasteboardTypeListImage as! [String])
-        let canShowPasteMenu = containsStringType || (containsImageType && dependencyManager.allowsPastingOfImages ?? true)
+        let allowsPastingOfImages = dependencyManager.allowsPastingOfImages ?? true
+        let allowsPasting = containsStringType || (containsImageType && allowsPastingOfImages)
 
-        return canShowPasteMenu
+        return allowsPasting
     }
 
     var canShowCopyMenu: Bool {
@@ -875,6 +876,10 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         } catch {
             Log.debug("failed to write temp image file to disk with error -> \(error)")
         }
+    }
+
+    func didPasteText(text: String) {
+        composerTextViewManager?.appendTextIfPossible(textView, text: text)
     }
     
     // MARK: - TrayDelegate

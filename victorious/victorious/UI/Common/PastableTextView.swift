@@ -16,6 +16,7 @@ protocol PastableTextViewDelegate: class {
 
     /// imageObject is required for sizing information, imageData is required for gif
     func didPasteImage(image: (imageObject: UIImage, imageData: NSData))
+    func didPasteText(text: String)
 }
 
 /// Subclass of VPlaceholderTextView to allow pasting of media content into the composer.
@@ -54,6 +55,8 @@ class PastableTextView: VPlaceholderTextView {
 
         if let image = pasteboard.image, let imageData = pasteboard.dataForPasteboardType("public.image") {
             pastableDelegate.didPasteImage((image, imageData))
+        } else if let text = pasteboard.string {
+            pastableDelegate.didPasteText(text)
         }
     }
 }
