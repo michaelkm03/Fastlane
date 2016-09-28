@@ -23,18 +23,12 @@ static inline BOOL isVideoExtension(NSString *pathExtension)
             [lowercasePathExtension isEqualToString:VConstantMediaExtensionMOV];
 }
 
-static inline BOOL isGIFExtension(NSString *pathExtension)
-{
-    NSString *lowercasePathExtension = [pathExtension lowercaseStringWithLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
-    return [lowercasePathExtension isEqualToString:VConstantMediaExtensionM3U8] ||
-    [lowercasePathExtension isEqualToString:VConstantMediaExtensionMP4] ||
-    [lowercasePathExtension isEqualToString:VConstantMediaExtensionMOV];
-}
-
 static inline BOOL isImageExtension(NSString *pathExtension)
 {
     NSString *lowercasePathExtension = [pathExtension lowercaseStringWithLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
-    return [lowercasePathExtension isEqualToString:VConstantMediaExtensionGIF];
+    return [lowercasePathExtension isEqualToString:VConstantMediaExtensionJPG] ||
+    [lowercasePathExtension isEqualToString:VConstantMediaExtensionPNG] ||
+    [lowercasePathExtension isEqualToString:VConstantMediaExtensionJPEG];
 }
 
 @implementation NSURL (MediaType)
@@ -49,11 +43,6 @@ static inline BOOL isImageExtension(NSString *pathExtension)
     return isImageExtension([self pathExtension]);
 }
 
-- (BOOL)v_hasGIFExtension
-{
-    return isGIFExtension([self pathExtension]);
-}
-
 @end
 
 @implementation NSString (MediaType)
@@ -66,11 +55,6 @@ static inline BOOL isImageExtension(NSString *pathExtension)
 - (BOOL)v_hasImageExtension
 {
     return isImageExtension([self pathExtension]);
-}
-
-- (BOOL)v_hasGIFExtension
-{
-    return isGIFExtension([self pathExtension]);
 }
 
 - (BOOL)v_isExtensionMp4

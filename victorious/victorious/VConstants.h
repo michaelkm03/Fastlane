@@ -92,7 +92,6 @@ static NSString * const VConstantMediaExtensionJPG       = @"jpg";
 static NSString * const VConstantMediaExtensionJPEG      = @"jpeg";
 static NSString * const VConstantMediaExtensionMOV       = @"mov";
 static NSString * const VConstantMediaExtensionMP4       = @"mp4";
-static NSString * const VConstantMediaExtensionGIF       = @"gif";
 
 static const CGFloat VConstantJPEGCompressionQuality    = 0.8f;
 

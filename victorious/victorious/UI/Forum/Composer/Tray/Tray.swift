@@ -52,8 +52,9 @@ extension Tray where Self: UIViewController {
         return progressHUD
     }
     
-    // MARK: - Media exporting
-    
+}
+
+extension Tray {
     func exportMedia(fromSearchResult mediaSearchResultObject: MediaSearchResult, completionBlock: (TrayMediaCompletionState) -> ()) -> MediaSearchExporter {
         let mediaExporter = MediaSearchExporter(mediaSearchResult: mediaSearchResultObject)
         mediaExporter.loadMedia() { (previewImage, mediaURL, error) in

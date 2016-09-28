@@ -1188,10 +1188,6 @@
 		F00DEBA01CC1940F00C5C9EA /* NSURL+PreviewImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00DEB9F1CC1940F00C5C9EA /* NSURL+PreviewImage.swift */; };
 		F00FC2CD1D91FAC300CFF79F /* StickerSearchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00FC2CC1D91FAC300CFF79F /* StickerSearchOperation.swift */; };
 		F00FC2CF1D92061200CFF79F /* StickerSearchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00FC2CE1D92061200CFF79F /* StickerSearchRequest.swift */; };
-		F00FC2D61D92160E00CFF79F /* NSURL+MediaType.h in Headers */ = {isa = PBXBuildFile; fileRef = F00FC2D41D92160E00CFF79F /* NSURL+MediaType.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F00FC2D71D92160E00CFF79F /* NSURL+MediaType.m in Sources */ = {isa = PBXBuildFile; fileRef = F00FC2D51D92160E00CFF79F /* NSURL+MediaType.m */; };
-		F00FC2D81D92161700CFF79F /* NSURL+MediaType.h in Headers */ = {isa = PBXBuildFile; fileRef = F00FC2D41D92160E00CFF79F /* NSURL+MediaType.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F00FC2D91D92161E00CFF79F /* NSURL+MediaType.m in Sources */ = {isa = PBXBuildFile; fileRef = F00FC2D51D92160E00CFF79F /* NSURL+MediaType.m */; };
 		F01307FC1CD2A4C100C0156C /* NativeWorkspaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F01307FB1CD2A4C100C0156C /* NativeWorkspaceViewController.swift */; };
 		F01307FE1CD2A89800C0156C /* NativeWorkspaceViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F01307FD1CD2A89800C0156C /* NativeWorkspaceViewController.storyboard */; };
 		F0140BC11AA93AEB00B95642 /* VTimerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F0140BC01AA93AEB00B95642 /* VTimerManager.m */; };
@@ -1267,6 +1263,7 @@
 		F0BD812D1C9B67150062D079 /* ComposerAttachmentTabBarButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0BD812C1C9B67150062D079 /* ComposerAttachmentTabBarButtonTests.swift */; };
 		F0C5AEDD1D9A397C0005EB0F /* StickerCreateRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C5AEDC1D9A397C0005EB0F /* StickerCreateRequest.swift */; };
 		F0C83A451B0FDD2B00A6EC1A /* coachmarks.json in Resources */ = {isa = PBXBuildFile; fileRef = F0C83A441B0FDD2B00A6EC1A /* coachmarks.json */; };
+		F0D8B17B1D9B4BEB00EF333D /* NSURL+MediaType.m in Sources */ = {isa = PBXBuildFile; fileRef = F00FC2D51D92160E00CFF79F /* NSURL+MediaType.m */; };
 		F0E0F1AA1AE8811700143CBF /* VLaunchScreenProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E0F1A91AE8811700143CBF /* VLaunchScreenProvider.m */; };
 		F0E6672A1D14964A007BF537 /* ContentCellTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E667291D14964A007BF537 /* ContentCellTracker.swift */; };
 		F0E6672E1D1496B8007BF537 /* ContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E6672D1D1496B8007BF537 /* ContentCell.swift */; };
@@ -2856,8 +2853,8 @@
 		F00DEB9F1CC1940F00C5C9EA /* NSURL+PreviewImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSURL+PreviewImage.swift"; sourceTree = "<group>"; };
 		F00FC2CC1D91FAC300CFF79F /* StickerSearchOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickerSearchOperation.swift; sourceTree = "<group>"; };
 		F00FC2CE1D92061200CFF79F /* StickerSearchRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickerSearchRequest.swift; sourceTree = "<group>"; };
-		F00FC2D41D92160E00CFF79F /* NSURL+MediaType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+MediaType.h"; sourceTree = "<group>"; };
-		F00FC2D51D92160E00CFF79F /* NSURL+MediaType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+MediaType.m"; sourceTree = "<group>"; };
+		F00FC2D41D92160E00CFF79F /* NSURL+MediaType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSURL+MediaType.h"; path = "../../VictoriousIOSSDK/NSURL+MediaType.h"; sourceTree = "<group>"; };
+		F00FC2D51D92160E00CFF79F /* NSURL+MediaType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSURL+MediaType.m"; path = "../../VictoriousIOSSDK/NSURL+MediaType.m"; sourceTree = "<group>"; };
 		F01307FB1CD2A4C100C0156C /* NativeWorkspaceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NativeWorkspaceViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		F01307FD1CD2A89800C0156C /* NativeWorkspaceViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = NativeWorkspaceViewController.storyboard; sourceTree = "<group>"; };
 		F0140BBF1AA93AEB00B95642 /* VTimerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTimerManager.h; sourceTree = "<group>"; };
@@ -3381,8 +3378,6 @@
 				0300AA591BF17C20000A121D /* VMultipartFormDataWriter.m */,
 				03314F5F1BE40F3200EE74FD /* VSDKCrypto.h */,
 				03314F601BE40F3200EE74FD /* VSDKCrypto.m */,
-				F00FC2D41D92160E00CFF79F /* NSURL+MediaType.h */,
-				F00FC2D51D92160E00CFF79F /* NSURL+MediaType.m */,
 				A7BBB8EA1C167858009319D9 /* VSDKURLMacroReplacement.h */,
 				A7BBB8EB1C167858009319D9 /* VSDKURLMacroReplacement.m */,
 				0EF7168B1C98FD770005CF86 /* WebSocket */,
@@ -5093,6 +5088,8 @@
 				A721E8C81B572453000B7901 /* NSString+VStringWithData.h */,
 				A721E8C91B572453000B7901 /* NSString+VStringWithData.m */,
 				67DDA81E1D46CA2500C55494 /* NSURL+CustomScheme.swift */,
+				F00FC2D41D92160E00CFF79F /* NSURL+MediaType.h */,
+				F00FC2D51D92160E00CFF79F /* NSURL+MediaType.m */,
 				A72A03271C8F55680067ADBD /* NSURL+OptionalString.swift */,
 				F00DEB9F1CC1940F00C5C9EA /* NSURL+PreviewImage.swift */,
 				A6B9FD0D1B60630900166BE8 /* NSURL+VTemporaryFiles.h */,
@@ -6417,7 +6414,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A7BBB8EC1C167858009319D9 /* VSDKURLMacroReplacement.h in Headers */,
-				F00FC2D61D92160E00CFF79F /* NSURL+MediaType.h in Headers */,
 				03314F1F1BE3E2DE00EE74FD /* VictoriousIOSSDK.h in Headers */,
 				A7D920501C063705002A6503 /* VRequestErrorConstants.h in Headers */,
 				0300AA5A1BF17C20000A121D /* VMultipartFormDataWriter.h in Headers */,
@@ -6479,7 +6475,6 @@
 				0372BEFB1C84FF61004950CF /* VRequestErrorConstants.h in Headers */,
 				0372BEF31C84FF1F004950CF /* VictoriousIOSSDK.h in Headers */,
 				0372BEF41C84FF1F004950CF /* VMultipartFormDataWriter.h in Headers */,
-				F00FC2D81D92161700CFF79F /* NSURL+MediaType.h in Headers */,
 				0372BEF51C84FF1F004950CF /* VSDKCrypto.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -7526,7 +7521,6 @@
 				C3FEA7A51BF26F24003446CC /* GIFSearchRequest.swift in Sources */,
 				0E5F7E401CA1E42000B3AF14 /* ForumNetworkSource.swift in Sources */,
 				0E0DF0CC1CDD3DE100C782EA /* UniqueIdentificationMessage.swift in Sources */,
-				F00FC2D71D92160E00CFF79F /* NSURL+MediaType.m in Sources */,
 				0E23691B1D493C5600D9E45C /* SwiftyBeaver.swift in Sources */,
 				62FD647C1D8B1E8100E9BAF8 /* ChatRoomsRequest.swift in Sources */,
 				A734AF181C499B5500ECA324 /* RequestBodyWriterType.swift in Sources */,
@@ -7770,7 +7764,6 @@
 				0372BEE71C84FF19004950CF /* TrendingHashtagsRequest.swift in Sources */,
 				0372BECA1C84FF0C004950CF /* GIFSearchResult.swift in Sources */,
 				03E7305E1C974B11008CB191 /* ValidateReceiptRequest.swift in Sources */,
-				F00FC2D91D92161E00CFF79F /* NSURL+MediaType.m in Sources */,
 				0372BEF21C84FF19004950CF /* VSDKURLMacroReplacement.m in Sources */,
 				0372BEB41C84FF02004950CF /* RequestPasswordResetRequest.swift in Sources */,
 				0372BE7E1C84FF02004950CF /* Bool+Initializers.swift in Sources */,
@@ -7899,6 +7892,7 @@
 				A7BA22001BA75A9A00F2CD37 /* UIView+Nib.swift in Sources */,
 				A76711FB1C1B7DD7006568DF /* TimingTracker.swift in Sources */,
 				A65318A21B59B35900389EA9 /* VCreationFlowAnimator.m in Sources */,
+				F0D8B17B1D9B4BEB00EF333D /* NSURL+MediaType.m in Sources */,
 				670A3B1C1CA9F5AF004C5F57 /* InterstitialAlertViewController.swift in Sources */,
 				A60658251B56FF7200414DB7 /* VCollectionListPresentationController.m in Sources */,
 				7A1DED131D82533D003F5C37 /* VIPClearSubscriptionOperation.swift in Sources */,

@@ -12,6 +12,7 @@
 
 #import "NSString+VCrypto.h"
 #import "NSString+VParseHelp.h"
+#import "NSURL+MediaType.h"
 #import "NSURL+VDataCacheID.h"
 #import "NSURL+VTemporaryFiles.h"
 #import "TestFairy.h"

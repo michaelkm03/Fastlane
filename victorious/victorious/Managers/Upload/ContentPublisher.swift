@@ -144,12 +144,12 @@ class ContentPublisher {
             
             operation.queue { result in
                 switch result {
-                case .success:
-                    completion?(nil)
-                case .failure(let error):
-                    completion?(error)
-                case .cancelled:
-                    break
+                    case .success:
+                        completion?(nil)
+                    case .failure(let error):
+                        completion?(error)
+                    case .cancelled:
+                        break
                 }
             }
         }

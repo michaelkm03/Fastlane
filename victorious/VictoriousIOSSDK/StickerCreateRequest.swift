@@ -11,8 +11,8 @@ import Foundation
 public class StickerCreateRequest: RequestType {
     public var urlRequest: NSURLRequest {
         let request = NSMutableURLRequest(URL: url)
-            request.HTTPMethod = "POST"
-            request.addValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        request.HTTPMethod = "POST"
+        request.addValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
         request.HTTPBody = formParams.vsdk_urlEncodedString().dataUsingEncoding(NSUTF8StringEncoding)
         return request
     }

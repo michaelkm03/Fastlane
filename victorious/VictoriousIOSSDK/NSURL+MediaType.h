@@ -12,7 +12,6 @@
 
 - (BOOL)v_hasVideoExtension; ///< Returns YES if the receiver's pathExtension is a common video extension
 - (BOOL)v_hasImageExtension; ///< Returns YES if the receiver's pathExtension is a common image extension
-- (BOOL)v_hasGIFExtension; ///< Returns YES if the receiver's pathExtension is a gif extension
 
 @end
 
@@ -20,7 +19,6 @@
 
 - (BOOL)v_hasVideoExtension; ///< Returns YES if the receiver's pathExtension is a common video extension
 - (BOOL)v_hasImageExtension; ///< Returns YES if the receiver's pathExtension is a common image extension
-- (BOOL)v_hasGIFExtension; ///< Returns YES if the receiver's pathExtension is a gif extension
 - (BOOL)v_isExtensionMp4; ///< Returns YES if the receiver's pathExtension is an mp4 video extension
 
 @end

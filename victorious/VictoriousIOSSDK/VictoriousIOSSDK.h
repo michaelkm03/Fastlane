@@ -18,4 +18,3 @@ FOUNDATION_EXPORT const unsigned char VictoriousIOSSDKVersionString[];
 #import <VictoriousIOSSDK/VSDKCrypto.h>
 #import <VictoriousIOSSDK/VRequestErrorConstants.h>
 #import <VictoriousIOSSDK/VSDKURLMacroReplacement.h>
-#import <VictoriousIOSSDK/NSURL+MediaType.h>

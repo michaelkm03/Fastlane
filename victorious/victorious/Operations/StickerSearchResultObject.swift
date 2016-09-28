@@ -31,7 +31,10 @@ import VictoriousIOSSDK
     }
     
     var aspectRatio: CGFloat {
-        return 1
+        guard sourceResult.height > 0 && sourceResult.width > 0 else {
+            return 1.0
+        }
+        return CGFloat(sourceResult.width) / CGFloat(sourceResult.height)
     }
     
     var assetSize: CGSize {
