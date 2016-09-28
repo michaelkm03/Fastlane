@@ -118,15 +118,10 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         let listMenuSection = ListMenuSection(rawValue: indexPath.section)!
 
         switch listMenuSection {
-            case .creator: return dequeueProperCell(creatorDataSource, for: collectionView, at: indexPath)
-            case .community: return dequeueProperCell(communityDataSource, for: collectionView, at: indexPath)
-            case .hashtags: return dequeueProperCell(hashtagDataSource, for: collectionView, at: indexPath)
-            case .chatRooms:
-                switch newChatRoomsDataSource.state {
-                    case .loading: return dequeueLoadingCell(from: collectionView, at: indexPath)
-                    case .items: return newChatRoomsDataSource.dequeueItemCell(from: collectionView, at: indexPath)
-                    case .failed, .noContent: return dequeueNoContentCell(from: collectionView, at: indexPath)
-                }
+            case .creator: return dequeueProperCell(from: creatorDataSource, for: collectionView, at: indexPath)
+            case .community: return dequeueProperCell(from: communityDataSource, for: collectionView, at: indexPath)
+            case .hashtags: return dequeueProperCell(from: hashtagDataSource, for: collectionView, at: indexPath)
+            case .chatRooms: return dequeueProperCell(from: newChatRoomsDataSource, for: collectionView, at: indexPath)
         }
     }
     
@@ -176,7 +171,12 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         return noContentCell
     }
 
-    private func dequeueProperCell<DataSource: ListMenuSectionDataSource where DataSource.Cell: UICollectionViewCell>(dataSource: DataSource, for collectionView: UICollectionView, at indexPath: NSIndexPath) -> UICollectionViewCell {
+    // HACK: This is a limitation of the Swift 2.2 compiler. You have to make a generic parameter's type generic for a generic method. 
+    //       If you do it, the compiler forces you to use that type in the parameter list which is not needed here.
+    //       The last paramter called item is not needed in the method below and it's made optional with a nil value as a work around. 
+    //       We should submit a bug to Swift if it still happens after the Swift 3 upgrade.
+    //       Tracked in https://jira.victorious.com/browse/IOS-5783
+    private func dequeueProperCell<Item, DataSource: NewListMenuSectionDataSource<Item>>(from dataSource: DataSource, for collectionView: UICollectionView, at indexPath: NSIndexPath, item: Item? = nil) -> UICollectionViewCell {
         switch dataSource.state {
             case .loading: return dequeueLoadingCell(from: collectionView, at: indexPath)
             case .items: return dataSource.dequeueItemCell(from: collectionView, at: indexPath)
