@@ -30,7 +30,19 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     }()
     
     private lazy var endVIPButton: UIButton? = {
-        return self.dependencyManager.endVIPButton
+        guard let configuration = self.dependencyManager.endVIPConfiguration else {
+            return nil
+        }
+        
+        let button = BackgroundButton(type: .System)
+        button.addTarget(self, action: #selector(endVIPEvent), forControlEvents: .TouchUpInside)
+        button.setTitle(configuration.endVIPTitle, forState: .Normal)
+        button.titleLabel?.font = configuration.endVIPTitleFont
+        button.titleLabel?.textColor = configuration.endVIPTitleColor
+        button.backgroundColor = configuration.endVIPBackgroundColor
+        button.sizeToFit()
+
+        return button
     }()
 
     private var stageShrinkingAnimator: StageShrinkingAnimator?
@@ -241,7 +253,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         
         chatFeed?.nextSender = self
         //Initialize the title view. This will later be resized in the viewWillAppear, once it has actually been added to the navigation stack
-        navBarTitleView = ForumNavBarTitleView(dependencyManager: self.dependencyManager, frame: CGRect(x: 0, y: 0, width: 200, height: 45))
+        navBarTitleView = ForumNavBarTitleView(dependencyManager: self.dependencyManager, frame: CGRect(x: 0, y: 0, width: 120, height: 45))
         navigationController?.navigationBar.barStyle = .Black
         if let button = closeButton {
             button.addTarget(self, action: #selector(onClose), forControlEvents: .TouchUpInside)
@@ -250,8 +262,6 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         }
         
         if let endVIPButton = endVIPButton where VCurrentUser.user?.accessLevel.isCreator == true {
-            endVIPButton.addTarget(self, action: #selector(endVIPEvent), forControlEvents: .TouchUpInside)
-            endVIPButton.sizeToFit()
             navigationItem.rightBarButtonItem = UIBarButtonItem(customView: endVIPButton)
         }
         
@@ -269,7 +279,13 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     }
     
     private dynamic func endVIPEvent() {
-        // TODO: End VIP Event
+        let alertController = UIAlertController(
+            title: "End VIP Chat",
+            message: "Are you sure you want to end the VIP Chat?",
+            preferredStyle: .ActionSheet
+        )
+        
+        presentViewController(alertController, animated: true, completion: nil)
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -496,10 +512,6 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
 }
 
 private extension VDependencyManager {
-    var endVIPButton: UIButton? {
-        return buttonForKey("end.vip.button")
-    }
-    
     var title: String? {
         return stringForKey("title.text")
     }
@@ -530,5 +542,27 @@ private extension VDependencyManager {
 
     var contentUnLikeKey: String? {
         return networkResources?.stringForKey("contentUnupvoteURL")
+    }
+    
+    // MARK: - End VIP Button
+    
+    var endVIPConfiguration: VDependencyManager? {
+        return childDependencyForKey("end.vip.button")
+    }
+    
+    var endVIPTitle: String? {
+        return stringForKey("text.title")
+    }
+    
+    var endVIPTitleColor: UIColor? {
+        return colorForKey("color.title")
+    }
+    
+    var endVIPTitleFont: UIFont? {
+        return fontForKey("font.title")
+    }
+    
+    var endVIPBackgroundColor: UIColor? {
+        return colorForKey("color.background")
     }
 }
