@@ -21,20 +21,21 @@ protocol NewListMenuSectionDataSourceDelegate: class {
     func didUpdateVisibleItems(forSection section: ListMenuSection)
 }
 
-class NewListMenuSectionDataSource<CellData> {
+class NewListMenuSectionDataSource<CellData, Request: RequestType where Request.ResultType == Array<CellData>> {
 
     // MARK: - Initialization
-    typealias CellConfigurationCallback = (cell: NewListMenuSectionCell, item: CellData)  -> Void
-    typealias FetchRemoteDataCallback = (dataSource: NewListMenuSectionDataSource) -> Void
+    typealias CellConfigurationCallback = (_: NewListMenuSectionCell, _: CellData)  -> Void
+    typealias FetchRemoteDataCallback = (_: NewListMenuSectionDataSource) -> Void
     let cellConfigurationCallback: CellConfigurationCallback
-    let fetchRemoteDataCallback: FetchRemoteDataCallback
+    let fetchRequest: Request
     weak var delegate: ListMenuSectionDataSourceDelegate?
     var state: ListMenuDataSourceState = .loading
+    var requestExecutor: RequestExecutorType = MainRequestExecutor()
 
-    init(dependencyManager: VDependencyManager, cellConfigurationCallback: CellConfigurationCallback, fetchRemoteDataCallback: FetchRemoteDataCallback) {
+    init(dependencyManager: VDependencyManager, cellConfigurationCallback: CellConfigurationCallback, fetchRequest: Request) {
         self.dependencyManager = dependencyManager
         self.cellConfigurationCallback = cellConfigurationCallback
-        self.fetchRemoteDataCallback = fetchRemoteDataCallback
+        self.fetchRequest = fetchRequest
     }
 
     // MARK - Dependency manager
@@ -53,17 +54,31 @@ class NewListMenuSectionDataSource<CellData> {
 
     func dequeueItemCell(from collectionView: UICollectionView, at indexPath: NSIndexPath) -> NewListMenuSectionCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(NewListMenuSectionCell.defaultReuseIdentifier, forIndexPath: indexPath) as! NewListMenuSectionCell
-        cellConfigurationCallback(cell: cell, item: visibleItems[indexPath.row])
+        cellConfigurationCallback(_: cell, _: visibleItems[indexPath.row])
         cell.dependencyManager = dependencyManager
         return cell
     }
 
     func setupDataSource(with delegate: ListMenuSectionDataSourceDelegate) {
         self.delegate = delegate
-        fetchRemoteDataCallback(dataSource: self)
+        let operation = RequestOperation(request: fetchRequest)
+        operation.requestExecutor = requestExecutor
+        operation.queue() { [weak self] result in
+            switch result {
+            case .success(let chatRooms):
+                self?.visibleItems = chatRooms
+
+            case .failure(let error):
+                self?.state = .failed(error: error)
+                self?.delegate?.didUpdateVisibleItems(forSection: .chatRooms)
+
+            case .cancelled:
+                self?.delegate?.didUpdateVisibleItems(forSection: .chatRooms)
+            }
+        }
     }
 
-    var visibleItems: [CellData] = [] {
+    var visibleItems: [CellData] = [CellData]() {
         didSet {
             state = visibleItems.isEmpty ? .noContent : .items
             delegate?.didUpdateVisibleItems(forSection: .hashtags)

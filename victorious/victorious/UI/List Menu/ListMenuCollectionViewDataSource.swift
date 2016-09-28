@@ -35,13 +35,10 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
 
     private weak var listMenuViewController: ListMenuViewController?
     private let dependencyManager: VDependencyManager
-    var requestExecutor: RequestExecutorType = MainRequestExecutor()
-    
     let communityDataSource: ListMenuCommunityDataSource
     let hashtagDataSource: ListMenuHashtagsDataSource
     let creatorDataSource: ListMenuCreatorDataSource
-    let newChatRoomsDataSource: NewListMenuSectionDataSource<ChatRoom>
-
+    let newChatRoomsDataSource: NewListMenuSectionDataSource<ChatRoom, ChatRoomsRequest>
     private let subscribeButton: SubscribeButton
     
     // MARK: - Initialization
@@ -54,38 +51,16 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         communityDataSource = ListMenuCommunityDataSource(dependencyManager: dependencyManager.communityChildDependency)
         hashtagDataSource = ListMenuHashtagsDataSource(dependencyManager: dependencyManager.hashtagsChildDependency)
 
-        let requestExecutor = self.requestExecutor
-        let chatRoomsAPIPath = self.dependencyManager.networkResources?.apiPathForKey(Constants.Keys.chatRoomsURL)
-        newChatRoomsDataSource = NewListMenuSectionDataSource(dependencyManager: dependencyManager.chatRoomsChildDependency, cellConfigurationCallback: { cell, item in
+        if
+            let apiPath = self.dependencyManager.networkResources?.apiPathForKey(Constants.Keys.chatRoomsURL),
+            let request = ChatRoomsRequest(apiPath: apiPath) {
+            newChatRoomsDataSource = NewListMenuSectionDataSource(dependencyManager: dependencyManager.chatRoomsChildDependency,cellConfigurationCallback: { cell, item in
                 cell.titleLabel.text = item.name
-            }, fetchRemoteDataCallback: { [weak requestExecutor, chatRoomsAPIPath] dataSource in
-                guard
-                    let apiPath = chatRoomsAPIPath,
-                    let request = ChatRoomsRequest(apiPath: apiPath),
-                    let requestExecutor = requestExecutor
-                else {
-                    Log.warning("Missing chat rooms API path or requestExecutor")
-                    dataSource.state = .failed(error: nil)
-                    return
-                }
-
-                let operation = RequestOperation(request: request)
-                operation.requestExecutor = requestExecutor
-                operation.queue() { [weak dataSource] result in
-                    switch result {
-                    case .success(let chatRooms):
-                        dataSource?.visibleItems = chatRooms
-
-                    case .failure(let error):
-                        dataSource?.state = .failed(error: error)
-                        dataSource?.delegate?.didUpdateVisibleItems(forSection: .chatRooms)
-
-                    case .cancelled:
-                        dataSource?.delegate?.didUpdateVisibleItems(forSection: .chatRooms)
-                    }
-                }
-            }
-        )
+            }, fetchRequest: request)
+        } else {
+            Log.warning("Missing chat rooms API path or requestExecutor")
+            return
+        }
 
         super.init()
         
@@ -171,12 +146,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         return noContentCell
     }
 
-    // HACK: This is a limitation of the Swift 2.2 compiler. You have to make a generic parameter's type generic for a generic method. 
-    //       If you do it, the compiler forces you to use that type in the parameter list which is not needed here.
-    //       The last paramter called item is not needed in the method below and it's made optional with a nil value as a work around. 
-    //       We should submit a bug to Swift if it still happens after the Swift 3 upgrade.
-    //       Tracked in https://jira.victorious.com/browse/IOS-5783
-    private func dequeueProperCell<Item, DataSource: NewListMenuSectionDataSource<Item>>(from dataSource: DataSource, for collectionView: UICollectionView, at indexPath: NSIndexPath, item: Item? = nil) -> UICollectionViewCell {
+    private func dequeueProperCell<Item, Request>(from dataSource: NewListMenuSectionDataSource<Item, Request>, for collectionView: UICollectionView, at indexPath: NSIndexPath) -> UICollectionViewCell {
         switch dataSource.state {
             case .loading: return dequeueLoadingCell(from: collectionView, at: indexPath)
             case .items: return dataSource.dequeueItemCell(from: collectionView, at: indexPath)
