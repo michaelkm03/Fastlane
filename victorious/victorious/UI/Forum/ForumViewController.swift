@@ -15,6 +15,15 @@ private struct Constants {
 /// A template driven .screen component that sets up, houses and mediates the interaction
 /// between the Forum's required concrete implementations and abstract dependencies.
 class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocusable, UploadManagerHost, ContentPublisherDelegate, CoachmarkDisplayer {
+    private struct EndVIPButtonConfiguration {
+        let title: String
+        let titleColor: UIColor
+        let titleFont: UIFont
+        let backgroundColor: UIColor
+        let confirmationTitle: String
+        let confirmationBody: String
+    }
+    
     @IBOutlet private weak var stageContainer: UIView!
     @IBOutlet private weak var stageViewControllerContainer: VPassthroughContainerView!
     @IBOutlet private weak var stageTouchView: UIView!
@@ -30,19 +39,42 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     }()
     
     private lazy var endVIPButton: UIButton? = {
-        guard let configuration = self.dependencyManager.endVIPConfiguration else {
+        guard let configuration = self.endVIPConfiguration else {
             return nil
         }
         
         let button = BackgroundButton(type: .System)
         button.addTarget(self, action: #selector(endVIPEvent), forControlEvents: .TouchUpInside)
-        button.setTitle(configuration.endVIPTitle, forState: .Normal)
-        button.titleLabel?.font = configuration.endVIPTitleFont
-        button.titleLabel?.textColor = configuration.endVIPTitleColor
-        button.backgroundColor = configuration.endVIPBackgroundColor
+        button.setTitle(configuration.title, forState: .Normal)
+        button.titleLabel?.font = configuration.titleFont
+        button.titleLabel?.textColor = configuration.titleColor
+        button.backgroundColor = configuration.backgroundColor
         button.sizeToFit()
 
         return button
+    }()
+    
+    private lazy var endVIPConfiguration: EndVIPButtonConfiguration? = {
+        guard
+            let configuration = self.dependencyManager.endVIPConfiguration,
+            let title = configuration.endVIPTitle,
+            let titleColor = configuration.endVIPTitleColor,
+            let titleFont = configuration.endVIPTitleFont,
+            let backgroundColor = configuration.endVIPBackgroundColor,
+            let confirmationTitle = configuration.endVIPConfirmationTitle,
+            let confirmationBody = configuration.endVIPConfirmationBody
+        else {
+            return nil
+        }
+        
+        return EndVIPButtonConfiguration(
+            title: title,
+            titleColor: titleColor,
+            titleFont: titleFont,
+            backgroundColor: backgroundColor,
+            confirmationTitle: confirmationTitle,
+            confirmationBody: confirmationBody
+        )
     }()
 
     private var stageShrinkingAnimator: StageShrinkingAnimator?
@@ -279,13 +311,35 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     }
     
     private dynamic func endVIPEvent() {
+        guard let configuration = self.endVIPConfiguration else {
+            return
+        }
+        
         let alertController = UIAlertController(
-            title: "End VIP Chat",
-            message: "Are you sure you want to end the VIP Chat?",
-            preferredStyle: .ActionSheet
+            title: configuration.confirmationTitle,
+            message: configuration.confirmationBody,
+            preferredStyle: .Alert
         )
+        let cancel = UIAlertAction(
+            title: NSLocalizedString("Cancel", comment: "Cancel closing the VIP Event"),
+            style: .Default,
+            handler: nil
+        )
+        alertController.addAction(cancel)
+        
+        let confirm = UIAlertAction(
+            title: NSLocalizedString("Yes", comment: "Confirm closing the VIP Event"),
+            style: .Destructive
+        ) { _ in
+            self.confirmCloseVIPEvent()
+        }
+        alertController.addAction(confirm)
         
         presentViewController(alertController, animated: true, completion: nil)
+    }
+    
+    private func confirmCloseVIPEvent() {
+        
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -564,5 +618,13 @@ private extension VDependencyManager {
     
     var endVIPBackgroundColor: UIColor? {
         return colorForKey("color.background")
+    }
+    
+    var endVIPConfirmationTitle: String? {
+        return stringForKey("text.confirmation.title")
+    }
+    
+    var endVIPConfirmationBody: String? {
+        return stringForKey("text.confirmation.body")
     }
 }
