@@ -65,9 +65,12 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
     
     /// Check this to determine whether or not the entered data is currently valid. When this propery is `nil` the dataSource is considered valid.
     var localizedError: ErrorType? {
+        let username = nameAndLocationCell.username ?? ""
+        let displayName = nameAndLocationCell.displayname ?? ""
+        
         return (
-            User.validationError(forUsername: nameAndLocationCell.username ?? "") ??
-            User.validationError(forDisplayName: nameAndLocationCell.displayname ?? "")
+            User.validationError(forUsername: username) ??
+            User.validationError(forDisplayName: displayName)
         )
     }
     

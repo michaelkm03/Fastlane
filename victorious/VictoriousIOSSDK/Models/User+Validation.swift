@@ -51,7 +51,7 @@ extension User {
     public static func validationError(forDisplayName displayName: String) -> ErrorType? {
         let trimmedDisplayName = displayName.stringByTrimmingCharactersInSet(.whitespaceAndNewlineCharacterSet())
         
-        guard trimmedDisplayName.characters.count < Constants.maxDisplayNameLength else {
+        guard trimmedDisplayName.characters.count <= Constants.maxDisplayNameLength else {
             return validationError(withDescription: NSLocalizedString("DisplayNameTooLong", comment: ""))
         }
         
