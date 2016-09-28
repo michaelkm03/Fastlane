@@ -24,19 +24,19 @@ class VIPSelectSubscriptionOperationTests: XCTestCase {
     func testValidProducts() {
         let operation = VIPSelectSubscriptionOperation(products: validProducts, originViewController: UIViewController())
         operation.execute { result in
-            switch result {
-                case .success(_):
-                    XCTFail("Operation execution generated success result without user interaction")
-                case .failure(_), .cancelled:
-                    XCTFail("Operation execution generated failure result")
-            }
+            XCTFail("Operation execution finished unexpectedly without user interaction")
         }
     }
     
     func testInvalidProducts() {
         let operation = VIPSelectSubscriptionOperation(products: invalidProducts, originViewController: UIViewController())
         operation.execute { result in
-            
+            switch result {
+                case .failure(let error as NSError):
+                    XCTAssertEqual(error.code, -2)
+                default:
+                    XCTFail("Operation execution finished with unexpected result")
+            }
         }
     }
 }

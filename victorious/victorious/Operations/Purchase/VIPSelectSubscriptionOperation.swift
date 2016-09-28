@@ -54,7 +54,7 @@ final class VIPSelectSubscriptionOperation: AsyncOperation<VProduct>, UIAlertVie
         
         // If we added no product to the selection, that means we don't have any valid products.
         guard alert.actions.count > 0 else {
-            finish(result: .failure(NSError(domain: "No valid product", code: -1, userInfo: ["products: ": products])))
+            finish(result: .failure(NSError(domain: "Incomplete product information", code: -2, userInfo: ["products: ": products])))
             return
         }
         
