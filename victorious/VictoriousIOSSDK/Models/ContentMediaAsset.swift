@@ -19,8 +19,8 @@ public enum ContentVideoAssetSource {
 /// Conformers are models that store information about content media asset.
 /// Consumers can directly use this type without caring what the concrete type is, persistent or not.
 public protocol ContentMediaAssetModel {
-    /// Returns either the youtube ID or the remote URL that links to the content
-    var resourceID: String { get }
+    /// Returns either the youtube ID or the remote URL that links to the content or nil if none of then exist.
+    var resourceID: String? { get }
     
     /// String describing the source. May return "youtube", "giphy", or nil.
     var source: String? { get }
@@ -48,10 +48,10 @@ public enum ContentMediaAsset: ContentMediaAssetModel {
     
     public struct RemoteAssetParameters {
         public let contentType: ContentType
-        public let url: NSURL
+        public let url: NSURL?
         public let source: String?
         public let size: CGSize
-        public init(contentType: ContentType, url: NSURL, source: String?, size: CGSize) {
+        public init(contentType: ContentType, url: NSURL?, source: String?, size: CGSize) {
             self.contentType = contentType
             self.url = url
             self.source = source
@@ -146,7 +146,7 @@ public enum ContentMediaAsset: ContentMediaAssetModel {
     }
     
     private init?(contentType: ContentType, source: String?, size: CGSize, remoteID: String? = nil, url: NSURL? = nil) {
-        guard url != nil || remoteID != nil else {
+        guard (url != nil || remoteID != nil) else {
             // By using the initialziation structs, we should NEVER make it here
             assertionFailure("invalid initialization parameters provided to \(#function)")
             return nil
@@ -169,10 +169,11 @@ public enum ContentMediaAsset: ContentMediaAssetModel {
                     self = .video(url: url, source: source, size: size)
                 }
             case .gif:
-                guard let url = url else {
+                if let url = url {
+                    self = .gif(remoteID: remoteID, url: url, source: source, size: size)
+                } else {
                     return nil
                 }
-                self = .gif(remoteID: remoteID, url: url, source: source, size: size)
             case .image:
                 guard let url = url else {
                     return nil
@@ -247,8 +248,13 @@ public enum ContentMediaAsset: ContentMediaAssetModel {
     
     // MARK: - ContentMediaAssetModel
     
-    public var resourceID: String {
-        return uniqueID
+    public var resourceID: String? {
+        switch self {
+            case .youtube(let externalID, _): return externalID
+            case .video(let url, _, _): return url.absoluteString
+            case .gif(_, let url, _, _): return url.absoluteString
+            case .image(let url, _): return url.absoluteString
+        }
     }
     
     public var videoSource: ContentVideoAssetSource? {
