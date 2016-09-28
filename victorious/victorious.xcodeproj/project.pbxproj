@@ -5416,19 +5416,19 @@
 		A77723E21C3482A0002351B5 /* Operations */ = {
 			isa = PBXGroup;
 			children = (
-				7A1DED211D83319C003F5C37 /* Operation Infrastructure */,
 				6236F8771C36037200746476 /* AccountCreateOperationTests.swift */,
 				678C43C61C545F6B00EBE83A /* CreateMediaUploadOperationTests.swift */,
 				A7C192B11C9220A000E5EB00 /* GIFSearchOperationTests.swift */,
 				622103481C65354A00A77A73 /* LoginOperationTests.swift */,
 				A722D9431C6E9836003C06C5 /* LoginSuccessOperationTests.swift */,
+				7A1DED211D83319C003F5C37 /* Operation Infrastructure */,
 				BF3058241C988A3600BD52FD /* TempDirectoryCleanupOperationTests.swift */,
 				6236F8751C36030000746476 /* TestRequestExecutor.swift */,
 				BF3CD8A11D12152C00CB7764 /* UserBlockToggleOperationTests.swift */,
 				BF3CD88D1D11D7B000CB7764 /* UserUpvoteToggleOperationTests.swift */,
 				A7E8CF271C90A88E00D126BF /* VIPPurchasingTests.swift */,
-				A7E8CF251C909F5200D126BF /* VIPValidateReceiptOperationTests.swift */,
 				672E4FAA1D9C5FF4006D4FC0 /* VIPSelectSubscriptionOperationTests.swift */,
+				A7E8CF251C909F5200D126BF /* VIPValidateReceiptOperationTests.swift */,
 			);
 			path = Operations;
 			sourceTree = "<group>";
