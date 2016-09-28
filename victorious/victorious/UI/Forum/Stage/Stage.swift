@@ -22,6 +22,9 @@ protocol Stage: class, ForumEventReceiver, StageShrinkingAnimatorDelegate {
     
     /// Removes the current content on the stage.
     func removeContent()
+    
+    /// Indicates if the stage is currently on the topmost view controller
+    var isOnScreen: Bool { get }
 }
 
 /// Conformers will recieve messages related to the stage resizing.

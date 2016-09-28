@@ -70,17 +70,16 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     }
     
     func loadVideo() {
-        guard let asset = content.assets.first else {
-            assertionFailure("There were no assets for this piece of content.")
+        guard let asset = content.assets.first, let resourceID = asset.resourceID else {
+            assertionFailure("Failed to load the asset for this piece of content -> \(content)")
             return
         }
 
         let item: VVideoPlayerItem
-        
         if asset.videoSource == .youtube {
-            item = VVideoPlayerItem(externalID: asset.resourceID)
+            item = VVideoPlayerItem(externalID: resourceID)
         }
-        else if let resourceURL = NSURL(string: asset.resourceID) {
+        else if let resourceURL = NSURL(string: resourceID) {
             item = VVideoPlayerItem(URL: resourceURL)
         }
         else {
