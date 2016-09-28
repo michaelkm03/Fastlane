@@ -51,6 +51,24 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         return true
     }
     
+    func insertTextAtSelectionIfPossible(textView: UITextView, text: String) -> Bool {
+        guard let selectedTextRange = textView.selectedTextRange else {
+            return false
+        }
+        
+        let selectedRange = textView.selectedRange
+        let replacementRange = NSRange(location: selectedRange.location, length: text.characters.count - selectedRange.length)
+        let canAppendText = canUpdateTextView(textView, textInRange: replacementRange, replacementText: text)
+        if canAppendText {
+            textView.replaceRange(selectedTextRange, withText: text)
+            updateDelegateOfTextViewStatus(textView)
+        }
+        else {
+            delegate?.textViewDidHitCharacterLimit(textView)
+        }
+        return canAppendText
+    }
+    
     func appendTextIfPossible(textView: UITextView, text: String) -> Bool {
         let replacementRange = NSRange(location: textView.text.characters.count, length: text.characters.count)
         let canAppendText = canUpdateTextView(textView, textInRange: replacementRange, replacementText: text)
