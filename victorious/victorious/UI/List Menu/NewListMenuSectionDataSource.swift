@@ -6,14 +6,6 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-/// Possible states for List Menu Data Source based on the results fetched
-enum NewListMenuDataSourceState {
-    case loading
-    case failed(error: ErrorType?)
-    case items
-    case noContent
-}
-
 protocol NewListMenuSectionDataSourceDelegate: class {
 
     /// Called when List Menu Network Data Sources have finished fetching data
