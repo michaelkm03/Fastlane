@@ -32,10 +32,20 @@ final class CreateMediaUploadOperation: SyncOperation<Void> {
     override var executionQueue: Queue {
         return .background
     }
+
+    private func isPublishable(publishParameters: VPublishParameters) -> Bool {
+        // A GIF needs either a URL refrence or a remote ID any other type only needs a mediaURL.
+        if publishParameters.isGIF {
+            return mediaURL != nil || publishParameters.assetRemoteId != nil
+        } else {
+            return mediaURL != nil
+        }
+    }
     
     override func execute() -> OperationResult<Void> {
         let uploadError = NSError(domain: "UploadError", code: -1, userInfo: nil)
-        if !publishParameters.isGIF && mediaURL == nil {
+
+        guard isPublishable(publishParameters) else {
             return .failure(uploadError)
         }
         

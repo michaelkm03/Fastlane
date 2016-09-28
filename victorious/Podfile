@@ -14,6 +14,9 @@ target :victorious do
     pod 'FBSDKCoreKit'
     pod 'FBSDKLoginKit'
     pod 'FBSDKShareKit'
+
+    pod 'FLAnimatedImage', '~> 1.0'
+
     link_with 'victorious'
 
     target :test do
