@@ -412,11 +412,11 @@ private extension VDependencyManager {
 
 private final class StagePreparer {
     var nextStageContent: StageContent?
-    func prepareNextContent(stageContent content: StageContent, for stage: StageViewController) {
-        let isYouTube = content.content.assets.first?.videoSource == .youtube
-        nextStageContent = content
+    func prepareNextContent(stageContent stageContent: StageContent, for stage: StageViewController) {
+        let isYouTube = stageContent.content.assets.first?.videoSource == .youtube
+        nextStageContent = stageContent
         if stage.isOnScreen || !isYouTube {
-            stage.updateStageContent(stageContent: content)
+            stage.updateStageContent(stageContent: stageContent)
         }
     }
     
