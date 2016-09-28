@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="NM8-sM-mk9">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="NM8-sM-mk9">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Title Card View Controller-->
@@ -16,79 +19,77 @@
                         <rect key="frame" x="0.0" y="0.0" width="250" height="45"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s8A-QO-Jkh">
-                                <rect key="frame" x="-250" y="0.0" width="248" height="44"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="YL4-zM-YYK">
-                                    <rect key="frame" x="0.0" y="0.0" width="248" height="44"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                    <subviews>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QlM-8X-Q80" userLabel="Container">
-                                            <rect key="frame" x="0.0" y="0.0" width="248" height="44"/>
-                                            <subviews>
-                                                <view alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oJe-8G-a1t" userLabel="White Effects View">
-                                                    <rect key="frame" x="0.0" y="0.0" width="248" height="44"/>
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                </view>
-                                                <view contentMode="scaleToFill" placeholderIntrinsicWidth="182" placeholderIntrinsicHeight="32" translatesAutoresizingMaskIntoConstraints="NO" id="kHj-qj-69e" userLabel="Marquee View" customClass="MarqueeView" customModule="victorious" customModuleProvider="target">
-                                                    <rect key="frame" x="54" y="5" width="182" height="32"/>
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="32" id="3Ym-35-eI6"/>
-                                                        <constraint firstAttribute="width" constant="182" id="FhH-gL-WJU"/>
-                                                    </constraints>
-                                                </view>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="giT-8C-waV" customClass="AvatarView" customModule="victorious" customModuleProvider="target">
-                                                    <rect key="frame" x="14" y="7" width="30" height="30"/>
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="30" id="ZMp-VF-lzm"/>
-                                                        <constraint firstAttribute="width" constant="30" id="dNl-vV-Blz"/>
-                                                    </constraints>
-                                                </view>
-                                            </subviews>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                            <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="giT-8C-waV" secondAttribute="bottom" constant="7" id="1Nr-2o-bdB"/>
-                                                <constraint firstAttribute="trailing" secondItem="oJe-8G-a1t" secondAttribute="trailing" id="5uo-Cw-4Yd"/>
-                                                <constraint firstItem="kHj-qj-69e" firstAttribute="top" secondItem="QlM-8X-Q80" secondAttribute="top" constant="5" id="6w6-H6-l0f"/>
-                                                <constraint firstItem="giT-8C-waV" firstAttribute="leading" secondItem="QlM-8X-Q80" secondAttribute="leading" constant="14" id="HQB-aD-EHQ"/>
-                                                <constraint firstItem="kHj-qj-69e" firstAttribute="leading" secondItem="giT-8C-waV" secondAttribute="trailing" constant="10" id="MRX-tb-ypw"/>
-                                                <constraint firstItem="oJe-8G-a1t" firstAttribute="leading" secondItem="QlM-8X-Q80" secondAttribute="leading" id="Mxc-Dt-rht"/>
-                                                <constraint firstItem="oJe-8G-a1t" firstAttribute="top" secondItem="QlM-8X-Q80" secondAttribute="top" id="NVR-5o-i2q"/>
-                                                <constraint firstAttribute="bottom" secondItem="kHj-qj-69e" secondAttribute="bottom" constant="7" id="eE6-K5-3OS"/>
-                                                <constraint firstAttribute="trailing" secondItem="kHj-qj-69e" secondAttribute="trailing" constant="12" id="hyG-21-Fai"/>
-                                                <constraint firstItem="giT-8C-waV" firstAttribute="top" secondItem="QlM-8X-Q80" secondAttribute="top" constant="7" id="mfb-LA-Rbg"/>
-                                                <constraint firstAttribute="bottom" secondItem="oJe-8G-a1t" secondAttribute="bottom" id="zK4-aw-BMR"/>
-                                            </constraints>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PLy-eP-4dP" userLabel="titleCardContainer">
+                                <subviews>
+                                    <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NaN-hT-1Us">
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="ASn-aE-Ql9">
+                                            <frame key="frameInset"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         </view>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="bottom" secondItem="QlM-8X-Q80" secondAttribute="bottom" id="6c8-Nh-SrH"/>
-                                        <constraint firstItem="QlM-8X-Q80" firstAttribute="top" secondItem="YL4-zM-YYK" secondAttribute="top" id="bWO-d2-fOp"/>
-                                        <constraint firstAttribute="trailing" secondItem="QlM-8X-Q80" secondAttribute="trailing" id="dUJ-Ur-X8S"/>
-                                        <constraint firstItem="QlM-8X-Q80" firstAttribute="leading" secondItem="YL4-zM-YYK" secondAttribute="leading" id="zel-uk-Lg1"/>
-                                    </constraints>
-                                </view>
+                                        <blurEffect style="light"/>
+                                    </visualEffectView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ufT-VK-ejn" userLabel="Container">
+                                        <subviews>
+                                            <view alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ICo-zj-eCQ" userLabel="White Effects View">
+                                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </view>
+                                            <view contentMode="scaleToFill" placeholderIntrinsicWidth="182" placeholderIntrinsicHeight="32" translatesAutoresizingMaskIntoConstraints="NO" id="o3m-XP-KC0" userLabel="Marquee View" customClass="MarqueeView" customModule="victorious" customModuleProvider="target">
+                                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="182" id="YqT-cM-aK8"/>
+                                                </constraints>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y4C-Kw-xXV" customClass="AvatarView" customModule="victorious" customModuleProvider="target">
+                                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="Y4C-Kw-xXV" secondAttribute="height" multiplier="1:1" id="zkq-KO-tpm"/>
+                                                </constraints>
+                                            </view>
+                                        </subviews>
+                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="o3m-XP-KC0" secondAttribute="bottom" constant="7" id="DaH-Ny-FBv"/>
+                                            <constraint firstItem="Y4C-Kw-xXV" firstAttribute="top" secondItem="ufT-VK-ejn" secondAttribute="top" constant="7" id="I9E-fc-z3Q"/>
+                                            <constraint firstItem="o3m-XP-KC0" firstAttribute="top" secondItem="ufT-VK-ejn" secondAttribute="top" constant="7" id="Mag-FX-DOz"/>
+                                            <constraint firstAttribute="trailing" secondItem="o3m-XP-KC0" secondAttribute="trailing" constant="12" id="Nkz-Zb-7ye"/>
+                                            <constraint firstItem="o3m-XP-KC0" firstAttribute="leading" secondItem="Y4C-Kw-xXV" secondAttribute="trailing" constant="10" id="P1p-Et-1QH"/>
+                                            <constraint firstItem="ICo-zj-eCQ" firstAttribute="top" secondItem="ufT-VK-ejn" secondAttribute="top" id="g2M-Z9-XjO"/>
+                                            <constraint firstAttribute="bottom" secondItem="Y4C-Kw-xXV" secondAttribute="bottom" constant="7" id="hmU-zk-4nw"/>
+                                            <constraint firstAttribute="bottom" secondItem="ICo-zj-eCQ" secondAttribute="bottom" id="o4l-xE-pFl"/>
+                                            <constraint firstAttribute="trailing" secondItem="ICo-zj-eCQ" secondAttribute="trailing" id="qmw-SM-uIt"/>
+                                            <constraint firstItem="ICo-zj-eCQ" firstAttribute="leading" secondItem="ufT-VK-ejn" secondAttribute="leading" id="xt3-Jt-JYm"/>
+                                            <constraint firstItem="Y4C-Kw-xXV" firstAttribute="leading" secondItem="ufT-VK-ejn" secondAttribute="leading" constant="14" id="yxL-Zg-09O"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="250" id="BaE-ff-szu"/>
+                                    <constraint firstAttribute="trailing" secondItem="NaN-hT-1Us" secondAttribute="trailing" id="6SV-a3-0Ko"/>
+                                    <constraint firstItem="NaN-hT-1Us" firstAttribute="top" secondItem="PLy-eP-4dP" secondAttribute="top" id="BjB-Rv-Ppg"/>
+                                    <constraint firstAttribute="trailing" secondItem="ufT-VK-ejn" secondAttribute="trailing" id="DTO-F7-HMP"/>
+                                    <constraint firstItem="ufT-VK-ejn" firstAttribute="top" secondItem="PLy-eP-4dP" secondAttribute="top" id="MsU-QV-Gpx"/>
+                                    <constraint firstAttribute="bottom" secondItem="NaN-hT-1Us" secondAttribute="bottom" id="Yz1-Bx-NTL"/>
+                                    <constraint firstItem="NaN-hT-1Us" firstAttribute="leading" secondItem="PLy-eP-4dP" secondAttribute="leading" id="eTV-Sy-pqj"/>
+                                    <constraint firstAttribute="bottom" secondItem="ufT-VK-ejn" secondAttribute="bottom" id="tiv-Sv-ZnC"/>
+                                    <constraint firstItem="ufT-VK-ejn" firstAttribute="leading" secondItem="PLy-eP-4dP" secondAttribute="leading" id="xIA-l6-gKI"/>
                                 </constraints>
-                                <blurEffect style="light"/>
-                            </visualEffectView>
+                            </view>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="s8A-QO-Jkh" firstAttribute="leading" secondItem="phw-Cr-eOS" secondAttribute="leading" constant="-250" id="Vce-cO-tQb"/>
-                            <constraint firstAttribute="top" secondItem="s8A-QO-Jkh" secondAttribute="top" id="z97-1H-8TA"/>
+                            <constraint firstItem="PLy-eP-4dP" firstAttribute="leading" secondItem="phw-Cr-eOS" secondAttribute="leadingMargin" constant="-266" id="KJR-Ww-go5"/>
+                            <constraint firstItem="NaY-ZL-6y9" firstAttribute="top" secondItem="PLy-eP-4dP" secondAttribute="bottom" constant="1" id="ShT-As-kEX"/>
+                            <constraint firstItem="PLy-eP-4dP" firstAttribute="top" secondItem="87o-7S-qdc" secondAttribute="bottom" id="n9c-yN-GT8"/>
                         </constraints>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="250" height="45"/>
                     <connections>
-                        <outlet property="avatarView" destination="giT-8C-waV" id="RbR-uD-ZLi"/>
-                        <outlet property="draggableView" destination="s8A-QO-Jkh" id="doC-mh-4TD"/>
-                        <outlet property="marqueeView" destination="kHj-qj-69e" id="GOr-Lc-6bc"/>
-                        <outlet property="marqueeViewWidthConstraint" destination="FhH-gL-WJU" id="TMa-MH-XK0"/>
+                        <outlet property="avatarView" destination="Y4C-Kw-xXV" id="nol-5d-Rvv"/>
+                        <outlet property="draggableView" destination="PLy-eP-4dP" id="pTQ-c4-vGf"/>
+                        <outlet property="marqueeView" destination="o3m-XP-KC0" id="iOU-2Q-CHh"/>
+                        <outlet property="marqueeViewWidthConstraint" destination="YqT-cM-aK8" id="3Kn-5T-pXS"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X7M-Rc-AjM" userLabel="First Responder" sceneMemberID="firstResponder"/>
