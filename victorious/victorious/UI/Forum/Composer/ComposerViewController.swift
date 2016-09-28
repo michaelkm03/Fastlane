@@ -105,7 +105,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     @IBOutlet weak private var confirmButtonContainer: UIView!
     
     private var searchTextChanged = false
-
+    
     private var selectedAsset: ContentMediaAsset? {
         didSet {
             updateConfirmButtonState()
@@ -282,7 +282,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     // MARK: - HashtagBarControllerSearchDelegate
     
     func hashtagBarController(hashtagBarController: HashtagBarController, selectedHashtag hashtag: String) {
-
+        
         guard let (_, range) = textViewCurrentHashtag else {
             return
         }
@@ -383,15 +383,15 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     func inputTextAttributes() -> (inputTextColor: UIColor?, inputTextFont: UIFont?) {
         return (dependencyManager.inputTextColor, dependencyManager.inputTextFont)
     }
-
+    
     private func updateConfirmButtonState() {
         let hasContentInTextView = textViewHasText || selectedAsset != nil
         confirmButton.enabled = hasContentInTextView && customInputAreaState == .Hidden
         confirmButton.backgroundColor = confirmButton.enabled ? dependencyManager.confirmButtonBackgroundColorEnabled : dependencyManager.confirmButtonBackgroundColorDisabled
     }
-
+    
     // MARK: - View lifecycle
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         passthroughContainerView.delegate = self
@@ -410,7 +410,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         composerTextViewManager = ComposerTextViewManager(textView: textView, delegate: self, maximumTextLength: maximumTextLength)
         setupHashtagBar()
     }
-
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         delegate?.composer(self, didUpdateContentHeight: totalComposerHeight)
@@ -426,7 +426,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         if confirmButtonContainerHeight != abs(confirmButton.touchInsets.vertical) {
             confirmButton.touchInsets = UIEdgeInsetsMake(-confirmButtonContainerHeight / 2, -Constants.confirmButtonHorizontalInset, -confirmButtonContainerHeight / 2, -Constants.confirmButtonHorizontalInset)
         }
-
+        
         let desiredAttachmentContainerHeight = shouldShowAttachmentContainer ? confirmButtonContainer.bounds.height : 0
         let attachmentContainerHeightNeedsUpdate = attachmentContainerHeightConstraint.constant != desiredAttachmentContainerHeight
         if attachmentContainerHeightNeedsUpdate {
@@ -584,9 +584,8 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         if let pastableTextView = textView as? PastableTextView {
             pastableTextView.pastableDelegate = self
         }
-
     }
-
+    
     private func setupAttachmentTabBar() {
         if isViewLoaded() {
             attachmentTabBar.setupWithAttachmentMenuItems(
@@ -605,7 +604,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         hashtagBarViewController.animationDelegate = self
         hashtagBarController = hashtagBarViewController.hashtagBarController
     }
-
+    
     private func updateAppearanceFromDependencyManager() {
         guard isViewLoaded() else {
             return
@@ -722,7 +721,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
                 update(toInputAreaState: .Hidden)
         }
     }
-
+    
     // MARK: - VCreationFlowControllerDelegate
     
     func creationFlowController(creationFlowController: VCreationFlowController!, finishedWithPreviewImage previewImage: UIImage!, capturedMediaURL: NSURL!) {
@@ -730,15 +729,15 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             creationFlowController.v_showErrorDefaultError()
             return
         }
-
+        
         // Disable VIP button if we just selected a GIF
         vipButton?.enabled = contentType != .gif
-
+        
         var preview = previewImage
         if let image = capturedMediaURL.v_videoPreviewImage where contentType == .gif {
             preview = image
         }
-
+        
         let publishParameters = creationFlowController.publishParameters
         if let remoteID = publishParameters.assetRemoteId {
             let mediaParameters = ContentMediaAsset.LocalAssetParameters(contentType: contentType, remoteID: remoteID, source: publishParameters.source, size: CGSize(width: publishParameters.width, height: publishParameters.height), url: capturedMediaURL)
@@ -751,9 +750,9 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
         let maxDimension = view.bounds.width * Constants.maximumAttachmentWidthPercentage
         let resizedImage = preview.scaledImageWithMaxDimension(maxDimension, upScaling: true)
-
+        
         composerTextViewManager?.prependImage(resizedImage, toTextView: textView)
-
+        
         self.dismissViewControllerAnimated(true) { [weak self] _ in
             guard let strongSelf = self else {
                 return
@@ -810,60 +809,60 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         else if let text = text {
             sendMessage(text: text, currentUser: user)
         }
-
+        
         cleanup()
     }
 
     // MARK: - Send Message
-
+    
     /// Call after a message has been sent to reset the state.
     private func cleanup() {
         composerTextViewManager?.resetTextView(textView)
         selectedAsset = nil
     }
-
+    
     // MARK: - PastableTextViewDelegate
     var canShowPasteMenu: Bool {
         let generalPasteboard = UIPasteboard.generalPasteboard()
-
+        
         let containsStringType = generalPasteboard.containsPasteboardTypes(UIPasteboardTypeListString as! [String])
         let containsImageType = generalPasteboard.containsPasteboardTypes(UIPasteboardTypeListImage as! [String])
         let allowsPastingOfImages = dependencyManager.allowsPastingOfImages ?? true
         let allowsPasting = containsStringType || (containsImageType && allowsPastingOfImages)
-
+        
         return allowsPasting
     }
-
+    
     var canShowCopyMenu: Bool {
         return textViewHasText
     }
-
+    
     var canShowCutMenu: Bool {
         return textViewHasText
     }
-
+    
     var canShowSelectMenu: Bool {
         return textViewHasText
     }
-
+    
     func didPasteImage(image: (imageObject: UIImage, imageData: NSData)) {
         guard let user = VCurrentUser.user else {
             assertionFailure("Failed to send message due to missing a valid logged in user")
             return
         }
-
+        
         guard let imageType = image.imageData.imageType() else {
             Log.debug("Failed to detect the type of image the user pasted.")
             return
         }
-
+        
         do {
             let fileUrl = try TemporaryFileWriter.writeTemporaryData(image.imageData, fileExtension: imageType.fileExtension)
-
+            
             let mediaParameters = ContentMediaAsset.RemoteAssetParameters(contentType: .image, url: fileUrl, source: nil, size: image.imageObject.size)
             if let pastedImageAsset = ContentMediaAsset(initializationParameters: mediaParameters) {
                 selectedAsset = pastedImageAsset
-
+                
                 // We want GIFs to autopost since they are to be considered as a reaction and not a content creation.
                 // We are also making the assumption that all GIFs are animated GIFs...
                 if imageType.fileExtension == Constants.gifType {
@@ -877,7 +876,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             Log.debug("failed to write temp image file to disk with error -> \(error)")
         }
     }
-
+    
     func didPasteText(text: String) {
         composerTextViewManager?.insertTextAtSelectionIfPossible(textView, text: text)
     }
@@ -945,7 +944,7 @@ private extension VDependencyManager {
     var inputTextFont: UIFont? {
         return fontForKey(VDependencyManagerParagraphFontKey)
     }
-
+    
     var confirmButtonTextFont: UIFont? {
         return fontForKey(VDependencyManagerLabel4FontKey)
     }
@@ -961,7 +960,7 @@ private extension VDependencyManager {
     var alwaysShowAttachmentBar: Bool? {
         return numberForKey("alwaysShowAttachmentBar")?.boolValue
     }
-
+    
     var allowsPastingOfImages: Bool? {
         return numberForKey("allowsPastingOfImages")?.boolValue
     }
