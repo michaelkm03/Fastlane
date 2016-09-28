@@ -45,7 +45,7 @@ class StickerTrayDataSource: PaginatedDataSource, TrayDataSource {
         collectionView.registerClass(TrayLoadingCollectionViewCell.self, forCellWithReuseIdentifier: Constants.loadingCellReuseIdentifier)
         collectionView.registerClass(TrayRetryLoadCollectionViewCell.self, forCellWithReuseIdentifier: Constants.retryCellReuseIdentifier)
         collectionView.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: Constants.defaultCellReuseIdentifier)
-        collectionView.registerNib(MediaSearchPreviewCell.associatedNib, forCellWithReuseIdentifier: Constants.stickerCellReuseIdentifier)
+        collectionView.registerNib(StickerSearchResultPreviewCell.associatedNib, forCellWithReuseIdentifier: Constants.stickerCellReuseIdentifier)
     }
     
     func fetchStickers(completion: (NSError? -> ())? = nil) {
@@ -89,10 +89,9 @@ class StickerTrayDataSource: PaginatedDataSource, TrayDataSource {
         let cell: UICollectionViewCell
         switch trayState {
             case .Populated:
-                let cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.stickerCellReuseIdentifier, forIndexPath: indexPath) as! MediaSearchPreviewCell
-                cell.activityIndicator.stopAnimating()
+                let cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.stickerCellReuseIdentifier, forIndexPath: indexPath) as! StickerSearchResultPreviewCell
                 if let sticker = asset(atIndex: indexPath.row) {
-                    cell.previewAssetUrl = sticker.thumbnailImageURL
+                    StickerSearchResultPreviewCellPopulator.populate(cell, withSearchResultObject: sticker)
                 }
                 return cell
             case .FailedToLoad:

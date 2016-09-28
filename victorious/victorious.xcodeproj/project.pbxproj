@@ -1264,6 +1264,9 @@
 		F0C5AEDD1D9A397C0005EB0F /* StickerCreateRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C5AEDC1D9A397C0005EB0F /* StickerCreateRequest.swift */; };
 		F0C83A451B0FDD2B00A6EC1A /* coachmarks.json in Resources */ = {isa = PBXBuildFile; fileRef = F0C83A441B0FDD2B00A6EC1A /* coachmarks.json */; };
 		F0D8B17B1D9B4BEB00EF333D /* NSURL+MediaType.m in Sources */ = {isa = PBXBuildFile; fileRef = F00FC2D51D92160E00CFF79F /* NSURL+MediaType.m */; };
+		F0D8B17D1D9B568700EF333D /* StickerSearchResultPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D8B17C1D9B568700EF333D /* StickerSearchResultPreviewCell.swift */; };
+		F0D8B17F1D9B56AE00EF333D /* StickerSearchResultPreviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F0D8B17E1D9B56AE00EF333D /* StickerSearchResultPreviewCell.xib */; };
+		F0D8B1811D9B579A00EF333D /* StickerSearchResultPreviewCellPopulator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D8B1801D9B579A00EF333D /* StickerSearchResultPreviewCellPopulator.swift */; };
 		F0E0F1AA1AE8811700143CBF /* VLaunchScreenProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E0F1A91AE8811700143CBF /* VLaunchScreenProvider.m */; };
 		F0E6672A1D14964A007BF537 /* ContentCellTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E667291D14964A007BF537 /* ContentCellTracker.swift */; };
 		F0E6672E1D1496B8007BF537 /* ContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0E6672D1D1496B8007BF537 /* ContentCell.swift */; };
@@ -2930,6 +2933,9 @@
 		F0BD812C1C9B67150062D079 /* ComposerAttachmentTabBarButtonTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposerAttachmentTabBarButtonTests.swift; sourceTree = "<group>"; };
 		F0C5AEDC1D9A397C0005EB0F /* StickerCreateRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickerCreateRequest.swift; sourceTree = "<group>"; };
 		F0C83A441B0FDD2B00A6EC1A /* coachmarks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = coachmarks.json; sourceTree = "<group>"; };
+		F0D8B17C1D9B568700EF333D /* StickerSearchResultPreviewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickerSearchResultPreviewCell.swift; sourceTree = "<group>"; };
+		F0D8B17E1D9B56AE00EF333D /* StickerSearchResultPreviewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StickerSearchResultPreviewCell.xib; sourceTree = "<group>"; };
+		F0D8B1801D9B579A00EF333D /* StickerSearchResultPreviewCellPopulator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickerSearchResultPreviewCellPopulator.swift; sourceTree = "<group>"; };
 		F0E0F1A81AE8811700143CBF /* VLaunchScreenProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VLaunchScreenProvider.h; sourceTree = "<group>"; };
 		F0E0F1A91AE8811700143CBF /* VLaunchScreenProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLaunchScreenProvider.m; sourceTree = "<group>"; };
 		F0E0F1AB1AE8A4B900143CBF /* VLaunchScreenProviderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VLaunchScreenProviderTests.m; sourceTree = "<group>"; };
@@ -6381,6 +6387,9 @@
 				F087E5B31D93B25900034146 /* StickerTrayDataSource.swift */,
 				F087E5B41D93B25900034146 /* StickerTrayViewController.storyboard */,
 				F087E5B51D93B25900034146 /* StickerTrayViewController.swift */,
+				F0D8B17C1D9B568700EF333D /* StickerSearchResultPreviewCell.swift */,
+				F0D8B17E1D9B56AE00EF333D /* StickerSearchResultPreviewCell.xib */,
+				F0D8B1801D9B579A00EF333D /* StickerSearchResultPreviewCellPopulator.swift */,
 			);
 			name = Sticker;
 			sourceTree = "<group>";
@@ -7007,6 +7016,7 @@
 				036F387A1A0C4DEA0014DF66 /* MavenPro-Bold.ttf in Resources */,
 				F004B3301D8C04BB005D4A74 /* MediaSearchPreviewCell.xib in Resources */,
 				F009BD1D1CEBF73500F81CAA /* HashtagBarViewController.storyboard in Resources */,
+				F0D8B17F1D9B56AE00EF333D /* StickerSearchResultPreviewCell.xib in Resources */,
 				B074C5B51B39D41F00EA3FFC /* VHashmarkView.xib in Resources */,
 				03F61E6C1C6ADF0700EEA8F9 /* Assets.bundle in Resources */,
 				C30AA4D71B043E890010CEFE /* PermissionAlert.storyboard in Resources */,
@@ -7867,6 +7877,7 @@
 				A6CC23C71B4B2A0600141DD6 /* VAssetGroupTableViewCell.m in Sources */,
 				62A7C9EB1C7FAE2A009F8200 /* NSBundle+AppStoreReceipt.swift in Sources */,
 				BFDB802E1CEF6EC300E66614 /* CloseUpContainerViewController.swift in Sources */,
+				F0D8B1811D9B579A00EF333D /* StickerSearchResultPreviewCellPopulator.swift in Sources */,
 				7AB55FE31CADABF000EBE31E /* VNewProfileViewController.swift in Sources */,
 				A72C86601C977FF600E97D4F /* RestorePurchaseOperation.swift in Sources */,
 				79883BDA1D1211310082D998 /* AccessoryScreenContainer.swift in Sources */,
@@ -8004,6 +8015,7 @@
 				A73BA2AC1C938B68008168B5 /* Stage.swift in Sources */,
 				D87351881A3120F5006D97B2 /* VCanvasView.m in Sources */,
 				D83AC7AA1AB201A600F63603 /* VPlayerView.m in Sources */,
+				F0D8B17D1D9B568700EF333D /* StickerSearchResultPreviewCell.swift in Sources */,
 				7AC1945D1D2DB9BB001B15B8 /* UIColor+Hex.swift in Sources */,
 				A72C864A1C977FF500E97D4F /* VStoredLogin.m in Sources */,
 				A73BA2A51C938B68008168B5 /* CloseUpMenuItem.swift in Sources */,

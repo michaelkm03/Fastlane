@@ -76,35 +76,42 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
             let sticker = dataSource.asset(atIndex: indexPath.item),
             let remoteID = sticker.remoteID where
             dataSource.trayState == .Populated
+        else {
+            if let _ = collectionView.cellForItemAtIndexPath(indexPath) as? TrayRetryLoadCollectionViewCell {
+                dataSource.fetchStickers()
+            }
             else {
-                if let _ = collectionView.cellForItemAtIndexPath(indexPath) as? TrayRetryLoadCollectionViewCell {
-                    dataSource.fetchStickers()
-                }
-                else {
-                    Log.debug("Selected asset from an unexpected index in Tray")
-                }
-                return
+                Log.debug("Selected asset from an unexpected index in Tray")
+            }
+            return
         }
+        guard VCurrentUser.user?.vipStatus?.isVIP == false || !sticker.isVIP else {
+            let originViewController = parentViewController ?? self
+            let router = Router(originViewController: originViewController, dependencyManager: dependencyManager)
+            router.navigate(to: DeeplinkDestination.vipSubscription, from: DeeplinkContext(value: DeeplinkContext.mainFeed))
+            return
+        }
+        
         progressHUD = showExportingHUD(delegate: self)
         mediaExporter?.cancelDownload()
         mediaExporter = nil
         let exporter = exportMedia(fromSearchResult: sticker) { [weak self] state in
             switch state {
-            case .success(let result):
-                self?.progressHUD?.hide(true)
-                let localAssetParameters = ContentMediaAsset.LocalAssetParameters(contentType: .sticker, remoteID: remoteID, source: nil, size: sticker.assetSize, url: sticker.sourceMediaURL)
-                guard
-                    let strongSelf = self,
-                    let asset = ContentMediaAsset(initializationParameters: localAssetParameters),
-                    let previewImage = result.exportPreviewImage
+                case .success(let result):
+                    self?.progressHUD?.hide(true)
+                    let localAssetParameters = ContentMediaAsset.LocalAssetParameters(contentType: .sticker, remoteID: remoteID, source: nil, size: sticker.assetSize, url: sticker.sourceMediaURL)
+                    guard
+                        let strongSelf = self,
+                        let asset = ContentMediaAsset(initializationParameters: localAssetParameters),
+                        let previewImage = result.exportPreviewImage
                     else {
                         return
-                }
-                strongSelf.delegate?.tray(strongSelf, selectedAsset: asset, withPreviewImage: previewImage)
-            case .failure(let error):
-                self?.progressHUD?.hide(true)
-                self?.showHUD(forRenderingError: error)
-            case .canceled:()
+                    }
+                    strongSelf.delegate?.tray(strongSelf, selectedAsset: asset, withPreviewImage: previewImage)
+                case .failure(let error):
+                    self?.progressHUD?.hide(true)
+                    self?.showHUD(forRenderingError: error)
+                case .canceled:()
             }
         }
         mediaExporter = exporter
