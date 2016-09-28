@@ -13,11 +13,10 @@ N/A
 - [ ] Functionality 2
 - [ ] Functionality 3
 
-**General Code Review Checklist**
-- [ ] Code conforms to our style guide, and is readable and maintainable
-- [ ] Existing functionality is unaffected (no regressions)
-- [ ] Addresses everything mentioned in the ticket and product spec
-- [ ] CI Tests are passing with the green check mark
-- [ ] Includes unit tests with a high level of coverage (for new models, requests and operations at least)
-- [ ] All user-facing strings are localized, and the keys used are added in Localizable.strings (base) file
-- [ ] If you map a local template for testing, make sure the app still functions correctly without the local template
+**General Code Review Guidelines**
+- Code conforms to our style guide, and is readable and maintainable
+- Existing functionality is unaffected (no regressions)
+- Addresses everything mentioned in the ticket and product spec
+- Includes unit tests with a high level of coverage (for new models, requests and operations at least)
+- All user-facing strings are localized, and the keys used are added in Localizable.strings (base) file
+- If you map a local template for testing, make sure the app still functions correctly without the local template

@@ -62,7 +62,7 @@
                                                                     <constraint firstAttribute="width" secondItem="WuD-ab-2bS" secondAttribute="height" multiplier="1:1" id="SFm-NX-zwh"/>
                                                                 </constraints>
                                                             </view>
-                                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="FNU-QM-fIQ" customClass="VPlaceholderTextView">
+                                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="FNU-QM-fIQ" customClass="PastableTextView" customModule="victorious" customModuleProvider="target">
                                                                 <rect key="frame" x="30" y="13.5" width="486" height="0.0"/>
                                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                                 <constraints>

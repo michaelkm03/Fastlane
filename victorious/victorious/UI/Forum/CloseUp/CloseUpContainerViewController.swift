@@ -52,11 +52,12 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     }()
 
     private lazy var likeView: LikeView = {
-        let likeView = LikeView(frame: Constants.likeViewFrame,
-                                textColor: self.dependencyManager.upvoteCountColor,
-                                selectedIcon: self.dependencyManager.upvoteIconSelected,
-                                unselectedIcon: self.dependencyManager.upvoteIconUnselected,
-                                alignment: .left
+        let likeView = LikeView(
+            frame: Constants.likeViewFrame,
+            textColor: self.dependencyManager.upvoteCountColor,
+            alignment: .left,
+            selectedIcon: self.dependencyManager.upvoteIconSelected,
+            unselectedIcon: self.dependencyManager.upvoteIconUnselected
         )
 
         likeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(toggleLike)))
@@ -246,6 +247,10 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
             let unLikeAPIPath = dependencyManager.contentUnLikeAPIPath
         else {
             return
+        }
+
+        if !content.isLikedByCurrentUser {
+            likeView.animateLike()
         }
 
         let toggleLikeOperation: SyncOperation<Void>? = content.isLikedByCurrentUser
