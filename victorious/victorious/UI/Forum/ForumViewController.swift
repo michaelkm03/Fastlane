@@ -22,6 +22,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         let backgroundColor: UIColor
         let confirmationTitle: String
         let confirmationBody: String
+        let closeAPIPath: APIPath
     }
     
     @IBOutlet private weak var stageContainer: UIView!
@@ -62,7 +63,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             let titleFont = configuration.endVIPTitleFont,
             let backgroundColor = configuration.endVIPBackgroundColor,
             let confirmationTitle = configuration.endVIPConfirmationTitle,
-            let confirmationBody = configuration.endVIPConfirmationBody
+            let confirmationBody = configuration.endVIPConfirmationBody,
+            let closeAPIPath = configuration.endVIPAPIPath
         else {
             return nil
         }
@@ -73,7 +75,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             titleFont: titleFont,
             backgroundColor: backgroundColor,
             confirmationTitle: confirmationTitle,
-            confirmationBody: confirmationBody
+            confirmationBody: confirmationBody,
+            closeAPIPath: closeAPIPath
         )
     }()
 
@@ -339,7 +342,11 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     }
     
     private func confirmCloseVIPEvent() {
+        guard let configuration = self.endVIPConfiguration else {
+            return
+        }
         
+        EndVIPEventOperation(apiPath: configuration.closeAPIPath)?.queue()
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -626,5 +633,9 @@ private extension VDependencyManager {
     
     var endVIPConfirmationBody: String? {
         return stringForKey("text.confirmation.body")
+    }
+    
+    var endVIPAPIPath: APIPath? {
+        return networkResources?.apiPathForKey("end.vip.event.URL")
     }
 }
