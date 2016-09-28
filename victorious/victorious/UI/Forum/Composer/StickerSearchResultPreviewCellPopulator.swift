@@ -15,7 +15,7 @@ struct StickerSearchResultPreviewCellPopulator {
         stickerCell.activityIndicator.startAnimating()
         stickerCell.imageView.sd_setImageWithURL(searchResultObject.thumbnailImageURL) { _ in
             stickerCell.activityIndicator.stopAnimating()
+            stickerCell.lockImageView.hidden = !searchResultObject.isVIP
         }
-        stickerCell.lockImageView.hidden = !searchResultObject.isVIP
     }
 }
