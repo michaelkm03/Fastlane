@@ -10,14 +10,19 @@ import UIKit
 
 class ListMenuSectionHeaderView: UICollectionReusableView {
     private struct Constants {
-        static let accessoryButtonXMargin = CGFloat(12.0)
+        static let subscribeButtonXMargin = CGFloat(12.0)
     }
     
     @IBOutlet private weak var titleLabel: UILabel!
     
+    static var preferredHeight: CGFloat {
+        return 18
+    }
+    
     var dependencyManager: VDependencyManager! {
         didSet {
             applyTemplateAppearance(with: dependencyManager)
+            addSubscribeButtonIfNeeded(with: dependencyManager)
         }
     }
     
@@ -28,24 +33,25 @@ class ListMenuSectionHeaderView: UICollectionReusableView {
         titleLabel.font = dependencyManager.titleFont
     }
     
-    static var preferredHeight: CGFloat {
-        return 18
+    // MARK: - Subscribe Button
+    
+    var isSubscribeButtonHidden: Bool = true {
+        didSet {
+            subscribeButton?.hidden = isSubscribeButtonHidden
+        }
     }
     
-    var accessoryView: UIView? {
-        didSet {
-            guard accessoryView !== oldValue else {
-                return
-            }
+    private var subscribeButton: SubscribeButton?
+
+    private func addSubscribeButtonIfNeeded(with dependencyManager: VDependencyManager) {
+        if subscribeButton == nil {
+            let subscribeButton = SubscribeButton(dependencyManager: dependencyManager)
+            addSubview(subscribeButton)
+            subscribeButton.translatesAutoresizingMaskIntoConstraints = false
+            centerYAnchor.constraintEqualToAnchor(subscribeButton.centerYAnchor).active = true
+            trailingAnchor.constraintEqualToAnchor(subscribeButton.trailingAnchor, constant: Constants.subscribeButtonXMargin).active = true
             
-            oldValue?.removeFromSuperview()
-            
-            if let accessoryButton = accessoryView {
-                addSubview(accessoryButton)
-                accessoryButton.translatesAutoresizingMaskIntoConstraints = false
-                centerYAnchor.constraintEqualToAnchor(accessoryButton.centerYAnchor).active = true
-                trailingAnchor.constraintEqualToAnchor(accessoryButton.trailingAnchor, constant: Constants.accessoryButtonXMargin).active = true
-            }
+            self.subscribeButton = subscribeButton
         }
     }
 }
