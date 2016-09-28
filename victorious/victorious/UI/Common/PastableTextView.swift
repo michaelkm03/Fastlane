@@ -9,17 +9,16 @@
 import Foundation
 
 protocol PastableTextViewDelegate: class {
-    func canShowPasteMenu() -> Bool
+    var canShowPasteMenu: Bool { get }
+    var canShowCopyMenu: Bool { get }
+    var canShowCutMenu: Bool { get }
+    var canShowSelectMenu: Bool { get }
 
-    func canShowCopyMenu() -> Bool
-
-    func canShowCutMenu() -> Bool
-
-    func canShowSelectMenu() -> Bool
-
+    /// imageObject is required for sizing information, imageData is required for gif
     func didPasteImage(image: (imageObject: UIImage, imageData: NSData))
 }
 
+/// Subclass of VPlaceholderTextView to allow pasting of media content into the composer.
 class PastableTextView: VPlaceholderTextView {
 
     var pastableDelegate: PastableTextViewDelegate?
@@ -33,13 +32,13 @@ class PastableTextView: VPlaceholderTextView {
 
         switch action {
             case #selector(copy(_:) ):
-                canPerformAction = pastableDelegate.canShowCopyMenu()
+                canPerformAction = pastableDelegate.canShowCopyMenu
             case #selector(cut(_: ) ):
-                canPerformAction = pastableDelegate.canShowCutMenu()
+                canPerformAction = pastableDelegate.canShowCutMenu
             case #selector(select(_: ) ):
-                canPerformAction = pastableDelegate.canShowSelectMenu()
+                canPerformAction = pastableDelegate.canShowSelectMenu
             case #selector(paste(_:) ):
-                canPerformAction = pastableDelegate.canShowPasteMenu()
+                canPerformAction = pastableDelegate.canShowPasteMenu
             default:
                 super.canPerformAction(action, withSender: sender)
         }

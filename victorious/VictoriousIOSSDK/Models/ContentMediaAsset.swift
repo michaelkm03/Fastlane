@@ -43,7 +43,7 @@ public protocol ContentMediaAssetModel {
 public enum ContentMediaAsset: ContentMediaAssetModel {
     case video(url: NSURL, source: String?, size: CGSize)
     case youtube(remoteID: String, source: String?)
-    case gif(remoteID: String?, url: NSURL?, source: String?, size: CGSize)
+    case gif(remoteID: String?, url: NSURL, source: String?, size: CGSize)
     case image(url: NSURL, size: CGSize)
     
     public struct RemoteAssetParameters {
@@ -233,7 +233,7 @@ public enum ContentMediaAsset: ContentMediaAssetModel {
         switch self {
             case .youtube(let externalID, _): return externalID
             case .video(let url, _, _): return url.absoluteString ?? ""
-            case .gif(_, let url, _, _): return url?.absoluteString ?? ""
+            case .gif(_, let url, _, _): return url.absoluteString ?? ""
             case .image(let url, _): return url.absoluteString ?? ""
         }
     }
@@ -252,7 +252,7 @@ public enum ContentMediaAsset: ContentMediaAssetModel {
         switch self {
             case .youtube(let externalID, _): return externalID
             case .video(let url, _, _): return url.absoluteString
-            case .gif(_, let url, _, _): return (url != nil ? url?.absoluteString : nil)
+            case .gif(_, let url, _, _): return url.absoluteString
             case .image(let url, _): return url.absoluteString
         }
     }

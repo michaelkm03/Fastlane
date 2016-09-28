@@ -23,6 +23,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         static let stickerInputAreaHeight: CGFloat = 100
         static let gifInputAreaHeight: CGFloat = 90
         static let vipLockComposerMargin: CGFloat = 8
+        static let gifType = "gif"
     }
     
     /// ForumEventSender
@@ -281,7 +282,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     // MARK: - HashtagBarControllerSearchDelegate
     
     func hashtagBarController(hashtagBarController: HashtagBarController, selectedHashtag hashtag: String) {
-        
+
         guard let (_, range) = textViewCurrentHashtag else {
             return
         }
@@ -388,7 +389,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         confirmButton.enabled = hasContentInTextView && customInputAreaState == .Hidden
         confirmButton.backgroundColor = confirmButton.enabled ? dependencyManager.confirmButtonBackgroundColorEnabled : dependencyManager.confirmButtonBackgroundColorDisabled
     }
-    
+
     // MARK: - View lifecycle
 
     override func viewDidLoad() {
@@ -822,28 +823,25 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     }
 
     // MARK: - PastableTextViewDelegate
-
-    func canShowPasteMenu() -> Bool {
+    var canShowPasteMenu: Bool {
         let generalPasteboard = UIPasteboard.generalPasteboard()
 
-        var canShowPasteMenu = true
-
-        canShowPasteMenu = generalPasteboard.containsPasteboardTypes(UIPasteboardTypeListString as! [String])
-        canShowPasteMenu = generalPasteboard.containsPasteboardTypes(UIPasteboardTypeListImage as! [String])
-        canShowPasteMenu = dependencyManager.allowsPastingOfImages ?? true
+        let containsStringType = generalPasteboard.containsPasteboardTypes(UIPasteboardTypeListString as! [String])
+        let containsImageType = generalPasteboard.containsPasteboardTypes(UIPasteboardTypeListImage as! [String])
+        let canShowPasteMenu = containsStringType || (containsImageType && dependencyManager.allowsPastingOfImages ?? true)
 
         return canShowPasteMenu
     }
 
-    func canShowCopyMenu() -> Bool {
+    var canShowCopyMenu: Bool {
         return textViewHasText
     }
 
-    func canShowCutMenu() -> Bool {
+    var canShowCutMenu: Bool {
         return textViewHasText
     }
 
-    func canShowSelectMenu() -> Bool {
+    var canShowSelectMenu: Bool {
         return textViewHasText
     }
 
@@ -867,7 +865,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
 
                 // We want GIFs to autopost since they are to be considered as a reaction and not a content creation.
                 // We are also making the assumption that all GIFs are animated GIFs...
-                if imageType.fileExtension == "gif" {
+                if imageType.fileExtension == Constants.gifType {
                     sendMessage(asset: pastedImageAsset, previewImage: image.imageObject, text: nil, currentUser: user, isVIPOnly: false)
                     cleanup()
                 } else {

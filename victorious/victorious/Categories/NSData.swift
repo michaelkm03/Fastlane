@@ -45,10 +45,10 @@ extension NSData {
             default: ()
         }
 
-        if let contentType = contentType, let fileExtension = fileExtension {
-            return (contentType: contentType, fileExtension: fileExtension)
+        guard let type = contentType, fileExt = fileExtension else {
+            return nil
         }
 
-        return nil
+        return (contentType: type, fileExtension: fileExt)
     }
 }

@@ -9,7 +9,6 @@
 import Foundation
 
 struct TemporaryFileWriter {
-
     private static var temporaryWrittenFiles: [NSURL] = []
 
     /// Forces all temporary written files to be removed from disk.
