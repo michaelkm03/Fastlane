@@ -240,7 +240,7 @@ public enum ContentMediaAsset: ContentMediaAssetModel {
         switch self {
             case .youtube(let externalID, _): return externalID
             case .gif(let externalID, _, _, _): return externalID
-        case .sticker(let externalID, _, _): return externalID
+            case .sticker(let externalID, _, _): return externalID
             default: return nil
         }
     }
