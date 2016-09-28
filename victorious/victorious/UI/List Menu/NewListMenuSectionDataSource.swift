@@ -13,10 +13,10 @@ protocol NewListMenuSectionDataSourceDelegate: class {
     func didUpdateVisibleItems(forSection section: ListMenuSection)
 }
 
-class NewListMenuSectionDataSource<CellData, Request: RequestType where Request.ResultType == Array<CellData>> {
+class NewListMenuSectionDataSource<Item, Request: RequestType where Request.ResultType == Array<Item>> {
 
     // MARK: - Initialization
-    typealias CellConfigurationCallback = (_: NewListMenuSectionCell, _: CellData)  -> Void
+    typealias CellConfigurationCallback = (_: NewListMenuSectionCell, _: Item)  -> Void
     typealias FetchRemoteDataCallback = (_: NewListMenuSectionDataSource) -> Void
     let cellConfigurationCallback: CellConfigurationCallback
     let fetchRequest: Request
@@ -70,7 +70,7 @@ class NewListMenuSectionDataSource<CellData, Request: RequestType where Request.
         }
     }
 
-    var visibleItems: [CellData] = [CellData]() {
+    var visibleItems: [Item] = [Item]() {
         didSet {
             state = visibleItems.isEmpty ? .noContent : .items
             delegate?.didUpdateVisibleItems(forSection: .hashtags)
