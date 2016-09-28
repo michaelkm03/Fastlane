@@ -879,7 +879,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     }
 
     func didPasteText(text: String) {
-        composerTextViewManager?.appendTextIfPossible(textView, text: text)
+        composerTextViewManager?.insertTextAtSelectionIfPossible(textView, text: text)
     }
     
     // MARK: - TrayDelegate
