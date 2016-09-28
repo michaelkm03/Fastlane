@@ -8,11 +8,15 @@
 
 #import "VProduct.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface VPseudoProduct : VProduct
 
 /**
  Creates a VPseudoProduct instance with the given property values
  */
-- (instancetype)initWithProductIdentifier:(NSString *)productIdentifier price:(NSString *)price localizedDescription:(NSString *)localizedDescription localizedTitle:(NSString *)localizedTitle;
+- (instancetype)initWithProductIdentifier:(NSString *)productIdentifier price:(nullable NSString *)price localizedDescription:(nullable NSString *)localizedDescription localizedTitle:(nullable NSString *)localizedTitle;
 
 @end
+
+NS_ASSUME_NONNULL_END
