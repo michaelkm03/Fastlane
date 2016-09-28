@@ -28,6 +28,10 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     private lazy var closeButton: ImageOnColorButton? = {
        return self.dependencyManager.closeButton
     }()
+    
+    private lazy var endVIPButton: UIButton? = {
+        return self.dependencyManager.endVIPButton
+    }()
 
     private var stageShrinkingAnimator: StageShrinkingAnimator?
     
@@ -242,6 +246,13 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             button.sizeToFit()
             navigationItem.leftBarButtonItem = UIBarButtonItem(customView: button)
         }
+        
+        if let endVIPButton = endVIPButton where VCurrentUser.user?.accessLevel.isCreator == true {
+            endVIPButton.addTarget(self, action: #selector(endVIPEvent), forControlEvents: .TouchUpInside)
+            endVIPButton.sizeToFit()
+            navigationItem.rightBarButtonItem = UIBarButtonItem(customView: endVIPButton)
+        }
+        
         updateStyle()
         
         if let forumNetworkSource = dependencyManager.forumNetworkSource {
@@ -253,6 +264,10 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             
             self.forumNetworkSource = forumNetworkSource
         }
+    }
+    
+    private dynamic func endVIPEvent() {
+        // TODO: End VIP Event
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -479,6 +494,9 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
 }
 
 private extension VDependencyManager {
+    var endVIPButton: UIButton? {
+        return buttonForKey("end.vip.button")
+    }
     
     var title: String? {
         return stringForKey("title.text")
