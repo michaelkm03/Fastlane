@@ -12,12 +12,12 @@ extension VDependencyManager {
     /// Using the provided key, attempts to retrieve a dictionary used to instantiate
     /// a child dependency manager for a subcomponent, such as a "cell" component
     /// of a ".screen" component with a table or collection view.
-    func childDependency(forKey: _ key: String) -> VDependencyManager? {
-        guard let configuration = templateValueOfType(NSDictionary.self, forKey: key) as? [AnyHashable: Any] else {
+    func childDependency(forKey key: String) -> VDependencyManager? {
+        guard let configuration = templateValue(ofType: NSDictionary.self, forKey: key) as? [AnyHashable: Any] else {
             return nil
         }
         
-        return childDependencyManagerWithAddedConfiguration(configuration)
+        return childDependencyManager(withAddedConfiguration: configuration)
     }
     
     /// Returns an array of child dependency managers located at the given `key`, or nil if an array doesn't exist at
@@ -27,6 +27,6 @@ extension VDependencyManager {
             return nil
         }
         
-        return array.flatMap { childDependencyManagerWithAddedConfiguration($0) }
+        return array.flatMap { childDependencyManager(withAddedConfiguration: $0) }
     }
 }
