@@ -16,14 +16,14 @@ import VictoriousIOSSDK
     extension ForumViewController {
         private static let defaultStageContentLength: Double = 5
         
-        func debug_startGeneratingMessages(interval: NSTimeInterval) {
-            VTimerManager.addTimerManagerWithTimeInterval(interval,
-                target: self,
-                selector: #selector(debug_createMessages),
-                userInfo: nil,
-                repeats: true,
-                toRunLoop: NSRunLoop.mainRunLoop(),
-                withRunMode: NSRunLoopCommonModes
+        func debug_startGeneratingMessages(interval: TimeInterval) {
+            VTimerManager.add(withTimeInterval: interval,
+                              target: self,
+                              selector: #selector(debug_createMessages),
+                              userInfo: nil,
+                              repeats: true,
+                              to: RunLoop.mainRunLoop,
+                withRunMode: RunLoopMode.commonModes.rawValue
             )
         }
         
@@ -83,8 +83,8 @@ import VictoriousIOSSDK
                 ),
                 createdAt: Timestamp(),
                 text: (text == nil) ? nil : "\(totalCount) :: \(text!)",
-                previewImages: [previewImage].flatMap { $0 },
-                type: type
+                type: type,
+                previewImages: [previewImage].flatMap { $0 }
             )
             
             totalCount += 1
