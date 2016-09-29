@@ -32,7 +32,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     private var visibleKeyboardHeight: CGFloat = 0
     
-    private var customInputAreaState: CustomInputAreaState = .Hidden
+    private var customInputAreaState: CustomInputAreaState = .hidden
     
     private var customInputAreaHeight: CGFloat = 0
     
@@ -115,7 +115,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     private var keyboardManager: VKeyboardNotificationManager?
     
     private var totalComposerHeight: CGFloat {
-        guard isViewLoaded() && composerIsVisible else {
+        guard isViewLoaded && composerIsVisible else {
             return 0
         }
         return fabs(inputViewToBottomConstraint.constant)
@@ -144,15 +144,15 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     private var selectedButton: UIButton? {
         didSet {
-            oldValue?.enabled = true
+            oldValue?.isEnabled = true
             if let button = selectedButton {
-                button.enabled = false
+                button.isEnabled = false
             }
         }
     }
     
     private var shouldShowAttachmentContainer: Bool {
-        guard let attachmentMenuItems = attachmentMenuItems where isViewLoaded() else {
+        guard let attachmentMenuItems = attachmentMenuItems, isViewLoaded else {
             return false
         }
         
@@ -190,20 +190,20 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     private lazy var showKeyboardBlock: VKeyboardManagerKeyboardChangeBlock = { startFrame, endFrame, animationDuration, animationCurve in
         
-        if self.textView.isFirstResponder() {
-            self.updateViewsForNewVisibleKeyboardHeight(endFrame.height, animationOptions: UIViewAnimationOptions(rawValue: UInt(animationCurve.rawValue << 16)), animationDuration: animationDuration)
+        if self.textView.isFirstResponder {
+            self.updateViewsForNewVisibleKeyboardHeight(visibleKeyboardHeight: endFrame.height, animationOptions: UIViewAnimationOptions(rawValue: UInt(animationCurve.rawValue << 16)), animationDuration: animationDuration)
         }
     }
     
     private lazy var hideKeyboardBlock: VKeyboardManagerKeyboardChangeBlock = { startFrame, endFrame, animationDuration, animationCurve in
         
         self.composerTextViewManager?.endEditing(self.textView)
-        self.updateViewsForNewVisibleKeyboardHeight(0, animationOptions: UIViewAnimationOptions(rawValue: UInt(animationCurve.rawValue << 16)), animationDuration: animationDuration)
+        self.updateViewsForNewVisibleKeyboardHeight(visibleKeyboardHeight: 0, animationOptions: UIViewAnimationOptions(rawValue: UInt(animationCurve.rawValue << 16)), animationDuration: animationDuration)
     }
     
     // MARK: - Composer
     
-    var maximumTextInputHeight = CGFloat.max
+    var maximumTextInputHeight = CGFloat.greatestFiniteMagnitude
     
     var text: String {
         get {
@@ -218,7 +218,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         textView.becomeFirstResponder()
     }
     
-    func dismissKeyboard(animated: Bool) {
+    func dismissKeyboard(_ animated: Bool) {
         if textViewIsEditing && textViewCanDismiss {
             if animated {
                 textView.resignFirstResponder()
@@ -230,14 +230,14 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
     }
     
-    func append(text: String) {
+    func append(_ text: String) {
         guard !text.isEmpty else {
             return
         }
         
-        let whitespaceCharacterSet = NSCharacterSet.whitespaceAndNewlineCharacterSet()
+        let whitespaceCharacterSet = NSCharacterSet.whitespacesAndNewlines
         
-        if let lastCharacter = textView.text?.utf16.last where !whitespaceCharacterSet.characterIsMember(lastCharacter) {
+        if let lastCharacter = textView.text?.utf16.last, !whitespaceCharacterSet.characterIsMember(lastCharacter) {
             composerTextViewManager?.appendTextIfPossible(textView, text: " " + text + " ")
         }
         else {
@@ -505,7 +505,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
     }
     
-    private func updateCustomInputAreaHeight(animated animated: Bool) {
+    private func updateCustomInputAreaHeight(animated: Bool) {
         self.customInputAreaHeightConstraint.constant = self.customInputAreaHeight
         if animated {
             UIView.animateWithDuration(Constants.animationDuration, delay: 0, options: [.CurveEaseOut, .AllowUserInteraction], animations: {
@@ -721,17 +721,17 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     // MARK: - VCreationFlowControllerDelegate
     
-    func creationFlowController(creationFlowController: VCreationFlowController!, finishedWithPreviewImage previewImage: UIImage!, capturedMediaURL: NSURL!) {
+    func creationFlowController(creationFlowController: VCreationFlowController!, finishedWithPreviewImage previewImage: UIImage!, capturedMediaURL: URL!) {
         guard let contentType = contentType(for: creationFlowController) else {
             creationFlowController.v_showErrorDefaultError()
             return
         }
         
         // Disable VIP button if we just selected a GIF
-        vipButton?.enabled = contentType != .gif
+        vipButton?.isEnabled = contentType != .gif
         
         var preview = previewImage
-        if let image = capturedMediaURL.v_videoPreviewImage where contentType == .gif {
+        if let image = capturedMediaURL.v_videoPreviewImage, contentType == .gif {
             preview = image
         }
         
@@ -766,7 +766,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         case .Image:
             return .image
         case .Video:
-            if creationFlowController.dynamicType == VGIFCreationFlowController.self {
+            if type(of: creationFlowController) == VGIFCreationFlowController.self {
                 return .gif
             } else {
                 return .video
