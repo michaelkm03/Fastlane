@@ -191,7 +191,7 @@ public enum ContentMediaAsset: ContentMediaAssetModel {
         }
         let size = CGSize(width: width, height: height)
         
-        switch json["type"].stringValue.lowercased {
+        switch json["type"].stringValue.lowercased() {
             case "image": self = .image(url: url, size: size)
             case "video": self = .video(url: url, source: nil, size: size)
             case "gif": self = .gif(remoteID: nil, url: url, source: nil, size: size)

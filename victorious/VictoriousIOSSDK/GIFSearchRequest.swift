@@ -11,7 +11,7 @@ import Foundation
 /// Returns a list of GIFs based on a search query
 public struct GIFSearchRequest: PaginatorPageable, ResultBasedPageable {
     
-    public let urlRequest: NSURLRequest
+    public let urlRequest: URLRequest
     public let searchOptions: GIFSearchOptions
     
     public let paginator: StandardPaginator
@@ -31,15 +31,15 @@ public struct GIFSearchRequest: PaginatorPageable, ResultBasedPageable {
                 url = URL(string: trendingURL)
         }
         
-        let mutableURLRequest = NSMutableURLRequest(url: url ?? URL(string: "")!)
-        paginator.addPaginationArguments(to: mutableURLRequest)
-        urlRequest = mutableURLRequest
+        var request = URLRequest(url: url ?? URL(string: "")!)
+        paginator.addPaginationArguments(to: &request)
+        urlRequest = request
         
         self.searchOptions = searchOptions
         self.paginator = paginator
     }
     
-    public func parseResponse(response: URLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [GIFSearchResult] {
+    public func parseResponse(response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> [GIFSearchResult] {
         guard let gifsJSON = responseJSON["payload"].array else {
             throw ResponseParsingError()
         }

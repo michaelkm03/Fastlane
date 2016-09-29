@@ -22,8 +22,8 @@ public struct AccountCreateRequest: RequestType {
     /// The credentials that will be used to create a new account
     public let credentials: NewAccountCredentials
     
-    public var urlRequest: NSURLRequest {
-        let urlRequest = NSMutableURLRequest(url: AccountCreateRequest.basePath as URL)
+    public var urlRequest: URLRequest {
+        var urlRequest = URLRequest(url: AccountCreateRequest.basePath)
         urlRequest.httpMethod = "POST"
         
         switch credentials {
@@ -31,7 +31,7 @@ public struct AccountCreateRequest: RequestType {
                 urlRequest.vsdk_addURLEncodedFormPost(["email": username, "password": password])
             
             case let .Facebook(accessToken):
-                urlRequest.URL = urlRequest.URL?.URLByAppendingPathComponent("via_facebook_modern")
+                urlRequest.url = urlRequest.url?.appendingPathComponent("via_facebook_modern")
                 urlRequest.vsdk_addURLEncodedFormPost(["facebook_access_token": accessToken])
         }
         
@@ -42,7 +42,7 @@ public struct AccountCreateRequest: RequestType {
         self.credentials = credentials
     }
     
-    public func parseResponse(response: URLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> AccountCreateResponse {
+    public func parseResponse(response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> AccountCreateResponse {
         let payload = responseJSON["payload"]
         if let token = payload["token"].string,
            let user = User(json: payload) {
@@ -51,7 +51,7 @@ public struct AccountCreateRequest: RequestType {
         throw ResponseParsingError()
     }
     
-    private static let basePath = NSURL(string: "/api/account/create")!
+    private static let basePath = URL(string: "/api/account/create")!
 }
 
 /// The response to an account create call

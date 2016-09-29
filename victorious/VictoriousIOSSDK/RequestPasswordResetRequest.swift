@@ -16,15 +16,15 @@ public struct RequestPasswordResetRequest: RequestType {
         self.email = email
     }
     
-    public var urlRequest: NSURLRequest {
-        let urlRequest = NSMutableURLRequest(url: NSURL(string: "/api/password_reset_request")! as URL)
+    public var urlRequest: URLRequest {
+        var urlRequest = URLRequest(url: URL(string: "/api/password_reset_request")!)
         let accountInfo = [ "email": email ]
         urlRequest.vsdk_addURLEncodedFormPost(accountInfo)
         
         return urlRequest
     }
     
-    public func parseResponse(response: URLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> String {
+    public func parseResponse(response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> String {
         let payload = responseJSON["payload"]
         guard let deviceToken = payload["device_token"].string else {
             throw ResponseParsingError()

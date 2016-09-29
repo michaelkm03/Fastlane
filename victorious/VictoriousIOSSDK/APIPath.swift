@@ -35,7 +35,7 @@ public struct APIPath: Equatable {
     // MARK: - Getting the processed URL
     
     /// The processed URL value with macros replaced and query parameters added.
-    public var url: NSURL? {
+    public var url: URL? {
         var processedPath = templatePath
         
         if macroReplacements.count > 0 {
@@ -58,7 +58,7 @@ public struct APIPath: Equatable {
             }
         }
         
-        return NSURL(string: processedPath)
+        return URL(string: processedPath)
     }
 }
 

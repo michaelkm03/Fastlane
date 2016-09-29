@@ -10,7 +10,7 @@ import Foundation
 
 extension Bool {
     init?(_ string: String) {
-        let lowercaseString = string.lowercased
+        let lowercaseString = string.lowercased()
         
         if ["true", "yes"].contains(lowercaseString) {
             self.init(true)

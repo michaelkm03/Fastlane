@@ -12,7 +12,7 @@ public struct LogoutRequest: RequestType {
     
     public init() {}
     
-    public var urlRequest: NSURLRequest {
-        return NSURLRequest(url: NSURL(string: "/api/logout")! as URL)
+    public var urlRequest: URLRequest {
+        return URLRequest(url: URL(string: "/api/logout")!)
     }
 }

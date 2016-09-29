@@ -22,9 +22,10 @@ public struct PasswordResetRequest: RequestType {
         self.deviceToken = deviceToken
     }
     
-    public var urlRequest: NSURLRequest {
+    public var urlRequest: URLRequest {
         
-        let urlRequest = NSMutableURLRequest(url: NSURL(string: "/api/password_reset")! as URL)
+        var urlRequest = URLRequest(url: URL(string: "/api/password_reset")!)
+        
         let passwordResetInfo = [
             "new_password": newPassword,
             "user_token": userToken,

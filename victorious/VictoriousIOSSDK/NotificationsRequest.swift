@@ -21,14 +21,14 @@ public struct NotificationsRequest: PaginatorPageable, ResultBasedPageable {
         self.paginator = paginator
     }
     
-    public var urlRequest: NSURLRequest {
-        let url = NSURL(string: "/api/notification/notifications_list")!
-        let request = NSMutableURLRequest(url: url as URL)
-        paginator.addPaginationArguments(to: request)
+    public var urlRequest: URLRequest {
+        let url = URL(string: "/api/notification/notifications_list")!
+        var request = URLRequest(url: url)
+        paginator.addPaginationArguments(to: &request)
         return request
     }
     
-    public func parseResponse(response: URLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [Notification] {
+    public func parseResponse(response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> [Notification] {
         
         guard let notificationsJSON = responseJSON["payload"].array else {
             throw ResponseParsingError()

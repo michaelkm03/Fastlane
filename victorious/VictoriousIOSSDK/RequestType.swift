@@ -14,10 +14,10 @@ public protocol RequestType {
     associatedtype ResultType
     
     /// An instance of NSURLRequest that will be used to send this request to the server
-    var urlRequest: NSURLRequest { get }
+    var urlRequest: URLRequest { get }
     
     /// A custom base URL can be specified by the request.
-    var baseURL: NSURL? { get }
+    var baseURL: URL? { get }
     
     /// Some requests get a full URL path from the template. In that case, it is not necessary to combine the urlRequest
     /// path with the base path. These requests should override this method to return true
@@ -29,24 +29,24 @@ public protocol RequestType {
     /// - parameter request: The NSURLRequest that was sent to the server
     /// - parameter responseData: The raw data returned by the server
     /// - parameter responseJSON: A JSON object parsed from responseData, if available
-    func parseResponse(response: URLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> ResultType
+    func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> ResultType
     
     /// Returns a copy of the url request decorated with headers based on the provided contexts
     ///
     /// - parameter requestContext: Describes metadata related to the execution of this request
     /// - parameter authenticationContext: Describes authentication data
-    func urlRequestWithHeaders(using requestContext: RequestContext, authenticationContext: AuthenticationContext?) -> NSURLRequest
+    func urlRequestWithHeaders(using requestContext: RequestContext, authenticationContext: AuthenticationContext?) -> URLRequest
 }
 
 /// For RequestType implementations that have no results, this extension provides a default implementation of
 /// parseResponse that does nothing. Useful for "fire and forget" API calls like tracking pings.
 extension RequestType {
     
-    public var baseURL: NSURL? {
+    public var baseURL: URL? {
         return nil
     }
     
-    public func parseResponse( response: URLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON ) throws {
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws {
         // This method intentionally left blank.
     }
 }
@@ -65,33 +65,33 @@ extension RequestType {
     ///
     /// - parameter result: The results of this request, if available.
     /// - parameter error: If an error occurred while executing this request, this parameter will have details.
-    public typealias ResultCallback = ( _ result: ResultType?, _ error: Error? ) -> ()
+    public typealias ResultCallback = (_ result: ResultType?, _ error: Error?) -> Void
     
     /// Executes this request
     ///
     /// - returns: A Cancelable reference that can be used to cancel the network request before it completes
-    public func execute(baseURL: NSURL, requestContext: RequestContext, authenticationContext: AuthenticationContext?, callback: ResultCallback? = nil) -> Cancelable {
+    public func execute(baseURL: URL, requestContext: RequestContext, authenticationContext: AuthenticationContext?, callback: ResultCallback? = nil) -> Cancelable {
         let urlSession = URLSession.shared
-        let mutableRequest = urlRequestWithHeaders(using: requestContext, authenticationContext: authenticationContext).mutableCopy() as! NSMutableURLRequest
+        var mutableRequest = urlRequestWithHeaders(using: requestContext, authenticationContext: authenticationContext)
         
         // Combine only if current path is relative, not full
         if let requestURLString = mutableRequest.url?.absoluteString , !providesFullURL {
-            mutableRequest.URL = NSURL(string: requestURLString, relativeToURL: baseURL as URL)
+            mutableRequest.url = URL(string: requestURLString, relativeTo: baseURL)
         }
         
-        let dataTask = urlSession.dataTaskWithRequest(mutableRequest as URLRequest) { (data: NSData?, response: URLResponse?, requestError: NSError?) in
+        let dataTask = urlSession.dataTask(with: mutableRequest as URLRequest) { (data: Data?, response: URLResponse?, requestError: Error?) in
 
             let result: ResultType?
-            let error: ErrorType?
+            let error: Error?
             
             if let response = response, let data = data {
                 do {
                     // Try to parse formatted error (e.g. 401s)
                     let responseJSON = JSON(data: data)
-                    try self.parseError(responseJSON)
+                    try self.parseError(responseJSON: responseJSON)
                     
                     // Try to check for other HTTP errors
-                    try self.parseError(response)
+                    try self.parseError(httpURLResponse: response)
                     
                     // Try to parse response for valid results
                     result = try self.parseResponse(response, toRequest: mutableRequest, responseData: data, responseJSON: responseJSON)
@@ -109,14 +109,14 @@ extension RequestType {
                 error = requestError
             }
             
-            callback?(result: result, error: error)
+            callback?(result, error)
         }
         dataTask.resume()
         return dataTask
     }
     
-    public func urlRequestWithHeaders(using requestContext: RequestContext, authenticationContext: AuthenticationContext?) -> NSURLRequest {
-        let mutableRequest = urlRequest.mutableCopy() as! NSMutableURLRequest
+    public func urlRequestWithHeaders(using requestContext: RequestContext, authenticationContext: AuthenticationContext?) -> URLRequest {
+        var mutableRequest = urlRequest
         
         if let authenticationContext = authenticationContext {
             mutableRequest.vsdk_setAuthorizationHeader(requestContext: requestContext, authenticationContext: authenticationContext)
@@ -139,7 +139,7 @@ extension RequestType {
             mutableRequest.vsdk_setExperimentsHeaderValue(experiments)
         }
         
-        return mutableRequest.copy() as! NSURLRequest
+        return mutableRequest
     }
     
     private func parseError(responseJSON: JSON) throws {

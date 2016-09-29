@@ -10,7 +10,7 @@ import Foundation
 
 class AccountUpdateRequestBodyWriter: NSObject, RequestBodyWriterType {
     struct Output {
-        let fileURL: NSURL
+        let fileURL: URL
         let contentType: String
     }
     
@@ -26,7 +26,7 @@ class AccountUpdateRequestBodyWriter: NSObject, RequestBodyWriterType {
     
     func write() throws -> Output {
         guard let bodyTempFileURL = bodyTempFileURL else {
-            throw NSURLError.UnsupportedURL
+            throw URLError(.unsupportedURL)
         }
 
         let writer = VMultipartFormDataWriter(outputFileURL: bodyTempFileURL as URL)

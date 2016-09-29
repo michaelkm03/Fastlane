@@ -34,12 +34,6 @@ public struct Tracking: TrackingModel {
     
     private let trackingMap: [String : [String]]?
     
-    public func trackingURLsForKey(key: ViewTrackingKey) -> [String]? {
-        return trackingMap?[key.rawValue]
-    }
-}
-
-extension Tracking {
     init(json: JSON) {
         var map = [String : [String]]()
         var id = ""
@@ -59,5 +53,9 @@ extension Tracking {
         }
         self.id = id
         trackingMap = map
+    }
+    
+    public func trackingURLsForKey(key: ViewTrackingKey) -> [String]? {
+        return trackingMap?[key.rawValue]
     }
 }

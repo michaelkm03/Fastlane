@@ -11,7 +11,7 @@ import Foundation
 /// A network request to retrive the list of creators (API Owners)
 /// Response of this request should be `[User]`
 public struct CreatorListRequest: RequestType {
-    private let url: NSURL
+    private let url: URL
     
     public init?(apiPath: APIPath) {
         guard let url = apiPath.url else {
@@ -21,11 +21,11 @@ public struct CreatorListRequest: RequestType {
         self.url = url
     }
     
-    public var urlRequest: NSURLRequest {
-        return NSURLRequest(url: url as URL)
+    public var urlRequest: URLRequest {
+        return URLRequest(url: url)
     }
     
-    public func parseResponse(response: URLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [UserModel] {
+    public func parseResponse(response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> [UserModel] {
         guard let json = responseJSON["payload"]["users"].array else {
             throw ResponseParsingError()
         }

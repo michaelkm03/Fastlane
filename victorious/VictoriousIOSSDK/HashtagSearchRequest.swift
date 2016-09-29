@@ -9,7 +9,7 @@
 import Foundation
 
 public struct HashtagSearchRequest: RequestType {
-    private let url: NSURL
+    private let url: URL
     
     // param: - searchTerm must be a urlPathPart percent encoded string
     public init?(apiPath: APIPath, searchTerm: String) {
@@ -25,8 +25,8 @@ public struct HashtagSearchRequest: RequestType {
         self.url = url
     }
     
-    public var urlRequest: NSURLRequest {
-        return NSURLRequest(url: url as URL)
+    public var urlRequest: URLRequest {
+        return URLRequest(url: url)
     }
     
     public func parseResponse(response: URLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [Hashtag] {

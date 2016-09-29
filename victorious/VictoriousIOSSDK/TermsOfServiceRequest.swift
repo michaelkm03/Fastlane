@@ -14,11 +14,11 @@ public struct TermsOfServiceRequest: RequestType {
     
     public let publicBaseURL = NSURL(string: "http://www.victorious.com/")!
     
-    public var urlRequest: NSURLRequest {
-        return NSURLRequest(url: NSURL(string: "/api/tos")! as URL)
+    public var urlRequest: URLRequest {
+        return URLRequest(url: URL(string: "/api/tos")!)
     }
     
-    public func parseResponse(response: URLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> String {
+    public func parseResponse(response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> String {
         guard let htmlPayload = responseJSON["payload"].dictionary,
               let htmlString = htmlPayload["html"]?.string else {
             throw ResponseParsingError()

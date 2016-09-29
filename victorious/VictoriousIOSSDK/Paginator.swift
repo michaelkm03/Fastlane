@@ -23,7 +23,7 @@ public protocol Paginator {
     
     /// Modifies the provided request by adding pagination data to it according to
     /// the implementation-specific logic for doing so.
-    func addPaginationArguments(to: NSMutableURLRequest)
+    func addPaginationArguments(to: inout URLRequest)
 }
 
 /// Defines are more domain-specific paginator that exposes its internal numeric

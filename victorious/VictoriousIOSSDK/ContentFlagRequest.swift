@@ -9,7 +9,7 @@
 import Foundation
 
 public struct ContentFlagRequest: RequestType {
-    private let url: NSURL
+    private let url: URL
 
     public init?(apiPath: APIPath, contentID: String) {
         var apiPath = apiPath
@@ -22,8 +22,8 @@ public struct ContentFlagRequest: RequestType {
         self.url = url
     }
     
-    public var urlRequest: NSURLRequest {
-        let request = NSMutableURLRequest(url: url as URL)
+    public var urlRequest: URLRequest {
+        var request = URLRequest(url: url)
         request.httpMethod = "POST"
         return request
     }

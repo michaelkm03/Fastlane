@@ -31,3 +31,16 @@ extension CharacterSet {
         return pathPartAllowedCharacterSet
     }
 }
+
+// MARK: - OBJC Compatibility!
+extension NSCharacterSet {
+    /// Returns the character set for characters allowed in a query URL component.
+    public static var vsdk_queryPartAllowedCharacterSet: CharacterSet {
+        return queryPartAllowedCharacterSet
+    }
+    
+    /// Returns the character set for characters allowed in a path URL component.
+    public static var vsdk_pathPartAllowedCharacterSet: CharacterSet {
+        return pathPartAllowedCharacterSet
+    }
+}

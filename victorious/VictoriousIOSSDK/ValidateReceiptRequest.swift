@@ -11,7 +11,7 @@ import Foundation
 public struct ValidateReceiptRequest: RequestType {
     private let requestBodyWriter: ValidateReceiptRequestBodyWriter
     private let requestBody: ValidateReceiptRequestBodyWriter.Output
-    private let url: NSURL
+    private let url: URL
     
     public init?(apiPath: APIPath, data: NSData) {
         guard let url = apiPath.url else {
@@ -32,15 +32,15 @@ public struct ValidateReceiptRequest: RequestType {
         }
     }
     
-    public var urlRequest: NSURLRequest {
-        let request = NSMutableURLRequest(url: url as URL)
+    public var urlRequest: URLRequest {
+        var request = URLRequest(url: url)
         request.httpBodyStream = InputStream(url: requestBody.fileURL as URL)
         request.httpMethod = "POST"
         request.addValue(requestBody.contentType, forHTTPHeaderField: "Content-Type")
         return request
     }
     
-    public func parseResponse(response: URLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> VIPStatus {
+    public func parseResponse(response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> VIPStatus {
         requestBodyWriter.removeBodyTempFile()
         
         guard let vipStatus = VIPStatus(json: responseJSON["payload"]["vip"]) else {

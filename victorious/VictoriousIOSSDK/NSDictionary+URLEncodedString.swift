@@ -49,14 +49,14 @@ fileprivate extension String {
     }
 }
 
-extension NSMutableURLRequest {
+extension URLRequest {
     /// Sets the HTTPMethod to "POST", the "Content-Type" to "application/x-www-form-urlencoded"
     /// and adds a URL-encoded HTTPBody.
     ///
     /// - warning: This function will overwrite any existing HTTPBody!
     ///
     /// - parameter postValues: The values to URL-encode and add to the HTTPBody
-    public func vsdk_addURLEncodedFormPost(_ postValues: [String: String]) {
+    public mutating func vsdk_addURLEncodedFormPost(_ postValues: [String: String]) {
         httpMethod = "POST"
         addValue("application/x-www-form-urlencoded; charset=utf-8", forHTTPHeaderField: "Content-Type")
         httpBody = postValues.vsdk_urlEncodedString().data(using: String.Encoding.utf8)

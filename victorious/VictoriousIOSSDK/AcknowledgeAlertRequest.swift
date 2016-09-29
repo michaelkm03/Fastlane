@@ -13,8 +13,8 @@ public struct AcknowledgeAlertRequest: RequestType {
 
     public let alertID: String
 
-    public var urlRequest: NSURLRequest {
-        let urlRequest = NSMutableURLRequest(url: NSURL(string: "/api/alert/acknowledge")! as URL)
+    public var urlRequest: URLRequest {
+        var urlRequest = URLRequest(url: URL(string: "/api/alert/acknowledge")!)
         let params = ["alert_id": alertID]
         urlRequest.vsdk_addURLEncodedFormPost(params)
         return urlRequest

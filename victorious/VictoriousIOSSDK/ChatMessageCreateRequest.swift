@@ -9,13 +9,13 @@
 import Foundation
 
 public struct ChatMessageCreateRequest: RequestType {
-    public var urlRequest: NSURLRequest {
-        let request = NSMutableURLRequest(url: url as URL)
+    public var urlRequest: URLRequest {
+        var request = URLRequest(url: url)
         request.vsdk_addURLEncodedFormPost(["content": text])
         return request
     }
     
-    private let url: NSURL
+    private let url: URL
     private let text: String
     
     public init?(apiPath: APIPath, text: String) {

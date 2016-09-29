@@ -17,16 +17,16 @@ public class Notification {
     public let subject: String
     public let user: User
     public let body: String?
-    public let createdAt: NSDate
+    public let createdAt: Date
     public let deeplink: String?
     public let imageURL: String?
     public let isRead: Bool?
     public let type: String?
-    public let updatedAt: NSDate?
+    public let updatedAt: Date?
     
     public init?(json: JSON) {
         
-        guard let createdAt     = DateFormatter.vsdk_defaultDateFormatter().dateFromString(json["created_at"].stringValue),
+        guard let createdAt     = DateFormatter.vsdk_defaultDateFormatter().date(from:json["created_at"].stringValue),
             let subject         = json["subject"].string,
             let user            = User(json: json["created_by"]) else {
                 return nil
@@ -40,7 +40,7 @@ public class Notification {
         imageURL                = json["creator_profile_image_url"].string
         isRead                  = json["is_read"].v_boolFromAnyValue
         type                    = json["type"].string
-        updatedAt               = DateFormatter.vsdk_defaultDateFormatter().dateFromString(json["updated_at"].stringValue)
+        updatedAt               = DateFormatter.vsdk_defaultDateFormatter().date(from: json["updated_at"].stringValue)
     }
 }
 

@@ -10,7 +10,7 @@ import Foundation
 
 public struct NotificationPreference: OptionSet, Hashable {
     public let rawValue: Int
-    private let stringValue: String
+    public let stringValue: String
     
     public init(rawValue: Int) {
         self.rawValue = rawValue
@@ -45,7 +45,7 @@ public struct NotificationPreference: OptionSet, Hashable {
 
 public struct DevicePreferencesRequest: RequestType {
     
-    private let url = NSURL(string: "/api/device/preferences")!
+    private let url = URL(string: "/api/device/preferences")!
     
     /// The value that this endpoint considers "true"
     private let trueValue = "1"
@@ -55,8 +55,8 @@ public struct DevicePreferencesRequest: RequestType {
     
     private let preferences: [NotificationPreference: Bool]?
     
-    public var urlRequest: NSURLRequest {
-        let mutableURLRequest = NSMutableURLRequest(url: url as URL)
+    public var urlRequest: URLRequest {
+        var mutableURLRequest = URLRequest(url: url)
         if let preferences = self.preferences {
             var formpost: [String: String] = [:]
             for preference in NotificationPreference.all {
@@ -79,7 +79,7 @@ public struct DevicePreferencesRequest: RequestType {
         self.preferences = preferences
     }
     
-    private func preferencesFromJSON(json: JSON) -> NotificationPreference {
+    private func preferences(from json: JSON) -> NotificationPreference {
         var returnValue: NotificationPreference = []
         for preference in NotificationPreference.all {
             if json[preference.stringValue].stringValue == trueValue {
@@ -91,6 +91,6 @@ public struct DevicePreferencesRequest: RequestType {
     
     public func parseResponse(response: URLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> NotificationPreference {
         let payload = responseJSON["payload"]
-        return preferencesFromJSON(payload)
+        return preferences(from: payload)
     }
 }

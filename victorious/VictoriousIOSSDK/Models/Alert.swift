@@ -46,7 +46,7 @@ public struct Alert: Equatable {
     public let alertID: String
     public let type: AlertType
     public let parameters: Alert.Parameters
-    public let dateAcknowledged: NSDate?
+    public let dateAcknowledged: Date?
 
     /// Initialize an alert only with display information. This is provided for initializing alerts on the client side.
     /// - parameter title: Title of the alert. Required.
@@ -86,7 +86,7 @@ extension Alert {
         self.type = alertType
         self.parameters = parameters
         self.alertID = alertID
-        self.dateAcknowledged = DateFormatter.vsdk_defaultDateFormatter().dateFromString(json["acknowledged_at"].stringValue)
+        self.dateAcknowledged = DateFormatter.vsdk_defaultDateFormatter().date(from: json["acknowledged_at"].stringValue)
     }
 }
 

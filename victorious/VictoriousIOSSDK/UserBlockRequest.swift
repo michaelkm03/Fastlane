@@ -9,7 +9,7 @@
 import Foundation
 
 public struct UserBlockRequest: RequestType {
-    private let url: NSURL
+    private let url: URL
     private let userID: User.ID
     
     public init?(apiPath: APIPath, userID: User.ID) {
@@ -24,8 +24,8 @@ public struct UserBlockRequest: RequestType {
         self.userID = userID
     }
     
-    public var urlRequest: NSURLRequest {
-        let request = NSMutableURLRequest(url: url as URL)
+    public var urlRequest: URLRequest {
+        var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.vsdk_addURLEncodedFormPost(["user_id": String(userID)])
         return request

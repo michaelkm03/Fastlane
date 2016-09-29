@@ -9,7 +9,7 @@
 import Foundation
 
 public struct MediaUploadCreateRequest: RequestType {
-    private let url: NSURL
+    private let url: URL
     
     public init?(apiPath: APIPath) {
         guard let url = apiPath.url else {
@@ -19,13 +19,13 @@ public struct MediaUploadCreateRequest: RequestType {
         self.url = url
     }
     
-    public var urlRequest: NSURLRequest {
-        let request = NSMutableURLRequest(url: url as URL)
+    public var urlRequest: URLRequest {
+        var request = URLRequest(url: url)
         request.httpMethod = "POST"
         return request
     }
     
-    public func parseResponse(response: URLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> String {
+    public func parseResponse(response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> String {
         let sequenceID = responseJSON["payload"]["sequence_id"]
         
         guard let mediaUploadSequenceID = sequenceID.string else {
