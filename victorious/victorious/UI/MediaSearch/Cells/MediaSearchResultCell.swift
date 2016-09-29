@@ -18,15 +18,15 @@ class MediaSearchResultCell: UICollectionViewCell {
     /// Sets the image asset URL to show in this cell
     var assetUrl: URL? {
         didSet {
-            if let url = self.assetUrl , self.assetUrl != oldValue {
-                self.loadImage( url )
+            if let url = self.assetUrl, self.assetUrl != oldValue {
+                self.loadImage(url)
             }
         }
     }
     
-    fileprivate func loadImage( _ url: URL ) {
+    fileprivate func loadImage(_ url: URL) {
         self.imageView.alpha = 0.0
-        self.imageView.sd_setImageWithURL( url, completed: { (image, error, cacheType, url) in
+        self.imageView.sd_setImageWithURL(url, completed: { image, error, cacheType, url in
             if cacheType == .None {
                 UIView.animateWithDuration(0.2) {
                     self.imageView.alpha = 1.0

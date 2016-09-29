@@ -15,14 +15,14 @@ class MediaSearchNoContentCell: UICollectionViewCell {
     @IBOutlet fileprivate weak var activityIndicator: UIActivityIndicatorView!
     
     /// Sets text value for a label to indicate to the user the state of the search
-    var text: String = "" {
+    var text = "" {
         didSet {
             self.label.text = text
         }
     }
     
     /// Puts the cell in or out of a loading state that shows an activity indicator
-    var loading: Bool = true {
+    var loading = true {
         didSet {
             self.activityIndicator.isHidden = !self.loading
         }
