@@ -15,8 +15,8 @@ extension VDependencyManager {
     static var userRemoteIdKey: String { return "remoteId" }
     
     func userProfileViewController(withRemoteID remoteID: NSNumber) -> UIViewController? {
-        return templateValueOfType(
-            VNewProfileViewController.self,
+        return templateValue(
+            ofType: VNewProfileViewController.self,
             forKey: VDependencyManager.userProfileViewComponentKey,
             withAddedDependencies: [VDependencyManager.userRemoteIdKey: remoteID]
         ) as? UIViewController

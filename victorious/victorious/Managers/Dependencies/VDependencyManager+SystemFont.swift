@@ -9,10 +9,9 @@
 import Foundation
 
 extension VDependencyManager {
-    
-    fileprivate func weightOfSystemFontWithName(_ name: String) -> CGFloat? {
+    private func weightOfSystemFontWithName(_ name: String) -> CGFloat? {
+        let normalizedName = name.lowercased()
         
-        let normalizedName = name.lowercased
         guard normalizedName.hasPrefix("systemfont-") else {
             return nil
         }

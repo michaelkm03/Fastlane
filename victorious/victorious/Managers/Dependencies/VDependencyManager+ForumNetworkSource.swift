@@ -10,7 +10,7 @@ import Foundation
 
 extension VDependencyManager {
     var forumNetworkSource: ForumNetworkSource? {
-        return singletonObjectOfType(NSObject.self, forKey: "networkLayerSource") as? ForumNetworkSource
+        return singletonObject(ofType: NSObject.self, forKey: "networkLayerSource") as? ForumNetworkSource
     }
 }
 
