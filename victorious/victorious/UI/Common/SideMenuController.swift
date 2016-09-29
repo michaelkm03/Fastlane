@@ -176,7 +176,7 @@ class SideMenuController: UIViewController {
     fileprivate func currentFocusTypeForEdge(_ edge: SideMenuControllerEdge?) -> VFocusType {
         
         let isFocused = panRecognizer.state != .changed && openEdge == edge
-        return isFocused ? .Stream : .none
+        return isFocused ? .stream : .none
     }
     
     fileprivate func addFocusWithType(_ focusType: VFocusType, toControllerAssociatedWithContainer container: UIView) {

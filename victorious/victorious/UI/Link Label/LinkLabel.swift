@@ -94,7 +94,7 @@ class LinkLabel: UILabel, NSLayoutManagerDelegate {
         for link in links {
             let range = NSRange(
                 location: text.characters.distance(from: text.startIndex, to: link.range.lowerBound),
-                length: <#T##String.CharacterView corresponding to your index##String.CharacterView#>.distance(from: link.range.lowerBound, to: link.range.upperBound)
+                length: text.characters.distance(from: link.range.lowerBound, to: link.range.upperBound)
             )
             
             if range.location + range.length > attributedString.length {
@@ -194,7 +194,7 @@ class LinkLabel: UILabel, NSLayoutManagerDelegate {
     fileprivate func getLink(at location: CGPoint) -> Link? {
         let location = location + CGPoint(x: 0.0, y: -verticalOffsetToTopOfText)
         var fractionOfDistance = CGFloat(0.0)
-        let characterIndex = layoutManager.characterIndexForPoint(location, inTextContainer: textContainer, fractionOfDistanceBetweenInsertionPoints: &fractionOfDistance)
+        let characterIndex = layoutManager.characterIndex(for: location, in: textContainer, fractionOfDistanceBetweenInsertionPoints: &fractionOfDistance)
         
         guard characterIndex <= textStorage.length, let text = text else {
             return nil
@@ -202,7 +202,7 @@ class LinkLabel: UILabel, NSLayoutManagerDelegate {
         
         for link in links {
             let rangeLocation = text.characters.distance(from: text.startIndex, to: link.range.lowerBound)
-            let rangeLength = <#T##String.CharacterView corresponding to your index##String.CharacterView#>.distance(from: link.range.lowerBound, to: link.range.upperBound)
+            let rangeLength = text.characters.distance(from: link.range.lowerBound, to: link.range.upperBound)
             
             if rangeLocation <= characterIndex && (rangeLocation + rangeLength - 1) >= characterIndex {
                 let glyphRange = layoutManager.glyphRange(forCharacterRange: NSMakeRange(rangeLocation, rangeLength), actualCharacterRange: nil)

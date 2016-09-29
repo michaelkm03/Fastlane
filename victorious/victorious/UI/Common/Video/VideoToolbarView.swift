@@ -56,15 +56,15 @@ class VideoToolbarView: UIView {
     
     func setCurrentTime( _ timeSeconds: Float64, duration: Float64 ) {
         slider.value = clampRatio( Float(timeSeconds / duration) )
-        elapsedTimeLabel.text = self.timeFormatter.stringForSeconds( clampTime(timeSeconds) )
-        remainingTimeLabel.text = self.timeFormatter.stringForSeconds( clampTime(duration - timeSeconds) )
+        elapsedTimeLabel.text = self.timeFormatter.string(forSeconds: clampTime(timeSeconds) )
+        remainingTimeLabel.text = self.timeFormatter.string(forSeconds: clampTime(duration - timeSeconds) )
     }
     
     func setProgress( _ progress: Float, duration: Float64 ) {
         slider.value = clampRatio( progress )
         let elapsedTime = Float64(progress) * duration
-        elapsedTimeLabel.text = self.timeFormatter.stringForSeconds( clampTime(elapsedTime) )
-        remainingTimeLabel.text = self.timeFormatter.stringForSeconds( clampTime(duration - elapsedTime) )
+        elapsedTimeLabel.text = self.timeFormatter.string(forSeconds: clampTime(elapsedTime) )
+        remainingTimeLabel.text = self.timeFormatter.string(forSeconds: clampTime(duration - elapsedTime) )
     }
     
     var paused: Bool = true {

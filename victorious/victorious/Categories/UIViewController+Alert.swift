@@ -18,11 +18,11 @@ extension UIViewController {
     
     /// Displays an alert with a single action that calls on the completion block.
     func v_showAlert(title: String?, message: String?, completion: ((Void) -> ())? = nil ) {
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: NSLocalizedString("OK", comment:""), style: .cancel) { action in
             completion?()
         }
         alertController.addAction( cancelAction )
-        self.presentViewController(alertController, animated: true, completion: nil)
+        self.present(alertController, animated: true, completion: nil)
     }
 }

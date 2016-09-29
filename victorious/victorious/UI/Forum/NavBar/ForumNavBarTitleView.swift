@@ -42,9 +42,9 @@ class ForumNavBarTitleView: UIView {
     
     fileprivate func setupViews() {
         //Initialize the stack view and set the layout information
-        stackView.axis = .Vertical
-        stackView.distribution = .FillProportionally
-        stackView.alignment = .Center
+        stackView.axis = .vertical
+        stackView.distribution = .fillProportionally
+        stackView.alignment = .center
         
         titleLabel.text = configuration.titleText
         titleLabel.font = configuration.titleFont

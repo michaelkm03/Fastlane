@@ -59,7 +59,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
     
     // MARK: - UICollectionView Data Source
     
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    private func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return ListMenuSection.numberOfSections
     }
     
@@ -74,20 +74,20 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         }
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let listMenuSection = ListMenuSection(rawValue: indexPath.section)!
 
         switch listMenuSection {
-            case .creator: return dequeueProperCell(dataSource: creatorDataSource, for: collectionView, at: indexPath)
-            case .community: return dequeueProperCell(dataSource: communityDataSource, for: collectionView, at: indexPath)
-            case .hashtags: return dequeueProperCell(dataSource: hashtagDataSource, for: collectionView, at: indexPath)
-            case .chatRooms: return dequeueProperCell(dataSource: chatRoomsDataSource, for: collectionView, at: indexPath)
+            case .creator: return dequeueProperCell(dataSource: creatorDataSource, for: collectionView, at: indexPath as NSIndexPath)
+            case .community: return dequeueProperCell(dataSource: communityDataSource, for: collectionView, at: indexPath as NSIndexPath)
+            case .hashtags: return dequeueProperCell(dataSource: hashtagDataSource, for: collectionView, at: indexPath as NSIndexPath)
+            case .chatRooms: return dequeueProperCell(dataSource: chatRoomsDataSource, for: collectionView, at: indexPath as NSIndexPath)
         }
     }
     
     func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
         let headerIdentifier = ListMenuSectionHeaderView.defaultReuseIdentifier
-        let headerView = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: headerIdentifier , forIndexPath: indexPath as IndexPath) as! ListMenuSectionHeaderView
+        let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerIdentifier , for: indexPath as IndexPath) as! ListMenuSectionHeaderView
         let listMenuSection = ListMenuSection(rawValue: indexPath.section)!
         
         switch listMenuSection {
