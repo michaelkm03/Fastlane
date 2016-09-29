@@ -9,13 +9,11 @@
 import UIKit
 
 protocol HashtagBarViewControllerAnimationDelegate: class {
-    
     func hashtagBarViewController(_ hashtagBarViewController: HashtagBarViewController, isUpdatingConstraints updateBlock: (Void) -> ())
 }
 
 /// Displays and manages a collection view populated with hashtags.
 class HashtagBarViewController: UIViewController, HashtagBarControllerSearchDelegate {
-    
     static func new(_ dependencyManager: VDependencyManager, containerHeightConstraint: NSLayoutConstraint) -> HashtagBarViewController {
         
         let hashtagBar = v_initialViewControllerFromStoryboard() as HashtagBarViewController

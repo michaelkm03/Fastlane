@@ -9,7 +9,6 @@
 import Foundation
 
 /// A cell containing a single, fit-to-bounds label.
-(HashtagBarCell)
 class HashtagBarCell: VBaseCollectionViewCell {
     
     @IBOutlet weak var label: UILabel!

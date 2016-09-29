@@ -39,7 +39,8 @@ final class CreateMediaUploadOperation: SyncOperation<Void> {
             return .failure(uploadError)
         }
         
-        let taskCreator = VUploadTaskCreator(uploadManager: uploadManager)
+        // Future: Fix the ! imported from Objc
+        let taskCreator = VUploadTaskCreator(uploadManager: uploadManager)!
         let authenticationContext = AuthenticationContext()
         
         taskCreator.request = request.urlRequestWithHeaders(using: RequestContext(), authenticationContext: authenticationContext)
@@ -92,16 +93,16 @@ final class CreateMediaUploadOperation: SyncOperation<Void> {
         if let textToolType = publishParameters.textToolType {
             dict["text_tool_type"] = textToolType
         }
-        if let parentNodeID = publishParameters.parentNodeID , !parentNodeID.isEqualToNumber(NSNumber(int: 0)) {
-            dict["parent_node_id"] = String(parentNodeID)
+        if let parentNodeID = publishParameters.parentNodeID , !parentNodeID.isEqual(to: NSNumber(value: 0)) {
+            dict["parent_node_id"] = String(describing: parentNodeID)
         }
         if let parentSequenceID = publishParameters.parentSequenceID , !parentSequenceID.isEmpty {
             dict["parent_sequence_id"] = String(parentSequenceID)
         }
         switch publishParameters.captionType {
-        case .Meme:
+        case .meme:
             dict["subcategory"] = "meme"
-        case .Normal:
+        case .normal:
             break
         }
         if let source = publishParameters.source {

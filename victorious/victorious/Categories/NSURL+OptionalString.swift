@@ -15,9 +15,8 @@ extension URL {
     /// for any other of the usual reasons.
     init?(v_string string: String?) {
         guard let string = string , !string.characters.isEmpty else {
-            (self as NSURL).init(string: "")
             return nil
         }
-        (self as NSURL).init(string: string)
+        self.init(string: string)
     }
 }

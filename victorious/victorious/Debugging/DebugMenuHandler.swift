@@ -49,7 +49,7 @@
                 let debuggingViewController: WebSocketDebuggingViewController = WebSocketDebuggingViewController.v_initialViewControllerFromStoryboard()
                 debuggingViewController.rawMessageContainer = messageContainer
                 let navigationController = UINavigationController(rootViewController: debuggingViewController)
-                targetViewController.presentViewController(navigationController, animated: true, completion: nil)
+                targetViewController.present(navigationController, animated: true, completion: nil)
             }
         }
     }

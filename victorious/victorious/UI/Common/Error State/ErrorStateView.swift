@@ -58,7 +58,7 @@ class ErrorStateView: UIView {
 
 private extension VDependencyManager {
     var errorIcon: UIImage? {
-        return image(forKey: "errorIcon")?.imageWithRenderingMode(.AlwaysTemplate)
+        return image(forKey: "errorIcon")?.withRenderingMode(.alwaysTemplate)
     }
     
     var title: String? {
