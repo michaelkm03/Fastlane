@@ -27,7 +27,7 @@ private struct Constants {
 /// This extension handles all template based decoration for the settings page, as well as
 /// other template based functionality.
 extension VSettingsViewController: VBackgroundContainer {
-    override public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    open override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard section < Constants.sectionHeaderTitles.count else {
             return nil
         }
@@ -39,15 +39,15 @@ extension VSettingsViewController: VBackgroundContainer {
         
         let containerView = UIView()
         containerView.addSubview(headerLabel)
-        containerView.v_addFitToParentConstraintsToSubview(headerLabel, leading: Constants.headerLabelLeftPadding, trailing: 0.0, top: 0.0, bottom: 0.0)
+        containerView.v_addFitToParentConstraints(toSubview: headerLabel, leading: Constants.headerLabelLeftPadding, trailing: 0.0, top: 0.0, bottom: 0.0)
         return containerView
     }
     
-    override public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    open override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 25
     }
     
-    override public func tableView(_ tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+    open override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         guard let label = cell.textLabel, let cell = cell as? SettingsTableViewCell else {
             return
         }
@@ -63,16 +63,16 @@ extension VSettingsViewController: VBackgroundContainer {
         }
         else {
             cell.backgroundView = UIView() // Must set this here so that we can add a background
-            dependencyManager.addBackgroundToBackgroundHost(cell, forKey: Constants.itemBackgroundKey)
+            dependencyManager.addBackground(toBackgroundHost: cell, forKey: Constants.itemBackgroundKey)
         }
     }
     
-    override public func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
         tableView.accessibilityIdentifier = VAutomationIdentifierSettingsTableView
         tableView.backgroundView = UIView()
-        dependencyManager.addBackgroundToBackgroundHost(self)
-        tableView.separatorStyle = .None
+        dependencyManager.addBackground(toBackgroundHost: self)
+        tableView.separatorStyle = .none
     }
     
     public func backgroundContainerView() -> UIView {
@@ -81,10 +81,10 @@ extension VSettingsViewController: VBackgroundContainer {
     
     public func handleAboutSectionSelection(_ row: Int) {
         switch row {
-            case 0: showFixedWebContent(.HelpCenter)
+            case 0: showFixedWebContent(.helpCenter)
             case 1: sendHelp()
-            case 2: showFixedWebContent(.TermsOfService)
-            case 3: showFixedWebContent(.PrivacyPolicy)
+            case 2: showFixedWebContent(.termsOfService)
+            case 3: showFixedWebContent(.privacyPolicy)
             default: break
         }
     }
@@ -92,13 +92,13 @@ extension VSettingsViewController: VBackgroundContainer {
     fileprivate func showFixedWebContent(_ type: FixedWebContentType) {
         let router = Router(originViewController: self, dependencyManager: dependencyManager)
         let configuration = ExternalLinkDisplayConfiguration(addressBarVisible: false, forceModal: false, isVIPOnly: false, title: type.title)
-        router.navigate(to: .externalURL(url: dependencyManager.urlForFixedWebContent(type), configuration: configuration), from: nil)
+        router.navigate(to: .externalURL(url: dependencyManager.urlForFixedWebContent(type) as URL, configuration: configuration), from: nil)
     }
 }
 
 private extension VSettingsViewController {
-    func isLastCell(_ indexPath: NSIndexPath) -> Bool {
-        return indexPath.row == tableView.numberOfRowsInSection(indexPath.section) - 1
+    func isLastCell(_ indexPath: IndexPath) -> Bool {
+        return indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1
     }
 
     func isLastSection(_ section: Int) -> Bool {
