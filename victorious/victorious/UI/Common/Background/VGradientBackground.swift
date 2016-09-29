@@ -28,10 +28,10 @@ class VGradientBackground: VBackground {
     fileprivate func updateStyle() {
         gradientView.setColors( [dependencyManager.startColor, dependencyManager.endColor] )
         switch dependencyManager.direction {
-        case .Vertical:
+        case .vertical:
             gradientView.startPoint = CGPoint(x: 0.5, y: 0.0)
             gradientView.endPoint = CGPoint(x: 0.5, y: 1.0)
-        case .Horizontal:
+        case .horizontal:
             gradientView.startPoint = CGPoint(x: 0.0, y: 0.5)
             gradientView.endPoint = CGPoint(x: 1.0, y: 0.5)
         }
@@ -47,11 +47,11 @@ private extension VDependencyManager {
     var direction: VGradientBackgroundDirection {
         switch string(forKey: "direction") ?? "" {
         case "horizontal":
-            return .Horizontal
+            return .horizontal
         case "vertical":
-            return .Vertical
+            return .vertical
         default:
-            return .Vertical
+            return .vertical
         }
     }
     

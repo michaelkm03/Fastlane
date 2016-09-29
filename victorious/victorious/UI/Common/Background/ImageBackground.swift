@@ -19,7 +19,7 @@ class ImageBackground: VBackground {
     
     override func viewForBackground() -> UIView {
         let imageView = UIImageView(image: backgroundImage)
-        imageView.contentMode = .ScaleAspectFill
+        imageView.contentMode = .scaleAspectFill
         return imageView
     }
 }

@@ -19,7 +19,7 @@ class SystemBlurredImageBackground : VBackground {
 
     override func viewForBackground() -> UIView {
         let backgroundImageView = UIImageView(image: backgroundImage)
-        backgroundImageView.contentMode = .ScaleAspectFill
+        backgroundImageView.contentMode = .scaleAspectFill
         
         let blurEffect = UIBlurEffect(style: .light)
         
