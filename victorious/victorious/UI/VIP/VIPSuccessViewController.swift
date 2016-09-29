@@ -30,7 +30,7 @@ class VIPSuccessViewController: UIViewController {
         }
     }
     
-    static func newWithDependencyManager(_ dependencyManager: VDependencyManager) -> VIPSuccessViewController {
+    static func new(with dependencyManager: VDependencyManager) -> VIPSuccessViewController {
         let successViewController: VIPSuccessViewController = v_initialViewControllerFromStoryboard()
         successViewController.dependencyManager = dependencyManager
         return successViewController

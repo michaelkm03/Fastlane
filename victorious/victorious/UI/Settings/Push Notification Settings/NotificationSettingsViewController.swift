@@ -288,7 +288,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
     
     // MARK: - Dependency Manager
     
-    class func newWithDependencyManager(_ dependencyManager: VDependencyManager) -> NotificationSettingsViewController {
+    class func new(with dependencyManager: VDependencyManager) -> NotificationSettingsViewController {
         let viewController = NotificationSettingsViewController(style: .Grouped)
         viewController.dependencyManager = dependencyManager
         return viewController

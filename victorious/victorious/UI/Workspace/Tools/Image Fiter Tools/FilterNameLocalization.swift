@@ -6,7 +6,7 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-(VFilterNameLocalization) class FilterNameLocalization: NSObject {
+class FilterNameLocalization: NSObject {
     
     fileprivate enum FilterNames: String {
         case barcelona = "Barcelona"

@@ -107,7 +107,7 @@ class MixedMediaCameraViewController: UIViewController, VCaptureVideoPreviewView
     
     @IBOutlet weak fileprivate var shutterView: VRadialGradientView!
     
-    class func newWithDependencyManager(_ dependencyManager: VDependencyManager) -> MixedMediaCameraViewController {
+    class func new(with dependencyManager: VDependencyManager) -> MixedMediaCameraViewController {
         
         let cameraViewController: MixedMediaCameraViewController = self.v_initialViewControllerFromStoryboard()
         cameraViewController.dependencyManager = dependencyManager

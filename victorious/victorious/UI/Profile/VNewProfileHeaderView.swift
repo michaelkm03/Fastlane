@@ -19,7 +19,7 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
     
     // MARK: - Initializing
     
-    class func newWithDependencyManager(_ dependencyManager: VDependencyManager) -> VNewProfileHeaderView {
+    class func new(with dependencyManager: VDependencyManager) -> VNewProfileHeaderView {
         let view: VNewProfileHeaderView = VNewProfileHeaderView.v_fromNib()
         view.dependencyManager = dependencyManager
         return view

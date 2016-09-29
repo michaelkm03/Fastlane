@@ -63,7 +63,7 @@ class ModernLoadingViewController: UIViewController, LoginFlowLoadingScreen, VBa
         
     // MARK: Factory method
     
-    class func newWithDependencyManager(_ dependencyManager: VDependencyManager) -> ModernLoadingViewController {
+    class func new(with dependencyManager: VDependencyManager) -> ModernLoadingViewController {
         let facebookLoginLoadingViewController: ModernLoadingViewController = self.v_initialViewControllerFromStoryboard()
         facebookLoginLoadingViewController.dependencyManager = dependencyManager
         return facebookLoginLoadingViewController

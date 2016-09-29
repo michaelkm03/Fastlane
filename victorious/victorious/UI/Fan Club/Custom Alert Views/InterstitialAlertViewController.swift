@@ -28,7 +28,7 @@ class InterstitialAlertViewController: UIViewController, Interstitial, VBackgrou
     
     // MARK: - Initialization
     
-    class func newWithDependencyManager(_ dependencyManager: VDependencyManager) -> InterstitialAlertViewController {
+    class func new(with dependencyManager: VDependencyManager) -> InterstitialAlertViewController {
         let imageAlertViewController = InterstitialAlertViewController.v_initialViewControllerFromStoryboard() as InterstitialAlertViewController
         imageAlertViewController.dependencyManager = dependencyManager
         

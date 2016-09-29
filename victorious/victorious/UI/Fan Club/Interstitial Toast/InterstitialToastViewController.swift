@@ -31,7 +31,7 @@ class InterstitialToastViewController: UIViewController, Interstitial, VBackgrou
     
     // MARK: - Initialization
     
-    class func newWithDependencyManager(_ dependencyManager: VDependencyManager) -> InterstitialToastViewController {
+    class func new(with dependencyManager: VDependencyManager) -> InterstitialToastViewController {
         let toastViewController = InterstitialToastViewController.v_initialViewControllerFromStoryboard() as InterstitialToastViewController
         toastViewController.dependencyManager = dependencyManager
         return toastViewController
