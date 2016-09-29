@@ -37,7 +37,7 @@ final class ShowShareContentOperation: AsyncOperation<Void> {
             applicationActivities: []
         )
         
-        let creatorName = appInfo?.appName
+        let creatorName = appInfo?.appName ?? ""
         let emailSubject = String(format: NSLocalizedString("EmailShareSubjectFormat", comment: ""), creatorName)
         activityViewController.setValue(emailSubject, forKey: "subject")
         activityViewController.excludedActivityTypes = [UIActivityType.postToFacebook]

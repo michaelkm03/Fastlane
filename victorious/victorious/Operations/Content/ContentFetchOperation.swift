@@ -29,19 +29,19 @@ final class ContentFetchOperation: AsyncOperation<Content> {
         return .main
     }
     
-    override func execute(_ finish: (_ result: OperationResult<Content>) -> Void) {
+    override func execute(_ finish: @escaping (_ result: OperationResult<Content>) -> Void) {
         RequestOperation(request: request).queue { result in
             switch result {
                 case .success(let content):
                     if let id = content.id , Content.contentIsHidden(withID: id) {
-                        finish(result: .failure(NSError(domain: "ContentFetchOperation", code: -1, userInfo: nil)))
+                        finish(.failure(NSError(domain: "ContentFetchOperation", code: -1, userInfo: nil)))
                     }
                     else {
-                        finish(result: result)
+                        finish(result)
                     }
                 
                 case .failure(_), .cancelled:
-                    finish(result: result)
+                    finish(result)
             }
         }
     }

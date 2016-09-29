@@ -27,7 +27,7 @@ final class ContentFeedOperation: AsyncOperation<ContentFeedResult> {
         return .main
     }
     
-    override func execute(_ finish: (_ result: OperationResult<ContentFeedResult>) -> Void) {
+    override func execute(_ finish: @escaping (_ result: OperationResult<ContentFeedResult>) -> Void) {
         RequestOperation(request: request).queue { result in
             switch result {
                 case .success(var feedResult):
@@ -39,10 +39,10 @@ final class ContentFeedOperation: AsyncOperation<ContentFeedResult> {
                         return !Content.contentIsHidden(withID: id)
                     }
                     
-                    finish(result: .success(feedResult))
+                    finish(.success(feedResult))
                 
                 case .failure(_), .cancelled:
-                    finish(result: result)
+                    finish(result)
             }
         }
     }
