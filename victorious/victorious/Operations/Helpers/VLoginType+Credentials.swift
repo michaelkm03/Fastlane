@@ -15,17 +15,17 @@ extension VLoginType {
     func storedCredentials(_ accountIdentifier: String? = nil) -> NewAccountCredentials? {
         switch self {
             
-        case .Facebook:
-            guard let currentToken = FBSDKAccessToken.currentAccessToken()
+        case .facebook:
+            guard let currentToken = FBSDKAccessToken.current()
                 , currentToken.expirationDate.timeIntervalSinceNow > 0.0 else {
                     return nil
             }
             return .Facebook(accessToken: currentToken.tokenString)
             
-        case .Email:
+        case .email:
             guard
                 let username = accountIdentifier,
-                let password = VStoredPassword().passwordForUsername(username)
+                let password = VStoredPassword().password(forUsername: username)
             else {
                 return nil
             }

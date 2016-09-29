@@ -18,20 +18,20 @@ extension MediaAttachment {
             return nil
         }
         size = CGSize( width: CGFloat(publishParameters.width), height: CGFloat(publishParameters.height) )
-        self.url = url
+        self.url = url as NSURL
         
         if publishParameters.isGIF {
             type = .GIF
             isGIFStyle = true
             shouldAutoplay = true
             // iOS client is only capable of creating .mp4 assets
-            formats = [ MediaAttachment.Format(url: publishParameters.mediaToUploadURL ?? NSURL(string: "")!, mimeType: .MP4)]
+            formats = [ MediaAttachment.Format(url: publishParameters.mediaToUploadURL as NSURL? ?? NSURL(string: "")!, mimeType: .MP4)]
         } else if publishParameters.isVideo {
             type = .Video
             isGIFStyle = false
             shouldAutoplay = false
             // iOS client is only capable of creating .mp4 assets
-            formats = [ MediaAttachment.Format(url: publishParameters.mediaToUploadURL ?? NSURL(string: "")!, mimeType: .MP4)]
+            formats = [ MediaAttachment.Format(url: publishParameters.mediaToUploadURL as NSURL? ?? NSURL(string: "")!, mimeType: .MP4)]
         } else {
             type = .Image
             isGIFStyle = false
@@ -50,12 +50,12 @@ extension MediaAttachment {
             return url
         }
         
-        let asset = AVAsset(URL: url)
+        let asset = AVAsset(url: url as URL)
         let assetGenerator = AVAssetImageGenerator(asset: asset)
         let time = CMTimeMake(asset.duration.value / 2, asset.duration.timescale)
-        let anImageRef: CGImageRef?
+        let anImageRef: CGImage?
         do {
-            anImageRef = try assetGenerator.copyCGImageAtTime(time, actualTime: nil)
+            anImageRef = try assetGenerator.copyCGImage(at: time, actualTime: nil)
         } catch {
             return nil
         }
@@ -63,14 +63,14 @@ extension MediaAttachment {
         guard let imageRef = anImageRef else {
             return nil
         }
-        let previewImage = UIImage(CGImage: imageRef)
-        guard let tempFile = NSURL.v_temporaryFileURLWithExtension(VConstantMediaExtensionJPG, inDirectory: kThumbnailDirectory) else {
+        let previewImage = UIImage(cgImage: imageRef)
+        guard let tempFile = NSURL.v_temporaryFileURL(withExtension: VConstantMediaExtensionJPG, inDirectory: kThumbnailDirectory) else {
             assertionFailure("Could not write to temporary directory!")
             return nil
         }
         if let imgData = UIImageJPEGRepresentation(previewImage, VConstantJPEGCompressionQuality) {
-            imgData.writeToURL(tempFile, atomically: false )
-            return tempFile
+            try? imgData.write(to: tempFile as URL)
+            return tempFile as NSURL?
         }
         
         return nil

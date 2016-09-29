@@ -13,23 +13,23 @@ import VictoriousCommon
 extension RequestContext {
     
     init( environment: VEnvironment = VEnvironmentManager.sharedInstance().currentEnvironment ) {
-        let deviceID = UIDevice.currentDevice().v_authorizationDeviceID
+        let deviceID = UIDevice.current.v_authorizationDeviceID
         let firstInstallDeviceID = FirstInstallManager().generateFirstInstallDeviceID() ?? deviceID
-        let sessionID = VRootViewController.sharedRootViewController()?.sessionTimer.sessionID
+        let sessionID = VRootViewController.shared()?.sessionTimer.sessionID
         let buildNumber: String
         let version: String
         
-        if let buildNumberFromBundle = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleVersion") as? String {
+        if let buildNumberFromBundle = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String {
             buildNumber = buildNumberFromBundle
         } else {
             buildNumber = ""
         }
-        if let versionFromBundle = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString") as? String {
+        if let versionFromBundle = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String {
             version = versionFromBundle
         } else {
             version = ""
         }
         
-        self.init(appID: environment.appID.integerValue, deviceID: deviceID, firstInstallDeviceID: firstInstallDeviceID, buildNumber: buildNumber, appVersion: version, experimentIDs: ExperimentSettings().activeExperiments ?? [], sessionID: sessionID)
+        self.init(appID: environment.appID.intValue, deviceID: deviceID, firstInstallDeviceID: firstInstallDeviceID, buildNumber: buildNumber, appVersion: version, experimentIDs: ExperimentSettings().activeExperiments ?? [], sessionID: sessionID)
     }
 }
