@@ -521,7 +521,6 @@
 		799B89D31D469E02006743FE /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 799B89CE1D469E02006743FE /* EditProfileViewController.swift */; };
 		799B89D41D469E02006743FE /* DisplaynameLocationAvatarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 799B89CF1D469E02006743FE /* DisplaynameLocationAvatarCell.swift */; };
 		79A809C61B7C07DF006AE04E /* UIViewController+Storyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79A809C51B7C07DF006AE04E /* UIViewController+Storyboard.swift */; };
-		79B51FD41B853A1900F826F3 /* NSDate+ComparableEquatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B51FD31B853A1900F826F3 /* NSDate+ComparableEquatable.swift */; };
 		79BA44AD1BFBEBD800594F9F /* FilteredImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79BA44AC1BFBEBD800594F9F /* FilteredImageView.swift */; };
 		79BA44AF1BFBEBEF00594F9F /* UIImageOrientation+TiffOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79BA44AE1BFBEBEF00594F9F /* UIImageOrientation+TiffOrientation.swift */; };
 		79BA9E5A1D18C81B008BAA35 /* WebSocketDebuggingViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 79BA9E591D18C81B008BAA35 /* WebSocketDebuggingViewController.storyboard */; };
@@ -1956,7 +1955,6 @@
 		799B89CF1D469E02006743FE /* DisplaynameLocationAvatarCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplaynameLocationAvatarCell.swift; sourceTree = "<group>"; };
 		79A809C51B7C07DF006AE04E /* UIViewController+Storyboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Storyboard.swift"; sourceTree = "<group>"; };
 		79ACFD16A2EFEF8FE18E316E /* Pods-VictoriousCommonOSX.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.qa.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.qa.xcconfig"; sourceTree = "<group>"; };
-		79B51FD31B853A1900F826F3 /* NSDate+ComparableEquatable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+ComparableEquatable.swift"; sourceTree = "<group>"; };
 		79BA44AC1BFBEBD800594F9F /* FilteredImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = FilteredImageView.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		79BA44AE1BFBEBEF00594F9F /* UIImageOrientation+TiffOrientation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageOrientation+TiffOrientation.swift"; sourceTree = "<group>"; };
 		79BA9E591D18C81B008BAA35 /* WebSocketDebuggingViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = WebSocketDebuggingViewController.storyboard; path = Debugging/WebSocketDebuggingViewController.storyboard; sourceTree = "<group>"; };
@@ -5057,7 +5055,6 @@
 				A7E8CF311C90BBFA00D126BF /* NSBundle+TestBundle.swift */,
 				A721E8B31B572453000B7901 /* NSData+AES.h */,
 				A721E8B41B572453000B7901 /* NSData+AES.m */,
-				79B51FD31B853A1900F826F3 /* NSDate+ComparableEquatable.swift */,
 				7A26E0141CB6D57B006C99DF /* NSDate+timeSince.swift */,
 				A721E8B71B572453000B7901 /* NSDictionary+VJSONLogging.h */,
 				A721E8B81B572453000B7901 /* NSDictionary+VJSONLogging.m */,
@@ -8191,7 +8188,6 @@
 				BF7AF9C61D22F9AF00539D90 /* ErrorStateView.swift in Sources */,
 				67BECC4B1CC9840C00DFEE4B /* ListMenuCreatorCollectionViewCell.swift in Sources */,
 				F0FBC43E1D21D4120070873F /* CaptionBar.swift in Sources */,
-				79B51FD41B853A1900F826F3 /* NSDate+ComparableEquatable.swift in Sources */,
 				F087E5B21D93B24B00034146 /* GIFTrayViewController.swift in Sources */,
 				7A1DED091D80E130003F5C37 /* UnauthorizedErrorHandler.swift in Sources */,
 				F009BD041CE6541F00F81CAA /* HashtagBarViewController.swift in Sources */,

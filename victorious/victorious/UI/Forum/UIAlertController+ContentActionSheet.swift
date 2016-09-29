@@ -14,17 +14,18 @@ extension UIAlertController {
     ///
     /// The provided content must have an ID.
     ///
-    convenience init?(actionsFor content: Content, dependencyManager: VDependencyManager, completion: (_ action: ContentAlertAction) -> Void) {
+    convenience init?(actionsFor content: Content, dependencyManager: VDependencyManager, completion: @escaping (_ action: ContentAlertAction) -> Void) {
+        
         guard let id = content.id else {
             return nil
         }
         
-        self.init(title: nil, message: nil, preferredStyle: .ActionSheet)
+        self.init(title: nil, message: nil, preferredStyle: .actionSheet)
         
         if content.isLikedByCurrentUser {
             addAction(UIAlertAction(
                 title: dependencyManager.unlikeTitle,
-                style: .Default,
+                style: .default,
                 handler: { _ in
                     guard
                         let apiPath = dependencyManager.contentUnupvoteAPIPath,
@@ -35,7 +36,7 @@ extension UIAlertController {
                     
                     operation.queue { result in
                         switch result {
-                            case .success(_): completion(action: .unlike)
+                            case .success(_): completion(.unlike)
                             case .failure(_), .cancelled: break
                         }
                     }
@@ -45,7 +46,7 @@ extension UIAlertController {
         else {
             addAction(UIAlertAction(
                 title: dependencyManager.likeTitle,
-                style: .Default,
+                style: .default,
                 handler: { _ in
                     guard
                         let apiPath = dependencyManager.contentUpvoteAPIPath,
@@ -56,7 +57,7 @@ extension UIAlertController {
                     
                     operation.queue { result in
                         switch result {
-                            case .success(_): completion(action: .like)
+                            case .success(_): completion(.like)
                             case .failure(_), .cancelled: break
                         }
                     }
@@ -67,7 +68,7 @@ extension UIAlertController {
         if content.wasCreatedByCurrentUser {
             addAction(UIAlertAction(
                 title: dependencyManager.deleteTitle,
-                style: .Destructive,
+                style: .destructive,
                 handler: { _ in
                     guard
                         let apiPath = dependencyManager.contentDeleteAPIPath,
@@ -78,7 +79,7 @@ extension UIAlertController {
                     
                     operation.queue { result in
                         switch result {
-                            case .success(_): completion(action: .delete)
+                            case .success(_): completion(.delete)
                             case .failure(_), .cancelled: break
                         }
                     }
@@ -88,7 +89,7 @@ extension UIAlertController {
         else {
             addAction(UIAlertAction(
                 title: dependencyManager.flagTitle,
-                style: .Destructive,
+                style: .destructive,
                 handler: { _ in
                     guard
                         let apiPath = dependencyManager.contentFlagAPIPath,
@@ -99,7 +100,7 @@ extension UIAlertController {
                     
                     operation.queue { result in
                         switch result {
-                            case .success(_): completion(action: .flag)
+                            case .success(_): completion(.flag)
                             case .failure(_), .cancelled: break
                         }
                     }
@@ -111,7 +112,7 @@ extension UIAlertController {
             title: NSLocalizedString("Cancel", comment: ""),
             style: .Cancel,
             handler: { _ in
-                completion(action: .cancel)
+                completion(.cancel)
             }
         ))
     }

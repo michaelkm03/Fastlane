@@ -11,7 +11,7 @@ import Foundation
 extension URL {
     /// Returns the path of a URL without the leading slash
     var pathWithoutLeadingSlash: String? {
-        guard let path = self.path , !path.isEmpty else {
+        guard !path.isEmpty else {
             return nil
         }
         
