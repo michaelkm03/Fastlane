@@ -15,6 +15,7 @@ class InlineValidationTextField: UITextField {
         static let validationHeight = CGFloat(24.0)
         static let sideInset = CGFloat(10.0)
         static let bottomClearInset = CGFloat(2.0)
+        static let validationImageSpacing = CGFloat(5.0)
     }
     
     // MARK: - Initializing
@@ -181,11 +182,12 @@ class InlineValidationTextField: UITextField {
         super.layoutSubviews()
         
         let alertImageSize = validationImageView.intrinsicContentSize()
+        let labelOffset = alertImageSize.width + Constants.validationImageSpacing
         
         validationLabel.frame = CGRect(
-            x: bounds.minX + alertImageSize.width + 5.0,
+            x: bounds.minX + labelOffset,
             y: bounds.minY,
-            width: bounds.width - alertImageSize.width - 5.0,
+            width: bounds.width - labelOffset,
             height: Constants.validationHeight
         )
         
