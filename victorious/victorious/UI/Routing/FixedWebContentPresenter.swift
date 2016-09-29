@@ -6,15 +6,13 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-import Foundation
-
 protocol FixedWebContentPresenter {
     func showFixedWebContent(type: FixedWebContentType, withDependencyManager dependencyManager: VDependencyManager)
 }
 
 extension FixedWebContentPresenter where Self: UIViewController {
     func showFixedWebContent(type: FixedWebContentType, withDependencyManager dependencyManager: VDependencyManager) {
-        guard let webContentDependencyManager = dependencyManager.childDependencyForKey("webContentBackground") else {
+        guard let webContentDependencyManager = dependencyManager.childDependencyForKey("static.webcontent.background") else {
             return
         }
         
