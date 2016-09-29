@@ -172,6 +172,6 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
 
 private extension VDependencyManager {
     var replyButtonsAreEnabled: Bool {
-        return bool(for: "show.reply.button") ?? true
+        return bool(for: "show.reply.button") ?? false
     }
 }
