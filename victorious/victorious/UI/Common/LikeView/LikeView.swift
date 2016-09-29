@@ -118,21 +118,21 @@ final class LikeView: UIView {
         super.layoutSubviews()
 
         let originX = alignment == .center
-            ? bounds.center.x - (imageView.intrinsicContentSize().width / 2)
+            ? bounds.center.x - (imageView.intrinsicContentSize.width / 2)
             : alignment.imageLeadingPadding
 
         imageView.frame = CGRect(
             x: originX,
-            y: bounds.center.y - (imageView.intrinsicContentSize().height / 2),
-            width: imageView.intrinsicContentSize().width,
-            height: imageView.intrinsicContentSize().height
+            y: bounds.center.y - (imageView.intrinsicContentSize.height / 2),
+            width: imageView.intrinsicContentSize.width,
+            height: imageView.intrinsicContentSize.height
         )
 
         countLabel.frame = CGRect(
             x: imageView.frame.maxY + alignment.countLeadingPadding,
-            y: bounds.center.y - (countLabel.intrinsicContentSize().height / 2),
-            width: countLabel.intrinsicContentSize().width,
-            height: countLabel.intrinsicContentSize().height
+            y: bounds.center.y - (countLabel.intrinsicContentSize.height / 2),
+            width: countLabel.intrinsicContentSize.width,
+            height: countLabel.intrinsicContentSize.height
         )
     }
 
@@ -158,7 +158,7 @@ final class LikeView: UIView {
     fileprivate func updateLikeCount(_ content: Content) {
         let likeCount = content.likeCount ?? 0
         let totalLikes = likeCount > 0 ? likeCount + content.currentUserLikeCount : content.currentUserLikeCount
-        countLabel.text = totalLikes > 0 ? largeNumberFormatter.stringForInteger(totalLikes) : ""
+        countLabel.text = totalLikes > 0 ? largeNumberFormatter.string(for: totalLikes) : ""
         setNeedsLayout()
     }
 

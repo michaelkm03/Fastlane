@@ -6,7 +6,7 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-extension NSBundle {
+extension Bundle {
     static var v_isTestBundle: Bool {
         let environment = NSProcessInfo.processInfo().environment
         return environment["XCInjectBundleInto"] != nil || environment["XCInjectBundle"] != nil
