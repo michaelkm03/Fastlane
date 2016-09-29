@@ -44,17 +44,17 @@ final class ShowTutorialsOperation: AsyncOperation<Void> {
             return
         }
         
-        guard let tutorialViewController = dependencyManager.templateValueOfType(TutorialViewController.self, forKey: "tutorial") as? TutorialViewController else {
+        guard let tutorialViewController = dependencyManager.templateValue(ofType: TutorialViewController.self, forKey: "tutorial") as? TutorialViewController else {
             finish(.failure(error))
             return
         }
         
         tutorialViewController.onContinue = {
-            finish(result: .success())
+            finish(.success())
         }
         
         let tutorialNavigationController = UINavigationController(rootViewController: tutorialViewController)
-        originViewController?.presentViewController(tutorialNavigationController, animated: animated, completion: nil)
+        originViewController?.present(tutorialNavigationController, animated: animated, completion: nil)
     }
     
     func shouldShowTutorials(_ currentVersion: AppVersion, userDefaults: UserDefaults = UserDefaults.standard) -> Bool {
