@@ -9,7 +9,6 @@
 import FBSDKLoginKit
 import FBSDKShareKit
 
-(VFacebookHelper)
 class FacebookHelper: NSObject {
     
     /// The set of read permissions that should be requested when logging in

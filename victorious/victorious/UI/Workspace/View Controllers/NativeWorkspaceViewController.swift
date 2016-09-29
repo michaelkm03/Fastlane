@@ -60,7 +60,7 @@ class NativeWorkspaceViewController: VWorkspaceViewController, UIVideoEditorCont
         }
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+    override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
     
