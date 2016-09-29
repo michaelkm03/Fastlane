@@ -20,7 +20,7 @@ protocol VIPGateViewControllerDelegate: class {
 
 extension VIPGateViewControllerDelegate {
     func showVIPForumFromDependencyManager(_ dependencyManager: VDependencyManager) {
-        guard let scaffold = VRootViewController.sharedRootViewController()?.scaffold else {
+        guard let scaffold = VRootViewController.shared()?.scaffold else {
             return
         }
         let router = Router(originViewController: scaffold, dependencyManager: dependencyManager)
@@ -164,7 +164,7 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
         if let attributes = dependencyManager.privacyPolicyLinkAttributes {
             privacyPolicyText.addAttributes(attributes, range: NSMakeRange(0, privacyPolicyText.length))
         }
-        privacyPolicyButton.setAttributedTitle(privacyPolicyText, forState: .Normal)
+        privacyPolicyButton.setAttributedTitle(privacyPolicyText, forState: .normal)
         
         let termsOfServiceText = NSMutableAttributedString(
             string: dependencyManager.termsOfService ?? Strings.termsOfService
@@ -172,10 +172,10 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
         if let attributes = dependencyManager.termsOfServiceLinkAttributes {
             termsOfServiceText.addAttributes(attributes, range: NSMakeRange(0, termsOfServiceText.length))
         }
-        termsOfServiceButton.setAttributedTitle(termsOfServiceText, forState: .Normal)
+        termsOfServiceButton.setAttributedTitle(termsOfServiceText, forState: .normal)
         
-        restoreButton.setTitle(dependencyManager.restoreText ?? Strings.restorePrompt, for: .Normal)
-        restoreButton.setTitleColor(dependencyManager.restoreTextColor, for: .Normal)
+        restoreButton.setTitle(dependencyManager.restoreText ?? Strings.restorePrompt, for: .normal)
+        restoreButton.setTitleColor(dependencyManager.restoreTextColor, for: .normal)
         if let font = dependencyManager.restoreFont {
             restoreButton.titleLabel?.font = font
         }
@@ -212,8 +212,8 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     }
     
     fileprivate lazy var progressHUD: MBProgressHUD = {
-        let progressHUD = MBProgressHUD(view: self.view)
-        progressHUD.mode = .Indeterminate
+        let progressHUD = MBProgressHUD(for: self.view)!
+        progressHUD.mode = .indeterminate
         progressHUD.graceTime = 0.35
         
         self.view.addSubview(progressHUD)
@@ -268,11 +268,11 @@ private extension VDependencyManager {
             return nil
         }
         
-        guard let lowestPriceProduct = products.select({ $1.storeKitProduct?.price.doubleValue < $0.storeKitProduct?.price.doubleValue }) else {
+        guard let lowestPriceProduct = products.select({ ($1.storeKitProduct?.price.doubleValue ?? 0.0) < ($0.storeKitProduct?.price.doubleValue ?? 0.0) }) else {
             return nil
         }
         
-        return description.stringByReplacingOccurrencesOfString("%%PRICE_TAG%%", withString: lowestPriceProduct.price)
+        return description.replacingOccurrences(of: "%%PRICE_TAG%%", with: lowestPriceProduct.price)
     }
     
     var descriptionFont: UIFont? {

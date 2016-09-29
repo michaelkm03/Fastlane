@@ -18,10 +18,8 @@ enum AvatarViewSize {
             case .small: return CGSize(width: 30.0, height: 30.0)
             case .large:
                 switch UIScreen.main.bounds.width {
-                    case 320.0:
-                        return CGSize(width: 75.0, height: 75.0)
-                    default:
-                        return CGSize(width: 90.0, height: 90.0)
+                    case 320.0: return CGSize(width: 75.0, height: 75.0)
+                    default: return CGSize(width: 90.0, height: 90.0)
                 }
         }
     }
@@ -175,8 +173,8 @@ class AvatarView: UIView {
         vipLabel.text = "VIP"
         vipLabel.sizeToFit()
         let centeredFrame = CGRect(
-            x: (vipBadgeView.frame.size.width / 2) - (vipLabel.frame.size.width / 2) ,
-            y: (vipBadgeView.frame.size.height / 2) - (vipLabel.frame.size.height / 2) ,
+            x: (vipBadgeView.frame.size.width / 2) - (vipLabel.frame.size.width / 2),
+            y: (vipBadgeView.frame.size.height / 2) - (vipLabel.frame.size.height / 2),
             width: vipLabel.frame.size.width,
             height: vipLabel.frame.size.height
         )
@@ -243,12 +241,12 @@ class AvatarView: UIView {
 
     fileprivate func updateVIPBadge() {
         let shouldShowVIPBadge = user?.hasValidVIPSubscription == true && size.shouldShowVIPBorder && isVIPEnabled == true
-        vipBadgeView?.hidden = !shouldShowVIPBadge
+        vipBadgeView?.isHidden = !shouldShowVIPBadge
     }
 
     fileprivate func updateVIPBorderView() {
         let shouldShowVIPBorder = user?.hasValidVIPSubscription == true && size.shouldShowVIPBorder && isVIPEnabled == true
-        vipBorderView?.hidden = !shouldShowVIPBorder
+        vipBorderView?.isHidden = !shouldShowVIPBorder
     }
     
     // MARK: - Content
@@ -296,7 +294,7 @@ class AvatarView: UIView {
                         }
                         
                         self?.imageView.image = image
-                        self?.initialsLabel.hidden = true
+                        self?.initialsLabel.isHidden = true
                     
                     case .failure(_):
                         self?.showInitials()
@@ -368,7 +366,7 @@ class AvatarView: UIView {
         )
         
         verifiedBadgeView.frame = CGRect(center: pointOnCircle, size: size)
-        verifiedBadgeView.hidden = user?.avatarBadgeType != .verified
+        verifiedBadgeView.isHidden = user?.avatarBadgeType != .verified
     }
 
     fileprivate func layoutVIPBadge() {

@@ -43,7 +43,7 @@ class VIPSubscriptionHelper {
     fileprivate let subscriptionFetchAPIPath: APIPath
     fileprivate var products: [VProduct]?
     
-    func fetchProducts(_ completion: ([VProduct]?) -> Void) {
+    func fetchProducts(_ completion: @escaping ([VProduct]?) -> Void) {
         guard let request = VIPFetchSubscriptionRequest(apiPath: subscriptionFetchAPIPath) else {
             return
         }
