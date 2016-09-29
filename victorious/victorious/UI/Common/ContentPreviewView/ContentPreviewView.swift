@@ -126,7 +126,7 @@ class ContentPreviewView: UIView {
     
     fileprivate func setupForContent(_ content: Content) {
         spinner?.startAnimating()
-        vipButton?.hidden = !content.isVIPOnly
+        vipButton?.isHidden = !content.isVIPOnly
         
         setupImage(forContent: content)
         
