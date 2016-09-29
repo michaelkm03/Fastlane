@@ -30,7 +30,7 @@ public struct GIFSearchRequest: PaginatorPageable, ResultBasedPageable {
         }
         
         let mutableURLRequest = NSMutableURLRequest(URL: url ?? NSURL())
-        paginator.addPaginationArgumentsToRequest(mutableURLRequest)
+        // FUTURE: Add proper pagination logic (replacing macros in the url)
         urlRequest = mutableURLRequest
         
         self.searchOptions = searchOptions

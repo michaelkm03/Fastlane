@@ -29,8 +29,7 @@ public struct StickerSearchRequest: PaginatorPageable, ResultBasedPageable {
         }
         
         let mutableURLRequest = NSMutableURLRequest(URL: url ?? NSURL())
-        //FUTURE: Once pagination is enabled on the stickers endpoint, uncomment the following line
-//        paginator.addPaginationArgumentsToRequest(mutableURLRequest)
+        // FUTURE: Add proper pagination logic (replacing macros in the url)
         urlRequest = mutableURLRequest
         
         self.searchOptions = searchOptions
