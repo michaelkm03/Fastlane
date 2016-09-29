@@ -25,11 +25,11 @@ class VideoBackground: VBackground, VVideoPlayerDelegate {
             return
         }
         
-        RequestOperation(request: VideoBackgroundFetchRequest(sequenceURL: sequenceURL)).queue { [weak self] result in
+        RequestOperation(request: VideoBackgroundFetchRequest(sequenceURL: sequenceURL as URL)).queue { [weak self] result in
             guard let item = result.output else {
                 return
             }
-            
+
             item.muted = true
             item.loop = true
             self?.videoView.setItem(item)
@@ -64,12 +64,12 @@ private struct VideoBackgroundFetchRequest: RequestType {
         self.urlRequest = URLRequest(url: sequenceURL)
     }
     
-    func parseResponse(_ response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> VVideoPlayerItem {
+    func parseResponse(_ response: URLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> VVideoPlayerItem {
         guard let payload = responseJSON["payload"].arrayValue.first, let url = url(from: payload) else {
             throw ResponseParsingError()
         }
         
-        return VVideoPlayerItem(URL: url)
+        return VVideoPlayerItem(url: url)
     }
     
     func url(from payload: JSON) -> URL? {
@@ -79,7 +79,7 @@ private struct VideoBackgroundFetchRequest: RequestType {
                     continue
                 }
                 
-                return url
+                return url as URL
             }
         }
         

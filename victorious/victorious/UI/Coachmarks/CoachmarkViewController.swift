@@ -182,10 +182,8 @@ class CoachmarkViewController: UIViewController, VBackgroundContainer {
     }
     
     // MARK: - Configuration
-    
-    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        return [.portrait]
-    }
+
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask = [.portrait]
 }
 
 private class HighlightForegroundView : UIView, VBackgroundContainer {
@@ -207,7 +205,7 @@ private extension VDependencyManager {
         }
         
         let name = VCurrentUser.user?.displayName ?? ""
-        return titleString.stringByReplacingOccurrencesOfString(Constants.userMacro, withString: name)
+        return titleString.replacingOccurrences(of: Constants.userMacro, with: name)
     }
     
     var titleFont: UIFont {
@@ -224,9 +222,9 @@ private extension VDependencyManager {
         }
         
         let appInfo = VAppInfo(dependencyManager: self)
-        let ownerName = appInfo.ownerName ?? ""
+        let ownerName = appInfo?.ownerName ?? ""
         
-        return coachmarkText.stringByReplacingOccurrencesOfString(Constants.creatorMacro, withString: ownerName)
+        return coachmarkText.replacingOccurrences(of: Constants.creatorMacro, with: ownerName)
     }
     
     var textColor: UIColor {
