@@ -21,7 +21,7 @@ extension PreviewImageContainer {
         let minimumWidth = minimumSize.width
         let minimumHeight = minimumSize.height
         
-        for asset in previewImages ?? [] {
+        for asset in previewImages {
             let lastWidth = qualifiedAsset?.size.width ?? CGFloat.greatestFiniteMagnitude
             let lastHeight = qualifiedAsset?.size.height ?? CGFloat.greatestFiniteMagnitude
             let width = asset.size.width
@@ -38,7 +38,7 @@ extension PreviewImageContainer {
     public func previewImage(ofMinimumWidth minimumWidth: CGFloat) -> ImageAssetModel? {
         var qualifiedAsset: ImageAssetModel?
         
-        for asset in previewImages ?? [] {
+        for asset in previewImages {
             let lastWidth = qualifiedAsset?.size.width ?? CGFloat.greatestFiniteMagnitude
             let width = asset.size.width
             
@@ -53,7 +53,7 @@ extension PreviewImageContainer {
     public var largestPreviewImage: ImageAssetModel? {
         var largestAsset: ImageAssetModel?
         
-        for asset in previewImages ?? [] where asset.size.area > (largestAsset?.size.area)! {
+        for asset in previewImages where asset.size.area > (largestAsset?.size.area)! {
             largestAsset = asset
         }
         
