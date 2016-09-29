@@ -17,7 +17,7 @@ class DisplaynameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
     
     @IBOutlet fileprivate var displaynameField: UITextField! {
         didSet {
-            NotificationCenter.defaultCenter().addObserver(
+            NotificationCenter.default.addObserver(
                 self,
                 selector: #selector(textFieldDidChange(_:)),
                 name: UITextFieldTextDidChangeNotification,
@@ -27,7 +27,7 @@ class DisplaynameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
     
     @IBOutlet fileprivate var usernameField: UITextField! {
         didSet {
-            NotificationCenter.defaultCenter().addObserver(
+            NotificationCenter.default.addObserver(
                 self,
                 selector: #selector(textFieldDidChange(_:)),
                 name: UITextFieldTextDidChangeNotification,
@@ -37,7 +37,7 @@ class DisplaynameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
     
     @IBOutlet fileprivate var locationField: UITextField! {
         didSet {
-            NotificationCenter.defaultCenter().addObserver(
+            NotificationCenter.default.addObserver(
                 self,
                 selector: #selector(textFieldDidChange(_:)),
                 name: UITextFieldTextDidChangeNotification,

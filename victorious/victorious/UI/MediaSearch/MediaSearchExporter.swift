@@ -42,23 +42,22 @@ class MediaSearchExporter {
     /// - parameter mediaSearchResult: The MediaSearchResult whose assets will be loaded/downloaded.
     /// Calling code should be responsible for deleting the file at the mediaUrl's path.
     /// - parameter completion: A completion closure called when all opeartions are complete
-    func loadMedia( _ completion: MediaSearchExporterCompletion ) {
+    func loadMedia(_ completion: @escaping MediaSearchExporterCompletion) {
         
         cleanupTempFile()
         
-        guard let previewImageURL = mediaSearchResult.thumbnailImageURL,
-            let searchResultURL = mediaSearchResult.sourceMediaURL else {
-                completion(previewImage: nil,
-                    mediaUrl: nil,
-                    error: NSError(domain: "MediaSearchExporter", code: -1, userInfo: nil))
-                return
+        guard
+            let previewImageURL = mediaSearchResult.thumbnailImageURL,
+            let searchResultURL = mediaSearchResult.sourceMediaURL
+        else {
+            completion(nil, nil, NSError(domain: "MediaSearchExporter", code: -1, userInfo: nil))
+            return
         }
         
         videoDownloadTask = URLSession.shared.downloadTask(with: URLRequest(url: searchResultURL as URL), completionHandler: { (location: URL?, response: URLResponse?, error: NSError?) in
-            
             guard let location = location, let downloadUrl = self.downloadUrl else {
                 DispatchQueue.main.async {
-                    completion(previewImage: nil, mediaUrl: nil, error: error)
+                    completion(nil, nil, error)
                 }
                 return
             }
@@ -70,21 +69,22 @@ class MediaSearchExporter {
                 let _ = try? FileManager.default.removeItem(at: location)
                 
                 DispatchQueue.main.async {
-                    completion(previewImage: nil, mediaUrl: nil, error: error as NSError)
+                    completion(nil, nil, error as NSError)
                 }
                 return
             }
             
             let previewImage: UIImage? = {
-                
-                if let response = response,
-                    let mimeType = response.MIMEType , mimeType.hasPrefix("image/") {
-                        if let data = NSData(contentsOfURL: downloadUrl) {
-                            return UIImage(data: data)
-                        }
+                if
+                    let response = response,
+                    let mimeType = response.mimeType,
+                    mimeType.hasPrefix("image/"),
+                    let data = try? Data(contentsOf: downloadUrl)
+                {
+                    return UIImage(data: data)
                 }
                 
-                if let previewImageData = try? NSData(contentsOfURL: previewImageURL, options: []) {
+                if let previewImageData = try? Data(contentsOf: previewImageURL, options: []) {
                     return UIImage(data: previewImageData)
                 }
                 return nil
@@ -92,11 +92,7 @@ class MediaSearchExporter {
             
             // Dispatch back to main thread for completion
             DispatchQueue.main.async {
-                completion(
-                    previewImage: previewImage,
-                    mediaUrl: downloadUrl,
-                    error: nil
-                )
+                completion(previewImage, downloadUrl as NSURL?, nil)
             }
         } as! (URL?, URLResponse?, Error?) -> Void) 
         videoDownloadTask?.resume()
@@ -116,22 +112,22 @@ class MediaSearchExporter {
     }
     
     lazy var downloadUrl: URL? = { [weak self] in
-        guard let cacheDirectoryPath = NSSearchPathForDirectoriesInDomains( FileManager.SearchPathDirectory.cachesDirectory, FileManager.SearchPathDomainMask.userDomainMask, true ).first,
-            let mediaSearchResult: MediaSearchResult = self?.mediaSearchResult else {
-                let failureMessage = "Unable to find file path for temporary media download. Media search result -> \(self?.mediaSearchResult)"
-                assertionFailure(failureMessage)
-                Log.error(failureMessage)
-                return nil
-        }
-        
-        let cacheDirectoryURL = URL(fileURLWithPath: cacheDirectoryPath)
-        guard let subdirectory = cacheDirectoryURL.appendingPathComponent("com.getvictorious.gifSearch") else {
+        guard
+            let cacheDirectoryPath = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.cachesDirectory, FileManager.SearchPathDomainMask.userDomainMask, true).first,
+            let mediaSearchResult: MediaSearchResult = self?.mediaSearchResult
+        else {
+            let failureMessage = "Unable to find file path for temporary media download. Media search result -> \(self?.mediaSearchResult)"
+            assertionFailure(failureMessage)
+            Log.error(failureMessage)
             return nil
         }
         
+        let cacheDirectoryURL = URL(fileURLWithPath: cacheDirectoryPath)
+        let subdirectory = cacheDirectoryURL.appendingPathComponent("com.getvictorious.gifSearch")
+        
         var isDirectory: ObjCBool = false
-        if !FileManager.default.fileExists(atPath: subdirectory.path!, isDirectory: &isDirectory ) || !isDirectory {
-            let _ = try? FileManager.default.createDirectory(atPath: subdirectory.path!, withIntermediateDirectories: true, attributes: nil)
+        if !FileManager.default.fileExists(atPath: subdirectory.path, isDirectory: &isDirectory) || !isDirectory.boolValue {
+            let _ = try? FileManager.default.createDirectory(atPath: subdirectory.path, withIntermediateDirectories: true, attributes: nil)
         }
         
         // Create a unique URL. May cause issues if GIF has a bad extension.

@@ -18,9 +18,7 @@ private struct MediaSearchLayout {
 }
 
 extension MediaSearchViewController: UICollectionViewDelegateFlowLayout {
-    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
         let insets = (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.sectionInset ?? UIEdgeInsets()
         let numRowsInSection = collectionView.numberOfItems(inSection: (indexPath as NSIndexPath).section)
         let totalWidth = collectionView.bounds.width - insets.left - insets.right - MediaSearchLayout.itemSpacing * CGFloat(numRowsInSection - 1)

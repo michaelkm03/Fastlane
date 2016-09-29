@@ -68,7 +68,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         
         fetchUser(using: dependencyManager)
         
-        NotificationCenter.defaultCenter().addObserver(self, selector: #selector(currentUserDidUpdate), name: VCurrentUser.userDidUpdateNotificationKey, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(currentUserDidUpdate), name: NSNotification.Name(rawValue: VCurrentUser.userDidUpdateNotificationKey), object: nil)
     }
     
     required init?(coder: NSCoder) {

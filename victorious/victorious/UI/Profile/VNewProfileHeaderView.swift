@@ -122,20 +122,20 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
     fileprivate func populateUserContent() {
         let userIsCreator = user?.accessLevel.isCreator == true
         
-        statsContainerView.hidden = userIsCreator
+        statsContainerView.isHidden = userIsCreator
         
         displayNameLabel.text = user?.displayName
         usernameLabel.text = user?.username
         locationLabel.text = user?.location
         taglineLabel.text = user?.tagline
-        upvotesGivenValueLabel?.text = numberFormatter.stringForInteger(user?.likesGiven ?? 0)
-        upvotesReceivedValueLabel?.text = numberFormatter.stringForInteger(user?.likesReceived ?? 0)
+        upvotesGivenValueLabel?.text = numberFormatter.string(for: user?.likesGiven ?? 0)
+        upvotesReceivedValueLabel?.text = numberFormatter.string(for: user?.likesReceived ?? 0)
         
         let tier = user?.fanLoyalty?.tier
         let shouldDisplayTier = tier?.isEmpty == false
         tierValueLabel.text = tier
-        tierTitleLabel.hidden = !shouldDisplayTier
-        tierValueLabel.hidden = !shouldDisplayTier
+        tierTitleLabel.isHidden = !shouldDisplayTier
+        tierValueLabel.isHidden = !shouldDisplayTier
         
         avatarView.user = user
         
@@ -152,8 +152,8 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
             self.backgroundImageView.alpha = 0.0
         }
         
-        contentContainerView.hidden = user == nil
-        loadingContainerView.hidden = user != nil
+        contentContainerView.isHidden = user == nil
+        loadingContainerView.isHidden = user != nil
     }
     
     fileprivate let numberFormatter = VLargeNumberFormatter()
@@ -172,12 +172,13 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         setNeedsLayout()
         layoutIfNeeded()
         
-        let widthConstraint = v_addWidthConstraint(width)
-        let height = systemLayoutSizeFittingSize(UILayoutFittingCompressedSize).height
+        // FUTURE: Unbang this.
+        let widthConstraint = v_addWidthConstraint(width)!
+        let height = systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
         
         removeConstraint(widthConstraint)
         
-        return CGSizeMake(width, height)
+        return CGSize(width: width, height: height)
     }
     
     func gridStreamShouldRefresh() {
@@ -227,7 +228,7 @@ private extension VDependencyManager {
     }
     
     var vipIcon: UIImage? {
-        return image(forKey: "vipIcon")?.imageWithRenderingMode(.AlwaysTemplate)
+        return image(forKey: "vipIcon")?.withRenderingMode(.alwaysTemplate)
     }
     
     var receivedUpvotesTitle: String? {

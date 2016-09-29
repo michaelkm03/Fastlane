@@ -16,7 +16,7 @@ extension VRootViewController {
         // Ideally we would pass in a `Scaffold` type to avoid this check, but this function is being called by
         // dear Obj-C so that was not an option.
         if let scaffold = scaffold as? Scaffold {
-            scaffold.navigate(to: deeplink)
+            scaffold.navigate(to: deeplink as URL)
         }
     }
     

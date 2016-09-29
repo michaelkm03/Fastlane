@@ -20,10 +20,10 @@ import UIKit
 }
 
 class MediaSearchOptions: NSObject {
-    var showPreview: Bool = false
-    var showAttribution: Bool = false
-    var clearSelectionOnAppearance: Bool = false
-    var shouldSkipExportRendering: Bool = false
+    var showPreview = false
+    var showAttribution = false
+    var clearSelectionOnAppearance = false
+    var shouldSkipExportRendering = false
     
     static var defaultOptions: MediaSearchOptions {
         return MediaSearchOptions()
@@ -78,7 +78,7 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
         scrollPaginator.loadItemsBelow = { [weak self] in
             // No need to pass in a search term, the data sources know how to discern based
             // on the search term of the previous page.
-            self?.performSearch(searchTerm: nil, pageType: .Next)
+            self?.performSearch(searchTerm: nil, pageType: .next)
         }
         
         self.searchBar.delegate = self
@@ -302,10 +302,7 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
             self.selectedIndexPath = IndexPath(row: (indexPath as NSIndexPath).row, section: sectionInserted - 1)
             self.previewSection = sectionInserted
             
-            self.collectionView.scrollToItem( at: previewCellIndexPath,
-                                                         at: .centeredVertically,
-                                                         animated: true )
-            
+            self.collectionView.scrollToItem(at: previewCellIndexPath, at: .centeredVertically, animated: true)
             self.updateLayout()
         }
         
@@ -316,22 +313,22 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
     fileprivate func updateLayout() {
         self.collectionView.performBatchUpdates({
             self.collectionView.collectionViewLayout.invalidateLayout()
-            }, completion: nil )
+        }, completion: nil)
     }
     
     /// Removes the section showing a search result preview at the specified index path
-    func hidePreviewForResult( _ indexPath: IndexPath ) {
+    func hidePreviewForResult(_ indexPath: IndexPath) {
         self.collectionView.performBatchUpdates({
             let result = self.dataSourceAdapter.removeHighlightSection()
-            self.collectionView.applyDataSourceChanges( result )
-            }, completion: nil )
+            self.collectionView.applyDataSourceChanges(result)
+        }, completion: nil)
         
         self.selectedIndexPath = nil
         self.previewSection = nil
         
         self.collectionView.performBatchUpdates({
             self.collectionView.collectionViewLayout.invalidateLayout()
-            }, completion: nil )
+        }, completion: nil)
         
         self.updateNavigationItemState()
     }

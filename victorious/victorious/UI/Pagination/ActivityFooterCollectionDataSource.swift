@@ -14,25 +14,25 @@ class ActivityFooterCollectionDataSource: NSObject, UICollectionViewDataSource {
     
     weak fileprivate var cell: UICollectionViewCell? {
         didSet {
-            cell?.hidden = hidden
+            cell?.isHidden = hidden
         }
     }
     
     var hidden: Bool = true {
         didSet {
-            cell?.hidden = hidden
+            cell?.isHidden = hidden
         }
     }
     
-    func collectionView( _ collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath ) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath: indexPath)
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath)
         self.cell = cell
         return cell
     }
     
-    func registerCells( _ collectionView: UICollectionView ) {
-        let nib = UINib(nibName: identifier, bundle: Bundle(forClass: ActivityIndicatorCollectionCell.self) )
-        collectionView.registerNib(nib, forCellWithReuseIdentifier: identifier)
+    func registerCells(_ collectionView: UICollectionView) {
+        let nib = UINib(nibName: identifier, bundle: Bundle(for: ActivityIndicatorCollectionCell.self) )
+        collectionView.register(nib, forCellWithReuseIdentifier: identifier)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -40,7 +40,6 @@ class ActivityFooterCollectionDataSource: NSObject, UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        let height: CGFloat = self.hidden ? 0.0 : 50.0
-        return CGSize(width: collectionView.bounds.width, height: height)
+        return CGSize(width: collectionView.bounds.width, height: hidden ? 0.0 : 50.0)
     }
 }

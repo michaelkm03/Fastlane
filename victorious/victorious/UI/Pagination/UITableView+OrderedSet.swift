@@ -16,11 +16,10 @@ public extension UITableView {
     
     /// Inserts and/or removes index paths based on difference between arguments `oldValue` and `newValue`.
     public func v_applyChangeInSection(_ section: NSInteger, from oldValue: NSOrderedSet, to newValue: NSOrderedSet, animated: Bool) {
-        
         guard !(newValue.count == 0 || oldValue.count == 0) else {
             let performChangesBlock = {
                 self.beginUpdates()
-                self.reloadSections( IndexSet(integer: section), with: .none)
+                self.reloadSections(IndexSet(integer: section), with: .none)
                 self.endUpdates()
             }
             if (animated && oldValue.count > 0) || (animated && newValue.count == 1) {

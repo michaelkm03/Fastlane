@@ -9,9 +9,7 @@
 import UIKit
 
 extension MediaSearchViewController: UIScrollViewDelegate {
-    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        
         self.scrollPaginator.scrollViewDidScroll( scrollView )
         
         if !self.isScrollViewDecelerating && self.searchBar.isFirstResponder {

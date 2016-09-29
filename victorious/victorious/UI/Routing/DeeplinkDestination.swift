@@ -79,7 +79,7 @@ enum DeeplinkDestination: Equatable {
             case .link:
                 guard
                     let url = content.linkedURL,
-                    let validDestination = DeeplinkDestination(url: url, isVIPOnly: content.isVIPOnly, forceModal: true)
+                    let validDestination = DeeplinkDestination(url: url as URL, isVIPOnly: content.isVIPOnly, forceModal: true)
                 else {
                     return nil
                 }

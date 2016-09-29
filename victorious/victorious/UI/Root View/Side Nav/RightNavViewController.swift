@@ -12,6 +12,7 @@ import UIKit
 
 /// A view controller that displays the right navigation area of a `SideNavScaffoldViewController`.
 class RightNavViewController: UIViewController, CoachmarkDisplayer {
+    
     // MARK: - Initializing
     
     init(dependencyManager: VDependencyManager) {
@@ -52,7 +53,7 @@ class RightNavViewController: UIViewController, CoachmarkDisplayer {
     
     // MARK: - CoachmarkDisplayer
     
-    func highlightFrame(forIdentifier forIdentifier: String) -> CGRect? {
+    func highlightFrame(forIdentifier: String) -> CGRect? {
         return nil 
     }
 }
