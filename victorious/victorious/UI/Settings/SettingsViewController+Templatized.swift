@@ -54,12 +54,12 @@ extension VSettingsViewController: VBackgroundContainer {
         
         label.font = dependencyManager.cellFont
         label.textColor = dependencyManager.cellTextColor
-        label.backgroundColor = UIColor.clearColor()
+        label.backgroundColor = UIColor.clear
 
-        cell.separatorColor = isLastCell(indexPath) || isLastSection(indexPath.section) ? UIColor.clearColor() : dependencyManager.separatorColor ?? UIColor.clearColor()
+        cell.separatorColor = isLastCell(indexPath) || isLastSection(indexPath.section) ? UIColor.clear : dependencyManager.separatorColor ?? UIColor.clear
 
         if cell.contentView.subviews.contains(versionString) {
-            cell.backgroundColor = UIColor.clearColor()
+            cell.backgroundColor = UIColor.clear
         }
         else {
             cell.backgroundView = UIView() // Must set this here so that we can add a background

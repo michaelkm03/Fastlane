@@ -45,7 +45,7 @@ class ToggleableImageButton: TouchableInsetAdjustableButton, TrackableButton {
             }
             setImage(selectedImage, forState: .Selected)
             
-            backgroundColor = .clearColor()
+            backgroundColor = .clear
         }
     }
 

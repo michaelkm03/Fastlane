@@ -18,7 +18,7 @@ class ComposerAttachmentTabBarButtonTests: XCTestCase {
             return
         }
         
-        let navigationMenuItem = VNavigationMenuItem(title: "title", identifier: "identifier", icon: icon, selectedIcon: UIImage(), destination: "testing", position: "top", tintColor: UIColor.redColor())
+        let navigationMenuItem = VNavigationMenuItem(title: "title", identifier: "identifier", icon: icon, selectedIcon: UIImage(), destination: "testing", position: "top", tintColor: UIColor.red)
         let button = ComposerAttachmentTabBarButton(navigationMenuItem: navigationMenuItem)
         XCTAssertEqual(button.navigationMenuItem, navigationMenuItem)
         XCTAssertEqual(button.imageForState(.Normal), icon)

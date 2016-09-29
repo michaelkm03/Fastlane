@@ -22,10 +22,10 @@ class BubbleView: UIView {
         super.init(frame: frame)
         contentView = UIView()
         borderView = UIImageView()
-        backgroundColor = .clearColor()
+        backgroundColor = .clear
         setupSubviews()
-        contentView.backgroundColor = .clearColor()
-        borderView.backgroundColor = .clearColor()
+        contentView.backgroundColor = .clear
+        borderView.backgroundColor = .clear
         addSubview(contentView)
         addSubview(borderView)
     }

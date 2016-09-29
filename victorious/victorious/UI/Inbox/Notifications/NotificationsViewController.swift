@@ -42,7 +42,7 @@ class NotificationsViewController: UIViewController, UITableViewDelegate, Notifi
         tableView.dataSource = dataSource
         tableView.backgroundColor = nil
         tableView.separatorStyle = .None
-        tableView.separatorColor = .clearColor()
+        tableView.separatorColor = .clear
         tableView.contentInset = Constants.contentInset
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = Constants.estimatedRowHeight

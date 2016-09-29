@@ -34,7 +34,7 @@ class MarqueeView: UIView {
 
     fileprivate lazy var gradientView: VLinearGradientView = {
         let gradientView = VLinearGradientView()
-        gradientView.setColors([UIColor.clearColor(), UIColor.whiteColor(), UIColor.whiteColor(), UIColor.clearColor()])
+        gradientView.setColors([UIColor.clear, UIColor.white, UIColor.white, UIColor.clear])
         gradientView.startPoint = CGPoint(x: 0, y: 0.5)
         gradientView.endPoint = CGPoint(x: 1, y: 0.5)
         return gradientView

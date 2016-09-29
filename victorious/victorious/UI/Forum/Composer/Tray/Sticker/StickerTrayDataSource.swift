@@ -97,17 +97,17 @@ class StickerTrayDataSource: PaginatedDataSource, TrayDataSource {
                 return cell
             case .failedToLoad:
                 let retryCell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.retryCellReuseIdentifier, forIndexPath: indexPath) as! TrayRetryLoadCollectionViewCell
-                retryCell.imageView.tintColor = .blackColor()
+                retryCell.imageView.tintColor = .black
                 cell = retryCell
             case .loading:
                 let loadingCell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.loadingCellReuseIdentifier, forIndexPath: indexPath) as! TrayLoadingCollectionViewCell
-            loadingCell.activityIndicator.color = .blackColor()
+            loadingCell.activityIndicator.color = .black
             cell = loadingCell
             case .empty:
                 cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.defaultCellReuseIdentifier, forIndexPath: indexPath)
         }
-        cell.backgroundColor = .clearColor()
-        cell.contentView.backgroundColor = .clearColor()
+        cell.backgroundColor = .clear
+        cell.contentView.backgroundColor = .clear
         return cell
     }
 }

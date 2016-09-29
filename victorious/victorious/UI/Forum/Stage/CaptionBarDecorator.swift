@@ -19,12 +19,12 @@ struct CaptionBarDecorator {
     func decorate(_ captionBar: CaptionBar) {
         let captionTextView = captionBar.captionTextView
         captionTextView.font = dependencyManager.font
-        captionTextView.textColor = dependencyManager.textColor ?? .whiteColor()
+        captionTextView.textColor = dependencyManager.textColor ?? .white
         captionTextView.backgroundColor = dependencyManager.textContainerColor
         
         let captionLabel = captionBar.captionLabel
         captionLabel.font = dependencyManager.font
-        captionLabel.textColor = dependencyManager.textColor ?? .whiteColor()
+        captionLabel.textColor = dependencyManager.textColor ?? .white
         captionLabel.backgroundColor = dependencyManager.textContainerColor
         captionLabel.numberOfLines = captionBar.collapsedNumberOfLines
         

@@ -415,11 +415,11 @@ private extension ChatFeedContent {
 
 private extension VDependencyManager {
     var messageTextColor: UIColor {
-        return colorForKey("color.message.text") ?? .whiteColor()
+        return colorForKey("color.message.text") ?? .white
     }
     
     var messageLinkColor: UIColor {
-        return colorForKey("color.message.link") ?? .blueColor()
+        return colorForKey("color.message.link") ?? .blue
     }
     
     var messageFont: UIFont {
@@ -427,7 +427,7 @@ private extension VDependencyManager {
     }
 
     var backgroundColor: UIColor {
-        return colorForKey("color.message.bubble") ?? .darkGrayColor()
+        return colorForKey("color.message.bubble") ?? .darkGray
     }
     
     var usernameFont: UIFont {
@@ -435,7 +435,7 @@ private extension VDependencyManager {
     }
     
     var usernameColor: UIColor {
-        return colorForKey("color.username.text") ?? .whiteColor()
+        return colorForKey("color.username.text") ?? .white
     }
     
     var timestampFont: UIFont {
@@ -443,11 +443,11 @@ private extension VDependencyManager {
     }
     
     var timestampColor: UIColor {
-        return colorForKey("color.timestamp.text") ?? .whiteColor()
+        return colorForKey("color.timestamp.text") ?? .white
     }
     
     var upvoteCountColor: UIColor {
-        return colorForKey("color.upvote.count.text") ?? .whiteColor()
+        return colorForKey("color.upvote.count.text") ?? .white
     }
 
     var upvoteStyle: UpvoteStyle {

@@ -13,7 +13,7 @@ class VideoBackground: VBackground, VVideoPlayerDelegate {
     
     required init(dependencyManager: VDependencyManager) {
         super.init(dependencyManager: dependencyManager)
-        videoView.backgroundColor = .blackColor()
+        videoView.backgroundColor = .black
         videoView.delegate = self
         fetchVideo(from: dependencyManager)
     }

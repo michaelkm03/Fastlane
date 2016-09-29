@@ -122,7 +122,7 @@ class YouTubeVideoPlayer: NSObject, VVideoPlayer, YTPlayerViewDelegate {
     // MARK: - YTPlayerViewDelegate
     
     func playerViewDidBecomeReady(_ playerView: YTPlayerView!) {
-        playerView.webView?.backgroundColor = UIColor.clearColor()
+        playerView.webView?.backgroundColor = UIColor.clear
         isPlaying = false
         delegate?.videoPlayerDidBecomeReady?(self)
         updateMute()

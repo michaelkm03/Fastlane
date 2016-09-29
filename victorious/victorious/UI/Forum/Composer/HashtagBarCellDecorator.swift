@@ -31,7 +31,7 @@ struct HashtagBarCellDecorator {
         
         cell.label.font = font
         cell.label.textColor = textColor
-        cell.backgroundColor = .clearColor()
+        cell.backgroundColor = .clear
     }
 }
 

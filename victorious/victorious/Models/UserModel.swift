@@ -31,7 +31,7 @@ extension UserModel {
     var color: UIColor {
         guard userModelColors.count > 0 else {
             assertionFailure("Found no user model colors.")
-            return .whiteColor()
+            return .white
         }
         
         return userModelColors[id % userModelColors.count]

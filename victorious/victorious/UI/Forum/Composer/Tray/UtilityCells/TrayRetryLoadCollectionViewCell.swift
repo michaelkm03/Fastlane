@@ -13,7 +13,7 @@ class TrayRetryLoadCollectionViewCell: UICollectionViewCell {
     lazy var imageView: UIImageView = {
         let image = UIImage(named: "uploadRetryButton")?.imageWithRenderingMode(.AlwaysTemplate)
         let imageView = UIImageView(image: image)
-        imageView.tintColor = .whiteColor()
+        imageView.tintColor = .white
         self.contentView.addSubview(imageView)
         return imageView
     }()

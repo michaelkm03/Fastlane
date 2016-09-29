@@ -25,7 +25,7 @@ class TextOnImageButton: TouchableInsetAdjustableButton, TrackableButton {
             setTitle(templateAppearanceValue(.text), forState: .Normal)
             titleLabel?.font = templateAppearanceValue(.font)
             
-            backgroundColor = .clearColor()
+            backgroundColor = .clear
             userInteractionEnabled = templateAppearanceValue(.clickable) ?? false
         }
     }

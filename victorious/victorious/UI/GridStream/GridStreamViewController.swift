@@ -90,7 +90,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         
         collectionView.delegate = self
         collectionView.dataSource = dataSource
-        collectionView.backgroundColor = UIColor.clearColor()
+        collectionView.backgroundColor = UIColor.clear
         collectionView.alwaysBounceVertical = true
         
         edgesForExtendedLayout = .Bottom

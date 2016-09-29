@@ -67,7 +67,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
         permissionsTrackingHelper = VPermissionsTrackingHelper()
         let cellNib = UINib(nibName: "VSettingsSwitchCell", bundle: nil)
         tableView.registerNib(cellNib, forCellReuseIdentifier: Constants.cellIdentifier)
-        tableView.separatorColor = UIColor.clearColor()
+        tableView.separatorColor = UIColor.clear
         tableView.bounces = true
         tableView.rowHeight = Constants.tableViewRowHeight
         spinner.frame = CGRect(center: tableView.bounds.center, size: CGSize(width: Constants.activityIndicatorSideLength, height: Constants.activityIndicatorSideLength))

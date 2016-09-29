@@ -201,7 +201,7 @@ class MixedMediaCameraViewController: UIViewController, VCaptureVideoPreviewView
         let boundsCenter = CGPoint(x: shutterView.bounds.midX, y: shutterView.bounds.midY)
         shutterView.innerRadius = 0
         shutterView.innerCenter = boundsCenter
-        shutterView.colors = [UIColor.clearColor(), UIColor.blackColor()]
+        shutterView.colors = [UIColor.clear, UIColor.black]
         shutterView.outerRadius = 5
         shutterView.outerCenter = boundsCenter
     }

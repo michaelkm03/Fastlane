@@ -102,8 +102,8 @@ class GIFTrayDataSource: PaginatedDataSource, TrayDataSource {
             case .empty:
                 cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.defaultCellReuseIdentifier, forIndexPath: indexPath)
         }
-        cell.backgroundColor = .clearColor()
-        cell.contentView.backgroundColor = .clearColor()
+        cell.backgroundColor = .clear
+        cell.contentView.backgroundColor = .clear
         return cell
     }
 }
