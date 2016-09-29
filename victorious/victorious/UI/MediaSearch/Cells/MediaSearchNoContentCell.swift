@@ -17,14 +17,14 @@ class MediaSearchNoContentCell: UICollectionViewCell {
     /// Sets text value for a label to indicate to the user the state of the search
     var text = "" {
         didSet {
-            self.label.text = text
+            label.text = text
         }
     }
     
     /// Puts the cell in or out of a loading state that shows an activity indicator
     var loading = true {
         didSet {
-            self.activityIndicator.isHidden = !self.loading
+            activityIndicator.isHidden = !loading
         }
     }
 }
