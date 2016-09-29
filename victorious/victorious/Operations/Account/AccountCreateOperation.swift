@@ -35,7 +35,7 @@ final class AccountCreateOperation: AsyncOperation<AccountCreateResponse> {
         return .background
     }
     
-    override func execute(_ finish: (_ result: OperationResult<AccountCreateResponse>) -> Void) {
+    override func execute(_ finish: @escaping (_ result: OperationResult<AccountCreateResponse>) -> Void) {
         let requestOperation = RequestOperation(request: AccountCreateRequest(credentials: credentials))
         
         requestOperation.queue { [weak self] requestResult in
@@ -43,7 +43,7 @@ final class AccountCreateOperation: AsyncOperation<AccountCreateResponse> {
                 let strongSelf = self,
                 let response = requestResult.output
             else {
-                finish(result: requestResult)
+                finish(requestResult)
                 return
             }
             

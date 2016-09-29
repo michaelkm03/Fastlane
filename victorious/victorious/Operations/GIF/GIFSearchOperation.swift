@@ -46,7 +46,7 @@ final class GIFSearchOperation: AsyncOperation<[AnyObject]>, PaginatedRequestOpe
         return .background
     }
     
-    override func execute(finish: (result: OperationResult<[AnyObject]>) -> Void) {
+    override func execute(finish: (_ result: OperationResult<[AnyObject]>) -> Void) {
         requestOperation.queue { [weak self] result in
             switch result {
                 case .success(let searchResults):

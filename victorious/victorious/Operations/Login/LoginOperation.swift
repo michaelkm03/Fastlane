@@ -5,6 +5,7 @@
 //  Created by Tian Lan on 2/10/16.
 //  Copyright © 2016 Victorious. All rights reserved.
 //
+import VictoriousIOSSDK
 
 class LoginOperation: AsyncOperation<AccountCreateResponse> {
     

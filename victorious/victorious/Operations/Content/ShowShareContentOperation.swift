@@ -8,6 +8,7 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 final class ShowShareContentOperation: AsyncOperation<Void> {
     
@@ -36,12 +37,12 @@ final class ShowShareContentOperation: AsyncOperation<Void> {
             applicationActivities: []
         )
         
-        let creatorName = appInfo.appName
+        let creatorName = appInfo?.appName
         let emailSubject = String(format: NSLocalizedString("EmailShareSubjectFormat", comment: ""), creatorName)
         activityViewController.setValue(emailSubject, forKey: "subject")
         activityViewController.excludedActivityTypes = [UIActivityType.postToFacebook]
         activityViewController.completionWithItemsHandler = { [weak self] activityType, completed, _, activityError in
-            if completed, let trackingURLs = self?.content.tracking?.trackingURLsForKey(.share) {
+            if completed, let trackingURLs = self?.content.tracking?.trackingURLsForKey(key: .share) {
                 VTrackingManager.sharedInstance().trackEvent("event", parameters: [VTrackingKeyUrls : trackingURLs])
                 finish(.success())
             }
