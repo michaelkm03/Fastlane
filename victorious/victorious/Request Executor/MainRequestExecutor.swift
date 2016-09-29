@@ -48,14 +48,14 @@ class MainRequestExecutor: RequestExecutorType {
         let executeSemphore = DispatchSemaphore(value: 0)
         
         let requestWithAlertsParsing = AlertsRequestDecorator(request: request)
-        requestWithAlertsParsing.execute(
+        let _ = requestWithAlertsParsing.execute(
             baseURL: baseURL,
             requestContext: requestContext,
             authenticationContext: authenticationContext,
             callback: { (result, error) in
                 DispatchQueue.main.async {
                     defer {
-                        dispatch_semaphore_signal(executeSemphore)
+                        executeSemphore.signal()
                     }
 
                     guard !self.cancelled else {
@@ -64,7 +64,7 @@ class MainRequestExecutor: RequestExecutorType {
 
                     if let nsError = self.convertError(error) {
                         self.error = nsError
-                        self.handle(nsError, with: request.urlRequest)
+                        let _ = self.handle(nsError, with: request.urlRequest)
                         onError?(nsError)
                     } else if let result = result {
                         if !result.alerts.isEmpty {
@@ -75,7 +75,7 @@ class MainRequestExecutor: RequestExecutorType {
                 }
             }
         )
-        executeSemphore.wait(timeout: DispatchTime.distantFuture)
+        let _ = executeSemphore.wait(timeout: DispatchTime.distantFuture)
         networkActivityIndicator.stop()
     }
     
