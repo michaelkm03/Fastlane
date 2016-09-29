@@ -46,7 +46,6 @@ class UploadManagerHelper: NSObject {
     }
     
     fileprivate static func removeUploadViewController(_ uploadViewController: VUploadProgressViewController, fromExistingParent existingParent: UIViewController) {
-        
         if let parent = existingParent as? UploadManagerHost {
             parent.uploadProgressViewController = nil
         }
@@ -56,7 +55,6 @@ class UploadManagerHelper: NSObject {
     }
 
     fileprivate static func addUploadViewController(_ uploadViewController: VUploadProgressViewController, toViewController viewController: UIViewController, withTopInset topInset: Float) {
-        
         viewController.addChildViewController(uploadViewController)
         let progressVCView = uploadViewController.view
         progressVCView.translatesAutoresizingMaskIntoConstraints = false

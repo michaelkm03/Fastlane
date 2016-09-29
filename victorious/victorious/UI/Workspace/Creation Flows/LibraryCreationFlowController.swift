@@ -24,12 +24,12 @@ class LibraryCreationFlowController: VAbstractImageVideoCreationFlowController, 
         return (capturedMediaURL as NSURL).v_hasVideoExtension() ? .video : .image
     }
     
-    override func gridViewController(withDependencyManager dependencyManager: VDependencyManager) -> VAssetCollectionGridViewController? {
+    override func gridViewController(with dependencyManager: VDependencyManager) -> VAssetCollectionGridViewController? {
         return dependencyManager.templateValue(ofType: VAssetCollectionGridViewController.self, forKey: Constants.imageVideoLibraryKey, withAddedDependencies:[VAssetCollectionGridViewControllerMediaType : NSNumber(integer: PHAssetMediaType.unknown.rawValue)]) as? VAssetCollectionGridViewController
     }
     
-    override func workspaceViewController(withDependencyManager dependencyManager: VDependencyManager) -> VWorkspaceViewController? {
-        let workspace: VWorkspaceViewController? = VCreationFlowPresenter.preferredWorkspaceForMediaType(mediaType(), fromDependencyManager: dependencyManager)
+    override func workspaceViewController(with dependencyManager: VDependencyManager) -> VWorkspaceViewController? {
+        let workspace: VWorkspaceViewController? = VCreationFlowPresenter.preferredWorkspace(for: mediaType(), from: dependencyManager)
         
         guard let selectedWorkspace = workspace else {
             fatalError("Workspace requested from mixed media creation flow controller when no valid media was selected")
@@ -39,16 +39,17 @@ class LibraryCreationFlowController: VAbstractImageVideoCreationFlowController, 
     }
     
     override func configurePublishParameters(_ publishParameters: VPublishParameters, withWorkspace workspace: VWorkspaceViewController) {
-        
         updatePublishParameters(publishParameters, workspace: workspace)
     }
     
-    override func downloaderWithAsset(_ asset: PHAsset) -> VAssetDownloader? {
-        if asset.mediaType == .Image {
+    override func downloader(with asset: PHAsset) -> VAssetDownloader? {
+        if asset.mediaType == .image {
             return VImageAssetDownloader(asset: asset)
-        } else if asset.mediaType == .Video {
+        }
+        else if asset.mediaType == .video {
             return VVideoAssetDownloader(asset: asset)
         }
+        
         assertionFailure("Library creation view controller was asked for an asset downloader with for an unsupported asset type")
         return nil
     }
@@ -64,7 +65,7 @@ class LibraryCreationFlowController: VAbstractImageVideoCreationFlowController, 
     // MARK: VAssetCollectionGridViewControllerDelegate
     
     override func gridViewController(_ gridViewController: VAssetCollectionGridViewController, selectedAsset asset: PHAsset) {
-        source = .Library
+        source = .library
         super.gridViewController(gridViewController, selectedAsset: asset)
     }
 }
