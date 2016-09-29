@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 class VIPValidateSubscriptionOperation: AsyncOperation<VIPStatus> {
     
@@ -47,15 +48,15 @@ class VIPValidateSubscriptionOperation: AsyncOperation<VIPStatus> {
         return .main
     }
     
-    override func execute(_ finish: (_ result: OperationResult<VIPStatus>) -> Void) {
+    override func execute(_ finish: @escaping (_ result: OperationResult<VIPStatus>) -> Void) {
         guard let request = request else {
             if shouldForceSuccess {
                 let status = VIPStatus(isVIP: true)
                 updateUser(status: status)
-                finish(result: .success(status))
+                finish(.success(status))
             }
             else {
-                finish(result: .failure(NSError(domain: "VIPValidateSubscriptionOperation", code: -1, userInfo: [:])))
+                finish(.failure(NSError(domain: "VIPValidateSubscriptionOperation", code: -1, userInfo: [:])))
             }
             
             return
@@ -66,20 +67,20 @@ class VIPValidateSubscriptionOperation: AsyncOperation<VIPStatus> {
                 case .success(let status):
                     self?.validationSucceeded = true
                     self?.updateUser(status: status)
-                    finish(result: .success(status))
+                    finish(.success(status))
                 
                 case .failure(let error):
                     if self?.shouldForceSuccess == true {
                         let status = VIPStatus(isVIP: true)
                         self?.updateUser(status: status)
-                        finish(result: .success(status))
+                        finish(.success(status))
                     } else {
                         self?.updateUser(status: nil)
-                        finish(result: .failure(error))
+                        finish(.failure(error))
                     }
                 
                 case .cancelled:
-                    finish(result: .cancelled)
+                    finish(.cancelled)
             }
         }
     }

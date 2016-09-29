@@ -34,59 +34,60 @@ final class ShowTestPurchaseConfirmationOperation: AsyncOperation<Void> {
         let alertController = UIAlertController(
             title: type.tite,
             message: type.messageWithTitle(title ?? "[ITEM]", duration: duration ?? "[DESCRIPTION]", price: price ?? "[PRICE]") + "\n\n[Simulated for testing]",
-            preferredStyle: .Alert
+            preferredStyle: .alert
         )
         alertController.addAction(
             UIAlertAction(
                 title: "Cancel",
                 style: .Cancel,
                 handler: { action in
-                    finish(result: .cancelled)
+                    finish(.cancelled)
                 }
             )
         )
         alertController.addAction(
             UIAlertAction(
                 title: type.confirmTitle,
-                style: .Default,
+                style: .default,
                 handler: { [weak self] action in
                     self?.didConfirmAction = true
-                    finish(result: .success())
+                    finish(.success())
                 }
             )
         )
-        if let rootVC = (UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController {
+        if let rootVC = (UIApplication.shared.delegate as! AppDelegate).window?.rootViewController {
             let targetVC = rootVC.presentedViewController ?? rootVC
-            targetVC.presentViewController(alertController, animated: true, completion: nil)
+            targetVC.present(alertController, animated: true, completion: nil)
         }
     }
+    
 }
 
 private extension VPurchaseType {
     
     var confirmTitle: String {
         switch self {
-        case .Subscription:
+        case .subscription:
             return "Confirm"
-        case .Product:
+        case .product:
             return "Buy"
         }
     }
     
     var tite: String {
         switch self {
-        case .Subscription:
+        case .subscription:
             return "Confirm Your Subscription"
-        case .Product:
+        case .product:
             return "Confirm You In-App Purchase"
         }
     }
     
     func messageWithTitle(_ title: String, duration: String, price: String) -> String {
         switch self {
-        case .Subscription:
+        case .subscription:
             return "Do you want to subscribe to \(title) for \(duration) for \(price)?  This subscription will automatically renew until canceled."
-        case .Product:
+        case .product:
             return "Do you want to buy \(title) for \(price)"
         }
     }

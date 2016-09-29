@@ -54,7 +54,7 @@ extension Paginated where Self : PaginatedOperation {
     
     func next() -> Self? {
         let results = self.results ?? []
-        if let nextPaginator = self.paginator.nextPage( results.count ) {
+        if let nextPaginator = self.paginator.nextPage( resultCount: results.count ) {
             return type(of: self).init(operation: self, paginator: nextPaginator)
         }
         return nil
