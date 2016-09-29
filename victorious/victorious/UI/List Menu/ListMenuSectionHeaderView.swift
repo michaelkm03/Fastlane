@@ -13,7 +13,7 @@ class ListMenuSectionHeaderView: UICollectionReusableView {
         static let subscribeButtonXMargin = CGFloat(12.0)
     }
     
-    @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet private var titleLabel: UILabel?
     
     static var preferredHeight: CGFloat {
         return 18
@@ -28,9 +28,9 @@ class ListMenuSectionHeaderView: UICollectionReusableView {
     
     private func applyTemplateAppearance(with dependencyManager: VDependencyManager) {
         clipsToBounds = false
-        titleLabel.text = dependencyManager.titleText
-        titleLabel.textColor = dependencyManager.titleColor
-        titleLabel.font = dependencyManager.titleFont
+        titleLabel?.text = dependencyManager.titleText
+        titleLabel?.textColor = dependencyManager.titleColor
+        titleLabel?.font = dependencyManager.titleFont
     }
     
     // MARK: - Subscribe Button
