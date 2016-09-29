@@ -13,21 +13,26 @@ protocol NewListMenuSectionDataSourceDelegate: class {
     func didUpdateVisibleItems(forSection section: ListMenuSection)
 }
 
-class NewListMenuSectionDataSource<Item, Request: RequestType where Request.ResultType == Array<Item>> {
+class NewListMenuSectionDataSource<Item, Operation: Queueable where Operation: NSOperation> {
 
     // MARK: - Initialization
-    typealias CellConfigurationCallback = (_: NewListMenuSectionCell, _: Item)  -> Void
-    typealias FetchRemoteDataCallback = (_: NewListMenuSectionDataSource) -> Void
-    let cellConfigurationCallback: CellConfigurationCallback
-    let fetchRequest: Request
+    typealias CellConfigurationCallback = (cell: NewListMenuSectionCell, item: Item) -> Void
+    typealias CreateOperationCallback = () -> Operation?
+    typealias ProcessOutputCallback = (output: Operation.Output) -> [Item]
+    let cellConfiguration: CellConfigurationCallback
+    let createOperation: CreateOperationCallback
+    let processOutput: ProcessOutputCallback
+    let section: ListMenuSection
     weak var delegate: ListMenuSectionDataSourceDelegate?
     var state: ListMenuDataSourceState = .loading
     var requestExecutor: RequestExecutorType = MainRequestExecutor()
 
-    init(dependencyManager: VDependencyManager, cellConfigurationCallback: CellConfigurationCallback, fetchRequest: Request) {
+    init(dependencyManager: VDependencyManager, cellConfiguration: CellConfigurationCallback, createOperation: CreateOperationCallback, processOutput: ProcessOutputCallback, section: ListMenuSection) {
         self.dependencyManager = dependencyManager
-        self.cellConfigurationCallback = cellConfigurationCallback
-        self.fetchRequest = fetchRequest
+        self.cellConfiguration = cellConfiguration
+        self.createOperation = createOperation
+        self.processOutput = processOutput
+        self.section = section
     }
 
     // MARK - Dependency manager
@@ -46,26 +51,41 @@ class NewListMenuSectionDataSource<Item, Request: RequestType where Request.Resu
 
     func dequeueItemCell(from collectionView: UICollectionView, at indexPath: NSIndexPath) -> NewListMenuSectionCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(NewListMenuSectionCell.defaultReuseIdentifier, forIndexPath: indexPath) as! NewListMenuSectionCell
-        cellConfigurationCallback(_: cell, _: visibleItems[indexPath.row])
+        cellConfiguration(cell: cell, item: visibleItems[indexPath.row])
         cell.dependencyManager = dependencyManager
         return cell
     }
 
     func setupDataSource(with delegate: ListMenuSectionDataSourceDelegate) {
         self.delegate = delegate
-        let operation = RequestOperation(request: fetchRequest)
-        operation.requestExecutor = requestExecutor
-        operation.queue() { [weak self] result in
+        fetchData()
+    }
+
+    func fetchData() {
+        let operation = createOperation()
+        // TODO: bring back the requestExecutor for testing
+        // operation?.requestExecutor = requestExecutor
+        operation?.queue() { [weak self] result in
+            guard let strongSelf = self else {
+                return
+            }
+
+            guard let output = result.output else {
+                return
+            }
+
+            let items = strongSelf.processOutput(output: output)
+
             switch result {
-            case .success(let chatRooms):
-                self?.visibleItems = chatRooms
+            case .success:
+                strongSelf.visibleItems = items
 
             case .failure(let error):
-                self?.state = .failed(error: error)
-                self?.delegate?.didUpdateVisibleItems(forSection: .chatRooms)
+                strongSelf.state = .failed(error: error)
+                strongSelf.delegate?.didUpdateVisibleItems(forSection: strongSelf.section)
 
             case .cancelled:
-                self?.delegate?.didUpdateVisibleItems(forSection: .chatRooms)
+                strongSelf.delegate?.didUpdateVisibleItems(forSection: strongSelf.section)
             }
         }
     }

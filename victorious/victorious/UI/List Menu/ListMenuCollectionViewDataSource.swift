@@ -38,7 +38,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
     let communityDataSource: ListMenuCommunityDataSource
     let hashtagDataSource: ListMenuHashtagsDataSource
     let creatorDataSource: ListMenuCreatorDataSource
-    let newChatRoomsDataSource: NewListMenuSectionDataSource<ChatRoom, ChatRoomsRequest>
+    let newChatRoomsDataSource: NewListMenuSectionDataSource<ChatRoom, RequestOperation<ChatRoomsRequest>>
     private let subscribeButton: SubscribeButton
     
     // MARK: - Initialization
@@ -54,9 +54,14 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         if
             let apiPath = self.dependencyManager.networkResources?.apiPathForKey(Constants.Keys.chatRoomsURL),
             let request = ChatRoomsRequest(apiPath: apiPath) {
-            newChatRoomsDataSource = NewListMenuSectionDataSource(dependencyManager: dependencyManager.chatRoomsChildDependency,cellConfigurationCallback: { cell, item in
-                cell.titleLabel.text = item.name
-            }, fetchRequest: request)
+
+            newChatRoomsDataSource = NewListMenuSectionDataSource(
+                dependencyManager: dependencyManager.chatRoomsChildDependency,
+                cellConfiguration: { cell, item in cell.titleLabel.text = item.name },
+                createOperation: { RequestOperation(request: request) },
+                processOutput: { $0 },
+                section: .chatRooms
+            )
         } else {
             Log.warning("Missing chat rooms API path or requestExecutor")
             return
