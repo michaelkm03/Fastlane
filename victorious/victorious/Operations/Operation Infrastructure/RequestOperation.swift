@@ -6,6 +6,8 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
+import VictoriousIOSSDK
+
 /// A generic operation that can be used to asynchronously execute a request.
 class RequestOperation<Request: RequestType>: AsyncOperation<Request.ResultType> {
     
@@ -28,7 +30,7 @@ class RequestOperation<Request: RequestType>: AsyncOperation<Request.ResultType>
         return .background
     }
     
-    override func execute(_ finish: (_ result: OperationResult<Request.ResultType>) -> Void) {
+    override func execute(_ finish: @escaping (_ result: OperationResult<Request.ResultType>) -> Void) {
         if !requestExecutor.errorHandlers.contains(where: { $0 is UnauthorizedErrorHandler }) {
             requestExecutor.errorHandlers.append(UnauthorizedErrorHandler())
         }
@@ -40,10 +42,10 @@ class RequestOperation<Request: RequestType>: AsyncOperation<Request.ResultType>
         requestExecutor.executeRequest(
             request,
             onComplete: { result in
-                finish(result: .success(result))
+                finish(.success(result))
             },
             onError: { error in
-                finish(result: .failure(error))
+                finish(.failure(error))
             }
         )
     }

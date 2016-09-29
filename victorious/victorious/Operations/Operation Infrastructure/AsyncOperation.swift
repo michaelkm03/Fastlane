@@ -66,7 +66,7 @@ class AsyncOperation<Output>: Operation, Queueable {
     
     // MARK: - Operation Execution
     
-    func execute(_ finish: (_ result: OperationResult<Output>) -> Void) {
+    func execute(_ finish: @escaping (_ result: OperationResult<Output>) -> Void) {
         fatalError("Subclasses of AsyncOperation must override `execute()`!")
     }
     
