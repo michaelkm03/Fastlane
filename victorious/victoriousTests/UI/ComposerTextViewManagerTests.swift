@@ -14,7 +14,7 @@ class ComposerTextViewManagerTests: XCTestCase {
     let textView: UITextView = {
         let textView = UITextView()
         textView.textColor = .red
-        textView.font = UIFont.systemFontOfSize(10)
+        textView.font = UIFont.systemFont(ofSize: 10)
         return textView
     }()
 

@@ -392,7 +392,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
 
 private extension Content {
     var timeLabel: String {
-        return NSDate(timestamp: createdAt).stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds)
+        return Date(timestamp: createdAt).stringDescribingTimeIntervalSinceNow(format: .concise, precision: .seconds)
     }
 }
 
@@ -423,7 +423,7 @@ private extension VDependencyManager {
     }
     
     var messageFont: UIFont {
-        return font(forKey: "font.message") ?? UIFont.systemFontOfSize(16.0)
+        return font(forKey: "font.message") ?? UIFont.systemFont(ofSize: 16.0)
     }
 
     var backgroundColor: UIColor {
@@ -431,7 +431,7 @@ private extension VDependencyManager {
     }
     
     var usernameFont: UIFont {
-        return font(forKey: "font.username.text") ?? UIFont.systemFontOfSize(12.0)
+        return font(forKey: "font.username.text") ?? UIFont.systemFont(ofSize: 12.0)
     }
     
     var usernameColor: UIColor {
@@ -439,7 +439,7 @@ private extension VDependencyManager {
     }
     
     var timestampFont: UIFont {
-        return font(forKey: "font.timestamp.text") ?? UIFont.systemFontOfSize(12.0)
+        return font(forKey: "font.timestamp.text") ?? UIFont.systemFont(ofSize: 12.0)
     }
     
     var timestampColor: UIColor {

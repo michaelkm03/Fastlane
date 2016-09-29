@@ -44,7 +44,7 @@ extension VDependencyManager {
     /// Returns a system font when appropriate
     func fontWithName(_ name: String, size: CGFloat) -> UIFont? {
         if let weight = weightOfSystemFontWithName(name) {
-            return UIFont.systemFontOfSize(size, weight: weight)
+            return UIFont.systemFont(ofSize: size, weight: weight)
         }
         return UIFont(name: name, size: size)
     }
