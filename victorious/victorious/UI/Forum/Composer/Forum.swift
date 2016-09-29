@@ -54,7 +54,7 @@ extension Forum {
     // MARK: - ComposerDelegate
     
     func composer(_ composer: Composer, didSelectCreationFlowType creationFlowType: VCreationFlowType) {
-        creationFlowPresenter()?.presentWorkspaceOnViewController(originViewController, creationFlowType: creationFlowType)
+        creationFlowPresenter()?.presentWorkspace(on: originViewController, creationFlowType: creationFlowType)
     }
 
     func composer(_ composer: Composer, didUpdateContentHeight height: CGFloat) {
@@ -74,7 +74,7 @@ private extension VCreationFlowType {
         switch self {
         case .GIF:
             return .GIF
-        case .Image:
+        case .image:
             return .Image
         default:
             return nil

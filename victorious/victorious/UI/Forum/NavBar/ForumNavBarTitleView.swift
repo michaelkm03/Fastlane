@@ -59,7 +59,7 @@ class ForumNavBarTitleView: UIView {
         subtitleLabel.sizeToFit()
         
         addSubview(stackView)
-        v_addFitToParentConstraintsToSubview(stackView, leading: 0.0, trailing: 0.0, top: 0.0, bottom: 5.0)
+        v_addFitToParentConstraints(toSubview: stackView, leading: 0.0, trailing: 0.0, top: 0.0, bottom: 5.0)
     }
     
     //Creates the string for the subtitle label
@@ -67,7 +67,7 @@ class ForumNavBarTitleView: UIView {
         let numberOfUsersText = activeUserCount == 1 ? configuration.singularNumberOfUsersText : configuration.pluralNumberOfUsersText
         
         return numberOfUsersText
-            .stringByReplacingOccurrencesOfString(Keys.visitorsMacro, withString: VLargeNumberFormatter()
+            .replacingOccurrences(of: Keys.visitorsMacro, with: VLargeNumberFormatter()
             .stringForInteger(activeUserCount))
     }
 }
