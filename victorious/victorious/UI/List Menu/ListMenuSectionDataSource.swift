@@ -11,7 +11,7 @@ import Foundation
 /// Possible states for List Menu Data Source based on the results fetched
 enum ListMenuDataSourceState {
     case loading
-    case failed(error: ErrorType?)
+    case failed(error: Error?)
     case items
     case noContent
 }

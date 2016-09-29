@@ -29,17 +29,17 @@ class NotificationsDataSource: PaginatedDataSource, UITableViewDataSource {
     
     func registerCells(for tableView: UITableView) {
         let identifier = "NotificationCell"
-        let nib = UINib(nibName: identifier, bundle: Bundle(forClass:type(of: self)) )
-        tableView.registerNib(nib, forCellReuseIdentifier: identifier)
+        let nib = UINib(nibName: identifier, bundle: Bundle(for:type(of: self)) )
+        tableView.register(nib, forCellReuseIdentifier: identifier)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return visibleItems.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("NotificationCell", forIndexPath: indexPath) as! NotificationCell
-        decorate(cell: cell, atIndexPath: indexPath)
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "NotificationCell", for: indexPath as IndexPath) as! NotificationCell
+        decorate(cell: cell, atIndexPath: indexPath as IndexPath)
         return cell
     }
     
