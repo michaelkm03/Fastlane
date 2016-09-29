@@ -18,19 +18,17 @@ class LibraryCreationFlowController: VAbstractImageVideoCreationFlowController, 
     override func mediaType() -> MediaType {
 
         guard let capturedMediaURL = capturedMediaURL else {
-            return .Unknown
+            return .unknown
         }
         
-        return capturedMediaURL.v_hasVideoExtension() ? .Video : .Image
+        return (capturedMediaURL as NSURL).v_hasVideoExtension() ? .video : .image
     }
     
-    override func gridViewControllerWithDependencyManager(_ dependencyManager: VDependencyManager) -> VAssetCollectionGridViewController? {
-        
-        return dependencyManager.templateValueOfType(VAssetCollectionGridViewController.self, forKey: Constants.imageVideoLibraryKey, withAddedDependencies:[VAssetCollectionGridViewControllerMediaType : NSNumber(integer: PHAssetMediaType.Unknown.rawValue)]) as? VAssetCollectionGridViewController
+    override func gridViewController(withDependencyManager dependencyManager: VDependencyManager) -> VAssetCollectionGridViewController? {
+        return dependencyManager.templateValue(ofType: VAssetCollectionGridViewController.self, forKey: Constants.imageVideoLibraryKey, withAddedDependencies:[VAssetCollectionGridViewControllerMediaType : NSNumber(integer: PHAssetMediaType.unknown.rawValue)]) as? VAssetCollectionGridViewController
     }
     
-    override func workspaceViewControllerWithDependencyManager(_ dependencyManager: VDependencyManager) -> VWorkspaceViewController? {
-        
+    override func workspaceViewController(withDependencyManager dependencyManager: VDependencyManager) -> VWorkspaceViewController? {
         let workspace: VWorkspaceViewController? = VCreationFlowPresenter.preferredWorkspaceForMediaType(mediaType(), fromDependencyManager: dependencyManager)
         
         guard let selectedWorkspace = workspace else {

@@ -22,21 +22,19 @@ class MixedMediaCameraCreationFlowController: VAbstractImageVideoCreationFlowCon
     }()
         
     override func mediaType() -> MediaType {
-        
         guard let capturedMediaURL = capturedMediaURL else {
-            return .Unknown
+            return .unknown
         }
         
-        return capturedMediaURL.v_hasVideoExtension() ? .Video : .Image
+        return (capturedMediaURL as NSURL).v_hasVideoExtension() ? .video : .image
     }
     
-    override func gridViewControllerWithDependencyManager(_ dependencyManager: VDependencyManager) -> VAssetCollectionGridViewController? {
+    override func gridViewController(with dependencyManager: VDependencyManager) -> VAssetCollectionGridViewController? {
         return nil
     }
     
-    override func workspaceViewControllerWithDependencyManager(_ dependencyManager: VDependencyManager) -> VWorkspaceViewController? {
-        
-        return VCreationFlowPresenter.preferredWorkspaceForMediaType(mediaType(), fromDependencyManager: dependencyManager)
+    override func workspaceViewController(with dependencyManager: VDependencyManager) -> VWorkspaceViewController? {
+        return VCreationFlowPresenter.preferredWorkspace(for: mediaType(), from: dependencyManager)
     }
     
     override func configurePublishParameters(_ publishParameters: VPublishParameters, withWorkspace workspace: VWorkspaceViewController) {
@@ -44,10 +42,10 @@ class MixedMediaCameraCreationFlowController: VAbstractImageVideoCreationFlowCon
         updatePublishParameters(publishParameters, workspace: workspace)
     }
     
-    override func downloaderWithAsset(_ asset: PHAsset) -> VAssetDownloader? {
-        if asset.mediaType == .Image {
+    override func downloader(with asset: PHAsset) -> VAssetDownloader? {
+        if asset.mediaType == .image {
             return VImageAssetDownloader(asset: asset)
-        } else if asset.mediaType == .Video {
+        } else if asset.mediaType == .video {
             return VVideoAssetDownloader(asset: asset)
         }
         return nil

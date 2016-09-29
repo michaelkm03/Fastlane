@@ -21,7 +21,7 @@ class VIPFlowNavigationController: UINavigationController, VIPGateViewController
     fileprivate var gateDependencyManager: VDependencyManager!
     fileprivate var successDependencyManager: VDependencyManager!
     
-    class func newWithDependencyManager(_ dependencyManager: VDependencyManager) -> VIPFlowNavigationController? {
+    class func new(with dependencyManager: VDependencyManager) -> VIPFlowNavigationController? {
         guard
             dependencyManager.isVIPEnabled == true,
             let gateDependencyManager = dependencyManager.paygateDependency,
