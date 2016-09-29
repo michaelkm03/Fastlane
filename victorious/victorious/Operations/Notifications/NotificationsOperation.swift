@@ -38,15 +38,15 @@ final class NotificationsOperation: AsyncOperation<[AnyObject]>, PaginatedOperat
             switch result {
                 case .success(let notifications):
                     self?.results = notifications
-                    finish(result: .success(notifications))
+                    finish(.success(notifications))
                 
                 case .failure(let error):
                     self?.results = []
-                    finish(result: .failure(error))
+                    finish(.failure(error))
                 
                 case .cancelled:
                     self?.results = []
-                    finish(result: .cancelled)
+                    finish(.cancelled)
             }
         }
     }
