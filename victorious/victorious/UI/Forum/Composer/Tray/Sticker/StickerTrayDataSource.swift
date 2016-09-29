@@ -19,7 +19,7 @@ class StickerTrayDataSource: PaginatedDataSource, TrayDataSource {
     
     let dependencyManager: VDependencyManager
     var dataSourceDelegate: TrayDataSourceDelegate?
-    private var stickers: [GIFSearchResultObject] = []
+    private var stickers: [StickerSearchResultObject] = []
     private(set) var trayState: TrayState = .Empty {
         didSet {
             if oldValue != trayState {
@@ -27,8 +27,9 @@ class StickerTrayDataSource: PaginatedDataSource, TrayDataSource {
             }
         }
     }
+    var cellSize: CGSize = .zero
     
-    func asset(atIndex index: Int) -> GIFSearchResultObject? {
+    func asset(atIndex index: Int) -> StickerSearchResultObject? {
         guard stickers.count > index else {
             return nil
         }
@@ -44,23 +45,22 @@ class StickerTrayDataSource: PaginatedDataSource, TrayDataSource {
         collectionView.registerClass(TrayLoadingCollectionViewCell.self, forCellWithReuseIdentifier: Constants.loadingCellReuseIdentifier)
         collectionView.registerClass(TrayRetryLoadCollectionViewCell.self, forCellWithReuseIdentifier: Constants.retryCellReuseIdentifier)
         collectionView.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: Constants.defaultCellReuseIdentifier)
-        collectionView.registerNib(MediaSearchPreviewCell.associatedNib, forCellWithReuseIdentifier: Constants.stickerCellReuseIdentifier)
+        collectionView.registerNib(StickerSearchResultPreviewCell.associatedNib, forCellWithReuseIdentifier: Constants.stickerCellReuseIdentifier)
     }
     
     func fetchStickers(completion: (NSError? -> ())? = nil) {
         trayState = .Loading
         let contentFetchEndpoint = dependencyManager.contentFetchEndpoint ?? ""
-        let searchOptions = GIFSearchOptions.Trending(url: contentFetchEndpoint)
+        let searchOptions = AssetSearchOptions.Trending(url: contentFetchEndpoint)
         let createOperation = {
-            return GIFSearchOperation(searchOptions: searchOptions)
+            return StickerSearchOperation(searchOptions: searchOptions)
         }
-        let pageLoadCompletion = {
-            [weak self] (results: [AnyObject]?, error: NSError?, cancelled: Bool) in
+        let pageLoadCompletion = { [weak self] (results: [AnyObject]?, error: NSError?, cancelled: Bool) in
             guard let strongSelf = self else {
                 return
             }
-            
-            let stickers = results as? [GIFSearchResultObject] ?? strongSelf.stickers
+
+            let stickers = results as? [StickerSearchResultObject] ?? strongSelf.stickers
             strongSelf.stickers = stickers
             guard stickers.count > 0 else {
                 strongSelf.trayState = .FailedToLoad
@@ -89,10 +89,9 @@ class StickerTrayDataSource: PaginatedDataSource, TrayDataSource {
         let cell: UICollectionViewCell
         switch trayState {
             case .Populated:
-                let cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.stickerCellReuseIdentifier, forIndexPath: indexPath) as! MediaSearchPreviewCell
-                cell.activityIndicator.stopAnimating()
+                let cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.stickerCellReuseIdentifier, forIndexPath: indexPath) as! StickerSearchResultPreviewCell
                 if let sticker = asset(atIndex: indexPath.row) {
-                    cell.previewAssetUrl = sticker.thumbnailImageURL
+                    StickerSearchResultPreviewCellPopulator.populate(cell, withSearchResultObject: sticker)
                 }
                 return cell
             case .FailedToLoad:
@@ -101,8 +100,8 @@ class StickerTrayDataSource: PaginatedDataSource, TrayDataSource {
                 cell = retryCell
             case .Loading:
                 let loadingCell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.loadingCellReuseIdentifier, forIndexPath: indexPath) as! TrayLoadingCollectionViewCell
-            loadingCell.activityIndicator.color = .blackColor()
-            cell = loadingCell
+                loadingCell.activityIndicator.color = .blackColor()
+                cell = loadingCell
             case .Empty:
                 cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.defaultCellReuseIdentifier, forIndexPath: indexPath)
         }

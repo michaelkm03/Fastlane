@@ -45,6 +45,7 @@ public enum ContentMediaAsset: ContentMediaAssetModel {
     case youtube(remoteID: String, source: String?)
     case gif(remoteID: String?, url: NSURL, source: String?, size: CGSize)
     case image(url: NSURL, size: CGSize)
+    case sticker(remoteID: String, url: NSURL, size: CGSize)
     
     public struct RemoteAssetParameters {
         public let contentType: ContentType
@@ -121,6 +122,14 @@ public enum ContentMediaAsset: ContentMediaAssetModel {
                 else {
                     return nil
                 }
+            case .sticker:
+                guard
+                    let remoteID = json["id"].string,
+                    let url = json["url"].URL
+                else {
+                    return nil
+                }
+                self = .sticker(remoteID: remoteID, url: url, size: size)
             case .text, .link:
                 return nil
         }
@@ -179,6 +188,11 @@ public enum ContentMediaAsset: ContentMediaAssetModel {
                     return nil
                 }
                 self = .image(url: url, size: size)
+            case .sticker:
+                guard let url = url, remoteID = remoteID else {
+                    return nil
+                }
+                self = .sticker(remoteID: remoteID, url: url, size: size)
         }
     }
     
@@ -207,6 +221,7 @@ public enum ContentMediaAsset: ContentMediaAssetModel {
             case .video(let url, _, _): return url
             case .gif(_, let url, _, _): return url
             case .image(let url, _): return url
+            case .sticker(_, let url, _): return url
         }
     }
     
@@ -225,6 +240,7 @@ public enum ContentMediaAsset: ContentMediaAssetModel {
         switch self {
             case .youtube(let externalID, _): return externalID
             case .gif(let externalID, _, _, _): return externalID
+            case .sticker(let externalID, _, _): return externalID
             default: return nil
         }
     }
@@ -235,6 +251,7 @@ public enum ContentMediaAsset: ContentMediaAssetModel {
             case .video(let url, _, _): return url.absoluteString ?? ""
             case .gif(_, let url, _, _): return url.absoluteString ?? ""
             case .image(let url, _): return url.absoluteString ?? ""
+            case .sticker(_, let url, _): return url.absoluteString ?? ""
         }
     }
     
@@ -243,6 +260,7 @@ public enum ContentMediaAsset: ContentMediaAssetModel {
             case .youtube(_, _), .video(_, _, _): return .video
             case .gif(_, _, _, _): return .gif
             case .image(_, _): return .image
+            case .sticker(_, _, _): return .sticker
         }
     }
     
@@ -254,14 +272,16 @@ public enum ContentMediaAsset: ContentMediaAssetModel {
             case .video(let url, _, _): return url.absoluteString
             case .gif(_, let url, _, _): return url.absoluteString
             case .image(let url, _): return url.absoluteString
+            case .sticker(_, let url, _): return url.absoluteString
         }
     }
     
     public var videoSource: ContentVideoAssetSource? {
         switch self {
-            case .video(_, _, _), .gif(_, _, _, _): return .video
-            case .youtube(_, _): return .youtube
-            case .image(_, _): return nil
+            case .video, .gif: return .video
+            case .youtube: return .youtube
+            case .image: return nil
+            case .sticker: return nil
         }
     }
     
@@ -269,11 +289,13 @@ public enum ContentMediaAsset: ContentMediaAssetModel {
         switch self {
             case .gif(_, _, _, let size):
                 return size
-            case .youtube(_):
+            case .youtube:
                 return nil
             case .video(_, _, let size):
                 return size
-            case.image(_, let size):
+            case .image(_, let size):
+                return size
+            case .sticker(_, _, let size):
                 return size
         }
     }

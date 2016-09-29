@@ -200,6 +200,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     }
 
     private func populateData() {
+        content?.wasCreatedByCurrentUser == true ? likeView?.updateAlignment(.left) : likeView?.updateAlignment(.center)
         captionLabel.detectUserTags(for: content) { [weak self] url in
             guard let strongSelf = self else {
                 return
@@ -407,7 +408,7 @@ private extension ChatFeedContent {
         switch content.type {
             case .text:
                 return 1.0
-            case .gif, .image, .link, .video:
+            case .gif, .image, .link, .video, .sticker:
                 return creationState?.alpha ?? 1.0
         }
     }

@@ -10,8 +10,10 @@ import Foundation
 import MBProgressHUD
 
 /// Conformers describe a object that allows for the selection of a piece of media
-protocol Tray: TrayDataSourceDelegate {
+protocol Tray: TrayDataSourceDelegate, LoadingCancellableViewDelegate {
     weak var delegate: TrayDelegate? { get set }
+    var progressHUD: MBProgressHUD? { get }
+    var mediaExporter: MediaSearchExporter? { get }
 }
 
 /// Encapsulates the result of media exporting functions within trays
@@ -48,6 +50,29 @@ extension Tray where Self: UIViewController {
         progressHUD.dimBackground = true
         progressHUD.show(true)
         return progressHUD
+    }
+    
+}
+
+extension Tray {
+    func exportMedia(fromSearchResult mediaSearchResultObject: MediaSearchResult, completionBlock: (TrayMediaCompletionState) -> ()) -> MediaSearchExporter {
+        let mediaExporter = MediaSearchExporter(mediaSearchResult: mediaSearchResultObject)
+        mediaExporter.loadMedia() { (previewImage, mediaURL, error) in
+            if mediaExporter.cancelled {
+                completionBlock(.canceled)
+            } else if
+                let previewImage = previewImage,
+                let mediaURL = mediaURL {
+                mediaSearchResultObject.exportPreviewImage = previewImage
+                mediaSearchResultObject.exportMediaURL = mediaURL
+                completionBlock(.success(mediaSearchResultObject))
+            } else if let error = error {
+                completionBlock(.failure(error))
+            } else {
+                Log.warning("Encountered unexpected media output state in tray")
+            }
+        }
+        return mediaExporter
     }
 }
 

@@ -10,17 +10,23 @@ import Foundation
 import MBProgressHUD
 
 /// A view controller that displays a side-scrolling double-row of stickers
-class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout,
-    LoadingCancellableViewDelegate {
+class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     private struct Constants {
-        static let collectionViewContentInsets = UIEdgeInsets(top: 2, left: 2, bottom: 2, right: 2)
+        static let padding = CGFloat(5)
+        static let collectionViewContentInsets = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
         static let numberOfRows = 2
-        static let interItemSpace = CGFloat(2)
+        static let interItemSpace = padding
     }
     
     weak var delegate: TrayDelegate?
-    private var progressHUD: MBProgressHUD?
-    private var mediaExporter: MediaSearchExporter?
+    var cellSize: CGSize = .zero {
+        didSet {
+            self.dataSource.cellSize = cellSize
+            self.collectionView.reloadData()
+        }
+    }
+    private(set) var progressHUD: MBProgressHUD?
+    private(set) var mediaExporter: MediaSearchExporter?
     
     lazy var dataSource: StickerTrayDataSource = {
         let dataSource = StickerTrayDataSource(dependencyManager: self.dependencyManager)
@@ -49,6 +55,13 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
         collectionView.hidden = false
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        let emptySpace = Constants.collectionViewContentInsets.vertical + CGFloat(Constants.numberOfRows - 1) * Constants.interItemSpace
+        let side = (view.bounds.height - emptySpace) / CGFloat(Constants.numberOfRows)
+        cellSize = CGSize(width: side, height: side)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         dataSource.registerCells(withCollectionView: collectionView)
@@ -72,12 +85,21 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
             }
             return
         }
+        guard let isVIP = VCurrentUser.user?.vipStatus?.isVIP where isVIP || !sticker.isVIP else {
+            let originViewController = parentViewController ?? self
+            let router = Router(originViewController: originViewController, dependencyManager: dependencyManager)
+            router.navigate(to: DeeplinkDestination.vipSubscription, from: DeeplinkContext(value: DeeplinkContext.mainFeed))
+            return
+        }
+        
         progressHUD = showExportingHUD(delegate: self)
-        exportMedia(fromSearchResult: sticker) { [weak self] state in
+        mediaExporter?.cancelDownload()
+        mediaExporter = nil
+        let exporter = exportMedia(fromSearchResult: sticker) { [weak self] state in
             switch state {
                 case .success(let result):
                     self?.progressHUD?.hide(true)
-                    let localAssetParameters = ContentMediaAsset.LocalAssetParameters(contentType: .gif, remoteID: remoteID, source: nil, size: sticker.assetSize, url: sticker.sourceMediaURL)
+                    let localAssetParameters = ContentMediaAsset.LocalAssetParameters(contentType: .sticker, remoteID: remoteID, source: nil, size: sticker.assetSize, url: sticker.sourceMediaURL)
                     guard
                         let strongSelf = self,
                         let asset = ContentMediaAsset(initializationParameters: localAssetParameters),
@@ -92,6 +114,7 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
                 case .canceled:()
             }
         }
+        mediaExporter = exporter
     }
     
     // MARK: - UICollectionViewDelegateFlowLayout
@@ -103,10 +126,7 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
         else {
             return view.bounds.insetBy(Constants.collectionViewContentInsets).size
         }
-        let numberOfRows = Constants.numberOfRows
-        let emptySpace = Constants.collectionViewContentInsets.vertical + CGFloat(Constants.numberOfRows - 1) * Constants.interItemSpace
-        let side = (view.bounds.height - emptySpace) / CGFloat(numberOfRows)
-        return CGSize(width: side, height: side)
+        return cellSize
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
@@ -121,35 +141,10 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
         return Constants.interItemSpace
     }
     
-    // MARK: - Media exporting
-    
-    private func exportMedia(fromSearchResult mediaSearchResultObject: MediaSearchResult, completionBlock: (TrayMediaCompletionState) -> ()) {
-        self.mediaExporter?.cancelDownload()
-        self.mediaExporter = nil
-        
-        let mediaExporter = MediaSearchExporter(mediaSearchResult: mediaSearchResultObject)
-        mediaExporter.loadMedia() { (previewImage, mediaURL, error) in
-            if mediaExporter.cancelled {
-                completionBlock(.canceled)
-            } else if
-                let previewImage = previewImage,
-                let mediaURL = mediaURL {
-                mediaSearchResultObject.exportPreviewImage = previewImage
-                mediaSearchResultObject.exportMediaURL = mediaURL
-                completionBlock(.success(mediaSearchResultObject))
-            } else if let error = error {
-                completionBlock(.failure(error))
-            } else {
-                Log.warning("Encountered unexpected media output state in tray")
-            }
-        }
-        self.mediaExporter = mediaExporter
-    }
-    
     // MARK: - LoadingCancellableViewDelegate
     
     func cancel() {
         progressHUD?.hide(true)
-        self.mediaExporter?.cancelDownload()
+        mediaExporter?.cancelDownload()
     }
 }
