@@ -401,14 +401,12 @@
 		624E39961C6AF153004E0C8E /* TestVideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624E39941C6AF120004E0C8E /* TestVideoPlayer.swift */; };
 		6287BE101C7E87390057D116 /* VIPGateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6287BE0F1C7E87390057D116 /* VIPGateViewController.swift */; };
 		62A40B521D9602FF009C3D29 /* ChatRoomsResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 62A40B511D9602FF009C3D29 /* ChatRoomsResponse.json */; };
-		62A625EF1D875C0200340407 /* ListMenuCollectionViewDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62A625EE1D875C0200340407 /* ListMenuCollectionViewDataSourceTests.swift */; };
 		62A7C9EB1C7FAE2A009F8200 /* NSBundle+AppStoreReceipt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62A7C9EA1C7FAE2A009F8200 /* NSBundle+AppStoreReceipt.swift */; };
 		62FD64781D8A2D7C00E9BAF8 /* ChatRoomsRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62FD64771D8A2D7C00E9BAF8 /* ChatRoomsRequestTests.swift */; };
 		62FD647C1D8B1E8100E9BAF8 /* ChatRoomsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62FD647B1D8B1E8000E9BAF8 /* ChatRoomsRequest.swift */; };
 		62FD647E1D8B253200E9BAF8 /* ChatRoomTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62FD647D1D8B253200E9BAF8 /* ChatRoomTests.swift */; };
 		62FD64801D8B4CE100E9BAF8 /* ChatRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62FD647F1D8B4CE100E9BAF8 /* ChatRoom.swift */; };
 		62FD64821D8B571B00E9BAF8 /* ChatRoom.json in Resources */ = {isa = PBXBuildFile; fileRef = 62FD64811D8B571B00E9BAF8 /* ChatRoom.json */; };
-		62FD64861D8B6E5600E9BAF8 /* ListMenuChatRoomsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62FD64851D8B6E5600E9BAF8 /* ListMenuChatRoomsDataSourceTests.swift */; };
 		62FD64871D8B720400E9BAF8 /* TestRequestExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6236F8751C36030000746476 /* TestRequestExecutor.swift */; };
 		62FD648B1D8B823B00E9BAF8 /* ListMenuChatRoomCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62FD648A1D8B823B00E9BAF8 /* ListMenuChatRoomCollectionViewCell.swift */; };
 		62FD648D1D8B837000E9BAF8 /* ListMenuChatRoomsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62FD648C1D8B837000E9BAF8 /* ListMenuChatRoomsDataSource.swift */; };
@@ -494,6 +492,9 @@
 		67F231571CBD69CD006BDBA5 /* ListMenuCollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67F231561CBD69CD006BDBA5 /* ListMenuCollectionViewDataSource.swift */; };
 		67F231591CBD7667006BDBA5 /* ListMenuHashtagCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67F231581CBD7667006BDBA5 /* ListMenuHashtagCollectionViewCell.swift */; };
 		67F2315B1CBD9762006BDBA5 /* ListMenuSectionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67F2315A1CBD9762006BDBA5 /* ListMenuSectionDataSource.swift */; };
+		67F50A921D9C9E170055E44E /* ListMenuChatRoomsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67F50A911D9C9E170055E44E /* ListMenuChatRoomsDataSourceTests.swift */; };
+		67F50A951D9C9E230055E44E /* ListMenuSectionHeaderViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67F50A931D9C9E230055E44E /* ListMenuSectionHeaderViewTests.swift */; };
+		67F50A961D9C9E230055E44E /* ListMenuCollectionViewDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67F50A941D9C9E230055E44E /* ListMenuCollectionViewDataSourceTests.swift */; };
 		67F6B7B81CCFE41200232CAF /* ListMenuNoContentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67F6B7B71CCFE41200232CAF /* ListMenuNoContentCollectionViewCell.swift */; };
 		67F9515A1C20C03E005E2A4D /* VMockRequestRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 67F951591C20C03E005E2A4D /* VMockRequestRecorder.m */; };
 		67FAC0BA1C4083370051D47E /* MockErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67FAC0B91C4083370051D47E /* MockErrorHandler.swift */; };
@@ -1829,7 +1830,6 @@
 		624E39941C6AF120004E0C8E /* TestVideoPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestVideoPlayer.swift; sourceTree = "<group>"; };
 		6287BE0F1C7E87390057D116 /* VIPGateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = VIPGateViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		62A40B511D9602FF009C3D29 /* ChatRoomsResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ChatRoomsResponse.json; sourceTree = "<group>"; };
-		62A625EE1D875C0200340407 /* ListMenuCollectionViewDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListMenuCollectionViewDataSourceTests.swift; path = "List Menu/ListMenuCollectionViewDataSourceTests.swift"; sourceTree = "<group>"; };
 		62A7C9EA1C7FAE2A009F8200 /* NSBundle+AppStoreReceipt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSBundle+AppStoreReceipt.swift"; sourceTree = "<group>"; };
 		62B9E8365153DC8C04105B08 /* Pods-victorious-test.stable.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-victorious-test.stable.xcconfig"; path = "Pods/Target Support Files/Pods-victorious-test/Pods-victorious-test.stable.xcconfig"; sourceTree = "<group>"; };
 		62FD64771D8A2D7C00E9BAF8 /* ChatRoomsRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatRoomsRequestTests.swift; sourceTree = "<group>"; };
@@ -1837,7 +1837,6 @@
 		62FD647D1D8B253200E9BAF8 /* ChatRoomTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatRoomTests.swift; sourceTree = "<group>"; };
 		62FD647F1D8B4CE100E9BAF8 /* ChatRoom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatRoom.swift; sourceTree = "<group>"; };
 		62FD64811D8B571B00E9BAF8 /* ChatRoom.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ChatRoom.json; sourceTree = "<group>"; };
-		62FD64851D8B6E5600E9BAF8 /* ListMenuChatRoomsDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListMenuChatRoomsDataSourceTests.swift; path = "Chat Rooms/ListMenuChatRoomsDataSourceTests.swift"; sourceTree = "<group>"; };
 		62FD648A1D8B823B00E9BAF8 /* ListMenuChatRoomCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListMenuChatRoomCollectionViewCell.swift; path = "List Menu/Chat Rooms/ListMenuChatRoomCollectionViewCell.swift"; sourceTree = "<group>"; };
 		62FD648C1D8B837000E9BAF8 /* ListMenuChatRoomsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListMenuChatRoomsDataSource.swift; path = "List Menu/Chat Rooms/ListMenuChatRoomsDataSource.swift"; sourceTree = "<group>"; };
 		6346130F32A50A474A9D3D05 /* Pods-VictoriousCommonOSX.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VictoriousCommonOSX.staging.xcconfig"; path = "Pods/Target Support Files/Pods-VictoriousCommonOSX/Pods-VictoriousCommonOSX.staging.xcconfig"; sourceTree = "<group>"; };
@@ -1925,6 +1924,9 @@
 		67F231561CBD69CD006BDBA5 /* ListMenuCollectionViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = ListMenuCollectionViewDataSource.swift; path = "List Menu/ListMenuCollectionViewDataSource.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		67F231581CBD7667006BDBA5 /* ListMenuHashtagCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListMenuHashtagCollectionViewCell.swift; path = "List Menu/Trending Hashtags/ListMenuHashtagCollectionViewCell.swift"; sourceTree = "<group>"; };
 		67F2315A1CBD9762006BDBA5 /* ListMenuSectionDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; name = ListMenuSectionDataSource.swift; path = "List Menu/ListMenuSectionDataSource.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		67F50A911D9C9E170055E44E /* ListMenuChatRoomsDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListMenuChatRoomsDataSourceTests.swift; sourceTree = "<group>"; };
+		67F50A931D9C9E230055E44E /* ListMenuSectionHeaderViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListMenuSectionHeaderViewTests.swift; sourceTree = "<group>"; };
+		67F50A941D9C9E230055E44E /* ListMenuCollectionViewDataSourceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListMenuCollectionViewDataSourceTests.swift; sourceTree = "<group>"; };
 		67F6B7B71CCFE41200232CAF /* ListMenuNoContentCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListMenuNoContentCollectionViewCell.swift; path = "List Menu/ListMenuNoContentCollectionViewCell.swift"; sourceTree = "<group>"; };
 		67F951581C20C03E005E2A4D /* VMockRequestRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMockRequestRecorder.h; sourceTree = "<group>"; };
 		67F951591C20C03E005E2A4D /* VMockRequestRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VMockRequestRecorder.m; sourceTree = "<group>"; };
@@ -4515,9 +4517,10 @@
 			isa = PBXGroup;
 			children = (
 				62FD64841D8B6E0C00E9BAF8 /* Chat Rooms */,
-				62A625EE1D875C0200340407 /* ListMenuCollectionViewDataSourceTests.swift */,
+				67F50A941D9C9E230055E44E /* ListMenuCollectionViewDataSourceTests.swift */,
+				67F50A931D9C9E230055E44E /* ListMenuSectionHeaderViewTests.swift */,
 			);
-			name = "List Menu";
+			path = "List Menu";
 			sourceTree = "<group>";
 		};
 		62FD64831D8B6CB100E9BAF8 /* Chat Rooms */ = {
@@ -4532,9 +4535,9 @@
 		62FD64841D8B6E0C00E9BAF8 /* Chat Rooms */ = {
 			isa = PBXGroup;
 			children = (
-				62FD64851D8B6E5600E9BAF8 /* ListMenuChatRoomsDataSourceTests.swift */,
+				67F50A911D9C9E170055E44E /* ListMenuChatRoomsDataSourceTests.swift */,
 			);
-			name = "Chat Rooms";
+			path = "Chat Rooms";
 			sourceTree = "<group>";
 		};
 		669EBBDE1A30234A00DE317D /* Pickers */ = {
@@ -8396,7 +8399,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				67803E1D1C24D57A008CEC73 /* VLaunchScreenProviderTests.m in Sources */,
-				62A625EF1D875C0200340407 /* ListMenuCollectionViewDataSourceTests.swift in Sources */,
 				67803E1A1C24D4A8008CEC73 /* VAppInfoTests.m in Sources */,
 				67803E141C24D136008CEC73 /* NSURL+VDataCacheIDTests.m in Sources */,
 				67803E131C24D02D008CEC73 /* DefaultTimingTrackerTests.swift in Sources */,
@@ -8425,13 +8427,16 @@
 				7AFE92091D6636C9005D51A4 /* CallbackTests.swift in Sources */,
 				A7DCA50C1C128A78004E35B4 /* VTrackingManagerTests.m in Sources */,
 				7AC194631D2DD2FC001B15B8 /* String+InitialsTests.swift in Sources */,
+				67F50A951D9C9E230055E44E /* ListMenuSectionHeaderViewTests.swift in Sources */,
 				7AE0A0471D64EA8100769080 /* AccessoryScreenTest.swift in Sources */,
 				A7DCA4E31C128A78004E35B4 /* VDependencyManagerImageTests.m in Sources */,
 				F093A9371CEFA008009ACABF /* String+SubstringHelpersTests.swift in Sources */,
 				A7EBF5111C2B2AB80080C7CF /* VTestHelpers.m in Sources */,
 				A76AEA571BFED31B00E8A26F /* FirstInstallManagerTests.swift in Sources */,
 				7AC1BA001D3FFD9100FA3CF6 /* CGPoint+InitializersTests.swift in Sources */,
+				67F50A961D9C9E230055E44E /* ListMenuCollectionViewDataSourceTests.swift in Sources */,
 				A7DCA4E41C128A78004E35B4 /* VDependencyManagerTests.m in Sources */,
+				67F50A921D9C9E170055E44E /* ListMenuChatRoomsDataSourceTests.swift in Sources */,
 				A7DCA5031C128A78004E35B4 /* VStoredPasswordTests.m in Sources */,
 				A7DCA4FC1C128A78004E35B4 /* VPhotoFilterSerializationTests.m in Sources */,
 				A7DE62F91C9B5B8C00F4838C /* ForumEventChainTests.swift in Sources */,
@@ -8440,7 +8445,6 @@
 				7AE3EA3B1CAF3B3200272A6A /* UICollectionViewFlowLayout+CellSizeTests.swift in Sources */,
 				A72005471A03074800285A9C /* VAsyncTestHelper.m in Sources */,
 				A7D0AD301C0D453D0018C63E /* NSDate+timeSinceTests.m in Sources */,
-				62FD64861D8B6E5600E9BAF8 /* ListMenuChatRoomsDataSourceTests.swift in Sources */,
 				A7DCA5021C128A78004E35B4 /* VStoredLoginTests.m in Sources */,
 				03E7303C1C973F9A008CB191 /* NetworkActivityIndicatorTests.swift in Sources */,
 				7A1921B41D9218F900EA71CF /* TutorialCollectionViewDataSource.swift in Sources */,

@@ -41,7 +41,7 @@ class ListMenuSectionHeaderView: UICollectionReusableView {
         }
     }
     
-    private var subscribeButton: SubscribeButton?
+    private(set) var subscribeButton: SubscribeButton?
 
     private func addSubscribeButtonIfNeeded(with dependencyManager: VDependencyManager) {
         if subscribeButton == nil {
