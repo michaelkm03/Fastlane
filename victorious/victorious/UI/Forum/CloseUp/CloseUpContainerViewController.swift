@@ -36,7 +36,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     private lazy var shareButton: UIBarButtonItem = {
         return UIBarButtonItem(
             image: self.dependencyManager.shareIcon,
-            style: .Done,
+            style: .done,
             target: self,
             action: #selector(share)
         )
@@ -45,7 +45,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     private lazy var overflowButton: UIBarButtonItem = {
         return UIBarButtonItem(
             image: self.dependencyManager.overflowIcon,
-            style: .Done,
+            style: .done,
             target: self,
             action: #selector(overflow)
         )
@@ -106,7 +106,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         updateAudioSessionCategory()
 
         if let content = content {
-            updateContent(content)
+            updateContent(content: content)
         }
         
         closeUpView.delegate = self
@@ -115,50 +115,50 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         
         addChildViewController(gridStreamController)
         view.addSubview(gridStreamController.view)
-        view.v_addFitToParentConstraintsToSubview(gridStreamController.view)
-        gridStreamController.didMoveToParentViewController(self)
+        view.v_addFitToParentConstraints(toSubview: gridStreamController.view)
+        gridStreamController.didMove(toParentViewController: self)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(returnedFromBackground), name: UIApplicationDidBecomeActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(returnedFromBackground), name: .UIApplicationDidBecomeActive, object: nil)
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
-        dependencyManager.addBackgroundToBackgroundHost(self)
+        dependencyManager.addBackground(toBackgroundHost: self)
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         dependencyManager.trackViewWillAppear(for: self)
         trackContentView()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(enterLandscapeMode), name: UIDeviceOrientationDidChangeNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(enterLandscapeMode), name: .UIDeviceOrientationDidChange, object: nil)
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         dependencyManager.trackViewWillDisappear(for: self)
         closeUpView.headerWillDisappear()
         
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIDeviceOrientationDidChangeNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .UIDeviceOrientationDidChange, object: nil)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         closeUpView.headerDidAppear()
     }
     
     // MARK: - ContentCellTracker
     
-    var sessionParameters: [NSObject : AnyObject] {
-        return [ VTrackingKeyContentId : contentID ]
+    var sessionParameters: [AnyHashable: Any] {
+        return [VTrackingKeyContentId: contentID]
     }
     
     private func trackContentView() {
-        if let content = content where firstPresentation {
+        if let content = content, firstPresentation {
             let value = context?.value ?? ""
             trackView(.viewStart, showingContent: content, parameters: [VTrackingKeyContext:value])
             firstPresentation = false
@@ -210,18 +210,18 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     
     // MARK: - CloseUpViewDelegate
     
-    func closeUpView(closeUpView: CloseUpView, didSelectProfileForUserID userID: User.ID) {
+    func closeUpView(_ closeUpView: CloseUpView, didSelectProfileForUserID userID: User.ID) {
         Router(originViewController: self, dependencyManager: dependencyManager).navigate(
             to: DeeplinkDestination(userID: userID),
             from: DeeplinkContext(value: DeeplinkContext.closeupView)
         )
     }
     
-    func closeUpViewGridStreamDidUpdate(closeUpView: CloseUpView) {
+    func closeUpViewGridStreamDidUpdate(_ closeUpView: CloseUpView) {
         triggerCoachmark()
     }
     
-    func closeUpView(closeUpView: CloseUpView, didSelectLinkURL url: NSURL) {
+    func closeUpView(_ closeUpView: CloseUpView, didSelectLinkURL url: URL) {
         Router(originViewController: self, dependencyManager: dependencyManager).navigate(
             to: DeeplinkDestination(url: url),
             from: DeeplinkContext(value: DeeplinkContext.closeupView)
@@ -296,7 +296,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
                     flagOrDeleteOperation.queue { [weak self] result in
                         /// FUTURE: Update parent view controller to remove content
                         switch result {
-                            case .success(_), .failure(_): self?.navigationController?.popViewControllerAnimated(true)
+                            case .success(_), .failure(_): let _ = self?.navigationController?.popViewController(animated: true)
                             case .cancelled: break
                         }
                 }
@@ -309,7 +309,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     // MARK: - Coachmark Displayer
     
     func highlightFrame(forIdentifier identifier: String) -> CGRect? {
-        if let barFrame = navigationController?.navigationBar.frame where identifier == "bump" {
+        if let barFrame = navigationController?.navigationBar.frame, identifier == "bump" {
             return CGRect(
                     x: barFrame.width - Constants.estimatedBarButtonWidth - Constants.navigationBarRightPadding,
                     y: Constants.estimatedStatusBarHeight,
@@ -328,8 +328,9 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
     
     private dynamic func enterLandscapeMode() {
         guard
-            let mediaContentView = closeUpView.mediaContentView
-            where UIDevice.currentDevice().orientation.isLandscape && presentedViewController == nil
+            let mediaContentView = closeUpView.mediaContentView,
+        
+            UIDevice.current.orientation.isLandscape && presentedViewController == nil
         else {
             return
         }
@@ -341,7 +342,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         }
         
         let lightbox = LightBoxViewController(mediaContentView: mediaContentView)
-        lightbox.modalTransitionStyle = .CrossDissolve
+        lightbox.modalTransitionStyle = .crossDissolve
         
         lightbox.willDismiss = { [weak self] in
             self?.closeUpView.closeUpContentContainerView?.addSubview(mediaContentView)
@@ -352,45 +353,45 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
             self?.closeUpView.headerDidAppear()
         }
         
-        presentViewController(lightbox, animated: true, completion: nil)
+        present(lightbox, animated: true, completion: nil)
     }
 }
 
 private extension VDependencyManager {
     var upvoteCountFont: UIFont? {
-        return fontForKey("font.upvote.count.text") ?? UIFont(name: ".SFUIText-Regular", size: 12.0)
+        return font(forKey: "font.upvote.count.text") ?? UIFont(name: ".SFUIText-Regular", size: 12.0)
     }
 
     var upvoteCountColor: UIColor {
-        return colorForKey("color.upvote.count.text") ?? .whiteColor()
+        return color(forKey: "color.upvote.count.text") ?? .white
     }
 
     var upvoteIconTint: UIColor? {
-        return colorForKey("color.text.actionButton")
+        return color(forKey: "color.text.actionButton")
     }
     
     var upvoteIconSelectedBackgroundColor: UIColor? {
-        return colorForKey("color.background.upvote.selected")
+        return color(forKey: "color.background.upvote.selected")
     }
     
     var upvoteIconUnselectedBackgroundColor: UIColor? {
-        return colorForKey("color.background.upvote.unselected")
+        return color(forKey: "color.background.upvote.unselected")
     }
     
     var upvoteIconSelected: UIImage? {
-        return imageForKey("upvote_icon_selected")?.imageWithRenderingMode(.AlwaysTemplate)
+        return image(forKey: "upvote_icon_selected")?.withRenderingMode(.alwaysTemplate)
     }
     
     var upvoteIconUnselected: UIImage? {
-        return imageForKey("upvote_icon_unselected")?.imageWithRenderingMode(.AlwaysTemplate)
+        return image(forKey: "upvote_icon_unselected")?.withRenderingMode(.alwaysTemplate)
     }
     
     var overflowIcon: UIImage? {
-        return imageForKey("more_icon")
+        return image(forKey: "more_icon")
     }
     
     var shareIcon: UIImage? {
-        return imageForKey("share_icon")
+        return image(forKey: "share_icon")
     }
     
     var contentFlagAPIPath: APIPath? {

@@ -115,12 +115,12 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     
     fileprivate func setup() {
         clipsToBounds = true
-        backgroundColor = .clear()
+        backgroundColor = .clear
         imageView.contentMode = (fillMode == .fit) ? .scaleAspectFit : .scaleAspectFill
         
         addSubview(imageView)
         
-        videoContainerView.backgroundColor = .clearColor()
+        videoContainerView.backgroundColor = .clear
         addSubview(videoContainerView)
         
         addSubview(textPostLabel)
@@ -165,7 +165,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
             return false
         }
 
-        return videoCoordinator.duration >= content.seekAheadTime
+        return videoCoordinator.duration >= content.seekAheadTime ?? 0
     }
 
     func loadContent() {
@@ -220,7 +220,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         tearDownTextLabel()
         tearDownImageView()
         
-        videoContainerView.hidden = false
+        videoContainerView.isHidden = false
         videoCoordinator?.tearDown()
         videoCoordinator = VContentVideoPlayerCoordinator(content: content)
         videoCoordinator?.setupVideoPlayer(in: videoContainerView)
@@ -236,7 +236,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     }
     
     fileprivate func tearDownVideoPlayer() {
-        videoContainerView.hidden = true
+        videoContainerView.isHidden = true
         videoCoordinator?.tearDown()
         videoCoordinator = nil
     }
@@ -258,13 +258,13 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
             return
         }
 
-        imageView.sd_setImageWithURL(url) { [weak self] _ in
+        imageView.sd_setImage(with: url as URL) { [weak self] _ in
             self?.textPostLabel.detectUserTags(for: self?.content) { [weak self] url in
                 guard let strongSelf = self else {
                     return
                 }
                 
-                strongSelf.delegate?.mediaContentView(strongSelf, didSelectLinkURL: url)
+                strongSelf.delegate?.mediaContentView(strongSelf, didSelectLinkURL: url as URL)
             }
             
             guard let text = self?.content.text else {
@@ -272,8 +272,8 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
             }
             
             self?.textPostLabel.text = text
-            self?.textPostLabel.hidden = false
-            self?.imageView.hidden = false
+            self?.textPostLabel.isHidden = false
+            self?.imageView.isHidden = false
             self?.finishedLoadingContent()
         }
     }
@@ -335,19 +335,19 @@ private extension VDependencyManager {
     }
     
     var textPostFont: UIFont? {
-        return fontForKey("font.textpost")
+        return font(forKey: "font.textpost")
     }
     
     var textPostColor: UIColor? {
-        return colorForKey("color.textpost")
+        return color(forKey: "color.textpost")
     }
     
     var linkColor: UIColor? {
-        return colorForKey("color.link")
+        return color(forKey: "color.link")
     }
     
     var textPostBackgroundImageURL: NSURL? {
-        guard let urlString = stringForKey("backgroundImage.textpost") else {
+        guard let urlString = string(forKey: "backgroundImage.textpost") else {
             return nil
         }
         

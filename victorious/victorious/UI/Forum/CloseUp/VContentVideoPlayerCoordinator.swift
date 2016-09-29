@@ -56,7 +56,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
             videoPlayer = VVideoView()
         }
         
-        videoPlayer.view.backgroundColor = .clearColor()
+        videoPlayer.view.backgroundColor = .clear
         
         super.init()
         
@@ -81,7 +81,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
             item = VVideoPlayerItem(externalID: asset.resourceID)
         }
         else if let resourceURL = URL(string: asset.resourceID) {
-            item = VVideoPlayerItem(URL: resourceURL)
+            item = VVideoPlayerItem(url: resourceURL)
         }
         else {
             return
@@ -127,7 +127,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     func playVideo(withSync synced: Bool = false) {
         if let seekAheadTime = content.seekAheadTime , synced {
             if Int(videoPlayer.currentTimeSeconds) <= Int(seekAheadTime) {
-                videoPlayer.seekToTimeSeconds(seekAheadTime)
+                videoPlayer.seek(toTimeSeconds: seekAheadTime)
             }
         }
         videoPlayer.play()
@@ -144,7 +144,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     
     fileprivate func prepareToPlay() {
         if let seekAheadTime = content.seekAheadTime , Int(videoPlayer.currentTimeSeconds) <= Int(seekAheadTime) {
-            videoPlayer.seekToTimeSeconds(seekAheadTime)
+            videoPlayer.seek(toTimeSeconds: seekAheadTime)
         }
         delegate?.coordinatorDidBecomeReady()
     }
@@ -177,7 +177,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         prepareToPlay()
     }
     
-    func videoPlayerItemIsReadyToPlay(_ videoPlayer: VVideoPlayer) {
+    func videoPlayerItemIsReady(toPlay videoPlayer: VVideoPlayer) {
         prepareToPlay()
     }
     
@@ -218,7 +218,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     
     func videoToolbar(_ videoToolbar: VideoToolbarView, didScrubToLocation location: Float) {
         let timeSeconds: TimeInterval = Double(location) * videoPlayer.durationSeconds
-        videoPlayer.seekToTimeSeconds(timeSeconds)
+        videoPlayer.seek(toTimeSeconds: timeSeconds)
     }
     
     func videoToolbar(_ videoToolbar: VideoToolbarView, didEndScrubbingToLocation location: Float) {
