@@ -35,7 +35,7 @@ extension UIImageView {
         switch imageAsset.imageSource {
             case .remote(let url):
                 sd_setImageWithURL(
-                    url,
+                    url as URL!,
                     placeholderImage: image,
                     options: .AvoidAutoSetImage
                 ) { image, error, _, url in
@@ -48,7 +48,7 @@ extension UIImageView {
     
     fileprivate func cachedBlurredImage(for url: URL, blurRadius: CGFloat) -> UIImage? {
         let key = blurredImageKey(for: url, blurRadius: blurRadius)
-        return SDWebImageManager.sharedManager().imageCache.imageFromMemoryCache(forKey: key)
+        return SDWebImageManager.shared().imageCache.imageFromMemoryCache(forKey: key)
     }
     
     fileprivate func addBlurredImage(_ image: UIImage, toCacheWithURL url: URL, blurRadius: CGFloat) {
@@ -56,7 +56,7 @@ extension UIImageView {
             return
         }
         
-        SDWebImageManager.sharedManager().imageCache.storeImage(
+        SDWebImageManager.shared().imageCache.store(
             image,
             forKey: key
         )
@@ -65,9 +65,6 @@ extension UIImageView {
     fileprivate func blurredImageKey(for url: URL, blurRadius: CGFloat) -> String? {
         let imageExtension = "\(UIImageView.blurredImageCachePathExtension)/\(blurRadius)"
         let key = url.appendingPathComponent(imageExtension).absoluteString
-        if key == nil {
-            Log.error("Failed to generate key for blurred image storage")
-        }
         return key
     }
     
