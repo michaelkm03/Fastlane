@@ -28,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         addLoginListener()
 
-        VReachability.reachabilityForInternetConnection().startNotifier()
+        VReachability.forInternetConnection().startNotifier()
 
         configureAudioSessionCategory()
 
@@ -54,13 +54,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any]) -> Bool {
-        if FacebookHelper.canOpenURL(url) {
+        if FacebookHelper.canOpenURL(url as NSURL) {
             let sourceApplication = options[UIApplicationOpenURLOptionsKey.sourceApplication] as! String
             let annotation = options[UIApplicationOpenURLOptionsKey.annotation]
-            return FBSDKApplicationDelegate.sharedInstance().application(app, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
+            return FBSDKApplicationDelegate.sharedInstance().application(app, open: url, sourceApplication: sourceApplication, annotation: annotation)
         }
 
-        VRootViewController.sharedRootViewController()?.applicationOpenURL(url)
+        VRootViewController.shared()?.applicationOpen(url)
 
         return true
     }
@@ -68,7 +68,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: @escaping () -> Void) {
         Log.verbose("handling events for background identifier -> \(identifier)")
 
-        let uploadManager = VUploadManager.sharedManager()
+        // Future: Fix this ! imported from Objc
+        let uploadManager = VUploadManager.shared()!
         if uploadManager.isYourBackgroundURLSession(identifier) {
             uploadManager.backgroundSessionEventsCompleteHandler = completionHandler
             uploadManager.startURLSession()
@@ -78,15 +79,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - Notifications
 
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
-        VRootViewController.sharedRootViewController()?.applicationDidReceiveRemoteNotification(userInfo)
+        VRootViewController.shared()?.applicationDidReceiveRemoteNotification(userInfo)
     }
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        VPushNotificationManager.sharedPushNotificationManager().didRegisterForRemoteNotificationsWithDeviceToken(deviceToken)
+        VPushNotificationManager.shared().didRegisterForRemoteNotifications(withDeviceToken: deviceToken)
     }
 
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        VPushNotificationManager.sharedPushNotificationManager().didFailToRegisterForRemoteNotificationsWithError(error)
+        VPushNotificationManager.shared().didFailToRegisterForRemoteNotificationsWithError(error)
     }
 
     // MARK: - Orientation
@@ -99,7 +100,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     /// Listens to the login user notification in order to `register` the user with our services.
     fileprivate func addLoginListener() {
-        NotificationCenter.defaultCenter().addObserverForName(kLoggedInChangedNotification, object: nil, queue: OperationQueue.mainQueue()) { (notififcation) in
+        NotificationCenter.default.addObserver(forName: .loggedInChanged, object: nil, queue: .main) { (notififcation) in
             if let currentUser = VCurrentUser.user {
                 #if V_ENABLE_TESTFAIRY
                     let userTraits = [TFSDKIdentityTraitNameKey: currentUser.displayName ?? "",
@@ -111,7 +112,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 Crashlytics.setUserEmail(currentUser.username ?? "")
                 Crashlytics.setUserName(currentUser.displayName ?? "")
 
-                Log.setUserIdentifier(String(currentUser.id))
+                Log.setUserIdentifier(identifier: String(currentUser.id))
             }
         }
     }
