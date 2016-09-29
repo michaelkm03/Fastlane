@@ -38,7 +38,7 @@ extension CGRect {
             fitRect.origin.x += (toRect.size.width - fitRect.size.width) * 0.5
         }
         
-        return CGRectIntegral(fitRect)
+        return fitRect.integral
     }
     
     func v_aspectFill(_ toRect: CGRect) -> CGRect {
@@ -56,7 +56,7 @@ extension CGRect {
             fitRect.origin.y += (toRect.size.height - fitRect.size.height) * 0.5
         }
         
-        return CGRectIntegral(fitRect)
+        return fitRect.integral
     }
     
     func insetBy(_ insets: UIEdgeInsets) -> CGRect {
