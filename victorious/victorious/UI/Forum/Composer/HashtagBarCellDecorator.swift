@@ -38,10 +38,10 @@ struct HashtagBarCellDecorator {
 private extension VDependencyManager {
     
     var font: UIFont? {
-        return fontForKey("font.suggestedHashtag.text")
+        return font(forKey: "font.suggestedHashtag.text")
     }
     
     var textColor: UIColor? {
-        return colorForKey("color.suggestedHashtag.text")
+        return color(forKey: "color.suggestedHashtag.text")
     }
 }

@@ -238,7 +238,7 @@ private extension VDependencyManager {
     }
     
     var closeButton: UIButton {
-        return buttonForKey(Constants.closeButtonKey) ?? UIButton()
+        return button(forKey: Constants.closeButtonKey) ?? UIButton()
     }
     
     var containerStrokeColor: UIColor {

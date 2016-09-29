@@ -89,7 +89,7 @@ private struct VideoBackgroundFetchRequest: RequestType {
 
 private extension VDependencyManager {
     var sequenceURL: NSURL? {
-        guard let urlString = stringForKey("sequenceURL") else {
+        guard let urlString = string(forKey: "sequenceURL") else {
             return nil
         }
         

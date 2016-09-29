@@ -108,18 +108,18 @@ class ModernLoadingViewController: UIViewController, LoginFlowLoadingScreen, VBa
 
 private extension VDependencyManager {
     var prompt: String? {
-        return self.stringForKey("prompt")
+        return self.string(forKey: "prompt")
     }
     
     var buttonTitle: String? {
-        return self.stringForKey("button.title")
+        return self.string(forKey: "button.title")
     }
     
     var textColor: UIColor? {
-        return self.colorForKey(VDependencyManagerMainTextColorKey)
+        return self.color(forKey: VDependencyManagerMainTextColorKey)
     }
     
     var promptFont: UIFont? {
-        return self.fontForKey(VDependencyManagerHeading1FontKey)
+        return self.font(forKey: VDependencyManagerHeading1FontKey)
     }
 }

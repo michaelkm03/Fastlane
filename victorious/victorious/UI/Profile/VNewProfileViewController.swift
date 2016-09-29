@@ -461,7 +461,7 @@ private extension VDependencyManager {
 
 private extension VDependencyManager {
     func streamAPIPath(forUserID userID: Int) -> APIPath {
-        guard var apiPath = apiPathForKey("streamURL") else {
+        guard var apiPath = apiPath(forKey: "streamURL") else {
             return APIPath(templatePath: "")
         }
         
@@ -475,7 +475,7 @@ private extension VDependencyManager {
 
 private extension VDependencyManager {
     var userUpvoteAPIPath: APIPath {
-        guard let apiPath = networkResources?.apiPathForKey("userUpvoteURL") else {
+        guard let apiPath = networkResources?.apiPath(forKey: "userUpvoteURL") else {
             assertionFailure("Failed to retrieve main feed API path from dependency manager.")
             return APIPath(templatePath: "")
         }
@@ -483,7 +483,7 @@ private extension VDependencyManager {
     }
     
     var userUnupvoteAPIPath: APIPath {
-        guard let apiPath = networkResources?.apiPathForKey("userUnupvoteURL") else {
+        guard let apiPath = networkResources?.apiPath(forKey: "userUnupvoteURL") else {
             assertionFailure("Failed to retrieve main feed API path from dependency manager.")
             return APIPath(templatePath: "")
         }
@@ -491,7 +491,7 @@ private extension VDependencyManager {
     }
     
     var userBlockAPIPath: APIPath {
-        guard let apiPath = networkResources?.apiPathForKey("userBlockURL") else {
+        guard let apiPath = networkResources?.apiPath(forKey: "userBlockURL") else {
             assertionFailure("Failed to retrieve main feed API path from dependency manager.")
             return APIPath(templatePath: "")
         }
@@ -499,7 +499,7 @@ private extension VDependencyManager {
     }
     
     var userUnblockAPIPath: APIPath {
-        guard let apiPath = networkResources?.apiPathForKey("userUnblockURL") else {
+        guard let apiPath = networkResources?.apiPath(forKey: "userUnblockURL") else {
             assertionFailure("Failed to retrieve main feed API path from dependency manager.")
             return APIPath(templatePath: "")
         }

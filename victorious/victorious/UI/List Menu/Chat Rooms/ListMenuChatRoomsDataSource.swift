@@ -34,7 +34,7 @@ final class ListMenuChatRoomsDataSource: ListMenuSectionDataSource {
 
     func fetchRemoteData(success: FetchRemoteDataCallback?) {
         guard
-            let apiPath = dependencyManager.networkResources?.apiPathForKey(Constants.Keys.chatRoomsURL),
+            let apiPath = dependencyManager.networkResources?.apiPath(forKey: Constants.Keys.chatRoomsURL),
             let request = ChatRoomsRequest(apiPath: apiPath)
         else {
             Log.warning("Missing chat rooms API path")
@@ -63,7 +63,7 @@ final class ListMenuChatRoomsDataSource: ListMenuSectionDataSource {
     // MARK: - DependencyManager properties
 
     var chatRoomStreamAPIPath: APIPath {
-        return dependencyManager.apiPathForKey(Constants.Keys.chatRoomStreamURL) ?? APIPath(templatePath: "")
+        return dependencyManager.apiPath(forKey: Constants.Keys.chatRoomStreamURL) ?? APIPath(templatePath: "")
     }
 
     // MARK: - Internals

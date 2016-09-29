@@ -396,6 +396,6 @@ private extension VDependencyManager {
     }
     
     var errorStateDependency: VDependencyManager? {
-        return childDependencyForKey("error.state")
+        return childDependency(forKey: "error.state")
     }
 }

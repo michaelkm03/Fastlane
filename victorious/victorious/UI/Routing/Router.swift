@@ -277,7 +277,7 @@ private final class ShowCloseUpOperation: AsyncOperation<Void> {
     
     override func execute(_ finish: @escaping (_ result: OperationResult<Void>) -> Void) {
         guard
-            let childDependencyManager = displayModifier.dependencyManager.childDependencyForKey("closeUpView"),
+            let childDependencyManager = displayModifier.dependencyManager.childDependency(forKey: "closeUpView"),
             let originViewController = displayModifier.originViewController,
             let contentID = contentID ?? content?.id
         else {
@@ -490,14 +490,14 @@ private final class ShowVIPSubscriptionOperation: AsyncOperation<Void> {
 
 private extension VDependencyManager {
     var relatedContentURL: String {
-        return stringForKey("streamURL") ?? ""
+        return string(forKey: "streamURL") ?? ""
     }
     
     var context: String {
-        return stringForKey("related.content.context") ?? ""
+        return string(forKey: "related.content.context") ?? ""
     }
     
     var contentFetchAPIPath: APIPath? {
-        return networkResources?.apiPathForKey("contentFetchURL")
+        return networkResources?.apiPath(forKey: "contentFetchURL")
     }
 }

@@ -120,30 +120,30 @@ class InterstitialAlertViewController: UIViewController, Interstitial, VBackgrou
 
 private extension VDependencyManager {
     var confirmButtonBackgroundColor: UIColor? {
-        return colorForKey(VDependencyManagerLinkColorKey)
+        return color(forKey: VDependencyManagerLinkColorKey)
     }
     
     var confirmButtonTitleFont: UIFont? {
-        return fontForKey(VDependencyManagerHeading4FontKey)
+        return font(forKey: VDependencyManagerHeading4FontKey)
     }
     
     var confirmButtonTitleColor: UIColor? {
-        return colorForKey(VDependencyManagerContentTextColorKey)
+        return color(forKey: VDependencyManagerContentTextColorKey)
     }
     
     var titleFont: UIFont? {
-        return fontForKey(VDependencyManagerHeading3FontKey)
+        return font(forKey: VDependencyManagerHeading3FontKey)
     }
     
     var detailLabelFont: UIFont? {
-        return fontForKey(VDependencyManagerParagraphFontKey)
+        return font(forKey: VDependencyManagerParagraphFontKey)
     }
     
     var textColor: UIColor? {
-        return colorForKey(VDependencyManagerMainTextColorKey)
+        return color(forKey: VDependencyManagerMainTextColorKey)
     }
     
     var confirmButtonTitle: String? {
-        return stringForKey("button.title")
+        return string(forKey: "button.title")
     }
 }

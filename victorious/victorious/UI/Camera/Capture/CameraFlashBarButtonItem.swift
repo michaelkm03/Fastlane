@@ -51,10 +51,10 @@ class CameraFlashBarButtonItem: UIBarButtonItem {
 private extension VDependencyManager {
     
     var normalStateImage: UIImage? {
-        return imageForKey("disableFlashIcon")
+        return image(forKey: "disableFlashIcon")
     }
     
     var selectedStateImage: UIImage? {
-        return imageForKey("flashIcon")
+        return image(forKey: "flashIcon")
     }
 }

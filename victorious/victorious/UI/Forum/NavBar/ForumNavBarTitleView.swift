@@ -75,13 +75,13 @@ class ForumNavBarTitleView: UIView {
 private extension VDependencyManager {
     func titleViewConfiguration() -> TitleViewConfiguration? {
         guard
-            let titleColor = colorForKey(Keys.titleColorKey),
-            let subtitleColor = colorForKey(Keys.subtitleColorKey),
-            let titleFont = fontForKey(Keys.titleFontKey),
-            let subtitleFont = fontForKey(Keys.subtitleFontKey),
-            let titleText = stringForKey(Keys.titleTextKey),
-            let singularNumberOfUsersText = stringForKey(Keys.singularNumberOfUsersTextKey),
-            let pluralNumberOfUsersText = stringForKey(Keys.pluralNumberOfUsersTextKey)
+            let titleColor = color(forKey: Keys.titleColorKey),
+            let subtitleColor = color(forKey: Keys.subtitleColorKey),
+            let titleFont = font(forKey: Keys.titleFontKey),
+            let subtitleFont = font(forKey: Keys.subtitleFontKey),
+            let titleText = string(forKey: Keys.titleTextKey),
+            let singularNumberOfUsersText = string(forKey: Keys.singularNumberOfUsersTextKey),
+            let pluralNumberOfUsersText = string(forKey: Keys.pluralNumberOfUsersTextKey)
         else {
             return nil
         }

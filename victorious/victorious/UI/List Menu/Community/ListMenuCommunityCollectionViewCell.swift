@@ -43,14 +43,14 @@ class ListMenuCommunityCollectionViewCell: UICollectionViewCell, ListMenuSection
 private extension VDependencyManager {
     
     var titleColor: UIColor? {
-        return colorForKey("color.text.navItem")
+        return color(forKey: "color.text.navItem")
     }
     
     var titleFont: UIFont? {
-        return fontForKey("font.navigationItems")
+        return font(forKey: "font.navigationItems")
     }
     
     var highlightedBackgroundColor: UIColor? {
-        return colorForKey(VDependencyManagerAccentColorKey)
+        return color(forKey: VDependencyManagerAccentColorKey)
     }
 }

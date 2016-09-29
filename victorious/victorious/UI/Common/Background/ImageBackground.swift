@@ -13,7 +13,7 @@ class ImageBackground: VBackground {
     fileprivate static let BackgroundImageKey = "image"
     
     required init(dependencyManager: VDependencyManager) {
-        backgroundImage = dependencyManager.imageForKey(ImageBackground.BackgroundImageKey)
+        backgroundImage = dependencyManager.image(forKey: ImageBackground.BackgroundImageKey)
         super.init()
     }
     

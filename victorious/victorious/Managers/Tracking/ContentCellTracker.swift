@@ -22,7 +22,7 @@ extension ContentCellTracker {
     func trackView(_ trackingKey: ViewTrackingKey, showingContent content: Content, parameters: [AnyHashable: Any] = [:]) {
         guard
             let tracking = content.tracking,
-            let trackingStrings = tracking.trackingURLsForKey(trackingKey),
+            let trackingStrings = tracking.trackingURLs(forKey: trackingKey),
             var combinedParameters = parametersForViewTrackingKey(trackingKey, trackingURLStrings: trackingStrings)
         else {
             return

@@ -395,22 +395,22 @@ private extension VDependencyManager {
     }
     
     var contentFlagAPIPath: APIPath? {
-        return networkResources?.apiPathForKey("contentFlagURL")
+        return networkResources?.apiPath(forKey: "contentFlagURL")
     }
     
     var contentDeleteAPIPath: APIPath? {
-        return networkResources?.apiPathForKey("contentDeleteURL")
+        return networkResources?.apiPath(forKey: "contentDeleteURL")
     }
 
     var contentLikeAPIPath: APIPath? {
-        return networkResources?.apiPathForKey("contentUpvoteURL", macroReplacements: ["%%CONTEXT%%": "closeup_view"])
+        return networkResources?.apiPath(forKey: "contentUpvoteURL", macroReplacements: ["%%CONTEXT%%": "closeup_view"])
     }
 
     var contentUnLikeAPIPath: APIPath? {
-        return networkResources?.apiPathForKey("contentUnupvoteURL", macroReplacements: ["%%CONTEXT%%": "closeup_view"])
+        return networkResources?.apiPath(forKey: "contentUnupvoteURL", macroReplacements: ["%%CONTEXT%%": "closeup_view"])
     }
     
     var gridStreamDependencyManager: VDependencyManager? {
-        return childDependencyForKey("gridStream")
+        return childDependency(forKey: "gridStream")
     }
 }

@@ -79,7 +79,7 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
     
     fileprivate func applyDependencyManagerStyles() {
         let appearanceKey = user?.accessLevel.isCreator == true ? VNewProfileViewController.creatorAppearanceKey : VNewProfileViewController.userAppearanceKey
-        let appearanceDependencyManager = dependencyManager?.childDependencyForKey(appearanceKey)
+        let appearanceDependencyManager = dependencyManager?.childDependency(forKey: appearanceKey)
         
         tintColor = appearanceDependencyManager?.accentColor
         
@@ -187,58 +187,58 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
 
 private extension VDependencyManager {
     var accentColor: UIColor? {
-        return colorForKey(VDependencyManagerAccentColorKey)
+        return color(forKey: VDependencyManagerAccentColorKey)
     }
     
     var loadingSpinnerColor: UIColor? {
-        return colorForKey(VDependencyManagerMainTextColorKey)
+        return color(forKey: VDependencyManagerMainTextColorKey)
     }
     
     var headerTextColor: UIColor? {
-        return colorForKey("color.text.header")
+        return color(forKey: "color.text.header")
     }
     
     var statValueTextColor: UIColor? {
-        return colorForKey(VDependencyManagerContentTextColorKey)
+        return color(forKey: VDependencyManagerContentTextColorKey)
     }
     
     var statLabelTextColor: UIColor? {
-        return colorForKey(VDependencyManagerSecondaryTextColorKey)
+        return color(forKey: VDependencyManagerSecondaryTextColorKey)
     }
     
     var infoTextColor: UIColor? {
-        return colorForKey("color.text.paragraph")
+        return color(forKey: "color.text.paragraph")
     }
     
     var headerFont: UIFont? {
-        return fontForKey(VDependencyManagerHeaderFontKey)
+        return font(forKey: VDependencyManagerHeaderFontKey)
     }
     
     var statValueFont: UIFont? {
-        return fontForKey(VDependencyManagerHeading2FontKey)
+        return font(forKey: VDependencyManagerHeading2FontKey)
     }
     
     var statLabelFont: UIFont? {
-        return fontForKey(VDependencyManagerLabel2FontKey)
+        return font(forKey: VDependencyManagerLabel2FontKey)
     }
     
     var infoFont: UIFont? {
-        return fontForKey(VDependencyManagerParagraphFontKey)
+        return font(forKey: VDependencyManagerParagraphFontKey)
     }
     
     var vipIcon: UIImage? {
-        return imageForKey("vipIcon")?.imageWithRenderingMode(.AlwaysTemplate)
+        return image(forKey: "vipIcon")?.imageWithRenderingMode(.AlwaysTemplate)
     }
     
     var receivedUpvotesTitle: String? {
-        return stringForKey("upvoted.text")
+        return string(forKey: "upvoted.text")
     }
     
     var givenUpvotesTitle: String? {
-        return stringForKey("upvotes.text")
+        return string(forKey: "upvotes.text")
     }
     
     var tierTitle: String? {
-        return stringForKey("status.text")
+        return string(forKey: "status.text")
     }
 }

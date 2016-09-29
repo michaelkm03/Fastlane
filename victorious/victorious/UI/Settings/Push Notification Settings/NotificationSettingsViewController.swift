@@ -202,8 +202,8 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
         }
         let headerLabel = UILabel()
         headerLabel.text = sections[section].title
-        headerLabel.font = dependencyManager.fontForKey(Constants.sectionTitleFontKey)
-        headerLabel.textColor = dependencyManager.colorForKey(Constants.sectionTitleColorKey)
+        headerLabel.font = dependencyManager.font(forKey: Constants.sectionTitleFontKey)
+        headerLabel.textColor = dependencyManager.color(forKey: Constants.sectionTitleColorKey)
         headerLabel.sizeToFit()
         let headerContainer = UIView()
         headerContainer.addSubview(headerLabel)
@@ -241,7 +241,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
         }
         
         var result: [NotificationSettingsTableSection] = []
-        let items = dependencyManager.arrayForKey(Constants.itemsArrayKey)
+        let items = dependencyManager.array(forKey: Constants.itemsArrayKey)
         
         for item in items {
             if let itemDictionary = item as? [String : AnyObject],

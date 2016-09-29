@@ -61,6 +61,6 @@ class VDependencyManager_SystemFontTests: XCTestCase {
 private extension VDependencyManager {
     
     var font: UIFont {
-        return fontForKey(fontKey)
+        return font(forKey: fontKey)
     }
 }

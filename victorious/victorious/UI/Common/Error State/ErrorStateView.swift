@@ -58,38 +58,38 @@ class ErrorStateView: UIView {
 
 private extension VDependencyManager {
     var errorIcon: UIImage? {
-        return imageForKey("errorIcon")?.imageWithRenderingMode(.AlwaysTemplate)
+        return image(forKey: "errorIcon")?.imageWithRenderingMode(.AlwaysTemplate)
     }
     
     var title: String? {
-        return stringForKey("title")
+        return string(forKey: "title")
     }
     
     var message: String? {
-        return stringForKey("message")
+        return string(forKey: "message")
     }
     
     var titleFont: UIFont? {
-        return fontForKey("titleFont")
+        return font(forKey: "titleFont")
     }
     
     var messageFont: UIFont? {
-        return fontForKey("messageFont")
+        return font(forKey: "messageFont")
     }
     
     var titleColor: UIColor? {
-        return colorForKey("titleColor")
+        return color(forKey: "titleColor")
     }
     
     var messageColor: UIColor? {
-        return colorForKey("messageColor")
+        return color(forKey: "messageColor")
     }
     
     var iconColor: UIColor? {
-        return colorForKey("iconColor")
+        return color(forKey: "iconColor")
     }
     
     var backgroundColor: UIColor? {
-        return colorForKey("backgroundColor")
+        return color(forKey: "backgroundColor")
     }
 }

@@ -19,7 +19,7 @@ class TestAlertsViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
-        cell.textLabel?.font = VThemeManager.sharedThemeManager().themedFontForKey(kVHeading3Font)
+        cell.textLabel?.font = VThemeManager.sharedThemeManager().themedFont(forKey: kVHeading3Font)
         return cell
     }
     

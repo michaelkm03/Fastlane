@@ -168,14 +168,14 @@ class InterstitialToastViewController: UIViewController, Interstitial, VBackgrou
 private extension VDependencyManager {
     
     var titleFont: UIFont? {
-        return fontForKey("font.title")
+        return font(forKey: "font.title")
     }
     
     var detailLabelFont: UIFont? {
-        return fontForKey("font.detail")
+        return font(forKey: "font.detail")
     }
     
     var textColor: UIColor? {
-        return colorForKey("color.text")
+        return color(forKey: "color.text")
     }
 }

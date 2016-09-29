@@ -124,6 +124,6 @@ class NewItemsController: NSObject {
 
 private extension VDependencyManager {
     var newItemButtonDependency: VDependencyManager? {
-        return childDependencyForKey("newItemButton")
+        return childDependency(forKey: "newItemButton")
     }
 }

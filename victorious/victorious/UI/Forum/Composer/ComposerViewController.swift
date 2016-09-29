@@ -824,83 +824,83 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
 // Update this extension to parse real values once they're returned in template
 private extension VDependencyManager {
     var toggleableVIPButton: UIButton? {
-        return buttonForKey("creator.vip.toggle")
+        return button(forKey: "creator.vip.toggle")
     }
     
     func maximumTextLengthForOwner(owner: Bool) -> Int {
-        return owner ? 0 : numberForKey("maximumTextLength")?.integerValue ?? 0
+        return owner ? 0 : number(forKey: "maximumTextLength")?.integerValue ?? 0
     }
     
     var inputPromptText: String {
-        return stringForKey("inputTextPrompt") ?? NSLocalizedString("What do you think?", comment: "")
+        return string(forKey: "inputTextPrompt") ?? NSLocalizedString("What do you think?", comment: "")
     }
     
     func attachmentMenuItemsForOwner(owner: Bool) -> [VNavigationMenuItem]? {
         let menuItemKey = owner ? "creatorItems" : "userItems"
-        return menuItemsForKey(menuItemKey)
+        return menuItems(forKey: menuItemKey)
     }
     
     var inputTextColor: UIColor? {
-        return colorForKey(VDependencyManagerMainTextColorKey)
+        return color(forKey: VDependencyManagerMainTextColorKey)
     }
     
     var inputPlaceholderTextColor: UIColor? {
-        return colorForKey(VDependencyManagerPlaceholderTextColorKey)
+        return color(forKey: VDependencyManagerPlaceholderTextColorKey)
     }
     
     var confirmButtonDisabledTextColor: UIColor? {
-        return colorForKey("color.link.disabled")
+        return color(forKey: "color.link.disabled")
     }
     
     var confirmButtonEnabledTextColor: UIColor? {
-        return colorForKey("color.link.enabled")
+        return color(forKey: "color.link.enabled")
     }
     
     var confirmButtonBackgroundColorEnabled: UIColor? {
-        return colorForKey("color.accent.enabled")
+        return color(forKey: "color.accent.enabled")
     }
     
     var confirmButtonBackgroundColorDisabled: UIColor? {
-        return colorForKey("color.accent.disabled")
+        return color(forKey: "color.accent.disabled")
     }
     
     var inputAreaBackgroundColor: UIColor? {
-        return colorForKey("color.accent.secondary")
+        return color(forKey: "color.accent.secondary")
     }
     
     var inputTextFont: UIFont? {
-        return fontForKey(VDependencyManagerParagraphFontKey)
+        return font(forKey: VDependencyManagerParagraphFontKey)
     }
 
     var confirmButtonTextFont: UIFont? {
-        return fontForKey(VDependencyManagerLabel4FontKey)
+        return font(forKey: VDependencyManagerLabel4FontKey)
     }
     
     var tabItemDeselectedTintColor: UIColor? {
-        return colorForKey("color.link.deselected")
+        return color(forKey: "color.link.deselected")
     }
     
     var tabItemSelectedTintColor: UIColor? {
-        return colorForKey("color.link.selected")
+        return color(forKey: "color.link.selected")
     }
     
     var alwaysShowAttachmentBar: Bool? {
-        return numberForKey("alwaysShowAttachmentBar")?.boolValue
+        return number(forKey: "alwaysShowAttachmentBar")?.boolValue
     }
     
     var keyboardAppearance: UIKeyboardAppearance {
-        return keyboardStyleForKey("keyboardStyle") ?? .Light
+        return keyboardStyle(forKey: "keyboardStyle") ?? .Light
     }
     
     var confirmKeyText: String {
-        return stringForKey("confirmKeyText") ?? NSLocalizedString("Send", comment: "")
+        return string(forKey: "confirmKeyText") ?? NSLocalizedString("Send", comment: "")
     }
     
     var gifTrayDependency: VDependencyManager? {
-        return childDependencyForKey("gifTray")
+        return childDependency(forKey: "gifTray")
     }
     
     var stickerTrayDependency: VDependencyManager? {
-        return childDependencyForKey("stickerTray")
+        return childDependency(forKey: "stickerTray")
     }
 }

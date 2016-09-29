@@ -102,14 +102,14 @@ class VIPFlowNavigationController: UINavigationController, VIPGateViewController
 
 private extension VDependencyManager {
     var backgroundImage: UIImage? {
-        return imageForKey("backgroundImage")
+        return image(forKey: "backgroundImage")
     }
     
     var successDependency: VDependencyManager? {
-        return childDependencyForKey("success")
+        return childDependency(forKey: "success")
     }
     
     var paygateDependency: VDependencyManager? {
-        return childDependencyForKey("vipPaygate")
+        return childDependency(forKey: "vipPaygate")
     }
 }

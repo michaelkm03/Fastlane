@@ -64,6 +64,6 @@ class TutorialNetworkDataSource: NSObject, NetworkDataSource {
 
 private extension VDependencyManager {
     var tutorialContentsAPIPath: APIPath? {
-        return apiPathForKey("tutorialMessagesEndpoint")
+        return apiPath(forKey: "tutorialMessagesEndpoint")
     }
 }

@@ -32,6 +32,6 @@ class CameraDirectionButton: UIButton {
 private extension VDependencyManager {
     
     var buttonImage: UIImage {
-        return imageForKey("reverseCameraIcon")
+        return image(forKey: "reverseCameraIcon")
     }
 }

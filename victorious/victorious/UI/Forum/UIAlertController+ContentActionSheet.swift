@@ -124,34 +124,34 @@ enum ContentAlertAction {
 
 private extension VDependencyManager {
     var contentUnupvoteAPIPath: APIPath? {
-        return networkResources?.apiPathForKey("contentUnupvoteURL")
+        return networkResources?.apiPath(forKey: "contentUnupvoteURL")
     }
     
     var contentUpvoteAPIPath: APIPath? {
-        return networkResources?.apiPathForKey("contentUpvoteURL")
+        return networkResources?.apiPath(forKey: "contentUpvoteURL")
     }
     
     var contentDeleteAPIPath: APIPath? {
-        return networkResources?.apiPathForKey("contentDeleteURL")
+        return networkResources?.apiPath(forKey: "contentDeleteURL")
     }
     
     var contentFlagAPIPath: APIPath? {
-        return networkResources?.apiPathForKey("contentFlagURL")
+        return networkResources?.apiPath(forKey: "contentFlagURL")
     }
     
     var likeTitle: String {
-        return childDependencyForKey("actions")?.stringForKey("upvote.text") ?? "LIKE"
+        return childDependency(forKey: "actions")?.string(forKey: "upvote.text") ?? "LIKE"
     }
     
     var unlikeTitle: String {
-        return childDependencyForKey("actions")?.stringForKey("unupvote.text") ?? "UNLIKE"
+        return childDependency(forKey: "actions")?.string(forKey: "unupvote.text") ?? "UNLIKE"
     }
     
     var flagTitle: String {
-        return childDependencyForKey("actions")?.stringForKey("flag.text") ?? "Report Post"
+        return childDependency(forKey: "actions")?.string(forKey: "flag.text") ?? "Report Post"
     }
     
     var deleteTitle: String {
-        return childDependencyForKey("actions")?.stringForKey("delete.text") ?? "Delete Post"
+        return childDependency(forKey: "actions")?.string(forKey: "delete.text") ?? "Delete Post"
     }
 }

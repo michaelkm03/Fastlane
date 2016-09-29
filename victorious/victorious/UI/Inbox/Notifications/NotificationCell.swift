@@ -101,15 +101,15 @@ class NotificationCell: UITableViewCell, VBackgroundContainer {
 
 private extension VDependencyManager {
     var messageTextColor: UIColor? {
-        return colorForKey(VDependencyManagerMainTextColorKey)
+        return color(forKey: VDependencyManagerMainTextColorKey)
     }
     
     var dateTextColor: UIColor? {
-        return colorForKey(VDependencyManagerSecondaryTextColorKey)
+        return color(forKey: VDependencyManagerSecondaryTextColorKey)
     }
     
     var messageFont: UIFont? {
-        return fontForKey(VDependencyManagerLabel1FontKey)
+        return font(forKey: VDependencyManagerLabel1FontKey)
     }
     
     var boldMessageFont: UIFont? {
@@ -121,7 +121,7 @@ private extension VDependencyManager {
     }
     
     var dateFont: UIFont? {
-        return fontForKey(VDependencyManagerLabel2FontKey)
+        return font(forKey: VDependencyManagerLabel2FontKey)
     }
 }
 

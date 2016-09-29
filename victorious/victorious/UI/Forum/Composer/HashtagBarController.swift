@@ -226,10 +226,10 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
 
 private extension VDependencyManager {
     var hashtagSearchAPIPath: APIPath? {
-        return networkResources?.apiPathForKey("hashtag.search.URL")
+        return networkResources?.apiPath(forKey: "hashtag.search.URL")
     }
     
     var trendingHashtagsAPIPath: APIPath? {
-        return networkResources?.apiPathForKey("trendingHashtagsURL")
+        return networkResources?.apiPath(forKey: "trendingHashtagsURL")
     }
 }

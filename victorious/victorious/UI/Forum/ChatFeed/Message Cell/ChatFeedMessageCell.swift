@@ -415,54 +415,54 @@ private extension ChatFeedContent {
 
 private extension VDependencyManager {
     var messageTextColor: UIColor {
-        return colorForKey("color.message.text") ?? .white
+        return color(forKey: "color.message.text") ?? .white
     }
     
     var messageLinkColor: UIColor {
-        return colorForKey("color.message.link") ?? .blue
+        return color(forKey: "color.message.link") ?? .blue
     }
     
     var messageFont: UIFont {
-        return fontForKey("font.message") ?? UIFont.systemFontOfSize(16.0)
+        return font(forKey: "font.message") ?? UIFont.systemFontOfSize(16.0)
     }
 
     var backgroundColor: UIColor {
-        return colorForKey("color.message.bubble") ?? .darkGray
+        return color(forKey: "color.message.bubble") ?? .darkGray
     }
     
     var usernameFont: UIFont {
-        return fontForKey("font.username.text") ?? UIFont.systemFontOfSize(12.0)
+        return font(forKey: "font.username.text") ?? UIFont.systemFontOfSize(12.0)
     }
     
     var usernameColor: UIColor {
-        return colorForKey("color.username.text") ?? .white
+        return color(forKey: "color.username.text") ?? .white
     }
     
     var timestampFont: UIFont {
-        return fontForKey("font.timestamp.text") ?? UIFont.systemFontOfSize(12.0)
+        return font(forKey: "font.timestamp.text") ?? UIFont.systemFontOfSize(12.0)
     }
     
     var timestampColor: UIColor {
-        return colorForKey("color.timestamp.text") ?? .white
+        return color(forKey: "color.timestamp.text") ?? .white
     }
     
     var upvoteCountColor: UIColor {
-        return colorForKey("color.upvote.count.text") ?? .white
+        return color(forKey: "color.upvote.count.text") ?? .white
     }
 
     var upvoteStyle: UpvoteStyle {
-        guard let upvoteStyle = stringForKey("upvote.type") else {
+        guard let upvoteStyle = string(forKey: "upvote.type") else {
             return .off
         }
         return UpvoteStyle(rawValue: upvoteStyle) ?? .off
     }
 
     var upvoteIconSelected: UIImage? {
-        return imageForKey("upvote.icon.selected")
+        return image(forKey: "upvote.icon.selected")
     }
 
     var upvoteIconUnselected: UIImage? {
-        return imageForKey("upvote.icon.unselected")
+        return image(forKey: "upvote.icon.unselected")
     }
 }
 

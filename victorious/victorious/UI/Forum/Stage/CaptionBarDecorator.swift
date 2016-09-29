@@ -42,18 +42,18 @@ struct CaptionBarDecorator {
 
 private extension VDependencyManager {
     var font: UIFont? {
-        return fontForKey("font.caption")
+        return font(forKey: "font.caption")
     }
     
     var textColor: UIColor? {
-        return colorForKey("color.caption")
+        return color(forKey: "color.caption")
     }
     
     var backgroundOverlayColor: UIColor? {
-        return colorForKey("color.background.caption")
+        return color(forKey: "color.background.caption")
     }
     
     var textContainerColor: UIColor? {
-        return colorForKey("color.textContainer.caption")
+        return color(forKey: "color.textContainer.caption")
     }
 }

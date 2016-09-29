@@ -27,7 +27,7 @@ class CoachmarkManager: NSObject, UIViewControllerTransitioningDelegate {
     }
     
     func reloadCoachmarks() {
-        guard let coachmarkConfigurations = dependencyManager.arrayForKey(Constants.coachmarksArrayKey) as? [[NSObject : AnyObject]] else {
+        guard let coachmarkConfigurations = dependencyManager.array(forKey: Constants.coachmarksArrayKey) as? [[NSObject : AnyObject]] else {
             return
         }
         let shownCoachmarks = fetchShownCoachmarkIDs()
@@ -47,7 +47,7 @@ class CoachmarkManager: NSObject, UIViewControllerTransitioningDelegate {
     }
     
     func fetchShownCoachmarkIDs() -> [String] {
-        return NSUserDefaults.standardUserDefaults().objectForKey(Constants.shownCoachmarksKey) as? [String] ?? []
+        return NSUserDefaults.standardUserDefaults().object(forKey: Constants.shownCoachmarksKey) as? [String] ?? []
     }
     
     private func saveCoachmarkState() {

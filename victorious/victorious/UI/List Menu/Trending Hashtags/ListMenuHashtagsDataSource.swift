@@ -22,7 +22,7 @@ final class ListMenuHashtagsDataSource: ListMenuSectionDataSource {
     let dependencyManager: VDependencyManager
     
     var hashtagStreamAPIPath: APIPath {
-        return dependencyManager.apiPathForKey("streamURL") ?? APIPath(templatePath: "")
+        return dependencyManager.apiPath(forKey: "streamURL") ?? APIPath(templatePath: "")
     }
     
     var hashtagStreamTrackingAPIPaths: [APIPath] {
@@ -72,6 +72,6 @@ final class ListMenuHashtagsDataSource: ListMenuSectionDataSource {
 
 private extension VDependencyManager {
     var trendingHashtagsAPIPath: APIPath? {
-        return networkResources?.apiPathForKey("trendingHashtagsURL")
+        return networkResources?.apiPath(forKey: "trendingHashtagsURL")
     }
 }

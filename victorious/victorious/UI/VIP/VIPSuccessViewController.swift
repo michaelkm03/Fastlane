@@ -95,21 +95,21 @@ class VIPSuccessViewController: UIViewController {
 
 private extension VDependencyManager {
     var successIcon: UIImage? {
-        return imageForKey("successIcon")
+        return image(forKey: "successIcon")
     }
     
     var successIconTintColor: UIColor? {
-        return colorForKey("color.successIcon")
+        return color(forKey: "color.successIcon")
     }
     
     var headlineText: String? {
-        return stringForKey("text.successMessage")
+        return string(forKey: "text.successMessage")
     }
     
     var headlineTextAttributes: [String : AnyObject]? {
         guard
-            let font = fontForKey("font.successMessage"),
-            let color = colorForKey("color.successMessage")
+            let font = font(forKey: "font.successMessage"),
+            let color = color(forKey: "color.successMessage")
         else {
             return nil
         }
@@ -124,13 +124,13 @@ private extension VDependencyManager {
     }
     
     var detailText: String? {
-        return stringForKey("text.successDetails")
+        return string(forKey: "text.successDetails")
     }
     
     var detailTextAttributes: [String : AnyObject]? {
         guard
-            let font = fontForKey("font.successDetails"),
-            let color = colorForKey("color.successDetails")
+            let font = font(forKey: "font.successDetails"),
+            let color = color(forKey: "color.successDetails")
         else {
             return nil
         }
@@ -146,9 +146,9 @@ private extension VDependencyManager {
     
     var confirmButtonAttributedText: NSAttributedString? {
         guard
-            let font = fontForKey("font.proceedMessage"),
-            let color = colorForKey("color.proceedMessage"),
-            let text = stringForKey("text.proceedMessage")
+            let font = font(forKey: "font.proceedMessage"),
+            let color = color(forKey: "color.proceedMessage"),
+            let text = string(forKey: "text.proceedMessage")
         else {
             return nil
         }
@@ -162,6 +162,6 @@ private extension VDependencyManager {
     }
     
     var confirmButonBackgroundColor: UIColor? {
-        return colorForKey("color.proceedButton")
+        return color(forKey: "color.proceedButton")
     }
 }

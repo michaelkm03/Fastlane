@@ -45,7 +45,7 @@ class VGradientBackground: VBackground {
 private extension VDependencyManager {
     
     var direction: VGradientBackgroundDirection {
-        switch stringForKey("direction") ?? "" {
+        switch string(forKey: "direction") ?? "" {
         case "horizontal":
             return .Horizontal
         case "vertical":
@@ -56,10 +56,10 @@ private extension VDependencyManager {
     }
     
     var startColor: UIColor {
-        return colorForKey("color.start")
+        return color(forKey: "color.start")
     }
     
     var endColor: UIColor {
-        return colorForKey("color.end")
+        return color(forKey: "color.end")
     }
 }

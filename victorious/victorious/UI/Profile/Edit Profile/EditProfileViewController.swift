@@ -215,6 +215,6 @@ class EditProfileViewController: UIViewController {
 
 private extension VDependencyManager {
     var userValidationAPIPath: APIPath? {
-        return networkResources?.apiPathForKey("username.validity.URL")
+        return networkResources?.apiPath(forKey: "username.validity.URL")
     }
 }

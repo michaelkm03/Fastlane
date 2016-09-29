@@ -29,8 +29,8 @@ class InterstitialAlertAnimator: NSObject, UIViewControllerAnimatedTransitioning
     
     func animateTransition(_ transitionContext: UIViewControllerContextTransitioning) {
         
-        if let toViewController = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey),
-            let fromViewController = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey) {
+        if let toViewController = transitionContext.viewController(forKey: UITransitionContextToViewControllerKey),
+            let fromViewController = transitionContext.viewController(forKey: UITransitionContextFromViewControllerKey) {
 
                 let containerView = transitionContext.containerView()
                 let toView = toViewController.view

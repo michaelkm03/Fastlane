@@ -40,7 +40,7 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
     }
     
     lazy fileprivate(set) var chatInterfaceDataSource: ChatInterfaceDataSource = {
-        let mainFeedDependency: VDependencyManager = self.dependencyManager.childDependencyForKey("mainFeed") ?? self.dependencyManager
+        let mainFeedDependency: VDependencyManager = self.dependencyManager.childDependency(forKey: "mainFeed") ?? self.dependencyManager
         let dataSource = TutorialCollectionViewDataSource(dependencyManager: mainFeedDependency)
         dataSource.delegate = self
         dataSource.registerCells(for: self.collectionView)
@@ -133,22 +133,22 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
 
 private extension VDependencyManager {
     var continueButtonChildDependency: VDependencyManager? {
-        return childDependencyForKey("continueButton")
+        return childDependency(forKey: "continueButton")
     }
     
     var continueButtonTitleColor: UIColor? {
-        return continueButtonChildDependency?.colorForKey(VDependencyManagerMainTextColorKey)
+        return continueButtonChildDependency?.color(forKey: VDependencyManagerMainTextColorKey)
     }
     
     var continueButtonTitleFont: UIFont? {
-        return continueButtonChildDependency?.fontForKey(VDependencyManagerButton1FontKey)
+        return continueButtonChildDependency?.font(forKey: VDependencyManagerButton1FontKey)
     }
     
     var continueButtonTitleText: String? {
-        return continueButtonChildDependency?.stringForKey("text")
+        return continueButtonChildDependency?.string(forKey: "text")
     }
     
     var continueButtonBackgroundColor: UIColor? {
-        return continueButtonChildDependency?.colorForKey(VDependencyManagerLinkColorKey)
+        return continueButtonChildDependency?.color(forKey: VDependencyManagerLinkColorKey)
     }
 }

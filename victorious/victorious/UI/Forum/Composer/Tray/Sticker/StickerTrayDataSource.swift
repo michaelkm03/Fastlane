@@ -114,6 +114,6 @@ class StickerTrayDataSource: PaginatedDataSource, TrayDataSource {
 
 private extension VDependencyManager {
     var contentFetchEndpoint: String? {
-        return stringForKey("default.content.endpoint")
+        return string(forKey: "default.content.endpoint")
     }
 }

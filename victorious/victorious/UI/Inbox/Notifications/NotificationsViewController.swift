@@ -221,6 +221,6 @@ class NotificationsViewController: UIViewController, UITableViewDelegate, Notifi
 
 private extension VDependencyManager {
     var refreshControlColor: UIColor? {
-        return colorForKey("color.text")
+        return color(forKey: "color.text")
     }
 }

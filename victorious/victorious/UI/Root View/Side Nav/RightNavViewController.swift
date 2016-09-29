@@ -41,7 +41,7 @@ class RightNavViewController: UIViewController, CoachmarkDisplayer {
         super.viewWillAppear(animated)
         
         if contentViewController == nil {
-            let contentViewController = dependencyManager.viewControllerForKey("contentScreen")
+            let contentViewController = dependencyManager.viewController(forKey: "contentScreen")
             addChildViewController(contentViewController)
             view.addSubview(contentViewController.view)
             view.v_addFitToParentConstraintsToSubview(contentViewController.view)

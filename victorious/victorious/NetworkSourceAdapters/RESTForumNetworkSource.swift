@@ -172,7 +172,7 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
 
 private extension VDependencyManager {
     var mainFeedAPIPath: APIPath {
-        guard let apiPath = apiPathForKey("mainFeedURL") else {
+        guard let apiPath = apiPath(forKey: "mainFeedURL") else {
             assertionFailure("Failed to retrieve main feed API path from dependency manager.")
             return APIPath(templatePath: "")
         }

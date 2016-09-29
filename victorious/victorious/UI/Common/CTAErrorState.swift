@@ -49,7 +49,7 @@ class CTAErrorState: UIView {
         messageLabel.font = dependencyManager.messageLabelFont
         messageLabel.textColor = dependencyManager.messageLabelColor
         
-        actionButton.dependencyManager = dependencyManager.childDependencyForKey(Constants.actionButtonKey)
+        actionButton.dependencyManager = dependencyManager.childDependency(forKey: Constants.actionButtonKey)
         actionButton.roundingType = .roundedRect(radius: Constants.buttonCornerRadius)
         
         addSubview(messageLabel)
@@ -79,14 +79,14 @@ class CTAErrorState: UIView {
 
 private extension VDependencyManager {
     var messageLabelText: String {
-        return stringForKey(Constants.messageTextKey)
+        return string(forKey: Constants.messageTextKey)
     }
     
     var messageLabelFont: UIFont? {
-        return fontForKey(Constants.messageFontKey)
+        return font(forKey: Constants.messageFontKey)
     }
     
     var messageLabelColor: UIColor? {
-        return colorForKey(Constants.messageColorKey)
+        return color(forKey: Constants.messageColorKey)
     }
 }

@@ -42,6 +42,6 @@ final class ProductPrefetchOperation: SyncOperation<Void> {
 
 private extension VDependencyManager {
     var subscriptionFetchAPIPath: APIPath? {
-        return networkResources?.apiPathForKey("inapp.sku.URL")
+        return networkResources?.apiPath(forKey: "inapp.sku.URL")
     }
 }

@@ -20,9 +20,9 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
     init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
         
-        let leftViewController = dependencyManager.viewControllerForKey("leftNavigation")
-        let centerViewController = dependencyManager.viewControllerForKey("centerScreen")
-        let rightNavViewController = dependencyManager.viewControllerForKey("rightNavigation")
+        let leftViewController = dependencyManager.viewController(forKey: "leftNavigation")
+        let centerViewController = dependencyManager.viewController(forKey: "centerScreen")
+        let rightNavViewController = dependencyManager.viewController(forKey: "rightNavigation")
         
         if leftViewController == nil || centerViewController == nil {
             assertionFailure("`SideNavScaffoldViewController` requires `leftNavigation` and `centerScreen` subcomponents.")
@@ -179,7 +179,7 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
     // MARK: - Status bar
     
     override var preferredStatusBarStyle : UIStatusBarStyle {
-        let navigationBarTextColor = dependencyManager.dependencyManagerForNavigationBar().colorForKey(VDependencyManagerMainTextColorKey)
+        let navigationBarTextColor = dependencyManager.dependencyManagerForNavigationBar().color(forKey: VDependencyManagerMainTextColorKey)
         return StatusBarUtilities.statusBarStyle(color: navigationBarTextColor)
     }
     
@@ -206,7 +206,7 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
     }
     
     fileprivate func showCreatorLogoTitle() {
-        dependencyManager.childDependencyForKey("centerScreen")?.configureNavigationItem(mainNavigationController.navigationBar.topItem)
+        dependencyManager.childDependency(forKey: "centerScreen")?.configureNavigationItem(mainNavigationController.navigationBar.topItem)
     }
     
     // MARK: - Orientation

@@ -27,6 +27,6 @@ class CameraNextBarButtonItem: UIBarButtonItem {
 private extension VDependencyManager {
     
     var nextBarButtonItemText: String {
-        return stringForKey("nextText")
+        return string(forKey: "nextText")
     }
 }

@@ -276,6 +276,6 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
 
 private extension VDependencyManager {
     var refreshControlColor: UIColor? {
-        return colorForKey(VDependencyManagerMainTextColorKey)
+        return color(forKey: VDependencyManagerMainTextColorKey)
     }
 }

@@ -64,10 +64,10 @@ class APIPathTests: XCTestCase {
         path1.templatePath += "/content"
         XCTAssertEqual(path1, path2)
         
-        path1.queryParameters.removeValueForKey("locale")
+        path1.queryParameters.removeValue(forKey: "locale")
         XCTAssertNotEqual(path1, path2)
         
-        path2.queryParameters.removeValueForKey("locale")
+        path2.queryParameters.removeValue(forKey: "locale")
         XCTAssertEqual(path1, path2)
     }
 }

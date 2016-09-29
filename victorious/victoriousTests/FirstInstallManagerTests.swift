@@ -18,7 +18,7 @@ class FirstInstallManagerTests: XCTestCase {
     
     override func setUp() {
         firstInstallManager.trackingManager = testTrackingManager
-        NSUserDefaults.standardUserDefaults().removeObjectForKey(firstInstallManager.appFirstInstallDefaultsKey)
+        NSUserDefaults.standardUserDefaults().removeObject(forKey: firstInstallManager.appFirstInstallDefaultsKey)
     }
     
     // MARK: - First Install Reporting

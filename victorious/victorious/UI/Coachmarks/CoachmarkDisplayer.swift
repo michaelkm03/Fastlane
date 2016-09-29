@@ -15,7 +15,7 @@ protocol CoachmarkDisplayer {
     ///  The id of the screen that conforms to this protocol.
     ///  Under most circumstances this method should be implemented as such:
     ///    {
-    ///      return self.dependencyManager.stringForKey(VDependencyManagerIDKey);
+    ///      return self.dependencyManager.string(forKey: VDependencyManagerIDKey);
     ///    }
     ///
     var screenIdentifier: String { get }

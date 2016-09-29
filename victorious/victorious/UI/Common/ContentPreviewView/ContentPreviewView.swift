@@ -180,6 +180,6 @@ class ContentPreviewView: UIView {
 
 private extension VDependencyManager {
     var userIsVIPButton: UIButton? {
-        return buttonForKey("button.vip")
+        return button(forKey: "button.vip")
     }
 }

@@ -66,7 +66,7 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     class func new(with dependencyManager: VDependencyManager) -> VIPGateViewController {
         let viewController: VIPGateViewController = VIPGateViewController.v_initialViewControllerFromStoryboard()
         viewController.dependencyManager = dependencyManager
-        viewController.title = dependencyManager.stringForKey("title")
+        viewController.title = dependencyManager.string(forKey: "title")
         return viewController
     }
 
@@ -248,23 +248,23 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
 
 private extension VDependencyManager {
     var navBarDependency: VDependencyManager {
-        return childDependencyForKey("navigation.bar.appearance") ?? self
+        return childDependency(forKey: "navigation.bar.appearance") ?? self
     }
     
     var headerText: String? {
-        return stringForKey("text.header")
+        return string(forKey: "text.header")
     }
     
     var headerFont: UIFont? {
-        return fontForKey("font.header")
+        return font(forKey: "font.header")
     }
     
     var headerTextColor: UIColor? {
-        return colorForKey("color.header")
+        return color(forKey: "color.header")
     }
     
     func descriptionText(for products: [VProduct]) -> String? {
-        guard let description = stringForKey("text.description") else {
+        guard let description = string(forKey: "text.description") else {
             return nil
         }
         
@@ -276,29 +276,29 @@ private extension VDependencyManager {
     }
     
     var descriptionFont: UIFont? {
-        return fontForKey("font.description")
+        return font(forKey: "font.description")
     }
     
     var descriptionTextColor: UIColor? {
-        return colorForKey("color.description")
+        return color(forKey: "color.description")
     }
     
     var restoreText: String? {
-        return stringForKey("text.restore")
+        return string(forKey: "text.restore")
     }
     
     var restoreFont: UIFont? {
-        return fontForKey("font.restore")
+        return font(forKey: "font.restore")
     }
     
     var restoreTextColor: UIColor? {
-        return colorForKey("color.restore")
+        return color(forKey: "color.restore")
     }
     
     var termsOfServiceLinkAttributes: [String: AnyObject]? {
         guard
-            let font = fontForKey("font.tos"),
-            let color = colorForKey("color.tos")
+            let font = font(forKey: "font.tos"),
+            let color = color(forKey: "color.tos")
         else {
             return nil
         }
@@ -310,13 +310,13 @@ private extension VDependencyManager {
     }
     
     var termsOfService: String? {
-        return stringForKey("text.tos")
+        return string(forKey: "text.tos")
     }
     
     var privacyPolicyLinkAttributes: [String : AnyObject]? {
         guard
-            let font = fontForKey("font.privacy"),
-            let color = colorForKey("color.privacy")
+            let font = font(forKey: "font.privacy"),
+            let color = color(forKey: "color.privacy")
         else {
             return nil
         }
@@ -328,26 +328,26 @@ private extension VDependencyManager {
     }
     
     var privacyPolicyText: String? {
-        return stringForKey("text.privacy")
+        return string(forKey: "text.privacy")
     }
     
     var subscribeButtonDependency: VDependencyManager? {
-        return childDependencyForKey("subscribeButton")
+        return childDependency(forKey: "subscribeButton")
     }
     
     var closeButtonDependency: VDependencyManager? {
-        return childDependencyForKey("close.button")
+        return childDependency(forKey: "close.button")
     }
     
     var restoreButtonDependency: VDependencyManager? {
-        return childDependencyForKey("restore.button")
+        return childDependency(forKey: "restore.button")
     }
     
     var subscriptionFetchAPIPath: APIPath? {
-        return networkResources?.apiPathForKey("inapp.sku.URL")
+        return networkResources?.apiPath(forKey: "inapp.sku.URL")
     }
     
     var validationAPIPath: APIPath? {
-        return networkResources?.apiPathForKey("purchaseURL")
+        return networkResources?.apiPath(forKey: "purchaseURL")
     }
 }

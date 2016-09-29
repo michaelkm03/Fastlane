@@ -86,6 +86,6 @@ class StageDataSource: ForumEventReceiver {
 
 private extension VDependencyManager {
     var contentFetchAPIPath: APIPath? {
-        return apiPathForKey("contentFetchURL")
+        return apiPath(forKey: "contentFetchURL")
     }
 }

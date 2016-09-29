@@ -481,34 +481,34 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
 private extension VDependencyManager {
     
     var title: String? {
-        return stringForKey("title.text")
+        return string(forKey: "title.text")
     }
     
     var chatFeedDependency: VDependencyManager? {
-        return childDependencyForKey("chatFeed")
+        return childDependency(forKey: "chatFeed")
     }
     
     var composerDependency: VDependencyManager? {
-        return childDependencyForKey("composer")
+        return childDependency(forKey: "composer")
     }
     
     var stageDependency: VDependencyManager? {
-        return childDependencyForKey("stage")
+        return childDependency(forKey: "stage")
     }
     
     var closeButton: ImageOnColorButton? {
-        return buttonForKey("close.button") as? ImageOnColorButton
+        return button(forKey: "close.button") as? ImageOnColorButton
     }
     
     var contentDeleteURL: String {
-        return networkResources?.stringForKey("contentDeleteURL") ?? ""
+        return networkResources?.string(forKey: "contentDeleteURL") ?? ""
     }
 
     var contentLikeKey: String? {
-        return networkResources?.stringForKey("contentUpvoteURL")
+        return networkResources?.string(forKey: "contentUpvoteURL")
     }
 
     var contentUnLikeKey: String? {
-        return networkResources?.stringForKey("contentUnupvoteURL")
+        return networkResources?.string(forKey: "contentUnupvoteURL")
     }
 }

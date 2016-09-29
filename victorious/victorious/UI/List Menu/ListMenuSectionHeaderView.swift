@@ -52,14 +52,14 @@ class ListMenuSectionHeaderView: UICollectionReusableView {
 
 private extension VDependencyManager {
     var titleColor: UIColor? {
-        return colorForKey(VDependencyManagerMainTextColorKey)
+        return color(forKey: VDependencyManagerMainTextColorKey)
     }
     
     var titleFont: UIFont? {
-        return fontForKey(VDependencyManagerHeaderFontKey)
+        return font(forKey: VDependencyManagerHeaderFontKey)
     }
     
     var titleText: String {
-        return stringForKey("title") ?? ""
+        return string(forKey: "title") ?? ""
     }
 }

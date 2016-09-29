@@ -331,7 +331,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
 
 private extension VDependencyManager {
     var textPostDependency: VDependencyManager? {
-        return childDependencyForKey("textPost")
+        return childDependency(forKey: "textPost")
     }
     
     var textPostFont: UIFont? {

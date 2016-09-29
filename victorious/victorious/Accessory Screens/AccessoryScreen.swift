@@ -14,16 +14,16 @@ struct AccessoryScreen {
     // MARK: - Initializing
     
     init?(dependencyManager: VDependencyManager) {
-        guard let id = dependencyManager.stringForKey("identifier") else {
+        guard let id = dependencyManager.string(forKey: "identifier") else {
             Log.warning("Tried to initialize an accessory screen without an identifier.")
             return nil
         }
         
         self.dependencyManager = dependencyManager
         self.id = id
-        title = dependencyManager.stringForKey("title")
-        icon = dependencyManager.imageForKey("icon")
-        position = AccessoryScreenPosition(string: dependencyManager.stringForKey("position") ?? "") ?? .right
+        title = dependencyManager.string(forKey: "title")
+        icon = dependencyManager.image(forKey: "icon")
+        position = AccessoryScreenPosition(string: dependencyManager.string(forKey: "position") ?? "") ?? .right
     }
     
     // MARK: - Dependency manager
@@ -48,7 +48,7 @@ struct AccessoryScreen {
     
     /// Loads the accessory screen's destination view controller and returns it if it exists.
     func loadDestination() -> UIViewController? {
-        return dependencyManager.viewControllerForKey("destination")
+        return dependencyManager.viewController(forKey: "destination")
     }
 }
 

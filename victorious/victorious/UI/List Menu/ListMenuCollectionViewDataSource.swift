@@ -141,22 +141,22 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
 
 private extension VDependencyManager {
     var creatorsChildDependency: VDependencyManager {
-        return self.childDependencyForKey("creators") ?? self
+        return self.childDependency(forKey: "creators") ?? self
     }
     
     var communityChildDependency: VDependencyManager {
-        return self.childDependencyForKey("community") ?? self
+        return self.childDependency(forKey: "community") ?? self
     }
     
     var hashtagsChildDependency: VDependencyManager {
-        return self.childDependencyForKey("trendingHashtags") ?? self
+        return self.childDependency(forKey: "trendingHashtags") ?? self
     }
 
     var chatRoomsChildDependency: VDependencyManager {
-        return self.childDependencyForKey("chat.rooms") ?? self
+        return self.childDependency(forKey: "chat.rooms") ?? self
     }
     
     var activityIndicatorColor: UIColor? {
-        return colorForKey(VDependencyManagerMainTextColorKey)
+        return color(forKey: VDependencyManagerMainTextColorKey)
     }
 }

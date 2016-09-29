@@ -179,6 +179,6 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
 
 private extension VDependencyManager {
     var gridDependency: VDependencyManager {
-        return childDependencyForKey("gridStream") ?? self
+        return childDependency(forKey: "gridStream") ?? self
     }
 }

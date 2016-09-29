@@ -41,6 +41,6 @@ extension VRootViewController {
 
 private extension VDependencyManager {
     var scaffoldDependencyManager: VDependencyManager? {
-        return childDependencyForKey(VDependencyManagerScaffoldViewControllerKey)
+        return childDependency(forKey: VDependencyManagerScaffoldViewControllerKey)
     }
 }

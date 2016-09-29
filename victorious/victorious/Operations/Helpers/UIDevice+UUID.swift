@@ -18,7 +18,7 @@ extension UIDevice {
         // If running on the simulator...
         #if(arch(i386) || arch(x86_64)) && os(iOS)
             let key = "com.getvictorious.debug-simulatedDeviceID"
-            if let identifier = NSUserDefaults.standardUserDefaults().valueForKey(key) as? String {
+            if let identifier = NSUserDefaults.standardUserDefaults().value(forKey: key) as? String {
                 return identifier
             } else {
                 let identifier = NSUUID().UUIDString

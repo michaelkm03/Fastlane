@@ -170,14 +170,14 @@ private extension UIViewController {
 
 private extension VDependencyManager {
     var purchaseDialogDependency: VDependencyManager? {
-        return childDependencyForKey("native.store.dialog")
+        return childDependency(forKey: "native.store.dialog")
     }
     
     var selectionDialogDependency: VDependencyManager? {
-        return childDependencyForKey("multiple.sku.dialog")
+        return childDependency(forKey: "multiple.sku.dialog")
     }
     
     var validationAPIPath: APIPath? {
-        return networkResources?.apiPathForKey("purchaseURL")
+        return networkResources?.apiPath(forKey: "purchaseURL")
     }
 }

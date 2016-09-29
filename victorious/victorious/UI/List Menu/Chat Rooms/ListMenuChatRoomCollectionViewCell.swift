@@ -45,14 +45,14 @@ final class ListMenuChatRoomCollectionViewCell: UICollectionViewCell, ListMenuSe
 
 private extension VDependencyManager {
     var chatRoomItemFont: UIFont? {
-        return fontForKey(VDependencyManagerParagraphFontKey)
+        return font(forKey: VDependencyManagerParagraphFontKey)
     }
 
     var selectedBackgroundColor: UIColor? {
-        return colorForKey(VDependencyManagerAccentColorKey)
+        return color(forKey: VDependencyManagerAccentColorKey)
     }
 
     var titleColor: UIColor? {
-        return colorForKey("color.text.navItem")
+        return color(forKey: "color.text.navItem")
     }
 }

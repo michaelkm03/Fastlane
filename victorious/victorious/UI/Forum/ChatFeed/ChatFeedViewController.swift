@@ -399,6 +399,6 @@ private extension PaginatedLoadingType {
 
 private extension VDependencyManager {
     var activityIndicatorColor: UIColor? {
-        return colorForKey("color.message.text")
+        return color(forKey: "color.message.text")
     }
 }

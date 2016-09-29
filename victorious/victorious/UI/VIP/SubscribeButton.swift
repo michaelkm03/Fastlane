@@ -110,10 +110,10 @@ class SubscribeButton: UIView {
 
 private extension VDependencyManager {
     var userIsVIPButton: UIButton? {
-        return buttonForKey("button.vip")
+        return button(forKey: "button.vip")
     }
     
     var subscriptionEnabled: Bool {
-        return childDependencyForKey("subscription")?.numberForKey("enabled")?.boolValue == true
+        return childDependency(forKey: "subscription")?.number(forKey: "enabled")?.boolValue == true
     }
 }

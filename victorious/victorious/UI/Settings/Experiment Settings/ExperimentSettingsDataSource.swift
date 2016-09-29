@@ -174,8 +174,8 @@ extension ExperimentSettingsDataSource: UITableViewDataSource {
         if self.state == .content && (indexPath as NSIndexPath).section == tableView.lastSection(),
             let cell = tableView.dequeueReusableCell( withIdentifier: buttonCellIdentifier, for: indexPath ) as? SettingsButtonCell {
                 if let button = cell.button as? VButton,
-                    let color = self.delegate?.dependencyManager?.colorForKey( VDependencyManagerLinkColorKey ),
-                    let font = self.delegate?.dependencyManager?.fontForKey( VDependencyManagerHeaderFontKey ) {
+                    let color = self.delegate?.dependencyManager?.color(forKey:  VDependencyManagerLinkColorKey ),
+                    let font = self.delegate?.dependencyManager?.font(forKey:  VDependencyManagerHeaderFontKey ) {
                         button.primaryColor = color
                         button.titleLabel?.font = font
                         button.style = .Primary

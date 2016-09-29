@@ -227,13 +227,13 @@ enum ContentPublisherError: Error {
 
 private extension VDependencyManager {
     func mediaCreationAPIPath(for content: Content) -> APIPath? {
-        return apiPathForKey("mediaCreationURL", macroReplacements: [
+        return apiPath(forKey: "mediaCreationURL", macroReplacements: [
             "%%TIME_CURRENT%%": content.postedAt?.apiString ?? ""
         ])
     }
     
     func textCreationAPIPath(for content: Content) -> APIPath? {
-        return apiPathForKey("textCreationURL", macroReplacements: [
+        return apiPath(forKey: "textCreationURL", macroReplacements: [
             "%%TIME_CURRENT%%": content.postedAt?.apiString ?? ""
         ])
     }

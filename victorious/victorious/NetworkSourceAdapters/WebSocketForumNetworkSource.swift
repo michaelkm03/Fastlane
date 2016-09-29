@@ -192,10 +192,10 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
 
 private extension VDependencyManager {
     var expandableTokenAPIPath: APIPath? {
-        return apiPathForKey("authURL")
+        return apiPath(forKey: "authURL")
     }
     
     var expandableSocketURL: String {
-        return stringForKey("socketURL") ?? ""
+        return string(forKey: "socketURL") ?? ""
     }
 }

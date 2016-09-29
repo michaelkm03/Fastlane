@@ -24,9 +24,9 @@ struct ListMenuCommunityItem {
     
     init?(_ dependencyManager: VDependencyManager) {
         guard
-            let title = dependencyManager.stringForKey("title"),
-            let name = dependencyManager.stringForKey("name"),
-            let streamAPIPath = dependencyManager.apiPathForKey("streamURL"),
+            let title = dependencyManager.string(forKey: "title"),
+            let name = dependencyManager.string(forKey: "name"),
+            let streamAPIPath = dependencyManager.apiPath(forKey: "streamURL"),
             let trackingAPIPaths = dependencyManager.trackingAPIPaths(forEventKey: "view")
         else {
             return nil

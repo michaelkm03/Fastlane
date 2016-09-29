@@ -25,10 +25,10 @@ class ListMenuNoContentCollectionViewCell: UICollectionViewCell {
 
 private extension VDependencyManager {
     var titleColor: UIColor? {
-        return colorForKey(VDependencyManagerContentTextColorKey)
+        return color(forKey: VDependencyManagerContentTextColorKey)
     }
     
     var titleFont: UIFont? {
-        return fontForKey(VDependencyManagerParagraphFontKey)
+        return font(forKey: VDependencyManagerParagraphFontKey)
     }
 }

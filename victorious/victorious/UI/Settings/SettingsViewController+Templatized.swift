@@ -108,22 +108,22 @@ private extension VSettingsViewController {
 
 private extension VDependencyManager {
     var headerLabelFont: UIFont? {
-        return fontForKey(Constants.sectionTitleFontKey)
+        return font(forKey: Constants.sectionTitleFontKey)
     }
     
     var headerLabelColor: UIColor? {
-        return colorForKey(Constants.sectionTitleFontColor)
+        return color(forKey: Constants.sectionTitleFontColor)
     }
     
     var cellFont: UIFont? {
-        return fontForKey(Constants.cellFontKey)
+        return font(forKey: Constants.cellFontKey)
     }
     
     var cellTextColor: UIColor? {
-        return colorForKey(Constants.cellColorKey)
+        return color(forKey: Constants.cellColorKey)
     }
     
     var separatorColor: UIColor? {
-        return colorForKey(Constants.separatorColorKey)
+        return color(forKey: Constants.separatorColorKey)
     }
 }

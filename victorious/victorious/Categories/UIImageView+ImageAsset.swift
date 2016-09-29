@@ -48,7 +48,7 @@ extension UIImageView {
     
     fileprivate func cachedBlurredImage(for url: URL, blurRadius: CGFloat) -> UIImage? {
         let key = blurredImageKey(for: url, blurRadius: blurRadius)
-        return SDWebImageManager.sharedManager().imageCache.imageFromMemoryCacheForKey(key)
+        return SDWebImageManager.sharedManager().imageCache.imageFromMemoryCache(forKey: key)
     }
     
     fileprivate func addBlurredImage(_ image: UIImage, toCacheWithURL url: URL, blurRadius: CGFloat) {

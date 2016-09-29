@@ -84,8 +84,8 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
         self.searchBar.delegate = self
         self.searchBar.accessibilityIdentifier = AutomationId.MediaSearchSearchbar.rawValue
         if let searchTextField = self.searchBar.v_textField {
-            searchTextField.tintColor = self.dependencyManager?.colorForKey(VDependencyManagerLinkColorKey)
-            searchTextField.font = self.dependencyManager?.fontForKey(VDependencyManagerHeading4FontKey)
+            searchTextField.tintColor = self.dependencyManager?.color(forKey: VDependencyManagerLinkColorKey)
+            searchTextField.font = self.dependencyManager?.font(forKey: VDependencyManagerHeading4FontKey)
             searchTextField.textColor = UIColor.white
             searchTextField.backgroundColor = UIColor(white: 0.2, alpha: 1.0)
         }

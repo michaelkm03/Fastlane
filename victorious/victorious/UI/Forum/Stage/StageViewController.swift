@@ -397,11 +397,11 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
 
 private extension VDependencyManager {
     var captionBarDependency: VDependencyManager? {
-        return childDependencyForKey("captionBar")
+        return childDependency(forKey: "captionBar")
     }
 
     /// STAGE has historically been used to track stage content before there was main_stage, vip_stage. Leaving this in until vip stage has been released, then it should be revisited.
     var context: String {
-        return stringForKey("context") ?? "STAGE"
+        return string(forKey: "context") ?? "STAGE"
     }
 }

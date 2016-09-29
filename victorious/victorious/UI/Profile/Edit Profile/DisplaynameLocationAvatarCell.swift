@@ -175,18 +175,18 @@ extension DisplaynameLocationAvatarCell {
 private extension VDependencyManager {
     
     var placeholderAndEnteredTextFont: UIFont? {
-        return fontForKey("font.paragraph")
+        return font(forKey: "font.paragraph")
     }
     
     var placeholderTextColor: UIColor? {
-        return colorForKey("color.text.placeholder")
+        return color(forKey: "color.text.placeholder")
     }
     
     var enteredTextColor: UIColor? {
-        return colorForKey("color.text")
+        return color(forKey: "color.text")
     }
     
     var cellBackgroundColor: UIColor? {
-        return colorForKey("color.accent")
+        return color(forKey: "color.accent")
     }
 }
