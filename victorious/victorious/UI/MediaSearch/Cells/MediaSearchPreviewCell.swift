@@ -22,7 +22,7 @@ class MediaSearchPreviewCell: UICollectionViewCell {
     
     var previewAssetUrl: URL? {
         didSet {
-            self.imageView.sd_setImageWithURL( self.previewAssetUrl )
+            self.imageView.sd_setImage(with: self.previewAssetUrl)
         }
     }
     
@@ -34,9 +34,9 @@ class MediaSearchPreviewCell: UICollectionViewCell {
             self.videoPlayer = VVideoView(frame: self.bounds)
             if let url = self.assetUrl, let videoPlayer = self.videoPlayer {
                 self.addSubview(videoPlayer.view)
-                self.v_addFitToParentConstraintsToSubview(videoPlayer.view)
+                self.v_addFitToParentConstraints(toSubview: videoPlayer.view)
                 
-                let videoPlayerItem = VVideoPlayerItem(URL: url)
+                let videoPlayerItem = VVideoPlayerItem(url: url)
                 videoPlayerItem.loop = true
                 videoPlayerItem.muted = true
                 videoPlayerItem.useAspectFit = true
