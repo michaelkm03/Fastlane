@@ -51,10 +51,8 @@ extension NSMutableURLRequest {
         setValue(newUserAgent, forHTTPHeaderField: HTTPHeader.userAgent)
         
         var path: String = ""
-        if let URL = self.url,
-           let urlComponents = URLComponents(url: URL, resolvingAgainstBaseURL: true),
-           let percentEncodedPath = urlComponents.percentEncodedPath {
-            path = percentEncodedPath
+        if let url = self.url, let urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true) {
+            path = urlComponents.percentEncodedPath
         }
         let sha1String = "\(currentDate)\(path)\(newUserAgent)\(authenticationToken)\(self.httpMethod)".v_sha1()
         setValue("Basic \(userID):\(sha1String)", forHTTPHeaderField: HTTPHeader.authorization)
