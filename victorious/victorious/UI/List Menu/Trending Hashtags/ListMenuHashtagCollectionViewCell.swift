@@ -10,9 +10,9 @@ final class ListMenuHashtagCollectionViewCell: UICollectionViewCell, ListMenuSec
     
     @IBOutlet fileprivate weak var titleLabel: UILabel!
     
-    override var selected: Bool {
+    override var isSelected: Bool {
         didSet {
-            updateCellBackgroundColor(to: contentView, selectedColor: dependencyManager?.selectedBackgroundColor, isSelected: selected)
+            updateCellBackgroundColor(to: contentView, selectedColor: dependencyManager?.selectedBackgroundColor, isSelected: isSelected)
         }
     }
     
