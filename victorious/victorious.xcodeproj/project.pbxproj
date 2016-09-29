@@ -2599,6 +2599,7 @@
 		BF3CD8A11D12152C00CB7764 /* UserBlockToggleOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserBlockToggleOperationTests.swift; sourceTree = "<group>"; };
 		BF3CD8A31D12171100CB7764 /* UserBlockRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserBlockRequestTests.swift; sourceTree = "<group>"; };
 		BF3CD8A51D12171B00CB7764 /* UserUnblockRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserUnblockRequestTests.swift; sourceTree = "<group>"; };
+		BF45A91C1D9CA2B0006B27C3 /* victorious.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = victorious.entitlements; sourceTree = "<group>"; };
 		BF5857EB1C920276007684FE /* MediaSearchMediaExporterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSearchMediaExporterTests.swift; sourceTree = "<group>"; };
 		BF5BF6BA1D00F558009FE532 /* ContentUnupvoteRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentUnupvoteRequestTests.swift; sourceTree = "<group>"; };
 		BF5BF6BC1D00F657009FE532 /* ContentUpvoteRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentUpvoteRequestTests.swift; sourceTree = "<group>"; };
@@ -5847,6 +5848,7 @@
 		BE171D811868BE64004E5202 /* victorious */ = {
 			isa = PBXGroup;
 			children = (
+				BF45A91C1D9CA2B0006B27C3 /* victorious.entitlements */,
 				7AFE92051D6634E2005D51A4 /* Accessory Screens */,
 				0EC65B0B1D52D6280040A8F8 /* AppDelegate.swift */,
 				0EC0F60B1CE64F85008760E8 /* Debugging */,
@@ -6783,6 +6785,9 @@
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 0;
+							};
+							com.apple.Keychain = {
+								enabled = 1;
 							};
 						};
 					};
@@ -8834,6 +8839,7 @@
 			baseConfigurationReference = 138B5A4A675BB6176F7DA761 /* Pods-victorious.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = victorious/victorious.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Victorious, Inc";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = ABHRJGEGKA;
@@ -10068,6 +10074,7 @@
 			baseConfigurationReference = 55FAA5574E7F158AB4EF865B /* Pods-victorious.staging.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = victorious/victorious.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Victorious, Inc";
 				DEFINES_MODULE = YES;
 				DownloadTemplate = yes;
@@ -10392,6 +10399,7 @@
 			baseConfigurationReference = AF22E63145F29BF59A08F94E /* Pods-victorious.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = victorious/victorious.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
@@ -10426,6 +10434,7 @@
 			baseConfigurationReference = D973EAEF66C87DDB60603750 /* Pods-victorious.stable.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = victorious/victorious.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Victorious, Inc";
 				DEFINES_MODULE = YES;
 				DownloadTemplate = yes;
@@ -10603,6 +10612,7 @@
 			baseConfigurationReference = 83063D73BF2679FF010A2245 /* Pods-victorious.qa.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = victorious/victorious.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Victorious, Inc";
 				DEFINES_MODULE = YES;
 				DownloadTemplate = yes;
