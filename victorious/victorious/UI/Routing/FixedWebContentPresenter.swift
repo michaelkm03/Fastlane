@@ -14,20 +14,11 @@ protocol FixedWebContentPresenter {
 
 extension FixedWebContentPresenter where Self: UIViewController {
     func showFixedWebContent(type: FixedWebContentType, withDependencyManager dependencyManager: VDependencyManager) {
-        let additionalConfiguration = [
-            "background": [
-                "name": "solidColor.background",
-                "color": [
-                    "red": 255,
-                    "green": 255,
-                    "blue": 255,
-                    "alpha": 255
-                ]
-            ]
-        ]
+        guard let webContentDependencyManager = dependencyManager.childDependencyForKey("webContentBackground") else {
+            return
+        }
         
-        let modifiedDependencyManager = dependencyManager.childDependencyManagerWithAddedConfiguration(additionalConfiguration)
-        let router = Router(originViewController: self, dependencyManager: modifiedDependencyManager)
+        let router = Router(originViewController: self, dependencyManager: webContentDependencyManager)
         let configuration = ExternalLinkDisplayConfiguration(addressBarVisible: false, forceModal: true, isVIPOnly: false, title: type.title)
         router.navigate(to: DeeplinkDestination.externalURL(url: dependencyManager.urlForFixedWebContent(type), configuration: configuration), from: nil)
     }
