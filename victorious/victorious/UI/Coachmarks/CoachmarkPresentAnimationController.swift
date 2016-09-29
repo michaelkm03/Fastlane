@@ -29,7 +29,7 @@ class CoachmarkPresentAnimationController: NSObject, UIViewControllerAnimatedTra
         
         UIView.animate(withDuration: transitionDuration(using: transitionContext), animations: {
             destinationVC.view.alpha = 1.0
-            blurView.effect = UIBlurEffect(style: .Light)
+            blurView.effect = UIBlurEffect(style: .light)
         }, completion: { didFinish in
             transitionContext.completeTransition(didFinish)
         }) 

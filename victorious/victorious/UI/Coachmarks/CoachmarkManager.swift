@@ -92,7 +92,7 @@ class CoachmarkManager: NSObject, UIViewControllerTransitioningDelegate {
             coachmarkToDisplay.hasBeenShown = true
             saveCoachmarkState()
             
-            if let urls = dependencyManager.arrayForKey(Constants.trackingURLsKey) as? [String] {
+            if let urls = dependencyManager.array(forKey: Constants.trackingURLsKey) as? [String] {
                 VTrackingManager.sharedInstance().trackEvent(Constants.trackingEventName, parameters: [ VTrackingKeyUrls : urls])
             }
     

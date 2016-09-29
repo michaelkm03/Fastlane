@@ -27,18 +27,18 @@ class Coachmark {
 
 private extension VDependencyManager {
     var screenIdentifier: String? {
-        return stringForKey("screen")
+        return string(forKey: "screen")
     }
     
     var highlightIdentifier: String? {
-        return stringForKey("highlight.target")
+        return string(forKey: "highlight.target")
     }
     
     var remoteID: String? {
-        return stringForKey("id")
+        return string(forKey: "id")
     }
     
     var context: String? {
-        return stringForKey("context")
+        return string(forKey: "context")
     }
 }

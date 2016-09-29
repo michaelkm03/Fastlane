@@ -42,11 +42,11 @@ protocol CoachmarkDisplayer {
 
 extension CoachmarkDisplayer where Self: UIViewController {
     func presentCoachmark(from viewController: CoachmarkViewController) {
-        presentViewController(viewController, animated: true, completion: nil)
+        present(viewController, animated: true, completion: nil)
     }
     
     var screenIdentifier: String {
-        return dependencyManager.stringForKey(VDependencyManagerIDKey)
+        return dependencyManager.string(forKey: VDependencyManagerIDKey)
     }
 
      var coachmarkContainerView : UIView {

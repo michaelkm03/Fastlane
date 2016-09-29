@@ -21,7 +21,7 @@ class CoachmarkDismissAnimationController: NSObject, UIViewControllerAnimatedTra
             return
         }
         
-        UIView.animateWithDuration(transitionDuration(using: transitionContext), animations: {
+        UIView.animate(withDuration: transitionDuration(using: transitionContext), animations: {
             originVC.view.alpha = 0.0
         }) { didFinish in
             transitionContext.completeTransition(didFinish)
