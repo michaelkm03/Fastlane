@@ -76,7 +76,11 @@ final class LikeView: UIView {
 
     private var selectedIcon: UIImage?
     private var unselectedIcon: UIImage?
-    private var alignment = LikeViewAlignment.center
+    private var alignment = LikeViewAlignment.center {
+        didSet {
+            setNeedsLayout()
+        }
+    }
 
     private var textColor: UIColor {
         get {
@@ -186,14 +190,15 @@ final class LikeView: UIView {
     }
 
     private func addAnimationView(of size: CGSize) {
-        if subviews.contains(animationImageView) {
-            return
+        if !subviews.contains(animationImageView) {
+            addSubview(animationImageView)
         }
 
-        addSubview(animationImageView)
         animationImageView.frame = CGRect(
             center: imageView.center,
             size: size
         )
+
+        setNeedsLayout()
     }
 }
