@@ -407,7 +407,7 @@ private extension ChatFeedContent {
         switch content.type {
             case .text:
                 return 1.0
-            case .gif, .image, .link, .video:
+            case .gif, .image, .link, .video, .sticker:
                 return creationState?.alpha ?? 1.0
         }
     }

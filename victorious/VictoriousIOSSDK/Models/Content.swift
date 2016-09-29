@@ -131,7 +131,7 @@ public struct Content: Equatable {
         previewImages = (json["preview"][previewType]["assets"].array ?? []).flatMap { ImageAsset(json: $0) }
         
         switch type {
-            case .image:
+            case .image, .sticker:
                 assets = [ContentMediaAsset(contentType: type, sourceType: sourceType, json: json[typeString])].flatMap { $0 }
             case .gif, .video:
                 assets = (json[typeString][sourceType].array ?? []).flatMap { ContentMediaAsset(contentType: type, sourceType: sourceType, json: $0) }

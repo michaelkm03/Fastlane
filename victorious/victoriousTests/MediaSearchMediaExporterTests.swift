@@ -137,4 +137,8 @@ struct MockSource {
     var remoteID: String? {
         return source.remoteID
     }
+    
+    var isVIP: Bool {
+        return false
+    }
 }
