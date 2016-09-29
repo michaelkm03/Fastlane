@@ -1032,7 +1032,6 @@
 		BF7AF9C81D22F9CB00539D90 /* ErrorStateView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF7AF9C71D22F9CB00539D90 /* ErrorStateView.xib */; };
 		BF84A9361C98AC5E00F13F8E /* TempDirectoryCleanupOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3058241C988A3600BD52FD /* TempDirectoryCleanupOperationTests.swift */; };
 		BF8F57A51CEBE47400188C0E /* ContentFeedRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8F57A41CEBE47400188C0E /* ContentFeedRequest.swift */; };
-		BF9006E91D9C7CEC0002D119 /* EndVIPEventOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9006E81D9C7CEC0002D119 /* EndVIPEventOperation.swift */; };
 		BF9006EB1D9C7D0B0002D119 /* EndVIPEventRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9006EA1D9C7D0B0002D119 /* EndVIPEventRequest.swift */; };
 		BF9006ED1D9C84230002D119 /* EndVIPEventRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9006EC1D9C84230002D119 /* EndVIPEventRequestTests.swift */; };
 		BF9800041D010ABF006A5526 /* ViewedContent_unliked.json in Resources */ = {isa = PBXBuildFile; fileRef = BF9800031D010ABF006A5526 /* ViewedContent_unliked.json */; };
@@ -2601,7 +2600,6 @@
 		BF7AF9C51D22F9AF00539D90 /* ErrorStateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ErrorStateView.swift; path = "Error State/ErrorStateView.swift"; sourceTree = "<group>"; };
 		BF7AF9C71D22F9CB00539D90 /* ErrorStateView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ErrorStateView.xib; path = "Error State/ErrorStateView.xib"; sourceTree = "<group>"; };
 		BF8F57A41CEBE47400188C0E /* ContentFeedRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentFeedRequest.swift; sourceTree = "<group>"; };
-		BF9006E81D9C7CEC0002D119 /* EndVIPEventOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EndVIPEventOperation.swift; path = VIP/EndVIPEventOperation.swift; sourceTree = "<group>"; };
 		BF9006EA1D9C7D0B0002D119 /* EndVIPEventRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndVIPEventRequest.swift; sourceTree = "<group>"; };
 		BF9006EC1D9C84230002D119 /* EndVIPEventRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndVIPEventRequestTests.swift; sourceTree = "<group>"; };
 		BF9800031D010ABF006A5526 /* ViewedContent_unliked.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ViewedContent_unliked.json; sourceTree = "<group>"; };
@@ -5159,7 +5157,6 @@
 		A72C85511C977FF500E97D4F /* Operations */ = {
 			isa = PBXGroup;
 			children = (
-				BF9006E71D9C7CD00002D119 /* VIP */,
 				7A1DEC9F1D80DCA5003F5C37 /* Account */,
 				7A1DECA01D80DFF9003F5C37 /* Content */,
 				7A1DECB91D80E021003F5C37 /* GIF */,
@@ -6036,14 +6033,6 @@
 				BF7AF9C71D22F9CB00539D90 /* ErrorStateView.xib */,
 			);
 			name = "Error States";
-			sourceTree = "<group>";
-		};
-		BF9006E71D9C7CD00002D119 /* VIP */ = {
-			isa = PBXGroup;
-			children = (
-				BF9006E81D9C7CEC0002D119 /* EndVIPEventOperation.swift */,
-			);
-			name = VIP;
 			sourceTree = "<group>";
 		};
 		BFC673631CE3C9C8004F9D3C /* ContentPreviewView */ = {
@@ -8346,7 +8335,6 @@
 				7A02F8951D273C0F00F43B24 /* SettingsTableViewCell.swift in Sources */,
 				D8D812B51B14FE5B00E93B37 /* VLoginFlowAPIHelper.m in Sources */,
 				A721E95A1B572454000B7901 /* UIStoryboard+VMainStoryboard.m in Sources */,
-				BF9006E91D9C7CEC0002D119 /* EndVIPEventOperation.swift in Sources */,
 				7A63CD3A1D5400F1006A48E4 /* UIView+ShakeAnimation.swift in Sources */,
 				F087E5B81D93B25900034146 /* StickerTrayViewController.swift in Sources */,
 				7A1DECB11D80E00C003F5C37 /* ContentFlagOperation.swift in Sources */,

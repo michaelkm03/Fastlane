@@ -342,11 +342,14 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     }
     
     private func confirmCloseVIPEvent() {
-        guard let configuration = self.endVIPConfiguration else {
+        guard
+            let configuration = self.endVIPConfiguration,
+            let request = EndVIPEventRequest(apiPath: configuration.closeAPIPath)
+        else {
             return
         }
         
-        EndVIPEventOperation(apiPath: configuration.closeAPIPath)?.queue()
+        RequestOperation(request: request).queue()
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
