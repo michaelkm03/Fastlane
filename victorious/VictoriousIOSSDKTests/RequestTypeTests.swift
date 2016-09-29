@@ -21,7 +21,7 @@ private class MockRequest<T>: RequestType {
     
     let mockResponseParser: ResponseParser
     
-    func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> T {
+    func parseResponse(_ response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> T {
         return try mockResponseParser(request, response, responseData, responseJSON)
     }
     

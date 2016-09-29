@@ -16,7 +16,7 @@ public struct TemplateRequest: RequestType {
         return URLRequest(url: URL(string: "/api/template")!)
     }
     
-    public func parseResponse(response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> Data {
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> Data {
         return responseData
     }
 }

@@ -25,7 +25,7 @@ public struct CreatorListRequest: RequestType {
         return URLRequest(url: url)
     }
     
-    public func parseResponse(response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> [UserModel] {
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> [UserModel] {
         guard let json = responseJSON["payload"]["users"].array else {
             throw ResponseParsingError()
         }

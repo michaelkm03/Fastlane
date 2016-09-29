@@ -11,7 +11,7 @@ import VictoriousIOSSDK
 
 struct MockRequest: RequestType {
     let urlRequest = NSURLRequest( URL: NSURL(string: "http://www.mockrequest.com" )! )
-    func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> Bool {
+    func parseResponse(_ response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> Bool {
         return true
     }
 }

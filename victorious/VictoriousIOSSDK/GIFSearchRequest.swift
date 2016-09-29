@@ -39,7 +39,7 @@ public struct GIFSearchRequest: PaginatorPageable, ResultBasedPageable {
         self.paginator = paginator
     }
     
-    public func parseResponse(response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> [GIFSearchResult] {
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> [GIFSearchResult] {
         guard let gifsJSON = responseJSON["payload"].array else {
             throw ResponseParsingError()
         }

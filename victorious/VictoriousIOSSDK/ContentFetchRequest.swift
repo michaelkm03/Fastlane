@@ -31,7 +31,7 @@ public struct ContentFetchRequest: RequestType {
         return URLRequest(url: url)
     }
 
-    public func parseResponse(response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> Content {
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> Content {
         let json = responseJSON["payload"]
         guard let content = Content(json: json) else {
             throw ResponseParsingError()

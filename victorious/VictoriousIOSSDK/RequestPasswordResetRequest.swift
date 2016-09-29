@@ -24,7 +24,7 @@ public struct RequestPasswordResetRequest: RequestType {
         return urlRequest
     }
     
-    public func parseResponse(response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> String {
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> String {
         let payload = responseJSON["payload"]
         guard let deviceToken = payload["device_token"].string else {
             throw ResponseParsingError()

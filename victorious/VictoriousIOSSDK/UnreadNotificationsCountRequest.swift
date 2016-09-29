@@ -23,7 +23,7 @@ public struct UnreadNotificationsCountRequest: RequestType {
         return URLRequest(url: url)
     }
     
-    public func parseResponse(response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> Int {
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> Int {
         guard let count = responseJSON["payload"]["unread_count"].int else {
             throw ResponseParsingError()
         }

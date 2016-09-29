@@ -25,7 +25,7 @@ public struct MediaUploadCreateRequest: RequestType {
         return request
     }
     
-    public func parseResponse(response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> String {
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> String {
         let sequenceID = responseJSON["payload"]["sequence_id"]
         
         guard let mediaUploadSequenceID = sequenceID.string else {

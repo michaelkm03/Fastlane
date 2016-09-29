@@ -30,7 +30,7 @@ public struct CreateChatServiceTokenRequest: RequestType {
         return request
     }
 
-    public func parseResponse(response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> String {
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> String {
         guard let token = responseJSON["payload"]["token"].string ?? responseJSON["token"].string else {
             throw ResponseParsingError()
         }

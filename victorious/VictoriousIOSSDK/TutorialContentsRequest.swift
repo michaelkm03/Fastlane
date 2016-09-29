@@ -24,7 +24,7 @@ public struct TutorialContentsRequest: RequestType {
         return URLRequest(url: url)
     }
     
-    public func parseResponse(response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> [Content] {
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> [Content] {
         guard let json = responseJSON["payload"]["viewed_contents"].array else {
             throw ResponseParsingError()
         }

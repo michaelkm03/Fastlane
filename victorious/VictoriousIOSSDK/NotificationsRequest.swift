@@ -28,7 +28,7 @@ public struct NotificationsRequest: PaginatorPageable, ResultBasedPageable {
         return request
     }
     
-    public func parseResponse(response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> [Notification] {
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> [Notification] {
         
         guard let notificationsJSON = responseJSON["payload"].array else {
             throw ResponseParsingError()

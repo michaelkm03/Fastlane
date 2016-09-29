@@ -33,7 +33,7 @@ public struct UsernameAvailabilityRequest: RequestType {
         return URLRequest(url: self.url as URL)
     }
     
-    public func parseResponse(response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> Bool {
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> Bool {
         return responseJSON["payload"]["success"].boolValue
     }
 }

@@ -20,7 +20,7 @@ public struct DeviceExperimentsRequest: RequestType {
         return URLRequest(url: URL(string: "/api/device/experiments")!)
     }
     
-    public func parseResponse(response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> (experiments: [DeviceExperiment], defaultExperimentIDs: Set<Int>) {
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> (experiments: [DeviceExperiment], defaultExperimentIDs: Set<Int>) {
         guard let experimentsJSON = responseJSON["payload"].array,
             let defaultExperimentsJSON = responseJSON["experiment_ids"].array else {
                 throw ResponseParsingError()

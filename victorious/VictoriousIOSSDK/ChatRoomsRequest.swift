@@ -17,7 +17,7 @@ public struct ChatRoomsRequest: RequestType {
         self.urlRequest = URLRequest(url: url)
     }
 
-    public func parseResponse(response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> [ChatRoom] {
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> [ChatRoom] {
         guard let chatroomsResponse = responseJSON["payload"]["room_list"].array else {
             throw ResponseParsingError(localizedDescription: "Failed to parse chat rooms response payload")
         }

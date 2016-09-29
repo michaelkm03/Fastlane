@@ -23,7 +23,7 @@ public struct TrendingHashtagsRequest: RequestType {
         return URLRequest(url: url)
     }
     
-    public func parseResponse(response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> [Hashtag] {
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> [Hashtag] {
         guard let hashtagJSON = responseJSON["payload"]["hashtags"].array else {
             throw ResponseParsingError()
         }

@@ -33,7 +33,7 @@ public struct WebViewHTMLFetchRequest: RequestType {
     
     public var providesFullURL = true
     
-    public func parseResponse(response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> String {
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> String {
         guard let htmlString = String(data: responseData as Data, encoding: String.Encoding.utf8) else {
             throw ResponseParsingError()
         }

@@ -24,7 +24,7 @@ public struct LoginRequest: RequestType {
         self.password = password
     }
     
-    public func parseResponse(response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> AccountCreateResponse {
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> AccountCreateResponse {
         let payload = responseJSON["payload"]
         if let token = payload["token"].string,
            let user = User(json: payload) {

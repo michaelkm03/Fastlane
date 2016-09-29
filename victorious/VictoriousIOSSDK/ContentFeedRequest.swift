@@ -25,7 +25,7 @@ public struct ContentFeedRequest: RequestType {
         return URLRequest(url: url)
     }
     
-    public func parseResponse(response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> ContentFeedResult {
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> ContentFeedResult {
         let contentsJSON: [JSON]?
         let contentParser: (JSON) -> Content?
         

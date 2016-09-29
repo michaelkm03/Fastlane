@@ -89,7 +89,7 @@ public struct DevicePreferencesRequest: RequestType {
         return returnValue
     }
     
-    public func parseResponse(response: URLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> NotificationPreference {
+    public func parseResponse(_ response: URLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> NotificationPreference {
         let payload = responseJSON["payload"]
         return preferences(from: payload)
     }

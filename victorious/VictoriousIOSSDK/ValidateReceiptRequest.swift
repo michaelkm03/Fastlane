@@ -40,7 +40,7 @@ public struct ValidateReceiptRequest: RequestType {
         return request
     }
     
-    public func parseResponse(response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> VIPStatus {
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> VIPStatus {
         requestBodyWriter.removeBodyTempFile()
         
         guard let vipStatus = VIPStatus(json: responseJSON["payload"]["vip"]) else {

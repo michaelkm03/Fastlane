@@ -40,13 +40,13 @@ public protocol RequestType {
 
 /// For RequestType implementations that have no results, this extension provides a default implementation of
 /// parseResponse that does nothing. Useful for "fire and forget" API calls like tracking pings.
-extension RequestType {
+public extension RequestType {
     
     public var baseURL: URL? {
         return nil
     }
     
-    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws {
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> Void {
         // This method intentionally left blank.
     }
 }
@@ -60,7 +60,7 @@ public protocol Cancelable: class {
 extension URLSessionTask: Cancelable {
 }
 
-extension RequestType {
+public extension RequestType {
     /// A closure to be called when the request finishes executing.
     ///
     /// - parameter result: The results of this request, if available.

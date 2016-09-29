@@ -18,7 +18,7 @@ public struct TermsOfServiceRequest: RequestType {
         return URLRequest(url: URL(string: "/api/tos")!)
     }
     
-    public func parseResponse(response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> String {
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> String {
         guard let htmlPayload = responseJSON["payload"].dictionary,
               let htmlString = htmlPayload["html"]?.string else {
             throw ResponseParsingError()

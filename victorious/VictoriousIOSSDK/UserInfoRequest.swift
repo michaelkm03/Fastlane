@@ -26,7 +26,7 @@ public struct UserInfoRequest: RequestType {
         return URLRequest(url: url)
     }
     
-    public func parseResponse(response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> User {
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> User {
         guard let user = User(json: responseJSON["payload"]) else {
             throw ResponseParsingError()
         }

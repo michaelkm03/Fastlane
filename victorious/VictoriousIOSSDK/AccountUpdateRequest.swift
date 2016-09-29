@@ -53,7 +53,7 @@ public struct AccountUpdateRequest: RequestType {
         }
     }
     
-    public func parseResponse(response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> User {
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> User {
         requestBodyWriter.removeBodyTempFile()
         
         guard let user = User(json: responseJSON["payload"]) else {
