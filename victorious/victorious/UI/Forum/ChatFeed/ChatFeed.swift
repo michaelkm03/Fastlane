@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 private struct Constants {
     static let scrolledToBottomTolerance = CGFloat(5.0)

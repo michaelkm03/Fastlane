@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 final class ContentFetchOperation: AsyncOperation<Content> {
     

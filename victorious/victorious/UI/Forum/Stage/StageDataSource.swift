@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 class StageDataSource: ForumEventReceiver {
     fileprivate static let backendStartTimeThreshold: Int64 = 1000

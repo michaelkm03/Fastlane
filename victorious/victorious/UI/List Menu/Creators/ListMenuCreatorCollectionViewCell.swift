@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 class ListMenuCreatorCollectionViewCell: UICollectionViewCell, ListMenuSectionCell {
     typealias Cell = ListMenuCreatorCollectionViewCell

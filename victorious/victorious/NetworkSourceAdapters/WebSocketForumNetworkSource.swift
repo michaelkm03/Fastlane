@@ -8,6 +8,7 @@
 
 import Foundation
 import VictoriousCommon
+import VictoriousIOSSDK
 
 class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
 

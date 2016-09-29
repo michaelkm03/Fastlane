@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDelegate, UICollectionViewDelegateFlowLayout, NewItemsControllerDelegate, ChatFeedMessageCellDelegate {
     fileprivate struct Layout {

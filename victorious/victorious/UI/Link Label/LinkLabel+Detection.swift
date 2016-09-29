@@ -6,6 +6,8 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
+import VictoriousIOSSDK
+
 extension LinkLabel {
     /// Sets the link detectors of the label to detect `content`'s user tags, calling `callback` with the corresponding
     /// URL when a link is tapped.
