@@ -14,10 +14,10 @@ class StatusBarUtilities: NSObject {
         
         let luminance = color.v_colorLuminance()
         switch luminance {
-        case .Bright:
-            return .LightContent
-        case .Dark:
-            return .Default
+        case .bright:
+            return .lightContent
+        case .dark:
+            return .default
         }
     }
 }
