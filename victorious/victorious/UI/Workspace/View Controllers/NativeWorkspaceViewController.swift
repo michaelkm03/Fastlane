@@ -40,24 +40,20 @@ class NativeWorkspaceViewController: VWorkspaceViewController, UIVideoEditorCont
         didSet {
             videoEditorViewController.videoQuality = .typeHigh
             videoEditorViewController.videoMaximumDuration = NativeWorkspaceViewController.videoMaximumDuration
-            guard let path = mediaURL.path else {
-                assertionFailure("Somehow recieved a media url with no path in NativeWorkspaceViewController")
-                v_showDefaultErrorAlert() { _ in
-                    self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
-                }
-                return
-            }
-            if !UIVideoEditorController.canEditVideoAtPath(path) {
+            
+            let path = mediaURL.path
+            
+            if !UIVideoEditorController.canEditVideo(atPath: path) {
                 assertionFailure("Handling a MediaURL that the video editor controller can't handle")
                 v_showDefaultErrorAlert() { _ in
-                    self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+                    self.presentingViewController?.dismiss(animated: true, completion: nil)
                 }
                 return
             }
             videoEditorViewController.videoPath = path
             videoEditorViewController.delegate = self
             let navigationBar = videoEditorViewController.navigationBar
-            dependencyManager.applyStyleToNavigationBar(navigationBar)
+            dependencyManager.applyStyle(to: navigationBar)
             // Reset the background image of the navigation bar so that it matches the
             // trimmer view that the editor places right below it
             navigationBar.setBackgroundImage(nil, for: .default)
