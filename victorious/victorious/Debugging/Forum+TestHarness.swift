@@ -22,7 +22,7 @@ import VictoriousIOSSDK
                               selector: #selector(debug_createMessages),
                               userInfo: nil,
                               repeats: true,
-                              to: RunLoop.mainRunLoop,
+                              to: RunLoop.main,
                 withRunMode: RunLoopMode.commonModes.rawValue
             )
         }
@@ -82,8 +82,8 @@ import VictoriousIOSSDK
                     previewImages: [randPreviewImage()]
                 ),
                 createdAt: Timestamp(),
-                text: (text == nil) ? nil : "\(totalCount) :: \(text!)",
                 type: type,
+                text: (text == nil) ? nil : "\(totalCount) :: \(text!)",
                 previewImages: [previewImage].flatMap { $0 }
             )
             
@@ -112,7 +112,7 @@ import VictoriousIOSSDK
                 let parameters = ContentMediaAsset.RemoteAssetParameters(contentType: contentType, url: url, source: source, size: CGSize(width: 100, height: 100))
                 assets.append(ContentMediaAsset(initializationParameters: parameters)!)
                 if contentType == .image {
-                    previewAsset = ImageAsset(url: url, size: CGSizeMake(100, 100))
+                    previewAsset = ImageAsset(url: url, size: CGSize(width: 100, height: 100))
                 }
             }
             
@@ -136,14 +136,14 @@ import VictoriousIOSSDK
             
             let time = next["length"] != nil ? Double(next["length"]!)! : ForumViewController.defaultStageContentLength
             
-            VTimerManager.addTimerManagerWithTimeInterval(
-                time,
+            VTimerManager.add(
+                withTimeInterval: time,
                 target: self,
                 selector: #selector(stageNext),
                 userInfo: nil,
                 repeats: false,
-                toRunLoop: NSRunLoop.mainRunLoop(),
-                withRunMode: NSRunLoopCommonModes
+                to: RunLoop.main,
+                withRunMode: RunLoopMode.commonModes.rawValue
             )
         }
 

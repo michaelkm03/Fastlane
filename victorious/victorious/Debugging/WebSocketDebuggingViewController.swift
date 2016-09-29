@@ -60,7 +60,7 @@
             return rawMessageContainer.messageContainer.count
         }
 
-        override func tableView(_ tableView: UITableView, cellForRowAt indexPath: NSIndexPath) -> UITableViewCell {
+        override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
             let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cellReuseIdentifier) as! DebugCell
             let currentRow = indexPath.row
             guard let rawMessageContainer = rawMessageContainer else {
@@ -74,7 +74,7 @@
                 return cell
             }
             let message = rawMessageContainer.messageContainer[currentRow]
-            cell.data = DebugCell.ViewData(message: message.messageString, creationDate: message.creationDate)
+            cell.data = DebugCell.ViewData(message: message.messageString, creationDate: message.creationDate as Date)
             return cell
         }
 
@@ -103,7 +103,7 @@
         }
         
         @objc private func close() {
-            dismissViewControllerAnimated(true, completion: nil)
+            dismiss(animated: true, completion: nil)
         }
 
         @objc private func export() {
