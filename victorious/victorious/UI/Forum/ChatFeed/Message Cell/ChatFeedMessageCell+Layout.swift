@@ -18,10 +18,13 @@ extension ChatFeedMessageCell {
 
     private struct Constants {
         static let likeViewMargin = CGFloat(16.0)
+        static let replyMargin = CGFloat(2.0)
         static let likeViewWidth = CGFloat(66.0)
         static let likeViewHeight = CGFloat(66.0)
         static let replyButtonWidth = CGFloat(44.0)
         static let replyButtonHeight = CGFloat(44.0)
+        static let replyHorizontalPadding = CGFloat(8.0)
+        static let replyVerticalPadding = CGFloat(4.0)
     }
 
     /// Performs the view layout for `cell` based on its content.
@@ -109,15 +112,15 @@ extension ChatFeedMessageCell {
             cell.failureButton.frame = .zero
         }
 
-        // Reply button layout:
+        // MARK: - Reply button
 
         if cell.showsReplyButton && alignment == .left {
             cell.replyButton.hidden = false
             let replyButton = cell.replyButton
             if let baseFrame = bubbleFrames.last {
                 replyButton.frame = CGRect(
-                    x: baseFrame.maxX - (Constants.replyButtonWidth / 2),
-                    y: baseFrame.maxY - (Constants.replyButtonHeight / 2),
+                    x: (baseFrame.maxX - (Constants.replyButtonWidth / 2) - Constants.replyHorizontalPadding),
+                    y: (baseFrame.maxY - (Constants.replyButtonHeight / 2) - Constants.replyVerticalPadding),
                     width: Constants.replyButtonWidth,
                     height: Constants.replyButtonHeight
                 )
@@ -129,8 +132,7 @@ extension ChatFeedMessageCell {
             cell.replyButton.hidden = true
         }
 
-        // Like view layout:
-
+        // MARK: - Like View
         if let topBubbleFrame = bubbleFrames.first, let bottomBubbleFrame = bubbleFrames.last {
             let likeViewOriginX = alignment == .left ? cell.bounds.size.width - Constants.likeViewWidth - Constants.likeViewMargin : Constants.likeViewMargin
             if let likeView = cell.likeView {
