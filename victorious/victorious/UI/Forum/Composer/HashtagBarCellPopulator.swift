@@ -10,7 +10,6 @@ import Foundation
 
 /// Populates a `HashtagBarCell`
 struct HashtagBarCellPopulator {
-    
     /// Populates a `HashtagBarCell` based on the provided tag
     static func populateCell(_ cell: HashtagBarCell, withTag tag: String) {
         
