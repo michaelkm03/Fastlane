@@ -110,7 +110,7 @@ extension UIAlertController {
         
         addAction(UIAlertAction(
             title: NSLocalizedString("Cancel", comment: ""),
-            style: .Cancel,
+            style: .cancel,
             handler: { _ in
                 completion(.cancel)
             }
