@@ -25,7 +25,7 @@ extension UIImageView {
             }
             
             if blurRadius != 0 {
-                self?.applyBlur(to: image, with: url, radius: blurRadius, completion: completion)
+                self?.applyBlur(to: image, with: url as URL?, radius: blurRadius, completion: completion)
             }
             else {
                 completion?(.success(image))
@@ -39,7 +39,8 @@ extension UIImageView {
                     placeholderImage: image,
                     options: .avoidAutoSetImage
                 ) { image, error, _, url in
-                    imageBlurBlock(image, url, error)
+                    // FIXME: 
+//                    imageBlurBlock(image, url, error)
             }
             case .local(let image):
                 imageBlurBlock(image, nil, nil)

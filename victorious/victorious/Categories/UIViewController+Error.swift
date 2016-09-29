@@ -33,16 +33,17 @@ extension UIViewController {
     
     func v_showErrorWithTitle(_ title: String?, message: String?, onView view: UIView) {
         
-        MBProgressHUD.hideAllHUDsForView(view, animated: false)
+        MBProgressHUD.hideAllHUDs(for: view, animated: false)
         
         let customView = UIImageView(image: UIImage(named:"error")!.withRenderingMode(.alwaysTemplate))
         customView.tintColor = UIColor.white
         
-        let progressHUD = MBProgressHUD.showHUDAddedTo(view, animated: true)
-        progressHUD.mode = .CustomView
+        // Future: Get rid of the ! imported from objc
+        let progressHUD = MBProgressHUD.showAdded(to: view, animated: true)!
+        progressHUD.mode = .customView
         progressHUD.margin = 30.0
         progressHUD.customView = customView
-        progressHUD.userInteractionEnabled = false
+        progressHUD.isUserInteractionEnabled = false
         progressHUD.labelText = title
         progressHUD.detailsLabelText = message
         progressHUD.hide(true, afterDelay: 2.0)
