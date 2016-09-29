@@ -19,6 +19,8 @@ protocol Composer: class, ForumEventReceiver, ForumEventSender, ComposerAttachme
     
     weak var delegate: ComposerDelegate? { get set }
     
+    var topInset: CGFloat { get set }
+    
     var dependencyManager: VDependencyManager! { get set }
     
     func dismissKeyboard(animated: Bool)
