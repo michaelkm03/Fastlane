@@ -17,7 +17,7 @@ class LogoutOperation: AsyncOperation<Void> {
     init(dependencyManager: VDependencyManager? = nil) {
         self.dependencyManager = dependencyManager
         super.init()
-        qualityOfService = .UserInitiated
+        qualityOfService = .userInitiated
     }
     
     // MARK: - Initializing
@@ -28,7 +28,7 @@ class LogoutOperation: AsyncOperation<Void> {
         return .background
     }
     
-    override func execute(_ finish: (_ result: OperationResult<Void>) -> Void) {
+    override func execute(_ finish: @escaping (_ result: OperationResult<Void>) -> Void) {
         guard VCurrentUser.user != nil else {
             // Cannot logout without a current (logged-in) user
             finish(.failure(NSError(domain: "LogoutOperation", code: -1, userInfo: [:])))
@@ -38,8 +38,8 @@ class LogoutOperation: AsyncOperation<Void> {
         RequestOperation(request: LogoutRequest()).queue { [weak self] result in
             InterstitialManager.sharedInstance.clearAllRegisteredAlerts()
             
-            NSUserDefaults.standardUserDefaults().removeObjectForKey(kLastLoginTypeUserDefaultsKey)
-            NSUserDefaults.standardUserDefaults().removeObjectForKey(kAccountIdentifierDefaultsKey)
+            UserDefaults.standard.removeObject(forKey: kLastLoginTypeUserDefaultsKey)
+            UserDefaults.standard.removeObject(forKey: kAccountIdentifierDefaultsKey)
             
             VStoredLogin().clearLoggedInUserFromDisk()
             VStoredPassword().clearSavedPassword()

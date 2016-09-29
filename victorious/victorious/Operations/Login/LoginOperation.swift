@@ -35,15 +35,15 @@ class LoginOperation: AsyncOperation<AccountCreateResponse> {
         return .background
     }
     
-    override func execute(_ finish: (_ result: OperationResult<AccountCreateResponse>) -> Void) {
-        let parameters = AccountCreateParameters(loginType: .Email, accountIdentifier: requestOperation.request.email)
+    override func execute(_ finish: @escaping (_ result: OperationResult<AccountCreateResponse>) -> Void) {
+        let parameters = AccountCreateParameters(loginType: .email, accountIdentifier: requestOperation.request.email)
         
         requestOperation.queue { [weak self] requestResult in
             guard
                 let strongSelf = self,
                 let response = requestResult.output
             else {
-                finish(result: requestResult)
+                finish(requestResult)
                 return
             }
             
@@ -53,9 +53,9 @@ class LoginOperation: AsyncOperation<AccountCreateResponse> {
                 parameters: parameters
             ).queue { loginSuccessResult in
                 switch loginSuccessResult {
-                    case .success: finish(result: requestResult)
-                    case .failure(let error): finish(result: .failure(error))
-                    case .cancelled: finish(result: .cancelled)
+                    case .success: finish(requestResult)
+                    case .failure(let error): finish(.failure(error))
+                    case .cancelled: finish(.cancelled)
                 }
             }
         }

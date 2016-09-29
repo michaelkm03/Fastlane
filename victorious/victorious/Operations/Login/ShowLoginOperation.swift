@@ -37,7 +37,7 @@ final class ShowLoginOperation: AsyncOperation<Void> {
         
         // User is not logged in, show login view
         guard
-            let templateValue = self.dependencyManager.templateValueConformingToProtocol(VLoginRegistrationFlow.self, forKey: "loginAndRegistrationView"),
+            let templateValue = self.dependencyManager.templateValueConforming(to: VLoginRegistrationFlow.self, forKey: "loginAndRegistrationView"),
             let viewController = templateValue as? UIViewController,
             let loginFlow = templateValue as? VLoginRegistrationFlow
         else {

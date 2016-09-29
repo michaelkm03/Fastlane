@@ -73,11 +73,11 @@ class LoginSuccessOperation: SyncOperation<Void> {
             return
         }
         
-        let info = VStoredLoginInfo(id, withToken: token, withLoginType: VCurrentUser.loginType)
+        let info = VStoredLoginInfo(id, withToken: token, with: VCurrentUser.loginType)
         
-        VStoredLogin().saveLoggedInUserToDisk(info)
+        VStoredLogin().saveLoggedInUser(toDisk: info)
         
-        UserDefaults.standard.setInteger(VCurrentUser.loginType.rawValue, forKey: kLastLoginTypeUserDefaultsKey)
+        UserDefaults.standard.set(VCurrentUser.loginType.rawValue, forKey: kLastLoginTypeUserDefaultsKey)
         
         if let accountIdentifier = VCurrentUser.accountIdentifier {
             UserDefaults.standard.set( accountIdentifier, forKey: kAccountIdentifierDefaultsKey)

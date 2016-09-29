@@ -28,7 +28,7 @@ final class StoredLoginOperation: SyncOperation<Void> {
         
         let storedLogin = VStoredLogin()
         if let info = storedLogin.storedLoginInfo() {
-            let user = User(id: info.userRemoteId.integerValue)
+            let user = User(id: info.userRemoteId.intValue)
             VCurrentUser.update(to: user)
             VCurrentUser.loginType = info.lastLoginType
             VCurrentUser.token = info.token
@@ -54,7 +54,7 @@ final class StoredLoginOperation: SyncOperation<Void> {
                 }
             }
             
-        } else if let loginType = VLoginType(rawValue: defaults.integerForKey(kLastLoginTypeUserDefaultsKey)),
+        } else if let loginType = VLoginType(rawValue: defaults.integer(forKey: kLastLoginTypeUserDefaultsKey)),
             let credentials = loginType.storedCredentials( accountIdentifier ) {
             
             // Next, if login with a stored token failed, use any stored credentials to login automatically
