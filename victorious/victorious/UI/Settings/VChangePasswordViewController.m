@@ -10,7 +10,6 @@
 #import "VConstants.h"
 #import "VPasswordValidator.h"
 #import "VButton.h"
-#import "VInlineValidationTextField.h"
 #import "VDependencyManager.h"
 #import "victorious-Swift.h"
 
@@ -19,9 +18,9 @@ static const CGFloat kPlaceholderActiveTextWhiteValue = 0.4f;
 
 @interface VChangePasswordViewController () <UITextFieldDelegate>
 
-@property (weak, nonatomic) IBOutlet VInlineValidationTextField *oldPasswordTextField;
-@property (weak, nonatomic) IBOutlet VInlineValidationTextField *changedPasswordTextField;
-@property (weak, nonatomic) IBOutlet VInlineValidationTextField *confirmPasswordTextField;
+@property (weak, nonatomic) IBOutlet InlineValidationTextField *oldPasswordTextField;
+@property (weak, nonatomic) IBOutlet InlineValidationTextField *changedPasswordTextField;
+@property (weak, nonatomic) IBOutlet InlineValidationTextField *confirmPasswordTextField;
 @property (weak, nonatomic) IBOutlet VButton *saveButton;
 
 @property (strong, nonatomic) VPasswordValidator *passwordValidator;
@@ -50,7 +49,7 @@ static const CGFloat kPlaceholderActiveTextWhiteValue = 0.4f;
 - (void)dealloc
 {
     NSArray *textFields = @[ self.oldPasswordTextField, self.changedPasswordTextField, self.confirmPasswordTextField ];
-    for ( VInlineValidationTextField *textField in textFields )
+    for ( InlineValidationTextField *textField in textFields )
     {
         [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:textField];
     }
@@ -71,14 +70,14 @@ static const CGFloat kPlaceholderActiveTextWhiteValue = 0.4f;
     NSDictionary *activePlaceholderAttributes = @{ NSForegroundColorAttributeName : [UIColor colorWithWhite:kPlaceholderActiveTextWhiteValue alpha:1.0f] };
     
     NSArray *textFields = @[ self.oldPasswordTextField, self.changedPasswordTextField, self.confirmPasswordTextField ];
-    for ( VInlineValidationTextField *textField in textFields )
+    for ( InlineValidationTextField *textField in textFields )
     {
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(textFieldDidChange:)
                                                      name:UITextFieldTextDidChangeNotification
                                                    object:textField];
         
-        [textField applyTextFieldStyle:VTextFieldStyleLoginRegistration];
+        [textField applyTextFieldStyle];
         textField.delegate = self;
     }
     
@@ -164,7 +163,7 @@ static const CGFloat kPlaceholderActiveTextWhiteValue = 0.4f;
     }
 }
 
-- (void)validateWithTextField:(VInlineValidationTextField *)textField
+- (void)validateWithTextField:(InlineValidationTextField *)textField
 {
     NSError *validationError;
     
@@ -264,13 +263,13 @@ static const CGFloat kPlaceholderActiveTextWhiteValue = 0.4f;
 
 - (void)textFieldDidChange:(NSNotification *)notification
 {
-    VInlineValidationTextField *textField = notification.object;
+    InlineValidationTextField *textField = notification.object;
     [self validateWithTextField:textField];
 }
 
 #pragma mark - UITextFieldDelegate
 
-- (BOOL)textFieldShouldEndEditing:(VInlineValidationTextField *)textField
+- (BOOL)textFieldShouldEndEditing:(InlineValidationTextField *)textField
 {
     if ( textField.text.length > 0 )
     {

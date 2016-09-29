@@ -66,7 +66,6 @@
 #import "VHasManagedDependencies.h"
 #import "VImageAssetDownloader.h"
 #import "VImageToolController.h"
-#import "VInlineValidationTextField.h"
 #import "VKeyboardNotificationManager.h"
 #import "VLargeNumberFormatter.h"
 #import "VLaunchScreenProvider.h"

@@ -16,7 +16,6 @@
 #import "VDependencyManager+VLoginAndRegistration.h"
 
 // Views + Helpers
-#import "VInlineValidationTextField.h"
 #import "VLoginFlowControllerDelegate.h"
 
 @interface VModernEnterNameViewController () <VBackgroundContainer, UITextFieldDelegate, VLoginFlowScreen>
@@ -24,7 +23,7 @@
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @property (nonatomic, weak) IBOutlet UILabel *promptLabel;
-@property (nonatomic, weak) IBOutlet VInlineValidationTextField *nameField;
+@property (nonatomic, weak) IBOutlet InlineValidationTextField *nameField;
 @property (nonatomic, weak) IBOutlet UIView *separator;
 
 @end

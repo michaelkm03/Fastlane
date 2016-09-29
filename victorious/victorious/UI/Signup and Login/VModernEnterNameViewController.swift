@@ -7,7 +7,7 @@
 //
 
 extension VModernEnterNameViewController {
-    func validateUsername(from textField: VInlineValidationTextField) -> Bool {
+    func validateUsername(from textField: InlineValidationTextField) -> Bool {
         let username = textField.text ?? ""
         
         guard let error = User.validationError(forUsername: username, errorFormat: .short) else {
