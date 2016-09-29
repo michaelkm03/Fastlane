@@ -34,25 +34,25 @@ class WebContentViewController: UIViewController, WKNavigationDelegate, WKUIDele
         super.init(nibName: nil, bundle: nil)
         
         if (shouldShowNavigationButtons) {
-            let backButton = UIBarButtonItem(image: UIImage(named: "browser-back"), style: .Plain, target: self, action: #selector(WebContentViewController.backButtonPressed))
-            let forwardButton = UIBarButtonItem(image: UIImage(named: "browser-forward"), style: .Plain, target: self, action: #selector(WebContentViewController.forwardButtonPressed))
-            cancelButton = UIBarButtonItem(image: UIImage(named: "browser-close"), style: .Plain, target: self, action: #selector(WebContentViewController.cancelButtonPressed))
+            let backButton = UIBarButtonItem(image: UIImage(named: "browser-back"), style: .plain, target: self, action: #selector(WebContentViewController.backButtonPressed))
+            let forwardButton = UIBarButtonItem(image: UIImage(named: "browser-forward"), style: .plain, target: self, action: #selector(WebContentViewController.forwardButtonPressed))
+            cancelButton = UIBarButtonItem(image: UIImage(named: "browser-close"), style: .plain, target: self, action: #selector(WebContentViewController.cancelButtonPressed))
             
             self.backButton = backButton
             self.forwardButton = forwardButton
             
-            backButton.enabled = false
-            forwardButton.enabled = false
+            backButton.isEnabled = false
+            forwardButton.isEnabled = false
             
             navigationItem.rightBarButtonItems = [forwardButton, backButton]
             navigationItem.leftBarButtonItem = cancelButton
         }
         
         webView.navigationDelegate = self
-        webView.UIDelegate = self
+        webView.uiDelegate = self
         
-        webView.backgroundColor = .clearColor()
-        webView.opaque = false
+        webView.backgroundColor = .clear
+        webView.isOpaque = false
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -67,7 +67,7 @@ class WebContentViewController: UIViewController, WKNavigationDelegate, WKUIDele
         view.addSubview(webView)
         view.v_addFitToParentConstraints(toSubview: webView)
         
-        dependencyManager.addBackgroundToBackgroundHost(self)
+        dependencyManager.addBackground(toBackgroundHost: self)
     }
     
     override func viewWillDisappear(_ animated: Bool) {

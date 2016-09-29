@@ -23,10 +23,10 @@ class CrossFadingAnimationController: NSObject, UIViewControllerAnimatedTransiti
         self.animationOptions = animationOptions
     }
     
-    func animateTransition(_ transitionContext: UIViewControllerContextTransitioning) {
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         guard
-            let toView = transitionContext.viewForKey(UITransitionContextToViewKey),
-            let fromView = transitionContext.viewForKey(UITransitionContextFromViewKey)
+            let toView = transitionContext.view(forKey: UITransitionContextViewKey.to),
+            let fromView = transitionContext.view(forKey: UITransitionContextViewKey.from)
         else {
             return
         }
@@ -37,18 +37,18 @@ class CrossFadingAnimationController: NSObject, UIViewControllerAnimatedTransiti
         }
     
         let animationOptions = self.animationOptions
-        UIView.animateWithDuration(animationOptions.fadeOutDuration, animations: animations) { _ in
+        UIView.animate(withDuration: animationOptions.fadeOutDuration, animations: animations) { _ in
             fromView.removeFromSuperview()
-            transitionContext.containerView().addSubview(toView)
+            transitionContext.containerView.addSubview(toView)
             let animations = {
                 toView.alpha = 1.0
                 transitionContext.completeTransition(true)
             }
-            UIView.animateWithDuration(animationOptions.fadeInDuration, animations: animations)
+            UIView.animate(withDuration: animationOptions.fadeInDuration, animations: animations)
         }
     }
     
-    func transitionDuration(_ transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return animationOptions.transitionDuration
     }
 }
