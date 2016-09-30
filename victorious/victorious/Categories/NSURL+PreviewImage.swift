@@ -20,3 +20,11 @@ extension URL {
     }
 
 }
+
+// MARK: - Obj-C compatbility
+
+extension NSURL {
+    var v_videoPreviewImage: UIImage? {
+        return (self as URL).v_videoPreviewImage
+    }
+}
