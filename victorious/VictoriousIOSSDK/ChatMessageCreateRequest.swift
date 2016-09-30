@@ -26,4 +26,8 @@ public struct ChatMessageCreateRequest: RequestType {
         self.url = url
         self.text = text
     }
+    
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws {
+        // Protocol conformance
+    }
 }

@@ -23,4 +23,8 @@ public struct AcknowledgeAlertRequest: RequestType {
     public init(alertID: String) {
         self.alertID = alertID
     }
+    
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws {
+        // Protocol conformance
+    }
 }

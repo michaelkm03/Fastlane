@@ -14,12 +14,12 @@ public protocol ForumNetworkSource: ForumEventReceiver, ForumEventSender {
     ///
     /// - parameter receiver: The receiver of `ForumEvent`.
     ///
-    func addChildReceiver(receiver: ForumEventReceiver)
+    func addChildReceiver(_ receiver: ForumEventReceiver)
 
     ///
     /// Removal of specific child receiver. Holds a strong reference to receiver.
     ///
-    func removeChildReceiver(receiver: ForumEventReceiver)
+    func removeChildReceiver(_ receiver: ForumEventReceiver)
 
     ///
     /// The receiver will prepare any connections and make sure it is ready to be used.

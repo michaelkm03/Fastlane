@@ -30,4 +30,8 @@ public struct ContentDeleteRequest: RequestType {
         self.url = url
         self.contentID = contentID
     }
+    
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws {
+        // Protocol conformance
+    }
 }

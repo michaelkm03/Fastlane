@@ -35,4 +35,8 @@ public struct PasswordResetRequest: RequestType {
         
         return urlRequest
     }
+    
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws {
+        // Protocol conformance
+    }
 }

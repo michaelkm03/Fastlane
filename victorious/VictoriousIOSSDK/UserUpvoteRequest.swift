@@ -30,4 +30,8 @@ public struct UserUpvoteRequest: RequestType {
         request.vsdk_addURLEncodedFormPost(["target_user_id": String(userID)])
         return request
     }
+    
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws {
+        // Protocol conformance
+    }
 }

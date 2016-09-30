@@ -18,4 +18,8 @@ public struct MarkAllNotificationsAsReadRequest: RequestType {
         request.httpMethod = "POST"
         return request
     }
+    
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws {
+        // Protocol conformance
+    }
 }

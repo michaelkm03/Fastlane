@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 extension UIAlertController {
     /// Creates an alert controller configured to show actions to take on an individual piece of content like flagging

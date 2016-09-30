@@ -15,4 +15,8 @@ public struct LogoutRequest: RequestType {
     public var urlRequest: URLRequest {
         return URLRequest(url: URL(string: "/api/logout")!)
     }
+    
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws {
+        // Protocol conformance
+    }
 }

@@ -55,15 +55,15 @@ extension ChatInterfaceDataSource {
     func cellForItem(for collectionView: UICollectionView, at indexPath: IndexPath) -> ChatFeedMessageCell {
         let chatFeedContent = content(at: (indexPath as NSIndexPath).row)
         let reuseIdentifier = chatFeedContent.content.reuseIdentifier
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! ChatFeedMessageCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! ChatFeedMessageCell
         decorate(cell, with: chatFeedContent)
         return cell
     }
     
     func registerCells(for collectionView: UICollectionView) {
-        collectionView.registerClass(ChatFeedMessageCell.self, forCellWithReuseIdentifier: ChatFeedMessageCell.imagePreviewCellReuseIdentifier)
-        collectionView.registerClass(ChatFeedMessageCell.self, forCellWithReuseIdentifier: ChatFeedMessageCell.videoPreviewCellReuseIdentifier)
-        collectionView.registerClass(ChatFeedMessageCell.self, forCellWithReuseIdentifier: ChatFeedMessageCell.nonMediaCellReuseIdentifier)
+        collectionView.register(ChatFeedMessageCell.self, forCellWithReuseIdentifier: ChatFeedMessageCell.imagePreviewCellReuseIdentifier)
+        collectionView.register(ChatFeedMessageCell.self, forCellWithReuseIdentifier: ChatFeedMessageCell.videoPreviewCellReuseIdentifier)
+        collectionView.register(ChatFeedMessageCell.self, forCellWithReuseIdentifier: ChatFeedMessageCell.nonMediaCellReuseIdentifier)
         CollectionLoadingView.register(in: collectionView, forSupplementaryViewKind: UICollectionElementKindSectionHeader)
     }
     
@@ -77,8 +77,8 @@ extension ChatInterfaceDataSource {
     }
     
     func updateTimestamps(in collectionView: UICollectionView) {
-        for indexPath in collectionView.indexPathsForVisibleItems() {
-            let cell = collectionView.cellForItemAtIndexPath(indexPath) as! ChatFeedMessageCell
+        for indexPath in collectionView.indexPathsForVisibleItems {
+            let cell = collectionView.cellForItem(at: indexPath) as! ChatFeedMessageCell
             cell.updateTimestamp()
         }
     }

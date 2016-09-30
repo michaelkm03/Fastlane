@@ -31,4 +31,8 @@ public struct CreateAlertRequest: RequestType {
         self.type = type
         self.additionalParameters = additionalParameters
     }
+    
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws {
+        // Protocol conformance
+    }
 }
