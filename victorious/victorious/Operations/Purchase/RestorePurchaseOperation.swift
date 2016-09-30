@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 final class RestorePurchasesOperation: AsyncOperation<Void> {
     let validationAPIPath: APIPath

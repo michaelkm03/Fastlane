@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 /// This operation tries to ask purchase manager to pre-fetch products from the store.
 /// We do this optimistically (no handling failures), because purchase manager will handle the refetch if this prefetch failed.

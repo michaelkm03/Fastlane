@@ -30,7 +30,7 @@ final class ProductFetchOperation: AsyncOperation<[VProduct]> {
             finish(.success(products))
         }
         
-        let failure = { (error: NSError?) in
+        let failure = { (error: Error?) in
             if let error = error {
                 finish(.failure(error))
             }
@@ -39,6 +39,6 @@ final class ProductFetchOperation: AsyncOperation<[VProduct]> {
             }
         }
         
-        purchaseManager.fetchProductsWithIdentifiers(productIdentifiers, success: success, failure: failure)
+        purchaseManager.fetchProducts(withIdentifiers: productIdentifiers, success: success, failure: failure)
     }
 }
