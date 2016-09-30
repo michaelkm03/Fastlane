@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 /// Provides UI for editing the currently logged in user's metadata
 /// Uses a save button that enables/disables when the entered data is valid.

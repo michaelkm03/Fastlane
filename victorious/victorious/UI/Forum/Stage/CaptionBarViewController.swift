@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 protocol CaptionBarViewControllerDelegate: class {
     func captionBarViewController(_ captionBarViewController: CaptionBarViewController, didTapOnUser user: UserModel)

@@ -91,7 +91,7 @@ class NativeCameraCreationFlowController: VCreationFlowController, UIImagePicker
             let mediaURL = NSURL.v_temporaryFileURL(withExtension: VConstantMediaExtensionPNG, inDirectory: kThumbnailDirectory) {
             
             //Image
-            imageData.write(to: mediaURL, options: .atomic)
+            try? imageData.write(to: mediaURL, options: .atomic)
             creationFlowDelegate.creationFlowController(self, finishedWithPreviewImage: rotatedImage, capturedMediaURL: mediaURL)
         } else {
             creationFlowDelegate.creationFlowControllerDidCancel?(self)

@@ -13,7 +13,7 @@ protocol ChatFeedMessageCellDelegate: class {
     func messageCellDidSelectAvatarImage(_ messageCell: ChatFeedMessageCell)
     func messageCellDidSelectMedia(_ messageCell: ChatFeedMessageCell)
     func messageCellDidLongPressContent(_ messageCell: ChatFeedMessageCell)
-    func messageCellDidToggleLikeContent(_ messageCell: ChatFeedMessageCell, completion: (() -> Void))
+    func messageCellDidToggleLikeContent(_ messageCell: ChatFeedMessageCell, completion: @escaping () -> Void)
     func messageCellDidSelectFailureButton(_ messageCell: ChatFeedMessageCell)
     func messageCellDidSelectReplyButton(_ messageCell: ChatFeedMessageCell)
     func messageCell(_ messageCell: ChatFeedMessageCell, didSelectLinkURL url: URL)

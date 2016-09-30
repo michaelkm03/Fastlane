@@ -6,6 +6,8 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
+import VictoriousIOSSDK
+
 extension VDependencyManager {
     var networkResources: VDependencyManager? {
         return childDependency(forKey: "networkResources")

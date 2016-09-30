@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 protocol TileCardDelegate: class {
     func didTap(on user: UserModel)

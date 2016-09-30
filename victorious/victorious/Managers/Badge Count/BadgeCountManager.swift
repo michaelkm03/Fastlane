@@ -6,6 +6,8 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
+import VictoriousIOSSDK
+
 /// An enum for different types of badge counts that are used in the app.
 enum BadgeCountType {
     case unreadNotifications

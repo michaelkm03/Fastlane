@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 extension VDependencyManager {
     var forumNetworkSource: ForumNetworkSource? {

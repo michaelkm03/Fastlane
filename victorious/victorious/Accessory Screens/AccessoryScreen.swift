@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 /// A struct that represents an accessory screen that comes from a template.
 struct AccessoryScreen {

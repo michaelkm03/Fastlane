@@ -20,15 +20,16 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
     init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
         
-        let leftViewController = dependencyManager.viewController(forKey: "leftNavigation")
-        let centerViewController = dependencyManager.viewController(forKey: "centerScreen")
-        let rightNavViewController = dependencyManager.viewController(forKey: "rightNavigation")
+        // Future: Get rid of the ! from Objc
+        let leftViewController = dependencyManager.viewController(forKey: "leftNavigation")!
+        let centerViewController = dependencyManager.viewController(forKey: "centerScreen")!
+        let rightNavViewController = dependencyManager.viewController(forKey: "rightNavigation")!
         
         if leftViewController == nil || centerViewController == nil {
             assertionFailure("`SideNavScaffoldViewController` requires `leftNavigation` and `centerScreen` subcomponents.")
         }
         
-        // Future: Get rid of the ! from Objc
+        
         self.centerViewController = centerViewController!
         self.rightNavViewController = rightNavViewController!
         

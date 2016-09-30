@@ -8,6 +8,7 @@
 
 import UIKit
 import SDWebImage
+import VictoriousIOSSDK
 
 typealias ImageCompletion = ((Result<UIImage>) -> Void)?
 

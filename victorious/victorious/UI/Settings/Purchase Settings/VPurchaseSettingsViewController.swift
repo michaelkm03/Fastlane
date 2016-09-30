@@ -8,17 +8,18 @@
 
 import UIKit
 import MBProgressHUD
+import VictoriousIOSSDK
 
 extension VPurchaseSettingsViewController {
     
     func setIsLoading(_ isLoading: Bool, title: String? = nil) {
         if isLoading {
-            MBProgressHUD.hideAllHUDsForView(self.view, animated: false)
-            let progressHUD = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-            progressHUD.mode = .Indeterminate
+            MBProgressHUD.hideAllHUDs(for: self.view, animated: false)
+            let progressHUD = MBProgressHUD.showAdded(to: self.view, animated: true)!
+            progressHUD.mode = .indeterminate
             progressHUD.labelText = title
         } else {
-            MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
+            MBProgressHUD.hideAllHUDs(for: self.view, animated: true)
         }
     }
     

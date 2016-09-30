@@ -291,8 +291,8 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         
         delegate?.chatFeed(self, didLongPress: content)
     }
-
-    func messageCellDidToggleLikeContent(_ messageCell: ChatFeedMessageCell, completion: @escaping (() -> Void)) {
+    
+    func messageCellDidToggleLikeContent(_ messageCell: ChatFeedMessageCell, completion: @escaping () -> Void) {
         guard let content = messageCell.chatFeedContent else {
             return
         }
