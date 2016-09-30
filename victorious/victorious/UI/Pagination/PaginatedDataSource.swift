@@ -122,8 +122,8 @@ import VictoriousIOSSDK
     func removeDeletedItems() {
         let oldCount = self.visibleItems.count
         self.visibleItems = self.visibleItems.v_orderedSetFitleredForDeletedObjects()
-        if oldCount > 0 && self.visibleItems == 0 {
-            // Setting state to `NoResults` will show a no content view, so we shouldonly
+        if oldCount > 0 && self.visibleItems.count == 0 {
+            // Setting state to `noResults` will show a no content view, so we shouldonly
             // do that if there was content previously.  Otherwise, the view could simply
             // not be finished loading yet.
             self.state = .noResults
@@ -238,7 +238,7 @@ private extension NSOrderedSet {
     }
     
     func v_orderedSetPurgedBy(_ limit: Int) -> NSOrderedSet {
-        let rangeStart = max(0, count - limit)
+        let rangeStart = Swift.max(0, count - limit)
         let rangeEnd = count
         let remaining = Array(array[rangeStart..<rangeEnd])
         return NSOrderedSet(array: remaining)

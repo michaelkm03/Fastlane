@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 /// Conformers can respond to the results fetched by this network data source
 protocol TutorialNetworkDataSourceDelegate: class {

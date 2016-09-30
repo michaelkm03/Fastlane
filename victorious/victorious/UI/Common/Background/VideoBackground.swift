@@ -64,7 +64,7 @@ private struct VideoBackgroundFetchRequest: RequestType {
         self.urlRequest = URLRequest(url: sequenceURL)
     }
     
-    func parseResponse(_ response: URLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> VVideoPlayerItem {
+    func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> VVideoPlayerItem {
         guard let payload = responseJSON["payload"].arrayValue.first, let url = url(from: payload) else {
             throw ResponseParsingError()
         }

@@ -40,7 +40,7 @@ class NativeCameraCreationFlowController: VCreationFlowController, UIImagePicker
         //Add a passthrough view on top of the whole UIImagePickerController since it isn't kvo
         //compliant for key cameraCaptureMode, doesn't support subclassing, and leaves no other
         //means (that I can find) of updating "allowsEditing" based on current cameraCaptureMode
-        let passthroughView = VPassthroughContainerView(frame: UIScreen.mainScreen().bounds)
+        let passthroughView = VPassthroughContainerView(frame: UIScreen.mainScreen.bounds)
         passthroughView.delegate = self
         nativeCamera.cameraOverlayView = passthroughView
         return nativeCamera
@@ -63,7 +63,7 @@ class NativeCameraCreationFlowController: VCreationFlowController, UIImagePicker
     }
     
     override func mediaType() -> MediaType {
-        return isRecordingVideo ? .Video : .Image
+        return isRecordingVideo ? .video : .Image
     }
     
     // MARK: - UIImagePickerControllerDelegate
@@ -74,7 +74,7 @@ class NativeCameraCreationFlowController: VCreationFlowController, UIImagePicker
         creationFlowDelegate.creationFlowControllerDidCancel?(self)
     }
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String: AnyObject]) {
+    private func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String: AnyObject]) {
         defer {
             dependencyManager.trackViewWillDisappear(for: self)
             let _ = try? AVAudioSession.sharedInstance().setCategory(audioSessionCategory)
@@ -88,7 +88,7 @@ class NativeCameraCreationFlowController: VCreationFlowController, UIImagePicker
         } else if let image = info[UIImagePickerControllerOriginalImage] as? UIImage,
             let rotatedImage = image.fixOrientation(),
             let imageData = UIImageJPEGRepresentation(rotatedImage, VConstantJPEGCompressionQuality),
-            let mediaURL = URL.v_temporaryFileURLWithExtension(VConstantMediaExtensionPNG, inDirectory: kThumbnailDirectory) {
+            let mediaURL = (URL as NSURL).v_temporaryFileURLWithExtension(VConstantMediaExtensionPNG, inDirectory: kThumbnailDirectory) {
             
             //Image
             imageData.writeToURL(mediaURL, atomically: true)

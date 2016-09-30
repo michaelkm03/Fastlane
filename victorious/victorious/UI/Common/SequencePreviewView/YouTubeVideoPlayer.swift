@@ -86,7 +86,7 @@ class YouTubeVideoPlayer: NSObject, VVideoPlayer, YTPlayerViewDelegate {
     }
 
     func seek(toTimeSeconds timeSeconds: TimeInterval) {
-        playerView.seekToSeconds(Float(timeSeconds), allowSeekAhead: true)
+        playerView.seek(toSeconds: Float(timeSeconds), allowSeekAhead: true)
     }
     
     func reset() {
@@ -107,14 +107,14 @@ class YouTubeVideoPlayer: NSObject, VVideoPlayer, YTPlayerViewDelegate {
     }
     
     func pauseAtStart() {
-        playerView.seekToSeconds(0.0, allowSeekAhead: true)
+        playerView.seek(toSeconds: 0.0, allowSeekAhead: true)
         playerView.pauseVideo()
     }
     
     func playFromStart() {
         let wasPlaying = isPlaying
         if !wasPlaying {
-            playerView.seekToSeconds(0.0, allowSeekAhead: true)
+            playerView.seek(toSeconds: 0.0, allowSeekAhead: true)
             playerView.playVideo()
         }
     }
@@ -189,22 +189,21 @@ class YouTubeVideoPlayer: NSObject, VVideoPlayer, YTPlayerViewDelegate {
 
 private extension YTPlayerView {
     
-    func setVolume( _ level: Int ) {
-        evaluate( "player.setVolume( \(level) );" )
+    func setVolume(_ level: Int) {
+        _ = evaluate("player.setVolume( \(level) );")
     }
     
     func mute() {
-        evaluate( "console.log( player )" )
-        evaluate( "player.mute();" )
+        _ = evaluate("console.log( player )")
+        _ = evaluate("player.mute();")
     }
     
     func unmute() {
-        evaluate( "player.unMute();" )
+        _ = evaluate("player.unMute();")
     }
     
     func evaluate( _ javaScriptString: String ) -> String? {
-        if let webView = webView, let result = webView.stringByEvaluatingJavaScriptFromString( javaScriptString ) {
-            //print( "Evaluating javascript (\(javaScriptString)) -----> \(result)" )
+        if let webView = webView, let result = webView.stringByEvaluatingJavaScript(from: javaScriptString) {
             return result
         }
         return nil

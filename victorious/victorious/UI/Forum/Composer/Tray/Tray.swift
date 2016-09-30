@@ -8,6 +8,7 @@
 
 import Foundation
 import MBProgressHUD
+import VictoriousIOSSDK
 
 /// Conformers describe a object that allows for the selection of a piece of media
 protocol Tray: TrayDataSourceDelegate {

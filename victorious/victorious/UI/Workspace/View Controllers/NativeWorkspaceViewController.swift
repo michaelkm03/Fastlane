@@ -113,8 +113,8 @@ class NativeWorkspaceViewController: VWorkspaceViewController, UIVideoEditorCont
             return
         }
         animator.dismissing = true
-        presentingViewController?.dismissViewControllerAnimated(true) {
-            self.callCompletionWithSuccess(true, previewImage: previewImage, renderedMediaURL: editedMediaURL)
+        presentingViewController?.dismiss(animated: true) {
+            self.callCompletion(withSuccess: true, previewImage: previewImage, renderedMediaURL: editedMediaURL)
         }
     }
 }
