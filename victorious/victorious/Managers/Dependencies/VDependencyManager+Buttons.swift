@@ -12,6 +12,6 @@ import Foundation
 extension VDependencyManager {
     
     func button(forKey key: String) -> UIButton? {
-        return templateValueOfType(UIButton.self, forKey: key) as? UIButton
+        return templateValue(ofType: UIButton.self, forKey: key) as? UIButton
     }
 }
