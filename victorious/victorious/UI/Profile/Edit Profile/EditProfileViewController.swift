@@ -51,13 +51,13 @@ class EditProfileViewController: UIViewController {
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.backgroundView = dependencyManager?.background().viewForBackground()
 
-        keyboardManager = VKeyboardNotificationManager(keyboardWillShowBlock: { [weak self] _,endFrame, _, _ in
+        keyboardManager = VKeyboardNotificationManager(keyboardWillShow: { [weak self] _,endFrame, _, _ in
             if let existingInsets = self?.tableView.contentInset {
                 let newInsets = UIEdgeInsets(top: existingInsets.top, left: existingInsets.left, bottom: endFrame.height, right: existingInsets.right)
                 self?.tableView.contentInset = newInsets
                 self?.tableView.scrollIndicatorInsets = newInsets
             }
-        }, willHideBlock: { _, _, _, _ in
+            }, willHide: { _, _, _, _ in
                 
         }, willChangeFrameBlock: { [weak self] _, endFrame, _, _ in
             if let existingInsets = self?.tableView.contentInset {
@@ -81,7 +81,7 @@ class EditProfileViewController: UIViewController {
     // MARK: - Target Action
     
     @IBAction func tappedCancel(_ sender: UIBarButtonItem) {
-        self.navigationController?.popViewController(animated: true)
+        let _ = self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction fileprivate func tappedSave(_ sender: UIBarButtonItem) {
@@ -102,14 +102,14 @@ class EditProfileViewController: UIViewController {
         let accountUpdateClosure = {
             AccountUpdateOperation(profileUpdate: profileUpdate)?.queue() { result in
                 switch result {
-                    case .success: self.navigationController?.popViewControllerAnimated(true)
+                    case .success:
+                        let _ = self.navigationController?.popViewControllerAnimated(true)
                     default:
                         self.v_showErrorDefaultError()
                         enableUIClosure()
                 }
             }
         }
-        
         
         if let username = profileUpdate.username {
             let appID = VEnvironmentManager.sharedInstance().currentEnvironment.appID.stringValue
@@ -154,7 +154,7 @@ class EditProfileViewController: UIViewController {
             self?.updateUI()
         }
         
-        tableView.dataSource = dataSource as! UITableViewDataSource?
+        tableView.dataSource = dataSource
     }
     
     fileprivate func updateUI() {
@@ -174,15 +174,15 @@ class EditProfileViewController: UIViewController {
         profilePicturePresenter = VEditProfilePicturePresenter(dependencyManager: dependencyManager)
         profilePicturePresenter?.resultHandler = { [weak self] success, previewImage, mediaURL in
             defer {
-                self?.dismissViewControllerAnimated(true, completion: nil)
+                self?.dismiss(animated: true, completion: nil)
             }
             
-            guard success else {
+            guard success, let previewImage = previewImage else {
                 return
             }
             self?.dataSource?.useNewAvatar(previewImage, fileURL: mediaURL)
         }
-        profilePicturePresenter?.presentOnViewController(self)
+        profilePicturePresenter?.present(on: self)
     }
 
     fileprivate func animateErrorInThenOut(_ localizedErrorString: String) {

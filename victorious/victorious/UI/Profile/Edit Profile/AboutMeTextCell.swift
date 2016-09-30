@@ -40,8 +40,8 @@ class AboutMeTextCell: UITableViewCell, UITextViewDelegate {
     
     // MARK: - UITextViewDelegate
     
-    func textView(_ textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
-        let newText = (textView.text as NSString).stringByReplacingCharactersInRange(range, withString: text)
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        let newText = (textView.text as NSString).replacingCharacters(in: range, with: text)
         let isValid = newText.characters.count < 256;
         if !isValid {
             textView.v_performShakeAnimation()
@@ -81,11 +81,11 @@ class AboutMeTextCell: UITableViewCell, UITextViewDelegate {
     // MARK: - Misc Private Functions
     
     fileprivate func notifySizeChangeIfNeeded() {
-        let textSize = textView.sizeThatFits(CGSize(width: textView.bounds.width, height: CGFloat.max))
+        let textSize = textView.sizeThatFits(CGSize(width: textView.bounds.width, height: CGFloat.greatestFiniteMagnitude))
         guard textSize.height != contentView.bounds.height else {
             return
         }
-        onDesiredHeightChangeClosure?(desiredHeight: textSize.height)
+        onDesiredHeightChangeClosure?(textSize.height)
     }
 }
 

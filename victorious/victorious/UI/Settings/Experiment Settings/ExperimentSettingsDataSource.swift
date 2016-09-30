@@ -96,12 +96,12 @@ class ExperimentSettingsDataSource: NSObject {
                         self.sections.append(Section(title: layer, experiments: experimentsInLayer))
                     }
                     
-                    self.state = self.sections.count > 0 ? .Content : .NoContent
+                    self.state = self.sections.count > 0 ? .content : .noContent
                     self.delegate?.tableView.reloadData()
                 
                 case .failure(_), .cancelled:
                     self.sections = []
-                    self.state = .Error
+                    self.state = .error
             }
         }
     }
@@ -115,7 +115,7 @@ class ExperimentSettingsDataSource: NSObject {
             for cell in tableView.visibleCells {
                 if let switchCell = cell as? VSettingsSwitchCell {
                     switchCell.switchColor = self.tintColor.current
-                    if let indexPath = tableView.indexPathForCell( switchCell ) {
+                    if let indexPath = tableView.indexPath(for: switchCell) {
                         let experiment = self.sections[ indexPath.section ].experiments[ indexPath.row ]
                         let nameWithID = "\(experiment.name) (\(experiment.id))"
                         switchCell.setTitle(nameWithID, value: experiment.isEnabled)
@@ -128,19 +128,19 @@ class ExperimentSettingsDataSource: NSObject {
 
 extension ExperimentSettingsDataSource: VSettingsSwitchCellDelegate {
     
-    func settingsDidUpdateFromCell(_ cell: VSettingsSwitchCell, newValue: Bool, key: String) {
-        if let indexPath = delegate?.tableView.indexPathForCell(cell) {
+    func settingsDidUpdate(from cell: VSettingsSwitchCell, newValue: Bool, key: String) {
+        if let indexPath = delegate?.tableView.indexPath(for: cell) {
             sections[indexPath.section].experiments[indexPath.row].isEnabled = newValue
             
             saveSettings()
             
             // Update values only on visible cells that need updating
             for index in sections[indexPath.section].experiments.indices {
-                let otherCellIndexPath = NSIndexPath(forRow: index, inSection: indexPath.section)
+                let otherCellIndexPath = IndexPath(row: index, section: indexPath.section)
                 
                 if
                     otherCellIndexPath != indexPath,
-                    let cell = delegate?.tableView.cellForRowAtIndexPath(otherCellIndexPath) as? VSettingsSwitchCell
+                    let cell = delegate?.tableView.cellForRow(at: otherCellIndexPath) as? VSettingsSwitchCell
                 {
                     cell.setValue(false, animated: true)
                 }
@@ -179,7 +179,7 @@ extension ExperimentSettingsDataSource: UITableViewDataSource {
                     let font = self.delegate?.dependencyManager?.font(forKey:  VDependencyManagerHeaderFontKey ) {
                         button.primaryColor = color
                         button.titleLabel?.font = font
-                        button.style = .Primary
+                        button.style = .primary
                 }
                 cell.delegate = self
                 return cell
@@ -187,10 +187,10 @@ extension ExperimentSettingsDataSource: UITableViewDataSource {
         
         let identifier = VSettingsSwitchCell.suggestedReuseIdentifier()
         if self.state == .content,
-            let cell = tableView.dequeueReusableCellWithIdentifier( identifier, forIndexPath: indexPath ) as? VSettingsSwitchCell {
+            let cell = tableView.dequeueReusableCell( withIdentifier: identifier, for: indexPath ) as? VSettingsSwitchCell {
                 let experiment = self.sections[ (indexPath as NSIndexPath).section ].experiments[ indexPath.row ]
                 let nameWithID = "\(experiment.name) (\(experiment.id))"
-                cell.setTitle( nameWithID, value: experiment.isEnabled.boolValue )
+                cell.setTitle( nameWithID, value: experiment.isEnabled )
                 cell.delegate = self
                 cell.switchColor = self.tintColor.current
                 return cell

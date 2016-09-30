@@ -28,11 +28,11 @@ struct SubstringLinkDetector: LinkDetector {
     }
     
     func detectLinks(in string: String) -> [Range<String.Index>] {
-        var searchRange = string.characters.indices
+        var searchRange = string.startIndex ..< string.endIndex
         var ranges = [Range<String.Index>]()
         
         while let range = string.range(of: substring, options: [], range: searchRange, locale: nil) {
-            searchRange = range.endIndex ..< string.endIndex
+            searchRange = range.upperBound ..< string.endIndex
             ranges.append(range)
         }
         

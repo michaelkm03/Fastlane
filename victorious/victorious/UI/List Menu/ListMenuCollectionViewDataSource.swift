@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 /// The enum for different sections of List Menu
 /// If you add a section, please make sure to update `numberOfSections` too
@@ -78,14 +79,14 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         let listMenuSection = ListMenuSection(rawValue: indexPath.section)!
 
         switch listMenuSection {
-            case .creator: return dequeueProperCell(dataSource: creatorDataSource, for: collectionView, at: indexPath as NSIndexPath)
-            case .community: return dequeueProperCell(dataSource: communityDataSource, for: collectionView, at: indexPath as NSIndexPath)
-            case .hashtags: return dequeueProperCell(dataSource: hashtagDataSource, for: collectionView, at: indexPath as NSIndexPath)
-            case .chatRooms: return dequeueProperCell(dataSource: chatRoomsDataSource, for: collectionView, at: indexPath as NSIndexPath)
+            case .creator: return dequeueProperCell(dataSource: creatorDataSource, for: collectionView, at: indexPath)
+            case .community: return dequeueProperCell(dataSource: communityDataSource, for: collectionView, at: indexPath)
+            case .hashtags: return dequeueProperCell(dataSource: hashtagDataSource, for: collectionView, at: indexPath)
+            case .chatRooms: return dequeueProperCell(dataSource: chatRoomsDataSource, for: collectionView, at: indexPath)
         }
     }
     
-    func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let headerIdentifier = ListMenuSectionHeaderView.defaultReuseIdentifier
         let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerIdentifier , for: indexPath as IndexPath) as! ListMenuSectionHeaderView
         let listMenuSection = ListMenuSection(rawValue: indexPath.section)!
@@ -115,13 +116,13 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         collectionView.register(nib, forCellWithReuseIdentifier: identifier)
     }
     
-    private func dequeueLoadingCell(from collectionView: UICollectionView, at indexPath: NSIndexPath) -> ActivityIndicatorCollectionCell {
+    private func dequeueLoadingCell(from collectionView: UICollectionView, at indexPath: IndexPath) -> ActivityIndicatorCollectionCell {
         let loadingCell = collectionView.dequeueReusableCell(withReuseIdentifier: ActivityIndicatorCollectionCell.defaultReuseIdentifier, for: indexPath as IndexPath) as! ActivityIndicatorCollectionCell
         loadingCell.color = dependencyManager.activityIndicatorColor
         return loadingCell
     }
     
-    private func dequeueNoContentCell(from collectionView: UICollectionView, at indexPath: NSIndexPath) -> UICollectionViewCell {
+    private func dequeueNoContentCell(from collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell {
         let noContentCell = collectionView.dequeueReusableCell(withReuseIdentifier: ListMenuNoContentCollectionViewCell.defaultReuseIdentifier, for: indexPath as IndexPath) as! ListMenuNoContentCollectionViewCell
         
         noContentCell.dependencyManager = dependencyManager
@@ -130,7 +131,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         return noContentCell
     }
 
-    private func dequeueProperCell<DataSource: ListMenuSectionDataSource where DataSource.Cell: UICollectionViewCell>(dataSource: DataSource, for collectionView: UICollectionView, at indexPath: NSIndexPath) -> UICollectionViewCell {
+    private func dequeueProperCell<DataSource: ListMenuSectionDataSource where DataSource.Cell: UICollectionViewCell>(dataSource: DataSource, for collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell {
         switch dataSource.state {
             case .loading: return dequeueLoadingCell(from: collectionView, at: indexPath)
             case .items: return dataSource.dequeueItemCell(from: collectionView, at: indexPath)
