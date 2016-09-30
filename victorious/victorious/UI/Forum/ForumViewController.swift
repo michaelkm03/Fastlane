@@ -288,7 +288,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         
         chatFeed?.nextSender = self
         //Initialize the title view. This will later be resized in the viewWillAppear, once it has actually been added to the navigation stack
-        navBarTitleView = ForumNavBarTitleView(dependencyManager: self.dependencyManager, frame: CGRect(x: 0, y: 0, width: 120, height: 45))
+        navBarTitleView = ForumNavBarTitleView(dependencyManager: self.dependencyManager, frame: CGRect(x: 0, y: 0, width: 80, height: 45))
         navigationController?.navigationBar.barStyle = .Black
         if let button = closeButton {
             button.addTarget(self, action: #selector(onClose), forControlEvents: .TouchUpInside)
