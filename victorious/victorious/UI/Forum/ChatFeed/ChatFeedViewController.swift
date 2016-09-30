@@ -189,7 +189,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return dataSource.collectionView(collectionView, sizeForItemAtIndexPath: indexPath)
+        return dataSource.collectionView(collectionView, desiredCellSizeAt: indexPath)
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
@@ -371,14 +371,14 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
             return
         }
         
-        timerManager = VTimerManager.addTimerManagerWithTimeInterval(
-            ChatFeedViewController.timestampUpdateInterval,
+        timerManager = VTimerManager.add(
+            withTimeInterval: ChatFeedViewController.timestampUpdateInterval,
             target: self,
             selector: #selector(onTimerTick),
             userInfo: nil,
             repeats: true,
-            toRunLoop: RunLoop.main,
-            withRunMode: RunLoopMode.commonModes
+            to: RunLoop.main,
+            withRunMode: RunLoopMode.commonModes.rawValue
         )
         
         onTimerTick()

@@ -98,11 +98,11 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
                 let newItems = createNewItemsArray(newItems)
                 
                 if stashingEnabled {
-                    stashedItems.appendContentsOf(newItems)
+                    stashedItems.append(contentsOf: newItems)
                     delegate?.chatFeedDataSource(self, didStashItems: newItems)
                 }
                 else {
-                    unstashedItems.appendContentsOf(newItems)
+                    unstashedItems.append(contentsOf: newItems)
                     delegate?.chatFeedDataSource(self, didLoadItems: newItems, loadingType: .newer)
                 }
                 
@@ -150,17 +150,17 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
         return numberOfItems(for: collectionView, in: section)
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAtIndexPath indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = cellForItem(for: collectionView, at: indexPath)
         cell.showsReplyButton = shouldShowReplyButtons
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, sizeForItemAtIndexPath indexPath: IndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, desiredCellSizeAt indexPath: IndexPath) -> CGSize {
         return desiredCellSize(for: collectionView, at: indexPath)
     }
     
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: IndexPath) -> UICollectionReusableView {
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         if kind == UICollectionElementKindSectionHeader {
             return CollectionLoadingView.dequeue(from: collectionView, forSupplementaryViewKind: kind, at: indexPath)
         }

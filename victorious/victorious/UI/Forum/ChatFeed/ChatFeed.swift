@@ -72,7 +72,7 @@ extension ChatFeed {
             newItemsController?.hide()
         }
         
-        let collectionView = self.collectionView
+        let collectionView = self.collectionView!
         let wasScrolledToBottom = collectionView.isScrolledToBottom(withTolerance: Constants.scrolledToBottomTolerance)
         let oldPendingItemCount = max(0, chatInterfaceDataSource.pendingItems.count - newPendingContentCount)
         let insertingAbovePendingContent = oldPendingItemCount > 0 && newPendingContentCount <= 0
@@ -96,7 +96,7 @@ extension ChatFeed {
     }
     
     fileprivate func updateCollectionView(with newItems: [ChatFeedContent], loadingType: PaginatedLoadingType, newPendingContentCount: Int, removedPendingContentIndices: [Int], completion: @escaping () -> Void) {
-        let collectionView = self.collectionView
+        let collectionView = self.collectionView!
         let unstashedItemCount = chatInterfaceDataSource.unstashedItems.count
         let oldUnstashedItemCount = unstashedItemCount - newItems.count
         let itemCount = chatInterfaceDataSource.itemCount
@@ -106,8 +106,8 @@ extension ChatFeed {
         collectionView.performBatchUpdates({
             switch loadingType {
                 case .newer:
-                    collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
-                        NSIndexPath(forItem: oldUnstashedItemCount + $0, inSection: 0)
+                    collectionView.insertItems(at: (0 ..< newItems.count).map {
+                        IndexPath(item: oldUnstashedItemCount + $0, section: 0)
                     })
                 
                 case .older:
@@ -118,21 +118,22 @@ extension ChatFeed {
                         assertionFailure("Chat feed's collection view did not have the required layout type ChatFeedCollectionViewLayout.")
                     }
                     
-                    collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
-                        NSIndexPath(forItem: $0, inSection: 0)
+                    collectionView.insertItems(at: (0 ..< newItems.count).map {
+                        IndexPath(item: $0, section: 0)
                     })
                 
                 case .refresh:
                     // Calling reloadData in here causes a crash
-                    collectionView.reloadSections(NSIndexSet(index: 0))
+                    collectionView.reloadSections(IndexSet(integer: 0))
             }
             
-            collectionView.insertItemsAtIndexPaths((0 ..< newPendingContentCount).map {
-                NSIndexPath(forItem: itemCount - 1 - $0, inSection: 0)
+            collectionView.insertItems(at: (0 ..< newPendingContentCount).map {
+                IndexPath(item: itemCount - 1 - $0, section: 0)
             })
             
-            collectionView.deleteItemsAtIndexPaths(removedPendingContentIndices.map {
-                NSIndexPath(forItem: oldUnstashedItemCount + $0, inSection: 0)
+            collectionView.deleteItems(at: removedPendingContentIndices.map {
+                
+                IndexPath(item: oldUnstashedItemCount + $0, section: 0)
             })
         }, completion: { _ in
             completion()
