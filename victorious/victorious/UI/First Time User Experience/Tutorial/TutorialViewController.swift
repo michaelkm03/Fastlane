@@ -56,7 +56,7 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
 
     // MARK: - Initialization
     
-    static func new(with dependencyManager: VDependencyManager) -> TutorialViewController {
+    static func new(withDependencyManager dependencyManager: VDependencyManager) -> TutorialViewController {
         let viewController: TutorialViewController = TutorialViewController.v_initialViewControllerFromStoryboard()
         viewController.dependencyManager = dependencyManager
         

@@ -64,7 +64,7 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
 
     // MARK: - Initialization
 
-    class func new(with dependencyManager: VDependencyManager) -> VIPGateViewController {
+    class func new(withDependencyManager dependencyManager: VDependencyManager) -> VIPGateViewController {
         let viewController: VIPGateViewController = VIPGateViewController.v_initialViewControllerFromStoryboard()
         viewController.dependencyManager = dependencyManager
         viewController.title = dependencyManager.string(forKey: "title")
