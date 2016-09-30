@@ -25,31 +25,31 @@ final class VIPSelectSubscriptionOperation: AsyncOperation<VProduct>, UIAlertVie
         return .main
     }
     
-    override func execute(_ finish: (_ result: OperationResult<VProduct>) -> Void) {
+    override func execute(_ finish: @escaping (_ result: OperationResult<VProduct>) -> Void) {
         guard willShowPrompt else {
             if let firstProduct = products.first {
-                finish(result: .success(firstProduct))
+                finish(.success(firstProduct))
             }
             else {
                 let error = NSError(domain: "No valid product", code: -1, userInfo: ["products: ": products])
-                finish(result: .failure(error))
+                finish(.failure(error))
             }
             return
         }
         
-        let alert = UIAlertController(title: Strings.alertTitle, message: Strings.alertMessage, preferredStyle: .Alert)
+        let alert = UIAlertController(title: Strings.alertTitle, message: Strings.alertMessage, preferredStyle: .alert)
         for product in products {
-            let action = UIAlertAction(title: product.price + " " + product.localizedDescription, style: .Default) { action in
-                finish(result: .success(product))
+            let action = UIAlertAction(title: product.price + " " + product.localizedDescription, style: .default) { action in
+                finish(.success(product))
             }
             alert.addAction(action)
         }
         
-        let action = UIAlertAction(title: Strings.cancel, style: .Default) { action in
-            finish(result: .cancelled)
+        let action = UIAlertAction(title: Strings.cancel, style: .default) { action in
+            finish(.cancelled)
         }
         alert.addAction(action)
-        originViewController.presentViewController(alert, animated: true, completion: nil)
+        originViewController.present(alert, animated: true, completion: nil)
     }
     
     fileprivate struct Strings {

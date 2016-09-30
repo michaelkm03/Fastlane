@@ -53,9 +53,9 @@ final class AccountCreateOperation: AsyncOperation<AccountCreateResponse> {
                 parameters: strongSelf.parameters
             ).queue { loginSuccessResult in
                 switch loginSuccessResult {
-                    case .success: finish(result: requestResult)
-                    case .failure(let error): finish(result: .failure(error))
-                    case .cancelled: finish(result: .cancelled)
+                    case .success: finish(requestResult)
+                    case .failure(let error): finish(.failure(error))
+                    case .cancelled: finish(.cancelled)
                 }
             }
         }
