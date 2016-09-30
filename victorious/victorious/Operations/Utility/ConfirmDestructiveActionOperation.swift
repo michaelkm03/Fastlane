@@ -29,25 +29,25 @@ final class ConfirmDestructiveActionOperation: AsyncOperation<Void> {
     }
     
     override func execute(_ finish: @escaping (_ output: OperationResult<Void>) -> Void) {
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.addAction(
             UIAlertAction(title: self.cancelTitle,
-                style: .Cancel,
+                style: .cancel,
                 handler: { action in
-                    finish(output: .cancelled)
+                    finish(.cancelled)
                 }
             )
         )
         
         alertController.addAction(
             UIAlertAction(title: self.actionTitle,
-                style: .Destructive,
+                style: .destructive,
                 handler: { action in
-                    finish(output: .success())
+                    finish(.success())
                 }
             )
         )
         
-        originViewController.presentViewController(alertController, animated: true, completion: nil)
+        originViewController.present(alertController, animated: true, completion: nil)
     }
 }
