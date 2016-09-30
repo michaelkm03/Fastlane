@@ -27,6 +27,7 @@ enum ListMenuSection: Int {
 class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, ListMenuSectionDataSourceDelegate {
     private struct Constants {
         struct Keys {
+            static let creatorListURL = "listOfCreatorsURL"
             static let trendingHashtagsURL = "trendingHashtagsURL"
             static let chatRoomsURL = "chat.rooms.URL"
             static let chatRoomStreamURL = "streamURL"
@@ -37,7 +38,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
     private weak var listMenuViewController: ListMenuViewController?
     private let dependencyManager: VDependencyManager
     let communityDataSource: NewListMenuSectionDataSource<ListMenuCommunityItem, SyncOperation<[ListMenuCommunityItem]>>
-    let creatorDataSource: ListMenuCreatorDataSource
+    let creatorDataSource: NewListMenuSectionDataSource<UserModel, RequestOperation<CreatorListRequest>>
     let newChatRoomsDataSource: NewListMenuSectionDataSource<ChatRoom, RequestOperation<ChatRoomsRequest>>
     let hashtagDataSource: NewListMenuSectionDataSource<Hashtag, RequestOperation<TrendingHashtagsRequest>>
     private let subscribeButton: SubscribeButton
@@ -57,6 +58,25 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         )
 
         if
+            let apiPath = dependencyManager.apiPathForKey(Constants.Keys.creatorListURL),
+            let request = CreatorListRequest(apiPath: apiPath) {
+
+            creatorDataSource = NewListMenuSectionDataSource(
+                dependencyManager: dependencyManager.creatorsChildDependency,
+                cellConfiguration: { cell, item in
+                    cell.titleLabel.text = item.displayName
+                    cell.avatarView.user = item
+                },
+                createOperation: { RequestOperation(request: request) },
+                processOutput: { $0 },
+                section: .creator
+            )
+        } else {
+            Log.warning("Missing creator list API path")
+            return
+        }
+
+        if
             let apiPath = dependencyManager.networkResources?.apiPathForKey(Constants.Keys.trendingHashtagsURL),
             let request = TrendingHashtagsRequest(apiPath: apiPath) {
 
@@ -68,7 +88,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
                 section: .hashtags
             )
         } else {
-            Log.warning("Missing chat rooms API path")
+            Log.warning("Missing trnding hashtags list API path")
             return
         }
 
