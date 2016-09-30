@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 /// The button that displays the user's profile image in the side nav scaffold and takes them to their profile.
 ///
