@@ -114,13 +114,13 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
             return .zero
         }
         
-        if let cachedValue = cachedSizes.object(forKey: searchText as NSString) as? NSValue {
-            return cachedValue.CGSizeValue
+        if let cachedValue = cachedSizes.object(forKey: searchText as NSString) {
+            return cachedValue.cgSizeValue
         }
         
         let boundingRect = (searchText as NSString).boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: UIScreen.main.bounds.height), options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName : cellDecorator.font], context: nil)
         let size = CGSize(width: ceil(boundingRect.width) + 10, height: ceil(boundingRect.height) + 10)
-        cachedSizes.setObject(NSValue(CGSize: size), forKey: searchText as NSString)
+        cachedSizes.setObject(NSValue(cgSize: size), forKey: searchText as NSString)
         return size
     }
     
