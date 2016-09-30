@@ -6,6 +6,8 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
+import VictoriousIOSSDK
+
 final class ListMenuHashtagCollectionViewCell: UICollectionViewCell, ListMenuSectionCell {
     
     @IBOutlet fileprivate weak var titleLabel: UILabel!

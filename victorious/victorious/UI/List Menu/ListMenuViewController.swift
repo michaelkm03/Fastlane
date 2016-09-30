@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 struct ListMenuSelectedItem {
     let streamAPIPath: APIPath

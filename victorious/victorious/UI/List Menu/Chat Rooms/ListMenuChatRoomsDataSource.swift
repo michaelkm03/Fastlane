@@ -6,6 +6,8 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
+import VictoriousIOSSDK
+
 final class ListMenuChatRoomsDataSource: ListMenuSectionDataSource {
     fileprivate struct Constants {
         struct Keys {

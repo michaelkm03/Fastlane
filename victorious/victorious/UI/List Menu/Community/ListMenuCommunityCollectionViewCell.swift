@@ -14,7 +14,7 @@ class ListMenuCommunityCollectionViewCell: UICollectionViewCell, ListMenuSection
     
     override var isSelected: Bool {
         didSet {
-            updateCellBackgroundColor(to: contentView, selectedColor: dependencyManager?.highlightedBackgroundColor, isSelected: selected)
+            updateCellBackgroundColor(to: contentView, selectedColor: dependencyManager?.highlightedBackgroundColor, isSelected: isSelected)
         }
     }
 
