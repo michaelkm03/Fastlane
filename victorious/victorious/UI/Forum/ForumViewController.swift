@@ -153,7 +153,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         UploadManagerHelper.addUploadManagerToViewController(viewController, topInset: topInset)
     }
     
-    func uploadProgressViewController(upvc: VUploadProgressViewController!, isNowDisplayingThisManyUploads uploadCount: Int) {
+    func uploadProgressViewController(_ upvc: VUploadProgressViewController!, isNowDisplayingThisManyUploads uploadCount: Int) {
         updateUploadProgressViewControllerVisibility()
     }
     
