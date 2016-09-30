@@ -12,12 +12,18 @@ protocol FixedWebContentPresenter {
 
 extension FixedWebContentPresenter where Self: UIViewController {
     func showFixedWebContent(type: FixedWebContentType, withDependencyManager dependencyManager: VDependencyManager) {
-        guard let webContentDependencyManager = dependencyManager.childDependencyForKey("static.webcontent.background") else {
+        guard let webContentDependencyManager = dependencyManager.fixedWebContentBackground else {
             return
         }
         
         let router = Router(originViewController: self, dependencyManager: webContentDependencyManager)
         let configuration = ExternalLinkDisplayConfiguration(addressBarVisible: false, forceModal: true, isVIPOnly: false, title: type.title)
         router.navigate(to: DeeplinkDestination.externalURL(url: dependencyManager.urlForFixedWebContent(type), configuration: configuration), from: nil)
+    }
+}
+
+private extension VDependencyManager {
+    var fixedWebContentBackground: VDependencyManager? {
+        return childDependencyForKey("static.webcontent.background")
     }
 }
