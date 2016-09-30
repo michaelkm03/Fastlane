@@ -40,13 +40,13 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        collectionView.hidden = true
+        collectionView.isHidden = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         dataSource.fetchStickers()
-        collectionView.hidden = false
+        collectionView.isHidden = false
     }
     
     override func viewDidLoad() {
@@ -58,13 +58,13 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
     
     // MARK: - UICollectionViewDelegate
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: IndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard
             let sticker = dataSource.asset(atIndex: (indexPath as NSIndexPath).item),
             let remoteID = sticker.remoteID ,
             dataSource.trayState == .populated
         else {
-            if let _ = collectionView.cellForItemAtIndexPath(indexPath) as? TrayRetryLoadCollectionViewCell {
+            if let _ = collectionView.cellForItem(at: indexPath) as? TrayRetryLoadCollectionViewCell {
                 dataSource.fetchStickers()
             }
             else {
@@ -77,7 +77,7 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
             switch state {
                 case .success(let result):
                     self?.progressHUD?.hide(true)
-                    let localAssetParameters = ContentMediaAsset.LocalAssetParameters(contentType: .gif, remoteID: remoteID, source: nil, size: sticker.assetSize, url: sticker.sourceMediaURL)
+                    let localAssetParameters = ContentMediaAsset.LocalAssetParameters(contentType: .gif, remoteID: remoteID, source: nil, size: sticker.assetSize, url: sticker.sourceMediaURL as NSURL?)
                     guard
                         let strongSelf = self,
                         let asset = ContentMediaAsset(initializationParameters: localAssetParameters),
@@ -96,7 +96,7 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
     
     // MARK: - UICollectionViewDelegateFlowLayout
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         guard
             let _ = dataSource.asset(atIndex: indexPath.row) ,
             dataSource.trayState == .populated
@@ -109,15 +109,15 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
         return CGSize(width: side, height: side)
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return Constants.collectionViewContentInsets
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return Constants.interItemSpace
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return Constants.interItemSpace
     }
     
@@ -135,7 +135,7 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
                 let previewImage = previewImage,
                 let mediaURL = mediaURL {
                 mediaSearchResultObject.exportPreviewImage = previewImage
-                mediaSearchResultObject.exportMediaURL = mediaURL
+                mediaSearchResultObject.exportMediaURL = mediaURL as URL
                 completionBlock(.success(mediaSearchResultObject))
             } else if let error = error {
                 completionBlock(.failure(error))

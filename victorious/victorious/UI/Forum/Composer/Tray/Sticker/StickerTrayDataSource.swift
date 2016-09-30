@@ -41,10 +41,10 @@ class StickerTrayDataSource: PaginatedDataSource, TrayDataSource {
     
     // This method must be called on the collection view that this object will provide cells for prior to dequeueing any cells
     func registerCells(withCollectionView collectionView: UICollectionView) {
-        collectionView.registerClass(TrayLoadingCollectionViewCell.self, forCellWithReuseIdentifier: Constants.loadingCellReuseIdentifier)
-        collectionView.registerClass(TrayRetryLoadCollectionViewCell.self, forCellWithReuseIdentifier: Constants.retryCellReuseIdentifier)
-        collectionView.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: Constants.defaultCellReuseIdentifier)
-        collectionView.registerNib(MediaSearchPreviewCell.associatedNib, forCellWithReuseIdentifier: Constants.stickerCellReuseIdentifier)
+        collectionView.register(TrayLoadingCollectionViewCell.self, forCellWithReuseIdentifier: Constants.loadingCellReuseIdentifier)
+        collectionView.register(TrayRetryLoadCollectionViewCell.self, forCellWithReuseIdentifier: Constants.retryCellReuseIdentifier)
+        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: Constants.defaultCellReuseIdentifier)
+        collectionView.register(MediaSearchPreviewCell.associatedNib, forCellWithReuseIdentifier: Constants.stickerCellReuseIdentifier)
     }
     
     func fetchStickers(_ completion: ((NSError?) -> ())? = nil) {
@@ -69,7 +69,7 @@ class StickerTrayDataSource: PaginatedDataSource, TrayDataSource {
             strongSelf.trayState = .populated
             completion?(error)
         }
-        self.loadPage(.First, createOperation: createOperation, completion: pageLoadCompletion)
+        self.loadPage(.first, createOperation: createOperation, completion: pageLoadCompletion)
     }
     
     // MARK: - UICollectionViewDataSource
@@ -85,26 +85,26 @@ class StickerTrayDataSource: PaginatedDataSource, TrayDataSource {
         }
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: UICollectionViewCell
         switch trayState {
             case .populated:
-                let cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.stickerCellReuseIdentifier, forIndexPath: indexPath) as! MediaSearchPreviewCell
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.stickerCellReuseIdentifier, for: indexPath) as! MediaSearchPreviewCell
                 cell.activityIndicator.stopAnimating()
                 if let sticker = asset(atIndex: indexPath.row) {
                     cell.previewAssetUrl = sticker.thumbnailImageURL
                 }
                 return cell
             case .failedToLoad:
-                let retryCell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.retryCellReuseIdentifier, forIndexPath: indexPath) as! TrayRetryLoadCollectionViewCell
+                let retryCell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.retryCellReuseIdentifier, for: indexPath) as! TrayRetryLoadCollectionViewCell
                 retryCell.imageView.tintColor = .black
                 cell = retryCell
             case .loading:
-                let loadingCell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.loadingCellReuseIdentifier, forIndexPath: indexPath) as! TrayLoadingCollectionViewCell
+                let loadingCell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.loadingCellReuseIdentifier, for: indexPath) as! TrayLoadingCollectionViewCell
             loadingCell.activityIndicator.color = .black
             cell = loadingCell
             case .empty:
-                cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.defaultCellReuseIdentifier, forIndexPath: indexPath)
+                cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.defaultCellReuseIdentifier, for: indexPath)
         }
         cell.backgroundColor = .clear
         cell.contentView.backgroundColor = .clear
