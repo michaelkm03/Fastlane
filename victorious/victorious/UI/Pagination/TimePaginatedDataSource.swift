@@ -6,6 +6,8 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
+import VictoriousIOSSDK
+
 /// A protocol that items managed by `TimePaginatedDataSource` must conform to.
 protocol PaginatableItem {
     /// The timestamp that pagination logic will be performed with.
