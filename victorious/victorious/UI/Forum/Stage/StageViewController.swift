@@ -117,14 +117,14 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     // MARK: - Setup
 
     fileprivate func setupUI() {
-        view.backgroundColor = .black()
+        view.backgroundColor = .black
         loadingIndicator.stopAnimating()
         captionBarViewController = childViewControllers.flatMap({ $0 as? CaptionBarViewController }).first
 
         audioSession.addObserver(
             self,
             forKeyPath: Constants.audioSessionOutputVolumeKeyPath,
-            options: [.New, .Old],
+            options: [.new, .old],
             context: nil
         )
     }
