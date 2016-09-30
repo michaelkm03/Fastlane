@@ -22,6 +22,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
             captionBarHeightConstraint.constant = 0
         }
     }
+    @IBOutlet weak var stayTunedImageView: UIImageView!
 
     @IBOutlet private weak var loadingIndicator: UIActivityIndicatorView!
     
@@ -93,6 +94,11 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         super.viewDidLoad()
 
         setupUI()
+        
+        if let image = dependencyManager.backgroundImage {
+            stayTunedImageView.image = image
+            show(animated: false)
+        }
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -181,7 +187,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
 
     private func newMediaContentView(for content: Content) -> MediaContentView {
         let mediaContentView = setupMediaContentView(for: content)
-        view.insertSubview(mediaContentView, aboveSubview: loadingIndicator)
+        view.insertSubview(mediaContentView, aboveSubview: stayTunedImageView)
         mediaContentView.translatesAutoresizingMaskIntoConstraints = false
         view.leadingAnchor.constraintEqualToAnchor(mediaContentView.leadingAnchor).active = true
         view.trailingAnchor.constraintEqualToAnchor(mediaContentView.trailingAnchor).active = true
@@ -192,8 +198,9 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
 
     private func showMediaContentView(mediaContentView: MediaContentView, animated: Bool, completion: ((Bool) -> Void)? = nil) {
         mediaContentView.didPresent()
-
+        
         let animations = {
+            self.stayTunedImageView.alpha = 0
             mediaContentView.alpha = 1
         }
         UIView.animateWithDuration((animated ? MediaContentView.AnimationConstants.mediaContentViewAnimationDuration : 0), animations: animations, completion: completion)
@@ -206,6 +213,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         loadingIndicator.startAnimating()
         
         let animations = {
+            self.stayTunedImageView.alpha = 1
             mediaContentView.alpha = 0
         }
         let duration = MediaContentView.AnimationConstants.mediaContentViewAnimationDuration * Constants.mediaContentViewAnimationDurationMultiplier
@@ -320,7 +328,6 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
 
         /// Instead of seeking past the end of the video we hide the stage.
         guard mediaContentView.hasValidMedia else {
-            hide(animated: true)
             return
         }
         
@@ -407,6 +414,10 @@ private extension VDependencyManager {
     /// STAGE has historically been used to track stage content before there was main_stage, vip_stage. Leaving this in until vip stage has been released, then it should be revisited.
     var context: String {
         return stringForKey("context") ?? "STAGE"
+    }
+    
+    var backgroundImage: UIImage? {
+        return imageForKey("stay.tuned.image")
     }
 }
 
