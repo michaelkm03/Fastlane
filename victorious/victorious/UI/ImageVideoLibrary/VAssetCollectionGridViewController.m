@@ -29,6 +29,7 @@ NSString * const VAssetCollectionGridViewControllerMediaType = @"assetGridViewCo
 
 static NSString * const kImageTitleKey = @"imageTitle";
 static NSString * const kVideoTitleKey = @"videoTitle";
+static NSString * const kMixedMediaTitleKey = @"mixedMediaTitle";
 
 @interface VAssetCollectionGridViewController () <VAssetCollectionUnauthorizedDataSourceDelegate, VAssetCollectionGridDataSourceDelegate>
 
@@ -67,6 +68,8 @@ static NSString * const kVideoTitleKey = @"videoTitle";
             return [self stringForKey:kImageTitleKey];
         case PHAssetMediaTypeVideo:
             return [self stringForKey:kVideoTitleKey];
+        case PHAssetMediaTypeUnknown:
+            return [self stringForKey:kMixedMediaTitleKey];
         default:
             return nil;
     }

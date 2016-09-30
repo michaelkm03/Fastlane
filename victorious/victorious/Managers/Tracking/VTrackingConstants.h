@@ -324,6 +324,7 @@ extern NSString * const VTrackingValueFindFriends;
 extern NSString * const VTrackingValueReposters; 
 extern NSString * const VTrackingValueCreatePoll;
 extern NSString * const VTrackingEventCreateFromLibrarySelected;
+extern NSString * const VTrackingEventCreateFromMixedMediaCameraSelected;
 extern NSString * const VTrackingEventCreateFromNativeCameraSelected;
 extern NSString * const VTrackingValueCreatePost; 
 extern NSString * const VTrackingValueMessage; 
