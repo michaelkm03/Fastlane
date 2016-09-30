@@ -62,7 +62,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         switch event {
             case .websocket(let websocketEvent):
                 switch websocketEvent {
-                    case .disconnected(_) where isViewLoaded():
+                    case .disconnected(_) where isViewLoaded:
                         let alert = Alert(title: NSLocalizedString("Reconnecting...", comment: "Reconnecting to server."), type: .reconnectingError)
                         InterstitialManager.sharedInstance.receive(alert)
                     default:
@@ -77,7 +77,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                 // path will be nil for home feed, and non nil for filtered feed
                 composer?.setComposerVisible(path == nil, animated: true)
             case .closeVIP():
-                onClose(nil)
+                onClose(sender: nil)
             case .refreshStage(_):
                 triggerCoachmark()
             case .setOptimisticPostingEnabled(let enabled):
@@ -89,7 +89,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     func send(event: ForumEvent) {
         switch event {
-            case .sendContent(let content): publish(content)
+            case .sendContent(let content): publish(content: content)
             default: break
         }
         
@@ -218,7 +218,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(mainFeedFilterDidChange), name: RESTForumNetworkSource.updateStreamURLNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(mainFeedFilterDidChange), name: NSNotification.Name(rawValue: RESTForumNetworkSource.updateStreamURLNotification), object: nil)
 
         publisher = ContentPublisher(dependencyManager: dependencyManager.networkResources ?? dependencyManager)
         publisher?.delegate = self
@@ -236,9 +236,9 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         chatFeed?.nextSender = self
         //Initialize the title view. This will later be resized in the viewWillAppear, once it has actually been added to the navigation stack
         navBarTitleView = ForumNavBarTitleView(dependencyManager: self.dependencyManager, frame: CGRect(x: 0, y: 0, width: 200, height: 45))
-        navigationController?.navigationBar.barStyle = .Black
+        navigationController?.navigationBar.barStyle = .black
         if let button = closeButton {
-            button.addTarget(self, action: #selector(onClose), forControlEvents: .TouchUpInside)
+            button.addTarget(self, action: #selector(onClose), for: .touchUpInside)
             button.sizeToFit()
             navigationItem.leftBarButtonItem = UIBarButtonItem(customView: button)
         }
@@ -249,7 +249,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             nextSender = forumNetworkSource
             
             // Inject ourselves into the child receiver list in order to link the chain together.
-            forumNetworkSource.addChildReceiver(self)
+            forumNetworkSource.addChildReceiver(receiver: self)
             
             self.forumNetworkSource = forumNetworkSource
         }
@@ -258,7 +258,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         
-        let destination = segue.destinationViewController
+        let destination = segue.destination
         
         if let stage = destination as? Stage {
             stage.dependencyManager = dependencyManager.stageDependency
@@ -288,25 +288,25 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             closeButton?.dependencyManager?.trackButtonEvent(.tap)
         }
         
-        navigationController?.dismissViewControllerAnimated(true, completion: nil)
+        navigationController?.dismiss(animated: true, completion: nil)
 
         // Close connection to network source when we close the forum.
         forumNetworkSource?.tearDown()
 
-        forumNetworkSource?.removeChildReceiver(self)
+        forumNetworkSource?.removeChildReceiver(receiver: self)
     }
     
     private func updateStyle() {
-        guard isViewLoaded() else {
+        guard isViewLoaded else {
             return
         }
         
         title = dependencyManager.title
-        dependencyManager.applyStyleToNavigationBar(self.navigationController?.navigationBar)
-        navigationController?.navigationBar.translucent = false
-        dependencyManager.applyStyleToNavigationBar(navigationController?.navigationBar)
+        dependencyManager.applyStyle(to: self.navigationController?.navigationBar)
+        navigationController?.navigationBar.isTranslucent = false
+        dependencyManager.applyStyle(to: navigationController?.navigationBar)
         
-        dependencyManager.addBackgroundToBackgroundHost(self)
+        dependencyManager.addBackground(toBackgroundHost: self)
     }
 
     @IBAction private func tappedOnStage(sender: UITapGestureRecognizer) {
@@ -327,7 +327,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                 case .cancel: break
             }
         }) {
-            presentViewController(alertController, animated: true, completion: nil)
+            present(alertController, animated: true, completion: nil)
         }
     }
     
@@ -337,7 +337,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         showActionSheet(forContent: chatFeedContent)
     }
 
-    func chatFeed(chatFeed: ChatFeed, didToggleLikeFor content: ChatFeedContent, completion: (() -> Void)) {
+    func chatFeed(_ chatFeed: ChatFeed, didToggleLikeFor content: ChatFeedContent, completion: @escaping (() -> Void)) {
         guard
             let contentID = content.content.id,
             let likeKey = dependencyManager.contentLikeKey,
@@ -372,18 +372,18 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         stageShrinkingAnimator?.chatFeed(chatFeed, willBeginDragging: scrollView)
     }
     
-    func chatFeed(chatFeed: ChatFeed, willEndDragging scrollView: UIScrollView, withVelocity velocity: CGPoint) {
+    func chatFeed(_ chatFeed: ChatFeed, willEndDragging scrollView: UIScrollView, withVelocity velocity: CGPoint) {
         stageShrinkingAnimator?.chatFeed(chatFeed, willEndDragging: scrollView, withVelocity: velocity)
     }
     
     func chatFeed(chatFeed: ChatFeed, didSelectFailureButtonFor chatFeedContent: ChatFeedContent) {
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.addAction(
             UIAlertAction(
                 title: NSLocalizedString("Try Again", comment: "Sending message failed. User taps this to try sending again"),
-                style: .Default,
+                style: .default,
                 handler: { [weak self] alertAction in
-                    self?.retryPublish(chatFeedContent)
+                    self?.retryPublish(chatFeedContent: chatFeedContent)
                 }
             )
         )
@@ -391,7 +391,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         alertController.addAction(
             UIAlertAction(
                 title: NSLocalizedString("Delete", comment: ""),
-                style: .Destructive,
+                style: .destructive,
                 handler: { [weak self] alertAction in
                     self?.delete(chatFeedContent)
                 }
@@ -401,11 +401,11 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         alertController.addAction(
             UIAlertAction(
                 title: NSLocalizedString("Cancel", comment: ""),
-                style: .Cancel,
+                style: .cancel,
                 handler: nil
             )
         )
-        presentViewController(alertController, animated: true, completion: nil)
+        present(alertController, animated: true, completion: nil)
     }
     
     func chatFeed(chatFeed: ChatFeed, didSelectReplyButtonFor chatFeedContent: ChatFeedContent) {
@@ -434,7 +434,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             return
         }
         
-        chatFeed?.collectionView.reloadItemsAtIndexPaths(contentPublisher.pendingItems.indices.map {
+        chatFeed?.collectionView.reloadItems(at: contentPublisher.pendingItems.indices.map {
             IndexPath(item: itemCount - 1 - $0, section: 0)
         })
     }
@@ -465,9 +465,9 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     // MARK: - VFocusable
     
-    var focusType: VFocusType = .None {
+    var focusType: VFocusType = .none {
         didSet {
-            view.userInteractionEnabled = focusType != .None
+            view.isUserInteractionEnabled = focusType != .none
         }
     }
     
