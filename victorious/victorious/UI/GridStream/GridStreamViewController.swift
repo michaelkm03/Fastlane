@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 struct GridStreamConfiguration {
     var sectionInset = UIEdgeInsetsMake(0, 0, 3, 0)

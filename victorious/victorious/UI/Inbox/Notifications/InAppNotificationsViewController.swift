@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 class InAppNotificationsViewController: UIViewController, UITableViewDelegate, InAppNotificationCellDelegate, VPaginatedDataSourceDelegate, VBackgroundContainer {
     fileprivate struct Constants {
