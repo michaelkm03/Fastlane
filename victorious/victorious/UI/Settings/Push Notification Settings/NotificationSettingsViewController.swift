@@ -58,7 +58,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
     fileprivate var sections:[NotificationSettingsTableSection] = []
     fileprivate var errorStateView: CTAErrorState?
     fileprivate var shouldFetchSettings = true
-    fileprivate let spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+    fileprivate let spinner = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
     
     // MARK: - UIViewController methods
     
@@ -66,7 +66,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
         stateManager = VNotificationSettingsStateManager(delegate: self)
         permissionsTrackingHelper = VPermissionsTrackingHelper()
         let cellNib = UINib(nibName: "VSettingsSwitchCell", bundle: nil)
-        tableView.registerNib(cellNib, forCellReuseIdentifier: Constants.cellIdentifier)
+        tableView.register(cellNib, forCellReuseIdentifier: Constants.cellIdentifier)
         tableView.separatorColor = UIColor.clear
         tableView.bounces = true
         tableView.rowHeight = Constants.tableViewRowHeight
@@ -150,9 +150,9 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
                 case .failure(_):
                     let title = NSLocalizedString("ErrorPushNotificationsNotSaved", comment: "")
                     let message = NSLocalizedString("PleaseTryAgainLater", comment: "")
-                    let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-                    alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .Cancel, handler: nil))
-                    self?.navigationController?.presentViewController(alertController, animated: true, completion: nil)
+                    let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                    alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .cancel, handler: nil))
+                    self?.navigationController?.present(alertController, animated: true, completion: nil)
             }
         }
     }
@@ -165,7 +165,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
     
     override func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         guard
-            let cell = tableView.dequeueReusableCellWithIdentifier(Constants.cellIdentifier) as? VSettingsSwitchCell,
+            let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cellIdentifier) as? VSettingsSwitchCell,
             let settings = self.settings
         ,
             indexPath.section < sections.count &&
@@ -179,7 +179,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
         cell.key = row.key
         cell.delegate = self
         cell.setDependencyManager(dependencyManager)
-        cell.selectionStyle = .None
+        cell.selectionStyle = .none
         
         if (indexPath.row == sections[indexPath.section].rows.count - 1) {
             cell.setSeparatorHidden(true)
@@ -207,7 +207,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
         headerLabel.sizeToFit()
         let headerContainer = UIView()
         headerContainer.addSubview(headerLabel)
-        headerContainer.v_addFitToParentConstraintsToSubview(headerLabel, leading: Constants.tableViewHeaderLeftPadding, trailing: 0, top: 0, bottom: 0)
+        headerContainer.v_addFitToParentConstraints(toSubview: headerLabel, leading: Constants.tableViewHeaderLeftPadding, trailing: 0, top: 0, bottom: 0)
         return headerContainer
     }
     
@@ -217,7 +217,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
     
     // MARK: - SettingsSwitchCell Delegate
     
-    func settingsDidUpdateFromCell(_ cell: VSettingsSwitchCell, newValue: Bool, key: String) {
+    func settingsDidUpdatefromFromCell(_ cell: VSettingsSwitchCell, newValue: Bool, key: String) {
         guard var settings = self.settings else {
             return
         }
@@ -241,7 +241,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
         }
         
         var result: [NotificationSettingsTableSection] = []
-        let items = dependencyManager.array(forKey: Constants.itemsArrayKey)
+        let items = dependencyManager.array(forKey: Constants.itemsArrayKey) ?? []
         
         for item in items {
             if let itemDictionary = item as? [String : AnyObject],
@@ -255,7 +255,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
                     {
                         if (rowKey == NotificationSettingType.postFromCreator.rawValue) {
                             let appInfo = VAppInfo(dependencyManager: dependencyManager)
-                            rowTitle = rowTitle.stringByReplacingOccurrencesOfString(Constants.creatorNameMacro, withString: appInfo.ownerName ?? "Creator")
+                            rowTitle = rowTitle.replacingOccurrences(of: Constants.creatorNameMacro, with: appInfo?.ownerName ?? "Creator")
                         }
                         return NotificationSettingsTableRow(key: rowKey, title: rowTitle)
                     }
@@ -289,7 +289,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
     // MARK: - Dependency Manager
     
     class func new(with dependencyManager: VDependencyManager) -> NotificationSettingsViewController {
-        let viewController = NotificationSettingsViewController(style: .Grouped)
+        let viewController = NotificationSettingsViewController(style: .grouped)
         viewController.dependencyManager = dependencyManager
         return viewController
     }
@@ -300,6 +300,6 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
         }
         
         tableView.backgroundView = UIView()
-        dependencyManager.addBackgroundToBackgroundHost(self)
+        dependencyManager.addBackground(toBackgroundHost: self)
     }
 }

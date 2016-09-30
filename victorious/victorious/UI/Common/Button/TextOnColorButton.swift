@@ -18,18 +18,18 @@ enum TextOnColorButtonRoundingType {
 class TextOnColorButton: TouchableInsetAdjustableButton, TrackableButton {
     var dependencyManager: VDependencyManager? {
         didSet {
-            hidden = dependencyManager == nil
-            backgroundColor = templateAppearanceValue(.backgroundColor)
-            setTitleColor(templateAppearanceValue(.foregroundColor), forState: .Normal)
-            setTitle(templateAppearanceValue(.text), forState: .Normal)
+            isHidden = dependencyManager == nil
+            backgroundColor = templateAppearanceValue(appearance: .backgroundColor)
+            setTitleColor(templateAppearanceValue(appearance: .foregroundColor), for: .normal)
+            setTitle(templateAppearanceValue(appearance: .text), for: .normal)
             titleLabel?.font = templateAppearanceValue(.font)
-            userInteractionEnabled = templateAppearanceValue(.clickable) ?? false
+            isUserInteractionEnabled = templateAppearanceValue(appearance: .clickable) ?? false
         }
     }
     
-    override var highlighted: Bool {
+    override var isHighlighted: Bool {
         didSet {
-            alpha = highlighted ? 0.5 : 1.0
+            alpha = isHighlighted ? 0.5 : 1.0
         }
     }
     
