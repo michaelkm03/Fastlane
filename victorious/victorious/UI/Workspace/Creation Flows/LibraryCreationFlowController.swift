@@ -25,7 +25,7 @@ class LibraryCreationFlowController: VAbstractImageVideoCreationFlowController {
     }
     
     override func gridViewController(with dependencyManager: VDependencyManager) -> VAssetCollectionGridViewController? {
-        return dependencyManager.templateValue(ofType: VAssetCollectionGridViewController.self, forKey: Constants.imageVideoLibraryKey, withAddedDependencies:[VAssetCollectionGridViewControllerMediaType : NSNumber(integer: PHAssetMediaType.unknown.rawValue)]) as? VAssetCollectionGridViewController
+        return dependencyManager.templateValue(ofType: VAssetCollectionGridViewController.self, forKey: Constants.imageVideoLibraryKey, withAddedDependencies:[VAssetCollectionGridViewControllerMediaType : NSNumber(value: PHAssetMediaType.unknown.rawValue)]) as? VAssetCollectionGridViewController
     }
     
     override func workspaceViewController(with dependencyManager: VDependencyManager) -> VWorkspaceViewController? {

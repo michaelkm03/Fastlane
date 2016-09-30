@@ -10,19 +10,19 @@ import UIKit
 
 /// An animator that imitates the "push" animation
 class PushTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
-    
-    var presenting: Bool = true
-    var dismissing: Bool = false
+    var presenting = true
+    var dismissing = false
     
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return presenting ? 0.325 : 0.35
     }
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
-        
-        guard let toView = transitionContext.view(forKey: UITransitionContextViewKey.to),
-            let fromView = transitionContext.view(forKey: UITransitionContextViewKey.from) else {
-                return
+        guard
+            let toView = transitionContext.view(forKey: UITransitionContextViewKey.to),
+            let fromView = transitionContext.view(forKey: UITransitionContextViewKey.from)
+        else {
+            return
         }
 
         let containerView = transitionContext.containerView
@@ -32,7 +32,7 @@ class PushTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         containerView.addSubview(backgroundView)
         containerView.addSubview(foregroundView)
         
-        if let snapshot = foregroundView.snapshotView(afterScreenUpdates: false) , dismissing {
+        if let snapshot = foregroundView.snapshotView(afterScreenUpdates: false), dismissing {
             backgroundView.addSubview(snapshot)
             transitionContext.completeTransition(true)
             return
@@ -51,17 +51,18 @@ class PushTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         foregroundView.transform = forgroundViewStartTransform
         backgroundView.transform = backgroundViewStartTransform
         
-        UIView.animate(withDuration: transitionDuration(using: transitionContext),
-                                   delay: 0,
-                                   options: [.curveEaseOut, .allowAnimatedContent],
-                                   animations: {
-                                    foregroundView.transform = forgroundViewEndTransform
-                                    backgroundView.transform = backgroundViewEndTransform
+        UIView.animate(
+            withDuration: transitionDuration(using: transitionContext),
+            delay: 0,
+            options: [.curveEaseOut, .allowAnimatedContent],
+            animations: {
+                foregroundView.transform = forgroundViewEndTransform
+                backgroundView.transform = backgroundViewEndTransform
             },
-                                   completion: { complete in
-                                    transitionContext.completeTransition(complete)
-                                    backgroundView.transform = CGAffineTransform.identity
-        })
+            completion: { complete in
+                transitionContext.completeTransition(complete)
+                backgroundView.transform = CGAffineTransform.identity
+            }
+        )
     }
-    
 }

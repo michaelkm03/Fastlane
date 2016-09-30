@@ -106,13 +106,15 @@ class NativeWorkspaceViewController: VWorkspaceViewController, UIVideoEditorCont
     }
     
     func videoEditorController(_ editor: UIVideoEditorController, didSaveEditedVideoToPath editedVideoPath: String) {
-        
         let editedMediaURL = URL(fileURLWithPath: editedVideoPath)
+        
         guard let previewImage = editedMediaURL.v_videoPreviewImage else {
             v_showErrorDefaultError()
             return
         }
+        
         animator.dismissing = true
+        
         presentingViewController?.dismiss(animated: true) {
             self.callCompletion(withSuccess: true, previewImage: previewImage, renderedMediaURL: editedMediaURL)
         }
