@@ -360,8 +360,9 @@ class StageShrinkingAnimator: NSObject {
     
     fileprivate func configureKeyboardListener() {
         keyboardManager = VKeyboardNotificationManager(
-            keyboardWillShowBlock: { [weak self] startFrame, endFrame, animationDuration, animationCurve in
-                UIView.animateWithDuration(Constants.fullSnapAnimationDuration,
+            keyboardWillShow: { [weak self] startFrame, endFrame, animationDuration, animationCurve in
+                UIView.animate(
+                    withDuration: Constants.fullSnapAnimationDuration,
                     delay: 0,
                     usingSpringWithDamping: Constants.springDamping,
                     initialSpringVelocity: 0,
@@ -372,7 +373,7 @@ class StageShrinkingAnimator: NSObject {
                     completion: nil
                 )
             },
-            willHideBlock: { [weak self] startFrame, endFrame, animationDuration, animationCurve in
+            willHide: { [weak self] startFrame, endFrame, animationDuration, animationCurve in
                 self?.ignoreScrollBehaviorUntilNextBegin = true
             },
             willChangeFrameBlock: nil

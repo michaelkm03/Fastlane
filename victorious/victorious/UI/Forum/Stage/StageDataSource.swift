@@ -49,7 +49,7 @@ class StageDataSource: ForumEventReceiver {
                 // is the same since we might be getting multiple Main stage messages during the contents lifetime.
                 let sameContent = currentContent?.id == stageEvent.contentID
                 let oldStartTime = currentContentFetchOperation?.refreshStageEvent.startTime ?? Timestamp(value: 0)
-                let sameStartTime = stageEvent.startTime?.within(StageDataSource.backendStartTimeThreshold, of: oldStartTime) ?? false
+                let sameStartTime = stageEvent.startTime?.within(threshold: StageDataSource.backendStartTimeThreshold, of: oldStartTime) ?? false
                 if sameContent && sameStartTime && stageEvent.section == .main {
                     return
                 }

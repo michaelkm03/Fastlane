@@ -30,7 +30,7 @@ class InAppNotificationsViewController: UIViewController, UITableViewDelegate, I
         dataSource.registerCells(for: tableView)
         dataSource.delegate = self
         
-        refreshControl.addTarget(self, action: #selector(refresh), for: .ValueChanged)
+        refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
         refreshControl.tintColor = dependencyManager.refreshControlColor
         
         noContentView.setDependencyManager(dependencyManager)
@@ -46,14 +46,14 @@ class InAppNotificationsViewController: UIViewController, UITableViewDelegate, I
         tableView.contentInset = Constants.contentInset
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = Constants.estimatedRowHeight
-        tableView.insertSubview(refreshControl, atIndex: 0)
+        tableView.insertSubview(refreshControl, at: 0)
         view.addSubview(tableView)
-        view.v_addFitToParentConstraintsToSubview(tableView)
+        view.v_addFitToParentConstraints(toSubview: tableView)
         
-        dependencyManager.addBackgroundToBackgroundHost(self)
+        dependencyManager.addBackground(toBackgroundHost: self)
         dependencyManager.configureNavigationItem(navigationItem)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(loggedInStatusDidChange), name: kLoggedInChangedNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(loggedInStatusDidChange), name: NSNotification.Name.loggedInChanged, object: nil)
         
         loggedInStatusDidChange(nil)
     }
@@ -100,7 +100,7 @@ class InAppNotificationsViewController: UIViewController, UITableViewDelegate, I
     
     // MARK: - Data source
     
-    fileprivate let dataSource: NotificationsDataSource
+    fileprivate let dataSource: InAppNotificationsDataSource
     
     // MARK: - Views
     
@@ -174,7 +174,7 @@ class InAppNotificationsViewController: UIViewController, UITableViewDelegate, I
     // MARK: - UITableViewDelegate
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let deepLink = (dataSource.visibleItems[indexPath.row] as? Notification)?.deeplink , !deepLink.isEmpty else {
+        guard let deepLink = (dataSource.visibleItems[indexPath.row] as? InAppNotification)?.deeplink , !deepLink.isEmpty else {
             return
         }
         
@@ -207,7 +207,7 @@ class InAppNotificationsViewController: UIViewController, UITableViewDelegate, I
             return
         }
         
-        let notification = dataSource.visibleItems[indexPath.row] as! Notification
+        let notification = dataSource.visibleItems[indexPath.row] as! InAppNotification
         let router = Router(originViewController: self, dependencyManager: dependencyManager)
         router.navigate(to: .profile(userID: notification.user.id), from: nil)
     }

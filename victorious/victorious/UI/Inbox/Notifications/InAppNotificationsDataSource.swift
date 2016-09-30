@@ -43,7 +43,7 @@ class InAppNotificationsDataSource: PaginatedDataSource, UITableViewDataSource {
     }
     
     func decorate(cell notificationCell: InAppNotificationCell, atIndexPath indexPath: IndexPath) {
-        let notification = visibleItems[indexPath.row] as! Notification
+        let notification = visibleItems[indexPath.row] as! InAppNotification
         notificationCell.updateContent(with: notification, dependencyManager: dependencyManager)
     }
 }

@@ -42,7 +42,7 @@ class TutorialNetworkDataSource: NSObject, NetworkDataSource {
         RequestOperation(request: request).queue { [weak self] result in
             self?.queuedTutorialMessages = result.output ?? []
             self?.dequeueTutorialMessage()
-            self?.timerManager = VTimerManager.scheduledTimerManagerWithTimeInterval(3.0, target: self, selector: #selector(self?.dequeueTutorialMessage), userInfo: nil, repeats: true)
+            self?.timerManager = VTimerManager.scheduledTimerManager(withTimeInterval: 3.0, target: self, selector: #selector(self?.dequeueTutorialMessage), userInfo: nil, repeats: true)
         }
     }
 

@@ -31,14 +31,14 @@ class YouTubeVideoPlayer: NSObject, VVideoPlayer, YTPlayerViewDelegate {
 
         playerView.delegate = self
         playerView.alpha = 0.0
-        playerView.userInteractionEnabled = false
+        playerView.isUserInteractionEnabled = false
         delegate?.videoPlayerDidStartBuffering?(self)
 
         let container: [AnyHashable: Any] = [
             "videoId": videoId,
             "playerVars": playerVars
         ]
-        playerView.loadWithPlayerParams(container)
+        playerView.load(withPlayerParams: container)
     }
     
     fileprivate var playerVars: [AnyHashable: Any] {
@@ -68,11 +68,11 @@ class YouTubeVideoPlayer: NSObject, VVideoPlayer, YTPlayerViewDelegate {
     }
     
     var currentTimeMilliseconds: UInt {
-        return UInt( playerView.currentTime() * 1000.0 )
+        return UInt(playerView.currentTime() * 1000.0)
     }
     
     var currentTimeSeconds: Float64 {
-        return Float64( playerView.currentTime() )
+        return Float64(playerView.currentTime())
     }
     
     var durationSeconds: Float64 {
@@ -85,7 +85,7 @@ class YouTubeVideoPlayer: NSObject, VVideoPlayer, YTPlayerViewDelegate {
         return playerView
     }
 
-    func seekToTimeSeconds(_ timeSeconds: TimeInterval) {
+    func seek(toTimeSeconds timeSeconds: TimeInterval) {
         playerView.seekToSeconds(Float(timeSeconds), allowSeekAhead: true)
     }
     
@@ -170,7 +170,7 @@ class YouTubeVideoPlayer: NSObject, VVideoPlayer, YTPlayerViewDelegate {
         }
     }
     
-    func playerView(_ playerView: YTPlayerView!, didChangeToQuality quality: YTPlaybackQuality) {}
+    func playerView(_ playerView: YTPlayerView!, didChangeTo quality: YTPlaybackQuality) {}
     
     func playerView(_ playerView: YTPlayerView!, receivedError error: YTPlayerError) {
         print( "YTPlayerView receivedError = \(error)" )
@@ -180,7 +180,7 @@ class YouTubeVideoPlayer: NSObject, VVideoPlayer, YTPlayerViewDelegate {
         delegate?.videoPlayer?(self, didPlayToTime: Float64(playTime) )
     }
     
-    func updateToBackgroundColor( _ backgroundColor: UIColor) {}
+    func update(toBackgroundColor backgroundColor: UIColor) {}
     
     var aspectRatio: CGFloat { return 1.0 }
 }

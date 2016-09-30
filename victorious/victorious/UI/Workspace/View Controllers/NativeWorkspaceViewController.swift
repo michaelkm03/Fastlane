@@ -98,10 +98,10 @@ class NativeWorkspaceViewController: VWorkspaceViewController, UIVideoEditorCont
     // MARK: - UIVideoEditorControllerDelegate
     
     func videoEditorControllerDidCancel(_ editor: UIVideoEditorController) {
-        presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+        presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
-    func videoEditorController(_ editor: UIVideoEditorController, didFailWithError error: NSError) {
+    func videoEditorController(_ editor: UIVideoEditorController, didFailWithError error: Error) {
         v_showErrorDefaultError()
     }
     
