@@ -9,7 +9,7 @@
 import Foundation
 
 /// Displays a flow starting with a library from which the user can select either a photo or a video
-class LibraryCreationFlowController: VAbstractImageVideoCreationFlowController, MixedMediaCreationFlow {
+class LibraryCreationFlowController: VAbstractImageVideoCreationFlowController {
     
     fileprivate struct Constants {
         static let imageVideoLibraryKey = "imageVideoLibrary"

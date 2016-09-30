@@ -57,12 +57,16 @@ class UploadManagerHelper: NSObject {
 
     private static func addUploadViewController(_ uploadViewController: VUploadProgressViewController, toViewController viewController: UIViewController, withTopInset topInset: Float) {
         viewController.addChildViewController(uploadViewController)
-        let progressVCView = uploadViewController.view
+        
+        guard let progressVCView = uploadViewController.view else {
+            return
+        }
+        
         progressVCView.translatesAutoresizingMaskIntoConstraints = false
         viewController.view.addSubview(progressVCView)
         uploadViewController.didMove(toParentViewController: viewController)
-        progressVCView.hidden = true
-        viewController.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[progressVCView]|", options: [], metrics: nil, views: ["progressVCView" : progressVCView]))
-        viewController.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-topInset-[progressVCView(44)]", options: [], metrics: ["topInset" : NSNumber(float: topInset)], views: ["progressVCView" : progressVCView]))
+        progressVCView.isHidden = true
+        viewController.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[progressVCView]|", options: [], metrics: nil, views: ["progressVCView": progressVCView]))
+        viewController.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-topInset-[progressVCView(44)]", options: [], metrics: ["topInset": NSNumber(value: topInset)], views: ["progressVCView": progressVCView]))
     }
 }

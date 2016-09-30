@@ -19,8 +19,8 @@ final class BadgeCountManager {
     // MARK: - Initializing
     
     fileprivate init() {
-        NSNotificationCenter.default.addObserver(self, selector: #selector(loggedInStatusDidChange), name: kLoggedInChangedNotification, object: nil)
-        NSNotificationCenter.default.addObserver(self, selector: #selector(applicationDidBecomeActive), name: VApplicationDidBecomeActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(loggedInStatusDidChange), name: kLoggedInChangedNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(applicationDidBecomeActive), name: VApplicationDidBecomeActiveNotification, object: nil)
         fetchUnreadNotificationCount()
     }
     
@@ -126,13 +126,13 @@ final class BadgeCountManager {
     
     // MARK: - Notifications
     
-    fileprivate dynamic func applicationDidBecomeActive(_ notification: NSNotification?) {
+    fileprivate dynamic func applicationDidBecomeActive(_ notification: Notification?) {
         if VCurrentUser.user != nil {
             fetchUnreadNotificationCount()
         }
     }
     
-    fileprivate dynamic func loggedInStatusDidChange(_ notification: NSNotification?) {
+    fileprivate dynamic func loggedInStatusDidChange(_ notification: Notification?) {
         if VCurrentUser.user != nil {
             fetchUnreadNotificationCount()
         }
