@@ -48,7 +48,7 @@ class InterstitialAlertViewController: UIViewController, Interstitial, VBackgrou
         
         if let iconURL = iconURL {
             iconImageView?.isHidden = false
-            iconImageView?.sd_setImageWithURL(iconURL)
+            iconImageView?.sd_setImage(with: iconURL)
         } else {
             iconImageView?.isHidden = true
         }
@@ -84,7 +84,7 @@ class InterstitialAlertViewController: UIViewController, Interstitial, VBackgrou
         super.viewDidLoad()
         styleComponents()
         if let alert = alert {
-            configure(withTitle: alert.parameters.title, detailedDescription: alert.parameters.description, iconImageURL: alert.parameters.icons?.first)
+            configure(withTitle: alert.parameters.title, detailedDescription: alert.parameters.description, iconImageURL: alert.parameters.icons?.first as URL?)
         }
     }
     
@@ -110,11 +110,11 @@ class InterstitialAlertViewController: UIViewController, Interstitial, VBackgrou
         confirmButton.layer.cornerRadius = Constants.cornerRadius
         confirmButton.titleLabel?.font = dependencyManager.confirmButtonTitleFont
         confirmButton.setTitleColor(dependencyManager.confirmButtonTitleColor, for: .Normal)
-        confirmButton.setTitleColor(dependencyManager.confirmButtonTitleColor?.colorWithAlphaComponent(0.5), for: .Highlighted)
+        confirmButton.setTitleColor(dependencyManager.confirmButtonTitleColor?.withAlphaComponent(0.5), for: .Highlighted)
         confirmButton.backgroundColor = dependencyManager.confirmButtonBackgroundColor
-        confirmButton.setTitle(dependencyManager.confirmButtonTitle, for: .Normal)
+        confirmButton.setTitle(dependencyManager.confirmButtonTitle, for: .normal)
         
-        dependencyManager.addBackgroundToBackgroundHost(self)
+        dependencyManager.addBackground(toBackgroundHost: self)
     }
 }
 

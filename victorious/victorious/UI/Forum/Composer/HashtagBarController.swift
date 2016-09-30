@@ -22,7 +22,7 @@ protocol HashtagBarControllerSearchDelegate: class {
 class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     fileprivate static let collectionViewInset = UIEdgeInsetsMake(0, 20, 0, 20)
         
-    fileprivate let cachedSizes = NSCache()
+    fileprivate let cachedSizes = Cache()
     
     fileprivate let cellDecorator: HashtagBarCellDecorator?
     
@@ -91,7 +91,7 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
         super.init()
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.registerNib(HashtagBarCell.nibForCell(), forCellWithReuseIdentifier: HashtagBarCell.suggestedReuseIdentifier())
+        collectionView.register(HashtagBarCell.nibForCell(), forCellWithReuseIdentifier: HashtagBarCell.suggestedReuseIdentifier())
         collectionView.contentInset = HashtagBarController.collectionViewInset
     }
     
@@ -118,7 +118,7 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
             return cachedValue.CGSizeValue
         }
         
-        let boundingRect = (searchText as NSString).boundingRectWithSize(CGSize(width: CGFloat.max, height: UIScreen.main.bounds.height), options: .UsesLineFragmentOrigin, attributes: [NSFontAttributeName : cellDecorator.font], context: nil)
+        let boundingRect = (searchText as NSString).boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: UIScreen.main.bounds.height), options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName : cellDecorator.font], context: nil)
         let size = CGSize(width: ceil(boundingRect.width) + 10, height: ceil(boundingRect.height) + 10)
         cachedSizes.setObject(NSValue(CGSize: size), forKey: searchText)
         return size
@@ -140,7 +140,7 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
             switch result {
                 case .success(let hashtags):
                     self?.searchResults = hashtags.map { $0.tag }.filter { tag in
-                        let matchRange = (tag as NSString).rangeOfString(text)
+                        let matchRange = (tag as NSString).range(of: text)
                         guard matchRange.location == 0 else {
                             return false
                         }
@@ -188,13 +188,13 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
     // MARK: - UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(HashtagBarCell.suggestedReuseIdentifier(), forIndexPath: indexPath) as! HashtagBarCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HashtagBarCell.suggestedReuseIdentifier(), for: indexPath) as! HashtagBarCell
         let tag = hashtagAtIndex((indexPath as NSIndexPath).row)
         guard let unwrappedTag = tag else {
-            cell.hidden = true
+            cell.isHidden = true
             return cell
         }
-        cell.hidden = false
+        cell.isHidden = false
         cellDecorator?.decorateCell(cell)
         HashtagBarCellPopulator.populateCell(cell, withTag: unwrappedTag)
         return cell

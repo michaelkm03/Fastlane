@@ -180,7 +180,7 @@ private final class ShowForumOperation: AsyncOperation<Void> {
             if self.showVIP {
                 viewController.forumNetworkSource?.setUpIfNeeded()
             }
-            finish(result: .success())
+            finish(.success())
         }
     }
 }
@@ -223,11 +223,11 @@ private final class ShowProfileOperation: AsyncOperation<Void> {
         
         if let originViewController = originViewController as? UINavigationController {
             originViewController.pushViewController(profileViewController, animated: true) {
-                finish(result: .success())
+                finish(.success())
             }
         } else {
             originViewController.navigationController?.pushViewController(profileViewController, animated: true) {
-                finish(result: .success())
+                finish(.success())
             }
         }
     }
@@ -303,11 +303,11 @@ private final class ShowCloseUpOperation: AsyncOperation<Void> {
         let animated = displayModifier.animated
         if let originViewController = originViewController as? UINavigationController {
             originViewController.pushViewController(closeUpViewController, animated: animated) {
-                finish(result: .success())
+                finish(.success())
             }
         } else {
             originViewController.navigationController?.pushViewController(closeUpViewController, animated: animated) {
-                finish(result: .success())
+                finish(.success())
             }
         }
     }
@@ -429,7 +429,7 @@ private final class ShowWebContentOperation: AsyncOperation<Void> {
         
         if let navigationController = (originViewController as? UINavigationController) ?? originViewController.navigationController , !configuration.forceModal {
             navigationController.pushViewController(viewController, animated: configuration.transitionAnimated) {
-                finish(result: .success())
+                finish(.success())
             }
         }
         else {
@@ -438,7 +438,7 @@ private final class ShowWebContentOperation: AsyncOperation<Void> {
             dependencyManager.applyStyleToNavigationBar(navigationController.navigationBar)
         
             originViewController.presentViewController(navigationController, animated: configuration.transitionAnimated) {
-                finish(result: .success())
+                finish(.success())
             }
         }
     }
@@ -481,7 +481,7 @@ private final class ShowVIPSubscriptionOperation: AsyncOperation<Void> {
         
         vipFlow.completionBlock = completion
         originViewController.presentViewController(vipFlow, animated: animated) {
-            finish(result: .success())
+            finish(.success())
         }
     }
 }
