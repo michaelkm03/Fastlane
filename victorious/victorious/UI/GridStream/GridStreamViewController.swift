@@ -93,12 +93,12 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         collectionView.backgroundColor = UIColor.clear
         collectionView.alwaysBounceVertical = true
         
-        edgesForExtendedLayout = .Bottom
+        edgesForExtendedLayout = .bottom
         extendedLayoutIncludesOpaqueBars = true
         automaticallyAdjustsScrollViewInsets = false
         
         view.addSubview(collectionView)
-        view.v_addFitToParentConstraintsToSubview(collectionView)
+        view.v_addFitToParentConstraints(toSubview: collectionView)
         
         if let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             flowLayout.minimumInteritemSpacing = self.configuration.interItemSpacing
@@ -111,9 +111,9 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
             refreshControl.addTarget(
                 self,
                 action: #selector(refresh),
-                forControlEvents: .ValueChanged
+                for: .valueChanged
             )
-            collectionView.insertSubview(refreshControl, atIndex: 0)
+            collectionView.insertSubview(refreshControl, at: 0)
         }
         
         scrollPaginator.tolerance += CollectionLoadingView.preferredHeight
@@ -147,7 +147,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         
         dataSource.loadContent(for: collectionView, loadingType: loadingType) { [weak self] result in
             // Calling this method stops scrolling, so only do it if necessary.
-            if self?.refreshControl.refreshing == true {
+            if self?.refreshControl.isRefreshing == true {
                 self?.refreshControl.endRefreshing()
             }
             
@@ -233,10 +233,10 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         
         let destination = DeeplinkDestination(content: targetContent)
         let context: DeeplinkContext?
-        if type(of: header?) == CloseUpView.self {
+        if type(of: header) == CloseUpView.self {
             context = DeeplinkContext(value: DeeplinkContext.closeupView)
         }
-        else if type(of: header?) == VNewProfileHeaderView.self {
+        else if type(of: header) == VNewProfileHeaderView.self {
             context = DeeplinkContext(value: DeeplinkContext.userProfile)
         }
         else {
