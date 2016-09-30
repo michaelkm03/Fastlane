@@ -8,11 +8,11 @@
 
 import Foundation
 
-/// A class representing a notification
+/// A class representing an in-app notification.
 ///
 /// A struct would be preferred, but is currently not compatible with our legacy pagination system.
 ///
-public class Notification {
+public class InAppNotification {
     
     public let subject: String
     public let user: User

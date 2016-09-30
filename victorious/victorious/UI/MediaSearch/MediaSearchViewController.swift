@@ -156,7 +156,7 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
         
         if options.shouldSkipExportRendering {
             if let thumbnailImageURL = mediaSearchResultObject.thumbnailImageURL {
-                DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.high).async { [weak self] in
+                DispatchQueue.global(qos: .userInitiated).async { [weak self] in
                     if let previewImageData = try? Data(contentsOf: thumbnailImageURL as URL, options: []) {
                         mediaSearchResultObject.exportPreviewImage = UIImage(data: previewImageData)
                     }
@@ -176,11 +176,11 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
         }
         view.delegate = self
         
-        MBProgressHUD.hideAllHUDsForView(self.view, animated: false)
-        progressHUD = MBProgressHUD.showHUDAddedTo( self.view.window, animated: true )
-        progressHUD?.mode = MBProgressHUDMode.CustomView
+        MBProgressHUD.hideAllHUDs(for: self.view, animated: false)
+        progressHUD = MBProgressHUD.showAdded(to: self.view.window, animated: true)
+        progressHUD?.mode = MBProgressHUDMode.customView
         progressHUD?.customView = view
-        progressHUD?.square = true;
+        progressHUD?.isSquare = true
         progressHUD?.dimBackground = true
         progressHUD?.show(true)
         
@@ -196,7 +196,7 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
                 strongSelf.progressHUD?.hide(true)
                 if let previewImage = previewImage, let mediaURL = mediaURL {
                     mediaSearchResultObject.exportPreviewImage = previewImage
-                    mediaSearchResultObject.exportMediaURL = mediaURL
+                    mediaSearchResultObject.exportMediaURL = mediaURL as URL
                     strongSelf.delegate?.mediaSearchResultSelected( mediaSearchResultObject )
                 } else {
                     strongSelf.progressHUD?.hide(true)
@@ -209,7 +209,7 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
     
     fileprivate func showHud(renderingError error: NSError?) {
         if error?.code != NSURLErrorCancelled {
-            MBProgressHUD.hideAllHUDsForView(view, animated: false)
+            MBProgressHUD.hideAllHUDs(for: view, animated: false)
             let errorTitle = NSLocalizedString("Error rendering media", comment: "")
             v_showErrorWithTitle(errorTitle, message: "")
         }
@@ -221,8 +221,8 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
         }
     }
     
-    func performSearch( searchTerm: String?, pageType: VPageType = .First ) {
-        if self.dataSourceAdapter.state != .Loading {
+    func performSearch(searchTerm: String?, pageType: VPageType = .first) {
+        if self.dataSourceAdapter.state != .loading {
             self.dataSourceAdapter.performSearch( searchTerm: searchTerm, pageType: pageType ) { result in
                 self.updateViewWithResult( result )
                 self.reloadNoContentSection()
