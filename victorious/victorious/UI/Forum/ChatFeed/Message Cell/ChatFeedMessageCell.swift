@@ -205,7 +205,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
                 return
             }
             
-            strongSelf.delegate?.messageCell(strongSelf, didSelectLinkURL: url)
+            strongSelf.delegate?.messageCell(strongSelf, didSelectLinkURL: url as URL)
         }
         
         captionLabel.text = content?.text
@@ -215,8 +215,8 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         likeView?.updateLikeStatus(content)
 
         let shouldHideTopLabels = content?.wasCreatedByCurrentUser == true
-        usernameLabel.hidden = shouldHideTopLabels
-        timestampLabel.hidden = shouldHideTopLabels
+        usernameLabel.isHidden = shouldHideTopLabels
+        timestampLabel.isHidden = shouldHideTopLabels
 
         if let content = content , content.type.hasMedia {
             if content.type == .gif && VCurrentUser.user?.canView(content) == true {
@@ -340,11 +340,11 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
         }
         
         let previewWidth = previewSize(displaying: content, inWidth: width)?.width
-        let maxCaptionWidth = min(width - nonContentWidth, previewWidth ?? CGFloat.max)
+        let maxCaptionWidth = min(width - nonContentWidth, previewWidth ?? CGFloat.greatestFiniteMagnitude)
         
-        var size = attributedText.boundingRectWithSize(
-            CGSize(width: maxCaptionWidth, height: CGFloat.max),
-            options: [.UsesLineFragmentOrigin],
+        var size = attributedText.boundingRect(
+            with: CGSize(width: maxCaptionWidth, height: CGFloat.greatestFiniteMagnitude),
+            options: [.usesLineFragmentOrigin],
             context: nil
         ).size
         
