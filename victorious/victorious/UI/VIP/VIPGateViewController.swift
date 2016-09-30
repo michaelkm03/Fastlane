@@ -8,6 +8,7 @@
 
 import UIKit
 import MBProgressHUD
+import VictoriousIOSSDK
 
 /// Conformers will receive a message when the vip gate
 /// will dismiss or has permitted the user to pass through.

@@ -131,7 +131,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         return noContentCell
     }
 
-    private func dequeueProperCell<DataSource: ListMenuSectionDataSource where DataSource.Cell: UICollectionViewCell>(dataSource: DataSource, for collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell {
+    private func dequeueProperCell<DataSource: ListMenuSectionDataSource>(dataSource: DataSource, for collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell where DataSource.Cell: UICollectionViewCell {
         switch dataSource.state {
             case .loading: return dequeueLoadingCell(from: collectionView, at: indexPath)
             case .items: return dataSource.dequeueItemCell(from: collectionView, at: indexPath)

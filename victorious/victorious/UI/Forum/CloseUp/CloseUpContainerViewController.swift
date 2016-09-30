@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 private struct Constants {
     static let leftRightSectionInset = CGFloat(0)

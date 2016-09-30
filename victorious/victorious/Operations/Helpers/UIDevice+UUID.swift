@@ -9,21 +9,19 @@
 import UIKit
 
 extension UIDevice {
-    
     /// Retreives a unique device ID using a method that is appropriate to the target architecture.
     /// This value remains constant when running in the iOS Simulator much as it would on a device.
     /// This allows stored login to work as expected in the simulator.
     var v_authorizationDeviceID: String {
-        
         // If running on the simulator...
         #if(arch(i386) || arch(x86_64)) && os(iOS)
             let key = "com.getvictorious.debug-simulatedDeviceID"
-            if let identifier = NSUserDefaults.standardUserDefaults().value(forKey: key) as? String {
+            if let identifier = UserDefaults.standard.value(forKey: key) as? String {
                 return identifier
             } else {
-                let identifier = NSUUID().UUIDString
-                NSUserDefaults.standardUserDefaults().setValue(identifier, forKey: key)
-                NSUserDefaults.standardUserDefaults().synchronize()
+                let identifier = NSUUID().uuidString
+                UserDefaults.standard.setValue(identifier, forKey: key)
+                UserDefaults.standard.synchronize()
                 return identifier
             }
         #else

@@ -30,9 +30,11 @@ import UIKit
             return
         }
         
-        let installDate = Date()
-        let trackingParameters = [VTrackingKeyTimeStamp: installDate, VTrackingKeyUrls: urls]
-        trackingManager.trackEvent(VTrackingEventApplicationFirstInstall, parameters: trackingParameters)
+        trackingManager.trackEvent(VTrackingEventApplicationFirstInstall, parameters: [
+            VTrackingKeyTimeStamp: Date(),
+            VTrackingKeyUrls: urls
+        ])
+        
         UserDefaults.standard.setValue(true, forKey: appFirstInstallDefaultsKey)
     }
     

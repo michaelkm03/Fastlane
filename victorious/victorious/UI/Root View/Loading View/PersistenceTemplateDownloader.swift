@@ -8,6 +8,7 @@
 
 import Foundation
 import VictoriousIOSSDK
+import VictoriousCommon
 
 class PersistenceTemplateDownloader: NSObject, VTemplateDownloader {
     private let requestExecutor = MainRequestExecutor()

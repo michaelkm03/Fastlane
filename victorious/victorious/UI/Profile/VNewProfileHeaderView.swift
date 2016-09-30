@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 protocol ConfigurableGridStreamHeaderDelegate: class {
     func shouldRefresh()

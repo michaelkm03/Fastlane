@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 protocol VIPSubscriptionHelperDelegate: class {
     func setIsLoading(_ isLoading: Bool, title: String?)

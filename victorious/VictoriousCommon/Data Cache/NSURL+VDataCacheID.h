@@ -14,6 +14,6 @@
  Adds VDataCacheID conformance to NSURL so that instances
  can be used as cache identifiers in VDataCache
  */
-@interface NSURL (VDataCacheID) <VDataCacheID>
+@interface NSURL <VDataCacheID>
 
 @end

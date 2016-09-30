@@ -90,7 +90,7 @@ class ContentPublisher {
             itemsToRemove.contains { itemToRemove in
                  itemToRemove.matches(item)
             }
-        }.map { $0.index }
+        }.map { $0.offset }
         
         pendingItems = pendingItems.filter { item in
             !itemsToRemove.contains { itemToRemove in

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 protocol CloseUpViewDelegate: class {
     func closeUpView(_ closeUpView: CloseUpView, didSelectProfileForUserID userID: User.ID)

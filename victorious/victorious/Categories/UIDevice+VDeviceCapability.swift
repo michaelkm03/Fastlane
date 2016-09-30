@@ -71,7 +71,7 @@ extension UIDevice {
         
         // This detects the iOS simulator
         #if(arch(i386) || arch(x86_64)) && os(iOS)
-            return VDeviceRating.LightningFast
+            return VDeviceRating.lightningFast
         
         #else
         

@@ -9,6 +9,7 @@
 import UIKit
 import Crashlytics
 import FBSDKCoreKit
+import VictoriousIOSSDK
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
