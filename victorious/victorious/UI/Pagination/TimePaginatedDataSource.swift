@@ -33,11 +33,11 @@ enum PaginatedOrdering {
 ///
 /// - NOTE: This should be renamed to `PaginatedDataSource` once the other `PaginatedDataSource` is removed.
 ///
-class TimePaginatedDataSource<Item, Operation: Queueable> where Operation: Operation {
+class TimePaginatedDataSource<Item, ItemOperation: Queueable> where ItemOperation: Operation {
     
     // MARK: - Initializing
     
-    init(apiPath: APIPath, ordering: PaginatedOrdering = .descending, throttleTime: NSTimeInterval = 1.0, createOperation: (_ apiPath: APIPath) -> Operation?, processOutput: (_ output: Operation.Output) -> [Item]) {
+    init(apiPath: APIPath, ordering: PaginatedOrdering = .descending, throttleTime: TimeInterval = 1.0, createOperation: @escaping (_ apiPath: APIPath) -> ItemOperation?, processOutput: @escaping (_ output: ItemOperation.Output) -> [Item]) {
         self.apiPath = apiPath
         self.ordering = ordering
         self.throttleTime = throttleTime
@@ -60,16 +60,16 @@ class TimePaginatedDataSource<Item, Operation: Queueable> where Operation: Opera
     let ordering: PaginatedOrdering
     
     /// The minimum time between requests for item loading.
-    let throttleTime: NSTimeInterval
+    let throttleTime: TimeInterval
     
     /// A function that converts an API path into an operation that loads a page of items.
-    fileprivate let createOperation: (_ apiPath: APIPath) -> Operation?
+    fileprivate let createOperation: (_ apiPath: APIPath) -> ItemOperation?
     
     /// A function that converts the output of the data source's operation into a list of items.
-    fileprivate let processOutput: (_ output: Operation.Output) -> [Item]
+    fileprivate let processOutput: (_ output: ItemOperation.Output) -> [Item]
     
     /// The operation that is currently loading items, if any.
-    fileprivate var currentOperation: Operation?
+    fileprivate var currentOperation: ItemOperation?
     
     // MARK: - Managing contents
     
@@ -78,7 +78,7 @@ class TimePaginatedDataSource<Item, Operation: Queueable> where Operation: Opera
     
     /// Whether the data source is currently loading a page of items or not.
     var isLoading: Bool {
-        return (currentOperation?.cancelled == false)
+        return (currentOperation?.isCancelled == false)
     }
     
     /// Whether the data source has determined that additional older items are available or not.
@@ -119,7 +119,7 @@ class TimePaginatedDataSource<Item, Operation: Queueable> where Operation: Opera
     /// - RETURNS: Whether or not items were actually requested to be loaded. Items will not be loaded if a page is
     /// already being loaded, or if loading is being throttled.
     ///
-    func loadItems(_ loadingType: PaginatedLoadingType, completion: ((_ result: OperationResult<Operation.Output>) -> Void)? = nil) -> Bool {
+    func loadItems(_ loadingType: PaginatedLoadingType, completion: ((_ result: OperationResult<ItemOperation.Output>) -> Void)? = nil) -> Bool {
         if loadingType == .refresh {
             currentOperation?.cancel()
             currentOperation = nil
@@ -135,11 +135,11 @@ class TimePaginatedDataSource<Item, Operation: Queueable> where Operation: Opera
         }
         
         lastLoadTime = NSDate()
-        currentOperation = createOperation(apiPath: apiPath)
+        currentOperation = createOperation(apiPath)
         
         currentOperation?.queue { [weak self] result in
             defer {
-                completion?(result: result)
+                completion?(result)
             }
             
             guard let strongSelf = self else {
@@ -152,7 +152,7 @@ class TimePaginatedDataSource<Item, Operation: Queueable> where Operation: Opera
                 return
             }
             
-            let newItems = strongSelf.processOutput(output: output)
+            let newItems = strongSelf.processOutput(output)
             
             switch loadingType {
                 case .refresh:
@@ -185,7 +185,7 @@ class TimePaginatedDataSource<Item, Operation: Queueable> where Operation: Opera
     }
     
     fileprivate func appendItems(_ newItems: [Item]) {
-        items.appendContentsOf(newItems)
+        items.append(contentsOf: newItems)
     }
     
     fileprivate func processedAPIPath(for loadingType: PaginatedLoadingType) -> APIPath? {
@@ -221,7 +221,7 @@ class TimePaginatedDataSource<Item, Operation: Queueable> where Operation: Opera
     // the timestamps by 1ms to make them exclusive.
     
     fileprivate var oldestTimestamp: Timestamp? {
-        if let timestamp = items.reduce(nil, combine: { timestamp, item in
+        if let timestamp = items.reduce(nil, { timestamp, item in
             min(timestamp ?? Timestamp.max, (item as! PaginatableItem).paginationTimestamp)
         }) {
             return Timestamp(value: timestamp.value - 1)
@@ -231,7 +231,7 @@ class TimePaginatedDataSource<Item, Operation: Queueable> where Operation: Opera
     }
     
     fileprivate var newestTimestamp: Timestamp? {
-        if let timestamp = items.reduce(nil, combine: { timestamp, item in
+        if let timestamp = items.reduce(nil, { timestamp, item in
             max(timestamp ?? Timestamp(value: 0), (item as! PaginatableItem).paginationTimestamp)
         }) {
             return Timestamp(value: timestamp.value + 1)
