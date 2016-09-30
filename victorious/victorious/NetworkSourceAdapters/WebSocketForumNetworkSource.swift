@@ -29,7 +29,7 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
         
         // Connect this link in the event chain.
         nextSender = webSocketController
-        webSocketController.addChildReceiver(self)
+        webSocketController.addChildReceiver(receiver: self)
 
         // Device ID is needed for tracking calls on the backend.
         let deviceID = UIDevice.currentDevice().v_authorizationDeviceID

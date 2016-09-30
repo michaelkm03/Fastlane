@@ -49,7 +49,7 @@ final class ShowLoginOperation: AsyncOperation<Void> {
         let originViewController = self.originViewController
         
         loginFlow.onCompletionBlock = { didSucceed in
-            finish(result: .success())
+            finish(.success())
             
             guard didSucceed else {
                 return
