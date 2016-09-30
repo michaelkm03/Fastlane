@@ -13,8 +13,8 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
     @IBOutlet var continueButtonBottomConstraint: NSLayoutConstraint!
     @IBOutlet fileprivate weak var continueButton: UIButton! {
         didSet {
-            continueButton.setTitleColor(dependencyManager.continueButtonTitleColor, for: .Normal)
-            continueButton.setTitle(dependencyManager.continueButtonTitleText, for: .Normal)
+            continueButton.setTitleColor(dependencyManager.continueButtonTitleColor, for: .normal)
+            continueButton.setTitle(dependencyManager.continueButtonTitleText, for: .normal)
             continueButton.titleLabel?.font = dependencyManager.continueButtonTitleFont
             continueButton.backgroundColor = dependencyManager.continueButtonBackgroundColor
         }
@@ -81,8 +81,8 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        dependencyManager.addBackgroundToBackgroundHost(self)
-        dependencyManager.applyStyleToNavigationBar(navigationController?.navigationBar)
+        dependencyManager.addBackground(toBackgroundHost: self)
+        dependencyManager.applyStyle(to: navigationController?.navigationBar)
         dependencyManager.configureNavigationItem(navigationController?.navigationBar.topItem)
         
         navigationController?.navigationBar.shadowImage = UIImage()

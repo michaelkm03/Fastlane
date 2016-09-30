@@ -110,8 +110,8 @@ struct Router {
                     self.originViewController?.present(safariViewController, animated: true, completion: nil)
                 }
                 
-                else if let originVC = self.originViewController, let url = url.absoluteString {
-                    ShowWebContentOperation(originViewController: originVC, url: url, dependencyManager: self.dependencyManager, configuration: configuration).queue()
+                else if let originVC = self.originViewController {
+                    ShowWebContentOperation(originViewController: originVC, url: url.absoluteString, dependencyManager: self.dependencyManager, configuration: configuration).queue()
                 }
             }
         }
@@ -162,7 +162,7 @@ private final class ShowForumOperation: AsyncOperation<Void> {
     override func execute(_ finish: @escaping (_ result: OperationResult<Void>) -> Void) {
 
         let templateKey = showVIP ? "vipForum" : "forum"
-        let templateValue = dependencyManager.templateValueOfType(ForumViewController.self, forKey: templateKey)
+        let templateValue = dependencyManager.templateValue(ofType: ForumViewController.self, forKey: templateKey)
         guard let viewController = templateValue as? ForumViewController else {
             let error = NSError(domain: "ShowForumOperation", code: -1, userInfo: nil)
             finish(.failure(error))
@@ -170,7 +170,7 @@ private final class ShowForumOperation: AsyncOperation<Void> {
         }
         
         let navigationController = UINavigationController(rootViewController: viewController)
-        originViewController?.presentViewController(navigationController, animated: animated) {
+        originViewController?.present(navigationController, animated: animated) {
             ///
             /// FUTURE:
             /// This HACK is added in order to avoid the other HACK related to the main feed going blank. 
@@ -213,7 +213,7 @@ private final class ShowProfileOperation: AsyncOperation<Void> {
         }
         
         guard
-            let profileViewController = dependencyManager.userProfileViewController(withRemoteID: userId),
+            let profileViewController = dependencyManager.userProfileViewController(withRemoteID: NSNumber(value: userId)),
             let originViewController = originViewController
         else {
             let error = NSError(domain: "ShowProfileOperation", code: -1, userInfo: nil)
@@ -295,8 +295,8 @@ private final class ShowCloseUpOperation: AsyncOperation<Void> {
             dependencyManager: childDependencyManager,
             contentID: contentID,
             streamAPIPath: apiPath,
-            content: content,
-            context: context
+            context: context,
+            content: content
         )
         displayedCloseUpView = closeUpViewController
         
@@ -330,7 +330,7 @@ private final class ShowFetchedCloseUpOperation: AsyncOperation<Void> {
         return .main
     }
     
-    override func execute(_ finish: (_ result: OperationResult<Void>) -> Void) {
+    override func execute(_ finish: @escaping (_ result: OperationResult<Void>) -> Void) {
         
         let displayModifier = self.displayModifier
         guard
@@ -349,10 +349,10 @@ private final class ShowFetchedCloseUpOperation: AsyncOperation<Void> {
         
         // Set up ShowCloseUpOperation and chain it
         let showCloseUpOperation = ShowCloseUpOperation(contentID: contentID, displayModifier: displayModifier, context: context)
-        showCloseUpOperation.rechainAfter(self)
+        let _ = showCloseUpOperation.rechainAfter(self)
         
         // Set up ContentFetchOperation and chain it
-        contentFetchOperation.rechainAfter(showCloseUpOperation)
+        let _ = contentFetchOperation.rechainAfter(showCloseUpOperation)
         
         // Queue operations. We queue the operations after setting up dependency graph for NSOperationQueue performance reasons.
         showCloseUpOperation.queue()
@@ -368,10 +368,10 @@ private final class ShowFetchedCloseUpOperation: AsyncOperation<Void> {
                     let router = Router(originViewController: shownCloseUpView, dependencyManager: displayModifier.dependencyManager)
                     router.checkForPermissionBeforeRouting(contentIsForVIPOnly: content.isVIPOnly) { success in
                         if success {
-                            shownCloseUpView.updateContent(content)
+                            shownCloseUpView.updateContent(content: content)
                         }
                         else {
-                            shownCloseUpView.navigationController?.popViewControllerAnimated(true)
+                            let _ = shownCloseUpView.navigationController?.popViewController(animated: true)
                         }
                     }
                 
@@ -415,7 +415,7 @@ private final class ShowWebContentOperation: AsyncOperation<Void> {
         operation.after(self).queue { result in
             switch result {
                 case .success(let htmlString):
-                    viewController.load(htmlString, baseURL: request.publicBaseURL ?? NSURL())
+                    viewController.load(htmlString, baseURL: request.publicBaseURL ?? NSURL() as URL)
                 
                 case .failure(_), .cancelled:
                     viewController.setFailure(with: result.error as? NSError)
@@ -423,7 +423,7 @@ private final class ShowWebContentOperation: AsyncOperation<Void> {
         }
         
         viewController.automaticallyAdjustsScrollViewInsets = false
-        viewController.edgesForExtendedLayout = .All
+        viewController.edgesForExtendedLayout = .all
         viewController.extendedLayoutIncludesOpaqueBars = true
         viewController.title = configuration.title
         
@@ -435,9 +435,9 @@ private final class ShowWebContentOperation: AsyncOperation<Void> {
         else {
             let navigationController = UINavigationController(rootViewController: viewController)
             
-            dependencyManager.applyStyleToNavigationBar(navigationController.navigationBar)
+            dependencyManager.applyStyle(to: navigationController.navigationBar)
         
-            originViewController.presentViewController(navigationController, animated: configuration.transitionAnimated) {
+            originViewController.present(navigationController, animated: configuration.transitionAnimated) {
                 finish(.success())
             }
         }
@@ -473,14 +473,14 @@ private final class ShowVIPSubscriptionOperation: AsyncOperation<Void> {
         
         guard
             let originViewController = originViewController,
-            let vipFlow = dependencyManager.templateValueOfType(VIPFlowNavigationController.self, forKey: "vipPaygateScreen") as? VIPFlowNavigationController
+            let vipFlow = dependencyManager.templateValue(ofType: VIPFlowNavigationController.self, forKey: "vipPaygateScreen") as? VIPFlowNavigationController
         else {
             finish(.cancelled)
             return
         }
         
         vipFlow.completionBlock = completion
-        originViewController.presentViewController(vipFlow, animated: animated) {
+        originViewController.present(vipFlow, animated: animated) {
             finish(.success())
         }
     }

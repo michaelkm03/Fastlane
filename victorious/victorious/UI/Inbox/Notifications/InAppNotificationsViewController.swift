@@ -53,8 +53,8 @@ class InAppNotificationsViewController: UIViewController, UITableViewDelegate, I
         dependencyManager.addBackground(toBackgroundHost: self)
         dependencyManager.configureNavigationItem(navigationItem)
         
-        NotificationCenter.defaultCenter.addObserver(self, selector: #selector(loggedInStatusDidChange), name: kLoggedInChangedNotification, object: nil)
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(loggedInStatusDidChange), name: NSNotification.Name.loggedInChanged, object: nil)
+
         loggedInStatusDidChange(nil)
     }
     
@@ -100,7 +100,7 @@ class InAppNotificationsViewController: UIViewController, UITableViewDelegate, I
     
     // MARK: - Data source
     
-    fileprivate let dataSource: NotificationsDataSource
+    fileprivate let dataSource: InAppNotificationsDataSource
     
     // MARK: - Views
     
@@ -114,7 +114,7 @@ class InAppNotificationsViewController: UIViewController, UITableViewDelegate, I
         let isAlreadyShowingNoContent = tableView.backgroundView == noContentView
         
         switch dataSource.state {
-            case .noResults, .loading where isAlreadyShowingNoContent:
+            case .noResults where isAlreadyShowingNoContent, .loading where isAlreadyShowingNoContent:
                 if !isAlreadyShowingNoContent {
                     noContentView.resetInitialAnimationState()
                     noContentView.animateTransitionIn()
@@ -132,7 +132,7 @@ class InAppNotificationsViewController: UIViewController, UITableViewDelegate, I
     fileprivate dynamic func refresh() {
         refreshControl.beginRefreshing()
         
-        dataSource.loadNotifications(.First) { [weak self] error in
+        dataSource.loadNotifications(.first) { [weak self] error in
             self?.refreshControl.endRefreshing()
             self?.updateTableView()
             self?.redecorateVisibleCells()
@@ -174,11 +174,11 @@ class InAppNotificationsViewController: UIViewController, UITableViewDelegate, I
     // MARK: - UITableViewDelegate
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let deepLink = (dataSource.visibleItems[indexPath.row] as? Notification)?.deeplink , !deepLink.isEmpty else {
+        guard let deepLink = (dataSource.visibleItems[indexPath.row] as? InAppNotification)?.deeplink, !deepLink.isEmpty else {
             return
         }
         
-        VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectNotification)
+        VTrackingManager.sharedInstance().trackEvent(NSNotification.Name.VTrackingEventUserDidSelect.rawValue)
         showDeepLink(deepLink)
     }
     
@@ -196,7 +196,7 @@ class InAppNotificationsViewController: UIViewController, UITableViewDelegate, I
         updateTableView()
     }
     
-    func paginatedDataSource(_ paginatedDataSource: PaginatedDataSource, didReceiveError error: NSError) {
+    func paginatedDataSource(_ paginatedDataSource: PaginatedDataSource, didReceiveError error: Error) {
         (navigationController ?? self).v_showErrorDefaultError()
     }
     
@@ -207,7 +207,7 @@ class InAppNotificationsViewController: UIViewController, UITableViewDelegate, I
             return
         }
         
-        let notification = dataSource.visibleItems[indexPath.row] as! Notification
+        let notification = dataSource.visibleItems[indexPath.row] as! InAppNotification
         let router = Router(originViewController: self, dependencyManager: dependencyManager)
         router.navigate(to: .profile(userID: notification.user.id), from: nil)
     }

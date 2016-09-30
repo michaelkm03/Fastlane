@@ -137,7 +137,7 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     fileprivate func navigateToFixedWebContent(_ type: FixedWebContentType) {
         let router = Router(originViewController: self, dependencyManager: dependencyManager.navBarDependency)
         let configuration = ExternalLinkDisplayConfiguration(addressBarVisible: false, forceModal: true, isVIPOnly: false, title: type.title)
-        router.navigate(to: .externalURL(url: dependencyManager.urlForFixedWebContent(type), configuration: configuration), from: nil)
+        router.navigate(to: .externalURL(url: dependencyManager.urlForFixedWebContent(type) as URL, configuration: configuration), from: nil)
     }
     
     fileprivate func HUDNeedsUpdateToTitle(_ title: String?) -> Bool {
@@ -164,7 +164,7 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
         if let attributes = dependencyManager.privacyPolicyLinkAttributes {
             privacyPolicyText.addAttributes(attributes, range: NSMakeRange(0, privacyPolicyText.length))
         }
-        privacyPolicyButton.setAttributedTitle(privacyPolicyText, forState: .normal)
+        privacyPolicyButton.setAttributedTitle(privacyPolicyText, for: .normal)
         
         let termsOfServiceText = NSMutableAttributedString(
             string: dependencyManager.termsOfService ?? Strings.termsOfService
@@ -172,7 +172,7 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
         if let attributes = dependencyManager.termsOfServiceLinkAttributes {
             termsOfServiceText.addAttributes(attributes, range: NSMakeRange(0, termsOfServiceText.length))
         }
-        termsOfServiceButton.setAttributedTitle(termsOfServiceText, forState: .normal)
+        termsOfServiceButton.setAttributedTitle(termsOfServiceText, for: .normal)
         
         restoreButton.setTitle(dependencyManager.restoreText ?? Strings.restorePrompt, for: .normal)
         restoreButton.setTitleColor(dependencyManager.restoreTextColor, for: .normal)

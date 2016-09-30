@@ -98,10 +98,10 @@ class NativeWorkspaceViewController: VWorkspaceViewController, UIVideoEditorCont
     // MARK: - UIVideoEditorControllerDelegate
     
     func videoEditorControllerDidCancel(_ editor: UIVideoEditorController) {
-        presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+        presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
-    func videoEditorController(_ editor: UIVideoEditorController, didFailWithError error: NSError) {
+    func videoEditorController(_ editor: UIVideoEditorController, didFailWithError error: Error) {
         v_showErrorDefaultError()
     }
     
@@ -113,8 +113,8 @@ class NativeWorkspaceViewController: VWorkspaceViewController, UIVideoEditorCont
             return
         }
         animator.dismissing = true
-        presentingViewController?.dismissViewControllerAnimated(true) {
-            self.callCompletionWithSuccess(true, previewImage: previewImage, renderedMediaURL: editedMediaURL)
+        presentingViewController?.dismiss(animated: true) {
+            self.callCompletion(withSuccess: true, previewImage: previewImage, renderedMediaURL: editedMediaURL)
         }
     }
 }

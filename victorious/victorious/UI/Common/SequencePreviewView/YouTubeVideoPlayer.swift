@@ -31,14 +31,14 @@ class YouTubeVideoPlayer: NSObject, VVideoPlayer, YTPlayerViewDelegate {
 
         playerView.delegate = self
         playerView.alpha = 0.0
-        playerView.userInteractionEnabled = false
+        playerView.isUserInteractionEnabled = false
         delegate?.videoPlayerDidStartBuffering?(self)
 
         let container: [AnyHashable: Any] = [
             "videoId": videoId,
             "playerVars": playerVars
         ]
-        playerView.loadWithPlayerParams(container)
+        playerView.load(withPlayerParams: container)
     }
     
     fileprivate var playerVars: [AnyHashable: Any] {
@@ -68,11 +68,11 @@ class YouTubeVideoPlayer: NSObject, VVideoPlayer, YTPlayerViewDelegate {
     }
     
     var currentTimeMilliseconds: UInt {
-        return UInt( playerView.currentTime() * 1000.0 )
+        return UInt(playerView.currentTime() * 1000.0)
     }
     
     var currentTimeSeconds: Float64 {
-        return Float64( playerView.currentTime() )
+        return Float64(playerView.currentTime())
     }
     
     var durationSeconds: Float64 {
@@ -85,8 +85,8 @@ class YouTubeVideoPlayer: NSObject, VVideoPlayer, YTPlayerViewDelegate {
         return playerView
     }
 
-    func seekToTimeSeconds(_ timeSeconds: TimeInterval) {
-        playerView.seekToSeconds(Float(timeSeconds), allowSeekAhead: true)
+    func seek(toTimeSeconds timeSeconds: TimeInterval) {
+        playerView.seek(toSeconds: Float(timeSeconds), allowSeekAhead: true)
     }
     
     func reset() {
@@ -107,14 +107,14 @@ class YouTubeVideoPlayer: NSObject, VVideoPlayer, YTPlayerViewDelegate {
     }
     
     func pauseAtStart() {
-        playerView.seekToSeconds(0.0, allowSeekAhead: true)
+        playerView.seek(toSeconds: 0.0, allowSeekAhead: true)
         playerView.pauseVideo()
     }
     
     func playFromStart() {
         let wasPlaying = isPlaying
         if !wasPlaying {
-            playerView.seekToSeconds(0.0, allowSeekAhead: true)
+            playerView.seek(toSeconds: 0.0, allowSeekAhead: true)
             playerView.playVideo()
         }
     }
@@ -170,7 +170,7 @@ class YouTubeVideoPlayer: NSObject, VVideoPlayer, YTPlayerViewDelegate {
         }
     }
     
-    func playerView(_ playerView: YTPlayerView!, didChangeToQuality quality: YTPlaybackQuality) {}
+    func playerView(_ playerView: YTPlayerView!, didChangeTo quality: YTPlaybackQuality) {}
     
     func playerView(_ playerView: YTPlayerView!, receivedError error: YTPlayerError) {
         print( "YTPlayerView receivedError = \(error)" )
@@ -180,7 +180,7 @@ class YouTubeVideoPlayer: NSObject, VVideoPlayer, YTPlayerViewDelegate {
         delegate?.videoPlayer?(self, didPlayToTime: Float64(playTime) )
     }
     
-    func updateToBackgroundColor( _ backgroundColor: UIColor) {}
+    func update(toBackgroundColor backgroundColor: UIColor) {}
     
     var aspectRatio: CGFloat { return 1.0 }
 }
@@ -189,22 +189,21 @@ class YouTubeVideoPlayer: NSObject, VVideoPlayer, YTPlayerViewDelegate {
 
 private extension YTPlayerView {
     
-    func setVolume( _ level: Int ) {
-        evaluate( "player.setVolume( \(level) );" )
+    func setVolume(_ level: Int) {
+        _ = evaluate("player.setVolume( \(level) );")
     }
     
     func mute() {
-        evaluate( "console.log( player )" )
-        evaluate( "player.mute();" )
+        _ = evaluate("console.log( player )")
+        _ = evaluate("player.mute();")
     }
     
     func unmute() {
-        evaluate( "player.unMute();" )
+        _ = evaluate("player.unMute();")
     }
     
     func evaluate( _ javaScriptString: String ) -> String? {
-        if let webView = webView, let result = webView.stringByEvaluatingJavaScriptFromString( javaScriptString ) {
-            //print( "Evaluating javascript (\(javaScriptString)) -----> \(result)" )
+        if let webView = webView, let result = webView.stringByEvaluatingJavaScript(from: javaScriptString) {
             return result
         }
         return nil
