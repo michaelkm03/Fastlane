@@ -85,7 +85,7 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
             }
             return
         }
-        guard let isVIP = VCurrentUser.user?.vipStatus?.isVIP where isVIP || !sticker.isVIP else {
+        guard StickerSearchResultPreviewCellPopulator.currentUserCanAccess(sticker) else {
             let originViewController = parentViewController ?? self
             let router = Router(originViewController: originViewController, dependencyManager: dependencyManager)
             router.navigate(to: DeeplinkDestination.vipSubscription, from: DeeplinkContext(value: DeeplinkContext.mainFeed))
