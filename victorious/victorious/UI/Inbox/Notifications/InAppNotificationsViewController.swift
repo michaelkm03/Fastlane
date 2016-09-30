@@ -18,7 +18,7 @@ class InAppNotificationsViewController: UIViewController, UITableViewDelegate, I
     
     init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
-        dataSource = NotificationsDataSource(dependencyManager: dependencyManager)
+        dataSource = InAppNotificationsDataSource(dependencyManager: dependencyManager)
         noContentView = VNoContentView(fromNibWithFrame: tableView.bounds)
         
         super.init(nibName: nil, bundle: nil)
@@ -30,7 +30,7 @@ class InAppNotificationsViewController: UIViewController, UITableViewDelegate, I
         dataSource.registerCells(for: tableView)
         dataSource.delegate = self
         
-        refreshControl.addTarget(self, action: #selector(refresh), for: .ValueChanged)
+        refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
         refreshControl.tintColor = dependencyManager.refreshControlColor
         
         noContentView.setDependencyManager(dependencyManager)
@@ -46,14 +46,14 @@ class InAppNotificationsViewController: UIViewController, UITableViewDelegate, I
         tableView.contentInset = Constants.contentInset
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = Constants.estimatedRowHeight
-        tableView.insertSubview(refreshControl, atIndex: 0)
+        tableView.insertSubview(refreshControl, at: 0)
         view.addSubview(tableView)
-        view.v_addFitToParentConstraintsToSubview(tableView)
+        view.v_addFitToParentConstraints(toSubview: tableView)
         
-        dependencyManager.addBackgroundToBackgroundHost(self)
+        dependencyManager.addBackground(toBackgroundHost: self)
         dependencyManager.configureNavigationItem(navigationItem)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(loggedInStatusDidChange), name: kLoggedInChangedNotification, object: nil)
+        NotificationCenter.defaultCenter().addObserver(self, selector: #selector(loggedInStatusDidChange), name: kLoggedInChangedNotification, object: nil)
         
         loggedInStatusDidChange(nil)
     }
@@ -114,7 +114,7 @@ class InAppNotificationsViewController: UIViewController, UITableViewDelegate, I
         let isAlreadyShowingNoContent = tableView.backgroundView == noContentView
         
         switch dataSource.state {
-            case .NoResults, .Loading where isAlreadyShowingNoContent:
+            case .noResults, .loading where isAlreadyShowingNoContent:
                 if !isAlreadyShowingNoContent {
                     noContentView.resetInitialAnimationState()
                     noContentView.animateTransitionIn()

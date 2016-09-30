@@ -143,7 +143,7 @@ class ContentPublisher {
             
             guard
                 let apiPath = dependencyManager.mediaCreationAPIPath(for: content),
-                let operation = CreateMediaUploadOperation(apiPath: apiPath, publishParameters: publishParameters, uploadManager: VUploadManager.sharedManager())
+                let operation = CreateMediaUploadOperation(apiPath: apiPath, publishParameters: publishParameters, uploadManager: VUploadManager.shared())
             else {
                 completion?(ContentPublisherError.invalidNetworkResources)
                 return

@@ -6,6 +6,7 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
+import Foundation
 import UIKit
 
 /// Conformers receive messages when a hashtag is selected.
@@ -22,8 +23,7 @@ protocol HashtagBarControllerSearchDelegate: class {
 class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     fileprivate static let collectionViewInset = UIEdgeInsetsMake(0, 20, 0, 20)
         
-    fileprivate let cachedSizes = Cache()
-    
+    fileprivate let cachedSizes = Cache<String, CGSize>()
     fileprivate let cellDecorator: HashtagBarCellDecorator?
     
     fileprivate let collectionView: UICollectionView

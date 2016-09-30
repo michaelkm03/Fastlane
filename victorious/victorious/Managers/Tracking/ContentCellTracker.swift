@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 protocol ContentCellTracker {
     var sessionParameters: [AnyHashable: Any] { get }
@@ -41,7 +42,7 @@ extension ContentCellTracker {
         let parameters = [
             VTrackingKeyTimeStamp: Date(),
             VTrackingKeyUrls: trackingURLStrings
-        ]
+        ] as [String : Any]
         
         switch trackingKey {
             case .cellView, .cellClick, .viewStart: break

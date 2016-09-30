@@ -67,7 +67,7 @@ class InterstitialAlertAnimator: NSObject, UIViewControllerAnimatedTransitioning
                         delay: 0.3,
                         usingSpringWithDamping: 0.7,
                         initialSpringVelocity: 0.2,
-                        options: .CurveEaseIn,
+                        options: .curveEaseIn,
                         animations: {
                             toView?.center.y -= containerView.bounds.size.height
                         },

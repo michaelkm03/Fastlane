@@ -61,8 +61,8 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         super.viewWillAppear(animated)
         
         collectionView?.reloadData()
-        
-        let homeFeedIndexPath = NSIndexPath(forRow: 0, inSection: ListMenuSection.community.rawValue)
+
+        let homeFeedIndexPath = NSIndexPath(row: 0, section: ListMenuSection.community.rawValue)
         let indexPath = lastSelectedIndexPath ?? homeFeedIndexPath
         collectionView?.selectItemAtIndexPath(indexPath, animated: false, scrollPosition: .None)
         

@@ -74,7 +74,7 @@ class SideNavProfileButton: BadgeButton {
     }
     
     override var intrinsicContentSize : CGSize {
-        return avatarView.intrinsicContentSize()
+        return avatarView.intrinsicContentSize
     }
     
     override func sizeThatFits(_ size: CGSize) -> CGSize {
