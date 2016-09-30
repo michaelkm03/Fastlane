@@ -32,17 +32,17 @@ protocol Chainable {
 }
 
 extension Operation: Chainable {
-    func after(_ dependency: Operation) -> Self {
+    @discardableResult func after(_ dependency: Operation) -> Self {
         addDependency(dependency)
         return self
     }
     
-    func before(_ dependent: Operation) -> Self {
+    @discardableResult func before(_ dependent: Operation) -> Self {
         dependent.addDependency(self)
         return self
     }
     
-    func rechainAfter(_ dependency: Operation) -> Self {
+    @discardableResult func rechainAfter(_ dependency: Operation) -> Self {
         addDependency(dependency)
         
         // Rechain (transfer) dependencies
