@@ -35,7 +35,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
 
     private weak var listMenuViewController: ListMenuViewController?
     private let dependencyManager: VDependencyManager
-    let communityDataSource: ListMenuCommunityDataSource
+    let communityDataSource: NewListMenuSectionDataSource<ListMenuCommunityItem, SyncOperation<[ListMenuCommunityItem]>>
     let hashtagDataSource: ListMenuHashtagsDataSource
     let creatorDataSource: ListMenuCreatorDataSource
     let newChatRoomsDataSource: NewListMenuSectionDataSource<ChatRoom, RequestOperation<ChatRoomsRequest>>
@@ -47,8 +47,15 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         self.listMenuViewController = listMenuViewController
         self.dependencyManager = dependencyManager
         
+        communityDataSource = NewListMenuSectionDataSource(
+            dependencyManager: dependencyManager,
+            cellConfiguration: { cell, item in cell.titleLabel.text = item.title },
+            createOperation: { CommunityItemsFetchOperation(dependencyManager: dependencyManager) },
+            processOutput: { $0 },
+            section: .community
+        )
+
         creatorDataSource = ListMenuCreatorDataSource(dependencyManager: dependencyManager.creatorsChildDependency)
-        communityDataSource = ListMenuCommunityDataSource(dependencyManager: dependencyManager.communityChildDependency)
         hashtagDataSource = ListMenuHashtagsDataSource(dependencyManager: dependencyManager.hashtagsChildDependency)
 
         if

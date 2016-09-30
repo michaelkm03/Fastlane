@@ -391,6 +391,8 @@
 		5A75EADE1C57653200B08056 /* VPublishParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A75EADC1C57653200B08056 /* VPublishParameters.m */; };
 		5A8F46331C8AA2BA00629D82 /* ValidateReceiptRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8F46321C8AA2BA00629D82 /* ValidateReceiptRequest.swift */; };
 		5AC41CDF1C9AB3FD00603FE5 /* VDependencyManager+Subcomponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC41CDE1C9AB3FD00603FE5 /* VDependencyManager+Subcomponent.swift */; };
+		621320041D9DDABD00A1B5BD /* CommunityItemsFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621320031D9DDABD00A1B5BD /* CommunityItemsFetchOperation.swift */; };
+		621320071D9DE5DE00A1B5BD /* CommunityItemsFetchOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621320061D9DE5DE00A1B5BD /* CommunityItemsFetchOperationTests.swift */; };
 		622103491C65354A00A77A73 /* LoginOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622103481C65354A00A77A73 /* LoginOperationTests.swift */; };
 		6232D4701C86539E00B1D9B8 /* TestTrackingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6232D46F1C86539E00B1D9B8 /* TestTrackingManager.swift */; };
 		6236F8761C36030000746476 /* TestRequestExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6236F8751C36030000746476 /* TestRequestExecutor.swift */; };
@@ -1834,6 +1836,8 @@
 		5A75EADC1C57653200B08056 /* VPublishParameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPublishParameters.m; sourceTree = "<group>"; };
 		5A8F46321C8AA2BA00629D82 /* ValidateReceiptRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValidateReceiptRequest.swift; sourceTree = "<group>"; };
 		5AC41CDE1C9AB3FD00603FE5 /* VDependencyManager+Subcomponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VDependencyManager+Subcomponent.swift"; sourceTree = "<group>"; };
+		621320031D9DDABD00A1B5BD /* CommunityItemsFetchOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommunityItemsFetchOperation.swift; path = "List Menu/CommunityItemsFetchOperation.swift"; sourceTree = "<group>"; };
+		621320061D9DE5DE00A1B5BD /* CommunityItemsFetchOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommunityItemsFetchOperationTests.swift; path = Operations/CommunityItemsFetchOperationTests.swift; sourceTree = "<group>"; };
 		622103481C65354A00A77A73 /* LoginOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginOperationTests.swift; sourceTree = "<group>"; };
 		6232D46F1C86539E00B1D9B8 /* TestTrackingManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestTrackingManager.swift; sourceTree = "<group>"; };
 		6236F8751C36030000746476 /* TestRequestExecutor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestRequestExecutor.swift; sourceTree = "<group>"; };
@@ -4498,6 +4502,22 @@
 			path = UI;
 			sourceTree = "<group>";
 		};
+		621320021D9DDA8700A1B5BD /* List Menu */ = {
+			isa = PBXGroup;
+			children = (
+				621320031D9DDABD00A1B5BD /* CommunityItemsFetchOperation.swift */,
+			);
+			name = "List Menu";
+			sourceTree = "<group>";
+		};
+		621320051D9DE58800A1B5BD /* Operations */ = {
+			isa = PBXGroup;
+			children = (
+				621320061D9DE5DE00A1B5BD /* CommunityItemsFetchOperationTests.swift */,
+			);
+			name = Operations;
+			sourceTree = "<group>";
+		};
 		6232D46E1C86539E00B1D9B8 /* Tracking */ = {
 			isa = PBXGroup;
 			children = (
@@ -5186,6 +5206,7 @@
 				7A1DECB91D80E021003F5C37 /* GIF */,
 				A72C859E1C977FF500E97D4F /* Helpers */,
 				A72C85AA1C977FF500E97D4F /* Launch */,
+				621320021D9DDA8700A1B5BD /* List Menu */,
 				7A1DECC31D80E06B003F5C37 /* Login */,
 				7A1DECCE1D80E080003F5C37 /* Notifications */,
 				7A1DECD71D80E093003F5C37 /* Operation Infrastructure */,
@@ -5918,6 +5939,7 @@
 				03A7614E1B3232970016B69D /* NSURL+VDataCacheIDTests.m */,
 				7987D7981B8A66C400EE4A39 /* NSURL+VTemporaryFilesTests.m */,
 				79070A2A1CFE73570049CFC3 /* ShowTutorialsOperationTests.swift */,
+				621320051D9DE58800A1B5BD /* Operations */,
 				7AFE92071D6636B1005D51A4 /* Simple Models */,
 				7AC194621D2DD2FC001B15B8 /* String+InitialsTests.swift */,
 				F093A9361CEFA008009ACABF /* String+SubstringHelpersTests.swift */,
@@ -8310,6 +8332,7 @@
 				A769FE451ABCFCE900888ED8 /* VTrackingSettingsViewController.m in Sources */,
 				C3623F2B1BA3AF3A002B121D /* Interstitial.swift in Sources */,
 				F087E5BF1D93B27200034146 /* TrayLoadingCollectionViewCell.swift in Sources */,
+				621320041D9DDABD00A1B5BD /* CommunityItemsFetchOperation.swift in Sources */,
 				A7F0C86A1CB2E51A0007178A /* SimulatedPurchaseManager.swift in Sources */,
 				675A9AFC1BC372DE009CE633 /* FirstInstallManager.swift in Sources */,
 				7AE14EAF1D88B6DB0088A13E /* LinkLabel.swift in Sources */,
@@ -8523,6 +8546,7 @@
 				A7DCA5111C128A78004E35B4 /* VUploadTaskSerializerTests.m in Sources */,
 				7987D79A1B8A66E400EE4A39 /* NSURL+VTemporaryFiles.m in Sources */,
 				A7D0AD2F1C0D453D0018C63E /* NSData+AESTests.m in Sources */,
+				621320071D9DE5DE00A1B5BD /* CommunityItemsFetchOperationTests.swift in Sources */,
 				67CA1EAE1CB590F10023278F /* InterstitialManagerTests.swift in Sources */,
 				A7DCA4FB1C128A78004E35B4 /* VPasswordValidationTests.m in Sources */,
 				F06FC1ED1C971BD400A014C7 /* ComposerTextViewManagerTests.swift in Sources */,

@@ -77,15 +77,13 @@ class NewListMenuSectionDataSource<Item, Operation: Queueable where Operation: N
             let items = strongSelf.processOutput(output: output)
 
             switch result {
-            case .success:
-                strongSelf.visibleItems = items
-
-            case .failure(let error):
-                strongSelf.state = .failed(error: error)
-                strongSelf.delegate?.didUpdateVisibleItems(forSection: strongSelf.section)
-
-            case .cancelled:
-                strongSelf.delegate?.didUpdateVisibleItems(forSection: strongSelf.section)
+                case .success:
+                    strongSelf.visibleItems = items
+                case .failure(let error):
+                    strongSelf.state = .failed(error: error)
+                    strongSelf.delegate?.didUpdateVisibleItems(forSection: strongSelf.section)
+                case .cancelled:
+                    strongSelf.delegate?.didUpdateVisibleItems(forSection: strongSelf.section)
             }
         }
     }
