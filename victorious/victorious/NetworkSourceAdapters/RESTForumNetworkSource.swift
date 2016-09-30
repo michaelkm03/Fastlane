@@ -23,7 +23,7 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
         
         super.init()
         
-        NSNotificationCenter.defaultCenter().addObserver(
+        NotificationCenter.default.addObserver(
             self,
             selector: #selector(handleUpdateStreamURLNotification),
             name: RESTForumNetworkSource.updateStreamURLNotification,

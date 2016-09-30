@@ -36,7 +36,7 @@ class VIPValidateSubscriptionOperation: AsyncOperation<VIPStatus> {
     
     // MARK: - Executing
     
-    var receiptDataSource: ReceiptDataSource = Bundle.main as! ReceiptDataSource
+    var receiptDataSource: ReceiptDataSource = Bundle.main
     
     fileprivate(set) var validationSucceeded = false
     

@@ -377,7 +377,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
             selector: #selector(onTimerTick),
             userInfo: nil,
             repeats: true,
-            toRunLoop: RunLoop.mainRunLoop(),
+            toRunLoop: RunLoop.main,
             withRunMode: RunLoopMode.commonModes
         )
         
