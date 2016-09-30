@@ -29,14 +29,13 @@ class SubscribeButton: UIView {
         subscribeButton.translatesAutoresizingMaskIntoConstraints = false
         userIsVIPButton?.translatesAutoresizingMaskIntoConstraints = false
         
-        subscribeButton.setTitle(NSLocalizedString("Upgrade", comment: ""), forState: .normal)
+        subscribeButton.setTitle(NSLocalizedString("Upgrade", comment: ""), for: .normal)
         subscribeButton.sizeToFit()
-        subscribeButton.addTarget(self, action: #selector(subscribeButtonWasPressed), forControlEvents: .touchUpInside)
+        subscribeButton.addTarget(self, action: #selector(subscribeButtonWasPressed), for: .touchUpInside)
         updateVIPState()
         
-        NotificationCenter.defaultCenter.addObserver(self, selector: #selector(userStatusDidChange), name: VCurrentUser.userDidUpdateNotificationKey, object: nil)
-        
-        NotificationCenter.defaultCenter().addObserver(self, selector: #selector(userStatusDidChange), name: kLoggedInChangedNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(userStatusDidChange), name: NSNotification.Name(rawValue: VCurrentUser.userDidUpdateNotificationKey), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(userStatusDidChange), name: NSNotification.Name.loggedInChanged, object: nil)
     }
     
     required init(coder: NSCoder) {

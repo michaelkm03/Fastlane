@@ -136,10 +136,11 @@ class YouTubeVideoPlayer: NSObject, VVideoPlayer, YTPlayerViewDelegate {
         }
         
         if playerView.alpha < 1.0 {
-            UIView.animateWithDuration( 0.3,
+            UIView.animate(
+                withDuration: 0.3,
                 delay: 0.2,
                 options: [],
-                animations: { () -> Void in
+                animations: {
                     self.playerView.alpha = 1.0
                 },
                 completion: nil
@@ -147,22 +148,22 @@ class YouTubeVideoPlayer: NSObject, VVideoPlayer, YTPlayerViewDelegate {
         }
     }
     
-    func playerView(_ playerView: YTPlayerView!, didChangeToState state: YTPlayerState) {
+    func playerView(_ playerView: YTPlayerView!, didChangeTo state: YTPlayerState) {
         switch state {
-            case .Ended:
-                playerView.userInteractionEnabled = true
+            case .ended:
+                playerView.isUserInteractionEnabled = true
                 isPlaying = false
                 delegate?.videoPlayerDidReachEnd?(self)
-            case .Paused:
+            case .paused:
                 isPlaying = false
                 delegate?.videoPlayerDidPause?(self)
-            case .Buffering:
+            case .buffering:
                 delegate?.videoPlayerDidStartBuffering?(self)
-            case .Queued:()
-            case .Unknown:()
-            case .Unstarted:()
-            case .Playing:
-                playerView.userInteractionEnabled = false
+            case .queued: break
+            case .unknown: break
+            case .unstarted: break
+            case .playing:
+                playerView.isUserInteractionEnabled = false
                 isPlaying = true
                 delegate?.videoPlayerDidStopBuffering?(self)
                 delegate?.videoPlayerDidPlay?(self)
