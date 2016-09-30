@@ -45,10 +45,6 @@ public extension RequestType {
     public var baseURL: URL? {
         return nil
     }
-    
-    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> Void {
-        // This method intentionally left blank.
-    }
 }
 
 /// An asynchronous task that can be canceled

@@ -24,4 +24,8 @@ public struct ApplicationTrackingRequest: RequestType {
         self.trackingURL = trackingURL
         self.eventIndex = eventIndex
     }
+    
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws {
+        // Protocol conformance
+    }
 }
