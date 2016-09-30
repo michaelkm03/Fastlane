@@ -12,7 +12,7 @@ import FBSDKShareKit
 class FacebookHelper: NSObject {
     
     /// The set of read permissions that should be requested when logging in
-    static let readPermissions = [ "public_profile", "user_friends", "email" ]
+    static let readPermissions = ["public_profile", "user_friends", "email"]
     
     /// Determines if a URL is a Facebook deep link.
     ///
@@ -24,7 +24,7 @@ class FacebookHelper: NSObject {
             return false
         }
 
-        return !fbSchemeRegex.matchesInString(urlScheme, options: [], range: NSMakeRange(0, urlScheme.characters.count)).isEmpty
+        return !fbSchemeRegex.matches(in: urlScheme, options: [], range: NSMakeRange(0, urlScheme.characters.count)).isEmpty
     }
     
     /// - returns: true if a Facebook app ID is present in the app's Info.plist file.
