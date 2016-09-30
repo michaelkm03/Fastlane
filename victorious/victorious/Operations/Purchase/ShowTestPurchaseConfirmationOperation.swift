@@ -39,7 +39,7 @@ final class ShowTestPurchaseConfirmationOperation: AsyncOperation<Void> {
         alertController.addAction(
             UIAlertAction(
                 title: "Cancel",
-                style: .Cancel,
+                style: .cancel,
                 handler: { action in
                     finish(.cancelled)
                 }

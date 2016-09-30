@@ -37,7 +37,7 @@ class LoginSuccessOperation: SyncOperation<Void> {
         VCurrentUser.loginType = parameters.loginType
         VCurrentUser.token = response.token
         VCurrentUser.accountIdentifier = parameters.accountIdentifier
-        VCurrentUser.isNewUser = response.newUser
+        VCurrentUser.isNewUser = response.newUser as NSNumber?
         
         VCurrentUser.update(to: currentUser)
         updateStoredCredentials(currentUser)
