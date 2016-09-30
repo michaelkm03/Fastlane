@@ -81,7 +81,6 @@
 "VideoCaptureFailed"    =   "Unable to record video";
 "VideoSaveFailed"       =   "Unable to save video";
 "VideoCoachMessage"     =   "Press and hold to record";
-"MixedMediaCoachMessage" =  "Press and hold to record a video, tap to take a picture";
 "LibraryCaptureFailed"  =   "Unable to access item in library";
 
 "Uploading"             =   "Your post is uploading...";
