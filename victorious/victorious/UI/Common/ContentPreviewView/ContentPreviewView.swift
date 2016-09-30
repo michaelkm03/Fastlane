@@ -68,7 +68,7 @@ class ContentPreviewView: UIView {
         super.init(frame: CGRect.zero)
         
         backgroundColor = Constants.loadingColor
-        previewImageView.backgroundColor = .clear()
+        previewImageView.backgroundColor = .clear
         
         /// Preview Image View
         previewImageView.contentMode = .scaleAspectFill

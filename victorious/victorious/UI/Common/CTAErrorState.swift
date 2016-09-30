@@ -35,7 +35,7 @@ class CTAErrorState: UIView {
         self.actionType = actionType
         super.init(frame: frame)
         setupViews()
-        actionButton.addTarget(self, action: #selector(CTAErrorState.performButtonAction), forControlEvents: .TouchUpInside)
+        actionButton.addTarget(self, action: #selector(CTAErrorState.performButtonAction), for: .touchUpInside)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -45,7 +45,7 @@ class CTAErrorState: UIView {
     fileprivate func setupViews() {
         messageLabel.text = dependencyManager.messageLabelText
         messageLabel.numberOfLines = 0
-        messageLabel.textAlignment = .Center
+        messageLabel.textAlignment = .center
         messageLabel.font = dependencyManager.messageLabelFont
         messageLabel.textColor = dependencyManager.messageLabelColor
         
@@ -54,15 +54,15 @@ class CTAErrorState: UIView {
         
         addSubview(messageLabel)
         
-        messageLabel.widthAnchor.constraintEqualToAnchor(self.widthAnchor).active = true
-        messageLabel.topAnchor.constraintEqualToAnchor(self.topAnchor).active = true
-        messageLabel.centerXAnchor.constraintEqualToAnchor(self.centerXAnchor).active = true
+        messageLabel.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
+        messageLabel.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        messageLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         messageLabel.translatesAutoresizingMaskIntoConstraints = false
         
         addSubview(actionButton)
-        actionButton.widthAnchor.constraintEqualToAnchor(self.widthAnchor).active = true
-        actionButton.topAnchor.constraintEqualToAnchor(messageLabel.bottomAnchor, constant: Constants.minimumSpacing).active = true
-        actionButton.centerXAnchor.constraintEqualToAnchor(self.centerXAnchor).active = true
+        actionButton.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
+        actionButton.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: Constants.minimumSpacing).isActive = true
+        actionButton.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         actionButton.translatesAutoresizingMaskIntoConstraints = false
     }
     
@@ -71,7 +71,7 @@ class CTAErrorState: UIView {
         switch actionType {
             case .openSettings:
                 if let url = URL(string: UIApplicationOpenSettingsURLString) {
-                    UIApplication.sharedApplication().openURL(url)
+                    UIApplication.shared.openURL(url)
                 }
         }
     }

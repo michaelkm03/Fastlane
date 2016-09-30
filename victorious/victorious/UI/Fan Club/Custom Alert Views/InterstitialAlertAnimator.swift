@@ -63,7 +63,7 @@ class InterstitialAlertAnimator: NSObject, UIViewControllerAnimatedTransitioning
                     
                     fromViewController.beginAppearanceTransition(false, animated: true)
                     // Animate the presented view to it's final position
-                    UIView.animateWithDuration(transitionDuration(using: transitionContext) + 0.3,
+                    UIView.animate(withDuration: transitionDuration(using: transitionContext) + 0.3,
                         delay: 0.3,
                         usingSpringWithDamping: 0.7,
                         initialSpringVelocity: 0.2,
