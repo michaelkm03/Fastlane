@@ -8,6 +8,7 @@
 
 import Foundation
 import SafariServices
+import VictoriousIOSSDK
 
 /// A Router object that is able to navigate to a deeplink destination in the app
 struct Router {

@@ -16,9 +16,9 @@ class SimulatedPurchaseManager: VPurchaseManager {
         static let title            = "[TITLE]"
     }
     
-    fileprivate var simulatedProductIdentifiers = Set<NSObject>()
+    fileprivate var simulatedProductIdentifiers = Set<AnyHashable>()
     
-    override var purchasedProductIdentifiers: Set<NSObject> {
+    override var purchasedProductIdentifiers: Set<AnyHashable> {
         return simulatedProductIdentifiers
     }
     
@@ -26,18 +26,18 @@ class SimulatedPurchaseManager: VPurchaseManager {
         return false
     }
     
-    override func purchaseableProductForProductIdentifier(_ productIdentifier: String) -> VProduct {
+    override func purchaseableProduct(forProductIdentifier productIdentifier: String) -> VProduct {
         return VPseudoProduct(
             productIdentifier: productIdentifier,
             price: PlaceholderStrings.price,
             localizedDescription: PlaceholderStrings.description,
-            localizedTitle: productIdentifier.componentsSeparatedByString(".").last ?? PlaceholderStrings.title
+            localizedTitle: productIdentifier.components(separatedBy: ".").last ?? PlaceholderStrings.title
         )
     }
     
     fileprivate var products = Set<VProduct>()
     
-    override func fetchProductsWithIdentifiers(_ productIdentifiers: Set<NSObject>, success successCallback: VProductsRequestSuccessBlock, failure failureCallback: VProductsRequestFailureBlock) {
+    override func fetchProducts(withIdentifiers productIdentifiers: Set<AnyHashable>, success successCallback: @escaping VProductsRequestSuccessBlock, failure failureCallback: @escaping VProductsRequestFailureBlock) {
         guard products.isEmpty else {
             successCallback(products)
             return
@@ -45,25 +45,25 @@ class SimulatedPurchaseManager: VPurchaseManager {
         
         let productIdentifiers = productIdentifiers.flatMap({ $0 as? String })
         for productIdentifier in productIdentifiers {
-            products.insert(purchaseableProductForProductIdentifier(productIdentifier))
+            products.insert(purchaseableProduct(forProductIdentifier: productIdentifier))
         }
         
         // Pretend that we are fetching from the store
         sleep(3)
         
-        successCallback( products )
+        successCallback(products)
     }
     
-    override func purchaseProduct(_ product: VProduct, success successCallback: VPurchaseSuccessBlock, failure failureCallback: VPurchaseFailBlock) {
-        
+    override func purchaseProduct(_ product: VProduct, success successCallback: @escaping VPurchaseSuccessBlock, failure failureCallback: @escaping VPurchaseFailBlock) {
         dispatch_after(1.0) { [weak self] in
             let operation = ShowTestPurchaseConfirmationOperation(
-                type: self?.purchaseTypeForProductIdentifier(product.productIdentifier) ?? .Product,
+                type: self?.purchaseType(forProductIdentifier: product.productIdentifier) ?? .product,
                 title: product.localizedTitle,
                 duration: product.localizedDescription,
                 price: product.price
             )
-            operation.queue() { result in
+            
+            operation.queue { result in
                 switch result {
                     case .success:
                         self?.setProductPurchased(product)
@@ -77,21 +77,21 @@ class SimulatedPurchaseManager: VPurchaseManager {
         }
     }
     
-    override func restorePurchasesSuccess(_ successCallback: VPurchaseSuccessBlock, failure failureCallback: VPurchaseFailBlock) {
-        dispatch_after( TimeInterval(arc4random_uniform(2) + 1) ) {
-            successCallback( Set<NSObject>() )
+    override func restorePurchasesSuccess(_ successCallback: @escaping VPurchaseSuccessBlock, failure failureCallback: @escaping VPurchaseFailBlock) {
+        dispatch_after(TimeInterval(arc4random_uniform(2) + 1)) {
+            successCallback(Set<AnyHashable>())
         }
     }
     
     override func resetPurchases() {
-        self.simulatedProductIdentifiers = Set<NSObject>()
-        self.purchaseRecord.clear()
+        simulatedProductIdentifiers = Set<AnyHashable>()
+        purchaseRecord.clear()
     }
     
     // MARK: - Private
     
     func setProductPurchased(_ product: VProduct) {
-        self.purchaseRecord.addProductIdentifier(product.productIdentifier)
-        self.simulatedProductIdentifiers.insert(product.productIdentifier)
+        purchaseRecord.addProductIdentifier(product.productIdentifier)
+        _ = simulatedProductIdentifiers.insert(product.productIdentifier)
     }
 }
