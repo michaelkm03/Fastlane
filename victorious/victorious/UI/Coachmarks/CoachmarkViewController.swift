@@ -183,7 +183,9 @@ class CoachmarkViewController: UIViewController, VBackgroundContainer {
     
     // MARK: - Configuration
 
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask = [.portrait]
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return [.portrait]
+    }
 }
 
 private class HighlightForegroundView : UIView, VBackgroundContainer {

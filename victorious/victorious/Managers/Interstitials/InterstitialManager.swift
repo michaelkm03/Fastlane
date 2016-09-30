@@ -74,7 +74,7 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
             case .achievement, .statusUpdate, .clientSideCreated:
                 interstitialViewController.transitioningDelegate = self
                 interstitialViewController.modalPresentationStyle = interstitial.preferredModalPresentationStyle()
-                presentingViewController.presentViewController(interstitialViewController, animated: true, completion: nil)
+                presentingViewController.present(interstitialViewController, animated: true, completion: nil)
         }
 
         acknowledgeAlert(alert)
@@ -94,9 +94,9 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
 
     fileprivate func addInterstitial(_ interstitial: UIViewController, toParent parent: UIViewController) {
         parent.view.addSubview(interstitial.view)
-        interstitial.willMoveToParentViewController(parent)
+        interstitial.willMove(toParentViewController: parent)
         parent.addChildViewController(interstitial)
-        interstitial.didMoveToParentViewController(parent)
+        interstitial.didMove(toParentViewController: parent)
     }
 
     // MARK: - AlertReceiver
@@ -130,13 +130,13 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
     }
     
     func dismissInterstitial(_ interstitialViewController: UIViewController) {
-        if interstitialViewController.parentViewController != nil {
-            interstitialViewController.willMoveToParentViewController(nil)
+        if interstitialViewController.parent != nil {
+            interstitialViewController.willMove(toParentViewController: nil)
             interstitialViewController.view.removeFromSuperview()
             interstitialViewController.removeFromParentViewController()
         }
         else if interstitialViewController.presentingViewController != nil {
-            interstitialViewController.dismissViewControllerAnimated(true, completion: nil)
+            interstitialViewController.dismiss(animated: true, completion: nil)
         }
 
         presentedInterstitial = nil
@@ -145,15 +145,15 @@ class InterstitialManager: NSObject, UIViewControllerTransitioningDelegate, Inte
     
     // MARK: Transition Delegate
         
-    func animationControllerForPresentedController(_ presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return presentedInterstitial?.presentationAnimator()
     }
     
-    func animationControllerForDismissedController(_ dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return presentedInterstitial?.dismissalAnimator()
     }
 
-    func presentationControllerForPresentedViewController(_ presented: UIViewController, presentingViewController presenting: UIViewController?, sourceViewController source: UIViewController) -> UIPresentationController? {
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         return presentedInterstitial?.presentationController(presented, presentingViewController: presenting)
     }
 }
