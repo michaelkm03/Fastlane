@@ -64,7 +64,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
 
         let homeFeedIndexPath = NSIndexPath(row: 0, section: ListMenuSection.community.rawValue)
         let indexPath = lastSelectedIndexPath ?? homeFeedIndexPath
-        collectionView?.selectItemAtIndexPath(indexPath, animated: false, scrollPosition: .None)
+        collectionView?.selectItem(at: indexPath as IndexPath, animated: true, scrollPosition: [])
         
         dependencyManager.trackViewWillAppear(for: self)
     }
@@ -96,11 +96,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         router.navigate(to: destination, from: nil)
         
         // This notification closes the side view controller
-        NotificationCenter.defaultCenter.postNotificationName(
-            RESTForumNetworkSource.updateStreamURLNotification,
-            object: nil,
-            userInfo: nil
-        )
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: RESTForumNetworkSource.updateStreamURLNotification), object: nil)
     }
     
     private func selectCommunity(atIndex index: Int) {
@@ -156,8 +152,8 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     }
     
     private func postListMenuSelection(listMenuSelection: ListMenuSelectedItem?) {
-        NotificationCenter.defaultCenter.postNotificationName(
-            RESTForumNetworkSource.updateStreamURLNotification,
+        NotificationCenter.default.post(
+            name: NSNotification.Name(rawValue: RESTForumNetworkSource.updateStreamURLNotification),
             object: nil,
             userInfo: listMenuSelection.flatMap { ["selectedItem": ReferenceWrapper($0)] }
         )
@@ -171,13 +167,13 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     
     // MARK: - UIViewController overrides
     
-    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return .portrait
     }
     
     // MARK: - UICollectionView Delegate Flow Layout
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: IndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         switch ListMenuSection(rawValue: indexPath.section)! {
             case .creator: return CGSize(width: view.bounds.width, height: ListMenuCreatorCollectionViewCell.preferredHeight)
             case .community: return CGSize(width: view.bounds.width, height: ListMenuCommunityCollectionViewCell.preferredHeight)
@@ -198,7 +194,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     
     private var lastSelectedIndexPath: NSIndexPath?
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: IndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         let listMenuSection = ListMenuSection(rawValue: indexPath.section)!
         
@@ -212,7 +208,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
                     collectionView.selectItem(
                         at: self?.lastSelectedIndexPath as IndexPath?,
                         animated: true,
-                        scrollPosition: .none
+                        scrollPosition: []
                     )
                 })
             case .community:
@@ -227,8 +223,8 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         }
     }
     
-    func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: IndexPath) -> Bool {
-        let validIndices: Range<Int>
+    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        let validIndices: CountableRange<Int>
         
         switch ListMenuSection(rawValue: indexPath.section)! {
             case .creator: validIndices = collectionViewDataSource.creatorDataSource.visibleItems.indices
@@ -241,7 +237,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     
     // MARK: - CoachmarkDisplayer
     
-    func highlightFrame(forIdentifier forIdentifier: String) -> CGRect? {
+    func highlightFrame(forIdentifier: String) -> CGRect? {
         return nil 
     }
     
