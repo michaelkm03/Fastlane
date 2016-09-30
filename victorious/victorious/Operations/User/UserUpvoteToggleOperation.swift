@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 class UserUpvoteToggleOperation: SyncOperation<Void> {
     fileprivate let user: UserModel

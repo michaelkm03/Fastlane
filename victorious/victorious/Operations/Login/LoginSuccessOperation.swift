@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 /// An operation that should be run after creating an account or logging in to set up and persist the current user's
 /// information.
