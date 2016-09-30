@@ -38,7 +38,7 @@ final class VIPSubscribeOperation: AsyncOperation<Void> {
                     VTrackingManager.sharedInstance().trackEvent(VTrackingEventRecievedProductReceiptFromBackend)
                 }
                 
-                finish(result: .success())
+                finish(.success())
             }
         }
         

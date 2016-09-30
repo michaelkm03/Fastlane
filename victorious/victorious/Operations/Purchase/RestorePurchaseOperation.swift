@@ -25,10 +25,10 @@ final class RestorePurchasesOperation: AsyncOperation<Void> {
             { results in
                 // Force success because we have to deliver the product even if the sever fails for any reason
                 VIPValidateSubscriptionOperation(apiPath: self.validationAPIPath, shouldForceSuccess: true)?.rechainAfter(self).queue()
-                finish(result: .success())
+                finish(.success())
             },
             failure: { error in
-                finish(result: .failure(error))
+                finish(.failure(error))
             }
         )
     }
