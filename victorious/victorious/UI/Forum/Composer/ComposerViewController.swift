@@ -549,6 +549,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         
         switch customInputAreaState {
             case .Hidden:
+                selectedButton = nil
                 customInputAreaHeight = 0
             case .Visible(let inputController):
                 customInputAreaHeight = inputController.desiredHeight
