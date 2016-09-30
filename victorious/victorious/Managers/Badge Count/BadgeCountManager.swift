@@ -19,8 +19,8 @@ final class BadgeCountManager {
     // MARK: - Initializing
     
     fileprivate init() {
-        NotificationCenter.default.addObserver(self, selector: #selector(loggedInStatusDidChange), name: kLoggedInChangedNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(applicationDidBecomeActive), name: VApplicationDidBecomeActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(loggedInStatusDidChange), name: NSNotification.Name.loggedInChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(applicationDidBecomeActive), name: NSNotification.Name.VApplicationDidBecomeActive, object: nil)
         fetchUnreadNotificationCount()
     }
     
@@ -38,13 +38,13 @@ final class BadgeCountManager {
     }
     
     fileprivate func updateApplicationBadgeCount() {
-        UIApplication.sharedApplication().applicationIconBadgeNumber = totalBadgeCount
+        UIApplication.shared.applicationIconBadgeNumber = totalBadgeCount
     }
     
     // MARK: - Listening for badge count changes
     
     /// Listens for changes in the badge count of the given `type`.
-    func whenBadgeCountChanges(for type: BadgeCountType, callback: () -> Void) {
+    func whenBadgeCountChanges(for type: BadgeCountType, callback: @escaping () -> Void) {
         switch type {
             case .unreadNotifications: whenUnreadNotificationCountChanges.add(callback)
         }
