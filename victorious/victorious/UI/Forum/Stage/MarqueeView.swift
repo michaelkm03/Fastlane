@@ -185,6 +185,6 @@ class MarqueeView: UIView {
         let stop = Constants.gradientWidth / frame.size.width
         let nextStop = 1.0 - stop
         gradientView.locations = [0.0, stop, nextStop, 1.0]
-        maskView = gradientView
+        mask = gradientView
     }
 }

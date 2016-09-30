@@ -68,7 +68,7 @@ class ForumNavBarTitleView: UIView {
         
         return numberOfUsersText
             .replacingOccurrences(of: Keys.visitorsMacro, with: VLargeNumberFormatter()
-            .stringForInteger(activeUserCount))
+            .string(for: activeUserCount))
     }
 }
 

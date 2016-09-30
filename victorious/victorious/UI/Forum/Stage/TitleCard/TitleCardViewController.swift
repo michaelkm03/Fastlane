@@ -101,7 +101,7 @@ class TitleCardViewController: UIViewController {
         autoHideTimer?.invalidate()
 
         let autoHideDelay = marqueeView.maxAnimationDuration > Constants.minDelay ? marqueeView.maxAnimationDuration : Constants.minDelay
-        autoHideTimer = VTimerManager.scheduledTimerManagerWithTimeInterval(autoHideDelay, target: self, selector: #selector(autoHideTimerDidFire), userInfo: nil, repeats: false)
+        autoHideTimer = VTimerManager.scheduledTimerManager(withTimeInterval: autoHideDelay, target: self, selector: #selector(autoHideTimerDidFire), userInfo: nil, repeats: false)
     }
 
     /// Slides out the title card from the screen.
@@ -122,7 +122,7 @@ class TitleCardViewController: UIViewController {
         draggableView.applyCornerRadius(Constants.cornerRadius)
         draggableView.layer.borderColor = Constants.borderColor
         draggableView.layer.borderWidth = Constants.borderWidth
-        view.backgroundColor = .clear()
+        view.backgroundColor = .clear
     }
 
     fileprivate func setupRecognizers(on view: UIView) {
