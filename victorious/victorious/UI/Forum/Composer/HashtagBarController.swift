@@ -23,7 +23,7 @@ protocol HashtagBarControllerSearchDelegate: class {
 class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     fileprivate static let collectionViewInset = UIEdgeInsetsMake(0, 20, 0, 20)
         
-    fileprivate let cachedSizes = Cache<String, CGSize>()
+    fileprivate let cachedSizes = NSCache<NSString, NSValue>()
     fileprivate let cellDecorator: HashtagBarCellDecorator?
     
     fileprivate let collectionView: UICollectionView
@@ -114,13 +114,13 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
             return .zero
         }
         
-        if let cachedValue = cachedSizes.object(forKey: searchText) as? NSValue {
+        if let cachedValue = cachedSizes.object(forKey: searchText as NSString) as? NSValue {
             return cachedValue.CGSizeValue
         }
         
         let boundingRect = (searchText as NSString).boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: UIScreen.main.bounds.height), options: .usesLineFragmentOrigin, attributes: [NSFontAttributeName : cellDecorator.font], context: nil)
         let size = CGSize(width: ceil(boundingRect.width) + 10, height: ceil(boundingRect.height) + 10)
-        cachedSizes.setObject(NSValue(CGSize: size), forKey: searchText)
+        cachedSizes.setObject(NSValue(CGSize: size), forKey: searchText as NSString)
         return size
     }
     
