@@ -39,7 +39,7 @@ class LightBoxViewController: UIViewController {
         
         view.addSubview(mediaContentView)
         view.v_addFitToParentConstraints(toSubview: mediaContentView)
-        view.backgroundColor = .black()
+        view.backgroundColor = .black
         
         NotificationCenter.default.addObserver(self, selector: #selector(orientationChanged), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
     }
