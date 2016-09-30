@@ -26,7 +26,8 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         static let gifType = "gif"
     }
     
-    /// ForumEventSender
+    // MARK: - ForumEventSender
+    
     var nextSender: ForumEventSender? {
         return delegate
     }
@@ -88,7 +89,9 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     @IBOutlet weak var vipLockWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var composerLeadingConstraint: NSLayoutConstraint!
     
-    @IBOutlet weak private var passthroughContainerView: VPassthroughContainerView!
+    @IBOutlet weak private var backgroundPassthroughContainerView: VPassthroughContainerView!
+    @IBOutlet weak private var ballisticsContainerView: VPassthroughContainerView!
+    @IBOutlet weak private var ballisticsContainerViewToTopConstraint: NSLayoutConstraint!
     
     @IBOutlet weak private var textView: VPlaceholderTextView!
     
@@ -218,6 +221,14 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     func showKeyboard() {
         textView.becomeFirstResponder()
+    }
+    
+    var topInset: CGFloat = 0 {
+        didSet {
+            if topInset != oldValue {
+                view.setNeedsUpdateConstraints()
+            }
+        }
     }
     
     func dismissKeyboard(animated: Bool) {
@@ -395,7 +406,8 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        passthroughContainerView.delegate = self
+        backgroundPassthroughContainerView.delegate = self
+        ballisticsContainerView.delegate = self
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(setupUserDependentUI), name: VCurrentUser.userDidUpdateNotificationKey, object: nil)
         setupUserDependentUI()
         
@@ -460,10 +472,16 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             customInputAreaHeightConstraint.constant = customInputAreaHeight
         }
         
+        let ballisticsTopConstraintNeedsUpdate = ballisticsContainerViewToTopConstraint.constant != topInset
+        if ballisticsTopConstraintNeedsUpdate {
+            ballisticsContainerViewToTopConstraint.constant = topInset
+        }
+        
         guard attachmentContainerHeightNeedsUpdate ||
             textViewContainerHeightNeedsUpdate ||
             textViewHeightNeedsUpdate ||
             customInputAreaHeightNeedsUpdate ||
+            ballisticsTopConstraintNeedsUpdate ||
             searchTextChanged else {
             // No reason to lay out views again
             super.updateViewConstraints()
@@ -715,6 +733,10 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     // MARK: - VPassthroughContainerViewDelegate
     
     func passthroughViewRecievedTouch(passthroughContainerView: VPassthroughContainerView!) {
+        guard passthroughContainerView == backgroundPassthroughContainerView else {
+            return
+        }
+        
         selectedButton = nil
         switch customInputAreaState {
             case .Hidden:()

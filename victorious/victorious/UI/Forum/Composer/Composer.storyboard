@@ -148,12 +148,19 @@
                                     <constraint firstAttribute="trailing" secondItem="nKf-rE-KkT" secondAttribute="trailing" id="vxr-GN-feG"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="02a-gt-uDi" customClass="VPassthroughContainerView">
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="02a-gt-uDi" firstAttribute="leading" secondItem="DkO-lo-gQh" secondAttribute="leading" id="AdV-Z9-nWA"/>
                             <constraint firstAttribute="trailing" secondItem="5ic-kf-nTp" secondAttribute="trailing" id="Lct-24-ZDm"/>
                             <constraint firstItem="Uhd-jy-MWr" firstAttribute="top" secondItem="5ic-kf-nTp" secondAttribute="bottom" id="U3X-LC-yS2"/>
+                            <constraint firstItem="5ic-kf-nTp" firstAttribute="top" secondItem="02a-gt-uDi" secondAttribute="bottom" id="cAZ-fT-2fd"/>
                             <constraint firstItem="5ic-kf-nTp" firstAttribute="leading" secondItem="DkO-lo-gQh" secondAttribute="leading" id="cci-UP-cGm"/>
+                            <constraint firstAttribute="trailing" secondItem="02a-gt-uDi" secondAttribute="trailing" id="gd4-ab-ibc"/>
+                            <constraint firstItem="02a-gt-uDi" firstAttribute="top" secondItem="kPa-TQ-cMr" secondAttribute="bottom" priority="750" id="z6N-dj-W0F"/>
                         </constraints>
                     </view>
                     <nil key="simulatedStatusBarMetrics"/>
@@ -161,6 +168,9 @@
                         <outlet property="attachmentContainerHeightConstraint" destination="RlM-AL-BQg" id="RWR-Gl-XJz"/>
                         <outlet property="attachmentContainerView" destination="5MN-kC-AjT" id="Myy-dz-PGb"/>
                         <outlet property="attachmentTabBar" destination="joT-P4-Pfz" id="LbM-S1-dyv"/>
+                        <outlet property="backgroundPassthroughContainerView" destination="DkO-lo-gQh" id="zaq-Ec-I8G"/>
+                        <outlet property="ballisticsContainerView" destination="02a-gt-uDi" id="C8M-lv-BtS"/>
+                        <outlet property="ballisticsContainerViewToTopConstraint" destination="z6N-dj-W0F" id="dbx-9t-JT1"/>
                         <outlet property="composerBackgroundContainerView" destination="5ic-kf-nTp" id="cw6-0V-MbL"/>
                         <outlet property="composerLeadingConstraint" destination="dBd-nu-ZmM" id="9RK-lr-nzU"/>
                         <outlet property="composerToBottomConstraint" destination="U3X-LC-yS2" id="Y41-DW-8rL"/>
@@ -172,7 +182,6 @@
                         <outlet property="hashtagBarContainerHeightConstraint" destination="R7y-FD-pPE" id="MR8-GL-dDY"/>
                         <outlet property="hashtagBarContainerView" destination="xmy-Vi-14p" id="cTJ-sD-xk7"/>
                         <outlet property="interactiveContainerView" destination="nKf-rE-KkT" id="avV-p4-Yra"/>
-                        <outlet property="passthroughContainerView" destination="DkO-lo-gQh" id="mrt-w4-ef1"/>
                         <outlet property="textInputAreaToTrayContainerConstraint" destination="gGN-gi-63X" id="jhr-IA-IoA"/>
                         <outlet property="textView" destination="FNU-QM-fIQ" id="Iaw-x1-tj0"/>
                         <outlet property="textViewContainerHeightConstraint" destination="4PX-UV-qLv" id="0ih-yq-hJK"/>
@@ -183,7 +192,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pv6-ay-D6e" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="503" y="379"/>
+            <point key="canvasLocation" x="501.60000000000002" y="378.26086956521743"/>
         </scene>
     </scenes>
 </document>

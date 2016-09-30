@@ -13,7 +13,6 @@
 #import "VDependencyManager+VKeyboardStyle.h"
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VConstants.h"
-#import "VInlineValidationTextField.h"
 #import "VEmailValidator.h"
 #import "VPasswordValidator.h"
 #import "VLoginFlowControllerDelegate.h"
@@ -33,8 +32,8 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 @property (nonatomic, strong) VPasswordValidator *passwordValidator;
 
 @property (nonatomic, weak) IBOutlet UILabel *promptLabel;
-@property (nonatomic, weak) IBOutlet VInlineValidationTextField *emailField;
-@property (nonatomic, weak) IBOutlet VInlineValidationTextField *passwordField;
+@property (nonatomic, weak) IBOutlet InlineValidationTextField *emailField;
+@property (nonatomic, weak) IBOutlet InlineValidationTextField *passwordField;
 @property (nonatomic, weak) IBOutlet CCHLinkTextView *forgotpasswordTextView;
 @property (nonatomic, strong) IBOutletCollection(UIView) NSArray *separators;
 
@@ -190,13 +189,13 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
 - (void)textFieldDidChange:(NSNotification *)notification
 {
-    VInlineValidationTextField *textField = notification.object;
+    InlineValidationTextField *textField = notification.object;
     [self validateWithTextField:textField];
 }
 
 #pragma mark - UITextFieldDelegate
 
-- (BOOL)textFieldShouldEndEditing:(VInlineValidationTextField *)textField
+- (BOOL)textFieldShouldEndEditing:(InlineValidationTextField *)textField
 {
     if ( textField.text.length > 0 )
     {
@@ -206,7 +205,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     return YES;
 }
 
-- (BOOL)textFieldShouldReturn:(VInlineValidationTextField *)textField
+- (BOOL)textFieldShouldReturn:(InlineValidationTextField *)textField
 {
     if (textField == self.emailField)
     {
@@ -225,7 +224,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
 #pragma mark - Private Methods
 
-- (void)validateWithTextField:(VInlineValidationTextField *)textField
+- (void)validateWithTextField:(InlineValidationTextField *)textField
 {
     NSError *validationError;
     

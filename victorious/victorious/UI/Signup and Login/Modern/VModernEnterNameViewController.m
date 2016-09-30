@@ -16,7 +16,6 @@
 #import "VDependencyManager+VLoginAndRegistration.h"
 
 // Views + Helpers
-#import "VInlineValidationTextField.h"
 #import "VLoginFlowControllerDelegate.h"
 
 @interface VModernEnterNameViewController () <VBackgroundContainer, UITextFieldDelegate, VLoginFlowScreen>
@@ -24,7 +23,7 @@
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @property (nonatomic, weak) IBOutlet UILabel *promptLabel;
-@property (nonatomic, weak) IBOutlet VInlineValidationTextField *nameField;
+@property (nonatomic, weak) IBOutlet InlineValidationTextField *nameField;
 @property (nonatomic, weak) IBOutlet UIView *separator;
 
 @end
@@ -107,7 +106,7 @@
 
 - (void)onContinue:(id)sender
 {
-    if ([self shouldSetUsername:self.nameField.text])
+    if ([self validateUsernameFrom:self.nameField])
     {
         [self.view endEditing:YES];
         
@@ -129,25 +128,6 @@
 - (UIView *)backgroundContainerView
 {
     return self.view;
-}
-
-#pragma mark - Private Methods
-
-- (BOOL)shouldSetUsername:(NSString *)name
-{
-    NSString *trimmedString = [name stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    if (trimmedString.length == 0)
-    {
-        [self.nameField showInvalidText:NSLocalizedString(@"You must enter a name.", nil)
-                               animated:YES
-                                  shake:YES
-                                 forced:YES];
-        return NO;
-    }
-    else
-    {
-        return YES;
-    }
 }
 
 @end
