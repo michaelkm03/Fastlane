@@ -29,14 +29,13 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
             assertionFailure("`SideNavScaffoldViewController` requires `leftNavigation` and `centerScreen` subcomponents.")
         }
         
-        
-        self.centerViewController = centerViewController!
-        self.rightNavViewController = rightNavViewController!
+        self.centerViewController = centerViewController
+        self.rightNavViewController = rightNavViewController
         
         centerWrapperViewController.addChildViewController(centerViewController)
         centerWrapperViewController.view.addSubview(centerViewController.view)
-        centerWrapperViewController.view.v_addFitToParentConstraintsToSubview(centerViewController.view)
-        centerViewController.didMoveToParentViewController(centerWrapperViewController)
+        centerWrapperViewController.view.v_addFitToParentConstraints(toSubview: centerViewController.view)
+        centerViewController.didMove(toParentViewController: centerWrapperViewController)
         
         mainNavigationController = UINavigationController(rootViewController: centerWrapperViewController)
         
