@@ -32,8 +32,9 @@ class CoachmarkManager: NSObject, UIViewControllerTransitioningDelegate {
         }
         let shownCoachmarks = fetchShownCoachmarkIDs()
         coachmarks = coachmarkConfigurations.map { coachmarkConfiguration in
-            let childDependency = dependencyManager.childDependencyManagerWithAddedConfiguration(coachmarkConfiguration)
-            let coachmark = Coachmark(dependencyManager: childDependency)
+            let childDependency = dependencyManager.childDependencyManager(withAddedConfiguration: coachmarkConfiguration)
+            // FUTURE: Remove force unwrap
+            let coachmark = Coachmark(dependencyManager: childDependency!)
             if shownCoachmarks.contains(coachmark.remoteID) {
                 coachmark.hasBeenShown = true
             }
@@ -42,17 +43,17 @@ class CoachmarkManager: NSObject, UIViewControllerTransitioningDelegate {
     }
 
     func resetShownCoachmarks() {
-        NSUserDefaults.standardUserDefaults().setObject(nil, forKey: Constants.shownCoachmarksKey)
+        UserDefaults.standard.set(nil, forKey: Constants.shownCoachmarksKey)
         reloadCoachmarks()
     }
     
     func fetchShownCoachmarkIDs() -> [String] {
-        return NSUserDefaults.standardUserDefaults().object(forKey: Constants.shownCoachmarksKey) as? [String] ?? []
+        return UserDefaults.standard.object(forKey: Constants.shownCoachmarksKey) as? [String] ?? []
     }
     
     private func saveCoachmarkState() {
         let shownCoachmarkIDs = coachmarks.filter { $0.hasBeenShown }.map { $0.remoteID }
-        NSUserDefaults.standardUserDefaults().setObject(shownCoachmarkIDs, forKey: Constants.shownCoachmarksKey)
+        UserDefaults.standard.set(shownCoachmarkIDs, forKey: Constants.shownCoachmarksKey)
     }
     
     /// Creates the coachmark and displays it over the viewController. This performs calculations
@@ -63,7 +64,7 @@ class CoachmarkManager: NSObject, UIViewControllerTransitioningDelegate {
     /// - parameter context: The context string used to differentiate between different coachmarks on the same screen, such as profile
     func setupCoachmark(in displayer: CoachmarkDisplayer, withContainerView container: UIView, withContext viewContext: String? = nil) {
         let screenIdentifier = displayer.screenIdentifier
-        if let index = coachmarks.indexOf({ coachmark in
+        if let index = coachmarks.index(where: { coachmark in
             var contextMatches = true
             if let coachmarkContext = coachmark.context {
                 contextMatches = viewContext == coachmarkContext

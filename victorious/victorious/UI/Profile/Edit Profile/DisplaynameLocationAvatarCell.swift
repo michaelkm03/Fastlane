@@ -20,7 +20,7 @@ class DisplaynameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
             NotificationCenter.default.addObserver(
                 self,
                 selector: #selector(textFieldDidChange(_:)),
-                name: UITextFieldTextDidChangeNotification,
+                name: NSNotification.Name.UITextFieldTextDidChange,
                 object: displaynameField)
         }
     }

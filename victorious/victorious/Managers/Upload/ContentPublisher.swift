@@ -6,6 +6,8 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
+import VictoriousIOSSDK
+
 /// Different states that content can be in while being created by the user.
 enum ContentCreationState {
     /// The content is queued locally and waiting to be sent to the server.

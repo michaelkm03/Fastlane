@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 private struct Constants {
     static let coachmarkDisplayDelay = 1.0
@@ -186,7 +187,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             if let webSocketForumNetworkSource = forumNetworkSource as? WebSocketForumNetworkSource,
                 let navigationController = navigationController {
                 let type = DebugMenuType.webSocket(messageContainer: webSocketForumNetworkSource.webSocketMessageContainer)
-                debugMenuHandler.setupCurrentDebugMenu(type, targetView: navigationController.navigationBar)
+                debugMenuHandler.setupCurrentDebugMenu(debugMenuType: type, targetView: navigationController.navigationBar)
             }
         #endif
         
@@ -195,7 +196,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        addUploadManagerToViewController(self, topInset: topLayoutGuide.length)
+        addUploadManagerToViewController(viewController: self, topInset: topLayoutGuide.length)
         updateUploadProgressViewControllerVisibility()
         
         // Remove this once the way to animate the workspace in and out from forum has been figured out

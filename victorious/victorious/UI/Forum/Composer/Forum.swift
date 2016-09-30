@@ -40,15 +40,16 @@ protocol Forum: ForumEventReceiver, ForumEventSender, ChatFeedDelegate, Composer
 extension Forum {
     // MARK: - ChatFeedDelegate
     
-    func chatFeed(_ chatFeed: ChatFeed, didSelectUserWithID userID: Int) {
+    func chatFeed(_ chatFeed: ChatFeed, didSelectUserWithID userID: User.ID) {
         let router = Router(originViewController: originViewController, dependencyManager: dependencyManager)
-        let destination = DeeplinkDestination(url: userID)
+        let destination = DeeplinkDestination(userID: userID)
         router.navigate(to: destination, from: chatFeedContext)
     }
     
     func chatFeed(_ chatFeed: ChatFeed, didSelect chatFeedContent: ChatFeedContent) {
         let router = Router(originViewController: originViewController, dependencyManager: dependencyManager)
-        let destination = DeeplinkDestination(url: chatFeedContent.content)
+        let destination = DeeplinkDestination(content: chatFeedContent.content)
+
         router.navigate(to: destination, from: chatFeedContext)
     }
     

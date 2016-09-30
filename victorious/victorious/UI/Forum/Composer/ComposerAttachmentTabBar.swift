@@ -47,7 +47,7 @@ class ComposerAttachmentTabBar: VFlexBar {
             return
         }
         
-        for (index, navigationMenuItem) in navigationMenuItems.enumerate() {
+        for (index, navigationMenuItem) in navigationMenuItems.enumerated() {
             if index == maxNumberOfMenuItems {
                 break
             }
@@ -56,7 +56,7 @@ class ComposerAttachmentTabBar: VFlexBar {
             button.translatesAutoresizingMaskIntoConstraints = false
             button.v_addWidthConstraint(Constants.buttonSideLength)
             button.v_addHeightConstraint(Constants.expandedHeight)
-            button.addTarget(self, action: #selector(buttonPressed(_: )), forControlEvents: .TouchUpInside)
+            button.addTarget(self, action: #selector(buttonPressed(_: )), for: .touchUpInside)
             actionItems.append(button)
             actionItems.append(ActionBarFlexibleSpaceItem.flexibleSpaceItem())
         }
@@ -75,10 +75,10 @@ class ComposerAttachmentTabBar: VFlexBar {
     
     fileprivate func updateTintColorOfButtons() {
         let buttonItems = buttons()
-        let renderingMode: UIImageRenderingMode = tabItemDeselectedTintColor != nil ? .AlwaysTemplate : .AlwaysOriginal
+        let renderingMode: UIImageRenderingMode = tabItemDeselectedTintColor != nil ? .alwaysTemplate : .alwaysOriginal
         for button in buttonItems {
-            let updatedImage = button.imageForState(.Normal)?.imageWithRenderingMode(renderingMode)
-            button.setImage(updatedImage, forState: .Normal)
+            let updatedImage = button.imageForState(.normal)?.imageWithRenderingMode(renderingMode)
+            button.setImage(updatedImage, forState: .normal)
             if let tabItemTintColor = tabItemDeselectedTintColor {
                 button.tintColor = tabItemTintColor
             }
@@ -101,7 +101,7 @@ class ComposerAttachmentTabBar: VFlexBar {
     fileprivate func buttons() -> [ComposerAttachmentTabBarButton] {
         let buttons = actionItems.filter { (item: AnyObject) -> Bool in
             type(of: item) == ComposerAttachmentTabBarButton.self
-        }
+        } as! (Any) -> Bool
         return buttons as? [ComposerAttachmentTabBarButton] ?? []
     }
 }

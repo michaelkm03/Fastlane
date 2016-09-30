@@ -43,7 +43,7 @@ class InterstitialAlertAnimator: NSObject, UIViewControllerAnimatedTransitioning
                     // Because this is a custom modal transition, this needs to be called so that 
                     // viewWillDisappear gets called on the presenting view controller
                     toViewController.beginAppearanceTransition(true, animated: true)
-                    UIView.animateWithDuration(transitionDuration(using: transitionContext),
+                    UIView.animate(withDuration: transitionDuration(using: transitionContext),
                         animations: { () in
                             fromView?.center.y += containerView.bounds.size.height
                         },
@@ -58,7 +58,7 @@ class InterstitialAlertAnimator: NSObject, UIViewControllerAnimatedTransitioning
                     containerView.v_addFitToParentConstraints(toSubview: toView)
                     
                     // Position the presented view off the top of the container view
-                    toView.frame = transitionContext.finalFrameForViewController(toViewController)
+                    toView?.frame = transitionContext.finalFrame(for: toViewController)
                     toView?.center.y += containerView.bounds.size.height
                     
                     fromViewController.beginAppearanceTransition(false, animated: true)
@@ -69,7 +69,7 @@ class InterstitialAlertAnimator: NSObject, UIViewControllerAnimatedTransitioning
                         initialSpringVelocity: 0.2,
                         options: .CurveEaseIn,
                         animations: {
-                            toView.center.y -= containerView.bounds.size.height
+                            toView?.center.y -= containerView.bounds.size.height
                         },
                         completion: { (completed) in
                             transitionContext.completeTransition(completed)

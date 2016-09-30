@@ -95,7 +95,7 @@ class ModernLoadingViewController: UIViewController, LoginFlowLoadingScreen, VBa
             ellipsesLabel.text = ellipsesLabel.text?.replacingCharacters(in: range, with: "")
         }
         else {
-            ellipsesLabel.text = (ellipsesLabel.text?)! + "."
+            ellipsesLabel.text = (ellipsesLabel.text ?? "") + "."
         }
     }
     

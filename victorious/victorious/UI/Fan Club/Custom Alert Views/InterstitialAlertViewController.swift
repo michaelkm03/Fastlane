@@ -109,8 +109,8 @@ class InterstitialAlertViewController: UIViewController, Interstitial, VBackgrou
         
         confirmButton.layer.cornerRadius = Constants.cornerRadius
         confirmButton.titleLabel?.font = dependencyManager.confirmButtonTitleFont
-        confirmButton.setTitleColor(dependencyManager.confirmButtonTitleColor, for: .Normal)
-        confirmButton.setTitleColor(dependencyManager.confirmButtonTitleColor?.withAlphaComponent(0.5), for: .Highlighted)
+        confirmButton.setTitleColor(dependencyManager.confirmButtonTitleColor, for: .normal)
+        confirmButton.setTitleColor(dependencyManager.confirmButtonTitleColor?.withAlphaComponent(0.5), for: .highlighted)
         confirmButton.backgroundColor = dependencyManager.confirmButtonBackgroundColor
         confirmButton.setTitle(dependencyManager.confirmButtonTitle, for: .normal)
         
