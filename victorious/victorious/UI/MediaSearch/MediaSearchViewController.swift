@@ -356,7 +356,7 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
         // `MediaSearchDataSourceAdapter` handles errors in its own unique way
     }
     
-    func paginatedDataSource(_ paginatedDataSource: PaginatedDataSource, didReceiveError error: NSError) {
+    func paginatedDataSource(_ paginatedDataSource: PaginatedDataSource, didReceiveError error: Error) {
         // `MediaSearchDataSourceAdapter` handles errors in its own unique way
     }
 }
