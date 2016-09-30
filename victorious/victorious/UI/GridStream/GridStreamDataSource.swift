@@ -80,7 +80,7 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
     }
     
     func loadContent(for collectionView: UICollectionView, loadingType: PaginatedLoadingType, completion: ((_ result: Result<[Content]>) -> Void)? = nil) {
-        paginatedDataSource.loadItems(loadingType) { [weak self] result in
+        let _ = paginatedDataSource.loadItems(loadingType) { [weak self] result in
             if let items = self?.paginatedDataSource.items {
                 self?.header?.gridStreamDidUpdateDataSource(with: items)
             }
@@ -95,9 +95,9 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
             if loadingType == .refresh {
                 // Reloading the non-header section
                 // Also, collectionView.reloadData() was not properly reloading the cells.
-                let desiredSection = GridStreamSection.Contents.rawValue
-                if collectionView.numberOfSections() > desiredSection {
-                    collectionView.reloadSections(NSIndexSet(index: desiredSection))
+                let desiredSection = GridStreamSection.contents.rawValue
+                if collectionView.numberOfSections > desiredSection {
+                    collectionView.reloadSections(IndexSet(integer: desiredSection))
                 }
             }
             else if let totalItemCount = self?.items.count , newItems.count > 0 {
@@ -106,16 +106,16 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
                 let previousCount = totalItemCount - newItems.count
                 
                 let indexPaths = (0 ..< newItems.count).map {
-                    NSIndexPath(forItem: previousCount + $0, inSection: GridStreamSection.Contents.rawValue)
+                    IndexPath(item: previousCount + $0, section: GridStreamSection.contents.rawValue)
                 }
                 
-                collectionView.insertItemsAtIndexPaths(indexPaths)
+                collectionView.insertItems(at: indexPaths)
             }
             
             switch result {
-                case .success(let feedResult): completion?(result: .success(feedResult.contents))
-                case .failure(let error): completion?(result: .failure(error))
-                case .cancelled: completion?(result: .success([]))
+                case .success(let feedResult): completion?(.success(feedResult.contents))
+                case .failure(let error): completion?(.failure(error))
+                case .cancelled: completion?(.success([]))
             }
         }
     }

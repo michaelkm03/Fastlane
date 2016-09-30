@@ -17,12 +17,12 @@ struct CaptionBarDecorator {
     let dependencyManager: VDependencyManager
     
     func decorate(_ captionBar: CaptionBar) {
-        let captionTextView = captionBar.captionTextView
+        let captionTextView = captionBar.captionTextView!
         captionTextView.font = dependencyManager.font
         captionTextView.textColor = dependencyManager.textColor ?? .white
         captionTextView.backgroundColor = dependencyManager.textContainerColor
         
-        let captionLabel = captionBar.captionLabel
+        let captionLabel = captionBar.captionLabel!
         captionLabel.font = dependencyManager.font
         captionLabel.textColor = dependencyManager.textColor ?? .white
         captionLabel.backgroundColor = dependencyManager.textContainerColor

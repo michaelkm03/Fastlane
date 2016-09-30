@@ -26,7 +26,7 @@ class CaptionBarViewController: UIViewController {
     
     fileprivate var captionBarDecorator: CaptionBarDecorator? {
         didSet {
-            guard isViewLoaded() else {
+            guard isViewLoaded else {
                 return
             }
             captionBarDecorator?.decorate(captionBar)
@@ -36,7 +36,7 @@ class CaptionBarViewController: UIViewController {
     fileprivate var captionIsExpanded = false {
         didSet {
             var desiredHeight: CGFloat = 0
-            let captionVisible = isViewLoaded() && isShowingCaption
+            let captionVisible = isViewLoaded && isShowingCaption
             if captionVisible {
                 desiredHeight = CaptionBarPopulator.toggle(captionBar, toCollapsed: !captionIsExpanded)
             }
