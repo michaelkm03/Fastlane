@@ -44,7 +44,7 @@ class ModernLoadingViewController: UIViewController, LoginFlowLoadingScreen, VBa
     var dependencyManager: VDependencyManager! {
         didSet {
             if let dependencyManager = dependencyManager {
-                cancelButton = UIBarButtonItem(title: dependencyManager.buttonTitle, style: .Plain, target: self, action: #selector(pressedCancel))
+                cancelButton = UIBarButtonItem(title: dependencyManager.buttonTitle, style: .plain, target: self, action: #selector(pressedCancel))
                 navigationItem.leftBarButtonItem = cancelButton
                 dependencyManager.addBackground(toBackgroundHost: self)
             }

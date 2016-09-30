@@ -54,7 +54,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         collectionView?.contentInset = Constants.contentInset
         dependencyManager.addBackground(toBackgroundHost: self)
         view.layoutIfNeeded()
-        NotificationCenter.defaultCenter.addObserver(self, selector: #selector(userVIPStatusChanged), name: NSNotification.Name(rawValue: VCurrentUser.userDidUpdateNotificationKey), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(userVIPStatusChanged), name: NSNotification.Name(rawValue: VCurrentUser.userDidUpdateNotificationKey), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {

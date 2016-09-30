@@ -22,21 +22,21 @@ class SubscribeButton: UIView {
         super.init(frame: CGRect.zero)
         
         guard dependencyManager.subscriptionEnabled else {
-            hidden = true
+            isHidden = true
             return
         }
         
         subscribeButton.translatesAutoresizingMaskIntoConstraints = false
         userIsVIPButton?.translatesAutoresizingMaskIntoConstraints = false
         
-        subscribeButton.setTitle(NSLocalizedString("Upgrade", comment: ""), forState: .Normal)
+        subscribeButton.setTitle(NSLocalizedString("Upgrade", comment: ""), forState: .normal)
         subscribeButton.sizeToFit()
-        subscribeButton.addTarget(self, action: #selector(subscribeButtonWasPressed), forControlEvents: .TouchUpInside)
+        subscribeButton.addTarget(self, action: #selector(subscribeButtonWasPressed), forControlEvents: .touchUpInside)
         updateVIPState()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userStatusDidChange), name: VCurrentUser.userDidUpdateNotificationKey, object: nil)
+        NotificationCenter.defaultCenter.addObserver(self, selector: #selector(userStatusDidChange), name: VCurrentUser.userDidUpdateNotificationKey, object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userStatusDidChange), name: kLoggedInChangedNotification, object: nil)
+        NotificationCenter.defaultCenter().addObserver(self, selector: #selector(userStatusDidChange), name: kLoggedInChangedNotification, object: nil)
     }
     
     required init(coder: NSCoder) {
@@ -63,7 +63,7 @@ class SubscribeButton: UIView {
     // MARK: - Actions
     
     fileprivate dynamic func subscribeButtonWasPressed() {
-        guard let scaffold = VRootViewController.sharedRootViewController()?.scaffold else {
+        guard let scaffold = VRootViewController.shared()?.scaffold else {
             return
         }
         
