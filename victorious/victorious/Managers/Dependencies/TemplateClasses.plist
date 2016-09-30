@@ -62,6 +62,8 @@
 	<string>VAssetCollectionGridViewController</string>
 	<key>library.creationFlow</key>
 	<string>victorious.LibraryCreationFlowController</string>
+	<key>New item</key>
+	<string></string>
 	<key>nativeCamera.creationFlow</key>
 	<string>victorious.NativeCameraCreationFlowController</string>
 	<key>video.creationFlow</key>
