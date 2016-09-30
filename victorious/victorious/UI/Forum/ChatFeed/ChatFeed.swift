@@ -36,7 +36,7 @@ protocol ChatFeedDelegate: class {
     func chatFeed(_ chatFeed: ChatFeed, didLongPress chatFeedContent: ChatFeedContent)
     func chatFeed(_ chatFeed: ChatFeed, didSelectFailureButtonFor chatFeedContent: ChatFeedContent)
     func chatFeed(_ chatFeed: ChatFeed, didSelectReplyButtonFor chatFeedContent: ChatFeedContent)
-    func chatFeed(_ chatFeed: ChatFeed, didToggleLikeFor content: ChatFeedContent, completion: (() -> Void))
+    func chatFeed(_ chatFeed: ChatFeed, didToggleLikeFor content: ChatFeedContent, completion: @escaping (() -> Void))
     func chatFeed(_ chatFeed: ChatFeed, didScroll scrollView: UIScrollView)
     func chatFeed(_ chatFeed: ChatFeed, willBeginDragging scrollView: UIScrollView)
     func chatFeed(_ chatFeed: ChatFeed, willEndDragging scrollView: UIScrollView, withVelocity velocity: CGPoint)
