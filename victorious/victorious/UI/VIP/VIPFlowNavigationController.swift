@@ -25,8 +25,8 @@ class VIPFlowNavigationController: UINavigationController, VIPGateViewController
         guard
             dependencyManager.isVIPEnabled == true,
             let gateDependencyManager = dependencyManager.paygateDependency,
-            let successDependencyManager = dependencyManager.successDependency
-            , VCurrentUser.user != nil
+            let successDependencyManager = dependencyManager.successDependency,
+            VCurrentUser.user != nil
         else {
             return nil
         }
@@ -35,15 +35,15 @@ class VIPFlowNavigationController: UINavigationController, VIPGateViewController
         vipFlow.dependencyManager = dependencyManager
         vipFlow.gateDependencyManager = gateDependencyManager
         vipFlow.successDependencyManager = successDependencyManager
-        let vipGate = VIPGateViewController.newWithDependencyManager(gateDependencyManager)
+        let vipGate = VIPGateViewController.new(with: gateDependencyManager)
         vipGate.delegate = vipFlow
-        vipFlow.showViewController(vipGate, sender: nil)
+        vipFlow.show(vipGate, sender: nil)
         return vipFlow
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        gateDependencyManager?.addBackgroundToBackgroundHost(self)
+        gateDependencyManager?.addBackground(toBackgroundHost: self)
         delegate = animationDelegate
     }
     
@@ -69,9 +69,9 @@ class VIPFlowNavigationController: UINavigationController, VIPGateViewController
         if success {
             //Transition to success state
             animationDelegate.fadingEnabled = true
-            let successViewController = VIPSuccessViewController.newWithDependencyManager(successDependencyManager)
+            let successViewController = VIPSuccessViewController.new(with: successDependencyManager)
             successViewController.delegate = self
-            showViewController(successViewController, sender: nil)
+            show(successViewController, sender: nil)
         }
         else {
             dismissAndCallCompletionWithSuccess(success)
@@ -87,7 +87,6 @@ class VIPFlowNavigationController: UINavigationController, VIPGateViewController
     // MARK: - Delegate notification
     
     func dismissAndCallCompletionWithSuccess(_ success: Bool) {
-        
         presentingViewController?.dismiss(animated: true) { [weak self] in
             self?.completionBlock?(success)
         }

@@ -80,7 +80,7 @@ class VIPSuccessViewController: UIViewController {
         
         confirmButton.backgroundColor = dependencyManager.confirmButonBackgroundColor
         if let attributedConfirmText = dependencyManager.confirmButtonAttributedText {
-            confirmButton.setAttributedTitle(attributedConfirmText, forState: .Normal)
+            confirmButton.setAttributedTitle(attributedConfirmText, for: .normal)
         }
         
         view.setNeedsUpdateConstraints()

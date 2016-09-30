@@ -38,7 +38,7 @@ class BadgeButton: UIButton {
     
     /// Sets the badge string to a localized integer value, or nil if the number is less than 1.
     func setBadgeNumber(_ badgeNumber: Int) {
-        badgeString = badgeNumber > 0 ? NumberFormatter.integerFormatter.string(from: NSNumber(badgeNumber)) : nil
+        badgeString = badgeNumber > 0 ? NumberFormatter.integerFormatter.string(from: NSNumber(value: badgeNumber)) : nil
     }
     
     // MARK: - Subviews

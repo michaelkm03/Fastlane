@@ -10,7 +10,7 @@ extension String {
     /// Returns the initials of `self`, a concatenation of the uppercase first characters of each word (determined by
     /// splitting on whitespace) in the string.
     func initials(maxCount: Int = 2) -> String {
-        let words = components(separatedBy: .whitespacesAndNewlines())
+        let words = components(separatedBy: .whitespacesAndNewlines)
         let initialCount = min(words.count, maxCount)
         let lastIndex = initialCount - 1
         

@@ -15,8 +15,6 @@ protocol VIPSubscriptionHelperDelegate: class {
 
 class VIPSubscriptionHelper {
     
-    // MARK: - Constants
-    
     // MARK: - Initializing
     
     init(subscriptionFetchAPIPath: APIPath, delegate: VIPSubscriptionHelperDelegate, originViewController: UIViewController, dependencyManager: VDependencyManager) {

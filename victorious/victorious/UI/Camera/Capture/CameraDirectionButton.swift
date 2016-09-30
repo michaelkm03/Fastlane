@@ -13,7 +13,7 @@ class CameraDirectionButton: UIButton {
     
     var dependencyManager: VDependencyManager? {
         didSet {
-            setImage(dependencyManager?.buttonImage, for: .Normal)
+            setImage(dependencyManager?.buttonImage, for: .normal)
         }
     }
     
