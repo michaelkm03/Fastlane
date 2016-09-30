@@ -174,7 +174,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     // MARK: - UIViewController
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
         if let navBarTitleView = navBarTitleView {
@@ -193,7 +193,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         BadgeCountManager.shared.fetchBadgeCount(for: .unreadNotifications)
     }
 
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         addUploadManagerToViewController(self, topInset: topLayoutGuide.length)
         updateUploadProgressViewControllerVisibility()
@@ -202,17 +202,17 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         dependencyManager.trackViewWillDisappear(for: self)
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return .LightContent
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
     
-    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        return .Portrait
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
     }
     
     override func viewDidLoad() {
@@ -254,9 +254,9 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             self.forumNetworkSource = forumNetworkSource
         }
     }
-
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        super.prepareForSegue(segue, sender: sender)
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
         
         let destination = segue.destinationViewController
         
@@ -277,7 +277,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         
         } else {
             // Hide any embedded container views from which a component could not be loaded
-            destination.view.superview?.hidden = true
+            destination.view.superview?.isHidden = true
         }
     }
     
@@ -435,7 +435,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         }
         
         chatFeed?.collectionView.reloadItemsAtIndexPaths(contentPublisher.pendingItems.indices.map {
-            NSIndexPath(forItem: itemCount - 1 - $0, inSection: 0)
+            IndexPath(item: itemCount - 1 - $0, section: 0)
         })
     }
     
