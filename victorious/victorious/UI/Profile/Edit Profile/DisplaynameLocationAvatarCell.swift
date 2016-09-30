@@ -112,7 +112,7 @@ class DisplaynameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
             locationField.textColor = enteredTextColor
             
             // Placeholder
-            let placeholderAttributes = [NSForegroundColorAttributeName: placeholderTextColor.colorWithAlphaComponent(Constants.placeholderAlpha)]
+            let placeholderAttributes = [NSForegroundColorAttributeName: placeholderTextColor.withAlphaComponent(Constants.placeholderAlpha)]
             displaynameField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("DisplayNamePlaceholder", comment: "Placeholder text for the user's name as it is displayed to others."),
                                                                      attributes: placeholderAttributes)
             usernameField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("UserNamePlaceholder", comment: "Placeholder text for the user's username that is globally unique as it is displayed to others."),
@@ -133,9 +133,9 @@ class DisplaynameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
     
     @objc fileprivate func tappedOnAvatar(_ gesture: UITapGestureRecognizer) {
         switch gesture.state {
-            case .Ended:
+            case .ended:
                 self.onAvatarSelected?()
-            case .Possible, .Cancelled, .Failed, .Changed, .Began:
+            case .possible, .cancelled, .failed, .changed, .began:
                 break
         }
     }
