@@ -163,11 +163,10 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
     
     // MARK: - TableViewDataSource
     
-    override func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard
             let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cellIdentifier) as? VSettingsSwitchCell,
-            let settings = self.settings
-        ,
+            let settings = self.settings,
             indexPath.section < sections.count &&
             indexPath.row < sections[indexPath.section].rows.count
         else {
@@ -192,7 +191,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
         return sections[section].rows.count
     }
     
-    override func numberOfSectionsInTableView(_ tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return settings == nil ? 0 : sections.count
     }
     
