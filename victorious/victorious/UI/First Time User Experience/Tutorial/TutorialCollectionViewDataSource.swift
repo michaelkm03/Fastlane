@@ -12,7 +12,7 @@ class TutorialCollectionViewDataSource: NSObject, ChatInterfaceDataSource, Tutor
     let dependencyManager: VDependencyManager
     weak var delegate: TutorialNetworkDataSourceDelegate?
     
-    let sizingCell = ChatFeedMessageCell(frame: CGRectZero)
+    let sizingCell = ChatFeedMessageCell(frame: CGRect.zero)
     
     lazy var networkDataSource: NetworkDataSource = {
         let dataSource = TutorialNetworkDataSource(dependencyManager: self.dependencyManager)
@@ -41,9 +41,9 @@ class TutorialCollectionViewDataSource: NSObject, ChatInterfaceDataSource, Tutor
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = cellForItem(for: collectionView, at: indexPath)
-        cell.timestampLabel.hidden = true
-        cell.likeView?.hidden = true
+        let cell = cellForItem(for: collectionView, at: indexPath as IndexPath)
+        cell.timestampLabel.isHidden = true
+        cell.likeView?.isHidden = true
         cell.showsReplyButton = false
         return cell
     }
