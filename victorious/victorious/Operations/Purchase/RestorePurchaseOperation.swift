@@ -28,7 +28,8 @@ final class RestorePurchasesOperation: AsyncOperation<Void> {
                 finish(.success())
             },
             failure: { error in
-                finish(.failure(error))
+                // FUTURE: Get rid of this ! from objc
+                finish(.failure(error!))
             }
         )
     }
