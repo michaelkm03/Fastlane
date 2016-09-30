@@ -43,8 +43,8 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
         self.dependencyManager = dependencyManager
         self.tableView = tableView
         self.user = userModel
-        nameAndLocationCell = tableView.dequeueReusableCellWithIdentifier("NameLocationAndPictureCell") as! DisplaynameLocationAvatarCell
-        aboutMeCell = tableView.dequeueReusableCellWithIdentifier("AboutMe") as! AboutMeTextCell
+        nameAndLocationCell = tableView.dequeueReusableCell(withIdentifier: "NameLocationAndPictureCell") as! DisplaynameLocationAvatarCell
+        aboutMeCell = tableView.dequeueReusableCell(withIdentifier: "AboutMe") as! AboutMeTextCell
         super.init()
         self.updateUI()
         nameAndLocationCell.onDataChange = { [weak self] in
@@ -53,12 +53,12 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
     }
     
     // MARK: - UITableViewDataSource
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 2
     }
-    
-    func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
             // Username, locaiton and camera
             configureNameAndLocationCell(nameAndLocationCell)
@@ -112,7 +112,7 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
     func useNewAvatar(_ previewImage: UIImage, fileURL: URL) {
         // Create a new userModel with the new preview image
         newAvatarFileURL = fileURL
-        let imageAsset = ImageAsset(url: fileURL, size: previewImage.size)
+        let imageAsset = ImageAsset(url: fileURL as NSURL, size: previewImage.size)
         let newUser = User(id: user.id,
                            username: nameAndLocationCell.username ?? user.username,
                            displayName: nameAndLocationCell.displayname ?? user.displayName,
@@ -131,7 +131,7 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
                              username: nameAndLocationCell.username == VCurrentUser.user?.username ? nil : nameAndLocationCell.username,
                              location: nameAndLocationCell.location,
                              tagline: aboutMeCell.tagline,
-                             profileImageURL: newAvatarFileURL)
+                             profileImageURL: newAvatarFileURL as NSURL?)
     }
     
     func beginEditing() {

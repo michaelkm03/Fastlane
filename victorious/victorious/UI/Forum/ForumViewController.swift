@@ -429,12 +429,12 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             self?.chatFeed?.collectionView.scrollToBottom(animated: true)
         }
     }
-    
-    func contentPublisher(contentPublisher: ContentPublisher, didFailToSend content: ChatFeedContent) {
+
+    func contentPublisher(_ contentPublisher: ContentPublisher, didFailToSend content: ChatFeedContent) {
         guard let itemCount = chatFeed?.chatInterfaceDataSource.itemCount else {
             return
         }
-        
+
         chatFeed?.collectionView.reloadItems(at: contentPublisher.pendingItems.indices.map {
             IndexPath(item: itemCount - 1 - $0, section: 0)
         })

@@ -53,7 +53,7 @@ class InAppNotificationsViewController: UIViewController, UITableViewDelegate, I
         dependencyManager.addBackground(toBackgroundHost: self)
         dependencyManager.configureNavigationItem(navigationItem)
         
-        NotificationCenter.defaultCenter().addObserver(self, selector: #selector(loggedInStatusDidChange), name: kLoggedInChangedNotification, object: nil)
+        NotificationCenter.defaultCenter.addObserver(self, selector: #selector(loggedInStatusDidChange), name: kLoggedInChangedNotification, object: nil)
         
         loggedInStatusDidChange(nil)
     }

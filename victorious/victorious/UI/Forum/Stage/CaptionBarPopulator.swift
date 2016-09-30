@@ -17,8 +17,8 @@ struct CaptionBarPopulator {
         let paragraphStyle = NSMutableParagraphStyle()
         let textInsets = textView.v_textInsets
         paragraphStyle.v_setTextInsets(textInsets)
-        paragraphStyle.lineBreakMode = .ByTruncatingTail
-        paragraphStyle.alignment = .Left
+        paragraphStyle.lineBreakMode = .byTruncatingTail
+        paragraphStyle.alignment = .left
         
         let font: UIFont = textView.font ?? label.font
         return [
@@ -36,40 +36,42 @@ struct CaptionBarPopulator {
         
         let animationCompletion: ((Bool) -> Void) = { _ in
             // Configure the textView
-            captionTextView.text = caption
-            captionTextView.hidden = true
+            captionTextView?.text = caption
+            captionTextView?.isHidden = true
             
             // Configure the label
-            captionLabel.numberOfLines = captionBar.collapsedNumberOfLines
-            let textAttributes = textAttributesForLabel(captionLabel, matchingTextView: captionTextView)
+            captionLabel?.numberOfLines = captionBar.collapsedNumberOfLines
+
+            // FUTURE - Swift 3 Force Unwrap
+            let textAttributes = textAttributesForLabel(captionLabel!, matchingTextView: captionTextView!)
             captionLabel.attributedText = NSAttributedString(string: caption, attributes: textAttributes)
-            captionLabel.hidden = false
-            
+            captionLabel?.isHidden = false
+
             // Check if we should show the expand button
-            var collapsedRect = captionLabel.textRectForBounds(captionTextView.bounds, limitedToNumberOfLines: captionBar.collapsedNumberOfLines)
-            let unboundedRect = captionLabel.textRectForBounds(captionTextView.bounds, limitedToNumberOfLines: 0)
+            var collapsedRect = captionLabel?.textRectForBounds(captionTextView?.bounds, limitedToNumberOfLines: captionBar.collapsedNumberOfLines)
+            let unboundedRect = captionLabel.textRectForBounds(captionTextView?.bounds, limitedToNumberOfLines: 0)
             captionBar.expandButton.hidden = collapsedRect == unboundedRect
             
             // Update constraints as needed
-            let textInsets = captionTextView.v_textInsets
+            let textInsets = captionTextView?.v_textInsets
             collapsedRect.size = CGSize(width: collapsedRect.width + textInsets.horizontal, height: collapsedRect.height + textInsets.vertical)
             captionBar.labelWidthConstraint.constant = collapsedRect.width
             
             completion?()
             
             // Animate back
-            UIView.animateWithDuration(CaptionBarPopulator.animationDuration) {
-                captionTextView.alpha = 1
-                captionLabel.alpha = 1
+            UIView.animate(withDuration: CaptionBarPopulator.animationDuration) {
+                captionTextView?.alpha = 1
+                captionLabel?.alpha = 1
             }
         }
 
         // Animate to alpha 0 with 0.2 seconds
-        UIView.animateWithDuration(
-            CaptionBarPopulator.animationDuration,
+        UIView.animate(
+            withDuration: CaptionBarPopulator.animationDuration,
             animations: {
-                captionTextView.alpha = 0
-                captionLabel.alpha = 0
+                captionTextView?.alpha = 0
+                captionLabel?.alpha = 0
             },
             completion: animationCompletion
         )
@@ -80,27 +82,27 @@ struct CaptionBarPopulator {
         let captionLabel = captionBar.captionLabel
         
         // Configure label
-        captionLabel.numberOfLines = collapsed ? captionBar.collapsedNumberOfLines : captionBar.expandedNumberOfLines
-        captionLabel.layoutIfNeeded()
+        captionLabel?.numberOfLines = collapsed ? captionBar.collapsedNumberOfLines : captionBar.expandedNumberOfLines
+        captionLabel?.layoutIfNeeded()
         if !collapsed {
-            captionTextView.scrollRectToVisible(CGRect.zero, animated: false)
+            captionTextView?.scrollRectToVisible(CGRect.zero, animated: false)
         }
         
         // Figure out whether to show the label or textView
         var showLabel = true
-        let maxSize = CGSize(width: captionTextView.bounds.width, height: CGFloat.max)
+        let maxSize = CGSize(width: captionTextView?.bounds.width, height: CGFloat.max)
         let textHeight = ceil(captionLabel.sizeThatFits(maxSize).height) + captionTextView.v_textInsets.vertical
         if !collapsed {
             let contentTextHeight = ceil(captionTextView.sizeThatFits(maxSize).height)
             showLabel = contentTextHeight == textHeight
         }
-        captionTextView.hidden = showLabel
-        captionLabel.hidden = !showLabel
-        captionTextView.scrollEnabled = true
+        captionTextView?.isHidden = showLabel
+        captionLabel?.isHidden = !showLabel
+        captionTextView?.isScrollEnabled = true
         
         // Determine visible height
         let visibleHeight = max(textHeight, captionBar.avatarButtonHeightConstraint.constant)
-        let captionLabelVerticalPadding = captionBar.verticalLabelPaddingConstraints.reduce(0, combine: { $0 + $1.constant })
+        let captionLabelVerticalPadding = captionBar.verticalLabelPaddingConstraints.reduce(0, { $0 + $1.constant })
         return captionLabelVerticalPadding + visibleHeight
     }
 }
