@@ -8,6 +8,7 @@
 
 import UIKit
 import MBProgressHUD
+import VictoriousIOSSDK
 
 /// Manages a camera that allows the user to take a video or capture a still image
 class MixedMediaCameraViewController: UIViewController, VCaptureVideoPreviewViewDelegate, VCameraVideoEncoderDelegate {

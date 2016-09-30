@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 /// A preset configurable size for an `AvatarView`.
 /// Uses a smaller size for iPhone 1-5s, and SE sized devices

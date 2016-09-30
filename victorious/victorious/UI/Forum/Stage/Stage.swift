@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 protocol Stage: class, ForumEventReceiver, StageShrinkingAnimatorDelegate {
     weak var delegate: StageDelegate? { get set }

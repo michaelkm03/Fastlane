@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 /// A deeplink destination that we can naviagte to within the app, or an external URL
 /// e.g. A piece of content, a user, or a specific screen that is deep linked to.
