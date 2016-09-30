@@ -73,7 +73,7 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 	}
     
     var state: VDataSourceState {
-        return dataSource?.state ?? .Cleared
+        return dataSource?.state ?? .cleared
     }
     
 	fileprivate(set) var sections: [Section] = []
@@ -88,7 +88,7 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 		}
         let resultsBefore = self.dataSource?.visibleItems ?? NSOrderedSet()
         dataSource.performSearch(searchTerm: searchTerm, pageType: pageType) { error in
-            if let results = dataSource.visibleItems.array.filter({ !resultsBefore.containsObject($0) }) as? [MediaSearchResult] {
+            if let results = dataSource.visibleItems.array.filter({ !resultsBefore.contains($0) }) as? [MediaSearchResult] {
                 let result = self.updateDataSource(results, pageType: pageType)
                 completion?(result)
             }
@@ -150,7 +150,7 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
     
     fileprivate func updateDataSource( _ results: [MediaSearchResult], pageType: VPageType ) -> ChangeResult {
         var result = ChangeResult()
-        if pageType == .First {
+        if pageType == .first {
             if self.sections.isEmpty && results.count > 0 {
                 result.deletedSections = IndexSet(integer: 0) // No content cell
             }
@@ -231,13 +231,13 @@ class MediaSearchDataSourceAdapter: NSObject, UICollectionViewDataSource {
 	
     fileprivate func configureNoContentCell( _ cell: MediaSearchNoContentCell, forState state: VDataSourceState ) {
 		switch state {
-		case .Loading:
+		case .loading:
 			cell.text = ""
 			cell.loading = true
-		case .Error:
+		case .error:
 			cell.text = NSLocalizedString( "Error loading results", comment:"" )
 			cell.loading = false
-        case .NoResults:
+        case .noResults:
 			cell.loading = false
 			cell.text = NSLocalizedString( "No results", comment:"" )
         default:

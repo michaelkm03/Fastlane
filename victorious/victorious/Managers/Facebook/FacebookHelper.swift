@@ -29,7 +29,7 @@ class FacebookHelper: NSObject {
     
     /// - returns: true if a Facebook app ID is present in the app's Info.plist file.
     class func facebookAppIDPresent() -> Bool {
-        if let facebookID = Bundle(forClass: self).objectForInfoDictionaryKey("FacebookAppID") as? String {
+        if let facebookID = Bundle(for: self).objectForInfoDictionaryKey("FacebookAppID") as? String {
             return facebookID != ""
         }
         return false

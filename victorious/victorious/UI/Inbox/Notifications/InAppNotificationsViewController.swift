@@ -54,7 +54,7 @@ class InAppNotificationsViewController: UIViewController, UITableViewDelegate, I
         dependencyManager.configureNavigationItem(navigationItem)
         
         NotificationCenter.default.addObserver(self, selector: #selector(loggedInStatusDidChange), name: NSNotification.Name.loggedInChanged, object: nil)
-        
+
         loggedInStatusDidChange(nil)
     }
     
