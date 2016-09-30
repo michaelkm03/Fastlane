@@ -58,14 +58,14 @@ class NewItemsController: NSObject {
         }
         isShowing = true
         let animations = {
-            self.newItemIndicator.transform = CGAffineTransformMakeScale(1, 1)
+            self.newItemIndicator.transform = CGAffineTransform(scaleX: 1, y: 1)
         }
         if animated {
-            UIView.animateWithDuration(Constants.openAnimationDuration,
+            UIView.animate(withDuration: Constants.openAnimationDuration,
                 delay: 0.0,
                 usingSpringWithDamping: 0.5,
                 initialSpringVelocity: 0.5,
-                options: [.LayoutSubviews],
+                options: [.layoutSubviews],
                 animations: animations,
                 completion: nil
             )
@@ -79,14 +79,14 @@ class NewItemsController: NSObject {
             return
         }
         let animations = {
-            self.newItemIndicator.transform = CGAffineTransformMakeScale(0, 0)
+            self.newItemIndicator.transform = CGAffineTransform(scaleX: 0, y: 0)
         }
         let completion = { (_: Bool) in
             self.count = 0
             self.isShowing = false
         }
         if animated {
-            UIView.animateWithDuration(Constants.closeAnimationDuration,
+            UIView.animate(withDuration: Constants.closeAnimationDuration,
                 delay: 0.0,
                 usingSpringWithDamping: 1.0,
                 initialSpringVelocity: 0.0,
@@ -109,7 +109,7 @@ class NewItemsController: NSObject {
     }
     
     fileprivate func localizedButtonTitle(count: Int) -> String {
-        let formattedMessageCount: String = largeNumberFormatter.stringForInteger(count)
+        let formattedMessageCount: String = largeNumberFormatter.string(for: count)
         let title: String
         if count == 1 {
             let localizedFormat = NSLocalizedString("NewMessagesFormatSingular", comment: "")
