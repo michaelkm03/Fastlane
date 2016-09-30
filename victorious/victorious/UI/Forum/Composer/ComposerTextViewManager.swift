@@ -45,7 +45,7 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
             return false
         }
         
-        mutableString.replaceCharactersInRange(range, withString: text)
+        mutableString.replaceCharacters(in: range, with: text)
         textView.attributedText = mutableString
         
         return true
@@ -56,7 +56,7 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         let canAppendText = canUpdateTextView(textView, textInRange: replacementRange, replacementText: text)
         if canAppendText {
             let newString = NSMutableAttributedString(attributedString: textView.attributedText)
-            newString.appendAttributedString(NSAttributedString(string: text, attributes: getTextViewInputAttributes()))
+            newString.append(NSAttributedString(string: text, attributes: getTextViewInputAttributes()))
             textView.attributedText = newString
             updateDelegateOfTextViewStatus(textView)
         }
@@ -109,7 +109,7 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
     
     // MARK: - UITextViewDelegate
     
-    func textView(_ textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         guard canUpdateTextView(textView, textInRange: range, replacementText: text) else {
             delegate?.textViewDidHitCharacterLimit(textView)
             return false
@@ -164,7 +164,7 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
     
     fileprivate func updateCurrentHashtag(forTextView textView: UITextView, isDismissing: Bool = false) {
         if !isDismissing &&
-            textView.isFirstResponder() &&
+            textView.isFirstResponder &&
             textView.selectedRange.length == 0 {
             delegate?.textViewCurrentHashtag = hashtagStringAroundLocation(textView.selectedRange.location, inTextView: textView)
         } else {
@@ -189,7 +189,7 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         let hashtagCharacter = Character("#")
         let hashtagBoundaryCharacters = [hashtagCharacter, Character(" "), Character("\n")]
 
-        let text = textView.text
+        let text = textView.text!
         guard let (preceedingString, preceedingCharacter, preceedingRange) = text.substringBeforeLocation(location, afterCharacters: hashtagBoundaryCharacters) ,
             preceedingCharacter == hashtagCharacter else {
             return nil
