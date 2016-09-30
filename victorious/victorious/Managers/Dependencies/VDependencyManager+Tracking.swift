@@ -51,7 +51,7 @@ extension VDependencyManager {
     /// Then `trackingKey` would be "tracking" and `eventKey` would be "view".
     ///
     func trackingAPIPaths(forEventKey eventKey: String, trackingKey: String = VDependencyManager.defaultTrackingKey) -> [APIPath]? {
-        guard let tracking = templateValueOfType(NSDictionary.self, forKey: trackingKey) as? [String: AnyObject] else {
+        guard let tracking = templateValue(ofType: NSDictionary.self, forKey: trackingKey) as? [String: AnyObject] else {
             return nil
         }
         
