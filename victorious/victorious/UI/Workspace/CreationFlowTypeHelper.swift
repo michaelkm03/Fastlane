@@ -18,7 +18,6 @@ class CreationFlowTypeHelper: NSObject {
         "Create Text": .text,
         "Create GIF": .GIF,
         "Create from Library": .library,
-        "Create from Mixed Media Camera": .mixedMediaCamera,
         "Create from Native Camera": .nativeCamera]
     
     static func creationFlowTypeForIdentifier(_ identifier: String) -> VCreationFlowType {
