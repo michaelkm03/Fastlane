@@ -190,17 +190,17 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         let hashtagBoundaryCharacters = [hashtagCharacter, Character(" "), Character("\n")]
 
         let text = textView.text!
-        guard let (preceedingString, preceedingCharacter, preceedingRange) = text.substringBeforeLocation(location, afterCharacters: hashtagBoundaryCharacters) ,
+        guard let (preceedingString, preceedingCharacter, preceedingRange) = text.substringBeforeLocation(location: location, afterCharacters: hashtagBoundaryCharacters) ,
             preceedingCharacter == hashtagCharacter else {
             return nil
         }
         
-        var foundRange = text.NSRangeFromRange(preceedingRange)
-        guard let (proceedingString, _, proceedingRange) = text.substringAfterLocation(location, beforeCharacters: hashtagBoundaryCharacters) else {
+        var foundRange = text.NSRangeFromRange(range: preceedingRange)
+        guard let (proceedingString, _, proceedingRange) = text.substringAfterLocation(location: location, beforeCharacters: hashtagBoundaryCharacters) else {
             return (preceedingString, foundRange)
         }
         
-        let foundEndRange = text.NSRangeFromRange(proceedingRange)
+        let foundEndRange = text.NSRangeFromRange(range: proceedingRange)
         foundRange = NSMakeRange(foundRange.location, foundRange.length + foundEndRange.length)
         return (preceedingString + proceedingString, foundRange)
     }
@@ -215,12 +215,12 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         
         let attachment = NSTextAttachment()
         attachment.image = image
-        let screenScale = UIScreen.mainScreen().scale
-        attachment.bounds.size = CGSizeMake(image.size.width / screenScale, image.size.height / screenScale)
+        let screenScale = UIScreen.main.scale
+        attachment.bounds.size = CGSize(width: image.size.width / screenScale, height: image.size.height / screenScale)
         let imageString = NSAttributedString(attachment: attachment).mutableCopy() as! NSMutableAttributedString
         imageString.addAttributes(attributes, range: NSMakeRange(0, imageString.length))
         let newLineString = NSAttributedString(string: "\n", attributes: attributes)
-        imageString.appendAttributedString(newLineString)
+        imageString.append(newLineString)
         return imageString
     }
     
@@ -233,7 +233,7 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         removePrependedImageFrom(textView)
         
         let mutableText = textView.attributedText.mutableCopy() as! NSMutableAttributedString
-        mutableText.insertAttributedString(prependedString, atIndex: 0)
+        mutableText.insert(prependedString, at: 0)
         textView.attributedText = mutableText
         delegate?.textViewPrependedImage = image
         updateDelegateOfTextViewStatus(textView)
