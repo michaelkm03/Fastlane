@@ -27,6 +27,7 @@ enum ListMenuSection: Int {
 class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, ListMenuSectionDataSourceDelegate {
     private struct Constants {
         struct Keys {
+            static let trendingHashtagsURL = "trendingHashtagsURL"
             static let chatRoomsURL = "chat.rooms.URL"
             static let chatRoomStreamURL = "streamURL"
             static let chatRoomViewTrackingURL = "view"
@@ -36,9 +37,9 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
     private weak var listMenuViewController: ListMenuViewController?
     private let dependencyManager: VDependencyManager
     let communityDataSource: NewListMenuSectionDataSource<ListMenuCommunityItem, SyncOperation<[ListMenuCommunityItem]>>
-    let hashtagDataSource: ListMenuHashtagsDataSource
     let creatorDataSource: ListMenuCreatorDataSource
     let newChatRoomsDataSource: NewListMenuSectionDataSource<ChatRoom, RequestOperation<ChatRoomsRequest>>
+    let hashtagDataSource: NewListMenuSectionDataSource<Hashtag, RequestOperation<TrendingHashtagsRequest>>
     private let subscribeButton: SubscribeButton
     
     // MARK: - Initialization
@@ -48,15 +49,28 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         self.dependencyManager = dependencyManager
         
         communityDataSource = NewListMenuSectionDataSource(
-            dependencyManager: dependencyManager,
+            dependencyManager: dependencyManager.communityChildDependency,
             cellConfiguration: { cell, item in cell.titleLabel.text = item.title },
             createOperation: { CommunityItemsFetchOperation(dependencyManager: dependencyManager) },
             processOutput: { $0 },
             section: .community
         )
 
-        creatorDataSource = ListMenuCreatorDataSource(dependencyManager: dependencyManager.creatorsChildDependency)
-        hashtagDataSource = ListMenuHashtagsDataSource(dependencyManager: dependencyManager.hashtagsChildDependency)
+        if
+            let apiPath = dependencyManager.networkResources?.apiPathForKey(Constants.Keys.trendingHashtagsURL),
+            let request = TrendingHashtagsRequest(apiPath: apiPath) {
+
+            hashtagDataSource = NewListMenuSectionDataSource(
+                dependencyManager: dependencyManager.hashtagsChildDependency,
+                cellConfiguration: { cell, item in cell.titleLabel.text = item.tag },
+                createOperation: { RequestOperation(request: request) },
+                processOutput: { $0 },
+                section: .hashtags
+            )
+        } else {
+            Log.warning("Missing chat rooms API path")
+            return
+        }
 
         if
             let apiPath = self.dependencyManager.networkResources?.apiPathForKey(Constants.Keys.chatRoomsURL),
@@ -70,7 +84,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
                 section: .chatRooms
             )
         } else {
-            Log.warning("Missing chat rooms API path or requestExecutor")
+            Log.warning("Missing chat rooms API path")
             return
         }
 

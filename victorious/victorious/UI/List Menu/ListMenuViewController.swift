@@ -117,7 +117,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     
     private func selectHashtag(atIndex index: Int) {
         let item = collectionViewDataSource.hashtagDataSource.visibleItems[index]
-        var apiPath = collectionViewDataSource.hashtagDataSource.hashtagStreamAPIPath
+        var apiPath = collectionViewDataSource.hashtagDataSource.streamAPIPath
         apiPath.macroReplacements["%%HASHTAG%%"] = item.tag
         let context = DeeplinkContext(value: DeeplinkContext.hashTagFeed, subContext: "#\(item.tag)")
         
@@ -125,7 +125,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
             streamAPIPath: apiPath,
             title: "#\(item.tag)",
             context: context,
-            trackingAPIPaths: collectionViewDataSource.hashtagDataSource.hashtagStreamTrackingAPIPaths.map { path in
+            trackingAPIPaths: collectionViewDataSource.hashtagDataSource.streamTrackingAPIPaths.map { path in
                 var path = path
                 path.macroReplacements["%%HASHTAG%%"] = item.tag
                 return path
@@ -146,7 +146,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
             streamAPIPath: apiPath,
             title: itemString,
             context: context,
-            trackingAPIPaths: collectionViewDataSource.hashtagDataSource.hashtagStreamTrackingAPIPaths.map { path in
+            trackingAPIPaths: collectionViewDataSource.hashtagDataSource.streamTrackingAPIPaths.map { path in
                 var path = path
                 path.macroReplacements[macro] = item.name
                 return path
