@@ -22,7 +22,8 @@ class TextOnColorButton: TouchableInsetAdjustableButton, TrackableButton {
             backgroundColor = templateAppearanceValue(appearance: .backgroundColor)
             setTitleColor(templateAppearanceValue(appearance: .foregroundColor), for: .normal)
             setTitle(templateAppearanceValue(appearance: .text), for: .normal)
-            titleLabel?.font = templateAppearanceValue(.font)
+            let font: UIFont? = templateAppearanceValue(appearance: .font)
+            titleLabel?.font = font
             isUserInteractionEnabled = templateAppearanceValue(appearance: .clickable) ?? false
         }
     }
