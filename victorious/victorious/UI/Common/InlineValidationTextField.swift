@@ -16,6 +16,7 @@ class InlineValidationTextField: UITextField {
         static let sideInset = CGFloat(10.0)
         static let bottomClearInset = CGFloat(2.0)
         static let validationImageSpacing = CGFloat(5.0)
+        static let validationFont = UIFont.systemFontOfSize(10.0, weight: UIFontWeightRegular)
     }
     
     // MARK: - Initializing
@@ -38,7 +39,7 @@ class InlineValidationTextField: UITextField {
         validationImageView.tintColor = .redColor()
         
         validationLabel.translatesAutoresizingMaskIntoConstraints = false
-        validationLabel.font = VThemeManager.sharedThemeManager().themedFontForKey(kVLabel4Font)
+        validationLabel.font = Constants.validationFont
         validationLabel.numberOfLines = 2
         validationLabel.textColor = .redColor()
         
@@ -65,7 +66,6 @@ class InlineValidationTextField: UITextField {
     
     func hideInvalidText() {
         validationIsVisible = false
-        invalidateIntrinsicContentSize()
     }
     
     func showInvalidText(invalidText: String, animated: Bool, shake: Bool, forced: Bool) {
@@ -83,21 +83,11 @@ class InlineValidationTextField: UITextField {
         if shake {
             AudioServicesPlayAlertSound(kSystemSoundID_Vibrate)
         }
-        
-        invalidateIntrinsicContentSize()
-    }
-    
-    func applyTextFieldStyle() {
-        tintColor = VThemeManager.sharedThemeManager().themedColorForKey(kVLinkColor)
-        font = VThemeManager.sharedThemeManager().themedFontForKey(kVHeading4Font)
-        textColor = VThemeManager.sharedThemeManager().themedColorForKey(kVContentTextColor)
-        invalidateIntrinsicContentSize()
     }
     
     func clearValidation() {
         hasResignedFirstResponder = false
         validationIsVisible = false
-        invalidateIntrinsicContentSize()
     }
     
     // MARK: - Managing placeholders

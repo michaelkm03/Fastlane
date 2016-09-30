@@ -77,7 +77,6 @@ static const CGFloat kPlaceholderActiveTextWhiteValue = 0.4f;
                                                      name:UITextFieldTextDidChangeNotification
                                                    object:textField];
         
-        [textField applyTextFieldStyle];
         textField.delegate = self;
     }
     
