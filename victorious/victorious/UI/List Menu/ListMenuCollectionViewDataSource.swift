@@ -25,22 +25,13 @@ enum ListMenuSection: Int {
 /// To fetch data for each section, it delegates the fetching to specific data sources.
 /// So if another section is added, a corresponding data source should be added too.
 class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, ListMenuSectionDataSourceDelegate {
-    private struct Constants {
-        struct Keys {
-            static let creatorListURL = "listOfCreatorsURL"
-            static let trendingHashtagsURL = "trendingHashtagsURL"
-            static let chatRoomsURL = "chat.rooms.URL"
-            static let chatRoomStreamURL = "streamURL"
-            static let chatRoomViewTrackingURL = "view"
-        }
-    }
 
     private weak var listMenuViewController: ListMenuViewController?
     private let dependencyManager: VDependencyManager
-    let communityDataSource: NewListMenuSectionDataSource<ListMenuCommunityItem, SyncOperation<[ListMenuCommunityItem]>>
-    let creatorDataSource: NewListMenuSectionDataSource<UserModel, RequestOperation<CreatorListRequest>>
-    let newChatRoomsDataSource: NewListMenuSectionDataSource<ChatRoom, RequestOperation<ChatRoomsRequest>>
-    let hashtagDataSource: NewListMenuSectionDataSource<Hashtag, RequestOperation<TrendingHashtagsRequest>>
+    let communityDataSource: NewListMenuSectionDataSource<ListMenuCommunityItem, SyncOperation<[ListMenuCommunityItem]>>?
+    let creatorDataSource: NewListMenuSectionDataSource<UserModel, RequestOperation<CreatorListRequest>>?
+    let newChatRoomsDataSource: NewListMenuSectionDataSource<ChatRoom, RequestOperation<ChatRoomsRequest>>?
+    let hashtagDataSource: NewListMenuSectionDataSource<Hashtag, RequestOperation<TrendingHashtagsRequest>>?
     private let subscribeButton: SubscribeButton
     
     // MARK: - Initialization
@@ -49,20 +40,23 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         self.listMenuViewController = listMenuViewController
         self.dependencyManager = dependencyManager
         
-        communityDataSource = NewListMenuSectionDataSource(
-            dependencyManager: dependencyManager.communityChildDependency,
-            cellConfiguration: { cell, item in cell.titleLabel.text = item.title },
-            createOperation: { CommunityItemsFetchOperation(dependencyManager: dependencyManager) },
-            processOutput: { $0 },
-            section: .community
-        )
+        if let childDependency = dependencyManager.communityChildDependency {
+            communityDataSource = NewListMenuSectionDataSource(
+                dependencyManager: childDependency,
+                cellConfiguration: { cell, item in cell.titleLabel.text = item.title },
+                createOperation: { CommunityItemsFetchOperation(dependencyManager: dependencyManager) },
+                processOutput: { $0 },
+                section: .community
+            )
+        }
 
         if
-            let apiPath = dependencyManager.apiPathForKey(Constants.Keys.creatorListURL),
+            let childDependency = dependencyManager.creatorsChildDependency,
+            let apiPath = dependencyManager.creatorsListAPIPath,
             let request = CreatorListRequest(apiPath: apiPath) {
 
             creatorDataSource = NewListMenuSectionDataSource(
-                dependencyManager: dependencyManager.creatorsChildDependency,
+                dependencyManager: childDependency,
                 cellConfiguration: { cell, item in
                     cell.titleLabel.text = item.displayName
                     cell.avatarView.user = item
@@ -71,41 +65,34 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
                 processOutput: { $0 },
                 section: .creator
             )
-        } else {
-            Log.warning("Missing creator list API path")
-            return
         }
 
         if
-            let apiPath = dependencyManager.networkResources?.apiPathForKey(Constants.Keys.trendingHashtagsURL),
+            let childDependency = dependencyManager.hashtagsChildDependency,
+            let apiPath = dependencyManager.hashtagsAPIPath,
             let request = TrendingHashtagsRequest(apiPath: apiPath) {
 
             hashtagDataSource = NewListMenuSectionDataSource(
-                dependencyManager: dependencyManager.hashtagsChildDependency,
+                dependencyManager: childDependency,
                 cellConfiguration: { cell, item in cell.titleLabel.text = item.tag },
                 createOperation: { RequestOperation(request: request) },
                 processOutput: { $0 },
                 section: .hashtags
             )
-        } else {
-            Log.warning("Missing trnding hashtags list API path")
-            return
         }
 
         if
-            let apiPath = self.dependencyManager.networkResources?.apiPathForKey(Constants.Keys.chatRoomsURL),
+            let childDependency = dependencyManager.chatRoomsChildDependency,
+            let apiPath = self.dependencyManager.chatRoomsAPIPath,
             let request = ChatRoomsRequest(apiPath: apiPath) {
 
             newChatRoomsDataSource = NewListMenuSectionDataSource(
-                dependencyManager: dependencyManager.chatRoomsChildDependency,
+                dependencyManager: childDependency,
                 cellConfiguration: { cell, item in cell.titleLabel.text = item.name },
                 createOperation: { RequestOperation(request: request) },
                 processOutput: { $0 },
                 section: .chatRooms
             )
-        } else {
-            Log.warning("Missing chat rooms API path")
-            return
         }
 
         super.init()
@@ -202,20 +189,32 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
 }
 
 private extension VDependencyManager {
-    var creatorsChildDependency: VDependencyManager {
-        return self.childDependencyForKey("creators") ?? self
-    }
-    
-    var communityChildDependency: VDependencyManager {
-        return self.childDependencyForKey("community") ?? self
-    }
-    
-    var hashtagsChildDependency: VDependencyManager {
-        return self.childDependencyForKey("trendingHashtags") ?? self
+    var creatorsChildDependency: VDependencyManager? {
+        return self.childDependencyForKey("creators")
     }
 
-    var chatRoomsChildDependency: VDependencyManager {
-        return self.childDependencyForKey("chat.rooms") ?? self
+    var creatorsListAPIPath: APIPath? {
+        return apiPathForKey("listOfCreatorsURL")
+    }
+
+    var communityChildDependency: VDependencyManager? {
+        return self.childDependencyForKey("community")
+    }
+
+    var hashtagsChildDependency: VDependencyManager? {
+        return self.childDependencyForKey("trendingHashtags")
+    }
+
+    var hashtagsAPIPath: APIPath? {
+        return networkResources?.apiPathForKey("trendingHashtagsURL")
+    }
+
+    var chatRoomsChildDependency: VDependencyManager? {
+        return self.childDependencyForKey("chat.rooms")
+    }
+
+    var chatRoomsAPIPath: APIPath? {
+        return networkResources?.apiPathForKey("chat.rooms.URL")
     }
     
     var activityIndicatorColor: UIColor? {
