@@ -61,12 +61,12 @@ class FilteredImageView: GLKView {
     override func draw(_ rect: CGRect) {
         if let scaledImage = scaledImage {
             if let filter = filter {
-                let inputCIImage = CIImage(image: scaledImage)?.imageByApplyingOrientation(scaledImage.imageOrientation.tiffOrientation())
-                if let outputImage = filter.filteredImageWithInputImage(inputCIImage) {
+                let inputCIImage = CIImage(image: scaledImage)?.applyingOrientation(scaledImage.imageOrientation.tiffOrientation())
+                if let outputImage = filter.filteredImage(withInputImage: inputCIImage) {
                     drawCIImage(outputImage)
                 }
             } else {
-                drawCIImage(CIImage(image: scaledImage)!.imageByApplyingOrientation(scaledImage.imageOrientation.tiffOrientation()))
+                drawCIImage(CIImage(image: scaledImage)!.applyingOrientation(scaledImage.imageOrientation.tiffOrientation()))
             }
         }
     }

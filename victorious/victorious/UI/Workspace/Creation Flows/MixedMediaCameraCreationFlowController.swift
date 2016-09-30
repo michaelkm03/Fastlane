@@ -16,7 +16,7 @@ class MixedMediaCameraCreationFlowController: VAbstractImageVideoCreationFlowCon
     }
     
     fileprivate lazy var mixedMediaCameraViewController: MixedMediaCameraViewController = {
-        let mixedMediaCamera = MixedMediaCameraViewController.mixedMediaCamera(self.dependencyManager, cameraContext: .MixedMediaContentCreation)
+        let mixedMediaCamera = MixedMediaCameraViewController.mixedMediaCamera(self.dependencyManager, cameraContext: .mixedMediaContentCreation)
         mixedMediaCamera.delegate = self
         return mixedMediaCamera
     }()
@@ -64,7 +64,7 @@ class MixedMediaCameraCreationFlowController: VAbstractImageVideoCreationFlowCon
     }
     
     func mixedMediaCameraViewController(_ mixedMediaCameraViewController: MixedMediaCameraViewController, capturedImageWithMediaURL mediaURL: URL, previewImage: UIImage) {
-        source = .Camera
-        self.captureFinishedWithMediaURL(mediaURL, previewImage: previewImage)
+        source = .camera
+        self.captureFinished(withMediaURL: mediaURL, previewImage: previewImage)
     }
 }
