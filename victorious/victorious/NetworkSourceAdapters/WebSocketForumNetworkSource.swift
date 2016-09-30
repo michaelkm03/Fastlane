@@ -32,14 +32,14 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
         webSocketController.addChildReceiver(receiver: self)
 
         // Device ID is needed for tracking calls on the backend.
-        let deviceID = UIDevice.currentDevice().v_authorizationDeviceID
-        webSocketController.setDeviceID(deviceID)
+        let deviceID = UIDevice.current.v_authorizationDeviceID
+        webSocketController.setDeviceID(deviceID: deviceID)
 
-        NSNotificationCenter.defaultCenter().addObserverForName(UIApplicationDidEnterBackgroundNotification, object: nil, queue: nil) { [weak self] (notification) in
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIApplicationDidEnterBackground, object: nil, queue: nil) { [weak self] (notification) in
             self?.tearDown()
         }
 
-        NSNotificationCenter.defaultCenter().addObserverForName(UIApplicationWillEnterForegroundNotification, object: nil, queue: nil) { [weak self] (notification) in
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIApplicationWillEnterForeground, object: nil, queue: nil) { [weak self] (notification) in
             if self?.isSetUp == false && self?.childEventReceivers.isEmpty == false {
                 self?.setUp()
             }
@@ -178,7 +178,7 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
                         return
                     }
                     
-                    strongSelf.webSocketController.replaceEndPoint(url)
+                    strongSelf.webSocketController.replaceEndPoint(endPoint: url)
                     strongSelf.webSocketController.setUp()
                 
                 case .failure(let error):

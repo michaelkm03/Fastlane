@@ -36,7 +36,7 @@ extension VPublishParameters {
             assetRemoteId = mediaAsset.externalID
         }
         else {
-            mediaToUploadURL = mediaAsset.url
+            mediaToUploadURL = mediaAsset.url as URL?
         }
     }
 }

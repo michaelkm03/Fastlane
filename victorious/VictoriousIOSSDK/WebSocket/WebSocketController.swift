@@ -98,13 +98,13 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
         webSocket.disconnect(forceTimeout: Constants.forceDisconnectTimeout)
     }
     
-    public func addChildReceiver(receiver: ForumEventReceiver) {
+    public func addChildReceiver(_ receiver: ForumEventReceiver) {
         if (!childEventReceivers.contains { $0 === receiver }) {
             childEventReceivers.append(receiver)
         }
     }
 
-    public func removeChildReceiver(receiver: ForumEventReceiver) {
+    public func removeChildReceiver(_ receiver: ForumEventReceiver) {
         if let index = childEventReceivers.index( where: { $0 === receiver } ) {
             childEventReceivers.remove(at: index)
         }

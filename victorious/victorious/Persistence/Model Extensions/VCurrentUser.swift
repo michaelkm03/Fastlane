@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 let kLastLoginTypeUserDefaultsKey = "com.getvictorious.VUserManager.LoginType"
 let kAccountIdentifierDefaultsKey = "com.getvictorious.VUserManager.AccountIdentifier"

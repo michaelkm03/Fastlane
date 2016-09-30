@@ -26,7 +26,7 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(handleUpdateStreamURLNotification),
-            name: RESTForumNetworkSource.updateStreamURLNotification,
+            name: NSNotification.Name(rawValue: RESTForumNetworkSource.updateStreamURLNotification),
             object: nil
         )
     }
@@ -57,15 +57,15 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     
     // MARK: - Polling
     
-    fileprivate static let pollingInterval = NSTimeInterval(5.0)
+    fileprivate static let pollingInterval = TimeInterval(5.0)
     
     fileprivate var pollingTimer: VTimerManager?
     
     fileprivate func startPolling() {
         pollingTimer?.invalidate()
         
-        pollingTimer = VTimerManager.scheduledTimerManagerWithTimeInterval(
-            RESTForumNetworkSource.pollingInterval,
+        pollingTimer = VTimerManager.scheduledTimerManager(
+            withTimeInterval: RESTForumNetworkSource.pollingInterval,
             target: self,
             selector: #selector(pollForNewContent),
             userInfo: nil,
@@ -88,7 +88,7 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
             
             switch result {
                 case .success(let feedResult):
-                    strongSelf.broadcast(.handleContent(feedResult.contents.reverse(), loadingType))
+                    strongSelf.broadcast(.handleContent(feedResult.contents.reversed(), loadingType))
                     
                     if let refreshStage = feedResult.refreshStage {
                         strongSelf.broadcast(.refreshStage(refreshStage))
@@ -137,14 +137,14 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     }
     
     func addChildReceiver(_ receiver: ForumEventReceiver) {
-        if !childEventReceivers.contains({ $0 === receiver }) {
+        if !childEventReceivers.contains(where: { $0 === receiver }) {
             childEventReceivers.append(receiver)
         }
     }
     
     func removeChildReceiver(_ receiver: ForumEventReceiver) {
-        if let index = childEventReceivers.indexOf({ $0 === receiver }) {
-            childEventReceivers.removeAtIndex(index)
+        if let index = childEventReceivers.index(where: { $0 === receiver }) {
+            childEventReceivers.remove(at: index)
         }
     }
     
