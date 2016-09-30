@@ -16,7 +16,7 @@ class ComposerAttachmentTabBarButton: UIButton {
         self.navigationMenuItem = navigationMenuItem
         super.init(frame: frame)
         adjustsImageWhenDisabled = true
-        setImage(navigationMenuItem.icon, forState: .Normal)
+        setImage(navigationMenuItem.icon, for: .Normal)
     }
 
     required init?(coder aDecoder: NSCoder) {

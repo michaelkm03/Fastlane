@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 /// Conformers of this protocol can be added into the ConfigurableHeaderContentStreamViewController as a header.
 protocol ConfigurableGridStreamHeader {
