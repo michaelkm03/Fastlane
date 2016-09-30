@@ -21,7 +21,7 @@ final class ProductFetchOperation: AsyncOperation<[VProduct]> {
         return .background
     }
     
-    override func execute(_ finish: (_ result: OperationResult<[VProduct]>) -> Void) {
+    override func execute(_ finish: @escaping (_ result: OperationResult<[VProduct]>) -> Void) {
         let success = { (fetchedProducts: Set<NSObject>?) in
             guard let products = fetchedProducts?.flatMap({ $0 as? VProduct }) else {
                 finish(.failure(NSError(domain: "ProductFetchOperation", code: -1, userInfo: nil)))

@@ -13,20 +13,20 @@ import Foundation
 class TextOnImageButton: TouchableInsetAdjustableButton, TrackableButton {
     var dependencyManager: VDependencyManager? {
         didSet {
-            var backgroundRenderingMode = UIImageRenderingMode.AlwaysOriginal
-            if let backgroundColor: UIColor = templateAppearanceValue(.backgroundColor) {
+            var backgroundRenderingMode = UIImageRenderingMode.alwaysOriginal
+            if let backgroundColor: UIColor = templateAppearanceValue(appearance: .backgroundColor) {
                 tintColor = backgroundColor
-                backgroundRenderingMode = .AlwaysTemplate
+                backgroundRenderingMode = .alwaysTemplate
             }
-            let backgroundImage: UIImage? = templateAppearanceValue(.backgroundImage)
-            setBackgroundImage(backgroundImage?.imageWithRenderingMode(backgroundRenderingMode), forState: .Normal)
+            let backgroundImage: UIImage? = templateAppearanceValue(appearance: .backgroundImage)
+            setBackgroundImage(backgroundImage?.withRenderingMode(backgroundRenderingMode), for: .normal)
             
-            setTitleColor(templateAppearanceValue(.foregroundColor), forState: .Normal)
-            setTitle(templateAppearanceValue(.text), forState: .Normal)
-            titleLabel?.font = templateAppearanceValue(.font)
+            setTitleColor(templateAppearanceValue(appearance: .foregroundColor), for: .normal)
+            setTitle(templateAppearanceValue(appearance: .text), for: .normal)
+            titleLabel?.font = templateAppearanceValue(appearance: .font)
             
             backgroundColor = .clear
-            userInteractionEnabled = templateAppearanceValue(.clickable) ?? false
+            isUserInteractionEnabled = templateAppearanceValue(appearance: .clickable) ?? false
         }
     }
 }
