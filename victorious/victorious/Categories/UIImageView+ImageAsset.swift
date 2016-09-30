@@ -71,7 +71,7 @@ extension UIImageView {
     }
     
     fileprivate func blurImage(_ image: UIImage, withRadius radius: CGFloat, completion: ImageCompletion) {
-        DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async {
+        DispatchQueue.global().async {
             guard let blurredImage = image.applyBlur(withRadius: radius) else {
                 completion?(.failure(nil))
                 return

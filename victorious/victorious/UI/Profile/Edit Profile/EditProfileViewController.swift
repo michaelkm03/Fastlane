@@ -104,7 +104,7 @@ class EditProfileViewController: UIViewController {
             AccountUpdateOperation(profileUpdate: profileUpdate)?.queue() { result in
                 switch result {
                     case .success:
-                        let _ = self.navigationController?.popViewControllerAnimated(true)
+                        let _ = self.navigationController?.popViewController(animated: true)
                     default:
                         self.v_showErrorDefaultError()
                         enableUIClosure()
@@ -178,7 +178,7 @@ class EditProfileViewController: UIViewController {
                 self?.dismiss(animated: true, completion: nil)
             }
             
-            guard success, let previewImage = previewImage else {
+            guard success, let previewImage = previewImage, let mediaURL = mediaURL else {
                 return
             }
             self?.dataSource?.useNewAvatar(previewImage, fileURL: mediaURL)

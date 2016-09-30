@@ -91,7 +91,7 @@ public class SSLSecurity {
         self.usePublicKeys = usePublicKeys
         
         if self.usePublicKeys {
-            DispatchQueue.global(qos: .default).async {
+            DispatchQueue.global().async {
                 let pubKeys = certs.reduce([SecKey]()) { (pubKeys: [SecKey], cert: SSLCert) -> [SecKey] in
                     var pubKeys = pubKeys
                     if let data = cert.certData, cert.key == nil {
