@@ -61,11 +61,11 @@ import UIKit
     /// - parameter withFileName: the name of the file to store device ID
     /// - returns: the device ID read from local file or generated from current device ID
     func generateFirstInstallDeviceID(withFileName filename: String = defaultDeviceIDFileName) -> String? {
-        guard let deviceIDFileURL = documentDirectory?.appendingPathComponent(filename),
-            let path = deviceIDFileURL.path else {
-                return nil
+        guard let deviceIDFileURL = documentDirectory?.appendingPathComponent(filename) else {
+            return nil
         }
         
+        let path = deviceIDFileURL.path
         let currentDeviceID = UIDevice.current.v_authorizationDeviceID
         
         // Tries to read from local file first
@@ -74,8 +74,8 @@ import UIKit
         }
         // If the local file does not exist, create a new one with the current Device ID
         else {
-            writeDeviceIDToFile(path, deviceID: currentDeviceID)
-            excludeBackupForFile(deviceIDFileURL, shouldExcludeFromBack: true)
+            _ = writeDeviceIDToFile(path, deviceID: currentDeviceID)
+            _ = excludeBackupForFile(deviceIDFileURL, shouldExcludeFromBack: true)
             return currentDeviceID
         }
     }

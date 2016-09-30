@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import VictoriousIOSSDK
 
 /// Conformers receive messages when a hashtag is selected.
 protocol HashtagBarControllerSelectionDelegate: class {

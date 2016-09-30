@@ -78,7 +78,7 @@ extension VDependencyManager {
         }
         
         var parameters = parameters
-        parameters[VTrackingKeyUrls] = apiPaths.map { $0.templatePath } as [String]
+        parameters[VTrackingKeyUrls] = (apiPaths.map { $0.templatePath }) as AnyObject?
         VTrackingManager.sharedInstance().trackEvent(VTrackingEventComponentDidBecomeVisible, parameters: parameters)
         
         objc_setAssociatedObject(viewController, &associatedObjectViewWasHiddenKey, NSNumber(value: true), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
@@ -87,7 +87,7 @@ extension VDependencyManager {
     func trackViewWillDisappear(for viewController: UIViewController) {
         let navigationStack = viewController.navigationController?.viewControllers ?? []
         
-        let navigationStackAfterViewController = navigationStack.indexOf(viewController).flatMap {
+        let navigationStackAfterViewController = navigationStack.index(of: viewController).flatMap {
             Array(navigationStack[$0 ..< navigationStack.count])
         } ?? []
         
