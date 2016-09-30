@@ -1,5 +1,5 @@
 //
-//  NotificationsRequest.swift
+//  InAppNotificationsRequest.swift
 //  victorious
 //
 //  Created by Cody Kolodziejzyk on 11/11/15.
@@ -9,7 +9,7 @@
 import Foundation
 
 /// Retrieves a list of notifications for the logged in user
-public struct NotificationsRequest: PaginatorPageable, ResultBasedPageable {
+public struct InAppNotificationsRequest: PaginatorPageable, ResultBasedPageable {
     
     public let paginator: StandardPaginator
     
@@ -17,7 +17,7 @@ public struct NotificationsRequest: PaginatorPageable, ResultBasedPageable {
         self.paginator = paginator
     }
     
-    public init(request: NotificationsRequest, paginator: StandardPaginator = StandardPaginator() ) {
+    public init(request: InAppNotificationsRequest, paginator: StandardPaginator = StandardPaginator() ) {
         self.paginator = paginator
     }
     
@@ -28,12 +28,11 @@ public struct NotificationsRequest: PaginatorPageable, ResultBasedPageable {
         return request
     }
     
-    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> [Notification] {
-        
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> [InAppNotification] {
         guard let notificationsJSON = responseJSON["payload"].array else {
             throw ResponseParsingError()
         }
         
-        return notificationsJSON.flatMap { Notification(json: $0) }
+        return notificationsJSON.flatMap { InAppNotification(json: $0) }
     }
 }

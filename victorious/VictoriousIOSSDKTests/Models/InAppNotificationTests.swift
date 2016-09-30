@@ -1,5 +1,5 @@
 //
-//  NotificationTests.swift
+//  InAppNotificationTests.swift
 //  victorious
 //
 //  Created by Cody Kolodziejzyk on 11/11/15.
@@ -9,7 +9,7 @@
 import VictoriousIOSSDK
 import XCTest
 
-class NotificationTests: XCTestCase {
+class InAppNotificationTests: XCTestCase {
     
     func testJSONParsing() {
         guard let mockUserDataURL = NSBundle(forClass: self.dynamicType).URLForResource("Notification", withExtension: "json"),
@@ -17,7 +17,7 @@ class NotificationTests: XCTestCase {
                 XCTFail("Error reading mock json data")
                 return
         }
-        guard let notification = Notification(json: JSON(data: mockData)) else {
+        guard let notification = InAppNotification(json: JSON(data: mockData)) else {
             XCTFail("User initializer failed")
             return
         }

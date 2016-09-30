@@ -26,7 +26,7 @@ final class VCurrentUser: NSObject {
         self.user = user
         NotificationCenter.default.post(Notification(name: Notification.Name(rawValue: userDidUpdateNotificationKey), object: nil))
         if loggedInUserChanged {
-            NotificationCenter.defaultCenter().postNotification(Notification(name: kLoggedInChangedNotification, object: nil))
+            NotificationCenter.default.post(Notification(name: NSNotification.Name.loggedInChanged, object: nil))
         }
     }
     
@@ -35,10 +35,10 @@ final class VCurrentUser: NSObject {
     static func clear() {
         assert(Thread.isMainThread)
         user = nil
-        NotificationCenter.defaultCenter().postNotification(Notification(name: kLoggedInChangedNotification, object: nil))
+        NotificationCenter.default.post(Notification(name: NSNotification.Name.loggedInChanged, object: nil))
     }
     
-    static var loginType: VLoginType = .None
+    static var loginType = VLoginType.none
     static var token: String?
     static var isNewUser: NSNumber?
     static var accountIdentifier: String?
@@ -47,26 +47,26 @@ final class VCurrentUser: NSObject {
 // Objc compatibility
 extension VCurrentUser {
     static var userID: NSNumber? {
-        return user?.id
+        return user?.id as NSNumber?
     }
     
     static var maxVideoUploadDuration: NSNumber? {
-        return user?.maxVideoUploadDuration
+        return user?.maxVideoUploadDuration as NSNumber?
     }
     
     static var isCreator: NSNumber? {
-        return user?.accessLevel.isCreator
+        return user?.accessLevel.isCreator as NSNumber?
     }
     
     static var isVIPSubScriber: NSNumber? {
-        return user?.hasValidVIPSubscription
+        return user?.hasValidVIPSubscription as NSNumber?
     }
     
     static var exists: NSNumber? {
-        return user != nil
+        return NSNumber(value: user != nil)
     }
     
     static var completedProfile: NSNumber? {
-        return user?.completedProfile
+        return user?.completedProfile as NSNumber?
     }
 }

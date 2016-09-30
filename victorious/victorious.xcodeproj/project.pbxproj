@@ -227,7 +227,7 @@
 		0372BE9C1C84FF02004950CF /* LogoutRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72EDF8E1C03E4D0003D6177 /* LogoutRequest.swift */; };
 		0372BE9D1C84FF02004950CF /* MarkAllNotificationsAsReadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E7C0FA1BF3F4A600AFE545 /* MarkAllNotificationsAsReadRequest.swift */; };
 		0372BE9F1C84FF02004950CF /* MediaUploadCreateRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678C43C01C541B3700EBE83A /* MediaUploadCreateRequest.swift */; };
-		0372BEA11C84FF02004950CF /* NotificationsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E7C0F01BF3EFEB00AFE545 /* NotificationsRequest.swift */; };
+		0372BEA11C84FF02004950CF /* InAppNotificationsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E7C0F01BF3EFEB00AFE545 /* InAppNotificationsRequest.swift */; };
 		0372BEA21C84FF02004950CF /* NSCharacterSet+VSDKURLParts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F9A8351C6C1FF600962481 /* NSCharacterSet+VSDKURLParts.swift */; };
 		0372BEA31C84FF02004950CF /* NSDictionary+URLEncodedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F581BE40F3200EE74FD /* NSDictionary+URLEncodedString.swift */; };
 		0372BEA41C84FF02004950CF /* NSMutableURLRequest+VictoriousIOSSDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03314F5D1BE40F3200EE74FD /* NSMutableURLRequest+VictoriousIOSSDK.swift */; };
@@ -1079,11 +1079,11 @@
 		C3E772201B4DBA78005809A5 /* VStreamFocusHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E7721F1B4DBA78005809A5 /* VStreamFocusHelper.m */; };
 		C3E772231B4DBC96005809A5 /* VCollectionViewStreamFocusHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E772221B4DBC96005809A5 /* VCollectionViewStreamFocusHelper.m */; };
 		C3E7C0E71BF3C8E400AFE545 /* NotificationsResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = C3E7C0E61BF3C8E400AFE545 /* NotificationsResponse.json */; };
-		C3E7C0E91BF3CCC500AFE545 /* NotificationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E7C0E81BF3CCC500AFE545 /* NotificationTests.swift */; };
+		C3E7C0E91BF3CCC500AFE545 /* InAppNotificationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E7C0E81BF3CCC500AFE545 /* InAppNotificationTests.swift */; };
 		C3E7C0EB1BF3CCF700AFE545 /* Notification.json in Resources */ = {isa = PBXBuildFile; fileRef = C3E7C0EA1BF3CCF700AFE545 /* Notification.json */; };
 		C3E7C0ED1BF3E1BD00AFE545 /* InAppNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E7C0EC1BF3E1BD00AFE545 /* InAppNotification.swift */; };
 		C3E7C0EF1BF3ED9900AFE545 /* NotificationsRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E7C0EE1BF3ED9900AFE545 /* NotificationsRequestTests.swift */; };
-		C3E7C0F11BF3EFEB00AFE545 /* NotificationsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E7C0F01BF3EFEB00AFE545 /* NotificationsRequest.swift */; };
+		C3E7C0F11BF3EFEB00AFE545 /* InAppNotificationsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E7C0F01BF3EFEB00AFE545 /* InAppNotificationsRequest.swift */; };
 		C3E7C0F31BF3F16000AFE545 /* UnreadNotificationsCountResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = C3E7C0F21BF3F16000AFE545 /* UnreadNotificationsCountResponse.json */; };
 		C3E7C0F51BF3F1C100AFE545 /* UnreadNotificationsCountRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E7C0F41BF3F1C100AFE545 /* UnreadNotificationsCountRequestTests.swift */; };
 		C3E7C0F71BF3F2F800AFE545 /* UnreadNotificationsCountRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E7C0F61BF3F2F800AFE545 /* UnreadNotificationsCountRequest.swift */; };
@@ -2652,11 +2652,11 @@
 		C3E772211B4DBC96005809A5 /* VCollectionViewStreamFocusHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCollectionViewStreamFocusHelper.h; sourceTree = "<group>"; };
 		C3E772221B4DBC96005809A5 /* VCollectionViewStreamFocusHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCollectionViewStreamFocusHelper.m; sourceTree = "<group>"; };
 		C3E7C0E61BF3C8E400AFE545 /* NotificationsResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = NotificationsResponse.json; sourceTree = "<group>"; };
-		C3E7C0E81BF3CCC500AFE545 /* NotificationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationTests.swift; sourceTree = "<group>"; };
+		C3E7C0E81BF3CCC500AFE545 /* InAppNotificationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InAppNotificationTests.swift; sourceTree = "<group>"; };
 		C3E7C0EA1BF3CCF700AFE545 /* Notification.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Notification.json; sourceTree = "<group>"; };
 		C3E7C0EC1BF3E1BD00AFE545 /* InAppNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InAppNotification.swift; sourceTree = "<group>"; };
 		C3E7C0EE1BF3ED9900AFE545 /* NotificationsRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsRequestTests.swift; sourceTree = "<group>"; };
-		C3E7C0F01BF3EFEB00AFE545 /* NotificationsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsRequest.swift; sourceTree = "<group>"; };
+		C3E7C0F01BF3EFEB00AFE545 /* InAppNotificationsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InAppNotificationsRequest.swift; sourceTree = "<group>"; };
 		C3E7C0F21BF3F16000AFE545 /* UnreadNotificationsCountResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = UnreadNotificationsCountResponse.json; sourceTree = "<group>"; };
 		C3E7C0F41BF3F1C100AFE545 /* UnreadNotificationsCountRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnreadNotificationsCountRequestTests.swift; sourceTree = "<group>"; };
 		C3E7C0F61BF3F2F800AFE545 /* UnreadNotificationsCountRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnreadNotificationsCountRequest.swift; sourceTree = "<group>"; };
@@ -3311,16 +3311,16 @@
 				A7D15DD51CBED6610039761B /* DictionaryConvertible.swift */,
 				A7D920471C063682002A6503 /* Errors */,
 				0EBF417A1CAB5C20002966B3 /* ForumEvents */,
-				C3FEA7A41BF26F24003446CC /* GIFSearchRequest.swift */,
 				F004B3291D8914E3005D4A74 /* GIFSearchOptions.swift */,
+				C3FEA7A41BF26F24003446CC /* GIFSearchRequest.swift */,
 				A7A583501C3B00CC0088A08A /* HashtagSearchRequest.swift */,
+				C3E7C0F01BF3EFEB00AFE545 /* InAppNotificationsRequest.swift */,
 				0E23691E1D4BC74B00D9E45C /* Logger */,
 				0315EAD21BED800A00645071 /* LoginRequest.swift */,
 				A72EDF8E1C03E4D0003D6177 /* LogoutRequest.swift */,
 				C3E7C0FA1BF3F4A600AFE545 /* MarkAllNotificationsAsReadRequest.swift */,
 				678C43C01C541B3700EBE83A /* MediaUploadCreateRequest.swift */,
 				03314F5A1BE40F3200EE74FD /* Models */,
-				C3E7C0F01BF3EFEB00AFE545 /* NotificationsRequest.swift */,
 				03F9A8351C6C1FF600962481 /* NSCharacterSet+VSDKURLParts.swift */,
 				03314F581BE40F3200EE74FD /* NSDictionary+URLEncodedString.swift */,
 				03314F5D1BE40F3200EE74FD /* NSMutableURLRequest+VictoriousIOSSDK.swift */,
@@ -3426,12 +3426,12 @@
 			isa = PBXGroup;
 			children = (
 				A7039CF51C24A8F40023DE6F /* AlertTests.swift */,
+				62FD647D1D8B253200E9BAF8 /* ChatRoomTests.swift */,
 				6731B2601BF182F100B9FFFE /* FanLoyaltyTests.swift */,
 				C3FEA7961BF16EDC003446CC /* GIFSearchResultTests.swift */,
 				C314E6BC1BF13CD000FB9591 /* HashtagTests.swift */,
-				62FD647D1D8B253200E9BAF8 /* ChatRoomTests.swift */,
 				03314F471BE40F0100EE74FD /* ImageAssetTests.swift */,
-				C3E7C0E81BF3CCC500AFE545 /* NotificationTests.swift */,
+				C3E7C0E81BF3CCC500AFE545 /* InAppNotificationTests.swift */,
 				0E85A1F91CAE28F400BE950E /* RefreshStageTests.swift */,
 				0EF377501D36C6E5006BF786 /* StageMetaDataTests.swift */,
 				7AFEB14A1D413D7B00FA972D /* TimestampTests.swift */,
@@ -7542,7 +7542,7 @@
 				0E9911CE1CEBD1E200B4E4A0 /* WebSocketRawMessageContainer.swift in Sources */,
 				678C43C11C541B3700EBE83A /* MediaUploadCreateRequest.swift in Sources */,
 				03BC6FB01BE74E9B00CFCBEE /* StandardPaginator.swift in Sources */,
-				C3E7C0F11BF3EFEB00AFE545 /* NotificationsRequest.swift in Sources */,
+				C3E7C0F11BF3EFEB00AFE545 /* InAppNotificationsRequest.swift in Sources */,
 				A7D9204B1C0636B3002A6503 /* ResponseParsingError.swift in Sources */,
 				C3E7C0FB1BF3F4A600AFE545 /* MarkAllNotificationsAsReadRequest.swift in Sources */,
 				0E4BF6B31CA60B5400B8A456 /* WebSocketEvent.swift in Sources */,
@@ -7583,7 +7583,7 @@
 				BF3CD8921D11E44B00CB7764 /* UserUnupvoteRequestTests.swift in Sources */,
 				0399E8101C51D4D200E090F7 /* TemplateRequestTests.swift in Sources */,
 				A74679991BF6D8500026FD2E /* UserInfoRequestTests.swift in Sources */,
-				C3E7C0E91BF3CCC500AFE545 /* NotificationTests.swift in Sources */,
+				C3E7C0E91BF3CCC500AFE545 /* InAppNotificationTests.swift in Sources */,
 				BF5BF6BD1D00F657009FE532 /* ContentUpvoteRequestTests.swift in Sources */,
 				C3FEA7971BF16EDC003446CC /* GIFSearchResultTests.swift in Sources */,
 				03314F501BE40F0100EE74FD /* RequestTypeTests.swift in Sources */,
@@ -7733,7 +7733,7 @@
 				0372BEF21C84FF19004950CF /* VSDKURLMacroReplacement.m in Sources */,
 				0372BEB41C84FF02004950CF /* RequestPasswordResetRequest.swift in Sources */,
 				0372BE7E1C84FF02004950CF /* Bool+Initializers.swift in Sources */,
-				0372BEA11C84FF02004950CF /* NotificationsRequest.swift in Sources */,
+				0372BEA11C84FF02004950CF /* InAppNotificationsRequest.swift in Sources */,
 				0372BE861C84FF02004950CF /* CreateAlertRequest.swift in Sources */,
 				0372BECB1C84FF0C004950CF /* Hashtag.swift in Sources */,
 				0372BEAC1C84FF02004950CF /* PasswordResetRequest.swift in Sources */,
