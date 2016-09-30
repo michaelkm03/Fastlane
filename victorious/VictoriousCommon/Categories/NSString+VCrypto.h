@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  A category for performing cryptographic operations on strings
  */
-@interface NSString
+@interface NSString ()
 
 /**
  Returns a SHA-256 hash of the receiver
