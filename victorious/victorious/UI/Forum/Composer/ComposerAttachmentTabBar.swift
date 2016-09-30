@@ -99,7 +99,7 @@ class ComposerAttachmentTabBar: VFlexBar {
     }
     
     fileprivate func buttons() -> [ComposerAttachmentTabBarButton] {
-        let buttons = actionItems.filter { (item: AnyObject) -> Bool in
+        let buttons = actionItems.filter { (item: Any) -> Bool in
             type(of: item) == ComposerAttachmentTabBarButton.self
         }
         return buttons as? [ComposerAttachmentTabBarButton] ?? []

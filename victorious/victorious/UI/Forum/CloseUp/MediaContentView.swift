@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 protocol MediaContentViewDelegate: class {
     /// Tells the delegate that a particular content is loaded.

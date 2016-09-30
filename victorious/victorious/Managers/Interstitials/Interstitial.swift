@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 /// View controllers that wish to be presented as interstitials should conform to this protocol.
 ///

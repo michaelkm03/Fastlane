@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 /// Provides UI for editing the user's `name`, `location`, and `tagline` fields.
 /// Assign closures to be notified of events in the UI.
