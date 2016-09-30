@@ -28,8 +28,9 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
             assertionFailure("`SideNavScaffoldViewController` requires `leftNavigation` and `centerScreen` subcomponents.")
         }
         
-        self.centerViewController = centerViewController
-        self.rightNavViewController = rightNavViewController
+        // Future: Get rid of the ! from Objc
+        self.centerViewController = centerViewController!
+        self.rightNavViewController = rightNavViewController!
         
         centerWrapperViewController.addChildViewController(centerViewController)
         centerWrapperViewController.view.addSubview(centerViewController.view)
@@ -51,12 +52,12 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
         
         addChildViewController(sideMenuController)
         view.addSubview(sideMenuController.view)
-        view.v_addFitToParentConstraintsToSubview(sideMenuController.view)
-        sideMenuController.didMoveToParentViewController(self)
+        view.v_addFitToParentConstraints(toSubview: sideMenuController.view)
+        sideMenuController.didMove(toParentViewController: self)
         
         let navigationBar = mainNavigationController.navigationBar
-        navigationBar.translucent = false
-        dependencyManager.applyStyleToNavigationBar(navigationBar)
+        navigationBar.isTranslucent = false
+        dependencyManager.applyStyle(to: navigationBar)
         
         let backArrowImage = UIImage(named: "BackArrow")
         navigationBar.backIndicatorImage = backArrowImage
@@ -74,7 +75,7 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
         
         performCommonInitialSetup()
         
-        NotificationCenter.defaultCenter().addObserver(self, selector: #selector(loggedInStatusDidChange), name: kLoggedInChangedNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(loggedInStatusDidChange), name: NSNotification.Name.loggedInChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(mainFeedFilterDidChange), name: NSNotification.Name(rawValue: RESTForumNetworkSource.updateStreamURLNotification), object: nil)
         
         showCreatorLogoTitle()
@@ -102,7 +103,7 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
         super.viewDidAppear(animated)
         
         if presentedViewController == nil {
-            InterstitialManager.sharedInstance.showNextInterstitial(onViewController: self)
+            let _ = InterstitialManager.sharedInstance.showNextInterstitial(onViewController: self)
         }
     }
     
@@ -179,7 +180,7 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
     // MARK: - Status bar
     
     override var preferredStatusBarStyle : UIStatusBarStyle {
-        let navigationBarTextColor = dependencyManager.dependencyManagerForNavigationBar().color(forKey: VDependencyManagerMainTextColorKey)
+        let navigationBarTextColor = dependencyManager.forNavigationBar().color(forKey: VDependencyManagerMainTextColorKey) ?? .black
         return StatusBarUtilities.statusBarStyle(color: navigationBarTextColor)
     }
     
