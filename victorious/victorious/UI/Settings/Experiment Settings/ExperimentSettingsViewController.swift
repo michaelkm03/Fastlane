@@ -38,7 +38,7 @@ class ExperimentSettingsViewController: UITableViewController, ExperimentSetting
         
         // If any changes were made since this view was presented
         if self.dataSource.experimentSettings.activeExperiments != self.initialExperimentIds {
-            NotificationCenter.default.postNotificationName(NSNotification.Name(rawValue: VSessionTimerNewSessionShouldStart), object: nil)
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: VSessionTimerNewSessionShouldStart), object: nil)
         }
     }
 }
