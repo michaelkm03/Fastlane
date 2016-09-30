@@ -29,7 +29,7 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
         
         // Connect this link in the event chain.
         nextSender = webSocketController
-        webSocketController.addChildReceiver(receiver: self)
+        webSocketController.addChildReceiver(self)
 
         // Device ID is needed for tracking calls on the backend.
         let deviceID = UIDevice.current.v_authorizationDeviceID
@@ -121,14 +121,14 @@ class WebSocketForumNetworkSource: NSObject, ForumNetworkSource {
     }
     
     func addChildReceiver(_ receiver: ForumEventReceiver) {
-        if !childEventReceivers.contains({ $0 === receiver }) {
+        if !childEventReceivers.contains(where: { $0 === receiver }) {
             childEventReceivers.append(receiver)
         }
     }
 
     func removeChildReceiver(_ receiver: ForumEventReceiver) {
-        if let index = childEventReceivers.indexOf({ $0 === receiver }) {
-            childEventReceivers.removeAtIndex(index)
+        if let index = childEventReceivers.index(where: { $0 === receiver }) {
+            childEventReceivers.remove(at: index)
         }
     }
     
