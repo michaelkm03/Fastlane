@@ -140,7 +140,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         }
     }
 
-    func setStageHeight(value: CGFloat) {
+    func setStageHeight(_ value: CGFloat) {
         stageContainerHeight.constant = value
         view.layoutIfNeeded()
     }
@@ -149,7 +149,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     var uploadProgressViewController: VUploadProgressViewController?
     
-    func addUploadManagerToViewController(viewController: UIViewController, topInset: CGFloat) {
+    func addUploadManagerToViewController(_ viewController: UIViewController, topInset: CGFloat) {
         UploadManagerHelper.addUploadManagerToViewController(viewController, topInset: topInset)
     }
     
@@ -163,7 +163,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         }
         
         if uploadProgressViewController.numberOfUploads > 0 {
-            uploadProgressViewController.view.hidden = false
+            uploadProgressViewController.view.isHidden = false
         }
     }
     
@@ -196,7 +196,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        addUploadManagerToViewController(viewController: self, topInset: topLayoutGuide.length)
+        addUploadManagerToViewController(self, topInset: topLayoutGuide.length)
         updateUploadProgressViewControllerVisibility()
         
         // Remove this once the way to animate the workspace in and out from forum has been figured out
@@ -250,7 +250,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             nextSender = forumNetworkSource
             
             // Inject ourselves into the child receiver list in order to link the chain together.
-            forumNetworkSource.addChildReceiver(receiver: self)
+            forumNetworkSource.addChildReceiver(self)
             
             self.forumNetworkSource = forumNetworkSource
         }
@@ -294,7 +294,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         // Close connection to network source when we close the forum.
         forumNetworkSource?.tearDown()
 
-        forumNetworkSource?.removeChildReceiver(receiver: self)
+        forumNetworkSource?.removeChildReceiver(self)
     }
     
     private func updateStyle() {
@@ -334,7 +334,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     // MARK: - ChatFeedDelegate
     
-    func chatFeed(chatFeed: ChatFeed, didLongPress chatFeedContent: ChatFeedContent) {
+    func chatFeed(_ chatFeed: ChatFeed, didLongPress chatFeedContent: ChatFeedContent) {
         showActionSheet(forContent: chatFeedContent)
     }
 
@@ -365,11 +365,11 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         }
     }
 
-    func chatFeed(chatFeed: ChatFeed, didScroll scrollView: UIScrollView) {
+    func chatFeed(_ chatFeed: ChatFeed, didScroll scrollView: UIScrollView) {
         stageShrinkingAnimator?.chatFeed(chatFeed, didScroll: scrollView)
     }
     
-    func chatFeed(chatFeed: ChatFeed, willBeginDragging scrollView: UIScrollView) {
+    func chatFeed(_ chatFeed: ChatFeed, willBeginDragging scrollView: UIScrollView) {
         stageShrinkingAnimator?.chatFeed(chatFeed, willBeginDragging: scrollView)
     }
     
@@ -377,7 +377,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         stageShrinkingAnimator?.chatFeed(chatFeed, willEndDragging: scrollView, withVelocity: velocity)
     }
     
-    func chatFeed(chatFeed: ChatFeed, didSelectFailureButtonFor chatFeedContent: ChatFeedContent) {
+    func chatFeed(_ chatFeed: ChatFeed, didSelectFailureButtonFor chatFeedContent: ChatFeedContent) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.addAction(
             UIAlertAction(
@@ -409,7 +409,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         present(alertController, animated: true, completion: nil)
     }
     
-    func chatFeed(chatFeed: ChatFeed, didSelectReplyButtonFor chatFeedContent: ChatFeedContent) {
+    func chatFeed(_ chatFeed: ChatFeed, didSelectReplyButtonFor chatFeedContent: ChatFeedContent) {
         guard let username = chatFeedContent.content.author?.username else {
             return
         }
@@ -424,7 +424,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     // MARK: - ContentPublisherDelegate
     
-    func contentPublisher(contentPublisher: ContentPublisher, didQueue content: ChatFeedContent) {
+    func contentPublisher(_ contentPublisher: ContentPublisher, didQueue content: ChatFeedContent) {
         chatFeed?.handleNewItems([], loadingType: .newer, newPendingContentCount: 1) { [weak self] in
             self?.chatFeed?.collectionView.scrollToBottom(animated: true)
         }
@@ -448,8 +448,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         }
         
         if let retriedIndex = publisher?.retryPublish(chatFeedContent) {
-            let retriedIndexPath = NSIndexPath(forItem: dataSource.unstashedItems.count + retriedIndex, inSection: 0)
-            chatFeed?.collectionView.reloadItemsAtIndexPaths([retriedIndexPath])
+            let retriedIndexPath = NSIndexPath(item: dataSource.unstashedItems.count + retriedIndex, section: 0)
+            chatFeed?.collectionView.reloadItems(at: [retriedIndexPath as IndexPath])
         }
     }
     
@@ -459,8 +459,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         }
         
         if let removedIndicies = publisher?.remove([chatFeedContent]) {
-            let indexPaths = removedIndicies.map { NSIndexPath(forItem: dataSource.unstashedItems.count + $0, inSection: 0)}
-            chatFeed?.collectionView.deleteItemsAtIndexPaths(indexPaths)
+            let indexPaths = removedIndicies.map { NSIndexPath(item: dataSource.unstashedItems.count + $0, section: 0)}
+            chatFeed?.collectionView.deleteItems(at: indexPaths as [IndexPath])
         }
     }
     

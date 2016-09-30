@@ -38,15 +38,15 @@ class RightNavViewController: UIViewController, CoachmarkDisplayer {
     
     // MARK: - View events
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         if contentViewController == nil {
             let contentViewController = dependencyManager.viewController(forKey: "contentScreen")
-            addChildViewController(contentViewController)
-            view.addSubview(contentViewController.view)
-            view.v_addFitToParentConstraintsToSubview(contentViewController.view)
-            contentViewController.didMoveToParentViewController(self)
+            addChildViewController(contentViewController!)
+            view.addSubview(contentViewController?.view)
+            view.v_addFitToParentConstraintsToSubview(contentViewController?.view)
+            contentViewController?.didMoveToParentViewController(self)
             self.contentViewController = contentViewController
         }
     }

@@ -14,9 +14,9 @@ final class ListMenuChatRoomCollectionViewCell: UICollectionViewCell, ListMenuSe
 
     // MARK: - UICollectionViewCell
 
-    override var selected: Bool {
+    override var isSelected: Bool {
         didSet {
-            updateCellBackgroundColor(to: contentView, selectedColor: dependencyManager?.selectedBackgroundColor, isSelected: selected)
+            updateCellBackgroundColor(to: contentView, selectedColor: dependencyManager?.selectedBackgroundColor, isSelected: isSelected)
         }
     }
 

@@ -8,6 +8,7 @@
 
 #if V_ENABLE_WEBSOCKET_DEBUG_MENU
     import Foundation
+    import VictoriousIOSSDK
 
     /// Type of debug menu to be shown.
     enum DebugMenuType {

@@ -77,8 +77,8 @@ class ComposerAttachmentTabBar: VFlexBar {
         let buttonItems = buttons()
         let renderingMode: UIImageRenderingMode = tabItemDeselectedTintColor != nil ? .alwaysTemplate : .alwaysOriginal
         for button in buttonItems {
-            let updatedImage = button.imageForState(.normal)?.imageWithRenderingMode(renderingMode)
-            button.setImage(updatedImage, forState: .normal)
+            let updatedImage = button.image(for: .normal)?.withRenderingMode(renderingMode)
+            button.setImage(updatedImage, for: .normal)
             if let tabItemTintColor = tabItemDeselectedTintColor {
                 button.tintColor = tabItemTintColor
             }
@@ -101,7 +101,7 @@ class ComposerAttachmentTabBar: VFlexBar {
     fileprivate func buttons() -> [ComposerAttachmentTabBarButton] {
         let buttons = actionItems.filter { (item: AnyObject) -> Bool in
             type(of: item) == ComposerAttachmentTabBarButton.self
-        } as! (Any) -> Bool
+        } as! (Any) -> Bool as! (Any) -> Bool
         return buttons as? [ComposerAttachmentTabBarButton] ?? []
     }
 }

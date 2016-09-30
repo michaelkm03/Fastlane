@@ -18,7 +18,7 @@ class InAppNotificationsViewController: UIViewController, UITableViewDelegate, I
     
     init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
-        dataSource = NotificationsDataSource(dependencyManager: dependencyManager)
+        dataSource = InAppNotificationsDataSource(dependencyManager: dependencyManager)
         noContentView = VNoContentView(fromNibWithFrame: tableView.bounds)
         
         super.init(nibName: nil, bundle: nil)
@@ -114,7 +114,7 @@ class InAppNotificationsViewController: UIViewController, UITableViewDelegate, I
         let isAlreadyShowingNoContent = tableView.backgroundView == noContentView
         
         switch dataSource.state {
-            case .NoResults, .Loading where isAlreadyShowingNoContent:
+            case .noResults, .loading where isAlreadyShowingNoContent:
                 if !isAlreadyShowingNoContent {
                     noContentView.resetInitialAnimationState()
                     noContentView.animateTransitionIn()
