@@ -1,5 +1,5 @@
 //
-//  NotificationCell.swift
+//  InAppNotificationCell.swift
 //  victorious
 //
 //  Created by Jarod Long on 4/6/16.
@@ -9,13 +9,13 @@
 import UIKit
 import VictoriousIOSSDK
 
-/// A delegate protocol for `NotificationCell`.
-protocol NotificationCellDelegate: class {
-    func notificationCellDidSelectUser(_ notificationCell: NotificationCell)
+/// A delegate protocol for `InAppNotificationCell`.
+protocol InAppNotificationCellDelegate: class {
+    func notificationCellDidSelectUser(_ notificationCell: InAppNotificationCell)
 }
 
-/// The table view cell used to display notifications.
-class NotificationCell: UITableViewCell, VBackgroundContainer {
+/// The table view cell used to display in-app notifications.
+class InAppNotificationCell: UITableViewCell, VBackgroundContainer {
     fileprivate struct Constants {
         static let containerCornerRadius = CGFloat(6.0)
     }
@@ -34,14 +34,14 @@ class NotificationCell: UITableViewCell, VBackgroundContainer {
     
     // MARK: - Content
     
-    func updateContent(with notification: Notification, dependencyManager: VDependencyManager) {
+    func updateContent(with notification: InAppNotification, dependencyManager: VDependencyManager) {
         avatarView.user = notification.user
-        dateLabel.text = notification.createdAt.stringDescribingTimeIntervalSinceNow(format: .verbose, precision: .minutes) ?? ""
+        dateLabel.text = notification.createdAt.stringDescribingTimeIntervalSinceNow(format: .verbose, precision: .minutes)
         dateLabel.font = dependencyManager.dateFont
         
         let message = notification.subject
         
-        dependencyManager.addBackgroundToBackgroundHost(self, forKey: VDependencyManagerCellBackgroundKey)
+        dependencyManager.addBackground(toBackgroundHost: self, forKey: VDependencyManagerCellBackgroundKey)
         
         dateLabel.textColor = dependencyManager.dateTextColor
         
@@ -60,7 +60,7 @@ class NotificationCell: UITableViewCell, VBackgroundContainer {
         ])
         
         let username = notification.user.displayName ?? ""
-        let range = (message as NSString).rangeOfString(username)
+        let range = (message as NSString).range(of: username)
         
         if range.location != NSNotFound && range.length > 0 {
             attributedMessage.addAttributes([
@@ -73,7 +73,7 @@ class NotificationCell: UITableViewCell, VBackgroundContainer {
     
     // MARK: - Delegate
     
-    weak var delegate: NotificationCellDelegate?
+    weak var delegate: InAppNotificationCellDelegate?
     
     // MARK: - Views
     
@@ -113,7 +113,7 @@ private extension VDependencyManager {
     }
     
     var boldMessageFont: UIFont? {
-        guard let fontDescriptor = messageFont?.fontDescriptor().fontDescriptorWithSymbolicTraits(.TraitBold) else {
+        guard let fontDescriptor = messageFont?.fontDescriptor.withSymbolicTraits(.traitBold) else {
             return nil
         }
         

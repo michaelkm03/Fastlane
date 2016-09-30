@@ -1,5 +1,5 @@
 //
-//  NotificationsViewController.swift
+//  InAppNotificationsViewController.swift
 //  victorious
 //
 //  Created by Jarod Long on 8/12/16.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NotificationsViewController: UIViewController, UITableViewDelegate, NotificationCellDelegate, VPaginatedDataSourceDelegate, VBackgroundContainer {
+class InAppNotificationsViewController: UIViewController, UITableViewDelegate, InAppNotificationCellDelegate, VPaginatedDataSourceDelegate, VBackgroundContainer {
     fileprivate struct Constants {
         static let contentInset = UIEdgeInsets(top: 8.0, left: 0.0, bottom: 8.0, right: 0.0)
         static let estimatedRowHeight = CGFloat(64.0)
@@ -24,13 +24,13 @@ class NotificationsViewController: UIViewController, UITableViewDelegate, Notifi
         super.init(nibName: nil, bundle: nil)
         
         automaticallyAdjustsScrollViewInsets = true
-        edgesForExtendedLayout = .All
+        edgesForExtendedLayout = .all
         extendedLayoutIncludesOpaqueBars = false
         
         dataSource.registerCells(for: tableView)
         dataSource.delegate = self
         
-        refreshControl.addTarget(self, action: #selector(refresh), forControlEvents: .ValueChanged)
+        refreshControl.addTarget(self, action: #selector(refresh), for: .ValueChanged)
         refreshControl.tintColor = dependencyManager.refreshControlColor
         
         noContentView.setDependencyManager(dependencyManager)
@@ -41,7 +41,7 @@ class NotificationsViewController: UIViewController, UITableViewDelegate, Notifi
         tableView.delegate = self
         tableView.dataSource = dataSource
         tableView.backgroundColor = nil
-        tableView.separatorStyle = .None
+        tableView.separatorStyle = .none
         tableView.separatorColor = .clear
         tableView.contentInset = Constants.contentInset
         tableView.rowHeight = UITableViewAutomaticDimension
@@ -145,7 +145,7 @@ class NotificationsViewController: UIViewController, UITableViewDelegate, Notifi
     
     fileprivate func redecorateVisibleCells() {
         for indexPath in tableView.indexPathsForVisibleRows ?? [] {
-            guard let cell = tableView.cellForRow(at: indexPath) as? NotificationCell else {
+            guard let cell = tableView.cellForRow(at: indexPath) as? InAppNotificationCell else {
                 continue
             }
             
@@ -183,7 +183,7 @@ class NotificationsViewController: UIViewController, UITableViewDelegate, Notifi
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        (cell as? NotificationCell)?.delegate = self
+        (cell as? InAppNotificationCell)?.delegate = self
     }
     
     // MARK: - VPaginatedDataSourceDelegate
@@ -202,7 +202,7 @@ class NotificationsViewController: UIViewController, UITableViewDelegate, Notifi
     
     // MARK: - VCellWithProfileDelegate
     
-    func notificationCellDidSelectUser(_ cell: NotificationCell) {
+    func notificationCellDidSelectUser(_ cell: InAppNotificationCell) {
         guard let indexPath = tableView.indexPath(for: cell) else {
             return
         }

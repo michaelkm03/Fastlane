@@ -335,7 +335,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     
     private func setupGridStreamController(for user: UserModel?) {
         //Setup a new controller every time since the api path changes
-        let header = VNewProfileHeaderView.newWithDependencyManager(dependencyManager)
+        let header = VNewProfileHeaderView.new(with: dependencyManager)
         header.delegate = self
         let userID = VNewProfileViewController.getUserID(forDependencyManager: dependencyManager)
         

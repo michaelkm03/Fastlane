@@ -79,7 +79,7 @@
 	<key>livechat.screen</key>
 	<string>victorious.ChatFeedViewController</string>
 	<key>notifications.screen</key>
-	<string>victorious.NotificationsViewController</string>
+	<string>victorious.InAppNotificationsViewController</string>
 	<key>forumProfile.screen</key>
 	<string>victorious.VNewProfileViewController</string>
 	<key>settings.screen</key>

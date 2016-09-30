@@ -43,7 +43,7 @@ struct NotificationSettingsTableRow {
 
 class NotificationSettingsViewController: UITableViewController, VSettingsSwitchCellDelegate, VNotificiationSettingsStateManagerDelegate, VBackgroundContainer {
     
-    // MARK : - Properties
+    // MARK: - Properties
     
     fileprivate var dependencyManager: VDependencyManager!
     var settings : NotificationSettings? {
@@ -100,9 +100,9 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
         errorStateView?.removeFromSuperview()
     }
     
-    func onError(_ error: NSError!) {
+    func onError(_ error: Error!) {
         settings = nil
-        if let errorStateView = self.errorStateView , error.code == Constants.userDeviceNotificationNotEnabledErrorCode {
+        if let errorStateView = self.errorStateView, (error as NSError).code == Constants.userDeviceNotificationNotEnabledErrorCode {
             view.addSubview(errorStateView)
         }
     }
@@ -216,7 +216,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
     
     // MARK: - SettingsSwitchCell Delegate
     
-    func settingsDidUpdatefromFromCell(_ cell: VSettingsSwitchCell, newValue: Bool, key: String) {
+    public func settingsDidUpdate(from cell: VSettingsSwitchCell, newValue: Bool, key: String) {
         guard var settings = self.settings else {
             return
         }

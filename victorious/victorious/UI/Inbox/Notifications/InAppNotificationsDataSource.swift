@@ -1,5 +1,5 @@
 //
-//  NotificationsDataSource.swift
+//  InAppNotificationsDataSource.swift
 //  victorious
 //
 //  Created by Patrick Lynch on 1/11/16.
@@ -8,8 +8,7 @@
 
 import Foundation
 
-class NotificationsDataSource: PaginatedDataSource, UITableViewDataSource {
-    
+class InAppNotificationsDataSource: PaginatedDataSource, UITableViewDataSource {
     let dependencyManager: VDependencyManager
     
     required init(dependencyManager: VDependencyManager) {
@@ -38,12 +37,12 @@ class NotificationsDataSource: PaginatedDataSource, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "NotificationCell", for: indexPath as IndexPath) as! NotificationCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "NotificationCell", for: indexPath as IndexPath) as! InAppNotificationCell
         decorate(cell: cell, atIndexPath: indexPath as IndexPath)
         return cell
     }
     
-    func decorate(cell notificationCell: NotificationCell, atIndexPath indexPath: IndexPath) {
+    func decorate(cell notificationCell: InAppNotificationCell, atIndexPath indexPath: IndexPath) {
         let notification = visibleItems[indexPath.row] as! Notification
         notificationCell.updateContent(with: notification, dependencyManager: dependencyManager)
     }
