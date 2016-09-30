@@ -185,10 +185,10 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         let mediaContentView = setupMediaContentView(for: content)
         view.insertSubview(mediaContentView, aboveSubview: loadingIndicator)
         mediaContentView.translatesAutoresizingMaskIntoConstraints = false
-        view.leadingAnchor.constraint(equalTo: mediaContentView.leadingAnchor).active = true
-        view.trailingAnchor.constraint(equalTo: mediaContentView.trailingAnchor).active = true
-        view.topAnchor.constraint(equalTo: mediaContentView.topAnchor).active = true
-        mediaContentView.bottomAnchor.constraint(equalTo: captionBarContainerView.topAnchor).active = true
+        view.leadingAnchor.constraint(equalTo: mediaContentView.leadingAnchor).isActive = true
+        view.trailingAnchor.constraint(equalTo: mediaContentView.trailingAnchor).isActive = true
+        view.topAnchor.constraint(equalTo: mediaContentView.topAnchor).isActive = true
+        mediaContentView.bottomAnchor.constraint(equalTo: captionBarContainerView.topAnchor).isActive = true
         return mediaContentView
     }
 
