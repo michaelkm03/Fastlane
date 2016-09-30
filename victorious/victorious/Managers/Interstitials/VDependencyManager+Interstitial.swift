@@ -15,18 +15,18 @@ extension VDependencyManager {
 
         switch alert.type {
             case .statusUpdate, .achievement, .clientSideCreated:
-                let templateValue = templateValueOfType(InterstitialAlertViewController.self, forKey: "statusUpdateScreen")
-                if let imageAlertVC = templateValue as? InterstitialAlertViewController {
+                let templateViewController = templateValue(ofType: InterstitialAlertViewController.self, forKey: "statusUpdateScreen")
+                if let imageAlertVC = templateViewController as? InterstitialAlertViewController {
                     interstitial = imageAlertVC
                 }
             case .toast:
-                let templateValue = templateValueOfType(InterstitialToastViewController.self, forKey: "toastScreen")
-                if let toastViewController = templateValue as? InterstitialToastViewController {
+                let templateViewController = templateValue(ofType: InterstitialToastViewController.self, forKey: "toastScreen")
+                if let toastViewController = templateViewController as? InterstitialToastViewController {
                     interstitial = toastViewController
                 }
             case .reconnectingError:
-                let templateValue = templateValueOfType(InterstitialToastViewController.self, forKey: "error.toast")
-                if let toastViewController = templateValue as? InterstitialToastViewController {
+                let templateViewController = templateValue(ofType: InterstitialToastViewController.self, forKey: "error.toast")
+                if let toastViewController = templateViewController as? InterstitialToastViewController {
                     interstitial = toastViewController
                 }
         }

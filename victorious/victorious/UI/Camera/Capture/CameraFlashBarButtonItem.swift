@@ -25,8 +25,8 @@ class CameraFlashBarButtonItem: UIBarButtonItem {
 
     var dependencyManager: VDependencyManager? {
         didSet {
-            interactiveButton.setImage(dependencyManager?.normalStateImage, for: .Normal)
-            interactiveButton.setImage(dependencyManager?.selectedStateImage, for: .Selected)
+            interactiveButton.setImage(dependencyManager?.normalStateImage, for: .normal)
+            interactiveButton.setImage(dependencyManager?.selectedStateImage, for: .selected)
         }
     }
     
