@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 class InAppNotificationsDataSource: PaginatedDataSource, UITableViewDataSource {
     let dependencyManager: VDependencyManager
@@ -27,9 +28,8 @@ class InAppNotificationsDataSource: PaginatedDataSource, UITableViewDataSource {
     // MARK: - UITableViewDataSource
     
     func registerCells(for tableView: UITableView) {
-        let identifier = "NotificationCell"
-        let nib = UINib(nibName: identifier, bundle: Bundle(for:type(of: self)) )
-        tableView.register(nib, forCellReuseIdentifier: identifier)
+        let nib = UINib(nibName: InAppNotificationCell.defaultReuseIdentifier, bundle: nil)
+        tableView.register(nib, forCellReuseIdentifier: InAppNotificationCell.defaultReuseIdentifier)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -37,7 +37,7 @@ class InAppNotificationsDataSource: PaginatedDataSource, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "NotificationCell", for: indexPath as IndexPath) as! InAppNotificationCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: InAppNotificationCell.defaultReuseIdentifier, for: indexPath as IndexPath) as! InAppNotificationCell
         decorate(cell: cell, atIndexPath: indexPath as IndexPath)
         return cell
     }
