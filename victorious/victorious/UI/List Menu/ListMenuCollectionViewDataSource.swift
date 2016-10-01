@@ -21,6 +21,19 @@ enum ListMenuSection: Int {
     }
 }
 
+// TODO: - Solodify this Experimental unification of ListMenu models to make Generic mechanism easier to wire up
+protocol ListMenuSectionModel {
+}
+
+extension ListMenuSelectedItem: ListMenuSectionModel {
+}
+extension User: ListMenuSectionModel {
+}
+extension ChatRoom: ListMenuSectionModel {
+}
+extension Hashtag: ListMenuSectionModel {
+}
+
 /// Data Source for the List Menu Collection View. It does not talk to the backend.
 /// To fetch data for each section, it delegates the fetching to specific data sources.
 /// So if another section is added, a corresponding data source should be added too.
@@ -33,6 +46,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
     let newChatRoomsDataSource: NewListMenuSectionDataSource<ChatRoom, RequestOperation<ChatRoomsRequest>>?
     let hashtagDataSource: NewListMenuSectionDataSource<Hashtag, RequestOperation<TrendingHashtagsRequest>>?
     private let subscribeButton: SubscribeButton
+    private var availableDataSources: [AnyListMenuSectionDataSource<ListMenuSectionModel>]
     
     // MARK: - Initialization
     
@@ -41,13 +55,16 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         self.dependencyManager = dependencyManager
         
         if let childDependency = dependencyManager.communityChildDependency {
-            communityDataSource = NewListMenuSectionDataSource(
+            let communityDataSourceInstance = NewListMenuSectionDataSource(
                 dependencyManager: childDependency,
                 cellConfiguration: { cell, item in cell.titleLabel.text = item.title },
                 createOperation: { CommunityItemsFetchOperation(dependencyManager: dependencyManager) },
                 processOutput: { $0 },
                 section: .community
             )
+            communityDataSource = communityDataSourceInstance
+            let anyCommunityDataSource = AnyListMenuSectionDataSource(genericDataSource: communityDataSourceInstance)
+            availableDataSources.append(anyCommunityDataSource)
         }
 
         if
@@ -97,10 +114,10 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
 
         super.init()
         
-        creatorDataSource.setupDataSource(with: self)
-        communityDataSource.setupDataSource(with: self)
-        hashtagDataSource.setupDataSource(with: self)
-        newChatRoomsDataSource.setupDataSource(with: self)
+        creatorDataSource?.setupDataSource(with: self)
+        communityDataSource?.setupDataSource(with: self)
+        hashtagDataSource?.setupDataSource(with: self)
+        newChatRoomsDataSource?.setupDataSource(with: self)
         
         registerNibs(for: listMenuViewController.collectionView)
     }

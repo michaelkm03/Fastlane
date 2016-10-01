@@ -6,14 +6,70 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-protocol NewListMenuSectionDataSourceDelegate: class {
-
-    /// Called when List Menu Network Data Sources have finished fetching data
-    /// from backend, and updated its `visibleItems`
-    func didUpdateVisibleItems(forSection section: ListMenuSection)
+protocol ListMenuSectionDataSourceType {
+    associatedtype Item
+    var visibleItems: [Item] { get }
+    var numberOfItems: Int { get }
+    var section: ListMenuSection { get }
+    var streamAPIPath: APIPath { get }
+    var streamTrackingAPIPaths: [APIPath] { get }
+    func dequeueItemCell(from collectionView: UICollectionView, at indexPath: NSIndexPath) -> NewListMenuSectionCell
+    func setupDataSource(with delegate: ListMenuSectionDataSourceDelegate)
 }
 
-class NewListMenuSectionDataSource<Item, Operation: Queueable where Operation: NSOperation> {
+class AnyListMenuSectionDataSource<Item>: ListMenuSectionDataSourceType {
+    // MARK: - ListMenuSectionDataSourceType
+
+    var visibleItems: [Item] {
+        return getVisibleItems()
+    }
+
+    var numberOfItems: Int {
+        return getNumberOfItems()
+    }
+
+    var section: ListMenuSection {
+        return getSection()
+    }
+
+    var streamAPIPath: APIPath {
+        return getStreamAPIPath()
+    }
+
+    var streamTrackingAPIPaths: [APIPath] {
+        return getStreamTrackingAPIPaths()
+    }
+
+    func dequeueItemCell(from collectionView: UICollectionView, at indexPath: NSIndexPath) -> NewListMenuSectionCell {
+        return injectedDequeueItemCell(from: collectionView, at: indexPath)
+    }
+
+    func setupDataSource(with delegate: ListMenuSectionDataSourceDelegate) {
+        return injectedSetupDataSource(with: delegate)
+    }
+
+    // MARK - Internals
+
+    private let getVisibleItems: () -> [Item]
+    private let getNumberOfItems: () -> Int
+    private let getSection: () -> ListMenuSection
+    private let getStreamAPIPath: () -> APIPath
+    private let getStreamTrackingAPIPaths: () -> [APIPath]
+    private let injectedDequeueItemCell: (from: UICollectionView, at: NSIndexPath) -> NewListMenuSectionCell
+    private let injectedSetupDataSource: (with: ListMenuSectionDataSourceDelegate) -> Void
+
+    init<Request>(genericDataSource: NewListMenuSectionDataSource<Item, Request>) {
+        getVisibleItems = { return genericDataSource.visibleItems }
+        getNumberOfItems = { return genericDataSource.numberOfItems }
+        getSection = { return genericDataSource.section }
+        getStreamAPIPath = { return genericDataSource.streamAPIPath }
+        getStreamTrackingAPIPaths = { return genericDataSource.streamTrackingAPIPaths }
+        injectedDequeueItemCell = genericDataSource.dequeueItemCell
+        injectedSetupDataSource = genericDataSource.setupDataSource
+    }
+}
+
+class NewListMenuSectionDataSource<Item, Operation: Queueable>: ListMenuSectionDataSourceType {
 
     // MARK: - Initialization
     typealias CellConfigurationCallback = (cell: NewListMenuSectionCell, item: Item) -> Void

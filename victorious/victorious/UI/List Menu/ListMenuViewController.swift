@@ -84,12 +84,14 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     // MARK: - Selection
     
     private func selectCreator(atIndex index: Int) {
-        guard let scaffold = VRootViewController.sharedRootViewController()?.scaffold as? Scaffold else {
+        guard
+            let scaffold = VRootViewController.sharedRootViewController()?.scaffold as? Scaffold,
+            let creator = collectionViewDataSource.creatorDataSource?.visibleItems[index],
+            let destination = DeeplinkDestination(userID: creator.id)
+        else {
+            Log.warning("Trying to select a non existing section at index \(index)")
             return
         }
-        
-        let creator = collectionViewDataSource.creatorDataSource.visibleItems[index]
-        let destination = DeeplinkDestination(userID: creator.id)
         
         // Had to trace down the inner navigation controller because List Menu has no idea where it is - and it doesn't have navigation stack either.
         let router = Router(originViewController: scaffold.mainNavigationController, dependencyManager: dependencyManager)
@@ -104,7 +106,10 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     }
     
     private func selectCommunity(atIndex index: Int) {
-        let item = collectionViewDataSource.communityDataSource.visibleItems[index]
+        guard let item = collectionViewDataSource.communityDataSource?.visibleItems[index] else {
+            Log.warning("Trying to select a non existing section at index \(index)")
+            return
+        }
         let context = DeeplinkContext(value: item.name)
         // Index 0 should correspond to the home feed, so we broadcast a nil path to denote an unfiltered feed.
         postListMenuSelection(index == 0 ? nil : ListMenuSelectedItem(
