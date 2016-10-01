@@ -1037,6 +1037,8 @@
 		BF7AF9C81D22F9CB00539D90 /* ErrorStateView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF7AF9C71D22F9CB00539D90 /* ErrorStateView.xib */; };
 		BF84A9361C98AC5E00F13F8E /* TempDirectoryCleanupOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3058241C988A3600BD52FD /* TempDirectoryCleanupOperationTests.swift */; };
 		BF8F57A51CEBE47400188C0E /* ContentFeedRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8F57A41CEBE47400188C0E /* ContentFeedRequest.swift */; };
+		BF9006EB1D9C7D0B0002D119 /* EndVIPEventRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9006EA1D9C7D0B0002D119 /* EndVIPEventRequest.swift */; };
+		BF9006ED1D9C84230002D119 /* EndVIPEventRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9006EC1D9C84230002D119 /* EndVIPEventRequestTests.swift */; };
 		BF9800041D010ABF006A5526 /* ViewedContent_unliked.json in Resources */ = {isa = PBXBuildFile; fileRef = BF9800031D010ABF006A5526 /* ViewedContent_unliked.json */; };
 		BF9800051D01E8FE006A5526 /* ViewedContent_unliked.json in Resources */ = {isa = PBXBuildFile; fileRef = BF9800031D010ABF006A5526 /* ViewedContent_unliked.json */; };
 		BF9C375E1C978B5F001841C5 /* TempDirectoryCleanupOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9C375D1C978B5F001841C5 /* TempDirectoryCleanupOperation.swift */; };
@@ -2619,6 +2621,8 @@
 		BF7AF9C51D22F9AF00539D90 /* ErrorStateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ErrorStateView.swift; path = "Error State/ErrorStateView.swift"; sourceTree = "<group>"; };
 		BF7AF9C71D22F9CB00539D90 /* ErrorStateView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ErrorStateView.xib; path = "Error State/ErrorStateView.xib"; sourceTree = "<group>"; };
 		BF8F57A41CEBE47400188C0E /* ContentFeedRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentFeedRequest.swift; sourceTree = "<group>"; };
+		BF9006EA1D9C7D0B0002D119 /* EndVIPEventRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndVIPEventRequest.swift; sourceTree = "<group>"; };
+		BF9006EC1D9C84230002D119 /* EndVIPEventRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndVIPEventRequestTests.swift; sourceTree = "<group>"; };
 		BF9800031D010ABF006A5526 /* ViewedContent_unliked.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ViewedContent_unliked.json; sourceTree = "<group>"; };
 		BF9C375D1C978B5F001841C5 /* TempDirectoryCleanupOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TempDirectoryCleanupOperation.swift; sourceTree = "<group>"; };
 		BFA66B431D9D98C000526305 /* FixedWebContentPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FixedWebContentPresenter.swift; sourceTree = "<group>"; };
@@ -3345,8 +3349,10 @@
 				7992DF661C17ACCF004007A1 /* DeviceExperimentsRequest.swift */,
 				0300AA7D1BF2BC8B000A121D /* DevicePreferencesRequest.swift */,
 				A7D15DD51CBED6610039761B /* DictionaryConvertible.swift */,
+				BF9006EA1D9C7D0B0002D119 /* EndVIPEventRequest.swift */,
 				A7D920471C063682002A6503 /* Errors */,
 				0EBF417A1CAB5C20002966B3 /* ForumEvents */,
+				F004B3291D8914E3005D4A74 /* GIFSearchOptions.swift */,
 				F004B3291D8914E3005D4A74 /* AssetSearchOptions.swift */,
 				C3FEA7A41BF26F24003446CC /* GIFSearchRequest.swift */,
 				A7A583501C3B00CC0088A08A /* HashtagSearchRequest.swift */,
@@ -3420,6 +3426,7 @@
 				BFB6EEF11D010744007909F2 /* ContentFlagRequestTests.swift */,
 				BF5BF6BA1D00F558009FE532 /* ContentUnupvoteRequestTests.swift */,
 				BF5BF6BC1D00F657009FE532 /* ContentUpvoteRequestTests.swift */,
+				BF9006EC1D9C84230002D119 /* EndVIPEventRequestTests.swift */,
 				0EDED5D51CBD72F000FAF77E /* CreateChatServiceTokenRequestTests.swift */,
 				67D3DBAF1CCA9AB300D9D374 /* CreatorListRequestTests.swift */,
 				7992DF6A1C17B174004007A1 /* DeviceExperimentsRequestTests.swift */,
@@ -7617,6 +7624,7 @@
 				A7039CF21C248E0B0023DE6F /* Alert.swift in Sources */,
 				0E9911CE1CEBD1E200B4E4A0 /* WebSocketRawMessageContainer.swift in Sources */,
 				678C43C11C541B3700EBE83A /* MediaUploadCreateRequest.swift in Sources */,
+				BF9006EB1D9C7D0B0002D119 /* EndVIPEventRequest.swift in Sources */,
 				03BC6FB01BE74E9B00CFCBEE /* StandardPaginator.swift in Sources */,
 				C3E7C0F11BF3EFEB00AFE545 /* NotificationsRequest.swift in Sources */,
 				F0C5AEDD1D9A397C0005EB0F /* StickerCreateRequest.swift in Sources */,
@@ -7661,6 +7669,7 @@
 				BF3CD8921D11E44B00CB7764 /* UserUnupvoteRequestTests.swift in Sources */,
 				0399E8101C51D4D200E090F7 /* TemplateRequestTests.swift in Sources */,
 				A74679991BF6D8500026FD2E /* UserInfoRequestTests.swift in Sources */,
+				BF9006ED1D9C84230002D119 /* EndVIPEventRequestTests.swift in Sources */,
 				C3E7C0E91BF3CCC500AFE545 /* NotificationTests.swift in Sources */,
 				BF5BF6BD1D00F657009FE532 /* ContentUpvoteRequestTests.swift in Sources */,
 				C3FEA7971BF16EDC003446CC /* GIFSearchResultTests.swift in Sources */,
