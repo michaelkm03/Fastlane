@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 /// A cell factory for `VContentOnlyCell`s.
 class VContentOnlyCellFactory: NSObject {
