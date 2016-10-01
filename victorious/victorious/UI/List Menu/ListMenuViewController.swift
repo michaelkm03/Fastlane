@@ -42,7 +42,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     
     // MARK: - Initialization
     
-    static func newWithDependencyManager(dependencyManager: VDependencyManager) -> ListMenuViewController {
+    static func new(withDependencyManager dependencyManager: VDependencyManager) -> ListMenuViewController {
         let viewController = self.v_initialViewControllerFromStoryboard() as ListMenuViewController
         viewController.dependencyManager = dependencyManager
         return viewController

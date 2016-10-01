@@ -30,7 +30,7 @@ class GIFTrayViewController: UIViewController, Tray, UICollectionViewDelegate, U
     
     fileprivate var dependencyManager: VDependencyManager!
     
-    static func new(_ dependencyManager: VDependencyManager) -> GIFTrayViewController {
+    static func new(withDependencyManager dependencyManager: VDependencyManager) -> GIFTrayViewController {
         let tray = GIFTrayViewController.v_initialViewControllerFromStoryboard() as GIFTrayViewController
         tray.dependencyManager = dependencyManager
         return tray

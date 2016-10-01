@@ -79,7 +79,7 @@ class CloseUpContainerViewController: UIViewController, CloseUpViewDelegate, Con
         self.context = context
         self.dependencyManager = dependencyManager
         
-        closeUpView = CloseUpView.newWithDependencyManager(dependencyManager)
+        closeUpView = CloseUpView.new(withDependencyManager: dependencyManager)
                 
         let configuration = GridStreamConfiguration(
             sectionInset: UIEdgeInsets(

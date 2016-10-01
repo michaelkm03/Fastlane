@@ -32,7 +32,7 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
     
     fileprivate var dependencyManager: VDependencyManager!
     
-    static func new(_ dependencyManager: VDependencyManager) -> StickerTrayViewController {
+    static func new(withDependencyManager dependencyManager: VDependencyManager) -> StickerTrayViewController {
         let tray = StickerTrayViewController.v_initialViewControllerFromStoryboard() as StickerTrayViewController
         tray.dependencyManager = dependencyManager
         return tray

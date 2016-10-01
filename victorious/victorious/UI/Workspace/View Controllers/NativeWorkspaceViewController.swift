@@ -29,6 +29,7 @@ class NativeWorkspaceViewController: VWorkspaceViewController, UIVideoEditorCont
         return false
     }
     
+    // FIXME
     override static func new(with dependencyManager: VDependencyManager) -> NativeWorkspaceViewController {
         let nativeWorkspace: NativeWorkspaceViewController = v_initialViewControllerFromStoryboard()
         nativeWorkspace.transitioningDelegate = nativeWorkspace

@@ -14,7 +14,7 @@ protocol HashtagBarViewControllerAnimationDelegate: class {
 
 /// Displays and manages a collection view populated with hashtags.
 class HashtagBarViewController: UIViewController, HashtagBarControllerSearchDelegate {
-    static func new(_ dependencyManager: VDependencyManager, containerHeightConstraint: NSLayoutConstraint) -> HashtagBarViewController {
+    static func new(withDependencyManager dependencyManager: VDependencyManager, containerHeightConstraint: NSLayoutConstraint) -> HashtagBarViewController {
         
         let hashtagBar = v_initialViewControllerFromStoryboard() as HashtagBarViewController
         hashtagBar.dependencyManager = dependencyManager

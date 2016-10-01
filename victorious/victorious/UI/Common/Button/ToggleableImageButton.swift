@@ -23,7 +23,7 @@ class ToggleableImageButton: TouchableInsetAdjustableButton, TrackableButton {
     
     weak var delegate: ToggleableImageButtonDelegate?
     
-    class func newWithDependencyManager(dependencyManager: VDependencyManager?) -> ToggleableImageButton {
+    class func new(withDependencyManager dependencyManager: VDependencyManager?) -> ToggleableImageButton {
         let button = ToggleableImageButton()
         button.dependencyManager = dependencyManager
         button.addTarget(button, action: #selector(toggle), for: .touchUpInside)

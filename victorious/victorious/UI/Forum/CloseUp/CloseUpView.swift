@@ -67,7 +67,7 @@ class CloseUpView: UIView, ConfigurableGridStreamHeader, MediaContentViewDelegat
     
     // MARK: - Initialization
     
-    class func newWithDependencyManager(_ dependencyManager: VDependencyManager, delegate: CloseUpViewDelegate? = nil) -> CloseUpView {
+    class func new(withDependencyManager dependencyManager: VDependencyManager, delegate: CloseUpViewDelegate? = nil) -> CloseUpView {
         let view : CloseUpView = CloseUpView.v_fromNib()
         view.dependencyManager = dependencyManager
         view.delegate = delegate

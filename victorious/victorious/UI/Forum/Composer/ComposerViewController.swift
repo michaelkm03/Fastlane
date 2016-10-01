@@ -56,14 +56,14 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     lazy var stickerInputController: CustomInputDisplayOptions = {
         let dependencyManager: VDependencyManager = self.dependencyManager.stickerTrayDependency!
-        let stickerTray = StickerTrayViewController.new(dependencyManager)
+        let stickerTray = StickerTrayViewController.new(withDependencyManager: dependencyManager)
         stickerTray.delegate = self
         return CustomInputDisplayOptions(viewController: stickerTray, desiredHeight: Constants.stickerInputAreaHeight)
     }()
     
     lazy var gifInputController: CustomInputDisplayOptions = {
         let dependencyManager: VDependencyManager = self.dependencyManager.gifTrayDependency!
-        let gifTray = GIFTrayViewController.new(dependencyManager)
+        let gifTray = GIFTrayViewController.new(withDependencyManager: dependencyManager)
         gifTray.delegate = self
         return CustomInputDisplayOptions(viewController: gifTray, desiredHeight: Constants.gifInputAreaHeight)
     }()
@@ -599,7 +599,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     }
     
     private func setupHashtagBar() {
-        let hashtagBarViewController = HashtagBarViewController.new(dependencyManager, containerHeightConstraint: hashtagBarContainerHeightConstraint)
+        let hashtagBarViewController = HashtagBarViewController.new(withDependencyManager: dependencyManager, containerHeightConstraint: hashtagBarContainerHeightConstraint)
         addChildViewController(hashtagBarViewController)
         hashtagBarContainerView.addSubview(hashtagBarViewController.view)
         hashtagBarContainerView.v_addFitToParentConstraints(toSubview: hashtagBarViewController.view)
