@@ -75,6 +75,7 @@
 #import "VLoginFlowControllerDelegate.h"
 #import "VLoginRegistrationFlow.h"
 #import "VLoginType.h"
+#import "VModernEnterNameViewController.h"
 #import "VModernLoginAndRegistrationFlowViewController.h"
 #import "VNoContentView.h"
 #import "VNotificationSettingsStateManager.h"

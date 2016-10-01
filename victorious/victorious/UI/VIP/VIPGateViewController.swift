@@ -28,7 +28,7 @@ extension VIPGateViewControllerDelegate {
     }
 }
 
-class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
+class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate, FixedWebContentPresenter {
     @IBOutlet weak private var headlineLabel: UILabel!
     @IBOutlet weak private var detailLabel: UILabel!
     @IBOutlet weak private var subscribeButton: TextOnColorButton!
@@ -120,11 +120,11 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     }
     
     @IBAction func onPrivacyPolicySelected() {
-        navigateToFixedWebContent(.PrivacyPolicy)
+        showFixedWebContent(.PrivacyPolicy, withDependencyManager: dependencyManager)
     }
     
     @IBAction func onTermsOfServiceSelected() {
-        navigateToFixedWebContent(.TermsOfService)
+        showFixedWebContent(.TermsOfService, withDependencyManager: dependencyManager)
     }
     
     @IBAction func onCloseSelected() {
@@ -133,12 +133,6 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     }
     
     // MARK: - Private
-    
-    private func navigateToFixedWebContent(type: FixedWebContentType) {
-        let router = Router(originViewController: self, dependencyManager: dependencyManager.navBarDependency)
-        let configuration = ExternalLinkDisplayConfiguration(addressBarVisible: false, forceModal: true, isVIPOnly: false, title: type.title)
-        router.navigate(to: .externalURL(url: dependencyManager.urlForFixedWebContent(type), configuration: configuration), from: nil)
-    }
     
     private func HUDNeedsUpdateToTitle(title: String?) -> Bool {
         if let currentTitle = progressHUD.labelText where currentTitle == title {

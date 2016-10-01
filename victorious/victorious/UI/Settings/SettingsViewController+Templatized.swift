@@ -26,7 +26,7 @@ private struct Constants {
 
 /// This extension handles all template based decoration for the settings page, as well as
 /// other template based functionality.
-extension VSettingsViewController: VBackgroundContainer {
+extension VSettingsViewController: VBackgroundContainer, FixedWebContentPresenter {
     override public func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard section < Constants.sectionHeaderTitles.count else {
             return nil
@@ -81,18 +81,12 @@ extension VSettingsViewController: VBackgroundContainer {
     
     public func handleAboutSectionSelection(row: Int) {
         switch row {
-            case 0: showFixedWebContent(.HelpCenter)
+            case 0: showFixedWebContent(.HelpCenter, withDependencyManager: dependencyManager)
             case 1: sendHelp()
-            case 2: showFixedWebContent(.TermsOfService)
-            case 3: showFixedWebContent(.PrivacyPolicy)
+            case 2: showFixedWebContent(.TermsOfService, withDependencyManager: dependencyManager)
+            case 3: showFixedWebContent(.PrivacyPolicy, withDependencyManager: dependencyManager)
             default: break
         }
-    }
-    
-    private func showFixedWebContent(type: FixedWebContentType) {
-        let router = Router(originViewController: self, dependencyManager: dependencyManager)
-        let configuration = ExternalLinkDisplayConfiguration(addressBarVisible: false, forceModal: false, isVIPOnly: false, title: type.title)
-        router.navigate(to: .externalURL(url: dependencyManager.urlForFixedWebContent(type), configuration: configuration), from: nil)
     }
 }
 

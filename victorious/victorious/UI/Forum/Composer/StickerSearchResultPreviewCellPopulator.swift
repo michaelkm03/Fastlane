@@ -15,7 +15,14 @@ struct StickerSearchResultPreviewCellPopulator {
         stickerCell.activityIndicator.startAnimating()
         stickerCell.imageView.sd_setImageWithURL(searchResultObject.thumbnailImageURL) { _ in
             stickerCell.activityIndicator.stopAnimating()
-            stickerCell.lockImageView.hidden = !searchResultObject.isVIP
+            stickerCell.lockImageView.hidden = currentUserCanAccess(searchResultObject)
         }
+    }
+    
+    static func currentUserCanAccess(searchResultObject: StickerSearchResultObject) -> Bool {
+        guard let isVIP = VCurrentUser.user?.vipStatus?.isVIP where isVIP || !searchResultObject.isVIP else {
+            return false
+        }
+        return true
     }
 }

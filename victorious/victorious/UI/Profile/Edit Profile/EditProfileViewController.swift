@@ -110,11 +110,11 @@ class EditProfileViewController: UIViewController {
             }
         }
         
-        
         if let username = profileUpdate.username {
             let appID = VEnvironmentManager.sharedInstance().currentEnvironment.appID.stringValue
             guard let usernameAvailabilityRequest = UsernameAvailabilityRequest(apiPath: apiPath, usernameToCheck: username, appID: appID) else {
-                self.animateErrorInThenOut(NSLocalizedString("ErrorOccured", comment: ""))
+                let error = self.error(withDescription: NSLocalizedString("ErrorOccured", comment: ""))
+                self.animateErrorInThenOut(error)
                 enableUIClosure()
                 return
             }
@@ -124,11 +124,13 @@ class EditProfileViewController: UIViewController {
                         if available {
                             accountUpdateClosure()
                         } else {
-                            self.animateErrorInThenOut(NSLocalizedString("That username is already taken.", comment: ""))
+                            let error = self.error(withDescription: NSLocalizedString("UsernameTaken", comment: ""))
+                            self.animateErrorInThenOut(error)
                             enableUIClosure()
                         }
                     case .failure(_), .cancelled:
-                        self.animateErrorInThenOut(NSLocalizedString("ErrorOccured", comment: ""))
+                        let error = self.error(withDescription: NSLocalizedString("ErrorOccurred", comment: ""))
+                        self.animateErrorInThenOut(error)
                         enableUIClosure()
                 }
             }
@@ -137,15 +139,23 @@ class EditProfileViewController: UIViewController {
         }
     }
     
+    private func error(withDescription description: String) -> ErrorType {
+        return NSError(domain: "EditProfileError", code: -1, userInfo: [
+            NSLocalizedDescriptionKey: description
+        ])
+    }
+    
     // MARK: - Miscellaneous Private Functions
     
     private func setupDataSource() {
         guard
             let dependencyManager = dependencyManager,
-            let currentUser = VCurrentUser.user else {
-                v_log("We need a dependencyManager in the edit profile VC!")
-                return
+            let currentUser = VCurrentUser.user
+        else {
+            Log.warning("We need a dependencyManager in the edit profile VC!")
+            return
         }
+        
         dataSource = EditProfileDataSource(dependencyManager: dependencyManager, tableView: tableView, userModel: currentUser)
         dataSource?.onUserRequestsCameraFlow = { [weak self] in
             self?.presentCamera()
@@ -185,8 +195,8 @@ class EditProfileViewController: UIViewController {
         profilePicturePresenter?.presentOnViewController(self)
     }
 
-    private func animateErrorInThenOut(localizedErrorString: String) {
-        self.validationErrorLabel.text = localizedErrorString
+    private func animateErrorInThenOut(error: ErrorType) {
+        self.validationErrorLabel.text = (error as NSError).localizedDescription
         self.animateErrorIn()
     }
     
