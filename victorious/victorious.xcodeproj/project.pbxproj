@@ -594,7 +594,6 @@
 		7A63CD421D5427F8006A48E4 /* VSocialLoginErrors.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A63CD411D5427F8006A48E4 /* VSocialLoginErrors.m */; };
 		7A67EC7E1CF9132300D022D1 /* TimePaginatedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A67EC7D1CF9132300D022D1 /* TimePaginatedDataSource.swift */; };
 		7A67EC801CFE41CC00D022D1 /* ForumEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A67EC7F1CFE41CC00D022D1 /* ForumEvent.swift */; };
-		7A7348591D063E83005225E4 /* ReferenceWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7348581D063E83005225E4 /* ReferenceWrapper.swift */; };
 		7A7348771D0B7552005225E4 /* ChatFeedContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A7348761D0B7552005225E4 /* ChatFeedContent.swift */; };
 		7A85D9CD1D1075DB00535EF3 /* PreviewImageContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A215BA51CF537BE005034BF /* PreviewImageContainer.swift */; };
 		7A85D9CF1D107D1D00535EF3 /* CGSize+Geometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A85D9CE1D107D1D00535EF3 /* CGSize+Geometry.swift */; };
@@ -2027,7 +2026,6 @@
 		7A63CD411D5427F8006A48E4 /* VSocialLoginErrors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSocialLoginErrors.m; sourceTree = "<group>"; };
 		7A67EC7D1CF9132300D022D1 /* TimePaginatedDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimePaginatedDataSource.swift; sourceTree = "<group>"; };
 		7A67EC7F1CFE41CC00D022D1 /* ForumEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForumEvent.swift; sourceTree = "<group>"; };
-		7A7348581D063E83005225E4 /* ReferenceWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferenceWrapper.swift; sourceTree = "<group>"; };
 		7A7348761D0B7552005225E4 /* ChatFeedContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFeedContent.swift; sourceTree = "<group>"; };
 		7A85D9CE1D107D1D00535EF3 /* CGSize+Geometry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGSize+Geometry.swift"; sourceTree = "<group>"; };
 		7A85F1711D59251900C2B7F3 /* VideoBackground.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoBackground.swift; sourceTree = "<group>"; };
@@ -6209,7 +6207,6 @@
 			children = (
 				7AE0A03C1D63943700769080 /* Callback.swift */,
 				BF01F3761D7892640066D9DC /* Result.swift */,
-				7A7348581D063E83005225E4 /* ReferenceWrapper.swift */,
 				F028F3E51AC0D9E800ABFDDC /* VAppInfo.h */,
 				F028F3E61AC0D9E800ABFDDC /* VAppInfo.m */,
 				A7EB574A1AF82159006AA1CF /* VLoginType.h */,
@@ -8233,7 +8230,6 @@
 				F087E5BC1D93B26700034146 /* TrayDataSource.swift in Sources */,
 				D8D3B7241AB264D400CF966C /* AVAsset+VVideoCompositionWithFrameDuration.m in Sources */,
 				96485C901D8C7F9A00EDAC90 /* LikeView.swift in Sources */,
-				7A7348591D063E83005225E4 /* ReferenceWrapper.swift in Sources */,
 				D8D812AB1B14EA0200E93B37 /* VModernResetPasswordViewController.m in Sources */,
 				C35AB0A61AF9843700B2AE1B /* VCVideoPlayerView.m in Sources */,
 				A73BA2A71C938B68008168B5 /* Composer.swift in Sources */,

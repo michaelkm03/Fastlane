@@ -197,7 +197,7 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
     
     fileprivate dynamic func mainFeedFilterDidChange(_ notification: Notification) {
         sideMenuController.closeSideViewController(animated: true)
-        if let title = ((notification as NSNotification).userInfo?["selectedItem"] as? ReferenceWrapper<ListMenuSelectedItem>)?.value.title {
+        if let title = ((notification as NSNotification).userInfo?["selectedItem"] as? ListMenuSelectedItem)?.title {
             mainNavigationController.navigationBar.topItem?.titleView = nil
             mainNavigationController.navigationBar.topItem?.title = title
         }

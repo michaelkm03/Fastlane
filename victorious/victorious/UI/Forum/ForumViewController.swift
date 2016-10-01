@@ -132,7 +132,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     private(set) var chatFeedContext: DeeplinkContext = DeeplinkContext(value: DeeplinkContext.mainFeed)
 
     private dynamic func mainFeedFilterDidChange(notification: NSNotification) {
-        if let context = (notification.userInfo?["selectedItem"] as? ReferenceWrapper<ListMenuSelectedItem>)?.value.context {
+        if let context = (notification.userInfo?["selectedItem"] as? ListMenuSelectedItem)?.context {
             chatFeedContext = context
         }
         else {

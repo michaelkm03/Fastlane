@@ -113,13 +113,13 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     
     /// A notification that can be posted to update the API path used to fetch content in the stream.
     ///
-    /// This notification's `userInfo` should contain a `streamAPIPath` key set to a `ReferenceWrapper<APIPath>`
-    /// containing the desired stream API path to update to, or nil to revert back to an unfiltered feed.
+    /// This notification's `userInfo` should contain a `selectedItem` key set to a `ListMenuSelectedItem` object
+    /// that containing the desired stream API path to update to, or nil to revert back to an unfiltered feed.
     ///
     static let updateStreamURLNotification = "com.getvictorious.update-stream-url"
     
     fileprivate dynamic func handleUpdateStreamURLNotification(_ notification: NSNotification) {
-        filteredStreamAPIPath = (notification.userInfo?["selectedItem"] as? ReferenceWrapper<ListMenuSelectedItem>)?.value.streamAPIPath
+        filteredStreamAPIPath = (notification.userInfo?["selectedItem"] as? ListMenuSelectedItem)?.streamAPIPath
     }
     
     // MARK: - ForumNetworkSource

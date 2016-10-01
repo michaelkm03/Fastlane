@@ -156,7 +156,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         NotificationCenter.default.post(
             name: NSNotification.Name(rawValue: RESTForumNetworkSource.updateStreamURLNotification),
             object: nil,
-            userInfo: listMenuSelection.flatMap { ["selectedItem": ReferenceWrapper($0)] }
+            userInfo: listMenuSelection.flatMap { ["selectedItem": $0] }
         )
         
         if let trackingAPIPaths = listMenuSelection?.trackingAPIPaths {
