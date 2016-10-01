@@ -213,7 +213,7 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     }
     
     fileprivate lazy var progressHUD: MBProgressHUD = {
-        let progressHUD = MBProgressHUD(for: self.view)!
+        let progressHUD = MBProgressHUD(view: self.view)!
         progressHUD.mode = .indeterminate
         progressHUD.graceTime = 0.35
         

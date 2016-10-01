@@ -96,7 +96,7 @@ extension URLRequest {
     /// used in calculating the correct Authentication header, this method calculates and sets those, too.
     public mutating func vsdk_setAuthorizationHeader(requestContext: RequestContext, authenticationContext: AuthenticationContext = defaultAuthenticationContext) {
         
-        let currentDate = URLRequest.dateFormatter.string(from: NSDate() as Date)
+        let currentDate = URLRequest.dateFormatter.string(from: Date())
         setValue(currentDate, forHTTPHeaderField: HTTPHeader.date)
         
         let previousUserAgent = value(forHTTPHeaderField: HTTPHeader.userAgent) ?? "victorious/\(requestContext.buildNumber)"
@@ -109,7 +109,8 @@ extension URLRequest {
            let percentEncodedPath = urlComponents.percentEncodedPath {
             path = percentEncodedPath
         }
-        let sha1String = vsdk_sha1("\(currentDate)\(path)\(newUserAgent)\(authenticationContext.token)\(self.httpMethod)")
+        print(currentDate, path, newUserAgent, authenticationContext.token, self.httpMethod!)
+        let sha1String = vsdk_sha1("\(currentDate)\(path)\(newUserAgent)\(authenticationContext.token)\(self.httpMethod!)")
         setValue("Basic \(authenticationContext.userID):\(sha1String)", forHTTPHeaderField: HTTPHeader.authorization)
     }
     

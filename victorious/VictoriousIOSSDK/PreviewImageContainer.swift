@@ -53,7 +53,7 @@ extension PreviewImageContainer {
     public var largestPreviewImage: ImageAssetModel? {
         var largestAsset: ImageAssetModel?
         
-        for asset in previewImages where asset.size.area > (largestAsset?.size.area)! {
+        for asset in previewImages where asset.size.area > largestAsset?.size.area ?? 0 {
             largestAsset = asset
         }
         

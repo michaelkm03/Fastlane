@@ -19,7 +19,7 @@ extension UIImageView {
     func getImageAsset(_ imageAsset: ImageAssetModel, blurRadius: CGFloat = 0, completion: ImageCompletion) {
         image = nil
         
-        let imageBlurBlock: (UIImage?, NSURL?, NSError?) -> Void = { [weak self] image, url, error in
+        let imageBlurBlock: (UIImage?, URL?, Error?) -> Void = { [weak self] image, url, error in
             guard let image = image else {
                 completion?(.failure(error))
                 return
@@ -41,7 +41,7 @@ extension UIImageView {
                     options: .avoidAutoSetImage
                 ) { image, error, _, url in
                     // FIXME: 
-//                    imageBlurBlock(image, url, error)
+                    imageBlurBlock(image, url, error)
             }
             case .local(let image):
                 imageBlurBlock(image, nil, nil)
