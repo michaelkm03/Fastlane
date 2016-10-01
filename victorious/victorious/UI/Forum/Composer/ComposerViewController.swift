@@ -77,6 +77,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             confirmButtonContainerHeightConstraint.constant = Constants.minimumConfirmButtonContainerHeight
         }
     }
+    @IBOutlet weak private var confirmButtonToSuperviewTopConstraint: NSLayoutConstraint!
     @IBOutlet weak private var inputViewToBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak private var customInputAreaHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak private var textViewContainerHeightConstraint: NSLayoutConstraint!
@@ -122,9 +123,10 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         guard isViewLoaded() && composerIsVisible else {
             return 0
         }
+        let attachmentAndTextInputHeight = max(textViewContainerHeightConstraint.constant
+            + attachmentContainerHeightConstraint.constant, confirmButtonContainerHeightConstraint.constant + confirmButtonToSuperviewTopConstraint.constant)
         return fabs(inputViewToBottomConstraint.constant)
-            + textViewContainerHeightConstraint.constant
-            + attachmentContainerHeightConstraint.constant
+            + attachmentAndTextInputHeight
             + hashtagBarContainerHeightConstraint.constant
             + customInputAreaHeightConstraint.constant
     }
