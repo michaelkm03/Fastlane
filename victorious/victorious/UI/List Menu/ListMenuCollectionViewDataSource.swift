@@ -60,7 +60,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
     
     // MARK: - UICollectionView Data Source
     
-    private func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         return ListMenuSection.numberOfSections
     }
     
