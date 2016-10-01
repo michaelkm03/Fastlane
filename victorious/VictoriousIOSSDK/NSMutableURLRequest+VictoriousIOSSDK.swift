@@ -109,7 +109,6 @@ extension URLRequest {
            let percentEncodedPath = urlComponents.percentEncodedPath {
             path = percentEncodedPath
         }
-        print(currentDate, path, newUserAgent, authenticationContext.token, self.httpMethod!)
         let sha1String = vsdk_sha1("\(currentDate)\(path)\(newUserAgent)\(authenticationContext.token)\(self.httpMethod!)")
         setValue("Basic \(authenticationContext.userID):\(sha1String)", forHTTPHeaderField: HTTPHeader.authorization)
     }

@@ -40,7 +40,6 @@ extension UIImageView {
                     placeholderImage: image,
                     options: .avoidAutoSetImage
                 ) { image, error, _, url in
-                    // FIXME: 
                     imageBlurBlock(image, url, error)
             }
             case .local(let image):
