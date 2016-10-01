@@ -35,7 +35,7 @@ class VIPFlowNavigationController: UINavigationController, VIPGateViewController
         vipFlow.dependencyManager = dependencyManager
         vipFlow.gateDependencyManager = gateDependencyManager
         vipFlow.successDependencyManager = successDependencyManager
-        let vipGate = VIPGateViewController.new(with: gateDependencyManager)
+        let vipGate = VIPGateViewController.new(withDependencyManager: gateDependencyManager)
         vipGate.delegate = vipFlow
         vipFlow.show(vipGate, sender: nil)
         return vipFlow
@@ -69,7 +69,7 @@ class VIPFlowNavigationController: UINavigationController, VIPGateViewController
         if success {
             //Transition to success state
             animationDelegate.fadingEnabled = true
-            let successViewController = VIPSuccessViewController.new(with: successDependencyManager)
+            let successViewController = VIPSuccessViewController.new(withDependencyManager: successDependencyManager)
             successViewController.delegate = self
             show(successViewController, sender: nil)
         }

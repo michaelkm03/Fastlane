@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 enum GridStreamSection: Int {
     case header = 0
