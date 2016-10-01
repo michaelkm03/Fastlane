@@ -201,7 +201,7 @@ class AvatarView: UIView {
             height: bounds.height + Constants.vipBorderWidth * 2
         )
 
-        vipBorderView.frame = CGRect(origin: bounds.center, size: vipBorderSize)
+        vipBorderView.frame = CGRect(center: bounds.center, size: vipBorderSize)
         vipBorderView.layer.cornerRadius = vipBorderView.frame.size.width / 2
 
         self.vipBorderView = vipBorderView
