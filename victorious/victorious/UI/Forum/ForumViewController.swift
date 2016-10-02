@@ -59,7 +59,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         return children.flatMap { $0 }
     }
     
-    func receive(event: ForumEvent) {
+    func receive(_ event: ForumEvent) {
         switch event {
             case .websocket(let websocketEvent):
                 switch websocketEvent {
