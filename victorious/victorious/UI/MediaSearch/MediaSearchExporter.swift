@@ -53,11 +53,10 @@ class MediaSearchExporter {
             completion(nil, nil, NSError(domain: "MediaSearchExporter", code: -1, userInfo: nil))
             return
         }
-        
-        videoDownloadTask = URLSession.shared.downloadTask(with: URLRequest(url: searchResultURL as URL), completionHandler: { (location: URL?, response: URLResponse?, error: NSError?) in
+        videoDownloadTask = URLSession.shared.downloadTask(with: URLRequest(url: searchResultURL as URL)) { location, response, error in
             guard let location = location, let downloadUrl = self.downloadUrl else {
                 DispatchQueue.main.async {
-                    completion(nil, nil, error)
+                    completion(nil, nil, error as NSError?)
                 }
                 return
             }
@@ -94,7 +93,7 @@ class MediaSearchExporter {
             DispatchQueue.main.async {
                 completion(previewImage, downloadUrl as NSURL?, nil)
             }
-        } as! (URL?, URLResponse?, Error?) -> Void) 
+        }
         videoDownloadTask?.resume()
     }
     
