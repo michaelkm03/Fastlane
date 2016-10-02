@@ -76,7 +76,7 @@ private class MockTerminusSender: ForumEventSender {
     
     var nextSender: ForumEventSender?
     
-    func send(event: ForumEvent) {
+    func send(_ event: ForumEvent) {
         sentEvents.append(event)
     }
 }

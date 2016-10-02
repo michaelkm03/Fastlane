@@ -88,7 +88,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         }
     }
     
-    func send(event: ForumEvent) {
+    func send(_ event: ForumEvent) {
         switch event {
             case .sendContent(let content): publish(content: content)
             default: break
@@ -453,7 +453,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         }
     }
     
-    private func delete(chatFeedContent: ChatFeedContent) {
+    private func delete(_ chatFeedContent: ChatFeedContent) {
         guard let dataSource = chatFeed?.chatInterfaceDataSource else {
             return
         }

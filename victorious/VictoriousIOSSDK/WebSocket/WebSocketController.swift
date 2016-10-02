@@ -125,7 +125,7 @@ public class WebSocketController: WebSocketDelegate, ForumNetworkSourceWebSocket
     /// Messages reaching `WebSocketController` will be piped over the WebSocket.
     public let nextSender: ForumEventSender? = nil
     
-    public func send(event: ForumEvent) {
+    public func send(_ event: ForumEvent) {
         sendOutbound(event)
     }
     
