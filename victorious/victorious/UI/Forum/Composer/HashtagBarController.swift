@@ -92,7 +92,7 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
         super.init()
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.register(HashtagBarCell.nibForCell(), forCellWithReuseIdentifier: HashtagBarCell.suggestedReuseIdentifier())
+        collectionView.register(UINib(nibName: HashtagBarCell.defaultReuseIdentifier, bundle: nil), forCellWithReuseIdentifier: HashtagBarCell.defaultReuseIdentifier)
         collectionView.contentInset = HashtagBarController.collectionViewInset
     }
     
@@ -189,7 +189,7 @@ class HashtagBarController: NSObject, UICollectionViewDataSource, UICollectionVi
     // MARK: - UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HashtagBarCell.suggestedReuseIdentifier(), for: indexPath) as! HashtagBarCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HashtagBarCell.defaultReuseIdentifier, for: indexPath) as! HashtagBarCell
         let tag = hashtagAtIndex((indexPath as NSIndexPath).row)
         guard let unwrappedTag = tag else {
             cell.isHidden = true

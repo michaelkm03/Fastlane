@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 private struct AppTimingEvent: Hashable {
     let type: String
