@@ -97,8 +97,7 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
             guard let username = nameAndLocationCell.username , !username.characters.isEmpty else {
                 return NSLocalizedString("Your username cannot be empty.", comment: "While editing, error to the user letting them know their username must not be empty.")
             }
-            let usernameCharacterset = CharacterSet(charactersIn: username)
-            guard CharacterSet.validUsernameCharacters.isSuperset(of: usernameCharacterset) else {
+            guard username.isValidUserName else {
                 return NSLocalizedString("Your username can only contain lowercase letters a-z, number 0-9, and underscores \"_\".",
                     comment: "While editing, an error that informs they have entered and invalid characters and must remove the invalid character.")
             }
@@ -165,5 +164,13 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
         }
         
         aboutMeCell.dependencyManager = dependencyManager
+    }
+}
+
+fileprivate extension String {
+    var isValidUserName: Bool {
+        let regex = "\\A\\w+\\z"
+        let test = NSPredicate(format:"SELF MATCHES %@", regex)
+        return test.evaluate(with: self)
     }
 }
