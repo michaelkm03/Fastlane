@@ -27,8 +27,8 @@ class UserBlockToggleOperationTests: XCTestCase {
         
         let operation = UserBlockToggleOperation(
             user: user,
-            blockAPIPath: APIPath(templatePath: ""),
-            unblockAPIPath: APIPath(templatePath: "")
+            blockAPIPath: APIPath(templatePath:"foo"),
+            unblockAPIPath: APIPath(templatePath:"foo")
         )
         
         operation.queue { result in
@@ -46,8 +46,8 @@ class UserBlockToggleOperationTests: XCTestCase {
         
         let operation = UserBlockToggleOperation(
             user: user,
-            blockAPIPath: APIPath(templatePath: ""),
-            unblockAPIPath: APIPath(templatePath: "")
+            blockAPIPath: APIPath(templatePath:"foo"),
+            unblockAPIPath: APIPath(templatePath:"foo")
         )
         
         operation.queue { result in

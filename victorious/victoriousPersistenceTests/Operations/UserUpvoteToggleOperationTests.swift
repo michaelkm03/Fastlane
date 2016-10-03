@@ -27,8 +27,8 @@ class UserUpvoteToggleOperationTests: XCTestCase {
         
         let operation = UserUpvoteToggleOperation(
             user: user,
-            upvoteAPIPath: APIPath(templatePath: ""),
-            unupvoteAPIPath: APIPath(templatePath: "")
+            upvoteAPIPath: APIPath(templatePath:"foo"),
+            unupvoteAPIPath: APIPath(templatePath:"foo")
         )
         
         operation.queue { result in
@@ -47,8 +47,8 @@ class UserUpvoteToggleOperationTests: XCTestCase {
         
         let operation = UserUpvoteToggleOperation(
             user: user,
-            upvoteAPIPath: APIPath(templatePath: ""),
-            unupvoteAPIPath: APIPath(templatePath: "")
+            upvoteAPIPath: APIPath(templatePath:"foo"),
+            unupvoteAPIPath: APIPath(templatePath:"foo")
         )
         
         operation.queue { result in

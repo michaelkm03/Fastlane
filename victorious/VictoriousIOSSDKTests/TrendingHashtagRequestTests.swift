@@ -20,7 +20,7 @@ class TrendingHashtagsRequestTests: XCTestCase {
         }
         
         do {
-            let trendingHashtagsRequest = TrendingHashtagsRequest(apiPath: APIPath(templatePath: ""))!
+            let trendingHashtagsRequest = TrendingHashtagsRequest(apiPath: APIPath(templatePath: "foo"))
             let results = try trendingHashtagsRequest.parseResponse(URLResponse(), toRequest: trendingHashtagsRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(results.count, 2)
             XCTAssertEqual(results[0].tag, "surfing")

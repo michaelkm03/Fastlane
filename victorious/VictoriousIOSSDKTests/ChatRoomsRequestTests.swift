@@ -19,7 +19,7 @@ class ChatRoomsRequestTests: XCTestCase {
             return
         }
 
-        let chatRoomsRequest = ChatRoomsRequest(apiPath: APIPath(templatePath: ""))!
+        let chatRoomsRequest = ChatRoomsRequest(apiPath: APIPath(templatePath: "foo"))!
         do {
             let results = try chatRoomsRequest.parseResponse(URLResponse(), toRequest: chatRoomsRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(results.count, 2)
