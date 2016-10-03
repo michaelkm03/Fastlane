@@ -23,6 +23,6 @@ class RegisterPushNotificationRequestTests: XCTestCase {
         }
         let bodyString = String(data: bodyData, encoding: String.Encoding.utf8)!
         
-        XCTAssertNotNil(bodyString.rangeOfString("push_id=\(mockPushID)"))
+        XCTAssertNotNil(bodyString.range(of: "push_id=\(mockPushID)"))
     }
 }

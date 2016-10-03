@@ -35,8 +35,8 @@ class LoginRequestTests: XCTestCase {
         }
         let bodyString = String(data: bodyData, encoding: String.Encoding.utf8)!
         
-        XCTAssertNotNil(bodyString.rangeOfString("email=\(mockEmail.stringByAddingPercentEncodingWithAllowedCharacters(CharacterSet.vsdk_queryPartAllowedCharacterSet)!)"))
-        XCTAssertNotNil(bodyString.rangeOfString("password=\(mockPassword)"))
+        XCTAssertNotNil(bodyString.range(of: "email=\(mockEmail.stringByAddingPercentEncodingWithAllowedCharacters(CharacterSet.vsdk_queryPartAllowedCharacterSet)!)"))
+        XCTAssertNotNil(bodyString.range(of: "password=\(mockPassword)"))
     }
     
     func testResponseParsing() {

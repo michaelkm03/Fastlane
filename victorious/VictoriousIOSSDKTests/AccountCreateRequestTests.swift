@@ -27,8 +27,8 @@ class AccountCreateRequestTests: XCTestCase {
         }
         let bodyString = String(data: bodyData, encoding: String.Encoding.utf8)!
         
-        XCTAssertNotNil(bodyString.rangeOfString("email=\(mockUsername.stringByAddingPercentEncodingWithAllowedCharacters(CharacterSet.vsdk_queryPartAllowedCharacterSet)!)"))
-        XCTAssertNotNil(bodyString.rangeOfString("password=\(mockPassword)"))
+        XCTAssertNotNil(bodyString.range(of: "email=\(mockUsername.stringByAddingPercentEncodingWithAllowedCharacters(CharacterSet.vsdk_queryPartAllowedCharacterSet)!)"))
+        XCTAssertNotNil(bodyString.range(of: "password=\(mockPassword)"))
     }
     
     func testFacebookRequest() {
@@ -46,7 +46,7 @@ class AccountCreateRequestTests: XCTestCase {
         }
         let bodyString = String(data: bodyData, encoding: String.Encoding.utf8)!
         
-        XCTAssertNotNil(bodyString.rangeOfString("facebook_access_token=\(mockToken)"))
+        XCTAssertNotNil(bodyString.range(of: "facebook_access_token=\(mockToken)"))
     }
     
     func testResponseParsing() {

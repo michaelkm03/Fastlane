@@ -19,9 +19,9 @@ class URLEncodedStringTests: XCTestCase {
         
         let result = mockValues.vsdk_urlEncodedString()
         
-        XCTAssertNotNil(result.rangeOfString("foo=bar"))
-        XCTAssertNotNil(result.rangeOfString("strawberry=%F0%9F%8D%93"))
-        XCTAssertNotNil(result.rangeOfString("ampersand%3Dequal=%26%20%3D"))
+        XCTAssertNotNil(result.range(of: "foo=bar"))
+        XCTAssertNotNil(result.range(of: "strawberry=%F0%9F%8D%93"))
+        XCTAssertNotNil(result.range(of: "ampersand%3Dequal=%26%20%3D"))
         XCTAssertEqual(result.characters.count, 59)
         
         let regex = try! NSRegularExpression(pattern: "^[^=&]+=[^=&]+&[^=&]+=[^=&]+&[^=&]+=[^=&]+$", options: [])

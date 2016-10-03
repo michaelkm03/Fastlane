@@ -27,9 +27,9 @@ class PasswordResetRequestTests: XCTestCase {
         }
         let bodyString = String(data: bodyData, encoding: String.Encoding.utf8)!
         
-        XCTAssertNotNil(bodyString.rangeOfString("new_password=\(mockNewPassword)"))
-        XCTAssertNotNil(bodyString.rangeOfString("user_token=\(mockUserToken)"))
-        XCTAssertNotNil(bodyString.rangeOfString("device_token=\(mockDeviceToken)"))
+        XCTAssertNotNil(bodyString.range(of: "new_password=\(mockNewPassword)"))
+        XCTAssertNotNil(bodyString.range(of: "user_token=\(mockUserToken)"))
+        XCTAssertNotNil(bodyString.range(of: "device_token=\(mockDeviceToken)"))
     }
     
     func testValidateTokenRequest() {
@@ -48,8 +48,8 @@ class PasswordResetRequestTests: XCTestCase {
         }
         let bodyString = String(data: bodyData, encoding: String.Encoding.utf8)!
         
-        XCTAssertNotNil(bodyString.rangeOfString("new_password=\(expectedEmptyPassword)"))
-        XCTAssertNotNil(bodyString.rangeOfString("user_token=\(mockUserToken)"))
-        XCTAssertNotNil(bodyString.rangeOfString("device_token=\(mockDeviceToken)"))
+        XCTAssertNotNil(bodyString.range(of: "new_password=\(expectedEmptyPassword)"))
+        XCTAssertNotNil(bodyString.range(of: "user_token=\(mockUserToken)"))
+        XCTAssertNotNil(bodyString.range(of: "device_token=\(mockDeviceToken)"))
     }
 }

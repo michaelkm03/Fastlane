@@ -93,8 +93,8 @@ class DevicePreferencesRequestTests: XCTestCase {
         }
         let bodyString = String(data: bodyData, encoding: String.Encoding.utf8)!
         
-        XCTAssertNotNil(bodyString.rangeOfString("notification_creator_post=1"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_new_follower=0"))
+        XCTAssertNotNil(bodyString.range(of: "notification_creator_post=1"))
+        XCTAssertNotNil(bodyString.range(of: "notification_new_follower=0"))
     }
     
     func testChangeRequestAllOff() {
@@ -120,18 +120,18 @@ class DevicePreferencesRequestTests: XCTestCase {
         }
         let bodyString = String(data: bodyData, encoding: String.Encoding.utf8)!
         
-        XCTAssertNotNil(bodyString.rangeOfString("notification_creator_post=0"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_follow_post=0"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_comment_post=0"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_private_message=0"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_new_follower=0"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_tag_post=0"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_mention=0"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_like_post=0"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_announcement=0"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_next_day=0"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_lapsed_user=0"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_emotive_ballistic=0"))
+        XCTAssertNotNil(bodyString.range(of: "notification_creator_post=0"))
+        XCTAssertNotNil(bodyString.range(of: "notification_follow_post=0"))
+        XCTAssertNotNil(bodyString.range(of: "notification_comment_post=0"))
+        XCTAssertNotNil(bodyString.range(of: "notification_private_message=0"))
+        XCTAssertNotNil(bodyString.range(of: "notification_new_follower=0"))
+        XCTAssertNotNil(bodyString.range(of: "notification_tag_post=0"))
+        XCTAssertNotNil(bodyString.range(of: "notification_mention=0"))
+        XCTAssertNotNil(bodyString.range(of: "notification_like_post=0"))
+        XCTAssertNotNil(bodyString.range(of: "notification_announcement=0"))
+        XCTAssertNotNil(bodyString.range(of: "notification_next_day=0"))
+        XCTAssertNotNil(bodyString.range(of: "notification_lapsed_user=0"))
+        XCTAssertNotNil(bodyString.range(of: "notification_emotive_ballistic=0"))
     }
     
     func testChangeRequestAllOn() {
@@ -157,17 +157,17 @@ class DevicePreferencesRequestTests: XCTestCase {
         }
         let bodyString = String(data: bodyData, encoding: String.Encoding.utf8)!
         
-        XCTAssertNotNil(bodyString.rangeOfString("notification_creator_post=1"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_follow_post=1"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_comment_post=1"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_private_message=1"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_new_follower=1"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_tag_post=1"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_mention=1"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_like_post=1"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_announcement=1"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_next_day=1"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_lapsed_user=1"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_emotive_ballistic=1"))
+        XCTAssertNotNil(bodyString.range(of: "notification_creator_post=1"))
+        XCTAssertNotNil(bodyString.range(of: "notification_follow_post=1"))
+        XCTAssertNotNil(bodyString.range(of: "notification_comment_post=1"))
+        XCTAssertNotNil(bodyString.range(of: "notification_private_message=1"))
+        XCTAssertNotNil(bodyString.range(of: "notification_new_follower=1"))
+        XCTAssertNotNil(bodyString.range(of: "notification_tag_post=1"))
+        XCTAssertNotNil(bodyString.range(of: "notification_mention=1"))
+        XCTAssertNotNil(bodyString.range(of: "notification_like_post=1"))
+        XCTAssertNotNil(bodyString.range(of: "notification_announcement=1"))
+        XCTAssertNotNil(bodyString.range(of: "notification_next_day=1"))
+        XCTAssertNotNil(bodyString.range(of: "notification_lapsed_user=1"))
+        XCTAssertNotNil(bodyString.range(of: "notification_emotive_ballistic=1"))
     }
 }
