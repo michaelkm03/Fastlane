@@ -3352,6 +3352,7 @@
 				BF9006EA1D9C7D0B0002D119 /* EndVIPEventRequest.swift */,
 				A7D920471C063682002A6503 /* Errors */,
 				0EBF417A1CAB5C20002966B3 /* ForumEvents */,
+				F004B3291D8914E3005D4A74 /* GIFSearchOptions.swift */,
 				F004B3291D8914E3005D4A74 /* AssetSearchOptions.swift */,
 				C3FEA7A41BF26F24003446CC /* GIFSearchRequest.swift */,
 				A7A583501C3B00CC0088A08A /* HashtagSearchRequest.swift */,
