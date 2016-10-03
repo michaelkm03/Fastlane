@@ -239,7 +239,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         let whitespaceCharacterSet = CharacterSet.whitespacesAndNewlines
         
         if
-            let lastCharacter = textView.text?.utf16.last,
+            let lastCharacter = textView.text?.characters.last,
             let scalar = UnicodeScalar(String(lastCharacter)),
             !whitespaceCharacterSet.contains(scalar)
         {
