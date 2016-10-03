@@ -7,7 +7,7 @@
 //
 
 extension VDependencyManager {
-    convenience init(dictionary: [String:AnyObject]) {
+    convenience init(dictionary: [String: Any]) {
         self.init(parentManager: nil, configuration: dictionary, dictionaryOfClassesByTemplateName: nil)
     }
 }

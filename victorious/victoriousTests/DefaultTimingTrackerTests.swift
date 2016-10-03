@@ -83,7 +83,7 @@ class DefaultTimingTrackerTests: XCTestCase {
             XCTAssertEqual( urls[0], testTemplateURL )
         }
         
-        let duration = mockTracker.lastParams?[VTrackingKeyDuration] as? Float ?? 0.0
+        let duration = Double(mockTracker.lastParams![VTrackingKeyDuration] as! Int)
         XCTAssertEqualWithAccuracy( duration, 1000.0, accuracy: 50.0)
         XCTAssertEqual( mockTracker.lastParams?[VTrackingKeySubtype] as? String, eventSubtype )
         XCTAssertEqual( mockTracker.lastParams?[VTrackingKeyType] as? String, eventType )

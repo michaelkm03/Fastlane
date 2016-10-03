@@ -26,14 +26,6 @@ class NSURL_CustomSchemeTests: XCTestCase {
         XCTAssert(url.isHTTPScheme)
     }
     
-    func testEmptyURL() {
-        let urlString = ""
-        let url = URL(string: urlString)!
-        let path = url.pathWithoutLeadingSlash
-        XCTAssertNil(path)
-        XCTAssertFalse(url.isHTTPScheme)
-    }
-    
     func testNonHTTPScheme() {
         let urlString = "spotify://search:asdf"
         let url = URL(string: urlString)!
