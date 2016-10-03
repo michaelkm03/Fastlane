@@ -28,7 +28,7 @@ extension TrackableButton where Self: UIButton {
             return nil
         }
         switch appearance {
-            case .backgroundColor, .foregroundColor, .selectedColor, .unselectedColor:
+            case .backgroundColor, .foregroundColor, .selectedColor, .unselectedColor, .borderColor:
                 return dependencyManager.colorForKey(appearance.rawValue) as? AppearanceValueType
             case .backgroundImage, .foregroundImage, .selectedImage, .unselectedImage:
                 return dependencyManager.imageForKey(appearance.rawValue) as? AppearanceValueType
@@ -59,6 +59,6 @@ enum TrackableButtonAppearance: String {
     
     case clickable = "clickable"
     
-    // Only used on TextOnPillButton
     case borderWidth = "width.border"
+    case borderColor = "color.border"
 }

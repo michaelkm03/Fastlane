@@ -54,6 +54,11 @@ class ContentPreviewView: UIView {
         vipButton?.removeFromSuperview()
         vipButton = self.dependencyManager?.userIsVIPButton
         
+        if let vipButton = vipButton as? TextOnColorButton {
+            vipButton.roundingType = .pill
+            vipButton.needsPadding = true
+        }
+        
         if let vipButton = vipButton {
             addSubview(vipButton)
         }
