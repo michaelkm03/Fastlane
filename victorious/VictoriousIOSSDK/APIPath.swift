@@ -45,7 +45,7 @@ public struct APIPath: Equatable {
         if queryParameters.count > 0 {
             if let components = NSURLComponents(string: processedPath) {
                 components.queryItems = (components.queryItems ?? []) + queryParameters.map {
-                    (NSURLQueryItem(name: $0, value: $1) as URLQueryItem)
+                    (URLQueryItem(name: $0, value: $1))
                 }
                 
                 if let pathWithQueryParameters = components.string {

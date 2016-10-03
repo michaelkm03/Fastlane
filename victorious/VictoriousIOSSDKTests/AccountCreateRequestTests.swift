@@ -27,7 +27,7 @@ class AccountCreateRequestTests: XCTestCase {
         }
         let bodyString = String(data: bodyData, encoding: String.Encoding.utf8)!
         
-        XCTAssertNotNil(bodyString.range(of: "email=\(mockUsername.addingPercentEncoding(withAllowedCharacters: (CharacterSet.vsdk_queryPartAllowedCharacterSet)))"))
+        XCTAssertNotNil(bodyString.range(of: "email=\(mockUsername.addingPercentEncoding(withAllowedCharacters: (CharacterSet.vsdk_queryPartAllowedCharacterSet))!)"))
         XCTAssertNotNil(bodyString.range(of: "password=\(mockPassword)"))
     }
     
