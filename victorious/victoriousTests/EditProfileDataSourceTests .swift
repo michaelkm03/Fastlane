@@ -35,11 +35,11 @@ class EditProfileDataSourceTests: XCTestCase {
         XCTAssertEqual(dataSource.tableView(UITableView(), numberOfRowsInSection: 0), 2)
         
         let nameCellIndexPath = IndexPath(row: 0, section: 0)
-        let nameCell = dataSource.tableView(UITableView(), cellForRowAtIndexPath: nameCellIndexPath) as? DisplaynameLocationAvatarCell
+        let nameCell = dataSource.tableView(UITableView(), cellForRowAt: nameCellIndexPath) as? DisplaynameLocationAvatarCell
         XCTAssertNotNil(nameCell)
         
         let aboutMeCellIndexPath = IndexPath(row: 1, section: 0)
-        let aboutMeCell = dataSource.tableView(UITableView(), cellForRowAtIndexPath: aboutMeCellIndexPath)
+        let aboutMeCell = dataSource.tableView(UITableView(), cellForRowAt: aboutMeCellIndexPath)
         XCTAssertNotNil(aboutMeCell)
         
         XCTAssertNotEqual(aboutMeCell, nameCell)
