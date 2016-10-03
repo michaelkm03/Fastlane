@@ -36,8 +36,8 @@ class AccountUpdateRequestTests: XCTestCase {
     }
     
     func testResponseParsing() {
-        guard let mockUserDataURL = NSBundle(forClass: self.dynamicType).URLForResource("AccountUpdateResponse", withExtension: "json"),
-            let mockData = NSData(contentsOfURL: mockUserDataURL) else {
+        guard let mockUserDataURL = Bundle(for: type(of: self)).url(forResource: "AccountUpdateResponse", withExtension: "json"),
+            let mockData = try? Data(contentsOf: mockUserDataURL) else {
                 XCTFail("Error reading mock json data")
                 return
         }
@@ -54,7 +54,7 @@ class AccountUpdateRequestTests: XCTestCase {
         }
         
         do {
-            let user = try updateRequest.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
+            let user = try updateRequest.parseResponse(URLResponse(), toRequest: URLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(user.id, 156)
             XCTAssertEqual(user.displayName, "Joe Victorious")
         } catch {
@@ -71,7 +71,7 @@ class AccountUpdateRequestTests: XCTestCase {
         }
         
         do {
-            let user = try updatePasswordRequest.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
+            let user = try updatePasswordRequest.parseResponse(URLResponse(), toRequest: URLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(user.id, 156)
             XCTAssertEqual(user.displayName, "Joe Victorious")
         } catch {

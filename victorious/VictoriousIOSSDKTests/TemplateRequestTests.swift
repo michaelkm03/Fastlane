@@ -17,15 +17,15 @@ class TemplateRequestTests: XCTestCase {
     }
     
     func testResponseParser() {
-        guard let mockResponseDataURL = NSBundle(forClass: self.dynamicType).URLForResource("template", withExtension: "json"),
-            let mockData = NSData(contentsOfURL: mockResponseDataURL) else {
+        guard let mockResponseDataURL = Bundle(for: type(of: self)).url(forResource: "template", withExtension: "json"),
+            let mockData = try? Data(contentsOf: mockResponseDataURL) else {
                 XCTFail("Error reading mock json data")
                 return
         }
         
         do {
             let request = TemplateRequest()
-            let results = try request.parseResponse(NSURLResponse(), toRequest: request.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
+            let results = try request.parseResponse(URLResponse(), toRequest: request.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(results, mockData)
         } catch {
             XCTFail("Sorry, parseResponse should not throw here")

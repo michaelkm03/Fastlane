@@ -15,7 +15,7 @@ class ListMenuCollectionViewDataSourceTests: XCTestCase {
         let listMenuViewController = ListMenuViewController.newWithDependencyManager(dependencyManager)
         listMenuViewController.beginAppearanceTransition(true, animated: false)
         let dataSource = ListMenuCollectionViewDataSource(dependencyManager: dependencyManager, listMenuViewController: listMenuViewController)
-        let cell = dataSource.collectionView(listMenuViewController.collectionView, cellForItemAtIndexPath: NSIndexPath(forRow: 1, inSection: 1))
+        let cell = dataSource.collectionView(listMenuViewController.collectionView, cellForItemAtIndexPath: IndexPath(forRow: 1, inSection: 1))
         XCTAssert(cell is ListMenuNoContentCollectionViewCell)
     }
 }

@@ -21,7 +21,7 @@ class RegisterPushNotificationRequestTests: XCTestCase {
             XCTFail("No HTTP Body!")
             return
         }
-        let bodyString = String(data: bodyData, encoding: NSUTF8StringEncoding)!
+        let bodyString = String(data: bodyData, encoding: String.Encoding.utf8)!
         
         XCTAssertNotNil(bodyString.rangeOfString("push_id=\(mockPushID)"))
     }

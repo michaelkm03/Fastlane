@@ -16,13 +16,13 @@ import Foundation
     
     @objc func resetAllEvents() {}
     
-    @objc func resetEvent(type type: String) {}
+    @objc func resetEvent(type: String) {}
     
-    @objc func startEvent(type type: String, subtype: String?) {
+    @objc func startEvent(type: String, subtype: String?) {
         eventsStarted.append( type )
     }
     
-    @objc func endEvent(type type: String, subtype: String?) {
+    @objc func endEvent(type: String, subtype: String?) {
         eventsEnded.append( type )
     }
 }

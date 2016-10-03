@@ -25,7 +25,7 @@ class MediaUploadCreateRequestTests: XCTestCase {
         let mockJSON = JSON( [ "payload": ["sequence_id": mockSequenceID] ] )
         
         do {
-            let results = try request.parseResponse(NSURLResponse(), toRequest: request.urlRequest, responseData: NSData(), responseJSON: mockJSON)
+            let results = try request.parseResponse(URLResponse(), toRequest: request.urlRequest, responseData: Data(), responseJSON: mockJSON)
             
             XCTAssertEqual(results, mockSequenceID)
         } catch {

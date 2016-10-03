@@ -12,8 +12,8 @@ import VictoriousIOSSDK
 class ChatRoomTests: XCTestCase {
     func testJSONParsing() {
         guard
-            let mockDataURL = NSBundle(forClass: self.dynamicType).URLForResource("ChatRoom", withExtension: "json"),
-            let mockData = NSData(contentsOfURL: mockDataURL) else {
+            let mockDataURL = Bundle(for: type(of: self)).url(forResource: "ChatRoom", withExtension: "json"),
+            let mockData = try? Data(contentsOf: mockDataURL) else {
                 XCTFail("Failed to read mock json data")
                 return
         }

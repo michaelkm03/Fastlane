@@ -12,8 +12,8 @@ import XCTest
 class TrendingHashtagsRequestTests: XCTestCase {
     func testResponseParsing() {
         guard
-            let mockResponseDataURL = NSBundle(forClass: self.dynamicType).URLForResource("TrendingHashtagResponse", withExtension: "json"),
-            let mockData = NSData(contentsOfURL: mockResponseDataURL)
+            let mockResponseDataURL = Bundle(for: type(of: self)).url(forResource: "TrendingHashtagResponse", withExtension: "json"),
+            let mockData = try? Data(contentsOf: mockResponseDataURL)
         else {
             XCTFail("Error reading mock json data")
             return
@@ -21,7 +21,7 @@ class TrendingHashtagsRequestTests: XCTestCase {
         
         do {
             let trendingHashtagsRequest = TrendingHashtagsRequest(apiPath: APIPath(templatePath: ""))!
-            let results = try trendingHashtagsRequest.parseResponse(NSURLResponse(), toRequest: trendingHashtagsRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
+            let results = try trendingHashtagsRequest.parseResponse(URLResponse(), toRequest: trendingHashtagsRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(results.count, 2)
             XCTAssertEqual(results[0].tag, "surfing")
             XCTAssertEqual(results[1].tag, "bikes")

@@ -25,14 +25,14 @@ class TimestampTests: XCTestCase {
     
     func testComparison() {
         XCTAssert(Timestamp(apiString: "5000") == Timestamp(apiString: "5000"))
-        XCTAssert(Timestamp(apiString: "5000") < Timestamp(apiString: "5001"))
+        XCTAssert(Timestamp(apiString: "5000")! < Timestamp(apiString: "5001")!)
         XCTAssert(Timestamp(apiString: "5001") > Timestamp(apiString: "5000"))
     }
     
     func testDateConversion() {
-        let date = NSDate(timeIntervalSince1970: 12345.0)
+        let date = Date(timeIntervalSince1970: 12345.0)
         let timestamp = Timestamp(date: date)
         XCTAssertEqual(timestamp.apiString, "12345000")
-        XCTAssertEqualWithAccuracy(NSDate(timestamp: timestamp).timeIntervalSince1970, date.timeIntervalSince1970, accuracy: 0.01)
+        XCTAssertEqualWithAccuracy(Date(timestamp: timestamp).timeIntervalSince1970, date.timeIntervalSince1970, accuracy: 0.01)
     }
 }

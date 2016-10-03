@@ -22,7 +22,7 @@ class AcknowledgeAlertRequestTests: XCTestCase {
             return
         }
 
-        let bodyString = String(data: bodyData, encoding: NSUTF8StringEncoding)!
+        let bodyString = String(data: bodyData, encoding: String.Encoding.utf8)!
         
         XCTAssertNotNil(bodyString.rangeOfString("alert_id=\(alertID)"))
     }

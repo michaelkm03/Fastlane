@@ -11,7 +11,7 @@ import XCTest
 @testable import victorious
 
 class EditProfileDataSourceTests: XCTestCase {
-    private struct Constants {
+    fileprivate struct Constants {
         static let testUsername = "asdf"
     }
     
@@ -21,7 +21,7 @@ class EditProfileDataSourceTests: XCTestCase {
         viewController.loadViewIfNeeded()
         let tableView = viewController.tableView
         XCTAssertNotNil(tableView)
-        return EditProfileDataSource(dependencyManager: dependencyManager, tableView: tableView!, userModel: User(id: 1, username: Constants.testUsername))
+        return EditProfileDataSource(dependencyManager: dependencyManager!, tableView: tableView!, userModel: User(id: 1, username: Constants.testUsername))
     }
     
     func testInit() {
@@ -34,11 +34,11 @@ class EditProfileDataSourceTests: XCTestCase {
         let dataSource = createTestDataSource()
         XCTAssertEqual(dataSource.tableView(UITableView(), numberOfRowsInSection: 0), 2)
         
-        let nameCellIndexPath = NSIndexPath(forRow: 0, inSection: 0)
+        let nameCellIndexPath = IndexPath(row: 0, section: 0)
         let nameCell = dataSource.tableView(UITableView(), cellForRowAtIndexPath: nameCellIndexPath) as? DisplaynameLocationAvatarCell
         XCTAssertNotNil(nameCell)
         
-        let aboutMeCellIndexPath = NSIndexPath(forRow: 1, inSection: 0)
+        let aboutMeCellIndexPath = IndexPath(row: 1, section: 0)
         let aboutMeCell = dataSource.tableView(UITableView(), cellForRowAtIndexPath: aboutMeCellIndexPath)
         XCTAssertNotNil(aboutMeCell)
         
@@ -71,7 +71,7 @@ class EditProfileDataSourceTests: XCTestCase {
         dataSource.nameAndLocationCell.displayname = ""
         XCTAssertNotNil(dataSource.localizedError)
         
-        let testDataPath = NSBundle(forClass: EditProfileDataSourceTests.self).pathForResource("LoremIpsum", ofType: "txt")
+        let testDataPath = Bundle(for: EditProfileDataSourceTests.self).path(forResource: "LoremIpsum", ofType: "txt")
         XCTAssertNotNil(testDataPath)
         
         do {

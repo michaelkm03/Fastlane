@@ -54,18 +54,18 @@ class ComposerTextViewManagerTests: XCTestCase {
         XCTAssertTrue(manager.canUpdateTextView(textView, textInRange: NSRange(location: baseTextLength - additionalTextLength, length: additionalTextLength), replacementText: additionalText))
         XCTAssertTrue(manager.canUpdateTextView(textView, textInRange: NSRange(location: baseTextLength - additionalTextLength, length: additionalTextLength), replacementText: ""))
         
-        textView.text = baseText.substringToIndex(baseText.characters.indexOf(baseText.characters.last!)!)
+        textView.text = baseText.substring(to: baseText.characters.index(of: baseText.characters.last!)!)
         XCTAssertTrue(manager.canUpdateTextView(textView, textInRange: NSRange(location: baseTextLength, length: 0), replacementText: additionalText))
     }
     
     func testUpdateDelegate() {
         
         let delegate = ComposerTextViewManagerDelegateStub()
-        let contentSizeExpectation = expectationWithDescription("Updated content size")
+        let contentSizeExpectation = expectation(description: "Updated content size")
         delegate.onSetTextViewContentSize = {
             contentSizeExpectation.fulfill()
         }
-        let textViewHasTextExpectation = expectationWithDescription("Updated text view has text")
+        let textViewHasTextExpectation = expectation(description: "Updated text view has text")
         delegate.onSetTextViewHasText = {
             textViewHasTextExpectation.fulfill()
         }
@@ -73,7 +73,7 @@ class ComposerTextViewManagerTests: XCTestCase {
             XCTFail("Failed to create ComposerTextViewManager for textView \(textView)")
             return
         }
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     func testDismissOnReturn() {
@@ -111,15 +111,15 @@ class ComposerTextViewManagerTests: XCTestCase {
     
     // MARK: - Delegate stub
     
-    private class ComposerTextViewManagerDelegateStub: ComposerTextViewManagerDelegate {
+    fileprivate class ComposerTextViewManagerDelegateStub: ComposerTextViewManagerDelegate {
         
-        var onSetTextViewContentSize: (Void -> ())? = nil
+        var onSetTextViewContentSize: ((Void) -> ())? = nil
         
-        var onSetTextViewHasText: (Void -> ())? = nil
+        var onSetTextViewHasText: ((Void) -> ())? = nil
         
-        var onSetTextViewIsEditing: (Void -> ())? = nil
+        var onSetTextViewIsEditing: ((Void) -> ())? = nil
         
-        var onSetTextViewPrependedImage: (Void -> ())? = nil
+        var onSetTextViewPrependedImage: ((Void) -> ())? = nil
         
         var textViewContentSize: CGSize = CGSize.zero {
             didSet {
@@ -139,7 +139,7 @@ class ComposerTextViewManagerTests: XCTestCase {
             }
         }
         
-        private var textViewPrependedImage: UIImage? {
+        fileprivate var textViewPrependedImage: UIImage? {
             didSet {
                 onSetTextViewPrependedImage?()
             }
@@ -147,7 +147,7 @@ class ComposerTextViewManagerTests: XCTestCase {
         
         var textViewCurrentHashtag: (String, NSRange)?
         
-        func textViewDidHitCharacterLimit(textView: UITextView) {}
+        func textViewDidHitCharacterLimit(_ textView: UITextView) {}
         
         var textViewCanDismiss: Bool = true
         

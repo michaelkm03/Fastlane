@@ -18,7 +18,7 @@ class FirstInstallManagerTests: XCTestCase {
     
     override func setUp() {
         firstInstallManager.trackingManager = testTrackingManager
-        NSUserDefaults.standardUserDefaults().removeObject(forKey: firstInstallManager.appFirstInstallDefaultsKey)
+        UserDefaults.standard.removeObject(forKey: firstInstallManager.appFirstInstallDefaultsKey)
     }
     
     // MARK: - First Install Reporting
@@ -43,11 +43,11 @@ class FirstInstallManagerTests: XCTestCase {
     
     let testingDeviceID = "testingDeviceID"
     let testingFileName = "testingFile.txt"
-    let fileManager = NSFileManager()
+    let fileManager = FileManager()
     
-    var testingFileURL: NSURL? {
-        let docDir = fileManager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first
-        return docDir?.URLByAppendingPathComponent(testingFileName)
+    var testingFileURL: URL? {
+        let docDir = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first
+        return docDir?.appendingPathComponent(testingFileName)
     }
     
     var testingFilePath: String? {
@@ -56,14 +56,14 @@ class FirstInstallManagerTests: XCTestCase {
     
     func testGenerationFromExistingFile() {
         do {
-            try testingFileName.writeToFile(testingFilePath!, atomically: true, encoding: NSUTF8StringEncoding)
+            try testingFileName.write(toFile: testingFilePath!, atomically: true, encoding: String.Encoding.utf8)
         }
         catch {
             XCTAssert(false, "failed to write to file \(testingFilePath)")
         }
         
         do {
-            let retrievedDeviceID = try NSString(contentsOfFile: testingFilePath!, encoding: NSUTF8StringEncoding) as String
+            let retrievedDeviceID = try NSString(contentsOfFile: testingFilePath!, encoding: String.Encoding.utf8.rawValue) as String
             let generatedDeviceID = firstInstallManager.generateFirstInstallDeviceID(withFileName: testingFileName)
             XCTAssertEqual(retrievedDeviceID, generatedDeviceID)
         }
@@ -72,7 +72,7 @@ class FirstInstallManagerTests: XCTestCase {
         }
         
         do {
-            try fileManager.removeItemAtURL(testingFileURL!)
+            try fileManager.removeItem(at: testingFileURL!)
         }
         catch {
             XCTAssert(false, "failed to delete the temporary directory created")
@@ -84,8 +84,8 @@ class FirstInstallManagerTests: XCTestCase {
         firstInstallManager.generateFirstInstallDeviceID(withFileName: testingFileName)
         
         do {
-            let retrivedDeviceID = try NSString(contentsOfFile: testingFilePath!, encoding: NSUTF8StringEncoding) as String
-            let currentDeviceID = UIDevice.currentDevice().v_authorizationDeviceID
+            let retrivedDeviceID = try NSString(contentsOfFile: testingFilePath!, encoding: String.Encoding.utf8.rawValue) as String
+            let currentDeviceID = UIDevice.current.v_authorizationDeviceID
             XCTAssertEqual(retrivedDeviceID, currentDeviceID)
         }
         catch {
@@ -93,7 +93,7 @@ class FirstInstallManagerTests: XCTestCase {
         }
         
         do {
-            try fileManager.removeItemAtURL(testingFileURL!)
+            try fileManager.removeItem(at: testingFileURL!)
         }
         catch {
             XCTAssert(false, "failed to delete the temporary directory created")

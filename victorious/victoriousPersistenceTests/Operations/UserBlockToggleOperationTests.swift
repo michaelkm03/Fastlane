@@ -23,7 +23,7 @@ class UserBlockToggleOperationTests: XCTestCase {
         let user = User(id: remoteUserID)
         user.block()
         
-        let expectation = expectationWithDescription("UserBlockToggleOperation")
+        let expectation = self.expectation(description: "UserBlockToggleOperation")
         
         let operation = UserBlockToggleOperation(
             user: user,
@@ -35,14 +35,14 @@ class UserBlockToggleOperationTests: XCTestCase {
             XCTAssertFalse(user.isBlocked)
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(1.0, handler: nil)
+        waitForExpectations(timeout: 1.0, handler: nil)
     }
     
     func testInitiallyUnblocked() {
         let user = User(id: remoteUserID)
         user.unblock()
         
-        let expectation = expectationWithDescription("UserBlockToggleOperation")
+        let expectation = self.expectation(description: "UserBlockToggleOperation")
         
         let operation = UserBlockToggleOperation(
             user: user,
@@ -54,6 +54,6 @@ class UserBlockToggleOperationTests: XCTestCase {
             XCTAssertTrue(user.isBlocked)
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(1.0, handler: nil)
+        waitForExpectations(timeout: 1.0, handler: nil)
     }
 }

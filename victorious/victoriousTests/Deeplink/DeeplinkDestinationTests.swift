@@ -10,11 +10,11 @@ import XCTest
 @testable import victorious
 
 class DeeplinkDestinationTests: XCTestCase {
-    let contentURL = NSURL(string: "vthisapp://content/12345")!
-    let profileURL = NSURL(string: "vthisapp://profile/12345")!
-    let vipForumURL = NSURL(string: "vthisapp://vipForum")!
-    let externalURL = NSURL(string: "vthisapp://webURL/https://www.example.com")!
-    let hiddenURL = NSURL(string: "vthisapp://hiddenWebURL/https://www.example.com")!
+    let contentURL = URL(string: "vthisapp://content/12345")!
+    let profileURL = URL(string: "vthisapp://profile/12345")!
+    let vipForumURL = URL(string: "vthisapp://vipForum")!
+    let externalURL = URL(string: "vthisapp://webURL/https://www.example.com")!
+    let hiddenURL = URL(string: "vthisapp://hiddenWebURL/https://www.example.com")!
     let defaultConfiguration = ExternalLinkDisplayConfiguration(addressBarVisible: true, forceModal: true, isVIPOnly: false, title: "")
 
     func testInitializeWithContentURL() {
@@ -34,13 +34,13 @@ class DeeplinkDestinationTests: XCTestCase {
     
     func testInitializeWithExternalURL() {
         let destination = DeeplinkDestination(url: externalURL)
-        let expectedURL = NSURL(string: "https://www.example.com")!
+        let expectedURL = URL(string: "https://www.example.com")!
         XCTAssertEqual(destination, .externalURL(url: expectedURL, configuration: defaultConfiguration))
     }
     
     func testInitializeWithHiddenURL() {
         let destination = DeeplinkDestination(url: hiddenURL, isVIPOnly: true)
-        let expectedURL = NSURL(string: "https://www.example.com")!
+        let expectedURL = URL(string: "https://www.example.com")!
         XCTAssertEqual(destination, .externalURL(url: expectedURL, configuration: defaultConfiguration))
     }
     

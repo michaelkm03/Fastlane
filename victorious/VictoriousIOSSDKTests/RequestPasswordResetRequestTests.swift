@@ -23,9 +23,9 @@ class RequestPasswordResetRequestTests: XCTestCase {
             XCTFail("No HTTP Body!")
             return
         }
-        let bodyString = String(data: bodyData, encoding: NSUTF8StringEncoding)!
+        let bodyString = String(data: bodyData, encoding: String.Encoding.utf8)!
         
-        XCTAssertNotNil(bodyString.rangeOfString("email=\(mockEmail.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.vsdk_queryPartAllowedCharacterSet)!)"))
+        XCTAssertNotNil(bodyString.rangeOfString("email=\(mockEmail.stringByAddingPercentEncodingWithAllowedCharacters(CharacterSet.vsdk_queryPartAllowedCharacterSet)!)"))
     }
     
     func testParseResponse() {
@@ -34,7 +34,7 @@ class RequestPasswordResetRequestTests: XCTestCase {
         
         do {
             let request = RequestPasswordResetRequest(email: mockEmail)
-            let results = try request.parseResponse(NSURLResponse(), toRequest: request.urlRequest, responseData: NSData(), responseJSON: mockJSON)
+            let results = try request.parseResponse(URLResponse(), toRequest: request.urlRequest, responseData: Data(), responseJSON: mockJSON)
             
             XCTAssertEqual(results, "MockDeviceToken")
         } catch {

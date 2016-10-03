@@ -50,7 +50,7 @@ class String_SubstringHelpersTests: XCTestCase {
         if let (foundString, foundCharacter, foundRange) = string.substringBeforeLocation(1, afterCharacters: [matchCharacter]) {
             XCTAssertEqual(foundString, "")
             XCTAssertEqual(foundCharacter, matchCharacter)
-            let secondIndex = string.startIndex.successor()
+            let secondIndex = string.characters.index(after: string.startIndex)
             XCTAssertEqual(foundRange, secondIndex..<secondIndex)
         } else {
             XCTFail()
@@ -102,7 +102,7 @@ class String_SubstringHelpersTests: XCTestCase {
         if let (foundString, foundCharacter, foundRange) = string.substringAfterLocation(stringLength - 1, beforeCharacters: [matchCharacter]) {
             XCTAssertEqual(foundString, "")
             XCTAssertEqual(foundCharacter, matchCharacter)
-            let secondToLastIndex = string.endIndex.predecessor()
+            let secondToLastIndex = string.characters.index(before: string.endIndex)
             XCTAssertEqual(foundRange, secondToLastIndex..<secondToLastIndex)
         } else {
             XCTFail()

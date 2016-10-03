@@ -24,11 +24,11 @@ class MockPurchaseManager: NSObject, VPurchaseManagerType {
     
     var purchasedProductIdentifiers = Set<NSObject>()
     
-    func isProductIdentifierPurchased(productIdentifier: String) -> Bool {
+    func isProductIdentifierPurchased(_ productIdentifier: String) -> Bool {
         return true
     }
     
-    func purchaseProduct(product: VProduct, success successCallback: VPurchaseSuccessBlock, failure failureCallback: VPurchaseFailBlock) {
+    func purchaseProduct(_ product: VProduct, success successCallback: VPurchaseSuccessBlock, failure failureCallback: VPurchaseFailBlock) {
         if let error = self.error {
             failureCallback( error )
         } else {
@@ -36,7 +36,7 @@ class MockPurchaseManager: NSObject, VPurchaseManagerType {
         }
     }
     
-    func purchaseProductWithIdentifier(productIdentifier: String, success successCallback: VPurchaseSuccessBlock, failure failureCallback: VPurchaseFailBlock) {
+    func purchaseProductWithIdentifier(_ productIdentifier: String, success successCallback: VPurchaseSuccessBlock, failure failureCallback: VPurchaseFailBlock) {
         if let error = self.error {
             failureCallback( error )
         } else {
@@ -44,7 +44,7 @@ class MockPurchaseManager: NSObject, VPurchaseManagerType {
         }
     }
     
-    func restorePurchasesSuccess(successCallback: VPurchaseSuccessBlock, failure failureCallback: VPurchaseFailBlock) {
+    func restorePurchasesSuccess(_ successCallback: VPurchaseSuccessBlock, failure failureCallback: VPurchaseFailBlock) {
         if let error = self.error {
             failureCallback( error )
         } else {
@@ -52,7 +52,7 @@ class MockPurchaseManager: NSObject, VPurchaseManagerType {
         }
     }
     
-    func fetchProductsWithIdentifiers(productIdentifiers: Set<NSObject>, success successCallback: VProductsRequestSuccessBlock, failure failureCallback: VProductsRequestFailureBlock) {
+    func fetchProductsWithIdentifiers(_ productIdentifiers: Set<NSObject>, success successCallback: VProductsRequestSuccessBlock, failure failureCallback: VProductsRequestFailureBlock) {
         if let error = self.error {
             failureCallback( error )
         } else {
@@ -60,7 +60,7 @@ class MockPurchaseManager: NSObject, VPurchaseManagerType {
         }
     }
     
-    func purchaseableProductForProductIdentifier(productIdentifier: String) -> VProduct {
+    func purchaseableProduct(forProductIdentifier productIdentifier: String) -> VProduct {
         XCTFail("MockPurchaseManager :: purchaseableProductForProductIdentifier :: Not yet implemented")
         abort()
     }
@@ -70,7 +70,7 @@ class MockPurchaseManager: NSObject, VPurchaseManagerType {
         abort()
     }
     
-    func purchaseTypeForProductIdentifier(productIdentifier: String) -> VPurchaseType {
+    func purchaseType(forProductIdentifier productIdentifier: String) -> VPurchaseType {
         XCTFail("MockPurchaseManager :: purchaseTypeForProductIdentifier :: Not yet implemented")
         abort()
     }

@@ -13,11 +13,11 @@ class StandardPaginatorTests: XCTestCase {
 
     func testRequest() {
         let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 10)
-        let request = NSMutableURLRequest(URL: NSURL(string: "http://www.example.com/api/test")!)
+        let request = NSMutableURLRequest(url: URL(string: "http://www.example.com/api/test")!)
         paginator.addPaginationArgumentsToRequest(request)
         
         let expectedURL = "http://www.example.com/api/test/1/10"
-        let actualURL = request.URL?.absoluteString
+        let actualURL = request.url?.absoluteString
         XCTAssertEqual(expectedURL, actualURL)
     }
     

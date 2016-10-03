@@ -19,7 +19,7 @@ class GIFSearchOperationTests: XCTestCase {
         let testRequestExecutor = TestRequestExecutor(result: [GIFSearchResult]())
         operation.requestExecutor = testRequestExecutor
         
-        let expectation = expectationWithDescription("GIFSearchOperation")
+        let expectation = self.expectation(description: "GIFSearchOperation")
         operation.queue { result in
             expectation.fulfill()
             
@@ -31,7 +31,7 @@ class GIFSearchOperationTests: XCTestCase {
                 XCTFail("operation.reesults should not be nil")
             }
         }
-        waitForExpectationsWithTimeout(1.0, handler: nil)
+        waitForExpectations(timeout: 1.0, handler: nil)
     }
 
     func testValidResult() {
@@ -50,11 +50,11 @@ class GIFSearchOperationTests: XCTestCase {
         let testRequestExecutor = TestRequestExecutor(result: result)
         operation.requestExecutor = testRequestExecutor
         
-        let expectation = expectationWithDescription("GIFSearchOperation")
+        let expectation = self.expectation(description: "GIFSearchOperation")
         operation.queue { result in
             expectation.fulfill()
             XCTAssertNil(result.error)
-            if let searchResults = result.output as? [GIFSearchResultObject] where !searchResults.isEmpty {
+            if let searchResults = result.output as? [GIFSearchResultObject] , !searchResults.isEmpty {
                 XCTAssertEqual( searchResults.count, 1)
                 XCTAssertEqual( searchResults[0].remoteID, "1001" )
                 XCTAssertNotNil( operation.next() )
@@ -63,7 +63,7 @@ class GIFSearchOperationTests: XCTestCase {
                 XCTFail("operation.reesults should not be nil or empty.")
             }
         }
-        waitForExpectationsWithTimeout(1.0, handler: nil)
+        waitForExpectations(timeout: 1.0, handler: nil)
     }
 
     func testOnError() {
@@ -74,11 +74,11 @@ class GIFSearchOperationTests: XCTestCase {
         let testRequestExecutor = TestRequestExecutor(error: expectedError)
         operation.requestExecutor = testRequestExecutor
         
-        let expectation = expectationWithDescription("GIFSearchOperation")
+        let expectation = self.expectation(description: "GIFSearchOperation")
         operation.queue { result in
             expectation.fulfill()
             XCTAssertEqual(result.error as? NSError, expectedError)
         }
-        waitForExpectationsWithTimeout(1.0, handler: nil)
+        waitForExpectations(timeout: 1.0, handler: nil)
     }
 }

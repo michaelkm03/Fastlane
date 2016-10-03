@@ -15,15 +15,15 @@ class GIFSearchRequestTests: XCTestCase {
     let searchOptions = GIFSearchOptions.Search(term: "lol", url: "testURL")
     
     func testResponseParsing() {
-        guard let mockResponseDataURL = NSBundle(forClass: self.dynamicType).URLForResource("GIFSearchResponse", withExtension: "json"),
-            let mockData = NSData(contentsOfURL: mockResponseDataURL) else {
+        guard let mockResponseDataURL = Bundle(for: type(of: self)).url(forResource: "GIFSearchResponse", withExtension: "json"),
+            let mockData = try? Data(contentsOf: mockResponseDataURL) else {
                 XCTFail("Error reading mock json data")
                 return
         }
         
         do {
             let searchGIFs = GIFSearchRequest(searchOptions: searchOptions)
-            let results = try searchGIFs.parseResponse(NSURLResponse(), toRequest: searchGIFs.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
+            let results = try searchGIFs.parseResponse(URLResponse(), toRequest: searchGIFs.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(results.count, 15)
             XCTAssertEqual(results[0].gifURL, "https://media2.giphy.com/media/KxufLEowgK7Xa/giphy.gif")
             XCTAssertEqual(results[0].mp4URL, "https://media2.giphy.com/media/KxufLEowgK7Xa/giphy.mp4")

@@ -12,8 +12,8 @@ import XCTest
 class InAppNotificationsRequestTests: XCTestCase {
     
     func testResponseParsing() {
-        guard let mockResponseDataURL = NSBundle(forClass: type(of: self)).URLForResource("NotificationsResponse", withExtension: "json"),
-            let mockData = NSData(contentsOfURL: mockResponseDataURL) else {
+        guard let mockResponseDataURL = Bundle(for: type(of: self)).url(forResource: "NotificationsResponse", withExtension: "json"),
+            let mockData = Data(contentsOfURL: mockResponseDataURL) else {
                 XCTFail("Error reading mock json data")
                 return
         }
@@ -21,7 +21,7 @@ class InAppNotificationsRequestTests: XCTestCase {
         do {
             let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 100)
             let notifications = InAppNotificationsRequest(paginator: paginator)
-            let results = try notifications.parseResponse(NSURLResponse(), toRequest: notifications.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
+            let results = try notifications.parseResponse(URLResponse(), toRequest: notifications.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(results.count, 1)
             XCTAssertEqual(results[0].subject, "Ryan Higa sent you a message")
             XCTAssertEqual(results[0].deeplink, "officialryanhiga://inbox/1379901")

@@ -13,7 +13,7 @@ class ComposerAttachmentTabBarButtonTests: XCTestCase {
 
     func testValuesAfterInit() {
         
-        guard let icon = UIImage(named: "sampleImage", inBundle: NSBundle(forClass: MediaSearchMediaExporterTests.self), compatibleWithTraitCollection: nil) else {
+        guard let icon = UIImage(named: "sampleImage", in: Bundle(for: MediaSearchMediaExporterTests.self), compatibleWith: nil) else {
             XCTFail("sampleImage was removed from the test data folder")
             return
         }
@@ -21,6 +21,6 @@ class ComposerAttachmentTabBarButtonTests: XCTestCase {
         let navigationMenuItem = VNavigationMenuItem(title: "title", identifier: "identifier", icon: icon, selectedIcon: UIImage(), destination: "testing", position: "top", tintColor: UIColor.red)
         let button = ComposerAttachmentTabBarButton(navigationMenuItem: navigationMenuItem)
         XCTAssertEqual(button.navigationMenuItem, navigationMenuItem)
-        XCTAssertEqual(button.imageForState(.Normal), icon)
+        XCTAssertEqual(button.image(for: .normal), icon)
     }
 }

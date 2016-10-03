@@ -35,11 +35,11 @@ class URLEncodedStringTests: XCTestCase {
         let urlRequest = NSMutableURLRequest()
         urlRequest.vsdk_addURLEncodedFormPost(mockValues)
         
-        XCTAssertEqual(urlRequest.HTTPMethod, "POST")
+        XCTAssertEqual(urlRequest.httpMethod, "POST")
         XCTAssertEqual(urlRequest.allHTTPHeaderFields?["Content-Type"], "application/x-www-form-urlencoded; charset=utf-8")
         
-        let expectedBody =  mockValues.vsdk_urlEncodedString().dataUsingEncoding(NSUTF8StringEncoding)
-        let actualBody = urlRequest.HTTPBody
+        let expectedBody =  mockValues.vsdk_urlEncodedString().dataUsingEncoding(String.Encoding.utf8)
+        let actualBody = urlRequest.httpBody
         XCTAssertEqual(expectedBody, actualBody)
     }
     
@@ -50,13 +50,13 @@ class URLEncodedStringTests: XCTestCase {
         let urlRequest = NSMutableURLRequest()
         urlRequest.vsdk_addURLEncodedFormPost(mockValues)
         
-        XCTAssertEqual(urlRequest.HTTPMethod, "POST")
+        XCTAssertEqual(urlRequest.httpMethod, "POST")
         XCTAssertEqual(urlRequest.allHTTPHeaderFields?["Content-Type"], "application/x-www-form-urlencoded; charset=utf-8")
         
-        let actualBody = String(data: urlRequest.HTTPBody!, encoding: NSUTF8StringEncoding)!
-        XCTAssertNotNil(actualBody.rangeOfString("mockIDs[]=1"))
-        XCTAssertNotNil(actualBody.rangeOfString("mockIDs[]=2"))
-        XCTAssertNotNil(actualBody.rangeOfString("test=yes"))
+        let actualBody = String(data: urlRequest.httpBody!, encoding: String.Encoding.utf8)!
+        XCTAssertNotNil(actualBody.range(of: "mockIDs[]=1"))
+        XCTAssertNotNil(actualBody.range(of: "mockIDs[]=2"))
+        XCTAssertNotNil(actualBody.range(of: "test=yes"))
     }
     
     // Reserved characters according to https://www.ietf.org/rfc/rfc2396.txt

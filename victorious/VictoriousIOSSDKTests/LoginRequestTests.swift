@@ -33,15 +33,15 @@ class LoginRequestTests: XCTestCase {
             XCTFail("No HTTP Body!")
             return
         }
-        let bodyString = String(data: bodyData, encoding: NSUTF8StringEncoding)!
+        let bodyString = String(data: bodyData, encoding: String.Encoding.utf8)!
         
-        XCTAssertNotNil(bodyString.rangeOfString("email=\(mockEmail.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.vsdk_queryPartAllowedCharacterSet)!)"))
+        XCTAssertNotNil(bodyString.rangeOfString("email=\(mockEmail.stringByAddingPercentEncodingWithAllowedCharacters(CharacterSet.vsdk_queryPartAllowedCharacterSet)!)"))
         XCTAssertNotNil(bodyString.rangeOfString("password=\(mockPassword)"))
     }
     
     func testResponseParsing() {
-        guard let mockUserDataURL = NSBundle(forClass: self.dynamicType).URLForResource("LoginResponse", withExtension: "json"),
-            let mockData = NSData(contentsOfURL: mockUserDataURL) else {
+        guard let mockUserDataURL = Bundle(for: type(of: self)).url(forResource: "LoginResponse", withExtension: "json"),
+            let mockData = try? Data(contentsOf: mockUserDataURL) else {
                 XCTFail("Error reading mock json data")
                 return
         }
@@ -49,7 +49,7 @@ class LoginRequestTests: XCTestCase {
         let loginRequest = LoginRequest(email: "joe@example.com", password: "hunter2")
         
         do {
-            let response = try loginRequest.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
+            let response = try loginRequest.parseResponse(URLResponse(), toRequest: URLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(response.token, "a787304ffd2cfcbc67edf0f628a030abdcf1808d")
             XCTAssertEqual(response.user.id, 156)
             XCTAssertEqual(response.user.displayName, "Joe")

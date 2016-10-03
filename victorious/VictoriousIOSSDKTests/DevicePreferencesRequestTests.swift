@@ -28,15 +28,15 @@ class DevicePreferencesRequestTests: XCTestCase {
     }
     
     func testResponseParsing() {
-        guard let mockResponseDataURL = NSBundle(forClass: self.dynamicType).URLForResource("DevicePreferencesResponse", withExtension: "json"),
-            let mockData = NSData(contentsOfURL: mockResponseDataURL) else {
+        guard let mockResponseDataURL = Bundle(for: type(of: self)).url(forResource: "DevicePreferencesResponse", withExtension: "json"),
+            let mockData = try? Data(contentsOf: mockResponseDataURL) else {
                 XCTFail("Error reading mock json data")
                 return
         }
         
         do {
             let request = DevicePreferencesRequest()
-            let result = try request.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
+            let result = try request.parseResponse(URLResponse(), toRequest: URLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssert(result.contains(.creatorPost))
             XCTAssertFalse(result.contains(.followPost))
             XCTAssertFalse(result.contains(.commentPost))
@@ -55,15 +55,15 @@ class DevicePreferencesRequestTests: XCTestCase {
     }
     
     func testAllEnabled() {
-        guard let mockResponseDataURL = NSBundle(forClass: self.dynamicType).URLForResource("DevicePreferencesAllOnResponse", withExtension: "json"),
-            let mockData = NSData(contentsOfURL: mockResponseDataURL) else {
+        guard let mockResponseDataURL = Bundle(for: type(of: self)).url(forResource: "DevicePreferencesAllOnResponse", withExtension: "json"),
+            let mockData = try? Data(contentsOf: mockResponseDataURL) else {
                 XCTFail("Error reading mock json data")
                 return
         }
         
         do {
             let request = DevicePreferencesRequest()
-            let result = try request.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
+            let result = try request.parseResponse(URLResponse(), toRequest: URLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssert(result.contains(.creatorPost))
             XCTAssert(result.contains(.followPost))
             XCTAssert(result.contains(.commentPost))
@@ -91,7 +91,7 @@ class DevicePreferencesRequestTests: XCTestCase {
             XCTFail("No HTTP Body!")
             return
         }
-        let bodyString = String(data: bodyData, encoding: NSUTF8StringEncoding)!
+        let bodyString = String(data: bodyData, encoding: String.Encoding.utf8)!
         
         XCTAssertNotNil(bodyString.rangeOfString("notification_creator_post=1"))
         XCTAssertNotNil(bodyString.rangeOfString("notification_new_follower=0"))
@@ -118,7 +118,7 @@ class DevicePreferencesRequestTests: XCTestCase {
             XCTFail("No HTTP Body!")
             return
         }
-        let bodyString = String(data: bodyData, encoding: NSUTF8StringEncoding)!
+        let bodyString = String(data: bodyData, encoding: String.Encoding.utf8)!
         
         XCTAssertNotNil(bodyString.rangeOfString("notification_creator_post=0"))
         XCTAssertNotNil(bodyString.rangeOfString("notification_follow_post=0"))
@@ -155,7 +155,7 @@ class DevicePreferencesRequestTests: XCTestCase {
             XCTFail("No HTTP Body!")
             return
         }
-        let bodyString = String(data: bodyData, encoding: NSUTF8StringEncoding)!
+        let bodyString = String(data: bodyData, encoding: String.Encoding.utf8)!
         
         XCTAssertNotNil(bodyString.rangeOfString("notification_creator_post=1"))
         XCTAssertNotNil(bodyString.rangeOfString("notification_follow_post=1"))

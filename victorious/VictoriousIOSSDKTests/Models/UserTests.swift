@@ -12,8 +12,8 @@ import XCTest
 class UserTests: XCTestCase {
     
     func testJSONParsing() {
-        guard let mockUserDataURL = NSBundle(forClass: self.dynamicType).URLForResource("User", withExtension: "json"),
-            let mockData = NSData(contentsOfURL: mockUserDataURL) else {
+        guard let mockUserDataURL = Bundle(for: type(of: self)).url(forResource: "User", withExtension: "json"),
+            let mockData = try? Data(contentsOf: mockUserDataURL) else {
                 XCTFail("Error reading mock json data")
                 return
         }
@@ -41,9 +41,9 @@ class UserTests: XCTestCase {
         
         let previewImages = user.previewImages
         if previewImages.count == 2 {
-            XCTAssertEqual(previewImages[0].url, NSURL(string: "https://d36dd6wez3mcdh.cloudfront.net/67ad37b710f11cea3c52feec037bcf10/80x80.jpg"))
+            XCTAssertEqual(previewImages[0].url, URL(string: "https://d36dd6wez3mcdh.cloudfront.net/67ad37b710f11cea3c52feec037bcf10/80x80.jpg"))
             XCTAssertEqual(previewImages[0].size, CGSize(width: 80, height: 80))
-            XCTAssertEqual(previewImages[1].url, NSURL(string: "https://d36dd6wez3mcdh.cloudfront.net/67ad37b710f11cea3c52feec037bcf10/100x100.jpg"))
+            XCTAssertEqual(previewImages[1].url, URL(string: "https://d36dd6wez3mcdh.cloudfront.net/67ad37b710f11cea3c52feec037bcf10/100x100.jpg"))
             XCTAssertEqual(previewImages[1].size, CGSize(width: 100, height: 100))
         } else {
             XCTFail("Expected 2 image assets in the avatar property")

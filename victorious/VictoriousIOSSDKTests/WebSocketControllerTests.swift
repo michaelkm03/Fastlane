@@ -10,8 +10,8 @@ import XCTest
 @testable import VictoriousIOSSDK
 
 class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender {
-    private var controller: WebSocketController!
-    private var webSocket: StubbedWebSocket!
+    fileprivate var controller: WebSocketController!
+    fileprivate var webSocket: StubbedWebSocket!
     
     // ForumEventSender
     var nextSender: ForumEventSender?
@@ -56,9 +56,9 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
         
         XCTAssertFalse(controller.isSetUp, "Expected controller to NOT be set up after initialization.")
         
-        expectationConnectEvent = expectationWithDescription("WebSocket-connect-event")
+        expectationConnectEvent = expectation(description: "WebSocket-connect-event")
         controller.setUp()
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
 
     func testWebSocketDisconnectEvents() {
@@ -68,23 +68,23 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
         webSocket.connect()
         XCTAssertTrue(controller.isSetUp, "Expected controller to be set up in order to test out the disconnect event.")
 
-        expectationDisconnectedEvent = expectationWithDescription("WebSocket-disconnect-event")
+        expectationDisconnectedEvent = expectation(description: "WebSocket-disconnect-event")
         controller.tearDown()
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
 
     func testWebSocketInboundChatMessage() {
         nextSender = controller
         controller.addChildReceiver(self)
         
-        guard let mockChatMessageURL = NSBundle(forClass: self.dynamicType).URLForResource("InboundWebsocketEvent", withExtension: "json"),
-            let mockChatMessageString = try? String(contentsOfURL: mockChatMessageURL, encoding: NSUTF8StringEncoding) else {
+        guard let mockChatMessageURL = Bundle(for: type(of: self)).url(forResource: "InboundWebsocketEvent", withExtension: "json"),
+            let mockChatMessageString = try? String(contentsOfURL: mockChatMessageURL, encoding: String.Encoding.utf8) else {
                 XCTFail("Error reading mock JSON data for InboundChatMessage.")
                 return
         }
-        expectationIncomingChatMessage = expectationWithDescription("WebSocket-incoming-chat-message")
+        expectationIncomingChatMessage = expectation(description: "WebSocket-incoming-chat-message")
         controller.websocketDidReceiveMessage(webSocket, text: mockChatMessageString)
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
 
     func testWebSocketOutboundChatMessage() {
@@ -99,18 +99,18 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
 
         let identificationMessage = controller.uniqueIdentificationMessage
 
-        var toServerDictionary: [String: AnyObject] = [chatMessageOutbound.rootTypeKey!: chatMessageOutbound.rootTypeValue!]
-        toServerDictionary[chatMessageOutbound.rootKey] = chatMessageOutbound.toDictionary()
-        var rootDictionary: [String: AnyObject] = ["type": "TO_SERVER"]
-        rootDictionary[identificationMessage.rootKey] = identificationMessage.toDictionary()
-        rootDictionary["to_server"] = toServerDictionary
+        var toServerDictionary: [String: AnyObject] = [chatMessageOutbound.rootTypeKey!: chatMessageOutbound.rootTypeValue! as AnyObject]
+        toServerDictionary[chatMessageOutbound.rootKey] = chatMessageOutbound.toDictionary() as AnyObject?
+        var rootDictionary: [String: AnyObject] = ["type": "TO_SERVER" as AnyObject]
+        rootDictionary[identificationMessage.rootKey] = identificationMessage.toDictionary() as AnyObject?
+        rootDictionary["to_server"] = toServerDictionary as AnyObject?
 
         webSocket.chatMessageOutboundString = JSON(rootDictionary).rawString()
-        webSocket.expectationOutboundChatMessage = expectationWithDescription("WebSocket-outgoing-chat-message")
+        webSocket.expectationOutboundChatMessage = expectation(description: "WebSocket-outgoing-chat-message")
         webSocket.connect()
         
         send(.sendContent(chatMessageOutbound))
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
 
     func testWebSocketBlockUserMessage() {
@@ -119,53 +119,53 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
         let blockUser = BlockUser(userID: "1337")
         let identificationMessage = controller.uniqueIdentificationMessage
 
-        var toServerDictionary: [String: AnyObject] = [blockUser.rootTypeKey!: blockUser.rootTypeValue!]
-        toServerDictionary[blockUser.rootKey] = blockUser.toDictionary()
-        var rootDictionary: [String: AnyObject] = ["type": "TO_SERVER"]
-        rootDictionary[identificationMessage.rootKey] = identificationMessage.toDictionary()
-        rootDictionary["to_server"] = toServerDictionary
+        var toServerDictionary: [String: AnyObject] = [blockUser.rootTypeKey!: blockUser.rootTypeValue! as AnyObject]
+        toServerDictionary[blockUser.rootKey] = blockUser.toDictionary() as AnyObject?
+        var rootDictionary: [String: AnyObject] = ["type": "TO_SERVER" as AnyObject]
+        rootDictionary[identificationMessage.rootKey] = identificationMessage.toDictionary() as AnyObject?
+        rootDictionary["to_server"] = toServerDictionary as AnyObject?
 
         webSocket.blockUserString = JSON(rootDictionary).rawString()
-        webSocket.expectationBlockUserMessage = expectationWithDescription("WebSocket-block-user-message")
+        webSocket.expectationBlockUserMessage = expectation(description: "WebSocket-block-user-message")
         webSocket.connect()
 
         send(.blockUser(blockUser))
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
 
     func testWebSocketRefreshStage() {
         nextSender = controller
         controller.addChildReceiver(self)
         
-        guard let mockStageMessageURL = NSBundle(forClass: self.dynamicType).URLForResource("RefreshStage", withExtension: "json"),
-            let mockStageMessageString = try? String(contentsOfURL: mockStageMessageURL, encoding: NSUTF8StringEncoding) else {
+        guard let mockStageMessageURL = Bundle(for: type(of: self)).url(forResource: "RefreshStage", withExtension: "json"),
+            let mockStageMessageString = try? String(contentsOfURL: mockStageMessageURL, encoding: String.Encoding.utf8) else {
                 XCTFail("Error reading mock JSON data for RefreshStage.")
                 return
         }
 
-        expectationRefreshStageMessage = expectationWithDescription("WebSocket-refresh-stage-message")
+        expectationRefreshStageMessage = expectation(description: "WebSocket-refresh-stage-message")
         controller.websocketDidReceiveMessage(webSocket, text: mockStageMessageString)
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
 
     func testChatUsersCount() {
         nextSender = controller
         controller.addChildReceiver(self)
 
-        guard let mockChatUserCountURL = NSBundle(forClass: self.dynamicType).URLForResource("ChatUserCount", withExtension: "json"),
-            let mockChatUserCountString = try? String(contentsOfURL: mockChatUserCountURL, encoding: NSUTF8StringEncoding) else {
+        guard let mockChatUserCountURL = Bundle(for: type(of: self)).url(forResource: "ChatUserCount", withExtension: "json"),
+            let mockChatUserCountString = try? String(contentsOfURL: mockChatUserCountURL, encoding: String.Encoding.utf8) else {
                 XCTFail("Error reading mock JSON data for ChatUserCount")
                 return
         }
 
-        expectationChatUserCountEvent = expectationWithDescription("WebSocket-chat-user-event")
+        expectationChatUserCountEvent = expectation(description: "WebSocket-chat-user-event")
         controller.websocketDidReceiveMessage(webSocket, text: mockChatUserCountString)
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
 
     // MARK: ForumEventReceiver
 
-    func receive(event: ForumEvent) {
+    func receive(_ event: ForumEvent) {
         switch event {
         case .websocket(let websocketEvent):
             switch websocketEvent {
@@ -211,25 +211,25 @@ private class StubbedWebSocket: WebSocket {
     var expectationOutboundChatMessage: XCTestExpectation?
     var expectationBlockUserMessage: XCTestExpectation?
     
-    init() { super.init(url: NSURL(string: "ws://this.url.is.fake")!) }
+    init() { super.init(url: URL(string: "ws://this.url.is.fake")!) }
     
     override var isConnected: Bool { return _isConnected }
-    private var _isConnected: Bool = false
+    fileprivate var _isConnected: Bool = false
     
     override func connect() {
         _isConnected = true
         delegate?.websocketDidConnect(self)
     }
 
-    override func disconnect(forceTimeout forceTimeout: NSTimeInterval?) {
+    override func disconnect(forceTimeout: TimeInterval?) {
         _isConnected = false
         delegate?.websocketDidDisconnect(self, error: nil)
     }
     
-    override func writeString(str: String, completion: (() -> ())? = nil) {
-        if let chatMessageOutboundString = chatMessageOutboundString where chatMessageOutboundString == str {
+    override func writeString(_ str: String, completion: (() -> ())? = nil) {
+        if let chatMessageOutboundString = chatMessageOutboundString , chatMessageOutboundString == str {
             expectationOutboundChatMessage?.fulfill()
-        } else if let blockUserString = blockUserString where blockUserString == str {
+        } else if let blockUserString = blockUserString , blockUserString == str {
             expectationBlockUserMessage?.fulfill()
         }
     }

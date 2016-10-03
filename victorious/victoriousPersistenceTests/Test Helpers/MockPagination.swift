@@ -13,7 +13,7 @@ import Foundation
 struct MockPaginatedRequest: PaginatorPageable, ResultBasedPageable {
     
     let paginator: StandardPaginator
-    var urlRequest = NSURLRequest()
+    var urlRequest = URLRequest()
     
     init( paginator: StandardPaginator = StandardPaginator(pageNumber: 1, itemsPerPage: 20) ) {
         self.paginator = paginator

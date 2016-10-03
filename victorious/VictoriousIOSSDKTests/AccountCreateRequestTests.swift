@@ -25,9 +25,9 @@ class AccountCreateRequestTests: XCTestCase {
             XCTFail("No HTTP Body!")
             return
         }
-        let bodyString = String(data: bodyData, encoding: NSUTF8StringEncoding)!
+        let bodyString = String(data: bodyData, encoding: String.Encoding.utf8)!
         
-        XCTAssertNotNil(bodyString.rangeOfString("email=\(mockUsername.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.vsdk_queryPartAllowedCharacterSet)!)"))
+        XCTAssertNotNil(bodyString.rangeOfString("email=\(mockUsername.stringByAddingPercentEncodingWithAllowedCharacters(CharacterSet.vsdk_queryPartAllowedCharacterSet)!)"))
         XCTAssertNotNil(bodyString.rangeOfString("password=\(mockPassword)"))
     }
     
@@ -44,14 +44,14 @@ class AccountCreateRequestTests: XCTestCase {
             XCTFail("No HTTP Body!")
             return
         }
-        let bodyString = String(data: bodyData, encoding: NSUTF8StringEncoding)!
+        let bodyString = String(data: bodyData, encoding: String.Encoding.utf8)!
         
         XCTAssertNotNil(bodyString.rangeOfString("facebook_access_token=\(mockToken)"))
     }
     
     func testResponseParsing() {
-        guard let mockUserDataURL = NSBundle(forClass: self.dynamicType).URLForResource("AccountCreateResponse", withExtension: "json"),
-            let mockData = NSData(contentsOfURL: mockUserDataURL) else {
+        guard let mockUserDataURL = Bundle(for: type(of: self)).url(forResource: "AccountCreateResponse", withExtension: "json"),
+            let mockData = try? Data(contentsOf: mockUserDataURL) else {
                 XCTFail("Error reading mock json data")
                 return
         }
@@ -63,7 +63,7 @@ class AccountCreateRequestTests: XCTestCase {
         let accountCreateRequest = AccountCreateRequest(credentials: credentials)
         
         do {
-            let response = try accountCreateRequest.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
+            let response = try accountCreateRequest.parseResponse(URLResponse(), toRequest: URLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(response.token, "f08745e841c878da64951f7bb3ceb114df27cfda")
             XCTAssertTrue(response.newUser)
             XCTAssertEqual(response.user.id, 1760702)
