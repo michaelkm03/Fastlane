@@ -56,7 +56,7 @@ extension URLRequest {
     /// - warning: This function will overwrite any existing HTTPBody!
     ///
     /// - parameter postValues: The values to URL-encode and add to the HTTPBody
-    public mutating func vsdk_addURLEncodedFormPost(_ postValues: [String: String]) {
+    public mutating func vsdk_addURLEncodedFormPost(_ postValues: [String: Any]) {
         httpMethod = "POST"
         addValue("application/x-www-form-urlencoded; charset=utf-8", forHTTPHeaderField: "Content-Type")
         httpBody = postValues.vsdk_urlEncodedString().data(using: String.Encoding.utf8)

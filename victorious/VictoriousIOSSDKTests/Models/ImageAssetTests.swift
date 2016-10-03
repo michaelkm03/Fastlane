@@ -22,6 +22,6 @@ class ImageAssetTests: XCTestCase {
             return
         }
         XCTAssertEqual(imageAsset.size, CGSize(width: 320, height: 180))
-        XCTAssertEqual(imageAsset.url, URL(string: "https://d36dd6wez3mcdh.cloudfront.net/a901cc4e626b33e1fa089aad76fb31ef/320x180.jpg"))
+        XCTAssertEqual(imageAsset.url, NSURL(string: "https://d36dd6wez3mcdh.cloudfront.net/a901cc4e626b33e1fa089aad76fb31ef/320x180.jpg"))
     }
 }

@@ -13,7 +13,7 @@ class InAppNotificationsRequestTests: XCTestCase {
     
     func testResponseParsing() {
         guard let mockResponseDataURL = Bundle(for: type(of: self)).url(forResource: "NotificationsResponse", withExtension: "json"),
-            let mockData = Data(contentsOfURL: mockResponseDataURL) else {
+            let mockData = try? Data(contentsOf: mockResponseDataURL) else {
                 XCTFail("Error reading mock json data")
                 return
         }

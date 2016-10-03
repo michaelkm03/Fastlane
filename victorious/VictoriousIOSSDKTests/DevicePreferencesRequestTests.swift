@@ -85,7 +85,7 @@ class DevicePreferencesRequestTests: XCTestCase {
         let request = DevicePreferencesRequest(preferences: [.creatorPost: true, .newFollower: false])
         let urlRequest = request.urlRequest
         
-        XCTAssertEqual(urlRequest.HTTPMethod, "POST")
+        XCTAssertEqual(urlRequest.httpMethod, "POST")
         
         guard let bodyData = urlRequest.httpBody else {
             XCTFail("No HTTP Body!")
@@ -112,7 +112,7 @@ class DevicePreferencesRequestTests: XCTestCase {
             .emotiveBallistic: false])
         let urlRequest = request.urlRequest
         
-        XCTAssertEqual(urlRequest.HTTPMethod, "POST")
+        XCTAssertEqual(urlRequest.httpMethod, "POST")
         
         guard let bodyData = urlRequest.httpBody else {
             XCTFail("No HTTP Body!")
@@ -149,7 +149,7 @@ class DevicePreferencesRequestTests: XCTestCase {
             .emotiveBallistic: true])
         let urlRequest = request.urlRequest
         
-        XCTAssertEqual(urlRequest.HTTPMethod, "POST")
+        XCTAssertEqual(urlRequest.httpMethod, "POST")
         
         guard let bodyData = urlRequest.httpBody else {
             XCTFail("No HTTP Body!")

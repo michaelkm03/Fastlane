@@ -20,7 +20,7 @@ class ContentTests: XCTestCase {
         XCTAssertEqual(content.id, "1")
         XCTAssertEqual(content.text, "TEST_TITLE")
         XCTAssertTrue(content.hashtags.isEmpty)
-        XCTAssertEqual(content.shareurl?.absoluteString, "SHARE_URL")
+        XCTAssertEqual(content.shareURL?.absoluteString, "SHARE_URL")
         XCTAssertEqual(Int(content.createdAt.value), 314159)
         XCTAssertEqual(content.previewImages.count, 4)
         XCTAssertEqual(content.assets.count, 1)
@@ -71,7 +71,7 @@ class ContentTests: XCTestCase {
 
     fileprivate func createChatMessageFromJSON(fileName: String) -> Content? {
         guard let mockUserDataURL = Bundle(for: type(of: self)).url(forResource: fileName, withExtension: "json"),
-            let mockData = Data(contentsOfURL: mockUserDataURL) else {
+            let mockData = try? Data(contentsOf: mockUserDataURL) else {
                 XCTFail("Error reading mock json data")
                 return nil
         }
@@ -81,7 +81,7 @@ class ContentTests: XCTestCase {
 
     fileprivate func createContentFromJSON(fileName: String) -> Content? {
         guard let mockUserDataURL = Bundle(for: type(of: self)).url(forResource: fileName, withExtension: "json"),
-            let mockData = Data(contentsOfURL: mockUserDataURL) else {
+            let mockData = try? Data(contentsOf: mockUserDataURL) else {
                 XCTFail("Error reading mock json data")
                 return nil
         }

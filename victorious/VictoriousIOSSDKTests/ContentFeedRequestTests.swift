@@ -14,7 +14,7 @@ class ContentFeedRequestTests: XCTestCase {
         let apiPath = APIPath(templatePath: "API_PATH")
         let request = ContentFeedRequest(apiPath: apiPath, payloadType: .regular)!
         XCTAssertEqual(request.urlRequest.url?.absoluteString, apiPath.url!.absoluteString)
-        XCTAssertEqual(request.urlRequest.HTTPMethod, "GET")
+        XCTAssertEqual(request.urlRequest.httpMethod, "GET")
     }
     
     func testParseResponse() {

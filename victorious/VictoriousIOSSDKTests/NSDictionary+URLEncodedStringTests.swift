@@ -15,7 +15,7 @@ class URLEncodedStringTests: XCTestCase {
     func testURLEncodedString() {
         let mockValues = [ "foo": "bar",
                            "strawberry": "🍓",
-                           "ampersand=equal": "& ="] as NSDictionary
+                           "ampersand=equal": "& ="]
         
         let result = mockValues.vsdk_urlEncodedString()
         
@@ -25,29 +25,29 @@ class URLEncodedStringTests: XCTestCase {
         XCTAssertEqual(result.characters.count, 59)
         
         let regex = try! NSRegularExpression(pattern: "^[^=&]+=[^=&]+&[^=&]+=[^=&]+&[^=&]+=[^=&]+$", options: [])
-        XCTAssertEqual(regex.matchesInString(result, options: [], range: NSMakeRange(0, result.characters.count)).count, 1)
+        XCTAssertEqual(regex.matches(in: result, options: [], range: NSMakeRange(0, result.characters.count)).count, 1)
     }
     
     func testMutableURLRequestAddURLEncodedFormPost() {
         let mockValues = [ "foo": "bar",
-                           "dodgers": "doyers" ] as NSDictionary
+                           "dodgers": "doyers" ]
         
-        let urlRequest = NSMutableURLRequest()
+        var urlRequest = URLRequest(url: URL(string: "foo")!)
         urlRequest.vsdk_addURLEncodedFormPost(mockValues)
         
         XCTAssertEqual(urlRequest.httpMethod, "POST")
         XCTAssertEqual(urlRequest.allHTTPHeaderFields?["Content-Type"], "application/x-www-form-urlencoded; charset=utf-8")
         
-        let expectedBody =  mockValues.vsdk_urlEncodedString().dataUsingEncoding(String.Encoding.utf8)
+        let expectedBody =  mockValues.vsdk_urlEncodedString().data(using: String.Encoding.utf8)
         let actualBody = urlRequest.httpBody
         XCTAssertEqual(expectedBody, actualBody)
     }
     
     func testArrayValueEncodedString() {
         let mockArray = [1, 2] as [Int]
-        let mockValues = ["test": "yes", "mockIDs": mockArray.flatMap({ $0 })] as NSDictionary
+        let mockValues: [String: Any] = ["test": "yes", "mockIDs": mockArray.flatMap({ $0 })]
         
-        let urlRequest = NSMutableURLRequest()
+        var urlRequest = URLRequest(url: URL(string: "foo")!)
         urlRequest.vsdk_addURLEncodedFormPost(mockValues)
         
         XCTAssertEqual(urlRequest.httpMethod, "POST")
@@ -61,7 +61,7 @@ class URLEncodedStringTests: XCTestCase {
     
     // Reserved characters according to https://www.ietf.org/rfc/rfc2396.txt
     func testReservedCharacters() {
-        let mockValues = ["reserved": ";/?:@&=+,$"] as NSDictionary
+        let mockValues = ["reserved": ";/?:@&=+,$"]
         let encoded = mockValues.vsdk_urlEncodedString()
         XCTAssertEqual(encoded, "reserved=%3B%2F%3F%3A%40%26%3D%2B%2C%24")
     }

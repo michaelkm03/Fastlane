@@ -143,7 +143,7 @@ class AccountCreateOperationTests: XCTestCase {
     
     private func loadUser() -> User? {
         guard let mockUserDataURL = NSBundle(forClass: self.dynamicType).URLForResource("User", withExtension: "json"),
-              let mockData = NSData(contentsOfURL: mockUserDataURL) else {
+              let mockData = NSData(contentsOf: mockUserDataURL) else {
             return nil
         }
         return User(json: JSON(data: mockData))
