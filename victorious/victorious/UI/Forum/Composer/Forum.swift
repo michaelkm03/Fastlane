@@ -71,16 +71,3 @@ extension Forum {
         composer?.topInset = height
     }
 }
-
-private extension VCreationFlowType {
-    var attachmentType: MediaAttachmentType? {
-        switch self {
-        case .GIF:
-            return .GIF
-        case .Image:
-            return .Image
-        default:
-            return nil
-        }
-    }
-}
