@@ -127,7 +127,7 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
 
 - (void)trackApplicationForeground
 {
-    NSArray *trackingURLs = [self.dependencyManager trackingURLsForKey:TemplateTrackingKey.start] ?: @[];
+    NSArray *trackingURLs = [self.dependencyManager trackingURLStringsForKey:TemplateTrackingKey.start] ?: @[];
     NSDictionary *params = @{ VTrackingKeyUrls : trackingURLs };
     [self resetSessionID];
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidEnterForeground parameters:params];
@@ -135,7 +135,7 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
 
 - (void)trackApplicationBackground
 {
-    NSArray *trackingURLs = [self.dependencyManager trackingURLsForKey:TemplateTrackingKey.stop] ?: @[];
+    NSArray *trackingURLs = [self.dependencyManager trackingURLStringsForKey:TemplateTrackingKey.stop] ?: @[];
     NSDictionary *params = @{ VTrackingKeyUrls : trackingURLs, VTrackingKeySessionTime : [NSNumber numberWithUnsignedInteger:self.sessionDuration] };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidEnterBackground parameters:params];
 }
@@ -146,7 +146,7 @@ static NSTimeInterval const kMinimumTimeBetweenSessions = 1800.0; // 30 minutes
     [[[FirstInstallManager alloc] init] reportFirstInstallIfNeededWithTrackingURLs:[self.dependencyManager trackingURLsForKey:TemplateTrackingKey.install]];
     
     // Tracking init (cold start)
-    NSArray *trackingURLs = [self.dependencyManager trackingURLsForKey:TemplateTrackingKey.appInit] ?: @[];
+    NSArray *trackingURLs = [self.dependencyManager trackingURLStringsForKey:TemplateTrackingKey.appInit] ?: @[];
     NSDictionary *params = @{ VTrackingKeyUrls : trackingURLs };
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventApplicationDidLaunch parameters:params];
 }
