@@ -21,13 +21,13 @@ class VIPPurchasingTests: BasePersistentStoreTestCase {
         let operation = VIPSubscribeOperation(productIdentifier: "")
         operation.purchaseManager = MockPurchaseManager()
         
-        let expectation = expectationWithDescription("VIPSubscribeOperation")
+        let expectation = expectation(description:"VIPSubscribeOperation")
         operation.queue() { op in
             XCTAssertNil(operation.error)
             XCTAssertTrue(VCurrentUser.isVIPSubscriber?.boolValue)
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(1.0, handler: nil)
+        waitForExpectations(timeout:1.0, handler: nil)
     }
     
     func testSubscribeError() {
@@ -35,7 +35,7 @@ class VIPPurchasingTests: BasePersistentStoreTestCase {
         let expectedError = NSError(domain: "", code: -99, userInfo:nil)
         operation.purchaseManager = MockPurchaseManager(error: expectedError)
         
-        let expectation = expectationWithDescription("VIPSubscribeOperation")
+        let expectation = expectation(description:"VIPSubscribeOperation")
         operation.queue() { op in
             XCTAssertEqual(operation.error, expectedError)
             guard let isVIPSubscriber = VCurrentUser.isVIPSubscriber?.boolValue else {
@@ -45,20 +45,20 @@ class VIPPurchasingTests: BasePersistentStoreTestCase {
             XCTAssertFalse(isVIPSubscriber.boolValue)
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(1.0, handler: nil)
+        waitForExpectations(timeout:1.0, handler: nil)
     }
     
     func testRestoreSuccess() {
         let operation = RestorePurchasesOperation()
         operation.purchaseManager = MockPurchaseManager()
         
-        let expectation = expectationWithDescription("RestorePurchasesOperation")
+        let expectation = expectation(description:"RestorePurchasesOperation")
         operation.queue() { op in
             XCTAssertNil(operation.error)
             XCTAssert(VCurrentUser.isVIPSubscriber.boolValue)
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(1.0, handler: nil)
+        waitForExpectations(timeout:1.0, handler: nil)
     }
     
     func testRestoreError() {
@@ -66,11 +66,11 @@ class VIPPurchasingTests: BasePersistentStoreTestCase {
         let expectedError = NSError(domain: "", code: -99, userInfo:nil)
         operation.purchaseManager = MockPurchaseManager(error: expectedError)
         
-        let expectation = expectationWithDescription("RestorePurchasesOperation")
+        let expectation = expectation(description:"RestorePurchasesOperation")
         operation.queue() { op in
             XCTAssertEqual(operation.error, expectedError)
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(1.0, handler: nil)
+        waitForExpectations(timeout:1.0, handler: nil)
     }
 }

@@ -13,7 +13,7 @@ import Foundation
 struct MockPaginatedRequest: PaginatorPageable, ResultBasedPageable {
     
     let paginator: StandardPaginator
-    var urlRequest = URLRequest()
+    var urlRequest = URLRequest(url: URL(string: "foo")!)
     
     init( paginator: StandardPaginator = StandardPaginator(pageNumber: 1, itemsPerPage: 20) ) {
         self.paginator = paginator
@@ -22,6 +22,8 @@ struct MockPaginatedRequest: PaginatorPageable, ResultBasedPageable {
     init( request: MockPaginatedRequest, paginator: StandardPaginator ) {
         self.paginator = paginator
     }
+    
+    func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> Void { }
 }
 
 class MockPaginatedObject {

@@ -44,7 +44,7 @@ class AccountCreateOperationTests: XCTestCase {
             newUser: false
         )
 
-        let expectation = expectationWithDescription("testFacebook")
+        let expectation = expectation(description:"testFacebook")
         operation.onComplete(response) {
             guard let persistentUser: VUser = self.persistentStore.mainContext.v_findObjects(["remoteId" : user.userID ]).first else {
                 XCTFail( "Unable to load the user the operation should have parsed." )
@@ -60,7 +60,7 @@ class AccountCreateOperationTests: XCTestCase {
 
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout:1, handler: nil)
     }
 
     func testEmailAndPassword() {
@@ -83,7 +83,7 @@ class AccountCreateOperationTests: XCTestCase {
             newUser: false
         )
         
-        let expectation = expectationWithDescription("testEmailAndPassword")
+        let expectation = expectation(description:"testEmailAndPassword")
         operation.onComplete(response) {
             guard let persistentUser: VUser = self.persistentStore.mainContext.v_findObjects(["remoteId" : user.userID ]).first else {
                 XCTFail( "Unable to load the user the operation should have parsed." )
@@ -99,7 +99,7 @@ class AccountCreateOperationTests: XCTestCase {
             
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout:1, handler: nil)
     }
 
     func testTwitter() {
@@ -122,7 +122,7 @@ class AccountCreateOperationTests: XCTestCase {
             newUser: false
         )
         
-        let expectation = expectationWithDescription("testTwitter")
+        let expectation = expectation(description:"testTwitter")
         operation.onComplete(response) {
             guard let persistentUser: VUser = self.persistentStore.mainContext.v_findObjects(["remoteId" : user.userID ]).first else {
                 XCTFail( "Unable to load the user the operation should have parsed." )
@@ -138,7 +138,7 @@ class AccountCreateOperationTests: XCTestCase {
             
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout:1, handler: nil)
     }
     
     private func loadUser() -> User? {
