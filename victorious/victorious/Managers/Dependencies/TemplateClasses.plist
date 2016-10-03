@@ -122,6 +122,8 @@
 	<string>VTextOnImageButton</string>
 	<key>textOnColor.button</key>
 	<string>VTextOnColorButton</string>
+	<key>textOnPill.button</key>
+	<string>VTextOnPillButton</string>
 	<key>push.notifications.screen</key>
 	<string>victorious.NotificationSettingsViewController</string>
 </dict>

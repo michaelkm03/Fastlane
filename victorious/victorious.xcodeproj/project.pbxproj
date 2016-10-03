@@ -1029,6 +1029,7 @@
 		BF5BF6BD1D00F657009FE532 /* ContentUpvoteRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5BF6BC1D00F657009FE532 /* ContentUpvoteRequestTests.swift */; };
 		BF68C4F01C7CEE9900739D87 /* AvatarBadgeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF68C4EE1C7CEE0000739D87 /* AvatarBadgeType.swift */; };
 		BF6FCA351D832E1500DB43BC /* ToggleableImageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6FCA341D832E1500DB43BC /* ToggleableImageButton.swift */; };
+		BF7345261DA310B000049A3F /* TextOnPillButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7345251DA310B000049A3F /* TextOnPillButton.swift */; };
 		BF78BF071CE27FB800AFB8F3 /* ContentMediaAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF78BF061CE27FB800AFB8F3 /* ContentMediaAsset.swift */; };
 		BF79B77D1C59542100AC980A /* UIDevice+VDeviceCapability.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF79B77C1C59542100AC980A /* UIDevice+VDeviceCapability.swift */; };
 		BF79C7711C98D3D100222C8A /* LoadingCancellableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF79C76F1C98D3D100222C8A /* LoadingCancellableView.swift */; };
@@ -2614,6 +2615,7 @@
 		BF5BF6BC1D00F657009FE532 /* ContentUpvoteRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentUpvoteRequestTests.swift; sourceTree = "<group>"; };
 		BF68C4EE1C7CEE0000739D87 /* AvatarBadgeType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AvatarBadgeType.swift; sourceTree = "<group>"; };
 		BF6FCA341D832E1500DB43BC /* ToggleableImageButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ToggleableImageButton.swift; path = Button/ToggleableImageButton.swift; sourceTree = "<group>"; };
+		BF7345251DA310B000049A3F /* TextOnPillButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TextOnPillButton.swift; path = Button/TextOnPillButton.swift; sourceTree = "<group>"; };
 		BF78BF061CE27FB800AFB8F3 /* ContentMediaAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentMediaAsset.swift; sourceTree = "<group>"; };
 		BF79B77C1C59542100AC980A /* UIDevice+VDeviceCapability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIDevice+VDeviceCapability.swift"; sourceTree = "<group>"; };
 		BF79C76F1C98D3D100222C8A /* LoadingCancellableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingCancellableView.swift; sourceTree = "<group>"; };
@@ -3352,7 +3354,6 @@
 				BF9006EA1D9C7D0B0002D119 /* EndVIPEventRequest.swift */,
 				A7D920471C063682002A6503 /* Errors */,
 				0EBF417A1CAB5C20002966B3 /* ForumEvents */,
-				F004B3291D8914E3005D4A74 /* GIFSearchOptions.swift */,
 				F004B3291D8914E3005D4A74 /* AssetSearchOptions.swift */,
 				C3FEA7A41BF26F24003446CC /* GIFSearchRequest.swift */,
 				A7A583501C3B00CC0088A08A /* HashtagSearchRequest.swift */,
@@ -6410,6 +6411,7 @@
 				F07DDE451CFCF33400C7FC8D /* ImageOnColorButton.swift */,
 				F07DDE461CFCF33400C7FC8D /* ImageOnImageButton.swift */,
 				F07DDE341CFCC7B200C7FC8D /* TextOnColorButton.swift */,
+				BF7345251DA310B000049A3F /* TextOnPillButton.swift */,
 				F07DDE471CFCF33400C7FC8D /* TextOnImageButton.swift */,
 				BF6FCA341D832E1500DB43BC /* ToggleableImageButton.swift */,
 				F0ABAA7B1D1CA8F700DAD4B3 /* TouchableInsetAdjustableButton.swift */,
@@ -8428,6 +8430,7 @@
 				034BA92E1C60272000C23D7E /* VLog.swift in Sources */,
 				A73BA2C61C9393ED008168B5 /* ChatFeedDataSource.swift in Sources */,
 				7A1DECF81D80E101003F5C37 /* ConfirmDestructiveActionOperation.swift in Sources */,
+				BF7345261DA310B000049A3F /* TextOnPillButton.swift in Sources */,
 				BF2AE2C01CD280CB00A9967A /* GridStreamDataSource.swift in Sources */,
 				D80A94E61A546DF90035D788 /* VAssetThumbnailDataSource.m in Sources */,
 				7AE0A0401D63B3EE00769080 /* BadgeCountManager.swift in Sources */,

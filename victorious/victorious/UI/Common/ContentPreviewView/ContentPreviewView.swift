@@ -21,9 +21,13 @@ class ContentPreviewView: UIView {
         static let vipSize = CGSize(width: 30, height: 30)
         
         static let imageReloadThreshold = CGFloat(0.75)
+        
+        static let gradientStartColor = UIColor(red: 76/255, green: 76/255, blue: 76/255, alpha: 0.5)
+        static let gradientEndColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1.0)
     }
 
     private let previewImageView = UIImageView()
+    private let gradientView = VLinearGradientView()
     private var vipButton: UIButton?
     
     private let playButton: UIView
@@ -67,6 +71,14 @@ class ContentPreviewView: UIView {
         
         super.init(frame: CGRectZero)
         
+        let colors = [
+            Constants.gradientStartColor,
+            Constants.gradientEndColor
+        ]
+        gradientView.setColors(colors)
+        gradientView.startPoint = CGPoint(x: 0.5, y: 0.0)
+        gradientView.endPoint = CGPoint(x: 0.5, y: 1.0)
+        
         backgroundColor = Constants.loadingColor
         previewImageView.backgroundColor = .clearColor()
         
@@ -75,6 +87,8 @@ class ContentPreviewView: UIView {
         addSubview(previewImageView)
         
         addSubview(playButton)
+        
+        addSubview(gradientView)
         
         if let spinner = spinner {
             addSubview(spinner)
@@ -92,6 +106,7 @@ class ContentPreviewView: UIView {
         super.layoutSubviews()
         
         previewImageView.frame = self.bounds
+        gradientView.frame = self.bounds
         
         playButton.frame = CGRect(
             origin: CGPoint(x: bounds.center.x - Constants.playButtonSize.width/2, y: bounds.center.y - Constants.playButtonSize.height/2),
@@ -100,7 +115,10 @@ class ContentPreviewView: UIView {
         
         if let vipButton = vipButton {
             vipButton.frame = CGRect(
-                origin: CGPoint(x: Constants.vipMargins, y: bounds.size.height - Constants.vipSize.height - Constants.vipMargins),
+                origin: CGPoint(
+                    x: bounds.center.x - vipButton.intrinsicContentSize().width/2,
+                    y: bounds.size.height - Constants.vipSize.height - Constants.vipMargins
+                ),
                 size: vipButton.intrinsicContentSize()
             )
         }
@@ -126,7 +144,9 @@ class ContentPreviewView: UIView {
     
     private func setupForContent(content: Content) {
         spinner?.startAnimating()
-        vipButton?.hidden = !content.isVIPOnly
+        let userCanViewContent = VCurrentUser.user?.canView(content) == true
+        gradientView.hidden = userCanViewContent
+        vipButton?.hidden = userCanViewContent
         
         setupImage(forContent: content)
         
@@ -137,10 +157,8 @@ class ContentPreviewView: UIView {
     }
     
     private func setupImage(forContent content: Content) {
-        let userCanViewContent = VCurrentUser.user?.canView(content) == true
         if let imageAsset = content.previewImage(ofMinimumWidth: bounds.size.width) {
-            let blurRadius = userCanViewContent ? 0 : Constants.imageViewBlurEffectRadius
-            previewImageView.getImageAsset(imageAsset, blurRadius: blurRadius) { [weak self] result in
+            previewImageView.getImageAsset(imageAsset) { [weak self] result in
                 switch result {
                     case .success(let image):
                         self?.finishedLoadingPreviewImage(image, for: content)

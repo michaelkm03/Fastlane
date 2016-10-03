@@ -36,7 +36,7 @@ extension TrackableButton where Self: UIButton {
                 return dependencyManager.stringForKey(appearance.rawValue) as? AppearanceValueType
             case .font:
                 return dependencyManager.fontForKey(appearance.rawValue) as? AppearanceValueType
-            case .clickable:
+            case .clickable, .borderWidth:
                 return dependencyManager.numberForKey(appearance.rawValue) as? AppearanceValueType
         }
     }
@@ -58,4 +58,7 @@ enum TrackableButtonAppearance: String {
     case unselectedColor = "color.unselected"
     
     case clickable = "clickable"
+    
+    // Only used on TextOnPillButton
+    case borderWidth = "width.border"
 }
