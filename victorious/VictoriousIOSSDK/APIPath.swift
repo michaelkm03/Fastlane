@@ -38,9 +38,7 @@ public struct APIPath: Equatable {
     public var url: NSURL? {
         var processedPath = templatePath
         
-        if macroReplacements.count > 0 {
-            processedPath = VSDKURLMacroReplacement().urlByReplacingMacrosFromDictionary(macroReplacements, inURLString: processedPath)
-        }
+        processedPath = VSDKURLMacroReplacement().urlByReplacingMacrosFromDictionary(macroReplacements, inURLString: processedPath)
         
         if queryParameters.count > 0 {
             if let components = NSURLComponents(string: processedPath) {
