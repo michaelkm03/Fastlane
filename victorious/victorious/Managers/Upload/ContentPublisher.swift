@@ -83,7 +83,6 @@ class ContentPublisher {
     
     /// Removes `chatFeedContents` from the `pendingQueue`, returning the indices of each removed item in the queue.
     func remove(itemsToRemove: [ChatFeedContent]) -> [Int] {
-        
         let indices = pendingItems.enumerate().filter { index, item in
             itemsToRemove.contains { itemToRemove in
                  itemToRemove.matches(item)
@@ -249,7 +248,7 @@ private extension VDependencyManager {
     func mediaCreationAPIPath(for content: Content) -> APIPath? {
         return apiPathForKey("mediaCreationURL", macroReplacements: [
             "%%TIME_CURRENT%%": content.postedAt?.apiString ?? ""
-            ])
+        ])
     }
     
     func stickerCreationAPIPath(for content: Content) -> APIPath? {
@@ -260,7 +259,7 @@ private extension VDependencyManager {
         return apiPathForKey("stickerCreationURL", macroReplacements: [
             "%%TIME_CURRENT%%": content.postedAt?.apiString ?? "",
             "%%CONTENT_ID%%": externalID
-            ])
+        ])
     }
     
     func textCreationAPIPath(for content: Content) -> APIPath? {
