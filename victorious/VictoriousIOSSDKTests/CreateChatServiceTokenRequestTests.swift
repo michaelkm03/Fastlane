@@ -22,6 +22,6 @@ class CreateChatServiceTokenRequestTests: XCTestCase {
         let url = URL(string: expandedURLString)!
         
         XCTAssertEqual(url.baseURL, request?.baseURL)
-        XCTAssertEqual(url, request?.urlRequest.URL)
+        XCTAssertEqual(url, request?.urlRequest.url)
     }
 }

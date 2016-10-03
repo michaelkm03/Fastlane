@@ -13,7 +13,7 @@ class DeviceExperimentsRequestTests: XCTestCase {
     
     func testRequest() {
         let experimentSettingsRequest = DeviceExperimentsRequest()
-        XCTAssertEqual(experimentSettingsRequest.urlRequest.URL, URL(string: "/api/device/experiments"))
+        XCTAssertEqual(experimentSettingsRequest.urlRequest.url, URL(string: "/api/device/experiments"))
     }
     
     func testValidResponseParsing() {

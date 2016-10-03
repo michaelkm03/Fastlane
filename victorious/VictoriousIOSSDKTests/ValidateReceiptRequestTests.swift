@@ -18,7 +18,7 @@ class ValidateReceiptRequestTests: XCTestCase {
             return
         }
         
-        XCTAssertEqual(request.urlRequest.URL, URL(string: urlString))
+        XCTAssertEqual(request.urlRequest.url, URL(string: urlString))
         XCTAssertEqual(request.urlRequest.HTTPMethod, "POST")
         
         guard let mockUserDataURL = Bundle(for: type(of: self)).url(forResource: "PurchaseResponse", withExtension: "json"),

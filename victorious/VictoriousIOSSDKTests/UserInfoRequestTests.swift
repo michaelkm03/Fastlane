@@ -15,7 +15,7 @@ class UserInfoRequestTests: XCTestCase {
     func testRequestConfigurationWithAPIPath() {
         let id = 9090
         let request = UserInfoRequest(apiPath: UserInfoRequestTests.apiPath, userID: id)!
-        XCTAssertEqual(request.urlRequest.URL, URL(string: "http://api.getvictorious.com/my/cool/path/\(id)"))
+        XCTAssertEqual(request.urlRequest.url, URL(string: "http://api.getvictorious.com/my/cool/path/\(id)"))
     }
     
     func testParseResponse() {

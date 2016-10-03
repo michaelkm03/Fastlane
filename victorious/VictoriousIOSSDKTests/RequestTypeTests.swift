@@ -61,7 +61,7 @@ class RequestTypeTests: XCTestCase {
         
         let parseResponseExpectation = expectation(description: "parseResponse")
         let mockRequest = MockRequest(urlRequest: expectedURLRequest) { (actualURLRequest, response, responseData, responseJSON) -> Int in
-            XCTAssertEqual(actualURLRequest.URL, expectedURLRequest.URL)
+            XCTAssertEqual(actualURLRequest.url, expectedURLRequest.url)
             XCTAssertEqual(actualURLRequest.allHTTPHeaderFields?["Coal-Mine"], "canary")
             XCTAssertEqual(responseData, expectedResponse.data(using: String.Encoding.utf8))
             XCTAssertEqual(responseJSON.null, NSNull())

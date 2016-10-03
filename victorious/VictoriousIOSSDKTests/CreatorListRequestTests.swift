@@ -20,7 +20,7 @@ class CreatorListRequestTests: XCTestCase {
         let expectedURLString = "https://vapi-dev.getvictorious.com/v1/user/owners/"
         let expectedURL = URL(string: expectedURLString)!
         
-        XCTAssertEqual(expectedURL, request?.urlRequest.URL)
+        XCTAssertEqual(expectedURL, request?.urlRequest.url)
         XCTAssertEqual(expectedURL.baseURL, request?.baseURL)
     }
     
