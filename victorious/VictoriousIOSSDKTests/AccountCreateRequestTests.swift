@@ -27,7 +27,7 @@ class AccountCreateRequestTests: XCTestCase {
         }
         let bodyString = String(data: bodyData, encoding: String.Encoding.utf8)!
         
-        XCTAssertNotNil(bodyString.range(of: "email=\(mockUsername.stringByAddingPercentEncodingWithAllowedCharacters(CharacterSet.vsdk_queryPartAllowedCharacterSet)!)"))
+        XCTAssertNotNil(bodyString.range(of: "email=\(mockUsername.addingPercentEncoding(withAllowedCharacters: (CharacterSet.vsdk_queryPartAllowedCharacterSet)!))"))
         XCTAssertNotNil(bodyString.range(of: "password=\(mockPassword)"))
     }
     
@@ -63,7 +63,7 @@ class AccountCreateRequestTests: XCTestCase {
         let accountCreateRequest = AccountCreateRequest(credentials: credentials)
         
         do {
-            let response = try accountCreateRequest.parseResponse(URLResponse(), toRequest: URLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
+            let response = try accountCreateRequest.parseResponse(URLResponse(), toRequest: URLRequest(url: URL(string: "foo")!), responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(response.token, "f08745e841c878da64951f7bb3ceb114df27cfda")
             XCTAssertTrue(response.newUser)
             XCTAssertEqual(response.user.id, 1760702)

@@ -29,7 +29,7 @@ class ContentFeedRequestTests: XCTestCase {
         let apiPath = APIPath(templatePath: "API_PATH")
         let request = ContentFeedRequest(apiPath: apiPath, payloadType: .regular)!
         do {
-            let feedResult = try request.parseResponse(URLResponse(), toRequest: URLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
+            let feedResult = try request.parseResponse(URLResponse(), toRequest: URLRequest(url: URL(string: "foo")!), responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(feedResult.contents.count, 2)
             XCTAssertEqual(feedResult.contents.first?.id, "20711")
             XCTAssertEqual(feedResult.contents.last?.id, "20712")

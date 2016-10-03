@@ -36,7 +36,7 @@ class DevicePreferencesRequestTests: XCTestCase {
         
         do {
             let request = DevicePreferencesRequest()
-            let result = try request.parseResponse(URLResponse(), toRequest: URLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
+            let result = try request.parseResponse(URLResponse(), toRequest: URLRequest(url: URL(string: "foo")!), responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssert(result.contains(.creatorPost))
             XCTAssertFalse(result.contains(.followPost))
             XCTAssertFalse(result.contains(.commentPost))
@@ -63,7 +63,7 @@ class DevicePreferencesRequestTests: XCTestCase {
         
         do {
             let request = DevicePreferencesRequest()
-            let result = try request.parseResponse(URLResponse(), toRequest: URLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
+            let result = try request.parseResponse(URLResponse(), toRequest: URLRequest(url: URL(string: "foo")!), responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssert(result.contains(.creatorPost))
             XCTAssert(result.contains(.followPost))
             XCTAssert(result.contains(.commentPost))
@@ -87,7 +87,7 @@ class DevicePreferencesRequestTests: XCTestCase {
         
         XCTAssertEqual(urlRequest.HTTPMethod, "POST")
         
-        guard let bodyData = urlRequest.HTTPBody else {
+        guard let bodyData = urlRequest.httpBody else {
             XCTFail("No HTTP Body!")
             return
         }
@@ -114,7 +114,7 @@ class DevicePreferencesRequestTests: XCTestCase {
         
         XCTAssertEqual(urlRequest.HTTPMethod, "POST")
         
-        guard let bodyData = urlRequest.HTTPBody else {
+        guard let bodyData = urlRequest.httpBody else {
             XCTFail("No HTTP Body!")
             return
         }
@@ -151,7 +151,7 @@ class DevicePreferencesRequestTests: XCTestCase {
         
         XCTAssertEqual(urlRequest.HTTPMethod, "POST")
         
-        guard let bodyData = urlRequest.HTTPBody else {
+        guard let bodyData = urlRequest.httpBody else {
             XCTFail("No HTTP Body!")
             return
         }

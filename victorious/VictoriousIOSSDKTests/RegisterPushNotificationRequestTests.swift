@@ -17,7 +17,7 @@ class RegisterPushNotificationRequestTests: XCTestCase {
         let urlRequest = request.urlRequest
         XCTAssertEqual(urlRequest.url?.absoluteString, "/api/device/register_push_id")
         
-        guard let bodyData = urlRequest.HTTPBody else {
+        guard let bodyData = urlRequest.httpBody else {
             XCTFail("No HTTP Body!")
             return
         }

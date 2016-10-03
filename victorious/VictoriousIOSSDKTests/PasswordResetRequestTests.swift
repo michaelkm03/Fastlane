@@ -21,7 +21,7 @@ class PasswordResetRequestTests: XCTestCase {
         
         XCTAssertEqual(urlRequest.url?.absoluteString, "/api/password_reset")
         
-        guard let bodyData = urlRequest.HTTPBody else {
+        guard let bodyData = urlRequest.httpBody else {
             XCTFail("No HTTP Body!")
             return
         }
@@ -42,7 +42,7 @@ class PasswordResetRequestTests: XCTestCase {
         
         XCTAssertEqual(urlRequest.url?.absoluteString, "/api/password_reset")
         
-        guard let bodyData = urlRequest.HTTPBody else {
+        guard let bodyData = urlRequest.httpBody else {
             XCTFail("No HTTP Body!")
             return
         }

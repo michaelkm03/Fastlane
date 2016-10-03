@@ -30,7 +30,7 @@ class ValidateReceiptRequestTests: XCTestCase {
         do {
             let vipStatus = try request.parseResponse(
                 URLResponse(),
-                toRequest: URLRequest(),
+                toRequest: URLRequest(url: URL(string: "foo")!),
                 responseData: mockData,
                 responseJSON: JSON(data: mockData)
             )

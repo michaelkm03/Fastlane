@@ -54,7 +54,7 @@ class AccountUpdateRequestTests: XCTestCase {
         }
         
         do {
-            let user = try updateRequest.parseResponse(URLResponse(), toRequest: URLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
+            let user = try updateRequest.parseResponse(URLResponse(), toRequest: URLRequest(url: URL(string: "foo")!), responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(user.id, 156)
             XCTAssertEqual(user.displayName, "Joe Victorious")
         } catch {
@@ -71,7 +71,7 @@ class AccountUpdateRequestTests: XCTestCase {
         }
         
         do {
-            let user = try updatePasswordRequest.parseResponse(URLResponse(), toRequest: URLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
+            let user = try updatePasswordRequest.parseResponse(URLResponse(), toRequest: URLRequest(url: URL(string: "foo")!), responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(user.id, 156)
             XCTAssertEqual(user.displayName, "Joe Victorious")
         } catch {

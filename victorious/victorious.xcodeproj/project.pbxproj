@@ -422,7 +422,6 @@
 		672033571C4DCF900015D91D /* TrendingUsersResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 672033561C4DCF900015D91D /* TrendingUsersResponse.json */; };
 		6725A9FE1CDBE6E8003E9168 /* NetworkDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6725A9FD1CDBE6E8003E9168 /* NetworkDataSource.swift */; };
 		6727B13A1BFBEA760093AA0A /* PTSans-Narrow.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6727B1391BFBEA760093AA0A /* PTSans-Narrow.ttf */; };
-		672828001C45ED6400B02909 /* AdditionalAssertions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 672827FF1C45ED6400B02909 /* AdditionalAssertions.swift */; };
 		672894331BFA9874001146DB /* MuseoSans-100.otf in Resources */ = {isa = PBXBuildFile; fileRef = 672894301BFA9874001146DB /* MuseoSans-100.otf */; };
 		672894341BFA9874001146DB /* MuseoSans-300.otf in Resources */ = {isa = PBXBuildFile; fileRef = 672894311BFA9874001146DB /* MuseoSans-300.otf */; };
 		672894351BFA9874001146DB /* MuseoSans-500.otf in Resources */ = {isa = PBXBuildFile; fileRef = 672894321BFA9874001146DB /* MuseoSans-500.otf */; };
@@ -1846,7 +1845,6 @@
 		672033561C4DCF900015D91D /* TrendingUsersResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TrendingUsersResponse.json; sourceTree = "<group>"; };
 		6725A9FD1CDBE6E8003E9168 /* NetworkDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkDataSource.swift; sourceTree = "<group>"; };
 		6727B1391BFBEA760093AA0A /* PTSans-Narrow.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PTSans-Narrow.ttf"; sourceTree = "<group>"; };
-		672827FF1C45ED6400B02909 /* AdditionalAssertions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdditionalAssertions.swift; sourceTree = "<group>"; };
 		672894301BFA9874001146DB /* MuseoSans-100.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSans-100.otf"; sourceTree = "<group>"; };
 		672894311BFA9874001146DB /* MuseoSans-300.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSans-300.otf"; sourceTree = "<group>"; };
 		672894321BFA9874001146DB /* MuseoSans-500.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MuseoSans-500.otf"; sourceTree = "<group>"; };
@@ -3375,7 +3373,6 @@
 				7992DF6A1C17B174004007A1 /* DeviceExperimentsRequestTests.swift */,
 				0300AA7F1BF2BCBB000A121D /* DevicePreferencesRequestTests.swift */,
 				C3FEA7A01BF17405003446CC /* GIFSearchRequestTests.swift */,
-				6727B1361BFBBCE00093AA0A /* Helpers */,
 				03314F2E1BE3E2DF00EE74FD /* Info.plist */,
 				0315EAD41BED8C3100645071 /* LoginRequestTests.swift */,
 				C3E7C0F81BF3F44700AFE545 /* MarkAllNotificationsAsReadRequestTests.swift */,
@@ -4533,14 +4530,6 @@
 				670A3B1B1CA9F5AF004C5F57 /* InterstitialAlertViewController.swift */,
 			);
 			name = "Interstitial Alert";
-			sourceTree = "<group>";
-		};
-		6727B1361BFBBCE00093AA0A /* Helpers */ = {
-			isa = PBXGroup;
-			children = (
-				672827FF1C45ED6400B02909 /* AdditionalAssertions.swift */,
-			);
-			path = Helpers;
 			sourceTree = "<group>";
 		};
 		6728942F1BFA9874001146DB /* MuseoSans */ = {
@@ -7559,7 +7548,6 @@
 				A7039CF61C24A8F40023DE6F /* AlertTests.swift in Sources */,
 				676468D01C3DC06300CC41D9 /* RequestPasswordResetRequestTests.swift in Sources */,
 				BF2D257B1CED40CC0001A2AF /* ContentTests.swift in Sources */,
-				672828001C45ED6400B02909 /* AdditionalAssertions.swift in Sources */,
 				C314E6BD1BF13CD000FB9591 /* HashtagTests.swift in Sources */,
 				BF3CD8921D11E44B00CB7764 /* UserUnupvoteRequestTests.swift in Sources */,
 				0399E8101C51D4D200E090F7 /* TemplateRequestTests.swift in Sources */,

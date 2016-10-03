@@ -17,7 +17,7 @@ class AcknowledgeAlertRequestTests: XCTestCase {
         let acknowledgeAlertRequest = AcknowledgeAlertRequest(alertID: alertID)
         XCTAssertEqual(acknowledgeAlertRequest.urlRequest.url?.absoluteString, "/api/alert/acknowledge")
         
-        guard let bodyData = acknowledgeAlertRequest.urlRequest.HTTPBody else {
+        guard let bodyData = acknowledgeAlertRequest.urlRequest.httpBody else {
             XCTFail("No HTTP Body!")
             return
         }

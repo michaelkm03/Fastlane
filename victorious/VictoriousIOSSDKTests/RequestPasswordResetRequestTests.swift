@@ -19,13 +19,13 @@ class RequestPasswordResetRequestTests: XCTestCase {
         
         XCTAssertEqual(urlRequest.url?.absoluteString, "/api/password_reset_request")
         
-        guard let bodyData = urlRequest.HTTPBody else {
+        guard let bodyData = urlRequest.httpBody else {
             XCTFail("No HTTP Body!")
             return
         }
         let bodyString = String(data: bodyData, encoding: String.Encoding.utf8)!
         
-        XCTAssertNotNil(bodyString.range(of: "email=\(mockEmail.stringByAddingPercentEncodingWithAllowedCharacters(CharacterSet.vsdk_queryPartAllowedCharacterSet)!)"))
+        XCTAssertNotNil(bodyString.range(of: "email=\(mockEmail.addingPercentEncoding(withAllowedCharacters: (CharacterSet.vsdk_queryPartAllowedCharacterSet)!))"))
     }
     
     func testParseResponse() {

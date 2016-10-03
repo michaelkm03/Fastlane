@@ -29,13 +29,13 @@ class LoginRequestTests: XCTestCase {
         
         XCTAssertEqual(request.url?.absoluteString, "/api/login")
         
-        guard let bodyData = request.HTTPBody else {
+        guard let bodyData = request.httpBody else {
             XCTFail("No HTTP Body!")
             return
         }
         let bodyString = String(data: bodyData, encoding: String.Encoding.utf8)!
         
-        XCTAssertNotNil(bodyString.range(of: "email=\(mockEmail.stringByAddingPercentEncodingWithAllowedCharacters(CharacterSet.vsdk_queryPartAllowedCharacterSet)!)"))
+        XCTAssertNotNil(bodyString.range(of: "email=\(mockEmail.addingPercentEncoding(withAllowedCharacters: (CharacterSet.vsdk_queryPartAllowedCharacterSet)!))"))
         XCTAssertNotNil(bodyString.range(of: "password=\(mockPassword)"))
     }
     
@@ -49,7 +49,7 @@ class LoginRequestTests: XCTestCase {
         let loginRequest = LoginRequest(email: "joe@example.com", password: "hunter2")
         
         do {
-            let response = try loginRequest.parseResponse(URLResponse(), toRequest: URLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
+            let response = try loginRequest.parseResponse(URLResponse(), toRequest: URLRequest(url: URL(string: "foo")!), responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(response.token, "a787304ffd2cfcbc67edf0f628a030abdcf1808d")
             XCTAssertEqual(response.user.id, 156)
             XCTAssertEqual(response.user.displayName, "Joe")

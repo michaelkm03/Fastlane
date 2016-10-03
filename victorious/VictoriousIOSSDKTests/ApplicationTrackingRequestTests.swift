@@ -17,6 +17,6 @@ class ApplicationTrackingRequestTests: XCTestCase {
         let trackingRequest = ApplicationTrackingRequest(trackingURL: url, eventIndex: eventIndex)
         let urlRequest = trackingRequest.urlRequest
         XCTAssertEqual(urlRequest.url, url)
-        XCTAssertEqual(urlRequest.valueForHTTPHeaderField("X-Client-Event-Index"), "20")
+        XCTAssertEqual(urlRequest.value(forHTTPHeader: "X-Client-Event-Index"), "20")
     }
 }

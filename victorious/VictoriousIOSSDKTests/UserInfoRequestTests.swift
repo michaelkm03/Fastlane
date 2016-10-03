@@ -29,7 +29,7 @@ class UserInfoRequestTests: XCTestCase {
         let request =  UserInfoRequest(apiPath: UserInfoRequestTests.apiPath, userID: id)!
         let user: User
         do {
-            user = try request.parseResponse(URLResponse(), toRequest: URLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
+            user = try request.parseResponse(URLResponse(), toRequest: URLRequest(url: URL(string: "foo")!), responseData: mockData, responseJSON: JSON(data: mockData))
         } catch {
             XCTFail("parseResponse is not supposed to throw")
             return
