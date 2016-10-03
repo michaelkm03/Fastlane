@@ -27,7 +27,7 @@ class LoginRequestTests: XCTestCase {
         let loginRequest = LoginRequest(email: mockEmail, password: mockPassword)
         let request = loginRequest.urlRequest
         
-        XCTAssertEqual(request.URL?.absoluteString, "/api/login")
+        XCTAssertEqual(request.url?.absoluteString, "/api/login")
         
         guard let bodyData = request.HTTPBody else {
             XCTFail("No HTTP Body!")

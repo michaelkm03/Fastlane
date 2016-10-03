@@ -31,6 +31,6 @@ class UnreadNotificationsCountRequestTests: XCTestCase {
     
     func testRequest() {
         let notificationCount = UnreadNotificationsCountRequest(apiPath: UnreadNotificationsCountRequestTests.apiPath)!
-        XCTAssertEqual(notificationCount.urlRequest.URL?.absoluteString, "http://api.getvictorious.com//api/notification/unread_notification_count")
+        XCTAssertEqual(notificationCount.urlRequest.url?.absoluteString, "http://api.getvictorious.com//api/notification/unread_notification_count")
     }
 }

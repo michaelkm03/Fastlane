@@ -17,7 +17,7 @@ class RequestPasswordResetRequestTests: XCTestCase {
         let request = RequestPasswordResetRequest(email: mockEmail)
         let urlRequest = request.urlRequest
         
-        XCTAssertEqual(urlRequest.URL?.absoluteString, "/api/password_reset_request")
+        XCTAssertEqual(urlRequest.url?.absoluteString, "/api/password_reset_request")
         
         guard let bodyData = urlRequest.HTTPBody else {
             XCTFail("No HTTP Body!")

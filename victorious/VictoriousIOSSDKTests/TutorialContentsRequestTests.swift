@@ -17,7 +17,7 @@ class TutorialContentsRequestTests: XCTestCase {
     func testRequest() {
         let request = TutorialContentsRequest(apiPath: apiPath)
         XCTAssertNotNil(request)
-        XCTAssertEqual(request?.urlRequest.URL?.absoluteString, apiPath.url?.absoluteString)
+        XCTAssertEqual(request?.urlRequest.url?.absoluteString, apiPath.url?.absoluteString)
     }
     
     func testParseResponse() {

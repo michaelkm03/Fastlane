@@ -40,7 +40,7 @@ class GIFSearchRequestTests: XCTestCase {
         let searchGIFs = GIFSearchRequest(searchOptions: searchOptions, paginator: paginator)
         switch searchOptions {
         case .Search(let term, let url):
-            XCTAssertEqual(searchGIFs.urlRequest.URL?.absoluteString, "\(url)/\(term)/1/100")
+            XCTAssertEqual(searchGIFs.urlRequest.url?.absoluteString, "\(url)/\(term)/1/100")
         default:
             XCTFail("Test was setup incorrectly, should be searching")
         }

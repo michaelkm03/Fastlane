@@ -21,7 +21,7 @@ class AccountUpdateRequestTests: XCTestCase {
                 profileImageURL: nil
             )
         )
-        XCTAssertEqual(updateRequest?.urlRequest.URL?.absoluteString, "/api/account/update")
+        XCTAssertEqual(updateRequest?.urlRequest.url?.absoluteString, "/api/account/update")
     }
     
     func testRequestWithPassword() {
@@ -32,7 +32,7 @@ class AccountUpdateRequestTests: XCTestCase {
                 newPassword: "password_new"
             )
         )
-        XCTAssertEqual(updateRequest?.urlRequest.URL?.absoluteString, "/api/account/update")
+        XCTAssertEqual(updateRequest?.urlRequest.url?.absoluteString, "/api/account/update")
     }
     
     func testResponseParsing() {

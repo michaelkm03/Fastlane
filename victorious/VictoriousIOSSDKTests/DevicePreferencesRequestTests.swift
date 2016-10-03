@@ -24,7 +24,7 @@ class DevicePreferencesRequestTests: XCTestCase {
     func testRequest() {
         let request = DevicePreferencesRequest()
         let urlRequest = request.urlRequest
-        XCTAssertEqual(urlRequest.URL?.absoluteString, "/api/device/preferences")
+        XCTAssertEqual(urlRequest.url?.absoluteString, "/api/device/preferences")
     }
     
     func testResponseParsing() {

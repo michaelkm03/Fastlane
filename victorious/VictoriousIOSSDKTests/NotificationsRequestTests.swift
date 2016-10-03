@@ -33,6 +33,6 @@ class InAppNotificationsRequestTests: XCTestCase {
     func testRequest() {
         let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 100)
         let notifications = InAppNotificationsRequest(paginator: paginator)
-        XCTAssertEqual(notifications.urlRequest.URL?.absoluteString, "/api/notification/notifications_list/1/100")
+        XCTAssertEqual(notifications.urlRequest.url?.absoluteString, "/api/notification/notifications_list/1/100")
     }
 }

@@ -16,7 +16,7 @@ class MediaUploadCreateRequestTests: XCTestCase {
     func testRequest() {
         let request = MediaUploadCreateRequest(apiPath: APIPath(templatePath: mockURLString))
         
-        XCTAssertEqual(request?.urlRequest.URL?.absoluteString, "\(mockURLString)")
+        XCTAssertEqual(request?.urlRequest.url?.absoluteString, "\(mockURLString)")
     }
     
     func testResponse() {

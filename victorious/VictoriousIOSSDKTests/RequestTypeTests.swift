@@ -226,7 +226,7 @@ class RequestTypeTests: XCTestCase {
         let parseResponseExpectation = expectation(description: "parseResponse")
         let mockRequest = MockRequest(urlRequest: mockURLRequest) { (urlRequest, _, _, _) -> Int in
             mockURLRequest.url = NSURL(string: "http://www.google.com/") as URL? // mutate OUR copy of the URL request.
-            XCTAssertEqual(urlRequest.URL?.absoluteString, "http://www.sneaky-mutation.org") // assert that the previous line didn't mutate the "urlRequest" argument
+            XCTAssertEqual(urlRequest.url?.absoluteString, "http://www.sneaky-mutation.org") // assert that the previous line didn't mutate the "urlRequest" argument
             parseResponseExpectation.fulfill()
             return 3
         }

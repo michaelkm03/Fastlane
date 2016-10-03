@@ -25,7 +25,7 @@ class AlertTests: XCTestCase {
         XCTAssertEqual( alert.alertID, "1341" )
         XCTAssertEqual( alert.type, AlertType.statusUpdate )
         XCTAssertEqual( DateFormatter.vsdk_defaultDateFormatter().string( from: alert.dateAcknowledged!), "2015-12-18 20:40:43" )
-        XCTAssertEqual( alert.parameters.backgroundVideoURL?.absoluteString, "http://www.video.com" )
+        XCTAssertEqual( alert.parameters.backgroundVideourl?.absoluteString, "http://www.video.com" )
         XCTAssertEqual( alert.parameters.description, "Level up!" )
         XCTAssertEqual( alert.parameters.title, "Alert Title" )
         XCTAssertEqual( alert.parameters.icons?.count, 1 )

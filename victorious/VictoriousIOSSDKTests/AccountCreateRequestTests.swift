@@ -19,9 +19,9 @@ class AccountCreateRequestTests: XCTestCase {
         let accountCreateRequest = AccountCreateRequest(credentials: credentials)
         let request = accountCreateRequest.urlRequest
         
-        XCTAssertEqual(request.URL?.absoluteString, "/api/account/create")
+        XCTAssertEqual(request.url?.absoluteString, "/api/account/create")
         
-        guard let bodyData = request.HTTPBody else {
+        guard let bodyData = request.httpBody else {
             XCTFail("No HTTP Body!")
             return
         }
@@ -38,9 +38,9 @@ class AccountCreateRequestTests: XCTestCase {
         let accountCreateRequest = AccountCreateRequest(credentials: credentials)
         let request = accountCreateRequest.urlRequest
         
-        XCTAssertEqual(request.URL?.absoluteString, "/api/account/create/via_facebook_modern")
+        XCTAssertEqual(request.url?.absoluteString, "/api/account/create/via_facebook_modern")
         
-        guard let bodyData = request.HTTPBody else {
+        guard let bodyData = request.httpBody else {
             XCTFail("No HTTP Body!")
             return
         }

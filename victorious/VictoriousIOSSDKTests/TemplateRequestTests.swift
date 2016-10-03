@@ -13,7 +13,7 @@ class TemplateRequestTests: XCTestCase {
 
     func testRequest() {
         let request = TemplateRequest()
-        XCTAssertEqual(request.urlRequest.URL?.absoluteString, "/api/template")
+        XCTAssertEqual(request.urlRequest.url?.absoluteString, "/api/template")
     }
     
     func testResponseParser() {

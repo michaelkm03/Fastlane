@@ -16,6 +16,6 @@ class UserUnupvoteRequestTests: XCTestCase {
     
     func testRequest() {
         let request = UserUnupvoteRequest(apiPath: APIPath(templatePath: "www.google.com/%%USER_ID%%"), userID: 123)
-        XCTAssertEqual(request?.urlRequest.URL?.absoluteString, "www.google.com/123")
+        XCTAssertEqual(request?.urlRequest.url?.absoluteString, "www.google.com/123")
     }
 }
