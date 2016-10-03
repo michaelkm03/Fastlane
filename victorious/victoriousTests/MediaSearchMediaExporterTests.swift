@@ -19,7 +19,7 @@ class MediaSearchMediaExporterTests: XCTestCase {
     fileprivate let sampleImageURL = Bundle(for: MediaSearchMediaExporterTests.self).url(forResource: "sampleImage", withExtension: fileExtension)!
     
     func testInvalidImageUrl() {
-        expectation = self.expectation(withDescription: "MediaSearchMediaExporterTests")
+        expectation = self.expectation(description: "MediaSearchMediaExporterTests")
         let mockSearchResult = MockSearchResult(source: MockSource())
         mediaSearchExporter = MediaSearchExporter(mediaSearchResult: mockSearchResult)
         mediaSearchExporter.loadMedia() { previewImage, mediaUrl, error in
@@ -32,7 +32,7 @@ class MediaSearchMediaExporterTests: XCTestCase {
     }
     
     func testDownloadCancelled() {
-        expectation = self.expectation(withDescription: "MediaSearchMediaExporterTests")
+        expectation = self.expectation(description: "MediaSearchMediaExporterTests")
         let mockSearchResult = MockSearchResult(source:
             MockSource(sourceMediaURL: sampleImageURL, thumbnailImageURL: sampleImageURL))
         mediaSearchExporter = MediaSearchExporter(mediaSearchResult: mockSearchResult)
@@ -48,7 +48,7 @@ class MediaSearchMediaExporterTests: XCTestCase {
     }
     
     func testDownloadFailed() {
-        expectation = self.expectation(withDescription: "MediaSearchMediaExporterTests")
+        expectation = self.expectation(description: "MediaSearchMediaExporterTests")
         let string = sampleImageURL.absoluteString
         let urlString = string.substring(to: string.characters.index(before: string.endIndex))
         let newURL = URL(string: urlString)!
@@ -65,7 +65,7 @@ class MediaSearchMediaExporterTests: XCTestCase {
     }
     
     func testValidSourceInformation() {
-        expectation = self.expectation(withDescription: "MediaSearchMediaExporterTests")
+        expectation = self.expectation(description: "MediaSearchMediaExporterTests")
         let mockSearchResult = MockSearchResult(source:
             MockSource(sourceMediaURL: sampleImageURL, thumbnailImageURL: sampleImageURL))
         mediaSearchExporter = MediaSearchExporter(mediaSearchResult: mockSearchResult)
@@ -102,7 +102,7 @@ struct MockSource {
     let thumbnailImageURL: URL
     let remoteID: String
     
-    init(sourceMediaURL: URL = URL(), thumbnailImageURL: URL = URL(), remoteID: String = "") {
+    init(sourceMediaURL: URL = URL(string: "foo")!, thumbnailImageURL: URL = URL(string: "foo")!, remoteID: String = "") {
         self.sourceMediaURL = sourceMediaURL
         self.thumbnailImageURL = thumbnailImageURL
         self.remoteID = remoteID

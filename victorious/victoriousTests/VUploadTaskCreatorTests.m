@@ -67,7 +67,7 @@
     
     VUploadTaskInformation *uploadTask = [self.uploadTaskCreator createUploadTaskWithError:nil];
     XCTAssertEqualObjects(request.URL, uploadTask.request.URL);
-    XCTAssertEqualObjects(request.httpMethod, uploadTask.request.httpMethod);
+    XCTAssertEqualObjects(request.HTTPMethod, uploadTask.request.HTTPMethod);
     XCTAssertEqualObjects(previewImage, uploadTask.previewImage);
     XCTAssertEqualObjects(description, uploadTask.uploadDescription);
 }
