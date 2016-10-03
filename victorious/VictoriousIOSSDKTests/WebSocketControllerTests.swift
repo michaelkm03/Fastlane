@@ -78,12 +78,12 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
         controller.addChildReceiver(self)
         
         guard let mockChatMessageURL = Bundle(for: type(of: self)).url(forResource: "InboundWebsocketEvent", withExtension: "json"),
-            let mockChatMessageString = try? String(contentsOfURL: mockChatMessageURL, encoding: String.Encoding.utf8) else {
+            let mockChatMessageString = try? String(contentsOf: mockChatMessageURL, encoding: String.Encoding.utf8) else {
                 XCTFail("Error reading mock JSON data for InboundChatMessage.")
                 return
         }
         expectationIncomingChatMessage = expectation(description: "WebSocket-incoming-chat-message")
-        controller.websocketDidReceiveMessage(webSocket, text: mockChatMessageString)
+        controller.websocketDidReceiveMessage(socket: webSocket, text: mockChatMessageString)
         waitForExpectations(timeout: 1, handler: nil)
     }
 
@@ -138,13 +138,13 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
         controller.addChildReceiver(self)
         
         guard let mockStageMessageURL = Bundle(for: type(of: self)).url(forResource: "RefreshStage", withExtension: "json"),
-            let mockStageMessageString = try? String(contentsOfURL: mockStageMessageURL, encoding: String.Encoding.utf8) else {
+            let mockStageMessageString = try? String(contentsOf: mockStageMessageURL, encoding: String.Encoding.utf8) else {
                 XCTFail("Error reading mock JSON data for RefreshStage.")
                 return
         }
 
         expectationRefreshStageMessage = expectation(description: "WebSocket-refresh-stage-message")
-        controller.websocketDidReceiveMessage(webSocket, text: mockStageMessageString)
+        controller.websocketDidReceiveMessage(socket: webSocket, text: mockStageMessageString)
         waitForExpectations(timeout: 1, handler: nil)
     }
 
@@ -153,13 +153,13 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
         controller.addChildReceiver(self)
 
         guard let mockChatUserCountURL = Bundle(for: type(of: self)).url(forResource: "ChatUserCount", withExtension: "json"),
-            let mockChatUserCountString = try? String(contentsOfURL: mockChatUserCountURL, encoding: String.Encoding.utf8) else {
+            let mockChatUserCountString = try? String(contentsOf: mockChatUserCountURL, encoding: String.Encoding.utf8) else {
                 XCTFail("Error reading mock JSON data for ChatUserCount")
                 return
         }
 
         expectationChatUserCountEvent = expectation(description: "WebSocket-chat-user-event")
-        controller.websocketDidReceiveMessage(webSocket, text: mockChatUserCountString)
+        controller.websocketDidReceiveMessage(socket: webSocket, text: mockChatUserCountString)
         waitForExpectations(timeout: 1, handler: nil)
     }
 
@@ -218,18 +218,17 @@ private class StubbedWebSocket: WebSocket {
     
     override func connect() {
         _isConnected = true
-        delegate?.websocketDidConnect(self)
+        delegate?.websocketDidConnect(socket: self)
     }
 
-    override func disconnect(forceTimeout: TimeInterval?) {
-        _isConnected = false
-        delegate?.websocketDidDisconnect(self, error: nil)
+    override private func disconnect(forceTimeout: TimeInterval?, closeCode: UInt16) {
+        delegate?.websocketDidDisconnect(socket: self, error: nil)
     }
     
-    override func writeString(_ str: String, completion: (() -> ())? = nil) {
-        if let chatMessageOutboundString = chatMessageOutboundString , chatMessageOutboundString == str {
+    override func write(string: String, completion: (() -> ())?) {
+        if let chatMessageOutboundString = chatMessageOutboundString , chatMessageOutboundString == string {
             expectationOutboundChatMessage?.fulfill()
-        } else if let blockUserString = blockUserString , blockUserString == str {
+        } else if let blockUserString = blockUserString , blockUserString == string {
             expectationBlockUserMessage?.fulfill()
         }
     }
