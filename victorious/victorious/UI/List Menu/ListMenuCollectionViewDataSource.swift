@@ -28,7 +28,6 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
     let creatorsDataSource: NewListMenuSectionDataSource<UserModel, RequestOperation<CreatorListRequest>>?
     let newChatRoomsDataSource: NewListMenuSectionDataSource<ChatRoom, RequestOperation<ChatRoomsRequest>>?
     let hashtagDataSource: NewListMenuSectionDataSource<Hashtag, RequestOperation<TrendingHashtagsRequest>>?
-    private let subscribeButton: SubscribeButton
     private(set) var availableSections: [ListMenuSection] = []
 
     // MARK: - Initialization
