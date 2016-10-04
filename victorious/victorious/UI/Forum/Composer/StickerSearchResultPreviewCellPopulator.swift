@@ -20,7 +20,7 @@ struct StickerSearchResultPreviewCellPopulator {
     }
     
     static func currentUserCanAccess(searchResultObject: StickerSearchResultObject) -> Bool {
-        guard let isVIP = VCurrentUser.user?.vipStatus?.isVIP where isVIP || !searchResultObject.isVIP else {
+        guard let isVIP = VCurrentUser.user?.vipStatus?.isVIP, isVIP || !searchResultObject.isVIP else {
             return false
         }
         return true

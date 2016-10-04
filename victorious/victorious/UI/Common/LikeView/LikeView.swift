@@ -106,7 +106,7 @@ final class LikeView: UIView {
         addSubview(countLabel)
 
         countLabel.font = Constants.font
-        countLabel.textAlignment = .Left
+        countLabel.textAlignment = .left
         self.textColor = textColor
         self.selectedIcon = selectedIcon
         self.unselectedIcon = unselectedIcon
@@ -190,15 +190,9 @@ final class LikeView: UIView {
         animationImageView.startAnimating()
     }
 
-<<<<<<< HEAD
-    fileprivate func addAnimationView(of size: CGSize) {
-        if subviews.contains(animationImageView) {
-            return
-=======
     private func addAnimationView(of size: CGSize) {
         if !subviews.contains(animationImageView) {
             addSubview(animationImageView)
->>>>>>> dev
         }
 
         animationImageView.frame = CGRect(

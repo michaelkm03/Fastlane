@@ -6,6 +6,8 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
+import VictoriousIOSSDK
+
 extension VModernEnterNameViewController {
     func validateUsername(from textField: InlineValidationTextField) -> Bool {
         let username = textField.text ?? ""
@@ -15,7 +17,7 @@ extension VModernEnterNameViewController {
         }
         
         let errorDescription = (error as NSError).localizedDescription
-        textField.showInvalidText(errorDescription, animated: true, shake: true, forced: true)
+        textField.showInvalidText(invalidText: errorDescription, animated: true, shake: true, forced: true)
         return false
     }
 }

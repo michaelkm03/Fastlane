@@ -45,7 +45,7 @@ final class CreateMediaUploadOperation: SyncOperation<Void> {
     override func execute() -> OperationResult<Void> {
         let uploadError = NSError(domain: "UploadError", code: -1, userInfo: nil)
 
-        guard isPublishable(publishParameters) else {
+        guard isPublishable(publishParameters: publishParameters) else {
             return .failure(uploadError)
         }
         

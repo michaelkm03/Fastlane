@@ -8,6 +8,7 @@
 
 import Foundation
 import MBProgressHUD
+import VictoriousIOSSDK
 
 extension VLoadingViewController {
     func startLoading() {

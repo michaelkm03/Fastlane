@@ -9,18 +9,18 @@
 import Foundation
 
 public class StickerCreateRequest: RequestType {
-    public var urlRequest: NSURLRequest {
-        let request = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "POST"
+    public var urlRequest: URLRequest {
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
         request.addValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
-        request.HTTPBody = formParams.vsdk_urlEncodedString().dataUsingEncoding(NSUTF8StringEncoding)
+        request.httpBody = formParams.vsdk_urlEncodedString().data(using: .utf8)
         return request
     }
     
-    private let url: NSURL
-    private let formParams: NSDictionary
+    private let url: URL
+    private let formParams: [String: String]
     
-    public init?(apiPath: APIPath, formParams: [NSObject : AnyObject]) {
+    public init?(apiPath: APIPath, formParams: [String: String]) {
         guard let url = apiPath.url else {
             return nil
         }
@@ -28,4 +28,6 @@ public class StickerCreateRequest: RequestType {
         self.url = url
         self.formParams = formParams
     }
+    
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> Void {}
 }

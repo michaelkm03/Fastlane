@@ -189,7 +189,7 @@ public enum ContentMediaAsset: ContentMediaAssetModel {
                 }
                 self = .image(url: url, size: size)
             case .sticker:
-                guard let url = url, remoteID = remoteID else {
+                guard let url = url, let remoteID = remoteID else {
                     return nil
                 }
                 self = .sticker(remoteID: remoteID, url: url, size: size)

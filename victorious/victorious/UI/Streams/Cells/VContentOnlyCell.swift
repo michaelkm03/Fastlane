@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 /// A collection view cell that only shows a stream item's content.
 class VContentOnlyCell: UICollectionViewCell, ContentCell {

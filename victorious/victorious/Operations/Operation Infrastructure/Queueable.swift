@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 /// - note: No matter which queue the operation is scheduled and/or executed on, its completion block will be running on the main queue.
 protocol Queueable {

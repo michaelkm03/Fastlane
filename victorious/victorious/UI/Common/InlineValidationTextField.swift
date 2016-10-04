@@ -16,7 +16,7 @@ class InlineValidationTextField: UITextField {
         static let sideInset = CGFloat(10.0)
         static let bottomClearInset = CGFloat(2.0)
         static let validationImageSpacing = CGFloat(5.0)
-        static let validationFont = UIFont.systemFontOfSize(10.0, weight: UIFontWeightRegular)
+        static let validationFont = UIFont.systemFont(ofSize: 10.0, weight: UIFontWeightRegular)
     }
     
     // MARK: - Initializing
@@ -35,13 +35,13 @@ class InlineValidationTextField: UITextField {
         validationIsVisible = false
         
         validationImageView.translatesAutoresizingMaskIntoConstraints = false
-        validationImageView.image = UIImage(named: "inline_validation_alert_icon")?.imageWithRenderingMode(.AlwaysTemplate)
-        validationImageView.tintColor = .redColor()
+        validationImageView.image = UIImage(named: "inline_validation_alert_icon")?.withRenderingMode(.alwaysTemplate)
+        validationImageView.tintColor = .red
         
         validationLabel.translatesAutoresizingMaskIntoConstraints = false
         validationLabel.font = Constants.validationFont
         validationLabel.numberOfLines = 2
-        validationLabel.textColor = .redColor()
+        validationLabel.textColor = .red
         
         addSubview(validationImageView)
         addSubview(validationLabel)
@@ -56,11 +56,11 @@ class InlineValidationTextField: UITextField {
     
     private var validationIsVisible: Bool {
         get {
-            return !validationLabel.hidden
+            return !validationLabel.isHidden
         }
         set {
-            validationImageView.hidden = !newValue
-            validationLabel.hidden = !newValue
+            validationImageView.isHidden = !newValue
+            validationLabel.isHidden = !newValue
         }
     }
     
@@ -107,7 +107,7 @@ class InlineValidationTextField: UITextField {
     }
     
     private func updatePlaceholder() {
-        if isFirstResponder() {
+        if isFirstResponder {
             if let activePlaceholder = activePlaceholder {
                 attributedPlaceholder = activePlaceholder
             }
@@ -129,7 +129,7 @@ class InlineValidationTextField: UITextField {
     override func resignFirstResponder() -> Bool {
         attributedPlaceholder = inactivePlaceholder
         
-        if isFirstResponder() {
+        if isFirstResponder {
             hasResignedFirstResponder = true
         }
         
@@ -138,30 +138,30 @@ class InlineValidationTextField: UITextField {
     
     // MARK: - UITextField
     
-    override func textRectForBounds(bounds: CGRect) -> CGRect {
-        var modifiedRect = super.textRectForBounds(bounds).insetBy(dx: Constants.sideInset, dy: 0.0)
+    override func textRect(forBounds bounds: CGRect) -> CGRect {
+        var modifiedRect = super.textRect(forBounds: bounds).insetBy(dx: Constants.sideInset, dy: 0.0)
         modifiedRect.origin.y = Constants.validationHeight
         modifiedRect.size.height -= Constants.validationHeight
         return modifiedRect
     }
     
-    override func placeholderRectForBounds(bounds: CGRect) -> CGRect {
-        return textRectForBounds(bounds)
+    override func placeholderRect(forBounds bounds: CGRect) -> CGRect {
+        return textRect(forBounds: bounds)
     }
     
-    override func editingRectForBounds(bounds: CGRect) -> CGRect {
-        return textRectForBounds(bounds)
+    override func editingRect(forBounds bounds: CGRect) -> CGRect {
+        return textRect(forBounds: bounds)
     }
     
-    override func clearButtonRectForBounds(bounds: CGRect) -> CGRect {
-        var modifiedRect = super.clearButtonRectForBounds(bounds)
+    override func clearButtonRect(forBounds bounds: CGRect) -> CGRect {
+        var modifiedRect = super.clearButtonRect(forBounds: bounds)
         modifiedRect.origin.y = bounds.maxY - modifiedRect.size.height - Constants.bottomClearInset
         return modifiedRect
     }
     
     // MARK: - Layout
     
-    override func intrinsicContentSize() -> CGSize {
+    override var intrinsicContentSize: CGSize {
         return CGSize(
             width: UIViewNoIntrinsicMetric,
             height: Constants.validationHeight + Constants.baseIntrinsicHeight
@@ -171,7 +171,7 @@ class InlineValidationTextField: UITextField {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        let alertImageSize = validationImageView.intrinsicContentSize()
+        let alertImageSize = validationImageView.intrinsicContentSize
         let labelOffset = alertImageSize.width + Constants.validationImageSpacing
         
         validationLabel.frame = CGRect(

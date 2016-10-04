@@ -17,6 +17,6 @@ extension VDependencyManager {
     // MARK: - Reading basic values
     
     func bool(for key: String) -> Bool? {
-        return numberForKey(key)?.boolValue
+        return number(forKey: key)?.boolValue
     }
 }

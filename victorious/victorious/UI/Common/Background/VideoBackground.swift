@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 class VideoBackground: VBackground, VVideoPlayerDelegate {
     // MARK: - Initializing

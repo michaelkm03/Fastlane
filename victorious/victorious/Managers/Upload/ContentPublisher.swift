@@ -259,7 +259,7 @@ private extension VDependencyManager {
             return nil
         }
         
-        return apiPathForKey("sticker.creation.URL", macroReplacements: [
+        return apiPath(forKey: "sticker.creation.URL", macroReplacements: [
             "%%TIME_CURRENT%%": content.postedAt?.apiString ?? "",
             "%%CONTENT_ID%%": externalID
             ])

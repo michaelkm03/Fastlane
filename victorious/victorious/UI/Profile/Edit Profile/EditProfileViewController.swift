@@ -141,7 +141,7 @@ class EditProfileViewController: UIViewController {
         }
     }
     
-    private func error(withDescription description: String) -> ErrorType {
+    private func error(withDescription description: String) -> Error {
         return NSError(domain: "EditProfileError", code: -1, userInfo: [
             NSLocalizedDescriptionKey: description
         ])
