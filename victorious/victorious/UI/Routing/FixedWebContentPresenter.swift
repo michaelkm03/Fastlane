@@ -24,6 +24,6 @@ extension FixedWebContentPresenter where Self: UIViewController {
 
 private extension VDependencyManager {
     var fixedWebContentBackground: VDependencyManager? {
-        return childDependencyForKey("static.webcontent.background")
+        return childDependencyForKey("static.webcontent")
     }
 }
