@@ -535,6 +535,7 @@
 		79EEC4A11C17B99B0004E6FC /* DeviceExperimentsResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 79EEC4A01C17B99B0004E6FC /* DeviceExperimentsResponse.json */; };
 		7A02F8931D2486D400F43B24 /* CollectionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A02F8921D2486D400F43B24 /* CollectionType.swift */; };
 		7A02F8951D273C0F00F43B24 /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A02F8941D273C0F00F43B24 /* SettingsTableViewCell.swift */; };
+		7A07385F1D9B2E570016D5D8 /* User+ValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A07385E1D9B2E570016D5D8 /* User+ValidationTests.swift */; };
 		7A126DF51CFF956800F9C86E /* APIPathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A126DF41CFF956800F9C86E /* APIPathTests.swift */; };
 		7A1389911D53E06E000F5C86 /* Subscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1389901D53E06E000F5C86 /* Subscription.swift */; };
 		7A1921AD1D91EF0200EA71CF /* VDependencyManager+Tracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1921AC1D91EF0200EA71CF /* VDependencyManager+Tracking.swift */; };
@@ -596,6 +597,8 @@
 		7A543CB11D5BB1CC005052FE /* CreatorListResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A543CB01D5BB1CC005052FE /* CreatorListResponse.json */; };
 		7A5519EC1D24775900CD6BCF /* ContentMediaSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5519EB1D24775900CD6BCF /* ContentMediaSize.swift */; };
 		7A5519EE1D24778C00CD6BCF /* ContentMediaSizeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5519ED1D24778C00CD6BCF /* ContentMediaSizeTests.swift */; };
+		7A57CDF81D9A016400DE9320 /* VModernEnterNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A57CDF71D9A016400DE9320 /* VModernEnterNameViewController.swift */; };
+		7A57CDFA1D9A023700DE9320 /* User+Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A57CDF91D9A023700DE9320 /* User+Validation.swift */; };
 		7A63CD3A1D5400F1006A48E4 /* UIView+ShakeAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A63CD391D5400F1006A48E4 /* UIView+ShakeAnimation.swift */; };
 		7A63CD421D5427F8006A48E4 /* VSocialLoginErrors.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A63CD411D5427F8006A48E4 /* VSocialLoginErrors.m */; };
 		7A67EC7E1CF9132300D022D1 /* TimePaginatedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A67EC7D1CF9132300D022D1 /* TimePaginatedDataSource.swift */; };
@@ -621,6 +624,7 @@
 		7AC9E7C41D5A53EC000D8FD6 /* UIAlertController+ContentActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC9E7C31D5A53EC000D8FD6 /* UIAlertController+ContentActionSheet.swift */; };
 		7ACB6B0F1D67DDE5008084EF /* SideNavProfileButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACB6B0E1D67DDE5008084EF /* SideNavProfileButton.swift */; };
 		7ACB6B111D6CBE1F008084EF /* AccessoryScreenBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACB6B101D6CBE1F008084EF /* AccessoryScreenBarButtonItem.swift */; };
+		7ADF89011D9C88C8007F7A33 /* InlineValidationTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADF89001D9C88C8007F7A33 /* InlineValidationTextField.swift */; };
 		7AE0A03B1D624E2B00769080 /* SubscribeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE0A03A1D624E2B00769080 /* SubscribeButton.swift */; };
 		7AE0A03D1D63943700769080 /* Callback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE0A03C1D63943700769080 /* Callback.swift */; };
 		7AE0A0401D63B3EE00769080 /* BadgeCountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE0A03F1D63B3EE00769080 /* BadgeCountManager.swift */; };
@@ -1033,9 +1037,12 @@
 		BF7AF9C81D22F9CB00539D90 /* ErrorStateView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF7AF9C71D22F9CB00539D90 /* ErrorStateView.xib */; };
 		BF84A9361C98AC5E00F13F8E /* TempDirectoryCleanupOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3058241C988A3600BD52FD /* TempDirectoryCleanupOperationTests.swift */; };
 		BF8F57A51CEBE47400188C0E /* ContentFeedRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8F57A41CEBE47400188C0E /* ContentFeedRequest.swift */; };
+		BF9006EB1D9C7D0B0002D119 /* EndVIPEventRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9006EA1D9C7D0B0002D119 /* EndVIPEventRequest.swift */; };
+		BF9006ED1D9C84230002D119 /* EndVIPEventRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9006EC1D9C84230002D119 /* EndVIPEventRequestTests.swift */; };
 		BF9800041D010ABF006A5526 /* ViewedContent_unliked.json in Resources */ = {isa = PBXBuildFile; fileRef = BF9800031D010ABF006A5526 /* ViewedContent_unliked.json */; };
 		BF9800051D01E8FE006A5526 /* ViewedContent_unliked.json in Resources */ = {isa = PBXBuildFile; fileRef = BF9800031D010ABF006A5526 /* ViewedContent_unliked.json */; };
 		BF9C375E1C978B5F001841C5 /* TempDirectoryCleanupOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9C375D1C978B5F001841C5 /* TempDirectoryCleanupOperation.swift */; };
+		BFA66B441D9D98C000526305 /* FixedWebContentPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA66B431D9D98C000526305 /* FixedWebContentPresenter.swift */; };
 		BFB6EEF21D010744007909F2 /* ContentFlagRequestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB6EEF11D010744007909F2 /* ContentFlagRequestTests.swift */; };
 		BFC6735E1CE2BCF5004F9D3C /* VContentVideoPlayerCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC6735D1CE2BCF5004F9D3C /* VContentVideoPlayerCoordinator.swift */; };
 		BFC673621CE3C9C4004F9D3C /* ContentPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC673611CE3C9C4004F9D3C /* ContentPreviewView.swift */; };
@@ -1141,8 +1148,6 @@
 		D89367491ADDBAA1001D2426 /* VActionBarFixedWidthItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D89367481ADDBAA1001D2426 /* VActionBarFixedWidthItem.m */; };
 		D89D7F7E1A9FF5F400B61783 /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D89D7F7D1A9FF5F400B61783 /* Launch Screen.xib */; };
 		D89F1CDA1ABE747000AF14A5 /* VRoundedBackgroundButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D89F1CD91ABE747000AF14A5 /* VRoundedBackgroundButton.m */; };
-		D8B70FE71A8015E500090C5E /* VInlineValidationTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B70FE61A8015E500090C5E /* VInlineValidationTextField.m */; };
-		D8B70FEA1A805CC800090C5E /* VInlineValidationView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B70FE91A805CC800090C5E /* VInlineValidationView.m */; };
 		D8C1FD081A69C2E40072892B /* VKeyboardNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D8C1FD071A69C2E40072892B /* VKeyboardNotificationManager.m */; };
 		D8D3B7181AB20E6600CF966C /* VTrimLoopingPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D3B7171AB20E6600CF966C /* VTrimLoopingPlayerViewController.m */; };
 		D8D3B7211AB2643500CF966C /* AVComposition+VMutedAudioMix.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D3B7201AB2643500CF966C /* AVComposition+VMutedAudioMix.m */; };
@@ -1987,6 +1992,7 @@
 		79EEC4A01C17B99B0004E6FC /* DeviceExperimentsResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DeviceExperimentsResponse.json; sourceTree = "<group>"; };
 		7A02F8921D2486D400F43B24 /* CollectionType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionType.swift; sourceTree = "<group>"; };
 		7A02F8941D273C0F00F43B24 /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
+		7A07385E1D9B2E570016D5D8 /* User+ValidationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "User+ValidationTests.swift"; sourceTree = "<group>"; };
 		7A126DF41CFF956800F9C86E /* APIPathTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIPathTests.swift; sourceTree = "<group>"; };
 		7A1389901D53E06E000F5C86 /* Subscription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Subscription.swift; sourceTree = "<group>"; };
 		7A1921AC1D91EF0200EA71CF /* VDependencyManager+Tracking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VDependencyManager+Tracking.swift"; sourceTree = "<group>"; };
@@ -2049,6 +2055,8 @@
 		7A543CB01D5BB1CC005052FE /* CreatorListResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CreatorListResponse.json; sourceTree = "<group>"; };
 		7A5519EB1D24775900CD6BCF /* ContentMediaSize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentMediaSize.swift; sourceTree = "<group>"; };
 		7A5519ED1D24778C00CD6BCF /* ContentMediaSizeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentMediaSizeTests.swift; sourceTree = "<group>"; };
+		7A57CDF71D9A016400DE9320 /* VModernEnterNameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VModernEnterNameViewController.swift; sourceTree = "<group>"; };
+		7A57CDF91D9A023700DE9320 /* User+Validation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "User+Validation.swift"; sourceTree = "<group>"; };
 		7A63CD391D5400F1006A48E4 /* UIView+ShakeAnimation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+ShakeAnimation.swift"; sourceTree = "<group>"; };
 		7A63CD401D5427F8006A48E4 /* VSocialLoginErrors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSocialLoginErrors.h; sourceTree = "<group>"; };
 		7A63CD411D5427F8006A48E4 /* VSocialLoginErrors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSocialLoginErrors.m; sourceTree = "<group>"; };
@@ -2074,6 +2082,7 @@
 		7AC9E7C31D5A53EC000D8FD6 /* UIAlertController+ContentActionSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIAlertController+ContentActionSheet.swift"; path = "../UI/Forum/UIAlertController+ContentActionSheet.swift"; sourceTree = "<group>"; };
 		7ACB6B0E1D67DDE5008084EF /* SideNavProfileButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideNavProfileButton.swift; sourceTree = "<group>"; };
 		7ACB6B101D6CBE1F008084EF /* AccessoryScreenBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessoryScreenBarButtonItem.swift; sourceTree = "<group>"; };
+		7ADF89001D9C88C8007F7A33 /* InlineValidationTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InlineValidationTextField.swift; sourceTree = "<group>"; };
 		7AE0A03A1D624E2B00769080 /* SubscribeButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscribeButton.swift; sourceTree = "<group>"; };
 		7AE0A03C1D63943700769080 /* Callback.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Callback.swift; sourceTree = "<group>"; };
 		7AE0A03F1D63B3EE00769080 /* BadgeCountManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BadgeCountManager.swift; sourceTree = "<group>"; };
@@ -2612,8 +2621,11 @@
 		BF7AF9C51D22F9AF00539D90 /* ErrorStateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ErrorStateView.swift; path = "Error State/ErrorStateView.swift"; sourceTree = "<group>"; };
 		BF7AF9C71D22F9CB00539D90 /* ErrorStateView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ErrorStateView.xib; path = "Error State/ErrorStateView.xib"; sourceTree = "<group>"; };
 		BF8F57A41CEBE47400188C0E /* ContentFeedRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentFeedRequest.swift; sourceTree = "<group>"; };
+		BF9006EA1D9C7D0B0002D119 /* EndVIPEventRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndVIPEventRequest.swift; sourceTree = "<group>"; };
+		BF9006EC1D9C84230002D119 /* EndVIPEventRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndVIPEventRequestTests.swift; sourceTree = "<group>"; };
 		BF9800031D010ABF006A5526 /* ViewedContent_unliked.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ViewedContent_unliked.json; sourceTree = "<group>"; };
 		BF9C375D1C978B5F001841C5 /* TempDirectoryCleanupOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TempDirectoryCleanupOperation.swift; sourceTree = "<group>"; };
+		BFA66B431D9D98C000526305 /* FixedWebContentPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FixedWebContentPresenter.swift; sourceTree = "<group>"; };
 		BFB6EEF11D010744007909F2 /* ContentFlagRequestTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentFlagRequestTests.swift; sourceTree = "<group>"; };
 		BFC6735D1CE2BCF5004F9D3C /* VContentVideoPlayerCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VContentVideoPlayerCoordinator.swift; sourceTree = "<group>"; };
 		BFC673611CE3C9C4004F9D3C /* ContentPreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContentPreviewView.swift; path = ContentPreviewView/ContentPreviewView.swift; sourceTree = "<group>"; };
@@ -2784,10 +2796,6 @@
 		D89D7F7D1A9FF5F400B61783 /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
 		D89F1CD81ABE747000AF14A5 /* VRoundedBackgroundButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VRoundedBackgroundButton.h; sourceTree = "<group>"; };
 		D89F1CD91ABE747000AF14A5 /* VRoundedBackgroundButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VRoundedBackgroundButton.m; sourceTree = "<group>"; };
-		D8B70FE51A8015E500090C5E /* VInlineValidationTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInlineValidationTextField.h; sourceTree = "<group>"; };
-		D8B70FE61A8015E500090C5E /* VInlineValidationTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInlineValidationTextField.m; sourceTree = "<group>"; };
-		D8B70FE81A805CC800090C5E /* VInlineValidationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VInlineValidationView.h; sourceTree = "<group>"; };
-		D8B70FE91A805CC800090C5E /* VInlineValidationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VInlineValidationView.m; sourceTree = "<group>"; };
 		D8C1FD061A69C2E40072892B /* VKeyboardNotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VKeyboardNotificationManager.h; sourceTree = "<group>"; };
 		D8C1FD071A69C2E40072892B /* VKeyboardNotificationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VKeyboardNotificationManager.m; sourceTree = "<group>"; };
 		D8D3B7161AB20E6600CF966C /* VTrimLoopingPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VTrimLoopingPlayerViewController.h; sourceTree = "<group>"; };
@@ -3143,9 +3151,11 @@
 				D89A50071A000D540010D050 /* Controls */,
 				7C28F1011D1DD94A0070B8AE /* CTAErrorState.swift */,
 				BF7AF9C41D22F98500539D90 /* Error States */,
+				7ADF89001D9C88C8007F7A33 /* InlineValidationTextField.swift */,
+				96485C8C1D8C76AB00EDAC90 /* LikeView */,
+				0EB1AFE81D89F19900D854DF /* PastableTextView.swift */,
 				D85E427B1AFA982000A13BD3 /* SequencePreviewView */,
 				7A1C70A91CC8513B00A666F5 /* SideMenuController.swift */,
-				96485C8C1D8C76AB00EDAC90 /* LikeView */,
 				D836883C19C36FF200070F22 /* UICollectionView */,
 				0EFC27DA1D38596E00C84068 /* UIDynamics */,
 				D84558FE1ABF4CFF00EA2FA9 /* VBadgeStringFormatter.h */,
@@ -3154,10 +3164,6 @@
 				A7A390C41A32441E00709812 /* VButton.m */,
 				7C268EFE1D138F6100E4A66A /* VButton+VBackgroundContainer.swift */,
 				A7AEF9CB1A83F2DC00A3D3A0 /* Video */,
-				D8B70FE51A8015E500090C5E /* VInlineValidationTextField.h */,
-				D8B70FE61A8015E500090C5E /* VInlineValidationTextField.m */,
-				D8B70FE81A805CC800090C5E /* VInlineValidationView.h */,
-				D8B70FE91A805CC800090C5E /* VInlineValidationView.m */,
 				D8C1FD061A69C2E40072892B /* VKeyboardNotificationManager.h */,
 				D8C1FD071A69C2E40072892B /* VKeyboardNotificationManager.m */,
 				F0E0F1A81AE8811700143CBF /* VLaunchScreenProvider.h */,
@@ -3178,7 +3184,6 @@
 				D888B5271A86FC7800B34149 /* VRadialGradientLayer.m */,
 				D888B5281A86FC7800B34149 /* VRadialGradientView.h */,
 				D888B5291A86FC7800B34149 /* VRadialGradientView.m */,
-				0EB1AFE81D89F19900D854DF /* PastableTextView.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -3269,6 +3274,7 @@
 				D8D8129F1B13CB9300E93B37 /* VModernEnterNameViewController.h */,
 				D8D812A01B13CB9300E93B37 /* VModernEnterNameViewController.m */,
 				D858E0D51B1FC32300437DDE /* VModernEnterNameViewController.storyboard */,
+				7A57CDF71D9A016400DE9320 /* VModernEnterNameViewController.swift */,
 				D8D812B61B15819600E93B37 /* VModernFlowControllerAnimationController.h */,
 				D8D812B71B15819600E93B37 /* VModernFlowControllerAnimationController.m */,
 				D85B708D1B0ECC6D0038CA5B /* VModernLandingViewController.h */,
@@ -3276,6 +3282,7 @@
 				D858E0CA1B1FAD2F00437DDE /* VModernLandingViewController.storyboard */,
 				D85B708A1B0EC7230038CA5B /* VModernLoginAndRegistrationFlowViewController.h */,
 				D85B708B1B0EC7230038CA5B /* VModernLoginAndRegistrationFlowViewController.m */,
+				7CCAB3561D5D2EC600ACE99D /* VModernLoginAndRegistrationFlowViewController.swift */,
 				D85B70961B0EED0D0038CA5B /* VModernLoginViewController.h */,
 				D85B70971B0EED0D0038CA5B /* VModernLoginViewController.m */,
 				D8D8129D1B13849E00E93B37 /* VModernLoginViewController.storyboard */,
@@ -3292,7 +3299,6 @@
 				D80536231B17B4310049B77A /* VPromptCarouselViewController.m */,
 				D80536251B17B5CB0049B77A /* VPromptCollectionViewCell.h */,
 				D80536261B17B5CB0049B77A /* VPromptCollectionViewCell.m */,
-				7CCAB3561D5D2EC600ACE99D /* VModernLoginAndRegistrationFlowViewController.swift */,
 			);
 			path = "Signup and Login";
 			sourceTree = "<group>";
@@ -3326,7 +3332,6 @@
 				7A38C08A1D5A81D300771F62 /* AcknowledgeAlertRequest.swift */,
 				7A52F02F1CFF8B9600AE7F3F /* APIPath.swift */,
 				03BF276C1C5AE50A0064A90B /* ApplicationTrackingRequest.swift */,
-				F004B3291D8914E3005D4A74 /* AssetSearchOptions.swift */,
 				C3348B201BF53EEE004183A1 /* Bool+Initializers.swift */,
 				7A85D9CE1D107D1D00535EF3 /* CGSize+Geometry.swift */,
 				F022CFDB1CFE535500F040BB /* ChatMessageCreateRequest.swift */,
@@ -3344,8 +3349,11 @@
 				7992DF661C17ACCF004007A1 /* DeviceExperimentsRequest.swift */,
 				0300AA7D1BF2BC8B000A121D /* DevicePreferencesRequest.swift */,
 				A7D15DD51CBED6610039761B /* DictionaryConvertible.swift */,
+				BF9006EA1D9C7D0B0002D119 /* EndVIPEventRequest.swift */,
 				A7D920471C063682002A6503 /* Errors */,
 				0EBF417A1CAB5C20002966B3 /* ForumEvents */,
+				F004B3291D8914E3005D4A74 /* GIFSearchOptions.swift */,
+				F004B3291D8914E3005D4A74 /* AssetSearchOptions.swift */,
 				C3FEA7A41BF26F24003446CC /* GIFSearchRequest.swift */,
 				A7A583501C3B00CC0088A08A /* HashtagSearchRequest.swift */,
 				0E23691E1D4BC74B00D9E45C /* Logger */,
@@ -3418,6 +3426,7 @@
 				BFB6EEF11D010744007909F2 /* ContentFlagRequestTests.swift */,
 				BF5BF6BA1D00F558009FE532 /* ContentUnupvoteRequestTests.swift */,
 				BF5BF6BC1D00F657009FE532 /* ContentUpvoteRequestTests.swift */,
+				BF9006EC1D9C84230002D119 /* EndVIPEventRequestTests.swift */,
 				0EDED5D51CBD72F000FAF77E /* CreateChatServiceTokenRequestTests.swift */,
 				67D3DBAF1CCA9AB300D9D374 /* CreatorListRequestTests.swift */,
 				7992DF6A1C17B174004007A1 /* DeviceExperimentsRequestTests.swift */,
@@ -3472,6 +3481,7 @@
 				0EF377501D36C6E5006BF786 /* StageMetaDataTests.swift */,
 				7AFEB14A1D413D7B00FA972D /* TimestampTests.swift */,
 				03314F481BE40F0100EE74FD /* UserTests.swift */,
+				7A07385E1D9B2E570016D5D8 /* User+ValidationTests.swift */,
 				BF2D25791CED40980001A2AF /* ViewedContent */,
 				0EC8ECF01D24488900A3272D /* WebSocketErrorTests.swift */,
 			);
@@ -3551,6 +3561,7 @@
 				7AFEB1481D413B7600FA972D /* Timestamp.swift */,
 				A7F843611BFD0BFD004C3D55 /* Tracking.swift */,
 				03314F5C1BE40F3200EE74FD /* User.swift */,
+				7A57CDF91D9A023700DE9320 /* User+Validation.swift */,
 				A7559A791CCFD93B00C37349 /* VIPStatus.swift */,
 			);
 			path = Models;
@@ -4695,6 +4706,7 @@
 				96964A461D871D9D0090EA49 /* DeeplinkContext.swift */,
 				6780BD611D248392003F8141 /* DeeplinkDestination.swift */,
 				67AB0C751D21A38A00394598 /* Router.swift */,
+				BFA66B431D9D98C000526305 /* FixedWebContentPresenter.swift */,
 			);
 			path = Routing;
 			sourceTree = "<group>";
@@ -7592,6 +7604,7 @@
 				0E8EB2D11CCF0BCB0087D815 /* ContentFetchRequest.swift in Sources */,
 				BF8F57A51CEBE47400188C0E /* ContentFeedRequest.swift in Sources */,
 				BF20227E1D00B9A4006B59C5 /* ContentUnupvoteRequest.swift in Sources */,
+				7A57CDFA1D9A023700DE9320 /* User+Validation.swift in Sources */,
 				795B75981BFA80E000227647 /* WebViewHTMLFetchRequest.swift in Sources */,
 				C3E7C0ED1BF3E1BD00AFE545 /* Notification.swift in Sources */,
 				03314F611BE40F3200EE74FD /* AccountCreateRequest.swift in Sources */,
@@ -7611,6 +7624,7 @@
 				A7039CF21C248E0B0023DE6F /* Alert.swift in Sources */,
 				0E9911CE1CEBD1E200B4E4A0 /* WebSocketRawMessageContainer.swift in Sources */,
 				678C43C11C541B3700EBE83A /* MediaUploadCreateRequest.swift in Sources */,
+				BF9006EB1D9C7D0B0002D119 /* EndVIPEventRequest.swift in Sources */,
 				03BC6FB01BE74E9B00CFCBEE /* StandardPaginator.swift in Sources */,
 				C3E7C0F11BF3EFEB00AFE545 /* NotificationsRequest.swift in Sources */,
 				F0C5AEDD1D9A397C0005EB0F /* StickerCreateRequest.swift in Sources */,
@@ -7655,6 +7669,7 @@
 				BF3CD8921D11E44B00CB7764 /* UserUnupvoteRequestTests.swift in Sources */,
 				0399E8101C51D4D200E090F7 /* TemplateRequestTests.swift in Sources */,
 				A74679991BF6D8500026FD2E /* UserInfoRequestTests.swift in Sources */,
+				BF9006ED1D9C84230002D119 /* EndVIPEventRequestTests.swift in Sources */,
 				C3E7C0E91BF3CCC500AFE545 /* NotificationTests.swift in Sources */,
 				BF5BF6BD1D00F657009FE532 /* ContentUpvoteRequestTests.swift in Sources */,
 				C3FEA7971BF16EDC003446CC /* GIFSearchResultTests.swift in Sources */,
@@ -7692,6 +7707,7 @@
 				0EC8ECF11D24488900A3272D /* WebSocketErrorTests.swift in Sources */,
 				C3E7C0EF1BF3ED9900AFE545 /* NotificationsRequestTests.swift in Sources */,
 				0300AA801BF2BCBB000A121D /* DevicePreferencesRequestTests.swift in Sources */,
+				7A07385F1D9B2E570016D5D8 /* User+ValidationTests.swift in Sources */,
 				BF3CD8901D11E44100CB7764 /* UserUpvoteRequestTests.swift in Sources */,
 				03314F4E1BE40F0100EE74FD /* AccountCreateRequestTests.swift in Sources */,
 				C3209CA41BF148DD00EA229D /* TrendingHashtagRequestTests.swift in Sources */,
@@ -8023,6 +8039,7 @@
 				A74783DA1BA09AA3005654A6 /* VideoToolbarView.swift in Sources */,
 				F009BD131CE6855400F81CAA /* WebSocketMessageDetailViewController.swift in Sources */,
 				0E6628751CCEE5DF0049ECF8 /* StageDataSource.swift in Sources */,
+				7ADF89011D9C88C8007F7A33 /* InlineValidationTextField.swift in Sources */,
 				A70564C319E781EE004A8387 /* VNoContentTableViewCell.m in Sources */,
 				7A1DED041D80E130003F5C37 /* DebugErrorHandler.swift in Sources */,
 				7A1DED181D825838003F5C37 /* NSOperation.swift in Sources */,
@@ -8071,7 +8088,6 @@
 				799B89D11D469E02006743FE /* EditProfileDataSource.swift in Sources */,
 				F027D8DF1B93A6FB00BC6322 /* UIEdgeInsets+Addition.swift in Sources */,
 				A7A2DFFF1A37813D00F8C705 /* VPurchaseActionCell.m in Sources */,
-				D8B70FEA1A805CC800090C5E /* VInlineValidationView.m in Sources */,
 				7956D41D1D2D724A00BC14AB /* StageShrinkingAnimator.swift in Sources */,
 				F07DDE481CFCF33400C7FC8D /* ImageOnColorButton.swift in Sources */,
 				A66D76841B5B2E23004765EA /* VLibraryFolderControl.m in Sources */,
@@ -8088,6 +8104,7 @@
 				0362656B1BAB99ED00C34C73 /* FacebookHelper.swift in Sources */,
 				7A1DECBC1D80E02C003F5C37 /* GIFSearchOperation.swift in Sources */,
 				D80A94DE1A53941D0035D788 /* VTrimControl.m in Sources */,
+				7A57CDF81D9A016400DE9320 /* VModernEnterNameViewController.swift in Sources */,
 				A7B133601C6178FD006EC4F5 /* PaginatedDataSource.swift in Sources */,
 				C39B220B1B0A58EF00D3DFE7 /* VPermissionMicrophone.m in Sources */,
 				0E23691D1D497C4100D9E45C /* Presentable.swift in Sources */,
@@ -8295,6 +8312,7 @@
 				A780ED591A933D9300A8CD5D /* CIFilter+VPhotoFilterComponentConformance.m in Sources */,
 				C30AA4E01B055EC60010CEFE /* VPermissionAlertAnimator.m in Sources */,
 				A73C3EC11C45890E00A8452C /* MediaSearchViewController.swift in Sources */,
+				BFA66B441D9D98C000526305 /* FixedWebContentPresenter.swift in Sources */,
 				A75ED00D1AB0B6D100C35063 /* VFilterTypeTool.m in Sources */,
 				A7E234991C97763400383C54 /* UICollectionView+Pagination.swift in Sources */,
 				A769FE4B1ABD051A00888ED8 /* VTrackingEventLog.m in Sources */,
@@ -8421,7 +8439,6 @@
 				799B89D31D469E02006743FE /* EditProfileViewController.swift in Sources */,
 				A7A2E0121A391A7D00F8C705 /* VPurchaseRecord.m in Sources */,
 				A779511A1B28AB9A00D9DB0A /* VEnvironmentManager.m in Sources */,
-				D8B70FE71A8015E500090C5E /* VInlineValidationTextField.m in Sources */,
 				0314D4DA19B46B5E00FA363C /* VSettingsViewController.m in Sources */,
 				A721E9491B572454000B7901 /* UIAlertController+VSimpleAlert.m in Sources */,
 				F07DDE351CFCC7B200C7FC8D /* TextOnColorButton.swift in Sources */,
