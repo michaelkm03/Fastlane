@@ -61,10 +61,12 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         super.viewWillAppear(animated)
         
         collectionView?.reloadData()
-        
-        let homeFeedIndexPath = NSIndexPath(forRow: 0, inSection: ListMenuSection.community.rawValue)
-        let indexPath = lastSelectedIndexPath ?? homeFeedIndexPath
-        collectionView?.selectItemAtIndexPath(indexPath, animated: false, scrollPosition: .None)
+
+        if let sectionIndex = collectionViewDataSource.availableSections.indexOf(.community) {
+            let homeFeedIndexPath = NSIndexPath(forRow: 0, inSection: sectionIndex)
+            let indexPath = lastSelectedIndexPath ?? homeFeedIndexPath
+            collectionView?.selectItemAtIndexPath(indexPath, animated: false, scrollPosition: .None)
+        }
         
         dependencyManager.trackViewWillAppear(for: self)
     }
@@ -86,13 +88,13 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     private func selectCreator(atIndex index: Int) {
         guard
             let scaffold = VRootViewController.sharedRootViewController()?.scaffold as? Scaffold,
-            let creator = collectionViewDataSource.creatorDataSource?.visibleItems[index],
-            let destination = DeeplinkDestination(userID: creator.id)
+            let creator = collectionViewDataSource.creatorDataSource?.visibleItems[index]
         else {
             Log.warning("Trying to select a non existing section at index \(index)")
             return
         }
-        
+
+        let destination = DeeplinkDestination(userID: creator.id)
         // Had to trace down the inner navigation controller because List Menu has no idea where it is - and it doesn't have navigation stack either.
         let router = Router(originViewController: scaffold.mainNavigationController, dependencyManager: dependencyManager)
         router.navigate(to: destination, from: nil)
@@ -121,8 +123,14 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     }
     
     private func selectHashtag(atIndex index: Int) {
-        let item = collectionViewDataSource.hashtagDataSource.visibleItems[index]
-        var apiPath = collectionViewDataSource.hashtagDataSource.streamAPIPath
+        guard
+            let item = collectionViewDataSource.hashtagDataSource?.visibleItems[index],
+            var apiPath = collectionViewDataSource.hashtagDataSource?.streamAPIPath,
+            let trackingAPIPaths = collectionViewDataSource.hashtagDataSource?.streamTrackingAPIPaths
+        else {
+            Log.error("Trying to select a hashtag with incomplete data")
+            return
+        }
         apiPath.macroReplacements["%%HASHTAG%%"] = item.tag
         let context = DeeplinkContext(value: DeeplinkContext.hashTagFeed, subContext: "#\(item.tag)")
         
@@ -130,7 +138,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
             streamAPIPath: apiPath,
             title: "#\(item.tag)",
             context: context,
-            trackingAPIPaths: collectionViewDataSource.hashtagDataSource.streamTrackingAPIPaths.map { path in
+            trackingAPIPaths: trackingAPIPaths.map { path in
                 var path = path
                 path.macroReplacements["%%HASHTAG%%"] = item.tag
                 return path
@@ -141,17 +149,23 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     }
 
     private func selectChatRoom(atIndex index: Int) {
-        let item = collectionViewDataSource.newChatRoomsDataSource.visibleItems[index]
+        guard
+            let item = collectionViewDataSource.newChatRoomsDataSource?.visibleItems[index],
+            var apiPath = collectionViewDataSource.newChatRoomsDataSource?.streamAPIPath,
+            let trackingAPIPaths = collectionViewDataSource.hashtagDataSource?.streamTrackingAPIPaths
+        else {
+            Log.error("Trying to select a chat room with incomplete data")
+            return
+        }
         let itemString = item.name
         let macro = "%%CHATROOM%%"
-        var apiPath = collectionViewDataSource.newChatRoomsDataSource.streamAPIPath
         apiPath.macroReplacements[macro] = item.name
         let context = DeeplinkContext(value: DeeplinkContext.chatRoomFeed, subContext: itemString)
         let selectedItem = ListMenuSelectedItem(
             streamAPIPath: apiPath,
             title: itemString,
             context: context,
-            trackingAPIPaths: collectionViewDataSource.hashtagDataSource.streamTrackingAPIPaths.map { path in
+            trackingAPIPaths: trackingAPIPaths.map { path in
                 var path = path
                 path.macroReplacements[macro] = item.name
                 return path
@@ -183,12 +197,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     // MARK: - UICollectionView Delegate Flow Layout
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        switch ListMenuSection(rawValue: indexPath.section)! {
-            case .creator: return CGSize(width: view.bounds.width, height: ListMenuCreatorCollectionViewCell.preferredHeight)
-            case .community: return CGSize(width: view.bounds.width, height: ListMenuCommunityCollectionViewCell.preferredHeight)
-            case .hashtags: return CGSize(width: view.bounds.width, height: ListMenuHashtagCollectionViewCell.preferredHeight)
-            case .chatRooms: return CGSize(width: view.bounds.width, height: ListMenuChatRoomCollectionViewCell.preferredHeight)
-        }
+        return CGSize(width: view.bounds.width, height: NewListMenuSectionCell.preferredHeight)
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
@@ -204,10 +213,9 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     private var lastSelectedIndexPath: NSIndexPath?
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        
-        let listMenuSection = ListMenuSection(rawValue: indexPath.section)!
-        
-        switch listMenuSection {
+        let section = collectionViewDataSource.availableSections[indexPath.section]
+
+        switch section {
             case .creator:
                 selectCreator(atIndex: indexPath.item)
                 
@@ -233,17 +241,17 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     }
     
     func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-        let validIndices: Range<Int>
-        
-        switch ListMenuSection(rawValue: indexPath.section)! {
-            case .creator: validIndices = collectionViewDataSource.creatorDataSource.visibleItems.indices
-            case .community: validIndices = collectionViewDataSource.communityDataSource.visibleItems.indices
-            case .hashtags: validIndices = collectionViewDataSource.hashtagDataSource.visibleItems.indices
-            case .chatRooms: validIndices = collectionViewDataSource.newChatRoomsDataSource.visibleItems.indices
+        let validIndices: Range<Int>?
+        let section = collectionViewDataSource.availableSections[indexPath.section]
+        validIndices = collectionViewDataSource.itemsIndices(for: section)
+        if let validIndices = validIndices {
+            return validIndices ~= indexPath.row
         }
-        return validIndices ~= indexPath.row
+        else {
+            return false
+        }
     }
-    
+
     // MARK: - CoachmarkDisplayer
     
     func highlightFrame(forIdentifier forIdentifier: String) -> CGRect? {

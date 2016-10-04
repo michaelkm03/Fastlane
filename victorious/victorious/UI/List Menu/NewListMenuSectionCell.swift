@@ -7,15 +7,19 @@
 //
 
 class NewListMenuSectionCell: UICollectionViewCell {
+
     // MARK: - Outlets
 
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var avatarView: AvatarView!
+    @IBOutlet weak var titleLabelToAvatarViewLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var titleLabelToViewLeadingConstraint: NSLayoutConstraint!
 
-    // Cell Configuration
+
+    // MARK: - Cell Configuration
 
     /// Preferred height of the type of cell according to design spec
-    static var preferredHight: CGFloat = 38
+    static var preferredHeight: CGFloat = 38
 
     var dependencyManager: VDependencyManager? {
         didSet {
