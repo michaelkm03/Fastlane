@@ -15,6 +15,20 @@ class NewListMenuSectionCell: UICollectionViewCell {
     @IBOutlet weak var titleLabelToAvatarViewLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var titleLabelToViewLeadingConstraint: NSLayoutConstraint!
 
+    var avatarViewHidden = true {
+        didSet {
+            if avatarViewHidden == true {
+                avatarView.hidden = true
+                titleLabelToAvatarViewLeadingConstraint.active = false
+                titleLabelToViewLeadingConstraint.active = true
+            }
+            else {
+                avatarView.hidden = false
+                titleLabelToAvatarViewLeadingConstraint.active = true
+                titleLabelToViewLeadingConstraint.active = false
+            }
+        }
+    }
 
     // MARK: - Cell Configuration
 

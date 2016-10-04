@@ -40,7 +40,10 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         if let childDependency = dependencyManager.communityChildDependency {
             communityDataSource = NewListMenuSectionDataSource(
                 dependencyManager: childDependency,
-                cellConfiguration: { cell, item in cell.titleLabel.text = item.title },
+                cellConfiguration: { cell, item in
+                    cell.titleLabel.text = item.title
+                    cell.avatarViewHidden = true
+                },
                 createOperation: { CommunityItemsFetchOperation(dependencyManager: childDependency) },
                 processOutput: { $0 },
                 section: .community
@@ -61,6 +64,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
                 cellConfiguration: { cell, item in
                     cell.titleLabel.text = item.displayName
                     cell.avatarView.user = item
+                    cell.avatarViewHidden = false
                 },
                 createOperation: { RequestOperation(request: request) },
                 processOutput: { $0 },
@@ -79,7 +83,10 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
 
             hashtagDataSource = NewListMenuSectionDataSource(
                 dependencyManager: childDependency,
-                cellConfiguration: { cell, item in cell.titleLabel.text = item.tag },
+                cellConfiguration: { cell, item in
+                    cell.titleLabel.text = item.tag
+                    cell.avatarViewHidden = true
+                },
                 createOperation: { RequestOperation(request: request) },
                 processOutput: { $0 },
                 section: .hashtags
@@ -97,7 +104,10 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
 
             newChatRoomsDataSource = NewListMenuSectionDataSource(
                 dependencyManager: childDependency,
-                cellConfiguration: { cell, item in cell.titleLabel.text = item.name },
+                cellConfiguration: { cell, item in
+                    cell.titleLabel.text = item.name
+                    cell.avatarViewHidden = true
+                },
                 createOperation: { RequestOperation(request: request) },
                 processOutput: { $0 },
                 section: .chatRooms
