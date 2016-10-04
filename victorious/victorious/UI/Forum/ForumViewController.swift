@@ -16,6 +16,16 @@ private struct Constants {
 /// A template driven .screen component that sets up, houses and mediates the interaction
 /// between the Forum's required concrete implementations and abstract dependencies.
 class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocusable, UploadManagerHost, ContentPublisherDelegate, CoachmarkDisplayer {
+    private struct EndVIPButtonConfiguration {
+        let title: String
+        let titleColor: UIColor
+        let titleFont: UIFont
+        let backgroundColor: UIColor
+        let confirmationTitle: String
+        let confirmationBody: String
+        let closeAPIPath: APIPath
+    }
+    
     @IBOutlet private weak var stageContainer: UIView!
     @IBOutlet private weak var stageViewControllerContainer: VPassthroughContainerView!
     @IBOutlet private weak var stageTouchView: UIView!
@@ -28,6 +38,47 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         
     private lazy var closeButton: ImageOnColorButton? = {
        return self.dependencyManager.closeButton
+    }()
+    
+    private lazy var endVIPButton: UIButton? = {
+        guard let configuration = self.endVIPConfiguration else {
+            return nil
+        }
+        
+        let button = BackgroundButton(type: .System)
+        button.addTarget(self, action: #selector(endVIPEvent), forControlEvents: .TouchUpInside)
+        button.setTitle(configuration.title, forState: .Normal)
+        button.titleLabel?.font = configuration.titleFont
+        button.titleLabel?.textColor = configuration.titleColor
+        button.backgroundColor = configuration.backgroundColor
+        button.sizeToFit()
+
+        return button
+    }()
+    
+    private lazy var endVIPConfiguration: EndVIPButtonConfiguration? = {
+        guard
+            let configuration = self.dependencyManager.endVIPConfiguration,
+            let title = configuration.endVIPTitle,
+            let titleColor = configuration.endVIPTitleColor,
+            let titleFont = configuration.endVIPTitleFont,
+            let backgroundColor = configuration.endVIPBackgroundColor,
+            let confirmationTitle = configuration.endVIPConfirmationTitle,
+            let confirmationBody = configuration.endVIPConfirmationBody,
+            let closeAPIPath = configuration.endVIPAPIPath
+        else {
+            return nil
+        }
+        
+        return EndVIPButtonConfiguration(
+            title: title,
+            titleColor: titleColor,
+            titleFont: titleFont,
+            backgroundColor: backgroundColor,
+            confirmationTitle: confirmationTitle,
+            confirmationBody: confirmationBody,
+            closeAPIPath: closeAPIPath
+        )
     }()
 
     private var stageShrinkingAnimator: StageShrinkingAnimator?
@@ -238,13 +289,18 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         
         chatFeed?.nextSender = self
         //Initialize the title view. This will later be resized in the viewWillAppear, once it has actually been added to the navigation stack
-        navBarTitleView = ForumNavBarTitleView(dependencyManager: self.dependencyManager, frame: CGRect(x: 0, y: 0, width: 200, height: 45))
+        navBarTitleView = ForumNavBarTitleView(dependencyManager: self.dependencyManager, frame: CGRect(x: 0, y: 0, width: 80, height: 45))
         navigationController?.navigationBar.barStyle = .Black
         if let button = closeButton {
             button.addTarget(self, action: #selector(onClose), forControlEvents: .TouchUpInside)
             button.sizeToFit()
             navigationItem.leftBarButtonItem = UIBarButtonItem(customView: button)
         }
+        
+        if let endVIPButton = endVIPButton where VCurrentUser.user?.accessLevel.isCreator == true {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(customView: endVIPButton)
+        }
+        
         updateStyle()
         
         if let forumNetworkSource = dependencyManager.forumNetworkSource {
@@ -256,6 +312,45 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             
             self.forumNetworkSource = forumNetworkSource
         }
+    }
+    
+    private dynamic func endVIPEvent() {
+        guard let configuration = self.endVIPConfiguration else {
+            return
+        }
+        
+        let alertController = UIAlertController(
+            title: configuration.confirmationTitle,
+            message: configuration.confirmationBody,
+            preferredStyle: .Alert
+        )
+        let cancel = UIAlertAction(
+            title: NSLocalizedString("Cancel", comment: "Cancel closing the VIP Event"),
+            style: .Default,
+            handler: nil
+        )
+        alertController.addAction(cancel)
+        
+        let confirm = UIAlertAction(
+            title: NSLocalizedString("Yes", comment: "Confirm closing the VIP Event"),
+            style: .Destructive
+        ) { _ in
+            self.confirmCloseVIPEvent()
+        }
+        alertController.addAction(confirm)
+        
+        presentViewController(alertController, animated: true, completion: nil)
+    }
+    
+    private func confirmCloseVIPEvent() {
+        guard
+            let configuration = self.endVIPConfiguration,
+            let request = EndVIPEventRequest(apiPath: configuration.closeAPIPath)
+        else {
+            return
+        }
+        
+        RequestOperation(request: request).queue()
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -482,7 +577,6 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
 }
 
 private extension VDependencyManager {
-    
     var title: String? {
         return stringForKey("title.text")
     }
@@ -513,5 +607,39 @@ private extension VDependencyManager {
 
     var contentUnLikeKey: String? {
         return networkResources?.stringForKey("contentUnupvoteURL")
+    }
+    
+    // MARK: - End VIP Button
+    
+    var endVIPConfiguration: VDependencyManager? {
+        return childDependencyForKey("end.vip.button")
+    }
+    
+    var endVIPTitle: String? {
+        return stringForKey("text.title")
+    }
+    
+    var endVIPTitleColor: UIColor? {
+        return colorForKey("color.title")
+    }
+    
+    var endVIPTitleFont: UIFont? {
+        return fontForKey("font.title")
+    }
+    
+    var endVIPBackgroundColor: UIColor? {
+        return colorForKey("color.background")
+    }
+    
+    var endVIPConfirmationTitle: String? {
+        return stringForKey("text.confirmation.title")
+    }
+    
+    var endVIPConfirmationBody: String? {
+        return stringForKey("text.confirmation.body")
+    }
+    
+    var endVIPAPIPath: APIPath? {
+        return networkResources?.apiPathForKey("end.vip.event.URL")
     }
 }

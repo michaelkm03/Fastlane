@@ -47,7 +47,9 @@ extension Forum {
     
     func chatFeed(chatFeed: ChatFeed, didSelect chatFeedContent: ChatFeedContent) {
         let router = Router(originViewController: originViewController, dependencyManager: dependencyManager)
-        let destination = DeeplinkDestination(content: chatFeedContent.content)
+        guard let destination = DeeplinkDestination(content: chatFeedContent.content) else {
+            return
+        }
         router.navigate(to: destination, from: chatFeedContext)
     }
     
@@ -66,18 +68,6 @@ extension Forum {
     func stage(stage: Stage, wantsUpdateToContentHeight height: CGFloat) {
         setStageHeight(height)
         chatFeed?.addedTopInset = height
-    }
-}
-
-private extension VCreationFlowType {
-    var attachmentType: MediaAttachmentType? {
-        switch self {
-        case .GIF:
-            return .GIF
-        case .Image:
-            return .Image
-        default:
-            return nil
-        }
+        composer?.topInset = height
     }
 }

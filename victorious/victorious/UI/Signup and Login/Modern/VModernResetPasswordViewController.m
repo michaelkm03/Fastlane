@@ -12,7 +12,6 @@
 // Views + Helpers
 #import "VLoginFlowControllerDelegate.h"
 #import "VPasswordValidator.h"
-#import "VInlineValidationTextField.h"
 #import "UIColor+VBrightness.h"
 #import "UIAlertController+VSimpleAlert.h"
 
@@ -31,8 +30,8 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 @property (nonatomic, strong) VPasswordValidator *passwordValidator;
 
 @property (nonatomic, weak) IBOutlet UILabel *promptLabel;
-@property (nonatomic, weak) IBOutlet VInlineValidationTextField *passwordTextField;
-@property (nonatomic, weak) IBOutlet VInlineValidationTextField *confirmPasswordTextField;
+@property (nonatomic, weak) IBOutlet InlineValidationTextField *passwordTextField;
+@property (nonatomic, weak) IBOutlet InlineValidationTextField *confirmPasswordTextField;
 @property (nonatomic, strong) IBOutletCollection(UIView) NSArray *separators;
 
 @end
@@ -161,13 +160,13 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
 - (void)textFieldDidChange:(NSNotification *)notification
 {
-    VInlineValidationTextField *textField = notification.object;
+    InlineValidationTextField *textField = notification.object;
     [self validateWithTextField:textField];
 }
 
 #pragma mark - UITextFieldDelegate
 
-- (BOOL)textFieldShouldEndEditing:(VInlineValidationTextField *)textField
+- (BOOL)textFieldShouldEndEditing:(InlineValidationTextField *)textField
 {
     if ( textField.text.length > 0 )
     {
@@ -217,7 +216,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     }
 }
 
-- (void)validateWithTextField:(VInlineValidationTextField *)textField
+- (void)validateWithTextField:(InlineValidationTextField *)textField
 {
     NSError *validationError;
     
