@@ -13,9 +13,9 @@ class NSPredicate_MediaTypeTests: XCTestCase {
 
     func testPredicateFromAssetMediaType() {
         
-        XCTAssertNil(NSPredicate.predicateWithAssetMediaType(.Unknown))
-        XCTAssertNotNil(NSPredicate.predicateWithAssetMediaType(.Image))
-        XCTAssertNotNil(NSPredicate.predicateWithAssetMediaType(.Video))
-        XCTAssertNotNil(NSPredicate.predicateWithAssetMediaType(.Audio))
+        XCTAssertNil(NSPredicate.predicateWithAssetMediaType(.unknown))
+        XCTAssertNotNil(NSPredicate.predicateWithAssetMediaType(.image))
+        XCTAssertNotNil(NSPredicate.predicateWithAssetMediaType(.video))
+        XCTAssertNotNil(NSPredicate.predicateWithAssetMediaType(.audio))
     }
 }

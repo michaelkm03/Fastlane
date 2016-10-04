@@ -22,26 +22,26 @@ class TextOnColorButton: TouchableInsetAdjustableButton, TrackableButton {
 
     var dependencyManager: VDependencyManager? {
         didSet {
-            hidden = dependencyManager == nil
-            backgroundColor = templateAppearanceValue(.backgroundColor)
-            setTitleColor(templateAppearanceValue(.foregroundColor), forState: .Normal)
-            setTitle(templateAppearanceValue(.text), forState: .Normal)
-            titleLabel?.font = templateAppearanceValue(.font)
-            userInteractionEnabled = templateAppearanceValue(.clickable) ?? false
+            isHidden = dependencyManager == nil
+            backgroundColor = templateAppearanceValue(appearance: .backgroundColor)
+            setTitleColor(templateAppearanceValue(appearance: .foregroundColor), for: .normal)
+            setTitle(templateAppearanceValue(appearance: .text), for: .normal)
+            titleLabel?.font = templateAppearanceValue(appearance: .font)
+            isUserInteractionEnabled = templateAppearanceValue(appearance: .clickable) ?? false
             
             if
-                let borderWidth: CGFloat = templateAppearanceValue(.borderWidth),
-                let borderColor: UIColor = templateAppearanceValue(.borderColor)
+                let borderWidth: CGFloat = templateAppearanceValue(appearance: .borderWidth),
+                let borderColor: UIColor = templateAppearanceValue(appearance: .borderColor)
             {
                 layer.borderWidth = borderWidth
-                layer.borderColor = borderColor.CGColor
+                layer.borderColor = borderColor.cgColor
             }
         }
     }
     
-    override var highlighted: Bool {
+    override var isHighlighted: Bool {
         didSet {
-            alpha = highlighted ? 0.5 : 1.0
+            alpha = isHighlighted ? 0.5 : 1.0
         }
     }
     
@@ -64,19 +64,19 @@ class TextOnColorButton: TouchableInsetAdjustableButton, TrackableButton {
     
     // MARK: - Sizing
     
-    override func intrinsicContentSize() -> CGSize {
+    override var intrinsicContentSize: CGSize {
         if needsPadding {
             return CGSize(
-                width: super.intrinsicContentSize().width + Constants.addedWidth,
-                height: super.intrinsicContentSize().height
+                width: super.intrinsicContentSize.width + Constants.addedWidth,
+                height: super.intrinsicContentSize.height
             )
         }
         else {
-            return super.intrinsicContentSize()
+            return super.intrinsicContentSize
         }
     }
     
-    override func sizeThatFits(size: CGSize) -> CGSize {
-        return intrinsicContentSize()
+    override func sizeThatFits(_ size: CGSize) -> CGSize {
+        return intrinsicContentSize
     }
 }

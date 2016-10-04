@@ -18,7 +18,7 @@ class LoadingCancellableView: UIView {
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView! {
         didSet {
             activityIndicatorView.startAnimating()
-            self.frame.size = CGSizeMake(120, 120)
+            self.frame.size = CGSize(width: 120, height: 120)
         }
     }
     @IBOutlet weak var text: UILabel! {
@@ -30,13 +30,13 @@ class LoadingCancellableView: UIView {
     @IBOutlet weak var cancelButton: UIButton! {
         didSet {
             cancelButton.layer.cornerRadius = 5
-            cancelButton.layer.borderColor = UIColor.whiteColor().CGColor
+            cancelButton.layer.borderColor = UIColor.white.cgColor
             cancelButton.layer.borderWidth = 1
-            cancelButton.setTitle(NSLocalizedString("Cancel", comment: ""), forState: .Normal)
+            cancelButton.setTitle(NSLocalizedString("Cancel", comment: ""), for: UIControlState())
         }
     }
     
-    @IBAction func cancelButtonAction(sender: AnyObject) {
+    @IBAction func cancelButtonAction(_ sender: AnyObject) {
         activityIndicatorView.stopAnimating()
         delegate?.cancel()
     }

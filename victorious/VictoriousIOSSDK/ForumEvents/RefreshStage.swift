@@ -53,7 +53,7 @@ public struct RefreshStage {
 
         let section = json["section"].string ?? "main_stage"
         
-        let lowerCasedSection = section.lowercaseString
+        let lowerCasedSection = section.lowercased()
         switch lowerCasedSection {
             case "vip_stage":
                 self.section = .vip

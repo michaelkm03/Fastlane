@@ -17,11 +17,11 @@ struct AlertsRequestDecorator<T: RequestType>: RequestType {
         self.innerRequest = request
     }
     
-    var urlRequest: NSURLRequest {
+    var urlRequest: URLRequest {
         return innerRequest.urlRequest
     }
     
-    func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> RequestResultWithAlerts<T.ResultType> {
+    func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> RequestResultWithAlerts<T.ResultType> {
         let result = try innerRequest.parseResponse(response, toRequest: request, responseData: responseData, responseJSON: responseJSON)
         let alerts = responseJSON["alerts"].arrayValue.flatMap { Alert(json: $0) }
         return RequestResultWithAlerts(result: result, alerts: alerts)

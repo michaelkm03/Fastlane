@@ -15,11 +15,11 @@ public protocol ForumEventSender: class {
     /// Events can be propagated up to the next sender (chain of responsibility)
     weak var nextSender: ForumEventSender? { get }
     
-    func send(event: ForumEvent)
+    func send(_ event: ForumEvent)
 }
 
 public extension ForumEventSender {
-    func send(event: ForumEvent) {
+    func send(_ event: ForumEvent) {
         // Unless defined by a concrete type, the default behavior passes the event along.
         nextSender?.send(event)
     }

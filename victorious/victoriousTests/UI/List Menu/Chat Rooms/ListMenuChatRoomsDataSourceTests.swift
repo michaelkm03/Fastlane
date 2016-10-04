@@ -15,14 +15,14 @@ class ListMenuChatRoomsDataSourceTests: XCTestCase {
         let requestExecutor = TestRequestExecutor(result: mockChatRooms)
         let config = ["networkResources":["chat.rooms.URL":"http://example.com"]]
         let dependencyManager = VDependencyManager(parentManager: nil, configuration: config, dictionaryOfClassesByTemplateName: [:])
-        let dataSource = ListMenuChatRoomsDataSource(dependencyManager: dependencyManager)
+        let dataSource = ListMenuChatRoomsDataSource(dependencyManager: dependencyManager!)
         dataSource.requestExecutor = requestExecutor
-        let expectation = expectationWithDescription("ListMenuChatRoomsDataSource data fetch")
+        let expectation = self.expectation(description: "ListMenuChatRoomsDataSource data fetch")
 
         dataSource.fetchRemoteData() {
             expectation.fulfill()
             XCTAssertEqual(dataSource.visibleItems.count, mockChatRooms.count)
         }
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
 }

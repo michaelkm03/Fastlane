@@ -10,8 +10,8 @@ import Foundation
 import VictoriousIOSSDK
 
 struct MockRequest: RequestType {
-    let urlRequest = NSURLRequest( URL: NSURL(string: "http://www.mockrequest.com" )! )
-    func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> Bool {
+    let urlRequest = URLRequest( url: URL(string: "http://www.mockrequest.com" )! )
+    func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> Bool {
         return true
     }
 }
@@ -22,8 +22,8 @@ struct MockErrorRequest: RequestType {
         self.code = code
     }
     
-    let urlRequest = NSURLRequest( URL: NSURL(string: "http://www.mockerrorrequest.com" )! )
-    func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> Bool {
+    let urlRequest = URLRequest( url: URL(string: "http://www.mockerrorrequest.com" )! )
+    func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> Bool {
         throw APIError( localizedDescription: "MockError", code: code)
     }
 }

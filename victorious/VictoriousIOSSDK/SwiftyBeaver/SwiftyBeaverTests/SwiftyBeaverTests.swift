@@ -58,9 +58,9 @@ class SwiftyBeaverTests: XCTestCase {
         let file = FileDestination()
 
         // add destinations
-        log.addDestination(console)
-        log.addDestination(console2)
-        log.addDestination(file)
+        XCTAssertTrue(log.addDestination(console))
+        XCTAssertTrue(log.addDestination(console2))
+        XCTAssertTrue(log.addDestination(file))
         XCTAssertEqual(log.countDestinations(), 3)
         // remove destinations
         XCTAssertTrue(log.removeDestination(console))
@@ -86,22 +86,21 @@ class SwiftyBeaverTests: XCTestCase {
 
         // add console
         let console = ConsoleDestination()
-        log.addDestination(console)
+        XCTAssertTrue(log.addDestination(console))
         log.verbose("the default console destination")
         // add another console and set it to be less chatty
         let console2 = ConsoleDestination()
-        log.addDestination(console2)
+        XCTAssertTrue(log.addDestination(console2))
         XCTAssertEqual(log.countDestinations(), 2)
-        console2.detailOutput = false
-        console2.dateFormat = "HH:mm:ss.SSS"
-        console2.minLevel = SwiftyBeaver.Level.Debug
+        console2.format = "$L: $M"
+        console2.minLevel = SwiftyBeaver.Level.debug
         log.verbose("a verbose hello from hopefully just 1 console!")
         log.debug("a debug hello from 2 different consoles!")
 
         // add file
         let file = FileDestination()
-        file.logFileURL = NSURL(string: "file:///tmp/testSwiftyBeaver.log")!
-        log.addDestination(file)
+        file.logFileURL = URL(string: "file:///tmp/testSwiftyBeaver.log")!
+        XCTAssertTrue(log.addDestination(file))
         XCTAssertEqual(log.countDestinations(), 3)
         log.verbose("default file msg 1")
         log.verbose("default file msg 2")
@@ -109,11 +108,10 @@ class SwiftyBeaverTests: XCTestCase {
 
         // log to another file
         let file2 = FileDestination()
-        file2.logFileURL = NSURL(string: "file:///tmp/testSwiftyBeaver2.log")!
-        file2.detailOutput = false
-        file2.dateFormat = "HH:mm:ss.SSS"
-        file2.minLevel = SwiftyBeaver.Level.Debug
-        log.addDestination(file2)
+        file2.logFileURL = URL(string: "file:///tmp/testSwiftyBeaver2.log")!
+        console2.format = "$L: $M"
+        file2.minLevel = SwiftyBeaver.Level.debug
+        XCTAssertTrue(log.addDestination(file2))
         XCTAssertEqual(log.countDestinations(), 4)
         log.verbose("this should be in file 1")
         log.debug("this should be in both files, msg 1")
@@ -121,9 +119,8 @@ class SwiftyBeaverTests: XCTestCase {
 
         // log to default file location
         let file3 = FileDestination()
-        file3.detailOutput = false
-        file3.dateFormat = "HH:mm:ss.SSS"
-        log.addDestination(file3)
+        console2.format = "$L: $M"
+        XCTAssertTrue(log.addDestination(file3))
         XCTAssertEqual(log.countDestinations(), 5)
         log.info("Logging to default log file \(file3.logFileURL)")
     }
@@ -134,17 +131,13 @@ class SwiftyBeaverTests: XCTestCase {
 
         // add console
         let console = ConsoleDestination()
-        log.addDestination(console)
+        XCTAssertTrue(log.addDestination(console))
 
         // add file
         let file = FileDestination()
-        file.logFileURL = NSURL(string: "file:///tmp/testSwiftyBeaver.log")!
-        file.detailOutput = false
-        file.dateFormat = "HH:mm:ss.SSS"
-        log.addDestination(file)
-
-        XCTAssertTrue(console.colored)
-        XCTAssertTrue(file.colored)
+        file.logFileURL = URL(string: "file:///tmp/testSwiftyBeaver.log")!
+        file.format = "$L: $M"
+        XCTAssertTrue(log.addDestination(file))
 
         log.verbose("not so important")
         log.debug("something to debug")
@@ -160,16 +153,14 @@ class SwiftyBeaverTests: XCTestCase {
 
         // add console
         let console = ConsoleDestination()
-        log.addDestination(console)
-
-        XCTAssertTrue(console.colored)
+        XCTAssertTrue(log.addDestination(console))
 
         // change default color
-        console.levelColor.Verbose = "fg255,0,255;"
-        console.levelColor.Debug = "fg255,100,0;"
-        console.levelColor.Info = ""
-        console.levelColor.Warning = "fg255,255,255;"
-        console.levelColor.Error = "fg100,0,200;"
+        console.levelColor.verbose = "fg255,0,255;"
+        console.levelColor.debug = "fg255,100,0;"
+        console.levelColor.info = ""
+        console.levelColor.warning = "fg255,255,255;"
+        console.levelColor.error = "fg100,0,200;"
 
         log.verbose("not so important, level in magenta")
         log.debug("something to debug, level in orange")
@@ -178,43 +169,14 @@ class SwiftyBeaverTests: XCTestCase {
         log.error("ouch, an error did occur!, level in purple")
     }
 
-    func testColoredMessage() {
-        let log = SwiftyBeaver.self
-
-        // add console
-        let console = ConsoleDestination()
-        log.addDestination(console)
-
-        // add file
-        let file = FileDestination()
-        file.logFileURL = NSURL(string: "file:///tmp/testSwiftyBeaver.log")!
-        file.detailOutput = false
-        file.dateFormat = "HH:mm:ss.SSS"
-        log.addDestination(file)
-
-        console.coloredLines = true
-        XCTAssertTrue(console.colored)
-        XCTAssertTrue(console.coloredLines)
-        file.coloredLines = true
-        XCTAssertTrue(file.colored)
-        XCTAssertTrue(file.coloredLines)
-
-        log.verbose("not so important")
-        log.debug("something to debug")
-        log.info("a nice information")
-        log.warning("oh no, that won’t be good")
-        log.error("ouch, an error did occur!")
-    }
-
     func testDifferentMessageTypes() {
         let log = SwiftyBeaver.self
 
         // add console
         let console = ConsoleDestination()
-        console.detailOutput = false
-        console.dateFormat = "HH:mm:ss.SSS"
-        console.levelString.Info = "interesting number"
-        log.addDestination(console)
+        console.format = "$L: $M"
+        console.levelString.info = "interesting number"
+        XCTAssertTrue(log.addDestination(console))
 
         log.verbose("My name is üÄölèå")
         log.verbose(123)
@@ -230,8 +192,7 @@ class SwiftyBeaverTests: XCTestCase {
         let log = SwiftyBeaver.self
         // add console
         let console = ConsoleDestination()
-        console.dateFormat = "HH:mm:ss.SSS"
-        log.addDestination(console)
+        XCTAssertTrue(log.addDestination(console))
         // should not create a compile error relating autoclosure
         log.info(instanceVar)
     }
@@ -242,11 +203,10 @@ class SwiftyBeaverTests: XCTestCase {
 
         // add console
         let console = ConsoleDestination()
-        console.dateFormat = "HH:mm:ss.SSS"
         // set info level on default
-        console.minLevel = .Info
+        console.minLevel = .info
 
-        log.addDestination(console)
+        XCTAssertTrue(log.addDestination(console))
 
         func longRunningTask() -> String {
             XCTAssert(false, "A block passed should not be executed if the log should not be logged.")
@@ -263,10 +223,10 @@ class SwiftyBeaverTests: XCTestCase {
 
     func testStripParams() {
         var f = "singleParam"
-        XCTAssertEqual(SwiftyBeaver.stripParams(f), "singleParam()")
+        XCTAssertEqual(SwiftyBeaver.stripParams(function: f), "singleParam()")
         f = "logWithParamFunc(_:foo:hello:)"
-        XCTAssertEqual(SwiftyBeaver.stripParams(f), "logWithParamFunc()")
+        XCTAssertEqual(SwiftyBeaver.stripParams(function: f), "logWithParamFunc()")
         f = "aFunc()"
-        XCTAssertEqual(SwiftyBeaver.stripParams(f), "aFunc()")
+        XCTAssertEqual(SwiftyBeaver.stripParams(function: f), "aFunc()")
     }
 }

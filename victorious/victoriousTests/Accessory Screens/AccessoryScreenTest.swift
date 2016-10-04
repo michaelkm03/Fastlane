@@ -12,9 +12,9 @@ import XCTest
 class AccessoryScreenTest: XCTestCase {
     func testInitWithDependencyManager() {
         let screen1 = AccessoryScreen(dependencyManager: VDependencyManager(dictionary: [
-            "identifier": "cool_screen",
-            "title": "Cool Screen",
-            "position": "left"
+            "identifier": "cool_screen" as AnyObject,
+            "title": "Cool Screen" as AnyObject,
+            "position": "left" as AnyObject
         ]))
         
         XCTAssertEqual(screen1?.id, "cool_screen")
@@ -22,7 +22,7 @@ class AccessoryScreenTest: XCTestCase {
         XCTAssertEqual(screen1?.position, .left)
         
         let screen2 = AccessoryScreen(dependencyManager: VDependencyManager(dictionary: [
-            "identifier": "empty_screen"
+            "identifier": "empty_screen" as AnyObject
         ]))
         
         XCTAssertEqual(screen2?.id, "empty_screen")

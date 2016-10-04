@@ -12,7 +12,7 @@ class AccessoryScreenBarButtonItem: UIBarButtonItem {
     
     // MARK: - Constants
     
-    private struct Constants {
+    fileprivate struct Constants {
         static let extraWidth = CGFloat(16.0)
     }
     
@@ -24,10 +24,10 @@ class AccessoryScreenBarButtonItem: UIBarButtonItem {
         
         super.init()
         
-        button.setImage(accessoryScreen.icon, forState: .Normal)
-        button.addTarget(self, action: #selector(buttonWasPressed), forControlEvents: .TouchUpInside)
+        button.setImage(accessoryScreen.icon, for: UIControlState())
+        button.addTarget(self, action: #selector(buttonWasPressed), for: .touchUpInside)
         
-        var buttonSize = button.intrinsicContentSize()
+        var buttonSize = button.intrinsicContentSize
         buttonSize.width += Constants.extraWidth
         button.frame.size = buttonSize
         customView = button
@@ -47,7 +47,7 @@ class AccessoryScreenBarButtonItem: UIBarButtonItem {
     
     // MARK: - Views
     
-    private let button = BadgeButton(type: .System)
+    fileprivate let button = BadgeButton(type: .system)
     
     // MARK: - Accessing the accessory screen
     
@@ -55,7 +55,7 @@ class AccessoryScreenBarButtonItem: UIBarButtonItem {
     
     // MARK: - Managing badge count
     
-    private func updateBadgeCount() {
+    fileprivate func updateBadgeCount() {
         guard let badgeCountType = container?.badgeCountType(for: accessoryScreen) else {
             return
         }
@@ -65,9 +65,9 @@ class AccessoryScreenBarButtonItem: UIBarButtonItem {
     
     // MARK: - Navigating
     
-    private weak var container: AccessoryScreenContainer?
+    fileprivate weak var container: AccessoryScreenContainer?
     
-    private dynamic func buttonWasPressed() {
+    fileprivate dynamic func buttonWasPressed() {
         guard let destination = accessoryScreen.loadDestination() else {
             return
         }

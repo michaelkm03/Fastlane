@@ -8,16 +8,16 @@
 
 import Foundation
 
-private let _integerFormatter: NSNumberFormatter = {
-    let formatter = NSNumberFormatter()
-    formatter.numberStyle = .DecimalStyle
+private let _integerFormatter: NumberFormatter = {
+    let formatter = NumberFormatter()
+    formatter.numberStyle = .decimal
     formatter.maximumFractionDigits = 0
     return formatter
 }()
 
-extension NSNumberFormatter {
+extension NumberFormatter {
     /// A number formatter that produces integer strings.
-    static var integerFormatter: NSNumberFormatter {
+    static var integerFormatter: NumberFormatter {
         return _integerFormatter
     }
 }

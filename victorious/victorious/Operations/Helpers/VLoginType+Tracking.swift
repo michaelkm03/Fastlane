@@ -10,11 +10,11 @@ import Foundation
 
 extension VLoginType {
     
-    func trackSuccess(newUser: Bool) {
+    func trackSuccess(_ newUser: Bool) {
         switch self {
-        case .Email:
+        case .email:
             VTrackingManager.sharedInstance().trackEvent(VTrackingEventLoginWithEmailDidSucceed)
-        case .Facebook:
+        case .facebook:
             if newUser {
                 let params = [
                     VTrackingKeyPermissionName: VTrackingValueAuthorized,
@@ -30,9 +30,9 @@ extension VLoginType {
     
     func trackFailure() {
         switch self {
-        case .Email:
+        case .email:
             VTrackingManager.sharedInstance().trackEvent(VTrackingEventLoginWithEmailDidFail)
-        case .Facebook:
+        case .facebook:
             VTrackingManager.sharedInstance().trackEvent(VTrackingEventLoginWithFacebookDidFail)
         default:
             return

@@ -13,19 +13,19 @@ import Foundation
 class ImageOnColorButton: TouchableInsetAdjustableButton, TrackableButton {
     var dependencyManager: VDependencyManager? {
         didSet {
-            backgroundColor = templateAppearanceValue(.backgroundColor)
+            backgroundColor = templateAppearanceValue(appearance: .backgroundColor)
             
-            var foregroundRenderingMode = UIImageRenderingMode.AlwaysOriginal
-            if let foregroundColor: UIColor = templateAppearanceValue(.foregroundColor) {
+            var foregroundRenderingMode = UIImageRenderingMode.alwaysOriginal
+            if let foregroundColor: UIColor = templateAppearanceValue(appearance: .foregroundColor) {
                 //Assume that background color was nil, use tintColor
                 //to color the foreground image
                 tintColor = foregroundColor
-                foregroundRenderingMode = .AlwaysTemplate
+                foregroundRenderingMode = .alwaysTemplate
             }
-            let foregroundImage: UIImage? = templateAppearanceValue(.foregroundImage)
-            setImage(foregroundImage?.imageWithRenderingMode(foregroundRenderingMode), forState: .Normal)
+            let foregroundImage: UIImage? = templateAppearanceValue(appearance: .foregroundImage)
+            setImage(foregroundImage?.withRenderingMode(foregroundRenderingMode), for: .normal)
             
-            userInteractionEnabled = templateAppearanceValue(.clickable) ?? false
+            isUserInteractionEnabled = templateAppearanceValue(appearance: .clickable) ?? false
         }
     }
 }

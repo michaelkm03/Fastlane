@@ -10,7 +10,6 @@ import Foundation
 
 /// Styles a `HashtagBarCell`
 struct HashtagBarCellDecorator {
-    
     let font: UIFont
     let textColor: UIColor
     
@@ -27,21 +26,20 @@ struct HashtagBarCellDecorator {
     }
     
     /// Applies text styling to a `HashtagBarCell`'s label
-    func decorateCell(cell: HashtagBarCell) {
+    func decorateCell(_ cell: HashtagBarCell) {
         
         cell.label.font = font
         cell.label.textColor = textColor
-        cell.backgroundColor = .clearColor()
+        cell.backgroundColor = .clear
     }
 }
 
 private extension VDependencyManager {
-    
     var font: UIFont? {
-        return fontForKey("font.suggestedHashtag.text")
+        return font(forKey: "font.suggestedHashtag.text")
     }
     
     var textColor: UIColor? {
-        return colorForKey("color.suggestedHashtag.text")
+        return color(forKey: "color.suggestedHashtag.text")
     }
 }

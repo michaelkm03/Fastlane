@@ -10,7 +10,7 @@ import Foundation
 import VictoriousIOSSDK
 
 extension VLoginFlowAPIHelper {
-    func queueUpdateProfileOperation(username username: String?, profileImageURL: NSURL?, completion: ((NSError?) -> ())?) -> NSOperation? {
+    func queueUpdateProfileOperation(username: String?, profileImageURL: NSURL?, completion: ((NSError?) -> ())?) -> Operation? {
         let updateOperation = AccountUpdateOperation(
             profileUpdate: ProfileUpdate(
                 displayName: nil,
@@ -35,8 +35,8 @@ extension VLoginFlowAPIHelper {
         return nil
     }
     
-    func queueFacebookLoginOperationWithCompletion(completion: (NSError?) -> ()) -> NSOperation {
-        let loginType = VLoginType.Facebook
+    func queueFacebookLoginOperationWithCompletion(_ completion: @escaping (NSError?) -> ()) -> Operation {
+        let loginType = VLoginType.facebook
         let credentials: NewAccountCredentials = loginType.storedCredentials()!
         let operation = AccountCreateOperation(
             dependencyManager: dependencyManager,
@@ -55,7 +55,7 @@ extension VLoginFlowAPIHelper {
         return operation
     }
     
-    func queueLoginOperationWithEmail(email: String, password: String, completion: ([AnyObject]?, NSError?, Bool) -> () ) -> NSOperation {
+    func queueLoginOperationWithEmail(_ email: String, password: String, completion: @escaping ([AnyObject]?, NSError?, Bool) -> () ) -> Operation {
         let operation = LoginOperation(
             dependencyManager: dependencyManager,
             email: email,
@@ -73,12 +73,12 @@ extension VLoginFlowAPIHelper {
         return operation
     }
     
-    func queueAccountCreateOperationWithEmail(email: String, password: String, completion: ([AnyObject]?, NSError?, Bool) -> () ) -> NSOperation {
+    func queueAccountCreateOperationWithEmail(_ email: String, password: String, completion: @escaping ([AnyObject]?, NSError?, Bool) -> () ) -> Operation {
         let operation = AccountCreateOperation(
             dependencyManager: dependencyManager,
             credentials: .UsernamePassword(username: email, password: password),
             parameters: AccountCreateParameters(
-                loginType: .Email,
+                loginType: .email,
                 accountIdentifier: email
             )
         )
@@ -94,36 +94,37 @@ extension VLoginFlowAPIHelper {
         return operation
     }
     
-    func queueRequestPasswordResetOperationWithEmail(email: String, completion: (deviceToken: String?, error: NSError?) -> Void) -> NSOperation {
+    func queueRequestPasswordResetOperationWithEmail(_ email: String, completion: @escaping (_ deviceToken: String?, _ error: NSError?) -> Void) -> Operation {
         let operation = RequestOperation(request: RequestPasswordResetRequest(email: email))
         
         operation.queue { result in
             switch result {
-                case .success(let deviceToken): completion(deviceToken: deviceToken, error: nil)
-                case .failure(let error): completion(deviceToken: nil, error: error as NSError)
-                case .cancelled: completion(deviceToken: nil, error: nil)
+                case .success(let deviceToken): completion(deviceToken, nil)
+                case .failure(let error): completion(nil, error as NSError)
+                case .cancelled: completion(nil, nil)
             }
         }
         
         return operation
     }
     
-    func queuePasswordResetOperationWithNewPassword(password: String, userToken: String, deviceToken: String, completion: (error: NSError?) -> Void) -> NSOperation {
+    func queuePasswordResetOperationWithNewPassword
+        (_ password: String, userToken: String, deviceToken: String, completion: @escaping (_ error: NSError?) -> Void) -> Operation {
         let operation = RequestOperation(
             request: PasswordResetRequest(newPassword: password, userToken: userToken, deviceToken: deviceToken)
         )
         
         operation.queue { result in
             switch result {
-                case .success, .cancelled: completion(error: nil)
-                case .failure(let error): completion(error: error as NSError)
+                case .success, .cancelled: completion(nil)
+                case .failure(let error): completion(error as NSError)
             }
         }
         
         return operation
     }
     
-    func queuePasswordResetOperationWithUserToken(userToken: String, deviceToken: String, completion: (error: NSError?) -> Void) -> NSOperation {
+    func queuePasswordResetOperationWithUserToken(_ userToken: String, deviceToken: String, completion: @escaping (_ error: NSError?) -> Void) -> Operation {
         return queuePasswordResetOperationWithNewPassword("", userToken: userToken, deviceToken: deviceToken, completion: completion)
     }
 }

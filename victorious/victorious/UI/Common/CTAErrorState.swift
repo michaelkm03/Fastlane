@@ -25,53 +25,53 @@ private struct Constants {
 /// A reusable error state class that tells the user that the current screen is not usable unless
 /// they perform a specific action.
 class CTAErrorState: UIView {
-    private let messageLabel = UILabel()
-    private var actionButton = TextOnColorButton()
-    private let dependencyManager: VDependencyManager
-    private let actionType: CTAErrorStateActionType
+    fileprivate let messageLabel = UILabel()
+    fileprivate var actionButton = TextOnColorButton()
+    fileprivate let dependencyManager: VDependencyManager
+    fileprivate let actionType: CTAErrorStateActionType
 
     init(frame: CGRect, dependencyManager: VDependencyManager, actionType: CTAErrorStateActionType) {
         self.dependencyManager = dependencyManager
         self.actionType = actionType
         super.init(frame: frame)
         setupViews()
-        actionButton.addTarget(self, action: #selector(CTAErrorState.performButtonAction), forControlEvents: .TouchUpInside)
+        actionButton.addTarget(self, action: #selector(CTAErrorState.performButtonAction), for: .touchUpInside)
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func setupViews() {
+    fileprivate func setupViews() {
         messageLabel.text = dependencyManager.messageLabelText
         messageLabel.numberOfLines = 0
-        messageLabel.textAlignment = .Center
+        messageLabel.textAlignment = .center
         messageLabel.font = dependencyManager.messageLabelFont
         messageLabel.textColor = dependencyManager.messageLabelColor
         
-        actionButton.dependencyManager = dependencyManager.childDependencyForKey(Constants.actionButtonKey)
+        actionButton.dependencyManager = dependencyManager.childDependency(forKey: Constants.actionButtonKey)
         actionButton.roundingType = .roundedRect(radius: Constants.buttonCornerRadius)
         
         addSubview(messageLabel)
         
-        messageLabel.widthAnchor.constraintEqualToAnchor(self.widthAnchor).active = true
-        messageLabel.topAnchor.constraintEqualToAnchor(self.topAnchor).active = true
-        messageLabel.centerXAnchor.constraintEqualToAnchor(self.centerXAnchor).active = true
+        messageLabel.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
+        messageLabel.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        messageLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         messageLabel.translatesAutoresizingMaskIntoConstraints = false
         
         addSubview(actionButton)
-        actionButton.widthAnchor.constraintEqualToAnchor(self.widthAnchor).active = true
-        actionButton.topAnchor.constraintEqualToAnchor(messageLabel.bottomAnchor, constant: Constants.minimumSpacing).active = true
-        actionButton.centerXAnchor.constraintEqualToAnchor(self.centerXAnchor).active = true
+        actionButton.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
+        actionButton.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: Constants.minimumSpacing).isActive = true
+        actionButton.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         actionButton.translatesAutoresizingMaskIntoConstraints = false
     }
     
-    @objc private func performButtonAction() {
+    @objc fileprivate func performButtonAction() {
         actionButton.dependencyManager?.trackButtonEvent(.tap)
         switch actionType {
             case .openSettings:
-                if let url = NSURL(string: UIApplicationOpenSettingsURLString) {
-                    UIApplication.sharedApplication().openURL(url)
+                if let url = URL(string: UIApplicationOpenSettingsURLString) {
+                    UIApplication.shared.openURL(url)
                 }
         }
     }
@@ -79,14 +79,14 @@ class CTAErrorState: UIView {
 
 private extension VDependencyManager {
     var messageLabelText: String {
-        return stringForKey(Constants.messageTextKey)
+        return string(forKey: Constants.messageTextKey)
     }
     
     var messageLabelFont: UIFont? {
-        return fontForKey(Constants.messageFontKey)
+        return font(forKey: Constants.messageFontKey)
     }
     
     var messageLabelColor: UIColor? {
-        return colorForKey(Constants.messageColorKey)
+        return color(forKey: Constants.messageColorKey)
     }
 }

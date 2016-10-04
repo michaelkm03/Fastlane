@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 struct ListMenuSelectedItem {
     let streamAPIPath: APIPath
@@ -41,7 +42,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     
     // MARK: - Initialization
     
-    static func newWithDependencyManager(dependencyManager: VDependencyManager) -> ListMenuViewController {
+    static func new(withDependencyManager dependencyManager: VDependencyManager) -> ListMenuViewController {
         let viewController = self.v_initialViewControllerFromStoryboard() as ListMenuViewController
         viewController.dependencyManager = dependencyManager
         return viewController
@@ -52,24 +53,24 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView?.contentInset = Constants.contentInset
-        dependencyManager.addBackgroundToBackgroundHost(self)
+        dependencyManager.addBackground(toBackgroundHost: self)
         view.layoutIfNeeded()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userVIPStatusChanged), name: VCurrentUser.userDidUpdateNotificationKey, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(userVIPStatusChanged), name: NSNotification.Name(rawValue: VCurrentUser.userDidUpdateNotificationKey), object: nil)
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         collectionView?.reloadData()
-        
-        let homeFeedIndexPath = NSIndexPath(forRow: 0, inSection: ListMenuSection.community.rawValue)
+
+        let homeFeedIndexPath = NSIndexPath(row: 0, section: ListMenuSection.community.rawValue)
         let indexPath = lastSelectedIndexPath ?? homeFeedIndexPath
-        collectionView?.selectItemAtIndexPath(indexPath, animated: false, scrollPosition: .None)
+        collectionView?.selectItem(at: indexPath as IndexPath, animated: true, scrollPosition: [])
         
         dependencyManager.trackViewWillAppear(for: self)
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         dependencyManager.trackViewWillDisappear(for: self)
     }
@@ -84,7 +85,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     // MARK: - Selection
     
     private func selectCreator(atIndex index: Int) {
-        guard let scaffold = VRootViewController.sharedRootViewController()?.scaffold as? Scaffold else {
+        guard let scaffold = VRootViewController.shared()?.scaffold as? Scaffold else {
             return
         }
         
@@ -96,18 +97,14 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         router.navigate(to: destination, from: nil)
         
         // This notification closes the side view controller
-        NSNotificationCenter.defaultCenter().postNotificationName(
-            RESTForumNetworkSource.updateStreamURLNotification,
-            object: nil,
-            userInfo: nil
-        )
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: RESTForumNetworkSource.updateStreamURLNotification), object: nil)
     }
     
     private func selectCommunity(atIndex index: Int) {
         let item = collectionViewDataSource.communityDataSource.visibleItems[index]
         let context = DeeplinkContext(value: item.name)
         // Index 0 should correspond to the home feed, so we broadcast a nil path to denote an unfiltered feed.
-        postListMenuSelection(index == 0 ? nil : ListMenuSelectedItem(
+        postListMenuSelection(listMenuSelection: index == 0 ? nil : ListMenuSelectedItem(
             streamAPIPath: item.streamAPIPath,
             title: item.title,
             context: context,
@@ -132,7 +129,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
             }
         )
         
-        postListMenuSelection(selectedTagItem)
+        postListMenuSelection(listMenuSelection: selectedTagItem)
     }
 
     private func selectChatRoom(atIndex index: Int) {
@@ -152,14 +149,14 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
                 return path
             }
         )
-        postListMenuSelection(selectedItem)
+        postListMenuSelection(listMenuSelection: selectedItem)
     }
     
     private func postListMenuSelection(listMenuSelection: ListMenuSelectedItem?) {
-        NSNotificationCenter.defaultCenter().postNotificationName(
-            RESTForumNetworkSource.updateStreamURLNotification,
+        NotificationCenter.default.post(
+            name: NSNotification.Name(rawValue: RESTForumNetworkSource.updateStreamURLNotification),
             object: nil,
-            userInfo: listMenuSelection.flatMap { ["selectedItem": ReferenceWrapper($0)] }
+            userInfo: listMenuSelection.flatMap { ["selectedItem": $0] }
         )
         
         if let trackingAPIPaths = listMenuSelection?.trackingAPIPaths {
@@ -171,13 +168,13 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     
     // MARK: - UIViewController overrides
     
-    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        return .Portrait
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
     }
     
     // MARK: - UICollectionView Delegate Flow Layout
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         switch ListMenuSection(rawValue: indexPath.section)! {
             case .creator: return CGSize(width: view.bounds.width, height: ListMenuCreatorCollectionViewCell.preferredHeight)
             case .community: return CGSize(width: view.bounds.width, height: ListMenuCommunityCollectionViewCell.preferredHeight)
@@ -186,11 +183,11 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         }
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 12, left: 0, bottom: 24, right: 0)
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: view.bounds.width, height: ListMenuSectionHeaderView.preferredHeight)
     }
     
@@ -198,7 +195,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     
     private var lastSelectedIndexPath: NSIndexPath?
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         let listMenuSection = ListMenuSection(rawValue: indexPath.section)!
         
@@ -209,26 +206,26 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
                 // Hack to get the selection to work. Otherwise, the previous state would not appear to be selected
                 // until touching the collectionView.
                 collectionView.performBatchUpdates(nil, completion: { [weak self] _ in
-                    collectionView.selectItemAtIndexPath(
-                        self?.lastSelectedIndexPath,
+                    collectionView.selectItem(
+                        at: self?.lastSelectedIndexPath as IndexPath?,
                         animated: true,
-                        scrollPosition: .None
+                        scrollPosition: []
                     )
                 })
             case .community:
                 selectCommunity(atIndex: indexPath.item)
-                lastSelectedIndexPath = indexPath
+                lastSelectedIndexPath = indexPath as NSIndexPath?
             case .hashtags:
                 selectHashtag(atIndex: indexPath.item)
-                lastSelectedIndexPath = indexPath
+                lastSelectedIndexPath = indexPath as NSIndexPath?
             case .chatRooms:
                 selectChatRoom(atIndex: indexPath.item)
-                lastSelectedIndexPath = indexPath
+                lastSelectedIndexPath = indexPath as NSIndexPath?
         }
     }
     
-    func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-        let validIndices: Range<Int>
+    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        let validIndices: CountableRange<Int>
         
         switch ListMenuSection(rawValue: indexPath.section)! {
             case .creator: validIndices = collectionViewDataSource.creatorDataSource.visibleItems.indices
@@ -241,7 +238,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     
     // MARK: - CoachmarkDisplayer
     
-    func highlightFrame(forIdentifier forIdentifier: String) -> CGRect? {
+    func highlightFrame(forIdentifier: String) -> CGRect? {
         return nil 
     }
     

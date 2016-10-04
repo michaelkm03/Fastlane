@@ -7,11 +7,12 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 /// This operation tries to ask purchase manager to pre-fetch products from the store.
 /// We do this optimistically (no handling failures), because purchase manager will handle the refetch if this prefetch failed.
 final class ProductPrefetchOperation: SyncOperation<Void> {
-    private let subscriptionFetchAPIPath: APIPath
+    fileprivate let subscriptionFetchAPIPath: APIPath
     
     init?(dependencyManager: VDependencyManager) {
         guard let subscriptionFetchAPIPath = dependencyManager.subscriptionFetchAPIPath else {
@@ -42,6 +43,6 @@ final class ProductPrefetchOperation: SyncOperation<Void> {
 
 private extension VDependencyManager {
     var subscriptionFetchAPIPath: APIPath? {
-        return networkResources?.apiPathForKey("inapp.sku.URL")
+        return networkResources?.apiPath(forKey: "inapp.sku.URL")
     }
 }

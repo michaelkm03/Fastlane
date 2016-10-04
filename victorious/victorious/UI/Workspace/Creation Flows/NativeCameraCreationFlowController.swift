@@ -10,51 +10,51 @@ import AVFoundation
 import UIKit
 
 class NativeCameraCreationFlowController: VCreationFlowController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, VPassthroughContainerViewDelegate {
-    private var audioSessionCategory = AVAudioSessionCategoryAmbient
+    fileprivate var audioSessionCategory = AVAudioSessionCategoryAmbient
     
-    private var trackedAppear = false
+    fileprivate var trackedAppear = false
     
     static let maxImageDimension: CGFloat = 640
     
-    private var isRecordingVideo: Bool {
-        return imagePickerController?.cameraCaptureMode == .Video
+    fileprivate var isRecordingVideo: Bool {
+        return imagePickerController?.cameraCaptureMode == .video
     }
     
-    private lazy var imagePickerController: UIImagePickerController? = {
-        let pickerSourceType = UIImagePickerControllerSourceType.Camera
-        guard let mediaTypes = UIImagePickerController.availableMediaTypesForSourceType(pickerSourceType) else {
+    fileprivate lazy var imagePickerController: UIImagePickerController? = {
+        let pickerSourceType = UIImagePickerControllerSourceType.camera
+        guard let mediaTypes = UIImagePickerController.availableMediaTypes(for: pickerSourceType) else {
             assertionFailure("Have no available media types for this device!")
             return nil
         }
         
         let nativeCamera = UIImagePickerController()
         nativeCamera.sourceType = pickerSourceType
-        nativeCamera.videoQuality = .TypeHigh
+        nativeCamera.videoQuality = .typeHigh
         nativeCamera.showsCameraControls = true
         nativeCamera.allowsEditing = true
         nativeCamera.mediaTypes = mediaTypes
-        nativeCamera.cameraCaptureMode = .Photo
+        nativeCamera.cameraCaptureMode = .photo
         nativeCamera.delegate = self
         nativeCamera.transitioningDelegate = self
         
         //Add a passthrough view on top of the whole UIImagePickerController since it isn't kvo
         //compliant for key cameraCaptureMode, doesn't support subclassing, and leaves no other
         //means (that I can find) of updating "allowsEditing" based on current cameraCaptureMode
-        let passthroughView = VPassthroughContainerView(frame: UIScreen.mainScreen().bounds)
+        let passthroughView = VPassthroughContainerView(frame: UIScreen.main.bounds)
         passthroughView.delegate = self
         nativeCamera.cameraOverlayView = passthroughView
         return nativeCamera
     }()
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
     override func rootFlowController() -> UINavigationController! {
         if !trackedAppear {
             trackedAppear = true
             dependencyManager.trackViewWillAppear(for: self)
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(enteredBackground), name: UIApplicationDidEnterBackgroundNotification, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(enteredBackground), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
             audioSessionCategory = AVAudioSession.sharedInstance().category
         }
         
@@ -63,24 +63,24 @@ class NativeCameraCreationFlowController: VCreationFlowController, UIImagePicker
     }
     
     override func mediaType() -> MediaType {
-        return isRecordingVideo ? .Video : .Image
+        return isRecordingVideo ? .video : .image
     }
     
     // MARK: - UIImagePickerControllerDelegate
     
-    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dependencyManager.trackViewWillDisappear(for: self)
         let _ = try? AVAudioSession.sharedInstance().setCategory(audioSessionCategory)
         creationFlowDelegate.creationFlowControllerDidCancel?(self)
     }
     
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String: AnyObject]) {
+    private func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String: AnyObject]) {
         defer {
             dependencyManager.trackViewWillDisappear(for: self)
             let _ = try? AVAudioSession.sharedInstance().setCategory(audioSessionCategory)
         }
         
-        if let mediaURL = info[UIImagePickerControllerMediaURL] as? NSURL,
+        if let mediaURL = info[UIImagePickerControllerMediaURL] as? URL,
             let image = mediaURL.v_videoPreviewImage {
             
             //Video
@@ -88,10 +88,10 @@ class NativeCameraCreationFlowController: VCreationFlowController, UIImagePicker
         } else if let image = info[UIImagePickerControllerOriginalImage] as? UIImage,
             let rotatedImage = image.fixOrientation(),
             let imageData = UIImageJPEGRepresentation(rotatedImage, VConstantJPEGCompressionQuality),
-            let mediaURL = NSURL.v_temporaryFileURLWithExtension(VConstantMediaExtensionPNG, inDirectory: kThumbnailDirectory) {
+            let mediaURL = NSURL.v_temporaryFileURL(withExtension: VConstantMediaExtensionPNG, inDirectory: kThumbnailDirectory) {
             
             //Image
-            imageData.writeToURL(mediaURL, atomically: true)
+            try? imageData.write(to: mediaURL, options: .atomic)
             creationFlowDelegate.creationFlowController(self, finishedWithPreviewImage: rotatedImage, capturedMediaURL: mediaURL)
         } else {
             creationFlowDelegate.creationFlowControllerDidCancel?(self)
@@ -100,15 +100,16 @@ class NativeCameraCreationFlowController: VCreationFlowController, UIImagePicker
     
     // MARK: - Notification Response
     
-    dynamic private func enteredBackground() {
+    dynamic fileprivate func enteredBackground() {
         audioSessionCategory = AVAudioSessionCategoryAmbient
     }
     
     // MARK: - Editing mode hack
     
-    func passthroughViewRecievedTouch(passthroughContainerView: VPassthroughContainerView!) {
+    
+    func passthroughViewRecievedTouch(_ passthroughContainerView: VPassthroughContainerView!) {
         let recordingVideo = isRecordingVideo
-        if let imagePickerController = imagePickerController where imagePickerController.allowsEditing != recordingVideo {
+        if let imagePickerController = imagePickerController , imagePickerController.allowsEditing != recordingVideo {
             imagePickerController.allowsEditing = recordingVideo
         }
     }

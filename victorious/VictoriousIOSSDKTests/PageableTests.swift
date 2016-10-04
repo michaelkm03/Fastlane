@@ -22,11 +22,15 @@ struct MockPageableRequest: PaginatorPageable, ResultBasedPageable {
         self.paginator = paginator
     }
     
-    var urlRequest: NSURLRequest {
-        let url = NSURL(string: "/api/mock/endpoint")!
-        let request = NSMutableURLRequest(URL: url)
-        paginator.addPaginationArgumentsToRequest(request)
-        return request
+    var urlRequest: URLRequest {
+        let url = URL(string: "/api/mock/endpoint")!
+        var request = URLRequest(url: url)
+        paginator.addPaginationArguments(to: &request)
+        return request as URLRequest
+    }
+    
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> Void {
+        
     }
 }
 

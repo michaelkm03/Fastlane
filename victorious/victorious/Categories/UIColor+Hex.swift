@@ -31,11 +31,11 @@ extension UIColor {
         self.init(red: red, green: green, blue: blue, alpha: 1.0)
     }
     
-    private static func scanHexComponent(from string: NSString, in range: NSRange) -> CGFloat? {
-        let scanner = NSScanner(string: string.substringWithRange(range))
+    fileprivate static func scanHexComponent(from string: NSString, in range: NSRange) -> CGFloat? {
+        let scanner = Scanner(string: string.substring(with: range))
         var value = UInt32(0)
         
-        guard scanner.scanHexInt(&value) else {
+        guard scanner.scanHexInt32(&value) else {
             return nil
         }
         
@@ -43,7 +43,7 @@ extension UIColor {
     }
     
     var rgbHexString: String {
-        if self == UIColor.whiteColor() {
+        if self == UIColor.white {
             return "ffffff"
         }
         

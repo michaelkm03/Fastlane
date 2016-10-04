@@ -22,10 +22,10 @@ public struct AccountUpdateRequest: RequestType {
     private let requestBodyWriter: AccountUpdateRequestBodyWriter
     private let requestBody: AccountUpdateRequestBodyWriter.Output
     
-    public var urlRequest: NSURLRequest {
-        let request = NSMutableURLRequest(URL: NSURL(string: "/api/account/update")!)
-        request.HTTPMethod = "POST"
-        request.HTTPBodyStream = NSInputStream(URL: requestBody.fileURL)
+    public var urlRequest: URLRequest {
+        var request = URLRequest(url: URL(string: "/api/account/update")!)
+        request.httpMethod = "POST"
+        request.httpBodyStream = InputStream(url: requestBody.fileURL)
         request.addValue( requestBody.contentType, forHTTPHeaderField: "Content-Type" )
         return request
     }
@@ -53,7 +53,7 @@ public struct AccountUpdateRequest: RequestType {
         }
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> User {
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> User {
         requestBodyWriter.removeBodyTempFile()
         
         guard let user = User(json: responseJSON["payload"]) else {

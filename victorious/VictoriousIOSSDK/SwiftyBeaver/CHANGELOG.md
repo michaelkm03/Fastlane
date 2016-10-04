@@ -4,6 +4,84 @@ All notable changes to this project will be documented in this file following th
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ----
+<br/>
+## 1.0.3 (2016-09-21)
+
+##### Changed
+
+- New format key `$Z` outputs datetime as UTC by [@skreutzberger](https://github.com/skreutzberger)
+
+<br/>
+## 1.0.2 (2016-09-19)
+
+##### Changed
+
+- Lowercase enum cases (`.Debug` -> `.debug`) to match Swift 3 convention by [@skreutzberger](https://github.com/skreutzberger)
+
+<br/>
+## 1.0.1 (2016-09-17)
+
+##### Added
+
+- Colored log level indicators for Xcode 8 Console by [@skreutzberger](https://github.com/skreutzberger)
+
+<br/>
+## 1.0.0 (2016-09-15)
+
+##### Added
+
+- Support for Xcode 8 & Swift 3 by [@skreutzberger](https://github.com/skreutzberger)
+
+##### Changed
+
+- Master branch is written in Swift 3 instead of Swift 2 by [@skreutzberger](https://github.com/skreutzberger)
+- Names of platform destination support files are public by [@skreutzberger](https://github.com/skreutzberger)
+- Default format has colored log level after time by [@skreutzberger](https://github.com/skreutzberger)
+- README explains installation under Swift 2 and Swift 3 by [@skreutzberger](https://github.com/skreutzberger)
+
+##### Removed
+
+- swift3 branch & tag 0.0.0 by [@skreutzberger](https://github.com/skreutzberger)
+
+<br/>
+## 0.7.0 (2016-09-09)
+
+##### Added
+
+- Exclusion filter by [@renaun](https://github.com/renaun)
+- Custom log formatting by [@skreutzberger](https://github.com/skreutzberger)
+
+##### Removed
+
+- .detailOutput, .colored & .coloredLines properties by [@skreutzberger](https://github.com/skreutzberger)
+
+<br/>
+## 0.6.5 (2016-07-29)
+
+##### Changed
+
+- On Xcode 8 colored console output is disabled by [@skreutzberger](https://github.com/skreutzberger)
+
+##### Fixed
+
+- Broken support for tvOS in platform destination by [@markj](https://github.com/markj)
+
+<br/>
+## 0.6.4 (2016-07-28)
+
+##### Added
+
+- Support for use in app extensions by [@madhavajay](https://github.com/madhavajay)
+
+##### Changed
+
+- Minimum target for OS X is 10.10 by [@DivineDominion](https://github.com/DivineDominion)
+
+##### Fixed
+
+- Potential issue when setting a platform sending threshold of lower than 1 by [@skreutzberger](https://github.com/skreutzberger)
+
+<br/>
 ## 0.6.3 (2016-06-29)
 
 ##### Added
@@ -16,7 +94,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Dedicated log level filter by [@skreutzberger](https://github.com/skreutzberger)
 
 <br/>
-
 ## 0.6.2 (2016-06-21)
 
 ##### Added
@@ -273,6 +350,5 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 #### Added
 
 - Initial release by [@skreutzberger](https://github.com/skreutzberger)
-
 
 

@@ -10,15 +10,15 @@ import Foundation
 
 /// A struct that provides comparable protocol conformance for app versions.
 struct AppVersion: Comparable {
-    private let components: [Int]
+    fileprivate let components: [Int]
     
     init(versionNumber : String) {
-        components = versionNumber.componentsSeparatedByString(".").map { Int($0) ?? 0 }
+        components = versionNumber.components(separatedBy: ".").map { Int($0) ?? 0 }
     }
     
     /// The string value of an app version ex: "1.0.1"
     var string: String {
-        return components.map { String($0) }.joinWithSeparator(".")
+        return components.map { String($0) }.joined(separator: ".")
     }
 }
 
@@ -26,9 +26,9 @@ func == (lhs: AppVersion, rhs: AppVersion) -> Bool {
     if lhs.components.count == rhs.components.count {
         return lhs.components == rhs.components
     } else if lhs.components.count < rhs.components.count {
-        return rhs.components.dropFirst(lhs.components.count).reduce(0, combine: +) == 0
+        return rhs.components.dropFirst(lhs.components.count).reduce(0, +) == 0
     } else {
-        return lhs.components.dropFirst(rhs.components.count).reduce(0, combine: +) == 0
+        return lhs.components.dropFirst(rhs.components.count).reduce(0, +) == 0
     }
 }
 

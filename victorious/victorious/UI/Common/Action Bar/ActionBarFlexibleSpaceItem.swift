@@ -8,7 +8,6 @@
 
 import Foundation
 
-@objc(VActionBarFlexibleSpaceItem)
 class ActionBarFlexibleSpaceItem: UIView {
     
     class func flexibleSpaceItem() -> ActionBarFlexibleSpaceItem {

@@ -12,8 +12,8 @@ import XCTest
 class GIFSearchResultTests: XCTestCase {
     
     func testJSONParsing() {
-        guard let mockUserDataURL = NSBundle(forClass: self.dynamicType).URLForResource("GIFSearchResult", withExtension: "json"),
-            let mockData = NSData(contentsOfURL: mockUserDataURL) else {
+        guard let mockUserDataURL = Bundle(for: type(of: self)).url(forResource: "GIFSearchResult", withExtension: "json"),
+            let mockData = try? Data(contentsOf: mockUserDataURL) else {
                 XCTFail("Error reading mock json data")
                 return
         }

@@ -51,7 +51,7 @@ struct NotificationSettings {
         }
     }
     
-    func isKeyEnabled(key: String) -> Bool {
+    func isKeyEnabled(_ key: String) -> Bool {
         guard let settingType = NotificationSettingType(rawValue: key) else {
             return false
         }

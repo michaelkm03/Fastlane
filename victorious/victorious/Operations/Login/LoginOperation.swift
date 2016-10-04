@@ -5,6 +5,7 @@
 //  Created by Tian Lan on 2/10/16.
 //  Copyright © 2016 Victorious. All rights reserved.
 //
+import VictoriousIOSSDK
 
 class LoginOperation: AsyncOperation<AccountCreateResponse> {
     
@@ -18,8 +19,8 @@ class LoginOperation: AsyncOperation<AccountCreateResponse> {
     
     // MARK: - Executing
     
-    private let dependencyManager: VDependencyManager
-    private let requestOperation: RequestOperation<LoginRequest>
+    fileprivate let dependencyManager: VDependencyManager
+    fileprivate let requestOperation: RequestOperation<LoginRequest>
     
     var requestExecutor: RequestExecutorType {
         get {
@@ -34,15 +35,15 @@ class LoginOperation: AsyncOperation<AccountCreateResponse> {
         return .background
     }
     
-    override func execute(finish: (result: OperationResult<AccountCreateResponse>) -> Void) {
-        let parameters = AccountCreateParameters(loginType: .Email, accountIdentifier: requestOperation.request.email)
+    override func execute(_ finish: @escaping (_ result: OperationResult<AccountCreateResponse>) -> Void) {
+        let parameters = AccountCreateParameters(loginType: .email, accountIdentifier: requestOperation.request.email)
         
         requestOperation.queue { [weak self] requestResult in
             guard
                 let strongSelf = self,
                 let response = requestResult.output
             else {
-                finish(result: requestResult)
+                finish(requestResult)
                 return
             }
             
@@ -52,9 +53,9 @@ class LoginOperation: AsyncOperation<AccountCreateResponse> {
                 parameters: parameters
             ).queue { loginSuccessResult in
                 switch loginSuccessResult {
-                    case .success: finish(result: requestResult)
-                    case .failure(let error): finish(result: .failure(error))
-                    case .cancelled: finish(result: .cancelled)
+                    case .success: finish(requestResult)
+                    case .failure(let error): finish(.failure(error))
+                    case .cancelled: finish(.cancelled)
                 }
             }
         }

@@ -38,31 +38,31 @@ class LightBoxViewController: UIViewController {
         super.viewDidLoad()
         
         view.addSubview(mediaContentView)
-        view.v_addFitToParentConstraintsToSubview(mediaContentView)
-        view.backgroundColor = .blackColor()
+        view.v_addFitToParentConstraints(toSubview: mediaContentView)
+        view.backgroundColor = .black
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(orientationChanged), name: UIDeviceOrientationDidChangeNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(orientationChanged), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         mediaContentView.didPresent()
     }
     
-    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        return .All
+    override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
+        return .all
     }
     
     // MARK: - Notification response
     
-    private dynamic func orientationChanged() {
-        guard UIDevice.currentDevice().orientation == .Portrait else {
+    fileprivate dynamic func orientationChanged() {
+        guard UIDevice.current.orientation == .portrait else {
             return
         }
         
         willDismiss()
-        dismissViewControllerAnimated(true) {
+        dismiss(animated: true) {
             self.didDismiss()
         }
     }

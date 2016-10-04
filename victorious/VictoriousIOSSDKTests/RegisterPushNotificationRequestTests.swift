@@ -15,14 +15,14 @@ class RegisterPushNotificationRequestTests: XCTestCase {
         let mockPushID = "mockPushNotificationID"
         let request = RegisterPushNotificationRequest(pushNotificationID: mockPushID)
         let urlRequest = request.urlRequest
-        XCTAssertEqual(urlRequest.URL?.absoluteString, "/api/device/register_push_id")
+        XCTAssertEqual(urlRequest.url?.absoluteString, "/api/device/register_push_id")
         
-        guard let bodyData = urlRequest.HTTPBody else {
+        guard let bodyData = urlRequest.httpBody else {
             XCTFail("No HTTP Body!")
             return
         }
-        let bodyString = String(data: bodyData, encoding: NSUTF8StringEncoding)!
+        let bodyString = String(data: bodyData, encoding: String.Encoding.utf8)!
         
-        XCTAssertNotNil(bodyString.rangeOfString("push_id=\(mockPushID)"))
+        XCTAssertNotNil(bodyString.range(of: "push_id=\(mockPushID)"))
     }
 }

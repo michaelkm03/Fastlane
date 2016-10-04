@@ -8,25 +8,25 @@
 
 import Foundation
 
-/// A class representing a notification
+/// A class representing an in-app notification.
 ///
 /// A struct would be preferred, but is currently not compatible with our legacy pagination system.
 ///
-public class Notification {
+public class InAppNotification {
     
     public let subject: String
     public let user: User
     public let body: String?
-    public let createdAt: NSDate
+    public let createdAt: Date
     public let deeplink: String?
     public let imageURL: String?
     public let isRead: Bool?
     public let type: String?
-    public let updatedAt: NSDate?
+    public let updatedAt: Date?
     
     public init?(json: JSON) {
         
-        guard let createdAt     = NSDateFormatter.vsdk_defaultDateFormatter().dateFromString(json["created_at"].stringValue),
+        guard let createdAt     = DateFormatter.vsdk_defaultDateFormatter().date(from:json["created_at"].stringValue),
             let subject         = json["subject"].string,
             let user            = User(json: json["created_by"]) else {
                 return nil
@@ -40,7 +40,7 @@ public class Notification {
         imageURL                = json["creator_profile_image_url"].string
         isRead                  = json["is_read"].v_boolFromAnyValue
         type                    = json["type"].string
-        updatedAt               = NSDateFormatter.vsdk_defaultDateFormatter().dateFromString(json["updated_at"].stringValue)
+        updatedAt               = DateFormatter.vsdk_defaultDateFormatter().date(from: json["updated_at"].stringValue)
     }
 }
 

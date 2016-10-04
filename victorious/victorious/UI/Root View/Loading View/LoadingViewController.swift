@@ -8,6 +8,7 @@
 
 import Foundation
 import MBProgressHUD
+import VictoriousIOSSDK
 
 extension VLoadingViewController {
     func startLoading() {
@@ -21,15 +22,15 @@ extension VLoadingViewController {
             self?.isLoading = false
             self?.progressHUD.taskInProgress = false
             self?.progressHUD.hide(true)
-            guard let template = loadingHelper.template else {
+            guard let template = loadingHelper.template as? [AnyHashable: Any] else {
                 return
             }
-            self?.onDoneLoadingWithTemplateConfiguration(template as [NSObject: AnyObject])
+            self?.onDoneLoading(withTemplateConfiguration: template)
         }
         loadingHelper.execute()
         
-        progressHUD = MBProgressHUD.showHUDAddedTo(view, animated: true)
-        progressHUD.mode = .Indeterminate
+        progressHUD = MBProgressHUD.showAdded(to: view, animated: true)
+        progressHUD.mode = .indeterminate
         progressHUD.graceTime = 2.0
         progressHUD.taskInProgress = true
     }
@@ -40,34 +41,38 @@ private class LoadingHelper: NSObject {
     var template: NSDictionary? {
         // If the new template has been downloaded use that, otherwise we pull the template out of the cache
         if let templateConfiguration = self.templateDownloadOperation.templateConfiguration {
-            return templateConfiguration
+            return templateConfiguration as NSDictionary
         }
         else {
             let environmentManager = VEnvironmentManager.sharedInstance()
-            guard let buildNumber = NSBundle.mainBundle().objectForInfoDictionaryKey(kCFBundleVersionKey as String) as? String else {
+            
+            guard let buildNumber = Bundle.main.object(forInfoDictionaryKey: kCFBundleVersionKey as String) as? String else {
                 return nil
             }
-            let templateCache = TemplateCache(dataCache: VDataCache(),
-                                              environment: environmentManager.currentEnvironment,
-                                              buildNumber: buildNumber)
+            
+            let templateCache = TemplateCache(
+                dataCache: VDataCache(),
+                environment: environmentManager.currentEnvironment,
+                buildNumber: buildNumber
+            )
+            
             self.templateDownloadOperation.templateCache = templateCache
             
             guard let cachedTemplateData = templateCache.cachedTemplateData() else {
                 return nil
             }
-            let cachedTemplate = VTemplateSerialization.templateConfigurationDictionaryWithData(cachedTemplateData)
             
-            return cachedTemplate
+            return VTemplateSerialization.templateConfigurationDictionary(with: cachedTemplateData) as NSDictionary
         }
     }
     
-    private lazy var templateDownloadOperation: VTemplateDownloadOperation = {
+    fileprivate lazy var templateDownloadOperation: VTemplateDownloadOperation = {
         VTemplateDownloadOperation(downloader: PersistenceTemplateDownloader())
     }()
     
-    private var dependencyManager: VDependencyManager {
-        var defaultDependencyManager = VDependencyManager.dependencyManagerWithDefaultValuesForColorsAndFonts()
-        if let template = template as? [NSObject: AnyObject] {
+    fileprivate var dependencyManager: VDependencyManager {
+        var defaultDependencyManager = VDependencyManager.withDefaultValuesForColorsAndFonts()!
+        if let template = template as? [AnyHashable: Any] {
             let parentManager = VDependencyManager(
                 parentManager: defaultDependencyManager,
                 configuration: nil,
@@ -84,7 +89,7 @@ private class LoadingHelper: NSObject {
         return defaultDependencyManager
     }
     
-    private lazy var loginOperation: StoredLoginOperation = {
+    fileprivate lazy var loginOperation: StoredLoginOperation = {
         return StoredLoginOperation(dependencyManager: self.dependencyManager)
     }()
     
