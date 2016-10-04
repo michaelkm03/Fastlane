@@ -42,8 +42,8 @@ class UniqueIdentificationMessage: DictionaryConvertible {
 
     func toDictionary() -> [String: AnyObject] {
         var dictionary = [String: AnyObject]()
-        dictionary["source"] = deviceID
-        dictionary["sequence"] = sequenceCounter
+        dictionary["source"] = deviceID as AnyObject?
+        dictionary["sequence"] = sequenceCounter as AnyObject?
         return dictionary
     }
 }

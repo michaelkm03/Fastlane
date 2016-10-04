@@ -13,11 +13,11 @@ class BadgeButton: UIButton {
     
     // MARK: - Constants
     
-    private struct Constants {
+    fileprivate struct Constants {
         static let badgePadding = CGFloat(1.0)
-        static let badgeTextColor = UIColor.whiteColor()
+        static let badgeTextColor = UIColor.white
         static let badgeBackgroundColor = UIColor(red: 0.95, green: 0.05, blue: 0.05, alpha: 1.0)
-        static let badgeFont = UIFont.systemFontOfSize(13.0, weight: UIFontWeightRegular)
+        static let badgeFont = UIFont.systemFont(ofSize: 13.0, weight: UIFontWeightRegular)
     }
     
     // MARK: - Accessing badge content
@@ -37,20 +37,20 @@ class BadgeButton: UIButton {
     }
     
     /// Sets the badge string to a localized integer value, or nil if the number is less than 1.
-    func setBadgeNumber(badgeNumber: Int) {
-        badgeString = badgeNumber > 0 ? NSNumberFormatter.integerFormatter.stringFromNumber(badgeNumber) : nil
+    func setBadgeNumber(_ badgeNumber: Int) {
+        badgeString = badgeNumber > 0 ? NumberFormatter.integerFormatter.string(from: NSNumber(value: badgeNumber)) : nil
     }
     
     // MARK: - Subviews
     
-    private let badgeLabel: UILabel = {
+    fileprivate let badgeLabel: UILabel = {
         let label = UILabel()
-        label.textAlignment = .Center
+        label.textAlignment = .center
         label.textColor = Constants.badgeTextColor
         label.backgroundColor = Constants.badgeBackgroundColor
         label.font = Constants.badgeFont
         label.clipsToBounds = true
-        label.userInteractionEnabled = false
+        label.isUserInteractionEnabled = false
         return label
     }()
     
@@ -69,7 +69,7 @@ class BadgeButton: UIButton {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        let intrinsicBadgeSize = badgeLabel.intrinsicContentSize()
+        let intrinsicBadgeSize = badgeLabel.intrinsicContentSize
         let badgeSize = CGSize(width: max(intrinsicBadgeSize.width, intrinsicBadgeSize.height), height: intrinsicBadgeSize.height)
         
         badgeLabel.frame = badgeSize.centered(on: badgeAnchorPoint).insetBy(

@@ -9,7 +9,7 @@
 import UIKit
 
 protocol SettingsButtonCellDelegate: class {
-    func buttonPressed( button: UIButton )
+    func buttonPressed( _ button: UIButton )
 }
 
 class SettingsButtonCell: UITableViewCell {
@@ -18,7 +18,7 @@ class SettingsButtonCell: UITableViewCell {
     
     @IBOutlet weak var button: UIButton!
     
-    @IBAction func buttonPressed( sender: UIButton ) {
+    @IBAction func buttonPressed( _ sender: UIButton ) {
         self.delegate?.buttonPressed( sender )
     }
     

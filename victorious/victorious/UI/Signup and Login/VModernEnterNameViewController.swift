@@ -6,6 +6,8 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
+import VictoriousIOSSDK
+
 extension VModernEnterNameViewController {
     func validateUsername(from textField: InlineValidationTextField) -> Bool {
         let username = textField.text ?? ""

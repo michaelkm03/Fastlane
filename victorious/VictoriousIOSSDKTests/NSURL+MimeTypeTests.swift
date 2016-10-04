@@ -24,7 +24,7 @@ class NSURL_MimeTypeTests: XCTestCase {
     }
     
     func testUnknown() {
-        let url = NSURL(fileURLWithPath: "/mypic.\(NSUUID().UUIDString)")
+        let url = NSURL(fileURLWithPath: "/mypic.\(UUID().uuidString)")
         let mime = url.vsdk_mimeType
         XCTAssertNil(mime)
     }

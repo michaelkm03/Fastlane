@@ -25,13 +25,13 @@ protocol ChatInterfaceDataSource: UICollectionViewDataSource {
     
     /// Calculated desired cell size for a given indexPath. 
     /// The size is based on the data object being displayed by the cell.
-    func desiredCellSize(for collectionView: UICollectionView, at indexPath: NSIndexPath) -> CGSize
+    func desiredCellSize(for collectionView: UICollectionView, at indexPath: IndexPath) -> CGSize
     
     /// Removes the item in `unstashedItems` at the given `index`.
     func removeUnstashedItem(at index: Int)
     
     /// Decorates and configures a cell with its data object
-    func decorate(cell: ChatFeedMessageCell, with chatFeedContent: ChatFeedContent)
+    func decorate(_ cell: ChatFeedMessageCell, with chatFeedContent: ChatFeedContent)
 }
 
 extension ChatInterfaceDataSource {
@@ -52,33 +52,33 @@ extension ChatInterfaceDataSource {
         return itemCount
     }
     
-    func cellForItem(for collectionView: UICollectionView, at indexPath: NSIndexPath) -> ChatFeedMessageCell {
-        let chatFeedContent = content(at: indexPath.row)
+    func cellForItem(for collectionView: UICollectionView, at indexPath: IndexPath) -> ChatFeedMessageCell {
+        let chatFeedContent = content(at: (indexPath as NSIndexPath).row)
         let reuseIdentifier = chatFeedContent.content.reuseIdentifier
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! ChatFeedMessageCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! ChatFeedMessageCell
         decorate(cell, with: chatFeedContent)
         return cell
     }
     
     func registerCells(for collectionView: UICollectionView) {
-        collectionView.registerClass(ChatFeedMessageCell.self, forCellWithReuseIdentifier: ChatFeedMessageCell.imagePreviewCellReuseIdentifier)
-        collectionView.registerClass(ChatFeedMessageCell.self, forCellWithReuseIdentifier: ChatFeedMessageCell.videoPreviewCellReuseIdentifier)
-        collectionView.registerClass(ChatFeedMessageCell.self, forCellWithReuseIdentifier: ChatFeedMessageCell.nonMediaCellReuseIdentifier)
+        collectionView.register(ChatFeedMessageCell.self, forCellWithReuseIdentifier: ChatFeedMessageCell.imagePreviewCellReuseIdentifier)
+        collectionView.register(ChatFeedMessageCell.self, forCellWithReuseIdentifier: ChatFeedMessageCell.videoPreviewCellReuseIdentifier)
+        collectionView.register(ChatFeedMessageCell.self, forCellWithReuseIdentifier: ChatFeedMessageCell.nonMediaCellReuseIdentifier)
         CollectionLoadingView.register(in: collectionView, forSupplementaryViewKind: UICollectionElementKindSectionHeader)
     }
     
-    func desiredCellSize(for collectionView: UICollectionView, at indexPath: NSIndexPath) -> CGSize {
+    func desiredCellSize(for collectionView: UICollectionView, at indexPath: IndexPath) -> CGSize {
         return content(at: indexPath.row).size
     }
     
-    func decorate(cell: ChatFeedMessageCell, with chatFeedContent: ChatFeedContent) {
+    func decorate(_ cell: ChatFeedMessageCell, with chatFeedContent: ChatFeedContent) {
         cell.dependencyManager = dependencyManager
         cell.chatFeedContent = chatFeedContent
     }
     
     func updateTimestamps(in collectionView: UICollectionView) {
-        for indexPath in collectionView.indexPathsForVisibleItems() {
-            let cell = collectionView.cellForItemAtIndexPath(indexPath) as! ChatFeedMessageCell
+        for indexPath in collectionView.indexPathsForVisibleItems {
+            let cell = collectionView.cellForItem(at: indexPath) as! ChatFeedMessageCell
             cell.updateTimestamp()
         }
     }

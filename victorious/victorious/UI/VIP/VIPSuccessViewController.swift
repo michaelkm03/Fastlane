@@ -9,7 +9,7 @@
 import UIKit
 
 protocol VIPSuccessViewControllerDelegate: class {
-    func successViewControllerFinished(successViewController: VIPSuccessViewController)
+    func successViewControllerFinished(_ successViewController: VIPSuccessViewController)
 }
 
 class VIPSuccessViewController: UIViewController {
@@ -24,13 +24,13 @@ class VIPSuccessViewController: UIViewController {
     
     weak var delegate: VIPSuccessViewControllerDelegate?
     
-    private var dependencyManager: VDependencyManager! {
+    fileprivate var dependencyManager: VDependencyManager! {
         didSet {
             updateSubviewContents()
         }
     }
     
-    static func newWithDependencyManager(dependencyManager: VDependencyManager) -> VIPSuccessViewController {
+    static func new(withDependencyManager dependencyManager: VDependencyManager) -> VIPSuccessViewController {
         let successViewController: VIPSuccessViewController = v_initialViewControllerFromStoryboard()
         successViewController.dependencyManager = dependencyManager
         return successViewController
@@ -52,8 +52,8 @@ class VIPSuccessViewController: UIViewController {
     
     // MARK: - Subview population
     
-    private func updateSubviewContents() {
-        guard isViewLoaded() else {
+    fileprivate func updateSubviewContents() {
+        guard isViewLoaded else {
             return
         }
         
@@ -80,7 +80,7 @@ class VIPSuccessViewController: UIViewController {
         
         confirmButton.backgroundColor = dependencyManager.confirmButonBackgroundColor
         if let attributedConfirmText = dependencyManager.confirmButtonAttributedText {
-            confirmButton.setAttributedTitle(attributedConfirmText, forState: .Normal)
+            confirmButton.setAttributedTitle(attributedConfirmText, for: .normal)
         }
         
         view.setNeedsUpdateConstraints()
@@ -88,34 +88,34 @@ class VIPSuccessViewController: UIViewController {
     
     // MARK: - Actions
     
-    @IBAction private func onConfirm() {
+    @IBAction fileprivate func onConfirm() {
         delegate?.successViewControllerFinished(self)
     }
 }
 
 private extension VDependencyManager {
     var successIcon: UIImage? {
-        return imageForKey("successIcon")
+        return image(forKey: "successIcon")
     }
     
     var successIconTintColor: UIColor? {
-        return colorForKey("color.successIcon")
+        return color(forKey: "color.successIcon")
     }
     
     var headlineText: String? {
-        return stringForKey("text.successMessage")
+        return string(forKey: "text.successMessage")
     }
     
     var headlineTextAttributes: [String : AnyObject]? {
         guard
-            let font = fontForKey("font.successMessage"),
-            let color = colorForKey("color.successMessage")
+            let font = font(forKey: "font.successMessage"),
+            let color = color(forKey: "color.successMessage")
         else {
             return nil
         }
         
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = .Center
+        paragraphStyle.alignment = .center
         return [
             NSFontAttributeName: font,
             NSForegroundColorAttributeName: color,
@@ -124,19 +124,19 @@ private extension VDependencyManager {
     }
     
     var detailText: String? {
-        return stringForKey("text.successDetails")
+        return string(forKey: "text.successDetails")
     }
     
     var detailTextAttributes: [String : AnyObject]? {
         guard
-            let font = fontForKey("font.successDetails"),
-            let color = colorForKey("color.successDetails")
+            let font = font(forKey: "font.successDetails"),
+            let color = color(forKey: "color.successDetails")
         else {
             return nil
         }
         
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = .Center
+        paragraphStyle.alignment = .center
         return [
             NSFontAttributeName: font,
             NSForegroundColorAttributeName: color,
@@ -146,9 +146,9 @@ private extension VDependencyManager {
     
     var confirmButtonAttributedText: NSAttributedString? {
         guard
-            let font = fontForKey("font.proceedMessage"),
-            let color = colorForKey("color.proceedMessage"),
-            let text = stringForKey("text.proceedMessage")
+            let font = font(forKey: "font.proceedMessage"),
+            let color = color(forKey: "color.proceedMessage"),
+            let text = string(forKey: "text.proceedMessage")
         else {
             return nil
         }
@@ -162,6 +162,6 @@ private extension VDependencyManager {
     }
     
     var confirmButonBackgroundColor: UIColor? {
-        return colorForKey("color.proceedButton")
+        return color(forKey: "color.proceedButton")
     }
 }

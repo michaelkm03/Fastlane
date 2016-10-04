@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 /// View controllers that wish to be presented as interstitials should conform to this protocol.
 ///
@@ -31,7 +32,7 @@ protocol Interstitial: class {
     func dismissalAnimator() -> UIViewControllerAnimatedTransitioning?
     
     /// Returns a presentation controller for animating the presentation and dismissal of the view controller
-    func presentationController(presentedViewController: UIViewController, presentingViewController: UIViewController?) -> UIPresentationController
+    func presentationController(_ presentedViewController: UIViewController, presentingViewController: UIViewController?) -> UIPresentationController
     
     /// Returns the modal presentation style preferred by this view controller
     func preferredModalPresentationStyle() -> UIModalPresentationStyle
@@ -40,7 +41,7 @@ protocol Interstitial: class {
 protocol InterstitialDelegate: class {
     
     /// Informs the delegate that the user wants to dismiss the interstitial
-    func dismissInterstitial(interstitialViewController: UIViewController)
+    func dismissInterstitial(_ interstitialViewController: UIViewController)
 
     /// Dismisses the current interstitial on screen with the specified alert type.
     func dismissCurrentInterstitial(of alertType: AlertType)

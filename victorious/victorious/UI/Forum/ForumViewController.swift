@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 private struct Constants {
     static let coachmarkDisplayDelay = 1.0
@@ -15,6 +16,16 @@ private struct Constants {
 /// A template driven .screen component that sets up, houses and mediates the interaction
 /// between the Forum's required concrete implementations and abstract dependencies.
 class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocusable, UploadManagerHost, ContentPublisherDelegate, CoachmarkDisplayer {
+    private struct EndVIPButtonConfiguration {
+        let title: String
+        let titleColor: UIColor
+        let titleFont: UIFont
+        let backgroundColor: UIColor
+        let confirmationTitle: String
+        let confirmationBody: String
+        let closeAPIPath: APIPath
+    }
+    
     @IBOutlet private weak var stageContainer: UIView!
     @IBOutlet private weak var stageViewControllerContainer: VPassthroughContainerView!
     @IBOutlet private weak var stageTouchView: UIView!
@@ -27,6 +38,47 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         
     private lazy var closeButton: ImageOnColorButton? = {
        return self.dependencyManager.closeButton
+    }()
+    
+    private lazy var endVIPButton: UIButton? = {
+        guard let configuration = self.endVIPConfiguration else {
+            return nil
+        }
+        
+        let button = BackgroundButton(type: .system)
+        button.addTarget(self, action: #selector(endVIPEvent), for: .touchUpInside)
+        button.setTitle(configuration.title, for: .normal)
+        button.titleLabel?.font = configuration.titleFont
+        button.titleLabel?.textColor = configuration.titleColor
+        button.backgroundColor = configuration.backgroundColor
+        button.sizeToFit()
+
+        return button
+    }()
+    
+    private lazy var endVIPConfiguration: EndVIPButtonConfiguration? = {
+        guard
+            let configuration = self.dependencyManager.endVIPConfiguration,
+            let title = configuration.endVIPTitle,
+            let titleColor = configuration.endVIPTitleColor,
+            let titleFont = configuration.endVIPTitleFont,
+            let backgroundColor = configuration.endVIPBackgroundColor,
+            let confirmationTitle = configuration.endVIPConfirmationTitle,
+            let confirmationBody = configuration.endVIPConfirmationBody,
+            let closeAPIPath = configuration.endVIPAPIPath
+        else {
+            return nil
+        }
+        
+        return EndVIPButtonConfiguration(
+            title: title,
+            titleColor: titleColor,
+            titleFont: titleFont,
+            backgroundColor: backgroundColor,
+            confirmationTitle: confirmationTitle,
+            confirmationBody: confirmationBody,
+            closeAPIPath: closeAPIPath
+        )
     }()
 
     private var stageShrinkingAnimator: StageShrinkingAnimator?
@@ -41,7 +93,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     // MARK: - Initialization
     
-    class func newWithDependencyManager(dependencyManager: VDependencyManager) -> ForumViewController {
+    class func new(withDependencyManager dependencyManager: VDependencyManager) -> ForumViewController {
         let forumVC: ForumViewController = ForumViewController.v_initialViewControllerFromStoryboard("Forum")
         forumVC.dependencyManager = dependencyManager
         return forumVC
@@ -58,11 +110,11 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         return children.flatMap { $0 }
     }
     
-    func receive(event: ForumEvent) {
+    func receive(_ event: ForumEvent) {
         switch event {
             case .websocket(let websocketEvent):
                 switch websocketEvent {
-                    case .disconnected(_) where isViewLoaded():
+                    case .disconnected(_) where isViewLoaded:
                         let alert = Alert(title: NSLocalizedString("Reconnecting...", comment: "Reconnecting to server."), type: .reconnectingError)
                         InterstitialManager.sharedInstance.receive(alert)
                     default:
@@ -77,7 +129,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                 // path will be nil for home feed, and non nil for filtered feed
                 composer?.setComposerVisible(path == nil, animated: true)
             case .closeVIP():
-                onClose(nil)
+                onClose(sender: nil)
             case .refreshStage(_):
                 triggerCoachmark()
             case .setOptimisticPostingEnabled(let enabled):
@@ -87,9 +139,9 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         }
     }
     
-    func send(event: ForumEvent) {
+    func send(_ event: ForumEvent) {
         switch event {
-            case .sendContent(let content): publish(content)
+            case .sendContent(let content): publish(content: content)
             default: break
         }
         
@@ -131,7 +183,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     private(set) var chatFeedContext: DeeplinkContext = DeeplinkContext(value: DeeplinkContext.mainFeed)
 
     private dynamic func mainFeedFilterDidChange(notification: NSNotification) {
-        if let context = (notification.userInfo?["selectedItem"] as? ReferenceWrapper<ListMenuSelectedItem>)?.value.context {
+        if let context = (notification.userInfo?["selectedItem"] as? ListMenuSelectedItem)?.context {
             chatFeedContext = context
         }
         else {
@@ -139,7 +191,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         }
     }
 
-    func setStageHeight(value: CGFloat) {
+    func setStageHeight(_ value: CGFloat) {
         stageContainerHeight.constant = value
         UIView.performWithoutAnimation() {
             self.view.layoutIfNeeded()
@@ -150,11 +202,11 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     var uploadProgressViewController: VUploadProgressViewController?
     
-    func addUploadManagerToViewController(viewController: UIViewController, topInset: CGFloat) {
+    func addUploadManagerToViewController(_ viewController: UIViewController, topInset: CGFloat) {
         UploadManagerHelper.addUploadManagerToViewController(viewController, topInset: topInset)
     }
     
-    func uploadProgressViewController(upvc: VUploadProgressViewController!, isNowDisplayingThisManyUploads uploadCount: Int) {
+    func uploadProgressViewController(_ upvc: VUploadProgressViewController!, isNowDisplayingThisManyUploads uploadCount: Int) {
         updateUploadProgressViewControllerVisibility()
     }
     
@@ -164,7 +216,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         }
         
         if uploadProgressViewController.numberOfUploads > 0 {
-            uploadProgressViewController.view.hidden = false
+            uploadProgressViewController.view.isHidden = false
         }
     }
     
@@ -176,7 +228,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     // MARK: - UIViewController
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
         if let navBarTitleView = navBarTitleView {
@@ -188,14 +240,14 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             if let webSocketForumNetworkSource = forumNetworkSource as? WebSocketForumNetworkSource,
                 let navigationController = navigationController {
                 let type = DebugMenuType.webSocket(messageContainer: webSocketForumNetworkSource.webSocketMessageContainer)
-                debugMenuHandler.setupCurrentDebugMenu(type, targetView: navigationController.navigationBar)
+                debugMenuHandler.setupCurrentDebugMenu(debugMenuType: type, targetView: navigationController.navigationBar)
             }
         #endif
         
         BadgeCountManager.shared.fetchBadgeCount(for: .unreadNotifications)
     }
 
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         addUploadManagerToViewController(self, topInset: topLayoutGuide.length)
         updateUploadProgressViewControllerVisibility()
@@ -204,23 +256,23 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         dependencyManager.trackViewWillDisappear(for: self)
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return .LightContent
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
     
-    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        return .Portrait
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(mainFeedFilterDidChange), name: RESTForumNetworkSource.updateStreamURLNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(mainFeedFilterDidChange), name: NSNotification.Name(rawValue: RESTForumNetworkSource.updateStreamURLNotification), object: nil)
 
         publisher = ContentPublisher(dependencyManager: dependencyManager.networkResources ?? dependencyManager)
         publisher?.delegate = self
@@ -237,13 +289,18 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         
         chatFeed?.nextSender = self
         //Initialize the title view. This will later be resized in the viewWillAppear, once it has actually been added to the navigation stack
-        navBarTitleView = ForumNavBarTitleView(dependencyManager: self.dependencyManager, frame: CGRect(x: 0, y: 0, width: 200, height: 45))
-        navigationController?.navigationBar.barStyle = .Black
+        navBarTitleView = ForumNavBarTitleView(dependencyManager: self.dependencyManager, frame: CGRect(x: 0, y: 0, width: 80, height: 45))
+        navigationController?.navigationBar.barStyle = .black
         if let button = closeButton {
-            button.addTarget(self, action: #selector(onClose), forControlEvents: .TouchUpInside)
+            button.addTarget(self, action: #selector(onClose), for: .touchUpInside)
             button.sizeToFit()
             navigationItem.leftBarButtonItem = UIBarButtonItem(customView: button)
         }
+        
+        if let endVIPButton = endVIPButton, VCurrentUser.user?.accessLevel.isCreator == true {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(customView: endVIPButton)
+        }
+        
         updateStyle()
         
         if let forumNetworkSource = dependencyManager.forumNetworkSource {
@@ -256,11 +313,50 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             self.forumNetworkSource = forumNetworkSource
         }
     }
-
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        super.prepareForSegue(segue, sender: sender)
+    
+    private dynamic func endVIPEvent() {
+        guard let configuration = self.endVIPConfiguration else {
+            return
+        }
         
-        let destination = segue.destinationViewController
+        let alertController = UIAlertController(
+            title: configuration.confirmationTitle,
+            message: configuration.confirmationBody,
+            preferredStyle: .alert
+        )
+        let cancel = UIAlertAction(
+            title: NSLocalizedString("Cancel", comment: "Cancel closing the VIP Event"),
+            style: .default,
+            handler: nil
+        )
+        alertController.addAction(cancel)
+        
+        let confirm = UIAlertAction(
+            title: NSLocalizedString("Yes", comment: "Confirm closing the VIP Event"),
+            style: .destructive
+        ) { _ in
+            self.confirmCloseVIPEvent()
+        }
+        alertController.addAction(confirm)
+        
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    private func confirmCloseVIPEvent() {
+        guard
+            let configuration = self.endVIPConfiguration,
+            let request = EndVIPEventRequest(apiPath: configuration.closeAPIPath)
+        else {
+            return
+        }
+        
+        RequestOperation(request: request).queue()
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        
+        let destination = segue.destination
         
         if let stage = destination as? Stage {
             stage.dependencyManager = dependencyManager.stageDependency
@@ -279,7 +375,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         
         } else {
             // Hide any embedded container views from which a component could not be loaded
-            destination.view.superview?.hidden = true
+            destination.view.superview?.isHidden = true
         }
     }
     
@@ -290,7 +386,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             closeButton?.dependencyManager?.trackButtonEvent(.tap)
         }
         
-        navigationController?.dismissViewControllerAnimated(true, completion: nil)
+        navigationController?.dismiss(animated: true, completion: nil)
 
         // Close connection to network source when we close the forum.
         forumNetworkSource?.tearDown()
@@ -299,16 +395,16 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     }
     
     private func updateStyle() {
-        guard isViewLoaded() else {
+        guard isViewLoaded else {
             return
         }
         
         title = dependencyManager.title
-        dependencyManager.applyStyleToNavigationBar(self.navigationController?.navigationBar)
-        navigationController?.navigationBar.translucent = false
-        dependencyManager.applyStyleToNavigationBar(navigationController?.navigationBar)
+        dependencyManager.applyStyle(to: self.navigationController?.navigationBar)
+        navigationController?.navigationBar.isTranslucent = false
+        dependencyManager.applyStyle(to: navigationController?.navigationBar)
         
-        dependencyManager.addBackgroundToBackgroundHost(self)
+        dependencyManager.addBackground(toBackgroundHost: self)
     }
 
     @IBAction private func tappedOnStage(sender: UITapGestureRecognizer) {
@@ -329,17 +425,17 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                 case .cancel: break
             }
         }) {
-            presentViewController(alertController, animated: true, completion: nil)
+            present(alertController, animated: true, completion: nil)
         }
     }
     
     // MARK: - ChatFeedDelegate
     
-    func chatFeed(chatFeed: ChatFeed, didLongPress chatFeedContent: ChatFeedContent) {
+    func chatFeed(_ chatFeed: ChatFeed, didLongPress chatFeedContent: ChatFeedContent) {
         showActionSheet(forContent: chatFeedContent)
     }
 
-    func chatFeed(chatFeed: ChatFeed, didToggleLikeFor content: ChatFeedContent, completion: (() -> Void)) {
+    func chatFeed(_ chatFeed: ChatFeed, didToggleLikeFor content: ChatFeedContent, completion: @escaping (() -> Void)) {
         guard
             let contentID = content.content.id,
             let likeKey = dependencyManager.contentLikeKey,
@@ -366,26 +462,26 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         }
     }
 
-    func chatFeed(chatFeed: ChatFeed, didScroll scrollView: UIScrollView) {
+    func chatFeed(_ chatFeed: ChatFeed, didScroll scrollView: UIScrollView) {
         stageShrinkingAnimator?.chatFeed(chatFeed, didScroll: scrollView)
     }
     
-    func chatFeed(chatFeed: ChatFeed, willBeginDragging scrollView: UIScrollView) {
+    func chatFeed(_ chatFeed: ChatFeed, willBeginDragging scrollView: UIScrollView) {
         stageShrinkingAnimator?.chatFeed(chatFeed, willBeginDragging: scrollView)
     }
     
-    func chatFeed(chatFeed: ChatFeed, willEndDragging scrollView: UIScrollView, withVelocity velocity: CGPoint) {
+    func chatFeed(_ chatFeed: ChatFeed, willEndDragging scrollView: UIScrollView, withVelocity velocity: CGPoint) {
         stageShrinkingAnimator?.chatFeed(chatFeed, willEndDragging: scrollView, withVelocity: velocity)
     }
     
-    func chatFeed(chatFeed: ChatFeed, didSelectFailureButtonFor chatFeedContent: ChatFeedContent) {
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+    func chatFeed(_ chatFeed: ChatFeed, didSelectFailureButtonFor chatFeedContent: ChatFeedContent) {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.addAction(
             UIAlertAction(
                 title: NSLocalizedString("Try Again", comment: "Sending message failed. User taps this to try sending again"),
-                style: .Default,
+                style: .default,
                 handler: { [weak self] alertAction in
-                    self?.retryPublish(chatFeedContent)
+                    self?.retryPublish(chatFeedContent: chatFeedContent)
                 }
             )
         )
@@ -393,7 +489,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         alertController.addAction(
             UIAlertAction(
                 title: NSLocalizedString("Delete", comment: ""),
-                style: .Destructive,
+                style: .destructive,
                 handler: { [weak self] alertAction in
                     self?.delete(chatFeedContent)
                 }
@@ -403,14 +499,14 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         alertController.addAction(
             UIAlertAction(
                 title: NSLocalizedString("Cancel", comment: ""),
-                style: .Cancel,
+                style: .cancel,
                 handler: nil
             )
         )
-        presentViewController(alertController, animated: true, completion: nil)
+        present(alertController, animated: true, completion: nil)
     }
     
-    func chatFeed(chatFeed: ChatFeed, didSelectReplyButtonFor chatFeedContent: ChatFeedContent) {
+    func chatFeed(_ chatFeed: ChatFeed, didSelectReplyButtonFor chatFeedContent: ChatFeedContent) {
         guard let username = chatFeedContent.content.author?.username else {
             return
         }
@@ -425,19 +521,19 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     // MARK: - ContentPublisherDelegate
     
-    func contentPublisher(contentPublisher: ContentPublisher, didQueue content: ChatFeedContent) {
+    func contentPublisher(_ contentPublisher: ContentPublisher, didQueue content: ChatFeedContent) {
         chatFeed?.handleNewItems([], loadingType: .newer, newPendingContentCount: 1) { [weak self] in
             self?.chatFeed?.collectionView.scrollToBottom(animated: true)
         }
     }
-    
-    func contentPublisher(contentPublisher: ContentPublisher, didFailToSend content: ChatFeedContent) {
+
+    func contentPublisher(_ contentPublisher: ContentPublisher, didFailToSend content: ChatFeedContent) {
         guard let itemCount = chatFeed?.chatInterfaceDataSource.itemCount else {
             return
         }
-        
-        chatFeed?.collectionView.reloadItemsAtIndexPaths(contentPublisher.pendingItems.indices.map {
-            NSIndexPath(forItem: itemCount - 1 - $0, inSection: 0)
+
+        chatFeed?.collectionView.reloadItems(at: contentPublisher.pendingItems.indices.map {
+            IndexPath(item: itemCount - 1 - $0, section: 0)
         })
     }
     
@@ -449,27 +545,27 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         }
         
         if let retriedIndex = publisher?.retryPublish(chatFeedContent) {
-            let retriedIndexPath = NSIndexPath(forItem: dataSource.unstashedItems.count + retriedIndex, inSection: 0)
-            chatFeed?.collectionView.reloadItemsAtIndexPaths([retriedIndexPath])
+            let retriedIndexPath = NSIndexPath(item: dataSource.unstashedItems.count + retriedIndex, section: 0)
+            chatFeed?.collectionView.reloadItems(at: [retriedIndexPath as IndexPath])
         }
     }
     
-    private func delete(chatFeedContent: ChatFeedContent) {
+    private func delete(_ chatFeedContent: ChatFeedContent) {
         guard let dataSource = chatFeed?.chatInterfaceDataSource else {
             return
         }
         
         if let removedIndicies = publisher?.remove([chatFeedContent]) {
-            let indexPaths = removedIndicies.map { NSIndexPath(forItem: dataSource.unstashedItems.count + $0, inSection: 0)}
-            chatFeed?.collectionView.deleteItemsAtIndexPaths(indexPaths)
+            let indexPaths = removedIndicies.map { NSIndexPath(item: dataSource.unstashedItems.count + $0, section: 0)}
+            chatFeed?.collectionView.deleteItems(at: indexPaths as [IndexPath])
         }
     }
     
     // MARK: - VFocusable
     
-    var focusType: VFocusType = .None {
+    var focusType: VFocusType = .none {
         didSet {
-            view.userInteractionEnabled = focusType != .None
+            view.isUserInteractionEnabled = focusType != .none
         }
     }
     
@@ -481,36 +577,69 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
 }
 
 private extension VDependencyManager {
-    
     var title: String? {
-        return stringForKey("title.text")
+        return string(forKey: "title.text")
     }
     
     var chatFeedDependency: VDependencyManager? {
-        return childDependencyForKey("chatFeed")
+        return childDependency(forKey: "chatFeed")
     }
     
     var composerDependency: VDependencyManager? {
-        return childDependencyForKey("composer")
+        return childDependency(forKey: "composer")
     }
     
     var stageDependency: VDependencyManager? {
-        return childDependencyForKey("stage")
+        return childDependency(forKey: "stage")
     }
     
     var closeButton: ImageOnColorButton? {
-        return buttonForKey("close.button") as? ImageOnColorButton
+        return button(forKey: "close.button") as? ImageOnColorButton
     }
     
     var contentDeleteURL: String {
-        return networkResources?.stringForKey("contentDeleteURL") ?? ""
+        return networkResources?.string(forKey: "contentDeleteURL") ?? ""
     }
 
     var contentLikeKey: String? {
-        return networkResources?.stringForKey("contentUpvoteURL")
+        return networkResources?.string(forKey: "contentUpvoteURL")
     }
 
     var contentUnLikeKey: String? {
-        return networkResources?.stringForKey("contentUnupvoteURL")
+        return networkResources?.string(forKey: "contentUnupvoteURL")
+    }
+    
+    // MARK: - End VIP Button
+    
+    var endVIPConfiguration: VDependencyManager? {
+        return childDependency(forKey: "end.vip.button")
+    }
+    
+    var endVIPTitle: String? {
+        return string(forKey: "text.title")
+    }
+    
+    var endVIPTitleColor: UIColor? {
+        return color(forKey: "color.title")
+    }
+    
+    var endVIPTitleFont: UIFont? {
+        return font(forKey: "font.title")
+    }
+    
+    var endVIPBackgroundColor: UIColor? {
+        return color(forKey: "color.background")
+    }
+    
+    var endVIPConfirmationTitle: String? {
+        return string(forKey: "text.confirmation.title")
+    }
+    
+    var endVIPConfirmationBody: String? {
+        return string(forKey: "text.confirmation.body")
+    }
+    
+    var endVIPAPIPath: APIPath? {
+        return networkResources?.apiPath(forKey: "end.vip.event.URL")
     }
 }

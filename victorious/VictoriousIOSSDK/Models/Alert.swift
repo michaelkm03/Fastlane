@@ -31,9 +31,9 @@ public struct Alert: Equatable {
         public let description: String?
         public let userFanLoyalty: FanLoyalty?
         public let icons: [NSURL]?
-        public let dismissalTime: NSTimeInterval?
+        public let dismissalTime: TimeInterval?
 
-        public init(title: String, backgroundVideoURL: NSURL? = nil, description: String? = nil, userFanLoyalty: FanLoyalty? = nil, icons: [NSURL]? = nil, dismissalTime: NSTimeInterval? = nil) {
+        public init(title: String, backgroundVideoURL: NSURL? = nil, description: String? = nil, userFanLoyalty: FanLoyalty? = nil, icons: [NSURL]? = nil, dismissalTime: TimeInterval? = nil) {
             self.title = title
             self.backgroundVideoURL = backgroundVideoURL
             self.description = description
@@ -46,7 +46,7 @@ public struct Alert: Equatable {
     public let alertID: String
     public let type: AlertType
     public let parameters: Alert.Parameters
-    public let dateAcknowledged: NSDate?
+    public let dateAcknowledged: Date?
 
     /// Initialize an alert only with display information. This is provided for initializing alerts on the client side.
     /// - parameter title: Title of the alert. Required.
@@ -66,7 +66,7 @@ extension Alert {
     /// - parameter type: Type of alert to be presented.
     /// - parameter description: Description of the alert.
     /// - parameter dismissalTime: Time to display alert, is nil is passed in it will be presented until user dismisses it.
-    public init(title: String, type: AlertType, description: String? = nil, dismissalTime: NSTimeInterval? = nil) {
+    public init(title: String, type: AlertType, description: String? = nil, dismissalTime: TimeInterval? = nil) {
         alertID = String(CACurrentMediaTime())
         self.type = type
         parameters = Parameters(title: title, description: description, dismissalTime: dismissalTime)
@@ -86,7 +86,7 @@ extension Alert {
         self.type = alertType
         self.parameters = parameters
         self.alertID = alertID
-        self.dateAcknowledged = NSDateFormatter.vsdk_defaultDateFormatter().dateFromString(json["acknowledged_at"].stringValue)
+        self.dateAcknowledged = DateFormatter.vsdk_defaultDateFormatter().date(from: json["acknowledged_at"].stringValue)
     }
 }
 

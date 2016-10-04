@@ -15,7 +15,7 @@ protocol CoachmarkDisplayer {
     ///  The id of the screen that conforms to this protocol.
     ///  Under most circumstances this method should be implemented as such:
     ///    {
-    ///      return self.dependencyManager.stringForKey(VDependencyManagerIDKey);
+    ///      return self.dependencyManager.string(forKey: VDependencyManagerIDKey);
     ///    }
     ///
     var screenIdentifier: String { get }
@@ -42,11 +42,11 @@ protocol CoachmarkDisplayer {
 
 extension CoachmarkDisplayer where Self: UIViewController {
     func presentCoachmark(from viewController: CoachmarkViewController) {
-        presentViewController(viewController, animated: true, completion: nil)
+        present(viewController, animated: true, completion: nil)
     }
     
     var screenIdentifier: String {
-        return dependencyManager.stringForKey(VDependencyManagerIDKey)
+        return dependencyManager.string(forKey: VDependencyManagerIDKey)
     }
 
      var coachmarkContainerView : UIView {

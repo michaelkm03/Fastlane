@@ -14,8 +14,8 @@ enum ButtonTrackingEvent: String {
 }
 
 extension VDependencyManager {
-    func trackButtonEvent(event: ButtonTrackingEvent, forTrackingKey trackingKey: String = VDependencyManager.defaultTrackingKey) {
-        guard let apiPaths = trackingAPIPaths(forEventKey: event.rawValue, trackingKey: trackingKey) where !apiPaths.isEmpty else {
+    func trackButtonEvent(_ event: ButtonTrackingEvent, forTrackingKey trackingKey: String = VDependencyManager.defaultTrackingKey) {
+        guard let apiPaths = trackingAPIPaths(forEventKey: event.rawValue, trackingKey: trackingKey) , !apiPaths.isEmpty else {
             return
         }
         

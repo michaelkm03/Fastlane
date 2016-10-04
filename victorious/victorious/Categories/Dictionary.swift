@@ -10,7 +10,7 @@ import Foundation
 
 extension Dictionary {
     /// Combines two dictionaries, favors passed in value in case of key collision
-    mutating func unionInPlace(dictionary: Dictionary) {
+    mutating func unionInPlace(_ dictionary: Dictionary) {
         for (key, value) in dictionary {
             self[key] = value
         }

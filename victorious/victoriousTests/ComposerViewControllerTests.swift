@@ -15,7 +15,7 @@ class ComposerViewControllerTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        
+
         viewController.dependencyManager = VDependencyManager(dictionary: [
             VDependencyManagerMainTextColorKey: [
                 "red": 255,

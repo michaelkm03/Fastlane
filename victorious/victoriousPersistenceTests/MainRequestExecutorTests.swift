@@ -27,13 +27,13 @@ class MainRequestExecutorTests: XCTestCase {
     }
     
     func testCompletion() {
-        let expectation = self.expectationWithDescription("testCopmletion")
+        let expectation = self.expectation(description: "testCopmletion")
         let request = MockRequest()
-        let url = request.urlRequest.URL?.absoluteString
+        let url = request.urlRequest.url?.absoluteString
 
-        stubRequest("GET", url)
+        stubRequest("GET", url as NSString?)
 
-        dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) ) {
+        DispatchQueue.global().async {
             self.requestExecutor.executeRequest( request,
                 onComplete: { result in
                     expectation.fulfill()
@@ -43,17 +43,17 @@ class MainRequestExecutorTests: XCTestCase {
                 }
             )
         }
-        waitForExpectationsWithTimeout(2, handler: nil)
+        waitForExpectations(timeout: 2, handler: nil)
     }
     
     func testError() {
-        let expectation = self.expectationWithDescription("testError")
+        let expectation = self.expectation(description:"testError")
         let request = MockErrorRequest()
-        let url = request.urlRequest.URL?.absoluteString
+        let url = request.urlRequest.url?.absoluteString
         
-        stubRequest("GET", url)
+        stubRequest("GET", url as NSString?)
         
-        dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) ) {
+        DispatchQueue.global().async {
             self.requestExecutor.executeRequest( request,
                 onComplete: { result in
                     XCTFail( "Should not be called" )
@@ -63,18 +63,18 @@ class MainRequestExecutorTests: XCTestCase {
                 }
             )
         }
-        waitForExpectationsWithTimeout(2, handler: nil)
+        waitForExpectations(timeout:2, handler: nil)
     }
     
     func testCancelled() {
-        let expectation = self.expectationWithDescription("testError")
+        let expectation = self.expectation(description:"testError")
         let request = MockRequest()
-        let url = request.urlRequest.URL?.absoluteString
+        let url = request.urlRequest.url?.absoluteString
         
-        stubRequest("GET", url)
+        stubRequest("GET", url as NSString?)
         
         self.requestExecutor.cancelled = true
-        dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) ) {
+        DispatchQueue.global().async {
             self.requestExecutor.executeRequest( request,
                 onComplete: { result in
                     XCTFail( "Should not be called" )
@@ -87,15 +87,15 @@ class MainRequestExecutorTests: XCTestCase {
         dispatch_after(1.0) {
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(2.0, handler: nil)
+        waitForExpectations(timeout:2.0, handler: nil)
     }
     
     func testErrorWithErrorHandlers() {
-        let expectation = self.expectationWithDescription("testError")
+        let expectation = self.expectation(description:"testError")
         let request = MockErrorRequest(code: 999)
-        let url = request.urlRequest.URL?.absoluteString
+        let url = request.urlRequest.url?.absoluteString
         
-        stubRequest("GET", url)
+        stubRequest("GET", url as NSString?)
         
         let errorHandler1 = MockErrorHandler(code: 999)
         let errorHandler2 = MockErrorHandler(code: 401)
@@ -103,7 +103,7 @@ class MainRequestExecutorTests: XCTestCase {
         self.requestExecutor.errorHandlers.append( errorHandler1 )
         self.requestExecutor.errorHandlers.append( errorHandler2 )
         
-        dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) ) {
+        DispatchQueue.global().async {
             self.requestExecutor.executeRequest( request,
                 onComplete: { result in
                     XCTFail( "Should not be called" )
@@ -115,6 +115,6 @@ class MainRequestExecutorTests: XCTestCase {
                 }
             )
         }
-        waitForExpectationsWithTimeout(2, handler: nil)
+        waitForExpectations(timeout:2, handler: nil)
     }
 }

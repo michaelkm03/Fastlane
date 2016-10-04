@@ -14,10 +14,10 @@ class PaginatedDataSourceTests: XCTestCase {
     
     var paginatedDataSource: PaginatedDataSource!
     var paginatedDataSourceUpdateCount: Int = 0
-    var paginatedDataSourceDidUpdateBlock: ((oldValue: NSOrderedSet, newValue: NSOrderedSet) -> Void)? = nil
+    var paginatedDataSourceDidUpdateBlock: ((_ oldValue: NSOrderedSet, _ newValue: NSOrderedSet) -> Void)? = nil
     
-    func paginatedDataSource( paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
-        self.paginatedDataSourceDidUpdateBlock?( oldValue: oldValue, newValue: newValue )
+    func paginatedDataSource( _ paginatedDataSource: PaginatedDataSource, didUpdateVisibleItemsFrom oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
+        self.paginatedDataSourceDidUpdateBlock?( oldValue, newValue )
     }
     
     override func setUp() {

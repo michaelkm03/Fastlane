@@ -24,23 +24,27 @@ class FileDestinationTests: XCTestCase {
         let log = SwiftyBeaver.self
 
         let path = "/tmp/testSBF.log"
-        deleteFile(path)
+        deleteFile(path: path)
 
         // add file
         let file = FileDestination()
-        file.logFileURL = NSURL(string: "file://" + path)!
-        file.detailOutput = false
-        file.dateFormat = ""
-        file.colored = false
-        log.addDestination(file)
+        file.logFileURL = URL(string: "file://" + path)!
+        file.format = "$L: $M"
+        let _ = log.addDestination(file)
 
         log.verbose("first line to log")
         log.debug("second line to log")
         log.info("third line to log")
-        log.flush(3)
+        let _ = log.flush(secondTimeout: 3)
+
+        // wait a bit until the logs are written to file
+        for i in 1...100000 {
+            let x = sqrt(Double(i))
+            XCTAssertEqual(x, sqrt(Double(i)))
+        }
 
         // was the file written and does it contain the lines?
-        let fileLines = self.linesOfFile(path)
+        let fileLines = self.linesOfFile(path: path)
         XCTAssertNotNil(fileLines)
         guard let lines = fileLines else { return }
         XCTAssertEqual(lines.count, 4)
@@ -55,32 +59,36 @@ class FileDestinationTests: XCTestCase {
         let log = SwiftyBeaver.self
 
         let folder = "/tmp/folder with spaces"
-        createFolder(folder)
+        createFolder(path: folder)
 
         let path = folder + "/testSBF.log"
-        deleteFile(path)
+        deleteFile(path: path)
 
-        // in conversion from path String to NSURL you need to replace " " with "%20"
-        let pathReadyForURL = path.stringByReplacingOccurrencesOfString(" ", withString: "%20")
-        let fileURL = NSURL(string: "file://" + pathReadyForURL)
+        // in conversion from path String to URL you need to replace " " with "%20"
+        let pathReadyForURL = path.replacingOccurrences(of: " ", with: "%20")
+        let fileURL = URL(string: "file://" + pathReadyForURL)
         XCTAssertNotNil(fileURL)
         guard let url = fileURL else { return }
 
         // add file
         let file = FileDestination()
         file.logFileURL = url
-        file.detailOutput = false
-        file.dateFormat = ""
-        file.colored = false
-        log.addDestination(file)
+        file.format = "$L: $M"
+        let _ = log.addDestination(file)
 
         log.verbose("first line to log")
         log.debug("second line to log")
         log.info("third line to log")
-        log.flush(3)
+        let _ = log.flush(secondTimeout: 3)
+
+        // wait a bit until the logs are written to file
+        for i in 1...100000 {
+            let x = sqrt(Double(i))
+            XCTAssertEqual(x, sqrt(Double(i)))
+        }
 
         // was the file written and does it contain the lines?
-        let fileLines = self.linesOfFile(path)
+        let fileLines = self.linesOfFile(path: path)
         XCTAssertNotNil(fileLines)
         guard let lines = fileLines else { return }
         XCTAssertEqual(lines.count, 4)
@@ -96,7 +104,7 @@ class FileDestinationTests: XCTestCase {
     // deletes a file if it is existing
     func deleteFile(path: String) {
         do {
-            try NSFileManager.defaultManager().removeItemAtPath(path)
+            try FileManager.default.removeItem(atPath: path)
         } catch {}
     }
 
@@ -104,8 +112,8 @@ class FileDestinationTests: XCTestCase {
     func linesOfFile(path: String) -> [String]? {
         do {
             // try to read file
-            let fileContent = try NSString(contentsOfFile: path, encoding: NSUTF8StringEncoding)
-            return fileContent.componentsSeparatedByString("\n")
+            let fileContent = try NSString(contentsOfFile: path, encoding: String.Encoding.utf8.rawValue)
+            return fileContent.components(separatedBy: "\n")
         } catch let error {
             print(error)
             return nil
@@ -115,8 +123,7 @@ class FileDestinationTests: XCTestCase {
     // creates a folder if not already existing
     func createFolder(path: String) {
         do {
-            try NSFileManager.defaultManager().createDirectoryAtPath(path,
-                        withIntermediateDirectories: true, attributes: nil)
+            try FileManager.default.createDirectory(atPath: path, withIntermediateDirectories: true, attributes: nil)
         } catch let error as NSError {
             print("Unable to create directory \(error.debugDescription)")
         }

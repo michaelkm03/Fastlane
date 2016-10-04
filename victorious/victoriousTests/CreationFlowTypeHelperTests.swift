@@ -13,14 +13,13 @@ class CreationFlowTypeHelperTests: XCTestCase {
 
     func testCreationTypeForIdentifier() {
         
-        XCTAssertEqual(CreationFlowTypeHelper.creationFlowTypeForIdentifier("Create Image"), VCreationFlowType.Image)
-        XCTAssertEqual(CreationFlowTypeHelper.creationFlowTypeForIdentifier("Create Video"), VCreationFlowType.Video)
-        XCTAssertEqual(CreationFlowTypeHelper.creationFlowTypeForIdentifier("Create Poll"), VCreationFlowType.Poll)
-        XCTAssertEqual(CreationFlowTypeHelper.creationFlowTypeForIdentifier("Create Text"), VCreationFlowType.Text)
+        XCTAssertEqual(CreationFlowTypeHelper.creationFlowTypeForIdentifier("Create Image"), VCreationFlowType.image)
+        XCTAssertEqual(CreationFlowTypeHelper.creationFlowTypeForIdentifier("Create Video"), VCreationFlowType.video)
+        XCTAssertEqual(CreationFlowTypeHelper.creationFlowTypeForIdentifier("Create Poll"), VCreationFlowType.poll)
+        XCTAssertEqual(CreationFlowTypeHelper.creationFlowTypeForIdentifier("Create Text"), VCreationFlowType.text)
         XCTAssertEqual(CreationFlowTypeHelper.creationFlowTypeForIdentifier("Create GIF"), VCreationFlowType.GIF)
-        XCTAssertEqual(CreationFlowTypeHelper.creationFlowTypeForIdentifier("Create from Library"), VCreationFlowType.Library)
-        XCTAssertEqual(CreationFlowTypeHelper.creationFlowTypeForIdentifier("Create from Mixed Media Camera"), VCreationFlowType.MixedMediaCamera)
-        XCTAssertEqual(CreationFlowTypeHelper.creationFlowTypeForIdentifier("Create from Native Camera"), VCreationFlowType.NativeCamera)
-        XCTAssertEqual(CreationFlowTypeHelper.creationFlowTypeForIdentifier("Invalid Key"), VCreationFlowType.Unknown)
+        XCTAssertEqual(CreationFlowTypeHelper.creationFlowTypeForIdentifier("Create from Library"), VCreationFlowType.library)
+        XCTAssertEqual(CreationFlowTypeHelper.creationFlowTypeForIdentifier("Create from Native Camera"), VCreationFlowType.nativeCamera)
+        XCTAssertEqual(CreationFlowTypeHelper.creationFlowTypeForIdentifier("Invalid Key"), VCreationFlowType.unknown)
     }
 }

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 struct TemporaryFileWriter {
     private static var temporaryWrittenFiles: [NSURL] = []
@@ -15,7 +16,7 @@ struct TemporaryFileWriter {
     static func removeTemporaryFiles() {
         for temporaryFile in temporaryWrittenFiles {
             do {
-                try NSFileManager.defaultManager().removeItemAtURL(temporaryFile)
+                try FileManager.default.removeItem(at: temporaryFile as URL)
             } catch {
                 Log.info("Failed to remove temporary file at URL -> \(temporaryFile) with error -> \(error)")
             }
@@ -25,11 +26,11 @@ struct TemporaryFileWriter {
 
     /// Writes the raw data to disk atomically with a file extension and a fileName. If no extension is specified none is used, if no filename is specified a new unique one is generated.
     /// If the file write succeeds a path is returned else nil is returned.
-    static func writeTemporaryData(data: NSData, fileExtension: String = "", fileName: String = NSProcessInfo.processInfo().globallyUniqueString) throws -> NSURL {
-        let fileURL = NSURL(fileURLWithPath: NSTemporaryDirectory()).URLByAppendingPathComponent("\(fileName).\(fileExtension)") ?? NSURL()
+    static func writeTemporaryData(_ data: Data, fileExtension: String = "", fileName: String = ProcessInfo.processInfo.globallyUniqueString) throws -> NSURL {
+        let fileURL = NSURL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("\(fileName).\(fileExtension)") as NSURL? ?? NSURL()
 
         do {
-            try data.writeToURL(fileURL, options: .AtomicWrite)
+            try data.write(to: fileURL as URL, options: .atomicWrite)
         } catch {
             Log.warning("Failed to write a temporary file to disk with path -> \(fileURL.absoluteString) and error -> \(error)")
             throw error

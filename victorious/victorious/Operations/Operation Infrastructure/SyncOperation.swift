@@ -12,7 +12,7 @@ import Foundation
 /// - requires:
 /// * Subclasses must override `var executionQueue` to specify which queue it gets executed on.
 /// * Subclasses must override `func execute()` to specify the main body of the operation.
-class SyncOperation<Output>: NSOperation, Queueable {
+class SyncOperation<Output>: Operation, Queueable {
     
     // MARK: - Queueable
     
@@ -24,7 +24,7 @@ class SyncOperation<Output>: NSOperation, Queueable {
         fatalError("Subclasses of SyncOperation must override `executionQueue`!")
     }
     
-    private(set) var result: OperationResult<Output>?
+    fileprivate(set) var result: OperationResult<Output>?
     
     // MARK: - Operation Execution
     
@@ -38,7 +38,7 @@ class SyncOperation<Output>: NSOperation, Queueable {
     }
     
     override final func main() {
-        guard !cancelled else {
+        guard !isCancelled else {
             result = .cancelled
             return
         }

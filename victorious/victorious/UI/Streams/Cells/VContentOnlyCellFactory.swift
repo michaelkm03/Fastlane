@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 /// A cell factory for `VContentOnlyCell`s.
 class VContentOnlyCellFactory: NSObject {
@@ -19,20 +20,20 @@ class VContentOnlyCellFactory: NSObject {
     
     // MARK: - Dependency manager
     
-    private let dependencyManager: VDependencyManager
+    fileprivate let dependencyManager: VDependencyManager
     
     
-    private var registeredReuseIdentifiers = Set<String>()
+    fileprivate var registeredReuseIdentifiers = Set<String>()
     
-    func collectionView(collectionView: UICollectionView, cellForContent content: Content, atIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForContent content: Content, atIndexPath indexPath: IndexPath) -> UICollectionViewCell {
         let reuseIdentifier = ContentPreviewView.defaultReuseIdentifier
         
         if !registeredReuseIdentifiers.contains(reuseIdentifier) {
-            collectionView.registerClass(VContentOnlyCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+            collectionView.register(VContentOnlyCell.self, forCellWithReuseIdentifier: reuseIdentifier)
             registeredReuseIdentifiers.insert(reuseIdentifier)
         }
         
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! VContentOnlyCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! VContentOnlyCell
         cell.dependencyManager = dependencyManager
         cell.content = content
         return cell

@@ -14,7 +14,7 @@ enum OperationResult<Output> {
     case success(Output)
     
     /// When the operation failed with a specific error. Use this case when there's an error that should be surfaced to the user.
-    case failure(ErrorType)
+    case failure(Error)
     
     /// When the operation was cancelled either by the caller, or determined to not be able to execute without a user facing error.
     case cancelled
@@ -28,7 +28,7 @@ enum OperationResult<Output> {
     }
     
     /// The error that the operation produced, or nil if the result did not fail.
-    var error: ErrorType? {
+    var error: Error? {
         switch self {
             case .failure(let error): return error
             case .success(_), .cancelled: return nil

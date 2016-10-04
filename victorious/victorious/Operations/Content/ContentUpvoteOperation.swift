@@ -6,6 +6,8 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
+import VictoriousIOSSDK
+
 final class ContentUpvoteOperation: SyncOperation<Void> {
     
     // MARK: - Initializing
@@ -22,8 +24,8 @@ final class ContentUpvoteOperation: SyncOperation<Void> {
     
     // MARK: - Executing
     
-    private let contentID: Content.ID
-    private let request: ContentUpvoteRequest
+    fileprivate let contentID: Content.ID
+    fileprivate let request: ContentUpvoteRequest
     
     override var executionQueue: Queue {
         return .main

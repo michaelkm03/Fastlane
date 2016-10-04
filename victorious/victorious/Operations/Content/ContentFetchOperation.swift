@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 final class ContentFetchOperation: AsyncOperation<Content> {
     
@@ -23,25 +24,25 @@ final class ContentFetchOperation: AsyncOperation<Content> {
     
     // MARK: - Executing
     
-    private let request: ContentFetchRequest
+    fileprivate let request: ContentFetchRequest
     
     override var executionQueue: Queue {
         return .main
     }
     
-    override func execute(finish: (result: OperationResult<Content>) -> Void) {
+    override func execute(_ finish: @escaping (_ result: OperationResult<Content>) -> Void) {
         RequestOperation(request: request).queue { result in
             switch result {
                 case .success(let content):
-                    if let id = content.id where Content.contentIsHidden(withID: id) {
-                        finish(result: .failure(NSError(domain: "ContentFetchOperation", code: -1, userInfo: nil)))
+                    if let id = content.id , Content.contentIsHidden(withID: id) {
+                        finish(.failure(NSError(domain: "ContentFetchOperation", code: -1, userInfo: nil)))
                     }
                     else {
-                        finish(result: result)
+                        finish(result)
                     }
                 
                 case .failure(_), .cancelled:
-                    finish(result: result)
+                    finish(result)
             }
         }
     }

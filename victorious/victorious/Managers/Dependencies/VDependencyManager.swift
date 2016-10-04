@@ -9,14 +9,14 @@
 extension VDependencyManager {
     
     // MARK: - Initializing
-    
-    convenience init(dictionary: [String:AnyObject]) {
+
+    convenience init(dictionary: [String: Any]) {
         self.init(parentManager: nil, configuration: dictionary, dictionaryOfClassesByTemplateName: nil)
     }
     
     // MARK: - Reading basic values
     
     func bool(for key: String) -> Bool? {
-        return numberForKey(key)?.boolValue
+        return number(forKey: key)?.boolValue
     }
 }

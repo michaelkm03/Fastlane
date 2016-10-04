@@ -19,7 +19,7 @@ extension UIEdgeInsets {
 }
 
 func +(base: UIEdgeInsets, additor: UIEdgeInsets) -> UIEdgeInsets {
-    var sum = UIEdgeInsetsZero
+    var sum = UIEdgeInsets.zero
     sum.left = base.left + additor.left
     sum.right = base.right + additor.right
     sum.top = base.top + additor.top

@@ -20,13 +20,13 @@ class CameraNextBarButtonItem: UIBarButtonItem {
     required init?(coder aDecoder: NSCoder) {
         
         super.init(coder: aDecoder)
-        enabled = false
+        isEnabled = false
     }
 }
 
 private extension VDependencyManager {
     
     var nextBarButtonItemText: String {
-        return stringForKey("nextText")
+        return string(forKey: "nextText")
     }
 }

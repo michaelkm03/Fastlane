@@ -17,9 +17,9 @@ class MockErrorHandler: NSObject, RequestErrorHandler {
         self.code = code
     }
     
-    private(set) var errorsHandled = [NSError]()
+    fileprivate(set) var errorsHandled = [NSError]()
     
-    func handle(error: NSError, with request: NSURLRequest? = nil) -> Bool {
+    func handle(_ error: NSError, with request: URLRequest? = nil) -> Bool {
         if error.code == code {
             errorsHandled.append(error)
             return true

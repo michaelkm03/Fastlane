@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 struct GridStreamConfiguration {
     var sectionInset = UIEdgeInsetsMake(0, 0, 3, 0)
@@ -20,16 +21,16 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     // MARK: Variables
     
     let dependencyManager: VDependencyManager
-    private let collectionView = UICollectionView(
-        frame: CGRectZero,
+    fileprivate let collectionView = UICollectionView(
+        frame: CGRect.zero,
         collectionViewLayout: UICollectionViewFlowLayout()
     )
-    private let dataSource: GridStreamDataSource<HeaderType>
+    fileprivate let dataSource: GridStreamDataSource<HeaderType>
 
-    private(set) var content: HeaderType.ContentType?
-    private var hasError: Bool = false
+    fileprivate(set) var content: HeaderType.ContentType?
+    fileprivate var hasError: Bool = false
     
-    func setContent(content: HeaderType.ContentType?, withError hasError: Bool) {
+    func setContent(_ content: HeaderType.ContentType?, withError hasError: Bool) {
         self.content = content
         self.hasError = hasError
         updateTrackingParameters()
@@ -38,26 +39,26 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         header?.decorateHeader(
             dependencyManager,
             withWidth: 0,
-            maxHeight: CGRectGetHeight(collectionView.bounds),
+            maxHeight: (collectionView.bounds).height,
             content: content,
             hasError: hasError
         )
-        collectionView.reloadSections(NSIndexSet(index: GridStreamSection.Header.rawValue))
+        collectionView.reloadSections(IndexSet(integer: GridStreamSection.header.rawValue))
 
     }
     
-    private let refreshControl = UIRefreshControl()
+    fileprivate let refreshControl = UIRefreshControl()
     
-    private var scrollPaginator = ScrollPaginator()
-    private let configuration: GridStreamConfiguration
+    fileprivate var scrollPaginator = ScrollPaginator()
+    fileprivate let configuration: GridStreamConfiguration
     
-    private var header: HeaderType?
+    fileprivate var header: HeaderType?
     
-    private var trackingParameters: [NSObject : AnyObject] = [:]
+    fileprivate var trackingParameters: [AnyHashable: Any] = [:]
     
     // MARK: - ContentCellTracker
     
-    var sessionParameters: [NSObject : AnyObject] {
+    var sessionParameters: [AnyHashable: Any] {
         return trackingParameters
     }
     
@@ -90,15 +91,15 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         
         collectionView.delegate = self
         collectionView.dataSource = dataSource
-        collectionView.backgroundColor = UIColor.clearColor()
+        collectionView.backgroundColor = UIColor.clear
         collectionView.alwaysBounceVertical = true
         
-        edgesForExtendedLayout = .Bottom
+        edgesForExtendedLayout = .bottom
         extendedLayoutIncludesOpaqueBars = true
         automaticallyAdjustsScrollViewInsets = false
         
         view.addSubview(collectionView)
-        view.v_addFitToParentConstraintsToSubview(collectionView)
+        view.v_addFitToParentConstraints(toSubview: collectionView)
         
         if let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             flowLayout.minimumInteritemSpacing = self.configuration.interItemSpacing
@@ -111,9 +112,9 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
             refreshControl.addTarget(
                 self,
                 action: #selector(refresh),
-                forControlEvents: .ValueChanged
+                for: .valueChanged
             )
-            collectionView.insertSubview(refreshControl, atIndex: 0)
+            collectionView.insertSubview(refreshControl, at: 0)
         }
         
         scrollPaginator.tolerance += CollectionLoadingView.preferredHeight
@@ -132,7 +133,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     // MARK: - Refreshing
     
     func reloadHeader() {
-        collectionView.reloadSections(NSIndexSet(index: GridStreamSection.Header.rawValue))
+        collectionView.reloadSections(IndexSet(integer: GridStreamSection.header.rawValue))
     }
     
     func refresh() {
@@ -140,14 +141,14 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         header?.gridStreamShouldRefresh()
     }
     
-    private func loadContent(loadingType: PaginatedLoadingType) {
+    fileprivate func loadContent(_ loadingType: PaginatedLoadingType) {
         guard !dataSource.isLoading else {
             return
         }
         
         dataSource.loadContent(for: collectionView, loadingType: loadingType) { [weak self] result in
             // Calling this method stops scrolling, so only do it if necessary.
-            if self?.refreshControl.refreshing == true {
+            if self?.refreshControl.isRefreshing == true {
                 self?.refreshControl.endRefreshing()
             }
             
@@ -164,24 +165,24 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     
     // MARK: - Configuration
     
-    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        return [.Portrait]
+    override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
+        return [.portrait]
     }
     
     // MARK: - UIScrollViewDelegate
     
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         scrollPaginator.scrollViewDidScroll(scrollView)
     }
     
     // MARK: - UICollectionViewDelegateFlowLayout
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         guard
-            section == GridStreamSection.Header.rawValue,
+            section == GridStreamSection.header.rawValue,
             let header = header
         else {
-            return CGSizeZero
+            return CGSize.zero
         }
         
         let size = header.sizeForHeader(
@@ -194,7 +195,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         return size
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
         
         return flowLayout.v_cellSize(
@@ -203,7 +204,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         )
     }
     
-    func collectionView(collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, atIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
         if let loadingView = view as? CollectionLoadingView {
             loadingView.color = dependencyManager.refreshControlColor
             loadingView.isLoading = dataSource.isLoading
@@ -213,30 +214,30 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         }
     }
     
-    func collectionView(collectionView: UICollectionView, didEndDisplayingSupplementaryView view: UICollectionReusableView, forElementOfKind elementKind: String, atIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didEndDisplayingSupplementaryView view: UICollectionReusableView, forElementOfKind elementKind: String, at indexPath: IndexPath) {
         if elementKind == UICollectionElementKindSectionHeader {
             header?.headerWillDisappear()
         }
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-        guard section == GridStreamSection.Contents.rawValue else {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+        guard section == GridStreamSection.contents.rawValue else {
             return CGSize.zero
         }
         
         return dataSource.hasLoadedAllItems ? CGSize.zero : CollectionLoadingView.preferredSize(in: collectionView.bounds)
     }
 
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let router = Router(originViewController: self, dependencyManager: dependencyManager)
         let targetContent = dataSource.items[indexPath.row]
         
         let destination = DeeplinkDestination(content: targetContent)
         let context: DeeplinkContext?
-        if header?.dynamicType == CloseUpView.self {
+        if type(of: header) == CloseUpView.self {
             context = DeeplinkContext(value: DeeplinkContext.closeupView)
         }
-        else if header?.dynamicType == VNewProfileHeaderView.self {
+        else if type(of: header) == VNewProfileHeaderView.self {
             context = DeeplinkContext(value: DeeplinkContext.userProfile)
         }
         else {
@@ -245,7 +246,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
         router.navigate(to: destination, from: context)
         header?.headerWillDisappear()
 
-        guard let content = (collectionView.cellForItemAtIndexPath(indexPath) as? ContentCell)?.content else {
+        guard let content = (collectionView.cellForItem(at: indexPath) as? ContentCell)?.content else {
             return
         }
 
@@ -254,7 +255,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
 
     // MARK: - UICollectionViewDelegate
     
-    func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         guard let content = (cell as? ContentCell)?.content else {
             return
         }
@@ -264,7 +265,7 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
     
     // MARK: - Tracking updating
     
-    private func updateTrackingParameters() {
+    fileprivate func updateTrackingParameters() {
         if
             let content = content as? Content,
             let contentId = content.id
@@ -276,6 +277,6 @@ class GridStreamViewController<HeaderType: ConfigurableGridStreamHeader>: UIView
 
 private extension VDependencyManager {
     var refreshControlColor: UIColor? {
-        return colorForKey(VDependencyManagerMainTextColorKey)
+        return color(forKey: VDependencyManagerMainTextColorKey)
     }
 }
