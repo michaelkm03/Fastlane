@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 final class StageContentFetchOperation: AsyncOperation<Content> {
     
@@ -23,49 +24,49 @@ final class StageContentFetchOperation: AsyncOperation<Content> {
     
     // MARK: - Executing
     
-    private let request: ContentFetchRequest
-    private(set) var refreshStageEvent: RefreshStage
+    fileprivate let request: ContentFetchRequest
+    fileprivate(set) var refreshStageEvent: RefreshStage
     
     override var executionQueue: Queue {
         return .main
     }
     
-    override func execute(finish: (result: OperationResult<Content>) -> Void) {
-        let operationStartTime = NSDate()
+    override func execute(_ finish: @escaping (_ result: OperationResult<Content>) -> Void) {
+        let operationStartTime = Date()
         
         RequestOperation(request: request).queue { [weak self] result in
             guard let strongSelf = self else {
-                finish(result: .cancelled)
+                finish(.cancelled)
                 return
             }
             
             switch result {
                 case .success(let content):
-                    finish(result: .success(strongSelf.calculateSeekAheadTime(for: content, from: operationStartTime)))
+                    finish(.success(strongSelf.calculateSeekAheadTime(for: content, from: operationStartTime)))
                 
                 case .failure(_), .cancelled:
-                    finish(result: result)
+                    finish(result)
             }
         }
     }
     
     /// Calculated time diff, used to sync users in the video on stage.
     /// seekAheadTime = serverTime - startTime + workTime
-    private func calculateSeekAheadTime(for content: Content, from operationStartTime: NSDate) -> Content {
+    fileprivate func calculateSeekAheadTime(for content: Content, from operationStartTime: Date) -> Content {
         guard
             let startTime = refreshStageEvent.startTime,
             let serverTime = refreshStageEvent.serverTime
-            where content.type == .video
+            , content.type == .video
         else {
             return content
         }
         
-        let timeDiff = NSTimeInterval(serverTime.value - startTime.value)
-        let workTime = NSDate().timeIntervalSinceDate(operationStartTime)
+        let timeDiff = TimeInterval(serverTime.value - startTime.value)
+        let workTime = Date().timeIntervalSince(operationStartTime)
         let seekAheadTime: Double = (timeDiff + workTime) / 1000
         
         var content = content
-        content.localStartTime = NSDate(timeIntervalSinceNow: -seekAheadTime)
+        content.localStartTime = Date(timeIntervalSinceNow: -seekAheadTime) as NSDate?
         return content
     }
 }

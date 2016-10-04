@@ -14,11 +14,11 @@ public enum DateFormat: String {
 
 /// Specify the standard default data formatter here, to be shared and
 /// references madea vailable by static property `vsdk_defaultDateFormatter`.
-private let _sharedDefaultDateFormatter = NSDateFormatter(vsdk_format: .Standard)
+private let _sharedDefaultDateFormatter = DateFormatter(vsdk_format: .Standard)
 
-public extension NSDateFormatter {
+public extension DateFormatter {
     
-    public class func vsdk_defaultDateFormatter() -> NSDateFormatter {
+    public class func vsdk_defaultDateFormatter() -> DateFormatter {
         return _sharedDefaultDateFormatter
     }
     
@@ -26,7 +26,7 @@ public extension NSDateFormatter {
         self.init()
         
         dateFormat = format.rawValue
-        locale = NSLocale(localeIdentifier: "en_US_POSIX")
-        timeZone = NSTimeZone(forSecondsFromGMT: 0)
+        locale = NSLocale(localeIdentifier: "en_US_POSIX") as Locale!
+        timeZone = NSTimeZone(forSecondsFromGMT: 0) as TimeZone!
     }
 }

@@ -10,17 +10,17 @@ import SDWebImage
 import UIKit
 
 struct StickerSearchResultPreviewCellPopulator {
-    static func populate(stickerCell: StickerSearchResultPreviewCell, withSearchResultObject searchResultObject: StickerSearchResultObject) {
+    static func populate(_ stickerCell: StickerSearchResultPreviewCell, withSearchResultObject searchResultObject: StickerSearchResultObject) {
         stickerCell.imageView.sd_cancelCurrentImageLoad()
         stickerCell.activityIndicator.startAnimating()
-        stickerCell.imageView.sd_setImageWithURL(searchResultObject.thumbnailImageURL) { _ in
+        stickerCell.imageView.sd_setImage(with: searchResultObject.thumbnailImageURL) { _ in
             stickerCell.activityIndicator.stopAnimating()
-            stickerCell.lockImageView.hidden = currentUserCanAccess(searchResultObject)
+            stickerCell.lockImageView.isHidden = currentUserCanAccess(searchResultObject)
         }
     }
     
-    static func currentUserCanAccess(searchResultObject: StickerSearchResultObject) -> Bool {
-        guard let isVIP = VCurrentUser.user?.vipStatus?.isVIP where isVIP || !searchResultObject.isVIP else {
+    static func currentUserCanAccess(_ searchResultObject: StickerSearchResultObject) -> Bool {
+        guard let isVIP = VCurrentUser.user?.vipStatus?.isVIP, isVIP || !searchResultObject.isVIP else {
             return false
         }
         return true

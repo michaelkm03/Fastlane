@@ -24,19 +24,19 @@ class DevicePreferencesRequestTests: XCTestCase {
     func testRequest() {
         let request = DevicePreferencesRequest()
         let urlRequest = request.urlRequest
-        XCTAssertEqual(urlRequest.URL?.absoluteString, "/api/device/preferences")
+        XCTAssertEqual(urlRequest.url?.absoluteString, "/api/device/preferences")
     }
     
     func testResponseParsing() {
-        guard let mockResponseDataURL = NSBundle(forClass: self.dynamicType).URLForResource("DevicePreferencesResponse", withExtension: "json"),
-            let mockData = NSData(contentsOfURL: mockResponseDataURL) else {
+        guard let mockResponseDataURL = Bundle(for: type(of: self)).url(forResource: "DevicePreferencesResponse", withExtension: "json"),
+            let mockData = try? Data(contentsOf: mockResponseDataURL) else {
                 XCTFail("Error reading mock json data")
                 return
         }
         
         do {
             let request = DevicePreferencesRequest()
-            let result = try request.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
+            let result = try request.parseResponse(URLResponse(), toRequest: URLRequest(url: URL(string: "foo")!), responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssert(result.contains(.creatorPost))
             XCTAssertFalse(result.contains(.followPost))
             XCTAssertFalse(result.contains(.commentPost))
@@ -55,15 +55,15 @@ class DevicePreferencesRequestTests: XCTestCase {
     }
     
     func testAllEnabled() {
-        guard let mockResponseDataURL = NSBundle(forClass: self.dynamicType).URLForResource("DevicePreferencesAllOnResponse", withExtension: "json"),
-            let mockData = NSData(contentsOfURL: mockResponseDataURL) else {
+        guard let mockResponseDataURL = Bundle(for: type(of: self)).url(forResource: "DevicePreferencesAllOnResponse", withExtension: "json"),
+            let mockData = try? Data(contentsOf: mockResponseDataURL) else {
                 XCTFail("Error reading mock json data")
                 return
         }
         
         do {
             let request = DevicePreferencesRequest()
-            let result = try request.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
+            let result = try request.parseResponse(URLResponse(), toRequest: URLRequest(url: URL(string: "foo")!), responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssert(result.contains(.creatorPost))
             XCTAssert(result.contains(.followPost))
             XCTAssert(result.contains(.commentPost))
@@ -85,16 +85,16 @@ class DevicePreferencesRequestTests: XCTestCase {
         let request = DevicePreferencesRequest(preferences: [.creatorPost: true, .newFollower: false])
         let urlRequest = request.urlRequest
         
-        XCTAssertEqual(urlRequest.HTTPMethod, "POST")
+        XCTAssertEqual(urlRequest.httpMethod, "POST")
         
-        guard let bodyData = urlRequest.HTTPBody else {
+        guard let bodyData = urlRequest.httpBody else {
             XCTFail("No HTTP Body!")
             return
         }
-        let bodyString = String(data: bodyData, encoding: NSUTF8StringEncoding)!
+        let bodyString = String(data: bodyData, encoding: String.Encoding.utf8)!
         
-        XCTAssertNotNil(bodyString.rangeOfString("notification_creator_post=1"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_new_follower=0"))
+        XCTAssertNotNil(bodyString.range(of: "notification_creator_post=1"))
+        XCTAssertNotNil(bodyString.range(of: "notification_new_follower=0"))
     }
     
     func testChangeRequestAllOff() {
@@ -112,26 +112,26 @@ class DevicePreferencesRequestTests: XCTestCase {
             .emotiveBallistic: false])
         let urlRequest = request.urlRequest
         
-        XCTAssertEqual(urlRequest.HTTPMethod, "POST")
+        XCTAssertEqual(urlRequest.httpMethod, "POST")
         
-        guard let bodyData = urlRequest.HTTPBody else {
+        guard let bodyData = urlRequest.httpBody else {
             XCTFail("No HTTP Body!")
             return
         }
-        let bodyString = String(data: bodyData, encoding: NSUTF8StringEncoding)!
+        let bodyString = String(data: bodyData, encoding: String.Encoding.utf8)!
         
-        XCTAssertNotNil(bodyString.rangeOfString("notification_creator_post=0"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_follow_post=0"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_comment_post=0"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_private_message=0"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_new_follower=0"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_tag_post=0"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_mention=0"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_like_post=0"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_announcement=0"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_next_day=0"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_lapsed_user=0"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_emotive_ballistic=0"))
+        XCTAssertNotNil(bodyString.range(of: "notification_creator_post=0"))
+        XCTAssertNotNil(bodyString.range(of: "notification_follow_post=0"))
+        XCTAssertNotNil(bodyString.range(of: "notification_comment_post=0"))
+        XCTAssertNotNil(bodyString.range(of: "notification_private_message=0"))
+        XCTAssertNotNil(bodyString.range(of: "notification_new_follower=0"))
+        XCTAssertNotNil(bodyString.range(of: "notification_tag_post=0"))
+        XCTAssertNotNil(bodyString.range(of: "notification_mention=0"))
+        XCTAssertNotNil(bodyString.range(of: "notification_like_post=0"))
+        XCTAssertNotNil(bodyString.range(of: "notification_announcement=0"))
+        XCTAssertNotNil(bodyString.range(of: "notification_next_day=0"))
+        XCTAssertNotNil(bodyString.range(of: "notification_lapsed_user=0"))
+        XCTAssertNotNil(bodyString.range(of: "notification_emotive_ballistic=0"))
     }
     
     func testChangeRequestAllOn() {
@@ -149,25 +149,25 @@ class DevicePreferencesRequestTests: XCTestCase {
             .emotiveBallistic: true])
         let urlRequest = request.urlRequest
         
-        XCTAssertEqual(urlRequest.HTTPMethod, "POST")
+        XCTAssertEqual(urlRequest.httpMethod, "POST")
         
-        guard let bodyData = urlRequest.HTTPBody else {
+        guard let bodyData = urlRequest.httpBody else {
             XCTFail("No HTTP Body!")
             return
         }
-        let bodyString = String(data: bodyData, encoding: NSUTF8StringEncoding)!
+        let bodyString = String(data: bodyData, encoding: String.Encoding.utf8)!
         
-        XCTAssertNotNil(bodyString.rangeOfString("notification_creator_post=1"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_follow_post=1"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_comment_post=1"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_private_message=1"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_new_follower=1"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_tag_post=1"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_mention=1"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_like_post=1"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_announcement=1"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_next_day=1"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_lapsed_user=1"))
-        XCTAssertNotNil(bodyString.rangeOfString("notification_emotive_ballistic=1"))
+        XCTAssertNotNil(bodyString.range(of: "notification_creator_post=1"))
+        XCTAssertNotNil(bodyString.range(of: "notification_follow_post=1"))
+        XCTAssertNotNil(bodyString.range(of: "notification_comment_post=1"))
+        XCTAssertNotNil(bodyString.range(of: "notification_private_message=1"))
+        XCTAssertNotNil(bodyString.range(of: "notification_new_follower=1"))
+        XCTAssertNotNil(bodyString.range(of: "notification_tag_post=1"))
+        XCTAssertNotNil(bodyString.range(of: "notification_mention=1"))
+        XCTAssertNotNil(bodyString.range(of: "notification_like_post=1"))
+        XCTAssertNotNil(bodyString.range(of: "notification_announcement=1"))
+        XCTAssertNotNil(bodyString.range(of: "notification_next_day=1"))
+        XCTAssertNotNil(bodyString.range(of: "notification_lapsed_user=1"))
+        XCTAssertNotNil(bodyString.range(of: "notification_emotive_ballistic=1"))
     }
 }

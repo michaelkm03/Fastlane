@@ -14,7 +14,7 @@ class RequestOperationTests: XCTestCase {
         let operation = RequestOperation(request: MockRequest())
         operation.requestExecutor = TestRequestExecutor(result: true)
         
-        let expectation = expectationWithDescription("Successful RequestOperation")
+        let expectation = self.expectation(description: "Successful RequestOperation")
         
         operation.execute { result in
             expectation.fulfill()
@@ -22,14 +22,14 @@ class RequestOperationTests: XCTestCase {
             XCTAssertNil(result.error)
         }
         
-        waitForExpectationsWithTimeout(1.0, handler: nil)
+        waitForExpectations(timeout: 1.0, handler: nil)
     }
     
     func testUnsuccessfulRequest() {
         let operation = RequestOperation(request: MockRequest())
         operation.requestExecutor = TestRequestExecutor(error: NSError(domain: "RequestOperationTests", code: -1, userInfo: [:]))
         
-        let expectation = expectationWithDescription("Unsuccessful RequestOperation")
+        let expectation = self.expectation(description: "Unsuccessful RequestOperation")
         
         operation.execute { result in
             expectation.fulfill()
@@ -37,6 +37,6 @@ class RequestOperationTests: XCTestCase {
             XCTAssertNotNil(result.error)
         }
         
-        waitForExpectationsWithTimeout(1.0, handler: nil)
+        waitForExpectations(timeout: 1.0, handler: nil)
     }
 }

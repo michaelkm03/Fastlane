@@ -9,29 +9,29 @@
 import Foundation
 
 @objc enum FixedWebContentType : Int {
-    case PrivacyPolicy
-    case HelpCenter
-    case TermsOfService
+    case privacyPolicy
+    case helpCenter
+    case termsOfService
     
     var title: String {
         switch self {
-        case .PrivacyPolicy: return NSLocalizedString("Privacy Policy", comment: "")
-        case .HelpCenter: return NSLocalizedString("Help", comment: "")
-        case .TermsOfService: return NSLocalizedString("Terms of Service", comment: "")
+            case .privacyPolicy: return NSLocalizedString("Privacy Policy", comment: "")
+            case .helpCenter: return NSLocalizedString("Help", comment: "")
+            case .termsOfService: return NSLocalizedString("Terms of Service", comment: "")
         }
     }
     
     var templateURLKey: String {
         switch self {
-        case .PrivacyPolicy: return "privacyURL"
-        case .HelpCenter: return "helpCenterURL"
-        case .TermsOfService: return "tosURL"
+            case .privacyPolicy: return "privacyURL"
+            case .helpCenter: return "helpCenterURL"
+            case .termsOfService: return "tosURL"
         }
     }
 }
 
 extension VDependencyManager {
-    func urlForFixedWebContent(type: FixedWebContentType) -> NSURL {
-        return NSURL(string: stringForKey(type.templateURLKey)) ?? NSURL()
+    func urlForFixedWebContent(_ type: FixedWebContentType) -> NSURL {
+        return NSURL(string: string(forKey: type.templateURLKey)) ?? NSURL()
     }
 }

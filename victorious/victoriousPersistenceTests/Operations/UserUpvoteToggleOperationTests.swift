@@ -23,19 +23,19 @@ class UserUpvoteToggleOperationTests: XCTestCase {
         let user = User(id: remoteUserID)
         user.upvote()
         
-        let expectation = expectationWithDescription("UserUpvoteToggleOperation")
+        let expectation = self.expectation(description: "UserUpvoteToggleOperation")
         
         let operation = UserUpvoteToggleOperation(
             user: user,
-            upvoteAPIPath: APIPath(templatePath: ""),
-            unupvoteAPIPath: APIPath(templatePath: "")
+            upvoteAPIPath: APIPath(templatePath:"foo"),
+            unupvoteAPIPath: APIPath(templatePath:"foo")
         )
         
         operation.queue { result in
             XCTAssertFalse(user.isUpvoted)
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(1.0, handler: nil)
+        waitForExpectations(timeout: 1.0, handler: nil)
     }
     
     func testInitiallyUnupvoted() {
@@ -43,18 +43,18 @@ class UserUpvoteToggleOperationTests: XCTestCase {
         user.unUpvote()
         XCTAssertFalse(user.isRemotelyFollowedByCurrentUser == true)
         
-        let expectation = expectationWithDescription("UserUpvoteToggleOperation")
+        let expectation = self.expectation(description: "UserUpvoteToggleOperation")
         
         let operation = UserUpvoteToggleOperation(
             user: user,
-            upvoteAPIPath: APIPath(templatePath: ""),
-            unupvoteAPIPath: APIPath(templatePath: "")
+            upvoteAPIPath: APIPath(templatePath:"foo"),
+            unupvoteAPIPath: APIPath(templatePath:"foo")
         )
         
         operation.queue { result in
             XCTAssertTrue(user.isUpvoted)
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(1.0, handler: nil)
+        waitForExpectations(timeout: 1.0, handler: nil)
     }
 }

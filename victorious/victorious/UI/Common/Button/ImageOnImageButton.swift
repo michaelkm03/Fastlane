@@ -13,20 +13,20 @@ import Foundation
 class ImageOnImageButton: TouchableInsetAdjustableButton, TrackableButton {
     var dependencyManager: VDependencyManager? {
         didSet {
-            var backgroundImage: UIImage? = templateAppearanceValue(.backgroundImage)
-            if let backgroundColor: UIColor = templateAppearanceValue(.backgroundColor) {
-                backgroundImage = backgroundImage?.v_tintedTemplateImageWithColor(backgroundColor)
+            var backgroundImage: UIImage? = templateAppearanceValue(appearance: .backgroundImage)
+            if let backgroundColor: UIColor = templateAppearanceValue(appearance: .backgroundColor) {
+                backgroundImage = backgroundImage?.v_tintedTemplateImage(with: backgroundColor)
             }
-            setBackgroundImage(backgroundImage?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
+            setBackgroundImage(backgroundImage?.withRenderingMode(.alwaysOriginal), for: .normal)
             
-            var foregroundImage: UIImage? = templateAppearanceValue(.foregroundImage)
-            if let foregroundColor: UIColor = templateAppearanceValue(.foregroundColor) {
-                foregroundImage = foregroundImage?.v_tintedTemplateImageWithColor(foregroundColor)
+            var foregroundImage: UIImage? = templateAppearanceValue(appearance: .foregroundImage)
+            if let foregroundColor: UIColor = templateAppearanceValue(appearance: .foregroundColor) {
+                foregroundImage = foregroundImage?.v_tintedTemplateImage(with: foregroundColor)
             }
-            setImage(foregroundImage?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
+            setImage(foregroundImage?.withRenderingMode(.alwaysOriginal), for: .normal)
             
-            backgroundColor = .clearColor()
-            userInteractionEnabled = templateAppearanceValue(.clickable) ?? false
+            backgroundColor = .clear
+            isUserInteractionEnabled = templateAppearanceValue(appearance: .clickable) ?? false
         }
     }
 }

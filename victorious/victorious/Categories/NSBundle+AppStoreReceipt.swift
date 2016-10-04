@@ -10,13 +10,13 @@ protocol ReceiptDataSource {
     func readReceiptData() -> NSData?
 }
 
-extension NSBundle: ReceiptDataSource {
+extension Bundle: ReceiptDataSource {
     
     func readReceiptData() -> NSData? {
         guard let appStoreReceiptURL = appStoreReceiptURL else {
             v_log("Failed to obtain appStoreReceiptURL")
             return nil
         }
-        return NSData(contentsOfURL: appStoreReceiptURL)
+        return NSData(contentsOf: appStoreReceiptURL)
     }
 }

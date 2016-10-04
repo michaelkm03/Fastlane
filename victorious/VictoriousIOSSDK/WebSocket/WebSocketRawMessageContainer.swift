@@ -29,7 +29,7 @@ public class WebSocketRawMessageContainer {
     public private(set) var messageContainer: [WebSocketRawMessage] = []
 
     /// Will add the message to a container IF the app is build with a custom flag: `V_ENABLE_WEBSOCKET_DEBUG_MENU`
-    public func addMessage(message: WebSocketRawMessage) {
+    public func add(_ message: WebSocketRawMessage) {
         #if V_ENABLE_WEBSOCKET_DEBUG_MENU
             messageContainer.append(message)
         #endif

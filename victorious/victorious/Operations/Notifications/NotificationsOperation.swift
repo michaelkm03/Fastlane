@@ -15,7 +15,7 @@ final class NotificationsOperation: AsyncOperation<[AnyObject]>, PaginatedOperat
     
     required init(paginator: StandardPaginator = StandardPaginator()) {
         self.paginator = paginator
-        request = NotificationsRequest(paginator: paginator)
+        request = InAppNotificationsRequest(paginator: paginator)
         super.init()
     }
     
@@ -26,27 +26,27 @@ final class NotificationsOperation: AsyncOperation<[AnyObject]>, PaginatedOperat
     // MARK: - Executing
     
     let paginator: StandardPaginator
-    let request: NotificationsRequest
+    let request: InAppNotificationsRequest
     var results: [AnyObject]?
     
     override var executionQueue: Queue {
         return .background
     }
     
-    override func execute(finish: (result: OperationResult<[AnyObject]>) -> Void) {
+    override func execute(_ finish: @escaping (_ result: OperationResult<[AnyObject]>) -> Void) {
         RequestOperation(request: request).queue { [weak self] result in
             switch result {
                 case .success(let notifications):
                     self?.results = notifications
-                    finish(result: .success(notifications))
+                    finish(.success(notifications))
                 
                 case .failure(let error):
                     self?.results = []
-                    finish(result: .failure(error))
+                    finish(.failure(error))
                 
                 case .cancelled:
                     self?.results = []
-                    finish(result: .cancelled)
+                    finish(.cancelled)
             }
         }
     }

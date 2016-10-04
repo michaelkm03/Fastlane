@@ -69,9 +69,9 @@ class ContentTests: XCTestCase {
         XCTAssertEqual(chatMessage.author?.displayName, "Leetzor")
     }
 
-    private func createChatMessageFromJSON(fileName fileName: String) -> Content? {
-        guard let mockUserDataURL = NSBundle(forClass: self.dynamicType).URLForResource(fileName, withExtension: "json"),
-            let mockData = NSData(contentsOfURL: mockUserDataURL) else {
+    fileprivate func createChatMessageFromJSON(fileName: String) -> Content? {
+        guard let mockUserDataURL = Bundle(for: type(of: self)).url(forResource: fileName, withExtension: "json"),
+            let mockData = try? Data(contentsOf: mockUserDataURL) else {
                 XCTFail("Error reading mock json data")
                 return nil
         }
@@ -79,9 +79,9 @@ class ContentTests: XCTestCase {
         return Content(chatMessageJSON: JSON(data: mockData), serverTime: Timestamp(value: 1234567890))
     }
 
-    private func createContentFromJSON(fileName fileName: String) -> Content? {
-        guard let mockUserDataURL = NSBundle(forClass: self.dynamicType).URLForResource(fileName, withExtension: "json"),
-            let mockData = NSData(contentsOfURL: mockUserDataURL) else {
+    fileprivate func createContentFromJSON(fileName: String) -> Content? {
+        guard let mockUserDataURL = Bundle(for: type(of: self)).url(forResource: fileName, withExtension: "json"),
+            let mockData = try? Data(contentsOf: mockUserDataURL) else {
                 XCTFail("Error reading mock json data")
                 return nil
         }

@@ -16,32 +16,32 @@ extension String {
     /// - parameter afterCharacters: Characters that, if one is encountered, mark the start of the desired substring. A character from this array will NOT be present in the returned substring.
     ///
     /// - returns: Returns nil iff the provided location is larger than the length of the string or less than 0
-    func substringBeforeLocation(location: Int, afterCharacters characters: [Character]) -> (substring: String, preceedingCharacter: Character?, range: Range<Index>)? {
+    func substringBeforeLocation(location: Int, afterCharacters characters: [Character]) -> (substring: String, preceedingCharacter: Character?, range: Range<String.Index>)? {
         
         guard location > 0 && self.characters.count >= location else {
             return nil
         }
         
-        var matchStartIndex = startIndex.advancedBy(location)
+        var matchStartIndex = index(startIndex, offsetBy: location)
         let matchEndIndex = matchStartIndex
         
         var currentCharacter = Character(" ")
         var foundMatch = false
         
         while matchStartIndex != startIndex && !foundMatch {
-            matchStartIndex = matchStartIndex.predecessor()
+            matchStartIndex = index(before: matchStartIndex)
             currentCharacter = self[matchStartIndex]
             foundMatch = characters.contains(currentCharacter)
         }
         
         if foundMatch {
-            matchStartIndex = matchStartIndex.successor()
+            matchStartIndex = index(after: matchStartIndex)
         }
         let matchedCharacter: Character? = foundMatch ? currentCharacter : nil
         
         let foundRange = matchStartIndex..<matchEndIndex
-        let substring = substringWithRange(foundRange)
-        return (substring, matchedCharacter, foundRange)
+        let sub = substring(with: foundRange)
+        return (sub, matchedCharacter, foundRange)
     }
     
     /// Finds the last occurrence of the provided substring before a character from the `beforeCharacters` array and after `location`.
@@ -56,7 +56,7 @@ extension String {
             return nil
         }
         
-        var matchEndIndex = startIndex.advancedBy(location)
+        var matchEndIndex = index(startIndex, offsetBy: location)
         let matchStartIndex = matchEndIndex
         
         var currentCharacter = Character(" ")
@@ -65,23 +65,27 @@ extension String {
         repeat {
             currentCharacter = self[matchEndIndex]
             foundMatch = characters.contains(currentCharacter)
-            matchEndIndex = matchEndIndex.successor()
+            matchEndIndex = index(after: matchEndIndex)
         } while matchEndIndex != endIndex && !foundMatch
         
         if foundMatch {
-            matchEndIndex = matchEndIndex.predecessor()
+            matchEndIndex = index(before: matchEndIndex)
         }
         let matchedCharacter: Character? = foundMatch ? currentCharacter : nil
         
         let foundRange = matchStartIndex..<matchEndIndex
-        let substring = substringWithRange(foundRange)
-        return (substring, matchedCharacter, foundRange)
+        let sub = substring(with: foundRange)
+        return (sub, matchedCharacter, foundRange)
     }
     
     func NSRangeFromRange(range : Range<String.Index>) -> NSRange {
         
-        let from = String.UTF16View.Index(range.startIndex, within: utf16)
-        let to = String.UTF16View.Index(range.endIndex, within: utf16)
-        return NSMakeRange(utf16.startIndex.distanceTo(from), from.distanceTo(to))
+        let from = String.UTF16View.Index(range.lowerBound, within: utf16)
+        let to = String.UTF16View.Index(range.upperBound, within: utf16)
+        
+        let location = utf16.distance(from: utf16.startIndex, to: from)
+        let length = utf16.distance(from: from, to: to)
+        
+        return NSMakeRange(location, length)
     }
 }

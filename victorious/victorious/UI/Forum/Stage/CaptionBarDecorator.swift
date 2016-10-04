@@ -9,22 +9,22 @@
 import Foundation
 
 struct CaptionBarDecorator {
-    private struct Constants {
+    fileprivate struct Constants {
         static let textAreaCornerRadius: CGFloat = 6
         static let expandButtonTouchInsets = UIEdgeInsetsMake(-6, -6, -6, -6)
     }
     
     let dependencyManager: VDependencyManager
     
-    func decorate(captionBar: CaptionBar) {
-        let captionTextView = captionBar.captionTextView
+    func decorate(_ captionBar: CaptionBar) {
+        let captionTextView = captionBar.captionTextView!
         captionTextView.font = dependencyManager.font
-        captionTextView.textColor = dependencyManager.textColor ?? .whiteColor()
+        captionTextView.textColor = dependencyManager.textColor ?? .white
         captionTextView.backgroundColor = dependencyManager.textContainerColor
         
-        let captionLabel = captionBar.captionLabel
+        let captionLabel = captionBar.captionLabel!
         captionLabel.font = dependencyManager.font
-        captionLabel.textColor = dependencyManager.textColor ?? .whiteColor()
+        captionLabel.textColor = dependencyManager.textColor ?? .white
         captionLabel.backgroundColor = dependencyManager.textContainerColor
         captionLabel.numberOfLines = captionBar.collapsedNumberOfLines
         
@@ -42,18 +42,18 @@ struct CaptionBarDecorator {
 
 private extension VDependencyManager {
     var font: UIFont? {
-        return fontForKey("font.caption")
+        return font(forKey: "font.caption")
     }
     
     var textColor: UIColor? {
-        return colorForKey("color.caption")
+        return color(forKey: "color.caption")
     }
     
     var backgroundOverlayColor: UIColor? {
-        return colorForKey("color.background.caption")
+        return color(forKey: "color.background.caption")
     }
     
     var textContainerColor: UIColor? {
-        return colorForKey("color.textContainer.caption")
+        return color(forKey: "color.textContainer.caption")
     }
 }

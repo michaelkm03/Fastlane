@@ -6,6 +6,8 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
+import VictoriousIOSSDK
+
 final class ListMenuHashtagsDataSource: ListMenuSectionDataSource {
     
     typealias Cell = ListMenuHashtagCollectionViewCell
@@ -22,7 +24,7 @@ final class ListMenuHashtagsDataSource: ListMenuSectionDataSource {
     let dependencyManager: VDependencyManager
     
     var hashtagStreamAPIPath: APIPath {
-        return dependencyManager.apiPathForKey("streamURL") ?? APIPath(templatePath: "")
+        return dependencyManager.apiPath(forKey: "streamURL") ?? APIPath(templatePath: "")
     }
     
     var hashtagStreamTrackingAPIPaths: [APIPath] {
@@ -33,18 +35,18 @@ final class ListMenuHashtagsDataSource: ListMenuSectionDataSource {
     
     /// An array of visible hashtags. This array starts with no hashtags,
     /// and gets populated after `fetchRemoteData` is called
-    private(set) var visibleItems: [Hashtag] = [] {
+    fileprivate(set) var visibleItems: [Hashtag] = [] {
         didSet {
             state = visibleItems.isEmpty ? .noContent : .items
             delegate?.didUpdateVisibleItems(forSection: .hashtags)
         }
     }
     
-    private(set) var state: ListMenuDataSourceState = .loading
+    fileprivate(set) var state: ListMenuDataSourceState = .loading
     
     weak var delegate: ListMenuSectionDataSourceDelegate?
 
-    func fetchRemoteData(success success: FetchRemoteDataCallback?) {
+    func fetchRemoteData(success: FetchRemoteDataCallback?) {
         guard
             let apiPath = dependencyManager.trendingHashtagsAPIPath,
             let request = TrendingHashtagsRequest(apiPath: apiPath)
@@ -72,6 +74,6 @@ final class ListMenuHashtagsDataSource: ListMenuSectionDataSource {
 
 private extension VDependencyManager {
     var trendingHashtagsAPIPath: APIPath? {
-        return networkResources?.apiPathForKey("trendingHashtagsURL")
+        return networkResources?.apiPath(forKey: "trendingHashtagsURL")
     }
 }

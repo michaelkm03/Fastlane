@@ -24,7 +24,7 @@ extension CGRect {
     
     // MARK: - Resizing
     
-    func v_aspectFit(toRect: CGRect) -> CGRect {
+    func v_aspectFit(_ toRect: CGRect) -> CGRect {
         let fromAspectRatio = self.size.width / self.size.height
         let toAspectRatio = toRect.size.width / toRect.size.height
         
@@ -38,10 +38,10 @@ extension CGRect {
             fitRect.origin.x += (toRect.size.width - fitRect.size.width) * 0.5
         }
         
-        return CGRectIntegral(fitRect)
+        return fitRect.integral
     }
     
-    func v_aspectFill(toRect: CGRect) -> CGRect {
+    func v_aspectFill(_ toRect: CGRect) -> CGRect {
         let fromAspectRatio = self.size.width / self.size.height
         let toAspectRatio = toRect.size.width / toRect.size.height
         
@@ -56,10 +56,10 @@ extension CGRect {
             fitRect.origin.y += (toRect.size.height - fitRect.size.height) * 0.5
         }
         
-        return CGRectIntegral(fitRect)
+        return fitRect.integral
     }
     
-    func insetBy(insets: UIEdgeInsets) -> CGRect {
+    func insetBy(_ insets: UIEdgeInsets) -> CGRect {
         var rect = self
         rect.origin.x += insets.left
         rect.origin.y += insets.top

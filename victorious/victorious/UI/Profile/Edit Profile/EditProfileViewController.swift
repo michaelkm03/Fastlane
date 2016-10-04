@@ -7,26 +7,27 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 /// Provides UI for editing the currently logged in user's metadata
 /// Uses a save button that enables/disables when the entered data is valid.
 /// Navigates away with a storyboard segue back to settings when complete.
 class EditProfileViewController: UIViewController {
-    private struct Constants {
-        static let animationDuration: NSTimeInterval = 0.25
-        static let errorOnScreenDuration: NSTimeInterval = 3.5
+    fileprivate struct Constants {
+        static let animationDuration: TimeInterval = 0.25
+        static let errorOnScreenDuration: TimeInterval = 3.5
         static let cellDisabledAlpha: CGFloat = 0.7
     }
 
     var dependencyManager: VDependencyManager?
-    private var dataSource: EditProfileDataSource?
-    private var profilePicturePresenter: VEditProfilePicturePresenter?
-    private var keyboardManager: VKeyboardNotificationManager?
+    fileprivate var dataSource: EditProfileDataSource?
+    fileprivate var profilePicturePresenter: VEditProfilePicturePresenter?
+    fileprivate var keyboardManager: VKeyboardNotificationManager?
     
-    @IBOutlet private weak var validationErrorLabel: UILabel!
-    @IBOutlet private weak var validationView: UIView!
-    @IBOutlet private weak var validationViewTopToLayoutGuideBottomConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var saveButton: UIBarButtonItem!
+    @IBOutlet fileprivate weak var validationErrorLabel: UILabel!
+    @IBOutlet fileprivate weak var validationView: UIView!
+    @IBOutlet fileprivate weak var validationViewTopToLayoutGuideBottomConstraint: NSLayoutConstraint!
+    @IBOutlet fileprivate weak var saveButton: UIBarButtonItem!
     // Exposed for tests since cells are registered in storybaord
     @IBOutlet weak var tableView: UITableView!
     
@@ -34,7 +35,7 @@ class EditProfileViewController: UIViewController {
         didSet {
             for cell in tableView.visibleCells {
                 cell.alpha = editingEnabled ? 1.0 : 0.7
-                cell.userInteractionEnabled = editingEnabled
+                cell.isUserInteractionEnabled = editingEnabled
             }
         }
     }
@@ -51,13 +52,13 @@ class EditProfileViewController: UIViewController {
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.backgroundView = dependencyManager?.background().viewForBackground()
 
-        keyboardManager = VKeyboardNotificationManager(keyboardWillShowBlock: { [weak self] _,endFrame, _, _ in
+        keyboardManager = VKeyboardNotificationManager(keyboardWillShow: { [weak self] _,endFrame, _, _ in
             if let existingInsets = self?.tableView.contentInset {
                 let newInsets = UIEdgeInsets(top: existingInsets.top, left: existingInsets.left, bottom: endFrame.height, right: existingInsets.right)
                 self?.tableView.contentInset = newInsets
                 self?.tableView.scrollIndicatorInsets = newInsets
             }
-        }, willHideBlock: { _, _, _, _ in
+            }, willHide: { _, _, _, _ in
                 
         }, willChangeFrameBlock: { [weak self] _, endFrame, _, _ in
             if let existingInsets = self?.tableView.contentInset {
@@ -68,41 +69,42 @@ class EditProfileViewController: UIViewController {
         })
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateUI()
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         dataSource?.beginEditing()
     }
     
     // MARK: - Target Action
     
-    @IBAction func tappedCancel(sender: UIBarButtonItem) {
-        self.navigationController?.popViewControllerAnimated(true)
+    @IBAction func tappedCancel(_ sender: UIBarButtonItem) {
+        let _ = self.navigationController?.popViewController(animated: true)
     }
     
-    @IBAction private func tappedSave(sender: UIBarButtonItem) {
-        guard let profileUpdate = dataSource?.accountUpdateDelta(), dependencyManager = dependencyManager, let apiPath = dependencyManager.userValidationAPIPath else {
+    @IBAction fileprivate func tappedSave(_ sender: UIBarButtonItem) {
+        guard let profileUpdate = dataSource?.accountUpdateDelta(), let dependencyManager = dependencyManager, let apiPath = dependencyManager.userValidationAPIPath else {
             return
         }
         
-        navigationItem.leftBarButtonItem?.enabled = false
-        navigationItem.rightBarButtonItem?.enabled = false
+        navigationItem.leftBarButtonItem?.isEnabled = false
+        navigationItem.rightBarButtonItem?.isEnabled = false
         editingEnabled = false
         
         let enableUIClosure = {
             self.editingEnabled = true
-            self.navigationItem.leftBarButtonItem?.enabled = true
-            self.navigationItem.rightBarButtonItem?.enabled = true
+            self.navigationItem.leftBarButtonItem?.isEnabled = true
+            self.navigationItem.rightBarButtonItem?.isEnabled = true
         }
         
         let accountUpdateClosure = {
             AccountUpdateOperation(profileUpdate: profileUpdate)?.queue() { result in
                 switch result {
-                    case .success: self.navigationController?.popViewControllerAnimated(true)
+                    case .success:
+                        let _ = self.navigationController?.popViewController(animated: true)
                     default:
                         self.v_showErrorDefaultError()
                         enableUIClosure()
@@ -139,7 +141,7 @@ class EditProfileViewController: UIViewController {
         }
     }
     
-    private func error(withDescription description: String) -> ErrorType {
+    private func error(withDescription description: String) -> Error {
         return NSError(domain: "EditProfileError", code: -1, userInfo: [
             NSLocalizedDescriptionKey: description
         ])
@@ -147,7 +149,7 @@ class EditProfileViewController: UIViewController {
     
     // MARK: - Miscellaneous Private Functions
     
-    private func setupDataSource() {
+    fileprivate func setupDataSource() {
         guard
             let dependencyManager = dependencyManager,
             let currentUser = VCurrentUser.user
@@ -167,42 +169,42 @@ class EditProfileViewController: UIViewController {
         tableView.dataSource = dataSource
     }
     
-    private func updateUI() {
+    fileprivate func updateUI() {
         guard let dataSource = self.dataSource else {
             return
         }
         if let error = dataSource.localizedError {
             self.animateErrorInThenOut(error)
-            saveButton.enabled = false
+            saveButton.isEnabled = false
         } else {
-            saveButton.enabled = true
+            saveButton.isEnabled = true
         }
     }
     
-    private func presentCamera() {
+    fileprivate func presentCamera() {
         VTrackingManager.sharedInstance().trackEvent(VTrackingEventUserDidSelectImageForEditProfile)
         profilePicturePresenter = VEditProfilePicturePresenter(dependencyManager: dependencyManager)
         profilePicturePresenter?.resultHandler = { [weak self] success, previewImage, mediaURL in
             defer {
-                self?.dismissViewControllerAnimated(true, completion: nil)
+                self?.dismiss(animated: true, completion: nil)
             }
             
-            guard success else {
+            guard success, let previewImage = previewImage, let mediaURL = mediaURL else {
                 return
             }
             self?.dataSource?.useNewAvatar(previewImage, fileURL: mediaURL)
         }
-        profilePicturePresenter?.presentOnViewController(self)
+        profilePicturePresenter?.present(on: self)
     }
-
-    private func animateErrorInThenOut(error: ErrorType) {
-        self.validationErrorLabel.text = (error as NSError).localizedDescription
+    
+    private func animateErrorInThenOut(_ error: Error) {
+        self.validationErrorLabel.text = error.localizedDescription
         self.animateErrorIn()
     }
     
-    private func animateErrorIn() {
-        UIView.animateWithDuration(
-            Constants.animationDuration,
+    fileprivate func animateErrorIn() {
+        UIView.animate(
+            withDuration: Constants.animationDuration,
             animations: {
                 self.validationViewTopToLayoutGuideBottomConstraint.constant = 0
                 self.view.layoutIfNeeded()
@@ -214,17 +216,17 @@ class EditProfileViewController: UIViewController {
         )
     }
     
-    private func animateErrorOut() {
-        UIView.animateWithDuration(Constants.animationDuration){
-            let validationViewSize = self.validationView.systemLayoutSizeFittingSize(self.view.bounds.size)
+    fileprivate func animateErrorOut() {
+        UIView.animate(withDuration: Constants.animationDuration, animations: {
+            let validationViewSize = self.validationView.systemLayoutSizeFitting(self.view.bounds.size)
             self.validationViewTopToLayoutGuideBottomConstraint.constant = -validationViewSize.height
             self.view.layoutIfNeeded()
-        }
+        })
     }
 }
 
 private extension VDependencyManager {
     var userValidationAPIPath: APIPath? {
-        return networkResources?.apiPathForKey("username.validity.URL")
+        return networkResources?.apiPath(forKey: "username.validity.URL")
     }
 }

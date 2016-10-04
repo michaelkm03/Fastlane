@@ -8,22 +8,23 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 class GIFSearchDataSource: PaginatedDataSource, MediaSearchDataSource {
     
-    private(set) var options = MediaSearchOptions()
+    fileprivate(set) var options = MediaSearchOptions()
     
     override init() {
         options.showPreview = true
     }
 	
-	func performSearch( searchTerm searchTerm: String?, pageType: VPageType, completion: (NSError? -> ())? ) {
+	func performSearch( searchTerm: String?, pageType: VPageType, completion: ((NSError?) -> ())? ) {
 		
         let searchOptions: AssetSearchOptions
         if let searchTerm = searchTerm {
-            searchOptions = AssetSearchOptions.Search(term: searchTerm, url: "/api/image/gif_search")
+            searchOptions = AssetSearchOptions.search(term: searchTerm, url: "/api/image/gif_search")
         } else {
-            searchOptions = AssetSearchOptions.Trending(url: "/api/image/trending_gifs")
+            searchOptions = AssetSearchOptions.trending(url: "/api/image/trending_gifs")
         }
         
 		self.loadPage( pageType,

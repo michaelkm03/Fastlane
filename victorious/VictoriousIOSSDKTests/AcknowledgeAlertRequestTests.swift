@@ -15,16 +15,16 @@ class AcknowledgeAlertRequestTests: XCTestCase {
     func testRequest() {        
         let alertID = "1524"
         let acknowledgeAlertRequest = AcknowledgeAlertRequest(alertID: alertID)
-        XCTAssertEqual(acknowledgeAlertRequest.urlRequest.URL?.absoluteString, "/api/alert/acknowledge")
+        XCTAssertEqual(acknowledgeAlertRequest.urlRequest.url?.absoluteString, "/api/alert/acknowledge")
         
-        guard let bodyData = acknowledgeAlertRequest.urlRequest.HTTPBody else {
+        guard let bodyData = acknowledgeAlertRequest.urlRequest.httpBody else {
             XCTFail("No HTTP Body!")
             return
         }
 
-        let bodyString = String(data: bodyData, encoding: NSUTF8StringEncoding)!
+        let bodyString = String(data: bodyData, encoding: String.Encoding.utf8)!
         
-        XCTAssertNotNil(bodyString.rangeOfString("alert_id=\(alertID)"))
+        XCTAssertNotNil(bodyString.range(of: "alert_id=\(alertID)"))
     }
 
 }

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 /// Defines an object that requires these few properties in order to execute
 /// the highest-level, abstract Forum business logic.  Plug and play :)
@@ -30,7 +31,7 @@ protocol Forum: ForumEventReceiver, ForumEventSender, ChatFeedDelegate, Composer
     
     // MARK: - Behaviors
 
-    func setStageHeight(value: CGFloat)
+    func setStageHeight(_ value: CGFloat)
 }
 
 /// The default implementation of the highest-level, abstract Forum business logic,
@@ -39,33 +40,31 @@ protocol Forum: ForumEventReceiver, ForumEventSender, ChatFeedDelegate, Composer
 extension Forum {
     // MARK: - ChatFeedDelegate
     
-    func chatFeed(chatFeed: ChatFeed, didSelectUserWithID userID: Int) {
+    func chatFeed(_ chatFeed: ChatFeed, didSelectUserWithID userID: User.ID) {
         let router = Router(originViewController: originViewController, dependencyManager: dependencyManager)
         let destination = DeeplinkDestination(userID: userID)
         router.navigate(to: destination, from: chatFeedContext)
     }
     
-    func chatFeed(chatFeed: ChatFeed, didSelect chatFeedContent: ChatFeedContent) {
+    func chatFeed(_ chatFeed: ChatFeed, didSelect chatFeedContent: ChatFeedContent) {
         let router = Router(originViewController: originViewController, dependencyManager: dependencyManager)
-        guard let destination = DeeplinkDestination(content: chatFeedContent.content) else {
-            return
-        }
+        let destination = DeeplinkDestination(content: chatFeedContent.content)
         router.navigate(to: destination, from: chatFeedContext)
     }
     
     // MARK: - ComposerDelegate
     
-    func composer(composer: Composer, didSelectCreationFlowType creationFlowType: VCreationFlowType) {
-        creationFlowPresenter()?.presentWorkspaceOnViewController(originViewController, creationFlowType: creationFlowType)
+    func composer(_ composer: Composer, didSelectCreationFlowType creationFlowType: VCreationFlowType) {
+        creationFlowPresenter()?.presentWorkspace(on: originViewController, creationFlowType: creationFlowType)
     }
 
-    func composer(composer: Composer, didUpdateContentHeight height: CGFloat) {
+    func composer(_ composer: Composer, didUpdateContentHeight height: CGFloat) {
         chatFeed?.addedBottomInset = height
     }
 
     // MARK: - StageDelegate
     
-    func stage(stage: Stage, wantsUpdateToContentHeight height: CGFloat) {
+    func stage(_ stage: Stage, wantsUpdateToContentHeight height: CGFloat) {
         setStageHeight(height)
         chatFeed?.addedTopInset = height
         composer?.topInset = height

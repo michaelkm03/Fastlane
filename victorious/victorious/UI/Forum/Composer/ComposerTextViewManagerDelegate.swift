@@ -23,7 +23,7 @@ protocol ComposerTextViewManagerDelegate: class {
     
     var textViewCurrentHashtag: (String, NSRange)? { get set }
 
-    func textViewDidHitCharacterLimit(textView: UITextView)
+    func textViewDidHitCharacterLimit(_ textView: UITextView)
     
     func inputTextAttributes() -> (inputTextColor: UIColor?, inputTextFont: UIFont?)
 }

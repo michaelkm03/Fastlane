@@ -9,7 +9,7 @@
 import Foundation
 
 extension VModernLoginAndRegistrationFlowViewController: FixedWebContentPresenter {
-    func showFixedWebContent(type: FixedWebContentType) {
+    func showFixedWebContent(_ type: FixedWebContentType) {
         showFixedWebContent(type, withDependencyManager: dependencyManager)
     }
 }

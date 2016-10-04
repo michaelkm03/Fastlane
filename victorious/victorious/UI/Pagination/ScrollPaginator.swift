@@ -32,7 +32,7 @@ struct ScrollPaginator {
     
     /// The owner of the paginator must call this in the `scrollViewDidScroll` delegate method of the associated scroll
     /// view.
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.isScrolledToTop(withTolerance: tolerance) {
             loadItemsAbove?()
         }

@@ -59,7 +59,7 @@ class QueueableTests: XCTestCase {
     }
     
     func testQueueOn() {
-        let expectation = self.expectationWithDescription("testQueueOn")
+        let expectation = self.expectation(description:"testQueueOn")
         
         let operation = MockOperation() { op in
             XCTAssert( NSThread.currentThread().isMainThread )
@@ -68,11 +68,11 @@ class QueueableTests: XCTestCase {
             XCTAssert( op.result )
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(2, handler: nil)
+        waitForExpectations(timeout:2, handler: nil)
     }
     
     func testQueue() {
-        let expectation = self.expectationWithDescription("testQueue")
+        let expectation = self.expectation(description:"testQueue")
         
         let operation = MockOperation()
         operation.queue() { op in
@@ -80,11 +80,11 @@ class QueueableTests: XCTestCase {
             XCTAssert( op.result )
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(2, handler: nil)
+        waitForExpectations(timeout:2, handler: nil)
     }
     
     func testQueueAfterQueueBefore() {
-        let expectation = self.expectationWithDescription("testQueueAfterQueueBefore")
+        let expectation = self.expectation(description:"testQueueAfterQueueBefore")
         var completedOperations = [MockOperation]()
 
         let completionBlock: (MockOperation)->() = { op in
@@ -118,7 +118,7 @@ class QueueableTests: XCTestCase {
         operationD.testCompletionBlock = completionBlock
         operationD.queueBefore( operationE )
         
-        waitForExpectationsWithTimeout(2, handler: nil)
+        waitForExpectations(timeout:2, handler: nil)
 
         XCTAssertEqual( completedOperations.count, 5 )
         

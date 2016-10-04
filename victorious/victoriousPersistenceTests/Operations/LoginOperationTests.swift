@@ -17,7 +17,7 @@ class LoginOperationTests: XCTestCase {
         }
         
         let operation = LoginOperation(
-            dependencyManager: VDependencyManager.dependencyManagerWithDefaultValuesForColorsAndFonts(),
+            dependencyManager: VDependencyManager.withDefaultValuesForColorsAndFonts(),
             email: email,
             password: "password"
         )
@@ -26,22 +26,22 @@ class LoginOperationTests: XCTestCase {
         let response = AccountCreateResponse(token: token, user: user)
         operation.requestExecutor = TestRequestExecutor(result: response)
         
-        let expectation = expectationWithDescription("testLoginWithEmailAndPassword")
+        let expectation = self.expectation(description: "testLoginWithEmailAndPassword")
         operation.queue() { result in
             let currentUser = VCurrentUser.user
             XCTAssertNotNil(VCurrentUser.user)
             XCTAssertEqual(currentUser?.id, 36179)
             
-            XCTAssertEqual(VCurrentUser.loginType, VLoginType.Email)
+            XCTAssertEqual(VCurrentUser.loginType, VLoginType.email)
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1.0, handler: nil)
+        waitForExpectations(timeout: 1.0, handler: nil)
     }
     
-    private func loadUser() -> User? {
-        guard let mockUserDataURL = NSBundle(forClass: self.dynamicType).URLForResource("User", withExtension: "json"),
-            let mockData = NSData(contentsOfURL: mockUserDataURL) else {
+    fileprivate func loadUser() -> User? {
+        guard let mockUserDataURL = Bundle(for: type(of: self)).url(forResource: "User", withExtension: "json"),
+            let mockData = try? Data(contentsOf: mockUserDataURL) else {
                 return nil
         }
         return User(json: JSON(data: mockData))

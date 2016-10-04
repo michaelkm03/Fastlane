@@ -184,7 +184,7 @@ static NSString * const kFacebookKey = @"facebook";
 {
     NSArray *options = [self.dependencyManager arrayOfValuesOfType:[NSString class] forKey:kSigninOptionsKey];
     
-    if (!VFacebookHelper.facebookAppIDPresent)
+    if (!FacebookHelper.facebookAppIDPresent)
     {
         options = [options filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSString *evaluatedObject, NSDictionary *bindings)
         {

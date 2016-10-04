@@ -10,7 +10,7 @@ import Foundation
 
 /// Netowrk request to fetch an array of content which will be displayed as tutorial messages
 public struct TutorialContentsRequest: RequestType {
-    private let url: NSURL
+    private let url: URL
     
     public init?(apiPath: APIPath) {
         guard let url = apiPath.url else {
@@ -20,11 +20,11 @@ public struct TutorialContentsRequest: RequestType {
         self.url = url
     }
     
-    public var urlRequest: NSURLRequest {
-        return NSURLRequest(URL: url)
+    public var urlRequest: URLRequest {
+        return URLRequest(url: url)
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [Content] {
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> [Content] {
         guard let json = responseJSON["payload"]["viewed_contents"].array else {
             throw ResponseParsingError()
         }

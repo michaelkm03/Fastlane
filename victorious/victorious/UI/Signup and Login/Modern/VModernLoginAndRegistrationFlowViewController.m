@@ -301,14 +301,14 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     
     FBSDKAccessToken *currentToken = [FBSDKAccessToken currentAccessToken];
     if ( currentToken == nil ||
-        ![[NSSet setWithArray:VFacebookHelper.readPermissions] isSubsetOfSet:[currentToken permissions]] ||
+        ![[NSSet setWithArray:FacebookHelper.readPermissions] isSubsetOfSet:[currentToken permissions]] ||
         [currentToken.expirationDate timeIntervalSinceNow] <= 0)
     {
         self.actionsDisabled = YES;
         self.facebookLoginProgressHUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         
         FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
-        [loginManager logInWithReadPermissions:VFacebookHelper.readPermissions
+        [loginManager logInWithReadPermissions:FacebookHelper.readPermissions
                             fromViewController:self
                                        handler:^(FBSDKLoginManagerLoginResult *result, NSError *error)
          {

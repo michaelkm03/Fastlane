@@ -7,29 +7,30 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 class VideoBackground: VBackground, VVideoPlayerDelegate {
     // MARK: - Initializing
     
     required init(dependencyManager: VDependencyManager) {
         super.init(dependencyManager: dependencyManager)
-        videoView.backgroundColor = .blackColor()
+        videoView.backgroundColor = .black
         videoView.delegate = self
         fetchVideo(from: dependencyManager)
     }
     
     // MARK: - Fetching the video
     
-    private func fetchVideo(from dependencyManager: VDependencyManager) {
+    fileprivate func fetchVideo(from dependencyManager: VDependencyManager) {
         guard let sequenceURL = dependencyManager.sequenceURL else {
             return
         }
         
-        RequestOperation(request: VideoBackgroundFetchRequest(sequenceURL: sequenceURL)).queue { [weak self] result in
+        RequestOperation(request: VideoBackgroundFetchRequest(sequenceURL: sequenceURL as URL)).queue { [weak self] result in
             guard let item = result.output else {
                 return
             }
-            
+
             item.muted = true
             item.loop = true
             self?.videoView.setItem(item)
@@ -39,7 +40,7 @@ class VideoBackground: VBackground, VVideoPlayerDelegate {
     // MARK: - Views
     
     /// The view that displays background video.
-    private let videoView = VVideoView()
+    fileprivate let videoView = VVideoView()
     
     // MARK: - VBackground
     
@@ -49,7 +50,7 @@ class VideoBackground: VBackground, VVideoPlayerDelegate {
     
     // MARK: - VVideoPlayerDelegate
     
-    func videoPlayerDidBecomeReady(videoPlayer: VVideoPlayer) {
+    func videoPlayerDidBecomeReady(_ videoPlayer: VVideoPlayer) {
         videoView.playFromStart()
     }
 }
@@ -58,28 +59,28 @@ class VideoBackground: VBackground, VVideoPlayerDelegate {
 // sequence endpoints for video backgrounds. This should eventually be refactored and removed.
 
 private struct VideoBackgroundFetchRequest: RequestType {
-    let urlRequest: NSURLRequest
+    let urlRequest: URLRequest
     
-    init(sequenceURL: NSURL) {
-        self.urlRequest = NSURLRequest(URL: sequenceURL)
+    init(sequenceURL: URL) {
+        self.urlRequest = URLRequest(url: sequenceURL)
     }
     
-    func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> VVideoPlayerItem {
+    func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> VVideoPlayerItem {
         guard let payload = responseJSON["payload"].arrayValue.first, let url = url(from: payload) else {
             throw ResponseParsingError()
         }
         
-        return VVideoPlayerItem(URL: url)
+        return VVideoPlayerItem(url: url)
     }
     
-    func url(from payload: JSON) -> NSURL? {
+    func url(from payload: JSON) -> URL? {
         for nodeJSON in payload["nodes"].arrayValue {
             for assetJSON in nodeJSON["assets"].arrayValue {
-                guard let url = assetJSON["data"].URL where url.pathExtension == "m3u8" else {
+                guard let url = assetJSON["data"].URL , url.pathExtension == "m3u8" else {
                     continue
                 }
                 
-                return url
+                return url as URL
             }
         }
         
@@ -89,7 +90,7 @@ private struct VideoBackgroundFetchRequest: RequestType {
 
 private extension VDependencyManager {
     var sequenceURL: NSURL? {
-        guard let urlString = stringForKey("sequenceURL") else {
+        guard let urlString = string(forKey: "sequenceURL") else {
             return nil
         }
         
