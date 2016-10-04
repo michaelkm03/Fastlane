@@ -81,7 +81,7 @@ class FirstInstallManagerTests: XCTestCase {
     
     func testGenerationWithoutFile() {
         // Create a testing file with testing device ID in it
-        firstInstallManager.generateFirstInstallDeviceID(withFileName: testingFileName)
+        let _ = firstInstallManager.generateFirstInstallDeviceID(withFileName: testingFileName)
         
         do {
             let retrivedDeviceID = try NSString(contentsOfFile: testingFilePath!, encoding: String.Encoding.utf8.rawValue) as String

@@ -11,7 +11,7 @@ import VictoriousIOSSDK
 @testable import victorious
 
 class GIFSearchOperationTests: XCTestCase {
-    let searchOptions = AssetSearchOptions.Search(term: "fun", url: "testURL")
+    let searchOptions = AssetSearchOptions.search(term: "fun", url: "testURL")
     
     func testEmptyResult() {
         let operation = GIFSearchOperation(searchOptions: searchOptions)

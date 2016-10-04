@@ -12,7 +12,7 @@ import VictoriousIOSSDK
 import XCTest
 
 class GIFSearchRequestTests: XCTestCase {
-    let searchOptions = AssetSearchOptions.Search(term: "lol", url: "testURL")
+    let searchOptions = AssetSearchOptions.search(term: "lol", url: "testURL")
     
     func testResponseParsing() {
         guard let mockResponseDataURL = Bundle(for: type(of: self)).url(forResource: "GIFSearchResponse", withExtension: "json"),
