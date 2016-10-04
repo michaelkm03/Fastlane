@@ -35,8 +35,8 @@ extension VLoginFlowAPIHelper {
         return nil
     }
     
-    func queueFacebookLoginOperationWithCompletion(completion: (NSError?) -> ()) -> NSOperation {
-        let loginType = VLoginType.Facebook
+    func queueFacebookLoginOperation(withCompletion completion: @escaping (_ error: NSError?) -> ()) -> Operation {
+        let loginType = VLoginType.facebook
         
         // FIXME: Fix this
         let credentials: NewAccountCredentials = loginType.storedCredentials()!

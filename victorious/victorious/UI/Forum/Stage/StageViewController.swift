@@ -418,7 +418,7 @@ private extension VDependencyManager {
     }
     
     var backgroundImage: UIImage? {
-        return imageForKey("stay.tuned.image")
+        return image(forKey: "stay.tuned.image")
     }
 }
 
