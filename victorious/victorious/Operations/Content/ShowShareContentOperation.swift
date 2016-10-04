@@ -65,6 +65,8 @@ private extension Content {
             case .image: shareText = NSLocalizedString("UGCShareImageFormat", comment: "")
             case .text: shareText = NSLocalizedString("UGCShareTextFormat", comment: "")
             case .link: shareText = NSLocalizedString("UGCShareLinkFormat", comment: "")
+            case .sticker: shareText =
+                NSLocalizedString("UGCShareTextFormat", comment: "")
         }
         
         return shareText

@@ -18,14 +18,14 @@ final class GIFSearchOperation: AsyncOperation<[AnyObject]>, PaginatedRequestOpe
         self.requestOperation = RequestOperation(request: request)
     }
     
-    convenience init(searchOptions: GIFSearchOptions) {
+    convenience init(searchOptions: AssetSearchOptions) {
         let paginator = StandardPaginator(pageNumber: 1, itemsPerPage: 20)
         self.init(request: GIFSearchRequest(searchOptions: searchOptions, paginator: paginator))
     }
     
     // MARK: - Executing
     
-    private let searchOptions: GIFSearchOptions?
+    private let searchOptions: AssetSearchOptions?
     
     var request: GIFSearchRequest
     
@@ -50,7 +50,7 @@ final class GIFSearchOperation: AsyncOperation<[AnyObject]>, PaginatedRequestOpe
         requestOperation.queue { [weak self] result in
             switch result {
                 case .success(let searchResults):
-                    let searchResultObjects = searchResults.map { GIFSearchResultObject( $0 ) }
+                    let searchResultObjects = searchResults.map { GIFSearchResultObject($0) }
                     self?.results = searchResultObjects
                     finish(.success(searchResultObjects))
                 

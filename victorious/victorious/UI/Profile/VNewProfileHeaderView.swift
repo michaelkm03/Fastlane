@@ -125,8 +125,15 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         
         statsContainerView.isHidden = userIsCreator
         
-        displayNameLabel.text = user?.displayName
-        usernameLabel.text = user?.username
+        if user?.displayName?.isEmpty == false {
+            displayNameLabel.text = user?.displayName
+            usernameLabel.text = user?.username
+        }
+        else {
+            displayNameLabel.text = user?.username
+            usernameLabel.text = ""
+        }
+        
         locationLabel.text = user?.location
         taglineLabel.text = user?.tagline
         upvotesGivenValueLabel?.text = numberFormatter.string(for: user?.likesGiven ?? 0)

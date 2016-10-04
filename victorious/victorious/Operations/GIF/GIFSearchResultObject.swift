@@ -45,4 +45,8 @@ import VictoriousIOSSDK
 	var remoteID: String? {
 		return sourceResult.remoteID
 	}
+    
+    var isVIP: Bool {
+        return false
+    }
 }

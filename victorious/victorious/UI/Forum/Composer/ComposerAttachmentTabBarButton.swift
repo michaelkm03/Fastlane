@@ -16,6 +16,7 @@ class ComposerAttachmentTabBarButton: UIButton {
         self.navigationMenuItem = navigationMenuItem
         super.init(frame: frame)
         adjustsImageWhenDisabled = true
+        imageView?.contentMode = .scaleAspectFit
         setImage(navigationMenuItem.icon, for: .normal)
     }
 

@@ -85,6 +85,8 @@ enum DeeplinkDestination: Equatable {
                     return nil
                 }
                 self = validDestination
+            case .sticker:
+                return nil
         }
     }
     

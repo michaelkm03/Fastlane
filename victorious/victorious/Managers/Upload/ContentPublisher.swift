@@ -135,7 +135,27 @@ class ContentPublisher {
     /// - Parameter completion: The block to call after upload has completed or failed. Always called.
     ///
     fileprivate func upload(_ content: Content, completion: ((Error?) -> Void)? = nil) {
-        if !content.assets.isEmpty {
+        if content.type == .sticker {
+            guard
+                let apiPath = dependencyManager.stickerCreationAPIPath(for: content),
+                let operation = CreateStickerOperation(apiPath: apiPath, content: content)
+            else {
+                completion?(ContentPublisherError.invalidNetworkResources)
+                return
+            }
+            
+            operation.queue { result in
+                switch result {
+                    case .success:
+                        completion?(nil)
+                    case .failure(let error):
+                        completion?(error)
+                    case .cancelled:
+                        break
+                }
+            }
+        }
+        else if !content.assets.isEmpty {
             guard let publishParameters = VPublishParameters(content: content) else {
                 completion?(ContentPublisherError.invalidContent)
                 return
@@ -231,7 +251,18 @@ private extension VDependencyManager {
     func mediaCreationAPIPath(for content: Content) -> APIPath? {
         return apiPath(forKey: "mediaCreationURL", macroReplacements: [
             "%%TIME_CURRENT%%": content.postedAt?.apiString ?? ""
-        ])
+            ])
+    }
+    
+    func stickerCreationAPIPath(for content: Content) -> APIPath? {
+        guard let externalID = content.assets.first?.externalID else {
+            return nil
+        }
+        
+        return apiPathForKey("sticker.creation.URL", macroReplacements: [
+            "%%TIME_CURRENT%%": content.postedAt?.apiString ?? "",
+            "%%CONTENT_ID%%": externalID
+            ])
     }
     
     func textCreationAPIPath(for content: Content) -> APIPath? {

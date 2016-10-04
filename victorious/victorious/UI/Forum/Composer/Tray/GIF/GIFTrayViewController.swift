@@ -17,8 +17,9 @@ class GIFTrayViewController: UIViewController, Tray, UICollectionViewDelegate, U
     }
     
     weak var delegate: TrayDelegate?
-    fileprivate var progressHUD: MBProgressHUD?
-    fileprivate var mediaExporter: MediaSearchExporter?
+
+    private(set) var progressHUD: MBProgressHUD?
+    private(set) var mediaExporter: MediaSearchExporter?
     
     lazy var dataSource: GIFTrayDataSource = {
         let dataSource = GIFTrayDataSource(dependencyManager: self.dependencyManager)
@@ -71,7 +72,9 @@ class GIFTrayViewController: UIViewController, Tray, UICollectionViewDelegate, U
             return
         }
         progressHUD = showExportingHUD(delegate: self)
-        exportMedia(fromSearchResult: gif) { [weak self] state in
+        mediaExporter?.cancelDownload()
+        mediaExporter = nil
+        let exporter = exportMedia(fromSearchResult: gif) { [weak self] state in
             switch state {
                 case .success(let result):
                     self?.progressHUD?.hide(true)
@@ -90,6 +93,7 @@ class GIFTrayViewController: UIViewController, Tray, UICollectionViewDelegate, U
                 case .canceled:()
             }
         }
+        mediaExporter = exporter
     }
     
     // MARK: - UICollectionViewDelegateFlowLayout
@@ -111,31 +115,6 @@ class GIFTrayViewController: UIViewController, Tray, UICollectionViewDelegate, U
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return Constants.interItemSpace
-    }
-    
-    // MARK: - Media exporting
-    
-    fileprivate func exportMedia(fromSearchResult mediaSearchResultObject: MediaSearchResult, completionBlock: @escaping (TrayMediaCompletionState) -> ()) {
-        self.mediaExporter?.cancelDownload()
-        self.mediaExporter = nil
-        
-        let mediaExporter = MediaSearchExporter(mediaSearchResult: mediaSearchResultObject)
-        mediaExporter.loadMedia() { (previewImage, mediaURL, error) in
-            if mediaExporter.cancelled {
-                completionBlock(.canceled)
-            } else if
-                let previewImage = previewImage,
-                let mediaURL = mediaURL {
-                mediaSearchResultObject.exportPreviewImage = previewImage
-                mediaSearchResultObject.exportMediaURL = mediaURL as URL
-                completionBlock(.success(mediaSearchResultObject))
-            } else if let error = error {
-                completionBlock(.failure(error))
-            } else {
-                Log.warning("Encountered unexpected media output state in tray")
-            }
-        }
-        self.mediaExporter = mediaExporter
     }
     
     // MARK: - LoadingCancellableViewDelegate

@@ -15,14 +15,14 @@ enum LikeViewAlignment {
 
     var imageLeadingPadding: CGFloat {
         switch self {
-            case .left: return 3.0
+            case .left: return 0.0
             case .center: return 0.0
         }
     }
 
     var countLeadingPadding: CGFloat {
         switch self {
-            case .left: return 0.0
+            case .left: return 4.0
             case .center: return 4.0
         }
     }
@@ -74,10 +74,14 @@ final class LikeView: UIView {
     }()
 
     // MARK: - Properties
-
-    fileprivate var selectedIcon: UIImage?
-    fileprivate var unselectedIcon: UIImage?
-    fileprivate var alignment = LikeViewAlignment.center
+    
+    private var selectedIcon: UIImage?
+    private var unselectedIcon: UIImage?
+    private var alignment = LikeViewAlignment.center {
+        didSet {
+            setNeedsLayout()
+        }
+    }
 
     fileprivate var textColor: UIColor {
         get {
@@ -102,6 +106,7 @@ final class LikeView: UIView {
         addSubview(countLabel)
 
         countLabel.font = Constants.font
+        countLabel.textAlignment = .Left
         self.textColor = textColor
         self.selectedIcon = selectedIcon
         self.unselectedIcon = unselectedIcon
@@ -130,9 +135,9 @@ final class LikeView: UIView {
         )
 
         countLabel.frame = CGRect(
-            x: imageView.frame.maxY + alignment.countLeadingPadding,
+            x: imageView.frame.maxX + alignment.countLeadingPadding,
             y: bounds.center.y - (countLabel.intrinsicContentSize.height / 2),
-            width: countLabel.intrinsicContentSize.width,
+            width: bounds.maxX - imageView.frame.maxX + alignment.countLeadingPadding,
             height: countLabel.intrinsicContentSize.height
         )
     }
@@ -146,6 +151,10 @@ final class LikeView: UIView {
 
         updateLikeImage(content)
         updateLikeCount(content)
+    }
+
+    func updateAlignment(newAlignment: LikeViewAlignment) {
+        alignment = newAlignment
     }
 
     // MARK: - Animation
@@ -181,15 +190,22 @@ final class LikeView: UIView {
         animationImageView.startAnimating()
     }
 
+<<<<<<< HEAD
     fileprivate func addAnimationView(of size: CGSize) {
         if subviews.contains(animationImageView) {
             return
+=======
+    private func addAnimationView(of size: CGSize) {
+        if !subviews.contains(animationImageView) {
+            addSubview(animationImageView)
+>>>>>>> dev
         }
 
-        addSubview(animationImageView)
         animationImageView.frame = CGRect(
             origin: imageView.center,
             size: size
         )
+
+        setNeedsLayout()
     }
 }

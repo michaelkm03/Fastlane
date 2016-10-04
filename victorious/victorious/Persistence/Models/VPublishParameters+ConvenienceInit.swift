@@ -30,10 +30,13 @@ extension VPublishParameters {
         
         isGIF = mediaAsset.contentType == .gif
         isVideo = mediaAsset.contentType == .video
+        let isSticker = mediaAsset.contentType == .sticker
+        let isRemoteGIF = mediaAsset.externalID != nil && isGIF
         
         isVIPContent = content.isVIPOnly
         
-        if isGIF {
+        // A GIF could either be a reference to a remote (externalID) or a file on disk.
+        if isRemoteGIF || isSticker {
             assetRemoteId = mediaAsset.externalID
         }
         else {

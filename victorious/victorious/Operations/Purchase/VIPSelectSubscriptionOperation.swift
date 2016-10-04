@@ -39,13 +39,26 @@ final class VIPSelectSubscriptionOperation: AsyncOperation<VProduct>, UIAlertVie
         
         let alert = UIAlertController(title: Strings.alertTitle, message: Strings.alertMessage, preferredStyle: .alert)
         for product in products {
-            let action = UIAlertAction(title: product.price + " " + product.localizedDescription, style: .default) { action in
-                finish(.success(product))
+            // We only add a product to selection if there's valid price and description
+            guard let price = product.price, let description = product.localizedDescription else {
+                Log.warning("A Subscription Product doesn't have valid price or localizedDescription. Product: \(product)")
+                continue
             }
+            
+            let action = UIAlertAction(title: price + " " + description, style: .Default) { action in
+                finish( .success(product))
+            }
+            
             alert.addAction(action)
         }
         
-        let action = UIAlertAction(title: Strings.cancel, style: .default) { action in
+        // If we added no product to the selection, that means we don't have any valid products.
+        guard alert.actions.count > 0 else {
+            finish(.failure(NSError(domain: "Incomplete product information", code: -2, userInfo: ["products: ": products])))
+            return
+        }
+        
+        let action = UIAlertAction(title: Strings.cancel, style: .Default) { action in
             finish(.cancelled)
         }
         alert.addAction(action)

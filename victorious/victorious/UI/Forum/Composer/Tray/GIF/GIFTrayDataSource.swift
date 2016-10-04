@@ -50,7 +50,7 @@ class GIFTrayDataSource: PaginatedDataSource, TrayDataSource {
     func fetchGifs(_ completion: ((NSError?) -> ())? = nil) {
         trayState = .loading
         let contentFetchEndpoint = dependencyManager.contentFetchEndpoint ?? ""
-        let searchOptions = GIFSearchOptions.Trending(url: contentFetchEndpoint)
+        let searchOptions = AssetSearchOptions.Trending(url: contentFetchEndpoint)
         let createOperation = {
             return GIFSearchOperation(searchOptions: searchOptions)
         }

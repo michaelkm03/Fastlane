@@ -26,7 +26,6 @@ class ContentMediaAssetTests: XCTestCase {
         XCTAssertNil(asset.externalID)
         XCTAssertNil(asset.source)
         XCTAssertEqual(asset.url?.absoluteString, "VALID_URL")
-        XCTAssertEqual(asset.uniqueID, asset.url?.absoluteString)
     }
     
     func testInvalidVideoSourceType() {
@@ -65,7 +64,6 @@ class ContentMediaAssetTests: XCTestCase {
         
         XCTAssertNil(asset.externalID)
         XCTAssertEqual(asset.url?.absoluteString, "VALID_URL")
-        XCTAssertEqual(asset.uniqueID, asset.url?.absoluteString)
     }
     
     func testInvalidImage() {
@@ -94,7 +92,6 @@ class ContentMediaAssetTests: XCTestCase {
         XCTAssertNil(asset.externalID)
         XCTAssertNil(asset.source)
         XCTAssertEqual(asset.url?.absoluteString, "VALID_URL")
-        XCTAssertEqual(asset.uniqueID, asset.url?.absoluteString)
     }
     
     func testInvalidGIFSourceType() {
@@ -134,7 +131,6 @@ class ContentMediaAssetTests: XCTestCase {
         XCTAssertNil(asset.url)
         XCTAssertEqual(asset.source, "youtube")
         XCTAssertEqual(asset.externalID, "VALID_ID")
-        XCTAssertEqual(asset.uniqueID, asset.externalID)
     }
     
     func testInvalidVideoNoIdentifierYoutube() {

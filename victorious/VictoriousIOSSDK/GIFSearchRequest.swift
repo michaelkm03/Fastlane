@@ -12,7 +12,7 @@ import Foundation
 public struct GIFSearchRequest: PaginatorPageable, ResultBasedPageable {
     
     public let urlRequest: URLRequest
-    public let searchOptions: GIFSearchOptions
+    public let searchOptions: AssetSearchOptions
     
     public let paginator: StandardPaginator
     
@@ -20,14 +20,13 @@ public struct GIFSearchRequest: PaginatorPageable, ResultBasedPageable {
         self.init(searchOptions: request.searchOptions, paginator: paginator)
     }
     
-    public init(searchOptions: GIFSearchOptions, paginator: StandardPaginator = StandardPaginator(pageNumber: 1, itemsPerPage: 20)) {
-		
-		var url: URL?
+    public init(searchOptions: AssetSearchOptions, paginator: StandardPaginator = StandardPaginator(pageNumber: 1, itemsPerPage: 20)) {
+		let url: URL?
         
         switch searchOptions {
-            case .Search(let searchTerm, let searchURL):
+            case .search(let searchTerm, let searchURL):
                 url = URL(string: searchURL)?.appendingPathComponent(searchTerm)
-            case .Trending(let trendingURL):
+            case .trending(let trendingURL):
                 url = URL(string: trendingURL)
         }
         

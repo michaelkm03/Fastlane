@@ -11,13 +11,11 @@
 #import "VDependencyManager+VKeyboardStyle.h"
 #import "VDependencyManager+VBackgroundContainer.h"
 #import "VConstants.h"
-#import "VInlineValidationTextField.h"
 #import "VPasswordValidator.h"
 #import "VEmailValidator.h"
 #import "VBackgroundContainer.h"
 #import "VLoginFlowControllerDelegate.h"
 #import "UIColor+VBrightness.h"
-#import "VInlineValidationView.h"
 #import "victorious-Swift.h"
 
 static NSString * const kPromptKey = @"prompt";
@@ -28,8 +26,8 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 @property (nonatomic, strong) VDependencyManager *dependencyManager;
 
 @property (nonatomic, weak) IBOutlet UITextView *promptTextView;
-@property (nonatomic, weak) IBOutlet VInlineValidationTextField *emailField;
-@property (nonatomic, weak) IBOutlet VInlineValidationTextField *passwordField;
+@property (nonatomic, weak) IBOutlet InlineValidationTextField *emailField;
+@property (nonatomic, weak) IBOutlet InlineValidationTextField *passwordField;
 @property (nonatomic, strong) IBOutletCollection(UIView) NSArray *separators;
 @property (nonatomic, strong) UIBarButtonItem *nextButton;
 
@@ -109,12 +107,10 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     self.emailField.activePlaceholder = [[NSAttributedString alloc] initWithString:self.emailField.placeholder
                                                                         attributes:activePlaceholderAttributes];
     self.emailField.accessibilityIdentifier = VAutomationIdentifierSignupEmailField;
-    self.emailField.inlineValidationView.accessibilityIdentifier = VAutomationIdentifierSignupEmailFieldValidation;
 
     self.passwordField.inactivePlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Enter Password", nil)
                                                                              attributes:placeholderTextFieldAttributes];
     self.passwordField.accessibilityIdentifier = VAutomationIdentifierSignupPasswordField;
-    self.passwordField.inlineValidationView.accessibilityIdentifier = VAutomationIdentifierSignupPasswordFieldValidation;
     
     self.passwordField.font = textFieldAttributes[NSFontAttributeName];
     self.passwordField.tintColor = [self.dependencyManager colorForKey:VDependencyManagerLinkColorKey];
@@ -187,13 +183,13 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
 - (void)textFieldDidChange:(NSNotification *)notification
 {
-    VInlineValidationTextField *textField = notification.object;
+    InlineValidationTextField *textField = notification.object;
     [self validateWithTextField:textField];
 }
 
 #pragma mark - UITextFieldDelegate
 
-- (BOOL)textFieldShouldEndEditing:(VInlineValidationTextField *)textField
+- (BOOL)textFieldShouldEndEditing:(InlineValidationTextField *)textField
 {
     if ( textField.text.length > 0 )
     {
@@ -203,7 +199,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     return YES;
 }
 
-- (BOOL)textFieldShouldReturn:(VInlineValidationTextField *)textField
+- (BOOL)textFieldShouldReturn:(InlineValidationTextField *)textField
 {
     if (textField == self.emailField)
     {
@@ -219,7 +215,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
 
 #pragma mark - Private Methods
 
-- (void)validateWithTextField:(VInlineValidationTextField *)textField
+- (void)validateWithTextField:(InlineValidationTextField *)textField
 {
     NSError *validationError;
     

@@ -27,8 +27,8 @@ static inline BOOL isImageExtension(NSString *pathExtension)
 {
     NSString *lowercasePathExtension = [pathExtension lowercaseStringWithLocale:[NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"]];
     return [lowercasePathExtension isEqualToString:VConstantMediaExtensionJPG] ||
-            [lowercasePathExtension isEqualToString:VConstantMediaExtensionPNG] ||
-            [lowercasePathExtension isEqualToString:VConstantMediaExtensionJPEG];
+    [lowercasePathExtension isEqualToString:VConstantMediaExtensionPNG] ||
+    [lowercasePathExtension isEqualToString:VConstantMediaExtensionJPEG];
 }
 
 @implementation NSURL (MediaType)

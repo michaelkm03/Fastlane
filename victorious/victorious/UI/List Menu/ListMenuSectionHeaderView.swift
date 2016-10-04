@@ -9,43 +9,50 @@
 import UIKit
 
 class ListMenuSectionHeaderView: UICollectionReusableView {
-    fileprivate struct Constants {
-        static let accessoryButtonXMargin = CGFloat(12.0)
+
+    private struct Constants {
+        static let subscribeButtonXMargin = CGFloat(12.0)
     }
     
-    @IBOutlet fileprivate weak var titleLabel: UILabel!
-    
-    var dependencyManager: VDependencyManager! {
-        didSet {
-            applyTemplateAppearance(with: dependencyManager)
-        }
-    }
-    
-    fileprivate func applyTemplateAppearance(with dependencyManager: VDependencyManager) {
-        clipsToBounds = false
-        titleLabel.text = dependencyManager.titleText
-        titleLabel.textColor = dependencyManager.titleColor
-        titleLabel.font = dependencyManager.titleFont
-    }
+    @IBOutlet private var titleLabel: UILabel?
     
     static var preferredHeight: CGFloat {
         return 18
     }
     
-    var accessoryView: UIView? {
+    var dependencyManager: VDependencyManager! {
         didSet {
-            guard accessoryView !== oldValue else {
-                return
-            }
+            applyTemplateAppearance(with: dependencyManager)
+            addSubscribeButtonIfNeeded(with: dependencyManager)
+        }
+    }
+    
+    fileprivate func applyTemplateAppearance(with dependencyManager: VDependencyManager) {
+        clipsToBounds = false
+        titleLabel?.text = dependencyManager.titleText
+        titleLabel?.textColor = dependencyManager.titleColor
+        titleLabel?.font = dependencyManager.titleFont
+    }
+    
+    // MARK: - Subscribe Button
+    
+    var isSubscribeButtonHidden: Bool = true {
+        didSet {
+            subscribeButton?.hidden = isSubscribeButtonHidden
+        }
+    }
+    
+    private(set) var subscribeButton: SubscribeButton?
+
+    private func addSubscribeButtonIfNeeded(with dependencyManager: VDependencyManager) {
+        if subscribeButton == nil {
+            let subscribeButton = SubscribeButton(dependencyManager: dependencyManager)
+            addSubview(subscribeButton)
+            subscribeButton.translatesAutoresizingMaskIntoConstraints = false
+            centerYAnchor.constraintEqualToAnchor(subscribeButton.centerYAnchor).active = true
+            trailingAnchor.constraintEqualToAnchor(subscribeButton.trailingAnchor, constant: Constants.subscribeButtonXMargin).active = true
             
-            oldValue?.removeFromSuperview()
-            
-            if let accessoryButton = accessoryView {
-                addSubview(accessoryButton)
-                accessoryButton.translatesAutoresizingMaskIntoConstraints = false
-                centerYAnchor.constraint(equalTo: accessoryButton.centerYAnchor).isActive = true
-                trailingAnchor.constraint(equalTo: accessoryButton.trailingAnchor, constant: Constants.accessoryButtonXMargin).isActive = true
-            }
+            self.subscribeButton = subscribeButton
         }
     }
 }

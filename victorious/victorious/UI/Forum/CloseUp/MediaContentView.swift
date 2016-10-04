@@ -146,7 +146,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     
     var hasValidMedia: Bool {
         switch content.type {
-            case .gif, .image, .link, .text:
+            case .gif, .image, .link, .text, .sticker:
                 return true
             case .video:
                 return seekableWithinBounds

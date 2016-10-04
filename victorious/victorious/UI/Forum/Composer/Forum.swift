@@ -48,8 +48,11 @@ extension Forum {
     
     func chatFeed(_ chatFeed: ChatFeed, didSelect chatFeedContent: ChatFeedContent) {
         let router = Router(originViewController: originViewController, dependencyManager: dependencyManager)
-        let destination = DeeplinkDestination(content: chatFeedContent.content)
-
+        
+        // FIXME: What about other failures?
+        guard let destination = DeeplinkDestination(content: chatFeedContent.content) else {
+            return
+        }
         router.navigate(to: destination, from: chatFeedContext)
     }
     
@@ -68,6 +71,7 @@ extension Forum {
     func stage(_ stage: Stage, wantsUpdateToContentHeight height: CGFloat) {
         setStageHeight(height)
         chatFeed?.addedTopInset = height
+        composer?.topInset = height
     }
 }
 

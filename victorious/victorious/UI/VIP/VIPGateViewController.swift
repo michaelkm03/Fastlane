@@ -29,14 +29,14 @@ extension VIPGateViewControllerDelegate {
     }
 }
 
-class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
-    @IBOutlet weak fileprivate var headlineLabel: UILabel!
-    @IBOutlet weak fileprivate var detailLabel: UILabel!
-    @IBOutlet weak fileprivate var subscribeButton: TextOnColorButton!
-    @IBOutlet weak fileprivate var restoreButton: TextOnColorButton!
-    @IBOutlet weak fileprivate var privacyPolicyButton: UIButton!
-    @IBOutlet weak fileprivate var termsOfServiceButton: UIButton!
-    @IBOutlet weak fileprivate var closeButton: ImageOnColorButton! {
+class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate, FixedWebContentPresenter {
+    @IBOutlet weak private var headlineLabel: UILabel!
+    @IBOutlet weak private var detailLabel: UILabel!
+    @IBOutlet weak private var subscribeButton: TextOnColorButton!
+    @IBOutlet weak private var restoreButton: TextOnColorButton!
+    @IBOutlet weak private var privacyPolicyButton: UIButton!
+    @IBOutlet weak private var termsOfServiceButton: UIButton!
+    @IBOutlet weak private var closeButton: ImageOnColorButton! {
         didSet {
             closeButton.dependencyManager = dependencyManager.closeButtonDependency
             closeButton.touchInsets = UIEdgeInsetsMake(-12, -12, -12, -12)
@@ -121,11 +121,11 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     }
     
     @IBAction func onPrivacyPolicySelected() {
-        navigateToFixedWebContent(.privacyPolicy)
+        showFixedWebContent(.privacyPolicy, withDependencyManager: dependencyManager)
     }
     
     @IBAction func onTermsOfServiceSelected() {
-        navigateToFixedWebContent(.termsOfService)
+        showFixedWebContent(.termsOfService, withDependencyManager: dependencyManager)
     }
     
     @IBAction func onCloseSelected() {
@@ -135,14 +135,8 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate {
     
     // MARK: - Private
     
-    fileprivate func navigateToFixedWebContent(_ type: FixedWebContentType) {
-        let router = Router(originViewController: self, dependencyManager: dependencyManager.navBarDependency)
-        let configuration = ExternalLinkDisplayConfiguration(addressBarVisible: false, forceModal: true, isVIPOnly: false, title: type.title)
-        router.navigate(to: .externalURL(url: dependencyManager.urlForFixedWebContent(type) as URL, configuration: configuration), from: nil)
-    }
-    
-    fileprivate func HUDNeedsUpdateToTitle(_ title: String?) -> Bool {
-        if let currentTitle = progressHUD.labelText , currentTitle == title {
+    private func HUDNeedsUpdateToTitle(_ title: String?) -> Bool {
+        if let currentTitle = progressHUD.labelText, currentTitle == title {
             return false
         }
         else {
@@ -269,11 +263,14 @@ private extension VDependencyManager {
             return nil
         }
         
-        guard let lowestPriceProduct = products.select({ ($1.storeKitProduct?.price.doubleValue ?? 0.0) < ($0.storeKitProduct?.price.doubleValue ?? 0.0) }) else {
+        guard
+            let lowestPriceProduct = products.select({ $1.storeKitProduct.price.doubleValue  < $0.storeKitProduct.price.doubleValue }),
+            let lowestPrice = lowestPriceProduct.price
+        else {
             return nil
         }
         
-        return description.replacingOccurrences(of: "%%PRICE_TAG%%", with: lowestPriceProduct.price)
+        return description.stringByReplacingOccurrencesOfString("%%PRICE_TAG%%", withString: lowestPrice)
     }
     
     var descriptionFont: UIFont? {

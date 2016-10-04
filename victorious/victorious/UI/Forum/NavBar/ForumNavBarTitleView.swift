@@ -49,6 +49,8 @@ class ForumNavBarTitleView: UIView {
         titleLabel.text = configuration.titleText
         titleLabel.font = configuration.titleFont
         titleLabel.textColor = configuration.titleColor
+        titleLabel.adjustsFontSizeToFitWidth = true
+        titleLabel.minimumScaleFactor = 0.8
         stackView.addArrangedSubview(titleLabel)
         titleLabel.sizeToFit()
         
@@ -56,6 +58,8 @@ class ForumNavBarTitleView: UIView {
         subtitleLabel.font = configuration.subtitleFont
         subtitleLabel.textColor = configuration.subtitleColor
         stackView.addArrangedSubview(subtitleLabel)
+        subtitleLabel.adjustsFontSizeToFitWidth = true
+        subtitleLabel.minimumScaleFactor = 0.8
         subtitleLabel.sizeToFit()
         
         addSubview(stackView)

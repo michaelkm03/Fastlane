@@ -34,14 +34,11 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
     let creatorDataSource: ListMenuCreatorDataSource
     let chatRoomsDataSource: ListMenuChatRoomsDataSource
     
-    private let subscribeButton: SubscribeButton
-    
     // MARK: - Initialization
     
     init(dependencyManager: VDependencyManager, listMenuViewController: ListMenuViewController) {
         self.listMenuViewController = listMenuViewController
         self.dependencyManager = dependencyManager
-        subscribeButton = SubscribeButton(dependencyManager: dependencyManager)
         
         creatorDataSource = ListMenuCreatorDataSource(dependencyManager: dependencyManager.creatorsChildDependency)
         communityDataSource = ListMenuCommunityDataSource(dependencyManager: dependencyManager.communityChildDependency)
@@ -98,7 +95,8 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
             case .chatRooms: headerView.dependencyManager = dependencyManager.chatRoomsChildDependency
         }
         
-        headerView.accessoryView = indexPath.section == 0 ? subscribeButton : nil
+        headerView.isSubscribeButtonHidden = indexPath.section != 0
+        
         return headerView
     }
     

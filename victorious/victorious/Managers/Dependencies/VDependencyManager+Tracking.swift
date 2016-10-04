@@ -97,6 +97,10 @@ extension VDependencyManager {
     
     // MARK: - Objective-C compatibility
     
+    func trackingURLStrings(forKey key: String) -> [String] {
+        return trackingAPIPaths(forEventKey: key)?.flatMap { $0.templatePath } ?? []
+    }
+    
     func trackingURLs(forKey key: String) -> [String] {
         return trackingAPIPaths(forEventKey: key)?.flatMap { $0.url?.absoluteString } ?? []
     }

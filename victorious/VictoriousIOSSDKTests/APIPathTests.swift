@@ -44,6 +44,12 @@ class APIPathTests: XCTestCase {
         XCTAssertTrue(path.url?.absoluteString.contains("param2=thing2") ?? false)
     }
     
+    func testMacroReplacementWithoutMacroReplacements() {
+        let path = APIPath(templatePath: "http://example.com/users/%%USER_ID%%/content.json")
+
+        XCTAssertEqual(path.url?.absoluteString, "http://example.com/users//content.json")
+    }
+    
     func testEquality() {
         var path1 = APIPath(
             templatePath: "http://apple.com/%%USER_ID%%",
