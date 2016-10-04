@@ -43,9 +43,9 @@ struct NotificationSettingsTableRow {
 
 class NotificationSettingsViewController: UITableViewController, VSettingsSwitchCellDelegate, VNotificiationSettingsStateManagerDelegate, VBackgroundContainer {
     
-    // MARK : - Properties
+    // MARK: - Properties
     
-    private var dependencyManager: VDependencyManager!
+    fileprivate var dependencyManager: VDependencyManager!
     var settings : NotificationSettings? {
         didSet {
             initializeSections()
@@ -53,12 +53,12 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
         }
     }
     
-    private var stateManager: VNotificationSettingsStateManager?
-    private var permissionsTrackingHelper: VPermissionsTrackingHelper?
-    private var sections:[NotificationSettingsTableSection] = []
-    private var errorStateView: CTAErrorState?
-    private var shouldFetchSettings = true
-    private let spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+    fileprivate var stateManager: VNotificationSettingsStateManager?
+    fileprivate var permissionsTrackingHelper: VPermissionsTrackingHelper?
+    fileprivate var sections:[NotificationSettingsTableSection] = []
+    fileprivate var errorStateView: CTAErrorState?
+    fileprivate var shouldFetchSettings = true
+    fileprivate let spinner = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
     
     // MARK: - UIViewController methods
     
@@ -66,15 +66,15 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
         stateManager = VNotificationSettingsStateManager(delegate: self)
         permissionsTrackingHelper = VPermissionsTrackingHelper()
         let cellNib = UINib(nibName: "VSettingsSwitchCell", bundle: nil)
-        tableView.registerNib(cellNib, forCellReuseIdentifier: Constants.cellIdentifier)
-        tableView.separatorColor = UIColor.clearColor()
+        tableView.register(cellNib, forCellReuseIdentifier: Constants.cellIdentifier)
+        tableView.separatorColor = UIColor.clear
         tableView.bounces = true
         tableView.rowHeight = Constants.tableViewRowHeight
         spinner.frame = CGRect(center: tableView.bounds.center, size: CGSize(width: Constants.activityIndicatorSideLength, height: Constants.activityIndicatorSideLength))
         createErrorStateView()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if (shouldFetchSettings) {
             stateManager?.reset()
@@ -83,12 +83,12 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
         }
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         saveSettings()
     }
     
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         shouldFetchSettings = true //Only reload once the screen disappears completely
     }
@@ -100,9 +100,9 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
         errorStateView?.removeFromSuperview()
     }
     
-    func onError(error: NSError!) {
+    func onError(_ error: Error!) {
         settings = nil
-        if let errorStateView = self.errorStateView where error.code == Constants.userDeviceNotificationNotEnabledErrorCode {
+        if let errorStateView = self.errorStateView, (error as NSError).code == Constants.userDeviceNotificationNotEnabledErrorCode {
             view.addSubview(errorStateView)
         }
     }
@@ -150,9 +150,9 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
                 case .failure(_):
                     let title = NSLocalizedString("ErrorPushNotificationsNotSaved", comment: "")
                     let message = NSLocalizedString("PleaseTryAgainLater", comment: "")
-                    let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-                    alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .Cancel, handler: nil))
-                    self?.navigationController?.presentViewController(alertController, animated: true, completion: nil)
+                    let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                    alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .cancel, handler: nil))
+                    self?.navigationController?.present(alertController, animated: true, completion: nil)
             }
         }
     }
@@ -163,11 +163,10 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
     
     // MARK: - TableViewDataSource
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard
-            let cell = tableView.dequeueReusableCellWithIdentifier(Constants.cellIdentifier) as? VSettingsSwitchCell,
-            let settings = self.settings
-        where
+            let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cellIdentifier) as? VSettingsSwitchCell,
+            let settings = self.settings,
             indexPath.section < sections.count &&
             indexPath.row < sections[indexPath.section].rows.count
         else {
@@ -179,7 +178,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
         cell.key = row.key
         cell.delegate = self
         cell.setDependencyManager(dependencyManager)
-        cell.selectionStyle = .None
+        cell.selectionStyle = .none
         
         if (indexPath.row == sections[indexPath.section].rows.count - 1) {
             cell.setSeparatorHidden(true)
@@ -188,36 +187,36 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
         return cell
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return sections[section].rows.count
     }
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return settings == nil ? 0 : sections.count
     }
     
-    override  func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let dependencyManager = self.dependencyManager where section < sections.count else {
+    override  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let dependencyManager = self.dependencyManager , section < sections.count else {
             return nil
         }
         let headerLabel = UILabel()
         headerLabel.text = sections[section].title
-        headerLabel.font = dependencyManager.fontForKey(Constants.sectionTitleFontKey)
-        headerLabel.textColor = dependencyManager.colorForKey(Constants.sectionTitleColorKey)
+        headerLabel.font = dependencyManager.font(forKey: Constants.sectionTitleFontKey)
+        headerLabel.textColor = dependencyManager.color(forKey: Constants.sectionTitleColorKey)
         headerLabel.sizeToFit()
         let headerContainer = UIView()
         headerContainer.addSubview(headerLabel)
-        headerContainer.v_addFitToParentConstraintsToSubview(headerLabel, leading: Constants.tableViewHeaderLeftPadding, trailing: 0, top: 0, bottom: 0)
+        headerContainer.v_addFitToParentConstraints(toSubview: headerLabel, leading: Constants.tableViewHeaderLeftPadding, trailing: 0, top: 0, bottom: 0)
         return headerContainer
     }
     
-    override  func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    override  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return Constants.tableViewHeaderHeight
     }
     
     // MARK: - SettingsSwitchCell Delegate
     
-    func settingsDidUpdateFromCell(cell: VSettingsSwitchCell, newValue: Bool, key: String) {
+    public func settingsDidUpdate(from cell: VSettingsSwitchCell, newValue: Bool, key: String) {
         guard var settings = self.settings else {
             return
         }
@@ -241,7 +240,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
         }
         
         var result: [NotificationSettingsTableSection] = []
-        let items = dependencyManager.arrayForKey(Constants.itemsArrayKey)
+        let items = dependencyManager.array(forKey: Constants.itemsArrayKey) ?? []
         
         for item in items {
             if let itemDictionary = item as? [String : AnyObject],
@@ -255,7 +254,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
                     {
                         if (rowKey == NotificationSettingType.postFromCreator.rawValue) {
                             let appInfo = VAppInfo(dependencyManager: dependencyManager)
-                            rowTitle = rowTitle.stringByReplacingOccurrencesOfString(Constants.creatorNameMacro, withString: appInfo.ownerName ?? "Creator")
+                            rowTitle = rowTitle.replacingOccurrences(of: Constants.creatorNameMacro, with: appInfo?.ownerName ?? "Creator")
                         }
                         return NotificationSettingsTableRow(key: rowKey, title: rowTitle)
                     }
@@ -269,27 +268,27 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
         return result
     }
     
-    private func createErrorStateView() {
+    fileprivate func createErrorStateView() {
         if let errorStateView = dependencyManager?.createErrorStateView(actionType: .openSettings) {
             errorStateView.frame = CGRect(center: self.tableView.bounds.center, size: CGSize(width: Constants.errorStateViewWidthMultiplier * tableView.frame.width, height: Constants.errorStateViewHeight))
             self.errorStateView = errorStateView
         }
     }
     
-    private func startSpinner() {
+    fileprivate func startSpinner() {
         view.addSubview(spinner)
         spinner.startAnimating()
     }
     
-    private func stopSpinner() {
+    fileprivate func stopSpinner() {
         spinner.stopAnimating()
         spinner.removeFromSuperview()
     }
     
     // MARK: - Dependency Manager
     
-    class func newWithDependencyManager(dependencyManager: VDependencyManager) -> NotificationSettingsViewController {
-        let viewController = NotificationSettingsViewController(style: .Grouped)
+    class func new(withDependencyManager dependencyManager: VDependencyManager) -> NotificationSettingsViewController {
+        let viewController = NotificationSettingsViewController(style: .grouped)
         viewController.dependencyManager = dependencyManager
         return viewController
     }
@@ -300,6 +299,6 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
         }
         
         tableView.backgroundView = UIView()
-        dependencyManager.addBackgroundToBackgroundHost(self)
+        dependencyManager.addBackground(toBackgroundHost: self)
     }
 }

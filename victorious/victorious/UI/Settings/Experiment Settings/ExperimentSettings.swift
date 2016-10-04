@@ -18,18 +18,18 @@ class ExperimentSettings: NSObject {
     /// A set of the user-selected experiments to be active in all subsequent backend interactions
     var activeExperiments: Set<Int>? {
         get {
-            if let activeExperiments = NSUserDefaults.standardUserDefaults().objectForKey(kActiveExperimentsKey) as? [Int] {
+            if let activeExperiments = UserDefaults.standard.object(forKey: kActiveExperimentsKey) as? [Int] {
                 return Set(activeExperiments)
             }
             return nil
         }
         set(experiments) {
-            let userDefaults = NSUserDefaults.standardUserDefaults()
+            let userDefaults = UserDefaults.standard
             if let experiments = experiments {
-                userDefaults.setObject(Array(experiments), forKey: kActiveExperimentsKey)
+                userDefaults.set(Array(experiments), forKey: kActiveExperimentsKey)
             }
             else {
-                userDefaults.removeObjectForKey(kActiveExperimentsKey)
+                userDefaults.removeObject(forKey: kActiveExperimentsKey)
             }
             userDefaults.synchronize()
         }
@@ -48,7 +48,7 @@ class ExperimentSettings: NSObject {
         if let activeExperiments = self.activeExperiments {
             // An empty string used in a header indicates to the backend that the user has
             // manually opted out of all experiments
-            return activeExperiments.map { "\($0)" }.joinWithSeparator( "," )
+            return activeExperiments.map { "\($0)" }.joined( separator: "," )
         }
         else {
             // A nil value used in a header indicates to the backend that the user does not wish

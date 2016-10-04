@@ -21,13 +21,13 @@ class DismissButton: UIButton {
         sharedInit()
     }
     
-    private struct LayoutConstants {
+    fileprivate struct LayoutConstants {
         static let buttonSize: CGFloat = 44.0
     }
     
-    private func sharedInit() {
-        backgroundColor = UIColor.lightGrayColor()
-        setImage(UIImage(named: "textClear"), forState: UIControlState.Normal)
+    fileprivate func sharedInit() {
+        backgroundColor = UIColor.lightGray
+        setImage(UIImage(named: "textClear"), for: UIControlState())
         v_addWidthConstraint(LayoutConstants.buttonSize)
         v_addHeightConstraint(LayoutConstants.buttonSize)
     }

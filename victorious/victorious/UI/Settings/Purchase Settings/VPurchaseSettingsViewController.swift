@@ -8,21 +8,22 @@
 
 import UIKit
 import MBProgressHUD
+import VictoriousIOSSDK
 
 extension VPurchaseSettingsViewController {
     
-    func setIsLoading(isLoading: Bool, title: String? = nil) {
+    func setIsLoading(_ isLoading: Bool, title: String? = nil) {
         if isLoading {
-            MBProgressHUD.hideAllHUDsForView(self.view, animated: false)
-            let progressHUD = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-            progressHUD.mode = .Indeterminate
+            MBProgressHUD.hideAllHUDs(for: self.view, animated: false)
+            let progressHUD = MBProgressHUD.showAdded(to: self.view, animated: true)!
+            progressHUD.mode = .indeterminate
             progressHUD.labelText = title
         } else {
-            MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
+            MBProgressHUD.hideAllHUDs(for: self.view, animated: true)
         }
     }
     
-    func queueValidateSubscriptionOperationWithURL(url: NSURL?, shouldForceSuccess: Bool, completion: () -> Void) {
+    func queueValidateSubscriptionOperationWithURL(_ url: NSURL?, shouldForceSuccess: Bool, completion: @escaping () -> Void) {
         guard let templatePath = url?.absoluteString else {
             completion()
             return
@@ -33,7 +34,7 @@ extension VPurchaseSettingsViewController {
         }
     }
     
-    func queueClearSubscriptionOperationWithCompletion(completion: () -> Void) {
+    func queueClearSubscriptionOperationWithCompletion(_ completion: @escaping () -> Void) {
         VIPClearSubscriptionOperation().queue { _ in
             completion()
         }

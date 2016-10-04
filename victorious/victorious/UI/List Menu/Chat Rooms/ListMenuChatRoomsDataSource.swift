@@ -6,8 +6,10 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
+import VictoriousIOSSDK
+
 final class ListMenuChatRoomsDataSource: ListMenuSectionDataSource {
-    private struct Constants {
+    fileprivate struct Constants {
         struct Keys {
             static let chatRoomsURL = "chat.rooms.URL"
             static let chatRoomStreamURL = "streamURL"
@@ -20,8 +22,8 @@ final class ListMenuChatRoomsDataSource: ListMenuSectionDataSource {
     typealias Cell = ListMenuChatRoomCollectionViewCell
     let dependencyManager: VDependencyManager
     weak var delegate: ListMenuSectionDataSourceDelegate?
-    private(set) var state: ListMenuDataSourceState = .loading
-    private(set) var visibleItems: [ChatRoom] = [] {
+    fileprivate(set) var state: ListMenuDataSourceState = .loading
+    fileprivate(set) var visibleItems: [ChatRoom] = [] {
         didSet {
             state = visibleItems.isEmpty ? .noContent : .items
             delegate?.didUpdateVisibleItems(forSection: .chatRooms)
@@ -32,9 +34,9 @@ final class ListMenuChatRoomsDataSource: ListMenuSectionDataSource {
         self.dependencyManager = dependencyManager
     }
 
-    func fetchRemoteData(success success: FetchRemoteDataCallback?) {
+    func fetchRemoteData(success: FetchRemoteDataCallback?) {
         guard
-            let apiPath = dependencyManager.networkResources?.apiPathForKey(Constants.Keys.chatRoomsURL),
+            let apiPath = dependencyManager.networkResources?.apiPath(forKey: Constants.Keys.chatRoomsURL),
             let request = ChatRoomsRequest(apiPath: apiPath)
         else {
             Log.warning("Missing chat rooms API path")
@@ -63,7 +65,7 @@ final class ListMenuChatRoomsDataSource: ListMenuSectionDataSource {
     // MARK: - DependencyManager properties
 
     var chatRoomStreamAPIPath: APIPath {
-        return dependencyManager.apiPathForKey(Constants.Keys.chatRoomStreamURL) ?? APIPath(templatePath: "")
+        return dependencyManager.apiPath(forKey: Constants.Keys.chatRoomStreamURL) ?? APIPath(templatePath: "")
     }
 
     // MARK: - Internals

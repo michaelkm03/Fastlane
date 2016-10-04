@@ -11,41 +11,41 @@ import Foundation
 
 class InterstitialAlertPresentationController: UIPresentationController {
     
-    private lazy var dimmingView = UIView()
+    fileprivate lazy var dimmingView = UIView()
     
     override func presentationTransitionWillBegin() {
         guard let containerView = containerView else {
             return
         }
         
-        dimmingView.backgroundColor = UIColor.blackColor()
+        dimmingView.backgroundColor = UIColor.black
         dimmingView.alpha = 0
         dimmingView.frame = containerView.bounds
         containerView.addSubview(dimmingView)
         
-        UIView.animateWithDuration(0.3) {
+        UIView.animate(withDuration: 0.3, animations: {
             self.dimmingView.alpha = 0.75
-        }
+        }) 
     }
     
-    override func presentationTransitionDidEnd(completed: Bool) {
+    override func presentationTransitionDidEnd(_ completed: Bool) {
         if !completed {
             dimmingView.removeFromSuperview()
         }
     }
     
     override func dismissalTransitionWillBegin() {
-        guard let transitionCoordinator = self.presentingViewController.transitionCoordinator() else {
+        guard let transitionCoordinator = self.presentingViewController.transitionCoordinator else {
             return
         }
         
         // Fade in the dimming view alongside the transition
-        transitionCoordinator.animateAlongsideTransition({ (context) in
+        transitionCoordinator.animate(alongsideTransition: { (context) in
             self.dimmingView.alpha = 0
         }, completion: nil)
     }
     
-    override func dismissalTransitionDidEnd(completed: Bool) {
+    override func dismissalTransitionDidEnd(_ completed: Bool) {
         if completed {
             dimmingView.removeFromSuperview()
         }

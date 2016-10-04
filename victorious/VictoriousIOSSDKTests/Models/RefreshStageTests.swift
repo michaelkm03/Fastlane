@@ -12,8 +12,8 @@ import XCTest
 class RefreshStageTests: XCTestCase {
 
     func testVIPInitialization() {
-        guard let refreshStageVIPJSONURL = NSBundle(forClass: self.dynamicType).URLForResource("RefreshStageVIP", withExtension: "json"),
-            let jsonData = NSData(contentsOfURL: refreshStageVIPJSONURL) else {
+        guard let refreshStageVIPJSONURL = Bundle(for: type(of: self)).url(forResource: "RefreshStageVIP", withExtension: "json"),
+            let jsonData = try? Data(contentsOf: refreshStageVIPJSONURL) else {
                 XCTFail("Error reading RefreshStage JSON data.")
                 return
         }
@@ -29,8 +29,8 @@ class RefreshStageTests: XCTestCase {
     }
     
     func testMainInitialization() {
-        guard let refreshStageMainJSONURL = NSBundle(forClass: self.dynamicType).URLForResource("RefreshStageMain", withExtension: "json"),
-            let jsonData = NSData(contentsOfURL: refreshStageMainJSONURL) else {
+        guard let refreshStageMainJSONURL = Bundle(for: type(of: self)).url(forResource: "RefreshStageMain", withExtension: "json"),
+            let jsonData = try? Data(contentsOf: refreshStageMainJSONURL) else {
                 XCTFail("Error reading RefreshStage JSON data.")
                 return
         }

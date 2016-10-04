@@ -29,7 +29,7 @@ static NSString * const kFilterComponentInputValueKey = @"value";
         return nil;
     }
     
-    VFilterNameLocalization *localization = [[VFilterNameLocalization alloc] init];
+    FilterNameLocalization *localization = [[FilterNameLocalization alloc] init];
     NSArray *filterPlist = [NSPropertyListSerialization propertyListWithData:filterData
                                                                      options:NSPropertyListImmutable
                                                                       format:nil

@@ -11,7 +11,7 @@ import Foundation
 /// Possible states for List Menu Data Source based on the results fetched
 enum ListMenuDataSourceState {
     case loading
-    case failed(error: ErrorType?)
+    case failed(error: Error?)
     case items
     case noContent
 }
@@ -42,11 +42,11 @@ protocol ListMenuSectionDataSource: class {
     var visibleItems: [SectionItem] { get }
     
     /// Kick off a network request to fetch data and fill `visibleItems`
-    func fetchRemoteData(success success: FetchRemoteDataCallback?)
+    func fetchRemoteData(success: FetchRemoteDataCallback?)
     
     /// Dequeues a cell from the data source that displays a valid item in the section. The return type `Cell` will be specified by conformer.
     /// Default implementation will dequeue the cell, configure the cell with `SectionItem`, and set `dependencyManager` on it
-    func dequeueItemCell(from collectionView: UICollectionView, at indexPath: NSIndexPath) -> Cell
+    func dequeueItemCell(from collectionView: UICollectionView, at indexPath: IndexPath) -> Cell
     
     /// Performs initial setup work after initialization of the data source.
     /// Default implementation sets up the delegate and kicks off the initial data fetch
@@ -63,8 +63,8 @@ protocol ListMenuSectionDataSourceDelegate: class {
 
 extension ListMenuSectionDataSource where Cell: UICollectionViewCell, Cell: ListMenuSectionCell, SectionItem == Cell.CellData {
     
-    func dequeueItemCell(from collectionView: UICollectionView, at indexPath: NSIndexPath) -> Cell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(Cell.defaultReuseIdentifier, forIndexPath: indexPath) as! Cell
+    func dequeueItemCell(from collectionView: UICollectionView, at indexPath: IndexPath) -> Cell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Cell.defaultReuseIdentifier, for: indexPath) as! Cell
         cell.configureCell(with: visibleItems[indexPath.row])
         cell.dependencyManager = dependencyManager
         

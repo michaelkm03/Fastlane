@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 class CreateStickerOperation: SyncOperation<Void> {
     let request: StickerCreateRequest
@@ -30,7 +31,7 @@ class CreateStickerOperation: SyncOperation<Void> {
         return .success()
     }
     
-    private static func formFields(for content: Content) -> [NSObject : AnyObject]? {
+    private static func formFields(for content: Content) -> [String: String]? {
         guard
             let asset = content.assets.first,
             let size = asset.size
@@ -40,8 +41,8 @@ class CreateStickerOperation: SyncOperation<Void> {
         
         return [
             "is_vip": content.isVIPOnly ? "true" : "false",
-            "width": size.width,
-            "height": size.height
+            "width": String(describing: size.width),
+            "height": String(describing: size.height)
         ]
     }
 }

@@ -12,25 +12,25 @@ import XCTest
 class ValidateReceiptRequestTests: XCTestCase {
     func testParseResponse() {
         let urlString = "urlString"
-        guard  let receiptData = "NSData whose `length` will be > 0 for testing.".dataUsingEncoding(NSUTF8StringEncoding),
-            let request = ValidateReceiptRequest(apiPath: APIPath(templatePath: urlString), data: receiptData) else {
+        guard  let receiptData = "NSData whose `length` will be > 0 for testing.".data(using: String.Encoding.utf8),
+            let request = ValidateReceiptRequest(apiPath: APIPath(templatePath: urlString), data: receiptData as NSData) else {
             XCTFail("Error preparing mock input data.")
             return
         }
         
-        XCTAssertEqual(request.urlRequest.URL, NSURL(string: urlString))
-        XCTAssertEqual(request.urlRequest.HTTPMethod, "POST")
+        XCTAssertEqual(request.urlRequest.url, URL(string: urlString))
+        XCTAssertEqual(request.urlRequest.httpMethod, "POST")
         
-        guard let mockUserDataURL = NSBundle(forClass: self.dynamicType).URLForResource("PurchaseResponse", withExtension: "json"),
-            let mockData = NSData(contentsOfURL: mockUserDataURL) else {
+        guard let mockUserDataURL = Bundle(for: type(of: self)).url(forResource: "PurchaseResponse", withExtension: "json"),
+            let mockData = try? Data(contentsOf: mockUserDataURL) else {
                 XCTFail("Error reading mock json data")
                 return
         }
         
         do {
             let vipStatus = try request.parseResponse(
-                NSURLResponse(),
-                toRequest: NSURLRequest(),
+                URLResponse(),
+                toRequest: URLRequest(url: URL(string: "foo")!),
                 responseData: mockData,
                 responseJSON: JSON(data: mockData)
             )

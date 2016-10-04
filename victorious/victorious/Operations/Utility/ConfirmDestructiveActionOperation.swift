@@ -10,11 +10,11 @@ import UIKit
 
 final class ConfirmDestructiveActionOperation: AsyncOperation<Void> {
     
-    private let actionTitle: String
-    private let dependencyManager: VDependencyManager
-    private let originViewController: UIViewController
+    fileprivate let actionTitle: String
+    fileprivate let dependencyManager: VDependencyManager
+    fileprivate let originViewController: UIViewController
     
-    private let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel Button")
+    fileprivate let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel Button")
     
     // MARK: - ActionConfirmationOperation
     
@@ -28,26 +28,26 @@ final class ConfirmDestructiveActionOperation: AsyncOperation<Void> {
         return .main
     }
     
-    override func execute(finish: (output: OperationResult<Void>) -> Void) {
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+    override func execute(_ finish: @escaping (_ output: OperationResult<Void>) -> Void) {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.addAction(
             UIAlertAction(title: self.cancelTitle,
-                style: .Cancel,
+                style: .cancel,
                 handler: { action in
-                    finish(output: .cancelled)
+                    finish(.cancelled)
                 }
             )
         )
         
         alertController.addAction(
             UIAlertAction(title: self.actionTitle,
-                style: .Destructive,
+                style: .destructive,
                 handler: { action in
-                    finish(output: .success())
+                    finish(.success())
                 }
             )
         )
         
-        originViewController.presentViewController(alertController, animated: true, completion: nil)
+        originViewController.present(alertController, animated: true, completion: nil)
     }
 }

@@ -7,15 +7,14 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 protocol VIPSubscriptionHelperDelegate: class {
-    func setIsLoading(isLoading: Bool, title: String?)
-    func VIPSubscriptionHelperCompletedSubscription(helper: VIPSubscriptionHelper)
+    func setIsLoading(_ isLoading: Bool, title: String?)
+    func VIPSubscriptionHelperCompletedSubscription(_ helper: VIPSubscriptionHelper)
 }
 
 class VIPSubscriptionHelper {
-    
-    // MARK: - Constants
     
     // MARK: - Initializing
     
@@ -32,18 +31,18 @@ class VIPSubscriptionHelper {
     
     // MARK: - Dependency manager
     
-    private let dependencyManager: VDependencyManager
+    fileprivate let dependencyManager: VDependencyManager
     
     // MARK: - Navigating
     
-    private weak var originViewController: UIViewController?
+    fileprivate weak var originViewController: UIViewController?
     
     // MARK: - Fetching products
     
-    private let subscriptionFetchAPIPath: APIPath
-    private var products: [VProduct]?
+    fileprivate let subscriptionFetchAPIPath: APIPath
+    fileprivate var products: [VProduct]?
     
-    func fetchProducts(completion: ([VProduct]?) -> Void) {
+    func fetchProducts(_ completion: @escaping ([VProduct]?) -> Void) {
         guard let request = VIPFetchSubscriptionRequest(apiPath: subscriptionFetchAPIPath) else {
             return
         }
@@ -93,7 +92,7 @@ class VIPSubscriptionHelper {
         }
     }
     
-    private func showSubscriptionSelectionForProducts(products: [VProduct]) {
+    fileprivate func showSubscriptionSelectionForProducts(_ products: [VProduct]) {
         guard let originViewController = originViewController else {
             delegate?.setIsLoading(false, title: nil)
             return
@@ -132,7 +131,7 @@ class VIPSubscriptionHelper {
         }
     }
     
-    private func subscribeToProduct(product: VProduct) {
+    fileprivate func subscribeToProduct(_ product: VProduct) {
         guard let validationAPIPath = dependencyManager.validationAPIPath else {
             return
         }
@@ -170,14 +169,14 @@ private extension UIViewController {
 
 private extension VDependencyManager {
     var purchaseDialogDependency: VDependencyManager? {
-        return childDependencyForKey("native.store.dialog")
+        return childDependency(forKey: "native.store.dialog")
     }
     
     var selectionDialogDependency: VDependencyManager? {
-        return childDependencyForKey("multiple.sku.dialog")
+        return childDependency(forKey: "multiple.sku.dialog")
     }
     
     var validationAPIPath: APIPath? {
-        return networkResources?.apiPathForKey("purchaseURL")
+        return networkResources?.apiPath(forKey: "purchaseURL")
     }
 }

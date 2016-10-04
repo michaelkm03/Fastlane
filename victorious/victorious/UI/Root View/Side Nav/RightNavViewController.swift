@@ -12,6 +12,7 @@ import UIKit
 
 /// A view controller that displays the right navigation area of a `SideNavScaffoldViewController`.
 class RightNavViewController: UIViewController, CoachmarkDisplayer {
+    
     // MARK: - Initializing
     
     init(dependencyManager: VDependencyManager) {
@@ -37,22 +38,25 @@ class RightNavViewController: UIViewController, CoachmarkDisplayer {
     
     // MARK: - View events
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         if contentViewController == nil {
-            let contentViewController = dependencyManager.viewControllerForKey("contentScreen")
+            guard let contentViewController = dependencyManager.viewController(forKey: "contentScreen") else {
+                return
+            }
+            
             addChildViewController(contentViewController)
             view.addSubview(contentViewController.view)
-            view.v_addFitToParentConstraintsToSubview(contentViewController.view)
-            contentViewController.didMoveToParentViewController(self)
+            view.v_addFitToParentConstraints(toSubview: contentViewController.view)
+            contentViewController.didMove(toParentViewController: self)
             self.contentViewController = contentViewController
         }
     }
     
     // MARK: - CoachmarkDisplayer
     
-    func highlightFrame(forIdentifier forIdentifier: String) -> CGRect? {
+    func highlightFrame(forIdentifier: String) -> CGRect? {
         return nil 
     }
 }

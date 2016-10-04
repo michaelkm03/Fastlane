@@ -13,26 +13,20 @@ extension User {
     // MARK: - Validation constants
     
     private struct Constants {
-        static let validUsernameCharacters = NSCharacterSet(
-            charactersInString: "abcdefghijklmnopqrstuvwxyz0123456789_"
-        )
-        
         static let maxUsernameLength = 20
         static let maxDisplayNameLength = 40
     }
     
     // MARK: - Validating properties
     
-    public static func validationError(forUsername username: String, errorFormat: UserValidationErrorFormat = .long) -> ErrorType? {
-        let trimmedUsername = username.stringByTrimmingCharactersInSet(.whitespaceAndNewlineCharacterSet())
+    public static func validationError(forUsername username: String, errorFormat: UserValidationErrorFormat = .long) -> Error? {
+        let trimmedUsername = username.trimmingCharacters(in: .whitespacesAndNewlines)
         
         guard !trimmedUsername.isEmpty else {
             return validationError(withDescription: NSLocalizedString("EmptyUsername", comment: ""))
         }
         
-        let usernameCharacters = NSCharacterSet(charactersInString: trimmedUsername)
-        
-        guard Constants.validUsernameCharacters.isSupersetOfSet(usernameCharacters) else {
+        guard trimmedUsername.isValidUserName else {
             return validationError(withDescription: {
                 switch errorFormat {
                     case .long: return NSLocalizedString("InvalidUsernameCharactersLong", comment: "")
@@ -48,8 +42,8 @@ extension User {
         return nil
     }
     
-    public static func validationError(forDisplayName displayName: String) -> ErrorType? {
-        let trimmedDisplayName = displayName.stringByTrimmingCharactersInSet(.whitespaceAndNewlineCharacterSet())
+    public static func validationError(forDisplayName displayName: String) -> Error? {
+        let trimmedDisplayName = displayName.trimmingCharacters(in: .whitespacesAndNewlines)
         
         guard trimmedDisplayName.characters.count <= Constants.maxDisplayNameLength else {
             return validationError(withDescription: NSLocalizedString("DisplayNameTooLong", comment: ""))
@@ -60,7 +54,7 @@ extension User {
     
     // MARK: - Generating errors
     
-    private static func validationError(withDescription description: String) -> ErrorType {
+    private static func validationError(withDescription description: String) -> Error {
         // FUTURE: We should create `LocalizedError` enums for each validated property once we move to Swift 3.
         return NSError(domain: "UserValidationError", code: -1, userInfo: [
             NSLocalizedDescriptionKey: description
@@ -71,4 +65,13 @@ extension User {
 /// An enum for different formats of error messages returned from validating `User` properties.
 public enum UserValidationErrorFormat {
     case long, short
+}
+
+private extension String {
+    // This is a workaround of the bug where CharacterSet.isSuperSetOf can cause random crashes.
+    var isValidUserName: Bool {
+        let regex = "\\A\\w+\\z"
+        let test = NSPredicate(format:"SELF MATCHES %@", regex)
+        return test.evaluate(with: self)
+    }
 }

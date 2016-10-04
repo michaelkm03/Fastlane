@@ -22,10 +22,10 @@ extension UIImage {
         blurFilter.setValue(inputImage, forKey: kCIInputImageKey)
         blurFilter.setValue(radius, forKey: kCIInputRadiusKey)
         
-        guard let result = blurFilter.outputImage, let cgImage = sharedCIContext.createCGImage(result, fromRect: inputImage.extent) else {
+        guard let result = blurFilter.outputImage, let cgImage = sharedCIContext.createCGImage(result, from: inputImage.extent) else {
             return nil
         }
 
-        return UIImage(CGImage: cgImage)
+        return UIImage(cgImage: cgImage)
     }
 }

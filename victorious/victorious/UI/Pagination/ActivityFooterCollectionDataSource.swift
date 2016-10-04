@@ -12,35 +12,34 @@ class ActivityFooterCollectionDataSource: NSObject, UICollectionViewDataSource {
     
     let identifier = "ActivityIndicatorCollectionCell"
     
-    weak private var cell: UICollectionViewCell? {
+    weak fileprivate var cell: UICollectionViewCell? {
         didSet {
-            cell?.hidden = hidden
+            cell?.isHidden = hidden
         }
     }
     
     var hidden: Bool = true {
         didSet {
-            cell?.hidden = hidden
+            cell?.isHidden = hidden
         }
     }
     
-    func collectionView( collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath ) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(identifier, forIndexPath: indexPath)
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath)
         self.cell = cell
         return cell
     }
     
-    func registerCells( collectionView: UICollectionView ) {
-        let nib = UINib(nibName: identifier, bundle: NSBundle(forClass: ActivityIndicatorCollectionCell.self) )
-        collectionView.registerNib(nib, forCellWithReuseIdentifier: identifier)
+    func registerCells(_ collectionView: UICollectionView) {
+        let nib = UINib(nibName: identifier, bundle: Bundle(for: ActivityIndicatorCollectionCell.self) )
+        collectionView.register(nib, forCellWithReuseIdentifier: identifier)
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 1
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        let height: CGFloat = self.hidden ? 0.0 : 50.0
-        return CGSize(width: collectionView.bounds.width, height: height)
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        return CGSize(width: collectionView.bounds.width, height: hidden ? 0.0 : 50.0)
     }
 }

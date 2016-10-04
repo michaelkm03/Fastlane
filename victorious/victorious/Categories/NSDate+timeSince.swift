@@ -16,32 +16,32 @@ import Foundation
     case minutes, seconds
 }
 
-extension NSDate {
+extension Date {
     // Avoiding default values for the format parameter for Objective-C compatibility.
     
     func stringDescribingTimeIntervalSinceNow() -> String {
         return stringDescribingTimeIntervalSinceNow(format: .concise, precision: .minutes)
     }
     
-    func stringDescribingTimeIntervalSinceNow(format format: DateTimeIntervalStringFormat, precision: DateTimeIntervalStringPrecision) -> String {
-        return stringDescribingTimeIntervalSince(NSDate(), format: format, precision: precision)
+    func stringDescribingTimeIntervalSinceNow(format: DateTimeIntervalStringFormat, precision: DateTimeIntervalStringPrecision) -> String {
+        return stringDescribingTimeIntervalSince(Date(), format: format, precision: precision)
     }
     
-    func stringDescribingTimeIntervalSince(date: NSDate) -> String {
+    func stringDescribingTimeIntervalSince(_ date: Date) -> String {
         return stringDescribingTimeIntervalSince(date, format: .concise, precision: .minutes)
     }
     
-    func stringDescribingTimeIntervalSince(date: NSDate, format: DateTimeIntervalStringFormat, precision: DateTimeIntervalStringPrecision) -> String {
-        let calendar = NSCalendar.currentCalendar()
-        let components = calendar.components([.Year, .Month, .WeekOfMonth, .Day, .Hour, .Minute, .Second], fromDate: self, toDate: date, options: [])
+    func stringDescribingTimeIntervalSince(_ date: Date, format: DateTimeIntervalStringFormat, precision: DateTimeIntervalStringPrecision) -> String {
+        let calendar = Calendar.current
+        let components = (calendar as NSCalendar).components([.year, .month, .weekOfMonth, .day, .hour, .minute, .second], from: self, to: date, options: [])
         
         switch components {
-        case let components where components.year > 1:
+        case let components where components.year! > 1:
             switch format {
             case .concise:
-                return NSString(format: NSLocalizedString("YearsAgo", comment: ""), components.year) as String
+                return NSString(format: NSLocalizedString("YearsAgo", comment: "") as NSString, components.year!) as String
             case .verbose:
-                return NSString(format: NSLocalizedString("YearsAgo Verbose", comment: ""), components.year) as String
+                return NSString(format: NSLocalizedString("YearsAgo Verbose", comment: "") as NSString, components.year!) as String
             }
         
         case let components where components.year == 1:
@@ -52,12 +52,12 @@ extension NSDate {
                 return NSLocalizedString("LastYear Verbose", comment: "")
             }
         
-        case let components where components.month > 1:
+        case let components where components.month! > 1:
             switch format {
             case .concise:
-                return NSString(format: NSLocalizedString("MonthsAgo", comment: ""), components.month) as String
+                return NSString(format: NSLocalizedString("MonthsAgo", comment: "") as NSString, components.month!) as String
             case .verbose:
-                return NSString(format: NSLocalizedString("MonthsAgo Verbose", comment: ""), components.month) as String
+                return NSString(format: NSLocalizedString("MonthsAgo Verbose", comment: "") as NSString, components.month!) as String
             }
         
         case let components where components.month == 1:
@@ -68,12 +68,12 @@ extension NSDate {
                 return NSLocalizedString("LastMonth Verbose", comment: "")
             }
         
-        case let components where components.weekOfMonth > 1:
+        case let components where components.weekOfMonth! > 1:
             switch format {
             case .concise:
-                return NSString(format: NSLocalizedString("WeeksAgo", comment: ""), components.weekOfMonth) as String
+                return NSString(format: NSLocalizedString("WeeksAgo", comment: "") as NSString, components.weekOfMonth!) as String
             case .verbose:
-                return NSString(format: NSLocalizedString("WeeksAgo Verbose", comment: ""), components.weekOfMonth) as String
+                return NSString(format: NSLocalizedString("WeeksAgo Verbose", comment: "") as NSString, components.weekOfMonth!) as String
             }
         
         case let components where components.weekOfMonth == 1:
@@ -84,12 +84,12 @@ extension NSDate {
                 return NSLocalizedString("LastWeek Verbose", comment: "")
             }
         
-        case let components where components.day > 1:
+        case let components where components.day! > 1:
             switch format {
             case .concise:
-                return NSString(format: NSLocalizedString("DaysAgo", comment: ""), components.day) as String
+                return NSString(format: NSLocalizedString("DaysAgo", comment: "") as NSString, components.day!) as String
             case .verbose:
-                return NSString(format: NSLocalizedString("DaysAgo Verbose", comment: ""), components.day) as String
+                return NSString(format: NSLocalizedString("DaysAgo Verbose", comment: "") as NSString, components.day!) as String
             }
         
         case let components where components.day == 1:
@@ -100,12 +100,12 @@ extension NSDate {
                 return NSLocalizedString("Yesterday Verbose", comment: "")
             }
         
-        case let components where components.hour > 1:
+        case let components where components.hour! > 1:
             switch format {
             case .concise:
-                return NSString(format: NSLocalizedString("HoursAgo", comment: ""), components.hour) as String
+                return NSString(format: NSLocalizedString("HoursAgo", comment: "") as NSString, components.hour!) as String
             case .verbose:
-                return NSString(format: NSLocalizedString("HoursAgo Verbose", comment: ""), components.hour) as String
+                return NSString(format: NSLocalizedString("HoursAgo Verbose", comment: "") as NSString, components.hour!) as String
             }
         
         case let components where components.hour == 1:
@@ -116,12 +116,12 @@ extension NSDate {
                 return NSLocalizedString("HourAgo Verbose", comment: "")
             }
         
-        case let components where components.minute > 1:
+        case let components where components.minute! > 1:
             switch format {
             case .concise:
-                return NSString(format: NSLocalizedString("MinutesAgo", comment: ""), components.minute) as String
+                return NSString(format: NSLocalizedString("MinutesAgo", comment: "") as NSString, components.minute!) as String
             case .verbose:
-                return NSString(format: NSLocalizedString("MinutesAgo Verbose", comment: ""), components.minute) as String
+                return NSString(format: NSLocalizedString("MinutesAgo Verbose", comment: "") as NSString, components.minute!) as String
             }
         
         case let components where components.minute == 1:
@@ -132,12 +132,12 @@ extension NSDate {
                 return NSLocalizedString("MinuteAgo Verbose", comment: "")
             }
         
-        case let components where components.second > 1 && precision == .seconds:
+        case let components where components.second! > 1 && precision == .seconds:
             switch format {
             case .concise:
-                return NSString(format: NSLocalizedString("SecondsAgo", comment: ""), components.second) as String
+                return NSString(format: NSLocalizedString("SecondsAgo", comment: "") as NSString, components.second!) as String
             case .verbose:
-                return NSString(format: NSLocalizedString("SecondsAgo Verbose", comment: ""), components.second) as String
+                return NSString(format: NSLocalizedString("SecondsAgo Verbose", comment: "") as NSString, components.second!) as String
             }
         
         case let components where components.second == 1 && precision == .seconds:

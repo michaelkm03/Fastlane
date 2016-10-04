@@ -26,7 +26,7 @@ public enum ViewTrackingKey: String {
 
 public protocol TrackingModel {
     var id: String { get }
-    func trackingURLsForKey(key: ViewTrackingKey) -> [String]?
+    func trackingURLs(forKey key: ViewTrackingKey) -> [String]?
 }
 
 public struct Tracking: TrackingModel {
@@ -34,12 +34,6 @@ public struct Tracking: TrackingModel {
     
     private let trackingMap: [String : [String]]?
     
-    public func trackingURLsForKey(key: ViewTrackingKey) -> [String]? {
-        return trackingMap?[key.rawValue]
-    }
-}
-
-extension Tracking {
     init(json: JSON) {
         var map = [String : [String]]()
         var id = ""
@@ -59,5 +53,9 @@ extension Tracking {
         }
         self.id = id
         trackingMap = map
+    }
+    
+    public func trackingURLs(forKey key: ViewTrackingKey) -> [String]? {
+        return trackingMap?[key.rawValue]
     }
 }

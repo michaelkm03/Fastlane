@@ -21,24 +21,24 @@
         var rawMessageContainer: WebSocketRawMessageContainer?
 
         private lazy var clearButton: UIButton = {
-            let clearButton = UIButton(type: .System)
-            clearButton.setTitle("Clear", forState: .Normal)
-            clearButton.addTarget(self, action: #selector(clear), forControlEvents: .TouchUpInside)
+            let clearButton = UIButton(type: .system)
+            clearButton.setTitle("Clear", for: .normal)
+            clearButton.addTarget(self, action: #selector(clear), for: .touchUpInside)
             return clearButton
         }()
 
-        private lazy var closeButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: #selector(close))
-        private lazy var exportButton: UIBarButtonItem = UIBarButtonItem(title: "Export", style: .Plain, target: self, action: #selector(export))
+        private lazy var closeButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(close))
+        private lazy var exportButton: UIBarButtonItem = UIBarButtonItem(title: "Export", style: .plain, target: self, action: #selector(export))
 
         private var mailComposerViewController: MFMailComposeViewController?
 
         // MARK: - UIViewController Lifecycle
 
-        override func viewWillAppear(animated: Bool) {
+        override func viewWillAppear(_ animated: Bool) {
             super.viewWillAppear(animated)
             navigationController?.setNavigationBarHidden(false, animated: animated)
             
-            VTimerManager.scheduledTimerManagerWithTimeInterval(1, target: self, selector: #selector(refresh), userInfo: nil, repeats: true)
+            VTimerManager.scheduledTimerManager(withTimeInterval: 1, target: self, selector: #selector(refresh), userInfo: nil, repeats: true)
         }
 
         override func viewDidLoad() {
@@ -53,15 +53,15 @@
 
         // MARK: - UITableViewDataSource
 
-        override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
             guard let rawMessageContainer = rawMessageContainer else {
                 return 0
             }
             return rawMessageContainer.messageContainer.count
         }
 
-        override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-            let cell = tableView.dequeueReusableCellWithIdentifier(Constants.cellReuseIdentifier) as! DebugCell
+        override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+            let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cellReuseIdentifier) as! DebugCell
             let currentRow = indexPath.row
             guard let rawMessageContainer = rawMessageContainer else {
                 assertionFailure("we should have a message container")
@@ -74,21 +74,21 @@
                 return cell
             }
             let message = rawMessageContainer.messageContainer[currentRow]
-            cell.data = DebugCell.ViewData(message: message.messageString, creationDate: message.creationDate)
+            cell.data = DebugCell.ViewData(message: message.messageString, creationDate: message.creationDate as Date)
             return cell
         }
 
         // MARK: - UITableViewDelegate
 
-        override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
             guard let rawMessageContainer = rawMessageContainer else {
                 assertionFailure("we should have a message container")
                 return
             }
             
             let message = rawMessageContainer.messageContainer[indexPath.row]
-            let detailedViewController = WebSocketMessageDetailViewController.newWithMessage(message)
-            showViewController(detailedViewController, sender: nil)
+            let detailedViewController = WebSocketMessageDetailViewController.newWithMessage(message: message)
+            show(detailedViewController, sender: nil)
         }
 
         // MARK: - Event response
@@ -103,11 +103,11 @@
         }
         
         @objc private func close() {
-            dismissViewControllerAnimated(true, completion: nil)
+            dismiss(animated: true, completion: nil)
         }
 
         @objc private func export() {
-            if let allMessagesString = rawMessageContainer?.exportAllMessages() where MFMailComposeViewController.canSendMail() {
+            if let allMessagesString = rawMessageContainer?.exportAllMessages() , MFMailComposeViewController.canSendMail() {
                 let mailComposerViewController = MFMailComposeViewController()
                 mailComposerViewController.mailComposeDelegate = self
                 mailComposerViewController.setSubject("WebSocket messages log 4 u <3")
@@ -115,14 +115,14 @@
                 mailComposerViewController.setMessageBody(allMessagesString, isHTML: false)
 
                 self.mailComposerViewController = mailComposerViewController
-                presentViewController(mailComposerViewController, animated: true, completion: nil)
+                present(mailComposerViewController, animated: true, completion: nil)
             }
         }
 
-        // MARK: - MFMailComposeViewController
+        // MARK: - MFMailComposeViewControllerDelegate
 
-        func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
-            controller.dismissViewControllerAnimated(true, completion: nil)
+        func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+            controller.dismiss(animated: true, completion: nil)
         }
     }
     
@@ -130,7 +130,7 @@
         
         struct ViewData {
             let message: String
-            let creationDate: NSDate
+            let creationDate: Date
         }
         
         var data: ViewData? {

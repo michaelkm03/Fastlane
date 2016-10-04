@@ -62,7 +62,7 @@ class ForumEventChainTests: XCTestCase {
         let parent = MockReceiverWithChildren(children: [childA, childB, childC])
         let origin = MockReceiverWithChildren(children: [parent])
         
-        self.measureBlock() {
+        self.measure() {
             for _ in 1...10000 {
                 let event = self.createEvent()
                 origin.receive(event)
@@ -76,7 +76,7 @@ private class MockTerminusSender: ForumEventSender {
     
     var nextSender: ForumEventSender?
     
-    func send(event: ForumEvent) {
+    func send(_ event: ForumEvent) {
         sentEvents.append(event)
     }
 }
@@ -88,7 +88,7 @@ private class MockLinkSender: ForumEventSender {
 private class MockReceiver: ForumEventReceiver {
     var receivedEvents = [ForumEvent]()
     
-    func receive(event: ForumEvent) {
+    func receive(_ event: ForumEvent) {
         receivedEvents.append(event)
     }
 }
@@ -100,7 +100,7 @@ private class MockReceiverWithChildren: ForumEventReceiver {
         return children
     }
     
-    private func receive(event: ForumEvent) {}
+    fileprivate func receive(_ event: ForumEvent) {}
     
     init(children: [ForumEventReceiver] = []) {
         self.children = children

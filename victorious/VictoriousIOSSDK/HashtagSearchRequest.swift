@@ -9,12 +9,12 @@
 import Foundation
 
 public struct HashtagSearchRequest: RequestType {
-    private let url: NSURL
+    private let url: URL
     
     // param: - searchTerm must be a urlPathPart percent encoded string
     public init?(apiPath: APIPath, searchTerm: String) {
-        let charSet = NSCharacterSet.vsdk_pathPartAllowedCharacterSet
-        let escapedSearchTerm = searchTerm.stringByAddingPercentEncodingWithAllowedCharacters(charSet) ?? searchTerm
+        let charSet = CharacterSet.vsdk_pathPartAllowedCharacterSet
+        let escapedSearchTerm = searchTerm.addingPercentEncoding(withAllowedCharacters: charSet) ?? searchTerm
         var apiPath = apiPath
         apiPath.queryParameters = ["hashtag": escapedSearchTerm]
         
@@ -25,11 +25,11 @@ public struct HashtagSearchRequest: RequestType {
         self.url = url
     }
     
-    public var urlRequest: NSURLRequest {
-        return NSURLRequest(URL: url)
+    public var urlRequest: URLRequest {
+        return URLRequest(url: url)
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [Hashtag] {
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> [Hashtag] {
         guard let hashtags = responseJSON["payload"]["hashtags"].array else {
             throw ResponseParsingError()
         }
