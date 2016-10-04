@@ -124,10 +124,6 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
                 // A chat user count message is the only confirmed way of knowing that the connection is open, since our backend always accepts our connection before validating everything is ok.
                 InterstitialManager.sharedInstance.dismissCurrentInterstitial(of: .reconnectingError)
                 navBarTitleView?.activeUserCount = userCount.userCount
-            case .filterContent(let path):
-                // FUTURE: the composer should listen to these events and hide itself so everything component in the forum handles it's own state
-                // path will be nil for home feed, and non nil for filtered feed
-                composer?.setComposerVisible(path == nil, animated: true)
             case .closeVIP():
                 onClose(nil)
             case .refreshStage(_):

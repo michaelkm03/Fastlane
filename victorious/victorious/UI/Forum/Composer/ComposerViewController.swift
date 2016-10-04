@@ -10,7 +10,7 @@ import UIKit
 import FLAnimatedImage
 
 /// Handles view manipulation and message sending related to the composer. Could definitely use a refactor to make it less stateful.
-class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate, ComposerAttachmentTabBarDelegate, VBackgroundContainer, VCreationFlowControllerDelegate, HashtagBarControllerSelectionDelegate, HashtagBarViewControllerAnimationDelegate, VPassthroughContainerViewDelegate, PastableTextViewDelegate, ToggleableImageButtonDelegate {
+class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate, ComposerAttachmentTabBarDelegate, VBackgroundContainer, VCreationFlowControllerDelegate, HashtagBarControllerSelectionDelegate, HashtagBarViewControllerAnimationDelegate, VPassthroughContainerViewDelegate, PastableTextViewDelegate, ToggleableImageButtonDelegate, ForumEventReceiver {
     private struct Constants {
         static let animationDuration = 0.2
         static let maximumNumberOfTabs = 4
@@ -24,6 +24,15 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         static let gifInputAreaHeight: CGFloat = 90
         static let vipLockComposerMargin: CGFloat = 8
         static let gifType = "gif"
+    }
+    
+    // MARK: - ForumEventReceiver
+    
+    func receive(event: ForumEvent) {
+        switch event {
+            case .filterContent(let path): feedIsFiltered = path != nil
+            default: break
+        }
     }
     
     // MARK: - ForumEventSender
@@ -259,25 +268,41 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         textViewHasText = true
     }
     
+    // MARK: - Managing visibiliity
+    
+    private var feedIsFiltered = false {
+        didSet {
+            updateComposerVisibility(animated: true)
+        }
+    }
+    
+    private var feedIsChatRoom = false {
+        didSet {
+            updateComposerVisibility(animated: true)
+        }
+    }
+    
     private var composerIsVisible = true
     
-    func setComposerVisible(visible: Bool, animated: Bool) {
-        guard visible != composerIsVisible else {
+    private func updateComposerVisibility(animated animated: Bool) {
+        let composerShouldBeVisible = !feedIsFiltered || feedIsChatRoom
+        
+        guard composerShouldBeVisible != composerIsVisible else {
             return
         }
         
         if animated {
             UIView.animateWithDuration(Constants.animationDuration) {
-                self.setComposerVisible(visible, animated: false)
+                self.updateComposerVisibility(animated: false)
                 self.view.layoutIfNeeded()
             }
         }
         else {
-            inputViewToBottomConstraint.constant = visible ? 0.0 : -totalComposerHeight
-            if !visible {
+            inputViewToBottomConstraint.constant = composerShouldBeVisible ? 0.0 : -totalComposerHeight
+            if !composerShouldBeVisible {
                 textView.resignFirstResponder()
             }
-            composerIsVisible = visible
+            composerIsVisible = composerShouldBeVisible
             delegate?.composer(self, didUpdateContentHeight: totalComposerHeight)
         }
     }
@@ -421,6 +446,8 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         updateAppearanceFromDependencyManager()
         composerTextViewManager = ComposerTextViewManager(textView: textView, delegate: self, maximumTextLength: maximumTextLength)
         setupHashtagBar()
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(mainFeedFilterDidChange), name: RESTForumNetworkSource.updateStreamURLNotification, object: nil)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -841,6 +868,13 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     private func cleanup() {
         composerTextViewManager?.resetTextView(textView)
         selectedAsset = nil
+    }
+    
+    // MARK: - Notifications
+    
+    private dynamic func mainFeedFilterDidChange(notification: NSNotification) {
+        let selectedItem = (notification.userInfo?["selectedItem"] as? ReferenceWrapper<ListMenuSelectedItem>)?.value
+        feedIsChatRoom = selectedItem?.chatRoomID != nil
     }
     
     // MARK: - PastableTextViewDelegate
