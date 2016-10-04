@@ -196,7 +196,7 @@ final class LikeView: UIView {
         }
 
         animationImageView.frame = CGRect(
-            origin: imageView.center,
+            center: imageView.center,
             size: size
         )
 
