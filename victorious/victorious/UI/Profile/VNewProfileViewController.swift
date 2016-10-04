@@ -303,6 +303,11 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     // MARK: - Managing the user
     
     private dynamic func currentUserDidUpdate() {
+        // Only update the header if we are displaying the current user.
+        guard self.user?.id == VCurrentUser.user?.id else {
+            return
+        }
+        
         setUser(user: VCurrentUser.user, using: dependencyManager)
     }
     
