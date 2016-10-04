@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import victorious
+@testable import victorious
 
 class CommunityItemsFetchOperationTests: XCTestCase {
     func testExecuteWithValidData() {
@@ -35,17 +35,21 @@ class CommunityItemsFetchOperationTests: XCTestCase {
                 ]
             ]
         ]
-        let dependencyManager = VDependencyManager(config: validConfig)
+        let dependencyManager = VDependencyManager(dictionary: validConfig)
         let operation = CommunityItemsFetchOperation(dependencyManager: dependencyManager)
-        let result = operation.execute()
-        XCTAssertEqual(result, .success)
+        switch operation.execute() {
+            case .success: XCTAssert(true)
+            case .failure, .cancelled: XCTFail()
+        }
     }
 
     func testExecuteWithInvalidData() {
-        let config = ""
-        let dependencyManager = VDependencyManager(config: config)
+        let invalidConfig = ["":""]
+        let dependencyManager = VDependencyManager(dictionary: invalidConfig)
         let operation = CommunityItemsFetchOperation(dependencyManager: dependencyManager)
-        let result = operation.execute()
-        XCTAssertEqual(result, .failure)
+        switch operation.execute() {
+            case .failure: XCTAssert(true)
+            case .success, .cancelled: XCTFail()
+        }
     }
 }
