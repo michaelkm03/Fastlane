@@ -9,15 +9,15 @@
 import UIKit
 
 class ConfigurableGridStreamHeaderView: UICollectionReusableView {
-    private var header: UIView?
+    fileprivate var header: UIView?
     
-    func addHeader(header: UIView) {
+    func addHeader(_ header: UIView) {
         if self.header == header {
             return
         }
         self.header?.removeFromSuperview()
         self.header = header
         addSubview(header)
-        v_addFitToParentConstraintsToSubview(header)
+        v_addFitToParentConstraints(toSubview: header)
     }
 }

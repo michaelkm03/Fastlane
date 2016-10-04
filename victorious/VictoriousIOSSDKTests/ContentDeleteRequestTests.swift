@@ -13,6 +13,6 @@ class ContentDeleteRequestTests: XCTestCase {
     func testValidFlaggingSequenceRequest() {
         let contentID = "123"
         let request = ContentDeleteRequest(apiPath: APIPath(templatePath: "www.google.com/%%CONTENT_ID%%"), contentID: contentID)
-        XCTAssertEqual(request?.urlRequest.URL?.absoluteString, "www.google.com/123")
+        XCTAssertEqual(request?.urlRequest.url?.absoluteString, "www.google.com/123")
     }
 }

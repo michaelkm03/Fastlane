@@ -20,7 +20,7 @@ extension NSURL {
         guard let pathExtension = self.pathExtension else {
             return nil
         }
-        if let type = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, pathExtension, nil)?.takeRetainedValue(),
+        if let type = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, pathExtension as CFString, nil)?.takeRetainedValue(),
            let mimeType = UTTypeCopyPreferredTagWithClass(type, kUTTagClassMIMEType)?.takeRetainedValue() {
             return mimeType as String
         }

@@ -28,13 +28,13 @@ public protocol UserModel: PreviewImageContainer {
 
 public func ==(lhs: UserModel?, rhs: UserModel?) -> Bool {
     switch (lhs, rhs) {
-        case (.None, .None):
+        case (.none, .none):
             return true
-        case (.Some(_), .None):
+        case (.some(_), .none):
             return false
-        case (.None, .Some(_)):
+        case (.none, .some(_)):
             return false
-        case (.Some(let lhs), .Some(let rhs)):
+        case (.some(let lhs), .some(let rhs)):
             return lhs.id == rhs.id
                 && lhs.username == rhs.username
                 && lhs.displayName == rhs.displayName
@@ -59,7 +59,7 @@ public struct User: UserModel {
         case owner, user
         
         public init(json: JSON) {
-            switch json.stringValue.lowercaseString {
+            switch json.stringValue.lowercased() {
                 case "api_owner": self = .owner	
                 case "api_user": self = .user
                 default: self = .user

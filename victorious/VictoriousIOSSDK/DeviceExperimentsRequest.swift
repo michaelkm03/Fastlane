@@ -16,11 +16,11 @@ public struct DeviceExperimentsRequest: RequestType {
         // just to be public
     }
     
-    public var urlRequest: NSURLRequest {
-        return NSURLRequest(URL: NSURL(string: "/api/device/experiments")!)
+    public var urlRequest: URLRequest {
+        return URLRequest(url: URL(string: "/api/device/experiments")!)
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> (experiments: [DeviceExperiment], defaultExperimentIDs: Set<Int>) {
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> (experiments: [DeviceExperiment], defaultExperimentIDs: Set<Int>) {
         guard let experimentsJSON = responseJSON["payload"].array,
             let defaultExperimentsJSON = responseJSON["experiment_ids"].array else {
                 throw ResponseParsingError()

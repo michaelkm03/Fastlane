@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 private struct Constants {
     static let scrolledToBottomTolerance = CGFloat(5.0)
@@ -30,15 +31,15 @@ protocol ChatFeed: class, ForumEventSender, ForumEventReceiver {
 // MARK: - ChatFeedDelegate
 
 protocol ChatFeedDelegate: class {
-    func chatFeed(chatFeed: ChatFeed, didSelectUserWithID userID: User.ID)
-    func chatFeed(chatFeed: ChatFeed, didSelect chatFeedContent: ChatFeedContent)
-    func chatFeed(chatFeed: ChatFeed, didLongPress chatFeedContent: ChatFeedContent)
-    func chatFeed(chatFeed: ChatFeed, didSelectFailureButtonFor chatFeedContent: ChatFeedContent)
-    func chatFeed(chatFeed: ChatFeed, didSelectReplyButtonFor chatFeedContent: ChatFeedContent)
-    func chatFeed(chatFeed: ChatFeed, didToggleLikeFor content: ChatFeedContent, completion: (() -> Void))
-    func chatFeed(chatFeed: ChatFeed, didScroll scrollView: UIScrollView)
-    func chatFeed(chatFeed: ChatFeed, willBeginDragging scrollView: UIScrollView)
-    func chatFeed(chatFeed: ChatFeed, willEndDragging scrollView: UIScrollView, withVelocity velocity: CGPoint)
+    func chatFeed(_ chatFeed: ChatFeed, didSelectUserWithID userID: User.ID)
+    func chatFeed(_ chatFeed: ChatFeed, didSelect chatFeedContent: ChatFeedContent)
+    func chatFeed(_ chatFeed: ChatFeed, didLongPress chatFeedContent: ChatFeedContent)
+    func chatFeed(_ chatFeed: ChatFeed, didSelectFailureButtonFor chatFeedContent: ChatFeedContent)
+    func chatFeed(_ chatFeed: ChatFeed, didSelectReplyButtonFor chatFeedContent: ChatFeedContent)
+    func chatFeed(_ chatFeed: ChatFeed, didToggleLikeFor content: ChatFeedContent, completion: @escaping (() -> Void))
+    func chatFeed(_ chatFeed: ChatFeed, didScroll scrollView: UIScrollView)
+    func chatFeed(_ chatFeed: ChatFeed, willBeginDragging scrollView: UIScrollView)
+    func chatFeed(_ chatFeed: ChatFeed, willEndDragging scrollView: UIScrollView, withVelocity velocity: CGPoint)
     func publisher(for chatFeed: ChatFeed) -> ContentPublisher?
 }
 
@@ -62,7 +63,7 @@ extension ChatFeed {
     /// If pending content has been added or removed, the added count or the indices of the removed items should be
     /// passed in via `newPendingContentCount` and `removedPendingContentIndices`.
     ///
-    func handleNewItems(newItems: [ChatFeedContent], loadingType: PaginatedLoadingType, newPendingContentCount: Int = 0, removedPendingContentIndices: [Int] = [], completion: (() -> Void)? = nil) {
+    func handleNewItems(_ newItems: [ChatFeedContent], loadingType: PaginatedLoadingType, newPendingContentCount: Int = 0, removedPendingContentIndices: [Int] = [], completion: (() -> Void)? = nil) {
         guard newItems.count > 0 || newPendingContentCount != 0 || removedPendingContentIndices.count > 0 || loadingType == .refresh else {
             return
         }
@@ -71,7 +72,7 @@ extension ChatFeed {
             newItemsController?.hide()
         }
         
-        let collectionView = self.collectionView
+        let collectionView = self.collectionView!
         let wasScrolledToBottom = collectionView.isScrolledToBottom(withTolerance: Constants.scrolledToBottomTolerance)
         let oldPendingItemCount = max(0, chatInterfaceDataSource.pendingItems.count - newPendingContentCount)
         let insertingAbovePendingContent = oldPendingItemCount > 0 && newPendingContentCount <= 0
@@ -94,8 +95,8 @@ extension ChatFeed {
         }
     }
     
-    private func updateCollectionView(with newItems: [ChatFeedContent], loadingType: PaginatedLoadingType, newPendingContentCount: Int, removedPendingContentIndices: [Int], completion: () -> Void) {
-        let collectionView = self.collectionView
+    fileprivate func updateCollectionView(with newItems: [ChatFeedContent], loadingType: PaginatedLoadingType, newPendingContentCount: Int, removedPendingContentIndices: [Int], completion: @escaping () -> Void) {
+        let collectionView = self.collectionView!
         let unstashedItemCount = chatInterfaceDataSource.unstashedItems.count
         let oldUnstashedItemCount = unstashedItemCount - newItems.count
         let itemCount = chatInterfaceDataSource.itemCount
@@ -105,8 +106,8 @@ extension ChatFeed {
         collectionView.performBatchUpdates({
             switch loadingType {
                 case .newer:
-                    collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
-                        NSIndexPath(forItem: oldUnstashedItemCount + $0, inSection: 0)
+                    collectionView.insertItems(at: (0 ..< newItems.count).map {
+                        IndexPath(item: oldUnstashedItemCount + $0, section: 0)
                     })
                 
                 case .older:
@@ -117,21 +118,22 @@ extension ChatFeed {
                         assertionFailure("Chat feed's collection view did not have the required layout type ChatFeedCollectionViewLayout.")
                     }
                     
-                    collectionView.insertItemsAtIndexPaths((0 ..< newItems.count).map {
-                        NSIndexPath(forItem: $0, inSection: 0)
+                    collectionView.insertItems(at: (0 ..< newItems.count).map {
+                        IndexPath(item: $0, section: 0)
                     })
                 
                 case .refresh:
                     // Calling reloadData in here causes a crash
-                    collectionView.reloadSections(NSIndexSet(index: 0))
+                    collectionView.reloadSections(IndexSet(integer: 0))
             }
             
-            collectionView.insertItemsAtIndexPaths((0 ..< newPendingContentCount).map {
-                NSIndexPath(forItem: itemCount - 1 - $0, inSection: 0)
+            collectionView.insertItems(at: (0 ..< newPendingContentCount).map {
+                IndexPath(item: itemCount - 1 - $0, section: 0)
             })
             
-            collectionView.deleteItemsAtIndexPaths(removedPendingContentIndices.map {
-                NSIndexPath(forItem: oldUnstashedItemCount + $0, inSection: 0)
+            collectionView.deleteItems(at: removedPendingContentIndices.map {
+                
+                IndexPath(item: oldUnstashedItemCount + $0, section: 0)
             })
         }, completion: { _ in
             completion()
@@ -139,13 +141,14 @@ extension ChatFeed {
     }
     
     /// Removes the given content from the data source and from the collection view.
-    func remove(item: ChatFeedContent) {
-        guard let index = chatInterfaceDataSource.unstashedItems.indexOf({ item.content.id == $0.content.id }) else {
+    func remove(_ item: ChatFeedContent) {
+        guard let index = chatInterfaceDataSource.unstashedItems.index(where: { item.content.id == $0.content.id }) else {
             assertionFailure("Tried to remove content from chat feed, but the chat feed didn't contain that content.")
             return
         }
         
         chatInterfaceDataSource.removeUnstashedItem(at: index)
-        collectionView.deleteItemsAtIndexPaths([NSIndexPath(forItem: index, inSection: 0)])
+        let item = IndexPath(item: index, section: 0)
+        collectionView.deleteItems(at: [item])
     }
 }

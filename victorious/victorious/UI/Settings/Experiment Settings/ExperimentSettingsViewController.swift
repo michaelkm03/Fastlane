@@ -26,19 +26,19 @@ class ExperimentSettingsViewController: UITableViewController, ExperimentSetting
         self.dataSource.delegate = self
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear( animated )
         
         self.initialExperimentIds = self.dataSource.experimentSettings.activeExperiments
         self.dataSource.loadSettings()
     }
     
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear( animated )
         
         // If any changes were made since this view was presented
         if self.dataSource.experimentSettings.activeExperiments != self.initialExperimentIds {
-            NSNotificationCenter.defaultCenter().postNotificationName(VSessionTimerNewSessionShouldStart, object: nil)
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: VSessionTimerNewSessionShouldStart), object: nil)
         }
     }
 }

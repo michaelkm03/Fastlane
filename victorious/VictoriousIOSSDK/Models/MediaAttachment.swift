@@ -73,7 +73,7 @@ extension MediaAttachment {
         self.thumbnailURL       = thumbnailURL
         self.shouldAutoplay     = json["should_autoplay"].bool
         
-        if let shouldAutoplay = self.shouldAutoplay where shouldAutoplay == true {
+        if let shouldAutoplay = self.shouldAutoplay , shouldAutoplay == true {
             self.type = .GIF
         } else {
             self.type = type
@@ -106,7 +106,7 @@ extension MediaAttachment {
         var url: NSURL? = nil
         
         // We MUST use the MP4 asset for gifs
-        if let formats = formats where type == .GIF {
+        if let formats = formats , type == .GIF {
             for format in formats {
                 if format.mimeType == .MP4 {
                     url = format.url
@@ -126,9 +126,9 @@ extension MediaAttachment.Format {
     
     public init?(json: JSON) {
         guard let dataString = json["data"].string,
-            mediaURL = NSURL(string: dataString),
-            mimeTypeString = json["mime_type"].string,
-            mimeType = MimeType(rawValue: mimeTypeString) else {
+            let mediaURL = NSURL(string: dataString),
+            let mimeTypeString = json["mime_type"].string,
+            let mimeType = MimeType(rawValue: mimeTypeString) else {
                 return nil
         }
         self.url = mediaURL

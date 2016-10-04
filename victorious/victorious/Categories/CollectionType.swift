@@ -6,7 +6,7 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-extension CollectionType {
+extension Collection {
     /// Returns an element selected from `self`.
     ///
     /// `chooseBetween` should return true when `potentialSelection` is preferred over `currentSelection`.
@@ -21,12 +21,12 @@ extension CollectionType {
     ///
     /// - COMPLEXITY: O(`self.count`)
     ///
-    func select(chooseBetween: (currentSelection: Generator.Element, potentialSelection: Generator.Element) -> Bool) -> Generator.Element? {
-        var selection: Generator.Element?
+    func select(_ chooseBetween: (_ currentSelection: Iterator.Element, _ potentialSelection: Iterator.Element) -> Bool) -> Iterator.Element? {
+        var selection: Iterator.Element?
         
         for element in self {
             if let currentSelection = selection {
-                if chooseBetween(currentSelection: currentSelection, potentialSelection: element) {
+                if chooseBetween(currentSelection, element) {
                     selection = element
                 }
             }

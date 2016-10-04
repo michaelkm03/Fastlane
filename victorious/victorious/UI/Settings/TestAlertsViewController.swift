@@ -11,22 +11,22 @@ import Foundation
 
 class TestAlertsViewController: UITableViewController {
     
-    private enum TestAlertIndex: Int {
+    fileprivate enum TestAlertIndex: Int {
         case achievement = 0
         case statusUpdate = 1
         case toast = 2
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = super.tableView(tableView, cellForRowAtIndexPath: indexPath)
-        cell.textLabel?.font = VThemeManager.sharedThemeManager().themedFontForKey(kVHeading3Font)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
+        cell.textLabel?.font = VThemeManager.shared().themedFont(forKey: kVHeading3Font)
         return cell
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         
-        guard let index = TestAlertIndex(rawValue: indexPath.row) else {
+        guard let index = TestAlertIndex(rawValue: (indexPath as NSIndexPath).row) else {
             assertionFailure("Unknown type of test alert registered")
             return
         }
@@ -41,7 +41,7 @@ class TestAlertsViewController: UITableViewController {
         }
     }
     
-    override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         return NSLocalizedString("TestAlertsViewControllerFooter", comment: "")
     }
 }

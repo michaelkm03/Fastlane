@@ -24,17 +24,17 @@ final class CollectionLoadingView: UICollectionReusableView {
         setup()
     }
     
-    private func setup() {
+    fileprivate func setup() {
         addSubview(activityIndicatorView)
         activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
-        activityIndicatorView.centerXAnchor.constraintEqualToAnchor(centerXAnchor).active = true
-        activityIndicatorView.centerYAnchor.constraintEqualToAnchor(centerYAnchor).active = true
+        activityIndicatorView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        activityIndicatorView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         activityIndicatorView.startAnimating()
     }
     
     // MARK: - Views
     
-    private let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+    fileprivate let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
     
     // MARK: - Configuration
     
@@ -51,7 +51,7 @@ final class CollectionLoadingView: UICollectionReusableView {
     /// Whether or not the view is currently displaying a loading state.
     var isLoading: Bool {
         get {
-            return activityIndicatorView.isAnimating()
+            return activityIndicatorView.isAnimating
         }
         set {
             if newValue {
@@ -67,14 +67,14 @@ final class CollectionLoadingView: UICollectionReusableView {
     
     /// Registers the view to be dequeued later in `collectionView`.
     static func register(in collectionView: UICollectionView, forSupplementaryViewKind kind: String) {
-        collectionView.registerClass(self, forSupplementaryViewOfKind: kind, withReuseIdentifier: defaultReuseIdentifier)
+        collectionView.register(self, forSupplementaryViewOfKind: kind, withReuseIdentifier: defaultReuseIdentifier)
     }
     
     // MARK: - Dequeueing
     
     /// Dequeues a loading view from `collectionView` to be displayed.
-    static func dequeue(from collectionView: UICollectionView, forSupplementaryViewKind kind: String, at indexPath: NSIndexPath) -> CollectionLoadingView {
-        return collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: defaultReuseIdentifier, forIndexPath: indexPath) as! CollectionLoadingView
+    static func dequeue(from collectionView: UICollectionView, forSupplementaryViewKind kind: String, at indexPath: IndexPath) -> CollectionLoadingView {
+        return collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: defaultReuseIdentifier, for: indexPath) as! CollectionLoadingView
     }
     
     // MARK: - Sizing

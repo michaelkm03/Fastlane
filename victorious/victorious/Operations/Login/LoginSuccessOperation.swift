@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 /// An operation that should be run after creating an account or logging in to set up and persist the current user's
 /// information.
@@ -22,7 +23,7 @@ class LoginSuccessOperation: SyncOperation<Void> {
     
     // MARK: - Executing
     
-    private let dependencyManager: VDependencyManager
+    fileprivate let dependencyManager: VDependencyManager
     let parameters: AccountCreateParameters
     let response: AccountCreateResponse
     
@@ -37,7 +38,7 @@ class LoginSuccessOperation: SyncOperation<Void> {
         VCurrentUser.loginType = parameters.loginType
         VCurrentUser.token = response.token
         VCurrentUser.accountIdentifier = parameters.accountIdentifier
-        VCurrentUser.isNewUser = response.newUser
+        VCurrentUser.isNewUser = response.newUser as NSNumber?
         
         VCurrentUser.update(to: currentUser)
         updateStoredCredentials(currentUser)
@@ -68,19 +69,19 @@ class LoginSuccessOperation: SyncOperation<Void> {
         return .success()
     }
     
-    private func updateStoredCredentials(user: User) {
+    fileprivate func updateStoredCredentials(_ user: User) {
         guard let id = VCurrentUser.userID, let token = VCurrentUser.token else {
             return
         }
         
-        let info = VStoredLoginInfo(id, withToken: token, withLoginType: VCurrentUser.loginType)
+        let info = VStoredLoginInfo(id, withToken: token, with: VCurrentUser.loginType)
         
-        VStoredLogin().saveLoggedInUserToDisk(info)
+        VStoredLogin().saveLoggedInUser(toDisk: info)
         
-        NSUserDefaults.standardUserDefaults().setInteger(VCurrentUser.loginType.rawValue, forKey: kLastLoginTypeUserDefaultsKey)
+        UserDefaults.standard.set(VCurrentUser.loginType.rawValue, forKey: kLastLoginTypeUserDefaultsKey)
         
         if let accountIdentifier = VCurrentUser.accountIdentifier {
-            NSUserDefaults.standardUserDefaults().setObject( accountIdentifier, forKey: kAccountIdentifierDefaultsKey)
+            UserDefaults.standard.set( accountIdentifier, forKey: kAccountIdentifierDefaultsKey)
         }
     }
 }

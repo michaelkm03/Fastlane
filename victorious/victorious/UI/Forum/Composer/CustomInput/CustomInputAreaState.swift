@@ -10,12 +10,12 @@ import Foundation
 
 /// Describes the currently display state of an input area
 enum CustomInputAreaState {
-    case Hidden
-    case Visible(inputController: CustomInputDisplayOptions)
+    case hidden
+    case visible(inputController: CustomInputDisplayOptions)
     
     var visibleInputController: CustomInputDisplayOptions? {
         switch self {
-            case .Visible(let inputController):
+            case .visible(let inputController):
                 return inputController
             default:
                 return nil

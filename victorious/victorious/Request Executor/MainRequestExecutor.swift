@@ -14,7 +14,7 @@ class MainRequestExecutor: RequestExecutorType {
     
     /// An error stored from the last request that was executed.  It is always populated
     /// regardless of whether or not an `RequestErrorHandler` handled it.
-    private(set) var error: NSError?
+    fileprivate(set) var error: NSError?
     
     /// An array of `RequestErrorHandler` objects that will handle errors when requests are executed.
     /// Calling code may append, filter or anything else to customize the behavior.  When an error occurs,
@@ -22,7 +22,7 @@ class MainRequestExecutor: RequestExecutorType {
     /// handle the error, then returns so that each error is handler by only one handler.
     var errorHandlers = [RequestErrorHandler]()
     
-    private func handle(error: NSError, with request: NSURLRequest? = nil) -> NSError? {
+    fileprivate func handle(_ error: NSError, with request: URLRequest? = nil) -> NSError? {
         for handler in errorHandlers {
             if handler.handle(error, with: request) {
                 return nil
@@ -31,12 +31,12 @@ class MainRequestExecutor: RequestExecutorType {
         return error
     }
     
-    private let networkActivityIndicator = NetworkActivityIndicator.sharedInstance()
-    private let alertsReceiver = AlertReceiverSelector.defaultReceiver
+    fileprivate let networkActivityIndicator = NetworkActivityIndicator.sharedInstance()
+    fileprivate let alertsReceiver = AlertReceiverSelector.defaultReceiver
     
     var cancelled: Bool = false
     
-    func executeRequest<T: RequestType>(request: T, onComplete: (T.ResultType -> ())?, onError: (NSError -> ())?) {
+    func executeRequest<T: RequestType>(_ request: T, onComplete: ((T.ResultType) -> ())?, onError: ((NSError) -> ())?) {
         
         let currentEnvironment = VEnvironmentManager.sharedInstance().currentEnvironment
         let requestContext = RequestContext(environment: currentEnvironment)
@@ -45,17 +45,17 @@ class MainRequestExecutor: RequestExecutorType {
         let authenticationContext = AuthenticationContext()
         
         networkActivityIndicator.start()
-        let executeSemphore = dispatch_semaphore_create(0)
+        let executeSemphore = DispatchSemaphore(value: 0)
         
         let requestWithAlertsParsing = AlertsRequestDecorator(request: request)
-        requestWithAlertsParsing.execute(
+        let _ = requestWithAlertsParsing.execute(
             baseURL: baseURL,
             requestContext: requestContext,
             authenticationContext: authenticationContext,
             callback: { (result, error) in
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     defer {
-                        dispatch_semaphore_signal(executeSemphore)
+                        executeSemphore.signal()
                     }
 
                     guard !self.cancelled else {
@@ -64,7 +64,7 @@ class MainRequestExecutor: RequestExecutorType {
 
                     if let nsError = self.convertError(error) {
                         self.error = nsError
-                        self.handle(nsError, with: request.urlRequest)
+                        let _ = self.handle(nsError, with: request.urlRequest)
                         onError?(nsError)
                     } else if let result = result {
                         if !result.alerts.isEmpty {
@@ -75,11 +75,11 @@ class MainRequestExecutor: RequestExecutorType {
                 }
             }
         )
-        dispatch_semaphore_wait(executeSemphore, DISPATCH_TIME_FOREVER)
+        let _ = executeSemphore.wait(timeout: DispatchTime.distantFuture)
         networkActivityIndicator.stop()
     }
     
-    private func convertError(error: ErrorType?) -> NSError? {
+    fileprivate func convertError(_ error: Error?) -> NSError? {
         guard let error = error else {
             return nil
         }

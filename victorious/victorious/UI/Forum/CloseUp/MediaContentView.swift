@@ -7,16 +7,17 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 protocol MediaContentViewDelegate: class {
     /// Tells the delegate that a particular content is loaded.
-    func mediaContentView(mediaContentView: MediaContentView, didFinishLoadingContent content: Content)
+    func mediaContentView(_ mediaContentView: MediaContentView, didFinishLoadingContent content: Content)
 
     /// A callback that tells the delegate that the piece of content has finished playing.
-    func mediaContentView(mediaContentView: MediaContentView, didFinishPlaybackOfContent content: Content)
+    func mediaContentView(_ mediaContentView: MediaContentView, didFinishPlaybackOfContent content: Content)
     
     /// A callback that tells the delegate that a URL has been selected from a link in the content's text.
-    func mediaContentView(mediaContentView: MediaContentView, didSelectLinkURL url: NSURL)
+    func mediaContentView(_ mediaContentView: MediaContentView, didSelectLinkURL url: URL)
 }
 
 enum FillMode {
@@ -27,7 +28,7 @@ enum FillMode {
 /// Displays an image/video/GIF/Youtube video/text post upon setting the content property.
 class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGestureRecognizerDelegate, Presentable {
     struct AnimationConstants {
-        static let mediaContentViewAnimationDuration = NSTimeInterval(0.75)
+        static let mediaContentViewAnimationDuration = TimeInterval(0.75)
     }
 
     // MARK: - Public
@@ -38,30 +39,30 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
 
     // MARK: - Private
 
-    private struct Constants {
+    fileprivate struct Constants {
         static let textPostLineSpacing: CGFloat = 2.0
         static let maxLineCount = 4
-        static let textAlignment = NSTextAlignment.Center
+        static let textAlignment = NSTextAlignment.center
         static let minimumScaleFactor: CGFloat = 0.8
         static let textPostPadding = 25
-        static let defaultTextColor = UIColor.whiteColor()
-        static let defaultTextFont = UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline)
+        static let defaultTextColor = UIColor.white
+        static let defaultTextFont = UIFont.preferredFont(forTextStyle: UIFontTextStyle.subheadline)
         static let imageReloadThreshold = CGFloat(0.75)
     }
 
-    private let dependencyManager: VDependencyManager
+    fileprivate let dependencyManager: VDependencyManager
 
-    private var videoCoordinator: VContentVideoPlayerCoordinator?
+    fileprivate var videoCoordinator: VContentVideoPlayerCoordinator?
 
-    private let spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+    fileprivate let spinner = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
     
-    private let shouldSyncOnReappearance: Bool
+    fileprivate let shouldSyncOnReappearance: Bool
 
-    private lazy var imageView = {
+    fileprivate lazy var imageView = {
         return UIImageView()
     }()
 
-    private lazy var textPostLabel: LinkLabel = {
+    fileprivate lazy var textPostLabel: LinkLabel = {
         let label = LinkLabel()
         label.textAlignment = Constants.textAlignment
         label.numberOfLines = Constants.maxLineCount
@@ -70,11 +71,11 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         return label
     }()
 
-    private lazy var videoContainerView = {
+    fileprivate lazy var videoContainerView = {
         return VPassthroughContainerView()
     }()
     
-    private lazy var singleTapRecognizer: UITapGestureRecognizer = {
+    fileprivate lazy var singleTapRecognizer: UITapGestureRecognizer = {
         let singleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(onContentTap))
         singleTapRecognizer.numberOfTapsRequired = 1
         singleTapRecognizer.delegate = self
@@ -82,11 +83,11 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         return singleTapRecognizer
     }()
 
-    private var allowsVideoControls: Bool
+    fileprivate var allowsVideoControls: Bool
 
-    private var fillMode: FillMode
+    fileprivate var fillMode: FillMode
 
-    private var lastFrameSize = CGSizeZero
+    fileprivate var lastFrameSize = CGSize.zero
     
     // MARK: - Life Cycle
 
@@ -113,20 +114,20 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         fatalError("Cannot create MCV from a Storyboard or NIB.")
     }
     
-    private func setup() {
+    fileprivate func setup() {
         clipsToBounds = true
-        backgroundColor = .clearColor()
-        imageView.contentMode = (fillMode == .fit) ? .ScaleAspectFit : .ScaleAspectFill
+        backgroundColor = .clear
+        imageView.contentMode = (fillMode == .fit) ? .scaleAspectFit : .scaleAspectFill
         
         addSubview(imageView)
         
-        videoContainerView.backgroundColor = .clearColor()
+        videoContainerView.backgroundColor = .clear
         addSubview(videoContainerView)
         
         addSubview(textPostLabel)
   
         addSubview(spinner)
-        sendSubviewToBack(spinner)
+        sendSubview(toBack: spinner)
         
         addGestureRecognizer(singleTapRecognizer)
     }
@@ -153,7 +154,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     }
 
     /// Can we seek ahead into the item with the current seekAheadTime stored in the content.
-    private var seekableWithinBounds: Bool {
+    fileprivate var seekableWithinBounds: Bool {
         // Since the youtube player will return duration = 0 for live streams, we check if the 
         // duration is 0. If that is the case, we return true for seekable.
         if content.assets.first?.videoSource == .youtube && videoCoordinator?.duration == 0 {
@@ -161,11 +162,11 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         }
 
         // Duration will be NaN if the item hasn't loaded yet.
-        guard let videoCoordinator = videoCoordinator where !videoCoordinator.duration.isNaN else {
+        guard let videoCoordinator = videoCoordinator , !videoCoordinator.duration.isNaN else {
             return false
         }
 
-        return videoCoordinator.duration >= content.seekAheadTime
+        return videoCoordinator.duration >= content.seekAheadTime ?? 0
     }
 
     func loadContent() {
@@ -187,11 +188,11 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     
     // MARK: - Managing preview image
     
-    private func setUpImageView(from imageAsset: ImageAssetModel) {
+    fileprivate func setUpImageView(from imageAsset: ImageAssetModel) {
         tearDownVideoPlayer()
         tearDownTextLabel()
         
-        imageView.hidden = false
+        imageView.isHidden = false
         
         imageView.getImageAsset(imageAsset) { [weak self] result in
             switch result {
@@ -204,23 +205,23 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         }
     }
     
-    private func finishedLoadingContent() {
+    fileprivate func finishedLoadingContent() {
         spinner.stopAnimating()
         delegate?.mediaContentView(self, didFinishLoadingContent: content)
     }
     
-    private func tearDownImageView() {
-        imageView.hidden = true
+    fileprivate func tearDownImageView() {
+        imageView.isHidden = true
         imageView.image = nil
     }
     
     // MARK: - Managing video
     
-    private func setUpVideoPlayer(for content: Content) {
+    fileprivate func setUpVideoPlayer(for content: Content) {
         tearDownTextLabel()
         tearDownImageView()
         
-        videoContainerView.hidden = false
+        videoContainerView.isHidden = false
         videoCoordinator?.tearDown()
         videoCoordinator = VContentVideoPlayerCoordinator(content: content)
         videoCoordinator?.setupVideoPlayer(in: videoContainerView)
@@ -235,15 +236,15 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         setNeedsLayout()
     }
     
-    private func tearDownVideoPlayer() {
-        videoContainerView.hidden = true
+    fileprivate func tearDownVideoPlayer() {
+        videoContainerView.isHidden = true
         videoCoordinator?.tearDown()
         videoCoordinator = nil
     }
     
     // MARK: - Managing Text 
     
-    private func setUpTextLabel() {
+    fileprivate func setUpTextLabel() {
         tearDownVideoPlayer()
         tearDownImageView()
         
@@ -252,19 +253,19 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
         textPostLabel.textColor = textPostDependency?.textPostColor ?? Constants.defaultTextColor
         textPostLabel.tintColor = textPostDependency?.linkColor
         
-        textPostLabel.hidden = true //Hide while we set up the view for the next post
+        textPostLabel.isHidden = true //Hide while we set up the view for the next post
 
         guard let url = textPostDependency?.textPostBackgroundImageURL else {
             return
         }
 
-        imageView.sd_setImageWithURL(url) { [weak self] _ in
+        imageView.sd_setImage(with: url as URL) { [weak self] _ in
             self?.textPostLabel.detectUserTags(for: self?.content) { [weak self] url in
                 guard let strongSelf = self else {
                     return
                 }
                 
-                strongSelf.delegate?.mediaContentView(strongSelf, didSelectLinkURL: url)
+                strongSelf.delegate?.mediaContentView(strongSelf, didSelectLinkURL: url as URL)
             }
             
             guard let text = self?.content.text else {
@@ -272,14 +273,14 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
             }
             
             self?.textPostLabel.text = text
-            self?.textPostLabel.hidden = false
-            self?.imageView.hidden = false
+            self?.textPostLabel.isHidden = false
+            self?.imageView.isHidden = false
             self?.finishedLoadingContent()
         }
     }
     
-    private func tearDownTextLabel() {
-        textPostLabel.hidden = true
+    fileprivate func tearDownTextLabel() {
+        textPostLabel.isHidden = true
         textPostLabel.text = ""
     }
     
@@ -311,7 +312,7 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
     
     // MARK: - UIGestureRecognizerDelegate
     
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         // This allows the owner of the view to add its own tap gesture recognizer.
         return true
     }
@@ -331,23 +332,23 @@ class MediaContentView: UIView, ContentVideoPlayerCoordinatorDelegate, UIGesture
 
 private extension VDependencyManager {
     var textPostDependency: VDependencyManager? {
-        return childDependencyForKey("textPost")
+        return childDependency(forKey: "textPost")
     }
     
     var textPostFont: UIFont? {
-        return fontForKey("font.textpost")
+        return font(forKey: "font.textpost")
     }
     
     var textPostColor: UIColor? {
-        return colorForKey("color.textpost")
+        return color(forKey: "color.textpost")
     }
     
     var linkColor: UIColor? {
-        return colorForKey("color.link")
+        return color(forKey: "color.link")
     }
     
     var textPostBackgroundImageURL: NSURL? {
-        guard let urlString = stringForKey("backgroundImage.textpost") else {
+        guard let urlString = string(forKey: "backgroundImage.textpost") else {
             return nil
         }
         

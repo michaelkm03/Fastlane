@@ -16,8 +16,8 @@ class ShowTutorialsOperationTests: XCTestCase {
 
         let viewController = UIViewController()
         let dependencyManager = VDependencyManager(parentManager: nil, configuration: nil, dictionaryOfClassesByTemplateName: nil)
-        let showTutorialOperation = ShowTutorialsOperation(originViewController: viewController, dependencyManager: dependencyManager)
-        var userDefaults = NSUserDefaults(suiteName: NSUUID().UUIDString)!
+        let showTutorialOperation = ShowTutorialsOperation(originViewController: viewController, dependencyManager: dependencyManager!)
+        var userDefaults = UserDefaults(suiteName: UUID().uuidString)!
         
         // We should only show the turorial post 5.0.
         XCTAssertFalse(showTutorialOperation.shouldShowTutorials(AppVersion(versionNumber: "4.0"), userDefaults: userDefaults))
@@ -26,7 +26,7 @@ class ShowTutorialsOperationTests: XCTestCase {
         XCTAssertTrue(showTutorialOperation.shouldShowTutorials(AppVersion(versionNumber: "5.0"), userDefaults: userDefaults))
         XCTAssertFalse(showTutorialOperation.shouldShowTutorials(AppVersion(versionNumber: "5.0"), userDefaults: userDefaults))
 
-        userDefaults = NSUserDefaults(suiteName: NSUUID().UUIDString)!
+        userDefaults = UserDefaults(suiteName: UUID().uuidString)!
         // For users that start in a 5.X world We should show if they have never seen it.
         XCTAssertTrue(showTutorialOperation.shouldShowTutorials(AppVersion(versionNumber: "5.1"), userDefaults: userDefaults))
         

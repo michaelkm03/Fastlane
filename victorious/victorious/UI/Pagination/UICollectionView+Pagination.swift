@@ -9,7 +9,7 @@
 import UIKit
 
 extension UICollectionView {
-    func v_applyChangeInSection(section: NSInteger, from oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
+    func v_applyChangeInSection(_ section: NSInteger, from oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
         self.v_applyChangeInSection(section, from: oldValue, to: newValue, animated: false, completion: nil)
     }
     
@@ -29,11 +29,11 @@ extension UICollectionView {
     }
     
     /// Inserts and/or removes index paths based on difference between arguments `oldValue` and `newValue`.
-    func v_applyChangeInSection(section: NSInteger, from oldValue: NSOrderedSet, to newValue: NSOrderedSet, animated: Bool, completion: (() -> ())? = nil) {
+    func v_applyChangeInSection(_ section: NSInteger, from oldValue: NSOrderedSet, to newValue: NSOrderedSet, animated: Bool, completion: (() -> ())? = nil) {
         
         guard !(newValue.count == 0 || oldValue.count == 0) else {
             let performChangesBlock = {
-                self.reloadSections( NSIndexSet(index: section) )
+                self.reloadSections( IndexSet(integer: section) )
             }
             if (animated && oldValue.count > 0) || (animated && newValue.count == 1) {
                 performChangesBlock()
@@ -44,23 +44,23 @@ extension UICollectionView {
             return
         }
         
-        var insertedIndexPaths = [NSIndexPath]()
-        for item in newValue where !oldValue.containsObject( item ) {
-            let index = newValue.indexOfObject( item )
-            insertedIndexPaths.append( NSIndexPath(forItem: index, inSection: section) )
+        var insertedIndexPaths = [IndexPath]()
+        for item in newValue where !oldValue.contains( item ) {
+            let index = newValue.index( of: item )
+            insertedIndexPaths.append( IndexPath(item: index, section: section) )
         }
         
-        var deletedIndexPaths = [NSIndexPath]()
-        for item in oldValue where !newValue.containsObject( item ) {
-            let index = oldValue.indexOfObject( item )
-            deletedIndexPaths.append( NSIndexPath(forItem: index, inSection: section) )
+        var deletedIndexPaths = [IndexPath]()
+        for item in oldValue where !newValue.contains( item ) {
+            let index = oldValue.index( of: item )
+            deletedIndexPaths.append( IndexPath(item: index, section: section) )
         }
         
         let performChangesBlock = {
             self.performBatchUpdates(
                 {
-                    self.insertItemsAtIndexPaths( insertedIndexPaths )
-                    self.deleteItemsAtIndexPaths( deletedIndexPaths )
+                    self.insertItems( at: insertedIndexPaths )
+                    self.deleteItems( at: deletedIndexPaths )
                 },
                 completion: { _ in
                     completion?()

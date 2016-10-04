@@ -49,8 +49,7 @@ xcodebuild clean \
    -destination "$DESTINATION"
 
 # Test
-xcodebuild GCC_TREAT_WARNINGS_AS_ERRORS=YES \
-    test \
+xcodebuild test \
     DownloadTemplate=no \
     -workspace victorious/victorious.xcworkspace \
     -scheme $SCHEME \

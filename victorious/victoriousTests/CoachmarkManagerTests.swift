@@ -17,22 +17,22 @@ private class DummyDisplayer: CoachmarkDisplayer {
         return "578d299a4323f"
     }
     
-    private func highlightFrame(forIdentifier identifier: String) -> CGRect? {
+    fileprivate func highlightFrame(forIdentifier identifier: String) -> CGRect? {
         return nil
     }
     
-    private func presentCoachmark(from viewController: CoachmarkViewController) {}
+    fileprivate func presentCoachmark(from viewController: CoachmarkViewController) {}
     
-    private func triggerCoachmark(withContext context: String?) {}
+    fileprivate func triggerCoachmark(withContext context: String?) {}
 }
 
 class CoachmarkManagerTests: XCTestCase {
     func createTestManager() -> CoachmarkManager  {
-       let file = NSBundle(forClass: CoachmarkManagerTests.self).pathForResource("coachmarks", ofType: "json")
+       let file = Bundle(for: CoachmarkManagerTests.self).path(forResource: "coachmarks", ofType: "json")
         
-        var configuration = [NSObject: AnyObject]()
+        var configuration = [AnyHashable: Any]()
         do {
-            configuration =  try NSJSONSerialization.JSONObjectWithData(NSData(contentsOfFile: file!)!, options: []) as! [NSObject: AnyObject]
+            configuration =  try JSONSerialization.jsonObject(with: Data(contentsOf: URL(fileURLWithPath: file!)), options: []) as! [AnyHashable: Any]
         }
         catch {
             XCTFail("Error parsing coachmark JSON")
@@ -54,7 +54,7 @@ class CoachmarkManagerTests: XCTestCase {
         let initialShownCoachmarks = manager.fetchShownCoachmarkIDs()
         XCTAssertEqual(initialShownCoachmarks.count, 0)
         
-        manager.setupCoachmark(in: DummyDisplayer(), withContainerView: UIView(frame: CGRectZero))
+        manager.setupCoachmark(in: DummyDisplayer(), withContainerView: UIView(frame: CGRect.zero))
         
         let finalShownCoachmarks = manager.fetchShownCoachmarkIDs()
         XCTAssertEqual(finalShownCoachmarks.count, 1)

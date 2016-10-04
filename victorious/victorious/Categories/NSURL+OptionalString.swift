@@ -8,14 +8,13 @@
 
 import Foundation
 
-extension NSURL {
+extension URL {
     
     /// Allows initialization with an optional string that returns an optional NSURL
     /// if nil or if the default NSURL initialize with non-optional string fails
     /// for any other of the usual reasons.
-    convenience init?(v_string string: String?) {
-        guard let string = string where !string.characters.isEmpty else {
-            self.init(string: "")
+    init?(v_string string: String?) {
+        guard let string = string , !string.characters.isEmpty else {
             return nil
         }
         self.init(string: string)

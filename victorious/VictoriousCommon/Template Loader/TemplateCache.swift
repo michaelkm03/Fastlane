@@ -11,10 +11,10 @@ import Foundation
 private let buildNumberDictionaryKey = "build"
 private let templateDataDictionaryKey = "template"
 
-@objc public class TemplateCache: NSObject {
-    public let dataCache: VDataCache
-    public let environment: VEnvironment
-    public let buildNumber: String
+@objc open class TemplateCache: NSObject {
+    open let dataCache: VDataCache
+    open let environment: VEnvironment
+    open let buildNumber: String
     
     public init(dataCache: VDataCache, environment: VEnvironment, buildNumber: String) {
         self.dataCache = dataCache
@@ -22,27 +22,27 @@ private let templateDataDictionaryKey = "template"
         self.buildNumber = buildNumber
     }
     
-    public func cachedTemplateData() -> NSData? {
-        if let cachedData = dataCache.cachedDataForID(cacheIDForEnvironment(environment)),
-            let infoDictionary = NSKeyedUnarchiver.unarchiveObjectWithData(cachedData) as? [String: AnyObject],
+    open func cachedTemplateData() -> Data? {
+        if let cachedData = dataCache.cachedData(for: cacheIDForEnvironment(environment) as VDataCacheID),
+            let infoDictionary = NSKeyedUnarchiver.unarchiveObject(with: cachedData) as? [String: AnyObject],
             let cachedBuildNumber = infoDictionary[buildNumberDictionaryKey] as? String
-            where cachedBuildNumber == buildNumber {
-                return infoDictionary[templateDataDictionaryKey] as? NSData
+            , cachedBuildNumber == buildNumber {
+                return infoDictionary[templateDataDictionaryKey] as? Data
         }
         return nil
     }
     
-    public func cacheTemplateData(templateData: NSData) throws {
-        let infoDictionary = [buildNumberDictionaryKey: buildNumber, templateDataDictionaryKey: templateData]
-        let data = NSKeyedArchiver.archivedDataWithRootObject(infoDictionary)
-        try dataCache.cacheData(data, forID: cacheIDForEnvironment(environment))
+    open func cacheTemplateData(_ templateData: Data) throws {
+        let infoDictionary = [buildNumberDictionaryKey: buildNumber, templateDataDictionaryKey: templateData] as [String : Any]
+        let data = NSKeyedArchiver.archivedData(withRootObject: infoDictionary)
+        try dataCache.cacheData(data, for: cacheIDForEnvironment(environment) as VDataCacheID)
     }
     
-    public func clearTemplateData() throws {
-        try dataCache.removeCachedDataForID(cacheIDForEnvironment(environment))
+    open func clearTemplateData() throws {
+        try dataCache.removeCachedData(for: cacheIDForEnvironment(environment) as VDataCacheID)
     }
     
-    private func cacheIDForEnvironment(environment: VEnvironment) -> String {
+    fileprivate func cacheIDForEnvironment(_ environment: VEnvironment) -> String {
         return "template.\(environment.name).data"
     }
 }

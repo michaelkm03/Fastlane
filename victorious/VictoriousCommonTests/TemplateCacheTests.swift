@@ -11,9 +11,9 @@ import XCTest
 
 class TemplateCacheTests: XCTestCase {
 
-    private let environment = VEnvironment(name: "Mock", baseURL: NSURL(string: "http://www.example.com")!, appID: 99)
-    private let buildNumber = "99"
-    private var templateCache: TemplateCache!
+    fileprivate let environment = VEnvironment(name: "Mock", baseURL: URL(string: "http://www.example.com")!, appID: 99)
+    fileprivate let buildNumber = "99"
+    fileprivate var templateCache: TemplateCache!
     
     override func setUp() {
         super.setUp()
@@ -21,7 +21,7 @@ class TemplateCacheTests: XCTestCase {
     }
     
     func testCache() {
-        let mockTemplateData = "Hello World".dataUsingEncoding(NSUTF8StringEncoding)!
+        let mockTemplateData = "Hello World".data(using: String.Encoding.utf8)!
         
         do {
             try templateCache.clearTemplateData()
@@ -35,7 +35,7 @@ class TemplateCacheTests: XCTestCase {
     }
     
     func testClearCache() {
-        let mockTemplateData = "Hello World".dataUsingEncoding(NSUTF8StringEncoding)!
+        let mockTemplateData = "Hello World".data(using: String.Encoding.utf8)!
         
         do {
             try templateCache.cacheTemplateData(mockTemplateData)
@@ -49,7 +49,7 @@ class TemplateCacheTests: XCTestCase {
     }
     
     func testBuildNumberChanged() {
-        let mockTemplateData = "Hello World".dataUsingEncoding(NSUTF8StringEncoding)!
+        let mockTemplateData = "Hello World".data(using: String.Encoding.utf8)!
         
         do {
             try templateCache.cacheTemplateData(mockTemplateData)

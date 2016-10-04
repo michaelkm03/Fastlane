@@ -12,11 +12,11 @@ public struct TemplateRequest: RequestType {
     
     public init() { }
     
-    public var urlRequest: NSURLRequest {
-        return NSURLRequest(URL: NSURL(string: "/api/template")!)
+    public var urlRequest: URLRequest {
+        return URLRequest(url: URL(string: "/api/template")!)
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> NSData {
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> Data {
         return responseData
     }
 }

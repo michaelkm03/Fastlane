@@ -10,9 +10,8 @@ import Foundation
 
 /// Populates a `HashtagBarCell`
 struct HashtagBarCellPopulator {
-    
     /// Populates a `HashtagBarCell` based on the provided tag
-    static func populateCell(cell: HashtagBarCell, withTag tag: String) {
+    static func populateCell(_ cell: HashtagBarCell, withTag tag: String) {
         
         cell.label.text = "#\(tag)"
         cell.label.numberOfLines = 1

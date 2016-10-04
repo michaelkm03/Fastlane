@@ -12,7 +12,7 @@ import AVFoundation
 /// An object that manages the propery system audio settings for a video player,
 /// accessible through its singleton instance (see `sharedInstance`).
 @objc class VAudioManager: NSObject {
-    private static var instance: VAudioManager?
+    fileprivate static var instance: VAudioManager?
     
     class func sharedInstance() -> VAudioManager {
         if let instance = VAudioManager.instance {
@@ -26,7 +26,7 @@ import AVFoundation
     }
     
     /// Updates the system audio settings for a video whose focuse playback has begun.
-    func focusedPlaybackDidBegin(muted muted: Bool) {
+    func focusedPlaybackDidBegin(muted: Bool) {
         let category = muted ? AVAudioSessionCategoryAmbient : AVAudioSessionCategoryPlayback
         do {
             try AVAudioSession.sharedInstance().setCategory(category)

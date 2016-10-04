@@ -10,18 +10,18 @@ import Foundation
 import UIKit
 
 class CoachmarkDismissAnimationController: NSObject, UIViewControllerAnimatedTransitioning {
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return 0.3
     }
     
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         guard
-            let originVC = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey) as? CoachmarkViewController
+            let originVC = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from) as? CoachmarkViewController
         else {
             return
         }
         
-        UIView.animateWithDuration(transitionDuration(transitionContext), animations: {
+        UIView.animate(withDuration: transitionDuration(using: transitionContext), animations: {
             originVC.view.alpha = 0.0
         }) { didFinish in
             transitionContext.completeTransition(didFinish)

@@ -33,7 +33,7 @@ class TutorialCollectionViewDataSourceTests: XCTestCase, ForumEventReceiver {
             dependencyManager: VDependencyManager(dictionary: [:])
         )!]
         
-        let cell = dataSource.collectionView(collectionView, cellForItemAtIndexPath: NSIndexPath(forItem: 0, inSection: 0)) as! ChatFeedMessageCell
+        let cell = dataSource.collectionView(collectionView, cellForItemAt: IndexPath(item: 0, section: 0)) as! ChatFeedMessageCell
         XCTAssertFalse(cell.showsReplyButton)
     }
 }

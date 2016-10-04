@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 /// A wrapper around a `Content` that contains extra information specific to the chat feed.
 struct ChatFeedContent {

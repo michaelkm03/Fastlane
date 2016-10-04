@@ -8,7 +8,7 @@
 
 import UIKit
 
-typealias VIPFlowCompletion = (Bool -> ())
+typealias VIPFlowCompletion = ((Bool) -> ())
 
 class VIPFlowNavigationController: UINavigationController, VIPGateViewControllerDelegate, VIPSuccessViewControllerDelegate, VBackgroundContainer {
     let animationDelegate: CrossFadingNavigationControllerDelegate = {
@@ -17,16 +17,16 @@ class VIPFlowNavigationController: UINavigationController, VIPGateViewController
         return delegate
     }()
     var completionBlock: VIPFlowCompletion?
-    @objc private(set) var dependencyManager: VDependencyManager!
-    private var gateDependencyManager: VDependencyManager!
-    private var successDependencyManager: VDependencyManager!
+    @objc fileprivate(set) var dependencyManager: VDependencyManager!
+    fileprivate var gateDependencyManager: VDependencyManager!
+    fileprivate var successDependencyManager: VDependencyManager!
     
-    class func newWithDependencyManager(dependencyManager: VDependencyManager) -> VIPFlowNavigationController? {
+    class func new(withDependencyManager dependencyManager: VDependencyManager) -> VIPFlowNavigationController? {
         guard
             dependencyManager.isVIPEnabled == true,
             let gateDependencyManager = dependencyManager.paygateDependency,
-            let successDependencyManager = dependencyManager.successDependency
-            where VCurrentUser.user != nil
+            let successDependencyManager = dependencyManager.successDependency,
+            VCurrentUser.user != nil
         else {
             return nil
         }
@@ -35,24 +35,24 @@ class VIPFlowNavigationController: UINavigationController, VIPGateViewController
         vipFlow.dependencyManager = dependencyManager
         vipFlow.gateDependencyManager = gateDependencyManager
         vipFlow.successDependencyManager = successDependencyManager
-        let vipGate = VIPGateViewController.newWithDependencyManager(gateDependencyManager)
+        let vipGate = VIPGateViewController.new(withDependencyManager: gateDependencyManager)
         vipGate.delegate = vipFlow
-        vipFlow.showViewController(vipGate, sender: nil)
+        vipFlow.show(vipGate, sender: nil)
         return vipFlow
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        gateDependencyManager?.addBackgroundToBackgroundHost(self)
+        gateDependencyManager?.addBackground(toBackgroundHost: self)
         delegate = animationDelegate
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         dependencyManager.trackViewWillAppear(for: self)
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         dependencyManager.trackViewWillDisappear(for: self)
     }
@@ -65,13 +65,13 @@ class VIPFlowNavigationController: UINavigationController, VIPGateViewController
     
     // MARK: - VIPGateViewControllerDelegate
     
-    func vipGateExitedWithSuccess(success: Bool) {
+    func vipGateExitedWithSuccess(_ success: Bool) {
         if success {
             //Transition to success state
             animationDelegate.fadingEnabled = true
-            let successViewController = VIPSuccessViewController.newWithDependencyManager(successDependencyManager)
+            let successViewController = VIPSuccessViewController.new(withDependencyManager: successDependencyManager)
             successViewController.delegate = self
-            showViewController(successViewController, sender: nil)
+            show(successViewController, sender: nil)
         }
         else {
             dismissAndCallCompletionWithSuccess(success)
@@ -80,36 +80,35 @@ class VIPFlowNavigationController: UINavigationController, VIPGateViewController
     
     // MARK: - VIPSuccessViewControllerDelegate
     
-    func successViewControllerFinished(successViewController: VIPSuccessViewController) {
+    func successViewControllerFinished(_ successViewController: VIPSuccessViewController) {
         dismissAndCallCompletionWithSuccess(true)
     }
     
     // MARK: - Delegate notification
     
-    func dismissAndCallCompletionWithSuccess(success: Bool) {
-        
-        presentingViewController?.dismissViewControllerAnimated(true) { [weak self] in
+    func dismissAndCallCompletionWithSuccess(_ success: Bool) {
+        presentingViewController?.dismiss(animated: true) { [weak self] in
             self?.completionBlock?(success)
         }
     }
     
     // MARK: - rotation management
     
-    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        return .Portrait
+    override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
+        return .portrait
     }
 }
 
 private extension VDependencyManager {
     var backgroundImage: UIImage? {
-        return imageForKey("backgroundImage")
+        return image(forKey: "backgroundImage")
     }
     
     var successDependency: VDependencyManager? {
-        return childDependencyForKey("success")
+        return childDependency(forKey: "success")
     }
     
     var paygateDependency: VDependencyManager? {
-        return childDependencyForKey("vipPaygate")
+        return childDependency(forKey: "vipPaygate")
     }
 }

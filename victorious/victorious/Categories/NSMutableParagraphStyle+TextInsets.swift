@@ -9,7 +9,7 @@
 import Foundation
 
 extension NSMutableParagraphStyle {
-    func v_setTextInsets(insets: UIEdgeInsets) {
+    func v_setTextInsets(_ insets: UIEdgeInsets) {
         firstLineHeadIndent = insets.left
         headIndent = insets.left
         tailIndent = -insets.right

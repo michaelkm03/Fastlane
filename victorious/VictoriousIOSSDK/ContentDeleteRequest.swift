@@ -9,14 +9,14 @@
 import UIKit
 
 public struct ContentDeleteRequest: RequestType {
-    public var urlRequest: NSURLRequest {
-        let request = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "POST"
+    public var urlRequest: URLRequest {
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
         request.vsdk_addURLEncodedFormPost(["sequence_id": contentID])
         return request
     }
     
-    private let url: NSURL
+    private let url: URL
     private let contentID: Content.ID
     
     public init?(apiPath: APIPath, contentID: Content.ID) {
@@ -29,5 +29,9 @@ public struct ContentDeleteRequest: RequestType {
         
         self.url = url
         self.contentID = contentID
+    }
+    
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws {
+        // Protocol conformance
     }
 }

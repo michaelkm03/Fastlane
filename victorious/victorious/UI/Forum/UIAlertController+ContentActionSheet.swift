@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 extension UIAlertController {
     /// Creates an alert controller configured to show actions to take on an individual piece of content like flagging
@@ -14,17 +15,18 @@ extension UIAlertController {
     ///
     /// The provided content must have an ID.
     ///
-    convenience init?(actionsFor content: Content, dependencyManager: VDependencyManager, completion: (action: ContentAlertAction) -> Void) {
+    convenience init?(actionsFor content: Content, dependencyManager: VDependencyManager, completion: @escaping (_ action: ContentAlertAction) -> Void) {
+        
         guard let id = content.id else {
             return nil
         }
         
-        self.init(title: nil, message: nil, preferredStyle: .ActionSheet)
+        self.init(title: nil, message: nil, preferredStyle: .actionSheet)
         
         if content.isLikedByCurrentUser {
             addAction(UIAlertAction(
                 title: dependencyManager.unlikeTitle,
-                style: .Default,
+                style: .default,
                 handler: { _ in
                     guard
                         let apiPath = dependencyManager.contentUnupvoteAPIPath,
@@ -35,7 +37,7 @@ extension UIAlertController {
                     
                     operation.queue { result in
                         switch result {
-                            case .success(_): completion(action: .unlike)
+                            case .success(_): completion(.unlike)
                             case .failure(_), .cancelled: break
                         }
                     }
@@ -45,7 +47,7 @@ extension UIAlertController {
         else {
             addAction(UIAlertAction(
                 title: dependencyManager.likeTitle,
-                style: .Default,
+                style: .default,
                 handler: { _ in
                     guard
                         let apiPath = dependencyManager.contentUpvoteAPIPath,
@@ -56,7 +58,7 @@ extension UIAlertController {
                     
                     operation.queue { result in
                         switch result {
-                            case .success(_): completion(action: .like)
+                            case .success(_): completion(.like)
                             case .failure(_), .cancelled: break
                         }
                     }
@@ -67,7 +69,7 @@ extension UIAlertController {
         if content.wasCreatedByCurrentUser {
             addAction(UIAlertAction(
                 title: dependencyManager.deleteTitle,
-                style: .Destructive,
+                style: .destructive,
                 handler: { _ in
                     guard
                         let apiPath = dependencyManager.contentDeleteAPIPath,
@@ -78,7 +80,7 @@ extension UIAlertController {
                     
                     operation.queue { result in
                         switch result {
-                            case .success(_): completion(action: .delete)
+                            case .success(_): completion(.delete)
                             case .failure(_), .cancelled: break
                         }
                     }
@@ -88,7 +90,7 @@ extension UIAlertController {
         else {
             addAction(UIAlertAction(
                 title: dependencyManager.flagTitle,
-                style: .Destructive,
+                style: .destructive,
                 handler: { _ in
                     guard
                         let apiPath = dependencyManager.contentFlagAPIPath,
@@ -99,7 +101,7 @@ extension UIAlertController {
                     
                     operation.queue { result in
                         switch result {
-                            case .success(_): completion(action: .flag)
+                            case .success(_): completion(.flag)
                             case .failure(_), .cancelled: break
                         }
                     }
@@ -109,9 +111,9 @@ extension UIAlertController {
         
         addAction(UIAlertAction(
             title: NSLocalizedString("Cancel", comment: ""),
-            style: .Cancel,
+            style: .cancel,
             handler: { _ in
-                completion(action: .cancel)
+                completion(.cancel)
             }
         ))
     }
@@ -123,35 +125,35 @@ enum ContentAlertAction {
 }
 
 private extension VDependencyManager {
-    private var contentUnupvoteAPIPath: APIPath? {
-        return networkResources?.apiPathForKey("contentUnupvoteURL")
+    var contentUnupvoteAPIPath: APIPath? {
+        return networkResources?.apiPath(forKey: "contentUnupvoteURL")
     }
     
-    private var contentUpvoteAPIPath: APIPath? {
-        return networkResources?.apiPathForKey("contentUpvoteURL")
+    var contentUpvoteAPIPath: APIPath? {
+        return networkResources?.apiPath(forKey: "contentUpvoteURL")
     }
     
-    private var contentDeleteAPIPath: APIPath? {
-        return networkResources?.apiPathForKey("contentDeleteURL")
+    var contentDeleteAPIPath: APIPath? {
+        return networkResources?.apiPath(forKey: "contentDeleteURL")
     }
     
-    private var contentFlagAPIPath: APIPath? {
-        return networkResources?.apiPathForKey("contentFlagURL")
+    var contentFlagAPIPath: APIPath? {
+        return networkResources?.apiPath(forKey: "contentFlagURL")
     }
     
-    private var likeTitle: String {
-        return childDependencyForKey("actions")?.stringForKey("upvote.text") ?? "LIKE"
+    var likeTitle: String {
+        return childDependency(forKey: "actions")?.string(forKey: "upvote.text") ?? "LIKE"
     }
     
-    private var unlikeTitle: String {
-        return childDependencyForKey("actions")?.stringForKey("unupvote.text") ?? "UNLIKE"
+    var unlikeTitle: String {
+        return childDependency(forKey: "actions")?.string(forKey: "unupvote.text") ?? "UNLIKE"
     }
     
-    private var flagTitle: String {
-        return childDependencyForKey("actions")?.stringForKey("flag.text") ?? "Report Post"
+    var flagTitle: String {
+        return childDependency(forKey: "actions")?.string(forKey: "flag.text") ?? "Report Post"
     }
     
-    private var deleteTitle: String {
-        return childDependencyForKey("actions")?.stringForKey("delete.text") ?? "Delete Post"
+    var deleteTitle: String {
+        return childDependency(forKey: "actions")?.string(forKey: "delete.text") ?? "Delete Post"
     }
 }
