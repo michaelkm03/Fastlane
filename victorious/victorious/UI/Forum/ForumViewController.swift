@@ -639,6 +639,7 @@ private extension VDependencyManager {
     }
     
     var endVIPAPIPath: APIPath? {
-        return networkResources?.apiPathForKey("end.vip.event.URL")
+        let appID = VEnvironmentManager.sharedInstance().currentEnvironment.appID.stringValue
+        return networkResources?.apiPathForKey("end.vip.event.URL", macroReplacements: ["%%APP_ID%%": appID])
     }
 }
