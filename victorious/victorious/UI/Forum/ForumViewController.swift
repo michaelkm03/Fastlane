@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 private struct Constants {
     static let coachmarkDisplayDelay = 1.0
@@ -100,12 +101,15 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     private var publisher: ContentPublisher?
     
+    /// The ID of the chat room that the user is currently in, or nil if the user is not in a chat room.
+    private var activeChatRoomID: ChatRoom.ID?
+    
     private func publish(content: Content) {
         guard let width = chatFeed?.collectionView.frame.width else {
             return
         }
         
-        publisher?.publish(content, withWidth: width)
+        publisher?.publish(content, withWidth: width, toChatRoomWithID: activeChatRoomID)
     }
 
     // MARK: - ForumEventSender
@@ -131,12 +135,9 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     private(set) var chatFeedContext: DeeplinkContext = DeeplinkContext(value: DeeplinkContext.mainFeed)
 
     private dynamic func mainFeedFilterDidChange(notification: NSNotification) {
-        if let context = (notification.userInfo?["selectedItem"] as? ReferenceWrapper<ListMenuSelectedItem>)?.value.context {
-            chatFeedContext = context
-        }
-        else {
-            chatFeedContext = DeeplinkContext(value: DeeplinkContext.mainFeed)
-        }
+        let selectedItem = (notification.userInfo?["selectedItem"] as? ReferenceWrapper<ListMenuSelectedItem>)?.value
+        chatFeedContext = selectedItem?.context ?? DeeplinkContext(value: DeeplinkContext.mainFeed)
+        activeChatRoomID = selectedItem?.chatRoomID
     }
 
     func setStageHeight(value: CGFloat) {

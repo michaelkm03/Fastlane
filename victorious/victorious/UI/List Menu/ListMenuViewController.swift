@@ -9,10 +9,11 @@
 import UIKit
 
 struct ListMenuSelectedItem {
-    let streamAPIPath: APIPath
-    let title: String?
-    let context: DeeplinkContext?
-    let trackingAPIPaths: [APIPath]
+    var streamAPIPath: APIPath
+    var chatRoomID: ChatRoom.ID?
+    var title: String?
+    var context: DeeplinkContext?
+    var trackingAPIPaths: [APIPath]
 }
 
 /// View Controller for the entire List Menu Component, which is currently being displayed as the left navigation pane
@@ -109,6 +110,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         // Index 0 should correspond to the home feed, so we broadcast a nil path to denote an unfiltered feed.
         postListMenuSelection(index == 0 ? nil : ListMenuSelectedItem(
             streamAPIPath: item.streamAPIPath,
+            chatRoomID: nil,
             title: item.title,
             context: context,
             trackingAPIPaths: item.trackingAPIPaths
@@ -123,6 +125,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         
         let selectedTagItem = ListMenuSelectedItem(
             streamAPIPath: apiPath,
+            chatRoomID: nil,
             title: "#\(item.tag)",
             context: context,
             trackingAPIPaths: collectionViewDataSource.hashtagDataSource.hashtagStreamTrackingAPIPaths.map { path in
@@ -137,14 +140,15 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
 
     private func selectChatRoom(atIndex index: Int) {
         let item = collectionViewDataSource.chatRoomsDataSource.visibleItems[index]
-        let itemString = item.name
         let macro = "%%CHATROOM%%"
         var apiPath = collectionViewDataSource.chatRoomsDataSource.chatRoomStreamAPIPath
         apiPath.macroReplacements[macro] = item.name
-        let context = DeeplinkContext(value: DeeplinkContext.chatRoomFeed, subContext: itemString)
+        let context = DeeplinkContext(value: DeeplinkContext.chatRoomFeed, subContext: item.name)
+        
         let selectedItem = ListMenuSelectedItem(
             streamAPIPath: apiPath,
-            title: itemString,
+            chatRoomID: nil,
+            title: item.name,
             context: context,
             trackingAPIPaths: collectionViewDataSource.hashtagDataSource.hashtagStreamTrackingAPIPaths.map { path in
                 var path = path
@@ -152,6 +156,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
                 return path
             }
         )
+        
         postListMenuSelection(selectedItem)
     }
     
