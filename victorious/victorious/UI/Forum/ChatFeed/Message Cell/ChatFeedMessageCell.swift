@@ -200,7 +200,7 @@ class ChatFeedMessageCell: UICollectionViewCell, MediaContentViewDelegate {
     }
     
     private func populateData() {
-        content?.wasCreatedByCurrentUser == true ? likeView?.updateAlignment(newAlignment: .left) : likeView?.updateAlignment(.center)
+        content?.wasCreatedByCurrentUser == true ? likeView?.updateAlignment(.left) : likeView?.updateAlignment(.center)
         
         captionLabel.detectUserTags(for: content) { [weak self] url in
             guard let strongSelf = self else {

@@ -270,7 +270,7 @@ private extension VDependencyManager {
             return nil
         }
         
-        return description.stringByReplacingOccurrencesOfString("%%PRICE_TAG%%", withString: lowestPrice)
+        return description.replacingOccurrences(of: "%%PRICE_TAG%%", with: lowestPrice)
     }
     
     var descriptionFont: UIFont? {

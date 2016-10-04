@@ -226,7 +226,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         stagePreparer.prepareNextContent(stageContent: stageContent, for: self)
     }
     
-    private func updateStageContent(stageContent content: StageContent) {
+    fileprivate func updateStageContent(stageContent content: StageContent) {
         currentStageContent = content
         
         if let mediaContentView = mediaContentView {
@@ -325,7 +325,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
             return
         }
         
-        dispatch_async(dispatch_get_main_queue()) {
+        DispatchQueue.main.async {
             self.show(animated: true)
             self.loadingIndicator.stopAnimating()
         }
@@ -413,7 +413,7 @@ private extension VDependencyManager {
 
 private final class StagePreparer {
     var nextStageContent: StageContent?
-    func prepareNextContent(stageContent: StageContent, for stage: StageViewController) {
+    func prepareNextContent(_ stageContent: StageContent, for stage: StageViewController) {
         let isYouTube = stageContent.content.assets.first?.videoSource == .youtube
         nextStageContent = stageContent
         if stage.isOnScreen || !isYouTube {
@@ -421,7 +421,7 @@ private final class StagePreparer {
         }
     }
     
-    func stage(stage: StageViewController, didBecomeVisible visible: Bool) {
+    func stage(_ stage: StageViewController, didBecomeVisible visible: Bool) {
         if let stageContent = nextStageContent, visible {
             stage.updateStageContent(stageContent: stageContent)
         }

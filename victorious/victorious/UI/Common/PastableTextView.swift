@@ -15,8 +15,8 @@ protocol PastableTextViewDelegate: class {
     var canShowSelectMenu: Bool { get }
 
     /// imageObject is required for sizing information, imageData is required for gif
-    func didPasteImage(image: (imageObject: UIImage, imageData: NSData))
-    func didPasteText(text: String)
+    func didPasteImage(_ image: (imageObject: UIImage, imageData: NSData))
+    func didPasteText(_ text: String)
 }
 
 /// Subclass of VPlaceholderTextView to allow pasting of media content into the composer.

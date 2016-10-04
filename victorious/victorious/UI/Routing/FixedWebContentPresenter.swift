@@ -19,12 +19,12 @@ extension FixedWebContentPresenter where Self: UIViewController {
         let router = Router(originViewController: self, dependencyManager: webContentDependencyManager)
         let configuration = ExternalLinkDisplayConfiguration(addressBarVisible: false, forceModal: true, isVIPOnly: false, title: type.title)
         
-        router.navigate(to: DeeplinkDestination.externalURL(url: dependencyManager.urlForFixedWebContent(type), configuration: configuration), from: nil)
+        router.navigate(to: DeeplinkDestination.externalURL(url: dependencyManager.urlForFixedWebContent(type) as URL, configuration: configuration), from: nil)
     }
 }
 
 private extension VDependencyManager {
     var fixedWebContentBackground: VDependencyManager? {
-        return childDependencyForKey("static.webcontent.background")
+        return childDependency(forKey: "static.webcontent.background")
     }
 }

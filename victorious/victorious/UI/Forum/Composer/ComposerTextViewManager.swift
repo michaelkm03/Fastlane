@@ -60,7 +60,7 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         let replacementRange = NSRange(location: selectedRange.location, length: text.characters.count - selectedRange.length)
         let canAppendText = canUpdateTextView(textView, textInRange: replacementRange, replacementText: text)
         if canAppendText {
-            textView.replaceRange(selectedTextRange, withText: text)
+            textView.replace(selectedTextRange, withText: text)
             updateDelegateOfTextViewStatus(textView)
         }
         else {

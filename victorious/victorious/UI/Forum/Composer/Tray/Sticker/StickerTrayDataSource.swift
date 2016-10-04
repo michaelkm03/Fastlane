@@ -52,7 +52,7 @@ class StickerTrayDataSource: PaginatedDataSource, TrayDataSource {
     func fetchStickers(_ completion: ((NSError?) -> ())? = nil) {
         trayState = .loading
         let contentFetchEndpoint = dependencyManager.contentFetchEndpoint ?? ""
-        let searchOptions = AssetSearchOptions.Trending(url: contentFetchEndpoint)
+        let searchOptions = AssetSearchOptions.trending(url: contentFetchEndpoint)
         let createOperation = {
             return StickerSearchOperation(searchOptions: searchOptions)
         }

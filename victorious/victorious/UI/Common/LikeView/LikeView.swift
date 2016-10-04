@@ -153,7 +153,7 @@ final class LikeView: UIView {
         updateLikeCount(content)
     }
 
-    func updateAlignment(newAlignment: LikeViewAlignment) {
+    func updateAlignment(_ newAlignment: LikeViewAlignment) {
         alignment = newAlignment
     }
 

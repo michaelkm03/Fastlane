@@ -45,7 +45,7 @@ final class VIPSelectSubscriptionOperation: AsyncOperation<VProduct>, UIAlertVie
                 continue
             }
             
-            let action = UIAlertAction(title: price + " " + description, style: .Default) { action in
+            let action = UIAlertAction(title: price + " " + description, style: .default) { action in
                 finish( .success(product))
             }
             
@@ -58,7 +58,7 @@ final class VIPSelectSubscriptionOperation: AsyncOperation<VProduct>, UIAlertVie
             return
         }
         
-        let action = UIAlertAction(title: Strings.cancel, style: .Default) { action in
+        let action = UIAlertAction(title: Strings.cancel, style: .default) { action in
             finish(.cancelled)
         }
         alert.addAction(action)

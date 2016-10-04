@@ -81,10 +81,10 @@ extension VSettingsViewController: VBackgroundContainer, FixedWebContentPresente
     
     public func handleAboutSectionSelection(_ row: Int) {
         switch row {
-            case 0: showFixedWebContent(.HelpCenter, withDependencyManager: dependencyManager)
+            case 0: showFixedWebContent(.helpCenter, withDependencyManager: dependencyManager)
             case 1: sendHelp()
-            case 2: showFixedWebContent(.TermsOfService, withDependencyManager: dependencyManager)
-            case 3: showFixedWebContent(.PrivacyPolicy, withDependencyManager: dependencyManager)
+            case 2: showFixedWebContent(.termsOfService, withDependencyManager: dependencyManager)
+            case 3: showFixedWebContent(.privacyPolicy, withDependencyManager: dependencyManager)
             default: break
         }
     }
