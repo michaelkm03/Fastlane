@@ -75,7 +75,7 @@ enum DeeplinkDestination: Equatable {
     /// However, when transitioning from a stage content, we don't want to fetch again because we want to keep the video playback in sync.
     init?(content: Content, forceFetch: Bool = true) {
         switch content.type {
-            case .image, .video, .gif, .text:
+            case .image, .video, .gif, .text, .sticker:
                 self = .closeUp(contentWrapper: .content(content: content, forceFetch: forceFetch))
             case .link:
                 guard
@@ -85,8 +85,6 @@ enum DeeplinkDestination: Equatable {
                     return nil
                 }
                 self = validDestination
-            case .sticker:
-                return nil
         }
     }
     

@@ -48,7 +48,7 @@ struct Router {
 
         switch contentWrapper {
             case .content(let content, let forceFetch):
-                guard content.type != .text else {
+                guard content.type.canBeShownInCloseUpView else {
                     return
                 }
 
@@ -500,5 +500,16 @@ private extension VDependencyManager {
     
     var contentFetchAPIPath: APIPath? {
         return networkResources?.apiPath(forKey: "contentFetchURL")
+    }
+}
+
+// MARK: - ContentType extensions
+
+private extension ContentType {
+    var canBeShownInCloseUpView: Bool {
+        switch self {
+            case .image, .gif, .video, .link: return true
+            case .text, .sticker: return false
+        }
     }
 }
