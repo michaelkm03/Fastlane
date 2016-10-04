@@ -29,12 +29,12 @@ class LoginSuccessOperationTests: XCTestCase {
 //            parameters: parameters
 //        )
 //        
-//        let expectation = expectationWithDescription("")
+//        let expectation = expectation(description:"")
 //        operation.queue() { results, error, cancelled in
 //            XCTAssertNil(error)
 //            expectation.fulfill()
 //        }
-//        waitForExpectationsWithTimeout(1.0, handler: nil)
+//        waitForExpectations(timeout:1.0, handler: nil)
 //        
 //        guard let persistentUser: VUser = operation.persistentStore.mainContext.v_findObjects(["remoteId" : user.id ]).first else {
 //            XCTFail( "Unable to load the user the operation should have parsed." )
@@ -51,7 +51,7 @@ class LoginSuccessOperationTests: XCTestCase {
 //    
 //    private func loadUser() -> User? {
 //        guard let mockUserDataURL = NSBundle(forClass: self.dynamicType).URLForResource("User", withExtension: "json"),
-//            let mockData = NSData(contentsOfURL: mockUserDataURL) else {
+//            let mockData = NSData(contentsOf:: mockUserDataURL) else {
 //                return nil
 //        }
 //        return User(json: JSON(data: mockData))

@@ -10,17 +10,16 @@ import UIKit
 
 public extension UITableView {
     
-    public func v_applyChangeInSection(section: NSInteger, from oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
+    public func v_applyChangeInSection(_ section: NSInteger, from oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
         self.v_applyChangeInSection(section, from: oldValue, to: newValue, animated: false)
     }
     
     /// Inserts and/or removes index paths based on difference between arguments `oldValue` and `newValue`.
-    public func v_applyChangeInSection(section: NSInteger, from oldValue: NSOrderedSet, to newValue: NSOrderedSet, animated: Bool) {
-        
+    public func v_applyChangeInSection(_ section: NSInteger, from oldValue: NSOrderedSet, to newValue: NSOrderedSet, animated: Bool) {
         guard !(newValue.count == 0 || oldValue.count == 0) else {
             let performChangesBlock = {
                 self.beginUpdates()
-                self.reloadSections( NSIndexSet(index: section), withRowAnimation: .None)
+                self.reloadSections(IndexSet(integer: section), with: .none)
                 self.endUpdates()
             }
             if (animated && oldValue.count > 0) || (animated && newValue.count == 1) {
@@ -31,22 +30,22 @@ public extension UITableView {
             return
         }
         
-        var insertedIndexPaths = [NSIndexPath]()
-        for item in newValue where !oldValue.containsObject( item ) {
-            let index = newValue.indexOfObject( item )
-            insertedIndexPaths.append( NSIndexPath(forRow: index, inSection: section) )
+        var insertedIndexPaths = [IndexPath]()
+        for item in newValue where !oldValue.contains( item ) {
+            let index = newValue.index( of: item )
+            insertedIndexPaths.append( IndexPath(row: index, section: section) )
         }
         
-        var deletedIndexPaths = [NSIndexPath]()
-        for item in oldValue where !newValue.containsObject( item ) {
-            let index = oldValue.indexOfObject( item )
-            deletedIndexPaths.append( NSIndexPath(forRow: index, inSection: section) )
+        var deletedIndexPaths = [IndexPath]()
+        for item in oldValue where !newValue.contains( item ) {
+            let index = oldValue.index( of: item )
+            deletedIndexPaths.append( IndexPath(row: index, section: section) )
         }
         
         let performChangesBlock = {
             self.beginUpdates()
-            self.deleteRowsAtIndexPaths( deletedIndexPaths, withRowAnimation: .Bottom)
-            self.insertRowsAtIndexPaths( insertedIndexPaths, withRowAnimation: .Top)
+            self.deleteRows( at: deletedIndexPaths, with: .bottom)
+            self.insertRows( at: insertedIndexPaths, with: .top)
             self.endUpdates()
         }
         

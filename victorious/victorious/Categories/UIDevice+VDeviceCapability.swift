@@ -12,7 +12,7 @@ enum DeviceType {
     case iPod
     case iPhone
     case iPad
-    case Other
+    case other
 }
 
 
@@ -52,13 +52,13 @@ enum DeviceType {
  */
 
 @objc enum VDeviceRating: Int {
-    case Unknown = 1,
-    Slow = 3,
-    Decent = 5,
-    Average = 8,
-    Great = 13,
-    Fast = 15,
-    LightningFast = 25
+    case unknown = 1,
+    slow = 3,
+    decent = 5,
+    average = 8,
+    great = 13,
+    fast = 15,
+    lightningFast = 25
 }
 
 private let kiPodConstant = "iPod"
@@ -71,7 +71,7 @@ extension UIDevice {
         
         // This detects the iOS simulator
         #if(arch(i386) || arch(x86_64)) && os(iOS)
-            return VDeviceRating.LightningFast
+            return VDeviceRating.lightningFast
         
         #else
         
@@ -79,66 +79,66 @@ extension UIDevice {
         uname(&systemInfo)
         let machineMirror = Mirror(reflecting: systemInfo.machine)
         var identifier = machineMirror.children.reduce("") { identifier, element in
-            guard let value = element.value as? Int8 where value != 0 else { return identifier }
+            guard let value = element.value as? Int8 , value != 0 else { return identifier }
             return identifier + String(UnicodeScalar(UInt8(value)))
         }
         
         if identifier.hasPrefix(kiPodConstant) {
-            identifier = identifier.stringByReplacingOccurrencesOfString(kiPodConstant, withString: "")
-            identifier = identifier.componentsSeparatedByString(",")[0]
+            identifier = identifier.replacingOccurrences(of: kiPodConstant, with: "")
+            identifier = identifier.components(separatedBy: ",")[0]
             if let version = Int(identifier) {
                 switch version {
                 case 5:
-                    return VDeviceRating.Slow
+                    return VDeviceRating.slow
                 case 6:
-                    return VDeviceRating.Average
+                    return VDeviceRating.average
                 case 6..<Int.max:
-                    return VDeviceRating.Fast
+                    return VDeviceRating.fast
                 default:
-                    return VDeviceRating.Unknown
+                    return VDeviceRating.unknown
                 }
             }
         }
         else if identifier.hasPrefix(kiPadConstant) {
-            identifier = identifier.stringByReplacingOccurrencesOfString(kiPadConstant, withString: "")
-            identifier = identifier.componentsSeparatedByString(",")[0]
+            identifier = identifier.replacingOccurrences(of: kiPadConstant, with: "")
+            identifier = identifier.components(separatedBy: ",")[0]
             if let version = Int(identifier) {
                 switch version {
                 case 2:
-                    return VDeviceRating.Slow
+                    return VDeviceRating.slow
                 case 3:
-                    return VDeviceRating.Decent
+                    return VDeviceRating.decent
                 case 4:
-                    return VDeviceRating.Average
+                    return VDeviceRating.average
                 case 5:
-                    return VDeviceRating.Fast
+                    return VDeviceRating.fast
                 case 6..<Int.max:
-                    return VDeviceRating.LightningFast
+                    return VDeviceRating.lightningFast
                 default:
-                    return VDeviceRating.Unknown
+                    return VDeviceRating.unknown
                 }
             }
         }
         else if identifier.hasPrefix(kiPhoneConstant) {
-            identifier = identifier.stringByReplacingOccurrencesOfString(kiPhoneConstant, withString: "")
-            identifier = identifier.componentsSeparatedByString(",")[0]
+            identifier = identifier.replacingOccurrences(of: kiPhoneConstant, with: "")
+            identifier = identifier.components(separatedBy: ",")[0]
             if let version = Int(identifier) {
                 switch version {
                 case 5:
-                    return VDeviceRating.Decent
+                    return VDeviceRating.decent
                 case 6:
-                    return VDeviceRating.Average
+                    return VDeviceRating.average
                 case 7:
-                    return VDeviceRating.Fast
+                    return VDeviceRating.fast
                 case 8..<Int.max:
-                    return VDeviceRating.LightningFast
+                    return VDeviceRating.lightningFast
                 default:
-                    return VDeviceRating.Unknown
+                    return VDeviceRating.unknown
                 }
             }
         }
         //Other, return 1
-        return VDeviceRating.Unknown
+        return VDeviceRating.unknown
         #endif
     }
 }

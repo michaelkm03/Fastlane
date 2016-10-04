@@ -9,14 +9,15 @@
 import Foundation
 import VictoriousIOSSDK
 
-extension NSMutableURLRequest {
-    func v_setAuthorizationHeader() {
+extension URLRequest {
+    mutating func v_setAuthorizationHeader() {
         let requestContext = RequestContext()
         
         if let authenticationContext = AuthenticationContext() {
-            self.vsdk_setAuthorizationHeader(requestContext: requestContext, authenticationContext: authenticationContext)
-        } else {
-            self.vsdk_setAuthorizationHeader(requestContext: requestContext)
+            vsdk_setAuthorizationHeader(requestContext: requestContext, authenticationContext: authenticationContext)
+        }
+        else {
+            vsdk_setAuthorizationHeader(requestContext: requestContext)
         }
     }
 }

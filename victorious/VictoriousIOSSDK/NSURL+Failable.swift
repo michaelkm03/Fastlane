@@ -13,7 +13,7 @@ extension NSURL {
     /// Attempts to initialize a URL from the provided optional string, checking that
     /// the string is defined and that it is not empty, i.e. ""
     convenience init?(vsdk_string string: String?) {
-        guard let string = string where !string.characters.isEmpty else {
+        guard let string = string , !string.characters.isEmpty else {
             self.init(string: "")
             return nil
         }

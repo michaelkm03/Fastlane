@@ -17,7 +17,7 @@ protocol Scaffold: InterstitialListener {
     /// The top-level navigation controller used by the scaffold.
     var mainNavigationController: UINavigationController { get }
     
-    func navigate(to deeplinkURL: NSURL)
+    func navigate(to deeplinkURL: URL)
 }
 
 extension Scaffold where Self: UIViewController {
@@ -30,7 +30,7 @@ extension Scaffold where Self: UIViewController {
     }
     
     /// Performs first-launch setup. Expected to be called only once from the first invocation of `viewDidAppear`.
-    func performSetup(onReady: (() -> Void)? = nil) {
+    func performSetup(_ onReady: (() -> Void)? = nil) {
         let pushNotificationOperation = RequestPushNotificationPermissionOperation()
         let tutorialOperation = ShowTutorialsOperation(originViewController: self, dependencyManager: dependencyManager)
         pushNotificationOperation.addDependency(tutorialOperation)
@@ -61,13 +61,13 @@ extension Scaffold where Self: UIViewController {
         }
 
         if let presentedViewController = presentedViewController {
-            InterstitialManager.sharedInstance.showNextInterstitial(onViewController: presentedViewController)
+            _ = InterstitialManager.sharedInstance.showNextInterstitial(onViewController: presentedViewController)
         } else {
-            InterstitialManager.sharedInstance.showNextInterstitial(onViewController: self)
+            _ = InterstitialManager.sharedInstance.showNextInterstitial(onViewController: self)
         }
     }
     
-    func navigate(to deeplinkURL: NSURL) {
+    func navigate(to deeplinkURL: URL) {
         let router = Router(originViewController: self.mainNavigationController, dependencyManager: dependencyManager)
         let destination = DeeplinkDestination(url: deeplinkURL)
         router.navigate(to: destination, from: nil)

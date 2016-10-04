@@ -11,7 +11,7 @@ import VictoriousIOSSDK
 
 final class StoredLoginOperation: SyncOperation<Void> {
     
-    private let dependencyManager: VDependencyManager
+    fileprivate let dependencyManager: VDependencyManager
     
     init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
@@ -23,12 +23,12 @@ final class StoredLoginOperation: SyncOperation<Void> {
     }
     
     override func execute() -> OperationResult<Void> {
-        let defaults = NSUserDefaults.standardUserDefaults()
-        let accountIdentifier: String? = defaults.stringForKey(kAccountIdentifierDefaultsKey)
+        let defaults = UserDefaults.standard
+        let accountIdentifier: String? = defaults.string(forKey: kAccountIdentifierDefaultsKey)
         
         let storedLogin = VStoredLogin()
         if let info = storedLogin.storedLoginInfo() {
-            let user = User(id: info.userRemoteId.integerValue)
+            let user = User(id: info.userRemoteId.intValue)
             VCurrentUser.update(to: user)
             VCurrentUser.loginType = info.lastLoginType
             VCurrentUser.token = info.token
@@ -54,7 +54,7 @@ final class StoredLoginOperation: SyncOperation<Void> {
                 }
             }
             
-        } else if let loginType = VLoginType(rawValue: defaults.integerForKey(kLastLoginTypeUserDefaultsKey)),
+        } else if let loginType = VLoginType(rawValue: defaults.integer(forKey: kLastLoginTypeUserDefaultsKey)),
             let credentials = loginType.storedCredentials( accountIdentifier ) {
             
             // Next, if login with a stored token failed, use any stored credentials to login automatically

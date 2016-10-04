@@ -9,6 +9,7 @@
 import UIKit
 
 class ListMenuSectionHeaderView: UICollectionReusableView {
+
     private struct Constants {
         static let subscribeButtonXMargin = CGFloat(12.0)
     }
@@ -26,7 +27,7 @@ class ListMenuSectionHeaderView: UICollectionReusableView {
         }
     }
     
-    private func applyTemplateAppearance(with dependencyManager: VDependencyManager) {
+    fileprivate func applyTemplateAppearance(with dependencyManager: VDependencyManager) {
         clipsToBounds = false
         titleLabel?.text = dependencyManager.titleText
         titleLabel?.textColor = dependencyManager.titleColor
@@ -37,7 +38,7 @@ class ListMenuSectionHeaderView: UICollectionReusableView {
     
     var isSubscribeButtonHidden: Bool = true {
         didSet {
-            subscribeButton?.hidden = isSubscribeButtonHidden
+            subscribeButton?.isHidden = isSubscribeButtonHidden
         }
     }
     
@@ -48,8 +49,8 @@ class ListMenuSectionHeaderView: UICollectionReusableView {
             let subscribeButton = SubscribeButton(dependencyManager: dependencyManager)
             addSubview(subscribeButton)
             subscribeButton.translatesAutoresizingMaskIntoConstraints = false
-            centerYAnchor.constraintEqualToAnchor(subscribeButton.centerYAnchor).active = true
-            trailingAnchor.constraintEqualToAnchor(subscribeButton.trailingAnchor, constant: Constants.subscribeButtonXMargin).active = true
+            centerYAnchor.constraint(equalTo: subscribeButton.centerYAnchor).isActive = true
+            trailingAnchor.constraint(equalTo: subscribeButton.trailingAnchor, constant: Constants.subscribeButtonXMargin).isActive = true
             
             self.subscribeButton = subscribeButton
         }
@@ -58,14 +59,14 @@ class ListMenuSectionHeaderView: UICollectionReusableView {
 
 private extension VDependencyManager {
     var titleColor: UIColor? {
-        return colorForKey(VDependencyManagerMainTextColorKey)
+        return color(forKey: VDependencyManagerMainTextColorKey)
     }
     
     var titleFont: UIFont? {
-        return fontForKey(VDependencyManagerHeaderFontKey)
+        return font(forKey: VDependencyManagerHeaderFontKey)
     }
     
     var titleText: String {
-        return stringForKey("title") ?? ""
+        return string(forKey: "title") ?? ""
     }
 }

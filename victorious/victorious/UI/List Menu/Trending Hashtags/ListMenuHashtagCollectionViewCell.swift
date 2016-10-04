@@ -6,13 +6,15 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
+import VictoriousIOSSDK
+
 final class ListMenuHashtagCollectionViewCell: UICollectionViewCell, ListMenuSectionCell {
     
-    @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet fileprivate weak var titleLabel: UILabel!
     
-    override var selected: Bool {
+    override var isSelected: Bool {
         didSet {
-            updateCellBackgroundColor(to: contentView, selectedColor: dependencyManager?.selectedBackgroundColor, isSelected: selected)
+            updateCellBackgroundColor(to: contentView, selectedColor: dependencyManager?.selectedBackgroundColor, isSelected: isSelected)
         }
     }
     
@@ -32,7 +34,7 @@ final class ListMenuHashtagCollectionViewCell: UICollectionViewCell, ListMenuSec
     
     // MARK: - Private methods
     
-    private func applyTemplateAppearance(with dependencyManager: VDependencyManager) {
+    fileprivate func applyTemplateAppearance(with dependencyManager: VDependencyManager) {
         titleLabel.textColor = dependencyManager.titleColor
         titleLabel.font = dependencyManager.hashtagItemFont
     }
@@ -40,14 +42,14 @@ final class ListMenuHashtagCollectionViewCell: UICollectionViewCell, ListMenuSec
 
 private extension VDependencyManager {
     var titleColor: UIColor? {
-        return colorForKey("color.text.navItem")
+        return color(forKey: "color.text.navItem")
     }
 
     var hashtagItemFont: UIFont? {
-        return fontForKey(VDependencyManagerParagraphFontKey)
+        return font(forKey: VDependencyManagerParagraphFontKey)
     }
     
     var selectedBackgroundColor: UIColor? {
-        return colorForKey(VDependencyManagerAccentColorKey)
+        return color(forKey: VDependencyManagerAccentColorKey)
     }
 }

@@ -12,7 +12,7 @@ class TutorialCollectionViewDataSource: NSObject, ChatInterfaceDataSource, Tutor
     let dependencyManager: VDependencyManager
     weak var delegate: TutorialNetworkDataSourceDelegate?
     
-    let sizingCell = ChatFeedMessageCell(frame: CGRectZero)
+    let sizingCell = ChatFeedMessageCell(frame: CGRect.zero)
     
     lazy var networkDataSource: NetworkDataSource = {
         let dataSource = TutorialNetworkDataSource(dependencyManager: self.dependencyManager)
@@ -36,21 +36,21 @@ class TutorialCollectionViewDataSource: NSObject, ChatInterfaceDataSource, Tutor
         assertionFailure("Removing items is not supported in the tutorial.")
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return numberOfItems(for: collectionView, in: section)
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = cellForItem(for: collectionView, at: indexPath)
-        cell.timestampLabel.hidden = true
-        cell.likeView?.hidden = true
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = cellForItem(for: collectionView, at: indexPath as IndexPath)
+        cell.timestampLabel.isHidden = true
+        cell.likeView?.isHidden = true
         cell.showsReplyButton = false
         return cell
     }
     
     // MARK: - TutorialNetworkDataSourceDelegate
     
-    func didReceiveNewMessage(message: ChatFeedContent) {
+    func didReceiveNewMessage(_ message: ChatFeedContent) {
         delegate?.didReceiveNewMessage(message)
     }
     

@@ -13,9 +13,13 @@ public struct MarkAllNotificationsAsReadRequest: RequestType {
     
     public init() {}
     
-    public var urlRequest: NSURLRequest {
-        let request = NSMutableURLRequest(URL: NSURL(string: "/api/notification/mark_all_notifications_read")!)
-        request.HTTPMethod = "POST"
+    public var urlRequest: URLRequest {
+        var request = URLRequest(url: URL(string: "/api/notification/mark_all_notifications_read")!)
+        request.httpMethod = "POST"
         return request
+    }
+    
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws {
+        // Protocol conformance
     }
 }

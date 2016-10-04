@@ -24,5 +24,5 @@ protocol RequestExecutorType: class {
     /// when the request finishes successfully executing or fails, respectively.  These closures
     /// are optional in cases where calling node isn't concerned with the response of the request,
     /// i.e. "fire and forget".
-    func executeRequest<T: RequestType>(request: T, onComplete: (T.ResultType -> ())?, onError: (NSError->())?)
+    func executeRequest<T: RequestType>(_ request: T, onComplete: ((T.ResultType) -> ())?, onError: ((NSError)->())?)
 }

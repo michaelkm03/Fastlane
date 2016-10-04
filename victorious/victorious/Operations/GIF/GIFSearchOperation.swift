@@ -46,21 +46,21 @@ final class GIFSearchOperation: AsyncOperation<[AnyObject]>, PaginatedRequestOpe
         return .background
     }
     
-    override func execute(finish: (result: OperationResult<[AnyObject]>) -> Void) {
+    override func execute(_ finish: @escaping (_ result: OperationResult<[AnyObject]>) -> Void) {
         requestOperation.queue { [weak self] result in
             switch result {
                 case .success(let searchResults):
                     let searchResultObjects = searchResults.map { GIFSearchResultObject($0) }
                     self?.results = searchResultObjects
-                    finish(result: .success(searchResultObjects))
+                    finish(.success(searchResultObjects))
                 
                 case .failure(let error):
                     self?.results = []
-                    finish(result: .failure(error))
+                    finish(.failure(error))
                 
                 case .cancelled:
                     self?.results = []
-                    finish(result: .cancelled)
+                    finish(.cancelled)
             }
         }
     }

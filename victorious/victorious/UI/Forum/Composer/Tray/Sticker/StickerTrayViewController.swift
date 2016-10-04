@@ -10,6 +10,7 @@ import Foundation
 import MBProgressHUD
 
 /// A view controller that displays a side-scrolling double-row of stickers
+
 class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     private struct Constants {
         static let padding = CGFloat(5)
@@ -19,6 +20,7 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
     }
     
     weak var delegate: TrayDelegate?
+
     var cellSize: CGSize = .zero {
         didSet {
             self.dataSource.cellSize = cellSize
@@ -34,25 +36,25 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
         return dataSource
     }()
     
-    @IBOutlet private(set) var collectionView: UICollectionView!
+    @IBOutlet fileprivate(set) var collectionView: UICollectionView!
     
-    private var dependencyManager: VDependencyManager!
+    fileprivate var dependencyManager: VDependencyManager!
     
-    static func new(dependencyManager: VDependencyManager) -> StickerTrayViewController {
+    static func new(withDependencyManager dependencyManager: VDependencyManager) -> StickerTrayViewController {
         let tray = StickerTrayViewController.v_initialViewControllerFromStoryboard() as StickerTrayViewController
         tray.dependencyManager = dependencyManager
         return tray
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        collectionView.hidden = true
+        collectionView.isHidden = true
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         dataSource.fetchStickers()
-        collectionView.hidden = false
+        collectionView.isHidden = false
     }
     
     override func viewDidLayoutSubviews() {
@@ -71,13 +73,13 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
     
     // MARK: - UICollectionViewDelegate
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard
-            let sticker = dataSource.asset(atIndex: indexPath.item),
-            let remoteID = sticker.remoteID where
-            dataSource.trayState == .Populated
+            let sticker = dataSource.asset(atIndex: (indexPath as NSIndexPath).item),
+            let remoteID = sticker.remoteID ,
+            dataSource.trayState == .populated
         else {
-            if let _ = collectionView.cellForItemAtIndexPath(indexPath) as? TrayRetryLoadCollectionViewCell {
+            if let _ = collectionView.cellForItem(at: indexPath) as? TrayRetryLoadCollectionViewCell {
                 dataSource.fetchStickers()
             }
             else {
@@ -85,8 +87,8 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
             }
             return
         }
-        guard let isVIP = VCurrentUser.user?.vipStatus?.isVIP where isVIP || !sticker.isVIP else {
-            let originViewController = parentViewController ?? self
+        guard StickerSearchResultPreviewCellPopulator.currentUserCanAccess(sticker) else {
+            let originViewController = parent ?? self
             let router = Router(originViewController: originViewController, dependencyManager: dependencyManager)
             router.navigate(to: DeeplinkDestination.vipSubscription, from: DeeplinkContext(value: DeeplinkContext.mainFeed))
             return
@@ -99,7 +101,8 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
             switch state {
                 case .success(let result):
                     self?.progressHUD?.hide(true)
-                    let localAssetParameters = ContentMediaAsset.LocalAssetParameters(contentType: .sticker, remoteID: remoteID, source: nil, size: sticker.assetSize, url: sticker.sourceMediaURL)
+                    let localAssetParameters = ContentMediaAsset.LocalAssetParameters(contentType: .sticker, remoteID: remoteID, source: nil, size: sticker.assetSize, url: sticker.sourceMediaURL as NSURL?)
+                    
                     guard
                         let strongSelf = self,
                         let asset = ContentMediaAsset(initializationParameters: localAssetParameters),
@@ -119,25 +122,25 @@ class StickerTrayViewController: UIViewController, Tray, UICollectionViewDelegat
     
     // MARK: - UICollectionViewDelegateFlowLayout
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         guard
-            let _ = dataSource.asset(atIndex: indexPath.row) where
-            dataSource.trayState == .Populated
+            let _ = dataSource.asset(atIndex: indexPath.row) ,
+            dataSource.trayState == .populated
         else {
             return view.bounds.insetBy(Constants.collectionViewContentInsets).size
         }
         return cellSize
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return Constants.collectionViewContentInsets
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAtIndex section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return Constants.interItemSpace
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return Constants.interItemSpace
     }
     

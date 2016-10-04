@@ -9,7 +9,7 @@
 import Foundation
 
 public struct ContentFetchRequest: RequestType {
-    private let url: NSURL
+    private let url: URL
     private let currentUserID: String
     private let contentID: String
     
@@ -27,11 +27,11 @@ public struct ContentFetchRequest: RequestType {
         self.contentID = contentID
     }
     
-    public var urlRequest: NSURLRequest {
-        return NSURLRequest(URL: url)
+    public var urlRequest: URLRequest {
+        return URLRequest(url: url)
     }
 
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> Content {
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> Content {
         let json = responseJSON["payload"]
         guard let content = Content(json: json) else {
             throw ResponseParsingError()

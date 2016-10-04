@@ -7,16 +7,17 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 class StageDataSource: ForumEventReceiver {
-    private static let backendStartTimeThreshold: Int64 = 1000
+    fileprivate static let backendStartTimeThreshold: Int64 = 1000
     
     weak var delegate: Stage?
     
-    private let dependencyManager: VDependencyManager?
+    fileprivate let dependencyManager: VDependencyManager?
     
-    private var currentContentFetchOperation: StageContentFetchOperation?
-    private var currentContent: Content?
+    fileprivate var currentContentFetchOperation: StageContentFetchOperation?
+    fileprivate var currentContent: Content?
     
     // MARK: Initialiation
     
@@ -26,7 +27,7 @@ class StageDataSource: ForumEventReceiver {
     
     // MARK: ForumEventReceiver
     
-    func receive(event: ForumEvent) {
+    func receive(_ event: ForumEvent) {
         guard let dependencyManager = dependencyManager else {
             Log.error("No dependency manager avaliable in StageDataSource, bailing.")
             return
@@ -48,7 +49,7 @@ class StageDataSource: ForumEventReceiver {
                 // is the same since we might be getting multiple Main stage messages during the contents lifetime.
                 let sameContent = currentContent?.id == stageEvent.contentID
                 let oldStartTime = currentContentFetchOperation?.refreshStageEvent.startTime ?? Timestamp(value: 0)
-                let sameStartTime = stageEvent.startTime?.within(StageDataSource.backendStartTimeThreshold, of: oldStartTime) ?? false
+                let sameStartTime = stageEvent.startTime?.within(threshold: StageDataSource.backendStartTimeThreshold, of: oldStartTime) ?? false
                 if sameContent && sameStartTime && stageEvent.section == .main {
                     return
                 }
@@ -86,6 +87,6 @@ class StageDataSource: ForumEventReceiver {
 
 private extension VDependencyManager {
     var contentFetchAPIPath: APIPath? {
-        return apiPathForKey("contentFetchURL")
+        return apiPath(forKey: "contentFetchURL")
     }
 }

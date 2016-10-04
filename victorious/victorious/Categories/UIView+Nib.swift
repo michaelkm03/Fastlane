@@ -14,9 +14,9 @@ extension UIView {
     ///
     /// :param: nibNameOrNil The name of the nib to load.  If nil is provided, the name of the
     /// generic type T will be used.
-    static func v_fromNib<T: UIView>(nibNameOrNil: String? = nil) -> T {
-        let name = nibNameOrNil ?? String(self)
-        if let nibViews = NSBundle.mainBundle().loadNibNamed(name, owner: nil, options: nil) {
+    static func v_fromNib<T: UIView>(_ nibNameOrNil: String? = nil) -> T {
+        let name = nibNameOrNil ?? String(describing: self)
+        if let nibViews = Bundle.main.loadNibNamed(name, owner: nil, options: nil) {
             for view in nibViews {
                 if let typedView = view as? T {
                     return typedView

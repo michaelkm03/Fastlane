@@ -47,14 +47,14 @@ extension MediaAttachment: DictionaryConvertible {
     public func toDictionary() -> [String: AnyObject] {
         var dictionary = [String: AnyObject]()
         if let width = size?.width {
-            dictionary["width"] = width
+            dictionary["width"] = width as AnyObject?
         }
         if let height = size?.height {
-            dictionary["height"] = height
+            dictionary["height"] = height as AnyObject?
         }
-        dictionary["type"] = type.forumRawValue
-        dictionary["thubmnail_url"] = thumbnailURL?.absoluteString
-        dictionary["url"] = url.absoluteString
+        dictionary["type"] = type.forumRawValue as AnyObject?
+        dictionary["thubmnail_url"] = thumbnailURL?.absoluteString as AnyObject?
+        dictionary["url"] = url.absoluteString as AnyObject?
         return dictionary
     }
 }

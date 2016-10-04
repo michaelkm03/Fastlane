@@ -290,7 +290,7 @@ extension Content: PreviewImageContainer, DictionaryConvertible {
     }
     
     public var currentUserLikeCount: Int {
-        if isRemotelyLikedByCurrentUser && !isLikedByCurrentUser && likeCount > 0 {
+        if isRemotelyLikedByCurrentUser && !isLikedByCurrentUser && likeCount! > 0 {
             return -1
         }
         
@@ -320,26 +320,26 @@ extension Content {
     
     public func toDictionary() -> [String: AnyObject] {
         var dictionary = [String: AnyObject]()
-        dictionary["type"] = "TEXT"
-        dictionary["text"] = text
+        dictionary["type"] = "TEXT" as AnyObject?
+        dictionary["text"] = text as AnyObject?
         
         if let assetURL = assets.first?.url  {
             let media: [String: String] = [
-                "type": type.rawValue.uppercaseString,
+                "type": type.rawValue.uppercased(),
                 "url": assetURL.absoluteString ?? ""
             ]
-            dictionary["media"] = media
+            dictionary["media"] = media as AnyObject?
         }
         
         return dictionary
     }
     
-    public var seekAheadTime: NSTimeInterval? {
+    public var seekAheadTime: TimeInterval? {
         guard let localStartTime = localStartTime else {
             return nil
         }
         
-        return NSDate().timeIntervalSinceDate(localStartTime)
+        return NSDate().timeIntervalSince(localStartTime as Date)
     }
 }
 

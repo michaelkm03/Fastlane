@@ -10,11 +10,11 @@ import UIKit
 
 class SettingsTableViewCell: UITableViewCell, VBackgroundContainer {
 
-    private let separatorView: UIView
+    fileprivate let separatorView: UIView
 
     var separatorColor: UIColor {
         get {
-            return separatorView.backgroundColor ?? UIColor.clearColor()
+            return separatorView.backgroundColor ?? UIColor.clear
         }
 
         set {
@@ -32,15 +32,15 @@ class SettingsTableViewCell: UITableViewCell, VBackgroundContainer {
         separatorView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(separatorView)
 
-        separatorView.leadingAnchor.constraintEqualToAnchor(leadingAnchor).active = true
-        separatorView.trailingAnchor.constraintEqualToAnchor(trailingAnchor).active = true
-        separatorView.bottomAnchor.constraintEqualToAnchor(bottomAnchor).active = true
-        separatorView.heightAnchor.constraintEqualToConstant(1).active = true
+        separatorView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+        separatorView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+        separatorView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        separatorView.heightAnchor.constraint(equalToConstant: 1).isActive = true
     }
 
     // MARK: - Views
     
-    @IBOutlet private var label: UILabel!
+    @IBOutlet fileprivate var label: UILabel!
     
     // MARK: - Values
     

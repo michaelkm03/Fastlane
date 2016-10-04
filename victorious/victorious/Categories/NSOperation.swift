@@ -8,8 +8,8 @@
 
 import Foundation
 
-extension NSOperation {
-    var dependentOperations: [NSOperation] {
+extension Operation {
+    var dependentOperations: [Operation] {
         return Queue.allQueues.flatMap {
             $0.operations
         }.filter {

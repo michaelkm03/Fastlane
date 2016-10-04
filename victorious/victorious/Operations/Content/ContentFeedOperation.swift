@@ -6,6 +6,8 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
+import VictoriousIOSSDK
+
 final class ContentFeedOperation: AsyncOperation<ContentFeedResult> {
     
     // MARK: - Initializing
@@ -21,13 +23,13 @@ final class ContentFeedOperation: AsyncOperation<ContentFeedResult> {
     
     // MARK: - Executing
     
-    private let request: ContentFeedRequest
+    fileprivate let request: ContentFeedRequest
     
     override var executionQueue: Queue {
         return .main
     }
     
-    override func execute(finish: (result: OperationResult<ContentFeedResult>) -> Void) {
+    override func execute(_ finish: @escaping (_ result: OperationResult<ContentFeedResult>) -> Void) {
         RequestOperation(request: request).queue { result in
             switch result {
                 case .success(var feedResult):
@@ -39,10 +41,10 @@ final class ContentFeedOperation: AsyncOperation<ContentFeedResult> {
                         return !Content.contentIsHidden(withID: id)
                     }
                     
-                    finish(result: .success(feedResult))
+                    finish(.success(feedResult))
                 
                 case .failure(_), .cancelled:
-                    finish(result: result)
+                    finish(result)
             }
         }
     }

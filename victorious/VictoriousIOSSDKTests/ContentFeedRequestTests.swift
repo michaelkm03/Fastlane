@@ -13,14 +13,14 @@ class ContentFeedRequestTests: XCTestCase {
     func testConfiguredRequest() {
         let apiPath = APIPath(templatePath: "API_PATH")
         let request = ContentFeedRequest(apiPath: apiPath, payloadType: .regular)!
-        XCTAssertEqual(request.urlRequest.URL?.absoluteString, apiPath.url!.absoluteString)
-        XCTAssertEqual(request.urlRequest.HTTPMethod, "GET")
+        XCTAssertEqual(request.urlRequest.url?.absoluteString, apiPath.url!.absoluteString)
+        XCTAssertEqual(request.urlRequest.httpMethod, "GET")
     }
     
     func testParseResponse() {
         guard
-            let mockUserDataURL = NSBundle(forClass: self.dynamicType).URLForResource("ViewedContentsResponse", withExtension: "json"),
-            let mockData = NSData(contentsOfURL: mockUserDataURL)
+            let mockUserDataURL = Bundle(for: type(of: self)).url(forResource: "ViewedContentsResponse", withExtension: "json"),
+            let mockData = try? Data(contentsOf: mockUserDataURL)
         else {
             XCTFail("Error reading mock json data")
             return
@@ -29,7 +29,7 @@ class ContentFeedRequestTests: XCTestCase {
         let apiPath = APIPath(templatePath: "API_PATH")
         let request = ContentFeedRequest(apiPath: apiPath, payloadType: .regular)!
         do {
-            let feedResult = try request.parseResponse(NSURLResponse(), toRequest: NSURLRequest(), responseData: mockData, responseJSON: JSON(data: mockData))
+            let feedResult = try request.parseResponse(URLResponse(), toRequest: URLRequest(url: URL(string: "foo")!), responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(feedResult.contents.count, 2)
             XCTAssertEqual(feedResult.contents.first?.id, "20711")
             XCTAssertEqual(feedResult.contents.last?.id, "20712")

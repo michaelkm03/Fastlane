@@ -12,13 +12,13 @@ import XCTest
 
 class InterstitialManagerTests: XCTestCase {
     
-    private var interstitialManager: InterstitialManager!
-    private var interstitialListener: MockInterstitialListener!
-    private var showNextInterstitial: (() -> Bool)!
+    fileprivate var interstitialManager: InterstitialManager!
+    fileprivate var interstitialListener: MockInterstitialListener!
+    fileprivate var showNextInterstitial: (() -> Bool)!
     
-    private let alertA = Alert(title: "a", description: "a")
-    private let alertB = Alert(title: "b", description: "b")
-    private let alertC = Alert(title: "c", description: "c")
+    fileprivate let alertA = Alert(title: "a", description: "a")
+    fileprivate let alertB = Alert(title: "b", description: "b")
+    fileprivate let alertC = Alert(title: "c", description: "c")
     
     override func setUp() {
         interstitialManager = InterstitialManager()
@@ -56,7 +56,7 @@ class InterstitialManagerTests: XCTestCase {
 }
 
 class MockInterstitialListener: NSObject, InterstitialListener {
-    private(set) var registeredInterstitialsCount: Int = 0
+    fileprivate(set) var registeredInterstitialsCount: Int = 0
     
     func newInterstitialHasBeenRegistered() {
         registeredInterstitialsCount += 1

@@ -14,7 +14,7 @@ extension UIView {
     ///
     /// - parameter pattern: Closure to call to determine if view is the one sought
     /// - returns: A view that passes the test or nil
-    func v_findSubviews( pattern: (UIView) -> (Bool) ) -> [UIView] {
+    func v_findSubviews( _ pattern: (UIView) -> (Bool) ) -> [UIView] {
         var output = [UIView]()
         for subview in self.subviews {
             if pattern( subview ) {

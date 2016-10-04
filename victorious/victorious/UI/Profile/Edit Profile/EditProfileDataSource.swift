@@ -14,8 +14,8 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
     private let tableView: UITableView
     let nameAndLocationCell: DisplaynameLocationAvatarCell
     let aboutMeCell: AboutMeTextCell
-    private var newAvatarFileURL: NSURL?
-    private var user: UserModel {
+    fileprivate var newAvatarFileURL: URL?
+    fileprivate var user: UserModel {
         didSet {
             updateUI()
             if let currentUser = user as? User {
@@ -28,8 +28,8 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
         self.dependencyManager = dependencyManager
         self.tableView = tableView
         self.user = userModel
-        nameAndLocationCell = tableView.dequeueReusableCellWithIdentifier("NameLocationAndPictureCell") as! DisplaynameLocationAvatarCell
-        aboutMeCell = tableView.dequeueReusableCellWithIdentifier("AboutMe") as! AboutMeTextCell
+        nameAndLocationCell = tableView.dequeueReusableCell(withIdentifier: "NameLocationAndPictureCell") as! DisplaynameLocationAvatarCell
+        aboutMeCell = tableView.dequeueReusableCell(withIdentifier: "AboutMe") as! AboutMeTextCell
         super.init()
         self.updateUI()
         nameAndLocationCell.onDataChange = { [weak self] in
@@ -38,12 +38,12 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
     }
     
     // MARK: - UITableViewDataSource
-    
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 2
     }
-    
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
             // Username, location and camera
             configureNameAndLocationCell(nameAndLocationCell)
@@ -64,7 +64,7 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
     var onUserUpdateData: (() -> Void)?
     
     /// Check this to determine whether or not the entered data is currently valid. When this propery is `nil` the dataSource is considered valid.
-    var localizedError: ErrorType? {
+    var localizedError: Error? {
         let username = nameAndLocationCell.username ?? ""
         let displayName = nameAndLocationCell.displayname ?? ""
         
@@ -75,10 +75,11 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
     }
     
     /// This function will update the UI with the provided `previewImage`
-    func useNewAvatar(previewImage: UIImage, fileURL: NSURL) {
+    func useNewAvatar(_ previewImage: UIImage, fileURL: URL) {
         // Create a new userModel with the new preview image
         newAvatarFileURL = fileURL
-        let imageAsset = ImageAsset(url: fileURL, size: previewImage.size)
+        
+        let imageAsset = ImageAsset(url: fileURL as NSURL, size: previewImage.size)
         self.user = User(
             id: user.id,
             username: nameAndLocationCell.username ?? user.username,
@@ -99,7 +100,7 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
             username: nameAndLocationCell.username == VCurrentUser.user?.username ? nil : nameAndLocationCell.username,
             location: nameAndLocationCell.location,
             tagline: aboutMeCell.tagline,
-            profileImageURL: newAvatarFileURL
+            profileImageURL: newAvatarFileURL as NSURL?
         )
     }
     
@@ -109,12 +110,12 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
     
     // MARK: - Misc Private Funcitons
     
-    private func updateUI() {
+    fileprivate func updateUI() {
         nameAndLocationCell.populate(withUser: user)
         aboutMeCell.tagline = user.tagline
     }
     
-    private func configureNameAndLocationCell(nameCell: DisplaynameLocationAvatarCell) {
+    fileprivate func configureNameAndLocationCell(_ nameCell: DisplaynameLocationAvatarCell) {
         nameCell.onReturnKeySelected = { [weak self] in
             self?.aboutMeCell.beginEditing()
         }
@@ -124,7 +125,7 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
         nameCell.dependencyManager = dependencyManager
     }
     
-    private func configueAboutMeCell(aboutMeCell: AboutMeTextCell) {
+    fileprivate func configueAboutMeCell(_ aboutMeCell: AboutMeTextCell) {
         // Support resizing
         aboutMeCell.onDesiredHeightChangeClosure = { [weak self] height in
             self?.tableView.beginUpdates()
@@ -132,5 +133,13 @@ class EditProfileDataSource: NSObject, UITableViewDataSource {
         }
         
         aboutMeCell.dependencyManager = dependencyManager
+    }
+}
+
+fileprivate extension String {
+    var isValidUserName: Bool {
+        let regex = "\\A\\w+\\z"
+        let test = NSPredicate(format:"SELF MATCHES %@", regex)
+        return test.evaluate(with: self)
     }
 }

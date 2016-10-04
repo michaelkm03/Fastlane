@@ -11,8 +11,8 @@ import Foundation
 extension VDependencyManager {
     /// The calling parent view must provide constraints or a new frame for this view
     func createErrorStateView(withKey key: String = "error.state", actionType: CTAErrorStateActionType) -> CTAErrorState? {
-        if let childManager = childDependencyForKey(key) {
-            return CTAErrorState(frame: CGRectZero, dependencyManager: childManager, actionType: actionType)
+        if let childManager = childDependency(forKey: key) {
+            return CTAErrorState(frame: CGRect.zero, dependencyManager: childManager, actionType: actionType)
         }
         else {
             return nil
