@@ -45,9 +45,9 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             return nil
         }
         
-        let button = BackgroundButton(type: .System)
-        button.addTarget(self, action: #selector(endVIPEvent), forControlEvents: .TouchUpInside)
-        button.setTitle(configuration.title, forState: .Normal)
+        let button = BackgroundButton(type: .system)
+        button.addTarget(self, action: #selector(endVIPEvent), for: .touchUpInside)
+        button.setTitle(configuration.title, for: .normal)
         button.titleLabel?.font = configuration.titleFont
         button.titleLabel?.textColor = configuration.titleColor
         button.backgroundColor = configuration.backgroundColor
@@ -322,24 +322,24 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         let alertController = UIAlertController(
             title: configuration.confirmationTitle,
             message: configuration.confirmationBody,
-            preferredStyle: .Alert
+            preferredStyle: .alert
         )
         let cancel = UIAlertAction(
             title: NSLocalizedString("Cancel", comment: "Cancel closing the VIP Event"),
-            style: .Default,
+            style: .default,
             handler: nil
         )
         alertController.addAction(cancel)
         
         let confirm = UIAlertAction(
             title: NSLocalizedString("Yes", comment: "Confirm closing the VIP Event"),
-            style: .Destructive
+            style: .destructive
         ) { _ in
             self.confirmCloseVIPEvent()
         }
         alertController.addAction(confirm)
         
-        presentViewController(alertController, animated: true, completion: nil)
+        present(alertController, animated: true, completion: nil)
     }
     
     private func confirmCloseVIPEvent() {
@@ -612,34 +612,34 @@ private extension VDependencyManager {
     // MARK: - End VIP Button
     
     var endVIPConfiguration: VDependencyManager? {
-        return childDependencyForKey("end.vip.button")
+        return childDependency(forKey: "end.vip.button")
     }
     
     var endVIPTitle: String? {
-        return stringForKey("text.title")
+        return string(forKey: "text.title")
     }
     
     var endVIPTitleColor: UIColor? {
-        return colorForKey("color.title")
+        return color(forKey: "color.title")
     }
     
     var endVIPTitleFont: UIFont? {
-        return fontForKey("font.title")
+        return font(forKey: "font.title")
     }
     
     var endVIPBackgroundColor: UIColor? {
-        return colorForKey("color.background")
+        return color(forKey: "color.background")
     }
     
     var endVIPConfirmationTitle: String? {
-        return stringForKey("text.confirmation.title")
+        return string(forKey: "text.confirmation.title")
     }
     
     var endVIPConfirmationBody: String? {
-        return stringForKey("text.confirmation.body")
+        return string(forKey: "text.confirmation.body")
     }
     
     var endVIPAPIPath: APIPath? {
-        return networkResources?.apiPathForKey("end.vip.event.URL")
+        return networkResources?.apiPath(forKey: "end.vip.event.URL")
     }
 }

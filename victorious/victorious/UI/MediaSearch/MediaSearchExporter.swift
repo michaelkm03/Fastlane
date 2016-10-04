@@ -26,7 +26,7 @@ class MediaSearchExporter {
     /// - parameter previewImage: A UIImage loaded with a still thumbnail asset
     /// - parameter mediaUrl: The URL on disk of the downloaded media file
     /// - parameter error: An NSError instance defined if there was en error, otherwise `nil`
-    typealias MediaSearchExporterCompletion = (_ previewImage: UIImage?, _ mediaUrl: NSURL?, _ error: NSError?)->()
+    typealias MediaSearchExporterCompletion = (_ previewImage: UIImage?, _ mediaUrl: URL?, _ error: NSError?)->()
     
     var videoDownloadTask: URLSessionDownloadTask?
     
@@ -91,7 +91,7 @@ class MediaSearchExporter {
             
             // Dispatch back to main thread for completion
             DispatchQueue.main.async {
-                completion(previewImage, downloadUrl as NSURL?, nil)
+                completion(previewImage, downloadUrl, nil)
             }
         }
         videoDownloadTask?.resume()

@@ -17,7 +17,7 @@ extension VModernEnterNameViewController {
         }
         
         let errorDescription = (error as NSError).localizedDescription
-        textField.showInvalidText(invalidText: errorDescription, animated: true, shake: true, forced: true)
+        textField.showInvalidText(errorDescription, animated: true, shake: true, forced: true)
         return false
     }
 }

@@ -68,7 +68,7 @@ class InlineValidationTextField: UITextField {
         validationIsVisible = false
     }
     
-    func showInvalidText(invalidText: String, animated: Bool, shake: Bool, forced: Bool) {
+    func showInvalidText(_ invalidText: String, animated: Bool, shake: Bool, forced: Bool) {
         guard forced || hasResignedFirstResponder else {
             return
         }

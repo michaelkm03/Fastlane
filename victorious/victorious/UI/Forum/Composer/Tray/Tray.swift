@@ -56,14 +56,15 @@ extension Tray where Self: UIViewController {
 }
 
 extension Tray {
-    func exportMedia(fromSearchResult mediaSearchResultObject: MediaSearchResult, completionBlock: (TrayMediaCompletionState) -> ()) -> MediaSearchExporter {
+    func exportMedia(fromSearchResult mediaSearchResultObject: MediaSearchResult, completionBlock: @escaping (TrayMediaCompletionState) -> ()) -> MediaSearchExporter {
         let mediaExporter = MediaSearchExporter(mediaSearchResult: mediaSearchResultObject)
         mediaExporter.loadMedia() { (previewImage, mediaURL, error) in
             if mediaExporter.cancelled {
                 completionBlock(.canceled)
             } else if
                 let previewImage = previewImage,
-                let mediaURL = mediaURL {
+                let mediaURL = mediaURL
+            {
                 mediaSearchResultObject.exportPreviewImage = previewImage
                 mediaSearchResultObject.exportMediaURL = mediaURL
                 completionBlock(.success(mediaSearchResultObject))

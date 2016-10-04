@@ -15,7 +15,7 @@ protocol PastableTextViewDelegate: class {
     var canShowSelectMenu: Bool { get }
 
     /// imageObject is required for sizing information, imageData is required for gif
-    func didPasteImage(_ image: (imageObject: UIImage, imageData: NSData))
+    func didPasteImage(_ image: (imageObject: UIImage, imageData: Data))
     func didPasteText(_ text: String)
 }
 
@@ -53,7 +53,7 @@ class PastableTextView: VPlaceholderTextView {
 
         let pasteboard = UIPasteboard.general
 
-        if let image = pasteboard.image, let imageData = pasteboard.dataForPasteboardType("public.image") {
+        if let image = pasteboard.image, let imageData = pasteboard.data(forPasteboardType: "public.image") {
             pastableDelegate.didPasteImage((image, imageData))
         } else if let text = pasteboard.string {
             pastableDelegate.didPasteText(text)

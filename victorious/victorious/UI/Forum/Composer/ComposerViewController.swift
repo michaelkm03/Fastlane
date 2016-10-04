@@ -854,10 +854,9 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     // MARK: - PastableTextViewDelegate
     var canShowPasteMenu: Bool {
-        let generalPasteboard = UIPasteboard.generalPasteboard()
-        
-        let containsStringType = generalPasteboard.containsPasteboardTypes(UIPasteboardTypeListString as! [String])
-        let containsImageType = generalPasteboard.containsPasteboardTypes(UIPasteboardTypeListImage as! [String])
+        let generalPasteboard = UIPasteboard.general
+        let containsStringType = generalPasteboard.contains(pasteboardTypes: UIPasteboardTypeListString as! [String])
+        let containsImageType = generalPasteboard.contains(pasteboardTypes: UIPasteboardTypeListImage as! [String])
         let allowsPastingOfImages = dependencyManager.allowsPastingOfImages ?? true
         let allowsPasting = containsStringType || (containsImageType && allowsPastingOfImages)
         
@@ -876,7 +875,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         return textViewHasText
     }
     
-    func didPasteImage(image: (imageObject: UIImage, imageData: NSData)) {
+    func didPasteImage(_ image: (imageObject: UIImage, imageData: Data)) {
         guard let user = VCurrentUser.user else {
             assertionFailure("Failed to send message due to missing a valid logged in user")
             return
@@ -900,7 +899,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
                     sendMessage(asset: pastedImageAsset, previewImage: image.imageObject, text: nil, currentUser: user, isVIPOnly: false)
                     cleanup()
                 } else {
-                    composerTextViewManager?.prependImage(image.imageObject, toTextView: textView)
+                    let _ = composerTextViewManager?.prependImage(image.imageObject, toTextView: textView)
                 }
             }
         } catch {
@@ -908,8 +907,8 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         }
     }
     
-    func didPasteText(text: String) {
-        composerTextViewManager?.insertTextAtSelectionIfPossible(textView, text: text)
+    func didPasteText(_ text: String) {
+        let _ = composerTextViewManager?.insertTextAtSelectionIfPossible(textView, text: text)
     }
     
     // MARK: - TrayDelegate
@@ -993,7 +992,7 @@ private extension VDependencyManager {
     }
     
     var allowsPastingOfImages: Bool? {
-        return numberForKey("allowsPastingOfImages")?.boolValue
+        return number(forKey: "allowsPastingOfImages")?.boolValue
     }
     
     var keyboardAppearance: UIKeyboardAppearance {

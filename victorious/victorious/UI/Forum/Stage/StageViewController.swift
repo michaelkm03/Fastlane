@@ -223,7 +223,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     }
 
     func addStageContent(_ stageContent: StageContent) {
-        stagePreparer.prepareNextContent(stageContent: stageContent, for: self)
+        stagePreparer.prepareNextContent(stageContent, for: self)
     }
     
     fileprivate func updateStageContent(stageContent content: StageContent) {
