@@ -23,11 +23,7 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
         // Future: Get rid of the ! from Objc
         let leftViewController = dependencyManager.viewController(forKey: "leftNavigation")!
         let centerViewController = dependencyManager.viewController(forKey: "centerScreen")!
-        let rightNavViewController = dependencyManager.viewController(forKey: "rightNavigation")!
-        
-        if leftViewController == nil || centerViewController == nil {
-            assertionFailure("`SideNavScaffoldViewController` requires `leftNavigation` and `centerScreen` subcomponents.")
-        }
+        let rightNavViewController = dependencyManager.viewController(forKey: "rightNavigation")
         
         self.centerViewController = centerViewController
         self.rightNavViewController = rightNavViewController
