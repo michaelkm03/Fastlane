@@ -3334,7 +3334,6 @@
 				BF9006EA1D9C7D0B0002D119 /* EndVIPEventRequest.swift */,
 				A7D920471C063682002A6503 /* Errors */,
 				0EBF417A1CAB5C20002966B3 /* ForumEvents */,
-				F004B3291D8914E3005D4A74 /* GIFSearchOptions.swift */,
 				F004B3291D8914E3005D4A74 /* AssetSearchOptions.swift */,
 				C3FEA7A41BF26F24003446CC /* GIFSearchRequest.swift */,
 				A7A583501C3B00CC0088A08A /* HashtagSearchRequest.swift */,
@@ -8475,7 +8474,6 @@
 				A7DCA4F91C128A78004E35B4 /* VNotificationSettingsStateManagerTests.m in Sources */,
 				7AE3EA3B1CAF3B3200272A6A /* UICollectionViewFlowLayout+CellSizeTests.swift in Sources */,
 				A72005471A03074800285A9C /* VAsyncTestHelper.m in Sources */,
-				62FD64861D8B6E5600E9BAF8 /* ListMenuChatRoomsDataSourceTests.swift in Sources */,
 				A7DCA5021C128A78004E35B4 /* VStoredLoginTests.m in Sources */,
 				03E7303C1C973F9A008CB191 /* NetworkActivityIndicatorTests.swift in Sources */,
 				7A1921B41D9218F900EA71CF /* TutorialCollectionViewDataSource.swift in Sources */,
@@ -8831,6 +8829,7 @@
 					"$(inherited)",
 					"-DNDEBUG",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.getvictorious.${ProductPrefix}victorious";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "9da7992a-4489-486b-9b12-61df1851b9ea";
 				PROVISIONING_PROFILE_SPECIFIER = "Victorious Wildcard In-House Distribution";
@@ -8876,7 +8875,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = YES;
@@ -8913,7 +8912,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Victorious, Inc";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Victorious, Inc";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
@@ -8944,7 +8943,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Victorious, Inc";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Victorious, Inc";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
@@ -8976,7 +8975,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Victorious, Inc";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Victorious, Inc";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
@@ -9007,7 +9006,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Victorious, Inc";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Victorious, Inc";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
@@ -9144,7 +9143,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -9174,7 +9173,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -9204,7 +9203,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -9234,7 +9233,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -9264,7 +9263,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -9424,7 +9423,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
@@ -9486,7 +9485,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Victorious, Inc";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Victorious, Inc";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -9544,7 +9543,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Victorious, Inc";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Victorious, Inc";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -9602,7 +9601,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Victorious, Inc";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Victorious, Inc";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -9660,7 +9659,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Victorious, Inc";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Victorious, Inc";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -9837,7 +9836,7 @@
 		0372BE6C1C84FA56004950CF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -9864,7 +9863,7 @@
 		0372BE6D1C84FA56004950CF /* QA */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -9891,7 +9890,7 @@
 		0372BE6E1C84FA56004950CF /* Staging */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -9918,7 +9917,7 @@
 		0372BE6F1C84FA56004950CF /* Stable */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -9945,7 +9944,7 @@
 		0372BE701C84FA56004950CF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -10071,6 +10070,7 @@
 					"-lTestFairy",
 				);
 				OTHER_SWIFT_FLAGS = "-DV_SHOW_TEST_ALERT_SETTINGS -DV_ENABLE_WEBSOCKET_DEBUG_MENU";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.getvictorious.${ProductPrefix}victorious";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "9da7992a-4489-486b-9b12-61df1851b9ea";
 				SWIFT_OBJC_BRIDGING_HEADER = victorious/SwiftBridging.h;
@@ -10397,6 +10397,7 @@
 					Reveal,
 				);
 				OTHER_SWIFT_FLAGS = "-DV_SHOW_TEST_ALERT_SETTINGS -DDEBUG -DV_BACKDOOR_ACCESS_TO_VIP -DV_ENABLE_WEBSOCKET_DEBUG_MENU -DV_FORUM_TEST_HARNESS -DV_FAKE_PURCHASES";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.getvictorious.${ProductPrefix}victorious";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "cd30c9fa-5f02-4085-a56c-1d9d12fd8619";
 				PROVISIONING_PROFILE_SPECIFIER = "Victorious Wildcard Development";
@@ -10432,6 +10433,7 @@
 					"$(inherited)",
 					"-lTestFairy",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.getvictorious.${ProductPrefix}victorious";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "9da7992a-4489-486b-9b12-61df1851b9ea";
 				SWIFT_OBJC_BRIDGING_HEADER = victorious/SwiftBridging.h;
@@ -10604,6 +10606,7 @@
 				GCC_PREFIX_HEADER = "victorious/Supporting Files/victorious-Prefix.pch";
 				INFOPLIST_FILE = AppSpecific/Info.plist;
 				OTHER_SWIFT_FLAGS = "-DV_SHOW_TEST_ALERT_SETTINGS -DV_BACKDOOR_ACCESS_TO_VIP -DV_ENABLE_WEBSOCKET_DEBUG_MENU -DV_FAKE_PURCHASES";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.getvictorious.${ProductPrefix}victorious";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "9da7992a-4489-486b-9b12-61df1851b9ea";
 				SWIFT_OBJC_BRIDGING_HEADER = victorious/SwiftBridging.h;
