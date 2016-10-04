@@ -139,20 +139,20 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     }
 
     private func selectChatRoom(atIndex index: Int) {
-        let item = collectionViewDataSource.chatRoomsDataSource.visibleItems[index]
+        let chatRoom = collectionViewDataSource.chatRoomsDataSource.visibleItems[index]
         let macro = "%%CHATROOM%%"
         var apiPath = collectionViewDataSource.chatRoomsDataSource.chatRoomStreamAPIPath
-        apiPath.macroReplacements[macro] = item.name
-        let context = DeeplinkContext(value: DeeplinkContext.chatRoomFeed, subContext: item.name)
+        apiPath.macroReplacements[macro] = chatRoom.name
+        let context = DeeplinkContext(value: DeeplinkContext.chatRoomFeed, subContext: chatRoom.name)
         
         let selectedItem = ListMenuSelectedItem(
             streamAPIPath: apiPath,
-            chatRoomID: nil,
-            title: item.name,
+            chatRoomID: chatRoom.id,
+            title: chatRoom.name,
             context: context,
             trackingAPIPaths: collectionViewDataSource.hashtagDataSource.hashtagStreamTrackingAPIPaths.map { path in
                 var path = path
-                path.macroReplacements[macro] = item.name
+                path.macroReplacements[macro] = chatRoom.name
                 return path
             }
         )
