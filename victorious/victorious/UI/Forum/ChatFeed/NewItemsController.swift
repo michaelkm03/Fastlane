@@ -13,7 +13,7 @@ import Foundation
 }
 
 class NewItemsController: NSObject {
-    private struct Constants {
+    fileprivate struct Constants {
         static let pillInsets = UIEdgeInsetsMake(10, 10, 10, 10)
         static let pillHeight: CGFloat = 30
         static let pillBottomMargin: CGFloat = 20
@@ -29,17 +29,17 @@ class NewItemsController: NSObject {
             newItemIndicator.dependencyManager = dependencyManager?.newItemButtonDependency
             newItemIndicator.contentEdgeInsets = Constants.pillInsets
             newItemIndicator.roundingType = .pill
-            newItemIndicator.addTarget(self, action: #selector(onNewItemsSelected), forControlEvents: .TouchUpInside)
+            newItemIndicator.addTarget(self, action: #selector(onNewItemsSelected), for: .touchUpInside)
         }
     }
     
-    private(set) var isShowing: Bool = true
+    fileprivate(set) var isShowing: Bool = true
     
     var count: Int = 0 {
         didSet {
             if oldValue != count {
                 let title = localizedButtonTitle(count: count)
-                newItemIndicator?.setTitle(title, forState: .Normal)
+                newItemIndicator?.setTitle(title, for: UIControlState())
             }
             if count == 0 {
                 hide()
@@ -49,23 +49,23 @@ class NewItemsController: NSObject {
     
     weak var delegate: NewItemsControllerDelegate?
     
-    @IBOutlet private weak var container: VPassthroughContainerView!
-    @IBOutlet private weak var newItemIndicator: TextOnColorButton!
+    @IBOutlet fileprivate weak var container: VPassthroughContainerView!
+    @IBOutlet fileprivate weak var newItemIndicator: TextOnColorButton!
     
-    func show(animated animated: Bool = true) {
+    func show(animated: Bool = true) {
         guard !isShowing else {
             return
         }
         isShowing = true
         let animations = {
-            self.newItemIndicator.transform = CGAffineTransformMakeScale(1, 1)
+            self.newItemIndicator.transform = CGAffineTransform(scaleX: 1, y: 1)
         }
         if animated {
-            UIView.animateWithDuration(Constants.openAnimationDuration,
+            UIView.animate(withDuration: Constants.openAnimationDuration,
                 delay: 0.0,
                 usingSpringWithDamping: 0.5,
                 initialSpringVelocity: 0.5,
-                options: [.LayoutSubviews],
+                options: [.layoutSubviews],
                 animations: animations,
                 completion: nil
             )
@@ -74,19 +74,19 @@ class NewItemsController: NSObject {
         }
     }
     
-    func hide(animated animated: Bool = true) {
+    func hide(animated: Bool = true) {
         guard isShowing else {
             return
         }
         let animations = {
-            self.newItemIndicator.transform = CGAffineTransformMakeScale(0, 0)
+            self.newItemIndicator.transform = CGAffineTransform(scaleX: 0, y: 0)
         }
         let completion = { (_: Bool) in
             self.count = 0
             self.isShowing = false
         }
         if animated {
-            UIView.animateWithDuration(Constants.closeAnimationDuration,
+            UIView.animate(withDuration: Constants.closeAnimationDuration,
                 delay: 0.0,
                 usingSpringWithDamping: 1.0,
                 initialSpringVelocity: 0.0,
@@ -102,21 +102,21 @@ class NewItemsController: NSObject {
     
     // MARK: - Private
     
-    @objc private func onNewItemsSelected() {
+    @objc fileprivate func onNewItemsSelected() {
         newItemIndicator.dependencyManager?.trackButtonEvent(.tap)
         delegate?.onNewItemsSelected()
         hide()
     }
     
-    private func localizedButtonTitle(count count: Int) -> String {
-        let formattedMessageCount: String = largeNumberFormatter.stringForInteger(count)
+    fileprivate func localizedButtonTitle(count: Int) -> String {
+        let formattedMessageCount: String = largeNumberFormatter.string(for: count)
         let title: String
         if count == 1 {
             let localizedFormat = NSLocalizedString("NewMessagesFormatSingular", comment: "")
-            title = NSString(format: localizedFormat, formattedMessageCount) as String
+            title = NSString(format: localizedFormat as NSString, formattedMessageCount) as String
         } else {
             let localizedFormat = NSLocalizedString("NewMessagesFormatPlural", comment: "")
-            title = NSString(format: localizedFormat, formattedMessageCount) as String
+            title = NSString(format: localizedFormat as NSString, formattedMessageCount) as String
         }
         return title
     }
@@ -124,6 +124,6 @@ class NewItemsController: NSObject {
 
 private extension VDependencyManager {
     var newItemButtonDependency: VDependencyManager? {
-        return childDependencyForKey("newItemButton")
+        return childDependency(forKey: "newItemButton")
     }
 }

@@ -9,7 +9,7 @@
 import Foundation
 
 public struct EndVIPEventRequest: RequestType {
-    private let url: NSURL
+    private let url: URL
     
     public init?(apiPath: APIPath) {
         guard let url = apiPath.url else {
@@ -19,9 +19,11 @@ public struct EndVIPEventRequest: RequestType {
         self.url = url
     }
     
-    public var urlRequest: NSURLRequest {
-        let request = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "POST"
+    public var urlRequest: URLRequest {
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
         return request
     }
+    
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> Void {}
 }

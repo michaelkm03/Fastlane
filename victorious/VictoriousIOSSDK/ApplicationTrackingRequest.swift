@@ -9,19 +9,23 @@
 import Foundation
 
 public struct ApplicationTrackingRequest: RequestType {
-    public let trackingURL: NSURL
+    public let trackingURL: URL
     
     /// This number should start at 1 and increase +1 for each tracking call
     public let eventIndex: Int
     
-    public var urlRequest: NSURLRequest {
-        let urlRequest = NSMutableURLRequest(URL: trackingURL)
+    public var urlRequest: URLRequest {
+        var urlRequest = URLRequest(url: trackingURL)
         urlRequest.setValue(String(eventIndex), forHTTPHeaderField: "X-Client-Event-Index")
         return urlRequest
     }
     
-    public init(trackingURL: NSURL, eventIndex: Int) {
+    public init(trackingURL: URL, eventIndex: Int) {
         self.trackingURL = trackingURL
         self.eventIndex = eventIndex
+    }
+    
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws {
+        // Protocol conformance
     }
 }

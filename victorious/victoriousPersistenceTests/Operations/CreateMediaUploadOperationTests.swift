@@ -16,30 +16,30 @@ class CreateMediaUploadOperationTests: XCTestCase {
     
     func testOperationExecution() {
         let mockParameters = VPublishParameters()
-        mockParameters.mediaToUploadURL = NSURL(string: "www.google.com")!
+        mockParameters.mediaToUploadURL = URL(string: "www.google.com")!
         
-        let expectation = expectationWithDescription("CreateMediaUploadOperation Tests")
-        let operation = CreateMediaUploadOperation(apiPath: APIPath(templatePath: ""), publishParameters: mockParameters, uploadManager: uploadManager)!
+        let expectation = self.expectation(description: "CreateMediaUploadOperation Tests")
+        let operation = CreateMediaUploadOperation(apiPath: APIPath(templatePath:"foo"), publishParameters: mockParameters, uploadManager: uploadManager)!
         
         operation.queue() { _ in
             XCTAssertEqual(1, self.uploadManager.enqueuedTasksCount)
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1.0, handler: nil)
+        waitForExpectations(timeout: 1.0, handler: nil)
     }
     
     func testParameterNoURL() {
         let invalidParameters = VPublishParameters()
         
-        let expectation = expectationWithDescription("CreateMediaUploadOperation Tests")
-        let operation = CreateMediaUploadOperation(apiPath: APIPath(templatePath: ""), publishParameters: invalidParameters, uploadManager: uploadManager)!
+        let expectation = self.expectation(description: "CreateMediaUploadOperation Tests")
+        let operation = CreateMediaUploadOperation(apiPath: APIPath(templatePath:"foo"), publishParameters: invalidParameters, uploadManager: uploadManager)!
         
         operation.queue() { _ in
             XCTAssertEqual(0, self.uploadManager.enqueuedTasksCount)
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(1.0, handler: nil)
+        waitForExpectations(timeout: 1.0, handler: nil)
 
     }
     
@@ -48,14 +48,14 @@ class CreateMediaUploadOperationTests: XCTestCase {
         mockParameters.isGIF = true
         mockParameters.assetRemoteId = "ABCDEF"
         
-        let expectation = expectationWithDescription("CreateMediaUploadOperation Tests")
-        let operation = CreateMediaUploadOperation(apiPath: APIPath(templatePath: ""), publishParameters: mockParameters, uploadManager: uploadManager)!
+        let expectation = self.expectation(description: "CreateMediaUploadOperation Tests")
+        let operation = CreateMediaUploadOperation(apiPath: APIPath(templatePath:"foo"), publishParameters: mockParameters, uploadManager: uploadManager)!
         
         operation.queue() { _ in
             XCTAssertEqual(1, self.uploadManager.enqueuedTasksCount)
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1.0, handler: nil)
+        waitForExpectations(timeout: 1.0, handler: nil)
     }
 }

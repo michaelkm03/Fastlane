@@ -16,11 +16,15 @@ public struct RegisterPushNotificationRequest: RequestType {
         self.pushNotificationID = pushNotificationID
     }
     
-    public var urlRequest: NSURLRequest {
-        let urlRequest = NSMutableURLRequest(URL: NSURL(string: "/api/device/register_push_id")!)
+    public var urlRequest: URLRequest {
+        var urlRequest = URLRequest(url: URL(string: "/api/device/register_push_id")!)
         let deviceInfo = ["push_id": pushNotificationID]
         urlRequest.vsdk_addURLEncodedFormPost(deviceInfo)
         
         return urlRequest
+    }
+    
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws {
+        // Protocol conformance
     }
 }

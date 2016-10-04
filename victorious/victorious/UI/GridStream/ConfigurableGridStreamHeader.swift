@@ -7,14 +7,15 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 /// Conformers of this protocol can be added into the ConfigurableHeaderContentStreamViewController as a header.
 protocol ConfigurableGridStreamHeader {
     associatedtype ContentType
 
-    func decorateHeader(dependencyManager: VDependencyManager, withWidth width: CGFloat, maxHeight: CGFloat, content: ContentType?, hasError: Bool)
+    func decorateHeader(_ dependencyManager: VDependencyManager, withWidth width: CGFloat, maxHeight: CGFloat, content: ContentType?, hasError: Bool)
 
-    func sizeForHeader(dependencyManager: VDependencyManager, withWidth width: CGFloat, maxHeight: CGFloat, content: ContentType?, hasError: Bool) -> CGSize
+    func sizeForHeader(_ dependencyManager: VDependencyManager, withWidth width: CGFloat, maxHeight: CGFloat, content: ContentType?, hasError: Bool) -> CGSize
 
     func headerWillDisappear()
 

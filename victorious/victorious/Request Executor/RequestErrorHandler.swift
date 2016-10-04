@@ -13,5 +13,5 @@ protocol RequestErrorHandler {
     
     /// Asks the receiver to handle the error provided.
     /// - returns `true` if the error could be handed by the receiver, and `false` if it was not possible.
-    func handle(error: NSError, with request: NSURLRequest?) -> Bool
+    func handle(_ error: NSError, with request: URLRequest?) -> Bool
 }

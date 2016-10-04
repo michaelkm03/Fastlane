@@ -11,7 +11,7 @@ import Foundation
 /// Request for creating a new authentication token at the backend used 
 /// to identify the client when a WebSocket connection opens.
 public struct CreateChatServiceTokenRequest: RequestType {
-    private let url: NSURL
+    private let url: URL
 
     public init?(apiPath: APIPath, currentUserID: User.ID) {
         var apiPath = apiPath
@@ -24,13 +24,13 @@ public struct CreateChatServiceTokenRequest: RequestType {
         self.url = url
     }
     
-    public var urlRequest: NSURLRequest {
-        let request = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "POST"
+    public var urlRequest: URLRequest {
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
         return request
     }
 
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> String {
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> String {
         guard let token = responseJSON["payload"]["token"].string ?? responseJSON["token"].string else {
             throw ResponseParsingError()
         }

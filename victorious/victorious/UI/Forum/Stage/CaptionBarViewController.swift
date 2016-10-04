@@ -7,36 +7,37 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 protocol CaptionBarViewControllerDelegate: class {
-    func captionBarViewController(captionBarViewController: CaptionBarViewController, didTapOnUser user: UserModel)
-    func captionBarViewController(captionBarViewController: CaptionBarViewController, wantsUpdateToContentHeight height: CGFloat)
+    func captionBarViewController(_ captionBarViewController: CaptionBarViewController, didTapOnUser user: UserModel)
+    func captionBarViewController(_ captionBarViewController: CaptionBarViewController, wantsUpdateToContentHeight height: CGFloat)
 }
 
 /// Shows and manages the display of a bar showing a user's avatar, text they've posted, and,
 /// when appropriate, an expansion button to allow all of the text to be scrolled through.
 class CaptionBarViewController: UIViewController {
-    @IBOutlet private weak var captionBar: CaptionBar!
-    private var displayingUser: UserModel?
-    private var isShowingCaption: Bool {
+    @IBOutlet fileprivate weak var captionBar: CaptionBar!
+    fileprivate var displayingUser: UserModel?
+    fileprivate var isShowingCaption: Bool {
         return displayingUser != nil
     }
-    private let fadeDuration = NSTimeInterval(0.75)
+    fileprivate let fadeDuration = TimeInterval(0.75)
     weak var delegate: CaptionBarViewControllerDelegate?
     
-    private var captionBarDecorator: CaptionBarDecorator? {
+    fileprivate var captionBarDecorator: CaptionBarDecorator? {
         didSet {
-            guard isViewLoaded() else {
+            guard isViewLoaded else {
                 return
             }
             captionBarDecorator?.decorate(captionBar)
         }
     }
     
-    private var captionIsExpanded = false {
+    fileprivate var captionIsExpanded = false {
         didSet {
             var desiredHeight: CGFloat = 0
-            let captionVisible = isViewLoaded() && isShowingCaption
+            let captionVisible = isViewLoaded && isShowingCaption
             if captionVisible {
                 desiredHeight = CaptionBarPopulator.toggle(captionBar, toCollapsed: !captionIsExpanded)
             }
@@ -64,7 +65,7 @@ class CaptionBarViewController: UIViewController {
     
     // MARK: - Public
     
-    func populate(user: UserModel, caption: String) {
+    func populate(_ user: UserModel, caption: String) {
         displayingUser = user
         CaptionBarPopulator.populate(captionBar, withUser: user, andCaption: caption) { [weak self] in
             self?.captionIsExpanded = false
@@ -73,11 +74,11 @@ class CaptionBarViewController: UIViewController {
     
     // MARK: - Actions
     
-    @IBAction private func pressedToggleButton() {
+    @IBAction fileprivate func pressedToggleButton() {
         captionIsExpanded = !captionIsExpanded
     }
     
-    @IBAction private func pressedAvatarButton() {
+    @IBAction fileprivate func pressedAvatarButton() {
         guard let displayingUser = displayingUser else {
             return
         }

@@ -9,10 +9,10 @@
 import Foundation
 
 enum TrayState {
-    case Empty
-    case Loading
-    case FailedToLoad
-    case Populated
+    case empty
+    case loading
+    case failedToLoad
+    case populated
 }
 
 // Conformers describe an object that provide data for a tray's collection view
@@ -26,11 +26,11 @@ protocol TrayDataSource: UICollectionViewDataSource {
 protocol TrayDataSourceDelegate: class {
     var collectionView: UICollectionView! { get }
     // The default implementation of this method simply reloads the collection view after a state change.
-    func trayDataSource<DataSource: TrayDataSource>(trayDataSource: DataSource, changedToState state: TrayState)
+    func trayDataSource<DataSource: TrayDataSource>(_ trayDataSource: DataSource, changedToState state: TrayState)
 }
 
 extension TrayDataSourceDelegate {
-    func trayDataSource<DataSource: TrayDataSource>(trayDataSource: DataSource, changedToState state: TrayState) {
+    func trayDataSource<DataSource: TrayDataSource>(_ trayDataSource: DataSource, changedToState state: TrayState) {
         collectionView.reloadData()
     }
 }

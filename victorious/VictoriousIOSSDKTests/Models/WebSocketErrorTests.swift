@@ -12,8 +12,8 @@ import XCTest
 class WebSocketErrorTests: XCTestCase {
 
     func testInitializationOfBackendErrorCodes() {
-        guard let webSocketErrorsJSONPath = NSBundle(forClass: self.dynamicType).URLForResource("WebSocketErrors", withExtension: "json"),
-            let jsonData = NSData(contentsOfURL: webSocketErrorsJSONPath) else {
+        guard let webSocketErrorsJSONPath = Bundle(for: type(of: self)).url(forResource: "WebSocketErrors", withExtension: "json"),
+            let jsonData = try? Data(contentsOf: webSocketErrorsJSONPath) else {
                 XCTFail("Error reading WebSocketErrors JSON data.")
                 return
         }

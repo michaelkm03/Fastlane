@@ -6,10 +6,12 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
+import VictoriousIOSSDK
+
 extension VPushNotificationManager {
-    func queueRegisterPushNotificationOperationWithPushNotificationID(pushNotificationID: String, completion: (error: NSError?) -> Void) {
+    func queueRegisterPushNotificationOperationWithPushNotificationID(_ pushNotificationID: String, completion: @escaping (_ error: NSError?) -> Void) {
         RequestOperation(request: RegisterPushNotificationRequest(pushNotificationID: pushNotificationID)).queue { result in
-            completion(error: result.error as? NSError)
+            completion(result.error as? NSError)
         }
     }
 }

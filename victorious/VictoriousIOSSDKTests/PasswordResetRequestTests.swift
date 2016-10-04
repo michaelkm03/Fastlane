@@ -19,17 +19,17 @@ class PasswordResetRequestTests: XCTestCase {
         let request = PasswordResetRequest(newPassword: mockNewPassword, userToken: mockUserToken, deviceToken: mockDeviceToken)
         let urlRequest = request.urlRequest
         
-        XCTAssertEqual(urlRequest.URL?.absoluteString, "/api/password_reset")
+        XCTAssertEqual(urlRequest.url?.absoluteString, "/api/password_reset")
         
-        guard let bodyData = urlRequest.HTTPBody else {
+        guard let bodyData = urlRequest.httpBody else {
             XCTFail("No HTTP Body!")
             return
         }
-        let bodyString = String(data: bodyData, encoding: NSUTF8StringEncoding)!
+        let bodyString = String(data: bodyData, encoding: String.Encoding.utf8)!
         
-        XCTAssertNotNil(bodyString.rangeOfString("new_password=\(mockNewPassword)"))
-        XCTAssertNotNil(bodyString.rangeOfString("user_token=\(mockUserToken)"))
-        XCTAssertNotNil(bodyString.rangeOfString("device_token=\(mockDeviceToken)"))
+        XCTAssertNotNil(bodyString.range(of: "new_password=\(mockNewPassword)"))
+        XCTAssertNotNil(bodyString.range(of: "user_token=\(mockUserToken)"))
+        XCTAssertNotNil(bodyString.range(of: "device_token=\(mockDeviceToken)"))
     }
     
     func testValidateTokenRequest() {
@@ -40,16 +40,16 @@ class PasswordResetRequestTests: XCTestCase {
         let request = PasswordResetRequest(userToken: mockUserToken, deviceToken: mockDeviceToken)
         let urlRequest = request.urlRequest
         
-        XCTAssertEqual(urlRequest.URL?.absoluteString, "/api/password_reset")
+        XCTAssertEqual(urlRequest.url?.absoluteString, "/api/password_reset")
         
-        guard let bodyData = urlRequest.HTTPBody else {
+        guard let bodyData = urlRequest.httpBody else {
             XCTFail("No HTTP Body!")
             return
         }
-        let bodyString = String(data: bodyData, encoding: NSUTF8StringEncoding)!
+        let bodyString = String(data: bodyData, encoding: String.Encoding.utf8)!
         
-        XCTAssertNotNil(bodyString.rangeOfString("new_password=\(expectedEmptyPassword)"))
-        XCTAssertNotNil(bodyString.rangeOfString("user_token=\(mockUserToken)"))
-        XCTAssertNotNil(bodyString.rangeOfString("device_token=\(mockDeviceToken)"))
+        XCTAssertNotNil(bodyString.range(of: "new_password=\(expectedEmptyPassword)"))
+        XCTAssertNotNil(bodyString.range(of: "user_token=\(mockUserToken)"))
+        XCTAssertNotNil(bodyString.range(of: "device_token=\(mockDeviceToken)"))
     }
 }

@@ -19,7 +19,7 @@ import Foundation
 // - unsupportedProtocol: Protocol sent is not valid, this does NOT refer to the actual WebSocket protocol but the part we use to transfer data.
 // - connectionTerminated: Connection closed, could contain a code and an error.
 //
-public enum WebSocketError: ErrorType, Equatable, CustomStringConvertible {
+public enum WebSocketError: Error, Equatable, CustomStringConvertible {
     case missingAppId(message: String)
     case missingToken(message: String)
     case unsupportedApp(message: String)

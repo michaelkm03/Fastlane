@@ -13,6 +13,6 @@ class ContentFlagRequestTests: XCTestCase {
     func testValidFlaggingSequenceRequest() {
         let contentID: String = "123"
         let request = ContentFlagRequest(apiPath: APIPath(templatePath: "www.google.com/%%CONTENT_ID%%"), contentID: contentID)
-        XCTAssertEqual(request?.urlRequest.URL?.absoluteString, "www.google.com/123")
+        XCTAssertEqual(request?.urlRequest.url?.absoluteString, "www.google.com/123")
     }
 }

@@ -9,11 +9,11 @@
 import Foundation
 
 class ForumNavBarTitleView: UIView {
-    private let titleLabel = UILabel()
-    private let subtitleLabel = UILabel()
-    private let stackView = UIStackView()
-    private let dependencyManager: VDependencyManager
-    private let configuration: TitleViewConfiguration
+    fileprivate let titleLabel = UILabel()
+    fileprivate let subtitleLabel = UILabel()
+    fileprivate let stackView = UIStackView()
+    fileprivate let dependencyManager: VDependencyManager
+    fileprivate let configuration: TitleViewConfiguration
     
     var activeUserCount: Int {
         didSet {
@@ -40,11 +40,11 @@ class ForumNavBarTitleView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupViews() {
+    fileprivate func setupViews() {
         //Initialize the stack view and set the layout information
-        stackView.axis = .Vertical
-        stackView.distribution = .FillProportionally
-        stackView.alignment = .Center
+        stackView.axis = .vertical
+        stackView.distribution = .fillProportionally
+        stackView.alignment = .center
         
         titleLabel.text = configuration.titleText
         titleLabel.font = configuration.titleFont
@@ -63,29 +63,29 @@ class ForumNavBarTitleView: UIView {
         subtitleLabel.sizeToFit()
         
         addSubview(stackView)
-        v_addFitToParentConstraintsToSubview(stackView, leading: 0.0, trailing: 0.0, top: 0.0, bottom: 5.0)
+        v_addFitToParentConstraints(toSubview: stackView, leading: 0.0, trailing: 0.0, top: 0.0, bottom: 5.0)
     }
     
     //Creates the string for the subtitle label
-    private func getSubtitleText() -> String {
+    fileprivate func getSubtitleText() -> String {
         let numberOfUsersText = activeUserCount == 1 ? configuration.singularNumberOfUsersText : configuration.pluralNumberOfUsersText
         
         return numberOfUsersText
-            .stringByReplacingOccurrencesOfString(Keys.visitorsMacro, withString: VLargeNumberFormatter()
-            .stringForInteger(activeUserCount))
+            .replacingOccurrences(of: Keys.visitorsMacro, with: VLargeNumberFormatter()
+            .string(for: activeUserCount))
     }
 }
 
 private extension VDependencyManager {
     func titleViewConfiguration() -> TitleViewConfiguration? {
         guard
-            let titleColor = colorForKey(Keys.titleColorKey),
-            let subtitleColor = colorForKey(Keys.subtitleColorKey),
-            let titleFont = fontForKey(Keys.titleFontKey),
-            let subtitleFont = fontForKey(Keys.subtitleFontKey),
-            let titleText = stringForKey(Keys.titleTextKey),
-            let singularNumberOfUsersText = stringForKey(Keys.singularNumberOfUsersTextKey),
-            let pluralNumberOfUsersText = stringForKey(Keys.pluralNumberOfUsersTextKey)
+            let titleColor = color(forKey: Keys.titleColorKey),
+            let subtitleColor = color(forKey: Keys.subtitleColorKey),
+            let titleFont = font(forKey: Keys.titleFontKey),
+            let subtitleFont = font(forKey: Keys.subtitleFontKey),
+            let titleText = string(forKey: Keys.titleTextKey),
+            let singularNumberOfUsersText = string(forKey: Keys.singularNumberOfUsersTextKey),
+            let pluralNumberOfUsersText = string(forKey: Keys.pluralNumberOfUsersTextKey)
         else {
             return nil
         }

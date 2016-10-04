@@ -10,29 +10,29 @@ import UIKit
 
 /// An animator that imitates the "push" animation
 class PushTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
+    var presenting = true
+    var dismissing = false
     
-    var presenting: Bool = true
-    var dismissing: Bool = false
-    
-    func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return presenting ? 0.325 : 0.35
     }
     
-    func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
-        
-        guard let toView = transitionContext.viewForKey(UITransitionContextToViewKey),
-            let fromView = transitionContext.viewForKey(UITransitionContextFromViewKey) else {
-                return
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+        guard
+            let toView = transitionContext.view(forKey: UITransitionContextViewKey.to),
+            let fromView = transitionContext.view(forKey: UITransitionContextViewKey.from)
+        else {
+            return
         }
 
-        let containerView = transitionContext.containerView()
+        let containerView = transitionContext.containerView
         let backgroundView = presenting ? fromView : toView
         let foregroundView = presenting ? toView : fromView
 
         containerView.addSubview(backgroundView)
         containerView.addSubview(foregroundView)
         
-        if let snapshot = foregroundView.snapshotViewAfterScreenUpdates(false) where dismissing {
+        if let snapshot = foregroundView.snapshotView(afterScreenUpdates: false), dismissing {
             backgroundView.addSubview(snapshot)
             transitionContext.completeTransition(true)
             return
@@ -40,28 +40,29 @@ class PushTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         
         let width = containerView.bounds.width
         
-        let forgroundViewOffscreenTransform = CGAffineTransformMakeTranslation(width, 0)
-        let forgroundViewStartTransform = presenting ? forgroundViewOffscreenTransform : CGAffineTransformIdentity
-        let forgroundViewEndTransform = presenting ? CGAffineTransformIdentity : forgroundViewOffscreenTransform
+        let forgroundViewOffscreenTransform = CGAffineTransform(translationX: width, y: 0)
+        let forgroundViewStartTransform = presenting ? forgroundViewOffscreenTransform : CGAffineTransform.identity
+        let forgroundViewEndTransform = presenting ? CGAffineTransform.identity : forgroundViewOffscreenTransform
         
-        let backgroundViewOffscreenTransform = CGAffineTransformMakeTranslation(-width / 3, 0)
-        let backgroundViewStartTransform = presenting ? CGAffineTransformIdentity : backgroundViewOffscreenTransform
-        let backgroundViewEndTransform = presenting ? backgroundViewOffscreenTransform : CGAffineTransformIdentity
+        let backgroundViewOffscreenTransform = CGAffineTransform(translationX: -width / 3, y: 0)
+        let backgroundViewStartTransform = presenting ? CGAffineTransform.identity : backgroundViewOffscreenTransform
+        let backgroundViewEndTransform = presenting ? backgroundViewOffscreenTransform : CGAffineTransform.identity
         
         foregroundView.transform = forgroundViewStartTransform
         backgroundView.transform = backgroundViewStartTransform
         
-        UIView.animateWithDuration(transitionDuration(transitionContext),
-                                   delay: 0,
-                                   options: [.CurveEaseOut, .AllowAnimatedContent],
-                                   animations: {
-                                    foregroundView.transform = forgroundViewEndTransform
-                                    backgroundView.transform = backgroundViewEndTransform
+        UIView.animate(
+            withDuration: transitionDuration(using: transitionContext),
+            delay: 0,
+            options: [.curveEaseOut, .allowAnimatedContent],
+            animations: {
+                foregroundView.transform = forgroundViewEndTransform
+                backgroundView.transform = backgroundViewEndTransform
             },
-                                   completion: { complete in
-                                    transitionContext.completeTransition(complete)
-                                    backgroundView.transform = CGAffineTransformIdentity
-        })
+            completion: { complete in
+                transitionContext.completeTransition(complete)
+                backgroundView.transform = CGAffineTransform.identity
+            }
+        )
     }
-    
 }

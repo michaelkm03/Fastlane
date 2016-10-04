@@ -27,15 +27,15 @@ final class AccountCreateOperation: AsyncOperation<AccountCreateResponse> {
     
     // MARK: - Executing
     
-    private let dependencyManager: VDependencyManager
-    private let credentials: NewAccountCredentials
-    private let parameters: AccountCreateParameters
+    fileprivate let dependencyManager: VDependencyManager
+    fileprivate let credentials: NewAccountCredentials
+    fileprivate let parameters: AccountCreateParameters
     
     override var executionQueue: Queue {
         return .background
     }
     
-    override func execute(finish: (result: OperationResult<AccountCreateResponse>) -> Void) {
+    override func execute(_ finish: @escaping (_ result: OperationResult<AccountCreateResponse>) -> Void) {
         let requestOperation = RequestOperation(request: AccountCreateRequest(credentials: credentials))
         
         requestOperation.queue { [weak self] requestResult in
@@ -43,7 +43,7 @@ final class AccountCreateOperation: AsyncOperation<AccountCreateResponse> {
                 let strongSelf = self,
                 let response = requestResult.output
             else {
-                finish(result: requestResult)
+                finish(requestResult)
                 return
             }
             
@@ -53,9 +53,9 @@ final class AccountCreateOperation: AsyncOperation<AccountCreateResponse> {
                 parameters: strongSelf.parameters
             ).queue { loginSuccessResult in
                 switch loginSuccessResult {
-                    case .success: finish(result: requestResult)
-                    case .failure(let error): finish(result: .failure(error))
-                    case .cancelled: finish(result: .cancelled)
+                    case .success: finish(requestResult)
+                    case .failure(let error): finish(.failure(error))
+                    case .cancelled: finish(.cancelled)
                 }
             }
         }

@@ -6,17 +6,19 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
+import VictoriousIOSSDK
+
 final class ListMenuChatRoomCollectionViewCell: UICollectionViewCell, ListMenuSectionCell {
 
     // MARK: - Outlets
 
-    @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet fileprivate weak var titleLabel: UILabel!
 
     // MARK: - UICollectionViewCell
 
-    override var selected: Bool {
+    override var isSelected: Bool {
         didSet {
-            updateCellBackgroundColor(to: contentView, selectedColor: dependencyManager?.selectedBackgroundColor, isSelected: selected)
+            updateCellBackgroundColor(to: contentView, selectedColor: dependencyManager?.selectedBackgroundColor, isSelected: isSelected)
         }
     }
 
@@ -36,7 +38,7 @@ final class ListMenuChatRoomCollectionViewCell: UICollectionViewCell, ListMenuSe
 
     // MARK: - Private methods
 
-    private func applyTemplateAppearance(with dependencyManager: VDependencyManager) {
+    fileprivate func applyTemplateAppearance(with dependencyManager: VDependencyManager) {
         titleLabel.textColor = dependencyManager.titleColor
         titleLabel.font = dependencyManager.chatRoomItemFont
     }
@@ -45,14 +47,14 @@ final class ListMenuChatRoomCollectionViewCell: UICollectionViewCell, ListMenuSe
 
 private extension VDependencyManager {
     var chatRoomItemFont: UIFont? {
-        return fontForKey(VDependencyManagerParagraphFontKey)
+        return font(forKey: VDependencyManagerParagraphFontKey)
     }
 
     var selectedBackgroundColor: UIColor? {
-        return colorForKey(VDependencyManagerAccentColorKey)
+        return color(forKey: VDependencyManagerAccentColorKey)
     }
 
     var titleColor: UIColor? {
-        return colorForKey("color.text.navItem")
+        return color(forKey: "color.text.navItem")
     }
 }

@@ -38,7 +38,7 @@ extension PaginatorPageable where Self : ResultBasedPageable {
     }
     
     public init?( nextRequestFromRequest request: Self, resultCount: Int ) {
-        if let paginator = request.paginator.nextPage( resultCount ) {
+        if let paginator = request.paginator.nextPage( resultCount: resultCount ) {
             self.init( request: request, paginator: paginator )
         } else {
             return nil

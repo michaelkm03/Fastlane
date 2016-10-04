@@ -9,9 +9,9 @@
 import Foundation
 
 final class ShowLoginOperation: AsyncOperation<Void> {
-    private weak var originViewController: UIViewController?
-    private let dependencyManager: VDependencyManager
-    private let animated: Bool
+    fileprivate weak var originViewController: UIViewController?
+    fileprivate let dependencyManager: VDependencyManager
+    fileprivate let animated: Bool
     
     required init(
         originViewController: UIViewController,
@@ -27,29 +27,29 @@ final class ShowLoginOperation: AsyncOperation<Void> {
         return .main
     }
     
-    override func execute(finish: (result: OperationResult<Void>) -> Void) {
+    override func execute(_ finish: @escaping (_ result: OperationResult<Void>) -> Void) {
         
         // Don't show login if the user is already logged in
         guard VCurrentUser.user == nil else {
-            finish(result: .success())
+            finish(.success())
             return
         }
         
         // User is not logged in, show login view
         guard
-            let templateValue = self.dependencyManager.templateValueConformingToProtocol(VLoginRegistrationFlow.self, forKey: "loginAndRegistrationView"),
+            let templateValue = self.dependencyManager.templateValueConforming(to: VLoginRegistrationFlow.self, forKey: "loginAndRegistrationView"),
             let viewController = templateValue as? UIViewController,
             let loginFlow = templateValue as? VLoginRegistrationFlow
         else {
             let error = NSError(domain: "ShowLoginOperation", code: -1, userInfo: nil)
-            finish(result: .failure(error))
+            finish(.failure(error))
             return
         }
         
         let originViewController = self.originViewController
         
         loginFlow.onCompletionBlock = { didSucceed in
-            finish(result: .success())
+            finish(.success())
             
             guard didSucceed else {
                 return
@@ -60,10 +60,10 @@ final class ShowLoginOperation: AsyncOperation<Void> {
             // to run first so that the configured tab bar is visible immediately
             // when the login view controller is dismissed.
             dispatch_after(0.0) {
-                originViewController?.dismissViewControllerAnimated(true, completion: nil)
+                originViewController?.dismiss(animated: true, completion: nil)
             }
         }
         
-        originViewController?.presentViewController(viewController, animated: animated, completion: nil)
+        originViewController?.present(viewController, animated: animated, completion: nil)
     }
 }

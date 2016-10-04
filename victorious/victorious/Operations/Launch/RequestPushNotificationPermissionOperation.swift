@@ -15,11 +15,11 @@ final class RequestPushNotificationPermissionOperation: SyncOperation<Void> {
     }
     
     override func execute() -> OperationResult<Void> {
-        guard !VPushNotificationManager.sharedPushNotificationManager().started else {
+        guard !VPushNotificationManager.shared().started else {
             return .cancelled
         }
 
-        VPushNotificationManager.sharedPushNotificationManager().startPushNotificationManager()
+        VPushNotificationManager.shared().start()
         return .success()
     }
 }

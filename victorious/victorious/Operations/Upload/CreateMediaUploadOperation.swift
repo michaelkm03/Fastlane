@@ -14,9 +14,9 @@ final class CreateMediaUploadOperation: SyncOperation<Void> {
     let request: MediaUploadCreateRequest
     let uploadManager: VUploadManager
     let publishParameters: VPublishParameters
-    let mediaURL: NSURL?
+    let mediaURL: URL?
     
-    private var currentUploadTask: VUploadTaskInformation?
+    fileprivate var currentUploadTask: VUploadTaskInformation?
     
     init?(apiPath: APIPath, publishParameters: VPublishParameters, uploadManager: VUploadManager) {
         guard let request = MediaUploadCreateRequest(apiPath: apiPath) else {
@@ -45,11 +45,12 @@ final class CreateMediaUploadOperation: SyncOperation<Void> {
     override func execute() -> OperationResult<Void> {
         let uploadError = NSError(domain: "UploadError", code: -1, userInfo: nil)
 
-        guard isPublishable(publishParameters) else {
+        guard isPublishable(publishParameters: publishParameters) else {
             return .failure(uploadError)
         }
         
-        let taskCreator = VUploadTaskCreator(uploadManager: uploadManager)
+        // Future: Fix the ! imported from Objc
+        let taskCreator = VUploadTaskCreator(uploadManager: uploadManager)!
         let authenticationContext = AuthenticationContext()
         
         taskCreator.request = request.urlRequestWithHeaders(using: RequestContext(), authenticationContext: authenticationContext)
@@ -75,8 +76,8 @@ final class CreateMediaUploadOperation: SyncOperation<Void> {
         uploadManager.cancelUploadTask(currentUploadTask)
     }
     
-    private var formFields: [NSObject : AnyObject] {
-        var dict: [NSObject : AnyObject] = [
+    fileprivate var formFields: [AnyHashable: Any] {
+        var dict: [AnyHashable: Any] = [
             "name": publishParameters.caption ?? "",
             "is_gif_style": publishParameters.isGIF ? "true" : "false",
             "did_crop": publishParameters.didCrop ? "true" : "false",
@@ -102,16 +103,16 @@ final class CreateMediaUploadOperation: SyncOperation<Void> {
         if let textToolType = publishParameters.textToolType {
             dict["text_tool_type"] = textToolType
         }
-        if let parentNodeID = publishParameters.parentNodeID where !parentNodeID.isEqualToNumber(NSNumber(int: 0)) {
-            dict["parent_node_id"] = String(parentNodeID)
+        if let parentNodeID = publishParameters.parentNodeID , !parentNodeID.isEqual(to: NSNumber(value: 0)) {
+            dict["parent_node_id"] = String(describing: parentNodeID)
         }
-        if let parentSequenceID = publishParameters.parentSequenceID where !parentSequenceID.isEmpty {
+        if let parentSequenceID = publishParameters.parentSequenceID , !parentSequenceID.isEmpty {
             dict["parent_sequence_id"] = String(parentSequenceID)
         }
         switch publishParameters.captionType {
-        case .Meme:
+        case .meme:
             dict["subcategory"] = "meme"
-        case .Normal:
+        case .normal:
             break
         }
         if let source = publishParameters.source {

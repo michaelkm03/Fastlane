@@ -10,9 +10,9 @@ import UIKit
 import VictoriousIOSSDK
 
 class UserBlockToggleOperation: SyncOperation<Void> {
-    private let user: UserModel
-    private let blockAPIPath: APIPath
-    private let unblockAPIPath: APIPath
+    fileprivate let user: UserModel
+    fileprivate let blockAPIPath: APIPath
+    fileprivate let unblockAPIPath: APIPath
     
     init(user: UserModel, blockAPIPath: APIPath, unblockAPIPath: APIPath) {
         self.user = user

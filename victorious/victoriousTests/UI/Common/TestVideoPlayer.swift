@@ -13,7 +13,7 @@ class TestVideoPlayer: NSObject, VVideoPlayer {
     var playFromStartCallCount = 0
     var pauseCallCount = 0
     var pauseAtStartCallCount = 0
-    var timeToSeek: NSTimeInterval = 0
+    var timeToSeek: TimeInterval = 0
     var setItem: VVideoPlayerItem?
     var backgroundColor: UIColor?
     var resetCallCount = 0
@@ -43,15 +43,15 @@ class TestVideoPlayer: NSObject, VVideoPlayer {
         pauseAtStartCallCount += 1
     }
 
-    func seekToTimeSeconds(timeSeconds: NSTimeInterval) {
+    func seek(toTimeSeconds timeSeconds: TimeInterval) {
         timeToSeek = timeSeconds
     }
 
-    func setItem(item: VVideoPlayerItem) {
+    func setItem(_ item: VVideoPlayerItem) {
         setItem = item
     }
 
-    func updateToBackgroundColor(backgroundColor: UIColor) {
+    func update(toBackgroundColor backgroundColor: UIColor) {
         self.backgroundColor = backgroundColor
     }
 

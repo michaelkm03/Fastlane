@@ -7,14 +7,15 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 enum VideoState {
-    case Buffering,
-    Ended,
-    NotStarted,
-    Paused,
-    Playing,
-    Scrubbing
+    case buffering,
+    ended,
+    notStarted,
+    paused,
+    playing,
+    scrubbing
 }
 
 protocol ContentVideoPlayerCoordinatorDelegate: class {
@@ -27,18 +28,18 @@ protocol ContentVideoPlayerCoordinatorDelegate: class {
 /// (currently supporting GIFs, videos, and youtube videos)
 /// Sets up the video view and handles replay/buffering/scrubbing logic
 class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolbarDelegate {
-    private struct Constants {
+    fileprivate struct Constants {
         static let toolbarHeight = CGFloat(41.0)
     }
 
-    private var lastState: VideoState = .NotStarted
-    private var state: VideoState = .NotStarted {
+    fileprivate var lastState: VideoState = .notStarted
+    fileprivate var state: VideoState = .notStarted {
         didSet {
             lastState = oldValue
-            toolbar.paused = state != .Playing
+            toolbar.paused = state != .playing
         }
     }
-    private var content: Content
+    fileprivate var content: Content
     
     weak var delegate: ContentVideoPlayerCoordinatorDelegate?
     
@@ -56,7 +57,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
             videoPlayer = VVideoView()
         }
         
-        videoPlayer.view.backgroundColor = .clearColor()
+        videoPlayer.view.backgroundColor = .clear
         
         super.init()
         
@@ -79,8 +80,8 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         if asset.videoSource == .youtube {
             item = VVideoPlayerItem(externalID: resourceID)
         }
-        else if let resourceURL = NSURL(string: resourceID) {
-            item = VVideoPlayerItem(URL: resourceURL)
+        else if let resourceURL = URL(string: resourceID) {
+            item = VVideoPlayerItem(url: resourceURL)
         }
         else {
             return
@@ -93,7 +94,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     
     // MARK: - Managing the video player
     
-    private let videoPlayer: VVideoPlayer
+    fileprivate let videoPlayer: VVideoPlayer
     
     var duration: Double {
         return videoPlayer.durationSeconds
@@ -105,17 +106,17 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     
     // MARK: - Managing the toolbar
     
-    private let toolbar = VideoToolbarView.viewFromNib()
+    fileprivate let toolbar = VideoToolbarView.viewFromNib()
     
     func setupToolbar(in superview: UIView, initallyVisible visible: Bool) {
         superview.addSubview(toolbar)
         toolbar.v_addHeightConstraint(Constants.toolbarHeight)
-        superview.v_addPinToLeadingTrailingToSubview(toolbar)
-        superview.v_addPinToBottomToSubview(toolbar)
+        superview.v_addPinToLeadingTrailing(toSubview: toolbar)
+        superview.v_addPinToBottom(toSubview: toolbar)
         toolbar.setVisible(visible)
     }
     
-    func toggleToolbarVisibility(animated: Bool) {
+    func toggleToolbarVisibility(_ animated: Bool) {
         toolbar.setVisible(!toolbar.isVisible, animated: animated)
     }
     
@@ -124,13 +125,13 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     /// Plays the video belonging to the content passed in during initialization.
     /// `synced` can be used to enable the syncing feature where the video would be synced between all users of the app.
     func playVideo(withSync synced: Bool = false) {
-        if let seekAheadTime = content.seekAheadTime where synced {
+        if let seekAheadTime = content.seekAheadTime , synced {
             if Int(videoPlayer.currentTimeSeconds) <= Int(seekAheadTime) {
-                videoPlayer.seekToTimeSeconds(seekAheadTime)
+                videoPlayer.seek(toTimeSeconds: seekAheadTime)
             }
         }
         videoPlayer.play()
-        state = .Playing
+        state = .playing
     }
     
     func pauseVideo() {
@@ -141,9 +142,9 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         return videoPlayer.isPlaying
     }
     
-    private func prepareToPlay() {
-        if let seekAheadTime = content.seekAheadTime where Int(videoPlayer.currentTimeSeconds) <= Int(seekAheadTime) {
-            videoPlayer.seekToTimeSeconds(seekAheadTime)
+    fileprivate func prepareToPlay() {
+        if let seekAheadTime = content.seekAheadTime , Int(videoPlayer.currentTimeSeconds) <= Int(seekAheadTime) {
+            videoPlayer.seek(toTimeSeconds: seekAheadTime)
         }
         delegate?.coordinatorDidBecomeReady()
     }
@@ -153,7 +154,7 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     func layout(in bounds: CGRect, with fillMode: FillMode = .fit) {
         let boundsAspectRatio = bounds.size.aspectRatio ?? 1
         
-        if let contentAspectRatio = content.naturalMediaAspectRatio where contentAspectRatio != boundsAspectRatio && (fillMode == .fill) {
+        if let contentAspectRatio = content.naturalMediaAspectRatio , contentAspectRatio != boundsAspectRatio && (fillMode == .fill) {
             // This expands the frame of the video player to fill the given bounds.
             let difference = fabs(boundsAspectRatio - contentAspectRatio)
             
@@ -169,59 +170,59 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
     
     // MARK: - VVideoPlayerDelegate
     
-    func videoPlayerDidBecomeReady(videoPlayer: VVideoPlayer) {
-        guard let asset = content.assets.first where asset.videoSource == .youtube else {
+    func videoPlayerDidBecomeReady(_ videoPlayer: VVideoPlayer) {
+        guard let asset = content.assets.first , asset.videoSource == .youtube else {
             return
         }
         prepareToPlay()
     }
     
-    func videoPlayerItemIsReadyToPlay(videoPlayer: VVideoPlayer) {
+    func videoPlayerItemIsReady(toPlay videoPlayer: VVideoPlayer) {
         prepareToPlay()
     }
     
-    func videoPlayerDidReachEnd(videoPlayer: VVideoPlayer) {
-        state = .Ended
+    func videoPlayerDidReachEnd(_ videoPlayer: VVideoPlayer) {
+        state = .ended
         delegate?.coordinatorDidFinishPlaying()
     }
     
-    func videoPlayerDidStartBuffering(videoPlayer: VVideoPlayer) {
-        if state != .Scrubbing && state != .Paused {
-            state = .Buffering
+    func videoPlayerDidStartBuffering(_ videoPlayer: VVideoPlayer) {
+        if state != .scrubbing && state != .paused {
+            state = .buffering
         }
     }
     
-    func videoPlayer(videoPlayer: VVideoPlayer, didPlayToTime time: Float64) {
+    func videoPlayer(_ videoPlayer: VVideoPlayer, didPlayToTime time: Float64) {
         toolbar.setCurrentTime(videoPlayer.currentTimeSeconds, duration: videoPlayer.durationSeconds)
     }
     
-    func videoPlayerDidPlay(videoPlayer: VVideoPlayer) {
-        state = .Playing
+    func videoPlayerDidPlay(_ videoPlayer: VVideoPlayer) {
+        state = .playing
     }
     
-    func videoPlayerDidPause(videoPlayer: VVideoPlayer) {
-        if state != .NotStarted && state != .Scrubbing {
-            state = .Paused
+    func videoPlayerDidPause(_ videoPlayer: VVideoPlayer) {
+        if state != .notStarted && state != .scrubbing {
+            state = .paused
         }
     }
     
     // MARK: - VideoToolbarDelegate
     
-    func videoToolbarDidPlay(videoToolbar: VideoToolbarView) {
+    func videoToolbarDidPlay(_ videoToolbar: VideoToolbarView) {
         videoPlayer.play()
     }
     
-    func videoToolbarDidPause(videoToolbar: VideoToolbarView) {
+    func videoToolbarDidPause(_ videoToolbar: VideoToolbarView) {
         videoPlayer.pause()
     }
     
-    func videoToolbar(videoToolbar: VideoToolbarView, didScrubToLocation location: Float) {
-        let timeSeconds: NSTimeInterval = Double(location) * videoPlayer.durationSeconds
-        videoPlayer.seekToTimeSeconds(timeSeconds)
+    func videoToolbar(_ videoToolbar: VideoToolbarView, didScrubToLocation location: Float) {
+        let timeSeconds: TimeInterval = Double(location) * videoPlayer.durationSeconds
+        videoPlayer.seek(toTimeSeconds: timeSeconds)
     }
     
-    func videoToolbar(videoToolbar: VideoToolbarView, didEndScrubbingToLocation location: Float) {
-        if lastState == .Playing {
+    func videoToolbar(_ videoToolbar: VideoToolbarView, didEndScrubbingToLocation location: Float) {
+        if lastState == .playing {
             videoPlayer.play()
         }
         else {
@@ -229,8 +230,8 @@ class VContentVideoPlayerCoordinator: NSObject, VVideoPlayerDelegate, VideoToolb
         }
     }
     
-    func videoToolbar(videoToolbar: VideoToolbarView, didStartScrubbingToLocation location: Float) {
-        state = .Scrubbing
+    func videoToolbar(_ videoToolbar: VideoToolbarView, didStartScrubbingToLocation location: Float) {
+        state = .scrubbing
         videoPlayer.pause()
     }
 }

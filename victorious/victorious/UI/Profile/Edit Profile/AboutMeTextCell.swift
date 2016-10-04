@@ -10,11 +10,11 @@ import Foundation
 
 /// Provides UI for the user to edit their `tagline`.
 class AboutMeTextCell: UITableViewCell, UITextViewDelegate {
-    private struct Constants {
+    fileprivate struct Constants {
         static let textViewInsets = UIEdgeInsets(top: 15, left: -4, bottom: 14, right: -5)
     }
     
-    @IBOutlet private var textView: VPlaceholderTextView!
+    @IBOutlet fileprivate var textView: VPlaceholderTextView!
     
     var dependencyManager: VDependencyManager? {
         didSet {
@@ -40,8 +40,8 @@ class AboutMeTextCell: UITableViewCell, UITextViewDelegate {
     
     // MARK: - UITextViewDelegate
     
-    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
-        let newText = (textView.text as NSString).stringByReplacingCharactersInRange(range, withString: text)
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        let newText = (textView.text as NSString).replacingCharacters(in: range, with: text)
         let isValid = newText.characters.count < 256;
         if !isValid {
             textView.v_performShakeAnimation()
@@ -50,7 +50,7 @@ class AboutMeTextCell: UITableViewCell, UITextViewDelegate {
         return isValid
     }
     
-    func textViewDidChange(textView: UITextView) {
+    func textViewDidChange(_ textView: UITextView) {
         onDataChange?()
         notifySizeChangeIfNeeded()
     }
@@ -76,34 +76,34 @@ class AboutMeTextCell: UITableViewCell, UITextViewDelegate {
     var onDataChange: (() -> ())?
     
     /// Provide a closure to be notified about changes to the height of the cell
-    var onDesiredHeightChangeClosure: ((desiredHeight: CGFloat) -> ())?
+    var onDesiredHeightChangeClosure: ((_ desiredHeight: CGFloat) -> ())?
     
     // MARK: - Misc Private Functions
     
-    private func notifySizeChangeIfNeeded() {
-        let textSize = textView.sizeThatFits(CGSize(width: textView.bounds.width, height: CGFloat.max))
+    fileprivate func notifySizeChangeIfNeeded() {
+        let textSize = textView.sizeThatFits(CGSize(width: textView.bounds.width, height: CGFloat.greatestFiniteMagnitude))
         guard textSize.height != contentView.bounds.height else {
             return
         }
-        onDesiredHeightChangeClosure?(desiredHeight: textSize.height)
+        onDesiredHeightChangeClosure?(textSize.height)
     }
 }
 
 private extension VDependencyManager {
     
     var placeholderAndEnteredTextFont: UIFont? {
-        return fontForKey("font.paragraph")
+        return font(forKey: "font.paragraph")
     }
     
     var placeholderTextColor: UIColor? {
-        return colorForKey("color.text.placeholder")
+        return color(forKey: "color.text.placeholder")
     }
     
     var enteredTextColor: UIColor? {
-        return colorForKey("color.text")
+        return color(forKey: "color.text")
     }
     
     var cellBackgroundColor: UIColor? {
-        return colorForKey("color.accent")
+        return color(forKey: "color.accent")
     }
 }

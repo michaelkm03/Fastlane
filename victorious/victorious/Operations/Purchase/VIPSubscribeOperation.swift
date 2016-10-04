@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 final class VIPSubscribeOperation: AsyncOperation<Void> {
     let product: VProduct
@@ -23,11 +24,11 @@ final class VIPSubscribeOperation: AsyncOperation<Void> {
         return .main
     }
     
-    override func execute(finish: (result: OperationResult<Void>) -> Void) {
-        let success = { (results: Set<NSObject>?) in
+    override func execute(_ finish: @escaping (_ result: OperationResult<Void>) -> Void) {
+        let success = { (fetchedProducts: Set<AnyHashable>?) in
             // Force success because we have to deliver the product even if the sever fails for any reason
             guard let validationOperation = VIPValidateSubscriptionOperation(apiPath: self.validationAPIPath, shouldForceSuccess: true) else {
-                finish(result: .success())
+                finish(.success())
                 return
             }
             
@@ -38,16 +39,16 @@ final class VIPSubscribeOperation: AsyncOperation<Void> {
                     VTrackingManager.sharedInstance().trackEvent(VTrackingEventRecievedProductReceiptFromBackend)
                 }
                 
-                finish(result: .success())
+                finish(.success())
             }
         }
         
-        let failure = { (error: NSError?) in
+        let failure = { (error: Error?) in
             if let error = error {
-                finish(result: .failure(error))
+                finish(.failure(error))
             }
             else {
-                finish(result: .cancelled)
+                finish(.cancelled)
             }
         }
         

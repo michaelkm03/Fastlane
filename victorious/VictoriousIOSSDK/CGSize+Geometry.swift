@@ -25,7 +25,7 @@ extension CGSize {
     
     // MARK: - Containment
     
-    public func contains(size: CGSize) -> Bool {
+    public func contains(_ size: CGSize) -> Bool {
         return width >= size.width && height >= size.height
     }
     

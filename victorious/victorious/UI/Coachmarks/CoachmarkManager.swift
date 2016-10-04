@@ -27,13 +27,14 @@ class CoachmarkManager: NSObject, UIViewControllerTransitioningDelegate {
     }
     
     func reloadCoachmarks() {
-        guard let coachmarkConfigurations = dependencyManager.arrayForKey(Constants.coachmarksArrayKey) as? [[NSObject : AnyObject]] else {
+        guard let coachmarkConfigurations = dependencyManager.array(forKey: Constants.coachmarksArrayKey) as? [[NSObject : AnyObject]] else {
             return
         }
         let shownCoachmarks = fetchShownCoachmarkIDs()
         coachmarks = coachmarkConfigurations.map { coachmarkConfiguration in
-            let childDependency = dependencyManager.childDependencyManagerWithAddedConfiguration(coachmarkConfiguration)
-            let coachmark = Coachmark(dependencyManager: childDependency)
+            let childDependency = dependencyManager.childDependencyManager(withAddedConfiguration: coachmarkConfiguration)
+            // FUTURE: Remove force unwrap
+            let coachmark = Coachmark(dependencyManager: childDependency!)
             if shownCoachmarks.contains(coachmark.remoteID) {
                 coachmark.hasBeenShown = true
             }
@@ -42,17 +43,17 @@ class CoachmarkManager: NSObject, UIViewControllerTransitioningDelegate {
     }
 
     func resetShownCoachmarks() {
-        NSUserDefaults.standardUserDefaults().setObject(nil, forKey: Constants.shownCoachmarksKey)
+        UserDefaults.standard.set(nil, forKey: Constants.shownCoachmarksKey)
         reloadCoachmarks()
     }
     
     func fetchShownCoachmarkIDs() -> [String] {
-        return NSUserDefaults.standardUserDefaults().objectForKey(Constants.shownCoachmarksKey) as? [String] ?? []
+        return UserDefaults.standard.object(forKey: Constants.shownCoachmarksKey) as? [String] ?? []
     }
     
     private func saveCoachmarkState() {
         let shownCoachmarkIDs = coachmarks.filter { $0.hasBeenShown }.map { $0.remoteID }
-        NSUserDefaults.standardUserDefaults().setObject(shownCoachmarkIDs, forKey: Constants.shownCoachmarksKey)
+        UserDefaults.standard.set(shownCoachmarkIDs, forKey: Constants.shownCoachmarksKey)
     }
     
     /// Creates the coachmark and displays it over the viewController. This performs calculations
@@ -63,7 +64,7 @@ class CoachmarkManager: NSObject, UIViewControllerTransitioningDelegate {
     /// - parameter context: The context string used to differentiate between different coachmarks on the same screen, such as profile
     func setupCoachmark(in displayer: CoachmarkDisplayer, withContainerView container: UIView, withContext viewContext: String? = nil) {
         let screenIdentifier = displayer.screenIdentifier
-        if let index = coachmarks.indexOf({ coachmark in
+        if let index = coachmarks.index(where: { coachmark in
             var contextMatches = true
             if let coachmarkContext = coachmark.context {
                 contextMatches = viewContext == coachmarkContext
@@ -92,7 +93,7 @@ class CoachmarkManager: NSObject, UIViewControllerTransitioningDelegate {
             coachmarkToDisplay.hasBeenShown = true
             saveCoachmarkState()
             
-            if let urls = dependencyManager.arrayForKey(Constants.trackingURLsKey) as? [String] {
+            if let urls = dependencyManager.array(forKey: Constants.trackingURLsKey) as? [String] {
                 VTrackingManager.sharedInstance().trackEvent(Constants.trackingEventName, parameters: [ VTrackingKeyUrls : urls])
             }
     
@@ -104,11 +105,11 @@ class CoachmarkManager: NSObject, UIViewControllerTransitioningDelegate {
     lazy var coachmarkPresentationController = CoachmarkPresentAnimationController()
     lazy var coachmarkDismissalController = CoachmarkDismissAnimationController()
     
-    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return coachmarkPresentationController
     }
     
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return coachmarkDismissalController
     }
 }
