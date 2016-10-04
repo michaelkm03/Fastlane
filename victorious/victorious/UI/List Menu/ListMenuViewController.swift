@@ -88,7 +88,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     private func selectCreator(atIndex index: Int) {
         guard
             let scaffold = VRootViewController.sharedRootViewController()?.scaffold as? Scaffold,
-            let creator = collectionViewDataSource.creatorDataSource?.visibleItems[index]
+            let creator = collectionViewDataSource.creatorsDataSource?.visibleItems[index]
         else {
             Log.warning("Trying to select a non existing section at index \(index)")
             return
@@ -216,7 +216,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         let section = collectionViewDataSource.availableSections[indexPath.section]
 
         switch section {
-            case .creator:
+            case .creators:
                 selectCreator(atIndex: indexPath.item)
                 
                 // Hack to get the selection to work. Otherwise, the previous state would not appear to be selected

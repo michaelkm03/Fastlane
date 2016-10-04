@@ -11,7 +11,7 @@ import UIKit
 /// The enum for different sections of List Menu
 /// If you add a section, please make sure to update `numberOfSections` too
 enum ListMenuSection {
-    case creator
+    case creators
     case community
     case hashtags
     case chatRooms
@@ -25,7 +25,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
     private weak var listMenuViewController: ListMenuViewController?
     private let dependencyManager: VDependencyManager
     let communityDataSource: NewListMenuSectionDataSource<ListMenuCommunityItem, SyncOperation<[ListMenuCommunityItem]>>?
-    let creatorDataSource: NewListMenuSectionDataSource<UserModel, RequestOperation<CreatorListRequest>>?
+    let creatorsDataSource: NewListMenuSectionDataSource<UserModel, RequestOperation<CreatorListRequest>>?
     let newChatRoomsDataSource: NewListMenuSectionDataSource<ChatRoom, RequestOperation<ChatRoomsRequest>>?
     let hashtagDataSource: NewListMenuSectionDataSource<Hashtag, RequestOperation<TrendingHashtagsRequest>>?
     private let subscribeButton: SubscribeButton
@@ -59,7 +59,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
             let apiPath = childDependency.creatorsListAPIPath,
             let request = CreatorListRequest(apiPath: apiPath) {
 
-            creatorDataSource = NewListMenuSectionDataSource(
+            creatorsDataSource = NewListMenuSectionDataSource(
                 dependencyManager: childDependency,
                 cellConfiguration: { cell, item in
                     cell.titleLabel.text = item.displayName
@@ -68,12 +68,12 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
                 },
                 createOperation: { RequestOperation(request: request) },
                 processOutput: { $0 },
-                section: .creator
+                section: .creators
             )
-            availableSections.append(.creator)
+            availableSections.append(.creators)
         }
         else {
-            creatorDataSource = nil
+            creatorsDataSource = nil
         }
 
         if
@@ -120,7 +120,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
 
         super.init()
         
-        creatorDataSource?.setupDataSource(with: self)
+        creatorsDataSource?.setupDataSource(with: self)
         communityDataSource?.setupDataSource(with: self)
         hashtagDataSource?.setupDataSource(with: self)
         newChatRoomsDataSource?.setupDataSource(with: self)
@@ -138,7 +138,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         let section = availableSections[section]
         
         switch section {
-            case .creator: return numberOfItems(from: creatorDataSource, in: section)
+            case .creators: return numberOfItems(from: creatorsDataSource, in: section)
             case .community: return numberOfItems(from: communityDataSource, in: section)
             case .hashtags: return numberOfItems(from: hashtagDataSource, in: section)
             case .chatRooms: return numberOfItems(from: newChatRoomsDataSource, in: section)
@@ -155,7 +155,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
 
     func itemsIndices(for section: ListMenuSection) -> Range<Int>? {
         switch section {
-            case .creator: return itemsIndices(for: creatorDataSource)
+            case .creators: return itemsIndices(for: creatorsDataSource)
             case .community: return itemsIndices(for: communityDataSource)
             case .hashtags: return itemsIndices(for: hashtagDataSource)
             case .chatRooms: return itemsIndices(for: newChatRoomsDataSource)
@@ -174,7 +174,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         let section = availableSections[indexPath.section]
 
         switch section {
-            case .creator: return dequeueProperCell(from: creatorDataSource, for: collectionView, at: indexPath)
+            case .creators: return dequeueProperCell(from: creatorsDataSource, for: collectionView, at: indexPath)
             case .community: return dequeueProperCell(from: communityDataSource, for: collectionView, at: indexPath)
             case .hashtags: return dequeueProperCell(from: hashtagDataSource, for: collectionView, at: indexPath)
             case .chatRooms: return dequeueProperCell(from: newChatRoomsDataSource, for: collectionView, at: indexPath)
@@ -187,7 +187,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         let section = availableSections[indexPath.section]
         
         switch section {
-            case .creator: headerView.dependencyManager = dependencyManager.creatorsChildDependency
+            case .creators: headerView.dependencyManager = dependencyManager.creatorsChildDependency
             case .community: headerView.dependencyManager = dependencyManager.communityChildDependency
             case .hashtags: headerView.dependencyManager = dependencyManager.hashtagsChildDependency
             case .chatRooms: headerView.dependencyManager = dependencyManager.chatRoomsChildDependency

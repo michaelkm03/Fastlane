@@ -22,7 +22,7 @@ final class ListMenuCreatorDataSource: ListMenuSectionDataSource {
     private(set) var visibleItems: [UserModel] = [] {
         didSet {
             state = visibleItems.isEmpty ? .noContent : .items
-            delegate?.didUpdateVisibleItems(forSection: .creator)
+            delegate?.didUpdateVisibleItems(forSection: .creators)
         }
     }
 
@@ -46,7 +46,7 @@ final class ListMenuCreatorDataSource: ListMenuSectionDataSource {
                     success?()
                 case .failure(let error):
                     self?.state = .failed(error: error)
-                    self?.delegate?.didUpdateVisibleItems(forSection: .creator)
+                    self?.delegate?.didUpdateVisibleItems(forSection: .creators)
                 case .cancelled:
                     break
             }
