@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 /// A data source that fetches stickers and provides cells that show non-animating previews of these stickers
 class StickerTrayDataSource: PaginatedDataSource, TrayDataSource {

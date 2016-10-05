@@ -9,6 +9,7 @@
 #if V_ENABLE_WEBSOCKET_DEBUG_MENU
 
     import UIKit
+    import VictoriousIOSSDK
 
     class WebSocketMessageDetailViewController: UIViewController {
 

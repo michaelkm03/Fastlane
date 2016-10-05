@@ -149,7 +149,11 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     private var publisher: ContentPublisher?
     
     /// The ID of the chat room that the user is currently in, or nil if the user is not in a chat room.
-    private var activeChatRoomID: ChatRoom.ID?
+    private var activeChatRoomID: ChatRoom.ID? {
+        didSet {
+            chatFeed?.activeChatRoomID = activeChatRoomID
+        }
+    }
     
     private func publish(content: Content) {
         guard let width = chatFeed?.collectionView.frame.width else {
@@ -527,8 +531,10 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         guard let itemCount = chatFeed?.chatInterfaceDataSource.itemCount else {
             return
         }
+        
+        let pendingItems = contentPublisher.pendingItems(forChatRoomWithID: activeChatRoomID)
 
-        chatFeed?.collectionView.reloadItems(at: contentPublisher.pendingItems.indices.map {
+        chatFeed?.collectionView.reloadItems(at: pendingItems.indices.map {
             IndexPath(item: itemCount - 1 - $0, section: 0)
         })
     }

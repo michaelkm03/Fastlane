@@ -58,7 +58,12 @@ class ContentPublisher {
     // MARK: - Publishing
     
     /// The content that is currently pending creation.
-    fileprivate(set) var pendingItems = [ChatFeedContent]()
+    private var pendingItems = [ChatFeedContent]()
+    
+    /// Returns all of the content that is pending publishing for the given `chatRoomID`.
+    func pendingItems(forChatRoomWithID chatRoomID: ChatRoom.ID?) -> [ChatFeedContent] {
+        return pendingItems.filter { $0.pendingChatRoomID == chatRoomID }
+    }
     
     /// Queues `content` for publishing.
     func publish(_ content: Content, withWidth width: CGFloat, toChatRoomWithID chatRoomID: ChatRoom.ID?) {

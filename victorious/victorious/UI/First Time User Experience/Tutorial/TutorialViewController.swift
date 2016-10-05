@@ -31,6 +31,7 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
     
     weak var nextSender: ForumEventSender? = nil
     var dependencyManager: VDependencyManager!
+    var activeChatRoomID: ChatRoom.ID?
     
     @IBOutlet fileprivate(set) weak var collectionView: UICollectionView! {
         didSet {

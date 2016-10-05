@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 /// A data source that fetches gifs and provides cells that load and auto-play these gifs
 class GIFTrayDataSource: PaginatedDataSource, TrayDataSource {
