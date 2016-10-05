@@ -27,6 +27,12 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         static let gifType = "gif"
     }
     
+    // MARK: - ForumEventReceiver
+    
+    let childEventReceivers = [ForumEventReceiver]()
+    
+    func receive(_ event: ForumEvent) {}
+    
     // MARK: - ForumEventSender
     
     var nextSender: ForumEventSender? {

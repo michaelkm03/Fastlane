@@ -92,6 +92,8 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     
     // MARK: - ForumEventReceiver
     
+    let childEventReceivers = [ForumEventReceiver]()
+    
     func receive(_ event: ForumEvent) {
         switch event {
             case .handleContent(let newItems, let loadingType):

@@ -125,6 +125,12 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
         return collectionView.bounds.width
     }
     
+    // MARK: - ForumEventReceiver
+    
+    let childEventReceivers = [ForumEventReceiver]()
+    
+    func receive(_ event: ForumEvent) {}
+    
     // MARK: - VBackgroundContainer
     
     func backgroundContainerView() -> UIView {
