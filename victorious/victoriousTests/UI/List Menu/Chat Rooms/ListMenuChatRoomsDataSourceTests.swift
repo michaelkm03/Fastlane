@@ -11,7 +11,7 @@ import XCTest
 
 class ListMenuChatRoomsDataSourceTests: XCTestCase {
     func testFetchRemoteData() {
-        let mockChatRooms = [ChatRoom(name: "Cupcakes")]
+        let mockChatRooms = [ChatRoom(id: "cupcakes", name: "Cupcakes")]
         let requestExecutor = TestRequestExecutor(result: mockChatRooms)
         let config = ["networkResources":["chat.rooms.URL":"http://example.com"]]
         let dependencyManager = VDependencyManager(parentManager: nil, configuration: config, dictionaryOfClassesByTemplateName: [:])
