@@ -282,14 +282,14 @@ class AvatarView: UIView {
         
         imageView.image = nil
         imageView.backgroundColor = user?.color
+        let size = bounds.size
         
-        if let imageAsset = user?.previewImage(ofMinimumSize: bounds.size) {
+        if let imageAsset = user?.previewImage(ofMinimumSize: size) {
             imageView.getImageAsset(imageAsset) { [weak self] result in
                 switch result {
                     case .success(let image):
                         guard
-                            let strongSelf = self
-                            , strongSelf.user?.previewImage(ofMinimumSize: strongSelf.bounds.size)?.url == imageAsset.url
+                            let strongSelf = self, strongSelf.user?.previewImage(ofMinimumSize: size)?.url == imageAsset.url
                         else {
                             return
                         }
