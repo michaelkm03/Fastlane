@@ -612,7 +612,7 @@ private extension VDependencyManager {
     // MARK: - End VIP Button
     
     var endVIPConfiguration: VDependencyManager? {
-        return childDependency(forKey: "end.vip.button")
+        return childDependency(forKey: "end.button.vip")
     }
     
     var endVIPTitle: String? {
@@ -640,6 +640,7 @@ private extension VDependencyManager {
     }
     
     var endVIPAPIPath: APIPath? {
-        return networkResources?.apiPath(forKey: "end.vip.event.URL")
+        let appID = VEnvironmentManager.sharedInstance().currentEnvironment.appID.stringValue
+        return networkResources?.apiPath(forKey: "end.vip.event.URL", macroReplacements: ["%%APP_ID%%": appID])
     }
 }
