@@ -78,8 +78,9 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             confirmButtonContainerHeightConstraint.constant = Constants.minimumConfirmButtonContainerHeight
         }
     }
+    @IBOutlet private var composerToBottomConstraint: NSLayoutConstraint!
+    @IBOutlet private var textInputAreaToTrayContainerConstraint: NSLayoutConstraint!
     @IBOutlet private var confirmButtonToSuperviewTopConstraint: NSLayoutConstraint!
-    @IBOutlet private var inputViewToBottomConstraint: NSLayoutConstraint!
     @IBOutlet private var customInputAreaHeightConstraint: NSLayoutConstraint!
     @IBOutlet private var textViewContainerHeightConstraint: NSLayoutConstraint!
     @IBOutlet private var textViewHeightConstraint: NSLayoutConstraint!
@@ -124,9 +125,10 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         guard isViewLoaded && composerIsVisible else {
             return 0
         }
+        //The displayed space of the text input area, which is dictated by the either the confirm button container's height or the textView and attachment bar's combined height
         let attachmentAndTextInputHeight = max(textViewContainerHeightConstraint.constant
             + attachmentContainerHeightConstraint.constant, confirmButtonContainerHeightConstraint.constant + confirmButtonToSuperviewTopConstraint.constant)
-        return fabs(inputViewToBottomConstraint.constant)
+        return fabs(textInputAreaToTrayContainerConstraint.constant)
             + attachmentAndTextInputHeight
             + hashtagBarContainerHeightConstraint.constant
             + customInputAreaHeightConstraint.constant
@@ -280,7 +282,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             }
         }
         else {
-            inputViewToBottomConstraint.constant = visible ? 0.0 : -totalComposerHeight
+            composerToBottomConstraint.constant = visible ? 0.0 : -totalComposerHeight
             if !visible {
                 textView.resignFirstResponder()
             }
@@ -519,12 +521,12 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         updateViewConstraints()
         if animationDuration != 0 {
             UIView.animate(withDuration: animationDuration, delay: 0, options: animationOptions, animations: {
-                self.inputViewToBottomConstraint.constant = visibleKeyboardHeight
+            self.textInputAreaToTrayContainerConstraint.constant = visibleKeyboardHeight
                 self.delegate?.composer(self, didUpdateContentHeight: self.totalComposerHeight)
                 self.view.layoutIfNeeded()
                 }, completion: nil)
         } else {
-            inputViewToBottomConstraint.constant = visibleKeyboardHeight
+            textInputAreaToTrayContainerConstraint.constant = visibleKeyboardHeight
             self.view.setNeedsLayout()
             self.delegate?.composer(self, didUpdateContentHeight: self.totalComposerHeight)
         }
@@ -556,6 +558,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         
         switch customInputAreaState {
             case .hidden:
+                selectedButton = nil
                 customInputAreaHeight = 0
             case .visible(let inputController):
                 customInputAreaHeight = inputController.desiredHeight

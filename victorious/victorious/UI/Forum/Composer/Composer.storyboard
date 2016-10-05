@@ -173,6 +173,7 @@
                         <outlet property="ballisticsContainerViewToTopConstraint" destination="z6N-dj-W0F" id="dbx-9t-JT1"/>
                         <outlet property="composerBackgroundContainerView" destination="5ic-kf-nTp" id="cw6-0V-MbL"/>
                         <outlet property="composerLeadingConstraint" destination="dBd-nu-ZmM" id="9RK-lr-nzU"/>
+                        <outlet property="composerToBottomConstraint" destination="U3X-LC-yS2" id="Y41-DW-8rL"/>
                         <outlet property="confirmButton" destination="ytv-wP-GFy" id="aqt-MR-7fO"/>
                         <outlet property="confirmButtonContainer" destination="6XI-Cd-FZ6" id="vAw-BD-CQI"/>
                         <outlet property="confirmButtonContainerHeightConstraint" destination="jHC-no-EqS" id="Ire-Pl-V7k"/>
@@ -181,8 +182,8 @@
                         <outlet property="customInputViewContainer" destination="9w5-8A-snB" id="4vL-Uc-x1R"/>
                         <outlet property="hashtagBarContainerHeightConstraint" destination="R7y-FD-pPE" id="MR8-GL-dDY"/>
                         <outlet property="hashtagBarContainerView" destination="xmy-Vi-14p" id="cTJ-sD-xk7"/>
-                        <outlet property="inputViewToBottomConstraint" destination="gGN-gi-63X" id="bBI-m1-aFh"/>
                         <outlet property="interactiveContainerView" destination="nKf-rE-KkT" id="avV-p4-Yra"/>
+                        <outlet property="textInputAreaToTrayContainerConstraint" destination="gGN-gi-63X" id="jhr-IA-IoA"/>
                         <outlet property="textView" destination="FNU-QM-fIQ" id="Iaw-x1-tj0"/>
                         <outlet property="textViewContainerHeightConstraint" destination="4PX-UV-qLv" id="0ih-yq-hJK"/>
                         <outlet property="textViewHeightConstraint" destination="ciC-0O-1WA" id="zlJ-WN-OOp"/>
