@@ -14,11 +14,11 @@ class ChatFeedCollectionViewLayout: UICollectionViewFlowLayout {
     /// Set this to the collection view's current content size before inserting cells at the top.
     var contentSizeWhenInsertingAbove: CGSize?
     
-    override func prepareLayout() {
-        super.prepareLayout()
+    override func prepare() {
+        super.prepare()
         
-        if let collectionView = collectionView, oldContentSize = contentSizeWhenInsertingAbove {
-            let newContentSize = collectionViewContentSize()
+        if let collectionView = collectionView, let oldContentSize = contentSizeWhenInsertingAbove {
+            let newContentSize = collectionViewContentSize
             let contentOffsetY = collectionView.contentOffset.y + (newContentSize.height - oldContentSize.height)
             let newOffset = CGPoint(x: collectionView.contentOffset.x, y: contentOffsetY)
             
@@ -35,14 +35,14 @@ class ChatFeedCollectionViewLayout: UICollectionViewFlowLayout {
         }
     }
     
-    override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-        return (super.layoutAttributesForElementsInRect(rect) ?? []).map {
+    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+        return (super.layoutAttributesForElements(in: rect) ?? []).map {
             processLayoutAttributes($0)
         }
     }
     
-    override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes? {
-        let attributes = super.layoutAttributesForItemAtIndexPath(indexPath)
+    override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+        let attributes = super.layoutAttributesForItem(at: indexPath)
         
         if let attributes = attributes {
             return processLayoutAttributes(attributes)
@@ -53,17 +53,17 @@ class ChatFeedCollectionViewLayout: UICollectionViewFlowLayout {
     
     /// Adjusts layout attributes to align messages to the bottom when there aren't enough to fill the entire
     /// collection view.
-    private func processLayoutAttributes(layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+    fileprivate func processLayoutAttributes(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
         guard let collectionView = collectionView else {
             return layoutAttributes
         }
         
-        let contentSize = collectionViewContentSize()
+        let contentSize = collectionViewContentSize
         let extraHeight = collectionView.bounds.height - contentSize.height - collectionView.contentInset.vertical
         
         if
             let modifiedLayoutAttributes = layoutAttributes.copy() as? UICollectionViewLayoutAttributes
-            where extraHeight > 0.0
+            , extraHeight > 0.0
         {
             modifiedLayoutAttributes.frame.origin.y += extraHeight
             return modifiedLayoutAttributes

@@ -9,7 +9,7 @@
 import UIKit
 
 public struct ContentFeedRequest: RequestType {
-    private let url: NSURL
+    private let url: URL
     private let payloadType: ContentFeedPayloadType
     
     public init?(apiPath: APIPath, payloadType: ContentFeedPayloadType) {
@@ -21,11 +21,11 @@ public struct ContentFeedRequest: RequestType {
         self.payloadType = payloadType
     }
     
-    public var urlRequest: NSURLRequest {
-        return NSURLRequest(URL: url)
+    public var urlRequest: URLRequest {
+        return URLRequest(url: url)
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> ContentFeedResult {
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> ContentFeedResult {
         let contentsJSON: [JSON]?
         let contentParser: (JSON) -> Content?
         

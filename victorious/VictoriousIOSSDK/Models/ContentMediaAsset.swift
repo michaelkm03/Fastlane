@@ -103,7 +103,7 @@ public enum ContentMediaAsset: ContentMediaAssetModel {
                 
                 if contentType == .video {
                     if let source = source,
-                        let externalID = externalID where source == "youtube" {
+                        let externalID = externalID , source == "youtube" {
                         self = .youtube(remoteID: externalID, source: source)
                     }
                     else if let url = url {
@@ -189,7 +189,7 @@ public enum ContentMediaAsset: ContentMediaAssetModel {
                 }
                 self = .image(url: url, size: size)
             case .sticker:
-                guard let url = url, remoteID = remoteID else {
+                guard let url = url, let remoteID = remoteID else {
                     return nil
                 }
                 self = .sticker(remoteID: remoteID, url: url, size: size)
@@ -206,7 +206,7 @@ public enum ContentMediaAsset: ContentMediaAssetModel {
         }
         let size = CGSize(width: width, height: height)
         
-        switch json["type"].stringValue.lowercaseString {
+        switch json["type"].stringValue.lowercased() {
             case "image": self = .image(url: url, size: size)
             case "video": self = .video(url: url, source: nil, size: size)
             case "gif": self = .gif(remoteID: nil, url: url, source: nil, size: size)

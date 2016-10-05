@@ -12,7 +12,11 @@ public struct LogoutRequest: RequestType {
     
     public init() {}
     
-    public var urlRequest: NSURLRequest {
-        return NSURLRequest(URL: NSURL(string: "/api/logout")!)
+    public var urlRequest: URLRequest {
+        return URLRequest(url: URL(string: "/api/logout")!)
+    }
+    
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws {
+        // Protocol conformance
     }
 }

@@ -9,7 +9,7 @@
 import Foundation
 
 public struct StickerSearchRequest: PaginatorPageable, ResultBasedPageable {
-    public let urlRequest: NSURLRequest
+    public let urlRequest: URLRequest
     public let searchOptions: AssetSearchOptions
     
     public let paginator: StandardPaginator
@@ -20,15 +20,16 @@ public struct StickerSearchRequest: PaginatorPageable, ResultBasedPageable {
     
     public init(searchOptions: AssetSearchOptions, paginator: StandardPaginator = StandardPaginator(pageNumber: 1, itemsPerPage: 20)) {
         
-        let url: NSURL?
+        let url: URL?
         switch searchOptions {
-        case .Search(let searchTerm, let searchURL):
-            url = NSURL(string: searchURL)?.URLByAppendingPathComponent(searchTerm)
-        case .Trending(let trendingURL):
-            url = NSURL(string: trendingURL)
+        case .search(let searchTerm, let searchURL):
+            url = URL(string: searchURL)?.appendingPathComponent(searchTerm)
+        case .trending(let trendingURL):
+            url = URL(string: trendingURL)
         }
         
-        let mutableURLRequest = NSMutableURLRequest(URL: url ?? NSURL())
+        // FUTURE: This should be failable initializer if url is nil
+        let mutableURLRequest = URLRequest(url: url ?? URL(string: "foo")!)
         // FUTURE: Add proper pagination logic (replacing macros in the url)
         urlRequest = mutableURLRequest
         
@@ -36,7 +37,7 @@ public struct StickerSearchRequest: PaginatorPageable, ResultBasedPageable {
         self.paginator = paginator
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [StickerSearchResult] {
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> [StickerSearchResult] {
         guard let contentsJSON = responseJSON["payload"]["stickers"].array else {
             throw ResponseParsingError()
         }

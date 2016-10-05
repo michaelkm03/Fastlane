@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 /// A deeplink destination that we can naviagte to within the app, or an external URL
 /// e.g. A piece of content, a user, or a specific screen that is deep linked to.
@@ -15,9 +16,9 @@ enum DeeplinkDestination: Equatable {
     case closeUp(contentWrapper: CloseUpContentWrapper)
     case vipForum
     case vipSubscription
-    case externalURL(url: NSURL, configuration: ExternalLinkDisplayConfiguration)
+    case externalURL(url: URL, configuration: ExternalLinkDisplayConfiguration)
     
-    init?(url: NSURL, isVIPOnly: Bool = false, title: String? = nil, forceModal: Bool = true) {
+    init?(url: URL, isVIPOnly: Bool = false, title: String? = nil, forceModal: Bool = true) {
         guard url.scheme == "vthisapp" else {
             Log.info("Received link (\(url.absoluteString)) in wrong format. All links should be in deep link format according to https://wiki.victorious.com/display/ENG/Deep+Linking+Specification")
             return nil
@@ -45,7 +46,7 @@ enum DeeplinkDestination: Equatable {
             case "webURL":
                 guard
                     let path = url.pathWithoutLeadingSlash,
-                    let externalURL = NSURL(string: path)
+                    let externalURL = URL(string: path)
                 else {
                     return nil
                 }
@@ -54,7 +55,7 @@ enum DeeplinkDestination: Equatable {
             case "hiddenWebURL":
                 guard
                     let path = url.pathWithoutLeadingSlash,
-                    let externalURL = NSURL(string: path)
+                    let externalURL = URL(string: path)
                 else {
                     return nil
                 }
@@ -74,18 +75,16 @@ enum DeeplinkDestination: Equatable {
     /// However, when transitioning from a stage content, we don't want to fetch again because we want to keep the video playback in sync.
     init?(content: Content, forceFetch: Bool = true) {
         switch content.type {
-            case .image, .video, .gif, .text:
+            case .image, .video, .gif, .text, .sticker:
                 self = .closeUp(contentWrapper: .content(content: content, forceFetch: forceFetch))
             case .link:
                 guard
                     let url = content.linkedURL,
-                    let validDestination = DeeplinkDestination(url: url, isVIPOnly: content.isVIPOnly, forceModal: true)
+                    let validDestination = DeeplinkDestination(url: url as URL, isVIPOnly: content.isVIPOnly, forceModal: true)
                 else {
                     return nil
                 }
                 self = validDestination
-            case .sticker:
-                return nil
         }
     }
     

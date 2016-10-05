@@ -23,13 +23,13 @@ class VIPValidateSuscriptionOperationTests: XCTestCase {
         operation.requestExecutor = testRequestExecutor
         operation.receiptDataSource = MockReceiptDataSource(data: "9asf8dh708f7adsm".data() )
         
-        let expectation = expectationWithDescription("VIPSubscribeOperation")
+        let expectation = expectation(description:"VIPSubscribeOperation")
         operation.queue() { results, error in
             XCTAssertNil(error)
             XCTAssertEqual( self.testRequestExecutor.executeRequestCallCount, 1)
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(1.0, handler: nil)
+        waitForExpectations(timeout:1.0, handler: nil)
     }
     
     func testInitializtionFailure() {
@@ -38,13 +38,13 @@ class VIPValidateSuscriptionOperationTests: XCTestCase {
         operation.requestExecutor = TestRequestExecutor()
         operation.receiptDataSource = MockReceiptDataSource(data: nil)
         
-        let expectation = expectationWithDescription("VIPSubscribeOperation")
+        let expectation = expectation(description:"VIPSubscribeOperation")
         operation.queue() { results, error in
             XCTAssertNotNil(error)
             XCTAssertEqual( self.testRequestExecutor.executeRequestCallCount, 0)
             expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(1.0, handler: nil)
+        waitForExpectations(timeout:1.0, handler: nil)
     }
 }
 

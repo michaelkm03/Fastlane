@@ -7,16 +7,17 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 class ListMenuCreatorCollectionViewCell: UICollectionViewCell, ListMenuSectionCell {
     typealias Cell = ListMenuCreatorCollectionViewCell
     
-    @IBOutlet private weak var avatarView: AvatarView!
-    @IBOutlet private weak var creatorNameLabel: UILabel!
+    @IBOutlet fileprivate weak var avatarView: AvatarView!
+    @IBOutlet fileprivate weak var creatorNameLabel: UILabel!
     
-    override var selected: Bool {
+    override var isSelected: Bool {
         didSet {
-            updateCellBackgroundColor(to: contentView, selectedColor: dependencyManager?.highlightedBackgroundColor, isSelected: selected)
+            updateCellBackgroundColor(to: contentView, selectedColor: dependencyManager?.highlightedBackgroundColor, isSelected: isSelected)
         }
     }
     
@@ -37,7 +38,7 @@ class ListMenuCreatorCollectionViewCell: UICollectionViewCell, ListMenuSectionCe
     
     // MARK: - Private methods
     
-    private func applyTemplateAppearance(with dependencyManager: VDependencyManager) {
+    fileprivate func applyTemplateAppearance(with dependencyManager: VDependencyManager) {
         creatorNameLabel.textColor = dependencyManager.titleColor
         creatorNameLabel.font = dependencyManager.titleFont
     }
@@ -45,14 +46,14 @@ class ListMenuCreatorCollectionViewCell: UICollectionViewCell, ListMenuSectionCe
 
 private extension VDependencyManager {
     var titleColor: UIColor? {
-        return colorForKey("color.text.navItem")
+        return color(forKey: "color.text.navItem")
     }
     
     var titleFont: UIFont? {
-        return fontForKey("font.navigationItems")
+        return font(forKey: "font.navigationItems")
     }
     
     var highlightedBackgroundColor: UIColor? {
-        return colorForKey(VDependencyManagerAccentColorKey)
+        return color(forKey: VDependencyManagerAccentColorKey)
     }
 }

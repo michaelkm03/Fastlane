@@ -6,6 +6,8 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
+import VictoriousIOSSDK
+
 class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     
     // MARK: - Initialization
@@ -21,23 +23,23 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
         
         super.init()
         
-        NSNotificationCenter.defaultCenter().addObserver(
+        NotificationCenter.default.addObserver(
             self,
             selector: #selector(handleUpdateStreamURLNotification),
-            name: RESTForumNetworkSource.updateStreamURLNotification,
+            name: NSNotification.Name(rawValue: RESTForumNetworkSource.updateStreamURLNotification),
             object: nil
         )
     }
     
     // MARK: - Dependency manager
     
-    private let dependencyManager: VDependencyManager
+    fileprivate let dependencyManager: VDependencyManager
     
     // MARK: - Data source
     
     let dataSource: TimePaginatedDataSource<Content, ContentFeedOperation>
     
-    private var filteredStreamAPIPath: APIPath? {
+    fileprivate var filteredStreamAPIPath: APIPath? {
         didSet {
             let newAPIPath = filteredStreamAPIPath ?? dependencyManager.mainFeedAPIPath
             
@@ -55,15 +57,15 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     
     // MARK: - Polling
     
-    private static let pollingInterval = NSTimeInterval(5.0)
+    fileprivate static let pollingInterval = TimeInterval(5.0)
     
-    private var pollingTimer: VTimerManager?
+    fileprivate var pollingTimer: VTimerManager?
     
-    private func startPolling() {
+    fileprivate func startPolling() {
         pollingTimer?.invalidate()
         
-        pollingTimer = VTimerManager.scheduledTimerManagerWithTimeInterval(
-            RESTForumNetworkSource.pollingInterval,
+        pollingTimer = VTimerManager.scheduledTimerManager(
+            withTimeInterval: RESTForumNetworkSource.pollingInterval,
             target: self,
             selector: #selector(pollForNewContent),
             userInfo: nil,
@@ -71,14 +73,14 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
         )
     }
     
-    @objc private func pollForNewContent() {
+    @objc fileprivate func pollForNewContent() {
         loadContent(.newer)
     }
     
     // MARK: - Loading content
     
     /// Loads a page of content with the given `loadingType`.
-    private func loadContent(loadingType: PaginatedLoadingType) {
+    fileprivate func loadContent(_ loadingType: PaginatedLoadingType) {
         let itemsWereLoaded = dataSource.loadItems(loadingType) { [weak self] result in
             guard let strongSelf = self else {
                 return
@@ -86,7 +88,7 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
             
             switch result {
                 case .success(let feedResult):
-                    strongSelf.broadcast(.handleContent(feedResult.contents.reverse(), loadingType))
+                    strongSelf.broadcast(.handleContent(feedResult.contents.reversed(), loadingType))
                     
                     if let refreshStage = feedResult.refreshStage {
                         strongSelf.broadcast(.refreshStage(refreshStage))
@@ -111,13 +113,13 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     
     /// A notification that can be posted to update the API path used to fetch content in the stream.
     ///
-    /// This notification's `userInfo` should contain a `streamAPIPath` key set to a `ReferenceWrapper<APIPath>`
-    /// containing the desired stream API path to update to, or nil to revert back to an unfiltered feed.
+    /// This notification's `userInfo` should contain a `selectedItem` key set to a `ListMenuSelectedItem` object
+    /// that containing the desired stream API path to update to, or nil to revert back to an unfiltered feed.
     ///
     static let updateStreamURLNotification = "com.getvictorious.update-stream-url"
     
-    private dynamic func handleUpdateStreamURLNotification(notification: NSNotification) {
-        filteredStreamAPIPath = (notification.userInfo?["selectedItem"] as? ReferenceWrapper<ListMenuSelectedItem>)?.value.streamAPIPath
+    fileprivate dynamic func handleUpdateStreamURLNotification(_ notification: NSNotification) {
+        filteredStreamAPIPath = (notification.userInfo?["selectedItem"] as? ListMenuSelectedItem)?.streamAPIPath
     }
     
     // MARK: - ForumNetworkSource
@@ -134,25 +136,25 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
         // Nothing to tear down.
     }
     
-    func addChildReceiver(receiver: ForumEventReceiver) {
-        if !childEventReceivers.contains({ $0 === receiver }) {
+    func addChildReceiver(_ receiver: ForumEventReceiver) {
+        if !childEventReceivers.contains(where: { $0 === receiver }) {
             childEventReceivers.append(receiver)
         }
     }
     
-    func removeChildReceiver(receiver: ForumEventReceiver) {
-        if let index = childEventReceivers.indexOf({ $0 === receiver }) {
-            childEventReceivers.removeAtIndex(index)
+    func removeChildReceiver(_ receiver: ForumEventReceiver) {
+        if let index = childEventReceivers.index(where: { $0 === receiver }) {
+            childEventReceivers.remove(at: index)
         }
     }
     
-    private(set) var isSetUp = false
+    fileprivate(set) var isSetUp = false
     
     // MARK: - ForumEventSender
     
-    private(set) weak var nextSender: ForumEventSender?
+    fileprivate(set) weak var nextSender: ForumEventSender?
     
-    func send(event: ForumEvent) {
+    func send(_ event: ForumEvent) {
         nextSender?.send(event)
         
         switch event {
@@ -163,16 +165,16 @@ class RESTForumNetworkSource: NSObject, ForumNetworkSource {
     
     // MARK: - ForumEventReceiver
     
-    private(set) var childEventReceivers = [ForumEventReceiver]()
+    fileprivate(set) var childEventReceivers = [ForumEventReceiver]()
     
-    func receive(event: ForumEvent) {
+    func receive(_ event: ForumEvent) {
         // Nothing yet.
     }
 }
 
 private extension VDependencyManager {
     var mainFeedAPIPath: APIPath {
-        guard let apiPath = apiPathForKey("mainFeedURL") else {
+        guard let apiPath = apiPath(forKey: "mainFeedURL") else {
             assertionFailure("Failed to retrieve main feed API path from dependency manager.")
             return APIPath(templatePath: "")
         }

@@ -20,7 +20,7 @@
 
 static CGFloat kDefaultItemWidth = 44.0f; // ATTENTION! This must be the same as VActionBar's internal constant: kDefaultActionItemWidth
 
-@class VActionBarFlexibleSpaceItem;
+@class ActionBarFlexibleSpaceItem;
 @class VActionBarFixedWidthItem;
 
 @interface VFlexBar (tests)
@@ -75,9 +75,9 @@ static CGFloat kDefaultItemWidth = 44.0f; // ATTENTION! This must be the same as
     UIView *testView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.actionBar setActionItems:@[testView]];
     
-    [self.actionBar setActionItems:@[[VActionBarFlexibleSpaceItem flexibleSpaceItem],
+    [self.actionBar setActionItems:@[[ActionBarFlexibleSpaceItem flexibleSpaceItem],
                                      testView,
-                                     [VActionBarFlexibleSpaceItem flexibleSpaceItem]]];
+                                     [ActionBarFlexibleSpaceItem flexibleSpaceItem]]];
 }
 
 - (void)testInvalidItems
@@ -91,23 +91,23 @@ static CGFloat kDefaultItemWidth = 44.0f; // ATTENTION! This must be the same as
     NSInteger numberOfFlexibleItems = [self.actionBar flexibleItemCountFromItems:@[]];
     XCTAssertEqual(numberOfFlexibleItems, 0);
     
-    numberOfFlexibleItems = [self.actionBar flexibleItemCountFromItems:@[[VActionBarFlexibleSpaceItem flexibleSpaceItem]]];
+    numberOfFlexibleItems = [self.actionBar flexibleItemCountFromItems:@[[ActionBarFlexibleSpaceItem flexibleSpaceItem]]];
     XCTAssertEqual(numberOfFlexibleItems, 1);
     
-    numberOfFlexibleItems = [self.actionBar flexibleItemCountFromItems:@[[VActionBarFlexibleSpaceItem flexibleSpaceItem],
-                                                                         [VActionBarFlexibleSpaceItem flexibleSpaceItem],
-                                                                         [VActionBarFlexibleSpaceItem flexibleSpaceItem],
-                                                                         [VActionBarFlexibleSpaceItem flexibleSpaceItem],
-                                                                         [VActionBarFlexibleSpaceItem flexibleSpaceItem]]];
+    numberOfFlexibleItems = [self.actionBar flexibleItemCountFromItems:@[[ActionBarFlexibleSpaceItem flexibleSpaceItem],
+                                                                         [ActionBarFlexibleSpaceItem flexibleSpaceItem],
+                                                                         [ActionBarFlexibleSpaceItem flexibleSpaceItem],
+                                                                         [ActionBarFlexibleSpaceItem flexibleSpaceItem],
+                                                                         [ActionBarFlexibleSpaceItem flexibleSpaceItem]]];
     XCTAssertEqual(numberOfFlexibleItems, 5);
 }
 
 - (void)testApplyFlexibleItemWithToFlexibleItems
 {
-    VActionBarFlexibleSpaceItem *flexItem1 = [VActionBarFlexibleSpaceItem flexibleSpaceItem];
-    VActionBarFlexibleSpaceItem *flexItem2 = [VActionBarFlexibleSpaceItem flexibleSpaceItem];
-    VActionBarFlexibleSpaceItem *flexItem3 = [VActionBarFlexibleSpaceItem flexibleSpaceItem];
-    VActionBarFlexibleSpaceItem *flexItem4 = [VActionBarFlexibleSpaceItem flexibleSpaceItem];
+    ActionBarFlexibleSpaceItem *flexItem1 = [ActionBarFlexibleSpaceItem flexibleSpaceItem];
+    ActionBarFlexibleSpaceItem *flexItem2 = [ActionBarFlexibleSpaceItem flexibleSpaceItem];
+    ActionBarFlexibleSpaceItem *flexItem3 = [ActionBarFlexibleSpaceItem flexibleSpaceItem];
+    ActionBarFlexibleSpaceItem *flexItem4 = [ActionBarFlexibleSpaceItem flexibleSpaceItem];
     
     [self.actionBar applyFlexibleItemWith:50 toFlexibleItemsInItems:@[flexItem1,
                                                                       flexItem2,
@@ -138,7 +138,7 @@ static CGFloat kDefaultItemWidth = 44.0f; // ATTENTION! This must be the same as
     CGFloat expectedWidth = totalWidth - fixedItemWidth;
     
     // Test flex ignoring
-    CGFloat calculatedRemainingSpace = [self.actionBar remainingSpaceAfterFilteringFixedAndInstrinsicSpaceFromItems:@[[VActionBarFlexibleSpaceItem flexibleSpaceItem]]
+    CGFloat calculatedRemainingSpace = [self.actionBar remainingSpaceAfterFilteringFixedAndInstrinsicSpaceFromItems:@[[ActionBarFlexibleSpaceItem flexibleSpaceItem]]
                                                                                                           fromWidth:totalWidth];
     XCTAssertEqual(calculatedRemainingSpace, totalWidth);
     
@@ -217,22 +217,22 @@ static CGFloat kDefaultItemWidth = 44.0f; // ATTENTION! This must be the same as
     [redSquare3 v_addHeightConstraint:20.0f];
     
     // Test square in middle
-    self.actionBar.actionItems = @[[VActionBarFlexibleSpaceItem flexibleSpaceItem], redSquare, [VActionBarFlexibleSpaceItem flexibleSpaceItem]];
+    self.actionBar.actionItems = @[[ActionBarFlexibleSpaceItem flexibleSpaceItem], redSquare, [ActionBarFlexibleSpaceItem flexibleSpaceItem]];
     [self.actionBar layoutIfNeeded];
     XCTAssertEqual(CGRectGetMidX(self.actionBar.bounds), CGRectGetMidX(redSquare.frame));
     
     // Test red square on left
-    self.actionBar.actionItems = @[redSquare, [VActionBarFlexibleSpaceItem flexibleSpaceItem]];
+    self.actionBar.actionItems = @[redSquare, [ActionBarFlexibleSpaceItem flexibleSpaceItem]];
     [self.actionBar layoutIfNeeded];
     XCTAssertEqual(CGRectGetMinX(self.actionBar.bounds), CGRectGetMinX(redSquare.frame));
     
     // Test red square on right
-    self.actionBar.actionItems = @[[VActionBarFlexibleSpaceItem flexibleSpaceItem], redSquare];
+    self.actionBar.actionItems = @[[ActionBarFlexibleSpaceItem flexibleSpaceItem], redSquare];
     [self.actionBar layoutIfNeeded];
     XCTAssertEqual(CGRectGetMaxX(self.actionBar.bounds), CGRectGetMaxX(redSquare.frame));
 
     // Test leading middle and trailing red squares
-    self.actionBar.actionItems = @[redSquare, [VActionBarFlexibleSpaceItem flexibleSpaceItem], redSquare2, [VActionBarFlexibleSpaceItem flexibleSpaceItem], redSquare3];
+    self.actionBar.actionItems = @[redSquare, [ActionBarFlexibleSpaceItem flexibleSpaceItem], redSquare2, [ActionBarFlexibleSpaceItem flexibleSpaceItem], redSquare3];
     [self.actionBar layoutIfNeeded];
     XCTAssertEqual(CGRectGetMinX(redSquare.frame), CGRectGetMinX(self.actionBar.bounds));
     XCTAssertEqual(CGRectGetMidX(redSquare2.frame), CGRectGetMidX(self.actionBar.bounds));
@@ -240,7 +240,7 @@ static CGFloat kDefaultItemWidth = 44.0f; // ATTENTION! This must be the same as
 
     // Test leading middle and trailing red squres with fixed edges
     CGFloat fixedEdgeWidth = 20.0f;
-    self.actionBar.actionItems = @[[VActionBarFixedWidthItem fixedWidthItemWithWidth:fixedEdgeWidth], redSquare, [VActionBarFlexibleSpaceItem flexibleSpaceItem], redSquare2, [VActionBarFlexibleSpaceItem flexibleSpaceItem], redSquare3, [VActionBarFixedWidthItem fixedWidthItemWithWidth:fixedEdgeWidth]];
+    self.actionBar.actionItems = @[[VActionBarFixedWidthItem fixedWidthItemWithWidth:fixedEdgeWidth], redSquare, [ActionBarFlexibleSpaceItem flexibleSpaceItem], redSquare2, [ActionBarFlexibleSpaceItem flexibleSpaceItem], redSquare3, [VActionBarFixedWidthItem fixedWidthItemWithWidth:fixedEdgeWidth]];
     [self.actionBar layoutIfNeeded];
     XCTAssertEqual(CGRectGetMinX(redSquare.frame), CGRectGetMinX(self.actionBar.bounds) + fixedEdgeWidth);
     XCTAssertEqual(CGRectGetMidX(redSquare2.frame), CGRectGetMidX(self.actionBar.bounds));

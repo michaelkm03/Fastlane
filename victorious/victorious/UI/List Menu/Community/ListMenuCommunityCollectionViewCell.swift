@@ -10,11 +10,11 @@ import UIKit
 
 class ListMenuCommunityCollectionViewCell: UICollectionViewCell, ListMenuSectionCell {
     
-    @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet fileprivate weak var titleLabel: UILabel!
     
-    override var selected: Bool {
+    override var isSelected: Bool {
         didSet {
-            updateCellBackgroundColor(to: contentView, selectedColor: dependencyManager?.highlightedBackgroundColor, isSelected: selected)
+            updateCellBackgroundColor(to: contentView, selectedColor: dependencyManager?.highlightedBackgroundColor, isSelected: isSelected)
         }
     }
 
@@ -34,7 +34,7 @@ class ListMenuCommunityCollectionViewCell: UICollectionViewCell, ListMenuSection
     
     // MARK: - Private methods
     
-    private func applyTemplateAppearance(with dependencyManager: VDependencyManager) {
+    fileprivate func applyTemplateAppearance(with dependencyManager: VDependencyManager) {
         titleLabel.textColor = dependencyManager.titleColor
         titleLabel.font = dependencyManager.titleFont
     }
@@ -43,14 +43,14 @@ class ListMenuCommunityCollectionViewCell: UICollectionViewCell, ListMenuSection
 private extension VDependencyManager {
     
     var titleColor: UIColor? {
-        return colorForKey("color.text.navItem")
+        return color(forKey: "color.text.navItem")
     }
     
     var titleFont: UIFont? {
-        return fontForKey("font.navigationItems")
+        return font(forKey: "font.navigationItems")
     }
     
     var highlightedBackgroundColor: UIColor? {
-        return colorForKey(VDependencyManagerAccentColorKey)
+        return color(forKey: VDependencyManagerAccentColorKey)
     }
 }

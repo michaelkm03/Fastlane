@@ -6,6 +6,8 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
+import VictoriousIOSSDK
+
 /// Different states that content can be in while being created by the user.
 enum ContentCreationState {
     /// The content is queued locally and waiting to be sent to the server.
@@ -24,10 +26,10 @@ enum ContentCreationState {
 /// A delegate protocol for `ContentPublisher`.
 protocol ContentPublisherDelegate: class {
     /// Notifies the delegate that the given `content` was queued to be published.
-    func contentPublisher(contentPublisher: ContentPublisher, didQueue content: ChatFeedContent)
+    func contentPublisher(_ contentPublisher: ContentPublisher, didQueue content: ChatFeedContent)
     
     /// Notifies the delegate that the given `content` failed to send.
-    func contentPublisher(contentPublisher: ContentPublisher, didFailToSend content: ChatFeedContent)
+    func contentPublisher(_ contentPublisher: ContentPublisher, didFailToSend content: ChatFeedContent)
 }
 
 /// An object that manages the publishing of user content.
@@ -45,7 +47,7 @@ class ContentPublisher {
     
     // MARK: - Dependency manager
     
-    private let dependencyManager: VDependencyManager
+    fileprivate let dependencyManager: VDependencyManager
     
     // MARK: - Configuration
     
@@ -56,10 +58,10 @@ class ContentPublisher {
     // MARK: - Publishing
     
     /// The content that is currently pending creation.
-    private(set) var pendingItems = [ChatFeedContent]()
+    fileprivate(set) var pendingItems = [ChatFeedContent]()
     
     /// Queues `content` for publishing.
-    func publish(content: Content, withWidth width: CGFloat, toChatRoomWithID chatRoomID: ChatRoom.ID?) {
+    func publish(_ content: Content, withWidth width: CGFloat, toChatRoomWithID chatRoomID: ChatRoom.ID?) {
         if optimisticPostingEnabled {
             guard let chatFeedContent = ChatFeedContent(
                 content: content,
@@ -76,7 +78,7 @@ class ContentPublisher {
             delegate?.contentPublisher(self, didQueue: chatFeedContent)
             
             // We want to make sure that we send items sequentially
-            guard !pendingItems.contains({ $0.creationState == .sending }) else {
+            guard !pendingItems.contains(where: { $0.creationState == .sending }) else {
                 return
             }
             
@@ -88,12 +90,12 @@ class ContentPublisher {
     }
     
     /// Removes `chatFeedContents` from the `pendingQueue`, returning the indices of each removed item in the queue.
-    func remove(itemsToRemove: [ChatFeedContent]) -> [Int] {
-        let indices = pendingItems.enumerate().filter { index, item in
+    func remove(_ itemsToRemove: [ChatFeedContent]) -> [Int] {
+        let indices = pendingItems.enumerated().filter { index, item in
             itemsToRemove.contains { itemToRemove in
                  itemToRemove.matches(item)
             }
-        }.map { $0.index }
+        }.map { $0.offset }
         
         pendingItems = pendingItems.filter { item in
             !itemsToRemove.contains { itemToRemove in
@@ -104,7 +106,7 @@ class ContentPublisher {
         return indices
     }
     
-    private func publishNextContent() {
+    fileprivate func publishNextContent() {
         guard let index = indexOfContent(withState: .waiting) else {
             return
         }
@@ -114,7 +116,7 @@ class ContentPublisher {
         upload(pendingItems[index].content, toChatRoomWithID: pendingItems[index].pendingChatRoomID) { [weak self] error in
             // The content's index will have changed by now if a preceding item was confirmed while this one was being
             // sent, so we need to get an updated index.
-            guard let strongSelf = self, updatedIndex = strongSelf.indexOfContent(withState: .sending) else {
+            guard let strongSelf = self, let updatedIndex = strongSelf.indexOfContent(withState: .sending) else {
                 return
             }
             
@@ -137,7 +139,7 @@ class ContentPublisher {
     /// - Parameter content: The content that should be uploaded.
     /// - Parameter completion: The block to call after upload has completed or failed. Always called.
     ///
-    private func upload(content: Content, toChatRoomWithID chatRoomID: ChatRoom.ID?, completion: ((ErrorType?) -> Void)? = nil) {
+    private func upload(_ content: Content, toChatRoomWithID chatRoomID: ChatRoom.ID?, completion: ((Error?) -> Void)? = nil) {
         if content.type == .sticker {
             guard
                 let apiPath = dependencyManager.stickerCreationAPIPath(for: content, chatRoomID: chatRoomID),
@@ -162,7 +164,7 @@ class ContentPublisher {
             
             guard
                 let apiPath = dependencyManager.mediaCreationAPIPath(for: content, chatRoomID: chatRoomID),
-                let operation = CreateMediaUploadOperation(apiPath: apiPath, publishParameters: publishParameters, uploadManager: VUploadManager.sharedManager())
+                let operation = CreateMediaUploadOperation(apiPath: apiPath, publishParameters: publishParameters, uploadManager: VUploadManager.shared())
             else {
                 completion?(ContentPublisherError.invalidNetworkResources)
                 return
@@ -199,15 +201,15 @@ class ContentPublisher {
     // MARK: - Handling Errors
     
     /// Retry publishing `content` that failed to be sent
-    func retryPublish(chatFeedContent: ChatFeedContent) -> Int? {
-        guard let index = index(of: chatFeedContent) where chatFeedContent.creationState == .failed else {
+    func retryPublish(_ chatFeedContent: ChatFeedContent) -> Int? {
+        guard let index = index(of: chatFeedContent) , chatFeedContent.creationState == .failed else {
             return nil
         }
         
         pendingItems[index].creationState = .sending
         
         upload(chatFeedContent.content, toChatRoomWithID: chatFeedContent.pendingChatRoomID) { [weak self] error in
-            guard let strongSelf = self, updatedIndex = strongSelf.index(of: chatFeedContent) else {
+            guard let strongSelf = self, let updatedIndex = strongSelf.index(of: chatFeedContent) else {
                 return
             }
             
@@ -226,25 +228,25 @@ class ContentPublisher {
     // MARK: - Index of Queue
     
     /// Returns the first content in the queue that has the given `state`.
-    private func indexOfContent(withState state: ContentCreationState) -> Int? {
-        return pendingItems.indexOf { $0.creationState == state }
+    fileprivate func indexOfContent(withState state: ContentCreationState) -> Int? {
+        return pendingItems.index { $0.creationState == state }
     }
     
     /// Returns the index of the specified content
-    private func index(of chatFeedContent: ChatFeedContent) -> Int? {
-        return pendingItems.indexOf { $0.matches(chatFeedContent) }
+    fileprivate func index(of chatFeedContent: ChatFeedContent) -> Int? {
+        return pendingItems.index { $0.matches(chatFeedContent) }
     }
 }
 
 /// Errors that can be generated by `ContentPublisher`.
-enum ContentPublisherError: ErrorType {
+enum ContentPublisherError: Error {
     case invalidContent
     case invalidNetworkResources
 }
 
 private extension VDependencyManager {
     func mediaCreationAPIPath(for content: Content, chatRoomID: ChatRoom.ID?) -> APIPath? {
-        return apiPathForKey("mediaCreationURL", macroReplacements: [
+        return apiPath(forKey: "mediaCreationURL", macroReplacements: [
             "%%TIME_CURRENT%%": content.postedAt?.apiString ?? "",
             "%%ROOM_ID%%": chatRoomID ?? ""
         ])
@@ -255,7 +257,7 @@ private extension VDependencyManager {
             return nil
         }
         
-        return apiPathForKey("sticker.creation.URL", macroReplacements: [
+        return apiPath(forKey: "sticker.creation.URL", macroReplacements: [
             "%%TIME_CURRENT%%": content.postedAt?.apiString ?? "",
             "%%CONTENT_ID%%": externalID,
             "%%ROOM_ID%%": chatRoomID ?? ""
@@ -263,7 +265,7 @@ private extension VDependencyManager {
     }
     
     func textCreationAPIPath(for content: Content, chatRoomID: ChatRoom.ID?) -> APIPath? {
-        return apiPathForKey("textCreationURL", macroReplacements: [
+        return apiPath(forKey: "textCreationURL", macroReplacements: [
             "%%TIME_CURRENT%%": content.postedAt?.apiString ?? "",
             "%%ROOM_ID%%": chatRoomID ?? ""
         ])
@@ -271,7 +273,7 @@ private extension VDependencyManager {
 }
 
 private extension ChatFeedContent {
-    func matches(item: ChatFeedContent) -> Bool {
+    func matches(_ item: ChatFeedContent) -> Bool {
         guard self.content.wasCreatedByCurrentUser && item.content.wasCreatedByCurrentUser else {
             return false
         }

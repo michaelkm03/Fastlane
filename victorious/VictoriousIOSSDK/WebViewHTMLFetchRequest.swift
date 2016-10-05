@@ -9,23 +9,23 @@
 import Foundation
 
 public struct WebViewHTMLFetchRequest: RequestType {
-    private let fullURL: NSURL
-    public var urlRequest: NSURLRequest
-    public var publicBaseURL: NSURL?
+    private let fullURL: URL
+    public var urlRequest: URLRequest
+    public var publicBaseURL: URL?
     
     public init(urlPath: String) {
-        guard let url = NSURL(string: urlPath) else {
+        guard let url = URL(string: urlPath) else {
             fatalError("Invalid Fetch URL" + urlPath)
         }
         fullURL = url
-        urlRequest = NSURLRequest(URL: fullURL)
+        urlRequest = URLRequest(url: fullURL)
         
         if let hostString = fullURL.host {
             let urlComponents = NSURLComponents()
             urlComponents.scheme = fullURL.scheme
             urlComponents.host = hostString
             
-            if let baseURL = urlComponents.URL {
+            if let baseURL = urlComponents.url {
                 publicBaseURL = baseURL
             }
         }
@@ -33,8 +33,8 @@ public struct WebViewHTMLFetchRequest: RequestType {
     
     public var providesFullURL = true
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> String {
-        guard let htmlString = String(data: responseData, encoding: NSUTF8StringEncoding) else {
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> String {
+        guard let htmlString = String(data: responseData as Data, encoding: String.Encoding.utf8) else {
             throw ResponseParsingError()
         }
         return htmlString

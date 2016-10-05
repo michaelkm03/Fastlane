@@ -44,7 +44,7 @@ class NotificationSettingsViewControllerTests: XCTestCase {
     }
 
     func testParsing() {
-        let viewController = NotificationSettingsViewController.newWithDependencyManager(createTestDependencyManager())
+        let viewController = NotificationSettingsViewController.new(withDependencyManager:createTestDependencyManager())
         let sections = viewController.sectionsForTableView()
         XCTAssertEqual(sections.count, 2)
         

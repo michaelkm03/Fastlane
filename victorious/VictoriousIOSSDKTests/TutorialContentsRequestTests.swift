@@ -12,24 +12,24 @@ import XCTest
 
 class TutorialContentsRequestTests: XCTestCase {
     
-    private let apiPath = APIPath(templatePath: "https://www.google.com")
+    fileprivate let apiPath = APIPath(templatePath: "https://www.google.com")
     
     func testRequest() {
         let request = TutorialContentsRequest(apiPath: apiPath)
         XCTAssertNotNil(request)
-        XCTAssertEqual(request?.urlRequest.URL?.absoluteString, apiPath.url?.absoluteString)
+        XCTAssertEqual(request?.urlRequest.url?.absoluteString, apiPath.url?.absoluteString)
     }
     
     func testParseResponse() {
-        guard let mockResponseDataURL = NSBundle(forClass: self.dynamicType).URLForResource("ViewedContentsResponse", withExtension: "json"),
-            let mockData = NSData(contentsOfURL: mockResponseDataURL) else {
+        guard let mockResponseDataURL = Bundle(for: type(of: self)).url(forResource: "ViewedContentsResponse", withExtension: "json"),
+            let mockData = try? Data(contentsOf: mockResponseDataURL) else {
                 XCTFail("Error reading mock json data")
                 return
         }
         
         do {
             let request = TutorialContentsRequest(apiPath: apiPath)!
-            let results = try request.parseResponse(NSURLResponse(), toRequest: request.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
+            let results = try request.parseResponse(URLResponse(), toRequest: request.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             
             XCTAssertEqual(results.count, 2)
             XCTAssertEqual(results.first?.id, "20711")

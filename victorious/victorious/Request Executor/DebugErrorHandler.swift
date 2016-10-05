@@ -19,7 +19,7 @@ class DebugErrorHandler: RequestErrorHandler {
         self.requestIdentifier = requestIdentifier
     }
     
-    func handle(error: NSError, with request: NSURLRequest? = nil) -> Bool {
+    func handle(_ error: NSError, with request: URLRequest? = nil) -> Bool {
         Log.warning("FetcherOperation `\(requestIdentifier)` failed with error: \(error) for request -> \(request)")
         
         // Doesn't actually handle errors, just logs them.

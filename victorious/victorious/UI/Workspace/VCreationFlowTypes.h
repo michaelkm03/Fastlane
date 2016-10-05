@@ -20,7 +20,6 @@ typedef NS_ENUM(NSInteger, VCreationFlowType)
     VCreationFlowTypeText,
     VCreationFlowTypeGIF,
     VCreationFlowTypeLibrary,
-    VCreationFlowTypeMixedMediaCamera,
     VCreationFlowTypeNativeCamera,
     VCreationFlowTypeUnknown
 };

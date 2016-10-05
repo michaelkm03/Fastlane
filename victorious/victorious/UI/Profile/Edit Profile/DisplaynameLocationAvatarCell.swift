@@ -7,45 +7,46 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 /// Provides UI for editing the user's `name`, `location`, and `tagline` fields.
 /// Assign closures to be notified of events in the UI.
 class DisplaynameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
-    private struct Constants {
+    fileprivate struct Constants {
         static let placeholderAlpha = CGFloat(0.5)
     }
     
-    @IBOutlet private var displaynameField: UITextField! {
+    @IBOutlet fileprivate var displaynameField: UITextField! {
         didSet {
-            NSNotificationCenter.defaultCenter().addObserver(
+            NotificationCenter.default.addObserver(
                 self,
                 selector: #selector(textFieldDidChange(_:)),
-                name: UITextFieldTextDidChangeNotification,
+                name: NSNotification.Name.UITextFieldTextDidChange,
                 object: displaynameField)
         }
     }
     
-    @IBOutlet private var usernameField: UITextField! {
+    @IBOutlet fileprivate var usernameField: UITextField! {
         didSet {
-            NSNotificationCenter.defaultCenter().addObserver(
+            NotificationCenter.default.addObserver(
                 self,
                 selector: #selector(textFieldDidChange(_:)),
-                name: UITextFieldTextDidChangeNotification,
+                name: NSNotification.Name.UITextFieldTextDidChange,
                 object: usernameField)
         }
     }
     
-    @IBOutlet private var locationField: UITextField! {
+    @IBOutlet fileprivate var locationField: UITextField! {
         didSet {
-            NSNotificationCenter.defaultCenter().addObserver(
+            NotificationCenter.default.addObserver(
                 self,
                 selector: #selector(textFieldDidChange(_:)),
-                name: UITextFieldTextDidChangeNotification,
+                name: NSNotification.Name.UITextFieldTextDidChange,
                 object: locationField)
         }
     }
     
-    @IBOutlet private var avatarView: AvatarView! {
+    @IBOutlet fileprivate var avatarView: AvatarView! {
         didSet {
             avatarView.size = .large
             avatarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tappedOnAvatar(_:))))
@@ -112,7 +113,7 @@ class DisplaynameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
             locationField.textColor = enteredTextColor
             
             // Placeholder
-            let placeholderAttributes = [NSForegroundColorAttributeName: placeholderTextColor.colorWithAlphaComponent(Constants.placeholderAlpha)]
+            let placeholderAttributes = [NSForegroundColorAttributeName: placeholderTextColor.withAlphaComponent(Constants.placeholderAlpha)]
             displaynameField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("DisplayNamePlaceholder", comment: "Placeholder text for the user's name as it is displayed to others."),
                                                                      attributes: placeholderAttributes)
             usernameField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("UserNamePlaceholder", comment: "Placeholder text for the user's username that is globally unique as it is displayed to others."),
@@ -131,18 +132,18 @@ class DisplaynameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
     
     // MARK: - Target / Action
     
-    @objc private func tappedOnAvatar(gesture: UITapGestureRecognizer) {
+    @objc fileprivate func tappedOnAvatar(_ gesture: UITapGestureRecognizer) {
         switch gesture.state {
-            case .Ended:
+            case .ended:
                 self.onAvatarSelected?()
-            case .Possible, .Cancelled, .Failed, .Changed, .Began:
+            case .possible, .cancelled, .failed, .changed, .began:
                 break
         }
     }
     
     // MARK: - UITextFieldDelegate
     
-    @objc func textFieldShouldReturn(textField: UITextField) -> Bool {
+    @objc func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == displaynameField {
             usernameField.becomeFirstResponder()
             return false
@@ -157,7 +158,7 @@ class DisplaynameLocationAvatarCell: UITableViewCell, UITextFieldDelegate {
 
     // MARK: - Notification Handlers
     
-    @objc private func textFieldDidChange(notification: NSNotification) {
+    @objc fileprivate func textFieldDidChange(_ notification: Notification) {
         onDataChange?()
     }
 }
@@ -175,18 +176,18 @@ extension DisplaynameLocationAvatarCell {
 private extension VDependencyManager {
     
     var placeholderAndEnteredTextFont: UIFont? {
-        return fontForKey("font.paragraph")
+        return font(forKey: "font.paragraph")
     }
     
     var placeholderTextColor: UIColor? {
-        return colorForKey("color.text.placeholder")
+        return color(forKey: "color.text.placeholder")
     }
     
     var enteredTextColor: UIColor? {
-        return colorForKey("color.text")
+        return color(forKey: "color.text")
     }
     
     var cellBackgroundColor: UIColor? {
-        return colorForKey("color.accent")
+        return color(forKey: "color.accent")
     }
 }

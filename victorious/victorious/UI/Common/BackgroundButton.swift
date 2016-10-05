@@ -10,11 +10,11 @@ import UIKit
 
 /// A button that displays a colored background behind its content via the `backgroundColor` property.
 class BackgroundButton: UIButton {
-    private struct Constants {
+    fileprivate struct Constants {
         static let addedWidth = CGFloat(20.0)
         static let height = CGFloat(30.0)
         static let cornerRadius = CGFloat(6.0)
-        static let defaultFont = UIFont.systemFontOfSize(14.0, weight: UIFontWeightSemibold)
+        static let defaultFont = UIFont.systemFont(ofSize: 14.0, weight: UIFontWeightSemibold)
         static let defaultTintColor = UIColor(white: 1.0, alpha: 1.0)
         static let defaultBackgroundColor = UIColor(white: 1.0, alpha: 0.2)
     }
@@ -31,7 +31,7 @@ class BackgroundButton: UIButton {
         setup()
     }
     
-    private func setup() {
+    fileprivate func setup() {
         layer.cornerRadius = Constants.cornerRadius
         titleLabel?.font = Constants.defaultFont
         tintColor = Constants.defaultTintColor
@@ -40,14 +40,14 @@ class BackgroundButton: UIButton {
     
     // MARK: - Sizing
     
-    override func intrinsicContentSize() -> CGSize {
+    override var intrinsicContentSize : CGSize {
         return CGSize(
-            width: super.intrinsicContentSize().width + Constants.addedWidth,
+            width: super.intrinsicContentSize.width + Constants.addedWidth,
             height: Constants.height
         )
     }
     
-    override func sizeThatFits(size: CGSize) -> CGSize {
-        return intrinsicContentSize()
+    override func sizeThatFits(_ size: CGSize) -> CGSize {
+        return intrinsicContentSize
     }
 }

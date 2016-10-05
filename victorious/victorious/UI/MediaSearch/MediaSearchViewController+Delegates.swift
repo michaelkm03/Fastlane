@@ -9,32 +9,30 @@
 import UIKit
 
 extension MediaSearchViewController: UIScrollViewDelegate {
-    
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-        
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         self.scrollPaginator.scrollViewDidScroll( scrollView )
         
-        if !self.isScrollViewDecelerating && self.searchBar.isFirstResponder() {
+        if !self.isScrollViewDecelerating && self.searchBar.isFirstResponder {
             self.searchBar.resignFirstResponder()
         }
         
         self.isScrollViewDecelerating = true
     }
     
-    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         self.isScrollViewDecelerating = false
     }
     
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         self.isScrollViewDecelerating = false
     }
 }
 
 extension MediaSearchViewController: UICollectionViewDelegate {
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        if collectionView.cellForItemAtIndexPath( indexPath ) is MediaSearchResultCell {
+        if collectionView.cellForItem( at: indexPath ) is MediaSearchResultCell {
             if self.options.showPreview {
                 showPreview(forItemAtIndexPath: indexPath)
             } else {
@@ -42,32 +40,32 @@ extension MediaSearchViewController: UICollectionViewDelegate {
                 selectAndExport(itemAtIndexPath: indexPath)
             }
             
-        } else if collectionView.cellForItemAtIndexPath( indexPath ) is MediaSearchPreviewCell {
+        } else if collectionView.cellForItem( at: indexPath ) is MediaSearchPreviewCell {
             selectAndExport(itemAtIndexPath: indexPath)
         }
     }
     
-    func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-        let cell = collectionView.cellForItemAtIndexPath( indexPath )
+    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        let cell = collectionView.cellForItem( at: indexPath )
         return cell is MediaSearchResultCell || cell is MediaSearchPreviewCell
     }
     
-    func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
-        cell.tintColor = self.dependencyManager?.colorForKey( VDependencyManagerLinkColorKey )
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        cell.tintColor = self.dependencyManager?.color(forKey:  VDependencyManagerLinkColorKey )
     }
     
     // MARK: - Private
     
-    func showPreview( forItemAtIndexPath indexPath: NSIndexPath ) {
+    func showPreview( forItemAtIndexPath indexPath: IndexPath ) {
         if self.selectedIndexPath == indexPath {
             self.hidePreviewForResult( indexPath )
-            collectionView.deselectItemAtIndexPath(indexPath, animated: true)
+            collectionView.deselectItem(at: indexPath, animated: true)
         } else {
             self.showPreviewForResult( indexPath )
         }
     }
     
-    func selectAndExport( itemAtIndexPath indexPath: NSIndexPath ) {
+    func selectAndExport( itemAtIndexPath indexPath: IndexPath ) {
         self.continueWithSelectedItem(nil)
         self.selectCellAtSelectedIndexPath() //< Selects the cell that was selected before this preview cell
         dispatch_after(0.0) {

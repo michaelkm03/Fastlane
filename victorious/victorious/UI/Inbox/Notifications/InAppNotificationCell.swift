@@ -1,5 +1,5 @@
 //
-//  NotificationCell.swift
+//  InAppNotificationCell.swift
 //  victorious
 //
 //  Created by Jarod Long on 4/6/16.
@@ -9,14 +9,14 @@
 import UIKit
 import VictoriousIOSSDK
 
-/// A delegate protocol for `NotificationCell`.
-protocol NotificationCellDelegate: class {
-    func notificationCellDidSelectUser(notificationCell: NotificationCell)
+/// A delegate protocol for `InAppNotificationCell`.
+protocol InAppNotificationCellDelegate: class {
+    func notificationCellDidSelectUser(_ notificationCell: InAppNotificationCell)
 }
 
-/// The table view cell used to display notifications.
-class NotificationCell: UITableViewCell, VBackgroundContainer {
-    private struct Constants {
+/// The table view cell used to display in-app notifications.
+class InAppNotificationCell: UITableViewCell, VBackgroundContainer {
+    fileprivate struct Constants {
         static let containerCornerRadius = CGFloat(6.0)
     }
     
@@ -26,7 +26,7 @@ class NotificationCell: UITableViewCell, VBackgroundContainer {
         super.awakeFromNib()
         
         containerView.layer.cornerRadius = Constants.containerCornerRadius
-        selectionStyle = .None
+        selectionStyle = .none
         
         backgroundColor = nil
         backgroundView?.backgroundColor = nil
@@ -34,14 +34,14 @@ class NotificationCell: UITableViewCell, VBackgroundContainer {
     
     // MARK: - Content
     
-    func updateContent(with notification: Notification, dependencyManager: VDependencyManager) {
+    func updateContent(with notification: InAppNotification, dependencyManager: VDependencyManager) {
         avatarView.user = notification.user
-        dateLabel.text = notification.createdAt.stringDescribingTimeIntervalSinceNow(format: .verbose, precision: .minutes) ?? ""
+        dateLabel.text = notification.createdAt.stringDescribingTimeIntervalSinceNow(format: .verbose, precision: .minutes)
         dateLabel.font = dependencyManager.dateFont
         
         let message = notification.subject
         
-        dependencyManager.addBackgroundToBackgroundHost(self, forKey: VDependencyManagerCellBackgroundKey)
+        dependencyManager.addBackground(toBackgroundHost: self, forKey: VDependencyManagerCellBackgroundKey)
         
         dateLabel.textColor = dependencyManager.dateTextColor
         
@@ -60,7 +60,7 @@ class NotificationCell: UITableViewCell, VBackgroundContainer {
         ])
         
         let username = notification.user.displayName ?? ""
-        let range = (message as NSString).rangeOfString(username)
+        let range = (message as NSString).range(of: username)
         
         if range.location != NSNotFound && range.length > 0 {
             attributedMessage.addAttributes([
@@ -73,22 +73,22 @@ class NotificationCell: UITableViewCell, VBackgroundContainer {
     
     // MARK: - Delegate
     
-    weak var delegate: NotificationCellDelegate?
+    weak var delegate: InAppNotificationCellDelegate?
     
     // MARK: - Views
     
-    @IBOutlet private var containerView: UIView!
-    @IBOutlet private var avatarView: AvatarView! {
+    @IBOutlet fileprivate var containerView: UIView!
+    @IBOutlet fileprivate var avatarView: AvatarView! {
         didSet {
             avatarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(profileButtonWasPressed)))
         }
     }
-    @IBOutlet private var messageLabel: IntrinsicContentSizeHackLabel!
-    @IBOutlet private var dateLabel: UILabel!
+    @IBOutlet fileprivate var messageLabel: IntrinsicContentSizeHackLabel!
+    @IBOutlet fileprivate var dateLabel: UILabel!
     
     // MARK: - Actions
     
-    @objc private func profileButtonWasPressed() {
+    @objc fileprivate func profileButtonWasPressed() {
         delegate?.notificationCellDidSelectUser(self)
     }
     
@@ -101,19 +101,19 @@ class NotificationCell: UITableViewCell, VBackgroundContainer {
 
 private extension VDependencyManager {
     var messageTextColor: UIColor? {
-        return colorForKey(VDependencyManagerMainTextColorKey)
+        return color(forKey: VDependencyManagerMainTextColorKey)
     }
     
     var dateTextColor: UIColor? {
-        return colorForKey(VDependencyManagerSecondaryTextColorKey)
+        return color(forKey: VDependencyManagerSecondaryTextColorKey)
     }
     
     var messageFont: UIFont? {
-        return fontForKey(VDependencyManagerLabel1FontKey)
+        return font(forKey: VDependencyManagerLabel1FontKey)
     }
     
     var boldMessageFont: UIFont? {
-        guard let fontDescriptor = messageFont?.fontDescriptor().fontDescriptorWithSymbolicTraits(.TraitBold) else {
+        guard let fontDescriptor = messageFont?.fontDescriptor.withSymbolicTraits(.traitBold) else {
             return nil
         }
         
@@ -121,7 +121,7 @@ private extension VDependencyManager {
     }
     
     var dateFont: UIFont? {
-        return fontForKey(VDependencyManagerLabel2FontKey)
+        return font(forKey: VDependencyManagerLabel2FontKey)
     }
 }
 
@@ -139,8 +139,8 @@ private extension VDependencyManager {
 /// A cleaner workaround would be welcomed if we can find one.
 ///
 class IntrinsicContentSizeHackLabel: UILabel {
-    override func intrinsicContentSize() -> CGSize {
-        var size = super.intrinsicContentSize()
+    override var intrinsicContentSize : CGSize {
+        var size = super.intrinsicContentSize
         size.height += 0.5
         return size
     }

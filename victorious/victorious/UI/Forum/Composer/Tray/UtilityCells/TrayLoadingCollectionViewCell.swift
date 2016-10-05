@@ -11,7 +11,7 @@ import Foundation
 // A cell with an animating activity indicator in it's center
 class TrayLoadingCollectionViewCell: UICollectionViewCell {
     lazy var activityIndicator: UIActivityIndicatorView = {
-        let indicator = UIActivityIndicatorView(activityIndicatorStyle: .White)
+        let indicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
         self.contentView.addSubview(indicator)
         indicator.startAnimating()
         return indicator

@@ -12,14 +12,14 @@ public struct CreateAlertRequest: RequestType {
     public let additionalParameters: [String: AnyObject]?
     public let type: String
     
-    public var urlRequest: NSURLRequest {
-        let urlRequest = NSMutableURLRequest(URL: NSURL(string: "/api/alert/create")!)
+    public var urlRequest: URLRequest {
+        var urlRequest = URLRequest(url: URL(string: "/api/alert/create")!)
         
-        var requestParameters: [String: AnyObject] = ["type": type]
+        var requestParameters: [String: String] = ["type": type]
         
         if let additionalParameters = additionalParameters {
-            let jsonData = try! NSJSONSerialization.dataWithJSONObject(additionalParameters, options: [])
-            let paramsString = String(data: jsonData, encoding: NSUTF8StringEncoding)
+            let jsonData = try! JSONSerialization.data(withJSONObject: additionalParameters, options: [])
+            let paramsString = String(data: jsonData, encoding: String.Encoding.utf8)
             requestParameters["params"] = paramsString
         }
         
@@ -30,5 +30,9 @@ public struct CreateAlertRequest: RequestType {
     public init(type: String, additionalParameters: [String: AnyObject]? = nil) {
         self.type = type
         self.additionalParameters = additionalParameters
+    }
+    
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws {
+        // Protocol conformance
     }
 }

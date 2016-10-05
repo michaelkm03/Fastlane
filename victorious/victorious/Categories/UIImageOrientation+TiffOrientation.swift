@@ -1,3 +1,5 @@
+
+
 //
 //  UIImageOrientation+TiffOrientation.swift
 //  victorious
@@ -13,21 +15,21 @@ extension UIImageOrientation {
     /// Converts to TIFF Tag Orientation. See documentation: http://partners.adobe.com/public/developer/en/tiff/TIFF6.pdf
     func tiffOrientation() -> Int32 {
         switch (self) {
-        case .Up:
+        case .up:
             return 1
-        case .Down:
+        case .down:
             return 3
-        case .Left:
+        case .left:
             return 8
-        case .Right:
+        case .right:
             return 6
-        case .UpMirrored:
+        case .upMirrored:
             return 2
-        case .DownMirrored:
+        case .downMirrored:
             return 4
-        case .LeftMirrored:
+        case .leftMirrored:
             return 5
-        case .RightMirrored:
+        case .rightMirrored:
             return 7
         }
     }

@@ -15,41 +15,41 @@ protocol ToggleableImageButtonDelegate: class {
 /// A template-styled button that displays a toggleable image button
 @objc(VToggleableImageButton)
 class ToggleableImageButton: TouchableInsetAdjustableButton, TrackableButton {
-    override var selected: Bool {
+    override var isSelected: Bool {
         didSet {
-            delegate?.button(self, becameSelected: selected)
+            delegate?.button(button: self, becameSelected: isSelected)
         }
     }
     
     weak var delegate: ToggleableImageButtonDelegate?
     
-    class func newWithDependencyManager(dependencyManager: VDependencyManager?) -> ToggleableImageButton {
+    class func new(withDependencyManager dependencyManager: VDependencyManager?) -> ToggleableImageButton {
         let button = ToggleableImageButton()
         button.dependencyManager = dependencyManager
-        button.addTarget(button, action: #selector(toggle), forControlEvents: .TouchUpInside)
+        button.addTarget(button, action: #selector(toggle), for: .touchUpInside)
         return button
     }
     
     var dependencyManager: VDependencyManager? {
         didSet {
-            var unselectedImage: UIImage? = templateAppearanceValue(.unselectedImage)
-            if let unselectedColor: UIColor = templateAppearanceValue(.unselectedColor) {
-                unselectedImage = unselectedImage?.v_tintedTemplateImageWithColor(unselectedColor)
+            var unselectedImage: UIImage? = templateAppearanceValue(appearance: .unselectedImage)
+            if let unselectedColor: UIColor = templateAppearanceValue(appearance: .unselectedColor) {
+                unselectedImage = unselectedImage?.v_tintedTemplateImage(with: unselectedColor)
             }
             
-            setImage(unselectedImage?.imageWithRenderingMode(.AlwaysOriginal), forState: .Normal)
+            setImage(unselectedImage?.withRenderingMode(.alwaysOriginal), for: .normal)
             
-            var selectedImage: UIImage? = templateAppearanceValue(.selectedImage)
-            if let selectedColor: UIColor = templateAppearanceValue(.selectedColor) {
-                selectedImage = selectedImage?.v_tintedTemplateImageWithColor(selectedColor)
+            var selectedImage: UIImage? = templateAppearanceValue(appearance: .selectedImage)
+            if let selectedColor: UIColor = templateAppearanceValue(appearance: .selectedColor) {
+                selectedImage = selectedImage?.v_tintedTemplateImage(with: selectedColor)
             }
-            setImage(selectedImage, forState: .Selected)
+            setImage(selectedImage, for: .selected)
             
-            backgroundColor = .clearColor()
+            backgroundColor = .clear
         }
     }
 
     private dynamic func toggle() {
-        selected = !selected
+        isSelected = !isSelected
     }
 }

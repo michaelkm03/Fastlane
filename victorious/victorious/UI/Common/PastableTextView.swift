@@ -15,8 +15,8 @@ protocol PastableTextViewDelegate: class {
     var canShowSelectMenu: Bool { get }
 
     /// imageObject is required for sizing information, imageData is required for gif
-    func didPasteImage(image: (imageObject: UIImage, imageData: NSData))
-    func didPasteText(text: String)
+    func didPasteImage(_ image: (imageObject: UIImage, imageData: Data))
+    func didPasteText(_ text: String)
 }
 
 /// Subclass of VPlaceholderTextView to allow pasting of media content into the composer.
@@ -24,7 +24,7 @@ class PastableTextView: VPlaceholderTextView {
 
     var pastableDelegate: PastableTextViewDelegate?
 
-    override func canPerformAction(action: Selector, withSender sender: AnyObject?) -> Bool {
+    override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
         guard let pastableDelegate = pastableDelegate else {
             return super.canPerformAction(action, withSender: sender)
         }
@@ -46,14 +46,14 @@ class PastableTextView: VPlaceholderTextView {
         return canPerformAction
     }
 
-    override func paste(sender: AnyObject?) {
+    override func paste(_ sender: Any?) {
         guard let pastableDelegate = pastableDelegate else {
             return
         }
 
-        let pasteboard = UIPasteboard.generalPasteboard()
+        let pasteboard = UIPasteboard.general
 
-        if let image = pasteboard.image, let imageData = pasteboard.dataForPasteboardType("public.image") {
+        if let image = pasteboard.image, let imageData = pasteboard.data(forPasteboardType: "public.image") {
             pastableDelegate.didPasteImage((image, imageData))
         } else if let text = pasteboard.string {
             pastableDelegate.didPasteText(text)

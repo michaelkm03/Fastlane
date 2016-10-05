@@ -8,7 +8,7 @@
 
 import Foundation
 
-public protocol RequestErrorType: ErrorType {
+public protocol RequestErrorType: Error {
     var code: Int { get }
     var localizedDescription: String { get }
     var domain: String { get }

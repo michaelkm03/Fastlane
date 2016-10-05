@@ -9,7 +9,7 @@
 import Foundation
 
 public struct UserInfoRequest: RequestType {
-    private let url: NSURL
+    private let url: URL
     
     public init?(apiPath: APIPath, userID: User.ID) {
         var apiPath = apiPath
@@ -22,11 +22,11 @@ public struct UserInfoRequest: RequestType {
         self.url = url
     }
     
-    public var urlRequest: NSURLRequest {
-        return NSURLRequest(URL: url)
+    public var urlRequest: URLRequest {
+        return URLRequest(url: url)
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> User {
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> User {
         guard let user = User(json: responseJSON["payload"]) else {
             throw ResponseParsingError()
         }

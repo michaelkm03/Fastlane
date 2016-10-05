@@ -18,13 +18,13 @@ class WebContentViewController: UIViewController, WKNavigationDelegate, WKUIDele
     
     // MARK: - Properties 
     
-    private let webView = WKWebView()
-    private var backButton: UIBarButtonItem?
-    private var forwardButton: UIBarButtonItem?
-    private var cancelButton: UIBarButtonItem?
-    private var initialBaseURL: NSURL?
-    private var initialHTMLString = ""
-    private let dependencyManager: VDependencyManager
+    fileprivate let webView = WKWebView()
+    fileprivate var backButton: UIBarButtonItem?
+    fileprivate var forwardButton: UIBarButtonItem?
+    fileprivate var cancelButton: UIBarButtonItem?
+    fileprivate var initialBaseURL: URL?
+    fileprivate var initialHTMLString = ""
+    fileprivate let dependencyManager: VDependencyManager
     
     // MARK: - Initialization 
     
@@ -34,25 +34,25 @@ class WebContentViewController: UIViewController, WKNavigationDelegate, WKUIDele
         super.init(nibName: nil, bundle: nil)
         
         if (shouldShowNavigationButtons) {
-            let backButton = UIBarButtonItem(image: UIImage(named: "browser-back"), style: .Plain, target: self, action: #selector(WebContentViewController.backButtonPressed))
-            let forwardButton = UIBarButtonItem(image: UIImage(named: "browser-forward"), style: .Plain, target: self, action: #selector(WebContentViewController.forwardButtonPressed))
-            cancelButton = UIBarButtonItem(image: UIImage(named: "browser-close"), style: .Plain, target: self, action: #selector(WebContentViewController.cancelButtonPressed))
+            let backButton = UIBarButtonItem(image: UIImage(named: "browser-back"), style: .plain, target: self, action: #selector(WebContentViewController.backButtonPressed))
+            let forwardButton = UIBarButtonItem(image: UIImage(named: "browser-forward"), style: .plain, target: self, action: #selector(WebContentViewController.forwardButtonPressed))
+            cancelButton = UIBarButtonItem(image: UIImage(named: "browser-close"), style: .plain, target: self, action: #selector(WebContentViewController.cancelButtonPressed))
             
             self.backButton = backButton
             self.forwardButton = forwardButton
             
-            backButton.enabled = false
-            forwardButton.enabled = false
+            backButton.isEnabled = false
+            forwardButton.isEnabled = false
             
             navigationItem.rightBarButtonItems = [forwardButton, backButton]
             navigationItem.leftBarButtonItem = cancelButton
         }
         
         webView.navigationDelegate = self
-        webView.UIDelegate = self
+        webView.uiDelegate = self
         
-        webView.backgroundColor = .clearColor()
-        webView.opaque = false
+        webView.backgroundColor = .clear
+        webView.isOpaque = false
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -63,14 +63,14 @@ class WebContentViewController: UIViewController, WKNavigationDelegate, WKUIDele
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        edgesForExtendedLayout = .None
+        edgesForExtendedLayout = UIRectEdge()
         view.addSubview(webView)
-        view.v_addFitToParentConstraintsToSubview(webView)
+        view.v_addFitToParentConstraints(toSubview: webView)
         
-        dependencyManager.addBackgroundToBackgroundHost(self)
+        dependencyManager.addBackground(toBackgroundHost: self)
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         hideStatusBarActivityIndicator()
     }
@@ -83,28 +83,28 @@ class WebContentViewController: UIViewController, WKNavigationDelegate, WKUIDele
     
     // MARK: - Configuration 
     
-    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        return [.Portrait]
+    override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
+        return [.portrait]
     }
     
     // MARK: - Private Helpers
    
-    private func updateNavigationButtonState() {
-        backButton?.enabled = webView.canGoBack || !webViewIsDisplayingInitialHTMLString
-        forwardButton?.enabled = webView.canGoForward
+    fileprivate func updateNavigationButtonState() {
+        backButton?.isEnabled = webView.canGoBack || !webViewIsDisplayingInitialHTMLString
+        forwardButton?.isEnabled = webView.canGoForward
     }
     
-    private func showStatusBarActivityIndicator() {
+    fileprivate func showStatusBarActivityIndicator() {
         NetworkActivityIndicator.sharedInstance().start()
     }
     
-    private func hideStatusBarActivityIndicator() {
+    fileprivate func hideStatusBarActivityIndicator() {
         NetworkActivityIndicator.sharedInstance().stop()
     }
     
     // MARK: - External Helpers 
     
-    func load(htmlString: String, baseURL: NSURL) {
+    func load(_ htmlString: String, baseURL: URL) {
         initialBaseURL = baseURL
         initialHTMLString = htmlString
         webView.loadHTMLString(htmlString, baseURL: baseURL)
@@ -130,22 +130,22 @@ class WebContentViewController: UIViewController, WKNavigationDelegate, WKUIDele
     
     func forwardButtonPressed() {
         
-        if let nextItem = webView.backForwardList.itemAtIndex(1) where webViewIsDisplayingInitialHTMLString {
+        if let nextItem = webView.backForwardList.item(at: 1) , webViewIsDisplayingInitialHTMLString {
             // When the first page is displayed by the user hitting back, the backforward list doesn't update, so going forward
             // from this page takes the user to the wrong page. So we force the webview to load the first item in the list
-            webView.goToBackForwardListItem(nextItem)
+            webView.go(to: nextItem)
         }
         
         webView.goForward()
     }
     
     func cancelButtonPressed() {
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
     
     var webViewIsDisplayingInitialHTMLString: Bool {
          if
-            let webViewURL = webView.URL?.absoluteString?.stringByTrimmingCharactersInSet(NSCharacterSet(charactersInString: "/")),
+            let webViewURL = webView.url?.absoluteString.trimmingCharacters(in: CharacterSet(charactersIn: "/")),
             let initialURL = initialBaseURL?.absoluteString
         {
             return webViewURL == initialURL
@@ -154,33 +154,33 @@ class WebContentViewController: UIViewController, WKNavigationDelegate, WKUIDele
         return false
     }
     
-    func webView(webView: WKWebView, didFinishNavigation navigation: WKNavigation!) {
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         hideStatusBarActivityIndicator()
         updateNavigationButtonState()
     }
     
-    func webView(webView: WKWebView, didFailNavigation navigation: WKNavigation!, withError error: NSError) {
+    func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
         hideStatusBarActivityIndicator()
     }
     
-    func webView(webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+    func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
         showStatusBarActivityIndicator()
     }
     
-    func webView(webView: WKWebView, decidePolicyForNavigationAction navigationAction: WKNavigationAction, decisionHandler: (WKNavigationActionPolicy) -> Void) {
-        decisionHandler(.Allow)
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        decisionHandler(.allow)
     }
     
-    func webView(webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: NSError) {
+    func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
         hideStatusBarActivityIndicator()
     }
     
     // MARK: - WKUIDelegate 
     
-    func webView(webView: WKWebView, createWebViewWithConfiguration configuration: WKWebViewConfiguration, forNavigationAction navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+    func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
         // Check if this is a new window navigation. If it is, load the new window's content in the current web view.
         if navigationAction.targetFrame == nil {
-            webView.loadRequest(navigationAction.request)
+            webView.load(navigationAction.request)
         }
         // Don't create a new webview since we're reusing the same one
         return nil

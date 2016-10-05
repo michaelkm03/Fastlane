@@ -20,17 +20,17 @@ public struct Callback<Parameter> {
     
     // MARK: - Managing callbacks
     
-    private var blocks = [CallbackBlock]()
+    fileprivate var blocks = [CallbackBlock]()
     
     /// Adds the given block to the callback.
-    public mutating func add(block: CallbackBlock) {
+    public mutating func add(_ block: @escaping CallbackBlock) {
         blocks.append(block)
     }
     
     // MARK: - Calling callbacks
     
     /// Calls all of the blocks in the callback.
-    public func call(parameter: Parameter) {
+    public func call(_ parameter: Parameter) {
         for block in blocks {
             block(parameter)
         }

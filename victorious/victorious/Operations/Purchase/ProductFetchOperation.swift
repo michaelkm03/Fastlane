@@ -11,7 +11,7 @@ import Foundation
 final class ProductFetchOperation: AsyncOperation<[VProduct]> {
     let productIdentifiers: Set<String>
     
-    private let purchaseManager: VPurchaseManagerType = VPurchaseManager.sharedInstance()
+    fileprivate let purchaseManager: VPurchaseManagerType = VPurchaseManager.sharedInstance()
     
     init(productIdentifiers: [String]) {
         self.productIdentifiers = Set(productIdentifiers.map { $0 })
@@ -21,24 +21,24 @@ final class ProductFetchOperation: AsyncOperation<[VProduct]> {
         return .background
     }
     
-    override func execute(finish: (result: OperationResult<[VProduct]>) -> Void) {
-        let success = { (fetchedProducts: Set<NSObject>?) in
+    override func execute(_ finish: @escaping (_ result: OperationResult<[VProduct]>) -> Void) {
+        let success = { (fetchedProducts: Set<AnyHashable>?) in
             guard let products = fetchedProducts?.flatMap({ $0 as? VProduct }) else {
-                finish(result: .failure(NSError(domain: "ProductFetchOperation", code: -1, userInfo: nil)))
+                finish(.failure(NSError(domain: "ProductFetchOperation", code: -1, userInfo: nil)))
                 return
             }
-            finish(result: .success(products))
+            finish(.success(products))
         }
         
-        let failure = { (error: NSError?) in
+        let failure = { (error: Error?) in
             if let error = error {
-                finish(result: .failure(error))
+                finish(.failure(error))
             }
             else {
-                finish(result: .cancelled)
+                finish(.cancelled)
             }
         }
         
-        purchaseManager.fetchProductsWithIdentifiers(productIdentifiers, success: success, failure: failure)
+        purchaseManager.fetchProducts(withIdentifiers: productIdentifiers, success: success, failure: failure)
     }
 }

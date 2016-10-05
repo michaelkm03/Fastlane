@@ -9,14 +9,14 @@
 import Foundation
 
 @objc enum VGradientBackgroundDirection: Int {
-    case Horizontal
-    case Vertical
+    case horizontal
+    case vertical
 }
 
-@objc class VGradientBackground: VBackground {
+class VGradientBackground: VBackground {
     
-    private let dependencyManager: VDependencyManager
-    private let gradientView = VLinearGradientView()
+    fileprivate let dependencyManager: VDependencyManager
+    fileprivate let gradientView = VLinearGradientView()
     
     required init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
@@ -25,13 +25,13 @@ import Foundation
         updateStyle()
     }
     
-    private func updateStyle() {
+    fileprivate func updateStyle() {
         gradientView.setColors( [dependencyManager.startColor, dependencyManager.endColor] )
         switch dependencyManager.direction {
-        case .Vertical:
+        case .vertical:
             gradientView.startPoint = CGPoint(x: 0.5, y: 0.0)
             gradientView.endPoint = CGPoint(x: 0.5, y: 1.0)
-        case .Horizontal:
+        case .horizontal:
             gradientView.startPoint = CGPoint(x: 0.0, y: 0.5)
             gradientView.endPoint = CGPoint(x: 1.0, y: 0.5)
         }
@@ -45,21 +45,21 @@ import Foundation
 private extension VDependencyManager {
     
     var direction: VGradientBackgroundDirection {
-        switch stringForKey("direction") ?? "" {
+        switch string(forKey: "direction") ?? "" {
         case "horizontal":
-            return .Horizontal
+            return .horizontal
         case "vertical":
-            return .Vertical
+            return .vertical
         default:
-            return .Vertical
+            return .vertical
         }
     }
     
     var startColor: UIColor {
-        return colorForKey("color.start")
+        return color(forKey: "color.start")
     }
     
     var endColor: UIColor {
-        return colorForKey("color.end")
+        return color(forKey: "color.end")
     }
 }

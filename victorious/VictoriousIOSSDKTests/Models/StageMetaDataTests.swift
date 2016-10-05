@@ -11,7 +11,7 @@ import XCTest
 
 class StageMetaDataTests: XCTestCase {
 
-    private let testTitle = "Teh Stage"
+    fileprivate let testTitle = "Teh Stage"
 
     func testInitialiation() {
         let metaData = StageMetaData(title: testTitle)

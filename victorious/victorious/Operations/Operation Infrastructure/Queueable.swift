@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 /// - note: No matter which queue the operation is scheduled and/or executed on, its completion block will be running on the main queue.
 protocol Queueable {
@@ -26,14 +27,14 @@ protocol Queueable {
     
     /// Adds the receiver to its default queue, with a completion block that'll run after the receiver's finished executing,
     /// and before the next operation starts.
-    func queue(completion completion: ((result: OperationResult<Output>) -> Void)?)
+    func queue(completion: ((_ result: OperationResult<Output>) -> Void)?)
     
     /// Adds the receiver to its default queue without completion block.
     func queue()
 }
 
-extension Queueable where Self: NSOperation {
-    func queue(completion completion: ((result: OperationResult<Output>) -> Void)?) {
+extension Queueable where Self: Operation {
+    func queue(completion: ((_ result: OperationResult<Output>) -> Void)?) {
         defer {
             scheduleQueue.operationQueue.addOperation(self)
         }
@@ -42,16 +43,16 @@ extension Queueable where Self: NSOperation {
             return
         }
         
-        let completionOperation = NSBlockOperation {
+        let completionOperation = BlockOperation {
             guard let result = self.result else {
                 Log.error("Received no result from async operation to pass through the completion handler. Operation: \(self)")
                 return
             }
-            completion(result: result)
+            completion(result)
         }
         
         completionOperation.addDependency(self)
-        NSOperationQueue.mainQueue().addOperation(completionOperation)
+        OperationQueue.main.addOperation(completionOperation)
     }
     
     func queue() {

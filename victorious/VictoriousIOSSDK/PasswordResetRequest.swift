@@ -22,9 +22,10 @@ public struct PasswordResetRequest: RequestType {
         self.deviceToken = deviceToken
     }
     
-    public var urlRequest: NSURLRequest {
+    public var urlRequest: URLRequest {
         
-        let urlRequest = NSMutableURLRequest(URL: NSURL(string: "/api/password_reset")!)
+        var urlRequest = URLRequest(url: URL(string: "/api/password_reset")!)
+        
         let passwordResetInfo = [
             "new_password": newPassword,
             "user_token": userToken,
@@ -33,5 +34,9 @@ public struct PasswordResetRequest: RequestType {
         urlRequest.vsdk_addURLEncodedFormPost(passwordResetInfo)
         
         return urlRequest
+    }
+    
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws {
+        // Protocol conformance
     }
 }
