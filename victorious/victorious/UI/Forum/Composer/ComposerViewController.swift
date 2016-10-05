@@ -11,7 +11,7 @@ import VictoriousIOSSDK
 import FLAnimatedImage
 
 /// Handles view manipulation and message sending related to the composer. Could definitely use a refactor to make it less stateful.
-class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate, ComposerAttachmentTabBarDelegate, VBackgroundContainer, VCreationFlowControllerDelegate, HashtagBarControllerSelectionDelegate, HashtagBarViewControllerAnimationDelegate, VPassthroughContainerViewDelegate, PastableTextViewDelegate, ToggleableImageButtonDelegate, ForumEventReceiver {
+class ComposerViewController: UIViewController, Composer, ComposerTextViewManagerDelegate, ComposerAttachmentTabBarDelegate, VBackgroundContainer, VCreationFlowControllerDelegate, HashtagBarControllerSelectionDelegate, HashtagBarViewControllerAnimationDelegate, VPassthroughContainerViewDelegate, PastableTextViewDelegate, ToggleableImageButtonDelegate {
     private struct Constants {
         static let animationDuration = 0.2
         static let maximumNumberOfTabs = 4
@@ -25,15 +25,6 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         static let gifInputAreaHeight: CGFloat = 90
         static let vipLockComposerMargin: CGFloat = 8
         static let gifType = "gif"
-    }
-    
-    // MARK: - ForumEventReceiver
-    
-    func receive(event: ForumEvent) {
-        switch event {
-            case .filterContent(let path): feedIsFiltered = path != nil
-            default: break
-        }
     }
     
     // MARK: - ForumEventSender
@@ -277,19 +268,19 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     private var feedIsFiltered = false {
         didSet {
-            updateComposerVisibility(animated: true)
+            updateVisibility(animated: true)
         }
     }
     
     private var feedIsChatRoom = false {
         didSet {
-            updateComposerVisibility(animated: true)
+            updateVisibility(animated: true)
         }
     }
     
     private var composerIsVisible = true
     
-    private func updateComposerVisibility(animated: Bool) {
+    private func updateVisibility(animated: Bool) {
         let composerShouldBeVisible = !feedIsFiltered || feedIsChatRoom
         
         guard composerShouldBeVisible != composerIsVisible else {
@@ -298,7 +289,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         
         if animated {
             UIView.animate(withDuration: Constants.animationDuration) {
-                self.updateComposerVisibility(animated: false)
+                self.updateVisibility(animated: false)
                 self.view.layoutIfNeeded()
             }
         }
@@ -883,6 +874,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     private dynamic func mainFeedFilterDidChange(notification: NSNotification) {
         let selectedItem = notification.userInfo?["selectedItem"] as? ListMenuSelectedItem
+        feedIsFiltered = selectedItem?.streamAPIPath != nil
         feedIsChatRoom = selectedItem?.chatRoomID != nil
     }
     
