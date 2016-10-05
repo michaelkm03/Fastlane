@@ -176,6 +176,7 @@
                         <outlet property="confirmButton" destination="ytv-wP-GFy" id="aqt-MR-7fO"/>
                         <outlet property="confirmButtonContainer" destination="6XI-Cd-FZ6" id="vAw-BD-CQI"/>
                         <outlet property="confirmButtonContainerHeightConstraint" destination="jHC-no-EqS" id="Ire-Pl-V7k"/>
+                        <outlet property="confirmButtonToSuperviewTopConstraint" destination="cnO-ET-h0Q" id="yBa-n9-ASc"/>
                         <outlet property="customInputAreaHeightConstraint" destination="Hzn-9s-qfk" id="rFy-ow-mHo"/>
                         <outlet property="customInputViewContainer" destination="9w5-8A-snB" id="4vL-Uc-x1R"/>
                         <outlet property="hashtagBarContainerHeightConstraint" destination="R7y-FD-pPE" id="MR8-GL-dDY"/>
