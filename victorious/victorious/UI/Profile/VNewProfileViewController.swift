@@ -88,7 +88,6 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        gridStreamController?.reloadHeader()
         trackViewWillAppearIfReady()
         BadgeCountManager.shared.fetchBadgeCount(for: .unreadNotifications)
     }
