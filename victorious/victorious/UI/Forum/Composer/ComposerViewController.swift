@@ -72,27 +72,28 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     
     /// Referenced so that it can be set toggled between 0 and it's default
     /// height when shouldShowAttachmentContainer is true
-    @IBOutlet weak private var attachmentContainerHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak private var confirmButtonContainerHeightConstraint: NSLayoutConstraint! {
+    @IBOutlet private var attachmentContainerHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private var confirmButtonContainerHeightConstraint: NSLayoutConstraint! {
         didSet {
             confirmButtonContainerHeightConstraint.constant = Constants.minimumConfirmButtonContainerHeight
         }
     }
-    @IBOutlet weak private var composerToBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak private var textInputAreaToTrayContainerConstraint: NSLayoutConstraint!
-    @IBOutlet weak private var customInputAreaHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak private var textViewContainerHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak private var textViewHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak private(set) var hashtagBarContainerHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private var composerToBottomConstraint: NSLayoutConstraint!
+    @IBOutlet private var textInputAreaToTrayContainerConstraint: NSLayoutConstraint!
+    @IBOutlet private var confirmButtonToSuperviewTopConstraint: NSLayoutConstraint!
+    @IBOutlet private var customInputAreaHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private var textViewContainerHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private var textViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private(set) var hashtagBarContainerHeightConstraint: NSLayoutConstraint!
     
     @IBOutlet weak private var hashtagBarContainerView: UIView!
     @IBOutlet weak var vipLockContainerView: UIView!
-    @IBOutlet weak var vipLockWidthConstraint: NSLayoutConstraint!
-    @IBOutlet weak var composerLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet var vipLockWidthConstraint: NSLayoutConstraint!
+    @IBOutlet var composerLeadingConstraint: NSLayoutConstraint!
     
     @IBOutlet weak private var backgroundPassthroughContainerView: VPassthroughContainerView!
     @IBOutlet weak private var ballisticsContainerView: VPassthroughContainerView!
-    @IBOutlet weak private var ballisticsContainerViewToTopConstraint: NSLayoutConstraint!
+    @IBOutlet private var ballisticsContainerViewToTopConstraint: NSLayoutConstraint!
     
     @IBOutlet weak private var textView: VPlaceholderTextView!
     
@@ -124,9 +125,11 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         guard isViewLoaded && composerIsVisible else {
             return 0
         }
+        //The displayed space of the text input area, which is dictated by the either the confirm button container's height or the textView and attachment bar's combined height
+        let attachmentAndTextInputHeight = max(textViewContainerHeightConstraint.constant
+            + attachmentContainerHeightConstraint.constant, confirmButtonContainerHeightConstraint.constant + confirmButtonToSuperviewTopConstraint.constant)
         return fabs(textInputAreaToTrayContainerConstraint.constant)
-            + textViewContainerHeightConstraint.constant
-            + attachmentContainerHeightConstraint.constant
+            + attachmentAndTextInputHeight
             + hashtagBarContainerHeightConstraint.constant
             + customInputAreaHeightConstraint.constant
     }
