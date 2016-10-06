@@ -197,7 +197,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
     // MARK: - UICollectionView Delegate Flow Layout
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        return CGSize(width: view.bounds.width, height: NewListMenuSectionCell.preferredHeight)
+        return CGSize(width: view.bounds.width, height: ListMenuSectionCell.preferredHeight)
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {

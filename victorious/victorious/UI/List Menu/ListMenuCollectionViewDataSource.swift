@@ -17,6 +17,13 @@ enum ListMenuSection {
     case chatRooms
 }
 
+/// Conformers of this protocol respond to List Menu Data Sources data update events
+protocol ListMenuSectionDataSourceDelegate: class {
+    /// Called when List Menu Network Data Sources have finished fetching data
+    /// from backend, and updated its `visibleItems`
+    func didUpdateVisibleItems(forSection section: ListMenuSection)
+}
+
 /// Data Source for the List Menu Collection View. It does not talk to the backend.
 /// To fetch data for each section, it delegates the fetching to specific data sources.
 /// So if another section is added, a corresponding data source should be added too.
@@ -24,10 +31,10 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
 
     private weak var listMenuViewController: ListMenuViewController?
     private let dependencyManager: VDependencyManager
-    let communityDataSource: NewListMenuSectionDataSource<ListMenuCommunityItem, SyncOperation<[ListMenuCommunityItem]>>?
-    let creatorsDataSource: NewListMenuSectionDataSource<UserModel, RequestOperation<CreatorListRequest>>?
-    let newChatRoomsDataSource: NewListMenuSectionDataSource<ChatRoom, RequestOperation<ChatRoomsRequest>>?
-    let hashtagDataSource: NewListMenuSectionDataSource<Hashtag, RequestOperation<TrendingHashtagsRequest>>?
+    let communityDataSource: ListMenuSectionDataSource<ListMenuCommunityItem, SyncOperation<[ListMenuCommunityItem]>>?
+    let creatorsDataSource: ListMenuSectionDataSource<UserModel, RequestOperation<CreatorListRequest>>?
+    let newChatRoomsDataSource: ListMenuSectionDataSource<ChatRoom, RequestOperation<ChatRoomsRequest>>?
+    let hashtagDataSource: ListMenuSectionDataSource<Hashtag, RequestOperation<TrendingHashtagsRequest>>?
     private(set) var availableSections: [ListMenuSection] = []
 
     // MARK: - Initialization
@@ -37,7 +44,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         self.dependencyManager = dependencyManager
         
         if let childDependency = dependencyManager.communityChildDependency {
-            communityDataSource = NewListMenuSectionDataSource(
+            communityDataSource = ListMenuSectionDataSource(
                 dependencyManager: childDependency,
                 cellConfiguration: { cell, item in
                     cell.titleLabel.text = item.title
@@ -58,7 +65,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
             let apiPath = childDependency.creatorsListAPIPath,
             let request = CreatorListRequest(apiPath: apiPath) {
 
-            creatorsDataSource = NewListMenuSectionDataSource(
+            creatorsDataSource = ListMenuSectionDataSource(
                 dependencyManager: childDependency,
                 cellConfiguration: { cell, item in
                     cell.titleLabel.text = item.displayName
@@ -80,7 +87,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
             let apiPath = childDependency.hashtagsAPIPath,
             let request = TrendingHashtagsRequest(apiPath: apiPath) {
 
-            hashtagDataSource = NewListMenuSectionDataSource(
+            hashtagDataSource = ListMenuSectionDataSource(
                 dependencyManager: childDependency,
                 cellConfiguration: { cell, item in
                     cell.titleLabel.text = item.tag
@@ -101,7 +108,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
             let apiPath = dependencyManager.chatRoomsAPIPath,
             let request = ChatRoomsRequest(apiPath: apiPath) {
 
-            newChatRoomsDataSource = NewListMenuSectionDataSource(
+            newChatRoomsDataSource = ListMenuSectionDataSource(
                 dependencyManager: childDependency,
                 cellConfiguration: { cell, item in
                     cell.titleLabel.text = item.name
@@ -144,7 +151,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         }
     }
 
-    private func numberOfItems<Item, Request>(from dataSource: NewListMenuSectionDataSource<Item, Request>?, in section: ListMenuSection) -> Int {
+    private func numberOfItems<Item, Request>(from dataSource: ListMenuSectionDataSource<Item, Request>?, in section: ListMenuSection) -> Int {
         guard let dataSource = dataSource else {
             Log.error("Retrieved number of items in section for the non-existent section: \(section)")
             return 0
@@ -161,7 +168,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         }
     }
 
-    private func itemsIndices<Item, Request>(for dataSource: NewListMenuSectionDataSource<Item, Request>?) -> Range<Int>? {
+    private func itemsIndices<Item, Request>(for dataSource: ListMenuSectionDataSource<Item, Request>?) -> Range<Int>? {
         guard let indices = dataSource?.visibleItems.indices else {
             Log.error("Failed to get item indices for a non-existent dataSource")
             return nil
@@ -226,7 +233,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         return noContentCell
     }
 
-    private func dequeueProperCell<Item, Request>(from dataSource: NewListMenuSectionDataSource<Item, Request>?, for collectionView: UICollectionView, at indexPath: NSIndexPath) -> UICollectionViewCell {
+    private func dequeueProperCell<Item, Request>(from dataSource: ListMenuSectionDataSource<Item, Request>?, for collectionView: UICollectionView, at indexPath: NSIndexPath) -> UICollectionViewCell {
         guard let dataSource = dataSource else {
             Log.error("Dequeueing a proper cell for a non-existent dataSource")
             return UICollectionViewCell()

@@ -2,11 +2,9 @@
 //  ListMenuSectionDataSource.swift
 //  victorious
 //
-//  Created by Tian Lan on 4/12/16.
+//  Created by Alex Tamoykin on 9/23/16.
 //  Copyright © 2016 Victorious. All rights reserved.
 //
-
-import Foundation
 
 /// Possible states for List Menu Data Source based on the results fetched
 enum ListMenuDataSourceState {
@@ -16,66 +14,91 @@ enum ListMenuDataSourceState {
     case noContent
 }
 
-typealias FetchRemoteDataCallback = () -> Void
+class ListMenuSectionDataSource<Item, Operation: Queueable> {
 
-/// Discrete data source for a section within a List Menu component.
-/// Mainly in charge of fetch data from backend, and notify its delegate
-protocol ListMenuSectionDataSource: class {
-    associatedtype SectionItem
-    associatedtype Cell
+    // MARK: - Initialization
+    typealias CellConfigurationCallback = (cell: ListMenuSectionCell, item: Item) -> Void
+    typealias CreateOperationCallback = () -> Operation?
+    typealias ProcessOutputCallback = (output: Operation.Output) -> [Item]
+    let cellConfiguration: CellConfigurationCallback
+    let createOperation: CreateOperationCallback
+    let processOutput: ProcessOutputCallback
+    let section: ListMenuSection
+    weak var delegate: ListMenuSectionDataSourceDelegate?
+    var state: ListMenuDataSourceState = .loading
+    var requestExecutor: RequestExecutorType = MainRequestExecutor()
 
-    init(dependencyManager: VDependencyManager)
-    
-    /// The data source's dependency manager
-    var dependencyManager: VDependencyManager { get }
-    
-    /// The delegate to be notified when data get updated
-    weak var delegate: ListMenuSectionDataSourceDelegate? { get set }
-    
-    /// The current state of the data source based on its results
-    var state: ListMenuDataSourceState { get }
-    
-    /// The number of items to show for this data source, based on its `state` and `visibleItems`
-    var numberOfItems: Int { get }
-    
-    /// The visible items fetched from backend and should be displayed
-    var visibleItems: [SectionItem] { get }
-    
-    /// Kick off a network request to fetch data and fill `visibleItems`
-    func fetchRemoteData(success success: FetchRemoteDataCallback?)
-    
-    /// Dequeues a cell from the data source that displays a valid item in the section. The return type `Cell` will be specified by conformer.
-    /// Default implementation will dequeue the cell, configure the cell with `SectionItem`, and set `dependencyManager` on it
-    func dequeueItemCell(from collectionView: UICollectionView, at indexPath: NSIndexPath) -> Cell
-    
-    /// Performs initial setup work after initialization of the data source.
-    /// Default implementation sets up the delegate and kicks off the initial data fetch
-    func setupDataSource(with _: ListMenuSectionDataSourceDelegate)
-}
+    init(dependencyManager: VDependencyManager, cellConfiguration: CellConfigurationCallback, createOperation: CreateOperationCallback, processOutput: ProcessOutputCallback, section: ListMenuSection) {
+        self.dependencyManager = dependencyManager
+        self.cellConfiguration = cellConfiguration
+        self.createOperation = createOperation
+        self.processOutput = processOutput
+        self.section = section
+    }
 
-/// Conformers of this protocol respond to List Menu Data Sources data update events
-protocol ListMenuSectionDataSourceDelegate: class {
-    
-    /// Called when List Menu Network Data Sources have finished fetching data
-    /// from backend, and updated its `visibleItems`
-    func didUpdateVisibleItems(forSection section: ListMenuSection)
-}
+    // MARK - Dependency manager
 
-extension ListMenuSectionDataSource where Cell: UICollectionViewCell, Cell: ListMenuSectionCell, SectionItem == Cell.CellData {
-    
-    func dequeueItemCell(from collectionView: UICollectionView, at indexPath: NSIndexPath) -> Cell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(Cell.defaultReuseIdentifier, forIndexPath: indexPath) as! Cell
-        cell.configureCell(with: visibleItems[indexPath.row])
+    let dependencyManager: VDependencyManager
+
+    var streamAPIPath: APIPath {
+        return dependencyManager.apiPathForKey("streamURL") ?? APIPath(templatePath: "")
+    }
+
+    var streamTrackingAPIPaths: [APIPath] {
+        return dependencyManager.trackingAPIPaths(forEventKey: "view") ?? []
+    }
+
+    // MARK: - Cell Lifecycle
+
+    func dequeueItemCell(from collectionView: UICollectionView, at indexPath: NSIndexPath) -> ListMenuSectionCell {
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(ListMenuSectionCell.defaultReuseIdentifier, forIndexPath: indexPath) as! ListMenuSectionCell
+        cellConfiguration(cell: cell, item: visibleItems[indexPath.row])
         cell.dependencyManager = dependencyManager
-        
+        cell.dependencyManager = dependencyManager
         return cell
     }
-    
+
     func setupDataSource(with delegate: ListMenuSectionDataSourceDelegate) {
         self.delegate = delegate
-        fetchRemoteData(success: nil)
+        fetchData()
     }
-    
+
+    func fetchData(success success: ((with: [Item]) -> Void)? = nil, failure: ((with: ErrorType) -> Void)? = nil, cancelled: (Void -> Void)? = nil) {
+        let operation = createOperation()
+        operation?.queue() { [weak self] result in
+            guard let strongSelf = self else {
+                return
+            }
+
+            guard let output = result.output else {
+                return
+            }
+
+            let items = strongSelf.processOutput(output: output)
+
+            switch result {
+                case .success:
+                    strongSelf.visibleItems = items
+                    strongSelf.delegate?.didUpdateVisibleItems(forSection: strongSelf.section)
+                    success?(with: items)
+                case .failure(let error):
+                    strongSelf.state = .failed(error: error)
+                    strongSelf.delegate?.didUpdateVisibleItems(forSection: strongSelf.section)
+                    failure?(with: error)
+                case .cancelled:
+                    strongSelf.delegate?.didUpdateVisibleItems(forSection: strongSelf.section)
+                    cancelled?()
+            }
+        }
+    }
+
+    var visibleItems: [Item] = [Item]() {
+        didSet {
+            state = visibleItems.isEmpty ? .noContent : .items
+            delegate?.didUpdateVisibleItems(forSection: .hashtags)
+        }
+    }
+
     var numberOfItems: Int {
         switch state {
         case .loading, .failed, .noContent:

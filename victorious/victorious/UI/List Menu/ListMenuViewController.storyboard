@@ -15,11 +15,10 @@
                         <viewControllerLayoutGuide type="bottom" id="tBm-I6-b8d"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="N4d-vr-opz">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Gos-ku-K2f">
-                                <frame key="frameInset" width="600" height="600"/>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Gos-ku-K2f">
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="6" minimumInteritemSpacing="0.0" id="fY6-im-rjj">
                                     <size key="itemSize" width="600" height="38"/>
@@ -28,83 +27,8 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ListMenuCreatorCollectionViewCell" id="pDL-Ab-X1N" customClass="ListMenuCreatorCollectionViewCell" customModule="victorious" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="30" width="600" height="38"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="38"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Creator Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sbZ-95-2Ut">
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <view contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" placeholderIntrinsicWidth="30" placeholderIntrinsicHeight="30" translatesAutoresizingMaskIntoConstraints="NO" id="LvS-JK-TEH" customClass="AvatarView" customModule="victorious" customModuleProvider="target">
-                                                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                                </view>
-                                            </subviews>
-                                        </view>
-                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <constraints>
-                                            <constraint firstItem="sbZ-95-2Ut" firstAttribute="leading" secondItem="LvS-JK-TEH" secondAttribute="trailing" constant="12" id="8XI-IH-57w"/>
-                                            <constraint firstItem="sbZ-95-2Ut" firstAttribute="centerY" secondItem="pDL-Ab-X1N" secondAttribute="centerY" id="RyP-Yx-X3y"/>
-                                            <constraint firstItem="LvS-JK-TEH" firstAttribute="leading" secondItem="pDL-Ab-X1N" secondAttribute="leading" constant="12" id="hNn-gU-t1Q"/>
-                                            <constraint firstAttribute="trailing" secondItem="sbZ-95-2Ut" secondAttribute="trailing" constant="28" id="iE6-Q2-ob3"/>
-                                            <constraint firstItem="LvS-JK-TEH" firstAttribute="centerY" secondItem="pDL-Ab-X1N" secondAttribute="centerY" id="jh1-Kf-abM"/>
-                                        </constraints>
-                                        <connections>
-                                            <outlet property="avatarView" destination="LvS-JK-TEH" id="seZ-KC-bjv"/>
-                                            <outlet property="creatorNameLabel" destination="sbZ-95-2Ut" id="vCk-7k-9nt"/>
-                                        </connections>
-                                    </collectionViewCell>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ListMenuCommunityCollectionViewCell" id="Aw7-Zd-Ktk" customClass="ListMenuCommunityCollectionViewCell" customModule="victorious" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="74" width="600" height="38"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="38"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Feed Filter Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pkv-DF-vXY">
-                                                    <fontDescription key="fontDescription" type="system" pointSize="21"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                        </view>
-                                        <constraints>
-                                            <constraint firstItem="pkv-DF-vXY" firstAttribute="centerY" secondItem="Aw7-Zd-Ktk" secondAttribute="centerY" id="RWB-E0-TSt"/>
-                                            <constraint firstItem="pkv-DF-vXY" firstAttribute="leading" secondItem="Aw7-Zd-Ktk" secondAttribute="leading" constant="14" id="gNj-9b-Buz"/>
-                                            <constraint firstAttribute="trailing" secondItem="pkv-DF-vXY" secondAttribute="trailing" constant="28" id="njj-j8-Nss"/>
-                                        </constraints>
-                                        <connections>
-                                            <outlet property="titleLabel" destination="pkv-DF-vXY" id="lsJ-9X-fXF"/>
-                                        </connections>
-                                    </collectionViewCell>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ListMenuChatRoomCollectionViewCell" id="0Wq-wL-hCl" userLabel="ListMenuChatRoomCollectionViewCell" customClass="ListMenuChatRoomCollectionViewCell" customModule="victorious" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="118" width="600" height="38"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="38"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Chat Room Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WdA-kE-z1c" userLabel="Title Label">
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                        </view>
-                                        <constraints>
-                                            <constraint firstItem="WdA-kE-z1c" firstAttribute="leading" secondItem="0Wq-wL-hCl" secondAttribute="leading" constant="14" id="0R9-13-EDv"/>
-                                            <constraint firstAttribute="trailing" secondItem="WdA-kE-z1c" secondAttribute="trailing" constant="28" id="WBO-d3-nwj"/>
-                                            <constraint firstItem="WdA-kE-z1c" firstAttribute="centerY" secondItem="0Wq-wL-hCl" secondAttribute="centerY" id="qsn-RH-6Yr"/>
-                                        </constraints>
-                                        <connections>
-                                            <outlet property="titleLabel" destination="WdA-kE-z1c" id="Aco-Y8-F0L"/>
-                                        </connections>
-                                    </collectionViewCell>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="NewListMenuSectionCell" id="CnW-UN-sEU" userLabel="NewListMenuSectionCell" customClass="NewListMenuSectionCell" customModule="victorious" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="162" width="600" height="38"/>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ListMenuSectionCell" id="CnW-UN-sEU" userLabel="ListMenuSectionCell" customClass="ListMenuSectionCell" customModule="victorious" customModuleProvider="target">
+                                        <rect key="frame" x="-112.5" y="30" width="600" height="38"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="38"/>
@@ -139,30 +63,8 @@
                                             <outlet property="titleLabelToViewLeadingConstraint" destination="XTV-br-AR9" id="0eP-Yj-iSk"/>
                                         </connections>
                                     </collectionViewCell>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ListMenuHashtagCollectionViewCell" id="AOw-BJ-JkJ" customClass="ListMenuHashtagCollectionViewCell" customModule="victorious" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="206" width="600" height="38"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="38"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" alpha="0.90000000000000002" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hashtag Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NhT-Ef-yEM">
-                                                    <fontDescription key="fontDescription" type="system" pointSize="19"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                        </view>
-                                        <constraints>
-                                            <constraint firstItem="NhT-Ef-yEM" firstAttribute="centerY" secondItem="AOw-BJ-JkJ" secondAttribute="centerY" id="HRS-S8-13P"/>
-                                            <constraint firstItem="NhT-Ef-yEM" firstAttribute="leading" secondItem="AOw-BJ-JkJ" secondAttribute="leading" constant="14" id="X9W-3d-1pZ"/>
-                                            <constraint firstAttribute="trailing" secondItem="NhT-Ef-yEM" secondAttribute="trailing" constant="28" id="qhO-li-5sb"/>
-                                        </constraints>
-                                        <connections>
-                                            <outlet property="titleLabel" destination="NhT-Ef-yEM" id="Lx0-vK-UDk"/>
-                                        </connections>
-                                    </collectionViewCell>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ListMenuNoContentCollectionViewCell" id="Mme-Cf-5dM" customClass="ListMenuNoContentCollectionViewCell" customModule="victorious" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="250" width="600" height="38"/>
+                                        <rect key="frame" x="-112.5" y="74" width="600" height="38"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="38"/>
@@ -186,7 +88,7 @@
                                     </collectionViewCell>
                                 </cells>
                                 <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ListMenuSectionHeaderView" id="4OX-AT-VFY" customClass="ListMenuSectionHeaderView" customModule="victorious" customModuleProvider="target">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="30"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Section Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F5P-vm-4DK">
