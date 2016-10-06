@@ -75,6 +75,10 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
         NotificationCenter.default.addObserver(self, selector: #selector(mainFeedFilterDidChange), name: NSNotification.Name(rawValue: RESTForumNetworkSource.updateStreamURLNotification), object: nil)
         
         showCreatorLogoTitle()
+        
+        if dependencyManager.shouldOpenLeftNavInitially {
+            sideMenuController.openSideViewController(on: .left, animated: false)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -232,5 +236,12 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
         allowsRightNavigation = navigationController.viewControllers.count <= 1
         sideMenuController.panningIsEnabled = navigationController.viewControllers.count <= 1
         viewController.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+    }
+}
+
+private extension VDependencyManager {
+    var shouldOpenLeftNavInitially: Bool {
+        // TODO: This should come from the template.
+        return true
     }
 }
