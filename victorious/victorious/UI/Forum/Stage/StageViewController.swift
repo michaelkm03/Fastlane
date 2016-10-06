@@ -17,7 +17,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         static let audioSessionOutputVolumeKeyPath = "outputVolume"
     }
     
-    @IBOutlet fileprivate weak var captionBarContainerView: UIView!
+    @IBOutlet private var captionBarContainerView: UIView!
     @IBOutlet fileprivate var captionBarHeightConstraint: NSLayoutConstraint! {
         didSet {
             captionBarHeightConstraint.constant = 0
@@ -26,8 +26,8 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
     
     private var stayTunedImageView: UIImageView?
     
-    @IBOutlet weak var titleCardContainerView: UIView!
-    @IBOutlet private weak var loadingIndicator: UIActivityIndicatorView!
+    @IBOutlet private var titleCardContainerView: UIView!
+    @IBOutlet private var loadingIndicator: UIActivityIndicatorView!
     
     private let stagePreparer = StagePreparer()
 
