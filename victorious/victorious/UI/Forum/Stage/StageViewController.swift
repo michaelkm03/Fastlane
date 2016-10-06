@@ -23,7 +23,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
             captionBarHeightConstraint.constant = 0
         }
     }
-    @IBOutlet weak var stayTunedImageView: UIImageView!
+    @IBOutlet private weak var stayTunedImageView: UIImageView!
 
     @IBOutlet private weak var loadingIndicator: UIActivityIndicatorView!
     
@@ -95,11 +95,6 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         super.viewDidLoad()
 
         setupUI()
-        
-        if let image = dependencyManager.backgroundImage {
-            stayTunedImageView.image = image
-            show(animated: false)
-        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -133,6 +128,11 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
             options: [.new, .old],
             context: nil
         )
+        
+        if let image = dependencyManager.backgroundImage {
+            stayTunedImageView.image = image
+            show(animated: false)
+        }
     }
 
     fileprivate func setupDataSource(_ dependencyManager: VDependencyManager) -> StageDataSource {
