@@ -70,6 +70,11 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         }
 
         dependencyManager.trackViewWillAppear(for: self)
+        
+        // This prevents issues with the list menu's layout receiving implicit animation when it's opened.
+        UIView.performWithoutAnimation {
+            view.layoutIfNeeded()
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
