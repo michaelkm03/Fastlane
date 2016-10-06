@@ -37,7 +37,8 @@ final class VIPSelectSubscriptionOperation: AsyncOperation<VProduct>, UIAlertVie
             return
         }
         
-        let alert = UIAlertController(title: Strings.alertTitle, message: Strings.alertMessage, preferredStyle: .alert)
+        let alert = UIAlertController(title: dependencyManager.selectionTitle, message: dependencyManager.selectionDetails, preferredStyle: .alert)
+        
         for product in products {
             // We only add a product to selection if there's valid price and description
             guard let price = product.price, let description = product.localizedDescription else {
@@ -58,16 +59,21 @@ final class VIPSelectSubscriptionOperation: AsyncOperation<VProduct>, UIAlertVie
             return
         }
         
-        let action = UIAlertAction(title: Strings.cancel, style: .default) { action in
+        let action = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .default) { action in
             finish(.cancelled)
         }
         alert.addAction(action)
+        
         originViewController.present(alert, animated: true, completion: nil)
     }
+}
+
+private extension VDependencyManager {
+    var selectionTitle: String? {
+        return string(forKey: "title.text")
+    }
     
-    fileprivate struct Strings {
-        static let alertTitle = NSLocalizedString("Become a VIP", comment: "Prompt for purchasing VIP subscription")
-        static let alertMessage = NSLocalizedString("Select payment schedule", comment: "Subtitle for VIP subscription dialog")
-        static let cancel = NSLocalizedString("Cancel", comment: "")
+    var selectionDetails: String? {
+        return string(forKey: "details.text")
     }
 }
