@@ -10,15 +10,15 @@ import Foundation
 
 final class VIPSelectSubscriptionOperation: AsyncOperation<VProduct>, UIAlertViewDelegate {
     let products: [VProduct]
-    
     let originViewController: UIViewController
-    
     let willShowPrompt: Bool
+    let dependencyManager: VDependencyManager
     
-    init(products: [VProduct], originViewController: UIViewController) {
+    init(products: [VProduct], originViewController: UIViewController, dependencyManager: VDependencyManager) {
         self.products = products
         self.willShowPrompt = products.count > 1
         self.originViewController = originViewController
+        self.dependencyManager = dependencyManager
     }
     
     override var executionQueue: Queue {
