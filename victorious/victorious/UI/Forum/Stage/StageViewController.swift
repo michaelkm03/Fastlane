@@ -23,8 +23,10 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
             captionBarHeightConstraint.constant = 0
         }
     }
-    @IBOutlet private weak var stayTunedImageView: UIImageView!
-
+    
+    private var stayTunedImageView: UIImageView?
+    
+    @IBOutlet weak var titleCardContainerView: UIView!
     @IBOutlet private weak var loadingIndicator: UIActivityIndicatorView!
     
     private let stagePreparer = StagePreparer()
@@ -129,8 +131,14 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
             context: nil
         )
         
+        setupStayTunedImageViewIfNecessary()
+    }
+    
+    private func setupStayTunedImageViewIfNecessary() {
         if let image = dependencyManager.backgroundImage {
-            stayTunedImageView.image = image
+            let imageView = UIImageView(image: image)
+            view.insertSubview(imageView, belowSubview: titleCardContainerView)
+            self.stayTunedImageView = imageView
             show(animated: false)
         }
     }
@@ -188,7 +196,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
 
     fileprivate func newMediaContentView(for content: Content) -> MediaContentView {
         let mediaContentView = setupMediaContentView(for: content)
-        view.insertSubview(mediaContentView, aboveSubview: stayTunedImageView)
+        view.insertSubview(mediaContentView, belowSubview: titleCardContainerView)
         mediaContentView.translatesAutoresizingMaskIntoConstraints = false
         view.leadingAnchor.constraint(equalTo: mediaContentView.leadingAnchor).isActive = true
         view.trailingAnchor.constraint(equalTo: mediaContentView.trailingAnchor).isActive = true
@@ -201,7 +209,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         mediaContentView.didPresent()
         
         let animations = {
-            self.stayTunedImageView.alpha = 0
+            self.stayTunedImageView?.alpha = 0
             mediaContentView.alpha = 1
         }
         UIView.animate(withDuration: (animated ? MediaContentView.AnimationConstants.mediaContentViewAnimationDuration : 0), animations: animations, completion: completion)
@@ -214,7 +222,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         loadingIndicator.startAnimating()
         
         let animations = {
-            self.stayTunedImageView.alpha = 1
+            self.stayTunedImageView?.alpha = 1
             mediaContentView.alpha = 0
         }
         let duration = MediaContentView.AnimationConstants.mediaContentViewAnimationDuration * Constants.mediaContentViewAnimationDurationMultiplier
