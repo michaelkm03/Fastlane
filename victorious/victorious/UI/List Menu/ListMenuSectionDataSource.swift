@@ -26,7 +26,6 @@ class ListMenuSectionDataSource<Item, Operation: Queueable> {
     let section: ListMenuSection
     weak var delegate: ListMenuSectionDataSourceDelegate?
     var state: ListMenuDataSourceState = .loading
-    var requestExecutor: RequestExecutorType = MainRequestExecutor()
 
     init(dependencyManager: VDependencyManager, cellConfiguration: CellConfigurationCallback, createOperation: CreateOperationCallback, processOutput: ProcessOutputCallback, section: ListMenuSection) {
         self.dependencyManager = dependencyManager
@@ -53,7 +52,6 @@ class ListMenuSectionDataSource<Item, Operation: Queueable> {
     func dequeueItemCell(from collectionView: UICollectionView, at indexPath: NSIndexPath) -> ListMenuSectionCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(ListMenuSectionCell.defaultReuseIdentifier, forIndexPath: indexPath) as! ListMenuSectionCell
         cellConfiguration(cell: cell, item: visibleItems[indexPath.row])
-        cell.dependencyManager = dependencyManager
         cell.dependencyManager = dependencyManager
         return cell
     }
