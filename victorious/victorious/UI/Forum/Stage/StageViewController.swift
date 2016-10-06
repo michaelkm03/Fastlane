@@ -17,14 +17,17 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         static let audioSessionOutputVolumeKeyPath = "outputVolume"
     }
     
-    @IBOutlet fileprivate weak var captionBarContainerView: UIView!
+    @IBOutlet private var captionBarContainerView: UIView!
     @IBOutlet fileprivate var captionBarHeightConstraint: NSLayoutConstraint! {
         didSet {
             captionBarHeightConstraint.constant = 0
         }
     }
-
-    @IBOutlet private weak var loadingIndicator: UIActivityIndicatorView!
+    
+    private var stayTunedImageView: UIImageView?
+    
+    @IBOutlet private var titleCardContainerView: UIView!
+    @IBOutlet private var loadingIndicator: UIActivityIndicatorView!
     
     private let stagePreparer = StagePreparer()
 
@@ -127,6 +130,17 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
             options: [.new, .old],
             context: nil
         )
+        
+        setupStayTunedImageViewIfNecessary()
+    }
+    
+    private func setupStayTunedImageViewIfNecessary() {
+        if let image = dependencyManager.backgroundImage {
+            let imageView = UIImageView(image: image)
+            view.insertSubview(imageView, belowSubview: titleCardContainerView)
+            self.stayTunedImageView = imageView
+            show(animated: false)
+        }
     }
 
     fileprivate func setupDataSource(_ dependencyManager: VDependencyManager) -> StageDataSource {
@@ -182,7 +196,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
 
     fileprivate func newMediaContentView(for content: Content) -> MediaContentView {
         let mediaContentView = setupMediaContentView(for: content)
-        view.insertSubview(mediaContentView, aboveSubview: loadingIndicator)
+        view.insertSubview(mediaContentView, belowSubview: titleCardContainerView)
         mediaContentView.translatesAutoresizingMaskIntoConstraints = false
         view.leadingAnchor.constraint(equalTo: mediaContentView.leadingAnchor).isActive = true
         view.trailingAnchor.constraint(equalTo: mediaContentView.trailingAnchor).isActive = true
@@ -193,8 +207,9 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
 
     fileprivate func showMediaContentView(_ mediaContentView: MediaContentView, animated: Bool, completion: ((Bool) -> Void)? = nil) {
         mediaContentView.didPresent()
-
+        
         let animations = {
+            self.stayTunedImageView?.alpha = 0
             mediaContentView.alpha = 1
         }
         UIView.animate(withDuration: (animated ? MediaContentView.AnimationConstants.mediaContentViewAnimationDuration : 0), animations: animations, completion: completion)
@@ -207,6 +222,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
         loadingIndicator.startAnimating()
         
         let animations = {
+            self.stayTunedImageView?.alpha = 1
             mediaContentView.alpha = 0
         }
         let duration = MediaContentView.AnimationConstants.mediaContentViewAnimationDuration * Constants.mediaContentViewAnimationDurationMultiplier
@@ -321,7 +337,6 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
 
         /// Instead of seeking past the end of the video we hide the stage.
         guard mediaContentView.hasValidMedia else {
-            hide(animated: true)
             return
         }
         
@@ -408,6 +423,10 @@ private extension VDependencyManager {
     /// STAGE has historically been used to track stage content before there was main_stage, vip_stage. Leaving this in until vip stage has been released, then it should be revisited.
     var context: String {
         return string(forKey: "context") ?? "STAGE"
+    }
+    
+    var backgroundImage: UIImage? {
+        return image(forKey: "stay.tuned.image")
     }
 }
 

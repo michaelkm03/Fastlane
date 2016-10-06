@@ -258,6 +258,8 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        
+        composer?.dismissKeyboard(animated)
         dependencyManager.trackViewWillDisappear(for: self)
     }
     
