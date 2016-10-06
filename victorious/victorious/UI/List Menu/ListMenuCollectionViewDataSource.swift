@@ -266,7 +266,7 @@ private extension VDependencyManager {
     }
 
     var hashtagsAPIPath: APIPath? {
-        return networkResources?.apiPath(forKey: "trendingHashtagsURL")
+        return apiPath(forKey: "listURL")
     }
 
     var chatRoomsChildDependency: VDependencyManager? {
@@ -274,7 +274,7 @@ private extension VDependencyManager {
     }
 
     var chatRoomsAPIPath: APIPath? {
-        return apiPath(forKey: "list.URL")
+        return apiPath(forKey: "listURL")
     }
 
     var activityIndicatorColor: UIColor? {
