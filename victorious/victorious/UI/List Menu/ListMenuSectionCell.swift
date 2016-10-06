@@ -17,16 +17,9 @@ class ListMenuSectionCell: UICollectionViewCell {
 
     var avatarViewHidden = true {
         didSet {
-            if avatarViewHidden == true {
-                avatarView.isHidden = true
-                titleLabelToAvatarViewLeadingConstraint.isActive = false
-                titleLabelToViewLeadingConstraint.isActive = true
-            }
-            else {
-                avatarView.isHidden = false
-                titleLabelToAvatarViewLeadingConstraint.isActive = true
-                titleLabelToViewLeadingConstraint.isActive = false
-            }
+            avatarView.isHidden = avatarViewHidden
+            titleLabelToAvatarViewLeadingConstraint.isActive = !avatarViewHidden
+            titleLabelToViewLeadingConstraint.isActive = avatarViewHidden
         }
     }
 
@@ -42,10 +35,6 @@ class ListMenuSectionCell: UICollectionViewCell {
             }
         }
     }
-
-    var titleColorKey = "color.text.navItem"
-    var itemFontKey = VDependencyManagerParagraphFontKey
-    var selectedBackgroundKey = VDependencyManagerAccentColorKey
 
     override var isSelected: Bool {
         didSet {

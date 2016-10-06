@@ -20,7 +20,7 @@ enum ListMenuSection {
 
 /// Conformers of this protocol respond to List Menu Data Sources data update events
 protocol ListMenuSectionDataSourceDelegate: class {
-    /// Called when List Menu Network Data Sources have finished fetching data
+    /// Called when List Menu Sectioin Data Sources have finished fetching data
     /// from backend, and updated its `visibleItems`
     func didUpdateVisibleItems(forSection section: ListMenuSection)
 }
@@ -64,8 +64,8 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         if
             let childDependency = dependencyManager.creatorsChildDependency,
             let apiPath = childDependency.creatorsListAPIPath,
-            let request = CreatorListRequest(apiPath: apiPath) {
-
+            let request = CreatorListRequest(apiPath: apiPath)
+        {
             creatorsDataSource = ListMenuSectionDataSource(
                 dependencyManager: childDependency,
                 cellConfiguration: { cell, item in
@@ -86,8 +86,8 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         if
             let childDependency = dependencyManager.hashtagsChildDependency,
             let apiPath = childDependency.hashtagsAPIPath,
-            let request = TrendingHashtagsRequest(apiPath: apiPath) {
-
+            let request = TrendingHashtagsRequest(apiPath: apiPath)
+        {
             hashtagDataSource = ListMenuSectionDataSource(
                 dependencyManager: childDependency,
                 cellConfiguration: { cell, item in
@@ -107,8 +107,8 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         if
             let childDependency = dependencyManager.chatRoomsChildDependency,
             let apiPath = childDependency.chatRoomsAPIPath,
-            let request = ChatRoomsRequest(apiPath: apiPath) {
-
+            let request = ChatRoomsRequest(apiPath: apiPath)
+        {
             chatRoomsDataSource = ListMenuSectionDataSource(
                 dependencyManager: childDependency,
                 cellConfiguration: { cell, item in

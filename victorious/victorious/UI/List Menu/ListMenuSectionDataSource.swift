@@ -22,19 +22,26 @@ enum ListMenuDataSourceState {
 class ListMenuSectionDataSource<Item, Operation: Queueable> {
 
     // MARK: - Initialization
+
     typealias CellConfigurationCallback = (ListMenuSectionCell, Item) -> Void
     typealias CreateOperationCallback = () -> Operation?
     typealias ProcessOutputCallback = (Operation.Output) -> [Item]
+
     /// Used for configing the cell after it's creation
     let cellConfiguration: CellConfigurationCallback
+
     /// Defines how an operation should be created
     let createOperation: CreateOperationCallback
+
     /// Defines how operation output should be processed into items
     let processOutput: ProcessOutputCallback
+
     /// The section that this data source represents
     let section: ListMenuSection
+
     /// The delegate to be notified when data get updated
     weak var delegate: ListMenuSectionDataSourceDelegate?
+
     /// The current state of the data source based on its results
     var state: ListMenuDataSourceState = .loading
 
@@ -89,11 +96,10 @@ class ListMenuSectionDataSource<Item, Operation: Queueable> {
     func fetchData(success: (([Item]) -> Void)? = nil, failure: ((Error) -> Void)? = nil, cancelled: ((Void) -> Void)? = nil) {
         let operation = createOperation()
         operation?.queue() { [weak self] result in
-            guard let strongSelf = self else {
-                return
-            }
-
-            guard let output = result.output else {
+            guard
+                let strongSelf = self,
+                let output = result.output
+            else {
                 return
             }
 
@@ -118,7 +124,7 @@ class ListMenuSectionDataSource<Item, Operation: Queueable> {
     /// MARK: - Items
 
     /// The visible items fetched from backend and should be displayed
-    var visibleItems: [Item] = [Item]() {
+    var visibleItems = [Item]() {
         didSet {
             state = visibleItems.isEmpty ? .noContent : .items
             delegate?.didUpdateVisibleItems(forSection: .hashtags)

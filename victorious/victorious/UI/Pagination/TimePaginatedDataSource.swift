@@ -28,9 +28,6 @@ enum PaginatedOrdering {
 /// To use this object, you simply provide an API path with the appropriate pagination macros as well as an operation
 /// that produces a list of items given a URL.
 ///
-/// - REQUIRES: `Item` must conform to `PaginatableItem`. Swift doesn't allow us to specify that requirement, so
-/// failing to conform will cause a runtime error.
-///
 /// - NOTE: This should be renamed to `PaginatedDataSource` once the other `PaginatedDataSource` is removed.
 ///
 class TimePaginatedDataSource<Item: PaginatableItem, ItemOperation: Queueable> where ItemOperation: Operation {
