@@ -31,7 +31,7 @@ enum PaginatedOrdering {
 ///
 /// - NOTE: This should be renamed to `PaginatedDataSource` once the other `PaginatedDataSource` is removed.
 ///
-class TimePaginatedDataSource<Item, Operation: Queueable where Operation: NSOperation> {
+class TimePaginatedDataSource<Item: PaginatableItem, Operation: Queueable where Operation: NSOperation> {
     
     // MARK: - Initializing
     
@@ -220,7 +220,7 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation: NSOper
     
     private var oldestTimestamp: Timestamp? {
         if let timestamp = items.reduce(nil, combine: { timestamp, item in
-            min(timestamp ?? Timestamp.max, (item as! PaginatableItem).paginationTimestamp)
+            min(timestamp ?? Timestamp.max, item.paginationTimestamp)
         }) {
             return Timestamp(value: timestamp.value - 1)
         }
@@ -230,7 +230,7 @@ class TimePaginatedDataSource<Item, Operation: Queueable where Operation: NSOper
     
     private var newestTimestamp: Timestamp? {
         if let timestamp = items.reduce(nil, combine: { timestamp, item in
-            max(timestamp ?? Timestamp(value: 0), (item as! PaginatableItem).paginationTimestamp)
+            max(timestamp ?? Timestamp(value: 0), item.paginationTimestamp)
         }) {
             return Timestamp(value: timestamp.value + 1)
         }
