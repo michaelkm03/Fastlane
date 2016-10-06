@@ -147,8 +147,8 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
 
     private func selectChatRoom(atIndex index: Int) {
         guard
-            let item = collectionViewDataSource.newChatRoomsDataSource?.visibleItems[index],
-            var apiPath = collectionViewDataSource.newChatRoomsDataSource?.streamAPIPath,
+            let item = collectionViewDataSource.chatRoomsDataSource?.visibleItems[index],
+            var apiPath = collectionViewDataSource.chatRoomsDataSource?.streamAPIPath,
             let trackingAPIPaths = collectionViewDataSource.hashtagDataSource?.streamTrackingAPIPaths
         else {
             Log.error("Trying to select a chat room with incomplete data")

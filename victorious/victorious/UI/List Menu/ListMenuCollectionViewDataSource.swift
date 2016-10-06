@@ -34,7 +34,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
     private let dependencyManager: VDependencyManager
     let communityDataSource: ListMenuSectionDataSource<ListMenuCommunityItem, SyncOperation<[ListMenuCommunityItem]>>?
     let creatorsDataSource: ListMenuSectionDataSource<UserModel, RequestOperation<CreatorListRequest>>?
-    let newChatRoomsDataSource: ListMenuSectionDataSource<ChatRoom, RequestOperation<ChatRoomsRequest>>?
+    let chatRoomsDataSource: ListMenuSectionDataSource<ChatRoom, RequestOperation<ChatRoomsRequest>>?
     let hashtagDataSource: ListMenuSectionDataSource<Hashtag, RequestOperation<TrendingHashtagsRequest>>?
     private(set) var availableSections: [ListMenuSection] = []
 
@@ -109,7 +109,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
             let apiPath = childDependency.chatRoomsAPIPath,
             let request = ChatRoomsRequest(apiPath: apiPath) {
 
-            newChatRoomsDataSource = ListMenuSectionDataSource(
+            chatRoomsDataSource = ListMenuSectionDataSource(
                 dependencyManager: childDependency,
                 cellConfiguration: { cell, item in
                     cell.titleLabel.text = item.name
@@ -122,7 +122,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
             availableSections.append(.chatRooms)
         }
         else {
-            newChatRoomsDataSource = nil
+            chatRoomsDataSource = nil
         }
 
         super.init()
@@ -130,7 +130,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         creatorsDataSource?.setupDataSource(with: self)
         communityDataSource?.setupDataSource(with: self)
         hashtagDataSource?.setupDataSource(with: self)
-        newChatRoomsDataSource?.setupDataSource(with: self)
+        chatRoomsDataSource?.setupDataSource(with: self)
 
         registerNibs(for: listMenuViewController.collectionView)
     }
@@ -148,7 +148,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
             case .creators: return numberOfItems(from: creatorsDataSource, in: section)
             case .community: return numberOfItems(from: communityDataSource, in: section)
             case .hashtags: return numberOfItems(from: hashtagDataSource, in: section)
-            case .chatRooms: return numberOfItems(from: newChatRoomsDataSource, in: section)
+            case .chatRooms: return numberOfItems(from: chatRoomsDataSource, in: section)
         }
     }
 
@@ -165,7 +165,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
             case .creators: return itemsIndices(for: creatorsDataSource)
             case .community: return itemsIndices(for: communityDataSource)
             case .hashtags: return itemsIndices(for: hashtagDataSource)
-            case .chatRooms: return itemsIndices(for: newChatRoomsDataSource)
+            case .chatRooms: return itemsIndices(for: chatRoomsDataSource)
         }
     }
 
@@ -184,7 +184,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
             case .creators: return dequeueProperCell(from: creatorsDataSource, for: collectionView, at: indexPath)
             case .community: return dequeueProperCell(from: communityDataSource, for: collectionView, at: indexPath)
             case .hashtags: return dequeueProperCell(from: hashtagDataSource, for: collectionView, at: indexPath)
-            case .chatRooms: return dequeueProperCell(from: newChatRoomsDataSource, for: collectionView, at: indexPath)
+            case .chatRooms: return dequeueProperCell(from: chatRoomsDataSource, for: collectionView, at: indexPath)
         }
     }
 
