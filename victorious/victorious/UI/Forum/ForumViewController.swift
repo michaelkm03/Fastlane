@@ -99,6 +99,20 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
         return forumVC
     }
     
+    override init(nibName: String?, bundle: Bundle?) {
+        super.init(nibName: nibName, bundle: bundle)
+        setup()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setup()
+    }
+    
+    private func setup() {
+        NotificationCenter.default.addObserver(self, selector: #selector(mainFeedFilterDidChange), name: NSNotification.Name(rawValue: RESTForumNetworkSource.updateStreamURLNotification), object: nil)
+    }
+    
     // MARK: - ForumEventReceiver
     
     var childEventReceivers: [ForumEventReceiver] {
@@ -273,9 +287,7 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        NotificationCenter.default.addObserver(self, selector: #selector(mainFeedFilterDidChange), name: NSNotification.Name(rawValue: RESTForumNetworkSource.updateStreamURLNotification), object: nil)
-
+        
         publisher = ContentPublisher(dependencyManager: dependencyManager.networkResources ?? dependencyManager)
         publisher?.delegate = self
         
