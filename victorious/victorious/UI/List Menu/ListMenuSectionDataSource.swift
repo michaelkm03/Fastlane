@@ -50,7 +50,7 @@ class ListMenuSectionDataSource<Item, Operation: Queueable> {
         self.section = section
     }
 
-    // MARK - Dependency manager
+    // MARK: - Dependency manager
 
     /// The data source's dependency manager
     let dependencyManager: VDependencyManager
@@ -74,6 +74,8 @@ class ListMenuSectionDataSource<Item, Operation: Queueable> {
         cell.dependencyManager = dependencyManager
         return cell
     }
+
+    /// MARK: - Data Fetch
 
     /// Performs all work necessary after initialization to get the data source ready for use
     func setupDataSource(with delegate: ListMenuSectionDataSourceDelegate) {
@@ -110,6 +112,8 @@ class ListMenuSectionDataSource<Item, Operation: Queueable> {
             }
         }
     }
+
+    /// MARK: - Items
 
     /// The visible items fetched from backend and should be displayed
     var visibleItems: [Item] = [Item]() {
