@@ -37,8 +37,8 @@ class InAppNotificationsDataSource: PaginatedDataSource, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: InAppNotificationCell.defaultReuseIdentifier, for: indexPath as IndexPath) as! InAppNotificationCell
-        decorate(cell: cell, atIndexPath: indexPath as IndexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: InAppNotificationCell.defaultReuseIdentifier, for: indexPath) as! InAppNotificationCell
+        decorate(cell: cell, atIndexPath: indexPath)
         return cell
     }
     
