@@ -39,7 +39,7 @@ class ListMenuSectionDataSourceTests: XCTestCase {
         let testDelegate = TestListMenuSectionDataSourceDelegate()
         dataSource.delegate = testDelegate
 
-        let expectation = expectationWithDescription("\(dataSource.dynamicType)) data fetch")
+        let expectation = self.expectation(description: "\(type(of: dataSource))) data fetch")
         dataSource.fetchData(
             success: { items in
                 expectation.fulfill()
@@ -54,6 +54,6 @@ class ListMenuSectionDataSourceTests: XCTestCase {
             }
         )
 
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
 }

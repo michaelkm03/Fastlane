@@ -11,7 +11,7 @@ import XCTest
 
 class CommunityItemsFetchOperationTests: XCTestCase {
     func testExecuteWithValidData() {
-        let validConfig = [
+        let validConfig: [String : Any] = [
             "title": "COMMUNITY",
             "items": [
                 [
