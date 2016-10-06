@@ -105,7 +105,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
 
         if
             let childDependency = dependencyManager.chatRoomsChildDependency,
-            let apiPath = dependencyManager.chatRoomsAPIPath,
+            let apiPath = childDependency.chatRoomsAPIPath,
             let request = ChatRoomsRequest(apiPath: apiPath) {
 
             newChatRoomsDataSource = ListMenuSectionDataSource(
@@ -253,7 +253,7 @@ private extension VDependencyManager {
     }
 
     var creatorsListAPIPath: APIPath? {
-        return apiPathForKey("listOfCreatorsURL")
+        return apiPathForKey("listURL")
     }
 
     var communityChildDependency: VDependencyManager? {
@@ -269,11 +269,11 @@ private extension VDependencyManager {
     }
 
     var chatRoomsChildDependency: VDependencyManager? {
-        return childDependencyForKey("chat.rooms")
+        return childDependencyForKey("rooms")
     }
 
     var chatRoomsAPIPath: APIPath? {
-        return networkResources?.apiPathForKey("chat.rooms.URL")
+        return apiPathForKey("list.URL")
     }
     
     var activityIndicatorColor: UIColor? {
