@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 protocol ConfigurableGridStreamHeaderDelegate: class {
     func shouldRefresh()
@@ -15,11 +16,11 @@ protocol ConfigurableGridStreamHeaderDelegate: class {
 /// The collection header view used for `VNewProfileViewController`.
 @IBDesignable
 class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHeader {
-    private static let blurRadius = CGFloat(12)
+    fileprivate static let blurRadius = CGFloat(12)
     
     // MARK: - Initializing
     
-    class func newWithDependencyManager(dependencyManager: VDependencyManager) -> VNewProfileHeaderView {
+    class func new(withDependencyManager dependencyManager: VDependencyManager) -> VNewProfileHeaderView {
         let view: VNewProfileHeaderView = VNewProfileHeaderView.v_fromNib()
         view.dependencyManager = dependencyManager
         return view
@@ -30,7 +31,7 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         avatarView.size = .large
         populateUserContent()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(currentUserDidUpdate), name: VCurrentUser.userDidUpdateNotificationKey, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(currentUserDidUpdate), name: NSNotification.Name(rawValue: VCurrentUser.userDidUpdateNotificationKey), object: nil)
     }
     
     // MARK: - Models
@@ -41,26 +42,26 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         }
     }
     
-    private static let observedUserProperties = ["name", "location", "tagline", "isVIPSubscriber", "likesGiven", "likesReceived", "pictureURL"]
+    fileprivate static let observedUserProperties = ["name", "location", "tagline", "isVIPSubscriber", "likesGiven", "likesReceived", "pictureURL"]
     
     // MARK: - Views
     
-    @IBOutlet private var contentContainerView: UIView!
-    @IBOutlet private var loadingContainerView: UIView!
-    @IBOutlet private var loadingSpinner: UIActivityIndicatorView!
-    @IBOutlet private var backgroundImageView: UIImageView!
-    @IBOutlet private var displayNameLabel: UILabel!
-    @IBOutlet private var usernameLabel: UILabel!
-    @IBOutlet private var statsContainerView: UIView!
-    @IBOutlet private var upvotesGivenValueLabel: UILabel!
-    @IBOutlet private var upvotesGivenTitleLabel: UILabel!
-    @IBOutlet private var upvotesReceivedValueLabel: UILabel!
-    @IBOutlet private var upvotesReceivedTitleLabel: UILabel!
-    @IBOutlet private var tierValueLabel: UILabel!
-    @IBOutlet private var tierTitleLabel: UILabel!
-    @IBOutlet private var locationLabel: UILabel!
-    @IBOutlet private var taglineLabel: UILabel!
-    @IBOutlet private var avatarView: AvatarView!
+    @IBOutlet fileprivate var contentContainerView: UIView!
+    @IBOutlet fileprivate var loadingContainerView: UIView!
+    @IBOutlet fileprivate var loadingSpinner: UIActivityIndicatorView!
+    @IBOutlet fileprivate var backgroundImageView: UIImageView!
+    @IBOutlet fileprivate var displayNameLabel: UILabel!
+    @IBOutlet fileprivate var usernameLabel: UILabel!
+    @IBOutlet fileprivate var statsContainerView: UIView!
+    @IBOutlet fileprivate var upvotesGivenValueLabel: UILabel!
+    @IBOutlet fileprivate var upvotesGivenTitleLabel: UILabel!
+    @IBOutlet fileprivate var upvotesReceivedValueLabel: UILabel!
+    @IBOutlet fileprivate var upvotesReceivedTitleLabel: UILabel!
+    @IBOutlet fileprivate var tierValueLabel: UILabel!
+    @IBOutlet fileprivate var tierTitleLabel: UILabel!
+    @IBOutlet fileprivate var locationLabel: UILabel!
+    @IBOutlet fileprivate var taglineLabel: UILabel!
+    @IBOutlet fileprivate var avatarView: AvatarView!
     
     // MARK: - Configuration
     
@@ -77,9 +78,9 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         }
     }
     
-    private func applyDependencyManagerStyles() {
+    fileprivate func applyDependencyManagerStyles() {
         let appearanceKey = user?.accessLevel.isCreator == true ? VNewProfileViewController.creatorAppearanceKey : VNewProfileViewController.userAppearanceKey
-        let appearanceDependencyManager = dependencyManager?.childDependencyForKey(appearanceKey)
+        let appearanceDependencyManager = dependencyManager?.childDependency(forKey: appearanceKey)
         
         tintColor = appearanceDependencyManager?.accentColor
         
@@ -114,15 +115,20 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
     
     // MARK: - Populating content
     
-    private dynamic func currentUserDidUpdate() {
+    fileprivate dynamic func currentUserDidUpdate() {
+        // Only update the header if we are displaying the current user.
+        guard self.user?.id == VCurrentUser.user?.id else {
+            return
+        }
+
         user = VCurrentUser.user
         populateUserContent()
     }
     
-    private func populateUserContent() {
+    fileprivate func populateUserContent() {
         let userIsCreator = user?.accessLevel.isCreator == true
         
-        statsContainerView.hidden = userIsCreator
+        statsContainerView.isHidden = userIsCreator
         
         if user?.displayName?.isEmpty == false {
             displayNameLabel.text = user?.displayName
@@ -135,14 +141,14 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         
         locationLabel.text = user?.location
         taglineLabel.text = user?.tagline
-        upvotesGivenValueLabel?.text = numberFormatter.stringForInteger(user?.likesGiven ?? 0)
-        upvotesReceivedValueLabel?.text = numberFormatter.stringForInteger(user?.likesReceived ?? 0)
+        upvotesGivenValueLabel?.text = numberFormatter.string(for: user?.likesGiven ?? 0)
+        upvotesReceivedValueLabel?.text = numberFormatter.string(for: user?.likesReceived ?? 0)
         
         let tier = user?.fanLoyalty?.tier
         let shouldDisplayTier = tier?.isEmpty == false
         tierValueLabel.text = tier
-        tierTitleLabel.hidden = !shouldDisplayTier
-        tierValueLabel.hidden = !shouldDisplayTier
+        tierTitleLabel.isHidden = !shouldDisplayTier
+        tierValueLabel.isHidden = !shouldDisplayTier
         
         avatarView.user = user
         
@@ -159,32 +165,33 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
             self.backgroundImageView.alpha = 0.0
         }
         
-        contentContainerView.hidden = user == nil
-        loadingContainerView.hidden = user != nil
+        contentContainerView.isHidden = user == nil
+        loadingContainerView.isHidden = user != nil
     }
     
-    private let numberFormatter = VLargeNumberFormatter()
+    fileprivate let numberFormatter = VLargeNumberFormatter()
     
     // MARK: - ConfigurableGridStreamHeader
     
-    func decorateHeader(dependencyManager: VDependencyManager, withWidth width: CGFloat, maxHeight: CGFloat, content: UserModel?, hasError: Bool) {
+    func decorateHeader(_ dependencyManager: VDependencyManager, withWidth width: CGFloat, maxHeight: CGFloat, content: UserModel?, hasError: Bool) {
         // No error states for profiles
         self.user = content
     }
     
-    func sizeForHeader(dependencyManager: VDependencyManager, withWidth width: CGFloat, maxHeight: CGFloat, content: UserModel?, hasError: Bool) -> CGSize {
+    func sizeForHeader(_ dependencyManager: VDependencyManager, withWidth width: CGFloat, maxHeight: CGFloat, content: UserModel?, hasError: Bool) -> CGSize {
         // No error states for profiles
         self.user = content
         
         setNeedsLayout()
         layoutIfNeeded()
         
-        let widthConstraint = v_addWidthConstraint(width)
-        let height = systemLayoutSizeFittingSize(UILayoutFittingCompressedSize).height
+        // FUTURE: Unbang this.
+        let widthConstraint = v_addWidthConstraint(width)!
+        let height = systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
         
         removeConstraint(widthConstraint)
         
-        return CGSizeMake(width, height)
+        return CGSize(width: width, height: height)
     }
     
     func gridStreamShouldRefresh() {
@@ -194,58 +201,58 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
 
 private extension VDependencyManager {
     var accentColor: UIColor? {
-        return colorForKey(VDependencyManagerAccentColorKey)
+        return color(forKey: VDependencyManagerAccentColorKey)
     }
     
     var loadingSpinnerColor: UIColor? {
-        return colorForKey(VDependencyManagerMainTextColorKey)
+        return color(forKey: VDependencyManagerMainTextColorKey)
     }
     
     var headerTextColor: UIColor? {
-        return colorForKey("color.text.header")
+        return color(forKey: "color.text.header")
     }
     
     var statValueTextColor: UIColor? {
-        return colorForKey(VDependencyManagerContentTextColorKey)
+        return color(forKey: VDependencyManagerContentTextColorKey)
     }
     
     var statLabelTextColor: UIColor? {
-        return colorForKey(VDependencyManagerSecondaryTextColorKey)
+        return color(forKey: VDependencyManagerSecondaryTextColorKey)
     }
     
     var infoTextColor: UIColor? {
-        return colorForKey("color.text.paragraph")
+        return color(forKey: "color.text.paragraph")
     }
     
     var headerFont: UIFont? {
-        return fontForKey(VDependencyManagerHeaderFontKey)
+        return font(forKey: VDependencyManagerHeaderFontKey)
     }
     
     var statValueFont: UIFont? {
-        return fontForKey(VDependencyManagerHeading2FontKey)
+        return font(forKey: VDependencyManagerHeading2FontKey)
     }
     
     var statLabelFont: UIFont? {
-        return fontForKey(VDependencyManagerLabel2FontKey)
+        return font(forKey: VDependencyManagerLabel2FontKey)
     }
     
     var infoFont: UIFont? {
-        return fontForKey(VDependencyManagerParagraphFontKey)
+        return font(forKey: VDependencyManagerParagraphFontKey)
     }
     
     var vipIcon: UIImage? {
-        return imageForKey("vipIcon")?.imageWithRenderingMode(.AlwaysTemplate)
+        return image(forKey: "vipIcon")?.withRenderingMode(.alwaysTemplate)
     }
     
     var receivedUpvotesTitle: String? {
-        return stringForKey("upvoted.text")
+        return string(forKey: "upvoted.text")
     }
     
     var givenUpvotesTitle: String? {
-        return stringForKey("upvotes.text")
+        return string(forKey: "upvotes.text")
     }
     
     var tierTitle: String? {
-        return stringForKey("status.text")
+        return string(forKey: "status.text")
     }
 }

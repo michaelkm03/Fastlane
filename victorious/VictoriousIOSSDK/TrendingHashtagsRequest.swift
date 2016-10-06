@@ -9,7 +9,7 @@
 import Foundation
 
 public struct TrendingHashtagsRequest: RequestType {
-    private let url: NSURL
+    private let url: URL
     
     public init?(apiPath: APIPath) {
         guard let url = apiPath.url else {
@@ -19,11 +19,11 @@ public struct TrendingHashtagsRequest: RequestType {
         self.url = url
     }
     
-    public var urlRequest: NSURLRequest {
-        return NSURLRequest(URL: url)
+    public var urlRequest: URLRequest {
+        return URLRequest(url: url)
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [Hashtag] {
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> [Hashtag] {
         guard let hashtagJSON = responseJSON["payload"]["hashtags"].array else {
             throw ResponseParsingError()
         }

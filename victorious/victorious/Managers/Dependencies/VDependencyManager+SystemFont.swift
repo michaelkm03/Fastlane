@@ -9,10 +9,9 @@
 import Foundation
 
 extension VDependencyManager {
-    
-    private func weightOfSystemFontWithName(name: String) -> CGFloat? {
+    private func weightOfSystemFontWithName(_ name: String) -> CGFloat? {
+        let normalizedName = name.lowercased()
         
-        let normalizedName = name.lowercaseString
         guard normalizedName.hasPrefix("systemfont-") else {
             return nil
         }
@@ -42,9 +41,9 @@ extension VDependencyManager {
     }
     
     /// Returns a system font when appropriate
-    func fontWithName(name: String, size: CGFloat) -> UIFont? {
+    func fontWithName(_ name: String, size: CGFloat) -> UIFont? {
         if let weight = weightOfSystemFontWithName(name) {
-            return UIFont.systemFontOfSize(size, weight: weight)
+            return UIFont.systemFont(ofSize: size, weight: weight)
         }
         return UIFont(name: name, size: size)
     }

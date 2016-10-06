@@ -20,8 +20,9 @@ public struct StandardPaginator: NumericPaginator {
     
     // MARK: - Paginator
     
-    public func addPaginationArgumentsToRequest(request: NSMutableURLRequest) {
-        request.URL = request.URL?.URLByAppendingPathComponent( String(pageNumber) )?.URLByAppendingPathComponent( String(itemsPerPage) )
+    public func addPaginationArguments(to request: inout URLRequest) {
+        request.url?.appendPathComponent(String(pageNumber))
+        request.url?.appendPathComponent(String(itemsPerPage))
     }
     
     public func previousPage() -> StandardPaginator? {

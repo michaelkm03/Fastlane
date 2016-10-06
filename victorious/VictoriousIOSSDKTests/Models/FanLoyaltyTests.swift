@@ -11,8 +11,8 @@ import XCTest
 
 class FanLoyaltyTests: XCTestCase {
     func testJSONParsing() {
-        guard let mockUserDataURL = NSBundle(forClass: self.dynamicType).URLForResource("FanLoyalty", withExtension: "json"),
-            let mockData = NSData(contentsOfURL: mockUserDataURL) else {
+        guard let mockUserDataURL = Bundle(for: type(of: self)).url(forResource: "FanLoyalty", withExtension: "json"),
+            let mockData = try? Data(contentsOf: mockUserDataURL) else {
                 XCTFail("Error reading mock json data")
                 return
         }

@@ -9,7 +9,7 @@
 import Foundation
 
 public struct UsernameAvailabilityRequest: RequestType {
-    private let url: NSURL
+    private let url: URL
     private let usernameToCheck: String
     
     private struct Constants {
@@ -29,11 +29,11 @@ public struct UsernameAvailabilityRequest: RequestType {
         self.usernameToCheck = usernameToCheck
     }
     
-    public var urlRequest: NSURLRequest {
-        return NSURLRequest(URL: self.url)
+    public var urlRequest: URLRequest {
+        return URLRequest(url: self.url as URL)
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> Bool {
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> Bool {
         return responseJSON["payload"]["success"].boolValue
     }
 }

@@ -7,18 +7,19 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 enum GridStreamSection: Int {
-    case Header = 0
-    case Contents
+    case header = 0
+    case contents
 }
 
 class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, UICollectionViewDataSource {
 
-    private let headerName = "ConfigurableGridStreamHeaderView"
-    private let cellCornerRadius = CGFloat(6)
-    private let cellBackgroundColor = UIColor.clearColor()
-    private let cellContentBackgroundColor = UIColor.clearColor()
+    fileprivate let headerName = "ConfigurableGridStreamHeaderView"
+    fileprivate let cellCornerRadius = CGFloat(6)
+    fileprivate let cellBackgroundColor = UIColor.clear
+    fileprivate let cellContentBackgroundColor = UIColor.clear
 
     // MARK: - Initializing
     
@@ -42,30 +43,30 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
     
     // MARK: - Dependency manager
     
-    private let dependencyManager: VDependencyManager
-    private var gridDependency: VDependencyManager
+    fileprivate let dependencyManager: VDependencyManager
+    fileprivate var gridDependency: VDependencyManager
     
     // MARK: - Registering views
     
-    func registerViewsFor(collectionView: UICollectionView) {
+    func registerViewsFor(_ collectionView: UICollectionView) {
         let headerNib = UINib(nibName: headerName, bundle: nil)
-        collectionView.registerNib(headerNib, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerName)
+        collectionView.register(headerNib, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: headerName)
         CollectionLoadingView.register(in: collectionView, forSupplementaryViewKind: UICollectionElementKindSectionFooter)
     }
     
     // MARK: - Managing content
     
-    private(set) var content: HeaderType.ContentType?
-    private var hasError = false
+    fileprivate(set) var content: HeaderType.ContentType?
+    fileprivate var hasError = false
     
-    func setContent(content: HeaderType.ContentType?, withError hasError: Bool) {
+    func setContent(_ content: HeaderType.ContentType?, withError hasError: Bool) {
         self.content = content
         self.hasError = hasError
     }
     
     // MARK: - Managing items
     
-    private let paginatedDataSource: TimePaginatedDataSource<Content, ContentFeedOperation>
+    fileprivate let paginatedDataSource: TimePaginatedDataSource<Content, ContentFeedOperation>
     
     var items: [Content] {
         return paginatedDataSource.items
@@ -79,8 +80,8 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
         return !paginatedDataSource.olderItemsAreAvailable
     }
     
-    func loadContent(for collectionView: UICollectionView, loadingType: PaginatedLoadingType, completion: ((result: Result<[Content]>) -> Void)? = nil) {
-        paginatedDataSource.loadItems(loadingType) { [weak self] result in
+    func loadContent(for collectionView: UICollectionView, loadingType: PaginatedLoadingType, completion: ((_ result: Result<[Content]>) -> Void)? = nil) {
+        let _ = paginatedDataSource.loadItems(loadingType) { [weak self] result in
             if let items = self?.paginatedDataSource.items {
                 self?.header?.gridStreamDidUpdateDataSource(with: items)
             }
@@ -95,61 +96,61 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
             if loadingType == .refresh {
                 // Reloading the non-header section
                 // Also, collectionView.reloadData() was not properly reloading the cells.
-                let desiredSection = GridStreamSection.Contents.rawValue
-                if collectionView.numberOfSections() > desiredSection {
-                    collectionView.reloadSections(NSIndexSet(index: desiredSection))
+                let desiredSection = GridStreamSection.contents.rawValue
+                if collectionView.numberOfSections > desiredSection {
+                    collectionView.reloadSections(IndexSet(integer: desiredSection))
                 }
             }
-            else if let totalItemCount = self?.items.count where newItems.count > 0 {
+            else if let totalItemCount = self?.items.count , newItems.count > 0 {
                 collectionView.collectionViewLayout.invalidateLayout()
 
                 let previousCount = totalItemCount - newItems.count
                 
                 let indexPaths = (0 ..< newItems.count).map {
-                    NSIndexPath(forItem: previousCount + $0, inSection: GridStreamSection.Contents.rawValue)
+                    IndexPath(item: previousCount + $0, section: GridStreamSection.contents.rawValue)
                 }
                 
-                collectionView.insertItemsAtIndexPaths(indexPaths)
+                collectionView.insertItems(at: indexPaths)
             }
             
             switch result {
-                case .success(let feedResult): completion?(result: .success(feedResult.contents))
-                case .failure(let error): completion?(result: .failure(error))
-                case .cancelled: completion?(result: .success([]))
+                case .success(let feedResult): completion?(.success(feedResult.contents))
+                case .failure(let error): completion?(.failure(error))
+                case .cancelled: completion?(.success([]))
             }
         }
     }
     
     // MARK: - UICollectionViewDataSource
     
-    private let cellFactory: VContentOnlyCellFactory
-    private var headerView: ConfigurableGridStreamHeaderView!
-    private var header: HeaderType?
+    fileprivate let cellFactory: VContentOnlyCellFactory
+    fileprivate var headerView: ConfigurableGridStreamHeaderView!
+    fileprivate var header: HeaderType?
 
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         guard let gridStreamSection = GridStreamSection(rawValue: section) else {
             return 0
         }
         
         switch gridStreamSection {
-            case .Header:
+            case .header:
                 return 0
-            case .Contents:
+            case .contents:
                 return items.count
         }
     }
     
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 2
     }
     
-    func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
-        if kind == UICollectionElementKindSectionFooter && indexPath.section == GridStreamSection.Contents.rawValue {
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        if kind == UICollectionElementKindSectionFooter && (indexPath as NSIndexPath).section == GridStreamSection.contents.rawValue {
             return CollectionLoadingView.dequeue(from: collectionView, forSupplementaryViewKind: kind, at: indexPath)
         }
-        else if kind == UICollectionElementKindSectionHeader && indexPath.section == GridStreamSection.Header.rawValue {
+        else if kind == UICollectionElementKindSectionHeader && (indexPath as NSIndexPath).section == GridStreamSection.header.rawValue {
             if headerView == nil {
-                headerView = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: headerName, forIndexPath: indexPath) as? ConfigurableGridStreamHeaderView
+                headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerName, for: indexPath) as? ConfigurableGridStreamHeaderView
             }
             header?.decorateHeader(dependencyManager,
                                    withWidth: collectionView.frame.width,
@@ -168,7 +169,7 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
         return UICollectionReusableView()
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = cellFactory.collectionView( collectionView, cellForContent: items[indexPath.row], atIndexPath: indexPath)
         cell.layer.cornerRadius = cellCornerRadius
         cell.backgroundColor = cellBackgroundColor
@@ -179,6 +180,6 @@ class GridStreamDataSource<HeaderType: ConfigurableGridStreamHeader>: NSObject, 
 
 private extension VDependencyManager {
     var gridDependency: VDependencyManager {
-        return childDependencyForKey("gridStream") ?? self
+        return childDependency(forKey: "gridStream") ?? self
     }
 }

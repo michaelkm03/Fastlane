@@ -19,7 +19,7 @@ class CommunityItemsFetchOperation: SyncOperation<[ListMenuCommunityItem]> {
 
     override func execute() -> OperationResult<[ListMenuCommunityItem]> {
         guard let dependencies = dependencyManager.childDependencies(for: "items") else {
-            let error = NSError(domain: "\(self.dynamicType)", code: 1, userInfo: nil)
+            let error = NSError(domain: "\(type(of: self))", code: 1, userInfo: nil)
             return .failure(error)
         }
         return .success(dependencies.flatMap { ListMenuCommunityItem($0) })

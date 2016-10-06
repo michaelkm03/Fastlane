@@ -286,7 +286,7 @@ static NSString *kConstraintIdentifier = @"VActionBarConstraints";
         id <VActionBarFlexibleWidth> flexibleWidthConformer = (id <VActionBarFlexibleWidth>)actionItem;
         return [flexibleWidthConformer canApplyFlexibleWidth];
     }
-    if ([actionItem isKindOfClass:[VActionBarFlexibleSpaceItem class]])
+    if ([actionItem isKindOfClass:[ActionBarFlexibleSpaceItem class]])
     {
         return YES;
     }

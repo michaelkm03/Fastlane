@@ -10,18 +10,18 @@ import VictoriousIOSSDK
 import XCTest
 
 class UnreadNotificationsCountRequestTests: XCTestCase {
-    private static let apiPath = APIPath(templatePath: "http://api.getvictorious.com//api/notification/unread_notification_count")
+    fileprivate static let apiPath = APIPath(templatePath: "http://api.getvictorious.com//api/notification/unread_notification_count")
 
     func testResponseParsing() {
-        guard let mockResponseDataURL = NSBundle(forClass: self.dynamicType).URLForResource("UnreadNotificationsCountResponse", withExtension: "json"),
-            let mockData = NSData(contentsOfURL: mockResponseDataURL) else {
+        guard let mockResponseDataURL = Bundle(for: type(of: self)).url(forResource: "UnreadNotificationsCountResponse", withExtension: "json"),
+            let mockData = try? Data(contentsOf: mockResponseDataURL) else {
                 XCTFail("Error reading mock json data")
                 return
         }
         
         do {
             let notificationCount = UnreadNotificationsCountRequest(apiPath: UnreadNotificationsCountRequestTests.apiPath)!
-            let count = try notificationCount.parseResponse(NSURLResponse(), toRequest: notificationCount.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
+            let count = try notificationCount.parseResponse(URLResponse(), toRequest: notificationCount.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             XCTAssertEqual(count, 12)
            
         } catch {
@@ -31,6 +31,6 @@ class UnreadNotificationsCountRequestTests: XCTestCase {
     
     func testRequest() {
         let notificationCount = UnreadNotificationsCountRequest(apiPath: UnreadNotificationsCountRequestTests.apiPath)!
-        XCTAssertEqual(notificationCount.urlRequest.URL?.absoluteString, "http://api.getvictorious.com//api/notification/unread_notification_count")
+        XCTAssertEqual(notificationCount.urlRequest.url?.absoluteString, "http://api.getvictorious.com//api/notification/unread_notification_count")
     }
 }

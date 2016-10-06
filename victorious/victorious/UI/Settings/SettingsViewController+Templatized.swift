@@ -27,7 +27,7 @@ private struct Constants {
 /// This extension handles all template based decoration for the settings page, as well as
 /// other template based functionality.
 extension VSettingsViewController: VBackgroundContainer, FixedWebContentPresenter {
-    override public func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    open override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard section < Constants.sectionHeaderTitles.count else {
             return nil
         }
@@ -39,85 +39,85 @@ extension VSettingsViewController: VBackgroundContainer, FixedWebContentPresente
         
         let containerView = UIView()
         containerView.addSubview(headerLabel)
-        containerView.v_addFitToParentConstraintsToSubview(headerLabel, leading: Constants.headerLabelLeftPadding, trailing: 0.0, top: 0.0, bottom: 0.0)
+        containerView.v_addFitToParentConstraints(toSubview: headerLabel, leading: Constants.headerLabelLeftPadding, trailing: 0.0, top: 0.0, bottom: 0.0)
         return containerView
     }
     
-    override public func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    open override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 25
     }
     
-    override public func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        guard let label = cell.textLabel, cell = cell as? SettingsTableViewCell else {
+    open override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let label = cell.textLabel, let cell = cell as? SettingsTableViewCell else {
             return
         }
         
         label.font = dependencyManager.cellFont
         label.textColor = dependencyManager.cellTextColor
-        label.backgroundColor = UIColor.clearColor()
+        label.backgroundColor = UIColor.clear
 
-        cell.separatorColor = isLastCell(indexPath) || isLastSection(indexPath.section) ? UIColor.clearColor() : dependencyManager.separatorColor ?? UIColor.clearColor()
+        cell.separatorColor = isLastCell(indexPath) || isLastSection(indexPath.section) ? UIColor.clear : dependencyManager.separatorColor ?? UIColor.clear
 
         if cell.contentView.subviews.contains(versionString) {
-            cell.backgroundColor = UIColor.clearColor()
+            cell.backgroundColor = UIColor.clear
         }
         else {
             cell.backgroundView = UIView() // Must set this here so that we can add a background
-            dependencyManager.addBackgroundToBackgroundHost(cell, forKey: Constants.itemBackgroundKey)
+            dependencyManager.addBackground(toBackgroundHost: cell, forKey: Constants.itemBackgroundKey)
         }
     }
     
-    override public func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
         tableView.accessibilityIdentifier = VAutomationIdentifierSettingsTableView
         tableView.backgroundView = UIView()
-        dependencyManager.addBackgroundToBackgroundHost(self)
-        tableView.separatorStyle = .None
+        dependencyManager.addBackground(toBackgroundHost: self)
+        tableView.separatorStyle = .none
     }
     
     public func backgroundContainerView() -> UIView {
         return tableView.backgroundView ?? self.view
     }
     
-    public func handleAboutSectionSelection(row: Int) {
+    public func handleAboutSectionSelection(_ row: Int) {
         switch row {
-            case 0: showFixedWebContent(.HelpCenter, withDependencyManager: dependencyManager)
+            case 0: showFixedWebContent(.helpCenter, withDependencyManager: dependencyManager)
             case 1: sendHelp()
-            case 2: showFixedWebContent(.TermsOfService, withDependencyManager: dependencyManager)
-            case 3: showFixedWebContent(.PrivacyPolicy, withDependencyManager: dependencyManager)
+            case 2: showFixedWebContent(.termsOfService, withDependencyManager: dependencyManager)
+            case 3: showFixedWebContent(.privacyPolicy, withDependencyManager: dependencyManager)
             default: break
         }
     }
 }
 
 private extension VSettingsViewController {
-    private func isLastCell(indexPath: NSIndexPath) -> Bool {
-        return indexPath.row == tableView.numberOfRowsInSection(indexPath.section) - 1
+    func isLastCell(_ indexPath: IndexPath) -> Bool {
+        return indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1
     }
 
-    private func isLastSection(section: Int) -> Bool {
+    func isLastSection(_ section: Int) -> Bool {
         return section == tableView.numberOfSections - 1
     }
 }
 
 private extension VDependencyManager {
     var headerLabelFont: UIFont? {
-        return fontForKey(Constants.sectionTitleFontKey)
+        return font(forKey: Constants.sectionTitleFontKey)
     }
     
     var headerLabelColor: UIColor? {
-        return colorForKey(Constants.sectionTitleFontColor)
+        return color(forKey: Constants.sectionTitleFontColor)
     }
     
     var cellFont: UIFont? {
-        return fontForKey(Constants.cellFontKey)
+        return font(forKey: Constants.cellFontKey)
     }
     
     var cellTextColor: UIColor? {
-        return colorForKey(Constants.cellColorKey)
+        return color(forKey: Constants.cellColorKey)
     }
     
     var separatorColor: UIColor? {
-        return colorForKey(Constants.separatorColorKey)
+        return color(forKey: Constants.separatorColorKey)
     }
 }

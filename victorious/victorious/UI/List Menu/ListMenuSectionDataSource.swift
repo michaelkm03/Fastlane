@@ -6,10 +6,12 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
+import VictoriousIOSSDK
+
 /// Possible states for List Menu Data Source based on the results fetched
 enum ListMenuDataSourceState {
     case loading
-    case failed(error: ErrorType?)
+    case failed(error: Error?)
     case items
     case noContent
 }
@@ -20,9 +22,9 @@ enum ListMenuDataSourceState {
 class ListMenuSectionDataSource<Item, Operation: Queueable> {
 
     // MARK: - Initialization
-    typealias CellConfigurationCallback = (cell: ListMenuSectionCell, item: Item) -> Void
+    typealias CellConfigurationCallback = (ListMenuSectionCell, Item) -> Void
     typealias CreateOperationCallback = () -> Operation?
-    typealias ProcessOutputCallback = (output: Operation.Output) -> [Item]
+    typealias ProcessOutputCallback = (Operation.Output) -> [Item]
     /// Used for configing the cell after it's creation
     let cellConfiguration: CellConfigurationCallback
     /// Defines how an operation should be created
@@ -42,7 +44,7 @@ class ListMenuSectionDataSource<Item, Operation: Queueable> {
     /// - parameter createOperation: Specify how your operation need to be created
     /// - parameter processOutput: This block defines how operation output is parsed to a list of items
     /// - parameter section: section which this data source represents
-    init(dependencyManager: VDependencyManager, cellConfiguration: CellConfigurationCallback, createOperation: CreateOperationCallback, processOutput: ProcessOutputCallback, section: ListMenuSection) {
+    init(dependencyManager: VDependencyManager, cellConfiguration: @escaping CellConfigurationCallback, createOperation: @escaping CreateOperationCallback, processOutput: @escaping ProcessOutputCallback, section: ListMenuSection) {
         self.dependencyManager = dependencyManager
         self.cellConfiguration = cellConfiguration
         self.createOperation = createOperation
@@ -57,7 +59,7 @@ class ListMenuSectionDataSource<Item, Operation: Queueable> {
 
     /// APIPath for a stream behind the item
     var streamAPIPath: APIPath {
-        return dependencyManager.apiPathForKey("streamURL") ?? APIPath(templatePath: "")
+        return dependencyManager.apiPath(forKey: "streamURL") ?? APIPath(templatePath: "")
     }
 
     /// Tracking APIPaths
@@ -68,9 +70,9 @@ class ListMenuSectionDataSource<Item, Operation: Queueable> {
     // MARK: - Cell Lifecycle
 
     /// Dequeue a cell that represents an item with data
-    func dequeueItemCell(from collectionView: UICollectionView, at indexPath: NSIndexPath) -> ListMenuSectionCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(ListMenuSectionCell.defaultReuseIdentifier, forIndexPath: indexPath) as! ListMenuSectionCell
-        cellConfiguration(cell: cell, item: visibleItems[indexPath.row])
+    func dequeueItemCell(from collectionView: UICollectionView, at indexPath: IndexPath) -> ListMenuSectionCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ListMenuSectionCell.defaultReuseIdentifier, for: indexPath) as! ListMenuSectionCell
+        cellConfiguration(cell, visibleItems[indexPath.row])
         cell.dependencyManager = dependencyManager
         return cell
     }
@@ -84,7 +86,7 @@ class ListMenuSectionDataSource<Item, Operation: Queueable> {
     }
 
     /// Kick off an operation to fetch data and fill `visibleItems`
-    func fetchData(success success: ((with: [Item]) -> Void)? = nil, failure: ((with: ErrorType) -> Void)? = nil, cancelled: (Void -> Void)? = nil) {
+    func fetchData(success: (([Item]) -> Void)? = nil, failure: ((Error) -> Void)? = nil, cancelled: ((Void) -> Void)? = nil) {
         let operation = createOperation()
         operation?.queue() { [weak self] result in
             guard let strongSelf = self else {
@@ -95,17 +97,17 @@ class ListMenuSectionDataSource<Item, Operation: Queueable> {
                 return
             }
 
-            let items = strongSelf.processOutput(output: output)
+            let items = strongSelf.processOutput(output)
 
             switch result {
                 case .success:
                     strongSelf.visibleItems = items
                     strongSelf.delegate?.didUpdateVisibleItems(forSection: strongSelf.section)
-                    success?(with: items)
+                    success?(items)
                 case .failure(let error):
                     strongSelf.state = .failed(error: error)
                     strongSelf.delegate?.didUpdateVisibleItems(forSection: strongSelf.section)
-                    failure?(with: error)
+                    failure?(error)
                 case .cancelled:
                     strongSelf.delegate?.didUpdateVisibleItems(forSection: strongSelf.section)
                     cancelled?()

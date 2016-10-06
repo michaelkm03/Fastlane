@@ -15,9 +15,9 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
     
     weak var delegate: ComposerTextViewManagerDelegate?
     
-    private var attachmentStringLength: Int
+    fileprivate var attachmentStringLength: Int
     
-    private var updatingSelection = false
+    fileprivate var updatingSelection = false
     
     init?(textView: UITextView, delegate: ComposerTextViewManagerDelegate? = nil, maximumTextLength: Int = 0, dismissOnReturn: Bool = true) {
         
@@ -36,7 +36,7 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
     
     // MARK: - Updating logic
     
-    func replaceTextInRange(range: NSRange, withText text: String, inTextView textView: UITextView) -> Bool {
+    func replaceTextInRange(_ range: NSRange, withText text: String, inTextView textView: UITextView) -> Bool {
         
         let mutableString = NSMutableAttributedString(attributedString: textView.attributedText)
         
@@ -45,13 +45,13 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
             return false
         }
         
-        mutableString.replaceCharactersInRange(range, withString: text)
+        mutableString.replaceCharacters(in: range, with: text)
         textView.attributedText = mutableString
         
         return true
     }
     
-    func insertTextAtSelectionIfPossible(textView: UITextView, text: String) -> Bool {
+    func insertTextAtSelectionIfPossible(_ textView: UITextView, text: String) -> Bool {
         guard let selectedTextRange = textView.selectedTextRange else {
             return false
         }
@@ -60,7 +60,7 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         let replacementRange = NSRange(location: selectedRange.location, length: text.characters.count - selectedRange.length)
         let canAppendText = canUpdateTextView(textView, textInRange: replacementRange, replacementText: text)
         if canAppendText {
-            textView.replaceRange(selectedTextRange, withText: text)
+            textView.replace(selectedTextRange, withText: text)
             updateDelegateOfTextViewStatus(textView)
         }
         else {
@@ -69,12 +69,12 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         return canAppendText
     }
     
-    func appendTextIfPossible(textView: UITextView, text: String) -> Bool {
+    func appendTextIfPossible(_ textView: UITextView, text: String) -> Bool {
         let replacementRange = NSRange(location: textView.text.characters.count, length: text.characters.count)
         let canAppendText = canUpdateTextView(textView, textInRange: replacementRange, replacementText: text)
         if canAppendText {
             let newString = NSMutableAttributedString(attributedString: textView.attributedText)
-            newString.appendAttributedString(NSAttributedString(string: text, attributes: getTextViewInputAttributes()))
+            newString.append(NSAttributedString(string: text, attributes: getTextViewInputAttributes()))
             textView.attributedText = newString
             updateDelegateOfTextViewStatus(textView)
         }
@@ -84,7 +84,7 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         return canAppendText
     }
     
-    func canUpdateTextView(textView: UITextView, textInRange range: NSRange, replacementText text: String) -> Bool {
+    func canUpdateTextView(_ textView: UITextView, textInRange range: NSRange, replacementText text: String) -> Bool {
         
         var additionalTextLength = text.characters.count
         if additionalTextLength <= 0 {
@@ -92,7 +92,7 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         }
                 
         if shouldDismissForText(text) {
-            if let delegate = delegate where delegate.textViewCanDismiss {
+            if let delegate = delegate , delegate.textViewCanDismiss {
                 textView.resignFirstResponder()
             }
             return true
@@ -110,24 +110,24 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         
     }
     
-    func updateDelegateOfTextViewStatus(textView: UITextView) {
+    func updateDelegateOfTextViewStatus(_ textView: UITextView) {
         delegate?.textViewHasText = captionFromTextView(textView, afterRemovingImage: false) != nil
         delegate?.textViewContentSize = textView.contentSize
     }
     
-    func resetTextView(textView: UITextView) {
+    func resetTextView(_ textView: UITextView) {
         textView.text = nil
         delegate?.textViewPrependedImage = nil
         updateDelegateOfTextViewStatus(textView)
     }
     
-    func shouldDismissForText(text: String) -> Bool {
+    func shouldDismissForText(_ text: String) -> Bool {
         return dismissOnReturn && text == "\n"
     }
     
     // MARK: - UITextViewDelegate
     
-    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         guard canUpdateTextView(textView, textInRange: range, replacementText: text) else {
             delegate?.textViewDidHitCharacterLimit(textView)
             return false
@@ -145,27 +145,27 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         return true
     }
     
-    func textViewDidChange(textView: UITextView) {
+    func textViewDidChange(_ textView: UITextView) {
         updateDelegateOfTextViewStatus(textView)
     }
     
-    func textViewDidBeginEditing(textView: UITextView) {
+    func textViewDidBeginEditing(_ textView: UITextView) {
         delegate?.textViewIsEditing = true
         updateCurrentHashtag(forTextView: textView)
     }
     
-    func textViewShouldEndEditing(textView: UITextView) -> Bool {
+    func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
         endEditing(textView)
         return true
     }
     
-    func endEditing(textView: UITextView) {
+    func endEditing(_ textView: UITextView) {
         delegate?.textViewIsEditing = false
         updateCurrentHashtag(forTextView: textView, isDismissing: true)
     }
     
-    func textViewDidChangeSelection(textView: UITextView) {
-        guard let delegate = delegate where !updatingSelection else {
+    func textViewDidChangeSelection(_ textView: UITextView) {
+        guard let delegate = delegate , !updatingSelection else {
             updatingSelection = false
             return
         }
@@ -180,9 +180,9 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         updateCurrentHashtag(forTextView: textView)
     }
     
-    private func updateCurrentHashtag(forTextView textView: UITextView, isDismissing: Bool = false) {
+    fileprivate func updateCurrentHashtag(forTextView textView: UITextView, isDismissing: Bool = false) {
         if !isDismissing &&
-            textView.isFirstResponder() &&
+            textView.isFirstResponder &&
             textView.selectedRange.length == 0 {
             delegate?.textViewCurrentHashtag = hashtagStringAroundLocation(textView.selectedRange.location, inTextView: textView)
         } else {
@@ -192,7 +192,7 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
     
     // MARK: - Helpers
     
-    private static func attributedTextAttributesFor(textView: UITextView) -> [String: AnyObject]? {
+    fileprivate static func attributedTextAttributesFor(_ textView: UITextView) -> [String: AnyObject]? {
         
         guard let font = textView.font,
             let color = textView.textColor else {
@@ -202,30 +202,30 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         return [NSFontAttributeName: font, NSForegroundColorAttributeName: color]
     }
     
-    private func hashtagStringAroundLocation(location: Int, inTextView textView: UITextView) -> (String, NSRange)? {
+    fileprivate func hashtagStringAroundLocation(_ location: Int, inTextView textView: UITextView) -> (String, NSRange)? {
         
         let hashtagCharacter = Character("#")
         let hashtagBoundaryCharacters = [hashtagCharacter, Character(" "), Character("\n")]
 
-        let text = textView.text
-        guard let (preceedingString, preceedingCharacter, preceedingRange) = text.substringBeforeLocation(location, afterCharacters: hashtagBoundaryCharacters) where
+        let text = textView.text!
+        guard let (preceedingString, preceedingCharacter, preceedingRange) = text.substringBeforeLocation(location: location, afterCharacters: hashtagBoundaryCharacters) ,
             preceedingCharacter == hashtagCharacter else {
             return nil
         }
         
-        var foundRange = text.NSRangeFromRange(preceedingRange)
-        guard let (proceedingString, _, proceedingRange) = text.substringAfterLocation(location, beforeCharacters: hashtagBoundaryCharacters) else {
+        var foundRange = text.NSRangeFromRange(range: preceedingRange)
+        guard let (proceedingString, _, proceedingRange) = text.substringAfterLocation(location: location, beforeCharacters: hashtagBoundaryCharacters) else {
             return (preceedingString, foundRange)
         }
         
-        let foundEndRange = text.NSRangeFromRange(proceedingRange)
+        let foundEndRange = text.NSRangeFromRange(range: proceedingRange)
         foundRange = NSMakeRange(foundRange.location, foundRange.length + foundEndRange.length)
         return (preceedingString + proceedingString, foundRange)
     }
     
     // MARK: - Image management
     
-    private static func attachmentStringForImage(image: UIImage, fromTextView textView: UITextView) -> NSAttributedString? {
+    fileprivate static func attachmentStringForImage(_ image: UIImage, fromTextView textView: UITextView) -> NSAttributedString? {
         
         guard let attributes = attributedTextAttributesFor(textView) else {
             return nil
@@ -233,16 +233,16 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         
         let attachment = NSTextAttachment()
         attachment.image = image
-        let screenScale = UIScreen.mainScreen().scale
-        attachment.bounds.size = CGSizeMake(image.size.width / screenScale, image.size.height / screenScale)
+        let screenScale = UIScreen.main.scale
+        attachment.bounds.size = CGSize(width: image.size.width / screenScale, height: image.size.height / screenScale)
         let imageString = NSAttributedString(attachment: attachment).mutableCopy() as! NSMutableAttributedString
         imageString.addAttributes(attributes, range: NSMakeRange(0, imageString.length))
         let newLineString = NSAttributedString(string: "\n", attributes: attributes)
-        imageString.appendAttributedString(newLineString)
+        imageString.append(newLineString)
         return imageString
     }
     
-    func prependImage(image: UIImage, toTextView textView: UITextView) -> Bool {
+    func prependImage(_ image: UIImage, toTextView textView: UITextView) -> Bool {
         
         guard let prependedString = ComposerTextViewManager.attachmentStringForImage(image, fromTextView: textView) else {
             return false
@@ -251,14 +251,14 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         removePrependedImageFrom(textView)
         
         let mutableText = textView.attributedText.mutableCopy() as! NSMutableAttributedString
-        mutableText.insertAttributedString(prependedString, atIndex: 0)
+        mutableText.insert(prependedString, at: 0)
         textView.attributedText = mutableText
         delegate?.textViewPrependedImage = image
         updateDelegateOfTextViewStatus(textView)
         return true
     }
     
-    private func removePrependedImageFrom(textView: UITextView) {
+    fileprivate func removePrependedImageFrom(_ textView: UITextView) {
         if delegate?.textViewHasPrependedImage == true {
             textView.attributedText = removePrependedImageFromAttributedText(textView.attributedText)
             delegate?.textViewPrependedImage = nil
@@ -266,19 +266,19 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         updateDelegateOfTextViewStatus(textView)
     }
     
-    private func removePrependedImageFromAttributedText(attributedText: NSAttributedString) -> NSAttributedString? {
+    fileprivate func removePrependedImageFromAttributedText(_ attributedText: NSAttributedString) -> NSAttributedString? {
         let imageRange = NSMakeRange(0, attachmentStringLength)
         let mutableText = attributedText.mutableCopy() as! NSMutableAttributedString
-        mutableText.deleteCharactersInRange(imageRange)
+        mutableText.deleteCharacters(in: imageRange)
         let immutableCopy = mutableText.copy() as! NSAttributedString
         return immutableCopy.length > 0 ? immutableCopy : nil
     }
     
-    private func shouldRemoveImageFromTextView(textView: UITextView, tryingToDeleteRange range: NSRange) -> Bool {
+    fileprivate func shouldRemoveImageFromTextView(_ textView: UITextView, tryingToDeleteRange range: NSRange) -> Bool {
         return delegate?.textViewHasPrependedImage == true && range.location < attachmentStringLength
     }
     
-    private func getTextViewInputAttributes() -> [String: AnyObject] {
+    fileprivate func getTextViewInputAttributes() -> [String: AnyObject] {
         guard
             let delegate = delegate,
             let color = delegate.inputTextAttributes().inputTextColor,
@@ -295,7 +295,7 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
     
     // This method removes leading and trailing whitespace and, optionally, a prepended image attachment from a copy of the the provided textView's attributed text.
     // It does not change any text on the textView and, therefore, does not update any status of delegate-stored properties.
-    func captionFromTextView(textView: UITextView, afterRemovingImage: Bool = true) -> String? {
+    func captionFromTextView(_ textView: UITextView, afterRemovingImage: Bool = true) -> String? {
         var attributedText: NSAttributedString? = textView.attributedText
         if
             afterRemovingImage
@@ -306,8 +306,8 @@ class ComposerTextViewManager: NSObject, UITextViewDelegate {
         }
     
         guard
-            let text = attributedText?.string.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
-            where !text.isEmpty
+            let text = attributedText?.string.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+            , !text.isEmpty
         else {
             return nil
         }

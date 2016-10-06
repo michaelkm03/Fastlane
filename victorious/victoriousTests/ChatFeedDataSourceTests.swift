@@ -20,7 +20,7 @@ class ChatFeedDataSourceTests: XCTestCase, ForumEventReceiver {
     func testShowReplyButtons() {
         XCTAssert(dataSource.shouldShowReplyButtons)
         
-        broadcast(.filterContent(path: APIPath(templatePath: "")))
+        broadcast(.filterContent(path: APIPath(templatePath:"foo")))
         XCTAssertFalse(dataSource.shouldShowReplyButtons)
         
         broadcast(.filterContent(path: nil))

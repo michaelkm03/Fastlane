@@ -20,7 +20,7 @@ protocol TrackableButton {
 
 extension TrackableButton where Self: UIButton {
     var trackingID: String? {
-        return dependencyManager?.stringForKey("id")
+        return dependencyManager?.string(forKey: "id")
     }
     
     func templateAppearanceValue<AppearanceValueType>(appearance: TrackableButtonAppearance) -> AppearanceValueType? {
@@ -28,16 +28,16 @@ extension TrackableButton where Self: UIButton {
             return nil
         }
         switch appearance {
-            case .backgroundColor, .foregroundColor, .selectedColor, .unselectedColor:
-                return dependencyManager.colorForKey(appearance.rawValue) as? AppearanceValueType
+            case .backgroundColor, .foregroundColor, .selectedColor, .unselectedColor, .borderColor:
+                return dependencyManager.color(forKey: appearance.rawValue) as? AppearanceValueType
             case .backgroundImage, .foregroundImage, .selectedImage, .unselectedImage:
-                return dependencyManager.imageForKey(appearance.rawValue) as? AppearanceValueType
+                return dependencyManager.image(forKey: appearance.rawValue) as? AppearanceValueType
             case .text:
-                return dependencyManager.stringForKey(appearance.rawValue) as? AppearanceValueType
+                return dependencyManager.string(forKey: appearance.rawValue) as? AppearanceValueType
             case .font:
-                return dependencyManager.fontForKey(appearance.rawValue) as? AppearanceValueType
-            case .clickable:
-                return dependencyManager.numberForKey(appearance.rawValue) as? AppearanceValueType
+                return dependencyManager.font(forKey: appearance.rawValue) as? AppearanceValueType
+            case .clickable, .borderWidth:
+                return dependencyManager.number(forKey: appearance.rawValue) as? AppearanceValueType
         }
     }
 }
@@ -58,4 +58,7 @@ enum TrackableButtonAppearance: String {
     case unselectedColor = "color.unselected"
     
     case clickable = "clickable"
+    
+    case borderWidth = "width.border"
+    case borderColor = "color.border"
 }

@@ -11,15 +11,13 @@ import Foundation
 /// Simplifies the updating of publish parameters for creation
 /// flows that can handle either video or image.
 protocol MixedMediaCreationFlow {
-    
-    func updatePublishParameters(publishParameters: VPublishParameters, workspace: VWorkspaceViewController)
+    func updatePublishParameters(_ publishParameters: VPublishParameters, workspace: VWorkspaceViewController)
 }
 
 extension MixedMediaCreationFlow {
-    
-    func updatePublishParameters(publishParameters: VPublishParameters, workspace: VWorkspaceViewController) {
+    func updatePublishParameters(_ publishParameters: VPublishParameters, workspace: VWorkspaceViewController) {
+        publishParameters.isVideo = workspace.creationFlowController.mediaType() == .video
         
-        publishParameters.isVideo = workspace.creationFlowController.mediaType() == .Video
         if workspace.supportsTools {
             if let videoToolController = workspace.toolController as? VVideoToolController {
                 publishParameters.didTrim = videoToolController.didTrim

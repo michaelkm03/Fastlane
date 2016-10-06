@@ -8,24 +8,25 @@
 
 import UIKit
 import SDWebImage
+import VictoriousIOSSDK
 
-typealias ImageCompletion = (Result<UIImage> -> Void)?
+typealias ImageCompletion = ((Result<UIImage>) -> Void)?
 
 extension UIImageView {
-    private static let blurredImageCachePathExtension = "blurred"
+    fileprivate static let blurredImageCachePathExtension = "blurred"
     
     /// Downloads the image from the image asset or grabs the cached version to return in the completion block
-    func getImageAsset(imageAsset: ImageAssetModel, blurRadius: CGFloat = 0, completion: ImageCompletion) {
+    func getImageAsset(_ imageAsset: ImageAssetModel, blurRadius: CGFloat = 0, completion: ImageCompletion) {
         image = nil
         
-        let imageBlurBlock: (UIImage?, NSURL?, NSError?) -> Void = { [weak self] image, url, error in
+        let imageBlurBlock: (UIImage?, URL?, Error?) -> Void = { [weak self] image, url, error in
             guard let image = image else {
                 completion?(.failure(error))
                 return
             }
             
             if blurRadius != 0 {
-                self?.applyBlur(to: image, with: url, radius: blurRadius, completion: completion)
+                self?.applyBlur(to: image, with: url as URL?, radius: blurRadius, completion: completion)
             }
             else {
                 completion?(.success(image))
@@ -34,57 +35,54 @@ extension UIImageView {
         
         switch imageAsset.imageSource {
             case .remote(let url):
-                sd_setImageWithURL(
-                    url,
+                sd_setImage(
+                    with: url as URL!,
                     placeholderImage: image,
-                    options: .AvoidAutoSetImage
+                    options: .avoidAutoSetImage
                 ) { image, error, _, url in
                     imageBlurBlock(image, url, error)
-                }
+            }
             case .local(let image):
                 imageBlurBlock(image, nil, nil)
         }
     }
     
-    private func cachedBlurredImage(for url: NSURL, blurRadius: CGFloat) -> UIImage? {
+    fileprivate func cachedBlurredImage(for url: URL, blurRadius: CGFloat) -> UIImage? {
         let key = blurredImageKey(for: url, blurRadius: blurRadius)
-        return SDWebImageManager.sharedManager().imageCache.imageFromMemoryCacheForKey(key)
+        return SDWebImageManager.shared().imageCache.imageFromMemoryCache(forKey: key)
     }
     
-    private func addBlurredImage(image: UIImage, toCacheWithURL url: NSURL, blurRadius: CGFloat) {
+    fileprivate func addBlurredImage(_ image: UIImage, toCacheWithURL url: URL, blurRadius: CGFloat) {
         guard let key = blurredImageKey(for: url, blurRadius: blurRadius) else {
             return
         }
         
-        SDWebImageManager.sharedManager().imageCache.storeImage(
+        SDWebImageManager.shared().imageCache.store(
             image,
             forKey: key
         )
     }
     
-    private func blurredImageKey(for url: NSURL, blurRadius: CGFloat) -> String? {
+    fileprivate func blurredImageKey(for url: URL, blurRadius: CGFloat) -> String? {
         let imageExtension = "\(UIImageView.blurredImageCachePathExtension)/\(blurRadius)"
-        let key = url.URLByAppendingPathComponent(imageExtension)?.absoluteString
-        if key == nil {
-            Log.error("Failed to generate key for blurred image storage")
-        }
+        let key = url.appendingPathComponent(imageExtension).absoluteString
         return key
     }
     
-    private func blurImage(image: UIImage, withRadius radius: CGFloat, completion: ImageCompletion) {
-        dispatch_async(dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0)) {
+    fileprivate func blurImage(_ image: UIImage, withRadius radius: CGFloat, completion: ImageCompletion) {
+        DispatchQueue.global().async {
             guard let blurredImage = image.applyBlur(withRadius: radius) else {
                 completion?(.failure(nil))
                 return
             }
             
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 completion?(.success(blurredImage))
             }
         }
     }
     
-    private func applyBlur(to image: UIImage, with url: NSURL? = nil, radius: CGFloat, completion: ImageCompletion) {
+    fileprivate func applyBlur(to image: UIImage, with url: URL? = nil, radius: CGFloat, completion: ImageCompletion) {
         guard let url = url else {
             // No URL to cache to, blur the image and call completion
             blurImage(image, withRadius: radius, completion: completion)

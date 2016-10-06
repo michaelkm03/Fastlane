@@ -18,14 +18,14 @@ class ListMenuSectionCell: UICollectionViewCell {
     var avatarViewHidden = true {
         didSet {
             if avatarViewHidden == true {
-                avatarView.hidden = true
-                titleLabelToAvatarViewLeadingConstraint.active = false
-                titleLabelToViewLeadingConstraint.active = true
+                avatarView.isHidden = true
+                titleLabelToAvatarViewLeadingConstraint.isActive = false
+                titleLabelToViewLeadingConstraint.isActive = true
             }
             else {
-                avatarView.hidden = false
-                titleLabelToAvatarViewLeadingConstraint.active = true
-                titleLabelToViewLeadingConstraint.active = false
+                avatarView.isHidden = false
+                titleLabelToAvatarViewLeadingConstraint.isActive = true
+                titleLabelToViewLeadingConstraint.isActive = false
             }
         }
     }
@@ -47,9 +47,9 @@ class ListMenuSectionCell: UICollectionViewCell {
     var itemFontKey = VDependencyManagerParagraphFontKey
     var selectedBackgroundKey = VDependencyManagerAccentColorKey
 
-    override var selected: Bool {
+    override var isSelected: Bool {
         didSet {
-            updateCellBackgroundColor(to: contentView, selectedColor: dependencyManager?.selectedBackgroundColor, isSelected: selected)
+            updateCellBackgroundColor(to: contentView, selectedColor: dependencyManager?.selectedBackgroundColor, isSelected: isSelected)
         }
     }
 
@@ -72,14 +72,14 @@ class ListMenuSectionCell: UICollectionViewCell {
 
 private extension VDependencyManager {
     var itemFont: UIFont? {
-        return fontForKey(VDependencyManagerParagraphFontKey)
+        return font(forKey: VDependencyManagerParagraphFontKey)
     }
 
     var selectedBackgroundColor: UIColor? {
-        return colorForKey(VDependencyManagerAccentColorKey)
+        return color(forKey: VDependencyManagerAccentColorKey)
     }
 
     var titleColor: UIColor? {
-        return colorForKey("color.text.navItem")
+        return color(forKey: "color.text.navItem")
     }
 }

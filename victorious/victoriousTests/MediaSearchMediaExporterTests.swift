@@ -16,10 +16,10 @@ class MediaSearchMediaExporterTests: XCTestCase {
     var mediaSearchExporter: MediaSearchExporter!
     var expectation: XCTestExpectation!
     
-    private let sampleImageURL = NSBundle(forClass: MediaSearchMediaExporterTests.self).URLForResource("sampleImage", withExtension: fileExtension)!
+    fileprivate let sampleImageURL = Bundle(for: MediaSearchMediaExporterTests.self).url(forResource: "sampleImage", withExtension: fileExtension)!
     
     func testInvalidImageUrl() {
-        expectation = expectationWithDescription("MediaSearchMediaExporterTests")
+        expectation = self.expectation(description: "MediaSearchMediaExporterTests")
         let mockSearchResult = MockSearchResult(source: MockSource())
         mediaSearchExporter = MediaSearchExporter(mediaSearchResult: mockSearchResult)
         mediaSearchExporter.loadMedia() { previewImage, mediaUrl, error in
@@ -28,11 +28,11 @@ class MediaSearchMediaExporterTests: XCTestCase {
             XCTAssertNotNil(error)
             self.expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     func testDownloadCancelled() {
-        expectation = expectationWithDescription("MediaSearchMediaExporterTests")
+        expectation = self.expectation(description: "MediaSearchMediaExporterTests")
         let mockSearchResult = MockSearchResult(source:
             MockSource(sourceMediaURL: sampleImageURL, thumbnailImageURL: sampleImageURL))
         mediaSearchExporter = MediaSearchExporter(mediaSearchResult: mockSearchResult)
@@ -44,14 +44,14 @@ class MediaSearchMediaExporterTests: XCTestCase {
             self.expectation.fulfill()
         }
         mediaSearchExporter.cancelDownload()
-        waitForExpectationsWithTimeout(2, handler: nil)
+        waitForExpectations(timeout: 2, handler: nil)
     }
     
     func testDownloadFailed() {
-        expectation = expectationWithDescription("MediaSearchMediaExporterTests")
-        let string = sampleImageURL.absoluteString!
-        let urlString = string.substringToIndex(string.endIndex.predecessor())
-        let newURL = NSURL(string: urlString)!
+        expectation = self.expectation(description: "MediaSearchMediaExporterTests")
+        let string = sampleImageURL.absoluteString
+        let urlString = string.substring(to: string.characters.index(before: string.endIndex))
+        let newURL = URL(string: urlString)!
         let mockSearchResult = MockSearchResult(source:
             MockSource(sourceMediaURL: newURL, thumbnailImageURL: newURL))
         mediaSearchExporter = MediaSearchExporter(mediaSearchResult: mockSearchResult)
@@ -61,19 +61,19 @@ class MediaSearchMediaExporterTests: XCTestCase {
             XCTAssertNotNil(error)
             self.expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(2, handler: nil)
+        waitForExpectations(timeout: 2, handler: nil)
     }
     
     func testValidSourceInformation() {
-        expectation = expectationWithDescription("MediaSearchMediaExporterTests")
+        expectation = self.expectation(description: "MediaSearchMediaExporterTests")
         let mockSearchResult = MockSearchResult(source:
             MockSource(sourceMediaURL: sampleImageURL, thumbnailImageURL: sampleImageURL))
         mediaSearchExporter = MediaSearchExporter(mediaSearchResult: mockSearchResult)
         
-        let path = mediaSearchExporter.downloadUrl!.path!
-        XCTAssertFalse(NSFileManager.defaultManager().fileExistsAtPath(path))
-        NSFileManager.defaultManager().createFileAtPath(path, contents: nil, attributes: nil)
-        XCTAssert(NSFileManager.defaultManager().fileExistsAtPath(path))
+        let path = mediaSearchExporter.downloadUrl!.path
+        XCTAssertFalse(FileManager.default.fileExists(atPath: path))
+        FileManager.default.createFile(atPath: path, contents: nil, attributes: nil)
+        XCTAssert(FileManager.default.fileExists(atPath: path))
         
         mediaSearchExporter.loadMedia() { previewImage, mediaUrl, error in
             XCTAssertNotNil(previewImage)
@@ -81,11 +81,11 @@ class MediaSearchMediaExporterTests: XCTestCase {
             XCTAssertNil(error)
             
             // Check to see if the file is deleted
-            XCTAssert(NSFileManager.defaultManager().fileExistsAtPath(path))
+            XCTAssert(FileManager.default.fileExists(atPath: path))
             
             self.expectation.fulfill()
         }
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     func testDownloadURLWithValidExtension() {
@@ -93,16 +93,16 @@ class MediaSearchMediaExporterTests: XCTestCase {
             MockSource(sourceMediaURL: sampleImageURL))
         mediaSearchExporter = MediaSearchExporter(mediaSearchResult: mockSearchResult)
         
-        XCTAssert(mediaSearchExporter.downloadUrl!.absoluteString!.hasSuffix(fileExtension))
+        XCTAssert(mediaSearchExporter.downloadUrl!.absoluteString.hasSuffix(fileExtension))
     }
 }
 
 struct MockSource {
-    let sourceMediaURL: NSURL
-    let thumbnailImageURL: NSURL
+    let sourceMediaURL: URL
+    let thumbnailImageURL: URL
     let remoteID: String
     
-    init(sourceMediaURL: NSURL = NSURL(), thumbnailImageURL: NSURL = NSURL(), remoteID: String = "") {
+    init(sourceMediaURL: URL = URL(string: "foo")!, thumbnailImageURL: URL = URL(string: "foo")!, remoteID: String = "") {
         self.sourceMediaURL = sourceMediaURL
         self.thumbnailImageURL = thumbnailImageURL
         self.remoteID = remoteID
@@ -117,12 +117,12 @@ struct MockSource {
     }
     
     var exportPreviewImage: UIImage?
-    var exportMediaURL: NSURL?
-    var sourceMediaURL: NSURL? {
+    var exportMediaURL: URL?
+    var sourceMediaURL: URL? {
         return source.sourceMediaURL
     }
     
-    var thumbnailImageURL: NSURL? {
+    var thumbnailImageURL: URL? {
         return source.thumbnailImageURL
     }
     

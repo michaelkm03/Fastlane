@@ -22,7 +22,7 @@ extension UserModel {
         return vipStatus?.isVIP == true
     }
     
-    func canView(content: Content) -> Bool {
+    func canView(_ content: Content) -> Bool {
         return !content.isVIPOnly || hasValidVIPSubscription
     }
     
@@ -31,7 +31,7 @@ extension UserModel {
     var color: UIColor {
         guard userModelColors.count > 0 else {
             assertionFailure("Found no user model colors.")
-            return .whiteColor()
+            return .white
         }
         
         return userModelColors[id % userModelColors.count]

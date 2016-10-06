@@ -39,7 +39,7 @@ class TestRequestExecutor: RequestExecutorType {
     
     var cancelled: Bool = false
     
-    func executeRequest<T: RequestType>(request: T, onComplete: (T.ResultType -> ())?, onError: (NSError->())?) {
+    func executeRequest<T: RequestType>(_ request: T, onComplete: ((T.ResultType) -> ())?, onError: ((NSError)->())?) {
         executeRequestCallCount += 1
         
         if cancelled {

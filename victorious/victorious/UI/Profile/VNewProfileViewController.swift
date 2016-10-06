@@ -28,10 +28,10 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         
         var accessoryScreensKey: String {
             switch self {
-                case selfUser: return "accessories.user.own"
-                case otherUser: return "accessories.user.other"
-                case selfCreator: return "accessories.creator.own"
-                case otherCreator: return "accessories.user.creator"
+                case .selfUser: return "accessories.user.own"
+                case .otherUser: return "accessories.user.other"
+                case .selfCreator: return "accessories.creator.own"
+                case .otherCreator: return "accessories.user.creator"
             }
         }
         
@@ -64,11 +64,11 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         super.init(nibName: nil, bundle: nil)
 
         // Applies a fallback background color while we fetch the user.
-        view.backgroundColor = dependencyManager.colorForKey(VDependencyManagerBackgroundColorKey)
+        view.backgroundColor = dependencyManager.color(forKey: VDependencyManagerBackgroundColorKey)
         
         fetchUser(using: dependencyManager)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(currentUserDidUpdate), name: VCurrentUser.userDidUpdateNotificationKey, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(currentUserDidUpdate), name: NSNotification.Name(rawValue: VCurrentUser.userDidUpdateNotificationKey), object: nil)
     }
     
     required init?(coder: NSCoder) {
@@ -76,24 +76,23 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        dependencyManager.addBackgroundToBackgroundHost(self)
+        dependencyManager.addBackground(toBackgroundHost: self)
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        gridStreamController?.reloadHeader()
         trackViewWillAppearIfReady()
         BadgeCountManager.shared.fetchBadgeCount(for: .unreadNotifications)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         triggerCoachmark(withContext: profileScreenContext?.coachmarkContext)
         dependencyManager.trackViewWillDisappear(for: self)
     }
@@ -126,27 +125,27 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     private lazy var overflowButton: UIBarButtonItem = {
         return UIBarButtonItem(
             image: self.dependencyManager.overflowIcon,
-            style: .Done,
+            style: .done,
             target: self,
             action: #selector(overflow)
         )
     }()
     
     private lazy var upvoteButton: UIButton = {
-        let button = BackgroundButton(type: .System)
-        button.addTarget(self, action: #selector(toggleUpvote), forControlEvents: .TouchUpInside)
+        let button = BackgroundButton(type: .system)
+        button.addTarget(self, action: #selector(toggleUpvote), for: .touchUpInside)
         return button
     }()
     
     private func goVIPButton(for menuItem: VNavigationMenuItem) -> UIButton {
-        let button = BackgroundButton(type: .System)
-        button.addTarget(self, action: #selector(goVIPButtonWasPressed), forControlEvents: .TouchUpInside)
-        button.setTitle(menuItem.title, forState: .Normal)
+        let button = BackgroundButton(type: .system)
+        button.addTarget(self, action: #selector(goVIPButtonWasPressed), for: .touchUpInside)
+        button.setTitle(menuItem.title, for: .normal)
         button.sizeToFit()
         return button
     }
     
-    private let spinner = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+    private let spinner = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
     
     // MARK: - View updating
     
@@ -169,12 +168,12 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
             
             if !isCreator {
                 if user.isUpvoted {
-                    upvoteButton.setImage(dependencyManager.upvoteIconSelected, forState: .Normal)
+                    upvoteButton.setImage(dependencyManager.upvoteIconSelected, for: .normal)
                     upvoteButton.backgroundColor = dependencyManager.upvoteIconSelectedBackgroundColor
                     upvoteButton.tintColor = dependencyManager.upvoteIconTint
                 }
                 else {
-                    upvoteButton.setImage(dependencyManager.upvoteIconUnselected, forState: .Normal)
+                    upvoteButton.setImage(dependencyManager.upvoteIconUnselected, for: .normal)
                     upvoteButton.backgroundColor = dependencyManager.upvoteIconUnselectedBackgroundColor
                     upvoteButton.tintColor = nil
                 }
@@ -186,7 +185,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         }
         else if
             currentIsCreator,
-            let menuItems = dependencyManager.accessoryMenuItemsWithKey(ProfileScreenContext.selfCreator.accessoryScreensKey) as? [VNavigationMenuItem]
+            let menuItems = dependencyManager.accessoryMenuItems(withKey: ProfileScreenContext.selfCreator.accessoryScreensKey) as? [VNavigationMenuItem]
         {
             let goVIPMenuItems = menuItems.filter() { $0.identifier == VNewProfileViewController.goVIPButtonID }
             if
@@ -203,7 +202,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     // MARK: - Actions
     
     private dynamic func goVIPButtonWasPressed() {
-        guard let scaffold = VRootViewController.sharedRootViewController()?.scaffold else {
+        guard let scaffold = VRootViewController.shared()?.scaffold else {
             return
         }
         Router(originViewController: scaffold, dependencyManager: dependencyManager).navigate(to: .vipForum, from: DeeplinkContext(value: DeeplinkContext.userProfile))
@@ -247,7 +246,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
             switch result {
                 case .success:
                     toggleBlockedOperation.queue() { [weak self] _ in
-                        self?.navigationController?.popViewControllerAnimated(true)
+                        let _ = self?.navigationController?.popViewController(animated: true)
                 }
                 case .failure, .cancelled:
                     break
@@ -278,11 +277,11 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     }
     
     func addCustomLeftItems(to items: [AccessoryScreenBarButtonItem]) -> [UIBarButtonItem] {
-        return items.filter({ shouldDisplay($0.accessoryScreen) }) + supplementalLeftButtons
+        return items.filter({ shouldDisplay(screen: $0.accessoryScreen) }) + supplementalLeftButtons
     }
     
     func addCustomRightItems(to items: [AccessoryScreenBarButtonItem]) -> [UIBarButtonItem] {
-        return items.filter({ shouldDisplay($0.accessoryScreen) }) + supplementalRightButtons
+        return items.filter({ shouldDisplay(screen: $0.accessoryScreen) }) + supplementalRightButtons
     }
     
     private func shouldDisplay(screen: AccessoryScreen) -> Bool {
@@ -303,15 +302,20 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     // MARK: - Managing the user
     
     private dynamic func currentUserDidUpdate() {
-        setUser(VCurrentUser.user, using: dependencyManager)
+        // Only update the header if we are displaying the current user.
+        guard self.user?.id == VCurrentUser.user?.id else {
+            return
+        }
+        
+        setUser(user: VCurrentUser.user, using: dependencyManager)
     }
     
     private func fetchUser(using dependencyManager: VDependencyManager) {
-        if let userRemoteID = dependencyManager.templateValueOfType(NSNumber.self, forKey: VDependencyManager.userRemoteIdKey) as? NSNumber {
-            fetchUser(withRemoteID: userRemoteID.integerValue)
+        if let userRemoteID = dependencyManager.templateValue(ofType: NSNumber.self, forKey: VDependencyManager.userRemoteIdKey) as? NSNumber {
+            fetchUser(withRemoteID: userRemoteID.intValue)
         }
         else {
-            setUser(VCurrentUser.user, using: dependencyManager)
+            setUser(user: VCurrentUser.user, using: dependencyManager)
         }
     }
     
@@ -335,7 +339,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     
     private func setupGridStreamController(for user: UserModel?) {
         //Setup a new controller every time since the api path changes
-        let header = VNewProfileHeaderView.newWithDependencyManager(dependencyManager)
+        let header = VNewProfileHeaderView.new(withDependencyManager: dependencyManager)
         header.delegate = self
         let userID = VNewProfileViewController.getUserID(forDependencyManager: dependencyManager)
         
@@ -349,15 +353,15 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         
         addChildViewController(gridStreamController)
         view.addSubview(gridStreamController.view)
-        view.v_addFitToParentConstraintsToSubview(gridStreamController.view)
-        gridStreamController.didMoveToParentViewController(self)
+        view.v_addFitToParentConstraints(toSubview: gridStreamController.view)
+        gridStreamController.didMove(toParentViewController: self)
         
         gridStreamController.setContent(user, withError: false)
     }
     
     private static func getUserID(forDependencyManager dependencyManager: VDependencyManager) -> Int {
-        if let userRemoteID = dependencyManager.templateValueOfType(NSNumber.self, forKey: VDependencyManager.userRemoteIdKey) as? NSNumber {
-            return userRemoteID.integerValue
+        if let userRemoteID = dependencyManager.templateValue(ofType: NSNumber.self, forKey: VDependencyManager.userRemoteIdKey) as? NSNumber {
+            return userRemoteID.intValue
         }
         else {
             let user = VCurrentUser.user
@@ -385,7 +389,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         wantsToTrackViewWillAppear = false
         
         dependencyManager.trackViewWillAppear(for: self, parameters: [
-            VTrackingKeyContext: context.trackingString
+            VTrackingKeyContext: context.trackingString as AnyObject
         ])
     }
     
@@ -407,7 +411,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
         }
         
         if shouldShowSpinner {
-            spinner.frame = CGRect(center: view.bounds.center, size: CGSizeZero)
+            spinner.frame = CGRect(center: view.bounds.center, size: CGSize.zero)
             view.addSubview(spinner)
             spinner.startAnimating()
         }
@@ -423,7 +427,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
             
             switch result {
                 case .success(let user):
-                    self?.setUser(user, using: dependencyManager)
+                    self?.setUser(user: user, using: dependencyManager)
                 case .failure(let error):
                     Log.warning("Failed to fetch user information with error: \(error)")
                 case .cancelled:
@@ -435,7 +439,7 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
     // MARK: - Coachmark Displayer
     
     func highlightFrame(forIdentifier identifier: String) -> CGRect? {
-        if let barFrame = navigationController?.navigationBar.frame where identifier == "bump" {
+        if let barFrame = navigationController?.navigationBar.frame, identifier == "bump" {
             return CGRect(
                 x: barFrame.width - VNewProfileViewController.estimatedBarButtonWidth - VNewProfileViewController.estimatedNavBarRightPadding,
                 y: VNewProfileViewController.estimatedStatusBarHeight,
@@ -455,13 +459,13 @@ class VNewProfileViewController: UIViewController, ConfigurableGridStreamHeaderD
 
 private extension VDependencyManager {
     var refreshControlColor: UIColor? {
-        return colorForKey(VDependencyManagerMainTextColorKey)
+        return color(forKey: VDependencyManagerMainTextColorKey)
     }
 }
 
 private extension VDependencyManager {
     func streamAPIPath(forUserID userID: Int) -> APIPath {
-        guard var apiPath = apiPathForKey("streamURL") else {
+        guard var apiPath = apiPath(forKey: "streamURL") else {
             return APIPath(templatePath: "")
         }
         
@@ -475,7 +479,7 @@ private extension VDependencyManager {
 
 private extension VDependencyManager {
     var userUpvoteAPIPath: APIPath {
-        guard let apiPath = networkResources?.apiPathForKey("userUpvoteURL") else {
+        guard let apiPath = networkResources?.apiPath(forKey: "userUpvoteURL") else {
             assertionFailure("Failed to retrieve main feed API path from dependency manager.")
             return APIPath(templatePath: "")
         }
@@ -483,7 +487,7 @@ private extension VDependencyManager {
     }
     
     var userUnupvoteAPIPath: APIPath {
-        guard let apiPath = networkResources?.apiPathForKey("userUnupvoteURL") else {
+        guard let apiPath = networkResources?.apiPath(forKey: "userUnupvoteURL") else {
             assertionFailure("Failed to retrieve main feed API path from dependency manager.")
             return APIPath(templatePath: "")
         }
@@ -491,7 +495,7 @@ private extension VDependencyManager {
     }
     
     var userBlockAPIPath: APIPath {
-        guard let apiPath = networkResources?.apiPathForKey("userBlockURL") else {
+        guard let apiPath = networkResources?.apiPath(forKey: "userBlockURL") else {
             assertionFailure("Failed to retrieve main feed API path from dependency manager.")
             return APIPath(templatePath: "")
         }
@@ -499,7 +503,7 @@ private extension VDependencyManager {
     }
     
     var userUnblockAPIPath: APIPath {
-        guard let apiPath = networkResources?.apiPathForKey("userUnblockURL") else {
+        guard let apiPath = networkResources?.apiPath(forKey: "userUnblockURL") else {
             assertionFailure("Failed to retrieve main feed API path from dependency manager.")
             return APIPath(templatePath: "")
         }
@@ -507,30 +511,30 @@ private extension VDependencyManager {
     }
     
     var upvoteIconTint: UIColor? {
-        return colorForKey("color.text.actionButton")
+        return color(forKey: "color.text.actionButton")
     }
     
     var upvoteIconSelectedBackgroundColor: UIColor? {
-        return colorForKey("color.background.upvote.selected")
+        return color(forKey: "color.background.upvote.selected")
     }
     
     var upvoteIconUnselectedBackgroundColor: UIColor? {
-        return colorForKey("color.background.upvote.unselected")
+        return color(forKey: "color.background.upvote.unselected")
     }
     
     var upvoteIconSelected: UIImage? {
-        return imageForKey("upvote_icon_selected")?.imageWithRenderingMode(.AlwaysTemplate)
+        return image(forKey: "upvote_icon_selected")?.withRenderingMode(.alwaysTemplate)
     }
     
     var upvoteIconUnselected: UIImage? {
-        return imageForKey("upvote_icon_unselected")?.imageWithRenderingMode(.AlwaysTemplate)
+        return image(forKey: "upvote_icon_unselected")?.withRenderingMode(.alwaysTemplate)
     }
     
     var overflowIcon: UIImage? {
-        return imageForKey("more_icon")
+        return image(forKey: "more_icon")
     }
     
     var shareIcon: UIImage? {
-        return imageForKey("share_icon")
+        return image(forKey: "share_icon")
     }
 }

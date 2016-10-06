@@ -9,13 +9,13 @@
 import Foundation
 
 public struct ChatMessageCreateRequest: RequestType {
-    public var urlRequest: NSURLRequest {
-        let request = NSMutableURLRequest(URL: url)
+    public var urlRequest: URLRequest {
+        var request = URLRequest(url: url)
         request.vsdk_addURLEncodedFormPost(["content": text])
         return request
     }
     
-    private let url: NSURL
+    private let url: URL
     private let text: String
     
     public init?(apiPath: APIPath, text: String) {
@@ -25,5 +25,9 @@ public struct ChatMessageCreateRequest: RequestType {
         
         self.url = url
         self.text = text
+    }
+    
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws {
+        // Protocol conformance
     }
 }

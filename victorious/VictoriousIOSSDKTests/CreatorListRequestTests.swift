@@ -11,29 +11,29 @@ import XCTest
 
 class CreatorListRequestTests: XCTestCase {
     
-    private let apiPathFromTemplate = APIPath(templatePath: "https://vapi-dev.getvictorious.com/v1/user/owners/")
+    fileprivate let apiPathFromTemplate = APIPath(templatePath: "https://vapi-dev.getvictorious.com/v1/user/owners/")
     
     func testInitialization() {
         let request = CreatorListRequest(apiPath: apiPathFromTemplate)
         XCTAssertNotNil(request)
         
         let expectedURLString = "https://vapi-dev.getvictorious.com/v1/user/owners/"
-        let expectedURL = NSURL(string: expectedURLString)!
+        let expectedURL = URL(string: expectedURLString)!
         
-        XCTAssertEqual(expectedURL, request?.urlRequest.URL)
+        XCTAssertEqual(expectedURL, request?.urlRequest.url)
         XCTAssertEqual(expectedURL.baseURL, request?.baseURL)
     }
     
     func testResponseParsing() {
-        guard let mockResponseDataURL = NSBundle(forClass: self.dynamicType).URLForResource("CreatorListResponse", withExtension: "json"),
-            let mockData = NSData(contentsOfURL: mockResponseDataURL) else {
+        guard let mockResponseDataURL = Bundle(for: type(of: self)).url(forResource: "CreatorListResponse", withExtension: "json"),
+            let mockData = try? Data(contentsOf: mockResponseDataURL) else {
                 XCTFail("Error reading mock json data")
                 return
         }
         
         do {
             let request = CreatorListRequest(apiPath: apiPathFromTemplate)!
-            let results = try request.parseResponse(NSURLResponse(), toRequest: request.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
+            let results = try request.parseResponse(URLResponse(), toRequest: request.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
             
             XCTAssertEqual(results.count, 3)
             

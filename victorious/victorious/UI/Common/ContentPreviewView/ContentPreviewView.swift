@@ -7,48 +7,58 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 class ContentPreviewView: UIView {
-    private struct Constants {
+    fileprivate struct Constants {
         // Change to actual assets
         static let playButtonPlayImageName = "directory_play_btn"
         static let playButtonSize = CGSize(width: 30, height: 30)
         
-        static let loadingColor = UIColor.whiteColor().colorWithAlphaComponent(0.2)
+        static let loadingColor = UIColor.white.withAlphaComponent(0.2)
         static let imageViewBlurEffectRadius: CGFloat = 12.0
         
         static let vipMargins: CGFloat = 6
         static let vipSize = CGSize(width: 30, height: 30)
         
         static let imageReloadThreshold = CGFloat(0.75)
+        
+        static let gradientStartColor = UIColor(red: 76/255, green: 76/255, blue: 76/255, alpha: 0.5)
+        static let gradientEndColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1.0)
     }
 
-    private let previewImageView = UIImageView()
-    private var vipButton: UIButton?
+    fileprivate let previewImageView = UIImageView()
+    fileprivate let gradientView = VLinearGradientView()
+    fileprivate var vipButton: UIButton?
     
-    private let playButton: UIView
+    fileprivate let playButton: UIView
     
-    private let loadingSpinnerEnabled: Bool
-    private lazy var spinner: UIActivityIndicatorView? = {
-        return self.loadingSpinnerEnabled ? UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge) : nil
+    fileprivate let loadingSpinnerEnabled: Bool
+    fileprivate lazy var spinner: UIActivityIndicatorView? = {
+        return self.loadingSpinnerEnabled ? UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge) : nil
     }()
     
-    private var lastSize = CGSizeZero
+    fileprivate var lastSize = CGSize.zero
     
     var dependencyManager: VDependencyManager? {
         didSet {
             if
                 let dependencyManager = dependencyManager
-                where dependencyManager != oldValue
+                , dependencyManager != oldValue
             {
                 setupOrCreateVIPButton()
             }
         }
     }
     
-    private func setupOrCreateVIPButton() {
+    fileprivate func setupOrCreateVIPButton() {
         vipButton?.removeFromSuperview()
         vipButton = self.dependencyManager?.userIsVIPButton
+        
+        if let vipButton = vipButton as? TextOnColorButton {
+            vipButton.roundingType = .pill
+            vipButton.needsPadding = true
+        }
         
         if let vipButton = vipButton {
             addSubview(vipButton)
@@ -62,26 +72,36 @@ class ContentPreviewView: UIView {
         
         // Play Button
         playButton = UIImageView(image: UIImage(named: Constants.playButtonPlayImageName))
-        playButton.contentMode = UIViewContentMode.ScaleAspectFill
+        playButton.contentMode = UIViewContentMode.scaleAspectFill
         playButton.alpha = 0
         
-        super.init(frame: CGRectZero)
+        super.init(frame: CGRect.zero)
+        
+        let colors = [
+            Constants.gradientStartColor,
+            Constants.gradientEndColor
+        ]
+        gradientView.setColors(colors)
+        gradientView.startPoint = CGPoint(x: 0.5, y: 0.0)
+        gradientView.endPoint = CGPoint(x: 0.5, y: 1.0)
         
         backgroundColor = Constants.loadingColor
-        previewImageView.backgroundColor = .clearColor()
+        previewImageView.backgroundColor = .clear
         
         /// Preview Image View
-        previewImageView.contentMode = .ScaleAspectFill
+        previewImageView.contentMode = .scaleAspectFill
         addSubview(previewImageView)
         
         addSubview(playButton)
         
+        addSubview(gradientView)
+        
         if let spinner = spinner {
             addSubview(spinner)
-            sendSubviewToBack(spinner)
+            sendSubview(toBack: spinner)
         }
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userVIPStatusChanged), name: VCurrentUser.userDidUpdateNotificationKey, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(userVIPStatusChanged), name: NSNotification.Name(rawValue: VCurrentUser.userDidUpdateNotificationKey), object: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -92,6 +112,7 @@ class ContentPreviewView: UIView {
         super.layoutSubviews()
         
         previewImageView.frame = self.bounds
+        gradientView.frame = self.bounds
         
         playButton.frame = CGRect(
             origin: CGPoint(x: bounds.center.x - Constants.playButtonSize.width/2, y: bounds.center.y - Constants.playButtonSize.height/2),
@@ -100,12 +121,15 @@ class ContentPreviewView: UIView {
         
         if let vipButton = vipButton {
             vipButton.frame = CGRect(
-                origin: CGPoint(x: Constants.vipMargins, y: bounds.size.height - Constants.vipSize.height - Constants.vipMargins),
-                size: vipButton.intrinsicContentSize()
+                origin: CGPoint(
+                    x: bounds.center.x - vipButton.intrinsicContentSize.width/2,
+                    y: bounds.size.height - Constants.vipSize.height - Constants.vipMargins
+                ),
+                size: vipButton.intrinsicContentSize
             )
         }
         
-        if let content = content where lastSize.area / bounds.size.area < Constants.imageReloadThreshold {
+        if let content = content , lastSize.area / bounds.size.area < Constants.imageReloadThreshold {
             setupImage(forContent: content)
         }
         
@@ -124,23 +148,23 @@ class ContentPreviewView: UIView {
         }
     }
     
-    private func setupForContent(content: Content) {
+    fileprivate func setupForContent(_ content: Content) {
         spinner?.startAnimating()
-        vipButton?.hidden = !content.isVIPOnly
+        let userCanViewContent = VCurrentUser.user?.canView(content) == true
+        gradientView.isHidden = userCanViewContent
+        vipButton?.isHidden = userCanViewContent
         
         setupImage(forContent: content)
         
         switch content.type {
-            case .video: playButton.hidden = false
-            case .text, .link, .gif, .image, .sticker: playButton.hidden = true
+            case .video: playButton.isHidden = false
+            case .text, .link, .gif, .image, .sticker: playButton.isHidden = true
         }
     }
     
-    private func setupImage(forContent content: Content) {
-        let userCanViewContent = VCurrentUser.user?.canView(content) == true
+    fileprivate func setupImage(forContent content: Content) {
         if let imageAsset = content.previewImage(ofMinimumWidth: bounds.size.width) {
-            let blurRadius = userCanViewContent ? 0 : Constants.imageViewBlurEffectRadius
-            previewImageView.getImageAsset(imageAsset, blurRadius: blurRadius) { [weak self] result in
+            previewImageView.getImageAsset(imageAsset) { [weak self] result in
                 switch result {
                     case .success(let image):
                         self?.finishedLoadingPreviewImage(image, for: content)
@@ -156,7 +180,7 @@ class ContentPreviewView: UIView {
         lastSize = bounds.size
     }
     
-    private func finishedLoadingPreviewImage(image: UIImage?, for content: Content) {
+    fileprivate func finishedLoadingPreviewImage(_ image: UIImage?, for content: Content) {
         let contentID = self.content?.id
         guard content.id == contentID || contentID == nil else {
             return
@@ -170,7 +194,7 @@ class ContentPreviewView: UIView {
     
     // MARK: - Notification actions
     
-    private dynamic func userVIPStatusChanged() {
+    fileprivate dynamic func userVIPStatusChanged() {
         guard let currentContent = content else {
             return
         }
@@ -180,6 +204,6 @@ class ContentPreviewView: UIView {
 
 private extension VDependencyManager {
     var userIsVIPButton: UIButton? {
-        return buttonForKey("button.vip")
+        return button(forKey: "button.vip")
     }
 }

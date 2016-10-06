@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension NSData {
+extension Data {
 
     ///
     /// This function will do it's best with reasonable amounts of resources to guess the content type of the possible image.
@@ -24,7 +24,7 @@ extension NSData {
         // Adapted solution from: http://stackoverflow.com/a/5042365/154915
 
         var byte: UInt8 = 0
-        getBytes(&byte, length: sizeof(UInt8))
+        copyBytes(to: &byte, count: MemoryLayout<UInt8>.size)
 
         var contentType: String?
         var fileExtension: String?
@@ -45,7 +45,7 @@ extension NSData {
             default: ()
         }
 
-        guard let type = contentType, fileExt = fileExtension else {
+        guard let type = contentType, let fileExt = fileExtension else {
             return nil
         }
 

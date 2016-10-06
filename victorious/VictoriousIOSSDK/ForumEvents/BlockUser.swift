@@ -30,7 +30,7 @@ public struct BlockUser: DictionaryConvertible {
     
     public func toDictionary() -> [String: AnyObject] {
         var muteAsDictionary = [String: AnyObject]()
-        muteAsDictionary["user_id"] = userID
+        muteAsDictionary["user_id"] = userID as AnyObject?
         return muteAsDictionary
     }
 }

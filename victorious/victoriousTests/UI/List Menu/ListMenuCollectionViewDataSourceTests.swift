@@ -12,7 +12,7 @@ import XCTest
 class ListMenuCollectionViewDataSourceTests: XCTestCase {
     func testAvailableSections() {
         let dependencyManager = VDependencyManager(dictionary: [:])
-        let listMenuViewController = ListMenuViewController.newWithDependencyManager(dependencyManager)
+        let listMenuViewController = ListMenuViewController.new(withDependencyManager:dependencyManager)
         listMenuViewController.beginAppearanceTransition(true, animated: false)
         let dataSource = ListMenuCollectionViewDataSource(dependencyManager: dependencyManager, listMenuViewController: listMenuViewController)
         XCTAssert(dataSource.availableSections.isEmpty)

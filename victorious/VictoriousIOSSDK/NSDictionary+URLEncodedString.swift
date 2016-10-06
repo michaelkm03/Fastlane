@@ -12,53 +12,53 @@ private let keySeparator = "&"
 private let valueSeparator = "="
 private let arrayValueSeperator = "[]"
 
-extension NSDictionary {
+extension Dictionary {
     public func vsdk_urlEncodedString() -> String {
-        let encodedString = NSMutableString()
+        var encodedString = String()
         for (key, value) in self {
-            if let key = String(key).stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.vsdk_queryPartAllowedCharacterSet) {
+            if let key = String(describing: key).addingPercentEncoding(withAllowedCharacters: .vsdk_queryPartAllowedCharacterSet) {
                 
                 // Checks for an array value and encodes it appropriately
                 if let valueArray = value as? NSArray {
                     for value in valueArray {
-                        if let value = String(value).stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.vsdk_queryPartAllowedCharacterSet) {
-                            encodedString.appendURLParameter(key, value: value, useArraySeperator: true)
+                        if let value = String(describing: value).addingPercentEncoding(withAllowedCharacters: .vsdk_queryPartAllowedCharacterSet) {
+                            encodedString.appendURLParameter(key: key, value: value, useArraySeperator: true)
                         }
                     }
                 }
-                else if let value = String(value).stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.vsdk_queryPartAllowedCharacterSet) {
-                    encodedString.appendURLParameter(key, value: value)
+                else if let value = String(describing: value).addingPercentEncoding(withAllowedCharacters: .vsdk_queryPartAllowedCharacterSet) {
+                    encodedString.appendURLParameter(key: key, value: value)
                 }
             }
         }
-        return encodedString as String
+        return encodedString
     }
 }
 
-private extension NSMutableString {
-    func appendURLParameter(key: String, value: String, useArraySeperator: Bool = false) {
-        if self.length != 0 {
-            self.appendString(keySeparator)
+fileprivate extension String {
+    mutating func appendURLParameter(key: String, value: String, useArraySeperator: Bool = false) {
+        if self.characters.count != 0 {
+            self.append(keySeparator)
         }
-        self.appendString(key)
+        self.append(key)
         if useArraySeperator {
-            self.appendString(arrayValueSeperator)
+            self.append(arrayValueSeperator)
         }
-        self.appendString(valueSeparator)
-        self.appendString(value)
+        self.append(valueSeparator)
+        self.append(value)
     }
 }
 
-extension NSMutableURLRequest {
+extension URLRequest {
     /// Sets the HTTPMethod to "POST", the "Content-Type" to "application/x-www-form-urlencoded"
     /// and adds a URL-encoded HTTPBody.
     ///
     /// - warning: This function will overwrite any existing HTTPBody!
     ///
     /// - parameter postValues: The values to URL-encode and add to the HTTPBody
-    public func vsdk_addURLEncodedFormPost(postValues: NSDictionary) {
-        HTTPMethod = "POST"
+    public mutating func vsdk_addURLEncodedFormPost(_ postValues: [String: Any]) {
+        httpMethod = "POST"
         addValue("application/x-www-form-urlencoded; charset=utf-8", forHTTPHeaderField: "Content-Type")
-        HTTPBody = postValues.vsdk_urlEncodedString().dataUsingEncoding(NSUTF8StringEncoding)
+        httpBody = postValues.vsdk_urlEncodedString().data(using: String.Encoding.utf8)
     }
 }

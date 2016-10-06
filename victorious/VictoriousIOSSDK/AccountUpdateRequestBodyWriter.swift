@@ -10,7 +10,7 @@ import Foundation
 
 class AccountUpdateRequestBodyWriter: NSObject, RequestBodyWriterType {
     struct Output {
-        let fileURL: NSURL
+        let fileURL: URL
         let contentType: String
     }
     
@@ -26,10 +26,10 @@ class AccountUpdateRequestBodyWriter: NSObject, RequestBodyWriterType {
     
     func write() throws -> Output {
         guard let bodyTempFileURL = bodyTempFileURL else {
-            throw NSURLError.UnsupportedURL
+            throw URLError(.unsupportedURL)
         }
 
-        let writer = VMultipartFormDataWriter(outputFileURL: bodyTempFileURL)
+        let writer = VMultipartFormDataWriter(outputFileURL: bodyTempFileURL as URL)
         
         // Write params for a password update
         if
@@ -57,9 +57,9 @@ class AccountUpdateRequestBodyWriter: NSObject, RequestBodyWriterType {
         if let profileImageURL = parameters.profileUpdate?.profileImageURL,
             let pathExtension = profileImageURL.pathExtension,
             let mimeType = profileImageURL.vsdk_mimeType {
-                try writer.appendFileWithName("profile_image.\(pathExtension)",
+                try writer.appendFile(withName: "profile_image.\(pathExtension)",
                     contentType: mimeType,
-                    fileURL: profileImageURL,
+                    fileURL: profileImageURL as URL,
                     fieldName: "profile_image"
                 )
         }

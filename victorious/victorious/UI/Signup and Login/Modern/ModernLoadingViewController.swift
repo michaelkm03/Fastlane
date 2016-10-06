@@ -34,8 +34,8 @@ class ModernLoadingViewController: UIViewController, LoginFlowLoadingScreen, VBa
         }
     }
     
-    private var cancelButton: UIBarButtonItem?
-    private var timerManager: VTimerManager?
+    fileprivate var cancelButton: UIBarButtonItem?
+    fileprivate var timerManager: VTimerManager?
     
     // MARK : Public properties
     
@@ -44,16 +44,16 @@ class ModernLoadingViewController: UIViewController, LoginFlowLoadingScreen, VBa
     var dependencyManager: VDependencyManager! {
         didSet {
             if let dependencyManager = dependencyManager {
-                cancelButton = UIBarButtonItem(title: dependencyManager.buttonTitle, style: .Plain, target: self, action: #selector(pressedCancel))
+                cancelButton = UIBarButtonItem(title: dependencyManager.buttonTitle, style: .plain, target: self, action: #selector(pressedCancel))
                 navigationItem.leftBarButtonItem = cancelButton
-                dependencyManager.addBackgroundToBackgroundHost(self)
+                dependencyManager.addBackground(toBackgroundHost: self)
             }
         }
     }
     
     var canCancel = true {
         didSet {
-            self.cancelButton?.enabled = canCancel
+            self.cancelButton?.isEnabled = canCancel
         }
     }
     
@@ -63,22 +63,22 @@ class ModernLoadingViewController: UIViewController, LoginFlowLoadingScreen, VBa
         
     // MARK: Factory method
     
-    class func newWithDependencyManager(dependencyManager: VDependencyManager) -> ModernLoadingViewController {
+    class func new(withDependencyManager dependencyManager: VDependencyManager) -> ModernLoadingViewController {
         let facebookLoginLoadingViewController: ModernLoadingViewController = self.v_initialViewControllerFromStoryboard()
         facebookLoginLoadingViewController.dependencyManager = dependencyManager
         return facebookLoginLoadingViewController
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         timerManager?.invalidate()
-        timerManager = VTimerManager.scheduledTimerManagerWithTimeInterval(0.3, target: self, selector: #selector(animate), userInfo: nil, repeats: true)
+        timerManager = VTimerManager.scheduledTimerManager(withTimeInterval: 0.3, target: self, selector: #selector(animate), userInfo: nil, repeats: true)
         if let loadingScreenDelegate = loadingScreenDelegate {
             loadingScreenDelegate.loadingScreenDidAppear()
         }
     }
     
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         ellipsesLabel.text = ""
     }
@@ -91,11 +91,11 @@ class ModernLoadingViewController: UIViewController, LoginFlowLoadingScreen, VBa
     
     func animate() {
         let ellipses = "..."
-        if let range = ellipsesLabel.text?.rangeOfString(ellipses) {
-            ellipsesLabel.text = ellipsesLabel.text?.stringByReplacingCharactersInRange(range, withString: "")
+        if let range = ellipsesLabel.text?.range(of: ellipses) {
+            ellipsesLabel.text = ellipsesLabel.text?.replacingCharacters(in: range, with: "")
         }
         else {
-            ellipsesLabel.text = ellipsesLabel.text?.stringByAppendingString(".")
+            ellipsesLabel.text = (ellipsesLabel.text ?? "") + "."
         }
     }
     
@@ -108,18 +108,18 @@ class ModernLoadingViewController: UIViewController, LoginFlowLoadingScreen, VBa
 
 private extension VDependencyManager {
     var prompt: String? {
-        return self.stringForKey("prompt")
+        return self.string(forKey: "prompt")
     }
     
     var buttonTitle: String? {
-        return self.stringForKey("button.title")
+        return self.string(forKey: "button.title")
     }
     
     var textColor: UIColor? {
-        return self.colorForKey(VDependencyManagerMainTextColorKey)
+        return self.color(forKey: VDependencyManagerMainTextColorKey)
     }
     
     var promptFont: UIFont? {
-        return self.fontForKey(VDependencyManagerHeading1FontKey)
+        return self.font(forKey: VDependencyManagerHeading1FontKey)
     }
 }

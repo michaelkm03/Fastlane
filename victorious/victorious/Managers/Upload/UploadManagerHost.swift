@@ -11,28 +11,28 @@ import Foundation
 /// Describes a type that can host the UI for showing media upload progress.
 @objc(VUploadManagerHost)
 protocol UploadManagerHost: VUploadProgressViewControllerDelegate {
-    
     var uploadProgressViewController: VUploadProgressViewController? { get set }
     
-    func addUploadManagerToViewController(viewController: UIViewController, topInset: CGFloat)
+    func addUploadManagerToViewController(_ viewController: UIViewController, topInset: CGFloat)
 }
 
 /// Intended to be utilized by types conforming to `UploadManagerHost` when
 /// `addUploadManagerToViewController` is called on them.
 @objc(VUploadManagerHelper)
 class UploadManagerHelper: NSObject {
-    
-    static func addUploadManagerToViewController(viewController: UIViewController, topInset: CGFloat) {
-        
-        guard let managerHost = viewController as? UploadManagerHost where
-            managerHost.uploadProgressViewController == nil else {
-                return
+    static func addUploadManagerToViewController(_ viewController: UIViewController, topInset: CGFloat) {
+        guard
+            let managerHost = viewController as? UploadManagerHost,
+            managerHost.uploadProgressViewController == nil
+        else {
+            return
         }
         
-        let uploadProgressViewController = VUploadProgressViewController(forUploadManager: VUploadManager.sharedManager())
+        guard let uploadProgressViewController = VUploadProgressViewController(for: VUploadManager.shared()) else {
+            return
+        }
         
-        if let existingParent = uploadProgressViewController.parentViewController {
-            
+        if let existingParent = uploadProgressViewController.parent {
             if existingParent === viewController {
                 return
             }
@@ -45,25 +45,28 @@ class UploadManagerHelper: NSObject {
         managerHost.uploadProgressViewController = uploadProgressViewController
     }
     
-    private static func removeUploadViewController(uploadViewController: VUploadProgressViewController, fromExistingParent existingParent: UIViewController) {
-        
+    private static func removeUploadViewController(_ uploadViewController: VUploadProgressViewController, fromExistingParent existingParent: UIViewController) {
         if let parent = existingParent as? UploadManagerHost {
             parent.uploadProgressViewController = nil
         }
-        uploadViewController.willMoveToParentViewController(nil)
+        
+        uploadViewController.willMove(toParentViewController: nil)
         uploadViewController.view.removeFromSuperview()
         uploadViewController.removeFromParentViewController()
     }
 
-    private static func addUploadViewController(uploadViewController: VUploadProgressViewController, toViewController viewController: UIViewController, withTopInset topInset: Float) {
-        
+    private static func addUploadViewController(_ uploadViewController: VUploadProgressViewController, toViewController viewController: UIViewController, withTopInset topInset: Float) {
         viewController.addChildViewController(uploadViewController)
-        let progressVCView = uploadViewController.view
+        
+        guard let progressVCView = uploadViewController.view else {
+            return
+        }
+        
         progressVCView.translatesAutoresizingMaskIntoConstraints = false
         viewController.view.addSubview(progressVCView)
-        uploadViewController.didMoveToParentViewController(viewController)
-        progressVCView.hidden = true
-        viewController.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[progressVCView]|", options: [], metrics: nil, views: ["progressVCView" : progressVCView]))
-        viewController.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-topInset-[progressVCView(44)]", options: [], metrics: ["topInset" : NSNumber(float: topInset)], views: ["progressVCView" : progressVCView]))
+        uploadViewController.didMove(toParentViewController: viewController)
+        progressVCView.isHidden = true
+        viewController.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[progressVCView]|", options: [], metrics: nil, views: ["progressVCView": progressVCView]))
+        viewController.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-topInset-[progressVCView(44)]", options: [], metrics: ["topInset": NSNumber(value: topInset)], views: ["progressVCView": progressVCView]))
     }
 }

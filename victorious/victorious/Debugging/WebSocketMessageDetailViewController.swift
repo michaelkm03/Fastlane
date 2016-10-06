@@ -8,7 +8,7 @@
 
 #if V_ENABLE_WEBSOCKET_DEBUG_MENU
 
-    import UIKit
+    import VictoriousIOSSDK
 
     class WebSocketMessageDetailViewController: UIViewController {
 
@@ -24,7 +24,7 @@
             return modelDetailVC
         }
 
-        override func viewWillAppear(animated: Bool) {
+        override func viewWillAppear(_ animated: Bool) {
             super.viewWillAppear(animated)
             navigationController?.setNavigationBarHidden(false, animated: animated)
         }
@@ -33,7 +33,7 @@
             super.viewDidLoad()
 
             if let message = message {
-                dateLabel.text = String(message.creationDate)
+                dateLabel.text = String(describing: message.creationDate)
                 messageTextView.text = message.messageString
                 rawJSONTextView.text = message.json?.debugDescription
             }

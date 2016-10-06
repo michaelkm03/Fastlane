@@ -8,6 +8,7 @@
 
 #if V_ENABLE_WEBSOCKET_DEBUG_MENU
     import Foundation
+    import VictoriousIOSSDK
 
     /// Type of debug menu to be shown.
     enum DebugMenuType {
@@ -49,7 +50,7 @@
                 let debuggingViewController: WebSocketDebuggingViewController = WebSocketDebuggingViewController.v_initialViewControllerFromStoryboard()
                 debuggingViewController.rawMessageContainer = messageContainer
                 let navigationController = UINavigationController(rootViewController: debuggingViewController)
-                targetViewController.presentViewController(navigationController, animated: true, completion: nil)
+                targetViewController.present(navigationController, animated: true, completion: nil)
             }
         }
     }

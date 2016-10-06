@@ -11,12 +11,12 @@ import UIKit
 extension VDependencyManager {
     var vipSubscription: Subscription? {
         guard
-            let subscription = childDependencyForKey("subscription"),
-            let enabled = subscription.numberForKey("enabled")?.boolValue
+            let subscription = childDependency(forKey: "subscription"),
+            let enabled = subscription.number(forKey: "enabled")?.boolValue
         else {
             return nil
         }
-        let iconImage = subscription.imageForKey("icon")
+        let iconImage = subscription.image(forKey: "icon")
         return Subscription(enabled: enabled, iconImage: iconImage)
     }
     

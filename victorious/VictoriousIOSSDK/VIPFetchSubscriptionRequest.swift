@@ -9,7 +9,7 @@
 import Foundation
 
 public struct VIPFetchSubscriptionRequest: RequestType {
-    public let url: NSURL
+    public let url: URL
     
     public init?(apiPath: APIPath) {
         guard let url = apiPath.url else {
@@ -19,11 +19,11 @@ public struct VIPFetchSubscriptionRequest: RequestType {
         self.url = url
     }
     
-    public var urlRequest: NSURLRequest {
-        return NSURLRequest(URL: url)
+    public var urlRequest: URLRequest {
+        return URLRequest(url: url)
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> [String] {
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> [String] {
         return responseJSON["payload"]["subscription_id"].array?.flatMap({ $0.string }) ?? []
     }
 }

@@ -6,24 +6,24 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-import Foundation
+import VictoriousIOSSDK
 
 /// A component that displays an alert as a toast.
 /// It slides in from the top of the screen, similar to a system push notification, and the gets dismissed automatically after a period of time. 
 /// Or it can also be dismissed if the user swipe up on the toast.
 class InterstitialToastViewController: UIViewController, Interstitial, VBackgroundContainer {
 
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var descriptionLabel: UILabel!
-    @IBOutlet private weak var containerView: UIView!
+    @IBOutlet fileprivate weak var titleLabel: UILabel!
+    @IBOutlet fileprivate weak var descriptionLabel: UILabel!
+    @IBOutlet fileprivate weak var containerView: UIView!
     
-    private var dependencyManager: VDependencyManager!
-    private var topAnchorConstraint: NSLayoutConstraint!
-    private var timerManager: VTimerManager?
+    fileprivate var dependencyManager: VDependencyManager!
+    fileprivate var topAnchorConstraint: NSLayoutConstraint!
+    fileprivate var timerManager: VTimerManager?
     
-    private struct Constants {
-        static let slideInAnimationDuration = NSTimeInterval(0.4)
-        static let slideOutAnimationDuration = NSTimeInterval(0.4)
+    fileprivate struct Constants {
+        static let slideInAnimationDuration = TimeInterval(0.4)
+        static let slideOutAnimationDuration = TimeInterval(0.4)
         
         static let toastViewHeight: CGFloat = 40
         static let topOffset = CGFloat(0)
@@ -31,18 +31,18 @@ class InterstitialToastViewController: UIViewController, Interstitial, VBackgrou
     
     // MARK: - Initialization
     
-    class func newWithDependencyManager(dependencyManager: VDependencyManager) -> InterstitialToastViewController {
+    class func new(withDependencyManager dependencyManager: VDependencyManager) -> InterstitialToastViewController {
         let toastViewController = InterstitialToastViewController.v_initialViewControllerFromStoryboard() as InterstitialToastViewController
         toastViewController.dependencyManager = dependencyManager
         return toastViewController
     }
 
-    private func configure(withTitle title: String, detailedDescription detail: String? = nil) {
+    fileprivate func configure(withTitle title: String, detailedDescription detail: String? = nil) {
         titleLabel.text = title
 
         // FUTURE: toasts don't support details any more, maybe they will in the future so don't want to rip this out
         descriptionLabel.text = detail
-        descriptionLabel.hidden = (detail == nil)
+        descriptionLabel.isHidden = (detail == nil)
     }
     
     // MARK: - Interstitial Protocol
@@ -59,12 +59,12 @@ class InterstitialToastViewController: UIViewController, Interstitial, VBackgrou
         return nil
     }
     
-    func presentationController(presentedViewController: UIViewController, presentingViewController: UIViewController?) -> UIPresentationController {
-        return UIPresentationController(presentedViewController: presentedViewController, presentingViewController: presentingViewController)
+    func presentationController(_ presentedViewController: UIViewController, presentingViewController: UIViewController?) -> UIPresentationController {
+        return UIPresentationController(presentedViewController: presentedViewController, presenting: presentingViewController)
     }
     
     func preferredModalPresentationStyle() -> UIModalPresentationStyle {
-        return .Custom
+        return .custom
     }
     
     // MARK: - VBackgroundContainer Protocol
@@ -83,49 +83,49 @@ class InterstitialToastViewController: UIViewController, Interstitial, VBackgrou
         }
     }
     
-    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        return .Portrait
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         guard let dismissalTime = alert?.parameters.dismissalTime else {
             return
         }
 
-        timerManager = VTimerManager.scheduledTimerManagerWithTimeInterval(dismissalTime,
+        timerManager = VTimerManager.scheduledTimerManager(withTimeInterval: dismissalTime,
             target: self,
-            selector: #selector(dismiss),
+            selector: #selector(dismissInterstitial),
             userInfo: nil,
             repeats: false
         )
     }
 
-    override func willMoveToParentViewController(parent: UIViewController?) {
+    override func willMove(toParentViewController parent: UIViewController?) {
         guard let parent = parent else {
             return
         }
         view.translatesAutoresizingMaskIntoConstraints = false
         
-        view.heightAnchor.constraintEqualToConstant(Constants.toastViewHeight).active = true
-        view.leftAnchor.constraintEqualToAnchor(parent.view.leftAnchor).active = true
-        view.rightAnchor.constraintEqualToAnchor(parent.view.rightAnchor).active = true
-        topAnchorConstraint = view.topAnchor.constraintEqualToAnchor(parent.view.topAnchor, constant: -Constants.toastViewHeight)
-        topAnchorConstraint.active = true
+        view.heightAnchor.constraint(equalToConstant: Constants.toastViewHeight).isActive = true
+        view.leftAnchor.constraint(equalTo: parent.view.leftAnchor).isActive = true
+        view.rightAnchor.constraint(equalTo: parent.view.rightAnchor).isActive = true
+        topAnchorConstraint = view.topAnchor.constraint(equalTo: parent.view.topAnchor, constant: -Constants.toastViewHeight)
+        topAnchorConstraint.isActive = true
 
         slideIn()
     }
     
     // MARK: - User Actions
     
-    @IBAction private func handlePan(sender: UIPanGestureRecognizer) {
-        if sender.state == .Ended && sender.translationInView(view).y < 0 {
-            dismiss()
+    @IBAction fileprivate func handlePan(_ sender: UIPanGestureRecognizer) {
+        if sender.state == .ended && sender.translation(in: view).y < 0 {
+            dismissInterstitial()
         }
     }
     
-    @objc private func dismiss() {
+    @objc fileprivate func dismissInterstitial() {
         timerManager?.invalidate()
         slideOut() {
             self.interstitialDelegate?.dismissInterstitial(self)
@@ -134,27 +134,27 @@ class InterstitialToastViewController: UIViewController, Interstitial, VBackgrou
     
     // MARK: - Private Methods
     
-    private func styleComponents() {
+    fileprivate func styleComponents() {
         titleLabel.font = dependencyManager.titleFont
         titleLabel.textColor = dependencyManager.textColor
 
         descriptionLabel.font = dependencyManager.detailLabelFont
         descriptionLabel.textColor = dependencyManager.textColor
 
-        dependencyManager.addBackgroundToBackgroundHost(self)
+        dependencyManager.addBackground(toBackgroundHost: self)
     }
     
-    private func slideIn() {
+    fileprivate func slideIn() {
         view.layoutIfNeeded()
-        UIView.animateWithDuration(Constants.slideInAnimationDuration) {
+        UIView.animate(withDuration: Constants.slideInAnimationDuration) {
             self.topAnchorConstraint.constant = Constants.topOffset
             self.view.layoutIfNeeded()
         }
     }
 
-    private func slideOut(completion: () -> Void) {
+    fileprivate func slideOut(_ completion: @escaping () -> Void) {
         view.layoutIfNeeded()
-        UIView.animateWithDuration(Constants.slideOutAnimationDuration,
+        UIView.animate(withDuration: Constants.slideOutAnimationDuration,
             animations: {
                 self.topAnchorConstraint.constant = -Constants.toastViewHeight
                 self.view.layoutIfNeeded()
@@ -168,14 +168,14 @@ class InterstitialToastViewController: UIViewController, Interstitial, VBackgrou
 private extension VDependencyManager {
     
     var titleFont: UIFont? {
-        return fontForKey("font.title")
+        return font(forKey: "font.title")
     }
     
     var detailLabelFont: UIFont? {
-        return fontForKey("font.detail")
+        return font(forKey: "font.detail")
     }
     
     var textColor: UIColor? {
-        return colorForKey("color.text")
+        return color(forKey: "color.text")
     }
 }

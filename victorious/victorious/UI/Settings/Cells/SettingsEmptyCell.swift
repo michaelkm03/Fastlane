@@ -10,7 +10,7 @@ import UIKit
 
 class SettingsEmptyCell: UITableViewCell {
     
-    @IBOutlet private weak var label: UILabel!
+    @IBOutlet fileprivate weak var label: UILabel!
     
     var message: String = "" {
         didSet {

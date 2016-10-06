@@ -12,9 +12,9 @@ public struct LoginRequest: RequestType {
     public let email: String
     public let password: String
 
-    public var urlRequest: NSURLRequest {
-        let urlRequest = NSMutableURLRequest(URL: NSURL(string: "/api/login")!)
-        urlRequest.HTTPMethod = "POST"
+    public var urlRequest: URLRequest {
+        var urlRequest = URLRequest(url: URL(string: "/api/login")!)
+        urlRequest.httpMethod = "POST"
         urlRequest.vsdk_addURLEncodedFormPost([ "email": email, "password": password ])
         return urlRequest
     }
@@ -24,7 +24,7 @@ public struct LoginRequest: RequestType {
         self.password = password
     }
     
-    public func parseResponse(response: NSURLResponse, toRequest request: NSURLRequest, responseData: NSData, responseJSON: JSON) throws -> AccountCreateResponse {
+    public func parseResponse(_ response: URLResponse, toRequest request: URLRequest, responseData: Data, responseJSON: JSON) throws -> AccountCreateResponse {
         let payload = responseJSON["payload"]
         if let token = payload["token"].string,
            let user = User(json: payload) {

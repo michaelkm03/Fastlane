@@ -6,11 +6,11 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-import Foundation
+import VictoriousIOSSDK
 
 /// A data source that fetches gifs and provides cells that load and auto-play these gifs
 class GIFTrayDataSource: PaginatedDataSource, TrayDataSource {
-    private struct Constants {
+    fileprivate struct Constants {
         static let loadingCellReuseIdentifier = TrayLoadingCollectionViewCell.defaultReuseIdentifier
         static let retryCellReuseIdentifier = TrayRetryLoadCollectionViewCell.defaultReuseIdentifier
         static let defaultCellReuseIdentifier = UICollectionViewCell.defaultReuseIdentifier
@@ -19,8 +19,8 @@ class GIFTrayDataSource: PaginatedDataSource, TrayDataSource {
     
     let dependencyManager: VDependencyManager
     var dataSourceDelegate: TrayDataSourceDelegate?
-    private var gifs: [GIFSearchResultObject] = []
-    private(set) var trayState: TrayState = .Empty {
+    fileprivate var gifs: [GIFSearchResultObject] = []
+    fileprivate(set) var trayState: TrayState = .empty {
         didSet {
             if oldValue != trayState {
                 dataSourceDelegate?.trayDataSource(self, changedToState: trayState)
@@ -41,16 +41,16 @@ class GIFTrayDataSource: PaginatedDataSource, TrayDataSource {
     
     // This method must be called on the collection view that this object will provide cells for prior to dequeueing any cells
     func registerCells(withCollectionView collectionView: UICollectionView) {
-        collectionView.registerClass(TrayLoadingCollectionViewCell.self, forCellWithReuseIdentifier: Constants.loadingCellReuseIdentifier)
-        collectionView.registerClass(TrayRetryLoadCollectionViewCell.self, forCellWithReuseIdentifier: Constants.retryCellReuseIdentifier)
-        collectionView.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: Constants.defaultCellReuseIdentifier)
-        collectionView.registerNib(MediaSearchPreviewCell.associatedNib, forCellWithReuseIdentifier: Constants.gifCellReuseIdentifier)
+        collectionView.register(TrayLoadingCollectionViewCell.self, forCellWithReuseIdentifier: Constants.loadingCellReuseIdentifier)
+        collectionView.register(TrayRetryLoadCollectionViewCell.self, forCellWithReuseIdentifier: Constants.retryCellReuseIdentifier)
+        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: Constants.defaultCellReuseIdentifier)
+        collectionView.register(MediaSearchPreviewCell.associatedNib, forCellWithReuseIdentifier: Constants.gifCellReuseIdentifier)
     }
     
-    func fetchGifs(completion: (NSError? -> ())? = nil) {
-        trayState = .Loading
+    func fetchGifs(_ completion: ((NSError?) -> ())? = nil) {
+        trayState = .loading
         let contentFetchEndpoint = dependencyManager.contentFetchEndpoint ?? ""
-        let searchOptions = AssetSearchOptions.Trending(url: contentFetchEndpoint)
+        let searchOptions = AssetSearchOptions.trending(url: contentFetchEndpoint)
         let createOperation = {
             return GIFSearchOperation(searchOptions: searchOptions)
         }
@@ -63,53 +63,53 @@ class GIFTrayDataSource: PaginatedDataSource, TrayDataSource {
             let gifs = results as? [GIFSearchResultObject] ?? strongSelf.gifs
             strongSelf.gifs = gifs
             guard gifs.count > 0 else {
-                strongSelf.trayState = .FailedToLoad
+                strongSelf.trayState = .failedToLoad
                 return
             }
-            strongSelf.trayState = .Populated
+            strongSelf.trayState = .populated
             completion?(error)
         }
-        self.loadPage(.First, createOperation: createOperation, completion: pageLoadCompletion)
+        self.loadPage(.first, createOperation: createOperation, completion: pageLoadCompletion)
     }
     
     // MARK: - UICollectionViewDataSource
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch trayState {
-            case .Empty:
+            case .empty:
                 return 0
-            case .FailedToLoad, .Loading:
+            case .failedToLoad, .loading:
                 return 1
-            case .Populated:
+            case .populated:
                 return gifs.count
         }
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: UICollectionViewCell
         switch trayState {
-            case .Populated:
-                let gifCell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.gifCellReuseIdentifier, forIndexPath: indexPath) as! MediaSearchPreviewCell
+            case .populated:
+                let gifCell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.gifCellReuseIdentifier, for: indexPath) as! MediaSearchPreviewCell
                 if let gif = asset(atIndex: indexPath.row) {
                     gifCell.assetUrl = gif.sourceMediaURL
                     gifCell.previewAssetUrl = gif.thumbnailImageURL
                 }
                 cell = gifCell
-            case .FailedToLoad:
-                cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.retryCellReuseIdentifier, forIndexPath: indexPath)
-            case .Loading:
-                cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.loadingCellReuseIdentifier, forIndexPath: indexPath)
-            case .Empty:
-                cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.defaultCellReuseIdentifier, forIndexPath: indexPath)
+            case .failedToLoad:
+                cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.retryCellReuseIdentifier, for: indexPath)
+            case .loading:
+                cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.loadingCellReuseIdentifier, for: indexPath)
+            case .empty:
+                cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.defaultCellReuseIdentifier, for: indexPath)
         }
-        cell.backgroundColor = .clearColor()
-        cell.contentView.backgroundColor = .clearColor()
+        cell.backgroundColor = .clear
+        cell.contentView.backgroundColor = .clear
         return cell
     }
 }
 
 private extension VDependencyManager {
     var contentFetchEndpoint: String? {
-        return stringForKey("default.content.endpoint")
+        return string(forKey: "default.content.endpoint")
     }
 }
