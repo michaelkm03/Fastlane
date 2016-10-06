@@ -57,6 +57,6 @@ final class ListMenuCreatorDataSource: ListMenuSectionDataSource {
 
 private extension VDependencyManager {
     var creatorListAPIPath: APIPath? {
-        return apiPath(forKey: "listOfCreatorsURL")
+        return apiPath(forKey: "listURL")
     }
 }

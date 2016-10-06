@@ -612,7 +612,7 @@ private extension VDependencyManager {
     // MARK: - End VIP Button
     
     var endVIPConfiguration: VDependencyManager? {
-        return childDependency(forKey: "end.vip.button")
+        return childDependency(forKey: "end.button.vip")
     }
     
     var endVIPTitle: String? {
