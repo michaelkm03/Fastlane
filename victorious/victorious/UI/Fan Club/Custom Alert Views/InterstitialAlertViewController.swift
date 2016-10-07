@@ -6,7 +6,7 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-import UIKit
+import VictoriousIOSSDK
 
 class InterstitialAlertViewController: UIViewController, Interstitial, VBackgroundContainer {
 

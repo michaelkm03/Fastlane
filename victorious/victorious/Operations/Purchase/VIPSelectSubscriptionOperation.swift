@@ -6,7 +6,7 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-import Foundation
+import VictoriousIOSSDK
 
 final class VIPSelectSubscriptionOperation: AsyncOperation<VProduct>, UIAlertViewDelegate {
     let products: [VProduct]

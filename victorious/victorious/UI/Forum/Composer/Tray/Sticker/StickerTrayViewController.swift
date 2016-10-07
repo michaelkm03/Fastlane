@@ -8,6 +8,7 @@
 
 import Foundation
 import MBProgressHUD
+import VictoriousIOSSDK
 
 /// A view controller that displays a side-scrolling double-row of stickers
 
