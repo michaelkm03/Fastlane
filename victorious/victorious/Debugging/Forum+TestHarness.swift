@@ -46,11 +46,6 @@ import VictoriousIOSSDK
             return names[rnd]
         }
 
-        private func randTitle() -> String {
-            let rnd = Int(arc4random() % UInt32(titles.count) )
-            return titles[rnd]
-        }
-
         private func randAsset() -> ContentMediaAsset {
             let rnd = Int(arc4random() % UInt32(sampleMedia.count) )
             let json = JSON(sampleMedia[rnd])
@@ -116,25 +111,30 @@ import VictoriousIOSSDK
                 }
             }
             
+            let name = "\(nameTitleIndex)" + nameTitle[nameTitleIndex].0
+            let title = "\(nameTitleIndex)" + nameTitle[nameTitleIndex].1
+            
             let content = Content(
                 author: User(
                     id: 1000 + Int(arc4random() % 9999),
-                    displayName: randName(),
+                    displayName: name,
                     previewImages: [randPreviewImage()]
                 ),
                 id: String(1000 + Int(arc4random() % 9999)),
                 type: contentType,
-                text: next["text"] ?? randomText(),
+                text: title,
                 assets: assets,
                 previewImages: [previewAsset]
             )
 
-            let metaData = StageMetaData(title: randTitle())
+            let metaData = StageMetaData(title: title)
             let stageContent = StageContent(content: content, metaData: metaData)
             stage?.addStageContent(stageContent)
             stageCount += 1
+            nameTitleIndex += 1
+            nameTitleIndex %= nameTitle.count
             
-            let time = next["length"] != nil ? Double(next["length"]!)! : ForumViewController.defaultStageContentLength
+            let time = TimeInterval(15)//next["length"] != nil ? Double(next["length"]!)! : ForumViewController.defaultStageContentLength
             
             VTimerManager.add(
                 withTimeInterval: time,
@@ -148,9 +148,21 @@ import VictoriousIOSSDK
         }
 
     }
-
+    
+    
+    private var nameTitleIndex = 0
     private var stageCount = 0
     private var totalCount = 0
+    
+    let short = "short"
+    let long = "loooooonglo00000000ooooong"
+    let a = (short, short)
+    let b = (short, long)
+    let c = (long, short)
+    let d = (long, long)
+    private let nameTitle: [(String, String)] = [
+        a, b, a, c, a, d, b, c, b, d, c, d
+    ]
 
     private let sampleStageImageContents = [
         [
@@ -160,7 +172,7 @@ import VictoriousIOSSDK
         ],
         [
             "type": "image",
-            "url": "http://www.koco.com/image/view/-/36170342/medRes/1/-/maxh/460/maxw/620/-/hwy60t/-/westbrook-jpg--1-.jpg"
+            "url": "https://s.yimg.com/uu/api/res/1.2/BfPmLsFU6JlTvkYLlD.5tA--/Zmk9c3RyaW07aD0zODA7cHlvZmY9MDtxPTgwO3c9MzgwO3NtPTE7YXBwaWQ9eXRhY2h5b24-/http://slingstone.zenfs.com/offnetwork/8214e4ec86522b0ee1c2634b457a1053"
         ],
         [
             "type": "image",
@@ -237,10 +249,6 @@ import VictoriousIOSSDK
 
     private let names = [
         "James", "Micelle Prescott", "Bernadette With The Long Name", "Julia", "Patrick", "Sebastian", "Sharif - He Went to the Land of the 🐨 & Kangaroos", "Mariana", "Sky", "Vincent", "Jarod", "Alex",
-    ]
-
-    private let titles = [
-        "Little Green Army Guys", "Top Spin", "The Lemon Grove Kids Meet the Green Grasshopper", "Smile", "Hahahahaha!!! 😂 That is so funny. 🤔 You are SO funny.", "Don't Panic"
     ]
 
     private let previewImageURLs = [
