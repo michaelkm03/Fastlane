@@ -24,7 +24,7 @@ class TestListMenuSectionDataSourceDelegate: ListMenuSectionDataSourceDelegate {
 
 class ListMenuSectionDataSourceTests: XCTestCase {
     func testFetchData() {
-        let mockChatRooms = [ChatRoom(name: "Cupcakes")]
+        let mockChatRooms = [ChatRoom(id: "cupcakes", name: "Cupcakes")]
         let config = ["":""]
         let dependencyManager = VDependencyManager(dictionary: config)
         let dataSource = ListMenuSectionDataSource<ChatRoom, MockOperation<[ChatRoom]>>(
