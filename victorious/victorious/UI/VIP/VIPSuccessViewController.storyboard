@@ -52,7 +52,7 @@
                                     <constraint firstAttribute="trailing" secondItem="0Wq-V9-GAs" secondAttribute="trailing" id="E2k-lq-BRL"/>
                                     <constraint firstItem="M3q-lM-LFK" firstAttribute="top" secondItem="7aU-vM-cL6" secondAttribute="top" id="OdS-SG-pTt"/>
                                     <constraint firstItem="0Wq-V9-GAs" firstAttribute="leading" secondItem="7aU-vM-cL6" secondAttribute="leading" id="Yq3-Aq-zGF"/>
-                                    <constraint firstItem="W4G-Wc-R5y" firstAttribute="top" secondItem="0Wq-V9-GAs" secondAttribute="bottom" constant="27" id="erl-aI-2Yi"/>
+                                    <constraint firstItem="W4G-Wc-R5y" firstAttribute="top" secondItem="0Wq-V9-GAs" secondAttribute="bottom" constant="8" id="erl-aI-2Yi"/>
                                     <constraint firstAttribute="trailing" secondItem="W4G-Wc-R5y" secondAttribute="trailing" id="lVV-h4-pLO"/>
                                     <constraint firstAttribute="bottom" secondItem="W4G-Wc-R5y" secondAttribute="bottom" id="n6k-v6-qAd"/>
                                     <constraint firstItem="M3q-lM-LFK" firstAttribute="centerX" secondItem="7aU-vM-cL6" secondAttribute="centerX" id="pVk-NZ-ijh"/>
@@ -106,7 +106,7 @@
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="RY6-7f-chh" firstAttribute="top" secondItem="7aU-vM-cL6" secondAttribute="bottom" constant="43" id="DEt-Qw-rZ3"/>
+                            <constraint firstItem="RY6-7f-chh" firstAttribute="top" secondItem="7aU-vM-cL6" secondAttribute="bottom" constant="80" id="DEt-Qw-rZ3"/>
                             <constraint firstAttribute="trailingMargin" secondItem="RY6-7f-chh" secondAttribute="trailing" constant="-1" id="Id0-Tv-wjX"/>
                             <constraint firstItem="RY6-7f-chh" firstAttribute="leading" secondItem="4nF-rH-OQJ" secondAttribute="leadingMargin" constant="-1" id="PRW-Mv-H2h"/>
                             <constraint firstItem="x8N-ol-ALP" firstAttribute="top" secondItem="RY6-7f-chh" secondAttribute="bottom" constant="123" id="b4d-Ww-vKQ"/>
