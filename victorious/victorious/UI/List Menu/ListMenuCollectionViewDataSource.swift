@@ -69,8 +69,9 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
             creatorsDataSource = ListMenuSectionDataSource(
                 dependencyManager: childDependency,
                 cellConfiguration: { cell, item in
-                    cell.titleLabel.text = item.displayName
+                    cell.titleLabel.text = item.username
                     cell.avatarView.user = item
+                    cell.avatarView.isHidden = false
                 },
                 createOperation: { RequestOperation(request: request) },
                 processOutput: { $0 },
