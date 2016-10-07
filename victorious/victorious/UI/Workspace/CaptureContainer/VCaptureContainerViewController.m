@@ -12,7 +12,6 @@
 #import "VAlternateCaptureOption.h"
 
 // Views + Helpers
-#import <OAStackView/OAStackView.h>
 #import "UIView+Autolayout.h"
 
 #import <KVOController/FBKVOController.h>
