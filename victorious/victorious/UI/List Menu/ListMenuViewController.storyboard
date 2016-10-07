@@ -28,43 +28,38 @@
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ListMenuSectionCell" id="CnW-UN-sEU" userLabel="ListMenuSectionCell" customClass="ListMenuSectionCell" customModule="victorious" customModuleProvider="target">
-                                        <rect key="frame" x="-112.5" y="30" width="600" height="38"/>
+                                        <rect key="frame" x="-113" y="30" width="600" height="38"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="38"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Section Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R4e-LM-bkU" userLabel="Title Label">
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <view contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" placeholderIntrinsicWidth="30" placeholderIntrinsicHeight="30" translatesAutoresizingMaskIntoConstraints="NO" id="7Vb-Dt-yef" userLabel="Avatar View" customClass="AvatarView" customModule="victorious" customModuleProvider="target">
-                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                </view>
+                                                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="fO9-jZ-ino">
+                                                    <subviews>
+                                                        <view contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" placeholderIntrinsicWidth="30" placeholderIntrinsicHeight="30" translatesAutoresizingMaskIntoConstraints="NO" id="7Vb-Dt-yef" userLabel="Avatar View" customClass="AvatarView" customModule="victorious" customModuleProvider="target">
+                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                        </view>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Section Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R4e-LM-bkU" userLabel="Title Label">
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
                                             </subviews>
                                         </view>
                                         <constraints>
-                                            <constraint firstItem="7Vb-Dt-yef" firstAttribute="centerY" secondItem="CnW-UN-sEU" secondAttribute="centerY" id="06j-ef-MTo"/>
-                                            <constraint firstAttribute="trailingMargin" secondItem="R4e-LM-bkU" secondAttribute="trailing" constant="28" id="HSt-xQ-PDL"/>
-                                            <constraint firstItem="R4e-LM-bkU" firstAttribute="centerY" secondItem="CnW-UN-sEU" secondAttribute="centerY" id="L5D-Gs-Myn"/>
-                                            <constraint firstItem="R4e-LM-bkU" firstAttribute="leading" secondItem="7Vb-Dt-yef" secondAttribute="trailing" constant="12" id="PbD-Ve-5hm"/>
-                                            <constraint firstItem="R4e-LM-bkU" firstAttribute="leading" secondItem="CnW-UN-sEU" secondAttribute="leadingMargin" constant="12" id="XTV-br-AR9"/>
-                                            <constraint firstItem="7Vb-Dt-yef" firstAttribute="leading" secondItem="CnW-UN-sEU" secondAttribute="leading" constant="12" id="iVe-id-dR3"/>
+                                            <constraint firstAttribute="trailing" secondItem="fO9-jZ-ino" secondAttribute="trailing" constant="28" id="2FF-yc-W73"/>
+                                            <constraint firstAttribute="bottom" secondItem="fO9-jZ-ino" secondAttribute="bottom" id="8hs-x2-CwB"/>
+                                            <constraint firstItem="fO9-jZ-ino" firstAttribute="leading" secondItem="CnW-UN-sEU" secondAttribute="leading" constant="12" id="Kcv-Ch-NO6"/>
+                                            <constraint firstItem="fO9-jZ-ino" firstAttribute="top" secondItem="CnW-UN-sEU" secondAttribute="top" id="efX-y4-8DY"/>
                                         </constraints>
-                                        <variation key="default">
-                                            <mask key="constraints">
-                                                <exclude reference="XTV-br-AR9"/>
-                                            </mask>
-                                        </variation>
                                         <connections>
                                             <outlet property="avatarView" destination="7Vb-Dt-yef" id="6so-7W-yvt"/>
                                             <outlet property="titleLabel" destination="R4e-LM-bkU" id="Eyx-NP-7L1"/>
-                                            <outlet property="titleLabelToAvatarViewLeadingConstraint" destination="PbD-Ve-5hm" id="qKL-hb-Jdd"/>
-                                            <outlet property="titleLabelToViewLeadingConstraint" destination="XTV-br-AR9" id="0eP-Yj-iSk"/>
                                         </connections>
                                     </collectionViewCell>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ListMenuNoContentCollectionViewCell" id="Mme-Cf-5dM" customClass="ListMenuNoContentCollectionViewCell" customModule="victorious" customModuleProvider="target">
-                                        <rect key="frame" x="-112.5" y="74" width="600" height="38"/>
+                                        <rect key="frame" x="-113" y="74" width="600" height="38"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="38"/>
@@ -124,7 +119,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6zb-OU-ubt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="763.768115942029" y="545.38043478260875"/>
+            <point key="canvasLocation" x="762.39999999999998" y="544.67766116941539"/>
         </scene>
     </scenes>
 </document>

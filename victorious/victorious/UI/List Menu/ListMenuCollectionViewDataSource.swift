@@ -49,7 +49,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
                 dependencyManager: childDependency,
                 cellConfiguration: { cell, item in
                     cell.titleLabel.text = item.title
-                    cell.avatarViewHidden = true
+                    cell.avatarView.isHidden = true
                 },
                 createOperation: { CommunityItemsFetchOperation(dependencyManager: childDependency) },
                 processOutput: { $0 },
@@ -71,7 +71,6 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
                 cellConfiguration: { cell, item in
                     cell.titleLabel.text = item.displayName
                     cell.avatarView.user = item
-                    cell.avatarViewHidden = false
                 },
                 createOperation: { RequestOperation(request: request) },
                 processOutput: { $0 },
@@ -84,27 +83,6 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         }
 
         if
-            let childDependency = dependencyManager.hashtagsChildDependency,
-            let apiPath = childDependency.hashtagsAPIPath,
-            let request = TrendingHashtagsRequest(apiPath: apiPath)
-        {
-            hashtagDataSource = ListMenuSectionDataSource(
-                dependencyManager: childDependency,
-                cellConfiguration: { cell, item in
-                    cell.titleLabel.text = item.tag
-                    cell.avatarViewHidden = true
-                },
-                createOperation: { RequestOperation(request: request) },
-                processOutput: { $0 },
-                section: .hashtags
-            )
-            availableSections.append(.hashtags)
-        }
-        else {
-            hashtagDataSource = nil
-        }
-
-        if
             let childDependency = dependencyManager.chatRoomsChildDependency,
             let apiPath = childDependency.chatRoomsAPIPath,
             let request = ChatRoomsRequest(apiPath: apiPath)
@@ -113,7 +91,7 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
                 dependencyManager: childDependency,
                 cellConfiguration: { cell, item in
                     cell.titleLabel.text = item.name
-                    cell.avatarViewHidden = true
+                    cell.avatarView.isHidden = true
                 },
                 createOperation: { RequestOperation(request: request) },
                 processOutput: { $0 },
@@ -123,6 +101,27 @@ class ListMenuCollectionViewDataSource: NSObject, UICollectionViewDataSource, Li
         }
         else {
             chatRoomsDataSource = nil
+        }
+
+        if
+            let childDependency = dependencyManager.hashtagsChildDependency,
+            let apiPath = childDependency.hashtagsAPIPath,
+            let request = TrendingHashtagsRequest(apiPath: apiPath)
+        {
+            hashtagDataSource = ListMenuSectionDataSource(
+                dependencyManager: childDependency,
+                cellConfiguration: { cell, item in
+                    cell.titleLabel.text = "#\(item.tag)"
+                    cell.avatarView.isHidden = true
+                },
+                createOperation: { RequestOperation(request: request) },
+                processOutput: { $0 },
+                section: .hashtags
+            )
+            availableSections.append(.hashtags)
+        }
+        else {
+            hashtagDataSource = nil
         }
 
         super.init()
