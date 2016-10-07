@@ -92,7 +92,6 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/FLAnimatedImage/FLAnimatedImage.framework"
   install_framework "$BUILT_PRODUCTS_DIR/KVOController/KVOController.framework"
   install_framework "$BUILT_PRODUCTS_DIR/MBProgressHUD/MBProgressHUD.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/OAStackView/OAStackView.framework"
   install_framework "$BUILT_PRODUCTS_DIR/SDWebImage/SDWebImage.framework"
 fi
 if [[ "$CONFIGURATION" == "QA" ]]; then
@@ -104,7 +103,6 @@ if [[ "$CONFIGURATION" == "QA" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/FLAnimatedImage/FLAnimatedImage.framework"
   install_framework "$BUILT_PRODUCTS_DIR/KVOController/KVOController.framework"
   install_framework "$BUILT_PRODUCTS_DIR/MBProgressHUD/MBProgressHUD.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/OAStackView/OAStackView.framework"
   install_framework "$BUILT_PRODUCTS_DIR/SDWebImage/SDWebImage.framework"
 fi
 if [[ "$CONFIGURATION" == "Staging" ]]; then
@@ -116,7 +114,6 @@ if [[ "$CONFIGURATION" == "Staging" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/FLAnimatedImage/FLAnimatedImage.framework"
   install_framework "$BUILT_PRODUCTS_DIR/KVOController/KVOController.framework"
   install_framework "$BUILT_PRODUCTS_DIR/MBProgressHUD/MBProgressHUD.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/OAStackView/OAStackView.framework"
   install_framework "$BUILT_PRODUCTS_DIR/SDWebImage/SDWebImage.framework"
 fi
 if [[ "$CONFIGURATION" == "Stable" ]]; then
@@ -128,7 +125,6 @@ if [[ "$CONFIGURATION" == "Stable" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/FLAnimatedImage/FLAnimatedImage.framework"
   install_framework "$BUILT_PRODUCTS_DIR/KVOController/KVOController.framework"
   install_framework "$BUILT_PRODUCTS_DIR/MBProgressHUD/MBProgressHUD.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/OAStackView/OAStackView.framework"
   install_framework "$BUILT_PRODUCTS_DIR/SDWebImage/SDWebImage.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
@@ -140,6 +136,5 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/FLAnimatedImage/FLAnimatedImage.framework"
   install_framework "$BUILT_PRODUCTS_DIR/KVOController/KVOController.framework"
   install_framework "$BUILT_PRODUCTS_DIR/MBProgressHUD/MBProgressHUD.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/OAStackView/OAStackView.framework"
   install_framework "$BUILT_PRODUCTS_DIR/SDWebImage/SDWebImage.framework"
 fi

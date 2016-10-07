@@ -10,7 +10,6 @@ target 'victorious' do
     pod 'KVOController'
     pod 'SDWebImage'
     pod 'CCHLinkTextView'
-    pod 'OAStackView'
     pod 'FBSDKCoreKit'
     pod 'FBSDKLoginKit'
     pod 'FBSDKShareKit'
