@@ -484,7 +484,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         var textViewContentHeight = textView.calculatePlaceholderTextHeight()
         var textViewContainerHeight = textViewContentHeight
         if textViewHasText {
-            textViewContentHeight = ceil(textView.contentSize.height)
+            textViewContentHeight = ceil(textView.contentHeight())
             //Ensure that text view container is less than maximum height
             textViewContainerHeight = min(textViewContentHeight, maximumTextInputHeight)
         }
