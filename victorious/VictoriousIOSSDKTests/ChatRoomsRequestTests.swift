@@ -22,11 +22,14 @@ class ChatRoomsRequestTests: XCTestCase {
         let chatRoomsRequest = ChatRoomsRequest(apiPath: APIPath(templatePath: "foo"))!
         do {
             let results = try chatRoomsRequest.parseResponse(URLResponse(), toRequest: chatRoomsRequest.urlRequest, responseData: mockData, responseJSON: JSON(data: mockData))
+            let room1 = results[0], room2 = results[1]
             XCTAssertEqual(results.count, 2)
-            XCTAssertEqual(results[0].name, "Cupcakes")
-            XCTAssertEqual(results[1].name, "Cholocate")
+            XCTAssertEqual(room1.name, "Cupcakes")
+            XCTAssertEqual(room1.id, "cupcakes")
+            XCTAssertEqual(room2.name, "Cholocate")
+            XCTAssertEqual(room2.id, "cholocate")
         } catch {
-            XCTFail("Oh nooo, exception thrown during json parsing :-(")
+            XCTFail("Oh nooo, exception thrown during json parsing 😔")
         }
     }
 }

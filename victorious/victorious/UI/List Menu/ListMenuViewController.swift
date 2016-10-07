@@ -155,22 +155,22 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
 
     private func selectChatRoom(atIndex index: Int) {
         guard
-            let chatRoom = collectionViewDataSource.chatRoomsDataSource?.visibleItems[index],
-            var streamAPIPath = collectionViewDataSource.chatRoomsDataSource?.streamAPIPath,
+            let item = collectionViewDataSource.chatRoomsDataSource?.visibleItems[index],
+            var apiPath = collectionViewDataSource.chatRoomsDataSource?.streamAPIPath,
             let trackingAPIPaths = collectionViewDataSource.chatRoomsDataSource?.streamTrackingAPIPaths
         else {
             Log.error("Trying to select a chat room with incomplete data")
             return
         }
-        
+
+        let itemString = item.name
         let macro = "%%ROOM_ID%%"
-        streamAPIPath.macroReplacements[macro] = chatRoom.id
-        let context = DeeplinkContext(value: DeeplinkContext.chatRoomFeed, subContext: chatRoom.id)
-        
+        apiPath.macroReplacements[macro] = item.id
+        let context = DeeplinkContext(value: DeeplinkContext.chatRoomFeed, subContext: itemString)
         let selectedItem = ListMenuSelectedItem(
-            streamAPIPath: streamAPIPath,
-            chatRoomID: chatRoom.id,
-            title: chatRoom.name,
+            streamAPIPath: apiPath,
+            chatRoomID: item.id,
+            title: item.name,
             context: context,
             trackingAPIPaths: trackingAPIPaths.map { path in
                 var path = path

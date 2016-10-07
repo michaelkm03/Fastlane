@@ -8,7 +8,6 @@
 
 public struct ChatRoom {
     public typealias ID = String
-    
     public var id: ID
     public var name: String
 
