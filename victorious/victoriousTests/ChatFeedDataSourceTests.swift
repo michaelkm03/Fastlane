@@ -17,6 +17,8 @@ class ChatFeedDataSourceTests: XCTestCase, ForumEventReceiver {
         return [dataSource]
     }
     
+    func receive(_ event: ForumEvent) {}
+    
     func testShowReplyButtons() {
         XCTAssert(dataSource.shouldShowReplyButtons)
         

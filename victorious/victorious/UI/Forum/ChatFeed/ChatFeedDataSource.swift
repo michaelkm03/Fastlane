@@ -23,7 +23,10 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     
     init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
+        
         super.init()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(mainFeedFilterDidChange), name: NSNotification.Name(rawValue: RESTForumNetworkSource.updateStreamURLNotification), object: nil)
     }
     
     // MARK: - Dependency manager
@@ -36,10 +39,18 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
     var stashingEnabled = false
     
     /// Whether or not the pending items from the delegate should be displayed.
-    fileprivate var shouldShowPendingItems = true
+    private var shouldShowPendingItems: Bool {
+        return !feedIsFiltered || feedIsChatRoom
+    }
     
     /// Whether or not reply buttons in chat cells should be displayed.
-    fileprivate(set) var shouldShowReplyButtons = true
+    var shouldShowReplyButtons: Bool {
+        return !feedIsFiltered || feedIsChatRoom
+    }
+    
+    private var feedIsFiltered = false
+    
+    private var feedIsChatRoom = false
     
     // MARK: - Managing content
     
@@ -72,7 +83,16 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
         delegate?.chatFeedDataSource(self, didUnstashItems: previouslyStashedItems)
     }
     
+    // MARK: - Notifications
+    
+    private dynamic func mainFeedFilterDidChange(notification: NSNotification) {
+        let selectedItem = notification.userInfo?["selectedItem"] as? ListMenuSelectedItem
+        feedIsChatRoom = selectedItem?.chatRoomID != nil
+    }
+    
     // MARK: - ForumEventReceiver
+    
+    let childEventReceivers = [ForumEventReceiver]()
     
     func receive(_ event: ForumEvent) {
         switch event {
@@ -80,9 +100,7 @@ class ChatFeedDataSource: NSObject, ForumEventSender, ForumEventReceiver, ChatIn
                 handleItems(newItems, withLoadingType: loadingType)
             
             case .filterContent(let path):
-                let isFilteredFeed = path != nil
-                shouldShowPendingItems = !isFilteredFeed
-                shouldShowReplyButtons = !isFilteredFeed
+                feedIsFiltered = path != nil
                 clearItems()
             
             default:

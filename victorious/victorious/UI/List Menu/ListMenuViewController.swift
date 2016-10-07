@@ -10,10 +10,11 @@ import UIKit
 import VictoriousIOSSDK
 
 struct ListMenuSelectedItem {
-    let streamAPIPath: APIPath
-    let title: String?
-    let context: DeeplinkContext?
-    let trackingAPIPaths: [APIPath]
+    var streamAPIPath: APIPath
+    var chatRoomID: ChatRoom.ID?
+    var title: String?
+    var context: DeeplinkContext?
+    var trackingAPIPaths: [APIPath]
 }
 
 /// View Controller for the entire List Menu Component, which is currently being displayed as the left navigation pane
@@ -116,8 +117,9 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         }
         let context = DeeplinkContext(value: item.name)
         // Index 0 should correspond to the home feed, so we broadcast a nil path to denote an unfiltered feed.
-        postListMenuSelection(listMenuSelection: index == 0 ? nil : ListMenuSelectedItem(
+        postListMenuSelection(index == 0 ? nil : ListMenuSelectedItem(
             streamAPIPath: item.streamAPIPath,
+            chatRoomID: nil,
             title: item.title,
             context: context,
             trackingAPIPaths: item.trackingAPIPaths
@@ -138,6 +140,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
 
         let selectedTagItem = ListMenuSelectedItem(
             streamAPIPath: apiPath,
+            chatRoomID: nil,
             title: "#\(item.tag)",
             context: context,
             trackingAPIPaths: trackingAPIPaths.map { path in
@@ -146,37 +149,40 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
                 return path
             }
         )
-
-        postListMenuSelection(listMenuSelection: selectedTagItem)
+        
+        postListMenuSelection(selectedTagItem)
     }
 
     private func selectChatRoom(atIndex index: Int) {
         guard
-            let item = collectionViewDataSource.chatRoomsDataSource?.visibleItems[index],
-            var apiPath = collectionViewDataSource.chatRoomsDataSource?.streamAPIPath,
+            let chatRoom = collectionViewDataSource.chatRoomsDataSource?.visibleItems[index],
+            var streamAPIPath = collectionViewDataSource.chatRoomsDataSource?.streamAPIPath,
             let trackingAPIPaths = collectionViewDataSource.hashtagDataSource?.streamTrackingAPIPaths
         else {
             Log.error("Trying to select a chat room with incomplete data")
             return
         }
-        let itemString = item.name
-        let macro = "%%CHATROOM%%"
-        apiPath.macroReplacements[macro] = item.name
-        let context = DeeplinkContext(value: DeeplinkContext.chatRoomFeed, subContext: itemString)
+        
+        let macro = "%%ROOM_ID%%"
+        streamAPIPath.macroReplacements[macro] = chatRoom.name
+        let context = DeeplinkContext(value: DeeplinkContext.chatRoomFeed, subContext: chatRoom.name)
+        
         let selectedItem = ListMenuSelectedItem(
-            streamAPIPath: apiPath,
-            title: itemString,
+            streamAPIPath: streamAPIPath,
+            chatRoomID: chatRoom.id,
+            title: chatRoom.name,
             context: context,
             trackingAPIPaths: trackingAPIPaths.map { path in
                 var path = path
-                path.macroReplacements[macro] = item.name
+                path.macroReplacements[macro] = chatRoom.name
                 return path
             }
         )
-        postListMenuSelection(listMenuSelection: selectedItem)
+        
+        postListMenuSelection(selectedItem)
     }
-
-    private func postListMenuSelection(listMenuSelection: ListMenuSelectedItem?) {
+    
+    private func postListMenuSelection(_ listMenuSelection: ListMenuSelectedItem?) {
         NotificationCenter.default.post(
             name: NSNotification.Name(rawValue: RESTForumNetworkSource.updateStreamURLNotification),
             object: nil,

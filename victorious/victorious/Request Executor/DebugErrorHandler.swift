@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 /// A simple implementation that logs each error encountered.
 /// Priority is low to allow other more functional error handlers
