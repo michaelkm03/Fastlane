@@ -6,7 +6,7 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-import Foundation
+import VictoriousIOSSDK
 
 /// A component that displays an alert as a toast.
 /// It slides in from the top of the screen, similar to a system push notification, and the gets dismissed automatically after a period of time. 
