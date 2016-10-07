@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import VictoriousIOSSDK
 
 extension VUploadManager {
     /// Mocks current user for testing purpose.

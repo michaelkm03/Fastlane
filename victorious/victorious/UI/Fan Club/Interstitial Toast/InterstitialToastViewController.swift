@@ -6,7 +6,6 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-import Foundation
 import VictoriousIOSSDK
 
 /// A component that displays an alert as a toast.
