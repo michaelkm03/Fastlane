@@ -43,13 +43,11 @@ class TitleCardViewController: UIViewController {
     }
 
     @IBOutlet weak var marqueeView: MarqueeView!
-    @IBOutlet weak var marqueeViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet fileprivate weak var avatarView: AvatarView! {
         didSet {
             avatarView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(avatarTapped)))
         }
     }
-
 
     /// The draggable container view - the actual title card that is animated.
     @IBOutlet fileprivate weak var draggableView: UIView!
@@ -192,7 +190,7 @@ class TitleCardViewController: UIViewController {
         currentState = .hidden
         animateTitleCard(withInitialVelocity: draggableBehavior.velocity)
     }
-
+    
     fileprivate func populateUI(with stageContent: StageContent?) {
         guard isViewLoaded else {
             return
@@ -201,7 +199,9 @@ class TitleCardViewController: UIViewController {
         let author = stageContent?.content.author?.displayName ?? ""
         let title = stageContent?.metaData?.title ?? ""
         let marqueeWidth = marqueeView.updateLabels(author: author, title: title)
-        marqueeViewWidthConstraint.constant = min(marqueeWidth, Constants.maxMarqueeViewWidth)
+        let width = min(marqueeWidth, Constants.maxMarqueeViewWidth) + 66
+        draggableView.frame.size.width = width
+        draggableView.frame.origin.x = -width
         marqueeView.layoutIfNeeded()
         marqueeView.scroll()
         avatarView.user = stageContent?.content.author

@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="NM8-sM-mk9">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="NM8-sM-mk9">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
@@ -35,9 +35,6 @@
                                             </view>
                                             <view contentMode="scaleToFill" placeholderIntrinsicWidth="182" placeholderIntrinsicHeight="32" translatesAutoresizingMaskIntoConstraints="NO" id="o3m-XP-KC0" userLabel="Marquee View" customClass="MarqueeView" customModule="victorious" customModuleProvider="target">
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="182" id="YqT-cM-aK8"/>
-                                                </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y4C-Kw-xXV" customClass="AvatarView" customModule="victorious" customModuleProvider="target">
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -68,6 +65,7 @@
                                     <constraint firstItem="NaN-hT-1Us" firstAttribute="top" secondItem="PLy-eP-4dP" secondAttribute="top" id="BjB-Rv-Ppg"/>
                                     <constraint firstAttribute="trailing" secondItem="ufT-VK-ejn" secondAttribute="trailing" id="DTO-F7-HMP"/>
                                     <constraint firstItem="ufT-VK-ejn" firstAttribute="top" secondItem="PLy-eP-4dP" secondAttribute="top" id="MsU-QV-Gpx"/>
+                                    <constraint firstAttribute="width" constant="248" id="WL7-ua-W8V"/>
                                     <constraint firstAttribute="bottom" secondItem="NaN-hT-1Us" secondAttribute="bottom" id="Yz1-Bx-NTL"/>
                                     <constraint firstItem="NaN-hT-1Us" firstAttribute="leading" secondItem="PLy-eP-4dP" secondAttribute="leading" id="eTV-Sy-pqj"/>
                                     <constraint firstAttribute="bottom" secondItem="ufT-VK-ejn" secondAttribute="bottom" id="tiv-Sv-ZnC"/>
@@ -89,7 +87,6 @@
                         <outlet property="avatarView" destination="Y4C-Kw-xXV" id="nol-5d-Rvv"/>
                         <outlet property="draggableView" destination="PLy-eP-4dP" id="pTQ-c4-vGf"/>
                         <outlet property="marqueeView" destination="o3m-XP-KC0" id="iOU-2Q-CHh"/>
-                        <outlet property="marqueeViewWidthConstraint" destination="YqT-cM-aK8" id="3Kn-5T-pXS"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X7M-Rc-AjM" userLabel="First Responder" sceneMemberID="firstResponder"/>
