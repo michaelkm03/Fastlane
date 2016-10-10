@@ -6,7 +6,7 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-import Foundation
+import VictoriousIOSSDK
 
 /// Catches 401 errors and logs out the current user to force a login, i.e. reauthorization.
 class UnauthorizedErrorHandler: RequestErrorHandler {

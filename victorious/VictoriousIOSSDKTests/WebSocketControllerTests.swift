@@ -164,7 +164,9 @@ class WebSocketControllerTests: XCTestCase, ForumEventReceiver, ForumEventSender
     }
 
     // MARK: ForumEventReceiver
-
+    
+    let childEventReceivers = [ForumEventReceiver]()
+    
     func receive(_ event: ForumEvent) {
         switch event {
         case .websocket(let websocketEvent):

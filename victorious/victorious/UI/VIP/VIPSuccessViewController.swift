@@ -23,6 +23,8 @@ class VIPSuccessViewController: UIViewController {
     @IBOutlet var detailTextViewHeightConstraint: NSLayoutConstraint!
     
     weak var delegate: VIPSuccessViewControllerDelegate?
+    private let maxHeadlineHeight = CGFloat(120)
+    private let maxDetailHeight = CGFloat(120)
     
     fileprivate var dependencyManager: VDependencyManager! {
         didSet {
@@ -45,9 +47,13 @@ class VIPSuccessViewController: UIViewController {
     
     override func updateViewConstraints() {
         super.updateViewConstraints()
-        headlineTextViewHeightConstraint.constant = headlineTextView.contentSize.height
-        detailTextViewHeightConstraint.constant = detailTextView.contentSize.height
+        headlineTextViewHeightConstraint.constant = min(headlineTextView.contentSize.height, maxHeadlineHeight)
+        detailTextViewHeightConstraint.constant = min(detailTextView.contentSize.height, maxDetailHeight)
         successImageViewHeightConstraint.constant = successImageView.image?.size.height ?? 0
+    }
+    
+    override func viewDidLayoutSubviews() {
+        view.setNeedsUpdateConstraints()
     }
     
     // MARK: - Subview population

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import VictoriousIOSSDK
 
 class InterstitialAlertViewController: UIViewController, Interstitial, VBackgroundContainer {
 

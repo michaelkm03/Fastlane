@@ -31,6 +31,7 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
     
     weak var nextSender: ForumEventSender? = nil
     var dependencyManager: VDependencyManager!
+    var activeChatRoomID: ChatRoom.ID?
     
     @IBOutlet fileprivate(set) weak var collectionView: UICollectionView! {
         didSet {
@@ -124,6 +125,12 @@ class TutorialViewController: UIViewController, ChatFeed, UICollectionViewDelega
     var chatFeedItemWidth: CGFloat {
         return collectionView.bounds.width
     }
+    
+    // MARK: - ForumEventReceiver
+    
+    let childEventReceivers = [ForumEventReceiver]()
+    
+    func receive(_ event: ForumEvent) {}
     
     // MARK: - VBackgroundContainer
     

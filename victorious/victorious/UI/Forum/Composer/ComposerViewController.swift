@@ -27,6 +27,12 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         static let gifType = "gif"
     }
     
+    // MARK: - ForumEventReceiver
+    
+    let childEventReceivers = [ForumEventReceiver]()
+    
+    func receive(_ event: ForumEvent) {}
+    
     // MARK: - ForumEventSender
     
     var nextSender: ForumEventSender? {
@@ -268,25 +274,43 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         textViewHasText = true
     }
     
+    // MARK: - Managing visibiliity
+    
+    private var feedIsFiltered = false {
+        didSet {
+            updateVisibility(animated: true)
+        }
+    }
+    
+    private var feedIsChatRoom = false {
+        didSet {
+            updateVisibility(animated: true)
+        }
+    }
+    
     private var composerIsVisible = true
     
-    func setComposerVisible(_ visible: Bool, animated: Bool) {
-        guard visible != composerIsVisible else {
+    private func updateVisibility(animated: Bool) {
+        let composerShouldBeVisible = !feedIsFiltered || feedIsChatRoom
+        
+        guard composerShouldBeVisible != composerIsVisible else {
             return
         }
         
         if animated {
             UIView.animate(withDuration: Constants.animationDuration) {
-                self.setComposerVisible(visible, animated: false)
+                self.updateVisibility(animated: false)
                 self.view.layoutIfNeeded()
             }
         }
         else {
-            composerToBottomConstraint.constant = visible ? 0.0 : -totalComposerHeight
-            if !visible {
+            composerToBottomConstraint.constant = composerShouldBeVisible ? 0.0 : -totalComposerHeight
+            
+            if !composerShouldBeVisible {
                 textView.resignFirstResponder()
             }
-            composerIsVisible = visible
+            
+            composerIsVisible = composerShouldBeVisible
             delegate?.composer(self, didUpdateContentHeight: totalComposerHeight)
         }
     }
@@ -431,6 +455,8 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         updateAppearanceFromDependencyManager()
         composerTextViewManager = ComposerTextViewManager(textView: textView, delegate: self, maximumTextLength: maximumTextLength)
         setupHashtagBar()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(mainFeedFilterDidChange), name: NSNotification.Name(rawValue: RESTForumNetworkSource.updateStreamURLNotification), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -458,7 +484,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
         var textViewContentHeight = textView.calculatePlaceholderTextHeight()
         var textViewContainerHeight = textViewContentHeight
         if textViewHasText {
-            textViewContentHeight = ceil(textView.contentSize.height)
+            textViewContentHeight = ceil(textView.contentHeight())
             //Ensure that text view container is less than maximum height
             textViewContainerHeight = min(textViewContentHeight, maximumTextInputHeight)
         }
@@ -855,6 +881,14 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     private func cleanup() {
         composerTextViewManager?.resetTextView(textView)
         selectedAsset = nil
+    }
+    
+    // MARK: - Notifications
+    
+    private dynamic func mainFeedFilterDidChange(notification: NSNotification) {
+        let selectedItem = notification.userInfo?["selectedItem"] as? ListMenuSelectedItem
+        feedIsFiltered = selectedItem?.streamAPIPath != nil
+        feedIsChatRoom = selectedItem?.chatRoomID != nil
     }
     
     // MARK: - PastableTextViewDelegate

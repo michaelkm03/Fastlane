@@ -7,6 +7,7 @@
 //
 
 #import "VPlaceholderTextView.h"
+#import "victorious-Swift.h"
 
 static const CGFloat kPlaceholderAlphaNoText = 0.5f;
 static const CGFloat kPlaceholderAlphaEnteringText = 0.2f;
@@ -162,13 +163,22 @@ static const CGFloat kPlaceholderAlphaEnteringText = 0.2f;
                                                                             options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
                                                                          attributes:@{NSFontAttributeName : self.placeholderTextView.font}
                                                                             context:nil]);
-    UIEdgeInsets edgeInsets = self.contentInset;
+    UIEdgeInsets edgeInsets = self.v_textInsets;
     textHeight += edgeInsets.top + edgeInsets.bottom;
     
     UIEdgeInsets containerEdgeInsets = self.textContainerInset;
     textHeight += containerEdgeInsets.top + containerEdgeInsets.bottom;
     
     return textHeight;
+}
+
+- (CGFloat)contentHeight
+{
+    CGFloat contentSizeHeight = self.contentSize.height;
+    UIEdgeInsets edgeInsets = self.v_textInsets;
+    contentSizeHeight += edgeInsets.top + edgeInsets.bottom;
+    
+    return contentSizeHeight;
 }
 
 #pragma mark - UIView Overrides

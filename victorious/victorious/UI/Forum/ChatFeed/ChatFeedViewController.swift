@@ -108,6 +108,14 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         loadingView?.isLoading = loadingViewEnabled && isLoading
     }
     
+    // MARK: - Chat room support
+    
+    var activeChatRoomID: ChatRoom.ID? {
+        didSet {
+            collectionView.reloadData()
+        }
+    }
+    
     // MARK: - ForumEventReceiver
     
     var childEventReceivers: [ForumEventReceiver] {
@@ -251,7 +259,11 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
     }
     
     func pendingItems(for chatFeedDataSource: ChatFeedDataSource) -> [ChatFeedContent] {
-        return delegate?.publisher(for: self)?.pendingItems ?? []
+        guard let publisher = delegate?.publisher(for: self) else {
+            return []
+        }
+        
+        return publisher.pendingItems(forChatRoomWithID: activeChatRoomID)
     }
     
     fileprivate func removePendingContent(_ contentToRemove: [ChatFeedContent]) -> [Int] {
@@ -259,7 +271,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
             return []
         }
         
-        if publisher.pendingItems.isEmpty || contentToRemove.isEmpty {
+        if publisher.pendingItems(forChatRoomWithID: activeChatRoomID).isEmpty || contentToRemove.isEmpty {
             return []
         }
         

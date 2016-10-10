@@ -22,14 +22,14 @@ class VIPSelectSubscriptionOperationTests: XCTestCase {
     ]
     
     func testValidProducts() {
-        let operation = VIPSelectSubscriptionOperation(products: validProducts, originViewController: UIViewController())
+        let operation = VIPSelectSubscriptionOperation(products: validProducts, originViewController: UIViewController(), dependencyManager: VDependencyManager(dictionary: ["key": "value"]))
         operation.execute { result in
             XCTFail("Operation execution finished unexpectedly without user interaction")
         }
     }
     
     func testInvalidProducts() {
-        let operation = VIPSelectSubscriptionOperation(products: invalidProducts, originViewController: UIViewController())
+        let operation = VIPSelectSubscriptionOperation(products: invalidProducts, originViewController: UIViewController(), dependencyManager: VDependencyManager(dictionary: ["key": "value"]))
         operation.execute { result in
             switch result {
                 case .failure(let error as NSError):

@@ -86,6 +86,8 @@ private class MockLinkSender: ForumEventSender {
 }
 
 private class MockReceiver: ForumEventReceiver {
+    var childEventReceivers = [ForumEventReceiver]()
+
     var receivedEvents = [ForumEvent]()
     
     func receive(_ event: ForumEvent) {

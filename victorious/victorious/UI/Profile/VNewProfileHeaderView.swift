@@ -16,7 +16,7 @@ protocol ConfigurableGridStreamHeaderDelegate: class {
 /// The collection header view used for `VNewProfileViewController`.
 @IBDesignable
 class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHeader {
-    fileprivate static let blurRadius = CGFloat(12)
+    private static let blurRadius = CGFloat(12)
     
     // MARK: - Initializing
     
@@ -32,6 +32,7 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         populateUserContent()
         
         NotificationCenter.default.addObserver(self, selector: #selector(currentUserDidUpdate), name: NSNotification.Name(rawValue: VCurrentUser.userDidUpdateNotificationKey), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(currentUserDidChange), name: NSNotification.Name.loggedInChanged, object: nil)
     }
     
     // MARK: - Models
@@ -42,26 +43,26 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         }
     }
     
-    fileprivate static let observedUserProperties = ["name", "location", "tagline", "isVIPSubscriber", "likesGiven", "likesReceived", "pictureURL"]
+    private static let observedUserProperties = ["name", "location", "tagline", "isVIPSubscriber", "likesGiven", "likesReceived", "pictureURL"]
     
     // MARK: - Views
     
-    @IBOutlet fileprivate var contentContainerView: UIView!
-    @IBOutlet fileprivate var loadingContainerView: UIView!
-    @IBOutlet fileprivate var loadingSpinner: UIActivityIndicatorView!
-    @IBOutlet fileprivate var backgroundImageView: UIImageView!
-    @IBOutlet fileprivate var displayNameLabel: UILabel!
-    @IBOutlet fileprivate var usernameLabel: UILabel!
-    @IBOutlet fileprivate var statsContainerView: UIView!
-    @IBOutlet fileprivate var upvotesGivenValueLabel: UILabel!
-    @IBOutlet fileprivate var upvotesGivenTitleLabel: UILabel!
-    @IBOutlet fileprivate var upvotesReceivedValueLabel: UILabel!
-    @IBOutlet fileprivate var upvotesReceivedTitleLabel: UILabel!
-    @IBOutlet fileprivate var tierValueLabel: UILabel!
-    @IBOutlet fileprivate var tierTitleLabel: UILabel!
-    @IBOutlet fileprivate var locationLabel: UILabel!
-    @IBOutlet fileprivate var taglineLabel: UILabel!
-    @IBOutlet fileprivate var avatarView: AvatarView!
+    @IBOutlet private var contentContainerView: UIView!
+    @IBOutlet private var loadingContainerView: UIView!
+    @IBOutlet private var loadingSpinner: UIActivityIndicatorView!
+    @IBOutlet private var backgroundImageView: UIImageView!
+    @IBOutlet private var displayNameLabel: UILabel!
+    @IBOutlet private var usernameLabel: UILabel!
+    @IBOutlet private var statsContainerView: UIView!
+    @IBOutlet private var upvotesGivenValueLabel: UILabel!
+    @IBOutlet private var upvotesGivenTitleLabel: UILabel!
+    @IBOutlet private var upvotesReceivedValueLabel: UILabel!
+    @IBOutlet private var upvotesReceivedTitleLabel: UILabel!
+    @IBOutlet private var tierValueLabel: UILabel!
+    @IBOutlet private var tierTitleLabel: UILabel!
+    @IBOutlet private var locationLabel: UILabel!
+    @IBOutlet private var taglineLabel: UILabel!
+    @IBOutlet private var avatarView: AvatarView!
     
     // MARK: - Configuration
     
@@ -78,7 +79,7 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         }
     }
     
-    fileprivate func applyDependencyManagerStyles() {
+    private func applyDependencyManagerStyles() {
         let appearanceKey = user?.accessLevel.isCreator == true ? VNewProfileViewController.creatorAppearanceKey : VNewProfileViewController.userAppearanceKey
         let appearanceDependencyManager = dependencyManager?.childDependency(forKey: appearanceKey)
         
@@ -115,17 +116,20 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
     
     // MARK: - Populating content
     
-    fileprivate dynamic func currentUserDidUpdate() {
+    private dynamic func currentUserDidUpdate() {
         // Only update the header if we are displaying the current user.
         guard self.user?.id == VCurrentUser.user?.id else {
             return
         }
 
         user = VCurrentUser.user
-        populateUserContent()
     }
     
-    fileprivate func populateUserContent() {
+    private dynamic func currentUserDidChange() {
+        user = VCurrentUser.user
+    }
+    
+    private func populateUserContent() {
         let userIsCreator = user?.accessLevel.isCreator == true
         
         statsContainerView.isHidden = userIsCreator
@@ -169,7 +173,7 @@ class VNewProfileHeaderView: UICollectionReusableView, ConfigurableGridStreamHea
         loadingContainerView.isHidden = user != nil
     }
     
-    fileprivate let numberFormatter = VLargeNumberFormatter()
+    private let numberFormatter = VLargeNumberFormatter()
     
     // MARK: - ConfigurableGridStreamHeader
     

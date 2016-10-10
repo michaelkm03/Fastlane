@@ -10,6 +10,7 @@
 
     import UIKit
     import MessageUI
+    import VictoriousIOSSDK
 
     class WebSocketDebuggingViewController: UITableViewController, MFMailComposeViewControllerDelegate {
 

@@ -29,8 +29,6 @@ protocol Composer: class, ForumEventReceiver, ForumEventSender, ComposerAttachme
     
     func sendMessage(asset: ContentMediaAsset, previewImage: UIImage, text: String?, currentUser: UserModel, isVIPOnly: Bool)
     
-    func setComposerVisible(_ visible: Bool, animated: Bool)
-    
     func showKeyboard()
     
     func append(_ text: String)

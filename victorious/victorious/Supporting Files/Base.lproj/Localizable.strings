@@ -203,8 +203,6 @@
 "SubscriptionDescriptionNoDateFormat"   = "%@ per month.";  // e.g. "$2.99 per month"
 "PurchasesSettingsTitle"                = "In-App Purchases";
 "SubscriptionsSettingsTitle"            = "Subscriptions";
-"Become a VIP"                          = "Become a VIP";
-"Select payment schedule"               = "Select payment schedule for after your free trial";
 
 "SubscriptionRestoreFailed"             = "Failed to restore subcription.";
 "SubscriptionActivityRestoring"         = "Checking for subscription...";

@@ -93,12 +93,16 @@ class VIPSubscriptionHelper {
     }
     
     fileprivate func showSubscriptionSelectionForProducts(_ products: [VProduct]) {
-        guard let originViewController = originViewController else {
+        guard
+            let originViewController = originViewController,
+            let selectionDependency = dependencyManager.selectionDialogDependency
+        else {
+            Log.error("We want to show subscription selection dialog, but got invalid originViewController or selectionDependencyManager")
             delegate?.setIsLoading(false, title: nil)
             return
         }
         
-        let selectSubscription = VIPSelectSubscriptionOperation(products: products, originViewController: originViewController)
+        let selectSubscription = VIPSelectSubscriptionOperation(products: products, originViewController: originViewController, dependencyManager: selectionDependency)
         let willShowPrompt = selectSubscription.willShowPrompt
         if willShowPrompt {
             delegate?.setIsLoading(false, title: nil)
@@ -108,12 +112,10 @@ class VIPSubscriptionHelper {
                 return
             }
             
-            let selectionDependency = strongSelf.dependencyManager.selectionDialogDependency
-            
             switch result {
                 case .success(let selectedProduct):
                     if willShowPrompt {
-                        selectionDependency?.trackButtonEvent(.tap)
+                        selectionDependency.trackButtonEvent(.tap)
                     }
                     self?.delegate?.setIsLoading(true, title: nil)
                     self?.subscribeToProduct(selectedProduct)
@@ -124,7 +126,7 @@ class VIPSubscriptionHelper {
                     originViewController.showSubscriptionAlert(for: error as NSError)
                 case .cancelled:
                     if willShowPrompt {
-                        selectionDependency?.trackButtonEvent(.cancel)
+                        selectionDependency.trackButtonEvent(.cancel)
                     }
                     self?.delegate?.setIsLoading(false, title: nil)
             }
