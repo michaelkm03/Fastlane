@@ -8,7 +8,7 @@
 
 #import "VVideoUtils.h"
 #import "VConstants.h"
-#import <KVOController/FBKVOController.h>
+@import KVOController;
 
 @implementation VVideoUtils
 

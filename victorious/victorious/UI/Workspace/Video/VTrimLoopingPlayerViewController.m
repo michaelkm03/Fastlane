@@ -9,7 +9,7 @@
 #import "VTrimLoopingPlayerViewController.h"
 #import "UIView+AutoLayout.h"
 
-#import <KVOController/FBKVOController.h>
+@import KVOController;
 
 // Video
 #import "VAssetLoader.h"

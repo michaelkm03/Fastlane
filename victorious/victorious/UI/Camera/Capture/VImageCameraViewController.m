@@ -10,7 +10,7 @@
 
 // Library
 #import <MBProgressHUD/MBProgressHUD.h>
-#import <KVOController/FBKVOController.h>
+@import KVOController;
 
 // Dependencies
 #import "VConstants.h"

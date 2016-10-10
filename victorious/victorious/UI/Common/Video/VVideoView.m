@@ -7,7 +7,7 @@
 //
 
 #import "VVideoView.h"
-#import <KVOController/FBKVOController.h>
+@import KVOController;
 #import "VVideoUtils.h"
 
 @import AVFoundation;
