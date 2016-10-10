@@ -134,7 +134,7 @@ import VictoriousIOSSDK
             nameTitleIndex += 1
             nameTitleIndex %= nameTitle.count
             
-            let time = TimeInterval(15)//next["length"] != nil ? Double(next["length"]!)! : ForumViewController.defaultStageContentLength
+            let time = next["length"] != nil ? Double(next["length"]!)! : ForumViewController.defaultStageContentLength
             
             VTimerManager.add(
                 withTimeInterval: time,
