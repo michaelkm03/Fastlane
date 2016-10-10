@@ -42,6 +42,9 @@ else
     DESTINATION="platform=iOS,name=${DEVICE_NAME}"
 fi
 
+# Remove Derived Data
+rm -rf ~/Library/Developer/Xcode/DerivedData
+
 # Clean
 xcodebuild clean \
    -workspace victorious/victorious.xcworkspace \
