@@ -173,8 +173,8 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
             title: item.name,
             context: context,
             trackingAPIPaths: trackingAPIPaths.map { path in
-                var path = path
-                path.macroReplacements[macro] = chatRoom.id
+                let path = path
+                path.macroReplacements[macro] = item.id
                 return path
             }
         )

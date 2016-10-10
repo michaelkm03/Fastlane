@@ -390,6 +390,7 @@
 		621320041D9DDABD00A1B5BD /* CommunityItemsFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621320031D9DDABD00A1B5BD /* CommunityItemsFetchOperation.swift */; };
 		621320071D9DE5DE00A1B5BD /* CommunityItemsFetchOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621320061D9DE5DE00A1B5BD /* CommunityItemsFetchOperationTests.swift */; };
 		622103491C65354A00A77A73 /* LoginOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622103481C65354A00A77A73 /* LoginOperationTests.swift */; };
+		623021511DAC521400F4690C /* VDependencyManager+ButtonTrackingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 623021501DAC521400F4690C /* VDependencyManager+ButtonTrackingTests.swift */; };
 		6232D4701C86539E00B1D9B8 /* TestTrackingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6232D46F1C86539E00B1D9B8 /* TestTrackingManager.swift */; };
 		6236F8761C36030000746476 /* TestRequestExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6236F8751C36030000746476 /* TestRequestExecutor.swift */; };
 		6236F8801C36056A00746476 /* PaginatedDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B0A61F1C347A01008B875C /* PaginatedDataSourceTests.swift */; };
@@ -1818,6 +1819,7 @@
 		621320031D9DDABD00A1B5BD /* CommunityItemsFetchOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommunityItemsFetchOperation.swift; path = "List Menu/CommunityItemsFetchOperation.swift"; sourceTree = "<group>"; };
 		621320061D9DE5DE00A1B5BD /* CommunityItemsFetchOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CommunityItemsFetchOperationTests.swift; path = Operations/CommunityItemsFetchOperationTests.swift; sourceTree = "<group>"; };
 		622103481C65354A00A77A73 /* LoginOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginOperationTests.swift; sourceTree = "<group>"; };
+		623021501DAC521400F4690C /* VDependencyManager+ButtonTrackingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "VDependencyManager+ButtonTrackingTests.swift"; path = "Managers/Dependencies/VDependencyManager+ButtonTrackingTests.swift"; sourceTree = "<group>"; };
 		6232D46F1C86539E00B1D9B8 /* TestTrackingManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestTrackingManager.swift; sourceTree = "<group>"; };
 		6236F8751C36030000746476 /* TestRequestExecutor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestRequestExecutor.swift; sourceTree = "<group>"; };
 		6236F8771C36037200746476 /* AccountCreateOperationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountCreateOperationTests.swift; sourceTree = "<group>"; };
@@ -4434,6 +4436,22 @@
 			name = Operations;
 			sourceTree = "<group>";
 		};
+		6230214E1DAC51C300F4690C /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				6230214F1DAC51D100F4690C /* Dependencies */,
+			);
+			name = Managers;
+			sourceTree = "<group>";
+		};
+		6230214F1DAC51D100F4690C /* Dependencies */ = {
+			isa = PBXGroup;
+			children = (
+				623021501DAC521400F4690C /* VDependencyManager+ButtonTrackingTests.swift */,
+			);
+			name = Dependencies;
+			sourceTree = "<group>";
+		};
 		6232D46E1C86539E00B1D9B8 /* Tracking */ = {
 			isa = PBXGroup;
 			children = (
@@ -5796,6 +5814,7 @@
 				03A7614E1B3232970016B69D /* NSURL+VDataCacheIDTests.m */,
 				7987D7981B8A66C400EE4A39 /* NSURL+VTemporaryFilesTests.m */,
 				79070A2A1CFE73570049CFC3 /* ShowTutorialsOperationTests.swift */,
+				6230214E1DAC51C300F4690C /* Managers */,
 				621320051D9DE58800A1B5BD /* Operations */,
 				7AFE92071D6636B1005D51A4 /* Simple Models */,
 				7AC194621D2DD2FC001B15B8 /* String+InitialsTests.swift */,
@@ -8344,6 +8363,7 @@
 				A7DCA50F1C128A78004E35B4 /* VUploadTaskCreatorTests.m in Sources */,
 				7AFE92091D6636C9005D51A4 /* CallbackTests.swift in Sources */,
 				A7DCA50C1C128A78004E35B4 /* VTrackingManagerTests.m in Sources */,
+				623021511DAC521400F4690C /* VDependencyManager+ButtonTrackingTests.swift in Sources */,
 				7AC194631D2DD2FC001B15B8 /* String+InitialsTests.swift in Sources */,
 				67F50A951D9C9E230055E44E /* ListMenuSectionHeaderViewTests.swift in Sources */,
 				7AE0A0471D64EA8100769080 /* AccessoryScreenTest.swift in Sources */,

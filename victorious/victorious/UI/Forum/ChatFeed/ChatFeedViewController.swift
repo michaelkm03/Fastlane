@@ -6,7 +6,6 @@
 //  Copyright © 2016 Victorious. All rights reserved.
 //
 
-import UIKit
 import VictoriousIOSSDK
 
 class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDelegate, UICollectionViewDelegateFlowLayout, NewItemsControllerDelegate, ChatFeedMessageCellDelegate {
@@ -326,7 +325,7 @@ class ChatFeedViewController: UIViewController, ChatFeed, ChatFeedDataSourceDele
         }
         
         delegate?.chatFeed(self, didSelectReplyButtonFor: content)
-        dependencyManager.trackButtonEvent(.tap, forTrackingKey: "reply.tracking")
+        dependencyManager.trackButtonEvent(.tap, for: "reply.tracking", with: activeChatRoomID.map { ["%%ROOM_ID%%": $0] })
     }
     
     func messageCell(_ messageCell: ChatFeedMessageCell, didSelectLinkURL url: URL) {
