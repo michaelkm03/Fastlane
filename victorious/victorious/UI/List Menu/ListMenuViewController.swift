@@ -164,8 +164,8 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
         }
         
         let macro = "%%ROOM_ID%%"
-        streamAPIPath.macroReplacements[macro] = chatRoom.name
-        let context = DeeplinkContext(value: DeeplinkContext.chatRoomFeed, subContext: chatRoom.name)
+        streamAPIPath.macroReplacements[macro] = chatRoom.id
+        let context = DeeplinkContext(value: DeeplinkContext.chatRoomFeed, subContext: chatRoom.id)
         
         let selectedItem = ListMenuSelectedItem(
             streamAPIPath: streamAPIPath,
@@ -174,7 +174,7 @@ class ListMenuViewController: UIViewController, UICollectionViewDelegate, UIColl
             context: context,
             trackingAPIPaths: trackingAPIPaths.map { path in
                 var path = path
-                path.macroReplacements[macro] = chatRoom.name
+                path.macroReplacements[macro] = chatRoom.id
                 return path
             }
         )
