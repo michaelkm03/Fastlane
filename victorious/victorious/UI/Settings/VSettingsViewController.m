@@ -158,7 +158,7 @@ static NSString * const kLikedContentScreenKey = @"likedContentScreen";
     {
         UITableViewCell *tableViewCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:VSettingsActionResetCoachmarks inSection:0]];
         UILabel *label = tableViewCell.textLabel;
-        NSArray *shownCoachmarks = [[NSUserDefaults standardUserDefaults] objectForKey:@"shownCoachmarks"];
+        NSArray *shownCoachmarks = [CoachmarkManager fetchShownCoachmarkIDs];
         BOOL canResetCoachmarks = shownCoachmarks != nil && shownCoachmarks.count > 0;
         label.textColor = canResetCoachmarks ? [UIColor blueColor] : [UIColor lightGrayColor];
         tableViewCell.userInteractionEnabled = canResetCoachmarks;
