@@ -14,8 +14,9 @@ N/A
 - [ ] Functionality 3
 
 **General Code Review Guidelines**
-- Code conforms to our style guide, and is readable and maintainable
-- Existing functionality is unaffected (no regressions)
+- Code coming into dev is OK to be released
+- Code conforms to our style guide
+- No regressions
 - Addresses everything mentioned in the ticket and product spec
 - Includes unit tests with a high level of coverage (for new models, requests and operations at least)
 - All user-facing strings are localized, and the keys used are added in Localizable.strings (base) file
