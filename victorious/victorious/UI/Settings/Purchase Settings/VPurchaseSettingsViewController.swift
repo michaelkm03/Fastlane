@@ -14,12 +14,12 @@ extension VPurchaseSettingsViewController {
     
     func setIsLoading(_ isLoading: Bool, title: String? = nil) {
         if isLoading {
-            MBProgressHUD.hideAllHUDs(for: self.view, animated: false)
-            let progressHUD = MBProgressHUD.showAdded(to: self.view, animated: true)!
+            MBProgressHUD.hide(for: self.view, animated: false)
+            let progressHUD = MBProgressHUD.showAdded(to: self.view, animated: true)
             progressHUD.mode = .indeterminate
-            progressHUD.labelText = title
+            progressHUD.label.text = title
         } else {
-            MBProgressHUD.hideAllHUDs(for: self.view, animated: true)
+            MBProgressHUD.hide(for: self.view, animated: true)
         }
     }
     

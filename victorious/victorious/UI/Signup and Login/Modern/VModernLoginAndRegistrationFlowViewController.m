@@ -313,7 +313,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
                                        handler:^(FBSDKLoginManagerLoginResult *result, NSError *error)
          {
              self.actionsDisabled = NO;
-             [self.facebookLoginProgressHUD hide:YES];
+             [self.facebookLoginProgressHUD hideAnimated:YES];
              self.facebookLoginProgressHUD = nil;
              
              if ( [FBSDKAccessToken currentAccessToken] != nil )
@@ -748,7 +748,7 @@ static NSString * const kKeyboardStyleKey = @"keyboardStyle";
     // This handles the case where the user taps "Cancel" on the "This app wants to open Facebook" prompt.
     if ( self.facebookLoginProgressHUD != nil )
     {
-        [self.facebookLoginProgressHUD hide:YES];
+        [self.facebookLoginProgressHUD hideAnimated:YES];
         self.facebookLoginProgressHUD = nil;
         self.actionsDisabled = NO;
     }
