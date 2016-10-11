@@ -8,15 +8,17 @@
 
 #import "FBKVOController.h"
 #import "Nocilla.h"
+
 #import "NSString+VDataCacheID.h"
 #import "NSURL+VDataCacheID.h"
 #import "VTemplateDownloadOperation.h"
 #import "VTemplateSerialization.h"
+#import "VEnvironment.h"
+
+#import <VictoriousCommon/VictoriousCommon-Swift.h>
 
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
-
-@import VictoriousCommon;
 
 @interface VBasicTemplateDownloaderMock : NSObject <VTemplateDownloader>
 
