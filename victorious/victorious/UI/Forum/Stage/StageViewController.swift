@@ -139,6 +139,7 @@ class StageViewController: UIViewController, Stage, CaptionBarViewControllerDele
             let imageView = UIImageView(image: image)
             imageView.contentMode = .scaleAspectFill
             view.insertSubview(imageView, belowSubview: titleCardContainerView)
+            view.v_addFitToParentConstraints(toSubview: imageView)
             self.stayTunedImageView = imageView
             show(animated: false)
         }
