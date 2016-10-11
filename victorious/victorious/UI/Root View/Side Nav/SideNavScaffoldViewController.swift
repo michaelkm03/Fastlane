@@ -76,7 +76,7 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
         
         showCreatorLogoTitle()
         
-        if dependencyManager.shouldOpenLeftNavInitially {
+        if dependencyManager.shouldShowLeftNavOnLaunch {
             sideMenuController.openSideViewController(on: .left, animated: false)
         }
     }
@@ -240,8 +240,7 @@ class SideNavScaffoldViewController: UIViewController, Scaffold, UINavigationCon
 }
 
 private extension VDependencyManager {
-    var shouldOpenLeftNavInitially: Bool {
-        // TODO: This should come from the template.
-        return true
+    var shouldShowLeftNavOnLaunch: Bool {
+        return bool(for: "show.list.menu.on.launch") ?? false
     }
 }
