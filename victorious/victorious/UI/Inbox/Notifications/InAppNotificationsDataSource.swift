@@ -19,16 +19,17 @@ class InAppNotificationsDataSource: NSObject, UITableViewDataSource {
         super.init()
     }
     
-    func loadNotifications(_ completion: ((NSError?) -> Void)? = nil ) {
+    func load(_ completion: ((OperationResult<[InAppNotification]>) -> Void)? = nil) {
         guard
             let notificationAPIPath = dependencyManager.notificationListApiPath,
             let request = InAppNotificationsRequest(apiPath: notificationAPIPath)
         else {
-            Log.warning("")
+            Log.warning("Unable to initialize a InAppNotificationRequest")
             return
         }
-        RequestOperation(request: request).queue() { result in
-            
+        
+        RequestOperation(request: request).queue { result in
+            completion?(result)
         }
     }
     

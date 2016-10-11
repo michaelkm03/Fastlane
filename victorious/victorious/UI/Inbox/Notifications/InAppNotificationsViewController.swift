@@ -29,7 +29,6 @@ class InAppNotificationsViewController: UIViewController, UITableViewDelegate, I
         extendedLayoutIncludesOpaqueBars = false
         
         dataSource.registerCells(for: tableView)
-        dataSource.delegate = self
         
         refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
         refreshControl.tintColor = dependencyManager.refreshControlColor
