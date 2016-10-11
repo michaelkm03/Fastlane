@@ -64,7 +64,7 @@ final class VIPSelectSubscriptionOperation: AsyncOperation<VProduct>, UIAlertVie
         }
         alert.addAction(action)
         
-        originViewController.present(alert, animated: true, completion: nil)
+        originViewController.present(alert, animated: true)
     }
 }
 

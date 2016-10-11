@@ -243,14 +243,14 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
         //  the current state of the paginated data source
         self.collectionView.performBatchUpdates({
             self.collectionView.reloadSections( IndexSet(integer: 0) )
-            }, completion: nil)
+            })
     }
     
     func updateViewWithResult( _ result: MediaSearchDataSourceAdapter.ChangeResult? ) {
         if let result = result , result.hasChanges {
             self.collectionView.performBatchUpdates({
                 self.collectionView.applyDataSourceChanges( result )
-                }, completion: nil)
+                })
         }
         if result?.error != nil || (result?.hasChanges == false && (self.dataSourceAdapter.dataSource?.visibleItems.count ?? 0) == 0) {
             self.collectionView.reloadData()
@@ -261,7 +261,7 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
         self.collectionView.performBatchUpdates({
             let result = self.dataSourceAdapter.clear()
             self.collectionView.applyDataSourceChanges( result )
-            }, completion: nil)
+            })
         
         self.selectedIndexPath = nil
         self.previewSection = nil
@@ -291,7 +291,7 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
             let result = self.dataSourceAdapter.addHighlightSection(forIndexPath: indexPath)
             sectionInserted = result.insertedSections?.integerGreaterThan(0)
             self.collectionView.applyDataSourceChanges( result )
-            }, completion: nil)
+            })
         
         if let sectionInserted = sectionInserted {
             let previewCellIndexPath = IndexPath(row: 0, section: sectionInserted)
@@ -312,7 +312,7 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
     fileprivate func updateLayout() {
         self.collectionView.performBatchUpdates({
             self.collectionView.collectionViewLayout.invalidateLayout()
-        }, completion: nil)
+        })
     }
     
     /// Removes the section showing a search result preview at the specified index path
@@ -320,14 +320,14 @@ class MediaSearchViewController: UIViewController, UISearchBarDelegate, VPaginat
         self.collectionView.performBatchUpdates({
             let result = self.dataSourceAdapter.removeHighlightSection()
             self.collectionView.applyDataSourceChanges(result)
-        }, completion: nil)
+        })
         
         self.selectedIndexPath = nil
         self.previewSection = nil
         
         self.collectionView.performBatchUpdates({
             self.collectionView.collectionViewLayout.invalidateLayout()
-        }, completion: nil)
+        })
         
         self.updateNavigationItemState()
     }

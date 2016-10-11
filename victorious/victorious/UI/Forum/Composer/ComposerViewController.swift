@@ -532,7 +532,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
                 self.textView.layoutIfNeeded()
                 self.textView.setContentOffset(previousContentOffset, animated: false)
             }
-        }, completion: nil)
+        })
         
         super.updateViewConstraints()
     }
@@ -550,7 +550,7 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
             self.textInputAreaToTrayContainerConstraint.constant = visibleKeyboardHeight
                 self.delegate?.composer(self, didUpdateContentHeight: self.totalComposerHeight)
                 self.view.layoutIfNeeded()
-                }, completion: nil)
+                })
         } else {
             textInputAreaToTrayContainerConstraint.constant = visibleKeyboardHeight
             self.view.setNeedsLayout()

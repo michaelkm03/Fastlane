@@ -42,7 +42,7 @@ class InterstitialAlertPresentationController: UIPresentationController {
         // Fade in the dimming view alongside the transition
         transitionCoordinator.animate(alongsideTransition: { (context) in
             self.dimmingView.alpha = 0
-        }, completion: nil)
+        })
     }
     
     override func dismissalTransitionDidEnd(_ completed: Bool) {
