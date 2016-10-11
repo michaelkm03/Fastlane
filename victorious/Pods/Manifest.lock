@@ -23,17 +23,17 @@ PODS:
   - SDWebImage/Core (3.8.2)
 
 DEPENDENCIES:
-  - CCHLinkTextView
-  - FBSDKCoreKit
-  - FBSDKLoginKit
-  - FBSDKShareKit
+  - CCHLinkTextView (~> 1.2.0)
+  - FBSDKCoreKit (~> 4.16.0)
+  - FBSDKLoginKit (~> 4.16.1)
+  - FBSDKShareKit (~> 4.16.1)
   - FLAnimatedImage (~> 1.0)
-  - KVOController
-  - MBProgressHUD
+  - KVOController (~> 1.2.0)
+  - MBProgressHUD (~> 1.0.0)
   - Nocilla (from `https://github.com/TouchFrame/Nocilla.git`)
-  - OCMock
+  - OCMock (~> 3.3.1)
   - Reveal-SDK
-  - SDWebImage
+  - SDWebImage (~> 3.8.2)
 
 EXTERNAL SOURCES:
   Nocilla:
@@ -58,6 +58,6 @@ SPEC CHECKSUMS:
   Reveal-SDK: 4d36a47c7091843eee525b72219e005b90bbac0b
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
 
-PODFILE CHECKSUM: 25b38cbf247967b515d9e7d5819c185198d9a759
+PODFILE CHECKSUM: 895545510bf0abcb1796827eab5aeb6356bb0ed9
 
 COCOAPODS: 1.1.0.rc.2

@@ -6,26 +6,26 @@ inhibit_all_warnings!
 use_frameworks!
 
 target 'victorious' do
-    pod 'MBProgressHUD'
-    pod 'KVOController'
-    pod 'SDWebImage'
-    pod 'CCHLinkTextView'
-    pod 'FBSDKCoreKit'
-    pod 'FBSDKLoginKit'
-    pod 'FBSDKShareKit'
+    pod 'MBProgressHUD', '~> 1.0.0'
+    pod 'KVOController', '~> 1.2.0'
+    pod 'SDWebImage', '~> 3.8.2'
+    pod 'CCHLinkTextView', '~> 1.2.0'
+    pod 'FBSDKCoreKit', '~> 4.16.0'
+    pod 'FBSDKLoginKit', '~> 4.16.1'
+    pod 'FBSDKShareKit', '~> 4.16.1'
     pod 'FLAnimatedImage', '~> 1.0'
     pod 'Reveal-SDK', :configurations => ['Debug']
 
     target 'victoriousTests' do
         inherit! :search_paths
         pod 'Nocilla', :git => 'https://github.com/TouchFrame/Nocilla.git'
-        pod 'OCMock'
+        pod 'OCMock', '~> 3.3.1'
     end
 
     target 'VictoriousCommonTests' do
         inherit! :search_paths
         pod 'Nocilla', :git => 'https://github.com/TouchFrame/Nocilla.git'
-        pod 'OCMock'
+        pod 'OCMock', '~> 3.3.1'
     end
 
 end
