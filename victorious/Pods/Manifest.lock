@@ -17,6 +17,7 @@ PODS:
   - MBProgressHUD (1.0.0)
   - Nocilla (0.10.0)
   - OCMock (3.3.1)
+  - Reveal-SDK (2)
   - SDWebImage (3.8.2):
     - SDWebImage/Core (= 3.8.2)
   - SDWebImage/Core (3.8.2)
@@ -31,6 +32,7 @@ DEPENDENCIES:
   - MBProgressHUD
   - Nocilla (from `https://github.com/TouchFrame/Nocilla.git`)
   - OCMock
+  - Reveal-SDK
   - SDWebImage
 
 EXTERNAL SOURCES:
@@ -53,8 +55,9 @@ SPEC CHECKSUMS:
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
   Nocilla: dccf5666770bd2edafffa23333362dec66001e4a
   OCMock: f3f61e6eaa16038c30caa5798c5e49d3307b6f22
+  Reveal-SDK: 4d36a47c7091843eee525b72219e005b90bbac0b
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
 
-PODFILE CHECKSUM: 9ace50f67f59633589e034ffb32e2807bb9fb475
+PODFILE CHECKSUM: 25b38cbf247967b515d9e7d5819c185198d9a759
 
 COCOAPODS: 1.1.0.rc.2

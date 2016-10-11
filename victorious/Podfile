@@ -14,6 +14,7 @@ target 'victorious' do
     pod 'FBSDKLoginKit'
     pod 'FBSDKShareKit'
     pod 'FLAnimatedImage', '~> 1.0'
+    pod 'Reveal-SDK', :configurations => ['Debug']
 
     target 'victoriousTests' do
         inherit! :search_paths
