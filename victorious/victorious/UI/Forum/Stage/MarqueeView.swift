@@ -96,7 +96,6 @@ class MarqueeView: UIView {
             width: titleLabelSize.width,
             height: titleLabelSize.height
         )
-
         return max(authorLabelA.frame.size.width, titleLabelA.frame.size.width)
     }
 
