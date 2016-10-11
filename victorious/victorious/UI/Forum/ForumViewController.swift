@@ -576,7 +576,13 @@ class ForumViewController: UIViewController, Forum, VBackgroundContainer, VFocus
             chatFeed?.collectionView.deleteItems(at: indexPaths as [IndexPath])
         }
     }
-    
+
+    // MARK: - ComposerDelegate
+
+    func didSelectNavigationMenuItem(_ navigationMenuItem: VNavigationMenuItem) {
+        navigationMenuItem.dependencyManager.trackButtonEvent(.tap, for: VDependencyManager.defaultTrackingKey, with:  activeChatRoomID.map { ["%%ROOM_ID%%": $0] })
+    }
+
     // MARK: - VFocusable
     
     var focusType: VFocusType = .none {

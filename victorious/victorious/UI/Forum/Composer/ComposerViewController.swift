@@ -739,6 +739,8 @@ class ComposerViewController: UIViewController, Composer, ComposerTextViewManage
     // MARK: - ComposerAttachmentTabBarDelegate
     
     func composerAttachmentTabBar(_ composerAttachmentTabBar: ComposerAttachmentTabBar, didSelectNavigationItem navigationItem: VNavigationMenuItem, fromButton button: UIButton) {
+        delegate?.didSelectNavigationMenuItem(navigationItem)
+
         let identifier = navigationItem.identifier
         let creationFlowType = CreationFlowTypeHelper.creationFlowTypeForIdentifier(identifier)
         var selectedButton: UIButton? = nil
