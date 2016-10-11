@@ -9,20 +9,27 @@
 import Foundation
 import VictoriousIOSSDK
 
-class InAppNotificationsDataSource: PaginatedDataSource, UITableViewDataSource {
+class InAppNotificationsDataSource: NSObject, UITableViewDataSource {
     let dependencyManager: VDependencyManager
     
-    required init(dependencyManager: VDependencyManager) {
+    private(set) var visibleItems: [InAppNotification] = []
+    
+    init(dependencyManager: VDependencyManager) {
         self.dependencyManager = dependencyManager
+        super.init()
     }
     
-    func loadNotifications(_ pageType: VPageType, completion: ((NSError?) -> ())? = nil ) {
-        loadPage( pageType,
-            createOperation: { NotificationsOperation() },
-            completion: { (results, error, cancelled) in
-                completion?(error)
-            }
-        )
+    func loadNotifications(_ completion: ((NSError?) -> Void)? = nil ) {
+        guard
+            let notificationAPIPath = dependencyManager.notificationListApiPath,
+            let request = InAppNotificationsRequest(apiPath: notificationAPIPath)
+        else {
+            Log.warning("")
+            return
+        }
+        RequestOperation(request: request).queue() { result in
+            
+        }
     }
     
     // MARK: - UITableViewDataSource
@@ -43,7 +50,13 @@ class InAppNotificationsDataSource: PaginatedDataSource, UITableViewDataSource {
     }
     
     func decorate(cell notificationCell: InAppNotificationCell, atIndexPath indexPath: IndexPath) {
-        let notification = visibleItems[indexPath.row] as! InAppNotification
+        let notification = visibleItems[indexPath.row]
         notificationCell.updateContent(with: notification, dependencyManager: dependencyManager)
+    }
+}
+
+private extension VDependencyManager {
+    var notificationListApiPath: APIPath? {
+        return apiPath(forKey: "notification.list.URL")
     }
 }
