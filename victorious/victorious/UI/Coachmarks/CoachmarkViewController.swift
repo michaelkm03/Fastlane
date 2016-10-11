@@ -172,7 +172,7 @@ class CoachmarkViewController: UIViewController, VBackgroundContainer {
     // MARK: - Button Actions
     
     func closeButtonAction() {
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true)
     }
     
     // MARK: - VBackgroundContainer Methods

@@ -152,7 +152,7 @@ class NotificationSettingsViewController: UITableViewController, VSettingsSwitch
                     let message = NSLocalizedString("PleaseTryAgainLater", comment: "")
                     let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
                     alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .cancel, handler: nil))
-                    self?.navigationController?.present(alertController, animated: true, completion: nil)
+                    self?.navigationController?.present(alertController, animated: true)
             }
         }
     }

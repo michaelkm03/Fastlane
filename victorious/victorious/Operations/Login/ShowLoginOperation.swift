@@ -60,10 +60,10 @@ final class ShowLoginOperation: AsyncOperation<Void> {
             // to run first so that the configured tab bar is visible immediately
             // when the login view controller is dismissed.
             dispatch_after(0.0) {
-                originViewController?.dismiss(animated: true, completion: nil)
+                originViewController?.dismiss(animated: true)
             }
         }
         
-        originViewController?.present(viewController, animated: animated, completion: nil)
+        originViewController?.present(viewController, animated: animated)
     }
 }

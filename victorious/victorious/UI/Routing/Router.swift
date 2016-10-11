@@ -108,7 +108,7 @@ struct Router {
                     
                 if configuration.addressBarVisible {
                     let safariViewController = SFSafariViewController(url: url)
-                    self.originViewController?.present(safariViewController, animated: true, completion: nil)
+                    self.originViewController?.present(safariViewController, animated: true)
                 }
                 
                 else if let originVC = self.originViewController {

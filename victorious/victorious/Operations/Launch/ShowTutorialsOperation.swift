@@ -54,7 +54,7 @@ final class ShowTutorialsOperation: AsyncOperation<Void> {
         }
         
         let tutorialNavigationController = UINavigationController(rootViewController: tutorialViewController)
-        originViewController?.present(tutorialNavigationController, animated: animated, completion: nil)
+        originViewController?.present(tutorialNavigationController, animated: animated)
     }
     
     func shouldShowTutorials(_ currentVersion: AppVersion, userDefaults: UserDefaults = UserDefaults.standard) -> Bool {

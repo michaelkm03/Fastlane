@@ -10,7 +10,7 @@ import UIKit
 
 extension UICollectionView {
     func v_applyChangeInSection(_ section: NSInteger, from oldValue: NSOrderedSet, to newValue: NSOrderedSet) {
-        self.v_applyChangeInSection(section, from: oldValue, to: newValue, animated: false, completion: nil)
+        self.v_applyChangeInSection(section, from: oldValue, to: newValue, animated: false)
     }
     
     func v_reloadForPreviousPage() {

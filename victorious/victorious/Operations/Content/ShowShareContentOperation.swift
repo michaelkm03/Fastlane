@@ -51,7 +51,7 @@ final class ShowShareContentOperation: AsyncOperation<Void> {
                 finish(.failure(error))
             }
         }
-        originViewController?.present(activityViewController, animated: true, completion: nil)
+        originViewController?.present(activityViewController, animated: true)
     }
 }
 

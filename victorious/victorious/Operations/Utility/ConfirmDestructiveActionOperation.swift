@@ -48,6 +48,6 @@ final class ConfirmDestructiveActionOperation: AsyncOperation<Void> {
             )
         )
         
-        originViewController.present(alertController, animated: true, completion: nil)
+        originViewController.present(alertController, animated: true)
     }
 }

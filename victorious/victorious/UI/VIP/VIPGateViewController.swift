@@ -136,7 +136,7 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate, Fi
     // MARK: - Private
     
     private func HUDNeedsUpdateToTitle(_ title: String?) -> Bool {
-        if let currentTitle = progressHUD.labelText, currentTitle == title {
+        if let currentTitle = progressHUD.label.text, currentTitle == title {
             return false
         }
         else {
@@ -207,7 +207,7 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate, Fi
     }
     
     fileprivate lazy var progressHUD: MBProgressHUD = {
-        let progressHUD = MBProgressHUD(view: self.view)!
+        let progressHUD = MBProgressHUD(view: self.view)
         progressHUD.mode = .indeterminate
         progressHUD.graceTime = 0.35
         
@@ -221,12 +221,10 @@ class VIPGateViewController: UIViewController, VIPSubscriptionHelperDelegate, Fi
             guard HUDNeedsUpdateToTitle(title) else {
                 return
             }
-            progressHUD.labelText = title
-            progressHUD.taskInProgress = true
-            progressHUD.show(true)
+            progressHUD.label.text = title
+            progressHUD.show(animated: true)
         } else {
-            progressHUD.taskInProgress = false
-            progressHUD.hide(true)
+            progressHUD.hide(animated: true)
         }
     }
     

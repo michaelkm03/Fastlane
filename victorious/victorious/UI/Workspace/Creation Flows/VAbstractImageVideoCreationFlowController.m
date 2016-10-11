@@ -305,7 +305,6 @@ static NSString * const kCreationFlowSourceSearch = @"search";
              selectedAsset:(PHAsset *)asset
 {
     MBProgressHUD *hudForView = [MBProgressHUD showHUDAddedTo:self.view.window animated:YES];
-    hudForView.dimBackground = YES;
     self.downloader = [self downloaderWithAsset:asset];
     __weak typeof(self) welf = self;
     [self.downloader downloadWithProgress:^(BOOL accurateProgress, double progress, NSString *progressText)
@@ -314,13 +313,13 @@ static NSString * const kCreationFlowSourceSearch = @"search";
          {
              hudForView.mode =  accurateProgress ? MBProgressHUDModeAnnularDeterminate : MBProgressHUDModeIndeterminate;
              hudForView.progress = progress;
-             hudForView.labelText = progressText;
+             hudForView.label.text = progressText;
          });
      }
                                completion:^(NSError *error, NSURL *downloadedFileURL, UIImage *previewImage)
      {
          __strong typeof(welf) strongSelf = welf;
-         [hudForView hide:YES];
+         [hudForView hideAnimated:YES];
          if (error == nil)
          {
              strongSelf.source = VCreationFlowSourceLibrary;

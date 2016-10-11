@@ -117,7 +117,7 @@
 {
     MBProgressHUD *hudForView = [MBProgressHUD showHUDAddedTo:self.view
                                                      animated:YES];
-    hudForView.labelText = self.activityText;
+    hudForView.label.text = self.activityText;
     
     [[VTrackingManager sharedInstance] trackEvent:VTrackingEventUserDidFinishWorkspaceEdits];
     
@@ -133,7 +133,7 @@
                  return;
              }
              
-             [hudForView hide:YES];
+             [hudForView hideAnimated:YES];
              if (error != nil)
              {
                  [strongSelf v_showAlertWithTitle:NSLocalizedString(@"Render failure", @"") message:error.localizedDescription completion:nil];
