@@ -30,7 +30,7 @@ class CoachmarkManager: NSObject, UIViewControllerTransitioningDelegate {
         guard let coachmarkConfigurations = dependencyManager.array(forKey: Constants.coachmarksArrayKey) as? [[NSObject : AnyObject]] else {
             return
         }
-        let shownCoachmarks = fetchShownCoachmarkIDs()
+        let shownCoachmarks = CoachmarkManager.fetchShownCoachmarkIDs()
         coachmarks = coachmarkConfigurations.map { coachmarkConfiguration in
             let childDependency = dependencyManager.childDependencyManager(withAddedConfiguration: coachmarkConfiguration)
             // FUTURE: Remove force unwrap
@@ -43,11 +43,11 @@ class CoachmarkManager: NSObject, UIViewControllerTransitioningDelegate {
     }
 
     func resetShownCoachmarks() {
-        UserDefaults.standard.set(nil, forKey: Constants.shownCoachmarksKey)
+        UserDefaults.standard.removeObject(forKey: Constants.shownCoachmarksKey)
         reloadCoachmarks()
     }
     
-    func fetchShownCoachmarkIDs() -> [String] {
+    class func fetchShownCoachmarkIDs() -> [String] {
         return UserDefaults.standard.object(forKey: Constants.shownCoachmarksKey) as? [String] ?? []
     }
     
